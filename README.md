@@ -1,8 +1,6 @@
-<img src="cyclos.png" style="float:right" alt="Cyclos"/>
-
 # Cyclos 4 user interface
 
-
+<img src="cyclos.png" align="right" width="120" alt="Cyclos"/>
 This project aims to create a modern, simple and intuitive user interface for [Cyclos](https://www.cyclos.org). The interface should be easy to customize and add functionality needed by specific projects.
 
 The initial planned scope is to have end-user functionality in this application. Administration functionality will still be available in Cyclos' default web interface.
