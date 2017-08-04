@@ -1,0 +1,16 @@
+{
+  "accountsOverview.title": "Accounts overview",
+  "accountsOverview.error.noAccounts": "There are no accounts to be displayed",
+
+  "account.type": "Account",
+  "account.number": "Number",
+  "account.balance": "Balance",
+  "account.availableBalance": "Available balance",
+  "account.reservedAmount": "Reserved amount",
+
+  "transaction.date": "Date",
+  "transaction.subject": "From / to",
+  "transaction.amount": "Amount",
+  "transaction.type": "Type",
+  "transaction.description": "Description"
+}

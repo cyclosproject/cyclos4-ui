@@ -1,0 +1,21 @@
+:host {
+  margin-bottom: 6px;
+  display: flex;
+}
+.gt-xs :host {
+  flex-direction: row;
+}
+.xs :host {
+  flex-direction: column;
+}
+
+.label {
+  font-weight: 400;
+}
+.value {
+  font-weight: 300;
+}
+
+.gt-xs .label {
+  flex: 0 1 160px;
+}

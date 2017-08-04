@@ -1,0 +1,22 @@
+:host {
+  border-radius: 100%;
+}
+img {
+  position: relative;
+}
+.container {
+  border-radius: 50%;
+  overflow: hidden;
+}
+.container.small {
+  width: 24px;
+  height: 24px;
+}
+.container.medium {
+  width: 36px;
+  height: 36px;
+}
+.container.large {
+  width: 48px;
+  height: 48px;
+}

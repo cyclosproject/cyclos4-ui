@@ -1,0 +1,15 @@
+// Angular material theme
+@import '~@angular/material/theming';
+
+$primary: mat-palette($mat-blue);
+$accent: mat-palette($mat-blue, A200, A100, A400);
+$warn: mat-palette($mat-red);
+$theme: mat-light-theme($primary, $accent, $warn);
+$foreground: map-get($theme, foreground);
+$background: map-get($theme, background);
+$typography: mat-typography-config();
+
+// Variables used on application theming
+$max-layout-width: 1160px;
+$menu-width: 200px;
+$max-form-width: 600px;

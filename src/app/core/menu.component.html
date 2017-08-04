@@ -1,0 +1,11 @@
+<md-toolbar *ngIf="layout.ltmd" color="primary">
+  <div class="toolbarTitle" fxFlex="grow">{{format.appTitleMenu}}</div>
+</md-toolbar>
+
+<menu-item *ngIf="login.user == null" url="/login" icon="lock" [label]="'Login'"></menu-item>
+<menu-item *ngIf="login.user != null" url="/accounts" icon="account_balance" [label]="'Accounts'"></menu-item>
+
+<menu-item *ngFor="let i of [1,2,3,4,5,6,7]" [url]="'/item' + i" icon="account_box" [label]="'Menu ' + i"></menu-item>
+
+<menu-item #logout *ngIf="login.user != null" (click)="login.logout();"
+  icon="lock" [label]="'Logout (temp)'"></menu-item>

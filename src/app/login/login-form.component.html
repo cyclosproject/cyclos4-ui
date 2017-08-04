@@ -1,0 +1,22 @@
+<form focusFirst fxLayout="column" #form="ngForm">
+  <md-input-container fxFlex="grow">
+    <input mdInput name="principal" type="text" required
+      [placeholder]="generalMessages.loginPrincipal()"
+      [(ngModel)]="data.principal"        
+      (keyup.enter)="passwordInput.focus()">
+    <md-icon mdPrefix class="md-24">account_circle</md-icon>
+  </md-input-container>
+  <!-- TODO: write a separated password input component based on password input -->
+  <md-input-container fxFlex="grow">
+    <input #passwordInput mdInput name="password" type="password" required
+      [placeholder]="generalMessages.loginPassword()"
+      [(ngModel)]="data.password"
+      (keyup.enter)="emit()">
+    <md-icon mdPrefix class="md-24">lock</md-icon>
+  </md-input-container>
+  <actions *ngIf="showActions">
+    <button md-raised-button color="accent" (click)="emit()">
+      {{generalMessages.loginAction()}}
+    </button>
+  </actions>
+</form>

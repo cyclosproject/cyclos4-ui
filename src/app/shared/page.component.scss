@@ -1,0 +1,13 @@
+@import 'src/definitions';
+
+:host {
+  display: flex !important;
+  flex-direction: column !important;
+}
+.pageTitle {
+  font-size: mat-font-size($typography, headline);
+  line-height: mat-font-size($typography, headline);
+  font-family: mat-font-family($typography);
+  color: mat-color($accent);
+  margin-bottom: 24px;
+}

@@ -1,0 +1,78 @@
+@import '~normalize.css/normalize.css';
+@import 'src/definitions';
+
+// Angular material theme with variables defined in _definitions.scss
+@include mat-core();
+@include angular-material-theme($theme);
+
+// Application style
+* {
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+}
+
+// Forms
+.gt-xs form {
+  max-width: $max-form-width;
+}
+.mat-input-prefix .mat-icon {
+  margin-right: 10px;
+  opacity: 0.65;
+}
+
+// Data tables
+md-tab-body {
+  padding-top: 20px;
+}
+.mat-header-cell {
+  font-size: 14px;
+}
+.mat-header-row, .mat-row {
+  padding: 0px 14px !important;
+}
+.mat-header-row.dynamic, .mat-row.dynamic {
+  height: auto !important;
+  padding: 4px 14px !important;
+}
+.clickable {
+  cursor: pointer;
+}
+md-table md-icon {
+  opacity: 0.67;
+}
+md-cell.avatar, md-header-cell.avatar {
+  max-width: 48px;
+}
+.mat-cell .cell-main {
+  font-weight: 500;
+}
+.mat-cell .cell-small {
+  font-size: 12px;
+}
+
+// Material icons
+.mat-icon.md-14 {
+  font-size: 14px;
+  width: 14px;
+  height: 14px;
+}
+.mat-icon.md-18 {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+}
+.mat-icon.md-24 {
+  font-size: 24px;
+  width: 24px;
+  height: 24px;
+}
+.mat-icon.md-36 {
+  font-size: 36px;
+  width: 36px;
+  height: 36px;
+}
+.mat-icon.md-48 {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+}

@@ -1,0 +1,19 @@
+@import 'src/definitions';
+
+:host {
+  flex: 1 1 100%;
+  display: flex;
+  flex-direction: row;
+  margin-top: 24px;
+}
+.lt-sm :host {
+  flex-direction: column-reverse;
+}
+.gt-xs :host /deep/ button {
+  flex: 0;
+  margin-right: 6px;
+}
+.lt-sm :host /deep/ button {
+  flex: 1 1 100%;
+  margin-bottom: 12px;
+}

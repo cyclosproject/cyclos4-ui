@@ -1,0 +1,32 @@
+@import 'src/definitions';
+
+:host {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+// Sidenav
+:host /deep/ .mat-sidenav-container {
+  flex: 1 1 100%;
+  max-width: $max-layout-width;
+}
+.lt-md :host /deep/ .mat-sidenav-content {
+  width: 100%;
+  flex-direction: column !important;
+}
+.gt-sm :host /deep/ .mat-sidenav-content {
+  max-width: $max-layout-width - $menu-width;
+  flex-direction: row !important;
+}
+:host /deep/ .mat-sidenav {
+  max-width: $menu-width;
+}
+
+// Main area
+.gt-xs :host /deep/ .main {
+  padding: 24px;
+}
+.xs :host /deep/ .main {
+  padding: 12px 8px 8px 8px;
+}

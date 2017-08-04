@@ -1,0 +1,16 @@
+@import 'src/definitions';
+
+a {
+  padding: 5px 5px 5px 20px !important;
+  min-width: 200px !important;
+  text-align: left !important;
+}
+a:not(.active) {
+  opacity: 0.65;
+}
+a.active {
+  color: mat-color($accent);
+}
+a .mat-icon {
+  margin-right: 10px;
+}

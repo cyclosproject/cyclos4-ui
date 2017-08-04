@@ -1,0 +1,12 @@
+<div id="notification" fxLayout="column" fxLayoutAlign="baseline end"
+  fxLayoutGap="20px" [class]="containerClass">
+
+  <div fxLayout="row" fxFlex="grow" style="width: 100%">
+    <md-icon fxFlex="nogrow" [color]="iconColor" class="md-36">{{notification.type}}</md-icon>
+    <div fxFlex="grow" class="notificationMessage" [innerHTML]="notification.message | trust"></div>
+  </div>
+  
+  <button *ngIf="allowClose" fxFlex="nogrow" fxFlexAlign="end" md-raised-button color="accent" (click)="close()">
+    {{generalMessages.close()}}
+  </button>
+</div>

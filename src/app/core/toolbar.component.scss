@@ -1,0 +1,9 @@
+@import 'src/definitions';
+
+.mat-toolbar {
+  max-width: $max-layout-width;
+}
+.toolbarTitle {
+  font-size: 20px;
+  padding-left: 5px;
+}
