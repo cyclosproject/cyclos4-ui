@@ -1,4 +1,4 @@
-<page [title]="accountMessages.accountsOverviewTitle()">
+<section [title]="accountMessages.accountsOverviewTitle()">
   <!-- No accounts: show a notification -->
   <notification *ngIf="noAccountsNotification" [notification]="noAccountsNotification"></notification>
 
@@ -37,6 +37,4 @@
     <md-row class="clickable" *cdkRowDef="let row; columns: displayedColumns;"
       (click)="showHistory(row)"></md-row>
   </md-table>
-</page>
-
-<resize-events></resize-events>
+</section>

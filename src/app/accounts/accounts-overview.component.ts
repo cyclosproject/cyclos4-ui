@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Injector } from '@angular/core';
 import { Router } from "@angular/router";
 import { AccountsService } from "app/api/services";
 import { AccountWithStatus } from "app/api/models";
@@ -6,10 +6,11 @@ import { NotificationService } from "app/core/notification.service";
 import { AccountMessages } from "app/messages/account-messages";
 import { Notification } from "app/shared/notification";
 import { NotificationType } from "app/shared/notification-type";
-import { DataSource, CollectionViewer } from "@angular/cdk";
 import { Observable } from "rxjs/Observable";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { LayoutService } from "app/core/layout.service";
+import { BaseAccountsComponent } from "app/accounts/base-accounts.component";
+import { TableDataSource } from "app/shared/table-datasource";
 
 /**
  * Diplays all user accounts with their statuses, allowing to go to each account details
@@ -19,18 +20,18 @@ import { LayoutService } from "app/core/layout.service";
   templateUrl: 'accounts-overview.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AccountsOverviewComponent implements OnInit {
+export class AccountsOverviewComponent extends BaseAccountsComponent {
   constructor(
+    injector: Injector,
     private accountsService: AccountsService,
-    private changeDetector: ChangeDetectorRef,
-    private router: Router,
-    public accountMessages: AccountMessages,
-    public layout: LayoutService
-  ) { }
+    private router: Router
+  ) {
+    super(injector);
+  }
 
   noAccountsNotification: Notification;
   
-  dataSource = new AccountsOverviewDataSource();
+  dataSource = new TableDataSource<AccountWithStatus>(this.changeDetector);
 
   get displayedColumns(): string[] {
     if (this.layout.xs) {
@@ -41,6 +42,7 @@ export class AccountsOverviewComponent implements OnInit {
   }
 
   ngOnInit() {
+    super.ngOnInit();
     this.accountsService.listAccountsByOwner({owner: 'self'})
       .then(response => {
         let accounts = response.data || [];
@@ -49,8 +51,7 @@ export class AccountsOverviewComponent implements OnInit {
           this.showHistory(accounts[0]);
         } else if (accounts.length > 0) {
           // Multiple accounts: show them all
-          this.dataSource.data.next(accounts);
-          this.changeDetector.markForCheck();
+          this.dataSource.data = accounts;
         } else {
           // No accounts to display
           this.noAccountsNotification = Notification.error(
@@ -63,16 +64,5 @@ export class AccountsOverviewComponent implements OnInit {
   showHistory(account: AccountWithStatus) {
     let type = account.type.internalName || account.type.id;
     this.router.navigate(['/accounts/history', type]);
-  }
-}
-
-export class AccountsOverviewDataSource extends DataSource<AccountWithStatus> {
-  data: BehaviorSubject<AccountWithStatus[]> = new BehaviorSubject([]);
-  
-  connect(collectionViewer: CollectionViewer): Observable<AccountWithStatus[]> {
-    return this.data;
-  }
-
-  disconnect(collectionViewer: CollectionViewer): void {
   }
 }

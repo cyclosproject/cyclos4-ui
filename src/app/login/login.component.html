@@ -1,14 +1,14 @@
 <!-- View for small to large devices -->
 <div *ngIf="layout.gtxs" fxLayout="column" fxLayout.gt-xs="row">
-  <page fxFlex="0 0 44%" [title]="generalMessages.loginTitle()">
-    <login-form #loginForm (onSubmit)="login($event)" [showActions]="!canRegister"></login-form>
-  </page>
+  <section fxFlex="0 0 44%" [title]="generalMessages.loginTitle()">
+    <login-form #loginForm (onSubmit)="doLogin($event)" [showActions]="!canRegister"></login-form>
+  </section>
 
   <div *ngIf="canRegister" fxFlex="0 0 12%"></div>
 
-  <page *ngIf="canRegister" fxFlex="0 0 44%" [title]="generalMessages.loginRegisterTitle()">
+  <section *ngIf="canRegister" fxFlex="0 0 44%" [title]="generalMessages.loginRegisterTitle()">
     {{generalMessages.loginRegisterText()}}
-  </page>
+  </section>
 </div>
 <div *ngIf="canRegister && layout.gtxs" fxLayout="row">
   <actions fxFlex="0 0 44%">
@@ -40,8 +40,6 @@
 </md-tab-group>
 
 <!-- Login page for extra small devices when registration is disabled -->
-<page *ngIf="!canRegister && layout.xs" [title]="generalMessages.loginTitle()">
-  <login-form (onSubmit)="login($event)" [showActions]="true"></login-form>
-</page>
-
-<resize-events></resize-events>
+<section *ngIf="!canRegister && layout.xs" [title]="generalMessages.loginTitle()">
+  <login-form (onSubmit)="doLogin($event)" [showActions]="true"></login-form>
+</section>

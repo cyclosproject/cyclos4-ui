@@ -1,0 +1,28 @@
+<div class="customField" *ngIf="hasValue">
+  <div class="label">{{field.name}}</div>
+  <div class="value" *ngIf="type == 'string'">{{value}}</div>
+  <div class="value break-nl" *ngIf="type == 'text'">{{value}}</div>
+  <div class="value" *ngIf="type == 'richText'" [innerHTML]="value | trust"></div>
+  <div class="value" *ngIf="type == 'url'"><a href="{{value}}">{{value}}</a></div>
+  <div class="value" *ngIf="type == 'boolean'">{{value}}</div>
+  <div class="value" *ngIf="type == 'date'">{{value | date}}</div>
+  <div class="value" *ngIf="type == 'integer'">{{value | number}}</div>
+  <div class="value" *ngIf="type == 'decimal'">{{value | number:field.decimalDigits}}</div>
+  <div class="value" *ngIf="type == 'dynamicSelection'">{{value.label}}</div>
+  <div class="value" *ngIf="type == 'singleSelection' || type == 'multiSelection'">
+    <span *ngFor="let pv of value; let last = last;">
+      <span *ngIf="pv.category">{{pv.category.name}} - </span>{{pv.value}}<span *ngIf="!last">, </span>
+    </span>
+  </div>
+  <div class="value" *ngIf="type == 'linkedEntity'">{{value.name}}</div>
+  <div class="value" *ngIf="type == 'file'">
+    <span *ngFor="let file of value">
+      {{file.name}}<span *ngIf="!last">, </span>
+    </span>
+  </div>
+  <div class="value" *ngIf="type == 'image'">
+    <span *ngFor="let img of value">
+      {{img.name}}<span *ngIf="!last">, </span>
+    </span>
+  </div>
+</div>

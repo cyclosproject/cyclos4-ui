@@ -1,0 +1,61 @@
+<!-- string, integer, URL or entity -->
+<md-input-container #stringComponent fxFlex="grow"
+  *ngIf="type == 'string' || type == 'integer' || type == 'url' || type == 'linkedEntity'">
+  <input #stringInput="ngModel" mdInput
+    [placeholder]="field.name"
+    [required]="field.required"
+    [type]="type == 'url' ? 'url' : 'text'"
+    [numbersOnly]="type == 'integer'"
+    [mask]="field.pattern"
+    [(ngModel)]="fieldValue" [ngModelOptions]="{standalone: true}">
+</md-input-container>
+
+<!-- text or rich text (no WYSIWYG editor yet!) -->
+<md-input-container #textComponent fxFlex="grow"
+  *ngIf="type == 'text' || type == 'richText'">
+  <textarea #textInput="ngModel" mdInput mdTextareaAutosize
+    [placeholder]="field.name"
+    mdAutosizeMinRows="3"
+    [required]="field.required"
+    [type]="type == 'url' ? 'url' : 'text'"
+    [numbersOnly]="type == 'integer'"
+    [(ngModel)]="fieldValue" [ngModelOptions]="{standalone: true}"></textarea>
+</md-input-container>
+
+<!-- boolean -->
+<md-checkbox #booleanComponent="ngModel" fxFlex="grow" *ngIf="type == 'boolean'"
+  [(ngModel)]="fieldValue" [ngModelOptions]="{standalone: true}">{{field.name}}</md-checkbox>
+
+<!-- decimal -->
+<decimal-field #decimalComponent="ngModel" fxFlex="grow" *ngIf="type == 'decimal'"
+  [placeholder]="field.name" [scale]="field.decimalDigits"
+  [required]="field.required"
+  [(ngModel)]="fieldValue" [ngModelOptions]="{standalone: true}"></decimal-field>
+
+<!-- date -->
+<date-field #dateComponent="ngModel" fxFlex="grow" *ngIf="type == 'date'"
+  [placeholder]="field.name" [required]="field.required"
+  [(ngModel)]="fieldValue" [ngModelOptions]="{standalone: true}"></date-field>
+
+<!-- single / multi selection -->
+<md-select #selectComponent="ngModel" fxFlex="grow" *ngIf="type == 'singleSelection' || type == 'multiSelection'"
+  [name]="field.internalName"
+  [(ngModel)]="fieldValue" [ngModelOptions]="{standalone: true}" [required]="field.required"
+  [placeholder]="field.name" [multiple]="type == 'multiSelection'">
+  <md-option *ngFor="let pv of field.possibleValues"
+    [value]="pv.id">
+    <span *ngIf="pv.category">{{pv.category.name}} - </span>
+    {{pv.value}}
+  </md-option>
+</md-select>
+
+<!-- dynamic selection -->
+<md-select #dynamicComponent="ngModel" fxFlex="grow" *ngIf="type == 'dynamicSelection'"
+  [name]="field.internalName"
+  [(ngModel)]="value" [ngModelOptions]="{standalone: true}" [required]="field.required"
+  [placeholder]="field.name">
+  <md-option *ngFor="let pv of field.dynamicValues"
+    [value]="pv.value">{{pv.label}}</md-option>
+</md-select>
+
+<!-- no support for file / image so far -->

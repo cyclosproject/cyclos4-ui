@@ -12,5 +12,11 @@
   "transaction.subject": "From / to",
   "transaction.amount": "Amount",
   "transaction.type": "Type",
-  "transaction.description": "Description"
+  "transaction.description": "Description",
+
+  "payment.kind.choose": "Kind of payment to perform",
+  "payment.kind.user": "To a user",
+  "payment.kind.contact": "To a contact",
+  "payment.kind.own": "Between own accounts",
+  "payment.kind.system": "To a system account"
 }

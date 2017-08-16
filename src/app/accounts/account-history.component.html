@@ -1,4 +1,4 @@
-<page [title]="data?.account?.type?.name">
+<section [title]="data?.account?.type?.name">
   <md-table [dataSource]="dataSource">
     <!-- Avatar column -->
     <ng-container cdkColumnDef="avatar">
@@ -40,6 +40,4 @@
     <md-header-row *cdkHeaderRowDef="layout.xs ? [] : displayedColumns"></md-header-row>
     <md-row *cdkRowDef="let row; columns: displayedColumns;" class.xs="dynamic"></md-row>
   </md-table>
-</page>
-
-<resize-events></resize-events>
+</section>

@@ -1,6 +1,5 @@
-import { Component, OnInit, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Injector } from '@angular/core';
 import { ActivatedRoute, Params } from "@angular/router";
-import { DataSource, CollectionViewer } from "@angular/cdk";
 import { DataForAccountHistory, AccountHistoryResult, AccountKind } from "app/api/models";
 import { AccountsService } from "app/api/services";
 
@@ -11,6 +10,8 @@ import { LayoutService } from "app/core/layout.service";
 import { AccountMessages } from "app/messages/account-messages";
 import { GeneralMessages } from "app/messages/general-messages";
 import { FormatService } from "app/core/format.service";
+import { BaseAccountsComponent } from "app/accounts/base-accounts.component";
+import { TableDataSource } from "app/shared/table-datasource";
 
 /**
  * Displays the account history of a given account
@@ -20,19 +21,17 @@ import { FormatService } from "app/core/format.service";
   templateUrl: 'account-history.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AccountHistoryComponent implements OnInit {
+export class AccountHistoryComponent extends BaseAccountsComponent {
   constructor(
+    injector: Injector,
     private accountsService: AccountsService,
-    private formatService: FormatService,
-    private route: ActivatedRoute,
-    private changeDetector: ChangeDetectorRef,
-    public layout: LayoutService,
-    public generalMessages: GeneralMessages,
-    public accountMessages: AccountMessages
-  ) { }
+    private route: ActivatedRoute
+  ) {
+    super(injector);
+  }
 
   data: DataForAccountHistory;
-  dataSource = new AccountHistoryDataSource();
+  dataSource = new TableDataSource<AccountHistoryResult>(this.changeDetector);
 
   get displayedColumns(): string[] {
     if (this.layout.xs) {
@@ -43,6 +42,7 @@ export class AccountHistoryComponent implements OnInit {
   }
 
   ngOnInit() {
+    super.ngOnInit();
     // Get the account history data
     this.route.params.switchMap(
       (params: Params) => this.accountsService.getAccountHistoryDataByOwnerAndType({
@@ -50,7 +50,6 @@ export class AccountHistoryComponent implements OnInit {
       }))
       .subscribe(response => {
         this.data = response.data;
-        this.changeDetector.markForCheck();
 
         // Fetch the account history
         let query: any = this.data.query;
@@ -58,7 +57,7 @@ export class AccountHistoryComponent implements OnInit {
         query.accountType = this.data.account.type.id;
         this.accountsService.searchAccountHistory(query)
           .then(response => {
-            this.dataSource.data.next(response.data);
+            this.dataSource.data = response.data;
             this.changeDetector.markForCheck();
           });
       });
@@ -71,7 +70,7 @@ export class AccountHistoryComponent implements OnInit {
     } else {
       if (row.type && row.type.from) {
         // Show the system account type name
-        return this.formatService.negative(row.amount)
+        return this.format.negative(row.amount)
           ? row.type.to.name
           : row.type.from.name;
       } else {
@@ -79,16 +78,5 @@ export class AccountHistoryComponent implements OnInit {
         return this.generalMessages.system();
       }
     }
-  }
-}
-
-export class AccountHistoryDataSource extends DataSource<AccountHistoryResult> {
-  data: BehaviorSubject<AccountHistoryResult[]> = new BehaviorSubject([]);
-
-  connect(collectionViewer: CollectionViewer): Observable<AccountHistoryResult[]> {
-    return this.data;
-  }
-
-  disconnect(collectionViewer: CollectionViewer): void {
   }
 }

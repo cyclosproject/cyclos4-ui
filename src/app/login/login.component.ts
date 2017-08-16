@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, ViewChild, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ViewChild, ChangeDetectorRef, OnDestroy, Injector } from '@angular/core';
 import { GeneralMessages } from "app/messages/general-messages";
 import { LoginService } from "app/core/login.service";
 import { Router, ActivatedRoute } from "@angular/router";
@@ -6,6 +6,7 @@ import { LayoutService } from "app/core/layout.service";
 import { LoginData } from "app/login/login-data";
 import { LoginFormComponent } from "app/login/login-form.component";
 import { DataForLogin, GroupForRegistration } from "app/api/models";
+import { BaseComponent } from "app/shared/base.component";
 
 /**
  * Component used to show a login form.
@@ -16,7 +17,7 @@ import { DataForLogin, GroupForRegistration } from "app/api/models";
   templateUrl: './login.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent extends BaseComponent {
 
   @ViewChild("loginForm")
   public loginForm: LoginFormComponent;
@@ -29,15 +30,16 @@ export class LoginComponent implements OnInit {
   }
 
   constructor(
-    public layout: LayoutService,
-    public generalMessages: GeneralMessages,
-    private changeDetector: ChangeDetectorRef,
+    injector: Injector,
     private loginService: LoginService,
     private router: Router,
     private route: ActivatedRoute
-  ) { }
+  ) {
+    super(injector);
+  }
 
   ngOnInit() {
+    super.ngOnInit();
     this.route.data.subscribe((data: {
       dataForLogin: DataForLogin,
       registrationGroups: GroupForRegistration[]
@@ -50,7 +52,7 @@ export class LoginComponent implements OnInit {
   /**
    * Performs the login
    */
-  login(data: LoginData): void {
+  doLogin(data: LoginData): void {
     // When using the external login button there's no data, so we assume it comes from the login form
     data = data || this.loginForm.data;
     this.loginService.login(data.principal, data.password)

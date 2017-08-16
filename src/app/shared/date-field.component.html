@@ -1,0 +1,10 @@
+<div class="decimalField" fxLayout="row">
+  <md-input-container fxFlex="grow">
+    <input #input="ngModel" mdInput
+      [type]="dateMask ? 'text' : 'date'"
+      [placeholder]="placeholder"
+      [required]="required"
+      [mask]="dateMask"
+      [(ngModel)]="fieldValue" [ngModelOptions]="{standalone: true}">
+  </md-input-container>
+</div>
