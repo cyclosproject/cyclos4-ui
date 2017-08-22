@@ -3,22 +3,22 @@ import { Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/r
 import { DataForLogin } from "app/api/models";
 import { AuthService } from "app/api/services";
 import { TranslationLoaderService } from "app/core/translation-loader.service";
-import { AccountMessages } from "app/messages/account-messages";
+import { BankingMessages } from "app/messages/banking-messages";
 
 /**
- * Loads the account messages before showing the accounts module
+ * Loads the banking messages before showing the banking module
  */
 @Injectable()
-export class AccountMessagesResolve implements Resolve<any> {
+export class BankingMessagesResolve implements Resolve<any> {
   constructor(
     private translationLoaderService: TranslationLoaderService,
-    private accountMessages: AccountMessages
+    private bankingMessages: BankingMessages
   ) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<any> {
-    return this.translationLoaderService.load('account')
+    return this.translationLoaderService.load('banking')
       .then(translations => {
-        this.accountMessages.initialize(translations);
+        this.bankingMessages.initialize(translations);
         return translations;
       });
   }

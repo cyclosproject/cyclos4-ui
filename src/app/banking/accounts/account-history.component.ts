@@ -7,11 +7,12 @@ import 'rxjs/add/operator/switchMap';
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { Observable } from "rxjs/Observable";
 import { LayoutService } from "app/core/layout.service";
-import { AccountMessages } from "app/messages/account-messages";
+import { BankingMessages } from "app/messages/banking-messages";
 import { GeneralMessages } from "app/messages/general-messages";
 import { FormatService } from "app/core/format.service";
-import { BaseAccountsComponent } from "app/accounts/base-accounts.component";
+import { BaseBankingComponent } from "app/banking/base-banking.component";
 import { TableDataSource } from "app/shared/table-datasource";
+import { ModelHelper } from "app/shared/model-helper";
 
 /**
  * Displays the account history of a given account
@@ -21,7 +22,7 @@ import { TableDataSource } from "app/shared/table-datasource";
   templateUrl: 'account-history.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AccountHistoryComponent extends BaseAccountsComponent {
+export class AccountHistoryComponent extends BaseBankingComponent {
   constructor(
     injector: Injector,
     private accountsService: AccountsService,
@@ -46,19 +47,19 @@ export class AccountHistoryComponent extends BaseAccountsComponent {
     // Get the account history data
     this.route.params.switchMap(
       (params: Params) => this.accountsService.getAccountHistoryDataByOwnerAndType({
-        owner: 'self', accountType: params.type
+        owner: ModelHelper.SELF, accountType: params.type
       }))
       .subscribe(response => {
         this.data = response.data;
 
         // Fetch the account history
         let query: any = this.data.query;
-        query.owner = 'self';
+        query.owner = ModelHelper.SELF;
         query.accountType = this.data.account.type.id;
         this.accountsService.searchAccountHistory(query)
           .then(response => {
             this.dataSource.data = response.data;
-            this.changeDetector.markForCheck();
+            this.detectChanges();
           });
       });
   }

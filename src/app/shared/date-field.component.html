@@ -2,6 +2,7 @@
   <md-input-container fxFlex="grow">
     <input #input="ngModel" mdInput
       [type]="dateMask ? 'text' : 'date'"
+      [focused]="focused"
       [placeholder]="placeholder"
       [required]="required"
       [mask]="dateMask"

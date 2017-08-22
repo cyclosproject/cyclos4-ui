@@ -28,6 +28,9 @@ import { CustomFieldValueComponent } from "app/shared/custom-field-value.compone
 import { CustomFieldInputComponent } from "app/shared/custom-field-input.component";
 import { DateFieldComponent } from "app/shared/date-field.component";
 import { DecimalFieldComponent } from "app/shared/decimal-field.component";
+import { PrincipalInputComponent } from "app/shared/principal-input.component";
+import { UserSelectionComponent } from "app/shared/user-selection.component";
+import { FocusedDirective } from "app/shared/focused.directive";
 
 /**
  * Module that configures UI elements
@@ -43,10 +46,13 @@ import { DecimalFieldComponent } from "app/shared/decimal-field.component";
     DecimalFieldComponent,
     CustomFieldValueComponent,
     CustomFieldInputComponent,
+    PrincipalInputComponent,
+    UserSelectionComponent,
     AvatarComponent,
     NotFoundComponent,
 
     FocusFirstDirective,
+    FocusedDirective,
     MaskDirective,
     NumbersOnlyDirective,
 
@@ -79,10 +85,13 @@ import { DecimalFieldComponent } from "app/shared/decimal-field.component";
     NotificationComponent,
     CustomFieldValueComponent,
     CustomFieldInputComponent,
+    PrincipalInputComponent,
+    UserSelectionComponent,
     AvatarComponent,
     NotFoundComponent,
 
     FocusFirstDirective,
+    FocusedDirective,
     MaskDirective,
     NumbersOnlyDirective,
 

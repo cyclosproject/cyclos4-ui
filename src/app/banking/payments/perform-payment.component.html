@@ -1,0 +1,23 @@
+<section [title]="bankingMessages.paymentTitle()">
+  <form focusFirst #form="ngForm" fxLayout="column">
+    <payment-kind *ngIf="step == 'kind'"
+      [(ngModel)]="kind" name="kind"
+      [allowedKinds]="allowedKinds" ></payment-kind>
+
+    <payment-id-method *ngIf="step == 'idMethod'"
+      [(ngModel)]="idMethod" name="idMethod"></payment-id-method>
+
+    <payment-user *ngIf="step == 'user'" [idMethod]="idMethod"
+      [(ngModel)]="user" name="user"></payment-user>
+
+    <actions fxLayout="column" fxLayout.gt-xs="row-reverse">
+      <button md-raised-button [disabled]="!nextEnabled" color="accent" (click)="next()">
+        {{generalMessages.next()}}
+      </button>
+      <div fxHide.xs fxFlex="grow"></div>
+      <button md-raised-button [disabled]="step == 'kind'" (click)="previous()">
+        {{generalMessages.previous()}}
+      </button>
+    </actions>
+  </form>
+</section>

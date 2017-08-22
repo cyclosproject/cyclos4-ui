@@ -3,7 +3,8 @@
     [fxFlex]="scale == 0 ? 'grow' : '70%'"
     [fxFlex.gt-sm]="scale == 0 ? 'grow' : '80%'">
     <input #integerField mdInput maxlength="24"
-      numbersOnly [required]="required" [placeholder]="placeholder" [disabled]="disabled"
+      numbersOnly [required]="required" [focused]="focused"
+      [placeholder]="placeholder" [disabled]="disabled"
       [(ngModel)]="integerPart" [ngModelOptions]="{standalone:true}" (blur)="onBlur($event)">
     <span mdPrefix *ngIf="prefix">{{prefix}}&nbsp;</span>
   </md-input-container>

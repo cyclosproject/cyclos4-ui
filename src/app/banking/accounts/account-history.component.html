@@ -21,19 +21,19 @@
 
     <!-- Date column -->
     <ng-container cdkColumnDef="date">
-      <md-header-cell *cdkHeaderCellDef>{{accountMessages.transactionDate()}}</md-header-cell>
+      <md-header-cell *cdkHeaderCellDef>{{bankingMessages.transactionDate()}}</md-header-cell>
       <md-cell *cdkCellDef="let row">{{row.date | date}}</md-cell>
     </ng-container>
 
     <!-- Subject column -->
     <ng-container cdkColumnDef="subject">
-      <md-header-cell *cdkHeaderCellDef>{{accountMessages.transactionSubject()}}</md-header-cell>
+      <md-header-cell *cdkHeaderCellDef>{{bankingMessages.transactionSubject()}}</md-header-cell>
       <md-cell *cdkCellDef="let row">{{subjectName(row)}}</md-cell>
     </ng-container>
 
     <!-- Amount column -->
     <ng-container cdkColumnDef="amount">
-      <md-header-cell *cdkHeaderCellDef style="text-align: end">{{accountMessages.transactionAmount()}}</md-header-cell>
+      <md-header-cell *cdkHeaderCellDef style="text-align: end">{{bankingMessages.transactionAmount()}}</md-header-cell>
       <md-cell *cdkCellDef="let row" style="text-align: end">{{row.amount | currency:data.account.currency}}</md-cell>
     </ng-container>
     

@@ -1,0 +1,6 @@
+<div class="form-info">{{bankingMessages.paymentKindSelect()}}</div>
+<md-radio-group #kindRadio [(ngModel)]="value" name="kind" fxLayout="column">
+    <md-radio-button *ngFor="let kind of allowedKinds" [value]="kind">
+        {{kindLabels[kind]}}
+    </md-radio-button>
+</md-radio-group>

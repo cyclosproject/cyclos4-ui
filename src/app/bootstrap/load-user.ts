@@ -12,7 +12,7 @@ export function loadUser(injector: Injector): Function {
     let apiConfigurationService = injector.get(ApiConfigurationService);
     if (apiConfigurationService.sessionToken) {
       // There should be an authenticated user. Load it.
-      return injector.get(AuthService).getCurrentAuth(['user'])
+      return injector.get(AuthService).getCurrentAuth(['user', 'permissions'])
         .then(response => {
           let auth = response.data;
           if (auth.user) {

@@ -1,17 +1,17 @@
-<section [title]="accountMessages.accountsOverviewTitle()">
+<section [title]="bankingMessages.accountsOverviewTitle()">
   <!-- No accounts: show a notification -->
   <notification *ngIf="noAccountsNotification" [notification]="noAccountsNotification"></notification>
 
   <md-table *ngIf="noAccountsNotification == null" [dataSource]="dataSource">
     <!-- Account type column -->
     <ng-container cdkColumnDef="type">
-      <md-header-cell *cdkHeaderCellDef>{{accountMessages.accountType()}}</md-header-cell>
+      <md-header-cell *cdkHeaderCellDef>{{bankingMessages.accountType()}}</md-header-cell>
       <md-cell *cdkCellDef="let row">{{row.type.name}}</md-cell>
     </ng-container>
 
     <!-- Number column -->
     <ng-container cdkColumnDef="number">
-      <md-header-cell *cdkHeaderCellDef>{{accountMessages.accountNumber()}}</md-header-cell>
+      <md-header-cell *cdkHeaderCellDef>{{bankingMessages.accountNumber()}}</md-header-cell>
       <md-cell *cdkCellDef="let row">{{row.number}}</md-cell>
     </ng-container>
 
@@ -26,9 +26,9 @@
 
     <!-- Balance column -->
     <ng-container cdkColumnDef="balance">
-      <md-header-cell *cdkHeaderCellDef style="text-align: end">{{accountMessages.accountBalance()}}</md-header-cell>
+      <md-header-cell *cdkHeaderCellDef style="text-align: end">{{bankingMessages.accountBalance()}}</md-header-cell>
       <md-cell *cdkCellDef="let row" style="text-align: end">
-        <div *ngIf="layout.xs" class="cell-main">{{accountMessages.accountBalance()}}</div>
+        <div *ngIf="layout.xs" class="cell-main">{{bankingMessages.accountBalance()}}</div>
         {{row.status?.balance | currency:row.currency}}
       </md-cell>
     </ng-container>

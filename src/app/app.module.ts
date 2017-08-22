@@ -5,7 +5,7 @@ import { BrowserModule } from "@angular/platform-browser";
 import 'hammerjs';
 
 import { AppComponent } from 'app/app.component';
-import { AppRoutingModule } from "app/routing/app-routing.module";
+import { AppRoutingModule } from "app/app-routing.module";
 import { SharedModule } from 'app/shared/shared.module';
 import { ApiModule } from "app/api/api.module";
 import { environment } from 'environments/environment';

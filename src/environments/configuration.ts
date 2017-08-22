@@ -2,12 +2,17 @@
 import { DataForUi } from "app/api/models";
 
 // The root URL for the API. Don't forget to include the /api in the end
-const API_URL = 'http://localhost:8888/england/api';
+const API_URL = 'http://localhost:8888/api';
 
 // Application title
 const APP_TITLE = 'Cyclos Local';
 // The application title displayed on the title bar inside the menu on small devices
 const APP_TITLE_MENU = 'Cyclos';
+
+// Available choices for number of results in a search. The default is the smallest one
+const SEARCH_PAGE_SIZES = [40, 100, 200];
+// Number of results displayed on quick searches, such as on user selection
+const QUICK_SEARCH_PAGE_SIZE = 10;
 
 // UI Data
 var DATA_FOR_UI: DataForUi = null;
@@ -34,17 +39,19 @@ DATA_FOR_UI = {
 // a single language for the application.
 
 var GENERAL_TRANSLATIONS = null;
-var ACCOUNT_TRANSLATIONS = null;
+var BANKING_TRANSLATIONS = null;
 // import * as GENERAL_TRANSLATIONS from "../translations/general.json";
-// import * as ACCOUNT_TRANSLATIONS from "../translations/account.json";
+// import * as BANKING_TRANSLATIONS from "../translations/banking.json";
 
 export const configuration = {
   appTitle: APP_TITLE,
   appTitleMenu: APP_TITLE_MENU,
   apiRoot: API_URL,
   dataForUi: DATA_FOR_UI,
+  searchPageSizes: SEARCH_PAGE_SIZES,
+  quickSearchPageSize: QUICK_SEARCH_PAGE_SIZE,
   translations: {
     general: GENERAL_TRANSLATIONS,
-    account: ACCOUNT_TRANSLATIONS
+    banking: BANKING_TRANSLATIONS
   }
 };

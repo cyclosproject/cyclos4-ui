@@ -12,7 +12,7 @@
 </div>
 <div *ngIf="canRegister && layout.gtxs" fxLayout="row">
   <actions fxFlex="0 0 44%">
-    <button md-raised-button color="accent" (click)="login(null)">
+    <button md-raised-button color="accent" (click)="doLogin(null)">
       {{generalMessages.loginAction()}}
     </button>
   </actions>
@@ -27,7 +27,7 @@
 <!-- Tabbed view for extra small devices when registration is enabled -->
 <md-tab-group *ngIf="canRegister && layout.xs">
   <md-tab [label]="generalMessages.loginTitle()">
-    <login-form [showActions]="true" (onSubmit)="login($event)"></login-form>
+    <login-form [showActions]="true" (onSubmit)="doLogin($event)"></login-form>
   </md-tab>
   <md-tab [label]="generalMessages.loginRegisterTitle()">
     {{generalMessages.loginRegisterText()}}

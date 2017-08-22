@@ -1,0 +1,21 @@
+<!-- any textual types -->
+<md-input-container #textComponent fxFlex="grow"
+  *ngIf="!isCustomField">
+  <input #usernameInput="ngModel" mdInput
+    [placeholder]="type.name"
+    [required]="true"
+    [focused]="focused"
+    [type]="type == 'email' ? 'email' : 'text'"
+    [mask]="type.mask"
+    [(ngModel)]="value" [ngModelOptions]="{standalone: true}">
+</md-input-container>
+
+<!-- custom fields -->
+<custom-field-input *ngIf="isCustomField"
+  #customFieldInput="ngModel"
+  fxFlex="grow"
+  fxLayout="column"
+  [focused]="focused"
+  [field]="type.customField"
+  [(ngModel)]="value" [ngModelOptions]="{standalone: true}">
+</custom-field-input>

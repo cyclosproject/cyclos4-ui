@@ -4,10 +4,10 @@ import { AppComponent } from "app/app.component";
 import { LoginComponent } from "app/login/login.component";
 import { HomeComponent } from "app/home/home.component";
 import { NotFoundComponent } from "app/shared/not-found.component";
-import { DataForLoginResolve } from "app/routing/data-for-login.resolve";
 import { SharedModule } from "app/shared/shared.module";
-import { RegistrationGroupsResolve } from "app/routing/registration-groups.resolve";
-import { LoggedUserGuard } from "app/routing/logged-user-guard";
+import { DataForLoginResolve } from "app/data-for-login.resolve";
+import { LoggedUserGuard } from "app/logged-user-guard";
+import { RegistrationGroupsResolve } from "app/registration-groups.resolve";
 
 const rootRoutes: Routes = [
   {
@@ -29,8 +29,8 @@ const rootRoutes: Routes = [
     }
   },
   {
-    path: 'accounts',
-    loadChildren: 'app/accounts/accounts.module#AccountsModule'
+    path: 'banking',
+    loadChildren: 'app/banking/banking.module#BankingModule'
   },
   {
     path: '**',

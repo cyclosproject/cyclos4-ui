@@ -3,14 +3,15 @@ import { Router } from "@angular/router";
 import { AccountsService } from "app/api/services";
 import { AccountWithStatus } from "app/api/models";
 import { NotificationService } from "app/core/notification.service";
-import { AccountMessages } from "app/messages/account-messages";
+import { BankingMessages } from "app/messages/banking-messages";
 import { Notification } from "app/shared/notification";
 import { NotificationType } from "app/shared/notification-type";
 import { Observable } from "rxjs/Observable";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { LayoutService } from "app/core/layout.service";
-import { BaseAccountsComponent } from "app/accounts/base-accounts.component";
+import { BaseBankingComponent } from "app/banking/base-banking.component";
 import { TableDataSource } from "app/shared/table-datasource";
+import { ModelHelper } from "app/shared/model-helper";
 
 /**
  * Diplays all user accounts with their statuses, allowing to go to each account details
@@ -20,7 +21,7 @@ import { TableDataSource } from "app/shared/table-datasource";
   templateUrl: 'accounts-overview.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AccountsOverviewComponent extends BaseAccountsComponent {
+export class AccountsOverviewComponent extends BaseBankingComponent {
   constructor(
     injector: Injector,
     private accountsService: AccountsService,
@@ -43,7 +44,7 @@ export class AccountsOverviewComponent extends BaseAccountsComponent {
 
   ngOnInit() {
     super.ngOnInit();
-    this.accountsService.listAccountsByOwner({owner: 'self'})
+    this.accountsService.listAccountsByOwner({owner: ModelHelper.SELF})
       .then(response => {
         let accounts = response.data || [];
         if (accounts.length == 1) {
@@ -55,14 +56,14 @@ export class AccountsOverviewComponent extends BaseAccountsComponent {
         } else {
           // No accounts to display
           this.noAccountsNotification = Notification.error(
-            this.accountMessages.accountsOverviewErrorNoAccounts());
-          this.changeDetector.markForCheck();
+            this.bankingMessages.accountsOverviewErrorNoAccounts());
+          this.detectChanges();
         }
       });
   }
 
   showHistory(account: AccountWithStatus) {
     let type = account.type.internalName || account.type.id;
-    this.router.navigate(['/accounts/history', type]);
+    this.router.navigate(['/banking/accounts', type]);
   }
 }

@@ -23,6 +23,7 @@ export class DecimalFieldComponent implements OnInit, ControlValueAccessor {
     private formatService: FormatService
   ) { }
 
+  @Input() focused: boolean;
   @Input() prefix: string;
   @Input() suffix: string;
   @Input() required: boolean;

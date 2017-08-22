@@ -50,6 +50,7 @@ export class DateFieldComponent implements OnInit, ControlValueAccessor, Validat
   private touchedCallback = () => { };
   private validatorChangeCallback = () => { };
 
+  @Input() focused: boolean;
   @Output() change: EventEmitter<string> = new EventEmitter();
   @Output() blur: EventEmitter<string> = new EventEmitter();
 

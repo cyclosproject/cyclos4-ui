@@ -41,8 +41,32 @@ export class CustomFieldInputComponent implements OnInit, ControlValueAccessor, 
   ) { }
 
   @Input()
-  public field: CustomFieldDetailed;
-  public type: CustomFieldTypeEnum;
+  focused: boolean;
+
+  @Input()
+  field: CustomFieldDetailed;
+  type: CustomFieldTypeEnum;
+
+  @Input()
+  public get disabled(): boolean {
+    if (this.stringInput) return this.stringInput.nativeElement.disabled;
+    if (this.textInput) return this.textInput.nativeElement.disabled;
+    if (this.booleanComponent) return this.booleanComponent.disabled;
+    if (this.decimalComponent) return this.decimalComponent.disabled;
+    if (this.dateComponent) return this.dateComponent.disabled;
+    if (this.selectComponent) return this.selectComponent.disabled;
+    if (this.dynamicComponent) return this.dynamicComponent.disabled;
+    return false;
+  }
+  public set disabled(isDisabled: boolean) {
+    if (this.stringInput) this.stringInput.nativeElement.disabled = isDisabled;
+    if (this.textInput) this.textInput.nativeElement.disabled = isDisabled;
+    if (this.booleanComponent) this.booleanComponent.disabled = isDisabled;
+    if (this.decimalComponent) this.decimalComponent.disabled = isDisabled;
+    if (this.dateComponent) this.dateComponent.disabled = isDisabled;
+    if (this.selectComponent) this.selectComponent.disabled = isDisabled;
+    if (this.dynamicComponent) this.dynamicComponent.disabled = isDisabled;
+  }
 
   private _value: string = null;
 
@@ -136,13 +160,7 @@ export class CustomFieldInputComponent implements OnInit, ControlValueAccessor, 
     this.touchedCallback = fn;
   }
   setDisabledState(isDisabled: boolean): void {
-    if (this.stringInput) this.stringInput.nativeElement.disabled = isDisabled;
-    if (this.textInput) this.textInput.nativeElement.disabled = isDisabled;
-    if (this.booleanComponent) this.booleanComponent.disabled = isDisabled;
-    if (this.decimalComponent) this.decimalComponent.disabled = isDisabled;
-    if (this.dateComponent) this.dateComponent.disabled = isDisabled;
-    if (this.selectComponent) this.selectComponent.disabled = isDisabled;
-    if (this.dynamicComponent) this.dynamicComponent.disabled = isDisabled;
+    this.disabled = isDisabled;
   }
 
   // Validator methods

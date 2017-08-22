@@ -47,4 +47,11 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.mediaSubscription.unsubscribe();
   }
+
+  /**
+   * Marks the change detector to check for changes
+   */
+  protected detectChanges(): void {
+    this.changeDetector.markForCheck();
+  }
 }

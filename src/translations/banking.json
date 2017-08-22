@@ -1,0 +1,28 @@
+{
+  "accountsOverview.title": "Accounts overview",
+  "accountsOverview.error.noAccounts": "There are no accounts to be displayed",
+
+  "account.type": "Account",
+  "account.number": "Number",
+  "account.balance": "Balance",
+  "account.availableBalance": "Available balance",
+  "account.reservedAmount": "Reserved amount",
+
+  "transaction.date": "Date",
+  "transaction.subject": "From / to",
+  "transaction.amount": "Amount",
+  "transaction.type": "Type",
+  "transaction.description": "Description",
+
+  "payment.title": "Perform payment",
+  "payment.kind.select": "Please, select the payment you want to perform",
+  "payment.kind.user": "To user",
+  "payment.kind.self": "Between my accounts",
+  "payment.kind.system": "To system account",
+  "payment.idMethod.select": "Please, choose the way you want to select the user",
+  "payment.idMethod.autocomplete": "Search",
+  "payment.idMethod.contact": "Contact list",
+  "payment.user.search": "Please, input the search keywords and select the user",
+  "payment.user.contacts": "Please, select the user from your contact list",
+  "payment.user.principal": "Please, enter the user data below"  
+}

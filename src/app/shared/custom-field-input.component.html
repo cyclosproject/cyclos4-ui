@@ -4,6 +4,7 @@
   <input #stringInput="ngModel" mdInput
     [placeholder]="field.name"
     [required]="field.required"
+    [focused]="focused"
     [type]="type == 'url' ? 'url' : 'text'"
     [numbersOnly]="type == 'integer'"
     [mask]="field.pattern"
@@ -17,6 +18,7 @@
     [placeholder]="field.name"
     mdAutosizeMinRows="3"
     [required]="field.required"
+    [focused]="focused"
     [type]="type == 'url' ? 'url' : 'text'"
     [numbersOnly]="type == 'integer'"
     [(ngModel)]="fieldValue" [ngModelOptions]="{standalone: true}"></textarea>
@@ -30,11 +32,13 @@
 <decimal-field #decimalComponent="ngModel" fxFlex="grow" *ngIf="type == 'decimal'"
   [placeholder]="field.name" [scale]="field.decimalDigits"
   [required]="field.required"
+  [focused]="focused"
   [(ngModel)]="fieldValue" [ngModelOptions]="{standalone: true}"></decimal-field>
 
 <!-- date -->
 <date-field #dateComponent="ngModel" fxFlex="grow" *ngIf="type == 'date'"
   [placeholder]="field.name" [required]="field.required"
+  [focused]="focused"
   [(ngModel)]="fieldValue" [ngModelOptions]="{standalone: true}"></date-field>
 
 <!-- single / multi selection -->

@@ -43,6 +43,9 @@ md-table md-icon {
 md-cell.avatar, md-header-cell.avatar {
   max-width: 48px;
 }
+md-cell.selection, md-header-cell.selection {
+  max-width: 32px;
+}
 .mat-cell .cell-main {
   font-weight: 500;
 }
@@ -75,4 +78,20 @@ md-cell.avatar, md-header-cell.avatar {
   font-size: 48px;
   width: 48px;
   height: 48px;
+}
+
+md-radio-group md-radio-button {
+  margin-bottom: 5px;
+}
+md-radio-group md-radio-button::last-of-type {
+  margin-bottom: 0px;
+}
+
+.form-info {
+  margin-bottom: 12px;
+}
+
+a.plain {
+  text-decoration: none;
+  color: map-get($foreground, text);
 }

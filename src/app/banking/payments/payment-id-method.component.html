@@ -1,0 +1,9 @@
+<div class="form-info">{{bankingMessages.paymentIdMethodSelect()}}</div>
+<md-radio-group *ngIf="dataForPayment | async" #idMethodRadio
+  [(ngModel)]="value" name="idMethod" fxLayout="column">
+  <div *ngFor="let idMethod of allowedIdMethods">
+    <md-radio-button [value]="idMethod">
+      {{idMethod.name}}
+    </md-radio-button>
+  </div>
+</md-radio-group>

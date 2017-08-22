@@ -12,13 +12,17 @@ export class TableDataSource<T> extends DataSource<T> {
     super();
   }
 
-  public get data(): T[] {
+  get data(): T[] {
     return this._data.value;
   }
 
-  public set data(value: T[]) {
+  set data(value: T[]) {
     this._data.next(value);
     this.changeDetector.markForCheck();
+  }
+
+  asObservable(): Observable<T[]> {
+    return this._data.asObservable();
   }
 
   private _data: BehaviorSubject<T[]> = new BehaviorSubject([]);

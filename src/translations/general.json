@@ -13,8 +13,18 @@
   "close": "Close",
   "yes": "Yes",
   "no": "No",
-
   "system": "System",
+  "next": "Next",
+  "previous": "Previous",
+  "keywords": "Keywords",
+  "user": "User",
+
+  "search.noResults": "No results for the specified search criteria",
+  "search.user.noKeywords": "Please, fill in the keywords to search for a user",
+
+  "menu.accounts": "Accounts",
+  "menu.account": "Account",
+  "menu.payment": "Payment",
 
   "error.badRequest": "Bad request parameters",
   "error.entityNotFoundKey": "The requested data could not be found: {type} with key {key}",
