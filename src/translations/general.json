@@ -9,6 +9,7 @@
   "login.register.action": "Register",
   
   "submit": "Submit",
+  "confirm": "Confirm",
   "cancel": "Cancel",
   "close": "Close",
   "yes": "Yes",
@@ -26,6 +27,17 @@
   "menu.account": "Account",
   "menu.payment": "Payment",
 
+  "password.otp.medium.sms": "SMS",
+  "password.otp.medium.email": "E-mail",
+  "password.otp.sent.email": "An e-mail with the password was sent to {email}",
+  "password.otp.sent.sms": "A SMS with the password was sent to {phone}",
+  "password.otp.error": "There was an error when sending the password.\nPlease, try again later.",
+  "password.confirmation.title": "{name} required",
+  "password.confirmation.notActive": "In order to confirm you need a {name}, but you do not have any.",
+  "password.confirmation.otp": "Please, request a password below in order to confirm.",
+  "password.confirmation.otp.existing": "In order to confirm, please, supply your {name}.\nYou can use the previously sent password or request for a new one.",
+  "password.confirmation.otp.noMediums": "In order to confirm you need a {name}, but you cannot request a new password.\nPlease, contact the administration.",
+  
   "error.badRequest": "Bad request parameters",
   "error.entityNotFoundKey": "The requested data could not be found: {type} with key {key}",
   "error.entityNotFound": "The requested data could not be found: {type}",

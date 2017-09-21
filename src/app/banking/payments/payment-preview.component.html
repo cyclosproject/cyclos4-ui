@@ -1,0 +1,37 @@
+<div class="form-info">{{preview.pendingAuthorization ? bankingMessages.paymentPreviewAuthMessage() : bankingMessages.paymentPreviewMessage()}}</div>
+
+<label-value [label]="bankingMessages.transactionFrom()">
+  {{from}}
+</label-value>
+<label-value *ngIf="preview.fromAccount.number" [label]="bankingMessages.transactionFromAccount()">
+  {{preview.fromAccount.number}}
+</label-value>  
+<label-value [label]="bankingMessages.transactionTo()">
+  {{to}}
+</label-value>
+<label-value *ngIf="preview.toAccount.number" [label]="bankingMessages.transactionToAccount()">
+  {{preview.toAccount.number}}
+</label-value>  
+<label-value *ngIf="hasAmount" [label]="bankingMessages.transactionAmount()">
+  {{preview.totalAmount | currency:preview.currency}}
+</label-value>
+<label-value *ngIf="hasMainAmount" [label]="bankingMessages.paymentMainAmount()">
+  {{preview.mainAmount | currency:preview.currency}}
+</label-value>
+<label-value *ngIf="hasFees" [label]="bankingMessages.paymentFees()">
+  <div *ngFor="let feePreview of preview.fees">
+    {{feePreview.fee.name}}: {{feePreview.amount | currency:preview.currency}}
+  </div>
+</label-value>
+<label-value *ngIf="hasTotalAmount" [label]="bankingMessages.paymentTotalAmount()">
+  {{preview.totalAmount | currency:preview.currency}}
+</label-value>
+<custom-field-value *ngFor="let fv of preview.customValues" [fieldValue]="fv">
+</custom-field-value>
+<label-value *ngIf="hasDescription" [label]="bankingMessages.transactionDescription()"
+  [value]="preview.payment.description" valueType="break">
+</label-value>
+<confirmation-password *ngIf="preview.confirmationPasswordInput"
+  [passwordInput]="preview.confirmationPasswordInput"
+  [(ngModel)]="confirmationPassword" name="confirmationPassword">
+</confirmation-password>

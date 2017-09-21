@@ -11,22 +11,22 @@ import { DataForLogin } from "app/api/models";
 @Component({
   selector: 'login-form',
   templateUrl: 'login-form.component.html',
+  styleUrls: ['login-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoginFormComponent implements OnInit {
 
   @Input()
-  public dataForLogin: DataForLogin;
+  dataForLogin: DataForLogin;
 
   @Input()
-  @Output()
-  public data: LoginData = new LoginData();
+  data: LoginData = new LoginData();
 
   @Input()
-  public showActions: boolean;
+  showActions: boolean;
 
   @Output()
-  public onSubmit: EventEmitter<LoginData>;
+  onSubmit: EventEmitter<LoginData>;
 
   constructor(
     public generalMessages: GeneralMessages,
@@ -43,6 +43,10 @@ export class LoginFormComponent implements OnInit {
    * Emits the current login data
    */
   emit(): void {
-    this.onSubmit.emit(this.data);
+    this.onSubmit.emit(new LoginData(this.data.principal, this.data.password));
+  }
+
+  get valid(): boolean {
+    return this.data && this.data.valid;
   }
 }

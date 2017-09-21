@@ -86,7 +86,12 @@ md-radio-group md-radio-button {
 md-radio-group md-radio-button::last-of-type {
   margin-bottom: 0px;
 }
-
+.mat-form-field {
+  width: inherit !important;
+}
+.mat-button, .mat-raised-button {
+  min-width: inherit !important;
+}
 .form-info {
   margin-bottom: 12px;
 }

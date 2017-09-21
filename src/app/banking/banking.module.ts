@@ -8,6 +8,10 @@ import { PerformPaymentComponent } from "app/banking/payments/perform-payment.co
 import { PaymentKindComponent } from "app/banking/payments/payment-kind.component";
 import { PaymentUserComponent } from "app/banking/payments/payment-user.component";
 import { PaymentIdMethodComponent } from "app/banking/payments/payment-id-method.component";
+import { PaymentTypeComponent } from "app/banking/payments/payment-type.component";
+import { PaymentFieldsComponent } from "app/banking/payments/payment-fields.component";
+import { PaymentPreviewComponent } from 'app/banking/payments/payment-preview.component';
+import { PaymentDoneComponent } from 'app/banking/payments/payment-done.component';
 
 /**
  * Module for displaying an user's accounts and view transfer details
@@ -25,7 +29,11 @@ import { PaymentIdMethodComponent } from "app/banking/payments/payment-id-method
     PerformPaymentComponent,
     PaymentKindComponent,
     PaymentIdMethodComponent,
-    PaymentUserComponent
+    PaymentUserComponent,
+    PaymentTypeComponent,
+    PaymentFieldsComponent,
+    PaymentPreviewComponent,
+    PaymentDoneComponent,
   ],
   providers: [
     BankingMessages

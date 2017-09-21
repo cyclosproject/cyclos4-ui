@@ -24,11 +24,11 @@ export class ToolbarComponent implements AfterViewInit {
   private previousTitle: string;
 
   ngAfterViewInit() {
-    this.sidenav.onOpenStart.subscribe(() => {
+    this.sidenav.onOpen.subscribe(() => {
       this.previousTitle = this.title.nativeElement.innerHTML;
       this.title.nativeElement.innerHTML = '';
     });
-    this.sidenav.onCloseStart.subscribe(() => {
+    this.sidenav.onClose.subscribe(() => {
       this.title.nativeElement.innerHTML = this.previousTitle;
     });
   }

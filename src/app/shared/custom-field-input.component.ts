@@ -1,12 +1,15 @@
 import { Component, OnInit, Input, forwardRef, Output, ViewChild, ElementRef, ChangeDetectionStrategy } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor, FormControl, AbstractControl, ValidationErrors, NgControl, Validator, NG_VALIDATORS } from "@angular/forms";
 import { CustomFieldTypeEnum, CustomFieldDetailed } from "app/api/models";
-import { MdInputContainer, MdCheckbox, MdSelect } from "@angular/material";
+import { MdCheckbox, MdSelect } from "@angular/material";
 import { FormatService } from "app/core/format.service";
 import { DecimalFieldComponent } from "app/shared/decimal-field.component";
 import { DateFieldComponent } from "app/shared/date-field.component";
 
 const MAX_INTEGER: number = 2147483647;
+
+const INPUT_TYPES = [CustomFieldTypeEnum.STRING, CustomFieldTypeEnum.INTEGER, CustomFieldTypeEnum.URL, CustomFieldTypeEnum.LINKED_ENTITY];
+const TEXTAREA_TYPES = [CustomFieldTypeEnum.TEXT, CustomFieldTypeEnum.RICH_TEXT];
 
 // Definition of the exported NG_VALUE_ACCESSOR provider
 export const CUSTOM_FIELD_VALUE_ACCESSOR = {
@@ -46,6 +49,14 @@ export class CustomFieldInputComponent implements OnInit, ControlValueAccessor, 
   @Input()
   field: CustomFieldDetailed;
   type: CustomFieldTypeEnum;
+
+  get input(): boolean {
+    return INPUT_TYPES.includes(this.type);
+  }
+
+  get textarea(): boolean {
+    return TEXTAREA_TYPES.includes(this.type);
+  }
 
   @Input()
   public get disabled(): boolean {
@@ -111,8 +122,13 @@ export class CustomFieldInputComponent implements OnInit, ControlValueAccessor, 
     } else if (this.field.type == CustomFieldTypeEnum.INTEGER) {
       let num = Number(fieldValue);
       if (num != null && num > MAX_INTEGER) {
-        // 3 assignments :-O
-        this.stringInput.nativeElement.value = this._fieldValue = this._value = MAX_INTEGER.toString();
+        // 2 assignments
+        this._fieldValue = this._value = MAX_INTEGER.toString();
+        if (this.stringInput) {
+          this.stringInput.nativeElement.value = this._value;
+        }
+      } else {
+        this._value = fieldValue;
       }
     } else {
       this._value = fieldValue;

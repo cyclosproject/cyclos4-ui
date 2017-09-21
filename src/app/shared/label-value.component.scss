@@ -16,6 +16,13 @@
   font-weight: 300;
 }
 
-.gt-xs .label {
-  flex: 0 1 160px;
+.gt-xs :host .value {
+  margin-left: 12px;
+}
+.xs :host .label {
+  width: inherit !important;
+}
+
+.break-nl {
+  white-space: pre-wrap;
 }

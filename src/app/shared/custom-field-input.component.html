@@ -1,6 +1,5 @@
 <!-- string, integer, URL or entity -->
-<md-input-container #stringComponent fxFlex="grow"
-  *ngIf="type == 'string' || type == 'integer' || type == 'url' || type == 'linkedEntity'">
+<md-input-container *ngIf="input" #stringComponent fxFlex="grow">
   <input #stringInput="ngModel" mdInput
     [placeholder]="field.name"
     [required]="field.required"
@@ -12,8 +11,7 @@
 </md-input-container>
 
 <!-- text or rich text (no WYSIWYG editor yet!) -->
-<md-input-container #textComponent fxFlex="grow"
-  *ngIf="type == 'text' || type == 'richText'">
+<md-input-container *ngIf="textarea" #textComponent fxFlex="grow">
   <textarea #textInput="ngModel" mdInput mdTextareaAutosize
     [placeholder]="field.name"
     mdAutosizeMinRows="3"

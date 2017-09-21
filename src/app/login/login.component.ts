@@ -55,6 +55,8 @@ export class LoginComponent extends BaseComponent {
   doLogin(data: LoginData): void {
     // When using the external login button there's no data, so we assume it comes from the login form
     data = data || this.loginForm.data;
+    if (!data.valid) return;
+    
     this.loginService.login(data.principal, data.password)
       .then(u => {
         // Redirect to the correct URL
@@ -62,4 +64,7 @@ export class LoginComponent extends BaseComponent {
       });
   }
 
+  register(): void {
+    alert("Not implemented yet");
+  }
 }

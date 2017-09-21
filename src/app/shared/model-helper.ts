@@ -1,5 +1,6 @@
-import { Entity } from "app/api/models";
+import { Entity, AccountWithOwner, TransferType, AccountKind, TransactionView, User } from "app/api/models";
 import { environment } from "environments/environment"
+import { GeneralMessages } from "app/messages/general-messages";
 
 /**
  * Helper methods for working with API model
@@ -9,6 +10,9 @@ export class ModelHelper {
   /** Represents the own user */
   static SELF = 'self';
 
+  /** Represents the system account owner */
+  static SYSTEM = 'system';
+  
   /**
    * Returns the entity internal name, if any, otherwise the id.
    * If the input entity is null, returns null.
@@ -19,6 +23,46 @@ export class ModelHelper {
       return entity['internalName'] || entity.id;
     }
     return null;
+  }
+  
+  /**
+   * Returns the entity internal name, if any, otherwise the id.
+   * If the input entity is null, returns null.
+   */
+  static accountName(generalMessages: GeneralMessages, from: boolean, accountOrTransaction: AccountWithOwner | TransactionView, transferType: TransferType = null): string {
+    if (accountOrTransaction == null) {
+      return null;
+    }
+    // Get the payment transfer type if none is given
+    if (transferType == null && (accountOrTransaction as TransactionView).type) {
+      transferType = (accountOrTransaction as TransactionView).type;
+    }
+
+    // Resolve the account kind
+    let kind: AccountKind;
+    if ((accountOrTransaction as AccountWithOwner).kind) {
+      kind = (accountOrTransaction as AccountWithOwner).kind;
+    } else {
+      let transaction = accountOrTransaction as TransactionView;
+      kind = from ? transaction.fromKind : transaction.toKind;
+    }
+
+    if (kind == AccountKind.SYSTEM) {
+      // The kind is system: show the system account name from the transfer type
+      let accountType = (from ? transferType.from : transferType.to) || {};
+      // Cyclos < 4.9 doesn't send from / to in transfer type. Show 'System' in this case.
+      return name || generalMessages.system();
+    }
+
+    // The account belongs to a user
+    let user: User;
+    if ((accountOrTransaction as AccountWithOwner).user) {
+      user = (accountOrTransaction as AccountWithOwner).user;
+    } else {
+      let transaction = accountOrTransaction as TransactionView;
+      user = from ? transaction.fromUser : transaction.toUser;
+    }
+    return (user || {}).display || generalMessages.user();
   }
 
   /**

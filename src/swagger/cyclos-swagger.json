@@ -1,15 +1,18 @@
 {
   "swagger" : "2.0",
   "info" : {
-    "description" : "The REST API for Cyclos @cyclosVersion",
-    "version" : "@cyclosVersion",
-    "title" : "Cyclos @cyclosVersion API"
+    "description" : "The REST API for Cyclos 4.9",
+    "version" : "4.9",
+    "title" : "Cyclos 4.9 API"
   },
-  "host" : "@host",
-  "basePath" : "@basePath",
+  "host" : "localhost:8888",
+  "basePath" : "/api",
   "tags" : [ {
     "name" : "Auth",
     "description" : "Operations regarding the user authentication, such as login / logout,\nactivating / deactivating an access client and obtaining the current\nauthenticated user information.\n"
+  }, {
+    "name" : "Sessions",
+    "description" : "Operations for administrators managing sessions of other users.\n"
   }, {
     "name" : "Captcha",
     "description" : "Generate new captcha challenges, which are required for some\noperations performed as guest, in order to make it harder for bots\nto abuse the api.  \n"
@@ -27,6 +30,9 @@
     "description" : "Management of user addresses, which is done separatedly from the raw\nuser profile fields.\n"
   }, {
     "name" : "ContactInfos",
+    "description" : "Management of user's additional contact information, which can either\nrepresent contact information for specific employees (e.g. a salesman)\nor distinct subsidiary offices of the same company.\n"
+  }, {
+    "name" : "ContactInfos (DEPRECATED)",
     "description" : "Management of user's additional contact information, which can either\nrepresent contact information for specific employees (e.g. a salesman)\nor distinct subsidiary offices of the same company.\n"
   }, {
     "name" : "Images",
@@ -55,6 +61,9 @@
   }, {
     "name" : "Payments",
     "description" : "Provides access for performing payments or scheduled payments.\n"
+  }, {
+    "name" : "PaymentRequests",
+    "description" : "Provide access to payment requests. A payment request is created by the \npayee with a defined payer. Once the payer (i.e the request's recipient) \naccepts the request, either a direct or scheduled payment is created\n(which could, depending on the configuration, be pending authorization).\n"
   }, {
     "name" : "POS",
     "description" : "Provides access for receiving payments or scheduled payments in\nPoint-Of-Sale (POS) operations.\n"
@@ -2037,7 +2046,7 @@
         "x-contentType" : "application/json"
       }
     },
-    "/contactInfos/{id}" : {
+    "/contact-infos/{id}" : {
       "get" : {
         "tags" : [ "ContactInfos" ],
         "summary" : "Returns details of a specific additional contact information",
@@ -2231,7 +2240,7 @@
         "x-contentType" : "application/json"
       }
     },
-    "/contactInfos/{id}/data-for-edit" : {
+    "/contact-infos/{id}/data-for-edit" : {
       "get" : {
         "tags" : [ "ContactInfos" ],
         "summary" : "Returns data to edit an existing additional contact information",
@@ -2293,6 +2302,270 @@
         }, {
           "accessClient" : [ ]
         } ],
+        "x-accepts" : "application/json",
+        "x-contentType" : "application/json"
+      }
+    },
+    "/contactInfos/{id}" : {
+      "get" : {
+        "tags" : [ "ContactInfos (DEPRECATED)" ],
+        "summary" : "DEPRECATED. Please use `GET /contact-infos/{id}`.  This path will be removed in Cyclos 4.10.\n",
+        "description" : "Returns information about an additional contact information by id\n",
+        "operationId" : "viewContactInfoDeprecated",
+        "parameters" : [ {
+          "name" : "fields",
+          "in" : "query",
+          "description" : "Select which fields to include on returned data. If nothing is set, all object fields are returned. Unprefixed field names will be handled like a whitelist (only listed fields will be included), while names starting with a minus (-) or exclamation mark (!) will be handled as blacklist (listed fields will not be included). This works for nesting as well. For example: `a,b.b1,c.-c1,c.-c2` will return the fields `a`, `b` (containing only the `b1` field) and `c` (containing all its fields except for `c1` or `c2`). \n",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          },
+          "collectionFormat" : "multi"
+        }, {
+          "name" : "id",
+          "in" : "path",
+          "description" : "The object identification",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The additional contact information data",
+            "schema" : {
+              "$ref" : "#/definitions/ContactInfoView"
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized access. Missing or invalid crendentials supplied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/UnauthorizedError"
+            }
+          },
+          "403" : {
+            "description" : "Permission denied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/ForbiddenError"
+            }
+          },
+          "404" : {
+            "description" : "An expected data was not found",
+            "schema" : {
+              "$ref" : "#/definitions/NotFoundError"
+            }
+          },
+          "500" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "security" : [ {
+          "basic" : [ ]
+        }, {
+          "session" : [ ]
+        }, {
+          "accessClient" : [ ]
+        } ],
+        "deprecated" : true,
+        "x-accepts" : "application/json",
+        "x-contentType" : "application/json"
+      },
+      "put" : {
+        "tags" : [ "ContactInfos (DEPRECATED)" ],
+        "summary" : "DEPRECATED. Please use `PUT /contact-infos/{id}`.  This path will be removed in Cyclos 4.10.\n",
+        "description" : "Updates an existing additional contact information",
+        "operationId" : "updateContactInfoDeprecated",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "The object identification",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "contactInfo",
+          "description" : "The additional contact information to be edited",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/ContactInfoEdit"
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "The additional contact information was updated"
+          },
+          "401" : {
+            "description" : "Unauthorized access. Missing or invalid crendentials supplied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/UnauthorizedError"
+            }
+          },
+          "403" : {
+            "description" : "Permission denied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/ForbiddenError"
+            }
+          },
+          "404" : {
+            "description" : "An expected data was not found",
+            "schema" : {
+              "$ref" : "#/definitions/NotFoundError"
+            }
+          },
+          "409" : {
+            "description" : "This operation expected an entity state, but it has resulted in a conflict",
+            "schema" : {
+              "$ref" : "#/definitions/ConflictError"
+            }
+          },
+          "422" : {
+            "description" : "Input error. Either a validation error or the maximum allowed items was exceeded\n",
+            "schema" : {
+              "$ref" : "#/definitions/InputError"
+            }
+          },
+          "500" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "security" : [ {
+          "basic" : [ ]
+        }, {
+          "session" : [ ]
+        }, {
+          "accessClient" : [ ]
+        } ],
+        "deprecated" : true,
+        "x-accepts" : "application/json",
+        "x-contentType" : "application/json"
+      },
+      "delete" : {
+        "tags" : [ "ContactInfos (DEPRECATED)" ],
+        "summary" : "DEPRECATED. Please use `DELETE /contact-infos/{id}`.  This path will be removed in Cyclos 4.10.\n",
+        "description" : "Removes an existing additional contact information",
+        "operationId" : "deleteContactInfoDeprecated",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "The object identification",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "The additional contact information was deleted"
+          },
+          "401" : {
+            "description" : "Unauthorized access. Missing or invalid crendentials supplied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/UnauthorizedError"
+            }
+          },
+          "403" : {
+            "description" : "Permission denied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/ForbiddenError"
+            }
+          },
+          "404" : {
+            "description" : "An expected data was not found",
+            "schema" : {
+              "$ref" : "#/definitions/NotFoundError"
+            }
+          },
+          "409" : {
+            "description" : "This operation expected an entity state, but it has resulted in a conflict",
+            "schema" : {
+              "$ref" : "#/definitions/ConflictError"
+            }
+          },
+          "500" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "security" : [ {
+          "basic" : [ ]
+        }, {
+          "session" : [ ]
+        }, {
+          "accessClient" : [ ]
+        } ],
+        "deprecated" : true,
+        "x-accepts" : "application/json",
+        "x-contentType" : "application/json"
+      }
+    },
+    "/contactInfos/{id}/data-for-edit" : {
+      "get" : {
+        "tags" : [ "ContactInfos (DEPRECATED)" ],
+        "summary" : "DEPRECATED. Please use `GET /contact-infos/{id}/data-for-edit`.  This path will be removed in Cyclos 4.10.\n",
+        "description" : "Returns configuration data for editing an additional contact\ninformation, plus the current ContactInfoEdit object that can be altered\nand posted back.\n",
+        "operationId" : "getContactInfoDataForEditDeprecated",
+        "parameters" : [ {
+          "name" : "fields",
+          "in" : "query",
+          "description" : "Select which fields to include on returned data. If nothing is set, all object fields are returned. Unprefixed field names will be handled like a whitelist (only listed fields will be included), while names starting with a minus (-) or exclamation mark (!) will be handled as blacklist (listed fields will not be included). This works for nesting as well. For example: `a,b.b1,c.-c1,c.-c2` will return the fields `a`, `b` (containing only the `b1` field) and `c` (containing all its fields except for `c1` or `c2`). \n",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          },
+          "collectionFormat" : "multi"
+        }, {
+          "name" : "id",
+          "in" : "path",
+          "description" : "The object identification",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The data for editing an contactInfo",
+            "schema" : {
+              "$ref" : "#/definitions/ContactInfoDataForEdit"
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized access. Missing or invalid crendentials supplied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/UnauthorizedError"
+            }
+          },
+          "403" : {
+            "description" : "Permission denied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/ForbiddenError"
+            }
+          },
+          "404" : {
+            "description" : "An expected data was not found",
+            "schema" : {
+              "$ref" : "#/definitions/NotFoundError"
+            }
+          },
+          "500" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "security" : [ {
+          "basic" : [ ]
+        }, {
+          "session" : [ ]
+        }, {
+          "accessClient" : [ ]
+        } ],
+        "deprecated" : true,
         "x-accepts" : "application/json",
         "x-contentType" : "application/json"
       }
@@ -3001,7 +3274,7 @@
       "post" : {
         "tags" : [ "Images" ],
         "summary" : "Adds a new temporary image for the currently authenticated user or guest.\n",
-        "description" : "Uploads a new temporary image. Those images can later be related to a new user registration or advertisement, so they will have images the beginning. Temporary images won't be immediately associated to the next registered entity, but each id must be explicitly associated on the `images` field.\nImages as guest can only be uploaded if on the destination group products the image profile field is allowed at registrations. Users may upload images if they can register new users or create advertisements.\n",
+        "description" : "Uploads a new temporary image. A temporary image can later be used as: - A profile image of a newly registered user; - The value of a custom field of type image; - An advertisement image.\nTemporary images won't be immediately associated to the next registered model, but its `id`, which is returned by this operation, must be explicitly passed in, either as the `images` field (for profile or advertisement images) or in the `customValues` field of the model that has custom values (multiple ids can be passed-in as pipe-separated).\nImages as guest can only be uploaded if on the destination group products the image profile field is allowed at registrations. Users may upload images if they can register new users or create advertisements.\n",
         "operationId" : "uploadTempImage",
         "produces" : [ "application/json", "text/plain" ],
         "parameters" : [ {
@@ -5583,6 +5856,69 @@
         "x-contentType" : "application/json"
       }
     },
+    "/passwords/{type}/change-generated" : {
+      "post" : {
+        "tags" : [ "Passwords" ],
+        "summary" : "Generates a new value for an already generated password.",
+        "description" : "Generates a new password whose type's `mode` is  `generated`.\n Only the password owner can perform this operation and the password status\n must be one of the following `active`, \n `expired` or `reset`.\n",
+        "operationId" : "changeGenerated",
+        "produces" : [ "application/json", "text/plain" ],
+        "parameters" : [ {
+          "name" : "confirmationPassword",
+          "in" : "header",
+          "description" : "The password used to confirm this action, if needed. The actual\npassword type, if any, depends on the Cyclos configuration for the\ncurrent channel.\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "type",
+          "in" : "path",
+          "description" : "Either the id or internal name of the password type",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The plain value of the generated password. This is the only time\nthis plain value is ever returned.\n",
+            "schema" : {
+              "type" : "string"
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized access. Missing or invalid crendentials supplied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/UnauthorizedError"
+            }
+          },
+          "403" : {
+            "description" : "Permission denied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/ForbiddenError"
+            }
+          },
+          "404" : {
+            "description" : "An expected data was not found",
+            "schema" : {
+              "$ref" : "#/definitions/NotFoundError"
+            }
+          },
+          "500" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "security" : [ {
+          "basic" : [ ]
+        }, {
+          "session" : [ ]
+        }, {
+          "accessClient" : [ ]
+        } ],
+        "x-accepts" : "application/json",
+        "x-contentType" : "application/json"
+      }
+    },
     "/passwords/{type}/generate" : {
       "post" : {
         "tags" : [ "Passwords" ],
@@ -5626,6 +5962,402 @@
             "description" : "Unexpected error",
             "schema" : {
               "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "security" : [ {
+          "basic" : [ ]
+        }, {
+          "session" : [ ]
+        }, {
+          "accessClient" : [ ]
+        } ],
+        "x-accepts" : "application/json",
+        "x-contentType" : "application/json"
+      }
+    },
+    "/payment-requests/{key}/accept" : {
+      "post" : {
+        "tags" : [ "PaymentRequests" ],
+        "summary" : "Accepts a payment request.",
+        "description" : "Accepts a payment request in status `open`. After accepting the payment request its resultant status could be  `processed` (and the corresponding  sheduled or direct payment was generated) or  `scheduled`.    This can be done only by managers or the payer (i.e the request's recipient)  with permission to accept.\n",
+        "operationId" : "acceptPaymentRequest",
+        "parameters" : [ {
+          "name" : "fields",
+          "in" : "query",
+          "description" : "Select which fields to include on returned data. If nothing is set, all object fields are returned. Unprefixed field names will be handled like a whitelist (only listed fields will be included), while names starting with a minus (-) or exclamation mark (!) will be handled as blacklist (listed fields will not be included). This works for nesting as well. For example: `a,b.b1,c.-c1,c.-c2` will return the fields `a`, `b` (containing only the `b1` field) and `c` (containing all its fields except for `c1` or `c2`). \n",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          },
+          "collectionFormat" : "multi"
+        }, {
+          "name" : "confirmationPassword",
+          "in" : "header",
+          "description" : "The password used to confirm this action, if needed. The actual\npassword type, if any, depends on the Cyclos configuration for the\ncurrent channel.\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "key",
+          "in" : "path",
+          "description" : "Either the id or transaction number.",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "params",
+          "description" : "The parameters to accept a payment request",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/AcceptOrReschedulePaymentRequest"
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "The performed payment. Only if the process date was not given (i.e the \nrequest was processed immediately).\n",
+            "schema" : {
+              "$ref" : "#/definitions/Transaction"
+            },
+            "headers" : {
+              "Location" : {
+                "type" : "string",
+                "description" : "URL for viewing the payment details"
+              }
+            }
+          },
+          "204" : {
+            "description" : "The payment request was accepted and scheduled for processing at the\ngiven date. Nothing is returned.                      \n"
+          },
+          "401" : {
+            "description" : "Unauthorized access. Missing or invalid crendentials supplied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/UnauthorizedError"
+            }
+          },
+          "403" : {
+            "description" : "Permission denied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/ForbiddenError"
+            }
+          },
+          "404" : {
+            "description" : "An expected data was not found",
+            "schema" : {
+              "$ref" : "#/definitions/NotFoundError"
+            }
+          },
+          "422" : {
+            "description" : "Input error. Either a validation error or the maximum allowed items was exceeded\n",
+            "schema" : {
+              "$ref" : "#/definitions/InputError"
+            }
+          },
+          "500" : {
+            "description" : "If a payment error has occurred",
+            "schema" : {
+              "$ref" : "#/definitions/PaymentError"
+            }
+          }
+        },
+        "security" : [ {
+          "basic" : [ ]
+        }, {
+          "session" : [ ]
+        }, {
+          "accessClient" : [ ]
+        } ],
+        "x-accepts" : "application/json",
+        "x-contentType" : "application/json"
+      }
+    },
+    "/payment-requests/{key}/cancel" : {
+      "post" : {
+        "tags" : [ "PaymentRequests" ],
+        "summary" : "Cancels a payment request.",
+        "description" : "Cancels a payment request in status `open`.\nThis can be done only by managers or the payee with permission to cancel.\n",
+        "operationId" : "cancelPaymentRequest",
+        "parameters" : [ {
+          "name" : "confirmationPassword",
+          "in" : "header",
+          "description" : "The password used to confirm this action, if needed. The actual\npassword type, if any, depends on the Cyclos configuration for the\ncurrent channel.\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "key",
+          "in" : "path",
+          "description" : "Either the id or transaction number",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "comments",
+          "description" : "A comment for the cancel action the payee/manager can set.",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "The payment request was cancelled. Nothing is returned."
+          },
+          "401" : {
+            "description" : "Unauthorized access. Missing or invalid crendentials supplied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/UnauthorizedError"
+            }
+          },
+          "403" : {
+            "description" : "Permission denied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/ForbiddenError"
+            }
+          },
+          "404" : {
+            "description" : "An expected data was not found",
+            "schema" : {
+              "$ref" : "#/definitions/NotFoundError"
+            }
+          },
+          "500" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "security" : [ {
+          "basic" : [ ]
+        }, {
+          "session" : [ ]
+        }, {
+          "accessClient" : [ ]
+        } ],
+        "x-accepts" : "application/json",
+        "x-contentType" : "application/json"
+      }
+    },
+    "/payment-requests/{key}/preview" : {
+      "get" : {
+        "tags" : [ "PaymentRequests" ],
+        "summary" : "Previews the payment performed when accepting the given payment request.\n",
+        "description" : "Previews the payment ony if the payment request status is  `open` or  `scheduled`.\n",
+        "operationId" : "previewPaymentRequest",
+        "parameters" : [ {
+          "name" : "fields",
+          "in" : "query",
+          "description" : "Select which fields to include on returned data. If nothing is set, all object fields are returned. Unprefixed field names will be handled like a whitelist (only listed fields will be included), while names starting with a minus (-) or exclamation mark (!) will be handled as blacklist (listed fields will not be included). This works for nesting as well. For example: `a,b.b1,c.-c1,c.-c2` will return the fields `a`, `b` (containing only the `b1` field) and `c` (containing all its fields except for `c1` or `c2`). \n",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          },
+          "collectionFormat" : "multi"
+        }, {
+          "name" : "key",
+          "in" : "path",
+          "description" : "Either the id or transaction number.",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The payment preview",
+            "schema" : {
+              "$ref" : "#/definitions/PaymentPreview"
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized access. Missing or invalid crendentials supplied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/UnauthorizedError"
+            }
+          },
+          "403" : {
+            "description" : "Permission denied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/ForbiddenError"
+            }
+          },
+          "404" : {
+            "description" : "An expected data was not found",
+            "schema" : {
+              "$ref" : "#/definitions/NotFoundError"
+            }
+          },
+          "422" : {
+            "description" : "Input error. Either a validation error or the maximum allowed items was exceeded\n",
+            "schema" : {
+              "$ref" : "#/definitions/InputError"
+            }
+          },
+          "500" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "security" : [ {
+          "basic" : [ ]
+        }, {
+          "session" : [ ]
+        }, {
+          "accessClient" : [ ]
+        } ],
+        "x-accepts" : "application/json",
+        "x-contentType" : "application/json"
+      }
+    },
+    "/payment-requests/{key}/reject" : {
+      "post" : {
+        "tags" : [ "PaymentRequests" ],
+        "summary" : "Rejects a payment request.",
+        "description" : "Rejects a payment request in status `open`. This can be done only by managers or the payer (i.e the request's recipient) with permission to accept.\n",
+        "operationId" : "rejectPaymentRequest",
+        "parameters" : [ {
+          "name" : "confirmationPassword",
+          "in" : "header",
+          "description" : "The password used to confirm this action, if needed. The actual\npassword type, if any, depends on the Cyclos configuration for the\ncurrent channel.\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "key",
+          "in" : "path",
+          "description" : "Either the id or transaction number",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "comments",
+          "description" : "A comment for the reject action the payer can set.",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "The payment request was rejected. Nothing is returned."
+          },
+          "401" : {
+            "description" : "Unauthorized access. Missing or invalid crendentials supplied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/UnauthorizedError"
+            }
+          },
+          "403" : {
+            "description" : "Permission denied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/ForbiddenError"
+            }
+          },
+          "404" : {
+            "description" : "An expected data was not found",
+            "schema" : {
+              "$ref" : "#/definitions/NotFoundError"
+            }
+          },
+          "500" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "security" : [ {
+          "basic" : [ ]
+        }, {
+          "session" : [ ]
+        }, {
+          "accessClient" : [ ]
+        } ],
+        "x-accepts" : "application/json",
+        "x-contentType" : "application/json"
+      }
+    },
+    "/payment-requests/{key}/reschedule" : {
+      "post" : {
+        "tags" : [ "PaymentRequests" ],
+        "summary" : "Reschedules a payment request.",
+        "description" : "Reschedules an already accepted and scheduled payment request (i.e with  status `scheduled`). If the new processing date is null then the payment request will be  processed immediately generating the corresponding payment. Otherwise it will be scheduled to be processed at the given date.  This can be done only by managers or the payer (i.e the request's recipient)  with permission to accept.\n",
+        "operationId" : "reschedulePaymentRequest",
+        "parameters" : [ {
+          "name" : "fields",
+          "in" : "query",
+          "description" : "Select which fields to include on returned data. If nothing is set, all object fields are returned. Unprefixed field names will be handled like a whitelist (only listed fields will be included), while names starting with a minus (-) or exclamation mark (!) will be handled as blacklist (listed fields will not be included). This works for nesting as well. For example: `a,b.b1,c.-c1,c.-c2` will return the fields `a`, `b` (containing only the `b1` field) and `c` (containing all its fields except for `c1` or `c2`). \n",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          },
+          "collectionFormat" : "multi"
+        }, {
+          "name" : "confirmationPassword",
+          "in" : "header",
+          "description" : "The password used to confirm this action, if needed. The actual\npassword type, if any, depends on the Cyclos configuration for the\ncurrent channel.\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "key",
+          "in" : "path",
+          "description" : "Either the id or transaction number.",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "params",
+          "description" : "The parameters to reschedule a payment request.",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/AcceptOrReschedulePaymentRequest"
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "The performed payment. Only if the process date was not given (i.e the \nrequest was processed immediately).\n",
+            "schema" : {
+              "$ref" : "#/definitions/Transaction"
+            },
+            "headers" : {
+              "Location" : {
+                "type" : "string",
+                "description" : "URL for viewing the payment details"
+              }
+            }
+          },
+          "204" : {
+            "description" : "The payment request was rescheduled. Nothing is returned."
+          },
+          "401" : {
+            "description" : "Unauthorized access. Missing or invalid crendentials supplied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/UnauthorizedError"
+            }
+          },
+          "403" : {
+            "description" : "Permission denied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/ForbiddenError"
+            }
+          },
+          "404" : {
+            "description" : "An expected data was not found",
+            "schema" : {
+              "$ref" : "#/definitions/NotFoundError"
+            }
+          },
+          "422" : {
+            "description" : "Input error. Either a validation error or the maximum allowed items was exceeded\n",
+            "schema" : {
+              "$ref" : "#/definitions/InputError"
+            }
+          },
+          "500" : {
+            "description" : "If a payment error has occurred",
+            "schema" : {
+              "$ref" : "#/definitions/PaymentError"
             }
           }
         },
@@ -7311,6 +8043,67 @@
         "x-produces-any" : true
       }
     },
+    "/sessions" : {
+      "post" : {
+        "tags" : [ "Sessions" ],
+        "summary" : "Logins a user, returning data from the new session",
+        "description" : "Created a session for a given user. Must be executed as administrator\nwith permissions. A channel can be specified (defaults to `main`) so\nthe user can be logged in by some external actor (like an website) and\nthen redirected to `<cyclos-root>?sessionToken=<session-token>`.\nIt is also recommended to set in Cyclos the login and logout URLs in the\nconfiguration, so, when the user logs out, he will be redirected back\nto the previous website.\n",
+        "operationId" : "loginUser",
+        "parameters" : [ {
+          "name" : "fields",
+          "in" : "query",
+          "description" : "Select which fields to include on returned data. If nothing is set, all object fields are returned. Unprefixed field names will be handled like a whitelist (only listed fields will be included), while names starting with a minus (-) or exclamation mark (!) will be handled as blacklist (listed fields will not be included). This works for nesting as well. For example: `a,b.b1,c.-c1,c.-c2` will return the fields `a`, `b` (containing only the `b1` field) and `c` (containing all its fields except for `c1` or `c2`). \n",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          },
+          "collectionFormat" : "multi"
+        }, {
+          "in" : "body",
+          "name" : "login",
+          "description" : "Information about the user being logged in",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/LoginUser"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "An object containing the authenticated user information\n",
+            "schema" : {
+              "$ref" : "#/definitions/UserAuth"
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized access. Missing or invalid crendentials supplied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/UnauthorizedError"
+            }
+          },
+          "403" : {
+            "description" : "Permission denied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/ForbiddenError"
+            }
+          },
+          "404" : {
+            "description" : "An expected data was not found",
+            "schema" : {
+              "$ref" : "#/definitions/NotFoundError"
+            }
+          },
+          "500" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "x-accepts" : "application/json",
+        "x-contentType" : "application/json"
+      }
+    },
     "/shared-records" : {
       "get" : {
         "tags" : [ "Records" ],
@@ -7713,6 +8506,12 @@
           "name" : "type",
           "in" : "query",
           "description" : "The payment type id or qualified internal name (in the form `fromAccountType.paymentType`). If no payment type is provided, the possible types will be returned, so the payer can choose.\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "payer",
+          "in" : "query",
+          "description" : "Will only be used if no specific payment type is given. An identification for the user which will pay the ticket. Is optional, and in most cases, should be left empty. If specified, the returned payment types will take into account those that can be paid by the given user.  \n",
           "required" : false,
           "type" : "string"
         } ],
@@ -12462,7 +13261,7 @@
         "x-contentType" : "application/json"
       }
     },
-    "/{user}/contactInfos" : {
+    "/{user}/contact-infos" : {
       "get" : {
         "tags" : [ "ContactInfos" ],
         "summary" : "Lists all (visible) additional contact informations for the user",
@@ -12608,7 +13407,7 @@
         "x-contentType" : "application/json"
       }
     },
-    "/{user}/contactInfos/data-for-new" : {
+    "/{user}/contact-infos/data-for-new" : {
       "get" : {
         "tags" : [ "ContactInfos" ],
         "summary" : "Returns data to create a new additional contact information",
@@ -12675,10 +13474,10 @@
         "x-contentType" : "application/json"
       }
     },
-    "/{user}/contactInfos/list-data" : {
+    "/{user}/contact-infos/list-data" : {
       "get" : {
         "tags" : [ "ContactInfos" ],
-        "summary" : "Returns data for listing additional contact informations of the\ngiven user\n",
+        "summary" : "Returns data for listing additional contact informations of the given user  \n",
         "description" : "Returns data containing the (visible) user additional contact\ninformations, plus additional data related to them.\n",
         "operationId" : "getUserContactInfosListData",
         "parameters" : [ {
@@ -12738,6 +13537,290 @@
         }, {
           "accessClient" : [ ]
         } ],
+        "x-accepts" : "application/json",
+        "x-contentType" : "application/json"
+      }
+    },
+    "/{user}/contactInfos" : {
+      "get" : {
+        "tags" : [ "ContactInfos (DEPRECATED)" ],
+        "summary" : "DEPRECATED. Please use `GET /{user}/contact-infos`.  This path will be removed in Cyclos 4.10.\n",
+        "description" : "Returns a list with all additional contact informations of the given\nuser that the currently authenticated user can see. \n",
+        "operationId" : "listContactInfosByUserDeprecated",
+        "parameters" : [ {
+          "name" : "fields",
+          "in" : "query",
+          "description" : "Select which fields to include on returned data. If nothing is set, all object fields are returned. Unprefixed field names will be handled like a whitelist (only listed fields will be included), while names starting with a minus (-) or exclamation mark (!) will be handled as blacklist (listed fields will not be included). This works for nesting as well. For example: `a,b.b1,c.-c1,c.-c2` will return the fields `a`, `b` (containing only the `b1` field) and `c` (containing all its fields except for `c1` or `c2`). \n",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          },
+          "collectionFormat" : "multi"
+        }, {
+          "name" : "user",
+          "in" : "path",
+          "description" : "Can be one of: - a user identification value, such as id, username, e-mail, phone, etc.\n  Id is always allowed, others depend on Cyclos configuration. Note that\n  a valid numeric value is always considered as id. For example, when\n  using another identification method that can be numeric only, prefix\n  the value with a single quote (like in Excel spreadsheets), for\n  example, `'1234567890`; \n- `self` for the currently authenticated user.\n",
+          "required" : true,
+          "type" : "string",
+          "x-dotInPath" : true
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The list of visible additional contact information\n",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/ContactInfo"
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized access. Missing or invalid crendentials supplied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/UnauthorizedError"
+            }
+          },
+          "403" : {
+            "description" : "Permission denied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/ForbiddenError"
+            }
+          },
+          "404" : {
+            "description" : "An expected data was not found",
+            "schema" : {
+              "$ref" : "#/definitions/NotFoundError"
+            }
+          },
+          "500" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "security" : [ {
+          "basic" : [ ]
+        }, {
+          "session" : [ ]
+        }, {
+          "accessClient" : [ ]
+        } ],
+        "deprecated" : true,
+        "x-accepts" : "application/json",
+        "x-contentType" : "application/json"
+      },
+      "post" : {
+        "tags" : [ "ContactInfos (DEPRECATED)" ],
+        "summary" : "DEPRECATED. Please use `POST /{user}/contact-infos`.  This path will be removed in Cyclos 4.10.\n",
+        "description" : "Creates a new additional contact information for the given user.\n",
+        "operationId" : "createContactInfoDeprecated",
+        "produces" : [ "application/json", "text/plain" ],
+        "parameters" : [ {
+          "name" : "user",
+          "in" : "path",
+          "description" : "Can be one of: - a user identification value, such as id, username, e-mail, phone, etc.\n  Id is always allowed, others depend on Cyclos configuration. Note that\n  a valid numeric value is always considered as id. For example, when\n  using another identification method that can be numeric only, prefix\n  the value with a single quote (like in Excel spreadsheets), for\n  example, `'1234567890`; \n- `self` for the currently authenticated user.\n",
+          "required" : true,
+          "type" : "string",
+          "x-dotInPath" : true
+        }, {
+          "in" : "body",
+          "name" : "contactInfo",
+          "description" : "The additional contact information to be created",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/ContactInfoNew"
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "Returns the identifier of the new additional contact information\n",
+            "schema" : {
+              "type" : "string"
+            },
+            "headers" : {
+              "Location" : {
+                "type" : "string",
+                "description" : "URL for viewing the additional contact information details\n"
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized access. Missing or invalid crendentials supplied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/UnauthorizedError"
+            }
+          },
+          "403" : {
+            "description" : "Permission denied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/ForbiddenError"
+            }
+          },
+          "404" : {
+            "description" : "An expected data was not found",
+            "schema" : {
+              "$ref" : "#/definitions/NotFoundError"
+            }
+          },
+          "422" : {
+            "description" : "Input error. Either a validation error or the maximum allowed items was exceeded\n",
+            "schema" : {
+              "$ref" : "#/definitions/InputError"
+            }
+          },
+          "500" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "security" : [ {
+          "basic" : [ ]
+        }, {
+          "session" : [ ]
+        }, {
+          "accessClient" : [ ]
+        } ],
+        "deprecated" : true,
+        "x-accepts" : "application/json",
+        "x-contentType" : "application/json"
+      }
+    },
+    "/{user}/contactInfos/data-for-new" : {
+      "get" : {
+        "tags" : [ "ContactInfos (DEPRECATED)" ],
+        "summary" : "DEPRECATED. Please use `GET /{user}/contact-infos/data-for-new`.  This path will be removed in Cyclos 4.10.\n",
+        "description" : "Returns configuration data for creating an additional contact\ninformation for the given user\n",
+        "operationId" : "getContactInfoDataForNewDeprecated",
+        "parameters" : [ {
+          "name" : "fields",
+          "in" : "query",
+          "description" : "Select which fields to include on returned data. If nothing is set, all object fields are returned. Unprefixed field names will be handled like a whitelist (only listed fields will be included), while names starting with a minus (-) or exclamation mark (!) will be handled as blacklist (listed fields will not be included). This works for nesting as well. For example: `a,b.b1,c.-c1,c.-c2` will return the fields `a`, `b` (containing only the `b1` field) and `c` (containing all its fields except for `c1` or `c2`). \n",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          },
+          "collectionFormat" : "multi"
+        }, {
+          "name" : "user",
+          "in" : "path",
+          "description" : "Can be one of: - a user identification value, such as id, username, e-mail, phone, etc.\n  Id is always allowed, others depend on Cyclos configuration. Note that\n  a valid numeric value is always considered as id. For example, when\n  using another identification method that can be numeric only, prefix\n  the value with a single quote (like in Excel spreadsheets), for\n  example, `'1234567890`; \n- `self` for the currently authenticated user.\n",
+          "required" : true,
+          "type" : "string",
+          "x-dotInPath" : true
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The data for creating an additional contact information",
+            "schema" : {
+              "$ref" : "#/definitions/ContactInfoDataForNew"
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized access. Missing or invalid crendentials supplied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/UnauthorizedError"
+            }
+          },
+          "403" : {
+            "description" : "Permission denied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/ForbiddenError"
+            }
+          },
+          "404" : {
+            "description" : "An expected data was not found",
+            "schema" : {
+              "$ref" : "#/definitions/NotFoundError"
+            }
+          },
+          "500" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "security" : [ {
+          "basic" : [ ]
+        }, {
+          "session" : [ ]
+        }, {
+          "accessClient" : [ ]
+        } ],
+        "deprecated" : true,
+        "x-accepts" : "application/json",
+        "x-contentType" : "application/json"
+      }
+    },
+    "/{user}/contactInfos/list-data" : {
+      "get" : {
+        "tags" : [ "ContactInfos (DEPRECATED)" ],
+        "summary" : "DEPRECATED. Please use `GET /{user}/contact-infos/list-data`.  This path will be removed in Cyclos 4.10.  \n",
+        "description" : "Returns data containing the (visible) user additional contact\ninformations, plus additional data related to them.\n",
+        "operationId" : "getUserContactInfosListDataDeprecated",
+        "parameters" : [ {
+          "name" : "fields",
+          "in" : "query",
+          "description" : "Select which fields to include on returned data. If nothing is set, all object fields are returned. Unprefixed field names will be handled like a whitelist (only listed fields will be included), while names starting with a minus (-) or exclamation mark (!) will be handled as blacklist (listed fields will not be included). This works for nesting as well. For example: `a,b.b1,c.-c1,c.-c2` will return the fields `a`, `b` (containing only the `b1` field) and `c` (containing all its fields except for `c1` or `c2`). \n",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          },
+          "collectionFormat" : "multi"
+        }, {
+          "name" : "user",
+          "in" : "path",
+          "description" : "Can be one of: - a user identification value, such as id, username, e-mail, phone, etc.\n  Id is always allowed, others depend on Cyclos configuration. Note that\n  a valid numeric value is always considered as id. For example, when\n  using another identification method that can be numeric only, prefix\n  the value with a single quote (like in Excel spreadsheets), for\n  example, `'1234567890`; \n- `self` for the currently authenticated user.\n",
+          "required" : true,
+          "type" : "string",
+          "x-dotInPath" : true
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The data for listing additional contact informations",
+            "schema" : {
+              "$ref" : "#/definitions/UserContactInfosListData"
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized access. Missing or invalid crendentials supplied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/UnauthorizedError"
+            }
+          },
+          "403" : {
+            "description" : "Permission denied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/ForbiddenError"
+            }
+          },
+          "404" : {
+            "description" : "An expected data was not found",
+            "schema" : {
+              "$ref" : "#/definitions/NotFoundError"
+            }
+          },
+          "500" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "security" : [ {
+          "basic" : [ ]
+        }, {
+          "session" : [ ]
+        }, {
+          "accessClient" : [ ]
+        } ],
+        "deprecated" : true,
         "x-accepts" : "application/json",
         "x-contentType" : "application/json"
       }
@@ -13003,7 +14086,7 @@
       "get" : {
         "tags" : [ "Images" ],
         "summary" : "Lists either `profile` or `custom` images for a given user \n",
-        "description" : "Returns either `profile` or `custom`\nimages for the given user. For `profile`, the user \nmust be visible by the authenticated user. For `custom`,\nthe authenticated user must either be the owner or a manager\n(administrator or broker).\n",
+        "description" : "Returns either `profile` or `custom`\nimages for the given user. For `profile`, the user \nmust be visible by the authenticated user.\nCustom images are used in rich text content, not images for custom fields.\nFor `custom`, the authenticated user must either be\nthe owner or a manager (administrator or broker).\n",
         "operationId" : "listUserImages",
         "parameters" : [ {
           "name" : "fields",
@@ -13079,7 +14162,7 @@
       "post" : {
         "tags" : [ "Images" ],
         "summary" : "Adds a new image for the given user. The image kind is either  `profile` or `custom`.\n",
-        "description" : "Uploads a new image, either `profile` (by default)\nor `custom`, for the given user.\n",
+        "description" : "Uploads a new image, either `profile` (by default)\nor `custom`, for the given user.\nCustom images are used in rich text content, not images for custom fields.\nFor uploading images for custom field values, see the documentation for\nthe operation at `POST /images/temp`.\n",
         "operationId" : "uploadUserImage",
         "produces" : [ "application/json", "text/plain" ],
         "parameters" : [ {
@@ -13163,7 +14246,7 @@
       "get" : {
         "tags" : [ "Images" ],
         "summary" : "Returns either `profile` or `custom` images for a given user, plus additional permissions and data \n",
-        "description" : "Returns either `profile` or `custom`\nimages for the given user. For `profile`, the user \nmust be visible by the authenticated user. For `custom`,\nthe authenticated user must either be the owner or a manager\n(administrator or broker). Additional data, such as the maximum images and\nwhether the images can be managed by the authenticated user are also\nreturned.\n",
+        "description" : "Returns either `profile` or `custom`\nimages for the given user.\nFor `profile`, the user must be visible by the\nauthenticated user.\nFor `custom`, the authenticated user must either be\nthe owner or a manager (administrator or broker).\nCustom images are used in rich text content, not images for custom fields.\nAdditional data, such as the maximum images and whether the images can be\nmanaged by the authenticated user are also returned.\n",
         "operationId" : "getUserImagesListData",
         "parameters" : [ {
           "name" : "fields",
@@ -13912,8 +14995,8 @@
     "/{user}/passwords" : {
       "get" : {
         "tags" : [ "Passwords" ],
-        "summary" : "Returns the status for each passwords the given user have",
-        "description" : "Returns the passwords, with their statuses, for a given user.\nAlso, permissions on which operations are enabled are also returned.\n",
+        "summary" : "Returns the status for each passwords the given user have.",
+        "description" : "Returns the passwords, with their statuses, for a given user.\n",
         "operationId" : "listUserPasswords",
         "parameters" : [ {
           "name" : "fields",
@@ -13939,7 +15022,7 @@
             "schema" : {
               "type" : "array",
               "items" : {
-                "$ref" : "#/definitions/PasswordStatusAndPermissions"
+                "$ref" : "#/definitions/PasswordStatusAndType"
               }
             }
           },
@@ -13982,7 +15065,7 @@
     "/{user}/passwords/list-data" : {
       "get" : {
         "tags" : [ "Passwords" ],
-        "summary" : "Returns the status for each passwords the given user have",
+        "summary" : "Returns complete data for each passwords the given user have.",
         "description" : "Returns the passwords, with their statuses, for a given user.\nAlso, permissions on which operations are enabled are also returned.\nIt is also returned additional data, such as the confirmation password\ninput in case some action is needed\n",
         "operationId" : "getUserPasswordsListData",
         "parameters" : [ {
@@ -14009,6 +15092,66 @@
             "schema" : {
               "$ref" : "#/definitions/DataForUserPasswords"
             }
+          },
+          "401" : {
+            "description" : "Unauthorized access. Missing or invalid crendentials supplied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/UnauthorizedError"
+            }
+          },
+          "403" : {
+            "description" : "Permission denied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/ForbiddenError"
+            }
+          },
+          "404" : {
+            "description" : "An expected data was not found",
+            "schema" : {
+              "$ref" : "#/definitions/NotFoundError"
+            }
+          },
+          "500" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "security" : [ {
+          "basic" : [ ]
+        }, {
+          "session" : [ ]
+        }, {
+          "accessClient" : [ ]
+        } ],
+        "x-accepts" : "application/json",
+        "x-contentType" : "application/json"
+      }
+    },
+    "/{user}/passwords/{type}/allow-generation" : {
+      "post" : {
+        "tags" : [ "Passwords" ],
+        "summary" : "Allows the given user to generate the password for the first time for the \ngiven type. \n",
+        "description" : "Only valid if type's mode is `generated`, it's  marked as requiring administrator authorization and the password status is `neverCreated`.\n",
+        "operationId" : "allowGeneration",
+        "parameters" : [ {
+          "name" : "user",
+          "in" : "path",
+          "description" : "A user identification value, such as id, username, e-mail, phone, etc. Id is always allowed, others depend on Cyclos configuration. Note that a valid numeric value is always considered as id. For example, when using another identification method that can be numeric only, prefix the value with a single quote (like in Excel spreadsheets), for example, `'1234567890`; \n",
+          "required" : true,
+          "type" : "string",
+          "x-dotInPath" : true
+        }, {
+          "name" : "type",
+          "in" : "path",
+          "description" : "Either the id or internal name of the password type",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "The password is pending and nothing is returned."
           },
           "401" : {
             "description" : "Unauthorized access. Missing or invalid crendentials supplied for such operation",
@@ -14234,16 +15377,16 @@
         "x-contentType" : "application/json"
       }
     },
-    "/{user}/passwords/{type}/reset" : {
+    "/{user}/passwords/{type}/reset-and-send" : {
       "post" : {
         "tags" : [ "Passwords" ],
-        "summary" : "Resets a generated password, allowing it to be generated again",
-        "description" : "Resets a generated password. This can only be done by administrators / brokers over managed users, and allow them to generate the password value again.\n",
-        "operationId" : "resetPassword",
+        "summary" : "Generates a new value for a manual password and send it to the user via e-mail \n",
+        "description" : "Resets a manual password to a generated value and send it to the user.\n  Can also be used to reset and send the main channel's access password if it\n  is generated. The new password is initially expired, so the user needs\n  to change it on first login.\n",
+        "operationId" : "resetAndSendPassword",
         "parameters" : [ {
           "name" : "user",
           "in" : "path",
-          "description" : "Can be one of: - a user identification value, such as id, username, e-mail, phone, etc.\n  Id is always allowed, others depend on Cyclos configuration. Note that\n  a valid numeric value is always considered as id. For example, when\n  using another identification method that can be numeric only, prefix\n  the value with a single quote (like in Excel spreadsheets), for\n  example, `'1234567890`; \n- `self` for the currently authenticated user.\n",
+          "description" : "A user identification value, such as id, username, e-mail, phone, etc. Id is always allowed, others depend on Cyclos configuration. Note that a valid numeric value is always considered as id. For example, when using another identification method that can be numeric only, prefix the value with a single quote (like in Excel spreadsheets), for example, `'1234567890`; \n",
           "required" : true,
           "type" : "string",
           "x-dotInPath" : true
@@ -14253,10 +15396,21 @@
           "description" : "Either the id or internal name of the password type",
           "required" : true,
           "type" : "string"
+        }, {
+          "name" : "sendMediums",
+          "in" : "query",
+          "description" : "The send mediums for which the password will be send. If nothing is specified will send though all available mediums. Possible values for each array element are: * email: The user will receive an email with the information * sms: The user will receive a sms with the information (only if there is at least one phone enabled for sms)\n",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string",
+            "enum" : [ "email", "sms" ]
+          },
+          "x-type" : "List<SendMediumEnum>"
         } ],
         "responses" : {
           "204" : {
-            "description" : "The password is reset, and nothing is returned"
+            "description" : "The password is reset and sent, and nothing is returned"
           },
           "401" : {
             "description" : "Unauthorized access. Missing or invalid crendentials supplied for such operation",
@@ -14294,16 +15448,16 @@
         "x-contentType" : "application/json"
       }
     },
-    "/{user}/passwords/{type}/reset-and-send" : {
+    "/{user}/passwords/{type}/reset-generated" : {
       "post" : {
         "tags" : [ "Passwords" ],
-        "summary" : "Generates a new value for a manual password and send it to the user via e-mail \n",
-        "description" : "Resets a manual password to a generated value and send it to the user.\n  Can also be used to reset and send the main channel's access password if it\n  is generated. The new password is initially expired, so the user needs\n  to change it on first login.\n",
-        "operationId" : "resetAndSendPassword",
+        "summary" : "Resets a generated password, allowing it to be generated again",
+        "description" : "Resets a generated password. This can only be done by administrators / brokers over managed users, and allow them to generate the password value again.\n",
+        "operationId" : "resetPassword",
         "parameters" : [ {
           "name" : "user",
           "in" : "path",
-          "description" : "Can be one of: - a user identification value, such as id, username, e-mail, phone, etc.\n  Id is always allowed, others depend on Cyclos configuration. Note that\n  a valid numeric value is always considered as id. For example, when\n  using another identification method that can be numeric only, prefix\n  the value with a single quote (like in Excel spreadsheets), for\n  example, `'1234567890`; \n- `self` for the currently authenticated user.\n",
+          "description" : "A user identification value, such as id, username, e-mail, phone, etc. Id is always allowed, others depend on Cyclos configuration. Note that a valid numeric value is always considered as id. For example, when using another identification method that can be numeric only, prefix the value with a single quote (like in Excel spreadsheets), for example, `'1234567890`; \n",
           "required" : true,
           "type" : "string",
           "x-dotInPath" : true
@@ -14313,21 +15467,10 @@
           "description" : "Either the id or internal name of the password type",
           "required" : true,
           "type" : "string"
-        }, {
-          "name" : "sendMediums",
-          "in" : "query",
-          "description" : "The send mediums for which the password will be send. If nothing is specified will send though all available mediums. Possible values for each array element are: * email: The user will receive an email with the information * sms: The user will receive a sms with the information (only if there is at least one phone enabled for sms)\n",
-          "required" : false,
-          "type" : "array",
-          "items" : {
-            "type" : "string",
-            "enum" : [ "email", "sms" ]
-          },
-          "x-type" : "List<SendMediumEnum>"
         } ],
         "responses" : {
           "204" : {
-            "description" : "The password is reset and sent, and nothing is returned"
+            "description" : "The password is reset, and nothing is returned"
           },
           "401" : {
             "description" : "Unauthorized access. Missing or invalid crendentials supplied for such operation",
@@ -15662,8 +16805,8 @@
     },
     "ForbiddenErrorCode" : {
       "type" : "string",
-      "description" : "Error codes for 403 Forbidden HTTP status.  Possible values are: * expiredPassword: The password being used has expired * illegalAction: Attempt to perform an action that is not allowed on this context * inaccessibleChannel: This channel cannot be accessed by the user  * indefinitelyBlocked: The password was indefinitely blocked by exceeding the allowed attempts  * invalidPassword: The password being used is invalid (normally the confirmation password) * operatorWithPendingAgreements: The operator cannot access because his owner member has pending agreements * permissionDenied: The operation was denied because a required permission was not granted * resetPassword: The password being used was manually reset * temporarilyBlocked: The password was temporarily blocked by exceeding the allowed attempts\n",
-      "enum" : [ "expiredPassword", "illegalAction", "inaccessibleChannel", "indefinitelyBlocked", "invalidPassword", "operatorWithPendingAgreements", "permissionDenied", "resetPassword", "temporarilyBlocked" ]
+      "description" : "Error codes for 403 Forbidden HTTP status.  Possible values are: * expiredPassword: The password being used has expired * illegalAction: Attempt to perform an action that is not allowed on this context * inaccessibleChannel: This channel cannot be accessed by the user  * indefinitelyBlocked: The password was indefinitely blocked by exceeding the allowed attempts  * invalidPassword: The password being used is invalid (normally the confirmation password) * operatorWithPendingAgreements: The operator cannot access because his owner member has pending agreements * pendingAgreements: There is at least one agreement which needs to be accepted in order to access the syste * permissionDenied: The operation was denied because a required permission was not granted * resetPassword: The password being used was manually reset * temporarilyBlocked: The password was temporarily blocked by exceeding the allowed attempts\n",
+      "enum" : [ "expiredPassword", "illegalAction", "inaccessibleChannel", "indefinitelyBlocked", "invalidPassword", "operatorWithPendingAgreements", "pendingAgreements", "permissionDenied", "resetPassword", "temporarilyBlocked" ]
     },
     "UserStatusEnum" : {
       "type" : "string",
@@ -15682,8 +16825,8 @@
     },
     "MobileOperationEnum" : {
       "type" : "string",
-      "description" : "The possible operations the mobile application can perform Possible values are: * acceptTicket: Accepts a generated QR code for performing a payment * activateNfcDevice: Activate the phone as NFC device * assignPos: Assign an access client for POS mode * boughtVouchers: View bought vouchers * createTicket: Generate a QR Code for receive payment * deactivateNfcDevice: Deactivate the phone as NFC device * formatNfc: Format NFC tags * initializeNfc: Initialize NFC tags * makeSystemPayment: Perform payments to system * makeUserPayment: Perform payments to other users * manageContacts: Manage own contacts * manageOperators: Manage own/user operators * mapDirectory: View the user directory (map) * personalizeNfc: Personalize NFC tags  * personalizeNfcSelf: Personalize NFC tags for the logged user or its operators * readNfc: Read NFC tags * receivePayment: Receive payments from other users * redeemVoucher: Redeem vouchers * registerUsersAsMember: Register other users as member or operator * unassignPos: Unassign the current access client from POS mode * usersSearch: Search other users * viewAccountInformation: View own accounts * viewUserProfile: View the profile of other users\n",
-      "enum" : [ "acceptTicket", "activateNfcDevice", "assignPos", "boughtVouchers", "createTicket", "deactivateNfcDevice", "formatNfc", "initializeNfc", "makeSystemPayment", "makeUserPayment", "manageContacts", "manageOperators", "mapDirectory", "personalizeNfc", "personalizeNfcSelf", "readNfc", "receivePayment", "redeemVoucher", "registerUsersAsMember", "unassignPos", "usersSearch", "viewAccountInformation", "viewUserProfile" ]
+      "description" : "The possible operations the mobile application can perform Possible values are: * acceptTicket: Accepts a generated QR code for performing a payment * activateNfcDevice: Activate the phone as NFC device * assignPos: Assign an access client for POS mode * boughtVouchers: View bought vouchers * createTicket: Generate a QR Code for receive payment * deactivateNfcDevice: Deactivate the phone as NFC device * formatNfc: Format NFC tags * initializeNfc: Initialize NFC tags * makeSystemPayment: Perform payments to system * makeUserPayment: Perform payments to other users * manageContacts: Manage own contacts * manageOperators: Manage own/user operators * managePasswords: Manage passwords * mapDirectory: View the user directory (map) * paymentRequests: Search and view payment requests * personalizeNfc: Personalize NFC tags  * personalizeNfcSelf: Personalize NFC tags for the logged user or its operators * readNfc: Read NFC tags * receivePayment: Receive payments from other users * redeemVoucher: Redeem vouchers * registerUsersAsManager: Register other users as user manager * registerUsersAsMember: Register other users as member or operator * unassignPos: Unassign the current access client from POS mode * usersSearch: Search other users * viewAccountInformation: View own accounts * viewUserProfile: View the profile of other users\n",
+      "enum" : [ "acceptTicket", "activateNfcDevice", "assignPos", "boughtVouchers", "createTicket", "deactivateNfcDevice", "formatNfc", "initializeNfc", "makeSystemPayment", "makeUserPayment", "manageContacts", "manageOperators", "managePasswords", "mapDirectory", "paymentRequests", "personalizeNfc", "personalizeNfcSelf", "readNfc", "receivePayment", "redeemVoucher", "registerUsersAsManager", "registerUsersAsMember", "unassignPos", "usersSearch", "viewAccountInformation", "viewUserProfile" ]
     },
     "DateFormatEnum" : {
       "type" : "string",
@@ -16520,6 +17663,21 @@
       } ],
       "description" : "Basic definition of a persistent entity which has a name"
     },
+    "PasswordStatus" : {
+      "type" : "object",
+      "properties" : {
+        "status" : {
+          "description" : "The password status Possible values are: * active: The password is active and valid * disabled: The password has been manually disabled * expired: The password is expired * indefinitelyBlocked: The password is blocked by exceeding the maximum attempts until it is manually unblocked * neverCreated: The password has never been created for the user * pending: The password was manually allowed (by admins) for the user to generate it, but it was not yet generated (never used for manual passwords) * reset: The password has been reset (can be used for login but must then be changed) * temporarilyBlocked: The password is temporarily blocked by exceeding the maximum attempts\n",
+          "$ref" : "#/definitions/PasswordStatusEnum"
+        },
+        "date" : {
+          "type" : "string",
+          "format" : "date-time",
+          "description" : "The date this status took place"
+        }
+      },
+      "description" : "Contains the status of a password\n"
+    },
     "Transfer" : {
       "allOf" : [ {
         "$ref" : "#/definitions/Entity"
@@ -17044,6 +18202,32 @@
         }
       } ],
       "description" : "Contains details about an occurrence of a recurring payment\n"
+    },
+    "LoginUser" : {
+      "type" : "object",
+      "properties" : {
+        "user" : {
+          "type" : "string",
+          "description" : "The user identification for login. The accepted kind of identification\n(login name, e-mail, etc) depend on the channel configuration.\n"
+        },
+        "password" : {
+          "type" : "string",
+          "description" : "The user password. The password type is set in the channel configuration.\n"
+        },
+        "remoteAddress" : {
+          "type" : "string",
+          "description" : "The IP address of the user requesting the login.\n"
+        },
+        "channel" : {
+          "type" : "string",
+          "description" : "The channel internal name. Defaults to `main`.\n"
+        },
+        "sessionTimeout" : {
+          "description" : "The amount of time the session is valid. The channel configuration has the\nsession timeout, which is the maximum amount of time that can be set.\nIf the given value is higher than the one in the configuration, it will be\nignored. Defaults to the timeout set in the configuration. \n",
+          "$ref" : "#/definitions/TimeInterval"
+        }
+      },
+      "description" : "Contains fields to login an user as administrator\n"
     },
     "OtpError" : {
       "allOf" : [ {
@@ -17839,6 +19023,10 @@
             "description" : "The authenticated user",
             "$ref" : "#/definitions/Auth"
           },
+          "nameOfUser" : {
+            "type" : "string",
+            "description" : "The name of the current user (if any)"
+          },
           "mobileHelp" : {
             "description" : "The help content for mobile mode",
             "$ref" : "#/definitions/UIElementWithContent"
@@ -17869,6 +19057,10 @@
             "type" : "boolean",
             "description" : "Indicates whether there is at least one NFC tag the user can use\nto receive payments\n"
           },
+          "personalizeOtherUsers" : {
+            "type" : "boolean",
+            "description" : "Indicates if the current user can personalize NFC tags for other users (as member)"
+          },
           "mobileCameraOnPayment" : {
             "type" : "boolean",
             "description" : "Indicates whether the scan QR code option should be displayed for payments         \n"
@@ -17882,7 +19074,7 @@
           },
           "allowedOperations" : {
             "type" : "array",
-            "description" : "The possible operations the mobile application can perform Possibles values for each array element are: * acceptTicket: Accepts a generated QR code for performing a payment * activateNfcDevice: Activate the phone as NFC device * assignPos: Assign an access client for POS mode * boughtVouchers: View bought vouchers * createTicket: Generate a QR Code for receive payment * deactivateNfcDevice: Deactivate the phone as NFC device * formatNfc: Format NFC tags * initializeNfc: Initialize NFC tags * makeSystemPayment: Perform payments to system * makeUserPayment: Perform payments to other users * manageContacts: Manage own contacts * manageOperators: Manage own/user operators * mapDirectory: View the user directory (map) * personalizeNfc: Personalize NFC tags  * personalizeNfcSelf: Personalize NFC tags for the logged user or its operators * readNfc: Read NFC tags * receivePayment: Receive payments from other users * redeemVoucher: Redeem vouchers * registerUsersAsMember: Register other users as member or operator * unassignPos: Unassign the current access client from POS mode * usersSearch: Search other users * viewAccountInformation: View own accounts * viewUserProfile: View the profile of other users\n",
+            "description" : "The possible operations the mobile application can perform Possibles values for each array element are: * acceptTicket: Accepts a generated QR code for performing a payment * activateNfcDevice: Activate the phone as NFC device * assignPos: Assign an access client for POS mode * boughtVouchers: View bought vouchers * createTicket: Generate a QR Code for receive payment * deactivateNfcDevice: Deactivate the phone as NFC device * formatNfc: Format NFC tags * initializeNfc: Initialize NFC tags * makeSystemPayment: Perform payments to system * makeUserPayment: Perform payments to other users * manageContacts: Manage own contacts * manageOperators: Manage own/user operators * managePasswords: Manage passwords * mapDirectory: View the user directory (map) * paymentRequests: Search and view payment requests * personalizeNfc: Personalize NFC tags  * personalizeNfcSelf: Personalize NFC tags for the logged user or its operators * readNfc: Read NFC tags * receivePayment: Receive payments from other users * redeemVoucher: Redeem vouchers * registerUsersAsManager: Register other users as user manager * registerUsersAsMember: Register other users as member or operator * unassignPos: Unassign the current access client from POS mode * usersSearch: Search other users * viewAccountInformation: View own accounts * viewUserProfile: View the profile of other users\n",
             "items" : {
               "$ref" : "#/definitions/MobileOperationEnum"
             }
@@ -18064,6 +19256,20 @@
       },
       "description" : "Error returned when a HTTP status code 401 occurs"
     },
+    "PasswordStatusAndType" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/PasswordStatus"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "type" : {
+            "description" : "The password type",
+            "$ref" : "#/definitions/InternalNamedEntity"
+          }
+        }
+      } ],
+      "description" : "Contains the status of a password and its type.\n"
+    },
     "InternalNamedEntity" : {
       "allOf" : [ {
         "$ref" : "#/definitions/NamedEntity"
@@ -18178,6 +19384,28 @@
         }
       },
       "description" : "Contains detailed data of a payment's authorization level.\n"
+    },
+    "PaymentRequestPermissions" : {
+      "type" : "object",
+      "properties" : {
+        "authorize" : {
+          "type" : "boolean",
+          "description" : "The payment request can be accepted by the payer."
+        },
+        "reject" : {
+          "type" : "boolean",
+          "description" : "The payment request can be rejected by the payer."
+        },
+        "cancel" : {
+          "type" : "boolean",
+          "description" : "The payment request can be canceled by the payee or managers."
+        },
+        "reschedule" : {
+          "type" : "boolean",
+          "description" : "The payment request can be rescheduled by the payee or managers."
+        }
+      },
+      "description" : "Permissions the user has over a payment request."
     },
     "AdQueryFilters" : {
       "allOf" : [ {
@@ -19173,6 +20401,21 @@
       } ],
       "description" : "Reference to a language in Cyclos"
     },
+    "AcceptOrReschedulePaymentRequest" : {
+      "type" : "object",
+      "properties" : {
+        "comments" : {
+          "type" : "string",
+          "description" : "A comment the payer can set."
+        },
+        "processDate" : {
+          "type" : "string",
+          "format" : "date-time",
+          "description" : "The date the payment request must be processed."
+        }
+      },
+      "description" : "Parameters for accepting or rescheduling payment requests."
+    },
     "IncomingMessage" : {
       "allOf" : [ {
         "$ref" : "#/definitions/Entity"
@@ -19208,7 +20451,7 @@
       "type" : "object",
       "properties" : {
         "code" : {
-          "description" : "Error codes for 403 Forbidden HTTP status.  Possible values are: * expiredPassword: The password being used has expired * illegalAction: Attempt to perform an action that is not allowed on this context * inaccessibleChannel: This channel cannot be accessed by the user  * indefinitelyBlocked: The password was indefinitely blocked by exceeding the allowed attempts  * invalidPassword: The password being used is invalid (normally the confirmation password) * operatorWithPendingAgreements: The operator cannot access because his owner member has pending agreements * permissionDenied: The operation was denied because a required permission was not granted * resetPassword: The password being used was manually reset * temporarilyBlocked: The password was temporarily blocked by exceeding the allowed attempts\n",
+          "description" : "Error codes for 403 Forbidden HTTP status.  Possible values are: * expiredPassword: The password being used has expired * illegalAction: Attempt to perform an action that is not allowed on this context * inaccessibleChannel: This channel cannot be accessed by the user  * indefinitelyBlocked: The password was indefinitely blocked by exceeding the allowed attempts  * invalidPassword: The password being used is invalid (normally the confirmation password) * operatorWithPendingAgreements: The operator cannot access because his owner member has pending agreements * pendingAgreements: There is at least one agreement which needs to be accepted in order to access the syste * permissionDenied: The operation was denied because a required permission was not granted * resetPassword: The password being used was manually reset * temporarilyBlocked: The password was temporarily blocked by exceeding the allowed attempts\n",
           "$ref" : "#/definitions/ForbiddenErrorCode"
         },
         "passwordType" : {
@@ -19382,6 +20625,20 @@
         }
       },
       "description" : "Permissions over other users"
+    },
+    "PasswordTypeWithDescription" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/PasswordType"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "description" : {
+            "type" : "string",
+            "description" : "The description of the password type. Useful to know what a password \nmust contain to meet the restrictions of this type.    \n"
+          }
+        }
+      } ],
+      "description" : "Password type definition plus a description."
     },
     "TimeInterval" : {
       "type" : "object",
@@ -19642,7 +20899,11 @@
       "properties" : {
         "change" : {
           "type" : "boolean",
-          "description" : "Manually change a generated password or generate another value for a generated password.\n"
+          "description" : "Manually change the password.\n"
+        },
+        "changeGenerated" : {
+          "type" : "boolean",
+          "description" : "Manually generate another value for a generated password. Can only be  done for the authenticated user himself.\n"
         },
         "generate" : {
           "type" : "boolean",
@@ -19650,19 +20911,19 @@
         },
         "allowGeneration" : {
           "type" : "boolean",
-          "description" : "For generated passwords that have a setting to require administration authorization, this action is the one that allows the user to generate the password value.\n"
+          "description" : "Granted only for those generated passwords that have a setting to  require administration authorization and have the status  `neverCreated`. Can only be done by administrators with permissions to enable/disable  the password.\n"
         },
         "disable" : {
           "type" : "boolean",
-          "description" : "Disables a password, making it unusable until being enabled again\n"
+          "description" : "Disables a password, making it unusable until being enabled again.\n"
         },
         "enable" : {
           "type" : "boolean",
           "description" : "Enables a disabled password, either manually disabled or by exceeding the wrong tries, depending on the password type configuration.\n"
         },
-        "reset" : {
+        "resetGenerated" : {
           "type" : "boolean",
-          "description" : "Resets a generated password, making it go back to the pending state. The user will then be able to generate a new value for it.\n"
+          "description" : "Resets a generated password, making it go back to the  `pending` state. The user will then be able to generate a new value for it.\n"
         },
         "resetAndSend" : {
           "type" : "boolean",
@@ -20000,6 +21261,10 @@
       }, {
         "type" : "object",
         "properties" : {
+          "global" : {
+            "type" : "boolean",
+            "description" : "Indicates whether this password type is defined in global mode (`true`) or in a network (`false`)\n"
+          },
           "mode" : {
             "description" : "Indicates how a password is handled Possible values are: * generated: Passwords are always generated * manual: Passwords are manually typed by users * otp: One Time Passwords. are always generated and can be used only once * script: Passwords are not stored in Cyclos, but handed-over for a script to verify them. \n  Is normally used to implement single-sign-on with other apps.\n",
             "$ref" : "#/definitions/PasswordModeEnum"
@@ -20090,26 +21355,21 @@
       "description" : "Data for searching records of a type, from any user"
     },
     "PasswordStatusAndPermissions" : {
-      "type" : "object",
-      "properties" : {
-        "type" : {
-          "description" : "The password type",
-          "$ref" : "#/definitions/PasswordType"
-        },
-        "status" : {
-          "description" : "The password status Possible values are: * active: The password is active and valid * disabled: The password has been manually disabled * expired: The password is expired * indefinitelyBlocked: The password is blocked by exceeding the maximum attempts until it is manually unblocked * neverCreated: The password has never been created for the user * pending: The password was manually allowed (by admins) for the user to generate it, but it was not yet generated (never used for manual passwords) * reset: The password has been reset (can be used for login but must then be changed) * temporarilyBlocked: The password is temporarily blocked by exceeding the maximum attempts\n",
-          "$ref" : "#/definitions/PasswordStatusEnum"
-        },
-        "date" : {
-          "type" : "string",
-          "format" : "date-time",
-          "description" : "The date this status took place"
-        },
-        "permissions" : {
-          "description" : "The permissions over actions the authenticated user can perform on\nthis password\n",
-          "$ref" : "#/definitions/PasswordPermissions"
+      "allOf" : [ {
+        "$ref" : "#/definitions/PasswordStatus"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "type" : {
+            "description" : "The password type along with the description",
+            "$ref" : "#/definitions/PasswordTypeWithDescription"
+          },
+          "permissions" : {
+            "description" : "The permissions over actions the authenticated user can perform on\nthis password\n",
+            "$ref" : "#/definitions/PasswordPermissions"
+          }
         }
-      },
+      } ],
       "description" : "Contains the status and permissions over a password\n"
     },
     "BuyVoucherError" : {
@@ -20441,7 +21701,7 @@
           },
           "allowManualInput" : {
             "type" : "boolean",
-            "description" : "Specifies if the principal type allows enter manually the token value.\n"
+            "description" : "Only returned if `kind` is `token`. Specifies if the principal type allows enter manually the token value.\n"
           },
           "example" : {
             "type" : "string",
@@ -20941,8 +22201,8 @@
           "$ref" : "#/definitions/PasswordInput"
         },
         "paymentType" : {
-          "description" : "The payment type in the form `fromAccountType.paymentType`",
-          "$ref" : "#/definitions/EntityReference"
+          "description" : "The payment type reference",
+          "$ref" : "#/definitions/TransferType"
         },
         "currency" : {
           "description" : "The currency of the payment",
@@ -21081,6 +22341,10 @@
               "$ref" : "#/definitions/Authorization"
             }
           },
+          "paymentRequestPermissions" : {
+            "description" : "Permissions the user has over this payment request.",
+            "$ref" : "#/definitions/PaymentRequestPermissions"
+          },
           "transfer" : {
             "description" : "Only returned if the `kind` is `payment`. This is the transfer generated when the payment was processed. Will be null if the went through authorization and was not authorized. Only returned if this `TransactionView` is not already in a `TransactionView`. \n",
             "$ref" : "#/definitions/TransferView"
@@ -21186,6 +22450,10 @@
           "ticketStatus" : {
             "description" : "The status of a ticket Possible values are: * canceled: The ticket was canceled by the receiver before being processed * expired: The ticket has expired without being confirmed by a payer or canceled by the receiver until the expiration date * open: The ticket was created, but not confirmed yet * processed: The ticket was confirmed and processed and the payment was generated\n",
             "$ref" : "#/definitions/TicketStatusEnum"
+          },
+          "payerPrincipal" : {
+            "type" : "string",
+            "description" : "Only returned if the `kind` is `ticket`, the ticket status is\n`open` and there is a fixed payer.\nIs the principal (for example, login name or e-mail) which can\nbe used to login the user, so he can accept the ticket.\n"
           },
           "cancelUrl" : {
             "type" : "string",
@@ -23198,6 +24466,20 @@
       } ],
       "description" : "A custom record is a structured data stored either for a user or for\nsystem (a general record, unrelated to a user).\n"
     },
+    "UserAuth" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/Auth"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "group" : {
+            "description" : "The user group",
+            "$ref" : "#/definitions/Group"
+          }
+        }
+      } ],
+      "description" : "Contains information returned after logging in an user.\n"
+    },
     "UserPermissions" : {
       "type" : "object",
       "properties" : {
@@ -23261,6 +24543,10 @@
       }, {
         "type" : "object",
         "properties" : {
+          "payer" : {
+            "type" : "string",
+            "description" : "An identification for the user which will pay the ticket. Is optional, and in most cases, should be left empty. If empty, at the moment the client will pay the ticket, both user identification and password will be entered, and the ticket will be confirmed. If specified, when confirming, only that user will be able to pay the ticket. \n"
+          },
           "cancelUrl" : {
             "type" : "string",
             "description" : "The URL to redirect when canceling the accept ticket flow"
@@ -23662,6 +24948,14 @@
       "name" : "user",
       "in" : "path",
       "description" : "Can be one of: - a user identification value, such as id, username, e-mail, phone, etc.\n  Id is always allowed, others depend on Cyclos configuration. Note that\n  a valid numeric value is always considered as id. For example, when\n  using another identification method that can be numeric only, prefix\n  the value with a single quote (like in Excel spreadsheets), for\n  example, `'1234567890`; \n- `self` for the currently authenticated user.\n",
+      "required" : true,
+      "type" : "string",
+      "x-dotInPath" : true
+    },
+    "userNoSelf" : {
+      "name" : "user",
+      "in" : "path",
+      "description" : "A user identification value, such as id, username, e-mail, phone, etc. Id is always allowed, others depend on Cyclos configuration. Note that a valid numeric value is always considered as id. For example, when using another identification method that can be numeric only, prefix the value with a single quote (like in Excel spreadsheets), for example, `'1234567890`; \n",
       "required" : true,
       "type" : "string",
       "x-dotInPath" : true

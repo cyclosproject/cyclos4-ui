@@ -1,22 +1,45 @@
 <section [title]="bankingMessages.paymentTitle()">
-  <form focusFirst #form="ngForm" fxLayout="column">
+  <form *ngIf="initialData | async" focusFirst #form="ngForm" fxLayout="column">
     <payment-kind *ngIf="step == 'kind'"
       [(ngModel)]="kind" name="kind"
       [allowedKinds]="allowedKinds" ></payment-kind>
 
     <payment-id-method *ngIf="step == 'idMethod'"
-      [(ngModel)]="idMethod" name="idMethod"></payment-id-method>
+      [(ngModel)]="idMethod" name="idMethod"
+      [allowedIdMethods]="allowedIdMethods"></payment-id-method>
 
-    <payment-user *ngIf="step == 'user'" [idMethod]="idMethod"
-      [(ngModel)]="user" name="user"></payment-user>
+    <payment-user *ngIf="step == 'user'"
+      [(ngModel)]="user" name="user"
+      [idMethod]="idMethod"></payment-user>
+
+    <payment-type *ngIf="step == 'type' && (paymentData | async)"
+      [(ngModel)]="paymentType" name="paymentType"
+      [allowedPaymentTypes]="paymentData.value.paymentTypes"></payment-type>
+
+    <payment-fields *ngIf="step == 'fields' && (paymentTypeData | async)"
+      [(ngModel)]="payment" name="payment"
+      [paymentTypeData]="paymentTypeData.value"></payment-fields>
+
+    <payment-preview *ngIf="step == 'preview' && (preview | async)"
+      [(ngModel)]="confirmationPassword" name="confirmationPassword"
+      [preview]="preview.value"></payment-preview>
+
+    <payment-done *ngIf="step == 'done' && (performed | async)"
+      [payment]="performed"></payment-done>
 
     <actions fxLayout="column" fxLayout.gt-xs="row-reverse">
-      <button md-raised-button [disabled]="!nextEnabled" color="accent" (click)="next()">
+      <button md-raised-button *ngIf="step != 'preview' && step != 'done'" [disabled]="!nextEnabled" color="accent" (click)="next()">
         {{generalMessages.next()}}
       </button>
+      <button md-raised-button *ngIf="step == 'preview'" color="accent" (click)="next()">
+        {{generalMessages.confirm()}}
+      </button>
       <div fxHide.xs fxFlex="grow"></div>
-      <button md-raised-button [disabled]="step == 'kind'" (click)="previous()">
+      <button md-raised-button *ngIf="step != 'done' && step != 'kind'"(click)="previous()">
         {{generalMessages.previous()}}
+      </button>
+      <button md-raised-button *ngIf="step == 'done'" (click)="reset()">
+        {{bankingMessages.paymentNewPayment()}}
       </button>
     </actions>
   </form>

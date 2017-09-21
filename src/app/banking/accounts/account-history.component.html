@@ -1,18 +1,18 @@
 <section [title]="data?.account?.type?.name">
   <md-table [dataSource]="dataSource">
     <!-- Avatar column -->
-    <ng-container cdkColumnDef="avatar">
-      <md-header-cell *cdkHeaderCellDef class="avatar"></md-header-cell>
-      <md-cell *cdkCellDef="let row" class="avatar">
+    <ng-container mdColumnDef="avatar">
+      <md-header-cell *mdHeaderCellDef class="avatar"></md-header-cell>
+      <md-cell *mdCellDef="let row" class="avatar">
         <avatar [image]="row.relatedAccount.kind == 'user' ? row.relatedAccount.user.image : null"
           [icon]="row.relatedAccount.kind == 'user' ? 'account_circle' : 'account_balance'"></avatar>
       </md-cell>
     </ng-container>
 
     <!-- Aggregated (for small devices) -->
-    <ng-container cdkColumnDef="aggregated">
-      <md-header-cell *cdkHeaderCellDef></md-header-cell>
-      <md-cell *cdkCellDef="let row">
+    <ng-container mdColumnDef="aggregated">
+      <md-header-cell *mdHeaderCellDef></md-header-cell>
+      <md-cell *mdCellDef="let row">
         <div class="cell-main">{{subjectName(row)}}</div>
         <div class="cell-date">{{row.date | dateTime}}</div>
         <div class="cell-small">{{row.description || row.type?.name}}</div>
@@ -20,24 +20,24 @@
     </ng-container>
 
     <!-- Date column -->
-    <ng-container cdkColumnDef="date">
-      <md-header-cell *cdkHeaderCellDef>{{bankingMessages.transactionDate()}}</md-header-cell>
-      <md-cell *cdkCellDef="let row">{{row.date | date}}</md-cell>
+    <ng-container mdColumnDef="date">
+      <md-header-cell *mdHeaderCellDef>{{bankingMessages.transactionDate()}}</md-header-cell>
+      <md-cell *mdCellDef="let row">{{row.date | date}}</md-cell>
     </ng-container>
 
     <!-- Subject column -->
-    <ng-container cdkColumnDef="subject">
-      <md-header-cell *cdkHeaderCellDef>{{bankingMessages.transactionSubject()}}</md-header-cell>
-      <md-cell *cdkCellDef="let row">{{subjectName(row)}}</md-cell>
+    <ng-container mdColumnDef="subject">
+      <md-header-cell *mdHeaderCellDef>{{bankingMessages.transactionSubject()}}</md-header-cell>
+      <md-cell *mdCellDef="let row">{{subjectName(row)}}</md-cell>
     </ng-container>
 
     <!-- Amount column -->
-    <ng-container cdkColumnDef="amount">
-      <md-header-cell *cdkHeaderCellDef style="text-align: end">{{bankingMessages.transactionAmount()}}</md-header-cell>
-      <md-cell *cdkCellDef="let row" style="text-align: end">{{row.amount | currency:data.account.currency}}</md-cell>
+    <ng-container mdColumnDef="amount">
+      <md-header-cell *mdHeaderCellDef style="text-align: end">{{bankingMessages.transactionAmount()}}</md-header-cell>
+      <md-cell *mdCellDef="let row" style="text-align: end">{{row.amount | currency:data.account.currency}}</md-cell>
     </ng-container>
     
-    <md-header-row *cdkHeaderRowDef="layout.xs ? [] : displayedColumns"></md-header-row>
-    <md-row *cdkRowDef="let row; columns: displayedColumns;" class.xs="dynamic"></md-row>
+    <md-header-row *mdHeaderRowDef="layout.xs ? [] : displayedColumns"></md-header-row>
+    <md-row *mdRowDef="let row; columns: displayedColumns;" class.xs="dynamic"></md-row>
   </md-table>
 </section>

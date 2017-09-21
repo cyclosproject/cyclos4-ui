@@ -1,7 +1,8 @@
 <!-- View for small to large devices -->
 <div *ngIf="layout.gtxs" fxLayout="column" fxLayout.gt-xs="row">
   <section fxFlex="0 0 44%" [title]="generalMessages.loginTitle()">
-    <login-form #loginForm (onSubmit)="doLogin($event)" [showActions]="!canRegister"></login-form>
+    <login-form #loginForm [dataForLogin]="dataForLogin"
+      (onSubmit)="doLogin($event)" [showActions]="!canRegister"></login-form>
   </section>
 
   <div *ngIf="canRegister" fxFlex="0 0 12%"></div>
@@ -12,7 +13,7 @@
 </div>
 <div *ngIf="canRegister && layout.gtxs" fxLayout="row">
   <actions fxFlex="0 0 44%">
-    <button md-raised-button color="accent" (click)="doLogin(null)">
+    <button md-raised-button color="accent" [disabled]="loginForm == null || !loginForm.valid" (click)="doLogin(null)">
       {{generalMessages.loginAction()}}
     </button>
   </actions>
@@ -27,12 +28,12 @@
 <!-- Tabbed view for extra small devices when registration is enabled -->
 <md-tab-group *ngIf="canRegister && layout.xs">
   <md-tab [label]="generalMessages.loginTitle()">
-    <login-form [showActions]="true" (onSubmit)="doLogin($event)"></login-form>
+    <login-form #mobileLoginForm [dataForLogin]="dataForLogin" [showActions]="true" (onSubmit)="doLogin($event)"></login-form>
   </md-tab>
   <md-tab [label]="generalMessages.loginRegisterTitle()">
     {{generalMessages.loginRegisterText()}}
     <actions>
-      <button md-raised-button color="accent" (click)="register()">
+      <button md-raised-button [disabled]="mobileLoginForm == null || !mobileLoginForm.valid" color="accent" (click)="register()">
         {{generalMessages.loginRegisterAction()}}
       </button>
     </actions>
@@ -41,5 +42,5 @@
 
 <!-- Login page for extra small devices when registration is disabled -->
 <section *ngIf="!canRegister && layout.xs" [title]="generalMessages.loginTitle()">
-  <login-form (onSubmit)="doLogin($event)" [showActions]="true"></login-form>
+  <login-form [dataForLogin]="dataForLogin" (onSubmit)="doLogin($event)" [showActions]="true"></login-form>
 </section>

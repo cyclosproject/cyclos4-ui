@@ -1,5 +1,5 @@
 import { ChangeDetectorRef } from "@angular/core";
-import { DataSource, CollectionViewer } from "@angular/cdk";
+import { DataSource } from "@angular/cdk/collections";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { Observable } from "rxjs/Observable";
 
@@ -27,10 +27,10 @@ export class TableDataSource<T> extends DataSource<T> {
 
   private _data: BehaviorSubject<T[]> = new BehaviorSubject([]);
 
-  connect(collectionViewer: CollectionViewer): Observable<T[]> {
+  connect(): Observable<T[]> {
     return this._data;
   }
 
-  disconnect(collectionViewer: CollectionViewer): void {
+  disconnect(): void {
   }
 }

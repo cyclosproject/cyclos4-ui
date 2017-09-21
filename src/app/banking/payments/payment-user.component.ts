@@ -38,15 +38,19 @@ export class PaymentUserComponent extends BaseBankingComponent implements Contro
   public contacts = new BehaviorSubject<User[]>(null);
 
   get isSearch(): boolean {
-    return this.idMethod != null && this.idMethod.internalName == IdentificationMethodEnum.AUTOCOMPLETE;
+    return this.idMethod != null
+      && this.idMethod.internalName == IdentificationMethodEnum.AUTOCOMPLETE;
   }
 
   get isContacts(): boolean {
-    return this.idMethod != null && this.idMethod.internalName == IdentificationMethodEnum.CONTACTS;
+    return this.idMethod != null
+      && this.idMethod.internalName == IdentificationMethodEnum.CONTACTS;
   }
 
   get isPrincipal(): boolean {
-    return this.idMethod != null && this.idMethod.internalName == IdentificationMethodEnum.PRINCIPAL_TYPE;
+    return this.idMethod != null 
+      && this.idMethod.internalName != IdentificationMethodEnum.AUTOCOMPLETE
+      && this.idMethod.internalName != IdentificationMethodEnum.CONTACTS;
   }
 
   private _value: string

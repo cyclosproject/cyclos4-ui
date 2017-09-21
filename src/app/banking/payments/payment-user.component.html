@@ -1,4 +1,4 @@
-<div *ngIf="idMethod == 'autocomplete'">
+<div *ngIf="isSearch">
   <div class="form-info">{{bankingMessages.paymentUserSearch()}}</div>
   <user-selection
     [dataForSearch]="dataForSearch | async"
@@ -7,7 +7,7 @@
     focused
     ></user-selection>
 </div>
-<div *ngIf="idMethod == 'contacts'">
+<div *ngIf="isContacts">
   <div class="form-info">{{bankingMessages.paymentUserContacts()}}</div>
   <md-radio-group #contactsRadio fxLayout="column"
     [(ngModel)]="value"
@@ -17,7 +17,7 @@
     </md-radio-button>
   </md-radio-group>
 </div>
-<div *ngIf="idMethod != 'autocomplete' && idMethod != 'contacts'">
+<div *ngIf="isPrincipal">
   <div class="form-info">{{bankingMessages.paymentUserPrincipal()}}</div>
   <principal-input [focused]="true" [type]="idMethod"
     [(ngModel)]="value" [ngModelOptions]="{standalone: true}">

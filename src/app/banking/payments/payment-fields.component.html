@@ -1,0 +1,26 @@
+<div fxLayout="column">
+  <div class="form-info">{{bankingMessages.paymentFieldsMessage()}}</div>
+
+  <decimal-field fxFlex="nogrow" focused required
+    placeholder="{{bankingMessages.transactionAmount()}}"
+    [prefix]="paymentTypeData.currency.prefix"
+    [suffix]="paymentTypeData.currency.suffix"
+    [scale]="paymentTypeData.currency.decimalDigits"
+    [(ngModel)]="amount" name="amount">
+  </decimal-field>
+
+  <custom-field-input *ngFor="let cf of paymentTypeData.customFields"
+    #fieldControl="ngModel"
+    fxFlex="grow"
+    fxLayout="column"
+    [field]="cf"
+    [(ngModel)]="customValues[cf.internalName]"
+    [name]="cf.internalName"></custom-field-input>
+
+  <md-input-container fxFlex="grow">
+    <textarea mdInput placeholder="{{bankingMessages.transactionDescription()}}"
+      mdTextareaAutosize
+      [(ngModel)]="description" name="description"
+      [required]="paymentTypeData.requiresDescription"></textarea>
+  </md-input-container>
+</div>

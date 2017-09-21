@@ -4,37 +4,37 @@
 
   <md-table *ngIf="noAccountsNotification == null" [dataSource]="dataSource">
     <!-- Account type column -->
-    <ng-container cdkColumnDef="type">
-      <md-header-cell *cdkHeaderCellDef>{{bankingMessages.accountType()}}</md-header-cell>
-      <md-cell *cdkCellDef="let row">{{row.type.name}}</md-cell>
+    <ng-container mdColumnDef="type">
+      <md-header-cell *mdHeaderCellDef>{{bankingMessages.accountType()}}</md-header-cell>
+      <md-cell *mdCellDef="let row">{{row.type.name}}</md-cell>
     </ng-container>
 
     <!-- Number column -->
-    <ng-container cdkColumnDef="number">
-      <md-header-cell *cdkHeaderCellDef>{{bankingMessages.accountNumber()}}</md-header-cell>
-      <md-cell *cdkCellDef="let row">{{row.number}}</md-cell>
+    <ng-container mdColumnDef="number">
+      <md-header-cell *mdHeaderCellDef>{{bankingMessages.accountNumber()}}</md-header-cell>
+      <md-cell *mdCellDef="let row">{{row.number}}</md-cell>
     </ng-container>
 
     <!-- Aggregated column -->
-    <ng-container cdkColumnDef="aggregated">
-      <md-header-cell *cdkHeaderCellDef></md-header-cell>
-      <md-cell *cdkCellDef="let row">
+    <ng-container mdColumnDef="aggregated">
+      <md-header-cell *mdHeaderCellDef></md-header-cell>
+      <md-cell *mdCellDef="let row">
         <div class="cell-main">{{row.type.name}}</div>
         <div>{{row.number}}</div>
       </md-cell>
     </ng-container>
 
     <!-- Balance column -->
-    <ng-container cdkColumnDef="balance">
-      <md-header-cell *cdkHeaderCellDef style="text-align: end">{{bankingMessages.accountBalance()}}</md-header-cell>
-      <md-cell *cdkCellDef="let row" style="text-align: end">
+    <ng-container mdColumnDef="balance">
+      <md-header-cell *mdHeaderCellDef style="text-align: end">{{bankingMessages.accountBalance()}}</md-header-cell>
+      <md-cell *mdCellDef="let row" style="text-align: end">
         <div *ngIf="layout.xs" class="cell-main">{{bankingMessages.accountBalance()}}</div>
         {{row.status?.balance | currency:row.currency}}
       </md-cell>
     </ng-container>
     
-    <md-header-row *cdkHeaderRowDef="layout.xs ? [] : displayedColumns"></md-header-row>
-    <md-row class="clickable" *cdkRowDef="let row; columns: displayedColumns;"
+    <md-header-row *mdHeaderRowDef="layout.xs ? [] : displayedColumns"></md-header-row>
+    <md-row class="clickable" *mdRowDef="let row; columns: displayedColumns;"
       (click)="showHistory(row)"></md-row>
   </md-table>
 </section>

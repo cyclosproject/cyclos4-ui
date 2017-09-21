@@ -5,7 +5,7 @@
     [placeholder]="type.name"
     [required]="true"
     [focused]="focused"
-    [type]="type == 'email' ? 'email' : 'text'"
+    [type]="type.kind == 'email' ? 'email' : 'text'"
     [mask]="type.mask"
     [(ngModel)]="value" [ngModelOptions]="{standalone: true}">
 </md-input-container>

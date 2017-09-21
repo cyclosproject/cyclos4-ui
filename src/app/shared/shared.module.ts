@@ -3,7 +3,6 @@ import { CommonModule } from "@angular/common";
 import { FormsModule } from '@angular/forms';
 
 import { MaterialModule, MdDialog } from '@angular/material'
-import { CdkTableModule } from "@angular/cdk";
 
 import { SectionComponent } from "app/shared/section.component";
 import { ActionsComponent } from "app/shared/actions.component";
@@ -31,6 +30,8 @@ import { DecimalFieldComponent } from "app/shared/decimal-field.component";
 import { PrincipalInputComponent } from "app/shared/principal-input.component";
 import { UserSelectionComponent } from "app/shared/user-selection.component";
 import { FocusedDirective } from "app/shared/focused.directive";
+import { PasswordInputComponent } from 'app/shared/password-input.component';
+import { ConfirmationPasswordComponent } from 'app/shared/confirmation-password.component';
 
 /**
  * Module that configures UI elements
@@ -47,6 +48,8 @@ import { FocusedDirective } from "app/shared/focused.directive";
     CustomFieldValueComponent,
     CustomFieldInputComponent,
     PrincipalInputComponent,
+    PasswordInputComponent,
+    ConfirmationPasswordComponent,
     UserSelectionComponent,
     AvatarComponent,
     NotFoundComponent,
@@ -68,24 +71,26 @@ import { FocusedDirective } from "app/shared/focused.directive";
     CommonModule,
     FormsModule,
     FlexLayoutModule,
-    MaterialModule,
-    CdkTableModule
+    MaterialModule
   ],
   exports: [
     CommonModule,
     FormsModule,
     FlexLayoutModule,
     MaterialModule,
-    CdkTableModule,
 
     SectionComponent,
     ActionsComponent,
     ViewFormComponent,
     LabelValueComponent,
     NotificationComponent,
+    DateFieldComponent,
+    DecimalFieldComponent,
     CustomFieldValueComponent,
     CustomFieldInputComponent,
     PrincipalInputComponent,
+    PasswordInputComponent,
+    ConfirmationPasswordComponent,
     UserSelectionComponent,
     AvatarComponent,
     NotFoundComponent,

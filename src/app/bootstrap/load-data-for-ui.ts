@@ -3,13 +3,16 @@
 import { FormatService } from "app/core/format.service";
 import { UIService } from "app/api/services";
 import { UiKind, DataForUi } from "app/api/models";
-import { Provider, APP_INITIALIZER } from "@angular/core";
+import { Provider, APP_INITIALIZER, Injector } from "@angular/core";
 
 import { environment } from "environments/environment"
+import { ApiConfigurationService } from "app/core/api-configuration.service";
 
-export function loadDataForUi(formatService: FormatService, uiService: UIService): Function {
+export function loadDataForUi(injector: Injector): Function {
+
   let init = (dataForUi: DataForUi) => {
     // Initialize the FormatService
+    let formatService = injector.get(FormatService);
     formatService.initialize(dataForUi);
 
     // Initialize the favorite icon
@@ -35,15 +38,28 @@ export function loadDataForUi(formatService: FormatService, uiService: UIService
       headerIf: "false",
       footerIf: "false"
     }
-    return () => uiService.dataForUi(params)
+    return () => {
+      let uiService = injector.get(UIService);
+      uiService.dataForUi(params)
       .then(response => {
         return init(response.data);
+      })
+      .catch(response => {
+        if (response.status == 401) {
+          // Had an invalid session token. Clear it and try again.
+          injector.get(ApiConfigurationService).sessionToken = null;
+          uiService.dataForUi(params)
+            .then(response => {
+              return init(response.data);
+            });
+        }
       });
+    };
   }
 }
 export const LOAD_DATA_FOR_UI: Provider = {
   provide: APP_INITIALIZER,
   useFactory: loadDataForUi,
-  deps: [FormatService, UIService],
+  deps: [Injector],
   multi: true
 };

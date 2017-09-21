@@ -77,6 +77,16 @@ export class LoginService {
   }
 
   /**
+   * Directly clears the logged user state
+   */
+  clear(): void {
+    this.redirectUrl = null;
+    this._auth = null;
+    this.apiConfigurationService.sessionToken = null;
+    this.onAuth.next(null);
+  }
+
+  /**
    * Performs the logout
    */
   logout(): Promise<void> {

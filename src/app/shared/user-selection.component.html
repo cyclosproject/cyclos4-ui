@@ -6,24 +6,24 @@
 </md-input-container>
 
 <md-table *ngIf="showTable | async; else noKeywords" [dataSource]="dataSource" fxFlex="grow">
-  <ng-container cdkColumnDef="radio">
-    <md-header-cell *cdkHeaderCellDef class="selection"></md-header-cell>
-    <md-cell *cdkCellDef="let row" class="selection">
+  <ng-container mdColumnDef="radio">
+    <md-header-cell *mdHeaderCellDef class="selection"></md-header-cell>
+    <md-cell *mdCellDef="let row" class="selection">
       <md-radio-group [(ngModel)]="value" [ngModelOptions]="{standalone: true}">
         <md-radio-button [value]="row.id"></md-radio-button>
       </md-radio-group>
     </md-cell>
   </ng-container>
   
-  <ng-container cdkColumnDef="user">
-    <md-header-cell *cdkHeaderCellDef>{{generalMessages.user()}}</md-header-cell>
-    <md-cell *cdkCellDef="let row">
+  <ng-container mdColumnDef="user">
+    <md-header-cell *mdHeaderCellDef>{{generalMessages.user()}}</md-header-cell>
+    <md-cell *mdCellDef="let row">
       <a href="#" class="plain" (click)="$event.preventDefault();value = row.id">{{row.display}}</a>
     </md-cell>
   </ng-container>
 
-  <md-header-row *cdkHeaderRowDef="['radio', 'user']"></md-header-row>
-  <md-row *cdkRowDef="let row; columns: ['radio', 'user'];"></md-row>
+  <md-header-row *mdHeaderRowDef="['radio', 'user']"></md-header-row>
+  <md-row *mdRowDef="let row; columns: ['radio', 'user'];"></md-row>
 </md-table>
 
 <ng-template #noKeywords>
