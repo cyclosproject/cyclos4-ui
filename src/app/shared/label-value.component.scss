@@ -3,10 +3,10 @@
   display: flex;
 }
 .gt-xs :host {
-  flex-direction: row;
+  flex-direction: row !important;
 }
 .xs :host {
-  flex-direction: column;
+  flex-direction: column !important;
 }
 
 .label {
