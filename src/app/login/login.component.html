@@ -28,10 +28,12 @@
 <!-- Tabbed view for extra small devices when registration is enabled -->
 <md-tab-group *ngIf="canRegister && layout.xs">
   <md-tab [label]="generalMessages.loginTitle()">
-    <login-form #mobileLoginForm [dataForLogin]="dataForLogin" [showActions]="true" (onSubmit)="doLogin($event)"></login-form>
+    <login-form class="topMargin" #mobileLoginForm [dataForLogin]="dataForLogin" [showActions]="true" (onSubmit)="doLogin($event)"></login-form>
   </md-tab>
   <md-tab [label]="generalMessages.loginRegisterTitle()">
-    {{generalMessages.loginRegisterText()}}
+    <div class="topMargin">
+      {{generalMessages.loginRegisterText()}}
+    </div>
     <actions>
       <button md-raised-button [disabled]="mobileLoginForm == null || !mobileLoginForm.valid" color="accent" (click)="register()">
         {{generalMessages.loginRegisterAction()}}

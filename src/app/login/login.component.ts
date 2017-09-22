@@ -14,7 +14,8 @@ import { BaseComponent } from "app/shared/base.component";
  */
 @Component({
   selector: 'app-login',
-  templateUrl: './login.component.html',
+  templateUrl: 'login.component.html',
+  styleUrls: ['login.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoginComponent extends BaseComponent {

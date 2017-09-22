@@ -1,8 +1,12 @@
 <md-toolbar color="primary" fxFlex="nogrow" ngClass.gt-sm="largeToolbar">
-  <button fxHide.gt-sm md-icon-button (click)="sidenav.toggle()">
+  <button fxHide.gt-sm md-icon-button (click)="sidenav.toggle();">
     <md-icon class="md-24">menu</md-icon>
   </button>
-  <div #title class="toolbarTitle" fxFlex="grow">{{format.appTitle}}</div>
+  <div class="toolbarTitle" fxFlex="grow">
+    <span [ngStyle.lt-md]="{'display': sidenav.opened ? 'none' : ''}">
+      {{format.appTitle}}
+    </span>
+  </div>
   <button md-icon-button>
     <md-icon class="md-24">search</md-icon>
   </button>

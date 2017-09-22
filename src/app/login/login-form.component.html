@@ -7,13 +7,14 @@
     <md-icon mdPrefix class="md-24">account_circle</md-icon>
   </md-input-container>
   <password-input #passwordComponent
+    fxFlex="grow"
     [showIcon]="true"
     [placeholder]="generalMessages.loginPassword()"
     [passwordInput]="dataForLogin.loginPasswordInput"
     [(ngModel)]="data.password" name="password"
     (onEnter)="emit()"
   ></password-input>
-  <actions *ngIf="showActions">
+  <actions *ngIf="showActions" fxFlex="grow">
     <button [disabled]="!valid" md-raised-button color="accent" (click)="emit()">
       {{generalMessages.loginAction()}}
     </button>

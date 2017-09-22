@@ -2,7 +2,11 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from "@angular/common";
 import { FormsModule } from '@angular/forms';
 
-import { MaterialModule, MdDialog } from '@angular/material'
+import {
+  MdButtonModule, MdInputModule, MdCheckboxModule, MdRadioModule, MdIconModule,
+  MdGridListModule, MdSelectModule, MdTabsModule, MdTableModule, MdSidenavModule,
+  MdToolbarModule, MdDialog, MdDialogModule
+} from '@angular/material'
 
 import { SectionComponent } from "app/shared/section.component";
 import { ActionsComponent } from "app/shared/actions.component";
@@ -71,13 +75,35 @@ import { ConfirmationPasswordComponent } from 'app/shared/confirmation-password.
     CommonModule,
     FormsModule,
     FlexLayoutModule,
-    MaterialModule
+    MdButtonModule,
+    MdInputModule, 
+    MdSelectModule,
+    MdCheckboxModule,
+    MdRadioModule,
+    MdIconModule,
+    MdGridListModule,
+    MdTabsModule,
+    MdTableModule,
+    MdSidenavModule,
+    MdToolbarModule, 
+    MdDialogModule
   ],
   exports: [
     CommonModule,
     FormsModule,
     FlexLayoutModule,
-    MaterialModule,
+    MdButtonModule,
+    MdInputModule, 
+    MdSelectModule,
+    MdCheckboxModule,
+    MdRadioModule,
+    MdIconModule,
+    MdGridListModule,
+    MdTabsModule,
+    MdTableModule,
+    MdSidenavModule,
+    MdToolbarModule, 
+    MdDialogModule,
 
     SectionComponent,
     ActionsComponent,

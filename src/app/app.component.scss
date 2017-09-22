@@ -11,11 +11,11 @@
   flex: 1 1 100%;
   max-width: $max-layout-width;
 }
-.lt-md :host /deep/ .mat-sidenav-content {
+.lt-md :host /deep/ .mat-drawer-content {
   width: 100%;
   flex-direction: column !important;
 }
-.gt-sm :host /deep/ .mat-sidenav-content {
+.gt-sm :host /deep/ .mat-drawer-content {
   max-width: $max-layout-width - $menu-width;
   flex-direction: row !important;
 }

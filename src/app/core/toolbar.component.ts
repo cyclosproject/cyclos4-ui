@@ -1,6 +1,7 @@
-import { Component, AfterViewInit, Input, ElementRef, ViewChild } from '@angular/core';
+import { Component, Input, ElementRef, ViewChild, ChangeDetectionStrategy, Injector } from '@angular/core';
 import { MdSidenav } from "@angular/material";
 import { FormatService } from "app/core/format.service";
+import { BaseComponent } from 'app/shared/base.component';
 
 /**
  * The toolbar displayed on the top
@@ -8,28 +9,14 @@ import { FormatService } from "app/core/format.service";
 @Component({
   selector: 'toolbar',
   templateUrl: 'toolbar.component.html',
-  styleUrls: ['toolbar.component.scss']
+  styleUrls: ['toolbar.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ToolbarComponent implements AfterViewInit {
-  constructor(
-    public format: FormatService
-  ) { }
+export class ToolbarComponent extends BaseComponent {
+  constructor(injector: Injector) {
+    super(injector);
+  }
 
   @Input()
   public sidenav: MdSidenav;
-
-  @ViewChild("title")
-  private title: ElementRef;
-
-  private previousTitle: string;
-
-  ngAfterViewInit() {
-    this.sidenav.onOpen.subscribe(() => {
-      this.previousTitle = this.title.nativeElement.innerHTML;
-      this.title.nativeElement.innerHTML = '';
-    });
-    this.sidenav.onClose.subscribe(() => {
-      this.title.nativeElement.innerHTML = this.previousTitle;
-    });
-  }
 }
