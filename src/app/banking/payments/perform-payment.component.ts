@@ -1,12 +1,13 @@
 import { Component, Injector, ChangeDetectionStrategy } from '@angular/core';
 import { BaseBankingComponent } from "app/banking/base-banking.component";
-import { AccountPermissions, DataForTransaction, IdentificationMethodEnum, PrincipalTypeKind, TransactionTypeData, TransferTypeWithCurrency, PerformPayment, PaymentPreview, TransactionView } from "app/api/models";
+import { AccountPermissions, DataForTransaction, IdentificationMethodEnum, PrincipalTypeKind, TransactionTypeData, TransferTypeWithCurrency, PerformPayment, PaymentPreview, TransactionView, PaymentError, PaymentErrorCode, ForbiddenError, ForbiddenErrorCode } from "app/api/models";
 import { PaymentKind } from "app/banking/payments/payment-kind";
 import { PaymentStep } from "app/banking/payments/payment-step";
 import { IdMethod } from "app/banking/payments/id-method";
 import { PaymentsService } from "app/api/services";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { ModelHelper } from "app/shared/model-helper";
+import { ErrorStatus } from 'app/core/error-handler.service';
 
 
 /**
@@ -210,6 +211,28 @@ export class PerformPaymentComponent extends BaseBankingComponent {
   }
 
   /**
+   * Performs the payment itself
+   */
+  performPayment() {
+    this.paymentsService.performPayment({
+      owner:ModelHelper.SELF,
+      payment: this.payment,
+      confirmationPassword: this.confirmationPassword,
+      fields: ['id', 'authorizationStatus']
+    })
+    .then(response => {
+      this.next();
+      this.performed.next(response.data);
+      this.detectChanges();
+    })
+    .catch(response => {
+      if (response.status == ErrorStatus.FORBIDDEN) {
+        this.confirmationPassword = null;
+      }
+    });
+  }
+
+  /**
    * Returns a list with all available steps
    */
   private allSteps(): PaymentStep[] {
@@ -311,17 +334,6 @@ export class PerformPaymentComponent extends BaseBankingComponent {
             this.preview.next(response.data);
           })
         break;
-      case PaymentStep.DONE:
-          this.paymentsService.performPayment({
-            owner:ModelHelper.SELF,
-            payment: this.payment,
-            confirmationPassword: this.confirmationPassword,
-            fields: ['id', 'authorizationStatus']
-          })
-          .then(response => {
-            this.performed.next(response.data);
-          })
-          break;
     }
   }
 }

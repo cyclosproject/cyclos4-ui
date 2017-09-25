@@ -25,6 +25,10 @@ export const CONFIRMATION_PASSWORD_VALIDATOR: Provider = {
   selector: 'confirmation-password',
   templateUrl: 'confirmation-password.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+    CONFIRMATION_PASSWORD_VALUE_ACCESSOR,
+    CONFIRMATION_PASSWORD_VALIDATOR
+  ]
 })
 export class ConfirmationPasswordComponent implements AfterViewInit, ControlValueAccessor, Validator {
   constructor(
@@ -33,7 +37,7 @@ export class ConfirmationPasswordComponent implements AfterViewInit, ControlValu
 
   otpRenewable: boolean;
 
-  @ViewChild("password")
+  @ViewChild("passwordComponent")
   private passwordComponent: PasswordInputComponent;
 
   ngAfterViewInit(): void {
@@ -115,7 +119,10 @@ export class ConfirmationPasswordComponent implements AfterViewInit, ControlValu
 
   // Validator methods
   validate(c: AbstractControl): ValidationErrors {
-    return this.passwordComponent.validate(c);
+    if (this.passwordComponent) {
+      return this.passwordComponent.validate(c);
+    }
+    return null;
   }
   registerOnValidatorChange(fn: () => void): void {
     this.validatorChangeCallback = fn;
