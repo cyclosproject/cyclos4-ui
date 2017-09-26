@@ -11,11 +11,11 @@ import { LayoutService } from "app/core/layout.service";
   styleUrls: ['menu-item.component.scss']
 })
 export class MenuItemComponent implements OnInit {
-  constructor(
-    @Inject(MenuComponent) private menu: MenuComponent,
-    public layout: LayoutService
-  ) {
-  }
+  // constructor(
+  //   @Inject(MenuComponent) private menu: MenuComponent,
+  //   public layout: LayoutService
+  // ) {
+  // }
 
   @Input()
   icon: string;
@@ -28,9 +28,9 @@ export class MenuItemComponent implements OnInit {
 
   ngOnInit() {}
 
-  anchorClick(event: MouseEvent): void {
-    if (this.menu.sidenav && this.layout.ltmd) {
-      this.menu.sidenav.close();
-    }
-  }
+  // anchorClick(event: MouseEvent): void {
+  //   if (this.menu.sidenav && this.layout.ltmd) {
+  //     this.menu.sidenav.close();
+  //   }
+  // }
 }

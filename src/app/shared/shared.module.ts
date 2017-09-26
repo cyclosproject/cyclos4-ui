@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import {
   MdButtonModule, MdInputModule, MdCheckboxModule, MdRadioModule, MdIconModule,
   MdGridListModule, MdSelectModule, MdTabsModule, MdTableModule, MdSidenavModule,
-  MdToolbarModule, MdDialog, MdDialogModule
+  MdDialog, MdDialogModule
 } from '@angular/material'
 
 import { SectionComponent } from "app/shared/section.component";
@@ -85,7 +85,6 @@ import { ConfirmationPasswordComponent } from 'app/shared/confirmation-password.
     MdTabsModule,
     MdTableModule,
     MdSidenavModule,
-    MdToolbarModule, 
     MdDialogModule
   ],
   exports: [
@@ -102,7 +101,6 @@ import { ConfirmationPasswordComponent } from 'app/shared/confirmation-password.
     MdTabsModule,
     MdTableModule,
     MdSidenavModule,
-    MdToolbarModule, 
     MdDialogModule,
 
     SectionComponent,

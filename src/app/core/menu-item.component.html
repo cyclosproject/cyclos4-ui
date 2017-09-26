@@ -1,7 +1,9 @@
-<a [routerLink]="url" md-button 
+<!--(click)="anchorClick($event)" -->
+<a [routerLink]="url"
   [routerLinkActive]="url == null ? '' : 'active'" 
-  [routerLinkActiveOptions]="{exact:true}"
-  (click)="anchorClick($event)">
+  [routerLinkActiveOptions]="{exact:true}">
   <md-icon *ngIf="icon" class="md-24">{{icon}}</md-icon>
-  {{label}}
+  <span class="text">
+    {{label}}
+  </span>
 </a>

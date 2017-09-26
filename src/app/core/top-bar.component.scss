@@ -1,0 +1,26 @@
+@import 'src/definitions';
+
+.title {
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+}
+.lt-md .title {
+  left: -6px;
+  position: relative;  
+}
+.title span {
+  font-size: 20px;
+}
+:host /deep/ .outer {
+  background-color: mat-color($primary);
+  color: mat-color($primary, default-contrast);
+  padding: 16px;
+}
+.lt-md :host /deep/ .outer {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+.menu-toggle {
+  left: -10px;
+}

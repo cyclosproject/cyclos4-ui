@@ -1,9 +1,14 @@
 @import 'src/definitions';
 
 a {
-  padding: 5px 5px 5px 20px !important;
-  min-width: 200px !important;
   text-align: left !important;
+  text-decoration: none;
+  color: mat-color($foreground, text);
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: center;
+  top: 1px;
+  position: relative;
 }
 a:not(.active) {
   opacity: 0.65;
@@ -13,4 +18,7 @@ a.active {
 }
 a .mat-icon {
   margin-right: 10px;
+}
+.text {
+  margin-top: 4px;
 }

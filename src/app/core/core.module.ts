@@ -1,7 +1,9 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 
 import { MenuComponent } from "app/core/menu.component";
-import { ToolbarComponent } from "app/core/toolbar.component";
+import { LayoutBarComponent } from "app/core/layout-bar.component";
+import { TopBarComponent } from "app/core/top-bar.component";
+import { MenuBarComponent } from "app/core/menu-bar.component";
 import { SharedModule } from "app/shared/shared.module";
 
 import { GeneralMessages } from "app/messages/general-messages";
@@ -20,7 +22,9 @@ import { RouterModule } from "@angular/router";
  */
 @NgModule({
   declarations: [
-    ToolbarComponent,
+    LayoutBarComponent,
+    TopBarComponent,
+    MenuBarComponent,
     MenuComponent,
     MenuItemComponent
   ],
@@ -29,7 +33,9 @@ import { RouterModule } from "@angular/router";
     RouterModule
   ],
   exports: [
-    ToolbarComponent,
+    LayoutBarComponent,
+    TopBarComponent,
+    MenuBarComponent,
     MenuComponent,
     MenuItemComponent
   ],

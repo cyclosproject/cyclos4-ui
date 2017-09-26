@@ -4,19 +4,16 @@ import { FormatService } from "app/core/format.service";
 import { BaseComponent } from 'app/shared/base.component';
 
 /**
- * The toolbar displayed on the top
+ * A bar that stretches all available width
  */
 @Component({
-  selector: 'toolbar',
-  templateUrl: 'toolbar.component.html',
-  styleUrls: ['toolbar.component.scss'],
+  selector: 'layout-bar',
+  templateUrl: 'layout-bar.component.html',
+  styleUrls: ['layout-bar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ToolbarComponent extends BaseComponent {
+export class LayoutBarComponent extends BaseComponent {
   constructor(injector: Injector) {
     super(injector);
   }
-
-  @Input()
-  public sidenav: MdSidenav;
 }

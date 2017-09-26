@@ -9,23 +9,33 @@
 // Sidenav
 :host /deep/ .mat-sidenav-container {
   flex: 1 1 100%;
-  max-width: $max-layout-width;
+}
+:host /deep/ .mat-drawer-content {
+  overflow: visible;
 }
 .lt-md :host /deep/ .mat-drawer-content {
   width: 100%;
   flex-direction: column !important;
 }
 .gt-sm :host /deep/ .mat-drawer-content {
-  max-width: $max-layout-width - $menu-width;
+  max-width: $max-layout-width;
+  margin-left: auto !important;
+  margin-right: auto !important;
   flex-direction: row !important;
-}
-:host /deep/ .mat-sidenav {
-  max-width: $menu-width;
 }
 
 // Main area
-.gt-xs :host /deep/ .main {
-  padding: 24px;
+.gt-sm :host /deep/ .main {
+  padding: 24px 0;
+}
+@media (max-width: $max-layout-width + 16px) {
+  .md :host /deep/ .main {
+    padding-left: 16px;
+    padding-right: 16px;
+  }  
+}
+.sm :host /deep/ .main {
+  padding: 12px;
 }
 .xs :host /deep/ .main {
   padding: 12px 8px 8px 8px;

@@ -1,9 +1,9 @@
-<md-toolbar color="primary" fxFlex="nogrow" ngClass.gt-sm="largeToolbar">
-  <button fxHide.gt-sm md-icon-button (click)="sidenav.toggle();">
+<layout-bar role="top">
+  <button class="menu-toggle" fxHide.gt-sm md-icon-button (click)="sidenav ? sidenav.toggle() : null">
     <md-icon class="md-24">menu</md-icon>
   </button>
-  <div class="toolbarTitle" fxFlex="grow">
-    <span [ngStyle.lt-md]="{'display': sidenav.opened ? 'none' : ''}">
+  <div class="title" fxFlex="grow">
+    <span [ngStyle.lt-md]="{'display': sidenav != null && sidenav.opened ? 'none' : ''}">
       {{format.appTitle}}
     </span>
   </div>
@@ -13,4 +13,4 @@
   <button md-icon-button>
     <md-icon class="md-24">account_circle</md-icon>
   </button>
-</md-toolbar>
+</layout-bar>

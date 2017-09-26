@@ -1,6 +1,7 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Injector } from '@angular/core';
 import { Router } from "@angular/router";
 import { LoginService } from "app/core/login.service";
+import { BaseComponent } from 'app/shared/base.component';
 
 /**
  * Displays the home page
@@ -10,14 +11,9 @@ import { LoginService } from "app/core/login.service";
   templateUrl: 'home.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HomeComponent implements OnInit {
-  constructor(
-    private loginService: LoginService,
-    private router: Router
-  ) {
-    if (!loginService.user) {
-      this.router.navigateByUrl('login');
-    }
+export class HomeComponent extends BaseComponent {
+  constructor(injector: Injector) {
+    super(injector);
   }
 
   ngOnInit() { }

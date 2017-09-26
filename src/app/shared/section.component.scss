@@ -9,8 +9,19 @@
   line-height: mat-font-size($typography, headline);
   font-family: mat-font-family($typography);
   color: mat-color($accent);
-  margin-bottom: 24px;
+  margin-bottom: mat-font-size($typography, headline);
 }
 .sectionContent .sectionTitle {
-  margin-top: 24px;
+  margin-top: mat-font-size($typography, headline);
+  font-size: mat-font-size($typography, subheading-2);
+  line-height: mat-font-size($typography, subheading-2);
+  margin-bottom: mat-font-size($typography, subheading-2);
+  font-weight: 500;
+}
+.sectionContent .sectionContent .sectionTitle {
+  margin-top: mat-font-size($typography, headline);
+  font-size: mat-font-size($typography, subheading-1);
+  line-height: mat-font-size($typography, subheading-1);
+  margin-bottom: mat-font-size($typography, subheading-1);
+  font-weight: 400;
 }

@@ -100,3 +100,7 @@ a.plain {
   text-decoration: none;
   color: map-get($foreground, text);
 }
+
+body.gt-sm {
+  background-color: mat-color($background, background);
+}

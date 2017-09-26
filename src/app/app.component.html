@@ -1,11 +1,11 @@
-<toolbar [sidenav]="sidenav" *ngIf="layout.gtsm"></toolbar>
+<top-bar *ngIf="layout.gtsm"></top-bar>
+<menu-bar *ngIf="layout.gtsm"></menu-bar>
+
 <md-sidenav-container>
-  <md-sidenav #sidenav
-    [mode]="layout.ltmd ? 'over' : 'side'"
-    [opened]="layout.gtsm">
+  <md-sidenav #sidenav mode="over">
     <menu fxLayout="column" [sidenav]="sidenav"></menu>
   </md-sidenav>
-  <toolbar [sidenav]="sidenav" *ngIf="layout.ltmd"></toolbar>
+  <top-bar [sidenav]="sidenav" *ngIf="layout.ltmd"></top-bar>
   <div fxLayout="column" fxFlex="grow" class="main">
     <router-outlet></router-outlet>
   </div>

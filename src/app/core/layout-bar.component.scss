@@ -1,0 +1,11 @@
+@import 'src/definitions';
+
+.outer {
+  display: flex;
+  flex-direction: row;
+}
+.inner {
+  width: 100%;
+  max-width: $max-layout-width;
+  margin: auto;
+}
