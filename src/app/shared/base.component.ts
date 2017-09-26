@@ -45,7 +45,9 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.mediaSubscription.unsubscribe();
+    if (this.mediaSubscription) {
+      this.mediaSubscription.unsubscribe();
+    }
   }
 
   /**
