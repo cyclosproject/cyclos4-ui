@@ -19,6 +19,14 @@
   margin-right: 10px;
   opacity: 0.65;
 }
+.mat-select-placeholder {
+  left: -2px;
+}
+md-checkbox + md-checkbox,
+md-checkbox + md-radio-group,
+md-radio-group + md-radio-group, md-radio-group + md-checkbox {
+  margin-top: 1.25em;
+}
 
 // Data tables
 md-tab-body {
