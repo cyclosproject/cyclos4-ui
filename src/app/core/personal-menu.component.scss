@@ -23,6 +23,9 @@
   width: 96px;
   margin-right: 20px;
 }
+.avatar-container.no-image {
+  opacity: 0.67;
+}
 .xs :host .avatar-container {
   margin: 10px 60px 0px 10px;
 }

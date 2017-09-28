@@ -56,7 +56,16 @@ export class PersonalMenuComponent extends BaseComponent {
         style.visibility = 'hidden';
         style.opacity = '0';
         style.display = '';
-        style.top = (a.offsetTop + a.offsetHeight + 8) + 'px';
+        var topAnchor: HTMLElement = null;
+        let parent = a.parentElement;
+        while (parent != null) {
+          if (parent.tagName.toLowerCase() == 'top-bar') {
+            topAnchor = parent;
+          }
+          parent = parent.parentElement;
+        }
+        topAnchor = topAnchor || a;
+        style.top = (topAnchor.offsetTop + topAnchor.offsetHeight) + 'px';
         if (this.layout.xs) {
           style.left = "0";
         } else {

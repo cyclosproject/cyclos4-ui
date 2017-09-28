@@ -1,6 +1,6 @@
 <div #container style="display:none" class="container" (click)="$event.stopPropagation()">
   <div class="popup mat-elevation-z6" fxLayout="row">
-    <div class="avatar-container">
+    <div class="avatar-container" [ngClass]="{'no-image': user?.image == null}">
       <avatar [image]="user?.image" size="huge"></avatar>
     </div>
     <div class="details-container" fxLayout="column">
