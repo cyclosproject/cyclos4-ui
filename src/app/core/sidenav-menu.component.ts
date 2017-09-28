@@ -9,12 +9,12 @@ import { ModelHelper } from "app/shared/model-helper";
 import { GeneralMessages } from "app/messages/general-messages";
 
 @Component({
-  selector: 'menu',
-  templateUrl: 'menu.component.html',
-  styleUrls: ['menu.component.scss'],
+  selector: 'sidenav-menu',
+  templateUrl: 'sidenav-menu.component.html',
+  styleUrls: ['sidenav-menu.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MenuComponent implements OnInit {
+export class SidenavMenuComponent implements OnInit {
   constructor(
     public generalMessages: GeneralMessages,
     public layout: LayoutService,

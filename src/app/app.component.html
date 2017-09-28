@@ -1,11 +1,12 @@
-<top-bar *ngIf="layout.gtsm"></top-bar>
+<top-bar *ngIf="layout.gtsm" (togglePersonalMenu)="personalMenu.toggle($event)"></top-bar>
 <menu-bar *ngIf="layout.gtsm"></menu-bar>
+<personal-menu #personalMenu></personal-menu>
 
 <md-sidenav-container>
   <md-sidenav #sidenav mode="over">
-    <menu fxLayout="column" [sidenav]="sidenav"></menu>
+    <sidenav-menu fxLayout="column" [sidenav]="sidenav"></sidenav-menu>
   </md-sidenav>
-  <top-bar [sidenav]="sidenav" *ngIf="layout.ltmd"></top-bar>
+  <top-bar [sidenav]="sidenav" *ngIf="layout.ltmd" (togglePersonalMenu)="personalMenu.toggle($event)"></top-bar>
   <div fxLayout="column" fxFlex="grow" class="main">
     <router-outlet></router-outlet>
   </div>

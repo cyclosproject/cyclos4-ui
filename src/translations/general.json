@@ -27,6 +27,11 @@
   "menu.account": "Account",
   "menu.payment": "Payment",
 
+  "personalMenu.contacts": "Contacts",
+  "personalMenu.profile": "My profile",
+  "personalMenu.passwords": "Change password",
+  "personalMenu.logout": "Logout",
+
   "password.otp.medium.sms": "SMS",
   "password.otp.medium.email": "E-mail",
   "password.otp.sent.email": "An e-mail with the password was sent to {email}",

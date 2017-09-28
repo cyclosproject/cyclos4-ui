@@ -1,14 +1,15 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy, ElementRef, ViewChild } from '@angular/core';
 import { Image } from "app/api/models";
 
 /**
  * The size for rendered avatars
  */
-export type AvatarSize = "small" | "medium" | "large";
+export type AvatarSize = "small" | "medium" | "large" | "huge";
 export const SIZES: {[key: string]: number} = {
   "small": 24,
   "medium": 36,
-  "large": 48
+  "large": 48,
+  "huge": 96
 };
 
 /**
@@ -59,6 +60,9 @@ export class AvatarComponent implements OnInit {
    */
   @Input()
   size: AvatarSize = "medium";
+
+  @ViewChild("outer")
+  container: ElementRef;
 
   private get _imageWidth(): number {
     if (this._ratio < 1) {

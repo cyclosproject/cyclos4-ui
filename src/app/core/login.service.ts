@@ -65,7 +65,7 @@ export class LoginService {
     // Setup the basic authentication for the login request
     this.apiConfigurationService.nextAsBasic(principal, password);
     // Then attempt to do the login
-    return this.authService.login({ fields: ['sessionToken', 'user', 'permissions'] })
+    return this.authService.login({})
       .then(response => {
         // Prepare the API configuration to pass the session token
         let auth = response.data;

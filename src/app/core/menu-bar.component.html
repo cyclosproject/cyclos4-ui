@@ -9,7 +9,4 @@
   <menu-item 
     url="/banking/payment" icon="payment"
     [label]="generalMessages.menuPayment()"></menu-item>
-  
-  <menu-item #logout *ngIf="login.user != null" (click)="login.logout();"
-    icon="lock" [label]="'Logout (temp)'"></menu-item>
 </layout-bar>

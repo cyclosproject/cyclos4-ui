@@ -1,4 +1,6 @@
-<div *ngIf="image != null" [class]="'container ' + size">
-  <img [src]="url" [ngStyle]="{'width': imageWidth, 'height': imageHeight, 'left': imageLeft, 'top': imageTop}">
+<div #outer>
+  <div *ngIf="image != null" [class]="'container ' + size">
+    <img [src]="url" [ngStyle]="{'width': imageWidth, 'height': imageHeight, 'left': imageLeft, 'top': imageTop}">
+  </div>
+  <md-icon *ngIf="image == null" [class]="iconClass">{{icon}}</md-icon>
 </div>
-<md-icon *ngIf="image == null" [class]="iconClass">{{icon}}</md-icon>

@@ -7,10 +7,11 @@
       {{format.appTitle}}
     </span>
   </div>
-  <button md-icon-button>
-    <md-icon class="md-24">search</md-icon>
-  </button>
-  <button md-icon-button>
-    <md-icon class="md-24">account_circle</md-icon>
-  </button>
+  <a #personalMenuToggle *ngIf="user != null" href="#"
+    class="personalMenuToggle" fxLayout="row" fxLayoutAlign="center center"
+    (click)="personalMenuToggleClick($event)">
+    <avatar [image]="user.image"></avatar>
+    <span fxHide.xs class="user">{{user.display}}</span>
+    <md-icon fxHide.xs class="md-24">arrow_drop_down</md-icon>
+  </a>
 </layout-bar>

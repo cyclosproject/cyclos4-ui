@@ -24,3 +24,13 @@
 .menu-toggle {
   left: -10px;
 }
+.personalMenuToggle {
+  text-decoration: none;
+  color: mat-color($primary, default-contrast);
+}
+.personalMenuToggle avatar {
+  margin-right: 8px;
+}
+.user {
+  white-space: nowrap;
+}

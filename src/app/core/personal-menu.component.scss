@@ -1,0 +1,31 @@
+@import 'src/definitions';
+
+.container {
+  position: absolute;
+  z-index: 1;
+  transition: opacity 400ms;
+}
+.popup {
+  background-color: map-get($background, card);
+  color: map-get($foreground, text);
+  padding: 20px;
+}
+.xs :host .popup {
+  width: 100vw;
+}
+.display {
+  font-weight: 500;
+}
+.principal {
+  opacity: 0.67;
+}
+.avatar-container {
+  width: 96px;
+  margin-right: 20px;
+}
+.xs :host .avatar-container {
+  margin: 10px 60px 0px 10px;
+}
+.menu {
+  margin-top: 12px;
+}

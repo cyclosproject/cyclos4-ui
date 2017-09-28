@@ -40,7 +40,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.mediaSubscription = this.media.subscribe(() => {
-      this.changeDetector.markForCheck();
+      this.onMediaChange();
     });
   }
 
@@ -48,6 +48,13 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
     if (this.mediaSubscription) {
       this.mediaSubscription.unsubscribe();
     }
+  }
+
+  /**
+   * Invoked whenever the current media breakpoints change
+   */
+  protected onMediaChange() {
+    this.detectChanges();
   }
 
   /**

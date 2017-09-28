@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, EventEmitter, Output, Inject } from '@angular/core';
-import { MenuComponent } from "app/core/menu.component";
+// import { SidenavMenuComponent } from "app/core/sidenav-menu.component";
 import { LayoutService } from "app/core/layout.service";
 
 /**

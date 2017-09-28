@@ -1,7 +1,10 @@
-import { Component, Input, ElementRef, ViewChild, ChangeDetectionStrategy, Injector } from '@angular/core';
+import { Component, Input, ElementRef, ViewChild, ChangeDetectionStrategy, Injector, EventEmitter, Output } from '@angular/core';
 import { MdSidenav } from "@angular/material";
 import { FormatService } from "app/core/format.service";
 import { BaseComponent } from 'app/shared/base.component';
+import { User } from 'app/api/models';
+import { Subscription } from 'rxjs/Subscription';
+import { AvatarComponent } from 'app/shared/avatar.component';
 
 /**
  * The top bar with the application title, main menu, personal menu, etc.
@@ -13,10 +16,42 @@ import { BaseComponent } from 'app/shared/base.component';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TopBarComponent extends BaseComponent {
+
+  private authSubscription: Subscription;
+
   constructor(injector: Injector) {
     super(injector);
   }
 
+  ngOnInit() {
+    super.ngOnInit();
+    this.authSubscription = this.login.subscribeForAuth(() => this.detectChanges());
+  }
+
+  ngOnDestroy() {
+    super.ngOnDestroy();
+    if (this.authSubscription) {
+      this.authSubscription.unsubscribe();
+    }
+  }
+
   @Input()
-  public sidenav: MdSidenav;
+  sidenav: MdSidenav;
+
+  @Output()
+  togglePersonalMenu = new EventEmitter<HTMLElement>();
+
+  @ViewChild("personalMenuToggle")
+  personalMenuToggle: ElementRef;
+
+  personalMenuToggleClick(event: MouseEvent) {
+    this.togglePersonalMenu.emit(this.personalMenuToggle.nativeElement);
+    event.preventDefault();
+    event.stopPropagation();
+  }
+
+  get user(): User {
+    return this.login.user;
+  }
+
 }

@@ -1,9 +1,10 @@
-import { Component, ChangeDetectionStrategy, Injector } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Injector, ViewChild } from '@angular/core';
 import { Title } from "@angular/platform-browser";
 import { GeneralMessages } from "app/messages/general-messages";
 import { LayoutService } from "app/core/layout.service";
 import { Subscription } from "rxjs/Subscription";
 import { BaseComponent } from "app/shared/base.component";
+import { PersonalMenuComponent } from 'app/core/personal-menu.component';
 
 @Component({
   selector: 'app-root',
