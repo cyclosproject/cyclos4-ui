@@ -1,9 +1,16 @@
 <div class="left" *ngIf="showLeft | async">
   <md-card>
-    <side-menu [menu]="menu"></side-menu>
-    <ng-container *ngIf="hasFilters">
-      <ng-container *ngTemplateOutlet="filtersTpl"></ng-container>
-    </ng-container>
+    <md-tab-group *ngIf="hasFilters">
+      <md-tab [label]="sideMenu.title || generalMessages.menu()">
+        <side-menu #sideMenu [hideTitle]="true" [menu]="menu"></side-menu>
+      </md-tab>
+      <md-tab label="Filters">
+        <ng-container *ngIf="hasFilters">
+          <ng-container *ngTemplateOutlet="filtersTpl"></ng-container>
+        </ng-container>
+      </md-tab>
+    </md-tab-group>
+    <side-menu *ngIf="!hasFilters" [menu]="menu"></side-menu>
   </md-card>
 </div>
 <div class="page" fxLayout="column" fxFlex="grow">
@@ -34,6 +41,10 @@
   </ng-container>
 </div>
 
-<ng-template #filtersTpl><ng-content select="page-filters"></ng-content></ng-template>
+<ng-template #filtersTpl>
+  <div class="filters">
+    <ng-content select="page-filters"></ng-content>
+  </div>
+</ng-template>
 <ng-template #headerTpl><ng-content select="page-header"></ng-content></ng-template>
 <ng-template #contentTpl><ng-content select="page-content"></ng-content></ng-template>

@@ -8,9 +8,12 @@
 
 :host /deep/ a {
   border-radius: 0px !important;
-  padding: 14px 0;
+  padding: 10px 14px 10px 0;
   margin-right: 24px;
   font-weight: 400;
+}
+:host /deep/ a * {
+  font-size: 16px !important;
 }
 
 :host /deep/ .outer {

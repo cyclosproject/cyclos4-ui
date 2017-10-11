@@ -7,8 +7,23 @@
   max-width: $left-area-width;
 }
 
+:host /deep/ .left side-menu .container {
+  margin-bottom: 1px;
+}
+:host /deep/ .left .mat-tab-body-content {
+  padding-top: 23px;
+  overflow: hidden;
+}
+:host /deep/ .left .mat-tab-body {
+  overflow: hidden;
+}
+
 .header {
   margin-bottom: $parts-margin;
+}
+
+.filters {
+  padding: 0 20px 20px 20px;
 }
   
 :host /deep/ .left .mat-card {

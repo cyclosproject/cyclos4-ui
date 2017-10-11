@@ -3,12 +3,19 @@
 
 // For the available palletes, see https://material.io/guidelines/style/color.html#color-color-palette
 
-// *** Material color palletes ***
+// *** Primary color palletes ***
 $primary: mat-palette($mat-blue, 800, 700, 900);
-$accent: mat-palette($mat-light-blue, A200, A100, A400);
+$accent: mat-palette($mat-light-blue, A100, A100, A200);
 $warn: mat-palette($mat-red);
 
-// *** Application variables ***
+// *** Angular Material theme ***
+$theme: mat-light-theme($primary, $accent, $warn);
+$is-dark: map-get($theme, is-dark);
+$foreground: map-get($theme, foreground);
+$background: map-get($theme, background);
+$typography: mat-typography-config();
+
+// *** General variables ***
 // Maximum width for layout area
 $max-layout-width: 1160px;
 // Width of the left area on medium to large displays
@@ -19,9 +26,4 @@ $parts-margin: 28px;
 $sidenav-width: 300px;
 // Maximum width for form fields
 $max-form-width: 600px;
-
-// *** Angular Material theme ***
-$theme: mat-light-theme($primary, $accent, $warn);
-$foreground: map-get($theme, foreground);
-$background: map-get($theme, background);
-$typography: mat-typography-config();
+$side-menu-hue: if($is-dark, 900, 50);

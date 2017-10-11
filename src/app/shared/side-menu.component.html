@@ -1,11 +1,11 @@
 <div class="container" fxLayout="column">
-  <div *ngIf="title" class="title">{{title}}</div>
+  <div *ngIf="title != null && !hideTitle" class="title">{{title}}</div>
   <div class="accounts" *ngIf="banking">
     <a md-button 
       class="account" *ngFor="let account of this.accounts"
       [routerLink]="'/banking/account/' + ApiHelper.internalNameOrId(account.type)"
       routerLinkActive="active">
-      <md-icon fxFlex="24px" class="md-24">account_balance</md-icon>
+      <md-icon fxFlex="18px" class="md-18">account_balance</md-icon>
       <div class="name" fxFlex="grow">{{account.type.name}}</div>
       <div class="balance" *ngIf="accountStatuses | async">
         {{(accountStatuses | async).get(account.type.id)?.balance | currency:account.currency}}

@@ -46,10 +46,7 @@ a.account .balance {
   width: 100%;
 }
 :host /deep/ menu-item a.active, a.active {
-  color: mat-color($accent, lighter-contrast);
-  background-color: mat-color($accent, lighter);
+  color: mat-contrast($primary, $side-menu-hue);
+  background-color: mat-color($primary, $side-menu-hue);
   opacity: 1;
-}
-:host /deep/ menu-item a.active *, a.active * {
-  opacity: 1 !important;
 }

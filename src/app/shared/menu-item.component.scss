@@ -3,16 +3,17 @@
 a {
   text-align: left !important;
   text-decoration: none;
-  color: mat-color($foreground, text);
   display: inline-flex;
   flex-direction: row;
   top: 1px;
   position: relative;
-  opacity: 0.75;
 }
 a .mat-icon {
   margin-right: 10px;
 }
 .text {
   margin-top: 4px;
+}
+a:not(.active) * {
+  opacity: 0.75;
 }

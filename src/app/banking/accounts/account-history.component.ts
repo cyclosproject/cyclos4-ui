@@ -43,6 +43,7 @@ export class AccountHistoryComponent extends BaseBankingComponent {
   menu = Menu.ACCOUNT;
 
   data: DataForAccountHistory;
+  query: any;
   dataSource = new TableDataSource<AccountHistoryResult>(this.changeDetector);
   status = new BehaviorSubject<StatusIndicator[]>([]);
 
@@ -93,13 +94,17 @@ export class AccountHistoryComponent extends BaseBankingComponent {
         this.data = response.data;
 
         // Fetch the account history
-        let query: any = this.data.query;
-        query.owner = ApiHelper.SELF;
-        query.accountType = this.data.account.type.id;
-        this.accountsService.searchAccountHistory(query)
-          .then(response => {
-            this.dataSource.data = response.data;
-          });
+        this.query = this.data.query;
+        this.query.owner = ApiHelper.SELF;
+        this.query.accountType = this.data.account.type.id;
+        this.update();
+      });
+  }
+
+  update() {
+    this.accountsService.searchAccountHistory(this.query)
+      .then(response => {
+        this.dataSource.data = response.data;
       });
   }
 

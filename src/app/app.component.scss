@@ -47,3 +47,7 @@
 :host /deep/ .main > router-outlet {
   display: none;
 }
+
+.gt-sm :host /deep/ .mat-drawer-container {
+  background-color: if($is-dark, mat-color($background, background), #f3f3f3);
+}

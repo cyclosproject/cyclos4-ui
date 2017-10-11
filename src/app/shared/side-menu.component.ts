@@ -31,6 +31,9 @@ export class SideMenuComponent extends BaseComponent {
   @Input()
   menu: Menu;
 
+  @Input()
+  hideTitle: boolean;
+
   get banking(): boolean {
     return this.menu.root === RootMenu.BANKING;
   }

@@ -23,6 +23,7 @@
   "search.noResults": "No results for the specified search criteria",
   "search.user.noKeywords": "Please, fill in the keywords to search for a user",
 
+  "menu": "Menu",
   "menu.login": "Login",
   "menu.home": "Home",
   "menu.banking": "Banking",
