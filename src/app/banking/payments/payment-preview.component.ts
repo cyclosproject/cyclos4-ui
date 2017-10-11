@@ -3,7 +3,7 @@ import { NG_VALUE_ACCESSOR, ControlValueAccessor } from "@angular/forms";
 import { BaseBankingComponent } from "app/banking/base-banking.component";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { PaymentPreview, AccountKind } from 'app/api/models';
-import { ModelHelper } from 'app/shared/model-helper';
+import { ApiHelper } from 'app/shared/api-helper';
 
 // Definition of the exported NG_VALUE_ACCESSOR provider
 export const PAYMENT_PREVIEW_VALUE_ACCESSOR: Provider = {
@@ -40,12 +40,12 @@ export class PaymentPreviewComponent extends BaseBankingComponent implements Con
   }
 
   get from(): string {
-    return ModelHelper.accountName(this.generalMessages, true,
+    return ApiHelper.accountName(this.generalMessages, true,
       this.preview.fromAccount, this.preview.paymentType);
   }
 
   get to(): string {
-    return ModelHelper.accountName(this.generalMessages, false,
+    return ApiHelper.accountName(this.generalMessages, false,
       this.preview.toAccount, this.preview.paymentType);
   }
 

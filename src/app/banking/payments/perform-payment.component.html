@@ -1,45 +1,47 @@
-<section [title]="bankingMessages.paymentTitle()">
-  <form *ngIf="initialData | async" focusFirst #form="ngForm" fxLayout="column">
-    <payment-kind *ngIf="step == 'kind'"
-      [(ngModel)]="kind" name="kind"
-      [allowedKinds]="allowedKinds" ></payment-kind>
+<page-layout [menu]="menu">
+  <page-content [title]="bankingMessages.paymentTitle()">
+    <form *ngIf="initialData | async" focusFirst #form="ngForm" fxLayout="column">
+      <payment-kind *ngIf="step == 'kind'"
+        [(ngModel)]="kind" name="kind"
+        [allowedKinds]="allowedKinds" ></payment-kind>
 
-    <payment-id-method *ngIf="step == 'idMethod'"
-      [(ngModel)]="idMethod" name="idMethod"
-      [allowedIdMethods]="allowedIdMethods"></payment-id-method>
+      <payment-id-method *ngIf="step == 'idMethod'"
+        [(ngModel)]="idMethod" name="idMethod"
+        [allowedIdMethods]="allowedIdMethods"></payment-id-method>
 
-    <payment-user *ngIf="step == 'user'"
-      [(ngModel)]="user" name="user"
-      [idMethod]="idMethod"></payment-user>
+      <payment-user *ngIf="step == 'user'"
+        [(ngModel)]="user" name="user"
+        [idMethod]="idMethod"></payment-user>
 
-    <payment-type *ngIf="step == 'type' && (paymentData | async)"
-      [(ngModel)]="paymentType" name="paymentType"
-      [allowedPaymentTypes]="paymentData.value.paymentTypes"></payment-type>
+      <payment-type *ngIf="step == 'type' && (paymentData | async)"
+        [(ngModel)]="paymentType" name="paymentType"
+        [allowedPaymentTypes]="paymentData.value.paymentTypes"></payment-type>
 
-    <payment-fields *ngIf="step == 'fields' && (paymentTypeData | async)"
-      [(ngModel)]="payment" name="payment"
-      [paymentTypeData]="paymentTypeData.value"></payment-fields>
+      <payment-fields *ngIf="step == 'fields' && (paymentTypeData | async)"
+        [(ngModel)]="payment" name="payment"
+        [paymentTypeData]="paymentTypeData.value"></payment-fields>
 
-    <payment-preview *ngIf="step == 'preview' && (preview | async)"
-      [(ngModel)]="confirmationPassword" name="confirmationPassword"
-      [preview]="preview.value"></payment-preview>
+      <payment-preview *ngIf="step == 'preview' && (preview | async)"
+        [(ngModel)]="confirmationPassword" name="confirmationPassword"
+        [preview]="preview.value"></payment-preview>
 
-    <payment-done *ngIf="step == 'done' && (performed | async)"
-      [payment]="performed"></payment-done>
+      <payment-done *ngIf="step == 'done' && (performed | async)"
+        [payment]="performed"></payment-done>
 
-    <actions fxLayout="column-reverse" fxLayout.gt-xs="row">
-      <button md-raised-button *ngIf="step != 'done' && step != 'kind'"(click)="previous()">
-        {{generalMessages.previous()}}
-      </button>
-      <button md-raised-button *ngIf="step != 'preview' && step != 'done'" [disabled]="!nextEnabled" color="accent" (click)="next()">
-        {{generalMessages.next()}}
-      </button>
-      <button md-raised-button *ngIf="step == 'preview'" color="accent" (click)="performPayment()">
-        {{generalMessages.confirm()}}
-      </button>
-      <button md-raised-button *ngIf="step == 'done'" (click)="reset()">
-        {{bankingMessages.paymentNewPayment()}}
-      </button>
-    </actions>
-  </form>
-</section>
+      <actions fxLayout="column-reverse" fxLayout.gt-xs="row">
+        <button md-raised-button *ngIf="step != 'done' && step != 'kind'"(click)="previous()">
+          {{generalMessages.previous()}}
+        </button>
+        <button md-raised-button *ngIf="step != 'preview' && step != 'done'" [disabled]="!nextEnabled" color="accent" (click)="next()">
+          {{generalMessages.next()}}
+        </button>
+        <button md-raised-button *ngIf="step == 'preview'" color="accent" (click)="performPayment()">
+          {{generalMessages.confirm()}}
+        </button>
+        <button md-raised-button *ngIf="step == 'done'" (click)="reset()">
+          {{bankingMessages.paymentNewPayment()}}
+        </button>
+      </actions>
+    </form>
+  </page-content>
+</page-layout>

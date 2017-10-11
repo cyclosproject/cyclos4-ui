@@ -4,6 +4,7 @@ import { ApiConfigurationService } from "app/core/api-configuration.service";
 import { Auth } from "app/api/models";
 import { LoginService } from "app/core/login.service";
 import { NotificationService } from "app/core/notification.service";
+import { ApiHelper } from "app/shared/api-helper";
 
 // Loads the logged user, if any
 // Use the injector to prevent a cyclic dependency
@@ -12,7 +13,8 @@ export function loadUser(injector: Injector): Function {
     let apiConfigurationService = injector.get(ApiConfigurationService);
     if (apiConfigurationService.sessionToken) {
       // There should be an authenticated user. Load it.
-      return injector.get(AuthService).getCurrentAuth()
+      return injector.get(AuthService)
+        .getCurrentAuth(ApiHelper.excludedAuthFields)
         .then(response => {
           let auth = response.data;
           if (auth.user) {

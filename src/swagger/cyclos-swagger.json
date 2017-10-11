@@ -5859,8 +5859,8 @@
     "/passwords/{type}/change-generated" : {
       "post" : {
         "tags" : [ "Passwords" ],
-        "summary" : "Generates a new value for an already generated password.",
-        "description" : "Generates a new password whose type's `mode` is  `generated`.\n Only the password owner can perform this operation and the password status\n must be one of the following `active`, \n `expired` or `reset`.\n",
+        "summary" : "Generates a new value for an active generated password.",
+        "description" : "Generates a new password whose type's `mode` is  `generated`.\n Only the password owner can perform this operation and the password\n status must be `active`.\n",
         "operationId" : "changeGenerated",
         "produces" : [ "application/json", "text/plain" ],
         "parameters" : [ {
@@ -5922,7 +5922,7 @@
     "/passwords/{type}/generate" : {
       "post" : {
         "tags" : [ "Passwords" ],
-        "summary" : "Generates the value of a generated password for the first time",
+        "summary" : "Generates the value of a generated password for the first time or if \nexpired.\n",
         "description" : "Generates the value of a password whose type's `mode` is  `generated`. Only the password owner can perform\n  this operation, and only in one of these conditions:\n  - If the password `status` is `neverCreated`\n    it can only be generated if the password doesn't require the\n    administrator authorization to generate. This can be configured in\n    the password type.\n  - The password can be generated if its `status` is one of the\n    following: `pending`, \n    `expired` or `reset`.\n",
         "operationId" : "generatePassword",
         "produces" : [ "application/json", "text/plain" ],
@@ -15129,6 +15129,79 @@
         "x-contentType" : "application/json"
       }
     },
+    "/{user}/passwords/{type}" : {
+      "get" : {
+        "tags" : [ "Passwords" ],
+        "summary" : "Returns complete data of the given password the given user have.",
+        "description" : "Returns the password status and the permissions on which operations are \nenabled for a given user. \n",
+        "operationId" : "getUserPasswordaData",
+        "parameters" : [ {
+          "name" : "fields",
+          "in" : "query",
+          "description" : "Select which fields to include on returned data. If nothing is set, all object fields are returned. Unprefixed field names will be handled like a whitelist (only listed fields will be included), while names starting with a minus (-) or exclamation mark (!) will be handled as blacklist (listed fields will not be included). This works for nesting as well. For example: `a,b.b1,c.-c1,c.-c2` will return the fields `a`, `b` (containing only the `b1` field) and `c` (containing all its fields except for `c1` or `c2`). \n",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          },
+          "collectionFormat" : "multi"
+        }, {
+          "name" : "user",
+          "in" : "path",
+          "description" : "Can be one of: - a user identification value, such as id, username, e-mail, phone, etc.\n  Id is always allowed, others depend on Cyclos configuration. Note that\n  a valid numeric value is always considered as id. For example, when\n  using another identification method that can be numeric only, prefix\n  the value with a single quote (like in Excel spreadsheets), for\n  example, `'1234567890`; \n- `self` for the currently authenticated user.\n",
+          "required" : true,
+          "type" : "string",
+          "x-dotInPath" : true
+        }, {
+          "name" : "type",
+          "in" : "path",
+          "description" : "Either the id or internal name of the password type",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The password details and permissions.",
+            "schema" : {
+              "$ref" : "#/definitions/PasswordStatusAndActions"
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized access. Missing or invalid crendentials supplied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/UnauthorizedError"
+            }
+          },
+          "403" : {
+            "description" : "Permission denied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/ForbiddenError"
+            }
+          },
+          "404" : {
+            "description" : "An expected data was not found",
+            "schema" : {
+              "$ref" : "#/definitions/NotFoundError"
+            }
+          },
+          "500" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "security" : [ {
+          "basic" : [ ]
+        }, {
+          "session" : [ ]
+        }, {
+          "accessClient" : [ ]
+        } ],
+        "x-accepts" : "application/json",
+        "x-contentType" : "application/json"
+      }
+    },
     "/{user}/passwords/{type}/allow-generation" : {
       "post" : {
         "tags" : [ "Passwords" ],
@@ -15381,7 +15454,7 @@
       "post" : {
         "tags" : [ "Passwords" ],
         "summary" : "Generates a new value for a manual password and send it to the user via e-mail \n",
-        "description" : "Resets a manual password to a generated value and send it to the user.\n  Can also be used to reset and send the main channel's access password if it\n  is generated. The new password is initially expired, so the user needs\n  to change it on first login.\n",
+        "description" : "Resets a manual password to a generated value and send it to the user.\n  Can also be used to reset and send the main channel's access password if\n  it is generated. The new password is initially expired, so the user needs\n  to change it on first login.\n",
         "operationId" : "resetAndSendPassword",
         "parameters" : [ {
           "name" : "user",
@@ -15399,7 +15472,7 @@
         }, {
           "name" : "sendMediums",
           "in" : "query",
-          "description" : "The send mediums for which the password will be send. If nothing is specified will send though all available mediums. Possible values for each array element are: * email: The user will receive an email with the information * sms: The user will receive a sms with the information (only if there is at least one phone enabled for sms)\n",
+          "description" : "The send mediums for which the password will be send. If nothing is  specified will send though all available mediums. Possible values for each array element are: * email: The user will receive an email with the information * sms: The user will receive a sms with the information (only if there is at least one phone enabled for sms)\n",
           "required" : false,
           "type" : "array",
           "items" : {
@@ -16931,7 +17004,8 @@
           "description" : "Entity identifier"
         }
       },
-      "description" : "Basic definition of a persistent entity"
+      "description" : "Basic definition of a persistent entity",
+      "x-abstract" : true
     },
     "DataForAccountHistory" : {
       "allOf" : [ {
@@ -17038,6 +17112,26 @@
         }
       } ],
       "description" : "Details of a voucher\n"
+    },
+    "RecordsPermissions" : {
+      "type" : "object",
+      "properties" : {
+        "user" : {
+          "type" : "array",
+          "description" : "Permissions over each visible user record type",
+          "items" : {
+            "$ref" : "#/definitions/RecordPermissions"
+          }
+        },
+        "system" : {
+          "type" : "array",
+          "description" : "Permissions over each visible system record type",
+          "items" : {
+            "$ref" : "#/definitions/RecordPermissions"
+          }
+        }
+      },
+      "description" : "Permissions over own or system records"
     },
     "TransferTypeWithCurrency" : {
       "allOf" : [ {
@@ -17187,6 +17281,48 @@
       "description" : "Basic definitions for a advertisements search",
       "x-abstract" : true
     },
+    "PasswordActions" : {
+      "type" : "object",
+      "properties" : {
+        "change" : {
+          "type" : "boolean",
+          "description" : "Manually change the password.\n"
+        },
+        "changeGenerated" : {
+          "type" : "boolean",
+          "description" : "Manually generate another value for a generated password. Can only be  done for the authenticated user himself.\n"
+        },
+        "generate" : {
+          "type" : "boolean",
+          "description" : "Generate the password value for the first time. Can only be done for the authenticated user himself.\n"
+        },
+        "allowGeneration" : {
+          "type" : "boolean",
+          "description" : "Granted only for those generated passwords that have a setting to  require administration authorization and have the status  `neverCreated`. Can only be done by administrators with permissions to enable/disable  the password.\n"
+        },
+        "disable" : {
+          "type" : "boolean",
+          "description" : "Disables a password, making it unusable until being enabled again.\n"
+        },
+        "enable" : {
+          "type" : "boolean",
+          "description" : "Enables a disabled password, either manually disabled or by exceeding the wrong tries, depending on the password type configuration.\n"
+        },
+        "resetGenerated" : {
+          "type" : "boolean",
+          "description" : "Resets a generated password, making it go back to the  `pending` state. The user will then be able to generate a new value for it.\n"
+        },
+        "resetAndSend" : {
+          "type" : "boolean",
+          "description" : "Resets a manual password to a generated value and send it to the user. Can also be used to reset and send the main channel's access password if it is generated. The new password is initially expired, so the user needs to change it on first login.\n"
+        },
+        "unblock" : {
+          "type" : "boolean",
+          "description" : "Unblocks a password which has been blocked by exceeding the wrong tries\n"
+        }
+      },
+      "description" : "Indicates the possible actions the authenticated user can perform over this password\n"
+    },
     "MobilePage" : {
       "allOf" : [ {
         "$ref" : "#/definitions/InternalNamedEntity"
@@ -17255,6 +17391,24 @@
         }
       } ],
       "description" : "Detailed information when viewing a record"
+    },
+    "PasswordStatusAndActions" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/PasswordStatus"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "type" : {
+            "description" : "The password type along with the description",
+            "$ref" : "#/definitions/PasswordTypeWithDescription"
+          },
+          "permissions" : {
+            "description" : "The permissions over actions the authenticated user can perform on\nthis password\n",
+            "$ref" : "#/definitions/PasswordActions"
+          }
+        }
+      } ],
+      "description" : "Contains the status and possible actions over a password\n"
     },
     "NewMessagePush" : {
       "type" : "object",
@@ -17661,7 +17815,8 @@
           }
         }
       } ],
-      "description" : "Basic definition of a persistent entity which has a name"
+      "description" : "Basic definition of a persistent entity which has a name",
+      "x-abstract" : true
     },
     "PasswordStatus" : {
       "type" : "object",
@@ -17938,6 +18093,20 @@
         }
       } ],
       "description" : "A advertisement is a structured data stored either for a user or for\nsystem (a general advertisement, unrelated to a user).\n"
+    },
+    "RelatedTransferType" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/InternalNamedEntity"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "related" : {
+            "description" : "Reference to the related account type",
+            "$ref" : "#/definitions/EntityReference"
+          }
+        }
+      } ],
+      "description" : "A transfer type related to an account point-of-view"
     },
     "PosError" : {
       "allOf" : [ {
@@ -18345,30 +18514,30 @@
         },
         "systemPayments" : {
           "type" : "array",
-          "description" : "Payment types allowed to be performed to system accounts",
+          "description" : "Payment types allowed to be performed to system accounts.",
           "items" : {
-            "$ref" : "#/definitions/EntityReference"
+            "$ref" : "#/definitions/RelatedTransferType"
           }
         },
         "userPayments" : {
           "type" : "array",
           "description" : "Payment types allowed to be performed to other users",
           "items" : {
-            "$ref" : "#/definitions/EntityReference"
+            "$ref" : "#/definitions/RelatedTransferType"
           }
         },
         "selfPayments" : {
           "type" : "array",
-          "description" : "Payment types allowed to be performed to other self accounts",
+          "description" : "Payment types allowed to be performed to other self accounts.\nOnly returned for user accounts.\n",
           "items" : {
-            "$ref" : "#/definitions/EntityReference"
+            "$ref" : "#/definitions/RelatedTransferType"
           }
         },
         "posPayments" : {
           "type" : "array",
-          "description" : "Payment types allowed to be used on POS (receive payments\nfrom other users)\n",
+          "description" : "Payment types allowed to be used on POS (receive payments\nfrom other users).\nOnly returned for user accounts.        \n",
           "items" : {
-            "$ref" : "#/definitions/EntityReference"
+            "$ref" : "#/definitions/RelatedTransferType"
           }
         }
       },
@@ -18412,6 +18581,16 @@
         }
       },
       "description" : "Represents a single possible value of a dynamic custom field\n"
+    },
+    "PaymentRequestsPermissions" : {
+      "type" : "object",
+      "properties" : {
+        "view" : {
+          "type" : "boolean",
+          "description" : "Can view payment requests?"
+        }
+      },
+      "description" : "Payment request permissions"
     },
     "AdEdit" : {
       "allOf" : [ {
@@ -18524,9 +18703,9 @@
         },
         "passwords" : {
           "type" : "array",
-          "description" : "The status and permissions for each password",
+          "description" : "The status and possible actions for each password",
           "items" : {
-            "$ref" : "#/definitions/PasswordStatusAndPermissions"
+            "$ref" : "#/definitions/PasswordStatusAndActions"
           }
         }
       },
@@ -18667,6 +18846,28 @@
         }
       } ],
       "description" : "Data for searching records of a specific owner and type"
+    },
+    "TicketsPermissions" : {
+      "type" : "object",
+      "properties" : {
+        "view" : {
+          "type" : "boolean",
+          "description" : "Can view tickets?"
+        },
+        "create" : {
+          "type" : "boolean",
+          "description" : "Can create tickets?"
+        },
+        "cancel" : {
+          "type" : "boolean",
+          "description" : "Can cancel tickets?"
+        },
+        "accept" : {
+          "type" : "boolean",
+          "description" : "Can accept tickets from others?"
+        }
+      },
+      "description" : "Permissions over own tickets"
     },
     "PhoneEdit" : {
       "allOf" : [ {
@@ -19088,11 +19289,15 @@
       "properties" : {
         "search" : {
           "type" : "boolean",
-          "description" : "Permission to search the marketplace"
+          "description" : "Can search the marketplace?"
         },
         "ownAdvertisements" : {
           "type" : "boolean",
-          "description" : "Permission to manage own simple advertisements"
+          "description" : "Can own ads?\nOnly returned if there is an authenticated user.\n"
+        },
+        "manageOwnAdvertisements" : {
+          "type" : "boolean",
+          "description" : "Can manage own ads?\nOnly returned if there is an authenticated user.\n"
         }
       },
       "description" : "Permissions for the marketplace"
@@ -19264,7 +19469,7 @@
         "properties" : {
           "type" : {
             "description" : "The password type",
-            "$ref" : "#/definitions/InternalNamedEntity"
+            "$ref" : "#/definitions/EntityReference"
           }
         }
       } ],
@@ -19282,7 +19487,8 @@
           }
         }
       } ],
-      "description" : "Basic definition of a persistent entity which has both a\nname and an internal name\n"
+      "description" : "Basic definition of a persistent entity which has both a\nname and an internal name\n",
+      "x-abstract" : true
     },
     "UserDataForMap" : {
       "allOf" : [ {
@@ -19465,7 +19671,8 @@
           }
         }
       } ],
-      "description" : "Base Error when work with a NFC card"
+      "description" : "Base Error when work with a NFC card",
+      "x-abstract" : true
     },
     "GeographicalCoordinate" : {
       "type" : "object",
@@ -19504,30 +19711,52 @@
           "description" : "Permissions over other users",
           "$ref" : "#/definitions/UsersPermissions"
         },
+        "banking" : {
+          "description" : "Permissions over banking / accounts",
+          "$ref" : "#/definitions/BankingPermissions"
+        },
+        "marketplace" : {
+          "description" : "Permissions for marketplace",
+          "$ref" : "#/definitions/MarketplacePermissions"
+        },
+        "passwords" : {
+          "description" : "Permissions over own passwords",
+          "$ref" : "#/definitions/PasswordsPermissions"
+        },
+        "records" : {
+          "description" : "Permissions over own records",
+          "$ref" : "#/definitions/RecordsPermissions"
+        },
+        "operations" : {
+          "description" : "Permissions over own custom operations",
+          "$ref" : "#/definitions/OperationsPermissions"
+        },
         "accounts" : {
           "type" : "array",
           "description" : "Permissions over each owned account",
           "items" : {
             "$ref" : "#/definitions/AccountPermissions"
-          }
-        },
-        "marketplace" : {
-          "description" : "Permissions for marketplace",
-          "$ref" : "#/definitions/MarketplacePermissions"
+          },
+          "x-deprecated" : "Use the `banking.accounts` instead\n",
+          "x-removed-on" : 4.11
         },
         "userRecords" : {
           "type" : "array",
           "description" : "List of user record types the user has access",
           "items" : {
             "$ref" : "#/definitions/RecordType"
-          }
+          },
+          "x-deprecated" : "Use the `records.user` instead\n",
+          "x-removed-on" : 4.11
         },
         "systemRecords" : {
           "type" : "array",
           "description" : "List of system record types the user has access",
           "items" : {
             "$ref" : "#/definitions/RecordType"
-          }
+          },
+          "x-deprecated" : "Use the `records.user` instead\n",
+          "x-removed-on" : 4.11
         }
       },
       "description" : "Contains all permissions and configurations a user or guest can perform\nin the REST API\n"
@@ -20141,6 +20370,20 @@
       } ],
       "description" : "Reference to a voucher type"
     },
+    "OperationPermissions" : {
+      "type" : "object",
+      "properties" : {
+        "operation" : {
+          "description" : "The custom operation",
+          "$ref" : "#/definitions/Operation"
+        },
+        "run" : {
+          "type" : "boolean",
+          "description" : "Can run this operation?"
+        }
+      },
+      "description" : "Permissions over a specific custom operation"
+    },
     "PhoneDataForEdit" : {
       "allOf" : [ {
         "$ref" : "#/definitions/PhoneBasicData"
@@ -20266,6 +20509,21 @@
       "description" : "Represents a user with all data for viewing the profile",
       "x-implements" : "IUser"
     },
+    "VersionedEntityReference" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/InternalNamedEntity"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "version" : {
+            "type" : "integer",
+            "description" : "The version stamp for the current object, used for optimistic locking.\nWhen saving, the same version as previously received needs to be passed\nback. If no one else has saved the object, the version will match and\nthe object will be updated. However, if someone other has saved the\nobject, the version will no longer match, and an error will be raised.\nThis is used to prevent multiple users (or processes) from updating the\nsame object and unwilingly overridding the property values, leading to\ndata loss. \n"
+          }
+        }
+      } ],
+      "description" : "Represents an entity that is being referenced from another one,\nwithout caring about the type of the referenced entity.\nAlso carries on the entity version\n",
+      "x-final" : true
+    },
     "PhoneDataForNew" : {
       "allOf" : [ {
         "$ref" : "#/definitions/PhoneBasicData"
@@ -20322,7 +20580,7 @@
     },
     "CustomFieldPossibleValue" : {
       "allOf" : [ {
-        "$ref" : "#/definitions/InternalNamedEntity"
+        "$ref" : "#/definitions/Entity"
       }, {
         "type" : "object",
         "properties" : {
@@ -20621,7 +20879,7 @@
         },
         "contacts" : {
           "type" : "boolean",
-          "description" : "Permission to own a contact list"
+          "description" : "Permission to own a contact list.\nOnly returned if there is an authenticated user.\n"
         }
       },
       "description" : "Permissions over other users"
@@ -20680,6 +20938,23 @@
         }
       } ],
       "description" : "Details of a change that took place in a transfer status."
+    },
+    "PasswordsPermissions" : {
+      "type" : "object",
+      "properties" : {
+        "manage" : {
+          "type" : "boolean",
+          "description" : "Can manage any password?"
+        },
+        "passwords" : {
+          "type" : "array",
+          "description" : "Permissions over each password type",
+          "items" : {
+            "$ref" : "#/definitions/PasswordPermissions"
+          }
+        }
+      },
+      "description" : "Permissions over own passwords"
     },
     "OwnerRecordPermissions" : {
       "allOf" : [ {
@@ -20897,44 +21172,28 @@
     "PasswordPermissions" : {
       "type" : "object",
       "properties" : {
+        "type" : {
+          "description" : "The password type",
+          "$ref" : "#/definitions/PasswordType"
+        },
         "change" : {
           "type" : "boolean",
-          "description" : "Manually change the password.\n"
-        },
-        "changeGenerated" : {
-          "type" : "boolean",
-          "description" : "Manually generate another value for a generated password. Can only be  done for the authenticated user himself.\n"
-        },
-        "generate" : {
-          "type" : "boolean",
-          "description" : "Generate the password value for the first time. Can only be done for the authenticated user himself.\n"
-        },
-        "allowGeneration" : {
-          "type" : "boolean",
-          "description" : "Granted only for those generated passwords that have a setting to  require administration authorization and have the status  `neverCreated`. Can only be done by administrators with permissions to enable/disable  the password.\n"
-        },
-        "disable" : {
-          "type" : "boolean",
-          "description" : "Disables a password, making it unusable until being enabled again.\n"
+          "description" : "Can change this password?"
         },
         "enable" : {
           "type" : "boolean",
-          "description" : "Enables a disabled password, either manually disabled or by exceeding the wrong tries, depending on the password type configuration.\n"
+          "description" : "Can enable / disable this password?"
         },
-        "resetGenerated" : {
+        "reset" : {
           "type" : "boolean",
-          "description" : "Resets a generated password, making it go back to the  `pending` state. The user will then be able to generate a new value for it.\n"
-        },
-        "resetAndSend" : {
-          "type" : "boolean",
-          "description" : "Resets a manual password to a generated value and send it to the user. Can also be used to reset and send the main channel's access password if it is generated. The new password is initially expired, so the user needs to change it on first login.\n"
+          "description" : "Can reset this password?"
         },
         "unblock" : {
           "type" : "boolean",
-          "description" : "Unblocks a password which has been blocked by exceeding the wrong tries\n"
+          "description" : "Can unblock this password if blocked by exceeding tries?"
         }
       },
-      "description" : "The permissions the authenticated user can perform over this password\n"
+      "description" : "Permissions a single password"
     },
     "PasswordTypeRegistration" : {
       "allOf" : [ {
@@ -21163,6 +21422,28 @@
       } ],
       "description" : "Query filters for records"
     },
+    "PaymentsPermissions" : {
+      "type" : "object",
+      "properties" : {
+        "user" : {
+          "type" : "boolean",
+          "description" : "Can perform payments to users?"
+        },
+        "system" : {
+          "type" : "boolean",
+          "description" : "Can perform payments to system accounts?"
+        },
+        "self" : {
+          "type" : "boolean",
+          "description" : "Can perform payments between own accounts?"
+        },
+        "pos" : {
+          "type" : "boolean",
+          "description" : "Can receive payments from users?"
+        }
+      },
+      "description" : "General payment permissions"
+    },
     "AuthorizationPermissions" : {
       "type" : "object",
       "properties" : {
@@ -21222,6 +21503,73 @@
         }
       } ],
       "description" : "Contains reference to a token. Tokens are used to identify users.\n"
+    },
+    "BaseAuth" : {
+      "type" : "object",
+      "properties" : {
+        "user" : {
+          "description" : "The authenticated user, if any.",
+          "$ref" : "#/definitions/User"
+        },
+        "language" : {
+          "description" : "The current language version",
+          "$ref" : "#/definitions/VersionedEntity"
+        },
+        "global" : {
+          "type" : "boolean",
+          "description" : "Indicates whether this user belongs to global mode.\nOnly returned if there is an authenticated user.\n"
+        },
+        "role" : {
+          "description" : "The main user role. Only returned if there is an authenticated user. Possible values are: * administrator: A user who can manage the system and other users. * broker: A user who can manage other users. * member: A regular user who can manage operators.  * operator: A \"sub-user\" created by a member to manage his data.\n",
+          "$ref" : "#/definitions/RoleEnum"
+        },
+        "systemAdministrator" : {
+          "type" : "boolean",
+          "description" : "Indicates whether this user is a system administrator, that is, either\nbelongs to the global system administrators group or to the network\nsystem administrators group.\nOnly returned if `role` is `administrator`.\n"
+        },
+        "aliasOperator" : {
+          "type" : "boolean",
+          "description" : "Indicates whether this user is an operator which is an alias of his\nowner member, that is, has all member permissions, and is not\nrestricted to an operator group.\nOnly returned if `role` is `operator`.\n"
+        },
+        "permissions" : {
+          "description" : "The granted permissions for the authenticated user or guest",
+          "$ref" : "#/definitions/Permissions"
+        },
+        "sessionToken" : {
+          "type" : "string",
+          "description" : "A token that must be passed in on the Session-Token header on\nsubsequent requests instead of the login name and password.\nOnly returned if using a session authentication.\n"
+        },
+        "accessClient" : {
+          "description" : "Only returned when authenticated as access client, contains \ninformation about it\n",
+          "$ref" : "#/definitions/EntityReference"
+        },
+        "principalType" : {
+          "description" : "Returns a reference to the principal type used for authentication.\nMay be some of the built-in types (login name, e-mail, mobile phone or\naccount number), a profile field, a token type or an access client type\n",
+          "$ref" : "#/definitions/EntityReference"
+        },
+        "principal" : {
+          "type" : "string",
+          "description" : "The principal (user identification) used on authentication. Can be the\nvalue of the login name, e-mail, account number, custom field or token\nused on authentication or at the moment of login. Is not returned when\nthe authentication was performed via access client.\n"
+        },
+        "expiredPassword" : {
+          "type" : "boolean",
+          "description" : "Returns whether the current access password is expired.\nIf so, the user will have to change the password,\nor all other actions will be denied.\n"
+        },
+        "pendingAgreements" : {
+          "type" : "boolean",
+          "description" : "Returns whether the current user has some agreements pending accept.\nIf so, a call to GET /agreements/pending should be performed to get\nthe content of the pending agreements, and then a POST \n/agreements/pending{id_or_internal_name} to accept each agreement.\n"
+        },
+        "expiredSecondaryPassword" : {
+          "type" : "boolean",
+          "description" : "Returns whether the current secondary access password is expired.\nIf so, the user will have to change the password,\nor all other actions will be denied.\n"
+        },
+        "pendingSecondaryPassword" : {
+          "type" : "boolean",
+          "description" : "Returns whether the current session is pending by validation\nIf so, the user will have to validate it using its secondary access \npasswordchange,\nor all other actions will be denied.\n"
+        }
+      },
+      "description" : "Contains relevant information for the authenticated user and his granted\npermissions. \n",
+      "x-abstract" : true
     },
     "Image" : {
       "allOf" : [ {
@@ -21353,24 +21701,6 @@
         }
       } ],
       "description" : "Data for searching records of a type, from any user"
-    },
-    "PasswordStatusAndPermissions" : {
-      "allOf" : [ {
-        "$ref" : "#/definitions/PasswordStatus"
-      }, {
-        "type" : "object",
-        "properties" : {
-          "type" : {
-            "description" : "The password type along with the description",
-            "$ref" : "#/definitions/PasswordTypeWithDescription"
-          },
-          "permissions" : {
-            "description" : "The permissions over actions the authenticated user can perform on\nthis password\n",
-            "$ref" : "#/definitions/PasswordPermissions"
-          }
-        }
-      } ],
-      "description" : "Contains the status and permissions over a password\n"
     },
     "BuyVoucherError" : {
       "allOf" : [ {
@@ -21921,6 +22251,26 @@
         }
       } ],
       "description" : "Base definitions to performing a transaction to an internal account (any\nexcept `externalPayment`, or `chargeback` which is performed distinctly).\n"
+    },
+    "OperationsPermissions" : {
+      "type" : "object",
+      "properties" : {
+        "user" : {
+          "type" : "array",
+          "description" : "Permissions over custom operations applied to the authenticated user, with `scope` = `user`.\n",
+          "items" : {
+            "$ref" : "#/definitions/OperationPermissions"
+          }
+        },
+        "system" : {
+          "type" : "array",
+          "description" : "Custom operations the authenticated has access, with `scope` = `system`. Only returned for administrators.\n",
+          "items" : {
+            "$ref" : "#/definitions/OperationPermissions"
+          }
+        }
+      },
+      "description" : "Permissions over own or system operations"
     },
     "ChangePassword" : {
       "type" : "object",
@@ -22696,7 +23046,7 @@
           "description" : "Can the authenticated user remove records of this type?"
         }
       },
-      "description" : "Basic definitions shared by `OwnerRecordPermissions` and `OwnerRecordPermissions`\n"
+      "description" : "Basic definitions shared by `OwnerRecordPermissions` and `BaseRecordDataForSearch`\n"
     },
     "UserEdit" : {
       "allOf" : [ {
@@ -22711,6 +23061,16 @@
         }
       } ],
       "description" : "Contains data used to edit a user profile. Only the basic and custom\nprofile fields can be edited in this operation. Addresses, phones and\nimages are managed through separated paths.\n"
+    },
+    "RecurringPaymentsPermissions" : {
+      "type" : "object",
+      "properties" : {
+        "view" : {
+          "type" : "boolean",
+          "description" : "Can view recurrings payments?"
+        }
+      },
+      "description" : "Permissions over own recurring payments"
     },
     "IAddress" : {
       "type" : "object",
@@ -23139,7 +23499,8 @@
           }
         }
       },
-      "description" : "Contains basic information used to search for transfers"
+      "description" : "Contains basic information used to search for transfers",
+      "x-abstract" : true
     },
     "DataForMobileGuest" : {
       "allOf" : [ {
@@ -23183,6 +23544,43 @@
         }
       },
       "description" : "Definitions for a user to confirm a forgotten password request"
+    },
+    "BankingPermissions" : {
+      "type" : "object",
+      "properties" : {
+        "accounts" : {
+          "type" : "array",
+          "description" : "Permissions over each owned account",
+          "items" : {
+            "$ref" : "#/definitions/AccountPermissions"
+          }
+        },
+        "payments" : {
+          "description" : "Payments permisisons",
+          "$ref" : "#/definitions/PaymentsPermissions"
+        },
+        "scheduledPayments" : {
+          "description" : "Scheduled payments permisisons",
+          "$ref" : "#/definitions/ScheduledPaymentsPermissions"
+        },
+        "recurringPayments" : {
+          "description" : "Recurring payments permisisons",
+          "$ref" : "#/definitions/RecurringPaymentsPermissions"
+        },
+        "externalPayments" : {
+          "description" : "External payments permisisons",
+          "$ref" : "#/definitions/ExternalPaymentsPermissions"
+        },
+        "paymentRequests" : {
+          "description" : "Payment requests permisisons",
+          "$ref" : "#/definitions/PaymentRequestsPermissions"
+        },
+        "tickets" : {
+          "description" : "Tickets permisisons",
+          "$ref" : "#/definitions/TicketsPermissions"
+        }
+      },
+      "description" : "Permissions for banking"
     },
     "VoucherDataForBuy" : {
       "allOf" : [ {
@@ -23307,7 +23705,8 @@
           "$ref" : "#/definitions/SearchByDistanceData"
         }
       },
-      "description" : "Common definitions for searching advertisements"
+      "description" : "Common definitions for searching advertisements",
+      "x-abstract" : true
     },
     "UserPhonesListData" : {
       "type" : "object",
@@ -23830,7 +24229,8 @@
           "$ref" : "#/definitions/SearchByDistanceData"
         }
       },
-      "description" : "Contains basic data used to search users in distinct contexts\n"
+      "description" : "Contains basic data used to search users in distinct contexts\n",
+      "x-abstract" : true
     },
     "UserMarketplacePermissions" : {
       "type" : "object",
@@ -24377,72 +24777,18 @@
       "description" : "A phone reference"
     },
     "Auth" : {
-      "type" : "object",
-      "properties" : {
-        "user" : {
-          "description" : "The authenticated user",
-          "$ref" : "#/definitions/User"
-        },
-        "language" : {
-          "$ref" : "#/definitions/VersionedEntity"
-        },
-        "configuration" : {
-          "$ref" : "#/definitions/VersionedEntity"
-        },
-        "global" : {
-          "type" : "boolean",
-          "description" : "Indicates whether this user belongs to global mode"
-        },
-        "role" : {
-          "description" : "The main role the user has. Possible values are: * administrator: A user who can manage the system and other users. * broker: A user who can manage other users. * member: A regular user who can manage operators.  * operator: A \"sub-user\" created by a member to manage his data.\n",
-          "$ref" : "#/definitions/RoleEnum"
-        },
-        "systemAdministrator" : {
-          "type" : "boolean",
-          "description" : "Indicates whether this user is a system administrator, that is, either\nbelongs to the global system administrators group or to the network\nsystem administrators group\n"
-        },
-        "aliasOperator" : {
-          "type" : "boolean",
-          "description" : "Indicates whether this user is an operator which is an alias of his\nowner member, that is, has all member permissions, and is not\nrestricted to an operator group.\n"
-        },
-        "permissions" : {
-          "description" : "The granted permissions for the authenticated user or guest",
-          "$ref" : "#/definitions/Permissions"
-        },
-        "sessionToken" : {
-          "type" : "string",
-          "description" : "A token that must be passed in on the Session-Token header on\nsubsequent requests instead of the login name and password.\n"
-        },
-        "accessClient" : {
-          "description" : "Only returned when authenticated as access client, contains \ninformation about it\n",
-          "$ref" : "#/definitions/EntityReference"
-        },
-        "principalType" : {
-          "description" : "Returns a reference to the principal type used for authentication.\nMay be some of the built-in types (login name, e-mail, mobile phone or\naccount number), a profile field, a token type or an access client type\n",
-          "$ref" : "#/definitions/EntityReference"
-        },
-        "principal" : {
-          "type" : "string",
-          "description" : "The principal (user identification) used on authentication. Can be the\nvalue of the login name, e-mail, account number, custom field or token\nused on authentication or at the moment of login. Is not returned when\nthe authentication was performed via access client.\n"
-        },
-        "expiredPassword" : {
-          "type" : "boolean",
-          "description" : "Returns whether the current access password is expired.\nIf so, the user will have to change the password,\nor all other actions will be denied.\n"
-        },
-        "pendingAgreements" : {
-          "type" : "boolean",
-          "description" : "Returns whether the current user has some agreements pending accept.\nIf so, a call to GET /agreements/pending should be performed to get\nthe content of the pending agreements, and then a POST \n/agreements/pending{id_or_internal_name} to accept each agreement.\n"
-        },
-        "expiredSecondaryPassword" : {
-          "type" : "boolean",
-          "description" : "Returns whether the current secondary access password is expired.\nIf so, the user will have to change the password,\nor all other actions will be denied.\n"
-        },
-        "pendingSecondaryPassword" : {
-          "type" : "boolean",
-          "description" : "Returns whether the current session is pending by validation\nIf so, the user will have to validate it using its secondary access \npasswordchange,\nor all other actions will be denied.\n"
+      "allOf" : [ {
+        "$ref" : "#/definitions/BaseAuth"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "configuration" : {
+            "description" : "The current configuration version",
+            "$ref" : "#/definitions/VersionedEntity"
+          }
         }
-      },
-      "description" : "Contains relevant information for the authenticated user and his granted\npermissions. \n"
+      } ],
+      "description" : "Contains information for the currently authenticated user\n"
     },
     "EntityReference" : {
       "allOf" : [ {
@@ -24450,7 +24796,8 @@
       }, {
         "type" : "object"
       } ],
-      "description" : "Represents an entity that is being referenced from another one,\nwithout caring about the type of the referenced entity.\n"
+      "description" : "Represents an entity that is being referenced from another one,\nwithout caring about the type of the referenced entity.\n",
+      "x-final" : true
     },
     "Record" : {
       "allOf" : [ {
@@ -24468,10 +24815,14 @@
     },
     "UserAuth" : {
       "allOf" : [ {
-        "$ref" : "#/definitions/Auth"
+        "$ref" : "#/definitions/BaseAuth"
       }, {
         "type" : "object",
         "properties" : {
+          "configuration" : {
+            "description" : "The current configuration",
+            "$ref" : "#/definitions/VersionedEntityReference"
+          },
           "group" : {
             "description" : "The user group",
             "$ref" : "#/definitions/Group"
@@ -24537,6 +24888,16 @@
       },
       "description" : "Determines permission the authenticated have over a specific user"
     },
+    "ExternalPaymentsPermissions" : {
+      "type" : "object",
+      "properties" : {
+        "view" : {
+          "type" : "boolean",
+          "description" : "Can view external payments?"
+        }
+      },
+      "description" : "Permissions over own external payments"
+    },
     "TicketNew" : {
       "allOf" : [ {
         "$ref" : "#/definitions/PerformBaseTransaction"
@@ -24562,6 +24923,42 @@
         }
       } ],
       "description" : "Contain the information to create a new ticket for the logged user\n"
+    },
+    "ScheduledPaymentsPermissions" : {
+      "type" : "object",
+      "properties" : {
+        "view" : {
+          "type" : "boolean",
+          "description" : "Can view scheduled payments?"
+        }
+      },
+      "description" : "Permissions over own scheduled payments"
+    },
+    "RecordPermissions" : {
+      "type" : "object",
+      "properties" : {
+        "type" : {
+          "description" : "The record type",
+          "$ref" : "#/definitions/RecordType"
+        },
+        "create" : {
+          "type" : "boolean",
+          "description" : "Can create records of this type?"
+        },
+        "update" : {
+          "type" : "boolean",
+          "description" : "Can update records of this type?"
+        },
+        "remove" : {
+          "type" : "boolean",
+          "description" : "Can remove records of this type?"
+        },
+        "singleId" : {
+          "type" : "string",
+          "description" : "If the record type `layout` is  `single` this property contains the identifier of the existing record (if any) of this type.  \n"
+        }
+      },
+      "description" : "Permissions over own records of a given type"
     },
     "GeneralOperatorsDataForSearch" : {
       "type" : "object",

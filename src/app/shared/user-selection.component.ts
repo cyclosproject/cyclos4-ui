@@ -7,7 +7,7 @@ import "rxjs/add/operator/debounceTime";
 import "rxjs/add/operator/distinctUntilChanged";
 import { UsersService } from "app/api/services";
 import { GeneralMessages } from "app/messages/general-messages";
-import { ModelHelper } from "app/shared/model-helper";
+import { ApiHelper } from "app/shared/api-helper";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 
 // Definition of the exported NG_VALUE_ACCESSOR provider
@@ -70,7 +70,7 @@ export class UserSelectionComponent implements OnInit, ControlValueAccessor {
     if (showTable) {
       this.usersService.searchUsers({
         keywords: keywords,
-        pageSize: ModelHelper.quickSearchPageSize,
+        pageSize: ApiHelper.quickSearchPageSize,
         ignoreProfileFieldsInList: true
       })
       .then(response => {

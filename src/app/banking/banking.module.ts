@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { SharedModule } from "app/shared/shared.module";
 import { AccountsRoutingModule } from "app/banking/banking-routing.module";
 import { AccountHistoryComponent } from "app/banking/accounts/account-history.component";
-import { AccountsOverviewComponent } from "app/banking/accounts/accounts-overview.component";
 import { BankingMessages } from "app/messages/banking-messages";
 import { PerformPaymentComponent } from "app/banking/payments/perform-payment.component";
 import { PaymentKindComponent } from "app/banking/payments/payment-kind.component";
@@ -23,7 +22,6 @@ import { PaymentDoneComponent } from 'app/banking/payments/payment-done.componen
   ],
   exports: [],
   declarations: [
-    AccountsOverviewComponent,
     AccountHistoryComponent,
 
     PerformPaymentComponent,

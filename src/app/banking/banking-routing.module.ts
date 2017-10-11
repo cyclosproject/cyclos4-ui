@@ -1,6 +1,5 @@
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
-import { AccountsOverviewComponent } from "app/banking/accounts/accounts-overview.component";
 import { AccountHistoryComponent } from "app/banking/accounts/account-history.component";
 import { BankingMessagesResolve } from "app/banking/banking-messages.resolve";
 import { LoggedUserGuard } from "app/logged-user-guard";
@@ -15,11 +14,11 @@ const accountRoutes: Routes = [
     canActivateChild: [LoggedUserGuard],
     children: [
       {
-        path: 'accounts',
-        component: AccountsOverviewComponent
+        path: 'account',
+        component: AccountHistoryComponent
       },
       {
-        path: 'accounts/:type',
+        path: 'account/:type',
         component: AccountHistoryComponent
       },
       {

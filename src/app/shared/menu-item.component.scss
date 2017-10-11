@@ -6,15 +6,9 @@ a {
   color: mat-color($foreground, text);
   display: inline-flex;
   flex-direction: row;
-  justify-content: center;
   top: 1px;
   position: relative;
-}
-a:not(.active) {
-  opacity: 0.67;
-}
-a.active {
-  color: mat-color($accent);
+  opacity: 0.75;
 }
 a .mat-icon {
   margin-right: 10px;

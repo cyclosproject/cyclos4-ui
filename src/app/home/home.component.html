@@ -1,45 +1,54 @@
-<section title="Main section title">
-  Main section content
-  <section title="Sub section title">
-    Sub section content
-    <section title="Sub-sub section title">
-      Sub-sub section content
-    </section>    
-  </section>
-  <section title="Form">
-    <div>Some form fields...</div>
-    <div fxLayout="column" style="max-width:600px">
-      <md-input-container>
-        <input mdInput placeholder="Text input">
-      </md-input-container>
-      
-      <md-input-container>
-        <textarea mdInput mdTextareaAutosize placeholder="Multi-line input"></textarea>
-      </md-input-container>
-
-      <md-checkbox>Checkbox</md-checkbox>
-
-      <md-radio-group>
-        <md-radio-button value="1">
-          Radio 1
-        </md-radio-button>
-        <md-radio-button value="2">
-          Radio 2
-        </md-radio-button>
-        <md-radio-button value="3">
-          Radio 3
-        </md-radio-button>  
-      </md-radio-group>
-      <md-select placeholder="Single select" multiple="false">
-        <md-option value="1">Value 1</md-option>
-        <md-option value="2">Value 2</md-option>
-        <md-option value="3">Value 3</md-option>
-      </md-select>    
-      <md-select placeholder="Multi select" multiple="true">
-        <md-option value="1">Value 1</md-option>
-        <md-option value="2">Value 2</md-option>
-        <md-option value="3">Value 3</md-option>
-      </md-select>    
-    </div>
-  </section>
-</section>
+<page-layout title="Components demo page"
+  [menu]="menu" [hasFilters]="true">
+  <page-filters>
+    Some filters...
+  </page-filters>
+  <page-content>
+    Some sections:
+    <section [margin]="true" title="Main section title">
+      Main section content
+      <section title="Sub section title">
+        Sub section content
+        <section title="Sub-sub section title">
+          Sub-sub section content
+        </section>
+      </section>
+      <section title="Form">
+        <div>Some form fields...</div>
+        <div fxLayout="column" style="max-width:600px">
+          <md-input-container>
+            <input mdInput placeholder="Text input">
+          </md-input-container>
+          
+          <md-input-container>
+            <textarea mdInput mdTextareaAutosize placeholder="Multi-line input"></textarea>
+          </md-input-container>
+    
+          <md-checkbox>Checkbox</md-checkbox>
+    
+          <md-radio-group>
+            <md-radio-button value="1">
+              Radio 1
+            </md-radio-button>
+            <md-radio-button value="2">
+              Radio 2
+            </md-radio-button>
+            <md-radio-button value="3">
+              Radio 3
+            </md-radio-button>  
+          </md-radio-group>
+          <md-select placeholder="Single select" multiple="false">
+            <md-option value="1">Value 1</md-option>
+            <md-option value="2">Value 2</md-option>
+            <md-option value="3">Value 3</md-option>
+          </md-select>    
+          <md-select placeholder="Multi select" multiple="true">
+            <md-option value="1">Value 1</md-option>
+            <md-option value="2">Value 2</md-option>
+            <md-option value="3">Value 3</md-option>
+          </md-select>    
+        </div>
+      </section>
+    </section>
+  </page-content>
+</page-layout>

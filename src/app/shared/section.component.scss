@@ -4,24 +4,24 @@
   display: flex !important;
   flex-direction: column !important;
 }
+.sectionTitle.margin, .sectionContent .sectionTitle {
+  margin-top: 22px;
+}
 .sectionTitle {
-  font-size: mat-font-size($typography, headline);
-  line-height: mat-font-size($typography, headline);
-  font-family: mat-font-family($typography);
+  font-size: 22px;
+  line-height: 22px;
   color: mat-color($accent);
-  margin-bottom: mat-font-size($typography, headline);
+  margin-bottom: 22px;
 }
 .sectionContent .sectionTitle {
-  margin-top: mat-font-size($typography, headline);
-  font-size: mat-font-size($typography, subheading-2);
-  line-height: mat-font-size($typography, subheading-2);
-  margin-bottom: mat-font-size($typography, subheading-2);
+  font-size: 20px;
+  line-height: 20px;
+  margin-bottom: 20px;
   font-weight: 500;
 }
 .sectionContent .sectionContent .sectionTitle {
-  margin-top: mat-font-size($typography, headline);
-  font-size: mat-font-size($typography, subheading-1);
-  line-height: mat-font-size($typography, subheading-1);
-  margin-bottom: mat-font-size($typography, subheading-1);
+  font-size: 20px;
+  line-height: 20px;
+  margin-bottom: 20px;
   font-weight: 400;
 }

@@ -1,0 +1,23 @@
+@import 'src/definitions';
+
+.left {
+  margin-right: $parts-margin;
+  width: $left-area-width;
+  min-width: $left-area-width;
+  max-width: $left-area-width;
+}
+
+.header {
+  margin-bottom: $parts-margin;
+}
+  
+:host /deep/ .left .mat-card {
+  padding: 0px;
+}
+
+.lt-md :host /deep/ .mat-card {
+  border: none;
+  border-radius: none;
+  padding: 0;
+  box-shadow: none;
+}

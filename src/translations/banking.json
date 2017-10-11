@@ -1,12 +1,12 @@
 {
-  "accountsOverview.title": "Accounts overview",
-  "accountsOverview.error.noAccounts": "There are no accounts to be displayed",
-
   "account.type": "Account",
   "account.number": "Number",
   "account.balance": "Balance",
   "account.availableBalance": "Available balance",
   "account.reservedAmount": "Reserved amount",
+  "account.creditLimit": "Lower limit",
+  "account.upperCreditLimit": "Upper limit",
+  "account.error.noAccounts": "There are no visible accounts",
 
   "transaction.date": "Date",
   "transaction.from": "From",

@@ -4,7 +4,6 @@ import { SidenavMenuComponent } from "app/core/sidenav-menu.component";
 import { LayoutBarComponent } from "app/core/layout-bar.component";
 import { TopBarComponent } from "app/core/top-bar.component";
 import { MenuBarComponent } from "app/core/menu-bar.component";
-import { MenuItemComponent } from "app/core/menu-item.component";
 
 import { SharedModule } from "app/shared/shared.module";
 import { GeneralMessages } from "app/messages/general-messages";
@@ -15,7 +14,6 @@ import { TranslationLoaderService } from "app/core/translation-loader.service";
 import { LayoutService } from "app/core/layout.service";
 import { LoginService } from "app/core/login.service";
 import { ApiConfigurationService } from "app/core/api-configuration.service";
-import { RouterModule } from "@angular/router";
 import { PersonalMenuComponent } from 'app/core/personal-menu.component';
 
 /**
@@ -27,19 +25,16 @@ import { PersonalMenuComponent } from 'app/core/personal-menu.component';
     TopBarComponent,
     MenuBarComponent,
     SidenavMenuComponent,
-    MenuItemComponent,
     PersonalMenuComponent
   ],
   imports: [
-    SharedModule,
-    RouterModule
+    SharedModule
   ],
   exports: [
     LayoutBarComponent,
     TopBarComponent,
     MenuBarComponent,
     SidenavMenuComponent,
-    MenuItemComponent,
     PersonalMenuComponent
   ],
   providers: [

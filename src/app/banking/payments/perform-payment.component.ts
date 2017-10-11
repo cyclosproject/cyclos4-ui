@@ -6,8 +6,9 @@ import { PaymentStep } from "app/banking/payments/payment-step";
 import { IdMethod } from "app/banking/payments/id-method";
 import { PaymentsService } from "app/api/services";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
-import { ModelHelper } from "app/shared/model-helper";
+import { ApiHelper } from "app/shared/api-helper";
 import { ErrorStatus } from 'app/core/error-handler.service';
+import { Menu } from 'app/shared/menu';
 
 
 /**
@@ -19,6 +20,8 @@ import { ErrorStatus } from 'app/core/error-handler.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PerformPaymentComponent extends BaseBankingComponent {
+
+  menu = Menu.PERFORM_PAYMENT;
 
   private _step: PaymentStep = PaymentStep.KIND;
   get step(): PaymentStep {
@@ -81,7 +84,7 @@ export class PerformPaymentComponent extends BaseBankingComponent {
     }
 
     // Get data for perform payment
-    this.paymentsService.dataForPerformPayment({ owner: ModelHelper.SELF })
+    this.paymentsService.dataForPerformPayment({ owner: ApiHelper.SELF })
       .then(response => {
         this.allowedIdMethods = [];
         let dp = response.data;
@@ -123,26 +126,16 @@ export class PerformPaymentComponent extends BaseBankingComponent {
   }
 
   private initAllowedKinds() {
-    let permissions = this.login.auth.permissions;
-    let accounts = permissions.accounts;
-
-    let hasAny = prop => {
-      for (let account of accounts) {
-        if (account[prop] != null && account[prop].length > 0) {
-          return true;
-        }
-      }
-      return false;
-    }
+    let payments = this.login.auth.permissions.banking.payments;
 
     this.allowedKinds = [];
-    if (hasAny('userPayments') && (this.initialData.value.paymentTypes || []).length > 0) {
+    if (payments.user && (this.initialData.value.paymentTypes || []).length > 0) {
       this.allowedKinds.push('user');
     }
-    if (hasAny('selfPayments')) {
+    if (payments.self) {
       this.allowedKinds.push('self');
     }
-    if (hasAny('systemPayments')) {
+    if (payments.system) {
       this.allowedKinds.push('system');
     }
   }
@@ -215,7 +208,7 @@ export class PerformPaymentComponent extends BaseBankingComponent {
    */
   performPayment() {
     this.paymentsService.performPayment({
-      owner:ModelHelper.SELF,
+      owner:ApiHelper.SELF,
       payment: this.payment,
       confirmationPassword: this.confirmationPassword,
       fields: ['id', 'authorizationStatus']
@@ -252,7 +245,7 @@ export class PerformPaymentComponent extends BaseBankingComponent {
 
   private fetchPaymentData(): Promise<DataForTransaction> {
     return this.paymentsService.dataForPerformPayment({
-      owner: ModelHelper.SELF,
+      owner: ApiHelper.SELF,
       to: this.to
     })
     .then(response => {
@@ -267,9 +260,9 @@ export class PerformPaymentComponent extends BaseBankingComponent {
       case PaymentKind.USER:
         return this.user;
       case PaymentKind.SYSTEM:
-        return ModelHelper.SYSTEM;
+        return ApiHelper.SYSTEM;
       case PaymentKind.SELF:
-        return ModelHelper.SELF;
+        return ApiHelper.SELF;
     }
     return null;
   }
@@ -318,7 +311,7 @@ export class PerformPaymentComponent extends BaseBankingComponent {
           } else {
             // We need to fetch the corresponding payment type data
             this.paymentsService.dataForPerformPayment({
-              owner: ModelHelper.SELF, to: this.to, type: this.paymentType.id
+              owner: ApiHelper.SELF, to: this.to, type: this.paymentType.id
             })
               .then(response => {
                 this.paymentTypeData.next(response.data.paymentTypeData);
@@ -328,7 +321,7 @@ export class PerformPaymentComponent extends BaseBankingComponent {
         break;
       case PaymentStep.PREVIEW:
         this.paymentsService.previewPayment({
-          owner:ModelHelper.SELF,
+          owner:ApiHelper.SELF,
           payment: this.payment})
           .then(response => {
             this.preview.next(response.data);

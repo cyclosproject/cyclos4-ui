@@ -17,22 +17,8 @@ import { AvatarComponent } from 'app/shared/avatar.component';
 })
 export class TopBarComponent extends BaseComponent {
 
-  private authSubscription: Subscription;
-
   constructor(injector: Injector) {
     super(injector);
-  }
-
-  ngOnInit() {
-    super.ngOnInit();
-    this.authSubscription = this.login.subscribeForAuth(() => this.detectChanges());
-  }
-
-  ngOnDestroy() {
-    super.ngOnDestroy();
-    if (this.authSubscription) {
-      this.authSubscription.unsubscribe();
-    }
   }
 
   @Input()

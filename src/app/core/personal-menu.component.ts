@@ -3,6 +3,7 @@ import { FormatService } from "app/core/format.service";
 import { BaseComponent } from 'app/shared/base.component';
 import { User, Auth } from 'app/api/models';
 import { Subscription } from 'rxjs/Subscription';
+import { MenuEntry, RootMenu, Menu, MenuType, RootMenuEntry } from 'app/shared/menu';
 
 /**
  * A popup menu shown when clicking the personal icon on top
@@ -18,22 +19,17 @@ export class PersonalMenuComponent extends BaseComponent {
     super(injector);
   }
 
-  private authSubscription: Subscription;
-
   ngOnInit() {
     super.ngOnInit();
-    this.authSubscription = this.login.subscribeForAuth(() => this.detectChanges());
+    this.update();
     document.body.addEventListener("click", e => this.hide(), false);
   }
 
-  ngOnDestroy() {
-    super.ngOnDestroy();
-    if (this.authSubscription) {
-      this.authSubscription.unsubscribe();
-    }
-  }
+  menuEntries: MenuEntry[];
 
-  protected onMediaChange() {
+  protected onDisplayChange() {
+    super.onDisplayChange();
+    this.update();
     this.hide();
   }
 
@@ -87,4 +83,15 @@ export class PersonalMenuComponent extends BaseComponent {
     setTimeout(() => style.display = 'none', 500);
   }
 
+  private update() {
+    let roots = this.login.menu(MenuType.PERSONAL);
+    let personal: RootMenuEntry = null;
+    for (let root of roots) {
+      if (root.rootMenu == RootMenu.PERSONAL) {
+        personal = root;
+        break;
+      }
+    }
+    this.menuEntries = (personal || {} as RootMenuEntry).entries || [];
+  }
 }

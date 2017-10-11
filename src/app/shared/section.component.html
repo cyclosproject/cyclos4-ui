@@ -1,4 +1,4 @@
-<div *ngIf="title" class="sectionTitle">{{title}}</div>
+<div *ngIf="title" class="sectionTitle" [ngClass]="{'margin': margin}">{{title}}</div>
 <div class="sectionContent">
   <ng-content></ng-content>
 </div>

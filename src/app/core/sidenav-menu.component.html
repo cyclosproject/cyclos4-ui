@@ -1,22 +1,9 @@
-<md-toolbar fxHide.gt-sm color="primary">
-  <div class="toolbarTitle" fxFlex="grow">{{format.appTitleMenu}}</div>
-</md-toolbar>
+<layout-bar>
+  <div class="title">{{format.appTitleMenu}}</div>
+</layout-bar>
 
-<menu-item *ngIf="login.user == null" url="/login" icon="lock" [label]="'Login'"></menu-item>
-
-<menu-item *ngIf="accounts"
-  url="/banking/accounts" icon="account_balance"
-  [label]="generalMessages.menuAccounts()"></menu-item>
-
-<menu-item *ngIf="singleAccount"
-  [url]="['/banking/accounts/', singleAccount]" icon="account_balance"
-  [label]="generalMessages.menuAccount()"></menu-item>
-
-<menu-item *ngIf="payment"
-  url="/banking/payment" icon="payment"
-  [label]="generalMessages.menuPayment()"></menu-item>
-
-<menu-item *ngFor="let i of [1,2,3,4,5,6,7]" [url]="'/item' + i" icon="account_box" [label]="'Menu ' + i"></menu-item>
-
-<menu-item #logout *ngIf="login.user != null" (click)="login.logout();"
-  icon="lock" [label]="'Logout (temp)'"></menu-item>
+<div class="rootContainer" *ngFor="let root of menu" fxLayout="column">
+  <div class="rootMenu">{{root.label}}</div>
+  <menu-item *ngFor="let entry of root.entries" [entry]="entry"
+    (click)="sidenav.close()"></menu-item>
+</div>

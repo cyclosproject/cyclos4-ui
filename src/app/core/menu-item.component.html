@@ -1,9 +1,0 @@
-<!--(click)="anchorClick($event)" -->
-<a [routerLink]="url"
-  [routerLinkActive]="url == null ? '' : 'active'" 
-  [routerLinkActiveOptions]="{exact:true}">
-  <md-icon *ngIf="icon" class="md-24">{{icon}}</md-icon>
-  <span class="text">
-    {{label}}
-  </span>
-</a>

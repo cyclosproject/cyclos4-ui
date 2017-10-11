@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy, Injector } from '@angular/c
 import { Router } from "@angular/router";
 import { LoginService } from "app/core/login.service";
 import { BaseComponent } from 'app/shared/base.component';
+import { Menu } from 'app/shared/menu';
 
 /**
  * Displays the home page
@@ -15,6 +16,8 @@ export class HomeComponent extends BaseComponent {
   constructor(injector: Injector) {
     super(injector);
   }
+
+  menu = Menu.HOME;
 
   ngOnInit() { }
 }

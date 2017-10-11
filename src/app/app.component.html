@@ -1,13 +1,19 @@
-<top-bar *ngIf="layout.gtsm" (togglePersonalMenu)="personalMenu.toggle($event)"></top-bar>
-<menu-bar *ngIf="layout.gtsm"></menu-bar>
+<!-- The personal menu is initially hidden -->
 <personal-menu #personalMenu></personal-menu>
 
+<!-- Top bars shown in desktop layout -->
+<top-bar *ngIf="layout.gtsm" (togglePersonalMenu)="personalMenu.toggle($event)"></top-bar>
+<menu-bar *ngIf="layout.gtsm"></menu-bar>
+
+<!-- The sidenav is used only on mobile.
+  However we nned a single router-outlet, or resizing a browser window
+  will cause weird effects -->
 <md-sidenav-container>
   <md-sidenav #sidenav mode="over">
     <sidenav-menu fxLayout="column" [sidenav]="sidenav"></sidenav-menu>
   </md-sidenav>
   <top-bar [sidenav]="sidenav" *ngIf="layout.ltmd" (togglePersonalMenu)="personalMenu.toggle($event)"></top-bar>
-  <div fxLayout="column" fxFlex="grow" class="main">
+  <div fxLayout="row" fxFlex="grow" class="main">
     <router-outlet></router-outlet>
   </div>
 </md-sidenav-container>

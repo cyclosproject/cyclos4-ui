@@ -1,13 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from "@angular/common";
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from "@angular/router";
 
 import {
   MdButtonModule, MdInputModule, MdCheckboxModule, MdRadioModule, MdIconModule,
   MdGridListModule, MdSelectModule, MdTabsModule, MdTableModule, MdSidenavModule,
-  MdDialog, MdDialogModule
+  MdDialog, MdDialogModule, MdCardModule
 } from '@angular/material'
 
+import { PageLayoutComponent } from "app/shared/page-layout.component";
+import { PageFiltersComponent } from "app/shared/page-filters.component";
+import { PageContentComponent } from "app/shared/page-content.component";
+import { PageHeaderComponent } from "app/shared/page-header.component";
+import { SideMenuComponent } from "app/shared/side-menu.component";
+import { MenuItemComponent } from 'app/shared/menu-item.component';
 import { SectionComponent } from "app/shared/section.component";
 import { ActionsComponent } from "app/shared/actions.component";
 
@@ -42,6 +49,12 @@ import { ConfirmationPasswordComponent } from 'app/shared/confirmation-password.
  */
 @NgModule({
   declarations: [
+    PageLayoutComponent,
+    SideMenuComponent,
+    MenuItemComponent,
+    PageFiltersComponent,
+    PageContentComponent,
+    PageHeaderComponent,
     SectionComponent,
     ActionsComponent,
     ViewFormComponent,
@@ -73,22 +86,7 @@ import { ConfirmationPasswordComponent } from 'app/shared/confirmation-password.
   ],
   imports: [
     CommonModule,
-    FormsModule,
-    FlexLayoutModule,
-    MdButtonModule,
-    MdInputModule, 
-    MdSelectModule,
-    MdCheckboxModule,
-    MdRadioModule,
-    MdIconModule,
-    MdGridListModule,
-    MdTabsModule,
-    MdTableModule,
-    MdSidenavModule,
-    MdDialogModule
-  ],
-  exports: [
-    CommonModule,
+    RouterModule,
     FormsModule,
     FlexLayoutModule,
     MdButtonModule,
@@ -102,7 +100,32 @@ import { ConfirmationPasswordComponent } from 'app/shared/confirmation-password.
     MdTableModule,
     MdSidenavModule,
     MdDialogModule,
+    MdCardModule
+  ],
+  exports: [
+    CommonModule,
+    RouterModule,
+    FormsModule,
+    FlexLayoutModule,
+    MdButtonModule,
+    MdInputModule, 
+    MdSelectModule,
+    MdCheckboxModule,
+    MdRadioModule,
+    MdIconModule,
+    MdGridListModule,
+    MdTabsModule,
+    MdTableModule,
+    MdSidenavModule,
+    MdDialogModule,
+    MdCardModule,
 
+    PageLayoutComponent,
+    SideMenuComponent,
+    MenuItemComponent,
+    PageFiltersComponent,
+    PageContentComponent,
+    PageHeaderComponent,
     SectionComponent,
     ActionsComponent,
     ViewFormComponent,

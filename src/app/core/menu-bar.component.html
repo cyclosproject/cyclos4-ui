@@ -1,12 +1,6 @@
-<layout-bar role="menu">
-  <menu-item *ngIf="login.user == null"
-    url="/login" icon="lock" [label]="'Login'"></menu-item>
-  
-  <menu-item 
-    url="/banking/accounts" icon="account_balance"
-    [label]="generalMessages.menuAccounts()"></menu-item>
-  
-  <menu-item 
-    url="/banking/payment" icon="payment"
-    [label]="generalMessages.menuPayment()"></menu-item>
+<layout-bar>
+  <menu-item *ngFor="let root of roots"
+    [entry]="root" 
+    [active]="root.rootMenu == (layout.menu | async)?.root"
+    (click)="onClick(root)"></menu-item>  
 </layout-bar>

@@ -3,7 +3,7 @@ import { NG_VALUE_ACCESSOR, ControlValueAccessor } from "@angular/forms";
 import { BaseBankingComponent } from "app/banking/base-banking.component";
 import { DataForTransaction, IdentificationMethodEnum, UserDataForSearch, User } from "app/api/models";
 import { UsersService, ContactsService } from "app/api/services";
-import { ModelHelper } from "app/shared/model-helper";
+import { ApiHelper } from "app/shared/api-helper";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { IdMethod } from "app/banking/payments/id-method";
 
@@ -74,7 +74,7 @@ export class PaymentUserComponent extends BaseBankingComponent implements Contro
         });
     } else if (this.isContacts) {
       this.contactsService.searchContacts({
-        user: ModelHelper.SELF,
+        user: ApiHelper.SELF,
         pageSize: 9999
       })
         .then(response => {

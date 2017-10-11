@@ -1,0 +1,39 @@
+<div class="left" *ngIf="showLeft | async">
+  <md-card>
+    <side-menu [menu]="menu"></side-menu>
+    <ng-container *ngIf="hasFilters">
+      <ng-container *ngTemplateOutlet="filtersTpl"></ng-container>
+    </ng-container>
+  </md-card>
+</div>
+<div class="page" fxLayout="column" fxFlex="grow">
+  <ng-container *ngIf="showLeft | async">
+    <!-- There is a left area: separated containers for header and content -->
+    <div *ngIf="hasHeader" class="header">
+      <md-card>
+        <ng-container *ngTemplateOutlet="headerTpl"></ng-container>
+      </md-card>
+    </div>
+    <div class="content">
+      <md-card>
+        <ng-container *ngTemplateOutlet="contentTpl"></ng-container>
+      </md-card>  
+    </div>
+  </ng-container>
+  <ng-container *ngIf="!(showLeft | async)">
+    <!-- No left area (mobile): Everything is together (no cards) -->
+    <div class="inline-header" *ngIf="hasHeader">
+      <ng-container *ngTemplateOutlet="headerTpl"></ng-container>
+    </div>
+    <div class="inline-filters" *ngIf="hasFilters">
+      <ng-container *ngTemplateOutlet="filtersTpl"></ng-container>
+    </div>
+    <div class="inline-content">
+      <ng-container *ngTemplateOutlet="contentTpl"></ng-container>
+    </div>
+  </ng-container>
+</div>
+
+<ng-template #filtersTpl><ng-content select="page-filters"></ng-content></ng-template>
+<ng-template #headerTpl><ng-content select="page-header"></ng-content></ng-template>
+<ng-template #contentTpl><ng-content select="page-content"></ng-content></ng-template>

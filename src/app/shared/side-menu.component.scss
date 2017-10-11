@@ -1,0 +1,55 @@
+@import 'src/definitions';
+
+.title {
+  font-size: 24px;
+  line-height: 24px;
+  margin: 24px;
+  opacity: 0.85;
+}
+
+a {
+  display: block;
+  text-decoration: none;
+  color: mat-color($foreground, text); 
+}
+a.account a.account {
+  margin-top: 12px;
+}
+a.account md-icon {
+  margin-right: 10px;
+  opacity: 0.75;
+}  
+a.account .name {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  opacity: 0.75;
+}  
+a.account .balance {
+  text-align: right;
+  white-space: nowrap;
+  opacity: 0.5;
+}
+:host /deep/ a.account .mat-button-wrapper {
+  align-items: center;
+}
+.accounts {
+  margin-bottom: 12px;
+}
+.accounts a {
+  padding: 10px 24px;
+  text-align: left;
+}
+:host /deep/ menu-item a {
+  border-top: 1px solid mat-color($foreground, divider);
+  padding: 8px 24px;
+  width: 100%;
+}
+:host /deep/ menu-item a.active, a.active {
+  color: mat-color($accent, lighter-contrast);
+  background-color: mat-color($accent, lighter);
+  opacity: 1;
+}
+:host /deep/ menu-item a.active *, a.active * {
+  opacity: 1 !important;
+}

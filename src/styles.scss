@@ -11,6 +11,17 @@
   font-size: 14px;
 }
 
+html {
+  overflow-y: scroll;
+}
+
+// Body
+body.gt-sm {
+  background-color: mat-color($background, background);
+}
+body.lt-md, .lt-md .mat-drawer-container {
+  background-color: map-get($background, card);
+}  
 // Forms
 .gt-xs form {
   max-width: $max-form-width;
@@ -112,8 +123,4 @@ md-radio-group md-radio-button::last-of-type {
 a.plain {
   text-decoration: none;
   color: map-get($foreground, text);
-}
-
-body.gt-sm {
-  background-color: mat-color($background, background);
 }

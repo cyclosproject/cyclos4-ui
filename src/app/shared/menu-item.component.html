@@ -1,0 +1,11 @@
+<a md-button
+  [routerLink]="url"
+  [routerLinkActive]="url == null ? '' : 'active'" 
+  [routerLinkActiveOptions]="{exact:true}"
+  [ngClass]="{'active': active}"
+  (click)="handleClick()">
+  <md-icon *ngIf="entry.icon" class="md-24">{{entry.icon}}</md-icon>
+  <span class="text">
+    {{entry.label}}
+  </span>
+</a>

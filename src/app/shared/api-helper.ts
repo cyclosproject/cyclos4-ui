@@ -5,7 +5,7 @@ import { GeneralMessages } from "app/messages/general-messages";
 /**
  * Helper methods for working with API model
  */
-export class ModelHelper {
+export class ApiHelper {
 
   /** Represents the own user */
   static SELF = 'self';
@@ -23,6 +23,20 @@ export class ModelHelper {
       return entity['internalName'] || entity.id;
     }
     return null;
+  }
+
+  /**
+   * Returns the fields that should be excluded when fetching the Auth model.
+   * Contains both deprecated and unused fields.
+   */
+  static get excludedAuthFields(): string[] {
+    return [
+      "-permissions.records",
+      "-permissions.systemRecords",
+      "-permissions.userRecords",
+      "-permissions.operations",
+      "-permissions.accounts",
+    ]
   }
   
   /**
@@ -71,11 +85,12 @@ export class ModelHelper {
   static get searchPageSizes(): number[] {
     return environment.searchPageSizes || [40, 100, 200];
   }
+  
   /**
    * Returns the available options for page sizes on searches
    */
   static get defaultSearchPageSize(): number {
-    return ModelHelper.searchPageSizes[0];
+    return ApiHelper.searchPageSizes[0];
   }
 
   /**

@@ -1,12 +1,14 @@
 @import 'src/definitions';
 
 :host /deep/ a.active {
-  border-bottom: 1px solid mat-color($accent);
+  color: mat-color($primary);
+  border-bottom: 1px solid mat-color($primary);
+  opacity: 1;
 }
 
 :host /deep/ a {
   border-radius: 0px !important;
-  padding: 10px 0;
+  padding: 14px 0;
   margin-right: 24px;
   font-weight: 400;
 }
@@ -14,6 +16,6 @@
 :host /deep/ .outer {
   background-color: map-get($background, card);
   color: map-get($foreground, text);
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid mat-color($foreground, divider);
   padding: 0 16px;
 }

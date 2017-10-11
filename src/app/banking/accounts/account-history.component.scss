@@ -1,0 +1,27 @@
+@import 'src/definitions';
+
+.indicators {
+  display: flex;
+  flex-direction: row;
+}
+.indicator {
+  display: inline-flex;
+  flex-direction: column-reverse;
+}
+.indicator .label {
+  font-size: 12px;
+  opacity: 0.75;
+  text-align: right;
+  margin-top: 4px;
+}
+.indicator .amount {
+  font-size: 16px;
+  font-weight: 500;
+  opacity: 0.85;
+  text-align: right;
+}
+.indicator-separator {
+  margin: 0 16px;
+  border-left: 1px solid mat-color($foreground, divider);
+  width: 1px;
+}

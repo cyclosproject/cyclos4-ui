@@ -27,7 +27,7 @@ export class FormatService {
     // The time format is consistent, except that we want uppercase AM/PM markers.
     this.timeFormat = (this._dataForUi.timeFormat || 'HH:mm').replace("a", "A");
     this.groupingSeparator = this.groupingSeparator || ',';
-    this.decimalSeparator = this.groupingSeparator || '.';
+    this.decimalSeparator = this.decimalSeparator || '.';
   }
 
   /**
@@ -113,10 +113,10 @@ export class FormatService {
   }
 
   /**
-   * Returns whether the given numner (or string) represents a positive number
+   * Returns whether the given number (or string) represents a positive number
    * @param num The input number or string representation of a number
    */
-  positive(num: number | string): boolean {
+  isPositive(num: number | string): boolean {
     if (num == null) {
       return false;
     }
@@ -127,10 +127,10 @@ export class FormatService {
   }
 
   /**
-   * Returns whether the given numner (or string) represents a negative number
+   * Returns whether the given number (or string) represents a negative number
    * @param num The input number or string representation of a number
    */
-  negative(num: number | string): boolean {
+  isNegative(num: number | string): boolean {
     if (num == null) {
       return false;
     }
@@ -138,6 +138,17 @@ export class FormatService {
       return num < 0;
     }
     return num.startsWith('-');
+  }
+
+  /**
+   * Returns whether the given number (or string) represents zero
+   * @param num The input number or string representation of a number
+   */
+  isZero(num: number | string): boolean {
+    if (num == null) {
+      return false;
+    }
+    return this.numberToFixed(num, 6) == '0.000000';
   }
 
   /**

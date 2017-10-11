@@ -7,17 +7,7 @@
       <div class="display">{{user?.display}}</div>
       <div class="principal">{{auth?.principal}}</div>
       <div class="menu" fxLayout="column">
-        <menu-item 
-          url="/personal/profile" icon="account_box"
-          [label]="generalMessages.personalMenuProfile()"></menu-item>
-        <menu-item 
-          url="/personal/passwords" icon="lock"
-          [label]="generalMessages.personalMenuPasswords()"></menu-item>
-        <menu-item 
-          url="/personal/contacts" icon="contacts"
-          [label]="generalMessages.personalMenuContacts()"></menu-item>
-        <menu-item #logout (click)="login.logout();hide();" icon="exit_to_app"
-        [label]="generalMessages.personalMenuLogout()"></menu-item>      
+        <menu-item *ngFor="let entry of menuEntries" [entry]="entry"></menu-item>
       </div>
     </div>
   </div>

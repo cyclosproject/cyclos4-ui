@@ -1,43 +1,59 @@
-<section [title]="data?.account?.type?.name">
-  <md-table [dataSource]="dataSource">
-    <!-- Avatar column -->
-    <ng-container mdColumnDef="avatar">
-      <md-header-cell *mdHeaderCellDef class="avatar"></md-header-cell>
-      <md-cell *mdCellDef="let row" class="avatar">
-        <avatar [image]="row.relatedAccount.kind == 'user' ? row.relatedAccount.user.image : null"
-          [icon]="row.relatedAccount.kind == 'user' ? 'account_circle' : 'account_balance'"></avatar>
-      </md-cell>
-    </ng-container>
+<page-layout [menu]="menu" [hasHeader]="(status | async).length > 0">
+  <page-header [title]="type?.name">
+    <div class="indicators">
+      <ng-container *ngFor="let indicator of (status | async); let last = last">
+        <div class="indicator">
+          <div class="label">{{indicator.label}}</div>
+          <div class="amount">{{indicator.amount | currency:currency}}</div>
+        </div>
+        <div *ngIf="!last" class="indicator-separator"></div>
+      </ng-container>
+    </div>    
+  </page-header>
+  <page-filters>
+    Filters for account history...
+  </page-filters>
+  <page-content [title]="(status | async).length > 0 ? null : type?.name">
+    <md-table [dataSource]="dataSource">
+      <!-- Avatar column -->
+      <ng-container mdColumnDef="avatar">
+        <md-header-cell *mdHeaderCellDef class="avatar"></md-header-cell>
+        <md-cell *mdCellDef="let row" class="avatar">
+          <avatar [image]="row.relatedAccount.kind == 'user' ? row.relatedAccount.user.image : null"
+            [icon]="row.relatedAccount.kind == 'user' ? 'account_circle' : 'account_balance'"></avatar>
+        </md-cell>
+      </ng-container>
 
-    <!-- Aggregated (for small devices) -->
-    <ng-container mdColumnDef="aggregated">
-      <md-header-cell *mdHeaderCellDef></md-header-cell>
-      <md-cell *mdCellDef="let row">
-        <div class="cell-main">{{subjectName(row)}}</div>
-        <div class="cell-date">{{row.date | dateTime}}</div>
-        <div class="cell-small">{{row.description || row.type?.name}}</div>
-      </md-cell>
-    </ng-container>
+      <!-- Aggregated (for small devices) -->
+      <ng-container mdColumnDef="aggregated">
+        <md-header-cell *mdHeaderCellDef></md-header-cell>
+        <md-cell *mdCellDef="let row">
+          <div class="cell-main">{{subjectName(row)}}</div>
+          <div class="cell-date">{{row.date | dateTime}}</div>
+          <div *ngIf="row.description" class="cell-small">{{row.description}}</div>
+        </md-cell>
+      </ng-container>
 
-    <!-- Date column -->
-    <ng-container mdColumnDef="date">
-      <md-header-cell *mdHeaderCellDef>{{bankingMessages.transactionDate()}}</md-header-cell>
-      <md-cell *mdCellDef="let row">{{row.date | date}}</md-cell>
-    </ng-container>
+      <!-- Date column -->
+      <ng-container mdColumnDef="date">
+        <md-header-cell *mdHeaderCellDef>{{bankingMessages.transactionDate()}}</md-header-cell>
+        <md-cell *mdCellDef="let row">{{row.date | date}}</md-cell>
+      </ng-container>
 
-    <!-- Subject column -->
-    <ng-container mdColumnDef="subject">
-      <md-header-cell *mdHeaderCellDef>{{bankingMessages.transactionSubject()}}</md-header-cell>
-      <md-cell *mdCellDef="let row">{{subjectName(row)}}</md-cell>
-    </ng-container>
+      <!-- Subject column -->
+      <ng-container mdColumnDef="subject">
+        <md-header-cell *mdHeaderCellDef>{{bankingMessages.transactionSubject()}}</md-header-cell>
+        <md-cell *mdCellDef="let row">{{subjectName(row)}}</md-cell>
+      </ng-container>
 
-    <!-- Amount column -->
-    <ng-container mdColumnDef="amount">
-      <md-header-cell *mdHeaderCellDef style="text-align: end">{{bankingMessages.transactionAmount()}}</md-header-cell>
-      <md-cell *mdCellDef="let row" style="text-align: end">{{row.amount | currency:data.account.currency}}</md-cell>
-    </ng-container>
-    
-    <md-header-row *mdHeaderRowDef="layout.xs ? [] : displayedColumns"></md-header-row>
-    <md-row *mdRowDef="let row; columns: displayedColumns;" class.xs="dynamic"></md-row>
-  </md-table>
-</section>
+      <!-- Amount column -->
+      <ng-container mdColumnDef="amount">
+        <md-header-cell *mdHeaderCellDef style="text-align: end">{{bankingMessages.transactionAmount()}}</md-header-cell>
+        <md-cell *mdCellDef="let row" style="text-align: end">{{row.amount | currency:data.account.currency}}</md-cell>
+      </ng-container>
+      
+      <md-header-row *mdHeaderRowDef="layout.xs ? [] : displayedColumns"></md-header-row>
+      <md-row *mdRowDef="let row; columns: displayedColumns;" class.xs="dynamic"></md-row>
+    </md-table>
+  </page-content>
+</page-layout>

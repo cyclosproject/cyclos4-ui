@@ -15,15 +15,18 @@ import { Subscription } from "rxjs/Subscription";
  * may become inconsistent.
  */
 export abstract class BaseComponent implements OnInit, OnDestroy {
-  public generalMessages: GeneralMessages;
-  public layout: LayoutService;
-  public format: FormatService;
-  public errorHandler: ErrorHandlerService;
-  public login: LoginService;
-  public notification: NotificationService;
+  generalMessages: GeneralMessages;
+  layout: LayoutService;
+  format: FormatService;
+  errorHandler: ErrorHandlerService;
+  login: LoginService;
+  notification: NotificationService;
+
   protected changeDetector: ChangeDetectorRef;
   protected media: ObservableMedia;
+
   private mediaSubscription: Subscription;
+  private authSubscription: Subscription;
   
   constructor(injector: Injector) {
     this.generalMessages = injector.get(GeneralMessages);
@@ -40,20 +43,29 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.mediaSubscription = this.media.subscribe(() => {
-      this.onMediaChange();
+      this.onDisplayChange();
+    });
+    this.authSubscription = this.login.subscribeForAuth(() => {
+      this.onDisplayChange();
     });
   }
 
   ngOnDestroy(): void {
     if (this.mediaSubscription) {
       this.mediaSubscription.unsubscribe();
+      this.mediaSubscription = null;
+    }
+    if (this.authSubscription) {
+      this.authSubscription.unsubscribe();
+      this.authSubscription = null;
     }
   }
 
   /**
-   * Invoked whenever the current media breakpoints change
+   * Invoked whenever the current media breakpoints change,
+   * or when the user logs in/out
    */
-  protected onMediaChange() {
+  protected onDisplayChange() {
     this.detectChanges();
   }
 
