@@ -28,9 +28,13 @@ export class PageLayoutComponent extends BaseComponent {
   @Input()
   hasFilters: boolean = false;
 
+  @Input()
+  title: string;
+
   showLeft = new BehaviorSubject<Boolean>(false);
 
   ngOnInit() {
+    super.ngOnInit();
     if (this.menu == null) {
       throw new Error("No menu given to this page");
     }

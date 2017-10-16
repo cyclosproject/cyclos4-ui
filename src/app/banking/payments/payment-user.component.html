@@ -9,13 +9,13 @@
 </div>
 <div *ngIf="isContacts">
   <div class="form-info">{{bankingMessages.paymentUserContacts()}}</div>
-  <md-radio-group #contactsRadio fxLayout="column"
+  <mat-radio-group #contactsRadio fxLayout="column"
     [(ngModel)]="value"
     [ngModelOptions]="{standalone: true}">
-    <md-radio-button *ngFor="let contact of contacts | async" [value]="contact.id">
+    <mat-radio-button *ngFor="let contact of contacts | async" [value]="contact.id">
       {{contact.display}}
-    </md-radio-button>
-  </md-radio-group>
+    </mat-radio-button>
+  </mat-radio-group>
 </div>
 <div *ngIf="isPrincipal">
   <div class="form-info">{{bankingMessages.paymentUserPrincipal()}}</div>

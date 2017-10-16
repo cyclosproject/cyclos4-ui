@@ -1,11 +1,11 @@
 <form focusFirst fxLayout="column" #form="ngForm" fxFlex="grow">
-  <md-input-container fxFlex="grow" floatPlaceholder="never">
-    <input mdInput name="principal" type="text" required
+  <mat-form-field fxFlex="grow" floatPlaceholder="never">
+    <input matInput name="principal" type="text" required
       [placeholder]="generalMessages.loginPrincipal()"
       [(ngModel)]="data.principal"
       (keyup.enter)="passwordComponent.focus()">
-    <md-icon mdPrefix class="md-24">account_circle</md-icon>
-  </md-input-container>
+    <mat-icon matPrefix class="mat-24">account_circle</mat-icon>
+  </mat-form-field>
   <password-input #passwordComponent
     fxFlex="grow"
     [showIcon]="true"
@@ -15,7 +15,7 @@
     (onEnter)="emit()"
   ></password-input>
   <actions *ngIf="showActions" fxFlex="grow">
-    <button [disabled]="!valid" md-raised-button color="accent" (click)="emit()">
+    <button [disabled]="!valid" mat-raised-button color="accent" (click)="emit()">
       {{generalMessages.loginAction()}}
     </button>
   </actions>

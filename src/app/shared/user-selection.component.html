@@ -1,30 +1,30 @@
 <div fxLayout="column">
-<md-input-container floatPlaceholder="never" fxFlex="grow">
-  <input mdInput #keywordsInput type="text" [focused]="focused"
+<mat-form-field floatPlaceholder="never" fxFlex="grow">
+  <input matInput #keywordsInput type="text" [focused]="focused"
     (keyup)="onKeywords.next($event.target.value)"
     [placeholder]="generalMessages.keywords()">
-</md-input-container>
+</mat-form-field>
 
-<md-table *ngIf="showTable | async; else noKeywords" [dataSource]="dataSource" fxFlex="grow">
-  <ng-container mdColumnDef="radio">
-    <md-header-cell *mdHeaderCellDef class="selection"></md-header-cell>
-    <md-cell *mdCellDef="let row" class="selection">
-      <md-radio-group [(ngModel)]="value" [ngModelOptions]="{standalone: true}">
-        <md-radio-button [value]="row.id"></md-radio-button>
-      </md-radio-group>
-    </md-cell>
+<mat-table *ngIf="showTable | async; else noKeywords" [dataSource]="dataSource" fxFlex="grow">
+  <ng-container matColumnDef="radio">
+    <mat-header-cell *matHeaderCellDef class="selection"></mat-header-cell>
+    <mat-cell *matCellDef="let row" class="selection">
+      <mat-radio-group [(ngModel)]="value" [ngModelOptions]="{standalone: true}">
+        <mat-radio-button [value]="row.id"></mat-radio-button>
+      </mat-radio-group>
+    </mat-cell>
   </ng-container>
   
-  <ng-container mdColumnDef="user">
-    <md-header-cell *mdHeaderCellDef>{{generalMessages.user()}}</md-header-cell>
-    <md-cell *mdCellDef="let row">
+  <ng-container matColumnDef="user">
+    <mat-header-cell *matHeaderCellDef>{{generalMessages.user()}}</mat-header-cell>
+    <mat-cell *matCellDef="let row">
       <a href="#" class="plain" (click)="$event.preventDefault();value = row.id">{{row.display}}</a>
-    </md-cell>
+    </mat-cell>
   </ng-container>
 
-  <md-header-row *mdHeaderRowDef="['radio', 'user']"></md-header-row>
-  <md-row *mdRowDef="let row; columns: ['radio', 'user'];"></md-row>
-</md-table>
+  <mat-header-row *matHeaderRowDef="['radio', 'user']"></mat-header-row>
+  <mat-row *matRowDef="let row; columns: ['radio', 'user'];"></mat-row>
+</mat-table>
 
 <ng-template #noKeywords>
   {{generalMessages.searchUserNoKeywords()}}

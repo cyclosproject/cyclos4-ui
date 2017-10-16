@@ -12,6 +12,10 @@ export class TableDataSource<T> extends DataSource<T> {
     super();
   }
 
+  get hasData(): boolean {
+    return this.data.length > 0;
+  }
+
   get data(): T[] {
     return this._data.value;
   }

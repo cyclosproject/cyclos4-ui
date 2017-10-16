@@ -8,9 +8,11 @@
 
 :host /deep/ a {
   border-radius: 0px !important;
-  padding: 10px 14px 10px 0;
-  margin-right: 24px;
+  padding: 10px 12px 10px 12px;
+  margin-right: 8px;
   font-weight: 400;
+  position: relative;
+  left: -12px;
 }
 :host /deep/ a * {
   font-size: 16px !important;

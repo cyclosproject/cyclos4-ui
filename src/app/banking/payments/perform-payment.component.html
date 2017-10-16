@@ -29,16 +29,16 @@
         [payment]="performed"></payment-done>
 
       <actions fxLayout="column-reverse" fxLayout.gt-xs="row">
-        <button md-raised-button *ngIf="step != 'done' && step != 'kind'"(click)="previous()">
+        <button mat-raised-button *ngIf="step != 'done' && step != 'kind'"(click)="previous()">
           {{generalMessages.previous()}}
         </button>
-        <button md-raised-button *ngIf="step != 'preview' && step != 'done'" [disabled]="!nextEnabled" color="accent" (click)="next()">
+        <button mat-raised-button *ngIf="step != 'preview' && step != 'done'" [disabled]="!nextEnabled" color="accent" (click)="next()">
           {{generalMessages.next()}}
         </button>
-        <button md-raised-button *ngIf="step == 'preview'" color="accent" (click)="performPayment()">
+        <button mat-raised-button *ngIf="step == 'preview'" color="accent" (click)="performPayment()">
           {{generalMessages.confirm()}}
         </button>
-        <button md-raised-button *ngIf="step == 'done'" (click)="reset()">
+        <button mat-raised-button *ngIf="step == 'done'" (click)="reset()">
           {{bankingMessages.paymentNewPayment()}}
         </button>
       </actions>

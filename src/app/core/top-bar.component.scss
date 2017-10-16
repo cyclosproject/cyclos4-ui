@@ -12,6 +12,10 @@
 .title span {
   font-size: 20px;
 }
+.logo {
+  max-height: 36px;
+  margin-right: 22px;
+}
 :host /deep/ .outer {
   background-color: mat-color($primary);
   color: mat-color($primary, default-contrast);

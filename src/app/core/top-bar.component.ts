@@ -1,5 +1,5 @@
 import { Component, Input, ElementRef, ViewChild, ChangeDetectionStrategy, Injector, EventEmitter, Output } from '@angular/core';
-import { MdSidenav } from "@angular/material";
+import { MatSidenav } from "@angular/material";
 import { FormatService } from "app/core/format.service";
 import { BaseComponent } from 'app/shared/base.component';
 import { User } from 'app/api/models';
@@ -22,7 +22,7 @@ export class TopBarComponent extends BaseComponent {
   }
 
   @Input()
-  sidenav: MdSidenav;
+  sidenav: MatSidenav;
 
   @Output()
   togglePersonalMenu = new EventEmitter<HTMLElement>();

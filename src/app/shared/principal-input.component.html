@@ -1,14 +1,14 @@
 <!-- any textual types -->
-<md-input-container #textComponent fxFlex="grow"
+<mat-form-field #textComponent fxFlex="grow"
   *ngIf="!isCustomField">
-  <input #usernameInput="ngModel" mdInput
+  <input #usernameInput="ngModel" matInput
     [placeholder]="type.name"
     [required]="true"
     [focused]="focused"
     [type]="type.kind == 'email' ? 'email' : 'text'"
     [mask]="type.mask"
     [(ngModel)]="value" [ngModelOptions]="{standalone: true}">
-</md-input-container>
+</mat-form-field>
 
 <!-- custom fields -->
 <custom-field-input *ngIf="isCustomField"

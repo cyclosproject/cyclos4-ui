@@ -1,5 +1,5 @@
 import { Component, Input, ElementRef, ViewChild, ChangeDetectionStrategy, Injector } from '@angular/core';
-import { MdSidenav } from "@angular/material";
+import { MatSidenav } from "@angular/material";
 import { FormatService } from "app/core/format.service";
 import { BaseComponent } from 'app/shared/base.component';
 

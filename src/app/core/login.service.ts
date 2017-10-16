@@ -169,6 +169,7 @@ export class LoginService {
       let root = roots.get(menu.root);
       root.entries.push(new MenuEntry(menu, url, icon, label, showIn));
     }
+    add(Menu.HOME, '/', 'home', this.generalMessages.menuHome());
     if (auth.user == null) {
       // Guest
       add(Menu.LOGIN, '/login', 'lock', this.generalMessages.menuLogin());

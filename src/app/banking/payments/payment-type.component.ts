@@ -1,7 +1,7 @@
 import { Component, Injector, Provider, forwardRef, ChangeDetectionStrategy, ViewChild, Input } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from "@angular/forms";
 import { BaseBankingComponent } from "app/banking/base-banking.component";
-import { MdRadioGroup } from "@angular/material";
+import { MatRadioGroup } from "@angular/material";
 import { TransferTypeWithCurrency } from "app/api/models";
 
 // Definition of the exported NG_VALUE_ACCESSOR provider
@@ -41,7 +41,7 @@ export class PaymentTypeComponent extends BaseBankingComponent implements Contro
   private touchedCallback = () => { };
 
   @ViewChild("paymentTypeRadio")
-  private paymentTypeRadioGroup: MdRadioGroup
+  private paymentTypeRadioGroup: MatRadioGroup
 
   writeValue(obj: any): void {
     this.value = obj

@@ -11,7 +11,7 @@
   margin-bottom: 1px;
 }
 :host /deep/ .left .mat-tab-body-content {
-  padding-top: 23px;
+  padding-top: 3px;
   overflow: hidden;
 }
 :host /deep/ .left .mat-tab-body {
@@ -25,7 +25,16 @@
 .filters {
   padding: 0 20px 20px 20px;
 }
-  
+
+.inline-header, .inline-filters {
+  margin-bottom: 22px;
+}
+
+.inline-filters {
+  padding: 12px;
+  box-shadow: 0px 3px 3px -2px rgba(0, 0, 0, 0.2), 0px 3px 4px 0px rgba(0, 0, 0, 0.14), 0px 1px 8px 0px rgba(0, 0, 0, 0.12);
+}
+
 :host /deep/ .left .mat-card {
   padding: 0px;
 }

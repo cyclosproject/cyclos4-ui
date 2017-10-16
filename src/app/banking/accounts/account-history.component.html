@@ -1,5 +1,5 @@
-<page-layout [menu]="menu" [hasFilters]="true" [hasHeader]="(status | async).length > 1">
-  <page-header [title]="type?.name">
+<page-layout [menu]="menu" [title]="type?.name" [hasFilters]="true" [hasHeader]="(status | async).length > 1">
+  <page-header>
     <div class="indicators">
       <ng-container *ngFor="let indicator of (status | async); let last = last">
         <div class="indicator">
@@ -11,49 +11,79 @@
     </div>    
   </page-header>
   <page-filters>
-    Filters for account history...
+    <form #filtersForm="ngForm" *ngIf="query != null" fxLayout="column">
+      <mat-form-field *ngIf="transferFilters.length > 1">
+        <mat-select fxFlex="grow"
+          [placeholder]="bankingMessages.accountTransferFilter()"
+          [(ngModel)]="transferFilterId" name="transferFilter">
+          <mat-option [value]="">{{generalMessages.searchAll()}}</mat-option>
+          <mat-option *ngFor="let filter of transferFilters"
+            [value]="filter.id">{{filter.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field *ngIf="preselectedPeriods.length > 1">
+        <mat-select
+          fxFlex="grow"
+          [placeholder]="generalMessages.period()"
+          [(ngModel)]="preselectedPeriod" name="preselectedPeriod">
+          <mat-option *ngFor="let period of preselectedPeriods"
+            [value]="period">{{period.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <date-field *ngIf="preselectedPeriod?.begin == null"
+        fxFlex="grow"
+        [(ngModel)]="query.datePeriod[0]" name="periodBegin"
+        [placeholder]="generalMessages.periodBegin()"></date-field>
+      <date-field *ngIf="preselectedPeriod?.end == null"
+        fxFlex="grow"
+        [(ngModel)]="query.datePeriod[1]" name="periodEnd"
+        [placeholder]="generalMessages.periodEnd()"></date-field>
+    </form>
   </page-filters>
-  <page-content [title]="(status | async).length > 1 ? null : type?.name">
-    <md-table [dataSource]="dataSource">
+  <page-content>
+    <div *ngIf="!dataSource.hasData">
+      {{generalMessages.searchNoResults()}}
+    </div>
+    <mat-table [fxHide]="!dataSource.hasData" [dataSource]="dataSource">
       <!-- Avatar column -->
-      <ng-container mdColumnDef="avatar">
-        <md-header-cell *mdHeaderCellDef class="avatar"></md-header-cell>
-        <md-cell *mdCellDef="let row" class="avatar">
+      <ng-container matColumnDef="avatar">
+        <mat-header-cell *matHeaderCellDef class="avatar"></mat-header-cell>
+        <mat-cell *matCellDef="let row" class="avatar">
           <avatar [image]="row.relatedAccount.kind == 'user' ? row.relatedAccount.user.image : null"
             [icon]="row.relatedAccount.kind == 'user' ? 'account_circle' : 'account_balance'"></avatar>
-        </md-cell>
+        </mat-cell>
       </ng-container>
 
       <!-- Aggregated (for small devices) -->
-      <ng-container mdColumnDef="aggregated">
-        <md-header-cell *mdHeaderCellDef></md-header-cell>
-        <md-cell *mdCellDef="let row">
+      <ng-container matColumnDef="aggregated">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let row">
           <div class="cell-main">{{subjectName(row)}}</div>
           <div class="cell-date">{{row.date | dateTime}}</div>
           <div *ngIf="row.description" class="cell-small">{{row.description}}</div>
-        </md-cell>
+        </mat-cell>
       </ng-container>
 
       <!-- Date column -->
-      <ng-container mdColumnDef="date">
-        <md-header-cell *mdHeaderCellDef>{{bankingMessages.transactionDate()}}</md-header-cell>
-        <md-cell *mdCellDef="let row">{{row.date | date}}</md-cell>
+      <ng-container matColumnDef="date">
+        <mat-header-cell *matHeaderCellDef>{{bankingMessages.transactionDate()}}</mat-header-cell>
+        <mat-cell *matCellDef="let row">{{row.date | date}}</mat-cell>
       </ng-container>
 
       <!-- Subject column -->
-      <ng-container mdColumnDef="subject">
-        <md-header-cell *mdHeaderCellDef>{{bankingMessages.transactionSubject()}}</md-header-cell>
-        <md-cell *mdCellDef="let row">{{subjectName(row)}}</md-cell>
+      <ng-container matColumnDef="subject">
+        <mat-header-cell *matHeaderCellDef>{{bankingMessages.transactionSubject()}}</mat-header-cell>
+        <mat-cell *matCellDef="let row">{{subjectName(row)}}</mat-cell>
       </ng-container>
 
       <!-- Amount column -->
-      <ng-container mdColumnDef="amount">
-        <md-header-cell *mdHeaderCellDef style="text-align: end">{{bankingMessages.transactionAmount()}}</md-header-cell>
-        <md-cell *mdCellDef="let row" style="text-align: end">{{row.amount | currency:data.account.currency}}</md-cell>
+      <ng-container matColumnDef="amount">
+        <mat-header-cell *matHeaderCellDef style="text-align: end">{{bankingMessages.transactionAmount()}}</mat-header-cell>
+        <mat-cell *matCellDef="let row" style="text-align: end">{{row.amount | currency:currency}}</mat-cell>
       </ng-container>
       
-      <md-header-row *mdHeaderRowDef="layout.xs ? [] : displayedColumns"></md-header-row>
-      <md-row *mdRowDef="let row; columns: displayedColumns;" class.xs="dynamic"></md-row>
-    </md-table>
+      <mat-header-row *matHeaderRowDef="layout.xs ? [] : displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;" class.xs="dynamic"></mat-row>
+    </mat-table>
   </page-content>
 </page-layout>

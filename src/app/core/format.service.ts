@@ -4,20 +4,71 @@ import * as moment from 'moment';
 import { ApiConfiguration } from "app/api/api-configuration";
 
 import { environment } from "environments/environment"
+import { GeneralMessages } from 'app/messages/general-messages';
+import { MatDateFormats } from '@angular/material';
+import { BehaviorSubject } from 'rxjs';
 
 declare const Big: any;
+
+/**
+ * Names for week days or months, in several forms:
+ * - long: Full name, such as 'December'
+ * - short: 3-letter name, such as 'Dec'
+ * - narrow: Single letter name, such as 'D'
+ */
+export type Names = {
+  'long': string[],
+  'short': string[],
+  'narrow': string[]
+}
 
 /**
  * Holds a shared instance of DataForUi and knows how to format dates and numbers
  */
 @Injectable()
 export class FormatService {
+
+  constructor(private generalMessages: GeneralMessages) {
+  }
+
+  dateFormat: string;
+  timeFormat: string;
+  groupingSeparator: string;
+  decimalSeparator: string;
+  dateParser: any;
+  materialDateFormats = new BehaviorSubject<MatDateFormats>(null);
+  
   private _dataForUi: DataForUi;
-  public dateFormat: string;
-  public timeFormat: string;
-  public groupingSeparator: string;
-  public decimalSeparator: string;
-  public dateParser: any;
+  private _monthNames: Names;
+  private _dayNames: Names;
+  
+  get monthNames(): Names {
+    if (this._monthNames == null) {
+      this._monthNames = this.getNames(
+        this.generalMessages.monthsLong(),
+        this.generalMessages.monthsShort(),
+        this.generalMessages.monthsNarrow());
+    }
+    return this._monthNames;
+  }
+
+  get dayNames(): Names {
+    if (this._dayNames == null) {
+      this._dayNames = this.getNames(
+        this.generalMessages.daysLong(),
+        this.generalMessages.daysShort(),
+        this.generalMessages.daysNarrow());
+    }
+    return this._dayNames;
+  }
+
+  private getNames(long: string, short: string, narrow: string): Names {
+    return {
+      'long': long.split(','),
+      'short': short.split(','),
+      'narrow': narrow.split(',')
+    }
+  }
 
   initialize(dataForUi: DataForUi): void {
     this._dataForUi = (dataForUi || {});
@@ -28,6 +79,32 @@ export class FormatService {
     this.timeFormat = (this._dataForUi.timeFormat || 'HH:mm').replace("a", "A");
     this.groupingSeparator = this.groupingSeparator || ',';
     this.decimalSeparator = this.decimalSeparator || '.';
+
+    this.materialDateFormats.next({
+      parse: {
+        dateInput: this.dateFormat
+      },
+      display: {
+        dateInput: this.dateFormat,
+        monthYearLabel: this.monthYearLabel,
+        dateA11yLabel: this.dateFormat,
+        monthYearA11yLabel: this.monthYearLabel
+      }
+    });
+  }
+
+  private get monthYearLabel(): string {
+    let match = /\w+(.).+/.exec(this.dateFormat);
+    if (!match) {
+      return this.dateFormat;
+    }
+    let sep = match[1];
+    // Remove the day part
+    let fmt = this.dateFormat.replace('DD', '').replace(sep + sep, sep);
+    if (fmt.startsWith(sep)) {
+      fmt = fmt.substr(1);
+    }
+    return fmt;
   }
 
   /**

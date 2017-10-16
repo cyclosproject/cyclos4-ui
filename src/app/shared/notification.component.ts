@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ChangeDetectionStrategy, Optional } from '@angular/core';
 import { Notification } from "app/shared/notification";
 import { NotificationType } from "app/shared/notification-type";
-import { MdDialogRef } from "@angular/material";
+import { MatDialogRef } from "@angular/material";
 import { GeneralMessages } from "app/messages/general-messages";
 
 /**
@@ -17,7 +17,7 @@ export class NotificationComponent implements OnInit {
   constructor(
     public generalMessages: GeneralMessages,
     @Optional()
-    public dialogRef: MdDialogRef<NotificationComponent>
+    public dialogRef: MatDialogRef<NotificationComponent>
   ) { }
 
   public containerClass: string;

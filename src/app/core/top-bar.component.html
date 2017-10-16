@@ -1,7 +1,8 @@
 <layout-bar>
-  <button class="menu-toggle" fxHide.gt-sm md-icon-button (click)="sidenav ? sidenav.toggle() : null">
-    <md-icon class="md-24">menu</md-icon>
+  <button class="menu-toggle" fxHide.gt-sm mat-icon-button (click)="sidenav ? sidenav.toggle() : null">
+    <mat-icon class="mat-24">menu</mat-icon>
   </button>
+  <img class="logo" src="images/logo.png">
   <div class="title" fxFlex="grow">
     <span [ngStyle.lt-md]="{'display': sidenav != null && sidenav.opened ? 'none' : ''}">
       {{format.appTitle}}
@@ -12,6 +13,6 @@
     (click)="personalMenuToggleClick($event)">
     <avatar [image]="user.image"></avatar>
     <span fxHide.xs class="user">{{user.display}}</span>
-    <md-icon fxHide.xs class="md-24">arrow_drop_down</md-icon>
+    <mat-icon fxHide.xs class="mat-24">arrow_drop_down</mat-icon>
   </a>
 </layout-bar>

@@ -17,10 +17,10 @@
     [(ngModel)]="customValues[cf.internalName]"
     [name]="cf.internalName"></custom-field-input>
 
-  <md-input-container fxFlex="grow">
-    <textarea mdInput placeholder="{{bankingMessages.transactionDescription()}}"
+  <mat-form-field fxFlex="grow">
+    <textarea matInput placeholder="{{bankingMessages.transactionDescription()}}"
       mdTextareaAutosize
       [(ngModel)]="description" name="description"
       [required]="paymentTypeData.requiresDescription"></textarea>
-  </md-input-container>
+  </mat-form-field>
 </div>

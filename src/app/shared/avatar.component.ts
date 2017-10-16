@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
 import { Image } from "app/api/models";
 
 /**
@@ -61,9 +61,6 @@ export class AvatarComponent implements OnInit {
   @Input()
   size: AvatarSize = "medium";
 
-  @ViewChild("outer")
-  container: ElementRef;
-
   private get _imageWidth(): number {
     if (this._ratio < 1) {
       return SIZES[this.size];
@@ -103,7 +100,7 @@ export class AvatarComponent implements OnInit {
   }
 
   get iconClass(): string {
-    return 'md-' + SIZES[this.size];
+    return 'mat-' + SIZES[this.size];
   }
 
   constructor() { }

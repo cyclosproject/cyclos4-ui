@@ -19,7 +19,18 @@
   "previous": "Previous",
   "keywords": "Keywords",
   "user": "User",
+  "period": "Period",
+  "period.begin": "Begin date",
+  "period.end": "End date",
 
+  "months.long": "January,February,March,April,May,June,July,August,September,October,November,December",
+  "months.short": "Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec",
+  "months.narrow": "J,F,M,A,M,J,J,A,S,O,N,D",
+  "days.long": "Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday",
+  "days.short": "Sun,Mon,Tue,Wed,Thu,Fri,Sat",
+  "days.narrow": "S,M,T,W,T,F,S",
+
+  "search.all": "All",
   "search.noResults": "No results for the specified search criteria",
   "search.user.noKeywords": "Please, fill in the keywords to search for a user",
 

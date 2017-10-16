@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, forwardRef, Output, ViewChild, ElementRef, ChangeDetectionStrategy } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor, FormControl, AbstractControl, ValidationErrors, NgControl, Validator, NG_VALIDATORS } from "@angular/forms";
 import { CustomFieldTypeEnum, CustomFieldDetailed } from "app/api/models";
-import { MdCheckbox, MdSelect } from "@angular/material";
+import { MatCheckbox, MatSelect } from "@angular/material";
 import { FormatService } from "app/core/format.service";
 import { DecimalFieldComponent } from "app/shared/decimal-field.component";
 import { DateFieldComponent } from "app/shared/date-field.component";
@@ -94,7 +94,7 @@ export class CustomFieldInputComponent implements OnInit, ControlValueAccessor, 
   private textInput: ElementRef;
 
   @ViewChild("booleanComponent")
-  private booleanComponent: MdCheckbox;
+  private booleanComponent: MatCheckbox;
 
   @ViewChild("decimalComponent")
   private decimalComponent: DecimalFieldComponent;
@@ -103,10 +103,10 @@ export class CustomFieldInputComponent implements OnInit, ControlValueAccessor, 
   private dateComponent: DateFieldComponent;
 
   @ViewChild("selectComponent")
-  private selectComponent: MdSelect;
+  private selectComponent: MatSelect;
 
   @ViewChild("dynamicComponent")
-  private dynamicComponent: MdSelect;
+  private dynamicComponent: MatSelect;
 
   @Input()
   @Output()

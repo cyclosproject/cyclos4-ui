@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, forwardRef, Output, ViewChild, ElementRef, ChangeDetectionStrategy } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor, FormControl, AbstractControl, ValidationErrors, NgControl, Validator, NG_VALIDATORS } from "@angular/forms";
 import { PrincipalTypeInput, PrincipalTypeKind } from "app/api/models";
-import { MdCheckbox, MdSelect } from "@angular/material";
+import { MatCheckbox, MatSelect } from "@angular/material";
 import { FormatService } from "app/core/format.service";
 import { DecimalFieldComponent } from "app/shared/decimal-field.component";
 import { DateFieldComponent } from "app/shared/date-field.component";

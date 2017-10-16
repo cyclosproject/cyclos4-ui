@@ -1,4 +1,4 @@
-import { NgModule, Optional, SkipSelf } from '@angular/core';
+import { NgModule, Optional, SkipSelf, Provider, forwardRef } from '@angular/core';
 
 import { SidenavMenuComponent } from "app/core/sidenav-menu.component";
 import { LayoutBarComponent } from "app/core/layout-bar.component";
@@ -15,6 +15,21 @@ import { LayoutService } from "app/core/layout.service";
 import { LoginService } from "app/core/login.service";
 import { ApiConfigurationService } from "app/core/api-configuration.service";
 import { PersonalMenuComponent } from 'app/core/personal-menu.component';
+import { DateAdapter, MAT_DATE_FORMATS, MatDateFormats } from '@angular/material';
+import { ApiDateAdapter } from 'app/core/api-date-adapter';
+
+export const DATE_ADAPTER_PROVIDER: Provider = {
+  provide: DateAdapter,
+  useExisting: forwardRef(() => ApiDateAdapter)
+}
+export function materialDateFormatsFactory(formatService: FormatService) {
+  return formatService.materialDateFormats.value;
+}
+export const DATE_FORMATS_PROVIDER: Provider = {
+  provide: MAT_DATE_FORMATS,
+  useFactory: materialDateFormatsFactory,
+  deps: [FormatService]
+}
 
 /**
  * Module that declares components used only by the core app module
@@ -45,7 +60,10 @@ import { PersonalMenuComponent } from 'app/core/personal-menu.component';
     FormatService,
     LayoutService,
     NotificationService,
-    LoginService
+    LoginService,
+    ApiDateAdapter,
+    DATE_ADAPTER_PROVIDER,
+    DATE_FORMATS_PROVIDER
   ]
 })
 export class CoreModule {

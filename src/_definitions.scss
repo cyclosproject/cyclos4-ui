@@ -5,7 +5,7 @@
 
 // *** Primary color palletes ***
 $primary: mat-palette($mat-blue, 800, 700, 900);
-$accent: mat-palette($mat-light-blue, A100, A100, A200);
+$accent: mat-palette($mat-blue, A200, A100, A400);
 $warn: mat-palette($mat-red);
 
 // *** Angular Material theme ***

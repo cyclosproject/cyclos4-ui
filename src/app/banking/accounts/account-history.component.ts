@@ -1,6 +1,6 @@
-import { Component, ChangeDetectionStrategy, Injector } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Injector, ViewChild, AfterViewInit, AfterViewChecked } from '@angular/core';
 import { ActivatedRoute, Params, Router } from "@angular/router";
-import { DataForAccountHistory, Currency, EntityReference, AccountHistoryResult, AccountKind, AccountHistoryStatus } from "app/api/models";
+import { DataForAccountHistory, Currency, EntityReference, PreselectedPeriod, AccountHistoryResult, AccountKind, AccountHistoryStatus, TransferFilter } from "app/api/models";
 import { AccountsService } from "app/api/services";
 
 import 'rxjs/add/operator/switchMap';
@@ -14,6 +14,8 @@ import { BaseBankingComponent } from "app/banking/base-banking.component";
 import { TableDataSource } from "app/shared/table-datasource";
 import { ApiHelper } from "app/shared/api-helper";
 import { Menu } from 'app/shared/menu';
+import { NgForm } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 /** Information for an account status element shown on top */
 export type StatusIndicator = {
@@ -30,7 +32,7 @@ export type StatusIndicator = {
   styleUrls: ['account-history.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AccountHistoryComponent extends BaseBankingComponent {
+export class AccountHistoryComponent extends BaseBankingComponent implements AfterViewChecked {
   constructor(
     injector: Injector,
     private accountsService: AccountsService,
@@ -42,18 +44,75 @@ export class AccountHistoryComponent extends BaseBankingComponent {
 
   menu = Menu.ACCOUNT;
 
-  data: DataForAccountHistory;
+  data = new BehaviorSubject<DataForAccountHistory>(null);
+
+  get type(): EntityReference {
+    let data = this.data.value;
+    if (data) {
+      return data.account.type;
+    }
+    return null;
+  }
+
+  get currency(): Currency {
+    let data = this.data.value;
+    if (data) {
+      return data.account.currency;
+    }
+    return null;
+  }
+
+  get preselectedPeriods(): PreselectedPeriod[] {
+    let data = this.data.value;
+    if (data) {
+      return data.preselectedPeriods;
+    }
+    return [];
+  }
+
+  get transferFilters(): TransferFilter[] {
+    let data = this.data.value;
+    if (data) {
+      return data.transferFilters;
+    }
+    return [];
+  }
+
+  get transferFilterId(): string {
+    let filters = this.query.transferFilters || [];
+    return filters.length == 0 ? null : filters[1];
+  }
+  set transferFilterId(id: string) {
+    this.query.transferFilters = [id];
+  }
+
+  private _preselectedPeriod: PreselectedPeriod;
+  get preselectedPeriod(): PreselectedPeriod {
+    return this._preselectedPeriod;
+  }
+  set preselectedPeriod(preselectedPeriod: PreselectedPeriod) {
+    this._preselectedPeriod = preselectedPeriod;
+    let begin: string, end: string;
+    let periods = this.preselectedPeriods;
+    if (preselectedPeriod.begin == null || preselectedPeriod.end == null) {
+      let first = periods[0] || {};
+      begin = first.begin;
+      end = first.end;
+    } else {
+      begin = preselectedPeriod.begin;
+      end = preselectedPeriod.end;
+    }
+    this.query.datePeriod[0] = begin;
+    this.query.datePeriod[1] = end;
+  }
+
   query: any;
   dataSource = new TableDataSource<AccountHistoryResult>(this.changeDetector);
   status = new BehaviorSubject<StatusIndicator[]>([]);
 
-  get type(): EntityReference {
-    return this.data ? this.data.account.type : null;
-  }
-
-  get currency(): Currency {
-    return this.data ? this.data.account.currency : null;
-  }
+  @ViewChild("filtersForm")
+  private filtersForm: NgForm;
+  private filtersSubscription: Subscription;
 
   get displayedColumns(): string[] {
     if (this.layout.xs) {
@@ -91,14 +150,46 @@ export class AccountHistoryComponent extends BaseBankingComponent {
       owner: ApiHelper.SELF, accountType: type
     })
       .then(response => {
-        this.data = response.data;
+        let data = response.data;
+        this.data.next(data);
+
+        // Prepare the query parameters
+        this.query = data.query;
+        this.query.owner = ApiHelper.SELF;
+        this.query.accountType = data.account.type.id;
+        this.query.datePeriod = [null, null];
+        // Select the default preselected period
+        if ((data.preselectedPeriods || []).length == 0) {
+          // No preselected periods? Create one, so we don't break the logic
+          data.preselectedPeriods = [
+            {defaultOption: true}
+          ];
+        }
+        for (let preselectedPeriod of data.preselectedPeriods) {
+          if (preselectedPeriod.defaultOption) {
+            this.preselectedPeriod = preselectedPeriod;
+            break;
+          }
+        }
 
         // Fetch the account history
-        this.query = this.data.query;
-        this.query.owner = ApiHelper.SELF;
-        this.query.accountType = this.data.account.type.id;
         this.update();
       });
+  }
+
+  ngOnDestroy() {
+    super.ngOnDestroy();
+    if (this.filtersSubscription) {
+      this.filtersSubscription.unsubscribe();
+    }
+  }
+
+  ngAfterViewChecked() {
+    // Update the query when the filters change
+    if (this.filtersForm && this.filtersSubscription == null) {
+      this.filtersSubscription = 
+        this.filtersForm.control.valueChanges.subscribe(() => this.update());
+    }
   }
 
   update() {

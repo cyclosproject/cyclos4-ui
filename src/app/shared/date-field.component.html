@@ -1,11 +1,12 @@
 <div class="decimalField" fxLayout="row">
-  <md-input-container fxFlex="grow">
-    <input #input="ngModel" mdInput
-      [type]="dateMask ? 'text' : 'date'"
+  <mat-form-field fxFlex="grow" *ngIf="formatService.materialDateFormats | async">
+    <input #input="ngModel" matInput
+      [matDatepicker]="datepicker"
       [focused]="focused"
       [placeholder]="placeholder"
-      [required]="required"
-      [mask]="dateMask"
-      [(ngModel)]="fieldValue" [ngModelOptions]="{standalone: true}">
-  </md-input-container>
+      [required]="required" 
+      [(ngModel)]="value" [ngModelOptions]="{standalone: true}">
+    <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
+  </mat-form-field>
+  <mat-datepicker #datepicker></mat-datepicker>
 </div>

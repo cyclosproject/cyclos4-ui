@@ -33,14 +33,14 @@ body.lt-md, .lt-md .mat-drawer-container {
 .mat-select-placeholder {
   left: -2px;
 }
-md-checkbox + md-checkbox,
-md-checkbox + md-radio-group,
-md-radio-group + md-radio-group, md-radio-group + md-checkbox {
+mat-checkbox + mat-checkbox,
+mat-checkbox + mat-radio-group,
+mat-radio-group + mat-radio-group, mat-radio-group + mat-checkbox {
   margin-top: 1.25em;
 }
 
 // Data tables
-md-tab-body {
+mat-tab-body {
   padding-top: 20px;
 }
 .mat-header-cell {
@@ -56,13 +56,13 @@ md-tab-body {
 .clickable {
   cursor: pointer;
 }
-md-table md-icon {
+mat-table mat-icon {
   opacity: 0.67;
 }
-md-cell.avatar, md-header-cell.avatar {
+mat-cell.avatar, mat-header-cell.avatar {
   max-width: 48px;
 }
-md-cell.selection, md-header-cell.selection {
+mat-cell.selection, mat-header-cell.selection {
   max-width: 32px;
 }
 .mat-cell .cell-main {
@@ -73,42 +73,45 @@ md-cell.selection, md-header-cell.selection {
 }
 
 // Material icons
-.mat-icon.md-14 {
+.mat-icon.mat-14 {
   font-size: 14px;
   width: 14px;
   height: 14px;
 }
-.mat-icon.md-18 {
+.mat-icon.mat-18 {
   font-size: 18px;
   width: 18px;
   height: 18px;
 }
-.mat-icon.md-24 {
+.mat-icon.mat-24 {
   font-size: 24px;
   width: 24px;
   height: 24px;
 }
-.mat-icon.md-36 {
+.mat-icon.mat-36 {
   font-size: 36px;
   width: 36px;
   height: 36px;
 }
-.mat-icon.md-48 {
+.mat-icon.mat-48 {
   font-size: 48px;
   width: 48px;
   height: 48px;
 }
-.mat-icon.md-96 {
+.mat-icon.mat-96 {
   font-size: 96px;
   width: 96px;
   height: 96px;
 }
 
-md-radio-group md-radio-button {
+mat-radio-group mat-radio-button {
   margin-bottom: 5px;
 }
-md-radio-group md-radio-button::last-of-type {
+mat-radio-group mat-radio-button::last-of-type {
   margin-bottom: 0px;
+}
+mat-radio-button + mat-radio-button {
+  margin-left: 18px;
 }
 .mat-form-field {
   width: inherit !important;

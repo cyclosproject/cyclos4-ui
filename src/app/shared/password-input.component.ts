@@ -15,7 +15,7 @@ import { AuthService } from "app/api/services/auth.service";
 import { NotificationService } from "app/core/notification.service";
 import { GeneralMessages } from "app/messages/general-messages";
 
-import { MdInput, MdGridList } from "@angular/material";
+import { MatInput, MatGridList } from "@angular/material";
 
 // Contains a mapping between OTP send mediums and material icon ligatures
 const OTP_ICONS = {}
@@ -70,7 +70,7 @@ export class PasswordInputComponent implements OnInit, AfterViewInit, ControlVal
   passwordComponent: ElementRef;
 
   @ViewChild("vkButtons")
-  vkButtons: MdGridList;
+  vkButtons: MatGridList;
 
   @Input() placeholder: string;
 
@@ -120,7 +120,7 @@ export class PasswordInputComponent implements OnInit, AfterViewInit, ControlVal
       this.changeDetector.detectChanges();
     }
     // For some reason, Firefox don't respect height, but only min-height
-    // on the MdGridList. We hope this doesn't break in future Angular Material versions.
+    // on the MatGridList. We hope this doesn't break in future Angular Material versions.
     if (this.vkButtons) {
       let vk = <any>this.vkButtons;
       let ref: ElementRef = vk._element;

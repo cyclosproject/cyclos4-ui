@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, ViewChild, EventEmitter, forwardRef, 
 import { NG_VALUE_ACCESSOR, ControlValueAccessor, NG_VALIDATORS, Validator, AbstractControl, ValidationErrors } from "@angular/forms";
 import { FormatService } from "app/core/format.service";
 import { LayoutService } from "app/core/layout.service";
+import { MatDatepickerInput } from '@angular/material';
 
 // Definition of the exported NG_VALUE_ACCESSOR provider
 export const DATE_FIELD_VALUE_ACCESSOR: Provider = {
@@ -17,13 +18,6 @@ export const DATE_VALIDATOR: Provider = {
   multi: true
 }
 
-// Check whether native date input is supported
-let input = document.createElement("input");
-input.setAttribute("type", "date");
-let invalid = "invalid-value";
-input.setAttribute("value", invalid);
-const DATE_INPUT_SUPPORTED = input.value !== invalid;
-
 /**
  * Renders a widget for a date field
  */
@@ -36,9 +30,9 @@ const DATE_INPUT_SUPPORTED = input.value !== invalid;
     DATE_VALIDATOR
   ]
 })
-export class DateFieldComponent implements OnInit, ControlValueAccessor, Validator {
+export class DateFieldComponent implements ControlValueAccessor, Validator {
   constructor(
-    private formatService: FormatService,
+    public formatService: FormatService,
     public layout: LayoutService
   ) { }
 
@@ -54,14 +48,17 @@ export class DateFieldComponent implements OnInit, ControlValueAccessor, Validat
   @Output() change: EventEmitter<string> = new EventEmitter();
   @Output() blur: EventEmitter<string> = new EventEmitter();
 
-  public dateMask: string;
-  public dateFormat: string;
+  get dateFormat(): string {
+    return this.formatService.dateFormat;
+  }
+
+  @ViewChild(MatDatepickerInput)
+  private input: MatDatepickerInput<string>;
 
   @ViewChild("input")
-  private input: ElementRef;
+  private inputRef: ElementRef;
 
   private _value: string = null;
-  private _fieldValue: string = null;
 
   @Input() @Output() 
   get value(): string {
@@ -71,53 +68,8 @@ export class DateFieldComponent implements OnInit, ControlValueAccessor, Validat
     if (this._value === value) {
       return;
     }
-    if (value == null || value === '') {
-      this._value = null;
-      this._fieldValue = null;
-    } else {
-      // The date may have a time component, which is not currently supported
-      let pos = value.indexOf('T');
-      if (pos >= 0) {
-        value = value.substr(0, pos);
-      }
-      this._value = value;
-      if (DATE_INPUT_SUPPORTED) {
-        // Native date input suppported - the value is ISO directly
-        this._fieldValue = value;
-      } else {
-        // Using a mask - format the value
-        this._fieldValue = this.formatService.formatAsDate(this._value);
-      }
-    }
+    this._value = value;
     this.emitValue();
-  }
-
-  @Input() @Output()
-  get fieldValue(): string {
-    return this._fieldValue;
-  }
-  set fieldValue(fieldValue: string) {
-    if (fieldValue == null || fieldValue === '') {
-      this._fieldValue = null;
-      this._value = null;
-    } else {
-      this._fieldValue = fieldValue;
-      if (DATE_INPUT_SUPPORTED) {
-        // The field value is an ISO date already
-        this._value = fieldValue;
-      } else {
-        this._value = this.formatService.parseDate(fieldValue);
-      }
-    }
-    this.emitValue();
-  }
-
-  ngOnInit() {
-    this.dateFormat = this.formatService.dateFormat;
-    if (!DATE_INPUT_SUPPORTED) {
-      // Will only use a mask if native date picker is not supported
-      this.dateMask = this.dateFormat.replace(/\w/g, '#');
-    }
   }
 
   private emitValue(): void {
@@ -127,7 +79,7 @@ export class DateFieldComponent implements OnInit, ControlValueAccessor, Validat
   }
 
   focus() {
-    this.input.nativeElement.focus();
+    this.inputRef.nativeElement.focus();
   }
 
   onBlur(event) {
@@ -146,18 +98,15 @@ export class DateFieldComponent implements OnInit, ControlValueAccessor, Validat
     this.touchedCallback = fn;
   }
   setDisabledState(isDisabled: boolean): void {
-    this.input.nativeElement.disabled = isDisabled;
+    this.input.disabled = isDisabled;
   }
 
   // Validator methods
   validate(c: AbstractControl): ValidationErrors {
-    if (this.formatService.parseDate(this._fieldValue) === undefined) {
-      return {
-        date: {
-          format: this.formatService.dateFormat
-        }
-      }
+    if (!this.required && (c.value === '' || c.value == null)) {
+      return null;
     }
+    return this.input.validate(c);
   }
   registerOnValidatorChange(fn: () => void): void {
     this.validatorChangeCallback = fn;

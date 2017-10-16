@@ -2,7 +2,7 @@ import { Component, Injector, Provider, forwardRef, ChangeDetectionStrategy, Vie
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from "@angular/forms";
 import { BaseBankingComponent } from "app/banking/base-banking.component";
 import { PaymentKind } from "app/banking/payments/payment-kind";
-import { MdRadioGroup } from "@angular/material";
+import { MatRadioGroup } from "@angular/material";
 
 // Definition of the exported NG_VALUE_ACCESSOR provider
 export const PAYMENT_KIND_VALUE_ACCESSOR: Provider = {
@@ -43,7 +43,7 @@ export class PaymentKindComponent extends BaseBankingComponent implements Contro
   private touchedCallback = () => { };
 
   @ViewChild("kindRadio")
-  private kindRadioGroup: MdRadioGroup
+  private kindRadioGroup: MatRadioGroup
 
   ngOnInit() {
     super.ngOnInit();

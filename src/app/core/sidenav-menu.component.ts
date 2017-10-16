@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
-import { MdSidenav } from '@angular/material';
+import { MatSidenav } from '@angular/material';
 import { BaseComponent } from 'app/shared/base.component';
 import { RootMenuEntry, MenuType } from 'app/shared/menu';
 
@@ -15,7 +15,7 @@ export class SidenavMenuComponent extends BaseComponent implements OnInit {
   }
 
   @Input()
-  sidenav: MdSidenav;
+  sidenav: MatSidenav;
 
   ngOnInit() {
     super.ngOnInit();

@@ -1,30 +1,32 @@
 <div class="left" *ngIf="showLeft | async">
-  <md-card>
-    <md-tab-group *ngIf="hasFilters">
-      <md-tab [label]="sideMenu.title || generalMessages.menu()">
+  <mat-card>
+    <mat-tab-group *ngIf="hasFilters">
+      <mat-tab [label]="sideMenu.title || generalMessages.menu()">
         <side-menu #sideMenu [hideTitle]="true" [menu]="menu"></side-menu>
-      </md-tab>
-      <md-tab label="Filters">
+      </mat-tab>
+      <mat-tab label="Filters">
         <ng-container *ngIf="hasFilters">
-          <ng-container *ngTemplateOutlet="filtersTpl"></ng-container>
+          <div class="filters">
+            <ng-container *ngTemplateOutlet="filtersTpl"></ng-container>
+          </div>
         </ng-container>
-      </md-tab>
-    </md-tab-group>
+      </mat-tab>
+    </mat-tab-group>
     <side-menu *ngIf="!hasFilters" [menu]="menu"></side-menu>
-  </md-card>
+  </mat-card>
 </div>
 <div class="page" fxLayout="column" fxFlex="grow">
   <ng-container *ngIf="showLeft | async">
     <!-- There is a left area: separated containers for header and content -->
     <div *ngIf="hasHeader" class="header">
-      <md-card>
+      <mat-card>
         <ng-container *ngTemplateOutlet="headerTpl"></ng-container>
-      </md-card>
+      </mat-card>
     </div>
     <div class="content">
-      <md-card>
+      <mat-card>
         <ng-container *ngTemplateOutlet="contentTpl"></ng-container>
-      </md-card>  
+      </mat-card>  
     </div>
   </ng-container>
   <ng-container *ngIf="!(showLeft | async)">
@@ -41,10 +43,6 @@
   </ng-container>
 </div>
 
-<ng-template #filtersTpl>
-  <div class="filters">
-    <ng-content select="page-filters"></ng-content>
-  </div>
-</ng-template>
+<ng-template #filtersTpl><ng-content select="page-filters"></ng-content></ng-template>
 <ng-template #headerTpl><ng-content select="page-header"></ng-content></ng-template>
 <ng-template #contentTpl><ng-content select="page-content"></ng-content></ng-template>

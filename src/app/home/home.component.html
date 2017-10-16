@@ -1,9 +1,8 @@
-<page-layout title="Components demo page"
-  [menu]="menu" [hasFilters]="true">
+<page-layout [menu]="menu">
   <page-filters>
     Some filters...
   </page-filters>
-  <page-content>
+  <page-content title="Components demo page">
     Some sections:
     <section [margin]="true" title="Main section title">
       Main section content
@@ -16,37 +15,41 @@
       <section title="Form">
         <div>Some form fields...</div>
         <div fxLayout="column" style="max-width:600px">
-          <md-input-container>
-            <input mdInput placeholder="Text input">
-          </md-input-container>
+          <mat-form-field>
+            <input matInput placeholder="Text input">
+          </mat-form-field>
           
-          <md-input-container>
-            <textarea mdInput mdTextareaAutosize placeholder="Multi-line input"></textarea>
-          </md-input-container>
+          <mat-form-field>
+            <textarea matInput mdTextareaAutosize placeholder="Multi-line input"></textarea>
+          </mat-form-field>
+
+          <decimal-field suffix="$" scale="2" placeholder="Decimal"></decimal-field>
+
+          <date-field placeholder="Date"></date-field>
+
+          <mat-checkbox>Checkbox</mat-checkbox>
     
-          <md-checkbox>Checkbox</md-checkbox>
-    
-          <md-radio-group>
-            <md-radio-button value="1">
+          <mat-radio-group>
+            <mat-radio-button value="1">
               Radio 1
-            </md-radio-button>
-            <md-radio-button value="2">
+            </mat-radio-button>
+            <mat-radio-button value="2">
               Radio 2
-            </md-radio-button>
-            <md-radio-button value="3">
+            </mat-radio-button>
+            <mat-radio-button value="3">
               Radio 3
-            </md-radio-button>  
-          </md-radio-group>
-          <md-select placeholder="Single select" multiple="false">
-            <md-option value="1">Value 1</md-option>
-            <md-option value="2">Value 2</md-option>
-            <md-option value="3">Value 3</md-option>
-          </md-select>    
-          <md-select placeholder="Multi select" multiple="true">
-            <md-option value="1">Value 1</md-option>
-            <md-option value="2">Value 2</md-option>
-            <md-option value="3">Value 3</md-option>
-          </md-select>    
+            </mat-radio-button>  
+          </mat-radio-group>
+          <mat-select placeholder="Single select" multiple="false">
+            <mat-option value="1">Value 1</mat-option>
+            <mat-option value="2">Value 2</mat-option>
+            <mat-option value="3">Value 3</mat-option>
+          </mat-select>    
+          <mat-select placeholder="Multi select" multiple="true">
+            <mat-option value="1">Value 1</mat-option>
+            <mat-option value="2">Value 2</mat-option>
+            <mat-option value="3">Value 3</mat-option>
+          </mat-select>    
         </div>
       </section>
     </section>
