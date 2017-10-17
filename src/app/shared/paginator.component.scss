@@ -1,7 +1,11 @@
 @import 'src/definitions';
 
-.no-data, .pagination {
+.no-data {
   padding: 24px;
+}
+
+.pagination {
+  padding: 12px;
 }
 
 :host /deep/ mat-select {
