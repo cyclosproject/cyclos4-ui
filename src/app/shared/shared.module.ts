@@ -5,7 +5,7 @@ import { RouterModule } from "@angular/router";
 
 import {
   MatButtonModule, MatInputModule, MatCheckboxModule, MatRadioModule,
-  MatSelectModule, MatDatepickerModule, 
+  MatSelectModule, MatDatepickerModule, MatTooltipModule,
   MatIconModule, MatGridListModule, MatTabsModule, MatTableModule,
   MatSidenavModule, MatDialog, MatDialogModule, MatCardModule
 } from '@angular/material'
@@ -96,6 +96,7 @@ import { ConfirmationPasswordComponent } from 'app/shared/confirmation-password.
     MatInputModule, 
     MatSelectModule,
     MatDatepickerModule,
+    MatTooltipModule,
     MatCheckboxModule,
     MatRadioModule,
     MatIconModule,
@@ -115,6 +116,7 @@ import { ConfirmationPasswordComponent } from 'app/shared/confirmation-password.
     MatInputModule, 
     MatSelectModule,
     MatDatepickerModule,
+    MatTooltipModule,
     MatCheckboxModule,
     MatRadioModule,
     MatIconModule,

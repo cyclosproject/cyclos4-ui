@@ -37,8 +37,11 @@
   "pagination.pageSize": "Items per page",
   "pagination.showing.total": "Showing {first} - {last} of {total}",
   "pagination.showing.noTotal": "Showing {first} - {last}",
+  "pagination.current": "Current page: {page}",
+  "pagination.first": "First page",
   "pagination.previous": "Previous page",
   "pagination.next": "Next page",
+  "pagination.last": "Last page",
 
   "menu": "Menu",
   "menu.login": "Login",

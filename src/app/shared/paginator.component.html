@@ -7,18 +7,29 @@
   <mat-select [(ngModel)]="pageSize" [ngModelOptions]="{standalone: true}">
       <mat-option *ngFor="let size of pageSizes" [value]="size">{{size}}</mat-option>
   </mat-select>
-  <div class="items" *ngIf="pagination.hasTotalCount">{{generalMessages.paginationShowingTotal(pagination.firstItem, pagination.lastItem, pagination.totalCount)}}</div>
-  <div class="items" *ngIf="!pagination.hasTotalCount">{{generalMessages.paginationShowingNoTotal(pagination.firstItem, pagination.lastItem)}}</div>
-  <button mat-icon-button [disabled]="pagination.page == 0" (click)="first()">
+  <div class="items" [matTooltip]="generalMessages.paginationCurrent(pagination.page + 1)">
+    <ng-container *ngIf="pagination.hasTotalCount">
+      {{generalMessages.paginationShowingTotal(pagination.firstItem, pagination.lastItem, pagination.totalCount)}}
+    </ng-container>
+    <ng-container *ngIf="!pagination.hasTotalCount">
+      {{generalMessages.paginationShowingNoTotal(pagination.firstItem, pagination.lastItem)}}
+    </ng-container>
+  </div>  
+  <button mat-icon-button [disabled]="pagination.page == 0" (click)="first()"
+    [matTooltip]="generalMessages.paginationFirst()">
     <mat-icon class="mat-24">first_page</mat-icon>
   </button>
-  <button mat-icon-button [disabled]="pagination.page == 0" (click)="previous()">
+  <button mat-icon-button [disabled]="pagination.page == 0" (click)="previous()"
+    [matTooltip]="generalMessages.paginationPrevious()">
     <mat-icon class="mat-24">navigate_before</mat-icon>
   </button>
-  <button mat-icon-button [disabled]="!pagination.hasNext" (click)="next()">
+  <button mat-icon-button [disabled]="!pagination.hasNext" (click)="next()"
+    [matTooltip]="generalMessages.paginationNext()">
     <mat-icon class="mat-24">navigate_next</mat-icon>
   </button>
-  <button mat-icon-button *ngIf="pagination.hasTotalCount" [disabled]="!pagination.hasNext" (click)="last()">
+  <button mat-icon-button *ngIf="pagination.hasTotalCount" [disabled]="!pagination.hasNext"
+    [matTooltip]="generalMessages.paginationLast()"
+    (click)="last()">
     <mat-icon class="mat-24">last_page</mat-icon>
   </button>
 </div>  
