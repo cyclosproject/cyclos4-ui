@@ -3,6 +3,7 @@ import { Menu } from 'app/shared/menu';
 import { BaseComponent } from 'app/shared/base.component';
 import { ObservableMedia } from '@angular/flex-layout';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable } from 'rxjs/Observable';
 
 /**
  * Defines a page layout, which has a left menu, optional filters,
@@ -30,6 +31,9 @@ export class PageLayoutComponent extends BaseComponent {
 
   @Input()
   tightContent: boolean = false;
+
+  @Input()
+  loaded: Observable<boolean>;
 
   @Input()
   title: string;

@@ -57,6 +57,14 @@ export class AccountHistoryComponent extends BaseBankingComponent implements Aft
     return null;
   }
 
+  get number(): string {
+    let data = this.data.value;
+    if (data) {
+      return data.account.number;
+    }
+    return null;
+  }
+
   get currency(): Currency {
     let data = this.data.value;
     if (data) {
@@ -112,6 +120,9 @@ export class AccountHistoryComponent extends BaseBankingComponent implements Aft
   query: any;
   dataSource = new TableDataSource<AccountHistoryResult>();
   status = new BehaviorSubject<StatusIndicator[]>([]);
+  loaded = new BehaviorSubject<boolean>(false);
+  private dataLoaded = false;
+  private statusLoaded = false;
 
   @ViewChild("filtersForm")
   private filtersForm: NgForm;
@@ -123,6 +134,15 @@ export class AccountHistoryComponent extends BaseBankingComponent implements Aft
     } else {
       return ['avatar', 'date', 'subject', 'amount'];
     }
+  }
+
+  get title(): string {
+    let type = this.type;
+    if (type == null) {
+      return null;
+    }
+    let number = this.number;
+    return number == null ? type.name : type.name + " - " + number;
   }
 
   get typeId(): string {
@@ -195,15 +215,25 @@ export class AccountHistoryComponent extends BaseBankingComponent implements Aft
     // Update the results
     this.accountsService.searchAccountHistory(this.query)
       .then(response => {
+        this.dataLoaded = true;
         this.dataSource.next(response);
+        this.notifyLoaded();
       });
 
     // Update the status
     let statusParams = Object.assign({}, this.query, STATUS_FIELDS);
     this.accountsService.getAccountStatusByOwnerAndType(statusParams)
       .then(response => {
+        this.statusLoaded = true;
         this.status.next(this.toIndicators(response.data.status));
+        this.notifyLoaded();
       });
+  }
+
+  private notifyLoaded() {
+    if (this.dataLoaded && this.statusLoaded && !this.loaded.value) {
+      this.loaded.next(true);
+    }
   }
 
   private toIndicators(status: AccountHistoryStatus): StatusIndicator[] {

@@ -16,7 +16,12 @@
   </mat-card>
 </div>
 <div class="page" fxLayout="column" fxFlex="grow">
-  <ng-container *ngIf="showLeft | async">
+  <!--
+  <div class="loading" *ngIf="loaded != null && !(loaded | async)">
+    Loading...
+  </div>
+  -->
+  <ng-container *ngIf="(showLeft | async) && (loaded == null || (loaded | async))">
     <!-- There is a left area: separated containers for header and content -->
     <div *ngIf="hasHeader" class="header">
       <mat-card>
@@ -29,7 +34,7 @@
       </mat-card>  
     </div>
   </ng-container>
-  <ng-container *ngIf="!(showLeft | async)">
+  <ng-container *ngIf="!(showLeft | async) && (loaded == null || (loaded | async))">
     <!-- No left area (mobile): Everything is together (no cards) -->
     <div class="inline-header" *ngIf="hasHeader">
       <ng-container *ngTemplateOutlet="headerTpl"></ng-container>
