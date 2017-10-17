@@ -77,8 +77,8 @@ export class FormatService {
 
     // The time format is consistent, except that we want uppercase AM/PM markers.
     this.timeFormat = (this._dataForUi.timeFormat || 'HH:mm').replace("a", "A");
-    this.groupingSeparator = this.groupingSeparator || ',';
-    this.decimalSeparator = this.decimalSeparator || '.';
+    this.groupingSeparator = this._dataForUi.groupingSeparator || ',';
+    this.decimalSeparator = this._dataForUi.decimalSeparator || '.';
 
     this.materialDateFormats.next({
       parse: {

@@ -1,0 +1,18 @@
+@import 'src/definitions';
+
+.no-data, .pagination {
+  padding: 24px;
+}
+
+:host /deep/ mat-select {
+  width: 150px;
+  margin: 0 12px;
+}
+
+.page-label {
+  text-align: end;
+}
+.items {
+  white-space: nowrap;
+  margin-right: 12px;
+}

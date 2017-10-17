@@ -29,6 +29,9 @@ export class PageLayoutComponent extends BaseComponent {
   hasFilters: boolean = false;
 
   @Input()
+  tightContent: boolean = false;
+
+  @Input()
   title: string;
 
   showLeft = new BehaviorSubject<Boolean>(false);

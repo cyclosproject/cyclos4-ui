@@ -1,4 +1,5 @@
-<page-layout [menu]="menu" [title]="type?.name" [hasFilters]="true" [hasHeader]="(status | async).length > 1">
+<page-layout [menu]="menu" [title]="type?.name" [tightContent]="true"
+  [hasFilters]="true" [hasHeader]="(status | async).length > 1">
   <page-header>
     <div class="indicators">
       <ng-container *ngFor="let indicator of (status | async); let last = last">
@@ -41,10 +42,7 @@
     </form>
   </page-filters>
   <page-content>
-    <div *ngIf="!dataSource.hasData">
-      {{generalMessages.searchNoResults()}}
-    </div>
-    <mat-table [fxHide]="!dataSource.hasData" [dataSource]="dataSource">
+    <mat-table #table [fxHide]="(dataSource.empty | async)" [dataSource]="dataSource">
       <!-- Avatar column -->
       <ng-container matColumnDef="avatar">
         <mat-header-cell *matHeaderCellDef class="avatar"></mat-header-cell>
@@ -85,5 +83,6 @@
       <mat-header-row *matHeaderRowDef="layout.xs ? [] : displayedColumns"></mat-header-row>
       <mat-row *matRowDef="let row; columns: displayedColumns;" class.xs="dynamic"></mat-row>
     </mat-table>
+    <paginator (update)="update()" [query]="query" [dataSource]="dataSource"></paginator>
   </page-content>
 </page-layout>

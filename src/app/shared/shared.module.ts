@@ -35,6 +35,7 @@ import { FlexLayoutModule } from "@angular/flex-layout";
 import { ViewFormComponent } from "app/shared/view-form.component";
 import { LabelValueComponent } from "app/shared/label-value.component";
 import { AvatarComponent } from "app/shared/avatar.component";
+import { PaginatorComponent } from "app/shared/paginator.component";
 import { CustomFieldValueComponent } from "app/shared/custom-field-value.component";
 import { CustomFieldInputComponent } from "app/shared/custom-field-input.component";
 import { DateFieldComponent } from "app/shared/date-field.component";
@@ -67,6 +68,7 @@ import { ConfirmationPasswordComponent } from 'app/shared/confirmation-password.
     CustomFieldInputComponent,
     PrincipalInputComponent,
     PasswordInputComponent,
+    PaginatorComponent,
     ConfirmationPasswordComponent,
     UserSelectionComponent,
     AvatarComponent,
@@ -140,6 +142,7 @@ import { ConfirmationPasswordComponent } from 'app/shared/confirmation-password.
     CustomFieldInputComponent,
     PrincipalInputComponent,
     PasswordInputComponent,
+    PaginatorComponent,
     ConfirmationPasswordComponent,
     UserSelectionComponent,
     AvatarComponent,

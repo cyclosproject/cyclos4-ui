@@ -2,37 +2,54 @@ import { ChangeDetectorRef } from "@angular/core";
 import { DataSource } from "@angular/cdk/collections";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { Observable } from "rxjs/Observable";
+import { ApiResponse } from "app/api/api-response";
+import { PaginationData } from "app/shared/pagination-data";
 
 /**
- * Simple implementation for a DataSource to be used on data tables
+ * Simple implementation for a DataSource to be used on data tables.
+ * Delegates the data to a BehaviorSubject which holds the data array.
+ * Also holds the pagination data.
  */
 export class TableDataSource<T> extends DataSource<T> {
 
-  constructor(private changeDetector: ChangeDetectorRef) {
+  /**
+   * Holds the datasource data
+   */
+  data: BehaviorSubject<T[]>;
+
+  /**
+   * Holds the pagination data
+   */
+  pagination: BehaviorSubject<PaginationData>;
+  
+  /**
+   * Observable indicating empty data
+   */
+  empty: Observable<boolean>;
+
+  /**
+   * Pushes a new data array to the datasource
+   * @param data The new data array
+   */
+  next(data: T[] |  ApiResponse<T[]>): void {
+    if (data instanceof ApiResponse) {
+      this.data.next(data.data);
+      this.pagination.next(PaginationData.from(data))
+    } else {
+      this.data.next(data);
+      this.pagination.next(null)
+    }
+  }
+
+  constructor() {
     super();
+    this.data = new BehaviorSubject([]);
+    this.empty = this.data.asObservable().map(arr => arr.length == 0);
+    this.pagination = new BehaviorSubject(null);
   }
-
-  get hasData(): boolean {
-    return this.data.length > 0;
-  }
-
-  get data(): T[] {
-    return this._data.value;
-  }
-
-  set data(value: T[]) {
-    this._data.next(value);
-    this.changeDetector.markForCheck();
-  }
-
-  asObservable(): Observable<T[]> {
-    return this._data.asObservable();
-  }
-
-  private _data: BehaviorSubject<T[]> = new BehaviorSubject([]);
 
   connect(): Observable<T[]> {
-    return this._data;
+    return this.data;
   }
 
   disconnect(): void {

@@ -34,6 +34,12 @@
   "search.noResults": "No results for the specified search criteria",
   "search.user.noKeywords": "Please, fill in the keywords to search for a user",
 
+  "pagination.pageSize": "Items per page",
+  "pagination.showing.total": "Showing {first} - {last} of {total}",
+  "pagination.showing.noTotal": "Showing {first} - {last}",
+  "pagination.previous": "Previous page",
+  "pagination.next": "Next page",
+
   "menu": "Menu",
   "menu.login": "Login",
   "menu.home": "Home",

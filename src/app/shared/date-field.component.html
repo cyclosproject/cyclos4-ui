@@ -1,12 +1,10 @@
-<div class="decimalField" fxLayout="row">
-  <mat-form-field fxFlex="grow" *ngIf="formatService.materialDateFormats | async">
-    <input #input="ngModel" matInput
-      [matDatepicker]="datepicker"
-      [focused]="focused"
-      [placeholder]="placeholder"
-      [required]="required" 
-      [(ngModel)]="value" [ngModelOptions]="{standalone: true}">
-    <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
-  </mat-form-field>
-  <mat-datepicker #datepicker></mat-datepicker>
-</div>
+<mat-form-field fxFlex="grow" *ngIf="formatService.materialDateFormats | async">
+  <input #input="ngModel" matInput
+    [matDatepicker]="datepicker"
+    [focused]="focused"
+    [placeholder]="placeholder"
+    [required]="required" 
+    [(ngModel)]="value" [ngModelOptions]="{standalone: true}">
+  <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
+</mat-form-field>
+<mat-datepicker #datepicker></mat-datepicker>

@@ -107,7 +107,7 @@ export class AccountHistoryComponent extends BaseBankingComponent implements Aft
   }
 
   query: any;
-  dataSource = new TableDataSource<AccountHistoryResult>(this.changeDetector);
+  dataSource = new TableDataSource<AccountHistoryResult>();
   status = new BehaviorSubject<StatusIndicator[]>([]);
 
   @ViewChild("filtersForm")
@@ -195,7 +195,7 @@ export class AccountHistoryComponent extends BaseBankingComponent implements Aft
   update() {
     this.accountsService.searchAccountHistory(this.query)
       .then(response => {
-        this.dataSource.data = response.data;
+        this.dataSource.next(response);
       });
   }
 

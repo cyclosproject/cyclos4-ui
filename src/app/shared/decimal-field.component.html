@@ -16,6 +16,6 @@
       numbersOnly style="text-align:right" [disabled]="disabled"
       [(ngModel)]="decimalPart" [ngModelOptions]="{standalone:true}" 
       (blur)="onBlur($event)">
-    <span mdSuffix *ngIf="suffix">&nbsp;{{suffix}}</span>
+    <span matSuffix *ngIf="suffix">&nbsp;{{suffix}}</span>
   </mat-form-field>
 </div>

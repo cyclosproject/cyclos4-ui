@@ -31,7 +31,6 @@ export const PAYMENT_USER_VALUE_ACCESSOR: Provider = {
 export class UserSelectionComponent implements OnInit, ControlValueAccessor {
   constructor(
     public generalMessages: GeneralMessages,
-    private changeDetector: ChangeDetectorRef,
     private usersService: UsersService) { }
 
   onKeywords = new Subject<string>();
@@ -41,7 +40,7 @@ export class UserSelectionComponent implements OnInit, ControlValueAccessor {
 
   showTable = new BehaviorSubject<boolean>(false);
   
-  dataSource: TableDataSource<User> = new TableDataSource(this.changeDetector);
+  dataSource: TableDataSource<User> = new TableDataSource();
 
   private _value: string
   get value(): string {
@@ -74,11 +73,11 @@ export class UserSelectionComponent implements OnInit, ControlValueAccessor {
         ignoreProfileFieldsInList: true
       })
       .then(response => {
-        this.dataSource.data = response.data;
+        this.dataSource.next(response.data);
       });
     } else {
       this.value = null;
-      this.dataSource.data = [];
+      this.dataSource.next([]);
     }
     this.showTable.next(showTable);
   }

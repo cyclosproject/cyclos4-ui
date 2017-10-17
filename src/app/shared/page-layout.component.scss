@@ -18,6 +18,10 @@
   overflow: hidden;
 }
 
+:host /deep/ .content.tight .mat-card {
+  padding: 0px;
+}
+
 .header {
   margin-bottom: $parts-margin;
 }

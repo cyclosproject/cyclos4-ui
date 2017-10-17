@@ -12,6 +12,12 @@ export class ApiHelper {
 
   /** Represents the system account owner */
   static SYSTEM = 'system';
+
+  /** The default page size */
+  static DEFAULT_PAGE_SIZE = 40;
+
+  /** The available options of page sizes in the paginator */
+  static PAGE_SIZES = [40, 100, 200];
   
   /**
    * Returns the entity internal name, if any, otherwise the id.
