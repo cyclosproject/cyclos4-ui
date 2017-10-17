@@ -23,6 +23,9 @@ export type StatusIndicator = {
   amount: string
 }
 
+/** Fields fetched when getting the account status */
+const STATUS_FIELDS = {fields: ['status']};
+
 /**
  * Displays the account history of a given account
  */
@@ -122,11 +125,15 @@ export class AccountHistoryComponent extends BaseBankingComponent implements Aft
     }
   }
 
+  get typeId(): string {
+    return this.route.snapshot.params.type;
+  }
+
   ngOnInit() {
     super.ngOnInit();
 
     // Resolve the account type
-    let type = this.route.snapshot.params.type;
+    let type = this.typeId;
     if (type == null) {
       // No account type given - get the first one
       let firstType = this.firstAccountType;
@@ -136,14 +143,6 @@ export class AccountHistoryComponent extends BaseBankingComponent implements Aft
         this.router.navigateByUrl('/banking/account/' + this.firstAccountType)
       }
     }
-
-    // Get the account status
-    this.accountsService.getAccountStatusByOwnerAndType({
-      owner: ApiHelper.SELF, accountType: type, fields: ['status']
-    })
-      .then(response => {
-        this.status.next(this.toIndicators(response.data.status));
-      });
 
     // Get the account history data
     this.accountsService.getAccountHistoryDataByOwnerAndType({
@@ -193,9 +192,17 @@ export class AccountHistoryComponent extends BaseBankingComponent implements Aft
   }
 
   update() {
+    // Update the results
     this.accountsService.searchAccountHistory(this.query)
       .then(response => {
         this.dataSource.next(response);
+      });
+
+    // Update the status
+    let statusParams = Object.assign({}, this.query, STATUS_FIELDS);
+    this.accountsService.getAccountStatusByOwnerAndType(statusParams)
+      .then(response => {
+        this.status.next(this.toIndicators(response.data.status));
       });
   }
 
@@ -218,6 +225,17 @@ export class AccountHistoryComponent extends BaseBankingComponent implements Aft
     }
     if (status.upperCreditLimit && !this.format.isZero(status.upperCreditLimit)) {
       add(status.upperCreditLimit, this.bankingMessages.accountUpperCreditLimit());
+    }
+    if (status.balanceAtBegin != null) {
+      let date = this.format.formatAsDate(this.query.datePeriod[0]);
+      add(status.balanceAtBegin, this.bankingMessages.accountBalanceOn(date));
+    }
+    if (status.balanceAtEnd != null) {
+      let date = this.format.formatAsDate(this.query.datePeriod[1]);
+      add(status.balanceAtEnd, this.bankingMessages.accountBalanceOn(date));
+    }
+    if (status.netInflow != null) {
+      add(status.netInflow, this.bankingMessages.accountNetInflow());
     }
     return result;
   }

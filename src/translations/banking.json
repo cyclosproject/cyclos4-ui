@@ -8,6 +8,8 @@
   "account.upperCreditLimit": "Upper limit",
   "account.error.noAccounts": "There are no visible accounts",
   "account.transferFilter": "Payment filter",
+  "account.balanceOn": "Balance on {date}",
+  "account.netInflow": "Net inflow",
 
   "transaction.date": "Date",
   "transaction.from": "From",

@@ -3,6 +3,7 @@
 .indicators {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
 }
 .indicator {
   display: inline-flex;
@@ -13,6 +14,7 @@
   opacity: 0.75;
   text-align: right;
   margin-top: 4px;
+  white-space: nowrap;
 }
 .indicator .amount {
   font-size: 16px;
