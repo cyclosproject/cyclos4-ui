@@ -2,7 +2,7 @@
 import { DataForUi } from "app/api/models";
 
 // The root URL for the API. Don't forget to include the /api in the end
-const API_URL = 'http://localhost:8888/api';
+const API_URL = 'http://192.168.0.22:8888/api';
 
 // Application title
 const APP_TITLE = 'Cyclos Local';

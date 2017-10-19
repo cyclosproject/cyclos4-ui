@@ -20,8 +20,10 @@ $typography: mat-typography-config();
 $max-layout-width: 1160px;
 // Width of the left area on medium to large displays
 $left-area-width: 320px;
-// Margin between parts like left area, header and page
+// Margin between parts like left area, header and page in medium - large displays
 $parts-margin: 28px;
+// Side margin in small - xsmall displays
+$small-margin: 8px;
 // Width of the sidenav on small displays
 $sidenav-width: 300px;
 // Maximum width for form fields

@@ -4,13 +4,16 @@
   padding: 24px;
 }
 
-.pagination {
+.paginator {
   padding: 12px;
 }
 
 :host /deep/ mat-select {
   width: 150px;
   margin: 0 12px;
+}
+:host /deep/ .mat-select-trigger {
+  width: 50px;
 }
 
 .page-label {
@@ -19,4 +22,8 @@
 .items {
   white-space: nowrap;
   margin-right: 12px;
+}
+
+.xs :host .paginator {
+  margin-bottom: 20px;
 }

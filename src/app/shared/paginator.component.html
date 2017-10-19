@@ -1,7 +1,7 @@
 <div class="no-data" *ngIf="dataSource.empty | async">
   {{generalMessages.searchNoResults()}}
 </div>
-<div class="pagination" fxLayout="row" fxLayoutAlign="start center"
+<div class="paginator" fxLayout="row" fxLayoutAlign="start center"
   *ngIf="!(dataSource.empty | async) && (dataSource.pagination | async)">
   <div class="page-label" fxFlex="grow">
     <ng-container *ngIf="layout.gtxs">
