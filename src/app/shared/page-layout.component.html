@@ -1,18 +1,15 @@
 <div class="left" *ngIf="showLeft | async">
   <mat-card>
-    <mat-tab-group *ngIf="hasFilters">
+    <mat-tab-group>
       <mat-tab [label]="sideMenu.title || generalMessages.menu()">
-        <side-menu #sideMenu [hideTitle]="true" [menu]="menu"></side-menu>
+        <side-menu #sideMenu [menu]="menu"></side-menu>
       </mat-tab>
-      <mat-tab label="Filters">
-        <ng-container *ngIf="hasFilters">
-          <div class="filters">
-            <ng-container *ngTemplateOutlet="filtersTpl"></ng-container>
-          </div>
-        </ng-container>
+      <mat-tab *ngIf="hasFilters" [label]="generalMessages.menuFilters()">
+        <div class="filters">
+          <ng-container *ngTemplateOutlet="filtersTpl"></ng-container>
+        </div>
       </mat-tab>
     </mat-tab-group>
-    <side-menu *ngIf="!hasFilters" [menu]="menu"></side-menu>
   </mat-card>
 </div>
 <div class="page" fxLayout="column" fxFlex="grow">

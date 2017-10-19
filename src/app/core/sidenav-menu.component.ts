@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@an
 import { MatSidenav } from '@angular/material';
 import { BaseComponent } from 'app/shared/base.component';
 import { RootMenuEntry, MenuType } from 'app/shared/menu';
+import { MenuService } from 'app/shared/menu.service';
 
 @Component({
   selector: 'sidenav-menu',
@@ -10,7 +11,9 @@ import { RootMenuEntry, MenuType } from 'app/shared/menu';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SidenavMenuComponent extends BaseComponent implements OnInit {
-  constructor(injector: Injector) {
+  constructor(
+    injector: Injector,
+    private menuService: MenuService) {
     super(injector);
   }
 
@@ -27,9 +30,9 @@ export class SidenavMenuComponent extends BaseComponent implements OnInit {
     this.update();
   }
 
-  menu: RootMenuEntry[];
+  roots: RootMenuEntry[];
 
   private update() {
-    this.menu = this.login.menu(MenuType.SIDENAV);
+    this.roots = this.menuService.menu(MenuType.SIDENAV);
   }
 }

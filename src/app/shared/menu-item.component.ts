@@ -23,6 +23,9 @@ export class MenuItemComponent extends BaseComponent {
   @Input()
   entry: BaseMenuEntry;
 
+  @Input()
+  iconClass = "mat-18";
+
   @Output()
   click = new EventEmitter<Menu>();
 

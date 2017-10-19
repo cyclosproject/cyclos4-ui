@@ -21,7 +21,8 @@ body.gt-sm {
 }
 body.lt-md, .lt-md .mat-drawer-container {
   background-color: map-get($background, card);
-}  
+}
+
 // Forms
 .gt-xs form {
   max-width: $max-form-width;
@@ -33,16 +34,42 @@ body.lt-md, .lt-md .mat-drawer-container {
 .mat-select-placeholder {
   left: -2px;
 }
+.mat-select-panel {
+  max-height: 100vh !important;
+}
 mat-checkbox + mat-checkbox,
 mat-checkbox + mat-radio-group,
 mat-radio-group + mat-radio-group, mat-radio-group + mat-checkbox {
   margin-top: 1.25em;
 }
+mat-radio-group mat-radio-button {
+  margin-bottom: 5px;
+}
+mat-radio-group mat-radio-button::last-of-type {
+  margin-bottom: 0px;
+}
+mat-radio-group.horizontal mat-radio-button + mat-radio-button {
+  margin-left: 18px;
+}
+.mat-form-field {
+  width: inherit !important;
+}
+.mat-button, .mat-raised-button {
+  min-width: inherit !important;
+}
+.form-info {
+  margin-bottom: 12px;
+}
+
+// Tabs
+.mat-tab-group.mat-primary .mat-tab-label:focus,
+.mat-tab-group.mat-primary .mat-tab-link:focus,
+.mat-tab-nav-bar.mat-primary .mat-tab-label:focus,
+.mat-tab-nav-bar.mat-primary .mat-tab-link:focus {
+  background-color: transparent !important;
+}
 
 // Data tables
-mat-tab-body {
-  padding-top: 20px;
-}
 .mat-header-cell {
   font-size: 14px;
 }
@@ -83,6 +110,11 @@ mat-cell.selection, mat-header-cell.selection {
   width: 18px;
   height: 18px;
 }
+.mat-icon.mat-22 {
+  font-size: 22px;
+  width: 22px;
+  height: 22px;
+}
 .mat-icon.mat-24 {
   font-size: 24px;
   width: 24px;
@@ -103,24 +135,8 @@ mat-cell.selection, mat-header-cell.selection {
   width: 96px;
   height: 96px;
 }
-
-mat-radio-group mat-radio-button {
-  margin-bottom: 5px;
-}
-mat-radio-group mat-radio-button::last-of-type {
-  margin-bottom: 0px;
-}
-mat-radio-button + mat-radio-button {
-  margin-left: 18px;
-}
-.mat-form-field {
-  width: inherit !important;
-}
-.mat-button, .mat-raised-button {
-  min-width: inherit !important;
-}
-.form-info {
-  margin-bottom: 12px;
+.mat-table .mat-icon {
+  opacity: 0.45;
 }
 
 a.plain {

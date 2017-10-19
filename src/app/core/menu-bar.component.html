@@ -1,6 +1,7 @@
 <layout-bar>
   <menu-item *ngFor="let root of roots"
-    [entry]="root" 
+    [entry]="root"
+    iconClass="mat-22"
     [active]="root.rootMenu == (layout.menu | async)?.root"
     (click)="onClick(root)"></menu-item>  
 </layout-bar>

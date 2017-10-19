@@ -40,24 +40,27 @@
   [(ngModel)]="fieldValue" [ngModelOptions]="{standalone: true}"></date-field>
 
 <!-- single / multi selection -->
-<mat-select #selectComponent="ngModel" fxFlex="grow" *ngIf="type == 'singleSelection' || type == 'multiSelection'"
-  [name]="field.internalName"
-  [(ngModel)]="fieldValue" [ngModelOptions]="{standalone: true}" [required]="field.required"
-  [placeholder]="field.name" [multiple]="type == 'multiSelection'">
-  <mat-option *ngFor="let pv of field.possibleValues"
-    [value]="pv.id">
-    <span *ngIf="pv.category">{{pv.category.name}} - </span>
-    {{pv.value}}
-  </mat-option>
-</mat-select>
+<mat-form-field *ngIf="type == 'singleSelection' || type == 'multiSelection'">
+  <mat-select #selectComponent="ngModel" fxFlex="grow"
+    [name]="field.internalName"
+    [(ngModel)]="fieldValue" [ngModelOptions]="{standalone: true}" [required]="field.required"
+    [placeholder]="field.name" [multiple]="type == 'multiSelection'">
+    <mat-option *ngFor="let pv of field.possibleValues"
+      [value]="pv.id">
+      <span *ngIf="pv.category">{{pv.category.name}} - </span>
+      {{pv.value}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
 
 <!-- dynamic selection -->
-<mat-select #dynamicComponent="ngModel" fxFlex="grow" *ngIf="type == 'dynamicSelection'"
-  [name]="field.internalName"
-  [(ngModel)]="value" [ngModelOptions]="{standalone: true}" [required]="field.required"
-  [placeholder]="field.name">
-  <mat-option *ngFor="let pv of field.dynamicValues"
-    [value]="pv.value">{{pv.label}}</mat-option>
-</mat-select>
-
+<mat-form-field *ngIf="type == 'dynamicSelection'">
+  <mat-select #dynamicComponent="ngModel" fxFlex="grow"
+    [name]="field.internalName"
+    [(ngModel)]="value" [ngModelOptions]="{standalone: true}" [required]="field.required"
+    [placeholder]="field.name">
+    <mat-option *ngFor="let pv of field.dynamicValues"
+      [value]="pv.value">{{pv.label}}</mat-option>
+  </mat-select>
+</mat-form-field>
 <!-- no support for file / image so far -->

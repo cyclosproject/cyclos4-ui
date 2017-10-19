@@ -1,12 +1,4 @@
 @import 'src/definitions';
-
-.title {
-  font-size: 24px;
-  line-height: 24px;
-  margin: 24px;
-  opacity: 0.85;
-}
-
 a {
   display: block;
   text-decoration: none;
@@ -28,25 +20,23 @@ a.account .name {
 a.account .balance {
   text-align: right;
   white-space: nowrap;
-  opacity: 0.5;
+  opacity: 1;
+  color: mat-color($primary);
 }
 :host /deep/ a.account .mat-button-wrapper {
   align-items: center;
 }
-.accounts {
-  margin-bottom: 12px;
-}
-.accounts a {
-  padding: 10px 24px;
-  text-align: left;
-}
-:host /deep/ menu-item a {
+a.account, :host /deep/ menu-item a {
   border-top: 1px solid mat-color($foreground, divider);
-  padding: 8px 24px;
+  text-align: left;
+  padding: 10px 24px;
   width: 100%;
 }
 :host /deep/ menu-item a.active, a.active {
   color: mat-contrast($primary, $side-menu-hue);
   background-color: mat-color($primary, $side-menu-hue);
   opacity: 1;
+}
+:host /deep/ a:not(.active) .mat-icon {
+  opacity: 0.60 !important;
 }

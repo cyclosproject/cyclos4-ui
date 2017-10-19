@@ -4,6 +4,7 @@ import { BaseComponent } from 'app/shared/base.component';
 import { User, Auth } from 'app/api/models';
 import { Subscription } from 'rxjs/Subscription';
 import { MenuEntry, RootMenu, Menu, MenuType, RootMenuEntry } from 'app/shared/menu';
+import { MenuService } from 'app/shared/menu.service';
 
 /**
  * A popup menu shown when clicking the personal icon on top
@@ -15,14 +16,19 @@ import { MenuEntry, RootMenu, Menu, MenuType, RootMenuEntry } from 'app/shared/m
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PersonalMenuComponent extends BaseComponent {
-  constructor(injector: Injector) {
+  constructor(
+    injector: Injector,
+    private menuService: MenuService) {
     super(injector);
   }
 
   ngOnInit() {
     super.ngOnInit();
     this.update();
-    document.body.addEventListener("click", e => this.hide(), false);
+    document.body.addEventListener("click", e => {
+      this.hide();
+      e.cancelBubble = true;
+    }, false);
   }
 
   menuEntries: MenuEntry[];
@@ -46,9 +52,12 @@ export class PersonalMenuComponent extends BaseComponent {
 
   toggle(a: HTMLElement) {
     if (this.container) {
-      let style = this.container.nativeElement.style as CSSStyleDeclaration;
-      if (style.display == 'none') {
+      if (this.visible) {
+        // Hide
+        this.hide();
+      } else {
         // Show
+        let style = this.container.nativeElement.style as CSSStyleDeclaration;
         style.visibility = 'hidden';
         style.opacity = '0';
         style.display = '';
@@ -70,21 +79,27 @@ export class PersonalMenuComponent extends BaseComponent {
         }
         style.visibility = 'visible';
         style.opacity = '1';
-      } else {
-        // Hide
-        this.hide();
       }
     }
   }
 
+  get visible(): boolean {
+    let style = this.container.nativeElement.style as CSSStyleDeclaration;
+    return !(style.display == 'none' || parseFloat(style.opacity) == 0);
+  }
+
   hide() {
+    if (!this.visible) {
+      // Already hidden
+      return;
+    }
     let style = this.container.nativeElement.style as CSSStyleDeclaration;
     style.opacity = '0';
     setTimeout(() => style.display = 'none', 500);
   }
 
   private update() {
-    let roots = this.login.menu(MenuType.PERSONAL);
+    let roots = this.menuService.menu(MenuType.PERSONAL);
     let personal: RootMenuEntry = null;
     for (let root of roots) {
       if (root.rootMenu == RootMenu.PERSONAL) {

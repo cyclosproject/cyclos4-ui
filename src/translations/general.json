@@ -22,7 +22,7 @@
   "period": "Period",
   "period.begin": "Begin date",
   "period.end": "End date",
-
+  
   "months.long": "January,February,March,April,May,June,July,August,September,October,November,December",
   "months.short": "Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec",
   "months.narrow": "J,F,M,A,M,J,J,A,S,O,N,D",
@@ -44,6 +44,7 @@
   "pagination.last": "Last page",
 
   "menu": "Menu",
+  "menu.filters": "Filters",
   "menu.login": "Login",
   "menu.home": "Home",
   "menu.banking": "Banking",

@@ -1,12 +1,13 @@
 import { Component, Input, ElementRef, ViewChild, ChangeDetectionStrategy, Injector } from '@angular/core';
 import { FormatService } from "app/core/format.service";
 import { BaseComponent } from 'app/shared/base.component';
-import { User, Auth, AccountWithCurrency, AccountStatus, Permissions } from 'app/api/models';
+
 import { Subscription } from 'rxjs/Subscription';
 import { Menu, RootMenu, MenuEntry, MenuType } from 'app/shared/menu';
-import { AccountsService } from 'app/api/services';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { MenuService } from 'app/shared/menu.service';
+import { AccountWithCurrency } from 'app/api/models';
 
 /**
  * A context-specific menu shown on the side of the layout for medium-large screens
@@ -20,7 +21,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 export class SideMenuComponent extends BaseComponent {
   constructor(
     injector: Injector,
-    private accountsService: AccountsService
+    public menuService: MenuService
     ) {
     super(injector);
   }
@@ -40,7 +41,6 @@ export class SideMenuComponent extends BaseComponent {
 
   title: string;
   
-  accountStatuses = new BehaviorSubject<Map<String, AccountStatus>>(new Map());
   entries = new BehaviorSubject<MenuEntry[]>([]);
 
   ngOnInit() {
@@ -58,7 +58,7 @@ export class SideMenuComponent extends BaseComponent {
 
   private update(): void {
     let found = false;
-    for (let root of this.login.menu(MenuType.SIDE)) {
+    for (let root of this.menuService.menu(MenuType.SIDE)) {
       if (root.rootMenu == this.menu.root) {
         found = true;
         this.title = root.title;
@@ -69,24 +69,6 @@ export class SideMenuComponent extends BaseComponent {
     if (!found) {
       this.title = null;
       this.entries.next([]);
-    }
-
-    if (this.menu.root == RootMenu.BANKING && this.login.user != null) {
-      // Get the balance for each account
-      this.accountsService.listAccountsByOwner({
-        owner: ApiHelper.SELF, 
-        fields: ['type.id', 'status.balance']
-      })
-      .then(response => {
-        let accountStatuses = new Map<String, AccountStatus>();
-        let accounts = response.data;
-        for (let account of accounts) {
-          accountStatuses.set(account.type.id, account.status);
-        }
-        this.accountStatuses.next(accountStatuses);
-      });
-    } else {
-      this.accountStatuses.next(new Map());
     }
   }
 

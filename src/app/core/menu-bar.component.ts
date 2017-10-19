@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
 import { Router } from '@angular/router';
 import { BaseComponent } from 'app/shared/base.component';
 import { RootMenuEntry, MenuType } from 'app/shared/menu';
+import { MenuService } from 'app/shared/menu.service';
 
 /**
  * A bar displayed below the top bar, with menu items
@@ -13,7 +14,10 @@ import { RootMenuEntry, MenuType } from 'app/shared/menu';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MenuBarComponent extends BaseComponent {
-  constructor(injector: Injector, private router: Router) {
+  constructor(
+    injector: Injector,
+    private router: Router,
+    private menuService: MenuService) {
     super(injector);
   }
 
@@ -30,7 +34,7 @@ export class MenuBarComponent extends BaseComponent {
   }
 
   private update() {
-    this.roots = this.login.menu(MenuType.BAR);
+    this.roots = this.menuService.menu(MenuType.BAR);
   }
 
   onClick(root: RootMenuEntry) {

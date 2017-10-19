@@ -7,6 +7,7 @@ import { LoginData } from "app/login/login-data";
 import { LoginFormComponent } from "app/login/login-form.component";
 import { DataForLogin, GroupForRegistration } from "app/api/models";
 import { BaseComponent } from "app/shared/base.component";
+import { Menu } from 'app/shared/menu';
 
 /**
  * Component used to show a login form.
@@ -48,6 +49,7 @@ export class LoginComponent extends BaseComponent {
       this.dataForLogin = data.dataForLogin;
       this.registrationGroups = data.registrationGroups;
     });
+    this.layout.menu.next(Menu.LOGIN);
   }
 
   /**

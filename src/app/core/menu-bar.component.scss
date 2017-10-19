@@ -2,7 +2,7 @@
 
 :host /deep/ a.active {
   color: mat-color($primary);
-  border-bottom: 1px solid mat-color($primary);
+  border-bottom: 2px solid mat-color($primary);
   opacity: 1;
 }
 
@@ -13,8 +13,9 @@
   font-weight: 400;
   position: relative;
   left: -12px;
+  top: 1px;  
 }
-:host /deep/ a * {
+:host /deep/ a.mat-button .text {
   font-size: 16px !important;
 }
 
@@ -23,4 +24,8 @@
   color: map-get($foreground, text);
   border-bottom: 1px solid mat-color($foreground, divider);
   padding: 0 16px;
+}
+
+:host /deep/ a:not(.active) .mat-icon {
+  opacity: 0.60 !important;
 }

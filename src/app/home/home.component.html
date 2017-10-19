@@ -29,7 +29,7 @@
 
           <mat-checkbox>Checkbox</mat-checkbox>
     
-          <mat-radio-group>
+          <mat-radio-group class="horizontal">
             <mat-radio-button value="1">
               Radio 1
             </mat-radio-button>
@@ -40,16 +40,22 @@
               Radio 3
             </mat-radio-button>  
           </mat-radio-group>
-          <mat-select placeholder="Single select" multiple="false">
-            <mat-option value="1">Value 1</mat-option>
-            <mat-option value="2">Value 2</mat-option>
-            <mat-option value="3">Value 3</mat-option>
-          </mat-select>    
-          <mat-select placeholder="Multi select" multiple="true">
-            <mat-option value="1">Value 1</mat-option>
-            <mat-option value="2">Value 2</mat-option>
-            <mat-option value="3">Value 3</mat-option>
-          </mat-select>    
+
+          <mat-form-field>
+            <mat-select placeholder="Single select" multiple="false">
+              <mat-option value="1">Value 1</mat-option>
+              <mat-option value="2">Value 2</mat-option>
+              <mat-option value="3">Value 3</mat-option>
+            </mat-select>    
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-select placeholder="Multi select" multiple="true">
+              <mat-option value="1">Value 1</mat-option>
+              <mat-option value="2">Value 2</mat-option>
+              <mat-option value="3">Value 3</mat-option>
+            </mat-select>    
+          </mat-form-field>
         </div>
       </section>
     </section>

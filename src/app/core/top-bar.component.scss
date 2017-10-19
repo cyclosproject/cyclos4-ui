@@ -18,8 +18,10 @@
 }
 :host /deep/ .outer {
   background-color: mat-color($primary);
-  color: mat-color($primary, default-contrast);
   padding: 16px;
+}
+:host /deep/ .outer, .personalMenuToggle {
+  color: rgba(mat-color($primary, default-contrast), 1);
 }
 .lt-md :host /deep/ .outer {
   padding-top: 8px;
@@ -30,7 +32,6 @@
 }
 .personalMenuToggle {
   text-decoration: none;
-  color: mat-color($primary, default-contrast);
 }
 .personalMenuToggle avatar {
   margin-right: 8px;
