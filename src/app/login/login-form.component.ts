@@ -1,9 +1,10 @@
-import { Component, OnInit, ChangeDetectionStrategy, Output, EventEmitter, Input } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Output, EventEmitter, Input, Injector } from '@angular/core';
 import { Router } from "@angular/router";
 import { GeneralMessages } from "app/messages/general-messages";
 import { LoginService } from "app/core/login.service";
-import { LoginData } from "app/login/login-data";
 import { DataForLogin } from "app/api/models";
+import { BaseComponent } from 'app/shared/base.component';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 /**
  * Displays the login form
@@ -14,39 +15,30 @@ import { DataForLogin } from "app/api/models";
   styleUrls: ['login-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LoginFormComponent implements OnInit {
+export class LoginFormComponent extends BaseComponent {
 
   @Input()
   dataForLogin: DataForLogin;
 
   @Input()
-  data: LoginData = new LoginData();
-
-  @Input()
   showActions: boolean;
 
+  @Input()
+  loginForm: FormGroup;
+
   @Output()
-  onSubmit: EventEmitter<LoginData>;
+  onSubmit = new EventEmitter<void>();
 
   constructor(
-    public generalMessages: GeneralMessages,
-    private loginService: LoginService,
-    private router: Router
+    injector: Injector
   ) {
-    this.onSubmit = new EventEmitter();
-  }
-
-  ngOnInit() {
+    super(injector);
   }
 
   /**
    * Emits the current login data
    */
   emit(): void {
-    this.onSubmit.emit(new LoginData(this.data.principal, this.data.password));
-  }
-
-  get valid(): boolean {
-    return this.data && this.data.valid;
+    this.onSubmit.emit();
   }
 }

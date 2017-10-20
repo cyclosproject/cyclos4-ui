@@ -3,11 +3,10 @@ import { GeneralMessages } from "app/messages/general-messages";
 import { LoginService } from "app/core/login.service";
 import { Router, ActivatedRoute } from "@angular/router";
 import { LayoutService } from "app/core/layout.service";
-import { LoginData } from "app/login/login-data";
-import { LoginFormComponent } from "app/login/login-form.component";
 import { DataForLogin, GroupForRegistration } from "app/api/models";
 import { BaseComponent } from "app/shared/base.component";
 import { Menu } from 'app/shared/menu';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 /**
  * Component used to show a login form.
@@ -21,13 +20,12 @@ import { Menu } from 'app/shared/menu';
 })
 export class LoginComponent extends BaseComponent {
 
-  @ViewChild("loginForm")
-  public loginForm: LoginFormComponent;
+  loginForm: FormGroup;
 
-  public dataForLogin: DataForLogin;
-  public registrationGroups: GroupForRegistration[];
+  dataForLogin: DataForLogin;
+  registrationGroups: GroupForRegistration[];
 
-  public get canRegister(): boolean {
+  get canRegister(): boolean {
     return this.registrationGroups != null && this.registrationGroups.length > 0;
   }
 
@@ -35,9 +33,14 @@ export class LoginComponent extends BaseComponent {
     injector: Injector,
     private loginService: LoginService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    formBuilder: FormBuilder
   ) {
     super(injector);
+    this.loginForm = formBuilder.group({
+      principal: '',
+      password: ''
+    });
   }
 
   ngOnInit() {
@@ -55,12 +58,12 @@ export class LoginComponent extends BaseComponent {
   /**
    * Performs the login
    */
-  doLogin(data: LoginData): void {
+  doLogin(): void {
     // When using the external login button there's no data, so we assume it comes from the login form
-    data = data || this.loginForm.data;
-    if (!data.valid) return;
-    
-    this.loginService.login(data.principal, data.password)
+    if (!this.loginForm.valid) return;
+
+    let value = this.loginForm.value;    
+    this.loginService.login(value.principal, value.password)
       .then(u => {
         // Redirect to the correct URL
         this.router.navigateByUrl(this.loginService.redirectUrl || '');

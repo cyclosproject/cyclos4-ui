@@ -1,41 +1,43 @@
 <!-- View for small to large devices -->
-<div *ngIf="layout.gtxs" fxLayout="column" fxLayout.gt-xs="row">
-  <section fxFlex="0 0 44%" [title]="generalMessages.loginTitle()">
-    <login-form #loginForm [dataForLogin]="dataForLogin"
-      (onSubmit)="doLogin($event)" [showActions]="!canRegister"></login-form>
-  </section>
+<div *ngIf="layout.gtxs" fxLayout="row" fxLayout.sm="column">
+  <mat-card fxFlex="grow" fxLayout="column">
+    <section fxFlex="grow" [title]="generalMessages.loginTitle()">
+      <login-form [loginForm]="loginForm" [dataForLogin]="dataForLogin"
+        (onSubmit)="doLogin()" [showActions]="!canRegister"></login-form>
+    </section>
+    <actions fxFlex="nogrow">
+      <button mat-raised-button color="accent" [disabled]="!loginForm.valid" (click)="doLogin()">
+        {{generalMessages.loginAction()}}
+      </button>
+    </actions>    
+  </mat-card>
 
-  <div *ngIf="canRegister" fxFlex="0 0 12%"></div>
+  <div *ngIf="canRegister" fxFlex="24px"></div>
 
-  <section *ngIf="canRegister" fxFlex="0 0 44%" [title]="generalMessages.loginRegisterTitle()">
-    {{generalMessages.loginRegisterText()}}
-  </section>
-</div>
-<div *ngIf="canRegister && layout.gtxs" fxLayout="row">
-  <actions fxFlex="0 0 44%">
-    <button mat-raised-button color="accent" [disabled]="loginForm == null || !loginForm.valid" (click)="doLogin(null)">
-      {{generalMessages.loginAction()}}
-    </button>
-  </actions>
-  <div fxFlex="0 0 12%"></div>
-  <actions fxFlex="0 0 44%">
-    <button mat-raised-button color="accent" (click)="register()">
-      {{generalMessages.loginRegisterAction()}}
-    </button>
-  </actions>
+  <mat-card *ngIf="canRegister" fxFlex="grow" fxLayout="column">
+    <section *ngIf="canRegister" fxFlex="grow" [title]="generalMessages.loginRegisterTitle()">
+      {{generalMessages.loginRegisterText()}}
+    </section>
+    <actions fxFlex="nogrow">
+      <button mat-raised-button color="accent" (click)="register()">
+        {{generalMessages.loginRegisterAction()}}
+      </button>      
+    </actions>    
+  </mat-card>
 </div>
 
 <!-- Tabbed view for extra small devices when registration is enabled -->
 <mat-tab-group *ngIf="canRegister && layout.xs">
   <mat-tab [label]="generalMessages.loginTitle()">
-    <login-form class="topMargin" #mobileLoginForm [dataForLogin]="dataForLogin" [showActions]="true" (onSubmit)="doLogin($event)"></login-form>
+    <login-form class="topMargin" [loginForm]="loginForm" [dataForLogin]="dataForLogin"
+      (onSubmit)="doLogin()" [showActions]="true"></login-form>
   </mat-tab>
   <mat-tab [label]="generalMessages.loginRegisterTitle()">
     <div class="topMargin">
       {{generalMessages.loginRegisterText()}}
     </div>
     <actions>
-      <button mat-raised-button [disabled]="mobileLoginForm == null || !mobileLoginForm.valid" color="accent" (click)="register()">
+      <button mat-raised-button [disabled]="!loginForm.valid" color="accent" (click)="register()">
         {{generalMessages.loginRegisterAction()}}
       </button>
     </actions>

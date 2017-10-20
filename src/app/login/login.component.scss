@@ -1,3 +1,7 @@
 .topMargin {
   margin-top: 16px;
 }
+:host /deep/ button {
+  min-height: 40px;
+  min-width: 150px !important;
+}

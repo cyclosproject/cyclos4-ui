@@ -33,7 +33,7 @@ export class PageLayoutComponent extends BaseComponent {
   tightContent: boolean = false;
 
   @Input()
-  loaded: Observable<boolean>;
+  loaded: Observable<any>;
 
   @Input()
   title: string;

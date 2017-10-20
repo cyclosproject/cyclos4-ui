@@ -1,13 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from "@angular/common";
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RouterModule } from "@angular/router";
 
 import {
   MatButtonModule, MatInputModule, MatCheckboxModule, MatRadioModule,
   MatSelectModule, MatDatepickerModule, MatTooltipModule,
   MatIconModule, MatGridListModule, MatTabsModule, MatTableModule,
-  MatSidenavModule, MatDialog, MatDialogModule, MatCardModule
+  MatDialog, MatDialogModule, MatCardModule,
+  MatSidenavModule, MatStepperModule
 } from '@angular/material'
 
 import { PageLayoutComponent } from "app/shared/page-layout.component";
@@ -91,6 +92,7 @@ import { ConfirmationPasswordComponent } from 'app/shared/confirmation-password.
     CommonModule,
     RouterModule,
     FormsModule,
+    ReactiveFormsModule,
     FlexLayoutModule,
     MatButtonModule,
     MatInputModule, 
@@ -103,14 +105,16 @@ import { ConfirmationPasswordComponent } from 'app/shared/confirmation-password.
     MatGridListModule,
     MatTabsModule,
     MatTableModule,
-    MatSidenavModule,
     MatDialogModule,
-    MatCardModule
+    MatCardModule,
+    MatSidenavModule,
+    MatStepperModule
   ],
   exports: [
     CommonModule,
     RouterModule,
     FormsModule,
+    ReactiveFormsModule,
     FlexLayoutModule,
     MatButtonModule,
     MatInputModule, 
@@ -123,9 +127,10 @@ import { ConfirmationPasswordComponent } from 'app/shared/confirmation-password.
     MatGridListModule,
     MatTabsModule,
     MatTableModule,
-    MatSidenavModule,
     MatDialogModule,
     MatCardModule,
+    MatSidenavModule,
+    MatStepperModule,
 
     PageLayoutComponent,
     SideMenuComponent,
