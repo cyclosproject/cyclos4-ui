@@ -60,6 +60,7 @@ mat-radio-group.horizontal mat-radio-button + mat-radio-button {
 }
 .mat-button, .mat-raised-button {
   min-width: inherit !important;
+  min-height: 40px;
 }
 .form-info {
   margin-bottom: 12px;
