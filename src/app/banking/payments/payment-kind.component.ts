@@ -1,69 +1,26 @@
 import { Component, Injector, Provider, forwardRef, ChangeDetectionStrategy, ViewChild, Input } from '@angular/core';
-import { NG_VALUE_ACCESSOR, ControlValueAccessor } from "@angular/forms";
+import { NG_VALUE_ACCESSOR, ControlValueAccessor, FormGroup } from "@angular/forms";
 import { BaseBankingComponent } from "app/banking/base-banking.component";
 import { PaymentKind } from "app/banking/payments/payment-kind";
 import { MatRadioGroup } from "@angular/material";
-
-// Definition of the exported NG_VALUE_ACCESSOR provider
-export const PAYMENT_KIND_VALUE_ACCESSOR: Provider = {
-  provide: NG_VALUE_ACCESSOR,
-  useExisting: forwardRef(() => PaymentKindComponent),
-  multi: true
-};
+import { PaymentKindAndIdMethod } from 'app/banking/payments/payment-kind-and-id-method';
 
 /**
- * Provides the selection of the payment kind the user will perform
+ * Provides the selection of the payment kind
  */
 @Component({
   selector: 'payment-kind',
   templateUrl: 'payment-kind.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [PAYMENT_KIND_VALUE_ACCESSOR]
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PaymentKindComponent extends BaseBankingComponent implements ControlValueAccessor {
+export class PaymentKindComponent extends BaseBankingComponent {
   constructor(injector: Injector) {
     super(injector);
   }
 
-  private _value: PaymentKind
-  get value(): PaymentKind {
-    return this._value;
-  }
-  set value(val: PaymentKind)  {
-    this._value = val;
-    this.changeCallback(val);
-  }
+  @Input()
+  kindForm: FormGroup;
 
   @Input()
-  allowedKinds: PaymentKind[];
-
-  kindLabels;
-  
-  private changeCallback = (_: any) => { };
-  private touchedCallback = () => { };
-
-  @ViewChild("kindRadio")
-  private kindRadioGroup: MatRadioGroup
-
-  ngOnInit() {
-    super.ngOnInit();
-
-    this.kindLabels = {};
-    this.kindLabels[PaymentKind.USER] = this.bankingMessages.paymentKindUser();
-    this.kindLabels[PaymentKind.SELF] = this.bankingMessages.paymentKindSelf();
-    this.kindLabels[PaymentKind.SYSTEM] = this.bankingMessages.paymentKindSystem();
-  }
-
-  writeValue(obj: any): void {
-    this.value = obj
-  }
-  registerOnChange(fn: any): void {
-    this.changeCallback = fn;
-  }
-  registerOnTouched(fn: any): void {
-    this.touchedCallback = fn;
-  }
-  setDisabledState(isDisabled: boolean): void {
-    this.kindRadioGroup.disabled = isDisabled;
-  }
+  allowedKindAndIdMethods: PaymentKindAndIdMethod[];
 }

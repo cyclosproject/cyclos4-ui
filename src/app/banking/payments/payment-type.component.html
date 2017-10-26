@@ -1,7 +1,9 @@
-<div class="form-info">{{bankingMessages.paymentTypeMessage()}}</div>
-<mat-radio-group #paymentTypeRadio [(ngModel)]="value" name="kind" fxLayout="column">
-    <mat-radio-button *ngFor="let paymentType of allowedPaymentTypes"
+<ng-container [formGroup]="typeForm">
+  <div class="form-info">{{bankingMessages.paymentTypeMessage()}}</div>
+    <mat-radio-group #paymentTypeRadio formControlName="type" fxLayout="column">
+      <mat-radio-button *ngFor="let paymentType of allowedPaymentTypes"
       [value]="paymentType">
-        {{paymentType.name}}
+      {{paymentType.name}}
     </mat-radio-button>
-</mat-radio-group>
+  </mat-radio-group>
+</ng-container>

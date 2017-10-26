@@ -28,8 +28,13 @@
   }
 }
 
-:host /deep/ .content.tight .mat-card {
-  padding: 0px;
+:host /deep/ .mat-card {
+  margin: 0 !important;
+}
+:host /deep/ .content.tight {
+  .mat-card, .mat-card-content {
+    padding: 0px;
+  }
 }
 
 .header {

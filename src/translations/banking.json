@@ -22,25 +22,38 @@
   "transaction.description": "Description",
 
   "payment.title": "Perform payment",
-  "payment.kind.message": "Please, select the payment you want to perform",
-  "payment.kind.user": "To user",
-  "payment.kind.self": "Between my accounts",
-  "payment.kind.system": "To system account",
-  "payment.idMethod.message": "Please, choose the way you want to select the user",
-  "payment.idMethod.autocomplete": "Search",
-  "payment.idMethod.contact": "Contact list",
+  
+  "payment.kind": "Destination",
+  "payment.kind.message": "Please, select which payment to perform",
+  "payment.kind.autocomplete": "Pay to a user using a search",
+  "payment.kind.contact": "Pay to user in my contact list",
+  "payment.kind.principal": "Pay to a user finding by {principal}",
+  "payment.kind.system": "Pay to a system account",
+  "payment.kind.self": "Transfer funds between own accounts",
+
+  "payment.user": "User",
+  "payment.user.message": "Please, select the user which will receive the payment",
   "payment.user.search": "Please, input the search keywords and select the user",
   "payment.user.contacts": "Please, select the user from your contact list",
   "payment.user.principal": "Please, enter the user data below",
+  "payment.error.noContacts": "Your contact list is empty",
+  
+  "payment.type": "Type",
   "payment.type.message": "Please, select the payment type",
+  "payment.error.noPaymentType": "There is no possible payment type for this payment",
+
+  "payment.fields": "Fields",
   "payment.fields.message": "Please, fill in the payment fields below",
+  
+  "payment.preview": "Confirmation",
   "payment.preview.message": "Please, review and confirm the payment",
   "payment.preview.auth.message": "Please, review and confirm the payment. Once confirmed, the payment will be pending further authorization.",
   "payment.mainAmount": "Main amount",
   "payment.totalAmount": "Total amount",
   "payment.fees": "Applied fees",
+
+  "payment.done": "Done",
   "payment.done.message": "The payment was successfully performed",
   "payment.done.auth.message": "The payment was submitted for further authorization",
-  "payment.newPayment": "New payment",
-  "payment.error.noPaymentType": "There is no possible payment type for this payment"
+  "payment.newPayment": "New payment"
 }

@@ -1,47 +1,96 @@
-<page-layout [menu]="menu">
+<page-layout [menu]="menu" [loaded]="initialData">
   <page-content [title]="bankingMessages.paymentTitle()">
-    <form *ngIf="initialData | async" focusFirst #form="ngForm" fxLayout="column">
-      <payment-kind *ngIf="step == 'kind'"
-        [(ngModel)]="kind" name="kind"
-        [allowedKinds]="allowedKinds" ></payment-kind>
-
-      <payment-id-method *ngIf="step == 'idMethod'"
-        [(ngModel)]="idMethod" name="idMethod"
-        [allowedIdMethods]="allowedIdMethods"></payment-id-method>
-
-      <payment-user *ngIf="step == 'user'"
-        [(ngModel)]="user" name="user"
-        [idMethod]="idMethod"></payment-user>
-
-      <payment-type *ngIf="step == 'type' && (paymentData | async)"
-        [(ngModel)]="paymentType" name="paymentType"
-        [allowedPaymentTypes]="paymentData.value.paymentTypes"></payment-type>
-
-      <payment-fields *ngIf="step == 'fields' && (paymentTypeData | async)"
-        [(ngModel)]="payment" name="payment"
-        [paymentTypeData]="paymentTypeData.value"></payment-fields>
-
-      <payment-preview *ngIf="step == 'preview' && (preview | async)"
-        [(ngModel)]="confirmationPassword" name="confirmationPassword"
-        [preview]="preview.value"></payment-preview>
-
-      <payment-done *ngIf="step == 'done' && (performed | async)"
-        [payment]="performed"></payment-done>
-
-      <actions fxLayout="column-reverse" fxLayout.gt-xs="row">
-        <button mat-raised-button *ngIf="step != 'done' && step != 'kind'"(click)="previous()">
-          {{generalMessages.previous()}}
-        </button>
-        <button mat-raised-button *ngIf="step != 'preview' && step != 'done'" [disabled]="!nextEnabled" color="accent" (click)="next()">
-          {{generalMessages.next()}}
-        </button>
-        <button mat-raised-button *ngIf="step == 'preview'" color="accent" (click)="performPayment()">
-          {{generalMessages.confirm()}}
-        </button>
-        <button mat-raised-button *ngIf="step == 'done'" (click)="reset()">
-          {{bankingMessages.paymentNewPayment()}}
-        </button>
-      </actions>
-    </form>
+    <td-steps #stepper [mode]="layout.ltmd ? 'vertical' : 'horizontal'">
+      <td-step #kindStep [label]="bankingMessages.paymentKind()"
+        [sublabel]="layout.ltmd ? (kindAndIdMethod | async)?.label : null">
+        <payment-kind [kindForm]="kindForm"
+          [allowedKindAndIdMethods]="allowedKindAndIdMethods"></payment-kind>
+        <actions fxLayout="column-reverse" fxLayout.gt-xs="row">
+          <button fxFlex.gt-xs="nogrow" mat-raised-button color="accent"
+            [disabled]="!kindForm.valid" (click)="nextFromKind()">
+            {{generalMessages.next()}}
+          </button>
+        </actions>
+      </td-step>
+      <td-step #userStep [label]="bankingMessages.paymentUser()"
+        [sublabel]="layout.ltmd ? (toUser | async)?.display : null">
+        <ng-container *ngIf="stepperControl.monitor(userStep) | async">
+          <payment-user
+            [userForm]="userForm"
+            [idMethod]="(kindAndIdMethod | async)?.idMethod"
+            [dataForSearch]="userDataForSearch | async"
+            [contacts]="contacts | async"></payment-user>
+          <actions fxLayout="column-reverse" fxLayout.gt-xs="row">
+            <button mat-raised-button (click)="previousFromUser()">
+              {{generalMessages.previous()}}
+            </button>
+            <button mat-raised-button color="accent"
+            [disabled]="!userForm.valid" (click)="nextFromUser()">
+            {{generalMessages.next()}}
+          </button>
+        </actions>
+      </ng-container>
+      </td-step>
+      <td-step #typeStep [label]="bankingMessages.paymentType()"
+        [sublabel]="layout.ltmd ? (paymentType | async)?.name : null">
+        <ng-container *ngIf="(stepperControl.monitor(typeStep) | async) && (paymentTypes | async)">
+          <payment-type [typeForm]="typeForm"
+            [allowedPaymentTypes]="paymentTypes | async"></payment-type>
+          <actions fxLayout="column-reverse" fxLayout.gt-xs="row">
+            <button mat-raised-button (click)="previousFromType()">
+              {{generalMessages.previous()}}
+            </button>
+            <button mat-raised-button color="accent"
+              [disabled]="!typeForm.valid" (click)="nextFromType()">
+              {{generalMessages.next()}}
+            </button>
+          </actions>
+        </ng-container>
+      </td-step>
+      <td-step #fieldsStep [label]="bankingMessages.paymentFields()"
+        [sublabel]="layout.ltmd ? (fieldsForm.value.amount | currency:(paymentTypeData | async)?.currency) : null">
+        <ng-container *ngIf="stepperControl.monitor(fieldsStep) | async">
+          <payment-fields [fieldsForm]="fieldsForm"
+            [paymentTypeData]="paymentTypeData | async"></payment-fields>
+          <actions fxLayout="column-reverse" fxLayout.gt-xs="row">
+            <button mat-raised-button (click)="previousFromFields()">
+              {{generalMessages.previous()}}
+            </button>
+            <button mat-raised-button color="accent"
+              [disabled]="!fieldsForm.valid" (click)="nextFromFields()">
+              {{generalMessages.next()}}
+            </button>
+          </actions>
+        </ng-container>
+      </td-step>
+      <td-step #previewStep [label]="bankingMessages.paymentPreview()">
+        <ng-container *ngIf="stepperControl.monitor(previewStep) | async">
+          <payment-preview #previewComponent [previewForm]="previewForm"
+            [preview]="preview | async"></payment-preview>
+          <actions fxLayout="column-reverse" fxLayout.gt-xs="row">
+            <button mat-raised-button (click)="previousFromPreview()">
+              {{generalMessages.previous()}}
+            </button>
+            <button mat-raised-button color="accent"
+              [disabled]="!fieldsForm.valid || !previewComponent.canConfirm"
+              (click)="nextFromPreview()">
+              {{generalMessages.confirm()}}
+            </button>
+          </actions>
+        </ng-container>
+      </td-step>
+      <td-step #doneStep [label]="bankingMessages.paymentDone()">
+        <ng-container *ngIf="(stepperControl.monitor(doneStep) | async) && (performed | async)">
+          <payment-done [payment]="performed | async"></payment-done>
+          <actions fxLayout="column-reverse" fxLayout.gt-xs="row">
+            <button mat-raised-button color="accent"
+              (click)="newPayment()">
+              {{bankingMessages.paymentNewPayment()}}
+            </button>
+          </actions>
+        </ng-container>
+      </td-step>
+    </td-steps>
+    <linear-stepper-control #stepperControl [stepper]="stepper"></linear-stepper-control>
   </page-content>
 </page-layout>

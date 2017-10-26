@@ -1,16 +1,9 @@
-import { Component, Injector, Provider, forwardRef, ChangeDetectionStrategy, ViewChild, Input } from '@angular/core';
-import { NG_VALUE_ACCESSOR, ControlValueAccessor } from "@angular/forms";
+import { Component, Injector, ChangeDetectionStrategy, Input } from '@angular/core';
 import { BaseBankingComponent } from "app/banking/base-banking.component";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { PaymentPreview, AccountKind } from 'app/api/models';
 import { ApiHelper } from 'app/shared/api-helper';
-
-// Definition of the exported NG_VALUE_ACCESSOR provider
-export const PAYMENT_PREVIEW_VALUE_ACCESSOR: Provider = {
-  provide: NG_VALUE_ACCESSOR,
-  useExisting: forwardRef(() => PaymentPreviewComponent),
-  multi: true
-};
+import { FormGroup } from '@angular/forms';
 
 /**
  * Displays the payment preview and presents the confirmation password
@@ -18,10 +11,9 @@ export const PAYMENT_PREVIEW_VALUE_ACCESSOR: Provider = {
 @Component({
   selector: 'payment-preview',
   templateUrl: 'payment-preview.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [PAYMENT_PREVIEW_VALUE_ACCESSOR]
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PaymentPreviewComponent extends BaseBankingComponent implements ControlValueAccessor {
+export class PaymentPreviewComponent extends BaseBankingComponent {
   constructor(
     injector: Injector) {
     super(injector);
@@ -30,14 +22,8 @@ export class PaymentPreviewComponent extends BaseBankingComponent implements Con
   @Input()
   preview: PaymentPreview;
 
-  private _confirmationPassword: string
-  get confirmationPassword(): string {
-    return this._confirmationPassword;
-  }
-  set confirmationPassword(val: string) {
-    this._confirmationPassword = val;
-    this.changeCallback(val);
-  }
+  @Input()
+  previewForm: FormGroup;
 
   get from(): string {
     return ApiHelper.accountName(this.generalMessages, true,
@@ -65,18 +51,9 @@ export class PaymentPreviewComponent extends BaseBankingComponent implements Con
     return (this.preview.payment.description || '').length > 0;
   }
 
-  private changeCallback = (_: any) => { };
-  private touchedCallback = () => { };
+  get canConfirm(): boolean {
+    return ApiHelper.canConfirm(this.preview.confirmationPasswordInput);
+  }
 
-  writeValue(obj: any): void {
-    this.confirmationPassword = obj
-  }
-  registerOnChange(fn: any): void {
-    this.changeCallback = fn;
-  }
-  registerOnTouched(fn: any): void {
-    this.touchedCallback = fn;
-  }
-  setDisabledState(isDisabled: boolean): void {
-  }
+
 }

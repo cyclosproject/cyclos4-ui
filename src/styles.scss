@@ -1,9 +1,13 @@
 @import '~normalize.css/normalize.css';
 @import 'src/definitions';
+@import '~@covalent/core/theming/all-theme';
 
 // Angular material theme with variables defined in _definitions.scss
 @include mat-core();
 @include angular-material-theme($theme);
+
+// Teradata covalent theme
+@include covalent-theme($theme);
 
 // Application style
 * {
@@ -67,6 +71,15 @@ mat-radio-group.horizontal mat-radio-button + mat-radio-button {
 .mat-tab-nav-bar.mat-primary .mat-tab-label:focus,
 .mat-tab-nav-bar.mat-primary .mat-tab-link:focus {
   background-color: transparent !important;
+}
+
+// Steppers
+.td-step-content {
+  margin: 0 !important;
+  padding: 16px !important;
+}
+.td-edit-icon {
+  display: none !important;
 }
 
 // Data tables

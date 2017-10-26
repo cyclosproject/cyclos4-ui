@@ -22,12 +22,16 @@
     <!-- There is a left area: separated containers for header and content -->
     <div *ngIf="hasHeader" class="header">
       <mat-card>
-        <ng-container *ngTemplateOutlet="headerTpl"></ng-container>
+        <mat-card-content>
+          <ng-container *ngTemplateOutlet="headerTpl"></ng-container>
+        </mat-card-content>
       </mat-card>
     </div>
     <div class="content" [ngClass]="{'tight': tightContent}">
       <mat-card>
-        <ng-container *ngTemplateOutlet="contentTpl"></ng-container>
+        <mat-card-content>
+          <ng-container *ngTemplateOutlet="contentTpl"></ng-container>
+        </mat-card-content>
       </mat-card>  
     </div>
   </ng-container>

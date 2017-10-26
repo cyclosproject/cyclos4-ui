@@ -1,8 +1,9 @@
-import { Component, ChangeDetectionStrategy, Input, Provider, forwardRef, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Provider, forwardRef, ViewChild, OnChanges } from '@angular/core';
 import { PasswordInput, PasswordModeEnum } from 'app/api/models';
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS, Validator, ControlValueAccessor, AbstractControl, ValidationErrors } from '@angular/forms';
 import { PasswordInputComponent } from 'app/shared/password-input.component';
 import { GeneralMessages } from 'app/messages/general-messages';
+import { Subscription } from 'rxjs';
 
 // Definition of the exported NG_VALUE_ACCESSOR provider
 export const CONFIRMATION_PASSWORD_VALUE_ACCESSOR: Provider = {
@@ -30,7 +31,7 @@ export const CONFIRMATION_PASSWORD_VALIDATOR: Provider = {
     CONFIRMATION_PASSWORD_VALIDATOR
   ]
 })
-export class ConfirmationPasswordComponent implements AfterViewInit, ControlValueAccessor, Validator {
+export class ConfirmationPasswordComponent implements OnChanges, ControlValueAccessor, Validator {
   constructor(
     public generalMessages: GeneralMessages
   ) { }
@@ -40,10 +41,14 @@ export class ConfirmationPasswordComponent implements AfterViewInit, ControlValu
   @ViewChild("passwordComponent")
   private passwordComponent: PasswordInputComponent;
 
-  ngAfterViewInit(): void {
-    this.passwordComponent.otpSent.subscribe(() => {
-      this.passwordInput.hasActivePassword = true;
-    });
+  private otpSubscription: Subscription;
+
+  ngOnChanges() {
+    if (this.otpSubscription == null && this.passwordComponent) {
+      this.otpSubscription = this.passwordComponent.otpSent.subscribe(() => {
+        this.passwordInput.hasActivePassword = true;
+      });
+    }
   }
 
   private changeCallback = (_: any) => { };

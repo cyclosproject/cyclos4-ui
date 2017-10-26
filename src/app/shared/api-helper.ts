@@ -1,6 +1,7 @@
-import { Entity, AccountWithOwner, TransferType, AccountKind, TransactionView, User } from "app/api/models";
+import { Entity, AccountWithOwner, TransferType, AccountKind, TransactionView, User, CustomFieldDetailed, PasswordInput, PasswordModeEnum } from "app/api/models";
 import { environment } from "environments/environment"
 import { GeneralMessages } from "app/messages/general-messages";
+import { FormBuilder, FormGroup, ValidatorFn, Validators } from "@angular/forms";
 
 /**
  * Helper methods for working with API model
@@ -104,5 +105,39 @@ export class ApiHelper {
    */
   static get quickSearchPageSize(): number {
     return environment.quickSearchPageSize || 10;
+  }
+
+  /**
+   * Returns whether the given password input is enabled for confirmation.
+   * That means: if the password is an OTP, needs valid mediums to send.
+   * Otherwise, there must have an active password.
+   * If passwordInput is null it is assumed that no confirmation password is needed, hence, can confirm.
+   */
+  static canConfirm(passwordInput: PasswordInput): boolean {
+    if (passwordInput == null || passwordInput.hasActivePassword) {
+      return true;
+    }
+    if (passwordInput.mode == PasswordModeEnum.OTP) {
+      return (passwordInput.otpSendMediums || []).length > 0;
+    }
+    return false;
+  }
+
+  /**
+   * Returns a FormGroup which contains a form control for each of the given custom fields
+   * @param formBuilder The form builder
+   * @param customFields The custom fields
+   * @returns The FormGroup
+   */
+  static customValuesFormGroup(formBuilder: FormBuilder, customFields: CustomFieldDetailed[]): FormGroup {
+    let customValues = {};
+    for (let cf of customFields) {
+      let val: ValidatorFn[] = [];
+      if (cf.required) {
+        val.push(Validators.required);
+      }
+      customValues[cf.internalName] = [null, val];
+    }
+    return formBuilder.group(customValues);
   }
 }

@@ -1,28 +1,30 @@
 <!-- View for small to large devices -->
 <div *ngIf="layout.gtxs" fxLayout="row" fxLayout.sm="column">
-  <mat-card fxFlex="grow" fxLayout="column">
-    <section fxFlex="grow" [title]="generalMessages.loginTitle()">
+  <mat-card fxFlex="grow">
+    <mat-card-title>{{generalMessages.loginTitle()}}</mat-card-title>
+    <mat-card-content>
       <login-form [loginForm]="loginForm" [dataForLogin]="dataForLogin"
         (onSubmit)="doLogin()" [showActions]="!canRegister"></login-form>
-    </section>
-    <actions fxFlex="nogrow">
+    </mat-card-content>
+    <mat-card-actions>
       <button mat-raised-button color="accent" [disabled]="!loginForm.valid" (click)="doLogin()">
         {{generalMessages.loginAction()}}
       </button>
-    </actions>    
+    </mat-card-actions>
   </mat-card>
 
   <div *ngIf="canRegister" fxFlex="24px"></div>
 
   <mat-card *ngIf="canRegister" fxFlex="grow" fxLayout="column">
-    <section *ngIf="canRegister" fxFlex="grow" [title]="generalMessages.loginRegisterTitle()">
+    <mat-card-title>{{generalMessages.loginRegisterTitle()}}</mat-card-title>
+    <mat-card-content fxFlex="grow">
       {{generalMessages.loginRegisterText()}}
-    </section>
-    <actions fxFlex="nogrow">
+    </mat-card-content>
+    <mat-card-actions>
       <button mat-raised-button color="accent" (click)="register()">
         {{generalMessages.loginRegisterAction()}}
       </button>      
-    </actions>    
+    </mat-card-actions>
   </mat-card>
 </div>
 

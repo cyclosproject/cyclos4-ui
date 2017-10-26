@@ -1,5 +1,7 @@
 import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
 
+export type TitleSize = 'regular' | 'small';
+
 /**
  * Represents a section with title and content
  */
@@ -15,6 +17,8 @@ export class SectionComponent implements OnInit {
   @Input() margin: boolean;
   
   @Input() title: string;
+
+  @Input() titleSize: TitleSize = 'regular';
 
   ngOnInit() { }
 }

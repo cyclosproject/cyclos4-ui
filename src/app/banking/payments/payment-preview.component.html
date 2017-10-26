@@ -31,7 +31,9 @@
 <label-value *ngIf="hasDescription" [label]="bankingMessages.transactionDescription()"
   [value]="preview.payment.description" valueType="break">
 </label-value>
-<confirmation-password *ngIf="preview.confirmationPasswordInput"
-  [passwordInput]="preview.confirmationPasswordInput"
-  [(ngModel)]="confirmationPassword">
-</confirmation-password>
+
+<ng-container *ngIf="preview.confirmationPasswordInput" [formGroup]="previewForm">
+  <confirmation-password formControlName="confirmationPassword"
+    [passwordInput]="preview.confirmationPasswordInput">
+  </confirmation-password>
+</ng-container>

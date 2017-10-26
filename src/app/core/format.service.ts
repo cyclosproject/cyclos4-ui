@@ -277,6 +277,9 @@ export class FormatService {
    * @param num The number to format
    */
   formatAsCurrency(currency: Currency, num: number | string): string {
+    if (num == null || num === '') {
+      return '';
+    }
     currency = (currency || {})
     let decimals = currency.decimalDigits || 2;
     let prefix = currency.prefix || "";

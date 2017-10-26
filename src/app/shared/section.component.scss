@@ -11,16 +11,16 @@
   font-size: 22px;
   line-height: 22px;
   margin-bottom: 22px;
+  opacity: 0.87;
 }
-.sectionContent .sectionTitle {
+.sectionContent .sectionTitle, .sectionTitle.small {
   font-size: 20px;
   line-height: 20px;
   margin-bottom: 20px;
-  font-weight: 500;
 }
 .sectionContent .sectionContent .sectionTitle {
   font-size: 16px;
   line-height: 20px;
   margin-bottom: 20px;
-  font-weight: 400;
+  font-weight: 500;
 }

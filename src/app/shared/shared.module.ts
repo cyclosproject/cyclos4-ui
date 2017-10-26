@@ -7,9 +7,9 @@ import {
   MatButtonModule, MatInputModule, MatCheckboxModule, MatRadioModule,
   MatSelectModule, MatDatepickerModule, MatTooltipModule,
   MatIconModule, MatGridListModule, MatTabsModule, MatTableModule,
-  MatDialog, MatDialogModule, MatCardModule,
-  MatSidenavModule, MatStepperModule
+  MatDialog, MatDialogModule, MatCardModule, MatSidenavModule
 } from '@angular/material'
+import { CovalentStepsModule } from "@covalent/core";
 
 import { PageLayoutComponent } from "app/shared/page-layout.component";
 import { PageFiltersComponent } from "app/shared/page-filters.component";
@@ -46,6 +46,7 @@ import { UserSelectionComponent } from "app/shared/user-selection.component";
 import { FocusedDirective } from "app/shared/focused.directive";
 import { PasswordInputComponent } from 'app/shared/password-input.component';
 import { ConfirmationPasswordComponent } from 'app/shared/confirmation-password.component';
+import { LinearStepperControlComponent } from 'app/shared/linear-stepper-control.component';
 
 /**
  * Module that configures UI elements
@@ -70,6 +71,7 @@ import { ConfirmationPasswordComponent } from 'app/shared/confirmation-password.
     PrincipalInputComponent,
     PasswordInputComponent,
     PaginatorComponent,
+    LinearStepperControlComponent,
     ConfirmationPasswordComponent,
     UserSelectionComponent,
     AvatarComponent,
@@ -108,7 +110,7 @@ import { ConfirmationPasswordComponent } from 'app/shared/confirmation-password.
     MatDialogModule,
     MatCardModule,
     MatSidenavModule,
-    MatStepperModule
+    CovalentStepsModule
   ],
   exports: [
     CommonModule,
@@ -130,7 +132,7 @@ import { ConfirmationPasswordComponent } from 'app/shared/confirmation-password.
     MatDialogModule,
     MatCardModule,
     MatSidenavModule,
-    MatStepperModule,
+    CovalentStepsModule,
 
     PageLayoutComponent,
     SideMenuComponent,
@@ -150,6 +152,7 @@ import { ConfirmationPasswordComponent } from 'app/shared/confirmation-password.
     PrincipalInputComponent,
     PasswordInputComponent,
     PaginatorComponent,
+    LinearStepperControlComponent,
     ConfirmationPasswordComponent,
     UserSelectionComponent,
     AvatarComponent,

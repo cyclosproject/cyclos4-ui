@@ -4,7 +4,7 @@
   </button>
   <img class="logo" src="images/logo.png">
   <div class="title" fxFlex="grow">
-    <span [ngStyle.lt-md]="{'display': sidenav != null && sidenav.opened ? 'none' : ''}">
+    <span [fxHide.lt-md]="sidenav?.opened">
       {{format.appTitle}}
     </span>
   </div>
