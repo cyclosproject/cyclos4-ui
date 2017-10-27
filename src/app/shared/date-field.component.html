@@ -7,4 +7,4 @@
     [(ngModel)]="value" [ngModelOptions]="{standalone: true}">
   <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
 </mat-form-field>
-<mat-datepicker #datepicker></mat-datepicker>
+<mat-datepicker [touchUi]="layout.xs" #datepicker></mat-datepicker>

@@ -23,7 +23,12 @@
   white-space: nowrap;
   margin-right: 12px;
 }
-
+.xs :host .paginator {
+  margin-top: 16px;
+}
+.xs :host .items {
+  margin-top: 8px;
+}
 .xs :host .paginator {
   margin-bottom: 20px;
 }
