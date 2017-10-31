@@ -18,6 +18,7 @@ import { PersonalMenuComponent } from 'app/core/personal-menu.component';
 import { DateAdapter, MAT_DATE_FORMATS, MatDateFormats } from '@angular/material';
 import { ApiDateAdapter } from 'app/core/api-date-adapter';
 import { MenuService } from 'app/shared/menu.service';
+import { PushNotificationsService } from 'app/core/push-notifications.service';
 
 export const DATE_ADAPTER_PROVIDER: Provider = {
   provide: DateAdapter,
@@ -63,6 +64,7 @@ export const DATE_FORMATS_PROVIDER: Provider = {
     NotificationService,
     LoginService,
     MenuService,
+    PushNotificationsService,
     ApiDateAdapter,
     DATE_ADAPTER_PROVIDER,
     DATE_FORMATS_PROVIDER

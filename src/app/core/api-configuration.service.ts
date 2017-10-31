@@ -24,6 +24,10 @@ export class ApiConfigurationService {
    * Sets the api configuration variables
    */
   setupApiConfiguration(): void {
+    let root = environment.apiRoot as string;
+    if (root.endsWith('/')) {
+      root = root.substr(0, root.length - 1);
+    }
     ApiConfiguration.rootUrl = environment.apiRoot
     ApiConfiguration.handleError = request => {
       this.errorHandlerService.handleHttpError(request);

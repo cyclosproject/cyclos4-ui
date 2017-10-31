@@ -6,9 +6,7 @@ import { ApiHelper } from "app/shared/api-helper";
 import { BehaviorSubject } from "rxjs";
 import { User, Auth, AccountWithCurrency, AccountStatus, Permissions } from 'app/api/models';
 import { AccountsService } from "app/api/services";
-import * as moment from 'moment';
-
-const SECONDS_BETWEEN_FETCH = 60;
+import { PushNotificationsService } from "app/core/push-notifications.service";
 
 /**
  * Holds shared data for the menu, plus logic regarding the currently visible menu 
@@ -18,6 +16,7 @@ export class MenuService {
 
   constructor(
     private login: LoginService,
+    private pushNotifications: PushNotificationsService,
     private accountsService: AccountsService,
     private generalMessages: GeneralMessages
   ) {
@@ -26,16 +25,28 @@ export class MenuService {
       this._menu = null;
       if (auth) {
         this.fetchData();
+      } else {
+        this._accountStatuses.next(new Map());
       }
+    });
+    if (this.login.user) {
+      // Fetch the data initially - there is a logged user
+      this.fetchData();
+    }
+    this.pushNotifications.subscribeForAccountStatus(account => {
+      let statuses = this._accountStatuses.value;
+      statuses.set(account.id, account.status);
+      this._accountStatuses.next(statuses);
     });
   }
 
   private _menu: RootMenuEntry[];
-  private lastFetch: moment.Moment;
   private _accountStatuses = new BehaviorSubject<Map<String, AccountStatus>>(new Map());
 
   get accountStatuses(): BehaviorSubject<Map<String, AccountStatus>> {
-    this.maybeFetchData();
+    if (this._accountStatuses == null) {
+      this.fetchData();
+    }
     return this._accountStatuses;
   }
   
@@ -64,26 +75,17 @@ export class MenuService {
     return roots;
   }
 
-  private maybeFetchData() {
-    if (this.lastFetch == null 
-      || moment().diff(this.lastFetch, 'seconds') > SECONDS_BETWEEN_FETCH) {
-      this.fetchData();
-    }
-  }
-
   private fetchData() {
-    this.lastFetch = moment();
-
     // Get the balance for each account
     this.accountsService.listAccountsByOwner({
       owner: ApiHelper.SELF, 
-      fields: ['type.id', 'status.balance']
+      fields: ['id', 'status.balance']
     })
       .then(response => {
         let accountStatuses = new Map<String, AccountStatus>();
         let accounts = response.data;
         for (let account of accounts) {
-          accountStatuses.set(account.type.id, account.status);
+          accountStatuses.set(account.id, account.status);
         }
         this.accountStatuses.next(accountStatuses);
       });

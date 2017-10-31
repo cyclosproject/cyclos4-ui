@@ -7,7 +7,7 @@
       <mat-icon fxFlex="18px" class="mat-18">account_balance</mat-icon>
       <div class="name" fxFlex="grow">{{account.type.name}}</div>
       <div class="balance" *ngIf="menuService.accountStatuses | async">
-        {{(menuService.accountStatuses | async).get(account.type.id)?.balance | currency:account.currency}}
+        {{(menuService.accountStatuses | async).get(account.id)?.balance | currency:account.currency}}
       </div>
     </a>
   </ng-container>

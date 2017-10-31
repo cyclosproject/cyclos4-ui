@@ -56,6 +56,7 @@ export class LoginService {
    */
   set auth(auth: Auth) {
     this._auth = auth;
+    this.onAuth.next(auth);
   }
 
   /**
@@ -73,9 +74,8 @@ export class LoginService {
       .then(response => {
         // Prepare the API configuration to pass the session token
         let auth = response.data;
-        this._auth = auth;
         this.apiConfigurationService.sessionToken = auth.sessionToken;
-        this.onAuth.next(auth);
+        this.auth = auth;
         return auth;
       });
   }
@@ -85,9 +85,8 @@ export class LoginService {
    */
   clear(): void {
     this.redirectUrl = null;
-    this._auth = null;
     this.apiConfigurationService.sessionToken = null;
-    this.onAuth.next(null);
+    this.auth = null;
   }
 
   /**

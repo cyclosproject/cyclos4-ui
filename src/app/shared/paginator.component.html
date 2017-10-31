@@ -3,7 +3,7 @@
 </div>
 <div class="paginator" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center"
   *ngIf="!(dataSource.empty | async) && (dataSource.pagination | async)">
-  <div fxLayout="row">
+  <div fxLayout="row" fxFlex.gt-xs="grow">
     <div class="page-label" fxFlex="grow">
       {{generalMessages.paginationPageSize()}}
     </div>
