@@ -12,7 +12,7 @@
 
 <!-- text or rich text (no WYSIWYG editor yet!) -->
 <mat-form-field *ngIf="textarea" #textComponent fxFlex="grow">
-  <textarea #textInput="ngModel" matInput mdTextareaAutosize
+  <textarea #textInput="ngModel" matInput matTextareaAutosize
     [placeholder]="field.name"
     mdAutosizeMinRows="3"
     [required]="field.required"

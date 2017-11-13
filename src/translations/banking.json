@@ -23,7 +23,7 @@
 
   "payment.title": "Perform payment",
   
-  "payment.kind": "Destination",
+  "payment.kind": "Pay to",
   "payment.kind.message": "Please, select which payment to perform",
   "payment.kind.autocomplete": "Pay to a user using a search",
   "payment.kind.contact": "Pay to user in my contact list",
@@ -31,19 +31,16 @@
   "payment.kind.system": "Pay to a system account",
   "payment.kind.self": "Transfer funds between own accounts",
 
-  "payment.user": "User",
+  "payment.user": "Select user",
   "payment.user.message": "Please, select the user which will receive the payment",
   "payment.user.search": "Please, input the search keywords and select the user",
   "payment.user.contacts": "Please, select the user from your contact list",
   "payment.user.principal": "Please, enter the user data below",
   "payment.error.noContacts": "Your contact list is empty",
   
-  "payment.type": "Type",
-  "payment.type.message": "Please, select the payment type",
-  "payment.error.noPaymentType": "There is no possible payment type for this payment",
-
-  "payment.fields": "Fields",
+  "payment.fields": "Payment details",
   "payment.fields.message": "Please, fill in the payment fields below",
+  "payment.error.noPaymentType": "There is no possible payment type for this payment",
   
   "payment.preview": "Confirmation",
   "payment.preview.message": "Please, review and confirm the payment",

@@ -6,7 +6,6 @@ import { BankingMessages } from "app/messages/banking-messages";
 import { PerformPaymentComponent } from "app/banking/payments/perform-payment.component";
 import { PaymentKindComponent } from "app/banking/payments/payment-kind.component";
 import { PaymentUserComponent } from "app/banking/payments/payment-user.component";
-import { PaymentTypeComponent } from "app/banking/payments/payment-type.component";
 import { PaymentFieldsComponent } from "app/banking/payments/payment-fields.component";
 import { PaymentPreviewComponent } from 'app/banking/payments/payment-preview.component';
 import { PaymentDoneComponent } from 'app/banking/payments/payment-done.component';
@@ -26,7 +25,6 @@ import { PaymentDoneComponent } from 'app/banking/payments/payment-done.componen
     PerformPaymentComponent,
     PaymentKindComponent,
     PaymentUserComponent,
-    PaymentTypeComponent,
     PaymentFieldsComponent,
     PaymentPreviewComponent,
     PaymentDoneComponent

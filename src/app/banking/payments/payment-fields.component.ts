@@ -1,7 +1,8 @@
 import { Component, Injector, Provider, forwardRef, ChangeDetectionStrategy, ViewChild, Input } from '@angular/core';
 import { BaseBankingComponent } from "app/banking/base-banking.component";
-import { PerformPayment, TransactionTypeData } from "app/api/models";
+import { PerformPayment, TransactionTypeData, TransferTypeWithCurrency } from "app/api/models";
 import { FormGroup } from '@angular/forms';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 /**
  * Provides the selection of the payment type
@@ -20,5 +21,8 @@ export class PaymentFieldsComponent extends BaseBankingComponent {
   fieldsForm: FormGroup;
 
   @Input()
-  paymentTypeData: TransactionTypeData;
+  paymentTypes: TransferTypeWithCurrency[];
+
+  @Input()
+  paymentTypeData: BehaviorSubject<TransactionTypeData>;
 }

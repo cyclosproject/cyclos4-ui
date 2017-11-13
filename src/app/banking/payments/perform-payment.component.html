@@ -31,26 +31,11 @@
         </actions>
       </ng-container>
       </td-step>
-      <td-step #typeStep [label]="bankingMessages.paymentType()"
-        [sublabel]="layout.ltmd ? (paymentType | async)?.name : null">
-        <ng-container *ngIf="(stepperControl.monitor(typeStep) | async) && (paymentTypes | async)">
-          <payment-type [typeForm]="typeForm"
-            [allowedPaymentTypes]="paymentTypes | async"></payment-type>
-          <actions fxLayout="column-reverse" fxLayout.gt-xs="row">
-            <button mat-raised-button (click)="previousFromType()">
-              {{generalMessages.previous()}}
-            </button>
-            <button mat-raised-button color="accent"
-              [disabled]="!typeForm.valid" (click)="nextFromType()">
-              {{generalMessages.next()}}
-            </button>
-          </actions>
-        </ng-container>
-      </td-step>
       <td-step #fieldsStep [label]="bankingMessages.paymentFields()"
         [sublabel]="layout.ltmd ? (fieldsForm.value.amount | currency:(paymentTypeData | async)?.currency) : null">
         <ng-container *ngIf="stepperControl.monitor(fieldsStep) | async">
           <payment-fields [fieldsForm]="fieldsForm"
+            [paymentTypes]="paymentTypes | async"
             [paymentTypeData]="paymentTypeData | async"></payment-fields>
           <actions fxLayout="column-reverse" fxLayout.gt-xs="row">
             <button mat-raised-button (click)="previousFromFields()">
