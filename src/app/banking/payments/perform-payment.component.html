@@ -36,7 +36,7 @@
         <ng-container *ngIf="stepperControl.monitor(fieldsStep) | async">
           <payment-fields [fieldsForm]="fieldsForm"
             [paymentTypes]="paymentTypes | async"
-            [paymentTypeData]="paymentTypeData | async"></payment-fields>
+            [paymentTypeData]="paymentTypeData"></payment-fields>
           <actions fxLayout="column-reverse" fxLayout.gt-xs="row">
             <button mat-raised-button (click)="previousFromFields()">
               {{generalMessages.previous()}}
