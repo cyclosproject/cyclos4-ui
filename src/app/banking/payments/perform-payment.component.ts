@@ -332,6 +332,9 @@ export class PerformPaymentComponent extends BaseBankingComponent {
     this.fieldsForm.setControl('customValues',
       ApiHelper.customValuesFormGroup(this.formBuilder, data.customFields));
     this.fieldsForm.patchValue({type: data.id});
+    if (data.fixedAmount) {
+      this.fieldsForm.patchValue({amount: data.fixedAmount});
+    }
     this.preparingFieldsForm = false;
     this.paymentTypeData.next(data);
   }
