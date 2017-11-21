@@ -6,7 +6,7 @@ import { ApiConfiguration } from "app/api/api-configuration";
 import { environment } from "environments/environment"
 import { GeneralMessages } from 'app/messages/general-messages';
 import { MatDateFormats } from '@angular/material';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 declare const Big: any;
 

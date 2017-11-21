@@ -3,8 +3,7 @@ import { UserDataForSearch, User } from "app/api/models";
 import { TableDataSource } from "app/shared/table-datasource";
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from "@angular/forms";
 import { Subject } from "rxjs/Subject";
-import "rxjs/add/operator/debounceTime";
-import "rxjs/add/operator/distinctUntilChanged";
+import { debounceTime, distinctUntilChanged } from "rxjs/operators";
 import { UsersService } from "app/api/services";
 import { GeneralMessages } from "app/messages/general-messages";
 import { ApiHelper } from "app/shared/api-helper";
@@ -59,9 +58,10 @@ export class UserSelectionComponent implements OnInit, ControlValueAccessor {
 
   ngOnInit() {
     this.onKeywords.asObservable()
-      .debounceTime(350)
-      .distinctUntilChanged()
-      .subscribe(keywords => this.search(keywords));
+      .pipe(
+        debounceTime(350),
+        distinctUntilChanged()
+      ).subscribe(keywords => this.search(keywords));
   }
 
   private search(keywords: string): void {

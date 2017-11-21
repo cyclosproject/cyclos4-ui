@@ -1,6 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input, OnInit, OnDestroy } from "@angular/core";
 import { TdStepsComponent, TdStepComponent, IStepChangeEvent, StepState } from "@covalent/core";
-import { BehaviorSubject, Subscription } from "rxjs";
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import { Subscription } from "rxjs/Subscription";
 import { Observable } from "rxjs/Observable";
 
 /**

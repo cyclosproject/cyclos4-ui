@@ -2,10 +2,10 @@ import { Component, Input, ElementRef, ViewChild, ChangeDetectionStrategy, Injec
 import { FormatService } from "app/core/format.service";
 import { BaseComponent } from 'app/shared/base.component';
 
-import { Subscription } from 'rxjs/Subscription';
 import { Menu, RootMenu, MenuEntry, MenuType } from 'app/shared/menu';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subscription } from 'rxjs/Subscription';
 import { MenuService } from 'app/shared/menu.service';
 import { AccountWithCurrency } from 'app/api/models';
 

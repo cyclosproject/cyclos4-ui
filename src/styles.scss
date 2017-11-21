@@ -31,7 +31,7 @@ body.lt-md, .lt-md .mat-drawer-container {
 .gt-xs form {
   max-width: $max-form-width;
 }
-.mat-input-prefix .mat-icon {
+.mat-input-prefix mat-icon {
   margin-right: 10px;
   opacity: 0.65;
 }
@@ -54,9 +54,6 @@ mat-radio-group mat-radio-button::last-of-type {
 }
 mat-radio-group.horizontal mat-radio-button + mat-radio-button {
   margin-left: 18px;
-}
-.mat-form-field {
-  width: inherit !important;
 }
 .mat-button, .mat-raised-button {
   min-width: inherit !important;
@@ -106,50 +103,50 @@ mat-cell.avatar, mat-header-cell.avatar {
 mat-cell.selection, mat-header-cell.selection {
   max-width: 32px;
 }
-.mat-cell .cell-main {
+mat-cell .cell-main {
   font-weight: 500;
 }
-.mat-cell .cell-small {
+mat-cell .cell-small {
   font-size: 12px;
 }
 
 // Material icons
-.mat-icon.mat-14 {
+mat-icon.mat-14 {
   font-size: 14px;
   width: 14px;
   height: 14px;
 }
-.mat-icon.mat-18 {
+mat-icon.mat-18 {
   font-size: 18px;
   width: 18px;
   height: 18px;
 }
-.mat-icon.mat-22 {
+mat-icon.mat-22 {
   font-size: 22px;
   width: 22px;
   height: 22px;
 }
-.mat-icon.mat-24 {
+mat-icon.mat-24 {
   font-size: 24px;
   width: 24px;
   height: 24px;
 }
-.mat-icon.mat-36 {
+mat-icon.mat-36 {
   font-size: 36px;
   width: 36px;
   height: 36px;
 }
-.mat-icon.mat-48 {
+mat-icon.mat-48 {
   font-size: 48px;
   width: 48px;
   height: 48px;
 }
-.mat-icon.mat-96 {
+mat-icon.mat-96 {
   font-size: 96px;
   width: 96px;
   height: 96px;
 }
-.mat-table .mat-icon {
+.mat-table mat-icon {
   opacity: 0.45;
 }
 

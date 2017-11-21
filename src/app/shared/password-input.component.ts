@@ -235,10 +235,11 @@ export class PasswordInputComponent implements OnInit, AfterViewInit, ControlVal
     }
     if (length < this.passwordInput.minLength) {
       return {
-        "length": {
-          "min": this.passwordInput.minLength
+        'minlength': {
+          'requiredLength': this.passwordInput.minLength,
+          'actualLength': length
         }
-      }
+      };
     }
     return null;
   }

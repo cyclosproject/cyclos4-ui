@@ -3,7 +3,7 @@ import { PasswordInput, PasswordModeEnum } from 'app/api/models';
 import { NG_VALUE_ACCESSOR, NG_VALIDATORS, Validator, ControlValueAccessor, AbstractControl, ValidationErrors } from '@angular/forms';
 import { PasswordInputComponent } from 'app/shared/password-input.component';
 import { GeneralMessages } from 'app/messages/general-messages';
-import { Subscription } from 'rxjs';
+import { Subscription } from 'rxjs/Subscription';
 
 // Definition of the exported NG_VALUE_ACCESSOR provider
 export const CONFIRMATION_PASSWORD_VALUE_ACCESSOR: Provider = {

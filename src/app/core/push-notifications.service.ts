@@ -6,7 +6,7 @@ import { ApiConfiguration } from "app/api/api-configuration";
 import { Observable } from "rxjs/Observable";
 import { NotificationService } from "app/core/notification.service";
 import { GeneralMessages } from "app/messages/general-messages";
-import { Subscription } from "rxjs";
+import { Subscription } from "rxjs/Subscription";
 
 const KINDS: PushNotificationEventKind[] = [
   PushNotificationEventKind.LOGGED_OUT,

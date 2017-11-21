@@ -2,7 +2,7 @@
   fxLayoutGap="20px" [class]="containerClass">
 
   <div fxLayout="row" fxFlex="grow" style="width: 100%">
-    <mat-icon fxFlex="nogrow" [color]="iconColor" class="mat-36">{{notification.type}}</mat-icon>
+    <mat-icon fxFlex="nogrow" [color]="iconColor" ngClass="mat-36">{{notification.type}}</mat-icon>
     <div fxFlex="grow" class="notificationMessage" [innerHTML]="notification.message | trust"></div>
   </div>
   

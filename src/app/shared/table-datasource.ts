@@ -2,6 +2,7 @@ import { ChangeDetectorRef } from "@angular/core";
 import { DataSource } from "@angular/cdk/collections";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { Observable } from "rxjs/Observable";
+import { map } from 'rxjs/operators'
 import { ApiResponse } from "app/api/api-response";
 import { PaginationData } from "app/shared/pagination-data";
 
@@ -44,7 +45,9 @@ export class TableDataSource<T> extends DataSource<T> {
   constructor() {
     super();
     this.data = new BehaviorSubject([]);
-    this.empty = this.data.asObservable().map(arr => arr.length == 0);
+    this.empty = this.data.asObservable().pipe(
+      map(arr => arr.length == 0)
+    );
     this.pagination = new BehaviorSubject(null);
   }
 

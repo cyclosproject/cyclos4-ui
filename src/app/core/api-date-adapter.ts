@@ -13,7 +13,6 @@ for (let i = 0; i < 31; i++) {
  */
 @Injectable()
 export class ApiDateAdapter extends DateAdapter<string> {
-
   constructor(private formatService: FormatService) {
     super();    
   }
@@ -88,5 +87,7 @@ export class ApiDateAdapter extends DateAdapter<string> {
   isValid(date: string): boolean {
     return moment(date).isValid();
   }
-
+  invalid(): string {
+    return undefined;
+  }
 }

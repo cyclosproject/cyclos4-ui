@@ -1,5 +1,8 @@
 {
   "compileOnSave": false,
+  "angularCompilerOptions": {
+    "preserveWhitespaces": false
+  },
   "compilerOptions": {
     "outDir": "./dist/out-tsc",
     "baseUrl": "src",

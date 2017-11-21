@@ -3,7 +3,7 @@ import { MenuType, Menu, RootMenuEntry, MenuEntry, RootMenu } from 'app/shared/m
 import { LoginService } from "app/core/login.service";
 import { GeneralMessages } from "app/messages/general-messages";
 import { ApiHelper } from "app/shared/api-helper";
-import { BehaviorSubject } from "rxjs";
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { User, Auth, AccountWithCurrency, AccountStatus, Permissions } from 'app/api/models';
 import { AccountsService } from "app/api/services";
 import { PushNotificationsService } from "app/core/push-notifications.service";
