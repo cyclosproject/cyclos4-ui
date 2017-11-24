@@ -28,7 +28,9 @@ export type Names = {
 @Injectable()
 export class FormatService {
 
-  constructor(private generalMessages: GeneralMessages) {
+  constructor(
+    private apiConfiguration: ApiConfiguration,
+    private generalMessages: GeneralMessages) {
   }
 
   dateFormat: string;
@@ -132,7 +134,8 @@ export class FormatService {
    * Returns the full URL to the configuration image (logo) with the given id
    */
   getLogoUrl(id: string): string {
-    return ApiConfiguration.rootUrl + "/../content/images/currentConfiguration/" 
+    return this.apiConfiguration.rootUrl
+      + "/../content/images/currentConfiguration/" 
       + id + "?" + this._dataForUi.resourceCacheKey;
   }
 

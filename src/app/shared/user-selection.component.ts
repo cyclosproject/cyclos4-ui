@@ -3,11 +3,13 @@ import { UserDataForSearch, User } from "app/api/models";
 import { TableDataSource } from "app/shared/table-datasource";
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from "@angular/forms";
 import { Subject } from "rxjs/Subject";
-import { debounceTime, distinctUntilChanged } from "rxjs/operators";
+import { debounceTime, distinctUntilChanged, switchMap } from "rxjs/operators";
 import { UsersService } from "app/api/services";
 import { GeneralMessages } from "app/messages/general-messages";
 import { ApiHelper } from "app/shared/api-helper";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import { Observable } from 'rxjs/Observable';
+import { UserResult } from 'app/api/models/user-result';
 
 // Definition of the exported NG_VALUE_ACCESSOR provider
 export const PAYMENT_USER_VALUE_ACCESSOR: Provider = {
@@ -30,13 +32,13 @@ export const PAYMENT_USER_VALUE_ACCESSOR: Provider = {
 export class UserSelectionComponent implements OnInit, ControlValueAccessor {
   constructor(
     public generalMessages: GeneralMessages,
-    private usersService: UsersService) { }
-
-  onKeywords = new Subject<string>();
-
+    private usersService: UsersService) {
+  }
+    
   @Input()
   focused: boolean | string;
-
+  
+  onKeywords = new Subject<string>();
   showTable = new BehaviorSubject<boolean>(false);
   
   dataSource: TableDataSource<User> = new TableDataSource();
@@ -57,24 +59,23 @@ export class UserSelectionComponent implements OnInit, ControlValueAccessor {
   public dataForSearch: UserDataForSearch;
 
   ngOnInit() {
-    this.onKeywords.asObservable()
-      .pipe(
-        debounceTime(350),
-        distinctUntilChanged()
-      ).subscribe(keywords => this.search(keywords));
+    this.onKeywords.pipe(
+      debounceTime(350),
+      distinctUntilChanged(),
+    ).subscribe(keywords => {
+      this.search(keywords);
+    });
   }
 
-  private search(keywords: string): void {
+  private search(keywords: string) {
     let showTable = keywords != null && keywords.length > 0;
     if (showTable) {
-      this.usersService.searchUsers({
+      this.dataSource.subscribe(
+       this.usersService.searchUsers({
         keywords: keywords,
         pageSize: ApiHelper.quickSearchPageSize,
         ignoreProfileFieldsInList: true
-      })
-      .then(response => {
-        this.dataSource.next(response.data);
-      });
+      }))
     } else {
       this.value = null;
       this.dataSource.next([]);

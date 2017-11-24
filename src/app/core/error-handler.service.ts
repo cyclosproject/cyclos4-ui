@@ -4,6 +4,7 @@ import { FormatService } from "app/core/format.service";
 import { Error as ApiError, ErrorKind, NotFoundError, InputError, InputErrorCode, UnauthorizedError, UnauthorizedErrorCode, PasswordStatusEnum, ForbiddenError, ForbiddenErrorCode, PaymentError, PaymentErrorCode } from "app/api/models";
 import { NgForm } from "@angular/forms";
 import { GeneralMessages } from "app/messages/general-messages";
+import { HttpErrorResponse } from '@angular/common/http/src/response';
 
 /**
  * Possible error statuses
@@ -76,41 +77,57 @@ export class ErrorHandlerService {
    * Handles an from the given Http response
    * @param err The response object
    */
-  handleHttpError(response: Response) {
+  handleHttpError(err: HttpErrorResponse) {
     var message: string = null;
-    let allowClose = true;
-    switch (response.status) {
-      case ErrorStatus.INVALID_REQUEST:
-        message = this.generalMessages.errorNetwork();
-        allowClose = false;
-        break;
-      case ErrorStatus.UNAUTHORIZED:
-        message = this.unauthorizedErrorMessage(response.json() as UnauthorizedError);
-        break;
-      case ErrorStatus.FORBIDDEN:
-        message = this.forbiddenErrorMessage(response.json() as ForbiddenError);
-        break;
-      case ErrorStatus.NOT_FOUND:
-        message = this.notFoundErrorMessage(response.json() as NotFoundError);
-        break;
-      case ErrorStatus.UNPROCESSABLE_ENTITY:
-        message = this.inputErrorMessage(response.json() as InputError);
-        break;
-      case ErrorStatus.INTERNAL_SERVER_ERROR:
-        // The internal server error may be a specific kind or a general error
-        let error = <ApiError><any>response.json();
-        switch (error.kind) {
-          case ErrorKind.PAYMENT:
-            // A payment error
-            message = this.paymentErrorMessage(error);
-            break;
-        }
+    let error = null;
+    if (err.error instanceof Error) {
+      // Client-side error
+      console.error('Client-side request error');
+      console.error(err.error);
+    } else {
+      try {
+        error = JSON.parse(err.message);
+      } catch (e) {
+        console.error('The server has sent an invalid JSON response: ' + err.message);
+      }
+      switch (err.status) {
+        case ErrorStatus.INVALID_REQUEST:
+          message = this.generalMessages.errorNetwork();
+          break;
+        case ErrorStatus.UNAUTHORIZED:
+          message = this.unauthorizedErrorMessage(error as UnauthorizedError);
+          break;
+        case ErrorStatus.FORBIDDEN:
+          message = this.forbiddenErrorMessage(error as ForbiddenError);
+          break;
+        case ErrorStatus.NOT_FOUND:
+          message = this.notFoundErrorMessage(error as NotFoundError);
+          break;
+        case ErrorStatus.UNPROCESSABLE_ENTITY:
+          message = this.inputErrorMessage(error as InputError);
+          break;
+        case ErrorStatus.INTERNAL_SERVER_ERROR:
+          // The internal server error may be a specific kind or a general error
+          if (error instanceof ApiError) {
+            switch (error.kind) {
+              case ErrorKind.PAYMENT:
+                // A payment error
+                message = this.paymentErrorMessage(error);
+                break;
+              case ErrorKind.OTP:
+                // An error while generating an OTP
+                message = this.generalMessages.passwordOtpError();
+                break;
+            }
+          }
+      }
     }
+
     if (!message) {
       // No specific message. Show a general message
       message = this.generalMessages.errorGeneral();
     }
-    this.notificationService.error(message, allowClose);
+    this.notificationService.error(message);
   }
 
   /**

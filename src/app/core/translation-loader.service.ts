@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { FormatService } from "app/core/format.service";
 import { Http } from "@angular/http";
 import { environment } from "environments/environment"
+import { HttpClient } from '@angular/common/http';
 
 /**
  * Service used to load translations
@@ -10,7 +11,7 @@ import { environment } from "environments/environment"
 export class TranslationLoaderService {
   constructor(
     private formatService: FormatService, 
-    private http: Http) {
+    private httpClient: HttpClient) {
   }
 
   public load(file: string): Promise<any> {
@@ -45,9 +46,10 @@ export class TranslationLoaderService {
       locale = locales.pop();
     }
     let suffix = locale == null ? '' : `_${locale}`;
-    return this.http.get(`translations/${file}${suffix}.json`)
+    return this.httpClient.get(`translations/${file}${suffix}.json`, {
+      responseType: 'json'
+    })
       .toPromise()
-      .then(response => response.json())
       .catch(err => this.doLoad(file, locales));
   }
 }

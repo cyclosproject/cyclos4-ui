@@ -1,20 +1,19 @@
-import { ApiResponse } from 'app/api/api-response';
+import { HttpResponse } from '@angular/common/http';
 
 /**
  * Pagination data, which can be constructed from an HTTP response
  */
 export class PaginationData {
 
-  static from(response: ApiResponse<any>): PaginationData {
-    let resp = response.response;
-    let pageItems = response.data || [];
+  static from(response: HttpResponse<any>): PaginationData {
+    let pageItems = response.body || [];
     return new PaginationData(
-      parseInt(resp.headers.get('X-Current-Page'), 10),
-      parseInt(resp.headers.get('X-Page-Size'), 10),
+      parseInt(response.headers.get('X-Current-Page'), 10),
+      parseInt(response.headers.get('X-Page-Size'), 10),
       pageItems.length,
-      parseInt(resp.headers.get('X-Total-Count'), 10),
-      parseInt(resp.headers.get('X-Page-Count'), 10),
-      resp.headers.get('X-Has-Next-Page') === 'true'
+      parseInt(response.headers.get('X-Total-Count'), 10),
+      parseInt(response.headers.get('X-Page-Count'), 10),
+      response.headers.get('X-Has-Next-Page') === 'true'
     );
   }
 

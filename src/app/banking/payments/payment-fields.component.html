@@ -15,7 +15,6 @@
     [prefix]="(paymentTypeData | async).currency.prefix"
     [suffix]="(paymentTypeData | async).currency.suffix"
     [scale]="(paymentTypeData | async).currency.decimalDigits"
-    [disabled]="(paymentTypeData | async).fixedAmount != null"
     formControlName="amount">
   </decimal-field>
 

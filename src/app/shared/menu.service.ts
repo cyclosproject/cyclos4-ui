@@ -81,14 +81,13 @@ export class MenuService {
       owner: ApiHelper.SELF, 
       fields: ['id', 'status.balance']
     })
-      .then(response => {
-        let accountStatuses = new Map<String, AccountStatus>();
-        let accounts = response.data;
-        for (let account of accounts) {
-          accountStatuses.set(account.id, account.status);
-        }
-        this.accountStatuses.next(accountStatuses);
-      });
+    .subscribe(accounts => {
+      let accountStatuses = new Map<String, AccountStatus>();
+      for (let account of accounts) {
+        accountStatuses.set(account.id, account.status);
+      }
+      this.accountStatuses.next(accountStatuses);
+    });
   }
   
 

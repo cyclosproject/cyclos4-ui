@@ -15,6 +15,7 @@ import { ApiHelper } from "app/shared/api-helper";
 import { Menu } from 'app/shared/menu';
 import { NgForm } from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';
+import { tap } from 'rxjs/operators';
 
 /** Information for an account status element shown on top */
 export type StatusIndicator = {
@@ -167,8 +168,7 @@ export class AccountHistoryComponent extends BaseBankingComponent implements Aft
     this.accountsService.getAccountHistoryDataByOwnerAndType({
       owner: ApiHelper.SELF, accountType: type
     })
-      .then(response => {
-        let data = response.data;
+      .subscribe(data => {
         this.data.next(data);
 
         // Prepare the query parameters
@@ -210,21 +210,24 @@ export class AccountHistoryComponent extends BaseBankingComponent implements Aft
     }
   }
 
+  // TODO this method can be improved by using the merge() rxjs operator,
+  // so a single subscription is enough for both calls, and there would ne no need
+  // for the dataLoaded, statusLoaded and loaded attributes.
   update() {
     // Update the results
-    this.accountsService.searchAccountHistory(this.query)
-      .then(response => {
+    let results = this.accountsService.searchAccountHistoryResponse(this.query).pipe(
+      tap(response => {
         this.dataLoaded = true;
-        this.dataSource.next(response);
         this.notifyLoaded();
-      });
-
+      }));
+    this.dataSource.subscribe(results);
+        
     // Update the status
     let statusParams = Object.assign({}, this.query, STATUS_FIELDS);
     this.accountsService.getAccountStatusByOwnerAndType(statusParams)
-      .then(response => {
+      .subscribe(account => {
         this.statusLoaded = true;
-        this.status.next(this.toIndicators(response.data.status));
+        this.status.next(this.toIndicators(account.status));
         this.notifyLoaded();
       });
   }

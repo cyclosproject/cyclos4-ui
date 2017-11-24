@@ -6,10 +6,12 @@ import { Subject } from "rxjs/Subject";
 import { Subscription } from "rxjs/Subscription";
 import { NotificationService } from "app/core/notification.service";
 import { ErrorHandlerService } from "app/core/error-handler.service";
-import { ApiConfigurationService } from "app/core/api-configuration.service";
 import { Router } from "@angular/router";
 import { GeneralMessages } from 'app/messages/general-messages';
 import { ApiHelper } from 'app/shared/api-helper';
+import { ApiInterceptor } from 'app/core/api.interceptor';
+import { Observable } from 'rxjs/Observable';
+import { tap } from 'rxjs/operators';
 
 /**
  * Service used to manage the login status
@@ -23,7 +25,7 @@ export class LoginService {
   public redirectUrl: string;
 
   constructor(
-    private apiConfigurationService: ApiConfigurationService,
+    private apiInterceptor: ApiInterceptor,
     private authService: AuthService,
     private notificationService: NotificationService,
     private errorHandlerService: ErrorHandlerService,
@@ -60,24 +62,23 @@ export class LoginService {
   }
 
   /**
-   * Performs the login
+   * Returns a cold observable that performs the login
    * @param principal The user principal
    * @param password The user password
    */
-  login(principal: string, password): Promise<Auth> {
+  login(principal: string, password): Observable<Auth> {
     // Setup the basic authentication for the login request
-    this.apiConfigurationService.nextAsBasic(principal, password);
+    this.apiInterceptor.nextAsBasic(principal, password);
     // Then attempt to do the login
     return this.authService.login({
       fields: ApiHelper.excludedAuthFields
-    })
-      .then(response => {
+    }).pipe(
+      tap(auth => {
         // Prepare the API configuration to pass the session token
-        let auth = response.data;
-        this.apiConfigurationService.sessionToken = auth.sessionToken;
+        this.apiInterceptor.sessionToken = auth.sessionToken;
         this.auth = auth;
-        return auth;
-      });
+      })
+    );
   }
 
   /**
@@ -85,25 +86,25 @@ export class LoginService {
    */
   clear(): void {
     this.redirectUrl = null;
-    this.apiConfigurationService.sessionToken = null;
+    this.apiInterceptor.sessionToken = null;
     this.auth = null;
   }
 
   /**
    * Performs the logout
    */
-  logout(): Promise<void> {
+  logout(): Observable<void> {
     this.redirectUrl = null;
     if (this._auth == null) {
       // No one logged in
-      return Promise.resolve();
+      return Observable.create();
     }
-    return this.authService.logout()
-      .then(response => {
-        this.clear();
-        this.router.navigateByUrl('/login');
-        return null;
-      });
+    let observable = this.authService.logout();
+    observable.subscribe(() => {
+      this.clear();
+      this.router.navigateByUrl('/login');
+    });
+    return observable;
   }
 
 }

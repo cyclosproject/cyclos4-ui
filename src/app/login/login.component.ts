@@ -7,6 +7,8 @@ import { DataForLogin, GroupForRegistration } from "app/api/models";
 import { BaseComponent } from "app/shared/base.component";
 import { Menu } from 'app/shared/menu';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { ApiInterceptor } from 'app/core/api.interceptor';
 
 /**
  * Component used to show a login form.
@@ -22,7 +24,7 @@ export class LoginComponent extends BaseComponent {
 
   loginForm: FormGroup;
 
-  dataForLogin: DataForLogin;
+  dataForLogin = new BehaviorSubject<DataForLogin>(null);
   registrationGroups: GroupForRegistration[];
 
   get canRegister(): boolean {
@@ -31,9 +33,9 @@ export class LoginComponent extends BaseComponent {
 
   constructor(
     injector: Injector,
-    private loginService: LoginService,
     private router: Router,
     private route: ActivatedRoute,
+    private interceptor: ApiInterceptor,
     formBuilder: FormBuilder
   ) {
     super(injector);
@@ -45,14 +47,18 @@ export class LoginComponent extends BaseComponent {
 
   ngOnInit() {
     super.ngOnInit();
-    this.route.data.subscribe((data: {
-      dataForLogin: DataForLogin,
-      registrationGroups: GroupForRegistration[]
-    }) => {
-      this.dataForLogin = data.dataForLogin;
-      this.registrationGroups = data.registrationGroups;
-    });
-    this.layout.menu.next(Menu.LOGIN);
+    if (this.interceptor.sessionToken != null) {
+      this.router.navigateByUrl(this.login.redirectUrl || '');
+    } else {
+      this.route.data.subscribe((data: {
+        dataForLogin: DataForLogin,
+        registrationGroups: GroupForRegistration[]
+      }) => {
+        this.dataForLogin.next(data.dataForLogin);
+        this.registrationGroups = data.registrationGroups;
+      });
+      this.layout.menu.next(Menu.LOGIN);
+    }
   }
 
   /**
@@ -63,10 +69,10 @@ export class LoginComponent extends BaseComponent {
     if (!this.loginForm.valid) return;
 
     let value = this.loginForm.value;    
-    this.loginService.login(value.principal, value.password)
-      .then(u => {
+    this.login.login(value.principal, value.password)
+      .subscribe(u => {
         // Redirect to the correct URL
-        this.router.navigateByUrl(this.loginService.redirectUrl || '');
+        this.router.navigateByUrl(this.login.redirectUrl || '');
       });
   }
 

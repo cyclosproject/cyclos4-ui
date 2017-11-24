@@ -57,10 +57,9 @@ export class PerformPaymentComponent extends BaseBankingComponent {
     });
     this.userForm.valueChanges.subscribe(value => this.user.next(value.user));
 
-    // Form for field (description + custom values set on prepareFieldsForm())
+    // Form for field (others are set on prepareFieldsForm())
     this.fieldsForm = formBuilder.group({
-      type: [null, Validators.required],
-      amount: [null, Validators.required]
+      type: [null, Validators.required]
     });
     // Changing the payment type should also fetch the payment type data
     this.fieldsForm.valueChanges.subscribe(values => {
@@ -94,9 +93,9 @@ export class PerformPaymentComponent extends BaseBankingComponent {
 
     // Get data for perform payment
     this.paymentsService.dataForPerformPayment({ owner: ApiHelper.SELF })
-      .then(response => {
-        this.initAllowedKinds(response.data);
-        this.initialData.next(response.data);
+      .subscribe(data => {
+        this.initAllowedKinds(data);
+        this.initialData.next(data);
         this.stepperControl.activate(this.kindStep);
       });
   }
@@ -225,8 +224,8 @@ export class PerformPaymentComponent extends BaseBankingComponent {
         } else {
           // Fetch data for searching users
           this.usersService.getUserDataForSearch()
-            .then(response => {
-              this.userDataForSearch.next(response.data);
+            .subscribe(data => {
+              this.userDataForSearch.next(data);
               proceed();
             });
         }
@@ -241,9 +240,9 @@ export class PerformPaymentComponent extends BaseBankingComponent {
             user: ApiHelper.SELF,
             pageSize: 9999
           })
-            .then(response => {
-              this.contacts.next(response.data);
-              if (response.data.length == 0) {
+            .subscribe(contacts => {
+              this.contacts.next(contacts);
+              if (contacts.length == 0) {
                 this.notification.error(this.bankingMessages.paymentErrorNoContacts());
               } else {
                 proceed();
@@ -266,30 +265,28 @@ export class PerformPaymentComponent extends BaseBankingComponent {
   paymentTypes = new BehaviorSubject<TransferTypeWithCurrency[]>([]);
   paymentTypeData = new BehaviorSubject<TransactionTypeData>(null);
 
-  private fetchPaymentData(): Promise<DataForTransaction> {
-    return this.paymentsService.dataForPerformPayment({
+  private fetchPaymentData() {
+    this.paymentsService.dataForPerformPayment({
       owner: ApiHelper.SELF,
       to: this.to,
       type: this.paymentType
     })
-      .then(response => {
-        let result = response.data;
-        this.paymentData.next(result);
-        this.toUser.next(result.toUser);
+      .subscribe(data => {
+        this.paymentData.next(data);
+        this.toUser.next(data.toUser);
 
         // If there is a single payment type, disable the type step
-        let noPaymentTypes = result.paymentTypes.length == 0;
-        this.paymentTypes.next(result.paymentTypes);
+        let noPaymentTypes = data.paymentTypes.length == 0;
+        this.paymentTypes.next(data.paymentTypes);
 
         if (noPaymentTypes) {
           this.notification.error(this.bankingMessages.paymentErrorNoPaymentType());
         } else {
           // Preselect the first payment type and activate the fields step
-          this.fieldsForm.patchValue({ type: result.paymentTypes[0].id })
-          this.prepareFieldsForm(result.paymentTypeData);
+          this.fieldsForm.patchValue({ type: data.paymentTypes[0].id })
+          this.prepareFieldsForm(data.paymentTypeData);
           this.stepperControl.activate(this.fieldsStep);
         }
-        return result;
       });
   }
 
@@ -311,22 +308,23 @@ export class PerformPaymentComponent extends BaseBankingComponent {
     return this.fieldsForm.value.type;
   }
 
-  private fetchPaymentTypeData(): Promise<TransactionTypeData> {
+  private fetchPaymentTypeData() {
     return this.paymentsService.dataForPerformPayment({
       owner: ApiHelper.SELF,
       to: this.to,
       type: this.paymentType,
       fields: ['paymentTypeData']
     })
-      .then(response => {
-        let result = response.data;
-        this.prepareFieldsForm(result.paymentTypeData);
-        return result.paymentTypeData;
+      .subscribe(data => {
+        this.prepareFieldsForm(data.paymentTypeData);
+        return data.paymentTypeData;
       });
   }
 
   private prepareFieldsForm(data: TransactionTypeData) {
     this.preparingFieldsForm = true;
+    this.fieldsForm.setControl('amount',
+      this.formBuilder.control({value: null, disabled: data.fixedAmount}, Validators.required));
     this.fieldsForm.setControl('description',
       this.formBuilder.control(null, data.requiresDescription ? Validators.required : null));
     this.fieldsForm.setControl('customValues',
@@ -360,12 +358,11 @@ export class PerformPaymentComponent extends BaseBankingComponent {
     payment.type = this.paymentType;
 
     // Preview the payment
-    return this.paymentsService.previewPayment({
+    this.paymentsService.previewPayment({
       owner: ApiHelper.SELF,
       payment: payment
     })
-      .then(response => {
-        let preview = response.data;
+      .subscribe(preview => {
         if (preview.confirmationPasswordInput) {
           // Require the confirmation password
           this.previewForm.setControl('confirmationPassword',
@@ -392,8 +389,7 @@ export class PerformPaymentComponent extends BaseBankingComponent {
   }
 
   nextFromPreview() {
-    this.performPayment()
-      .then(() => this.stepperControl.activate(this.doneStep));
+    this.performPayment();
   }
 
   ////////////////////////////////////////////////////
@@ -411,11 +407,12 @@ export class PerformPaymentComponent extends BaseBankingComponent {
       confirmationPassword: this.previewForm.value.confirmationPassword,
       fields: ['id', 'authorizationStatus']
     })
-      .then(response => {
-        this.performed.next(response.data);
-      })
-      .catch(response => {
-        if (response.status == ErrorStatus.FORBIDDEN) {
+      .subscribe(performed => {
+        this.performed.next(performed);
+        this.stepperControl.activate(this.doneStep);
+      }, error => {
+        if (error.status == ErrorStatus.FORBIDDEN
+          && this.preview.value.confirmationPasswordInput) {
           this.previewForm.setValue({
             confirmationPassword: null
           });

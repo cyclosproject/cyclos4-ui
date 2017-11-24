@@ -26,6 +26,7 @@ export class PushNotificationsService {
 
   constructor(
     private generalMessages: GeneralMessages,
+    private apiConfiguration: ApiConfiguration,
     private login: LoginService,
     private notification: NotificationService,
     private zone: NgZone
@@ -63,7 +64,7 @@ export class PushNotificationsService {
     if (accountIds == null || accountIds.length == 0) {
       kinds.delete(PushNotificationEventKind.ACCOUNT_STATUS);
     }
-    let url = ApiConfiguration.rootUrl + '/push/subscribe?clientId=' + clientId;
+    let url = this.apiConfiguration.rootUrl + '/push/subscribe?clientId=' + clientId;
     kinds.forEach(kind => url += '&kinds=' + kind);
     accountIds.forEach(id => url += '&accountIds=' + id);
     this.eventSource = new EventSourcePolyfill(url, {

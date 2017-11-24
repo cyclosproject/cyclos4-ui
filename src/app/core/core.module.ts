@@ -13,13 +13,19 @@ import { FormatService } from "app/core/format.service";
 import { TranslationLoaderService } from "app/core/translation-loader.service";
 import { LayoutService } from "app/core/layout.service";
 import { LoginService } from "app/core/login.service";
-import { ApiConfigurationService } from "app/core/api-configuration.service";
 import { PersonalMenuComponent } from 'app/core/personal-menu.component';
 import { DateAdapter, MAT_DATE_FORMATS, MatDateFormats } from '@angular/material';
 import { ApiDateAdapter } from 'app/core/api-date-adapter';
 import { MenuService } from 'app/shared/menu.service';
 import { PushNotificationsService } from 'app/core/push-notifications.service';
+import { ApiInterceptor } from 'app/core/api.interceptor';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
+export const API_INTERCEPTOR_PROVIDER: Provider = {
+  provide: HTTP_INTERCEPTORS,
+  useExisting: forwardRef(() => ApiInterceptor),
+  multi: true
+}
 export const DATE_ADAPTER_PROVIDER: Provider = {
   provide: DateAdapter,
   useExisting: forwardRef(() => ApiDateAdapter)
@@ -55,7 +61,7 @@ export const DATE_FORMATS_PROVIDER: Provider = {
     PersonalMenuComponent
   ],
   providers: [
-    ApiConfigurationService,
+    ApiInterceptor,
     GeneralMessages,
     TranslationLoaderService,
     ErrorHandlerService,
@@ -66,6 +72,7 @@ export const DATE_FORMATS_PROVIDER: Provider = {
     MenuService,
     PushNotificationsService,
     ApiDateAdapter,
+    API_INTERCEPTOR_PROVIDER,
     DATE_ADAPTER_PROVIDER,
     DATE_FORMATS_PROVIDER
   ]

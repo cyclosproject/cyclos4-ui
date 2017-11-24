@@ -1,9 +1,5 @@
 import { NgModule, Provider, APP_INITIALIZER } from '@angular/core';
-import { HttpModule } from "@angular/http";
 import { BrowserModule } from "@angular/platform-browser";
-
-import 'hammerjs';
-
 import { AppComponent } from 'app/app.component';
 import { AppRoutingModule } from "app/app-routing.module";
 import { SharedModule } from 'app/shared/shared.module';
@@ -16,6 +12,7 @@ import { LOAD_USER } from "app/bootstrap/load-user";
 import { LoginModule } from "app/login/login.module";
 import { CoreModule } from "app/core/core.module";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import 'hammerjs';
 
 /**
  * Root application module
@@ -25,7 +22,6 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
     AppComponent
   ],
   imports: [
-    HttpModule,
     ApiModule,
     CoreModule,
     SharedModule,

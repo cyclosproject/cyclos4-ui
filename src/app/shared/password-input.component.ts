@@ -165,8 +165,8 @@ export class PasswordInputComponent implements OnInit, AfterViewInit, ControlVal
 
   requestOtp(medium: SendMediumEnum): void {
     this.authService.newOtp(medium)
-      .then(resp => {
-        let arg = resp.data.join(", ");
+      .subscribe(mediums => {
+        let arg = mediums.join(", ");
         var message: string;
         switch (medium) {
           case SendMediumEnum.EMAIL:
@@ -187,10 +187,7 @@ export class PasswordInputComponent implements OnInit, AfterViewInit, ControlVal
             this.passwordComponent.nativeElement.focus();
           });
         }
-      })
-      .catch(error => {
-        this.notificationService.error(this.generalMessages.passwordOtpError());
-      })
+      });
   }
 
   private updateVKButtons(): void {
