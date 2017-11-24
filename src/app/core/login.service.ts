@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Auth, User } from "app/api/models";
-import { RequestOptions } from "@angular/http";
 import { AuthService } from "app/api/services/auth.service";
 import { Subject } from "rxjs/Subject";
 import { Subscription } from "rxjs/Subscription";

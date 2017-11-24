@@ -154,8 +154,13 @@ export class DecimalFieldComponent implements OnInit, ControlValueAccessor {
     this.touchedCallback = fn;
   }
   setDisabledState(isDisabled: boolean): void {
-    this.integerField.nativeElement.disabled = isDisabled;
-    this.decimalField.nativeElement.disabled = isDisabled;
+    this.disabled = isDisabled;
+    if (this.integerField) {
+      this.integerField.nativeElement.disabled = isDisabled;
+    }
+    if (this.decimalField) {
+      this.decimalField.nativeElement.disabled = isDisabled;
+    }
   }
 
 }

@@ -1,5 +1,4 @@
 import { Injectable, Injector } from '@angular/core';
-import { RequestOptions } from "@angular/http";
 import { LoginService } from 'app/core/login.service';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
 import { NotificationService } from 'app/core/notification.service';
@@ -32,6 +31,11 @@ export class ApiInterceptor implements HttpInterceptor {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    if (!req.url.includes('/api/')) {
+      // This is not a request to the API! proceed as is
+      return next.handle(req);
+    }
+
     // Maybe we should ignore errors...
     let ignoreError = this._ignoreNextError;
     this._ignoreNextError = false;

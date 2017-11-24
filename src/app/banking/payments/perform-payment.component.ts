@@ -59,7 +59,8 @@ export class PerformPaymentComponent extends BaseBankingComponent {
 
     // Form for field (others are set on prepareFieldsForm())
     this.fieldsForm = formBuilder.group({
-      type: [null, Validators.required]
+      type: [null, Validators.required],
+      amount: [null, Validators.required]
     });
     // Changing the payment type should also fetch the payment type data
     this.fieldsForm.valueChanges.subscribe(values => {
@@ -317,21 +318,21 @@ export class PerformPaymentComponent extends BaseBankingComponent {
     })
       .subscribe(data => {
         this.prepareFieldsForm(data.paymentTypeData);
-        return data.paymentTypeData;
       });
   }
 
   private prepareFieldsForm(data: TransactionTypeData) {
     this.preparingFieldsForm = true;
-    this.fieldsForm.setControl('amount',
-      this.formBuilder.control({value: null, disabled: data.fixedAmount}, Validators.required));
     this.fieldsForm.setControl('description',
-      this.formBuilder.control(null, data.requiresDescription ? Validators.required : null));
+    this.formBuilder.control(null, data.requiresDescription ? Validators.required : null));
     this.fieldsForm.setControl('customValues',
-      ApiHelper.customValuesFormGroup(this.formBuilder, data.customFields));
+    ApiHelper.customValuesFormGroup(this.formBuilder, data.customFields));
     this.fieldsForm.patchValue({type: data.id});
     if (data.fixedAmount) {
       this.fieldsForm.patchValue({amount: data.fixedAmount});
+      this.fieldsForm.controls.amount.disable();
+    } else {
+      this.fieldsForm.controls.amount.enable();
     }
     this.preparingFieldsForm = false;
     this.paymentTypeData.next(data);

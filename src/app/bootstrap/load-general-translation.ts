@@ -3,7 +3,6 @@ import { TranslationLoaderService } from "app/core/translation-loader.service";
 import { UIService } from "app/api/services";
 import { UiKind, DataForUi } from "app/api/models";
 import { Provider, APP_INITIALIZER } from "@angular/core";
-import { Http } from "@angular/http";
 import { GeneralMessages } from "app/messages/general-messages";
 
 // Load the general keys before showing
