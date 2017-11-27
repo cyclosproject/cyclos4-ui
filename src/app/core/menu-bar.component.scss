@@ -1,24 +1,5 @@
 @import 'src/definitions';
 
-:host /deep/ a.active {
-  color: mat-color($primary);
-  border-bottom: 2px solid mat-color($primary);
-  opacity: 1;
-}
-
-:host /deep/ a {
-  border-radius: 0px !important;
-  padding: 10px 12px 10px 12px;
-  margin-right: 8px;
-  font-weight: 400;
-  position: relative;
-  left: -12px;
-  top: 1px;  
-}
-:host /deep/ a.mat-button .text {
-  font-size: 16px !important;
-}
-
 :host /deep/ .outer {
   background-color: map-get($background, card);
   color: map-get($foreground, text);
@@ -26,6 +7,27 @@
   padding: 0 16px;
 }
 
-:host /deep/ a:not(.active) .mat-icon {
-  opacity: 0.55 !important;
+:host /deep/ .mat-icon {
+  margin-right: 8px;
+}
+
+:host /deep/ a.active {
+  opacity: 1 !important;
+}
+
+:host /deep/ a:not(.active) {
+  opacity: 0.65 !important;
+}
+:host /deep/ .mat-button-focus-overlay {
+  display: none !important;
+}
+
+:host /deep/ .mat-tab-link {
+  height: 60px !important;
+  font-weight: 400;
+  font-size: 1.2em;
+}
+
+:host /deep/ .mat-tab-nav-bar {
+  border-bottom-width: 0px !important;
 }

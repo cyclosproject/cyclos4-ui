@@ -34,7 +34,6 @@ export class LoginComponent extends BaseComponent {
   constructor(
     injector: Injector,
     private router: Router,
-    private route: ActivatedRoute,
     private interceptor: ApiInterceptor,
     formBuilder: FormBuilder
   ) {
@@ -50,13 +49,13 @@ export class LoginComponent extends BaseComponent {
     if (this.interceptor.sessionToken != null) {
       this.router.navigateByUrl(this.login.redirectUrl || '');
     } else {
-      this.route.data.subscribe((data: {
+      this.subscriptions.push(this.route.data.subscribe((data: {
         dataForLogin: DataForLogin,
         registrationGroups: GroupForRegistration[]
       }) => {
         this.dataForLogin.next(data.dataForLogin);
         this.registrationGroups = data.registrationGroups;
-      });
+      }));
       this.layout.menu.next(Menu.LOGIN);
     }
   }

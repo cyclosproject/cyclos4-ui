@@ -8,17 +8,24 @@ import { SharedModule } from 'app/shared/shared.module';
 import { DataForLoginResolve } from 'app/data-for-login.resolve';
 import { LoggedUserGuard } from 'app/logged-user-guard';
 import { RegistrationGroupsResolve } from 'app/registration-groups.resolve';
+import { Menu } from 'app/shared/menu';
 
 const rootRoutes: Routes = [
   {
     path: '',
     component: HomeComponent,
-    pathMatch: 'full'
+    pathMatch: 'full',
+    data: {
+      menu: Menu.HOME
+    }
   },
   {
     path: 'home',
     component: HomeComponent,
-    pathMatch: 'full'
+    pathMatch: 'full',
+    data: {
+      menu: Menu.HOME
+    }
   },
   {
     path: 'login',
@@ -26,6 +33,9 @@ const rootRoutes: Routes = [
     resolve: {
       dataForLogin: DataForLoginResolve,
       registrationGroups: RegistrationGroupsResolve
+    },
+    data: {
+      menu: Menu.LOGIN
     }
   },
   {

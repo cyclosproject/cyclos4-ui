@@ -4,6 +4,7 @@ import { AccountHistoryComponent } from 'app/banking/accounts/account-history.co
 import { BankingMessagesResolve } from 'app/banking/banking-messages.resolve';
 import { LoggedUserGuard } from 'app/logged-user-guard';
 import { PerformPaymentComponent } from 'app/banking/payments/perform-payment.component';
+import { Menu } from 'app/shared/menu';
 
 const accountRoutes: Routes = [
   {
@@ -15,15 +16,24 @@ const accountRoutes: Routes = [
     children: [
       {
         path: 'account',
-        component: AccountHistoryComponent
+        component: AccountHistoryComponent,
+        data: {
+          menu: Menu.ACCOUNT
+        }
       },
       {
         path: 'account/:type',
-        component: AccountHistoryComponent
+        component: AccountHistoryComponent,
+        data: {
+          menu: Menu.ACCOUNT
+        }
       },
       {
         path: 'payment',
-        component: PerformPaymentComponent
+        component: PerformPaymentComponent,
+        data: {
+          menu: Menu.PERFORM_PAYMENT
+        }
       }
     ]
   }

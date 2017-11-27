@@ -18,6 +18,9 @@ export class MenuItemComponent extends BaseComponent {
   }
 
   @Input()
+  disableRipple: boolean;
+
+  @Input()
   active: boolean;
 
   @Input()

@@ -7,6 +7,7 @@ import { LoginService } from 'app/core/login.service';
 import { NotificationService } from 'app/core/notification.service';
 import { ObservableMedia } from '@angular/flex-layout';
 import { Subscription } from 'rxjs/Subscription';
+import { ActivatedRoute } from '@angular/router';
 
 /**
  * Base class to meant to be inherited by other components.
@@ -21,12 +22,12 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
   errorHandler: ErrorHandlerService;
   login: LoginService;
   notification: NotificationService;
+  route: ActivatedRoute;
 
   protected changeDetector: ChangeDetectorRef;
   protected media: ObservableMedia;
 
-  private mediaSubscription: Subscription;
-  private authSubscription: Subscription;
+  protected subscriptions: Subscription[] = [];
 
   constructor(injector: Injector) {
     this.generalMessages = injector.get(GeneralMessages);
@@ -36,29 +37,29 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
     this.login = injector.get(LoginService);
     this.notification = injector.get(NotificationService);
     this.layout = injector.get(LayoutService);
+    this.route = injector.get(ActivatedRoute);
 
     this.changeDetector = injector.get(ChangeDetectorRef);
     this.media = injector.get(ObservableMedia);
   }
 
   ngOnInit() {
-    this.mediaSubscription = this.media.subscribe(() => {
+    this.subscriptions.push(this.media.subscribe(() => {
       this.onDisplayChange();
-    });
-    this.authSubscription = this.login.subscribeForAuth(() => {
+    }));
+    this.subscriptions.push(this.login.subscribeForAuth(() => {
       this.onDisplayChange();
-    });
+    }));
+    this.subscriptions.push(this.route.data.subscribe(data => {
+      if (data.menu && this.layout.menu !== data.menu) {
+        this.layout.menu.next(data.menu);
+      }
+    }));
   }
 
   ngOnDestroy(): void {
-    if (this.mediaSubscription) {
-      this.mediaSubscription.unsubscribe();
-      this.mediaSubscription = null;
-    }
-    if (this.authSubscription) {
-      this.authSubscription.unsubscribe();
-      this.authSubscription = null;
-    }
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+    this.subscriptions.length = 0;
   }
 
   /**

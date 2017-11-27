@@ -1,4 +1,5 @@
 <a mat-button
+  [disableRipple]="disableRipple"
   [routerLink]="url"
   [routerLinkActive]="url == null ? '' : 'active'"
   [routerLinkActiveOptions]="{exact:true}"

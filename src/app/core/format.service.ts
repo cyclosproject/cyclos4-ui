@@ -8,7 +8,7 @@ import { GeneralMessages } from 'app/messages/general-messages';
 import { MatDateFormats } from '@angular/material';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
-declare const Big: any;
+import Big from 'big.js';
 
 /**
  * Names for week days or months, in several forms:

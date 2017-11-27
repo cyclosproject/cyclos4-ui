@@ -1,7 +1,14 @@
 <layout-bar>
-  <menu-item *ngFor="let root of roots"
-    [entry]="root"
-    iconClass="mat-22"
-    [active]="root.rootMenu == (layout.menu | async)?.root"
-    (click)="onClick(root)"></menu-item>
+  <nav mat-tab-nav-bar #tabGroup>
+    <a mat-tab-link
+      *ngFor="let root of roots | async"
+      [routerLink]="root.entries[0].url"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{exact:true}"
+      #rla="routerLinkActive"
+      [active]="rla.isActive">
+      <mat-icon ngClass="mat-22">{{ root.icon }}</mat-icon>
+      {{ root.label }}
+    </a>
+  </nav>
 </layout-bar>

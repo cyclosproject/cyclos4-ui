@@ -42,7 +42,6 @@ export class AccountHistoryComponent extends BaseBankingComponent implements Aft
   constructor(
     injector: Injector,
     private accountsService: AccountsService,
-    private route: ActivatedRoute,
     private router: Router
   ) {
     super(injector);
