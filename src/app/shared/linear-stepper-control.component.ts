@@ -1,8 +1,8 @@
-import { Component, ChangeDetectionStrategy, Input, OnInit, OnDestroy } from "@angular/core";
-import { TdStepsComponent, TdStepComponent, IStepChangeEvent, StepState } from "@covalent/core";
-import { BehaviorSubject } from "rxjs/BehaviorSubject";
-import { Subscription } from "rxjs/Subscription";
-import { Observable } from "rxjs/Observable";
+import { Component, ChangeDetectionStrategy, Input, OnInit, OnDestroy } from '@angular/core';
+import { TdStepsComponent, TdStepComponent, IStepChangeEvent, StepState } from '@covalent/core';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
 
 /**
  * Controls a teradata covalent stepper to implement the logic of a linear stepper
@@ -28,7 +28,7 @@ export class LinearStepperControlComponent implements OnInit, OnDestroy {
       this.activate(event.newStep);
     });
 
-    let sub = this.activeStep.subscribe(step => {
+    const sub = this.activeStep.subscribe(step => {
       if (step) {
         this.doActivate(step);
       }
@@ -46,9 +46,9 @@ export class LinearStepperControlComponent implements OnInit, OnDestroy {
   monitor(step: TdStepComponent): Observable<boolean> {
     let mon = this.monitors.get(step);
     if (mon == null) {
-      let subj = new BehaviorSubject<boolean>(this.activeStep.value == step);
-      let sub = this.activeStep.subscribe(it => {
-        if (step == it) {
+      const subj = new BehaviorSubject<boolean>(this.activeStep.value === step);
+      const sub = this.activeStep.subscribe(it => {
+        if (step === it) {
           subj.next(true);
         } else if (subj.value) {
           subj.next(false);
@@ -72,7 +72,7 @@ export class LinearStepperControlComponent implements OnInit, OnDestroy {
    * Marks the given step as disabled, so it is never activated
    */
   disable(step: TdStepComponent) {
-    let disabled = this.disabledSteps.value;
+    const disabled = this.disabledSteps.value;
     if (!disabled.has(step)) {
       disabled.add(step);
       this.disabledSteps.next(disabled);
@@ -83,7 +83,7 @@ export class LinearStepperControlComponent implements OnInit, OnDestroy {
    * Re-enables a step previously marked as disabled
    */
   enable(step: TdStepComponent) {
-    let disabled = this.disabledSteps.value;
+    const disabled = this.disabledSteps.value;
     if (disabled.has(step)) {
       disabled.delete(step);
       this.disabledSteps.next(disabled);
@@ -94,22 +94,22 @@ export class LinearStepperControlComponent implements OnInit, OnDestroy {
    * Activates the last step and marks it as complete
    */
   complete() {
-    let steps = this.stepper.steps; 
-    if (steps.length == 0) {
+    const steps = this.stepper.steps;
+    if (steps.length === 0) {
       return;
     }
-    let last = steps[steps.length - 1];
-    this.enable(last)
+    const last = steps[steps.length - 1];
+    this.enable(last);
     last.state = StepState.Complete;
   }
 
   private doActivate(step: TdStepComponent) {
     // Disable all steps greater than the current step
-    let steps = this.stepper.steps;
-    let index = steps.indexOf(step);
-    let disabled = this.disabledSteps.value;
+    const steps = this.stepper.steps;
+    const index = steps.indexOf(step);
+    const disabled = this.disabledSteps.value;
     for (let i = 0; i < steps.length; i++) {
-      let current = steps[i];
+      const current = steps[i];
       current.disabled = disabled.has(current) || i > index;
       if (i > index) {
         current.state = StepState.None;
@@ -124,5 +124,4 @@ export class LinearStepperControlComponent implements OnInit, OnDestroy {
     step.state = StepState.None;
     step.open();
   }
-
 }

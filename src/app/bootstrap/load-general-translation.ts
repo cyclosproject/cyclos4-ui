@@ -1,9 +1,9 @@
-import { FormatService } from "app/core/format.service";
-import { TranslationLoaderService } from "app/core/translation-loader.service";
-import { UIService } from "app/api/services";
-import { UiKind, DataForUi } from "app/api/models";
-import { Provider, APP_INITIALIZER } from "@angular/core";
-import { GeneralMessages } from "app/messages/general-messages";
+import { FormatService } from 'app/core/format.service';
+import { TranslationLoaderService } from 'app/core/translation-loader.service';
+import { UIService } from 'app/api/services';
+import { UiKind, DataForUi } from 'app/api/models';
+import { Provider, APP_INITIALIZER } from '@angular/core';
+import { GeneralMessages } from 'app/messages/general-messages';
 
 // Load the general keys before showing
 export function loadGeneralTranslation(

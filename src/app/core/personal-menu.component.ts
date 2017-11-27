@@ -1,5 +1,5 @@
 import { Component, Input, ElementRef, ViewChild, ChangeDetectionStrategy, Injector } from '@angular/core';
-import { FormatService } from "app/core/format.service";
+import { FormatService } from 'app/core/format.service';
 import { BaseComponent } from 'app/shared/base.component';
 import { User, Auth } from 'app/api/models';
 import { Subscription } from 'rxjs/Subscription';
@@ -22,25 +22,25 @@ export class PersonalMenuComponent extends BaseComponent {
     super(injector);
   }
 
+  menuEntries: MenuEntry[];
+
+  @ViewChild('container')
+  container: ElementRef;
+
   ngOnInit() {
     super.ngOnInit();
     this.update();
-    document.body.addEventListener("click", e => {
+    document.body.addEventListener('click', e => {
       this.hide();
       e.cancelBubble = true;
     }, false);
   }
-
-  menuEntries: MenuEntry[];
 
   protected onDisplayChange() {
     super.onDisplayChange();
     this.update();
     this.hide();
   }
-
-  @ViewChild("container")
-  container: ElementRef;
 
   get user(): User {
     return this.login.user;
@@ -57,14 +57,14 @@ export class PersonalMenuComponent extends BaseComponent {
         this.hide();
       } else {
         // Show
-        let style = this.container.nativeElement.style as CSSStyleDeclaration;
+        const style = this.container.nativeElement.style as CSSStyleDeclaration;
         style.visibility = 'hidden';
         style.opacity = '0';
         style.display = '';
-        var topAnchor: HTMLElement = null;
+        let topAnchor: HTMLElement = null;
         let parent = a.parentElement;
         while (parent != null) {
-          if (parent.tagName.toLowerCase() == 'top-bar') {
+          if (parent.tagName.toLowerCase() === 'top-bar') {
             topAnchor = parent;
           }
           parent = parent.parentElement;
@@ -72,9 +72,9 @@ export class PersonalMenuComponent extends BaseComponent {
         topAnchor = topAnchor || a;
         style.top = (topAnchor.offsetTop + topAnchor.offsetHeight) + 'px';
         if (this.layout.xs) {
-          style.left = "0";
+          style.left = '0';
         } else {
-          let el = this.container.nativeElement as HTMLElement;
+          const el = this.container.nativeElement as HTMLElement;
           style.left = (a.offsetLeft + a.offsetWidth - el.offsetWidth) + 'px';
         }
         style.visibility = 'visible';
@@ -84,8 +84,8 @@ export class PersonalMenuComponent extends BaseComponent {
   }
 
   get visible(): boolean {
-    let style = this.container.nativeElement.style as CSSStyleDeclaration;
-    return !(style.display == 'none' || parseFloat(style.opacity) == 0);
+    const style = this.container.nativeElement.style as CSSStyleDeclaration;
+    return !(style.display === 'none' || parseFloat(style.opacity) === 0);
   }
 
   hide() {
@@ -93,16 +93,16 @@ export class PersonalMenuComponent extends BaseComponent {
       // Already hidden
       return;
     }
-    let style = this.container.nativeElement.style as CSSStyleDeclaration;
+    const style = this.container.nativeElement.style as CSSStyleDeclaration;
     style.opacity = '0';
     setTimeout(() => style.display = 'none', 500);
   }
 
   private update() {
-    let roots = this.menuService.menu(MenuType.PERSONAL);
+    const roots = this.menuService.menu(MenuType.PERSONAL);
     let personal: RootMenuEntry = null;
-    for (let root of roots) {
-      if (root.rootMenu == RootMenu.PERSONAL) {
+    for (const root of roots) {
+      if (root.rootMenu === RootMenu.PERSONAL) {
         personal = root;
         break;
       }

@@ -1,5 +1,5 @@
-import { PaymentKind } from "app/banking/payments/payment-kind";
-import { IdMethod } from "app/banking/payments/id-method";
+import { PaymentKind } from 'app/banking/payments/payment-kind';
+import { IdMethod } from 'app/banking/payments/id-method';
 
 /**
  * Holds a payment kind and an user identification method

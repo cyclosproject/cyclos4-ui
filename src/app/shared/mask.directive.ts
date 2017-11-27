@@ -1,27 +1,27 @@
 import { Directive, ElementRef, HostListener, Input } from '@angular/core';
-import { NgControl } from "@angular/forms";
+import { NgControl } from '@angular/forms';
 
 const ALLOWED = [
-  "ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown",
-  "End", "Home", "Delete", "Backspace", "Tab",
-  "Shift", "Control", "Alt", "Super", "Meta"
+  'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown',
+  'End', 'Home', 'Delete', 'Backspace', 'Tab',
+  'Shift', 'Control', 'Alt', 'Super', 'Meta'
 ];
 
-var DIGITS: string = "";
+let DIGITS = '';
 for (let i = 0; i <= 9; i++) {
   DIGITS += i.toString();
 }
-var LOWER: string = "";
+let LOWER = '';
 for (let i = 'a'; i <= 'z'; i = String.fromCodePoint(i.codePointAt(0) + 1)) {
   LOWER += i;
 }
-var UPPER: string = LOWER.toUpperCase();
-var LETTERS: string = LOWER + UPPER;
-var ALPHA: string = DIGITS + LETTERS;
+const UPPER = LOWER.toUpperCase();
+const LETTERS = LOWER + UPPER;
+const ALPHA = DIGITS + LETTERS;
 
 class MaskField {
   constructor(
-    public allowed: string, 
+    public allowed: string,
     public literal: boolean = false,
     private tx: (c: string) => string = null) { }
 
@@ -60,28 +60,28 @@ export class MaskDirective {
   constructor(
     private el: ElementRef,
     private control: NgControl
-    ) { }
+  ) { }
 
   private fields: MaskField[];
 
-  @Input() 
+  @Input()
   set mask(mask: string) {
     if (!mask) {
       this.fields = null;
       return;
-    } 
+    }
 
     this.fields = [];
     let wasEscape = false;
     let wasCapital = false;
     for (let i = 0; i < mask.length; i++) {
-      let c = mask.charAt(i);
+      const c = mask.charAt(i);
       let field: MaskField = null;
       let isEscape = false;
       let isCapital = false;
       if (wasEscape) {
         field = new MaskField(c, true);
-      } else if (c == '\\') {
+      } else if (c === '\\') {
         isEscape = true;
       } else if (MASK_ANY.indexOf(c) >= 0) {
         field = new MaskField(null);
@@ -90,14 +90,17 @@ export class MaskDirective {
       } else if (MASK_LETTER.indexOf(c) >= 0) {
         field = new MaskField(LETTERS);
       } else if (MASK_LOWER.indexOf(c) >= 0) {
-        field = new MaskField(LETTERS, false, c => c.toLocaleLowerCase());
+        field = new MaskField(LETTERS, false, _c => _c.toLocaleLowerCase());
       } else if (MASK_UPPER.indexOf(c) >= 0) {
-        field = new MaskField(LETTERS, false, c => c.toUpperCase());
+        field = new MaskField(LETTERS, false, _c => _c.toUpperCase());
       } else if (MASK_CAPITAL.indexOf(c) >= 0) {
         const capital = wasCapital;
-        field = new MaskField(LETTERS, false, c => {
-          if (capital) return c.toLowerCase();
-          else return c.toUpperCase();
+        field = new MaskField(LETTERS, false, _c => {
+          if (capital) {
+            return _c.toLowerCase();
+          } else {
+            return _c.toUpperCase();
+          }
         });
         isCapital = true;
       } else {
@@ -117,7 +120,7 @@ export class MaskDirective {
     }
 
     // Get the caret position
-    let el = this.el.nativeElement;
+    const el = this.el.nativeElement;
     let value = el.value;
     let caret = el.selectionStart;
     let selectionEnd = el.selectionEnd;
@@ -142,19 +145,19 @@ export class MaskDirective {
 
     // Apply the typed character
     if (field.accepted(event.key)) {
-      let key = field.transform(event.key);
+      const key = field.transform(event.key);
       value = value.substring(0, caret)
         + key + value.substr(caret + 1);
       el.selectionStart = el.selectionEnd = ++caret;
 
       // If inserting chars before the end of the string, ensure the rest is still valid
       for (let i = caret; i < this.fields.length && i < value.length + 1; i++) {
-        let f = this.fields[i];
+        const f = this.fields[i];
         if (i < value.length && !f.accepted(value.charAt(i))) {
           // No longer valid
           value = value.substr(0, i);
           break;
-        } else if (caret == value.length && f.literal) {
+        } else if (caret === value.length && f.literal) {
           value = value.substring(0, caret)
             + f.allowed + value.substr(caret + 1);
           caret++;

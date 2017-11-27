@@ -1,13 +1,13 @@
 import { Component, OnInit, Input, ChangeDetectorRef, Provider, forwardRef, ChangeDetectionStrategy } from '@angular/core';
-import { UserDataForSearch, User } from "app/api/models";
-import { TableDataSource } from "app/shared/table-datasource";
-import { NG_VALUE_ACCESSOR, ControlValueAccessor } from "@angular/forms";
-import { Subject } from "rxjs/Subject";
-import { debounceTime, distinctUntilChanged, switchMap } from "rxjs/operators";
-import { UsersService } from "app/api/services";
-import { GeneralMessages } from "app/messages/general-messages";
-import { ApiHelper } from "app/shared/api-helper";
-import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import { UserDataForSearch, User } from 'app/api/models';
+import { TableDataSource } from 'app/shared/table-datasource';
+import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
+import { Subject } from 'rxjs/Subject';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { UsersService } from 'app/api/services';
+import { GeneralMessages } from 'app/messages/general-messages';
+import { ApiHelper } from 'app/shared/api-helper';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { UserResult } from 'app/api/models/user-result';
 
@@ -34,16 +34,19 @@ export class UserSelectionComponent implements OnInit, ControlValueAccessor {
     public generalMessages: GeneralMessages,
     private usersService: UsersService) {
   }
-    
+
   @Input()
   focused: boolean | string;
-  
+
+  @Input()
+  dataForSearch: UserDataForSearch;
+
   onKeywords = new Subject<string>();
   showTable = new BehaviorSubject<boolean>(false);
-  
+
   dataSource: TableDataSource<User> = new TableDataSource();
 
-  private _value: string
+  private _value: string;
   get value(): string {
     return this._value;
   }
@@ -55,9 +58,6 @@ export class UserSelectionComponent implements OnInit, ControlValueAccessor {
   private changeCallback = (_: any) => { };
   private touchedCallback = () => { };
 
-  @Input()
-  public dataForSearch: UserDataForSearch;
-
   ngOnInit() {
     this.onKeywords.pipe(
       debounceTime(350),
@@ -68,14 +68,14 @@ export class UserSelectionComponent implements OnInit, ControlValueAccessor {
   }
 
   private search(keywords: string) {
-    let showTable = keywords != null && keywords.length > 0;
+    const showTable = keywords != null && keywords.length > 0;
     if (showTable) {
       this.dataSource.subscribe(
        this.usersService.searchUsers({
         keywords: keywords,
         pageSize: ApiHelper.quickSearchPageSize,
         ignoreProfileFieldsInList: true
-      }))
+      }));
     } else {
       this.value = null;
       this.dataSource.next([]);
@@ -84,7 +84,7 @@ export class UserSelectionComponent implements OnInit, ControlValueAccessor {
   }
 
   writeValue(obj: any): void {
-    this.value = obj
+    this.value = obj;
   }
   registerOnChange(fn: any): void {
     this.changeCallback = fn;

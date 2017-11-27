@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Notification } from "app/shared/notification";
-import { NotificationType } from "app/shared/notification-type";
-import { MatDialog, MatDialogRef } from "@angular/material";
-import { NotificationComponent } from "app/shared/notification.component";
+import { Notification } from 'app/shared/notification';
+import { NotificationType } from 'app/shared/notification-type';
+import { MatDialog, MatDialogRef } from '@angular/material';
+import { NotificationComponent } from 'app/shared/notification.component';
 
 /**
  * Service used to manage notifications being displayed for users
@@ -21,7 +21,7 @@ export class NotificationService {
   error(message: string, allowClose = true): MatDialogRef<NotificationComponent> {
     return this.showNotification(NotificationType.ERROR, message, allowClose);
   }
-  
+
   /**
    * Shows a warning notification
    * @param message The notification message
@@ -30,7 +30,7 @@ export class NotificationService {
   warning(message: string, allowClose = true): MatDialogRef<NotificationComponent> {
     return this.showNotification(NotificationType.WARNING, message, allowClose);
   }
-  
+
   /**
    * Shows an information notification
    * @param message The notification message
@@ -47,10 +47,10 @@ export class NotificationService {
    * @returns The dialog reference
    */
   showNotification(type: NotificationType, message: string, allowClose = true): MatDialogRef<NotificationComponent> {
-    let ref = this.dialog.open(NotificationComponent, {
+    const ref = this.dialog.open(NotificationComponent, {
       disableClose: !allowClose
     });
-    let component = ref.componentInstance;
+    const component = ref.componentInstance;
     component.notification = new Notification(type, message);
     component.allowClose = allowClose;
     return ref;

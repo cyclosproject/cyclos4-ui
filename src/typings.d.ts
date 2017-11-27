@@ -5,7 +5,7 @@ interface NodeModule {
 }
 
 // JSON loading, basically used for translations
-declare module "*.json" {
+declare module '*.json' {
     const value: any;
     export default value;
 }

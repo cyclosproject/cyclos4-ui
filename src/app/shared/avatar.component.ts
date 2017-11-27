@@ -1,15 +1,15 @@
 import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
-import { Image } from "app/api/models";
+import { Image } from 'app/api/models';
 
 /**
  * The size for rendered avatars
  */
-export type AvatarSize = "small" | "medium" | "large" | "huge";
+export type AvatarSize = 'small' | 'medium' | 'large' | 'huge';
 export const SIZES: {[key: string]: number} = {
-  "small": 24,
-  "medium": 36,
-  "large": 48,
-  "huge": 96
+  'small': 24,
+  'medium': 36,
+  'large': 48,
+  'huge': 96
 };
 
 /**
@@ -17,6 +17,7 @@ export const SIZES: {[key: string]: number} = {
  * If there is no image, an icon is shown instead
  */
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'avatar',
   templateUrl: 'avatar.component.html',
   styleUrls: ['avatar.component.scss'],
@@ -42,10 +43,12 @@ export class AvatarComponent implements OnInit {
   }
 
   get url(): string {
-    if (this._image == null) return null;
-    let param = this._ratio > 0 ? 'width' : 'height';
+    if (this._image == null) {
+      return null;
+    }
+    const param = this._ratio > 0 ? 'width' : 'height';
     // Use twice the size to prevent pixelation on high density devices
-    let size = SIZES[this.size] * 2;
+    const size = SIZES[this.size] * 2;
     return `${this._image.url}?${param}=${size}`;
   }
 
@@ -53,13 +56,13 @@ export class AvatarComponent implements OnInit {
    * The icon show when no image is available
    */
   @Input()
-  icon: string = "account_circle";
+  icon = 'account_circle';
 
   /**
    * The size of images and icons
    */
   @Input()
-  size: AvatarSize = "medium";
+  size: AvatarSize = 'medium';
 
   private get _imageWidth(): number {
     if (this._ratio < 1) {
@@ -84,7 +87,7 @@ export class AvatarComponent implements OnInit {
   }
 
   get imageLeft(): string {
-    let offset = this._imageWidth - SIZES[this.size];
+    const offset = this._imageWidth - SIZES[this.size];
     if (offset > 0) {
       return -(offset / 2) + 'px';
     }
@@ -92,7 +95,7 @@ export class AvatarComponent implements OnInit {
   }
 
   get imageTop(): string {
-    let offset = this._imageHeight - SIZES[this.size];
+    const offset = this._imageHeight - SIZES[this.size];
     if (offset > 0) {
       return -(offset / 2) + 'px';
     }

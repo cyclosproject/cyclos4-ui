@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { FormatService } from "app/core/format.service";
-import { Currency } from "app/api/models";
+import { FormatService } from 'app/core/format.service';
+import { Currency } from 'app/api/models';
 
 /**
  * Pipe used to format a number as currency
@@ -16,5 +16,4 @@ export class CurrencyPipe implements PipeTransform {
   public transform(value: string | number, currency: Currency): string {
     return this.formatService.formatAsCurrency(currency, value);
   }
-
 }

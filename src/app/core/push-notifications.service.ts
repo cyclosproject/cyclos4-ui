@@ -1,12 +1,12 @@
-import { Injectable, NgZone } from "@angular/core";
+import { Injectable, NgZone } from '@angular/core';
 import { EventSourcePolyfill } from 'ng-event-source';
-import { LoginService } from "app/core/login.service";
-import { Auth, PushNotificationEventKind, AccountWithStatus } from "app/api/models";
-import { ApiConfiguration } from "app/api/api-configuration";
-import { Observable } from "rxjs/Observable";
-import { NotificationService } from "app/core/notification.service";
-import { GeneralMessages } from "app/messages/general-messages";
-import { Subscription } from "rxjs/Subscription";
+import { LoginService } from 'app/core/login.service';
+import { Auth, PushNotificationEventKind, AccountWithStatus } from 'app/api/models';
+import { ApiConfiguration } from 'app/api/api-configuration';
+import { Observable } from 'rxjs/Observable';
+import { NotificationService } from 'app/core/notification.service';
+import { GeneralMessages } from 'app/messages/general-messages';
+import { Subscription } from 'rxjs/Subscription';
 
 const KINDS: PushNotificationEventKind[] = [
   PushNotificationEventKind.LOGGED_OUT,
@@ -18,9 +18,9 @@ const KINDS: PushNotificationEventKind[] = [
  */
 @Injectable()
 export class PushNotificationsService {
- 
+
   private eventSource: EventSourcePolyfill;
-  
+
   private accountStatusObserver;
   private accountStatus: Observable<AccountWithStatus>;
 
@@ -30,7 +30,7 @@ export class PushNotificationsService {
     private login: LoginService,
     private notification: NotificationService,
     private zone: NgZone
-    ) {
+  ) {
     login.subscribeForAuth(auth => {
       if (login.user) {
         this.open(auth);
@@ -57,19 +57,19 @@ export class PushNotificationsService {
 
   private open(auth: Auth) {
     this.close();
-    let accounts = (auth.permissions.banking || {}).accounts;
-    let accountIds = accounts == null ? null : accounts.map(a => a.account.id);
-    let clientId = Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
-    let kinds = new Set<PushNotificationEventKind>(KINDS);
-    if (accountIds == null || accountIds.length == 0) {
+    const accounts = (auth.permissions.banking || {}).accounts;
+    const accountIds = accounts == null ? null : accounts.map(a => a.account.id);
+    const clientId = Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
+    const kinds = new Set<PushNotificationEventKind>(KINDS);
+    if (accountIds == null || accountIds.length === 0) {
       kinds.delete(PushNotificationEventKind.ACCOUNT_STATUS);
     }
     let url = this.apiConfiguration.rootUrl + '/push/subscribe?clientId=' + clientId;
     kinds.forEach(kind => url += '&kinds=' + kind);
     accountIds.forEach(id => url += '&accountIds=' + id);
     this.eventSource = new EventSourcePolyfill(url, {
-        headers: {'Session-Token': auth.sessionToken}
-      });
+      headers: { 'Session-Token': auth.sessionToken }
+    });
 
     // Listen for logged out events
     this.eventSource.addEventListener(PushNotificationEventKind.LOGGED_OUT, (event: any) => {
@@ -82,7 +82,7 @@ export class PushNotificationsService {
 
     // Listen for account status events
     this.eventSource.addEventListener(PushNotificationEventKind.ACCOUNT_STATUS, (event: any) => {
-      let account = JSON.parse(event.data) as AccountWithStatus;
+      const account = JSON.parse(event.data) as AccountWithStatus;
       this.zone.run(() => this.accountStatusObserver.next(account));
     });
   }

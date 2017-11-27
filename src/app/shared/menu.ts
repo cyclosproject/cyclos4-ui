@@ -1,17 +1,17 @@
-import { Data } from "@angular/router";
-import { Auth } from "app/api/models";
+import { Data } from '@angular/router';
+import { Auth } from 'app/api/models';
 
 /** The types of menus in the application */
-export enum MenuType { 
+export enum MenuType {
   /** The sidenav shown on small devices */
-  SIDENAV, 
+  SIDENAV,
   /** The horizontal bar shown on medium+ devices */
-  BAR, 
+  BAR,
   /** The second-level side menu shown on medium+ devices */
-  SIDE, 
+  SIDE,
   /** The popup personal menu shown on clicking the logged user avatar */
   PERSONAL
-};
+}
 
 /** Contains the top-level (root) menus */
 export type RootMenu = 'home' | 'login' | 'personal' | 'banking' | 'users' | 'marketplace';
@@ -31,7 +31,7 @@ export module RootMenu {
 export class Menu {
   constructor(
     public root: RootMenu
-  ) {}
+  ) { }
 }
 export module Menu {
   // Standalone
@@ -46,8 +46,8 @@ export module Menu {
 
   // Users
   export const SEARCH_USERS = new Menu(RootMenu.USERS);
-  
-  // Marketplace 
+
+  // Marketplace
   export const SEARCH_MARKETPLACE = new Menu(RootMenu.MARKETPLACE);
 
   // Personal
@@ -64,7 +64,7 @@ export abstract class BaseMenuEntry {
     public icon: string,
     public label: string,
     public showIn: MenuType[]
-  ) {}
+  ) { }
 }
 /** Resolved root menu entry */
 export class RootMenuEntry extends BaseMenuEntry {

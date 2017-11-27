@@ -1,11 +1,11 @@
-import { ChangeDetectorRef } from "@angular/core";
-import { DataSource } from "@angular/cdk/collections";
-import { BehaviorSubject } from "rxjs/BehaviorSubject";
-import { Observable } from "rxjs/Observable";
-import { map, flatMap } from 'rxjs/operators'
-import { PaginationData } from "app/shared/pagination-data";
-import { HttpResponse } from "@angular/common/http";
-import { Subscription } from "rxjs/Subscription";
+import { ChangeDetectorRef } from '@angular/core';
+import { DataSource } from '@angular/cdk/collections';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable } from 'rxjs/Observable';
+import { map, flatMap } from 'rxjs/operators';
+import { PaginationData } from 'app/shared/pagination-data';
+import { HttpResponse } from '@angular/common/http';
+import { Subscription } from 'rxjs/Subscription';
 
 /**
  * Simple implementation for a DataSource to be used on data tables.
@@ -23,7 +23,7 @@ export class TableDataSource<T> extends DataSource<T> {
    * Holds the pagination data
    */
   pagination = new BehaviorSubject<PaginationData>(null);
-  
+
   /**
    * Observable indicating empty data
    */
@@ -47,8 +47,8 @@ export class TableDataSource<T> extends DataSource<T> {
         this.pagination.next(PaginationData.from(res));
       } else {
         this.data.next(res);
-        this.pagination.next(null)
-        }
+        this.pagination.next(null);
+      }
     });
   }
 
@@ -58,7 +58,7 @@ export class TableDataSource<T> extends DataSource<T> {
    */
   next(data: T[]): void {
     this.data.next(data);
-    this.pagination.next(null)
+    this.pagination.next(null);
   }
 
   private unsubscribe() {
@@ -70,7 +70,7 @@ export class TableDataSource<T> extends DataSource<T> {
 
   constructor() {
     super();
-    this.data.subscribe(arr => this.empty.next(arr == null || arr.length == 0));
+    this.data.subscribe(arr => this.empty.next(arr == null || arr.length === 0));
   }
 
   connect(): Observable<T[]> {

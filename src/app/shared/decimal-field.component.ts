@@ -1,12 +1,12 @@
 import { Component, OnInit, Input, Output, ViewChild, EventEmitter, forwardRef, ElementRef, ChangeDetectionStrategy } from '@angular/core';
-import { NG_VALUE_ACCESSOR, ControlValueAccessor } from "@angular/forms";
-import { FormatService } from "app/core/format.service";
+import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
+import { FormatService } from 'app/core/format.service';
 
 // Definition of the exported NG_VALUE_ACCESSOR provider
 export const DECIMAL_FIELD_VALUE_ACCESSOR = {
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => DecimalFieldComponent),
-    multi: true
+  provide: NG_VALUE_ACCESSOR,
+  useExisting: forwardRef(() => DecimalFieldComponent),
+  multi: true
 };
 
 /**
@@ -31,50 +31,54 @@ export class DecimalFieldComponent implements OnInit, ControlValueAccessor {
   @Input() disabled: boolean;
   decimalSeparator: string;
 
-  private changeCallback = (_: any) => { };
-  private touchedCallback = () => { };
-
   @Output() change: EventEmitter<string> = new EventEmitter();
   @Output() blur: EventEmitter<string> = new EventEmitter();
 
-  @ViewChild("integerField")
+  private _integerPart: string;
+  private _decimalPart: string;
+  private _scale = 0;
+
+  @ViewChild('integerField')
   private integerField: ElementRef;
-  @ViewChild("decimalField")
+  @ViewChild('decimalField')
   private decimalField: ElementRef;
 
-  private _scale: number = 0;
 
-  @Input() @Output() 
+  private changeCallback = (_: any) => { };
+  private touchedCallback = () => { };
+
+  @Input()
   get value(): string {
-    if (this._integerPart == null || this._integerPart == '') return null;
-    return this._scale == 0 
+    if (this._integerPart == null || this._integerPart === '') {
+      return null;
+    }
+    return this._scale === 0
       ? this._integerPart
       : this._integerPart + '.' + this._decimalPart;
   }
   set value(value: string) {
     value = this.formatService.numberToFixed(value, this._scale);
-    if (this.value == value) {
+    if (this.value === value) {
       // Nothing changed
       return;
     }
-    if (this._scale == 0) {
+    if (this._scale === 0) {
       this._integerPart = value;
       this._decimalPart = null;
     } else {
-      let pos = value == null ? -1 : value.indexOf('.');
+      const pos = value == null ? -1 : value.indexOf('.');
       this._integerPart = pos < 0 ? value : value.substr(0, pos);
       this._decimalPart = pos < 0 ? '0'.repeat(this.scale) : value.substr(pos + 1);
     }
     this.emitValue();
   }
 
-  private _integerPart: string;
-  @Input() @Output() 
+  @Input()
   get integerPart(): string {
     return this._integerPart;
   }
   set integerPart(integerPart: string) {
-    if (this._integerPart == integerPart) {
+    if (this._integerPart === integerPart) {
       // No changes
       return;
     }
@@ -86,13 +90,12 @@ export class DecimalFieldComponent implements OnInit, ControlValueAccessor {
     this.emitValue();
   }
 
-  private _decimalPart: string;
-  @Input() @Output() 
+  @Input() @Output()
   get decimalPart(): string {
     return this._decimalPart;
   }
-  set decimalPart(decimalPart: string) {  
-    if (this._decimalPart == decimalPart) {
+  set decimalPart(decimalPart: string) {
+    if (this._decimalPart === decimalPart) {
       // No changes
       return;
     }
@@ -127,12 +130,14 @@ export class DecimalFieldComponent implements OnInit, ControlValueAccessor {
 
   onBlur(event) {
     this.adjustDecimalPart();
-    if (this.touchedCallback) this.touchedCallback();
+    if (this.touchedCallback) {
+      this.touchedCallback();
+    }
     this.blur.emit(event);
   }
 
   private adjustDecimalPart(): void {
-    let dec = (this._decimalPart || '');
+    const dec = (this._decimalPart || '');
     if (dec.length < this._scale) {
       this._decimalPart = dec + '0'.repeat(this._scale - dec.length);
       this.emitValue();
@@ -161,5 +166,4 @@ export class DecimalFieldComponent implements OnInit, ControlValueAccessor {
       this.decimalField.nativeElement.disabled = isDisabled;
     }
   }
-
 }

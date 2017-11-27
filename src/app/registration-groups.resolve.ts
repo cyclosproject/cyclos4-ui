@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
-import { GroupForRegistration } from "app/api/models";
-import { UsersService } from "app/api/services";
+import { GroupForRegistration } from 'app/api/models';
+import { UsersService } from 'app/api/services';
 import { Observable } from 'rxjs/Observable';
 
 /**

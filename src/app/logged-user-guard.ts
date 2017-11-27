@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, CanActivateChild, ActivatedRouteSnapshot, RouterStateSnapshot, Router, CanLoad, Route } from '@angular/router';
-import { LoginService } from "app/core/login.service";
+import { LoginService } from 'app/core/login.service';
 
 /**
  * Guard that ensures there is a logged user to allow activation
@@ -15,7 +15,7 @@ export class LoggedUserGuard implements CanActivate, CanActivateChild, CanLoad {
   canLoad(route: Route): boolean {
     return this.checkLoggedIn(null);
   }
-  
+
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     return this.checkLoggedIn(state.url);
   }
@@ -25,13 +25,12 @@ export class LoggedUserGuard implements CanActivate, CanActivateChild, CanLoad {
   }
 
   private checkLoggedIn(url: string): boolean {
-    let loggedIn = this.loginService.user != null;
+    const loggedIn = this.loginService.user != null;
     if (!loggedIn) {
       // Store the redirect URL
       this.loginService.redirectUrl = url;
-      this.router.navigateByUrl('/login')
+      this.router.navigateByUrl('/login');
     }
     return loggedIn;
   }
-
 }

@@ -1,13 +1,14 @@
 import { Component, OnInit, Input, ChangeDetectionStrategy, Optional } from '@angular/core';
-import { Notification } from "app/shared/notification";
-import { NotificationType } from "app/shared/notification-type";
-import { MatDialogRef } from "@angular/material";
-import { GeneralMessages } from "app/messages/general-messages";
+import { Notification } from 'app/shared/notification';
+import { NotificationType } from 'app/shared/notification-type';
+import { MatDialogRef } from '@angular/material';
+import { GeneralMessages } from 'app/messages/general-messages';
 
 /**
  * Component used to show a notification
  */
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'notification',
   templateUrl: 'notification.component.html',
   styleUrls: ['notification.component.scss'],
@@ -27,21 +28,21 @@ export class NotificationComponent implements OnInit {
   public notification: Notification;
 
   @Input()
-  public allowClose: boolean = true;
+  public allowClose = true;
 
   ngOnInit() {
     if (this.dialogRef == null) {
       // Don't allow closing if there' no dialog!
       this.allowClose = false;
     }
-    this.containerClass = "notification";
-    this.iconColor = "";
+    this.containerClass = 'notification';
+    this.iconColor = '';
     if (this.notification != null) {
-      let type = this.notification.type;
-      this.containerClass += " notification--" + type;
-      this.iconColor = type == NotificationType.ERROR
-        ? "warn" : type == NotificationType.INFO
-        ? "primary" : "accent";
+      const type = this.notification.type;
+      this.containerClass += ' notification--' + type;
+      this.iconColor = type === NotificationType.ERROR
+        ? 'warn' : type === NotificationType.INFO
+        ? 'primary' : 'accent';
     }
   }
 

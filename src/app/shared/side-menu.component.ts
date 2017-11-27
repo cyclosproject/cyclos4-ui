@@ -1,5 +1,5 @@
 import { Component, Input, ElementRef, ViewChild, ChangeDetectionStrategy, Injector } from '@angular/core';
-import { FormatService } from "app/core/format.service";
+import { FormatService } from 'app/core/format.service';
 import { BaseComponent } from 'app/shared/base.component';
 
 import { Menu, RootMenu, MenuEntry, MenuType } from 'app/shared/menu';
@@ -27,7 +27,7 @@ export class SideMenuComponent extends BaseComponent {
   }
 
   // Namespace for template
-  ApiHelper = ApiHelper
+  ApiHelper = ApiHelper;
 
   @Input()
   menu: Menu;
@@ -40,13 +40,13 @@ export class SideMenuComponent extends BaseComponent {
   }
 
   title: string;
-  
+
   entries = new BehaviorSubject<MenuEntry[]>([]);
 
   ngOnInit() {
     super.ngOnInit();
     if (this.menu == null) {
-      throw new Error("Missing value for menu");
+      throw new Error('Missing value for menu');
     }
     this.update();
   }
@@ -58,8 +58,8 @@ export class SideMenuComponent extends BaseComponent {
 
   private update(): void {
     let found = false;
-    for (let root of this.menuService.menu(MenuType.SIDE)) {
-      if (root.rootMenu == this.menu.root) {
+    for (const root of this.menuService.menu(MenuType.SIDE)) {
+      if (root.rootMenu === this.menu.root) {
         found = true;
         this.title = root.title;
         this.entries.next(root.entries);
@@ -73,9 +73,9 @@ export class SideMenuComponent extends BaseComponent {
   }
 
   get accounts(): AccountWithCurrency[] {
-    let permissions = ((this.login.auth || {}).permissions || {});
-    let banking = permissions.banking || {};
-    let accountPermissions = banking.accounts || [];
+    const permissions = ((this.login.auth || {}).permissions || {});
+    const banking = permissions.banking || {};
+    const accountPermissions = banking.accounts || [];
     return accountPermissions.map(p => p.account);
   }
 }

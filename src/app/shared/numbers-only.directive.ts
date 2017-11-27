@@ -1,11 +1,11 @@
 import { Directive, ElementRef, HostListener, Input } from '@angular/core';
-import { NgControl } from "@angular/forms";
+import { NgControl } from '@angular/forms';
 
 const ALLOWED = [
-  "ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown",
-  "End", "Home", "Delete", "Backspace", "Tab",
-  "Shift", "Control", "Alt", "Super", "Meta",
-  "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"
+  'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown',
+  'End', 'Home', 'Delete', 'Backspace', 'Tab',
+  'Shift', 'Control', 'Alt', 'Super', 'Meta',
+  '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
 ];
 
 /**
@@ -16,7 +16,7 @@ const ALLOWED = [
 })
 export class NumbersOnlyDirective {
   constructor(
-    private el: ElementRef, 
+    private el: ElementRef,
     private control: NgControl) {}
 
   private enabled: boolean;
@@ -37,7 +37,7 @@ export class NumbersOnlyDirective {
 
   @HostListener('paste', ['$event']) onPaste(event: ClipboardEvent) {
     if (this.enabled) {
-      let data = event.clipboardData.getData('text/plain');
+      const data = event.clipboardData.getData('text/plain');
       if (!/^\d+$/.test(data)) {
         event.preventDefault();
       }

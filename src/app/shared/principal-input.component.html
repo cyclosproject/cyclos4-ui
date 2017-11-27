@@ -4,6 +4,7 @@
   <input #usernameInput="ngModel" matInput
     [placeholder]="type.name"
     [required]="true"
+    [disabled]="disabled"
     [focused]="focused"
     [type]="type.kind == 'email' ? 'email' : 'text'"
     [mask]="type.mask"
@@ -16,6 +17,7 @@
   fxFlex="grow"
   fxLayout="column"
   [focused]="focused"
+  [disabled]="disabled"
   [field]="type.customField"
   [(ngModel)]="value" [ngModelOptions]="{standalone: true}">
 </custom-field-input>

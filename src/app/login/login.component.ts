@@ -1,10 +1,10 @@
 import { Component, OnInit, ChangeDetectionStrategy, ViewChild, ChangeDetectorRef, OnDestroy, Injector } from '@angular/core';
-import { GeneralMessages } from "app/messages/general-messages";
-import { LoginService } from "app/core/login.service";
-import { Router, ActivatedRoute } from "@angular/router";
-import { LayoutService } from "app/core/layout.service";
-import { DataForLogin, GroupForRegistration } from "app/api/models";
-import { BaseComponent } from "app/shared/base.component";
+import { GeneralMessages } from 'app/messages/general-messages';
+import { LoginService } from 'app/core/login.service';
+import { Router, ActivatedRoute } from '@angular/router';
+import { LayoutService } from 'app/core/layout.service';
+import { DataForLogin, GroupForRegistration } from 'app/api/models';
+import { BaseComponent } from 'app/shared/base.component';
 import { Menu } from 'app/shared/menu';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -66,9 +66,11 @@ export class LoginComponent extends BaseComponent {
    */
   doLogin(): void {
     // When using the external login button there's no data, so we assume it comes from the login form
-    if (!this.loginForm.valid) return;
+    if (!this.loginForm.valid) {
+      return;
+    }
 
-    let value = this.loginForm.value;    
+    const value = this.loginForm.value;
     this.login.login(value.principal, value.password)
       .subscribe(u => {
         // Redirect to the correct URL
@@ -77,6 +79,6 @@ export class LoginComponent extends BaseComponent {
   }
 
   register(): void {
-    alert("Not implemented yet");
+    alert('Not implemented yet');
   }
 }

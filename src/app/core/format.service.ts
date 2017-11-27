@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { DataForUi, Currency, ThemeUIElement } from 'app/api/models';
 import * as moment from 'moment';
-import { ApiConfiguration } from "app/api/api-configuration";
+import { ApiConfiguration } from 'app/api/api-configuration';
 
-import { environment } from "environments/environment"
+import { environment } from 'environments/environment';
 import { GeneralMessages } from 'app/messages/general-messages';
 import { MatDateFormats } from '@angular/material';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -20,7 +20,7 @@ export type Names = {
   'long': string[],
   'short': string[],
   'narrow': string[]
-}
+};
 
 /**
  * Holds a shared instance of DataForUi and knows how to format dates and numbers
@@ -39,11 +39,11 @@ export class FormatService {
   decimalSeparator: string;
   dateParser: any;
   materialDateFormats = new BehaviorSubject<MatDateFormats>(null);
-  
+
   private _dataForUi: DataForUi;
   private _monthNames: Names;
   private _dayNames: Names;
-  
+
   get monthNames(): Names {
     if (this._monthNames == null) {
       this._monthNames = this.getNames(
@@ -69,7 +69,7 @@ export class FormatService {
       'long': long.split(','),
       'short': short.split(','),
       'narrow': narrow.split(',')
-    }
+    };
   }
 
   initialize(dataForUi: DataForUi): void {
@@ -78,7 +78,7 @@ export class FormatService {
     this.dateFormat = (this._dataForUi.dateFormat || 'YYYY-MM-DD').toUpperCase();
 
     // The time format is consistent, except that we want uppercase AM/PM markers.
-    this.timeFormat = (this._dataForUi.timeFormat || 'HH:mm').replace("a", "A");
+    this.timeFormat = (this._dataForUi.timeFormat || 'HH:mm').replace('a', 'A');
     this.groupingSeparator = this._dataForUi.groupingSeparator || ',';
     this.decimalSeparator = this._dataForUi.decimalSeparator || '.';
 
@@ -96,11 +96,11 @@ export class FormatService {
   }
 
   private get monthYearLabel(): string {
-    let match = /\w+(.).+/.exec(this.dateFormat);
+    const match = /\w+(.).+/.exec(this.dateFormat);
     if (!match) {
       return this.dateFormat;
     }
-    let sep = match[1];
+    const sep = match[1];
     // Remove the day part
     let fmt = this.dateFormat.replace('DD', '').replace(sep + sep, sep);
     if (fmt.startsWith(sep)) {
@@ -135,8 +135,8 @@ export class FormatService {
    */
   getLogoUrl(id: string): string {
     return this.apiConfiguration.rootUrl
-      + "/../content/images/currentConfiguration/" 
-      + id + "?" + this._dataForUi.resourceCacheKey;
+      + '/../content/images/currentConfiguration/'
+      + id + '?' + this._dataForUi.resourceCacheKey;
   }
 
   /**
@@ -145,7 +145,7 @@ export class FormatService {
    */
   formatAsDate(date: Date | string): string {
     if (date == null) {
-      return "";
+      return '';
     }
     return moment(date).format(this.dateFormat);
   }
@@ -156,7 +156,7 @@ export class FormatService {
    */
   formatAsTime(date: Date | string): string {
     if (date == null) {
-      return "";
+      return '';
     }
     return moment(date).format(this.timeFormat);
   }
@@ -167,9 +167,9 @@ export class FormatService {
    */
   formatAsDateTime(date: Date | string): string {
     if (date == null) {
-      return "";
+      return '';
     }
-    return moment(date).format(this.dateFormat + " " + this.timeFormat);
+    return moment(date).format(this.dateFormat + ' ' + this.timeFormat);
   }
 
   /**
@@ -182,7 +182,7 @@ export class FormatService {
       return null;
     }
 
-    var bignum: any;
+    let bignum: any;
     try {
       bignum = Big(num);
     } catch (Error) {
@@ -200,7 +200,7 @@ export class FormatService {
     if (num == null) {
       return false;
     }
-    if (typeof(num) == 'number') {
+    if (typeof (num) === 'number') {
       return num > 0;
     }
     return !num.startsWith('-');
@@ -214,7 +214,7 @@ export class FormatService {
     if (num == null) {
       return false;
     }
-    if (typeof(num) == 'number') {
+    if (typeof (num) === 'number') {
       return num < 0;
     }
     return num.startsWith('-');
@@ -228,7 +228,7 @@ export class FormatService {
     if (num == null) {
       return false;
     }
-    return this.numberToFixed(num, 6) == '0.000000';
+    return this.numberToFixed(num, 6) === '0.000000';
   }
 
   /**
@@ -237,26 +237,26 @@ export class FormatService {
    * @param scale The number of decimal digits
    */
   formatAsNumber(num: number | string, scale: number): string {
-    let fixed = this.numberToFixed(num, scale);
+    const fixed = this.numberToFixed(num, scale);
     if (fixed == null) {
       return '';
     }
 
-    let parts = fixed.split('.');
+    const parts = fixed.split('.');
     let intPart = parts[0];
-    let decPart = parts.length == 1 ? null : parts[1];
+    const decPart = parts.length === 1 ? null : parts[1];
 
-    let wasNegative = intPart.startsWith('-');
+    const wasNegative = intPart.startsWith('-');
     if (wasNegative) {
       intPart = intPart.substring(1);
     }
 
-    var integers: string[] = [];
+    const integers: string[] = [];
     while (intPart.length > 0) {
       let part: string;
       if (intPart.length < 3) {
         part = intPart;
-        intPart = "";
+        intPart = '';
       } else {
         part = intPart.substring(intPart.length - 3);
         intPart = intPart.substring(0, intPart.length - 3);
@@ -283,10 +283,10 @@ export class FormatService {
     if (num == null || num === '') {
       return '';
     }
-    currency = (currency || {})
-    let decimals = currency.decimalDigits || 2;
-    let prefix = currency.prefix || "";
-    let suffix = currency.suffix || "";
+    currency = (currency || {});
+    const decimals = currency.decimalDigits || 2;
+    const prefix = currency.prefix || '';
+    const suffix = currency.suffix || '';
     return prefix + this.formatAsNumber(num, decimals) + suffix;
   }
 
@@ -300,10 +300,10 @@ export class FormatService {
     if (text == null || text === '') {
       return null;
     }
-    if (text.length != this.dateFormat.length) {
+    if (text.length !== this.dateFormat.length) {
       return undefined;
     }
-    let mm = moment(text, this.dateFormat);
+    const mm = moment(text, this.dateFormat);
     if (!mm.isValid()) {
       return undefined;
     }

@@ -1,12 +1,12 @@
 import { Component, OnInit, OnDestroy, Injector, ChangeDetectorRef } from '@angular/core';
-import { GeneralMessages } from "app/messages/general-messages";
-import { LayoutService } from "app/core/layout.service";
-import { FormatService } from "app/core/format.service";
-import { ErrorHandlerService } from "app/core/error-handler.service";
-import { LoginService } from "app/core/login.service";
-import { NotificationService } from "app/core/notification.service";
-import { ObservableMedia } from "@angular/flex-layout";
-import { Subscription } from "rxjs/Subscription";
+import { GeneralMessages } from 'app/messages/general-messages';
+import { LayoutService } from 'app/core/layout.service';
+import { FormatService } from 'app/core/format.service';
+import { ErrorHandlerService } from 'app/core/error-handler.service';
+import { LoginService } from 'app/core/login.service';
+import { NotificationService } from 'app/core/notification.service';
+import { ObservableMedia } from '@angular/flex-layout';
+import { Subscription } from 'rxjs/Subscription';
 
 /**
  * Base class to meant to be inherited by other components.
@@ -27,7 +27,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
 
   private mediaSubscription: Subscription;
   private authSubscription: Subscription;
-  
+
   constructor(injector: Injector) {
     this.generalMessages = injector.get(GeneralMessages);
     this.layout = injector.get(LayoutService);

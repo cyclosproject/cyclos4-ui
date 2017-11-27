@@ -1,7 +1,10 @@
-import { Entity, AccountWithOwner, TransferType, AccountKind, TransactionView, User, CustomFieldDetailed, PasswordInput, PasswordModeEnum } from "app/api/models";
-import { environment } from "environments/environment"
-import { GeneralMessages } from "app/messages/general-messages";
-import { FormBuilder, FormGroup, ValidatorFn, Validators } from "@angular/forms";
+import {
+  Entity, AccountWithOwner, TransferType, AccountKind, TransactionView, User,
+  CustomFieldDetailed, PasswordInput, PasswordModeEnum
+} from 'app/api/models';
+import { environment } from 'environments/environment';
+import { GeneralMessages } from 'app/messages/general-messages';
+import { FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 
 /**
  * Helper methods for working with API model
@@ -19,7 +22,7 @@ export class ApiHelper {
 
   /** The available options of page sizes in the paginator */
   static PAGE_SIZES = [40, 100, 200];
-  
+
   /**
    * Returns the entity internal name, if any, otherwise the id.
    * If the input entity is null, returns null.
@@ -38,19 +41,23 @@ export class ApiHelper {
    */
   static get excludedAuthFields(): string[] {
     return [
-      "-permissions.records",
-      "-permissions.systemRecords",
-      "-permissions.userRecords",
-      "-permissions.operations",
-      "-permissions.accounts",
-    ]
+      '-permissions.records',
+      '-permissions.systemRecords',
+      '-permissions.userRecords',
+      '-permissions.operations',
+      '-permissions.accounts',
+    ];
   }
-  
+
   /**
    * Returns the entity internal name, if any, otherwise the id.
    * If the input entity is null, returns null.
    */
-  static accountName(generalMessages: GeneralMessages, from: boolean, accountOrTransaction: AccountWithOwner | TransactionView, transferType: TransferType = null): string {
+  static accountName(
+    generalMessages: GeneralMessages,
+    from: boolean,
+    accountOrTransaction: AccountWithOwner | TransactionView,
+    transferType: TransferType = null): string {
     if (accountOrTransaction == null) {
       return null;
     }
@@ -64,13 +71,13 @@ export class ApiHelper {
     if ((accountOrTransaction as AccountWithOwner).kind) {
       kind = (accountOrTransaction as AccountWithOwner).kind;
     } else {
-      let transaction = accountOrTransaction as TransactionView;
+      const transaction = accountOrTransaction as TransactionView;
       kind = from ? transaction.fromKind : transaction.toKind;
     }
 
-    if (kind == AccountKind.SYSTEM) {
+    if (kind === AccountKind.SYSTEM) {
       // The kind is system: show the system account name from the transfer type
-      let accountType = (from ? transferType.from : transferType.to) || {};
+      const accountType = (from ? transferType.from : transferType.to) || {};
       // Cyclos < 4.9 doesn't send from / to in transfer type. Show 'System' in this case.
       return name || generalMessages.system();
     }
@@ -80,7 +87,7 @@ export class ApiHelper {
     if ((accountOrTransaction as AccountWithOwner).user) {
       user = (accountOrTransaction as AccountWithOwner).user;
     } else {
-      let transaction = accountOrTransaction as TransactionView;
+      const transaction = accountOrTransaction as TransactionView;
       user = from ? transaction.fromUser : transaction.toUser;
     }
     return (user || {}).display || generalMessages.user();
@@ -92,7 +99,7 @@ export class ApiHelper {
   static get searchPageSizes(): number[] {
     return environment.searchPageSizes || [40, 100, 200];
   }
-  
+
   /**
    * Returns the available options for page sizes on searches
    */
@@ -117,7 +124,7 @@ export class ApiHelper {
     if (passwordInput == null || passwordInput.hasActivePassword) {
       return true;
     }
-    if (passwordInput.mode == PasswordModeEnum.OTP) {
+    if (passwordInput.mode === PasswordModeEnum.OTP) {
       return (passwordInput.otpSendMediums || []).length > 0;
     }
     return false;
@@ -130,9 +137,9 @@ export class ApiHelper {
    * @returns The FormGroup
    */
   static customValuesFormGroup(formBuilder: FormBuilder, customFields: CustomFieldDetailed[]): FormGroup {
-    let customValues = {};
-    for (let cf of customFields) {
-      let val: ValidatorFn[] = [];
+    const customValues = {};
+    for (const cf of customFields) {
+      const val: ValidatorFn[] = [];
       if (cf.required) {
         val.push(Validators.required);
       }

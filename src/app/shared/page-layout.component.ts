@@ -24,13 +24,13 @@ export class PageLayoutComponent extends BaseComponent {
   menu: Menu;
 
   @Input()
-  hasHeader: boolean = false;
+  hasHeader = false;
 
   @Input()
-  hasFilters: boolean = false;
+  hasFilters = false;
 
   @Input()
-  tightContent: boolean = false;
+  tightContent = false;
 
   @Input()
   loaded: Observable<any>;
@@ -43,7 +43,7 @@ export class PageLayoutComponent extends BaseComponent {
   ngOnInit() {
     super.ngOnInit();
     if (this.menu == null) {
-      throw new Error("No menu given to this page");
+      throw new Error('No menu given to this page');
     }
     this.layout.menu.next(this.menu);
     this.update();
@@ -58,7 +58,7 @@ export class PageLayoutComponent extends BaseComponent {
     super.onDisplayChange();
     this.update();
   }
-  
+
   private update() {
     this.showLeft.next(this.media.isActive('gt-sm'));
   }

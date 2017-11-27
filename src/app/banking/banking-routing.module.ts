@@ -1,9 +1,9 @@
-import { NgModule } from "@angular/core";
-import { Routes, RouterModule } from "@angular/router";
-import { AccountHistoryComponent } from "app/banking/accounts/account-history.component";
-import { BankingMessagesResolve } from "app/banking/banking-messages.resolve";
-import { LoggedUserGuard } from "app/logged-user-guard";
-import { PerformPaymentComponent } from "app/banking/payments/perform-payment.component";
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+import { AccountHistoryComponent } from 'app/banking/accounts/account-history.component';
+import { BankingMessagesResolve } from 'app/banking/banking-messages.resolve';
+import { LoggedUserGuard } from 'app/logged-user-guard';
+import { PerformPaymentComponent } from 'app/banking/payments/perform-payment.component';
 
 const accountRoutes: Routes = [
   {

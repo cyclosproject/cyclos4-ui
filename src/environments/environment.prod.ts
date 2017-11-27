@@ -1,4 +1,4 @@
-import { configuration } from "environments/configuration"
+import { configuration } from 'environments/configuration';
 
 // Environment for production
 export const environment: any = configuration;

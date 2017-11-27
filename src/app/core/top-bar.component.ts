@@ -1,6 +1,6 @@
 import { Component, Input, ElementRef, ViewChild, ChangeDetectionStrategy, Injector, EventEmitter, Output } from '@angular/core';
-import { MatSidenav } from "@angular/material";
-import { FormatService } from "app/core/format.service";
+import { MatSidenav } from '@angular/material';
+import { FormatService } from 'app/core/format.service';
 import { BaseComponent } from 'app/shared/base.component';
 import { User } from 'app/api/models';
 import { Subscription } from 'rxjs/Subscription';
@@ -27,7 +27,7 @@ export class TopBarComponent extends BaseComponent {
   @Output()
   togglePersonalMenu = new EventEmitter<HTMLElement>();
 
-  @ViewChild("personalMenuToggle")
+  @ViewChild('personalMenuToggle')
   personalMenuToggle: ElementRef;
 
   personalMenuToggleClick(event: MouseEvent) {
@@ -39,5 +39,4 @@ export class TopBarComponent extends BaseComponent {
   get user(): User {
     return this.login.user;
   }
-
 }

@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { FormatService } from "app/core/format.service";
-import { Account } from "app/api/models";
+import { FormatService } from 'app/core/format.service';
+import { Account } from 'app/api/models';
 
 /**
  * Pipe used to format an account, displaying the number (if any) and type
@@ -20,5 +20,4 @@ export class AccountPipe implements PipeTransform {
       return account.type.name;
     }
   }
-
 }

@@ -1,15 +1,15 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 import { MenuType, Menu, RootMenuEntry, MenuEntry, RootMenu } from 'app/shared/menu';
-import { LoginService } from "app/core/login.service";
-import { GeneralMessages } from "app/messages/general-messages";
-import { ApiHelper } from "app/shared/api-helper";
-import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import { LoginService } from 'app/core/login.service';
+import { GeneralMessages } from 'app/messages/general-messages';
+import { ApiHelper } from 'app/shared/api-helper';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { User, Auth, AccountWithCurrency, AccountStatus, Permissions } from 'app/api/models';
-import { AccountsService } from "app/api/services";
-import { PushNotificationsService } from "app/core/push-notifications.service";
+import { AccountsService } from 'app/api/services';
+import { PushNotificationsService } from 'app/core/push-notifications.service';
 
 /**
- * Holds shared data for the menu, plus logic regarding the currently visible menu 
+ * Holds shared data for the menu, plus logic regarding the currently visible menu
  */
 @Injectable()
 export class MenuService {
@@ -34,7 +34,7 @@ export class MenuService {
       this.fetchData();
     }
     this.pushNotifications.subscribeForAccountStatus(account => {
-      let statuses = this._accountStatuses.value;
+      const statuses = this._accountStatuses.value;
       statuses.set(account.id, account.status);
       this._accountStatuses.next(statuses);
     });
@@ -49,20 +49,20 @@ export class MenuService {
     }
     return this._accountStatuses;
   }
-  
+
   /**
    * Returns the menu structure to be displayed in a specific menu
    */
   menu(type: MenuType): RootMenuEntry[] {
-    let roots: RootMenuEntry[] = [];
-    for (let root of this.fullMenu) {
+    const roots: RootMenuEntry[] = [];
+    for (const root of this.fullMenu) {
       if (root.showIn != null && !root.showIn.includes(type)) {
         // This entire root entry is not available for this menu type
         continue;
       }
       // Make a copy, because we don't know if there are filtered entries
-      let copy = new RootMenuEntry(root.rootMenu, root.icon, root.label, root.title, root.showIn);
-      for (let entry of root.entries) {
+      const copy = new RootMenuEntry(root.rootMenu, root.icon, root.label, root.title, root.showIn);
+      for (const entry of root.entries) {
         if (entry.showIn != null && !entry.showIn.includes(type)) {
           // This entry is not available for this menu type
           continue;
@@ -78,18 +78,18 @@ export class MenuService {
   private fetchData() {
     // Get the balance for each account
     this.accountsService.listAccountsByOwner({
-      owner: ApiHelper.SELF, 
+      owner: ApiHelper.SELF,
       fields: ['id', 'status.balance']
     })
-    .subscribe(accounts => {
-      let accountStatuses = new Map<String, AccountStatus>();
-      for (let account of accounts) {
-        accountStatuses.set(account.id, account.status);
-      }
-      this.accountStatuses.next(accountStatuses);
-    });
+      .subscribe(accounts => {
+        const accountStatuses = new Map<String, AccountStatus>();
+        for (const account of accounts) {
+          accountStatuses.set(account.id, account.status);
+        }
+        this.accountStatuses.next(accountStatuses);
+      });
   }
-  
+
 
   /**
    * Creates the full menu structure
@@ -100,53 +100,54 @@ export class MenuService {
       return this._menu;
     }
 
-    let auth = this.login.auth || {};
-    let permissions = auth.permissions
+    const auth = this.login.auth || {};
+    const permissions = auth.permissions;
 
     // The root menu hierarchy
-    let roots = new Map<RootMenu, RootMenuEntry>();
-    let addRoot = (root: RootMenu, icon: string, label: string, title: string = null, showIn: MenuType[] = null) =>
+    const roots = new Map<RootMenu, RootMenuEntry>();
+    const addRoot = (root: RootMenu, icon: string, label: string, title: string = null, showIn: MenuType[] = null) =>
       roots.set(root, new RootMenuEntry(root, icon, label, title, showIn));
     addRoot(RootMenu.LOGIN, 'lock', this.generalMessages.menuLogin());
     addRoot(RootMenu.HOME, 'home', this.generalMessages.menuHome());
     addRoot(RootMenu.BANKING, 'account_balance', this.generalMessages.menuBanking(), this.generalMessages.menuBankingTitle());
     addRoot(RootMenu.USERS, 'account_box', this.generalMessages.menuUsers(), this.generalMessages.menuBankingTitle());
     addRoot(RootMenu.MARKETPLACE, 'shopping_cart', this.generalMessages.menuMarketplace(), this.generalMessages.menuBankingTitle());
-    addRoot(RootMenu.PERSONAL, 'account_box', this.generalMessages.menuPersonal(), this.generalMessages.menuPersonalProfile(), [MenuType.SIDENAV, MenuType.PERSONAL]);
-    
+    addRoot(RootMenu.PERSONAL, 'account_box', this.generalMessages.menuPersonal(),
+      this.generalMessages.menuPersonalProfile(), [MenuType.SIDENAV, MenuType.PERSONAL]);
+
     // The first-level menu entries
-    let add = (menu: Menu, url: string, icon: string, label: string, showIn: MenuType[] = null) => {
-      let root = roots.get(menu.root);
+    const add = (menu: Menu, url: string, icon: string, label: string, showIn: MenuType[] = null) => {
+      const root = roots.get(menu.root);
       root.entries.push(new MenuEntry(menu, url, icon, label, showIn));
-    }
+    };
     add(Menu.HOME, '/', 'home', this.generalMessages.menuHome());
     if (auth.user == null) {
       // Guest
       add(Menu.LOGIN, '/login', 'lock', this.generalMessages.menuLogin());
     } else {
-      let banking = permissions.banking || {};
-      let users = permissions.users || {};
-      let accounts = banking.accounts || [];
+      const banking = permissions.banking || {};
+      const users = permissions.users || {};
+      const accounts = banking.accounts || [];
 
       // Banking
       if (accounts.length > 0) {
-        for (let account of accounts) {
-          let type = account.account.type;
+        for (const account of accounts) {
+          const type = account.account.type;
           add(Menu.ACCOUNT, '/banking/account/' + ApiHelper.internalNameOrId(type),
             'account_balance', type.name, [MenuType.BAR, MenuType.SIDENAV]);
         }
       }
-      let payments = banking.payments || {};
+      const payments = banking.payments || {};
       if (payments.user || payments.system || payments.self) {
         add(Menu.PERFORM_PAYMENT, '/banking/payment', 'payment',
           this.generalMessages.menuBankingPayment());
       }
       if ((banking.scheduledPayments || {}).view) {
-        add(Menu.SCHEDULED_PAYMENTS, '/banking/scheduled-payments', 'schedule', 
+        add(Menu.SCHEDULED_PAYMENTS, '/banking/scheduled-payments', 'schedule',
           this.generalMessages.menuBankingScheduledPayments());
       }
       if ((banking.recurringPayments || {}).view) {
-        add(Menu.RECURRING_PAYMENTS, '/banking/recurring-payments', 'loop', 
+        add(Menu.RECURRING_PAYMENTS, '/banking/recurring-payments', 'loop',
           this.generalMessages.menuBankingRecurringPayments());
       }
 
@@ -156,25 +157,25 @@ export class MenuService {
 
       // Personal
       if (users.contacts) {
-        add(Menu.CONTACTS, '/personal/contacts', 'contacts', 
+        add(Menu.CONTACTS, '/personal/contacts', 'contacts',
           this.generalMessages.menuPersonalContacts());
       }
       if ((permissions.passwords || {}).manage) {
-        add(Menu.PASSWORDS, '/personal/passwords', 'lock', 
+        add(Menu.PASSWORDS, '/personal/passwords', 'lock',
           this.generalMessages.menuPersonalPasswords());
       }
-      add(Menu.LOGOUT, null, 'exit_to_app', 
+      add(Menu.LOGOUT, null, 'exit_to_app',
         this.generalMessages.menuPersonalLogout());
     }
 
     // Populate the menu in the root declaration order
     this._menu = [];
-    for (let root of RootMenu.values()) {
-      let rootEntry = roots.get(root);
+    for (const root of RootMenu.values()) {
+      const rootEntry = roots.get(root);
       if (rootEntry && rootEntry.entries.length > 0) {
         this._menu.push(rootEntry);
       }
     }
     return this._menu;
-  }  
+  }
 }

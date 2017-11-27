@@ -1,9 +1,13 @@
 import { Injectable } from '@angular/core';
-import { NotificationService } from "app/core/notification.service";
-import { FormatService } from "app/core/format.service";
-import { Error as ApiError, ErrorKind, NotFoundError, InputError, InputErrorCode, UnauthorizedError, UnauthorizedErrorCode, PasswordStatusEnum, ForbiddenError, ForbiddenErrorCode, PaymentError, PaymentErrorCode } from "app/api/models";
-import { NgForm } from "@angular/forms";
-import { GeneralMessages } from "app/messages/general-messages";
+import { NotificationService } from 'app/core/notification.service';
+import { FormatService } from 'app/core/format.service';
+import {
+  Error as ApiError, ErrorKind, NotFoundError, InputError, InputErrorCode,
+  UnauthorizedError, UnauthorizedErrorCode, PasswordStatusEnum, ForbiddenError,
+  ForbiddenErrorCode, PaymentError, PaymentErrorCode
+} from 'app/api/models';
+import { NgForm } from '@angular/forms';
+import { GeneralMessages } from 'app/messages/general-messages';
 import { HttpErrorResponse } from '@angular/common/http/src/response';
 
 /**
@@ -58,15 +62,18 @@ export class ErrorHandlerService {
    * Shows validation errors of the form
    */
   showFormErrors(form: NgForm): boolean {
-    let message = "";
-    for (let name in form.control.errors) {
-      let errors = form.control.errors[name];
-      if (errors != null) {
-        message += form.controls[name] + "<br>";
+    let message = '';
+    const errors = form.control.errors;
+    for (const name in errors) {
+      if (errors.hasOwnProperty(name)) {
+        const propertyErrors = errors[name];
+        if (propertyErrors != null) {
+          message += form.controls[name] + '<br>';
+        }
       }
     }
     if (message) {
-      message = this.generalMessages.errorValidation() + "<br>" + message;
+      message = this.generalMessages.errorValidation() + '<br>' + message;
       this.notificationService.error(message);
       return true;
     }
@@ -78,7 +85,7 @@ export class ErrorHandlerService {
    * @param err The response object
    */
   handleHttpError(err: HttpErrorResponse) {
-    var message: string = null;
+    let message: string = null;
     if (err.error instanceof Error) {
       // Client-side error
       console.error('Client-side request error');
@@ -135,10 +142,12 @@ export class ErrorHandlerService {
    * @param error The error
    */
   public inputErrorMessage(error: InputError): string {
-    if (error == null) return null;
+    if (error == null) {
+      return null;
+    }
     let message = this.generalMessages.errorValidation();
-    if (error.code == InputErrorCode.VALIDATION) {
-      let items: string[] = [];
+    if (error.code === InputErrorCode.VALIDATION) {
+      const items: string[] = [];
       (error.generalErrors || []).forEach(e => items.push(e));
       (error.properties || []).forEach(p => {
         (error.propertyErrors[p] || []).forEach(e => items.push(e));
@@ -146,10 +155,10 @@ export class ErrorHandlerService {
       (error.customFields || []).forEach(p => {
         (error.customFieldErrors[p] || []).forEach(e => items.push(e));
       });
-      if (items.length == 1) {
+      if (items.length === 1) {
         return items[0];
       } else if (items.length > 1) {
-        message = "<b>" + message + "</b><ul><li>" + items.join("</li><li>") + "</li></ul>";
+        message = '<b>' + message + '</b><ul><li>' + items.join('</li><li>') + '</li></ul>';
       }
     }
     return message;
@@ -160,7 +169,9 @@ export class ErrorHandlerService {
    * @param error The error
    */
   public notFoundErrorMessage(error: NotFoundError): string {
-    if (error == null) return null;
+    if (error == null) {
+      return null;
+    }
     if (error.entityType) {
       if (error.key) {
         return this.generalMessages.errorEntityNotFoundKey(error.entityType, error.key);
@@ -209,7 +220,7 @@ export class ErrorHandlerService {
    */
   public forbiddenErrorMessage(error: ForbiddenError): string {
     error = error || {} as ForbiddenError;
-    let passwordType = (error.passwordType || {}).name;
+    const passwordType = (error.passwordType || {}).name;
     switch (error.code) {
       case ForbiddenErrorCode.ILLEGAL_ACTION:
         return this.generalMessages.errorIllegalAction();
@@ -232,8 +243,8 @@ export class ErrorHandlerService {
    */
   public paymentErrorMessage(error: PaymentError): string {
     error = error || {} as PaymentError;
-    let count = () => this.formatService.formatAsNumber(error.maxPayments, 0);
-    let amount = () => this.formatService.formatAsCurrency(error.currency, error.maxAmount);
+    const count = () => this.formatService.formatAsNumber(error.maxPayments, 0);
+    const amount = () => this.formatService.formatAsCurrency(error.currency, error.maxAmount);
     switch (error.code) {
       case PaymentErrorCode.TIME_BETWEEN_PAYMENTS_NOT_MET:
         return this.generalMessages.errorPaymentMinTime();

@@ -1,17 +1,20 @@
 import { Component, ChangeDetectionStrategy, Injector, ViewChild, AfterViewInit, AfterViewChecked } from '@angular/core';
-import { ActivatedRoute, Params, Router } from "@angular/router";
-import { DataForAccountHistory, Currency, EntityReference, PreselectedPeriod, AccountHistoryResult, AccountKind, AccountHistoryStatus, TransferFilter } from "app/api/models";
-import { AccountsService } from "app/api/services";
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import {
+  DataForAccountHistory, Currency, EntityReference, PreselectedPeriod,
+  AccountHistoryResult, AccountKind, AccountHistoryStatus, TransferFilter
+} from 'app/api/models';
+import { AccountsService } from 'app/api/services';
 
-import { BehaviorSubject } from "rxjs/BehaviorSubject";
-import { Observable } from "rxjs/Observable";
-import { LayoutService } from "app/core/layout.service";
-import { BankingMessages } from "app/messages/banking-messages";
-import { GeneralMessages } from "app/messages/general-messages";
-import { FormatService } from "app/core/format.service";
-import { BaseBankingComponent } from "app/banking/base-banking.component";
-import { TableDataSource } from "app/shared/table-datasource";
-import { ApiHelper } from "app/shared/api-helper";
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable } from 'rxjs/Observable';
+import { LayoutService } from 'app/core/layout.service';
+import { BankingMessages } from 'app/messages/banking-messages';
+import { GeneralMessages } from 'app/messages/general-messages';
+import { FormatService } from 'app/core/format.service';
+import { BaseBankingComponent } from 'app/banking/base-banking.component';
+import { TableDataSource } from 'app/shared/table-datasource';
+import { ApiHelper } from 'app/shared/api-helper';
 import { Menu } from 'app/shared/menu';
 import { NgForm } from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';
@@ -21,10 +24,10 @@ import { tap } from 'rxjs/operators';
 export type StatusIndicator = {
   label: string,
   amount: string
-}
+};
 
 /** Fields fetched when getting the account status */
-const STATUS_FIELDS = {fields: ['status']};
+const STATUS_FIELDS = { fields: ['status'] };
 
 /**
  * Displays the account history of a given account
@@ -50,7 +53,7 @@ export class AccountHistoryComponent extends BaseBankingComponent implements Aft
   data = new BehaviorSubject<DataForAccountHistory>(null);
 
   get type(): EntityReference {
-    let data = this.data.value;
+    const data = this.data.value;
     if (data) {
       return data.account.type;
     }
@@ -58,7 +61,7 @@ export class AccountHistoryComponent extends BaseBankingComponent implements Aft
   }
 
   get number(): string {
-    let data = this.data.value;
+    const data = this.data.value;
     if (data) {
       return data.account.number;
     }
@@ -66,7 +69,7 @@ export class AccountHistoryComponent extends BaseBankingComponent implements Aft
   }
 
   get currency(): Currency {
-    let data = this.data.value;
+    const data = this.data.value;
     if (data) {
       return data.account.currency;
     }
@@ -74,7 +77,7 @@ export class AccountHistoryComponent extends BaseBankingComponent implements Aft
   }
 
   get preselectedPeriods(): PreselectedPeriod[] {
-    let data = this.data.value;
+    const data = this.data.value;
     if (data) {
       return data.preselectedPeriods;
     }
@@ -82,7 +85,7 @@ export class AccountHistoryComponent extends BaseBankingComponent implements Aft
   }
 
   get transferFilters(): TransferFilter[] {
-    let data = this.data.value;
+    const data = this.data.value;
     if (data) {
       return data.transferFilters;
     }
@@ -90,8 +93,8 @@ export class AccountHistoryComponent extends BaseBankingComponent implements Aft
   }
 
   get transferFilterId(): string {
-    let filters = this.query.transferFilters || [];
-    return filters.length == 0 ? null : filters[1];
+    const filters = this.query.transferFilters || [];
+    return filters.length === 0 ? null : filters[1];
   }
   set transferFilterId(id: string) {
     this.query.transferFilters = [id];
@@ -104,9 +107,9 @@ export class AccountHistoryComponent extends BaseBankingComponent implements Aft
   set preselectedPeriod(preselectedPeriod: PreselectedPeriod) {
     this._preselectedPeriod = preselectedPeriod;
     let begin: string, end: string;
-    let periods = this.preselectedPeriods;
+    const periods = this.preselectedPeriods;
     if (preselectedPeriod.begin == null || preselectedPeriod.end == null) {
-      let first = periods[0] || {};
+      const first = periods[0] || {};
       begin = first.begin;
       end = first.end;
     } else {
@@ -124,7 +127,7 @@ export class AccountHistoryComponent extends BaseBankingComponent implements Aft
   private dataLoaded = false;
   private statusLoaded = false;
 
-  @ViewChild("filtersForm")
+  @ViewChild('filtersForm')
   private filtersForm: NgForm;
   private filtersSubscription: Subscription;
 
@@ -137,12 +140,12 @@ export class AccountHistoryComponent extends BaseBankingComponent implements Aft
   }
 
   get title(): string {
-    let type = this.type;
+    const type = this.type;
     if (type == null) {
       return null;
     }
-    let number = this.number;
-    return number == null ? type.name : type.name + " - " + number;
+    const number = this.number;
+    return number == null ? type.name : type.name + ' - ' + number;
   }
 
   get typeId(): string {
@@ -153,14 +156,14 @@ export class AccountHistoryComponent extends BaseBankingComponent implements Aft
     super.ngOnInit();
 
     // Resolve the account type
-    let type = this.typeId;
+    const type = this.typeId;
     if (type == null) {
       // No account type given - get the first one
-      let firstType = this.firstAccountType;
+      const firstType = this.firstAccountType;
       if (firstType == null) {
         this.notification.error(this.bankingMessages.accountErrorNoAccounts());
       } else {
-        this.router.navigateByUrl('/banking/account/' + this.firstAccountType)
+        this.router.navigateByUrl('/banking/account/' + this.firstAccountType);
       }
     }
 
@@ -177,13 +180,13 @@ export class AccountHistoryComponent extends BaseBankingComponent implements Aft
         this.query.accountType = data.account.type.id;
         this.query.datePeriod = [null, null];
         // Select the default preselected period
-        if ((data.preselectedPeriods || []).length == 0) {
+        if ((data.preselectedPeriods || []).length === 0) {
           // No preselected periods? Create one, so we don't break the logic
           data.preselectedPeriods = [
-            {defaultOption: true}
+            { defaultOption: true }
           ];
         }
-        for (let preselectedPeriod of data.preselectedPeriods) {
+        for (const preselectedPeriod of data.preselectedPeriods) {
           if (preselectedPeriod.defaultOption) {
             this.preselectedPeriod = preselectedPeriod;
             break;
@@ -205,7 +208,7 @@ export class AccountHistoryComponent extends BaseBankingComponent implements Aft
   ngAfterViewChecked() {
     // Update the query when the filters change
     if (this.filtersForm && this.filtersSubscription == null) {
-      this.filtersSubscription = 
+      this.filtersSubscription =
         this.filtersForm.control.valueChanges.subscribe(() => this.update());
     }
   }
@@ -215,15 +218,15 @@ export class AccountHistoryComponent extends BaseBankingComponent implements Aft
   // for the dataLoaded, statusLoaded and loaded attributes.
   update() {
     // Update the results
-    let results = this.accountsService.searchAccountHistoryResponse(this.query).pipe(
+    const results = this.accountsService.searchAccountHistoryResponse(this.query).pipe(
       tap(response => {
         this.dataLoaded = true;
         this.notifyLoaded();
       }));
     this.dataSource.subscribe(results);
-        
+
     // Update the status
-    let statusParams = Object.assign({}, this.query, STATUS_FIELDS);
+    const statusParams = Object.assign({}, this.query, STATUS_FIELDS);
     this.accountsService.getAccountStatusByOwnerAndType(statusParams)
       .subscribe(account => {
         this.statusLoaded = true;
@@ -239,13 +242,13 @@ export class AccountHistoryComponent extends BaseBankingComponent implements Aft
   }
 
   private toIndicators(status: AccountHistoryStatus): StatusIndicator[] {
-    let result: StatusIndicator[] = [];
-    let add = (amount: string, label: string) => {
+    const result: StatusIndicator[] = [];
+    const add = (amount: string, label: string) => {
       if (amount) {
-        result.push({amount: amount, label: label});
+        result.push({ amount: amount, label: label });
       }
-    }
-    if (status.availableBalance != status.balance) {
+    };
+    if (status.availableBalance !== status.balance) {
       add(status.availableBalance, this.bankingMessages.accountAvailableBalance());
     }
     add(status.balance, this.bankingMessages.accountBalance());
@@ -259,11 +262,11 @@ export class AccountHistoryComponent extends BaseBankingComponent implements Aft
       add(status.upperCreditLimit, this.bankingMessages.accountUpperCreditLimit());
     }
     if (status.balanceAtBegin != null) {
-      let date = this.format.formatAsDate(this.query.datePeriod[0]);
+      const date = this.format.formatAsDate(this.query.datePeriod[0]);
       add(status.balanceAtBegin, this.bankingMessages.accountBalanceOn(date));
     }
     if (status.balanceAtEnd != null) {
-      let date = this.format.formatAsDate(this.query.datePeriod[1]);
+      const date = this.format.formatAsDate(this.query.datePeriod[1]);
       add(status.balanceAtEnd, this.bankingMessages.accountBalanceOn(date));
     }
     if (status.netInflow != null) {
@@ -273,7 +276,7 @@ export class AccountHistoryComponent extends BaseBankingComponent implements Aft
   }
 
   private get firstAccountType(): string {
-    let accounts = ((this.login.auth || {}).permissions || {}).accounts;
+    const accounts = ((this.login.auth || {}).permissions || {}).accounts;
     if (accounts && accounts.length > 0) {
       return ApiHelper.internalNameOrId(accounts[0].account.type);
     } else {
@@ -282,7 +285,7 @@ export class AccountHistoryComponent extends BaseBankingComponent implements Aft
   }
 
   subjectName(row: AccountHistoryResult): string {
-    if (row.relatedAccount.kind == AccountKind.USER) {
+    if (row.relatedAccount.kind === AccountKind.USER) {
       // Show the user display
       return row.relatedAccount.user.display;
     } else {

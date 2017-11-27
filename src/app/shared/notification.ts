@@ -1,4 +1,4 @@
-import { NotificationType } from "app/shared/notification-type";
+import { NotificationType } from 'app/shared/notification-type';
 
 /**
  * Contains data for a notification being displayed

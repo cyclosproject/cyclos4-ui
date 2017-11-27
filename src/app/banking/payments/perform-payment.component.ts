@@ -1,11 +1,15 @@
 import { Component, Injector, ChangeDetectionStrategy, ViewChild } from '@angular/core';
-import { BaseBankingComponent } from "app/banking/base-banking.component";
-import { AccountPermissions, DataForTransaction, IdentificationMethodEnum, PrincipalTypeKind, TransactionTypeData, TransferTypeWithCurrency, PerformPayment, PaymentPreview, TransactionView, PaymentError, PaymentErrorCode, ForbiddenError, ForbiddenErrorCode, UserDataForSearch, User } from "app/api/models";
-import { PaymentKind } from "app/banking/payments/payment-kind";
-import { IdMethod } from "app/banking/payments/id-method";
-import { PaymentsService, UsersService, ContactsService } from "app/api/services";
-import { BehaviorSubject } from "rxjs/BehaviorSubject";
-import { ApiHelper } from "app/shared/api-helper";
+import { BaseBankingComponent } from 'app/banking/base-banking.component';
+import {
+  AccountPermissions, DataForTransaction, IdentificationMethodEnum,
+  PrincipalTypeKind, TransactionTypeData, TransferTypeWithCurrency,
+  PerformPayment, PaymentPreview, TransactionView, PaymentError, PaymentErrorCode,
+  ForbiddenError, ForbiddenErrorCode, UserDataForSearch, User } from 'app/api/models';
+import { PaymentKind } from 'app/banking/payments/payment-kind';
+import { IdMethod } from 'app/banking/payments/id-method';
+import { PaymentsService, UsersService, ContactsService } from 'app/api/services';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { ApiHelper } from 'app/shared/api-helper';
 import { ErrorStatus } from 'app/core/error-handler.service';
 import { LinearStepperControlComponent } from 'app/shared/linear-stepper-control.component';
 import { Menu } from 'app/shared/menu';
@@ -13,7 +17,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PaymentKindAndIdMethod } from 'app/banking/payments/payment-kind-and-id-method';
 import { Observable } from 'rxjs/Observable';
 import { TdStepComponent } from '@covalent/core';
-import { cloneDeep } from "lodash";
+import { cloneDeep } from 'lodash';
 import { ApiInterceptor } from 'app/core/api.interceptor';
 import { StepState } from '@covalent/core/steps/step.component';
 
@@ -35,8 +39,40 @@ export class PerformPaymentComponent extends BaseBankingComponent {
   // Data fetched when the payment destination is known
   paymentData = new BehaviorSubject<DataForTransaction>(null);
 
-  @ViewChild("stepperControl")
+  @ViewChild('stepperControl')
   stepperControl: LinearStepperControlComponent;
+
+  // Kind step
+  @ViewChild('kindStep') kindStep: TdStepComponent;
+  kindForm: FormGroup;
+  searchIdMethod: IdMethod;
+  contactsIdMethod: IdMethod;
+  allowedKindAndIdMethods: PaymentKindAndIdMethod[];
+  kindAndIdMethod = new BehaviorSubject<PaymentKindAndIdMethod>(null);
+
+  // User step
+  @ViewChild('userStep') userStep: TdStepComponent;
+  userForm: FormGroup;
+  userDataForSearch = new BehaviorSubject<UserDataForSearch>(null);
+  contacts = new BehaviorSubject<User[]>([]);
+  user = new BehaviorSubject<string>(null);
+  toUser = new BehaviorSubject<User>(null);
+
+  // Fields step
+  @ViewChild('fieldsStep') fieldsStep: TdStepComponent;
+  fieldsForm: FormGroup;
+  preparingFieldsForm: boolean;
+  paymentTypes = new BehaviorSubject<TransferTypeWithCurrency[]>([]);
+  paymentTypeData = new BehaviorSubject<TransactionTypeData>(null);
+
+  // Preview step
+  @ViewChild('previewStep') previewStep: TdStepComponent;
+  previewForm: FormGroup;
+  preview = new BehaviorSubject<PaymentPreview>(null);
+
+  // Done step
+  @ViewChild('doneStep') doneStep: TdStepComponent;
+  performed = new BehaviorSubject<TransactionView>(null);
 
   constructor(
     injector: Injector,
@@ -69,13 +105,15 @@ export class PerformPaymentComponent extends BaseBankingComponent {
     this.fieldsForm.valueChanges.subscribe(values => {
       // Setting the form controls also triggers this,
       // and we don't want to re-fetch the data in this case
-      if (this.preparingFieldsForm) return;
+      if (this.preparingFieldsForm) {
+        return;
+      }
 
       if (values.type == null) {
         this.paymentTypeData.next(null);
       } else if (this.paymentTypeData.value == null
         || this.paymentTypeData.value == null
-        || this.paymentTypeData.value.id != values.type) {
+        || this.paymentTypeData.value.id !== values.type) {
         // The type has changed
         this.fetchPaymentTypeData();
       }
@@ -104,19 +142,8 @@ export class PerformPaymentComponent extends BaseBankingComponent {
       });
   }
 
-
-  ////////////////////////////////////////////////////
-  // Kind step
-  ////////////////////////////////////////////////////
-  @ViewChild("kindStep") kindStep: TdStepComponent;
-  kindForm: FormGroup;
-  searchIdMethod: IdMethod;
-  contactsIdMethod: IdMethod;
-  allowedKindAndIdMethods: PaymentKindAndIdMethod[];
-  kindAndIdMethod = new BehaviorSubject<PaymentKindAndIdMethod>(null);
-
   private initAllowedKinds(data: DataForTransaction) {
-    let payments = this.login.auth.permissions.banking.payments;
+    const payments = this.login.auth.permissions.banking.payments;
 
     this.allowedKindAndIdMethods = [];
     let defaultKindAndIdMethod: PaymentKindAndIdMethod = null;
@@ -125,33 +152,33 @@ export class PerformPaymentComponent extends BaseBankingComponent {
     if (payments.user && (data.paymentTypes || []).length > 0) {
       // Search
       if (data.allowAutocomplete) {
-        let kid = new PaymentKindAndIdMethod(
+        const kid = new PaymentKindAndIdMethod(
           this.bankingMessages.paymentKindAutocomplete(),
           PaymentKind.USER, this.searchIdMethod);
         this.allowedKindAndIdMethods.push(kid);
-        if (data.defaultIdMethod == IdentificationMethodEnum.AUTOCOMPLETE) {
+        if (data.defaultIdMethod === IdentificationMethodEnum.AUTOCOMPLETE) {
           defaultKindAndIdMethod = kid;
         }
       }
       // Contacts
       if (data.allowContacts) {
-        let kid = new PaymentKindAndIdMethod(
+        const kid = new PaymentKindAndIdMethod(
           this.bankingMessages.paymentKindContact(),
           PaymentKind.USER, this.contactsIdMethod);
         this.allowedKindAndIdMethods.push(kid);
-        if (data.defaultIdMethod == IdentificationMethodEnum.CONTACTS) {
+        if (data.defaultIdMethod === IdentificationMethodEnum.CONTACTS) {
           defaultKindAndIdMethod = kid;
         }
       }
       // Principal types
       data.principalTypes.forEach(pt => {
-        if (pt.kind != PrincipalTypeKind.TOKEN || pt.allowManualInput) {
+        if (pt.kind !== PrincipalTypeKind.TOKEN || pt.allowManualInput) {
           // Only tokens with manual input are supported (no NFC tag / barcode scanning / etc)
-          let kid = new PaymentKindAndIdMethod(
+          const kid = new PaymentKindAndIdMethod(
             this.bankingMessages.paymentKindPrincipal((pt.name || '').toLowerCase()),
             PaymentKind.USER, pt);
           this.allowedKindAndIdMethods.push(kid);
-          if (data.defaultPrincipalType == pt.internalName) {
+          if (data.defaultPrincipalType === pt.internalName) {
             defaultKindAndIdMethod = kid;
           }
         }
@@ -159,7 +186,7 @@ export class PerformPaymentComponent extends BaseBankingComponent {
     }
     // Self payments
     if (payments.self) {
-      let kid = new PaymentKindAndIdMethod(
+      const kid = new PaymentKindAndIdMethod(
         this.bankingMessages.paymentKindSelf(), PaymentKind.SELF);
       this.allowedKindAndIdMethods.push(kid);
       if (defaultKindAndIdMethod == null) {
@@ -168,7 +195,7 @@ export class PerformPaymentComponent extends BaseBankingComponent {
     }
     // System payments
     if (payments.system) {
-      let kid = new PaymentKindAndIdMethod(
+      const kid = new PaymentKindAndIdMethod(
         this.bankingMessages.paymentKindSystem(), PaymentKind.SYSTEM);
       this.allowedKindAndIdMethods.push(kid);
       if (defaultKindAndIdMethod == null) {
@@ -183,9 +210,9 @@ export class PerformPaymentComponent extends BaseBankingComponent {
 
   /** Fetch either the data for search of search the contact list */
   nextFromKind() {
-    let kid = this.kindAndIdMethod.value;
-    let isUser = kid.kind == PaymentKind.USER;
-    if (kid.kind == PaymentKind.USER) {
+    const kid = this.kindAndIdMethod.value;
+    const isUser = kid.kind === PaymentKind.USER;
+    if (kid.kind === PaymentKind.USER) {
       // Still needs to select the user
       this.stepperControl.enable(this.userStep);
       this.fetchUserData();
@@ -196,16 +223,6 @@ export class PerformPaymentComponent extends BaseBankingComponent {
     }
   }
 
-  ////////////////////////////////////////////////////
-  // User step
-  ////////////////////////////////////////////////////
-  @ViewChild("userStep") userStep: TdStepComponent;
-  userForm: FormGroup;
-  userDataForSearch = new BehaviorSubject<UserDataForSearch>(null);
-  contacts = new BehaviorSubject<User[]>([]);
-  user = new BehaviorSubject<string>(null);
-  toUser = new BehaviorSubject<User>(null);
-
   previousFromUser() {
     this.stepperControl.activate(this.kindStep);
   }
@@ -215,11 +232,11 @@ export class PerformPaymentComponent extends BaseBankingComponent {
   }
 
   private fetchUserData() {
-    let proceed = () => {
+    const proceed = () => {
       this.stepperControl.activate(this.userStep);
     };
-    let kid = this.kindAndIdMethod.value;
-    let internalName = (kid.idMethod || {}).internalName;
+    const kid = this.kindAndIdMethod.value;
+    const internalName = (kid.idMethod || {}).internalName;
     switch (internalName) {
       case IdentificationMethodEnum.AUTOCOMPLETE:
         if (this.userDataForSearch.value) {
@@ -246,7 +263,7 @@ export class PerformPaymentComponent extends BaseBankingComponent {
           })
             .subscribe(contacts => {
               this.contacts.next(contacts);
-              if (contacts.length == 0) {
+              if (contacts.length === 0) {
                 this.notification.error(this.bankingMessages.paymentErrorNoContacts());
               } else {
                 proceed();
@@ -260,15 +277,6 @@ export class PerformPaymentComponent extends BaseBankingComponent {
     }
   }
 
-  ////////////////////////////////////////////////////
-  // Fields step
-  ////////////////////////////////////////////////////
-  @ViewChild("fieldsStep") fieldsStep: TdStepComponent;
-  fieldsForm: FormGroup;
-  preparingFieldsForm: boolean;
-  paymentTypes = new BehaviorSubject<TransferTypeWithCurrency[]>([]);
-  paymentTypeData = new BehaviorSubject<TransactionTypeData>(null);
-
   private fetchPaymentData() {
     this.apiInterceptor.ignoreNextError();
     this.paymentsService.dataForPerformPayment({
@@ -281,21 +289,21 @@ export class PerformPaymentComponent extends BaseBankingComponent {
         this.toUser.next(data.toUser);
 
         // If there is a single payment type, disable the type step
-        let noPaymentTypes = data.paymentTypes.length == 0;
+        const noPaymentTypes = data.paymentTypes.length === 0;
         this.paymentTypes.next(data.paymentTypes);
 
         if (noPaymentTypes) {
           this.notification.error(this.bankingMessages.paymentErrorNoPaymentType());
         } else {
           // Preselect the first payment type and activate the fields step
-          this.fieldsForm.patchValue({ type: data.paymentTypes[0].id })
+          this.fieldsForm.patchValue({ type: data.paymentTypes[0].id });
           this.prepareFieldsForm(data.paymentTypeData);
           this.stepperControl.activate(this.fieldsStep);
         }
       }, response => {
-        let kid = this.kindAndIdMethod.value;
-        let kind = kid.kind;    
-        if (kind == PaymentKind.USER && response.status == ErrorStatus.NOT_FOUND) {
+        const kid = this.kindAndIdMethod.value;
+        const kind = kid.kind;
+        if (kind === PaymentKind.USER && response.status === ErrorStatus.NOT_FOUND) {
           this.notification.error(this.bankingMessages.paymentErrorInvalidUser());
         } else {
           this.errorHandler.handleHttpError(response);
@@ -304,8 +312,8 @@ export class PerformPaymentComponent extends BaseBankingComponent {
   }
 
   get to(): string {
-    let kid = this.kindAndIdMethod.value;
-    let kind = kid.kind;
+    const kid = this.kindAndIdMethod.value;
+    const kind = kid.kind;
     switch (kind) {
       case PaymentKind.USER:
         return this.user.value;
@@ -351,7 +359,7 @@ export class PerformPaymentComponent extends BaseBankingComponent {
   }
 
   previousFromFields() {
-    if (this.kindAndIdMethod.value.kind == PaymentKind.USER) {
+    if (this.kindAndIdMethod.value.kind === PaymentKind.USER) {
       // No type selection, but has to select the user
       this.stepperControl.activate(this.userStep);
     } else {
@@ -366,7 +374,7 @@ export class PerformPaymentComponent extends BaseBankingComponent {
 
   private previewPayment() {
     // This includes all fields.
-    let payment = cloneDeep(this.fieldsForm.value);
+    const payment = cloneDeep(this.fieldsForm.value);
     payment.subject = this.to;
     payment.type = this.paymentType;
 
@@ -389,14 +397,6 @@ export class PerformPaymentComponent extends BaseBankingComponent {
       });
   }
 
-
-  ////////////////////////////////////////////////////
-  // Preview step
-  ////////////////////////////////////////////////////
-  @ViewChild('previewStep') previewStep: TdStepComponent;
-  previewForm: FormGroup;
-  preview = new BehaviorSubject<PaymentPreview>(null);
-
   previousFromPreview() {
     this.stepperControl.activate(this.fieldsStep);
   }
@@ -405,11 +405,6 @@ export class PerformPaymentComponent extends BaseBankingComponent {
     this.performPayment();
   }
 
-  ////////////////////////////////////////////////////
-  // Done step
-  ////////////////////////////////////////////////////
-  @ViewChild('doneStep') doneStep: TdStepComponent;
-  performed = new BehaviorSubject<TransactionView>(null);
   /**
    * Performs the payment itself
    */
@@ -424,7 +419,7 @@ export class PerformPaymentComponent extends BaseBankingComponent {
         this.performed.next(performed);
         this.stepperControl.complete();
       }, error => {
-        if (error.status == ErrorStatus.FORBIDDEN
+        if (error.status === ErrorStatus.FORBIDDEN
           && this.preview.value.confirmationPasswordInput) {
           this.previewForm.setValue({
             confirmationPassword: null

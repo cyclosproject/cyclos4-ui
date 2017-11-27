@@ -1,8 +1,8 @@
 import { Component, ChangeDetectionStrategy, Output, EventEmitter, Input, Injector } from '@angular/core';
-import { Router } from "@angular/router";
-import { GeneralMessages } from "app/messages/general-messages";
-import { LoginService } from "app/core/login.service";
-import { DataForLogin } from "app/api/models";
+import { Router } from '@angular/router';
+import { GeneralMessages } from 'app/messages/general-messages';
+import { LoginService } from 'app/core/login.service';
+import { DataForLogin } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
@@ -27,7 +27,7 @@ export class LoginFormComponent extends BaseComponent {
   loginForm: FormGroup;
 
   @Output()
-  onSubmit = new EventEmitter<void>();
+  submit = new EventEmitter<void>();
 
   constructor(
     injector: Injector
@@ -39,6 +39,6 @@ export class LoginFormComponent extends BaseComponent {
    * Emits the current login data
    */
   emit(): void {
-    this.onSubmit.emit();
+    this.submit.emit();
   }
 }

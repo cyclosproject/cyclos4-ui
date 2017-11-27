@@ -1,9 +1,9 @@
 import { Component, ChangeDetectionStrategy, Injector, ViewChild } from '@angular/core';
-import { Title } from "@angular/platform-browser";
-import { GeneralMessages } from "app/messages/general-messages";
-import { LayoutService } from "app/core/layout.service";
-import { Subscription } from "rxjs/Subscription";
-import { BaseComponent } from "app/shared/base.component";
+import { Title } from '@angular/platform-browser';
+import { GeneralMessages } from 'app/messages/general-messages';
+import { LayoutService } from 'app/core/layout.service';
+import { Subscription } from 'rxjs/Subscription';
+import { BaseComponent } from 'app/shared/base.component';
 import { PersonalMenuComponent } from 'app/core/personal-menu.component';
 import { Router } from '@angular/router';
 
@@ -21,7 +21,7 @@ export class AppComponent extends BaseComponent {
   ) {
     super(injector);
   }
-  
+
   ngOnInit() {
     super.ngOnInit();
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;

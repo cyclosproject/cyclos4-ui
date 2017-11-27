@@ -37,13 +37,13 @@ export class ApiInterceptor implements HttpInterceptor {
     }
 
     // Maybe we should ignore errors...
-    let ignoreError = this._ignoreNextError;
+    const ignoreError = this._ignoreNextError;
     this._ignoreNextError = false;
 
     // Close any notification before sending a request
     this.injector.get(NotificationService).close();
 
-    let headers = {};
+    const headers = {};
 
     // This front-end is presented as main channel
     headers[CHANNEL] = 'main';
@@ -61,12 +61,12 @@ export class ApiInterceptor implements HttpInterceptor {
         headers[SESSION_TOKEN] = sessionToken;
       }
     }
-    
+
     // Apply the headers to the request
     req = req.clone({
       setHeaders: headers
-    })
-    
+    });
+
     // Also handle errors globally
     return next.handle(req).pipe(
       tap(x => x, err => {
@@ -84,7 +84,7 @@ export class ApiInterceptor implements HttpInterceptor {
    * @param password The user password
    */
   nextAsBasic(principal: string, password: string): void {
-    this.nextAuth = "Basic " + btoa(principal + ":" + password);
+    this.nextAuth = 'Basic ' + btoa(principal + ':' + password);
   }
 
   /**
@@ -104,5 +104,4 @@ export class ApiInterceptor implements HttpInterceptor {
   get sessionToken(): string {
     return localStorage.getItem(SESSION_TOKEN);
   }
-
 }

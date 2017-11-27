@@ -1,15 +1,18 @@
-import { Component, OnInit, Input, Output, ViewChild, EventEmitter, forwardRef, ElementRef, Provider, ChangeDetectionStrategy } from '@angular/core';
-import { NG_VALUE_ACCESSOR, ControlValueAccessor, NG_VALIDATORS, Validator, AbstractControl, ValidationErrors } from "@angular/forms";
-import { FormatService } from "app/core/format.service";
-import { LayoutService } from "app/core/layout.service";
+import {
+  Component, OnInit, Input, Output, ViewChild, EventEmitter,
+  forwardRef, ElementRef, Provider, ChangeDetectionStrategy
+} from '@angular/core';
+import { NG_VALUE_ACCESSOR, ControlValueAccessor, NG_VALIDATORS, Validator, AbstractControl, ValidationErrors } from '@angular/forms';
+import { FormatService } from 'app/core/format.service';
+import { LayoutService } from 'app/core/layout.service';
 import { MatDatepickerInput } from '@angular/material';
 import { isDate } from 'moment';
 
 // Definition of the exported NG_VALUE_ACCESSOR provider
 export const DATE_FIELD_VALUE_ACCESSOR: Provider = {
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => DateFieldComponent),
-    multi: true
+  provide: NG_VALUE_ACCESSOR,
+  useExisting: forwardRef(() => DateFieldComponent),
+  multi: true
 };
 
 // Definition of the exported NG_VALIDATORS provider
@@ -17,7 +20,7 @@ export const DATE_VALIDATOR: Provider = {
   provide: NG_VALIDATORS,
   useExisting: forwardRef(() => DateFieldComponent),
   multi: true
-}
+};
 
 /**
  * Renders a widget for a date field
@@ -41,27 +44,27 @@ export class DateFieldComponent implements ControlValueAccessor, Validator {
   @Input() placeholder: string;
   @Input() disabled: boolean;
 
-  private changeCallback = (_: any) => { };
-  private touchedCallback = () => { };
-  private validatorChangeCallback = () => { };
-
   @Input() focused: boolean;
   @Output() change: EventEmitter<string> = new EventEmitter();
   @Output() blur: EventEmitter<string> = new EventEmitter();
+
+  @ViewChild(MatDatepickerInput)
+  private input: MatDatepickerInput<string>;
+
+  @ViewChild('input')
+  private inputRef: ElementRef;
+
+  private _value: string = null;
+
+  private changeCallback = (_: any) => { };
+  private touchedCallback = () => { };
+  private validatorChangeCallback = () => { };
 
   get dateFormat(): string {
     return this.formatService.dateFormat;
   }
 
-  @ViewChild(MatDatepickerInput)
-  private input: MatDatepickerInput<string>;
-
-  @ViewChild("input")
-  private inputRef: ElementRef;
-
-  private _value: string = null;
-
-  @Input() @Output() 
+  @Input()
   get value(): string {
     return this._value;
   }
@@ -84,7 +87,9 @@ export class DateFieldComponent implements ControlValueAccessor, Validator {
   }
 
   onBlur(event) {
-    if (this.touchedCallback) this.touchedCallback();
+    if (this.touchedCallback) {
+      this.touchedCallback();
+    }
     this.blur.emit(event);
   }
 
@@ -113,5 +118,4 @@ export class DateFieldComponent implements ControlValueAccessor, Validator {
   registerOnValidatorChange(fn: () => void): void {
     this.validatorChangeCallback = fn;
   }
-
 }

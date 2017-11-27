@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
-import { DataForLogin } from "app/api/models";
-import { AuthService } from "app/api/services";
-import { TranslationLoaderService } from "app/core/translation-loader.service";
-import { BankingMessages } from "app/messages/banking-messages";
+import { DataForLogin } from 'app/api/models';
+import { AuthService } from 'app/api/services';
+import { TranslationLoaderService } from 'app/core/translation-loader.service';
+import { BankingMessages } from 'app/messages/banking-messages';
 
 /**
  * Loads the banking messages before showing the banking module

@@ -1,7 +1,7 @@
 import { Component, Injector, Provider, forwardRef, ChangeDetectionStrategy, ViewChild, Input } from '@angular/core';
-import { NG_VALUE_ACCESSOR, ControlValueAccessor } from "@angular/forms";
-import { BaseBankingComponent } from "app/banking/base-banking.component";
-import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
+import { BaseBankingComponent } from 'app/banking/base-banking.component';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { PaymentPreview, AccountKind, TransactionView, AuthorizationStatusEnum } from 'app/api/models';
 import { ApiHelper } from 'app/shared/api-helper';
 
@@ -29,7 +29,7 @@ export class PaymentDoneComponent extends BaseBankingComponent {
   get to(): string {
     return ApiHelper.accountName(this.generalMessages, false, this.payment);
   }
-  
+
   get pendingAuth(): boolean {
     return this.payment.authorizationStatus == AuthorizationStatusEnum.PENDING;
   }

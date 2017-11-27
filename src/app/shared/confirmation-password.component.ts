@@ -36,12 +36,22 @@ export class ConfirmationPasswordComponent implements OnChanges, ControlValueAcc
     public generalMessages: GeneralMessages
   ) { }
 
+  @Input()
+  passwordInput: PasswordInput;
+
   otpRenewable: boolean;
 
-  @ViewChild("passwordComponent")
+  @ViewChild('passwordComponent')
   private passwordComponent: PasswordInputComponent;
 
+
   private otpSubscription: Subscription;
+
+  private _password: string;
+
+  private changeCallback = (_: any) => { };
+  private touchedCallback = () => { };
+  private validatorChangeCallback = () => { };
 
   ngOnChanges() {
     if (this.otpSubscription == null && this.passwordComponent) {
@@ -51,18 +61,15 @@ export class ConfirmationPasswordComponent implements OnChanges, ControlValueAcc
     }
   }
 
-  private changeCallback = (_: any) => { };
-  private touchedCallback = () => { };
-  private validatorChangeCallback = () => { };
-
   get disabled(): boolean {
     return this.passwordComponent == null ? false : this.passwordComponent.disabled;
   }
-  set disabled(disabled: boolean)  {
-    if (this.passwordComponent) this.passwordComponent.disabled = disabled;
+  set disabled(disabled: boolean) {
+    if (this.passwordComponent) {
+      this.passwordComponent.disabled = disabled;
+    }
   }
 
-  private _password: string;
   get password(): string {
     return this._password;
   }
@@ -71,28 +78,28 @@ export class ConfirmationPasswordComponent implements OnChanges, ControlValueAcc
     this.changeCallback(password);
   }
 
-  @Input()
-  passwordInput: PasswordInput;
 
   get canConfirm(): boolean {
     return this.activePassword || this.hasOtpSendMediums;
-  }  
+  }
+
   get activePassword(): boolean {
     return this.passwordInput.hasActivePassword;
   }
+
   get hasOtpSendMediums(): boolean {
-    return this.passwordInput.mode == PasswordModeEnum.OTP
+    return this.passwordInput.mode === PasswordModeEnum.OTP
       && (this.passwordInput.otpSendMediums || []).length > 0;
   }
 
   get confirmationMessage(): string {
-    let otp = this.passwordInput.mode == PasswordModeEnum.OTP;
+    const otp = this.passwordInput.mode === PasswordModeEnum.OTP;
     if (this.activePassword && !otp) {
       // The normal case is that the user has an active password. In that case, show no additional message.
       // However, for OTP it is possible to request a new password, so we do show a message in this case.
       return null;
     }
-    let name = this.passwordInput.name;
+    const name = this.passwordInput.name;
     if (otp) {
       if (!this.hasOtpSendMediums) {
         return this.generalMessages.passwordConfirmationOtpNoMediums(name);

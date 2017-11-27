@@ -24,7 +24,7 @@ export class MenuItemComponent extends BaseComponent {
   entry: BaseMenuEntry;
 
   @Input()
-  iconClass = "mat-18";
+  iconClass = 'mat-18';
 
   @Output()
   click = new EventEmitter<Menu>();
@@ -38,7 +38,7 @@ export class MenuItemComponent extends BaseComponent {
 
   handleClick() {
     if (this.entry instanceof MenuEntry) {
-      let menu = this.entry.menu;
+      const menu = this.entry.menu;
       if (menu === Menu.LOGOUT) {
         this.login.logout();
       } else if (this.entry.url) {

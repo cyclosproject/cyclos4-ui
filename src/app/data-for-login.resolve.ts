@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
-import { DataForLogin } from "app/api/models";
-import { AuthService } from "app/api/services";
+import { DataForLogin } from 'app/api/models';
+import { AuthService } from 'app/api/services';
 import { Observable } from 'rxjs/Observable';
 
 /**

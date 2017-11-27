@@ -1,6 +1,6 @@
-import { Injector } from "@angular/core";
-import { BaseComponent } from "app/shared/base.component";
-import { BankingMessages } from "app/messages/banking-messages";
+import { Injector } from '@angular/core';
+import { BaseComponent } from 'app/shared/base.component';
+import { BankingMessages } from 'app/messages/banking-messages';
 
 /**
  * Base class for components in the banking module

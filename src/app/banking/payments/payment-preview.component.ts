@@ -1,6 +1,6 @@
 import { Component, Injector, ChangeDetectionStrategy, Input } from '@angular/core';
-import { BaseBankingComponent } from "app/banking/base-banking.component";
-import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import { BaseBankingComponent } from 'app/banking/base-banking.component';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { PaymentPreview, AccountKind } from 'app/api/models';
 import { ApiHelper } from 'app/shared/api-helper';
 import { FormGroup } from '@angular/forms';
@@ -42,7 +42,7 @@ export class PaymentPreviewComponent extends BaseBankingComponent {
     return this.hasTotalAmount;
   }
   get hasTotalAmount(): boolean {
-    return this.preview.mainAmount != this.preview.totalAmount
+    return this.preview.mainAmount !== this.preview.totalAmount;
   }
   get hasFees(): boolean {
     return (this.preview.fees || []).length > 0;

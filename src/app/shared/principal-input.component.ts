@@ -1,11 +1,12 @@
 import { Component, OnInit, Input, forwardRef, Output, ViewChild, ElementRef, ChangeDetectionStrategy } from '@angular/core';
-import { NG_VALUE_ACCESSOR, ControlValueAccessor, FormControl, AbstractControl, ValidationErrors, NgControl, Validator, NG_VALIDATORS } from "@angular/forms";
-import { PrincipalTypeInput, PrincipalTypeKind } from "app/api/models";
-import { MatCheckbox, MatSelect } from "@angular/material";
-import { FormatService } from "app/core/format.service";
-import { DecimalFieldComponent } from "app/shared/decimal-field.component";
-import { DateFieldComponent } from "app/shared/date-field.component";
-import { CustomFieldInputComponent } from "app/shared/custom-field-input.component";
+import { NG_VALUE_ACCESSOR, ControlValueAccessor, FormControl, AbstractControl, ValidationErrors, NgControl, Validator, NG_VALIDATORS } from '@angular/forms';
+import { PrincipalTypeInput, PrincipalTypeKind } from 'app/api/models';
+import { MatCheckbox, MatSelect } from '@angular/material';
+import { FormatService } from 'app/core/format.service';
+import { DecimalFieldComponent } from 'app/shared/decimal-field.component';
+import { DateFieldComponent } from 'app/shared/date-field.component';
+import { CustomFieldInputComponent } from 'app/shared/custom-field-input.component';
+import { isDate } from 'moment';
 
 // Definition of the exported NG_VALUE_ACCESSOR provider
 export const PRINCIPAL_VALUE_ACCESSOR = {
@@ -44,24 +45,26 @@ export class PrincipalInputComponent implements OnInit, ControlValueAccessor, Va
   @Input()
   public focused: boolean | string;
 
+  @Input()
+  public disabled: boolean;
+
   public isCustomField: boolean;
 
   private _value: string = null;
+
+  @ViewChild('textInput')
+  private textInput: ElementRef;
+
+  @ViewChild('customFieldInput')
+  private customFieldInput: CustomFieldInputComponent;
 
   private changeCallback = (_: any) => { };
   private touchedCallback = () => { };
   private validatorChangeCallback = () => { };
 
-  @ViewChild("textInput")
-  private textInput: ElementRef;
-
-  @ViewChild("customFieldInput")
-  private customFieldInput: CustomFieldInputComponent;
-
-  @Output()
   @Input()
   get value(): string {
-    return this._value
+    return this._value;
   }
   set value(value: string) {
     if (this._value === value) {
@@ -77,7 +80,7 @@ export class PrincipalInputComponent implements OnInit, ControlValueAccessor, Va
   }
 
   ngOnInit() {
-    this.isCustomField = this.type.kind == PrincipalTypeKind.CUSTOM_FIELD;
+    this.isCustomField = this.type.kind === PrincipalTypeKind.CUSTOM_FIELD;
   }
 
   // ControlValueAccessor methods
@@ -91,18 +94,23 @@ export class PrincipalInputComponent implements OnInit, ControlValueAccessor, Va
     this.touchedCallback = fn;
   }
   setDisabledState(isDisabled: boolean): void {
-    if (this.textInput) this.textInput.nativeElement.disabled = isDisabled;
-    if (this.customFieldInput) this.customFieldInput.disabled = isDisabled;
+    this.disabled = isDisabled;
+    if (this.textInput) {
+      this.textInput.nativeElement.disabled = isDisabled;
+    }
+    if (this.customFieldInput) {
+      this.customFieldInput.disabled = isDisabled;
+    }
   }
 
   // Validator methods
   validate(c: AbstractControl): ValidationErrors {
-    let value = c.value;
+    const value = c.value;
     if (value === null || value === '') {
       // We assume the principal is required.
       return {
         required: true
-      }
+      };
     }
     if (this.customFieldInput != null) {
       return this.customFieldInput.validate(c);

@@ -1,19 +1,19 @@
-import { Provider, APP_INITIALIZER, Injector } from "@angular/core";
-import { AuthService } from "app/api/services";
-import { Auth } from "app/api/models";
-import { LoginService } from "app/core/login.service";
-import { NotificationService } from "app/core/notification.service";
-import { ApiHelper } from "app/shared/api-helper";
-import { ApiInterceptor } from "app/core/api.interceptor";
+import { Provider, APP_INITIALIZER, Injector } from '@angular/core';
+import { AuthService } from 'app/api/services';
+import { Auth } from 'app/api/models';
+import { LoginService } from 'app/core/login.service';
+import { NotificationService } from 'app/core/notification.service';
+import { ApiHelper } from 'app/shared/api-helper';
+import { ApiInterceptor } from 'app/core/api.interceptor';
 
 // Loads the logged user, if any
 // Use the injector to prevent a cyclic dependency
 export function loadUser(injector: Injector): Function {
   return () => {
-    let apiInterceptor = injector.get(ApiInterceptor);
+    const apiInterceptor = injector.get(ApiInterceptor);
     if (apiInterceptor.sessionToken) {
       // There should be an authenticated user. Load it.
-      let interceptor = injector.get(ApiInterceptor);
+      const interceptor = injector.get(ApiInterceptor);
 
       // Ignore any errors in the next request, as we'll just clear the session token on error
       interceptor.ignoreNextError();
@@ -34,7 +34,7 @@ export function loadUser(injector: Injector): Function {
     } else {
       return null;
     }
-  }
+  };
 }
 export const LOAD_USER: Provider = {
   provide: APP_INITIALIZER,

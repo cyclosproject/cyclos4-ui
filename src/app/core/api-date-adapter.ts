@@ -1,7 +1,7 @@
-import { DateAdapter, MatDateFormats } from "@angular/material";
+import { DateAdapter, MatDateFormats } from '@angular/material';
 import * as moment from 'moment';
-import { Injectable } from "@angular/core";
-import { FormatService } from "app/core/format.service";
+import { Injectable } from '@angular/core';
+import { FormatService } from 'app/core/format.service';
 
 const DATE_NAMES = [];
 for (let i = 0; i < 31; i++) {
@@ -14,7 +14,7 @@ for (let i = 0; i < 31; i++) {
 @Injectable()
 export class ApiDateAdapter extends DateAdapter<string> {
   constructor(private formatService: FormatService) {
-    super();    
+    super();
   }
 
   getYear(date: string): number {
@@ -29,13 +29,13 @@ export class ApiDateAdapter extends DateAdapter<string> {
   getDayOfWeek(date: string): number {
     return moment(date).day();
   }
-  getMonthNames(style: "long" | "short" | "narrow"): string[] {
+  getMonthNames(style: 'long' | 'short' | 'narrow'): string[] {
     return this.formatService.monthNames[style];
   }
   getDateNames(): string[] {
     return DATE_NAMES;
   }
-  getDayOfWeekNames(style: "long" | "short" | "narrow"): string[] {
+  getDayOfWeekNames(style: 'long' | 'short' | 'narrow'): string[] {
     return this.formatService.dayNames[style];
   }
   getYearName(date: string): string {
@@ -53,7 +53,7 @@ export class ApiDateAdapter extends DateAdapter<string> {
     return date;
   }
   createDate(year: number, month: number, date: number): string {
-    return moment({year: year, month: month, date: date}).format();
+    return moment({ year: year, month: month, date: date }).format();
   }
   today(): string {
     return moment().format();
@@ -82,7 +82,7 @@ export class ApiDateAdapter extends DateAdapter<string> {
     return iso8601String;
   }
   isDateInstance(obj: any): boolean {
-    return typeof obj == 'string' && moment(obj).isValid();
+    return typeof obj === 'string' && moment(obj).isValid();
   }
   isValid(date: string): boolean {
     return moment(date).isValid();

@@ -1,13 +1,15 @@
 import { Component, OnInit, Input, forwardRef, Output, ViewChild, ElementRef, ChangeDetectionStrategy } from '@angular/core';
-import { NG_VALUE_ACCESSOR, ControlValueAccessor, FormControl, AbstractControl, ValidationErrors, NgControl, Validator, NG_VALIDATORS } from "@angular/forms";
-import { CustomFieldTypeEnum, CustomFieldDetailed } from "app/api/models";
-import { MatCheckbox, MatSelect } from "@angular/material";
-import { FormatService } from "app/core/format.service";
-import { DecimalFieldComponent } from "app/shared/decimal-field.component";
-import { DateFieldComponent } from "app/shared/date-field.component";
+import {
+  NG_VALUE_ACCESSOR, ControlValueAccessor, FormControl, AbstractControl,
+  ValidationErrors, NgControl, Validator, NG_VALIDATORS
+} from '@angular/forms';
+import { CustomFieldTypeEnum, CustomFieldDetailed } from 'app/api/models';
+import { MatCheckbox, MatSelect } from '@angular/material';
+import { FormatService } from 'app/core/format.service';
+import { DecimalFieldComponent } from 'app/shared/decimal-field.component';
+import { DateFieldComponent } from 'app/shared/date-field.component';
 
-const MAX_INTEGER: number = 2147483647;
-
+const MAX_INTEGER = 2147483647;
 const INPUT_TYPES = [CustomFieldTypeEnum.STRING, CustomFieldTypeEnum.INTEGER, CustomFieldTypeEnum.URL, CustomFieldTypeEnum.LINKED_ENTITY];
 const TEXTAREA_TYPES = [CustomFieldTypeEnum.TEXT, CustomFieldTypeEnum.RICH_TEXT];
 
@@ -39,9 +41,6 @@ export const CUSTOM_FIELD_VALIDATOR = {
   ]
 })
 export class CustomFieldInputComponent implements OnInit, ControlValueAccessor, Validator {
-  constructor(
-    private formatService: FormatService
-  ) { }
 
   @Input()
   focused: boolean;
@@ -49,6 +48,38 @@ export class CustomFieldInputComponent implements OnInit, ControlValueAccessor, 
   @Input()
   field: CustomFieldDetailed;
   type: CustomFieldTypeEnum;
+
+  private _value: string = null;
+  private _fieldValue: any = null;
+
+  @ViewChild('stringInput')
+  private stringInput: ElementRef;
+
+  @ViewChild('textInput')
+  private textInput: ElementRef;
+
+  @ViewChild('booleanComponent')
+  private booleanComponent: MatCheckbox;
+
+  @ViewChild('decimalComponent')
+  private decimalComponent: DecimalFieldComponent;
+
+  @ViewChild('dateComponent')
+  private dateComponent: DateFieldComponent;
+
+  @ViewChild('selectComponent')
+  private selectComponent: MatSelect;
+
+  @ViewChild('dynamicComponent')
+  private dynamicComponent: MatSelect;
+
+  private changeCallback = (_: any) => { };
+  private touchedCallback = () => { };
+  private validatorChangeCallback = () => { };
+
+  constructor(
+    private formatService: FormatService
+  ) { }
 
   get input(): boolean {
     return INPUT_TYPES.includes(this.type);
@@ -60,53 +91,53 @@ export class CustomFieldInputComponent implements OnInit, ControlValueAccessor, 
 
   @Input()
   public get disabled(): boolean {
-    if (this.stringInput) return this.stringInput.nativeElement.disabled;
-    if (this.textInput) return this.textInput.nativeElement.disabled;
-    if (this.booleanComponent) return this.booleanComponent.disabled;
-    if (this.decimalComponent) return this.decimalComponent.disabled;
-    if (this.dateComponent) return this.dateComponent.disabled;
-    if (this.selectComponent) return this.selectComponent.disabled;
-    if (this.dynamicComponent) return this.dynamicComponent.disabled;
+    if (this.stringInput) {
+      return this.stringInput.nativeElement.disabled;
+    }
+    if (this.textInput) {
+      return this.textInput.nativeElement.disabled;
+    }
+    if (this.booleanComponent) {
+      return this.booleanComponent.disabled;
+    }
+    if (this.decimalComponent) {
+      return this.decimalComponent.disabled;
+    }
+    if (this.dateComponent) {
+      return this.dateComponent.disabled;
+    }
+    if (this.selectComponent) {
+      return this.selectComponent.disabled;
+    }
+    if (this.dynamicComponent) {
+      return this.dynamicComponent.disabled;
+    }
     return false;
   }
   public set disabled(isDisabled: boolean) {
-    if (this.stringInput) this.stringInput.nativeElement.disabled = isDisabled;
-    if (this.textInput) this.textInput.nativeElement.disabled = isDisabled;
-    if (this.booleanComponent) this.booleanComponent.disabled = isDisabled;
-    if (this.decimalComponent) this.decimalComponent.disabled = isDisabled;
-    if (this.dateComponent) this.dateComponent.disabled = isDisabled;
-    if (this.selectComponent) this.selectComponent.disabled = isDisabled;
-    if (this.dynamicComponent) this.dynamicComponent.disabled = isDisabled;
+    this.disabled = isDisabled;
+    if (this.stringInput) {
+      this.stringInput.nativeElement.disabled = isDisabled;
+    }
+    if (this.textInput) {
+      this.textInput.nativeElement.disabled = isDisabled;
+    }
+    if (this.booleanComponent) {
+      this.booleanComponent.disabled = isDisabled;
+    }
+    if (this.decimalComponent) {
+      this.decimalComponent.disabled = isDisabled;
+    }
+    if (this.dateComponent) {
+      this.dateComponent.disabled = isDisabled;
+    }
+    if (this.selectComponent) {
+      this.selectComponent.disabled = isDisabled;
+    }
+    if (this.dynamicComponent) {
+      this.dynamicComponent.disabled = isDisabled;
+    }
   }
-
-  private _value: string = null;
-
-  private _fieldValue: any = null;
-
-  private changeCallback = (_: any) => { };
-  private touchedCallback = () => { };
-  private validatorChangeCallback = () => { };
-
-  @ViewChild("stringInput")
-  private stringInput: ElementRef;
-
-  @ViewChild("textInput")
-  private textInput: ElementRef;
-
-  @ViewChild("booleanComponent")
-  private booleanComponent: MatCheckbox;
-
-  @ViewChild("decimalComponent")
-  private decimalComponent: DecimalFieldComponent;
-
-  @ViewChild("dateComponent")
-  private dateComponent: DateFieldComponent;
-
-  @ViewChild("selectComponent")
-  private selectComponent: MatSelect;
-
-  @ViewChild("dynamicComponent")
-  private dynamicComponent: MatSelect;
 
   @Input()
   @Output()
@@ -119,8 +150,8 @@ export class CustomFieldInputComponent implements OnInit, ControlValueAccessor, 
     if (fieldValue instanceof Array) {
       // A multi selection
       this._value = fieldValue.join('|');
-    } else if (this.field.type == CustomFieldTypeEnum.INTEGER) {
-      let num = Number(fieldValue);
+    } else if (this.field.type === CustomFieldTypeEnum.INTEGER) {
+      const num = Number(fieldValue);
       if (num != null && num > MAX_INTEGER) {
         // 2 assignments
         this._fieldValue = this._value = MAX_INTEGER.toString();
@@ -139,15 +170,15 @@ export class CustomFieldInputComponent implements OnInit, ControlValueAccessor, 
   @Output()
   @Input()
   get value(): string {
-    return this._value
+    return this._value;
   }
   set value(value: string) {
     if (this._value === value) {
       return;
     }
-    if (this.type == CustomFieldTypeEnum.MULTI_SELECTION) {
+    if (this.type === CustomFieldTypeEnum.MULTI_SELECTION) {
       // A multi selection - split the array
-      this._fieldValue = (value || "").split("|");
+      this._fieldValue = (value || '').split('|');
     } else {
       // Just use the field value as the raw value
       this._fieldValue = value;
@@ -181,19 +212,19 @@ export class CustomFieldInputComponent implements OnInit, ControlValueAccessor, 
 
   // Validator methods
   validate(c: AbstractControl): ValidationErrors {
-    let value = c.value;
+    const value = c.value;
     if (this.field.required && (value === null || value === '')) {
       return {
         required: true
-      }
-    } else if (this.type == CustomFieldTypeEnum.DATE) {
+      };
+    } else if (this.type === CustomFieldTypeEnum.DATE) {
       // For dates, undefined means invalid
       if (value === undefined) {
         return {
           date: {
             format: this.formatService.dateFormat
           }
-        }
+        };
       }
     }
   }
