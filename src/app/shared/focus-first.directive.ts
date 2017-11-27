@@ -9,9 +9,9 @@ export class FocusFirstDirective implements AfterViewInit {
   ) { }
 
   ngAfterViewInit(): void {
-    let elements = this.el.nativeElement.elements;
+    const elements = this.el.nativeElement.elements;
     if (elements.length > 0) {
-      let input = elements[0];
+      const input = elements[0];
       this.renderer.invokeElementMethod(input, 'focus', []);
       this.changeDetector.detectChanges();
     }

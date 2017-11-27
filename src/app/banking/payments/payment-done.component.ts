@@ -31,6 +31,6 @@ export class PaymentDoneComponent extends BaseBankingComponent {
   }
 
   get pendingAuth(): boolean {
-    return this.payment.authorizationStatus == AuthorizationStatusEnum.PENDING;
+    return this.payment.authorizationStatus === AuthorizationStatusEnum.PENDING;
   }
 }

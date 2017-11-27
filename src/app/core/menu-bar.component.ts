@@ -38,10 +38,9 @@ export class MenuBarComponent extends BaseComponent {
   }
 
   onClick(root: RootMenuEntry) {
-    let entry = root.entries[0];
+    const entry = root.entries[0];
     if (entry) {
       this.router.navigateByUrl(entry.url);
     }
   }
-
 }

@@ -24,7 +24,7 @@
 
 <!-- boolean -->
 <mat-checkbox #booleanComponent="ngModel" fxFlex="grow" *ngIf="type == 'boolean'"
-  [(ngModel)]="fieldValue" [ngModelOptions]="{standalone: true}">{{field.name}}</mat-checkbox>
+  [(ngModel)]="fieldValue" [ngModelOptions]="{standalone: true}">{{ field.name }}</mat-checkbox>
 
 <!-- decimal -->
 <decimal-field #decimalComponent="ngModel" fxFlex="grow" *ngIf="type == 'decimal'"
@@ -47,8 +47,8 @@
     [placeholder]="field.name" [multiple]="type == 'multiSelection'">
     <mat-option *ngFor="let pv of field.possibleValues"
       [value]="pv.id">
-      <span *ngIf="pv.category">{{pv.category.name}} - </span>
-      {{pv.value}}
+      <span *ngIf="pv.category">{{ pv.category.name }} - </span>
+      {{ pv.value }}
     </mat-option>
   </mat-select>
 </mat-form-field>
@@ -60,7 +60,7 @@
     [(ngModel)]="value" [ngModelOptions]="{standalone: true}" [required]="field.required"
     [placeholder]="field.name">
     <mat-option *ngFor="let pv of field.dynamicValues"
-      [value]="pv.value">{{pv.label}}</mat-option>
+      [value]="pv.value">{{ pv.label }}</mat-option>
   </mat-select>
 </mat-form-field>
 <!-- no support for file / image so far -->

@@ -5,8 +5,8 @@
     <div class="indicators">
       <ng-container *ngFor="let indicator of (status | async); let last = last">
         <div class="indicator">
-          <div class="label">{{indicator.label}}</div>
-          <div class="amount">{{indicator.amount | currency:currency}}</div>
+          <div class="label">{{ indicator.label }}</div>
+          <div class="amount">{{ indicator.amount | currency:currency }}</div>
         </div>
         <div *ngIf="!last" class="indicator-separator"></div>
       </ng-container>
@@ -18,9 +18,9 @@
         <mat-select fxFlex="grow"
           [placeholder]="bankingMessages.accountTransferFilter()"
           [(ngModel)]="transferFilterId" name="transferFilter">
-          <mat-option [value]="">{{generalMessages.searchAll()}}</mat-option>
+          <mat-option [value]="">{{ generalMessages.searchAll() }}</mat-option>
           <mat-option *ngFor="let filter of transferFilters"
-            [value]="filter.id">{{filter.name}}</mat-option>
+            [value]="filter.id">{{ filter.name }}</mat-option>
         </mat-select>
       </mat-form-field>
       <mat-form-field *ngIf="preselectedPeriods.length > 1">
@@ -29,7 +29,7 @@
           [placeholder]="generalMessages.period()"
           [(ngModel)]="preselectedPeriod" name="preselectedPeriod">
           <mat-option *ngFor="let period of preselectedPeriods"
-            [value]="period">{{period.name}}</mat-option>
+            [value]="period">{{ period.name }}</mat-option>
         </mat-select>
       </mat-form-field>
       <date-field *ngIf="preselectedPeriod?.begin == null"
@@ -57,28 +57,28 @@
       <ng-container matColumnDef="aggregated">
         <mat-header-cell *matHeaderCellDef></mat-header-cell>
         <mat-cell *matCellDef="let row">
-          <div class="cell-main">{{subjectName(row)}}</div>
-          <div class="cell-date">{{row.date | dateTime}}</div>
-          <div *ngIf="row.description" class="cell-small">{{row.description}}</div>
+          <div class="cell-main">{{ subjectName(row) }}</div>
+          <div class="cell-date">{{ row.date | dateTime }}</div>
+          <div *ngIf="row.description" class="cell-small">{{ row.description }}</div>
         </mat-cell>
       </ng-container>
 
       <!-- Date column -->
       <ng-container matColumnDef="date">
-        <mat-header-cell *matHeaderCellDef>{{bankingMessages.transactionDate()}}</mat-header-cell>
-        <mat-cell *matCellDef="let row">{{row.date | date}}</mat-cell>
+        <mat-header-cell *matHeaderCellDef>{{ bankingMessages.transactionDate() }}</mat-header-cell>
+        <mat-cell *matCellDef="let row">{{ row.date | date }}</mat-cell>
       </ng-container>
 
       <!-- Subject column -->
       <ng-container matColumnDef="subject">
-        <mat-header-cell *matHeaderCellDef>{{bankingMessages.transactionSubject()}}</mat-header-cell>
-        <mat-cell *matCellDef="let row">{{subjectName(row)}}</mat-cell>
+        <mat-header-cell *matHeaderCellDef>{{ bankingMessages.transactionSubject() }}</mat-header-cell>
+        <mat-cell *matCellDef="let row">{{ subjectName(row) }}</mat-cell>
       </ng-container>
 
       <!-- Amount column -->
       <ng-container matColumnDef="amount">
-        <mat-header-cell *matHeaderCellDef style="text-align: end">{{bankingMessages.transactionAmount()}}</mat-header-cell>
-        <mat-cell *matCellDef="let row" style="text-align: end">{{row.amount | currency:currency}}</mat-cell>
+        <mat-header-cell *matHeaderCellDef style="text-align: end">{{ bankingMessages.transactionAmount() }}</mat-header-cell>
+        <mat-cell *matCellDef="let row" style="text-align: end">{{ row.amount | currency:currency }}</mat-cell>
       </ng-container>
       
       <mat-header-row *matHeaderRowDef="layout.xs ? [] : displayedColumns"></mat-header-row>

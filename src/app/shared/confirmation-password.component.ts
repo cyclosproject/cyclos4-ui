@@ -17,7 +17,7 @@ export const CONFIRMATION_PASSWORD_VALIDATOR: Provider = {
   provide: NG_VALIDATORS,
   useExisting: forwardRef(() => ConfirmationPasswordComponent),
   multi: true
-}
+};
 
 /**
  * Component used to input a password to confirm an action

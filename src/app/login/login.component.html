@@ -1,14 +1,14 @@
 <!-- View for small to large devices -->
 <div *ngIf="layout.gtxs" fxLayout="row" fxLayout.sm="column">
   <mat-card fxFlex="grow">
-    <mat-card-title>{{generalMessages.loginTitle()}}</mat-card-title>
+    <mat-card-title>{{ generalMessages.loginTitle() }}</mat-card-title>
     <mat-card-content>
       <login-form *ngIf="dataForLogin | async" [loginForm]="loginForm" [dataForLogin]="dataForLogin.value" (submit)="doLogin()"
         [showActions]="!canRegister"></login-form>
     </mat-card-content>
     <mat-card-actions>
       <button mat-raised-button color="accent" [disabled]="!loginForm.valid" (click)="doLogin()">
-        {{generalMessages.loginAction()}}
+        {{ generalMessages.loginAction() }}
       </button>
     </mat-card-actions>
   </mat-card>
@@ -16,13 +16,13 @@
   <div *ngIf="canRegister" fxFlex="24px"></div>
 
   <mat-card *ngIf="canRegister" fxFlex="grow" fxLayout="column">
-    <mat-card-title>{{generalMessages.loginRegisterTitle()}}</mat-card-title>
+    <mat-card-title>{{ generalMessages.loginRegisterTitle() }}</mat-card-title>
     <mat-card-content fxFlex="grow">
-      {{generalMessages.loginRegisterText()}}
+      {{ generalMessages.loginRegisterText() }}
     </mat-card-content>
     <mat-card-actions>
       <button mat-raised-button color="accent" (click)="register()">
-        {{generalMessages.loginRegisterAction()}}
+        {{ generalMessages.loginRegisterAction() }}
       </button>
     </mat-card-actions>
   </mat-card>
@@ -36,11 +36,11 @@
   </mat-tab>
   <mat-tab [label]="generalMessages.loginRegisterTitle()">
     <div class="topMargin">
-      {{generalMessages.loginRegisterText()}}
+      {{ generalMessages.loginRegisterText() }}
     </div>
     <actions>
       <button mat-raised-button [disabled]="!loginForm.valid" color="accent" (click)="register()">
-        {{generalMessages.loginRegisterAction()}}
+        {{ generalMessages.loginRegisterAction() }}
       </button>
     </actions>
   </mat-tab>

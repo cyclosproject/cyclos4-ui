@@ -8,16 +8,16 @@ export class FocusedDirective implements AfterViewInit {
     private changeDetector: ChangeDetectorRef
   ) { }
 
-  @Input() 
+  @Input()
   focused: string | boolean;
 
   ngAfterViewInit(): void {
-    if (this.focused == '' || this.focused === true || this.focused === 'true') {
-      let run = () => {
+    if (this.focused === '' || this.focused === true || this.focused === 'true') {
+      const run = () => {
         this.renderer.invokeElementMethod(this.el.nativeElement, 'focus', []);
         this.changeDetector.detectChanges();
-      }
-      if (this.el.nativeElement.clientWidth == 0) {
+      };
+      if (this.el.nativeElement.clientWidth === 0) {
         // The field is still hidden
         setTimeout(run, 100);
       } else {

@@ -227,11 +227,11 @@ export class ErrorHandlerService {
       case ForbiddenErrorCode.INVALID_PASSWORD:
         return this.generalMessages.errorInvalid(passwordType);
       case ForbiddenErrorCode.EXPIRED_PASSWORD:
-        return this.generalMessages.errorPasswordExpired(passwordType)
+        return this.generalMessages.errorPasswordExpired(passwordType);
       case ForbiddenErrorCode.TEMPORARILY_BLOCKED:
-        return this.generalMessages.errorPasswordTemporarilyBlocked(passwordType)
+        return this.generalMessages.errorPasswordTemporarilyBlocked(passwordType);
       case ForbiddenErrorCode.INDEFINITELY_BLOCKED:
-        return this.generalMessages.errorPasswordIndefinitelyBlocked(passwordType)
+        return this.generalMessages.errorPasswordIndefinitelyBlocked(passwordType);
       default:
         return this.generalMessages.errorPermission();
     }

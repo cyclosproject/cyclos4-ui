@@ -6,17 +6,17 @@
       numbersOnly [required]="required" [focused]="focused"
       [placeholder]="placeholder" [disabled]="disabled"
       [(ngModel)]="integerPart" [ngModelOptions]="{standalone:true}" (blur)="onBlur($event)">
-    <span matPrefix *ngIf="prefix">{{prefix}}&nbsp;</span>
+    <span matPrefix *ngIf="prefix">{{ prefix + '&nbsp;' }}</span>
   </mat-form-field>
-  <div *ngIf="scale > 0" class="separator" fxFlex="2%">{{decimalSeparator}}</div>
-  <mat-form-field *ngIf="scale > 0" 
+  <div *ngIf="scale > 0" class="separator" fxFlex="2%">{{ decimalSeparator }}</div>
+  <mat-form-field *ngIf="scale > 0"
     fxFlex="28%" fxFlex.gt-sm="18%"
     floatPlaceholder="never">
     <input #decimalField matInput type="number" [size]="scale" [maxLength]="scale"
       numbersOnly style="text-align:right" [disabled]="disabled"
-      [(ngModel)]="decimalPart" [ngModelOptions]="{standalone:true}" 
+      [(ngModel)]="decimalPart" [ngModelOptions]="{standalone:true}"
       (focus)="decimalField.select()"
       (blur)="onBlur($event)">
-    <span matSuffix *ngIf="suffix">&nbsp;{{suffix}}</span>
+    <span matSuffix *ngIf="suffix">{{ '&nbsp;' + suffix }}</span>
   </mat-form-field>
 </div>

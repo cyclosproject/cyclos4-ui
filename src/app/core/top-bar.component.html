@@ -5,14 +5,14 @@
   <img class="logo" src="images/logo.png">
   <div class="title" fxFlex="grow">
     <span [fxHide.lt-md]="sidenav?.opened">
-      {{format.appTitle}}
+      {{ format.appTitle }}
     </span>
   </div>
   <a #personalMenuToggle *ngIf="user != null" href="#"
     class="personalMenuToggle" fxLayout="row" fxLayoutAlign="center center"
     (click)="personalMenuToggleClick($event)">
     <avatar [image]="user.image"></avatar>
-    <span fxHide.xs class="user">{{user.display}}</span>
+    <span fxHide.xs class="user">{{ user.display }}</span>
     <mat-icon fxHide.xs ngClass="mat-24">arrow_drop_down</mat-icon>
   </a>
 </layout-bar>

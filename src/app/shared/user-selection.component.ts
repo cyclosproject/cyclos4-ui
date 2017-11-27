@@ -18,7 +18,6 @@ export const PAYMENT_USER_VALUE_ACCESSOR: Provider = {
   multi: true
 };
 
-
 /**
  * Displays a keyword filter plus a result table with the users to choose.
  * Each table row has a radio button which can toggle the user

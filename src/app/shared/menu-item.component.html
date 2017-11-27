@@ -4,8 +4,8 @@
   [routerLinkActiveOptions]="{exact:true}"
   [ngClass]="{'active': active}"
   (click)="handleClick()">
-  <mat-icon *ngIf="entry.icon" [ngClass]="iconClass">{{entry.icon}}</mat-icon>
+  <mat-icon *ngIf="entry.icon" [ngClass]="iconClass">{{ entry.icon }}</mat-icon>
   <span class="text">
-    {{entry.label}}
+    {{ entry.label }}
   </span>
 </a>

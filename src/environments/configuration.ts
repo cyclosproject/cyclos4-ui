@@ -15,7 +15,7 @@ const SEARCH_PAGE_SIZES = [40, 100, 200];
 const QUICK_SEARCH_PAGE_SIZE = 10;
 
 // UI Data
-let DATA_FOR_UI: DataForUi = null;
+const DATA_FOR_UI: DataForUi = null;
 // It is possible to avoid a request to the server to fetch localization data.
 // To do so, uncomment the code below and set the correct data.
 /*
@@ -38,8 +38,8 @@ DATA_FOR_UI = {
 // will prevent additional requests from being performed on runtime, but will force
 // a single language for the application.
 
-let GENERAL_TRANSLATIONS = null;
-let BANKING_TRANSLATIONS = null;
+const GENERAL_TRANSLATIONS = null;
+const BANKING_TRANSLATIONS = null;
 // import * as GENERAL_TRANSLATIONS from '../translations/general.json';
 // import * as BANKING_TRANSLATIONS from '../translations/banking.json';
 

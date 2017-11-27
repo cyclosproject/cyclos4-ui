@@ -4,8 +4,8 @@
       <avatar [image]="user?.image" size="huge"></avatar>
     </div>
     <div class="details-container" fxLayout="column">
-      <div class="display">{{user?.display}}</div>
-      <div class="principal">{{auth?.principal}}</div>
+      <div class="display">{{ user?.display }}</div>
+      <div class="principal">{{ auth?.principal }}</div>
       <div class="menu" fxLayout="column">
         <menu-item *ngFor="let entry of menuEntries" [entry]="entry"
           (click)="hide()"></menu-item>

@@ -10,7 +10,7 @@ export function loadGeneralTranslation(
   translationLoaderService: TranslationLoaderService,
   generalMessages: GeneralMessages): Function {
   return () => translationLoaderService.load('general')
-    .then(keys => generalMessages.initialize(keys))
+    .then(keys => generalMessages.initialize(keys));
 }
 export const LOAD_GENERAL_TRANSLATION: Provider = {
   provide: APP_INITIALIZER,

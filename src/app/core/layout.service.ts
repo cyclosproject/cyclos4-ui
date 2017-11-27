@@ -30,8 +30,8 @@ export class LayoutService implements OnDestroy {
   }
 
   private updateStyles(): void {
-    let body = document.body;
-    for (let breakPoint of this.breakPoints.items) {
+    const body = document.body;
+    for (const breakPoint of this.breakPoints.items) {
       if (this.media.isActive(breakPoint.alias)) {
         body.classList.add(breakPoint.alias);
       } else {
@@ -55,7 +55,7 @@ export class LayoutService implements OnDestroy {
   get xl(): boolean {
     return this.media.isActive('xl');
   }
-  
+
   get ltsm(): boolean {
     return this.media.isActive('lt-sm');
   }

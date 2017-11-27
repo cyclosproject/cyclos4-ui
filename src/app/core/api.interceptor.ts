@@ -56,7 +56,7 @@ export class ApiInterceptor implements HttpInterceptor {
       this.nextAuth = null;
     } else {
       // Send the session token if any
-      let sessionToken = localStorage.getItem(SESSION_TOKEN);
+      const sessionToken = localStorage.getItem(SESSION_TOKEN);
       if (sessionToken) {
         headers[SESSION_TOKEN] = sessionToken;
       }

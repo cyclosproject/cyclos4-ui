@@ -6,6 +6,7 @@ export type TitleSize = 'regular' | 'small';
  * Represents a section with title and content
  */
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'section',
   templateUrl: 'section.component.html',
   styleUrls: ['section.component.scss'],
@@ -15,7 +16,7 @@ export class SectionComponent implements OnInit {
   constructor() { }
 
   @Input() margin: boolean;
-  
+
   @Input() title: string;
 
   @Input() titleSize: TitleSize = 'regular';

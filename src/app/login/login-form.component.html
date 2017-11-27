@@ -15,7 +15,7 @@
   ></password-input>
   <actions *ngIf="showActions" fxFlex="grow">
     <button [disabled]="!loginForm.valid" mat-raised-button color="accent" (click)="emit()">
-      {{generalMessages.loginAction()}}
+      {{ generalMessages.loginAction() }}
     </button>
   </actions>
 </form>

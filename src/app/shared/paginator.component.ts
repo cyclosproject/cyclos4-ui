@@ -8,12 +8,13 @@ import { ApiHelper } from 'app/shared/api-helper';
 
 type PageData = {
   page: number, pageSize: number
-}
+};
 
 /**
  * Adds either a message for an empty data table or a paginator
  */
 @Component({
+  // tslint:disable-next-line:component-selector
   selector: 'paginator',
   templateUrl: 'paginator.component.html',
   styleUrls: ['paginator.component.scss'],
@@ -23,7 +24,7 @@ export class PaginatorComponent<T> extends BaseComponent {
   constructor(injector: Injector) {
     super(injector);
   }
-  
+
   @Input()
   dataSource: TableDataSource<T>;
 
@@ -38,8 +39,8 @@ export class PaginatorComponent<T> extends BaseComponent {
   }
 
   previous() {
-    let pagination = this.pagination;
-    if (!pagination || pagination.page == 0) {
+    const pagination = this.pagination;
+    if (!pagination || pagination.page === 0) {
       return;
     }
     this.doUpdate({
@@ -49,7 +50,7 @@ export class PaginatorComponent<T> extends BaseComponent {
   }
 
   next() {
-    let pagination = this.pagination;
+    const pagination = this.pagination;
     if (pagination && pagination.hasTotalCount && pagination.page >= pagination.pageCount) {
       // We know by the total count that there shouldn't have any other page
       return;
@@ -59,9 +60,9 @@ export class PaginatorComponent<T> extends BaseComponent {
       pageSize: pagination.pageSize
     });
   }
-  
+
   first() {
-    let pagination = this.pagination;
+    const pagination = this.pagination;
     if (!pagination) {
       return;
     }
@@ -70,9 +71,9 @@ export class PaginatorComponent<T> extends BaseComponent {
       pageSize: pagination.pageSize
     });
   }
-  
+
   last() {
-    let pagination = this.pagination;
+    const pagination = this.pagination;
     if (!pagination || !pagination.hasTotalCount) {
       return;
     }
@@ -87,12 +88,12 @@ export class PaginatorComponent<T> extends BaseComponent {
   }
 
   get pageSize(): number {
-    let pagination = this.pagination;
+    const pagination = this.pagination;
     return pagination ? pagination.pageSize : ApiHelper.DEFAULT_PAGE_SIZE;
   }
 
   set pageSize(pageSize: number) {
-    let pagination = this.pagination;
+    const pagination = this.pagination;
     if (this.pagination) {
       this.doUpdate({
         page: this.pagination.page,

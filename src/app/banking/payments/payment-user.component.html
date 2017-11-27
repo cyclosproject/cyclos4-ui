@@ -1,6 +1,6 @@
 <ng-container [formGroup]="userForm">
   <div *ngIf="isSearch">
-    <div class="form-info">{{bankingMessages.paymentUserSearch()}}</div>
+    <div class="form-info">{{ bankingMessages.paymentUserSearch() }}</div>
     <user-selection
       [dataForSearch]="dataForSearch"
       formControlName="user"
@@ -8,16 +8,16 @@
       ></user-selection>
   </div>
   <div *ngIf="isContacts">
-    <div class="form-info">{{bankingMessages.paymentUserContacts()}}</div>
+    <div class="form-info">{{ bankingMessages.paymentUserContacts() }}</div>
     <mat-radio-group #contactsRadio fxLayout="column"
       formControlName="user">
       <mat-radio-button *ngFor="let contact of contacts" [value]="contact.id">
-        {{contact.display}}
+        {{ contact.display }}
       </mat-radio-button>
     </mat-radio-group>
   </div>
   <div *ngIf="isPrincipal">
-    <div class="form-info">{{bankingMessages.paymentUserPrincipal()}}</div>
+    <div class="form-info">{{ bankingMessages.paymentUserPrincipal() }}</div>
     <principal-input focused [type]="idMethod"
       formControlName="user">
     </principal-input>

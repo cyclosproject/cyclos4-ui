@@ -20,6 +20,8 @@ export class SidenavMenuComponent extends BaseComponent implements OnInit {
   @Input()
   sidenav: MatSidenav;
 
+  roots: RootMenuEntry[];
+
   ngOnInit() {
     super.ngOnInit();
     this.update();
@@ -29,8 +31,6 @@ export class SidenavMenuComponent extends BaseComponent implements OnInit {
     super.onDisplayChange();
     this.update();
   }
-
-  roots: RootMenuEntry[];
 
   private update() {
     this.roots = this.menuService.menu(MenuType.SIDENAV);

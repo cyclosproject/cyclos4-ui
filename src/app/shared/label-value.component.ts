@@ -27,7 +27,7 @@ export class LabelValueComponent implements OnInit {
   private _labelWidth: string;
   @Input()
   set labelWidth(val: string | number) {
-    this._labelWidth = typeof val == 'number' ? val + 'px' : val;
+    this._labelWidth = typeof val === 'number' ? val + 'px' : val;
   }
   get labelWidth(): string | number {
     return this._labelWidth || '160px';

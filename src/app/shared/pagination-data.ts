@@ -4,9 +4,12 @@ import { HttpResponse } from '@angular/common/http';
  * Pagination data, which can be constructed from an HTTP response
  */
 export class PaginationData {
+  hasTotalCount: boolean;
+  firstItem: number;
+  lastItem: number;
 
   static from(response: HttpResponse<any>): PaginationData {
-    let pageItems = response.body || [];
+    const pageItems = response.body || [];
     return new PaginationData(
       parseInt(response.headers.get('X-Current-Page'), 10),
       parseInt(response.headers.get('X-Page-Size'), 10),
@@ -29,8 +32,4 @@ export class PaginationData {
     this.firstItem = pageSize * page + 1;
     this.lastItem = this.firstItem + currentPageItems - 1;
   }
-
-  hasTotalCount: boolean;
-  firstItem: number;
-  lastItem: number;
 }

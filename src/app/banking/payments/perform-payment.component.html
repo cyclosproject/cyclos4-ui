@@ -8,7 +8,7 @@
         <actions fxLayout="column-reverse" fxLayout.gt-xs="row">
           <button fxFlex.gt-xs="nogrow" mat-raised-button color="accent"
             [disabled]="!kindForm.valid" (click)="nextFromKind()">
-            {{generalMessages.next()}}
+            {{ generalMessages.next() }}
           </button>
         </actions>
       </td-step>
@@ -22,11 +22,11 @@
             [contacts]="contacts | async"></payment-user>
           <actions fxLayout="column-reverse" fxLayout.gt-xs="row">
             <button mat-raised-button (click)="previousFromUser()">
-              {{generalMessages.previous()}}
+              {{ generalMessages.previous() }}
             </button>
             <button mat-raised-button color="accent"
             [disabled]="!userForm.valid" (click)="nextFromUser()">
-            {{generalMessages.next()}}
+            {{ generalMessages.next() }}
           </button>
         </actions>
       </ng-container>
@@ -39,11 +39,11 @@
             [paymentTypeData]="paymentTypeData"></payment-fields>
           <actions fxLayout="column-reverse" fxLayout.gt-xs="row">
             <button mat-raised-button (click)="previousFromFields()">
-              {{generalMessages.previous()}}
+              {{ generalMessages.previous() }}
             </button>
             <button mat-raised-button color="accent"
               [disabled]="!fieldsForm.valid" (click)="nextFromFields()">
-              {{generalMessages.next()}}
+              {{ generalMessages.next() }}
             </button>
           </actions>
         </ng-container>
@@ -54,12 +54,12 @@
             [preview]="preview | async"></payment-preview>
           <actions fxLayout="column-reverse" fxLayout.gt-xs="row">
             <button mat-raised-button (click)="previousFromPreview()">
-              {{generalMessages.previous()}}
+              {{ generalMessages.previous() }}
             </button>
             <button mat-raised-button color="accent"
               [disabled]="!fieldsForm.valid || !previewComponent.canConfirm"
               (click)="nextFromPreview()">
-              {{generalMessages.confirm()}}
+              {{ generalMessages.confirm() }}
             </button>
           </actions>
         </ng-container>
@@ -70,7 +70,7 @@
           <actions fxLayout="column-reverse" fxLayout.gt-xs="row">
             <button mat-raised-button color="accent"
               (click)="newPayment()">
-              {{bankingMessages.paymentNewPayment()}}
+              {{ bankingMessages.paymentNewPayment() }}
             </button>
           </actions>
         </ng-container>

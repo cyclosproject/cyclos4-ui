@@ -1,22 +1,22 @@
 <div class="no-data" *ngIf="dataSource.empty | async">
-  {{generalMessages.searchNoResults()}}
+  {{ generalMessages.searchNoResults() }}
 </div>
 <div class="paginator" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start center"
   *ngIf="!(dataSource.empty | async) && (dataSource.pagination | async)">
   <div fxLayout="row" fxFlex.gt-xs="grow">
     <div class="page-label" fxFlex="grow">
-      {{generalMessages.paginationPageSize()}}
+      {{ generalMessages.paginationPageSize() }}
     </div>
     <mat-select [(ngModel)]="pageSize" [ngModelOptions]="{standalone: true}">
-        <mat-option *ngFor="let size of pageSizes" [value]="size">{{size}}</mat-option>
+        <mat-option *ngFor="let size of pageSizes" [value]="size">{{ size }}</mat-option>
     </mat-select>
   </div>
   <div fxLayout="row" class="items" [matTooltip]="generalMessages.paginationCurrent(pagination.page + 1)">
     <ng-container *ngIf="pagination.hasTotalCount">
-      {{generalMessages.paginationShowingTotal(pagination.firstItem, pagination.lastItem, pagination.totalCount)}}
+      {{ generalMessages.paginationShowingTotal(pagination.firstItem, pagination.lastItem, pagination.totalCount) }}
     </ng-container>
     <ng-container *ngIf="!pagination.hasTotalCount">
-      {{generalMessages.paginationShowingNoTotal(pagination.firstItem, pagination.lastItem)}}
+      {{ generalMessages.paginationShowingNoTotal(pagination.firstItem, pagination.lastItem) }}
     </ng-container>
   </div>
   <div fxLayout="row">

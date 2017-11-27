@@ -8,9 +8,9 @@ export module PaymentStep {
   export const USER: PaymentStep = 'user';
   export const TYPE: PaymentStep = 'type';
   export const FIELDS: PaymentStep = 'fields';
-  export const PREVIEW: PaymentStep = 'preview';  
+  export const PREVIEW: PaymentStep = 'preview';
   export const DONE: PaymentStep = 'done';
-  
+
   export function values(): PaymentStep[] {
     return [KIND, USER, TYPE, FIELDS, PREVIEW, DONE];
   }

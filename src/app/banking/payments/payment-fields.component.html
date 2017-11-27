@@ -1,11 +1,11 @@
 <div fxLayout="column" [formGroup]="fieldsForm">
-  <div class="form-info">{{bankingMessages.paymentFieldsMessage()}}</div>
+  <div class="form-info">{{ bankingMessages.paymentFieldsMessage() }}</div>
 
   <mat-form-field *ngIf="(paymentTypes || []).length > 1">
     <mat-select formControlName="type" required
       [placeholder]="bankingMessages.transactionType()">
       <mat-option *ngFor="let tt of paymentTypes" [value]="tt.id">
-        {{tt.name}}
+        {{ tt.name }}
       </mat-option>
     </mat-select>
   </mat-form-field>

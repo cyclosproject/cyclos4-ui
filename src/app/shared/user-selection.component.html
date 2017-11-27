@@ -16,9 +16,9 @@
   </ng-container>
   
   <ng-container matColumnDef="user">
-    <mat-header-cell *matHeaderCellDef>{{generalMessages.user()}}</mat-header-cell>
+    <mat-header-cell *matHeaderCellDef>{{ generalMessages.user() }}</mat-header-cell>
     <mat-cell *matCellDef="let row">
-      <a href="#" class="plain" (click)="$event.preventDefault();value = row.id">{{row.display}}</a>
+      <a href="#" class="plain" (click)="$event.preventDefault();value = row.id">{{ row.display }}</a>
     </mat-cell>
   </ng-container>
 
@@ -27,7 +27,7 @@
 </mat-table>
 
 <ng-template #noKeywords>
-  {{generalMessages.searchUserNoKeywords()}}
+  {{ generalMessages.searchUserNoKeywords() }}
 </ng-template>
 
 </div>
