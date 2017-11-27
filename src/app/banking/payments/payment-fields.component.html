@@ -28,7 +28,7 @@
 
   <mat-form-field fxFlex="grow">
     <textarea matInput matTextareaAutosize
-      [placeholder]="bankingMessages.transactionDescription()"      
+      [placeholder]="bankingMessages.transactionDescription()"
       formControlName="description"
       [required]="(paymentTypeData | async).requiresDescription"></textarea>
   </mat-form-field>

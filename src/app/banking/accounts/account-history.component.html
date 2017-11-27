@@ -10,7 +10,7 @@
         </div>
         <div *ngIf="!last" class="indicator-separator"></div>
       </ng-container>
-    </div>    
+    </div>
   </page-header>
   <page-filters>
     <form #filtersForm="ngForm" *ngIf="query != null" fxLayout="column">
@@ -80,7 +80,7 @@
         <mat-header-cell *matHeaderCellDef style="text-align: end">{{ bankingMessages.transactionAmount() }}</mat-header-cell>
         <mat-cell *matCellDef="let row" style="text-align: end">{{ row.amount | currency:currency }}</mat-cell>
       </ng-container>
-      
+
       <mat-header-row *matHeaderRowDef="layout.xs ? [] : displayedColumns"></mat-header-row>
       <mat-row *matRowDef="let row; columns: displayedColumns;" class.xs="dynamic"></mat-row>
     </mat-table>

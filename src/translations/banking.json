@@ -22,7 +22,7 @@
   "transaction.description": "Description",
 
   "payment.title": "Perform payment",
-  
+
   "payment.kind": "Pay to",
   "payment.kind.message": "Please, select which payment to perform",
   "payment.kind.autocomplete": "Pay to a user using a search",
@@ -39,11 +39,11 @@
   "payment.error.noContacts": "Your contact list is empty",
 
   "payment.error.invalidUser": "The user you have informed is invalid",
-  
+
   "payment.fields": "Payment details",
   "payment.fields.message": "Please, fill in the payment fields below",
   "payment.error.noPaymentType": "There is no possible payment type for this payment",
-  
+
   "payment.preview": "Confirmation",
   "payment.preview.message": "Please, review and confirm the payment",
   "payment.preview.auth.message": "Please, review and confirm the payment. Once confirmed, the payment will be pending further authorization.",

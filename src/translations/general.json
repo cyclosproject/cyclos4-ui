@@ -3,11 +3,11 @@
   "login.principal": "User",
   "login.password": "Password",
   "login.action": "Login",
-  
+
   "login.register.title": "User registration",
   "login.register.text": "If you don't have an account yet, you can register by clicking the button below.",
   "login.register.action": "Register",
-  
+
   "submit": "Submit",
   "confirm": "Confirm",
   "cancel": "Cancel",
@@ -22,7 +22,7 @@
   "period": "Period",
   "period.begin": "Begin date",
   "period.end": "End date",
-  
+
   "months.long": "January,February,March,April,May,June,July,August,September,October,November,December",
   "months.short": "Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec",
   "months.narrow": "J,F,M,A,M,J,J,A,S,O,N,D",
@@ -63,7 +63,7 @@
   "menu.personal.profile": "My profile",
   "menu.personal.passwords": "Passwords",
   "menu.personal.logout": "Logout",
-  
+
   "password.otp.medium.sms": "SMS",
   "password.otp.medium.email": "E-mail",
   "password.otp.sent.email": "An e-mail with the password was sent to {email}",
@@ -74,7 +74,7 @@
   "password.confirmation.otp": "Please, request a password below in order to confirm.",
   "password.confirmation.otp.existing": "In order to confirm, please, supply your {name}.\nYou can use the previously sent password or request for a new one.",
   "password.confirmation.otp.noMediums": "In order to confirm you need a {name}, but you cannot request a new password.\nPlease, contact the administration.",
-  
+
   "error.badRequest": "Bad request parameters",
   "error.entityNotFoundKey": "The requested data could not be found: {type} with key {key}",
   "error.entityNotFound": "The requested data could not be found: {type}",

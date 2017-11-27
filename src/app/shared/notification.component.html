@@ -5,7 +5,7 @@
     <mat-icon fxFlex="nogrow" [color]="iconColor" ngClass="mat-36">{{ notification.type }}</mat-icon>
     <div fxFlex="grow" class="notificationMessage" [innerHTML]="notification.message | trust"></div>
   </div>
-  
+
   <button *ngIf="allowClose" fxFlex="nogrow" fxFlexAlign="end" mat-raised-button color="accent" (click)="close()">
     {{ generalMessages.close() }}
   </button>

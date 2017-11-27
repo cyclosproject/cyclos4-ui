@@ -5,13 +5,13 @@
 </label-value>
 <label-value *ngIf="preview.fromAccount.number" [label]="bankingMessages.transactionFromAccount()">
   {{ preview.fromAccount.number }}
-</label-value>  
+</label-value>
 <label-value [label]="bankingMessages.transactionTo()">
   {{ to }}
 </label-value>
 <label-value *ngIf="preview.toAccount.number" [label]="bankingMessages.transactionToAccount()">
   {{ preview.toAccount.number }}
-</label-value>  
+</label-value>
 <label-value *ngIf="hasAmount" [label]="bankingMessages.transactionAmount()">
   {{ preview.totalAmount | currency:preview.currency }}
 </label-value>

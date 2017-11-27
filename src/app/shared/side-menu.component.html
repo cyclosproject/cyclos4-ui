@@ -1,6 +1,6 @@
 <div class="container" fxLayout="column">
   <ng-container *ngIf="banking">
-    <a mat-button 
+    <a mat-button
       class="account" *ngFor="let account of this.accounts"
       [routerLink]="'/banking/account/' + ApiHelper.internalNameOrId(account.type)"
       routerLinkActive="active">
