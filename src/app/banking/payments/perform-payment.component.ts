@@ -14,6 +14,8 @@ import { PaymentKindAndIdMethod } from 'app/banking/payments/payment-kind-and-id
 import { Observable } from 'rxjs/Observable';
 import { TdStepComponent } from '@covalent/core';
 import { cloneDeep } from "lodash";
+import { ApiInterceptor } from 'app/core/api.interceptor';
+import { StepState } from '@covalent/core/steps/step.component';
 
 /**
  * Component used to choose which kind of payment will be performed
@@ -28,7 +30,7 @@ export class PerformPaymentComponent extends BaseBankingComponent {
   menu = Menu.PERFORM_PAYMENT;
 
   // Data fetched initially
-  initialData: BehaviorSubject<DataForTransaction> = new BehaviorSubject(null);
+  initialData = new BehaviorSubject<DataForTransaction>(null);
 
   // Data fetched when the payment destination is known
   paymentData = new BehaviorSubject<DataForTransaction>(null);
@@ -41,7 +43,8 @@ export class PerformPaymentComponent extends BaseBankingComponent {
     private formBuilder: FormBuilder,
     private paymentsService: PaymentsService,
     private usersService: UsersService,
-    private contactsService: ContactsService) {
+    private contactsService: ContactsService,
+    private apiInterceptor: ApiInterceptor) {
     super(injector);
 
     // Form for payment kind
@@ -267,6 +270,7 @@ export class PerformPaymentComponent extends BaseBankingComponent {
   paymentTypeData = new BehaviorSubject<TransactionTypeData>(null);
 
   private fetchPaymentData() {
+    this.apiInterceptor.ignoreNextError();
     this.paymentsService.dataForPerformPayment({
       owner: ApiHelper.SELF,
       to: this.to,
@@ -287,6 +291,14 @@ export class PerformPaymentComponent extends BaseBankingComponent {
           this.fieldsForm.patchValue({ type: data.paymentTypes[0].id })
           this.prepareFieldsForm(data.paymentTypeData);
           this.stepperControl.activate(this.fieldsStep);
+        }
+      }, response => {
+        let kid = this.kindAndIdMethod.value;
+        let kind = kid.kind;    
+        if (kind == PaymentKind.USER && response.status == ErrorStatus.NOT_FOUND) {
+          this.notification.error(this.bankingMessages.paymentErrorInvalidUser());
+        } else {
+          this.errorHandler.handleHttpError(response);
         }
       });
   }
@@ -410,7 +422,7 @@ export class PerformPaymentComponent extends BaseBankingComponent {
     })
       .subscribe(performed => {
         this.performed.next(performed);
-        this.stepperControl.activate(this.doneStep);
+        this.stepperControl.complete();
       }, error => {
         if (error.status == ErrorStatus.FORBIDDEN
           && this.preview.value.confirmationPasswordInput) {

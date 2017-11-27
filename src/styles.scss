@@ -62,6 +62,14 @@ mat-radio-group.horizontal mat-radio-button + mat-radio-button {
 .form-info {
   margin-bottom: 12px;
 }
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+input[type=number] {
+  -moz-appearance: textfield;
+}
 
 // Tabs
 .mat-tab-group.mat-primary .mat-tab-label:focus,

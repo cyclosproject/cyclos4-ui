@@ -42,7 +42,7 @@ export class PrincipalInputComponent implements OnInit, ControlValueAccessor, Va
   public type: PrincipalTypeInput;
 
   @Input()
-  public focused: boolean;
+  public focused: boolean | string;
 
   public isCustomField: boolean;
 

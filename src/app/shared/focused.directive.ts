@@ -13,8 +13,17 @@ export class FocusedDirective implements AfterViewInit {
 
   ngAfterViewInit(): void {
     if (this.focused == '' || this.focused === true || this.focused === 'true') {
-      this.renderer.invokeElementMethod(this.el.nativeElement, 'focus', []);
-      this.changeDetector.detectChanges();
+      let run = () => {
+        this.renderer.invokeElementMethod(this.el.nativeElement, 'focus', []);
+        this.changeDetector.detectChanges();
+      }
+      if (this.el.nativeElement.clientWidth == 0) {
+        // The field is still hidden
+        setTimeout(run, 100);
+      } else {
+        // The field is visible - invoke directly
+        run();
+      }
     }
   }
 }

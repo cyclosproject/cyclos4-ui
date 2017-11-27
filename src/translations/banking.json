@@ -37,6 +37,8 @@
   "payment.user.contacts": "Please, select the user from your contact list",
   "payment.user.principal": "Please, enter the user data below",
   "payment.error.noContacts": "Your contact list is empty",
+
+  "payment.error.invalidUser": "The user you have informed is invalid",
   
   "payment.fields": "Payment details",
   "payment.fields.message": "Please, fill in the payment fields below",

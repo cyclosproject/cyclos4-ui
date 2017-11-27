@@ -23,14 +23,13 @@ export class DecimalFieldComponent implements OnInit, ControlValueAccessor {
     private formatService: FormatService
   ) { }
 
-  @Input() focused: boolean;
+  @Input() focused: boolean | string;
   @Input() prefix: string;
   @Input() suffix: string;
   @Input() required: boolean;
   @Input() placeholder: string;
   @Input() disabled: boolean;
   decimalSeparator: string;
-
 
   private changeCallback = (_: any) => { };
   private touchedCallback = () => { };

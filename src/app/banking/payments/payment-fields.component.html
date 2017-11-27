@@ -10,7 +10,7 @@
     </mat-select>
   </mat-form-field>
 
-  <decimal-field fxFlex="nogrow" [focused]="true" required
+  <decimal-field fxFlex="nogrow" focused required
     [placeholder]="bankingMessages.transactionAmount()"
     [prefix]="(paymentTypeData | async).currency.prefix"
     [suffix]="(paymentTypeData | async).currency.suffix"

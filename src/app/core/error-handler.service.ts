@@ -79,16 +79,16 @@ export class ErrorHandlerService {
    */
   handleHttpError(err: HttpErrorResponse) {
     var message: string = null;
-    let error = null;
     if (err.error instanceof Error) {
       // Client-side error
       console.error('Client-side request error');
       console.error(err.error);
     } else {
+      let error;
       try {
         error = JSON.parse(err.message);
       } catch (e) {
-        console.error('The server has sent an invalid JSON response: ' + err.message);
+        error = null;
       }
       switch (err.status) {
         case ErrorStatus.INVALID_REQUEST:
@@ -177,7 +177,7 @@ export class ErrorHandlerService {
    * @param error The error
    */
   public unauthorizedErrorMessage(error: UnauthorizedError): string {
-    if (error == null) return null;
+    error = error || {} as UnauthorizedError;
     switch (error.code) {
       case UnauthorizedErrorCode.LOGIN:
         switch (error.passwordStatus) {
@@ -208,7 +208,7 @@ export class ErrorHandlerService {
    * @param error The error
    */
   public forbiddenErrorMessage(error: ForbiddenError): string {
-    if (error == null) return null;
+    error = error || {} as ForbiddenError;
     let passwordType = (error.passwordType || {}).name;
     switch (error.code) {
       case ForbiddenErrorCode.ILLEGAL_ACTION:
@@ -231,7 +231,7 @@ export class ErrorHandlerService {
    * @param error The error
    */
   public paymentErrorMessage(error: PaymentError): string {
-    if (error == null) return null;
+    error = error || {} as PaymentError;
     let count = () => this.formatService.formatAsNumber(error.maxPayments, 0);
     let amount = () => this.formatService.formatAsCurrency(error.currency, error.maxAmount);
     switch (error.code) {

@@ -88,7 +88,20 @@ export class LinearStepperControlComponent implements OnInit, OnDestroy {
       disabled.delete(step);
       this.disabledSteps.next(disabled);
     }
-  }  
+  }
+
+  /**
+   * Activates the last step and marks it as complete
+   */
+  complete() {
+    let steps = this.stepper.steps; 
+    if (steps.length == 0) {
+      return;
+    }
+    let last = steps[steps.length - 1];
+    this.enable(last)
+    last.state = StepState.Complete;
+  }
 
   private doActivate(step: TdStepComponent) {
     // Disable all steps greater than the current step
@@ -108,6 +121,7 @@ export class LinearStepperControlComponent implements OnInit, OnDestroy {
         }
       }
     }
+    step.state = StepState.None;
     step.open();
   }
 
