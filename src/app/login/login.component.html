@@ -4,7 +4,7 @@
     <mat-card-title>{{ generalMessages.loginTitle() }}</mat-card-title>
     <mat-card-content>
       <login-form *ngIf="dataForLogin | async" [loginForm]="loginForm" [dataForLogin]="dataForLogin.value" (submit)="doLogin()"
-        [showActions]="!canRegister"></login-form>
+        [showActions]="false"></login-form>
     </mat-card-content>
     <mat-card-actions>
       <button mat-raised-button color="accent" [disabled]="!loginForm.valid" (click)="doLogin()">
