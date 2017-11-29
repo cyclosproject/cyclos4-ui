@@ -47,6 +47,8 @@ export class ViewTransferDetailsComponent extends BaseBankingComponent {
   get displayedColumns(): string[] {
     if (this.layout.xs) {
       return ['aggregated', 'amount'];
+    } else if (this.transfer.currency.transactionNumberPattern) {
+      return ['date', 'transactionNumber', 'from', 'to', 'amount'];
     } else {
       return ['date', 'from', 'to', 'amount'];
     }

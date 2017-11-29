@@ -1,3 +1,6 @@
+<label-value *ngIf="transfer.transactionNumber" [label]="bankingMessages.transactionNumber()">
+  {{ transfer.transactionNumber }}
+</label-value>  
 <label-value [label]="bankingMessages.transactionDate()">
   {{ transfer.date | dateTime }}
 </label-value>
@@ -34,6 +37,9 @@
 
 <ng-container *ngIf="transfer.parent">
   <section margin titleSize="small" [title]="bankingMessages.transferParentTitle()">
+    <label-value *ngIf="transfer.parent.transactionNumber" [label]="bankingMessages.transactionNumber()">
+      {{ transfer.parent.transactionNumber }}
+    </label-value>  
     <label-value [label]="bankingMessages.transactionDate()">
       {{ transfer.parent.date | dateTime }}
     </label-value>
@@ -76,6 +82,7 @@
               {{ bankingMessages.transactionFromTo(from(row), to(row)) }}
             </div>
             <div class="cell-date">{{ row.date | dateTime }}</div>
+            <div *ngIf="row.transactionNumber" class="cell-date">{{ row.transactionNumber }}</div>
             <div *ngIf="row.description" class="cell-small">{{ row.description }}</div>
           </a>
         </mat-cell>
@@ -87,6 +94,16 @@
         <mat-cell *matCellDef="let row">
           <a [routerLink]="path(row)">
             {{ row.date | date }}
+          </a>
+        </mat-cell>
+      </ng-container>
+
+      <!-- Transaction number column -->
+      <ng-container matColumnDef="transactionNumber">
+        <mat-header-cell *matHeaderCellDef>{{ bankingMessages.transactionNumber() }}</mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <a [routerLink]="path(row)">
+            {{ row.transactionNumber }}
           </a>
         </mat-cell>
       </ng-container>

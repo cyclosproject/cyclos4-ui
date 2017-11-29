@@ -94,17 +94,19 @@ export class ApiHelper {
   }
 
   /**
-   * If the given transfer, transaction or account history result has a transaction number,
-   * returns it, taking care * of escaping it if it is fully numeric.
+   * Given an object representing a transfer / transaction, if it has a transaction number,
+   * returns it, taking care of escaping the value if it is fully numeric.
    * Otherwise, returns the id.
    * @param trans Either the transfer or transaction
    */
   static transactionNumberOrId(trans: Transfer | Transaction | AccountHistoryResult): string {
-    const tx = trans.transactionNumber;
-    if (tx != null && tx !== '') {
-      if (/^\d+$/.test(tx)) {
+    const number = trans.transactionNumber;
+    if (number != null && number !== '') {
+      if (/^\d+$/.test(number)) {
         // The transaction number is fully numeric. Escape it to avoid clashing with id
-        return `'${tx}`;
+        return `'${number}`;
+      } else {
+        return number;
       }
     }
     return trans.id;

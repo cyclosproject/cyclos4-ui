@@ -131,7 +131,12 @@ export class AccountHistoryComponent extends BaseBankingComponent implements Aft
     if (this.layout.xs) {
       return ['avatar', 'aggregated', 'amount'];
     } else {
-      return ['avatar', 'date', 'subject', 'amount'];
+      const data = this.data.value;
+      if (data && data.account.currency.transactionNumberPattern) {
+        return ['avatar', 'date', 'transactionNumber', 'subject', 'amount'];
+      } else {
+        return ['avatar', 'date', 'subject', 'amount'];
+      }
     }
   }
 
