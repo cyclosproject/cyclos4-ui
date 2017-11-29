@@ -23,6 +23,8 @@ export class LoginService {
 
   public redirectUrl: string;
 
+  private _authInitialized = false;
+
   constructor(
     private apiInterceptor: ApiInterceptor,
     private authService: AuthService,
@@ -57,7 +59,15 @@ export class LoginService {
    */
   set auth(auth: Auth) {
     this._auth = auth;
+    this._authInitialized = true;
     this.onAuth.next(auth);
+  }
+
+  /**
+   * Returns whether the authorization has already been initialized
+   */
+  get authInitialized(): boolean {
+    return this._authInitialized;
   }
 
   /**
@@ -92,17 +102,16 @@ export class LoginService {
   /**
    * Performs the logout
    */
-  logout(): Observable<void> {
+  logout(): void {
     this.redirectUrl = null;
     if (this._auth == null) {
       // No one logged in
-      return Observable.create();
+      return;
     }
-    const observable = this.authService.logout();
-    observable.subscribe(() => {
-      this.clear();
-      this.router.navigateByUrl('/login');
-    });
-    return observable;
+    this.authService.logout()
+      .subscribe(() => {
+        this.clear();
+        this.router.navigateByUrl('/login');
+      });
   }
 }

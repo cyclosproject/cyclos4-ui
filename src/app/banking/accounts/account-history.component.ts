@@ -41,13 +41,10 @@ const STATUS_FIELDS = { fields: ['status'] };
 export class AccountHistoryComponent extends BaseBankingComponent implements AfterViewChecked {
   constructor(
     injector: Injector,
-    private accountsService: AccountsService,
-    private router: Router
+    private accountsService: AccountsService
   ) {
     super(injector);
   }
-
-  menu = Menu.ACCOUNT;
 
   data = new BehaviorSubject<DataForAccountHistory>(null);
 
@@ -298,5 +295,13 @@ export class AccountHistoryComponent extends BaseBankingComponent implements Aft
         return this.generalMessages.system();
       }
     }
+  }
+
+  /**
+   * Returns the route components for the given row
+   * @param row The row
+   */
+  path(row: AccountHistoryResult): string[] {
+    return ['/banking', 'transfer', ApiHelper.transactionNumberOrId(row)];
   }
 }

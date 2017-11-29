@@ -74,15 +74,18 @@ export class DecimalFieldComponent implements OnInit, ControlValueAccessor {
   }
 
   @Input()
-  get integerPart(): string {
+  get integerPart(): string | number {
     return this._integerPart;
   }
-  set integerPart(integerPart: string) {
+  set integerPart(integerPart: string | number) {
     if (this._integerPart === integerPart) {
       // No changes
       return;
     }
-    if (integerPart.match(/^[0-9]*$/)) {
+    if (typeof integerPart === 'number') {
+      this._integerPart = String(integerPart);
+    } else if (typeof integerPart === 'string'
+      && integerPart.match(/^[0-9]*$/)) {
       this._integerPart = integerPart;
     } else {
       this._integerPart = null;
@@ -91,15 +94,22 @@ export class DecimalFieldComponent implements OnInit, ControlValueAccessor {
   }
 
   @Input() @Output()
-  get decimalPart(): string {
+  get decimalPart(): string | number {
     return this._decimalPart;
   }
-  set decimalPart(decimalPart: string) {
+  set decimalPart(decimalPart: string | number) {
     if (this._decimalPart === decimalPart) {
       // No changes
       return;
     }
-    this._decimalPart = decimalPart;
+    if (typeof decimalPart === 'number') {
+      this._decimalPart = String(decimalPart);
+    } else if (typeof decimalPart === 'string'
+      && decimalPart.match(/^[0-9]*$/)) {
+      this._decimalPart = decimalPart;
+    } else {
+      this._decimalPart = null;
+    }
     this.emitValue();
   }
 

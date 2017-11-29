@@ -7,7 +7,7 @@ import { LoginService } from 'app/core/login.service';
 import { NotificationService } from 'app/core/notification.service';
 import { ObservableMedia } from '@angular/flex-layout';
 import { Subscription } from 'rxjs/Subscription';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 /**
  * Base class to meant to be inherited by other components.
@@ -22,6 +22,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
   errorHandler: ErrorHandlerService;
   login: LoginService;
   notification: NotificationService;
+  router: Router;
   route: ActivatedRoute;
 
   protected changeDetector: ChangeDetectorRef;
@@ -37,6 +38,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
     this.login = injector.get(LoginService);
     this.notification = injector.get(NotificationService);
     this.layout = injector.get(LayoutService);
+    this.router = injector.get(Router);
     this.route = injector.get(ActivatedRoute);
 
     this.changeDetector = injector.get(ChangeDetectorRef);
@@ -51,7 +53,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
       this.onDisplayChange();
     }));
     this.subscriptions.push(this.route.data.subscribe(data => {
-      if (data.menu && this.layout.menu !== data.menu) {
+      if (data.menu && this.layout.menu.value !== data.menu) {
         this.layout.menu.next(data.menu);
       }
     }));

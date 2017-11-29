@@ -25,12 +25,16 @@ a.account .balance {
 }
 :host /deep/ a.account .mat-button-wrapper {
   align-items: center;
+  flex: 1;
 }
 a.account, :host /deep/ menu-item a {
   border-top: 1px solid mat-color($foreground, divider);
   text-align: left;
-  padding: 10px 24px;
   width: 100%;
+  height: 58px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 :host /deep/ menu-item a.active, a.active {
   color: mat-contrast($primary, $side-menu-hue);

@@ -5,10 +5,14 @@ import { LoginService } from 'app/core/login.service';
 import { NotificationService } from 'app/core/notification.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { ApiInterceptor } from 'app/core/api.interceptor';
+import { tap } from 'rxjs/operators';
 
 // Loads the logged user, if any
 // Use the injector to prevent a cyclic dependency
 export function loadUser(injector: Injector): Function {
+  const init = auth => {
+    injector.get(LoginService).auth = auth;
+  };
   return () => {
     const apiInterceptor = injector.get(ApiInterceptor);
     if (apiInterceptor.sessionToken) {
@@ -19,20 +23,21 @@ export function loadUser(injector: Injector): Function {
       interceptor.ignoreNextError();
       return injector.get(AuthService)
         .getCurrentAuth(ApiHelper.excludedAuthFields)
-        .subscribe(auth => {
-          if (auth.user) {
+        .toPromise()
+        .then(auth => {
             // Store the authentication on the login service.
-            injector.get(LoginService).auth = auth;
-          } else {
-            // No user?
+            // Even if null: the authInitialized flag will be set.
+            init(auth);
+          })
+        .catch(error => {
+            // The current session prefix is invalid. Clear it.
             apiInterceptor.sessionToken = null;
-          }
-        }, error => {
-          // The current session prefix is invalid. Clear it.
-          apiInterceptor.sessionToken = null;
-        });
+            // Still initialize the auth to null, so it will be known there's really no one logged-in.
+            init(null);
+          });
     } else {
-      return null;
+      // Same comment as above
+      init(null);
     }
   };
 }

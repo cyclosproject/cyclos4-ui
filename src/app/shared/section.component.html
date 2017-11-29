@@ -1,6 +1,8 @@
 <div *ngIf="title"
   [class]="'sectionTitle ' + titleSize"
-  [ngClass]="{'margin': margin}">{{ title }}</div>
+  [ngClass]="{'margin': margin === true || margin === 'true' || margin === ''}">
+  {{ title }}
+</div>
 <div class="sectionContent">
   <ng-content></ng-content>
 </div>

@@ -9,11 +9,11 @@
 .lt-sm :host {
   flex-direction: column-reverse;
 }
-.gt-xs :host /deep/ button {
+.gt-xs :host /deep/ button, .gt-xs :host /deep/ a {
   flex: 0;
   margin-right: 22px;
 }
-.lt-sm :host /deep/ button {
+.lt-sm :host /deep/ button, .lt-sm :host /deep/ a {
   flex: 1 1 100%;
   margin-bottom: 12px;
 }

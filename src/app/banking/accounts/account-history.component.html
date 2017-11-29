@@ -1,4 +1,4 @@
-<page-layout [menu]="menu" [tightContent]="true"
+<page-layout [tightContent]="true"
   [loaded]="loaded" [hasFilters]="true"
   [hasHeader]="(status | async).length > 1">
   <page-header [title]="title">
@@ -57,28 +57,42 @@
       <ng-container matColumnDef="aggregated">
         <mat-header-cell *matHeaderCellDef></mat-header-cell>
         <mat-cell *matCellDef="let row">
-          <div class="cell-main">{{ subjectName(row) }}</div>
-          <div class="cell-date">{{ row.date | dateTime }}</div>
-          <div *ngIf="row.description" class="cell-small">{{ row.description }}</div>
+          <a [routerLink]="path(row)">
+            <div class="cell-main">{{ subjectName(row) }}</div>
+            <div class="cell-date">{{ row.date | dateTime }}</div>
+            <div *ngIf="row.description" class="cell-small">{{ row.description }}</div>
+          </a>
         </mat-cell>
       </ng-container>
 
       <!-- Date column -->
       <ng-container matColumnDef="date">
         <mat-header-cell *matHeaderCellDef>{{ bankingMessages.transactionDate() }}</mat-header-cell>
-        <mat-cell *matCellDef="let row">{{ row.date | date }}</mat-cell>
+        <mat-cell *matCellDef="let row">
+          <a [routerLink]="path(row)">
+            {{ row.date | date }}
+          </a>
+        </mat-cell>
       </ng-container>
 
       <!-- Subject column -->
       <ng-container matColumnDef="subject">
         <mat-header-cell *matHeaderCellDef>{{ bankingMessages.transactionSubject() }}</mat-header-cell>
-        <mat-cell *matCellDef="let row">{{ subjectName(row) }}</mat-cell>
+        <mat-cell *matCellDef="let row">
+          <a [routerLink]="path(row)">
+            {{ subjectName(row) }}
+          </a>
+        </mat-cell>
       </ng-container>
 
       <!-- Amount column -->
       <ng-container matColumnDef="amount">
         <mat-header-cell *matHeaderCellDef style="text-align: end">{{ bankingMessages.transactionAmount() }}</mat-header-cell>
-        <mat-cell *matCellDef="let row" style="text-align: end">{{ row.amount | currency:currency }}</mat-cell>
+        <mat-cell *matCellDef="let row" style="text-align: end">
+          <a [routerLink]="path(row)">
+            {{ row.amount | currency:currency }}
+          </a>
+        </mat-cell>
       </ng-container>
 
       <mat-header-row *matHeaderRowDef="layout.xs ? [] : displayedColumns"></mat-header-row>

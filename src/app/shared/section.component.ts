@@ -15,7 +15,7 @@ export type TitleSize = 'regular' | 'small';
 export class SectionComponent implements OnInit {
   constructor() { }
 
-  @Input() margin: boolean;
+  @Input() margin: boolean | string;
 
   @Input() title: string;
 

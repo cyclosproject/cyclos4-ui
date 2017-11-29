@@ -21,9 +21,6 @@ export class PageLayoutComponent extends BaseComponent {
   }
 
   @Input()
-  menu: Menu;
-
-  @Input()
   hasHeader = false;
 
   @Input()
@@ -42,16 +39,11 @@ export class PageLayoutComponent extends BaseComponent {
 
   ngOnInit() {
     super.ngOnInit();
-    if (this.menu == null) {
-      throw new Error('No menu given to this page');
-    }
-    this.layout.menu.next(this.menu);
     this.update();
   }
 
   ngOnDestroy() {
     super.ngOnDestroy();
-    this.layout.menu.next(null);
   }
 
   onDisplayChange() {

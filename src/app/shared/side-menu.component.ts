@@ -30,13 +30,11 @@ export class SideMenuComponent extends BaseComponent {
   ApiHelper = ApiHelper;
 
   @Input()
-  menu: Menu;
-
-  @Input()
   hideTitle: boolean;
 
   get banking(): boolean {
-    return this.menu.root === RootMenu.BANKING;
+    const menu = this.layout.menu.value;
+    return menu != null && menu.root === RootMenu.BANKING;
   }
 
   title: string;
@@ -45,9 +43,6 @@ export class SideMenuComponent extends BaseComponent {
 
   ngOnInit() {
     super.ngOnInit();
-    if (this.menu == null) {
-      throw new Error('Missing value for menu');
-    }
     this.update();
   }
 
@@ -58,12 +53,15 @@ export class SideMenuComponent extends BaseComponent {
 
   private update(): void {
     let found = false;
-    for (const root of this.menuService.menu(MenuType.SIDE)) {
-      if (root.rootMenu === this.menu.root) {
-        found = true;
-        this.title = root.title;
-        this.entries.next(root.entries);
-        break;
+    const menu = this.layout.menu.value;
+    if (menu != null) {
+      for (const root of this.menuService.menu(MenuType.SIDE)) {
+        if (root.rootMenu === menu.root) {
+          found = true;
+          this.title = root.title;
+          this.entries.next(root.entries);
+          break;
+        }
       }
     }
     if (!found) {

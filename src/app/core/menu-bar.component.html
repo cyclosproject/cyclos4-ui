@@ -1,12 +1,9 @@
 <layout-bar>
   <nav mat-tab-nav-bar #tabGroup>
-    <a mat-tab-link
+    <a #link mat-tab-link
       *ngFor="let root of roots | async"
       [routerLink]="root.entries[0].url"
-      routerLinkActive="active"
-      [routerLinkActiveOptions]="{exact:true}"
-      #rla="routerLinkActive"
-      [active]="rla.isActive">
+      [active]="(layout.menu | async)?.root == root.rootMenu">
       <mat-icon ngClass="mat-22">{{ root.icon }}</mat-icon>
       {{ root.label }}
     </a>

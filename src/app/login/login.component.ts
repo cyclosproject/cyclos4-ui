@@ -33,7 +33,6 @@ export class LoginComponent extends BaseComponent {
 
   constructor(
     injector: Injector,
-    private router: Router,
     private interceptor: ApiInterceptor,
     formBuilder: FormBuilder
   ) {

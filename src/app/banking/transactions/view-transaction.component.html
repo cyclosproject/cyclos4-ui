@@ -1,0 +1,31 @@
+<page-layout [loaded]="loaded">
+<page-content *ngIf="loaded | async" [title]="title">
+  <view-transfer-details *ngIf="transaction.transfer != null" [transfer]="transaction.transfer">
+  </view-transfer-details>
+  <ng-container *ngIf="transaction.transfer == null">
+    <label-value [label]="bankingMessages.transactionDate()">
+      {{ transaction.date | dateTime }}
+    </label-value>
+    <label-value [label]="bankingMessages.transactionAmount()">
+      {{ transaction.amount | currency:transaction.currency }}
+    </label-value>
+    <label-value *ngIf="transaction.by" [label]="bankingMessages.transactionBy()">
+      {{ transaction.by.display }}
+    </label-value>
+    <label-value *ngIf="transaction.channel" [label]="bankingMessages.transactionChannel()">
+      {{ transaction.channel.name }}
+    </label-value>
+    <label-value [label]="bankingMessages.transactionFrom()">
+      {{ from }}
+    </label-value>
+    <label-value [label]="bankingMessages.transactionTo()">
+      {{ to }}
+    </label-value>
+    <label-value [label]="bankingMessages.transactionType()">
+      {{ transaction.type.name }}
+    </label-value>
+    <custom-field-value *ngFor="let value of transaction.customValues" [fieldValue]="value">
+    </custom-field-value>
+  </ng-container>
+</page-content>
+</page-layout>

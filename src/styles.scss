@@ -58,6 +58,7 @@ mat-radio-group.horizontal mat-radio-button + mat-radio-button {
 .mat-button, .mat-raised-button {
   min-width: inherit !important;
   min-height: 40px;
+  line-height: 40px !important;
 }
 .form-info {
   margin-bottom: 12px;
@@ -111,11 +112,22 @@ mat-cell.avatar, mat-header-cell.avatar {
 mat-cell.selection, mat-header-cell.selection {
   max-width: 32px;
 }
+mat-cell {
+  font-weight: 300;
+}
 mat-cell .cell-main {
   font-weight: 500;
 }
 mat-cell .cell-small {
   font-size: 12px;
+}
+mat-table a {
+  opacity: 0.87;
+  color: map-get($foreground, text);
+  text-decoration: none;
+}
+mat-table a:hover {
+  text-decoration: underline;
 }
 
 // Material icons

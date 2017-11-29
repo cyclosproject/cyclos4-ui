@@ -5,7 +5,7 @@ import { GeneralMessages } from 'app/messages/general-messages';
 /** Types whose values are passed directly as attribute to the <label-value> tag */
 const DIRECT_TYPES = [
   CustomFieldTypeEnum.STRING, CustomFieldTypeEnum.TEXT, CustomFieldTypeEnum.RICH_TEXT,
-  CustomFieldTypeEnum.DYNAMIC_SELECTION, CustomFieldTypeEnum.LINKED_ENTITY];
+  CustomFieldTypeEnum.DYNAMIC_SELECTION, CustomFieldTypeEnum.BOOLEAN, CustomFieldTypeEnum.LINKED_ENTITY];
 
 /**
  * Component used to display a custom field value

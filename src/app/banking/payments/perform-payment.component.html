@@ -1,5 +1,5 @@
-<page-layout [menu]="menu" [loaded]="initialData">
-  <page-content [title]="bankingMessages.paymentTitle()">
+<page-layout [loaded]="initialData">
+  <page-content [title]="bankingMessages.paymentPerformTitle()">
     <td-steps #stepper [mode]="layout.ltmd ? 'vertical' : 'horizontal'">
       <td-step #kindStep [label]="bankingMessages.paymentKind()"
         [sublabel]="layout.ltmd ? (kindAndIdMethod | async)?.label : null">
@@ -68,6 +68,10 @@
         <ng-container *ngIf="(stepperControl.monitor(doneStep) | async) && (performed | async)">
           <payment-done [payment]="performed | async"></payment-done>
           <actions fxLayout="column-reverse" fxLayout.gt-xs="row">
+            <a mat-raised-button color="accent"
+              [routerLink]="viewPerformedPath">
+              {{ bankingMessages.paymentViewPayment() }}
+            </a>
             <button mat-raised-button color="accent"
               (click)="newPayment()">
               {{ bankingMessages.paymentNewPayment() }}

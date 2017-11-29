@@ -144,10 +144,7 @@ export class FormatService {
    * @param date The input date or string
    */
   formatAsDate(date: Date | string): string {
-    if (date == null) {
-      return '';
-    }
-    return moment(date).format(this.dateFormat);
+    return this.doFormat(date, this.dateFormat);
   }
 
   /**
@@ -155,10 +152,7 @@ export class FormatService {
    * @param date The input date or string
    */
   formatAsTime(date: Date | string): string {
-    if (date == null) {
-      return '';
-    }
-    return moment(date).format(this.timeFormat);
+    return this.doFormat(date, this.timeFormat);
   }
 
   /**
@@ -166,10 +160,14 @@ export class FormatService {
    * @param date The input date or string
    */
   formatAsDateTime(date: Date | string): string {
+    return this.doFormat(date, this.dateFormat + ' ' + this.timeFormat);
+  }
+
+  private doFormat(date: Date | string, format: string): string {
     if (date == null) {
       return '';
     }
-    return moment(date).format(this.dateFormat + ' ' + this.timeFormat);
+    return moment(date).parseZone().format(format);
   }
 
   /**

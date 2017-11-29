@@ -39,7 +39,9 @@ export module Menu {
   export const HOME = new Menu(RootMenu.HOME);
 
   // Banking
-  export const ACCOUNT = new Menu(RootMenu.BANKING);
+  export const ACCOUNT_HISTORY = new Menu(RootMenu.BANKING);
+  export const VIEW_TRANSFER = new Menu(RootMenu.BANKING);
+  export const VIEW_TRANSACTION = new Menu(RootMenu.BANKING);
   export const PERFORM_PAYMENT = new Menu(RootMenu.BANKING);
   export const SCHEDULED_PAYMENTS = new Menu(RootMenu.BANKING);
   export const RECURRING_PAYMENTS = new Menu(RootMenu.BANKING);

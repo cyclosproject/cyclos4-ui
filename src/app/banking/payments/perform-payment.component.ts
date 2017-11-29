@@ -31,8 +31,6 @@ import { StepState } from '@covalent/core/steps/step.component';
 })
 export class PerformPaymentComponent extends BaseBankingComponent {
 
-  menu = Menu.PERFORM_PAYMENT;
-
   // Data fetched initially
   initialData = new BehaviorSubject<DataForTransaction>(null);
 
@@ -426,6 +424,11 @@ export class PerformPaymentComponent extends BaseBankingComponent {
           });
         }
       });
+  }
+
+  /** Returns the path components for the currently performed transaction details */
+  get viewPerformedPath(): string[] {
+    return ['/banking', 'transaction', ApiHelper.transactionNumberOrId(this.performed.value)];
   }
 
   newPayment() {

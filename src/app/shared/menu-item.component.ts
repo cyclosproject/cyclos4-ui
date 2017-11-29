@@ -13,7 +13,7 @@ import { BaseMenuEntry, Menu, MenuEntry } from 'app/shared/menu';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MenuItemComponent extends BaseComponent {
-  constructor(injector: Injector, private router: Router) {
+  constructor(injector: Injector) {
     super(injector);
   }
 

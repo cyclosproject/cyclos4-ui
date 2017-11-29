@@ -46,7 +46,9 @@ export function loadDataForUi(injector: Injector): Function {
       // Set the interceptor to ignore any errors. In case some occurred, will retry once.
       interceptor.ignoreNextError();
       uiService.dataForUi(params)
-      .subscribe(init, (error: HttpErrorResponse) => {
+      .toPromise()
+      .then(init)
+      .catch((error: HttpErrorResponse) => {
         if (error.status === 401) {
           // Had an invalid session token. Clear it and try again.
           interceptor.sessionToken = null;

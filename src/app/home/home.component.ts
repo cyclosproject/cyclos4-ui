@@ -17,8 +17,4 @@ export class HomeComponent extends BaseComponent {
   constructor(injector: Injector) {
     super(injector);
   }
-
-  menu = Menu.HOME;
-
-  ngOnInit() { }
 }

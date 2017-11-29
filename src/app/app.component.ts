@@ -7,6 +7,8 @@ import { BaseComponent } from 'app/shared/base.component';
 import { PersonalMenuComponent } from 'app/core/personal-menu.component';
 import { Router } from '@angular/router';
 
+import 'rxjs/add/observable/empty';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -16,8 +18,7 @@ import { Router } from '@angular/router';
 export class AppComponent extends BaseComponent {
   constructor(
     injector: Injector,
-    private title: Title,
-    private router: Router
+    private title: Title
   ) {
     super(injector);
   }

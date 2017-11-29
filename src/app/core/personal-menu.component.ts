@@ -99,6 +99,10 @@ export class PersonalMenuComponent extends BaseComponent {
   }
 
   private update() {
+    if (this.login.user == null) {
+      // Don't update the personal menu if there's no logged user - it won't be shown
+      return;
+    }
     const roots = this.menuService.menu(MenuType.PERSONAL);
     let personal: RootMenuEntry = null;
     for (const root of roots) {

@@ -2,7 +2,7 @@
   <mat-card>
     <mat-tab-group>
       <mat-tab [label]="sideMenu.title || generalMessages.menu()">
-        <side-menu #sideMenu [menu]="menu"></side-menu>
+        <side-menu #sideMenu></side-menu>
       </mat-tab>
       <mat-tab *ngIf="hasFilters" [label]="generalMessages.menuFilters()">
         <div class="filters">
@@ -13,11 +13,9 @@
   </mat-card>
 </div>
 <div class="page" fxLayout="column" fxFlex="grow">
-  <!--
   <div class="loading" *ngIf="loaded != null && !(loaded | async)">
     Loading...
   </div>
-  -->
   <ng-container *ngIf="(showLeft | async) && (loaded == null || (loaded | async))">
     <!-- There is a left area: separated containers for header and content -->
     <div *ngIf="hasHeader" class="header">

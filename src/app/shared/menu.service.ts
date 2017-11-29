@@ -95,6 +95,10 @@ export class MenuService {
    * Creates the full menu structure
    */
   private get fullMenu(): RootMenuEntry[] {
+    if (!this.login.authInitialized) {
+      // Don't initialize the menu before the login service finishes fetching the initial auth
+      return [];
+    }
     if (this._menu != null) {
       // The menu is already calculated
       return this._menu;
@@ -133,7 +137,7 @@ export class MenuService {
       if (accounts.length > 0) {
         for (const account of accounts) {
           const type = account.account.type;
-          add(Menu.ACCOUNT, '/banking/account/' + ApiHelper.internalNameOrId(type),
+          add(Menu.ACCOUNT_HISTORY, '/banking/account/' + ApiHelper.internalNameOrId(type),
             'account_balance', type.name, [MenuType.BAR, MenuType.SIDENAV]);
         }
       }

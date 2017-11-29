@@ -1,6 +1,6 @@
 import {
   ElementRef, Component, Input, Output, EventEmitter, ViewChild, AfterViewInit,
-  ChangeDetectorRef, forwardRef, Provider, ChangeDetectionStrategy, OnInit
+  ChangeDetectorRef, forwardRef, Provider, ChangeDetectionStrategy, OnInit, OnDestroy
 } from '@angular/core';
 import {
   NG_VALUE_ACCESSOR, NG_VALIDATORS, ControlValueAccessor, Validator,
@@ -19,6 +19,7 @@ import { NotificationService } from 'app/core/notification.service';
 import { GeneralMessages } from 'app/messages/general-messages';
 
 import { MatInput, MatGridList } from '@angular/material';
+import { Subscription } from 'rxjs/Subscription';
 
 // Contains a mapping between OTP send mediums and material icon ligatures
 const OTP_ICONS = {};
@@ -52,7 +53,7 @@ export const PASSWORD_INPUT_VALIDATOR: Provider = {
     PASSWORD_INPUT_VALIDATOR
   ]
 })
-export class PasswordInputComponent implements OnInit, AfterViewInit, ControlValueAccessor, Validator {
+export class PasswordInputComponent implements OnInit, OnDestroy, AfterViewInit, ControlValueAccessor, Validator {
 
   // Contains the current characters combination shown in the VK
   currentVKCombinations: string[];
@@ -78,6 +79,8 @@ export class PasswordInputComponent implements OnInit, AfterViewInit, ControlVal
   otpMediums: any;
 
   private _passwordInput: PasswordInput;
+
+  private subscriptions: Subscription[] = [];
 
   private changeCallback = (_: any) => { };
   private touchedCallback = () => { };
@@ -118,6 +121,10 @@ export class PasswordInputComponent implements OnInit, AfterViewInit, ControlVal
     if (this.placeholder == null) {
       this.placeholder = this.passwordInput.name;
     }
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
   ngAfterViewInit(): void {
@@ -186,12 +193,15 @@ export class PasswordInputComponent implements OnInit, AfterViewInit, ControlVal
             message = 'The OTP was sent to ' + arg;
             break;
         }
-        const dialog = this.notificationService.info(message);
+        const dialog$ = this.notificationService.info(message);
         this.otpSent.emit(null);
         if (this.passwordComponent) {
-          dialog.afterClosed().subscribe(() => {
-            this.passwordComponent.nativeElement.focus();
-          });
+          // There are 2 subscriptions here: one for the dialog result, another one for the afterClosed() event
+          this.subscriptions.push(dialog$.subscribe(dialog => {
+            this.subscriptions.push(dialog.afterClosed().subscribe(() => {
+              this.passwordComponent.nativeElement.focus();
+            }));
+          }));
         }
       });
   }

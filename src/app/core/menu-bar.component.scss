@@ -11,11 +11,11 @@
   margin-right: 8px;
 }
 
-:host /deep/ a.active {
+:host /deep/ a.mat-tab-label-active {
   opacity: 1 !important;
 }
 
-:host /deep/ a:not(.active) {
+:host /deep/ a:not(.mat-tab-label-active) {
   opacity: 0.65 !important;
 }
 :host /deep/ .mat-button-focus-overlay {
@@ -24,8 +24,10 @@
 
 :host /deep/ .mat-tab-link {
   height: 60px !important;
-  font-weight: 400;
   font-size: 1.2em;
+}
+:host /deep/ .mat-icon {
+  font-weight: 400;
 }
 
 :host /deep/ .mat-tab-nav-bar {

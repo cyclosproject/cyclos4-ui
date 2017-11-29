@@ -99,7 +99,7 @@ export class LinearStepperControlComponent implements OnInit, OnDestroy {
       return;
     }
     const last = steps[steps.length - 1];
-    this.enable(last);
+    this.activate(last);
     last.state = StepState.Complete;
   }
 

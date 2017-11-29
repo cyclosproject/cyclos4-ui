@@ -91,11 +91,14 @@ export class ErrorHandlerService {
       console.error('Client-side request error');
       console.error(err.error);
     } else {
-      let error;
-      try {
-        error = JSON.parse(err.message);
-      } catch (e) {
-        error = null;
+      // Server-generated error
+      let error = err.error;
+      if (!error) {
+        try {
+          error = JSON.parse(err.message);
+        } catch (e) {
+          error = null;
+        }
       }
       switch (err.status) {
         case ErrorStatus.INVALID_REQUEST:
@@ -174,7 +177,7 @@ export class ErrorHandlerService {
     }
     if (error.entityType) {
       if (error.key) {
-        return this.generalMessages.errorEntityNotFoundKey(error.entityType, error.key);
+        return this.generalMessages.errorEntityNotFoundKey(error.key, error.entityType);
       } else {
         return this.generalMessages.errorEntityNotFound(error.entityType);
       }

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Injector, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injector, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { BaseComponent } from 'app/shared/base.component';
 import { RootMenuEntry, MenuType, Menu } from 'app/shared/menu';
@@ -16,16 +16,12 @@ import { Subscription } from 'rxjs/Subscription';
   styleUrls: ['menu-bar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MenuBarComponent extends BaseComponent implements AfterViewInit {
+export class MenuBarComponent extends BaseComponent {
   constructor(
     injector: Injector,
-    private router: Router,
     private menuService: MenuService) {
     super(injector);
   }
-
-  @ViewChild('tabGroup')
-  tabGroup: MatTabNav;
 
   roots = new BehaviorSubject<RootMenuEntry[]>([]);
 
@@ -57,26 +53,5 @@ export class MenuBarComponent extends BaseComponent implements AfterViewInit {
     if (entry) {
       this.router.navigateByUrl(entry.url);
     }
-  }
-
-  ngAfterViewInit(): void {
-    const updateTabs = menu => {
-      if (menu == null) {
-        return;
-      }
-      const roots = this.roots.value;
-      for (let i = 0; i < roots.length; i++) {
-        if (roots[i].rootMenu === menu.root) {
-          this.tabGroup._tabLinks.forEach((link, ix) => {
-            if (ix === i) {
-              const ref: ElementRef = link['_elementRef'];
-              ref.nativeElement.click();
-            }
-          });
-          break;
-        }
-      }
-    };
-    this.layout.menu.subscribe(updateTabs);
   }
 }

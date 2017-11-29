@@ -1,6 +1,6 @@
 import {
   Entity, AccountWithOwner, TransferType, AccountKind, TransactionView, User,
-  CustomFieldDetailed, PasswordInput, PasswordModeEnum
+  CustomFieldDetailed, PasswordInput, PasswordModeEnum, Transfer, Transaction, AccountHistoryResult
 } from 'app/api/models';
 import { environment } from 'environments/environment';
 import { GeneralMessages } from 'app/messages/general-messages';
@@ -91,6 +91,23 @@ export class ApiHelper {
       user = from ? transaction.fromUser : transaction.toUser;
     }
     return (user || {}).display || generalMessages.user();
+  }
+
+  /**
+   * If the given transfer, transaction or account history result has a transaction number,
+   * returns it, taking care * of escaping it if it is fully numeric.
+   * Otherwise, returns the id.
+   * @param trans Either the transfer or transaction
+   */
+  static transactionNumberOrId(trans: Transfer | Transaction | AccountHistoryResult): string {
+    const tx = trans.transactionNumber;
+    if (tx != null && tx !== '') {
+      if (/^\d+$/.test(tx)) {
+        // The transaction number is fully numeric. Escape it to avoid clashing with id
+        return `'${tx}`;
+      }
+    }
+    return trans.id;
   }
 
   /**
