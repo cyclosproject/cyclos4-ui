@@ -72,17 +72,9 @@
         <mat-header-cell *matHeaderCellDef></mat-header-cell>
         <mat-cell *matCellDef="let row">
           <a [routerLink]="path(row)" fxLayout="column">
-            <div fxLayout="row">
-              <div fxLayout="column">
-                <div class="cell-main">{{ bankingMessages.transactionFrom() }}</div>
-                <div class="cell-main">{{ from(row) }}</div>
-              </div>
-              <div fxLayout="column">
-                <div class="cell-main">{{ bankingMessages.transactionTo() }}</div>
-                <div class="cell-main">{{ to(row) }}</div>
-              </div>
+            <div class="cell-main">
+              {{ bankingMessages.transactionFromTo(from(row), to(row)) }}
             </div>
-            <div class="cell-date">{{ row.date | dateTime }}</div>
             <div class="cell-date">{{ row.date | dateTime }}</div>
             <div *ngIf="row.description" class="cell-small">{{ row.description }}</div>
           </a>
@@ -127,8 +119,8 @@
 
       <!-- Amount column -->
       <ng-container matColumnDef="amount">
-        <mat-header-cell *matHeaderCellDef>{{ bankingMessages.transactionAmount() }}</mat-header-cell>
-        <mat-cell *matCellDef="let row">
+        <mat-header-cell *matHeaderCellDef style="text-align: end">{{ bankingMessages.transactionAmount() }}</mat-header-cell>
+        <mat-cell *matCellDef="let row" style="text-align: end">
           <a [routerLink]="path(row)">
             {{ row.amount | currency:row.currency }}
           </a>

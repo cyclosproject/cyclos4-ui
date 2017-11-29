@@ -156,8 +156,10 @@ export class MenuService {
       }
 
       // Temporary, just to show other root menu entries
-      add(Menu.SEARCH_USERS, '/users/search', 'account_box', null);
-      add(Menu.SEARCH_MARKETPLACE, '/marketplace/search', 'shopping_cart', null);
+      add(Menu.SEARCH_USERS, '/users/search', 'account_box',
+        this.generalMessages.menuUsersSearch());
+      add(Menu.SEARCH_MARKETPLACE, '/marketplace/search', 'shopping_cart',
+        this.generalMessages.menuMarketplaceSearch());
 
       // Personal
       if (users.contacts) {

@@ -15,6 +15,7 @@
   "transaction.from": "From",
   "transaction.fromAccount": "From account",
   "transaction.to": "To",
+  "transaction.fromTo": "{from} to {to}",
   "transaction.toAccount": "To account",
   "transaction.subject": "From / to",
   "transaction.amount": "Amount",

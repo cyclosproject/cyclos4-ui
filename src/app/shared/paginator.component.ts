@@ -5,6 +5,7 @@ import { MatTable } from '@angular/material';
 import { QueryFilters } from 'app/api/models';
 import { PaginationData } from 'app/shared/pagination-data';
 import { ApiHelper } from 'app/shared/api-helper';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 type PageData = {
   page: number, pageSize: number
@@ -21,8 +22,14 @@ type PageData = {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PaginatorComponent<T> extends BaseComponent {
-  constructor(injector: Injector) {
+  constructor(
+    injector: Injector,
+    formBuilder: FormBuilder) {
     super(injector);
+    this.form = formBuilder.group({
+      page: null,
+      pageSize: null
+    });
   }
 
   @Input()
@@ -34,6 +41,27 @@ export class PaginatorComponent<T> extends BaseComponent {
   @Output()
   update = new EventEmitter<void>();
 
+  form: FormGroup;
+
+  private initialized = false;
+
+  ngOnInit() {
+    super.ngOnInit();
+    this.subscriptions.push(this.dataSource.pagination.subscribe(pagination => {
+      if (pagination) {
+        if (!this.initialized) {
+          this.form.setValue({
+            page: pagination.page,
+            pageSize: pagination.pageSize
+          });
+          this.initialized = true;
+        }
+      }
+    }));
+    this.subscriptions.push(this.form.valueChanges.subscribe(
+      val => this.doUpdate(val as PageData)));
+  }
+
   get pagination(): PaginationData {
     return this.dataSource.pagination.value;
   }
@@ -43,9 +71,8 @@ export class PaginatorComponent<T> extends BaseComponent {
     if (!pagination || pagination.page === 0) {
       return;
     }
-    this.doUpdate({
-      page: pagination.page - 1,
-      pageSize: pagination.pageSize
+    this.form.patchValue({
+      page: pagination.page - 1
     });
   }
 
@@ -55,9 +82,8 @@ export class PaginatorComponent<T> extends BaseComponent {
       // We know by the total count that there shouldn't have any other page
       return;
     }
-    this.doUpdate({
-      page: pagination.page + 1,
-      pageSize: pagination.pageSize
+    this.form.patchValue({
+      page: pagination.page + 1
     });
   }
 
@@ -66,9 +92,8 @@ export class PaginatorComponent<T> extends BaseComponent {
     if (!pagination) {
       return;
     }
-    this.doUpdate({
-      page: 0,
-      pageSize: pagination.pageSize
+    this.form.patchValue({
+      page: 0
     });
   }
 
@@ -77,29 +102,13 @@ export class PaginatorComponent<T> extends BaseComponent {
     if (!pagination || !pagination.hasTotalCount) {
       return;
     }
-    this.doUpdate({
-      page: pagination.pageCount - 1,
-      pageSize: pagination.pageSize
+    this.form.patchValue({
+      page: pagination.pageCount - 1
     });
   }
 
   get pageSizes(): number[] {
     return ApiHelper.PAGE_SIZES;
-  }
-
-  get pageSize(): number {
-    const pagination = this.pagination;
-    return pagination ? pagination.pageSize : ApiHelper.DEFAULT_PAGE_SIZE;
-  }
-
-  set pageSize(pageSize: number) {
-    const pagination = this.pagination;
-    if (this.pagination) {
-      this.doUpdate({
-        page: this.pagination.page,
-        pageSize: pageSize
-      });
-    }
   }
 
   private doUpdate(data: PageData) {
