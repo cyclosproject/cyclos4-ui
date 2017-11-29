@@ -112,9 +112,11 @@ export class PaginatorComponent<T> extends BaseComponent {
   }
 
   private doUpdate(data: PageData) {
-    this.query.page = data.page;
-    this.query.pageSize = data.pageSize;
-    this.update.emit();
+    if (this.query) {
+      this.query.page = data.page;
+      this.query.pageSize = data.pageSize;
+      this.update.emit();
+    }
   }
 
 }

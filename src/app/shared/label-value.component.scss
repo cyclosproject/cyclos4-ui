@@ -1,3 +1,5 @@
+@import 'src/definitions';
+
 :host {
   margin-bottom: 6px;
   display: flex;
@@ -10,10 +12,8 @@
 }
 
 .label {
-  font-weight: 400;
-}
-.value {
-  font-weight: 300;
+  font-weight: 500;
+  color: map-get($foreground, secondary-text);
 }
 
 .gt-xs :host .value {
