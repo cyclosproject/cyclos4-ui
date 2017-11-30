@@ -1,5 +1,5 @@
 import { DateAdapter } from '@angular/material';
-import * as moment from 'moment';
+import * as moment from 'moment-mini-ts';
 import { Injectable } from '@angular/core';
 import { FormatService } from 'app/core/format.service';
 

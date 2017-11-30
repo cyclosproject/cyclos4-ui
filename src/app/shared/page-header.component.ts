@@ -1,4 +1,4 @@
-import { Component, Input, Injector } from '@angular/core';
+import { Component, Input, Injector, ChangeDetectionStrategy } from '@angular/core';
 import { BaseComponent } from 'app/shared/base.component';
 
 /**
@@ -7,7 +7,8 @@ import { BaseComponent } from 'app/shared/base.component';
 @Component({
   selector: 'page-header',
   templateUrl: 'page-header.component.html',
-  styleUrls: ['page-header.component.scss']
+  styleUrls: ['page-header.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PageHeaderComponent extends BaseComponent {
   constructor(injector: Injector) {

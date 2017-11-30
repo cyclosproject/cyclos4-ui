@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 import { ApiHelper } from 'app/shared/api-helper';
 import { ApiInterceptor } from 'app/core/api.interceptor';
 import { Observable } from 'rxjs/Observable';
-import { tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators/tap';
 
 /**
  * Service used to manage the login status

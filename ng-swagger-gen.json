@@ -2,12 +2,15 @@
   "$schema": "./node_modules/ng-swagger-gen/ng-swagger-gen-schema.json",
   "swagger": "src/swagger/cyclos-swagger.json",
   "output": "src/app/api",
-  "ignoreUnusedModels": true,
-  "minParamsForContainer": 2,
-  "defaultTag": "Api",
-  "removeStaleFiles": true,
-  "modelIndex": true,
-  "errorHandler": true,
-  "serviceIndex": true,
-  "apiModule": true
+  "includeTags": [
+    "Auth",
+    "Users",
+    "Contacts",
+    "Transactions",
+    "Transfers",
+    "Payments",
+    "Accounts",
+    "UI"
+  ],
+  "minParamsForContainer": 2
 }

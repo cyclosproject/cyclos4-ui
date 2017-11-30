@@ -1,17 +1,17 @@
 import { Injectable, NgZone } from '@angular/core';
 import { EventSourcePolyfill } from 'ng-event-source';
 import { LoginService } from 'app/core/login.service';
-import { Auth, PushNotificationEventKind, AccountWithStatus } from 'app/api/models';
+import { Auth, AccountWithStatus } from 'app/api/models';
 import { ApiConfiguration } from 'app/api/api-configuration';
 import { Observable } from 'rxjs/Observable';
 import { NotificationService } from 'app/core/notification.service';
 import { GeneralMessages } from 'app/messages/general-messages';
 import { Subscription } from 'rxjs/Subscription';
 
-const KINDS: PushNotificationEventKind[] = [
-  PushNotificationEventKind.LOGGED_OUT,
-  PushNotificationEventKind.ACCOUNT_STATUS
-];
+export const LOGGED_OUT = 'loggedOut';
+export const ACCOUNT_STATUS = 'accountStatus';
+
+const KINDS = [LOGGED_OUT, ACCOUNT_STATUS];
 
 /**
  * Handles the registration and notitification of push events
@@ -60,9 +60,9 @@ export class PushNotificationsService {
     const accounts = (auth.permissions.banking || {}).accounts;
     const accountIds = accounts == null ? null : accounts.map(a => a.account.id);
     const clientId = Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
-    const kinds = new Set<PushNotificationEventKind>(KINDS);
+    const kinds = new Set<string>(KINDS);
     if (accountIds == null || accountIds.length === 0) {
-      kinds.delete(PushNotificationEventKind.ACCOUNT_STATUS);
+      kinds.delete(ACCOUNT_STATUS);
     }
     let url = this.apiConfiguration.rootUrl + '/push/subscribe?clientId=' + clientId;
     kinds.forEach(kind => url += '&kinds=' + kind);
@@ -72,7 +72,7 @@ export class PushNotificationsService {
     });
 
     // Listen for logged out events
-    this.eventSource.addEventListener(PushNotificationEventKind.LOGGED_OUT, (event: any) => {
+    this.eventSource.addEventListener(LOGGED_OUT, (event: any) => {
       this.zone.run(() => {
         this.close();
         this.notification.error(this.generalMessages.errorSessionExpired());
@@ -81,7 +81,7 @@ export class PushNotificationsService {
     });
 
     // Listen for account status events
-    this.eventSource.addEventListener(PushNotificationEventKind.ACCOUNT_STATUS, (event: any) => {
+    this.eventSource.addEventListener(ACCOUNT_STATUS, (event: any) => {
       const account = JSON.parse(event.data) as AccountWithStatus;
       this.zone.run(() => this.accountStatusObserver.next(account));
     });

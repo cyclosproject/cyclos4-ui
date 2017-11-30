@@ -3,7 +3,7 @@ import { ErrorHandlerService } from 'app/core/error-handler.service';
 import { NotificationService } from 'app/core/notification.service';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import { tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators/tap';
 
 const CHANNEL = 'Channel';
 const AUTHORIZATION = 'Authorization';

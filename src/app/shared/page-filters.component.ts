@@ -1,4 +1,4 @@
-import { Component, Injector } from '@angular/core';
+import { Component, Injector, ChangeDetectionStrategy } from '@angular/core';
 import { BaseComponent } from 'app/shared/base.component';
 
 /**
@@ -7,7 +7,8 @@ import { BaseComponent } from 'app/shared/base.component';
 @Component({
   selector: 'page-filters',
   templateUrl: 'page-filters.component.html',
-  styleUrls: ['page-filters.component.scss']
+  styleUrls: ['page-filters.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PageFiltersComponent extends BaseComponent {
   constructor(injector: Injector) {

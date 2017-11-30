@@ -11,7 +11,7 @@ import { TableDataSource } from 'app/shared/table-datasource';
 import { ApiHelper } from 'app/shared/api-helper';
 import { NgForm } from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';
-import { tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators/tap';
 
 /** Information for an account status element shown on top */
 export type StatusIndicator = {
