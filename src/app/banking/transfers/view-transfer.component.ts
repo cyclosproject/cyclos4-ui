@@ -1,10 +1,8 @@
-import { Component, OnInit, Injector, ChangeDetectionStrategy } from '@angular/core';
-import { Menu } from 'app/shared/menu';
+import { Component, Injector, ChangeDetectionStrategy } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { TransfersService } from 'app/api/services/transfers.service';
 import { BaseBankingComponent } from 'app/banking/base-banking.component';
 import { TransferView } from 'app/api/models/transfer-view';
-import { ApiHelper } from 'app/shared/api-helper';
 
 /**
  * Component that shows details of a transfer

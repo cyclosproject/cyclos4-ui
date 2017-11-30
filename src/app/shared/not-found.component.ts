@@ -1,7 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { GeneralMessages } from 'app/messages/general-messages';
 import { Notification } from 'app/shared/notification';
-import { NotificationType } from 'app/shared/notification-type';
 
 /**
  * Component shown when the URL is not a recognized component

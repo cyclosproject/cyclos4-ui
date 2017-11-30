@@ -8,17 +8,14 @@ import {
 } from '@angular/forms';
 import { PasswordInput } from 'app/api/models';
 import { PasswordInputMethodEnum } from 'app/api/models';
-import { PasswordModeEnum } from 'app/api/models';
 import { SendMediumEnum } from 'app/api/models';
-import { OtpError } from 'app/api/models';
-import { OtpErrorCode } from 'app/api/models';
 
 import { AuthService } from 'app/api/services/auth.service';
 
 import { NotificationService } from 'app/core/notification.service';
 import { GeneralMessages } from 'app/messages/general-messages';
 
-import { MatInput, MatGridList } from '@angular/material';
+import { MatGridList } from '@angular/material';
 import { Subscription } from 'rxjs/Subscription';
 
 // Contains a mapping between OTP send mediums and material icon ligatures

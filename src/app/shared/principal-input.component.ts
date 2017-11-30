@@ -1,17 +1,12 @@
 import {
-  Component, OnInit, Input, forwardRef, Output, ViewChild,
+  Component, OnInit, Input, forwardRef, ViewChild,
   ElementRef, ChangeDetectionStrategy } from '@angular/core';
 import {
-  NG_VALUE_ACCESSOR, ControlValueAccessor, FormControl, AbstractControl,
-  ValidationErrors, NgControl, Validator, NG_VALIDATORS
+  NG_VALUE_ACCESSOR, ControlValueAccessor, AbstractControl,
+  ValidationErrors, Validator, NG_VALIDATORS
 } from '@angular/forms';
 import { PrincipalTypeInput, PrincipalTypeKind } from 'app/api/models';
-import { MatCheckbox, MatSelect } from '@angular/material';
-import { FormatService } from 'app/core/format.service';
-import { DecimalFieldComponent } from 'app/shared/decimal-field.component';
-import { DateFieldComponent } from 'app/shared/date-field.component';
 import { CustomFieldInputComponent } from 'app/shared/custom-field-input.component';
-import { isDate } from 'moment';
 
 // Definition of the exported NG_VALUE_ACCESSOR provider
 export const PRINCIPAL_VALUE_ACCESSOR = {
@@ -40,9 +35,6 @@ export const PRINCIPAL_VALIDATOR = {
   ]
 })
 export class PrincipalInputComponent implements OnInit, ControlValueAccessor, Validator {
-  constructor(
-    private formatService: FormatService
-  ) { }
 
   @Input()
   public type: PrincipalTypeInput;

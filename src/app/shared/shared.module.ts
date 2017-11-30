@@ -6,8 +6,7 @@ import { RouterModule } from '@angular/router';
 import {
   MatButtonModule, MatInputModule, MatCheckboxModule, MatRadioModule,
   MatSelectModule, MatDatepickerModule, MatTooltipModule,
-  MatIconModule, MatGridListModule, MatTabsModule, MatTableModule,
-  MatDialog, MatDialogModule, MatCardModule, MatSidenavModule
+  MatIconModule, MatGridListModule, MatTabsModule, MatTableModule, MatDialogModule, MatCardModule, MatSidenavModule
 } from '@angular/material';
 import { CovalentStepsModule } from '@covalent/core';
 

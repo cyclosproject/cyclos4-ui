@@ -1,4 +1,4 @@
-import { DateAdapter, MatDateFormats } from '@angular/material';
+import { DateAdapter } from '@angular/material';
 import * as moment from 'moment';
 import { Injectable } from '@angular/core';
 import { FormatService } from 'app/core/format.service';

@@ -1,8 +1,6 @@
-import { ChangeDetectorRef } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
-import { map, flatMap } from 'rxjs/operators';
 import { PaginationData } from 'app/shared/pagination-data';
 import { HttpResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs/Subscription';

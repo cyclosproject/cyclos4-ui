@@ -1,10 +1,7 @@
 import { Component, ChangeDetectionStrategy, Output, EventEmitter, Input, Injector } from '@angular/core';
-import { Router } from '@angular/router';
-import { GeneralMessages } from 'app/messages/general-messages';
-import { LoginService } from 'app/core/login.service';
 import { DataForLogin } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 
 /**
  * Displays the login form

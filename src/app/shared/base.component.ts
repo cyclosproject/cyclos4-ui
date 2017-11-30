@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Injector, ChangeDetectorRef } from '@angular/core';
+import { OnInit, OnDestroy, Injector, ChangeDetectorRef } from '@angular/core';
 import { GeneralMessages } from 'app/messages/general-messages';
 import { LayoutService } from 'app/core/layout.service';
 import { FormatService } from 'app/core/format.service';

@@ -1,8 +1,6 @@
-import { Component, Injector, Provider, forwardRef, ChangeDetectionStrategy, ViewChild, Input } from '@angular/core';
-import { NG_VALUE_ACCESSOR, ControlValueAccessor, FormGroup } from '@angular/forms';
+import { Component, Injector, ChangeDetectionStrategy, Input } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { BaseBankingComponent } from 'app/banking/base-banking.component';
-import { PaymentKind } from 'app/banking/payments/payment-kind';
-import { MatRadioGroup } from '@angular/material';
 import { PaymentKindAndIdMethod } from 'app/banking/payments/payment-kind-and-id-method';
 
 /**

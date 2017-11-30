@@ -1,8 +1,5 @@
-import { Component, OnInit, ChangeDetectionStrategy, Injector } from '@angular/core';
-import { Router } from '@angular/router';
-import { LoginService } from 'app/core/login.service';
+import { Component, ChangeDetectionStrategy, Injector } from '@angular/core';
 import { BaseComponent } from 'app/shared/base.component';
-import { Menu } from 'app/shared/menu';
 
 /**
  * Displays the home page

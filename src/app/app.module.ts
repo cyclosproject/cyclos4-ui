@@ -1,10 +1,8 @@
-import { NgModule, Provider, APP_INITIALIZER } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
 import { AppComponent } from 'app/app.component';
 import { AppRoutingModule } from 'app/app-routing.module';
 import { SharedModule } from 'app/shared/shared.module';
 import { ApiModule } from 'app/api/api.module';
-import { environment } from 'environments/environment';
 import { INIT_API_CONFIGURATION } from 'app/bootstrap/init-api-configuration';
 import { LOAD_GENERAL_TRANSLATION } from 'app/bootstrap/load-general-translation';
 import { LOAD_DATA_FOR_UI } from 'app/bootstrap/load-data-for-ui';

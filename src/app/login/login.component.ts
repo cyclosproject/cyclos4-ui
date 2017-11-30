@@ -1,8 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, ViewChild, ChangeDetectorRef, OnDestroy, Injector } from '@angular/core';
-import { GeneralMessages } from 'app/messages/general-messages';
-import { LoginService } from 'app/core/login.service';
-import { Router, ActivatedRoute } from '@angular/router';
-import { LayoutService } from 'app/core/layout.service';
+import { Component, ChangeDetectionStrategy, Injector } from '@angular/core';
 import { DataForLogin, GroupForRegistration } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
 import { Menu } from 'app/shared/menu';

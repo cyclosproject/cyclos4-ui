@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Component, Injector, ChangeDetectionStrategy, Input } from '@angular/core';
 import { BaseBankingComponent } from 'app/banking/base-banking.component';
 import { TransferView } from 'app/api/models/transfer-view';
 import { ApiHelper } from 'app/shared/api-helper';

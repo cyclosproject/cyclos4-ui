@@ -79,7 +79,7 @@ export class ApiHelper {
       // The kind is system: show the system account name from the transfer type
       const accountType = (from ? transferType.from : transferType.to) || {};
       // Cyclos < 4.9 doesn't send from / to in transfer type. Show 'System' in this case.
-      return name || generalMessages.system();
+      return accountType.name || generalMessages.system();
     }
 
     // The account belongs to a user

@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, Output } from '@angular/core';
-import { Router } from '@angular/router';
 import { BaseComponent } from 'app/shared/base.component';
 import { BaseMenuEntry, Menu, MenuEntry } from 'app/shared/menu';
 

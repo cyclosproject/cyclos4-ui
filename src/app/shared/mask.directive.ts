@@ -84,7 +84,7 @@ export class MaskDirective {
       } else if (c === '\\') {
         isEscape = true;
       } else if (MASK_ANY.indexOf(c) >= 0) {
-        field = new MaskField(null);
+        field = new MaskField(ALPHA);
       } else if (MASK_DIGIT.indexOf(c) >= 0) {
         field = new MaskField(DIGITS);
       } else if (MASK_LETTER.indexOf(c) >= 0) {

@@ -1,11 +1,9 @@
 import { Injectable, Injector } from '@angular/core';
-import { LoginService } from 'app/core/login.service';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
 import { NotificationService } from 'app/core/notification.service';
-import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse } from '@angular/common/http';
+import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { tap } from 'rxjs/operators';
-import { GeneralMessages } from 'app/messages/general-messages';
 
 const CHANNEL = 'Channel';
 const AUTHORIZATION = 'Authorization';

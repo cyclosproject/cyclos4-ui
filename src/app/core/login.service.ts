@@ -3,10 +3,7 @@ import { Auth, User } from 'app/api/models';
 import { AuthService } from 'app/api/services/auth.service';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
-import { NotificationService } from 'app/core/notification.service';
-import { ErrorHandlerService } from 'app/core/error-handler.service';
 import { Router } from '@angular/router';
-import { GeneralMessages } from 'app/messages/general-messages';
 import { ApiHelper } from 'app/shared/api-helper';
 import { ApiInterceptor } from 'app/core/api.interceptor';
 import { Observable } from 'rxjs/Observable';
@@ -28,8 +25,6 @@ export class LoginService {
   constructor(
     private apiInterceptor: ApiInterceptor,
     private authService: AuthService,
-    private notificationService: NotificationService,
-    private errorHandlerService: ErrorHandlerService,
     private router: Router) {
   }
 

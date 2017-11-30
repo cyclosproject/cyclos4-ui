@@ -1,6 +1,3 @@
-import { Data } from '@angular/router';
-import { Auth } from 'app/api/models';
-
 /** The types of menus in the application */
 export enum MenuType {
   /** The sidenav shown on small devices */

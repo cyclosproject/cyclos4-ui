@@ -1,5 +1,4 @@
-import { Component, OnInit, Injector, ChangeDetectionStrategy } from '@angular/core';
-import { Menu } from 'app/shared/menu';
+import { Component, Injector, ChangeDetectionStrategy } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { TransactionsService } from 'app/api/services/transactions.service';
 import { BaseBankingComponent } from 'app/banking/base-banking.component';

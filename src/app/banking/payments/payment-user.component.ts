@@ -1,4 +1,4 @@
-import { Component, Injector, Provider, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Component, Injector, ChangeDetectionStrategy, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { BaseBankingComponent } from 'app/banking/base-banking.component';
 import { IdentificationMethodEnum, UserDataForSearch, User } from 'app/api/models';

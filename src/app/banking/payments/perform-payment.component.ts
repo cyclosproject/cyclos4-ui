@@ -1,10 +1,8 @@
 import { Component, Injector, ChangeDetectionStrategy, ViewChild } from '@angular/core';
 import { BaseBankingComponent } from 'app/banking/base-banking.component';
 import {
-  AccountPermissions, DataForTransaction, IdentificationMethodEnum,
-  PrincipalTypeKind, TransactionTypeData, TransferTypeWithCurrency,
-  PerformPayment, PaymentPreview, TransactionView, PaymentError, PaymentErrorCode,
-  ForbiddenError, ForbiddenErrorCode, UserDataForSearch, User } from 'app/api/models';
+  DataForTransaction, IdentificationMethodEnum, PrincipalTypeKind, TransactionTypeData,
+  TransferTypeWithCurrency, PaymentPreview, TransactionView, UserDataForSearch, User } from 'app/api/models';
 import { PaymentKind } from 'app/banking/payments/payment-kind';
 import { IdMethod } from 'app/banking/payments/id-method';
 import { PaymentsService, UsersService, ContactsService } from 'app/api/services';
@@ -12,14 +10,11 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { ApiHelper } from 'app/shared/api-helper';
 import { ErrorStatus } from 'app/core/error-handler.service';
 import { LinearStepperControlComponent } from 'app/shared/linear-stepper-control.component';
-import { Menu } from 'app/shared/menu';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PaymentKindAndIdMethod } from 'app/banking/payments/payment-kind-and-id-method';
-import { Observable } from 'rxjs/Observable';
 import { TdStepComponent } from '@covalent/core';
 import { cloneDeep } from 'lodash';
 import { ApiInterceptor } from 'app/core/api.interceptor';
-import { StepState } from '@covalent/core/steps/step.component';
 
 /**
  * Component used to choose which kind of payment will be performed
@@ -209,7 +204,6 @@ export class PerformPaymentComponent extends BaseBankingComponent {
   /** Fetch either the data for search of search the contact list */
   nextFromKind() {
     const kid = this.kindAndIdMethod.value;
-    const isUser = kid.kind === PaymentKind.USER;
     if (kid.kind === PaymentKind.USER) {
       // Still needs to select the user
       this.stepperControl.enable(this.userStep);

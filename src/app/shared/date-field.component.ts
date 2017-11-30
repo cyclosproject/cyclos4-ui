@@ -1,12 +1,11 @@
 import {
-  Component, OnInit, Input, Output, ViewChild, EventEmitter,
+  Component, Input, Output, ViewChild, EventEmitter,
   forwardRef, ElementRef, Provider, ChangeDetectionStrategy
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor, NG_VALIDATORS, Validator, AbstractControl, ValidationErrors } from '@angular/forms';
 import { FormatService } from 'app/core/format.service';
 import { LayoutService } from 'app/core/layout.service';
 import { MatDatepickerInput } from '@angular/material';
-import { isDate } from 'moment';
 
 // Definition of the exported NG_VALUE_ACCESSOR provider
 export const DATE_FIELD_VALUE_ACCESSOR: Provider = {

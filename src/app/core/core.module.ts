@@ -14,7 +14,7 @@ import { TranslationLoaderService } from 'app/core/translation-loader.service';
 import { LayoutService } from 'app/core/layout.service';
 import { LoginService } from 'app/core/login.service';
 import { PersonalMenuComponent } from 'app/core/personal-menu.component';
-import { DateAdapter, MAT_DATE_FORMATS, MatDateFormats } from '@angular/material';
+import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material';
 import { ApiDateAdapter } from 'app/core/api-date-adapter';
 import { MenuService } from 'app/shared/menu.service';
 import { PushNotificationsService } from 'app/core/push-notifications.service';

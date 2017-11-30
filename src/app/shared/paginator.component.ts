@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, Input, Output, EventEmitter } from '@angular/core';
 import { BaseComponent } from 'app/shared/base.component';
 import { TableDataSource } from 'app/shared/table-datasource';
-import { MatTable } from '@angular/material';
 import { QueryFilters } from 'app/api/models';
 import { PaginationData } from 'app/shared/pagination-data';
 import { ApiHelper } from 'app/shared/api-helper';

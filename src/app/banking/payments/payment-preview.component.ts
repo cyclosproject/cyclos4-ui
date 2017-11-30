@@ -1,7 +1,6 @@
 import { Component, Injector, ChangeDetectionStrategy, Input } from '@angular/core';
 import { BaseBankingComponent } from 'app/banking/base-banking.component';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { PaymentPreview, AccountKind } from 'app/api/models';
+import { PaymentPreview } from 'app/api/models';
 import { ApiHelper } from 'app/shared/api-helper';
 import { FormGroup } from '@angular/forms';
 

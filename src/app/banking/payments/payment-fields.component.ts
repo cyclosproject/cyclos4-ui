@@ -1,6 +1,6 @@
-import { Component, Injector, Provider, forwardRef, ChangeDetectionStrategy, ViewChild, Input } from '@angular/core';
+import { Component, Injector, ChangeDetectionStrategy, Input } from '@angular/core';
 import { BaseBankingComponent } from 'app/banking/base-banking.component';
-import { PerformPayment, TransactionTypeData, TransferTypeWithCurrency } from 'app/api/models';
+import { TransactionTypeData, TransferTypeWithCurrency } from 'app/api/models';
 import { FormGroup } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 

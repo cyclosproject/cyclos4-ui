@@ -1,15 +1,13 @@
-import { Component, OnInit, Input, ChangeDetectorRef, Provider, forwardRef, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Input, Provider, forwardRef, ChangeDetectionStrategy } from '@angular/core';
 import { UserDataForSearch, User } from 'app/api/models';
 import { TableDataSource } from 'app/shared/table-datasource';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 import { Subject } from 'rxjs/Subject';
-import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { UsersService } from 'app/api/services';
 import { GeneralMessages } from 'app/messages/general-messages';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { UserResult } from 'app/api/models/user-result';
 
 // Definition of the exported NG_VALUE_ACCESSOR provider
 export const PAYMENT_USER_VALUE_ACCESSOR: Provider = {

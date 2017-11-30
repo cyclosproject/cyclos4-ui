@@ -1,5 +1,4 @@
-import { Component, ChangeDetectionStrategy, Injector, ViewChild, AfterViewInit, AfterViewChecked } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Component, ChangeDetectionStrategy, Injector, ViewChild, AfterViewChecked } from '@angular/core';
 import {
   DataForAccountHistory, Currency, EntityReference, PreselectedPeriod,
   AccountHistoryResult, AccountKind, AccountHistoryStatus, TransferFilter
@@ -7,15 +6,9 @@ import {
 import { AccountsService } from 'app/api/services';
 
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { LayoutService } from 'app/core/layout.service';
-import { BankingMessages } from 'app/messages/banking-messages';
-import { GeneralMessages } from 'app/messages/general-messages';
-import { FormatService } from 'app/core/format.service';
 import { BaseBankingComponent } from 'app/banking/base-banking.component';
 import { TableDataSource } from 'app/shared/table-datasource';
 import { ApiHelper } from 'app/shared/api-helper';
-import { Menu } from 'app/shared/menu';
 import { NgForm } from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';
 import { tap } from 'rxjs/operators';

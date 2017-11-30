@@ -1,10 +1,8 @@
-import { ChangeDetectionStrategy, Component, Injector, ViewChild, ElementRef } from '@angular/core';
-import { Router } from '@angular/router';
+import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
 import { BaseComponent } from 'app/shared/base.component';
-import { RootMenuEntry, MenuType, Menu } from 'app/shared/menu';
+import { RootMenuEntry, MenuType } from 'app/shared/menu';
 import { MenuService } from 'app/shared/menu.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { MatTabNav } from '@angular/material';
 import { Subscription } from 'rxjs/Subscription';
 
 /**

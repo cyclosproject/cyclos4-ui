@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DataForUi, Currency, ThemeUIElement } from 'app/api/models';
+import { DataForUi, Currency } from 'app/api/models';
 import * as moment from 'moment';
 import { ApiConfiguration } from 'app/api/api-configuration';
 

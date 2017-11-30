@@ -1,8 +1,6 @@
-import { Component, Injector, Provider, forwardRef, ChangeDetectionStrategy, ViewChild, Input } from '@angular/core';
-import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
+import { Component, Injector, ChangeDetectionStrategy, Input } from '@angular/core';
 import { BaseBankingComponent } from 'app/banking/base-banking.component';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { PaymentPreview, AccountKind, TransactionView, AuthorizationStatusEnum } from 'app/api/models';
+import { TransactionView, AuthorizationStatusEnum } from 'app/api/models';
 import { ApiHelper } from 'app/shared/api-helper';
 
 /**

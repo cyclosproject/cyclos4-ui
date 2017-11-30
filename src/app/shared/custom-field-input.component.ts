@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, forwardRef, Output, ViewChild, ElementRef, ChangeDetectionStrategy } from '@angular/core';
 import {
-  NG_VALUE_ACCESSOR, ControlValueAccessor, FormControl, AbstractControl,
-  ValidationErrors, NgControl, Validator, NG_VALIDATORS
+  NG_VALUE_ACCESSOR, ControlValueAccessor, AbstractControl,
+  ValidationErrors, Validator, NG_VALIDATORS
 } from '@angular/forms';
 import { CustomFieldTypeEnum, CustomFieldDetailed } from 'app/api/models';
 import { MatCheckbox, MatSelect } from '@angular/material';

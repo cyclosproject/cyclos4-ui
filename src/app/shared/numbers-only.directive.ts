@@ -1,5 +1,4 @@
-import { Directive, ElementRef, HostListener, Input } from '@angular/core';
-import { NgControl } from '@angular/forms';
+import { Directive, HostListener, Input } from '@angular/core';
 
 const ALLOWED = [
   'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown',
@@ -15,17 +14,12 @@ const ALLOWED = [
   selector: '[numbersOnly]'
 })
 export class NumbersOnlyDirective {
-  constructor(
-    private el: ElementRef,
-    private control: NgControl) {}
-
   private enabled: boolean;
 
   @Input()
   public set numbersOnly(numbersOnly: boolean | string) {
     this.enabled = numbersOnly === '' || numbersOnly === 'true' || numbersOnly === true;
   }
-
 
   @HostListener('keydown', ['$event']) onKeyDown(event: KeyboardEvent) {
     if (this.enabled) {

@@ -1,7 +1,5 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy, Injector } from '@angular/core';
-import { Menu } from 'app/shared/menu';
+import { Component, Input, ChangeDetectionStrategy, Injector } from '@angular/core';
 import { BaseComponent } from 'app/shared/base.component';
-import { ObservableMedia } from '@angular/flex-layout';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 

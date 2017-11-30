@@ -10,7 +10,6 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 @Injectable()
 export class LayoutService implements OnDestroy {
   private mediaSubscription: Subscription;
-  private firstUpdate: boolean;
 
   constructor(
     private media: ObservableMedia,

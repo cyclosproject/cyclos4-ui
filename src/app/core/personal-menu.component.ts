@@ -1,9 +1,7 @@
-import { Component, Input, ElementRef, ViewChild, ChangeDetectionStrategy, Injector } from '@angular/core';
-import { FormatService } from 'app/core/format.service';
+import { Component, ElementRef, ViewChild, ChangeDetectionStrategy, Injector } from '@angular/core';
 import { BaseComponent } from 'app/shared/base.component';
 import { User, Auth } from 'app/api/models';
-import { Subscription } from 'rxjs/Subscription';
-import { MenuEntry, RootMenu, Menu, MenuType, RootMenuEntry } from 'app/shared/menu';
+import { MenuEntry, RootMenu, MenuType, RootMenuEntry } from 'app/shared/menu';
 import { MenuService } from 'app/shared/menu.service';
 
 /**
