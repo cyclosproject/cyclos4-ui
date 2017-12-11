@@ -2,7 +2,10 @@ import { Component, ChangeDetectionStrategy, Injector } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { BaseComponent } from 'app/shared/base.component';
 
+// Static Observable methods
 import 'rxjs/add/observable/empty';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/observable/timer';
 
 @Component({
   selector: 'app-root',

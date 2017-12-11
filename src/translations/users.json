@@ -1,0 +1,17 @@
+{
+  "search.title": "Users search",
+
+  "user.name": "Full name",
+  "user.username": "Login name",
+  "user.email": "E-mail",
+
+  "registration.title": "New user registration",
+  "registration.error.noGroups": "No possible groups for registration",
+  "registration.group": "Group",
+  "registration.group.message": "Select the group you want to register in",
+  "registration.fields": "Fields",
+  "registration.fields.message": "Please, fill in your data below",
+  "registration.agreement": "Registration agreement(s)",
+  "registration.agreement.check": "I agree with the above registration agreement",
+  "registration.captcha": "Visual validation"
+}

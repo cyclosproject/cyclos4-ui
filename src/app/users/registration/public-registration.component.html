@@ -1,0 +1,35 @@
+<page-layout [loaded]="loaded">
+  <page-content [title]="usersMessages.registrationTitle()">
+    <td-steps #stepper [mode]="layout.ltmd ? 'vertical' : 'horizontal'">
+      <td-step #groupStep *ngIf="groups.length > 1" [label]="usersMessages.registrationGroup()"
+        [sublabel]="layout.ltmd ? (group | async).name : null">
+        <ng-container *ngIf="stepperControl.monitor(groupStep) | async">
+          <registration-group [groups]="groups" [form]=groupForm></registration-group>
+          <actions fxLayout="column-reverse" fxLayout.gt-xs="row">
+            <button fxFlex.gt-xs="nogrow" mat-raised-button color="accent"
+              [disabled]="!groupForm.valid" (click)="nextFromGroup()">
+              {{ generalMessages.next() }}
+            </button>
+          </actions>
+        </ng-container>
+      </td-step>
+      <td-step #fieldsStep [label]="usersMessages.registrationFields()"
+        [sublabel]="layout.ltmd ? user.name || user.username || user.email : null">
+        <ng-container *ngIf="stepperControl.monitor(fieldsStep) | async">
+          <registration-fields [data]="data | async" [form]=fieldsForm></registration-fields>
+          <actions fxLayout="column-reverse" fxLayout.gt-xs="row">
+            <button *ngIf="groups.length > 1"
+              mat-raised-button (click)="previousFromFields()">
+              {{ generalMessages.previous() }}
+            </button>
+            <button fxFlex.gt-xs="nogrow" mat-raised-button color="accent"
+              [disabled]="!groupForm.valid" (click)="nextFromGroup()">
+              {{ generalMessages.next() }}
+            </button>
+          </actions>
+        </ng-container>
+      </td-step>
+    </td-steps>
+    <linear-stepper-control #stepperControl [stepper]="stepper"></linear-stepper-control>
+  </page-content>
+</page-layout>

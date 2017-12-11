@@ -1,0 +1,44 @@
+<div fxLayout="column" [formGroup]="form">
+  <div class="form-info">{{ usersMessages.registrationFieldsMessage() }}</div>
+
+  <mat-form-field *ngIf="hasName">
+    <input matInput formControlName="name"
+      [placeholder]="usersMessages.userName()"
+      required focused />
+    <mat-error>
+      {{form.get('name').getError('message')}}
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field *ngIf="hasUsername">
+    <input matInput formControlName="username"
+      [placeholder]="usersMessages.userUsername()"
+      required [focused]="!hasName" />
+    <mat-error>
+      {{form.get('username').getError('message')}}
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field *ngIf="hasEmail">
+    <input matInput formControlName="email"
+      [placeholder]="usersMessages.userEmail()"
+      [required]="data.emailRequired"
+      [focused]="!hasName && !hasUsername" />
+    <mat-error>
+      {{form.get('email').getError('message')}}
+    </mat-error>
+  </mat-form-field>
+  
+  <ng-container [formGroup]="form.get('customValues')">
+    <custom-field-input *ngFor="let cf of data.customFields"
+      fxFlex="grow"
+      fxLayout="column"
+      [field]="cf"
+      [formControlName]="cf.internalName">
+    </custom-field-input>
+  </ng-container>
+
+  {{form.valueChanges | async | json}}
+  <br>
+  {{form.get('customValues').get('cpf').valid}}
+</div>

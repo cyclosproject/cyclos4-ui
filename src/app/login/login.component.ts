@@ -73,6 +73,6 @@ export class LoginComponent extends BaseComponent {
   }
 
   register(): void {
-    alert('Not implemented yet');
+    this.router.navigate(['/users', 'registration']);
   }
 }

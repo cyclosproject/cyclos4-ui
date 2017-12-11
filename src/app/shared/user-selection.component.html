@@ -9,7 +9,7 @@
   <ng-container matColumnDef="radio">
     <mat-header-cell *matHeaderCellDef class="selection"></mat-header-cell>
     <mat-cell *matCellDef="let row" class="selection">
-      <mat-radio-group [(ngModel)]="value" [ngModelOptions]="{standalone: true}">
+      <mat-radio-group [formControl]="formControl">
         <mat-radio-button [value]="row.id"></mat-radio-button>
       </mat-radio-group>
     </mat-cell>

@@ -1,13 +1,17 @@
-import { Component, OnInit, Input, forwardRef, Output, ViewChild, ElementRef, ChangeDetectionStrategy } from '@angular/core';
 import {
-  NG_VALUE_ACCESSOR, ControlValueAccessor, AbstractControl,
-  ValidationErrors, Validator, NG_VALIDATORS
+  Component, OnInit, Input, forwardRef, Output, ViewChild, ElementRef,
+  ChangeDetectionStrategy, Optional, Host, SkipSelf
+} from '@angular/core';
+import {
+  NG_VALUE_ACCESSOR, ControlValueAccessor, AbstractControl, FormControl,
+  ValidationErrors, Validator, NG_VALIDATORS, ControlContainer
 } from '@angular/forms';
 import { CustomFieldTypeEnum, CustomFieldDetailed } from 'app/api/models';
 import { MatCheckbox, MatSelect } from '@angular/material';
 import { FormatService } from 'app/core/format.service';
 import { DecimalFieldComponent } from 'app/shared/decimal-field.component';
 import { DateFieldComponent } from 'app/shared/date-field.component';
+import { ApiHelper } from 'app/shared/api-helper';
 
 const MAX_INTEGER = 2147483647;
 const INPUT_TYPES = [CustomFieldTypeEnum.STRING, CustomFieldTypeEnum.INTEGER, CustomFieldTypeEnum.URL, CustomFieldTypeEnum.LINKED_ENTITY];
@@ -42,15 +46,18 @@ export const CUSTOM_FIELD_VALIDATOR = {
 })
 export class CustomFieldInputComponent implements OnInit, ControlValueAccessor, Validator {
 
-  @Input()
-  focused: boolean;
+  @Input() formControl: FormControl;
+  @Input() formControlName: string;
 
-  @Input()
-  field: CustomFieldDetailed;
+  @Input() focused: boolean;
+  @Input() field: CustomFieldDetailed;
+
   type: CustomFieldTypeEnum;
 
   private _value: string = null;
   private _fieldValue: any = null;
+
+  ApiHelper = ApiHelper;
 
   @ViewChild('stringInput')
   private stringInput: ElementRef;
@@ -78,8 +85,21 @@ export class CustomFieldInputComponent implements OnInit, ControlValueAccessor, 
   private validatorChangeCallback = () => { };
 
   constructor(
+    @Optional() @Host() @SkipSelf()
+    private controlContainer: ControlContainer,
     private formatService: FormatService
   ) { }
+
+  ngOnInit() {
+    this.type = this.field.type;
+
+    if (this.controlContainer && this.formControlName) {
+      const control = this.controlContainer.control.get(this.formControlName);
+      if (control instanceof FormControl) {
+        this.formControl = control;
+      }
+    }
+  }
 
   get input(): boolean {
     return INPUT_TYPES.includes(this.type);
@@ -190,10 +210,6 @@ export class CustomFieldInputComponent implements OnInit, ControlValueAccessor, 
   private emitValue(): void {
     this.changeCallback(this._value);
     this.validatorChangeCallback();
-  }
-
-  ngOnInit() {
-    this.type = this.field.type;
   }
 
   // ControlValueAccessor methods

@@ -71,6 +71,12 @@ input[type=number]::-webkit-outer-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+.mat-form-field-subscript-wrapper {
+  top: calc(100% - 1.9em);
+}
+.mat-error {
+  font-size: 12px;
+}
 
 // Tabs
 .mat-tab-group.mat-primary .mat-tab-label:focus,

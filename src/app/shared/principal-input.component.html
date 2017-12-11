@@ -1,23 +1,21 @@
 <!-- any textual types -->
 <mat-form-field #textComponent fxFlex="grow"
   *ngIf="!isCustomField">
-  <input #usernameInput="ngModel" matInput
+  <input #usernameInput matInput
     [placeholder]="type.name"
     [required]="true"
-    [disabled]="disabled"
     [focused]="focused"
     [type]="type.kind == 'email' ? 'email' : 'text'"
     [mask]="type.mask"
-    [(ngModel)]="value" [ngModelOptions]="{standalone: true}">
+    [formControl]="formControl">
 </mat-form-field>
 
 <!-- custom fields -->
 <custom-field-input *ngIf="isCustomField"
-  #customFieldInput="ngModel"
+  #customFieldInput
   fxFlex="grow"
   fxLayout="column"
   [focused]="focused"
-  [disabled]="disabled"
   [field]="type.customField"
-  [(ngModel)]="value" [ngModelOptions]="{standalone: true}">
+  [formControl]="formControl">
 </custom-field-input>

@@ -1,6 +1,6 @@
-import { Component, ChangeDetectionStrategy, Input, Provider, forwardRef, ViewChild, OnChanges } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Provider, forwardRef, ViewChild, OnChanges, OnInit, SkipSelf, Host, Optional } from '@angular/core';
 import { PasswordInput, PasswordModeEnum } from 'app/api/models';
-import { NG_VALUE_ACCESSOR, NG_VALIDATORS, Validator, ControlValueAccessor, AbstractControl, ValidationErrors } from '@angular/forms';
+import { NG_VALUE_ACCESSOR, NG_VALIDATORS, Validator, ControlValueAccessor, AbstractControl, ValidationErrors, FormControl, ControlContainer } from '@angular/forms';
 import { PasswordInputComponent } from 'app/shared/password-input.component';
 import { GeneralMessages } from 'app/messages/general-messages';
 import { Subscription } from 'rxjs/Subscription';
@@ -31,10 +31,9 @@ export const CONFIRMATION_PASSWORD_VALIDATOR: Provider = {
     CONFIRMATION_PASSWORD_VALIDATOR
   ]
 })
-export class ConfirmationPasswordComponent implements OnChanges, ControlValueAccessor, Validator {
-  constructor(
-    public generalMessages: GeneralMessages
-  ) { }
+export class ConfirmationPasswordComponent implements OnInit, OnChanges, ControlValueAccessor, Validator {
+  @Input() formControl: FormControl;
+  @Input() formControlName: string;
 
   @Input()
   passwordInput: PasswordInput;
@@ -44,7 +43,6 @@ export class ConfirmationPasswordComponent implements OnChanges, ControlValueAcc
   @ViewChild('passwordComponent')
   private passwordComponent: PasswordInputComponent;
 
-
   private otpSubscription: Subscription;
 
   private _password: string;
@@ -52,6 +50,21 @@ export class ConfirmationPasswordComponent implements OnChanges, ControlValueAcc
   private changeCallback = (_: any) => { };
   private touchedCallback = () => { };
   private validatorChangeCallback = () => { };
+
+  constructor(
+    @Optional() @Host() @SkipSelf()
+    private controlContainer: ControlContainer,
+    public generalMessages: GeneralMessages
+  ) { }
+
+  ngOnInit() {
+    if (this.controlContainer && this.formControlName) {
+      const control = this.controlContainer.control.get(this.formControlName);
+      if (control instanceof FormControl) {
+        this.formControl = control;
+      }
+    }
+  }
 
   ngOnChanges() {
     if (this.otpSubscription == null && this.passwordComponent) {
@@ -77,7 +90,6 @@ export class ConfirmationPasswordComponent implements OnChanges, ControlValueAcc
     this._password = password;
     this.changeCallback(password);
   }
-
 
   get canConfirm(): boolean {
     return this.activePassword || this.hasOtpSendMediums;

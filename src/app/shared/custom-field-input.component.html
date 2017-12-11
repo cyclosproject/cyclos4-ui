@@ -1,66 +1,82 @@
 <!-- string, integer, URL or entity -->
 <mat-form-field *ngIf="input" #stringComponent fxFlex="grow">
-  <input #stringInput="ngModel" matInput
+  <input #stringInput matInput
     [placeholder]="field.name"
     [required]="field.required"
     [focused]="focused"
-    [type]="type == 'url' ? 'url' : 'text'"
+    [type]="type == 'integer' ? 'number' : type == 'url' ? 'url' : 'text'"
     [numbersOnly]="type == 'integer'"
     [mask]="field.pattern"
-    [(ngModel)]="fieldValue" [ngModelOptions]="{standalone: true}">
+    [formControl]="formControl">
+  <mat-error>
+    {{formControl?.getError('message')}}
+  </mat-error>
 </mat-form-field>
 
 <!-- text or rich text (no WYSIWYG editor yet!) -->
 <mat-form-field *ngIf="textarea" #textComponent fxFlex="grow">
-  <textarea #textInput="ngModel" matInput matTextareaAutosize
+  <textarea #textInput matInput matTextareaAutosize
     [placeholder]="field.name"
     mdAutosizeMinRows="3"
     [required]="field.required"
     [focused]="focused"
     [type]="type == 'url' ? 'url' : 'text'"
     [numbersOnly]="type == 'integer'"
-    [(ngModel)]="fieldValue" [ngModelOptions]="{standalone: true}"></textarea>
+    [formControl]="formControl"></textarea>
+  <mat-error>
+    {{formControl?.getError('message')}}
+  </mat-error>
 </mat-form-field>
 
 <!-- boolean -->
-<mat-checkbox #booleanComponent="ngModel" fxFlex="grow" *ngIf="type == 'boolean'"
-  [(ngModel)]="fieldValue" [ngModelOptions]="{standalone: true}">{{ field.name }}</mat-checkbox>
+<mat-checkbox #booleanComponent fxFlex="grow" *ngIf="type == 'boolean'"
+  [formControl]="formControl">
+  {{ field.name }}
+</mat-checkbox>
 
 <!-- decimal -->
-<decimal-field #decimalComponent="ngModel" fxFlex="grow" *ngIf="type == 'decimal'"
+<decimal-field #decimalComponent fxFlex="grow" *ngIf="type == 'decimal'"
   [placeholder]="field.name" [scale]="field.decimalDigits"
   [required]="field.required"
   [focused]="focused"
-  [(ngModel)]="fieldValue" [ngModelOptions]="{standalone: true}"></decimal-field>
+  [formControl]="formControl">
+</decimal-field>
 
 <!-- date -->
-<date-field #dateComponent="ngModel" fxFlex="grow" *ngIf="type == 'date'"
+<date-field #dateComponent fxFlex="grow" *ngIf="type == 'date'"
   [placeholder]="field.name" [required]="field.required"
   [focused]="focused"
-  [(ngModel)]="fieldValue" [ngModelOptions]="{standalone: true}"></date-field>
+  [formControl]="formControl">
+</date-field>
 
 <!-- single / multi selection -->
 <mat-form-field *ngIf="type == 'singleSelection' || type == 'multiSelection'">
-  <mat-select #selectComponent="ngModel" fxFlex="grow"
-    [name]="field.internalName"
-    [(ngModel)]="fieldValue" [ngModelOptions]="{standalone: true}" [required]="field.required"
+  <mat-select #selectComponent fxFlex="grow"
+    [formControl]="formControl"
+    [required]="field.required"
     [placeholder]="field.name" [multiple]="type == 'multiSelection'">
     <mat-option *ngFor="let pv of field.possibleValues"
-      [value]="pv.id">
+      [value]="ApiHelper.internalNameOrId(pv)">
       <span *ngIf="pv.category">{{ pv.category.name }} - </span>
       {{ pv.value }}
     </mat-option>
   </mat-select>
+  <mat-error>
+    {{formControl?.getError('message')}}
+  </mat-error>
 </mat-form-field>
 
 <!-- dynamic selection -->
 <mat-form-field *ngIf="type == 'dynamicSelection'">
-  <mat-select #dynamicComponent="ngModel" fxFlex="grow"
-    [name]="field.internalName"
-    [(ngModel)]="value" [ngModelOptions]="{standalone: true}" [required]="field.required"
+  <mat-select #dynamicComponent fxFlex="grow"
+    [formControl]="formControl"
+    [required]="field.required"
     [placeholder]="field.name">
     <mat-option *ngFor="let pv of field.dynamicValues"
       [value]="pv.value">{{ pv.label }}</mat-option>
   </mat-select>
+  <mat-error>
+    {{formControl?.getError('message')}}
+  </mat-error>
 </mat-form-field>
 <!-- no support for file / image so far -->

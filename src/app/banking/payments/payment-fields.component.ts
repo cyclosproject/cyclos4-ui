@@ -5,7 +5,7 @@ import { FormGroup } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 /**
- * Provides the selection of the payment type
+ * Provides the selection of the payment type and filling of payment fields
  */
 @Component({
   selector: 'payment-fields',

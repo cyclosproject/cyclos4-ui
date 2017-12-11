@@ -1,20 +1,23 @@
-<div class="decimalField" fxLayout="row" fxLayoutAlign="center center">
+<div class="decimalField" fxLayout="row" fxLayoutAlign="center center" [formGroup]="form">
   <mat-form-field
     [fxFlex]="scale == 0 ? 'grow' : '70%'"
     [fxFlex.gt-sm]="scale == 0 ? 'grow' : '80%'">
     <input #integerField matInput type="number" maxlength="24"
       numbersOnly [required]="required" [focused]="focused"
-      [placeholder]="placeholder" [disabled]="disabled"
-      [(ngModel)]="integerPart" [ngModelOptions]="{standalone:true}" (blur)="onBlur($event)">
+      [placeholder]="placeholder"
+      formControlName="integer" (blur)="onBlur($event)">
     <span matPrefix *ngIf="prefix">{{ prefix + '&nbsp;' }}</span>
+    <mat-error>
+      {{formControl?.getError('message')}}
+    </mat-error>
   </mat-form-field>
   <div *ngIf="scale > 0" class="separator" fxFlex="2%">{{ decimalSeparator }}</div>
   <mat-form-field *ngIf="scale > 0"
     fxFlex="28%" fxFlex.gt-sm="18%"
     floatPlaceholder="never">
     <input #decimalField matInput type="number" [size]="scale" [maxLength]="scale"
-      numbersOnly style="text-align:right" [disabled]="disabled"
-      [(ngModel)]="decimalPart" [ngModelOptions]="{standalone:true}"
+      numbersOnly style="text-align:right"
+      formControlName="decimal"
       (focus)="decimalField.select()"
       (blur)="onBlur($event)">
     <span matSuffix *ngIf="suffix">{{ '&nbsp;' + suffix }}</span>

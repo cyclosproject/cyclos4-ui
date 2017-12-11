@@ -1,8 +1,11 @@
 import {
-  Component, Input, Output, ViewChild, EventEmitter,
-  forwardRef, ElementRef, Provider, ChangeDetectionStrategy
+  Component, Input, Output, ViewChild, EventEmitter, forwardRef, ElementRef,
+  Provider, ChangeDetectionStrategy, SkipSelf, Host, Optional, OnInit
 } from '@angular/core';
-import { NG_VALUE_ACCESSOR, ControlValueAccessor, NG_VALIDATORS, Validator, AbstractControl, ValidationErrors } from '@angular/forms';
+import {
+  NG_VALUE_ACCESSOR, ControlValueAccessor, NG_VALIDATORS, Validator,
+  AbstractControl, ValidationErrors, FormControl, ControlContainer
+} from '@angular/forms';
 import { FormatService } from 'app/core/format.service';
 import { LayoutService } from 'app/core/layout.service';
 import { MatDatepickerInput } from '@angular/material';
@@ -33,11 +36,9 @@ export const DATE_VALIDATOR: Provider = {
     DATE_VALIDATOR
   ]
 })
-export class DateFieldComponent implements ControlValueAccessor, Validator {
-  constructor(
-    public formatService: FormatService,
-    public layout: LayoutService
-  ) { }
+export class DateFieldComponent implements OnInit, ControlValueAccessor, Validator {
+  @Input() formControl: FormControl;
+  @Input() formControlName: string;
 
   @Input() required: boolean;
   @Input() placeholder: string;
@@ -58,6 +59,22 @@ export class DateFieldComponent implements ControlValueAccessor, Validator {
   private changeCallback = (_: any) => { };
   private touchedCallback = () => { };
   private validatorChangeCallback = () => { };
+
+  constructor(
+    @Optional() @Host() @SkipSelf()
+    private controlContainer: ControlContainer,
+    public formatService: FormatService,
+    public layout: LayoutService
+  ) { }
+
+  ngOnInit() {
+    if (this.controlContainer && this.formControlName) {
+      const control = this.controlContainer.control.get(this.formControlName);
+      if (control instanceof FormControl) {
+        this.formControl = control;
+      }
+    }
+  }
 
   get dateFormat(): string {
     return this.formatService.dateFormat;

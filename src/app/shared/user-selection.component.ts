@@ -1,7 +1,10 @@
-import { Component, OnInit, Input, Provider, forwardRef, ChangeDetectionStrategy } from '@angular/core';
+import {
+  Component, OnInit, Input, Provider, forwardRef, ChangeDetectionStrategy,
+  SkipSelf, Host, Optional
+} from '@angular/core';
 import { UserDataForSearch, User } from 'app/api/models';
 import { TableDataSource } from 'app/shared/table-datasource';
-import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
+import { NG_VALUE_ACCESSOR, ControlValueAccessor, ControlContainer, FormControl } from '@angular/forms';
 import { Subject } from 'rxjs/Subject';
 import { debounceTime } from 'rxjs/operators/debounceTime';
 import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged';
@@ -28,10 +31,8 @@ export const PAYMENT_USER_VALUE_ACCESSOR: Provider = {
   providers: [PAYMENT_USER_VALUE_ACCESSOR]
 })
 export class UserSelectionComponent implements OnInit, ControlValueAccessor {
-  constructor(
-    public generalMessages: GeneralMessages,
-    private usersService: UsersService) {
-  }
+  @Input() formControl: FormControl;
+  @Input() formControlName: string;
 
   @Input()
   focused: boolean | string;
@@ -45,6 +46,14 @@ export class UserSelectionComponent implements OnInit, ControlValueAccessor {
   dataSource: TableDataSource<User> = new TableDataSource();
 
   private _value: string;
+
+  constructor(
+    @Optional() @Host() @SkipSelf()
+    private controlContainer: ControlContainer,
+    public generalMessages: GeneralMessages,
+    private usersService: UsersService) {
+  }
+
   get value(): string {
     return this._value;
   }
@@ -58,11 +67,18 @@ export class UserSelectionComponent implements OnInit, ControlValueAccessor {
 
   ngOnInit() {
     this.onKeywords.pipe(
-      debounceTime(350),
+      debounceTime(ApiHelper.DEBOUNCE_TIME),
       distinctUntilChanged(),
     ).subscribe(keywords => {
       this.search(keywords);
     });
+
+    if (this.controlContainer && this.formControlName) {
+      const control = this.controlContainer.control.get(this.formControlName);
+      if (control instanceof FormControl) {
+        this.formControl = control;
+      }
+    }
   }
 
   private search(keywords: string) {

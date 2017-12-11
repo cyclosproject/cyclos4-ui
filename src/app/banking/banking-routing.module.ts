@@ -8,7 +8,7 @@ import { Menu } from 'app/shared/menu';
 import { ViewTransferComponent } from 'app/banking/transfers/view-transfer.component';
 import { ViewTransactionComponent } from 'app/banking/transactions/view-transaction.component';
 
-const accountRoutes: Routes = [
+const bankingRoutes: Routes = [
   {
     path: '',
     resolve: {
@@ -56,11 +56,11 @@ const accountRoutes: Routes = [
 ];
 
 /**
- * This module declares the routes in the accounts module
+ * Routes for the banking module
  */
 @NgModule({
   imports: [
-    RouterModule.forChild(accountRoutes)
+    RouterModule.forChild(bankingRoutes)
   ],
   exports: [
     RouterModule
@@ -69,4 +69,4 @@ const accountRoutes: Routes = [
     BankingMessagesResolve
   ]
 })
-export class AccountsRoutingModule {}
+export class BankingRoutingModule {}

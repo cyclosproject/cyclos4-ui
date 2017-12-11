@@ -11,16 +11,17 @@ export enum MenuType {
 }
 
 /** Contains the top-level (root) menus */
-export type RootMenu = 'home' | 'login' | 'personal' | 'banking' | 'users' | 'marketplace';
+export type RootMenu = 'home' | 'login' | 'registration' | 'personal' | 'banking' | 'users' | 'marketplace';
 export module RootMenu {
   export const HOME: RootMenu = 'home';
   export const LOGIN: RootMenu = 'login';
+  export const REGISTRATION: RootMenu = 'registration';
   export const BANKING: RootMenu = 'banking';
   export const USERS: RootMenu = 'users';
   export const MARKETPLACE: RootMenu = 'marketplace';
   export const PERSONAL: RootMenu = 'personal';
   export function values(): RootMenu[] {
-    return [HOME, LOGIN, BANKING, USERS, MARKETPLACE, PERSONAL];
+    return [HOME, LOGIN, REGISTRATION, BANKING, USERS, MARKETPLACE, PERSONAL];
   }
 }
 
@@ -32,8 +33,9 @@ export class Menu {
 }
 export module Menu {
   // Standalone
-  export const LOGIN = new Menu(RootMenu.LOGIN);
   export const HOME = new Menu(RootMenu.HOME);
+  export const LOGIN = new Menu(RootMenu.LOGIN);
+  export const REGISTRATION = new Menu(RootMenu.REGISTRATION);
 
   // Banking
   export const ACCOUNT_HISTORY = new Menu(RootMenu.BANKING);

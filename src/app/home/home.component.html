@@ -14,22 +14,22 @@
       </section>
       <section title="Form">
         <div>Some form fields...</div>
-        <div fxLayout="column" style="max-width:600px">
+        <div fxLayout="column" style="max-width:600px" [formGroup]="form">
           <mat-form-field>
-            <input matInput placeholder="Text input">
+            <input matInput placeholder="Text input" formControlName="singleLine">
           </mat-form-field>
 
           <mat-form-field>
-            <textarea matInput matTextareaAutosize placeholder="Multi-line input"></textarea>
+            <textarea matInput matTextareaAutosize formControlName="multiLine" placeholder="Multi-line input"></textarea>
           </mat-form-field>
 
-          <decimal-field suffix="$" scale="2" placeholder="Decimal"></decimal-field>
+          <decimal-field formControlName="decimal" suffix="$" scale="2" placeholder="Decimal"></decimal-field>
 
-          <date-field placeholder="Date"></date-field>
+          <date-field formControlName="date" placeholder="Date"></date-field>
 
-          <mat-checkbox>Checkbox</mat-checkbox>
+          <mat-checkbox formControlName="checkBox">Checkbox</mat-checkbox>
 
-          <mat-radio-group class="horizontal">
+          <mat-radio-group class="horizontal" formControlName="radio">
             <mat-radio-button value="1">
               Radio 1
             </mat-radio-button>
@@ -42,7 +42,7 @@
           </mat-radio-group>
 
           <mat-form-field>
-            <mat-select placeholder="Single select" multiple="false">
+            <mat-select placeholder="Single select" formControlName="singleSelection">
               <mat-option value="1">Value 1</mat-option>
               <mat-option value="2">Value 2</mat-option>
               <mat-option value="3">Value 3</mat-option>
@@ -50,7 +50,7 @@
           </mat-form-field>
 
           <mat-form-field>
-            <mat-select placeholder="Multi select" multiple="true">
+            <mat-select placeholder="Multi select" multiple="true" formControlName="multiSelection">
               <mat-option value="1">Value 1</mat-option>
               <mat-option value="2">Value 2</mat-option>
               <mat-option value="3">Value 3</mat-option>

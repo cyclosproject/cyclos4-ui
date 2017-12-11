@@ -1,5 +1,11 @@
-import { Component, OnInit, Input, Output, ViewChild, EventEmitter, forwardRef, ElementRef, ChangeDetectionStrategy } from '@angular/core';
-import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
+import { 
+  Component, OnInit, Input, Output, ViewChild, EventEmitter, forwardRef,
+  ElementRef, ChangeDetectionStrategy, SkipSelf, Host, Optional
+} from '@angular/core';
+import {
+  NG_VALUE_ACCESSOR, ControlValueAccessor, FormControl, ControlContainer,
+  FormGroup, FormBuilder, Validators
+} from '@angular/forms';
 import { FormatService } from 'app/core/format.service';
 
 // Definition of the exported NG_VALUE_ACCESSOR provider
@@ -19,9 +25,8 @@ export const DECIMAL_FIELD_VALUE_ACCESSOR = {
   providers: [DECIMAL_FIELD_VALUE_ACCESSOR]
 })
 export class DecimalFieldComponent implements OnInit, ControlValueAccessor {
-  constructor(
-    private formatService: FormatService
-  ) { }
+  @Input() formControl: FormControl;
+  @Input() formControlName: string;
 
   @Input() focused: boolean | string;
   @Input() prefix: string;
@@ -34,8 +39,8 @@ export class DecimalFieldComponent implements OnInit, ControlValueAccessor {
   @Output() change: EventEmitter<string> = new EventEmitter();
   @Output() blur: EventEmitter<string> = new EventEmitter();
 
-  private _integerPart: string;
-  private _decimalPart: string;
+  /** This is the internal form, holding both integer and decimal parts */
+  form: FormGroup;
   private _scale = 0;
 
   @ViewChild('integerField')
@@ -43,18 +48,43 @@ export class DecimalFieldComponent implements OnInit, ControlValueAccessor {
   @ViewChild('decimalField')
   private decimalField: ElementRef;
 
-
   private changeCallback = (_: any) => { };
   private touchedCallback = () => { };
 
+  constructor(
+    @Optional() @Host() @SkipSelf()
+    private controlContainer: ControlContainer,
+    private formatService: FormatService,
+    formBuilder: FormBuilder
+  ) {
+    this.form = formBuilder.group({
+      'integer': [null, Validators.required],
+      'decimal': null,
+    });
+  }
+
+  ngOnInit() {
+    this.decimalSeparator = this.formatService.decimalSeparator;
+
+    if (this.controlContainer && this.formControlName) {
+      const control = this.controlContainer.control.get(this.formControlName);
+      if (control instanceof FormControl) {
+        this.formControl = control;
+      }
+    }
+  }
+
   @Input()
   get value(): string {
-    if (this._integerPart == null || this._integerPart === '') {
+    const value = this.form.value;
+    const integerPart = value.integer;
+
+    if (integerPart == null || integerPart === '') {
       return null;
     }
     return this._scale === 0
-      ? this._integerPart
-      : this._integerPart + '.' + this._decimalPart;
+      ? integerPart
+      : integerPart + '.' + value.decimal;
   }
   set value(value: string) {
     value = this.formatService.numberToFixed(value, this._scale);
@@ -62,55 +92,20 @@ export class DecimalFieldComponent implements OnInit, ControlValueAccessor {
       // Nothing changed
       return;
     }
+    let integerPart: string;
+    let decimalPart: string;
     if (this._scale === 0) {
-      this._integerPart = value;
-      this._decimalPart = null;
+      integerPart = value;
+      decimalPart = null;
     } else {
       const pos = value == null ? -1 : value.indexOf('.');
-      this._integerPart = pos < 0 ? value : value.substr(0, pos);
-      this._decimalPart = pos < 0 ? '0'.repeat(this.scale) : value.substr(pos + 1);
+      integerPart = pos < 0 ? value : value.substr(0, pos);
+      decimalPart = pos < 0 ? '0'.repeat(this.scale) : value.substr(pos + 1);
     }
-    this.emitValue();
-  }
-
-  @Input()
-  get integerPart(): string | number {
-    return this._integerPart;
-  }
-  set integerPart(integerPart: string | number) {
-    if (this._integerPart === integerPart) {
-      // No changes
-      return;
-    }
-    if (typeof integerPart === 'number') {
-      this._integerPart = String(integerPart);
-    } else if (typeof integerPart === 'string'
-      && integerPart.match(/^[0-9]*$/)) {
-      this._integerPart = integerPart;
-    } else {
-      this._integerPart = null;
-    }
-    this.emitValue();
-  }
-
-  @Input() @Output()
-  get decimalPart(): string | number {
-    return this._decimalPart;
-  }
-  set decimalPart(decimalPart: string | number) {
-    if (this._decimalPart === decimalPart) {
-      // No changes
-      return;
-    }
-    if (typeof decimalPart === 'number') {
-      this._decimalPart = String(decimalPart);
-    } else if (typeof decimalPart === 'string'
-      && decimalPart.match(/^[0-9]*$/)) {
-      this._decimalPart = decimalPart;
-    } else {
-      this._decimalPart = null;
-    }
-    this.emitValue();
+    this.form.setValue({
+      integer: integerPart,
+      decimal: decimalPart
+    });
   }
 
   @Input()
@@ -123,10 +118,6 @@ export class DecimalFieldComponent implements OnInit, ControlValueAccessor {
 
   get scale(): number {
     return this._scale;
-  }
-
-  ngOnInit() {
-    this.decimalSeparator = this.formatService.decimalSeparator;
   }
 
   private emitValue(): void {
@@ -147,13 +138,19 @@ export class DecimalFieldComponent implements OnInit, ControlValueAccessor {
   }
 
   private adjustDecimalPart(): void {
-    const dec = (this._decimalPart || '');
-    if (dec.length < this._scale) {
-      this._decimalPart = dec + '0'.repeat(this._scale - dec.length);
-      this.emitValue();
-    } else if (dec.length > this._scale) {
-      this._decimalPart = dec.substr(0, this._scale);
-      this.emitValue();
+    let decimalPart = (this.form.value.decimal || '');
+    let changed = false;
+    if (decimalPart.length < this._scale) {
+      decimalPart = decimalPart + '0'.repeat(this._scale - decimalPart.length);
+      changed = true;
+    } else if (decimalPart.length > this._scale) {
+      decimalPart = decimalPart.substr(0, this._scale);
+      changed = true;
+    }
+    if (changed) {
+      this.form.patchValue({
+        decimal: decimalPart
+      });
     }
   }
 

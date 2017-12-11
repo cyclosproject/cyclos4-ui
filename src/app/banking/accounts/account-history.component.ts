@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Injector, ViewChild, AfterViewChecked } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Injector, ViewChild } from '@angular/core';
 import {
   DataForAccountHistory, Currency, EntityReference, PreselectedPeriod,
   AccountHistoryResult, AccountKind, AccountHistoryStatus, TransferFilter
@@ -9,9 +9,13 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { BaseBankingComponent } from 'app/banking/base-banking.component';
 import { TableDataSource } from 'app/shared/table-datasource';
 import { ApiHelper } from 'app/shared/api-helper';
-import { NgForm } from '@angular/forms';
+import { NgForm, FormGroup, FormBuilder } from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';
 import { tap } from 'rxjs/operators/tap';
+import { debounceTime } from 'rxjs/operators/debounceTime';
+import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged';
+import { switchMap } from 'rxjs/operators/switchMap';
+import { Observable } from 'rxjs/Observable';
 
 /** Information for an account status element shown on top */
 export type StatusIndicator = {
@@ -31,15 +35,27 @@ const STATUS_FIELDS = { fields: ['status'] };
   styleUrls: ['account-history.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AccountHistoryComponent extends BaseBankingComponent implements AfterViewChecked {
+export class AccountHistoryComponent extends BaseBankingComponent {
   constructor(
     injector: Injector,
-    private accountsService: AccountsService
+    private accountsService: AccountsService,
+    formBuilder: FormBuilder
   ) {
     super(injector);
+    this.form = formBuilder.group({
+      transferFilter: null,
+      preselectedPeriod: null,
+      periodBegin: null,
+      periodEnd: null
+    });
+    this.subscriptions.push(this.form.valueChanges.subscribe(value => {
+      this.update(value);
+    }));
   }
 
   data = new BehaviorSubject<DataForAccountHistory>(null);
+
+  form: FormGroup;
 
   get type(): EntityReference {
     const data = this.data.value;
@@ -81,44 +97,12 @@ export class AccountHistoryComponent extends BaseBankingComponent implements Aft
     return [];
   }
 
-  get transferFilterId(): string {
-    const filters = this.query.transferFilters || [];
-    return filters.length === 0 ? null : filters[1];
-  }
-  set transferFilterId(id: string) {
-    this.query.transferFilters = [id];
-  }
-
-  private _preselectedPeriod: PreselectedPeriod;
-  get preselectedPeriod(): PreselectedPeriod {
-    return this._preselectedPeriod;
-  }
-  set preselectedPeriod(preselectedPeriod: PreselectedPeriod) {
-    this._preselectedPeriod = preselectedPeriod;
-    let begin: string, end: string;
-    const periods = this.preselectedPeriods;
-    if (preselectedPeriod.begin == null || preselectedPeriod.end == null) {
-      const first = periods[0] || {};
-      begin = first.begin;
-      end = first.end;
-    } else {
-      begin = preselectedPeriod.begin;
-      end = preselectedPeriod.end;
-    }
-    this.query.datePeriod[0] = begin;
-    this.query.datePeriod[1] = end;
-  }
-
   query: any;
   dataSource = new TableDataSource<AccountHistoryResult>();
   status = new BehaviorSubject<StatusIndicator[]>([]);
   loaded = new BehaviorSubject<boolean>(false);
   private dataLoaded = false;
   private statusLoaded = false;
-
-  @ViewChild('filtersForm')
-  private filtersForm: NgForm;
-  private filtersSubscription: Subscription;
 
   get displayedColumns(): string[] {
     if (this.layout.xs) {
@@ -182,35 +166,34 @@ export class AccountHistoryComponent extends BaseBankingComponent implements Aft
         }
         for (const preselectedPeriod of data.preselectedPeriods) {
           if (preselectedPeriod.defaultOption) {
-            this.preselectedPeriod = preselectedPeriod;
+            this.form.patchValue({
+              preselectedPeriod: preselectedPeriod
+            });
             break;
           }
         }
 
         // Fetch the account history
-        this.update();
+        this.update(this.form.value);
       });
-  }
-
-  ngOnDestroy() {
-    super.ngOnDestroy();
-    if (this.filtersSubscription) {
-      this.filtersSubscription.unsubscribe();
-    }
-  }
-
-  ngAfterViewChecked() {
-    // Update the query when the filters change
-    if (this.filtersForm && this.filtersSubscription == null) {
-      this.filtersSubscription =
-        this.filtersForm.control.valueChanges.subscribe(() => this.update());
-    }
   }
 
   // TODO this method can be improved by using the merge() rxjs operator,
   // so a single subscription is enough for both calls, and there would ne no need
   // for the dataLoaded, statusLoaded and loaded attributes.
-  update() {
+  update(value: any) {
+    if (value) {
+      // Update the query from the current form value
+      const filter = value.transferFilter as TransferFilter;
+      this.query.transferFilters = filter == null ? [] : [filter.id];
+
+      const period = (value.preselectedPeriod || {}) as PreselectedPeriod;
+      this.query.datePeriod = [
+        period.begin || value.periodBegin,
+        period.end || value.periodEnd,
+      ];
+    }
+
     // Update the results
     const results = this.accountsService.searchAccountHistoryResponse(this.query).pipe(
       tap(response => {

@@ -13,32 +13,29 @@
     </div>
   </page-header>
   <page-filters>
-    <form #filtersForm="ngForm" *ngIf="query != null" fxLayout="column">
+    <form *ngIf="query != null" fxLayout="column" [formGroup]="form">
       <mat-form-field *ngIf="transferFilters.length > 1">
         <mat-select fxFlex="grow"
           [placeholder]="bankingMessages.accountTransferFilter()"
-          [(ngModel)]="transferFilterId" name="transferFilter">
+          formControlName="transferFilter">
           <mat-option [value]="">{{ generalMessages.searchAll() }}</mat-option>
           <mat-option *ngFor="let filter of transferFilters"
-            [value]="filter.id">{{ filter.name }}</mat-option>
+            [value]="filter">{{ filter.name }}</mat-option>
         </mat-select>
       </mat-form-field>
       <mat-form-field *ngIf="preselectedPeriods.length > 1">
-        <mat-select
-          fxFlex="grow"
+        <mat-select fxFlex="grow"
           [placeholder]="generalMessages.period()"
-          [(ngModel)]="preselectedPeriod" name="preselectedPeriod">
+          formControlName="preselectedPeriod">
           <mat-option *ngFor="let period of preselectedPeriods"
             [value]="period">{{ period.name }}</mat-option>
         </mat-select>
       </mat-form-field>
-      <date-field *ngIf="preselectedPeriod?.begin == null"
-        fxFlex="grow"
-        [(ngModel)]="query.datePeriod[0]" name="periodBegin"
+      <date-field *ngIf="form.value?.preselectedPeriod?.begin == null"
+        formControlName="periodBegin" fxFlex="grow"
         [placeholder]="generalMessages.periodBegin()"></date-field>
-      <date-field *ngIf="preselectedPeriod?.end == null"
-        fxFlex="grow"
-        [(ngModel)]="query.datePeriod[1]" name="periodEnd"
+      <date-field *ngIf="form.value?.preselectedPeriod?.end == null"
+        formControlName="periodEnd" fxFlex="grow"
         [placeholder]="generalMessages.periodEnd()"></date-field>
     </form>
   </page-filters>

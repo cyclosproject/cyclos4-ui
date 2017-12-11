@@ -1,10 +1,13 @@
 <mat-form-field fxFlex="grow" *ngIf="formatService.materialDateFormats | async">
-  <input #input="ngModel" matInput
+  <input #input matInput
     [matDatepicker]="datepicker"
     [focused]="focused"
     [placeholder]="placeholder"
     [required]="required"
-    [(ngModel)]="value" [ngModelOptions]="{standalone: true}">
+    [formControl]="formControl">
   <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
+  <mat-error>
+    {{formControl?.getError('message')}}
+  </mat-error>
 </mat-form-field>
 <mat-datepicker [touchUi]="layout.xs" #datepicker></mat-datepicker>

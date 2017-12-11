@@ -38,6 +38,10 @@ const rootRoutes: Routes = [
     }
   },
   {
+    path: 'users',
+    loadChildren: 'app/users/users.module#UsersModule'
+  },
+  {
     path: 'banking',
     loadChildren: 'app/banking/banking.module#BankingModule'
   },
@@ -52,7 +56,9 @@ const rootRoutes: Routes = [
  */
 @NgModule({
   imports: [
-    RouterModule.forRoot(rootRoutes),
+    RouterModule.forRoot(rootRoutes, {
+      onSameUrlNavigation: 'reload'
+    }),
     SharedModule
   ],
   declarations: [

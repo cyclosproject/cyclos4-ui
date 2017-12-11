@@ -1,9 +1,9 @@
 {
   "swagger" : "2.0",
   "info" : {
-    "description" : "The REST API for Cyclos 4.9-BETA",
-    "version" : "4.9-BETA",
-    "title" : "Cyclos 4.9-BETA API"
+    "description" : "The REST API for Cyclos 4.9",
+    "version" : "4.9",
+    "title" : "Cyclos 4.9 API"
   },
   "host" : "localhost:8888",
   "basePath" : "/api",
@@ -9151,7 +9151,16 @@
         }, {
           "name" : "transferFilters",
           "in" : "query",
-          "description" : "Reference to the transfer filters, which filters transfers by type.\n",
+          "description" : "Reference to the transfer filters, which filters transfers by type. May be either the internal id or qualified transfer filter internal name, in the format `accountType.transferFilter`.\n",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "transferTypes",
+          "in" : "query",
+          "description" : "Reference to the transfer types for filter. May be either the internal id or qualified transfer type internal name, in the format `accountType.transferType`.\n",
           "required" : false,
           "type" : "array",
           "items" : {
@@ -10442,6 +10451,83 @@
         "x-contentType" : "application/json"
       }
     },
+    "/users/validate/{group}/{field}" : {
+      "get" : {
+        "tags" : [ "Users" ],
+        "summary" : "Validates the value of a single field for user registration",
+        "description" : "Validates the value of a field which will be used for registering a\nuser, returning either `204 No Content` if the field is valid or\n`200` with the error description if the field is invalid.\nNotice that the result is the validation error. If a `422` status\ncode is returned it means that either the given `field` is invalid\nor the given `value` is empty.\n",
+        "operationId" : "validateUserRegistrationField",
+        "produces" : [ "application/json", "text/plain" ],
+        "parameters" : [ {
+          "name" : "group",
+          "in" : "path",
+          "description" : "The internal name or id of the group in which the user is being registered \n",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "field",
+          "in" : "path",
+          "description" : "One of: `name` (full name), `username` (login name), `email`, 'mobilePhone`, `landLinePhone` or the internal name of a custom field. \n",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "value",
+          "in" : "query",
+          "description" : "The value to be validated",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "asMember",
+          "in" : "query",
+          "description" : "Flag required only when the authenticated user is a member and a broker, in that case we need to distingish between both.\nIf true then the groups returned will be those allowed as member, otherwise will return the goups allowed as broker.  \n",
+          "required" : false,
+          "type" : "boolean"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The validation error if the field is invalid",
+            "schema" : {
+              "type" : "string"
+            }
+          },
+          "204" : {
+            "description" : "No content if the field is valid"
+          },
+          "401" : {
+            "description" : "Unauthorized access. Missing or invalid crendentials supplied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/UnauthorizedError"
+            }
+          },
+          "403" : {
+            "description" : "Permission denied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/ForbiddenError"
+            }
+          },
+          "404" : {
+            "description" : "An expected data was not found",
+            "schema" : {
+              "$ref" : "#/definitions/NotFoundError"
+            }
+          },
+          "422" : {
+            "description" : "Input error. Either a validation error or the maximum allowed items was exceeded\n",
+            "schema" : {
+              "$ref" : "#/definitions/InputError"
+            }
+          },
+          "500" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "x-accepts" : "application/json",
+        "x-contentType" : "application/json"
+      }
+    },
     "/users/{user}" : {
       "get" : {
         "tags" : [ "Users" ],
@@ -11006,7 +11092,16 @@
         }, {
           "name" : "transferFilters",
           "in" : "query",
-          "description" : "Reference to the transfer filters, which filters transfers by type.\n",
+          "description" : "Reference to the transfer filters, which filters transfers by type. May be either the internal id or qualified transfer filter internal name, in the format `accountType.transferFilter`.\n",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "transferTypes",
+          "in" : "query",
+          "description" : "Reference to the transfer types for filter. May be either the internal id or qualified transfer type internal name, in the format `accountType.transferType`.\n",
           "required" : false,
           "type" : "array",
           "items" : {
@@ -11302,7 +11397,16 @@
         }, {
           "name" : "transferFilters",
           "in" : "query",
-          "description" : "Reference to the transfer filters, which filters transfers by type.\n",
+          "description" : "Reference to the transfer filters, which filters transfers by type. May be either the internal id or qualified transfer filter internal name, in the format `accountType.transferFilter`.\n",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "transferTypes",
+          "in" : "query",
+          "description" : "Reference to the transfer types for filter. May be either the internal id or qualified transfer type internal name, in the format `accountType.transferType`.\n",
           "required" : false,
           "type" : "array",
           "items" : {
@@ -12815,6 +12919,15 @@
           "description" : "Reference to the broker of users involved in transfers. Is only taken into account if authenticated as administrator.\n",
           "required" : false,
           "type" : "string"
+        }, {
+          "name" : "transferTypes",
+          "in" : "query",
+          "description" : "Reference to the transfer types for filter. May be either the internal id or qualified transfer type internal name, in the format `accountType.transferType`.\n",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          }
         }, {
           "name" : "channels",
           "in" : "query",
@@ -18746,7 +18859,14 @@
           },
           "transferFilters" : {
             "type" : "array",
-            "description" : "Reference to the transfer filters, which filters transfers by type.\n",
+            "description" : "Reference to the transfer filters, which filters transfers by type.\nMay be either the internal id or qualified transfer filter internal\nname, in the format `accountType.transferFilter`.\n",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "transferTypes" : {
+            "type" : "array",
+            "description" : "Reference to the transfer types for filter. May be either the\ninternal id or qualified transfer type internal name, in the\nformat `accountType.transferType`.\n",
             "items" : {
               "type" : "string"
             }
@@ -19558,6 +19678,10 @@
               "$ref" : "#/definitions/EntityReference"
             }
           },
+          "hasValuesList" : {
+            "type" : "boolean",
+            "description" : "Returns whether this custom field has a list of possible values,\naccording to its type.\n"
+          },
           "possibleValues" : {
             "type" : "array",
             "description" : "Only applicable when the custom field is enumerated (single or multi\nselection). Contains the possible values for selection.\nEach value may or may not have a category.\nWhen they have, it will be a string pointing to the internal name\n(if available) or id of the possible value category,\nwhich can be looked up in the categories property.\n",
@@ -19570,6 +19694,71 @@
             "description" : "Only applicable when the custom field is dynamic selection.\nContains the script-generated possible values.\n",
             "items" : {
               "$ref" : "#/definitions/CustomFieldDynamicValue"
+            }
+          },
+          "stringValues" : {
+            "type" : "array",
+            "description" : "Only applicable when the custom field type is `string` and `hasValuesList` is `true`. Contains the possible string values.\n",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "dateValues" : {
+            "type" : "array",
+            "description" : "Only applicable when the custom field type is `date` and `hasValuesList` is `true`. Contains the possible date values.\n",
+            "items" : {
+              "type" : "string",
+              "format" : "date-time"
+            }
+          },
+          "integerValues" : {
+            "type" : "array",
+            "description" : "Only applicable when the custom field type is `integer` and `hasValuesList` is `true`. Contains the possible integer values.\n",
+            "items" : {
+              "type" : "integer"
+            }
+          },
+          "decimalValues" : {
+            "type" : "array",
+            "description" : "Only applicable when the custom field type is `decimal` and `hasValuesList` is `true`. Contains the possible decimal values.\n",
+            "items" : {
+              "type" : "string",
+              "format" : "number"
+            }
+          },
+          "adValues" : {
+            "type" : "array",
+            "description" : "Only applicable when the custom field is linked entity of type `advertisement` and `hasValuesList` is `true`. Contains the possible advertisements.\n",
+            "items" : {
+              "$ref" : "#/definitions/Ad"
+            }
+          },
+          "transactionValues" : {
+            "type" : "array",
+            "description" : "Only applicable when the custom field is linked entity of type `transaction` and `hasValuesList` is `true`. Contains the possible transactions.\n",
+            "items" : {
+              "$ref" : "#/definitions/Transaction"
+            }
+          },
+          "transferValues" : {
+            "type" : "array",
+            "description" : "Only applicable when the custom field is linked entity of type `transfer` and `hasValuesList` is `true`. Contains the possible transfers.\n",
+            "items" : {
+              "$ref" : "#/definitions/Transfer"
+            }
+          },
+          "recordValues" : {
+            "type" : "array",
+            "description" : "Only applicable when the custom field is linked entity of type `record` and `hasValuesList` is `true`. Contains the possible records.\n",
+            "items" : {
+              "$ref" : "#/definitions/Record"
+            }
+          },
+          "userValues" : {
+            "type" : "array",
+            "description" : "Only applicable when the custom field is linked entity of type `user` and `hasValuesList` is `true`. Contains the possible users.\n",
+            "items" : {
+              "$ref" : "#/definitions/User"
             }
           }
         }
@@ -19641,7 +19830,7 @@
           },
           "booleanValue" : {
             "type" : "boolean",
-            "description" : "The field value if the field type is `bool`.\n"
+            "description" : "The field value if the field type is `boolean`.\n"
           },
           "integerValue" : {
             "type" : "integer",
@@ -19658,10 +19847,6 @@
             "items" : {
               "$ref" : "#/definitions/CustomFieldPossibleValue"
             }
-          },
-          "linkedEntityValue" : {
-            "description" : "The field value if the field type is `linkedEntity`.\n",
-            "$ref" : "#/definitions/EntityReference"
           },
           "dynamicValue" : {
             "description" : "The field value if the field type is `dynamicSelection`.\n",
@@ -19680,10 +19865,34 @@
             "items" : {
               "$ref" : "#/definitions/Image"
             }
+          },
+          "linkedEntityValue" : {
+            "description" : "The field value if the field type is `linkedEntity`.\n",
+            "$ref" : "#/definitions/EntityReference"
+          },
+          "adValue" : {
+            "description" : "The field value if the field type is `linkedEntity` and the linked entity type is `advertisement`.\n",
+            "$ref" : "#/definitions/Ad"
+          },
+          "transactionValue" : {
+            "description" : "The field value if the field type is `linkedEntity` and the linked entity type is `transaction`.\n",
+            "$ref" : "#/definitions/Transaction"
+          },
+          "transferValue" : {
+            "description" : "The field value if the field type is `linkedEntity` and the linked entity type is `transfer`.\n",
+            "$ref" : "#/definitions/Transfer"
+          },
+          "recordValue" : {
+            "description" : "The field value if the field type is `linkedEntity` and the linked entity type is `record`.\n",
+            "$ref" : "#/definitions/Record"
+          },
+          "userValue" : {
+            "description" : "The field value if the field type is `linkedEntity` and the linked entity type is `user`.\n",
+            "$ref" : "#/definitions/User"
           }
         }
       } ],
-      "description" : "Holds detailed information about a custom field value. The actual value should be read from a property depending on the field type. If the type is either `string`, `text`, `richText` or `url`, the property containing the value is `stringValue`. If the type is `integer`, the property is `integerValue`. If `decimal`, `decimalValue`. If `date`, `dateValue`. If `bool`, `booleanValue`. If either `singleSelection` or `multiSelection`, `possibleValues`. If `dynamicSelection`, `dynamicValue`. Finally, if `linkedEntity`, `linkedEntityValue`.\n"
+      "description" : "Holds detailed information about a custom field value. The actual value should be read from a property depending on the field type: - If the type is either `string`,\n  `text`,\n  `richText` or\n  `url`, the property is on `stringValue`;\n- If the type is `integer`, the property is `integerValue`; - If the type is `decimal`, the property is `decimalValue`; - If the type is `date`, the property is `dateValue`; - If the type is `boolean`, the property is `booleanValue`; - If the type is either `singleSelection` or\n  `multiSelection`, the property is `possibleValues`;\n- If the type is `dynamicSelection`, the property is `dynamicValue`; - If the type is `file`, the property is `fileValues`; - If the type is `image`, the property is `imageValues`; - Finally, if the type is `linkedEntity`, it depends on the value\n  of the field's `linkedEntityType`:\n  - If the entity type is `user`, the property is `userValue`;\n  - If the entity type is `record`, the property is `recordValue`;\n  - If the entity type is `transaction`, the property is `transactionValue`;\n  - If the entity type is `transfer`, the property is `transferValue`;\n  - If the entity type is `advertisement`, the property is `adValue`.  \n"
     },
     "DataForAccountHistory" : {
       "allOf" : [ {
@@ -19771,6 +19980,10 @@
     "DataForLogin" : {
       "type" : "object",
       "properties" : {
+        "accessPasswordType" : {
+          "description" : "The password type used for login access\n",
+          "$ref" : "#/definitions/EntityReference"
+        },
         "principalTypes" : {
           "type" : "array",
           "description" : "The identification methods accepted for login",
@@ -21039,6 +21252,10 @@
         "operationalKey" : {
           "type" : "string",
           "description" : "The Application Key used to operate with the tag, encoded as hex.\nUsed when making a payment or to assign an already initialized tag to a user.\n"
+        },
+        "tokenLabel" : {
+          "type" : "string",
+          "description" : "The same label given by the client at initialization or the label\ngenerated according the the pattern defined.\n"
         }
       },
       "description" : "Contains the keys that should be stored on the NFC tag\n"
@@ -23481,6 +23698,13 @@
           "broker" : {
             "type" : "string",
             "description" : "Reference to the broker of users involved in transfers. Is only\ntaken into account if authenticated as administrator.\n"
+          },
+          "transferTypes" : {
+            "type" : "array",
+            "description" : "Reference to the transfer types for filter. May be either the\ninternal id or qualified transfer type internal name, in the\nformat `accountType.transferType`.\n",
+            "items" : {
+              "type" : "string"
+            }
           },
           "channels" : {
             "type" : "array",

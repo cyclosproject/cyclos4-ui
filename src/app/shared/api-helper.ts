@@ -5,6 +5,8 @@ import {
 import { environment } from 'environments/environment';
 import { GeneralMessages } from 'app/messages/general-messages';
 import { FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { AsyncValidatorFn } from '@angular/forms/src/directives/validators';
+import { CustomFieldTypeEnum } from 'app/api/models/custom-field-type-enum';
 
 /**
  * Helper methods for working with API model
@@ -22,6 +24,9 @@ export class ApiHelper {
 
   /** The available options of page sizes in the paginator */
   static PAGE_SIZES = [40, 100, 200];
+
+  /** Time (in ms) to wait between keystrokes to make a request */
+  static DEBOUNCE_TIME = 400;
 
   /**
    * Returns the entity internal name, if any, otherwise the id.
@@ -153,16 +158,20 @@ export class ApiHelper {
    * Returns a FormGroup which contains a form control for each of the given custom fields
    * @param formBuilder The form builder
    * @param customFields The custom fields
+   * @param asyncValProvider If provided will be called for each custom field to provide an additional,
+   *                         asynchronous validation
    * @returns The FormGroup
    */
-  static customValuesFormGroup(formBuilder: FormBuilder, customFields: CustomFieldDetailed[]): FormGroup {
+  static customValuesFormGroup(formBuilder: FormBuilder, customFields: CustomFieldDetailed[],
+    asyncValProvider?: (CustomFieldDetailed) => AsyncValidatorFn): FormGroup {
     const customValues = {};
     for (const cf of customFields) {
       const val: ValidatorFn[] = [];
       if (cf.required) {
         val.push(Validators.required);
       }
-      customValues[cf.internalName] = [null, val];
+      const defVal: any = cf.defaultValue;
+      customValues[cf.internalName] = [defVal, val, asyncValProvider ? asyncValProvider(cf) : null];
     }
     return formBuilder.group(customValues);
   }

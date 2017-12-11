@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 import {
@@ -92,7 +92,6 @@ import { LinearStepperControlComponent } from 'app/shared/linear-stepper-control
   imports: [
     CommonModule,
     RouterModule,
-    FormsModule,
     ReactiveFormsModule,
     FlexLayoutModule,
     MatButtonModule,
@@ -114,7 +113,6 @@ import { LinearStepperControlComponent } from 'app/shared/linear-stepper-control
   exports: [
     CommonModule,
     RouterModule,
-    FormsModule,
     ReactiveFormsModule,
     FlexLayoutModule,
     MatButtonModule,

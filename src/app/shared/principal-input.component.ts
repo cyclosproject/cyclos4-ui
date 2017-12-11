@@ -1,9 +1,10 @@
 import {
   Component, OnInit, Input, forwardRef, ViewChild,
-  ElementRef, ChangeDetectionStrategy } from '@angular/core';
+  ElementRef, ChangeDetectionStrategy, SkipSelf, Host, Optional
+} from '@angular/core';
 import {
   NG_VALUE_ACCESSOR, ControlValueAccessor, AbstractControl,
-  ValidationErrors, Validator, NG_VALIDATORS
+  ValidationErrors, Validator, NG_VALIDATORS, FormControl, ControlContainer
 } from '@angular/forms';
 import { PrincipalTypeInput, PrincipalTypeKind } from 'app/api/models';
 import { CustomFieldInputComponent } from 'app/shared/custom-field-input.component';
@@ -35,6 +36,8 @@ export const PRINCIPAL_VALIDATOR = {
   ]
 })
 export class PrincipalInputComponent implements OnInit, ControlValueAccessor, Validator {
+  @Input() formControl: FormControl;
+  @Input() formControlName: string;
 
   @Input()
   public type: PrincipalTypeInput;
@@ -59,6 +62,21 @@ export class PrincipalInputComponent implements OnInit, ControlValueAccessor, Va
   private touchedCallback = () => { };
   private validatorChangeCallback = () => { };
 
+  constructor(
+    @Optional() @Host() @SkipSelf()
+    private controlContainer: ControlContainer
+  ) { }
+
+  ngOnInit() {
+    this.isCustomField = this.type.kind === PrincipalTypeKind.CUSTOM_FIELD;
+    if (this.controlContainer && this.formControlName) {
+      const control = this.controlContainer.control.get(this.formControlName);
+      if (control instanceof FormControl) {
+        this.formControl = control;
+      }
+    }
+  }
+
   @Input()
   get value(): string {
     return this._value;
@@ -74,10 +92,6 @@ export class PrincipalInputComponent implements OnInit, ControlValueAccessor, Va
   private emitValue(): void {
     this.changeCallback(this._value);
     this.validatorChangeCallback();
-  }
-
-  ngOnInit() {
-    this.isCustomField = this.type.kind === PrincipalTypeKind.CUSTOM_FIELD;
   }
 
   // ControlValueAccessor methods

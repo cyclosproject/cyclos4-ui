@@ -1,0 +1,11 @@
+<ng-container [formGroup]="form">
+  <div class="form-info">{{ usersMessages.registrationGroupMessage() }}</div>
+
+  <mat-radio-group #radioGroup formControlName="group">
+    <div *ngFor="let group of groups">
+      <mat-radio-button [value]="group" [matTooltip]="group.description">
+        {{ group.name }}
+      </mat-radio-button>
+    </div>
+  </mat-radio-group>
+</ng-container>

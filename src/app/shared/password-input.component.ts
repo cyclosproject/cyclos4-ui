@@ -1,10 +1,11 @@
 import {
   ElementRef, Component, Input, Output, EventEmitter, ViewChild, AfterViewInit,
-  ChangeDetectorRef, forwardRef, Provider, ChangeDetectionStrategy, OnInit, OnDestroy
+  ChangeDetectorRef, forwardRef, Provider, ChangeDetectionStrategy,
+  OnInit, OnDestroy, SkipSelf, Host, Optional
 } from '@angular/core';
 import {
   NG_VALUE_ACCESSOR, NG_VALIDATORS, ControlValueAccessor, Validator,
-  AbstractControl, ValidationErrors
+  AbstractControl, ValidationErrors, ControlContainer, FormControl
 } from '@angular/forms';
 import { PasswordInput } from 'app/api/models';
 import { PasswordInputMethodEnum } from 'app/api/models';
@@ -51,6 +52,8 @@ export const PASSWORD_INPUT_VALIDATOR: Provider = {
   ]
 })
 export class PasswordInputComponent implements OnInit, OnDestroy, AfterViewInit, ControlValueAccessor, Validator {
+  @Input() formControl: FormControl;
+  @Input() formControlName: string;
 
   // Contains the current characters combination shown in the VK
   currentVKCombinations: string[];
@@ -70,7 +73,6 @@ export class PasswordInputComponent implements OnInit, OnDestroy, AfterViewInit,
 
   @Output() otpSent = new EventEmitter<void>();
 
-  private _password: string;
   virtualKeyboard: boolean;
   otpIcons: any = OTP_ICONS;
   otpMediums: any;
@@ -92,19 +94,9 @@ export class PasswordInputComponent implements OnInit, OnDestroy, AfterViewInit,
     }
   }
 
-
-  get password(): string {
-    return this._password;
-  }
-  set password(password: string) {
-    if (this._password === password) {
-      return;
-    }
-    this._password = password;
-    this.emitPasswordChange();
-  }
-
   constructor(
+    @Optional() @Host() @SkipSelf()
+    private controlContainer: ControlContainer,
     private authService: AuthService,
     private notificationService: NotificationService,
     private generalMessages: GeneralMessages,
@@ -117,6 +109,13 @@ export class PasswordInputComponent implements OnInit, OnDestroy, AfterViewInit,
 
     if (this.placeholder == null) {
       this.placeholder = this.passwordInput.name;
+    }
+
+    if (this.controlContainer && this.formControlName) {
+      const control = this.controlContainer.control.get(this.formControlName);
+      if (control instanceof FormControl) {
+        this.formControl = control;
+      }
     }
   }
 
@@ -168,11 +167,6 @@ export class PasswordInputComponent implements OnInit, OnDestroy, AfterViewInit,
     this.updateVKButtons();
   }
 
-  emitPasswordChange() {
-    this.changeCallback(this._password);
-    this.validatorChangeCallback();
-  }
-
   requestOtp(medium: SendMediumEnum): void {
     this.authService.newOtp(medium)
       .subscribe(mediums => {
@@ -211,12 +205,11 @@ export class PasswordInputComponent implements OnInit, OnDestroy, AfterViewInit,
     if (this.enteredVKPassword.length < this._passwordInput.buttons.length) {
       this.currentVKCombinations = this.passwordInput.buttons[this.enteredVKPassword.length];
     }
-    this.password = this._passwordInput.id + '|' + this.enteredVKPassword.join('|');
+    this.formControl.setValue(this._passwordInput.id + '|' + this.enteredVKPassword.join('|'));
   }
 
   // ControlValueAccessor methods
   writeValue(obj: any): void {
-    this.password = obj;
   }
   registerOnChange(fn: any): void {
     this.changeCallback = fn;
@@ -232,17 +225,13 @@ export class PasswordInputComponent implements OnInit, OnDestroy, AfterViewInit,
 
   // Validator methods
   validate(c: AbstractControl): ValidationErrors {
-    if (c.value == null || c.value === '') {
+    const value = c.value;
+    if (value == null || value === '') {
       return {
         required: true
       };
     }
-    let length: number;
-    if (this.passwordInput.inputMethod === PasswordInputMethodEnum.VIRTUAL_KEYBOARD) {
-      length = this.enteredVKPassword.length;
-    } else {
-      length = this._password.length;
-    }
+    const length = value.length;
     if (length < this.passwordInput.minLength) {
       return {
         'minlength': {

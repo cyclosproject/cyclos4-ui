@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from 'app/shared/shared.module';
-import { AccountsRoutingModule } from 'app/banking/banking-routing.module';
+import { BankingRoutingModule } from 'app/banking/banking-routing.module';
 import { BankingMessages } from 'app/messages/banking-messages';
 import { AccountHistoryComponent } from 'app/banking/accounts/account-history.component';
 import { ViewTransferComponent } from 'app/banking/transfers/view-transfer.component';
@@ -14,11 +14,11 @@ import { ViewTransactionComponent } from 'app/banking/transactions/view-transact
 import { ViewTransferDetailsComponent } from 'app/banking/transfers/view-transfer-details.component';
 
 /**
- * Module for displaying an user's accounts and view transfer details
+ * Banking module
  */
 @NgModule({
   imports: [
-    AccountsRoutingModule,
+    BankingRoutingModule,
     SharedModule
   ],
   exports: [],
