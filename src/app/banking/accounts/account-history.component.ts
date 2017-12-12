@@ -174,14 +174,17 @@ export class AccountHistoryComponent extends BaseBankingComponent {
         }
 
         // Fetch the account history
-        this.update(this.form.value);
+        this.update();
       });
   }
 
   // TODO this method can be improved by using the merge() rxjs operator,
   // so a single subscription is enough for both calls, and there would ne no need
   // for the dataLoaded, statusLoaded and loaded attributes.
-  update(value: any) {
+  update(value?: any) {
+    if (value == null) {
+      value = this.form.value;
+    }
     if (value) {
       // Update the query from the current form value
       const filter = value.transferFilter as TransferFilter;
