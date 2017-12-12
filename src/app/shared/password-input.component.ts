@@ -18,6 +18,7 @@ import { GeneralMessages } from 'app/messages/general-messages';
 
 import { MatGridList } from '@angular/material';
 import { Subscription } from 'rxjs/Subscription';
+import { BaseControlComponent } from 'app/shared/base-control.component';
 
 // Contains a mapping between OTP send mediums and material icon ligatures
 const OTP_ICONS = {};
@@ -51,9 +52,9 @@ export const PASSWORD_INPUT_VALIDATOR: Provider = {
     PASSWORD_INPUT_VALIDATOR
   ]
 })
-export class PasswordInputComponent implements OnInit, OnDestroy, AfterViewInit, ControlValueAccessor, Validator {
-  @Input() formControl: FormControl;
-  @Input() formControlName: string;
+export class PasswordInputComponent
+  extends BaseControlComponent<string>
+  implements OnDestroy, AfterViewInit, Validator {
 
   // Contains the current characters combination shown in the VK
   currentVKCombinations: string[];
@@ -81,41 +82,25 @@ export class PasswordInputComponent implements OnInit, OnDestroy, AfterViewInit,
 
   private subscriptions: Subscription[] = [];
 
-  private changeCallback = (_: any) => { };
-  private touchedCallback = () => { };
   private validatorChangeCallback = () => { };
 
-  get disabled(): boolean {
-    return this.passwordComponent == null ? false : this.passwordComponent.nativeElement.disabled || false;
-  }
-  set disabled(disabled: boolean) {
-    if (this.passwordComponent) {
-      this.passwordComponent.nativeElement.disabled = disabled;
-    }
-  }
-
   constructor(
-    @Optional() @Host() @SkipSelf()
-    private controlContainer: ControlContainer,
+    @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
     private authService: AuthService,
     private notificationService: NotificationService,
     private generalMessages: GeneralMessages,
-    private changeDetector: ChangeDetectorRef) { }
+    private changeDetector: ChangeDetectorRef) {
+    super(controlContainer);
+  }
 
   ngOnInit(): void {
+    super.ngOnInit();
     this.otpMediums = {};
     this.otpMediums[SendMediumEnum.EMAIL] = this.generalMessages.passwordOtpMediumEmail();
     this.otpMediums[SendMediumEnum.SMS] = this.generalMessages.passwordOtpMediumSms();
 
     if (this.placeholder == null) {
       this.placeholder = this.passwordInput.name;
-    }
-
-    if (this.controlContainer && this.formControlName) {
-      const control = this.controlContainer.control.get(this.formControlName);
-      if (control instanceof FormControl) {
-        this.formControl = control;
-      }
     }
   }
 
@@ -208,16 +193,8 @@ export class PasswordInputComponent implements OnInit, OnDestroy, AfterViewInit,
     this.formControl.setValue(this._passwordInput.id + '|' + this.enteredVKPassword.join('|'));
   }
 
-  // ControlValueAccessor methods
-  writeValue(obj: any): void {
-  }
-  registerOnChange(fn: any): void {
-    this.changeCallback = fn;
-  }
-  registerOnTouched(fn: any): void {
-    this.touchedCallback = fn;
-  }
-  setDisabledState(isDisabled: boolean): void {
+  onDisabledChange(isDisabled: boolean): void {
+    this.disabled = isDisabled;
     if (this.passwordComponent) {
       this.passwordComponent.nativeElement.disabled = isDisabled;
     }
@@ -225,6 +202,9 @@ export class PasswordInputComponent implements OnInit, OnDestroy, AfterViewInit,
 
   // Validator methods
   validate(c: AbstractControl): ValidationErrors {
+    if (!c.touched) {
+      return null;
+    }
     const value = c.value;
     if (value == null || value === '') {
       return {

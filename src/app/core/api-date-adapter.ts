@@ -2,6 +2,8 @@ import { DateAdapter } from '@angular/material';
 import * as moment from 'moment-mini-ts';
 import { Injectable } from '@angular/core';
 import { FormatService } from 'app/core/format.service';
+import { ApiHelper } from 'app/shared/api-helper';
+import { LengthValidation } from 'app/shared/length-validation';
 
 const DATE_NAMES = [];
 for (let i = 0; i < 31; i++) {
@@ -59,6 +61,10 @@ export class ApiDateAdapter extends DateAdapter<string> {
     return moment().format();
   }
   parse(value: any, parseFormat: any): string {
+    const length = this.length(parseFormat);
+    if (!length.valid(value)) {
+      return ApiHelper.INVALID_DATE;
+    }
     return moment(value, parseFormat).format();
   }
   format(date: string, displayFormat: any): string {
@@ -82,12 +88,25 @@ export class ApiDateAdapter extends DateAdapter<string> {
     return iso8601String;
   }
   isDateInstance(obj: any): boolean {
-    return typeof obj === 'string' && moment(obj).isValid();
+    return typeof obj === 'string' && this.isValid(obj);
   }
   isValid(date: string): boolean {
+    if (date === ApiHelper.INVALID_DATE) {
+      return false;
+    }
     return moment(date).isValid();
   }
   invalid(): string {
-    return undefined;
+    return ApiHelper.INVALID_DATE;
+  }
+
+  private length(parseFormat?: string): LengthValidation {
+    if (parseFormat == null || parseFormat === '') {
+      parseFormat = this.formatService.dateFormat;
+    }
+    const noInputs = parseFormat.replace(/[a-z|A-Z]/g, '');
+    const max = parseFormat.length;
+    const min = max - noInputs.length;
+    return new LengthValidation(min, max);
   }
 }

@@ -40,7 +40,8 @@ export class FormatService {
   dateParser: any;
   materialDateFormats = new BehaviorSubject<MatDateFormats>(null);
 
-  private _dataForUi: DataForUi;
+  dataForUi: DataForUi;
+
   private _monthNames: Names;
   private _dayNames: Names;
 
@@ -73,14 +74,15 @@ export class FormatService {
   }
 
   initialize(dataForUi: DataForUi): void {
-    this._dataForUi = (dataForUi || {});
     // Cyclos uses Java format, such as dd/MM/yyyy. Moment uses all uppercase for those.
-    this.dateFormat = (this._dataForUi.dateFormat || 'YYYY-MM-DD').toUpperCase();
+    this.dateFormat = (dataForUi.dateFormat || 'YYYY-MM-DD').toUpperCase();
 
     // The time format is consistent, except that we want uppercase AM/PM markers.
-    this.timeFormat = (this._dataForUi.timeFormat || 'HH:mm').replace('a', 'A');
-    this.groupingSeparator = this._dataForUi.groupingSeparator || ',';
-    this.decimalSeparator = this._dataForUi.decimalSeparator || '.';
+    this.timeFormat = (dataForUi.timeFormat || 'HH:mm').replace('a', 'A');
+    this.groupingSeparator = dataForUi.groupingSeparator || ',';
+    this.decimalSeparator = dataForUi.decimalSeparator || '.';
+
+    this.dataForUi = dataForUi;
 
     this.materialDateFormats.next({
       parse: {
@@ -93,6 +95,7 @@ export class FormatService {
         monthYearA11yLabel: this.monthYearLabel
       }
     });
+
   }
 
   private get monthYearLabel(): string {
@@ -124,19 +127,12 @@ export class FormatService {
   }
 
   /**
-   * Returns the DataForUi instance
-   */
-  public get dataForUi(): DataForUi {
-    return this._dataForUi;
-  }
-
-  /**
    * Returns the full URL to the configuration image (logo) with the given id
    */
   getLogoUrl(id: string): string {
     return this.apiConfiguration.rootUrl
       + '/../content/images/currentConfiguration/'
-      + id + '?' + this._dataForUi.resourceCacheKey;
+      + id + '?' + this.dataForUi.resourceCacheKey;
   }
 
   /**
@@ -286,25 +282,5 @@ export class FormatService {
     const prefix = currency.prefix || '';
     const suffix = currency.suffix || '';
     return prefix + this.formatAsNumber(num, decimals) + suffix;
-  }
-
-  /**
-   * Parses the given text as string in the configuration-defined format,
-   * returning an ISO formatted date.
-   * If the input is null or empty, returns null.
-   * If the input is an invalid date, returns 'invalid'.
-   */
-  parseDate(text: string): string {
-    if (text == null || text === '') {
-      return null;
-    }
-    if (text.length !== this.dateFormat.length) {
-      return undefined;
-    }
-    const mm = moment(text, this.dateFormat);
-    if (!mm.isValid()) {
-      return undefined;
-    }
-    return mm.format('YYYY-MM-DD');
   }
 }

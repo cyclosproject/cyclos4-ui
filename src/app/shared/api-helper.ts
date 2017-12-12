@@ -28,6 +28,9 @@ export class ApiHelper {
   /** Time (in ms) to wait between keystrokes to make a request */
   static DEBOUNCE_TIME = 400;
 
+  /** Value used to mark a date as invalid */
+  static INVALID_DATE = ' ';
+
   /**
    * Returns the entity internal name, if any, otherwise the id.
    * If the input entity is null, returns null.

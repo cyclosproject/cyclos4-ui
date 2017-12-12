@@ -4,7 +4,8 @@
     [focused]="focused"
     [placeholder]="placeholder"
     [required]="required"
-    [formControl]="formControl">
+    [formControl]="formControl"
+    (blur)="onBlur($event)">
   <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
   <mat-error>
     {{formControl?.getError('message')}}

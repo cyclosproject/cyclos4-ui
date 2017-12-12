@@ -11,7 +11,7 @@
     [placeholder]="generalMessages.loginPassword()"
     [passwordInput]="dataForLogin.loginPasswordInput"
     formControlName="password"
-    (onEnter)="emit()"
+    (enter)="emit()"
   ></password-input>
   <actions *ngIf="showActions" fxFlex="grow">
     <button [disabled]="!loginForm.valid" mat-raised-button color="accent" (click)="emit()">

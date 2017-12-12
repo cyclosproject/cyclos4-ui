@@ -1,4 +1,4 @@
-import { 
+import {
   Component, OnInit, Input, Output, ViewChild, EventEmitter, forwardRef,
   ElementRef, ChangeDetectionStrategy, SkipSelf, Host, Optional
 } from '@angular/core';
@@ -7,6 +7,8 @@ import {
   FormGroup, FormBuilder, Validators
 } from '@angular/forms';
 import { FormatService } from 'app/core/format.service';
+import { BaseControlComponent } from 'app/shared/base-control.component';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 // Definition of the exported NG_VALUE_ACCESSOR provider
 export const DECIMAL_FIELD_VALUE_ACCESSOR = {
@@ -24,17 +26,12 @@ export const DECIMAL_FIELD_VALUE_ACCESSOR = {
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [DECIMAL_FIELD_VALUE_ACCESSOR]
 })
-export class DecimalFieldComponent implements OnInit, ControlValueAccessor {
-  @Input() formControl: FormControl;
-  @Input() formControlName: string;
-
+export class DecimalFieldComponent extends BaseControlComponent<string> {
   @Input() focused: boolean | string;
   @Input() prefix: string;
   @Input() suffix: string;
   @Input() required: boolean;
   @Input() placeholder: string;
-  @Input() disabled: boolean;
-  decimalSeparator: string;
 
   @Output() change: EventEmitter<string> = new EventEmitter();
   @Output() blur: EventEmitter<string> = new EventEmitter();
@@ -48,64 +45,47 @@ export class DecimalFieldComponent implements OnInit, ControlValueAccessor {
   @ViewChild('decimalField')
   private decimalField: ElementRef;
 
-  private changeCallback = (_: any) => { };
-  private touchedCallback = () => { };
+  decimalSeparator = new BehaviorSubject<string>(null);
 
   constructor(
-    @Optional() @Host() @SkipSelf()
-    private controlContainer: ControlContainer,
+    @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
     private formatService: FormatService,
     formBuilder: FormBuilder
   ) {
+    super(controlContainer);
     this.form = formBuilder.group({
       'integer': [null, Validators.required],
       'decimal': null,
     });
+    this.form.valueChanges.subscribe(value => {
+      const integer = (this.formatService.numberToFixed(value.integer, 0) || '').substr(0, 15);
+      const decimal = this.decimalPart(value.decimal);
+      let newValue: string;
+      if (integer === '') {
+        newValue = null;
+      } else if (this.scale === 0) {
+        newValue = integer;
+      } else {
+        newValue = `${integer}.${decimal}`;
+      }
+      this.value = newValue;
+      const currValue = this.form.value;
+      const currInteger = currValue.integer == null ? '' : String(currValue.integer);
+      const currDecimal = currValue.decimal == null ? '' : String(currValue.decimal);
+      if (currInteger !== integer || currDecimal !== decimal.substr(0, currDecimal.length)) {
+        this.form.setValue({integer: integer, decimal: decimal});
+      }
+    });
   }
 
   ngOnInit() {
-    this.decimalSeparator = this.formatService.decimalSeparator;
-
-    if (this.controlContainer && this.formControlName) {
-      const control = this.controlContainer.control.get(this.formControlName);
-      if (control instanceof FormControl) {
-        this.formControl = control;
-      }
-    }
-  }
-
-  @Input()
-  get value(): string {
-    const value = this.form.value;
-    const integerPart = value.integer;
-
-    if (integerPart == null || integerPart === '') {
-      return null;
-    }
-    return this._scale === 0
-      ? integerPart
-      : integerPart + '.' + value.decimal;
-  }
-  set value(value: string) {
-    value = this.formatService.numberToFixed(value, this._scale);
-    if (this.value === value) {
-      // Nothing changed
-      return;
-    }
-    let integerPart: string;
-    let decimalPart: string;
-    if (this._scale === 0) {
-      integerPart = value;
-      decimalPart = null;
+    super.ngOnInit();
+    const init = () => this.decimalSeparator.next(this.formatService.decimalSeparator);
+    if (this.formatService.decimalSeparator) {
+      init();
     } else {
-      const pos = value == null ? -1 : value.indexOf('.');
-      integerPart = pos < 0 ? value : value.substr(0, pos);
-      decimalPart = pos < 0 ? '0'.repeat(this.scale) : value.substr(pos + 1);
+      this.formatService.materialDateFormats.subscribe(init);
     }
-    this.form.setValue({
-      integer: integerPart,
-      decimal: decimalPart
-    });
   }
 
   @Input()
@@ -120,11 +100,6 @@ export class DecimalFieldComponent implements OnInit, ControlValueAccessor {
     return this._scale;
   }
 
-  private emitValue(): void {
-    this.change.emit(this.value);
-    this.changeCallback(this.value);
-  }
-
   focus() {
     this.integerField.nativeElement.focus();
   }
@@ -137,35 +112,34 @@ export class DecimalFieldComponent implements OnInit, ControlValueAccessor {
     this.blur.emit(event);
   }
 
-  private adjustDecimalPart(): void {
-    let decimalPart = (this.form.value.decimal || '');
-    let changed = false;
+  onKeyUp(event: KeyboardEvent) {
+    if (event.key === this.decimalSeparator.value) {
+      this.decimalField.nativeElement.focus();
+    }
+  }
+
+  private decimalPart(raw: any): string {
+    let decimalPart = raw == null ? '' : String(raw);
     if (decimalPart.length < this._scale) {
       decimalPart = decimalPart + '0'.repeat(this._scale - decimalPart.length);
-      changed = true;
     } else if (decimalPart.length > this._scale) {
       decimalPart = decimalPart.substr(0, this._scale);
-      changed = true;
     }
-    if (changed) {
+    return decimalPart;
+  }
+
+  private adjustDecimalPart(): void {
+    const value = this.form.value;
+    const raw = value.decimal == null ? null : String(value.decimal);
+    const decimalPart = this.decimalPart(raw);
+    if (raw !== decimalPart) {
       this.form.patchValue({
         decimal: decimalPart
       });
     }
   }
 
-  // ControlValueAccessor methods
-  writeValue(obj: any): void {
-    this.value = obj;
-  }
-  registerOnChange(fn: any): void {
-    this.changeCallback = fn;
-  }
-  registerOnTouched(fn: any): void {
-    this.touchedCallback = fn;
-  }
-  setDisabledState(isDisabled: boolean): void {
-    this.disabled = isDisabled;
+  onDisabledChange(isDisabled: boolean) {
     if (this.integerField) {
       this.integerField.nativeElement.disabled = isDisabled;
     }

@@ -1,9 +1,16 @@
-import { Component, ChangeDetectionStrategy, Input, Provider, forwardRef, ViewChild, OnChanges, OnInit, SkipSelf, Host, Optional } from '@angular/core';
+import {
+  Component, ChangeDetectionStrategy, Input, Provider, forwardRef,
+  ViewChild, OnChanges, OnInit, SkipSelf, Host, Optional
+} from '@angular/core';
 import { PasswordInput, PasswordModeEnum } from 'app/api/models';
-import { NG_VALUE_ACCESSOR, NG_VALIDATORS, Validator, ControlValueAccessor, AbstractControl, ValidationErrors, FormControl, ControlContainer } from '@angular/forms';
+import {
+  NG_VALUE_ACCESSOR, NG_VALIDATORS, Validator, ControlValueAccessor,
+  AbstractControl, ValidationErrors, FormControl, ControlContainer
+} from '@angular/forms';
 import { PasswordInputComponent } from 'app/shared/password-input.component';
 import { GeneralMessages } from 'app/messages/general-messages';
 import { Subscription } from 'rxjs/Subscription';
+import { BaseControlComponent } from 'app/shared/base-control.component';
 
 // Definition of the exported NG_VALUE_ACCESSOR provider
 export const CONFIRMATION_PASSWORD_VALUE_ACCESSOR: Provider = {
@@ -31,12 +38,9 @@ export const CONFIRMATION_PASSWORD_VALIDATOR: Provider = {
     CONFIRMATION_PASSWORD_VALIDATOR
   ]
 })
-export class ConfirmationPasswordComponent implements OnInit, OnChanges, ControlValueAccessor, Validator {
-  @Input() formControl: FormControl;
-  @Input() formControlName: string;
+export class ConfirmationPasswordComponent extends BaseControlComponent<string> implements OnChanges, Validator {
 
-  @Input()
-  passwordInput: PasswordInput;
+  @Input() passwordInput: PasswordInput;
 
   otpRenewable: boolean;
 
@@ -45,25 +49,13 @@ export class ConfirmationPasswordComponent implements OnInit, OnChanges, Control
 
   private otpSubscription: Subscription;
 
-  private _password: string;
-
-  private changeCallback = (_: any) => { };
-  private touchedCallback = () => { };
   private validatorChangeCallback = () => { };
 
   constructor(
-    @Optional() @Host() @SkipSelf()
-    private controlContainer: ControlContainer,
+    @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
     public generalMessages: GeneralMessages
-  ) { }
-
-  ngOnInit() {
-    if (this.controlContainer && this.formControlName) {
-      const control = this.controlContainer.control.get(this.formControlName);
-      if (control instanceof FormControl) {
-        this.formControl = control;
-      }
-    }
+  ) {
+    super(controlContainer);
   }
 
   ngOnChanges() {
@@ -72,23 +64,6 @@ export class ConfirmationPasswordComponent implements OnInit, OnChanges, Control
         this.passwordInput.hasActivePassword = true;
       });
     }
-  }
-
-  get disabled(): boolean {
-    return this.passwordComponent == null ? false : this.passwordComponent.disabled;
-  }
-  set disabled(disabled: boolean) {
-    if (this.passwordComponent) {
-      this.passwordComponent.disabled = disabled;
-    }
-  }
-
-  get password(): string {
-    return this._password;
-  }
-  set password(password: string) {
-    this._password = password;
-    this.changeCallback(password);
   }
 
   get canConfirm(): boolean {
@@ -125,17 +100,7 @@ export class ConfirmationPasswordComponent implements OnInit, OnChanges, Control
     }
   }
 
-  // ControlValueAccessor methods
-  writeValue(obj: any): void {
-    this.password = obj;
-  }
-  registerOnChange(fn: any): void {
-    this.changeCallback = fn;
-  }
-  registerOnTouched(fn: any): void {
-    this.touchedCallback = fn;
-  }
-  setDisabledState(isDisabled: boolean): void {
+  onDisabledChange(isDisabled: boolean) {
     if (this.passwordComponent) {
       this.passwordComponent.disabled = isDisabled;
     }

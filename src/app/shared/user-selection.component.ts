@@ -1,6 +1,6 @@
 import {
   Component, OnInit, Input, Provider, forwardRef, ChangeDetectionStrategy,
-  SkipSelf, Host, Optional
+  SkipSelf, Host, Optional, ElementRef, ViewChild
 } from '@angular/core';
 import { UserDataForSearch, User } from 'app/api/models';
 import { TableDataSource } from 'app/shared/table-datasource';
@@ -12,6 +12,7 @@ import { UsersService } from 'app/api/services';
 import { GeneralMessages } from 'app/messages/general-messages';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { BaseControlComponent } from 'app/shared/base-control.component';
 
 // Definition of the exported NG_VALUE_ACCESSOR provider
 export const PAYMENT_USER_VALUE_ACCESSOR: Provider = {
@@ -30,10 +31,7 @@ export const PAYMENT_USER_VALUE_ACCESSOR: Provider = {
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [PAYMENT_USER_VALUE_ACCESSOR]
 })
-export class UserSelectionComponent implements OnInit, ControlValueAccessor {
-  @Input() formControl: FormControl;
-  @Input() formControlName: string;
-
+export class UserSelectionComponent extends BaseControlComponent<string> {
   @Input()
   focused: boolean | string;
 
@@ -45,40 +43,23 @@ export class UserSelectionComponent implements OnInit, ControlValueAccessor {
 
   dataSource: TableDataSource<User> = new TableDataSource();
 
-  private _value: string;
+  @ViewChild('keywordsInput') keywordsInput: ElementRef;
 
   constructor(
-    @Optional() @Host() @SkipSelf()
-    private controlContainer: ControlContainer,
+    @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
     public generalMessages: GeneralMessages,
     private usersService: UsersService) {
+    super(controlContainer);
   }
-
-  get value(): string {
-    return this._value;
-  }
-  set value(val: string) {
-    this._value = val;
-    this.changeCallback(val);
-  }
-
-  private changeCallback = (_: any) => { };
-  private touchedCallback = () => { };
 
   ngOnInit() {
+    super.ngOnInit();
     this.onKeywords.pipe(
       debounceTime(ApiHelper.DEBOUNCE_TIME),
       distinctUntilChanged(),
     ).subscribe(keywords => {
       this.search(keywords);
     });
-
-    if (this.controlContainer && this.formControlName) {
-      const control = this.controlContainer.control.get(this.formControlName);
-      if (control instanceof FormControl) {
-        this.formControl = control;
-      }
-    }
   }
 
   private search(keywords: string) {
@@ -97,15 +78,9 @@ export class UserSelectionComponent implements OnInit, ControlValueAccessor {
     this.showTable.next(showTable);
   }
 
-  writeValue(obj: any): void {
-    this.value = obj;
-  }
-  registerOnChange(fn: any): void {
-    this.changeCallback = fn;
-  }
-  registerOnTouched(fn: any): void {
-    this.touchedCallback = fn;
-  }
-  setDisabledState(isDisabled: boolean): void {
+  onDisabledChange(isDisabled: boolean): void {
+    if (this.keywordsInput) {
+      this.keywordsInput.nativeElement.disabled = isDisabled;
+    }
   }
 }

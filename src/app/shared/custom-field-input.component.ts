@@ -12,6 +12,7 @@ import { FormatService } from 'app/core/format.service';
 import { DecimalFieldComponent } from 'app/shared/decimal-field.component';
 import { DateFieldComponent } from 'app/shared/date-field.component';
 import { ApiHelper } from 'app/shared/api-helper';
+import { BaseControlComponent } from 'app/shared/base-control.component';
 
 const MAX_INTEGER = 2147483647;
 const INPUT_TYPES = [CustomFieldTypeEnum.STRING, CustomFieldTypeEnum.INTEGER, CustomFieldTypeEnum.URL, CustomFieldTypeEnum.LINKED_ENTITY];
@@ -44,18 +45,12 @@ export const CUSTOM_FIELD_VALIDATOR = {
     CUSTOM_FIELD_VALIDATOR
   ]
 })
-export class CustomFieldInputComponent implements OnInit, ControlValueAccessor, Validator {
-
-  @Input() formControl: FormControl;
-  @Input() formControlName: string;
+export class CustomFieldInputComponent extends BaseControlComponent<string> implements Validator {
 
   @Input() focused: boolean;
   @Input() field: CustomFieldDetailed;
 
   type: CustomFieldTypeEnum;
-
-  private _value: string = null;
-  private _fieldValue: any = null;
 
   ApiHelper = ApiHelper;
 
@@ -80,25 +75,18 @@ export class CustomFieldInputComponent implements OnInit, ControlValueAccessor, 
   @ViewChild('dynamicComponent')
   private dynamicComponent: MatSelect;
 
-  private changeCallback = (_: any) => { };
-  private touchedCallback = () => { };
   private validatorChangeCallback = () => { };
 
   constructor(
-    @Optional() @Host() @SkipSelf()
-    private controlContainer: ControlContainer,
+    @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
     private formatService: FormatService
-  ) { }
+  ) {
+    super(controlContainer);
+  }
 
   ngOnInit() {
+    super.ngOnInit();
     this.type = this.field.type;
-
-    if (this.controlContainer && this.formControlName) {
-      const control = this.controlContainer.control.get(this.formControlName);
-      if (control instanceof FormControl) {
-        this.formControl = control;
-      }
-    }
   }
 
   get input(): boolean {
@@ -109,33 +97,7 @@ export class CustomFieldInputComponent implements OnInit, ControlValueAccessor, 
     return TEXTAREA_TYPES.includes(this.type);
   }
 
-  @Input()
-  public get disabled(): boolean {
-    if (this.stringInput) {
-      return this.stringInput.nativeElement.disabled;
-    }
-    if (this.textInput) {
-      return this.textInput.nativeElement.disabled;
-    }
-    if (this.booleanComponent) {
-      return this.booleanComponent.disabled;
-    }
-    if (this.decimalComponent) {
-      return this.decimalComponent.disabled;
-    }
-    if (this.dateComponent) {
-      return this.dateComponent.disabled;
-    }
-    if (this.selectComponent) {
-      return this.selectComponent.disabled;
-    }
-    if (this.dynamicComponent) {
-      return this.dynamicComponent.disabled;
-    }
-    return false;
-  }
-  public set disabled(isDisabled: boolean) {
-    this.disabled = isDisabled;
+  onDisabledChange(isDisabled: boolean) {
     if (this.stringInput) {
       this.stringInput.nativeElement.disabled = isDisabled;
     }
@@ -157,73 +119,6 @@ export class CustomFieldInputComponent implements OnInit, ControlValueAccessor, 
     if (this.dynamicComponent) {
       this.dynamicComponent.disabled = isDisabled;
     }
-  }
-
-  @Input()
-  @Output()
-  public get fieldValue(): any {
-    return this._fieldValue;
-  }
-
-  public set fieldValue(fieldValue: any) {
-    this._fieldValue = fieldValue;
-    if (fieldValue instanceof Array) {
-      // A multi selection
-      this._value = fieldValue.join('|');
-    } else if (this.field.type === CustomFieldTypeEnum.INTEGER) {
-      const num = Number(fieldValue);
-      if (num != null && num > MAX_INTEGER) {
-        // 2 assignments
-        this._fieldValue = this._value = MAX_INTEGER.toString();
-        if (this.stringInput) {
-          this.stringInput.nativeElement.value = this._value;
-        }
-      } else {
-        this._value = fieldValue;
-      }
-    } else {
-      this._value = fieldValue;
-    }
-    this.emitValue();
-  }
-
-  @Output()
-  @Input()
-  get value(): string {
-    return this._value;
-  }
-  set value(value: string) {
-    if (this._value === value) {
-      return;
-    }
-    if (this.type === CustomFieldTypeEnum.MULTI_SELECTION) {
-      // A multi selection - split the array
-      this._fieldValue = (value || '').split('|');
-    } else {
-      // Just use the field value as the raw value
-      this._fieldValue = value;
-    }
-    this._value = value;
-    this.emitValue();
-  }
-
-  private emitValue(): void {
-    this.changeCallback(this._value);
-    this.validatorChangeCallback();
-  }
-
-  // ControlValueAccessor methods
-  writeValue(obj: any): void {
-    this.value = obj == null ? null : obj.toString();
-  }
-  registerOnChange(fn: any): void {
-    this.changeCallback = fn;
-  }
-  registerOnTouched(fn: any): void {
-    this.touchedCallback = fn;
-  }
-  setDisabledState(isDisabled: boolean): void {
-    this.disabled = isDisabled;
   }
 
   // Validator methods

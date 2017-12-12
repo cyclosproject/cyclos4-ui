@@ -1,6 +1,7 @@
 import { Component, ChangeDetectionStrategy, Injector } from '@angular/core';
 import { BaseComponent } from 'app/shared/base.component';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 /**
  * Displays the home page
@@ -15,6 +16,8 @@ export class HomeComponent extends BaseComponent {
 
   form: FormGroup;
 
+  loaded = new BehaviorSubject(false);
+
   constructor(injector: Injector, formBuilder: FormBuilder) {
     super(injector);
 
@@ -28,5 +31,16 @@ export class HomeComponent extends BaseComponent {
       singleSelection: null,
       multiSelection: null
     });
+  }
+
+  ngOnInit() {
+    super.ngOnInit();
+    if (this.format.dataForUi != null) {
+      this.loaded.next(true);
+    } else {
+      this.format.materialDateFormats.subscribe(() => {
+        this.loaded.next(true);
+      });
+    }
   }
 }

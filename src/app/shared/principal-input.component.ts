@@ -8,6 +8,7 @@ import {
 } from '@angular/forms';
 import { PrincipalTypeInput, PrincipalTypeKind } from 'app/api/models';
 import { CustomFieldInputComponent } from 'app/shared/custom-field-input.component';
+import { BaseControlComponent } from 'app/shared/base-control.component';
 
 // Definition of the exported NG_VALUE_ACCESSOR provider
 export const PRINCIPAL_VALUE_ACCESSOR = {
@@ -35,22 +36,12 @@ export const PRINCIPAL_VALIDATOR = {
     PRINCIPAL_VALIDATOR
   ]
 })
-export class PrincipalInputComponent implements OnInit, ControlValueAccessor, Validator {
-  @Input() formControl: FormControl;
-  @Input() formControlName: string;
+export class PrincipalInputComponent extends BaseControlComponent<string> implements Validator {
+  @Input() type: PrincipalTypeInput;
 
-  @Input()
-  public type: PrincipalTypeInput;
+  @Input() focused: boolean | string;
 
-  @Input()
-  public focused: boolean | string;
-
-  @Input()
-  public disabled: boolean;
-
-  public isCustomField: boolean;
-
-  private _value: string = null;
+  isCustomField: boolean;
 
   @ViewChild('textInput')
   private textInput: ElementRef;
@@ -58,54 +49,21 @@ export class PrincipalInputComponent implements OnInit, ControlValueAccessor, Va
   @ViewChild('customFieldInput')
   private customFieldInput: CustomFieldInputComponent;
 
-  private changeCallback = (_: any) => { };
-  private touchedCallback = () => { };
   private validatorChangeCallback = () => { };
 
   constructor(
-    @Optional() @Host() @SkipSelf()
-    private controlContainer: ControlContainer
-  ) { }
+    @Optional() @Host() @SkipSelf() controlContainer: ControlContainer
+  ) {
+    super(controlContainer);
+  }
 
   ngOnInit() {
+    super.ngOnInit();
     this.isCustomField = this.type.kind === PrincipalTypeKind.CUSTOM_FIELD;
-    if (this.controlContainer && this.formControlName) {
-      const control = this.controlContainer.control.get(this.formControlName);
-      if (control instanceof FormControl) {
-        this.formControl = control;
-      }
-    }
-  }
-
-  @Input()
-  get value(): string {
-    return this._value;
-  }
-  set value(value: string) {
-    if (this._value === value) {
-      return;
-    }
-    this._value = value;
-    this.emitValue();
-  }
-
-  private emitValue(): void {
-    this.changeCallback(this._value);
-    this.validatorChangeCallback();
   }
 
   // ControlValueAccessor methods
-  writeValue(obj: any): void {
-    this.value = obj == null ? null : obj.toString();
-  }
-  registerOnChange(fn: any): void {
-    this.changeCallback = fn;
-  }
-  registerOnTouched(fn: any): void {
-    this.touchedCallback = fn;
-  }
-  setDisabledState(isDisabled: boolean): void {
-    this.disabled = isDisabled;
+  onDisabledChange(isDisabled: boolean): void {
     if (this.textInput) {
       this.textInput.nativeElement.disabled = isDisabled;
     }

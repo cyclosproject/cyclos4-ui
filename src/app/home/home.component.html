@@ -1,4 +1,4 @@
-<page-layout>
+<page-layout [loaded]="loaded">
   <page-filters>
     Some filters...
   </page-filters>
@@ -16,16 +16,16 @@
         <div>Some form fields...</div>
         <div fxLayout="column" style="max-width:600px" [formGroup]="form">
           <mat-form-field>
-            <input matInput placeholder="Text input" formControlName="singleLine">
+            <input matInput maxlength="4" placeholder="Text input" formControlName="singleLine">
           </mat-form-field>
 
           <mat-form-field>
             <textarea matInput matTextareaAutosize formControlName="multiLine" placeholder="Multi-line input"></textarea>
           </mat-form-field>
 
-          <decimal-field formControlName="decimal" suffix="$" scale="2" placeholder="Decimal"></decimal-field>
+          <decimal-field #decimal formControlName="decimal" suffix="$" scale="2" placeholder="Decimal"></decimal-field>
 
-          <date-field formControlName="date" placeholder="Date"></date-field>
+          <date-field #date formControlName="date" placeholder="Date"></date-field>
 
           <mat-checkbox formControlName="checkBox">Checkbox</mat-checkbox>
 
