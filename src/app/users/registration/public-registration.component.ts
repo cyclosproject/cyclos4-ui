@@ -118,7 +118,7 @@ export class PublicRegistrationComponent extends BaseUsersComponent implements A
         const group = this.groups[0];
         this.group.next(group);
         this.groupForm.patchValue({
-          group: ApiHelper.internalNameOrId(group)
+          group: group
         });
         // After getting the registration data for this group, will mark as loaded
         this.nextFromGroup();
