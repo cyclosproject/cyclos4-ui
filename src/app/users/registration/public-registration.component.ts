@@ -16,7 +16,7 @@ import { map } from 'rxjs/operators/map';
 import { switchMap } from 'rxjs/operators/switchMap';
 import { UserNew } from 'app/api/models/user-new';
 import { AfterViewInit } from '@angular/core/src/metadata/lifecycle_hooks';
-import { copyProperties } from 'app/shared/helper';
+import { copyProperties, empty } from 'app/shared/helper';
 import { UserRegistrationResult } from 'app/api/models/user-registration-result';
 import { UserRegistrationStatusEnum } from 'app/api/models/user-registration-status-enum';
 import { AvailabilityEnum } from 'app/api/models/availability-enum';
@@ -324,14 +324,18 @@ export class PublicRegistrationComponent extends BaseUsersComponent implements A
     if (data.phoneConfiguration.landLineAvailability !== AvailabilityEnum.DISABLED) {
       const landLinePhone = { ...data.phoneConfiguration.landLinePhone };
       copyProperties(this.fieldsForm.value.landLinePhone, landLinePhone);
-      user.landLinePhones = [landLinePhone];
+      if (!empty(landLinePhone.number)) {
+        user.landLinePhones = [landLinePhone];
+      }
     }
 
     // Set the mobile phone
     if (data.phoneConfiguration.mobileAvailability !== AvailabilityEnum.DISABLED) {
       const mobilePhone = { ...data.phoneConfiguration.mobilePhone };
       copyProperties(this.fieldsForm.value.mobilePhone, mobilePhone);
-      user.mobilePhones = [mobilePhone];
+      if (!empty(mobilePhone.number)) {
+        user.mobilePhones = [mobilePhone];
+      }
     }
 
     // Set the address

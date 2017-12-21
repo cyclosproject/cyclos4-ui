@@ -33,7 +33,7 @@ export class RegistrationConfirmComponent extends BaseUsersComponent {
     throw new Error('No such password form');
   }
 
-  requiredSecurityAnswer(): BehaviorSubject<boolean> {
+  get requiredSecurityAnswer(): BehaviorSubject<boolean> {
     const question = this.form.get('securityQuestion');
     const subj = new BehaviorSubject(!empty(question.value));
     this.subscriptions.push(question.valueChanges.subscribe(value => {
