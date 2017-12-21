@@ -20,6 +20,8 @@ import { MenuService } from 'app/shared/menu.service';
 import { PushNotificationsService } from 'app/core/push-notifications.service';
 import { ApiInterceptor } from 'app/core/api.interceptor';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { RegistrationGroupsResolve } from 'app/registration-groups.resolve';
+import { CountriesResolve } from 'app/countries.resolve';
 
 export const API_INTERCEPTOR_PROVIDER: Provider = {
   provide: HTTP_INTERCEPTORS,
@@ -71,6 +73,8 @@ export const DATE_FORMATS_PROVIDER: Provider = {
     LoginService,
     MenuService,
     PushNotificationsService,
+    RegistrationGroupsResolve,
+    CountriesResolve,
     ApiDateAdapter,
     API_INTERCEPTOR_PROVIDER,
     DATE_ADAPTER_PROVIDER,
@@ -83,7 +87,7 @@ export class CoreModule {
   ) {
     if (parentModule) {
       throw new Error('CoreModule is already loaded. '
-      + 'It should only be imported in AppModule');
+        + 'It should only be imported in AppModule');
     }
 
   }

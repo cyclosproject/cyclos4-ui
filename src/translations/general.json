@@ -29,6 +29,9 @@
   "days.long": "Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday",
   "days.short": "Sun,Mon,Tue,Wed,Thu,Fri,Sat",
   "days.narrow": "S,M,T,W,T,F,S",
+  
+  "fieldVisibility.visible": "This field is visible to other users",
+  "fieldVisibility.hidden": "This field is hidden for other users",
 
   "search.all": "All",
   "search.noResults": "No results for the specified search criteria",

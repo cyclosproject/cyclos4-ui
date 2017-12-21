@@ -6,7 +6,8 @@ import { environment } from 'environments/environment';
 import { GeneralMessages } from 'app/messages/general-messages';
 import { FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { AsyncValidatorFn } from '@angular/forms/src/directives/validators';
-import { CustomFieldTypeEnum } from 'app/api/models/custom-field-type-enum';
+import { AddressFieldEnum } from 'app/api/models/address-field-enum';
+import { UsersMessages } from 'app/messages/users-messages';
 
 /**
  * Helper methods for working with API model
@@ -177,5 +178,49 @@ export class ApiHelper {
       customValues[cf.internalName] = [defVal, val, asyncValProvider ? asyncValProvider(cf) : null];
     }
     return formBuilder.group(customValues);
+  }
+
+  /**
+   * Returns a form that has a captcha challenge and response
+   * @param formBuilder The form builder
+   */
+  static captchaFormGroup(formBuilder: FormBuilder) {
+    return formBuilder.group({
+      challenge: ['', Validators.required],
+      response: ['', Validators.required]
+    });
+  }
+
+  /**
+   * Returns the label of an address field
+   * @param field The address field
+   * @param usersMessages The message source
+   */
+  static addressFieldLabel(field: AddressFieldEnum, usersMessages: UsersMessages): string {
+    switch (field) {
+      case AddressFieldEnum.ADDRESS_LINE_1:
+        return usersMessages.userAddressAddressLine1();
+      case AddressFieldEnum.ADDRESS_LINE_2:
+        return usersMessages.userAddressAddressLine2();
+      case AddressFieldEnum.BUILDING_NUMBER:
+        return usersMessages.userAddressBuildingNumber();
+      case AddressFieldEnum.CITY:
+        return usersMessages.userAddressCity();
+      case AddressFieldEnum.COMPLEMENT:
+        return usersMessages.userAddressComplement();
+      case AddressFieldEnum.COUNTRY:
+        return usersMessages.userAddressCountry();
+      case AddressFieldEnum.NEIGHBORHOOD:
+        return usersMessages.userAddressNeighborhood();
+      case AddressFieldEnum.PO_BOX:
+        return usersMessages.userAddressPoBox();
+      case AddressFieldEnum.REGION:
+        return usersMessages.userAddressRegion();
+      case AddressFieldEnum.STREET:
+        return usersMessages.userAddressStreet();
+      case AddressFieldEnum.ZIP:
+        return usersMessages.userAddressZip();
+    }
+    return null;
   }
 }

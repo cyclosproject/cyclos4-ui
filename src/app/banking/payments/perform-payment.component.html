@@ -25,11 +25,11 @@
               {{ generalMessages.previous() }}
             </button>
             <button mat-raised-button color="accent"
-            [disabled]="!userForm.valid" (click)="nextFromUser()">
-            {{ generalMessages.next() }}
-          </button>
-        </actions>
-      </ng-container>
+              [disabled]="!userForm.valid" (click)="nextFromUser()">
+              {{ generalMessages.next() }}
+            </button>
+          </actions>
+        </ng-container>
       </td-step>
       <td-step #fieldsStep [label]="bankingMessages.paymentFields()"
         [sublabel]="layout.ltmd ? (fieldsForm.value.amount | currency:(paymentTypeData | async)?.currency) : null">

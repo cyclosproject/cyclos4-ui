@@ -1,9 +1,9 @@
 import {
   Component, Input, Output, ViewChild, EventEmitter, forwardRef, ElementRef,
-  Provider, ChangeDetectionStrategy, SkipSelf, Host, Optional, OnInit
+  Provider, ChangeDetectionStrategy, SkipSelf, Host, Optional
 } from '@angular/core';
 import {
-  NG_VALUE_ACCESSOR, ControlValueAccessor, NG_VALIDATORS, Validator,
+  NG_VALUE_ACCESSOR, NG_VALIDATORS, Validator,
   AbstractControl, ValidationErrors, FormControl, ControlContainer
 } from '@angular/forms';
 import { FormatService } from 'app/core/format.service';
@@ -11,7 +11,6 @@ import { LayoutService } from 'app/core/layout.service';
 import { MatDatepickerInput } from '@angular/material';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseControlComponent } from 'app/shared/base-control.component';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 // Definition of the exported NG_VALUE_ACCESSOR provider
 export const DATE_FIELD_VALUE_ACCESSOR: Provider = {
@@ -40,10 +39,12 @@ export const DATE_VALIDATOR: Provider = {
   ]
 })
 export class DateFieldComponent extends BaseControlComponent<string> implements Validator {
+  @Input() name: string;
   @Input() required: boolean;
   @Input() placeholder: string;
-
   @Input() focused: boolean;
+  @Input() privacyControl: FormControl;
+
   @Output() change: EventEmitter<string> = new EventEmitter();
   @Output() blur: EventEmitter<string> = new EventEmitter();
 

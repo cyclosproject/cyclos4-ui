@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
 
-export type TitleSize = 'regular' | 'small';
+export type TitleSize = 'regular' | 'small' | 'xsmall';
 
 /**
  * Represents a section with title and content

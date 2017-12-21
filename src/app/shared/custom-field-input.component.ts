@@ -1,10 +1,10 @@
 import {
-  Component, OnInit, Input, forwardRef, Output, ViewChild, ElementRef,
+  Component, Input, forwardRef, ViewChild, ElementRef,
   ChangeDetectionStrategy, Optional, Host, SkipSelf
 } from '@angular/core';
 import {
-  NG_VALUE_ACCESSOR, ControlValueAccessor, AbstractControl, FormControl,
-  ValidationErrors, Validator, NG_VALIDATORS, ControlContainer
+  NG_VALUE_ACCESSOR, AbstractControl, FormControl,
+  ValidationErrors, Validator, NG_VALIDATORS, ControlContainer, FormBuilder
 } from '@angular/forms';
 import { CustomFieldTypeEnum, CustomFieldDetailed } from 'app/api/models';
 import { MatCheckbox, MatSelect } from '@angular/material';
@@ -49,6 +49,7 @@ export class CustomFieldInputComponent extends BaseControlComponent<string> impl
 
   @Input() focused: boolean;
   @Input() field: CustomFieldDetailed;
+  @Input() privacyControl: FormControl;
 
   type: CustomFieldTypeEnum;
 
@@ -75,11 +76,14 @@ export class CustomFieldInputComponent extends BaseControlComponent<string> impl
   @ViewChild('dynamicComponent')
   private dynamicComponent: MatSelect;
 
+  multiSelectControl: FormControl;
+
   private validatorChangeCallback = () => { };
 
   constructor(
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
-    private formatService: FormatService
+    private formatService: FormatService,
+    private formBuilder: FormBuilder
   ) {
     super(controlContainer);
   }
@@ -87,6 +91,15 @@ export class CustomFieldInputComponent extends BaseControlComponent<string> impl
   ngOnInit() {
     super.ngOnInit();
     this.type = this.field.type;
+
+    // The multi selection field's FormControl must contain an array
+    if (this.type === CustomFieldTypeEnum.MULTI_SELECTION) {
+      const initialValue = (this.formControl.value || '').split('|');
+      this.multiSelectControl = this.formBuilder.control(initialValue);
+      this.multiSelectControl.valueChanges.subscribe(value => {
+        this.formControl.setValue((value || []).join('|'));
+      });
+    }
   }
 
   get input(): boolean {

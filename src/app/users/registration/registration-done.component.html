@@ -1,0 +1,20 @@
+<div class="doneContainer"
+  [ngSwitch]="result.status">
+
+  <div *ngSwitchCase="'active'">
+    <p>{{ usersMessages.registrationDoneActivePrefix() }}</p>
+    <p [innerHTML]="principalsHtml | trust"></p>
+    <p>{{ passwordsMessage }}</p>
+  </div>
+
+  <div *ngSwitchCase="'inactive'">
+    <p>{{ usersMessages.registrationDonePrefix() }}</p>
+    <p>{{ usersMessages.registrationDoneInactive() }}</p>
+  </div>
+
+  <div *ngSwitchCase="'emailValidation'">
+    <p>{{ usersMessages.registrationDonePrefix() }}</p>
+    <p>{{ usersMessages.registrationDoneEmailValidation() }}</p>
+  </div>
+
+</div>

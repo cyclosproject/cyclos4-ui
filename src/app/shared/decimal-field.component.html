@@ -10,7 +10,7 @@
       formControlName="integer" (blur)="onBlur($event)">
     <span matPrefix *ngIf="prefix">{{ prefix + '&nbsp;' }}</span>
     <mat-error>
-      {{formControl?.getError('message')}}
+      {{ formControl?.getError('message') }}
     </mat-error>
   </mat-form-field>
   <div *ngIf="scale > 0" class="separator" fxFlex="2%">
@@ -26,5 +26,8 @@
       (focus)="decimalField.select()"
       (blur)="onBlur($event)">
     <span matSuffix *ngIf="suffix">{{ '&nbsp;' + suffix }}</span>
+    <span matSuffix *ngIf="privacyControl != null && name != null">
+      <field-privacy [field]="name" [control]="privacyControl"></field-privacy>
+    </span>
   </mat-form-field>
 </div>

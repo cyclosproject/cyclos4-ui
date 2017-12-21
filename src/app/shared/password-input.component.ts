@@ -1,11 +1,10 @@
 import {
   ElementRef, Component, Input, Output, EventEmitter, ViewChild, AfterViewInit,
-  ChangeDetectorRef, forwardRef, Provider, ChangeDetectionStrategy,
-  OnInit, OnDestroy, SkipSelf, Host, Optional
+  ChangeDetectorRef, forwardRef, Provider, ChangeDetectionStrategy, OnDestroy, SkipSelf, Host, Optional
 } from '@angular/core';
 import {
-  NG_VALUE_ACCESSOR, NG_VALIDATORS, ControlValueAccessor, Validator,
-  AbstractControl, ValidationErrors, ControlContainer, FormControl
+  NG_VALUE_ACCESSOR, NG_VALIDATORS, Validator,
+  AbstractControl, ValidationErrors, ControlContainer
 } from '@angular/forms';
 import { PasswordInput } from 'app/api/models';
 import { PasswordInputMethodEnum } from 'app/api/models';

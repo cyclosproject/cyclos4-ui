@@ -9890,6 +9890,12 @@
               "$ref" : "#/definitions/NotFoundError"
             }
           },
+          "422" : {
+            "description" : "Input error. Either a validation error or the maximum allowed items was exceeded\n",
+            "schema" : {
+              "$ref" : "#/definitions/InputError"
+            }
+          },
           "500" : {
             "description" : "Unexpected error",
             "schema" : {
@@ -10467,7 +10473,7 @@
         }, {
           "name" : "field",
           "in" : "path",
-          "description" : "One of: `name` (full name), `username` (login name), `email`, 'mobilePhone`, `landLinePhone` or the internal name of a custom field. \n",
+          "description" : "One of: `name` (full name), `username` (login name), `email`, `mobilePhone`, `landLinePhone` or the internal name of a custom field. \n",
           "required" : true,
           "type" : "string"
         }, {
@@ -20716,6 +20722,10 @@
           "type" : "string",
           "description" : "The number extension, only for landLine phones, and is only used if the\nphone configuration states that extensions are enabled. \n"
         },
+        "hidden" : {
+          "type" : "boolean",
+          "description" : "Indicates whether this phone is hidden for other users (`true`)\nor visible to all users (`false`).\n"
+        },
         "enabledForSms" : {
           "type" : "boolean",
           "description" : "Only applicable if this represents a mobile phone.\nWhether this mobile phone is enabled for SMS, both receiving\nnotifications and sending SMS operations. Can only be set if the\nmobile phone is verified.\n"
@@ -22348,6 +22358,10 @@
           "type" : "string",
           "description" : "The number extension, only for landLine phones, and is only used if the\nphone configuration states that extensions are enabled. \n"
         },
+        "hidden" : {
+          "type" : "boolean",
+          "description" : "Indicates whether this phone is hidden for other users (`true`)\nor visible to all users (`false`).\n"
+        },
         "enabledForSms" : {
           "type" : "boolean",
           "description" : "Only applicable if this represents a mobile phone.\nWhether this mobile phone is enabled for SMS, both receiving\nnotifications and sending SMS operations. Can only be set if the\nmobile phone is verified.\n"
@@ -22423,6 +22437,10 @@
           "extension" : {
             "type" : "string",
             "description" : "The number extension, only for landLine phones, and is only used if the\nphone configuration states that extensions are enabled. \n"
+          },
+          "hidden" : {
+            "type" : "boolean",
+            "description" : "Indicates whether this phone is hidden for other users (`true`)\nor visible to all users (`false`).\n"
           },
           "enabledForSms" : {
             "type" : "boolean",
@@ -22569,6 +22587,10 @@
       }, {
         "type" : "object",
         "properties" : {
+          "display" : {
+            "type" : "string",
+            "description" : "The descriptive text for this record, according to the record\ntype configuration in Cyclos \n"
+          },
           "kind" : {
             "description" : "The possible kinds of a record, which can either belong to system or to an user Possible values are: * system: The record belongs to the system, and is unrelated to an user * user: The record belongs to a specific user\n",
             "$ref" : "#/definitions/RecordKind"
@@ -23513,6 +23535,10 @@
       }, {
         "type" : "object",
         "properties" : {
+          "display" : {
+            "type" : "string",
+            "description" : "The descriptive text for this transaction, according to the transaction\ntype and currency configuration in Cyclos \n"
+          },
           "transactionNumber" : {
             "type" : "string",
             "description" : "The transaction number identifying this balance transfer. The\ncurrency configuration has the definition on whether transaction\nnumbers are enabled and which format they have.\n"
@@ -24094,6 +24120,10 @@
       }, {
         "type" : "object",
         "properties" : {
+          "display" : {
+            "type" : "string",
+            "description" : "The descriptive text for this transfer, according to the transfer\ntype and currency configuration in Cyclos \n"
+          },
           "date" : {
             "type" : "string",
             "format" : "date-time",

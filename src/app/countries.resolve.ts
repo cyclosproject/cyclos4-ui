@@ -1,23 +1,24 @@
 import { Injectable } from '@angular/core';
 import { Resolve, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
-import { GroupForRegistration } from 'app/api/models';
-import { UsersService } from 'app/api/services';
 import { Observable } from 'rxjs/Observable';
 import { tap } from 'rxjs/operators/tap';
+import { Country } from 'app/api/models/country';
+import { AddressesService } from 'app/api/services';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { SingletonResolve } from 'app/singleton.resolve';
 
 /**
  * Loads the possible groups for registration
  */
 @Injectable()
-export class RegistrationGroupsResolve extends SingletonResolve<GroupForRegistration[]> {
+export class CountriesResolve extends SingletonResolve<Country[]> {
   constructor(
-    private usersService: UsersService
+    private addressesService: AddressesService
   ) {
     super();
   }
 
-  fetch(): Observable<GroupForRegistration[]> {
-    return this.usersService.getGroupsForUserRegistration({});
+  fetch(): Observable<Country[]> {
+    return this.addressesService.listCountries();
   }
 }

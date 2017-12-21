@@ -1,6 +1,13 @@
 {
+  "editor.tabSize": 2,
+  "editor.formatOnSave": true,
   "editor.rulers": [
     120
   ],
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "tslint.autoFixOnSave": true,
+  "html.format.endWithNewline": true,
+  "html.format.wrapLineLength": 80,
+  "html.format.preserveNewLines": true,
+  "html.format.wrapAttributes": "force"
 }

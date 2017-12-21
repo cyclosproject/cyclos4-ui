@@ -6,8 +6,8 @@ import { NotFoundComponent } from 'app/shared/not-found.component';
 import { SharedModule } from 'app/shared/shared.module';
 import { DataForLoginResolve } from 'app/data-for-login.resolve';
 import { LoggedUserGuard } from 'app/logged-user-guard';
-import { RegistrationGroupsResolve } from 'app/registration-groups.resolve';
 import { Menu } from 'app/shared/menu';
+import { RegistrationGroupsResolve } from 'app/registration-groups.resolve';
 
 const rootRoutes: Routes = [
   {
@@ -69,7 +69,6 @@ const rootRoutes: Routes = [
   ],
   providers: [
     DataForLoginResolve,
-    RegistrationGroupsResolve,
     LoggedUserGuard
   ]
 })

@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Injector, ViewChild } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Injector } from '@angular/core';
 import {
   DataForAccountHistory, Currency, EntityReference, PreselectedPeriod,
   AccountHistoryResult, AccountKind, AccountHistoryStatus, TransferFilter
@@ -9,13 +9,8 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { BaseBankingComponent } from 'app/banking/base-banking.component';
 import { TableDataSource } from 'app/shared/table-datasource';
 import { ApiHelper } from 'app/shared/api-helper';
-import { NgForm, FormGroup, FormBuilder } from '@angular/forms';
-import { Subscription } from 'rxjs/Subscription';
+import { FormGroup, FormBuilder } from '@angular/forms';
 import { tap } from 'rxjs/operators/tap';
-import { debounceTime } from 'rxjs/operators/debounceTime';
-import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged';
-import { switchMap } from 'rxjs/operators/switchMap';
-import { Observable } from 'rxjs/Observable';
 
 /** Information for an account status element shown on top */
 export type StatusIndicator = {

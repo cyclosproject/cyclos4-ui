@@ -10,17 +10,29 @@
 .sectionTitle {
   font-size: 22px;
   line-height: 22px;
-  margin-bottom: 22px;
+  margin-bottom: 18px;
   opacity: 0.87;
 }
-.sectionContent .sectionTitle, .sectionTitle.small {
+.sectionContent /deep/ .sectionTitle, .sectionTitle.small {
   font-size: 20px;
   line-height: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
-.sectionContent .sectionContent .sectionTitle {
+.sectionContent /deep/ .sectionContent .sectionTitle, .sectionTitle.xsmall {
   font-size: 16px;
-  line-height: 20px;
-  margin-bottom: 20px;
+  line-height: 16px;
+  margin-bottom: 12px;
   font-weight: 500;
+}
+
+.sectionContent /deep/ .sectionTitle.small {
+  font-size: 16px;
+  line-height: 16px;
+  margin-bottom: 12px;
+}
+
+.sectionContent /deep/ .sectionContent /deep/ .sectionTitle.small {
+  font-size: 13px;
+  line-height: 13px;
+  margin-bottom: 7px;
 }

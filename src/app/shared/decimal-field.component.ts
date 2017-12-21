@@ -1,9 +1,9 @@
 import {
-  Component, OnInit, Input, Output, ViewChild, EventEmitter, forwardRef,
+  Component, Input, Output, ViewChild, EventEmitter, forwardRef,
   ElementRef, ChangeDetectionStrategy, SkipSelf, Host, Optional
 } from '@angular/core';
 import {
-  NG_VALUE_ACCESSOR, ControlValueAccessor, FormControl, ControlContainer,
+  NG_VALUE_ACCESSOR, FormControl, ControlContainer,
   FormGroup, FormBuilder, Validators
 } from '@angular/forms';
 import { FormatService } from 'app/core/format.service';
@@ -27,11 +27,13 @@ export const DECIMAL_FIELD_VALUE_ACCESSOR = {
   providers: [DECIMAL_FIELD_VALUE_ACCESSOR]
 })
 export class DecimalFieldComponent extends BaseControlComponent<string> {
+  @Input() name: string;
   @Input() focused: boolean | string;
   @Input() prefix: string;
   @Input() suffix: string;
   @Input() required: boolean;
   @Input() placeholder: string;
+  @Input() privacyControl: FormControl;
 
   @Output() change: EventEmitter<string> = new EventEmitter();
   @Output() blur: EventEmitter<string> = new EventEmitter();

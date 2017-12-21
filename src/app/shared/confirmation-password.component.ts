@@ -1,11 +1,11 @@
 import {
   Component, ChangeDetectionStrategy, Input, Provider, forwardRef,
-  ViewChild, OnChanges, OnInit, SkipSelf, Host, Optional
+  ViewChild, OnChanges, SkipSelf, Host, Optional
 } from '@angular/core';
 import { PasswordInput, PasswordModeEnum } from 'app/api/models';
 import {
-  NG_VALUE_ACCESSOR, NG_VALIDATORS, Validator, ControlValueAccessor,
-  AbstractControl, ValidationErrors, FormControl, ControlContainer
+  NG_VALUE_ACCESSOR, NG_VALIDATORS, Validator,
+  AbstractControl, ValidationErrors, ControlContainer
 } from '@angular/forms';
 import { PasswordInputComponent } from 'app/shared/password-input.component';
 import { GeneralMessages } from 'app/messages/general-messages';

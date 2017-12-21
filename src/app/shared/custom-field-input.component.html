@@ -1,6 +1,9 @@
 <!-- string, integer, URL or entity -->
-<mat-form-field *ngIf="input" #stringComponent fxFlex="grow">
-  <input #stringInput matInput
+<mat-form-field *ngIf="input"
+  #stringComponent
+  fxFlex="grow">
+  <input #stringInput
+    matInput
     [placeholder]="field.name"
     [required]="field.required"
     [focused]="focused"
@@ -8,14 +11,23 @@
     [numbersOnly]="type == 'integer'"
     [mask]="field.pattern"
     [formControl]="formControl">
+  <span matSuffix
+    *ngIf="privacyControl">
+    <field-privacy [field]="field.internalName"
+      [control]="privacyControl"></field-privacy>
+  </span>
   <mat-error>
-    {{formControl?.getError('message')}}
+    {{ formControl?.getError('message') }}
   </mat-error>
 </mat-form-field>
 
 <!-- text or rich text (no WYSIWYG editor yet!) -->
-<mat-form-field *ngIf="textarea" #textComponent fxFlex="grow">
-  <textarea #textInput matInput matTextareaAutosize
+<mat-form-field *ngIf="textarea"
+  #textComponent
+  fxFlex="grow">
+  <textarea #textInput
+    matInput
+    matTextareaAutosize
     [placeholder]="field.name"
     mdAutosizeMinRows="3"
     [required]="field.required"
@@ -23,60 +35,99 @@
     [type]="type == 'url' ? 'url' : 'text'"
     [numbersOnly]="type == 'integer'"
     [formControl]="formControl"></textarea>
+  <span matSuffix
+    *ngIf="privacyControl">
+    <field-privacy [field]="field.internalName"
+      [control]="privacyControl"></field-privacy>
+  </span>
   <mat-error>
-    {{formControl?.getError('message')}}
+    {{ formControl?.getError('message') }}
   </mat-error>
 </mat-form-field>
 
 <!-- boolean -->
-<mat-checkbox #booleanComponent fxFlex="grow" *ngIf="type == 'boolean'"
-  [formControl]="formControl">
-  {{ field.name }}
-</mat-checkbox>
+<div *ngIf="type == 'boolean'"
+  fxFlex="grow"
+  fxLayout="row">
+  <mat-checkbox #booleanComponent
+    fxFlex="grow"
+    [formControl]="formControl">
+    {{ field.name }}
+  </mat-checkbox>
+  <span fxFlex="nogrow"
+    *ngIf="privacyControl">
+    <field-privacy [field]="field.internalName"
+      [control]="privacyControl"></field-privacy>
+  </span>
+</div>
 
 <!-- decimal -->
-<decimal-field #decimalComponent fxFlex="grow" *ngIf="type == 'decimal'"
-  [placeholder]="field.name" [scale]="field.decimalDigits"
+<decimal-field #decimalComponent
+  fxFlex="grow"
+  *ngIf="type == 'decimal'"
+  [name]="field.internalName"
+  [placeholder]="field.name"
+  [scale]="field.decimalDigits"
   [required]="field.required"
   [focused]="focused"
-  [formControl]="formControl">
+  [formControl]="formControl"
+  [privacyControl]="privacyControl">
 </decimal-field>
 
 <!-- date -->
-<date-field #dateComponent fxFlex="grow" *ngIf="type == 'date'"
-  [placeholder]="field.name" [required]="field.required"
+<date-field #dateComponent
+  fxFlex="grow"
+  *ngIf="type == 'date'"
+  [name]="field.internalName"
+  [placeholder]="field.name"
+  [required]="field.required"
   [focused]="focused"
-  [formControl]="formControl">
+  [formControl]="formControl"
+  [privacyControl]="privacyControl">
 </date-field>
 
 <!-- single / multi selection -->
 <mat-form-field *ngIf="type == 'singleSelection' || type == 'multiSelection'">
-  <mat-select #selectComponent fxFlex="grow"
-    [formControl]="formControl"
+  <mat-select #selectComponent
+    fxFlex="grow"
+    [formControl]="type == 'multiSelection' ? multiSelectControl : formControl"
     [required]="field.required"
-    [placeholder]="field.name" [multiple]="type == 'multiSelection'">
+    [placeholder]="field.name"
+    [multiple]="type == 'multiSelection'">
+    <mat-option *ngIf="type == 'singleSelection'"></mat-option>
     <mat-option *ngFor="let pv of field.possibleValues"
       [value]="ApiHelper.internalNameOrId(pv)">
       <span *ngIf="pv.category">{{ pv.category.name }} - </span>
       {{ pv.value }}
     </mat-option>
   </mat-select>
+  <span matSuffix
+    *ngIf="privacyControl">
+    <field-privacy [field]="field.internalName"
+      [control]="privacyControl"></field-privacy>
+  </span>
   <mat-error>
-    {{formControl?.getError('message')}}
+    {{ formControl?.getError('message') }}
   </mat-error>
 </mat-form-field>
 
 <!-- dynamic selection -->
 <mat-form-field *ngIf="type == 'dynamicSelection'">
-  <mat-select #dynamicComponent fxFlex="grow"
+  <mat-select #dynamicComponent
+    fxFlex="grow"
     [formControl]="formControl"
     [required]="field.required"
     [placeholder]="field.name">
     <mat-option *ngFor="let pv of field.dynamicValues"
       [value]="pv.value">{{ pv.label }}</mat-option>
   </mat-select>
+  <span matSuffix
+    *ngIf="privacyControl">
+    <field-privacy [field]="field.internalName"
+      [control]="privacyControl"></field-privacy>
+  </span>
   <mat-error>
-    {{formControl?.getError('message')}}
+    {{ formControl?.getError('message') }}
   </mat-error>
 </mat-form-field>
 <!-- no support for file / image so far -->

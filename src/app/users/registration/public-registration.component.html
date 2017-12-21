@@ -1,35 +1,90 @@
 <page-layout [loaded]="loaded">
   <page-content [title]="usersMessages.registrationTitle()">
-    <td-steps #stepper [mode]="layout.ltmd ? 'vertical' : 'horizontal'">
-      <td-step #groupStep *ngIf="groups.length > 1" [label]="usersMessages.registrationGroup()"
+    <td-steps #stepper
+      [mode]="layout.ltmd ? 'vertical' : 'horizontal'">
+      <td-step #groupStep
+        *ngIf="groups.length > 1"
+        [label]="usersMessages.registrationGroup()"
         [sublabel]="layout.ltmd ? (group | async).name : null">
         <ng-container *ngIf="stepperControl.monitor(groupStep) | async">
-          <registration-group [groups]="groups" [form]=groupForm></registration-group>
-          <actions fxLayout="column-reverse" fxLayout.gt-xs="row">
-            <button fxFlex.gt-xs="nogrow" mat-raised-button color="accent"
-              [disabled]="!groupForm.valid" (click)="nextFromGroup()">
+          <registration-group [groups]="groups"
+            [form]=groupForm></registration-group>
+          <actions fxLayout="column-reverse"
+            fxLayout.gt-xs="row">
+            <button fxFlex.gt-xs="nogrow"
+              mat-raised-button
+              color="accent"
+              [disabled]="!groupForm.valid"
+              (click)="nextFromGroup()">
               {{ generalMessages.next() }}
             </button>
           </actions>
         </ng-container>
       </td-step>
-      <td-step #fieldsStep [label]="usersMessages.registrationFields()"
+      <td-step #fieldsStep
+        [label]="usersMessages.registrationFields()"
         [sublabel]="layout.ltmd ? user.name || user.username || user.email : null">
         <ng-container *ngIf="stepperControl.monitor(fieldsStep) | async">
-          <registration-fields [data]="data | async" [form]=fieldsForm></registration-fields>
-          <actions fxLayout="column-reverse" fxLayout.gt-xs="row">
+          <registration-fields [data]="data | async"
+            [form]="fieldsForm"></registration-fields>
+          <actions fxLayout="column-reverse"
+            fxLayout.gt-xs="row">
             <button *ngIf="groups.length > 1"
-              mat-raised-button (click)="previousFromFields()">
+              mat-raised-button
+              (click)="previousFromFields()">
               {{ generalMessages.previous() }}
             </button>
-            <button fxFlex.gt-xs="nogrow" mat-raised-button color="accent"
-              [disabled]="!groupForm.valid" (click)="nextFromGroup()">
+            <button fxFlex.gt-xs="nogrow"
+              mat-raised-button
+              color="accent"
+              [disabled]="!fieldsForm.valid"
+              (click)="nextFromFields()">
               {{ generalMessages.next() }}
             </button>
           </actions>
         </ng-container>
       </td-step>
+      <td-step #confirmStep
+        [label]="usersMessages.registrationConfirm()">
+        <ng-container *ngIf="stepperControl.monitor(confirmStep) | async">
+          <registration-confirm [data]="data | async"
+            [form]=confirmForm></registration-confirm>
+          <actions fxLayout="column-reverse"
+            fxLayout.gt-xs="row">
+            <button *ngIf="groups.length > 1"
+              mat-raised-button
+              (click)="previousFromConfirm()">
+              {{ generalMessages.previous() }}
+            </button>
+            <button fxFlex.gt-xs="nogrow"
+              mat-raised-button
+              color="accent"
+              [disabled]="!confirmForm.valid"
+              (click)="nextFromConfirm()">
+              {{ generalMessages.confirm() }}
+            </button>
+          </actions>
+        </ng-container>
+      </td-step>
+      <td-step #doneStep
+        [label]="usersMessages.registrationDone()">
+        <ng-container *ngIf="stepperControl.monitor(doneStep) | async">
+          <registration-done [result]="result | async"></registration-done>
+          <actions *ngIf="(result | async).status == 'active'"
+            fxLayout="column-reverse"
+            fxLayout.gt-xs="row">
+            <button fxFlex.gt-xs="nogrow"
+              mat-raised-button
+              color="accent"
+              (click)="goToLogin()">
+              {{ usersMessages.registrationDoneGoToLogin() }}
+            </button>
+          </actions>
+        </ng-container>
+      </td-step>
+
     </td-steps>
-    <linear-stepper-control #stepperControl [stepper]="stepper"></linear-stepper-control>
+    <linear-stepper-control #stepperControl
+      [stepper]="stepper"></linear-stepper-control>
   </page-content>
 </page-layout>

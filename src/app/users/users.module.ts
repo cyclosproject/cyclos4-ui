@@ -5,6 +5,8 @@ import { PublicRegistrationComponent } from 'app/users/registration/public-regis
 import { RegistrationGroupComponent } from 'app/users/registration/registration-group.component';
 import { RegistrationFieldsComponent } from 'app/users/registration/registration-fields.component';
 import { UsersRoutingModule } from 'app/users/users-routing.module';
+import { RegistrationConfirmComponent } from 'app/users/registration/registration-confirm.component';
+import { RegistrationDoneComponent } from 'app/users/registration/registration-done.component';
 
 /**
  * Users module
@@ -18,7 +20,9 @@ import { UsersRoutingModule } from 'app/users/users-routing.module';
   declarations: [
     PublicRegistrationComponent,
     RegistrationGroupComponent,
-    RegistrationFieldsComponent
+    RegistrationFieldsComponent,
+    RegistrationConfirmComponent,
+    RegistrationDoneComponent
   ],
   providers: [
     UsersMessages

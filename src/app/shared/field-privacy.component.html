@@ -1,0 +1,6 @@
+<button mat-icon-button (click)="toggle($event)"
+  [matTooltip]="hidden ? generalMessages.fieldVisibilityHidden() : generalMessages.fieldVisibilityVisible()">
+  <mat-icon ngClass="mat-24">
+    {{ icon }}
+  </mat-icon>
+</button>

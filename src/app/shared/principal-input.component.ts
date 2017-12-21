@@ -1,10 +1,10 @@
 import {
-  Component, OnInit, Input, forwardRef, ViewChild,
+  Component, Input, forwardRef, ViewChild,
   ElementRef, ChangeDetectionStrategy, SkipSelf, Host, Optional
 } from '@angular/core';
 import {
-  NG_VALUE_ACCESSOR, ControlValueAccessor, AbstractControl,
-  ValidationErrors, Validator, NG_VALIDATORS, FormControl, ControlContainer
+  NG_VALUE_ACCESSOR, AbstractControl,
+  ValidationErrors, Validator, NG_VALIDATORS, ControlContainer
 } from '@angular/forms';
 import { PrincipalTypeInput, PrincipalTypeKind } from 'app/api/models';
 import { CustomFieldInputComponent } from 'app/shared/custom-field-input.component';

@@ -6,7 +6,7 @@ import { RouterModule } from '@angular/router';
 import {
   MatButtonModule, MatInputModule, MatCheckboxModule, MatRadioModule,
   MatSelectModule, MatDatepickerModule, MatTooltipModule,
-  MatIconModule, MatGridListModule, MatTabsModule, MatTableModule, MatDialogModule, MatCardModule, MatSidenavModule
+  MatIconModule, MatGridListModule, MatTabsModule, MatTableModule, MatDialogModule, MatCardModule, MatSidenavModule, MatSlideToggleModule
 } from '@angular/material';
 import { CovalentStepsModule } from '@covalent/core';
 
@@ -46,6 +46,8 @@ import { FocusedDirective } from 'app/shared/focused.directive';
 import { PasswordInputComponent } from 'app/shared/password-input.component';
 import { ConfirmationPasswordComponent } from 'app/shared/confirmation-password.component';
 import { LinearStepperControlComponent } from 'app/shared/linear-stepper-control.component';
+import { FieldPrivacyComponent } from 'app/shared/field-privacy.component';
+import { CaptchaComponent } from 'app/shared/captcha.component';
 
 /**
  * Module that configures UI elements
@@ -69,11 +71,13 @@ import { LinearStepperControlComponent } from 'app/shared/linear-stepper-control
     CustomFieldInputComponent,
     PrincipalInputComponent,
     PasswordInputComponent,
+    FieldPrivacyComponent,
     PaginatorComponent,
     LinearStepperControlComponent,
     ConfirmationPasswordComponent,
     UserSelectionComponent,
     AvatarComponent,
+    CaptchaComponent,
     NotFoundComponent,
 
     FocusFirstDirective,
@@ -100,6 +104,7 @@ import { LinearStepperControlComponent } from 'app/shared/linear-stepper-control
     MatDatepickerModule,
     MatTooltipModule,
     MatCheckboxModule,
+    MatSlideToggleModule,
     MatRadioModule,
     MatIconModule,
     MatGridListModule,
@@ -121,6 +126,7 @@ import { LinearStepperControlComponent } from 'app/shared/linear-stepper-control
     MatDatepickerModule,
     MatTooltipModule,
     MatCheckboxModule,
+    MatSlideToggleModule,
     MatRadioModule,
     MatIconModule,
     MatGridListModule,
@@ -148,11 +154,13 @@ import { LinearStepperControlComponent } from 'app/shared/linear-stepper-control
     CustomFieldInputComponent,
     PrincipalInputComponent,
     PasswordInputComponent,
+    FieldPrivacyComponent,
     PaginatorComponent,
     LinearStepperControlComponent,
     ConfirmationPasswordComponent,
     UserSelectionComponent,
     AvatarComponent,
+    CaptchaComponent,
     NotFoundComponent,
 
     FocusFirstDirective,

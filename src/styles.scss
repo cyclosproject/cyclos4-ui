@@ -38,9 +38,11 @@ body.lt-md, .lt-md .mat-drawer-container {
 .mat-select-placeholder {
   left: -2px;
 }
+/*
 .mat-select-panel {
   max-height: 100vh !important;
 }
+*/
 mat-checkbox + mat-checkbox,
 mat-checkbox + mat-radio-group,
 mat-radio-group + mat-radio-group, mat-radio-group + mat-checkbox {
@@ -171,6 +173,13 @@ mat-icon.mat-96 {
 }
 .mat-table mat-icon {
   opacity: 0.45;
+}
+
+.mat-form-field-prefix .mat-icon-button .mat-icon,
+.mat-form-field-suffix .mat-icon-button .mat-icon {
+  height: 1.2em;
+  line-height: 1.2em;
+  font-size: 1.2em !important;
 }
 
 a.plain {

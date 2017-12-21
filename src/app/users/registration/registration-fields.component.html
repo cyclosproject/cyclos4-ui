@@ -1,40 +1,140 @@
-<div fxLayout="column" [formGroup]="form">
+<div fxLayout="column"
+  [formGroup]="form">
   <div class="form-info">{{ usersMessages.registrationFieldsMessage() }}</div>
 
   <mat-form-field *ngIf="hasName">
-    <input matInput formControlName="name"
-      [placeholder]="usersMessages.userName()"
-      required focused />
+    <input matInput
+      formControlName="name"
+      required
+      focused
+      [placeholder]="usersMessages.userName()" />
     <mat-error>
-      {{form.get('name').getError('message')}}
+      {{ form.get('name').getError('message') }}
     </mat-error>
   </mat-form-field>
 
   <mat-form-field *ngIf="hasUsername">
-    <input matInput formControlName="username"
-      [placeholder]="usersMessages.userUsername()"
-      required [focused]="!hasName" />
+    <input matInput
+      formControlName="username"
+      required
+      [focused]="!hasName"
+      [placeholder]="usersMessages.userUsername()" />
     <mat-error>
-      {{form.get('username').getError('message')}}
+      {{ form.get('username').getError('message') }}
     </mat-error>
   </mat-form-field>
 
   <mat-form-field *ngIf="hasEmail">
-    <input matInput formControlName="email"
-      [placeholder]="usersMessages.userEmail()"
+    <input matInput
+      formControlName="email"
       [required]="data.emailRequired"
-      [focused]="!hasName && !hasUsername" />
+      [focused]="!hasName && !hasUsername"
+      [placeholder]="usersMessages.userEmail()" />
+    <span matSuffix
+      *ngIf="managePrivacy('email')">
+      <field-privacy field="email"
+        [control]="form.get('hiddenFields')"></field-privacy>
+    </span>
     <mat-error>
-      {{form.get('email').getError('message')}}
+      {{ form.get('email').getError('message') }}
     </mat-error>
   </mat-form-field>
-  
+
+  <ng-container *ngIf="hasMobilePhone"
+    [formGroup]="form.get('mobilePhone')">
+    <mat-form-field>
+      <input matInput
+        formControlName="number"
+        [required]="data.phoneConfiguration.mobileAvailability == 'required'"
+        [placeholder]="usersMessages.userMobilePhone()" />
+      <span matSuffix
+        *ngIf="managePrivacy('phone')">
+        <field-privacy [control]="form.get('mobilePhone.hidden')"></field-privacy>
+      </span>
+      <mat-error>
+        {{ form.get('mobilePhone').getError('message') }}
+      </mat-error>
+    </mat-form-field>
+  </ng-container>
+
+  <div *ngIf="hasLandLinePhone"
+    [formGroup]="form.get('landLinePhone')"
+    fxFlex="grow"
+    fxLayout="row">
+    <mat-form-field fxFlex="grow">
+      <input matInput
+        formControlName="number"
+        [required]="data.phoneConfiguration.landLineAvailability == 'required'"
+        [placeholder]="usersMessages.userLandLinePhone()" />
+      <span matSuffix
+        *ngIf="managePrivacy('phone')">
+        <field-privacy [control]="form.get('landLinePhone.hidden')"></field-privacy>
+      </span>
+      <mat-error>
+        {{ form.get('landLinePhone').getError('message') }}
+      </mat-error>
+    </mat-form-field>
+    <ng-container *ngIf="hasExtension">
+      <div fxFlex="nogrow">&nbsp;</div>
+      <mat-form-field fxFlex="nogrow">
+        <input matInput
+          formControlName="extension"
+          [placeholder]="usersMessages.userLandLinePhoneExtension()" />
+      </mat-form-field>
+    </ng-container>
+  </div>
+
   <ng-container [formGroup]="form.get('customValues')">
     <custom-field-input *ngFor="let cf of data.customFields"
       fxFlex="grow"
       fxLayout="column"
       [field]="cf"
-      [formControlName]="cf.internalName">
+      [formControlName]="cf.internalName"
+      [privacyControl]="managePrivacy(cf.internalName) ? form.get('hiddenFields') : null">
     </custom-field-input>
   </ng-container>
+
+  <section *ngIf="hasAddress"
+    margin
+    titleSize="small"
+    [title]="usersMessages.registrationAddressTitle()">
+    <div fxLayout="column">
+      <mat-slide-toggle fxFlex="grow"
+        *ngIf="optionalAddress"
+        formControlName="addressDefined">
+        {{ usersMessages.registrationAddressDefine() }}
+      </mat-slide-toggle>
+      <ng-container *ngFor="let field of addressFields">
+        <ng-container [formGroup]="form.get('address')">
+          <!-- Have to use [fxHide] instead of *ngIf="form.value.addressDefined" because
+            the [required] directive adds a required validation, but doesn't remove it
+            when the field is removed from DOM.
+            See https://github.com/angular/material2/issues/2574 -->
+          <mat-input-container [fxHide]="!form.value.addressDefined"
+            fxFlex="grow"
+            *ngIf="field == 'country'; else addressField">
+            <mat-select [formControlName]="field"
+              [required]="requiredAddressField(field) | async"
+              [placeholder]="addressFieldLabel(field)">
+              <mat-option></mat-option>
+              <mat-option *ngFor="let country of countries | async"
+                [value]="country.code">
+                {{ country.name }}
+              </mat-option>
+            </mat-select>
+          </mat-input-container>
+          <ng-template #addressField>
+            <!-- Same comment for fxHide as above -->
+            <mat-input-container [fxHide]="!form.value.addressDefined"
+              fxFlex="grow">
+              <input matInput
+                [formControlName]="field"
+                [required]="requiredAddressField(field) | async"
+                [placeholder]="addressFieldLabel(field)" />
+            </mat-input-container>
+          </ng-template>
+        </ng-container>
+      </ng-container>
+    </div>
+  </section>
 </div>

@@ -1,0 +1,92 @@
+<section *ngFor="let pt of data.passwordTypes; let i = index"
+  titleSize="small"
+  [margin]="i > 0"
+  [title]="pt.name">
+  <div fxLayout="column"
+    [formGroup]="passwordsForm(i)">
+    <div class="form-info"
+      fxFlex="grow">{{ pt.description }}</div>
+    <mat-form-field fxFlex="grow">
+      <input matInput
+        type="password"
+        formControlName="value"
+        required
+        [focused]="i == 0"
+        [placeholder]="pt.name" />
+    </mat-form-field>
+
+    <mat-form-field fxFlex="grow">
+      <input matInput
+        type="password"
+        formControlName="confirmationValue"
+        required
+        [placeholder]="usersMessages.registrationPasswordConfirm(pt.name)" />
+    </mat-form-field>
+  </div>
+</section>
+
+<section *ngIf="data.securityQuestions != null && data.securityQuestions.length > 0"
+  titleSize="small"
+  margin
+  [title]="usersMessages.registrationSecurityQuestionTitle()"
+  [formGroup]="form">
+  <div fxLayout="column">
+    <div class="form-info"
+      fxFlex="grow">{{ usersMessages.registrationSecurityQuestionMessage() }}</div>
+    <mat-form-field fxFlex="grow">
+      <mat-select formControlName="securityQuestion"
+        [placeholder]="usersMessages.registrationSecurityQuestionQuestion()">
+        <mat-option value="">
+          {{ usersMessages.registrationSecurityQuestionLeaveBlank() }}
+        </mat-option>
+        <mat-option *ngFor="let q of data.securityQuestions"
+          [value]="q.internalName">
+          {{ q.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Must use [fxHide] instead of *ngIf. See comments in registration-fields.component.html -->
+    <mat-form-field fxFlex="grow"
+      [fxHide]="!(requiredSecurityAnswer | async)">
+      <input matInput
+        formControlName="securityAnswer"
+        [required]="requiredSecurityAnswer | async"
+        [placeholder]="usersMessages.registrationSecurityQuestionAnswer()" />
+    </mat-form-field>
+  </div>
+</section>
+
+<section *ngIf="data.agreements != null && data.agreements.length > 0"
+  titleSize="small"
+  margin
+  [title]="usersMessages.registrationAgreementTitle()"
+  [formGroup]="form">
+
+  <div class="form-info">
+    {{ usersMessages.registrationAgreementMessage() }}
+  </div>
+
+  <div class="agreements">
+    <section *ngFor="let agreement of data.agreements"
+      [title]="agreement.name"
+      titleSize="xsmall">
+      <div [innerHTML]="agreement.content | trust"></div>
+    </section>
+  </div>
+
+  <mat-checkbox formControlName="acceptAgreement">
+    {{ usersMessages.registrationAgreementCheck() }}
+  </mat-checkbox>
+</section>
+
+<section *ngIf="data.captchaType != null"
+  titleSize="small"
+  margin
+  [title]="usersMessages.registrationCaptchaTitle()">
+  <div fxLayout="column">
+    <div class="form-info"
+      fxFlex="grow">{{ usersMessages.registrationCaptchaMessage() }}</div>
+    <captcha [form]="form.get('captcha')"></captcha>
+  </div>
+</section>

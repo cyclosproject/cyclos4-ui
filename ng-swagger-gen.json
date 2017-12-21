@@ -5,12 +5,14 @@
   "includeTags": [
     "Auth",
     "Users",
+    "Addresses",
     "Contacts",
     "Transactions",
     "Transfers",
     "Payments",
     "Accounts",
-    "UI"
+    "UI",
+    "Captcha"
   ],
   "minParamsForContainer": 2
 }

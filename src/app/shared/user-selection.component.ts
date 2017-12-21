@@ -1,10 +1,10 @@
 import {
-  Component, OnInit, Input, Provider, forwardRef, ChangeDetectionStrategy,
+  Component, Input, Provider, forwardRef, ChangeDetectionStrategy,
   SkipSelf, Host, Optional, ElementRef, ViewChild
 } from '@angular/core';
 import { UserDataForSearch, User } from 'app/api/models';
 import { TableDataSource } from 'app/shared/table-datasource';
-import { NG_VALUE_ACCESSOR, ControlValueAccessor, ControlContainer, FormControl } from '@angular/forms';
+import { NG_VALUE_ACCESSOR, ControlContainer } from '@angular/forms';
 import { Subject } from 'rxjs/Subject';
 import { debounceTime } from 'rxjs/operators/debounceTime';
 import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged';
