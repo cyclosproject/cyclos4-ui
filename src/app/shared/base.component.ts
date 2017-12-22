@@ -64,6 +64,12 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
     this.subscriptions.length = 0;
   }
 
+  focusDelayed(control: any) {
+    if (control.focus) {
+      setTimeout(() => control.focus(), 100);
+    }
+  }
+
   /**
    * Invoked whenever the current media breakpoints change,
    * or when the user logs in/out

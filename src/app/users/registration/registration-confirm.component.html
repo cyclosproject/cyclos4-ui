@@ -35,7 +35,8 @@
       fxFlex="grow">{{ usersMessages.registrationSecurityQuestionMessage() }}</div>
     <mat-form-field fxFlex="grow">
       <mat-select formControlName="securityQuestion"
-        [placeholder]="usersMessages.registrationSecurityQuestionQuestion()">
+        [placeholder]="usersMessages.registrationSecurityQuestionQuestion()"
+        (change)="focusDelayed(securityAnswer)">
         <mat-option value="">
           {{ usersMessages.registrationSecurityQuestionLeaveBlank() }}
         </mat-option>
@@ -46,10 +47,12 @@
       </mat-select>
     </mat-form-field>
 
-    <!-- Must use [fxHide] instead of *ngIf. See comments in registration-fields.component.html -->
+    <!-- Must use [fxHide] instead of *ngIf. The [required] adds a validation on the control,
+      and doesn't removes it when removed from DOM -->
     <mat-form-field fxFlex="grow"
       [fxHide]="!(requiredSecurityAnswer | async)">
-      <input matInput
+      <input #securityAnswer
+        matInput
         formControlName="securityAnswer"
         [required]="requiredSecurityAnswer | async"
         [placeholder]="usersMessages.registrationSecurityQuestionAnswer()" />

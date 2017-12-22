@@ -2,7 +2,6 @@ import { Component, Injector, ChangeDetectionStrategy, Input } from '@angular/co
 import { BaseUsersComponent } from 'app/users/base-users.component';
 import { UserRegistrationResult } from 'app/api/models';
 import { escapeHtml } from 'app/shared/helper';
-import { UserRegistrationStatusEnum } from 'app/api/models/user-registration-status-enum';
 
 /**
  * Provides the input for the password, captcha and agreement

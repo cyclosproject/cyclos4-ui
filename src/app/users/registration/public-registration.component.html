@@ -26,7 +26,8 @@
         [sublabel]="layout.ltmd ? user.name || user.username || user.email : null">
         <ng-container *ngIf="stepperControl.monitor(fieldsStep) | async">
           <registration-fields [data]="data | async"
-            [form]="fieldsForm"></registration-fields>
+            [form]="fieldsForm"
+            [addressForm]="addressForm"></registration-fields>
           <actions fxLayout="column-reverse"
             fxLayout.gt-xs="row">
             <button *ngIf="groups.length > 1"
@@ -37,7 +38,9 @@
             <button fxFlex.gt-xs="nogrow"
               mat-raised-button
               color="accent"
-              [disabled]="!fieldsForm.valid"
+              [disabled]="((fieldsForm.statusChanges | async) !== 'VALID') ||
+                (fieldsForm.value.addressDefined === true
+                && (addressForm.statusChanges | async) !== 'VALID')"
               (click)="nextFromFields()">
               {{ generalMessages.next() }}
             </button>

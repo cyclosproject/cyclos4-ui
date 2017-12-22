@@ -16,9 +16,8 @@ import { map } from 'rxjs/operators/map';
 import { switchMap } from 'rxjs/operators/switchMap';
 import { UserNew } from 'app/api/models/user-new';
 import { AfterViewInit } from '@angular/core/src/metadata/lifecycle_hooks';
-import { copyProperties, empty } from 'app/shared/helper';
+import { copyProperties, empty, getAllErrors } from 'app/shared/helper';
 import { UserRegistrationResult } from 'app/api/models/user-registration-result';
-import { UserRegistrationStatusEnum } from 'app/api/models/user-registration-status-enum';
 import { AvailabilityEnum } from 'app/api/models/availability-enum';
 
 /** Validator function that ensures password and confirmation match */
@@ -73,6 +72,9 @@ export class PublicRegistrationComponent extends BaseUsersComponent implements A
   @ViewChild('fieldsStep') fieldsStep: TdStepComponent;
   user = new UserNew();
   fieldsForm: FormGroup;
+  addressForm: FormGroup;
+  fieldsValid = new BehaviorSubject(false);
+  counter = new BehaviorSubject(0);
 
   // Confirmation step
   @ViewChild('confirmStep') confirmStep: TdStepComponent;
@@ -98,6 +100,18 @@ export class PublicRegistrationComponent extends BaseUsersComponent implements A
     // Form for field (fully dynamic)
     this.fieldsForm = formBuilder.group({
     });
+
+    // Form for address (fully dynamic)
+    // As the address is optionally defined, this confuses validations if the address is set to not defined
+    // Hence we use a separated form
+    this.addressForm = formBuilder.group({
+    });
+
+    // Update the valid status whenever either form status changes
+    const updateValidity = () => this.updateFieldsValid();
+    this.subscriptions.push(this.fieldsForm.statusChanges.subscribe(updateValidity));
+    this.subscriptions.push(this.addressForm.statusChanges.subscribe(updateValidity));
+    this.subscriptions.push(this.addressForm.valueChanges.subscribe(updateValidity));
 
     // Form for confirmation (fully dynamic)
     this.confirmForm = formBuilder.group({
@@ -212,34 +226,16 @@ export class PublicRegistrationComponent extends BaseUsersComponent implements A
     if (addressAvailability !== AvailabilityEnum.DISABLED) {
       const address = addressConfiguration.address;
 
-      const addressForm = this.formBuilder.group({
+      this.addressForm = this.formBuilder.group({
         hidden: address.hidden
       });
-
-      const definedValidator: ValidatorFn = control => {
-        if (control.value) {
-          // Address is defined: return its errors
-          return addressForm.errors;
-        }
-        // Address is not defined - no eror
-        return null;
-      };
-      this.fieldsForm.setControl('addressDefined',
-        this.formBuilder.control(addressAvailability === AvailabilityEnum.REQUIRED, definedValidator));
-
-      const requiredIfDefined: ValidatorFn = control => {
-        if (this.fieldsForm.value.addressDefined) {
-          // The address is defined - validate the field
-          return Validators.required(control);
-        }
-        return null;
-      };
+      const addressDefined = this.formBuilder.control(
+        addressAvailability === AvailabilityEnum.REQUIRED);
+      this.fieldsForm.setControl('addressDefined', addressDefined);
       for (const field of addressConfiguration.enabledFields) {
-        const val = addressConfiguration.requiredFields.includes(field) ? requiredIfDefined : null;
-        addressForm.setControl(field, this.formBuilder.control(address[field], val));
+        const val = addressConfiguration.requiredFields.includes(field) ? Validators.required : null;
+        this.addressForm.setControl(field, this.formBuilder.control(address[field], val));
       }
-
-      this.fieldsForm.setControl('address', addressForm);
     }
 
     // Custom fields
@@ -287,7 +283,7 @@ export class PublicRegistrationComponent extends BaseUsersComponent implements A
     // Security question
     if (data.securityQuestions != null && data.securityQuestions.length > 0) {
       this.confirmForm.setControl('securityQuestion', this.formBuilder.control(''));
-      this.confirmForm.setControl('securityAnswer', this.formBuilder.control(''));
+      this.confirmForm.setControl('securityAnswer', this.formBuilder.control('', SEGURITY_ANSWER_VAL));
     }
 
     // Agreements
@@ -310,6 +306,15 @@ export class PublicRegistrationComponent extends BaseUsersComponent implements A
   }
 
   nextFromConfirm() {
+    const user = this.userNew;
+    this.usersService.createUser(user)
+      .subscribe(result => {
+        this.result.next(result);
+        this.stepperControl.complete();
+      });
+  }
+
+  private get userNew(): UserNew {
     const data = this.data.value;
 
     const user = new UserNew();
@@ -343,28 +348,44 @@ export class PublicRegistrationComponent extends BaseUsersComponent implements A
       // But only if defined
       if (this.fieldsForm.value.addressDefined) {
         const address = { ...data.addressConfiguration.address };
-        copyProperties(this.fieldsForm.value.address, address);
+        copyProperties(this.addressForm.value, address);
         user.addresses = [address];
       }
     }
 
     // Copy the fields in the confirmation form
     copyProperties(this.confirmForm.value, user);
-    this.usersService.createUser(user)
-      .subscribe(result => {
-        this.result.next(result);
-        this.stepperControl.complete();
-      });
+    return user;
   }
 
   goToLogin() {
     this.router.navigateByUrl('/login');
   }
 
+  private updateFieldsValid() {
+    let valid = false;
+    if (this.fieldsForm.valid) {
+      const addressDefinedControl = this.fieldsForm.get('addressDefined');
+      const addressDefined = addressDefinedControl != null && addressDefinedControl.value === true;
+      valid = !addressDefined || this.addressForm.valid;
+    }
+    if (this.fieldsValid.value !== valid) {
+      this.fieldsValid.next(valid);
+      this.counter.next(this.counter.value + 1);
+    }
+  }
+
+  get errors() {
+    return {
+      fields: getAllErrors(this.fieldsForm),
+      address: getAllErrors(this.addressForm)
+    };
+  }
+
   private serverSideValidator(field: string): AsyncValidatorFn {
     return (c: AbstractControl): Observable<ValidationErrors | null> => {
       let val = c.value;
-      if (val == null || val === null || !c.dirty) {
+      if (empty(val) || !c.dirty) {
         // Don't validate empty value (will fail validation required), nor fields that haven't been modified yet
         return Observable.of(null);
       }

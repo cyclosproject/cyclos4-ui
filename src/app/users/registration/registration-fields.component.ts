@@ -9,7 +9,6 @@ import { CountriesResolve } from 'app/countries.resolve';
 import { Observable } from 'rxjs/Observable';
 import { Country } from 'app/api/models/country';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { getAllErrors } from 'app/shared/helper';
 
 /**
  * Provides the input for user fields
@@ -27,20 +26,13 @@ export class RegistrationFieldsComponent extends BaseUsersComponent {
   }
 
   @Input()
-  counter: BehaviorSubject<number>;
-
-  @Input()
   form: FormGroup;
 
   @Input()
-  data: UserDataForNew;
+  addressForm: FormGroup;
 
-  ngOnInit() {
-    super.ngOnInit();
-    this.subscriptions.push(this.form.statusChanges.subscribe(st => {
-      this.detectChanges();
-    }));
-  }
+  @Input()
+  data: UserDataForNew;
 
   get hasName(): boolean {
     return this.canEdit('name');
@@ -107,9 +99,5 @@ export class RegistrationFieldsComponent extends BaseUsersComponent {
   private canEdit(field: string): boolean {
     const actions = this.data.profileFieldActions[field];
     return actions && actions.edit;
-  }
-
-  get errors() {
-    return getAllErrors(this.form);
   }
 }

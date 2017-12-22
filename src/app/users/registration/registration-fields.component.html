@@ -104,35 +104,31 @@
         formControlName="addressDefined">
         {{ usersMessages.registrationAddressDefine() }}
       </mat-slide-toggle>
-      <ng-container *ngFor="let field of addressFields">
-        <ng-container [formGroup]="form.get('address')">
-          <!-- Have to use [fxHide] instead of *ngIf="form.value.addressDefined" because
-            the [required] directive adds a required validation, but doesn't remove it
-            when the field is removed from DOM.
-            See https://github.com/angular/material2/issues/2574 -->
-          <mat-input-container [fxHide]="!form.value.addressDefined"
-            fxFlex="grow"
-            *ngIf="field == 'country'; else addressField">
-            <mat-select [formControlName]="field"
-              [required]="requiredAddressField(field) | async"
-              [placeholder]="addressFieldLabel(field)">
-              <mat-option></mat-option>
-              <mat-option *ngFor="let country of countries | async"
-                [value]="country.code">
-                {{ country.name }}
-              </mat-option>
-            </mat-select>
-          </mat-input-container>
-          <ng-template #addressField>
-            <!-- Same comment for fxHide as above -->
-            <mat-input-container [fxHide]="!form.value.addressDefined"
+      <ng-container *ngIf="form.value.addressDefined">
+        <ng-container *ngFor="let field of addressFields; let first = first">
+          <ng-container [formGroup]="addressForm">
+            <mat-input-container *ngIf="field == 'country'; else addressField"
               fxFlex="grow">
-              <input matInput
-                [formControlName]="field"
+              <mat-select [formControlName]="field"
                 [required]="requiredAddressField(field) | async"
-                [placeholder]="addressFieldLabel(field)" />
+                [placeholder]="addressFieldLabel(field)">
+                <mat-option></mat-option>
+                <mat-option *ngFor="let country of countries | async"
+                  [value]="country.code">
+                  {{ country.name }}
+                </mat-option>
+              </mat-select>
             </mat-input-container>
-          </ng-template>
+            <ng-template #addressField>
+              <mat-input-container fxFlex="grow">
+                <input matInput
+                  [focused]="optionalAddress && first"
+                  [formControlName]="field"
+                  [required]="requiredAddressField(field) | async"
+                  [placeholder]="addressFieldLabel(field)" />
+              </mat-input-container>
+            </ng-template>
+          </ng-container>
         </ng-container>
       </ng-container>
     </div>
