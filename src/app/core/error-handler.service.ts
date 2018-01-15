@@ -118,7 +118,7 @@ export class ErrorHandlerService {
           break;
         case ErrorStatus.INTERNAL_SERVER_ERROR:
           // The internal server error may be a specific kind or a general error
-          if (error instanceof ApiError) {
+          if (error.hasOwnProperty('kind')) {
             switch (error.kind) {
               case ErrorKind.PAYMENT:
                 // A payment error

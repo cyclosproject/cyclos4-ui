@@ -20,10 +20,10 @@
       "prefix": "app",
       "styles": [
         "../node_modules/@covalent/core/common/platform.scss",
+        "../node_modules/normalize.css/normalize.css",
         "styles.scss"
       ],
-      "scripts": [
-      ],
+      "scripts": [],
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",

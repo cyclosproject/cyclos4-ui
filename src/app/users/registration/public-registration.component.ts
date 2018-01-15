@@ -70,7 +70,7 @@ export class PublicRegistrationComponent extends BaseUsersComponent implements A
   // Fields step
   data = new BehaviorSubject<UserDataForNew>(null);
   @ViewChild('fieldsStep') fieldsStep: TdStepComponent;
-  user = new UserNew();
+  user: UserNew = {};
   fieldsForm: FormGroup;
   addressForm: FormGroup;
   fieldsValid = new BehaviorSubject(false);
@@ -317,7 +317,7 @@ export class PublicRegistrationComponent extends BaseUsersComponent implements A
   private get userNew(): UserNew {
     const data = this.data.value;
 
-    const user = new UserNew();
+    const user: UserNew = {};
 
     // Set the group
     user.group = this.groupId;
