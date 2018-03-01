@@ -12,6 +12,8 @@ import { UserDataForNew } from 'app/api/models';
 import { LinearStepperControlComponent } from 'app/shared/linear-stepper-control.component';
 import { TdStepComponent } from '@covalent/core';
 import { Observable } from 'rxjs/Observable';
+import { of as observableOf } from 'rxjs/observable/of';
+import { timer as observableTimer } from 'rxjs/observable/timer';
 import { map } from 'rxjs/operators/map';
 import { switchMap } from 'rxjs/operators/switchMap';
 import { UserNew } from 'app/api/models/user-new';
@@ -387,7 +389,7 @@ export class PublicRegistrationComponent extends BaseUsersComponent implements A
       let val = c.value;
       if (empty(val) || !c.dirty) {
         // Don't validate empty value (will fail validation required), nor fields that haven't been modified yet
-        return Observable.of(null);
+        return observableOf(null);
       }
 
       // Multi selections hold the value as array, but we must pass it as pipe-separated
@@ -395,7 +397,7 @@ export class PublicRegistrationComponent extends BaseUsersComponent implements A
         val = val.join('|');
       }
 
-      return Observable.timer(ApiHelper.DEBOUNCE_TIME).pipe(
+      return observableTimer(ApiHelper.DEBOUNCE_TIME).pipe(
         switchMap(() => {
           return this.usersService.validateUserRegistrationField({
             group: this.groupId, field: field, value: val

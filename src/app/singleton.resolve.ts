@@ -1,6 +1,7 @@
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
+import { of as observableOf } from 'rxjs/observable/of';
 import { Subscription } from 'rxjs/Subscription';
 
 /**
@@ -33,7 +34,7 @@ export abstract class SingletonResolve<T> implements Resolve<T> {
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<T> {
     if (this._data.value !== null) {
       // Already resolved
-      return Observable.of(this._data.value);
+      return observableOf(this._data.value);
     }
     // Return an observable
     let subscription: Subscription = null;
