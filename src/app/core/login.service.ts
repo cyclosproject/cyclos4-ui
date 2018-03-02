@@ -8,19 +8,20 @@ import { ApiHelper } from 'app/shared/api-helper';
 import { ApiInterceptor } from 'app/core/api.interceptor';
 import { Observable } from 'rxjs/Observable';
 import { tap } from 'rxjs/operators/tap';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 /**
  * Service used to manage the login status
  */
 @Injectable()
 export class LoginService {
-  private _auth: Auth;
-
-  private onAuth: Subject<Auth> = new Subject();
+  private _auth = new BehaviorSubject(null as Auth);
+  private _loggingOut = new BehaviorSubject(false);
 
   public redirectUrl: string;
 
   private _authInitialized = false;
+
 
   constructor(
     private apiInterceptor: ApiInterceptor,
@@ -32,30 +33,37 @@ export class LoginService {
    * Adds a new observer notified when the user logs-in (auth != null) or logs out (auth == null)
    */
   subscribeForAuth(next?: (value: Auth) => void, error?: (error: any) => void, complete?: () => void): Subscription {
-    return this.onAuth.subscribe(next, error, complete);
+    return this._auth.subscribe(next, error, complete);
+  }
+
+  /**
+   * Adds a new observer notified when the logout process starts. The flag is cleared once the logout request is processed.
+   */
+  subscribeForLoggingOut(next?: (value: boolean) => void, error?: (error: any) => void, complete?: () => void): Subscription {
+    return this._loggingOut.subscribe(next, error, complete);
   }
 
   /**
    * Returns the currently authenticated user
    */
   get user(): User {
-    return this._auth == null ? null : this._auth.user;
+    const auth = this.auth;
+    return auth == null ? null : auth.user;
   }
 
   /**
    * Returns the current authentication
    */
   get auth(): Auth {
-    return this._auth;
+    return this._auth.value;
   }
 
   /**
    * Sets the current authentication
    */
   set auth(auth: Auth) {
-    this._auth = auth;
     this._authInitialized = true;
-    this.onAuth.next(auth);
+    this._auth.next(auth);
   }
 
   /**
@@ -63,6 +71,13 @@ export class LoginService {
    */
   get authInitialized(): boolean {
     return this._authInitialized;
+  }
+
+  /**
+   * Returns whether the service is in the process of logging out
+   */
+  get loggingOut(): boolean {
+    return this._loggingOut.value;
   }
 
   /**
@@ -103,10 +118,12 @@ export class LoginService {
       // No one logged in
       return;
     }
+    this._loggingOut.next(true);
     this.authService.logout()
       .subscribe(() => {
-        this.clear();
         this.router.navigateByUrl('/login');
+        this.clear();
+        setTimeout(() => this._loggingOut.next(false), 100);
       });
   }
 }

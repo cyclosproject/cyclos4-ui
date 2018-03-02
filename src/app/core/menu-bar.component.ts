@@ -46,10 +46,15 @@ export class MenuBarComponent extends BaseComponent {
     this.roots.next(this.menuService.menu(MenuType.BAR));
   }
 
-  onClick(root: RootMenuEntry) {
+  onClick(event: MouseEvent, root: RootMenuEntry) {
     const entry = root.entries[0];
     if (entry) {
+      // Whenever a menu is clicked, clear the state, because a new navigation path starts
+      this.stateManager.clear();
+      this.breadcrumb.clear();
       this.router.navigateByUrl(entry.url);
+      event.cancelBubble = true;
+      event.stopPropagation();
     }
   }
 }

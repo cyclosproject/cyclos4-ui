@@ -1,9 +1,18 @@
-<form focusFirst fxLayout="column" [formGroup]="loginForm" fxFlex="grow">
-  <mat-form-field fxFlex="grow" floatPlaceholder="never">
-    <input matInput formControlName="principal" type="text" required
+<form focusFirst
+  fxLayout="column"
+  [formGroup]="loginForm"
+  fxFlex="grow">
+  <mat-form-field fxFlex="grow"
+    floatPlaceholder="never">
+    <input matInput
+      formControlName="principal"
+      type="text"
+      required
+      [focused]
       [placeholder]="generalMessages.loginPrincipal()"
       (keyup.enter)="passwordComponent.focus()">
-    <mat-icon matPrefix ngClass="mat-24">account_circle</mat-icon>
+    <mat-icon matPrefix
+      ngClass="mat-24">account_circle</mat-icon>
   </mat-form-field>
   <password-input #passwordComponent
     fxFlex="grow"
@@ -11,10 +20,13 @@
     [placeholder]="generalMessages.loginPassword()"
     [passwordInput]="dataForLogin.loginPasswordInput"
     formControlName="password"
-    (enter)="emit()"
-  ></password-input>
-  <actions *ngIf="showActions" fxFlex="grow">
-    <button [disabled]="!loginForm.valid" mat-raised-button color="accent" (click)="emit()">
+    (enter)="emit()"></password-input>
+  <actions *ngIf="showActions"
+    fxFlex="grow">
+    <button [disabled]="!loginForm.valid"
+      mat-raised-button
+      color="accent"
+      (click)="emit()">
       {{ generalMessages.loginAction() }}
     </button>
   </actions>

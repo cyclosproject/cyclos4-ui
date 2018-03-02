@@ -28,6 +28,9 @@ export class ViewTransferDetailsComponent extends BaseBankingComponent {
   ngOnInit() {
     super.ngOnInit();
     this.childrenDataSource.next(this.transfer.children);
+    if (this.transfer.transactionNumber) {
+      this.breadcrumb.title = this.transfer.transactionNumber;
+    }
   }
 
   from(transfer: Transfer): string {

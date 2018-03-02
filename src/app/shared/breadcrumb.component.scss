@@ -1,0 +1,17 @@
+@import 'src/definitions';
+
+.breadcrumb {
+  margin-bottom: 14px;
+}
+a {
+  display: block;
+  text-decoration: none;
+  color: mat-color($foreground, text);
+  padding-top: 3px;
+  white-space: nowrap;
+}
+.current {
+  opacity: 0.6;
+  padding-top: 3px;
+  white-space: nowrap;
+}

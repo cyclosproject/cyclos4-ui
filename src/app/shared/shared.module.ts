@@ -48,6 +48,7 @@ import { ConfirmationPasswordComponent } from 'app/shared/confirmation-password.
 import { LinearStepperControlComponent } from 'app/shared/linear-stepper-control.component';
 import { FieldPrivacyComponent } from 'app/shared/field-privacy.component';
 import { CaptchaComponent } from 'app/shared/captcha.component';
+import { BreadcrumbComponent } from './breadcrumb.component';
 
 /**
  * Module that configures UI elements
@@ -57,6 +58,7 @@ import { CaptchaComponent } from 'app/shared/captcha.component';
     PageLayoutComponent,
     SideMenuComponent,
     MenuItemComponent,
+    BreadcrumbComponent,
     PageFiltersComponent,
     PageContentComponent,
     PageHeaderComponent,
@@ -140,6 +142,7 @@ import { CaptchaComponent } from 'app/shared/captcha.component';
     PageLayoutComponent,
     SideMenuComponent,
     MenuItemComponent,
+    BreadcrumbComponent,
     PageFiltersComponent,
     PageContentComponent,
     PageHeaderComponent,

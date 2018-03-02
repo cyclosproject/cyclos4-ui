@@ -2,6 +2,7 @@ import { Component, Input, ChangeDetectionStrategy, Injector } from '@angular/co
 import { BaseComponent } from 'app/shared/base.component';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
+import { BreadcrumbService } from '../core/breadcrumb.service';
 
 /**
  * Defines a page layout, which has a left menu, optional filters,
@@ -30,15 +31,21 @@ export class PageLayoutComponent extends BaseComponent {
   @Input()
   loaded: Observable<any>;
 
+  private _title: string;
+
   @Input()
-  title: string;
+  set title(title: string) {
+    this._title = title;
+    if (title != null && title.length > 0 && this.breadcrumb.title == null) {
+      this.breadcrumb.title = title;
+    }
+  }
+  get title(): string {
+    return this._title;
+  }
 
   showLeft = new BehaviorSubject<Boolean>(false);
 
-  ngOnInit() {
-    super.ngOnInit();
-    this.update();
-  }
 
   ngOnDestroy() {
     super.ngOnDestroy();

@@ -8,6 +8,8 @@ import { NotificationService } from 'app/core/notification.service';
 import { ObservableMedia } from '@angular/flex-layout';
 import { Subscription } from 'rxjs/Subscription';
 import { ActivatedRoute, Router } from '@angular/router';
+import { StateManager } from '../core/state-manager';
+import { BreadcrumbService } from '../core/breadcrumb.service';
 
 /**
  * Base class to meant to be inherited by other components.
@@ -22,6 +24,8 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
   errorHandler: ErrorHandlerService;
   login: LoginService;
   notification: NotificationService;
+  stateManager: StateManager;
+  breadcrumb: BreadcrumbService;
   router: Router;
   route: ActivatedRoute;
 
@@ -37,7 +41,9 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
     this.errorHandler = injector.get(ErrorHandlerService);
     this.login = injector.get(LoginService);
     this.notification = injector.get(NotificationService);
+    this.stateManager = injector.get(StateManager);
     this.layout = injector.get(LayoutService);
+    this.breadcrumb = injector.get(BreadcrumbService);
     this.router = injector.get(Router);
     this.route = injector.get(ActivatedRoute);
 

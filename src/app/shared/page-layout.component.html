@@ -1,10 +1,12 @@
-<div class="left" *ngIf="showLeft | async">
+<div class="left"
+  *ngIf="showLeft | async">
   <mat-card>
     <mat-tab-group>
       <mat-tab [label]="sideMenu.title || generalMessages.menu()">
         <side-menu #sideMenu></side-menu>
       </mat-tab>
-      <mat-tab *ngIf="hasFilters" [label]="generalMessages.menuFilters()">
+      <mat-tab *ngIf="hasFilters"
+        [label]="generalMessages.menuFilters()">
         <div class="filters">
           <ng-container *ngTemplateOutlet="filtersTpl"></ng-container>
         </div>
@@ -12,22 +14,29 @@
     </mat-tab-group>
   </mat-card>
 </div>
-<div class="page" fxLayout="column" fxFlex="grow">
-  <div class="loading" *ngIf="loaded != null && !(loaded | async)">
+<div class="page"
+  fxLayout="column"
+  fxFlex="grow">
+  <div class="loading"
+    *ngIf="loaded != null && !(loaded | async)">
     Loading...
   </div>
   <ng-container *ngIf="(showLeft | async) && (loaded == null || (loaded | async))">
     <!-- There is a left area: separated containers for header and content -->
-    <div *ngIf="hasHeader" class="header">
+    <div *ngIf="hasHeader"
+      class="header">
       <mat-card>
         <mat-card-content>
+          <breadcrumb></breadcrumb>
           <ng-container *ngTemplateOutlet="headerTpl"></ng-container>
         </mat-card-content>
       </mat-card>
     </div>
-    <div class="content" [ngClass]="{'tight': tightContent}">
+    <div class="content"
+      [ngClass]="{'tight': tightContent}">
       <mat-card>
         <mat-card-content>
+          <breadcrumb *ngIf="!hasHeader"></breadcrumb>
           <ng-container *ngTemplateOutlet="contentTpl"></ng-container>
         </mat-card-content>
       </mat-card>
@@ -35,10 +44,12 @@
   </ng-container>
   <ng-container *ngIf="!(showLeft | async) && (loaded == null || (loaded | async))">
     <!-- No left area (mobile): Everything is together (no cards) -->
-    <div class="inline-header" *ngIf="hasHeader">
+    <div class="inline-header"
+      *ngIf="hasHeader">
       <ng-container *ngTemplateOutlet="headerTpl"></ng-container>
     </div>
-    <div class="inline-filters" *ngIf="hasFilters">
+    <div class="inline-filters"
+      *ngIf="hasFilters">
       <ng-container *ngTemplateOutlet="filtersTpl"></ng-container>
     </div>
     <div class="inline-content">
@@ -47,6 +58,12 @@
   </ng-container>
 </div>
 
-<ng-template #filtersTpl><ng-content select="page-filters"></ng-content></ng-template>
-<ng-template #headerTpl><ng-content select="page-header"></ng-content></ng-template>
-<ng-template #contentTpl><ng-content select="page-content"></ng-content></ng-template>
+<ng-template #filtersTpl>
+  <ng-content select="page-filters"></ng-content>
+</ng-template>
+<ng-template #headerTpl>
+  <ng-content select="page-header"></ng-content>
+</ng-template>
+<ng-template #contentTpl>
+  <ng-content select="page-content"></ng-content>
+</ng-template>

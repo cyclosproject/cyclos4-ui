@@ -1,0 +1,23 @@
+<nav class="breadcrumb"
+  *ngIf="(entries | async).length > 1"
+  fxLayout="row wrap">
+  <ng-container *ngFor="let entry of (entries | async);">
+    <div class="entry"
+      fxLayout="row"
+      fxFlex="nogrow">
+      <ng-container *ngIf="!isCurrent(entry.url)">
+        <a [routerLink]="entry.url">
+          {{entry.title || entry.url}}
+        </a>
+        <mat-icon ngClass="mat-22">
+          chevron_right
+        </mat-icon>
+      </ng-container>
+      <ng-container *ngIf="isCurrent(entry.url)">
+        <div class="current">
+          {{entry.title || entry.url}}
+        </div>
+      </ng-container>
+    </div>
+  </ng-container>
+</nav>

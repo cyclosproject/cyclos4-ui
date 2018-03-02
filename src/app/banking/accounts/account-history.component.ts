@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, Injector } from '@angular/core';
 import {
   DataForAccountHistory, Currency, EntityReference, PreselectedPeriod,
-  AccountHistoryResult, AccountKind, AccountHistoryStatus, TransferFilter
+  AccountHistoryResult, AccountKind, AccountHistoryStatus, TransferFilter, AccountHistoryQueryFilters
 } from 'app/api/models';
 import { AccountsService } from 'app/api/services';
 
@@ -43,6 +43,7 @@ export class AccountHistoryComponent extends BaseBankingComponent {
       periodBegin: null,
       periodEnd: null
     });
+    this.stateManager.manage(this.form);
     this.subscriptions.push(this.form.valueChanges.subscribe(value => {
       this.update(value);
     }));
@@ -141,32 +142,39 @@ export class AccountHistoryComponent extends BaseBankingComponent {
     }
 
     // Get the account history data
-    this.accountsService.getAccountHistoryDataByOwnerAndType({
-      owner: ApiHelper.SELF, accountType: type
-    })
+    this.stateManager.cache('data',
+      this.accountsService.getAccountHistoryDataByOwnerAndType({
+        owner: ApiHelper.SELF, accountType: type
+      }))
       .subscribe(data => {
         this.data.next(data);
 
-        // Prepare the query parameters
-        this.query = data.query;
-        this.query.owner = ApiHelper.SELF;
-        this.query.accountType = data.account.type.id;
-        this.query.datePeriod = [null, null];
-        // Select the default preselected period
-        if ((data.preselectedPeriods || []).length === 0) {
-          // No preselected periods? Create one, so we don't break the logic
-          data.preselectedPeriods = [
-            { defaultOption: true }
-          ];
-        }
-        for (const preselectedPeriod of data.preselectedPeriods) {
-          if (preselectedPeriod.defaultOption) {
-            this.form.patchValue({
-              preselectedPeriod: preselectedPeriod
-            });
-            break;
+        // Initialize the breadcrumb to be just the type name
+        this.breadcrumb.title = data.account.type.name;
+
+        // Initialize the query
+        this.query = this.stateManager.get('query', () => {
+          const query: any = data.query;
+          query.owner = ApiHelper.SELF;
+          query.accountType = data.account.type.id;
+          query.datePeriod = [null, null];
+          // Select the default preselected period
+          if ((data.preselectedPeriods || []).length === 0) {
+            // No preselected periods? Create one, so we don't break the logic
+            data.preselectedPeriods = [
+              { defaultOption: true }
+            ];
           }
-        }
+          for (const preselectedPeriod of data.preselectedPeriods) {
+            if (preselectedPeriod.defaultOption) {
+              this.form.patchValue({
+                preselectedPeriod: preselectedPeriod
+              }, { emitEvent: false });
+              break;
+            }
+          }
+          return query;
+        });
 
         // Fetch the account history
         this.update();

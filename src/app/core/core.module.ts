@@ -17,11 +17,13 @@ import { PersonalMenuComponent } from 'app/core/personal-menu.component';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material';
 import { ApiDateAdapter } from 'app/core/api-date-adapter';
 import { MenuService } from 'app/shared/menu.service';
+import { StateManager } from 'app/core/state-manager';
 import { PushNotificationsService } from 'app/core/push-notifications.service';
 import { ApiInterceptor } from 'app/core/api.interceptor';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RegistrationGroupsResolve } from 'app/registration-groups.resolve';
 import { CountriesResolve } from 'app/countries.resolve';
+import { BreadcrumbService } from './breadcrumb.service';
 
 export const API_INTERCEPTOR_PROVIDER: Provider = {
   provide: HTTP_INTERCEPTORS,
@@ -70,6 +72,8 @@ export const DATE_FORMATS_PROVIDER: Provider = {
     FormatService,
     LayoutService,
     NotificationService,
+    BreadcrumbService,
+    StateManager,
     LoginService,
     MenuService,
     PushNotificationsService,

@@ -1,5 +1,6 @@
 <page-layout [tightContent]="true"
-  [loaded]="loaded" [hasFilters]="true"
+  [loaded]="loaded"
+  [hasFilters]="true"
   [hasHeader]="(status | async).length > 1">
   <page-header [title]="title">
     <div class="indicators">
@@ -8,12 +9,15 @@
           <div class="label">{{ indicator.label }}</div>
           <div class="amount">{{ indicator.amount | currency:currency }}</div>
         </div>
-        <div *ngIf="!last" class="indicator-separator"></div>
+        <div *ngIf="!last"
+          class="indicator-separator"></div>
       </ng-container>
     </div>
   </page-header>
   <page-filters>
-    <form *ngIf="query != null" fxLayout="column" [formGroup]="form">
+    <form *ngIf="query != null"
+      fxLayout="column"
+      [formGroup]="form">
       <mat-form-field *ngIf="transferFilters.length > 1">
         <mat-select fxFlex="grow"
           [placeholder]="bankingMessages.accountTransferFilter()"
@@ -32,20 +36,27 @@
         </mat-select>
       </mat-form-field>
       <date-field *ngIf="form.value?.preselectedPeriod?.begin == null"
-        formControlName="periodBegin" fxFlex="grow"
+        formControlName="periodBegin"
+        fxFlex="grow"
         [placeholder]="generalMessages.periodBegin()"></date-field>
       <date-field *ngIf="form.value?.preselectedPeriod?.end == null"
-        formControlName="periodEnd" fxFlex="grow"
+        formControlName="periodEnd"
+        fxFlex="grow"
         [placeholder]="generalMessages.periodEnd()"></date-field>
     </form>
   </page-filters>
   <page-content [title]="(status | async).length > 1 ? null : title">
-    <mat-table #table [fxHide]="(dataSource.empty | async)" [dataSource]="dataSource">
+    <mat-table #table
+      [fxHide]="(dataSource.empty | async)"
+      [dataSource]="dataSource">
       <!-- Avatar column -->
       <ng-container matColumnDef="avatar">
-        <mat-header-cell *matHeaderCellDef class="avatar"></mat-header-cell>
-        <mat-cell *matCellDef="let row" class="avatar">
+        <mat-header-cell *matHeaderCellDef
+          class="avatar"></mat-header-cell>
+        <mat-cell *matCellDef="let row"
+          class="avatar">
           <avatar [image]="row.relatedAccount.kind == 'user' ? row.relatedAccount.user.image : null"
+        
             [icon]="row.relatedAccount.kind == 'user' ? 'account_circle' : 'account_balance'"></avatar>
         </mat-cell>
       </ng-container>
@@ -57,8 +68,10 @@
           <a [routerLink]="path(row)">
             <div class="cell-main">{{ subjectName(row) }}</div>
             <div class="cell-date">{{ row.date | dateTime }}</div>
-            <div *ngIf="row.transactionNumber" class="cell-date">{{ row.transactionNumber }}</div>
-            <div *ngIf="row.description" class="cell-small">{{ row.description }}</div>
+            <div *ngIf="row.transactionNumber"
+              class="cell-date">{{ row.transactionNumber }}</div>
+            <div *ngIf="row.description"
+              class="cell-small">{{ row.description }}</div>
           </a>
         </mat-cell>
       </ng-container>
@@ -77,7 +90,8 @@
       <ng-container matColumnDef="transactionNumber">
         <mat-header-cell *matHeaderCellDef>{{ bankingMessages.transactionNumber() }}</mat-header-cell>
         <mat-cell *matCellDef="let row">
-          <a *ngIf="row.transactionNumber" [routerLink]="path(row)">
+          <a *ngIf="row.transactionNumber"
+            [routerLink]="path(row)">
             {{ row.transactionNumber }}
           </a>
         </mat-cell>
@@ -95,8 +109,10 @@
 
       <!-- Amount column -->
       <ng-container matColumnDef="amount">
-        <mat-header-cell *matHeaderCellDef style="text-align: end">{{ bankingMessages.transactionAmount() }}</mat-header-cell>
-        <mat-cell *matCellDef="let row" style="text-align: end">
+        <mat-header-cell *matHeaderCellDef
+          style="text-align: end">{{ bankingMessages.transactionAmount() }}</mat-header-cell>
+        <mat-cell *matCellDef="let row"
+          style="text-align: end">
           <a [routerLink]="path(row)">
             {{ row.amount | currency:currency }}
           </a>
@@ -104,8 +120,12 @@
       </ng-container>
 
       <mat-header-row *matHeaderRowDef="layout.xs ? [] : displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns;" class.xs="dynamic"></mat-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"
+        class.xs="dynamic"
+        (click)="router.navigate(path(row))"></mat-row>
     </mat-table>
-    <paginator (update)="update()" [query]="query" [dataSource]="dataSource"></paginator>
+    <paginator (update)="update()"
+      [query]="query"
+      [dataSource]="dataSource"></paginator>
   </page-content>
 </page-layout>

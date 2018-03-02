@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
 import { MatSidenav } from '@angular/material';
 import { BaseComponent } from 'app/shared/base.component';
-import { RootMenuEntry, MenuType } from 'app/shared/menu';
+import { RootMenuEntry, MenuType, MenuEntry } from 'app/shared/menu';
 import { MenuService } from 'app/shared/menu.service';
 
 @Component({
@@ -30,6 +30,15 @@ export class SidenavMenuComponent extends BaseComponent implements OnInit {
   onDisplayChange() {
     super.onDisplayChange();
     this.update();
+  }
+
+  onMenuClicked(event: MouseEvent, entry: MenuEntry) {
+    this.sidenav.close();
+    this.breadcrumb.clear();
+    this.stateManager.clear();
+    this.router.navigateByUrl(entry.url);
+    event.cancelBubble = true;
+    event.stopPropagation();
   }
 
   private update() {

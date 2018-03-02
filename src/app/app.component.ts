@@ -1,6 +1,7 @@
 import { Component, ChangeDetectionStrategy, Injector } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { BaseComponent } from 'app/shared/base.component';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Component({
   selector: 'app-root',
@@ -16,9 +17,12 @@ export class AppComponent extends BaseComponent {
     super(injector);
   }
 
+  loggingOut = new BehaviorSubject(false);
+
   ngOnInit() {
     super.ngOnInit();
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.title.setTitle(this.format.appTitle);
+    this.subscriptions.push(this.login.subscribeForLoggingOut(flag => this.loggingOut.next(flag)));
   }
 }

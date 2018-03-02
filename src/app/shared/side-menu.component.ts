@@ -20,7 +20,7 @@ export class SideMenuComponent extends BaseComponent {
   constructor(
     injector: Injector,
     public menuService: MenuService
-    ) {
+  ) {
     super(injector);
   }
 
@@ -47,6 +47,14 @@ export class SideMenuComponent extends BaseComponent {
   onDisplayChange() {
     super.onDisplayChange();
     this.update();
+  }
+
+  onMenuClicked(event: MouseEvent, url: string) {
+    this.breadcrumb.clear();
+    this.stateManager.clear();
+    this.router.navigateByUrl(url);
+    event.cancelBubble = true;
+    event.stopPropagation();
   }
 
   private update(): void {

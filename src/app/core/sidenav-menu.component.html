@@ -2,8 +2,11 @@
   <div class="title">{{ format.appTitleMenu }}</div>
 </layout-bar>
 
-<div class="rootContainer" *ngFor="let root of roots" fxLayout="column">
+<div class="rootContainer"
+  *ngFor="let root of roots"
+  fxLayout="column">
   <div class="rootMenu">{{ root.label }}</div>
-  <menu-item *ngFor="let entry of root.entries" [entry]="entry"
-    (click)="sidenav.close()"></menu-item>
+  <menu-item *ngFor="let entry of root.entries"
+    [entry]="entry"
+    (click)="onMenuClicked($event, entry)"></menu-item>
 </div>
