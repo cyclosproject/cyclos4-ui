@@ -10,6 +10,7 @@ import { AbstractControl, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';
 import { tap } from 'rxjs/operators/tap';
 import { LoginService } from './login.service';
+import { Router } from '@angular/router';
 
 /**
  * Service used to navigate between pages and managing the component state
@@ -20,7 +21,9 @@ export class StateManager {
   private state = new Map<string, any>();
   private subscriptions: Subscription[] = [];
 
-  constructor(private loginService: LoginService) {
+  constructor(
+    private loginService: LoginService,
+    private router: Router) {
     loginService.subscribeForAuth(a => this.clear());
   }
 
@@ -39,7 +42,7 @@ export class StateManager {
    * @param fetch The observable used to fetch the data in case it is not already cached
    */
   cache<T>(key: string, fetch: Observable<T>): Observable<T> {
-    const k = key + '@' + window.location.pathname;
+    const k = key + '@' + this.router.url;
     if (this.state.has(k)) {
       return observableOf(this.state.get(k));
     }
@@ -58,7 +61,7 @@ export class StateManager {
     if (value instanceof AbstractControl) {
       value = value.value;
     }
-    const k = key + '@' + window.location.pathname;
+    const k = key + '@' + this.router.url;
     this.state.set(k, value);
   }
 
@@ -67,7 +70,7 @@ export class StateManager {
    * @param key The key (valid only for the current path)
    */
   get(key: string, producer: () => any = null): any {
-    const k = key + '@' + window.location.pathname;
+    const k = key + '@' + this.router.url;
     let value = this.state.get(k);
     if (value == null && producer != null) {
       // If no value, but we have a producer, call it
