@@ -11,6 +11,7 @@ import { TableDataSource } from 'app/shared/table-datasource';
 import { ApiHelper } from 'app/shared/api-helper';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { tap } from 'rxjs/operators/tap';
+import { debounceTime } from 'rxjs/operators/debounceTime';
 
 /** Information for an account status element shown on top */
 export type StatusIndicator = {
@@ -44,7 +45,9 @@ export class AccountHistoryComponent extends BaseBankingComponent {
       periodEnd: null
     });
     this.stateManager.manage(this.form);
-    this.subscriptions.push(this.form.valueChanges.subscribe(value => {
+    this.subscriptions.push(this.form.valueChanges.pipe(
+      debounceTime(ApiHelper.DEBOUNCE_TIME)
+    ).subscribe(value => {
       this.update(value);
     }));
   }

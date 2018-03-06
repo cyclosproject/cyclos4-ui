@@ -37,6 +37,8 @@ export class SideMenuComponent extends BaseComponent {
 
   title: string;
 
+  console = console;
+
   entries = new BehaviorSubject<MenuEntry[]>([]);
 
   ngOnInit() {
@@ -49,10 +51,16 @@ export class SideMenuComponent extends BaseComponent {
     this.update();
   }
 
-  onMenuClicked(event: MouseEvent, url: string) {
+  onAccountClicked(event: MouseEvent, account: AccountWithCurrency) {
+    // Clear the shared state
     this.breadcrumb.clear();
     this.stateManager.clear();
+
+    // Navigate to the account history details page
+    const url = '/banking/account/' + ApiHelper.internalNameOrId(account.type);
     this.router.navigateByUrl(url);
+
+    // Stop the event
     event.cancelBubble = true;
     event.stopPropagation();
   }

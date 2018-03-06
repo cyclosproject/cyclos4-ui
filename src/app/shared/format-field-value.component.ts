@@ -1,0 +1,258 @@
+import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
+import {
+  CustomFieldValue, CustomField, CustomFieldTypeEnum, CustomFieldPossibleValue, CustomFieldDetailed,
+  LinkedEntityTypeEnum
+} from 'app/api/models';
+import { GeneralMessages } from 'app/messages/general-messages';
+import { ApiHelper } from 'app/shared/api-helper';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+
+/** Types whose values are rendered directly */
+const DIRECT_TYPES = [
+  CustomFieldTypeEnum.STRING,
+  CustomFieldTypeEnum.DYNAMIC_SELECTION,
+  CustomFieldTypeEnum.BOOLEAN,
+  CustomFieldTypeEnum.LINKED_ENTITY
+];
+
+/**
+ * Component used to directly display a custom field value.
+ * Also works for regular fields.
+ */
+@Component({
+  selector: 'format-field-value',
+  templateUrl: 'format-field-value.component.html',
+  styleUrls: ['format-field-value.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class FormatFieldValueComponent implements OnInit {
+  constructor(private generalMessages: GeneralMessages) { }
+
+  /**
+   * Either this has to be specified or the other 3: fields + fieldName + object
+   */
+  @Input() fieldValue: CustomFieldValue;
+
+  /**
+   * Either this + fieldName + object has to be specified, or fieldValue.
+   * This is actually optional. If not specified, or the corresponding field
+   * is not found, will just render the actual value with no formatting.
+   */
+  @Input() fields: CustomFieldDetailed[];
+
+  /**
+   * Either this + fields + object has to be specified, or fieldValue
+   */
+  @Input() fieldName: string;
+
+  /**
+   * Either this + fields + field has to be specified, or fieldValue
+   */
+  @Input() object: any;
+
+  field: CustomField;
+  type: CustomFieldTypeEnum;
+  value = new BehaviorSubject<any>(null);
+  hasValue = new BehaviorSubject(false);
+
+  get directValue(): boolean {
+    return DIRECT_TYPES.includes(this.type);
+  }
+
+  ngOnInit() {
+    if (this.fieldValue == null &&
+      (this.fields == null || this.object == null)) {
+      throw new Error('Either fieldValue or all fields, field and object must be set');
+    }
+    if (this.fieldValue == null) {
+      // When there's no CustomFieldValue, emulate one, so the handling is the same regardless the case
+      this.fieldValue = this.createFieldValue();
+    }
+    this.field = this.fieldValue.field;
+    this.type = this.field.type;
+    const value = this.getValue();
+    this.value.next(value);
+    this.hasValue.next(value != null && (value.length === undefined || value.length > 0));
+  }
+
+  private getValue(): any {
+    switch (this.type) {
+      case CustomFieldTypeEnum.BOOLEAN:
+        if (this.fieldValue.booleanValue != null) {
+          return this.fieldValue.booleanValue
+            ? this.generalMessages.yes()
+            : this.generalMessages.no();
+        }
+        break;
+      case CustomFieldTypeEnum.DATE:
+        return this.fieldValue.dateValue;
+      case CustomFieldTypeEnum.DECIMAL:
+        return this.fieldValue.decimalValue;
+      case CustomFieldTypeEnum.DYNAMIC_SELECTION:
+        const dyn = this.fieldValue.dynamicValue;
+        if (dyn) {
+          return dyn.label || dyn.value;
+        }
+        break;
+      case CustomFieldTypeEnum.FILE:
+        return this.fieldValue.fileValues;
+      case CustomFieldTypeEnum.IMAGE:
+        return this.fieldValue.imageValues;
+      case CustomFieldTypeEnum.INTEGER:
+        return this.fieldValue.integerValue;
+      case CustomFieldTypeEnum.LINKED_ENTITY:
+        let entity = null;
+        switch (this.field.linkedEntityType) {
+          case LinkedEntityTypeEnum.USER:
+            entity = this.fieldValue.userValue;
+            break;
+          case LinkedEntityTypeEnum.ADVERTISEMENT:
+            entity = this.fieldValue.adValue;
+            break;
+          case LinkedEntityTypeEnum.TRANSACTION:
+            entity = this.fieldValue.transactionValue;
+            break;
+          case LinkedEntityTypeEnum.TRANSFER:
+            entity = this.fieldValue.transferValue;
+            break;
+          case LinkedEntityTypeEnum.RECORD:
+            entity = this.fieldValue.recordValue;
+            break;
+        }
+        if (entity != null) {
+          return entity.display || entity.name || entity.transactionNumber || entity.id;
+        }
+        break;
+      case CustomFieldTypeEnum.SINGLE_SELECTION:
+      case CustomFieldTypeEnum.MULTI_SELECTION:
+        const enumerated = this.fieldValue.enumeratedValues || [];
+        // Sort the values
+        enumerated.sort((pv1: CustomFieldPossibleValue, pv2: CustomFieldPossibleValue) => {
+          if (pv1.category == null && pv2.category != null) {
+            return -1;
+          } else if (pv2.category == null && pv1.category != null) {
+            return 1;
+          } else {
+            return pv1.value === pv2.value ? 0 : pv1.value < pv2.value ? -1 : 1;
+          }
+        });
+        return enumerated;
+      case CustomFieldTypeEnum.RICH_TEXT:
+        let rich = this.fieldValue.stringValue;
+        if (rich != null && rich.length > 0) {
+          // For HTML, add a div in the end that prevents floats from passing
+          // through the parent div's height
+          rich += '<div style="clear: both"></div>';
+        }
+        return rich;
+      default:
+        return this.fieldValue.stringValue;
+    }
+    return null;
+  }
+
+  private createFieldValue(): CustomFieldValue {
+    // First get the actual value
+    let value = this.object[this.fieldName] as string;
+    if (value == null && this.object.customValues) {
+      // Attempt a custom field value
+      value = this.object.customValues[this.fieldName] as string;
+    }
+    if (value === '') {
+      value = null;
+    }
+    const parts = value == null ? [] : value.split(ApiHelper.VALUE_SEPARATOR);
+
+    // Then create a new CustomFieldValue
+    const fieldValue: CustomFieldValue = {
+      field: this.fields.find(cf => cf.internalName === this.fieldName)
+    };
+    if (fieldValue.field == null) {
+      // When no custom field is found, assume one of type string
+      fieldValue.field = {
+        name: this.fieldName,
+        internalName: this.fieldName,
+        type: CustomFieldTypeEnum.STRING
+      };
+    }
+    switch (fieldValue.field.type) {
+      case CustomFieldTypeEnum.BOOLEAN:
+        fieldValue.booleanValue = value === 'true';
+        break;
+      case CustomFieldTypeEnum.DATE:
+        fieldValue.dateValue = value;
+        break;
+      case CustomFieldTypeEnum.DECIMAL:
+        fieldValue.decimalValue = value;
+        break;
+      case CustomFieldTypeEnum.DYNAMIC_SELECTION:
+        fieldValue.dynamicValue = {
+          value: parts[0],
+          label: parts.length > 1 ? parts[1] : parts[0]
+        };
+        break;
+      case CustomFieldTypeEnum.INTEGER:
+        fieldValue.integerValue = parseInt(value, 10);
+        break;
+      case CustomFieldTypeEnum.SINGLE_SELECTION:
+      case CustomFieldTypeEnum.MULTI_SELECTION:
+        fieldValue.enumeratedValues = parts.map(ref => {
+          const cf = (fieldValue.field as CustomFieldDetailed);
+          const possibleValues = (cf || {}).possibleValues;
+          if (possibleValues) {
+            return possibleValues.find(pv => pv.id === value || pv.internalName === value);
+          }
+          return null;
+        });
+        // Make sure no nulls exist in the value
+        fieldValue.enumeratedValues = fieldValue.enumeratedValues.filter(pv => pv != null);
+        break;
+      case CustomFieldTypeEnum.LINKED_ENTITY:
+        if (value != null) {
+          const id = parts[0];
+          const display = parts.length > 1 ? parts[1] : parts[0];
+          switch (fieldValue.field.linkedEntityType) {
+            case LinkedEntityTypeEnum.USER:
+              fieldValue.userValue = {
+                id: id,
+                display: display
+              };
+              break;
+            case LinkedEntityTypeEnum.ADVERTISEMENT:
+              fieldValue.adValue = {
+                id: id,
+                name: display
+              };
+              break;
+            case LinkedEntityTypeEnum.TRANSACTION:
+              fieldValue.transactionValue = {
+                id: id,
+                display: display
+              };
+              break;
+            case LinkedEntityTypeEnum.TRANSFER:
+              fieldValue.transferValue = {
+                id: id,
+                display: display
+              };
+              break;
+            case LinkedEntityTypeEnum.RECORD:
+              fieldValue.recordValue = {
+                id: id,
+                display: display
+              };
+              break;
+          }
+        }
+        break;
+      case CustomFieldTypeEnum.FILE:
+      case CustomFieldTypeEnum.IMAGE:
+        // FILE and IMAGE are not supported on search results
+        break;
+      default:
+        fieldValue.stringValue = value;
+        break;
+    }
+    return fieldValue;
+  }
+}

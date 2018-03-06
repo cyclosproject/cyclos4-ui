@@ -7,6 +7,7 @@ import { RegistrationFieldsComponent } from 'app/users/registration/registration
 import { UsersRoutingModule } from 'app/users/users-routing.module';
 import { RegistrationConfirmComponent } from 'app/users/registration/registration-confirm.component';
 import { RegistrationDoneComponent } from 'app/users/registration/registration-done.component';
+import { SearchUsersComponent } from 'app/users/search/search-users.component';
 
 /**
  * Users module
@@ -22,7 +23,9 @@ import { RegistrationDoneComponent } from 'app/users/registration/registration-d
     RegistrationGroupComponent,
     RegistrationFieldsComponent,
     RegistrationConfirmComponent,
-    RegistrationDoneComponent
+    RegistrationDoneComponent,
+
+    SearchUsersComponent,
   ],
   providers: [
     UsersMessages

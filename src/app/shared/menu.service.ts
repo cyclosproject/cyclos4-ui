@@ -114,8 +114,8 @@ export class MenuService {
     addRoot(RootMenu.LOGIN, 'lock', this.generalMessages.menuLogin());
     addRoot(RootMenu.HOME, 'home', this.generalMessages.menuHome());
     addRoot(RootMenu.BANKING, 'account_balance', this.generalMessages.menuBanking(), this.generalMessages.menuBankingTitle());
-    addRoot(RootMenu.USERS, 'account_box', this.generalMessages.menuUsers(), this.generalMessages.menuBankingTitle());
-    addRoot(RootMenu.MARKETPLACE, 'shopping_cart', this.generalMessages.menuMarketplace(), this.generalMessages.menuBankingTitle());
+    addRoot(RootMenu.USERS, 'account_box', this.generalMessages.menuUsers(), this.generalMessages.menuUsersTitle());
+    addRoot(RootMenu.MARKETPLACE, 'shopping_cart', this.generalMessages.menuMarketplace(), this.generalMessages.menuMarketplaceTitle());
     addRoot(RootMenu.PERSONAL, 'account_box', this.generalMessages.menuPersonal(),
       this.generalMessages.menuPersonalProfile(), [MenuType.SIDENAV, MenuType.PERSONAL]);
 
@@ -155,9 +155,11 @@ export class MenuService {
           this.generalMessages.menuBankingRecurringPayments());
       }
 
-      // Temporary, just to show other root menu entries
+      // Users
       add(Menu.SEARCH_USERS, '/users/search', 'account_box',
         this.generalMessages.menuUsersSearch());
+
+      // Temporary, just to show other root menu entries
       add(Menu.SEARCH_MARKETPLACE, '/marketplace/search', 'shopping_cart',
         this.generalMessages.menuMarketplaceSearch());
 

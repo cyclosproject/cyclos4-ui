@@ -8,5 +8,5 @@
   <div class="rootMenu">{{ root.label }}</div>
   <menu-item *ngFor="let entry of root.entries"
     [entry]="entry"
-    (click)="onMenuClicked($event, entry)"></menu-item>
+    (click)="onMenuClicked($event)"></menu-item>
 </div>

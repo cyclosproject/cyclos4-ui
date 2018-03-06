@@ -1,6 +1,6 @@
 import {
   Entity, AccountWithOwner, TransferType, AccountKind, TransactionView, User,
-  CustomFieldDetailed, PasswordInput, PasswordModeEnum, Transfer, Transaction, AccountHistoryResult
+  CustomFieldDetailed, PasswordInput, PasswordModeEnum, Transfer, Transaction, AccountHistoryResult, UserResult
 } from 'app/api/models';
 import { environment } from 'environments/environment';
 import { GeneralMessages } from 'app/messages/general-messages';
@@ -13,6 +13,9 @@ import { UsersMessages } from 'app/messages/users-messages';
  * Helper methods for working with API model
  */
 export class ApiHelper {
+
+  /** Value separator for custom fields */
+  static VALUE_SEPARATOR = '|';
 
   /** Represents the own user */
   static SELF = 'self';

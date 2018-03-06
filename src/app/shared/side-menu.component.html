@@ -6,8 +6,7 @@
       *ngFor="let account of this.accounts"
       [routerLink]="'/banking/account/' + ApiHelper.internalNameOrId(account.type)"
   
-      (click)="onMenuClicked($event, '/banking/account/' + ApiHelper.internalNameOrId(account.type))"
-  
+      (click)="onAccountClicked($event, account)"
       routerLinkActive="active">
       <mat-icon fxFlex="18px"
         ngClass="mat-18">account_balance</mat-icon>
@@ -21,6 +20,5 @@
     </a>
   </ng-container>
   <menu-item *ngFor="let entry of (entries | async)"
-    (click)="onMenuClicked($event, entry.url)"
     [entry]="entry"></menu-item>
 </div>

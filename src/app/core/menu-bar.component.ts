@@ -53,7 +53,7 @@ export class MenuBarComponent extends BaseComponent {
       this.stateManager.clear();
       this.breadcrumb.clear();
       this.router.navigateByUrl(entry.url);
-      event.cancelBubble = true;
+      event.preventDefault();
       event.stopPropagation();
     }
   }

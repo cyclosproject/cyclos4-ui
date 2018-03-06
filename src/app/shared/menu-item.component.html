@@ -4,8 +4,9 @@
   [routerLinkActive]="url == null ? '' : 'active'"
   [routerLinkActiveOptions]="{exact:true}"
   [ngClass]="{'active': active}"
-  (click)="handleClick()">
-  <mat-icon *ngIf="entry.icon" [ngClass]="iconClass">{{ entry.icon }}</mat-icon>
+  (click)="handleClick($event)">
+  <mat-icon *ngIf="entry.icon"
+    [ngClass]="iconClass">{{ entry.icon }}</mat-icon>
   <span class="text">
     {{ entry.label }}
   </span>

@@ -1,0 +1,142 @@
+<page-layout [tightContent]="true"
+  [loaded]="loaded"
+  [hasFilters]="true">
+  <page-filters>
+    <form *ngIf="query != null"
+      fxLayout="column"
+      [formGroup]="form">
+      <mat-form-field>
+        <input formControlName="keywords"
+          matInput
+          [placeholder]="generalMessages.keywords()">
+      </mat-form-field>
+    </form>
+  </page-filters>
+  <page-content [title]="usersMessages.searchTitle()">
+    <mat-table #table
+      [fxHide]="(dataSource.empty | async)"
+      [dataSource]="dataSource">
+      <!-- Avatar column -->
+      <ng-container matColumnDef="avatar">
+        <mat-header-cell *matHeaderCellDef
+          class="avatar"></mat-header-cell>
+        <mat-cell *matCellDef="let row"
+          class="avatar">
+          <avatar [image]="row.image"></avatar>
+        </mat-cell>
+      </ng-container>
+
+      <!-- Aggregated (for small devices) -->
+      <ng-container matColumnDef="aggregated">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <a [routerLink]="path(row)">
+            <div *ngIf="fieldsInList.length == 0"
+              class="cell-main">{{ row.display }}</div>
+            <ng-container *ngFor="let field of fieldsInList.length; let first;">
+              <format-field-value [fields]="(data | async).customFields"
+                [fieldName]="field"
+                [object]="row"></format-field-value>
+            </ng-container>
+          </a>
+        </mat-cell>
+      </ng-container>
+
+      <!-- Display column -->
+      <ng-container matColumnDef="display">
+        <mat-header-cell *matHeaderCellDef>{{ generalMessages.user() }}</mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <a [routerLink]="path(row)">
+            Display: {{ row.display }}
+          </a>
+        </mat-cell>
+      </ng-container>
+
+      <!-- As material table don't work with dynamic column definitions, we have to hardcode with up to a fixed number of columns -->
+      <ng-container matColumnDef="field0">
+        <mat-header-cell *matHeaderCellDef>{{ fieldName(0) }}</mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <a [routerLink]="path(row)">
+            <format-field-value [fields]="(data | async).customFields"
+              [fieldName]="fieldInternalName(0)"
+              [object]="row"></format-field-value>
+          </a>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="field1">
+        <mat-header-cell *matHeaderCellDef>{{ fieldName(1) }}</mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <a [routerLink]="path(row)">
+            <format-field-value [fields]="(data | async).customFields"
+              [fieldName]="fieldInternalName(1)"
+              [object]="row"></format-field-value>
+          </a>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="field2">
+        <mat-header-cell *matHeaderCellDef>{{ fieldName(2) }}</mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <a [routerLink]="path(row)">
+            <format-field-value [fields]="(data | async).customFields"
+              [fieldName]="fieldInternalName(2)"
+              [object]="row"></format-field-value>
+          </a>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="field3">
+        <mat-header-cell *matHeaderCellDef>{{ fieldName(3) }}</mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <a [routerLink]="path(row)">
+            <format-field-value [fields]="(data | async).customFields"
+              [fieldName]="fieldInternalName(3)"
+              [object]="row"></format-field-value>
+          </a>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="field4">
+        <mat-header-cell *matHeaderCellDef>{{ fieldName(4) }}</mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <a [routerLink]="path(row)">
+            <format-field-value [fields]="(data | async).customFields"
+              [fieldName]="fieldInternalName(4)"
+              [object]="row"></format-field-value>
+          </a>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="field5">
+        <mat-header-cell *matHeaderCellDef>{{ fieldName(5) }}</mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <a [routerLink]="path(row)">
+            <format-field-value [fields]="(data | async).customFields"
+              [fieldName]="fieldInternalName(5)"
+              [object]="row"></format-field-value>
+          </a>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="field6">
+        <mat-header-cell *matHeaderCellDef>{{ fieldName(6) }}</mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <a [routerLink]="path(row)">
+            <format-field-value [fields]="(data | async).customFields"
+              [fieldName]="fieldInternalName(6)"
+              [object]="row"></format-field-value>
+          </a>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="(displayedColumns | async).length > 2 ? displayedColumns.value : []"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns | async;"
+        class.xs="dynamic"
+        (click)="router.navigate(path(row))"></mat-row>
+    </mat-table>
+    <paginator (update)="update()"
+      [query]="query"
+      [dataSource]="dataSource"></paginator>
+  </page-content>
+</page-layout>

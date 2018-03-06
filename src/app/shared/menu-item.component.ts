@@ -38,7 +38,7 @@ export class MenuItemComponent extends BaseComponent {
     return null;
   }
 
-  handleClick() {
+  handleClick(event: MouseEvent) {
     if (this.entry instanceof MenuEntry) {
       const menu = this.entry.menu;
       if (menu === Menu.LOGOUT) {
@@ -47,6 +47,14 @@ export class MenuItemComponent extends BaseComponent {
         this.router.navigateByUrl(this.entry.url);
       }
       this.click.emit(menu);
+
+      // Clear the shared state
+      this.breadcrumb.clear();
+      this.stateManager.clear();
+
+      // Cancel the standard event
+      event.cancelBubble = true;
+      event.stopPropagation();
     }
   }
 }

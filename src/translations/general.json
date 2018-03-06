@@ -3,11 +3,9 @@
   "login.principal": "User",
   "login.password": "Password",
   "login.action": "Login",
-
   "login.register.title": "User registration",
   "login.register.text": "If you don't have an account yet, you can register by clicking the button below.",
   "login.register.action": "Register",
-
   "submit": "Submit",
   "confirm": "Confirm",
   "cancel": "Cancel",
@@ -22,21 +20,17 @@
   "period": "Period",
   "period.begin": "Begin date",
   "period.end": "End date",
-
   "months.long": "January,February,March,April,May,June,July,August,September,October,November,December",
   "months.short": "Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec",
   "months.narrow": "J,F,M,A,M,J,J,A,S,O,N,D",
   "days.long": "Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday",
   "days.short": "Sun,Mon,Tue,Wed,Thu,Fri,Sat",
   "days.narrow": "S,M,T,W,T,F,S",
-  
   "fieldVisibility.visible": "This field is visible to other users",
   "fieldVisibility.hidden": "This field is hidden for other users",
-
   "search.all": "All",
   "search.noResults": "No results for the specified search criteria",
   "search.user.noKeywords": "Please, fill in the keywords to search for a user",
-
   "pagination.pageSize": "Items per page",
   "pagination.showing.total": "Showing {first} - {last} of {total}",
   "pagination.showing.noTotal": "Showing {first} - {last}",
@@ -45,20 +39,21 @@
   "pagination.previous": "Previous page",
   "pagination.next": "Next page",
   "pagination.last": "Last page",
-
   "menu": "Menu",
   "menu.filters": "Filters",
   "menu.login": "Login",
   "menu.home": "Home",
   "menu.banking": "Banking",
-  "menu.bankingTitle": "Banking menu",
+  "menu.banking.title": "Banking menu",
   "menu.banking.account": "Account",
   "menu.banking.payment": "Do payment",
   "menu.banking.scheduledPayments": "Scheduled payments",
   "menu.banking.recurringPayments": "Recurring payments",
   "menu.users": "Users",
+  "menu.users.title": "Users menu",
   "menu.users.search": "Search users",
   "menu.marketplace": "Marketplace",
+  "menu.marketplace.title": "Marketplace menu",
   "menu.marketplace.search": "Search products and services",
   "menu.personal": "Personal",
   "menu.personalTitle": "Personal menu",
@@ -66,7 +61,6 @@
   "menu.personal.profile": "My profile",
   "menu.personal.passwords": "Passwords",
   "menu.personal.logout": "Logout",
-
   "password.otp.medium.sms": "SMS",
   "password.otp.medium.email": "E-mail",
   "password.otp.sent.email": "An e-mail with the password was sent to {email}",
@@ -77,7 +71,6 @@
   "password.confirmation.otp": "Please, request a password below in order to confirm.",
   "password.confirmation.otp.existing": "In order to confirm, please, supply your {name}.\nYou can use the previously sent password or request for a new one.",
   "password.confirmation.otp.noMediums": "In order to confirm you need a {name}, but you cannot request a new password.\nPlease, contact the administration.",
-
   "error.badRequest": "Bad request parameters",
   "error.entityNotFoundKey": "The requested data could not be found: {type} with key {key}",
   "error.entityNotFound": "The requested data could not be found: {type}",

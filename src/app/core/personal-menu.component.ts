@@ -25,13 +25,22 @@ export class PersonalMenuComponent extends BaseComponent {
   @ViewChild('container')
   container: ElementRef;
 
+  private listener: any;
+
   ngOnInit() {
     super.ngOnInit();
     this.update();
-    document.body.addEventListener('click', e => {
+    this.listener = e => {
       this.hide();
-      e.cancelBubble = true;
-    }, false);
+      e.preventDefault();
+      e.stopPropagation();
+    };
+    document.body.addEventListener('click', this.listener, false);
+  }
+
+  ngOnDestroy() {
+    super.ngOnDestroy();
+    document.body.removeEventListener('click', this.listener, false);
   }
 
   protected onDisplayChange() {

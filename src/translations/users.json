@@ -1,8 +1,11 @@
 {
   "search.title": "Users search",
+  "search.breadcrumb": "Users",
   "user.name": "Full name",
   "user.username": "Login name",
   "user.email": "E-mail",
+  "user.accountNumber": "Account number",
+  "user.phone": "Phone",
   "user.landLinePhone": "Land-line phone",
   "user.landLinePhone.extension": "Extension",
   "user.mobilePhone": "Mobile phone",

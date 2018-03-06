@@ -67,3 +67,7 @@
   padding: 0;
   box-shadow: none;
 }
+
+:host /deep/ .content.tight .title {
+  padding: 16px 0 0 16px;
+}

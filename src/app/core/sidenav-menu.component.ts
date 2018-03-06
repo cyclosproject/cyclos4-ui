@@ -32,13 +32,8 @@ export class SidenavMenuComponent extends BaseComponent implements OnInit {
     this.update();
   }
 
-  onMenuClicked(event: MouseEvent, entry: MenuEntry) {
+  onMenuClicked(entry: MenuEntry) {
     this.sidenav.close();
-    this.breadcrumb.clear();
-    this.stateManager.clear();
-    this.router.navigateByUrl(entry.url);
-    event.cancelBubble = true;
-    event.stopPropagation();
   }
 
   private update() {

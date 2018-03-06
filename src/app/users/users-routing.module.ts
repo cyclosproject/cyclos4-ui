@@ -4,6 +4,7 @@ import { UsersMessagesResolve } from 'app/users/users-messages.resolve';
 import { Menu } from 'app/shared/menu';
 import { RegistrationGroupsResolve } from 'app/registration-groups.resolve';
 import { PublicRegistrationComponent } from 'app/users/registration/public-registration.component';
+import { SearchUsersComponent } from 'app/users/search/search-users.component';
 
 const usersRoutes: Routes = [
   {
@@ -12,6 +13,13 @@ const usersRoutes: Routes = [
       usersMessages: UsersMessagesResolve
     },
     children: [
+      {
+        path: 'search',
+        component: SearchUsersComponent,
+        data: {
+          menu: Menu.SEARCH_USERS
+        }
+      },
       {
         path: 'registration',
         component: PublicRegistrationComponent,
@@ -40,4 +48,4 @@ const usersRoutes: Routes = [
     UsersMessagesResolve
   ]
 })
-export class UsersRoutingModule {}
+export class UsersRoutingModule { }
