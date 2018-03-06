@@ -11,20 +11,17 @@
   <span *ngIf="type == 'decimal'">{{ value.value | number:field.decimalDigits }}</span>
   <div *ngIf="type == 'singleSelection' || type == 'multiSelection'">
     <span *ngFor="let pv of value.value; let last = last;">
-      <span *ngIf="pv.category">{{ pv.category.name }} - </span>{{ pv.value }}
-      <span *ngIf="!last">, </span>
+      <span *ngIf="pv.category">{{ pv.category.name }} - </span>{{ pv.value + (last ? '' : ', ') }}
     </span>
   </div>
   <div *ngIf="type == 'file'">
     <span *ngFor="let file of value.value; let last = last;">
-      {{ file.name }}
-      <span *ngIf="!last">, </span>
+      {{ file.name + (last ? '' : ', ') }}
     </span>
   </div>
   <div *ngIf="type == 'image'">
     <span *ngFor="let img of value.value; let last = last;">
-      {{ img.name }}
-      <span *ngIf="!last">, </span>
+      {{ img.name + (last ? '' : ', ')}}
     </span>
   </div>
 </ng-container>

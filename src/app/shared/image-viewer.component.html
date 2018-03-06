@@ -1,0 +1,23 @@
+<div *ngIf="images.length > 0"
+  [ngClass]="{'image-viewer': true, 'profile': profile, 'portrait': portrait}"
+  fxLayout="column">
+  <a href="#"
+    (click)="onClick($event, 0)">
+    <img [src]="images[0].src"
+      class="first">
+  </a>
+  <div *ngIf="images.length > 1"
+    class="thumbs"
+    fxLayout="row wrap"
+    fxLayoutAlign="center center"
+    fxLayoutGap="3px">
+    <ng-container *ngFor="let image of images; let index = index;">
+      <a *ngIf="index > 0"
+        href="#"
+        (click)="onClick($event, index)">
+        <img [src]="image.thumb"
+          class="thumb">
+      </a>
+    </ng-container>
+  </div>
+</div>

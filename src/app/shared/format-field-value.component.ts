@@ -125,24 +125,13 @@ export class FormatFieldValueComponent implements OnInit {
         break;
       case CustomFieldTypeEnum.SINGLE_SELECTION:
       case CustomFieldTypeEnum.MULTI_SELECTION:
-        const enumerated = this.fieldValue.enumeratedValues || [];
-        // Sort the values
-        enumerated.sort((pv1: CustomFieldPossibleValue, pv2: CustomFieldPossibleValue) => {
-          if (pv1.category == null && pv2.category != null) {
-            return -1;
-          } else if (pv2.category == null && pv1.category != null) {
-            return 1;
-          } else {
-            return pv1.value === pv2.value ? 0 : pv1.value < pv2.value ? -1 : 1;
-          }
-        });
-        return enumerated;
+        return this.fieldValue.enumeratedValues || [];
       case CustomFieldTypeEnum.RICH_TEXT:
         let rich = this.fieldValue.stringValue;
         if (rich != null && rich.length > 0) {
           // For HTML, add a div in the end that prevents floats from passing
           // through the parent div's height
-          rich += '<div style="clear: both"></div>';
+          rich += '<div class="clear-floats"></div>';
         }
         return rich;
       default:

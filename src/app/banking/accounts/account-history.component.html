@@ -122,6 +122,7 @@
       <mat-header-row *matHeaderRowDef="layout.xs ? [] : displayedColumns"></mat-header-row>
       <mat-row *matRowDef="let row; columns: displayedColumns;"
         class.xs="dynamic"
+        class="clickable"
         (click)="router.navigate(path(row))"></mat-row>
     </mat-table>
     <paginator (update)="update()"

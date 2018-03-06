@@ -33,6 +33,7 @@
     "@angular/platform-browser-dynamic": "^5.2.7",
     "@angular/router": "^5.2.7",
     "@covalent/core": "^1.0.0",
+    "angular2-lightbox": "^1.3.0",
     "big.js": "^5.0.3",
     "core-js": "^2.5.3",
     "hammerjs": "^2.0.8",

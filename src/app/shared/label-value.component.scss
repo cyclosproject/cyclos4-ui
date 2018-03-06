@@ -26,3 +26,11 @@
 .break-nl {
   white-space: pre-wrap;
 }
+
+:host /deep/ a {
+  color: mat-color($primary);
+  text-decoration: none;
+}
+:host /deep/ a:hover {
+  text-decoration: underline;
+}

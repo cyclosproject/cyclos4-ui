@@ -10,6 +10,8 @@ import {
 } from '@angular/material';
 import { CovalentStepsModule } from '@covalent/core';
 
+import { LightboxModule } from 'angular2-lightbox';
+
 import { PageLayoutComponent } from 'app/shared/page-layout.component';
 import { PageFiltersComponent } from 'app/shared/page-filters.component';
 import { PageContentComponent } from 'app/shared/page-content.component';
@@ -50,6 +52,8 @@ import { LinearStepperControlComponent } from 'app/shared/linear-stepper-control
 import { FieldPrivacyComponent } from 'app/shared/field-privacy.component';
 import { CaptchaComponent } from 'app/shared/captcha.component';
 import { BreadcrumbComponent } from './breadcrumb.component';
+import { ImageViewerComponent } from './image-viewer.component';
+
 
 /**
  * Module that configures UI elements
@@ -81,6 +85,7 @@ import { BreadcrumbComponent } from './breadcrumb.component';
     ConfirmationPasswordComponent,
     UserSelectionComponent,
     AvatarComponent,
+    ImageViewerComponent,
     CaptchaComponent,
     NotFoundComponent,
 
@@ -117,7 +122,8 @@ import { BreadcrumbComponent } from './breadcrumb.component';
     MatDialogModule,
     MatCardModule,
     MatSidenavModule,
-    CovalentStepsModule
+    CovalentStepsModule,
+    LightboxModule
   ],
   exports: [
     CommonModule,
@@ -140,6 +146,7 @@ import { BreadcrumbComponent } from './breadcrumb.component';
     MatCardModule,
     MatSidenavModule,
     CovalentStepsModule,
+    LightboxModule,
 
     PageLayoutComponent,
     SideMenuComponent,
@@ -166,6 +173,7 @@ import { BreadcrumbComponent } from './breadcrumb.component';
     ConfirmationPasswordComponent,
     UserSelectionComponent,
     AvatarComponent,
+    ImageViewerComponent,
     CaptchaComponent,
     NotFoundComponent,
 

@@ -1,0 +1,49 @@
+.image-viewer.profile {
+  float: right;
+}
+
+.image-viewer {
+  max-width: 250px;
+}
+
+img.first {
+  display: block;
+  margin: auto;
+  max-width: 250px;
+}
+
+
+.image-viewer.portrait img.first {
+  max-height: 200px;
+}
+
+.thumbs {
+  margin-top: 3px;
+}
+
+.image-viewer.portrait .thumbs {
+  max-width: 180px;
+}
+
+img.thumb {
+  max-height: 50px;
+  max-width: 80px;
+}
+
+img:hover {
+  -webkit-filter: brightness(60%);
+  filter: brightness(60%);
+  -webkit-transition: all ease-out 0.2s;
+  transition: all ease-out 0.2s;
+}
+
+
+.xs :host {
+  .image-viewer, img.first {
+    max-width: 200px;
+  }
+
+  .image-viewer.portrait .thumbs {
+    max-width: 140px;
+  }
+}

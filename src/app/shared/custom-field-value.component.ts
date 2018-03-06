@@ -18,4 +18,6 @@ export class CustomFieldValueComponent {
   @Input() fieldValue: CustomFieldValue;
   @Input() labelWidth: string;
 
+  @ViewChild('formatFieldValue') formatFieldValue: FormatFieldValueComponent;
+
 }

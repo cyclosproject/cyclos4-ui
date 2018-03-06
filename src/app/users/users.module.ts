@@ -8,6 +8,8 @@ import { UsersRoutingModule } from 'app/users/users-routing.module';
 import { RegistrationConfirmComponent } from 'app/users/registration/registration-confirm.component';
 import { RegistrationDoneComponent } from 'app/users/registration/registration-done.component';
 import { SearchUsersComponent } from 'app/users/search/search-users.component';
+import { UserProfileComponent } from 'app/users/profile/user-profile.component';
+import { ViewAddressDetailsComponent } from 'app/users/profile/view-address-details.component';
 
 /**
  * Users module
@@ -26,6 +28,8 @@ import { SearchUsersComponent } from 'app/users/search/search-users.component';
     RegistrationDoneComponent,
 
     SearchUsersComponent,
+    UserProfileComponent,
+    ViewAddressDetailsComponent
   ],
   providers: [
     UsersMessages

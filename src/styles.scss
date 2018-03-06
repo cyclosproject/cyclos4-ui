@@ -18,6 +18,10 @@ html {
   overflow-y: scroll;
 }
 
+.clear-floats {
+  clear: both;
+}
+
 // Body
 body.gt-sm {
   background-color: mat-color($background, background);
@@ -64,10 +68,10 @@ mat-radio-group.horizontal mat-radio-button + mat-radio-button {
 .form-info {
   margin-bottom: 12px;
 }
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
-  -webkit-appearance: none; 
-  margin: 0; 
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 input[type=number] {
   -moz-appearance: textfield;
@@ -110,7 +114,7 @@ input[type=number] {
 .clickable {
   cursor: pointer;
 }
-mat-table mat-icon {
+.mat-table .mat-icon {
   opacity: 0.67;
 }
 mat-cell.avatar, mat-header-cell.avatar {
@@ -125,13 +129,9 @@ mat-cell .cell-main {
 mat-cell .cell-small {
   font-size: 12px;
 }
-mat-table a {
-  opacity: 0.87;
-  color: map-get($foreground, text);
+.mat-table a, .mat-table a:hover {
+  color: mat-color($foreground, text);
   text-decoration: none;
-}
-mat-table a:hover {
-  text-decoration: underline;
 }
 
 // Material icons

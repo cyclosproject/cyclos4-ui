@@ -4,35 +4,28 @@
   display: flex !important;
   flex-direction: column !important;
 }
-.sectionTitle.margin, .sectionContent .sectionTitle {
-  margin-top: 22px;
+.sectionTitle.margin {
+  margin-top: 16px !important;
+}
+.sectionContent .sectionTitle {
+  margin-top: 8px;
 }
 .sectionTitle {
-  font-size: 22px;
-  line-height: 22px;
-  margin-bottom: 18px;
+  font-size: 18px;
+  line-height: 18px;
+  margin-bottom: 12px;
   opacity: 0.87;
 }
 .sectionContent /deep/ .sectionTitle, .sectionTitle.small {
-  font-size: 20px;
-  line-height: 20px;
-  margin-bottom: 16px;
+  font-size: 16px;
+  line-height: 16px;
+  margin-bottom: 4px;
+  margin-top: 6px;
 }
 .sectionContent /deep/ .sectionContent .sectionTitle, .sectionTitle.xsmall {
-  font-size: 16px;
-  line-height: 16px;
-  margin-bottom: 12px;
+  font-size: 14px;
+  line-height: 14px;
+  margin-bottom: 4px;
+  margin-top: 2px;
   font-weight: 500;
-}
-
-.sectionContent /deep/ .sectionTitle.small {
-  font-size: 16px;
-  line-height: 16px;
-  margin-bottom: 12px;
-}
-
-.sectionContent /deep/ .sectionContent /deep/ .sectionTitle.small {
-  font-size: 13px;
-  line-height: 13px;
-  margin-bottom: 7px;
 }

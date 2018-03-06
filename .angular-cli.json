@@ -21,6 +21,7 @@
       "styles": [
         "../node_modules/@covalent/core/common/platform.scss",
         "../node_modules/normalize.css/normalize.css",
+        "../node_modules/angular2-lightbox/lightbox.css",
         "styles.scss"
       ],
       "scripts": [],

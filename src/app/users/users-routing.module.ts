@@ -5,6 +5,8 @@ import { Menu } from 'app/shared/menu';
 import { RegistrationGroupsResolve } from 'app/registration-groups.resolve';
 import { PublicRegistrationComponent } from 'app/users/registration/public-registration.component';
 import { SearchUsersComponent } from 'app/users/search/search-users.component';
+import { UserProfileComponent } from 'app/users/profile/user-profile.component';
+import { CountriesResolve } from 'app/countries.resolve';
 
 const usersRoutes: Routes = [
   {
@@ -21,10 +23,21 @@ const usersRoutes: Routes = [
         }
       },
       {
+        path: 'profile/:key',
+        component: UserProfileComponent,
+        resolve: {
+          countries: CountriesResolve
+        },
+        data: {
+          menu: Menu.USER_PROFILE
+        }
+      },
+      {
         path: 'registration',
         component: PublicRegistrationComponent,
         resolve: {
-          groups: RegistrationGroupsResolve
+          groups: RegistrationGroupsResolve,
+          countries: CountriesResolve
         },
         data: {
           menu: Menu.REGISTRATION

@@ -41,7 +41,7 @@ export class SearchUsersComponent extends BaseUsersComponent {
     }));
   }
 
-  data = new BehaviorSubject<UserDataForSearch>(null);
+  data: UserDataForSearch;
 
   form: FormGroup;
 
@@ -59,7 +59,7 @@ export class SearchUsersComponent extends BaseUsersComponent {
     this.stateManager.cache('data',
       this.usersService.getUserDataForSearch())
       .subscribe(data => {
-        this.data.next(data);
+        this.data = data;
         this.updateDisplayedColumns();
 
         // Initialize the query
@@ -93,7 +93,7 @@ export class SearchUsersComponent extends BaseUsersComponent {
    * Returns the identifiers of fields to show in the result list
    */
   get fieldsInList(): string[] {
-    let arr = (this.data.value || {}).fieldsInList || [];
+    let arr = (this.data || {}).fieldsInList || [];
     if (arr.length > SearchUsersComponent.MAX_COLUMNS) {
       arr = arr.slice(0, SearchUsersComponent.MAX_COLUMNS);
     }
@@ -145,7 +145,7 @@ export class SearchUsersComponent extends BaseUsersComponent {
       case 'accountNumber':
         return this.usersMessages.userAccountNumber();
       default:
-        for (const cf of this.data.value.customFields) {
+        for (const cf of this.data.customFields) {
           if (cf.internalName === field) {
             return cf.name;
           }

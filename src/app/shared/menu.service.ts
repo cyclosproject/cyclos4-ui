@@ -164,6 +164,8 @@ export class MenuService {
         this.generalMessages.menuMarketplaceSearch());
 
       // Personal
+      add(Menu.MY_PROFILE, '/users/profile/self', 'account_box',
+        this.generalMessages.menuPersonalProfile());
       if (users.contacts) {
         add(Menu.CONTACTS, '/personal/contacts', 'contacts',
           this.generalMessages.menuPersonalContacts());

@@ -1,0 +1,90 @@
+<page-layout [loaded]="loaded">
+  <page-content *ngIf="loaded | async"
+    [title]="user.display">
+    <image-viewer *ngIf="user.image"
+      [profile]="true"
+      [image]="user.image"
+      [additionalImages]="user.additionalImages"></image-viewer>
+    <label-value *ngIf="user.name != null && user.name !== user.display"
+      [label]="usersMessages.userName()"
+      [value]="user.name"></label-value>
+    <label-value *ngIf="user.username"
+      [label]="usersMessages.userUsername()"
+      [value]="user.username"></label-value>
+    <label-value *ngIf="user.email"
+      [label]="usersMessages.userEmail()">
+      <a [href]="'mailto:' + user.email">{{ user.email }}</a>
+    </label-value>
+    <label-value *ngFor="let phone of user.phones"
+      [label]="phone.type === 'mobile' ? usersMessages.userMobilePhone() : usersMessages.userLandLinePhone()">
+      <a [href]="'tel:' + phone.normalizedNumber">
+        {{ phone.number }}
+      </a>
+    </label-value>
+    <custom-field-value *ngFor="let value of user.customValues"
+      [fieldValue]="value">
+    </custom-field-value>
+
+    <!-- Multiple addresses -->
+    <section *ngIf="(user.addresses || []).length > 1"
+      [title]="usersMessages.userAddresses()"
+      margin
+      titleSize="small">
+      <section *ngFor="let address of user.addresses"
+        [title]="address.name"
+        titleSize="xsmall">
+        <view-address-details [address]="address"
+          [countries]="countries | async">
+        </view-address-details>
+      </section>
+    </section>
+
+    <!-- Single address -->
+    <section *ngIf="(user.addresses || []).length === 1"
+      [title]="usersMessages.userAddress()"
+      titleSize="xsmall">
+      <view-address-details [address]="user.addresses[0]"
+        [countries]="countries | async">
+      </view-address-details>
+    </section>
+
+    <!-- Contact infos -->
+    <section *ngIf="(user.contactInfos || []).length > 0"
+      [title]="usersMessages.userContactInfos()"
+      margin
+      titleSize="small">
+      <section *ngFor="let contactInfo of user.contactInfos"
+        [title]="contactInfo.name"
+        titleSize="xsmall">
+        <image-viewer *ngIf="contactInfo.image"
+          [profile]="true"
+          [image]="contactInfo.image"></image-viewer>
+        <label-value *ngIf="contactInfo.email"
+          [label]="usersMessages.userEmail()">
+          <a [href]="'mailto:' + contactInfo.email">{{ contactInfo.email }}</a>
+        </label-value>
+        <label-value *ngIf="contactInfo.mobilePhone"
+          [label]="usersMessages.userMobilePhone()">
+          <a [href]="'tel:' + contactInfo.normalizedMobilePhone">
+            {{ contactInfo.mobilePhone }}
+          </a>
+        </label-value>
+        <label-value *ngIf="contactInfo.landLinePhone"
+          [label]="usersMessages.userLandLinePhone()">
+          <a [href]="'tel:' + contactInfo.normalizedLandLinePhone">
+            {{ contactInfo.landLinePhone }}
+          </a>
+        </label-value>
+        <custom-field-value *ngFor="let value of contactInfo.customValues"
+          [fieldValue]="value">
+        </custom-field-value>
+        <view-address-details *ngIf="contactInfo.address"
+          [address]="contactInfo.address"
+          [countries]="countries | async">
+        </view-address-details>
+      </section>
+    </section>
+
+    <div class="clear-floats"></div>
+  </page-content>
+</page-layout>

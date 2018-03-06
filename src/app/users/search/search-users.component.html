@@ -34,7 +34,7 @@
             <div *ngIf="fieldsInList.length == 0"
               class="cell-main">{{ row.display }}</div>
             <ng-container *ngFor="let field of fieldsInList.length; let first;">
-              <format-field-value [fields]="(data | async).customFields"
+              <format-field-value [fields]="data.customFields"
                 [fieldName]="field"
                 [object]="row"></format-field-value>
             </ng-container>
@@ -57,7 +57,7 @@
         <mat-header-cell *matHeaderCellDef>{{ fieldName(0) }}</mat-header-cell>
         <mat-cell *matCellDef="let row">
           <a [routerLink]="path(row)">
-            <format-field-value [fields]="(data | async).customFields"
+            <format-field-value [fields]="data.customFields"
               [fieldName]="fieldInternalName(0)"
               [object]="row"></format-field-value>
           </a>
@@ -68,7 +68,7 @@
         <mat-header-cell *matHeaderCellDef>{{ fieldName(1) }}</mat-header-cell>
         <mat-cell *matCellDef="let row">
           <a [routerLink]="path(row)">
-            <format-field-value [fields]="(data | async).customFields"
+            <format-field-value [fields]="data.customFields"
               [fieldName]="fieldInternalName(1)"
               [object]="row"></format-field-value>
           </a>
@@ -79,7 +79,7 @@
         <mat-header-cell *matHeaderCellDef>{{ fieldName(2) }}</mat-header-cell>
         <mat-cell *matCellDef="let row">
           <a [routerLink]="path(row)">
-            <format-field-value [fields]="(data | async).customFields"
+            <format-field-value [fields]="data.customFields"
               [fieldName]="fieldInternalName(2)"
               [object]="row"></format-field-value>
           </a>
@@ -90,7 +90,7 @@
         <mat-header-cell *matHeaderCellDef>{{ fieldName(3) }}</mat-header-cell>
         <mat-cell *matCellDef="let row">
           <a [routerLink]="path(row)">
-            <format-field-value [fields]="(data | async).customFields"
+            <format-field-value [fields]="data.customFields"
               [fieldName]="fieldInternalName(3)"
               [object]="row"></format-field-value>
           </a>
@@ -101,7 +101,7 @@
         <mat-header-cell *matHeaderCellDef>{{ fieldName(4) }}</mat-header-cell>
         <mat-cell *matCellDef="let row">
           <a [routerLink]="path(row)">
-            <format-field-value [fields]="(data | async).customFields"
+            <format-field-value [fields]="data.customFields"
               [fieldName]="fieldInternalName(4)"
               [object]="row"></format-field-value>
           </a>
@@ -112,7 +112,7 @@
         <mat-header-cell *matHeaderCellDef>{{ fieldName(5) }}</mat-header-cell>
         <mat-cell *matCellDef="let row">
           <a [routerLink]="path(row)">
-            <format-field-value [fields]="(data | async).customFields"
+            <format-field-value [fields]="data.customFields"
               [fieldName]="fieldInternalName(5)"
               [object]="row"></format-field-value>
           </a>
@@ -123,7 +123,7 @@
         <mat-header-cell *matHeaderCellDef>{{ fieldName(6) }}</mat-header-cell>
         <mat-cell *matCellDef="let row">
           <a [routerLink]="path(row)">
-            <format-field-value [fields]="(data | async).customFields"
+            <format-field-value [fields]="data.customFields"
               [fieldName]="fieldInternalName(6)"
               [object]="row"></format-field-value>
           </a>
@@ -133,6 +133,7 @@
       <mat-header-row *matHeaderRowDef="(displayedColumns | async).length > 2 ? displayedColumns.value : []"></mat-header-row>
       <mat-row *matRowDef="let row; columns: displayedColumns | async;"
         class.xs="dynamic"
+        class="clickable"
         (click)="router.navigate(path(row))"></mat-row>
     </mat-table>
     <paginator (update)="update()"

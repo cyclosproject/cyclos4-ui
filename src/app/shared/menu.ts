@@ -47,6 +47,7 @@ export module Menu {
 
   // Users
   export const SEARCH_USERS = new Menu(RootMenu.USERS);
+  export const USER_PROFILE = new Menu(RootMenu.USERS);
 
   // Marketplace
   export const SEARCH_MARKETPLACE = new Menu(RootMenu.MARKETPLACE);
