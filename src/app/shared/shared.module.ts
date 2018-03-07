@@ -10,8 +10,6 @@ import {
 } from '@angular/material';
 import { CovalentStepsModule } from '@covalent/core';
 
-import { LightboxModule } from 'angular2-lightbox';
-
 import { PageLayoutComponent } from 'app/shared/page-layout.component';
 import { PageFiltersComponent } from 'app/shared/page-filters.component';
 import { PageContentComponent } from 'app/shared/page-content.component';
@@ -120,8 +118,7 @@ import { ImageViewerComponent } from './image-viewer.component';
     MatDialogModule,
     MatCardModule,
     MatSidenavModule,
-    CovalentStepsModule,
-    LightboxModule
+    CovalentStepsModule
   ],
   exports: [
     CommonModule,
@@ -144,7 +141,6 @@ import { ImageViewerComponent } from './image-viewer.component';
     MatCardModule,
     MatSidenavModule,
     CovalentStepsModule,
-    LightboxModule,
 
     PageLayoutComponent,
     SideMenuComponent,

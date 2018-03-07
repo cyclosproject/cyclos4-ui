@@ -24,6 +24,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RegistrationGroupsResolve } from 'app/registration-groups.resolve';
 import { CountriesResolve } from 'app/countries.resolve';
 import { BreadcrumbService } from './breadcrumb.service';
+import { LightboxModule } from 'angular2-lightbox';
 
 export const API_INTERCEPTOR_PROVIDER: Provider = {
   provide: HTTP_INTERCEPTORS,
@@ -55,14 +56,16 @@ export const DATE_FORMATS_PROVIDER: Provider = {
     PersonalMenuComponent
   ],
   imports: [
-    SharedModule
+    SharedModule,
+    LightboxModule
   ],
   exports: [
     LayoutBarComponent,
     TopBarComponent,
     MenuBarComponent,
     SidenavMenuComponent,
-    PersonalMenuComponent
+    PersonalMenuComponent,
+    LightboxModule
   ],
   providers: [
     ApiInterceptor,
