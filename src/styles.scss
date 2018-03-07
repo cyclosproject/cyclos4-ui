@@ -30,6 +30,36 @@ body.lt-md, .lt-md .mat-drawer-container {
   background-color: map-get($background, card);
 }
 
+// Titles
+h1, h2, h3 {
+  opacity: 0.87;
+}
+h1 {
+  margin: 20px 0 12px 0;
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: 500;
+}
+h2 {
+  font-size: 16px;
+  line-height: 16px;
+  margin: 32px 0 16px 0;
+  font-weight: 500;
+  border-bottom: 1px solid mat-color($foreground, divider);
+  padding-bottom: 12px;
+}
+h3 {
+  font-size: 14px;
+  line-height: 14px;
+  margin: 16px 0 16px 0;
+  font-weight: 500;
+  padding: 0;
+  border: 0;
+}
+h1:first-child, h2:first-child, h3:first-child {
+  margin-top: 0;
+}
+
 // Forms
 .gt-xs form {
   max-width: $max-form-width;
@@ -63,9 +93,11 @@ mat-radio-group.horizontal mat-radio-button + mat-radio-button {
   min-height: 40px;
   line-height: 40px !important;
 }
+.form-info, .form-info-light {
+  margin-bottom: 12px;
+}
 .form-info {
   font-weight: 500;
-  margin-bottom: 12px;
 }
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {

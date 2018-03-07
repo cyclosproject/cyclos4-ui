@@ -32,8 +32,7 @@
       <mat-card>
         <mat-card-content>
           <breadcrumb></breadcrumb>
-          <div *ngIf="title != null && title.length > 0"
-            class="title">{{ title }}</div>
+          <h1 *ngIf="title != null && title.length > 0">{{ title }}</h1>
           <div class="header-wrapper">
             <ng-container *ngTemplateOutlet="headerTpl"></ng-container>
           </div>
@@ -45,8 +44,7 @@
       <mat-card>
         <mat-card-content>
           <breadcrumb *ngIf="!hasHeader"></breadcrumb>
-          <div *ngIf="!hasHeader && title != null && title.length > 0"
-            class="title">{{ title }}</div>
+          <h1 *ngIf="!hasHeader && title != null && title.length > 0">{{ title }}</h1>
           <div class="content-wrapper">
             <ng-container *ngTemplateOutlet="contentTpl"></ng-container>
           </div>
@@ -57,8 +55,7 @@
   <ng-container *ngIf="!(showLeft | async) && (loaded == null || (loaded | async))">
     <!-- No left area (mobile): Everything is together (no cards) -->
     <breadcrumb></breadcrumb>
-    <div *ngIf="title != null && title.length > 0"
-      class="title">{{ title }}</div>
+    <h1 *ngIf="title != null && title.length > 0">{{ title }}</h1>
 
     <div class="inline-header"
       *ngIf="hasHeader">

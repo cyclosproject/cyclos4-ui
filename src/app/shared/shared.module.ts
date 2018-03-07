@@ -18,7 +18,6 @@ import { PageContentComponent } from 'app/shared/page-content.component';
 import { PageHeaderComponent } from 'app/shared/page-header.component';
 import { SideMenuComponent } from 'app/shared/side-menu.component';
 import { MenuItemComponent } from 'app/shared/menu-item.component';
-import { SectionComponent } from 'app/shared/section.component';
 import { ActionsComponent } from 'app/shared/actions.component';
 
 import { TrustPipe } from 'app/shared/trust.pipe';
@@ -67,7 +66,6 @@ import { ImageViewerComponent } from './image-viewer.component';
     PageFiltersComponent,
     PageContentComponent,
     PageHeaderComponent,
-    SectionComponent,
     ActionsComponent,
     ViewFormComponent,
     LabelValueComponent,
@@ -155,7 +153,6 @@ import { ImageViewerComponent } from './image-viewer.component';
     PageFiltersComponent,
     PageContentComponent,
     PageHeaderComponent,
-    SectionComponent,
     ActionsComponent,
     ViewFormComponent,
     LabelValueComponent,

@@ -43,131 +43,125 @@
 </label-value>
 
 <ng-container *ngIf="transfer.parent">
-  <section margin
-    titleSize="small"
-    [title]="bankingMessages.transferParentTitle()">
-    <label-value *ngIf="transfer.parent.transactionNumber"
-      [label]="bankingMessages.transactionNumber()">
-      {{ transfer.parent.transactionNumber }}
-    </label-value>
-    <label-value [label]="bankingMessages.transactionDate()">
-      {{ transfer.parent.date | dateTime }}
-    </label-value>
-    <label-value [label]="bankingMessages.transactionAmount()">
-      {{ transfer.parent.amount | currency:transfer.parent.currency }}
-    </label-value>
-    <label-value [label]="bankingMessages.transactionFrom()">
-      {{ from(transfer.parent) }}
-    </label-value>
-    <label-value *ngIf="transfer.from.number"
-      [label]="bankingMessages.transactionFromAccount()">
-      {{ transfer.parent.from.number }}
-    </label-value>
-    <label-value [label]="bankingMessages.transactionTo()">
-      {{ to(transfer.parent) }}
-    </label-value>
-    <label-value *ngIf="transfer.to.number"
-      [label]="bankingMessages.transactionToAccount()">
-      {{ transfer.parent.to.number }}
-    </label-value>
-    <label-value [label]="bankingMessages.transactionType()">
-      {{ transfer.parent.type.name }}
-    </label-value>
-    <actions>
-      <a [routerLink]="path(transfer.parent)"
-        mat-button>
-        {{ bankingMessages.transferParentView() }}
-      </a>
-    </actions>
-  </section>
+  <h2>{{ bankingMessages.transferParentTitle() }}</h2>
+  <label-value *ngIf="transfer.parent.transactionNumber"
+    [label]="bankingMessages.transactionNumber()">
+    {{ transfer.parent.transactionNumber }}
+  </label-value>
+  <label-value [label]="bankingMessages.transactionDate()">
+    {{ transfer.parent.date | dateTime }}
+  </label-value>
+  <label-value [label]="bankingMessages.transactionAmount()">
+    {{ transfer.parent.amount | currency:transfer.parent.currency }}
+  </label-value>
+  <label-value [label]="bankingMessages.transactionFrom()">
+    {{ from(transfer.parent) }}
+  </label-value>
+  <label-value *ngIf="transfer.from.number"
+    [label]="bankingMessages.transactionFromAccount()">
+    {{ transfer.parent.from.number }}
+  </label-value>
+  <label-value [label]="bankingMessages.transactionTo()">
+    {{ to(transfer.parent) }}
+  </label-value>
+  <label-value *ngIf="transfer.to.number"
+    [label]="bankingMessages.transactionToAccount()">
+    {{ transfer.parent.to.number }}
+  </label-value>
+  <label-value [label]="bankingMessages.transactionType()">
+    {{ transfer.parent.type.name }}
+  </label-value>
+  <actions>
+    <a [routerLink]="path(transfer.parent)"
+      mat-button>
+      {{ bankingMessages.transferParentView() }}
+    </a>
+  </actions>
 </ng-container>
 
 <ng-container *ngIf="(transfer.children || []).length > 0">
-  <section margin
-    titleSize="small"
-    [title]="bankingMessages.transferChildrenTitle()">
-    <mat-table [dataSource]="childrenDataSource">
+  <h2>{{ bankingMessages.transferChildrenTitle() }}</h2>
+  <mat-table [dataSource]="childrenDataSource">
 
-      <!-- Aggregated (for small devices) -->
-      <ng-container matColumnDef="aggregated">
-        <mat-header-cell *matHeaderCellDef></mat-header-cell>
-        <mat-cell *matCellDef="let row">
-          <a [routerLink]="path(row)"
-            fxLayout="column">
-            <div class="cell-main">
-              {{ bankingMessages.transactionFromTo(from(row), to(row)) }}
-            </div>
-            <div class="cell-date">{{ row.date | dateTime }}</div>
-            <div *ngIf="row.transactionNumber"
-              class="cell-date">{{ row.transactionNumber }}</div>
-            <div *ngIf="row.description"
-              class="cell-small">{{ row.description }}</div>
-          </a>
-        </mat-cell>
-      </ng-container>
+    <!-- Aggregated (for small devices) -->
+    <ng-container matColumnDef="aggregated">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <a [routerLink]="path(row)"
+          fxLayout="column">
+          <div class="cell-main">
+            {{ bankingMessages.transactionFromTo(from(row), to(row)) }}
+          </div>
+          <div class="cell-date">{{ row.date | dateTime }}</div>
+          <div *ngIf="row.transactionNumber"
+            class="cell-date">{{ row.transactionNumber }}</div>
+          <div *ngIf="row.description"
+            class="cell-small">{{ row.description }}</div>
+        </a>
+      </mat-cell>
+    </ng-container>
 
-      <!-- Date column -->
-      <ng-container matColumnDef="date">
-        <mat-header-cell *matHeaderCellDef>{{ bankingMessages.transactionDate() }}</mat-header-cell>
-        <mat-cell *matCellDef="let row">
-          <a [routerLink]="path(row)">
-            {{ row.date | date }}
-          </a>
-        </mat-cell>
-      </ng-container>
+    <!-- Date column -->
+    <ng-container matColumnDef="date">
+      <mat-header-cell *matHeaderCellDef>{{ bankingMessages.transactionDate() }}</mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <a [routerLink]="path(row)">
+          {{ row.date | date }}
+        </a>
+      </mat-cell>
+    </ng-container>
 
-      <!-- Transaction number column -->
-      <ng-container matColumnDef="transactionNumber">
-        <mat-header-cell *matHeaderCellDef>{{ bankingMessages.transactionNumber() }}</mat-header-cell>
-        <mat-cell *matCellDef="let row">
-          <a [routerLink]="path(row)">
-            {{ row.transactionNumber }}
-          </a>
-        </mat-cell>
-      </ng-container>
+    <!-- Transaction number column -->
+    <ng-container matColumnDef="transactionNumber">
+      <mat-header-cell *matHeaderCellDef>{{ bankingMessages.transactionNumber() }}</mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <a [routerLink]="path(row)">
+          {{ row.transactionNumber }}
+        </a>
+      </mat-cell>
+    </ng-container>
 
-      <!-- From column -->
-      <ng-container matColumnDef="from">
-        <mat-header-cell *matHeaderCellDef>{{ bankingMessages.transactionFrom() }}</mat-header-cell>
-        <mat-cell *matCellDef="let row">
-          <a [routerLink]="path(row)">
-            {{ from(row) }}
-            <ng-container *ngIf="row.from.number">
-              <br>{{ row.from.number }}
-            </ng-container>
-          </a>
-        </mat-cell>
-      </ng-container>
+    <!-- From column -->
+    <ng-container matColumnDef="from">
+      <mat-header-cell *matHeaderCellDef>{{ bankingMessages.transactionFrom() }}</mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <a [routerLink]="path(row)">
+          {{ from(row) }}
+          <ng-container *ngIf="row.from.number">
+            <br>{{ row.from.number }}
+          </ng-container>
+        </a>
+      </mat-cell>
+    </ng-container>
 
-      <!-- To column -->
-      <ng-container matColumnDef="to">
-        <mat-header-cell *matHeaderCellDef>{{ bankingMessages.transactionTo() }}</mat-header-cell>
-        <mat-cell *matCellDef="let row">
-          <a [routerLink]="path(row)">
-            {{ to(row) }}
-            <ng-container *ngIf="row.to.number">
-              <br>{{ row.to.number }}
-            </ng-container>
-          </a>
-        </mat-cell>
-      </ng-container>
+    <!-- To column -->
+    <ng-container matColumnDef="to">
+      <mat-header-cell *matHeaderCellDef>{{ bankingMessages.transactionTo() }}</mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <a [routerLink]="path(row)">
+          {{ to(row) }}
+          <ng-container *ngIf="row.to.number">
+            <br>{{ row.to.number }}
+          </ng-container>
+        </a>
+      </mat-cell>
+    </ng-container>
 
-      <!-- Amount column -->
-      <ng-container matColumnDef="amount">
-        <mat-header-cell *matHeaderCellDef
-          style="text-align: end">{{ bankingMessages.transactionAmount() }}</mat-header-cell>
-        <mat-cell *matCellDef="let row"
-          style="text-align: end">
-          <a [routerLink]="path(row)">
-            {{ row.amount | currency:row.currency }}
-          </a>
-        </mat-cell>
-      </ng-container>
+    <!-- Amount column -->
+    <ng-container matColumnDef="amount">
+      <mat-header-cell *matHeaderCellDef
+        style="text-align: end">{{ bankingMessages.transactionAmount() }}</mat-header-cell>
+      <mat-cell *matCellDef="let row"
+        style="text-align: end">
+        <a [routerLink]="path(row)">
+          {{ row.amount | currency:row.currency }}
+        </a>
+      </mat-cell>
+    </ng-container>
 
-      <mat-header-row *matHeaderRowDef="layout.xs ? [] : displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns;"
-        class.xs="dynamic"
-        (click)="router.navigate(path(row))"></mat-row>
-    </mat-table>
-  </section>
+    <mat-header-row *matHeaderRowDef="layout.xs ? [] : displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"
+      class.xs="dynamic"
+      (click)="router.navigate(path(row))"></mat-row>
+  </mat-table>
 </ng-container>

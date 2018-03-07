@@ -26,36 +26,28 @@
     </custom-field-value>
 
     <!-- Multiple addresses -->
-    <section *ngIf="(user.addresses || []).length > 1"
-      [title]="usersMessages.userAddresses()"
-      margin
-      titleSize="small">
-      <section *ngFor="let address of user.addresses"
-        [title]="address.name"
-        titleSize="xsmall">
+    <ng-container *ngIf="(user.addresses || []).length > 1">
+      <h2>{{ usersMessages.userAddresses() }}</h2>
+      <ng-container *ngFor="let address of user.addresses">
+        <h3>{{ address.name }}</h3>
         <view-address-details [address]="address"
           [countries]="countries | async">
         </view-address-details>
-      </section>
-    </section>
+      </ng-container>
+    </ng-container>
 
     <!-- Single address -->
-    <section *ngIf="(user.addresses || []).length === 1"
-      [title]="usersMessages.userAddress()"
-      titleSize="xsmall">
+    <ng-container *ngIf="(user.addresses || []).length === 1">
+      <h3>{{ usersMessages.userAddress() }}</h3>
       <view-address-details [address]="user.addresses[0]"
         [countries]="countries | async">
       </view-address-details>
-    </section>
+    </ng-container>
 
     <!-- Contact infos -->
-    <section *ngIf="(user.contactInfos || []).length > 0"
-      [title]="usersMessages.userContactInfos()"
-      margin
-      titleSize="small">
-      <section *ngFor="let contactInfo of user.contactInfos"
-        [title]="contactInfo.name"
-        titleSize="xsmall">
+    <ng-container *ngIf="(user.contactInfos || []).length > 0">
+      <h2>{{ usersMessages.userContactInfos() }}</h2>
+      <ng-container *ngFor="let contactInfo of user.contactInfos">
         <image-viewer *ngIf="contactInfo.image"
           [profile]="true"
           [image]="contactInfo.image"></image-viewer>
@@ -82,8 +74,8 @@
           [address]="contactInfo.address"
           [countries]="countries | async">
         </view-address-details>
-      </section>
-    </section>
+      </ng-container>
+    </ng-container>
 
     <div class="clear-floats"></div>
   </page-content>

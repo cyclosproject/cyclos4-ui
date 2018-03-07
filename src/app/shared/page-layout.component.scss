@@ -65,12 +65,13 @@
   box-shadow: none;
 }
 
-.title {
+h1 {
   font-size: 22px;
   line-height: 24px;
   opacity: 0.87;
   border-bottom: 1px solid mat-color($foreground, divider);
   padding: 16px;
+  margin: 0;
 }
 
 .content:not(.tight) .content-wrapper, .header-wrapper {
@@ -82,7 +83,7 @@
   opacity: 0.75;
 }
 
-.lt-md :host .title {
+.lt-md :host h1 {
   padding-left: 0px;
   margin-bottom: 22px;
 }

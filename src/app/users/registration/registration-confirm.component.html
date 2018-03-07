@@ -1,10 +1,8 @@
-<section *ngFor="let pt of data.passwordTypes; let i = index"
-  titleSize="small"
-  [margin]="i > 0"
-  [title]="pt.name">
+<ng-container *ngFor="let pt of data.passwordTypes; let i = index">
+  <h2>{{ pt.name }}</h2>
   <div fxLayout="column"
     [formGroup]="passwordsForm(i)">
-    <div class="form-info"
+    <div class="form-info-light"
       fxFlex="grow">{{ pt.description }}</div>
     <mat-form-field fxFlex="grow">
       <input matInput
@@ -23,15 +21,13 @@
         [placeholder]="usersMessages.registrationPasswordConfirm(pt.name)" />
     </mat-form-field>
   </div>
-</section>
+</ng-container>
 
-<section *ngIf="data.securityQuestions != null && data.securityQuestions.length > 0"
-  titleSize="small"
-  margin
-  [title]="usersMessages.registrationSecurityQuestionTitle()"
-  [formGroup]="form">
-  <div fxLayout="column">
-    <div class="form-info"
+<ng-container *ngIf="data.securityQuestions != null && data.securityQuestions.length > 0">
+  <h2>{{ usersMessages.registrationSecurityQuestionTitle() }}</h2>
+  <div fxLayout="column"
+    [formGroup]="form">
+    <div class="form-info-light"
       fxFlex="grow">{{ usersMessages.registrationSecurityQuestionMessage() }}</div>
     <mat-form-field fxFlex="grow">
       <mat-select formControlName="securityQuestion"
@@ -48,7 +44,7 @@
     </mat-form-field>
 
     <!-- Must use [fxHide] instead of *ngIf. The [required] adds a validation on the control,
-      and doesn't removes it when removed from DOM -->
+        and doesn't removes it when removed from DOM -->
     <mat-form-field fxFlex="grow"
       [fxHide]="!(requiredSecurityAnswer | async)">
       <input #securityAnswer
@@ -58,38 +54,31 @@
         [placeholder]="usersMessages.registrationSecurityQuestionAnswer()" />
     </mat-form-field>
   </div>
-</section>
+</ng-container>
 
-<section *ngIf="data.agreements != null && data.agreements.length > 0"
-  titleSize="small"
-  margin
-  [title]="usersMessages.registrationAgreementTitle()"
+<ng-container *ngIf="data.agreements != null && data.agreements.length > 0"
   [formGroup]="form">
-
-  <div class="form-info">
+  <h2>{{ usersMessages.registrationAgreementTitle() }}</h2>
+  <div class="form-info-light">
     {{ usersMessages.registrationAgreementMessage() }}
   </div>
-
   <div class="agreements">
-    <section *ngFor="let agreement of data.agreements"
-      [title]="agreement.name"
-      titleSize="xsmall">
+    <ng-container *ngFor="let agreement of data.agreements">
+      <h3>{{ agreement.name }}</h3>
       <div [innerHTML]="agreement.content | trust"></div>
-    </section>
+    </ng-container>
   </div>
 
   <mat-checkbox formControlName="acceptAgreement">
     {{ usersMessages.registrationAgreementCheck() }}
   </mat-checkbox>
-</section>
+</ng-container>
 
-<section *ngIf="data.captchaType != null"
-  titleSize="small"
-  margin
-  [title]="usersMessages.registrationCaptchaTitle()">
+<ng-container *ngIf="data.captchaType != null">
+  <h2>{{ usersMessages.registrationCaptchaTitle() }}</h2>
   <div fxLayout="column">
-    <div class="form-info"
+    <div class="form-info-light"
       fxFlex="grow">{{ usersMessages.registrationCaptchaMessage() }}</div>
     <captcha [form]="form.get('captcha')"></captcha>
   </div>
-</section>
+</ng-container>

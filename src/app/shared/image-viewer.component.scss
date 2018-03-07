@@ -1,6 +1,11 @@
+@import 'src/definitions';
+
 .image-viewer.profile {
   float: right;
-  margin-left: 16px;
+  background: mat-color($background, card);
+  position: relative;
+  z-index: 9999;
+  padding-left: 16px;
 }
 
 .image-viewer {

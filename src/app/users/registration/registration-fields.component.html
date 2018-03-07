@@ -94,10 +94,8 @@
     </custom-field-input>
   </ng-container>
 
-  <section *ngIf="hasAddress"
-    margin
-    titleSize="small"
-    [title]="usersMessages.registrationAddressTitle()">
+  <ng-container *ngIf="hasAddress">
+    <h2>{{ usersMessages.registrationAddressTitle() }}</h2>
     <div fxLayout="column">
       <mat-slide-toggle fxFlex="grow"
         *ngIf="optionalAddress"
@@ -132,5 +130,5 @@
         </ng-container>
       </ng-container>
     </div>
-  </section>
+  </ng-container>
 </div>
