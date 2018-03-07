@@ -32,15 +32,11 @@ export class PersonalMenuComponent extends BaseComponent {
     this.update();
     this.listener = e => {
       this.hide();
-      e.preventDefault();
-      e.stopPropagation();
     };
-    document.body.addEventListener('click', this.listener, false);
   }
 
   ngOnDestroy() {
     super.ngOnDestroy();
-    document.body.removeEventListener('click', this.listener, false);
   }
 
   protected onDisplayChange() {
@@ -86,6 +82,7 @@ export class PersonalMenuComponent extends BaseComponent {
         }
         style.visibility = 'visible';
         style.opacity = '1';
+        document.body.addEventListener('click', this.listener, true);
       }
     }
   }
@@ -103,6 +100,7 @@ export class PersonalMenuComponent extends BaseComponent {
     const style = this.container.nativeElement.style as CSSStyleDeclaration;
     style.opacity = '0';
     setTimeout(() => style.display = 'none', 500);
+    document.body.removeEventListener('click', this.listener, true);
   }
 
   private update() {

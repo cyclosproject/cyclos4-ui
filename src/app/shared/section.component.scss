@@ -5,6 +5,9 @@
   flex-direction: column !important;
 }
 .sectionTitle.margin {
+  margin-top: 20px !important;
+}
+.sectionTitle.margin.xsmall {
   margin-top: 16px !important;
 }
 .sectionContent .sectionTitle {
@@ -19,13 +22,17 @@
 .sectionContent /deep/ .sectionTitle, .sectionTitle.small {
   font-size: 16px;
   line-height: 16px;
-  margin-bottom: 4px;
+  margin-bottom: 16px;
   margin-top: 6px;
+  border-bottom: 1px solid mat-color($foreground, divider);
+  padding-bottom: 12px;
 }
 .sectionContent /deep/ .sectionContent .sectionTitle, .sectionTitle.xsmall {
   font-size: 14px;
   line-height: 14px;
-  margin-bottom: 4px;
+  margin-bottom: 16px;
   margin-top: 2px;
   font-weight: 500;
+  padding: 0;
+  border: 0;
 }

@@ -1,5 +1,6 @@
-<page-layout [loaded]="loaded">
-<page-content *ngIf="loaded | async" [title]="bankingMessages.transferViewTitle()">
-  <view-transfer-details [transfer]="transfer"></view-transfer-details>
-</page-content>
+<page-layout [loaded]="loaded"
+  [title]="bankingMessages.transferViewTitle()">
+  <page-content *ngIf="loaded | async">
+    <view-transfer-details [transfer]="transfer"></view-transfer-details>
+  </page-content>
 </page-layout>

@@ -4,8 +4,8 @@
 // For the available palletes, see https://material.io/guidelines/style/color.html#color-color-palette
 
 // *** Primary color palletes ***
-$primary: mat-palette($mat-blue, 800, 700, 900);
-$accent: mat-palette($mat-blue, A200, A100, A400);
+$primary: mat-palette($mat-blue, 600, 400, 700);
+$accent: mat-palette($mat-blue, 500, 400, 700);
 $warn: mat-palette($mat-red);
 
 // *** Angular Material theme ***

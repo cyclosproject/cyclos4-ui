@@ -43,7 +43,7 @@ export class BreadcrumbService {
    * Sets the title for the current entry
    */
   set title(title: string) {
-    const entries = this.breadcrumb.value.splice(0);
+    const entries = this.breadcrumb.value.slice();
     if (entries.length === 0) {
       return;
     }
@@ -78,7 +78,7 @@ export class BreadcrumbService {
       entries.splice(index, entries.length - index - 1);
     } else {
       // Going to a new URL
-      entries = entries.splice(0);
+      entries = entries.slice();
       entries.push(new BreadCrumbEntry(event.url));
     }
     this.breadcrumb.next(entries);

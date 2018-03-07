@@ -1,12 +1,16 @@
 @import 'src/definitions';
 
 .breadcrumb {
-  margin-bottom: 14px;
+  padding: 16px 16px 0;
+}
+.lt-md :host .breadcrumb {
+  padding-left: 0;
+  padding-top: 0;
 }
 a {
   display: block;
   text-decoration: none;
-  color: mat-color($foreground, text);
+  color: mat-color($accent, darker);
   padding-top: 3px;
   white-space: nowrap;
 }
@@ -14,4 +18,9 @@ a {
   opacity: 0.6;
   padding-top: 3px;
   white-space: nowrap;
+}
+.divider {
+  opacity: 0.6;
+  display: block;
+  padding: 3px 6px 0;
 }

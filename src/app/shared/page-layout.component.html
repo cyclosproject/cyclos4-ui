@@ -9,6 +9,10 @@
         [label]="generalMessages.menuFilters()">
         <div class="filters">
           <ng-container *ngTemplateOutlet="filtersTpl"></ng-container>
+          <div class="actions">
+            <button mat-button
+              color="accent">Clear filters</button>
+          </div>
         </div>
       </mat-tab>
     </mat-tab-group>
@@ -28,7 +32,11 @@
       <mat-card>
         <mat-card-content>
           <breadcrumb></breadcrumb>
-          <ng-container *ngTemplateOutlet="headerTpl"></ng-container>
+          <div *ngIf="title != null && title.length > 0"
+            class="title">{{ title }}</div>
+          <div class="header-wrapper">
+            <ng-container *ngTemplateOutlet="headerTpl"></ng-container>
+          </div>
         </mat-card-content>
       </mat-card>
     </div>
@@ -37,13 +45,21 @@
       <mat-card>
         <mat-card-content>
           <breadcrumb *ngIf="!hasHeader"></breadcrumb>
-          <ng-container *ngTemplateOutlet="contentTpl"></ng-container>
+          <div *ngIf="!hasHeader && title != null && title.length > 0"
+            class="title">{{ title }}</div>
+          <div class="content-wrapper">
+            <ng-container *ngTemplateOutlet="contentTpl"></ng-container>
+          </div>
         </mat-card-content>
       </mat-card>
     </div>
   </ng-container>
   <ng-container *ngIf="!(showLeft | async) && (loaded == null || (loaded | async))">
     <!-- No left area (mobile): Everything is together (no cards) -->
+    <breadcrumb></breadcrumb>
+    <div *ngIf="title != null && title.length > 0"
+      class="title">{{ title }}</div>
+
     <div class="inline-header"
       *ngIf="hasHeader">
       <ng-container *ngTemplateOutlet="headerTpl"></ng-container>

@@ -1,7 +1,7 @@
 @import 'src/definitions';
 
 :host {
-  margin-bottom: 6px;
+  margin-bottom: 16px;
   display: flex;
 }
 .gt-xs :host {
@@ -28,7 +28,7 @@
 }
 
 :host /deep/ a {
-  color: mat-color($primary);
+  color: mat-color($accent, darker);
   text-decoration: none;
 }
 :host /deep/ a:hover {

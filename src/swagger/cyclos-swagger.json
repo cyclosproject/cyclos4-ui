@@ -16322,6 +16322,12 @@
           "type" : "string",
           "x-dotInPath" : true
         }, {
+          "name" : "ignoreProfileFieldsInList",
+          "in" : "query",
+          "description" : "When set to `true`, instead of returning users with corresponding profile fields set on list, will return them with `display` and `shortDisplay`. \n",
+          "required" : false,
+          "type" : "boolean"
+        }, {
           "name" : "includeGroup",
           "in" : "query",
           "description" : "When set to `true` and the logged user has permission to view user groups, will return the `group` property on users. \n",
@@ -22166,11 +22172,11 @@
           },
           "normalizedMobilePhone" : {
             "type" : "string",
-            "description" : "The mobile phone number, normalized to the E.164 format\n"
+            "description" : "The mobile phone, normalized to the E.164 format\n"
           },
           "normalizedLandLinePhone" : {
             "type" : "string",
-            "description" : "The land-line phone number, normalized to the E.164 format\n"
+            "description" : "The land-line phone, normalized to the E.164 format\n"
           },
           "address" : {
             "description" : "The address for this additional contact information",
@@ -22528,6 +22534,10 @@
       }, {
         "type" : "object",
         "properties" : {
+          "ignoreProfileFieldsInList" : {
+            "type" : "boolean",
+            "description" : "When set to `true`, instead of returning users with corresponding profile fields set on list, will return them with `display` and `shortDisplay`. \n"
+          },
           "includeGroup" : {
             "type" : "boolean",
             "description" : "When set to `true` and the logged user has permission to view user groups, will return the `group` property on users. \n"

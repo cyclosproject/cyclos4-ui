@@ -2,6 +2,7 @@ import { Component, ChangeDetectionStrategy, Injector } from '@angular/core';
 import { BaseComponent } from 'app/shared/base.component';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { filter } from 'rxjs/operators/filter';
 
 /**
  * Displays the home page
@@ -31,6 +32,7 @@ export class HomeComponent extends BaseComponent {
       singleSelection: null,
       multiSelection: null
     });
+    this.form.valueChanges.subscribe(v => console.dir(v));
   }
 
   ngOnInit() {

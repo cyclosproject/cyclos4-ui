@@ -2,7 +2,8 @@ import { Component, Injector, ChangeDetectionStrategy, ViewChild } from '@angula
 import { BaseBankingComponent } from 'app/banking/base-banking.component';
 import {
   DataForTransaction, IdentificationMethodEnum, PrincipalTypeKind, TransactionTypeData,
-  TransferTypeWithCurrency, PaymentPreview, TransactionView, UserDataForSearch, User } from 'app/api/models';
+  TransferTypeWithCurrency, PaymentPreview, TransactionView, UserDataForSearch, User
+} from 'app/api/models';
 import { PaymentKind } from 'app/banking/payments/payment-kind';
 import { IdMethod } from 'app/banking/payments/id-method';
 import { PaymentsService, UsersService, ContactsService } from 'app/api/services';
@@ -251,7 +252,8 @@ export class PerformPaymentComponent extends BaseBankingComponent {
           // Retrieve the contact list
           this.contactsService.searchContacts({
             user: ApiHelper.SELF,
-            pageSize: 9999
+            pageSize: 9999,
+            ignoreProfileFieldsInList: true
           })
             .subscribe(contacts => {
               this.contacts.next(contacts);
@@ -336,12 +338,12 @@ export class PerformPaymentComponent extends BaseBankingComponent {
   private prepareFieldsForm(data: TransactionTypeData) {
     this.preparingFieldsForm = true;
     this.fieldsForm.setControl('description',
-    this.formBuilder.control(null, data.requiresDescription ? Validators.required : null));
+      this.formBuilder.control(null, data.requiresDescription ? Validators.required : null));
     this.fieldsForm.setControl('customValues',
-    ApiHelper.customValuesFormGroup(this.formBuilder, data.customFields));
-    this.fieldsForm.patchValue({type: data.id});
+      ApiHelper.customValuesFormGroup(this.formBuilder, data.customFields));
+    this.fieldsForm.patchValue({ type: data.id });
     if (data.fixedAmount) {
-      this.fieldsForm.patchValue({amount: data.fixedAmount});
+      this.fieldsForm.patchValue({ amount: data.fixedAmount });
       this.fieldsForm.controls.amount.disable();
     } else {
       this.fieldsForm.controls.amount.enable();

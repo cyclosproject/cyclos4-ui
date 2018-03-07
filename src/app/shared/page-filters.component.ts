@@ -10,8 +10,5 @@ import { BaseComponent } from 'app/shared/base.component';
   styleUrls: ['page-filters.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PageFiltersComponent extends BaseComponent {
-  constructor(injector: Injector) {
-    super(injector);
-  }
+export class PageFiltersComponent {
 }

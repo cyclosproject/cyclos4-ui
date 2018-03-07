@@ -4,6 +4,7 @@ import { AppRoutingModule } from 'app/app-routing.module';
 import { SharedModule } from 'app/shared/shared.module';
 import { ApiModule } from 'app/api/api.module';
 import { INIT_API_CONFIGURATION } from 'app/bootstrap/init-api-configuration';
+import { SETUP_LIGHTBOX } from 'app/bootstrap/setup-lightbox';
 import { LOAD_GENERAL_TRANSLATION } from 'app/bootstrap/load-general-translation';
 import { LOAD_DATA_FOR_UI } from 'app/bootstrap/load-data-for-ui';
 import { LOAD_USER } from 'app/bootstrap/load-user';
@@ -32,6 +33,7 @@ import 'hammerjs';
   ],
   providers: [
     INIT_API_CONFIGURATION,
+    SETUP_LIGHTBOX,
     LOAD_GENERAL_TRANSLATION,
     LOAD_DATA_FOR_UI,
     LOAD_USER

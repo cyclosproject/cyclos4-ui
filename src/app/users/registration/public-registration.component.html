@@ -1,5 +1,6 @@
-<page-layout [loaded]="loaded">
-  <page-content [title]="usersMessages.registrationTitle()">
+<page-layout [loaded]="loaded"
+  [title]="usersMessages.registrationTitle()">
+  <page-content>
     <td-steps #stepper
       [mode]="layout.ltmd ? 'vertical' : 'horizontal'">
       <td-step #groupStep

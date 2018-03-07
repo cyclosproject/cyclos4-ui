@@ -9,19 +9,19 @@ a.account a.account {
 }
 a.account mat-icon {
   margin-right: 10px;
-  opacity: 0.75;
+  opacity: 0.65;
 }  
 a.account .name {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
-  opacity: 0.75;
+  opacity: 0.65;
 }  
 a.account .balance {
   text-align: right;
   white-space: nowrap;
   opacity: 1;
-  color: mat-color($primary);
+  color: mat-color($accent, darker);
 }
 :host /deep/ a.account .mat-button-wrapper {
   align-items: center;
@@ -43,4 +43,7 @@ a.account, :host /deep/ menu-item a {
 }
 :host /deep/ a:not(.active) .mat-icon {
   opacity: 0.60 !important;
+}
+:host /deep/ a:hover {
+  background: mat-color($background, hover) !important;
 }

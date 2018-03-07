@@ -1,6 +1,6 @@
-<page-layout [loaded]="loaded">
-  <page-content *ngIf="loaded | async"
-    [title]="title">
+<page-layout [loaded]="loaded"
+  [title]="title">
+  <page-content *ngIf="loaded | async">
     <view-transfer-details *ngIf="transaction.transfer != null"
       [transfer]="transaction.transfer">
     </view-transfer-details>

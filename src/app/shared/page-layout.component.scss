@@ -23,15 +23,12 @@
   .mat-tab-body {
     overflow: hidden;
   }
-  .mat-ink-bar {
-    opacity: 0.5;
-  }
 }
 
 :host /deep/ .mat-card {
   margin: 0 !important;
 }
-:host /deep/ .content.tight {
+:host /deep/ .content, :host /deep/ .header {
   .mat-card, .mat-card-content {
     padding: 0px;
   }
@@ -51,7 +48,7 @@
 .inline-content, .inline-header, .inline-filters {
   max-width: calc(100vw - 16px) !important;
 }
-  
+
 .inline-filters {
   padding: 12px;
   box-shadow: 0px 3px 3px -2px rgba(0, 0, 0, 0.2), 0px 3px 4px 0px rgba(0, 0, 0, 0.14), 0px 1px 8px 0px rgba(0, 0, 0, 0.12);
@@ -68,6 +65,24 @@
   box-shadow: none;
 }
 
-:host /deep/ .content.tight .title {
-  padding: 16px 0 0 16px;
+.title {
+  font-size: 22px;
+  line-height: 24px;
+  opacity: 0.87;
+  border-bottom: 1px solid mat-color($foreground, divider);
+  padding: 16px;
+}
+
+.content:not(.tight) .content-wrapper, .header-wrapper {
+  padding: 16px;
+}
+
+:host /deep/ .left .mat-tab-label-content {
+  font-size: 15px;
+  opacity: 0.75;
+}
+
+.lt-md :host .title {
+  padding-left: 0px;
+  margin-bottom: 22px;
 }

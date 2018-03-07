@@ -41,18 +41,16 @@ body.lt-md, .lt-md .mat-drawer-container {
 .mat-select-placeholder {
   left: -2px;
 }
-/*
 .mat-select-panel {
-  max-height: 100vh !important;
+  max-height: 350px !important;
 }
-*/
 mat-checkbox + mat-checkbox,
 mat-checkbox + mat-radio-group,
 mat-radio-group + mat-radio-group, mat-radio-group + mat-checkbox {
   margin-top: 1.25em;
 }
 mat-radio-group mat-radio-button {
-  margin-bottom: 8px;
+  margin-bottom: 12px;
 }
 mat-radio-group mat-radio-button::last-of-type {
   margin-bottom: 0px;
@@ -66,6 +64,7 @@ mat-radio-group.horizontal mat-radio-button + mat-radio-button {
   line-height: 40px !important;
 }
 .form-info {
+  font-weight: 500;
   margin-bottom: 12px;
 }
 input[type=number]::-webkit-inner-spin-button,
@@ -99,23 +98,26 @@ input[type=number] {
 .td-edit-icon {
   display: none !important;
 }
+.td-steps-header {
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+}
 
 // Data tables
 .mat-header-cell {
   font-size: 14px;
 }
 .mat-header-row, .mat-row {
-  padding: 0px 14px !important;
+  padding: 4px 14px !important;
 }
 .mat-header-row.dynamic, .mat-row.dynamic {
   height: auto !important;
-  padding: 4px 14px !important;
 }
 .clickable {
   cursor: pointer;
 }
 .mat-table .mat-icon {
-  opacity: 0.67;
+  opacity: 0.4;
 }
 mat-cell.avatar, mat-header-cell.avatar {
   max-width: 48px;
@@ -132,6 +134,12 @@ mat-cell .cell-small {
 .mat-table a, .mat-table a:hover {
   color: mat-color($foreground, text);
   text-decoration: none;
+}
+.mat-row:hover {
+  background: mat-color($background, hover);
+}
+.mat-header-row {
+  min-height: 48px !important;
 }
 
 // Material icons

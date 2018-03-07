@@ -9,9 +9,7 @@
         <a [routerLink]="entry.url">
           {{entry.title || entry.url}}
         </a>
-        <mat-icon ngClass="mat-22">
-          chevron_right
-        </mat-icon>
+        <span class="divider">&gt;</span>
       </ng-container>
       <ng-container *ngIf="isCurrent(entry.url)">
         <div class="current">

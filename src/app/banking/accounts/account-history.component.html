@@ -1,8 +1,9 @@
-<page-layout [tightContent]="true"
+<page-layout [title]="title"
+  [tightContent]="true"
   [loaded]="loaded"
   [hasFilters]="true"
   [hasHeader]="(status | async).length > 1">
-  <page-header [title]="title">
+  <page-header>
     <div class="indicators">
       <ng-container *ngFor="let indicator of (status | async); let last = last">
         <div class="indicator">
@@ -45,7 +46,7 @@
         [placeholder]="generalMessages.periodEnd()"></date-field>
     </form>
   </page-filters>
-  <page-content [title]="(status | async).length > 1 ? null : title">
+  <page-content>
     <mat-table #table
       [fxHide]="(dataSource.empty | async)"
       [dataSource]="dataSource">
