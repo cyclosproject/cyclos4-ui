@@ -3,10 +3,11 @@
 </layout-bar>
 
 <div class="rootContainer"
-  *ngFor="let root of roots | async"
+  *ngFor="let root of roots | async; let first = first"
   fxLayout="column">
-  <div class="rootMenu">{{ root.label }}</div>
+  <div [ngClass]="{rootMenu: true, first: first}">{{ root.label }}</div>
   <menu-item *ngFor="let entry of root.entries"
+    [active]="(layout.menu | async) === entry.menu"
     [entry]="entry"
     (click)="onMenuClicked($event)"></menu-item>
 </div>

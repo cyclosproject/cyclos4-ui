@@ -32,6 +32,7 @@ export const DATE_VALIDATOR: Provider = {
 @Component({
   selector: 'date-field',
   templateUrl: 'date-field.component.html',
+  styleUrls: ['date-field.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     DATE_FIELD_VALUE_ACCESSOR,

@@ -5,7 +5,7 @@ import { Image } from 'app/api/models';
  * The size for rendered avatars
  */
 export type AvatarSize = 'small' | 'medium' | 'large' | 'huge';
-export const SIZES: {[key: string]: number} = {
+export const SIZES: { [key: string]: number } = {
   'small': 24,
   'medium': 36,
   'large': 48,

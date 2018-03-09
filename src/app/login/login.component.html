@@ -6,6 +6,9 @@
     <mat-card fxFlex="grow">
       <mat-card-title>{{ generalMessages.loginTitle() }}</mat-card-title>
       <mat-card-content>
+        <div class="text">
+          You can login with your username and password
+        </div>
         <login-form [loginForm]="loginForm"
           [dataForLogin]="dataForLogin"
           (submit)="doLogin()"
@@ -15,27 +18,12 @@
         <button mat-raised-button
           color="accent"
           (click)="doLogin()">
-          {{ generalMessages.loginAction() }}
+          {{ generalMessages.submit() }}
         </button>
-      </mat-card-actions>
-    </mat-card>
-
-    <div *ngIf="canRegister"
-      fxFlex="24px"></div>
-
-    <mat-card *ngIf="canRegister"
-      fxFlex="grow"
-      fxLayout="column">
-      <mat-card-title>{{ generalMessages.loginRegisterTitle() }}</mat-card-title>
-      <mat-card-content fxFlex="grow">
-        {{ generalMessages.loginRegisterText() }}
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-raised-button
-          color="accent"
-          (click)="register()">
-          {{ generalMessages.loginRegisterAction() }}
-        </button>
+        <a href="#"
+          class="forgotPassword">
+          Forgot your password?
+        </a>
       </mat-card-actions>
     </mat-card>
   </div>

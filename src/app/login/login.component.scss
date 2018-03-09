@@ -1,7 +1,36 @@
+@import 'src/definitions';
+
 .topMargin {
   margin-top: 16px;
 }
 :host /deep/ button {
   min-height: 40px;
   min-width: 150px !important;
+}
+:host /deep/ .mat-card {
+  max-width: $login-width;
+  margin: 32px auto 0 auto;
+}
+:host /deep/ .mat-card-title {
+  text-align: center;
+  padding-top: 38px !important;
+}
+:host /deep/ .mat-card-actions {
+  text-align: center;
+  padding-bottom: 38px !important;
+}
+.text {
+  text-align: center;
+  opacity: 0.7;
+  margin: 16px 0;
+}
+.forgotPassword {
+  color: mat-color($accent, darker);
+  text-align: center;
+  margin-top: 36px;
+  text-decoration: none;
+  display: block;
+}
+.forgotPassword:hover {
+  text-decoration: underline;
 }

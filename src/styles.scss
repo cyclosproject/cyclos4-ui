@@ -31,18 +31,18 @@ body.lt-md, .lt-md .mat-drawer-container {
 }
 
 .mat-card {
-  max-width: $main-content-width;
+  max-width: $max-content-width;
 }
 
 // Titles
 h1, h2, h3 {
   opacity: 0.87;
+  font-weight: 400;
 }
 h1 {
   margin: 24px 0 12px 0;
   font-size: 20px;
   line-height: 24px;
-  font-weight: 500;
   border-bottom: 1px solid mat-color($foreground, divider);
   padding-bottom: 12px;
 }
@@ -50,18 +50,21 @@ h2 {
   font-size: 16px;
   line-height: 16px;
   margin: 32px 0 16px 0;
-  font-weight: 500;
   border-bottom: 1px solid mat-color($foreground, divider);
   padding-bottom: 12px;
+  color: mat-color($primary, darker);
 }
 h3 {
   font-size: 14px;
   line-height: 14px;
   margin: 16px 0 16px 0;
-  font-weight: 500;
   padding: 0;
   border: 0;
 }
+h1.no-bottom-margin, h2.no-bottom-margin, h3.no-bottom-margin {
+  margin-bottom: 0 !important;
+}
+
 
 // Forms
 .gt-xs form {
@@ -123,6 +126,9 @@ input[type=number] {
 .mat-tab-nav-bar.mat-primary .mat-tab-label:focus,
 .mat-tab-nav-bar.mat-primary .mat-tab-link:focus {
   background-color: transparent !important;
+}
+.mat-tab-label, .mat-tab-link {
+  font-weight: 400 !important;
 }
 
 // Steppers
@@ -197,6 +203,11 @@ mat-icon.mat-24 {
   font-size: 24px;
   width: 24px;
   height: 24px;
+}
+mat-icon.mat-30 {
+  font-size: 30px;
+  width: 30px;
+  height: 30px;
 }
 mat-icon.mat-36 {
   font-size: 36px;

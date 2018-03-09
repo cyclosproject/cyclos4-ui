@@ -20,10 +20,18 @@
         {{ transaction.channel.name }}
       </label-value>
       <label-value [label]="bankingMessages.transactionFrom()">
-        {{ from }}
+        <user-link *ngIf="transaction.fromUser != null"
+          [user]="transaction.fromUser"></user-link>
+        <ng-container *ngIf="transaction.fromUser == null">
+          {{ transaction.type.from.name }}
+        </ng-container>
       </label-value>
       <label-value [label]="bankingMessages.transactionTo()">
-        {{ to }}
+        <user-link *ngIf="transaction.toUser != null"
+          [user]="transaction.toUser"></user-link>
+        <ng-container *ngIf="transaction.toUser == null">
+          {{ transaction.type.to.name }}
+        </ng-container>
       </label-value>
       <label-value [label]="bankingMessages.transactionType()">
         {{ transaction.type.name }}

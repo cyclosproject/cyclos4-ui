@@ -34,3 +34,6 @@
   border-left: 1px solid mat-color($foreground, divider);
   width: 1px;
 }
+.negative {
+  color: mat-color($warn) !important;
+}

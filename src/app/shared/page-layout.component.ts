@@ -5,6 +5,11 @@ import { Observable } from 'rxjs/Observable';
 import { BreadcrumbService } from '../core/breadcrumb.service';
 
 /**
+ * Possible sizes for the main content
+ */
+export type ContentSize = 'small' | 'medium' | 'full';
+
+/**
  * Defines a page layout, which has a left menu, optional filters,
  * optional header and a content
  */
@@ -32,6 +37,9 @@ export class PageLayoutComponent extends BaseComponent {
   tightContent = false;
 
   @Input()
+  contentSize: ContentSize = 'full';
+
+  @Input()
   loaded: Observable<any>;
 
   private _title: string;
@@ -48,7 +56,6 @@ export class PageLayoutComponent extends BaseComponent {
   }
 
   showLeft = new BehaviorSubject<Boolean>(false);
-
 
   ngOnDestroy() {
     super.ngOnDestroy();

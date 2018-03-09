@@ -80,7 +80,7 @@
 </ng-container>
 
 <ng-container *ngIf="(transfer.children || []).length > 0">
-  <h2>{{ bankingMessages.transferChildrenTitle() }}</h2>
+  <h2 class="no-bottom-margin">{{ bankingMessages.transferChildrenTitle() }}</h2>
   <mat-table [dataSource]="childrenDataSource">
 
     <!-- Aggregated (for small devices) -->

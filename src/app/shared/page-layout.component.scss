@@ -35,8 +35,17 @@
 }
 
 .page.standalone {
-  max-width: $main-content-width;
   margin: auto;
+}
+
+.page {
+  max-width: $max-content-width;
+}
+.page.medium {
+  max-width: $medium-content-width;
+}
+.page.small {
+  max-width: $small-content-width;
 }
 
 .header {
@@ -85,7 +94,7 @@ h1 {
 
 :host /deep/ .left .mat-tab-label-content {
   font-size: 15px;
-  opacity: 0.75;
+  opacity: 1;
 }
 
 .lt-md :host h1 {

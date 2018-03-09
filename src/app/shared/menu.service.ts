@@ -127,7 +127,7 @@ export class MenuService {
     addRoot(RootMenu.BANKING, 'account_balance', this.generalMessages.menuBanking(), this.generalMessages.menuBankingTitle());
     addRoot(RootMenu.USERS, 'group', this.generalMessages.menuUsers(), this.generalMessages.menuUsersTitle());
     addRoot(RootMenu.MARKETPLACE, 'shopping_cart', this.generalMessages.menuMarketplace(), this.generalMessages.menuMarketplaceTitle());
-    addRoot(RootMenu.PERSONAL, 'account_box', this.generalMessages.menuPersonal(), this.generalMessages.menuPersonalProfile());
+    addRoot(RootMenu.PERSONAL, 'account_box', this.generalMessages.menuPersonal(), this.generalMessages.menuPersonalTitle());
 
     // Lambda that adds a submenu to a root menu
     const add = (menu: Menu, url: string, icon: string, label: string, showIn: MenuType[] = null) => {

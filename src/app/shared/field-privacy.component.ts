@@ -11,6 +11,7 @@ import { GeneralMessages } from 'app/messages/general-messages';
 @Component({
   selector: 'field-privacy',
   templateUrl: 'field-privacy.component.html',
+  styleUrls: ['field-privacy.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FieldPrivacyComponent {

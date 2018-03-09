@@ -16,7 +16,8 @@ import { debounceTime } from 'rxjs/operators/debounceTime';
 /** Information for an account status element shown on top */
 export type StatusIndicator = {
   label: string,
-  amount: string
+  amount: string,
+  alwaysNegative: boolean
 };
 
 /** Fields fetched when getting the account status */
@@ -229,9 +230,9 @@ export class AccountHistoryComponent extends BaseBankingComponent {
 
   private toIndicators(status: AccountHistoryStatus): StatusIndicator[] {
     const result: StatusIndicator[] = [];
-    const add = (amount: string, label: string) => {
+    const add = (amount: string, label: string, alwaysNegative: boolean = false) => {
       if (amount) {
-        result.push({ amount: amount, label: label });
+        result.push({ amount: amount, label: label, alwaysNegative: alwaysNegative });
       }
     };
     if (status.availableBalance !== status.balance) {
@@ -239,7 +240,7 @@ export class AccountHistoryComponent extends BaseBankingComponent {
     }
     add(status.balance, this.bankingMessages.accountBalance());
     if (status.reservedAmount && !this.format.isZero(status.reservedAmount)) {
-      add(status.reservedAmount, this.bankingMessages.accountReservedAmount());
+      add(status.reservedAmount, this.bankingMessages.accountReservedAmount(), true);
     }
     if (status.creditLimit && !this.format.isZero(status.creditLimit)) {
       add(status.creditLimit, this.bankingMessages.accountCreditLimit());

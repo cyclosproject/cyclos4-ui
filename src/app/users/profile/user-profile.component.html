@@ -38,7 +38,7 @@
 
     <!-- Single address -->
     <ng-container *ngIf="(user.addresses || []).length === 1">
-      <h3>{{ usersMessages.userAddress() }}</h3>
+      <h2>{{ usersMessages.userAddress() }}</h2>
       <view-address-details [address]="user.addresses[0]"
         [countries]="countries | async">
       </view-address-details>

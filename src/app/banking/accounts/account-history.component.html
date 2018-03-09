@@ -8,7 +8,12 @@
       <ng-container *ngFor="let indicator of (status | async); let last = last">
         <div class="indicator">
           <div class="label">{{ indicator.label }}</div>
-          <div class="amount">{{ indicator.amount | currency:currency }}</div>
+          <div [ngClass]="{
+            amount: true,
+            negative:(indicator.alwaysNegative || format.isNegative(indicator.amount))
+          }">
+            {{ indicator.amount | currency:currency }}
+          </div>
         </div>
         <div *ngIf="!last"
           class="indicator-separator"></div>
@@ -114,7 +119,8 @@
           style="text-align: end">{{ bankingMessages.transactionAmount() }}</mat-header-cell>
         <mat-cell *matCellDef="let row"
           style="text-align: end">
-          <a [routerLink]="path(row)">
+          <a [routerLink]="path(row)"
+            [ngClass]="{negative: format.isNegative(row.amount)}">
             {{ row.amount | currency:currency }}
           </a>
         </mat-cell>

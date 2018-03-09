@@ -19,7 +19,11 @@
   </mat-card>
 </div>
 <div class="page"
-  [ngClass]="{standalone: !((showLeft | async) && hasMenu)}"
+  [ngClass]="{
+    standalone: !((showLeft | async) && hasMenu),
+    medium: contentSize === 'medium',
+    small: contentSize === 'small'
+  }"
   fxLayout="column"
   fxFlex="grow">
   <div class="loading"
