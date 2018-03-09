@@ -6,6 +6,8 @@ import {
 import { GeneralMessages } from 'app/messages/general-messages';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { ApiInterceptor } from 'app/core/api.interceptor';
+import { NextRequestState } from 'app/core/next-request-state';
 
 /** Types whose values are rendered directly */
 const DIRECT_TYPES = [
@@ -26,7 +28,10 @@ const DIRECT_TYPES = [
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FormatFieldValueComponent implements OnInit {
-  constructor(private generalMessages: GeneralMessages) { }
+  constructor(
+    private generalMessages: GeneralMessages,
+    private nextRequestState: NextRequestState) {
+  }
 
   /**
    * Either this has to be specified or the other 3: fields + fieldName + object
@@ -243,5 +248,14 @@ export class FormatFieldValueComponent implements OnInit {
         break;
     }
     return fieldValue;
+  }
+
+  appendAuth(url: string): string {
+    const sessionToken = this.nextRequestState.sessionToken;
+    if (sessionToken == null || sessionToken === '') {
+      return url;
+    }
+    const sep = url.includes('?') ? '&' : '?';
+    return url + sep + 'Session-Token=' + sessionToken;
   }
 }

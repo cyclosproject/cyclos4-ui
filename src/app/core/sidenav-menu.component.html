@@ -3,7 +3,7 @@
 </layout-bar>
 
 <div class="rootContainer"
-  *ngFor="let root of roots"
+  *ngFor="let root of roots | async"
   fxLayout="column">
   <div class="rootMenu">{{ root.label }}</div>
   <menu-item *ngFor="let entry of root.entries"

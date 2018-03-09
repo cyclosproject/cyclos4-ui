@@ -40,17 +40,9 @@ export class ViewTransactionComponent extends BaseBankingComponent {
     }
   }
 
-  get from(): string {
-    return ApiHelper.accountName(this.generalMessages, true, this.transaction);
-  }
-
-  get to(): string {
-    return ApiHelper.accountName(this.generalMessages, false, this.transaction);
-  }
-
   ngOnInit() {
     const key = this.route.snapshot.paramMap.get('key');
-    this.transactionsService.viewTransaction({key: key})
+    this.transactionsService.viewTransaction({ key: key })
       .subscribe(transaction => {
         this.transaction = transaction;
         this.loaded.next(true);

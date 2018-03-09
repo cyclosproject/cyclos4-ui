@@ -3,6 +3,7 @@ import { MatSidenav } from '@angular/material';
 import { BaseComponent } from 'app/shared/base.component';
 import { RootMenuEntry, MenuType, MenuEntry } from 'app/shared/menu';
 import { MenuService } from 'app/shared/menu.service';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'sidenav-menu',
@@ -20,23 +21,14 @@ export class SidenavMenuComponent extends BaseComponent implements OnInit {
   @Input()
   sidenav: MatSidenav;
 
-  roots: RootMenuEntry[];
+  roots: Observable<RootMenuEntry[]>;
 
   ngOnInit() {
     super.ngOnInit();
-    this.update();
-  }
-
-  onDisplayChange() {
-    super.onDisplayChange();
-    this.update();
+    this.roots = this.menuService.menu(MenuType.SIDENAV);
   }
 
   onMenuClicked(entry: MenuEntry) {
     this.sidenav.close();
-  }
-
-  private update() {
-    this.roots = this.menuService.menu(MenuType.SIDENAV);
   }
 }

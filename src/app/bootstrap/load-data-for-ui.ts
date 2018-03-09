@@ -9,6 +9,7 @@ import { environment } from 'environments/environment';
 import { ApiInterceptor } from 'app/core/api.interceptor';
 import { HttpErrorResponse } from '@angular/common/http/src/response';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
+import { NextRequestState } from 'app/core/next-request-state';
 
 export function loadDataForUi(injector: Injector): Function {
 
@@ -42,25 +43,25 @@ export function loadDataForUi(injector: Injector): Function {
     };
     return () => {
       const uiService = injector.get(UIService);
-      const interceptor = injector.get(ApiInterceptor);
-      // Set the interceptor to ignore any errors. In case some occurred, will retry once.
-      interceptor.ignoreNextError();
-      uiService.dataForUi(params)
-      .toPromise()
-      .then(init)
-      .catch((error: HttpErrorResponse) => {
-        if (error.status === 401) {
-          // Had an invalid session token. Clear it and try again.
-          interceptor.sessionToken = null;
-          uiService.dataForUi(params).subscribe(init);
-        } else {
-          // Handle the error
-          injector.get(ErrorHandlerService).handleHttpError(error);
-        }
+      const errorHandler = injector.get(ErrorHandlerService);
+      const nextRequestState = injector.get(NextRequestState);
+      errorHandler.requestWithCustomErrorHandler(defaultHandling => {
+        uiService.dataForUi(params)
+          .subscribe(init, (resp: HttpErrorResponse) => {
+            if (resp.status === 401) {
+              // Had an invalid session token. Clear it and try again.
+              nextRequestState.sessionToken = null;
+              uiService.dataForUi(params).subscribe(init);
+            } else {
+              // Handle the error
+              defaultHandling(resp);
+            }
+          });
       });
     };
   }
 }
+
 export const LOAD_DATA_FOR_UI: Provider = {
   provide: APP_INITIALIZER,
   useFactory: loadDataForUi,

@@ -50,6 +50,7 @@ import { FieldPrivacyComponent } from 'app/shared/field-privacy.component';
 import { CaptchaComponent } from 'app/shared/captcha.component';
 import { BreadcrumbComponent } from './breadcrumb.component';
 import { ImageViewerComponent } from './image-viewer.component';
+import { UserLinkComponent } from './user-link.component';
 
 
 /**
@@ -81,6 +82,7 @@ import { ImageViewerComponent } from './image-viewer.component';
     ConfirmationPasswordComponent,
     UserSelectionComponent,
     AvatarComponent,
+    UserLinkComponent,
     ImageViewerComponent,
     CaptchaComponent,
     NotFoundComponent,
@@ -166,6 +168,7 @@ import { ImageViewerComponent } from './image-viewer.component';
     ConfirmationPasswordComponent,
     UserSelectionComponent,
     AvatarComponent,
+    UserLinkComponent,
     ImageViewerComponent,
     CaptchaComponent,
     NotFoundComponent,

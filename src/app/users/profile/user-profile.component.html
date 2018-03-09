@@ -1,6 +1,6 @@
 <page-layout [loaded]="loaded"
-  [title]="(loaded | async) ? user.display : null">
-  <page-content *ngIf="loaded | async">
+  [title]="(loaded | async) ? user?.display : null">
+  <page-content *ngIf="(loaded | async) && user">
     <image-viewer *ngIf="user.image"
       [profile]="true"
       [image]="user.image"

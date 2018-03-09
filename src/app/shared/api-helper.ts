@@ -62,50 +62,6 @@ export class ApiHelper {
   }
 
   /**
-   * Returns the entity internal name, if any, otherwise the id.
-   * If the input entity is null, returns null.
-   */
-  static accountName(
-    generalMessages: GeneralMessages,
-    from: boolean,
-    accountOrTransaction: AccountWithOwner | TransactionView,
-    transferType: TransferType = null): string {
-    if (accountOrTransaction == null) {
-      return null;
-    }
-    // Get the payment transfer type if none is given
-    if (transferType == null && (accountOrTransaction as TransactionView).type) {
-      transferType = (accountOrTransaction as TransactionView).type;
-    }
-
-    // Resolve the account kind
-    let kind: AccountKind;
-    if ((accountOrTransaction as AccountWithOwner).kind) {
-      kind = (accountOrTransaction as AccountWithOwner).kind;
-    } else {
-      const transaction = accountOrTransaction as TransactionView;
-      kind = from ? transaction.fromKind : transaction.toKind;
-    }
-
-    if (kind === AccountKind.SYSTEM) {
-      // The kind is system: show the system account name from the transfer type
-      const accountType = (from ? transferType.from : transferType.to) || {};
-      // Cyclos < 4.9 doesn't send from / to in transfer type. Show 'System' in this case.
-      return accountType.name || generalMessages.system();
-    }
-
-    // The account belongs to a user
-    let user: User;
-    if ((accountOrTransaction as AccountWithOwner).user) {
-      user = (accountOrTransaction as AccountWithOwner).user;
-    } else {
-      const transaction = accountOrTransaction as TransactionView;
-      user = from ? transaction.fromUser : transaction.toUser;
-    }
-    return (user || {}).display || generalMessages.user();
-  }
-
-  /**
    * Given an object representing a transfer / transaction, if it has a transaction number,
    * returns it, taking care of escaping the value if it is fully numeric.
    * Otherwise, returns the id.

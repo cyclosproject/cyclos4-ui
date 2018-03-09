@@ -24,16 +24,6 @@ export class PaymentPreviewComponent extends BaseBankingComponent {
   @Input()
   previewForm: FormGroup;
 
-  get from(): string {
-    return ApiHelper.accountName(this.generalMessages, true,
-      this.preview.fromAccount, this.preview.paymentType);
-  }
-
-  get to(): string {
-    return ApiHelper.accountName(this.generalMessages, false,
-      this.preview.toAccount, this.preview.paymentType);
-  }
-
   get hasAmount(): boolean {
     return !this.hasTotalAmount;
   }

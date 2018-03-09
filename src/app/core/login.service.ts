@@ -9,6 +9,7 @@ import { ApiInterceptor } from 'app/core/api.interceptor';
 import { Observable } from 'rxjs/Observable';
 import { tap } from 'rxjs/operators/tap';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { NextRequestState } from 'app/core/next-request-state';
 
 /**
  * Service used to manage the login status
@@ -24,7 +25,7 @@ export class LoginService {
 
 
   constructor(
-    private apiInterceptor: ApiInterceptor,
+    private nextRequestState: NextRequestState,
     private authService: AuthService,
     private router: Router) {
   }
@@ -87,14 +88,14 @@ export class LoginService {
    */
   login(principal: string, password): Observable<Auth> {
     // Setup the basic authentication for the login request
-    this.apiInterceptor.nextAsBasic(principal, password);
+    this.nextRequestState.nextAsBasic(principal, password);
     // Then attempt to do the login
     return this.authService.login({
       fields: ApiHelper.excludedAuthFields
     }).pipe(
       tap(auth => {
         // Prepare the API configuration to pass the session token
-        this.apiInterceptor.sessionToken = auth.sessionToken;
+        this.nextRequestState.sessionToken = auth.sessionToken;
         this.auth = auth;
       })
     );
@@ -105,7 +106,7 @@ export class LoginService {
    */
   clear(): void {
     this.redirectUrl = null;
-    this.apiInterceptor.sessionToken = null;
+    this.nextRequestState.sessionToken = null;
     this.auth = null;
   }
 

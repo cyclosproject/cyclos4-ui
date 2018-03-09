@@ -8,7 +8,9 @@ import {
 } from 'app/api/models';
 import { NgForm } from '@angular/forms';
 import { GeneralMessages } from 'app/messages/general-messages';
-import { HttpErrorResponse } from '@angular/common/http/src/response';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ApiInterceptor } from './api.interceptor';
+import { NextRequestState } from './next-request-state';
 
 /**
  * Possible error statuses
@@ -54,7 +56,8 @@ export class ErrorHandlerService {
   constructor(
     private generalMessages: GeneralMessages,
     private notificationService: NotificationService,
-    private formatService: FormatService
+    private formatService: FormatService,
+    private nextRequestState: NextRequestState
   ) { }
 
 
@@ -78,6 +81,19 @@ export class ErrorHandlerService {
       return true;
     }
     return false;
+  }
+
+  /**
+   * Used to perform an HTTP request with a custom error handling code.
+   * This prevents the default error handling, allowing services and components to
+   * handle specific errors without always triggering the default error handling.
+   * The callback receives the `defaultHandling` function that performs the default
+   * error handling, so, the custom error handler can call it on unhandled cases.
+   * @param callback The function that actually performs the HTTP request
+   */
+  requestWithCustomErrorHandler(callback: (defaultHandling: (response: HttpErrorResponse) => void) => any) {
+    this.nextRequestState.ignoreNextError = true;
+    callback(resp => this.handleHttpError(resp));
   }
 
   /**

@@ -20,6 +20,8 @@ $typography: mat-typography-config();
 $max-layout-width: 1160px;
 // Width of the left area on medium to large displays
 $left-area-width: 320px;
+// Width of the main content area
+$main-content-width: $max-layout-width - $left-area-width;
 // Margin between parts like left area, header and page in medium - large displays
 $parts-margin: 28px;
 // Side margin in small - xsmall displays

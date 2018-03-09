@@ -23,6 +23,16 @@ const usersRoutes: Routes = [
         }
       },
       {
+        path: 'my-profile',
+        component: UserProfileComponent,
+        resolve: {
+          countries: CountriesResolve
+        },
+        data: {
+          menu: Menu.MY_PROFILE
+        }
+      },
+      {
         path: 'profile/:key',
         component: UserProfileComponent,
         resolve: {

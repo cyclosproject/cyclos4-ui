@@ -1,0 +1,5 @@
+<ng-container *ngIf="path == null">{{ display }}</ng-container>
+<a *ngIf="path != null"
+  [routerLink]="path">
+  {{ display }}
+</a>

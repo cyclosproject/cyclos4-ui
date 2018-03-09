@@ -30,7 +30,6 @@ const rootRoutes: Routes = [
     path: 'login',
     component: LoginComponent,
     resolve: {
-      dataForLogin: DataForLoginResolve,
       registrationGroups: RegistrationGroupsResolve
     },
     data: {

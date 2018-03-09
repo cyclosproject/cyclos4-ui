@@ -1,8 +1,8 @@
 <div class="left"
-  *ngIf="showLeft | async">
+  *ngIf="(showLeft | async) && hasMenu">
   <mat-card>
     <mat-tab-group>
-      <mat-tab [label]="sideMenu.title || generalMessages.menu()">
+      <mat-tab [label]="(sideMenu.title | async) || generalMessages.menu()">
         <side-menu #sideMenu></side-menu>
       </mat-tab>
       <mat-tab *ngIf="hasFilters"
@@ -19,6 +19,7 @@
   </mat-card>
 </div>
 <div class="page"
+  [ngClass]="{standalone: !((showLeft | async) && hasMenu)}"
   fxLayout="column"
   fxFlex="grow">
   <div class="loading"

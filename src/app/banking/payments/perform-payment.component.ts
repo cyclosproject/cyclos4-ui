@@ -15,7 +15,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PaymentKindAndIdMethod } from 'app/banking/payments/payment-kind-and-id-method';
 import { TdStepComponent } from '@covalent/core';
 import { cloneDeep } from 'lodash';
-import { ApiInterceptor } from 'app/core/api.interceptor';
+import { HttpErrorResponse } from '@angular/common/http';
 
 /**
  * Component used to choose which kind of payment will be performed
@@ -73,8 +73,7 @@ export class PerformPaymentComponent extends BaseBankingComponent {
     private formBuilder: FormBuilder,
     private paymentsService: PaymentsService,
     private usersService: UsersService,
-    private contactsService: ContactsService,
-    private apiInterceptor: ApiInterceptor) {
+    private contactsService: ContactsService) {
     super(injector);
 
     // Form for payment kind
@@ -272,37 +271,38 @@ export class PerformPaymentComponent extends BaseBankingComponent {
   }
 
   private fetchPaymentData() {
-    this.apiInterceptor.ignoreNextError();
-    this.paymentsService.dataForPerformPayment({
-      owner: ApiHelper.SELF,
-      to: this.to,
-      type: this.paymentType
-    })
-      .subscribe(data => {
-        this.paymentData.next(data);
-        this.toUser.next(data.toUser);
+    this.errorHandler.requestWithCustomErrorHandler(defaultHandling => {
+      this.paymentsService.dataForPerformPayment({
+        owner: ApiHelper.SELF,
+        to: this.to,
+        type: this.paymentType
+      })
+        .subscribe(data => {
+          this.paymentData.next(data);
+          this.toUser.next(data.toUser);
 
-        // If there is a single payment type, disable the type step
-        const noPaymentTypes = data.paymentTypes.length === 0;
-        this.paymentTypes.next(data.paymentTypes);
+          // If there is a single payment type, disable the type step
+          const noPaymentTypes = data.paymentTypes.length === 0;
+          this.paymentTypes.next(data.paymentTypes);
 
-        if (noPaymentTypes) {
-          this.notification.error(this.bankingMessages.paymentErrorNoPaymentType());
-        } else {
-          // Preselect the first payment type and activate the fields step
-          this.fieldsForm.patchValue({ type: data.paymentTypes[0].id });
-          this.prepareFieldsForm(data.paymentTypeData);
-          this.stepperControl.activate(this.fieldsStep);
-        }
-      }, response => {
-        const kid = this.kindAndIdMethod.value;
-        const kind = kid.kind;
-        if (kind === PaymentKind.USER && response.status === ErrorStatus.NOT_FOUND) {
-          this.notification.error(this.bankingMessages.paymentErrorInvalidUser());
-        } else {
-          this.errorHandler.handleHttpError(response);
-        }
-      });
+          if (noPaymentTypes) {
+            this.notification.error(this.bankingMessages.paymentErrorNoPaymentType());
+          } else {
+            // Preselect the first payment type and activate the fields step
+            this.fieldsForm.patchValue({ type: data.paymentTypes[0].id });
+            this.prepareFieldsForm(data.paymentTypeData);
+            this.stepperControl.activate(this.fieldsStep);
+          }
+        }, (response: HttpErrorResponse) => {
+          const kid = this.kindAndIdMethod.value;
+          const kind = kid.kind;
+          if (kind === PaymentKind.USER && response.status === ErrorStatus.NOT_FOUND) {
+            this.notification.error(this.bankingMessages.paymentErrorInvalidUser());
+          } else {
+            defaultHandling(response);
+          }
+        });
+    });
   }
 
   get to(): string {

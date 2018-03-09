@@ -2,7 +2,9 @@ import { Provider, APP_INITIALIZER, Injector } from '@angular/core';
 import { AuthService } from 'app/api/services';
 import { LoginService } from 'app/core/login.service';
 import { ApiHelper } from 'app/shared/api-helper';
-import { ApiInterceptor } from 'app/core/api.interceptor';
+import { NextRequestState } from 'app/core/next-request-state';
+import { ErrorHandlerService } from '../core/error-handler.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 // Loads the logged user, if any
 // Use the injector to prevent a cyclic dependency
@@ -11,27 +13,22 @@ export function loadUser(injector: Injector): Function {
     injector.get(LoginService).auth = auth;
   };
   return () => {
-    const apiInterceptor = injector.get(ApiInterceptor);
-    if (apiInterceptor.sessionToken) {
+    const nextRequestState = injector.get(NextRequestState);
+    if (nextRequestState.sessionToken) {
       // There should be an authenticated user. Load it.
-      const interceptor = injector.get(ApiInterceptor);
-
-      // Ignore any errors in the next request, as we'll just clear the session token on error
-      interceptor.ignoreNextError();
-      return injector.get(AuthService)
-        .getCurrentAuth(ApiHelper.excludedAuthFields)
-        .toPromise()
-        .then(auth => {
-            // Store the authentication on the login service.
-            // Even if null: the authInitialized flag will be set.
-            init(auth);
-          })
-        .catch(error => {
+      const authService = injector.get(AuthService);
+      const errorHandler = injector.get(ErrorHandlerService);
+      errorHandler.requestWithCustomErrorHandler(defaultHandling => {
+        authService.getCurrentAuth().subscribe(
+          auth => init(auth),
+          (resp: HttpErrorResponse) => {
             // The current session prefix is invalid. Clear it.
-            apiInterceptor.sessionToken = null;
+            nextRequestState.sessionToken = null;
             // Still initialize the auth to null, so it will be known there's really no one logged-in.
             init(null);
-          });
+          }
+        );
+      });
     } else {
       // Same comment as above
       init(null);

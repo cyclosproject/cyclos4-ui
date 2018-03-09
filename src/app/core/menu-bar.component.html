@@ -1,14 +1,15 @@
 <layout-bar>
   <nav mat-tab-nav-bar
     #tabGroup>
-    <a #link
-      mat-tab-link
-      *ngFor="let root of roots | async"
-      [routerLink]="root.entries[0].url"
-      (click)="onClick($event, root)"
-      [active]="(layout.menu | async)?.root == root.rootMenu">
-      <mat-icon ngClass="mat-22">{{ root.icon }}</mat-icon>
-      {{ root.label }}
-    </a>
+    <ng-container *ngFor="let root of roots | async">
+      <a #link
+        mat-tab-link
+        [routerLink]="root.entries[0].url"
+        (click)="onClick($event, root)"
+        [active]="(activeRoot | async) === root.rootMenu">
+        <mat-icon ngClass="mat-22">{{ root.icon }}</mat-icon>
+        {{ root.label }}
+      </a>
+    </ng-container>
   </nav>
 </layout-bar>

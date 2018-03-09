@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Router, RouterEvent, NavigationStart } from '@angular/router';
+import { Router, RouterEvent, NavigationStart, ActivatedRouteSnapshot, ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs/Subject';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { BreadCrumbEntry } from './breadcrumb-entry';
 import { filter } from 'rxjs/operators/filter';
 import { map } from 'rxjs/operators/map';
 import { LoginService } from './login.service';
+
+const IGNORE_BREADCRUMB = ['', '/home', '/login'];
 
 /**
  * Service used to navigate between pages and managing the component state
@@ -20,6 +22,7 @@ export class BreadcrumbService {
 
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     private loginService: LoginService) {
     loginService.subscribeForAuth(a => this.clear());
     router.events
@@ -63,6 +66,11 @@ export class BreadcrumbService {
   }
 
   private onRouterEvent(event: NavigationStart): void {
+    if (IGNORE_BREADCRUMB.includes(event.url)) {
+      // Ignore the breadcrumb for this URL
+      return;
+    }
+
     let entries = this.breadcrumb.value;
 
     // Find the breadcrumb entry for this path

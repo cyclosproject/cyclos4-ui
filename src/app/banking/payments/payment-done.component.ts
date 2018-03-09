@@ -20,14 +20,6 @@ export class PaymentDoneComponent extends BaseBankingComponent {
   @Input()
   payment: TransactionView;
 
-  get from(): string {
-    return ApiHelper.accountName(this.generalMessages, true, this.payment);
-  }
-
-  get to(): string {
-    return ApiHelper.accountName(this.generalMessages, false, this.payment);
-  }
-
   get pendingAuth(): boolean {
     return this.payment.authorizationStatus === AuthorizationStatusEnum.PENDING;
   }

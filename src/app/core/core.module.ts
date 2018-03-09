@@ -25,6 +25,7 @@ import { RegistrationGroupsResolve } from 'app/registration-groups.resolve';
 import { CountriesResolve } from 'app/countries.resolve';
 import { BreadcrumbService } from './breadcrumb.service';
 import { LightboxModule } from 'angular2-lightbox';
+import { NextRequestState } from './next-request-state';
 
 export const API_INTERCEPTOR_PROVIDER: Provider = {
   provide: HTTP_INTERCEPTORS,
@@ -68,6 +69,7 @@ export const DATE_FORMATS_PROVIDER: Provider = {
     LightboxModule
   ],
   providers: [
+    NextRequestState,
     ApiInterceptor,
     GeneralMessages,
     TranslationLoaderService,

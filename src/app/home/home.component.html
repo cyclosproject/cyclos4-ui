@@ -1,8 +1,6 @@
 <page-layout [loaded]="loaded"
+  [hasMenu]="false"
   title="Components demo page">
-  <page-filters>
-    Some filters...
-  </page-filters>
   <page-content>
     Some titles:
     <h1>Title 1</h1>
@@ -14,7 +12,6 @@
     <h2>Form</h2>
     <div>Some form fields...</div>
     <div fxLayout="column"
-      style="max-width:600px"
       [formGroup]="form">
       <mat-form-field>
         <input matInput

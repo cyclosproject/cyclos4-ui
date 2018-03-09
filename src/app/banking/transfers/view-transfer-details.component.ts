@@ -5,6 +5,9 @@ import { ApiHelper } from 'app/shared/api-helper';
 import { Transfer } from 'app/api/models';
 import { TableDataSource } from 'app/shared/table-datasource';
 
+const FROM = '_FROM_';
+const TO = '_TO_';
+
 /**
  * Component that shows details of a transfer
  */
@@ -25,22 +28,29 @@ export class ViewTransferDetailsComponent extends BaseBankingComponent {
 
   childrenDataSource = new TableDataSource<Transfer>();
 
+  fromToTemplate: { fromFirst: boolean, prefix: string, separator: string, suffix: string };
+
   ngOnInit() {
     super.ngOnInit();
     this.childrenDataSource.next(this.transfer.children);
     if (this.transfer.transactionNumber) {
       this.breadcrumb.title = this.transfer.transactionNumber;
     }
-  }
 
-  from(transfer: Transfer): string {
-    return ApiHelper.accountName(this.generalMessages, true,
-      transfer.from, transfer.type);
-  }
-
-  to(transfer: Transfer): string {
-    return ApiHelper.accountName(this.generalMessages, false,
-      transfer.to, transfer.type);
+    const msg = this.bankingMessages.transactionFromTo(FROM, TO);
+    const fromIx = msg.indexOf(FROM);
+    const toIx = msg.indexOf(TO);
+    const fromFirst = fromIx < toIx;
+    const firstBegin = fromFirst ? fromIx : toIx;
+    const firstEnd = fromFirst ? fromIx + FROM.length : toIx + TO.length;
+    const secondBegin = fromFirst ? toIx : fromIx;
+    const secondEnd = fromFirst ? toIx + TO.length : fromIx + FROM.length;
+    this.fromToTemplate = {
+      fromFirst: fromFirst,
+      prefix: msg.substring(0, firstBegin),
+      separator: msg.substring(firstEnd, secondBegin),
+      suffix: msg.substring(secondEnd)
+    };
   }
 
   path(transfer: Transfer): string[] {

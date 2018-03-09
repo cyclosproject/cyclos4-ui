@@ -1,11 +1,12 @@
 import { Component, Input, ChangeDetectionStrategy, Injector } from '@angular/core';
 import { BaseComponent } from 'app/shared/base.component';
 
-import { RootMenu, MenuEntry, MenuType } from 'app/shared/menu';
+import { RootMenu, MenuEntry, MenuType, RootMenuEntry, Menu } from 'app/shared/menu';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { MenuService } from 'app/shared/menu.service';
 import { AccountWithCurrency } from 'app/api/models';
+import { Observable } from 'rxjs/Observable';
 
 /**
  * A context-specific menu shown on the side of the layout for medium-large screens
@@ -35,20 +36,35 @@ export class SideMenuComponent extends BaseComponent {
     return menu != null && menu.root === RootMenu.BANKING;
   }
 
-  title: string;
-
-  console = console;
-
   entries = new BehaviorSubject<MenuEntry[]>([]);
+  roots = new BehaviorSubject<RootMenuEntry[]>([]);
+  title = new BehaviorSubject<string>(null);
 
   ngOnInit() {
     super.ngOnInit();
-    this.update();
+
+    this.menuService.menu(MenuType.SIDE).subscribe(roots => this.roots.next(roots));
+
+    this.layout.menu.subscribe(menu => {
+      this.updateFrom(menu);
+    });
+    this.updateFrom(this.layout.menu.value);
   }
 
-  onDisplayChange() {
-    super.onDisplayChange();
-    this.update();
+  private updateFrom(menu: Menu) {
+    let entries: MenuEntry[] = [];
+    let title = null;
+    if (menu != null) {
+      for (const root of this.roots.value) {
+        if (root.rootMenu === menu.root) {
+          title = root.title;
+          entries = root.entries;
+          break;
+        }
+      }
+    }
+    this.entries.next(entries);
+    this.title.next(title);
   }
 
   onAccountClicked(event: MouseEvent, account: AccountWithCurrency) {
@@ -63,25 +79,6 @@ export class SideMenuComponent extends BaseComponent {
     // Stop the event
     event.cancelBubble = true;
     event.stopPropagation();
-  }
-
-  private update(): void {
-    let found = false;
-    const menu = this.layout.menu.value;
-    if (menu != null) {
-      for (const root of this.menuService.menu(MenuType.SIDE)) {
-        if (root.rootMenu === menu.root) {
-          found = true;
-          this.title = root.title;
-          this.entries.next(root.entries);
-          break;
-        }
-      }
-    }
-    if (!found) {
-      this.title = null;
-      this.entries.next([]);
-    }
   }
 
   get accounts(): AccountWithCurrency[] {

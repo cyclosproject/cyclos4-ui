@@ -15,13 +15,21 @@
     </span>
   </div>
   <div *ngIf="type == 'file'">
-    <span *ngFor="let file of value.value; let last = last;">
-      {{ file.name + (last ? '' : ', ') }}
-    </span>
+    <ng-container *ngFor="let file of value.value; let last = last;">
+      <a [href]="appendAuth(file.url)"
+        [type]="file.contentType"
+        target="_blank"
+        [download]="file.name">{{ file.name }}</a>
+      <ng-container *ngIf="!last">, </ng-container>
+    </ng-container>
   </div>
   <div *ngIf="type == 'image'">
-    <span *ngFor="let img of value.value; let last = last;">
-      {{ img.name + (last ? '' : ', ')}}
-    </span>
+    <ng-container *ngFor="let img of value.value; let last = last;">
+      <a [href]="appendAuth(img.url)"
+        [type]="img.contentType"
+        target="_blank"
+        [download]="img.name">{{ img.name }}</a>
+      <ng-container *ngIf="!last">, </ng-container>
+    </ng-container>
   </div>
 </ng-container>

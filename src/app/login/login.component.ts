@@ -4,7 +4,10 @@ import { BaseComponent } from 'app/shared/base.component';
 import { Menu } from 'app/shared/menu';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { ApiInterceptor } from 'app/core/api.interceptor';
+import { ApiInterceptor } from '../core/api.interceptor';
+import { NextRequestState } from 'app/core/next-request-state';
+import { RegistrationGroupsResolve } from '../registration-groups.resolve';
+import { AuthService } from '../api/services';
 
 /**
  * Component used to show a login form.
@@ -20,7 +23,8 @@ export class LoginComponent extends BaseComponent {
 
   loginForm: FormGroup;
 
-  dataForLogin = new BehaviorSubject<DataForLogin>(null);
+  loaded = new BehaviorSubject(false);
+  dataForLogin: DataForLogin;
   registrationGroups: GroupForRegistration[];
 
   get canRegister(): boolean {
@@ -29,8 +33,10 @@ export class LoginComponent extends BaseComponent {
 
   constructor(
     injector: Injector,
-    private interceptor: ApiInterceptor,
-    formBuilder: FormBuilder
+    formBuilder: FormBuilder,
+    private authService: AuthService,
+    private nextRequestState: NextRequestState,
+    private registrationGroupsResolve: RegistrationGroupsResolve
   ) {
     super(injector);
     this.loginForm = formBuilder.group({
@@ -41,17 +47,14 @@ export class LoginComponent extends BaseComponent {
 
   ngOnInit() {
     super.ngOnInit();
-    if (this.interceptor.sessionToken != null) {
+    if (this.nextRequestState.sessionToken != null) {
       this.router.navigateByUrl(this.login.redirectUrl || '');
     } else {
-      this.subscriptions.push(this.route.data.subscribe((data: {
-        dataForLogin: DataForLogin,
-        registrationGroups: GroupForRegistration[]
-      }) => {
-        this.dataForLogin.next(data.dataForLogin);
-        this.registrationGroups = data.registrationGroups;
-      }));
-      this.layout.menu.next(Menu.LOGIN);
+      this.registrationGroups = this.route.snapshot.data.registrationGroups;
+      this.authService.getDataForLogin().subscribe(dataForLogin => {
+        this.dataForLogin = dataForLogin;
+        this.loaded.next(true);
+      });
     }
   }
 

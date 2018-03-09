@@ -12,6 +12,7 @@ import { LoginModule } from 'app/login/login.module';
 import { CoreModule } from 'app/core/core.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import 'hammerjs';
+import { LOAD_REGISTRATION_GROUPS } from 'app/bootstrap/load-registration-groups';
 
 /**
  * Root application module
@@ -35,6 +36,7 @@ import 'hammerjs';
     INIT_API_CONFIGURATION,
     SETUP_LIGHTBOX,
     LOAD_GENERAL_TRANSLATION,
+    LOAD_REGISTRATION_GROUPS,
     LOAD_DATA_FOR_UI,
     LOAD_USER
   ],

@@ -1,6 +1,7 @@
 {
   "search.title": "Users search",
   "search.breadcrumb": "Users",
+  "profile.permissionError": "You don't have permission to view the profile of this user",
   "user.name": "Full name",
   "user.username": "Login name",
   "user.email": "E-mail",

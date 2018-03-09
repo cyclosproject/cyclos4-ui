@@ -3,6 +3,8 @@ import { BaseComponent } from 'app/shared/base.component';
 import { User, Auth } from 'app/api/models';
 import { MenuEntry, RootMenu, MenuType, RootMenuEntry } from 'app/shared/menu';
 import { MenuService } from 'app/shared/menu.service';
+import { Observable } from 'rxjs/Observable';
+import { map } from 'rxjs/operators/map';
 
 /**
  * A popup menu shown when clicking the personal icon on top
@@ -20,7 +22,7 @@ export class PersonalMenuComponent extends BaseComponent {
     super(injector);
   }
 
-  menuEntries: MenuEntry[];
+  menuEntries: Observable<MenuEntry[]>;
 
   @ViewChild('container')
   container: ElementRef;
@@ -29,19 +31,30 @@ export class PersonalMenuComponent extends BaseComponent {
 
   ngOnInit() {
     super.ngOnInit();
-    this.update();
+    this.menuEntries = this.menuService.menu(MenuType.PERSONAL).pipe(
+      map(roots => {
+        if (this.login.user == null) {
+          // If there's no logged user, there's also no personal menu to show
+          return null;
+        }
+        // Return only the entries in the personal menu
+        let personal: RootMenuEntry = null;
+        for (const root of roots) {
+          if (root.rootMenu === RootMenu.PERSONAL) {
+            personal = root;
+            break;
+          }
+        }
+        return (personal || {} as RootMenuEntry).entries || [];
+      })
+    );
     this.listener = e => {
       this.hide();
     };
   }
 
-  ngOnDestroy() {
-    super.ngOnDestroy();
-  }
-
   protected onDisplayChange() {
     super.onDisplayChange();
-    this.update();
     this.hide();
   }
 
@@ -101,21 +114,5 @@ export class PersonalMenuComponent extends BaseComponent {
     style.opacity = '0';
     setTimeout(() => style.display = 'none', 500);
     document.body.removeEventListener('click', this.listener, true);
-  }
-
-  private update() {
-    if (this.login.user == null) {
-      // Don't update the personal menu if there's no logged user - it won't be shown
-      return;
-    }
-    const roots = this.menuService.menu(MenuType.PERSONAL);
-    let personal: RootMenuEntry = null;
-    for (const root of roots) {
-      if (root.rootMenu === RootMenu.PERSONAL) {
-        personal = root;
-        break;
-      }
-    }
-    this.menuEntries = (personal || {} as RootMenuEntry).entries || [];
   }
 }

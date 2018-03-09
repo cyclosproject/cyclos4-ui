@@ -1,9 +1,10 @@
-import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injector, AfterViewInit } from '@angular/core';
 import { BaseComponent } from 'app/shared/base.component';
-import { RootMenuEntry, MenuType } from 'app/shared/menu';
+import { RootMenuEntry, MenuType, Menu, RootMenu } from 'app/shared/menu';
 import { MenuService } from 'app/shared/menu.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
 
 /**
  * A bar displayed below the top bar, with menu items
@@ -21,13 +22,19 @@ export class MenuBarComponent extends BaseComponent {
     super(injector);
   }
 
-  roots = new BehaviorSubject<RootMenuEntry[]>([]);
+  roots: Observable<RootMenuEntry[]>;
+  activeRoot = new BehaviorSubject<RootMenu>(null);
 
   private menuSubscription: Subscription;
 
   ngOnInit() {
     super.ngOnInit();
-    this.update();
+    this.roots = this.menuService.menu(MenuType.BAR);
+    this.subscriptions.push(this.layout.menu.subscribe(menu => {
+      if (menu != null) {
+        this.activeRoot.next(menu.root);
+      }
+    }));
   }
 
   ngOnDestroy() {
@@ -35,15 +42,6 @@ export class MenuBarComponent extends BaseComponent {
     if (this.menuSubscription) {
       this.menuSubscription.unsubscribe();
     }
-  }
-
-  onDisplayChange() {
-    super.onDisplayChange();
-    this.update();
-  }
-
-  private update() {
-    this.roots.next(this.menuService.menu(MenuType.BAR));
   }
 
   onClick(event: MouseEvent, root: RootMenuEntry) {

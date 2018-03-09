@@ -4,9 +4,13 @@ import { LoginService } from 'app/core/login.service';
 import { GeneralMessages } from 'app/messages/general-messages';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { AccountStatus } from 'app/api/models';
+import { AccountStatus, Auth } from 'app/api/models';
 import { AccountsService } from 'app/api/services';
 import { PushNotificationsService } from 'app/core/push-notifications.service';
+import { RegistrationGroupsResolve } from '../registration-groups.resolve';
+import { Observable } from 'rxjs/Observable';
+import { filter } from 'rxjs/operators/filter';
+import { map } from 'rxjs/operators/map';
 
 /**
  * Holds shared data for the menu, plus logic regarding the currently visible menu
@@ -18,21 +22,30 @@ export class MenuService {
     private login: LoginService,
     private pushNotifications: PushNotificationsService,
     private accountsService: AccountsService,
-    private generalMessages: GeneralMessages
+    private generalMessages: GeneralMessages,
+    private registrationGroups: RegistrationGroupsResolve
   ) {
     // Clear the status whenever the logged user changes
-    this.login.subscribeForAuth(auth => {
-      this._menu = null;
-      if (auth) {
+    this._fullMenu = new BehaviorSubject<RootMenuEntry[]>([]);
+    if (this.login.authInitialized) {
+      this._fullMenu.next(this.buildFullMenu(this.login.auth));
+      if (this.login.user) {
+        // Fetch the data initially - there is a logged user
         this.fetchData();
-      } else {
-        this._accountStatuses.next(new Map());
+      }
+    }
+    // Whenever the authenticated user changes, reload the menu
+    this.login.subscribeForAuth(auth => {
+      this._fullMenu.next(this.buildFullMenu(auth));
+      if (auth != null && auth.user) {
+        // Fetch the data initially - there is a logged user
+        this.fetchData();
       }
     });
-    if (this.login.user) {
-      // Fetch the data initially - there is a logged user
-      this.fetchData();
-    }
+    // When the registration changes, fetch the menu as well
+    this.registrationGroups.data.subscribe(groups => {
+      this._fullMenu.next(this.buildFullMenu(this.login.auth));
+    });
     this.pushNotifications.subscribeForAccountStatus(account => {
       const statuses = this._accountStatuses.value;
       statuses.set(account.id, account.status);
@@ -40,7 +53,7 @@ export class MenuService {
     });
   }
 
-  private _menu: RootMenuEntry[];
+  private _fullMenu: BehaviorSubject<RootMenuEntry[]>;
   private _accountStatuses = new BehaviorSubject<Map<String, AccountStatus>>(new Map());
 
   get accountStatuses(): BehaviorSubject<Map<String, AccountStatus>> {
@@ -53,26 +66,30 @@ export class MenuService {
   /**
    * Returns the menu structure to be displayed in a specific menu
    */
-  menu(type: MenuType): RootMenuEntry[] {
-    const roots: RootMenuEntry[] = [];
-    for (const root of this.fullMenu) {
-      if (root.showIn != null && !root.showIn.includes(type)) {
-        // This entire root entry is not available for this menu type
-        continue;
-      }
-      // Make a copy, because we don't know if there are filtered entries
-      const copy = new RootMenuEntry(root.rootMenu, root.icon, root.label, root.title, root.showIn);
-      for (const entry of root.entries) {
-        if (entry.showIn != null && !entry.showIn.includes(type)) {
-          // This entry is not available for this menu type
-          continue;
+  menu(type: MenuType): Observable<RootMenuEntry[]> {
+    return this._fullMenu.pipe(
+      map(fullRoots => {
+        const roots: RootMenuEntry[] = [];
+        for (const root of fullRoots) {
+          if (root.showIn != null && !root.showIn.includes(type)) {
+            // This entire root entry is not available for this menu type
+            continue;
+          }
+          // Make a copy, because we don't know if there are filtered entries
+          const copy = new RootMenuEntry(root.rootMenu, root.icon, root.label, root.title, root.showIn);
+          for (const entry of root.entries) {
+            if (entry.showIn != null && !entry.showIn.includes(type)) {
+              // This entry is not available for this menu type
+              continue;
+            }
+            copy.entries.push(entry);
+          }
+          // Use the copy
+          roots.push(copy);
         }
-        copy.entries.push(entry);
-      }
-      // Use the copy
-      roots.push(copy);
-    }
-    return roots;
+        return roots;
+      })
+    );
   }
 
   private fetchData() {
@@ -92,42 +109,40 @@ export class MenuService {
 
 
   /**
-   * Creates the full menu structure
+   * Build the full menu structure from the given authentication
    */
-  private get fullMenu(): RootMenuEntry[] {
-    if (!this.login.authInitialized) {
-      // Don't initialize the menu before the login service finishes fetching the initial auth
-      return [];
-    }
-    if (this._menu != null) {
-      // The menu is already calculated
-      return this._menu;
-    }
-
-    const auth = this.login.auth || {};
+  private buildFullMenu(maybeNullAuth: Auth): RootMenuEntry[] {
+    const auth = maybeNullAuth || {};
     const permissions = auth.permissions;
+    const user = auth.user;
 
-    // The root menu hierarchy
     const roots = new Map<RootMenu, RootMenuEntry>();
+    // Lambda that adds a root menu
     const addRoot = (root: RootMenu, icon: string, label: string, title: string = null, showIn: MenuType[] = null) =>
       roots.set(root, new RootMenuEntry(root, icon, label, title, showIn));
-    addRoot(RootMenu.LOGIN, 'lock', this.generalMessages.menuLogin());
+    // Create the root menu entries
     addRoot(RootMenu.HOME, 'home', this.generalMessages.menuHome());
+    addRoot(RootMenu.LOGIN, 'lock', this.generalMessages.menuLogin());
+    addRoot(RootMenu.REGISTRATION, 'input', this.generalMessages.menuRegister());
     addRoot(RootMenu.BANKING, 'account_balance', this.generalMessages.menuBanking(), this.generalMessages.menuBankingTitle());
-    addRoot(RootMenu.USERS, 'account_box', this.generalMessages.menuUsers(), this.generalMessages.menuUsersTitle());
+    addRoot(RootMenu.USERS, 'group', this.generalMessages.menuUsers(), this.generalMessages.menuUsersTitle());
     addRoot(RootMenu.MARKETPLACE, 'shopping_cart', this.generalMessages.menuMarketplace(), this.generalMessages.menuMarketplaceTitle());
-    addRoot(RootMenu.PERSONAL, 'account_box', this.generalMessages.menuPersonal(),
-      this.generalMessages.menuPersonalProfile(), [MenuType.SIDENAV, MenuType.PERSONAL]);
+    addRoot(RootMenu.PERSONAL, 'account_box', this.generalMessages.menuPersonal(), this.generalMessages.menuPersonalProfile());
 
-    // The first-level menu entries
+    // Lambda that adds a submenu to a root menu
     const add = (menu: Menu, url: string, icon: string, label: string, showIn: MenuType[] = null) => {
       const root = roots.get(menu.root);
       root.entries.push(new MenuEntry(menu, url, icon, label, showIn));
     };
+    // Add the submenus
     add(Menu.HOME, '/', 'home', this.generalMessages.menuHome());
-    if (auth.user == null) {
+    if (user == null) {
       // Guest
+      const registrationGroups = this.registrationGroups.data.value || [];
       add(Menu.LOGIN, '/login', 'lock', this.generalMessages.menuLogin());
+      if (registrationGroups.length > 0) {
+        add(Menu.REGISTRATION, '/users/registration', 'input', this.generalMessages.menuRegister());
+      }
     } else {
       const banking = permissions.banking || {};
       const users = permissions.users || {};
@@ -156,7 +171,7 @@ export class MenuService {
       }
 
       // Users
-      add(Menu.SEARCH_USERS, '/users/search', 'account_box',
+      add(Menu.SEARCH_USERS, '/users/search', 'group',
         this.generalMessages.menuUsersSearch());
 
       // Temporary, just to show other root menu entries
@@ -164,7 +179,7 @@ export class MenuService {
         this.generalMessages.menuMarketplaceSearch());
 
       // Personal
-      add(Menu.MY_PROFILE, '/users/profile/self', 'account_box',
+      add(Menu.MY_PROFILE, '/users/my-profile', 'account_box',
         this.generalMessages.menuPersonalProfile());
       if (users.contacts) {
         add(Menu.CONTACTS, '/personal/contacts', 'contacts',
@@ -179,13 +194,13 @@ export class MenuService {
     }
 
     // Populate the menu in the root declaration order
-    this._menu = [];
+    const rootMenus: RootMenuEntry[] = [];
     for (const root of RootMenu.values()) {
       const rootEntry = roots.get(root);
       if (rootEntry && rootEntry.entries.length > 0) {
-        this._menu.push(rootEntry);
+        rootMenus.push(rootEntry);
       }
     }
-    return this._menu;
+    return rootMenus;
   }
 }

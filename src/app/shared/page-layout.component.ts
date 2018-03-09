@@ -20,6 +20,9 @@ export class PageLayoutComponent extends BaseComponent {
   }
 
   @Input()
+  hasMenu = true;
+
+  @Input()
   hasHeader = false;
 
   @Input()
