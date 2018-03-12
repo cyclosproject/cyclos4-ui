@@ -37,6 +37,16 @@
   }
 }
 
+.gt-xs :host /deep/ .spinner {
+  padding: 32px 32px 256px 32px;
+}
+
+.xs :host /deep/ .spinner {
+  display: block;
+  margin: 32px auto 0 auto;
+}
+
+
 .page.standalone {
   margin: auto;
 }
@@ -101,4 +111,18 @@
 
 .filters .actions {
   margin-top: 12px;
+}
+
+.inline-filters {
+  animation: mobile-filters 1s ease-out;
+}
+
+@keyframes mobile-filters {
+  from {
+    max-height: 0vh;
+    display: none;
+  }
+  to {
+    max-height: 100vh;
+  }
 }

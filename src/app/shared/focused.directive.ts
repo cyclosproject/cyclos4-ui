@@ -1,6 +1,6 @@
 import { Directive, ElementRef, Renderer, AfterViewInit, ChangeDetectorRef, Input } from '@angular/core';
 
-@Directive({ selector: 'input[focused],select[focused],textarea[focused]' })
+@Directive({ selector: 'mat-form-field[focused],input[focused],select[focused],textarea[focused]' })
 export class FocusedDirective implements AfterViewInit {
   constructor(
     private el: ElementRef,

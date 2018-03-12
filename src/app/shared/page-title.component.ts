@@ -1,6 +1,7 @@
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { GeneralMessages } from 'app/messages/general-messages';
 import { PageLayoutComponent } from './page-layout.component';
+import { LayoutService } from 'app/core/layout.service';
 
 /**
  * The title, with breadcrumb and show filters button
@@ -13,12 +14,12 @@ import { PageLayoutComponent } from './page-layout.component';
 })
 export class PageTitleComponent {
 
-  constructor(public generalMessages: GeneralMessages) {
+  constructor(
+    public generalMessages: GeneralMessages,
+    public layout: LayoutService) {
   }
 
   @Input() title: string;
-
-  @Input() hasFilters: boolean;
 
   @Input() pageLayout: PageLayoutComponent;
 

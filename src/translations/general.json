@@ -42,6 +42,7 @@
   "filters.title": "Filters",
   "filters.clear": "Clear filters",
   "filters.show": "Show filters",
+  "filters.hide": "Hide filters",
   "home.guests.title": "Welcome to {application}",
   "home.users.title": "Dashboard",
   "menu.login": "Login",

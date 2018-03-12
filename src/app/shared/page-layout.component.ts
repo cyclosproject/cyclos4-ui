@@ -3,6 +3,7 @@ import { BaseComponent } from 'app/shared/base.component';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { MatTabGroup } from '@angular/material';
+import { FormGroup } from '@angular/forms';
 
 /**
  * Possible sizes for the main content
@@ -34,6 +35,11 @@ export class PageLayoutComponent extends BaseComponent {
   hasFilters = false;
 
   @Input()
+  filtersForm: FormGroup;
+
+  private initialFormState: any;
+
+  @Input()
   tightContent = false;
 
   @Input()
@@ -45,9 +51,11 @@ export class PageLayoutComponent extends BaseComponent {
   @ViewChild('tabGroup')
   tabGroup: MatTabGroup;
 
-  filtersShown = false;
+  filtersShown = new BehaviorSubject(false);
 
   private _title: string;
+
+  private creationTime = new Date();
 
   @Input()
   set title(title: string) {
@@ -62,8 +70,18 @@ export class PageLayoutComponent extends BaseComponent {
 
   showLeft = new BehaviorSubject<Boolean>(false);
 
-  ngOnDestroy() {
-    super.ngOnDestroy();
+  ngOnInit() {
+    super.ngOnInit();
+    if (this.filtersForm != null) {
+      // Copy the initial form state
+      this.initialFormState = this.filtersForm.value;
+      if (this.loaded != null) {
+        // Also, once loaded, copy the state again because it can be modified before fully loading the component
+        this.subscriptions.push(this.loaded.subscribe(() => {
+          this.initialFormState = this.filtersForm.value;
+        }));
+      }
+    }
   }
 
   onDisplayChange() {
@@ -72,11 +90,32 @@ export class PageLayoutComponent extends BaseComponent {
   }
 
   showFilters() {
-    this.filtersShown = true;
-    this.tabGroup.selectedIndex = 1;
+    this.filtersShown.next(true);
+    if (this.tabGroup) {
+      this.tabGroup.selectedIndex = 1;
+    }
+  }
+
+  hideFilters() {
+    this.filtersShown.next(false);
+    if (this.tabGroup) {
+      this.tabGroup.selectedIndex = 0;
+    }
+  }
+
+  clearFilters() {
+    if (this.filtersForm) {
+      this.filtersForm.reset(this.initialFormState);
+    }
   }
 
   private update() {
     this.showLeft.next(this.media.isActive('gt-sm'));
+  }
+
+  // The spinner is only shown a few milliseconds after the component creation
+  showSpinner() {
+    const now = new Date();
+    return (now.getTime() - this.creationTime.getTime()) > 300;
   }
 }

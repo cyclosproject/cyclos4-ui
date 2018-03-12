@@ -3,11 +3,23 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
-import {
-  MatButtonModule, MatInputModule, MatCheckboxModule, MatRadioModule,
-  MatSelectModule, MatDatepickerModule, MatTooltipModule,
-  MatIconModule, MatGridListModule, MatTabsModule, MatTableModule, MatDialogModule, MatCardModule, MatSidenavModule, MatSlideToggleModule
-} from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSelectModule } from '@angular/material/select';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatIconModule } from '@angular/material/icon';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatTableModule } from '@angular/material/table';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatCardModule } from '@angular/material/card';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
 import { CovalentStepsModule } from '@covalent/core';
 
 import { PageLayoutComponent } from 'app/shared/page-layout.component';
@@ -114,6 +126,7 @@ import { PageTitleComponent } from 'app/shared/page-title.component';
     MatTooltipModule,
     MatCheckboxModule,
     MatSlideToggleModule,
+    MatProgressSpinnerModule,
     MatRadioModule,
     MatIconModule,
     MatGridListModule,
@@ -136,6 +149,7 @@ import { PageTitleComponent } from 'app/shared/page-title.component';
     MatTooltipModule,
     MatCheckboxModule,
     MatSlideToggleModule,
+    MatProgressSpinnerModule,
     MatRadioModule,
     MatIconModule,
     MatGridListModule,

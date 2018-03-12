@@ -1,20 +1,17 @@
 <div *ngIf="(showLeft | async) && hasMenu"
   [ngClass]="{
     left: true,
-    filtersHidden: !filtersShown
+    filtersHidden: !(filtersShown | async)
   }">
   <mat-card>
     <mat-tab-group #tabGroup>
       <mat-tab [label]="(sideMenu.title | async) || generalMessages.menu()">
         <side-menu #sideMenu></side-menu>
       </mat-tab>
-      <mat-tab *ngIf="hasFilters && filtersShown"
+      <mat-tab *ngIf="hasFilters && (filtersShown | async)"
         [label]="generalMessages.filtersTitle()">
         <div class="filters">
           <ng-container *ngTemplateOutlet="filtersTpl"></ng-container>
-          <div class="actions">
-            <button mat-raised-button>{{ generalMessages.filtersClear() }}</button>
-          </div>
         </div>
       </mat-tab>
     </mat-tab-group>
@@ -29,20 +26,15 @@
   }"
   fxLayout="column"
   fxFlex="grow">
-  <div class="loading"
-    *ngIf="loaded != null && !(loaded | async)">
-    Loading...
-  </div>
-  <ng-container *ngIf="(showLeft | async) && (loaded == null || (loaded | async))">
+  <ng-container *ngIf="(showLeft | async)">
     <!-- There is a left area: separated containers for header and content -->
-    <div *ngIf="hasHeader"
+    <div *ngIf="hasHeader && (loaded == null || (loaded | async))"
       class="header">
       <mat-card>
         <mat-card-content>
           <page-title *ngIf="title != null && title.length > 0"
             [pageLayout]="this"
-            [title]="title"
-            [hasFilters]="hasFilters"></page-title>
+            [title]="title"></page-title>
           <div class="header-wrapper">
             <ng-container *ngTemplateOutlet="headerTpl"></ng-container>
           </div>
@@ -53,38 +45,60 @@
       [ngClass]="{'tight': tightContent}">
       <mat-card>
         <mat-card-content>
-          <page-title *ngIf="!hasHeader && title != null && title.length > 0"
-            [pageLayout]="this"
-            [title]="title"
-            [hasFilters]="hasFilters"></page-title>
-          <div class="content-wrapper">
-            <ng-container *ngTemplateOutlet="contentTpl"></ng-container>
+          <div class="spinner"
+            *ngIf="loaded != null && !(loaded | async) && showSpinner">
+            <mat-progress-spinner color="accent"
+              mode="indeterminate"></mat-progress-spinner>
           </div>
+          <ng-container *ngIf="loaded == null || (loaded | async)">
+            <page-title *ngIf="!hasHeader && title != null && title.length > 0"
+              [pageLayout]="this"
+              [title]="title"></page-title>
+            <div class="content-wrapper">
+              <ng-container *ngTemplateOutlet="contentTpl"></ng-container>
+            </div>
+          </ng-container>
         </mat-card-content>
       </mat-card>
     </div>
   </ng-container>
-  <ng-container *ngIf="!(showLeft | async) && (loaded == null || (loaded | async))">
+  <ng-container *ngIf="!(showLeft | async)">
     <!-- No left area (mobile): Everything is together (no cards) -->
-    <breadcrumb></breadcrumb>
-    <h1 *ngIf="title != null && title.length > 0">{{ title }}</h1>
-
-    <div class="inline-header"
-      *ngIf="hasHeader">
-      <ng-container *ngTemplateOutlet="headerTpl"></ng-container>
+    <div class="spinner"
+      *ngIf="loaded != null && !(loaded | async) && showSpinner">
+      <mat-progress-spinner color="accent"
+        mode="indeterminate"></mat-progress-spinner>
     </div>
-    <div class="inline-filters"
-      *ngIf="hasFilters">
-      <ng-container *ngTemplateOutlet="filtersTpl"></ng-container>
-    </div>
-    <div class="inline-content">
-      <ng-container *ngTemplateOutlet="contentTpl"></ng-container>
-    </div>
+    <ng-container *ngIf="(loaded == null || (loaded | async))">
+      <page-title *ngIf="title != null && title.length > 0"
+        [pageLayout]="this"
+        [title]="title"></page-title>
+      <div class="inline-header"
+        *ngIf="hasHeader">
+        <ng-container *ngTemplateOutlet="headerTpl"></ng-container>
+      </div>
+      <div class="inline-filters"
+        *ngIf="hasFilters && (filtersShown | async)">
+        <ng-container *ngTemplateOutlet="filtersTpl"></ng-container>
+      </div>
+      <div class="inline-content">
+        <ng-container *ngIf="loaded == null || (loaded | async)">
+          <ng-container *ngTemplateOutlet="contentTpl"></ng-container>
+        </ng-container>
+      </div>
+    </ng-container>
   </ng-container>
 </div>
 
 <ng-template #filtersTpl>
   <ng-content select="page-filters"></ng-content>
+  <div class="actions">
+    <button mat-raised-button
+      (click)="clearFilters()">{{ generalMessages.filtersClear() }}</button>
+    <div fxFlex="grow"></div>
+    <button mat-raised-button
+      (click)="hideFilters()">{{ generalMessages.filtersHide() }}</button>
+  </div>
 </ng-template>
 <ng-template #headerTpl>
   <ng-content select="page-header"></ng-content>

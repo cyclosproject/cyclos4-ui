@@ -3,7 +3,8 @@
   <breadcrumb></breadcrumb>
   <div class="title-wrapper">
     <h1>{{ title }}</h1>
-    <button *ngIf="hasFilters"
+    <button *ngIf="pageLayout.hasFilters && (layout.gtxs || !(pageLayout.filtersShown | async))"
+  
       class="showFilters"
       (click)="showFilters()"
       mat-button>

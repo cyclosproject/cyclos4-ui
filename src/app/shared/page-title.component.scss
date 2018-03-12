@@ -19,3 +19,15 @@ h1 {
   border: none;
   float: left;
 }
+
+.xs :host /deep/ {
+  .wrapper {
+    border: 0;
+  }
+  h1 {
+    margin: 8px 0 20px 0;
+  }
+  .showFilters {
+    margin: 0 0 8px 0;
+  }
+}

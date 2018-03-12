@@ -36,7 +36,7 @@ export class AccountHistoryComponent extends BaseBankingComponent {
   constructor(
     injector: Injector,
     private accountsService: AccountsService,
-    formBuilder: FormBuilder
+    private formBuilder: FormBuilder
   ) {
     super(injector);
     this.form = formBuilder.group({
@@ -171,9 +171,7 @@ export class AccountHistoryComponent extends BaseBankingComponent {
           }
           for (const preselectedPeriod of data.preselectedPeriods) {
             if (preselectedPeriod.defaultOption) {
-              this.form.patchValue({
-                preselectedPeriod: preselectedPeriod
-              }, { emitEvent: false });
+              this.form.setControl('preselectedPeriod', this.formBuilder.control(preselectedPeriod));
               break;
             }
           }
