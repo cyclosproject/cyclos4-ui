@@ -13,7 +13,7 @@ export class CurrencyPipe implements PipeTransform {
   constructor(private formatService: FormatService) {
   }
 
-  public transform(value: string | number, currency: Currency): string {
-    return this.formatService.formatAsCurrency(currency, value);
+  public transform(value: string | number, currency: Currency, forceSign: boolean = false): string {
+    return this.formatService.formatAsCurrency(currency, value, forceSign);
   }
 }

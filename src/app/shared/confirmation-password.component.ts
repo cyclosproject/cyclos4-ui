@@ -49,8 +49,6 @@ export class ConfirmationPasswordComponent extends BaseControlComponent<string> 
 
   private otpSubscription: Subscription;
 
-  private validatorChangeCallback = () => { };
-
   constructor(
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
     public generalMessages: GeneralMessages
@@ -114,6 +112,5 @@ export class ConfirmationPasswordComponent extends BaseControlComponent<string> 
     return null;
   }
   registerOnValidatorChange(fn: () => void): void {
-    this.validatorChangeCallback = fn;
   }
 }

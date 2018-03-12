@@ -1,11 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Notification } from 'app/shared/notification';
-import { NotificationType } from 'app/shared/notification-type';
-import { MatDialog, MatDialogRef } from '@angular/material';
-import { NotificationComponent } from 'app/shared/notification.component';
 import { Observable } from 'rxjs/Observable';
 import { of as observableOf } from 'rxjs/observable/of';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';
 import { tap } from 'rxjs/operators/tap';
@@ -22,7 +17,7 @@ export class StateManager {
   private subscriptions: Subscription[] = [];
 
   constructor(
-    private loginService: LoginService,
+    loginService: LoginService,
     private router: Router) {
     loginService.subscribeForAuth(a => this.clear());
   }

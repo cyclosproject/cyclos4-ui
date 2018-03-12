@@ -3,7 +3,6 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { TransactionsService } from 'app/api/services/transactions.service';
 import { BaseBankingComponent } from 'app/banking/base-banking.component';
 import { TransactionView } from 'app/api/models/transaction-view';
-import { ApiHelper } from 'app/shared/api-helper';
 import { TransactionKind } from 'app/api/models/transaction-kind';
 
 /**

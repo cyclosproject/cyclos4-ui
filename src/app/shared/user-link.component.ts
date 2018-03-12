@@ -1,10 +1,6 @@
-import { ChangeDetectionStrategy, Component, Injector, Input, Output, EventEmitter } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injector, Input } from '@angular/core';
 import { BaseComponent } from 'app/shared/base.component';
-import { TableDataSource } from 'app/shared/table-datasource';
-import { QueryFilters, User, AccountWithOwner } from 'app/api/models';
-import { PaginationData } from 'app/shared/pagination-data';
-import { ApiHelper } from 'app/shared/api-helper';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { User, AccountWithOwner } from 'app/api/models';
 
 /**
  * Shows a link to a user profile, and a popup on hover with more details.
@@ -17,7 +13,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   styleUrls: ['user-link.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UserLinkComponent<T> extends BaseComponent {
+export class UserLinkComponent extends BaseComponent {
   constructor(injector: Injector) {
     super(injector);
   }

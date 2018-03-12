@@ -6,7 +6,6 @@ import { ApiHelper } from 'app/shared/api-helper';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { MenuService } from 'app/shared/menu.service';
 import { AccountWithCurrency } from 'app/api/models';
-import { Observable } from 'rxjs/Observable';
 
 /**
  * A context-specific menu shown on the side of the layout for medium-large screens

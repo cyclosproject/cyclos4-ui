@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, Injector, AfterViewInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
 import { BaseComponent } from 'app/shared/base.component';
-import { RootMenuEntry, MenuType, Menu, RootMenu } from 'app/shared/menu';
+import { RootMenuEntry, MenuType, RootMenu } from 'app/shared/menu';
 import { MenuService } from 'app/shared/menu.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subscription } from 'rxjs/Subscription';

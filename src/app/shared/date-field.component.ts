@@ -55,8 +55,6 @@ export class DateFieldComponent extends BaseControlComponent<string> implements 
   @ViewChild('input')
   private inputRef: ElementRef;
 
-  private validatorChangeCallback = () => { };
-
   constructor(
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
     public formatService: FormatService,
@@ -102,6 +100,5 @@ export class DateFieldComponent extends BaseControlComponent<string> implements 
     return this.input.validate(c);
   }
   registerOnValidatorChange(fn: () => void): void {
-    this.validatorChangeCallback = fn;
   }
 }

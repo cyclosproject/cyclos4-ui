@@ -1,8 +1,8 @@
-import { Component, Input, ChangeDetectionStrategy, Injector } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy, Injector, ViewChild } from '@angular/core';
 import { BaseComponent } from 'app/shared/base.component';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
-import { BreadcrumbService } from '../core/breadcrumb.service';
+import { MatTabGroup } from '@angular/material';
 
 /**
  * Possible sizes for the main content
@@ -42,6 +42,11 @@ export class PageLayoutComponent extends BaseComponent {
   @Input()
   loaded: Observable<any>;
 
+  @ViewChild('tabGroup')
+  tabGroup: MatTabGroup;
+
+  filtersShown = false;
+
   private _title: string;
 
   @Input()
@@ -64,6 +69,11 @@ export class PageLayoutComponent extends BaseComponent {
   onDisplayChange() {
     super.onDisplayChange();
     this.update();
+  }
+
+  showFilters() {
+    this.filtersShown = true;
+    this.tabGroup.selectedIndex = 1;
   }
 
   private update() {

@@ -1,8 +1,7 @@
 import { Component, ChangeDetectionStrategy, Injector } from '@angular/core';
 import { BaseComponent } from 'app/shared/base.component';
-import { FormBuilder, FormGroup } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { filter } from 'rxjs/operators/filter';
+import { HttpClient } from '@angular/common/http';
 
 /**
  * Displays the home page
@@ -15,34 +14,36 @@ import { filter } from 'rxjs/operators/filter';
 })
 export class HomeComponent extends BaseComponent {
 
-  form: FormGroup;
-
   loaded = new BehaviorSubject(false);
 
-  constructor(injector: Injector, formBuilder: FormBuilder) {
-    super(injector);
+  title: string;
+  homeContent: string;
 
-    this.form = formBuilder.group({
-      singleLine: null,
-      multiLine: null,
-      checkBox: null,
-      radio: '1',
-      decimal: null,
-      date: null,
-      singleSelection: null,
-      multiSelection: null
-    });
-    this.form.valueChanges.subscribe(v => console.dir(v));
+  constructor(
+    injector: Injector,
+    private httpClient: HttpClient) {
+    super(injector);
   }
 
   ngOnInit() {
     super.ngOnInit();
-    if (this.format.dataForUi != null) {
-      this.loaded.next(true);
+    const guest = this.login.user == null;
+    this.title = guest ?
+      this.generalMessages.homeGuestsTitle(this.format.appTitle) :
+      this.generalMessages.homeUsersTitle();
+
+    if (guest) {
+      // Load the home page content
+      this.httpClient.get('content/home.html', {
+        responseType: 'text'
+      })
+        .subscribe(content => {
+          this.homeContent = content;
+          this.loaded.next(true);
+        });
     } else {
-      this.format.materialDateFormats.subscribe(() => {
-        this.loaded.next(true);
-      });
+      // TODO: Load the data for dashboard
+      this.loaded.next(true);
     }
   }
 }

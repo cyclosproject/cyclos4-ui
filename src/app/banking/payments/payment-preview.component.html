@@ -1,5 +1,4 @@
-<div class="form-info">{{ preview.pendingAuthorization ? bankingMessages.paymentPreviewAuthMessage() : bankingMessages.paymentPreviewMessage()
-  }}</div>
+<div class="form-info">{{ preview.pendingAuthorization ? bankingMessages.paymentPreviewAuthMessage() : bankingMessages.paymentPreviewMessage() }}</div>
 
 <label-value [label]="bankingMessages.transactionFrom()">
   <user-link [account]="preview.fromAccount"></user-link>

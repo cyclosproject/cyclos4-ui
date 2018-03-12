@@ -1,75 +1,9 @@
 <page-layout [loaded]="loaded"
   [hasMenu]="false"
-  title="Components demo page">
+  [title]="title">
   <page-content>
-    Some titles:
-    <h1>Title 1</h1>
-    Main section content
-    <h2>Title 2</h2>
-    Sub section content
-    <h3>Title 3</h3>
-    Sub-sub section content
-    <h2>Form</h2>
-    <div>Some form fields...</div>
-    <form fxLayout="column"
-      [formGroup]="form">
-      <mat-form-field>
-        <input matInput
-          maxlength="4"
-          placeholder="Text input"
-          formControlName="singleLine">
-      </mat-form-field>
-
-      <mat-form-field>
-        <textarea matInput
-          matTextareaAutosize
-          formControlName="multiLine"
-          placeholder="Multi-line input"></textarea>
-      </mat-form-field>
-
-      <decimal-field #decimal
-        formControlName="decimal"
-        suffix="$"
-        scale="2"
-        placeholder="Decimal"></decimal-field>
-
-      <date-field #date
-        formControlName="date"
-        placeholder="Date"></date-field>
-
-      <mat-checkbox formControlName="checkBox">Checkbox</mat-checkbox>
-
-      <mat-radio-group class="horizontal"
-        formControlName="radio">
-        <mat-radio-button value="1">
-          Radio 1
-        </mat-radio-button>
-        <mat-radio-button value="2">
-          Radio 2
-        </mat-radio-button>
-        <mat-radio-button value="3">
-          Radio 3
-        </mat-radio-button>
-      </mat-radio-group>
-
-      <mat-form-field>
-        <mat-select placeholder="Single select"
-          formControlName="singleSelection">
-          <mat-option value="1">Value 1</mat-option>
-          <mat-option value="2">Value 2</mat-option>
-          <mat-option value="3">Value 3</mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-select placeholder="Multi select"
-          multiple="true"
-          formControlName="multiSelection">
-          <mat-option value="1">Value 1</mat-option>
-          <mat-option value="2">Value 2</mat-option>
-          <mat-option value="3">Value 3</mat-option>
-        </mat-select>
-      </mat-form-field>
-    </form>
+    <div *ngIf="login.user == null"
+      [innerHTML]="homeContent | trust"></div>
+    <dashboard *ngIf="login.user != null"></dashboard>
   </page-content>
 </page-layout>

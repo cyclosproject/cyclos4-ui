@@ -51,6 +51,7 @@ import { CaptchaComponent } from 'app/shared/captcha.component';
 import { BreadcrumbComponent } from './breadcrumb.component';
 import { ImageViewerComponent } from './image-viewer.component';
 import { UserLinkComponent } from './user-link.component';
+import { PageTitleComponent } from 'app/shared/page-title.component';
 
 
 /**
@@ -65,6 +66,7 @@ import { UserLinkComponent } from './user-link.component';
     PageFiltersComponent,
     PageContentComponent,
     PageHeaderComponent,
+    PageTitleComponent,
     ActionsComponent,
     ViewFormComponent,
     LabelValueComponent,
@@ -151,6 +153,7 @@ import { UserLinkComponent } from './user-link.component';
     PageFiltersComponent,
     PageContentComponent,
     PageHeaderComponent,
+    PageTitleComponent,
     ActionsComponent,
     ViewFormComponent,
     LabelValueComponent,

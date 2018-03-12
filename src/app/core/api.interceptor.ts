@@ -1,4 +1,4 @@
-import { Injectable, Injector } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
 import { NotificationService } from 'app/core/notification.service';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';

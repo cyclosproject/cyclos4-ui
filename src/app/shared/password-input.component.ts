@@ -81,8 +81,6 @@ export class PasswordInputComponent
 
   private subscriptions: Subscription[] = [];
 
-  private validatorChangeCallback = () => { };
-
   constructor(
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
     private authService: AuthService,
@@ -222,7 +220,6 @@ export class PasswordInputComponent
     return null;
   }
   registerOnValidatorChange(fn: () => void): void {
-    this.validatorChangeCallback = fn;
   }
 
   focus() {

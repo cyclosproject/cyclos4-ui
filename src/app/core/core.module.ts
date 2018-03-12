@@ -26,6 +26,7 @@ import { CountriesResolve } from 'app/countries.resolve';
 import { BreadcrumbService } from './breadcrumb.service';
 import { LightboxModule } from 'angular2-lightbox';
 import { NextRequestState } from './next-request-state';
+import { SvgIconRegistry } from 'app/core/svg-icon-registry';
 
 export const API_INTERCEPTOR_PROVIDER: Provider = {
   provide: HTTP_INTERCEPTORS,
@@ -85,6 +86,7 @@ export const DATE_FORMATS_PROVIDER: Provider = {
     RegistrationGroupsResolve,
     CountriesResolve,
     ApiDateAdapter,
+    SvgIconRegistry,
     API_INTERCEPTOR_PROVIDER,
     DATE_ADAPTER_PROVIDER,
     DATE_FORMATS_PROVIDER

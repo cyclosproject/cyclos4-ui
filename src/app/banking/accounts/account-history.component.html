@@ -10,7 +10,8 @@
           <div class="label">{{ indicator.label }}</div>
           <div [ngClass]="{
             amount: true,
-            negative:(indicator.alwaysNegative || format.isNegative(indicator.amount))
+            negative:(indicator.alwaysNegative || format.isNegative(indicator.amount)),
+            positive:(!indicator.alwaysNegative && format.isPositive(indicator.amount))
           }">
             {{ indicator.amount | currency:currency }}
           </div>
@@ -61,9 +62,9 @@
           class="avatar"></mat-header-cell>
         <mat-cell *matCellDef="let row"
           class="avatar">
-          <avatar [image]="row.relatedAccount.kind == 'user' ? row.relatedAccount.user.image : null"
-        
-            [icon]="row.relatedAccount.kind == 'user' ? 'account_circle' : 'account_balance'"></avatar>
+          <avatar [icon]="avatarIcon(row)"
+            [image]="avatarImage(row)">
+          </avatar>
         </mat-cell>
       </ng-container>
 
@@ -120,8 +121,11 @@
         <mat-cell *matCellDef="let row"
           style="text-align: end">
           <a [routerLink]="path(row)"
-            [ngClass]="{negative: format.isNegative(row.amount)}">
-            {{ row.amount | currency:currency }}
+            [ngClass]="{
+              positive: format.isPositive(row.amount),
+              negative: format.isNegative(row.amount)
+            }">
+            {{ row.amount | currency:currency:true }}
           </a>
         </mat-cell>
       </ng-container>

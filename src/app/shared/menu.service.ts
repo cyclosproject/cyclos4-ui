@@ -9,7 +9,6 @@ import { AccountsService } from 'app/api/services';
 import { PushNotificationsService } from 'app/core/push-notifications.service';
 import { RegistrationGroupsResolve } from '../registration-groups.resolve';
 import { Observable } from 'rxjs/Observable';
-import { filter } from 'rxjs/operators/filter';
 import { map } from 'rxjs/operators/map';
 
 /**
@@ -121,7 +120,9 @@ export class MenuService {
     const addRoot = (root: RootMenu, icon: string, label: string, title: string = null, showIn: MenuType[] = null) =>
       roots.set(root, new RootMenuEntry(root, icon, label, title, showIn));
     // Create the root menu entries
-    addRoot(RootMenu.HOME, 'home', this.generalMessages.menuHome());
+    addRoot(RootMenu.HOME,
+      user == null ? 'home' : 'dashboard',
+      user == null ? this.generalMessages.menuHome() : this.generalMessages.menuDashboard());
     addRoot(RootMenu.LOGIN, 'lock', this.generalMessages.menuLogin());
     addRoot(RootMenu.REGISTRATION, 'input', this.generalMessages.menuRegister());
     addRoot(RootMenu.BANKING, 'account_balance', this.generalMessages.menuBanking(), this.generalMessages.menuBankingTitle());
@@ -180,14 +181,14 @@ export class MenuService {
 
       // Personal
       add(Menu.MY_PROFILE, '/users/my-profile', 'account_box',
-        this.generalMessages.menuPersonalProfile());
+        this.generalMessages.menuPersonalProfile(), [MenuType.SIDENAV, MenuType.SIDE]);
       if (users.contacts) {
         add(Menu.CONTACTS, '/personal/contacts', 'contacts',
-          this.generalMessages.menuPersonalContacts());
+          this.generalMessages.menuPersonalContacts(), [MenuType.SIDENAV, MenuType.SIDE]);
       }
       if ((permissions.passwords || {}).manage) {
         add(Menu.PASSWORDS, '/personal/passwords', 'lock',
-          this.generalMessages.menuPersonalPasswords());
+          this.generalMessages.menuPersonalPasswords(), [MenuType.SIDENAV, MenuType.SIDE]);
       }
       add(Menu.LOGOUT, null, 'exit_to_app',
         this.generalMessages.menuPersonalLogout());

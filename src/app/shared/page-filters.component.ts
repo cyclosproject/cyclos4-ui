@@ -1,5 +1,4 @@
-import { Component, Injector, ChangeDetectionStrategy } from '@angular/core';
-import { BaseComponent } from 'app/shared/base.component';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 
 /**
  * A section that shows query filters for the current page

@@ -2,14 +2,13 @@ import { Injectable } from '@angular/core';
 import { NotificationService } from 'app/core/notification.service';
 import { FormatService } from 'app/core/format.service';
 import {
-  Error as ApiError, ErrorKind, NotFoundError, InputError, InputErrorCode,
+  ErrorKind, NotFoundError, InputError, InputErrorCode,
   UnauthorizedError, UnauthorizedErrorCode, PasswordStatusEnum, ForbiddenError,
   ForbiddenErrorCode, PaymentError, PaymentErrorCode
 } from 'app/api/models';
 import { NgForm } from '@angular/forms';
 import { GeneralMessages } from 'app/messages/general-messages';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ApiInterceptor } from './api.interceptor';
 import { NextRequestState } from './next-request-state';
 
 /**

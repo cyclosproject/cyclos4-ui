@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, Injector } from '@angular/core';
 import {
   DataForAccountHistory, Currency, EntityReference, PreselectedPeriod,
-  AccountHistoryResult, AccountKind, AccountHistoryStatus, TransferFilter, AccountHistoryQueryFilters
+  AccountHistoryResult, AccountKind, AccountHistoryStatus, TransferFilter, Image
 } from 'app/api/models';
 import { AccountsService } from 'app/api/services';
 
@@ -294,5 +294,21 @@ export class AccountHistoryComponent extends BaseBankingComponent {
    */
   path(row: AccountHistoryResult): string[] {
     return ['/banking', 'transfer', ApiHelper.transactionNumberOrId(row)];
+  }
+
+  /**
+   * Returns the icon used on the given row's avatar
+   * @param row The row
+   */
+  avatarIcon(row: AccountHistoryResult): string {
+    return row.relatedAccount.kind === 'user' ? 'account_circle' : 'account_balance_circle';
+  }
+
+  /**
+   * Returns the image used on the given row's avatar
+   * @param row The row
+   */
+  avatarImage(row: AccountHistoryResult): Image {
+    return row.relatedAccount.kind === 'user' ? row.relatedAccount.user.image : null;
   }
 }

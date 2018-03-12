@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, Injector } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Injector } from '@angular/core';
 import { BaseComponent } from './base.component';
 
 @Component({

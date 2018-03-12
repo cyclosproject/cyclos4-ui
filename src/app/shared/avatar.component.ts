@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
 import { Image } from 'app/api/models';
+import { SvgIconRegistry } from 'app/core/svg-icon-registry';
 
 /**
  * The size for rendered avatars
@@ -59,6 +60,11 @@ export class AvatarComponent implements OnInit {
   icon = 'account_circle';
 
   /**
+   * If the icon name represents an SVG icon, it will be replaced by this one
+   */
+  svgIcon: string;
+
+  /**
    * The size of images and icons
    */
   @Input()
@@ -106,7 +112,14 @@ export class AvatarComponent implements OnInit {
     return 'mat-' + SIZES[this.size];
   }
 
-  constructor() { }
+  constructor(private svgIconRegistry: SvgIconRegistry) {
+  }
 
-  ngOnInit() { }
+  ngOnInit() {
+    if (this.svgIconRegistry.isSvgIcon(this.icon)) {
+      // This is a SVG icon
+      this.svgIcon = this.icon;
+      this.icon = null;
+    }
+  }
 }

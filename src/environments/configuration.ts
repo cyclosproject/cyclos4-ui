@@ -43,6 +43,7 @@ const BANKING_TRANSLATIONS = null;
 // import * as GENERAL_TRANSLATIONS from '../translations/general.json';
 // import * as BANKING_TRANSLATIONS from '../translations/banking.json';
 
+
 export const configuration = {
   appTitle: APP_TITLE,
   appTitleMenu: APP_TITLE_MENU,

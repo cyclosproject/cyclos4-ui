@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from 'app/login/login.component';
 import { HomeComponent } from 'app/home/home.component';
+import { DashboardComponent } from 'app/home/dashboard.component';
 import { NotFoundComponent } from 'app/shared/not-found.component';
 import { SharedModule } from 'app/shared/shared.module';
 import { DataForLoginResolve } from 'app/data-for-login.resolve';
@@ -61,7 +62,8 @@ const rootRoutes: Routes = [
     SharedModule
   ],
   declarations: [
-    HomeComponent
+    HomeComponent,
+    DashboardComponent
   ],
   exports: [
     RouterModule

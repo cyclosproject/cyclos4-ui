@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Router, RouterEvent, NavigationStart, ActivatedRouteSnapshot, ActivatedRoute } from '@angular/router';
-import { Subject } from 'rxjs/Subject';
+import { Router, NavigationStart } from '@angular/router';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { BreadCrumbEntry } from './breadcrumb-entry';
 import { filter } from 'rxjs/operators/filter';
@@ -21,9 +20,8 @@ export class BreadcrumbService {
   breadcrumb = new BehaviorSubject<BreadCrumbEntry[]>([]);
 
   constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    private loginService: LoginService) {
+    router: Router,
+    loginService: LoginService) {
     loginService.subscribeForAuth(a => this.clear());
     router.events
       .pipe(

@@ -1,17 +1,19 @@
-<div class="left"
-  *ngIf="(showLeft | async) && hasMenu">
+<div *ngIf="(showLeft | async) && hasMenu"
+  [ngClass]="{
+    left: true,
+    filtersHidden: !filtersShown
+  }">
   <mat-card>
-    <mat-tab-group>
+    <mat-tab-group #tabGroup>
       <mat-tab [label]="(sideMenu.title | async) || generalMessages.menu()">
         <side-menu #sideMenu></side-menu>
       </mat-tab>
-      <mat-tab *ngIf="hasFilters"
-        [label]="generalMessages.menuFilters()">
+      <mat-tab *ngIf="hasFilters && filtersShown"
+        [label]="generalMessages.filtersTitle()">
         <div class="filters">
           <ng-container *ngTemplateOutlet="filtersTpl"></ng-container>
           <div class="actions">
-            <button mat-button
-              color="accent">Clear filters</button>
+            <button mat-raised-button>{{ generalMessages.filtersClear() }}</button>
           </div>
         </div>
       </mat-tab>
@@ -21,6 +23,7 @@
 <div class="page"
   [ngClass]="{
     standalone: !((showLeft | async) && hasMenu),
+    full: contentSize === 'full',
     medium: contentSize === 'medium',
     small: contentSize === 'small'
   }"
@@ -36,8 +39,10 @@
       class="header">
       <mat-card>
         <mat-card-content>
-          <breadcrumb></breadcrumb>
-          <h1 *ngIf="title != null && title.length > 0">{{ title }}</h1>
+          <page-title *ngIf="title != null && title.length > 0"
+            [pageLayout]="this"
+            [title]="title"
+            [hasFilters]="hasFilters"></page-title>
           <div class="header-wrapper">
             <ng-container *ngTemplateOutlet="headerTpl"></ng-container>
           </div>
@@ -48,8 +53,10 @@
       [ngClass]="{'tight': tightContent}">
       <mat-card>
         <mat-card-content>
-          <breadcrumb *ngIf="!hasHeader"></breadcrumb>
-          <h1 *ngIf="!hasHeader && title != null && title.length > 0">{{ title }}</h1>
+          <page-title *ngIf="!hasHeader && title != null && title.length > 0"
+            [pageLayout]="this"
+            [title]="title"
+            [hasFilters]="hasFilters"></page-title>
           <div class="content-wrapper">
             <ng-container *ngTemplateOutlet="contentTpl"></ng-container>
           </div>

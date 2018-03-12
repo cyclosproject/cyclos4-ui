@@ -14,7 +14,6 @@ import { DateFieldComponent } from 'app/shared/date-field.component';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseControlComponent } from 'app/shared/base-control.component';
 
-const MAX_INTEGER = 2147483647;
 const INPUT_TYPES = [CustomFieldTypeEnum.STRING, CustomFieldTypeEnum.INTEGER, CustomFieldTypeEnum.URL, CustomFieldTypeEnum.LINKED_ENTITY];
 const TEXTAREA_TYPES = [CustomFieldTypeEnum.TEXT, CustomFieldTypeEnum.RICH_TEXT];
 
@@ -77,8 +76,6 @@ export class CustomFieldInputComponent extends BaseControlComponent<string> impl
   private dynamicComponent: MatSelect;
 
   multiSelectControl: FormControl;
-
-  private validatorChangeCallback = () => { };
 
   constructor(
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
@@ -153,6 +150,5 @@ export class CustomFieldInputComponent extends BaseControlComponent<string> impl
     }
   }
   registerOnValidatorChange(fn: () => void): void {
-    this.validatorChangeCallback = fn;
   }
 }

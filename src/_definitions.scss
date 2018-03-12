@@ -7,6 +7,9 @@
 $primary: mat-palette($mat-blue, 600, 400, 700);
 $accent: mat-palette($mat-blue, 500, 400, 700);
 $warn: mat-palette($mat-red);
+$positive: mat-palette($mat-green);
+$negative: mat-palette($mat-red);
+
 
 // *** Angular Material theme ***
 $theme: mat-light-theme($primary, $accent, $warn);

@@ -1,12 +1,11 @@
 import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
 import {
-  CustomFieldValue, CustomField, CustomFieldTypeEnum, CustomFieldPossibleValue, CustomFieldDetailed,
+  CustomFieldValue, CustomField, CustomFieldTypeEnum, CustomFieldDetailed,
   LinkedEntityTypeEnum
 } from 'app/api/models';
 import { GeneralMessages } from 'app/messages/general-messages';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { ApiInterceptor } from 'app/core/api.interceptor';
 import { NextRequestState } from 'app/core/next-request-state';
 
 /** Types whose values are rendered directly */

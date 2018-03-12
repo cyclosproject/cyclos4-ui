@@ -1,9 +1,8 @@
 import {
-  Entity, AccountWithOwner, TransferType, AccountKind, TransactionView, User,
-  CustomFieldDetailed, PasswordInput, PasswordModeEnum, Transfer, Transaction, AccountHistoryResult, UserResult
+  Entity,
+  CustomFieldDetailed, PasswordInput, PasswordModeEnum, Transfer, Transaction, AccountHistoryResult
 } from 'app/api/models';
 import { environment } from 'environments/environment';
-import { GeneralMessages } from 'app/messages/general-messages';
 import { FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { AsyncValidatorFn } from '@angular/forms/src/directives/validators';
 import { AddressFieldEnum } from 'app/api/models/address-field-enum';

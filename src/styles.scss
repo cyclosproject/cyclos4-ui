@@ -147,6 +147,8 @@ input[type=number] {
 // Data tables
 .mat-header-cell {
   font-size: 14px;
+  color: mat-color($foreground, text);
+  opacity: 0.87;
 }
 .mat-header-row, .mat-row {
   padding: 4px 14px !important;
@@ -238,4 +240,12 @@ mat-icon.mat-96 {
 a.plain {
   text-decoration: none;
   color: map-get($foreground, text);
+}
+
+// Positive / negative amounts
+.negative {
+  color: mat-color($negative) !important;
+}
+.positive {
+  color: mat-color($positive) !important;
 }

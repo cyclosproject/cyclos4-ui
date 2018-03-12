@@ -6,6 +6,9 @@
   min-width: $left-area-width;
   max-width: $left-area-width;
 }
+:host /deep/ .filtersHidden .mat-ink-bar {
+  display: none;
+}
 
 :host /deep/ .left {
   .mat-tab-body-content {
@@ -41,10 +44,13 @@
 .page {
   max-width: $max-content-width;
 }
-.page.medium {
+.page.standalone.full, .page.standalone.full .mat-card {
+  max-width: inherit;
+}
+.page.standalone.medium {
   max-width: $medium-content-width;
 }
-.page.small {
+.page.standalone.small {
   max-width: $small-content-width;
 }
 
@@ -79,15 +85,6 @@
   box-shadow: none;
 }
 
-h1 {
-  font-size: 22px;
-  line-height: 24px;
-  opacity: 0.87;
-  border-bottom: 1px solid mat-color($foreground, divider);
-  padding: 16px;
-  margin: 0;
-}
-
 .content:not(.tight) .content-wrapper, .header-wrapper {
   padding: 16px;
 }
@@ -100,4 +97,8 @@ h1 {
 .lt-md :host h1 {
   padding-left: 0px;
   margin-bottom: 22px;
+}
+
+.filters .actions {
+  margin-top: 12px;
 }

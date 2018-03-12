@@ -6,7 +6,6 @@ import { UiKind, DataForUi } from 'app/api/models';
 import { Provider, APP_INITIALIZER, Injector } from '@angular/core';
 
 import { environment } from 'environments/environment';
-import { ApiInterceptor } from 'app/core/api.interceptor';
 import { HttpErrorResponse } from '@angular/common/http/src/response';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
 import { NextRequestState } from 'app/core/next-request-state';

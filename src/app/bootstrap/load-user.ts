@@ -1,7 +1,6 @@
 import { Provider, APP_INITIALIZER, Injector } from '@angular/core';
 import { AuthService } from 'app/api/services';
 import { LoginService } from 'app/core/login.service';
-import { ApiHelper } from 'app/shared/api-helper';
 import { NextRequestState } from 'app/core/next-request-state';
 import { ErrorHandlerService } from '../core/error-handler.service';
 import { HttpErrorResponse } from '@angular/common/http';

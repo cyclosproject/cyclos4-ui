@@ -1,7 +1,6 @@
 import { Component, Injector, ChangeDetectionStrategy, Input } from '@angular/core';
 import { BaseBankingComponent } from 'app/banking/base-banking.component';
 import { TransactionView, AuthorizationStatusEnum } from 'app/api/models';
-import { ApiHelper } from 'app/shared/api-helper';
 
 /**
  * Displays a confirmation that the payment was performed

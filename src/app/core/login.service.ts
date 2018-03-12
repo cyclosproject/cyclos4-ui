@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Auth, User } from 'app/api/models';
 import { AuthService } from 'app/api/services/auth.service';
-import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 import { Router } from '@angular/router';
 import { ApiHelper } from 'app/shared/api-helper';
-import { ApiInterceptor } from 'app/core/api.interceptor';
 import { Observable } from 'rxjs/Observable';
 import { tap } from 'rxjs/operators/tap';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';

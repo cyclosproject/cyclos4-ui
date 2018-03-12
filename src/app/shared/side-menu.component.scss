@@ -21,7 +21,7 @@ a.account .balance {
   text-align: right;
   white-space: nowrap;
   opacity: 1;
-  color: mat-color($accent, darker);
+  font-weight: 500;
 }
 :host /deep/ a.account .mat-button-wrapper {
   align-items: center;

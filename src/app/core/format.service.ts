@@ -229,8 +229,9 @@ export class FormatService {
    * Formats the given number (or string) as number according to the current settings
    * @param num The input number or string representation of a number
    * @param scale The number of decimal digits
+   * @param forceSign If true will output + for positive numbers
    */
-  formatAsNumber(num: number | string, scale: number): string {
+  formatAsNumber(num: number | string, scale: number, forceSign: boolean = false): string {
     const fixed = this.numberToFixed(num, scale);
     if (fixed == null) {
       return '';
@@ -260,6 +261,8 @@ export class FormatService {
     let intFmt = integers.join(this.groupingSeparator);
     if (wasNegative) {
       intFmt = '-' + intFmt;
+    } else if (forceSign) {
+      intFmt = '+' + intFmt;
     }
     if (decPart) {
       return intFmt + this.decimalSeparator + decPart;
@@ -272,8 +275,9 @@ export class FormatService {
    * Formats a number as currency
    * @param currency The currency to format
    * @param num The number to format
+   * @param forceSign If true will output + for positive numbers
    */
-  formatAsCurrency(currency: Currency, num: number | string): string {
+  formatAsCurrency(currency: Currency, num: number | string, forceSign: boolean = false): string {
     if (num == null || num === '') {
       return '';
     }
@@ -281,6 +285,6 @@ export class FormatService {
     const decimals = currency.decimalDigits || 2;
     const prefix = currency.prefix || '';
     const suffix = currency.suffix || '';
-    return prefix + this.formatAsNumber(num, decimals) + suffix;
+    return prefix + this.formatAsNumber(num, decimals, forceSign) + suffix;
   }
 }

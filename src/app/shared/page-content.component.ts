@@ -1,6 +1,4 @@
-import { Component, Input, Injector, ChangeDetectionStrategy } from '@angular/core';
-import { BaseComponent } from 'app/shared/base.component';
-import { BreadcrumbService } from '../core/breadcrumb.service';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 
 /**
  * The main content in a page layout

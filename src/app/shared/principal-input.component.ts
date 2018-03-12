@@ -49,8 +49,6 @@ export class PrincipalInputComponent extends BaseControlComponent<string> implem
   @ViewChild('customFieldInput')
   private customFieldInput: CustomFieldInputComponent;
 
-  private validatorChangeCallback = () => { };
-
   constructor(
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer
   ) {
@@ -87,6 +85,5 @@ export class PrincipalInputComponent extends BaseControlComponent<string> implem
     return null;
   }
   registerOnValidatorChange(fn: () => void): void {
-    this.validatorChangeCallback = fn;
   }
 }
