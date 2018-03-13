@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Injector, Input } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Injector, Input, HostBinding } from '@angular/core';
 import { BaseUsersComponent } from 'app/users/base-users.component';
 import { AddressView, Country } from 'app/api/models';
 
@@ -14,6 +14,8 @@ export class ViewAddressDetailsComponent extends BaseUsersComponent {
   constructor(injector: Injector) {
     super(injector);
   }
+
+  @HostBinding('class') hostClass = 'has-label-value';
 
   @Input() address: AddressView;
   @Input() countries: Country[];

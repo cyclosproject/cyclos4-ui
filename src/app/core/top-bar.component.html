@@ -1,18 +1,29 @@
 <layout-bar>
-  <button class="menu-toggle" fxHide.gt-sm mat-icon-button (click)="sidenav ? sidenav.toggle() : null">
+  <button class="menu-toggle"
+    fxHide.gt-sm
+    mat-icon-button
+    (click)="sidenav ? sidenav.toggle() : null">
     <mat-icon ngClass="mat-24">menu</mat-icon>
   </button>
-  <img class="logo" src="images/logo.png">
-  <div class="title" fxFlex="grow">
-    <span [fxHide.lt-md]="sidenav?.opened">
+  <img class="logo"
+    src="images/logo.png">
+  <div class="title"
+    fxFlex="grow">
+    <span [fxHide.lt-md]="hideTitle | async">
       {{ format.appTitle }}
     </span>
   </div>
-  <a #personalMenuToggle *ngIf="user != null" href="#"
-    class="personalMenuToggle" fxLayout="row" fxLayoutAlign="center center"
+  <a #personalMenuToggle
+    *ngIf="user != null"
+    href="#"
+    class="personalMenuToggle"
+    fxLayout="row"
+    fxLayoutAlign="center center"
     (click)="personalMenuToggleClick($event)">
     <avatar [image]="user.image"></avatar>
-    <span fxHide.xs class="user">{{ user.display }}</span>
-    <mat-icon fxHide.xs ngClass="mat-24">arrow_drop_down</mat-icon>
+    <span fxHide.xs
+      class="user">{{ user.display }}</span>
+    <mat-icon fxHide.xs
+      ngClass="mat-24">arrow_drop_down</mat-icon>
   </a>
 </layout-bar>

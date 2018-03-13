@@ -1,5 +1,8 @@
 @import 'src/definitions';
 
+a, a:hover {
+  text-decoration: none;
+}
 .container {
   position: absolute;
   z-index: 99999;

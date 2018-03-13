@@ -43,7 +43,7 @@ export class HomeComponent extends BaseComponent {
         });
     } else {
       // TODO: Load the data for dashboard
-      this.loaded.next(true);
+      setTimeout(() => this.loaded.next(true), 300);
     }
   }
 }

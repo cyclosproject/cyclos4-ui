@@ -46,7 +46,7 @@ export class MenuBarComponent extends BaseComponent {
 
   onClick(event: MouseEvent, root: RootMenuEntry) {
     const entry = root.entries[0];
-    if (entry) {
+    if (entry && entry.url != null) {
       // Whenever a menu is clicked, clear the state, because a new navigation path starts
       this.stateManager.clear();
       this.breadcrumb.clear();

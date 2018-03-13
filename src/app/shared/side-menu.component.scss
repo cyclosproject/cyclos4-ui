@@ -23,6 +23,7 @@ a.account .balance {
   opacity: 1;
   font-weight: 500;
 }
+
 :host /deep/ a.account .mat-button-wrapper {
   align-items: center;
   flex: 1;
@@ -45,6 +46,6 @@ a.account, :host /deep/ menu-item a {
 :host /deep/ a:not(.active) .mat-icon {
   opacity: 0.60 !important;
 }
-:host /deep/ a:hover {
+:host /deep/ a:hover:not(.active) {
   background: mat-color($background, hover) !important;
 }

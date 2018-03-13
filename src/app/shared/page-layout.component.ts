@@ -4,6 +4,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { MatTabGroup } from '@angular/material';
 import { FormGroup } from '@angular/forms';
+import { cloneDeep } from 'lodash';
 
 /**
  * Possible sizes for the main content
@@ -30,9 +31,6 @@ export class PageLayoutComponent extends BaseComponent {
 
   @Input()
   hasHeader = false;
-
-  @Input()
-  hasFilters = false;
 
   @Input()
   filtersForm: FormGroup;
@@ -68,17 +66,24 @@ export class PageLayoutComponent extends BaseComponent {
     return this._title;
   }
 
+  get hasFilters(): boolean {
+    return this.filtersForm != null;
+  }
+
   showLeft = new BehaviorSubject<Boolean>(false);
 
   ngOnInit() {
     super.ngOnInit();
     if (this.filtersForm != null) {
-      // Copy the initial form state
-      this.initialFormState = this.filtersForm.value;
-      if (this.loaded != null) {
-        // Also, once loaded, copy the state again because it can be modified before fully loading the component
-        this.subscriptions.push(this.loaded.subscribe(() => {
-          this.initialFormState = this.filtersForm.value;
+      if (this.loaded == null) {
+        // No loaded notification: clone the form value right away
+        this.initialFormState = cloneDeep(this.filtersForm.value);
+      } else {
+        // There's a loaded notification: clone the form state right after finishing loading
+        this.subscriptions.push(this.loaded.subscribe(done => {
+          if (done && this.initialFormState == null) {
+            this.initialFormState = cloneDeep(this.filtersForm.value);
+          }
         }));
       }
     }

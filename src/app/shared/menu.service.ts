@@ -136,7 +136,9 @@ export class MenuService {
       root.entries.push(new MenuEntry(menu, url, icon, label, showIn));
     };
     // Add the submenus
-    add(Menu.HOME, '/', 'home', this.generalMessages.menuHome());
+    add(Menu.HOME, '/',
+      user == null ? 'home' : 'dashboard',
+      user == null ? this.generalMessages.menuHome() : this.generalMessages.menuDashboard());
     if (user == null) {
       // Guest
       const registrationGroups = this.registrationGroups.data.value || [];
@@ -181,14 +183,14 @@ export class MenuService {
 
       // Personal
       add(Menu.MY_PROFILE, '/users/my-profile', 'account_box',
-        this.generalMessages.menuPersonalProfile(), [MenuType.SIDENAV, MenuType.SIDE]);
+        this.generalMessages.menuPersonalProfile(), [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
       if (users.contacts) {
         add(Menu.CONTACTS, '/personal/contacts', 'contacts',
-          this.generalMessages.menuPersonalContacts(), [MenuType.SIDENAV, MenuType.SIDE]);
+          this.generalMessages.menuPersonalContacts(), [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
       }
       if ((permissions.passwords || {}).manage) {
         add(Menu.PASSWORDS, '/personal/passwords', 'lock',
-          this.generalMessages.menuPersonalPasswords(), [MenuType.SIDENAV, MenuType.SIDE]);
+          this.generalMessages.menuPersonalPasswords(), [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
       }
       add(Menu.LOGOUT, null, 'exit_to_app',
         this.generalMessages.menuPersonalLogout());

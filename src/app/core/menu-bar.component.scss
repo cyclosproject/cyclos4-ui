@@ -25,6 +25,8 @@
 :host /deep/ .mat-tab-link {
   height: 60px !important;
   font-size: 1.2em;
+  padding: 10px !important;
+  min-width: 150px;
 }
 :host /deep/ .mat-icon {
   font-weight: 400;

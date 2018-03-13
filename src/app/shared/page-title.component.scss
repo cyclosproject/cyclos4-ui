@@ -9,6 +9,10 @@
   float: right;
   margin: 8px;
 }
+:host /deep/ .showFilters .mat-icon {
+  position: relative;
+  top: -1px;
+}
 
 h1 {
   font-size: 22px;

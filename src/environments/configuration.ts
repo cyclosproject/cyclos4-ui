@@ -7,7 +7,7 @@ const API_URL = 'http://localhost:8888/api';
 // Application title
 const APP_TITLE = 'Cyclos Local';
 // The application title displayed on the title bar inside the menu on small devices
-const APP_TITLE_MENU = 'Cyclos';
+const APP_TITLE_MENU = 'Cyclos menu';
 
 // Available choices for number of results in a search. The default is the smallest one
 const SEARCH_PAGE_SIZES = [40, 100, 200];

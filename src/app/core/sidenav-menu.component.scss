@@ -4,6 +4,10 @@
   overflow: hidden;
   margin: 0;
   padding: 0;
+  width: 100%;
+}
+:host /deep/ .mat-button-focus-overlay {
+  background-color: transparent !important;
 }
 
 :host /deep/ .outer {
@@ -17,20 +21,40 @@
   font-size: 20px;
 }
 
-.rootContainer {
-  margin-top: 22px;
+.gt-xs :host /deep/ .rootContainer {
+  margin-top: 12px;
 }
 .rootMenu {
   font-weight: 500;
-  padding-top: 14px;
+  padding-top: 18px;
   padding-left: 22px;
   padding-bottom: 4px;
+  margin-top: 8px;
 }
 .rootMenu:not(.first) {
   border-top: 1px solid mat-color($foreground, divider);
 }
 
+:host /deep/ .rootContainer a {
+  padding-top: 1px;
+  padding-bottom: 1px;
+}
+.rootContainer.guest .rootMenu {
+  display: none;
+}
+.rootContainer.guest menu-item {
+  border-bottom: 1px solid mat-color($foreground, divider);
+}
+:host /deep/ .rootContainer.guest a {
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
 :host /deep/ menu-item a {
   width: 100%;
   padding: 0 20px;
+}
+
+:host /deep/ menu-item.home {
+  margin-top: 8px;
 }

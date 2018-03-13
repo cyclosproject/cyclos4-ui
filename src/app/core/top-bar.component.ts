@@ -2,6 +2,7 @@ import { Component, Input, ElementRef, ViewChild, ChangeDetectionStrategy, Injec
 import { MatSidenav } from '@angular/material';
 import { BaseComponent } from 'app/shared/base.component';
 import { User } from 'app/api/models';
+import { Subject } from 'rxjs/Subject';
 
 /**
  * The top bar with the application title, main menu, personal menu, etc.
@@ -26,6 +27,16 @@ export class TopBarComponent extends BaseComponent {
 
   @ViewChild('personalMenuToggle')
   personalMenuToggle: ElementRef;
+
+  hideTitle = new Subject<boolean>();
+
+  ngOnInit() {
+    super.ngOnInit();
+    if (this.sidenav) {
+      this.subscriptions.push(this.sidenav.openedStart.subscribe(() => this.hideTitle.next(true)));
+      this.subscriptions.push(this.sidenav.closedStart.subscribe(() => this.hideTitle.next(false)));
+    }
+  }
 
   personalMenuToggleClick(event: MouseEvent) {
     this.togglePersonalMenu.emit(this.personalMenuToggle.nativeElement);

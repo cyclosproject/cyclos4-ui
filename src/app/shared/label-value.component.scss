@@ -1,9 +1,9 @@
 @import 'src/definitions';
 
 :host {
-  margin-bottom: 16px;
   display: flex;
 }
+
 .gt-xs :host {
   flex-direction: row !important;
 }

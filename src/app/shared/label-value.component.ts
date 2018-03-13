@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy, HostBinding } from '@angular/core';
 
 /**
  * Displays a label / value pair
@@ -11,6 +11,8 @@ import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core
 })
 export class LabelValueComponent implements OnInit {
   constructor() { }
+
+  @HostBinding('class') hostClass = 'has-label-value';
 
   @Input() label: string;
 

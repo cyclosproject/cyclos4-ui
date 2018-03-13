@@ -48,6 +48,7 @@
     <ng-container *ngIf="(user.contactInfos || []).length > 0">
       <h2>{{ usersMessages.userContactInfos() }}</h2>
       <ng-container *ngFor="let contactInfo of user.contactInfos">
+        <h3>{{ contactInfo.name }}</h3>
         <image-viewer *ngIf="contactInfo.image"
           [profile]="true"
           [image]="contactInfo.image"></image-viewer>

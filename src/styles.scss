@@ -57,14 +57,17 @@ h2 {
 h3 {
   font-size: 14px;
   line-height: 14px;
-  margin: 16px 0 16px 0;
+  margin: 24px 0 16px 0;
   padding: 0;
   border: 0;
+  font-weight: 500;
+}
+h2 + h3 {
+  margin-top: 16px;
 }
 h1.no-bottom-margin, h2.no-bottom-margin, h3.no-bottom-margin {
   margin-bottom: 0 !important;
 }
-
 
 // Forms
 .gt-xs form {
@@ -120,6 +123,13 @@ input[type=number] {
   font-size: 12px;
 }
 
+.has-label-value {
+  display: block;
+}
+.has-label-value + .has-label-value {
+  margin-top: 16px;
+}
+
 // Tabs
 .mat-tab-group.mat-primary .mat-tab-label:focus,
 .mat-tab-group.mat-primary .mat-tab-link:focus,
@@ -160,10 +170,14 @@ input[type=number] {
   cursor: pointer;
 }
 .mat-table .mat-icon {
-  opacity: 0.4;
+  opacity: 0.25;
 }
 mat-cell.avatar, mat-header-cell.avatar {
   max-width: 48px;
+}
+mat-cell.avatar avatar .container {
+  position: relative;
+  left: 1px;
 }
 mat-cell.selection, mat-header-cell.selection {
   max-width: 32px;
@@ -216,6 +230,11 @@ mat-icon.mat-36 {
   width: 36px;
   height: 36px;
 }
+mat-icon.mat-44 {
+  font-size: 44px;
+  width: 44px;
+  height: 44px;
+}
 mat-icon.mat-48 {
   font-size: 48px;
   width: 48px;
@@ -244,8 +263,8 @@ a.plain {
 
 // Positive / negative amounts
 .negative {
-  color: mat-color($negative) !important;
+  color: mat-color($negative, $balance-hue) !important;
 }
 .positive {
-  color: mat-color($positive) !important;
+  color: mat-color($positive, $balance-hue) !important;
 }

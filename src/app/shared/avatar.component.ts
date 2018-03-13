@@ -12,6 +12,12 @@ export const SIZES: { [key: string]: number } = {
   'large': 48,
   'huge': 96
 };
+export const ICON_SIZES: { [key: string]: number } = {
+  'small': 24,
+  'medium': 44,
+  'large': 48,
+  'huge': 96
+};
 
 /**
  * Renders an avatar (image within a circle).
@@ -109,7 +115,7 @@ export class AvatarComponent implements OnInit {
   }
 
   get iconClass(): string {
-    return 'mat-' + SIZES[this.size];
+    return 'mat-' + ICON_SIZES[this.size];
   }
 
   constructor(private svgIconRegistry: SvgIconRegistry) {

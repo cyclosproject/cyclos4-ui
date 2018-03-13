@@ -13,8 +13,8 @@
   font-size: 20px;
 }
 .logo {
-  max-height: 36px;
-  margin-right: 22px;
+  max-height: 28px;
+  margin: 0 12px;
 }
 :host /deep/ .outer {
   background-color: mat-color($primary);
@@ -26,6 +26,9 @@
 .lt-md :host /deep/ .outer {
   padding-top: 8px;
   padding-bottom: 8px;
+}
+:host /deep/ .inner {
+  align-items: center;
 }
 .menu-toggle {
   left: -10px;
