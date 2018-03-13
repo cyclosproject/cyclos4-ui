@@ -1,9 +1,11 @@
 <ng-container [formGroup]="userForm">
   <div *ngIf="isSearch">
     <div class="form-info">{{ bankingMessages.paymentUserSearch() }}</div>
-    <user-selection [dataForSearch]="dataForSearch"
-      formControlName="user"
-      focused></user-selection>
+    <div class="search">
+      <user-selection [dataForSearch]="dataForSearch"
+        formControlName="user"
+        focused></user-selection>
+    </div>
   </div>
   <div *ngIf="isContacts">
     <div class="form-info">{{ bankingMessages.paymentUserContacts() }}</div>

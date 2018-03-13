@@ -11,8 +11,6 @@
 }
 
 :host /deep/ .outer {
-  background-color: mat-color($primary);
-  color: mat-color($primary, default-contrast);
   padding: 16px 0 17px 0;
 }
 :host /deep/ .title {
@@ -32,7 +30,8 @@
   margin-top: 8px;
 }
 .rootMenu:not(.first) {
-  border-top: 1px solid mat-color($foreground, divider);
+  border-top-width: 1px;
+  border-top-style: solid;
 }
 
 :host /deep/ .rootContainer a {
@@ -43,7 +42,8 @@
   display: none;
 }
 .rootContainer.guest menu-item {
-  border-bottom: 1px solid mat-color($foreground, divider);
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
 }
 :host /deep/ .rootContainer.guest a {
   padding-top: 12px;

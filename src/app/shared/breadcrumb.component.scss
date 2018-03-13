@@ -3,6 +3,9 @@
 .breadcrumb {
   padding: 16px 16px 0;
 }
+.xs :host /deep/ .breadcrumb {
+  padding: 24px 0 12px 0;
+}
 .lt-md :host .breadcrumb {
   padding-left: 0;
   padding-top: 0;
@@ -10,7 +13,6 @@
 a {
   display: block;
   text-decoration: none;
-  color: mat-color($accent, darker);
   padding-top: 3px;
   white-space: nowrap;
 }

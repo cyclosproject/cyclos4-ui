@@ -1,0 +1,17 @@
+@import '~@angular/material/theming';
+
+@mixin breadcrumb-component-theme($theme) {
+  $foreground: map-get($theme, foreground);
+  $accent: map-get($theme, accent);
+
+  breadcrumb {
+    a {
+      color: mat-color($accent, darker);
+    }
+
+    .current, .divider {
+      color: map-get($foreground, text)
+    }
+  }
+}
+

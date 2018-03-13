@@ -75,8 +75,6 @@
           <a [routerLink]="path(row)">
             <div class="cell-main">{{ subjectName(row) }}</div>
             <div class="cell-date">{{ row.date | dateTime }}</div>
-            <div *ngIf="row.transactionNumber"
-              class="cell-date">{{ row.transactionNumber }}</div>
             <div *ngIf="row.description"
               class="cell-small">{{ row.description }}</div>
           </a>

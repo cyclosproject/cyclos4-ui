@@ -1,0 +1,18 @@
+@import '~@angular/material/theming';
+
+@mixin label-value-component-theme($theme) {
+  $foreground: map-get($theme, foreground);
+  $accent: map-get($theme, accent);
+  $is-dark: map-get($theme, is-dark);
+
+  label-value {
+    .label {
+      color: map-get($foreground, secondary-text);
+    }
+
+    a {
+      color: mat-color($accent, if($is-dark, lighter, darker));
+    }
+  }
+}
+

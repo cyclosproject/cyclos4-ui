@@ -1,0 +1,25 @@
+@import '~@angular/material/theming';
+
+@mixin side-menu-component-theme($theme) {
+  $foreground: map-get($theme, foreground);
+  $background: map-get($theme, background);
+  $primary: map-get($theme, primary);
+  $is-dark: map-get($theme, is-dark);
+  $side-menu-hue: if($is-dark, 600, 50);
+
+  side-menu {
+    a {
+      color: mat-color($foreground, text); 
+      border-color: mat-color($foreground, divider) !important;
+    }
+
+    a.active {
+      color: mat-contrast($primary, $side-menu-hue);
+      background-color: mat-color($primary, $side-menu-hue);
+    }
+
+    a:hover:not(.active) {
+      background: mat-color($background, hover) !important;
+    }
+  }
+}

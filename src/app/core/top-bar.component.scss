@@ -17,11 +17,8 @@
   margin: 0 12px;
 }
 :host /deep/ .outer {
-  background-color: mat-color($primary);
   padding: 16px;
-}
-:host /deep/ .outer, .personalMenuToggle {
-  color: rgba(mat-color($primary, default-contrast), 1);
+  min-height: 36px;
 }
 .lt-md :host /deep/ .outer {
   padding-top: 8px;

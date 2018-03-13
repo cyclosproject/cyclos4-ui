@@ -1,33 +1,43 @@
 <div fxLayout="column">
-<mat-form-field floatPlaceholder="never" fxFlex="grow">
-  <input matInput #keywordsInput type="text" [focused]="focused"
-    (keyup)="onKeywords.next($event.target.value)"
-    [placeholder]="generalMessages.keywords()">
-</mat-form-field>
+  <mat-form-field floatPlaceholder="never"
+    fxFlex="grow">
+    <input matInput
+      #keywordsInput
+      type="text"
+      [focused]="focused"
+      (keyup)="onKeywords.next($event.target.value)"
+      [placeholder]="generalMessages.keywords()">
+  </mat-form-field>
 
-<mat-table *ngIf="showTable | async; else noKeywords" [dataSource]="dataSource" fxFlex="grow">
-  <ng-container matColumnDef="radio">
-    <mat-header-cell *matHeaderCellDef class="selection"></mat-header-cell>
-    <mat-cell *matCellDef="let row" class="selection">
-      <mat-radio-group [formControl]="formControl">
-        <mat-radio-button [value]="row.id"></mat-radio-button>
-      </mat-radio-group>
-    </mat-cell>
-  </ng-container>
+  <mat-table *ngIf="showTable | async; else noKeywords"
+    [dataSource]="dataSource"
+    fxFlex="grow">
+    <ng-container matColumnDef="radio">
+      <mat-header-cell *matHeaderCellDef
+        class="selection"></mat-header-cell>
+      <mat-cell *matCellDef="let row"
+        class="selection">
+        <mat-radio-group [formControl]="formControl">
+          <mat-radio-button [value]="row.id"></mat-radio-button>
+        </mat-radio-group>
+      </mat-cell>
+    </ng-container>
 
-  <ng-container matColumnDef="user">
-    <mat-header-cell *matHeaderCellDef>{{ generalMessages.user() }}</mat-header-cell>
-    <mat-cell *matCellDef="let row">
-      <a href="#" class="plain" (click)="$event.preventDefault();value = row.id">{{ row.display }}</a>
-    </mat-cell>
-  </ng-container>
+    <ng-container matColumnDef="user">
+      <mat-header-cell *matHeaderCellDef>{{ generalMessages.user() }}</mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <a href="#"
+          class="plain"
+          (click)="$event.preventDefault();value = row.id">{{ row.display }}</a>
+      </mat-cell>
+    </ng-container>
 
-  <mat-header-row *matHeaderRowDef="['radio', 'user']"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: ['radio', 'user'];"></mat-row>
-</mat-table>
+    <mat-header-row *matHeaderRowDef="[]"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: ['radio', 'user'];"></mat-row>
+  </mat-table>
 
-<ng-template #noKeywords>
-  {{ generalMessages.searchUserNoKeywords() }}
-</ng-template>
+  <ng-template #noKeywords>
+    {{ generalMessages.searchUserNoKeywords() }}
+  </ng-template>
 
 </div>

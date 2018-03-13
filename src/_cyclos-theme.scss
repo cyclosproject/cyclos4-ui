@@ -1,0 +1,82 @@
+@import 'src/definitions';
+@import 'src/app/core/menu-bar.component-theme';
+@import 'src/app/core/personal-menu.component-theme';
+@import 'src/app/core/sidenav-menu.component-theme';
+@import 'src/app/core/top-bar.component-theme';
+@import 'src/app/shared/side-menu.component-theme';
+@import 'src/app/shared/breadcrumb.component-theme';
+@import 'src/app/shared/page-title.component-theme';
+@import 'src/app/shared/label-value.component-theme';
+@import 'src/app/shared/image-viewer.component-theme';
+@import 'src/app/login/login.component-theme';
+@import 'src/app/banking/accounts/account-history.component-theme';
+
+// Include all component themes
+@mixin cyclos-theme($theme) {
+  @include angular-material-theme($theme);
+  @include covalent-theme($theme);
+
+  $foreground: map-get($theme, foreground);
+  $background: map-get($theme, background);
+  $primary: map-get($theme, primary);
+  $accent: map-get($theme, accent);
+  $warn: map-get($theme, warn);
+  $is-dark: map-get($theme, is-dark);
+
+  /******** Include each component theme *******/
+  @include menu-bar-component-theme($theme);
+  @include personal-menu-component-theme($theme);
+  @include sidenav-menu-component-theme($theme);
+  @include top-bar-component-theme($theme);
+  @include side-menu-component-theme($theme);
+  @include breadcrumb-component-theme($theme);
+  @include page-title-component-theme($theme);
+  @include label-value-component-theme($theme);
+  @include image-viewer-component-theme($theme);
+  @include login-component-theme($theme);
+  @include account-history-component-theme($theme);
+
+  /******* Global definitions that depend on colors *******/
+
+  body.gt-sm, body.gt-sm .mat-drawer-container {
+    background-color: if($is-dark, mat-color($background, background), #f3f3f3) !important;
+  }
+  body.lt-md, body.lt-md .mat-drawer-container {
+    background-color: if($is-dark, map-get($background, card), white) !important;
+  }
+
+  h1, h2 {
+    border-bottom-color: mat-color($foreground, divider);
+  }
+
+  h2 {
+    color: mat-color($accent, if($is-dark, 200, 800));
+  }
+
+  h1, h3 {
+    color: mat-color($foreground, text);
+  }
+
+  a.plain {
+    color: map-get($foreground, text);
+  }
+
+  $balance-hue: if($is-dark, A100, 800);
+  .negative {
+    color: mat-color($negative, $balance-hue) !important;
+  }
+  .positive {
+    color: mat-color($positive, $balance-hue) !important;
+  }
+
+  .mat-header-cell {
+    color: mat-color($foreground, text);
+  }
+  .mat-table a, .mat-table a:hover {
+    color: mat-color($foreground, text);
+  }
+  .mat-row:hover {
+    background: mat-color($background, hover);
+  }
+
+}

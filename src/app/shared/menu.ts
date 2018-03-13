@@ -53,6 +53,7 @@ export module Menu {
   export const SEARCH_MARKETPLACE = new Menu(RootMenu.MARKETPLACE);
 
   // Personal
+  export const SETTINGS = new Menu(RootMenu.PERSONAL);
   export const CONTACTS = new Menu(RootMenu.PERSONAL);
   export const MY_PROFILE = new Menu(RootMenu.PERSONAL);
   export const PASSWORDS = new Menu(RootMenu.PERSONAL);

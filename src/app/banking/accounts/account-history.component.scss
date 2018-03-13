@@ -30,6 +30,7 @@
 }
 .indicator-separator {
   margin: 0 16px;
-  border-left: 1px solid mat-color($foreground, divider);
+  border-left-width: 1px;
+  border-left-style: solid;
   width: 1px;
 }

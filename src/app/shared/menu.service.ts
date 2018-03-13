@@ -184,6 +184,8 @@ export class MenuService {
       // Personal
       add(Menu.MY_PROFILE, '/users/my-profile', 'account_box',
         this.generalMessages.menuPersonalProfile(), [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
+      add(Menu.SETTINGS, '/settings', 'settings',
+        this.generalMessages.menuPersonalSettings(), [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
       if (users.contacts) {
         add(Menu.CONTACTS, '/personal/contacts', 'contacts',
           this.generalMessages.menuPersonalContacts(), [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);

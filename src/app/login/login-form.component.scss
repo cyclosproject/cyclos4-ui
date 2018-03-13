@@ -1,3 +1,9 @@
 :host /deep/ .mat-input-element {
   margin-bottom: 7px;
 }
+
+.xs :host {
+  max-width: 70vw;
+  display: block;
+  margin: 20px auto 0 auto;
+}

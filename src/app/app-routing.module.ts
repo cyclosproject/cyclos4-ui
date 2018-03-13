@@ -9,6 +9,7 @@ import { DataForLoginResolve } from 'app/data-for-login.resolve';
 import { LoggedUserGuard } from 'app/logged-user-guard';
 import { Menu } from 'app/shared/menu';
 import { RegistrationGroupsResolve } from 'app/registration-groups.resolve';
+import { SettingsComponent } from 'app/settings/settings.component';
 
 const rootRoutes: Routes = [
   {
@@ -35,6 +36,13 @@ const rootRoutes: Routes = [
     },
     data: {
       menu: Menu.LOGIN
+    }
+  },
+  {
+    path: 'settings',
+    component: SettingsComponent,
+    data: {
+      menu: Menu.SETTINGS
     }
   },
   {

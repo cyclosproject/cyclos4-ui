@@ -1,14 +1,16 @@
-<div class="label"
-  [fxFlex.gt-xs]="'0 1 ' + labelWidth"
-  [ngStyle]="{'width': labelWidth}">{{ label }}</div>
-<div *ngIf="value != null && valueType == 'plain'"
-  class="value">{{ value }}</div>
-<div *ngIf="value != null && valueType == 'break'"
-  class="value break-nl">{{ value }}</div>
-<div *ngIf="value != null && valueType == 'html'"
-  class="value"
-  [innerHTML]="value | trust"></div>
-<div *ngIf="value == null"
-  class='value'>
-  <ng-content></ng-content>
+<div class="label-value"
+  fxLayout="row">
+  <div class="label"
+    [ngStyle]="{'width': labelWidth}">{{ label }}</div>
+  <div *ngIf="value != null && valueType == 'plain'"
+    class="value">{{ value }}</div>
+  <div *ngIf="value != null && valueType == 'break'"
+    class="value break-nl">{{ value }}</div>
+  <div *ngIf="value != null && valueType == 'html'"
+    class="value"
+    [innerHTML]="value | trust"></div>
+  <div *ngIf="value == null"
+    class='value'>
+    <ng-content></ng-content>
+  </div>
 </div>

@@ -9,11 +9,9 @@ a, a:hover {
   transition: opacity 400ms;
 }
 .gt-xs :host .details-container {
-  min-width: 220px;  
+  min-width: 220px;
 }
 .popup {
-  background-color: map-get($background, card);
-  color: map-get($foreground, text);
   padding: 20px;
 }
 .xs :host .popup {
@@ -27,7 +25,7 @@ a, a:hover {
 }
 .display, .principal {
   white-space: nowrap;
-} 
+}
 .avatar-container {
   width: 96px;
   margin-right: 20px;

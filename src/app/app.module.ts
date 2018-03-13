@@ -13,6 +13,7 @@ import { CoreModule } from 'app/core/core.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import 'hammerjs';
 import { LOAD_REGISTRATION_GROUPS } from 'app/bootstrap/load-registration-groups';
+import { SettingsModule } from './settings/settings.module';
 
 /**
  * Root application module
@@ -26,11 +27,11 @@ import { LOAD_REGISTRATION_GROUPS } from 'app/bootstrap/load-registration-groups
     CoreModule,
     SharedModule,
     BrowserAnimationsModule,
+    AppRoutingModule,
 
-    // LoginModule is here to make it eagerly loaded
+    // Eagerly loaded modules
     LoginModule,
-
-    AppRoutingModule
+    SettingsModule
   ],
   providers: [
     INIT_API_CONFIGURATION,

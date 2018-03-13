@@ -1,26 +1,11 @@
 @import 'src/definitions';
 
-:host {
-  display: flex;
-}
-
-.gt-xs :host {
-  flex-direction: row !important;
-}
-.xs :host {
-  flex-direction: column !important;
-}
-
 .label {
   font-weight: 500;
-  color: map-get($foreground, secondary-text);
 }
 
-.gt-xs :host .value {
+.value {
   margin-left: 12px;
-}
-.xs :host .label {
-  width: inherit !important;
 }
 
 .break-nl {
@@ -28,7 +13,6 @@
 }
 
 :host /deep/ a {
-  color: mat-color($accent, darker);
   text-decoration: none;
 }
 :host /deep/ a:hover {

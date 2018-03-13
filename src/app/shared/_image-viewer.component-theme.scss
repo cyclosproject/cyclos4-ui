@@ -1,0 +1,11 @@
+@import '~@angular/material/theming';
+
+@mixin image-viewer-component-theme($theme) {
+  $background: map-get($theme, background);
+
+  image-viewer {
+    .profile {
+      background: mat-color($background, card);
+    }
+  }
+}

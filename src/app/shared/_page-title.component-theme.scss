@@ -1,0 +1,16 @@
+@import '~@angular/material/theming';
+
+@mixin page-title-component-theme($theme) {
+  $foreground: map-get($theme, foreground);
+
+  page-title {
+    .wrapper {
+      color: mat-color($foreground, divider);
+    }
+
+    .showFilters {
+      color: mat-color($foreground, text);
+    }
+  }
+}
+

@@ -1,12 +1,9 @@
 @import 'src/definitions';
+@import 'src/cyclos-theme';
 @import '~@covalent/core/theming/all-theme';
 
 // Angular material theme with variables defined in _definitions.scss
 @include mat-core();
-@include angular-material-theme($theme);
-
-// Teradata covalent theme
-@include covalent-theme($theme);
 
 // Application style
 * {
@@ -16,18 +13,15 @@
 
 html {
   overflow-y: scroll;
+  @include cyclos-theme($light-theme);
+}
+
+html.dark {
+  @include cyclos-theme($dark-theme);
 }
 
 .clear-floats {
   clear: both;
-}
-
-// Body
-body.gt-sm {
-  background-color: mat-color($background, background);
-}
-body.lt-md, .lt-md .mat-drawer-container {
-  background-color: map-get($background, card);
 }
 
 .mat-card {
@@ -39,20 +33,20 @@ h1, h2, h3 {
   opacity: 0.87;
   font-weight: 400;
 }
+h1, h2 {
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  padding-bottom: 9px;
+}
 h1 {
   margin: 24px 0 12px 0;
   font-size: 20px;
   line-height: 24px;
-  border-bottom: 1px solid mat-color($foreground, divider);
-  padding-bottom: 12px;
 }
 h2 {
   font-size: 16px;
   line-height: 16px;
   margin: 32px 0 16px 0;
-  border-bottom: 1px solid mat-color($foreground, divider);
-  padding-bottom: 12px;
-  color: mat-color($primary, darker);
 }
 h3 {
   font-size: 14px;
@@ -73,6 +67,12 @@ h1.no-bottom-margin, h2.no-bottom-margin, h3.no-bottom-margin {
 .gt-xs form {
   max-width: $max-form-width;
 }
+.xs form {
+  max-width: 80vw;
+  display: block;
+  margin: auto;
+}
+
 .mat-input-prefix mat-icon {
   margin-right: 10px;
   opacity: 0.65;
@@ -89,7 +89,7 @@ mat-radio-group + mat-radio-group, mat-radio-group + mat-checkbox {
   margin-top: 1.25em;
 }
 mat-radio-group mat-radio-button {
-  margin-bottom: 12px;
+  margin-bottom: 18px;
 }
 mat-radio-group mat-radio-button::last-of-type {
   margin-bottom: 0px;
@@ -103,7 +103,7 @@ mat-radio-group.horizontal mat-radio-button + mat-radio-button {
   line-height: 40px !important;
 }
 .form-info, .form-info-light {
-  margin-bottom: 12px;
+  margin-bottom: 24px;
 }
 .form-info {
   font-weight: 500;
@@ -157,7 +157,6 @@ input[type=number] {
 // Data tables
 .mat-header-cell {
   font-size: 14px;
-  color: mat-color($foreground, text);
   opacity: 0.87;
 }
 .mat-header-row, .mat-row {
@@ -172,8 +171,11 @@ input[type=number] {
 .mat-table .mat-icon {
   opacity: 0.25;
 }
+.xs .mat-cell {
+  padding: 6px 0;
+}
 mat-cell.avatar, mat-header-cell.avatar {
-  max-width: 48px;
+  max-width: 58px;
 }
 mat-cell.avatar avatar .container {
   position: relative;
@@ -189,11 +191,7 @@ mat-cell .cell-small {
   font-size: 12px;
 }
 .mat-table a, .mat-table a:hover {
-  color: mat-color($foreground, text);
   text-decoration: none;
-}
-.mat-row:hover {
-  background: mat-color($background, hover);
 }
 .mat-header-row {
   min-height: 48px !important;
@@ -258,13 +256,4 @@ mat-icon.mat-96 {
 
 a.plain {
   text-decoration: none;
-  color: map-get($foreground, text);
-}
-
-// Positive / negative amounts
-.negative {
-  color: mat-color($negative, $balance-hue) !important;
-}
-.positive {
-  color: mat-color($positive, $balance-hue) !important;
 }

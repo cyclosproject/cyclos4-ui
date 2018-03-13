@@ -1,0 +1,16 @@
+@import '~@angular/material/theming';
+
+@mixin top-bar-component-theme($theme) {
+  $primary: map-get($theme, primary);
+
+  top-bar {
+    .outer {
+      background-color: mat-color($primary);
+    }
+
+    .outer, .personalMenuToggle {
+      color: rgba(mat-color($primary, default-contrast), 1);
+    }
+  }
+}
+

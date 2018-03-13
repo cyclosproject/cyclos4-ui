@@ -25,7 +25,6 @@
   margin: 16px 0;
 }
 .forgotPassword {
-  color: mat-color($accent);
   text-align: center;
   margin-top: 36px;
   text-decoration: none;
@@ -33,4 +32,9 @@
 }
 .forgotPassword:hover {
   text-decoration: underline;
+}
+.register {
+  max-width: 70vw;
+  display: block;
+  margin: 36px auto 0 auto;
 }

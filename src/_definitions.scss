@@ -11,10 +11,8 @@ $positive: mat-palette($mat-green);
 $negative: mat-palette($mat-red);
 
 // *** Angular Material theme ***
-$theme: mat-light-theme($primary, $accent, $warn);
-$is-dark: map-get($theme, is-dark);
-$foreground: map-get($theme, foreground);
-$background: map-get($theme, background);
+$light-theme: mat-light-theme($primary, $accent, $warn);
+$dark-theme: mat-dark-theme($primary, $accent, $warn);
 $typography: mat-typography-config();
 
 // *** General variables ***
@@ -34,7 +32,3 @@ $login-width: 400px;
 $max-form-width: 600px;
 // Side margin in small - xsmall displays
 $small-margin: 8px;
-// Contrast color on left menu
-$side-menu-hue: if($is-dark, 600, 50);
-// Contrast color on positive / negative amounts
-$balance-hue: if($is-dark, A100, 800);

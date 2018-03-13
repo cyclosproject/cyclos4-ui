@@ -10,6 +10,7 @@ import { IdMethod } from 'app/banking/payments/id-method';
 @Component({
   selector: 'payment-user',
   templateUrl: 'payment-user.component.html',
+  styleUrls: ['payment-user.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PaymentUserComponent extends BaseBankingComponent {

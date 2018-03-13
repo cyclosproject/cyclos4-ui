@@ -3,8 +3,7 @@
   <page-content *ngIf="(loaded | async) && user">
     <image-viewer *ngIf="user.image"
       [profile]="true"
-      [image]="user.image"
-      [additionalImages]="user.additionalImages"></image-viewer>
+      [image]="user.image"></image-viewer>
     <label-value *ngIf="user.name != null && user.name !== user.display"
       [label]="usersMessages.userName()"
       [value]="user.name"></label-value>

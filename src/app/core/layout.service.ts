@@ -28,8 +28,29 @@ export class LayoutService implements OnDestroy {
     this.mediaSubscription.unsubscribe();
   }
 
+  get darkTheme(): boolean {
+    return localStorage.getItem('darkTheme') === 'true';
+  }
+
+  set darkTheme(darkTheme: boolean) {
+    localStorage.setItem('darkTheme', String(darkTheme));
+    const html = document.body.parentElement;
+    if (html && html.classList) {
+      if (darkTheme) {
+        html.classList.add('dark');
+        html.classList.remove('light');
+      } else {
+        html.classList.add('light');
+        html.classList.remove('dark');
+      }
+    }
+  }
+
   private updateStyles(): void {
     const body = document.body;
+    // Update the light / dark theme style
+    this.darkTheme = this.darkTheme;
+    // Now apply the classes for each media query breakpoint
     for (const breakPoint of this.breakPoints.items) {
       if (this.media.isActive(breakPoint.alias)) {
         body.classList.add(breakPoint.alias);

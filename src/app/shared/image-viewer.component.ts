@@ -43,7 +43,7 @@ export class ImageViewerComponent implements OnInit {
     if (this.image) {
       this.images.push(new LightboxImage(this.image));
     }
-    for (const image of this.additionalImages) {
+    for (const image of this.additionalImages || []) {
       this.images.push(new LightboxImage(image));
     }
   }

@@ -38,16 +38,18 @@
         [showActions]="true"></login-form>
     </mat-tab>
     <mat-tab [label]="generalMessages.loginRegisterTitle()">
-      <div class="topMargin">
-        {{ generalMessages.loginRegisterText() }}
+      <div class="register">
+        <div>
+          {{ generalMessages.loginRegisterText() }}
+        </div>
+        <actions>
+          <button mat-raised-button
+            color="accent"
+            (click)="register()">
+            {{ generalMessages.submit() }}
+          </button>
+        </actions>
       </div>
-      <actions>
-        <button mat-raised-button
-          color="accent"
-          (click)="register()">
-          {{ generalMessages.loginRegisterAction() }}
-        </button>
-      </actions>
     </mat-tab>
   </mat-tab-group>
 

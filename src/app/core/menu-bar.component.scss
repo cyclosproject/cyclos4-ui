@@ -1,9 +1,8 @@
 @import 'src/definitions';
 
 :host /deep/ .outer {
-  background-color: map-get($background, card);
-  color: map-get($foreground, text);
-  border-bottom: 1px solid mat-color($foreground, divider);
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
   padding: 0 16px;
 }
 

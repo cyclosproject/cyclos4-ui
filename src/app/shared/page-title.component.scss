@@ -1,7 +1,8 @@
 @import 'src/definitions';
 
 .wrapper {
-  border-bottom: 1px solid mat-color($foreground, divider);
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
 }
 
 .showFilters {
