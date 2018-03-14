@@ -7,6 +7,7 @@ import { PublicRegistrationComponent } from 'app/users/registration/public-regis
 import { SearchUsersComponent } from 'app/users/search/search-users.component';
 import { UserProfileComponent } from 'app/users/profile/user-profile.component';
 import { CountriesResolve } from 'app/countries.resolve';
+import { LoggedUserGuard } from 'app/logged-user-guard';
 
 const usersRoutes: Routes = [
   {
@@ -25,6 +26,7 @@ const usersRoutes: Routes = [
       {
         path: 'my-profile',
         component: UserProfileComponent,
+        canActivate: [LoggedUserGuard],
         resolve: {
           countries: CountriesResolve
         },

@@ -4,8 +4,8 @@
   $foreground: map-get($theme, foreground);
 
   page-title {
-    .wrapper {
-      color: mat-color($foreground, divider);
+    .page-title {
+      border-color: mat-color($foreground, divider);
     }
 
     .showFilters {

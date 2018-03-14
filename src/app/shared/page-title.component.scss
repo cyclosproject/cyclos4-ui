@@ -1,8 +1,12 @@
 @import 'src/definitions';
 
-.wrapper {
+.page-title {
   border-bottom-width: 1px;
   border-bottom-style: solid;
+}
+
+.lt-md :host .page-title {
+  margin-bottom: 22px;
 }
 
 .showFilters {

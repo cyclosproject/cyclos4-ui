@@ -1,11 +1,14 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy, Injector } from '@angular/core';
 import { Image } from 'app/api/models';
 import { SvgIconRegistry } from 'app/core/svg-icon-registry';
+import { LayoutService } from 'app/core/layout.service';
+import { BaseComponent } from './base.component';
 
 /**
- * The size for rendered avatars
+ * The size for rendered avatars.
+ * Profile is a special value that adapts to the max image width / height and layout size
  */
-export type AvatarSize = 'small' | 'medium' | 'large' | 'huge';
+export type AvatarSize = 'small' | 'medium' | 'large' | 'huge' | 'profile';
 export const SIZES: { [key: string]: number } = {
   'small': 24,
   'medium': 36,
@@ -30,10 +33,19 @@ export const ICON_SIZES: { [key: string]: number } = {
   styleUrls: ['avatar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AvatarComponent implements OnInit {
+export class AvatarComponent extends BaseComponent {
+
+  static MAX_PROFILE_SIZE = 200;
+  static MAX_PROFILE_SIZE_SMALL = 100;
 
   private _image: Image;
   private _ratio: number;
+
+  constructor(
+    injector: Injector,
+    private svgIconRegistry: SvgIconRegistry) {
+    super(injector);
+  }
 
   /**
    * The image to show
@@ -53,9 +65,15 @@ export class AvatarComponent implements OnInit {
     if (this._image == null) {
       return null;
     }
-    const param = this._ratio > 0 ? 'width' : 'height';
-    // Use twice the size to prevent pixelation on high density devices
-    const size = SIZES[this.size] * 2;
+    // The smallest dimension is used to determine the requested size...
+    const param = this._ratio < 1 ? 'width' : 'height';
+    // ... which should be doubled prevent pixelation on high density devices.
+    let size: number;
+    if (this.size === 'profile') {
+      size = this.maxSize * 2;
+    } else {
+      size = SIZES[this.size] * 2;
+    }
     return `${this._image.url}?${param}=${size}`;
   }
 
@@ -76,7 +94,24 @@ export class AvatarComponent implements OnInit {
   @Input()
   size: AvatarSize = 'medium';
 
+  get maxSize(): number {
+    if (this.size === 'profile') {
+      return this.layout.ltmd ? AvatarComponent.MAX_PROFILE_SIZE_SMALL : AvatarComponent.MAX_PROFILE_SIZE;
+    } else {
+      return SIZES[this.size];
+    }
+  }
+
   private get _imageWidth(): number {
+    if (this.size === 'profile') {
+      if (this._ratio > 1) {
+        // Height determines the width by ratio
+        return this._imageHeight * this._ratio;
+      }
+      const width = this.image.width *= this._ratio;
+      const maxSize = this.maxSize;
+      return width > maxSize ? maxSize : width;
+    }
     if (this._ratio < 1) {
       return SIZES[this.size];
     }
@@ -88,6 +123,16 @@ export class AvatarComponent implements OnInit {
   }
 
   private get _imageHeight(): number {
+    if (this.size === 'profile') {
+      if (this._ratio < 1) {
+        // Width determines the height by ratio
+        return this._imageWidth / this._ratio;
+      }
+      const height = this.image.height *= this._ratio;
+      const maxSize = this.maxSize;
+      return height > maxSize ? maxSize : height;
+    }
+
     if (this._ratio > 1) {
       return SIZES[this.size];
     }
@@ -99,7 +144,7 @@ export class AvatarComponent implements OnInit {
   }
 
   get imageLeft(): string {
-    const offset = this._imageWidth - SIZES[this.size];
+    const offset = this._imageWidth - this.maxSize;
     if (offset > 0) {
       return -(offset / 2) + 'px';
     }
@@ -107,7 +152,7 @@ export class AvatarComponent implements OnInit {
   }
 
   get imageTop(): string {
-    const offset = this._imageHeight - SIZES[this.size];
+    const offset = this._imageHeight - this.maxSize;
     if (offset > 0) {
       return -(offset / 2) + 'px';
     }
@@ -118,10 +163,10 @@ export class AvatarComponent implements OnInit {
     return 'mat-' + ICON_SIZES[this.size];
   }
 
-  constructor(private svgIconRegistry: SvgIconRegistry) {
-  }
-
   ngOnInit() {
+    if (this.size === 'profile' && this.image == null) {
+      throw new Error('Profile avatar requires an image');
+    }
     if (this.svgIconRegistry.isSvgIcon(this.icon)) {
       // This is a SVG icon
       this.svgIcon = this.icon;

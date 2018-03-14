@@ -12,22 +12,6 @@
   -webkit-mask-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);
   mask-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);
 }
-.container.small {
-  width: 24px;
-  height: 24px;
-}
-.container.medium {
-  width: 36px;
-  height: 36px;
-}
-.container.large {
-  width: 48px;
-  height: 48px;
-}
-.container.huge {
-  width: 96px;
-  height: 96px;
-}
 .container img {
   position: relative;
 }

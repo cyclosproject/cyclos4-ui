@@ -64,10 +64,10 @@ h1.no-bottom-margin, h2.no-bottom-margin, h3.no-bottom-margin {
 }
 
 // Forms
-.gt-xs form {
+form {
   max-width: $max-form-width;
 }
-.xs form {
+.lt-md form {
   max-width: 80vw;
   display: block;
   margin: auto;
