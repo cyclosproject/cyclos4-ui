@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { FormatService } from 'app/core/format.service';
 import { environment } from 'environments/environment';
 import { HttpClient } from '@angular/common/http';
+import { DataForUiHolder } from './data-for-ui-holder';
 
 /**
  * Service used to load translations
@@ -9,7 +10,7 @@ import { HttpClient } from '@angular/common/http';
 @Injectable()
 export class TranslationLoaderService {
   constructor(
-    private formatService: FormatService,
+    private dataForUiHolder: DataForUiHolder,
     private httpClient: HttpClient) {
   }
 
@@ -21,7 +22,7 @@ export class TranslationLoaderService {
     }
 
     // We have to dynamically load the translation
-    const dataForUi = this.formatService.dataForUi;
+    const dataForUi = this.dataForUiHolder.dataForUi;
     const locales = [null];
     if (dataForUi) {
       const lang = dataForUi.language.code;
@@ -49,6 +50,11 @@ export class TranslationLoaderService {
       responseType: 'json'
     })
       .toPromise()
-      .catch(err => this.doLoad(file, locales));
+      .catch(err => {
+        if (locales.length === 0) {
+          return null;
+        }
+        this.doLoad(file, locales);
+      });
   }
 }

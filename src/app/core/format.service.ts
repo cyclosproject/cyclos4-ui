@@ -9,6 +9,7 @@ import { MatDateFormats } from '@angular/material';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import Big from 'big.js';
+import { DataForUiHolder } from './data-for-ui-holder';
 
 /**
  * Names for week days or months, in several forms:
@@ -29,8 +30,14 @@ export type Names = {
 export class FormatService {
 
   constructor(
+    dataForUiHolder: DataForUiHolder,
     private apiConfiguration: ApiConfiguration,
     private generalMessages: GeneralMessages) {
+    dataForUiHolder.subscribe(dataForUi => this.initialize(dataForUi));
+    // If already loaded, initialize right away
+    if (dataForUiHolder.dataForUi) {
+      this.initialize(dataForUiHolder.dataForUi);
+    }
   }
 
   dateFormat: string;
@@ -40,8 +47,7 @@ export class FormatService {
   dateParser: any;
   materialDateFormats = new BehaviorSubject<MatDateFormats>(null);
 
-  dataForUi: DataForUi;
-
+  private _dataForUi: DataForUi;
   private _monthNames: Names;
   private _dayNames: Names;
 
@@ -74,6 +80,9 @@ export class FormatService {
   }
 
   initialize(dataForUi: DataForUi): void {
+    if (dataForUi == null) {
+      return;
+    }
     // Cyclos uses Java format, such as dd/MM/yyyy. Moment uses all uppercase for those.
     this.dateFormat = (dataForUi.dateFormat || 'YYYY-MM-DD').toUpperCase();
 
@@ -82,7 +91,7 @@ export class FormatService {
     this.groupingSeparator = dataForUi.groupingSeparator || ',';
     this.decimalSeparator = dataForUi.decimalSeparator || '.';
 
-    this.dataForUi = dataForUi;
+    this._dataForUi = dataForUi;
 
     this.materialDateFormats.next({
       parse: {
@@ -132,7 +141,7 @@ export class FormatService {
   getLogoUrl(id: string): string {
     return this.apiConfiguration.rootUrl
       + '/../content/images/currentConfiguration/'
-      + id + '?' + this.dataForUi.resourceCacheKey;
+      + id + '?' + this._dataForUi.resourceCacheKey;
   }
 
   /**

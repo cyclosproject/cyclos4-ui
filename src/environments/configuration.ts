@@ -14,22 +14,6 @@ const SEARCH_PAGE_SIZES = [40, 100, 200];
 // Number of results displayed on quick searches, such as on user selection
 const QUICK_SEARCH_PAGE_SIZE = 10;
 
-// UI Data
-const DATA_FOR_UI: DataForUi = null;
-// It is possible to avoid a request to the server to fetch localization data.
-// To do so, uncomment the code below and set the correct data.
-/*
-DATA_FOR_UI = {
-  language: {code: 'en'},
-  country: 'br',
-  dateFormat: 'dd/MM/yyyy',
-  timeFormat: 'HH:mm',
-  decimalSeparator: ',',
-  groupingSeparator: '.',
-  resourceCacheKey: `${Math.random()}_${new Date().getTime()}`
-};
-*/
-
 // Translations
 // It is possible to set the application to be statically translated by commenting the
 // var declarations, uncommenting the import statements and adjusting the json files
@@ -48,7 +32,6 @@ export const configuration = {
   appTitle: APP_TITLE,
   appTitleMenu: APP_TITLE_MENU,
   apiRoot: API_URL,
-  dataForUi: DATA_FOR_UI,
   searchPageSizes: SEARCH_PAGE_SIZES,
   quickSearchPageSize: QUICK_SEARCH_PAGE_SIZE,
   translations: {

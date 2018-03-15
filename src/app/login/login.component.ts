@@ -43,14 +43,13 @@ export class LoginComponent extends BaseComponent {
 
   ngOnInit() {
     super.ngOnInit();
-    if (this.nextRequestState.sessionToken != null) {
+    const dataForUi = this.dataForUiHolder.dataForUi;
+    if (dataForUi.auth != null) {
       this.router.navigateByUrl(this.login.redirectUrl || '');
     } else {
-      this.registrationGroups = this.route.snapshot.data.registrationGroups;
-      this.authService.getDataForLogin().subscribe(dataForLogin => {
-        this.dataForLogin = dataForLogin;
-        this.loaded.next(true);
-      });
+      this.dataForLogin = dataForUi.dataForLogin;
+      this.registrationGroups = dataForUi.publicRegistrationGroups;
+      this.loaded.next(true);
     }
   }
 
@@ -64,11 +63,7 @@ export class LoginComponent extends BaseComponent {
     }
 
     const value = this.loginForm.value;
-    this.login.login(value.principal, value.password)
-      .subscribe(u => {
-        // Redirect to the correct URL
-        this.router.navigateByUrl(this.login.redirectUrl || '');
-      });
+    this.login.login(value.principal, value.password);
   }
 
   register(): void {

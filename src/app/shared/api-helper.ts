@@ -50,13 +50,14 @@ export class ApiHelper {
    * Returns the fields that should be excluded when fetching the Auth model.
    * Contains both deprecated and unused fields.
    */
-  static get excludedAuthFields(): string[] {
+  static excludedAuthFields(prefix: string): string[] {
+    const actualPrefix = prefix == null ? '' : prefix + '.';
     return [
-      '-permissions.records',
-      '-permissions.systemRecords',
-      '-permissions.userRecords',
-      '-permissions.operations',
-      '-permissions.accounts',
+      `-${actualPrefix}permissions.records`,
+      `-${actualPrefix}permissions.systemRecords`,
+      `-${actualPrefix}permissions.userRecords`,
+      `-${actualPrefix}permissions.operations`,
+      `-${actualPrefix}permissions.accounts`,
     ];
   }
 

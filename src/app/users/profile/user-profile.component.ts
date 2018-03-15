@@ -4,8 +4,8 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { BaseUsersComponent } from 'app/users/base-users.component';
 import { UsersService } from 'app/api/services';
 import { UserView, Country } from 'app/api/models';
-import { CountriesResolve } from '../../countries.resolve';
-import { ErrorStatus } from '../../core/error-handler.service';
+import { CountriesResolve } from 'app/countries.resolve';
+import { ErrorStatus } from 'app/core/error-status';
 import { HttpErrorResponse } from '@angular/common/http';
 
 /**

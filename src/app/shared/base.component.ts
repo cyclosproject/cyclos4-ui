@@ -10,6 +10,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StateManager } from '../core/state-manager';
 import { BreadcrumbService } from '../core/breadcrumb.service';
+import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 
 /**
  * Base class to meant to be inherited by other components.
@@ -18,6 +19,7 @@ import { BreadcrumbService } from '../core/breadcrumb.service';
  * may become inconsistent.
  */
 export abstract class BaseComponent implements OnInit, OnDestroy {
+  dataForUiHolder: DataForUiHolder;
   generalMessages: GeneralMessages;
   layout: LayoutService;
   format: FormatService;
@@ -35,6 +37,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
   protected subscriptions: Subscription[] = [];
 
   constructor(injector: Injector) {
+    this.dataForUiHolder = injector.get(DataForUiHolder);
     this.generalMessages = injector.get(GeneralMessages);
     this.layout = injector.get(LayoutService);
     this.format = injector.get(FormatService);
@@ -55,7 +58,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
     this.subscriptions.push(this.media.subscribe(() => {
       this.onDisplayChange();
     }));
-    this.subscriptions.push(this.login.subscribeForAuth(() => {
+    this.subscriptions.push(this.dataForUiHolder.subscribe(() => {
       this.onDisplayChange();
     }));
     this.subscriptions.push(this.route.data.subscribe(data => {

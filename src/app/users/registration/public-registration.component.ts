@@ -122,27 +122,23 @@ export class PublicRegistrationComponent extends BaseUsersComponent implements A
 
   ngOnInit() {
     super.ngOnInit();
-    this.subscriptions.push(this.route.data.subscribe((data: {
-      groups: GroupForRegistration[]
-    }) => {
-      this.groups = data.groups;
-      if (this.groups.length === 0) {
-        // No groups for registration!
-        this.notification.error(this.usersMessages.registrationErrorNoGroups());
-      } else if (this.groups.length === 1) {
-        // There is a single group - select it
-        const group = this.groups[0];
-        this.group.next(group);
-        this.groupForm.patchValue({
-          group: group
-        });
-        // After getting the registration data for this group, will mark as loaded
-        this.nextFromGroup();
-      } else {
-        // The application is fully loaded
-        this.loaded.next(true);
-      }
-    }));
+    this.groups = (this.dataForUiHolder.dataForUi.publicRegistrationGroups || []);
+    if (this.groups.length === 0) {
+      // No groups for registration!
+      this.notification.error(this.usersMessages.registrationErrorNoGroups());
+    } else if (this.groups.length === 1) {
+      // There is a single group - select it
+      const group = this.groups[0];
+      this.group.next(group);
+      this.groupForm.patchValue({
+        group: group
+      });
+      // After getting the registration data for this group, will mark as loaded
+      this.nextFromGroup();
+    } else {
+      // The page is fully loaded
+      this.loaded.next(true);
+    }
   }
 
   ngAfterViewInit() {

@@ -8,31 +8,23 @@ import { Observable } from 'rxjs/Observable';
 import { tap } from 'rxjs/operators/tap';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { NextRequestState } from 'app/core/next-request-state';
+import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 
 /**
  * Service used to manage the login status
  */
 @Injectable()
 export class LoginService {
-  private _auth = new BehaviorSubject(null as Auth);
   private _loggingOut = new BehaviorSubject(false);
 
   public redirectUrl: string;
 
-  private _authInitialized = false;
-
 
   constructor(
+    private dataForUiHolder: DataForUiHolder,
     private nextRequestState: NextRequestState,
     private authService: AuthService,
     private router: Router) {
-  }
-
-  /**
-   * Adds a new observer notified when the user logs-in (auth != null) or logs out (auth == null)
-   */
-  subscribeForAuth(next?: (value: Auth) => void, error?: (error: any) => void, complete?: () => void): Subscription {
-    return this._auth.subscribe(next, error, complete);
   }
 
   /**
@@ -54,22 +46,8 @@ export class LoginService {
    * Returns the current authentication
    */
   get auth(): Auth {
-    return this._auth.value;
-  }
-
-  /**
-   * Sets the current authentication
-   */
-  set auth(auth: Auth) {
-    this._authInitialized = true;
-    this._auth.next(auth);
-  }
-
-  /**
-   * Returns whether the authorization has already been initialized
-   */
-  get authInitialized(): boolean {
-    return this._authInitialized;
+    const dataForUi = this.dataForUiHolder.dataForUi;
+    return dataForUi == null ? null : dataForUi.auth;
   }
 
   /**
@@ -80,23 +58,30 @@ export class LoginService {
   }
 
   /**
-   * Returns a cold observable that performs the login
+   * Performs the login, returning a Promise with the session token.
+   * Once logged in, will automatically redirect the user to the correct page.
    * @param principal The user principal
    * @param password The user password
    */
-  login(principal: string, password): Observable<Auth> {
+  login(principal: string, password): Promise<string> {
     // Setup the basic authentication for the login request
     this.nextRequestState.nextAsBasic(principal, password);
     // Then attempt to do the login
     return this.authService.login({
-      fields: ApiHelper.excludedAuthFields
-    }).pipe(
-      tap(auth => {
-        // Prepare the API configuration to pass the session token
+      fields: ['sessionToken']
+    }).toPromise()
+      .then(auth => {
+        // Store the session token
         this.nextRequestState.sessionToken = auth.sessionToken;
-        this.auth = auth;
-      })
-    );
+
+        // Then reload the DataForUi instance (as user)
+        return this.dataForUiHolder.reload()
+          .then(() => {
+            // Redirect to the correct URL
+            this.router.navigateByUrl(this.redirectUrl || '');
+            return auth.sessionToken;
+          });
+      });
   }
 
   /**
@@ -105,7 +90,6 @@ export class LoginService {
   clear(): void {
     this.redirectUrl = null;
     this.nextRequestState.sessionToken = null;
-    this.auth = null;
   }
 
   /**
@@ -113,16 +97,23 @@ export class LoginService {
    */
   logout(): void {
     this.redirectUrl = null;
-    if (this._auth == null) {
+    if (this.auth == null) {
       // No one logged in
       return;
     }
     this._loggingOut.next(true);
     this.authService.logout()
-      .subscribe(() => {
-        this.router.navigateByUrl('/login');
+      .toPromise()
+      .then(() => {
         this.clear();
-        setTimeout(() => this._loggingOut.next(false), 100);
+
+        // Then reload the DataForUi instance (as guest)
+        return this.dataForUiHolder.reload()
+          .then(() => {
+            this._loggingOut.next(false);
+            this.router.navigateByUrl('/login');
+            return null;
+          });
       });
   }
 }

@@ -6,6 +6,15 @@
   flex-direction: column;
 }
 
+.app-loading {
+  opacity: 0.6;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 // Sidenav
 :host /deep/ .mat-sidenav-container {
   flex: 1 1 100%;

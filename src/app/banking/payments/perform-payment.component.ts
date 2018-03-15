@@ -9,7 +9,7 @@ import { IdMethod } from 'app/banking/payments/id-method';
 import { PaymentsService, UsersService, ContactsService } from 'app/api/services';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { ApiHelper } from 'app/shared/api-helper';
-import { ErrorStatus } from 'app/core/error-handler.service';
+import { ErrorStatus } from 'app/core/error-status';
 import { LinearStepperControlComponent } from 'app/shared/linear-stepper-control.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PaymentKindAndIdMethod } from 'app/banking/payments/payment-kind-and-id-method';

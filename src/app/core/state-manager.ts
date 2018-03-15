@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { tap } from 'rxjs/operators/tap';
 import { LoginService } from './login.service';
 import { Router } from '@angular/router';
+import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 
 /**
  * Service used to navigate between pages and managing the component state
@@ -17,9 +18,9 @@ export class StateManager {
   private subscriptions: Subscription[] = [];
 
   constructor(
-    loginService: LoginService,
+    dataForUiHolder: DataForUiHolder,
     private router: Router) {
-    loginService.subscribeForAuth(a => this.clear());
+    dataForUiHolder.subscribe(() => this.clear());
   }
 
   /**

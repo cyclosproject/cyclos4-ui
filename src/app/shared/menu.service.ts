@@ -7,9 +7,9 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { AccountStatus, Auth } from 'app/api/models';
 import { AccountsService } from 'app/api/services';
 import { PushNotificationsService } from 'app/core/push-notifications.service';
-import { RegistrationGroupsResolve } from '../registration-groups.resolve';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators/map';
+import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 
 /**
  * Holds shared data for the menu, plus logic regarding the currently visible menu
@@ -22,28 +22,31 @@ export class MenuService {
     private pushNotifications: PushNotificationsService,
     private accountsService: AccountsService,
     private generalMessages: GeneralMessages,
-    private registrationGroups: RegistrationGroupsResolve
+    private dataForUiHolder: DataForUiHolder
   ) {
     // Clear the status whenever the logged user changes
     this._fullMenu = new BehaviorSubject<RootMenuEntry[]>([]);
-    if (this.login.authInitialized) {
-      this._fullMenu.next(this.buildFullMenu(this.login.auth));
-      if (this.login.user) {
+    const initialDataForUi = this.dataForUiHolder.dataForUi;
+    const initialAuth = (initialDataForUi || {}).auth;
+
+    if (initialDataForUi != null) {
+      this._fullMenu.next(this.buildFullMenu(initialAuth));
+      if (initialAuth != null) {
         // Fetch the data initially - there is a logged user
         this.fetchData();
       }
     }
     // Whenever the authenticated user changes, reload the menu
-    this.login.subscribeForAuth(auth => {
+    dataForUiHolder.subscribe(dataForUi => {
+      const auth = (dataForUi || {}).auth;
       this._fullMenu.next(this.buildFullMenu(auth));
-      if (auth != null && auth.user) {
-        // Fetch the data initially - there is a logged user
+      if (auth == null) {
+        // Logged out: clear the data
+        this.clearData();
+      } else {
+        // Logged in: fetch the data
         this.fetchData();
       }
-    });
-    // When the registration changes, fetch the menu as well
-    this.registrationGroups.data.subscribe(groups => {
-      this._fullMenu.next(this.buildFullMenu(this.login.auth));
     });
     this.pushNotifications.subscribeForAccountStatus(account => {
       const statuses = this._accountStatuses.value;
@@ -106,6 +109,9 @@ export class MenuService {
       });
   }
 
+  private clearData() {
+    this.accountStatuses.next(null);
+  }
 
   /**
    * Build the full menu structure from the given authentication
@@ -141,7 +147,7 @@ export class MenuService {
       user == null ? this.generalMessages.menuHome() : this.generalMessages.menuDashboard());
     if (user == null) {
       // Guest
-      const registrationGroups = this.registrationGroups.data.value || [];
+      const registrationGroups = (this.dataForUiHolder.dataForUi || {}).publicRegistrationGroups || [];
       add(Menu.LOGIN, '/login', 'lock', this.generalMessages.menuLogin());
       if (registrationGroups.length > 0) {
         add(Menu.REGISTRATION, '/users/registration', 'input', this.generalMessages.menuRegister());

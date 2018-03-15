@@ -21,12 +21,12 @@ import { StateManager } from 'app/core/state-manager';
 import { PushNotificationsService } from 'app/core/push-notifications.service';
 import { ApiInterceptor } from 'app/core/api.interceptor';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { RegistrationGroupsResolve } from 'app/registration-groups.resolve';
 import { CountriesResolve } from 'app/countries.resolve';
 import { BreadcrumbService } from './breadcrumb.service';
 import { LightboxModule } from 'angular2-lightbox';
 import { NextRequestState } from './next-request-state';
 import { SvgIconRegistry } from 'app/core/svg-icon-registry';
+import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 
 export const API_INTERCEPTOR_PROVIDER: Provider = {
   provide: HTTP_INTERCEPTORS,
@@ -74,6 +74,7 @@ export const DATE_FORMATS_PROVIDER: Provider = {
     ApiInterceptor,
     GeneralMessages,
     TranslationLoaderService,
+    DataForUiHolder,
     ErrorHandlerService,
     FormatService,
     LayoutService,
@@ -83,7 +84,6 @@ export const DATE_FORMATS_PROVIDER: Provider = {
     LoginService,
     MenuService,
     PushNotificationsService,
-    RegistrationGroupsResolve,
     CountriesResolve,
     ApiDateAdapter,
     SvgIconRegistry,

@@ -5,6 +5,7 @@ import { BreadCrumbEntry } from './breadcrumb-entry';
 import { filter } from 'rxjs/operators/filter';
 import { map } from 'rxjs/operators/map';
 import { LoginService } from './login.service';
+import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 
 const IGNORE_BREADCRUMB = ['', '/home', '/login'];
 
@@ -21,8 +22,8 @@ export class BreadcrumbService {
 
   constructor(
     router: Router,
-    loginService: LoginService) {
-    loginService.subscribeForAuth(a => this.clear());
+    dataForUiHolder: DataForUiHolder) {
+    dataForUiHolder.subscribe(() => this.clear());
     router.events
       .pipe(
         filter(e => e instanceof NavigationStart),

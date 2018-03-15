@@ -7,6 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import { NotificationService } from 'app/core/notification.service';
 import { GeneralMessages } from 'app/messages/general-messages';
 import { Subscription } from 'rxjs/Subscription';
+import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 
 export const LOGGED_OUT = 'loggedOut';
 export const ACCOUNT_STATUS = 'accountStatus';
@@ -25,17 +26,19 @@ export class PushNotificationsService {
   private accountStatus: Observable<AccountWithStatus>;
 
   constructor(
+    dataForUiHolder: DataForUiHolder,
     private generalMessages: GeneralMessages,
     private apiConfiguration: ApiConfiguration,
     private login: LoginService,
     private notification: NotificationService,
     private zone: NgZone
   ) {
-    login.subscribeForAuth(auth => {
-      if (login.user) {
-        this.open(auth);
-      } else {
+    dataForUiHolder.subscribe(dataForUi => {
+      const auth = (dataForUi || {}).auth;
+      if (auth == null) {
         this.close();
+      } else {
+        this.open(auth);
       }
     });
     this.accountStatus = Observable.create(observer => {

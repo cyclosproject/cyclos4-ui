@@ -72,7 +72,7 @@
     "description" : "Vouchers are the way by which a user (possibly external) can buy at \nplaces that  accept payments in Cyclos.  \n"
   }, {
     "name" : "Tickets",
-    "description" : "Provide access to tickets. A ticket is payment with a destinatary but \nwithout a defined payer. They allow to a user (e.g a shop) generate a \nticket for himself and send it to another user to allow pay it.       \n"
+    "description" : "Provide access to tickets. A ticket represents a payment with a destinatary\nbut possibly without a defined payer. They allow to a user (e.g a shop) \ngenerate a ticket for himself and send it to another user to allow pay it.       \n"
   }, {
     "name" : "Mobile",
     "description" : "Contains operations used by the Cyclos mobile application, but can also\nbe useful for third-party mobile applications.\n"
@@ -10620,7 +10620,7 @@
     "/tickets/data-for-new" : {
       "get" : {
         "tags" : [ "Tickets" ],
-        "summary" : "Returns configuration data for create a new ticket",
+        "summary" : "Returns data for create a new ticket for the logged user.",
         "operationId" : "dataForNewTicket",
         "parameters" : [ {
           "name" : "fields",
@@ -10818,8 +10818,8 @@
     "/tickets/{ticket}/accept" : {
       "post" : {
         "tags" : [ "Tickets" ],
-        "summary" : "Accept a ticket generating the corresponding payment",
-        "description" : "After a successful acceptance a new direct payment from the logged user (i.e the payer) to the user who generated the ticket will be generated.\n",
+        "summary" : "Accepts a ticket by the payer.",
+        "description" : "After a successful acceptance a new direct payment from the logged user (i.e the payer) to the user who generated the ticket will be generated ONLY if the ticket doesn't have a `successUrl` nor `successWebhook`. Otherwise the ticket goes to the `approved` status and no  payment is generated. DEPRECATED: use `POST /tickets/{ticket}/approve` instead. \n",
         "operationId" : "acceptTicket",
         "parameters" : [ {
           "name" : "fields",
@@ -10846,7 +10846,7 @@
         } ],
         "responses" : {
           "201" : {
-            "description" : "The created payment",
+            "description" : "The created payment, if any.",
             "schema" : {
               "$ref" : "#/definitions/Transaction"
             },
@@ -10855,6 +10855,90 @@
                 "type" : "string",
                 "description" : "URL for viewing the payment details"
               }
+            }
+          },
+          "204" : {
+            "description" : "No content when the payment was not generated."
+          },
+          "401" : {
+            "description" : "Unauthorized access. Missing or invalid crendentials supplied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/UnauthorizedError"
+            }
+          },
+          "403" : {
+            "description" : "Permission denied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/ForbiddenError"
+            }
+          },
+          "404" : {
+            "description" : "An expected data was not found",
+            "schema" : {
+              "$ref" : "#/definitions/NotFoundError"
+            }
+          },
+          "422" : {
+            "description" : "Input error. Either a validation error or the maximum allowed items was exceeded\n",
+            "schema" : {
+              "$ref" : "#/definitions/InputError"
+            }
+          },
+          "500" : {
+            "description" : "If a payment error has occurred",
+            "schema" : {
+              "$ref" : "#/definitions/PaymentError"
+            }
+          }
+        },
+        "security" : [ {
+          "basic" : [ ]
+        }, {
+          "session" : [ ]
+        }, {
+          "accessClient" : [ ]
+        } ],
+        "deprecated" : true,
+        "x-accepts" : "application/json",
+        "x-remove-version" : 4.12,
+        "x-deprecated" : "Use `POST /tickets/{ticket}/approve` instead",
+        "x-contentType" : "application/json"
+      }
+    },
+    "/tickets/{ticket}/approve" : {
+      "post" : {
+        "tags" : [ "Tickets" ],
+        "summary" : "Approves a ticket by the payer.",
+        "description" : "After a successful approval, a new direct payment from the logged user (i.e the payer) to the user who created the ticket will be generated ONLY if the ticket doesn't have a defined `successUrl` nor `successWebhook`, in that case the ticket goes to `processed` status. Otherwise the ticket just goes to the `approved` status and the corresponding payment will be generated only after the ticket is processed by the receiver.\n",
+        "operationId" : "approveTicket",
+        "parameters" : [ {
+          "name" : "fields",
+          "in" : "query",
+          "description" : "Select which fields to include on returned data. If nothing is set, all object fields are returned. Unprefixed field names will be handled like a whitelist (only listed fields will be included), while names starting with a minus (-) or exclamation mark (!) will be handled as blacklist (listed fields will not be included). This works for nesting as well. For example: `a,b.b1,c.-c1,c.-c2` will return the fields `a`, `b` (containing only the `b1` field) and `c` (containing all its fields except for `c1` or `c2`). \n",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          },
+          "collectionFormat" : "multi"
+        }, {
+          "name" : "confirmationPassword",
+          "in" : "header",
+          "description" : "The password used to confirm this action, if needed. The actual\npassword type, if any, depends on the Cyclos configuration for the\ncurrent channel.\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "ticket",
+          "in" : "path",
+          "description" : "The ticket number",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The approval result.",
+            "schema" : {
+              "$ref" : "#/definitions/TicketApprovalResult"
             }
           },
           "401" : {
@@ -10902,8 +10986,8 @@
     "/tickets/{ticket}/cancel" : {
       "post" : {
         "tags" : [ "Tickets" ],
-        "summary" : "Cancels a ticket",
-        "description" : "The logged user must be the ticket's owner",
+        "summary" : "Cancels a ticket by the receiver.",
+        "description" : "Cancels a ticket by the receiver before being approved by the payer. The  logged user must be the ticket's owner.\n",
         "operationId" : "cancelTicket",
         "parameters" : [ {
           "name" : "ticket",
@@ -10955,8 +11039,8 @@
     "/tickets/{ticket}/preview" : {
       "post" : {
         "tags" : [ "Tickets" ],
-        "summary" : "Previews the payment generated by the ticket only if status is\n`open`\n",
-        "description" : "Previews the payment that will be generated if the ticket is accepted by a user (i.e the payer). The actual balance checking is not performed in  the preview.\n",
+        "summary" : "Previews the payment generated by the ticket.\n",
+        "description" : "Previews the payment that will be generated if the ticket is approved by a user (i.e the payer). The ticket status must be  `open` and `successUrl` null or  `approved`. The actual balance checking is not  performed in the preview.\n",
         "operationId" : "previewTicket",
         "parameters" : [ {
           "name" : "fields",
@@ -10977,9 +11061,9 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "The payment preview",
+            "description" : "The approval preview",
             "schema" : {
-              "$ref" : "#/definitions/PaymentPreview"
+              "$ref" : "#/definitions/TicketPreview"
             }
           },
           "401" : {
@@ -11010,6 +11094,90 @@
             "description" : "Unexpected error",
             "schema" : {
               "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "security" : [ {
+          "basic" : [ ]
+        }, {
+          "session" : [ ]
+        }, {
+          "accessClient" : [ ]
+        } ],
+        "x-accepts" : "application/json",
+        "x-contentType" : "application/json"
+      }
+    },
+    "/tickets/{ticket}/process" : {
+      "post" : {
+        "tags" : [ "Tickets" ],
+        "summary" : "Processes a ticket by the receiver.",
+        "description" : "Processes an already approved ticket generating a new direct payment from the user who approve the ticket to the logged user (i.e the ticket's creator). A ticket can be processed only if its status is `approved` and the given `code` matches the code given at ticket creation. After successfully processing it goes to the final status: `processed`.\n",
+        "operationId" : "processTicket",
+        "parameters" : [ {
+          "name" : "fields",
+          "in" : "query",
+          "description" : "Select which fields to include on returned data. If nothing is set, all object fields are returned. Unprefixed field names will be handled like a whitelist (only listed fields will be included), while names starting with a minus (-) or exclamation mark (!) will be handled as blacklist (listed fields will not be included). This works for nesting as well. For example: `a,b.b1,c.-c1,c.-c2` will return the fields `a`, `b` (containing only the `b1` field) and `c` (containing all its fields except for `c1` or `c2`). \n",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          },
+          "collectionFormat" : "multi"
+        }, {
+          "name" : "ticket",
+          "in" : "path",
+          "description" : "The ticket number",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "code",
+          "in" : "query",
+          "description" : "The process code associated to the ticket being processed.\n",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The process result",
+            "schema" : {
+              "$ref" : "#/definitions/TicketProcessResult"
+            },
+            "headers" : {
+              "Location" : {
+                "type" : "string",
+                "description" : "URL for viewing the payment details"
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized access. Missing or invalid crendentials supplied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/UnauthorizedError"
+            }
+          },
+          "403" : {
+            "description" : "Permission denied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/ForbiddenError"
+            }
+          },
+          "404" : {
+            "description" : "An expected data was not found",
+            "schema" : {
+              "$ref" : "#/definitions/NotFoundError"
+            }
+          },
+          "422" : {
+            "description" : "Input error. Either a validation error or the maximum allowed items was exceeded\n",
+            "schema" : {
+              "$ref" : "#/definitions/InputError"
+            }
+          },
+          "500" : {
+            "description" : "If a payment error has occurred",
+            "schema" : {
+              "$ref" : "#/definitions/PaymentError"
             }
           }
         },
@@ -11617,10 +11785,10 @@
         }, {
           "name" : "kind",
           "in" : "query",
-          "description" : "Specifies the kind of user interface to get data for. If null then no  data related to the UI will be returned. Possible values are:\n* main: The main web user interface\n* mobile: The mobile application user interface\n* pay: The Ticket / Easy invoice confirmation application user interface\n",
+          "description" : "Specifies the kind of user interface to get data for. If null then no  data related to the UI will be returned. Possible values are:\n* custom: A custom front-end application. Has no headers, footers or theme\n* main: The main web user interface\n* mobile: The mobile application user interface\n* pay: The Ticket / Easy invoice confirmation application user interface\n",
           "required" : false,
           "type" : "string",
-          "enum" : [ "main", "mobile", "pay" ],
+          "enum" : [ "custom", "main", "mobile", "pay" ],
           "x-type" : "UiKind"
         }, {
           "name" : "cyclosVersion",
@@ -15085,12 +15253,12 @@
         }, {
           "name" : "ticketStatuses",
           "in" : "query",
-          "description" : "The status of a ticket Possible values for each array element are:\n* canceled: The ticket was canceled by the receiver before being processed\n* expired: The ticket has expired without being confirmed by a payer or canceled by the receiver until the expiration date\n* open: The ticket was created, but not confirmed yet\n* processed: The ticket was confirmed and processed and the payment was generated\n",
+          "description" : "The status of a ticket Possible values for each array element are:\n* approved: The ticket was approved by the payer and is waiting to be processed by the receiver to generate the payment\n* canceled: The ticket was canceled by the receiver before being approved\n* expired: The ticket has expired without being approved by a payer or canceled by the receiver until the expiration date\n* open: The ticket was created, but not approved yet\n* processed: The ticket was approved and processed and the payment was generated\n",
           "required" : false,
           "type" : "array",
           "items" : {
             "type" : "string",
-            "enum" : [ "canceled", "expired", "open", "processed" ]
+            "enum" : [ "approved", "canceled", "expired", "open", "processed" ]
           },
           "x-type" : "List<TicketStatusEnum>"
         }, {
@@ -19651,8 +19819,8 @@
     },
     "TicketStatusEnum" : {
       "type" : "string",
-      "description" : "The status of a ticket Possible values are:\n* canceled: The ticket was canceled by the receiver before being processed\n* expired: The ticket has expired without being confirmed by a payer or canceled by the receiver until the expiration date\n* open: The ticket was created, but not confirmed yet\n* processed: The ticket was confirmed and processed and the payment was generated\n",
-      "enum" : [ "canceled", "expired", "open", "processed" ]
+      "description" : "The status of a ticket Possible values are:\n* approved: The ticket was approved by the payer and is waiting to be processed by the receiver to generate the payment\n* canceled: The ticket was canceled by the receiver before being approved\n* expired: The ticket has expired without being approved by a payer or canceled by the receiver until the expiration date\n* open: The ticket was created, but not approved yet\n* processed: The ticket was approved and processed and the payment was generated\n",
+      "enum" : [ "approved", "canceled", "expired", "open", "processed" ]
     },
     "TimeFieldEnum" : {
       "type" : "string",
@@ -19696,8 +19864,8 @@
     },
     "UiKind" : {
       "type" : "string",
-      "description" : "Indicates the type of user interface Possible values are:\n* main: The main web user interface\n* mobile: The mobile application user interface\n* pay: The Ticket / Easy invoice confirmation application user interface\n",
-      "enum" : [ "main", "mobile", "pay" ]
+      "description" : "Indicates the type of user interface Possible values are:\n* custom: A custom front-end application. Has no headers, footers or theme\n* main: The main web user interface\n* mobile: The mobile application user interface\n* pay: The Ticket / Easy invoice confirmation application user interface\n",
+      "enum" : [ "custom", "main", "mobile", "pay" ]
     },
     "UnauthorizedErrorCode" : {
       "type" : "string",
@@ -23125,6 +23293,21 @@
           "format" : "date-time",
           "description" : "The current time in the the user's time zone.\n"
         },
+        "auth" : {
+          "description" : "The logged user authentication. Not returned for guests.",
+          "$ref" : "#/definitions/Auth"
+        },
+        "dataForLogin" : {
+          "description" : "The data used for logging the user in. Not returned for logged users.\n",
+          "$ref" : "#/definitions/DataForLogin"
+        },
+        "publicRegistrationGroups" : {
+          "type" : "array",
+          "description" : "Groups that can be used for a public registration. Not returned\nfor logged users.\n",
+          "items" : {
+            "$ref" : "#/definitions/GroupForRegistration"
+          }
+        },
         "decimalSeparator" : {
           "type" : "string",
           "description" : "The character used to specify the decimal point   \n"
@@ -24964,7 +25147,7 @@
           "mainAmount" : {
             "type" : "string",
             "format" : "number",
-            "description" : "Depending on the configured fees, it could happen that the main amount is deducted from fees amount. This reflects the new main amount. If no fees deduct, it will be the same as `totalAmount`.\n"
+            "description" : "This reflects the new transaction amount. Depending on the configured fees, it could happen that the fee amount is deducted from transaction amount. If no fees deduct, it will be the same as transaction amount.  E.g: payment from A to B by 100 units with two fees: 10 units deducted from payment amount and other of 15 not deducted. Then the `totalAmount` will be 115, 90 for the `mainAmount`, 10 for the first fee and 15 for  the other fee. \n"
           },
           "fees" : {
             "type" : "array",
@@ -26794,6 +26977,36 @@
       } ],
       "description" : "UI element containing wether the content or the components.\n"
     },
+    "TicketApprovalResult" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/Entity"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "ticketNumber" : {
+            "type" : "string",
+            "description" : "The ticket number identifier."
+          },
+          "ticketStatus" : {
+            "description" : "The status of a ticket Possible values are:\n* approved: The ticket was approved by the payer and is waiting to be processed by the receiver to generate the payment\n* canceled: The ticket was canceled by the receiver before being approved\n* expired: The ticket has expired without being approved by a payer or canceled by the receiver until the expiration date\n* open: The ticket was created, but not approved yet\n* processed: The ticket was approved and processed and the payment was generated\n",
+            "$ref" : "#/definitions/TicketStatusEnum"
+          },
+          "cancelUrl" : {
+            "type" : "string",
+            "description" : "The URL to redirect when canceling the accept ticket flow"
+          },
+          "successUrl" : {
+            "type" : "string",
+            "description" : "The URL to redirect after successfully accepting a ticket"
+          },
+          "transaction" : {
+            "description" : "The generated payment. Only if `status` is `processed`.\n",
+            "$ref" : "#/definitions/Transaction"
+          }
+        }
+      } ],
+      "description" : "Ticket approval result."
+    },
     "TicketNew" : {
       "allOf" : [ {
         "$ref" : "#/definitions/PerformBaseTransaction"
@@ -26806,11 +27019,19 @@
           },
           "cancelUrl" : {
             "type" : "string",
-            "description" : "The URL to redirect when canceling the accept ticket flow"
+            "description" : "The URL to redirect when canceling the approve ticket flow.\n"
           },
           "successUrl" : {
             "type" : "string",
-            "description" : "The URL to redirect after successfully accepting a ticket"
+            "description" : "The URL to redirect after successfully confirming a ticket.\n"
+          },
+          "successWebhook" : {
+            "type" : "string",
+            "description" : "The URL to be invoked by the server after successfully confirming a  ticket.\n"
+          },
+          "processCode" : {
+            "type" : "string",
+            "description" : "A code used to process the ticket.  Required only if `successUrl` or `successWebhook` or both are given.  Otherwise it must be null. \n"
           },
           "expiresAfter" : {
             "description" : "Defines the expiration interval. If none is given, it is assumed that the ticket expires in one day.\n",
@@ -26819,6 +27040,45 @@
         }
       } ],
       "description" : "Contain the information to create a new ticket for the logged user\n"
+    },
+    "TicketPreview" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/PaymentPreview"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "cancelUrl" : {
+            "type" : "string",
+            "description" : "The URL to redirect when canceling the accept ticket flow"
+          },
+          "successUrl" : {
+            "type" : "string",
+            "description" : "The URL to redirect after successfully accepting a ticket"
+          }
+        }
+      } ]
+    },
+    "TicketProcessResult" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/Entity"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "ticketNumber" : {
+            "type" : "string",
+            "description" : "The ticket number identifier."
+          },
+          "actuallyProcessed" : {
+            "type" : "boolean",
+            "description" : "Flag indicating if the ticket was processed by this invocation or the ticket was already processed in a previous invocation. This will only  be true for the first invocation of the `process` service method.\n"
+          },
+          "transaction" : {
+            "description" : "The generated payment.",
+            "$ref" : "#/definitions/Transaction"
+          }
+        }
+      } ],
+      "description" : "Ticket process result."
     },
     "TicketsPermissions" : {
       "type" : "object",
@@ -26837,7 +27097,13 @@
         },
         "accept" : {
           "type" : "boolean",
-          "description" : "Can accept tickets from others?"
+          "description" : "Can accept tickets from others?",
+          "x-deprecated" : "Use `approve` instead",
+          "x-remove-version" : 4.12
+        },
+        "approve" : {
+          "type" : "boolean",
+          "description" : "Can approve tickets from others?"
         }
       },
       "description" : "Permissions over own tickets"
@@ -27065,7 +27331,7 @@
         "totalAmount" : {
           "type" : "string",
           "format" : "number",
-          "description" : "The final total transaction amount"
+          "description" : "The final amount charged to the payer including fees."
         },
         "customValues" : {
           "type" : "array",
@@ -27155,7 +27421,7 @@
           },
           "ticketStatuses" : {
             "type" : "array",
-            "description" : "Statuses used as search criteria applied only to transactions of kind `ticket`. Possibles values for each array element are:\n* canceled: The ticket was canceled by the receiver before being processed\n* expired: The ticket has expired without being confirmed by a payer or canceled by the receiver until the expiration date\n* open: The ticket was created, but not confirmed yet\n* processed: The ticket was confirmed and processed and the payment was generated\n",
+            "description" : "Statuses used as search criteria applied only to transactions of kind `ticket`. Possibles values for each array element are:\n* approved: The ticket was approved by the payer and is waiting to be processed by the receiver to generate the payment\n* canceled: The ticket was canceled by the receiver before being approved\n* expired: The ticket has expired without being approved by a payer or canceled by the receiver until the expiration date\n* open: The ticket was created, but not approved yet\n* processed: The ticket was approved and processed and the payment was generated\n",
             "items" : {
               "$ref" : "#/definitions/TicketStatusEnum"
             }
@@ -27487,7 +27753,7 @@
             "description" : "Only returned if the `kind` is `externalPayment`.\nIs the user identification value for this external payment\n(for example, the e-mail or mobile phone values).\n"
           },
           "ticketStatus" : {
-            "description" : "The status of a ticket Possible values are:\n* canceled: The ticket was canceled by the receiver before being processed\n* expired: The ticket has expired without being confirmed by a payer or canceled by the receiver until the expiration date\n* open: The ticket was created, but not confirmed yet\n* processed: The ticket was confirmed and processed and the payment was generated\n",
+            "description" : "The status of a ticket Possible values are:\n* approved: The ticket was approved by the payer and is waiting to be processed by the receiver to generate the payment\n* canceled: The ticket was canceled by the receiver before being approved\n* expired: The ticket has expired without being approved by a payer or canceled by the receiver until the expiration date\n* open: The ticket was created, but not approved yet\n* processed: The ticket was approved and processed and the payment was generated\n",
             "$ref" : "#/definitions/TicketStatusEnum"
           },
           "payerPrincipal" : {
