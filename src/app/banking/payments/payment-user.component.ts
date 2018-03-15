@@ -1,6 +1,6 @@
 import { Component, Injector, ChangeDetectionStrategy, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { BaseBankingComponent } from 'app/banking/base-banking.component';
+import { BaseComponent } from 'app/shared/base.component';
 import { IdentificationMethodEnum, UserDataForSearch, User } from 'app/api/models';
 import { IdMethod } from 'app/banking/payments/id-method';
 
@@ -13,7 +13,7 @@ import { IdMethod } from 'app/banking/payments/id-method';
   styleUrls: ['payment-user.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PaymentUserComponent extends BaseBankingComponent {
+export class PaymentUserComponent extends BaseComponent {
   constructor(
     injector: Injector) {
     super(injector);

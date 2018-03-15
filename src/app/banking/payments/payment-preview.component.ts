@@ -1,5 +1,5 @@
 import { Component, Injector, ChangeDetectionStrategy, Input } from '@angular/core';
-import { BaseBankingComponent } from 'app/banking/base-banking.component';
+import { BaseComponent } from 'app/shared/base.component';
 import { PaymentPreview } from 'app/api/models';
 import { ApiHelper } from 'app/shared/api-helper';
 import { FormGroup } from '@angular/forms';
@@ -12,7 +12,7 @@ import { FormGroup } from '@angular/forms';
   templateUrl: 'payment-preview.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PaymentPreviewComponent extends BaseBankingComponent {
+export class PaymentPreviewComponent extends BaseComponent {
   constructor(
     injector: Injector) {
     super(injector);

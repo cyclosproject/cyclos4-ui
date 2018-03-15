@@ -1,7 +1,10 @@
 {
   "$schema": "./node_modules/ng-translation-gen/ng-translation-gen-schema.json",
+  "mapping": {
+    "messages": "Messages"
+  },
   "input": "src/translations",
   "output": "src/app/messages",
-  "classSuffix": "Messages",
-  "includeOnlyMappedFiles": false
+  "classSuffix": "",
+  "includeOnlyMappedFiles": true
 }

@@ -4,7 +4,7 @@
     fxLayout="row"
     fxLayout.sm="column">
     <mat-card fxFlex="grow">
-      <mat-card-title>{{ generalMessages.loginTitle() }}</mat-card-title>
+      <mat-card-title>{{ messages.loginTitle() }}</mat-card-title>
       <mat-card-content>
         <div class="text">
           You can login with your username and password
@@ -18,7 +18,7 @@
         <button mat-raised-button
           color="accent"
           (click)="doLogin()">
-          {{ generalMessages.submit() }}
+          {{ messages.submit() }}
         </button>
         <a href="#"
           class="forgotPassword">
@@ -30,23 +30,23 @@
 
   <!-- Tabbed view for extra small devices when registration is enabled -->
   <mat-tab-group *ngIf="canRegister && layout.xs">
-    <mat-tab [label]="generalMessages.loginTitle()">
+    <mat-tab [label]="messages.loginTitle()">
       <login-form class="topMargin"
         [loginForm]="loginForm"
         [dataForLogin]="dataForLogin"
         (submit)="doLogin()"
         [showActions]="true"></login-form>
     </mat-tab>
-    <mat-tab [label]="generalMessages.loginRegisterTitle()">
+    <mat-tab [label]="messages.loginRegisterTitle()">
       <div class="register">
         <div>
-          {{ generalMessages.loginRegisterText() }}
+          {{ messages.loginRegisterText() }}
         </div>
         <actions>
           <button mat-raised-button
             color="accent"
             (click)="register()">
-            {{ generalMessages.submit() }}
+            {{ messages.submit() }}
           </button>
         </actions>
       </div>
@@ -55,7 +55,7 @@
 
   <!-- Login page for extra small devices when registration is disabled -->
   <ng-container *ngIf="!canRegister && layout.xs">
-    <h2>{{ generalMessages.loginTitle() }}</h2>
+    <h2>{{ messages.loginTitle() }}</h2>
     <login-form [loginForm]="loginForm"
       [dataForLogin]="dataForLogin"
       (submit)="doLogin($event)"

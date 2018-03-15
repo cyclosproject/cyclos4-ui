@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { GeneralMessages } from 'app/messages/general-messages';
+import { Messages } from 'app/messages/messages';
 
 /**
  * A widget that switches between field visibilities.
@@ -18,7 +18,7 @@ export class FieldPrivacyComponent {
   @Input() field: string;
   @Input() control: FormControl;
 
-  constructor(public generalMessages: GeneralMessages) {
+  constructor(public messages: Messages) {
   }
 
   get hidden(): boolean {

@@ -5,7 +5,7 @@ import { Auth, AccountWithStatus } from 'app/api/models';
 import { ApiConfiguration } from 'app/api/api-configuration';
 import { Observable } from 'rxjs/Observable';
 import { NotificationService } from 'app/core/notification.service';
-import { GeneralMessages } from 'app/messages/general-messages';
+import { Messages } from 'app/messages/messages';
 import { Subscription } from 'rxjs/Subscription';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 
@@ -27,7 +27,7 @@ export class PushNotificationsService {
 
   constructor(
     dataForUiHolder: DataForUiHolder,
-    private generalMessages: GeneralMessages,
+    private messages: Messages,
     private apiConfiguration: ApiConfiguration,
     private login: LoginService,
     private notification: NotificationService,
@@ -78,7 +78,7 @@ export class PushNotificationsService {
     this.eventSource.addEventListener(LOGGED_OUT, (event: any) => {
       this.zone.run(() => {
         this.close();
-        this.notification.error(this.generalMessages.errorSessionExpired());
+        this.notification.error(this.messages.errorSessionExpired());
         this.login.clear();
       });
     });

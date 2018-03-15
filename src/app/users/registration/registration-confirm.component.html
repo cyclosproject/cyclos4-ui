@@ -18,23 +18,23 @@
         type="password"
         formControlName="confirmationValue"
         required
-        [placeholder]="usersMessages.registrationPasswordConfirm(pt.name)" />
+        [placeholder]="messages.registrationPasswordConfirm(pt.name)" />
     </mat-form-field>
   </div>
 </ng-container>
 
 <ng-container *ngIf="data.securityQuestions != null && data.securityQuestions.length > 0">
-  <h2>{{ usersMessages.registrationSecurityQuestionTitle() }}</h2>
+  <h2>{{ messages.registrationSecurityQuestionTitle() }}</h2>
   <div fxLayout="column"
     [formGroup]="form">
     <div class="form-info-light"
-      fxFlex="grow">{{ usersMessages.registrationSecurityQuestionMessage() }}</div>
+      fxFlex="grow">{{ messages.registrationSecurityQuestionMessage() }}</div>
     <mat-form-field fxFlex="grow">
       <mat-select formControlName="securityQuestion"
-        [placeholder]="usersMessages.registrationSecurityQuestionQuestion()"
+        [placeholder]="messages.registrationSecurityQuestionQuestion()"
         (change)="focusDelayed(securityAnswer)">
         <mat-option value="">
-          {{ usersMessages.registrationSecurityQuestionLeaveBlank() }}
+          {{ messages.registrationSecurityQuestionLeaveBlank() }}
         </mat-option>
         <mat-option *ngFor="let q of data.securityQuestions"
           [value]="q.internalName">
@@ -51,16 +51,16 @@
         matInput
         formControlName="securityAnswer"
         [required]="requiredSecurityAnswer | async"
-        [placeholder]="usersMessages.registrationSecurityQuestionAnswer()" />
+        [placeholder]="messages.registrationSecurityQuestionAnswer()" />
     </mat-form-field>
   </div>
 </ng-container>
 
 <ng-container *ngIf="data.agreements != null && data.agreements.length > 0"
   [formGroup]="form">
-  <h2>{{ usersMessages.registrationAgreementTitle() }}</h2>
+  <h2>{{ messages.registrationAgreementTitle() }}</h2>
   <div class="form-info-light">
-    {{ usersMessages.registrationAgreementMessage() }}
+    {{ messages.registrationAgreementMessage() }}
   </div>
   <div class="agreements">
     <ng-container *ngFor="let agreement of data.agreements">
@@ -70,15 +70,15 @@
   </div>
 
   <mat-checkbox formControlName="acceptAgreement">
-    {{ usersMessages.registrationAgreementCheck() }}
+    {{ messages.registrationAgreementCheck() }}
   </mat-checkbox>
 </ng-container>
 
 <ng-container *ngIf="data.captchaType != null">
-  <h2>{{ usersMessages.registrationCaptchaTitle() }}</h2>
+  <h2>{{ messages.registrationCaptchaTitle() }}</h2>
   <div fxLayout="column">
     <div class="form-info-light"
-      fxFlex="grow">{{ usersMessages.registrationCaptchaMessage() }}</div>
+      fxFlex="grow">{{ messages.registrationCaptchaMessage() }}</div>
     <captcha [form]="form.get('captcha')"></captcha>
   </div>
 </ng-container>

@@ -1,13 +1,13 @@
 <page-layout [loaded]="loaded"
   [hasMenu]="false"
   contentSize="medium"
-  [title]="usersMessages.registrationTitle()">
+  [title]="messages.registrationTitle()">
   <page-content>
     <td-steps #stepper
       [mode]="layout.ltmd ? 'vertical' : 'horizontal'">
       <td-step #groupStep
         *ngIf="groups.length > 1"
-        [label]="usersMessages.registrationGroup()"
+        [label]="messages.registrationGroup()"
         [sublabel]="layout.ltmd ? (group | async).name : null">
         <ng-container *ngIf="stepperControl.monitor(groupStep) | async">
           <registration-group [groups]="groups"
@@ -19,13 +19,13 @@
               color="accent"
               [disabled]="!groupForm.valid"
               (click)="nextFromGroup()">
-              {{ generalMessages.next() }}
+              {{ messages.next() }}
             </button>
           </actions>
         </ng-container>
       </td-step>
       <td-step #fieldsStep
-        [label]="usersMessages.registrationFields()"
+        [label]="messages.registrationFields()"
         [sublabel]="layout.ltmd ? user.name || user.username || user.email : null">
         <ng-container *ngIf="stepperControl.monitor(fieldsStep) | async">
           <registration-fields [data]="data | async"
@@ -36,7 +36,7 @@
             <button *ngIf="groups.length > 1"
               mat-raised-button
               (click)="previousFromFields()">
-              {{ generalMessages.previous() }}
+              {{ messages.previous() }}
             </button>
             <button fxFlex.gt-xs="nogrow"
               mat-raised-button
@@ -45,13 +45,13 @@
                 (fieldsForm.value.addressDefined === true
                 && (addressForm.statusChanges | async) !== 'VALID')"
               (click)="nextFromFields()">
-              {{ generalMessages.next() }}
+              {{ messages.next() }}
             </button>
           </actions>
         </ng-container>
       </td-step>
       <td-step #confirmStep
-        [label]="usersMessages.registrationConfirm()">
+        [label]="messages.registrationConfirm()">
         <ng-container *ngIf="stepperControl.monitor(confirmStep) | async">
           <registration-confirm [data]="data | async"
             [form]=confirmForm></registration-confirm>
@@ -60,20 +60,20 @@
             <button *ngIf="groups.length > 1"
               mat-raised-button
               (click)="previousFromConfirm()">
-              {{ generalMessages.previous() }}
+              {{ messages.previous() }}
             </button>
             <button fxFlex.gt-xs="nogrow"
               mat-raised-button
               color="accent"
               [disabled]="!confirmForm.valid"
               (click)="nextFromConfirm()">
-              {{ generalMessages.confirm() }}
+              {{ messages.confirm() }}
             </button>
           </actions>
         </ng-container>
       </td-step>
       <td-step #doneStep
-        [label]="usersMessages.registrationDone()">
+        [label]="messages.registrationDone()">
         <ng-container *ngIf="stepperControl.monitor(doneStep) | async">
           <registration-done [result]="result | async"></registration-done>
           <actions *ngIf="(result | async).status == 'active'"
@@ -83,7 +83,7 @@
               mat-raised-button
               color="accent"
               (click)="goToLogin()">
-              {{ usersMessages.registrationDoneGoToLogin() }}
+              {{ messages.registrationDoneGoToLogin() }}
             </button>
           </actions>
         </ng-container>

@@ -29,8 +29,8 @@ export class HomeComponent extends BaseComponent {
     super.ngOnInit();
     const guest = this.login.user == null;
     this.title = guest ?
-      this.generalMessages.homeGuestsTitle(this.format.appTitle) :
-      this.generalMessages.homeUsersTitle();
+      this.messages.homeGuestsTitle(this.format.appTitle) :
+      this.messages.homeUsersTitle();
 
     if (guest) {
       // Load the home page content

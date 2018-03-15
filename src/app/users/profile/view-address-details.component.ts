@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, Injector, Input, HostBinding } from '@angular/core';
-import { BaseUsersComponent } from 'app/users/base-users.component';
+import { BaseComponent } from 'app/shared/base.component';
 import { AddressView, Country } from 'app/api/models';
 
 /**
@@ -10,7 +10,7 @@ import { AddressView, Country } from 'app/api/models';
   templateUrl: 'view-address-details.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ViewAddressDetailsComponent extends BaseUsersComponent {
+export class ViewAddressDetailsComponent extends BaseComponent {
   constructor(injector: Injector) {
     super(injector);
   }

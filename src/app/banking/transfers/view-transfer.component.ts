@@ -1,7 +1,7 @@
 import { Component, Injector, ChangeDetectionStrategy } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { TransfersService } from 'app/api/services/transfers.service';
-import { BaseBankingComponent } from 'app/banking/base-banking.component';
+import { BaseComponent } from 'app/shared/base.component';
 import { TransferView } from 'app/api/models/transfer-view';
 
 /**
@@ -12,7 +12,7 @@ import { TransferView } from 'app/api/models/transfer-view';
   templateUrl: './view-transfer.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ViewTransferComponent extends BaseBankingComponent {
+export class ViewTransferComponent extends BaseComponent {
   constructor(
     injector: Injector,
     private transfersService: TransfersService

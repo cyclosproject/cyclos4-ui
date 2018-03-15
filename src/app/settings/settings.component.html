@@ -1,17 +1,17 @@
 <page-layout [loaded]="loaded"
-  [title]="generalMessages.settingsTitle()">
+  [title]="messages.settingsTitle()">
   <page-content *ngIf="(loaded | async)">
     <form [formGroup]="form"
       fxLayout="column">
       <mat-slide-toggle fxFlex="grow"
         formControlName="darkTheme">
-        {{ generalMessages.settingsDarkTheme() }}
+        {{ messages.settingsDarkTheme() }}
       </mat-slide-toggle>
       <actions>
         <button mat-raised-button
           color="accent"
           (click)="save()">
-          {{ generalMessages.save() }}
+          {{ messages.save() }}
         </button>
       </actions>
     </form>

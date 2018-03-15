@@ -1,7 +1,7 @@
 import { Component, Injector, ChangeDetectionStrategy } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { TransactionsService } from 'app/api/services/transactions.service';
-import { BaseBankingComponent } from 'app/banking/base-banking.component';
+import { BaseComponent } from 'app/shared/base.component';
 import { TransactionView } from 'app/api/models/transaction-view';
 import { TransactionKind } from 'app/api/models/transaction-kind';
 
@@ -13,7 +13,7 @@ import { TransactionKind } from 'app/api/models/transaction-kind';
   templateUrl: './view-transaction.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ViewTransactionComponent extends BaseBankingComponent {
+export class ViewTransactionComponent extends BaseComponent {
   constructor(
     injector: Injector,
     private transactionsService: TransactionsService
@@ -29,13 +29,13 @@ export class ViewTransactionComponent extends BaseBankingComponent {
     const kind = (this.transaction || {}).kind;
     switch (kind) {
       case TransactionKind.PAYMENT:
-        return this.bankingMessages.transactionViewPaymentTitle();
+        return this.messages.transactionViewPaymentTitle();
       case TransactionKind.SCHEDULED_PAYMENT:
-        return this.bankingMessages.transactionViewScheduledPaymentTitle();
+        return this.messages.transactionViewScheduledPaymentTitle();
       case TransactionKind.RECURRING_PAYMENT:
-        return this.bankingMessages.transactionViewRecurringPaymentTitle();
+        return this.messages.transactionViewRecurringPaymentTitle();
       default:
-        return this.bankingMessages.transactionViewTitle();
+        return this.messages.transactionViewTitle();
     }
   }
 

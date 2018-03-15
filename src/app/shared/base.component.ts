@@ -1,5 +1,5 @@
 import { OnInit, OnDestroy, Injector, ChangeDetectorRef } from '@angular/core';
-import { GeneralMessages } from 'app/messages/general-messages';
+import { Messages } from 'app/messages/messages';
 import { LayoutService } from 'app/core/layout.service';
 import { FormatService } from 'app/core/format.service';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
@@ -20,7 +20,7 @@ import { DataForUiHolder } from 'app/core/data-for-ui-holder';
  */
 export abstract class BaseComponent implements OnInit, OnDestroy {
   dataForUiHolder: DataForUiHolder;
-  generalMessages: GeneralMessages;
+  messages: Messages;
   layout: LayoutService;
   format: FormatService;
   errorHandler: ErrorHandlerService;
@@ -38,7 +38,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
 
   constructor(injector: Injector) {
     this.dataForUiHolder = injector.get(DataForUiHolder);
-    this.generalMessages = injector.get(GeneralMessages);
+    this.messages = injector.get(Messages);
     this.layout = injector.get(LayoutService);
     this.format = injector.get(FormatService);
     this.errorHandler = injector.get(ErrorHandlerService);

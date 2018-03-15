@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MenuType, Menu, RootMenuEntry, MenuEntry, RootMenu } from 'app/shared/menu';
 import { LoginService } from 'app/core/login.service';
-import { GeneralMessages } from 'app/messages/general-messages';
+import { Messages } from 'app/messages/messages';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { AccountStatus, Auth } from 'app/api/models';
@@ -21,7 +21,7 @@ export class MenuService {
     private login: LoginService,
     private pushNotifications: PushNotificationsService,
     private accountsService: AccountsService,
-    private generalMessages: GeneralMessages,
+    private messages: Messages,
     private dataForUiHolder: DataForUiHolder
   ) {
     // Clear the status whenever the logged user changes
@@ -128,13 +128,13 @@ export class MenuService {
     // Create the root menu entries
     addRoot(RootMenu.HOME,
       user == null ? 'home' : 'dashboard',
-      user == null ? this.generalMessages.menuHome() : this.generalMessages.menuDashboard());
-    addRoot(RootMenu.LOGIN, 'lock', this.generalMessages.menuLogin());
-    addRoot(RootMenu.REGISTRATION, 'input', this.generalMessages.menuRegister());
-    addRoot(RootMenu.BANKING, 'account_balance', this.generalMessages.menuBanking(), this.generalMessages.menuBankingTitle());
-    addRoot(RootMenu.USERS, 'group', this.generalMessages.menuUsers(), this.generalMessages.menuUsersTitle());
-    addRoot(RootMenu.MARKETPLACE, 'shopping_cart', this.generalMessages.menuMarketplace(), this.generalMessages.menuMarketplaceTitle());
-    addRoot(RootMenu.PERSONAL, 'account_box', this.generalMessages.menuPersonal(), this.generalMessages.menuPersonalTitle());
+      user == null ? this.messages.menuHome() : this.messages.menuDashboard());
+    addRoot(RootMenu.LOGIN, 'lock', this.messages.menuLogin());
+    addRoot(RootMenu.REGISTRATION, 'input', this.messages.menuRegister());
+    addRoot(RootMenu.BANKING, 'account_balance', this.messages.menuBanking(), this.messages.menuBankingTitle());
+    addRoot(RootMenu.USERS, 'group', this.messages.menuUsers(), this.messages.menuUsersTitle());
+    addRoot(RootMenu.MARKETPLACE, 'shopping_cart', this.messages.menuMarketplace(), this.messages.menuMarketplaceTitle());
+    addRoot(RootMenu.PERSONAL, 'account_box', this.messages.menuPersonal(), this.messages.menuPersonalTitle());
 
     // Lambda that adds a submenu to a root menu
     const add = (menu: Menu, url: string, icon: string, label: string, showIn: MenuType[] = null) => {
@@ -144,13 +144,13 @@ export class MenuService {
     // Add the submenus
     add(Menu.HOME, '/',
       user == null ? 'home' : 'dashboard',
-      user == null ? this.generalMessages.menuHome() : this.generalMessages.menuDashboard());
+      user == null ? this.messages.menuHome() : this.messages.menuDashboard());
     if (user == null) {
       // Guest
       const registrationGroups = (this.dataForUiHolder.dataForUi || {}).publicRegistrationGroups || [];
-      add(Menu.LOGIN, '/login', 'lock', this.generalMessages.menuLogin());
+      add(Menu.LOGIN, '/login', 'lock', this.messages.menuLogin());
       if (registrationGroups.length > 0) {
-        add(Menu.REGISTRATION, '/users/registration', 'input', this.generalMessages.menuRegister());
+        add(Menu.REGISTRATION, '/users/registration', 'input', this.messages.menuRegister());
       }
     } else {
       const banking = permissions.banking || {};
@@ -168,40 +168,40 @@ export class MenuService {
       const payments = banking.payments || {};
       if (payments.user || payments.system || payments.self) {
         add(Menu.PERFORM_PAYMENT, '/banking/payment', 'payment',
-          this.generalMessages.menuBankingPayment());
+          this.messages.menuBankingPayment());
       }
       if ((banking.scheduledPayments || {}).view) {
         add(Menu.SCHEDULED_PAYMENTS, '/banking/scheduled-payments', 'schedule',
-          this.generalMessages.menuBankingScheduledPayments());
+          this.messages.menuBankingScheduledPayments());
       }
       if ((banking.recurringPayments || {}).view) {
         add(Menu.RECURRING_PAYMENTS, '/banking/recurring-payments', 'loop',
-          this.generalMessages.menuBankingRecurringPayments());
+          this.messages.menuBankingRecurringPayments());
       }
 
       // Users
       add(Menu.SEARCH_USERS, '/users/search', 'group',
-        this.generalMessages.menuUsersSearch());
+        this.messages.menuUsersSearch());
 
       // Temporary, just to show other root menu entries
       add(Menu.SEARCH_MARKETPLACE, '/marketplace/search', 'shopping_cart',
-        this.generalMessages.menuMarketplaceSearch());
+        this.messages.menuMarketplaceSearch());
 
       // Personal
       add(Menu.MY_PROFILE, '/users/my-profile', 'account_box',
-        this.generalMessages.menuPersonalProfile(), [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
+        this.messages.menuPersonalProfile(), [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
       add(Menu.SETTINGS, '/settings', 'settings',
-        this.generalMessages.menuPersonalSettings(), [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
+        this.messages.menuPersonalSettings(), [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
       if (users.contacts) {
         add(Menu.CONTACTS, '/personal/contacts', 'contacts',
-          this.generalMessages.menuPersonalContacts(), [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
+          this.messages.menuPersonalContacts(), [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
       }
       if ((permissions.passwords || {}).manage) {
         add(Menu.PASSWORDS, '/personal/passwords', 'lock',
-          this.generalMessages.menuPersonalPasswords(), [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
+          this.messages.menuPersonalPasswords(), [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
       }
       add(Menu.LOGOUT, null, 'exit_to_app',
-        this.generalMessages.menuPersonalLogout());
+        this.messages.menuPersonalLogout());
     }
 
     // Populate the menu in the root declaration order

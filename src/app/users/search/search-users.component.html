@@ -1,5 +1,5 @@
 <page-layout [tightContent]="true"
-  [title]="usersMessages.searchTitle()"
+  [title]="messages.userSearchTitle()"
   [loaded]="loaded"
   [filtersForm]="form">
   <page-filters>
@@ -9,7 +9,7 @@
       <mat-form-field>
         <input formControlName="keywords"
           matInput
-          [placeholder]="generalMessages.keywords()">
+          [placeholder]="messages.keywords()">
       </mat-form-field>
     </form>
   </page-filters>
@@ -45,7 +45,7 @@
 
       <!-- Display column -->
       <ng-container matColumnDef="display">
-        <mat-header-cell *matHeaderCellDef>{{ generalMessages.user() }}</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef>{{ messages.user() }}</mat-header-cell>
         <mat-cell *matCellDef="let row">
           <a [routerLink]="path(row)">
             {{ row.display }}

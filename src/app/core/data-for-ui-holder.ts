@@ -11,6 +11,8 @@ import { NextRequestState } from 'app/core/next-request-state';
 import { UIService } from 'app/api/services';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ErrorStatus } from 'app/core/error-status';
+import { TranslationLoaderService } from './translation-loader.service';
+import { Messages } from 'app/messages/messages';
 
 /**
  * Injectable used to hold the `DataForUi` instance used by the application
@@ -21,7 +23,9 @@ export class DataForUiHolder {
 
   constructor(
     private nextRequestState: NextRequestState,
-    private uiService: UIService) {
+    private uiService: UIService,
+    private translationLoaderService: TranslationLoaderService,
+    private messages: Messages) {
   }
 
   /**
@@ -32,7 +36,16 @@ export class DataForUiHolder {
     this.nextRequestState.ignoreNextError = true;
     return this.uiService.dataForUi({ kind: UiKind.CUSTOM })
       .toPromise()
-      .then(dataForUi => this.dataForUi = dataForUi)
+      .then(dataForUi => {
+        // We're initializing the DataForUi. Also load the corresponding translation
+        return this.translationLoaderService.load(dataForUi.language.code, dataForUi.country)
+          .then(messages => {
+            this.messages.initialize(messages);
+            // Only after the messages are initialized, initialize the DataForUi instance
+            this.dataForUi = dataForUi;
+            return dataForUi;
+          });
+      })
       .catch((resp: HttpErrorResponse) => {
         if (!retried && this.nextRequestState.sessionToken != null
           && (resp.status === ErrorStatus.FORBIDDEN || resp.status === ErrorStatus.UNAUTHORIZED)) {

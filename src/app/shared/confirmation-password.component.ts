@@ -8,7 +8,7 @@ import {
   AbstractControl, ValidationErrors, ControlContainer
 } from '@angular/forms';
 import { PasswordInputComponent } from 'app/shared/password-input.component';
-import { GeneralMessages } from 'app/messages/general-messages';
+import { Messages } from 'app/messages/messages';
 import { Subscription } from 'rxjs/Subscription';
 import { BaseControlComponent } from 'app/shared/base-control.component';
 
@@ -51,7 +51,7 @@ export class ConfirmationPasswordComponent extends BaseControlComponent<string> 
 
   constructor(
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
-    public generalMessages: GeneralMessages
+    public messages: Messages
   ) {
     super(controlContainer);
   }
@@ -87,14 +87,14 @@ export class ConfirmationPasswordComponent extends BaseControlComponent<string> 
     const name = this.passwordInput.name;
     if (otp) {
       if (!this.hasOtpSendMediums) {
-        return this.generalMessages.passwordConfirmationOtpNoMediums(name);
+        return this.messages.passwordConfirmationOtpNoMediums(name);
       } else if (this.activePassword) {
-        return this.generalMessages.passwordConfirmationOtpExisting(name);
+        return this.messages.passwordConfirmationOtpExisting(name);
       } else {
-        return this.generalMessages.passwordConfirmationOtp();
+        return this.messages.passwordConfirmationOtp();
       }
     } else {
-      return this.generalMessages.passwordConfirmationNotActive(name);
+      return this.messages.passwordConfirmationNotActive(name);
     }
   }
 

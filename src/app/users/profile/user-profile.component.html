@@ -6,17 +6,17 @@
       [image]="user.image"
       [additionalImages]="user.additionalImages"></image-viewer>
     <label-value *ngIf="user.name != null && user.name !== user.display"
-      [label]="usersMessages.userName()"
+      [label]="messages.userName()"
       [value]="user.name"></label-value>
     <label-value *ngIf="user.username"
-      [label]="usersMessages.userUsername()"
+      [label]="messages.userUsername()"
       [value]="user.username"></label-value>
     <label-value *ngIf="user.email"
-      [label]="usersMessages.userEmail()">
+      [label]="messages.userEmail()">
       <a [href]="'mailto:' + user.email">{{ user.email }}</a>
     </label-value>
     <label-value *ngFor="let phone of user.phones"
-      [label]="phone.type === 'mobile' ? usersMessages.userMobilePhone() : usersMessages.userLandLinePhone()">
+      [label]="phone.type === 'mobile' ? messages.userMobilePhone() : messages.userLandLinePhone()">
       <a [href]="'tel:' + phone.normalizedNumber">
         {{ phone.number }}
       </a>
@@ -27,7 +27,7 @@
 
     <!-- Multiple addresses -->
     <ng-container *ngIf="(user.addresses || []).length > 1">
-      <h2>{{ usersMessages.userAddresses() }}</h2>
+      <h2>{{ messages.userAddresses() }}</h2>
       <ng-container *ngFor="let address of user.addresses">
         <h3>{{ address.name }}</h3>
         <view-address-details [address]="address"
@@ -38,7 +38,7 @@
 
     <!-- Single address -->
     <ng-container *ngIf="(user.addresses || []).length === 1">
-      <h2>{{ usersMessages.userAddress() }}</h2>
+      <h2>{{ messages.userAddress() }}</h2>
       <view-address-details [address]="user.addresses[0]"
         [countries]="countries | async">
       </view-address-details>
@@ -46,24 +46,24 @@
 
     <!-- Contact infos -->
     <ng-container *ngIf="(user.contactInfos || []).length > 0">
-      <h2>{{ usersMessages.userContactInfos() }}</h2>
+      <h2>{{ messages.userContactInfos() }}</h2>
       <ng-container *ngFor="let contactInfo of user.contactInfos">
         <h3>{{ contactInfo.name }}</h3>
         <image-viewer *ngIf="contactInfo.image"
           [profile]="true"
           [image]="contactInfo.image"></image-viewer>
         <label-value *ngIf="contactInfo.email"
-          [label]="usersMessages.userEmail()">
+          [label]="messages.userEmail()">
           <a [href]="'mailto:' + contactInfo.email">{{ contactInfo.email }}</a>
         </label-value>
         <label-value *ngIf="contactInfo.mobilePhone"
-          [label]="usersMessages.userMobilePhone()">
+          [label]="messages.userMobilePhone()">
           <a [href]="'tel:' + contactInfo.normalizedMobilePhone">
             {{ contactInfo.mobilePhone }}
           </a>
         </label-value>
         <label-value *ngIf="contactInfo.landLinePhone"
-          [label]="usersMessages.userLandLinePhone()">
+          [label]="messages.userLandLinePhone()">
           <a [href]="'tel:' + contactInfo.normalizedLandLinePhone">
             {{ contactInfo.landLinePhone }}
           </a>

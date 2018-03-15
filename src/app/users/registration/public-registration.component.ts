@@ -3,7 +3,7 @@ import {
   FormGroup, FormBuilder, Validators, ValidatorFn, AsyncValidatorFn,
   AbstractControl, ValidationErrors
 } from '@angular/forms';
-import { BaseUsersComponent } from 'app/users/base-users.component';
+import { BaseComponent } from 'app/shared/base.component';
 import { GroupForRegistration } from 'app/api/models/group-for-registration';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { ApiHelper } from 'app/shared/api-helper';
@@ -57,7 +57,7 @@ const SEGURITY_ANSWER_VAL: ValidatorFn = control => {
   templateUrl: './public-registration.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PublicRegistrationComponent extends BaseUsersComponent implements AfterViewInit {
+export class PublicRegistrationComponent extends BaseComponent implements AfterViewInit {
   loaded = new BehaviorSubject(false);
 
   @ViewChild('stepperControl')
@@ -125,7 +125,7 @@ export class PublicRegistrationComponent extends BaseUsersComponent implements A
     this.groups = (this.dataForUiHolder.dataForUi.publicRegistrationGroups || []);
     if (this.groups.length === 0) {
       // No groups for registration!
-      this.notification.error(this.usersMessages.registrationErrorNoGroups());
+      this.notification.error(this.messages.registrationErrorNoGroups());
     } else if (this.groups.length === 1) {
       // There is a single group - select it
       const group = this.groups[0];

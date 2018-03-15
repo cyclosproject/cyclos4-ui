@@ -5,11 +5,11 @@
   }">
   <mat-card>
     <mat-tab-group #tabGroup>
-      <mat-tab [label]="(sideMenu.title | async) || generalMessages.menu()">
+      <mat-tab [label]="(sideMenu.title | async) || messages.menu()">
         <side-menu #sideMenu></side-menu>
       </mat-tab>
       <mat-tab *ngIf="hasFilters && (filtersShown | async)"
-        [label]="generalMessages.filtersTitle()">
+        [label]="messages.filtersTitle()">
         <div class="filters">
           <ng-container *ngTemplateOutlet="filtersTpl"></ng-container>
         </div>
@@ -94,10 +94,10 @@
   <ng-content select="page-filters"></ng-content>
   <div class="actions">
     <button mat-raised-button
-      (click)="clearFilters()">{{ generalMessages.filtersClear() }}</button>
+      (click)="clearFilters()">{{ messages.filtersClear() }}</button>
     <div fxFlex="grow"></div>
     <button mat-raised-button
-      (click)="hideFilters()">{{ generalMessages.filtersHide() }}</button>
+      (click)="hideFilters()">{{ messages.filtersHide() }}</button>
   </div>
 </ng-template>
 <ng-template #headerTpl>

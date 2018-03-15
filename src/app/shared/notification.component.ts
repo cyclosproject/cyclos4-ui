@@ -2,7 +2,7 @@ import { Component, OnInit, Input, ChangeDetectionStrategy, Optional } from '@an
 import { Notification } from 'app/shared/notification';
 import { NotificationType } from 'app/shared/notification-type';
 import { MatDialogRef } from '@angular/material';
-import { GeneralMessages } from 'app/messages/general-messages';
+import { Messages } from 'app/messages/messages';
 
 /**
  * Component used to show a notification
@@ -16,7 +16,7 @@ import { GeneralMessages } from 'app/messages/general-messages';
 })
 export class NotificationComponent implements OnInit {
   constructor(
-    public generalMessages: GeneralMessages,
+    public messages: Messages,
     @Optional()
     public dialogRef: MatDialogRef<NotificationComponent>
   ) { }
@@ -42,7 +42,7 @@ export class NotificationComponent implements OnInit {
       this.containerClass += ' notification--' + type;
       this.iconColor = type === NotificationType.ERROR
         ? 'warn' : type === NotificationType.INFO
-        ? 'primary' : 'accent';
+          ? 'primary' : 'accent';
     }
   }
 

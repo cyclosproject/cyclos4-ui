@@ -6,7 +6,7 @@
       type="text"
       [focused]="focused"
       (keyup)="onKeywords.next($event.target.value)"
-      [placeholder]="generalMessages.keywords()">
+      [placeholder]="messages.keywords()">
   </mat-form-field>
 
   <mat-table *ngIf="showTable | async; else noKeywords"
@@ -24,7 +24,7 @@
     </ng-container>
 
     <ng-container matColumnDef="user">
-      <mat-header-cell *matHeaderCellDef>{{ generalMessages.user() }}</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef>{{ messages.user() }}</mat-header-cell>
       <mat-cell *matCellDef="let row">
         <a href="#"
           class="plain"
@@ -37,7 +37,7 @@
   </mat-table>
 
   <ng-template #noKeywords>
-    {{ generalMessages.searchUserNoKeywords() }}
+    {{ messages.searchUserNoKeywords() }}
   </ng-template>
 
 </div>

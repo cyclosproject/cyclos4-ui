@@ -7,7 +7,7 @@ import {
   ForbiddenErrorCode, PaymentError, PaymentErrorCode
 } from 'app/api/models';
 import { NgForm } from '@angular/forms';
-import { GeneralMessages } from 'app/messages/general-messages';
+import { Messages } from 'app/messages/messages';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NextRequestState } from './next-request-state';
 import { ErrorStatus } from './error-status';
@@ -19,7 +19,7 @@ import { ErrorStatus } from './error-status';
 export class ErrorHandlerService {
 
   constructor(
-    private generalMessages: GeneralMessages,
+    private messages: Messages,
     private notificationService: NotificationService,
     private formatService: FormatService,
     private nextRequestState: NextRequestState
@@ -41,7 +41,7 @@ export class ErrorHandlerService {
       }
     }
     if (message) {
-      message = this.generalMessages.errorValidation() + '<br>' + message;
+      message = this.messages.errorValidation() + '<br>' + message;
       this.notificationService.error(message);
       return true;
     }
@@ -83,7 +83,7 @@ export class ErrorHandlerService {
       }
       switch (err.status) {
         case ErrorStatus.INVALID_REQUEST:
-          message = this.generalMessages.errorNetwork();
+          message = this.messages.errorNetwork();
           break;
         case ErrorStatus.UNAUTHORIZED:
           message = this.unauthorizedErrorMessage(error as UnauthorizedError);
@@ -107,7 +107,7 @@ export class ErrorHandlerService {
                 break;
               case ErrorKind.OTP:
                 // An error while generating an OTP
-                message = this.generalMessages.passwordOtpError();
+                message = this.messages.passwordOtpError();
                 break;
             }
           }
@@ -116,7 +116,7 @@ export class ErrorHandlerService {
 
     if (!message) {
       // No specific message. Show a general message
-      message = this.generalMessages.errorGeneral();
+      message = this.messages.errorGeneral();
     }
     this.notificationService.error(message);
   }
@@ -129,7 +129,7 @@ export class ErrorHandlerService {
     if (error == null) {
       return null;
     }
-    let message = this.generalMessages.errorValidation();
+    let message = this.messages.errorValidation();
     if (error.code === InputErrorCode.VALIDATION) {
       const items: string[] = [];
       (error.generalErrors || []).forEach(e => items.push(e));
@@ -158,12 +158,12 @@ export class ErrorHandlerService {
     }
     if (error.entityType) {
       if (error.key) {
-        return this.generalMessages.errorEntityNotFoundKey(error.key, error.entityType);
+        return this.messages.errorEntityNotFoundKey(error.key, error.entityType);
       } else {
-        return this.generalMessages.errorEntityNotFound(error.entityType);
+        return this.messages.errorEntityNotFound(error.entityType);
       }
     } else {
-      return this.generalMessages.errorNotFound();
+      return this.messages.errorNotFound();
     }
   }
 
@@ -177,24 +177,24 @@ export class ErrorHandlerService {
       case UnauthorizedErrorCode.LOGIN:
         switch (error.passwordStatus) {
           case PasswordStatusEnum.DISABLED:
-            return this.generalMessages.errorLoginPasswordDisabled();
+            return this.messages.errorLoginPasswordDisabled();
           case PasswordStatusEnum.RESET:
-            return this.generalMessages.errorLoginPasswordReset();
+            return this.messages.errorLoginPasswordReset();
           case PasswordStatusEnum.INDEFINITELY_BLOCKED:
-            return this.generalMessages.errorLoginPasswordIndefinitelyBlocked();
+            return this.messages.errorLoginPasswordIndefinitelyBlocked();
           case PasswordStatusEnum.TEMPORARILY_BLOCKED:
-            return this.generalMessages.errorLoginPasswordTemporarilyBlocked();
+            return this.messages.errorLoginPasswordTemporarilyBlocked();
           case PasswordStatusEnum.EXPIRED:
-            return this.generalMessages.errorLoginPasswordExpired();
+            return this.messages.errorLoginPasswordExpired();
           case PasswordStatusEnum.PENDING:
-            return this.generalMessages.errorLoginPasswordPending();
+            return this.messages.errorLoginPasswordPending();
           default:
-            return this.generalMessages.errorLogin();
+            return this.messages.errorLogin();
         }
       case UnauthorizedErrorCode.LOGGED_OUT:
-        return this.generalMessages.errorSessionExpired();
+        return this.messages.errorSessionExpired();
       default:
-        return this.generalMessages.errorPermission();
+        return this.messages.errorPermission();
     }
   }
 
@@ -207,17 +207,17 @@ export class ErrorHandlerService {
     const passwordType = (error.passwordType || {}).name;
     switch (error.code) {
       case ForbiddenErrorCode.ILLEGAL_ACTION:
-        return this.generalMessages.errorIllegalAction();
+        return this.messages.errorIllegalAction();
       case ForbiddenErrorCode.INVALID_PASSWORD:
-        return this.generalMessages.errorInvalid(passwordType);
+        return this.messages.errorInvalid(passwordType);
       case ForbiddenErrorCode.EXPIRED_PASSWORD:
-        return this.generalMessages.errorPasswordExpired(passwordType);
+        return this.messages.errorPasswordExpired(passwordType);
       case ForbiddenErrorCode.TEMPORARILY_BLOCKED:
-        return this.generalMessages.errorPasswordTemporarilyBlocked(passwordType);
+        return this.messages.errorPasswordTemporarilyBlocked(passwordType);
       case ForbiddenErrorCode.INDEFINITELY_BLOCKED:
-        return this.generalMessages.errorPasswordIndefinitelyBlocked(passwordType);
+        return this.messages.errorPasswordIndefinitelyBlocked(passwordType);
       default:
-        return this.generalMessages.errorPermission();
+        return this.messages.errorPermission();
     }
   }
 
@@ -231,25 +231,25 @@ export class ErrorHandlerService {
     const amount = () => this.formatService.formatAsCurrency(error.currency, error.maxAmount);
     switch (error.code) {
       case PaymentErrorCode.TIME_BETWEEN_PAYMENTS_NOT_MET:
-        return this.generalMessages.errorPaymentMinTime();
+        return this.messages.errorPaymentMinTime();
       case PaymentErrorCode.INSUFFICIENT_BALANCE:
-        return this.generalMessages.errorPaymentBalance();
+        return this.messages.errorPaymentBalance();
       case PaymentErrorCode.DESTINATION_UPPER_LIMIT_REACHED:
-        return this.generalMessages.errorPaymentUpperCreditLimit();
+        return this.messages.errorPaymentUpperCreditLimit();
       case PaymentErrorCode.DAILY_AMOUNT_EXCEEDED:
-        return this.generalMessages.errorPaymentDayAmount(amount());
+        return this.messages.errorPaymentDayAmount(amount());
       case PaymentErrorCode.DAILY_PAYMENTS_EXCEEDED:
-        return this.generalMessages.errorPaymentDayCount(count());
+        return this.messages.errorPaymentDayCount(count());
       case PaymentErrorCode.WEEKLY_AMOUNT_EXCEEDED:
-        return this.generalMessages.errorPaymentWeekAmount(amount());
+        return this.messages.errorPaymentWeekAmount(amount());
       case PaymentErrorCode.WEEKLY_PAYMENTS_EXCEEDED:
-        return this.generalMessages.errorPaymentWeekCount(count());
+        return this.messages.errorPaymentWeekCount(count());
       case PaymentErrorCode.MONTHLY_AMOUNT_EXCEEDED:
-        return this.generalMessages.errorPaymentMonthAmount(amount());
+        return this.messages.errorPaymentMonthAmount(amount());
       case PaymentErrorCode.MONTHLY_PAYMENTS_EXCEEDED:
-        return this.generalMessages.errorPaymentMonthCount(count());
+        return this.messages.errorPaymentMonthCount(count());
       default:
-        return this.generalMessages.errorGeneral();
+        return this.messages.errorGeneral();
     }
   }
 }

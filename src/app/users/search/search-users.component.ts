@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, Injector } from '@angular/core';
 
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { BaseUsersComponent } from 'app/users/base-users.component';
+import { BaseComponent } from 'app/shared/base.component';
 import { TableDataSource } from 'app/shared/table-datasource';
 import { ApiHelper } from 'app/shared/api-helper';
 import { FormGroup, FormBuilder } from '@angular/forms';
@@ -19,7 +19,7 @@ import { UserResult } from '../../api/models/user-result';
   templateUrl: 'search-users.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SearchUsersComponent extends BaseUsersComponent {
+export class SearchUsersComponent extends BaseComponent {
 
   static MAX_COLUMNS = 7;
 
@@ -53,7 +53,7 @@ export class SearchUsersComponent extends BaseUsersComponent {
   ngOnInit() {
     super.ngOnInit();
 
-    this.breadcrumb.title = this.usersMessages.searchBreadcrumb();
+    this.breadcrumb.title = this.messages.userSearchBreadcrumb();
 
     // Get the data for user search
     this.stateManager.cache('data',
@@ -135,15 +135,15 @@ export class SearchUsersComponent extends BaseUsersComponent {
     }
     switch (field) {
       case 'name':
-        return this.usersMessages.userName();
+        return this.messages.userName();
       case 'username':
-        return this.usersMessages.userUsername();
+        return this.messages.userUsername();
       case 'email':
-        return this.usersMessages.userEmail();
+        return this.messages.userEmail();
       case 'phone':
-        return this.usersMessages.userPhone();
+        return this.messages.userPhone();
       case 'accountNumber':
-        return this.usersMessages.userAccountNumber();
+        return this.messages.userAccountNumber();
       default:
         for (const cf of this.data.customFields) {
           if (cf.internalName === field) {

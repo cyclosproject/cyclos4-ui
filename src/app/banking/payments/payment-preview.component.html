@@ -1,42 +1,43 @@
-<div class="form-info">{{ preview.pendingAuthorization ? bankingMessages.paymentPreviewAuthMessage() : bankingMessages.paymentPreviewMessage() }}</div>
+<div class="form-info">{{ preview.pendingAuthorization ? messages.paymentPreviewAuthMessage() : messages.paymentPreviewMessage()
+  }}</div>
 
-<label-value [label]="bankingMessages.transactionFrom()">
+<label-value [label]="messages.transactionFrom()">
   <user-link [account]="preview.fromAccount"></user-link>
 </label-value>
 <label-value *ngIf="preview.fromAccount.number"
-  [label]="bankingMessages.transactionFromAccount()">
+  [label]="messages.transactionFromAccount()">
   {{ preview.fromAccount.number }}
 </label-value>
-<label-value [label]="bankingMessages.transactionTo()">
+<label-value [label]="messages.transactionTo()">
   <user-link [account]="preview.toAccount"></user-link>
 </label-value>
 <label-value *ngIf="preview.toAccount.number"
-  [label]="bankingMessages.transactionToAccount()">
+  [label]="messages.transactionToAccount()">
   {{ preview.toAccount.number }}
 </label-value>
 <label-value *ngIf="hasAmount"
-  [label]="bankingMessages.transactionAmount()">
+  [label]="messages.transactionAmount()">
   {{ preview.totalAmount | currency:preview.currency }}
 </label-value>
 <label-value *ngIf="hasMainAmount"
-  [label]="bankingMessages.paymentMainAmount()">
+  [label]="messages.paymentMainAmount()">
   {{ preview.mainAmount | currency:preview.currency }}
 </label-value>
 <label-value *ngIf="hasFees"
-  [label]="bankingMessages.paymentFees()">
+  [label]="messages.paymentFees()">
   <div *ngFor="let feePreview of preview.fees">
     {{ feePreview.fee.name }}: {{ feePreview.amount | currency:preview.currency }}
   </div>
 </label-value>
 <label-value *ngIf="hasTotalAmount"
-  [label]="bankingMessages.paymentTotalAmount()">
+  [label]="messages.paymentTotalAmount()">
   {{ preview.totalAmount | currency:preview.currency }}
 </label-value>
 <custom-field-value *ngFor="let fv of preview.customValues"
   [fieldValue]="fv">
 </custom-field-value>
 <label-value *ngIf="hasDescription"
-  [label]="bankingMessages.transactionDescription()"
+  [label]="messages.transactionDescription()"
   [value]="preview.payment.description"
   valueType="break">
 </label-value>

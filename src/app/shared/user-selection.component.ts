@@ -9,7 +9,7 @@ import { Subject } from 'rxjs/Subject';
 import { debounceTime } from 'rxjs/operators/debounceTime';
 import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged';
 import { UsersService } from 'app/api/services';
-import { GeneralMessages } from 'app/messages/general-messages';
+import { Messages } from 'app/messages/messages';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { BaseControlComponent } from 'app/shared/base-control.component';
@@ -47,7 +47,7 @@ export class UserSelectionComponent extends BaseControlComponent<string> {
 
   constructor(
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
-    public generalMessages: GeneralMessages,
+    public messages: Messages,
     private usersService: UsersService) {
     super(controlContainer);
   }
@@ -66,11 +66,11 @@ export class UserSelectionComponent extends BaseControlComponent<string> {
     const showTable = keywords != null && keywords.length > 0;
     if (showTable) {
       this.dataSource.subscribe(
-       this.usersService.searchUsers({
-        keywords: keywords,
-        pageSize: ApiHelper.quickSearchPageSize,
-        ignoreProfileFieldsInList: true
-      }));
+        this.usersService.searchUsers({
+          keywords: keywords,
+          pageSize: ApiHelper.quickSearchPageSize,
+          ignoreProfileFieldsInList: true
+        }));
     } else {
       this.value = null;
       this.dataSource.next([]);

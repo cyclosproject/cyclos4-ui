@@ -13,7 +13,7 @@ import { SendMediumEnum } from 'app/api/models';
 import { AuthService } from 'app/api/services/auth.service';
 
 import { NotificationService } from 'app/core/notification.service';
-import { GeneralMessages } from 'app/messages/general-messages';
+import { Messages } from 'app/messages/messages';
 
 import { MatGridList } from '@angular/material';
 import { Subscription } from 'rxjs/Subscription';
@@ -85,7 +85,7 @@ export class PasswordInputComponent
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
     private authService: AuthService,
     private notificationService: NotificationService,
-    private generalMessages: GeneralMessages,
+    private messages: Messages,
     private changeDetector: ChangeDetectorRef) {
     super(controlContainer);
   }
@@ -93,8 +93,8 @@ export class PasswordInputComponent
   ngOnInit(): void {
     super.ngOnInit();
     this.otpMediums = {};
-    this.otpMediums[SendMediumEnum.EMAIL] = this.generalMessages.passwordOtpMediumEmail();
-    this.otpMediums[SendMediumEnum.SMS] = this.generalMessages.passwordOtpMediumSms();
+    this.otpMediums[SendMediumEnum.EMAIL] = this.messages.passwordOtpMediumEmail();
+    this.otpMediums[SendMediumEnum.SMS] = this.messages.passwordOtpMediumSms();
 
     if (this.placeholder == null) {
       this.placeholder = this.passwordInput.name;
@@ -156,10 +156,10 @@ export class PasswordInputComponent
         let message: string;
         switch (medium) {
           case SendMediumEnum.EMAIL:
-            message = this.generalMessages.passwordOtpSentEmail(arg);
+            message = this.messages.passwordOtpSentEmail(arg);
             break;
           case SendMediumEnum.SMS:
-            message = this.generalMessages.passwordOtpSentSms(arg);
+            message = this.messages.passwordOtpSentSms(arg);
             break;
           default:
             // Unhandled medium

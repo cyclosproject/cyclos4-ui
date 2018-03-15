@@ -3,8 +3,7 @@ import { AppComponent } from 'app/app.component';
 import { AppRoutingModule } from 'app/app-routing.module';
 import { SharedModule } from 'app/shared/shared.module';
 import { ApiModule } from 'app/api/api.module';
-import { INITIALIZE } from 'app/bootstrap/initialize';
-import { LOAD_GENERAL_TRANSLATION } from 'app/bootstrap/load-general-translation';
+import { INITIALIZE } from 'app/initialize';
 import { LoginModule } from 'app/login/login.module';
 import { CoreModule } from 'app/core/core.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -30,8 +29,7 @@ import 'hammerjs';
     SettingsModule
   ],
   providers: [
-    INITIALIZE,
-    LOAD_GENERAL_TRANSLATION
+    INITIALIZE
   ],
   bootstrap: [
     AppComponent

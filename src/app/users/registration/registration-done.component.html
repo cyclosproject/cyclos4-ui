@@ -2,19 +2,19 @@
   [ngSwitch]="result.status">
 
   <div *ngSwitchCase="'active'">
-    <p>{{ usersMessages.registrationDoneActivePrefix() }}</p>
+    <p>{{ messages.registrationDoneActivePrefix() }}</p>
     <p [innerHTML]="principalsHtml | trust"></p>
     <p>{{ passwordsMessage }}</p>
   </div>
 
   <div *ngSwitchCase="'inactive'">
-    <p>{{ usersMessages.registrationDonePrefix() }}</p>
-    <p>{{ usersMessages.registrationDoneInactive() }}</p>
+    <p>{{ messages.registrationDonePrefix() }}</p>
+    <p>{{ messages.registrationDoneInactive() }}</p>
   </div>
 
   <div *ngSwitchCase="'emailValidation'">
-    <p>{{ usersMessages.registrationDonePrefix() }}</p>
-    <p>{{ usersMessages.registrationDoneEmailValidation() }}</p>
+    <p>{{ messages.registrationDonePrefix() }}</p>
+    <p>{{ messages.registrationDoneEmailValidation() }}</p>
   </div>
 
 </div>

@@ -6,7 +6,7 @@ import { TopBarComponent } from 'app/core/top-bar.component';
 import { MenuBarComponent } from 'app/core/menu-bar.component';
 
 import { SharedModule } from 'app/shared/shared.module';
-import { GeneralMessages } from 'app/messages/general-messages';
+import { Messages } from 'app/messages/messages';
 import { NotificationService } from 'app/core/notification.service';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
 import { FormatService } from 'app/core/format.service';
@@ -72,7 +72,7 @@ export const DATE_FORMATS_PROVIDER: Provider = {
   providers: [
     NextRequestState,
     ApiInterceptor,
-    GeneralMessages,
+    Messages,
     TranslationLoaderService,
     DataForUiHolder,
     ErrorHandlerService,

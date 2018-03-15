@@ -17,16 +17,16 @@ const QUICK_SEARCH_PAGE_SIZE = 10;
 // Translations
 // It is possible to set the application to be statically translated by commenting the
 // var declarations, uncommenting the import statements and adjusting the json files
-// to include the correct language, such as '../translations/general_es.json'.
+// to include the correct language, such as '../translations/messages_es.json' for Spanish.
 // This will embed the translations in the generated web application resources and
 // will prevent additional requests from being performed on runtime, but will force
 // a single language for the application.
 
-const GENERAL_TRANSLATIONS = null;
-const BANKING_TRANSLATIONS = null;
-// import * as GENERAL_TRANSLATIONS from '../translations/general.json';
-// import * as BANKING_TRANSLATIONS from '../translations/banking.json';
+const TRANSLATIONS = null;
+// import * as TRANSLATIONS from '../translations/messages.json';
 
+// This defines the available locales. Not used when translations are statically compiled.
+const LOCALES = ['en'];
 
 export const configuration = {
   appTitle: APP_TITLE,
@@ -34,8 +34,6 @@ export const configuration = {
   apiRoot: API_URL,
   searchPageSizes: SEARCH_PAGE_SIZES,
   quickSearchPageSize: QUICK_SEARCH_PAGE_SIZE,
-  translations: {
-    general: GENERAL_TRANSLATIONS,
-    banking: BANKING_TRANSLATIONS
-  }
+  translations: TRANSLATIONS,
+  locales: LOCALES
 };

@@ -1,5 +1,5 @@
 import { Component, Injector, ChangeDetectionStrategy, Input } from '@angular/core';
-import { BaseUsersComponent } from 'app/users/base-users.component';
+import { BaseComponent } from 'app/shared/base.component';
 import { UserDataForNew } from 'app/api/models';
 import { FormGroup } from '@angular/forms';
 import { AvailabilityEnum } from 'app/api/models/availability-enum';
@@ -18,7 +18,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
   templateUrl: 'registration-fields.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RegistrationFieldsComponent extends BaseUsersComponent {
+export class RegistrationFieldsComponent extends BaseComponent {
   constructor(
     injector: Injector,
     private countriesResolve: CountriesResolve) {
@@ -84,7 +84,7 @@ export class RegistrationFieldsComponent extends BaseUsersComponent {
   }
 
   addressFieldLabel(field: AddressFieldEnum): string {
-    return ApiHelper.addressFieldLabel(field, this.usersMessages);
+    return ApiHelper.addressFieldLabel(field, this.messages);
   }
 
   get optionalAddress(): boolean {

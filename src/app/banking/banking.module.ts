@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from 'app/shared/shared.module';
 import { BankingRoutingModule } from 'app/banking/banking-routing.module';
-import { BankingMessages } from 'app/messages/banking-messages';
 import { AccountHistoryComponent } from 'app/banking/accounts/account-history.component';
 import { ViewTransferComponent } from 'app/banking/transfers/view-transfer.component';
 import { PerformPaymentComponent } from 'app/banking/payments/perform-payment.component';
@@ -35,9 +34,6 @@ import { ViewTransferDetailsComponent } from 'app/banking/transfers/view-transfe
     PaymentFieldsComponent,
     PaymentPreviewComponent,
     PaymentDoneComponent
-  ],
-  providers: [
-    BankingMessages
   ]
 })
 export class BankingModule {

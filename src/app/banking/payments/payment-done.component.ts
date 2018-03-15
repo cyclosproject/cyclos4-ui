@@ -1,5 +1,5 @@
 import { Component, Injector, ChangeDetectionStrategy, Input } from '@angular/core';
-import { BaseBankingComponent } from 'app/banking/base-banking.component';
+import { BaseComponent } from 'app/shared/base.component';
 import { TransactionView, AuthorizationStatusEnum } from 'app/api/models';
 
 /**
@@ -10,7 +10,7 @@ import { TransactionView, AuthorizationStatusEnum } from 'app/api/models';
   templateUrl: 'payment-done.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PaymentDoneComponent extends BaseBankingComponent {
+export class PaymentDoneComponent extends BaseComponent {
   constructor(
     injector: Injector) {
     super(injector);

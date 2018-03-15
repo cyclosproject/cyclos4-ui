@@ -9,7 +9,7 @@
       type="text"
       required
       [focused]
-      [placeholder]="generalMessages.loginPrincipal()"
+      [placeholder]="messages.loginPrincipal()"
       (keyup.enter)="passwordComponent.focus()">
     <mat-icon matPrefix
       ngClass="mat-24">account_circle</mat-icon>
@@ -17,7 +17,7 @@
   <password-input #passwordComponent
     fxFlex="grow"
     [showIcon]="true"
-    [placeholder]="generalMessages.loginPassword()"
+    [placeholder]="messages.loginPassword()"
     [passwordInput]="dataForLogin.loginPasswordInput"
     formControlName="password"
     (enter)="emit()"></password-input>
@@ -27,7 +27,7 @@
       mat-raised-button
       color="accent"
       (click)="emit()">
-      {{ generalMessages.submit() }}
+      {{ messages.submit() }}
     </button>
   </actions>
 </form>

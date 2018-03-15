@@ -1,13 +1,13 @@
 <form fxLayout="column"
   [formGroup]="form">
-  <div class="form-info">{{ usersMessages.registrationFieldsMessage() }}</div>
+  <div class="form-info">{{ messages.registrationFieldsMessage() }}</div>
 
   <mat-form-field *ngIf="hasName">
     <input matInput
       formControlName="name"
       required
       focused
-      [placeholder]="usersMessages.userName()" />
+      [placeholder]="messages.userName()" />
     <mat-error>
       {{ form.get('name').getError('message') }}
     </mat-error>
@@ -18,7 +18,7 @@
       formControlName="username"
       required
       [focused]="!hasName"
-      [placeholder]="usersMessages.userUsername()" />
+      [placeholder]="messages.userUsername()" />
     <mat-error>
       {{ form.get('username').getError('message') }}
     </mat-error>
@@ -29,7 +29,7 @@
       formControlName="email"
       [required]="data.emailRequired"
       [focused]="!hasName && !hasUsername"
-      [placeholder]="usersMessages.userEmail()" />
+      [placeholder]="messages.userEmail()" />
     <span matSuffix
       *ngIf="managePrivacy('email')">
       <field-privacy field="email"
@@ -46,7 +46,7 @@
       <input matInput
         formControlName="number"
         [required]="data.phoneConfiguration.mobileAvailability == 'required'"
-        [placeholder]="usersMessages.userMobilePhone()" />
+        [placeholder]="messages.userMobilePhone()" />
       <span matSuffix
         *ngIf="managePrivacy('phone')">
         <field-privacy [control]="form.get('mobilePhone.hidden')"></field-privacy>
@@ -65,7 +65,7 @@
       <input matInput
         formControlName="number"
         [required]="data.phoneConfiguration.landLineAvailability == 'required'"
-        [placeholder]="usersMessages.userLandLinePhone()" />
+        [placeholder]="messages.userLandLinePhone()" />
       <span matSuffix
         *ngIf="managePrivacy('phone')">
         <field-privacy [control]="form.get('landLinePhone.hidden')"></field-privacy>
@@ -79,7 +79,7 @@
       <mat-form-field fxFlex="nogrow">
         <input matInput
           formControlName="extension"
-          [placeholder]="usersMessages.userLandLinePhoneExtension()" />
+          [placeholder]="messages.userLandLinePhoneExtension()" />
       </mat-form-field>
     </ng-container>
   </div>
@@ -95,12 +95,12 @@
   </ng-container>
 
   <ng-container *ngIf="hasAddress">
-    <h2>{{ usersMessages.registrationAddressTitle() }}</h2>
+    <h2>{{ messages.registrationAddressTitle() }}</h2>
     <div fxLayout="column">
       <mat-slide-toggle fxFlex="grow"
         *ngIf="optionalAddress"
         formControlName="addressDefined">
-        {{ usersMessages.registrationAddressDefine() }}
+        {{ messages.registrationAddressDefine() }}
       </mat-slide-toggle>
       <ng-container *ngIf="form.value.addressDefined">
         <ng-container *ngFor="let field of addressFields; let first = first">

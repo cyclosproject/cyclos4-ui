@@ -1,5 +1,5 @@
 import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
-import { GeneralMessages } from 'app/messages/general-messages';
+import { Messages } from 'app/messages/messages';
 import { PageLayoutComponent } from './page-layout.component';
 import { LayoutService } from 'app/core/layout.service';
 
@@ -15,7 +15,7 @@ import { LayoutService } from 'app/core/layout.service';
 export class PageTitleComponent {
 
   constructor(
-    public generalMessages: GeneralMessages,
+    public messages: Messages,
     public layout: LayoutService) {
   }
 

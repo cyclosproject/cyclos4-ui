@@ -3,7 +3,7 @@ import {
   CustomFieldValue, CustomField, CustomFieldTypeEnum, CustomFieldDetailed,
   LinkedEntityTypeEnum
 } from 'app/api/models';
-import { GeneralMessages } from 'app/messages/general-messages';
+import { Messages } from 'app/messages/messages';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { NextRequestState } from 'app/core/next-request-state';
@@ -28,7 +28,7 @@ const DIRECT_TYPES = [
 })
 export class FormatFieldValueComponent implements OnInit {
   constructor(
-    private generalMessages: GeneralMessages,
+    private messages: Messages,
     private nextRequestState: NextRequestState) {
   }
 
@@ -84,8 +84,8 @@ export class FormatFieldValueComponent implements OnInit {
       case CustomFieldTypeEnum.BOOLEAN:
         if (this.fieldValue.booleanValue != null) {
           return this.fieldValue.booleanValue
-            ? this.generalMessages.yes()
-            : this.generalMessages.no();
+            ? this.messages.yes()
+            : this.messages.no();
         }
         break;
       case CustomFieldTypeEnum.DATE:

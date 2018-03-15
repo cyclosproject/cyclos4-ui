@@ -4,7 +4,7 @@ import * as moment from 'moment-mini-ts';
 import { ApiConfiguration } from 'app/api/api-configuration';
 
 import { environment } from 'environments/environment';
-import { GeneralMessages } from 'app/messages/general-messages';
+import { Messages } from 'app/messages/messages';
 import { MatDateFormats } from '@angular/material';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
@@ -32,7 +32,7 @@ export class FormatService {
   constructor(
     dataForUiHolder: DataForUiHolder,
     private apiConfiguration: ApiConfiguration,
-    private generalMessages: GeneralMessages) {
+    private messages: Messages) {
     dataForUiHolder.subscribe(dataForUi => this.initialize(dataForUi));
     // If already loaded, initialize right away
     if (dataForUiHolder.dataForUi) {
@@ -54,9 +54,9 @@ export class FormatService {
   get monthNames(): Names {
     if (this._monthNames == null) {
       this._monthNames = this.getNames(
-        this.generalMessages.monthsLong(),
-        this.generalMessages.monthsShort(),
-        this.generalMessages.monthsNarrow());
+        this.messages.monthsLong(),
+        this.messages.monthsShort(),
+        this.messages.monthsNarrow());
     }
     return this._monthNames;
   }
@@ -64,9 +64,9 @@ export class FormatService {
   get dayNames(): Names {
     if (this._dayNames == null) {
       this._dayNames = this.getNames(
-        this.generalMessages.daysLong(),
-        this.generalMessages.daysShort(),
-        this.generalMessages.daysNarrow());
+        this.messages.daysLong(),
+        this.messages.daysShort(),
+        this.messages.daysNarrow());
     }
     return this._dayNames;
   }

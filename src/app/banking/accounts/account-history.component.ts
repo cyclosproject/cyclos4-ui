@@ -6,7 +6,7 @@ import {
 import { AccountsService } from 'app/api/services';
 
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { BaseBankingComponent } from 'app/banking/base-banking.component';
+import { BaseComponent } from 'app/shared/base.component';
 import { TableDataSource } from 'app/shared/table-datasource';
 import { ApiHelper } from 'app/shared/api-helper';
 import { FormGroup, FormBuilder } from '@angular/forms';
@@ -32,7 +32,7 @@ const STATUS_FIELDS = { fields: ['status'] };
   styleUrls: ['account-history.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AccountHistoryComponent extends BaseBankingComponent {
+export class AccountHistoryComponent extends BaseComponent {
   constructor(
     injector: Injector,
     private accountsService: AccountsService,
@@ -139,7 +139,7 @@ export class AccountHistoryComponent extends BaseBankingComponent {
       // No account type given - get the first one
       const firstType = this.firstAccountType;
       if (firstType == null) {
-        this.notification.error(this.bankingMessages.accountErrorNoAccounts());
+        this.notification.error(this.messages.accountErrorNoAccounts());
       } else {
         this.router.navigateByUrl('/banking/account/' + this.firstAccountType);
       }
@@ -234,28 +234,28 @@ export class AccountHistoryComponent extends BaseBankingComponent {
       }
     };
     if (status.availableBalance !== status.balance) {
-      add(status.availableBalance, this.bankingMessages.accountAvailableBalance());
+      add(status.availableBalance, this.messages.accountAvailableBalance());
     }
-    add(status.balance, this.bankingMessages.accountBalance());
+    add(status.balance, this.messages.accountBalance());
     if (status.reservedAmount && !this.format.isZero(status.reservedAmount)) {
-      add(status.reservedAmount, this.bankingMessages.accountReservedAmount(), true);
+      add(status.reservedAmount, this.messages.accountReservedAmount(), true);
     }
     if (status.creditLimit && !this.format.isZero(status.creditLimit)) {
-      add(status.creditLimit, this.bankingMessages.accountCreditLimit());
+      add(status.creditLimit, this.messages.accountCreditLimit());
     }
     if (status.upperCreditLimit && !this.format.isZero(status.upperCreditLimit)) {
-      add(status.upperCreditLimit, this.bankingMessages.accountUpperCreditLimit());
+      add(status.upperCreditLimit, this.messages.accountUpperCreditLimit());
     }
     if (status.balanceAtBegin != null) {
       const date = this.format.formatAsDate(this.query.datePeriod[0]);
-      add(status.balanceAtBegin, this.bankingMessages.accountBalanceOn(date));
+      add(status.balanceAtBegin, this.messages.accountBalanceOn(date));
     }
     if (status.balanceAtEnd != null) {
       const date = this.format.formatAsDate(this.query.datePeriod[1]);
-      add(status.balanceAtEnd, this.bankingMessages.accountBalanceOn(date));
+      add(status.balanceAtEnd, this.messages.accountBalanceOn(date));
     }
     if (status.netInflow != null) {
-      add(status.netInflow, this.bankingMessages.accountNetInflow());
+      add(status.netInflow, this.messages.accountNetInflow());
     }
     return result;
   }
@@ -281,7 +281,7 @@ export class AccountHistoryComponent extends BaseBankingComponent {
           : row.type.from.name;
       } else {
         // Some older cyclos versions didn't send from / to
-        return this.generalMessages.system();
+        return this.messages.system();
       }
     }
   }

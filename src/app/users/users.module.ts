@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from 'app/shared/shared.module';
-import { UsersMessages } from 'app/messages/users-messages';
 import { PublicRegistrationComponent } from 'app/users/registration/public-registration.component';
 import { RegistrationGroupComponent } from 'app/users/registration/registration-group.component';
 import { RegistrationFieldsComponent } from 'app/users/registration/registration-fields.component';
@@ -30,9 +29,6 @@ import { ViewAddressDetailsComponent } from 'app/users/profile/view-address-deta
     SearchUsersComponent,
     UserProfileComponent,
     ViewAddressDetailsComponent
-  ],
-  providers: [
-    UsersMessages
   ]
 })
 export class UsersModule {

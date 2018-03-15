@@ -5,35 +5,35 @@
       [transfer]="transaction.transfer">
     </view-transfer-details>
     <ng-container *ngIf="transaction.transfer == null">
-      <label-value [label]="bankingMessages.transactionDate()">
+      <label-value [label]="messages.transactionDate()">
         {{ transaction.date | dateTime }}
       </label-value>
-      <label-value [label]="bankingMessages.transactionAmount()">
+      <label-value [label]="messages.transactionAmount()">
         {{ transaction.amount | currency:transaction.currency }}
       </label-value>
       <label-value *ngIf="transaction.by"
-        [label]="bankingMessages.transactionBy()">
+        [label]="messages.transactionBy()">
         {{ transaction.by.display }}
       </label-value>
       <label-value *ngIf="transaction.channel"
-        [label]="bankingMessages.transactionChannel()">
+        [label]="messages.transactionChannel()">
         {{ transaction.channel.name }}
       </label-value>
-      <label-value [label]="bankingMessages.transactionFrom()">
+      <label-value [label]="messages.transactionFrom()">
         <user-link *ngIf="transaction.fromUser != null"
           [user]="transaction.fromUser"></user-link>
         <ng-container *ngIf="transaction.fromUser == null">
           {{ transaction.type.from.name }}
         </ng-container>
       </label-value>
-      <label-value [label]="bankingMessages.transactionTo()">
+      <label-value [label]="messages.transactionTo()">
         <user-link *ngIf="transaction.toUser != null"
           [user]="transaction.toUser"></user-link>
         <ng-container *ngIf="transaction.toUser == null">
           {{ transaction.type.to.name }}
         </ng-container>
       </label-value>
-      <label-value [label]="bankingMessages.transactionType()">
+      <label-value [label]="messages.transactionType()">
         {{ transaction.type.name }}
       </label-value>
       <custom-field-value *ngFor="let value of transaction.customValues"

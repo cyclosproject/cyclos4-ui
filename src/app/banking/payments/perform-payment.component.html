@@ -1,10 +1,10 @@
 <page-layout [loaded]="initialData"
-  [title]="bankingMessages.paymentPerformTitle()">
+  [title]="messages.paymentPerformTitle()">
   <page-content>
     <td-steps #stepper
       [mode]="layout.ltmd ? 'vertical' : 'horizontal'">
       <td-step #kindStep
-        [label]="bankingMessages.paymentKind()"
+        [label]="messages.paymentKind()"
         [sublabel]="layout.ltmd ? (kindAndIdMethod | async)?.label : null">
         <payment-kind [kindForm]="kindForm"
           [allowedKindAndIdMethods]="allowedKindAndIdMethods"></payment-kind>
@@ -15,12 +15,12 @@
             color="accent"
             [disabled]="!kindForm.valid"
             (click)="nextFromKind()">
-            {{ generalMessages.next() }}
+            {{ messages.next() }}
           </button>
         </actions>
       </td-step>
       <td-step #userStep
-        [label]="bankingMessages.paymentUser()"
+        [label]="messages.paymentUser()"
         [sublabel]="layout.ltmd ? (toUser | async)?.display : null">
         <ng-container *ngIf="stepperControl.monitor(userStep) | async">
           <payment-user [userForm]="userForm"
@@ -31,19 +31,19 @@
             fxLayout.gt-xs="row">
             <button mat-raised-button
               (click)="previousFromUser()">
-              {{ generalMessages.previous() }}
+              {{ messages.previous() }}
             </button>
             <button mat-raised-button
               color="accent"
               [disabled]="!userForm.valid"
               (click)="nextFromUser()">
-              {{ generalMessages.next() }}
+              {{ messages.next() }}
             </button>
           </actions>
         </ng-container>
       </td-step>
       <td-step #fieldsStep
-        [label]="bankingMessages.paymentFields()"
+        [label]="messages.paymentFields()"
         [sublabel]="layout.ltmd ? (fieldsForm.value.amount | currency:(paymentTypeData | async)?.currency) : null">
         <ng-container *ngIf="stepperControl.monitor(fieldsStep) | async">
           <payment-fields [fieldsForm]="fieldsForm"
@@ -53,19 +53,19 @@
             fxLayout.gt-xs="row">
             <button mat-raised-button
               (click)="previousFromFields()">
-              {{ generalMessages.previous() }}
+              {{ messages.previous() }}
             </button>
             <button mat-raised-button
               color="accent"
               [disabled]="!fieldsForm.valid"
               (click)="nextFromFields()">
-              {{ generalMessages.next() }}
+              {{ messages.next() }}
             </button>
           </actions>
         </ng-container>
       </td-step>
       <td-step #previewStep
-        [label]="bankingMessages.paymentPreview()">
+        [label]="messages.paymentPreview()">
         <ng-container *ngIf="stepperControl.monitor(previewStep) | async">
           <payment-preview #previewComponent
             [previewForm]="previewForm"
@@ -74,19 +74,19 @@
             fxLayout.gt-xs="row">
             <button mat-raised-button
               (click)="previousFromPreview()">
-              {{ generalMessages.previous() }}
+              {{ messages.previous() }}
             </button>
             <button mat-raised-button
               color="accent"
               [disabled]="!fieldsForm.valid || !previewComponent.canConfirm"
               (click)="nextFromPreview()">
-              {{ generalMessages.confirm() }}
+              {{ messages.confirm() }}
             </button>
           </actions>
         </ng-container>
       </td-step>
       <td-step #doneStep
-        [label]="bankingMessages.paymentDone()">
+        [label]="messages.paymentDone()">
         <ng-container *ngIf="(stepperControl.monitor(doneStep) | async) && (performed | async)">
           <payment-done [payment]="performed | async"></payment-done>
           <actions fxLayout="column-reverse"
@@ -94,12 +94,12 @@
             <a mat-raised-button
               color="accent"
               [routerLink]="viewPerformedPath">
-              {{ bankingMessages.paymentViewPayment() }}
+              {{ messages.paymentViewPayment() }}
             </a>
             <button mat-raised-button
               color="accent"
               (click)="newPayment()">
-              {{ bankingMessages.paymentNewPayment() }}
+              {{ messages.paymentNewPayment() }}
             </button>
           </actions>
         </ng-container>

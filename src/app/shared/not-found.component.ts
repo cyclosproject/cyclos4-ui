@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { GeneralMessages } from 'app/messages/general-messages';
+import { Messages } from 'app/messages/messages';
 import { Notification } from 'app/shared/notification';
 
 /**
@@ -15,9 +15,9 @@ export class NotFoundComponent implements OnInit {
   public notification: Notification;
 
   constructor(
-    public generalMessages: GeneralMessages
+    public messages: Messages
   ) {
-    this.notification = Notification.error(this.generalMessages.errorNotFound());
+    this.notification = Notification.error(this.messages.errorNotFound());
   }
 
   ngOnInit() { }

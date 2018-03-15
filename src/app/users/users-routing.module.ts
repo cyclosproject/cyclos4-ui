@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { UsersMessagesResolve } from 'app/users/users-messages.resolve';
 import { Menu } from 'app/shared/menu';
 import { PublicRegistrationComponent } from 'app/users/registration/public-registration.component';
 import { SearchUsersComponent } from 'app/users/search/search-users.component';
@@ -11,9 +10,6 @@ import { LoggedUserGuard } from 'app/logged-user-guard';
 const usersRoutes: Routes = [
   {
     path: '',
-    resolve: {
-      usersMessages: UsersMessagesResolve
-    },
     children: [
       {
         path: 'search',
@@ -66,9 +62,7 @@ const usersRoutes: Routes = [
   ],
   exports: [
     RouterModule
-  ],
-  providers: [
-    UsersMessagesResolve
   ]
 })
-export class UsersRoutingModule { }
+export class UsersRoutingModule {
+}

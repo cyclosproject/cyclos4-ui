@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, Injector } from '@angular/core';
 
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { BaseUsersComponent } from 'app/users/base-users.component';
+import { BaseComponent } from 'app/shared/base.component';
 import { UsersService } from 'app/api/services';
 import { UserView, Country } from 'app/api/models';
 import { CountriesResolve } from 'app/countries.resolve';
@@ -16,7 +16,7 @@ import { HttpErrorResponse } from '@angular/common/http';
   templateUrl: 'user-profile.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UserProfileComponent extends BaseUsersComponent {
+export class UserProfileComponent extends BaseComponent {
 
   constructor(
     injector: Injector,
@@ -36,7 +36,7 @@ export class UserProfileComponent extends BaseUsersComponent {
       key = this.login.user.id;
     }
     if (key == null) {
-      this.notification.error(this.usersMessages.profilePermissionError());
+      this.notification.error(this.messages.userProfilePermissionError());
       this.loaded.next(true);
       return;
     } else {
@@ -47,7 +47,7 @@ export class UserProfileComponent extends BaseUsersComponent {
             this.loaded.next(true);
           }, (resp: HttpErrorResponse) => {
             if ([ErrorStatus.FORBIDDEN, ErrorStatus.UNAUTHORIZED].includes(resp.status)) {
-              this.notification.error(this.usersMessages.profilePermissionError());
+              this.notification.error(this.messages.userProfilePermissionError());
               this.loaded.next(true);
             } else {
               defaultHandling(resp);

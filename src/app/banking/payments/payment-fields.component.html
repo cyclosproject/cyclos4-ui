@@ -1,11 +1,11 @@
 <form fxLayout="column"
   [formGroup]="fieldsForm">
-  <div class="form-info">{{ bankingMessages.paymentFieldsMessage() }}</div>
+  <div class="form-info">{{ messages.paymentFieldsMessage() }}</div>
 
   <mat-form-field *ngIf="(paymentTypes || []).length > 1">
     <mat-select formControlName="type"
       required
-      [placeholder]="bankingMessages.transactionType()">
+      [placeholder]="messages.transactionType()">
       <mat-option *ngFor="let tt of paymentTypes"
         [value]="tt.id">
         {{ tt.name }}
@@ -16,7 +16,7 @@
   <decimal-field fxFlex="nogrow"
     focused
     required
-    [placeholder]="bankingMessages.transactionAmount()"
+    [placeholder]="messages.transactionAmount()"
     [prefix]="(paymentTypeData | async).currency.prefix"
     [suffix]="(paymentTypeData | async).currency.suffix"
     [scale]="(paymentTypeData | async).currency.decimalDigits"
@@ -34,7 +34,7 @@
   <mat-form-field fxFlex="grow">
     <textarea matInput
       matTextareaAutosize
-      [placeholder]="bankingMessages.transactionDescription()"
+      [placeholder]="messages.transactionDescription()"
       formControlName="description"
       [required]="(paymentTypeData | async).requiresDescription"></textarea>
   </mat-form-field>

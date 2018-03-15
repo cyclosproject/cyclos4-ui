@@ -1,5 +1,5 @@
 import { Component, Injector, ChangeDetectionStrategy, Input } from '@angular/core';
-import { BaseUsersComponent } from 'app/users/base-users.component';
+import { BaseComponent } from 'app/shared/base.component';
 import { UserRegistrationResult } from 'app/api/models';
 import { escapeHtml } from 'app/shared/helper';
 
@@ -11,7 +11,7 @@ import { escapeHtml } from 'app/shared/helper';
   templateUrl: 'registration-done.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RegistrationDoneComponent extends BaseUsersComponent {
+export class RegistrationDoneComponent extends BaseComponent {
   constructor(injector: Injector) {
     super(injector);
   }
@@ -29,18 +29,18 @@ export class RegistrationDoneComponent extends BaseUsersComponent {
     }
     if (principals.length === 1) {
       const principal = principals[0];
-      return this.usersMessages.registrationDoneActiveSinglePrincipal(
+      return this.messages.registrationDoneActiveSinglePrincipal(
         escapeHtml(principal.channels.map(c => c.name).join(', ')),
         escapeHtml(principal.type.name),
         escapeHtml(principal.value)
       );
     }
     const buf: string[] = [];
-    buf.push(this.usersMessages.registrationDoneActiveMultiplePrincipals());
+    buf.push(this.messages.registrationDoneActiveMultiplePrincipals());
     buf.push('<ul>');
     for (const principal of principals) {
       buf.push('<li>');
-      buf.push(this.usersMessages.registrationDoneActiveMultiplePrincipalsTemplate(
+      buf.push(this.messages.registrationDoneActiveMultiplePrincipalsTemplate(
         escapeHtml(principal.channels.map(c => c.name).join(', ')),
         escapeHtml(principal.type.name),
         escapeHtml(principal.value)
@@ -54,13 +54,13 @@ export class RegistrationDoneComponent extends BaseUsersComponent {
   get passwordsMessage(): string {
     const passwords = this.result.generatedPasswords;
     if (passwords == null || passwords.length === 0) {
-      return this.usersMessages.registrationDoneActiveNoGeneratedPasswords();
+      return this.messages.registrationDoneActiveNoGeneratedPasswords();
     }
     if (passwords.length === 1) {
       const password = passwords[0];
-      return this.usersMessages.registrationDoneActiveSingleGeneratedPassword(password.name);
+      return this.messages.registrationDoneActiveSingleGeneratedPassword(password.name);
     }
-    return this.usersMessages.registrationDoneActiveMultipleGeneratedPasswords(
+    return this.messages.registrationDoneActiveMultipleGeneratedPasswords(
       passwords.map(p => p.name).join(', '));
   }
 }

@@ -1,5 +1,5 @@
 import { Component, Injector, ChangeDetectionStrategy, Input } from '@angular/core';
-import { BaseBankingComponent } from 'app/banking/base-banking.component';
+import { BaseComponent } from 'app/shared/base.component';
 import { TransferView } from 'app/api/models/transfer-view';
 import { ApiHelper } from 'app/shared/api-helper';
 import { Transfer } from 'app/api/models';
@@ -16,7 +16,7 @@ const TO = '_TO_';
   templateUrl: './view-transfer-details.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ViewTransferDetailsComponent extends BaseBankingComponent {
+export class ViewTransferDetailsComponent extends BaseComponent {
   constructor(
     injector: Injector
   ) {
@@ -37,7 +37,7 @@ export class ViewTransferDetailsComponent extends BaseBankingComponent {
       this.breadcrumb.title = this.transfer.transactionNumber;
     }
 
-    const msg = this.bankingMessages.transactionFromTo(FROM, TO);
+    const msg = this.messages.transactionFromTo(FROM, TO);
     const fromIx = msg.indexOf(FROM);
     const toIx = msg.indexOf(TO);
     const fromFirst = fromIx < toIx;

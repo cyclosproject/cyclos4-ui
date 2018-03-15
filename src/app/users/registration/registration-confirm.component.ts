@@ -1,5 +1,5 @@
 import { Component, Injector, ChangeDetectionStrategy, Input } from '@angular/core';
-import { BaseUsersComponent } from 'app/users/base-users.component';
+import { BaseComponent } from 'app/shared/base.component';
 import { UserDataForNew } from 'app/api/models';
 import { FormGroup, FormArray } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -14,7 +14,7 @@ import { empty } from 'app/shared/helper';
   styleUrls: ['registration-confirm.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RegistrationConfirmComponent extends BaseUsersComponent {
+export class RegistrationConfirmComponent extends BaseComponent {
   constructor(injector: Injector) {
     super(injector);
   }

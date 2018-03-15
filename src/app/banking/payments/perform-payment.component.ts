@@ -1,5 +1,5 @@
 import { Component, Injector, ChangeDetectionStrategy, ViewChild } from '@angular/core';
-import { BaseBankingComponent } from 'app/banking/base-banking.component';
+import { BaseComponent } from 'app/shared/base.component';
 import {
   DataForTransaction, IdentificationMethodEnum, PrincipalTypeKind, TransactionTypeData,
   TransferTypeWithCurrency, PaymentPreview, TransactionView, UserDataForSearch, User
@@ -25,7 +25,7 @@ import { HttpErrorResponse } from '@angular/common/http';
   templateUrl: 'perform-payment.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PerformPaymentComponent extends BaseBankingComponent {
+export class PerformPaymentComponent extends BaseComponent {
 
   // Data fetched initially
   initialData = new BehaviorSubject<DataForTransaction>(null);
@@ -146,7 +146,7 @@ export class PerformPaymentComponent extends BaseBankingComponent {
       // Search
       if (data.allowAutocomplete) {
         const kid = new PaymentKindAndIdMethod(
-          this.bankingMessages.paymentKindAutocomplete(),
+          this.messages.paymentKindAutocomplete(),
           PaymentKind.USER, this.searchIdMethod);
         this.allowedKindAndIdMethods.push(kid);
         if (data.defaultIdMethod === IdentificationMethodEnum.AUTOCOMPLETE) {
@@ -156,7 +156,7 @@ export class PerformPaymentComponent extends BaseBankingComponent {
       // Contacts
       if (data.allowContacts) {
         const kid = new PaymentKindAndIdMethod(
-          this.bankingMessages.paymentKindContact(),
+          this.messages.paymentKindContact(),
           PaymentKind.USER, this.contactsIdMethod);
         this.allowedKindAndIdMethods.push(kid);
         if (data.defaultIdMethod === IdentificationMethodEnum.CONTACTS) {
@@ -168,7 +168,7 @@ export class PerformPaymentComponent extends BaseBankingComponent {
         if (pt.kind !== PrincipalTypeKind.TOKEN || pt.allowManualInput) {
           // Only tokens with manual input are supported (no NFC tag / barcode scanning / etc)
           const kid = new PaymentKindAndIdMethod(
-            this.bankingMessages.paymentKindPrincipal((pt.name || '').toLowerCase()),
+            this.messages.paymentKindPrincipal((pt.name || '').toLowerCase()),
             PaymentKind.USER, pt);
           this.allowedKindAndIdMethods.push(kid);
           if (data.defaultPrincipalType === pt.internalName) {
@@ -180,7 +180,7 @@ export class PerformPaymentComponent extends BaseBankingComponent {
     // Self payments
     if (payments.self) {
       const kid = new PaymentKindAndIdMethod(
-        this.bankingMessages.paymentKindSelf(), PaymentKind.SELF);
+        this.messages.paymentKindSelf(), PaymentKind.SELF);
       this.allowedKindAndIdMethods.push(kid);
       if (defaultKindAndIdMethod == null) {
         defaultKindAndIdMethod = kid;
@@ -189,7 +189,7 @@ export class PerformPaymentComponent extends BaseBankingComponent {
     // System payments
     if (payments.system) {
       const kid = new PaymentKindAndIdMethod(
-        this.bankingMessages.paymentKindSystem(), PaymentKind.SYSTEM);
+        this.messages.paymentKindSystem(), PaymentKind.SYSTEM);
       this.allowedKindAndIdMethods.push(kid);
       if (defaultKindAndIdMethod == null) {
         defaultKindAndIdMethod = kid;
@@ -257,7 +257,7 @@ export class PerformPaymentComponent extends BaseBankingComponent {
             .subscribe(contacts => {
               this.contacts.next(contacts);
               if (contacts.length === 0) {
-                this.notification.error(this.bankingMessages.paymentErrorNoContacts());
+                this.notification.error(this.messages.paymentErrorNoContacts());
               } else {
                 proceed();
               }
@@ -286,7 +286,7 @@ export class PerformPaymentComponent extends BaseBankingComponent {
           this.paymentTypes.next(data.paymentTypes);
 
           if (noPaymentTypes) {
-            this.notification.error(this.bankingMessages.paymentErrorNoPaymentType());
+            this.notification.error(this.messages.paymentErrorNoPaymentType());
           } else {
             // Preselect the first payment type and activate the fields step
             this.fieldsForm.patchValue({ type: data.paymentTypes[0].id });
@@ -297,7 +297,7 @@ export class PerformPaymentComponent extends BaseBankingComponent {
           const kid = this.kindAndIdMethod.value;
           const kind = kid.kind;
           if (kind === PaymentKind.USER && response.status === ErrorStatus.NOT_FOUND) {
-            this.notification.error(this.bankingMessages.paymentErrorInvalidUser());
+            this.notification.error(this.messages.paymentErrorInvalidUser());
           } else {
             defaultHandling(response);
           }
