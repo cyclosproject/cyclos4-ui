@@ -17,7 +17,7 @@ export class SvgIconRegistry {
   }
 
   private register(name: string): void {
-    this.matIconRegistry.addSvgIcon(name, this.sanitizer.bypassSecurityTrustResourceUrl(`icons/${name}.svg`));
+    this.matIconRegistry.addSvgIcon(name, this.sanitizer.bypassSecurityTrustResourceUrl(`images/${name}.svg`));
     this.registeredNames.push(name);
   }
 
