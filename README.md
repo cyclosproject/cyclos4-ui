@@ -5,7 +5,7 @@ This project aims to create a modern, simple and intuitive user interface for [C
 
 The initial planned scope is to have end-user functionality in this application. Administration functionality will still be available in Cyclos' default web interface.
 
-This user interface is still in very early days of development, and not yet useful for production.
+This user interface is still in very early days of development, and not yet useful for production. Cyclos 4.10 or newer is required for the back-end.
 
 ## Technical details
 
