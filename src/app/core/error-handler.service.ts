@@ -11,6 +11,7 @@ import { Messages } from 'app/messages/messages';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NextRequestState } from './next-request-state';
 import { ErrorStatus } from './error-status';
+import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 
 /**
  * Service used to handle application errors
@@ -22,7 +23,8 @@ export class ErrorHandlerService {
     private messages: Messages,
     private notificationService: NotificationService,
     private formatService: FormatService,
-    private nextRequestState: NextRequestState
+    private nextRequestState: NextRequestState,
+    private dataForUiHolder: DataForUiHolder
   ) { }
 
 
@@ -86,6 +88,15 @@ export class ErrorHandlerService {
           message = this.messages.errorNetwork();
           break;
         case ErrorStatus.UNAUTHORIZED:
+          if (error.code === UnauthorizedErrorCode.LOGGED_OUT) {
+            // Was logged out. Fetch the DataForUi again and go to the login page.
+            // this.dataForUiHolder.reload()
+            //   .then(dataForUi => {
+            //     if (dataForUi.auth == null) {
+            //       // TODO aqui!!!!!
+            //     }
+            //   });
+          }
           message = this.unauthorizedErrorMessage(error as UnauthorizedError);
           break;
         case ErrorStatus.FORBIDDEN:

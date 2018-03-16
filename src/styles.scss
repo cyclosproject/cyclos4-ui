@@ -73,6 +73,21 @@ form {
   margin: auto;
 }
 
+.field-tiny {
+  max-width: 100px;
+}
+.field-small, date-field {
+  max-width: 200px;
+}
+.field-medium, decimal-field {
+  max-width: 300px;
+}
+.field-large {
+  max-width: 500px;
+}
+.field-full {
+  max-width: 100%;
+}
 .mat-input-prefix mat-icon {
   margin-right: 10px;
   opacity: 0.65;
@@ -101,6 +116,9 @@ mat-radio-group.horizontal mat-radio-button + mat-radio-button {
   min-width: inherit !important;
   min-height: 40px;
   line-height: 40px !important;
+}
+.mat-button:hover .mat-button-focus-overlay {
+  background-color: transparent !important;
 }
 .form-info, .form-info-light {
   margin-bottom: 24px;
@@ -162,6 +180,10 @@ input[type=number] {
 .mat-header-row, .mat-row {
   padding: 4px 14px !important;
 }
+.xs .mat-header-row, .xs .mat-row {
+  padding: 5px 14px !important;
+}
+
 .mat-header-row.dynamic, .mat-row.dynamic {
   height: auto !important;
 }
@@ -175,7 +197,7 @@ input[type=number] {
   padding: 6px 0;
 }
 mat-cell.avatar, mat-header-cell.avatar {
-  max-width: 58px;
+  max-width: 54px;
 }
 mat-cell.avatar avatar .container {
   position: relative;
@@ -189,6 +211,9 @@ mat-cell .cell-main {
 }
 mat-cell .cell-small {
   font-size: 12px;
+}
+.xs mat-cell .cell-text {
+  margin-bottom: 2px;
 }
 .mat-table a, .mat-table a:hover {
   text-decoration: none;

@@ -4,8 +4,17 @@
   $foreground: map-get($theme, foreground);
   $background: map-get($theme, background);
 
-  personal-menu .popup {
-    background-color: map-get($background, card);
-    color: map-get($foreground, text);
+  personal-menu {
+    .popup {
+      background-color: map-get($background, card);
+    }
+    
+    .details {
+      color: map-get($foreground, text);
+    }
+
+    .details:hover, .mat-button:hover, .mat-button-focus-overlay:hover {
+      background-color: map-get($background, hover);
+    }
   }
 }

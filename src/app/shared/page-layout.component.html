@@ -48,6 +48,7 @@
           <div class="spinner"
             *ngIf="loaded != null && !(loaded | async) && showSpinner">
             <mat-progress-spinner color="accent"
+              [diameter]="50"
               mode="indeterminate"></mat-progress-spinner>
           </div>
           <ng-container *ngIf="loaded == null || (loaded | async)">
@@ -67,18 +68,24 @@
     <div class="spinner"
       *ngIf="loaded != null && !(loaded | async) && showSpinner">
       <mat-progress-spinner color="accent"
+        [diameter]="50"
         mode="indeterminate"></mat-progress-spinner>
     </div>
     <ng-container *ngIf="(loaded == null || (loaded | async))">
       <page-title *ngIf="title != null && title.length > 0"
+        [noBottomMargin]="tightContent"
         [pageLayout]="this"
         [title]="title"></page-title>
       <div class="inline-header"
         *ngIf="hasHeader">
+        <div *ngIf="tightContent"
+          class="header-extra-margin"></div>
         <ng-container *ngTemplateOutlet="headerTpl"></ng-container>
       </div>
       <div class="inline-filters"
         *ngIf="hasFilters && (filtersShown | async)">
+        <div *ngIf="tightContent && !hasHeader"
+          class="filters-extra-margin"></div>
         <ng-container *ngTemplateOutlet="filtersTpl"></ng-container>
       </div>
       <div class="inline-content">
@@ -97,6 +104,7 @@
       (click)="clearFilters()">{{ messages.filtersClear() }}</button>
     <div fxFlex="grow"></div>
     <button mat-raised-button
+      *ngIf="showLeft | async"
       (click)="hideFilters()">{{ messages.filtersHide() }}</button>
   </div>
 </ng-template>

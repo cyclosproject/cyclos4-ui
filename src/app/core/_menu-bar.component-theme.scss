@@ -4,9 +4,15 @@
   $foreground: map-get($theme, foreground);
   $background: map-get($theme, background);
 
-  menu-bar .outer {
-    background-color: map-get($background, card);
-    color: map-get($foreground, text);
-    border-bottom-color: mat-color($foreground, divider)
+  menu-bar {
+    .outer {
+      background-color: map-get($background, card);
+      color: map-get($foreground, text);
+      border-bottom-color: mat-color($foreground, divider)
+    }
+
+    .mat-tab-link:hover {
+      background-color: map-get($background, hover);
+    }
   }
 }

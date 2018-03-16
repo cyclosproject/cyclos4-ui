@@ -1,7 +1,8 @@
 <!-- string, integer, URL or entity -->
 <mat-form-field *ngIf="input"
   #stringComponent
-  fxFlex="grow">
+  fxFlex="grow"
+  [class]="type == 'integer' ? 'small' : 'field-' + field.size">
   <input #stringInput
     matInput
     [placeholder]="field.name"

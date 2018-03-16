@@ -75,7 +75,7 @@ export class DecimalFieldComponent extends BaseControlComponent<string> {
       const currInteger = currValue.integer == null ? '' : String(currValue.integer);
       const currDecimal = currValue.decimal == null ? '' : String(currValue.decimal);
       if (currInteger !== integer || currDecimal !== decimal.substr(0, currDecimal.length)) {
-        this.form.setValue({integer: integer, decimal: decimal});
+        this.form.setValue({ integer: integer, decimal: decimal });
       }
     });
   }
@@ -100,6 +100,14 @@ export class DecimalFieldComponent extends BaseControlComponent<string> {
 
   get scale(): number {
     return this._scale;
+  }
+
+  get decimalWidth(): number {
+    const scale = this.scale;
+    if (scale === 0) {
+      return 0;
+    }
+    return 10 + (this.suffix || '').trim().length * 9 + this.scale * 9;
   }
 
   focus() {

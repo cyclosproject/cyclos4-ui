@@ -48,8 +48,10 @@ export class PersonalMenuComponent extends BaseComponent {
         return (personal || {} as RootMenuEntry).entries || [];
       })
     );
-    this.listener = e => {
-      this.hide();
+    this.listener = (e: MouseEvent) => {
+      if (!e.srcElement.classList.contains('popup')) {
+        this.hide();
+      }
     };
   }
 

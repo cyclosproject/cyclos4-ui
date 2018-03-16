@@ -80,8 +80,12 @@
 }
 
 .inline-filters {
-  padding: 12px;
-  box-shadow: 0px 3px 3px -2px rgba(0, 0, 0, 0.2), 0px 3px 4px 0px rgba(0, 0, 0, 0.14), 0px 1px 8px 0px rgba(0, 0, 0, 0.12);
+  padding: 4px 12px 12px 12px;
+}
+
+:host /deep/ .inline-filters .actions {
+  max-width: 90%;
+  margin: 22px auto 0 auto;
 }
 
 :host /deep/ .left .mat-card {
@@ -110,6 +114,10 @@
 
 .inline-filters {
   animation: mobile-filters 1s ease-out;
+}
+
+.header-extra-margin, .filters-extra-margin {
+  margin-top: 22px;
 }
 
 @keyframes mobile-filters {

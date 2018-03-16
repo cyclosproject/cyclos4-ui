@@ -4,6 +4,7 @@
 <div *ngIf="!(initialized | async)"
   class="app-loading">
   <mat-progress-spinner color="accent"
+    [diameter]="50"
     mode="indeterminate"></mat-progress-spinner>
 </div>
 

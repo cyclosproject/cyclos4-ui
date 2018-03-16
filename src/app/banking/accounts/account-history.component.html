@@ -5,8 +5,9 @@
   [hasHeader]="(status | async).length > 1">
   <page-header>
     <div class="indicators">
-      <ng-container *ngFor="let indicator of (status | async); let last = last">
-        <div class="indicator">
+      <ng-container *ngFor="let indicator of (status | async); let i = index; let last = last">
+        <div class="indicator"
+          [fxHide.xs]="i > 2">
           <div class="label">{{ indicator.label }}</div>
           <div [ngClass]="{
             amount: true,
@@ -17,6 +18,7 @@
           </div>
         </div>
         <div *ngIf="!last"
+          [fxHide.xs]="i > 1"
           class="indicator-separator"></div>
       </ng-container>
     </div>
@@ -73,10 +75,10 @@
         <mat-header-cell *matHeaderCellDef></mat-header-cell>
         <mat-cell *matCellDef="let row">
           <a [routerLink]="path(row)">
-            <div class="cell-main">{{ subjectName(row) }}</div>
-            <div class="cell-date">{{ row.date | dateTime }}</div>
+            <div class="cell-text cell-main">{{ subjectName(row) }}</div>
+            <div class="cell-text cell-date">{{ row.date | dateTime }}</div>
             <div *ngIf="row.description"
-              class="cell-small">{{ row.description }}</div>
+              class="cell-text cell-small">{{ row.description }}</div>
           </a>
         </mat-cell>
       </ng-container>

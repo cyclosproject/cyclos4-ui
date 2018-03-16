@@ -1,19 +1,21 @@
-<a #container
-  routerLink="/users/my-profile"
+<div #container
   style="display:none"
-  class="container"
-  (click)="$event.stopPropagation()">
+  class="container">
   <div class="popup mat-elevation-z6"
     fxLayout="row">
-    <div class="avatar-container"
+    <a routerLink="/users/my-profile"
+      class="avatar-container"
       [ngClass]="{'no-image': user?.image == null}">
       <avatar [image]="user?.image"
         size="huge"></avatar>
-    </div>
+    </a>
     <div class="details-container"
       fxLayout="column">
-      <div class="display">{{ user?.display }}</div>
-      <div class="principal">{{ auth?.principal }}</div>
+      <a class="details"
+        routerLink="/users/my-profile">
+        <div class="display">{{ user?.display }}</div>
+        <div class="principal">{{ auth?.principal }}</div>
+      </a>
       <div class="menu"
         fxLayout="column">
         <menu-item *ngFor="let entry of menuEntries | async"
@@ -22,4 +24,4 @@
       </div>
     </div>
   </div>
-</a>
+</div>

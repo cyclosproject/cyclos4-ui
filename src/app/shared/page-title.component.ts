@@ -23,7 +23,9 @@ export class PageTitleComponent {
 
   @Input() pageLayout: PageLayoutComponent;
 
-  showFilters() {
-    this.pageLayout.showFilters();
+  @Input() noBottomMargin: boolean;
+
+  toggleFilters() {
+    this.pageLayout.toggleFilters();
   }
 }

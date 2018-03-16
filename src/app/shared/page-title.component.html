@@ -1,15 +1,18 @@
-<div class="page-title"
-  fxLayout="column">
+<div fxLayout="column"
+  [ngClass]="{
+    'page-title': true,
+    'no-bottom-margin': noBottomMargin
+  }">
   <breadcrumb></breadcrumb>
   <div class="title-wrapper">
     <h1>{{ title }}</h1>
-    <button *ngIf="pageLayout.hasFilters && (layout.gtxs || !(pageLayout.filtersShown | async))"
-  
+    <button mat-button
+      *ngIf="pageLayout.hasFilters"
       class="showFilters"
-      (click)="showFilters()"
-      mat-button>
+      (click)="toggleFilters()">
       <mat-icon ngClass="mat-22">filter_list</mat-icon>
-      {{ messages.filtersShow() }}
+      {{ (pageLayout.filtersShown | async) ? messages.filtersHide() : messages.filtersShow()
+      }}
     </button>
   </div>
 </div>

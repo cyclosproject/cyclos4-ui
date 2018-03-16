@@ -89,18 +89,18 @@
       <mat-cell *matCellDef="let row">
         <a [routerLink]="path(row)"
           fxLayout="column">
-          <div class="cell-main">
+          <div class="cell-text cell-main">
             {{ fromToTemplate.prefix }}
             <user-link [account]="fromToTemplate.fromFirst ? row.from : row.to"></user-link>
             {{ fromToTemplate.separator }}
             <user-link [account]="fromToTemplate.fromFirst ? row.to : row.from"></user-link>
             {{ fromToTemplate.suffix }}
           </div>
-          <div class="cell-date">{{ row.date | dateTime }}</div>
+          <div class="cell-text cell-date">{{ row.date | dateTime }}</div>
           <div *ngIf="row.transactionNumber"
-            class="cell-date">{{ row.transactionNumber }}</div>
+            class="cell-text cell-date">{{ row.transactionNumber }}</div>
           <div *ngIf="row.description"
-            class="cell-small">{{ row.description }}</div>
+            class="cell-text cell-small">{{ row.description }}</div>
         </a>
       </mat-cell>
     </ng-container>

@@ -5,6 +5,9 @@
   flex-direction: row;
   overflow-x: auto;
 }
+.xs :host /deep/ .indicators {
+  padding: 0 16px;
+}
 .indicator {
   display: inline-flex;
   flex-direction: column-reverse;

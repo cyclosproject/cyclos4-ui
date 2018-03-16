@@ -1,33 +1,49 @@
-<div class="decimalField" fxLayout="row" fxLayoutAlign="center center" [formGroup]="form">
-  <mat-form-field
-    [fxFlex]="scale == 0 ? 'grow' : '70%'"
-    [fxFlex.gt-sm]="scale == 0 ? 'grow' : '80%'">
-    <input #integerField matInput type="number"
+<div class="decimalField"
+  fxLayout="row"
+  fxLayoutAlign="center center"
+  [formGroup]="form">
+  <mat-form-field fxFlex="grow">
+    <input #integerField
+      matInput
+      type="number"
       maxlength="15"
-      numbersOnly [required]="required" [focused]="focused"
+      numbersOnly
+      [required]="required"
+      [focused]="focused"
       (keydown)="onKeyUp($event)"
       [placeholder]="placeholder"
-      formControlName="integer" (blur)="onBlur($event)">
-    <span matPrefix *ngIf="prefix">{{ prefix + '&nbsp;' }}</span>
+      formControlName="integer"
+      (blur)="onBlur($event)">
+    <span matPrefix
+      *ngIf="prefix">{{ prefix + '&nbsp;' }}</span>
     <mat-error>
       {{ formControl?.getError('message') }}
     </mat-error>
   </mat-form-field>
-  <div *ngIf="scale > 0" class="separator" fxFlex="2%">
+  <div *ngIf="scale > 0"
+    class="separator"
+    fxFlex="10px">
     {{ '&nbsp;' + (decimalSeparator | async) + '&nbsp;' }}
   </div>
   <mat-form-field *ngIf="scale > 0"
-    fxFlex="28%" fxFlex.gt-sm="18%"
+    fxFlex="nogrow"
+    [ngStyle]="{width: decimalWidth + 'px'}"
     floatPlaceholder="never">
-    <input #decimalField matInput type="number"
+    <input #decimalField
+      matInput
+      type="number"
       [maxlength]="scale"
-      numbersOnly style="text-align:right"
+      numbersOnly
+      style="text-align:right"
       formControlName="decimal"
       (focus)="decimalField.select()"
       (blur)="onBlur($event)">
-    <span matSuffix *ngIf="suffix">{{ '&nbsp;' + suffix }}</span>
-    <span matSuffix *ngIf="privacyControl != null && name != null">
-      <field-privacy [field]="name" [control]="privacyControl"></field-privacy>
+    <span matSuffix
+      *ngIf="suffix">{{ '&nbsp;' + suffix }}</span>
+    <span matSuffix
+      *ngIf="privacyControl != null && name != null">
+      <field-privacy [field]="name"
+        [control]="privacyControl"></field-privacy>
     </span>
   </mat-form-field>
 </div>

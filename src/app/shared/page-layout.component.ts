@@ -94,6 +94,14 @@ export class PageLayoutComponent extends BaseComponent {
     this.update();
   }
 
+  toggleFilters() {
+    if (this.filtersShown.value) {
+      this.hideFilters();
+    } else {
+      this.showFilters();
+    }
+  }
+
   showFilters() {
     this.filtersShown.next(true);
     if (this.tabGroup) {
