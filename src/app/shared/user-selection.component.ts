@@ -2,7 +2,7 @@ import {
   Component, Input, Provider, forwardRef, ChangeDetectionStrategy,
   SkipSelf, Host, Optional, ElementRef, ViewChild
 } from '@angular/core';
-import { UserDataForSearch, User } from 'app/api/models';
+import { UserDataForSearch, User, UserResult } from 'app/api/models';
 import { TableDataSource } from 'app/shared/table-datasource';
 import { NG_VALUE_ACCESSOR, ControlContainer } from '@angular/forms';
 import { Subject } from 'rxjs/Subject';
@@ -13,6 +13,9 @@ import { Messages } from 'app/messages/messages';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { BaseControlComponent } from 'app/shared/base-control.component';
+import { Observable } from 'rxjs/Observable';
+import { switchMap } from 'rxjs/operators/switchMap';
+import { of as observableOf } from 'rxjs/observable/of';
 
 // Definition of the exported NG_VALUE_ACCESSOR provider
 export const PAYMENT_USER_VALUE_ACCESSOR: Provider = {
@@ -38,10 +41,9 @@ export class UserSelectionComponent extends BaseControlComponent<string> {
   @Input()
   dataForSearch: UserDataForSearch;
 
-  onKeywords = new Subject<string>();
-  showTable = new BehaviorSubject<boolean>(false);
+  keywords = new BehaviorSubject<string>(null);
 
-  dataSource: TableDataSource<User> = new TableDataSource();
+  users$: Observable<UserResult[]>;
 
   @ViewChild('keywordsInput') keywordsInput: ElementRef;
 
@@ -54,28 +56,28 @@ export class UserSelectionComponent extends BaseControlComponent<string> {
 
   ngOnInit() {
     super.ngOnInit();
-    this.onKeywords.pipe(
+    this.users$ = this.keywords.pipe(
       debounceTime(ApiHelper.DEBOUNCE_TIME),
       distinctUntilChanged(),
-    ).subscribe(keywords => {
-      this.search(keywords);
-    });
+      switchMap(keywords => this.doSearch(keywords)));
   }
 
-  private search(keywords: string) {
-    const showTable = keywords != null && keywords.length > 0;
-    if (showTable) {
-      this.dataSource.subscribe(
-        this.usersService.searchUsers({
-          keywords: keywords,
-          pageSize: ApiHelper.quickSearchPageSize,
-          ignoreProfileFieldsInList: true
-        }));
+  search(keywords: string): void {
+    this.keywords.next(keywords);
+  }
+
+  private doSearch(keywords: string): Observable<UserResult[]> {
+    const showUsers = keywords != null && keywords.length > 0;
+    if (showUsers) {
+      return this.usersService.searchUsers({
+        keywords: keywords,
+        pageSize: ApiHelper.quickSearchPageSize,
+        ignoreProfileFieldsInList: true
+      });
     } else {
       this.value = null;
-      this.dataSource.next([]);
+      return observableOf([]);
     }
-    this.showTable.next(showTable);
   }
 
   onDisabledChange(isDisabled: boolean): void {

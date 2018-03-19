@@ -1,11 +1,15 @@
 @import '~@angular/material/theming';
 
 @mixin login-component-theme($theme) {
+  $foreground: map-get($theme, foreground);
   $accent: map-get($theme, accent);
   $is-dark: map-get($theme, is-dark);
   $link-hue: if($is-dark, 50, 600);
 
   app-login {
+    h1 {
+      color: rgba(map-get($foreground, text), 1);
+    }
     .forgotPassword {
       color: mat-color($accent, $link-hue);
     }

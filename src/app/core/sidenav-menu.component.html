@@ -1,5 +1,13 @@
 <layout-bar>
-  <div class="title">{{ format.appTitleMenu }}</div>
+  <div fxFlex="row">
+    <button fxFlex="40px"
+      mat-icon-button
+      (click)="close()">
+      <mat-icon ngClass="mat-24">close</mat-icon>
+    </button>
+    <div fxFlex="grow"
+      class="title">{{ format.appTitleMenu }}</div>
+  </div>
 </layout-bar>
 
 <div *ngFor="let root of roots | async; let first = first"

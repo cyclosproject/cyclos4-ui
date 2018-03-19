@@ -5,7 +5,7 @@
       <a #link
         mat-tab-link
         [routerLink]="root.entries[0].url"
-        (click)="onClick($event, root)"
+        (click)="onClick($event, root);$event.target.blur()"
         [active]="(activeRoot | async) === root.rootMenu">
         <mat-icon ngClass="mat-22">{{ root.icon }}</mat-icon>
         {{ root.label }}

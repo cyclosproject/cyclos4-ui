@@ -27,6 +27,9 @@ export class PageLayoutComponent extends BaseComponent {
   }
 
   @Input()
+  extraMargin = true;
+
+  @Input()
   hasMenu = true;
 
   @Input()

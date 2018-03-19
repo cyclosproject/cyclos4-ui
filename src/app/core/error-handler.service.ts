@@ -12,6 +12,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { NextRequestState } from './next-request-state';
 import { ErrorStatus } from './error-status';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
+import { Router } from '@angular/router';
+import { LoginService } from 'app/core/login.service';
 
 /**
  * Service used to handle application errors
@@ -21,6 +23,8 @@ export class ErrorHandlerService {
 
   constructor(
     private messages: Messages,
+    private router: Router,
+    private loginService: LoginService,
     private notificationService: NotificationService,
     private formatService: FormatService,
     private nextRequestState: NextRequestState,
@@ -76,9 +80,9 @@ export class ErrorHandlerService {
     } else {
       // Server-generated error
       let error = err.error;
-      if (!error) {
+      if (typeof error === 'string') {
         try {
-          error = JSON.parse(err.message);
+          error = JSON.parse(error);
         } catch (e) {
           error = null;
         }
@@ -88,14 +92,17 @@ export class ErrorHandlerService {
           message = this.messages.errorNetwork();
           break;
         case ErrorStatus.UNAUTHORIZED:
-          if (error.code === UnauthorizedErrorCode.LOGGED_OUT) {
+          if (error.code === UnauthorizedErrorCode.LOGGED_OUT || this.nextRequestState.sessionToken == null) {
             // Was logged out. Fetch the DataForUi again and go to the login page.
-            // this.dataForUiHolder.reload()
-            //   .then(dataForUi => {
-            //     if (dataForUi.auth == null) {
-            //       // TODO aqui!!!!!
-            //     }
-            //   });
+            this.nextRequestState.sessionToken = null;
+            this.dataForUiHolder.reload()
+              .then(dataForUi => {
+                if (dataForUi.auth == null) {
+                  this.loginService.redirectUrl = this.router.url;
+                  this.router.navigateByUrl('/login');
+                }
+              });
+            return;
           }
           message = this.unauthorizedErrorMessage(error as UnauthorizedError);
           break;

@@ -1,10 +1,17 @@
-<div fxFlex="nogrow" fxLayout="column" [formGroup]="form">
-  <img fxFlex="nogrow" [src]="imageUrl | async" alt="captcha">
+<div [formGroup]="form"
+  fxFlex="nogrow"
+  fxLayout="column"
+  fxLayoutAlign="center"
+  class="wrapper">
+  <img [src]="imageUrl | async"
+    alt="captcha">
   <div fxLayout="row">
     <mat-form-field>
-      <input matInput formControlName="response">
+      <input matInput
+        formControlName="response">
     </mat-form-field>
-    <button mat-icon-button (click)="newCaptcha()">
+    <button mat-icon-button
+      (click)="newCaptcha()">
       <mat-icon>refresh</mat-icon>
     </button>
   </div>

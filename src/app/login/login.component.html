@@ -1,65 +1,57 @@
-<ng-container *ngIf="loaded | async">
-  <!-- View for small to large devices -->
-  <div *ngIf="layout.gtxs"
-    fxLayout="row"
-    fxLayout.sm="column">
-    <mat-card fxFlex="grow">
-      <mat-card-title>{{ messages.loginTitle() }}</mat-card-title>
-      <mat-card-content>
+<page-layout [loaded]="loaded"
+  [hasMenu]="false"
+  contentSize="small">
+  <page-content>
+    <form [formGroup]="form"
+      fxLayout="column"
+      focusFirst>
+      <h1>{{ messages.loginTitle() }}</h1>
+      <div *ngIf="(login.redirectUrl || '').length === 0; else disconnected"
+        class="text">
+        {{ messages.loginMessage() }}
+      </div>
+      <ng-template #disconnected>
         <div class="text">
-          You can login with your username and password
+          {{ messages.loginDisconnected() }}
         </div>
-        <login-form [loginForm]="loginForm"
-          [dataForLogin]="dataForLogin"
-          (submit)="doLogin()"
-          [showActions]="false"></login-form>
-      </mat-card-content>
-      <mat-card-actions>
+      </ng-template>
+
+      <mat-form-field fxFlex="grow"
+        floatPlaceholder="never">
+        <input matInput
+          formControlName="principal"
+          type="text"
+          required
+          [focused]
+          [placeholder]="messages.loginPrincipal()"
+          (keyup.enter)="passwordComponent.focus()">
+        <mat-icon matPrefix
+          ngClass="mat-24">account_circle</mat-icon>
+      </mat-form-field>
+
+      <password-input #passwordComponent
+        fxFlex="grow"
+        [showIcon]="true"
+        [placeholder]="messages.loginPassword()"
+        [passwordInput]="dataForLogin.loginPasswordInput"
+        formControlName="password"
+        (enter)="doLogin()">
+      </password-input>
+
+      <actions fxFlex="grow"
+        fxLayout="row"
+        fxLayoutAlign="center">
         <button mat-raised-button
           color="accent"
           (click)="doLogin()">
           {{ messages.submit() }}
         </button>
-        <a href="#"
-          class="forgotPassword">
-          Forgot your password?
-        </a>
-      </mat-card-actions>
-    </mat-card>
-  </div>
+      </actions>
 
-  <!-- Tabbed view for extra small devices when registration is enabled -->
-  <mat-tab-group *ngIf="canRegister && layout.xs">
-    <mat-tab [label]="messages.loginTitle()">
-      <login-form class="topMargin"
-        [loginForm]="loginForm"
-        [dataForLogin]="dataForLogin"
-        (submit)="doLogin()"
-        [showActions]="true"></login-form>
-    </mat-tab>
-    <mat-tab [label]="messages.loginRegisterTitle()">
-      <div class="register">
-        <div>
-          {{ messages.loginRegisterText() }}
-        </div>
-        <actions>
-          <button mat-raised-button
-            color="accent"
-            (click)="register()">
-            {{ messages.submit() }}
-          </button>
-        </actions>
-      </div>
-    </mat-tab>
-  </mat-tab-group>
-
-  <!-- Login page for extra small devices when registration is disabled -->
-  <ng-container *ngIf="!canRegister && layout.xs">
-    <h2>{{ messages.loginTitle() }}</h2>
-    <login-form [loginForm]="loginForm"
-      [dataForLogin]="dataForLogin"
-      (submit)="doLogin($event)"
-      [showActions]="true"></login-form>
-  </ng-container>
-
-</ng-container>
+      <a class="forgotPassword"
+        routerLink="/forgot-password">
+        {{ messages.loginForgotPassword()}}
+      </a>
+    </form>
+  </page-content>
+</page-layout>

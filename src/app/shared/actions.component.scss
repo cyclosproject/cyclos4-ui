@@ -13,6 +13,9 @@
   flex: 0;
   margin-right: 22px;
 }
+.gt-xs :host /deep/ button:last-of-type, .gt-xs :host /deep/ a:last-of-type {
+  margin-right: 0;
+}
 .lt-sm :host /deep/ button, .lt-sm :host /deep/ a {
   flex: 1 1 100%;
   margin-bottom: 12px;

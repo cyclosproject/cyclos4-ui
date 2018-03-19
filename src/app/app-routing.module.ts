@@ -8,6 +8,7 @@ import { SharedModule } from 'app/shared/shared.module';
 import { LoggedUserGuard } from 'app/logged-user-guard';
 import { Menu } from 'app/shared/menu';
 import { SettingsComponent } from 'app/settings/settings.component';
+import { ForgotPasswordComponent } from 'app/login/forgot-password.component';
 
 const rootRoutes: Routes = [
   {
@@ -29,6 +30,13 @@ const rootRoutes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
+    data: {
+      menu: Menu.LOGIN
+    }
+  },
+  {
+    path: 'forgot-password',
+    component: ForgotPasswordComponent,
     data: {
       menu: Menu.LOGIN
     }

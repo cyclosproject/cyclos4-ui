@@ -1,40 +1,43 @@
 @import 'src/definitions';
 
-.topMargin {
-  margin-top: 16px;
-}
-:host /deep/ button {
-  min-height: 40px;
-  min-width: 150px !important;
-}
-:host /deep/ .mat-card {
-  max-width: $login-width;
-  margin: 32px auto 0 auto;
-}
-:host /deep/ .mat-card-title {
+h1 {
   text-align: center;
-  padding-top: 38px !important;
-}
-:host /deep/ .mat-card-actions {
-  text-align: center;
-  padding-bottom: 38px !important;
+  padding-top: 0;
+  border: none;
+  font-size: 24px;
+  margin-bottom: 24px;
 }
 .text {
   text-align: center;
   opacity: 0.7;
-  margin: 16px 0;
+  margin-bottom: 16px;
 }
 .forgotPassword {
   text-align: center;
-  margin-top: 36px;
+  margin: 12px 0 22px 0;
   text-decoration: none;
   display: block;
 }
 .forgotPassword:hover {
   text-decoration: underline;
 }
-.register {
-  max-width: 70vw;
-  display: block;
-  margin: 36px auto 0 auto;
+:host /deep/ actions {
+  margin: 40px 0 24px 0;
+}
+:host /deep/ actions button {
+  min-height: 40px;
+  min-width: 150px !important;
+}
+:host /deep/ input {
+  margin-bottom: 7px;
+}
+:host /deep/ .mat-input-prefix .mat-icon {
+  position: relative;
+  top: 0px;
+  width: 24px;
+  height: 24px;
+  font-size: 24px;
+}
+:host /deep/ captcha .wrapper {
+  margin: auto;
 }

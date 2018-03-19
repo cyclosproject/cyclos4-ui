@@ -5,39 +5,20 @@
       #keywordsInput
       type="text"
       [focused]="focused"
-      (keyup)="onKeywords.next($event.target.value)"
+      (input)="search(keywordsInput.value)"
       [placeholder]="messages.keywords()">
   </mat-form-field>
 
-  <mat-table *ngIf="showTable | async; else noKeywords"
-    [dataSource]="dataSource"
-    fxFlex="grow">
-    <ng-container matColumnDef="radio">
-      <mat-header-cell *matHeaderCellDef
-        class="selection"></mat-header-cell>
-      <mat-cell *matCellDef="let row"
-        class="selection">
-        <mat-radio-group [formControl]="formControl">
-          <mat-radio-button [value]="row.id"></mat-radio-button>
-        </mat-radio-group>
-      </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="user">
-      <mat-header-cell *matHeaderCellDef>{{ messages.user() }}</mat-header-cell>
-      <mat-cell *matCellDef="let row">
-        <a href="#"
-          class="plain"
-          (click)="$event.preventDefault();value = row.id">{{ row.display }}</a>
-      </mat-cell>
-    </ng-container>
-
-    <mat-header-row *matHeaderRowDef="[]"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: ['radio', 'user'];"></mat-row>
-  </mat-table>
+  <mat-radio-group *ngIf="((keywords | async) || '').length > 0; else noKeywords"
+    [formControl]="formControl"
+    fxLayout="column">
+    <mat-radio-button *ngFor="let user of users$ | async"
+      [value]="user.id">
+      {{ user.display }}
+    </mat-radio-button>
+  </mat-radio-group>
 
   <ng-template #noKeywords>
     {{ messages.searchUserNoKeywords() }}
   </ng-template>
-
 </div>

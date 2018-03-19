@@ -8,7 +8,7 @@ import { AuthService } from 'app/api/services';
 
 /**
  * Component used to show a login form.
- * Also has a link to public registration.
+ * Also has a link to the forgot password functionality.
  */
 @Component({
   selector: 'app-login',
@@ -18,14 +18,12 @@ import { AuthService } from 'app/api/services';
 })
 export class LoginComponent extends BaseComponent {
 
-  loginForm: FormGroup;
-
+  form: FormGroup;
   loaded = new BehaviorSubject(false);
   dataForLogin: DataForLogin;
-  registrationGroups: GroupForRegistration[];
 
-  get canRegister(): boolean {
-    return this.registrationGroups != null && this.registrationGroups.length > 0;
+  get forgotPasswordEnabled(): boolean {
+    return (this.dataForLogin.forgotPasswordMediums || []).length > 0;
   }
 
   constructor(
@@ -35,7 +33,7 @@ export class LoginComponent extends BaseComponent {
     private nextRequestState: NextRequestState
   ) {
     super(injector);
-    this.loginForm = formBuilder.group({
+    this.form = formBuilder.group({
       principal: '',
       password: ''
     });
@@ -48,7 +46,6 @@ export class LoginComponent extends BaseComponent {
       this.router.navigateByUrl(this.login.redirectUrl || '');
     } else {
       this.dataForLogin = dataForUi.dataForLogin;
-      this.registrationGroups = dataForUi.publicRegistrationGroups;
       this.loaded.next(true);
     }
   }
@@ -57,16 +54,10 @@ export class LoginComponent extends BaseComponent {
    * Performs the login
    */
   doLogin(): void {
-    // When using the external login button there's no data, so we assume it comes from the login form
-    if (!this.loginForm.valid) {
+    if (!this.form.valid) {
       return;
     }
-
-    const value = this.loginForm.value;
+    const value = this.form.value;
     this.login.login(value.principal, value.password);
-  }
-
-  register(): void {
-    this.router.navigate(['/users', 'registration']);
   }
 }

@@ -29,6 +29,10 @@ export class SidenavMenuComponent extends BaseComponent implements OnInit {
   }
 
   onMenuClicked(entry: MenuEntry) {
+    this.close();
+  }
+
+  close() {
     this.sidenav.close();
   }
 }

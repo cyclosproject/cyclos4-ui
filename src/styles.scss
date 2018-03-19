@@ -91,6 +91,8 @@ form {
 .mat-input-prefix mat-icon {
   margin-right: 10px;
   opacity: 0.65;
+  position: relative;
+  top: 7px;
 }
 .mat-select-placeholder {
   left: -2px;

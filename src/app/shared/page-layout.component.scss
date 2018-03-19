@@ -1,12 +1,16 @@
 @import 'src/definitions';
 
+.gt-xs :host /deep/ .page-layout.extra-margin {
+  margin-top: 32px;
+}
+
 .left {
   margin-right: $parts-margin;
   width: $left-area-width;
   min-width: $left-area-width;
   max-width: $left-area-width;
 }
-:host /deep/ .filtersHidden .mat-ink-bar {
+:host /deep/ .filters-hidden .mat-ink-bar {
   display: none;
 }
 
