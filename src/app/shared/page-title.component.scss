@@ -12,7 +12,6 @@
 .showFilters {
   opacity: 0.7;
   float: right;
-  margin: 8px;
 }
 :host /deep/ .showFilters .mat-icon {
   position: relative;
@@ -29,14 +28,12 @@ h1 {
   float: left;
 }
 
-.xs :host /deep/ {
+.lt-md :host /deep/ {
   .wrapper {
     border: 0;
   }
   h1 {
-    margin: 8px 0 20px 0;
-  }
-  .showFilters {
-    margin: 0 0 8px 0;
+    margin: 0;
+    padding: 16px 0 16px 8px;
   }
 }

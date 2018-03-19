@@ -192,6 +192,9 @@ input[type=number] {
 .clickable {
   cursor: pointer;
 }
+.mat-table {
+  max-width: 100vw;
+}
 .mat-table .mat-icon {
   opacity: 0.25;
 }

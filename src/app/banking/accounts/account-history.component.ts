@@ -122,12 +122,25 @@ export class AccountHistoryComponent extends BaseComponent {
     if (type == null) {
       return null;
     }
-    const number = this.number;
+    const number = this.layout.xs ? null : this.number;
     return number == null ? type.name : type.name + ' - ' + number;
   }
 
   get typeId(): string {
     return this.route.snapshot.params.type;
+  }
+
+  get maxIndicators(): number {
+    const width = this.layout.width;
+    if (width < 350) {
+      return 2;
+    } else if (width < 450) {
+      return 3;
+    } else if (width < 1100) {
+      return 4;
+    } else {
+      return 5;
+    }
   }
 
   ngOnInit() {

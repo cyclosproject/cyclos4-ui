@@ -43,11 +43,8 @@
     padding-right: 16px;
   }
 }
-.sm :host /deep/ .main {
-  padding: 12px;
-}
-.xs :host /deep/ .main {
-  padding: 12px 8px 8px 8px;
+.lt-md :host /deep/ .main {
+  padding: 0;
 }
 
 :host /deep/ .main > * {

@@ -6,8 +6,8 @@
   <page-header>
     <div class="indicators">
       <ng-container *ngFor="let indicator of (status | async); let i = index; let last = last">
-        <div class="indicator"
-          [fxHide.xs]="i > 2">
+        <div *ngIf="i < maxIndicators"
+          class="indicator">
           <div class="label">{{ indicator.label }}</div>
           <div [ngClass]="{
             amount: true,
@@ -17,8 +17,7 @@
             {{ indicator.amount | currency:currency }}
           </div>
         </div>
-        <div *ngIf="!last"
-          [fxHide.xs]="i > 1"
+        <div *ngIf="!last && i < maxIndicators - 1"
           class="indicator-separator"></div>
       </ng-container>
     </div>
@@ -29,6 +28,7 @@
       [formGroup]="form">
       <mat-form-field *ngIf="transferFilters.length > 1">
         <mat-select fxFlex="grow"
+          focused
           [placeholder]="messages.accountTransferFilter()"
           formControlName="transferFilter">
           <mat-option [value]="">{{ messages.searchAll() }}</mat-option>

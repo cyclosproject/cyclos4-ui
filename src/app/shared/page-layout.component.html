@@ -77,22 +77,29 @@
       </div>
       <ng-container *ngIf="(loaded == null || (loaded | async))">
         <page-title *ngIf="title != null && title.length > 0"
-          [noBottomMargin]="tightContent"
+          [noBottomMargin]="true"
           [pageLayout]="this"
           [title]="title"></page-title>
-        <div class="inline-header"
+        <div [ngClass]="{
+          'inline-header': true,
+          'tight-content': tightContent
+          }"
           *ngIf="hasHeader">
-          <div *ngIf="tightContent"
-            class="header-extra-margin"></div>
           <ng-container *ngTemplateOutlet="headerTpl"></ng-container>
         </div>
-        <div class="inline-filters"
+        <div [ngClass]="{
+          'inline-filters': true,
+          'tight-content': tightContent
+          }"
           *ngIf="hasFilters && (filtersShown | async)">
           <div *ngIf="tightContent && !hasHeader"
             class="filters-extra-margin"></div>
           <ng-container *ngTemplateOutlet="filtersTpl"></ng-container>
         </div>
-        <div class="inline-content">
+        <div [ngClass]="{
+          'inline-content': true,
+          'tight-content': tightContent
+          }">
           <ng-container *ngIf="loaded == null || (loaded | async)">
             <ng-container *ngTemplateOutlet="contentTpl"></ng-container>
           </ng-container>

@@ -1,9 +1,12 @@
-import { Directive, ElementRef, Renderer, AfterViewInit, ChangeDetectorRef, Input } from '@angular/core';
+import { Directive, ElementRef, Renderer, AfterViewInit, ChangeDetectorRef, Input, Optional } from '@angular/core';
+import { MatFormField, MatSelect, MatInput } from '@angular/material';
 
-@Directive({ selector: 'mat-form-field[focused],input[focused],select[focused],textarea[focused]' })
+@Directive({ selector: 'mat-select[focused],input[focused],select[focused],textarea[focused]' })
 export class FocusedDirective implements AfterViewInit {
   constructor(
     private el: ElementRef,
+    @Optional() private select: MatSelect,
+    @Optional() private input: MatInput,
     private renderer: Renderer,
     private changeDetector: ChangeDetectorRef
   ) { }
@@ -14,8 +17,14 @@ export class FocusedDirective implements AfterViewInit {
   ngAfterViewInit(): void {
     if (this.focused === '' || this.focused === true || this.focused === 'true') {
       const run = () => {
-        this.renderer.invokeElementMethod(this.el.nativeElement, 'focus', []);
-        this.changeDetector.detectChanges();
+        if (this.select != null) {
+          this.select.focus();
+        } else if (this.input != null) {
+          this.input.focus();
+        } else {
+          this.renderer.invokeElementMethod(this.el.nativeElement, 'focus', []);
+          this.changeDetector.detectChanges();
+        }
       };
       if (this.el.nativeElement.clientWidth === 0) {
         // The field is still hidden

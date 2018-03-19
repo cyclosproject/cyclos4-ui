@@ -72,11 +72,10 @@ export class SideMenuComponent extends BaseComponent {
     this.stateManager.clear();
 
     // Navigate to the account history details page
-    const url = '/banking/account/' + ApiHelper.internalNameOrId(account.type);
-    this.router.navigateByUrl(url);
+    this.router.navigate(this.accountLink(account));
 
     // Stop the event
-    event.cancelBubble = true;
+    event.preventDefault();
     event.stopPropagation();
   }
 
@@ -85,5 +84,9 @@ export class SideMenuComponent extends BaseComponent {
     const banking = permissions.banking || {};
     const accountPermissions = banking.accounts || [];
     return accountPermissions.map(p => p.account);
+  }
+
+  accountLink(account: AccountWithCurrency): string[] {
+    return ['banking', 'account', ApiHelper.internalNameOrId(account.type)];
   }
 }

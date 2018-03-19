@@ -76,15 +76,17 @@
   padding: 20px;
 }
 
-.inline-header, .inline-filters {
-  margin-bottom: 22px;
-}
 .inline-content, .inline-header, .inline-filters {
-  max-width: calc(100vw - 16px) !important;
+  max-width: 100vw;
+}
+.inline-header, .inline-filters {
+  padding: 14px 8px;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
 }
 
 .inline-filters {
-  padding: 4px 12px 12px 12px;
+  padding: 12px 12px 22px 12px;
 }
 
 :host /deep/ .inline-filters .actions {

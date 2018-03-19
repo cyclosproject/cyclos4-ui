@@ -102,4 +102,12 @@ export class LayoutService implements OnDestroy {
     return this.media.isActive('gt-lg');
   }
 
+  get width(): number {
+    return Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+  }
+
+  get height(): number {
+    return Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+  }
+
 }

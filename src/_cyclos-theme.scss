@@ -5,6 +5,7 @@
 @import 'src/app/core/top-bar.component-theme';
 @import 'src/app/shared/side-menu.component-theme';
 @import 'src/app/shared/breadcrumb.component-theme';
+@import 'src/app/shared/page-layout.component-theme';
 @import 'src/app/shared/page-title.component-theme';
 @import 'src/app/shared/label-value.component-theme';
 @import 'src/app/shared/image-viewer.component-theme';
@@ -30,6 +31,7 @@
   @include top-bar-component-theme($theme);
   @include side-menu-component-theme($theme);
   @include breadcrumb-component-theme($theme);
+  @include page-layout-component-theme($theme);
   @include page-title-component-theme($theme);
   @include label-value-component-theme($theme);
   @include image-viewer-component-theme($theme);
