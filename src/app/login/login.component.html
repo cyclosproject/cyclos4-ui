@@ -6,15 +6,9 @@
       fxLayout="column"
       focusFirst>
       <h1>{{ messages.loginTitle() }}</h1>
-      <div *ngIf="(login.redirectUrl || '').length === 0; else disconnected"
-        class="text">
-        {{ messages.loginMessage() }}
+      <div class="text">
+        {{ text }}
       </div>
-      <ng-template #disconnected>
-        <div class="text">
-          {{ messages.loginDisconnected() }}
-        </div>
-      </ng-template>
 
       <mat-form-field fxFlex="grow"
         floatPlaceholder="never">

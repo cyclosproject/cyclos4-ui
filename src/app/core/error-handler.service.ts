@@ -4,7 +4,7 @@ import { FormatService } from 'app/core/format.service';
 import {
   ErrorKind, NotFoundError, InputError, InputErrorCode,
   UnauthorizedError, UnauthorizedErrorCode, PasswordStatusEnum, ForbiddenError,
-  ForbiddenErrorCode, PaymentError, PaymentErrorCode
+  ForbiddenErrorCode, PaymentError, PaymentErrorCode, ForgottenPasswordError, ForgottenPasswordErrorCode
 } from 'app/api/models';
 import { NgForm } from '@angular/forms';
 import { Messages } from 'app/messages/messages';
@@ -126,6 +126,10 @@ export class ErrorHandlerService {
               case ErrorKind.OTP:
                 // An error while generating an OTP
                 message = this.messages.passwordOtpError();
+                break;
+              case ErrorKind.FORGOTTEN_PASSWORD:
+                // An error while changing a forgotten password
+                message = this.forgottenPasswordErrorMessage(error);
                 break;
             }
           }
@@ -266,6 +270,24 @@ export class ErrorHandlerService {
         return this.messages.errorPaymentMonthAmount(amount());
       case PaymentErrorCode.MONTHLY_PAYMENTS_EXCEEDED:
         return this.messages.errorPaymentMonthCount(count());
+      default:
+        return this.messages.errorGeneral();
+    }
+  }
+
+  /**
+   * Returns the error message for a ForgottenPasswordError
+   * @param error The error
+   */
+  public forgottenPasswordErrorMessage(error: ForgottenPasswordError): string {
+    error = error || {} as ForgottenPasswordError;
+    switch (error.code) {
+      case ForgottenPasswordErrorCode.INVALID_SECURITY_ANSWER:
+        if (error.keyInvalidated) {
+          return this.messages.errorForgottenPasswordInvalidSecurityAnswerKeyInvalidated();
+        } else {
+          return this.messages.errorForgottenPasswordInvalidSecurityAnswer();
+        }
       default:
         return this.messages.errorGeneral();
     }

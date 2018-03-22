@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { NextRequestState } from 'app/core/next-request-state';
 import { AuthService } from 'app/api/services';
+import { LoginPageState } from '../core/login.service';
 
 /**
  * Component used to show a login form.
@@ -59,5 +60,13 @@ export class LoginComponent extends BaseComponent {
     }
     const value = this.form.value;
     this.login.login(value.principal, value.password);
+  }
+
+  get text(): string {
+    if (this.login.loginPageState === LoginPageState.LOGGED_OUT) {
+      return this.messages.loginMessageDisconnected();
+    } else {
+      return this.messages.loginMessage();
+    }
   }
 }

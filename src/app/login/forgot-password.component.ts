@@ -62,6 +62,7 @@ export class ForgotPasswordComponent extends BaseComponent {
     this.authService.forgottenPasswordRequest(this.form.value)
       .subscribe(() => {
         this.notification.info(this.messages.forgotPasswordSent());
+        this.cancel();
       });
   }
 

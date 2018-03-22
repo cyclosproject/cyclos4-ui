@@ -76,7 +76,8 @@
     </mat-form-field>
     <ng-container *ngIf="hasExtension">
       <div fxFlex="nogrow">&nbsp;</div>
-      <mat-form-field fxFlex="nogrow">
+      <mat-form-field fxFlex="nogrow"
+        ngClass="field-tiny">
         <input matInput
           formControlName="extension"
           [placeholder]="messages.userLandLinePhoneExtension()" />

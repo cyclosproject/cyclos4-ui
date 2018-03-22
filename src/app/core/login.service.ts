@@ -10,6 +10,13 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { NextRequestState } from 'app/core/next-request-state';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 
+export enum LoginPageState {
+  NORMAL,
+  LOGGED_OUT,
+  FORGOT_PASSWORD_GENERATED,
+  FORGOT_PASSWORD_MANUAL
+}
+
 /**
  * Service used to manage the login status
  */
@@ -17,8 +24,22 @@ import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 export class LoginService {
   private _loggingOut = new BehaviorSubject(false);
 
-  public redirectUrl: string;
+  private _redirectUrl: string;
 
+  get redirectUrl(): string {
+    return this._redirectUrl;
+  }
+
+  set redirectUrl(redirectUrl: string) {
+    this._redirectUrl = redirectUrl;
+    this._loginPageState = redirectUrl == null ? LoginPageState.NORMAL : LoginPageState.LOGGED_OUT;
+  }
+
+  private _loginPageState: LoginPageState = LoginPageState.NORMAL;
+
+  get loginPageState(): LoginPageState {
+    return this._loginPageState;
+  }
 
   constructor(
     private dataForUiHolder: DataForUiHolder,
@@ -93,9 +114,9 @@ export class LoginService {
   }
 
   /**
-   * Performs the logout
+   * Performs the logout, optionally redirecting to a custom URL
    */
-  logout(): void {
+  logout(redirectUrl: string = null): void {
     this.redirectUrl = null;
     if (this.auth == null) {
       // No one logged in
@@ -111,9 +132,13 @@ export class LoginService {
         return this.dataForUiHolder.reload()
           .then(() => {
             this._loggingOut.next(false);
-            this.router.navigateByUrl('/login');
+            this.router.navigateByUrl(redirectUrl || '/login');
             return null;
           });
       });
+  }
+
+  forgottenPasswordChanged(generated: boolean): void {
+    this._loginPageState = generated ? LoginPageState.FORGOT_PASSWORD_GENERATED : LoginPageState.FORGOT_PASSWORD_MANUAL;
   }
 }

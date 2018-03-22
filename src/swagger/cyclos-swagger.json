@@ -1,9 +1,9 @@
 {
   "swagger" : "2.0",
   "info" : {
-    "description" : "The REST API for Cyclos 4.10",
-    "version" : "4.10",
-    "title" : "Cyclos 4.10 API"
+    "description" : "The REST API for Cyclos 4.10-BETA",
+    "version" : "4.10-BETA",
+    "title" : "Cyclos 4.10-BETA API"
   },
   "host" : "localhost:8888",
   "basePath" : "/api",
@@ -10452,7 +10452,7 @@
       "post" : {
         "tags" : [ "Tickets" ],
         "summary" : "Creates a new ticket with status `open` for\nthe logged user.\n",
-        "description" : "The logged user will be the ticket's owner and then the receiver of the \npayment after accepting the ticket by other user (i.e the payer).\n",
+        "description" : "The logged user will be the ticket's owner and then the receiver of the \npayment generated after processing the ticket only if was previously\napproved by the payer.\n",
         "operationId" : "newTicket",
         "parameters" : [ {
           "name" : "fields",
@@ -10685,16 +10685,15 @@
       "get" : {
         "tags" : [ "Tickets" ],
         "summary" : "Returns a QR-code image with the URL for an easy invoice confirmation\n",
-        "description" : "The genrated QR-code image contains an URL in the form: `<root>/pay?to=<user>&amount=<amount>...`\n",
+        "description" : "The generated QR-code image contains an URL in the form: `<root>/pay?to=<user>&amount=<amount>...`\n",
         "operationId" : "getEasyInvoiceQrCode",
         "produces" : [ "application/json", "image/jpeg", "image/gif", "image/png" ],
         "parameters" : [ {
           "name" : "user",
           "in" : "path",
-          "description" : "Can be one of:\n* a user identification value, such as id, username, e-mail, phone, etc.\n  Id is always allowed, others depend on Cyclos configuration. Note that\n  a valid numeric value is always considered as id. For example, when\n  using another identification method that can be numeric only, prefix\n  the value with a single quote (like in Excel spreadsheets), for\n  example, `'1234567890`;\n   \n* `self` for the currently authenticated user.\n",
+          "description" : "The user which will receive the easy invoice. Unlike other cases of user reference, in this case `self` cannot be used, because the URL URL may be shared with others, hence, `self` makes no sense.\n",
           "required" : true,
-          "type" : "string",
-          "x-dotInPath" : true
+          "type" : "string"
         }, {
           "name" : "amount",
           "in" : "query",
@@ -10712,6 +10711,12 @@
           "name" : "currency",
           "in" : "query",
           "description" : "The currency id or internal name. Either this or `type` should be informed if an `amount` was given and the user has multiple currencies.\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "description",
+          "in" : "query",
+          "description" : "The easy invoice description",
           "required" : false,
           "type" : "string"
         }, {
@@ -11112,7 +11117,7 @@
       "post" : {
         "tags" : [ "Tickets" ],
         "summary" : "Processes a ticket by the receiver.",
-        "description" : "Processes an already approved ticket generating a new direct payment from the user who approve the ticket to the logged user (i.e the ticket's creator). A ticket can be processed only if its status is `approved` and the given `code` matches the code given at ticket creation. After successfully processing it goes to the final status: `processed`.\n",
+        "description" : "Processes an already approved ticket generating a new direct payment from the user who approve the ticket to the logged user (i.e the ticket's creator). A ticket can be processed only if its status is `approved` and the `orderId` (if any) matches the one given at ticket creation. After successfully processing it goes to the final status:  `processed`.\n",
         "operationId" : "processTicket",
         "parameters" : [ {
           "name" : "fields",
@@ -11131,10 +11136,10 @@
           "required" : true,
           "type" : "string"
         }, {
-          "name" : "code",
+          "name" : "orderId",
           "in" : "query",
-          "description" : "The process code associated to the ticket being processed.\n",
-          "required" : true,
+          "description" : "The order id given at ticket creation. Must be specified only if an `orderId` was given when the ticket was created.  \n",
+          "required" : false,
           "type" : "string"
         } ],
         "responses" : {
@@ -11861,7 +11866,7 @@
       "get" : {
         "tags" : [ "Users" ],
         "summary" : "Search for users",
-        "description" : "Returns a page of users that match a given criteria. The fields returned depend on the products, in the profile fields of other users setting. Only fields (both basic or custom) marked to be returned on user list are returned. If no fields are set to be returned, the resulting objects will have the `display` and `shortDisplay` filled in. However, those fields are not returned when another profile field is returned, preventing duplicated data to be returned. \n",
+        "description" : "Returns a page of users that match a given criteria. The fields returned depend on the products, in the profile fields of other users setting. Only fields (both basic or custom) marked to be returned on user list are returned. If no fields are set to be returned, or if the `ignoreProfileFieldsInList` flag is true in the given query then the resulting objects will have the `display` and `shortDisplay` filled in.  However, those fields are not returned when another profile field is returned, preventing duplicated data to be returned. \n",
         "operationId" : "searchUsers",
         "parameters" : [ {
           "name" : "fields",
@@ -12213,7 +12218,7 @@
         }, {
           "name" : "asMember",
           "in" : "query",
-          "description" : "Flag required only when the authenticated user is a member and a broker, in that case we need to distingish between both.\nIf true then the configuration data for registering new users as member will be returned, otherwise will return the configuration data for registering as broker.          \n",
+          "description" : "Flag required only when the authenticated user is a member and a\nbroker, in that case we need to distingish between both.\nIf true then the configuration data for registering new users as\nmember will be returned, otherwise will return the configuration\ndata for registering as broker.          \n",
           "required" : false,
           "type" : "boolean"
         } ],
@@ -12325,7 +12330,7 @@
         }, {
           "name" : "asMember",
           "in" : "query",
-          "description" : "Flag required only when the authenticated user is a member and a broker, in that case we need to distingish between both.\nIf true then the groups returned will be those allowed as member, otherwise will return the goups allowed as broker.  \n",
+          "description" : "Flag required only when the authenticated user is a member and a\nbroker, in that case we need to distingish between both.\nIf true then the groups returned will be those allowed as member,\notherwise will return the goups allowed as broker.  \n",
           "required" : false,
           "type" : "boolean"
         } ],
@@ -12685,6 +12690,114 @@
         "x-contentType" : "application/json"
       }
     },
+    "/users/validate/email-change/{key}" : {
+      "post" : {
+        "tags" : [ "Users" ],
+        "summary" : "Validates an e-mail via a validation key",
+        "description" : "When the user e-mail is changed, and the configuration enables the\nvalidation, an e-mail is sent to the new user e-mail, with a link to\nverify it. In this case, only after verifying the new e-mail it is\neffectively set as the new e-mail.\nThis operation effectively verifies the new e-mail.\n",
+        "operationId" : "validateEmailChange",
+        "parameters" : [ {
+          "name" : "key",
+          "in" : "path",
+          "description" : "The validation key sent via e-mail",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Returns the id of the user that had the e-mail verified",
+            "schema" : {
+              "type" : "string"
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized access. Missing or invalid crendentials supplied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/UnauthorizedError"
+            }
+          },
+          "403" : {
+            "description" : "Permission denied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/ForbiddenError"
+            }
+          },
+          "404" : {
+            "description" : "An expected data was not found",
+            "schema" : {
+              "$ref" : "#/definitions/NotFoundError"
+            }
+          },
+          "500" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "x-accepts" : "application/json",
+        "x-contentType" : "application/json"
+      }
+    },
+    "/users/validate/registration/{key}" : {
+      "post" : {
+        "tags" : [ "Users" ],
+        "summary" : "Validates an user registration via a key sent by e-mail",
+        "description" : "When a user is registered, and the configuration enables the validation,\nan e-mail is sent to user e-mail, with a link to verify it. In this case,\nonly after verifying the e-mail the user is activated.\nThis operation effectively verifies the e-mail and performs the user\nactivation. However, depending on the settings, the initial user status\nmight be blocked or inactive.  \n",
+        "operationId" : "validateUserRegistration",
+        "parameters" : [ {
+          "name" : "fields",
+          "in" : "query",
+          "description" : "Select which fields to include on returned data. If nothing is set, all object fields are returned. Unprefixed field names will be handled like a whitelist (only listed fields will be included), while names starting with a minus (-) or exclamation mark (!) will be handled as blacklist (listed fields will not be included). This works for nesting as well. For example: `a,b.b1,c.-c1,c.-c2` will return the fields `a`, `b` (containing only the `b1` field) and `c` (containing all its fields except for `c1` or `c2`). \n",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          },
+          "collectionFormat" : "multi"
+        }, {
+          "name" : "key",
+          "in" : "path",
+          "description" : "The validation key sent via e-mail",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Returns details about the verified user",
+            "schema" : {
+              "$ref" : "#/definitions/UserRegistrationResult"
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized access. Missing or invalid crendentials supplied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/UnauthorizedError"
+            }
+          },
+          "403" : {
+            "description" : "Permission denied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/ForbiddenError"
+            }
+          },
+          "404" : {
+            "description" : "An expected data was not found",
+            "schema" : {
+              "$ref" : "#/definitions/NotFoundError"
+            }
+          },
+          "500" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "x-accepts" : "application/json",
+        "x-contentType" : "application/json"
+      }
+    },
     "/users/validate/{group}/{field}" : {
       "get" : {
         "tags" : [ "Users" ],
@@ -12713,7 +12826,7 @@
         }, {
           "name" : "asMember",
           "in" : "query",
-          "description" : "Flag required only when the authenticated user is a member and a broker, in that case we need to distingish between both.\nIf true then the groups returned will be those allowed as member, otherwise will return the goups allowed as broker.  \n",
+          "description" : "Flag required only when the authenticated user is a member and a\nbroker, in that case we need to distingish between both.\nIf true then the groups returned will be those allowed as member,\notherwise will return the goups allowed as broker.  \n",
           "required" : false,
           "type" : "boolean"
         } ],
@@ -22143,13 +22256,21 @@
           "type" : "string",
           "description" : "The key received by e-mail on the forgotten password reset request\n"
         },
+        "securityAnswer" : {
+          "type" : "string",
+          "description" : "When a security question is asked, this is the answer, and is required.\n"
+        },
         "newPassword" : {
           "type" : "string",
           "description" : "The new password value. Required when the password is manual.\n"
         },
-        "securityAnswer" : {
+        "checkConfirmation" : {
+          "type" : "boolean",
+          "description" : "Depending on the client, if a confirm password field is shown to users, it might be useful to check the confirmation password value on the server. This way, if there are other validation exceptions, they are all shown together. In this case, this field should be set to `true` and the `confirmationValue` should be passed in with the user input. However, in cases where clients just want to register a user with a password non interactively (like in a bulk registration), passing the password value twice is not desirable. In such cases, this field can be left empty (or set to `false`), and the `newPasswordConfirmation` will be ignored.\n"
+        },
+        "newPasswordConfirmation" : {
           "type" : "string",
-          "description" : "When a security question is asked, this is the answer, and is required.\n"
+          "description" : "The new password confirmation value. Is ignored unless `checkConfirmation` is set to `true`.\n"
         }
       },
       "description" : "The parameters for confirming a forgotten password reset"
@@ -22164,6 +22285,14 @@
         "newPassword" : {
           "type" : "string",
           "description" : "The new password value. Required."
+        },
+        "checkConfirmation" : {
+          "type" : "boolean",
+          "description" : "Depending on the client, if a confirm password field is shown to users, it might be useful to check the confirmation password value on the server. This way, if there are other validation exceptions, they are all shown together. In this case, this field should be set to `true` and the `confirmationValue` should be passed in with the user input. However, in cases where clients just want to register a user with a password non interactively (like in a bulk registration), passing the password value twice is not desirable. In such cases, this field can be left empty (or set to `false`), and the `newPasswordConfirmation` will be ignored.\n"
+        },
+        "newPasswordConfirmation" : {
+          "type" : "string",
+          "description" : "The new password confirmation value. Is ignored unless `checkConfirmation` is set to `true`.\n"
         },
         "forceChange" : {
           "type" : "boolean",
@@ -27019,19 +27148,19 @@
           },
           "cancelUrl" : {
             "type" : "string",
-            "description" : "The URL to redirect when canceling the approve ticket flow.\n"
+            "description" : "The url to redirect when canceling the approve ticket flow. If an `orderId` is given then it will be added as a query parameter to this url when redirect as well as the ticket number too.\n"
           },
           "successUrl" : {
             "type" : "string",
-            "description" : "The URL to redirect after successfully confirming a ticket.\n"
+            "description" : "The url to redirect after successful approving a ticket.  If an `orderId` is given then it will be added as a query parameter to this url when redirect as well as the ticket number too.\n"
           },
           "successWebhook" : {
             "type" : "string",
-            "description" : "The URL to be invoked by the server after successfully confirming a  ticket.\n"
+            "description" : "The url to be invoked by the server after successfully approving a  ticket. If an `orderId` is given then it will be added as a query parameter to this url when redirect as well as the ticket number too.          \n"
           },
-          "processCode" : {
+          "orderId" : {
             "type" : "string",
-            "description" : "A code used to process the ticket.  Required only if `successUrl` or `successWebhook` or both are given.  Otherwise it must be null. \n"
+            "description" : "An optional order identifier given by the ticket's creator. If given  then that identifier will be used at ticket processing to ensure the  ticket is for that order. This attribute is usefull in case the client doesn't want to reflect  the generated ticket number in its database after creating the ticket,\n"
           },
           "expiresAfter" : {
             "description" : "Defines the expiration interval. If none is given, it is assumed that the ticket expires in one day.\n",
