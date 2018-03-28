@@ -22491,6 +22491,13 @@
     "ContactInfoBasicData" : {
       "type" : "object",
       "properties" : {
+        "customFields" : {
+          "type" : "array",
+          "description" : "The additional contact information custom fields",
+          "items" : {
+            "$ref" : "#/definitions/CustomFieldDetailed"
+          }
+        },
         "addresses" : {
           "type" : "array",
           "description" : "The available user addresses, which can be referenced by id\n",
@@ -22511,7 +22518,7 @@
       }, {
         "type" : "object",
         "properties" : {
-          "contactInto" : {
+          "contactInfo" : {
             "description" : "The additional contact information that is being edited. This value can be modified and sent back on `PUT /contactInfos/{id}`.\n",
             "$ref" : "#/definitions/ContactInfoEdit"
           },

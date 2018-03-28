@@ -24,8 +24,7 @@
     class="items"
     [matTooltip]="messages.paginationCurrent(pagination.page + 1)">
     <ng-container *ngIf="pagination.hasTotalCount">
-      {{ messages.paginationShowingTotal(pagination.firstItem, pagination.lastItem, pagination.totalCount)
-      }}
+      {{ messages.paginationShowingTotal(pagination.firstItem, pagination.lastItem, pagination.totalCount) }}
     </ng-container>
     <ng-container *ngIf="!pagination.hasTotalCount">
       {{ messages.paginationShowingNoTotal(pagination.firstItem, pagination.lastItem) }}

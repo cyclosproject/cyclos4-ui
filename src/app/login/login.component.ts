@@ -1,10 +1,8 @@
 import { Component, ChangeDetectionStrategy, Injector } from '@angular/core';
-import { DataForLogin, GroupForRegistration } from 'app/api/models';
+import { DataForLogin } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { NextRequestState } from 'app/core/next-request-state';
-import { AuthService } from 'app/api/services';
 import { LoginPageState } from '../core/login.service';
 
 /**
@@ -29,9 +27,7 @@ export class LoginComponent extends BaseComponent {
 
   constructor(
     injector: Injector,
-    formBuilder: FormBuilder,
-    private authService: AuthService,
-    private nextRequestState: NextRequestState
+    formBuilder: FormBuilder
   ) {
     super(injector);
     this.form = formBuilder.group({

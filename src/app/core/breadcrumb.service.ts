@@ -4,7 +4,6 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { BreadCrumbEntry } from './breadcrumb-entry';
 import { filter } from 'rxjs/operators/filter';
 import { map } from 'rxjs/operators/map';
-import { LoginService } from './login.service';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 
 const IGNORE_BREADCRUMB = ['', '/home', '/login'];

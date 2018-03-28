@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { FormatService } from 'app/core/format.service';
 import { environment } from 'environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { NextRequestState } from './next-request-state';

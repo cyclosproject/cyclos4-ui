@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { MenuType, Menu, RootMenuEntry, MenuEntry, RootMenu } from 'app/shared/menu';
-import { LoginService } from 'app/core/login.service';
 import { Messages } from 'app/messages/messages';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -18,7 +17,6 @@ import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 export class MenuService {
 
   constructor(
-    private login: LoginService,
     private pushNotifications: PushNotificationsService,
     private accountsService: AccountsService,
     private messages: Messages,

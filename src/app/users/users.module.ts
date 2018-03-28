@@ -9,6 +9,7 @@ import { RegistrationDoneComponent } from 'app/users/registration/registration-d
 import { SearchUsersComponent } from 'app/users/search/search-users.component';
 import { UserProfileComponent } from 'app/users/profile/user-profile.component';
 import { ViewAddressDetailsComponent } from 'app/users/profile/view-address-details.component';
+import { ValidateRegistrationComponent } from './registration/validate-registration.component';
 
 /**
  * Users module
@@ -25,6 +26,8 @@ import { ViewAddressDetailsComponent } from 'app/users/profile/view-address-deta
     RegistrationFieldsComponent,
     RegistrationConfirmComponent,
     RegistrationDoneComponent,
+
+    ValidateRegistrationComponent,
 
     SearchUsersComponent,
     UserProfileComponent,

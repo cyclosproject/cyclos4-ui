@@ -1,5 +1,5 @@
-import { Directive, ElementRef, Renderer, AfterViewInit, ChangeDetectorRef, Input, Optional } from '@angular/core';
-import { MatFormField, MatSelect, MatInput } from '@angular/material';
+import { Directive, ElementRef, AfterViewInit, ChangeDetectorRef, Input, Optional } from '@angular/core';
+import { MatSelect, MatInput } from '@angular/material';
 
 @Directive({ selector: 'mat-select[focused],input[focused],select[focused],textarea[focused]' })
 export class FocusedDirective implements AfterViewInit {
@@ -7,7 +7,6 @@ export class FocusedDirective implements AfterViewInit {
     private el: ElementRef,
     @Optional() private select: MatSelect,
     @Optional() private input: MatInput,
-    private renderer: Renderer,
     private changeDetector: ChangeDetectorRef
   ) { }
 
@@ -22,7 +21,7 @@ export class FocusedDirective implements AfterViewInit {
         } else if (this.input != null) {
           this.input.focus();
         } else {
-          this.renderer.invokeElementMethod(this.el.nativeElement, 'focus', []);
+          this.el.nativeElement.focus();
           this.changeDetector.detectChanges();
         }
       };

@@ -1,5 +1,4 @@
-import { Component, ChangeDetectionStrategy, Output, EventEmitter, Input, Injector } from '@angular/core';
-import { DataForLogin } from 'app/api/models';
+import { Component, ChangeDetectionStrategy, Injector } from '@angular/core';
 import { BaseComponent } from 'app/shared/base.component';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';

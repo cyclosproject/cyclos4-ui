@@ -1,7 +1,6 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy, Injector } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy, Injector } from '@angular/core';
 import { Image } from 'app/api/models';
 import { SvgIconRegistry } from 'app/core/svg-icon-registry';
-import { LayoutService } from 'app/core/layout.service';
 import { BaseComponent } from './base.component';
 
 /**

@@ -6,6 +6,7 @@ import { SearchUsersComponent } from 'app/users/search/search-users.component';
 import { UserProfileComponent } from 'app/users/profile/user-profile.component';
 import { CountriesResolve } from 'app/countries.resolve';
 import { LoggedUserGuard } from 'app/logged-user-guard';
+import { ValidateRegistrationComponent } from 'app/users/registration/validate-registration.component';
 
 const usersRoutes: Routes = [
   {
@@ -45,6 +46,13 @@ const usersRoutes: Routes = [
         resolve: {
           countries: CountriesResolve
         },
+        data: {
+          menu: Menu.REGISTRATION
+        }
+      },
+      {
+        path: 'validate-registration/:key',
+        component: ValidateRegistrationComponent,
         data: {
           menu: Menu.REGISTRATION
         }

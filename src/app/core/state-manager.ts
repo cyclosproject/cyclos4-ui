@@ -4,7 +4,6 @@ import { of as observableOf } from 'rxjs/observable/of';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';
 import { tap } from 'rxjs/operators/tap';
-import { LoginService } from './login.service';
 import { Router } from '@angular/router';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 

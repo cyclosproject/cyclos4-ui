@@ -1,5 +1,4 @@
 // This file defines the environment variables shared by both development and production
-import { DataForUi } from 'app/api/models';
 
 // The root URL for the API. Don't forget to include the /api in the end
 const API_URL = 'http://localhost:8888/api';

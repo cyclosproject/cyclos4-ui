@@ -4,7 +4,7 @@ import { UserRegistrationResult } from 'app/api/models';
 import { escapeHtml } from 'app/shared/helper';
 
 /**
- * Provides the input for the password, captcha and agreement
+ * Shows a message after the registration is done
  */
 @Component({
   selector: 'registration-done',

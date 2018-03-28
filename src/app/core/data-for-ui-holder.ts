@@ -1,11 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Auth, User, DataForUi, UiKind } from 'app/api/models';
-import { AuthService } from 'app/api/services/auth.service';
+import { DataForUi, UiKind } from 'app/api/models';
 import { Subscription } from 'rxjs/Subscription';
-import { Router } from '@angular/router';
-import { ApiHelper } from 'app/shared/api-helper';
-import { Observable } from 'rxjs/Observable';
-import { tap } from 'rxjs/operators/tap';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { NextRequestState } from 'app/core/next-request-state';
 import { UIService } from 'app/api/services';

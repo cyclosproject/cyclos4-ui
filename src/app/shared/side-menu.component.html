@@ -19,8 +19,7 @@
         }"
         fxFlex="nogrow"
         *ngIf="menuService.accountStatuses | async">
-        {{ (menuService.accountStatuses | async).get(account.id)?.balance | currency:account.currency
-        }}
+        {{ (menuService.accountStatuses | async).get(account.id)?.balance | currency:account.currency }}
       </div>
     </a>
   </ng-container>

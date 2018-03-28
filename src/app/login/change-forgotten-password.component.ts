@@ -1,11 +1,9 @@
 import { Component, ChangeDetectionStrategy, Injector } from '@angular/core';
-import { DataForLogin, GroupForRegistration, PrincipalTypeInput, DataForChangeForgottenPassword } from 'app/api/models';
+import { DataForChangeForgottenPassword } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
 import { FormBuilder, FormGroup, Validators, ValidatorFn } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { NextRequestState } from 'app/core/next-request-state';
 import { AuthService } from 'app/api/services';
-import { ApiHelper } from 'app/shared/api-helper';
 
 /** Validator function that ensures password and confirmation match */
 const PASSWORDS_MATCH_VAL: ValidatorFn = control => {

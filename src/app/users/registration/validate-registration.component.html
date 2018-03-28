@@ -1,0 +1,17 @@
+<page-layout [loaded]="loaded"
+  [hasMenu]="false"
+  contentSize="small">
+  <page-content *ngIf="result | async">
+    <registration-done [result]="result.value"></registration-done>
+  </page-content>
+
+  <actions fxLayout="row"
+    fxLayout.xs="column-reverse"
+    fxLayoutAlign="center">
+    <button mat-raised-button
+      color="accent"
+      (click)="goToLogin()">
+      {{ messages.registrationDoneGoToLogin() }}
+    </button>
+  </actions>
+</page-layout>
