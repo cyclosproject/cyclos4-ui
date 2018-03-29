@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 /**
  * Displays actions, normally buttons
@@ -11,7 +11,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ActionsComponent implements OnInit {
 
+  @Input() topMargin: 'normal' | 'double' | 'none' = 'normal';
+  @Input() align: string;
+
   constructor() { }
 
   ngOnInit() { }
+
 }

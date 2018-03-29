@@ -1,1 +1,11 @@
-<ng-content></ng-content>
+<div [ngClass]="{
+    actions: true,
+    'top-margin-none': topMargin === 'none',
+    'top-margin-normal': topMargin === 'normal',
+    'top-margin-double': topMargin === 'double'
+  }"
+  fxLayout="row"
+  fxLayout.xs="column-reverse"
+  [fxLayoutAlign]="align">
+  <ng-content></ng-content>
+</div>

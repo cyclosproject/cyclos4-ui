@@ -1,6 +1,6 @@
 import {
   Component, Input, Output, ViewChild, EventEmitter, forwardRef,
-  ElementRef, ChangeDetectionStrategy, SkipSelf, Host, Optional
+  ElementRef, ChangeDetectionStrategy, SkipSelf, Host, Optional, ChangeDetectorRef
 } from '@angular/core';
 import {
   NG_VALUE_ACCESSOR, FormControl, ControlContainer,
@@ -9,6 +9,7 @@ import {
 import { FormatService } from 'app/core/format.service';
 import { BaseControlComponent } from 'app/shared/base-control.component';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { LayoutService } from 'app/core/layout.service';
 
 // Definition of the exported NG_VALUE_ACCESSOR provider
 export const DECIMAL_FIELD_VALUE_ACCESSOR = {
@@ -23,6 +24,7 @@ export const DECIMAL_FIELD_VALUE_ACCESSOR = {
 @Component({
   selector: 'decimal-field',
   templateUrl: 'decimal-field.component.html',
+  styleUrls: ['decimal-field.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [DECIMAL_FIELD_VALUE_ACCESSOR]
 })
@@ -30,10 +32,19 @@ export class DecimalFieldComponent extends BaseControlComponent<string> {
   @Input() name: string;
   @Input() focused: boolean | string;
   @Input() prefix: string;
-  @Input() suffix: string;
   @Input() required: boolean;
   @Input() placeholder: string;
   @Input() privacyControl: FormControl;
+
+  private _suffix: string;
+  private _suffixWidth = 0;
+  @Input() get suffix(): string {
+    return this._suffix;
+  }
+  set suffix(suffix: string) {
+    this._suffix = suffix;
+    this._suffixWidth = (suffix || '').length === 0 ? 0 : this.layout.textWidth('  ' + suffix);
+  }
 
   @Output() change: EventEmitter<string> = new EventEmitter();
   @Output() blur: EventEmitter<string> = new EventEmitter();
@@ -42,16 +53,15 @@ export class DecimalFieldComponent extends BaseControlComponent<string> {
   form: FormGroup;
   private _scale = 0;
 
-  @ViewChild('integerField')
-  private integerField: ElementRef;
-  @ViewChild('decimalField')
-  private decimalField: ElementRef;
+  @ViewChild('integerField') private integerField: ElementRef;
+  @ViewChild('decimalField') private decimalField: ElementRef;
 
   decimalSeparator = new BehaviorSubject<string>(null);
 
   constructor(
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
-    private formatService: FormatService,
+    private format: FormatService,
+    private layout: LayoutService,
     formBuilder: FormBuilder
   ) {
     super(controlContainer);
@@ -60,7 +70,7 @@ export class DecimalFieldComponent extends BaseControlComponent<string> {
       'decimal': null,
     });
     this.form.valueChanges.subscribe(value => {
-      const integer = (this.formatService.numberToFixed(value.integer, 0) || '').substr(0, 15);
+      const integer = (this.format.numberToFixed(value.integer, 0) || '').substr(0, 15);
       const decimal = this.decimalPart(value.decimal);
       let newValue: string;
       if (integer === '') {
@@ -82,11 +92,11 @@ export class DecimalFieldComponent extends BaseControlComponent<string> {
 
   ngOnInit() {
     super.ngOnInit();
-    const init = () => this.decimalSeparator.next(this.formatService.decimalSeparator);
-    if (this.formatService.decimalSeparator) {
+    const init = () => this.decimalSeparator.next(this.format.decimalSeparator);
+    if (this.format.decimalSeparator) {
       init();
     } else {
-      this.formatService.materialDateFormats.subscribe(init);
+      this.format.materialDateFormats.subscribe(init);
     }
   }
 
@@ -102,12 +112,12 @@ export class DecimalFieldComponent extends BaseControlComponent<string> {
     return this._scale;
   }
 
-  get decimalWidth(): number {
+  get decimalWidth(): string {
     const scale = this.scale;
     if (scale === 0) {
-      return 0;
+      return '0';
     }
-    return 10 + (this.suffix || '').trim().length * 9 + this.scale * 9;
+    return (this._suffixWidth + 20 + this.layout.textWidth('0'.repeat(scale))) + 'px';
   }
 
   focus() {

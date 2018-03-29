@@ -2,7 +2,8 @@
   [formGroup]="fieldsForm">
   <div class="form-info">{{ messages.paymentFieldsMessage() }}</div>
 
-  <mat-form-field *ngIf="(paymentTypes || []).length > 1">
+  <mat-form-field *ngIf="(paymentTypes || []).length > 1"
+    ngClass="field-medium">
     <mat-select formControlName="type"
       required
       [placeholder]="messages.transactionType()">

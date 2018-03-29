@@ -8,6 +8,7 @@ import { TransactionView, AuthorizationStatusEnum } from 'app/api/models';
 @Component({
   selector: 'payment-done',
   templateUrl: 'payment-done.component.html',
+  styleUrls: ['payment-done.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PaymentDoneComponent extends BaseComponent {

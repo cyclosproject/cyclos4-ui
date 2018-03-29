@@ -8,7 +8,7 @@
         (click)="onClick($event, root);$event.target.blur()"
         [active]="(activeRoot | async) === root.rootMenu">
         <mat-icon ngClass="mat-22">{{ root.icon }}</mat-icon>
-        {{ root.label }}
+        <span class="item-text">{{ root.label }}</span>
       </a>
     </ng-container>
   </nav>

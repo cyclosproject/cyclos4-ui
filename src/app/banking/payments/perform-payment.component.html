@@ -8,8 +8,7 @@
         [sublabel]="layout.ltmd ? (kindAndIdMethod | async)?.label : null">
         <payment-kind [kindForm]="kindForm"
           [allowedKindAndIdMethods]="allowedKindAndIdMethods"></payment-kind>
-        <actions fxLayout="column-reverse"
-          fxLayout.gt-xs="row">
+        <actions>
           <button fxFlex.gt-xs="nogrow"
             mat-raised-button
             color="accent"
@@ -27,8 +26,7 @@
             [idMethod]="(kindAndIdMethod | async)?.idMethod"
             [dataForSearch]="userDataForSearch | async"
             [contacts]="contacts | async"></payment-user>
-          <actions fxLayout="column-reverse"
-            fxLayout.gt-xs="row">
+          <actions>
             <button mat-raised-button
               (click)="previousFromUser()">
               {{ messages.previous() }}
@@ -49,8 +47,7 @@
           <payment-fields [fieldsForm]="fieldsForm"
             [paymentTypes]="paymentTypes | async"
             [paymentTypeData]="paymentTypeData"></payment-fields>
-          <actions fxLayout="column-reverse"
-            fxLayout.gt-xs="row">
+          <actions>
             <button mat-raised-button
               (click)="previousFromFields()">
               {{ messages.previous() }}
@@ -70,8 +67,7 @@
           <payment-preview #previewComponent
             [previewForm]="previewForm"
             [preview]="preview | async"></payment-preview>
-          <actions fxLayout="column-reverse"
-            fxLayout.gt-xs="row">
+          <actions topMargin="double">
             <button mat-raised-button
               (click)="previousFromPreview()">
               {{ messages.previous() }}
@@ -89,8 +85,7 @@
         [label]="messages.paymentDone()">
         <ng-container *ngIf="(stepperControl.monitor(doneStep) | async) && (performed | async)">
           <payment-done [payment]="performed | async"></payment-done>
-          <actions fxLayout="column-reverse"
-            fxLayout.gt-xs="row">
+          <actions topMargin="double">
             <a mat-raised-button
               color="accent"
               [routerLink]="viewPerformedPath">

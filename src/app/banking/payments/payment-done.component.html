@@ -1,3 +1,9 @@
-<div class="form-info">
-  {{ pendingAuth ? messages.paymentDoneAuthMessage() : messages.paymentDoneMessage() }}
+<div class="wrapper"
+  fxLayout="row"
+  fxLayoutAlign="baseline center">
+  <mat-icon ngClass="mat-36 positive">done</mat-icon>
+  <div class="done">
+    {{ pendingAuth ? messages.paymentDoneAuthMessage() : messages.paymentDoneMessage()
+    }}
+  </div>
 </div>

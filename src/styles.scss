@@ -64,9 +64,6 @@ h1.no-bottom-margin, h2.no-bottom-margin, h3.no-bottom-margin {
 }
 
 // Forms
-form {
-  max-width: $max-form-width;
-}
 .lt-md form {
   max-width: 80vw;
   display: block;
@@ -74,16 +71,16 @@ form {
 }
 
 .field-tiny {
-  max-width: 100px;
+  max-width: 10%;
 }
-.field-small, date-field {
-  max-width: 200px;
+.field-small, date-field, decimal-field {
+  max-width: 25%;
 }
-.field-medium, decimal-field {
-  max-width: 300px;
+.field-medium {
+  max-width: 50%;
 }
 .field-large {
-  max-width: 500px;
+  max-width: 75%;
 }
 .field-full {
   max-width: 100%;
@@ -108,7 +105,7 @@ mat-radio-group + mat-radio-group, mat-radio-group + mat-checkbox {
 mat-radio-group mat-radio-button {
   margin-bottom: 18px;
 }
-mat-radio-group mat-radio-button::last-of-type {
+mat-radio-group mat-radio-button:last-of-type {
   margin-bottom: 0px;
 }
 mat-radio-group.horizontal mat-radio-button + mat-radio-button {
@@ -162,9 +159,9 @@ input[type=number] {
 }
 
 // Steppers
-.td-step-content {
+.gt-xs .td-step-content {
   margin: 0 !important;
-  padding: 16px !important;
+  padding: 8px !important;
 }
 .td-edit-icon {
   display: none !important;
@@ -173,7 +170,9 @@ input[type=number] {
   -webkit-box-shadow: none !important;
   box-shadow: none !important;
 }
-
+.td-step-body, .td-step-content {
+  overflow-x: visible !important;
+}
 // Data tables
 .mat-header-cell {
   font-size: 14px;
@@ -207,6 +206,10 @@ mat-cell.avatar, mat-header-cell.avatar {
 mat-cell.avatar avatar .container {
   position: relative;
   left: 1px;
+}
+mat-cell.avatar avatar {
+  position: relative;
+  top: 1px;
 }
 mat-cell.selection, mat-header-cell.selection {
   max-width: 32px;

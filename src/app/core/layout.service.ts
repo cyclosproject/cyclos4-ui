@@ -24,6 +24,9 @@ export class LayoutService implements OnDestroy {
   /** The active menu */
   menu = new BehaviorSubject<Menu>(null);
 
+  private _canvas: HTMLCanvasElement;
+  private _ctx: CanvasRenderingContext2D;
+
   ngOnDestroy(): void {
     this.mediaSubscription.unsubscribe();
   }
@@ -44,6 +47,28 @@ export class LayoutService implements OnDestroy {
         html.classList.remove('dark');
       }
     }
+  }
+
+  /**
+   * Returns the text width, in pixels
+   * @param text The text to measure
+   */
+  textWidth(text: string): number {
+    return this.context2d.measureText(text).width;
+  }
+
+  private get context2d(): CanvasRenderingContext2D {
+    if (this._canvas == null) {
+      this._canvas = document.createElement('canvas');
+      this._canvas.style.width = '0px';
+      this._canvas.style.height = '0px';
+      this._canvas.style.visibility = 'hidden';
+      document.body.appendChild(this._canvas);
+      this._ctx = this._canvas.getContext('2d');
+      const bodyStyle = window.getComputedStyle(document.body);
+      this._ctx.font = bodyStyle.font;
+    }
+    return this._ctx;
   }
 
   private updateStyles(): void {

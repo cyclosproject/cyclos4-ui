@@ -12,8 +12,8 @@ export abstract class BaseControlComponent<T> implements OnInit, ControlValueAcc
 
   private _value: T;
 
-  private changeCallback = (_: any) => {};
-  protected touchedCallback = () => {};
+  private changeCallback = (_: any) => { };
+  protected touchedCallback = () => { };
 
   constructor(protected controlContainer: ControlContainer) {
   }
@@ -45,7 +45,7 @@ export abstract class BaseControlComponent<T> implements OnInit, ControlValueAcc
   }
 
   writeValue(obj: any): void {
-    this.value = obj;
+    this._value = obj;
   }
 
   registerOnChange(fn: any): void {

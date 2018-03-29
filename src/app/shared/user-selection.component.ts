@@ -29,6 +29,7 @@ export const PAYMENT_USER_VALUE_ACCESSOR: Provider = {
 @Component({
   selector: 'user-selection',
   templateUrl: 'user-selection.component.html',
+  styleUrls: ['user-selection.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [PAYMENT_USER_VALUE_ACCESSOR]
 })
@@ -70,6 +71,7 @@ export class UserSelectionComponent extends BaseControlComponent<string> {
       return this.usersService.searchUsers({
         keywords: keywords,
         pageSize: ApiHelper.quickSearchPageSize,
+        usersToExclude: ['self'],
         ignoreProfileFieldsInList: true
       });
     } else {

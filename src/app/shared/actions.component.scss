@@ -2,21 +2,33 @@
 
 :host {
   flex: 1 1 100%;
-  display: flex;
-  flex-direction: row;
+}
+.actions.top-margin-none {
+  margin-top: 0;
+}
+.actions.top-margin-normal {
   margin-top: 24px;
 }
-.lt-sm :host {
-  flex-direction: column-reverse;
+.actions.top-margin-double {
+  margin-top: 48px;
 }
-.gt-xs :host /deep/ button, .gt-xs :host /deep/ a {
-  flex: 0;
-  margin-right: 22px;
+.gt-xs :host /deep/ {
+  button, a {
+    flex: 0;
+    margin-right: 22px;
+  }
+
+  *:last-child {
+    margin-right: 0;
+  }
 }
-.gt-xs :host /deep/ button:last-of-type, .gt-xs :host /deep/ a:last-of-type {
-  margin-right: 0;
-}
-.lt-sm :host /deep/ button, .lt-sm :host /deep/ a {
-  flex: 1 1 100%;
-  margin-bottom: 12px;
+.lt-sm :host /deep/ {
+  button, a {
+    flex: 1 1 100%;
+    margin-bottom: 12px;
+  }
+
+  *:last-child {
+    margin-bottom: 0;
+  }
 }

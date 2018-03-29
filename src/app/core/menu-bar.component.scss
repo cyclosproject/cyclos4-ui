@@ -9,13 +9,13 @@
 :host /deep/ .mat-icon {
   margin-right: 8px;
 }
-
-:host /deep/ a.mat-tab-label-active {
+:host /deep/ a {
   opacity: 1 !important;
 }
-
 :host /deep/ a:not(.mat-tab-label-active) {
-  opacity: 0.65 !important;
+  .item-text, .mat-icon {
+    opacity: 0.65 !important;
+  }
 }
 :host /deep/ .mat-button-focus-overlay {
   display: none !important;
@@ -23,14 +23,17 @@
 
 :host /deep/ .mat-tab-link {
   height: 60px !important;
-  font-size: 1.2em;
   padding: 10px !important;
   min-width: 150px;
 }
-:host /deep/ .mat-icon {
-  font-weight: 400;
+:host /deep/ {
+  .item-text, .mat-icon {
+    font-weight: 400;
+  }
+  .item-text {
+    font-size: 1.2em;
+  }
 }
-
 :host /deep/ .mat-tab-nav-bar {
   border-bottom-width: 0px !important;
 }
