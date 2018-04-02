@@ -12,7 +12,8 @@
     "Payments",
     "Accounts",
     "UI",
-    "Captcha"
+    "Captcha",
+    "Operations"
   ],
   "minParamsForContainer": 2
 }

@@ -1854,7 +1854,10 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "The image content"
+            "description" : "The image content",
+            "schema" : {
+              "type" : "file"
+            }
           },
           "401" : {
             "description" : "Unauthorized access. Missing or invalid crendentials supplied for such operation",
@@ -2608,7 +2611,8 @@
           "in" : "formData",
           "description" : "The custom operation parameters, encoded as `RunOperation`. \n",
           "required" : false,
-          "type" : "string"
+          "type" : "string",
+          "x-type" : "RunOperation"
         }, {
           "name" : "file",
           "in" : "formData",
@@ -3214,7 +3218,8 @@
           "in" : "formData",
           "description" : "The custom operation parameters, encoded as `RunOperation`. \n",
           "required" : false,
-          "type" : "string"
+          "type" : "string",
+          "x-type" : "RunOperation"
         }, {
           "name" : "file",
           "in" : "formData",
@@ -3425,6 +3430,7 @@
         "summary" : "Adds a new temporary file for the currently authenticated user or guest.\n",
         "description" : "Uploads a new temporary file. The returned id can later be used as value of a custom field of type file.\n",
         "operationId" : "uploadTempFile",
+        "consumes" : [ "multipart/form-data" ],
         "produces" : [ "application/json", "text/plain" ],
         "parameters" : [ {
           "name" : "name",
@@ -3484,7 +3490,7 @@
           }
         },
         "x-accepts" : "application/json",
-        "x-contentType" : "application/x-www-form-urlencoded"
+        "x-contentType" : "multipart/form-data"
       }
     },
     "/files/{id}" : {
@@ -3612,7 +3618,10 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "The file content"
+            "description" : "The file content",
+            "schema" : {
+              "type" : "file"
+            }
           },
           "401" : {
             "description" : "Unauthorized access. Missing or invalid crendentials supplied for such operation",
@@ -4203,7 +4212,10 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "The image content"
+            "description" : "The image content",
+            "schema" : {
+              "type" : "file"
+            }
           },
           "401" : {
             "description" : "Unauthorized access. Missing or invalid crendentials supplied for such operation",
@@ -5359,7 +5371,8 @@
           "in" : "formData",
           "description" : "The custom operation parameters, encoded as `RunOperation`. \n",
           "required" : false,
-          "type" : "string"
+          "type" : "string",
+          "x-type" : "RunOperation"
         }, {
           "name" : "file",
           "in" : "formData",
@@ -6433,7 +6446,8 @@
           "in" : "formData",
           "description" : "The custom operation parameters, encoded as `RunOperation`. \n",
           "required" : false,
-          "type" : "string"
+          "type" : "string",
+          "x-type" : "RunOperation"
         }, {
           "name" : "file",
           "in" : "formData",
@@ -7815,7 +7829,10 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "The image content"
+            "description" : "The image content",
+            "schema" : {
+              "type" : "file"
+            }
           },
           "401" : {
             "description" : "Unauthorized access. Missing or invalid crendentials supplied for such operation",
@@ -9495,7 +9512,8 @@
           "in" : "formData",
           "description" : "The custom operation parameters, encoded as `RunOperation`. \n",
           "required" : false,
-          "type" : "string"
+          "type" : "string",
+          "x-type" : "RunOperation"
         }, {
           "name" : "file",
           "in" : "formData",
@@ -11221,7 +11239,10 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "The image content"
+            "description" : "The image content",
+            "schema" : {
+              "type" : "file"
+            }
           },
           "401" : {
             "description" : "Unauthorized access. Missing or invalid crendentials supplied for such operation",
@@ -11280,6 +11301,78 @@
             "description" : "Transaction details",
             "schema" : {
               "$ref" : "#/definitions/TransactionView"
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized access. Missing or invalid crendentials supplied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/UnauthorizedError"
+            }
+          },
+          "403" : {
+            "description" : "Permission denied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/ForbiddenError"
+            }
+          },
+          "404" : {
+            "description" : "An expected data was not found",
+            "schema" : {
+              "$ref" : "#/definitions/NotFoundError"
+            }
+          },
+          "500" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "security" : [ {
+          "basic" : [ ]
+        }, {
+          "session" : [ ]
+        }, {
+          "accessClient" : [ ]
+        } ],
+        "x-accepts" : "application/json",
+        "x-contentType" : "application/json"
+      }
+    },
+    "/transfer/{key}/operations/{operation}/data-for-run" : {
+      "get" : {
+        "tags" : [ "Operations" ],
+        "summary" : "Returns configuration data for running a custom operation over a\ntransfer\n",
+        "description" : "Returns data to run a specific custom operation over a transfer.\nThe operation scope must be `transfer`. \n",
+        "operationId" : "getTransferOperationDataForRun",
+        "parameters" : [ {
+          "name" : "fields",
+          "in" : "query",
+          "description" : "Select which fields to include on returned data. If nothing is set, all object fields are returned. Unprefixed field names will be handled like a whitelist (only listed fields will be included), while names starting with a minus (-) or exclamation mark (!) will be handled as blacklist (listed fields will not be included). This works for nesting as well. For example: `a,b.b1,c.-c1,c.-c2` will return the fields `a`, `b` (containing only the `b1` field) and `c` (containing all its fields except for `c1` or `c2`). \n",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          },
+          "collectionFormat" : "multi"
+        }, {
+          "name" : "key",
+          "in" : "path",
+          "description" : "Either the id or transaction number",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "operation",
+          "in" : "path",
+          "description" : "Either the id or internal name of the custom operation",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The data used to run the operation\n",
+            "schema" : {
+              "$ref" : "#/definitions/OperationDataForRun"
             }
           },
           "401" : {
@@ -11769,6 +11862,281 @@
         } ],
         "x-accepts" : "application/json",
         "x-contentType" : "application/json"
+      }
+    },
+    "/transfers/{key}/operations" : {
+      "get" : {
+        "tags" : [ "Operations" ],
+        "summary" : "Lists the custom operations over the given transfer",
+        "description" : "Returns the custom operations the authenticated user can run over the\ngiven transfer. All returned operations have the scope\n`transfer`.\n",
+        "operationId" : "listOperationsByTransfer",
+        "parameters" : [ {
+          "name" : "fields",
+          "in" : "query",
+          "description" : "Select which fields to include on returned data. If nothing is set, all object fields are returned. Unprefixed field names will be handled like a whitelist (only listed fields will be included), while names starting with a minus (-) or exclamation mark (!) will be handled as blacklist (listed fields will not be included). This works for nesting as well. For example: `a,b.b1,c.-c1,c.-c2` will return the fields `a`, `b` (containing only the `b1` field) and `c` (containing all its fields except for `c1` or `c2`). \n",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          },
+          "collectionFormat" : "multi"
+        }, {
+          "name" : "key",
+          "in" : "path",
+          "description" : "Either the id or transaction number",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The list of custom operations\n",
+            "schema" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/definitions/Operation"
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized access. Missing or invalid crendentials supplied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/UnauthorizedError"
+            }
+          },
+          "403" : {
+            "description" : "Permission denied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/ForbiddenError"
+            }
+          },
+          "404" : {
+            "description" : "An expected data was not found",
+            "schema" : {
+              "$ref" : "#/definitions/NotFoundError"
+            }
+          },
+          "500" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "security" : [ {
+          "basic" : [ ]
+        }, {
+          "session" : [ ]
+        }, {
+          "accessClient" : [ ]
+        } ],
+        "x-accepts" : "application/json",
+        "x-contentType" : "application/json"
+      }
+    },
+    "/transfers/{key}/operations/{operation}/run" : {
+      "post" : {
+        "tags" : [ "Operations" ],
+        "summary" : "Runs a custom operation over a transfer",
+        "description" : "Runs a specific custom operation over a given transfer. The operation scope must be `transfer`. If the operation resulted in a file download (either because the `resultType` is `fileDownload` or is a `resultPage` running for either PDF or CSV) the resulting contente type will be of the file itself. Otherwise will result in an `application/json` with the result object. \n",
+        "operationId" : "runTransferOperation",
+        "produces" : [ "application/json", "text/plain", "text/html", "text/css", "text/yaml", "text/javascript", "text/csv", "image/jpeg", "image/gif", "image/png", "application/pdf", "application/zip", "image/svg+xml", "application/octet-stream" ],
+        "parameters" : [ {
+          "name" : "fields",
+          "in" : "query",
+          "description" : "Select which fields to include on returned data. If nothing is set, all object fields are returned. Unprefixed field names will be handled like a whitelist (only listed fields will be included), while names starting with a minus (-) or exclamation mark (!) will be handled as blacklist (listed fields will not be included). This works for nesting as well. For example: `a,b.b1,c.-c1,c.-c2` will return the fields `a`, `b` (containing only the `b1` field) and `c` (containing all its fields except for `c1` or `c2`). \n",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          },
+          "collectionFormat" : "multi"
+        }, {
+          "name" : "key",
+          "in" : "path",
+          "description" : "Either the id or transaction number",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "operation",
+          "in" : "path",
+          "description" : "Either the id or internal name of the custom operation",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "in" : "body",
+          "name" : "params",
+          "description" : "The custom operation parameters",
+          "required" : false,
+          "schema" : {
+            "$ref" : "#/definitions/RunOperation"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The custom operation result, either as `RunOperationResult` or as\nthe file itself\n",
+            "schema" : {
+              "$ref" : "#/definitions/RunOperationResult"
+            },
+            "headers" : {
+              "X-Total-Count" : {
+                "type" : "integer",
+                "description" : "The total number of results. It may be configured in Cyclos to skip the\ntotal count, which is useful on large databases, where the count itself\nmay use a lot of resources from the database. If disabled, this header\nis not returned.\n"
+              },
+              "X-Page-Size" : {
+                "type" : "integer",
+                "description" : "The maximum number of results per page"
+              },
+              "X-Current-Page" : {
+                "type" : "integer",
+                "description" : "The current page the results are in"
+              },
+              "X-Has-Next-Page" : {
+                "type" : "boolean",
+                "description" : "Returns whether there is a next page. This is normally\nalways returned, whether total count is enabled or not.\nIf the total count is not returned, is the only way for\nclients to know whether more results are available or\nnot. \n"
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized access. Missing or invalid crendentials supplied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/UnauthorizedError"
+            }
+          },
+          "403" : {
+            "description" : "Permission denied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/ForbiddenError"
+            }
+          },
+          "404" : {
+            "description" : "An expected data was not found",
+            "schema" : {
+              "$ref" : "#/definitions/NotFoundError"
+            }
+          },
+          "500" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "security" : [ {
+          "basic" : [ ]
+        }, {
+          "session" : [ ]
+        }, {
+          "accessClient" : [ ]
+        } ],
+        "x-accepts" : "application/json",
+        "x-contentType" : "application/json",
+        "x-produces-any" : true
+      }
+    },
+    "/transfers/{key}/operations/{operation}/run-upload" : {
+      "post" : {
+        "tags" : [ "Operations" ],
+        "summary" : "Runs a custom operation over a transfer while uploading a file\n",
+        "description" : "Runs a specific custom operation over a given transfer. The operation scope must be `transfer`. This path allows uploading a file, by using a `multipart-form-data` post. If the operation resulted in a file download (either because the `resultType` is `fileDownload` or is a `resultPage` running for either PDF or CSV) the resulting contente type will be of the file itself. Otherwise will result in an `application/json` with the result object. \n",
+        "operationId" : "runTransferOperationWithUpload",
+        "consumes" : [ "multipart/form-data" ],
+        "produces" : [ "application/json", "text/plain", "text/html", "text/css", "text/yaml", "text/javascript", "text/csv", "image/jpeg", "image/gif", "image/png", "application/pdf", "application/zip", "image/svg+xml", "application/octet-stream" ],
+        "parameters" : [ {
+          "name" : "fields",
+          "in" : "query",
+          "description" : "Select which fields to include on returned data. If nothing is set, all object fields are returned. Unprefixed field names will be handled like a whitelist (only listed fields will be included), while names starting with a minus (-) or exclamation mark (!) will be handled as blacklist (listed fields will not be included). This works for nesting as well. For example: `a,b.b1,c.-c1,c.-c2` will return the fields `a`, `b` (containing only the `b1` field) and `c` (containing all its fields except for `c1` or `c2`). \n",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          },
+          "collectionFormat" : "multi"
+        }, {
+          "name" : "key",
+          "in" : "path",
+          "description" : "Either the id or transaction number",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "operation",
+          "in" : "path",
+          "description" : "Either the id or internal name of the custom operation",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "params",
+          "in" : "formData",
+          "description" : "The custom operation parameters, encoded as `RunOperation`. \n",
+          "required" : false,
+          "type" : "string",
+          "x-type" : "RunOperation"
+        }, {
+          "name" : "file",
+          "in" : "formData",
+          "description" : "The file being uploaded",
+          "required" : true,
+          "type" : "file"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The custom operation result, either as `RunOperationResult` or as\nthe file itself\n",
+            "schema" : {
+              "$ref" : "#/definitions/RunOperationResult"
+            },
+            "headers" : {
+              "X-Total-Count" : {
+                "type" : "integer",
+                "description" : "The total number of results. It may be configured in Cyclos to skip the\ntotal count, which is useful on large databases, where the count itself\nmay use a lot of resources from the database. If disabled, this header\nis not returned.\n"
+              },
+              "X-Page-Size" : {
+                "type" : "integer",
+                "description" : "The maximum number of results per page"
+              },
+              "X-Current-Page" : {
+                "type" : "integer",
+                "description" : "The current page the results are in"
+              },
+              "X-Has-Next-Page" : {
+                "type" : "boolean",
+                "description" : "Returns whether there is a next page. This is normally\nalways returned, whether total count is enabled or not.\nIf the total count is not returned, is the only way for\nclients to know whether more results are available or\nnot. \n"
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized access. Missing or invalid crendentials supplied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/UnauthorizedError"
+            }
+          },
+          "403" : {
+            "description" : "Permission denied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/ForbiddenError"
+            }
+          },
+          "404" : {
+            "description" : "An expected data was not found",
+            "schema" : {
+              "$ref" : "#/definitions/NotFoundError"
+            }
+          },
+          "500" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "security" : [ {
+          "basic" : [ ]
+        }, {
+          "session" : [ ]
+        }, {
+          "accessClient" : [ ]
+        } ],
+        "x-accepts" : "application/json",
+        "x-contentType" : "multipart/form-data",
+        "x-produces-any" : true
       }
     },
     "/ui/data-for-ui" : {
@@ -14251,7 +14619,8 @@
           "in" : "formData",
           "description" : "The custom operation parameters, encoded as `RunOperation`. \n",
           "required" : false,
-          "type" : "string"
+          "type" : "string",
+          "x-type" : "RunOperation"
         }, {
           "name" : "file",
           "in" : "formData",
@@ -16931,6 +17300,7 @@
         "summary" : "Adds a new image for the given user. The image kind is either  `profile` or `custom`.\n",
         "description" : "Uploads a new image, either `profile` (by default)\nor `custom`, for the given user.\nCustom images are used in rich text content, not images for custom fields.\nFor uploading images for custom field values, see the documentation for\nthe operation at `POST /images/temp`.\n",
         "operationId" : "uploadUserImage",
+        "consumes" : [ "multipart/form-data" ],
         "produces" : [ "application/json", "text/plain" ],
         "parameters" : [ {
           "name" : "user",
@@ -17006,7 +17376,7 @@
           "accessClient" : [ ]
         } ],
         "x-accepts" : "application/json",
-        "x-contentType" : "application/x-www-form-urlencoded"
+        "x-contentType" : "multipart/form-data"
       }
     },
     "/{user}/images/list-data" : {
@@ -19787,8 +20157,8 @@
     },
     "OperationScopeEnum" : {
       "type" : "string",
-      "description" : "The scope determines where does a custom operation can be executed Possible values are:\n* advertisement: A custom operation which is executed over an advertisement\n* bulkAction: A custom operation executed over a set of users (one at a time)\n* contact: A custom operation which is executed over a contact in a user's contact list\n* contactInfo: A custom operation which is executed over an additional contact information, which is part of the user profile\n* internal: A custom operation which is executed by another custom operation\n* menu: A custom operation which is visible in a custom menu item\n* record: A custom operation which is executed over a record\n* system: A general, system custom operation\n* user: A custom operation over a single user\n",
-      "enum" : [ "advertisement", "bulkAction", "contact", "contactInfo", "internal", "menu", "record", "system", "user" ]
+      "description" : "The scope determines where does a custom operation can be executed Possible values are:\n* advertisement: A custom operation which is executed over an advertisement\n* bulkAction: A custom operation executed over a set of users (one at a time)\n* contact: A custom operation which is executed over a contact in a user's contact list\n* contactInfo: A custom operation which is executed over an additional contact information, which is part of the user profile\n* internal: A custom operation which is executed by another custom operation\n* menu: A custom operation which is visible in a custom menu item\n* record: A custom operation which is executed over a record\n* system: A general, system custom operation\n* transfer: A custom operation which is executed over a transfer\n* user: A custom operation over a single user\n",
+      "enum" : [ "advertisement", "bulkAction", "contact", "contactInfo", "internal", "menu", "record", "system", "transfer", "user" ]
     },
     "OrderStatusEnum" : {
       "type" : "string",
@@ -21393,14 +21763,14 @@
         },
         "categories" : {
           "type" : "array",
-          "description" : "The advertisement categoriesn each with its children, forming a tree\n",
+          "description" : "The advertisement categories each with its children, forming a tree\n",
           "items" : {
             "$ref" : "#/definitions/AdCategoryWithChildren"
           }
         },
         "customFields" : {
           "type" : "array",
-          "description" : "The list of custom profile fields that are either to be used as search filter (if its internal name is present on either  `fieldsInBasicSearch` or `fieldsInAdvancedSearch`) and / or in the result list (if its internal name is present on `fieldsInList`). \n",
+          "description" : "The list of custom fields that are either to be used as search filter (if its internal name is present on either  `fieldsInBasicSearch` or `fieldsInAdvancedSearch`) and / or in the result list (if its internal name is present on `fieldsInList`). \n",
           "items" : {
             "$ref" : "#/definitions/CustomFieldDetailed"
           }
@@ -24633,7 +25003,7 @@
         "type" : "object",
         "properties" : {
           "scope" : {
-            "description" : "The scope determines where does a custom operation can be executed Possible values are:\n* advertisement: A custom operation which is executed over an advertisement\n* bulkAction: A custom operation executed over a set of users (one at a time)\n* contact: A custom operation which is executed over a contact in a user's contact list\n* contactInfo: A custom operation which is executed over an additional contact information, which is part of the user profile\n* internal: A custom operation which is executed by another custom operation\n* menu: A custom operation which is visible in a custom menu item\n* record: A custom operation which is executed over a record\n* system: A general, system custom operation\n* user: A custom operation over a single user\n",
+            "description" : "The scope determines where does a custom operation can be executed Possible values are:\n* advertisement: A custom operation which is executed over an advertisement\n* bulkAction: A custom operation executed over a set of users (one at a time)\n* contact: A custom operation which is executed over a contact in a user's contact list\n* contactInfo: A custom operation which is executed over an additional contact information, which is part of the user profile\n* internal: A custom operation which is executed by another custom operation\n* menu: A custom operation which is visible in a custom menu item\n* record: A custom operation which is executed over a record\n* system: A general, system custom operation\n* transfer: A custom operation which is executed over a transfer\n* user: A custom operation over a single user\n",
             "$ref" : "#/definitions/OperationScopeEnum"
           },
           "resultType" : {
@@ -24647,6 +25017,10 @@
           "label" : {
             "type" : "string",
             "description" : "A representative label about the operation"
+          },
+          "canRunDirectly" : {
+            "type" : "boolean",
+            "description" : "Indicates whether this operation can be executed directly, without\nshowing a form page\n"
           }
         }
       } ],
@@ -28202,6 +28576,13 @@
           "canChargeback" : {
             "type" : "boolean",
             "description" : "Can the authenticated user chargeback this transfer?\n"
+          },
+          "operations" : {
+            "type" : "array",
+            "description" : "The list of custom operations the logged user can run over this\ntransfer\n",
+            "items" : {
+              "$ref" : "#/definitions/Operation"
+            }
           },
           "confirmationPasswordInput" : {
             "description" : "If a confirmation password is used, contains the definitions on how\nto request that password from the user. This confirmation password\nis required when performing sensible actions. Sometimes this is dynamic,\nfor example, the confirmation might be configured to be used only once\nper session, or operations like payments may have a limit per day to be\nwithout confirmation (pinless).\n",

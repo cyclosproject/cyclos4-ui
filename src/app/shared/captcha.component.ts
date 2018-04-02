@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, Input, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
 import { CaptchaService } from 'app/api/services';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { FormGroup } from '@angular/forms';
@@ -9,7 +9,7 @@ import { FormGroup } from '@angular/forms';
   templateUrl: './captcha.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CaptchaComponent implements OnInit {
+export class CaptchaComponent implements AfterViewInit, OnDestroy {
   constructor(private captchaService: CaptchaService) { }
 
   @Input() group: string;
@@ -20,21 +20,38 @@ export class CaptchaComponent implements OnInit {
    */
   @Input() form: FormGroup;
 
-  imageUrl = new BehaviorSubject<string>(null);
+  @ViewChild('image') image: ElementRef;
 
-  ngOnInit() {
+  currentUrl: string;
+
+  ngAfterViewInit() {
     this.newCaptcha();
+  }
+
+  ngOnDestroy() {
+    this.revokeCurrent();
+  }
+
+  private revokeCurrent() {
+    if (this.currentUrl) {
+      URL.revokeObjectURL(this.currentUrl);
+      this.currentUrl = null;
+    }
   }
 
   newCaptcha() {
     this.captchaService.newCaptchaResponse(this.group)
       .subscribe(response => {
-        const url = response.headers.get('Location');
+        const id = response.body;
         this.form.patchValue({
-          challenge: response.body,
+          challenge: id,
           response: ''
         });
-        this.imageUrl.next(url);
+        this.captchaService.getCaptchaContent({ id: id, group: this.group }).subscribe(blob => {
+          this.revokeCurrent();
+          this.currentUrl = URL.createObjectURL(blob);
+          this.image.nativeElement.src = this.currentUrl;
+        });
       });
   }
 }
