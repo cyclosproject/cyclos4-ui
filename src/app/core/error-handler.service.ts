@@ -4,7 +4,7 @@ import { FormatService } from 'app/core/format.service';
 import {
   ErrorKind, NotFoundError, InputError, InputErrorCode,
   UnauthorizedError, UnauthorizedErrorCode, PasswordStatusEnum, ForbiddenError,
-  ForbiddenErrorCode, PaymentError, PaymentErrorCode, ForgottenPasswordError, ForgottenPasswordErrorCode
+  ForbiddenErrorCode, PaymentError, PaymentErrorCode, ForgottenPasswordError, ForgottenPasswordErrorCode, ConflictError, ConflictErrorCode
 } from 'app/api/models';
 import { NgForm } from '@angular/forms';
 import { Messages } from 'app/messages/messages';
@@ -115,6 +115,9 @@ export class ErrorHandlerService {
         case ErrorStatus.UNPROCESSABLE_ENTITY:
           message = this.inputErrorMessage(error as InputError);
           break;
+        case ErrorStatus.CONFLICT:
+          message = this.conflictErrorMessage(error as ConflictError);
+          break;
         case ErrorStatus.INTERNAL_SERVER_ERROR:
           // The internal server error may be a specific kind or a general error
           if (error.hasOwnProperty('kind')) {
@@ -168,6 +171,23 @@ export class ErrorHandlerService {
       }
     }
     return message;
+  }
+
+
+  /**
+   * Returns the error message for a conflict error
+   * @param error The error
+   */
+  public conflictErrorMessage(error: ConflictError): string {
+    error = error || {} as ConflictError;
+    switch (error.code) {
+      case ConflictErrorCode.STALE_ENTITY:
+        return this.messages.errorStaleEntity();
+      case ConflictErrorCode.CONSTRAINT_VIOLATED_ON_REMOVE:
+        return this.messages.errorConstraintViolatedOnRemove();
+      default:
+        return this.messages.errorGeneral();
+    }
   }
 
   /**

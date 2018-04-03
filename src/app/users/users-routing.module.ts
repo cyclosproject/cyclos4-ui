@@ -3,7 +3,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { Menu } from 'app/shared/menu';
 import { PublicRegistrationComponent } from 'app/users/registration/public-registration.component';
 import { SearchUsersComponent } from 'app/users/search/search-users.component';
-import { UserProfileComponent } from 'app/users/profile/user-profile.component';
+import { ViewUserProfileComponent } from 'app/users/profile/view-user-profile.component';
+import { EditMyProfileComponent } from 'app/users/profile/edit-my-profile.component';
 import { CountriesResolve } from 'app/countries.resolve';
 import { LoggedUserGuard } from 'app/logged-user-guard';
 import { ValidateRegistrationComponent } from 'app/users/registration/validate-registration.component';
@@ -21,7 +22,7 @@ const usersRoutes: Routes = [
       },
       {
         path: 'my-profile',
-        component: UserProfileComponent,
+        component: ViewUserProfileComponent,
         canActivate: [LoggedUserGuard],
         resolve: {
           countries: CountriesResolve
@@ -31,8 +32,16 @@ const usersRoutes: Routes = [
         }
       },
       {
+        path: 'edit-my-profile',
+        component: EditMyProfileComponent,
+        canActivate: [LoggedUserGuard],
+        data: {
+          menu: Menu.MY_PROFILE
+        }
+      },
+      {
         path: 'profile/:key',
-        component: UserProfileComponent,
+        component: ViewUserProfileComponent,
         resolve: {
           countries: CountriesResolve
         },

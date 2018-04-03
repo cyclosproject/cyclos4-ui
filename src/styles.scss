@@ -71,19 +71,23 @@ h1.no-bottom-margin, h2.no-bottom-margin, h3.no-bottom-margin {
 }
 
 .field-tiny {
-  max-width: 10%;
+  width: 10%;
+  min-width: 100px;
 }
 .field-small, date-field, decimal-field {
-  max-width: 25%;
+  width: 25%;
+  min-width: 200px;
 }
 .field-medium {
-  max-width: 50%;
+  width: 50%;
+  min-width: 300px;
 }
 .field-large {
-  max-width: 75%;
+  width: 75%;
+  min-width: 450px;
 }
 .field-full {
-  max-width: 100%;
+  width: 100%;
 }
 .mat-input-prefix mat-icon {
   margin-right: 10px;
@@ -143,7 +147,8 @@ input[type=number] {
 .has-label-value {
   display: block;
 }
-.has-label-value + .has-label-value {
+.has-label-value + .has-label-value,
+.has-label-value + custom-field-input {
   margin-top: 16px;
 }
 

@@ -1,7 +1,8 @@
-<div [ngClass]="{
-  'page-layout': true,
-  'extra-margin': extraMargin
-}">
+<div fxLayout="row"
+  [ngClass]="{
+    'page-layout': true,
+    'extra-margin': extraMargin
+  }">
   <div *ngIf="(showLeft | async) && hasMenu"
     [ngClass]="{
       left: true,
@@ -21,15 +22,15 @@
       </mat-tab-group>
     </mat-card>
   </div>
-  <div class="page"
-    [ngClass]="{
-      standalone: !((showLeft | async) && hasMenu),
-      full: contentSize === 'full',
-      medium: contentSize === 'medium',
-      small: contentSize === 'small'
+  <div [ngClass]="{
+      'page-wrapper': true,
+      'page-wrapper-standalone': !((showLeft | async) && hasMenu),
+      'page-wrapper-full': contentSize === 'full',
+      'page-wrapper-medium': contentSize === 'medium',
+      'page-wrapper-small': contentSize === 'small'
     }"
     fxLayout="column"
-    fxFlex="grow">
+    fxFlex="nogrow">
     <ng-container *ngIf="(showLeft | async)">
       <!-- There is a left area: separated containers for header and content -->
       <div *ngIf="hasHeader && (loaded == null || (loaded | async))"

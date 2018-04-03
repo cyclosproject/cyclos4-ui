@@ -12,11 +12,11 @@ import { HttpErrorResponse } from '@angular/common/http';
  * Displays an user profile
  */
 @Component({
-  selector: 'user-profile',
-  templateUrl: 'user-profile.component.html',
+  selector: 'view-user-profile',
+  templateUrl: 'view-user-profile.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UserProfileComponent extends BaseComponent {
+export class ViewUserProfileComponent extends BaseComponent {
 
   constructor(
     injector: Injector,

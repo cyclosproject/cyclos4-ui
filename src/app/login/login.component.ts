@@ -43,7 +43,7 @@ export class LoginComponent extends BaseComponent {
       this.router.navigateByUrl(this.login.redirectUrl || '');
     } else {
       this.dataForLogin = dataForUi.dataForLogin;
-      this.loaded.next(true);
+      setInterval(() => this.loaded.next(true), 50);
     }
   }
 

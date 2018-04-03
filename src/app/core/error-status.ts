@@ -23,6 +23,11 @@ export enum ErrorStatus {
   NOT_FOUND = 404,
 
   /**
+   * Status Code: 409.
+   */
+  CONFLICT = 409,
+
+  /**
    * Status Code: 422.
    */
   UNPROCESSABLE_ENTITY = 422,

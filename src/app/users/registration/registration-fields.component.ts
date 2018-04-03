@@ -34,30 +34,6 @@ export class RegistrationFieldsComponent extends BaseComponent {
   @Input()
   data: UserDataForNew;
 
-  get hasName(): boolean {
-    return this.canEdit('name');
-  }
-
-  get hasUsername(): boolean {
-    return this.canEdit('name') && !this.data.generatedUsername;
-  }
-
-  get hasEmail(): boolean {
-    return this.canEdit('email');
-  }
-
-  get hasLandLinePhone(): boolean {
-    return this.data.phoneConfiguration.landLineAvailability !== AvailabilityEnum.DISABLED;
-  }
-
-  get hasExtension(): boolean {
-    return this.data.phoneConfiguration.extensionEnabled;
-  }
-
-  get hasMobilePhone(): boolean {
-    return this.data.phoneConfiguration.mobileAvailability !== AvailabilityEnum.DISABLED;
-  }
-
   get hasAddress(): boolean {
     return this.data.addressConfiguration.availability !== AvailabilityEnum.DISABLED;
   }
@@ -89,15 +65,5 @@ export class RegistrationFieldsComponent extends BaseComponent {
 
   get optionalAddress(): boolean {
     return this.data.addressConfiguration.availability === AvailabilityEnum.OPTIONAL;
-  }
-
-  managePrivacy(field: string): boolean {
-    const actions = this.data.profileFieldActions[field];
-    return actions != null && actions.managePrivacy;
-  }
-
-  private canEdit(field: string): boolean {
-    const actions = this.data.profileFieldActions[field];
-    return actions && actions.edit;
   }
 }

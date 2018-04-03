@@ -1,6 +1,6 @@
 import {
   Component, Input, Output, ViewChild, EventEmitter, forwardRef,
-  ElementRef, ChangeDetectionStrategy, SkipSelf, Host, Optional, ChangeDetectorRef
+  ElementRef, ChangeDetectionStrategy, SkipSelf, Host, Optional
 } from '@angular/core';
 import {
   NG_VALUE_ACCESSOR, FormControl, ControlContainer,

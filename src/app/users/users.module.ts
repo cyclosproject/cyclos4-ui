@@ -7,9 +7,11 @@ import { UsersRoutingModule } from 'app/users/users-routing.module';
 import { RegistrationConfirmComponent } from 'app/users/registration/registration-confirm.component';
 import { RegistrationDoneComponent } from 'app/users/registration/registration-done.component';
 import { SearchUsersComponent } from 'app/users/search/search-users.component';
-import { UserProfileComponent } from 'app/users/profile/user-profile.component';
 import { ViewAddressDetailsComponent } from 'app/users/profile/view-address-details.component';
 import { ValidateRegistrationComponent } from './registration/validate-registration.component';
+import { ViewUserProfileComponent } from 'app/users/profile/view-user-profile.component';
+import { EditMyProfileComponent } from 'app/users/profile/edit-my-profile.component';
+import { UserFieldsFormComponent } from 'app/users/profile/user-fields-form.component';
 
 /**
  * Users module
@@ -30,8 +32,10 @@ import { ValidateRegistrationComponent } from './registration/validate-registrat
     ValidateRegistrationComponent,
 
     SearchUsersComponent,
-    UserProfileComponent,
-    ViewAddressDetailsComponent
+    ViewUserProfileComponent,
+    ViewAddressDetailsComponent,
+    EditMyProfileComponent,
+    UserFieldsFormComponent
   ]
 })
 export class UsersModule {

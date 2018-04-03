@@ -51,21 +51,24 @@
   margin: auto;
 }
 
-.page.standalone {
+.page-wrapper-standalone {
   margin: auto;
 }
 
-.page {
+.page-wrapper:not(.page-wrapper-full) {
   max-width: $max-content-width;
 }
-.page.standalone.full, .page.standalone.full .mat-card {
+.page-wrapper-full {
+  width: 100%;
+}
+.page-wrapper-full .mat-card {
   max-width: inherit;
 }
-.page.standalone.medium {
-  max-width: $medium-content-width;
+.page-wrapper-medium {
+  width: $medium-content-width;
 }
-.page.standalone.small {
-  max-width: $small-content-width;
+.page-wrapper-small {
+  width: $small-content-width;
 }
 
 .header {

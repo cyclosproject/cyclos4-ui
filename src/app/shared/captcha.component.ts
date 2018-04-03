@@ -1,6 +1,5 @@
-import { Component, OnInit, ChangeDetectionStrategy, Input, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
 import { CaptchaService } from 'app/api/services';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { FormGroup } from '@angular/forms';
 
 @Component({
