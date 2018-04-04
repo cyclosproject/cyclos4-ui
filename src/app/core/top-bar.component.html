@@ -5,7 +5,17 @@
     (click)="sidenav ? sidenav.toggle() : null">
     <mat-icon ngClass="mat-24">menu</mat-icon>
   </button>
-  <img class="logo"
+  <button class="back"
+    fxHide.gt-sm
+    [ngStyle]="{
+      visibility: ((breadcrumb.breadcrumb | async)?.length > 1) ? 'visible' : 'hidden'
+    }"
+    mat-icon-button
+    (click)="breadcrumb.back()">
+    <mat-icon ngClass="mat-24">arrow_back</mat-icon>
+  </button>
+  <img fxHide.xs
+    class="logo"
     src="images/logo.png">
   <div class="title"
     fxFlex="grow">
@@ -13,6 +23,9 @@
       {{ format.appTitle }}
     </span>
   </div>
+  <div class="spacer"
+    fxHide.gt-xs
+    fxFlex="grow"></div>
   <a #personalMenuToggle
     *ngIf="user != null"
     href="#"

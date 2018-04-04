@@ -3,7 +3,6 @@
   [titleActions]="titleActions | async">
   <page-content *ngIf="(loaded | async) && user">
     <image-viewer *ngIf="user.image"
-      [profile]="true"
       [image]="user.image"
       [additionalImages]="user.additionalImages"></image-viewer>
     <label-value *ngIf="user.name != null && user.name !== title"
@@ -50,10 +49,10 @@
       <h2>{{ messages.userContactInfos() }}</h2>
       <div class="contact-info"
         *ngFor="let contactInfo of user.contactInfos">
+        <h3 fxHide.gt-xs>{{ contactInfo.name }}</h3>
         <image-viewer *ngIf="contactInfo.image"
-          [profile]="true"
           [image]="contactInfo.image"></image-viewer>
-        <h3>{{ contactInfo.name }}</h3>
+        <h3 fxHide.xs>{{ contactInfo.name }}</h3>
         <label-value *ngIf="contactInfo.email"
           [label]="messages.userEmail()">
           <a [href]="'mailto:' + contactInfo.email">{{ contactInfo.email }}</a>

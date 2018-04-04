@@ -1,4 +1,5 @@
 <nav class="breadcrumb"
+  fxHide.xs
   *ngIf="(entries | async).length > 1"
   fxLayout="row wrap">
   <ng-container *ngFor="let entry of (entries | async);">

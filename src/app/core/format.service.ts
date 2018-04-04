@@ -10,6 +10,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import Big from 'big.js';
 import { DataForUiHolder } from './data-for-ui-holder';
+import { ObservableMedia } from '@angular/flex-layout';
 
 /**
  * Names for week days or months, in several forms:
@@ -32,7 +33,8 @@ export class FormatService {
   constructor(
     dataForUiHolder: DataForUiHolder,
     private apiConfiguration: ApiConfiguration,
-    private messages: Messages) {
+    private messages: Messages,
+    private media: ObservableMedia) {
     dataForUiHolder.subscribe(dataForUi => this.initialize(dataForUi));
     // If already loaded, initialize right away
     if (dataForUiHolder.dataForUi) {
@@ -125,7 +127,7 @@ export class FormatService {
    * Returns the application title
    */
   public get appTitle(): string {
-    return environment.appTitle;
+    return this.media.isActive('xs') ? environment.appTitleSmall : environment.appTitle;
   }
 
   /**

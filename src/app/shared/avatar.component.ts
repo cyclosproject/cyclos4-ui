@@ -35,131 +35,38 @@ export const ICON_SIZES: { [key: string]: number } = {
 export class AvatarComponent extends BaseComponent {
 
   static MAX_PROFILE_SIZE = 200;
-  static MAX_PROFILE_SIZE_SMALL = 100;
+  static MAX_PROFILE_SIZE_SMALL = 140;
 
-  private _image: Image;
-  private _ratio: number;
+  /**
+   * The icon show when no image is available
+   */
+  @Input() icon = 'account_circle';
+
+  /**
+   * The size of images and icons
+   */
+  @Input() size: AvatarSize = 'medium';
+
+  /**
+   * The image to show
+   */
+  @Input() image: Image;
+
+  url: string;
+  maxSize: number;
+  ratio: number;
+  imageWidth: number;
+  imageHeight: number;
+  imageLeft: number;
+  imageTop: number;
+
+  iconClass: string;
+  svgIcon: string;
 
   constructor(
     injector: Injector,
     private svgIconRegistry: SvgIconRegistry) {
     super(injector);
-  }
-
-  /**
-   * The image to show
-   */
-  @Input()
-  set image(image: Image) {
-    this._image = image;
-    if (image) {
-      this._ratio = image.width / image.height;
-    }
-  }
-  get image(): Image {
-    return this._image;
-  }
-
-  get url(): string {
-    if (this._image == null) {
-      return null;
-    }
-    // The smallest dimension is used to determine the requested size...
-    const param = this._ratio < 1 ? 'width' : 'height';
-    // ... which should be doubled prevent pixelation on high density devices.
-    let size: number;
-    if (this.size === 'profile') {
-      size = this.maxSize * 2;
-    } else {
-      size = SIZES[this.size] * 2;
-    }
-    return `${this._image.url}?${param}=${size}`;
-  }
-
-  /**
-   * The icon show when no image is available
-   */
-  @Input()
-  icon = 'account_circle';
-
-  /**
-   * If the icon name represents an SVG icon, it will be replaced by this one
-   */
-  svgIcon: string;
-
-  /**
-   * The size of images and icons
-   */
-  @Input()
-  size: AvatarSize = 'medium';
-
-  get maxSize(): number {
-    if (this.size === 'profile') {
-      return this.layout.ltmd ? AvatarComponent.MAX_PROFILE_SIZE_SMALL : AvatarComponent.MAX_PROFILE_SIZE;
-    } else {
-      return SIZES[this.size];
-    }
-  }
-
-  private get _imageWidth(): number {
-    if (this.size === 'profile') {
-      if (this._ratio > 1) {
-        // Height determines the width by ratio
-        return this._imageHeight * this._ratio;
-      }
-      const width = this.image.width *= this._ratio;
-      const maxSize = this.maxSize;
-      return width > maxSize ? maxSize : width;
-    }
-    if (this._ratio < 1) {
-      return SIZES[this.size];
-    }
-    return (SIZES[this.size] * this._ratio);
-  }
-
-  get imageWidth(): string {
-    return this._imageWidth + 'px';
-  }
-
-  private get _imageHeight(): number {
-    if (this.size === 'profile') {
-      if (this._ratio < 1) {
-        // Width determines the height by ratio
-        return this._imageWidth / this._ratio;
-      }
-      const height = this.image.height *= this._ratio;
-      const maxSize = this.maxSize;
-      return height > maxSize ? maxSize : height;
-    }
-
-    if (this._ratio > 1) {
-      return SIZES[this.size];
-    }
-    return (SIZES[this.size] / this._ratio);
-  }
-
-  get imageHeight(): string {
-    return this._imageHeight + 'px';
-  }
-
-  get imageLeft(): string {
-    const offset = this._imageWidth - this.maxSize;
-    if (offset > 0) {
-      return -(offset / 2) + 'px';
-    }
-    return '0';
-  }
-
-  get imageTop(): string {
-    const offset = this._imageHeight - this.maxSize;
-    if (offset > 0) {
-      return -(offset / 2) + 'px';
-    }
-    return '0';
-  }
-
-  get iconClass(): string {
-    return 'mat-' + ICON_SIZES[this.size];
   }
 
   ngOnInit() {
@@ -170,6 +77,67 @@ export class AvatarComponent extends BaseComponent {
       // This is a SVG icon
       this.svgIcon = this.icon;
       this.icon = null;
+    }
+
+    // Initialize the maximum size
+    let maxSize: number;
+    if (this.size === 'profile') {
+      maxSize = this.layout.ltmd ? AvatarComponent.MAX_PROFILE_SIZE_SMALL : AvatarComponent.MAX_PROFILE_SIZE;
+    } else {
+      maxSize = SIZES[this.size];
+    }
+    this.maxSize = maxSize;
+
+    const image = this.image;
+    if (image) {
+      // Calculate the image attributes
+      this.ratio = image.width / image.height;
+      if (this.size === 'profile') {
+        if (this.ratio > 1.0) {
+          // Height determines width by ratio
+          this.imageHeight = Math.min(image.height, maxSize);
+          this.imageWidth = this.imageHeight * this.ratio;
+        } else if (this.ratio < 1.0) {
+          // Width determines height by ratio
+          this.imageWidth = Math.min(image.width, maxSize);
+          this.imageHeight = this.imageWidth / this.ratio;
+        } else {
+          // Perfect square
+          this.imageWidth = this.imageHeight = Math.min(image.width, maxSize);
+        }
+      } else {
+        if (this.ratio > 1.0) {
+          // Height determines width by ratio
+          this.imageHeight = SIZES[this.size];
+          this.imageWidth = this.imageHeight * this.ratio;
+        } else if (this.ratio < 1.0) {
+          // Width determines height by ratio
+          this.imageWidth = SIZES[this.size];
+          this.imageHeight = this.imageWidth / this.ratio;
+        } else {
+          // Perfect square
+          this.imageWidth = this.imageHeight = SIZES[this.size];
+        }
+      }
+      const offsetLeft = this.imageWidth - maxSize;
+      this.imageLeft = offsetLeft > 0 ? -offsetLeft / 2 : 0;
+      const offsetTop = this.imageHeight - maxSize;
+      this.imageTop = offsetTop > 0 ? -offsetTop / 2 : 0;
+
+      // Define the URL
+      // The smallest dimension is used to determine the requested size...
+      const param = this.ratio < 1 ? 'width' : 'height';
+      // ... which should be doubled prevent pixelation on high density devices.
+      let size: number;
+      if (this.size === 'profile') {
+        size = this.maxSize * 2;
+      } else {
+        size = SIZES[this.size] * 2;
+      }
+      this.url = `${this.image.url}?${param}=${size}`;
+    } else {
+      // Calculate the icon attributes
+      this.iconClass = 'mat-' + ICON_SIZES[this.size];
     }
   }
 }

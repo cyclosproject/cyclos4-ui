@@ -30,3 +30,8 @@
 .xs :host .paginator {
   margin-bottom: 20px;
 }
+@media (max-width: 350px) {
+  .nav-first, .nav-last {
+    display: none !important;
+  }
+}

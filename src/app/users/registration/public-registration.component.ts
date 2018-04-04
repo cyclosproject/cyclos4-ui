@@ -122,6 +122,10 @@ export class PublicRegistrationComponent extends BaseComponent implements AfterV
 
   ngOnInit() {
     super.ngOnInit();
+
+    // Because the fields form has async validators, we have to make sure changes are detected on status change
+    this.subscriptions.push(this.fieldsForm.statusChanges.subscribe(() => this.detectChanges()));
+
     this.groups = (this.dataForUiHolder.dataForUi.publicRegistrationGroups || []);
     if (this.groups.length === 0) {
       // No groups for registration!

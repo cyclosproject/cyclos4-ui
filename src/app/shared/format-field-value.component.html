@@ -14,22 +14,17 @@
       <span *ngIf="pv.category">{{ pv.category.name }} - </span>{{ pv.value + (last ? '' : ', ') }}
     </span>
   </div>
-  <div *ngIf="type == 'file'">
+  <div *ngIf="type == 'file' && (value.value || []).length > 0">
     <ng-container *ngFor="let file of value.value; let last = last;">
       <a [href]="appendAuth(file.url)"
         [type]="file.contentType"
         target="_blank"
+        (click)="downloadFile($event, file)"
         [download]="file.name">{{ file.name }}</a>
       <ng-container *ngIf="!last">, </ng-container>
     </ng-container>
   </div>
-  <div *ngIf="type == 'image'">
-    <ng-container *ngFor="let img of value.value; let last = last;">
-      <a [href]="appendAuth(img.url)"
-        [type]="img.contentType"
-        target="_blank"
-        [download]="img.name">{{ img.name }}</a>
-      <ng-container *ngIf="!last">, </ng-container>
-    </ng-container>
+  <div *ngIf="type == 'image' && (value.value || []).length > 0">
+    <image-viewer [additionalImages]="value.value"></image-viewer>
   </div>
 </ng-container>

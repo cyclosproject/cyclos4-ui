@@ -4,7 +4,7 @@
   $background: map-get($theme, background);
 
   image-viewer {
-    .profile {
+    .image-viewer-large {
       background: mat-color($background, card);
     }
   }

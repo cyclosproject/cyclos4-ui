@@ -5,6 +5,13 @@
   display: flex;
   flex-direction: column;
 }
+.xs :host .title {
+  position: absolute;
+  left: 0;
+  right: 0;
+  text-align: center;
+  z-index: 0;
+}
 .lt-md .title {
   left: -6px;
   position: relative;
@@ -30,13 +37,16 @@
 .menu-toggle {
   left: -10px;
 }
-.xs :host /deep/ .menu-toggle {
-  left: -6px;
+.xs :host /deep/ {
+  .menu-toggle, .back {
+    left: -6px;
+    z-index: 1;
+  }
 }
 .personalMenuToggle {
   text-decoration: none;
 }
-.personalMenuToggle avatar {
+.gt-xs :host .personalMenuToggle avatar {
   margin-right: 8px;
 }
 .user {

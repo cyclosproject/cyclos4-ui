@@ -24,7 +24,8 @@
     class="items"
     [matTooltip]="messages.paginationCurrent(pagination.page + 1)">
     <ng-container *ngIf="pagination.hasTotalCount">
-      {{ messages.paginationShowingTotal(pagination.firstItem, pagination.lastItem, pagination.totalCount) }}
+      {{ messages.paginationShowingTotal(pagination.firstItem, pagination.lastItem, pagination.totalCount)
+      }}
     </ng-container>
     <ng-container *ngIf="!pagination.hasTotalCount">
       {{ messages.paginationShowingNoTotal(pagination.firstItem, pagination.lastItem) }}
@@ -32,24 +33,28 @@
   </div>
   <div fxLayout="row">
     <button mat-icon-button
+      ngClass="nav-first"
       [disabled]="pagination.page == 0"
       (click)="first()"
       [matTooltip]="messages.paginationFirst()">
       <mat-icon ngClass="mat-24">first_page</mat-icon>
     </button>
     <button mat-icon-button
+      ngClass="nav-prev"
       [disabled]="pagination.page == 0"
       (click)="previous()"
       [matTooltip]="messages.paginationPrevious()">
       <mat-icon ngClass="mat-24">navigate_before</mat-icon>
     </button>
     <button mat-icon-button
+      ngClass="nav-next"
       [disabled]="!pagination.hasNext"
       (click)="next()"
       [matTooltip]="messages.paginationNext()">
       <mat-icon ngClass="mat-24">navigate_next</mat-icon>
     </button>
     <button mat-icon-button
+      ngClass="nav-last"
       *ngIf="pagination.hasTotalCount"
       [disabled]="!pagination.hasNext"
       [matTooltip]="messages.paginationLast()"

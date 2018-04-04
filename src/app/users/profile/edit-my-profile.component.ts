@@ -25,8 +25,8 @@ export class EditMyProfileComponent extends BaseComponent {
     private usersService: UsersService,
     private formBuilder: FormBuilder) {
     super(injector);
-    // Everything is dynamic!
     this.form = formBuilder.group({
+      version: null,
       hiddenFields: []
     });
   }
@@ -56,7 +56,11 @@ export class EditMyProfileComponent extends BaseComponent {
     const user = this.user;
     const fields = data.profileFieldActions || {};
 
-    this.form.setControl('version', this.formBuilder.control(user.version));
+    // Set the initial state
+    this.form.patchValue({
+      version: user.version,
+      hiddenFields: user.hiddenFields
+    });
 
     // Get the editable fields
     for (const field in fields) {
@@ -80,7 +84,6 @@ export class EditMyProfileComponent extends BaseComponent {
     const editableCustomFields = data.customFields.filter(cf => this.editableFields.includes(cf.internalName));
     this.form.setControl('customValues',
       ApiHelper.customValuesFormGroup(this.formBuilder, editableCustomFields));
-    this.form.patchValue({ hiddenFields: this.user.hiddenFields });
 
     if (data.confirmationPasswordInput) {
       this.form.setControl('confirmationPassword', this.formBuilder.control('', Validators.required));

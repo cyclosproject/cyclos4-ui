@@ -39,9 +39,9 @@
             <button fxFlex.gt-xs="nogrow"
               mat-raised-button
               color="accent"
-              [disabled]="((fieldsForm.statusChanges | async) !== 'VALID') ||
-                (fieldsForm.value.addressDefined === true
-                && (addressForm.statusChanges | async) !== 'VALID')"
+              [disabled]="!fieldsForm.valid ||
+                fieldsForm.value.addressDefined === true && !addressForm.valid"
+          
               (click)="nextFromFields()">
               {{ messages.next() }}
             </button>

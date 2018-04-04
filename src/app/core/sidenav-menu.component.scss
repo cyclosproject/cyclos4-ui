@@ -15,8 +15,17 @@
 }
 :host /deep/ .title {
   text-align: center;
-  padding: 9px 46px 0 0;
+  margin-top: 9px;
   font-size: 20px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  text-align: center;
+  z-index: 0;
+}
+
+.close-sidenav {
+  z-index: 1;
 }
 
 .gt-xs :host /deep/ .rootContainer {

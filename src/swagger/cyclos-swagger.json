@@ -4175,6 +4175,68 @@
         "x-contentType" : "application/json"
       }
     },
+    "/images/{id}/content" : {
+      "get" : {
+        "tags" : [ "Images" ],
+        "summary" : "Returns an image content by id",
+        "description" : "Returns the content of an image, given the image kind and key.\nWhen neither `width` nor `height` are specified, returns the original\ncontent. The original ratio is always maintained. When only of one of \nthe dimensions is specified, it is used as maximum, and the other is\ncalculated. When both are informed, the maximum size with the original\nratio that fits both dimensions is used. \n",
+        "operationId" : "getImageContentById",
+        "produces" : [ "application/json", "image/jpeg", "image/gif", "image/png" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "The object identification",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "width",
+          "in" : "query",
+          "description" : "The requested image width",
+          "required" : false,
+          "type" : "integer"
+        }, {
+          "name" : "height",
+          "in" : "query",
+          "description" : "The requested file height",
+          "required" : false,
+          "type" : "integer"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The image content",
+            "schema" : {
+              "type" : "file"
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized access. Missing or invalid crendentials supplied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/UnauthorizedError"
+            }
+          },
+          "403" : {
+            "description" : "Permission denied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/ForbiddenError"
+            }
+          },
+          "404" : {
+            "description" : "An expected data was not found",
+            "schema" : {
+              "$ref" : "#/definitions/NotFoundError"
+            }
+          },
+          "500" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "x-accepts" : "application/json",
+        "x-contentType" : "application/json"
+      }
+    },
     "/images/{kind}/{file}" : {
       "get" : {
         "tags" : [ "Images" ],

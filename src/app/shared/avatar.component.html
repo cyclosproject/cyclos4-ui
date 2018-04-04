@@ -6,10 +6,10 @@
   }">
   <img [src]="url"
     [ngStyle]="{
-      width: imageWidth,
-      height: imageHeight,
-      left: imageLeft,
-      top: imageTop
+      width: imageWidth + 'px',
+      height: imageHeight + 'px',
+      left: imageLeft + 'px',
+      top: imageTop + 'px'
     }">
 </div>
 <mat-icon *ngIf="image == null && svgIcon != null"

@@ -1,12 +1,16 @@
 import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
 import {
   CustomFieldValue, CustomField, CustomFieldTypeEnum, CustomFieldDetailed,
-  LinkedEntityTypeEnum
+  LinkedEntityTypeEnum,
+  StoredFile,
+  Image
 } from 'app/api/models';
 import { Messages } from 'app/messages/messages';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { NextRequestState } from 'app/core/next-request-state';
+import * as download from 'downloadjs';
+import { FilesService, ImagesService } from 'app/api/services';
 
 /** Types whose values are rendered directly */
 const DIRECT_TYPES = [
@@ -29,7 +33,9 @@ const DIRECT_TYPES = [
 export class FormatFieldValueComponent implements OnInit {
   constructor(
     private messages: Messages,
-    private nextRequestState: NextRequestState) {
+    private nextRequestState: NextRequestState,
+    private filesService: FilesService,
+    private imagesService: ImagesService) {
   }
 
   /**
@@ -256,5 +262,24 @@ export class FormatFieldValueComponent implements OnInit {
     }
     const sep = url.includes('?') ? '&' : '?';
     return url + sep + 'Session-Token=' + sessionToken;
+  }
+
+  downloadFile(event: MouseEvent, file: StoredFile) {
+    this.filesService.getRawFileContent(file.id).subscribe(blob => {
+      download(blob, file.name, file.contentType);
+    });
+    event.stopPropagation();
+    event.preventDefault();
+  }
+
+  downloadImage(event: MouseEvent, image: Image) {
+    const url = image.url;
+    const sep = url.lastIndexOf('/');
+    const file = url.substr(sep + 1);
+    this.imagesService.getImageContentById({ id: image.id }).subscribe(blob => {
+      download(blob, image.name, image.contentType);
+    });
+    event.stopPropagation();
+    event.preventDefault();
   }
 }

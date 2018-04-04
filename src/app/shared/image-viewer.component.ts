@@ -18,8 +18,9 @@ export class LightboxImage {
 }
 
 /**
- * Shows a large image, plus small thumbnails of additional images.
- * Clicking either image will show the image fullscreen
+ * May either show a large image (when image is set), such as in the user profile,
+ * or a set of small images (when image is null, but has additionalImages).
+ * Clicking the image will show the lightbox with all images.
  */
 @Component({
   // tslint:disable-next-line:component-selector
@@ -34,7 +35,6 @@ export class ImageViewerComponent implements OnInit {
 
   @Input() image: Image;
   @Input() additionalImages: Image[];
-  @Input() profile: boolean;
 
   images: LightboxImage[];
 
@@ -56,12 +56,5 @@ export class ImageViewerComponent implements OnInit {
     this.lightbox.open(this.images, index);
     event.preventDefault();
     event.stopPropagation();
-  }
-
-  get portrait(): boolean {
-    if (this.image == null) {
-      return false;
-    }
-    return this.image.width < this.image.height;
   }
 }

@@ -158,8 +158,7 @@ input[type=number] {
 .has-label-value {
   display: block;
 }
-.has-label-value + .has-label-value,
-.has-label-value + custom-field-input {
+.has-label-value + .has-label-value {
   margin-top: 16px;
 }
 

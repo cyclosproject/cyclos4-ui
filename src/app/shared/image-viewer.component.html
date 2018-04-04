@@ -1,8 +1,25 @@
+<!-- Show only a large image -->
 <div *ngIf="image != null"
-  [ngClass]="{'image-viewer': true, 'profile': profile, 'portrait': portrait}">
-  <a href="#"
+  class="image-viewer image-viewer-large">
+  <a fxFlex="nogrow"
+    fxLayout="row"
+    fxLayoutAlign.xs="center center"
+    href="#"
     (click)="onClick($event, 0)">
-    <avatar size="profile"
+    <avatar fxFlex="nogrow"
+      size="profile"
       [image]="image"></avatar>
+  </a>
+</div>
+
+<!-- Show only small images -->
+<div *ngIf="image == null"
+  fxLayout="row wrap"
+  class="image-viewer image-viewer-small">
+  <a *ngIf="additionalImages?.length > 0"
+    href="#"
+    (click)="onClick($event, 0)">
+    <avatar size="small"
+      [image]="additionalImages[0]"></avatar>
   </a>
 </div>

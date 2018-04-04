@@ -12,7 +12,9 @@
     "Payments",
     "Accounts",
     "UI",
-    "Captcha"
+    "Captcha",
+    "Files",
+    "Images"
   ],
   "minParamsForContainer": 2
 }

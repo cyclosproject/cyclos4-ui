@@ -20,7 +20,7 @@ export class BreadcrumbService {
   breadcrumb = new BehaviorSubject<BreadCrumbEntry[]>([]);
 
   constructor(
-    router: Router,
+    private router: Router,
     dataForUiHolder: DataForUiHolder) {
     dataForUiHolder.subscribe(() => this.clear());
     router.events
@@ -90,4 +90,13 @@ export class BreadcrumbService {
     this.breadcrumb.next(entries);
   }
 
+  /**
+   * Goes back one level
+   */
+  back() {
+    const breadcrumb = this.breadcrumb.value;
+    if (breadcrumb.length > 1) {
+      this.router.navigateByUrl(breadcrumb[breadcrumb.length - 2].url);
+    }
+  }
 }

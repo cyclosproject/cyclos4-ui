@@ -11,7 +11,7 @@
       <button fxFlex.gt-xs="nogrow"
         mat-raised-button
         color="accent"
-        [disabled]="(form.statusChanges | async) !== 'VALID'"
+        [disabled]="!form.valid"
         (click)="save()">
         {{ messages.save() }}
       </button>

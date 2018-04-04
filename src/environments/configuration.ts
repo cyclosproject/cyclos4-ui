@@ -5,6 +5,8 @@ const API_URL = 'http://localhost:8888/api';
 
 // Application title
 const APP_TITLE = 'Cyclos Local';
+// Application title on small devices (constrained space)
+const APP_TITLE_SMALL = 'Cyclos';
 // The application title displayed on the title bar inside the menu on small devices
 const APP_TITLE_MENU = 'Cyclos menu';
 
@@ -29,6 +31,7 @@ const LOCALES = ['en'];
 
 export const configuration = {
   appTitle: APP_TITLE,
+  appTitleSmall: APP_TITLE_SMALL,
   appTitleMenu: APP_TITLE_MENU,
   apiRoot: API_URL,
   searchPageSizes: SEARCH_PAGE_SIZES,
