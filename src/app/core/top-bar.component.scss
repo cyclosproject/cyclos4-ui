@@ -30,6 +30,9 @@
 .menu-toggle {
   left: -10px;
 }
+.xs :host /deep/ .menu-toggle {
+  left: -6px;
+}
 .personalMenuToggle {
   text-decoration: none;
 }

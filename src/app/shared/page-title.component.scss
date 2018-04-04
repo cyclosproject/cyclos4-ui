@@ -9,11 +9,12 @@
   margin-bottom: 22px;
 }
 
-.showFilters {
+.action {
   opacity: 0.7;
   float: right;
+  margin-left: 12px;
 }
-:host /deep/ .showFilters .mat-icon {
+:host /deep/ .action .mat-icon {
   position: relative;
   top: -1px;
 }

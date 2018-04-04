@@ -1,11 +1,12 @@
 <page-layout [loaded]="loaded"
-  [title]="(loaded | async) ? user?.display : null">
+  [title]="(loaded | async) ? title : null"
+  [titleActions]="titleActions | async">
   <page-content *ngIf="(loaded | async) && user">
     <image-viewer *ngIf="user.image"
       [profile]="true"
       [image]="user.image"
       [additionalImages]="user.additionalImages"></image-viewer>
-    <label-value *ngIf="user.name != null && user.name !== user.display"
+    <label-value *ngIf="user.name != null && user.name !== title"
       [label]="messages.userName()"
       [value]="user.name"></label-value>
     <label-value *ngIf="user.username"
@@ -47,11 +48,12 @@
     <!-- Contact infos -->
     <ng-container *ngIf="(user.contactInfos || []).length > 0">
       <h2>{{ messages.userContactInfos() }}</h2>
-      <ng-container *ngFor="let contactInfo of user.contactInfos">
-        <h3>{{ contactInfo.name }}</h3>
+      <div class="contact-info"
+        *ngFor="let contactInfo of user.contactInfos">
         <image-viewer *ngIf="contactInfo.image"
           [profile]="true"
           [image]="contactInfo.image"></image-viewer>
+        <h3>{{ contactInfo.name }}</h3>
         <label-value *ngIf="contactInfo.email"
           [label]="messages.userEmail()">
           <a [href]="'mailto:' + contactInfo.email">{{ contactInfo.email }}</a>
@@ -75,9 +77,8 @@
           [address]="contactInfo.address"
           [countries]="countries | async">
         </view-address-details>
-      </ng-container>
+      </div>
     </ng-container>
-
     <div class="clear-floats"></div>
   </page-content>
 </page-layout>

@@ -10,7 +10,7 @@
     }">
     <mat-card>
       <mat-tab-group #tabGroup>
-        <mat-tab [label]="(sideMenu.title | async) || messages.menu()">
+        <mat-tab [label]="(sideMenu.entries | async)?.title || messages.menu()">
           <side-menu #sideMenu></side-menu>
         </mat-tab>
         <mat-tab *ngIf="hasFilters && (filtersShown | async)"
@@ -39,7 +39,8 @@
           <mat-card-content>
             <page-title *ngIf="title != null && title.length > 0"
               [pageLayout]="this"
-              [title]="title"></page-title>
+              [title]="title"
+              [actions]="titleActions"></page-title>
             <div class="header-wrapper">
               <ng-container *ngTemplateOutlet="headerTpl"></ng-container>
             </div>
@@ -59,7 +60,8 @@
             <ng-container *ngIf="loaded == null || (loaded | async)">
               <page-title *ngIf="!hasHeader && title != null && title.length > 0"
                 [pageLayout]="this"
-                [title]="title"></page-title>
+                [title]="title"
+                [actions]="titleActions"></page-title>
               <div class="content-wrapper">
                 <ng-container *ngTemplateOutlet="contentTpl"></ng-container>
               </div>
@@ -80,7 +82,8 @@
         <page-title *ngIf="title != null && title.length > 0"
           [noBottomMargin]="true"
           [pageLayout]="this"
-          [title]="title"></page-title>
+          [title]="title"
+          [actions]="titleActions"></page-title>
         <div [ngClass]="{
           'inline-header': true,
           'tight-content': tightContent
@@ -111,14 +114,14 @@
 
   <ng-template #filtersTpl>
     <ng-content select="page-filters"></ng-content>
-    <div class="actions">
+    <actions>
       <button mat-raised-button
         (click)="clearFilters()">{{ messages.filtersClear() }}</button>
       <div fxFlex="grow"></div>
       <button mat-raised-button
         *ngIf="showLeft | async"
         (click)="hideFilters()">{{ messages.filtersHide() }}</button>
-    </div>
+    </actions>
   </ng-template>
   <ng-template #headerTpl>
     <ng-content select="page-header"></ng-content>

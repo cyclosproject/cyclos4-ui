@@ -25897,6 +25897,10 @@
           "description" : "Permissions over other users",
           "$ref" : "#/definitions/UsersPermissions"
         },
+        "myProfile" : {
+          "description" : "Permissions over own profile",
+          "$ref" : "#/definitions/UserProfilePermissions"
+        },
         "banking" : {
           "description" : "Permissions over banking / accounts",
           "$ref" : "#/definitions/BankingPermissions"
@@ -29358,6 +29362,10 @@
         "manageImages" : {
           "type" : "boolean",
           "description" : "Can manage profile images?"
+        },
+        "manageContactInfos" : {
+          "type" : "boolean",
+          "description" : "Can manage additional contact informations?"
         }
       },
       "description" : "Permissions over a user profile"

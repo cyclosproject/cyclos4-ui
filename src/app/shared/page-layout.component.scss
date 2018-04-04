@@ -112,13 +112,13 @@
   padding: 16px;
 }
 
+.inline-content:not(.tight) {
+  padding: 8px;
+}
+
 :host /deep/ .left .mat-tab-label-content {
   font-size: 15px;
   opacity: 1;
-}
-
-.filters .actions {
-  margin-top: 16px;
 }
 
 .inline-filters {

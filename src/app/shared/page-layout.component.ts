@@ -1,5 +1,6 @@
 import { Component, Input, ChangeDetectionStrategy, Injector, ViewChild } from '@angular/core';
 import { BaseComponent } from 'app/shared/base.component';
+import { Action } from 'app/shared/action';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { MatTabGroup } from '@angular/material';
@@ -26,31 +27,25 @@ export class PageLayoutComponent extends BaseComponent {
     super(injector);
   }
 
-  @Input()
-  extraMargin = false;
+  @Input() extraMargin = false;
 
-  @Input()
-  hasMenu = true;
+  @Input() hasMenu = true;
 
-  @Input()
-  hasHeader = false;
+  @Input() hasHeader = false;
 
-  @Input()
-  filtersForm: FormGroup;
+  @Input() filtersForm: FormGroup;
 
   private initialFormState: any;
 
-  @Input()
-  tightContent = false;
+  @Input() tightContent = false;
 
-  @Input()
-  contentSize: ContentSize = 'full';
+  @Input() contentSize: ContentSize = 'full';
 
-  @Input()
-  loaded: Observable<any>;
+  @Input() loaded: Observable<any>;
 
-  @ViewChild('tabGroup')
-  tabGroup: MatTabGroup;
+  @Input() titleActions: Action[];
+
+  @ViewChild('tabGroup') tabGroup: MatTabGroup;
 
   filtersShown = new BehaviorSubject(false);
 

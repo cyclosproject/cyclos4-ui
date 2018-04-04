@@ -1,10 +1,10 @@
 @import 'src/definitions';
 
-.breadcrumb {
-  padding: 16px 16px 0;
+.gt-sm :host .breadcrumb {
+  margin: 16px 0 0 16px;
 }
-.xs :host /deep/ .breadcrumb {
-  padding: 24px 0 12px 0;
+.lt-md :host /deep/ .breadcrumb {
+  margin: 8px 0 0 8px;
 }
 .lt-md :host .breadcrumb {
   padding-left: 0;

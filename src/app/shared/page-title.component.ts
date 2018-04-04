@@ -2,6 +2,7 @@ import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { Messages } from 'app/messages/messages';
 import { PageLayoutComponent } from './page-layout.component';
 import { LayoutService } from 'app/core/layout.service';
+import { Action } from 'app/shared/action';
 
 /**
  * The title, with breadcrumb and show filters button
@@ -24,6 +25,8 @@ export class PageTitleComponent {
   @Input() pageLayout: PageLayoutComponent;
 
   @Input() noBottomMargin: boolean;
+
+  @Input() actions: Action[];
 
   toggleFilters() {
     this.pageLayout.toggleFilters();

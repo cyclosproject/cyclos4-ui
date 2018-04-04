@@ -2,27 +2,32 @@
   fxLayout="column">
   <ng-container *ngIf="banking">
     <a mat-button
-      class="account"
       *ngFor="let account of this.accounts"
+      [ngClass]="{
+        account: true,
+        active: isAccountActive(account)
+      }"
       [routerLink]="accountLink(account)"
-      [routerLinkActiveOptions]="{exact: true}"
-      (click)="onAccountClicked($event, account)"
-      routerLinkActive="active">
-      <mat-icon fxFlex="18px"
-        ngClass="mat-18">account_balance</mat-icon>
-      <div class="name"
-        fxFlex="grow">{{ account.type.name }}</div>
-      <div [ngClass]="{
+      (click)="onAccountClicked($event, account)">
+      <div fxLayout="row"
+        fxLayoutAlign="center center">
+        <mat-icon fxFlex="18px"
+          ngClass="mat-18">account_balance</mat-icon>
+        <div class="name"
+          fxFlex="grow">{{ account.type.name }}</div>
+        <div [ngClass]="{
           balance: true,
           positive: format.isPositive((menuService.accountStatuses | async).get(account.id)?.balance),
           negative: format.isNegative((menuService.accountStatuses | async).get(account.id)?.balance)
         }"
-        fxFlex="nogrow"
-        *ngIf="menuService.accountStatuses | async">
-        {{ (menuService.accountStatuses | async).get(account.id)?.balance | currency:account.currency }}
+          fxFlex="nogrow"
+          *ngIf="menuService.accountStatuses | async">
+          {{ (menuService.accountStatuses | async).get(account.id)?.balance | currency:account.currency
+          }}
+        </div>
       </div>
     </a>
   </ng-container>
-  <menu-item *ngFor="let entry of (entries | async)"
+  <menu-item *ngFor="let entry of (entries | async).entries"
     [entry]="entry"></menu-item>
 </div>

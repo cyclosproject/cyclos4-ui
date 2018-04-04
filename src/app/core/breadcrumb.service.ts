@@ -81,7 +81,7 @@ export class BreadcrumbService {
     }
     if (index >= 0) {
       // Going back to an URL that was previously in navigation
-      entries.splice(index, entries.length - index - 1);
+      entries.splice(index + 1, entries.length - index - 1);
     } else {
       // Going to a new URL
       entries = entries.slice();

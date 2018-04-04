@@ -16,6 +16,10 @@ html {
   @include cyclos-theme($light-theme);
 }
 
+body {
+  height: initial;
+}
+
 html.dark {
   @include cyclos-theme($dark-theme);
 }
@@ -64,27 +68,34 @@ h1.no-bottom-margin, h2.no-bottom-margin, h3.no-bottom-margin {
 }
 
 // Forms
-.lt-md form {
-  max-width: 80vw;
-  display: block;
-  margin: auto;
+.gt-xs {
+  .field-tiny {
+    width: 10%;
+    min-width: 100px;
+  }
+  .field-small, date-field, decimal-field {
+    width: 25%;
+    min-width: 200px;
+  }
+  .field-medium {
+    width: 50%;
+    min-width: 300px;
+  }
+  .field-large {
+    width: 75%;
+    min-width: 450px;
+  }
 }
-
-.field-tiny {
-  width: 10%;
-  min-width: 100px;
-}
-.field-small, date-field, decimal-field {
-  width: 25%;
-  min-width: 200px;
-}
-.field-medium {
-  width: 50%;
-  min-width: 300px;
-}
-.field-large {
-  width: 75%;
-  min-width: 450px;
+.xs {
+  .field-tiny {
+    width: 100px;
+  }
+  .field-small, date-field, decimal-field {
+    width: 200px;
+  }
+  .field-medium, .field-large {
+    width: 100%;
+  }
 }
 .field-full {
   width: 100%;

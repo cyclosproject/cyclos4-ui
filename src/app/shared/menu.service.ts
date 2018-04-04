@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { MenuType, Menu, RootMenuEntry, MenuEntry, RootMenu } from 'app/shared/menu';
+import { MenuType, Menu, RootMenuEntry, MenuEntry, RootMenu, FloatingMenu, SideMenuEntries } from 'app/shared/menu';
 import { Messages } from 'app/messages/messages';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -64,7 +64,40 @@ export class MenuService {
   }
 
   /**
-   * Returns the menu structure to be displayed in a specific menu
+   * Returns the available `MenuEntry` for the given `Menu`, if any, or null if none matches
+   * @param menu The menu indication
+   */
+  menuEntry(menu: Menu): MenuEntry {
+    const roots = this._fullMenu.value || [];
+    for (const rootEntry of roots) {
+      if (rootEntry.rootMenu === menu.root) {
+        for (const entry of rootEntry.entries) {
+          if (entry.menu === menu) {
+            return entry;
+          }
+        }
+      }
+    }
+    return null;
+  }
+
+
+  /**
+   * Returns the available `RootMenuEntry` for the given `RootMenu`, if any, or null if none matches
+   * @param root The root menu
+   */
+  rootEntry(root: RootMenu): RootMenuEntry {
+    const roots = this._fullMenu.value || [];
+    for (const rootEntry of roots) {
+      if (rootEntry.rootMenu === root) {
+        return rootEntry;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Returns the menu structure to be displayed in a specific menu.
    */
   menu(type: MenuType): Observable<RootMenuEntry[]> {
     return this._fullMenu.pipe(
@@ -90,6 +123,39 @@ export class MenuService {
         return roots;
       })
     );
+  }
+
+  /**
+   * Returns the menu entries to show in the side menu, plus the menu title.
+   * Takes into account the given menu's FloatingMenu, as it must match the floating menu of the returned entries.
+   */
+  sideMenu(menu: Menu): Observable<SideMenuEntries> {
+    return this.menu(MenuType.SIDE).pipe(
+      map(roots => {
+        const root = roots.find(e => e.rootMenu === menu.root);
+        if (root == null) {
+          return new SideMenuEntries(null, []);
+        }
+        let title = root.title;
+        if (menu.floating) {
+          title = this.floatingTitle(menu.floating);
+        }
+        const entries = root.entries.filter(e => e.menu.floating === menu.floating);
+        return new SideMenuEntries(title, entries);
+      })
+    );
+  }
+
+  /**
+   * Returns the title for the given floating menu
+   * @param floating The floating menu
+   */
+  private floatingTitle(floating: FloatingMenu): string {
+    switch (floating) {
+      case FloatingMenu.EDIT_MY_PROFILE:
+        return this.messages.floatingMenuEditMyProfileTitle();
+    }
+    return null;
   }
 
   private fetchData() {
@@ -121,8 +187,11 @@ export class MenuService {
 
     const roots = new Map<RootMenu, RootMenuEntry>();
     // Lambda that adds a root menu
-    const addRoot = (root: RootMenu, icon: string, label: string, title: string = null, showIn: MenuType[] = null) =>
-      roots.set(root, new RootMenuEntry(root, icon, label, title, showIn));
+    const addRoot = (root: RootMenu, icon: string, label: string, title: string = null, showIn: MenuType[] = null) => {
+      const entry = new RootMenuEntry(root, icon, label, title, showIn);
+      roots.set(root, entry);
+      return entry;
+    };
     // Create the root menu entries
     addRoot(RootMenu.HOME,
       user == null ? 'home' : 'dashboard',
@@ -181,13 +250,36 @@ export class MenuService {
       add(Menu.SEARCH_USERS, '/users/search', 'group',
         this.messages.menuUsersSearch());
 
-      // Temporary, just to show other root menu entries
+      // Marketplace (not implemented yet)
+      /*
       add(Menu.SEARCH_MARKETPLACE, '/marketplace/search', 'shopping_cart',
         this.messages.menuMarketplaceSearch());
+      */
 
+      const myProfile = permissions.myProfile;
       // Personal
       add(Menu.MY_PROFILE, '/users/my-profile', 'account_box',
         this.messages.menuPersonalProfile(), [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
+      if (myProfile.editProfile) {
+        add(Menu.EDIT_MY_PROFILE, '/users/edit-my-profile', 'account_box',
+          this.messages.menuPersonalEditMyProfile());
+      }
+      if (myProfile.managePhones) {
+        add(Menu.EDIT_MY_PHONES, '/users/edit-my-profile/phones', 'phone',
+          this.messages.menuPersonalPhones(), [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
+      }
+      if (myProfile.manageAddresses) {
+        add(Menu.EDIT_MY_ADRRESSES, '/users/edit-my-profile/addresses', 'place',
+          this.messages.menuPersonalAddresses(), [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
+      }
+      if (myProfile.manageImages) {
+        add(Menu.EDIT_MY_IMAGES, '/users/edit-my-profile/images', 'photo_library',
+          this.messages.menuPersonalImages(), [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
+      }
+      if (myProfile.manageContactInfos) {
+        add(Menu.EDIT_MY_CONTACT_INFOS, '/users/edit-my-profile/contact-infos', 'perm_contact_calendar',
+          this.messages.menuPersonalContactInfos(), [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
+      }
       add(Menu.SETTINGS, '/settings', 'settings',
         this.messages.menuPersonalSettings(), [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
       if (users.contacts) {

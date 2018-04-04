@@ -36,7 +36,7 @@ const usersRoutes: Routes = [
         component: EditMyProfileComponent,
         canActivate: [LoggedUserGuard],
         data: {
-          menu: Menu.MY_PROFILE
+          menu: Menu.EDIT_MY_PROFILE
         }
       },
       {

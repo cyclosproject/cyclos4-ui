@@ -117,4 +117,9 @@ export class PersonalMenuComponent extends BaseComponent {
     setTimeout(() => style.display = 'none', 500);
     document.body.removeEventListener('click', this.listener, true);
   }
+
+  clearState() {
+    this.breadcrumb.clear();
+    this.stateManager.clear();
+  }
 }

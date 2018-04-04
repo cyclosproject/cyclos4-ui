@@ -1,11 +1,12 @@
 import { Component, Input, ChangeDetectionStrategy, Injector } from '@angular/core';
 import { BaseComponent } from 'app/shared/base.component';
 
-import { RootMenu, MenuEntry, MenuType, RootMenuEntry, Menu } from 'app/shared/menu';
+import { RootMenu, MenuEntry, MenuType, RootMenuEntry, Menu, SideMenuEntries } from 'app/shared/menu';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { MenuService } from 'app/shared/menu.service';
 import { AccountWithCurrency } from 'app/api/models';
+import { Subscription } from 'rxjs/Subscription';
 
 /**
  * A context-specific menu shown on the side of the layout for medium-large screens
@@ -35,14 +36,11 @@ export class SideMenuComponent extends BaseComponent {
     return menu != null && menu.root === RootMenu.BANKING;
   }
 
-  entries = new BehaviorSubject<MenuEntry[]>([]);
-  roots = new BehaviorSubject<RootMenuEntry[]>([]);
-  title = new BehaviorSubject<string>(null);
+  entries = new BehaviorSubject<SideMenuEntries>(null);
+  subscription: Subscription;
 
   ngOnInit() {
     super.ngOnInit();
-
-    this.menuService.menu(MenuType.SIDE).subscribe(roots => this.roots.next(roots));
 
     this.layout.menu.subscribe(menu => {
       this.updateFrom(menu);
@@ -51,19 +49,11 @@ export class SideMenuComponent extends BaseComponent {
   }
 
   private updateFrom(menu: Menu) {
-    let entries: MenuEntry[] = [];
-    let title = null;
-    if (menu != null) {
-      for (const root of this.roots.value) {
-        if (root.rootMenu === menu.root) {
-          title = root.title;
-          entries = root.entries;
-          break;
-        }
-      }
+    if (this.subscription != null) {
+      this.subscription.unsubscribe();
     }
-    this.entries.next(entries);
-    this.title.next(title);
+    this.subscription = this.menuService.sideMenu(menu)
+      .subscribe(entries => this.entries.next(entries));
   }
 
   onAccountClicked(event: MouseEvent, account: AccountWithCurrency) {
@@ -88,5 +78,9 @@ export class SideMenuComponent extends BaseComponent {
 
   accountLink(account: AccountWithCurrency): string[] {
     return ['banking', 'account', ApiHelper.internalNameOrId(account.type)];
+  }
+
+  isAccountActive(account: AccountWithCurrency): boolean {
+    return this.router.url.endsWith('/banking/account/' + account.type.internalName);
   }
 }

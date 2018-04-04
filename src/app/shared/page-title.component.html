@@ -8,12 +8,21 @@
     fxLayout="row">
     <h1 fxFlex="grow">{{ title }}</h1>
     <button mat-button
+      *ngFor="let action of actions"
+      fxFlex="nogrow"
+      class="action"
+      (click)="action.onClick()">
+      <mat-icon ngClass="mat-22">{{ action.icon }}</mat-icon>
+      {{ action.label }}
+    </button>
+    <button mat-button
       *ngIf="pageLayout.hasFilters"
       fxFlex="nogrow"
-      class="showFilters"
+      class="action"
       (click)="toggleFilters()">
       <mat-icon ngClass="mat-22">filter_list</mat-icon>
-      {{ (pageLayout.filtersShown | async) ? messages.filtersHide() : messages.filtersShow() }}
+      {{ (pageLayout.filtersShown | async) ? messages.filtersHide() : messages.filtersShow()
+      }}
     </button>
   </div>
 </div>

@@ -11,7 +11,7 @@ export enum MenuType {
 }
 
 /** Contains the top-level (root) menus */
-export type RootMenu = 'home' | 'login' | 'registration' | 'personal' | 'banking' | 'users' | 'marketplace';
+export type RootMenu = 'home' | 'login' | 'registration' | 'banking' | 'users' | 'marketplace' | 'personal';
 export module RootMenu {
   export const HOME: RootMenu = 'home';
   export const LOGIN: RootMenu = 'login';
@@ -25,10 +25,20 @@ export module RootMenu {
   }
 }
 
+/** Contains the floating menus, that is, those which have no dedicated root menu, but do have a side menu */
+export type FloatingMenu = 'editMyProfile';
+export module FloatingMenu {
+  export const EDIT_MY_PROFILE: FloatingMenu = 'editMyProfile';
+  export function values(): FloatingMenu[] {
+    return [EDIT_MY_PROFILE];
+  }
+}
+
 /** Represents an available menu item */
 export class Menu {
   constructor(
-    public root: RootMenu
+    public root: RootMenu,
+    public floating: FloatingMenu = null
   ) { }
 }
 export module Menu {
@@ -53,9 +63,14 @@ export module Menu {
   export const SEARCH_MARKETPLACE = new Menu(RootMenu.MARKETPLACE);
 
   // Personal
+  export const MY_PROFILE = new Menu(RootMenu.PERSONAL);
+  export const EDIT_MY_PROFILE = new Menu(RootMenu.PERSONAL, FloatingMenu.EDIT_MY_PROFILE);
+  export const EDIT_MY_PHONES = new Menu(RootMenu.PERSONAL, FloatingMenu.EDIT_MY_PROFILE);
+  export const EDIT_MY_ADRRESSES = new Menu(RootMenu.PERSONAL, FloatingMenu.EDIT_MY_PROFILE);
+  export const EDIT_MY_IMAGES = new Menu(RootMenu.PERSONAL, FloatingMenu.EDIT_MY_PROFILE);
+  export const EDIT_MY_CONTACT_INFOS = new Menu(RootMenu.PERSONAL, FloatingMenu.EDIT_MY_PROFILE);
   export const SETTINGS = new Menu(RootMenu.PERSONAL);
   export const CONTACTS = new Menu(RootMenu.PERSONAL);
-  export const MY_PROFILE = new Menu(RootMenu.PERSONAL);
   export const PASSWORDS = new Menu(RootMenu.PERSONAL);
   export const LOGOUT = new Menu(RootMenu.PERSONAL);
 }
@@ -80,8 +95,13 @@ export class RootMenuEntry extends BaseMenuEntry {
   ) {
     super(icon, label, showIn);
   }
+
+  /**
+   * The entries in this menu
+   */
   entries: MenuEntry[] = [];
 }
+
 /** Resolved menu entry */
 export class MenuEntry extends BaseMenuEntry {
   constructor(
@@ -92,5 +112,16 @@ export class MenuEntry extends BaseMenuEntry {
     showIn: MenuType[] = null
   ) {
     super(icon, label, showIn);
+  }
+}
+
+/**
+ * The entries to show in the side menu
+ */
+export class SideMenuEntries {
+  constructor(
+    public title: string,
+    public entries: MenuEntry[]
+  ) {
   }
 }

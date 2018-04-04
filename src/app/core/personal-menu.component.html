@@ -5,6 +5,7 @@
     fxLayout="row">
     <a routerLink="/users/my-profile"
       class="avatar-container"
+      (click)="clearState()"
       [ngClass]="{'no-image': user?.image == null}">
       <avatar [image]="user?.image"
         size="huge"></avatar>
@@ -12,6 +13,7 @@
     <div class="details-container"
       fxLayout="column">
       <a class="details"
+        (click)="clearState()"
         routerLink="/users/my-profile">
         <div class="display">{{ user?.display }}</div>
         <div class="principal">{{ auth?.principal }}</div>
