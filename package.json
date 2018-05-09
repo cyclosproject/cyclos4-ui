@@ -51,6 +51,7 @@
     "@angular/compiler-cli": "^5.2.10",
     "@angular/language-service": "^5.2.10",
     "codelyzer": "~4.2.1",
+    "hoek": "^5.0.3",
     "ng-swagger-gen": "^0.11.3",
     "ng-translation-gen": "^0.1.2",
     "ts-node": "^5.0.1",
