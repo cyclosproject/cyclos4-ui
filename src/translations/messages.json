@@ -140,6 +140,7 @@
   "error.validation": "The action couldn't be processed, as there were validation errors",
   "user.editMyProfile.title": "Edit profile fields",
   "user.editMyProfile.saved": "Profile fields were successfully saved",
+  "user.manageMyPhones": "Phones",
   "user.search.title": "Users search",
   "user.search.breadcrumb": "Users",
   "user.profile.permissionError": "You don't have permission to view the profile of this user",

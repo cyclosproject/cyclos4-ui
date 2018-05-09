@@ -52,7 +52,7 @@ export class ViewUserProfileComponent extends BaseComponent {
               // Can edit the profile
               this.titleActions.next([
                 new Action('mode_edit', this.messages.edit(), () => {
-                  this.router.navigate(['users', 'edit-my-profile']);
+                  this.router.navigate(['users', 'my-profile', 'edit']);
                 })
               ]);
             }

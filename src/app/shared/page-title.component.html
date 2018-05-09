@@ -21,8 +21,7 @@
       class="action"
       (click)="toggleFilters()">
       <mat-icon ngClass="mat-22">filter_list</mat-icon>
-      {{ (pageLayout.filtersShown | async) ? messages.filtersHide() : messages.filtersShow()
-      }}
+      {{ (pageLayout.filtersShown | async) ? messages.filtersHide() : messages.filtersShow() }}
     </button>
   </div>
 </div>

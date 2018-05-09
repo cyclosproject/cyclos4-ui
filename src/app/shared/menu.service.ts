@@ -261,23 +261,23 @@ export class MenuService {
       add(Menu.MY_PROFILE, '/users/my-profile', 'account_box',
         this.messages.menuPersonalProfile(), [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
       if (myProfile.editProfile) {
-        add(Menu.EDIT_MY_PROFILE, '/users/edit-my-profile', 'account_box',
+        add(Menu.EDIT_MY_PROFILE, '/users/my-profile/edit', 'account_box',
           this.messages.menuPersonalEditMyProfile());
       }
       if (myProfile.managePhones) {
-        add(Menu.EDIT_MY_PHONES, '/users/edit-my-profile/phones', 'phone',
+        add(Menu.MY_PHONES, '/users/my-profile/phones', 'phone',
           this.messages.menuPersonalPhones(), [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
       }
       if (myProfile.manageAddresses) {
-        add(Menu.EDIT_MY_ADRRESSES, '/users/edit-my-profile/addresses', 'place',
+        add(Menu.MY_ADRRESSES, '/users/my-profile/addresses', 'place',
           this.messages.menuPersonalAddresses(), [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
       }
       if (myProfile.manageImages) {
-        add(Menu.EDIT_MY_IMAGES, '/users/edit-my-profile/images', 'photo_library',
+        add(Menu.MY_IMAGES, '/users/my-profile/images', 'photo_library',
           this.messages.menuPersonalImages(), [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
       }
       if (myProfile.manageContactInfos) {
-        add(Menu.EDIT_MY_CONTACT_INFOS, '/users/edit-my-profile/contact-infos', 'perm_contact_calendar',
+        add(Menu.MY_CONTACT_INFOS, '/users/my-profile/contact-infos', 'perm_contact_calendar',
           this.messages.menuPersonalContactInfos(), [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
       }
       add(Menu.SETTINGS, '/settings', 'settings',

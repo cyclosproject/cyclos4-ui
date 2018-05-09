@@ -11,14 +11,14 @@ import { cloneDeep } from 'lodash';
 const BASIC_FIELDS = ['name', 'username', 'email'];
 
 /**
- * Edits the logged user's profile
+ * Edits a user's profile. Currently implemented only for the logged user.
  */
 @Component({
-  selector: 'edit-my-profile',
-  templateUrl: 'edit-my-profile.component.html',
+  selector: 'edit-user-profile',
+  templateUrl: 'edit-user-profile.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class EditMyProfileComponent extends BaseComponent {
+export class EditUserProfileComponent extends BaseComponent {
 
   constructor(
     injector: Injector,
@@ -32,7 +32,6 @@ export class EditMyProfileComponent extends BaseComponent {
   }
 
   loaded = new BehaviorSubject(false);
-  id: string;
   data: UserDataForEdit;
   user: UserEdit;
   form: FormGroup;
@@ -41,8 +40,7 @@ export class EditMyProfileComponent extends BaseComponent {
 
   ngOnInit() {
     super.ngOnInit();
-    this.id = this.login.user.id;
-    this.usersService.getUserDataForEdit({ user: this.id })
+    this.usersService.getUserDataForEdit({ user: ApiHelper.SELF })
       .subscribe(data => {
         this.data = data;
         this.user = data.user;
@@ -99,7 +97,7 @@ export class EditMyProfileComponent extends BaseComponent {
     // Instead, it is a separated parameter
     const confirmationPassword = this.form.value.confirmationPassword || '';
     this.usersService.updateUser({
-      user: this.id,
+      user: ApiHelper.SELF,
       body: user,
       confirmationPassword: confirmationPassword
     }).subscribe(() => {

@@ -4,10 +4,11 @@ import { Menu } from 'app/shared/menu';
 import { PublicRegistrationComponent } from 'app/users/registration/public-registration.component';
 import { SearchUsersComponent } from 'app/users/search/search-users.component';
 import { ViewUserProfileComponent } from 'app/users/profile/view-user-profile.component';
-import { EditMyProfileComponent } from 'app/users/profile/edit-my-profile.component';
+import { EditUserProfileComponent } from 'app/users/profile/edit-user-profile.component';
 import { CountriesResolve } from 'app/countries.resolve';
 import { LoggedUserGuard } from 'app/logged-user-guard';
 import { ValidateRegistrationComponent } from 'app/users/registration/validate-registration.component';
+import { ManagePhonesComponent } from './profile/manage-phones.component';
 
 const usersRoutes: Routes = [
   {
@@ -21,6 +22,17 @@ const usersRoutes: Routes = [
         }
       },
       {
+        path: 'profile/:key',
+        component: ViewUserProfileComponent,
+        resolve: {
+          countries: CountriesResolve
+        },
+        data: {
+          menu: Menu.USER_PROFILE
+        }
+      },
+
+      {
         path: 'my-profile',
         component: ViewUserProfileComponent,
         canActivate: [LoggedUserGuard],
@@ -32,21 +44,19 @@ const usersRoutes: Routes = [
         }
       },
       {
-        path: 'edit-my-profile',
-        component: EditMyProfileComponent,
+        path: 'my-profile/edit',
+        component: EditUserProfileComponent,
         canActivate: [LoggedUserGuard],
         data: {
           menu: Menu.EDIT_MY_PROFILE
         }
       },
       {
-        path: 'profile/:key',
-        component: ViewUserProfileComponent,
-        resolve: {
-          countries: CountriesResolve
-        },
+        path: 'my-profile/phones',
+        component: ManagePhonesComponent,
+        canActivate: [LoggedUserGuard],
         data: {
-          menu: Menu.USER_PROFILE
+          menu: Menu.MY_PHONES
         }
       },
       {

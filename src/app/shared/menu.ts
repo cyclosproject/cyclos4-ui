@@ -65,10 +65,10 @@ export module Menu {
   // Personal
   export const MY_PROFILE = new Menu(RootMenu.PERSONAL);
   export const EDIT_MY_PROFILE = new Menu(RootMenu.PERSONAL, FloatingMenu.EDIT_MY_PROFILE);
-  export const EDIT_MY_PHONES = new Menu(RootMenu.PERSONAL, FloatingMenu.EDIT_MY_PROFILE);
-  export const EDIT_MY_ADRRESSES = new Menu(RootMenu.PERSONAL, FloatingMenu.EDIT_MY_PROFILE);
-  export const EDIT_MY_IMAGES = new Menu(RootMenu.PERSONAL, FloatingMenu.EDIT_MY_PROFILE);
-  export const EDIT_MY_CONTACT_INFOS = new Menu(RootMenu.PERSONAL, FloatingMenu.EDIT_MY_PROFILE);
+  export const MY_PHONES = new Menu(RootMenu.PERSONAL, FloatingMenu.EDIT_MY_PROFILE);
+  export const MY_ADRRESSES = new Menu(RootMenu.PERSONAL, FloatingMenu.EDIT_MY_PROFILE);
+  export const MY_IMAGES = new Menu(RootMenu.PERSONAL, FloatingMenu.EDIT_MY_PROFILE);
+  export const MY_CONTACT_INFOS = new Menu(RootMenu.PERSONAL, FloatingMenu.EDIT_MY_PROFILE);
   export const SETTINGS = new Menu(RootMenu.PERSONAL);
   export const CONTACTS = new Menu(RootMenu.PERSONAL);
   export const PASSWORDS = new Menu(RootMenu.PERSONAL);

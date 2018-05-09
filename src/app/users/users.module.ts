@@ -10,8 +10,9 @@ import { SearchUsersComponent } from 'app/users/search/search-users.component';
 import { ViewAddressDetailsComponent } from 'app/users/profile/view-address-details.component';
 import { ValidateRegistrationComponent } from './registration/validate-registration.component';
 import { ViewUserProfileComponent } from 'app/users/profile/view-user-profile.component';
-import { EditMyProfileComponent } from 'app/users/profile/edit-my-profile.component';
+import { EditUserProfileComponent } from 'app/users/profile/edit-user-profile.component';
 import { UserFieldsFormComponent } from 'app/users/profile/user-fields-form.component';
+import { ManagePhonesComponent } from './profile/manage-phones.component';
 
 /**
  * Users module
@@ -34,8 +35,10 @@ import { UserFieldsFormComponent } from 'app/users/profile/user-fields-form.comp
     SearchUsersComponent,
     ViewUserProfileComponent,
     ViewAddressDetailsComponent,
-    EditMyProfileComponent,
-    UserFieldsFormComponent
+    EditUserProfileComponent,
+    UserFieldsFormComponent,
+
+    ManagePhonesComponent
   ]
 })
 export class UsersModule {

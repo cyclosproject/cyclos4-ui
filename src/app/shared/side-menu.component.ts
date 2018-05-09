@@ -1,7 +1,7 @@
 import { Component, Input, ChangeDetectionStrategy, Injector } from '@angular/core';
 import { BaseComponent } from 'app/shared/base.component';
 
-import { RootMenu, MenuEntry, MenuType, RootMenuEntry, Menu, SideMenuEntries } from 'app/shared/menu';
+import { RootMenu, Menu, SideMenuEntries } from 'app/shared/menu';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { MenuService } from 'app/shared/menu.service';
