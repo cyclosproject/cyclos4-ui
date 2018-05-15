@@ -16,7 +16,7 @@ import { NotificationService } from 'app/core/notification.service';
 import { Messages } from 'app/messages/messages';
 
 import { MatGridList } from '@angular/material';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { BaseControlComponent } from 'app/shared/base-control.component';
 
 // Contains a mapping between OTP send mediums and material icon ligatures

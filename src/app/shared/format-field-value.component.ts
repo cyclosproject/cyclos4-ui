@@ -7,7 +7,7 @@ import {
 } from 'app/api/models';
 import { Messages } from 'app/messages/messages';
 import { ApiHelper } from 'app/shared/api-helper';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { BehaviorSubject } from 'rxjs';
 import { NextRequestState } from 'app/core/next-request-state';
 import * as download from 'downloadjs';
 import { FilesService, ImagesService } from 'app/api/services';

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Country } from 'app/api/models/country';
 import { AddressesService } from 'app/api/services';
 import { SingletonResolve } from 'app/singleton.resolve';

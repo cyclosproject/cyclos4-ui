@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Injector } from '@angular/core';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { BehaviorSubject } from 'rxjs';
 import { BaseComponent } from 'app/shared/base.component';
 import { UsersService } from 'app/api/services';
 import { UserView, Country } from 'app/api/models';

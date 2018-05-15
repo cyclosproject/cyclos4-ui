@@ -3,8 +3,8 @@ import { BaseComponent } from 'app/shared/base.component';
 import { User, Auth } from 'app/api/models';
 import { MenuEntry, RootMenu, MenuType, RootMenuEntry } from 'app/shared/menu';
 import { MenuService } from 'app/shared/menu.service';
-import { Observable } from 'rxjs/Observable';
-import { map } from 'rxjs/operators/map';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 /**
  * A popup menu shown when clicking the personal icon on top

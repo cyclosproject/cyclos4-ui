@@ -18,9 +18,7 @@
     "forin": true,
     "import-blacklist": [
       true,
-      "rxjs",
-      "rxjs/Rx",
-      "rxjs/operators"
+      "rxjs/Rx"
     ],
     "import-spacing": true,
     "indent": [

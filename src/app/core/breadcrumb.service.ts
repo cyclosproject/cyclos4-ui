@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Router, NavigationStart } from '@angular/router';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { BehaviorSubject } from 'rxjs';
 import { BreadCrumbEntry } from './breadcrumb-entry';
-import { filter } from 'rxjs/operators/filter';
-import { map } from 'rxjs/operators/map';
+import { filter } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 
 const IGNORE_BREADCRUMB = ['', '/home', '/login'];

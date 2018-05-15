@@ -1,8 +1,8 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { BreakPointRegistry, MediaChange, ObservableMedia } from '@angular/flex-layout';
 import { Menu } from 'app/shared/menu';
-import { Subscription } from 'rxjs/Subscription';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subscription } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 /**
  * Shared definitions for the application layout

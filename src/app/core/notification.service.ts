@@ -3,8 +3,8 @@ import { Notification } from 'app/shared/notification';
 import { NotificationType } from 'app/shared/notification-type';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { NotificationComponent } from 'app/shared/notification.component';
-import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 /**
  * Service used to manage notifications being displayed for users

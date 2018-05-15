@@ -2,9 +2,9 @@ import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
 import { BaseComponent } from 'app/shared/base.component';
 import { RootMenuEntry, MenuType, RootMenu } from 'app/shared/menu';
 import { MenuService } from 'app/shared/menu.service';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs';
+import { Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 
 /**
  * A bar displayed below the top bar, with menu items

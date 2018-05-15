@@ -1,8 +1,8 @@
 import { Component, ChangeDetectionStrategy, Input, OnInit, OnDestroy } from '@angular/core';
 import { TdStepsComponent, TdStepComponent, IStepChangeEvent, StepState } from '@covalent/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs';
+import { Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 
 /**
  * Controls a teradata covalent stepper to implement the logic of a linear stepper

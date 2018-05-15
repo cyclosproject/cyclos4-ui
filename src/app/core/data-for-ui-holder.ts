@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DataForUi, UiKind } from 'app/api/models';
-import { Subscription } from 'rxjs/Subscription';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subscription } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { NextRequestState } from 'app/core/next-request-state';
 import { UIService } from 'app/api/services';
 import { HttpErrorResponse } from '@angular/common/http';

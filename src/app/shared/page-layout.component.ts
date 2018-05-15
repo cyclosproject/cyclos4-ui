@@ -1,8 +1,8 @@
 import { Component, Input, ChangeDetectionStrategy, Injector, ViewChild } from '@angular/core';
 import { BaseComponent } from 'app/shared/base.component';
 import { Action } from 'app/shared/action';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { MatTabGroup } from '@angular/material';
 import { FormGroup } from '@angular/forms';
 import { cloneDeep } from 'lodash';

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Auth, User } from 'app/api/models';
 import { AuthService } from 'app/api/services/auth.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { BehaviorSubject } from 'rxjs';
 import { NextRequestState } from 'app/core/next-request-state';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 

@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { MenuType, Menu, RootMenuEntry, MenuEntry, RootMenu, FloatingMenu, SideMenuEntries } from 'app/shared/menu';
 import { Messages } from 'app/messages/messages';
 import { ApiHelper } from 'app/shared/api-helper';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { BehaviorSubject } from 'rxjs';
 import { AccountStatus, Auth } from 'app/api/models';
 import { AccountsService } from 'app/api/services';
 import { PushNotificationsService } from 'app/core/push-notifications.service';
-import { Observable } from 'rxjs/Observable';
-import { map } from 'rxjs/operators/map';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 
 /**

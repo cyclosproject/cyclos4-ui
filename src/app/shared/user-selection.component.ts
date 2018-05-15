@@ -4,16 +4,16 @@ import {
 } from '@angular/core';
 import { UserDataForSearch, UserResult } from 'app/api/models';
 import { NG_VALUE_ACCESSOR, ControlContainer } from '@angular/forms';
-import { debounceTime } from 'rxjs/operators/debounceTime';
-import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged';
+import { debounceTime } from 'rxjs/operators';
+import { distinctUntilChanged } from 'rxjs/operators';
 import { UsersService } from 'app/api/services';
 import { Messages } from 'app/messages/messages';
 import { ApiHelper } from 'app/shared/api-helper';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { BehaviorSubject } from 'rxjs';
 import { BaseControlComponent } from 'app/shared/base-control.component';
-import { Observable } from 'rxjs/Observable';
-import { switchMap } from 'rxjs/operators/switchMap';
-import { of as observableOf } from 'rxjs/observable/of';
+import { Observable } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+import { of as observableOf } from 'rxjs';
 
 // Definition of the exported NG_VALUE_ACCESSOR provider
 export const PAYMENT_USER_VALUE_ACCESSOR: Provider = {

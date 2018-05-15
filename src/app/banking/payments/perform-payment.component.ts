@@ -7,7 +7,7 @@ import {
 import { PaymentKind } from 'app/banking/payments/payment-kind';
 import { IdMethod } from 'app/banking/payments/id-method';
 import { PaymentsService, UsersService, ContactsService } from 'app/api/services';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { BehaviorSubject } from 'rxjs';
 import { ApiHelper } from 'app/shared/api-helper';
 import { ErrorStatus } from 'app/core/error-status';
 import { LinearStepperControlComponent } from 'app/shared/linear-stepper-control.component';

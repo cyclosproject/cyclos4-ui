@@ -6,7 +6,7 @@ import { ErrorHandlerService } from 'app/core/error-handler.service';
 import { LoginService } from 'app/core/login.service';
 import { NotificationService } from 'app/core/notification.service';
 import { ObservableMedia } from '@angular/flex-layout';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StateManager } from '../core/state-manager';
 import { BreadcrumbService } from '../core/breadcrumb.service';

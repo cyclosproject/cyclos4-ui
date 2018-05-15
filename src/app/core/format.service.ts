@@ -6,7 +6,7 @@ import { ApiConfiguration } from 'app/api/api-configuration';
 import { environment } from 'environments/environment';
 import { Messages } from 'app/messages/messages';
 import { MatDateFormats } from '@angular/material';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { BehaviorSubject } from 'rxjs';
 
 import Big from 'big.js';
 import { DataForUiHolder } from './data-for-ui-holder';

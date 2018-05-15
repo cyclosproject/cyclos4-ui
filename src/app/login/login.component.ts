@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy, Injector } from '@angular/core';
 import { DataForLogin } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { BehaviorSubject } from 'rxjs';
 import { LoginPageState } from '../core/login.service';
 
 /**

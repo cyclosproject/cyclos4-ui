@@ -2,7 +2,7 @@ import { Component, Injector, ChangeDetectionStrategy, Input } from '@angular/co
 import { BaseComponent } from 'app/shared/base.component';
 import { UserDataForNew } from 'app/api/models';
 import { FormGroup, FormArray } from '@angular/forms';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { BehaviorSubject } from 'rxjs';
 import { empty } from 'app/shared/helper';
 
 /**

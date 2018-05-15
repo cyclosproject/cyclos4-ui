@@ -6,9 +6,9 @@ import { AvailabilityEnum } from 'app/api/models/availability-enum';
 import { AddressFieldEnum } from 'app/api/models/address-field-enum';
 import { ApiHelper } from 'app/shared/api-helper';
 import { CountriesResolve } from 'app/countries.resolve';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Country } from 'app/api/models/country';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { BehaviorSubject } from 'rxjs';
 
 /**
  * Provides the input for user fields

@@ -3,10 +3,10 @@ import { EventSourcePolyfill } from 'ng-event-source';
 import { LoginService } from 'app/core/login.service';
 import { Auth, AccountWithStatus } from 'app/api/models';
 import { ApiConfiguration } from 'app/api/api-configuration';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { NotificationService } from 'app/core/notification.service';
 import { Messages } from 'app/messages/messages';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 
 export const LOGGED_OUT = 'loggedOut';

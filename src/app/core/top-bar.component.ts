@@ -2,7 +2,7 @@ import { Component, Input, ElementRef, ViewChild, ChangeDetectionStrategy, Injec
 import { MatSidenav } from '@angular/material';
 import { BaseComponent } from 'app/shared/base.component';
 import { User } from 'app/api/models';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 
 /**
  * The top bar with the application title, main menu, personal menu, etc.

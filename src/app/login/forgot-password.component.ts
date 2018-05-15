@@ -2,7 +2,7 @@ import { Component, ChangeDetectionStrategy, Injector } from '@angular/core';
 import { DataForLogin, PrincipalTypeInput } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { BehaviorSubject } from 'rxjs';
 import { AuthService } from 'app/api/services';
 import { ApiHelper } from 'app/shared/api-helper';
 

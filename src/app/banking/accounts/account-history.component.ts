@@ -5,13 +5,13 @@ import {
 } from 'app/api/models';
 import { AccountsService } from 'app/api/services';
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { BehaviorSubject } from 'rxjs';
 import { BaseComponent } from 'app/shared/base.component';
 import { TableDataSource } from 'app/shared/table-datasource';
 import { ApiHelper } from 'app/shared/api-helper';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { tap } from 'rxjs/operators/tap';
-import { debounceTime } from 'rxjs/operators/debounceTime';
+import { tap } from 'rxjs/operators';
+import { debounceTime } from 'rxjs/operators';
 
 /** Information for an account status element shown on top */
 export type StatusIndicator = {

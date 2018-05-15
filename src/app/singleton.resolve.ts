@@ -1,8 +1,8 @@
 import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import { of as observableOf } from 'rxjs/observable/of';
-import { Subscription } from 'rxjs/Subscription';
+import { BehaviorSubject } from 'rxjs';
+import { Observable } from 'rxjs';
+import { of as observableOf } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 /**
  * Base class to be extended by resolvers that fetch data once and the data is

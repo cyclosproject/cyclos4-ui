@@ -3,10 +3,10 @@ import { BaseComponent } from 'app/shared/base.component';
 
 import { RootMenu, Menu, SideMenuEntries } from 'app/shared/menu';
 import { ApiHelper } from 'app/shared/api-helper';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { BehaviorSubject } from 'rxjs';
 import { MenuService } from 'app/shared/menu.service';
 import { AccountWithCurrency } from 'app/api/models';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 /**
  * A context-specific menu shown on the side of the layout for medium-large screens

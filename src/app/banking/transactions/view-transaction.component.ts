@@ -1,5 +1,5 @@
 import { Component, Injector, ChangeDetectionStrategy } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { BehaviorSubject } from 'rxjs';
 import { TransactionsService } from 'app/api/services/transactions.service';
 import { BaseComponent } from 'app/shared/base.component';
 import { TransactionView } from 'app/api/models/transaction-view';

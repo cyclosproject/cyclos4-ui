@@ -9,7 +9,7 @@ import {
 } from '@angular/forms';
 import { PasswordInputComponent } from 'app/shared/password-input.component';
 import { Messages } from 'app/messages/messages';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { BaseControlComponent } from 'app/shared/base-control.component';
 
 // Definition of the exported NG_VALUE_ACCESSOR provider

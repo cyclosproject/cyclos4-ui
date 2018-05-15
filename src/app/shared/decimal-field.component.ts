@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 import { FormatService } from 'app/core/format.service';
 import { BaseControlComponent } from 'app/shared/base-control.component';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { BehaviorSubject } from 'rxjs';
 import { LayoutService } from 'app/core/layout.service';
 
 // Definition of the exported NG_VALUE_ACCESSOR provider

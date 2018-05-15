@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { of as observableOf } from 'rxjs/observable/of';
+import { Observable } from 'rxjs';
+import { of as observableOf } from 'rxjs';
 import { AbstractControl, FormGroup } from '@angular/forms';
-import { Subscription } from 'rxjs/Subscription';
-import { tap } from 'rxjs/operators/tap';
+import { Subscription } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 

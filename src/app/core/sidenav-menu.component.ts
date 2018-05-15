@@ -3,7 +3,7 @@ import { MatSidenav } from '@angular/material';
 import { BaseComponent } from 'app/shared/base.component';
 import { RootMenuEntry, MenuType, MenuEntry } from 'app/shared/menu';
 import { MenuService } from 'app/shared/menu.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'sidenav-menu',

@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
 import { NotificationService } from 'app/core/notification.service';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import { tap } from 'rxjs/operators/tap';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { NextRequestState } from 'app/core/next-request-state';
 
 /**
