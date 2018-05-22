@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
 import { Image } from 'app/api/models';
-import { Lightbox } from 'angular2-lightbox';
+import { Lightbox } from 'ngx-lightbox';
 
 const MAX_THUMB_WIDTH = 160;
 const MAX_THUMB_HEIGHT = 100;

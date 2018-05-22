@@ -16,7 +16,7 @@
       <ng-container *ngIf="form.value.addressDefined">
         <ng-container *ngFor="let field of addressFields; let first = first">
           <ng-container [formGroup]="addressForm">
-            <mat-input-container *ngIf="field == 'country'; else addressField"
+            <mat-form-field *ngIf="field == 'country'; else addressField"
               fxFlex="grow">
               <mat-select [formControlName]="field"
                 [required]="requiredAddressField(field) | async"
@@ -27,15 +27,15 @@
                   {{ country.name }}
                 </mat-option>
               </mat-select>
-            </mat-input-container>
+            </mat-form-field>
             <ng-template #addressField>
-              <mat-input-container fxFlex="grow">
+              <mat-form-field fxFlex="grow">
                 <input matInput
                   [focused]="optionalAddress && first"
                   [formControlName]="field"
                   [required]="requiredAddressField(field) | async"
                   [placeholder]="addressFieldLabel(field)" />
-              </mat-input-container>
+              </mat-form-field>
             </ng-template>
           </ng-container>
         </ng-container>

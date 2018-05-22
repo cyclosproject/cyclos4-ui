@@ -1,7 +1,7 @@
 import { Provider, APP_INITIALIZER } from '@angular/core';
 import { ApiConfiguration } from 'app/api/api-configuration';
 import { environment } from 'environments/environment';
-import { LightboxConfig } from 'angular2-lightbox';
+import { LightboxConfig } from 'ngx-lightbox';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 
 // Initializes the shared services

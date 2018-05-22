@@ -23,7 +23,7 @@ import { ApiInterceptor } from 'app/core/api.interceptor';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CountriesResolve } from 'app/countries.resolve';
 import { BreadcrumbService } from './breadcrumb.service';
-import { LightboxModule } from 'angular2-lightbox';
+import { LightboxModule } from 'ngx-lightbox';
 import { NextRequestState } from './next-request-state';
 import { SvgIconRegistry } from 'app/core/svg-icon-registry';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
