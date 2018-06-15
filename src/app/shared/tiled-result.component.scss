@@ -1,0 +1,44 @@
+.mat-card {
+  padding: 8px !important;
+  min-width: 220px;
+  min-height: 90px;
+
+  div.title {
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+
+  div.image {
+    float: left;
+    margin-right: 12px;
+  }
+}
+
+:host {
+  display: inline-block;
+}
+
+.gt-xs :host  {
+  .image {
+    margin-left: 8px;
+    margin-top: 8px;
+  }
+  .container {
+    margin-left: 8px;
+  }
+}
+
+.xs :host  {
+  flex: 1 1 100% !important;
+  display: block;
+
+  .mat-card {
+    min-width: initial;
+    min-height: initial;
+  }
+
+  actions {
+    max-width: 150px;
+    display: block;
+  }
+}

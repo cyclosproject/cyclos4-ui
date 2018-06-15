@@ -2,9 +2,16 @@
 
 :host {
   flex: 1 1 100%;
+  width: 100%;
 }
 .actions.top-margin-none {
   margin-top: 0;
+}
+.actions.top-margin-small {
+  margin-top: 8px;
+}
+.actions.top-margin-half {
+  margin-top: 12px;
 }
 .actions.top-margin-normal {
   margin-top: 24px;
@@ -12,16 +19,30 @@
 .actions.top-margin-double {
   margin-top: 48px;
 }
-.gt-xs :host /deep/ {
+.gt-xs :host /deep/ .actions.button-space-normal {
   button, a {
-    flex: 0;
     margin-right: 22px;
   }
+}
+.gt-xs :host /deep/ .actions.button-space-small {
+  button, a {
+    margin-right: 4px;
+  }
+}
+.gt-xs :host /deep/ .actions.button-space-equidistant {
+  justify-content: space-between !important;
 
+  button, a {
+    margin-right: 0;
+  }
+}
+
+.gt-xs :host /deep/ {
   *:last-child {
     margin-right: 0;
   }
 }
+
 .lt-sm :host /deep/ {
   button, a {
     flex: 1 1 100%;

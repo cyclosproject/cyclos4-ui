@@ -1,0 +1,41 @@
+<mat-card>
+  <mat-card-content>
+    <div class="outer"
+      fxLayout="column"
+      fxLayout.xs="row">
+      <div class="details"
+        fxFlex="grow"
+        fxLayout="row"
+        fxLayoutGap="4px">
+        <div class="image"
+          fxFlex="nogrow"
+          fxLayout="column"
+          *ngIf="image != null || icon != null">
+          <avatar [icon]="icon"
+            [image]="image"></avatar>
+        </div>
+        <div class="container"
+          fxFlex="grow"
+          fxLayout="column"
+          fxLayoutAlign.xs="center center">
+          <div class="title">{{ title }}</div>
+          <div class="content">
+            <ng-content></ng-content>
+          </div>
+        </div>
+      </div>
+      <actions *ngIf="actions && actions.length > 0"
+        [reverseXs]="false"
+        topMargin="small"
+        buttonSpace="equidistant">
+        <button *ngFor="let act of actions"
+          mat-button
+          (click)="act.onClick()">
+          <mat-icon *ngIf="act.icon"
+            ngClass="mat-22">{{ act.icon }}</mat-icon>
+          {{ act.label }}
+        </button>
+      </actions>
+    </div>
+  </mat-card-content>
+</mat-card>

@@ -11,8 +11,10 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class ActionsComponent implements OnInit {
 
-  @Input() topMargin: 'normal' | 'double' | 'none' = 'normal';
+  @Input() topMargin: 'normal' | 'double' | 'half' | 'small' | 'none' = 'normal';
   @Input() align: string;
+  @Input() buttonSpace: 'normal' | 'small' | 'equidistant' = 'normal';
+  @Input() reverseXs = true;
 
   constructor() { }
 

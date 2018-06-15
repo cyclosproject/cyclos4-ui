@@ -19,8 +19,11 @@ import { MatCardModule } from '@angular/material/card';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { CovalentStepsModule } from '@covalent/core';
+
+import { SatPopoverModule } from '@ncstate/sat-popover';
 
 import { PageLayoutComponent } from 'app/shared/page-layout.component';
 import { PageFiltersComponent } from 'app/shared/page-filters.component';
@@ -41,11 +44,16 @@ import { MaskDirective } from 'app/shared/mask.directive';
 import { NumbersOnlyDirective } from 'app/shared/numbers-only.directive';
 import { FocusFirstDirective } from 'app/shared/focus-first.directive';
 import { NotificationComponent } from 'app/shared/notification.component';
+import { YesNoComponent } from 'app/shared/yes-no.component';
+import { ConfirmWithPasswordComponent } from 'app/shared/confirm-with-password.component';
 import { NotFoundComponent } from 'app/shared/not-found.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ViewFormComponent } from 'app/shared/view-form.component';
 import { LabelValueComponent } from 'app/shared/label-value.component';
 import { AvatarComponent } from 'app/shared/avatar.component';
+import { FabSpeedDialComponent } from 'app/shared/fab-speed-dial.component';
+import { TiledResultsComponent } from 'app/shared/tiled-results.component';
+import { TiledResultComponent } from 'app/shared/tiled-result.component';
 import { PaginatorComponent } from 'app/shared/paginator.component';
 import { FormatFieldValueComponent } from 'app/shared/format-field-value.component';
 import { CustomFieldValueComponent } from 'app/shared/custom-field-value.component';
@@ -83,6 +91,8 @@ import { PageTitleComponent } from 'app/shared/page-title.component';
     ViewFormComponent,
     LabelValueComponent,
     NotificationComponent,
+    YesNoComponent,
+    ConfirmWithPasswordComponent,
     DateFieldComponent,
     DecimalFieldComponent,
     FormatFieldValueComponent,
@@ -96,6 +106,9 @@ import { PageTitleComponent } from 'app/shared/page-title.component';
     ConfirmationPasswordComponent,
     UserSelectionComponent,
     AvatarComponent,
+    FabSpeedDialComponent,
+    TiledResultsComponent,
+    TiledResultComponent,
     UserLinkComponent,
     ImageViewerComponent,
     CaptchaComponent,
@@ -127,6 +140,7 @@ import { PageTitleComponent } from 'app/shared/page-title.component';
     MatCheckboxModule,
     MatSlideToggleModule,
     MatProgressSpinnerModule,
+    MatSnackBarModule,
     MatRadioModule,
     MatIconModule,
     MatGridListModule,
@@ -135,7 +149,8 @@ import { PageTitleComponent } from 'app/shared/page-title.component';
     MatDialogModule,
     MatCardModule,
     MatSidenavModule,
-    CovalentStepsModule
+    CovalentStepsModule,
+    SatPopoverModule
   ],
   exports: [
     CommonModule,
@@ -150,6 +165,7 @@ import { PageTitleComponent } from 'app/shared/page-title.component';
     MatCheckboxModule,
     MatSlideToggleModule,
     MatProgressSpinnerModule,
+    MatSnackBarModule,
     MatRadioModule,
     MatIconModule,
     MatGridListModule,
@@ -159,6 +175,7 @@ import { PageTitleComponent } from 'app/shared/page-title.component';
     MatCardModule,
     MatSidenavModule,
     CovalentStepsModule,
+    SatPopoverModule,
 
     PageLayoutComponent,
     SideMenuComponent,
@@ -172,6 +189,8 @@ import { PageTitleComponent } from 'app/shared/page-title.component';
     ViewFormComponent,
     LabelValueComponent,
     NotificationComponent,
+    YesNoComponent,
+    ConfirmWithPasswordComponent,
     DateFieldComponent,
     DecimalFieldComponent,
     FormatFieldValueComponent,
@@ -185,6 +204,9 @@ import { PageTitleComponent } from 'app/shared/page-title.component';
     ConfirmationPasswordComponent,
     UserSelectionComponent,
     AvatarComponent,
+    FabSpeedDialComponent,
+    TiledResultsComponent,
+    TiledResultComponent,
     UserLinkComponent,
     ImageViewerComponent,
     CaptchaComponent,
@@ -204,7 +226,9 @@ import { PageTitleComponent } from 'app/shared/page-title.component';
     AccountPipe
   ],
   entryComponents: [
-    NotificationComponent
+    NotificationComponent,
+    YesNoComponent,
+    ConfirmWithPasswordComponent
   ]
 })
 export class SharedModule {

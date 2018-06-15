@@ -1,0 +1,44 @@
+<form [formGroup]="form"
+  fxLayout="column">
+  <h1 class="no-top-margin">{{ title }}</h1>
+  <mat-form-field>
+    <input matInput
+      formControlName="name"
+      required
+      focused
+      [placeholder]="messages.name()" />
+    <mat-error>
+      {{ form.get('name').getError('message') }}
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput
+      formControlName="number"
+      required
+      [placeholder]="messages.phoneNumber()" />
+    <mat-error>
+      {{ form.get('number').getError('message') }}
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field *ngIf="data.extensionEnabled">
+    <input matInput
+      formControlName="extension"
+      required
+      [placeholder]="messages.phoneExtension()" />
+    <mat-error>
+      {{ form.get('extension').getError('message') }}
+    </mat-error>
+  </mat-form-field>
+  <mat-checkbox *ngIf="managePrivacy"
+    formControlName="hidden">{{ messages.phonePrivate() }}</mat-checkbox>
+  <confirmation-password *ngIf="data.confirmationPasswordInput"
+    formControlName="confirmationPassword"
+    [passwordInput]="data.confirmationPasswordInput"></confirmation-password>
+  <actions buttonSpace="equidistant">
+    <button mat-raised-button
+      color="accent"
+      (click)="save()">{{ messages.save() }}</button>
+    <button mat-raised-button
+      (click)="dialogRef.close()">{{ messages.cancel() }}</button>
+  </actions>
+</form>

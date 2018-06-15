@@ -8,7 +8,7 @@ import { EditUserProfileComponent } from 'app/users/profile/edit-user-profile.co
 import { CountriesResolve } from 'app/countries.resolve';
 import { LoggedUserGuard } from 'app/logged-user-guard';
 import { ValidateRegistrationComponent } from 'app/users/registration/validate-registration.component';
-import { ManagePhonesComponent } from './profile/manage-phones.component';
+import { ManagePhonesComponent } from './phones/manage-phones.component';
 
 const usersRoutes: Routes = [
   {

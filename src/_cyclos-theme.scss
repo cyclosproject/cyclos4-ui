@@ -59,6 +59,14 @@
     color: mat-color($foreground, text);
   }
 
+  hr {
+    border: none;
+    border-bottom: 1px solid mat-color($foreground, divider);
+    width: 100%;
+    display: block;
+    margin: 16px auto;
+  }
+
   a.plain {
     color: map-get($foreground, text);
   }

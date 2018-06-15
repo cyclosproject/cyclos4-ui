@@ -7,8 +7,9 @@
   personal-menu {
     .popup {
       background-color: map-get($background, card);
+      color: map-get($foreground, text);
     }
-    
+
     .details {
       color: map-get($foreground, text);
     }

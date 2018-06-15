@@ -1,0 +1,10 @@
+<div class="tiled-results"
+  [ngClass]="{
+    'tiles-1': tilesPerRow === 1,
+    'tiles-2': tilesPerRow === 2,
+    'tiles-3': tilesPerRow === 3
+  }"
+  fxLayout="row wrap"
+  fxLayoutGap="8px">
+  <ng-content></ng-content>
+</div>

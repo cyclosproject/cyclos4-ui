@@ -6,12 +6,15 @@
       <user-fields-form [data]="data"
         [user]="user"
         [form]="form"></user-fields-form>
+      <confirmation-password *ngIf="data.confirmationPasswordInput"
+        formControlName="confirmationPassword"
+        [passwordInput]="data.confirmationPasswordInput"></confirmation-password>
     </form>
     <actions>
       <button fxFlex.gt-xs="nogrow"
         mat-raised-button
         color="accent"
-        [disabled]="!form.valid"
+        [disabled]="(form.statusChanges | async) != 'VALID'"
         (click)="save()">
         {{ messages.save() }}
       </button>

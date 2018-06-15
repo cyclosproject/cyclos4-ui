@@ -6,6 +6,8 @@
   ],
   "typescript.tsdk": "node_modules/typescript/lib",
   "tslint.autoFixOnSave": true,
+  "typescript.preferences.quoteStyle": "single",
+  "typescript.preferences.importModuleSpecifier": "non-relative",
   "html.format.endWithNewline": true,
   "html.format.wrapLineLength": 80,
   "html.format.preserveNewLines": true,

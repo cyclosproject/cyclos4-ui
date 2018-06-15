@@ -1,0 +1,24 @@
+<page-layout [title]="messages.userManageMyPhones()"
+  [loaded]="loaded">
+  <page-content *ngIf="loaded | async">
+    <tiled-results>
+      <tiled-result *ngFor="let phone of data.phones"
+        [title]="phone.name"
+        [icon]="icon(phone.type)"
+        [actions]="actions(phone)"
+        fxFlex="nogrow">
+        {{ phone.number }}
+        <div>
+          {{ phone.hidden ? messages.visibilityPrivate() : messages.visibilityPublic() }}
+        </div>
+        <div *ngIf="phone.type === 'mobile' && data.smsEnabled">
+          {{ phone.verified ? phone.enabledForSms ? messages.phoneSmsEnabled() : messages.phoneSmsDisabled()
+          : messages.phoneNotVerified() }}
+        </div>
+      </tiled-result>
+    </tiled-results>
+    <fab-speed-dial *ngIf="createActions.length > 0"
+      [actions]="createActions">
+    </fab-speed-dial>
+  </page-content>
+</page-layout>

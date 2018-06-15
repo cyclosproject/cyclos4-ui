@@ -2,10 +2,15 @@
     actions: true,
     'top-margin-none': topMargin === 'none',
     'top-margin-normal': topMargin === 'normal',
-    'top-margin-double': topMargin === 'double'
+    'top-margin-double': topMargin === 'double',
+    'top-margin-half': topMargin === 'half',
+    'top-margin-small': topMargin === 'small',
+    'button-space-normal': buttonSpace === 'normal',
+    'button-space-small': buttonSpace === 'small',
+    'button-space-equidistant': buttonSpace === 'equidistant'
   }"
   fxLayout="row"
-  fxLayout.xs="column-reverse"
+  [fxLayout.xs]="reverseXs ? 'column-reverse' : 'column'"
   [fxLayoutAlign]="align">
   <ng-content></ng-content>
 </div>

@@ -33,6 +33,7 @@
     "@angular/platform-browser-dynamic": "^6.0.4",
     "@angular/router": "^6.0.4",
     "@covalent/core": "^2.0.0-beta.2",
+    "@ncstate/sat-popover": "^2.1.1",
     "@types/downloadjs": "^1.4.0",
     "big.js": "^5.1.2",
     "core-js": "^2.5.7",

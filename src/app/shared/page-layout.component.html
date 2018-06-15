@@ -8,7 +8,7 @@
       left: true,
       'filters-hidden': !(filtersShown | async)
     }">
-    <mat-card>
+    <mat-card ngClass="layout">
       <mat-tab-group #tabGroup>
         <mat-tab [label]="(sideMenu.entries | async)?.title || messages.menu()">
           <side-menu #sideMenu></side-menu>
@@ -35,7 +35,7 @@
       <!-- There is a left area: separated containers for header and content -->
       <div *ngIf="hasHeader && (loaded == null || (loaded | async))"
         class="header">
-        <mat-card>
+        <mat-card ngClass="layout">
           <mat-card-content>
             <page-title *ngIf="title != null && title.length > 0"
               [pageLayout]="this"
@@ -49,7 +49,7 @@
       </div>
       <div class="content"
         [ngClass]="{'tight': tightContent}">
-        <mat-card>
+        <mat-card ngClass="layout">
           <mat-card-content>
             <div class="spinner"
               *ngIf="loaded != null && !(loaded | async) && showSpinner">

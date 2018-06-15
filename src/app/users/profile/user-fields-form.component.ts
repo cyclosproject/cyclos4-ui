@@ -21,11 +21,28 @@ export class UserFieldsFormComponent extends BaseComponent {
   @Input() form: FormGroup;
   @Input() data: UserBasicData;
   @Input() user: UserManage;
-  editableFields: string[] = [];
+  hasReadOnlyFields = false;
 
   constructor(
     injector: Injector) {
     super(injector);
+  }
+
+  ngOnInit() {
+    super.ngOnInit();
+    if (this.readOnly('name') && this.user.name
+      || this.readOnly('username') && this.user.username
+      || this.readOnly('email') && this.user.email) {
+      this.hasReadOnlyFields = true;
+    }
+    if (!this.hasReadOnlyFields) {
+      for (const cf of this.data.customFields) {
+        if (this.readOnly(cf.internalName) && this.user.customValues[cf.internalName] != null) {
+          this.hasReadOnlyFields = true;
+          break;
+        }
+      }
+    }
   }
 
   readOnly(field: string): boolean {

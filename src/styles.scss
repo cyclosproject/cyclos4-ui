@@ -63,6 +63,9 @@ h3 {
 h2 + h3 {
   margin-top: 16px;
 }
+h1.no-top-margin, h2.no-top-margin, h3.no-top-margin {
+  margin-top: 0 !important;
+}
 h1.no-bottom-margin, h2.no-bottom-margin, h3.no-bottom-margin {
   margin-bottom: 0 !important;
 }

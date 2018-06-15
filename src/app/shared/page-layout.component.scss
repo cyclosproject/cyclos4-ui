@@ -32,11 +32,11 @@
   }
 }
 
-:host /deep/ .mat-card {
+:host /deep/ .mat-card.layout {
   margin: 0 !important;
 }
 :host /deep/ .content, :host /deep/ .header {
-  .mat-card, .mat-card-content {
+  .mat-card.layout, .mat-card.layout .mat-card-content {
     padding: 0px;
   }
 }
@@ -97,11 +97,11 @@
   margin: 22px auto 0 auto;
 }
 
-:host /deep/ .left .mat-card {
+:host /deep/ .left .mat-card.layout {
   padding: 0px;
 }
 
-.lt-md :host /deep/ .mat-card {
+.lt-md :host /deep/ .mat-card.layout {
   border: none;
   border-radius: none;
   padding: 0;

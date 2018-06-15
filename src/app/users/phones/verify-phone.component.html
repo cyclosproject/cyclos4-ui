@@ -1,0 +1,27 @@
+<h1 class="no-top-margin">{{ messages.phoneVerifyTitle() }}</h1>
+<div fxLayout="row"
+  fxLayoutGap="16px">
+
+  <mat-form-field>
+    <input #codeControl
+      matInput
+      [formControl]="code"
+      required
+      focused
+      [placeholder]="messages.phoneVerificationCode()" />
+  </mat-form-field>
+
+  <button mat-raised-button
+    color="accent"
+    (click)="sendCode()">{{ messages.phoneSendVerificationCode() }}</button>
+
+</div>
+
+<actions buttonSpace="equidistant">
+  <button mat-raised-button
+    color="accent"
+    [disabled]="!code.valid"
+    (click)="verify()">{{ messages.confirm() }}</button>
+  <button mat-raised-button
+    (click)="dialogRef.close()">{{ messages.cancel() }}</button>
+</actions>

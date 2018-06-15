@@ -9,6 +9,7 @@ import { CoreModule } from 'app/core/core.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SettingsModule } from './settings/settings.module';
 import 'hammerjs';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material';
 
 /**
  * Root application module
@@ -29,7 +30,8 @@ import 'hammerjs';
     SettingsModule
   ],
   providers: [
-    INITIALIZE
+    INITIALIZE,
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } }
   ],
   bootstrap: [
     AppComponent

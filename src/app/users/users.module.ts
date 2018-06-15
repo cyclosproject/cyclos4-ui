@@ -12,7 +12,9 @@ import { ValidateRegistrationComponent } from './registration/validate-registrat
 import { ViewUserProfileComponent } from 'app/users/profile/view-user-profile.component';
 import { EditUserProfileComponent } from 'app/users/profile/edit-user-profile.component';
 import { UserFieldsFormComponent } from 'app/users/profile/user-fields-form.component';
-import { ManagePhonesComponent } from './profile/manage-phones.component';
+import { ManagePhonesComponent } from 'app/users/phones/manage-phones.component';
+import { PhoneFormComponent } from 'app/users/phones/phone-form.component';
+import { VerifyPhoneComponent } from 'app/users/phones/verify-phone.component';
 
 /**
  * Users module
@@ -38,7 +40,13 @@ import { ManagePhonesComponent } from './profile/manage-phones.component';
     EditUserProfileComponent,
     UserFieldsFormComponent,
 
-    ManagePhonesComponent
+    ManagePhonesComponent,
+    PhoneFormComponent,
+    VerifyPhoneComponent
+  ],
+  entryComponents: [
+    PhoneFormComponent,
+    VerifyPhoneComponent
   ]
 })
 export class UsersModule {

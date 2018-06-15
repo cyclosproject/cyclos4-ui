@@ -7,7 +7,8 @@
       class="avatar-container"
       (click)="clearState()"
       [ngClass]="{'no-image': user?.image == null}">
-      <avatar [image]="user?.image"
+      <avatar *ngIf="user?.image"
+        [image]="user?.image"
         size="huge"></avatar>
     </a>
     <div class="details-container"

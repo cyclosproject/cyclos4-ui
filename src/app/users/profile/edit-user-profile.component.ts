@@ -7,6 +7,7 @@ import { UserDataForEdit, UserEdit } from 'app/api/models';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ApiHelper } from 'app/shared/api-helper';
 import { cloneDeep } from 'lodash';
+import { getAllErrors } from '../../shared/helper';
 
 const BASIC_FIELDS = ['name', 'username', 'email'];
 
@@ -37,6 +38,8 @@ export class EditUserProfileComponent extends BaseComponent {
   form: FormGroup;
   editableFields: string[] = [];
   confirmationPassword: FormControl;
+
+  getAllErrors = getAllErrors;
 
   ngOnInit() {
     super.ngOnInit();

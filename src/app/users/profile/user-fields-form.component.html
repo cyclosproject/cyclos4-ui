@@ -28,7 +28,7 @@
         [control]="form.get('hiddenFields')"></field-privacy>
     </label-value>
   </ng-container>
-
+  <hr *ngIf="hasReadOnlyFields">
   <mat-form-field *ngIf="editable('name')">
     <input matInput
       formControlName="name"
@@ -75,7 +75,7 @@
       <input matInput
         formControlName="number"
         [required]="mobilePhoneRequired"
-        [placeholder]="messages.userMobilePhone()" />
+        [placeholder]="messages.phoneMobile()" />
       <span matSuffix
         *ngIf="managePrivacy('phone')">
         <field-privacy [control]="form.get('mobilePhone.hidden')"></field-privacy>
@@ -94,7 +94,7 @@
       <input matInput
         formControlName="number"
         [required]="landLinePhoneRequired"
-        [placeholder]="messages.userLandLinePhone()" />
+        [placeholder]="messages.phoneLandLine()" />
       <span matSuffix
         *ngIf="managePrivacy('phone')">
         <field-privacy [control]="form.get('landLinePhone.hidden')"></field-privacy>
@@ -109,7 +109,7 @@
         ngClass="field-tiny">
         <input matInput
           formControlName="extension"
-          [placeholder]="messages.userLandLinePhoneExtension()" />
+          [placeholder]="messages.phoneExtension()" />
       </mat-form-field>
     </ng-container>
   </div>

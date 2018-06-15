@@ -1,0 +1,9 @@
+.gt-xs :host ::ng-deep .tiled-results.tiles-1 tiled-result {
+  width: 100%;
+}
+.gt-xs :host ::ng-deep .tiled-results.tiles-2 tiled-result {
+  width: calc(50% - 8px);
+}
+.gt-xs :host ::ng-deep .tiled-results.tiles-3 tiled-result {
+  width: calc(33.33% - 8px);
+}
