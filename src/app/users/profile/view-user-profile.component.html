@@ -16,7 +16,7 @@
       <a [href]="'mailto:' + user.email">{{ user.email }}</a>
     </label-value>
     <label-value *ngFor="let phone of user.phones"
-      [label]="phone.type === 'mobile' ? messages.userMobilePhone() : messages.userLandLinePhone()">
+      [label]="phone.type === 'mobile' ? messages.phoneMobile() : messages.phoneLandLine()">
       <a [href]="'tel:' + phone.normalizedNumber">
         {{ phone.number }}
       </a>

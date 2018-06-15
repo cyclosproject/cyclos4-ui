@@ -31,7 +31,7 @@ import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material';
   ],
   providers: [
     INITIALIZE,
-    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 2500 } }
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 3500 } }
   ],
   bootstrap: [
     AppComponent

@@ -31,6 +31,9 @@ html.dark {
 .mat-card {
   max-width: $max-content-width;
 }
+.xs .mat-card mat-card-content {
+  padding: 8px;
+}
 
 // Titles
 h1, h2, h3 {

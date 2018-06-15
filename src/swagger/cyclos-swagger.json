@@ -8583,6 +8583,7 @@
         "summary" : "Sends the verification code for a user to verify the mobile phone",
         "description" : "Sends an SMS text with a verification code the user can use to verify\nhis mobile phone. Only verified phones can be used for receiving SMS\nnotifications or to operate in the SMS operations channel. Only the\nphone owner can verify phones with this method. Administrators / brokers\ncan directly mark a phone number as verified.\n",
         "operationId" : "sendPhoneVerificationCode",
+        "produces" : [ "application/json", "text/plain" ],
         "parameters" : [ {
           "name" : "id",
           "in" : "path",
@@ -8639,6 +8640,7 @@
         "summary" : "Marks a phone as verified if the code matches",
         "description" : "Verifies a mobile phone by submitting the code received by SMS.\nOnly verified phones can be enabled for receiving SMS\nnotifications or to operate in the SMS operations channel. \nOnly the phone owner can verify phones with this method.\nAdministrators / brokers can directly mark a phone number as verified.\n",
         "operationId" : "verifyPhone",
+        "produces" : [ "application/json", "text/plain" ],
         "parameters" : [ {
           "name" : "id",
           "in" : "path",

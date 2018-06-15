@@ -23,6 +23,9 @@ export class SettingsComponent extends BaseComponent {
     this.form = formBuilder.group({
       darkTheme: this.layout.darkTheme
     });
+    this.form.get('darkTheme').valueChanges.subscribe(dark => {
+      this.layout.darkTheme = dark;
+    });
   }
 
   ngOnInit() {
@@ -30,7 +33,4 @@ export class SettingsComponent extends BaseComponent {
     setInterval(() => this.loaded.next(true), 100);
   }
 
-  save() {
-    this.layout.darkTheme = this.form.value.darkTheme;
-  }
 }

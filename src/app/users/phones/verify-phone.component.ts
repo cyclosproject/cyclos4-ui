@@ -3,7 +3,7 @@ import { Component, ChangeDetectionStrategy, Injector, Inject, ViewChild, Elemen
 import { BehaviorSubject } from 'rxjs';
 import { BaseComponent } from 'app/shared/base.component';
 import { PhonesService } from 'app/api/services';
-import { PhoneDataForEdit, PhoneDataForNew, PhoneKind, PhoneResult } from 'app/api/models';
+import { PhoneDataForEdit, PhoneDataForNew, PhoneKind, PhoneResult, CodeVerificationStatusEnum } from 'app/api/models';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { copyProperties } from 'app/shared/helper';
@@ -42,6 +42,7 @@ export class VerifyPhoneComponent extends BaseComponent {
     this.phonesService.sendPhoneVerificationCode(this.phone.id).subscribe(number => {
       this.notification.snackBar(this.messages.phoneVerificationCodeSent(number));
       this.codeControl.nativeElement.focus();
+      this.code.setValue(null);
     });
   }
 
@@ -55,9 +56,23 @@ export class VerifyPhoneComponent extends BaseComponent {
     this.phonesService.verifyPhone({
       id: this.phone.id,
       code: this.code.value
-    }).subscribe(() => {
-      this.dialogRef.close(true);
-      this.notification.snackBar(this.messages.phoneVerified());
+    }).subscribe(status => {
+      switch (status) {
+        case CodeVerificationStatusEnum.CODE_NOT_SENT:
+        case CodeVerificationStatusEnum.EXPIRED:
+          this.notification.error(this.messages.phoneVerifyErrorMissingCode());
+          break;
+        case CodeVerificationStatusEnum.FAILED:
+          this.notification.error(this.messages.phoneVerifyErrorInvalidCode());
+          break;
+        case CodeVerificationStatusEnum.MAX_ATTEMPTS_REACHED:
+          this.notification.error(this.messages.phoneVerifyErrorMaxAttemptsReached());
+          break;
+        case CodeVerificationStatusEnum.SUCCESS:
+          this.dialogRef.close(true);
+          this.notification.snackBar(this.messages.phoneVerified());
+          break;
+      }
     });
   }
 }

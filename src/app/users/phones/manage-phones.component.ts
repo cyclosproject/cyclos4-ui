@@ -76,21 +76,22 @@ export class ManagePhonesComponent extends BaseComponent {
       this.edit(phone);
     }));
     if (phone.type === PhoneKind.MOBILE) {
-      if (this.data.canVerify && !phone.verified) {
+      if (phone.verified) {
+        if (this.data.canEnableForSms) {
+          if (phone.enabledForSms) {
+            actions.push(new Action('sms_failed', this.messages.phoneDisableSms(), () => {
+              this.disableForSms(phone);
+            }));
+          } else {
+            actions.push(new Action('sms', this.messages.phoneEnableSms(), () => {
+              this.enableForSms(phone);
+            }));
+          }
+        }
+      } else if (this.data.canVerify) {
         actions.push(new Action('verified_user', this.messages.phoneVerify(), () => {
           this.verify(phone);
         }));
-      }
-      if (this.data.canEnableForSms) {
-        if (phone.enabledForSms) {
-          actions.push(new Action('sms_failed', this.messages.phoneDisableSms(), () => {
-            this.disableForSms(phone);
-          }));
-        } else {
-          actions.push(new Action('sms', this.messages.phoneEnableSms(), () => {
-            this.enableForSms(phone);
-          }));
-        }
       }
     }
     actions.push(new Action('delete', this.messages.remove(), () => {

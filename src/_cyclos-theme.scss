@@ -8,6 +8,7 @@
 @import 'src/app/shared/page-layout.component-theme';
 @import 'src/app/shared/page-title.component-theme';
 @import 'src/app/shared/label-value.component-theme';
+@import 'src/app/shared/tiled-result.component-theme';
 @import 'src/app/shared/image-viewer.component-theme';
 @import 'src/app/login/login.component-theme';
 @import 'src/app/banking/accounts/account-history.component-theme';
@@ -34,6 +35,7 @@
   @include page-layout-component-theme($theme);
   @include page-title-component-theme($theme);
   @include label-value-component-theme($theme);
+  @include tiled-result-component-theme($theme);
   @include image-viewer-component-theme($theme);
   @include login-component-theme($theme);
   @include account-history-component-theme($theme);

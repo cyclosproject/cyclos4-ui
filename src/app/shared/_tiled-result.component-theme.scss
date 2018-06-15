@@ -1,0 +1,13 @@
+@import '~@angular/material/theming';
+
+@mixin tiled-result-component-theme($theme) {
+  $foreground: map-get($theme, foreground);
+  $background: map-get($theme, background);
+
+  tiled-result {
+    .mat-card {
+      background-color: darken(mat-color($background, card), 1%);
+      color: mat-color($foreground, text);
+    }
+  }
+}

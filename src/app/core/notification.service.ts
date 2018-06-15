@@ -103,7 +103,7 @@ export class NotificationService {
         this.open = null;
       });
       const component = ref.componentInstance;
-      component.notification = new Notification(type, message);
+      component.notification = new Notification(type, message.replace('\n', '<br>'));
       component.allowClose = allowClose;
       this.open = ref;
       result.next(ref);
