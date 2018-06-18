@@ -18,6 +18,8 @@ import { VerifyPhoneComponent } from 'app/users/phones/verify-phone.component';
 import { ManageAddressesComponent } from 'app/users/addresses/manage-addresses.component';
 import { AddressFormComponent } from 'app/users/addresses/address-form.component';
 import { ManageImagesComponent } from 'app/users/images/manage-images.component';
+import { ContactInfoFormComponent } from 'app/users/contact-infos/contact-info-form.component';
+import { ManageContactInfosComponent } from 'app/users/contact-infos/manage-contact-infos.component';
 
 /**
  * Users module
@@ -50,12 +52,16 @@ import { ManageImagesComponent } from 'app/users/images/manage-images.component'
     ManageAddressesComponent,
     AddressFormComponent,
 
-    ManageImagesComponent
+    ManageImagesComponent,
+
+    ManageContactInfosComponent,
+    ContactInfoFormComponent
   ],
   entryComponents: [
     PhoneFormComponent,
     VerifyPhoneComponent,
-    AddressFormComponent
+    AddressFormComponent,
+    ContactInfoFormComponent
   ]
 })
 export class UsersModule {

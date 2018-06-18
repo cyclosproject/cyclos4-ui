@@ -1,0 +1,32 @@
+<page-layout [title]="messages.userContactInfos()"
+  [loaded]="loaded">
+  <page-content *ngIf="loaded | async">
+    <tiled-results>
+      <tiled-result *ngFor="let contactInfo of data.contactInfos"
+        [title]="contactInfo.name"
+        [image]="contactInfo.image"
+        [actions]="actions(contactInfo)"
+        fxFlex="nogrow">
+        <div *ngIf="contactInfo.email">
+          <a [href]="'mailto:' + contactInfo.email">{{ contactInfo.email }}</a>
+        </div>
+        <div *ngIf="contactInfo.mobilePhone">
+          <a [href]="'tel:' + contactInfo.mobilePhone">{{ contactInfo.mobilePhone }}</a>
+        </div>
+        <div *ngIf="contactInfo.landLinePhone">
+          <a [href]="'tel:' + contactInfo.landLinePhone">{{ contactInfo.landLinePhone }}</a>
+          <ng-container *ngIf="contactInfo.landLineExtension">
+            {{ messages.phoneExtensionNumber(contactInfo.landLinePhone) }}
+          </ng-container>
+        </div>
+        <div *ngIf="contactInfo.address">
+          {{ contactInfo.address.name }}
+        </div>
+      </tiled-result>
+    </tiled-results>
+    <fab *ngIf="data.canManage"
+      icon="add"
+      (click)="createNew()">
+    </fab>
+  </page-content>
+</page-layout>

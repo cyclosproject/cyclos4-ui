@@ -2401,6 +2401,81 @@
         "x-contentType" : "application/json"
       }
     },
+    "/contact-infos/{id}/image" : {
+      "post" : {
+        "tags" : [ "Images" ],
+        "summary" : "Uploads a new image for the given additional contact information.\n",
+        "description" : "Saves the given image for the additional contact information.\nIf the given additional contact information already has an image, the\nold one is removed, and the current image is saved in its place.\n",
+        "operationId" : "uploadContactInfoImage",
+        "produces" : [ "application/json", "text/plain" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "The object identification",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "name",
+          "in" : "query",
+          "description" : "The name for the new image. If not informed will fall back to the\noriginal file name in the form data\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "image",
+          "in" : "formData",
+          "description" : "The image being uploaded",
+          "required" : true,
+          "type" : "file"
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "The image is saved, its id is returned in the body and the URL to get the content is returned in the `Location` header\n",
+            "schema" : {
+              "type" : "string"
+            },
+            "headers" : {
+              "Location" : {
+                "type" : "string",
+                "description" : "URL for obtaining the image content"
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized access. Missing or invalid crendentials supplied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/UnauthorizedError"
+            }
+          },
+          "403" : {
+            "description" : "Permission denied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/ForbiddenError"
+            }
+          },
+          "404" : {
+            "description" : "An expected data was not found",
+            "schema" : {
+              "$ref" : "#/definitions/NotFoundError"
+            }
+          },
+          "500" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "security" : [ {
+          "basic" : [ ]
+        }, {
+          "session" : [ ]
+        }, {
+          "accessClient" : [ ]
+        } ],
+        "x-accepts" : "application/json",
+        "x-contentType" : "application/x-www-form-urlencoded"
+      }
+    },
     "/contact-infos/{id}/operations" : {
       "get" : {
         "tags" : [ "Operations" ],
@@ -3353,81 +3428,6 @@
         "x-accepts" : "application/json",
         "x-contentType" : "multipart/form-data",
         "x-produces-any" : true
-      }
-    },
-    "/contactInfos/{id}/image" : {
-      "post" : {
-        "tags" : [ "Images" ],
-        "summary" : "Uploads a new image for the given additional contact information.\n",
-        "description" : "Saves the given image for the additional contact information.\nIf the given additional contact information already has an image, the\nold one is removed, and the current image is saved in its place.\n",
-        "operationId" : "uploadContactInfoImage",
-        "produces" : [ "application/json", "text/plain" ],
-        "parameters" : [ {
-          "name" : "id",
-          "in" : "path",
-          "description" : "The object identification",
-          "required" : true,
-          "type" : "string"
-        }, {
-          "name" : "name",
-          "in" : "query",
-          "description" : "The name for the new image. If not informed will fall back to the\noriginal file name in the form data\n",
-          "required" : false,
-          "type" : "string"
-        }, {
-          "name" : "image",
-          "in" : "formData",
-          "description" : "The image being uploaded",
-          "required" : true,
-          "type" : "file"
-        } ],
-        "responses" : {
-          "201" : {
-            "description" : "The image is saved, its id is returned in the body and the URL to get the content is returned in the `Location` header\n",
-            "schema" : {
-              "type" : "string"
-            },
-            "headers" : {
-              "Location" : {
-                "type" : "string",
-                "description" : "URL for obtaining the image content"
-              }
-            }
-          },
-          "401" : {
-            "description" : "Unauthorized access. Missing or invalid crendentials supplied for such operation",
-            "schema" : {
-              "$ref" : "#/definitions/UnauthorizedError"
-            }
-          },
-          "403" : {
-            "description" : "Permission denied for such operation",
-            "schema" : {
-              "$ref" : "#/definitions/ForbiddenError"
-            }
-          },
-          "404" : {
-            "description" : "An expected data was not found",
-            "schema" : {
-              "$ref" : "#/definitions/NotFoundError"
-            }
-          },
-          "500" : {
-            "description" : "Unexpected error",
-            "schema" : {
-              "$ref" : "#/definitions/Error"
-            }
-          }
-        },
-        "security" : [ {
-          "basic" : [ ]
-        }, {
-          "session" : [ ]
-        }, {
-          "accessClient" : [ ]
-        } ],
-        "x-accepts" : "application/json",
-        "x-contentType" : "application/x-www-form-urlencoded"
       }
     },
     "/files/temp" : {
@@ -29363,7 +29363,7 @@
           "type" : "boolean",
           "description" : "Indicates whether the addresses can be managed by the\nauthenticated user\n"
         },
-        "canCreateAddress" : {
+        "canCreate" : {
           "type" : "boolean",
           "description" : "Indicates whether the authenticated user can create a new address\nfor this user\n"
         },
@@ -29489,6 +29489,10 @@
         "canManage" : {
           "type" : "boolean",
           "description" : "Indicates whether the additional contact informations can be\nmanaged by the authenticated user\n"
+        },
+        "canCreate" : {
+          "type" : "boolean",
+          "description" : "Indicates whether new additional contact informations can be\ncreated by the authenticated user\n"
         },
         "maxContactInfos" : {
           "type" : "integer",

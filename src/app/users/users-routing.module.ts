@@ -11,6 +11,7 @@ import { ValidateRegistrationComponent } from 'app/users/registration/validate-r
 import { ManagePhonesComponent } from './phones/manage-phones.component';
 import { ManageAddressesComponent } from 'app/users/addresses/manage-addresses.component';
 import { ManageImagesComponent } from 'app/users/images/manage-images.component';
+import { ManageContactInfosComponent } from 'app/users/contact-infos/manage-contact-infos.component';
 
 const usersRoutes: Routes = [
   {
@@ -78,6 +79,14 @@ const usersRoutes: Routes = [
         canActivate: [LoggedUserGuard],
         data: {
           menu: Menu.MY_IMAGES
+        }
+      },
+      {
+        path: 'my-profile/contact-infos',
+        component: ManageContactInfosComponent,
+        canActivate: [LoggedUserGuard],
+        data: {
+          menu: Menu.MY_CONTACT_INFOS
         }
       },
       {

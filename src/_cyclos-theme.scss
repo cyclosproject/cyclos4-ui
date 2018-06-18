@@ -91,4 +91,10 @@
     background: mat-color($background, hover);
   }
 
+  page-content {
+    a {
+      color: mat-color($accent, if($is-dark, lighter, darker));
+    }
+  }
+
 }
