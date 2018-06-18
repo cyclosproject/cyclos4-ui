@@ -116,7 +116,10 @@ export class ManagePhonesComponent extends BaseComponent {
           });
       } else {
         // Need to confirm with a password
-        this.notification.confirmWithPassword(this.messages.phoneDisableSmsConfirm(phone.number), passwordInput)
+        this.notification.confirmWithPassword(
+          this.messages.phoneDisableSmsConfirm(phone.number),
+          passwordInput,
+          this.messages.phoneConfirmationPassword())
           .subscribe(confirmationPassword => {
             if (confirmationPassword) {
               this.doDisableSms(phone, confirmationPassword);
@@ -149,7 +152,10 @@ export class ManagePhonesComponent extends BaseComponent {
           });
       } else {
         // Need to confirm with a password
-        this.notification.confirmWithPassword(this.messages.phoneRemove(phone.number), passwordInput)
+        this.notification.confirmWithPassword(
+          this.messages.phoneRemove(phone.number),
+          passwordInput,
+          this.messages.phoneConfirmationPassword())
           .subscribe(confirmationPassword => {
             if (confirmationPassword) {
               this.doRemove(phone, confirmationPassword);

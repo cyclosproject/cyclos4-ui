@@ -17,6 +17,7 @@ import { PhoneFormComponent } from 'app/users/phones/phone-form.component';
 import { VerifyPhoneComponent } from 'app/users/phones/verify-phone.component';
 import { ManageAddressesComponent } from 'app/users/addresses/manage-addresses.component';
 import { AddressFormComponent } from 'app/users/addresses/address-form.component';
+import { ManageImagesComponent } from 'app/users/images/manage-images.component';
 
 /**
  * Users module
@@ -47,7 +48,9 @@ import { AddressFormComponent } from 'app/users/addresses/address-form.component
     VerifyPhoneComponent,
 
     ManageAddressesComponent,
-    AddressFormComponent
+    AddressFormComponent,
+
+    ManageImagesComponent
   ],
   entryComponents: [
     PhoneFormComponent,

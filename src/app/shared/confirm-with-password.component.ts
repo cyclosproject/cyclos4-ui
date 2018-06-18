@@ -7,6 +7,7 @@ import { FormBuilder, FormControl, Validators } from '@angular/forms';
 export interface ConfirmWithPasswordData {
   message: string;
   passwordInput: PasswordInput;
+  confirmationMessage?: string;
 }
 
 /**

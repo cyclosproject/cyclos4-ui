@@ -1,0 +1,14 @@
+<page-layout [title]="messages.userImages()"
+  [loaded]="loaded">
+  <page-content *ngIf="loaded | async">
+    <tiled-results>
+      <tiled-result *ngFor="let image of data.images"
+        [image]="image"
+        [title]="image.name"
+        [actions]="actions(image)"
+        fxFlex="nogrow">
+        {{ messages.imageDimensions(image.height, image.width) }}
+      </tiled-result>
+    </tiled-results>
+  </page-content>
+</page-layout>

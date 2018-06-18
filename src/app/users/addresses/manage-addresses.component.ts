@@ -77,7 +77,10 @@ export class ManageAddressesComponent extends BaseComponent {
           });
       } else {
         // Need to confirm with a password
-        this.notification.confirmWithPassword(this.messages.addressRemove(address.name), passwordInput)
+        this.notification.confirmWithPassword(
+          this.messages.addressRemove(address.name),
+          passwordInput,
+          this.messages.addressConfirmationPassword())
           .subscribe(confirmationPassword => {
             if (confirmationPassword) {
               this.doRemove(address, confirmationPassword);

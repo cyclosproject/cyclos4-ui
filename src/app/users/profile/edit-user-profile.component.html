@@ -8,7 +8,8 @@
         [form]="form"></user-fields-form>
       <confirmation-password *ngIf="data.confirmationPasswordInput"
         formControlName="confirmationPassword"
-        [passwordInput]="data.confirmationPasswordInput"></confirmation-password>
+        [passwordInput]="data.confirmationPasswordInput"
+        [message]="messages.userEditMyProfileConfirmationPassword()"></confirmation-password>
     </form>
     <actions>
       <button fxFlex.gt-xs="nogrow"

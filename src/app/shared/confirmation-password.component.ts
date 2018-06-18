@@ -32,6 +32,7 @@ export const CONFIRMATION_PASSWORD_VALIDATOR: Provider = {
 @Component({
   selector: 'confirmation-password',
   templateUrl: 'confirmation-password.component.html',
+  styleUrls: ['confirmation-password.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     CONFIRMATION_PASSWORD_VALUE_ACCESSOR,
@@ -41,6 +42,8 @@ export const CONFIRMATION_PASSWORD_VALIDATOR: Provider = {
 export class ConfirmationPasswordComponent extends BaseControlComponent<string> implements OnChanges, Validator {
 
   @Input() passwordInput: PasswordInput;
+
+  @Input() message: string;
 
   otpRenewable: boolean;
 

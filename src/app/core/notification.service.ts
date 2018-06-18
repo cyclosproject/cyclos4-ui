@@ -37,13 +37,16 @@ export class NotificationService {
   /**
    * Shows a message and a confirmation password to confirm a given action
    * @param message The message to show
+   * @param passwordInput The `PasswordInput` received from the server
+   * @param confirmationMessage A message passed in to the `ConfirmationPasswordComponent`
    * @returns An `Observable` which emits the selected confirmation password or null if canceled
    */
-  confirmWithPassword(message: string, passwordInput: PasswordInput): Observable<string> {
+  confirmWithPassword(message: string, passwordInput: PasswordInput, confirmationMessage?: string): Observable<string> {
     return this.dialog.open(ConfirmWithPasswordComponent, {
       data: {
         message: message,
-        passwordInput: passwordInput
+        passwordInput: passwordInput,
+        confirmationMessage: confirmationMessage
       }
     }).afterClosed();
   }

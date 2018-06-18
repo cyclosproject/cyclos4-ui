@@ -11,10 +11,15 @@
         <div>
           {{ phone.hidden ? messages.visibilityPrivate() : messages.visibilityPublic() }}
         </div>
-        <div *ngIf="phone.type === 'mobile' && data.smsEnabled">
-          {{ phone.verified ? phone.enabledForSms ? messages.phoneSmsEnabled() : messages.phoneSmsDisabled()
-          : messages.phoneNotVerified() }}
-        </div>
+        <ng-container *ngIf="data.smsEnabled">
+          <div *ngIf="phone.type === 'mobile'; else blankLine">
+            {{ phone.verified ? phone.enabledForSms ? messages.phoneSmsEnabled() : messages.phoneSmsDisabled()
+            : messages.phoneNotVerified() }}
+          </div>
+          <ng-template #blankLine>
+            <br>
+          </ng-template>
+        </ng-container>
       </tiled-result>
     </tiled-results>
     <fab-speed-dial *ngIf="createActions.length > 0"

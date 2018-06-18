@@ -10,6 +10,7 @@ import { LoggedUserGuard } from 'app/logged-user-guard';
 import { ValidateRegistrationComponent } from 'app/users/registration/validate-registration.component';
 import { ManagePhonesComponent } from './phones/manage-phones.component';
 import { ManageAddressesComponent } from 'app/users/addresses/manage-addresses.component';
+import { ManageImagesComponent } from 'app/users/images/manage-images.component';
 
 const usersRoutes: Routes = [
   {
@@ -69,6 +70,14 @@ const usersRoutes: Routes = [
         canActivate: [LoggedUserGuard],
         data: {
           menu: Menu.MY_ADDRESSES
+        }
+      },
+      {
+        path: 'my-profile/images',
+        component: ManageImagesComponent,
+        canActivate: [LoggedUserGuard],
+        data: {
+          menu: Menu.MY_IMAGES
         }
       },
       {
