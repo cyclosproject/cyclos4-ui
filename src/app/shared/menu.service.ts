@@ -269,7 +269,7 @@ export class MenuService {
           this.messages.menuPersonalPhones(), [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
       }
       if (myProfile.manageAddresses) {
-        add(Menu.MY_ADRRESSES, '/users/my-profile/addresses', 'place',
+        add(Menu.MY_ADDRESSES, '/users/my-profile/addresses', 'place',
           this.messages.menuPersonalAddresses(), [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
       }
       if (myProfile.manageImages) {

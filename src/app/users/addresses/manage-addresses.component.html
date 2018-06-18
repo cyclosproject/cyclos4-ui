@@ -1,0 +1,34 @@
+<page-layout [title]="messages.userAddresses()"
+  [loaded]="loaded">
+  <page-content *ngIf="loaded | async">
+    <tiled-results>
+      <tiled-result *ngFor="let address of data.addresses"
+        [title]="address.defaultAddress
+          ? messages.addressDefaultName(address.name)
+          : address.name"
+        icon="place"
+        [actions]="actions(address)"
+        fxFlex="nogrow">
+        <div *ngIf="address.addressLine1">{{ address.addressLine1 }}</div>
+        <div *ngIf="address.addressLine2">{{ address.addressLine2 }}</div>
+        <div *ngIf="address.street">
+          {{ address.street }}
+          <ng-container *ngIf="address.buildingNumber">, {{ address.buildingNumber }}</ng-container>
+          <ng-container *ngIf="address.complement">, {{ address.complement }}</ng-container>
+        </div>
+        <div *ngIf="address.zip">{{ address.zip }}</div>
+        <div *ngIf="address.neighborhood">{{ address.neighborhood }}</div>
+        <div *ngIf="address.city">{{ address.city }}</div>
+        <div *ngIf="address.region">{{ address.region }}</div>
+        <div *ngIf="address.country">{{ country(address.country) }}</div>
+        <div>
+          {{ address.hidden ? messages.visibilityPrivate() : messages.visibilityPublic() }}
+        </div>
+      </tiled-result>
+    </tiled-results>
+    <fab *ngIf="data.canCreateAddress"
+      icon="add"
+      (click)="createNew()">
+    </fab>
+  </page-content>
+</page-layout>

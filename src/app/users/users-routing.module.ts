@@ -9,6 +9,7 @@ import { CountriesResolve } from 'app/countries.resolve';
 import { LoggedUserGuard } from 'app/logged-user-guard';
 import { ValidateRegistrationComponent } from 'app/users/registration/validate-registration.component';
 import { ManagePhonesComponent } from './phones/manage-phones.component';
+import { ManageAddressesComponent } from 'app/users/addresses/manage-addresses.component';
 
 const usersRoutes: Routes = [
   {
@@ -57,6 +58,17 @@ const usersRoutes: Routes = [
         canActivate: [LoggedUserGuard],
         data: {
           menu: Menu.MY_PHONES
+        }
+      },
+      {
+        path: 'my-profile/addresses',
+        component: ManageAddressesComponent,
+        resolve: {
+          countries: CountriesResolve
+        },
+        canActivate: [LoggedUserGuard],
+        data: {
+          menu: Menu.MY_ADDRESSES
         }
       },
       {

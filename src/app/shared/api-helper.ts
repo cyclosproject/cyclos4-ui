@@ -158,27 +158,27 @@ export class ApiHelper {
   static addressFieldLabel(field: AddressFieldEnum, messages: Messages): string {
     switch (field) {
       case AddressFieldEnum.ADDRESS_LINE_1:
-        return messages.userAddressAddressLine1();
+        return messages.addressAddressLine1();
       case AddressFieldEnum.ADDRESS_LINE_2:
-        return messages.userAddressAddressLine2();
+        return messages.addressAddressLine2();
       case AddressFieldEnum.BUILDING_NUMBER:
-        return messages.userAddressBuildingNumber();
+        return messages.addressBuildingNumber();
       case AddressFieldEnum.CITY:
-        return messages.userAddressCity();
+        return messages.addressCity();
       case AddressFieldEnum.COMPLEMENT:
-        return messages.userAddressComplement();
+        return messages.addressComplement();
       case AddressFieldEnum.COUNTRY:
-        return messages.userAddressCountry();
+        return messages.addressCountry();
       case AddressFieldEnum.NEIGHBORHOOD:
-        return messages.userAddressNeighborhood();
+        return messages.addressNeighborhood();
       case AddressFieldEnum.PO_BOX:
-        return messages.userAddressPoBox();
+        return messages.addressPoBox();
       case AddressFieldEnum.REGION:
-        return messages.userAddressRegion();
+        return messages.addressRegion();
       case AddressFieldEnum.STREET:
-        return messages.userAddressStreet();
+        return messages.addressStreet();
       case AddressFieldEnum.ZIP:
-        return messages.userAddressZip();
+        return messages.addressZip();
     }
     return null;
   }

@@ -4768,7 +4768,7 @@
           "x-dotInPath" : true
         }, {
           "in" : "body",
-          "name" : "ad",
+          "name" : "advertisement",
           "description" : "The advertisement to be edited.",
           "required" : true,
           "schema" : {
@@ -22114,6 +22114,10 @@
           "defaultAddress" : {
             "type" : "boolean",
             "description" : "Indicates whether this is the default address for the user"
+          },
+          "hidden" : {
+            "type" : "boolean",
+            "description" : "Indicates whether this address is hidden for other users. Is only returned if the authenticated user manages the owner of this phone.\n"
           }
         }
       } ],
@@ -26817,7 +26821,7 @@
           },
           "hidden" : {
             "type" : "boolean",
-            "description" : "Indicates whether this phone is hidden for other users. Is only returned if `kind` is `mobile` and the authenticated user manages the owner of this phone.\n"
+            "description" : "Indicates whether this phone is hidden for other users. Is only returned if the authenticated user manages the owner of this phone.\n"
           },
           "verificationCodeSendDate" : {
             "type" : "string",
@@ -29359,6 +29363,10 @@
           "type" : "boolean",
           "description" : "Indicates whether the addresses can be managed by the\nauthenticated user\n"
         },
+        "canCreateAddress" : {
+          "type" : "boolean",
+          "description" : "Indicates whether the authenticated user can create a new address\nfor this user\n"
+        },
         "maxAddresses" : {
           "type" : "integer",
           "description" : "Indicates the maximum number of addresses the user can have\n"
@@ -30573,18 +30581,6 @@
     "VoucherBasicData" : {
       "type" : "object",
       "properties" : {
-        "title" : {
-          "type" : "string",
-          "description" : "The voucher title",
-          "x-deprecated" : "Since 4.9 the correct way to get this value is through the `type.voucherTitle` property. \n",
-          "x-remove-version" : 4.11
-        },
-        "description" : {
-          "type" : "string",
-          "description" : "The voucher description",
-          "x-deprecated" : "Since 4.9 the correct way to get this value is through the `type.voucherDescription` property.\n",
-          "x-remove-version" : 4.11
-        },
         "type" : {
           "description" : "The voucher type",
           "$ref" : "#/definitions/VoucherTypeDetailed"

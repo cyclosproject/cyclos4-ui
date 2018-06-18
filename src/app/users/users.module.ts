@@ -15,6 +15,8 @@ import { UserFieldsFormComponent } from 'app/users/profile/user-fields-form.comp
 import { ManagePhonesComponent } from 'app/users/phones/manage-phones.component';
 import { PhoneFormComponent } from 'app/users/phones/phone-form.component';
 import { VerifyPhoneComponent } from 'app/users/phones/verify-phone.component';
+import { ManageAddressesComponent } from 'app/users/addresses/manage-addresses.component';
+import { AddressFormComponent } from 'app/users/addresses/address-form.component';
 
 /**
  * Users module
@@ -42,11 +44,15 @@ import { VerifyPhoneComponent } from 'app/users/phones/verify-phone.component';
 
     ManagePhonesComponent,
     PhoneFormComponent,
-    VerifyPhoneComponent
+    VerifyPhoneComponent,
+
+    ManageAddressesComponent,
+    AddressFormComponent
   ],
   entryComponents: [
     PhoneFormComponent,
-    VerifyPhoneComponent
+    VerifyPhoneComponent,
+    AddressFormComponent
   ]
 })
 export class UsersModule {

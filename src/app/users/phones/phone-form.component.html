@@ -37,6 +37,7 @@
   <actions buttonSpace="equidistant">
     <button mat-raised-button
       color="accent"
+      [disabled]="!form.valid"
       (click)="save()">{{ messages.save() }}</button>
     <button mat-raised-button
       (click)="dialogRef.close()">{{ messages.cancel() }}</button>

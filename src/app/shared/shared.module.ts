@@ -52,6 +52,7 @@ import { ViewFormComponent } from 'app/shared/view-form.component';
 import { LabelValueComponent } from 'app/shared/label-value.component';
 import { AvatarComponent } from 'app/shared/avatar.component';
 import { FabSpeedDialComponent } from 'app/shared/fab-speed-dial.component';
+import { FabComponent } from 'app/shared/fab.component';
 import { TiledResultsComponent } from 'app/shared/tiled-results.component';
 import { TiledResultComponent } from 'app/shared/tiled-result.component';
 import { PaginatorComponent } from 'app/shared/paginator.component';
@@ -107,6 +108,7 @@ import { PageTitleComponent } from 'app/shared/page-title.component';
     UserSelectionComponent,
     AvatarComponent,
     FabSpeedDialComponent,
+    FabComponent,
     TiledResultsComponent,
     TiledResultComponent,
     UserLinkComponent,
@@ -205,6 +207,7 @@ import { PageTitleComponent } from 'app/shared/page-title.component';
     UserSelectionComponent,
     AvatarComponent,
     FabSpeedDialComponent,
+    FabComponent,
     TiledResultsComponent,
     TiledResultComponent,
     UserLinkComponent,

@@ -57,10 +57,7 @@ export class ManagePhonesComponent extends BaseComponent {
         user: ApiHelper.SELF,
         type: kind
       }).subscribe(forNew => {
-        this.dialog.open(PhoneFormComponent, {
-          disableClose: true,
-          data: forNew
-        }).afterClosed().subscribe(saved => {
+        this.dialog.open(PhoneFormComponent, this.layout.formDialogConfig(forNew)).afterClosed().subscribe(saved => {
           if (saved) {
             this.notification.snackBar(this.messages.phoneCreated());
             this.reload();
@@ -131,9 +128,7 @@ export class ManagePhonesComponent extends BaseComponent {
 
   private verify(phone: PhoneResult) {
     if (!phone.verified && this.data.canVerify) {
-      this.dialog.open(VerifyPhoneComponent, {
-        data: phone
-      }).afterClosed().subscribe(verified => {
+      this.dialog.open(VerifyPhoneComponent, this.layout.formDialogConfig(phone)).afterClosed().subscribe(verified => {
         if (verified) {
           this.notification.snackBar(this.messages.phoneVerified());
           this.reload();
@@ -189,10 +184,7 @@ export class ManagePhonesComponent extends BaseComponent {
       id: phone.id
     }).subscribe(forEdit => {
       forEdit['id'] = phone.id;
-      this.dialog.open(PhoneFormComponent, {
-        disableClose: true,
-        data: forEdit
-      }).afterClosed().subscribe(saved => {
+      this.dialog.open(PhoneFormComponent, this.layout.formDialogConfig(forEdit)).afterClosed().subscribe(saved => {
         if (saved) {
           this.notification.snackBar(this.messages.phoneModified());
           this.reload();

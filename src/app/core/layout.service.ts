@@ -3,6 +3,7 @@ import { BreakPointRegistry, MediaChange, ObservableMedia } from '@angular/flex-
 import { Menu } from 'app/shared/menu';
 import { Subscription } from 'rxjs';
 import { BehaviorSubject } from 'rxjs';
+import { MatDialog, MatDialogConfig } from '@angular/material';
 
 /**
  * Shared definitions for the application layout
@@ -133,6 +134,18 @@ export class LayoutService implements OnDestroy {
 
   get height(): number {
     return Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+  }
+
+  /**
+   * Returns options suitable to be used as MatDialogConfig for opening popup forms
+   * @param data The data to be passed to the form
+   */
+  formDialogConfig(data: any = null): MatDialogConfig<any> {
+    return {
+      data: data,
+      width: this.xs ? '90%' : '600px',
+      disableClose: true
+    };
   }
 
 }

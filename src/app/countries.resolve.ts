@@ -9,6 +9,8 @@ import { SingletonResolve } from 'app/singleton.resolve';
  */
 @Injectable()
 export class CountriesResolve extends SingletonResolve<Country[]> {
+  countries: { [code: string]: string };
+
   constructor(
     private addressesService: AddressesService
   ) {
@@ -17,5 +19,19 @@ export class CountriesResolve extends SingletonResolve<Country[]> {
 
   fetch(): Observable<Country[]> {
     return this.addressesService.listCountries();
+  }
+
+  protected onFetched(data: Country[]) {
+    this.countries = {};
+    data.forEach(c => this.countries[c.code] = c.name);
+  }
+
+  /**
+   * Returns the country name for the given code
+   * @param code The country code
+   */
+  name(code: string): string {
+    const name = this.countries[code];
+    return name == null ? code : name;
   }
 }

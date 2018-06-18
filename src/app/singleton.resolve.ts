@@ -21,6 +21,7 @@ export abstract class SingletonResolve<T> implements Resolve<T> {
           // On success, store the data and mark as done
           this._done = true;
           this._data.next(data);
+          this.onFetched(data);
         }, err => {
           // On error, clear the requested flag, so it could eventually retry
           this._requested = false;
@@ -30,6 +31,12 @@ export abstract class SingletonResolve<T> implements Resolve<T> {
   }
 
   protected abstract fetch(): Observable<T>;
+
+  /**
+   * May be overridden by subclasses to process the data once it is fetched
+   * @param data The fetched data
+   */
+  protected abstract onFetched(data: T);
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<T> {
     if (this._data.value !== null) {
@@ -43,6 +50,7 @@ export abstract class SingletonResolve<T> implements Resolve<T> {
         // Ensure we're not getting the initial null data
         if (this._done) {
           observer.next(data);
+          this.onFetched(data);
           observer.complete();
           subscription.unsubscribe();
         }
