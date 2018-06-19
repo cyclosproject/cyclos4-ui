@@ -14,6 +14,8 @@ import { Action } from 'app/shared/action';
 export class TiledResultComponent {
   constructor() { }
 
+  @Input() avatarPosition: 'left' | 'top' = 'left';
+
   /** The icon to show */
   @Input() icon: string;
 
@@ -25,5 +27,8 @@ export class TiledResultComponent {
 
   /** Actions shown below the tile */
   @Input() actions: Action[];
+
+  /** Url to navigate by clicking this result */
+  @Input() url: string;
 
 }

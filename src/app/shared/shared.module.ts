@@ -4,6 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatRadioModule } from '@angular/material/radio';
@@ -134,6 +135,7 @@ import { PageTitleComponent } from 'app/shared/page-title.component';
     ReactiveFormsModule,
     FlexLayoutModule,
     MatButtonModule,
+    MatButtonToggleModule,
     MatInputModule,
     MatSelectModule,
     MatDatepickerModule,
@@ -160,6 +162,7 @@ import { PageTitleComponent } from 'app/shared/page-title.component';
     ReactiveFormsModule,
     FlexLayoutModule,
     MatButtonModule,
+    MatButtonToggleModule,
     MatInputModule,
     MatSelectModule,
     MatDatepickerModule,

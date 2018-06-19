@@ -1,41 +1,60 @@
 <mat-card>
   <mat-card-content>
-    <div class="outer"
-      fxLayout="column">
-      <div class="details"
-        fxFlex="grow"
+    <a [ngClass]="{
+        'no-link': url == null,
+        plain: true
+      }"
+      [routerLink]="url == null ? '#' : url"
+      (click)="url == null ? $event.preventDefault() : null">
+      <div class="topAvatar"
         fxLayout="row"
-        fxLayoutAlign="start center"
-        fxLayoutGap="4px">
-        <div class="image"
-          fxFlex="nogrow"
-          fxLayout="column"
-          *ngIf="image != null || icon != null">
-          <avatar [icon]="icon"
-            iconColor="accent"
-            [image]="image"></avatar>
-        </div>
-        <div class="container"
+        fxLayoutAlign="center center"
+        *ngIf="avatarPosition === 'top' && (image != null || icon != null)">
+        <avatar [icon]="icon"
+          iconColor="accent"
+          size="xlarge"
+          [image]="image"></avatar>
+      </div>
+      <div [ngClass]="{
+        outer: true,
+        centered: avatarPosition === 'top'
+      }"
+        fxLayout="column">
+        <div class="details"
           fxFlex="grow"
-          fxLayout="column">
-          <div class="title">{{ title }}</div>
-          <div class="content">
-            <ng-content></ng-content>
+          fxLayout="row"
+          fxLayoutAlign="start center"
+          fxLayoutGap="4px">
+          <div class="leftAvatar"
+            fxFlex="nogrow"
+            fxLayout="column"
+            *ngIf="avatarPosition === 'left' && (image != null || icon != null)">
+            <avatar [icon]="icon"
+              iconColor="accent"
+              [image]="image"></avatar>
+          </div>
+          <div class="container"
+            fxFlex="grow"
+            fxLayout="column">
+            <div class="title">{{ title }}</div>
+            <div class="content">
+              <ng-content></ng-content>
+            </div>
           </div>
         </div>
+        <actions *ngIf="actions && actions.length > 0"
+          [reverseXs]="false"
+          topMargin="small"
+          buttonSpace="equidistant">
+          <button *ngFor="let act of actions"
+            mat-button
+            (click)="act.onClick()">
+            <mat-icon *ngIf="act.icon"
+              ngClass="mat-22">{{ act.icon }}</mat-icon>
+            {{ act.label }}
+          </button>
+        </actions>
       </div>
-      <actions *ngIf="actions && actions.length > 0"
-        [reverseXs]="false"
-        topMargin="small"
-        buttonSpace="equidistant">
-        <button *ngFor="let act of actions"
-          mat-button
-          (click)="act.onClick()">
-          <mat-icon *ngIf="act.icon"
-            ngClass="mat-22">{{ act.icon }}</mat-icon>
-          {{ act.label }}
-        </button>
-      </actions>
-    </div>
+    </a>
   </mat-card-content>
 </mat-card>

@@ -1,10 +1,12 @@
 <div class="tiled-results"
   [ngClass]="{
+    'standalone': standalone,
     'tiles-1': tilesPerRow === 1,
     'tiles-2': tilesPerRow === 2,
-    'tiles-3': tilesPerRow === 3
+    'tiles-3': tilesPerRow === 3,
+    'tiles-4': tilesPerRow === 4
   }"
   fxLayout="row wrap"
-  fxLayoutGap="8px">
+  fxLayoutAlign="space-between start">
   <ng-content></ng-content>
 </div>

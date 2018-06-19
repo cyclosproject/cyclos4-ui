@@ -209,6 +209,9 @@ input[type=number] {
     font-size: 14px;
     opacity: 0.87;
   }
+  .mat-header-row, .mat-row {
+    height: 56px;
+  }
   .mat-header-row.dynamic, .mat-row.dynamic {
     height: auto !important;
   }
@@ -219,8 +222,8 @@ input[type=number] {
     opacity: 0.25;
   }
   .mat-cell.avatar, .mat-header-cell.avatar {
-    width: 64px;
-    height: 64px;
+    width: 54px;
+    padding-left: 14px;
   }
   .mat-cell.avatar avatar .container {
     position: relative;
@@ -229,6 +232,11 @@ input[type=number] {
   .mat-cell.avatar avatar {
     position: relative;
     top: 1px;
+
+    .mat-icon {
+      position: relative;
+      left: -3px;
+    }
   }
   .mat-cell.selection, .mat-header-cell.selection {
     max-width: 32px;
@@ -259,48 +267,39 @@ input[type=number] {
 // Material icons
 mat-icon.mat-14 {
   font-size: 14px;
-  width: 14px;
-  height: 14px;
+}
+mat-icon.mat-16 {
+  font-size: 16px;
 }
 mat-icon.mat-18 {
   font-size: 18px;
-  width: 18px;
-  height: 18px;
 }
 mat-icon.mat-22 {
   font-size: 22px;
-  width: 22px;
-  height: 22px;
 }
 mat-icon.mat-24 {
   font-size: 24px;
-  width: 24px;
-  height: 24px;
 }
 mat-icon.mat-30 {
   font-size: 30px;
-  width: 30px;
-  height: 30px;
 }
 mat-icon.mat-36 {
   font-size: 36px;
-  width: 36px;
-  height: 36px;
 }
 mat-icon.mat-44 {
   font-size: 44px;
-  width: 44px;
-  height: 44px;
 }
 mat-icon.mat-48 {
   font-size: 48px;
-  width: 48px;
-  height: 48px;
+}
+mat-icon.mat-64 {
+  font-size: 64px;
+}
+mat-icon.mat-74 {
+  font-size: 74px;
 }
 mat-icon.mat-96 {
   font-size: 96px;
-  width: 96px;
-  height: 96px;
 }
 .mat-table mat-icon {
   opacity: 0.45;
@@ -313,9 +312,6 @@ mat-icon.mat-96 {
   font-size: 1.2em !important;
 }
 
-a.plain {
-  text-decoration: none;
-}
 a.link-with-icon {
   display: flex;
   flex-direction: row;
@@ -332,6 +328,12 @@ page-content, .mat-dialog-container {
     text-decoration: underline;
   }
 }
+a.no-link {
+  cursor: default;
+}
+a.plain, a.plain:hover {
+  text-decoration: none !important;
+}
 
 .mat-icon {
   opacity: 0.5;
@@ -339,7 +341,7 @@ page-content, .mat-dialog-container {
 .mat-icon.mat-primary, .mat-icon.mat-accent {
   opacity: 0.7;
 }
-.mat-fab .mat-icon, .mat-mini-fab .mat-icon {
+.mat-fab .mat-icon, .mat-mini-fab .mat-icon, .mat-button-toggle .mat-icon {
   opacity: 1;
 }
 

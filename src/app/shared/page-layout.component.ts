@@ -39,6 +39,8 @@ export class PageLayoutComponent extends BaseComponent {
 
   @Input() tightContent = false;
 
+  @Input() invisibleContent = false;
+
   @Input() contentSize: ContentSize = 'full';
 
   @Input() loaded: Observable<any>;

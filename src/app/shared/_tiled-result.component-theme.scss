@@ -6,8 +6,13 @@
 
   tiled-result {
     .mat-card {
-      background-color: darken(mat-color($background, card), 1%);
       color: mat-color($foreground, text);
+    }
+  }
+
+  .tiled-results:not(.standalone) tiled-result {
+    .mat-card {
+      background-color: darken(mat-color($background, card), 1%);
     }
   }
 }

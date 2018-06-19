@@ -8,10 +8,17 @@
     margin-bottom: 8px;
   }
 
-  div.image {
+  div.leftAvatar {
     float: left;
     margin-right: 12px;
   }
+}
+
+.topAvatar {
+  height: 80px;
+}
+.centered div {
+  text-align: center;
 }
 
 :host {
@@ -19,12 +26,10 @@
 }
 
 .gt-xs :host  {
-  .image {
+  .leftAvatar {
     margin-left: 8px;
     margin-top: 8px;
-  }
-  .container {
-    margin-left: 8px;
+    margin-right: 8px;
   }
 }
 

@@ -4,12 +4,13 @@ import { BehaviorSubject } from 'rxjs';
 import { BaseComponent } from 'app/shared/base.component';
 import { TableDataSource } from 'app/shared/table-datasource';
 import { ApiHelper } from 'app/shared/api-helper';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { tap } from 'rxjs/operators';
 import { debounceTime } from 'rxjs/operators';
 import { UsersService } from 'app/api/services';
 import { UserDataForSearch } from 'app/api/models';
-import { UserResult } from '../../api/models/user-result';
+import { UserResult } from 'app/api/models/user-result';
+import { ResultType } from 'app/shared/result-type';
 
 /**
  * Displays the account history of a given account
@@ -30,9 +31,13 @@ export class SearchUsersComponent extends BaseComponent {
   ) {
     super(injector);
     this.form = formBuilder.group({
+      resultType: ResultType.TILES,
       keywords: null,
       customValues: null
     });
+    this.resultType = formBuilder.control(ResultType.TILES);
+    this.form.setControl('resultType', this.resultType);
+
     this.stateManager.manage(this.form);
     this.subscriptions.push(this.form.valueChanges.pipe(
       debounceTime(ApiHelper.DEBOUNCE_TIME)
@@ -44,11 +49,15 @@ export class SearchUsersComponent extends BaseComponent {
   data: UserDataForSearch;
 
   form: FormGroup;
+  resultType: FormControl;
 
   query: any;
   dataSource = new TableDataSource<UserResult>();
   loaded = new BehaviorSubject(false);
   displayedColumns = new BehaviorSubject<string[]>([]);
+
+  // Export enum to the template
+  ResultType = ResultType;
 
   ngOnInit() {
     super.ngOnInit();
@@ -103,7 +112,7 @@ export class SearchUsersComponent extends BaseComponent {
    * We don't show it if there are no profile fields in list, or with XS devices
    */
   get showHeader(): boolean {
-    return this.layout.xs || this.fieldsInList.length > 0;
+    return this.layout.gtxs && this.fieldsInList.length > 0;
   }
 
   /**

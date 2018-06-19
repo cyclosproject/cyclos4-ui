@@ -5,5 +5,13 @@
   width: calc(50% - 8px);
 }
 .gt-xs :host ::ng-deep .tiled-results.tiles-3 tiled-result {
-  width: calc(33.33% - 8px);
+  width: calc(33.333% - 8px);
+}
+.gt-xs :host ::ng-deep .tiled-results.tiles-4 tiled-result {
+  width: calc(25% - 8px);
+}
+:host ::ng-deep tiled-result .mat-card {
+  min-width: 64px !important;
+  min-height: 64px !important;
+  margin: 0 0 12px 0;
 }

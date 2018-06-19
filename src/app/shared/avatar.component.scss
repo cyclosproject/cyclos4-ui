@@ -1,10 +1,6 @@
 :host {
   display: inline-block;
 }
-:host ::ng-deep .mat-icon {
-  position: relative;
-  left: -3px;
-}
 .container {
   border-radius: 50%;
   overflow: hidden;

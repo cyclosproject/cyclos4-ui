@@ -1,15 +1,19 @@
-<page-layout [tightContent]="true"
-  [title]="messages.userSearchTitle()"
+<page-layout [title]="messages.userSearchTitle()"
   [hasHeader]="true"
   [loaded]="loaded"
-  [filtersForm]="form">
+  [filtersForm]="form"
+  [tightContent]="true"
+  [invisibleContent]="resultType.value === ResultType.TILES">
   <page-header>
-    <div style="opacity: 0.6"
-      fxLayout="row-reverse">
-      <mat-icon ngClass="mat-22">save</mat-icon>
-      <mat-icon ngClass="mat-22"
-        style="margin-right: 10px">print</mat-icon>
-    </div>
+    <mat-button-toggle-group [formControl]="resultType"
+      aria-label="Font Style">
+      <mat-button-toggle [value]="ResultType.TILES">
+        <mat-icon>view_module</mat-icon>
+      </mat-button-toggle>
+      <mat-button-toggle [value]="ResultType.LIST">
+        <mat-icon>view_list</mat-icon>
+      </mat-button-toggle>
+    </mat-button-toggle-group>
   </page-header>
   <page-filters>
     <form *ngIf="query != null"
@@ -23,7 +27,8 @@
     </form>
   </page-filters>
   <page-content>
-    <table *ngIf="!(dataSource.empty | async)"
+    <table *ngIf="!(dataSource.empty | async) 
+    && resultType.value == ResultType.LIST"
       mat-table
       #table
       [dataSource]="dataSource">
@@ -166,7 +171,7 @@
         </td>
       </ng-container>
 
-      <ng-container *ngIf="(displayedColumns | async).length > 2">
+      <ng-container *ngIf="showHeader">
         <tr mat-header-row
           *matHeaderRowDef="displayedColumns | async"></tr>
       </ng-container>
@@ -176,6 +181,19 @@
         ngClass="clickable"
         (click)="router.navigate(path(row))"></tr>
     </table>
+
+    <tiled-results [standalone]="true"
+      [tilesPerRow]="layout.xs ? 1 : layout.sm ? 2 : 4"
+      *ngIf="resultType.value === ResultType.TILES">
+      <tiled-result *ngFor="let user of dataSource.data.value"
+        [image]="user.image"
+        [url]="path(user)"
+        icon="account_circle"
+        avatarPosition="top"
+        [title]="user.display">
+      </tiled-result>
+    </tiled-results>
+
     <paginator (update)="update()"
       [query]="query"
       [dataSource]="dataSource"></paginator>

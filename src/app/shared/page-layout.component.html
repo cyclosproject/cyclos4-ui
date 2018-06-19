@@ -48,7 +48,10 @@
         </mat-card>
       </div>
       <div class="content"
-        [ngClass]="{'tight': tightContent}">
+        [ngClass]="{
+          'tight': tightContent,
+          'invisible': invisibleContent
+        }">
         <mat-card ngClass="layout">
           <mat-card-content>
             <div class="spinner"

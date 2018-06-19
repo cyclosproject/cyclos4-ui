@@ -14,6 +14,7 @@ import { Action } from 'app/shared/action';
 export class TiledResultsComponent {
   constructor() { }
 
-  @Input() tilesPerRow: 1 | 2 | 3 = 2;
+  @Input() tilesPerRow: 1 | 2 | 3 | 4 = 2;
 
+  @Input() standalone = false;
 }

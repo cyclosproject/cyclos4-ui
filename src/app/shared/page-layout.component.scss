@@ -40,6 +40,12 @@
     padding: 0px;
   }
 }
+:host ::ng-deep .content.invisible {
+  .mat-card.layout {
+    background: transparent;
+    box-shadow: none;
+  }
+}
 
 .spinner {
   opacity: 0.6;

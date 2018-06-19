@@ -7,17 +7,19 @@ import { BaseComponent } from './base.component';
  * The size for rendered avatars.
  * Profile is a special value that adapts to the max image width / height and layout size
  */
-export type AvatarSize = 'small' | 'medium' | 'large' | 'huge' | 'profile';
+export type AvatarSize = 'small' | 'medium' | 'large' | 'xlarge' | 'huge' | 'profile';
 export const SIZES: { [key: string]: number } = {
   'small': 24,
   'medium': 36,
   'large': 48,
+  'xlarge': 64,
   'huge': 96
 };
 export const ICON_SIZES: { [key: string]: number } = {
   'small': 24,
   'medium': 44,
   'large': 48,
+  'xlarge': 74,
   'huge': 96
 };
 
