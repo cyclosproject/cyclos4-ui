@@ -16,9 +16,6 @@
             {{ phone.verified ? phone.enabledForSms ? messages.phoneSmsEnabled() : messages.phoneSmsDisabled()
             : messages.phoneNotVerified() }}
           </div>
-          <ng-template #blankLine>
-            <br>
-          </ng-template>
         </ng-container>
       </tiled-result>
     </tiled-results>
@@ -27,3 +24,6 @@
     </fab-speed-dial>
   </page-content>
 </page-layout>
+<ng-template #blankLine>
+  <br>
+</ng-template>

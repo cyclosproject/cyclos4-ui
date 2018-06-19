@@ -8,7 +8,6 @@ import { ApiHelper } from 'app/shared/api-helper';
 import { Action } from 'app/shared/action';
 import { MatDialog } from '@angular/material';
 import { ContactInfoFormComponent } from 'app/users/contact-infos/contact-info-form.component';
-import { CountriesResolve } from 'app/countries.resolve';
 import { UserContactInfosListData } from 'app/api/models/user-contact-infos-list-data';
 
 /**

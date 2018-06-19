@@ -47,10 +47,17 @@ export class AvatarComponent extends BaseComponent {
    */
   @Input() size: AvatarSize = 'medium';
 
+  private _image: Image;
   /**
    * The image to show
    */
-  @Input() image: Image;
+  @Input() get image(): Image {
+    return this._image;
+  }
+  set image(image: Image) {
+    this._image = image;
+    this.initImage();
+  }
 
   url: string;
   maxSize: number;
@@ -78,7 +85,10 @@ export class AvatarComponent extends BaseComponent {
       this.svgIcon = this.icon;
       this.icon = null;
     }
+    this.initImage();
+  }
 
+  private initImage() {
     // Initialize the maximum size
     let maxSize: number;
     if (this.size === 'profile') {

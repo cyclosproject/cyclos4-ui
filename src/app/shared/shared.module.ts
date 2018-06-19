@@ -21,7 +21,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
-import { CovalentStepsModule } from '@covalent/core';
+import { CovalentStepsModule } from '@covalent/core/steps';
+import { CovalentFileModule } from '@covalent/core/file';
 
 import { SatPopoverModule } from '@ncstate/sat-popover';
 
@@ -152,6 +153,7 @@ import { PageTitleComponent } from 'app/shared/page-title.component';
     MatCardModule,
     MatSidenavModule,
     CovalentStepsModule,
+    CovalentFileModule,
     SatPopoverModule
   ],
   exports: [
@@ -177,6 +179,7 @@ import { PageTitleComponent } from 'app/shared/page-title.component';
     MatCardModule,
     MatSidenavModule,
     CovalentStepsModule,
+    CovalentFileModule,
     SatPopoverModule,
 
     PageLayoutComponent,

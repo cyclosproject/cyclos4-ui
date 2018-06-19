@@ -4,23 +4,28 @@
     <tiled-results>
       <tiled-result *ngFor="let contactInfo of data.contactInfos"
         [title]="contactInfo.name"
+        icon="account_circle"
         [image]="contactInfo.image"
         [actions]="actions(contactInfo)"
         fxFlex="nogrow">
-        <div *ngIf="contactInfo.email">
+        <div *ngIf="contactInfo.email; else blankLine">
           <a [href]="'mailto:' + contactInfo.email">{{ contactInfo.email }}</a>
         </div>
-        <div *ngIf="contactInfo.mobilePhone">
-          <a [href]="'tel:' + contactInfo.mobilePhone">{{ contactInfo.mobilePhone }}</a>
-        </div>
-        <div *ngIf="contactInfo.landLinePhone">
-          <a [href]="'tel:' + contactInfo.landLinePhone">{{ contactInfo.landLinePhone }}</a>
-          <ng-container *ngIf="contactInfo.landLineExtension">
-            {{ messages.phoneExtensionNumber(contactInfo.landLinePhone) }}
-          </ng-container>
-        </div>
-        <div *ngIf="contactInfo.address">
+        <div *ngIf="contactInfo.address; else blankLine">
           {{ contactInfo.address.name }}
+        </div>
+        <div *ngIf="contactInfo.mobilePhone != null || contactInfo.landLinePhone != null; else blankLine">
+          <a *ngIf="contactInfo.mobilePhone"
+            [href]="'tel:' + contactInfo.mobilePhone">{{ contactInfo.mobilePhone }}</a>
+          <ng-container *ngIf="contactInfo.mobilePhone != null && contactInfo.landLinePhone != null">
+            /
+          </ng-container>
+          <ng-container *ngIf="contactInfo.landLinePhone">
+            <a [href]="'tel:' + contactInfo.landLinePhone">{{ contactInfo.landLinePhone }}</a>
+            <ng-container *ngIf="contactInfo.landLineExtension">
+              {{ messages.phoneExtensionNumber(contactInfo.landLinePhone) }}
+            </ng-container>
+          </ng-container>
         </div>
       </tiled-result>
     </tiled-results>
@@ -30,3 +35,6 @@
     </fab>
   </page-content>
 </page-layout>
+<ng-template #blankLine>
+  <br>
+</ng-template>

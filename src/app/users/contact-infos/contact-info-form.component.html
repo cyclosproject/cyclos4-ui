@@ -1,6 +1,38 @@
 <form [formGroup]="form"
   fxLayout="column">
   <h1 class="no-top-margin">{{ title }}</h1>
+  <div *ngIf="id"
+    tdFileDrop
+    (fileDrop)="uploadImage($event)"
+    class="imageWrapper"
+    fxLayout="row">
+    <div class="spacer"
+      fxFlex="1 1 35%"></div>
+    <div class="imageHolder"
+      fxFlex="1 1 30%"
+      fxLayout="row"
+      fxLayoutAlign="center center">
+      <avatar size="huge"
+        [image]="image | async"
+        *ngIf="image | async"></avatar>
+    </div>
+    <div class="imageActions"
+      fxFlex="1 1 35%"
+      fxLayout="column"
+      fxLayoutAlign="space-between end">
+      <td-file-input #fileInput
+        (select)="uploadImage($event)">
+        <mat-icon ngClass="mat22">add_a_photo</mat-icon>
+        {{ messages.contactInfoUploadNewImage() }}
+      </td-file-input>
+      <button *ngIf="image | async"
+        mat-raised-button
+        (click)="removeImage()">
+        <mat-icon ngClass="mat22">delete</mat-icon>
+        {{ messages.contactInfoRemoveImage() }}
+      </button>
+    </div>
+  </div>
   <mat-form-field>
     <input matInput
       formControlName="name"
@@ -57,8 +89,6 @@
     </mat-error>
   </mat-form-field>
 
-  <mat-checkbox formControlName="hidden">{{ messages.contactInfoPrivate() }}</mat-checkbox>
-
   <ng-container [formGroup]="form.get('customValues')">
     <ng-container *ngFor="let cf of data.customFields">
       <custom-field-input fxFlex="grow"
@@ -69,12 +99,14 @@
     </ng-container>
   </ng-container>
 
+  <mat-checkbox formControlName="hidden">{{ messages.contactInfoPrivate() }}</mat-checkbox>
+
   <actions buttonSpace="equidistant">
     <button mat-raised-button
       color="accent"
       [disabled]="!form.valid"
       (click)="save()">{{ messages.save() }}</button>
     <button mat-raised-button
-      (click)="dialogRef.close()">{{ messages.cancel() }}</button>
+      (click)="dialogRef.close(imageModified)">{{ messages.cancel() }}</button>
   </actions>
 </form>

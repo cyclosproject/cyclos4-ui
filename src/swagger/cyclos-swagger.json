@@ -23483,6 +23483,10 @@
           "edit" : {
             "type" : "boolean",
             "description" : "Indicates whether the current contact info can be edited by the\ncurrently authenticated used.\n"
+          },
+          "image" : {
+            "description" : "The image for this additional contact information",
+            "$ref" : "#/definitions/Image"
           }
         }
       } ],

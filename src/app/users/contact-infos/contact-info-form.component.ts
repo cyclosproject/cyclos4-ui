@@ -2,8 +2,8 @@ import { Component, ChangeDetectionStrategy, Injector, Inject } from '@angular/c
 
 import { BehaviorSubject } from 'rxjs';
 import { BaseComponent } from 'app/shared/base.component';
-import { ContactInfosService } from 'app/api/services';
-import { ContactInfoDataForEdit, ContactInfoDataForNew } from 'app/api/models';
+import { ContactInfosService, ImagesService } from 'app/api/services';
+import { ContactInfoDataForEdit, ContactInfoDataForNew, Image } from 'app/api/models';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { copyProperties, empty } from 'app/shared/helper';
@@ -23,6 +23,8 @@ export class ContactInfoFormComponent extends BaseComponent {
   form: FormGroup;
   id: string;
   title: string;
+  image = new BehaviorSubject<Image>(null);
+  imageModified = false;
 
   constructor(
     injector: Injector,
@@ -30,7 +32,8 @@ export class ContactInfoFormComponent extends BaseComponent {
     public dialogRef: MatDialogRef<ContactInfoFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: ContactInfoDataForNew | ContactInfoDataForEdit,
     public countriesResolve: CountriesResolve,
-    private contactInfosService: ContactInfosService) {
+    private contactInfosService: ContactInfosService,
+    private imagesService: ImagesService) {
     super(injector);
 
     this.id = data['id'];
@@ -39,6 +42,7 @@ export class ContactInfoFormComponent extends BaseComponent {
     if (this.id) {
       // Details
       this.title = this.messages.contactInfoDetails();
+      this.image.next((data as ContactInfoDataForEdit).image);
     } else {
       // New
       this.title = this.messages.contactInfoNew();
@@ -49,7 +53,8 @@ export class ContactInfoFormComponent extends BaseComponent {
       email: contactInfo.email,
       landLinePhone: contactInfo.landLinePhone,
       mobilePhone: contactInfo.mobilePhone,
-      address: contactInfo.address
+      address: contactInfo.address,
+      hidden: contactInfo.hidden
     });
 
     if (data.phoneConfiguration.extensionEnabled) {
@@ -82,6 +87,40 @@ export class ContactInfoFormComponent extends BaseComponent {
         contactInfo: this.data.contactInfo
       }).subscribe(() => {
         this.dialogRef.close(true);
+      });
+    }
+  }
+
+  uploadImage(file: File | FileList) {
+    if (file instanceof FileList) {
+      file = file.item(0);
+    }
+    this.imagesService.uploadContactInfoImage({
+      id: this.id,
+      name: file.name,
+      image: file
+    }).subscribe(imageId => {
+      // Now get the image details
+      this.imagesService.viewImage({
+        id: imageId
+      }).subscribe(image => {
+        this.image.next(image);
+        this.imageModified = true;
+        this.notification.snackBar(this.messages.contactInfoImageUploaded());
+      });
+    });
+  }
+
+  removeImage() {
+    const image = this.image.value;
+    if (image) {
+      this.notification.yesNo(this.messages.contactInfoRemoveImageConfirm()).subscribe(answer => {
+        if (answer) {
+          this.imagesService.deleteImage(image.id).subscribe(() => {
+            this.image.next(null);
+            this.notification.snackBar(this.messages.contactInfoImageRemoved());
+          });
+        }
       });
     }
   }
