@@ -11,10 +11,3 @@
 .break-nl {
   white-space: pre-wrap;
 }
-
-:host /deep/ a {
-  text-decoration: none;
-}
-:host /deep/ a:hover {
-  text-decoration: underline;
-}

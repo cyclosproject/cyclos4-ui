@@ -91,7 +91,7 @@
     background: mat-color($background, hover);
   }
 
-  page-content {
+  page-content, .mat-dialog-container {
     a {
       color: mat-color($accent, if($is-dark, lighter, darker));
     }

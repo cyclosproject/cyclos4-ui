@@ -1,3 +1,7 @@
 .notificationMessage {
   padding: 0 0 2px 8px;
 }
+
+:host .mat-icon {
+  opacity: 1;
+}

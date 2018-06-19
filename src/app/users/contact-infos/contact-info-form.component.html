@@ -5,32 +5,36 @@
     tdFileDrop
     (fileDrop)="uploadImage($event)"
     class="imageWrapper"
-    fxLayout="row">
-    <div class="spacer"
-      fxFlex="1 1 35%"></div>
+    fxLayout="row"
+    fxLayoutAlign="center center"
+    fxLayoutGap="24px">
     <div class="imageHolder"
-      fxFlex="1 1 30%"
+      fxFlex="grow"
       fxLayout="row"
-      fxLayoutAlign="center center">
+      fxLayoutAlign="end end">
       <avatar size="huge"
         [image]="image | async"
-        *ngIf="image | async"></avatar>
+        icon="account_circle"
+        iconColor="accent"></avatar>
     </div>
     <div class="imageActions"
-      fxFlex="1 1 35%"
+      fxFlex="grow"
       fxLayout="column"
-      fxLayoutAlign="space-between end">
+      fxLayoutAlign="start start">
+      <a href="#"
+        (click)="fileInput.inputElement.click();$event.preventDefault()">{{ messages.contactInfoUploadNewImage() }}</a>
       <td-file-input #fileInput
+        style="display:none"
         (select)="uploadImage($event)">
-        <mat-icon ngClass="mat22">add_a_photo</mat-icon>
-        {{ messages.contactInfoUploadNewImage() }}
       </td-file-input>
-      <button *ngIf="image | async"
-        mat-raised-button
-        (click)="removeImage()">
-        <mat-icon ngClass="mat22">delete</mat-icon>
-        {{ messages.contactInfoRemoveImage() }}
-      </button>
+
+      <ng-container *ngIf="image | async">
+        <br>
+        <a href="#"
+          (click)="removeImage();$event.preventDefault()">
+          {{ messages.contactInfoRemoveImage() }}
+        </a>
+      </ng-container>
     </div>
   </div>
   <mat-form-field>

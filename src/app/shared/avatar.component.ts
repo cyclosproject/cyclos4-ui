@@ -42,6 +42,8 @@ export class AvatarComponent extends BaseComponent {
    */
   @Input() icon = 'account_circle';
 
+  @Input() iconColor: string;
+
   /**
    * The size of images and icons
    */

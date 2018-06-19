@@ -16,6 +16,7 @@ import { CountriesResolve } from 'app/countries.resolve';
 @Component({
   selector: 'contact-info-form',
   templateUrl: 'contact-info-form.component.html',
+  styleUrls: ['contact-info-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ContactInfoFormComponent extends BaseComponent {

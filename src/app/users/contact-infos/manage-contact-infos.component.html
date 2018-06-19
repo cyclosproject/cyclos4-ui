@@ -23,9 +23,13 @@
           <ng-container *ngIf="contactInfo.landLinePhone">
             <a [href]="'tel:' + contactInfo.landLinePhone">{{ contactInfo.landLinePhone }}</a>
             <ng-container *ngIf="contactInfo.landLineExtension">
-              {{ messages.phoneExtensionNumber(contactInfo.landLinePhone) }}
+              {{ messages.phoneExtensionNumber(contactInfo.landLineExtension) }}
             </ng-container>
           </ng-container>
+          <div>
+            {{ contactInfo.hidden ? messages.visibilityPrivate() : messages.visibilityPublic()
+            }}
+          </div>
         </div>
       </tiled-result>
     </tiled-results>

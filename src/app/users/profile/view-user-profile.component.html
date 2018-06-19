@@ -13,12 +13,24 @@
       [value]="user.username"></label-value>
     <label-value *ngIf="user.email"
       [label]="messages.userEmail()">
-      <a [href]="'mailto:' + user.email">{{ user.email }}</a>
+      <a [href]="'mailto:' + user.email"
+        class="link-with-icon">
+        <mat-icon>email</mat-icon>
+        <span>
+          {{ user.email }}
+        </span>
+      </a>
     </label-value>
     <label-value *ngFor="let phone of user.phones"
-      [label]="phone.type === 'mobile' ? messages.phoneMobile() : messages.phoneLandLine()">
-      <a [href]="'tel:' + phone.normalizedNumber">
-        {{ phone.number }}
+      [label]="phone.name">
+      <a [href]="'tel:' + phone.normalizedNumber"
+        class="link-with-icon">
+        <mat-icon>
+          {{ phone.type === 'mobile' ? 'smartphone' : 'phone'}}
+        </mat-icon>
+        <span>
+          {{ phone.number }}
+        </span>
       </a>
     </label-value>
     <custom-field-value *ngFor="let value of user.customValues"
@@ -55,19 +67,34 @@
         <h3 fxHide.xs>{{ contactInfo.name }}</h3>
         <label-value *ngIf="contactInfo.email"
           [label]="messages.userEmail()">
-          <a [href]="'mailto:' + contactInfo.email">{{ contactInfo.email }}</a>
+          <a [href]="'mailto:' + contactInfo.email"
+            class="link-with-icon">
+            <mat-icon>email</mat-icon>
+            <span>{{ contactInfo.email }}</span>
+          </a>
         </label-value>
         <label-value *ngIf="contactInfo.mobilePhone"
-          [label]="messages.userMobilePhone()">
-          <a [href]="'tel:' + contactInfo.normalizedMobilePhone">
-            {{ contactInfo.mobilePhone }}
+          [label]="messages.phoneMobile()">
+          <a [href]="'tel:' + contactInfo.normalizedMobilePhone"
+            class="link-with-icon">
+            <mat-icon>smartphone</mat-icon>
+            <span>
+              {{ contactInfo.mobilePhone }}
+            </span>
           </a>
         </label-value>
         <label-value *ngIf="contactInfo.landLinePhone"
-          [label]="messages.userLandLinePhone()">
-          <a [href]="'tel:' + contactInfo.normalizedLandLinePhone">
-            {{ contactInfo.landLinePhone }}
+          [label]="messages.phoneLandLine()">
+          <a [href]="'tel:' + contactInfo.normalizedLandLinePhone"
+            class="link-with-icon">
+            <mat-icon>phone</mat-icon>
+            <span>
+              {{ contactInfo.landLinePhone }}
+            </span>
           </a>
+          <ng-container *ngIf="contactInfo.landLineExtension">
+            {{ messages.phoneExtensionNumber(contactInfo.landLineExtension) }}
+          </ng-container>
         </label-value>
         <custom-field-value *ngFor="let value of contactInfo.customValues"
           [fieldValue]="value">

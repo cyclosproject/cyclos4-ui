@@ -13,9 +13,11 @@
     }">
 </div>
 <mat-icon *ngIf="image == null && svgIcon != null"
+  [color]="iconColor"
   [ngClass]="iconClass"
   [svgIcon]="svgIcon"></mat-icon>
 <mat-icon *ngIf="image == null && svgIcon == null"
+  [color]="iconColor"
   [ngClass]="iconClass">
   {{ icon }}
 </mat-icon>

@@ -144,7 +144,8 @@ export class LayoutService implements OnDestroy {
     return {
       data: data,
       width: this.xs ? '90%' : '600px',
-      disableClose: true
+      disableClose: true,
+      autoFocus: false
     };
   }
 
