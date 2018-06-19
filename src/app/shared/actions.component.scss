@@ -19,17 +19,17 @@
 .actions.top-margin-double {
   margin-top: 48px;
 }
-.gt-xs :host /deep/ .actions.button-space-normal {
+.gt-xs :host ::ng-deep .actions.button-space-normal {
   button, a {
     margin-right: 22px;
   }
 }
-.gt-xs :host /deep/ .actions.button-space-small {
+.gt-xs :host ::ng-deep .actions.button-space-small {
   button, a {
     margin-right: 4px;
   }
 }
-.gt-xs :host /deep/ .actions.button-space-equidistant {
+.gt-xs :host ::ng-deep .actions.button-space-equidistant {
   justify-content: space-between !important;
 
   button, a {
@@ -37,13 +37,13 @@
   }
 }
 
-.gt-xs :host /deep/ {
+.gt-xs :host ::ng-deep {
   *:last-child {
     margin-right: 0;
   }
 }
 
-.lt-sm :host /deep/ {
+.lt-sm :host ::ng-deep {
   button, a {
     flex: 1 1 100%;
     margin-bottom: 12px;

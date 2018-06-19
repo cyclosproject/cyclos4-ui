@@ -166,9 +166,6 @@ export class AccountHistoryComponent extends BaseComponent {
       .subscribe(data => {
         this.data.next(data);
 
-        // Initialize the breadcrumb to be just the type name
-        this.breadcrumb.title = data.account.type.name;
-
         // Initialize the query
         this.query = this.stateManager.get('query', () => {
           const query: any = data.query;

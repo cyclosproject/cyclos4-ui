@@ -1,6 +1,8 @@
 <page-layout [loaded]="loaded"
   [title]="messages.transferViewTitle()">
   <page-content *ngIf="loaded | async">
-    <view-transfer-details [transfer]="transfer"></view-transfer-details>
+    <div class="form-wrapper">
+      <view-transfer-details [transfer]="transfer"></view-transfer-details>
+    </div>
   </page-content>
 </page-layout>

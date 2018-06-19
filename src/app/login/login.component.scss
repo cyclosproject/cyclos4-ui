@@ -21,23 +21,23 @@ h1 {
 .forgotPassword:hover {
   text-decoration: underline;
 }
-:host /deep/ actions {
+:host ::ng-deep actions {
   margin: 40px 0 24px 0;
 }
-:host /deep/ actions button {
+:host ::ng-deep actions button {
   min-height: 40px;
   min-width: 150px !important;
 }
-:host /deep/ input {
+:host ::ng-deep input {
   margin-bottom: 7px;
 }
-:host /deep/ .mat-input-prefix .mat-icon {
+:host ::ng-deep .mat-input-prefix .mat-icon {
   position: relative;
   top: 0px;
   width: 24px;
   height: 24px;
   font-size: 24px;
 }
-:host /deep/ captcha .wrapper {
+:host ::ng-deep captcha .wrapper {
   margin: auto;
 }

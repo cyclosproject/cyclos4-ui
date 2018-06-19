@@ -5,7 +5,7 @@
   flex-direction: row;
   overflow-x: auto;
 }
-.xs :host /deep/ .indicators {
+.xs :host ::ng-deep .indicators {
   padding: 0 16px;
 }
 .indicator {

@@ -12,7 +12,7 @@
   margin-bottom: 16px;
 }
 
-:host /deep/ img:hover {
+:host ::ng-deep img:hover {
   -webkit-filter: brightness(80%);
   filter: brightness(80%);
   -webkit-transition: all ease-out 0.4s;

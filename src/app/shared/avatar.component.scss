@@ -1,7 +1,7 @@
 :host {
   display: inline-block;
 }
-:host /deep/ .mat-icon {
+:host ::ng-deep .mat-icon {
   position: relative;
   left: -3px;
 }

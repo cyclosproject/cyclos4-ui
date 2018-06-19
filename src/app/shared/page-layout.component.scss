@@ -1,6 +1,6 @@
 @import 'src/definitions';
 
-.gt-xs :host /deep/ .page-layout.extra-margin {
+.gt-xs :host ::ng-deep .page-layout.extra-margin {
   margin-top: 32px;
 }
 
@@ -10,11 +10,11 @@
   min-width: $left-area-width;
   max-width: $left-area-width;
 }
-:host /deep/ .filters-hidden .mat-ink-bar {
+:host ::ng-deep .filters-hidden .mat-ink-bar {
   display: none;
 }
 
-:host /deep/ .left {
+:host ::ng-deep .left {
   .mat-tab-body-content {
     overflow: hidden;
   }
@@ -32,10 +32,10 @@
   }
 }
 
-:host /deep/ .mat-card.layout {
+:host ::ng-deep .mat-card.layout {
   margin: 0 !important;
 }
-:host /deep/ .content, :host /deep/ .header {
+:host ::ng-deep .content, :host ::ng-deep .header {
   .mat-card.layout, .mat-card.layout .mat-card-content {
     padding: 0px;
   }
@@ -46,7 +46,7 @@
   display: block;
   padding: 64px;
 }
-:host /deep/ .spinner mat-progress-spinner {
+:host ::ng-deep .spinner mat-progress-spinner {
   display: block;
   margin: auto;
 }
@@ -92,16 +92,16 @@
   padding: 12px 12px 22px 12px;
 }
 
-:host /deep/ .inline-filters .actions {
+:host ::ng-deep .inline-filters .actions {
   max-width: 90%;
   margin: 22px auto 0 auto;
 }
 
-:host /deep/ .left .mat-card.layout {
+:host ::ng-deep .left .mat-card.layout {
   padding: 0px;
 }
 
-.lt-md :host /deep/ .mat-card.layout {
+.lt-md :host ::ng-deep .mat-card.layout {
   border: none;
   border-radius: none;
   padding: 0;
@@ -116,7 +116,7 @@
   padding: 8px;
 }
 
-:host /deep/ .left .mat-tab-label-content {
+:host ::ng-deep .left .mat-tab-label-content {
   font-size: 15px;
   opacity: 1;
 }

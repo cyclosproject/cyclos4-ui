@@ -164,6 +164,10 @@ input[type=number] {
   font-size: 12px;
 }
 
+.form-wrapper {
+  margin: 16px 0;
+}
+
 .has-label-value {
   display: block;
 }
@@ -183,7 +187,7 @@ input[type=number] {
 }
 
 // Steppers
-.gt-xs .td-step-content {
+.gt-xs td-step-content {
   margin: 0 !important;
   padding: 8px !important;
 }
@@ -198,61 +202,58 @@ input[type=number] {
   overflow-x: visible !important;
 }
 // Data tables
-.mat-header-cell {
-  font-size: 14px;
-  opacity: 0.87;
-}
-.mat-header-row, .mat-row {
-  padding: 4px 14px !important;
-}
-.xs .mat-header-row, .xs .mat-row {
-  padding: 5px 14px !important;
-}
-
-.mat-header-row.dynamic, .mat-row.dynamic {
-  height: auto !important;
-}
-.clickable {
-  cursor: pointer;
-}
 .mat-table {
   max-width: 100vw;
+
+  .mat-header-cell {
+    font-size: 14px;
+    opacity: 0.87;
+  }
+  .mat-header-row.dynamic, .mat-row.dynamic {
+    height: auto !important;
+  }
+  .clickable {
+    cursor: pointer;
+  }
+  .mat-icon {
+    opacity: 0.25;
+  }
+  .mat-cell.avatar, .mat-header-cell.avatar {
+    width: 64px;
+    height: 64px;
+  }
+  .mat-cell.avatar avatar .container {
+    position: relative;
+    left: 1px;
+  }
+  .mat-cell.avatar avatar {
+    position: relative;
+    top: 1px;
+  }
+  .mat-cell.selection, .mat-header-cell.selection {
+    max-width: 32px;
+  }
+  .mat-cell .cell-main {
+    font-weight: 500;
+  }
+  .mat-cell .cell-small {
+    font-size: 12px;
+  }
+  a, a:hover {
+    text-decoration: none;
+  }
+  .mat-header-row {
+    min-height: 48px !important;
+  }
 }
-.mat-table .mat-icon {
-  opacity: 0.25;
-}
-.xs .mat-cell {
-  padding: 6px 0;
-}
-mat-cell.avatar, mat-header-cell.avatar {
-  max-width: 54px;
-  padding-left: 0px !important;
-}
-mat-cell.avatar avatar .container {
-  position: relative;
-  left: 1px;
-}
-mat-cell.avatar avatar {
-  position: relative;
-  top: 1px;
-}
-mat-cell.selection, mat-header-cell.selection {
-  max-width: 32px;
-}
-mat-cell .cell-main {
-  font-weight: 500;
-}
-mat-cell .cell-small {
-  font-size: 12px;
-}
-.xs mat-cell .cell-text {
-  margin-bottom: 2px;
-}
-.mat-table a, .mat-table a:hover {
-  text-decoration: none;
-}
-.mat-header-row {
-  min-height: 48px !important;
+.xs .mat-table {
+  .mat-cell {
+    padding: 6px 0;
+
+    .cell-text {
+      margin-bottom: 2px;
+    }
+  }
 }
 
 // Material icons
@@ -340,4 +341,8 @@ page-content, .mat-dialog-container {
 }
 .mat-fab .mat-icon, .mat-mini-fab .mat-icon {
   opacity: 1;
+}
+
+table {
+  width: 100%;
 }

@@ -33,9 +33,6 @@ export class ViewTransferDetailsComponent extends BaseComponent {
   ngOnInit() {
     super.ngOnInit();
     this.childrenDataSource.next(this.transfer.children);
-    if (this.transfer.transactionNumber) {
-      this.breadcrumb.title = this.transfer.transactionNumber;
-    }
 
     const msg = this.messages.transactionFromTo(FROM, TO);
     const fromIx = msg.indexOf(FROM);

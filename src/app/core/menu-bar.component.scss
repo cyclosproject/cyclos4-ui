@@ -1,32 +1,37 @@
 @import 'src/definitions';
 
-:host /deep/ .outer {
+:host ::ng-deep .outer {
   border-bottom-width: 1px;
   border-bottom-style: solid;
   padding: 0 16px;
 }
 
-:host /deep/ .mat-icon {
+:host ::ng-deep .mat-icon {
   margin-right: 8px;
 }
-:host /deep/ a {
+:host ::ng-deep a {
   opacity: 1 !important;
 }
-:host /deep/ a:not(.mat-tab-label-active) {
+:host ::ng-deep a:not(.mat-tab-label-active) {
   .item-text, .mat-icon {
     opacity: 0.65 !important;
   }
 }
-:host /deep/ .mat-button-focus-overlay {
+:host ::ng-deep a.mat-tab-label-active {
+  .mat-icon {
+    opacity: 1 !important;
+  }
+}
+:host ::ng-deep .mat-button-focus-overlay {
   display: none !important;
 }
 
-:host /deep/ .mat-tab-link {
+:host ::ng-deep .mat-tab-link {
   height: 60px !important;
   padding: 10px !important;
   min-width: 150px;
 }
-:host /deep/ {
+:host ::ng-deep {
   .item-text, .mat-icon {
     font-weight: 400;
   }
@@ -34,6 +39,6 @@
     font-size: 1.2em;
   }
 }
-:host /deep/ .mat-tab-nav-bar {
+:host ::ng-deep .mat-tab-nav-bar {
   border-bottom-width: 0px !important;
 }

@@ -6,14 +6,14 @@
   padding: 0;
   width: 100%;
 }
-:host /deep/ .mat-button-focus-overlay {
+:host ::ng-deep .mat-button-focus-overlay {
   background-color: transparent !important;
 }
 
-:host /deep/ .outer {
+:host ::ng-deep .outer {
   padding: 8px 10px;
 }
-:host /deep/ .title {
+:host ::ng-deep .title {
   text-align: center;
   margin-top: 9px;
   font-size: 20px;
@@ -28,7 +28,7 @@
   z-index: 1;
 }
 
-.gt-xs :host /deep/ .rootContainer {
+.gt-xs :host ::ng-deep .rootContainer {
   margin-top: 12px;
 }
 .rootMenu {
@@ -43,7 +43,7 @@
   border-top-style: solid;
 }
 
-:host /deep/ .rootContainer a {
+:host ::ng-deep .rootContainer a {
   padding-top: 1px;
   padding-bottom: 1px;
 }
@@ -54,16 +54,16 @@
   border-bottom-width: 1px;
   border-bottom-style: solid;
 }
-:host /deep/ .rootContainer.guest a {
+:host ::ng-deep .rootContainer.guest a {
   padding-top: 12px;
   padding-bottom: 12px;
 }
 
-:host /deep/ menu-item a {
+:host ::ng-deep menu-item a {
   width: 100%;
   padding: 0 20px;
 }
 
-:host /deep/ menu-item.home {
+:host ::ng-deep menu-item.home {
   margin-top: 8px;
 }

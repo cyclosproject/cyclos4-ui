@@ -8,11 +8,11 @@
   padding: 12px;
 }
 
-:host /deep/ mat-select {
+:host ::ng-deep mat-select {
   width: 150px;
   margin: 0 12px;
 }
-:host /deep/ .mat-select-trigger {
+:host ::ng-deep .mat-select-trigger {
   width: 50px;
 }
 

@@ -16,17 +16,17 @@
 }
 
 // Sidenav
-:host /deep/ .mat-sidenav-container {
+:host ::ng-deep .mat-sidenav-container {
   flex: 1 1 100%;
 }
-:host /deep/ .mat-drawer-content {
+:host ::ng-deep .mat-drawer-content {
   overflow: visible;
 }
-.lt-md :host /deep/ .mat-drawer-content {
+.lt-md :host ::ng-deep .mat-drawer-content {
   width: 100%;
   flex-direction: column !important;
 }
-.gt-sm :host /deep/ .mat-drawer-content {
+.gt-sm :host ::ng-deep .mat-drawer-content {
   max-width: $max-layout-width;
   margin-left: auto !important;
   margin-right: auto !important;
@@ -34,22 +34,22 @@
 }
 
 // Main area
-.gt-sm :host /deep/ .main {
+.gt-sm :host ::ng-deep .main {
   padding: $parts-margin 0;
 }
 @media (max-width: $max-layout-width + 16px) {
-  .md :host /deep/ .main {
+  .md :host ::ng-deep .main {
     padding-left: 16px;
     padding-right: 16px;
   }
 }
-.lt-md :host /deep/ .main {
+.lt-md :host ::ng-deep .main {
   padding: 0;
 }
 
-:host /deep/ .main > * {
+:host ::ng-deep .main > * {
   flex: 1 1 100%;
 }
-:host /deep/ .main > router-outlet {
+:host ::ng-deep .main > router-outlet {
   display: none;
 }

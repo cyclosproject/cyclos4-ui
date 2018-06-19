@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router, NavigationStart } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
-import { BreadCrumbEntry } from './breadcrumb-entry';
 import { filter } from 'rxjs/operators';
 import { map } from 'rxjs/operators';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
@@ -17,7 +16,7 @@ export class BreadcrumbService {
   /**
    * The current breadcrumb entries
    */
-  breadcrumb = new BehaviorSubject<BreadCrumbEntry[]>([]);
+  breadcrumb = new BehaviorSubject<string[]>([]);
 
   constructor(
     private router: Router,
@@ -40,29 +39,6 @@ export class BreadcrumbService {
     this.breadcrumb.next([]);
   }
 
-  /**
-   * Sets the title for the current entry
-   */
-  set title(title: string) {
-    const entries = this.breadcrumb.value.slice();
-    if (entries.length === 0) {
-      return;
-    }
-    entries[entries.length - 1].title = title;
-    this.breadcrumb.next(entries);
-  }
-
-  /**
-   * Returns the title for the current entry
-   */
-  get title(): string {
-    const entries = this.breadcrumb.value;
-    if (entries.length === 0) {
-      return null;
-    }
-    return entries[entries.length - 1].title;
-  }
-
   private onRouterEvent(event: NavigationStart): void {
     if (IGNORE_BREADCRUMB.includes(event.url)) {
       // Ignore the breadcrumb for this URL
@@ -74,7 +50,7 @@ export class BreadcrumbService {
     // Find the breadcrumb entry for this path
     let index = -1;
     for (let i = 0; i < entries.length; i++) {
-      if (entries[i].url === event.url) {
+      if (entries[i] === event.url) {
         index = i;
         break;
       }
@@ -85,7 +61,7 @@ export class BreadcrumbService {
     } else {
       // Going to a new URL
       entries = entries.slice();
-      entries.push(new BreadCrumbEntry(event.url));
+      entries.push(event.url);
     }
     this.breadcrumb.next(entries);
   }
@@ -96,7 +72,7 @@ export class BreadcrumbService {
   back() {
     const breadcrumb = this.breadcrumb.value;
     if (breadcrumb.length > 1) {
-      this.router.navigateByUrl(breadcrumb[breadcrumb.length - 2].url);
+      this.router.navigateByUrl(breadcrumb[breadcrumb.length - 2]);
     }
   }
 }

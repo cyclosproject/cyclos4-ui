@@ -144,7 +144,6 @@
   "user.editMyProfile.saved": "Profile fields were successfully saved",
   "user.editMyProfile.confirmationPassword": "In order to save your profile you have to supply your confirmation password",
   "user.search.title": "Users search",
-  "user.search.breadcrumb": "Users",
   "user.profile.permissionError": "You don't have permission to view the profile of this user",
   "user.name": "Full name",
   "user.username": "Login name",

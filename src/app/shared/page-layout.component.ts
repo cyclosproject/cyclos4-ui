@@ -43,26 +43,16 @@ export class PageLayoutComponent extends BaseComponent {
 
   @Input() loaded: Observable<any>;
 
+  @Input() title: string;
+
   @Input() titleActions: Action[];
 
   @ViewChild('tabGroup') tabGroup: MatTabGroup;
 
   filtersShown = new BehaviorSubject(false);
 
-  private _title: string;
-
   private creationTime = new Date();
 
-  @Input()
-  set title(title: string) {
-    this._title = title;
-    if (title != null && title.length > 0 && this.breadcrumb.title == null) {
-      this.breadcrumb.title = title;
-    }
-  }
-  get title(): string {
-    return this._title;
-  }
 
   get hasFilters(): boolean {
     return this.filtersForm != null;

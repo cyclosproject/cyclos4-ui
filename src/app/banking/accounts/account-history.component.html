@@ -55,70 +55,83 @@
     </form>
   </page-filters>
   <page-content>
-    <mat-table #table
-      [fxHide]="(dataSource.empty | async)"
+    <table *ngIf="!(dataSource.empty | async)"
+      mat-table
+      #table
       [dataSource]="dataSource">
       <!-- Avatar column -->
       <ng-container matColumnDef="avatar">
-        <mat-header-cell *matHeaderCellDef
-          class="avatar"></mat-header-cell>
-        <mat-cell *matCellDef="let row"
+        <th mat-header-cell
+          *matHeaderCellDef
+          class="avatar"></th>
+        <td mat-cell
+          *matCellDef="let row"
           class="avatar">
           <avatar [icon]="avatarIcon(row)"
             [image]="avatarImage(row)">
           </avatar>
-        </mat-cell>
+        </td>
       </ng-container>
 
       <!-- Aggregated (for small devices) -->
       <ng-container matColumnDef="aggregated">
-        <mat-header-cell *matHeaderCellDef></mat-header-cell>
-        <mat-cell *matCellDef="let row">
+        <th mat-header-cell
+          *matHeaderCellDef></th>
+        <td mat-cell
+          *matCellDef="let row">
           <a [routerLink]="path(row)">
             <div class="cell-text cell-main">{{ subjectName(row) }}</div>
             <div class="cell-text cell-date">{{ row.date | dateTime }}</div>
             <div *ngIf="row.description"
               class="cell-text cell-small">{{ row.description }}</div>
           </a>
-        </mat-cell>
+        </td>
       </ng-container>
 
       <!-- Date column -->
       <ng-container matColumnDef="date">
-        <mat-header-cell *matHeaderCellDef>{{ messages.transactionDate() }}</mat-header-cell>
-        <mat-cell *matCellDef="let row">
+        <th mat-header-cell
+          *matHeaderCellDef>{{ messages.transactionDate() }}</th>
+        <td mat-cell
+          *matCellDef="let row">
           <a [routerLink]="path(row)">
             {{ row.date | date }}
           </a>
-        </mat-cell>
+        </td>
       </ng-container>
 
       <!-- Date column -->
       <ng-container matColumnDef="transactionNumber">
-        <mat-header-cell *matHeaderCellDef>{{ messages.transactionNumber() }}</mat-header-cell>
-        <mat-cell *matCellDef="let row">
+        <th mat-header-cell
+          *matHeaderCellDef>{{ messages.transactionNumber() }}</th>
+        <td mat-cell
+          *matCellDef="let row">
           <a *ngIf="row.transactionNumber"
             [routerLink]="path(row)">
             {{ row.transactionNumber }}
           </a>
-        </mat-cell>
+        </td>
       </ng-container>
 
       <!-- Subject column -->
       <ng-container matColumnDef="subject">
-        <mat-header-cell *matHeaderCellDef>{{ messages.transactionSubject() }}</mat-header-cell>
-        <mat-cell *matCellDef="let row">
+        <th mat-header-cell
+          *matHeaderCellDef>{{ messages.transactionSubject() }}</th>
+        <td mat-cell
+          *matCellDef="let row">
           <a [routerLink]="path(row)">
             {{ subjectName(row) }}
           </a>
-        </mat-cell>
+        </td>
       </ng-container>
 
       <!-- Amount column -->
       <ng-container matColumnDef="amount">
-        <mat-header-cell *matHeaderCellDef
-          style="text-align: end">{{ messages.transactionAmount() }}</mat-header-cell>
-        <mat-cell *matCellDef="let row"
+        <th mat-header-cell
+          *matHeaderCellDef
+          style="text-align: end">{{ messages.transactionAmount() }}</th>
+        <td mat-cell
+          *matCellDef="let row"
           style="text-align: end">
           <a [routerLink]="path(row)"
             [ngClass]="{
@@ -127,15 +140,17 @@
             }">
             {{ row.amount | currency:currency:true }}
           </a>
-        </mat-cell>
+        </td>
       </ng-container>
 
-      <mat-header-row *matHeaderRowDef="layout.xs ? [] : displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns;"
+      <tr *matHeaderRowDef="layout.xs ? [] : displayedColumns"
+        mat-header-row></tr>
+      <tr *matRowDef="let row; columns: displayedColumns;"
+        mat-row
         ngClass.xs="dynamic"
         ngClass="clickable"
-        (click)="router.navigate(path(row))"></mat-row>
-    </mat-table>
+        (click)="router.navigate(path(row))"></tr>
+    </table>
     <paginator (update)="update()"
       [query]="query"
       [dataSource]="dataSource"></paginator>

@@ -24,11 +24,11 @@ a.account .balance {
   font-weight: 500;
 }
 
-:host /deep/ a.account .mat-button-wrapper {
+:host ::ng-deep a.account .mat-button-wrapper {
   align-items: center;
   flex: 1;
 }
-a.account, :host /deep/ menu-item a {
+a.account, :host ::ng-deep menu-item a {
   border-top-width: 1px;
   border-top-style: solid;
   text-align: left;
@@ -39,9 +39,9 @@ a.account, :host /deep/ menu-item a {
   align-items: center;
   font-weight: 400;
 }
-:host /deep/ menu-item a.active, a.active {
+:host ::ng-deep menu-item a.active, a.active {
   opacity: 1;
 }
-:host /deep/ a:not(.active) .mat-icon {
+:host ::ng-deep a:not(.active) .mat-icon {
   opacity: 0.60 !important;
 }

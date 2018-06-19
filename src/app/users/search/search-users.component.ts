@@ -53,8 +53,6 @@ export class SearchUsersComponent extends BaseComponent {
   ngOnInit() {
     super.ngOnInit();
 
-    this.breadcrumb.title = this.messages.userSearchBreadcrumb();
-
     // Get the data for user search
     this.stateManager.cache('data',
       this.usersService.getUserDataForSearch())

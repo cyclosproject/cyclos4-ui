@@ -81,12 +81,15 @@
 
 <ng-container *ngIf="(transfer.children || []).length > 0">
   <h2 class="no-bottom-margin">{{ messages.transferChildrenTitle() }}</h2>
-  <mat-table [dataSource]="childrenDataSource">
+  <table mat-table
+    [dataSource]="childrenDataSource">
 
     <!-- Aggregated (for small devices) -->
     <ng-container matColumnDef="aggregated">
-      <mat-header-cell *matHeaderCellDef></mat-header-cell>
-      <mat-cell *matCellDef="let row">
+      <th mat-header-cell
+        *matHeaderCellDef></th>
+      <td mat-cell
+        *matCellDef="let row">
         <a [routerLink]="path(row)"
           fxLayout="column">
           <div class="cell-text cell-main">
@@ -102,71 +105,83 @@
           <div *ngIf="row.description"
             class="cell-text cell-small">{{ row.description }}</div>
         </a>
-      </mat-cell>
+      </td>
     </ng-container>
 
     <!-- Date column -->
     <ng-container matColumnDef="date">
-      <mat-header-cell *matHeaderCellDef>{{ messages.transactionDate() }}</mat-header-cell>
-      <mat-cell *matCellDef="let row">
+      <th mat-header-cell
+        *matHeaderCellDef>{{ messages.transactionDate() }}</th>
+      <td mat-cell
+        *matCellDef="let row">
         <a [routerLink]="path(row)">
           {{ row.date | date }}
         </a>
-      </mat-cell>
+      </td>
     </ng-container>
 
     <!-- Transaction number column -->
     <ng-container matColumnDef="transactionNumber">
-      <mat-header-cell *matHeaderCellDef>{{ messages.transactionNumber() }}</mat-header-cell>
-      <mat-cell *matCellDef="let row">
+      <th mat-header-cell
+        *matHeaderCellDef>{{ messages.transactionNumber() }}</th>
+      <td mat-cell
+        *matCellDef="let row">
         <a [routerLink]="path(row)">
           {{ row.transactionNumber }}
         </a>
-      </mat-cell>
+      </td>
     </ng-container>
 
     <!-- From column -->
     <ng-container matColumnDef="from">
-      <mat-header-cell *matHeaderCellDef>{{ messages.transactionFrom() }}</mat-header-cell>
-      <mat-cell *matCellDef="let row">
+      <th mat-header-cell
+        *matHeaderCellDef>{{ messages.transactionFrom() }}</th>
+      <td mat-cell
+        *matCellDef="let row">
         <a [routerLink]="path(row)">
           <user-link [account]="row.from"></user-link>
           <ng-container *ngIf="row.from.number">
             <br>{{ row.from.number }}
           </ng-container>
         </a>
-      </mat-cell>
+      </td>
     </ng-container>
 
     <!-- To column -->
     <ng-container matColumnDef="to">
-      <mat-header-cell *matHeaderCellDef>{{ messages.transactionTo() }}</mat-header-cell>
-      <mat-cell *matCellDef="let row">
+      <th mat-header-cell
+        *matHeaderCellDef>{{ messages.transactionTo() }}</th>
+      <td mat-cell
+        *matCellDef="let row">
         <a [routerLink]="path(row)">
           <user-link [account]="row.to"></user-link>
           <ng-container *ngIf="row.to.number">
             <br>{{ row.to.number }}
           </ng-container>
         </a>
-      </mat-cell>
+      </td>
     </ng-container>
 
     <!-- Amount column -->
     <ng-container matColumnDef="amount">
-      <mat-header-cell *matHeaderCellDef
-        style="text-align: end">{{ messages.transactionAmount() }}</mat-header-cell>
-      <mat-cell *matCellDef="let row"
+      <th mat-header-cell
+        *matHeaderCellDef
+        style="text-align: end">{{ messages.transactionAmount() }}</th>
+      <td mat-cell
+        *matCellDef="let row"
         style="text-align: end">
         <a [routerLink]="path(row)">
           {{ row.amount | currency:row.currency }}
         </a>
-      </mat-cell>
+      </td>
     </ng-container>
 
-    <mat-header-row *matHeaderRowDef="layout.xs ? [] : displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"
+    <tr mat-header-row
+      *matHeaderRowDef="layout.xs ? [] : displayedColumns"></tr>
+    <tr mat-row
+      *matRowDef="let row; columns: displayedColumns;"
       ngClass.xs="dynamic"
       ngClass="clickable"
-      (click)="router.navigate(path(row))"></mat-row>
-  </mat-table>
+      (click)="router.navigate(path(row))"></tr>
+  </table>
 </ng-container>

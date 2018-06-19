@@ -70,7 +70,6 @@ import { ConfirmationPasswordComponent } from 'app/shared/confirmation-password.
 import { LinearStepperControlComponent } from 'app/shared/linear-stepper-control.component';
 import { FieldPrivacyComponent } from 'app/shared/field-privacy.component';
 import { CaptchaComponent } from 'app/shared/captcha.component';
-import { BreadcrumbComponent } from './breadcrumb.component';
 import { ImageViewerComponent } from './image-viewer.component';
 import { UserLinkComponent } from './user-link.component';
 import { PageTitleComponent } from 'app/shared/page-title.component';
@@ -84,7 +83,6 @@ import { PageTitleComponent } from 'app/shared/page-title.component';
     PageLayoutComponent,
     SideMenuComponent,
     MenuItemComponent,
-    BreadcrumbComponent,
     PageFiltersComponent,
     PageContentComponent,
     PageHeaderComponent,
@@ -185,7 +183,6 @@ import { PageTitleComponent } from 'app/shared/page-title.component';
     PageLayoutComponent,
     SideMenuComponent,
     MenuItemComponent,
-    BreadcrumbComponent,
     PageFiltersComponent,
     PageContentComponent,
     PageHeaderComponent,
