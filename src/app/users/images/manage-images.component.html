@@ -8,10 +8,22 @@
         [image]="image"
         [title]="image.name"
         [actions]="actions(image)"
+        [useLightbox]="true"
         fxFlex="nogrow">
         {{ messages.imageDimensions(image.height, image.width) }}
       </tiled-result>
     </tiled-results>
+    <ng-container *ngIf="data.canCreate">
+      <td-file-input #fileInput
+        style="display:none"
+        multiple
+        (select)="uploadImages($event)">
+      </td-file-input>
+
+      <fab icon="add"
+        (click)="fileInput.inputElement.click()">
+      </fab>
+    </ng-container>
   </page-content>
 </page-layout>
 <ng-template #noResults>

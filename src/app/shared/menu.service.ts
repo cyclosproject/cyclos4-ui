@@ -280,6 +280,9 @@ export class MenuService {
         add(Menu.MY_CONTACT_INFOS, '/users/my-profile/contact-infos', 'perm_contact_calendar',
           this.messages.menuPersonalContactInfos(), [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
       }
+      add(Menu.BACK_TO_PERSONAL, '/users/my-profile', 'arrow_back',
+        this.messages.menuPersonalBack(), [MenuType.SIDE]);
+
       add(Menu.SETTINGS, '/settings', 'settings',
         this.messages.menuPersonalSettings(), [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
       if (users.contacts) {

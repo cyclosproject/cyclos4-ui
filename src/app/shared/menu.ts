@@ -69,6 +69,7 @@ export module Menu {
   export const MY_ADDRESSES = new Menu(RootMenu.PERSONAL, FloatingMenu.EDIT_MY_PROFILE);
   export const MY_IMAGES = new Menu(RootMenu.PERSONAL, FloatingMenu.EDIT_MY_PROFILE);
   export const MY_CONTACT_INFOS = new Menu(RootMenu.PERSONAL, FloatingMenu.EDIT_MY_PROFILE);
+  export const BACK_TO_PERSONAL = new Menu(RootMenu.PERSONAL, FloatingMenu.EDIT_MY_PROFILE);
   export const SETTINGS = new Menu(RootMenu.PERSONAL);
   export const CONTACTS = new Menu(RootMenu.PERSONAL);
   export const PASSWORDS = new Menu(RootMenu.PERSONAL);

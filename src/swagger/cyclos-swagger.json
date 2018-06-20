@@ -3430,6 +3430,84 @@
         "x-produces-any" : true
       }
     },
+    "/contactInfos/{id}/image" : {
+      "post" : {
+        "tags" : [ "Images" ],
+        "summary" : "DEPRECATED: use `POST /contact-infos/{id}/image`\n",
+        "description" : "Saves the given image for the additional contact information.\nIf the given additional contact information already has an image, the\nold one is removed, and the current image is saved in its place.\n",
+        "operationId" : "uploadContactInfoImageDeprecated",
+        "produces" : [ "application/json", "text/plain" ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "The object identification",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "name",
+          "in" : "query",
+          "description" : "The name for the new image. If not informed will fall back to the\noriginal file name in the form data\n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "image",
+          "in" : "formData",
+          "description" : "The image being uploaded",
+          "required" : true,
+          "type" : "file"
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "The image is saved, its id is returned in the body and the URL to get the content is returned in the `Location` header\n",
+            "schema" : {
+              "type" : "string"
+            },
+            "headers" : {
+              "Location" : {
+                "type" : "string",
+                "description" : "URL for obtaining the image content"
+              }
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized access. Missing or invalid crendentials supplied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/UnauthorizedError"
+            }
+          },
+          "403" : {
+            "description" : "Permission denied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/ForbiddenError"
+            }
+          },
+          "404" : {
+            "description" : "An expected data was not found",
+            "schema" : {
+              "$ref" : "#/definitions/NotFoundError"
+            }
+          },
+          "500" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "security" : [ {
+          "basic" : [ ]
+        }, {
+          "session" : [ ]
+        }, {
+          "accessClient" : [ ]
+        } ],
+        "deprecated" : true,
+        "x-accepts" : "application/json",
+        "x-remove-version" : 4.13,
+        "x-deprecated" : "Use `POST /contact-infos/{id}/image`",
+        "x-contentType" : "application/x-www-form-urlencoded"
+      }
+    },
     "/files/temp" : {
       "get" : {
         "tags" : [ "Files" ],
@@ -3510,6 +3588,20 @@
           "description" : "This parameter is only taken into account if the current request\nis running as guest. It should be a reasonably unique key (for\nexample, an UUID, device identifier or a reasonably large random\nstring) which uniquely identifies the uploaded file as belonging\nto this \"session\". If no key is given, files uploaded as guest\nare matched by IP address. Using a key is recommended, because\nclients that move between WiFi and mobile connection or if the\nclient is in a network with multiple outbound IP addresses, files\nwon't be correctly matched without a key.  \n",
           "required" : false,
           "type" : "string"
+        }, {
+          "name" : "customField",
+          "in" : "query",
+          "description" : "If the temp file will be used as the value of a custom field of type file then the corresponding custom field\nmust be given (id or internal name). Otherwise this paremeter will be ignored. \n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "customFieldKind",
+          "in" : "query",
+          "description" : "If a custom field is given then its kind must be given too to allow find it. Possible values are:\n* ad: Advertisements field.\n* contact: Contact fields.\n* contactInfo: Additional contact information fields.\n* custom_operation: Custom operation fields.\n* document: Document fields.\n* record: Record fields.\n* transaction: Transaction fields.\n* user: User profile fields.\n",
+          "required" : false,
+          "type" : "string",
+          "enum" : [ "ad", "contact", "contactInfo", "custom_operation", "document", "record", "transaction", "user" ],
+          "x-type" : "CustomFieldKind"
         }, {
           "name" : "file",
           "in" : "formData",
@@ -4080,9 +4172,23 @@
         }, {
           "name" : "guestKey",
           "in" : "query",
-          "description" : "This parameter is only taken into account if the current request\nis running as guest. It should be a reasonably unique key (for\nexample, an UUID, device identifier or a reasonably large random\nstring) which uniquely identifies the uploaded image as belonging\nto this \"session\". If no key is given, images uploaded as guest\nare matched by IP address. Using a key is recommended, because\nclients that move between WiFi and mobile connection or if the\nclient is in a network with multiple outbound IP addresses, images\nwon't be correctly matched without a key.  \n",
+          "description" : "This parameter is only taken into account if the current request\nis running as guest. It should be a reasonably unique key (for\nexample, an UUID, device identifier or a reasonably large random\nstring) which uniquely identifies the uploaded image as belonging\nto this \"session\". If no key is given, images uploaded as guest\nare matched by IP address. Using a key is recommended, because\nclients that move between WiFi and mobile connection or if the\nclient is in a network with multiple outbound IP addresses, images\nwon't be correctly matched without a key.\n",
           "required" : false,
           "type" : "string"
+        }, {
+          "name" : "customField",
+          "in" : "query",
+          "description" : "If the temp image will be used as the value of a custom field of type image then the corresponding custom field\nmust be given (id or internal name). Otherwise this paremeter will be ignored. \n",
+          "required" : false,
+          "type" : "string"
+        }, {
+          "name" : "customFieldKind",
+          "in" : "query",
+          "description" : "If a custom field is given then its kind must be given too to allow find it. Possible values are:\n* ad: Advertisements field.\n* contact: Contact fields.\n* contactInfo: Additional contact information fields.\n* custom_operation: Custom operation fields.\n* document: Document fields.\n* record: Record fields.\n* transaction: Transaction fields.\n* user: User profile fields.\n",
+          "required" : false,
+          "type" : "string",
+          "enum" : [ "ad", "contact", "contactInfo", "custom_operation", "document", "record", "transaction", "user" ],
+          "x-type" : "CustomFieldKind"
         }, {
           "name" : "image",
           "in" : "formData",
@@ -20604,6 +20710,11 @@
       "description" : "The UI control (widget) type that should be used to render this field for edit. Most notably, the types that can have distinct controls are singleSelection, that could be rendered as a single selection widget or radio button group, and multi selection, which could be rendered as a multi selection widget or a checkbox group. Possible values are:\n* checkbox: A checkbox group\n* entitySelection: A widget to select a linked entity (for example, an auto-complete for users)\n* multiSelection: A multi-selection field\n* radio: A radio button group\n* richEditor: An HTML editor\n* singleSelection: A single-selection field\n* text: A single line text\n* textarea: A multi line text\n* upload: A widget to upload a file\n",
       "enum" : [ "checkbox", "entitySelection", "multiSelection", "radio", "richEditor", "singleSelection", "text", "textarea", "upload" ]
     },
+    "CustomFieldKind" : {
+      "type" : "string",
+      "description" : "Determines the kind if a custom field Possible values are:\n* ad: Advertisements field.\n* contact: Contact fields.\n* contactInfo: Additional contact information fields.\n* custom_operation: Custom operation fields.\n* document: Document fields.\n* record: Record fields.\n* transaction: Transaction fields.\n* user: User profile fields.\n",
+      "enum" : [ "ad", "contact", "contactInfo", "custom_operation", "document", "record", "transaction", "user" ]
+    },
     "CustomFieldSizeEnum" : {
       "type" : "string",
       "description" : "The size of the widget that should be rendered Possible values are:\n* full: The widget should occupy 100% of the available area\n* large: A large widget\n* medium: A medium widget\n* small: A small widget\n* tiny: A very small widget\n",
@@ -23601,7 +23712,7 @@
         "properties" : {
           "hidden" : {
             "type" : "boolean",
-            "description" : "Indicates whether this additional contact information is hiddenfor\nother users.\n"
+            "description" : "Indicates whether this additional contact information is hidden\nfor other users.\n"
           },
           "customValues" : {
             "type" : "object",
@@ -23907,10 +24018,6 @@
           "pattern" : {
             "type" : "string",
             "description" : "The (optional) mask to be applied to string values"
-          },
-          "decimalDigits" : {
-            "type" : "integer",
-            "description" : "The number of decimal digits that should be used when type is decimal\n"
           },
           "required" : {
             "type" : "boolean",
@@ -25037,6 +25144,10 @@
         "canManage" : {
           "type" : "boolean",
           "description" : "Does the authenticated user has permission to manage these images?\n"
+        },
+        "canCreate" : {
+          "type" : "boolean",
+          "description" : "Does the authenticated user has permission to create a new image?\n"
         },
         "maxImages" : {
           "type" : "integer",

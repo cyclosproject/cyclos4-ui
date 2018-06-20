@@ -8,6 +8,7 @@
     height: maxSize + 'px'
   }">
   <img [src]="url"
+    (click)="showLightbox()"
     [ngStyle]="{
       width: imageWidth + 'px',
       height: imageHeight + 'px',

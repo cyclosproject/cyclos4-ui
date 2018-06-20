@@ -2,6 +2,7 @@ import { Component, Input, ChangeDetectionStrategy, Injector } from '@angular/co
 import { Image } from 'app/api/models';
 import { SvgIconRegistry } from 'app/core/svg-icon-registry';
 import { BaseComponent } from './base.component';
+import { Lightbox } from 'ngx-lightbox';
 
 /**
  * The size for rendered avatars.
@@ -48,6 +49,8 @@ export class AvatarComponent extends BaseComponent {
 
   @Input() roundBorders = true;
 
+  @Input() useLightbox = false;
+
   /**
    * The size of images and icons
    */
@@ -83,6 +86,7 @@ export class AvatarComponent extends BaseComponent {
 
   constructor(
     injector: Injector,
+    private lightbox: Lightbox,
     private svgIconRegistry: SvgIconRegistry) {
     super(injector);
   }
@@ -165,6 +169,16 @@ export class AvatarComponent extends BaseComponent {
     } else {
       // Calculate the icon attributes
       this.iconClass = 'mat-' + ICON_SIZES[this.size];
+    }
+  }
+
+  showLightbox() {
+    if (this.image && this.useLightbox) {
+      this.lightbox.open([{
+        src: this.image.url,
+        caption: this.image.name,
+        thumb: this.url
+      }]);
     }
   }
 }

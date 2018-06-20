@@ -1,9 +1,9 @@
 import { Component, ChangeDetectionStrategy, Injector } from '@angular/core';
 
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { BaseComponent } from 'app/shared/base.component';
 import { ImagesService } from 'app/api/services';
-import { ImagesListData, Image } from 'app/api/models';
+import { ImagesListData, Image, UserImageKind } from 'app/api/models';
 import { ApiHelper } from 'app/shared/api-helper';
 import { Action } from 'app/shared/action';
 
@@ -43,6 +43,29 @@ export class ManageImagesComponent extends BaseComponent {
       this.remove(image);
     }));
     return actions;
+  }
+
+  uploadImages(files: File | FileList) {
+    const observables: Observable<any>[] = [];
+    if (files instanceof File) {
+      observables.push(this.imagesService.uploadUserImage({
+        user: ApiHelper.SELF,
+        kind: UserImageKind.PROFILE,
+        image: files
+      }));
+    } else {
+      for (let i = 0; i < files.length; i++) {
+        observables.push(this.imagesService.uploadUserImage({
+          user: ApiHelper.SELF,
+          kind: UserImageKind.PROFILE,
+          image: files.item(i)
+        }));
+      }
+    }
+    combineLatest(observables).subscribe(() => {
+      this.notification.snackBar(this.messages.imageProfileUploaded());
+      this.reload();
+    });
   }
 
   private remove(image: Image) {

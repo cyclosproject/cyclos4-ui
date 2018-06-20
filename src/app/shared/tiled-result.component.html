@@ -37,6 +37,7 @@
     <avatar *ngIf="image; else noLargeImage"
       [image]="image"
       [size]="tiledResults.tileWidth == null ? 'xlarge' : 'custom'"
+      [useLightbox]="useLightbox"
       [roundBorders]="false"
       [customSize]="tiledResults.tileWidth"></avatar>
   </div>
@@ -53,10 +54,11 @@
         fxFlex="nogrow"
         fxLayout="column"
         *ngIf="avatarPosition === 'left' && (image != null || icon != null)">
-        <avatar [icon]="icon"
+        <avatar [image]="image"
+          [icon]="icon"
           iconColor="accent"
           size="xlarge"
-          [image]="image"></avatar>
+          [useLightbox]="useLightbox"></avatar>
       </div>
       <div class="container"
         fxFlex="grow"

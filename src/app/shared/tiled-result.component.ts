@@ -26,6 +26,9 @@ export class TiledResultComponent {
   /** The image to show (overrides icon) */
   @Input() image: Image;
 
+  /** Show a large image (lightbox) when clicking on the image? */
+  @Input() useLightbox = false;
+
   /** The tile title */
   @Input() title: string;
 
@@ -34,5 +37,4 @@ export class TiledResultComponent {
 
   /** Url to navigate by clicking this result */
   @Input() url: string;
-
 }
