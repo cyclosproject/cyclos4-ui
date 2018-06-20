@@ -61,6 +61,9 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
     this.subscriptions.push(this.dataForUiHolder.subscribe(() => {
       this.onDisplayChange();
     }));
+    this.subscriptions.push(this.layout.subscribeForPageLoaded(() => {
+      this.onDisplayChange();
+    }));
     this.subscriptions.push(this.route.data.subscribe(data => {
       if (data.menu && this.layout.menu.value !== data.menu) {
         this.layout.menu.next(data.menu);

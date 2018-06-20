@@ -68,12 +68,14 @@ export class PageLayoutComponent extends BaseComponent {
       if (this.loaded == null) {
         // No loaded notification: clone the form value right away
         this.initialFormState = cloneDeep(this.filtersForm.value);
+        this.layout.nextLoadedPage(this);
       } else {
         // There's a loaded notification: clone the form state right after finishing loading
         this.subscriptions.push(this.loaded.subscribe(done => {
           if (done && this.initialFormState == null) {
             this.initialFormState = cloneDeep(this.filtersForm.value);
           }
+          this.layout.nextLoadedPage(this);
         }));
       }
     }

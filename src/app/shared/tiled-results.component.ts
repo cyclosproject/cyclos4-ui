@@ -1,5 +1,6 @@
 import { Component, Input, ChangeDetectionStrategy, Injector } from '@angular/core';
 import { BaseComponent } from 'app/shared/base.component';
+import { fromEvent } from 'rxjs';
 
 export type TilesPerRow = 1 | 2 | 3 | 4 | 'auto';
 
@@ -26,6 +27,15 @@ export class TiledResultsComponent extends BaseComponent {
     return this._tilesPerRow;
   }
 
+  ngOnInit() {
+    super.ngOnInit();
+    if (this.tilesPerRow === 'auto') {
+      // We need the exact pixel dimensions for the auto size to work ok
+      this.subscriptions.push(fromEvent(window, 'resize').subscribe(() =>
+        this.onDisplayChange()));
+    }
+  }
+
   set tilesPerRow(tiles: TilesPerRow) {
     this._tilesPerRow = tiles;
     this.onDisplayChange();
@@ -35,8 +45,8 @@ export class TiledResultsComponent extends BaseComponent {
     super.onDisplayChange();
     if (this._tilesPerRow === 'auto') {
       const width = this.layout.contentWidth;
-      const tiles = Math.round(width / 200);
-      this.actualTiles = Math.max(2, Math.min(4, tiles)) as TilesPerRow;
+      const tiles = Math.round(width / 250);
+      this.actualTiles = Math.max(2, Math.min(3, tiles)) as TilesPerRow;
     }
   }
 }

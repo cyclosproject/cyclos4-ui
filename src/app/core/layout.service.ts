@@ -1,9 +1,10 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { BreakPointRegistry, MediaChange, ObservableMedia } from '@angular/flex-layout';
 import { Menu } from 'app/shared/menu';
-import { Subscription } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
 import { BehaviorSubject } from 'rxjs';
 import { MatDialog, MatDialogConfig } from '@angular/material';
+import { PageLayoutComponent } from 'app/shared/page-layout.component';
 
 /**
  * Shared definitions for the application layout
@@ -24,6 +25,7 @@ export class LayoutService implements OnDestroy {
 
   /** The active menu */
   menu = new BehaviorSubject<Menu>(null);
+  pageLoaded = new Subject<PageLayoutComponent>();
 
   private _canvas: HTMLCanvasElement;
   private _ctx: CanvasRenderingContext2D;
@@ -139,10 +141,11 @@ export class LayoutService implements OnDestroy {
    * Returns the content area width, in pixels
    */
   get contentWidth(): number {
-    let elements = document.getElementsByClassName('content-wrapper');
-    if (elements.length === 0) {
-      elements = document.getElementsByClassName('inline-content');
+    if (this.ltmd) {
+      // For xs and sm sizes, the full width is available
+      return this.width;
     }
+    const elements = document.getElementsByClassName('content-wrapper');
     if (elements.length === 0) {
       // Not in a page layout
       return this.width;
@@ -166,6 +169,21 @@ export class LayoutService implements OnDestroy {
       disableClose: true,
       autoFocus: false
     };
+  }
+
+  /**
+   * Adds a new observer notified when a page layout was loaded
+   */
+  subscribeForPageLoaded(observer: (PageLayoutComponent) => void, err?: (any) => void, complete?: () => void): any {
+    return this.pageLoaded.subscribe(observer, err, complete);
+  }
+
+  /**
+   * Notifies that a page was loaded
+   * @param page The loaded page
+   */
+  nextLoadedPage(page: PageLayoutComponent) {
+    this.pageLoaded.next(page);
   }
 
 }

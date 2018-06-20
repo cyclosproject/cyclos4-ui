@@ -50,7 +50,7 @@
       <div class="content"
         [ngClass]="{
           'tight': tightContent,
-          'invisible': invisibleContent
+          'invisible': invisibleContent && !(loaded != null && !(loaded | async) && showSpinner)
         }">
         <mat-card ngClass="layout">
           <mat-card-content>
