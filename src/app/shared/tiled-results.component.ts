@@ -23,6 +23,11 @@ export class TiledResultsComponent extends BaseComponent {
 
   @Input() standalone = false;
 
+  /**
+   * When set, tiles will have a fixed width instead of by number of tiles
+   */
+  @Input() tileWidth: number;
+
   @Input() get tilesPerRow(): TilesPerRow {
     return this._tilesPerRow;
   }
@@ -43,10 +48,14 @@ export class TiledResultsComponent extends BaseComponent {
 
   onDisplayChange() {
     super.onDisplayChange();
-    if (this._tilesPerRow === 'auto') {
+    if (this.tileWidth != null) {
+      this.actualTiles = null;
+    } else if (this._tilesPerRow === 'auto') {
       const width = this.layout.contentWidth;
       const tiles = Math.round(width / 250);
       this.actualTiles = Math.max(2, Math.min(3, tiles)) as TilesPerRow;
+    } else {
+      this.actualTiles = this._tilesPerRow;
     }
   }
 }

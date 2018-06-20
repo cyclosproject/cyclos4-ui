@@ -1,8 +1,10 @@
 <page-layout [title]="messages.userImages()"
   [loaded]="loaded">
   <page-content *ngIf="loaded | async">
-    <tiled-results>
+    <tiled-results *ngIf="data.images.length > 0; else noResults"
+      [tileWidth]="248">
       <tiled-result *ngFor="let image of data.images"
+        avatarPosition="top"
         [image]="image"
         [title]="image.name"
         [actions]="actions(image)"
@@ -12,3 +14,6 @@
     </tiled-results>
   </page-content>
 </page-layout>
+<ng-template #noResults>
+  <div class="no-results">{{ messages.imageNoResults() }}</div>
+</ng-template>

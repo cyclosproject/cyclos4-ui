@@ -1,10 +1,10 @@
 <div class="tiled-results"
   [ngClass]="{
     'standalone': standalone,
-    'tiles-1': actualTiles === 1,
-    'tiles-2': actualTiles === 2,
-    'tiles-3': actualTiles === 3,
-    'tiles-4': actualTiles === 4
+    'tiles-1': layout.xs || actualTiles === 1,
+    'tiles-2': layout.gtxs && actualTiles === 2,
+    'tiles-3': layout.gtxs && actualTiles === 3,
+    'tiles-4': layout.gtxs && actualTiles === 4
   }"
   fxLayout="row wrap"
   fxLayoutAlign="space-between start">

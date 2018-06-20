@@ -13,8 +13,8 @@ export class ActionsComponent implements OnInit {
 
   @Input() topMargin: 'normal' | 'double' | 'half' | 'small' | 'none' = 'normal';
   @Input() align: string;
-  @Input() buttonSpace: 'normal' | 'small' | 'equidistant' = 'normal';
-  @Input() reverseXs = true;
+  @Input() buttonSpace: 'normal' | 'small' | 'equidistant' | 'none' = 'normal';
+  @Input() xsMode: 'column' | 'column-reverse' | 'row' = 'column-reverse';
 
   constructor() { }
 

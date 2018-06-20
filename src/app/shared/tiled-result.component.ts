@@ -1,6 +1,7 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy, HostBinding } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy, HostBinding, Inject, forwardRef, Optional } from '@angular/core';
 import { Image } from 'app/api/models';
 import { Action } from 'app/shared/action';
+import { TiledResultsComponent } from 'app/shared/tiled-results.component';
 
 /**
  * Renders a card-like element with an avatar, a title and a body
@@ -12,7 +13,10 @@ import { Action } from 'app/shared/action';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TiledResultComponent {
-  constructor() { }
+  constructor(
+    @Optional() @Inject(forwardRef(() => TiledResultsComponent)) public tiledResults
+  ) {
+  }
 
   @Input() avatarPosition: 'left' | 'top' = 'left';
 

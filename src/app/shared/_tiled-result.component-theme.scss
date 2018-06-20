@@ -1,12 +1,20 @@
 @import '~@angular/material/theming';
 
 @mixin tiled-result-component-theme($theme) {
+  $accent: map-get($theme, accent);
   $foreground: map-get($theme, foreground);
   $background: map-get($theme, background);
+  $is-dark: map-get($theme, is-dark);
+  $active-hue: if($is-dark, 600, 50);
 
   tiled-result {
     .mat-card {
       color: mat-color($foreground, text);
+    }
+
+    .no-large-image {
+      /*background-color: mat-color($accent, $active-hue);*/
+      border-bottom: 1px solid mat-color($foreground, divider);
     }
   }
 

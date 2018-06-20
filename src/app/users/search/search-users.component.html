@@ -3,7 +3,7 @@
   [loaded]="loaded"
   [filtersForm]="form"
   [tightContent]="true"
-  [invisibleContent]="resultType.value === ResultType.TILES">
+  [invisibleContent]="resultType.value === ResultType.TILES && !(dataSource.empty | async)">
   <page-header>
     <mat-button-toggle-group [formControl]="resultType"
       aria-label="Font Style">
@@ -183,7 +183,7 @@
     </table>
 
     <tiled-results [standalone]="true"
-      tilesPerRow="auto"
+      [tileWidth]="196"
       *ngIf="resultType.value === ResultType.TILES">
       <tiled-result *ngFor="let user of dataSource.data.value"
         [image]="user.image"
@@ -191,12 +191,14 @@
         icon="account_circle"
         avatarPosition="top"
         [title]="user.display">
-        <div *ngFor="let field of fieldsInTile">
-          <format-field-value [fields]="data.customFields"
-            [fieldName]="field"
-            [object]="user">
-            <br>
-          </format-field-value>
+        <div *ngFor="let field of fieldsInTile; let first = first">
+          <div [class]="first ? 'tile-title' : 'tile-data'">
+            <format-field-value [fields]="data.customFields"
+              [fieldName]="field"
+              [object]="user">
+              <br>
+            </format-field-value>
+          </div>
         </div>
       </tiled-result>
     </tiled-results>

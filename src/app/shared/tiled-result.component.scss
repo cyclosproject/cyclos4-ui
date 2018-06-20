@@ -1,22 +1,41 @@
 .mat-card {
-  padding: 8px !important;
+  padding: 8px;
   min-width: 220px;
   min-height: 90px;
 
-  div.title {
-    font-weight: 500;
-    margin-bottom: 8px;
-  }
-
-  div.leftAvatar {
+  div.left-avatar {
     float: left;
     margin-right: 12px;
   }
 }
 
-.topAvatar {
-  height: 80px;
+:host ::ng-deep {
+  .tile-title {
+    font-weight: 500;
+  }
+
+  .tile-title, .tile-data {
+    margin-bottom: 4px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
 }
+
+.mat-card:not(.with-top-avatar) {
+  padding: 8px !important;
+}
+.mat-card.with-top-avatar {
+  padding: 0 !important;
+}
+.mat-card.with-actions {
+  padding-bottom: 4px !important;
+}
+
+div.top-avatar {
+  margin-bottom: 4px;
+}
+
 .centered div {
   text-align: center;
 }
@@ -31,7 +50,7 @@
 }
 
 .gt-xs :host  {
-  .leftAvatar {
+  .left-avatar {
     margin-left: 8px;
     margin-top: 8px;
     margin-right: 8px;
@@ -43,4 +62,8 @@
     margin-top: 8px;
     display: block;
   }
+}
+
+.no-large-image .mat-icon {
+  opacity: 0.3;
 }

@@ -1,60 +1,85 @@
-<mat-card>
+<mat-card [ngStyle]="{
+  width: tiledResults.tileWidth == null ? 'auto' : tiledResults.tileWidth + 'px'
+}"
+  [ngClass]="{
+    'with-top-avatar': avatarPosition === 'top',
+    'with-actions': actions != null && actions.length > 0
+  }">
   <mat-card-content>
-    <a [ngClass]="{
+    <a *ngIf="url; else contentTpl"
+      [ngClass]="{
         'no-link': url == null,
         plain: true
       }"
-      [routerLink]="url == null ? '#' : url"
-      (click)="url == null ? $event.preventDefault() : null">
-      <div class="topAvatar"
-        fxLayout="row"
-        fxLayoutAlign="center center"
-        *ngIf="avatarPosition === 'top' && (image != null || icon != null)">
+      [routerLink]="url">
+      <ng-container *ngTemplateOutlet="contentTpl"></ng-container>
+    </a>
+  </mat-card-content>
+</mat-card>
+<ng-template #noLargeImage>
+  <div class="no-large-image"
+    fxLayout="row"
+    fxLayoutAlign="center center"
+    [ngStyle]="{
+      width: tiledResults.tileWidth == null ? '' : tiledResults.tileWidth + 'px',
+      height: tiledResults.tileWidth == null ? '' : tiledResults.tileWidth + 'px'
+    }">
+    <mat-icon [ngStyle]="{
+      fontSize: tiledResults.tileWidth == null ? '' : (tiledResults.tileWidth * 0.5) + 'px'
+    }">account_box</mat-icon>
+  </div>
+</ng-template>
+<ng-template #contentTpl>
+  <div class="top-avatar"
+    fxLayout="row"
+    fxLayoutAlign="center center"
+    *ngIf="avatarPosition === 'top' && (image != null || icon != null)">
+    <avatar *ngIf="image; else noLargeImage"
+      [image]="image"
+      [size]="tiledResults.tileWidth == null ? 'xlarge' : 'custom'"
+      [roundBorders]="false"
+      [customSize]="tiledResults.tileWidth"></avatar>
+  </div>
+  <div [ngClass]="{
+    outer: true,
+    centered: avatarPosition === 'top'
+  }"
+    fxLayout="column">
+    <div class="details"
+      fxFlex="grow"
+      fxLayout="row"
+      fxLayoutAlign="start center">
+      <div class="left-avatar"
+        fxFlex="nogrow"
+        fxLayout="column"
+        *ngIf="avatarPosition === 'left' && (image != null || icon != null)">
         <avatar [icon]="icon"
           iconColor="accent"
           size="xlarge"
           [image]="image"></avatar>
       </div>
-      <div [ngClass]="{
-        outer: true,
-        centered: avatarPosition === 'top'
-      }"
+      <div class="container"
+        fxFlex="grow"
         fxLayout="column">
-        <div class="details"
-          fxFlex="grow"
-          fxLayout="row"
-          fxLayoutAlign="start center"
-          fxLayoutGap="4px">
-          <div class="leftAvatar"
-            fxFlex="nogrow"
-            fxLayout="column"
-            *ngIf="avatarPosition === 'left' && (image != null || icon != null)">
-            <avatar [icon]="icon"
-              iconColor="accent"
-              [image]="image"></avatar>
-          </div>
-          <div class="container"
-            fxFlex="grow"
-            fxLayout="column">
-            <div class="title">{{ title }}</div>
-            <div class="content">
-              <ng-content></ng-content>
-            </div>
-          </div>
+        <div *ngIf="title"
+          class="tile-title">{{ title }}</div>
+        <div class="content">
+          <ng-content></ng-content>
         </div>
-        <actions *ngIf="actions && actions.length > 0"
-          [reverseXs]="false"
-          topMargin="small"
-          buttonSpace="equidistant">
-          <button *ngFor="let act of actions"
-            mat-button
-            (click)="act.onClick()">
-            <mat-icon *ngIf="act.icon"
-              ngClass="mat-22">{{ act.icon }}</mat-icon>
-            {{ act.label }}
-          </button>
-        </actions>
       </div>
-    </a>
-  </mat-card-content>
-</mat-card>
+    </div>
+    <actions *ngIf="actions && actions.length > 0"
+      xsMode="row"
+      topMargin="small"
+      [align]="actions.length === 1 ? 'center center' : 'space-between center'"
+      [buttonSpace]="actions.length === 1 ? 'none' : 'equidistant'">
+      <button *ngFor="let act of actions"
+        mat-button
+        (click)="act.onClick()">
+        <mat-icon *ngIf="act.icon"
+          ngClass="mat-22">{{ act.icon }}</mat-icon>
+        {{ act.label }}
+      </button>
+    </actions>
+  </div>
+</ng-template>

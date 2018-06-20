@@ -264,6 +264,11 @@ input[type=number] {
   }
 }
 
+.no-results {
+  padding: 24px;
+  text-align: center;
+}
+
 // Material icons
 mat-icon.mat-14 {
   font-size: 14px;
@@ -318,6 +323,7 @@ a.link-with-icon {
   align-items: center;
   .mat-icon {
     margin-right: 4px;
+    font-size: 16px;
   }
 }
 page-content, .mat-dialog-container {

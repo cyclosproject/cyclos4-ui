@@ -1,7 +1,7 @@
 <page-layout [title]="messages.userAddresses()"
   [loaded]="loaded">
   <page-content *ngIf="loaded | async">
-    <tiled-results>
+    <tiled-results *ngIf="data.addresses.length > 0; else noResults">
       <tiled-result *ngFor="let address of data.addresses"
         [title]="address.defaultAddress
           ? messages.addressDefaultName(address.name)
@@ -9,19 +9,27 @@
         icon="place"
         [actions]="actions(address)"
         fxFlex="nogrow">
-        <div *ngIf="address.addressLine1">{{ address.addressLine1 }}</div>
-        <div *ngIf="address.addressLine2">{{ address.addressLine2 }}</div>
-        <div *ngIf="address.street">
+        <div *ngIf="address.addressLine1"
+          class="tile-data">{{ address.addressLine1 }}</div>
+        <div *ngIf="address.addressLine2"
+          class="tile-data">{{ address.addressLine2 }}</div>
+        <div *ngIf="address.street"
+          class="tile-data">
           {{ address.street }}
           <ng-container *ngIf="address.buildingNumber">, {{ address.buildingNumber }}</ng-container>
           <ng-container *ngIf="address.complement">, {{ address.complement }}</ng-container>
         </div>
-        <div *ngIf="address.zip">{{ address.zip }}</div>
-        <div *ngIf="address.neighborhood">{{ address.neighborhood }}</div>
-        <div *ngIf="address.city">{{ address.city }}</div>
-        <div *ngIf="address.region">{{ address.region }}</div>
-        <div *ngIf="address.country">{{ country(address.country) }}</div>
-        <div>
+        <div *ngIf="address.zip"
+          class="tile-data">{{ address.zip }}</div>
+        <div *ngIf="address.neighborhood"
+          class="tile-data">{{ address.neighborhood }}</div>
+        <div *ngIf="address.city"
+          class="tile-data">{{ address.city }}</div>
+        <div *ngIf="address.region"
+          class="tile-data">{{ address.region }}</div>
+        <div *ngIf="address.country"
+          class="tile-data">{{ country(address.country) }}</div>
+        <div class="tile-data">
           {{ address.hidden ? messages.visibilityPrivate() : messages.visibilityPublic() }}
         </div>
       </tiled-result>
@@ -32,3 +40,6 @@
     </fab>
   </page-content>
 </page-layout>
+<ng-template #noResults>
+  <div class="no-results">{{ messages.addressNoResults() }}</div>
+</ng-template>

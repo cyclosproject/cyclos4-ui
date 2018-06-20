@@ -1,5 +1,8 @@
 <div *ngIf="image != null"
   class="container"
+  [ngClass]="{
+    'round-borders': roundBorders
+  }"
   [ngStyle]="{
     width: maxSize + 'px',
     height: maxSize + 'px'

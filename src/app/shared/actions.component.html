@@ -7,10 +7,13 @@
     'top-margin-small': topMargin === 'small',
     'button-space-normal': buttonSpace === 'normal',
     'button-space-small': buttonSpace === 'small',
-    'button-space-equidistant': buttonSpace === 'equidistant'
+    'button-space-equidistant': buttonSpace === 'equidistant',
+    'xs-row': xsMode === 'row',
+    'xs-column': xsMode === 'column',
+    'xs-column-reverse': xsMode === 'column-reverse'
   }"
   fxLayout="row"
-  [fxLayout.xs]="reverseXs ? 'column-reverse' : 'column'"
+  [fxLayout.xs]="xsMode"
   [fxLayoutAlign]="align">
   <ng-content></ng-content>
 </div>

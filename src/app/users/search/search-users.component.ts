@@ -23,7 +23,7 @@ import { ResultType } from 'app/shared/result-type';
 export class SearchUsersComponent extends BaseComponent {
 
   static MAX_COLUMNS = 7;
-  static MAX_TILE_FIELDS = 3;
+  static MAX_TILE_FIELDS = 2;
 
   constructor(
     injector: Injector,

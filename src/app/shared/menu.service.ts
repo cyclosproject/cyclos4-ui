@@ -291,7 +291,7 @@ export class MenuService {
           this.messages.menuPersonalPasswords(), [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
       }
       add(Menu.LOGOUT, null, 'exit_to_app',
-        this.messages.menuPersonalLogout());
+        this.messages.menuPersonalLogout(), [MenuType.PERSONAL]);
     }
 
     // Populate the menu in the root declaration order

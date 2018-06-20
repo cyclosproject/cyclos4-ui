@@ -7,7 +7,7 @@ import { BaseComponent } from './base.component';
  * The size for rendered avatars.
  * Profile is a special value that adapts to the max image width / height and layout size
  */
-export type AvatarSize = 'small' | 'medium' | 'large' | 'xlarge' | 'huge' | 'profile';
+export type AvatarSize = 'small' | 'medium' | 'large' | 'xlarge' | 'huge' | 'profile' | 'custom';
 export const SIZES: { [key: string]: number } = {
   'small': 24,
   'medium': 36,
@@ -46,10 +46,17 @@ export class AvatarComponent extends BaseComponent {
 
   @Input() iconColor: string;
 
+  @Input() roundBorders = true;
+
   /**
    * The size of images and icons
    */
   @Input() size: AvatarSize = 'medium';
+
+  /**
+   * The pixel size when `size` is `custom`.
+   */
+  @Input() customSize: number;
 
   private _image: Image;
   /**
@@ -84,6 +91,9 @@ export class AvatarComponent extends BaseComponent {
     if (this.size === 'profile' && this.image == null) {
       throw new Error('Profile avatar requires an image');
     }
+    if (this.size === 'custom' && this.customSize == null) {
+      throw new Error('Custom avatar size requires a customSize');
+    }
     if (this.svgIconRegistry.isSvgIcon(this.icon)) {
       // This is a SVG icon
       this.svgIcon = this.icon;
@@ -97,16 +107,19 @@ export class AvatarComponent extends BaseComponent {
     let maxSize: number;
     if (this.size === 'profile') {
       maxSize = this.layout.ltmd ? AvatarComponent.MAX_PROFILE_SIZE_SMALL : AvatarComponent.MAX_PROFILE_SIZE;
+    } else if (this.size === 'custom') {
+      maxSize = this.customSize;
     } else {
       maxSize = SIZES[this.size];
     }
     this.maxSize = maxSize;
 
+    const customSize = this.size === 'profile' || this.size === 'custom';
     const image = this.image;
     if (image) {
       // Calculate the image attributes
       this.ratio = image.width / image.height;
-      if (this.size === 'profile') {
+      if (customSize) {
         if (this.ratio > 1.0) {
           // Height determines width by ratio
           this.imageHeight = Math.min(image.height, maxSize);
@@ -143,7 +156,7 @@ export class AvatarComponent extends BaseComponent {
       const param = this.ratio < 1 ? 'width' : 'height';
       // ... which should be doubled prevent pixelation on high density devices.
       let size: number;
-      if (this.size === 'profile') {
+      if (customSize) {
         size = this.maxSize * 2;
       } else {
         size = SIZES[this.size] * 2;

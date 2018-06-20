@@ -43,7 +43,14 @@
   }
 }
 
-.lt-sm :host ::ng-deep {
+:host .actions ::ng-deep {
+  button, a {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+}
+
+.lt-sm :host .actions:not(.xs-row) ::ng-deep {
   button, a {
     flex: 1 1 100%;
     margin-bottom: 12px;
