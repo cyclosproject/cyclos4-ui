@@ -1,4 +1,4 @@
-<ng-container *ngIf="hasValue | async">
+<ng-container *ngIf="(hasValue | async); else empty">
   <ng-container *ngIf="directValue">{{ value.value }}</ng-container>
   <div *ngIf="type == 'text'"
     class="break-nl">{{ value.value }}</div>
@@ -28,3 +28,6 @@
     <image-viewer [additionalImages]="value.value"></image-viewer>
   </div>
 </ng-container>
+<ng-template #empty>
+  <ng-content></ng-content>
+</ng-template>

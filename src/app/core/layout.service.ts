@@ -128,8 +128,27 @@ export class LayoutService implements OnDestroy {
     return this.media.isActive('gt-lg');
   }
 
+  /**
+   * Returns the document width, in pixels
+   */
   get width(): number {
     return Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+  }
+
+  /**
+   * Returns the content area width, in pixels
+   */
+  get contentWidth(): number {
+    let elements = document.getElementsByClassName('content-wrapper');
+    if (elements.length === 0) {
+      elements = document.getElementsByClassName('inline-content');
+    }
+    if (elements.length === 0) {
+      // Not in a page layout
+      return this.width;
+    } else {
+      return elements.item(0).clientWidth;
+    }
   }
 
   get height(): number {

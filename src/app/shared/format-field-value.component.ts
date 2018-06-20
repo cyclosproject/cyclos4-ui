@@ -23,6 +23,8 @@ const DIRECT_TYPES = [
 /**
  * Component used to directly display a custom field value.
  * Also works for regular fields.
+ * The content of the `format-field-value` tag is rendered when
+ * there is no value (default value).
  */
 @Component({
   selector: 'format-field-value',

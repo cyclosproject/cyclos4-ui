@@ -20,6 +20,11 @@
 .centered div {
   text-align: center;
 }
+:host .title, :host .content div {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 
 :host {
   display: inline-block;
@@ -34,14 +39,6 @@
 }
 
 .xs :host  {
-  flex: 1 1 100% !important;
-  display: block;
-
-  .mat-card {
-    min-width: initial;
-    min-height: initial;
-  }
-
   actions {
     margin-top: 8px;
     display: block;

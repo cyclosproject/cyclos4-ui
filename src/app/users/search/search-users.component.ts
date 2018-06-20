@@ -23,6 +23,7 @@ import { ResultType } from 'app/shared/result-type';
 export class SearchUsersComponent extends BaseComponent {
 
   static MAX_COLUMNS = 7;
+  static MAX_TILE_FIELDS = 3;
 
   constructor(
     injector: Injector,
@@ -103,6 +104,17 @@ export class SearchUsersComponent extends BaseComponent {
     let arr = (this.data || {}).fieldsInList || [];
     if (arr.length > SearchUsersComponent.MAX_COLUMNS) {
       arr = arr.slice(0, SearchUsersComponent.MAX_COLUMNS);
+    }
+    return arr;
+  }
+
+  /**
+   * Returns the identifiers of fields to show in tiled view
+   */
+  get fieldsInTile(): string[] {
+    let arr = (this.data || {}).fieldsInList || [];
+    if (arr.length > SearchUsersComponent.MAX_TILE_FIELDS) {
+      arr = arr.slice(0, SearchUsersComponent.MAX_TILE_FIELDS);
     }
     return arr;
   }
