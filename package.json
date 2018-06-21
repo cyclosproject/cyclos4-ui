@@ -14,10 +14,10 @@
     "ng": "ng",
     "ng-swagger-gen": "ng-swagger-gen",
     "ng-translation-gen": "ng-translation-gen",
-    "start": "npm run ng-swagger-gen && npm run ng-translation-gen && ng serve",
-    "build": "npm run ng-swagger-gen && npm run ng-translation-gen && ng build --prod",
-    "lint": "ng lint",
-    "e2e": "ng e2e"
+    "start": "npm run ng-swagger-gen && npm run ng-translation-gen && npm run ng serve",
+    "build": "npm run ng-swagger-gen && npm run ng-translation-gen && npm run ng build --prod",
+    "lint": "npm run ng lint",
+    "e2e": "npm run ng e2e"
   },
   "private": true,
   "dependencies": {
