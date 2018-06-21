@@ -57,11 +57,12 @@ export class ContactInfoFormComponent extends BaseComponent {
       address: contactInfo.address,
       hidden: contactInfo.hidden
     });
-
     if (data.phoneConfiguration.extensionEnabled) {
       this.form.setControl('landLineExtension', formBuilder.control(contactInfo.landLineExtension));
     }
-
+    if (data.confirmationPasswordInput) {
+      this.form.setControl('confirmationPassword', formBuilder.control(null, Validators.required));
+    }
     if (!empty(data.customFields)) {
       this.form.setControl('customValues',
         ApiHelper.customValuesFormGroup(formBuilder, data.customFields));
@@ -72,12 +73,13 @@ export class ContactInfoFormComponent extends BaseComponent {
     if (!this.form.valid) {
       return;
     }
-    copyProperties(this.form.value, this.data.contactInfo);
+    copyProperties(this.form.value, this.data.contactInfo, ['confirmationPassword']);
     if (this.id == null) {
       // Creating a new contactInfo
       this.contactInfosService.createContactInfo({
         user: ApiHelper.SELF,
-        contactInfo: this.data.contactInfo
+        contactInfo: this.data.contactInfo,
+        confirmationPassword: this.form.value.confirmationPassword
       }).subscribe(() => {
         this.dialogRef.close(true);
       });
@@ -85,7 +87,8 @@ export class ContactInfoFormComponent extends BaseComponent {
       // Saving an existing contactInfo
       this.contactInfosService.updateContactInfo({
         id: this.id,
-        contactInfo: this.data.contactInfo
+        contactInfo: this.data.contactInfo,
+        confirmationPassword: this.form.value.confirmationPassword
       }).subscribe(() => {
         this.dialogRef.close(true);
       });

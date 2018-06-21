@@ -65,16 +65,35 @@ export class ManageContactInfosComponent extends BaseComponent {
   }
 
   private remove(contactInfo: ContactInfoResult) {
-    this.notification.yesNo(this.messages.contactInfoRemove(contactInfo.name))
-      .subscribe(answer => {
-        if (answer) {
-          this.doRemove(contactInfo);
-        }
-      });
+    this.contactInfosService.getPasswordInputForRemoveContactInfo({ id: contactInfo.id }).subscribe(passwordInput => {
+      if (passwordInput == null) {
+        // No confirmation password is required: just as yes / no
+        this.notification.yesNo(this.messages.contactInfoRemove(contactInfo.name))
+          .subscribe(answer => {
+            if (answer) {
+              this.doRemove(contactInfo);
+            }
+          });
+      } else {
+        // Need to confirm with a password
+        this.notification.confirmWithPassword(
+          this.messages.contactInfoRemove(contactInfo.name),
+          passwordInput,
+          this.messages.phoneConfirmationPassword())
+          .subscribe(confirmationPassword => {
+            if (confirmationPassword) {
+              this.doRemove(contactInfo, confirmationPassword);
+            }
+          });
+      }
+    });
   }
 
   private doRemove(contactInfo: ContactInfoResult, confirmationPassword: string = null) {
-    this.contactInfosService.deleteContactInfo(contactInfo.id).subscribe(() => {
+    this.contactInfosService.deleteContactInfo({
+      id: contactInfo.id,
+      confirmationPassword: confirmationPassword
+    }).subscribe(() => {
       this.notification.snackBar(this.messages.contactInfoRemoved());
       this.reload();
     });

@@ -2218,6 +2218,12 @@
           "required" : true,
           "type" : "string"
         }, {
+          "name" : "confirmationPassword",
+          "in" : "header",
+          "description" : "The password used to confirm this action, if needed. The actual\npassword type, if any, depends on the Cyclos configuration for the\ncurrent channel.\n",
+          "required" : false,
+          "type" : "string"
+        }, {
           "in" : "body",
           "name" : "contactInfo",
           "description" : "The additional contact information to be edited",
@@ -2287,6 +2293,12 @@
           "in" : "path",
           "description" : "The object identification",
           "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "confirmationPassword",
+          "in" : "header",
+          "description" : "The password used to confirm this action, if needed. The actual\npassword type, if any, depends on the Cyclos configuration for the\ncurrent channel.\n",
+          "required" : false,
           "type" : "string"
         } ],
         "responses" : {
@@ -2821,6 +2833,72 @@
         "x-accepts" : "application/json",
         "x-contentType" : "multipart/form-data",
         "x-produces-any" : true
+      }
+    },
+    "/contact-infos/{id}/password-for-remove" : {
+      "get" : {
+        "tags" : [ "ContactInfos" ],
+        "summary" : "Returns a confirmation `PasswordInput` for removing an additional\ncontact information, if any \n",
+        "description" : "If a confirmation password is required to remove an additiona contact infomation, clients should invoke this operation prior to effectively removing it, which will return the data regarding the confirmation password. \n",
+        "operationId" : "getPasswordInputForRemoveContactInfo",
+        "parameters" : [ {
+          "name" : "fields",
+          "in" : "query",
+          "description" : "Select which fields to include on returned data. If nothing is set, all object fields are returned. Unprefixed field names will be handled like a whitelist (only listed fields will be included), while names starting with a minus (-) or exclamation mark (!) will be handled as blacklist (listed fields will not be included). This works for nesting as well. For example: `a,b.b1,c.-c1,c.-c2` will return the fields `a`, `b` (containing only the `b1` field) and `c` (containing all its fields except for `c1` or `c2`). \n",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          },
+          "collectionFormat" : "multi"
+        }, {
+          "name" : "id",
+          "in" : "path",
+          "description" : "The object identification",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The confirmation password input, or null",
+            "schema" : {
+              "$ref" : "#/definitions/PasswordInput"
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized access. Missing or invalid crendentials supplied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/UnauthorizedError"
+            }
+          },
+          "403" : {
+            "description" : "Permission denied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/ForbiddenError"
+            }
+          },
+          "404" : {
+            "description" : "An expected data was not found",
+            "schema" : {
+              "$ref" : "#/definitions/NotFoundError"
+            }
+          },
+          "500" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "security" : [ {
+          "basic" : [ ]
+        }, {
+          "session" : [ ]
+        }, {
+          "accessClient" : [ ]
+        } ],
+        "x-accepts" : "application/json",
+        "x-contentType" : "application/json"
       }
     },
     "/contact-list/{id}" : {
@@ -17010,6 +17088,12 @@
           "type" : "string",
           "x-dotInPath" : true
         }, {
+          "name" : "confirmationPassword",
+          "in" : "header",
+          "description" : "The password used to confirm this action, if needed. The actual\npassword type, if any, depends on the Cyclos configuration for the\ncurrent channel.\n",
+          "required" : false,
+          "type" : "string"
+        }, {
           "in" : "body",
           "name" : "contactInfo",
           "description" : "The additional contact information to be created",
@@ -23577,6 +23661,10 @@
         "phoneConfiguration" : {
           "description" : "Contains configuration data for phones\n",
           "$ref" : "#/definitions/PhoneConfiguration"
+        },
+        "confirmationPasswordInput" : {
+          "description" : "If a confirmation password is used, contains the definitions on how\nto request that password from the user. This confirmation password\nis required when performing sensible actions. Sometimes this is dynamic,\nfor example, the confirmation might be configured to be used only once\nper session, or operations like payments may have a limit per day to be\nwithout confirmation (pinless).\n",
+          "$ref" : "#/definitions/PasswordInput"
         }
       },
       "description" : "Contains data shared by both ContactInfoDataForNew and\nContactInfoDataForEdit\n"
@@ -23992,6 +24080,10 @@
           "control" : {
             "description" : "The UI control (widget) type that should be used to render this field for edit. Most notably, the types that can have distinct controls are singleSelection, that could be rendered as a single selection widget or radio button group, and multi selection, which could be rendered as a multi selection widget or a checkbox group. Possible values are:\n* checkbox: A checkbox group\n* entitySelection: A widget to select a linked entity (for example, an auto-complete for users)\n* multiSelection: A multi-selection field\n* radio: A radio button group\n* richEditor: An HTML editor\n* singleSelection: A single-selection field\n* text: A single line text\n* textarea: A multi line text\n* upload: A widget to upload a file\n",
             "$ref" : "#/definitions/CustomFieldControlEnum"
+          },
+          "kind" : {
+            "description" : "Determines the kind if a custom field Possible values are:\n* ad: Advertisements field.\n* contact: Contact fields.\n* contactInfo: Additional contact information fields.\n* custom_operation: Custom operation fields.\n* document: Document fields.\n* record: Record fields.\n* transaction: Transaction fields.\n* user: User profile fields.\n",
+            "$ref" : "#/definitions/CustomFieldKind"
           },
           "decimalDigits" : {
             "type" : "integer",

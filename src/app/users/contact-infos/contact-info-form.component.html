@@ -105,6 +105,11 @@
 
   <mat-checkbox formControlName="hidden">{{ messages.contactInfoPrivate() }}</mat-checkbox>
 
+  <confirmation-password *ngIf="data.confirmationPasswordInput"
+    formControlName="confirmationPassword"
+    [passwordInput]="data.confirmationPasswordInput"
+    [message]="messages.phoneConfirmationPassword()"></confirmation-password>
+
   <actions buttonSpace="equidistant">
     <button mat-raised-button
       color="accent"
