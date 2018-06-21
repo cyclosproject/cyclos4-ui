@@ -62,7 +62,8 @@
       </div>
       <div class="container"
         fxFlex="grow"
-        fxLayout="column">
+        fxLayout="column"
+        [fxLayoutAlign]="avatarPosition === 'top' ? 'center center' : 'start start'">
         <div *ngIf="title"
           class="tile-title">{{ title }}</div>
         <div class="content">

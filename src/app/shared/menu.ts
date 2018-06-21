@@ -11,17 +11,16 @@ export enum MenuType {
 }
 
 /** Contains the top-level (root) menus */
-export type RootMenu = 'home' | 'login' | 'registration' | 'banking' | 'users' | 'marketplace' | 'personal';
+export type RootMenu = 'home' | 'login' | 'registration' | 'banking' | 'marketplace' | 'personal';
 export module RootMenu {
   export const HOME: RootMenu = 'home';
   export const LOGIN: RootMenu = 'login';
   export const REGISTRATION: RootMenu = 'registration';
   export const BANKING: RootMenu = 'banking';
-  export const USERS: RootMenu = 'users';
   export const MARKETPLACE: RootMenu = 'marketplace';
   export const PERSONAL: RootMenu = 'personal';
   export function values(): RootMenu[] {
-    return [HOME, LOGIN, REGISTRATION, BANKING, USERS, MARKETPLACE, PERSONAL];
+    return [HOME, LOGIN, REGISTRATION, BANKING, MARKETPLACE, PERSONAL];
   }
 }
 
@@ -55,12 +54,10 @@ export module Menu {
   export const SCHEDULED_PAYMENTS = new Menu(RootMenu.BANKING);
   export const RECURRING_PAYMENTS = new Menu(RootMenu.BANKING);
 
-  // Users
-  export const SEARCH_USERS = new Menu(RootMenu.USERS);
-  export const USER_PROFILE = new Menu(RootMenu.USERS);
-
   // Marketplace
-  export const SEARCH_MARKETPLACE = new Menu(RootMenu.MARKETPLACE);
+  export const SEARCH_ADVERTISEMENTS = new Menu(RootMenu.MARKETPLACE);
+  export const SEARCH_USERS = new Menu(RootMenu.MARKETPLACE);
+  export const USER_PROFILE = new Menu(RootMenu.MARKETPLACE);
 
   // Personal
   export const MY_PROFILE = new Menu(RootMenu.PERSONAL);
@@ -95,6 +92,9 @@ export class RootMenuEntry extends BaseMenuEntry {
     showIn: MenuType[] = null
   ) {
     super(icon, label, showIn);
+    if (this.title == null) {
+      this.title = this.label;
+    }
   }
 
   /**

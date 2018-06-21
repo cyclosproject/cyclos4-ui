@@ -153,7 +153,7 @@ export class MenuService {
   private floatingTitle(floating: FloatingMenu): string {
     switch (floating) {
       case FloatingMenu.EDIT_MY_PROFILE:
-        return this.messages.floatingMenuEditMyProfileTitle();
+        return this.messages.menuPersonalEditMyProfile();
     }
     return null;
   }
@@ -198,10 +198,9 @@ export class MenuService {
       user == null ? this.messages.menuHome() : this.messages.menuDashboard());
     addRoot(RootMenu.LOGIN, 'lock', this.messages.menuLogin());
     addRoot(RootMenu.REGISTRATION, 'input', this.messages.menuRegister());
-    addRoot(RootMenu.BANKING, 'account_balance', this.messages.menuBanking(), this.messages.menuBankingTitle());
-    addRoot(RootMenu.USERS, 'group', this.messages.menuUsers(), this.messages.menuUsersTitle());
-    addRoot(RootMenu.MARKETPLACE, 'shopping_cart', this.messages.menuMarketplace(), this.messages.menuMarketplaceTitle());
-    addRoot(RootMenu.PERSONAL, 'account_box', this.messages.menuPersonal(), this.messages.menuPersonalTitle());
+    addRoot(RootMenu.BANKING, 'account_balance', this.messages.menuBanking());
+    addRoot(RootMenu.MARKETPLACE, 'shopping_cart', this.messages.menuMarketplace());
+    addRoot(RootMenu.PERSONAL, 'account_box', this.messages.menuPersonal());
 
     // Lambda that adds a submenu to a root menu
     const add = (menu: Menu, url: string, icon: string, label: string, showIn: MenuType[] = null) => {
@@ -246,15 +245,14 @@ export class MenuService {
           this.messages.menuBankingRecurringPayments());
       }
 
-      // Users
-      add(Menu.SEARCH_USERS, '/users/search', 'group',
-        this.messages.menuUsersSearch());
-
-      // Marketplace (not implemented yet)
+      // Marketplace
       /*
       add(Menu.SEARCH_MARKETPLACE, '/marketplace/search', 'shopping_cart',
-        this.messages.menuMarketplaceSearch());
+        this.messages.menuMarketplaceAdvertisements());
       */
+      add(Menu.SEARCH_USERS, '/users/search', 'group',
+        this.messages.menuMarketplaceUsers());
+
 
       const myProfile = permissions.myProfile;
       // Personal

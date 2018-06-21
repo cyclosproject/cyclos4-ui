@@ -15,11 +15,18 @@
   }
 
   .tile-title, .tile-data {
-    margin-bottom: 4px;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+    width: 100%;
   }
+  .tile-data {
+    margin-top: 4px;
+  }
+}
+
+.container {
+  min-height: 32px;
 }
 
 .mat-card:not(.with-top-avatar) {
@@ -31,9 +38,12 @@
 .mat-card.with-actions {
   padding-bottom: 4px !important;
 }
+.mat-card:not(.with-actions) {
+  padding-bottom: 10px !important;
+}
 
 div.top-avatar {
-  margin-bottom: 4px;
+  margin-bottom: 10px;
 }
 
 .centered div {

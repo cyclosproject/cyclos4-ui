@@ -10,7 +10,9 @@
         [actions]="actions(image)"
         [useLightbox]="true"
         fxFlex="nogrow">
-        {{ messages.imageDimensions(image.height, image.width) }}
+        <div class="tile-data">
+          {{ messages.imageDimensions(image.height, image.width) }}
+        </div>
       </tiled-result>
     </tiled-results>
     <ng-container *ngIf="data.canCreate">
