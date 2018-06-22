@@ -5,6 +5,12 @@
   }">
   <div class="title-wrapper"
     fxLayout="row">
+    <button *ngIf="((breadcrumb.breadcrumb | async)?.length > 1) && layout.gtxs"
+      class="back"
+      mat-icon-button
+      (click)="breadcrumb.back()">
+      <mat-icon ngClass="mat-24">arrow_back</mat-icon>
+    </button>
     <h1 fxFlex="grow">{{ title }}</h1>
     <button mat-button
       *ngFor="let action of actions"

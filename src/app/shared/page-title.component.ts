@@ -3,6 +3,7 @@ import { Messages } from 'app/messages/messages';
 import { PageLayoutComponent } from './page-layout.component';
 import { LayoutService } from 'app/core/layout.service';
 import { Action } from 'app/shared/action';
+import { BreadcrumbService } from 'app/core/breadcrumb.service';
 
 /**
  * The title, with breadcrumb and show filters button
@@ -17,7 +18,8 @@ export class PageTitleComponent {
 
   constructor(
     public messages: Messages,
-    public layout: LayoutService) {
+    public layout: LayoutService,
+    public breadcrumb: BreadcrumbService) {
   }
 
   @Input() title: string;
