@@ -150,6 +150,7 @@
   "user.address": "Address",
   "user.images": "Profile images",
   "user.contactInfos": "Additional contact information",
+  "contact.list.title": "Contact list",
   "registration.title": "New user registration",
   "registration.error.noGroups": "No possible groups for registration",
   "registration.group": "Group",

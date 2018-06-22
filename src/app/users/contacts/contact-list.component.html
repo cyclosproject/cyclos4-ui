@@ -1,4 +1,4 @@
-<page-layout [title]="messages.userSearchTitle()"
+<page-layout [title]="messages.contactListTitle()"
   [hasHeader]="true"
   [loaded]="loaded"
   [filtersForm]="form"
@@ -28,6 +28,7 @@
   </page-filters>
   <page-content>
     <users-results *ngIf="loaded | async"
+      resultKind="contact"
       [dataSource]="dataSource"
       [query]="query"
       [data]="data"

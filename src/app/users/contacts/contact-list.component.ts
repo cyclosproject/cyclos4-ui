@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Injector, ViewChild } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Injector } from '@angular/core';
 
 import { BehaviorSubject } from 'rxjs';
 import { BaseComponent } from 'app/shared/base.component';
@@ -7,39 +7,36 @@ import { ApiHelper } from 'app/shared/api-helper';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { tap } from 'rxjs/operators';
 import { debounceTime } from 'rxjs/operators';
-import { UsersService } from 'app/api/services';
-import { UserDataForSearch } from 'app/api/models';
+import { UsersService, ContactsService } from 'app/api/services';
+import { ContactListDataForSearch, ContactResult } from 'app/api/models';
 import { UserResult } from 'app/api/models/user-result';
 import { ResultType } from 'app/shared/result-type';
-import { UsersResultsComponent } from 'app/users/search/users-results.component';
 
 /**
- * Search for users
+ * Search for contacts
  */
 @Component({
-  selector: 'search-users',
-  templateUrl: 'search-users.component.html',
+  selector: 'contact-list',
+  templateUrl: 'contact-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SearchUsersComponent extends BaseComponent {
+export class ContactListComponent extends BaseComponent {
 
-  // Export enum to the template
-  ResultType = ResultType;
-
-  data: UserDataForSearch;
+  data: ContactListDataForSearch;
 
   form: FormGroup;
   resultType: FormControl;
 
   query: any;
-  dataSource = new TableDataSource<UserResult>();
+  dataSource = new TableDataSource<ContactResult>();
   loaded = new BehaviorSubject(false);
 
-  @ViewChild('results') results: UsersResultsComponent;
+  // Export enum to the template
+  ResultType = ResultType;
 
   constructor(
     injector: Injector,
-    private usersService: UsersService,
+    private contactsService: ContactsService,
     formBuilder: FormBuilder
   ) {
     super(injector);
@@ -64,7 +61,9 @@ export class SearchUsersComponent extends BaseComponent {
 
     // Get the data for user search
     this.stateManager.cache('data',
-      this.usersService.getUserDataForSearch())
+      this.contactsService.getContactListDataForSearch({
+        user: ApiHelper.SELF
+      }))
       .subscribe(data => {
         this.data = data;
 
@@ -72,6 +71,7 @@ export class SearchUsersComponent extends BaseComponent {
         this.query = this.stateManager.get('query', () => {
           return data.query;
         });
+        this.query.user = ApiHelper.SELF;
 
         // Perform the search
         this.update();
@@ -88,10 +88,11 @@ export class SearchUsersComponent extends BaseComponent {
     }
 
     // Update the results
-    const results = this.usersService.searchUsersResponse(this.query).pipe(
+    const results = this.contactsService.searchContactListResponse(this.query).pipe(
       tap(() => {
         this.loaded.next(true);
       }));
     this.dataSource.subscribe(results);
   }
+
 }

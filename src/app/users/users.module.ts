@@ -20,6 +20,8 @@ import { AddressFormComponent } from 'app/users/addresses/address-form.component
 import { ManageImagesComponent } from 'app/users/images/manage-images.component';
 import { ContactInfoFormComponent } from 'app/users/contact-infos/contact-info-form.component';
 import { ManageContactInfosComponent } from 'app/users/contact-infos/manage-contact-infos.component';
+import { ContactListComponent } from 'app/users/contacts/contact-list.component';
+import { UsersResultsComponent } from 'app/users/search/users-results.component';
 
 /**
  * Users module
@@ -40,6 +42,7 @@ import { ManageContactInfosComponent } from 'app/users/contact-infos/manage-cont
     ValidateRegistrationComponent,
 
     SearchUsersComponent,
+    UsersResultsComponent,
     ViewUserProfileComponent,
     ViewAddressDetailsComponent,
     EditUserProfileComponent,
@@ -55,7 +58,9 @@ import { ManageContactInfosComponent } from 'app/users/contact-infos/manage-cont
     ManageImagesComponent,
 
     ManageContactInfosComponent,
-    ContactInfoFormComponent
+    ContactInfoFormComponent,
+
+    ContactListComponent
   ],
   entryComponents: [
     PhoneFormComponent,

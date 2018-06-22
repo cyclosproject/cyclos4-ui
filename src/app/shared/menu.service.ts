@@ -284,7 +284,7 @@ export class MenuService {
       add(Menu.SETTINGS, '/settings', 'settings',
         this.messages.menuPersonalSettings(), [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
       if (users.contacts) {
-        add(Menu.CONTACTS, '/personal/contacts', 'contacts',
+        add(Menu.CONTACTS, '/users/contacts', 'contacts',
           this.messages.menuPersonalContacts(), [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
       }
       if ((permissions.passwords || {}).manage) {

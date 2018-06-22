@@ -12,6 +12,7 @@ import { ManagePhonesComponent } from './phones/manage-phones.component';
 import { ManageAddressesComponent } from 'app/users/addresses/manage-addresses.component';
 import { ManageImagesComponent } from 'app/users/images/manage-images.component';
 import { ManageContactInfosComponent } from 'app/users/contact-infos/manage-contact-infos.component';
+import { ContactListComponent } from 'app/users/contacts/contact-list.component';
 
 const usersRoutes: Routes = [
   {
@@ -87,6 +88,24 @@ const usersRoutes: Routes = [
         canActivate: [LoggedUserGuard],
         data: {
           menu: Menu.MY_CONTACT_INFOS
+        }
+      },
+      {
+        path: 'contacts',
+        component: ContactListComponent,
+        canActivate: [LoggedUserGuard],
+        data: {
+          menu: Menu.CONTACTS
+        }
+      },
+      {
+        path: 'contact-profile/:key',
+        component: ViewUserProfileComponent,
+        resolve: {
+          countries: CountriesResolve
+        },
+        data: {
+          menu: Menu.CONTACT_PROFILE
         }
       },
       {

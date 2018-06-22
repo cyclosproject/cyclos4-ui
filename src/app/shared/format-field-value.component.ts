@@ -62,6 +62,16 @@ export class FormatFieldValueComponent implements OnInit {
    */
   @Input() object: any;
 
+  /**
+   * May be specified as a separated holder for custom values
+   */
+  @Input() customValues: any;
+
+  /**
+   * Indicates that multi-line / rich text should be rendered as plain text with no line breaks
+   */
+  @Input() plainText = false;
+
   field: CustomField;
   type: CustomFieldTypeEnum;
   value = new BehaviorSubject<any>(null);
@@ -76,6 +86,10 @@ export class FormatFieldValueComponent implements OnInit {
       (this.fields == null || this.object == null)) {
       throw new Error('Either fieldValue or all fields, field and object must be set');
     }
+    // Default the custom values source to object.customValues
+    if (this.object != null && this.customValues == null) {
+      this.customValues = this.object.customValues;
+    }
     if (this.fieldValue == null) {
       // When there's no CustomFieldValue, emulate one, so the handling is the same regardless the case
       this.fieldValue = this.createFieldValue();
@@ -83,6 +97,10 @@ export class FormatFieldValueComponent implements OnInit {
     this.field = this.fieldValue.field;
     this.type = this.field.type;
     const value = this.getValue();
+    // For rich / plain, handle text / rich text as plain text
+    if (this.plainText && [CustomFieldTypeEnum.RICH_TEXT, CustomFieldTypeEnum.TEXT].includes(this.type)) {
+      this.type = CustomFieldTypeEnum.STRING;
+    }
     this.value.next(value);
     this.hasValue.next(value != null && (value.length === undefined || value.length > 0));
   }
@@ -141,9 +159,15 @@ export class FormatFieldValueComponent implements OnInit {
       case CustomFieldTypeEnum.RICH_TEXT:
         let rich = this.fieldValue.stringValue;
         if (rich != null && rich.length > 0) {
-          // For HTML, add a div in the end that prevents floats from passing
-          // through the parent div's height
-          rich += '<div class="clear-floats"></div>';
+          if (this.plainText) {
+            const div = document.createElement('div');
+            div.innerHTML = rich;
+            rich = div.textContent || div.innerText || '';
+          } else {
+            // For HTML, add a div in the end that prevents floats from passing
+            // through the parent div's height
+            rich += '<div class="clear-floats"></div>';
+          }
         }
         return rich;
       default:
@@ -155,9 +179,9 @@ export class FormatFieldValueComponent implements OnInit {
   private createFieldValue(): CustomFieldValue {
     // First get the actual value
     let value = this.object[this.fieldName] as string;
-    if (value == null && this.object.customValues) {
+    if (value == null && this.customValues) {
       // Attempt a custom field value
-      value = this.object.customValues[this.fieldName] as string;
+      value = this.customValues[this.fieldName] as string;
     }
     if (value === '') {
       value = null;

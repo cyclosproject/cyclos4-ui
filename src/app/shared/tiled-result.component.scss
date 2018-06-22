@@ -14,11 +14,13 @@
     font-weight: 500;
   }
 
-  .tile-title, .tile-data {
+  .tile-title, .tile-data, .tile-title format-field-value, .tile-data format-field-value {
+    display: block;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
     width: 100%;
+    max-height: 1.1em;
   }
   .tile-data {
     margin-top: 4px;
@@ -59,6 +61,13 @@ div.top-avatar {
   display: inline-block;
 }
 
+.content {
+  width: 100%;
+}
+.mat-card.with-top-avatar .content {
+  width: calc(100% - 8px);
+  margin: 0 auto;
+}
 .gt-xs :host  {
   .left-avatar {
     margin-left: 8px;

@@ -9,12 +9,12 @@
   <span *ngIf="type == 'date'">{{ value.value | date }}</span>
   <span *ngIf="type == 'integer'">{{ value.value | number }}</span>
   <span *ngIf="type == 'decimal'">{{ value.value | number:field.decimalDigits }}</span>
-  <div *ngIf="type == 'singleSelection' || type == 'multiSelection'">
+  <ng-container *ngIf="type == 'singleSelection' || type == 'multiSelection'">
     <span *ngFor="let pv of value.value; let last = last;">
       <span *ngIf="pv.category">{{ pv.category.name }} - </span>{{ pv.value + (last ? '' : ', ') }}
     </span>
-  </div>
-  <div *ngIf="type == 'file' && (value.value || []).length > 0">
+  </ng-container>
+  <ng-container *ngIf="type == 'file' && (value.value || []).length > 0">
     <ng-container *ngFor="let file of value.value; let last = last;">
       <a [href]="appendAuth(file.url)"
         [type]="file.contentType"
@@ -23,10 +23,10 @@
         [download]="file.name">{{ file.name }}</a>
       <ng-container *ngIf="!last">, </ng-container>
     </ng-container>
-  </div>
-  <div *ngIf="type == 'image' && (value.value || []).length > 0">
+  </ng-container>
+  <ng-container *ngIf="type == 'image' && (value.value || []).length > 0">
     <image-viewer [additionalImages]="value.value"></image-viewer>
-  </div>
+  </ng-container>
 </ng-container>
 <ng-template #empty>
   <ng-content></ng-content>
