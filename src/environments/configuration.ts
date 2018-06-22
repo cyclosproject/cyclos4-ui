@@ -10,6 +10,9 @@ const APP_TITLE_SMALL = 'Cyclos';
 // The application title displayed on the title bar inside the menu on small devices
 const APP_TITLE_MENU = 'Cyclos menu';
 
+// The google maps API key. When null, maps are not used.
+const GOOGLE_MAPS_API_KEY = null;
+
 // Available choices for number of results in a search. The default is the smallest one
 const SEARCH_PAGE_SIZES = [40, 100, 200];
 // Number of results displayed on quick searches, such as on user selection
@@ -37,5 +40,6 @@ export const configuration = {
   searchPageSizes: SEARCH_PAGE_SIZES,
   quickSearchPageSize: QUICK_SEARCH_PAGE_SIZE,
   translations: TRANSLATIONS,
-  locales: LOCALES
+  locales: LOCALES,
+  googleMapsApiKey: GOOGLE_MAPS_API_KEY
 };

@@ -65,6 +65,7 @@ import { DateFieldComponent } from 'app/shared/date-field.component';
 import { DecimalFieldComponent } from 'app/shared/decimal-field.component';
 import { PrincipalInputComponent } from 'app/shared/principal-input.component';
 import { UserSelectionComponent } from 'app/shared/user-selection.component';
+import { ResultTypeFieldComponent } from 'app/shared/result-type-field.component';
 import { FocusedDirective } from 'app/shared/focused.directive';
 import { PasswordInputComponent } from 'app/shared/password-input.component';
 import { ConfirmationPasswordComponent } from 'app/shared/confirmation-password.component';
@@ -106,6 +107,7 @@ import { PageTitleComponent } from 'app/shared/page-title.component';
     LinearStepperControlComponent,
     ConfirmationPasswordComponent,
     UserSelectionComponent,
+    ResultTypeFieldComponent,
     AvatarComponent,
     FabSpeedDialComponent,
     FabComponent,
@@ -208,6 +210,7 @@ import { PageTitleComponent } from 'app/shared/page-title.component';
     LinearStepperControlComponent,
     ConfirmationPasswordComponent,
     UserSelectionComponent,
+    ResultTypeFieldComponent,
     AvatarComponent,
     FabSpeedDialComponent,
     FabComponent,

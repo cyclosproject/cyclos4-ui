@@ -169,6 +169,10 @@ export class UsersResultsComponent extends BaseComponent {
         // 5 columns, named field0, field1, ...
         const fields: string[] = [];
         fields.push('avatar');
+        if (this.resultKind === 'contact') {
+          // For contacts, always show the user display as well
+          fields.push('display');
+        }
         for (let i = 0; i < this.fieldsInList.length; i++) {
           fields.push('field' + i);
         }

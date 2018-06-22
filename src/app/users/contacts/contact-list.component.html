@@ -5,15 +5,7 @@
   [tightContent]="true"
   [invisibleContent]="resultType.value === ResultType.TILES && !(dataSource.empty | async)">
   <page-header>
-    <mat-button-toggle-group [formControl]="resultType"
-      aria-label="Font Style">
-      <mat-button-toggle [value]="ResultType.TILES">
-        <mat-icon>view_module</mat-icon>
-      </mat-button-toggle>
-      <mat-button-toggle [value]="ResultType.LIST">
-        <mat-icon>view_list</mat-icon>
-      </mat-button-toggle>
-    </mat-button-toggle-group>
+    <result-type-field [formControl]="resultType"></result-type-field>
   </page-header>
   <page-filters>
     <form *ngIf="query != null"

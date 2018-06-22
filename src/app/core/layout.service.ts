@@ -3,7 +3,7 @@ import { BreakPointRegistry, MediaChange, ObservableMedia } from '@angular/flex-
 import { Menu } from 'app/shared/menu';
 import { Subscription, Subject } from 'rxjs';
 import { BehaviorSubject } from 'rxjs';
-import { MatDialog, MatDialogConfig } from '@angular/material';
+import { MatDialogConfig } from '@angular/material';
 import { PageLayoutComponent } from 'app/shared/page-layout.component';
 
 /**
