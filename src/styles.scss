@@ -257,10 +257,15 @@ input[type=number] {
 .xs .mat-table {
   .mat-cell {
     padding: 6px 0;
-
     .cell-text {
       margin-bottom: 2px;
     }
+  }
+  .mat-row .mat-cell:first-child {
+    padding-left: 6px;
+  }
+  .mat-row .mat-cell:last-child {
+    padding-right: 6px;
   }
 }
 

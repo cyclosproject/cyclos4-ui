@@ -1,10 +1,13 @@
 import { Component, ChangeDetectionStrategy, Injector, Input, EventEmitter, Output } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { User, UserDataForSearch, ContactListDataForSearch, ContactResult, UserResult } from 'app/api/models';
+import { User, UserDataForSearch, ContactListDataForSearch, ContactResult, UserResult, Address, UserDataForMap } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
 import { FormControl } from '@angular/forms';
 import { ResultType } from 'app/shared/result-type';
 import { TableDataSource } from 'app/shared/table-datasource';
+import { MapsService } from 'app/core/maps.service';
+import { LatLngBounds } from '@agm/core';
+import { fitBounds } from 'app/shared/helper';
 
 const MAX_COLUMNS = 7;
 const MAX_TILE_FIELDS = 2;
@@ -15,6 +18,7 @@ const MAX_TILE_FIELDS = 2;
 @Component({
   selector: 'users-results',
   templateUrl: 'users-results.component.html',
+  styleUrls: ['users-results.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UsersResultsComponent extends BaseComponent {
@@ -29,45 +33,62 @@ export class UsersResultsComponent extends BaseComponent {
 
   @Input() dataSource: TableDataSource<any>;
 
-  @Input() data: UserDataForSearch | ContactListDataForSearch;
+  @Input() data: UserDataForSearch | UserDataForMap | ContactListDataForSearch;
 
   @Input() resultType: FormControl;
 
   @Output() update = new EventEmitter<null>();
 
+  mapFitBounds = new BehaviorSubject<LatLngBounds>(null);
+
   constructor(
-    injector: Injector) {
+    injector: Injector,
+    public maps: MapsService) {
     super(injector);
   }
 
   ngOnInit() {
     super.ngOnInit();
-    this.dataSource.data.subscribe(() => this.updateDisplayedColumns());
+    this.dataSource.data.subscribe(rows => {
+      this.updateDisplayedColumns();
+      this.adjustMap();
+    });
   }
 
   /**
-   * The result kind
-   * @param input The result from the search
+   * Returns the user displayed for the given result row
+   * @param row The result from the search
    */
-  user(input): User {
+  user(row): User {
     if (this.resultKind === 'contact') {
-      return (input as ContactResult).contact;
+      return (row as ContactResult).contact;
     }
-    return input as User;
+    return row as User;
   }
 
   /**
-   * The result kind
-   * @param input The result from the search
+   * Returns the custom values holder for the given result row
+   * @param row The result from the search
    */
-  customValues(input): any {
-    if (input == null) {
+  customValues(row): any {
+    if (row == null) {
       return null;
     }
     if (this.resultKind === 'contact') {
-      return (input as ContactResult).customValues;
+      return (row as ContactResult).customValues;
     }
-    return (input as UserResult).customValues;
+    return (row as UserResult).customValues;
+  }
+
+  /**
+   * Returns the address displayed for the given result row
+   * @param row The result from the search
+   */
+  address(row): Address {
+    if (this.resultKind === 'contact') {
+      return null;
+    }
+    return (row as UserResult).address;
   }
 
   /**
@@ -191,6 +212,15 @@ export class UsersResultsComponent extends BaseComponent {
   onDisplayChange() {
     super.onDisplayChange();
     this.updateDisplayedColumns();
+  }
+
+  adjustMap() {
+    const mapData = this.maps.data;
+    if (mapData != null && mapData.defaultLocation == null) {
+      // Only fit the map to locations if there's no default location
+      const rows = this.dataSource.data.value;
+      this.mapFitBounds.next(fitBounds(rows.map(row => this.address(row))));
+    }
   }
 
 }

@@ -145,7 +145,7 @@
 
       <tr *matHeaderRowDef="layout.xs ? [] : displayedColumns"
         mat-header-row
-        fxHide.xs></tr>
+        ngStyle.xs="display:none"></tr>
       <tr *matRowDef="let row; columns: displayedColumns;"
         mat-row
         ngClass.xs="dynamic"

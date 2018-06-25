@@ -20819,6 +20819,11 @@
       "description" : "Unit for measuring distances Possible values are:\n* kilometer: Unit representing kilometers\n* mile: Unit representing miles \n",
       "enum" : [ "kilometer", "mile" ]
     },
+    "DistanceUnitEnum" : {
+      "type" : "string",
+      "description" : "Determines the unit used to measure distances Possible values are:\n* kilometer: Kilometer(s)\n* mile: Mile(s)\n",
+      "enum" : [ "kilometer", "mile" ]
+    },
     "ErrorKind" : {
       "type" : "string",
       "description" : "Error types associated to the HTTP Status 500 Possible values are:\n* buyVoucher: An error has occurred when buying a voucher \n* forgottenPassword: An error has occurred when changing a forgotten password.\n* general: An unexpected error has occurred\n* initializeNfc: An error has occurred when initializing a NFC token\n* nfcAuth: An error has occurred when making an external NFC authentication\n* otp: An error has occurred requesting an OTP\n* payment: An error has occurred when making a payment\n* personalizeNfc: An error has occurred when personalizing a NFC token\n* pos: An error has occurred when receiving a payment on a POS operation\n* redeemVoucher: An error has occurred when redeeming a voucher\n* shoppingCart: An error has occurred when interacting with a shopping cart.\n* shoppingCartCheckout: An error has occurred when checking out a shopping cart.\n",
@@ -24631,6 +24636,10 @@
             "$ref" : "#/definitions/GroupForRegistration"
           }
         },
+        "mapData" : {
+          "description" : "Configuration data for map usage. Is null when maps are not used. \n",
+          "$ref" : "#/definitions/MapData"
+        },
         "decimalSeparator" : {
           "type" : "string",
           "description" : "The character used to specify the decimal point   \n"
@@ -24650,6 +24659,10 @@
         "timeZoneId" : {
           "type" : "string",
           "description" : "The time zone ID set in the configuration (e.g `Europe/Amsterdam`)"
+        },
+        "distanceUnit" : {
+          "description" : "The unit used to measure distances",
+          "$ref" : "#/definitions/DistanceUnitEnum"
         },
         "rootUrl" : {
           "type" : "string",
@@ -25435,6 +25448,32 @@
         }
       },
       "description" : "Contains fields to login an user as administrator\n"
+    },
+    "MapData" : {
+      "type" : "object",
+      "properties" : {
+        "googleMapsApiKey" : {
+          "type" : "string",
+          "description" : "The Google Maps API key to be used by clients    \n"
+        },
+        "defaultLocation" : {
+          "description" : "The default location, if any, for map displays    \n",
+          "$ref" : "#/definitions/GeographicalCoordinate"
+        },
+        "defaultZoomMobile" : {
+          "type" : "integer",
+          "description" : "The default zoom level for mobile views    \n"
+        },
+        "defaultZoom" : {
+          "type" : "integer",
+          "description" : "The default zoom level for larger views    \n"
+        },
+        "distanceUnit" : {
+          "description" : "Determines the unit used to measure distances\n",
+          "$ref" : "#/definitions/DistanceUnitEnum"
+        }
+      },
+      "description" : "Contains data relative to maps displayed in the application\n"
     },
     "MarketplacePermissions" : {
       "type" : "object",

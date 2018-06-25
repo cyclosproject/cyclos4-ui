@@ -1,4 +1,7 @@
 import { AbstractControl, FormGroup, FormArray, FormControl } from '@angular/forms';
+import { GeographicalCoordinate, Address } from 'app/api/models';
+import { } from '@types/googlemaps';
+import { LatLngBounds } from '@agm/core';
 
 /**
  * Copies all properties from the given source to the given destination object
@@ -76,4 +79,28 @@ export function empty(input: string | Array<any>): boolean {
     return true;
   }
   return input.length === 0;
+}
+
+/**
+ * Returns a LatLngBounds containing all the given addresses or coordinates
+ * @param locations The coordinates or addresses
+ */
+export function fitBounds(locations: GeographicalCoordinate[] | Address[]): LatLngBounds {
+  if (typeof google === 'undefined' || empty(locations)) {
+    return null;
+  }
+  let bounds = new google.maps.LatLngBounds(null);
+  for (const loc of locations) {
+    if (loc == null) { continue; }
+    let coord: GeographicalCoordinate;
+    if (loc.hasOwnProperty('location')) {
+      coord = loc['location'] as GeographicalCoordinate;
+    } else {
+      coord = loc as GeographicalCoordinate;
+    }
+    if (coord.latitude != null && coord.longitude != null) {
+      bounds = bounds.extend(new google.maps.LatLng(coord.latitude, coord.longitude));
+    }
+  }
+  return bounds.isEmpty() ? null : bounds as any as LatLngBounds;
 }

@@ -8,7 +8,7 @@ import { LayoutService } from 'app/core/layout.service';
 import { BaseControlComponent } from 'app/shared/base-control.component';
 import { ResultType } from 'app/shared/result-type';
 import { MatButtonToggleGroup } from '@angular/material';
-import { environment } from 'environments/environment';
+import { MapsService } from 'app/core/maps.service';
 
 // Definition of the exported NG_VALUE_ACCESSOR provider
 export const RESULT_TYPE_FIELD_VALUE_ACCESSOR: Provider = {
@@ -23,6 +23,7 @@ export const RESULT_TYPE_FIELD_VALUE_ACCESSOR: Provider = {
 @Component({
   selector: 'result-type-field',
   templateUrl: 'result-type-field.component.html',
+  styleUrls: ['result-type-field.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     RESULT_TYPE_FIELD_VALUE_ACCESSOR
@@ -48,13 +49,14 @@ export class ResultTypeFieldComponent extends BaseControlComponent<ResultType> {
   constructor(
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
     public formatService: FormatService,
-    public layout: LayoutService
+    public layout: LayoutService,
+    private maps: MapsService
   ) {
     super(controlContainer);
   }
 
   ngOnInit() {
-    this.allowMap = this.allowMap && environment.googleMapsApiKey != null;
+    this.allowMap = this.allowMap && this.maps.enabled;
   }
 
   onDisabledChange(isDisabled: boolean) {

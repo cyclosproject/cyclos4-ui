@@ -12,7 +12,7 @@ import { TiledResultsComponent } from 'app/shared/tiled-results.component';
   styleUrls: ['tiled-result.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TiledResultComponent {
+export class TiledResultComponent implements OnInit {
   constructor(
     @Optional() @Inject(forwardRef(() => TiledResultsComponent)) public tiledResults
   ) {
@@ -37,4 +37,13 @@ export class TiledResultComponent {
 
   /** Url to navigate by clicking this result */
   @Input() url: string;
+
+  /** The tile width. If there's a wrapper `<tiled-results>`, will read from it */
+  @Input() tileWidth: number;
+
+  ngOnInit() {
+    if (this.tileWidth == null && this.tiledResults != null) {
+      this.tileWidth = this.tiledResults.tileWidth;
+    }
+  }
 }

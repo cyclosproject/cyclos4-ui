@@ -175,8 +175,9 @@
     [image]="user(row).image"
     [url]="path(row)"
     icon="account_circle"
-    avatarPosition="top">
-    <div *ngFor="let field of fieldsInTile; let first = first">
+    avatarPosition="top"
+    [title]="user(row).display">
+    <ng-container *ngFor="let field of fieldsInTile; let first = first">
       <div *ngIf="first && user(row).display"
         class="tile-title">
         {{ user(row).display }}
@@ -190,10 +191,54 @@
           <br>
         </format-field-value>
       </div>
-    </div>
+    </ng-container>
   </tiled-result>
 </tiled-results>
 
-<paginator (update)="triggerUpdate()"
+<agm-map *ngIf="resultType.value === ResultType.MAP"
+  fxFlex="grow"
+  [zoom]="layout.xs ? maps.data?.defaultZoomMobile : maps.data?.defaultZoom"
+  [fitBounds]="mapFitBounds | async"
+  [latitude]="maps.data?.defaultLocation?.latitude"
+  [longitude]="maps.data?.defaultLocation?.longitude"
+  (mapReady)="adjustMap()">
+  <ng-container *ngFor="let row of dataSource.data.value">
+    <agm-marker *ngIf="address(row) as addr"
+      [latitude]="addr.location.latitude"
+      [longitude]="addr.location.longitude">
+      <agm-info-window>
+        <tiled-result [tileWidth]="196"
+          [image]="user(row).image"
+          [url]="path(row)"
+          [title]="user(row).display"
+          icon="account_circle"
+          avatarPosition="top">
+          <div *ngFor="let field of fieldsInTile; let first = first"
+            [class]="first ? 'tile-title' : 'tile-data'">
+            <format-field-value [fields]="data.customFields"
+              [plainText]="true"
+              [fieldName]="field"
+              [object]="row"
+              [customValues]="customValues(row)">
+              <br>
+            </format-field-value>
+          </div>
+          <div class="tile-data">
+            <div *ngIf="addr.addressLine1">{{ addr.addressLine1 }}</div>
+            <div *ngIf="addr.addressLine2">{{ addr.addressLine2 }}</div>
+            <div *ngIf="addr.street">
+              {{ addr.street }}
+              <ng-container *ngIf="addr.buildingNumber">, {{ addr.buildingNumber }}</ng-container>
+              <ng-container *ngIf="addr.complement">, {{ addr.complement }}</ng-container>
+            </div>
+          </div>
+        </tiled-result>
+      </agm-info-window>
+    </agm-marker>
+  </ng-container>
+</agm-map>
+
+<paginator *ngIf="resultType.value !== ResultType.MAP"
+  (update)="triggerUpdate()"
   [query]="query"
   [dataSource]="dataSource"></paginator>

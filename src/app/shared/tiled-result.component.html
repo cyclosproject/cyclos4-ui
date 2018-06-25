@@ -1,5 +1,5 @@
 <mat-card [ngStyle]="{
-  width: tiledResults.tileWidth == null ? 'auto' : tiledResults.tileWidth + 'px'
+  width: tileWidth == null ? 'auto' : tileWidth + 'px'
 }"
   [ngClass]="{
     'with-top-avatar': avatarPosition === 'top',
@@ -21,11 +21,11 @@
     fxLayout="row"
     fxLayoutAlign="center center"
     [ngStyle]="{
-      width: tiledResults.tileWidth == null ? '' : tiledResults.tileWidth + 'px',
-      height: tiledResults.tileWidth == null ? '' : tiledResults.tileWidth + 'px'
+      width: tileWidth == null ? '' : tileWidth + 'px',
+      height: tileWidth == null ? '' : tileWidth + 'px'
     }">
     <mat-icon [ngStyle]="{
-      fontSize: tiledResults.tileWidth == null ? '' : (tiledResults.tileWidth * 0.5) + 'px'
+      fontSize: tileWidth == null ? '' : (tileWidth * 0.5) + 'px'
     }">account_box</mat-icon>
   </div>
 </ng-template>
@@ -36,10 +36,10 @@
     *ngIf="avatarPosition === 'top' && (image != null || icon != null)">
     <avatar *ngIf="image; else noLargeImage"
       [image]="image"
-      [size]="tiledResults.tileWidth == null ? 'xlarge' : 'custom'"
+      [size]="tileWidth == null ? 'xlarge' : 'custom'"
       [useLightbox]="useLightbox"
       [roundBorders]="false"
-      [customSize]="tiledResults.tileWidth"></avatar>
+      [customSize]="tileWidth"></avatar>
   </div>
   <div [ngClass]="{
     outer: true,

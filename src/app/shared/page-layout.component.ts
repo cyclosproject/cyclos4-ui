@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy, Injector, ViewChild } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy, Injector, ViewChild, ElementRef } from '@angular/core';
 import { BaseComponent } from 'app/shared/base.component';
 import { Action } from 'app/shared/action';
 import { BehaviorSubject } from 'rxjs';
@@ -51,10 +51,13 @@ export class PageLayoutComponent extends BaseComponent {
 
   @ViewChild('tabGroup') tabGroup: MatTabGroup;
 
+  @ViewChild('pageLayout') pageLayout: ElementRef;
+  @ViewChild('contentWrapper') contentWrapper: ElementRef;
+  @ViewChild('inlineContent') inlineContent: ElementRef;
+
   filtersShown = new BehaviorSubject(false);
 
   private creationTime = new Date();
-
 
   get hasFilters(): boolean {
     return this.filtersForm != null;

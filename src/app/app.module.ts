@@ -10,6 +10,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SettingsModule } from './settings/settings.module';
 import 'hammerjs';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material';
+import { LAZY_MAPS_API_CONFIG, LazyMapsAPILoader, MapsAPILoader } from '@agm/core';
+import { DataForUiHolder } from 'app/core/data-for-ui-holder';
+import { DataForUi } from 'app/api/models';
+import { BROWSER_GLOBALS_PROVIDERS } from '@agm/core/utils/browser-globals';
 
 /**
  * Root application module
@@ -31,7 +35,29 @@ import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material';
   ],
   providers: [
     INITIALIZE,
-    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 3500 } }
+    {
+      provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {
+        duration: 3500
+      }
+    },
+    {
+      provide: MapsAPILoader,
+      useClass: LazyMapsAPILoader
+    },
+    ...BROWSER_GLOBALS_PROVIDERS,
+    {
+      provide: LAZY_MAPS_API_CONFIG,
+      useFactory: (dataForUiHolder: DataForUiHolder) => {
+        const config: any = {};
+        dataForUiHolder.subscribe((dataForUi: DataForUi) => {
+          if (dataForUi != null && dataForUi.mapData && dataForUi.mapData.googleMapsApiKey) {
+            config.apiKey = dataForUi.mapData.googleMapsApiKey;
+          }
+        });
+        return config;
+      },
+      deps: [DataForUiHolder]
+    }
   ],
   bootstrap: [
     AppComponent

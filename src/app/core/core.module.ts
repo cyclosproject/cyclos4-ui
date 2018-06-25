@@ -10,6 +10,7 @@ import { Messages } from 'app/messages/messages';
 import { NotificationService } from 'app/core/notification.service';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
 import { FormatService } from 'app/core/format.service';
+import { MapsService } from 'app/core/maps.service';
 import { TranslationLoaderService } from 'app/core/translation-loader.service';
 import { LayoutService } from 'app/core/layout.service';
 import { LoginService } from 'app/core/login.service';
@@ -78,6 +79,7 @@ export const DATE_FORMATS_PROVIDER: Provider = {
     ErrorHandlerService,
     FormatService,
     LayoutService,
+    MapsService,
     NotificationService,
     BreadcrumbService,
     StateManager,

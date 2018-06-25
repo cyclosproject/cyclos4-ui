@@ -23,7 +23,7 @@
     <users-results *ngIf="loaded | async"
       [dataSource]="dataSource"
       [query]="query"
-      [data]="data"
+      [data]="data | async"
       [resultType]="resultType"
       (update)="update()"></users-results>
   </page-content>

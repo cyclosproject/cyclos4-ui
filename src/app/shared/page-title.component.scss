@@ -1,5 +1,8 @@
 @import 'src/definitions';
 
+:host {
+  width: 100%;
+}
 .page-title {
   border-bottom-width: 1px;
   border-bottom-style: solid;

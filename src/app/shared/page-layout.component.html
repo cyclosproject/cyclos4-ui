@@ -1,8 +1,11 @@
-<div fxLayout="row"
+<div #pageLayout
   [ngClass]="{
     'page-layout': true,
     'extra-margin': extraMargin
-  }">
+  }"
+  fxFlex="grow"
+  [fxLayout]="(showLeft | async) && hasMenu ? 'row' : 'column'"
+  [fxLayoutAlign]="(showLeft | async) && hasMenu ? 'stretch' : 'start center'">
   <div *ngIf="(showLeft | async) && hasMenu"
     [ngClass]="{
       left: true,
@@ -30,11 +33,14 @@
       'page-wrapper-small': contentSize === 'small'
     }"
     fxLayout="column"
-    fxFlex="nogrow">
+    fxFlex="grow"
+    fxLayoutAlign="start start">
     <ng-container *ngIf="(showLeft | async)">
       <!-- There is a left area: separated containers for header and content -->
       <div *ngIf="hasHeader && (loaded == null || (loaded | async))"
-        class="header">
+        class="header"
+        fxFlex="nogrow"
+        fxLayout="column">
         <mat-card ngClass="layout">
           <mat-card-content>
             <page-title *ngIf="title != null && title.length > 0"
@@ -49,9 +55,11 @@
       </div>
       <div class="content"
         [ngClass]="{
-          'tight': tightContent,
+          'tight-content': tightContent,
           'invisible': invisibleContent && !(loaded != null && !(loaded | async) && showSpinner)
-        }">
+        }"
+        fxFlex="nogrow"
+        fxLayout="column">
         <mat-card ngClass="layout">
           <mat-card-content>
             <div class="spinner"
@@ -65,7 +73,8 @@
                 [pageLayout]="this"
                 [title]="title"
                 [actions]="titleActions"></page-title>
-              <div class="content-wrapper">
+              <div #contentWrapper
+                class="content-wrapper">
                 <ng-container *ngTemplateOutlet="contentTpl"></ng-container>
               </div>
             </ng-container>
@@ -103,10 +112,13 @@
             class="filters-extra-margin"></div>
           <ng-container *ngTemplateOutlet="filtersTpl"></ng-container>
         </div>
-        <div [ngClass]="{
+        <div #inlineContent
+          [ngClass]="{
           'inline-content': true,
           'tight-content': tightContent
-          }">
+          }"
+          fxFlex="grow"
+          fxLayout="column">
           <ng-container *ngIf="loaded == null || (loaded | async)">
             <ng-container *ngTemplateOutlet="contentTpl"></ng-container>
           </ng-container>

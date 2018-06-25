@@ -8,7 +8,7 @@ import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { tap } from 'rxjs/operators';
 import { debounceTime } from 'rxjs/operators';
 import { UsersService } from 'app/api/services';
-import { UserDataForSearch } from 'app/api/models';
+import { UserDataForSearch, UserDataForMap } from 'app/api/models';
 import { UserResult } from 'app/api/models/user-result';
 import { ResultType } from 'app/shared/result-type';
 import { UsersResultsComponent } from 'app/users/search/users-results.component';
@@ -26,10 +26,11 @@ export class SearchUsersComponent extends BaseComponent {
   // Export enum to the template
   ResultType = ResultType;
 
-  data: UserDataForSearch;
+  data = new BehaviorSubject<UserDataForSearch | UserDataForMap>(null);
 
   form: FormGroup;
   resultType: FormControl;
+  previousResultType = ResultType.TILES;
 
   query: any;
   dataSource = new TableDataSource<UserResult>();
@@ -44,11 +45,12 @@ export class SearchUsersComponent extends BaseComponent {
   ) {
     super(injector);
     this.form = formBuilder.group({
-      resultType: ResultType.TILES,
+      resultType: this.previousResultType,
       keywords: null,
       customValues: null
     });
-    this.resultType = formBuilder.control(ResultType.TILES);
+    this.resultType = formBuilder.control(this.previousResultType);
+    this.resultType.valueChanges.subscribe(rt => this.updateResultType(rt));
     this.form.setControl('resultType', this.resultType);
 
     this.stateManager.manage(this.form);
@@ -62,20 +64,7 @@ export class SearchUsersComponent extends BaseComponent {
   ngOnInit() {
     super.ngOnInit();
 
-    // Get the data for user search
-    this.stateManager.cache('data',
-      this.usersService.getUserDataForSearch())
-      .subscribe(data => {
-        this.data = data;
-
-        // Initialize the query
-        this.query = this.stateManager.get('query', () => {
-          return data.query;
-        });
-
-        // Perform the search
-        this.update();
-      });
+    this.updateResultType(this.previousResultType, true);
   }
 
   update(value?: any) {
@@ -88,10 +77,42 @@ export class SearchUsersComponent extends BaseComponent {
     }
 
     // Update the results
-    const results = this.usersService.searchUsersResponse(this.query).pipe(
+    const search = this.resultType.value === ResultType.MAP
+      ? this.usersService.searchMapDirectoryResponse(this.query)
+      : this.usersService.searchUsersResponse(this.query);
+    const results = search.pipe(
       tap(() => {
         this.loaded.next(true);
       }));
     this.dataSource.subscribe(results);
+  }
+
+  private updateResultType(resultType: ResultType, force = false) {
+    const isMap = resultType === ResultType.MAP;
+    const wasMap = this.previousResultType === ResultType.MAP;
+    if (isMap !== wasMap || force) {
+      // Have to reload the data
+      this.loaded.next(false);
+      this.data.next(null);
+    }
+    const afterData = (data: UserDataForSearch | UserDataForMap) => {
+      this.data.next(data);
+      // Initialize the query
+      this.query = this.stateManager.get('query', () => {
+        return data.query;
+      });
+      // Perform the search
+      this.update();
+    };
+    if (isMap && !wasMap || force && isMap) {
+      // Get data for showing the map
+      this.stateManager.cache('dataForMap',
+        this.usersService.getDataForMapDirectory()).subscribe(afterData);
+    } else if (!isMap && wasMap || force && !isMap) {
+      // Get the data for user search
+      this.stateManager.cache('data',
+        this.usersService.getUserDataForSearch()).subscribe(afterData);
+    }
+    this.previousResultType = resultType;
   }
 }

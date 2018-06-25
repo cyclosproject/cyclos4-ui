@@ -6,6 +6,7 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
 @Component({
   selector: 'page-content',
   templateUrl: 'page-content.component.html',
+  styleUrls: ['page-content.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PageContentComponent {

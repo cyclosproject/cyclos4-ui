@@ -75,7 +75,7 @@ import { CaptchaComponent } from 'app/shared/captcha.component';
 import { ImageViewerComponent } from './image-viewer.component';
 import { UserLinkComponent } from './user-link.component';
 import { PageTitleComponent } from 'app/shared/page-title.component';
-
+import { AgmCoreModule } from '@agm/core';
 
 /**
  * Module that configures UI elements
@@ -156,7 +156,8 @@ import { PageTitleComponent } from 'app/shared/page-title.component';
     MatSidenavModule,
     CovalentStepsModule,
     CovalentFileModule,
-    SatPopoverModule
+    SatPopoverModule,
+    AgmCoreModule
   ],
   exports: [
     CommonModule,
@@ -184,6 +185,7 @@ import { PageTitleComponent } from 'app/shared/page-title.component';
     CovalentStepsModule,
     CovalentFileModule,
     SatPopoverModule,
+    AgmCoreModule,
 
     PageLayoutComponent,
     SideMenuComponent,

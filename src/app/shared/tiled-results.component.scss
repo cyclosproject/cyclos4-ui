@@ -15,3 +15,7 @@
   min-height: 64px !important;
   margin: 0 0 12px 0;
 }
+
+.xs :host .tiled-results {
+  padding: 8px;
+}
