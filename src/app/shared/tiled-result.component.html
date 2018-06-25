@@ -1,5 +1,5 @@
 <mat-card [ngStyle]="{
-  width: tileWidth == null ? 'auto' : tileWidth + 'px'
+  width: tileWidth == null || layout.xs ? 'auto' : tileWidth + 'px'
 }"
   [ngClass]="{
     'with-top-avatar': avatarPosition === 'top',
@@ -21,8 +21,8 @@
     fxLayout="row"
     fxLayoutAlign="center center"
     [ngStyle]="{
-      width: tileWidth == null ? '' : tileWidth + 'px',
-      height: tileWidth == null ? '' : tileWidth + 'px'
+      width: tileWidth == null || layout.xs ? '100%' : tileWidth + 'px',
+      height: tileWidth == null || layout.xs ? 'auto' : tileWidth + 'px'
     }">
     <mat-icon [ngStyle]="{
       fontSize: tileWidth == null ? '' : (tileWidth * 0.5) + 'px'

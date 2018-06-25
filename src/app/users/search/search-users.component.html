@@ -20,7 +20,9 @@
     </form>
   </page-filters>
   <page-content>
+    <!-- Shouldn't grow when no results, or the message would take all the remaining height -->
     <users-results *ngIf="loaded | async"
+      [fxFlex]="((dataSource.data | async)?.length || 0) > 0 ? 'grow' : 'nogrow'"
       [dataSource]="dataSource"
       [query]="query"
       [data]="data | async"

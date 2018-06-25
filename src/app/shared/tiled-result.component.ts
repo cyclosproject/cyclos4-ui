@@ -2,6 +2,7 @@ import { Component, OnInit, Input, ChangeDetectionStrategy, HostBinding, Inject,
 import { Image } from 'app/api/models';
 import { Action } from 'app/shared/action';
 import { TiledResultsComponent } from 'app/shared/tiled-results.component';
+import { LayoutService } from 'app/core/layout.service';
 
 /**
  * Renders a card-like element with an avatar, a title and a body
@@ -14,7 +15,8 @@ import { TiledResultsComponent } from 'app/shared/tiled-results.component';
 })
 export class TiledResultComponent implements OnInit {
   constructor(
-    @Optional() @Inject(forwardRef(() => TiledResultsComponent)) public tiledResults
+    @Optional() @Inject(forwardRef(() => TiledResultsComponent)) public tiledResults,
+    public layout: LayoutService
   ) {
   }
 

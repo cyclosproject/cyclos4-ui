@@ -1,7 +1,8 @@
 <div #pageLayout
   [ngClass]="{
     'page-layout': true,
-    'extra-margin': extraMargin
+    'extra-margin': extraMargin,
+    'full-height-content': layout.fullHeightContent | async
   }"
   fxFlex="grow"
   [fxLayout]="(showLeft | async) && hasMenu ? 'row' : 'column'"
@@ -38,16 +39,19 @@
     <ng-container *ngIf="(showLeft | async)">
       <!-- There is a left area: separated containers for header and content -->
       <div *ngIf="hasHeader && (loaded == null || (loaded | async))"
+        #header
         class="header"
         fxFlex="nogrow"
         fxLayout="column">
         <mat-card ngClass="layout">
           <mat-card-content>
             <page-title *ngIf="title != null && title.length > 0"
+              #pageTitle
               [pageLayout]="this"
               [title]="title"
               [actions]="titleActions"></page-title>
-            <div class="header-wrapper">
+            <div #headerWrapper
+              class="header-wrapper">
               <ng-container *ngTemplateOutlet="headerTpl"></ng-container>
             </div>
           </mat-card-content>
@@ -58,7 +62,7 @@
           'tight-content': tightContent,
           'invisible': invisibleContent && !(loaded != null && !(loaded | async) && showSpinner)
         }"
-        fxFlex="nogrow"
+        fxFlex="grow"
         fxLayout="column">
         <mat-card ngClass="layout">
           <mat-card-content>
@@ -110,7 +114,9 @@
           *ngIf="hasFilters && (filtersShown | async)">
           <div *ngIf="tightContent && !hasHeader"
             class="filters-extra-margin"></div>
-          <ng-container *ngTemplateOutlet="filtersTpl"></ng-container>
+          <div class="inline-filters-wrapper">
+            <ng-container *ngTemplateOutlet="filtersTpl"></ng-container>
+          </div>
         </div>
         <div #inlineContent
           [ngClass]="{

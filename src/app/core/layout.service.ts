@@ -25,7 +25,11 @@ export class LayoutService implements OnDestroy {
 
   /** The active menu */
   menu = new BehaviorSubject<Menu>(null);
-  pageLoaded = new Subject<PageLayoutComponent>();
+
+  /** Whether the content takes the full available height */
+  fullHeightContent = new BehaviorSubject(false);
+
+  private pageLoaded = new Subject<PageLayoutComponent>();
 
   private _canvas: HTMLCanvasElement;
   private _ctx: CanvasRenderingContext2D;
@@ -184,6 +188,7 @@ export class LayoutService implements OnDestroy {
    */
   nextLoadedPage(page: PageLayoutComponent) {
     this.pageLoaded.next(page);
+    this.fullHeightContent.next(false);
   }
 
 }

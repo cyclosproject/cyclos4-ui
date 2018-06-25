@@ -31,8 +31,8 @@ html.dark {
 .mat-card {
   max-width: $max-content-width;
 }
-.xs .mat-card mat-card-content {
-  padding: 8px;
+.xs .mat-card > mat-card-content {
+  padding: 0;
 }
 
 // Titles
@@ -163,9 +163,12 @@ input[type=number] {
 .mat-error {
   font-size: 12px;
 }
-
 .form-wrapper {
   margin: 16px 0;
+}
+
+.xs .inline-filters .actions {
+  margin-top: 0 !important;
 }
 
 .has-label-value {

@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy, Injector, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy, Injector, ViewChild, ElementRef, AfterViewInit, AfterViewChecked } from '@angular/core';
 import { BaseComponent } from 'app/shared/base.component';
 import { Action } from 'app/shared/action';
 import { BehaviorSubject } from 'rxjs';
@@ -22,7 +22,7 @@ export type ContentSize = 'small' | 'medium' | 'full';
   styleUrls: ['page-layout.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PageLayoutComponent extends BaseComponent {
+export class PageLayoutComponent extends BaseComponent implements AfterViewInit, AfterViewChecked {
   constructor(injector: Injector) {
     super(injector);
   }
@@ -51,9 +51,9 @@ export class PageLayoutComponent extends BaseComponent {
 
   @ViewChild('tabGroup') tabGroup: MatTabGroup;
 
-  @ViewChild('pageLayout') pageLayout: ElementRef;
-  @ViewChild('contentWrapper') contentWrapper: ElementRef;
-  @ViewChild('inlineContent') inlineContent: ElementRef;
+  @ViewChild('pageTitle') pageTitle: any;
+  @ViewChild('headerWrapper') headerWrapper: ElementRef;
+  @ViewChild('header') header: ElementRef;
 
   filtersShown = new BehaviorSubject(false);
 
@@ -82,6 +82,14 @@ export class PageLayoutComponent extends BaseComponent {
         }));
       }
     }
+  }
+
+  ngAfterViewChecked(): void {
+    this.updateHeader();
+  }
+
+  ngAfterViewInit(): void {
+    this.updateHeader();
   }
 
   onDisplayChange() {
@@ -119,11 +127,21 @@ export class PageLayoutComponent extends BaseComponent {
 
   private update() {
     this.showLeft.next(this.media.isActive('gt-sm'));
+    this.updateHeader();
   }
 
   // The spinner is only shown a few milliseconds after the component creation
   showSpinner() {
     const now = new Date();
     return (now.getTime() - this.creationTime.getTime()) > 300;
+  }
+
+  updateHeader() {
+    if (this.header != null && this.pageTitle != null && this.headerWrapper != null) {
+      const header = this.header.nativeElement;
+      const pageTitle = this.pageTitle.rootElement.nativeElement;
+      const headerWrapper = this.headerWrapper.nativeElement;
+      header.style.flex = '0 0 ' + (pageTitle.getBoundingClientRect().height + headerWrapper.getBoundingClientRect().height) + 'px';
+    }
   }
 }

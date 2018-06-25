@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy, ElementRef, ViewChild } from '@angular/core';
 import { Messages } from 'app/messages/messages';
 import { PageLayoutComponent } from './page-layout.component';
 import { LayoutService } from 'app/core/layout.service';
@@ -29,6 +29,8 @@ export class PageTitleComponent {
   @Input() noBottomMargin: boolean;
 
   @Input() actions: Action[];
+
+  @ViewChild('root') rootElement: ElementRef;
 
   toggleFilters() {
     this.pageLayout.toggleFilters();

@@ -81,8 +81,9 @@ export class SearchUsersComponent extends BaseComponent {
       ? this.usersService.searchMapDirectoryResponse(this.query)
       : this.usersService.searchUsersResponse(this.query);
     const results = search.pipe(
-      tap(() => {
+      tap(response => {
         this.loaded.next(true);
+        this.layout.fullHeightContent.next(response.body.length > 0 && this.resultType.value === ResultType.MAP);
       }));
     this.dataSource.subscribe(results);
   }
@@ -94,6 +95,11 @@ export class SearchUsersComponent extends BaseComponent {
       // Have to reload the data
       this.loaded.next(false);
       this.data.next(null);
+      if (this.query) {
+        // When changing between map / no-map, reset the page
+        this.query.page = 0;
+        this.query.pageSize = null;
+      }
     }
     const afterData = (data: UserDataForSearch | UserDataForMap) => {
       this.data.next(data);

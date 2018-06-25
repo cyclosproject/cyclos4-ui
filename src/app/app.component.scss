@@ -24,8 +24,6 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-}
-.lt-md :host ::ng-deep mat-sidenav-content {
   width: 100%;
   flex-direction: column !important;
 }
