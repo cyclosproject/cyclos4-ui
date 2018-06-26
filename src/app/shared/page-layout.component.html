@@ -134,7 +134,10 @@
   </div>
 
   <ng-template #filtersTpl>
-    <ng-content select="page-filters"></ng-content>
+    <div #filtersWrapper
+      class="filters-wrapper">
+      <ng-content select="page-filters"></ng-content>
+    </div>
     <actions>
       <button mat-raised-button
         (click)="clearFilters()">{{ messages.filtersClear() }}</button>

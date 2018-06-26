@@ -5,8 +5,9 @@
   [tightContent]="true"
   [invisibleContent]="resultType.value === ResultType.TILES && !(dataSource.empty | async)">
   <page-header>
-    <result-type-field [formControl]="resultType"
-      [allowMap]="true"></result-type-field>
+    <result-type-field *ngIf="allowedResultTypes.length > 1"
+      [formControl]="resultType"
+      [allowedResultTypes]="allowedResultTypes"></result-type-field>
   </page-header>
   <page-filters>
     <form *ngIf="query != null"
@@ -15,6 +16,7 @@
       <mat-form-field>
         <input formControlName="keywords"
           matInput
+          focused
           [placeholder]="messages.keywords()">
       </mat-form-field>
     </form>

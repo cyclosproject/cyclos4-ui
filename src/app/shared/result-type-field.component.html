@@ -1,12 +1,6 @@
 <mat-button-toggle-group [formControl]="formControl">
-  <mat-button-toggle [value]="ResultType.TILES">
-    <mat-icon>view_module</mat-icon>
-  </mat-button-toggle>
-  <mat-button-toggle [value]="ResultType.LIST">
-    <mat-icon>view_list</mat-icon>
-  </mat-button-toggle>
-  <mat-button-toggle [value]="ResultType.MAP"
-    *ngIf="allowMap">
-    <mat-icon>place</mat-icon>
+  <mat-button-toggle *ngFor="let resultType of allowedResultTypes"
+    [value]="resultType">
+    <mat-icon>{{ icon(resultType) }}</mat-icon>
   </mat-button-toggle>
 </mat-button-toggle-group>

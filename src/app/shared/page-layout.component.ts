@@ -55,6 +55,8 @@ export class PageLayoutComponent extends BaseComponent implements AfterViewInit,
   @ViewChild('headerWrapper') headerWrapper: ElementRef;
   @ViewChild('header') header: ElementRef;
 
+  @ViewChild('filtersWrapper') filtersWrapper: ElementRef;
+
   filtersShown = new BehaviorSubject(false);
 
   private creationTime = new Date();

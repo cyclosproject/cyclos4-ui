@@ -36,15 +36,12 @@ export class ResultTypeFieldComponent extends BaseControlComponent<ResultType> {
   @Input() focused: boolean;
   @Input() privacyControl: FormControl;
 
-  @Input() allowMap = false;
+  @Input() allowedResultTypes = [ResultType.TILES, ResultType.LIST];
 
   @Output() change: EventEmitter<string> = new EventEmitter();
   @Output() blur: EventEmitter<string> = new EventEmitter();
 
   @ViewChild(MatButtonToggleGroup) group: MatButtonToggleGroup;
-
-  // Alias for using in the template
-  ResultType = ResultType;
 
   constructor(
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
@@ -56,10 +53,25 @@ export class ResultTypeFieldComponent extends BaseControlComponent<ResultType> {
   }
 
   ngOnInit() {
-    this.allowMap = this.allowMap && this.maps.enabled;
+    if (!this.maps.enabled) {
+      // If maps would be allowed but is not enabled by configuration, remove it
+      const mapIndex = this.allowedResultTypes.indexOf(ResultType.MAP);
+      this.allowedResultTypes.splice(mapIndex, 1);
+    }
   }
 
   onDisabledChange(isDisabled: boolean) {
     this.group.disabled = isDisabled;
+  }
+
+  icon(resultType: ResultType): string {
+    switch (resultType) {
+      case ResultType.TILES:
+        return 'view_module';
+      case ResultType.LIST:
+        return 'view_list';
+      case ResultType.MAP:
+        return 'place';
+    }
   }
 }

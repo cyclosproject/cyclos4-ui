@@ -250,9 +250,10 @@ export class MenuService {
       add(Menu.SEARCH_MARKETPLACE, '/marketplace/search', 'shopping_cart',
         this.messages.menuMarketplaceAdvertisements());
       */
-      add(Menu.SEARCH_USERS, '/users/search', 'group',
-        this.messages.menuMarketplaceUsers());
-
+      if (users.search || users.map) {
+        add(Menu.SEARCH_USERS, '/users/search', 'group',
+          this.messages.menuMarketplaceUsers());
+      }
 
       const myProfile = permissions.myProfile;
       // Personal

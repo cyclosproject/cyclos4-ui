@@ -30,7 +30,10 @@ export class SearchUsersComponent extends BaseComponent {
 
   form: FormGroup;
   resultType: FormControl;
-  previousResultType = ResultType.TILES;
+  previousResultType: ResultType;
+  canSearch: boolean;
+  canViewMap: boolean;
+  allowedResultTypes: ResultType[];
 
   query: any;
   dataSource = new TableDataSource<UserResult>();
@@ -44,6 +47,24 @@ export class SearchUsersComponent extends BaseComponent {
     formBuilder: FormBuilder
   ) {
     super(injector);
+    // Get the permissions to search users and view map directory
+    const permissions = this.login.permissions || {};
+    const users = permissions.users || {};
+    this.canSearch = !!users.search;
+    this.canViewMap = !!users.map;
+    if (!this.canSearch && !this.canViewMap) {
+      this.notification.error(this.messages.errorPermission());
+      return;
+    }
+    this.allowedResultTypes = [];
+    if (this.canSearch) {
+      this.allowedResultTypes.push(ResultType.TILES);
+      this.allowedResultTypes.push(ResultType.LIST);
+    }
+    if (this.canViewMap) {
+      this.allowedResultTypes.push(ResultType.MAP);
+    }
+    this.previousResultType = this.canSearch ? ResultType.TILES : ResultType.MAP;
     this.form = formBuilder.group({
       resultType: this.previousResultType,
       keywords: null,

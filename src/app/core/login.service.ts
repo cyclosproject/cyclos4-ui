@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Auth, User } from 'app/api/models';
+import { Auth, User, Permissions } from 'app/api/models';
 import { AuthService } from 'app/api/services/auth.service';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
@@ -58,6 +58,14 @@ export class LoginService {
   get user(): User {
     const auth = this.auth;
     return auth == null ? null : auth.user;
+  }
+
+  /**
+   * Returns the current user permissions, or null if not logged in
+   */
+  get permissions(): Permissions {
+    const auth = this.auth;
+    return auth == null ? null : auth.permissions;
   }
 
   /**
