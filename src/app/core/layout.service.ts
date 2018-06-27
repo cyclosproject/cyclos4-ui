@@ -187,8 +187,8 @@ export class LayoutService implements OnDestroy {
    * @param page The loaded page
    */
   nextLoadedPage(page: PageLayoutComponent) {
-    this.pageLoaded.next(page);
     this.fullHeightContent.next(false);
+    this.pageLoaded.next(page);
   }
 
 }

@@ -2,13 +2,14 @@
   style="display:none"
   class="container">
   <div class="popup mat-elevation-z6"
-    fxLayout="row">
+    fxLayout="row"
+    fxLayoutAlign="center center">
     <a routerLink="/users/my-profile"
       class="avatar-container"
       (click)="clearState()"
       [ngClass]="{'no-image': user?.image == null}">
-      <avatar *ngIf="user?.image"
-        [image]="user?.image"
+      <avatar [image]="user?.image"
+        icon="account_circle"
         size="huge"></avatar>
     </a>
     <div class="details-container"

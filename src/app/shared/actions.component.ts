@@ -11,6 +11,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class ActionsComponent implements OnInit {
 
+  @Input() root: boolean | string = false;
   @Input() topMargin: 'normal' | 'double' | 'half' | 'small' | 'none' = 'normal';
   @Input() align: string;
   @Input() buttonSpace: 'normal' | 'small' | 'equidistant' | 'none' = 'normal';

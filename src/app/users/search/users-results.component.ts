@@ -7,7 +7,7 @@ import { ResultType } from 'app/shared/result-type';
 import { TableDataSource } from 'app/shared/table-datasource';
 import { MapsService } from 'app/core/maps.service';
 import { LatLngBounds } from '@agm/core';
-import { fitBounds } from 'app/shared/helper';
+import { fitBounds, empty } from 'app/shared/helper';
 
 const MAX_COLUMNS = 7;
 const MAX_TILE_FIELDS = 2;
@@ -31,6 +31,9 @@ export class UsersResultsComponent extends BaseComponent {
 
   @Input() query: any;
 
+  /** This input is here only to force a change in an @Input() field, so change detection properly works with OnPush */
+  @Input() rendering = false;
+
   @Input() dataSource: TableDataSource<any>;
 
   @Input() data: UserDataForSearch | UserDataForMap | ContactListDataForSearch;
@@ -38,6 +41,8 @@ export class UsersResultsComponent extends BaseComponent {
   @Input() resultType: FormControl;
 
   @Output() update = new EventEmitter<null>();
+
+  @Output() load = new EventEmitter<null>();
 
   mapFitBounds = new BehaviorSubject<LatLngBounds>(null);
 
@@ -221,6 +226,10 @@ export class UsersResultsComponent extends BaseComponent {
       const rows = this.dataSource.data.value;
       this.mapFitBounds.next(fitBounds(rows.map(row => this.address(row))));
     }
+  }
+
+  notifyLoad() {
+    this.load.emit(null);
   }
 
 }

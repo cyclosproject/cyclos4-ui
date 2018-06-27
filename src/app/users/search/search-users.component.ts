@@ -28,6 +28,8 @@ export class SearchUsersComponent extends BaseComponent {
 
   data = new BehaviorSubject<UserDataForSearch | UserDataForMap>(null);
 
+  renderingResults = new BehaviorSubject(true);
+
   form: FormGroup;
   resultType: FormControl;
   previousResultType: ResultType;
@@ -103,18 +105,22 @@ export class SearchUsersComponent extends BaseComponent {
       : this.usersService.searchUsersResponse(this.query);
     const results = search.pipe(
       tap(response => {
-        this.loaded.next(true);
         this.layout.fullHeightContent.next(response.body.length > 0 && this.resultType.value === ResultType.MAP);
+        // When no rows state that results are not being rendered
+        if (response.body.length === 0) {
+          this.renderingResults.next(false);
+        }
       }));
     this.dataSource.subscribe(results);
   }
 
   private updateResultType(resultType: ResultType, force = false) {
+    this.renderingResults.next(true);
+    this.dataSource.next([]);
     const isMap = resultType === ResultType.MAP;
     const wasMap = this.previousResultType === ResultType.MAP;
     if (isMap !== wasMap || force) {
       // Have to reload the data
-      this.loaded.next(false);
       this.data.next(null);
       if (this.query) {
         // When changing between map / no-map, reset the page
@@ -124,6 +130,7 @@ export class SearchUsersComponent extends BaseComponent {
     }
     const afterData = (data: UserDataForSearch | UserDataForMap) => {
       this.data.next(data);
+      this.loaded.next(true);
       // Initialize the query
       this.query = this.stateManager.get('query', () => {
         return data.query;
@@ -137,7 +144,7 @@ export class SearchUsersComponent extends BaseComponent {
         this.usersService.getDataForMapDirectory()).subscribe(afterData);
     } else if (!isMap && wasMap || force && !isMap) {
       // Get the data for user search
-      this.stateManager.cache('data',
+      this.stateManager.cache('dataForSearch',
         this.usersService.getUserDataForSearch()).subscribe(afterData);
     }
     this.previousResultType = resultType;

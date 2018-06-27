@@ -10,15 +10,6 @@
       color: mat-color($foreground, text);
     }
 
-    .no-large-image {
-      border-bottom: 1px solid mat-color($foreground, divider);
-    }
-  }
-
-  .xs tiled-result {
-    .no-large-image {
-      border-bottom: none;
-    }
     .top-avatar {
       border-bottom: 1px solid mat-color($foreground, divider);
     }

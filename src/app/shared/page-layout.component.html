@@ -66,12 +66,7 @@
         fxLayout="column">
         <mat-card ngClass="layout">
           <mat-card-content>
-            <div class="spinner"
-              *ngIf="loaded != null && !(loaded | async) && showSpinner">
-              <mat-progress-spinner color="accent"
-                [diameter]="50"
-                mode="indeterminate"></mat-progress-spinner>
-            </div>
+            <spinner *ngIf="loaded != null && !(loaded | async) && showSpinner"></spinner>
             <ng-container *ngIf="loaded == null || (loaded | async)">
               <page-title *ngIf="!hasHeader && title != null && title.length > 0"
                 [pageLayout]="this"
@@ -88,12 +83,7 @@
     </ng-container>
     <ng-container *ngIf="!(showLeft | async)">
       <!-- No left area (mobile): Everything is together (no cards) -->
-      <div class="spinner"
-        *ngIf="loaded != null && !(loaded | async) && showSpinner">
-        <mat-progress-spinner color="accent"
-          [diameter]="50"
-          mode="indeterminate"></mat-progress-spinner>
-      </div>
+      <spinner *ngIf="loaded != null && !(loaded | async) && showSpinner"></spinner>
       <ng-container *ngIf="(loaded == null || (loaded | async))">
         <page-title *ngIf="title != null && title.length > 0"
           [noBottomMargin]="true"

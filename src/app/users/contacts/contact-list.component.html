@@ -19,12 +19,22 @@
     </form>
   </page-filters>
   <page-content>
-    <users-results *ngIf="loaded | async"
-      resultKind="contact"
-      [dataSource]="dataSource"
-      [query]="query"
-      [data]="data"
-      [resultType]="resultType"
-      (update)="update()"></users-results>
+    <ng-container *ngIf="loaded | async">
+      <users-results *ngIf="(dataSource.data | async).length > 0"
+        resultKind="contact"
+        [ngClass]="{hidden: (renderingResults | async)}"
+        fxFlex="grow"
+        [rendering]="renderingResults | async"
+        [dataSource]="dataSource"
+        [query]="query"
+        [data]="data"
+        [resultType]="resultType"
+        (update)="update()"
+        (load)="renderingResults.next(false)"></users-results>
+      <div *ngIf="(dataSource.data | async).length === 0
+        && !(renderingResults | async)"
+        class="no-results">{{ messages.searchNoResults() }}</div>
+      <spinner *ngIf="(renderingResults | async)"></spinner>
+    </ng-container>
   </page-content>
 </page-layout>

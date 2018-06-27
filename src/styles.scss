@@ -24,6 +24,10 @@ html.dark {
   @include cyclos-theme($dark-theme);
 }
 
+.hidden {
+  display: none !important;
+}
+
 .clear-floats {
   clear: both;
 }
@@ -356,6 +360,7 @@ a.link-with-icon {
   .mat-icon {
     margin-right: 4px;
     font-size: 16px;
+    opacity: 1 !important;
   }
 }
 page-content, .mat-dialog-container {
@@ -369,7 +374,9 @@ page-content, .mat-dialog-container {
 a.no-link {
   cursor: default;
 }
-a.plain, a.plain:hover {
+a.plain, a.plain:hover,
+a.mat-button, a.mat-button:hover,
+a.mat-raised-button, a.mat-raised-button:hover {
   text-decoration: none !important;
 }
 

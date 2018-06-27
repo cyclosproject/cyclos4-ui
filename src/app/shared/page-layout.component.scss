@@ -27,7 +27,7 @@
   display: none;
 }
 
-.header, .content, .inline-header, .inline-content, .inline-filters, .spinner {
+.header, .content, .inline-header, .inline-content, .inline-filters {
   width: 100%;
 }
 
@@ -68,16 +68,6 @@
     background: transparent;
     box-shadow: none;
   }
-}
-
-.spinner {
-  opacity: 0.6;
-  display: block;
-  padding: 64px 0;
-}
-:host ::ng-deep .spinner mat-progress-spinner {
-  display: block;
-  margin: auto;
 }
 
 .page-wrapper-standalone {

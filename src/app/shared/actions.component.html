@@ -1,5 +1,6 @@
 <div [ngClass]="{
     actions: true,
+    root: [true, 'true', ''].includes(root),
     'top-margin-none': topMargin === 'none',
     'top-margin-normal': topMargin === 'normal',
     'top-margin-double': topMargin === 'double',

@@ -76,6 +76,7 @@ import { ImageViewerComponent } from './image-viewer.component';
 import { UserLinkComponent } from './user-link.component';
 import { PageTitleComponent } from 'app/shared/page-title.component';
 import { AgmCoreModule } from '@agm/core';
+import { SpinnerComponent } from 'app/shared/spinner.component';
 
 /**
  * Module that configures UI elements
@@ -89,6 +90,7 @@ import { AgmCoreModule } from '@agm/core';
     PageContentComponent,
     PageHeaderComponent,
     PageTitleComponent,
+    SpinnerComponent,
     ActionsComponent,
     ViewFormComponent,
     LabelValueComponent,
@@ -194,6 +196,7 @@ import { AgmCoreModule } from '@agm/core';
     PageContentComponent,
     PageHeaderComponent,
     PageTitleComponent,
+    SpinnerComponent,
     ActionsComponent,
     ViewFormComponent,
     LabelValueComponent,

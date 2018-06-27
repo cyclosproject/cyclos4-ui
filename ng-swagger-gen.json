@@ -4,6 +4,7 @@
   "output": "src/app/api",
   "includeTags": [
     "Auth",
+    "Passwords",
     "Users",
     "Phones",
     "Addresses",

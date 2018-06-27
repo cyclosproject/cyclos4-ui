@@ -19,6 +19,11 @@
 .actions.top-margin-double {
   margin-top: 48px;
 }
+.gt-xs :host ::ng-deep .actions.root {
+  button, a {
+    min-width: 120px !important;
+  }
+}
 .gt-xs :host ::ng-deep .actions.button-space-normal {
   button, a {
     margin-right: 22px;

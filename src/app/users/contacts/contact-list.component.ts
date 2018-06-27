@@ -24,6 +24,8 @@ export class ContactListComponent extends BaseComponent {
 
   data: ContactListDataForSearch;
 
+  renderingResults = new BehaviorSubject(true);
+
   form: FormGroup;
   resultType: FormControl;
 
@@ -46,6 +48,7 @@ export class ContactListComponent extends BaseComponent {
       customValues: null
     });
     this.resultType = formBuilder.control(ResultType.TILES);
+    this.resultType.valueChanges.subscribe(() => this.renderingResults.next(true));
     this.form.setControl('resultType', this.resultType);
 
     this.stateManager.manage(this.form);
@@ -89,8 +92,12 @@ export class ContactListComponent extends BaseComponent {
 
     // Update the results
     const results = this.contactsService.searchContactListResponse(this.query).pipe(
-      tap(() => {
+      tap(response => {
         this.loaded.next(true);
+        // When no rows state that results are not being rendered
+        if (response.body.length === 0) {
+          this.renderingResults.next(false);
+        }
       }));
     this.dataSource.subscribe(results);
   }

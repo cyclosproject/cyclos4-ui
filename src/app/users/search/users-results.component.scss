@@ -1,8 +1,8 @@
 agm-map {
-  //height: 400px;
   display: flex;
   flex-direction: column;
   flex: 1;
+  height: 100%;
 }
 :host ::ng-deep .agm-map-container-inner {
   flex: 1;

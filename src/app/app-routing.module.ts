@@ -65,6 +65,10 @@ const rootRoutes: Routes = [
     loadChildren: 'app/banking/banking.module#BankingModule'
   },
   {
+    path: 'personal',
+    loadChildren: 'app/personal/personal.module#PersonalModule'
+  },
+  {
     path: '**',
     component: NotFoundComponent
   }

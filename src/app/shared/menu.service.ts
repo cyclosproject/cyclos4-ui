@@ -236,10 +236,12 @@ export class MenuService {
         add(Menu.PERFORM_PAYMENT, '/banking/payment', 'payment',
           this.messages.menuBankingPayment());
       }
+      /*
       if ((banking.scheduledPayments || {}).view) {
         add(Menu.SCHEDULED_PAYMENTS, '/banking/scheduled-payments', 'schedule',
           this.messages.menuBankingScheduledPayments());
       }
+      */
       if ((banking.recurringPayments || {}).view) {
         add(Menu.RECURRING_PAYMENTS, '/banking/recurring-payments', 'loop',
           this.messages.menuBankingRecurringPayments());

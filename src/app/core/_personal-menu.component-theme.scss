@@ -10,6 +10,10 @@
       color: map-get($foreground, text);
     }
 
+    a, a:hover {
+      color: map-get($foreground, text);
+    }
+
     .details {
       color: map-get($foreground, text);
     }
