@@ -13,17 +13,17 @@
       [innerHTML]="message | trust"></div>
   </div>
 
-  <div class="buttons"
-    fxLayout="row"
-    fxLayoutAlign="space-between start">
+  <actions root
+    buttonSpace="equidistant">
     <button mat-raised-button
       (click)="no()">
       {{ messages.no() }}
     </button>
     <button mat-raised-button
+      focused
       color="accent"
       (click)="yes()">
       {{ messages.yes() }}
     </button>
-  </div>
+  </actions>
 </div>

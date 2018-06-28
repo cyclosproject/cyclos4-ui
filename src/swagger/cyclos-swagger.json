@@ -19493,7 +19493,7 @@
         "tags" : [ "Passwords" ],
         "summary" : "Resets a generated password, allowing it to be generated again",
         "description" : "Resets a generated password. This can only be done by administrators / brokers over managed users, and allow them to generate the password value again.\n",
-        "operationId" : "resetPassword",
+        "operationId" : "resetGeneratedPassword",
         "parameters" : [ {
           "name" : "user",
           "in" : "path",

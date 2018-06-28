@@ -30,6 +30,7 @@ export class NotificationService {
    */
   yesNo(message: string): Observable<Boolean> {
     return this.dialog.open(YesNoComponent, {
+      autoFocus: false,
       data: message
     }).afterClosed();
   }
@@ -43,6 +44,7 @@ export class NotificationService {
    */
   confirmWithPassword(message: string, passwordInput: PasswordInput, confirmationMessage?: string): Observable<string> {
     return this.dialog.open(ConfirmWithPasswordComponent, {
+      autoFocus: false,
       data: {
         message: message,
         passwordInput: passwordInput,

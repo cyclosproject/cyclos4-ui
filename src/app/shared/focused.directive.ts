@@ -2,7 +2,7 @@ import { Directive, ElementRef, AfterViewInit, ChangeDetectorRef, Input, Optiona
 import { MatSelect, MatInput } from '@angular/material';
 import { PageLayoutComponent } from 'app/shared/page-layout.component';
 
-@Directive({ selector: 'mat-select[focused],input[focused],select[focused],textarea[focused]' })
+@Directive({ selector: 'mat-select[focused],input[focused],select[focused],textarea[focused],button[focused],a[focused]' })
 export class FocusedDirective implements OnInit, AfterViewInit {
   constructor(
     private el: ElementRef,
