@@ -3,6 +3,7 @@ import { Image } from 'app/api/models';
 import { Action } from 'app/shared/action';
 import { TiledResultsComponent } from 'app/shared/tiled-results.component';
 import { LayoutService } from 'app/core/layout.service';
+import { AvatarSize } from 'app/shared/avatar.component';
 
 /**
  * Renders a card-like element with an avatar, a title and a body
@@ -21,6 +22,9 @@ export class TiledResultComponent implements OnInit {
   }
 
   @Input() avatarPosition: 'left' | 'top' = 'left';
+
+  /** The size of rendered avatar when showing the left avatar */
+  @Input() leftAvatarSize: AvatarSize = 'large';
 
   /** The icon to show */
   @Input() icon: string;

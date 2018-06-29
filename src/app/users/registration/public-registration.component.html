@@ -12,7 +12,7 @@
         <ng-container *ngIf="stepperControl.monitor(groupStep) | async">
           <registration-group [groups]="groups"
             [form]=groupForm></registration-group>
-          <actions>
+          <actions root>
             <button fxFlex.gt-xs="nogrow"
               mat-raised-button
               color="accent"
@@ -30,7 +30,7 @@
           <registration-fields [data]="data | async"
             [form]="fieldsForm"
             [addressForm]="addressForm"></registration-fields>
-          <actions>
+          <actions root>
             <button *ngIf="groups.length > 1"
               mat-raised-button
               (click)="previousFromFields()">
@@ -53,7 +53,7 @@
         <ng-container *ngIf="stepperControl.monitor(confirmStep) | async">
           <registration-confirm [data]="data | async"
             [form]=confirmForm></registration-confirm>
-          <actions>
+          <actions root>
             <button *ngIf="groups.length > 1"
               mat-raised-button
               (click)="previousFromConfirm()">
@@ -73,7 +73,8 @@
         [label]="messages.registrationDone()">
         <ng-container *ngIf="stepperControl.monitor(doneStep) | async">
           <registration-done [result]="result | async"></registration-done>
-          <actions *ngIf="(result | async).status == 'active'">
+          <actions *ngIf="(result | async).status == 'active'"
+            root>
             <button fxFlex.gt-xs="nogrow"
               mat-raised-button
               color="accent"

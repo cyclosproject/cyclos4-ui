@@ -110,7 +110,8 @@
     [passwordInput]="data.confirmationPasswordInput"
     [message]="messages.phoneConfirmationPassword()"></confirmation-password>
 
-  <actions buttonSpace="equidistant">
+  <actions root
+    buttonSpace="equidistant">
     <button mat-raised-button
       color="accent"
       [disabled]="!form.valid"

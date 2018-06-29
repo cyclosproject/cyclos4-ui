@@ -57,7 +57,7 @@
         <avatar [image]="image"
           [icon]="icon"
           iconColor="accent"
-          size="xlarge"
+          [size]="leftAvatarSize"
           [useLightbox]="useLightbox"></avatar>
       </div>
       <div class="container"
@@ -74,7 +74,7 @@
     <actions *ngIf="actions && actions.length > 0"
       xsMode="row"
       topMargin="small"
-      [align]="actions.length === 1 ? 'center center' : 'space-between center'"
+      align="space-between center"
       [buttonSpace]="actions.length === 1 ? 'none' : 'equidistant'">
       <button *ngFor="let act of actions"
         mat-button

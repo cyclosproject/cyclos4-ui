@@ -208,6 +208,7 @@
   [latitude]="maps.data?.defaultLocation?.latitude"
   [longitude]="maps.data?.defaultLocation?.longitude"
   [fullscreenControl]="true"
+  maxZoom="17"
   (mapReady)="adjustMap(); notifyLoad()">
   <ng-container *ngFor="let row of dataSource.data.value">
     <agm-marker *ngIf="address(row) as addr"

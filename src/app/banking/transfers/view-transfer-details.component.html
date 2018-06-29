@@ -71,7 +71,7 @@
   <label-value [label]="messages.transactionType()">
     {{ transfer.parent.type.name }}
   </label-value>
-  <actions>
+  <actions root>
     <a [routerLink]="path(transfer.parent)"
       mat-button>
       {{ messages.transferParentView() }}

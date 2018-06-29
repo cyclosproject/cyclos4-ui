@@ -147,7 +147,7 @@ export class PublicRegistrationComponent extends BaseComponent implements AfterV
 
   ngAfterViewInit() {
     if (this.groups.length > 0) {
-      this.stepperControl.activate(this.groupStep);
+      window.setTimeout(() => this.stepperControl.activate(this.groupStep), 0);
     }
   }
 

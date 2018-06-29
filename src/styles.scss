@@ -130,10 +130,10 @@ mat-checkbox + mat-radio-group,
 mat-radio-group + mat-radio-group, mat-radio-group + mat-checkbox {
   margin-top: 1.25em;
 }
-mat-radio-group mat-radio-button {
+mat-radio-group:not(.horizontal) mat-radio-button {
   margin-bottom: 18px;
 }
-mat-radio-group mat-radio-button:last-of-type {
+mat-radio-group:not(.horizontal) mat-radio-button:last-of-type {
   margin-bottom: 0px;
 }
 mat-radio-group.horizontal mat-radio-button + mat-radio-button {
@@ -344,6 +344,9 @@ mat-icon.mat-96 {
 }
 .mat-table mat-icon {
   opacity: 0.45;
+}
+.td-step-header mat-icon {
+  opacity: 1 !important;
 }
 
 .mat-form-field-prefix .mat-icon-button .mat-icon,

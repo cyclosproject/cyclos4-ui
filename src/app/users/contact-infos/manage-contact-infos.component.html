@@ -6,6 +6,7 @@
         [title]="contactInfo.name"
         icon="account_circle"
         [image]="contactInfo.image"
+        leftAvatarSize="xlarge"
         [actions]="actions(contactInfo)"
         fxFlex="nogrow">
         <div *ngIf="contactInfo.address; else blankLine"

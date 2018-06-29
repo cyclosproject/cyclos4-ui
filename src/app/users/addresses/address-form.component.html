@@ -41,7 +41,8 @@
     formControlName="confirmationPassword"
     [passwordInput]="data.confirmationPasswordInput"
     [message]="messages.addressConfirmationPassword"></confirmation-password>
-  <actions buttonSpace="equidistant">
+  <actions root
+    buttonSpace="equidistant">
     <button mat-raised-button
       color="accent"
       [disabled]="!form.valid"
