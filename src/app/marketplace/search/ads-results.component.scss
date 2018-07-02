@@ -1,0 +1,15 @@
+agm-map {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  height: 100%;
+}
+:host ::ng-deep .agm-map-container-inner {
+  flex: 1;
+}
+
+.promo-price {
+  opacity: 0.5;
+  text-decoration: line-through;
+  margin-right: 6px;
+}

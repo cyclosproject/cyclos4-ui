@@ -66,9 +66,10 @@ export class TableDataSource<T> extends DataSource<T> {
     }
   }
 
-  constructor() {
+  constructor(data: T[] = []) {
     super();
     this.data.subscribe(arr => this.empty.next(arr == null || arr.length === 0));
+    this.next(data);
   }
 
   connect(): Observable<T[]> {

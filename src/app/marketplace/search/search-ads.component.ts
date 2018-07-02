@@ -7,66 +7,48 @@ import { ApiHelper } from 'app/shared/api-helper';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { tap } from 'rxjs/operators';
 import { debounceTime } from 'rxjs/operators';
-import { UsersService } from 'app/api/services';
-import { UserDataForSearch, UserDataForMap } from 'app/api/models';
-import { UserResult } from 'app/api/models/user-result';
+import { MarketplaceService } from 'app/api/services';
+import { AdResult, AdAddressResultEnum } from 'app/api/models';
 import { ResultType } from 'app/shared/result-type';
-import { UsersResultsComponent } from 'app/users/search/users-results.component';
+import { AdDataForSearch } from 'app/api/models/ad-data-for-search';
+import { AdsResultsComponent } from 'app/marketplace/search/ads-results.component';
 
 /**
- * Search for users
+ * Search for advertisements
  */
 @Component({
-  selector: 'search-users',
-  templateUrl: 'search-users.component.html',
+  selector: 'search-ads',
+  templateUrl: 'search-ads.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SearchUsersComponent extends BaseComponent {
+export class SearchAdsComponent extends BaseComponent {
 
   // Export enum to the template
   ResultType = ResultType;
 
-  data = new BehaviorSubject<UserDataForSearch | UserDataForMap>(null);
+  data: AdDataForSearch;
 
   renderingResults = new BehaviorSubject(true);
 
+  resultTypes = [ResultType.TILES, ResultType.LIST, ResultType.MAP];
+
   form: FormGroup;
   resultType: FormControl;
-  previousResultType: ResultType;
-  canSearch: boolean;
-  canViewMap: boolean;
-  allowedResultTypes: ResultType[];
 
   query: any;
-  dataSource = new TableDataSource<UserResult>(null);
+  dataSource = new TableDataSource<AdResult>(null);
   loaded = new BehaviorSubject(false);
 
-  @ViewChild('results') results: UsersResultsComponent;
+  previousResultType: ResultType = ResultType.TILES;
+
+  @ViewChild('results') results: AdsResultsComponent;
 
   constructor(
     injector: Injector,
-    private usersService: UsersService,
+    private marketplaceService: MarketplaceService,
     formBuilder: FormBuilder
   ) {
     super(injector);
-    // Get the permissions to search users and view map directory
-    const permissions = this.login.permissions || {};
-    const users = permissions.users || {};
-    this.canSearch = !!users.search;
-    this.canViewMap = !!users.map;
-    if (!this.canSearch && !this.canViewMap) {
-      this.notification.error(this.messages.errorPermission());
-      return;
-    }
-    this.allowedResultTypes = [];
-    if (this.canSearch) {
-      this.allowedResultTypes.push(ResultType.TILES);
-      this.allowedResultTypes.push(ResultType.LIST);
-    }
-    if (this.canViewMap) {
-      this.allowedResultTypes.push(ResultType.MAP);
-    }
-    this.previousResultType = this.canSearch ? ResultType.TILES : ResultType.MAP;
     this.form = formBuilder.group({
       keywords: null,
       customValues: null
@@ -86,7 +68,21 @@ export class SearchUsersComponent extends BaseComponent {
   ngOnInit() {
     super.ngOnInit();
 
-    this.updateResultType(this.previousResultType, true);
+    // Get the data for advertisements search
+    this.stateManager.cache('data', this.marketplaceService.getAdDataForSearch({}))
+      .subscribe(data => {
+        this.data = data;
+        this.loaded.next(true);
+
+        // Initialize the query
+        this.query = this.stateManager.get('query', () => {
+          return data.query;
+        });
+        this.query.user = ApiHelper.SELF;
+
+        // Perform the search
+        this.updateResultType(this.previousResultType, true);
+      });
   }
 
   update(value?: any) {
@@ -99,17 +95,15 @@ export class SearchUsersComponent extends BaseComponent {
     }
 
     // Update the results
-    const search = this.resultType.value === ResultType.MAP
-      ? this.usersService.searchMapDirectoryResponse(this.query)
-      : this.usersService.searchUsersResponse(this.query);
-    const results = search.pipe(
+    const results = this.marketplaceService.searchAdsResponse(this.query).pipe(
       tap(response => {
         this.layout.fullHeightContent.next(response.body.length > 0 && this.resultType.value === ResultType.MAP);
         // When no rows state that results are not being rendered
         if (response.body.length === 0) {
           this.renderingResults.next(false);
         }
-      }));
+      })
+    );
     this.dataSource.subscribe(results);
   }
 
@@ -119,32 +113,13 @@ export class SearchUsersComponent extends BaseComponent {
     const isMap = resultType === ResultType.MAP;
     const wasMap = this.previousResultType === ResultType.MAP;
     if (isMap !== wasMap || force) {
-      // Have to reload the data
-      this.data.next(null);
       if (this.query) {
         // When changing between map / no-map, reset the page
         this.query.page = 0;
         this.query.pageSize = null;
       }
-    }
-    const afterData = (data: UserDataForSearch | UserDataForMap) => {
-      this.data.next(data);
-      this.loaded.next(true);
-      // Initialize the query
-      this.query = this.stateManager.get('query', () => {
-        return data.query;
-      });
-      // Perform the search
+      this.query.addressResult = isMap ? AdAddressResultEnum.ALL : AdAddressResultEnum.NONE;
       this.update();
-    };
-    if (isMap && !wasMap || force && isMap) {
-      // Get data for showing the map
-      this.stateManager.cache('dataForMap',
-        this.usersService.getDataForMapDirectory()).subscribe(afterData);
-    } else if (!isMap && wasMap || force && !isMap) {
-      // Get the data for user search
-      this.stateManager.cache('dataForSearch',
-        this.usersService.getUserDataForSearch()).subscribe(afterData);
     }
     this.previousResultType = resultType;
   }

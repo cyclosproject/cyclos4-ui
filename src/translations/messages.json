@@ -14,6 +14,7 @@
   "keywords": "Keywords",
   "user": "User",
   "name": "Name",
+  "description": "Description",
   "visibility.private": "Visible only by me",
   "visibility.public": "Visible by other users",
   "period": "Period",
@@ -306,7 +307,6 @@
   "transaction.subject": "From / to",
   "transaction.amount": "Amount",
   "transaction.type": "Type",
-  "transaction.description": "Description",
   "transaction.number": "Transaction number",
   "transaction.channel": "Channel",
   "transaction.by": "Performed by",
@@ -347,5 +347,11 @@
   "payment.done.auth.message": "The payment was submitted for further authorization",
   "payment.newPayment": "New payment",
   "payment.viewPayment": "View payment details",
-  "payment.confirmationPassword": "In order to perform this payment you have to supply your confirmation password"
+  "payment.confirmationPassword": "In order to perform this payment you have to supply your confirmation password",
+  "ad.search.title": "Marketplace",
+  "ad.name": "Title",
+  "ad.price": "Price",
+  "ad.owner": "Owner",
+  "ad.category": "Category",
+  "ad.categories": "Categories"
 }

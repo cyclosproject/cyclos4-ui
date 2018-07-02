@@ -1,17 +1,15 @@
-<page-layout [title]="messages.userSearchTitle()"
+<page-layout [title]="messages.adSearchTitle()"
   [hasHeader]="true"
   [loaded]="loaded"
   [filtersForm]="form"
   [tightContent]="true"
   [invisibleContent]="!(dataSource.empty | async) && resultType.value === ResultType.TILES">
   <page-header>
-    <result-type-field *ngIf="(allowedResultTypes || []).length > 1"
-      [formControl]="resultType"
-      [allowedResultTypes]="allowedResultTypes"></result-type-field>
+    <result-type-field [formControl]="resultType"
+      [allowedResultTypes]="resultTypes"></result-type-field>
   </page-header>
   <page-filters>
-    <form *ngIf="query != null"
-      fxLayout="column"
+    <form fxLayout="column"
       [formGroup]="form">
       <mat-form-field>
         <input formControlName="keywords"
@@ -23,7 +21,7 @@
   </page-filters>
   <page-content>
     <ng-container *ngIf="loaded | async">
-      <users-results [ngClass]="{
+      <ads-results [ngClass]="{
           hidden: (renderingResults | async) || (dataSource.data | async)?.length === 0
         }"
         fxFlex="grow"
@@ -31,12 +29,11 @@
         [dataSource]="dataSource"
         [rendering]="renderingResults | async"
         [query]="query"
-        [data]="data | async"
+        [data]="data"
         [resultType]="resultType"
         (update)="update()"
-        (load)="renderingResults.next(false)"></users-results>
-      <div *ngIf="(dataSource.data | async) != null
-        && dataSource.data.value?.length === 0"
+        (load)="renderingResults.next(false)"></ads-results>
+      <div *ngIf="(dataSource.data | async)?.length === 0"
         class="no-results">{{ messages.searchNoResults() }}</div>
       <spinner *ngIf="renderingResults | async"></spinner>
     </ng-container>

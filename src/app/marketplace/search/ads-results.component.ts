@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Injector, Input, EventEmitter, Output } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { User, UserDataForSearch, ContactListDataForSearch, ContactResult, UserResult, Address, UserDataForMap } from 'app/api/models';
+import { AdDataForSearch, AdResult, Currency } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
 import { FormControl } from '@angular/forms';
 import { ResultType } from 'app/shared/result-type';
@@ -9,19 +9,19 @@ import { MapsService } from 'app/core/maps.service';
 import { LatLngBounds } from '@agm/core';
 import { fitBounds, empty } from 'app/shared/helper';
 
-const MAX_COLUMNS = 7;
-const MAX_TILE_FIELDS = 2;
+const MAX_COLUMNS = 5;
+const MAX_TILE_FIELDS = 1;
 
 /**
- * Displays the results of a user search
+ * Displays the results of a advertisements search
  */
 @Component({
-  selector: 'users-results',
-  templateUrl: 'users-results.component.html',
-  styleUrls: ['users-results.component.scss'],
+  selector: 'ads-results',
+  templateUrl: 'ads-results.component.html',
+  styleUrls: ['ads-results.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UsersResultsComponent extends BaseComponent {
+export class AdsResultsComponent extends BaseComponent {
   displayedColumns = new BehaviorSubject<string[]>([]);
 
   // Export enum to the template
@@ -29,16 +29,14 @@ export class UsersResultsComponent extends BaseComponent {
 
   mapReady = false;
 
-  @Input() resultKind: 'user' | 'contact' = 'user';
-
   @Input() query: any;
 
   /** This input is here only to force a change in an @Input() field, so change detection properly works with OnPush */
   @Input() rendering = false;
 
-  @Input() dataSource: TableDataSource<any>;
+  @Input() dataSource: TableDataSource<AdResult>;
 
-  @Input() data: UserDataForSearch | UserDataForMap | ContactListDataForSearch;
+  @Input() data: AdDataForSearch;
 
   @Input() resultType: FormControl;
 
@@ -60,42 +58,6 @@ export class UsersResultsComponent extends BaseComponent {
       this.updateDisplayedColumns();
       this.adjustMap();
     });
-  }
-
-  /**
-   * Returns the user displayed for the given result row
-   * @param row The result from the search
-   */
-  user(row): User {
-    if (this.resultKind === 'contact') {
-      return (row as ContactResult).contact;
-    }
-    return row as User;
-  }
-
-  /**
-   * Returns the custom values holder for the given result row
-   * @param row The result from the search
-   */
-  customValues(row): any {
-    if (row == null) {
-      return null;
-    }
-    if (this.resultKind === 'contact') {
-      return (row as ContactResult).customValues;
-    }
-    return (row as UserResult).customValues;
-  }
-
-  /**
-   * Returns the address displayed for the given result row
-   * @param row The result from the search
-   */
-  address(row): Address {
-    if (this.resultKind === 'contact') {
-      return null;
-    }
-    return (row as UserResult).address;
   }
 
   /**
@@ -126,24 +88,6 @@ export class UsersResultsComponent extends BaseComponent {
    */
   get showHeader(): boolean {
     return this.layout.gtxs && this.fieldsInList.length > 0;
-  }
-
-
-  /**
-   * Returns the route components for the given row
-   * @param row The user or contact
-   */
-  path(row: any): string[] {
-    if (this.resultKind === 'contact') {
-      // When supporting contact custom fields, check for
-      // (this.data as ContactListDataForSearch).hasVisibleFields
-      // to navigate to the contact edit page
-
-      // Go to the contact profile
-      return ['/users', 'contact-profile', this.user(row).id];
-    }
-    // Go to the user profile
-    return ['/users', 'profile', this.user(row).id];
   }
 
   /**
@@ -185,30 +129,22 @@ export class UsersResultsComponent extends BaseComponent {
   }
 
   private updateDisplayedColumns() {
-    const fieldsInList = this.fieldsInList;
-    if (fieldsInList.length > 0) {
-      // There are specific fields in list
-      if (this.layout.xs) {
-        // In mobile layout there's an aggregated column
-        this.displayedColumns.next(['avatar', 'aggregated']);
-      } else {
-        // In other layouts show the specific columns, plus the avatar
-        // As the columns cannot be dynamically defined, we define up to
-        // 5 columns, named field0, field1, ...
-        const fields: string[] = [];
-        fields.push('avatar');
-        if (this.resultKind === 'contact') {
-          // For contacts, always show the user display as well
-          fields.push('display');
-        }
-        for (let i = 0; i < this.fieldsInList.length; i++) {
-          fields.push('field' + i);
-        }
-        this.displayedColumns.next(fields);
-      }
+    if (this.layout.xs) {
+      // In mobile layout there's an aggregated column
+      this.displayedColumns.next(['avatar', 'aggregated']);
     } else {
-      // No specific fields - show the display only
-      this.displayedColumns.next(['avatar', 'display']);
+      // In other layouts show the specific columns, plus the avatar
+      // As the columns cannot be dynamically defined, we define up to
+      // 5 columns, named field0, field1, ...
+      const fields: string[] = [];
+      fields.push('avatar');
+      fields.push('name');
+      fields.push('owner');
+      for (let i = 0; i < this.fieldsInList.length; i++) {
+        fields.push('field' + i);
+      }
+      fields.push('price');
+      this.displayedColumns.next(fields);
     }
   }
 
@@ -222,22 +158,46 @@ export class UsersResultsComponent extends BaseComponent {
   }
 
   adjustMap() {
-    if (this.resultType.value !== ResultType.MAP) {
-      return;
-    }
     const mapData = this.maps.data;
     const rows = this.dataSource.data.value;
     if (mapData != null && mapData.defaultLocation == null) {
       // Only fit the map to locations if there's no default location
-      this.mapFitBounds.next(rows == null ? null : fitBounds(rows.map(row => this.address(row))));
+      this.mapFitBounds.next(rows == null ? null : fitBounds(rows.map(row => row.address)));
     }
     if (rows != null && this.mapReady) {
       this.notifyLoad();
     }
+
   }
 
   notifyLoad() {
     this.load.emit(null);
+  }
+
+
+  /**
+   * Returns the route components for the given ad
+   * @param ad The advertisement
+   */
+  path(ad: AdResult): string[] {
+    return ['/marketplace', 'view', ad.id];
+  }
+
+  /**
+   * Returns the currency for the given ad
+   * @param ad The advertisement
+   */
+  lookupCurrency(ad: AdResult): Currency {
+    const currencies = this.data.currencies;
+    return currencies.find(c => c.internalName === ad.currency || c.id === ad.currency);
+  }
+
+  /**
+   * Returns the number of decimals for the given ad's price
+   * @param ad The advertisement
+   */
+  decimals(ad: AdResult): number {
+    return (this.lookupCurrency(ad) || {}).decimalDigits || 0;
   }
 
 }

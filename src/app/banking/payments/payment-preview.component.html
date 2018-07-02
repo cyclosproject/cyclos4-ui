@@ -1,5 +1,6 @@
 <div class="form-info">{{ preview.pendingAuthorization ? messages.paymentPreviewAuthMessage() : messages.paymentPreviewMessage()
-  }}</div>
+  }}
+</div>
 
 <label-value [label]="messages.transactionFrom()">
   <user-link [account]="preview.fromAccount"></user-link>
@@ -37,7 +38,7 @@
   [fieldValue]="fv">
 </custom-field-value>
 <label-value *ngIf="hasDescription"
-  [label]="messages.transactionDescription()"
+  [label]="messages.description()"
   [value]="preview.payment.description"
   valueType="break">
 </label-value>

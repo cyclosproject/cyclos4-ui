@@ -20,10 +20,12 @@
   </page-filters>
   <page-content>
     <ng-container *ngIf="loaded | async">
-      <users-results *ngIf="(dataSource.data | async).length > 0"
-        resultKind="contact"
-        [ngClass]="{hidden: (renderingResults | async)}"
+      <users-results resultKind="contact"
+        [ngClass]="{
+          hidden: (renderingResults | async) || (dataSource.data | async)?.length === 0
+        }"
         fxFlex="grow"
+        fxLayout="column"
         [rendering]="renderingResults | async"
         [dataSource]="dataSource"
         [query]="query"
@@ -31,8 +33,8 @@
         [resultType]="resultType"
         (update)="update()"
         (load)="renderingResults.next(false)"></users-results>
-      <div *ngIf="(dataSource.data | async).length === 0
-        && !(renderingResults | async)"
+      <div *ngIf="(dataSource.data | async) != null
+        && dataSource.data.value?.length === 0"
         class="no-results">{{ messages.searchNoResults() }}</div>
       <spinner *ngIf="(renderingResults | async)"></spinner>
     </ng-container>

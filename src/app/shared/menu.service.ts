@@ -221,6 +221,7 @@ export class MenuService {
     } else {
       const banking = permissions.banking || {};
       const users = permissions.users || {};
+      const marketplace = permissions.marketplace || {};
       const accounts = banking.accounts || [];
 
       // Banking
@@ -248,13 +249,13 @@ export class MenuService {
       }
 
       // Marketplace
-      /*
-      add(Menu.SEARCH_MARKETPLACE, '/marketplace/search', 'shopping_cart',
-        this.messages.menuMarketplaceAdvertisements());
-      */
       if (users.search || users.map) {
         add(Menu.SEARCH_USERS, '/users/search', 'group',
           this.messages.menuMarketplaceUsers());
+      }
+      if (marketplace.search) {
+        add(Menu.SEARCH_ADVERTISEMENTS, '/marketplace/search', 'shopping_cart',
+          this.messages.menuMarketplaceAdvertisements());
       }
 
       const myProfile = permissions.myProfile;

@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy, Injector } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy, Injector, EventEmitter, Output, AfterContentInit } from '@angular/core';
 import { BaseComponent } from 'app/shared/base.component';
 import { fromEvent } from 'rxjs';
 
@@ -13,7 +13,7 @@ export type TilesPerRow = 1 | 2 | 3 | 4 | 'auto';
   styleUrls: ['tiled-results.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TiledResultsComponent extends BaseComponent {
+export class TiledResultsComponent extends BaseComponent implements AfterContentInit {
   constructor(injector: Injector) {
     super(injector);
   }
@@ -27,6 +27,8 @@ export class TiledResultsComponent extends BaseComponent {
    * When set, tiles will have a fixed width instead of by number of tiles
    */
   @Input() tileWidth: number;
+
+  @Output() rendered = new EventEmitter<null>();
 
   @Input() get tilesPerRow(): TilesPerRow {
     return this._tilesPerRow;
@@ -57,5 +59,9 @@ export class TiledResultsComponent extends BaseComponent {
     } else {
       this.actualTiles = this._tilesPerRow;
     }
+  }
+
+  ngAfterContentInit() {
+    this.rendered.next(null);
   }
 }

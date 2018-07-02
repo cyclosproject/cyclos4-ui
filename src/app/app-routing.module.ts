@@ -57,12 +57,16 @@ const rootRoutes: Routes = [
     }
   },
   {
+    path: 'banking',
+    loadChildren: 'app/banking/banking.module#BankingModule'
+  },
+  {
     path: 'users',
     loadChildren: 'app/users/users.module#UsersModule'
   },
   {
-    path: 'banking',
-    loadChildren: 'app/banking/banking.module#BankingModule'
+    path: 'marketplace',
+    loadChildren: 'app/marketplace/marketplace.module#MarketplaceModule'
   },
   {
     path: 'personal',

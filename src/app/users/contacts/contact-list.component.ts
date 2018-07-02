@@ -7,9 +7,8 @@ import { ApiHelper } from 'app/shared/api-helper';
 import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { tap } from 'rxjs/operators';
 import { debounceTime } from 'rxjs/operators';
-import { UsersService, ContactsService } from 'app/api/services';
+import { ContactsService } from 'app/api/services';
 import { ContactListDataForSearch, ContactResult } from 'app/api/models';
-import { UserResult } from 'app/api/models/user-result';
 import { ResultType } from 'app/shared/result-type';
 
 /**
@@ -30,7 +29,7 @@ export class ContactListComponent extends BaseComponent {
   resultType: FormControl;
 
   query: any;
-  dataSource = new TableDataSource<ContactResult>();
+  dataSource = new TableDataSource<ContactResult>(null);
   loaded = new BehaviorSubject(false);
 
   // Export enum to the template
@@ -91,6 +90,7 @@ export class ContactListComponent extends BaseComponent {
     }
 
     // Update the results
+    this.dataSource.next(null);
     const results = this.contactsService.searchContactListResponse(this.query).pipe(
       tap(response => {
         this.loaded.next(true);

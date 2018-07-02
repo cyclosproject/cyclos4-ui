@@ -5,8 +5,8 @@ import { FormatService } from 'app/core/format.service';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
 import { LoginService } from 'app/core/login.service';
 import { NotificationService } from 'app/core/notification.service';
-import { ObservableMedia } from '@angular/flex-layout';
-import { Subscription } from 'rxjs';
+import { ObservableMedia, MediaChange } from '@angular/flex-layout';
+import { Subscription, Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StateManager } from '../core/state-manager';
 import { BreadcrumbService } from '../core/breadcrumb.service';
@@ -31,8 +31,9 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
   router: Router;
   route: ActivatedRoute;
 
-  protected changeDetector: ChangeDetectorRef;
   protected media: ObservableMedia;
+  public media$: Observable<MediaChange>;
+  protected changeDetector: ChangeDetectorRef;
 
   protected subscriptions: Subscription[] = [];
 
@@ -52,6 +53,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
 
     this.changeDetector = injector.get(ChangeDetectorRef);
     this.media = injector.get(ObservableMedia);
+    this.media$ = this.media.asObservable();
   }
 
   ngOnInit() {
