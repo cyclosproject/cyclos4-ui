@@ -6,7 +6,8 @@
   fxLayoutAlign.xs="center stretch">
   <ad-category *ngFor="let category of data.categories; let last = last"
     [category]="category"
-    [tileWidth]="196"></ad-category>
+    [tileWidth]="196"
+    (selection)="categorySelected.emit($event)"></ad-category>
   <div class="empty"
     fxHide.xs
     *ngFor="let i of [0, 1, 2, 3, 4, 5, 6, 7]"></div>

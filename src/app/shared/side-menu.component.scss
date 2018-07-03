@@ -41,6 +41,9 @@ a.account, :host ::ng-deep menu-item a {
 }
 :host ::ng-deep menu-item a.active, a.active {
   opacity: 1;
+  .mat-icon {
+    opacity: 1 !important;
+  }
 }
 :host ::ng-deep a:not(.active) .mat-icon {
   opacity: 0.60 !important;

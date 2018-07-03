@@ -353,5 +353,6 @@
   "ad.price": "Price",
   "ad.owner": "Owner",
   "ad.category": "Category",
-  "ad.categories": "Categories"
+  "ad.categories": "Categories",
+  "ad.category.showAll": "Show all"
 }

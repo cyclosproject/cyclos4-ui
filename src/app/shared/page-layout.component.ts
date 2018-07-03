@@ -35,6 +35,15 @@ export class PageLayoutComponent extends BaseComponent implements AfterViewInit,
 
   @Input() filtersForm: FormGroup;
 
+  private _showFiltersVisible = true;
+  @Input() get showFiltersVisible(): boolean {
+    return this._showFiltersVisible;
+  }
+  set showFiltersVisible(visible: boolean) {
+    this._showFiltersVisible = visible;
+    this.hideFilters();
+  }
+
   private initialFormState: any;
 
   @Input() tightContent = false;

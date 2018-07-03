@@ -49,6 +49,7 @@
               #pageTitle
               [pageLayout]="this"
               [title]="title"
+              [showFiltersVisible]="showFiltersVisible"
               [actions]="titleActions"></page-title>
             <div #headerWrapper
               class="header-wrapper">
@@ -71,6 +72,7 @@
               <page-title *ngIf="!hasHeader && title != null && title.length > 0"
                 [pageLayout]="this"
                 [title]="title"
+                [showFiltersVisible]="showFiltersVisible"
                 [actions]="titleActions"></page-title>
               <div #contentWrapper
                 class="content-wrapper">
@@ -89,6 +91,7 @@
           [noBottomMargin]="true"
           [pageLayout]="this"
           [title]="title"
+          [showFiltersVisible]="showFiltersVisible"
           [actions]="titleActions"></page-title>
         <div [ngClass]="{
           'inline-header': true,

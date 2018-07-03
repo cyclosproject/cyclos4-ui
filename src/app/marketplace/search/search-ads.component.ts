@@ -8,7 +8,7 @@ import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { tap } from 'rxjs/operators';
 import { debounceTime } from 'rxjs/operators';
 import { MarketplaceService } from 'app/api/services';
-import { AdResult, AdAddressResultEnum } from 'app/api/models';
+import { AdResult, AdAddressResultEnum, AdCategoryWithChildren } from 'app/api/models';
 import { ResultType } from 'app/shared/result-type';
 import { AdDataForSearch } from 'app/api/models/ad-data-for-search';
 import { AdsResultsComponent } from 'app/marketplace/search/ads-results.component';
@@ -40,6 +40,7 @@ export class SearchAdsComponent extends BaseComponent {
   loaded = new BehaviorSubject(false);
 
   previousResultType: ResultType = ResultType.CATEGORIES;
+  showFiltersVisible = new BehaviorSubject(false);
 
   @ViewChild('results') results: AdsResultsComponent;
 
@@ -84,6 +85,12 @@ export class SearchAdsComponent extends BaseComponent {
       });
   }
 
+  selectCategory(category: AdCategoryWithChildren) {
+    this.query.category = ApiHelper.internalNameOrId(category);
+    this.resultType.setValue(ResultType.TILES);
+    this.update();
+  }
+
   update(value?: any) {
     if (value == null) {
       value = this.form.value;
@@ -107,8 +114,11 @@ export class SearchAdsComponent extends BaseComponent {
   }
 
   private updateResultType(resultType: ResultType, force = false) {
-    if (resultType === ResultType.CATEGORIES) {
+    const isCategories = resultType === ResultType.CATEGORIES;
+    this.showFiltersVisible.next(!isCategories);
+    if (isCategories) {
       // When showing categories, we do no ads search
+      this.query.category = null;
       this.dataSource.next([]);
       this.renderingResults.next(false);
     } else {

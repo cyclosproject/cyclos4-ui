@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Injector, Input, EventEmitter, Output } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { AdDataForSearch, AdResult, Currency } from 'app/api/models';
+import { AdDataForSearch, AdResult, Currency, AdCategoryWithChildren } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
 import { FormControl } from '@angular/forms';
 import { ResultType } from 'app/shared/result-type';
@@ -43,6 +43,8 @@ export class AdsResultsComponent extends BaseComponent {
   @Output() update = new EventEmitter<null>();
 
   @Output() load = new EventEmitter<null>();
+
+  @Output() categorySelected = new EventEmitter<AdCategoryWithChildren>();
 
   mapFitBounds = new BehaviorSubject<LatLngBounds>(null);
 

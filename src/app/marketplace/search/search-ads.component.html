@@ -2,6 +2,7 @@
   [hasHeader]="true"
   [loaded]="loaded"
   [filtersForm]="form"
+  [showFiltersVisible]="showFiltersVisible | async"
   [tightContent]="true"
   [invisibleContent]="resultType.value === ResultType.CATEGORIES || !(dataSource.empty | async) && resultType.value === ResultType.TILES">
   <page-header>
@@ -32,7 +33,8 @@
         [data]="data"
         [resultType]="resultType.valueChanges | async"
         (update)="update()"
-        (load)="renderingResults.next(false)"></ads-results>
+        (load)="renderingResults.next(false)"
+        (categorySelected)="selectCategory($event)"></ads-results>
       <div *ngIf="(dataSource.data | async)?.length === 0
         && resultType.value !== ResultType.CATEGORIES"
         class="no-results">{{ messages.searchNoResults() }}</div>

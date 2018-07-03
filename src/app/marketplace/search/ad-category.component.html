@@ -6,20 +6,31 @@
     <div class="title"
       fxLayout="row"
       fxLayoutAlign="center center">
-      <avatar [image]="image"
-        [icon]="icon"
-        size="small"></avatar>
-      <span class="title-text"
-        fxFlex="grow">
-        {{ category.name }}
-      </span>
-    </div>
-    <div *ngFor="let child of category.children; let index = index">
-      <a class="sub-category"
+      <div class="avatar-container">
+        <avatar [image]="image"
+          [icon]="icon || 'shopping_basket'"
+          size="small"></avatar>
+      </div>
+      <a class="title-text"
         href="#"
-        (click)="$event.preventDefault()">
-        {{ child.name }}
+        (click)="$event.preventDefault(); selection.emit(category)"
+        fxFlex="grow"> {{ category.name }}
       </a>
     </div>
+    <div class="children">
+      <ng-container *ngFor="let child of children">
+        <a class="sub-category"
+          href="#"
+          (click)="$event.preventDefault(); selection.emit(child)">
+          {{ child.name }}
+        </a>
+      </ng-container>
+    </div>
+    <button *ngIf="showShowAll"
+      class="show-all"
+      mat-raised-button
+      (click)="showAll()">
+      {{ messages.adCategoryShowAll() }}
+    </button>
   </mat-card-content>
 </mat-card>

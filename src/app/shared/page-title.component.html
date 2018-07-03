@@ -22,7 +22,7 @@
       {{ action.label }}
     </button>
     <button mat-button
-      *ngIf="pageLayout?.hasFilters"
+      *ngIf="pageLayout?.hasFilters && showFiltersVisible"
       fxFlex="nogrow"
       class="action"
       (click)="toggleFilters()">

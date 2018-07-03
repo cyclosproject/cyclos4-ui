@@ -24,6 +24,8 @@ export class PageTitleComponent {
 
   @Input() title: string;
 
+  @Input() showFiltersVisible = true;
+
   @Input() pageLayout: PageLayoutComponent;
 
   @Input() noBottomMargin: boolean;
