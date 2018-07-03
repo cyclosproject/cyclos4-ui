@@ -1,0 +1,25 @@
+<mat-card [ngStyle]="{
+    width: tileWidth == null || layout.xs ? 'auto' : tileWidth + 'px'
+  }"
+  fxFlex.xs="grow">
+  <mat-card-content>
+    <div class="title"
+      fxLayout="row"
+      fxLayoutAlign="center center">
+      <avatar [image]="image"
+        [icon]="icon"
+        size="small"></avatar>
+      <span class="title-text"
+        fxFlex="grow">
+        {{ category.name }}
+      </span>
+    </div>
+    <div *ngFor="let child of category.children; let index = index">
+      <a class="sub-category"
+        href="#"
+        (click)="$event.preventDefault()">
+        {{ child.name }}
+      </a>
+    </div>
+  </mat-card-content>
+</mat-card>

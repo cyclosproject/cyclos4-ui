@@ -77,6 +77,5 @@ export class TableDataSource<T> extends DataSource<T> {
   }
 
   disconnect(): void {
-    this.unsubscribe();
   }
 }

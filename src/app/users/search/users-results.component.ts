@@ -2,12 +2,11 @@ import { Component, ChangeDetectionStrategy, Injector, Input, EventEmitter, Outp
 import { BehaviorSubject } from 'rxjs';
 import { User, UserDataForSearch, ContactListDataForSearch, ContactResult, UserResult, Address, UserDataForMap } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
-import { FormControl } from '@angular/forms';
 import { ResultType } from 'app/shared/result-type';
 import { TableDataSource } from 'app/shared/table-datasource';
 import { MapsService } from 'app/core/maps.service';
 import { LatLngBounds } from '@agm/core';
-import { fitBounds, empty } from 'app/shared/helper';
+import { fitBounds } from 'app/shared/helper';
 
 const MAX_COLUMNS = 7;
 const MAX_TILE_FIELDS = 2;
@@ -40,7 +39,7 @@ export class UsersResultsComponent extends BaseComponent {
 
   @Input() data: UserDataForSearch | UserDataForMap | ContactListDataForSearch;
 
-  @Input() resultType: FormControl;
+  @Input() resultType: ResultType;
 
   @Output() update = new EventEmitter<null>();
 
@@ -222,7 +221,7 @@ export class UsersResultsComponent extends BaseComponent {
   }
 
   adjustMap() {
-    if (this.resultType.value !== ResultType.MAP) {
+    if (this.resultType !== ResultType.MAP) {
       return;
     }
     const mapData = this.maps.data;

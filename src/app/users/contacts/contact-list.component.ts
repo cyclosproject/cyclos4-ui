@@ -48,7 +48,6 @@ export class ContactListComponent extends BaseComponent {
     });
     this.resultType = formBuilder.control(ResultType.TILES);
     this.resultType.valueChanges.subscribe(() => this.renderingResults.next(true));
-    this.form.setControl('resultType', this.resultType);
 
     this.stateManager.manage(this.form);
     this.subscriptions.push(this.form.valueChanges.pipe(

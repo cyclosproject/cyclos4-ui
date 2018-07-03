@@ -66,6 +66,8 @@ export class ResultTypeFieldComponent extends BaseControlComponent<ResultType> {
 
   icon(resultType: ResultType): string {
     switch (resultType) {
+      case ResultType.CATEGORIES:
+        return 'view_column';
       case ResultType.TILES:
         return 'view_module';
       case ResultType.LIST:

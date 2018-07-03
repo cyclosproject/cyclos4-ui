@@ -38,7 +38,7 @@ export class AdsResultsComponent extends BaseComponent {
 
   @Input() data: AdDataForSearch;
 
-  @Input() resultType: FormControl;
+  @Input() resultType: ResultType;
 
   @Output() update = new EventEmitter<null>();
 
@@ -158,6 +158,9 @@ export class AdsResultsComponent extends BaseComponent {
   }
 
   adjustMap() {
+    if (this.resultType !== ResultType.MAP) {
+      return;
+    }
     const mapData = this.maps.data;
     const rows = this.dataSource.data.value;
     if (mapData != null && mapData.defaultLocation == null) {
@@ -167,7 +170,6 @@ export class AdsResultsComponent extends BaseComponent {
     if (rows != null && this.mapReady) {
       this.notifyLoad();
     }
-
   }
 
   notifyLoad() {

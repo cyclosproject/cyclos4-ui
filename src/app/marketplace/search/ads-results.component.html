@@ -1,4 +1,18 @@
-<table *ngIf="resultType.value == ResultType.LIST"
+<div class="categories"
+  *ngIf="resultType == null || resultType == ResultType.CATEGORIES"
+  fxLayout="row wrap"
+  fxLayout.xs="column"
+  fxLayoutAlign="space-between start"
+  fxLayoutAlign.xs="center stretch">
+  <ad-category *ngFor="let category of data.categories; let last = last"
+    [category]="category"
+    [tileWidth]="196"></ad-category>
+  <div class="empty"
+    fxHide.xs
+    *ngFor="let i of [0, 1, 2, 3, 4, 5, 6, 7]"></div>
+</div>
+
+<table *ngIf="resultType == ResultType.LIST"
   mat-table
   #table
   [dataSource]="dataSource">
@@ -180,7 +194,7 @@
 
 <tiled-results [standalone]="true"
   [tileWidth]="196"
-  *ngIf="resultType.value === ResultType.TILES"
+  *ngIf="resultType === ResultType.TILES"
   (rendered)="notifyLoad()">
   <ng-container *ngFor="let ad of dataSource.data.value; let last = last;">
     <tiled-result [image]="ad.image"
@@ -207,7 +221,7 @@
   </ng-container>
 </tiled-results>
 
-<agm-map *ngIf="resultType.value === ResultType.MAP"
+<agm-map *ngIf="resultType === ResultType.MAP"
   fxFlex="grow"
   [zoom]="layout.xs ? maps.data?.defaultZoomMobile : maps.data?.defaultZoom"
   [fitBounds]="mapFitBounds | async"
@@ -215,7 +229,7 @@
   [longitude]="maps.data?.defaultLocation?.longitude"
   [fullscreenControl]="true"
   maxZoom="17"
-  (mapReady)="adjustMap(); notifyLoad()">
+  (mapReady)="mapReady = true; adjustMap();">
   <ng-container *ngFor="let ad of dataSource.data | async">
     <agm-marker *ngIf="ad.address as addr"
       [latitude]="addr.location.latitude"
@@ -257,7 +271,7 @@
   </ng-container>
 </agm-map>
 
-<paginator *ngIf="resultType.value !== ResultType.MAP"
+<paginator *ngIf="resultType === ResultType.LIST || resultType === ResultType.TILES"
   (update)="triggerUpdate()"
   [query]="query"
   [dataSource]="dataSource"></paginator>

@@ -3,7 +3,7 @@
   [loaded]="loaded"
   [filtersForm]="form"
   [tightContent]="true"
-  [invisibleContent]="!(dataSource.empty | async) && resultType.value === ResultType.TILES">
+  [invisibleContent]="resultType.value === ResultType.CATEGORIES || !(dataSource.empty | async) && resultType.value === ResultType.TILES">
   <page-header>
     <result-type-field [formControl]="resultType"
       [allowedResultTypes]="resultTypes"></result-type-field>
@@ -22,7 +22,7 @@
   <page-content>
     <ng-container *ngIf="loaded | async">
       <ads-results [ngClass]="{
-          hidden: (renderingResults | async) || (dataSource.data | async)?.length === 0
+          hidden: resultType.value !== ResultType.CATEGORIES && ((renderingResults | async) || (dataSource.data | async)?.length === 0)
         }"
         fxFlex="grow"
         fxLayout="column"
@@ -30,10 +30,11 @@
         [rendering]="renderingResults | async"
         [query]="query"
         [data]="data"
-        [resultType]="resultType"
+        [resultType]="resultType.valueChanges | async"
         (update)="update()"
         (load)="renderingResults.next(false)"></ads-results>
-      <div *ngIf="(dataSource.data | async)?.length === 0"
+      <div *ngIf="(dataSource.data | async)?.length === 0
+        && resultType.value !== ResultType.CATEGORIES"
         class="no-results">{{ messages.searchNoResults() }}</div>
       <spinner *ngIf="renderingResults | async"></spinner>
     </ng-container>

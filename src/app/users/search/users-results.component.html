@@ -1,4 +1,4 @@
-<table *ngIf="resultType.value == ResultType.LIST"
+<table *ngIf="resultType == ResultType.LIST"
   mat-table
   #table
   [dataSource]="dataSource">
@@ -171,7 +171,7 @@
     *matFooterRowDef>{{ notifyLoad() || '' }}</tr>
 </table>
 
-<tiled-results *ngIf="resultType.value === ResultType.TILES"
+<tiled-results *ngIf="resultType === ResultType.TILES"
   [standalone]="true"
   [tileWidth]="196"
   (rendered)="notifyLoad()">
@@ -200,7 +200,7 @@
   </ng-container>
 </tiled-results>
 
-<agm-map *ngIf="resultType.value === ResultType.MAP"
+<agm-map *ngIf="resultType === ResultType.MAP"
   fxFlex="grow"
   [zoom]="layout.xs ? maps.data?.defaultZoomMobile : maps.data?.defaultZoom"
   [fitBounds]="mapFitBounds | async"
@@ -245,7 +245,7 @@
   </ng-container>
 </agm-map>
 
-<paginator *ngIf="resultType.value !== ResultType.MAP"
+<paginator *ngIf="resultType !== ResultType.MAP"
   (update)="triggerUpdate()"
   [query]="query"
   [dataSource]="dataSource"></paginator>

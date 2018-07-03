@@ -12,6 +12,7 @@
 @import 'src/app/shared/image-viewer.component-theme';
 @import 'src/app/login/login.component-theme';
 @import 'src/app/banking/accounts/account-history.component-theme';
+@import 'src/app/marketplace/search/ads-results.component-theme';
 
 // Include all component themes
 @mixin cyclos-theme($theme) {
@@ -39,6 +40,7 @@
   @include image-viewer-component-theme($theme);
   @include login-component-theme($theme);
   @include account-history-component-theme($theme);
+  @include ads-results-component-theme($theme);
 
   /******* Global definitions that depend on colors *******/
 

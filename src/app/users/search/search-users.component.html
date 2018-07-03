@@ -22,7 +22,7 @@
     </form>
   </page-filters>
   <page-content>
-    <ng-container *ngIf="loaded | async">
+    <ng-container *ngIf="data | async">
       <users-results [ngClass]="{
           hidden: (renderingResults | async) || (dataSource.data | async)?.length === 0
         }"
@@ -32,7 +32,7 @@
         [rendering]="renderingResults | async"
         [query]="query"
         [data]="data | async"
-        [resultType]="resultType"
+        [resultType]="(resultType.valueChanges | async) || previousResultType"
         (update)="update()"
         (load)="renderingResults.next(false)"></users-results>
       <div *ngIf="(dataSource.data | async) != null

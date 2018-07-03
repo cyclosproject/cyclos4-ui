@@ -30,7 +30,7 @@
         [dataSource]="dataSource"
         [query]="query"
         [data]="data"
-        [resultType]="resultType"
+        [resultType]="(resultType.valueChanges | async) || ResultType.TILES"
         (update)="update()"
         (load)="renderingResults.next(false)"></users-results>
       <div *ngIf="(dataSource.data | async) != null

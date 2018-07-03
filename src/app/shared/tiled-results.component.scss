@@ -10,12 +10,22 @@
 :host ::ng-deep .tiled-results.tiles-4 tiled-result {
   width: calc(25% - 8px);
 }
-:host ::ng-deep tiled-result .mat-card {
+.gt-xs :host ::ng-deep tiled-result .mat-card {
   min-width: 64px !important;
   min-height: 64px !important;
+  margin: 0 6px 12px 0;
+}
+.xs :host ::ng-deep .mat-card {
   margin: 0 0 12px 0;
 }
 
 .xs :host .tiled-results {
   padding: 8px;
+}
+
+.empty {
+  height: 0;
+  width: 0;
+  margin: 0;
+  padding: 0;
 }

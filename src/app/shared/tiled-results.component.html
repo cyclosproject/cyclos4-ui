@@ -7,6 +7,10 @@
     'tiles-4': layout.gtxs && actualTiles === 4
   }"
   fxLayout="row wrap"
-  fxLayoutAlign="space-between start">
+  fxLayout.xs="column"
+  fxLayoutAlign="space-between start"
+  fxLayoutAlign.xs="center stretch">
   <ng-content></ng-content>
+  <div class="empty"
+    *ngFor="let i of [0, 1, 2, 3, 4, 5, 6, 7]"></div>
 </div>

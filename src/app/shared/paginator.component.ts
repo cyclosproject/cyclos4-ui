@@ -44,11 +44,14 @@ export class PaginatorComponent<T> extends BaseComponent {
 
   private initialized = false;
 
+  private lastPage: PageData;
+
   ngOnInit() {
     super.ngOnInit();
     this.subscriptions.push(this.dataSource.pagination.subscribe(pagination => {
       if (pagination) {
         if (!this.initialized) {
+          this.lastPage = pagination;
           this.form.setValue({
             page: pagination.page,
             pageSize: pagination.pageSize
@@ -111,11 +114,13 @@ export class PaginatorComponent<T> extends BaseComponent {
   }
 
   private doUpdate(data: PageData) {
-    if (this.query) {
+    const changed = this.lastPage == null || data == null || data.page !== this.lastPage.page || data.pageSize !== this.lastPage.pageSize;
+    if (changed && this.query) {
       this.query.page = data.page;
       this.query.pageSize = data.pageSize;
       this.update.emit();
     }
+    this.lastPage = data;
   }
 
 }

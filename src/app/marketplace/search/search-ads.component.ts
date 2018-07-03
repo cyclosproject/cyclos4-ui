@@ -30,7 +30,7 @@ export class SearchAdsComponent extends BaseComponent {
 
   renderingResults = new BehaviorSubject(true);
 
-  resultTypes = [ResultType.TILES, ResultType.LIST, ResultType.MAP];
+  resultTypes = [ResultType.CATEGORIES, ResultType.TILES, ResultType.LIST, ResultType.MAP];
 
   form: FormGroup;
   resultType: FormControl;
@@ -39,7 +39,7 @@ export class SearchAdsComponent extends BaseComponent {
   dataSource = new TableDataSource<AdResult>(null);
   loaded = new BehaviorSubject(false);
 
-  previousResultType: ResultType = ResultType.TILES;
+  previousResultType: ResultType = ResultType.CATEGORIES;
 
   @ViewChild('results') results: AdsResultsComponent;
 
@@ -55,7 +55,6 @@ export class SearchAdsComponent extends BaseComponent {
     });
     this.resultType = formBuilder.control(this.previousResultType);
     this.resultType.valueChanges.subscribe(rt => this.updateResultType(rt));
-    this.form.setControl('resultType', this.resultType);
 
     this.stateManager.manage(this.form);
     this.subscriptions.push(this.form.valueChanges.pipe(
@@ -108,18 +107,24 @@ export class SearchAdsComponent extends BaseComponent {
   }
 
   private updateResultType(resultType: ResultType, force = false) {
-    this.renderingResults.next(true);
-    this.dataSource.next(null);
-    const isMap = resultType === ResultType.MAP;
-    const wasMap = this.previousResultType === ResultType.MAP;
-    if (isMap !== wasMap || force) {
-      if (this.query) {
-        // When changing between map / no-map, reset the page
-        this.query.page = 0;
-        this.query.pageSize = null;
+    if (resultType === ResultType.CATEGORIES) {
+      // When showing categories, we do no ads search
+      this.dataSource.next([]);
+      this.renderingResults.next(false);
+    } else {
+      const isResults = resultType === ResultType.TILES || resultType === ResultType.LIST;
+      const isMap = resultType === ResultType.MAP;
+      const wasResults = this.previousResultType === ResultType.TILES || this.previousResultType === ResultType.LIST;
+      if (force || isResults !== wasResults || isMap) {
+        if (this.query) {
+          this.query.page = 0;
+          this.query.pageSize = null;
+        }
+        this.renderingResults.next(true);
+        this.dataSource.next(null);
+        this.query.addressResult = isMap ? AdAddressResultEnum.ALL : AdAddressResultEnum.NONE;
+        this.update();
       }
-      this.query.addressResult = isMap ? AdAddressResultEnum.ALL : AdAddressResultEnum.NONE;
-      this.update();
     }
     this.previousResultType = resultType;
   }

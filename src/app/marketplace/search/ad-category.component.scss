@@ -1,0 +1,18 @@
+.title {
+  margin-bottom: 4px;
+}
+.title-text {
+  font-weight: 500;
+}
+:host ::ng-deep .title .mat-icon {
+  opacity: 1 !important;
+  margin: 8px;
+}
+.sub-category {
+  display: block;
+  width: 100%;
+  padding: 2px 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

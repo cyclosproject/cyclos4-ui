@@ -3675,10 +3675,10 @@
         }, {
           "name" : "customFieldKind",
           "in" : "query",
-          "description" : "If a custom field is given then its kind must be given too to allow find it. Possible values are:\n* ad: Advertisements field.\n* contact: Contact fields.\n* contactInfo: Additional contact information fields.\n* custom_operation: Custom operation fields.\n* document: Document fields.\n* record: Record fields.\n* transaction: Transaction fields.\n* user: User profile fields.\n",
+          "description" : "If a custom field is given then its kind must be given too to allow find it. Possible values are:\n* contact: Contact fields.\n* contactInfo: Additional contact information fields.\n* custom_operation: Custom operation fields.\n* document: Document fields.\n* marketplace: Advertisements field.\n* record: Record fields.\n* transaction: Transaction fields.\n* user: User profile fields.\n",
           "required" : false,
           "type" : "string",
-          "enum" : [ "ad", "contact", "contactInfo", "custom_operation", "document", "record", "transaction", "user" ],
+          "enum" : [ "contact", "contactInfo", "custom_operation", "document", "marketplace", "record", "transaction", "user" ],
           "x-type" : "CustomFieldKind"
         }, {
           "name" : "file",
@@ -4262,10 +4262,10 @@
         }, {
           "name" : "customFieldKind",
           "in" : "query",
-          "description" : "If a custom field is given then its kind must be given too to allow find it. Possible values are:\n* ad: Advertisements field.\n* contact: Contact fields.\n* contactInfo: Additional contact information fields.\n* custom_operation: Custom operation fields.\n* document: Document fields.\n* record: Record fields.\n* transaction: Transaction fields.\n* user: User profile fields.\n",
+          "description" : "If a custom field is given then its kind must be given too to allow find it. Possible values are:\n* contact: Contact fields.\n* contactInfo: Additional contact information fields.\n* custom_operation: Custom operation fields.\n* document: Document fields.\n* marketplace: Advertisements field.\n* record: Record fields.\n* transaction: Transaction fields.\n* user: User profile fields.\n",
           "required" : false,
           "type" : "string",
-          "enum" : [ "ad", "contact", "contactInfo", "custom_operation", "document", "record", "transaction", "user" ],
+          "enum" : [ "contact", "contactInfo", "custom_operation", "document", "marketplace", "record", "transaction", "user" ],
           "x-type" : "CustomFieldKind"
         }, {
           "name" : "image",
@@ -4497,10 +4497,10 @@
         "parameters" : [ {
           "name" : "kind",
           "in" : "path",
-          "description" : "Determines the kind of an image Possible values are:\n* ad: Advertisement images are associated with an advertisement, be it simple or for web shop.\n* adCategory: An image of an advertisement (simple or webshop)\n* contactInfo: An image of an additional contact information\n* customFieldValue: An image used as custom field value\n* profile: User profile images are those associated with the user profile. The first profile image is used to depict the user on search results.\n* systemCustom: System custom images are additional images an administrator that can be used on rich text contents.\n* temp: A temporary image which can upload for later associating with an entity being registered (for example, user or advertisement).\n* userCustom: User custom images are additional images that can be used on rich text contents.\n* voucherType: An image of a voucher type\n",
+          "description" : "Determines the kind of an image Possible values are:\n* contactInfo: An image of an additional contact information\n* customFieldValue: An image used as custom field value\n* marketplace: Advertisement images are associated with an advertisement, be it simple or for web shop.\n* marketplaceCategory: An image of an advertisement (simple or webshop)\n* profile: User profile images are those associated with the user profile. The first profile image is used to depict the user on search results.\n* systemCustom: System custom images are additional images an administrator that can be used on rich text contents.\n* temp: A temporary image which can upload for later associating with an entity being registered (for example, user or advertisement).\n* userCustom: User custom images are additional images that can be used on rich text contents.\n* voucherType: An image of a voucher type\n",
           "required" : true,
           "type" : "string",
-          "enum" : [ "ad", "adCategory", "contactInfo", "customFieldValue", "profile", "systemCustom", "temp", "userCustom", "voucherType" ],
+          "enum" : [ "contactInfo", "customFieldValue", "marketplace", "marketplaceCategory", "profile", "systemCustom", "temp", "userCustom", "voucherType" ],
           "x-type" : "ImageKind"
         }, {
           "name" : "file",
@@ -20796,8 +20796,8 @@
     },
     "CustomFieldKind" : {
       "type" : "string",
-      "description" : "Determines the kind if a custom field Possible values are:\n* ad: Advertisements field.\n* contact: Contact fields.\n* contactInfo: Additional contact information fields.\n* custom_operation: Custom operation fields.\n* document: Document fields.\n* record: Record fields.\n* transaction: Transaction fields.\n* user: User profile fields.\n",
-      "enum" : [ "ad", "contact", "contactInfo", "custom_operation", "document", "record", "transaction", "user" ]
+      "description" : "Determines the kind if a custom field Possible values are:\n* contact: Contact fields.\n* contactInfo: Additional contact information fields.\n* custom_operation: Custom operation fields.\n* document: Document fields.\n* marketplace: Advertisements field.\n* record: Record fields.\n* transaction: Transaction fields.\n* user: User profile fields.\n",
+      "enum" : [ "contact", "contactInfo", "custom_operation", "document", "marketplace", "record", "transaction", "user" ]
     },
     "CustomFieldSizeEnum" : {
       "type" : "string",
@@ -20841,8 +20841,8 @@
     },
     "ForbiddenErrorCode" : {
       "type" : "string",
-      "description" : "Error codes for 403 Forbidden HTTP status.  Possible values are:\n* expiredPassword: The password being used has expired\n* illegalAction: Attempt to perform an action that is not allowed on this context\n* inaccessibleChannel: This channel cannot be accessed by the user \n* indefinitelyBlocked: The password was indefinitely blocked by exceeding the allowed attempts \n* invalidPassword: The password being used is invalid (normally the confirmation password)\n* operatorWithPendingAgreements: The operator cannot access because his owner member has pending agreements\n* pendingAgreements: There is at least one agreement which needs to be accepted in order to access the syste\n* permissionDenied: The operation was denied because a required permission was not granted\n* resetPassword: The password being used was manually reset\n* temporarilyBlocked: The password was temporarily blocked by exceeding the allowed attempts\n",
-      "enum" : [ "expiredPassword", "illegalAction", "inaccessibleChannel", "indefinitelyBlocked", "invalidPassword", "operatorWithPendingAgreements", "pendingAgreements", "permissionDenied", "resetPassword", "temporarilyBlocked" ]
+      "description" : "Error codes for 403 Forbidden HTTP status.  Possible values are:\n* expiredPassword: The password being used has expired\n* illegalAction: Attempt to perform an action that is not allowed on this context\n* inaccessibleChannel: This channel cannot be accessed by the user \n* inaccessiblePrincipal: The used identification method (principal type) cannot be used in this channel\n* indefinitelyBlocked: The password was indefinitely blocked by exceeding the allowed attempts \n* invalidPassword: The password being used is invalid (normally the confirmation password)\n* operatorWithPendingAgreements: The operator cannot access because his owner member has pending agreements\n* pendingAgreements: There is at least one agreement which needs to be accepted in order to access the syste\n* permissionDenied: The operation was denied because a required permission was not granted\n* resetPassword: The password being used was manually reset\n* temporarilyBlocked: The password was temporarily blocked by exceeding the allowed attempts\n",
+      "enum" : [ "expiredPassword", "illegalAction", "inaccessibleChannel", "inaccessiblePrincipal", "indefinitelyBlocked", "invalidPassword", "operatorWithPendingAgreements", "pendingAgreements", "permissionDenied", "resetPassword", "temporarilyBlocked" ]
     },
     "ForgottenPasswordErrorCode" : {
       "type" : "string",
@@ -20861,8 +20861,8 @@
     },
     "ImageKind" : {
       "type" : "string",
-      "description" : "Determines the kind of an image Possible values are:\n* ad: Advertisement images are associated with an advertisement, be it simple or for web shop.\n* adCategory: An image of an advertisement (simple or webshop)\n* contactInfo: An image of an additional contact information\n* customFieldValue: An image used as custom field value\n* profile: User profile images are those associated with the user profile. The first profile image is used to depict the user on search results.\n* systemCustom: System custom images are additional images an administrator that can be used on rich text contents.\n* temp: A temporary image which can upload for later associating with an entity being registered (for example, user or advertisement).\n* userCustom: User custom images are additional images that can be used on rich text contents.\n* voucherType: An image of a voucher type\n",
-      "enum" : [ "ad", "adCategory", "contactInfo", "customFieldValue", "profile", "systemCustom", "temp", "userCustom", "voucherType" ]
+      "description" : "Determines the kind of an image Possible values are:\n* contactInfo: An image of an additional contact information\n* customFieldValue: An image used as custom field value\n* marketplace: Advertisement images are associated with an advertisement, be it simple or for web shop.\n* marketplaceCategory: An image of an advertisement (simple or webshop)\n* profile: User profile images are those associated with the user profile. The first profile image is used to depict the user on search results.\n* systemCustom: System custom images are additional images an administrator that can be used on rich text contents.\n* temp: A temporary image which can upload for later associating with an entity being registered (for example, user or advertisement).\n* userCustom: User custom images are additional images that can be used on rich text contents.\n* voucherType: An image of a voucher type\n",
+      "enum" : [ "contactInfo", "customFieldValue", "marketplace", "marketplaceCategory", "profile", "systemCustom", "temp", "userCustom", "voucherType" ]
     },
     "ImageSizeEnum" : {
       "type" : "string",
@@ -21001,8 +21001,8 @@
     },
     "PosErrorCode" : {
       "type" : "string",
-      "description" : "Application-specific error codes for a POS operation error  Possible values are:\n* payerNotInChannel: The specified payer user does not participate on the POS channel.\n* payerNotOperative: The specified payer has some restriction that renders he/she inoperative for POS operations. An example of such case is when the user has pending agreements.\n* unexpected: An unexpected error has occurred. See the `exceptionType` and `exceptionMessage` fields for the internal information.\n",
-      "enum" : [ "payerNotInChannel", "payerNotOperative", "unexpected" ]
+      "description" : "Application-specific error codes for a POS operation error  Possible values are:\n* payerInaccessiblePrincipal: The specified payer cannot use the given identification method (principal type) in the POS channel.\n* payerNotInChannel: The specified payer user does not participate on the POS channel.\n* payerNotOperative: The specified payer has some restriction that renders he/she inoperative for POS operations. An example of such case is when the user has pending agreements.\n* unexpected: An unexpected error has occurred. See the `exceptionType` and `exceptionMessage` fields for the internal information.\n",
+      "enum" : [ "payerInaccessiblePrincipal", "payerNotInChannel", "payerNotOperative", "unexpected" ]
     },
     "PrincipalTypeKind" : {
       "type" : "string",
@@ -24087,7 +24087,7 @@
             "$ref" : "#/definitions/CustomFieldControlEnum"
           },
           "kind" : {
-            "description" : "Determines the kind if a custom field Possible values are:\n* ad: Advertisements field.\n* contact: Contact fields.\n* contactInfo: Additional contact information fields.\n* custom_operation: Custom operation fields.\n* document: Document fields.\n* record: Record fields.\n* transaction: Transaction fields.\n* user: User profile fields.\n",
+            "description" : "Determines the kind if a custom field Possible values are:\n* contact: Contact fields.\n* contactInfo: Additional contact information fields.\n* custom_operation: Custom operation fields.\n* document: Document fields.\n* marketplace: Advertisements field.\n* record: Record fields.\n* transaction: Transaction fields.\n* user: User profile fields.\n",
             "$ref" : "#/definitions/CustomFieldKind"
           },
           "decimalDigits" : {
@@ -24818,7 +24818,7 @@
       "type" : "object",
       "properties" : {
         "code" : {
-          "description" : "Error codes for 403 Forbidden HTTP status.  Possible values are:\n* expiredPassword: The password being used has expired\n* illegalAction: Attempt to perform an action that is not allowed on this context\n* inaccessibleChannel: This channel cannot be accessed by the user \n* indefinitelyBlocked: The password was indefinitely blocked by exceeding the allowed attempts \n* invalidPassword: The password being used is invalid (normally the confirmation password)\n* operatorWithPendingAgreements: The operator cannot access because his owner member has pending agreements\n* pendingAgreements: There is at least one agreement which needs to be accepted in order to access the syste\n* permissionDenied: The operation was denied because a required permission was not granted\n* resetPassword: The password being used was manually reset\n* temporarilyBlocked: The password was temporarily blocked by exceeding the allowed attempts\n",
+          "description" : "Error codes for 403 Forbidden HTTP status.  Possible values are:\n* expiredPassword: The password being used has expired\n* illegalAction: Attempt to perform an action that is not allowed on this context\n* inaccessibleChannel: This channel cannot be accessed by the user \n* inaccessiblePrincipal: The used identification method (principal type) cannot be used in this channel\n* indefinitelyBlocked: The password was indefinitely blocked by exceeding the allowed attempts \n* invalidPassword: The password being used is invalid (normally the confirmation password)\n* operatorWithPendingAgreements: The operator cannot access because his owner member has pending agreements\n* pendingAgreements: There is at least one agreement which needs to be accepted in order to access the syste\n* permissionDenied: The operation was denied because a required permission was not granted\n* resetPassword: The password being used was manually reset\n* temporarilyBlocked: The password was temporarily blocked by exceeding the allowed attempts\n",
           "$ref" : "#/definitions/ForbiddenErrorCode"
         },
         "passwordType" : {
@@ -25232,7 +25232,7 @@
         "type" : "object",
         "properties" : {
           "kind" : {
-            "description" : "Determines the kind of an image Possible values are:\n* ad: Advertisement images are associated with an advertisement, be it simple or for web shop.\n* adCategory: An image of an advertisement (simple or webshop)\n* contactInfo: An image of an additional contact information\n* customFieldValue: An image used as custom field value\n* profile: User profile images are those associated with the user profile. The first profile image is used to depict the user on search results.\n* systemCustom: System custom images are additional images an administrator that can be used on rich text contents.\n* temp: A temporary image which can upload for later associating with an entity being registered (for example, user or advertisement).\n* userCustom: User custom images are additional images that can be used on rich text contents.\n* voucherType: An image of a voucher type\n",
+            "description" : "Determines the kind of an image Possible values are:\n* contactInfo: An image of an additional contact information\n* customFieldValue: An image used as custom field value\n* marketplace: Advertisement images are associated with an advertisement, be it simple or for web shop.\n* marketplaceCategory: An image of an advertisement (simple or webshop)\n* profile: User profile images are those associated with the user profile. The first profile image is used to depict the user on search results.\n* systemCustom: System custom images are additional images an administrator that can be used on rich text contents.\n* temp: A temporary image which can upload for later associating with an entity being registered (for example, user or advertisement).\n* userCustom: User custom images are additional images that can be used on rich text contents.\n* voucherType: An image of a voucher type\n",
             "$ref" : "#/definitions/ImageKind"
           },
           "convertedToJpeg" : {
@@ -27129,7 +27129,7 @@
         "type" : "object",
         "properties" : {
           "code" : {
-            "description" : "Application-specific error codes for a POS operation error  Possible values are:\n* payerNotInChannel: The specified payer user does not participate on the POS channel.\n* payerNotOperative: The specified payer has some restriction that renders he/she inoperative for POS operations. An example of such case is when the user has pending agreements.\n* unexpected: An unexpected error has occurred. See the `exceptionType` and `exceptionMessage` fields for the internal information.\n",
+            "description" : "Application-specific error codes for a POS operation error  Possible values are:\n* payerInaccessiblePrincipal: The specified payer cannot use the given identification method (principal type) in the POS channel.\n* payerNotInChannel: The specified payer user does not participate on the POS channel.\n* payerNotOperative: The specified payer has some restriction that renders he/she inoperative for POS operations. An example of such case is when the user has pending agreements.\n* unexpected: An unexpected error has occurred. See the `exceptionType` and `exceptionMessage` fields for the internal information.\n",
             "$ref" : "#/definitions/PosErrorCode"
           }
         }
@@ -27916,6 +27916,18 @@
         "url" : {
           "type" : "string",
           "description" : "The execution result as an URL, to which the client should be redirected. Only returned if `resultType` is either `externalRedirect` or `url`.\n"
+        },
+        "backTo" : {
+          "description" : "Either the id or internal name of the custom operation to go back after run the operation.\n",
+          "$ref" : "#/definitions/EntityReference"
+        },
+        "backToRoot" : {
+          "type" : "boolean",
+          "description" : "A boolean value indicating if the client application must go back to the page that originated the custom  operation executions.     \n"
+        },
+        "reRun" : {
+          "type" : "boolean",
+          "description" : "A boolean value indicating if the custom operation we went back to or the current action container operation must be re-run before display it.\n"
         },
         "columns" : {
           "type" : "array",

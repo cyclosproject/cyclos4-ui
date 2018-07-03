@@ -73,7 +73,6 @@ export class SearchUsersComponent extends BaseComponent {
     });
     this.resultType = formBuilder.control(this.previousResultType);
     this.resultType.valueChanges.subscribe(rt => this.updateResultType(rt));
-    this.form.setControl('resultType', this.resultType);
 
     this.stateManager.manage(this.form);
     this.subscriptions.push(this.form.valueChanges.pipe(
@@ -99,6 +98,7 @@ export class SearchUsersComponent extends BaseComponent {
     }
 
     // Update the results
+    this.dataSource.next(null);
     const search = this.resultType.value === ResultType.MAP
       ? this.usersService.searchMapDirectoryResponse(this.query)
       : this.usersService.searchUsersResponse(this.query);
@@ -110,12 +110,11 @@ export class SearchUsersComponent extends BaseComponent {
           this.renderingResults.next(false);
         }
       }));
+    this.renderingResults.next(true);
     this.dataSource.subscribe(results);
   }
 
   private updateResultType(resultType: ResultType, force = false) {
-    this.renderingResults.next(true);
-    this.dataSource.next(null);
     const isMap = resultType === ResultType.MAP;
     const wasMap = this.previousResultType === ResultType.MAP;
     if (isMap !== wasMap || force) {

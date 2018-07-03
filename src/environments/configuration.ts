@@ -29,6 +29,19 @@ const TRANSLATIONS = null;
 // This defines the available locales. Not used when translations are statically compiled.
 const LOCALES = ['en'];
 
+// This defines a mapping between advertisement category internal name and material icons.
+// See https://material.io/tools/icons
+const AD_CATEGORY_ICONS = {
+  'community': 'people',
+  'food': 'restaurant',
+  'goods': 'pages',
+  'housing': 'location_city',
+  'jobs': 'work',
+  'labor': 'business',
+  'leisure': 'mood',
+  'services': 'room_service'
+};
+
 export const configuration = {
   appTitle: APP_TITLE,
   appTitleSmall: APP_TITLE_SMALL,
@@ -37,5 +50,6 @@ export const configuration = {
   searchPageSizes: SEARCH_PAGE_SIZES,
   quickSearchPageSize: QUICK_SEARCH_PAGE_SIZE,
   translations: TRANSLATIONS,
-  locales: LOCALES
+  locales: LOCALES,
+  adCategoryIcons: AD_CATEGORY_ICONS
 };
