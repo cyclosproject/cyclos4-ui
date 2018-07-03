@@ -23,6 +23,9 @@ a.account .balance {
   opacity: 1;
   font-weight: 500;
 }
+a.active .name {
+  opacity: 1;
+}
 
 :host ::ng-deep a.account .mat-button-wrapper {
   align-items: center;

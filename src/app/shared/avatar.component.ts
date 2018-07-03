@@ -17,7 +17,7 @@ export const SIZES: { [key: string]: number } = {
   'huge': 96
 };
 export const ICON_SIZES: { [key: string]: number } = {
-  'small': 24,
+  'small': 28,
   'medium': 44,
   'large': 48,
   'xlarge': 74,
