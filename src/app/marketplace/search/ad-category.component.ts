@@ -26,13 +26,24 @@ export class AdCategoryComponent extends BaseComponent {
 
   @Input() category: AdCategoryWithChildren;
 
-  @Input() tileWidth: number;
+  @Input() hideChildren = false;
 
-  @Input() showShowAll = true;
+  @Input() tileWidth: number;
 
   @Input() limit = MAX_CHILD;
 
   @Output() selection = new EventEmitter<AdCategoryWithChildren>();
+
+  showShowAll = true;
+
+  ngOnInit() {
+    super.ngOnInit();
+    if (this.limit == null) {
+      this.limit = 0;
+    }
+    const children = this.category.children || [];
+    this.showShowAll = this.limit > 0 && children.length > this.limit + 1;
+  }
 
   get icon(): string {
     const icons = environment.adCategoryIcons || {};
@@ -45,10 +56,19 @@ export class AdCategoryComponent extends BaseComponent {
 
   get children(): AdCategoryWithChildren[] {
     const children = this.category.children || [];
-    if (this.limit > 0 && children.length > this.limit) {
+    if (this.limit > 0 && children.length > this.limit + 1) {
       return children.slice(0, this.limit);
     }
     return children;
+  }
+
+  get spaces(): string[] {
+    if (this.limit <= 0) {
+      return [];
+    }
+    const children = this.category.children || [];
+    const number = this.limit - children.length;
+    return number <= 0 ? [] : ' '.repeat(number).split('');
   }
 
   showAll() {

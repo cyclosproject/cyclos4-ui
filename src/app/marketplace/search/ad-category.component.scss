@@ -20,13 +20,27 @@
 }
 .show-all {
   width: 100%;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
 }
 .children {
   padding: 8px;
+  position: relative;
 }
-.children a {
-  padding: 8px 0 0 0;
+.children.with-show-all {
+  padding-bottom: 50px;
 }
-.children a:first-of-type {
-  padding-top: 0px;
+.children {
+  a, .space {
+    display: block;
+    margin: 8px 0 0 0;
+    padding: 0;
+    opacity: 0.8;
+  }
+}
+.children {
+  a:first-of-type, .space:first-child {
+    margin-top: 0px;
+  }
 }

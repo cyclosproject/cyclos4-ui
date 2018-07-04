@@ -2,11 +2,12 @@
   *ngIf="resultType == null || resultType == ResultType.CATEGORIES"
   fxLayout="row wrap"
   fxLayout.xs="column"
-  fxLayoutAlign="space-between start"
+  fxLayoutAlign="start stretch"
   fxLayoutAlign.xs="center stretch">
   <ad-category *ngFor="let category of data.categories; let last = last"
     [category]="category"
     [tileWidth]="196"
+    [hideChildren]="noCategoriesWithChildren"
     (selection)="categorySelected.emit($event)"></ad-category>
   <div class="empty"
     fxHide.xs

@@ -19,7 +19,11 @@
         fxFlex="grow"> {{ category.name }}
       </a>
     </div>
-    <div class="children">
+    <div *ngIf="!hideChildren"
+      [ngClass]="{
+        children: true,
+        'with-show-all': showShowAll
+      }">
       <ng-container *ngFor="let child of children">
         <a class="sub-category"
           href="#"
@@ -27,6 +31,8 @@
           {{ child.name }}
         </a>
       </ng-container>
+      <div class="space"
+        *ngFor="let sp of spaces">&nbsp;</div>
     </div>
     <button *ngIf="showShowAll"
       class="show-all"

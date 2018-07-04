@@ -46,6 +46,8 @@ export class AdsResultsComponent extends BaseComponent {
 
   @Output() categorySelected = new EventEmitter<AdCategoryWithChildren>();
 
+  noCategoriesWithChildren = true;
+
   mapFitBounds = new BehaviorSubject<LatLngBounds>(null);
 
   constructor(
@@ -56,6 +58,13 @@ export class AdsResultsComponent extends BaseComponent {
 
   ngOnInit() {
     super.ngOnInit();
+    // Check if there's at least one category with children
+    for (const cat of this.data.categories || []) {
+      if (!empty(cat.children)) {
+        this.noCategoriesWithChildren = false;
+        break;
+      }
+    }
     this.dataSource.data.subscribe(rows => {
       this.updateDisplayedColumns();
       this.adjustMap();

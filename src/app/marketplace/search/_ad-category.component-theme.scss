@@ -14,5 +14,10 @@
     .title-text, .title-text:hover {
       color: mat-color($accent, default-contrast) !important;
     }
+    .children {
+      a, a:hover {
+        color: map-get($foreground, text) !important;
+      }
+    }
   }
 }
