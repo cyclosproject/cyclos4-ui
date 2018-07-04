@@ -30,7 +30,7 @@ export class SettingsComponent extends BaseComponent {
 
   ngOnInit() {
     super.ngOnInit();
-    setInterval(() => this.loaded.next(true), 100);
+    setTimeout(() => this.loaded.next(true), 100);
   }
 
 }

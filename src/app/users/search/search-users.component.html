@@ -36,7 +36,8 @@
         (update)="update()"
         (load)="renderingResults.next(false)"></users-results>
       <div *ngIf="(dataSource.data | async) != null
-        && dataSource.data.value?.length === 0"
+        && dataSource.data.value != null
+        && dataSource.data.value.length === 0"
         class="no-results">{{ messages.searchNoResults() }}</div>
       <spinner *ngIf="renderingResults | async"></spinner>
     </ng-container>

@@ -3,11 +3,14 @@ import { Component, ChangeDetectionStrategy, Injector } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { BaseComponent } from 'app/shared/base.component';
 import { UsersService } from 'app/api/services';
-import { UserView, Country } from 'app/api/models';
+import { UserView, Country, Address } from 'app/api/models';
 import { CountriesResolve } from 'app/countries.resolve';
 import { ErrorStatus } from 'app/core/error-status';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Action } from 'app/shared/action';
+import { MapsService } from 'app/core/maps.service';
+import { LatLngBounds } from '@agm/core';
+import { fitBounds } from 'app/shared/helper';
 
 /**
  * Displays an user profile
@@ -23,7 +26,8 @@ export class ViewUserProfileComponent extends BaseComponent {
   constructor(
     injector: Injector,
     private usersService: UsersService,
-    private countriesResolve: CountriesResolve) {
+    private countriesResolve: CountriesResolve,
+    public maps: MapsService) {
     super(injector);
   }
 
@@ -31,6 +35,8 @@ export class ViewUserProfileComponent extends BaseComponent {
   user: UserView;
   countries: BehaviorSubject<Country[]>;
   titleActions = new BehaviorSubject<Action[]>(null);
+  addressMapFitBounds = new BehaviorSubject<LatLngBounds>(null);
+  locatedAddresses: Address[];
 
   ngOnInit() {
     super.ngOnInit();
@@ -57,6 +63,20 @@ export class ViewUserProfileComponent extends BaseComponent {
               ]);
             }
 
+            // Get the located addresses
+            if (this.maps.enabled) {
+              this.locatedAddresses = user.addresses.filter(addr => addr.location);
+              if (this.locatedAddresses.length > 1) {
+                // Label each address
+                let label = 'A';
+                for (const addr of this.locatedAddresses) {
+                  addr['label'] = label;
+                  addr['fullName'] = this.messages.addressFullName(label, addr.name);
+                  label = label === 'Z' ? 'A' : String.fromCharCode(label.charCodeAt(0) + 1);
+                }
+              }
+            }
+
             this.loaded.next(true);
           }, (resp: HttpErrorResponse) => {
             if ([ErrorStatus.FORBIDDEN, ErrorStatus.UNAUTHORIZED].includes(resp.status)) {
@@ -77,6 +97,10 @@ export class ViewUserProfileComponent extends BaseComponent {
 
   get title(): string {
     return this.myProfile ? this.messages.menuPersonalProfile() : (this.user || {}).display;
+  }
+
+  fitAddressesBounds() {
+    this.addressMapFitBounds.next(fitBounds(this.locatedAddresses));
   }
 
 }

@@ -3,3 +3,14 @@
     float: left;
   }
 }
+.addresses, .contact-infos {
+  clear: both;
+}
+
+.map-container {
+  float: right;
+}
+agm-map {
+  height: 200px;
+  width: 300px;
+}

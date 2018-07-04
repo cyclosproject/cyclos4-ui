@@ -216,6 +216,7 @@
   "registration.captcha.title": "Visual validation",
   "registration.captcha.message": "Please, type in the characters in the image below",
   "address.defaultName": "{name} (default)",
+  "address.fullName": "{label} - {name}",
   "address.addressLine1": "Address line 1",
   "address.addressLine2": "Address line 2",
   "address.street": "Street",

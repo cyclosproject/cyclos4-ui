@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy, Injector, EventEmitter, Output, AfterContentInit } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy, Injector, EventEmitter, Output, AfterContentChecked } from '@angular/core';
 import { BaseComponent } from 'app/shared/base.component';
 import { fromEvent } from 'rxjs';
 
@@ -13,7 +13,7 @@ export type TilesPerRow = 1 | 2 | 3 | 4 | 'auto';
   styleUrls: ['tiled-results.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TiledResultsComponent extends BaseComponent implements AfterContentInit {
+export class TiledResultsComponent extends BaseComponent implements AfterContentChecked {
   constructor(injector: Injector) {
     super(injector);
   }
@@ -61,7 +61,7 @@ export class TiledResultsComponent extends BaseComponent implements AfterContent
     }
   }
 
-  ngAfterContentInit() {
+  ngAfterContentChecked() {
     this.rendered.next(null);
   }
 }

@@ -237,6 +237,7 @@
   (mapReady)="mapReady = true; adjustMap();">
   <ng-container *ngFor="let ad of dataSource.data | async">
     <agm-marker *ngIf="ad.address as addr"
+      [title]="ad.name"
       [latitude]="addr.location.latitude"
       [longitude]="addr.location.longitude">
       <agm-info-window>
