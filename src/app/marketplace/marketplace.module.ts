@@ -5,6 +5,7 @@ import { SearchAdsComponent } from 'app/marketplace/search/search-ads.component'
 import { AdsResultsComponent } from 'app/marketplace/search/ads-results.component';
 import { AdCategoryComponent } from 'app/marketplace/search/ad-category.component';
 import { SubCategoryDialogComponent } from 'app/marketplace/search/sub-category-dialog.component';
+import { ViewAdComponent } from 'app/marketplace/view/view-ad.component';
 
 /**
  * Marketplace module
@@ -19,7 +20,8 @@ import { SubCategoryDialogComponent } from 'app/marketplace/search/sub-category-
     SearchAdsComponent,
     AdsResultsComponent,
     AdCategoryComponent,
-    SubCategoryDialogComponent
+    SubCategoryDialogComponent,
+    ViewAdComponent
   ],
   entryComponents: [
     SubCategoryDialogComponent

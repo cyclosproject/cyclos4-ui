@@ -34,6 +34,7 @@ export class SearchAdsComponent extends BaseComponent {
 
   form: FormGroup;
   resultType: FormControl;
+  resultType$ = new BehaviorSubject<ResultType>(null);
 
   query: any;
   dataSource = new TableDataSource<AdResult>(null);
@@ -56,6 +57,8 @@ export class SearchAdsComponent extends BaseComponent {
     });
     this.resultType = formBuilder.control(this.previousResultType);
     this.resultType.valueChanges.subscribe(rt => this.updateResultType(rt));
+    this.resultType$.next(this.previousResultType);
+    this.form.setControl('resultType', this.resultType);
 
     this.stateManager.manage(this.form);
     this.subscriptions.push(this.form.valueChanges.pipe(
@@ -81,7 +84,7 @@ export class SearchAdsComponent extends BaseComponent {
         this.query.user = ApiHelper.SELF;
 
         // Perform the search
-        this.updateResultType(this.previousResultType, true);
+        this.updateResultType(this.resultType.value, true);
       });
   }
 
@@ -116,6 +119,13 @@ export class SearchAdsComponent extends BaseComponent {
   private updateResultType(resultType: ResultType, force = false) {
     const isCategories = resultType === ResultType.CATEGORIES;
     this.showFiltersVisible.next(!isCategories);
+    this.resultType$.next(resultType);
+
+    if (this.query == null) {
+      // Not initialized yet
+      return;
+    }
+
     if (isCategories) {
       // When showing categories, we do no ads search
       this.query.category = null;
@@ -126,13 +136,11 @@ export class SearchAdsComponent extends BaseComponent {
       const isMap = resultType === ResultType.MAP;
       const wasResults = this.previousResultType === ResultType.TILES || this.previousResultType === ResultType.LIST;
       if (force || isResults !== wasResults || isMap) {
-        if (this.query) {
-          this.query.page = 0;
-          this.query.pageSize = null;
-        }
+        this.query.page = 0;
+        this.query.pageSize = null;
+        this.query.addressResult = isMap ? AdAddressResultEnum.ALL : AdAddressResultEnum.NONE;
         this.renderingResults.next(true);
         this.dataSource.next(null);
-        this.query.addressResult = isMap ? AdAddressResultEnum.ALL : AdAddressResultEnum.NONE;
         this.update();
       }
     }

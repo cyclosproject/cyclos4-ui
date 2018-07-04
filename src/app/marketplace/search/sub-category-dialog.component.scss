@@ -1,3 +1,18 @@
 :host ::ng-deep .mat-card {
   margin: 0;
 }
+
+a {
+  display: block;
+  margin-top: 8px;
+}
+a:first-of-type {
+  margin-top: 0;
+}
+
+avatar {
+  float: right;
+}
+:host ::ng-deep .mat-icon {
+  opacity: 1;
+}

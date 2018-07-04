@@ -65,3 +65,11 @@
     margin-bottom: 0;
   }
 }
+.xs mat-dialog-actions :host ::ng-deep .actions {
+  justify-content: space-between !important;
+
+  button, a {
+    margin-right: 0;
+    min-width: 100px !important;
+  }
+}

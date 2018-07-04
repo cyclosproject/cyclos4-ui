@@ -1,6 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input, Optional, Inject } from '@angular/core';
 import { AdCategoryWithChildren, Image } from 'app/api/models';
-import { environment } from 'environments/environment';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Messages } from 'app/messages/messages';
 
@@ -15,10 +14,17 @@ import { Messages } from 'app/messages/messages';
 })
 export class SubCategoryDialogComponent {
 
+  category: AdCategoryWithChildren;
+  icon: string;
+  image: Image;
+
   constructor(
     public dialogRef: MatDialogRef<SubCategoryDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public category: AdCategoryWithChildren,
+    @Inject(MAT_DIALOG_DATA) public data: any,
     public messages: Messages) {
+    this.category = data.category;
+    this.icon = data.icon;
+    this.image = data.image;
   }
 
   select(child: AdCategoryWithChildren) {

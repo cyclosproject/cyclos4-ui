@@ -72,6 +72,7 @@ export class SearchUsersComponent extends BaseComponent {
       customValues: null
     });
     this.resultType = formBuilder.control(this.previousResultType);
+    this.form.setControl('resultType', this.resultType);
     this.resultType.valueChanges.subscribe(rt => this.updateResultType(rt));
 
     this.stateManager.manage(this.form);

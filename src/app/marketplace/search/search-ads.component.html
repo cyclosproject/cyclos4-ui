@@ -31,7 +31,7 @@
         [rendering]="renderingResults | async"
         [query]="query"
         [data]="data"
-        [resultType]="resultType.valueChanges | async"
+        [resultType]="resultType$ | async"
         (update)="update()"
         (load)="renderingResults.next(false)"
         (categorySelected)="selectCategory($event)"></ads-results>

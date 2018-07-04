@@ -55,9 +55,10 @@ export module Menu {
   export const RECURRING_PAYMENTS = new Menu(RootMenu.BANKING);
 
   // Marketplace
-  export const SEARCH_ADVERTISEMENTS = new Menu(RootMenu.MARKETPLACE);
   export const SEARCH_USERS = new Menu(RootMenu.MARKETPLACE);
   export const USER_PROFILE = new Menu(RootMenu.MARKETPLACE);
+  export const SEARCH_ADS = new Menu(RootMenu.MARKETPLACE);
+  export const VIEW_AD = new Menu(RootMenu.MARKETPLACE);
 
   // Personal
   export const MY_PROFILE = new Menu(RootMenu.PERSONAL);

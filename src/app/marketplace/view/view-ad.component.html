@@ -1,0 +1,47 @@
+<page-layout [loaded]="loaded"
+  [title]="ad?.name">
+  <page-content *ngIf="(loaded | async) && ad">
+    <div>
+      <image-viewer *ngIf="ad.image"
+        [image]="ad.image"
+        [additionalImages]="ad.additionalImages"></image-viewer>
+      <label-value [label]="messages.adName()"
+        [value]="ad.name"></label-value>
+      <label-value [label]="(ad.categories || []).length == 1
+        ? messages.adCategory() : messages.adCategories()">
+        <ng-container *ngFor="let category of (ad.categories || [])">
+          <div>
+            <ng-container *ngFor="let curr of categoryLevels(category); let first = first;">
+              <ng-container *ngIf="!first">
+                &gt;
+              </ng-container>
+              {{ curr.name }}
+            </ng-container>
+          </div>
+        </ng-container>
+      </label-value>
+      <label-value [label]="messages.adOwner()">
+        <user-link [user]="ad.owner"></user-link>
+      </label-value>
+      <label-value *ngIf="ad.price"
+        [label]="messages.adPrice()">
+        <ng-container *ngIf="ad.promotionalPrice">
+          <span class="promo-price">
+            {{ ad.price | number:ad.currency.decimalDigits }}
+          </span>
+          {{ ad.promotionalPrice | currency:ad.currency }}
+        </ng-container>
+        <ng-container *ngIf="ad.promotionalPrice == null">
+          {{ ad.price | currency:ad.currency }}
+        </ng-container>
+      </label-value>
+      <custom-field-value *ngFor="let value of ad.customValues"
+        [fieldValue]="value">
+      </custom-field-value>
+
+      <h2 class="description-title">{{ messages.description() }}</h2>
+      <div class="description"
+        [innerHTML]="ad.description | trust"></div>
+    </div>
+  </page-content>
+</page-layout>

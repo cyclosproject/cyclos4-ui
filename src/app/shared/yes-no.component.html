@@ -1,20 +1,22 @@
-<div fxLayout="column"
-  fxLayoutAlign="baseline end"
-  fxLayoutGap="20px">
+<mat-dialog-content>
+  <div fxLayout="column"
+    fxLayoutAlign="baseline end"
+    fxLayoutGap="20px">
 
-  <div fxFlex="grow"
-    fxLayout="row"
-    style="width: 100%">
-    <mat-icon fxFlex="nogrow"
-      color="accent"
-      ngClass="mat-36">help_outline</mat-icon>
     <div fxFlex="grow"
-      class="message"
-      [innerHTML]="message | trust"></div>
+      fxLayout="row"
+      style="width: 100%">
+      <mat-icon fxFlex="nogrow"
+        color="accent"
+        ngClass="mat-36">help_outline</mat-icon>
+      <div fxFlex="grow"
+        class="message"
+        [innerHTML]="message | trust"></div>
+    </div>
   </div>
-
-  <actions root
-    buttonSpace="equidistant">
+</mat-dialog-content>
+<mat-dialog-actions>
+  <actions>
     <button mat-raised-button
       (click)="no()">
       {{ messages.no() }}
@@ -26,4 +28,4 @@
       {{ messages.yes() }}
     </button>
   </actions>
-</div>
+</mat-dialog-actions>

@@ -1,10 +1,24 @@
-<ad-category [category]="category"
-  [tileWidth]="300"
-  [limit]="null"
-  (selection)="select($event)"></ad-category>
-<actions>
-  <button mat-raised-button
-    (click)="dialogRef.close()">
-    {{ messages.cancel() }}
-  </button>
-</actions>
+<h1 mat-dialog-title>{{ category.name }} </h1>
+<mat-dialog-content>
+  <avatar size="huge"
+    [image]="image"
+    [icon]="icon"
+    iconColor="accent"></avatar>
+  <div class="children">
+    <a class="sub-category"
+      *ngFor="let child of category.children || []"
+      href="#"
+      (click)="$event.preventDefault(); select(child)">
+      {{ child.name }}
+    </a>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <actions root
+    topMargin="half">
+    <button mat-raised-button
+      (click)="dialogRef.close()">
+      {{ messages.cancel() }}
+    </button>
+  </actions>
+</mat-dialog-actions>

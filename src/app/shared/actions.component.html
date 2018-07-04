@@ -14,7 +14,7 @@
     'xs-column-reverse': xsMode === 'column-reverse'
   }"
   fxLayout="row"
-  [fxLayout.xs]="xsMode"
+  [fxLayout.xs]="xsMode === 'row' ? 'row wrap' : xsMode"
   [fxLayoutAlign]="align">
   <ng-content></ng-content>
 </div>

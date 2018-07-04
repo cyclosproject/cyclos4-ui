@@ -73,7 +73,11 @@ export class AdCategoryComponent extends BaseComponent {
 
   showAll() {
     this.dialog.open(SubCategoryDialogComponent, {
-      data: this.category,
+      data: {
+        category: this.category,
+        icon: this.icon,
+        image: this.image
+      },
       autoFocus: false,
       width: '400px'
     }).afterClosed().subscribe(selected => {

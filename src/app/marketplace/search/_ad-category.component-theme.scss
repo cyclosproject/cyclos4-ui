@@ -8,11 +8,13 @@
   ad-category {
     .title {
       border-bottom: 1px solid mat-color($foreground, divider);
-      background-color: mat-color($accent);
-      color: mat-color($accent, default-contrast);
+      background-color: map-color($background, card);
+      mat-icon {
+        color: mat-color($accent);
+      }
     }
     .title-text, .title-text:hover {
-      color: mat-color($accent, default-contrast) !important;
+      color: map-get($foreground, text);
     }
     .children {
       a, a:hover {

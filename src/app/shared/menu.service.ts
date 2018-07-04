@@ -254,7 +254,7 @@ export class MenuService {
           this.messages.menuMarketplaceUsers());
       }
       if (marketplace.search) {
-        add(Menu.SEARCH_ADVERTISEMENTS, '/marketplace/search', 'shopping_cart',
+        add(Menu.SEARCH_ADS, '/marketplace/search', 'shopping_cart',
           this.messages.menuMarketplaceAdvertisements());
       }
 
