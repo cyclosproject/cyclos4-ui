@@ -1,7 +1,5 @@
 .mat-card {
   padding: 8px;
-  min-width: 220px;
-  min-height: 90px;
 
   div.left-avatar {
     float: left;
@@ -44,8 +42,15 @@
   padding-bottom: 10px !important;
 }
 
-div.top-avatar {
+.top-avatar {
   margin-bottom: 10px;
+  position: relative;
+}
+
+.additional-image {
+  position: absolute;
+  right: 0px;
+  bottom: -12px;
 }
 
 .centered div {

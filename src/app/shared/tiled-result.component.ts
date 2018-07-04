@@ -32,6 +32,12 @@ export class TiledResultComponent implements OnInit {
   /** The image to show (overrides icon) */
   @Input() image: Image;
 
+  /** The additional image to show floating on the right side (only fo top avatar) */
+  @Input() additionalImage: Image;
+
+  /** A tooltip for the additional image */
+  @Input() additionalImageTooltip: string;
+
   /** Show a large image (lightbox) when clicking on the image? */
   @Input() useLightbox = false;
 

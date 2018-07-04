@@ -1,11 +1,10 @@
-<mat-card [ngStyle]="{
-  width: tileWidth == null || layout.xs ? 'auto' : tileWidth + 'px'
-}"
-  [ngClass]="{
+<mat-card [ngClass]="{
     'with-top-avatar': avatarPosition === 'top',
     'with-actions': actions != null && actions.length > 0
   }">
-  <mat-card-content>
+  <mat-card-content [ngStyle]="{
+      width: tileWidth == null || layout.xs ? 'auto' : tileWidth + 'px'
+    }">
     <a *ngIf="url; else contentTpl"
       [ngClass]="{
         'no-link': url == null,
@@ -40,6 +39,11 @@
       [useLightbox]="useLightbox"
       [roundBorders]="false"
       [customSize]="tileWidth"></avatar>
+    <avatar *ngIf="additionalImage"
+      class="additional-image"
+      [image]="additionalImage"
+      [matTooltip]="additionalImageTooltip"
+      size="medium"></avatar>
   </div>
   <div [ngClass]="{
     outer: true,

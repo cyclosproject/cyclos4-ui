@@ -126,11 +126,11 @@ export class AvatarComponent extends BaseComponent {
       if (customSize) {
         if (this.ratio > 1.0) {
           // Height determines width by ratio
-          this.imageHeight = Math.min(image.height, maxSize);
+          this.imageHeight = image.height < maxSize ? maxSize : image.height;
           this.imageWidth = this.imageHeight * this.ratio;
         } else if (this.ratio < 1.0) {
           // Width determines height by ratio
-          this.imageWidth = Math.min(image.width, maxSize);
+          this.imageWidth = image.width < maxSize ? maxSize : image.width;
           this.imageHeight = this.imageWidth / this.ratio;
         } else {
           // Perfect square

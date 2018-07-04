@@ -200,6 +200,8 @@
   (rendered)="notifyLoad()">
   <ng-container *ngFor="let ad of dataSource.data.value; let last = last;">
     <tiled-result [image]="ad.image"
+      [additionalImage]="ad.owner.image"
+      [additionalImageTooltip]="ad.owner.display"
       [url]="path(ad)"
       icon="shopping_basket"
       avatarPosition="top">
