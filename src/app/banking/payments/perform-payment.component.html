@@ -4,6 +4,7 @@
     <td-steps #stepper
       [mode]="layout.ltmd ? 'vertical' : 'horizontal'">
       <td-step #kindStep
+        *ngIf="toParam == null"
         [label]="messages.paymentKind()"
         [sublabel]="layout.ltmd ? (kindAndIdMethod | async)?.label : null">
         <payment-kind [kindForm]="kindForm"
@@ -19,6 +20,7 @@
         </actions>
       </td-step>
       <td-step #userStep
+        *ngIf="toParam == null"
         [label]="messages.paymentUser()"
         [sublabel]="layout.ltmd ? (toUser | async)?.display : null">
         <ng-container *ngIf="stepperControl.monitor(userStep) | async">
@@ -48,7 +50,8 @@
             [paymentTypes]="paymentTypes | async"
             [paymentTypeData]="paymentTypeData"></payment-fields>
           <actions root>
-            <button mat-raised-button
+            <button *ngIf="toParam == null"
+              mat-raised-button
               (click)="previousFromFields()">
               {{ messages.previous() }}
             </button>

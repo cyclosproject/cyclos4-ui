@@ -1,9 +1,15 @@
-<h1 mat-dialog-title>{{ category.name }} </h1>
-<mat-dialog-content>
-  <avatar size="huge"
+<h1 mat-dialog-title
+  fxLayout="row"
+  fxLayoutAlign="center center">
+  <avatar size="medium"
     [image]="image"
     [icon]="icon"
     iconColor="accent"></avatar>
+  <span fxFlex="grow">
+    {{ category.name }}
+  </span>
+</h1>
+<mat-dialog-content>
   <div class="children">
     <a class="sub-category"
       *ngFor="let child of category.children || []"
@@ -14,11 +20,10 @@
   </div>
 </mat-dialog-content>
 <mat-dialog-actions>
-  <actions root
-    topMargin="half">
+  <actions reverse>
     <button mat-raised-button
       (click)="dialogRef.close()">
-      {{ messages.cancel() }}
+      {{ messages.close() }}
     </button>
   </actions>
 </mat-dialog-actions>

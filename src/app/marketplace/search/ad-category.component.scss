@@ -25,12 +25,15 @@
   left: 0px;
   font-weight: normal;
 }
+:host ::ng-deep .show-all .mat-button-wrapper {
+  opacity: 0.8;
+}
 .children {
-  padding: 8px;
+  padding: 12px 8px;
   position: relative;
 }
 .children.with-show-all {
-  padding-bottom: 50px;
+  padding-bottom: 54px;
 }
 .children {
   a, .space {

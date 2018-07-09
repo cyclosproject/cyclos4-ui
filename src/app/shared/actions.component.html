@@ -1,6 +1,6 @@
 <div [ngClass]="{
     actions: true,
-    root: [true, 'true', ''].includes(root),
+    root: root,
     'top-margin-none': topMargin === 'none',
     'top-margin-normal': topMargin === 'normal',
     'top-margin-double': topMargin === 'double',
@@ -13,8 +13,8 @@
     'xs-column': xsMode === 'column',
     'xs-column-reverse': xsMode === 'column-reverse'
   }"
-  fxLayout="row"
-  [fxLayout.xs]="xsMode === 'row' ? 'row wrap' : xsMode"
+  [fxLayout]="'row' + (reverse ? '-reverse' : '')"
+  [fxLayout.xs]="xsMode === 'row' ? xsMode + (reverse ? '-reverse' : '') + ' wrap' : xsMode"
   [fxLayoutAlign]="align">
   <ng-content></ng-content>
 </div>

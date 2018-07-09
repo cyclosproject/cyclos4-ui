@@ -11,8 +11,9 @@ a:first-of-type {
 }
 
 avatar {
-  float: right;
+  margin-right: 12px;
 }
+
 :host ::ng-deep .mat-icon {
   opacity: 1;
 }

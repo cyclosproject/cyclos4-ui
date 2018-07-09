@@ -46,7 +46,15 @@ const bankingRoutes: Routes = [
         data: {
           menu: Menu.PERFORM_PAYMENT
         }
+      },
+      {
+        path: 'payment/:to',
+        component: PerformPaymentComponent,
+        data: {
+          menu: Menu.PERFORM_PAYMENT
+        }
       }
+
     ]
   }
 ];

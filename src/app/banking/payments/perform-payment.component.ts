@@ -2,7 +2,7 @@ import { Component, Injector, ChangeDetectionStrategy, ViewChild } from '@angula
 import { BaseComponent } from 'app/shared/base.component';
 import {
   DataForTransaction, IdentificationMethodEnum, PrincipalTypeKind, TransactionTypeData,
-  TransferTypeWithCurrency, PaymentPreview, TransactionView, UserDataForSearch, User
+  TransferTypeWithCurrency, PaymentPreview, TransactionView, UserDataForSearch, User, AccountKind
 } from 'app/api/models';
 import { PaymentKind } from 'app/banking/payments/payment-kind';
 import { IdMethod } from 'app/banking/payments/id-method';
@@ -26,6 +26,9 @@ import { HttpErrorResponse } from '@angular/common/http';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PerformPaymentComponent extends BaseComponent {
+
+  // Parameter indicating a fixed payment destination
+  toParam: string;
 
   // Data fetched initially
   initialData = new BehaviorSubject<DataForTransaction>(null);
@@ -119,6 +122,8 @@ export class PerformPaymentComponent extends BaseComponent {
   ngOnInit() {
     super.ngOnInit();
 
+    this.toParam = this.route.snapshot.params['to'];
+
     this.searchIdMethod = {
       internalName: IdentificationMethodEnum.AUTOCOMPLETE
     };
@@ -127,15 +132,36 @@ export class PerformPaymentComponent extends BaseComponent {
     };
 
     // Get data for perform payment
-    this.paymentsService.dataForPerformPayment({ owner: ApiHelper.SELF })
+    this.paymentsService.dataForPerformPayment({
+      owner: ApiHelper.SELF,
+      to: this.toParam
+    })
       .subscribe(data => {
         this.initAllowedKinds(data);
         this.initialData.next(data);
-        this.stepperControl.activate(this.kindStep);
+        if (data.toKind != null) {
+          // Payment to system / specific user
+          this.kindForm.setValue({
+            kindAndIdMethod: new PaymentKindAndIdMethod(null, data.toKind === AccountKind.SYSTEM ? PaymentKind.SYSTEM : PaymentKind.USER)
+          });
+          if (data.toKind === AccountKind.USER) {
+            this.userForm.setValue({
+              user: data.toUser.id
+            });
+          }
+          this.initPaymentData(data);
+        } else {
+          // User will choose to whom to pay
+          this.stepperControl.activate(this.kindStep);
+        }
       });
   }
 
   private initAllowedKinds(data: DataForTransaction) {
+    if (this.toParam) {
+      // There's a specific payment destination
+      return;
+    }
     const payments = this.login.auth.permissions.banking.payments;
 
     this.allowedKindAndIdMethods = [];
@@ -278,21 +304,7 @@ export class PerformPaymentComponent extends BaseComponent {
         type: this.paymentType
       })
         .subscribe(data => {
-          this.paymentData.next(data);
-          this.toUser.next(data.toUser);
-
-          // If there is a single payment type, disable the type step
-          const noPaymentTypes = data.paymentTypes.length === 0;
-          this.paymentTypes.next(data.paymentTypes);
-
-          if (noPaymentTypes) {
-            this.notification.error(this.messages.paymentErrorNoPaymentType());
-          } else {
-            // Preselect the first payment type and activate the fields step
-            this.fieldsForm.patchValue({ type: data.paymentTypes[0].id });
-            this.prepareFieldsForm(data.paymentTypeData);
-            this.stepperControl.activate(this.fieldsStep);
-          }
+          this.initPaymentData(data);
         }, (response: HttpErrorResponse) => {
           const kid = this.kindAndIdMethod.value;
           const kind = kid.kind;
@@ -303,6 +315,24 @@ export class PerformPaymentComponent extends BaseComponent {
           }
         });
     });
+  }
+
+  private initPaymentData(data: DataForTransaction) {
+    this.paymentData.next(data);
+    this.toUser.next(data.toUser);
+
+    // If there is a single payment type, disable the type step
+    const noPaymentTypes = data.paymentTypes.length === 0;
+    this.paymentTypes.next(data.paymentTypes);
+
+    if (noPaymentTypes) {
+      this.notification.error(this.messages.paymentErrorNoPaymentType());
+    } else {
+      // Preselect the first payment type and activate the fields step
+      this.fieldsForm.patchValue({ type: data.paymentTypes[0].id });
+      this.prepareFieldsForm(data.paymentTypeData);
+      this.stepperControl.activate(this.fieldsStep);
+    }
   }
 
   get to(): string {

@@ -38,6 +38,19 @@
         [fieldValue]="value">
       </custom-field-value>
 
+      <ng-container *ngIf="actions.length > 0">
+        <h2>{{ messages.userProfileActions() }}</h2>
+        <div class="profileActions">
+          <a *ngFor="let action of actions"
+            class="action link-with-icon"
+            href="#"
+            (click)="action.onClick(); $event.preventDefault()">
+            <mat-icon>{{ action.icon }}</mat-icon>
+            {{ action.label }}
+          </a>
+        </div>
+      </ng-container>
+
       <!-- Multiple addresses -->
       <ng-container *ngIf="(user.addresses || []).length > 1">
         <h2 class="addresses">{{ messages.userAddresses() }}</h2>

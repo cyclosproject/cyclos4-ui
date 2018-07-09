@@ -16,10 +16,5 @@
     .title-text, .title-text:hover {
       color: map-get($foreground, text);
     }
-    .children {
-      a, a:hover {
-        color: map-get($foreground, text) !important;
-      }
-    }
   }
 }

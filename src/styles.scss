@@ -51,21 +51,27 @@ h1, h2 {
 }
 h1 {
   margin: 24px 0 12px 0;
+}
+h1, h1 > span {
   font-size: 20px;
   line-height: 24px;
 }
 h2 {
-  font-size: 16px;
-  line-height: 16px;
   margin: 32px 0 16px 0;
 }
+h2, h2 > span {
+  font-size: 16px;
+  line-height: 16px;
+}
 h3 {
-  font-size: 14px;
-  line-height: 14px;
   margin: 24px 0 16px 0;
   padding: 0;
   border: 0;
   font-weight: 500;
+}
+h3, h3 > span {
+  font-size: 14px;
+  line-height: 14px;
 }
 h2 + h3 {
   margin-top: 16px;
@@ -394,10 +400,17 @@ a.mat-raised-button, a.mat-raised-button:hover {
 .mat-icon.mat-primary, .mat-icon.mat-accent {
   opacity: 0.7;
 }
-.mat-fab .mat-icon, .mat-mini-fab .mat-icon, .mat-button-toggle .mat-icon {
+.mat-fab .mat-icon, .mat-mini-fab .mat-icon, .mat-button-toggle .mat-icon, .td-steps-header .mat-icon {
   opacity: 1;
 }
 
 table {
   width: 100%;
+}
+
+.mat-dialog-container h1 {
+  margin-top: -16px !important;
+}
+.mat-dialog-actions {
+  margin-bottom: -16px !important;
 }
