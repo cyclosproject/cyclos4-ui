@@ -1,12 +1,13 @@
-import { Component, ChangeDetectionStrategy, Injector, Input, EventEmitter, Output } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Injector, Input, EventEmitter, Output, ViewChildren, QueryList } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { User, UserDataForSearch, ContactListDataForSearch, ContactResult, UserResult, Address, UserDataForMap } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
 import { ResultType } from 'app/shared/result-type';
 import { TableDataSource } from 'app/shared/table-datasource';
 import { MapsService } from 'app/core/maps.service';
-import { LatLngBounds } from '@agm/core';
+import { LatLngBounds, AgmInfoWindow } from '@agm/core';
 import { fitBounds } from 'app/shared/helper';
+import { ApiHelper } from 'app/shared/api-helper';
 
 const MAX_COLUMNS = 7;
 const MAX_TILE_FIELDS = 2;
@@ -45,7 +46,11 @@ export class UsersResultsComponent extends BaseComponent {
 
   @Output() load = new EventEmitter<null>();
 
+  @ViewChildren(AgmInfoWindow) infoWindows: QueryList<AgmInfoWindow>;
+
   mapFitBounds = new BehaviorSubject<LatLngBounds>(null);
+
+  addressStreet = ApiHelper.addressStreet;
 
   constructor(
     injector: Injector,
@@ -237,6 +242,10 @@ export class UsersResultsComponent extends BaseComponent {
 
   notifyLoad() {
     this.load.emit(null);
+  }
+
+  closeAllInfoWindows() {
+    this.infoWindows.forEach(iw => iw.close());
   }
 
 }

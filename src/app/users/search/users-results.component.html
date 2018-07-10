@@ -208,39 +208,39 @@
   [longitude]="maps.data?.defaultLocation?.longitude"
   [fullscreenControl]="true"
   maxZoom="17"
+  (mapClick)="closeAllInfoWindows()"
   (mapReady)="mapReady = true; adjustMap();">
   <ng-container *ngFor="let row of dataSource.data | async">
     <agm-marker *ngIf="address(row) as addr"
       [title]="user(row).display"
       [latitude]="addr.location.latitude"
-      [longitude]="addr.location.longitude">
+      [longitude]="addr.location.longitude"
+      (markerClick)="closeAllInfoWindows()">
       <agm-info-window>
-        <tiled-result [tileWidth]="196"
+        <avatar size="custom"
+          [customSize]="196"
           [image]="user(row).image"
-          [url]="path(row)"
-          [title]="user(row).display"
-          icon="account_circle"
-          avatarPosition="top">
-          <div *ngFor="let field of fieldsInTile; let first = first"
-            [class]="first ? 'tile-title' : 'tile-data'">
-            <format-field-value [fields]="data.customFields"
-              [plainText]="true"
-              [fieldName]="field"
-              [object]="row"
-              [customValues]="customValues(row)">
-              <br>
-            </format-field-value>
-          </div>
-          <div class="tile-data">
-            <div *ngIf="addr.addressLine1">{{ addr.addressLine1 }}</div>
-            <div *ngIf="addr.addressLine2">{{ addr.addressLine2 }}</div>
-            <div *ngIf="addr.street">
-              {{ addr.street }}
-              <ng-container *ngIf="addr.buildingNumber">, {{ addr.buildingNumber }}</ng-container>
-              <ng-container *ngIf="addr.complement">, {{ addr.complement }}</ng-container>
-            </div>
-          </div>
-        </tiled-result>
+          [roundBorders]="false"
+          icon="account_circle"></avatar>
+        <div *ngIf="fieldsInTile.length == 0"
+          class="info-window-title">
+          {{ user(row).display }}
+        </div>
+        <div *ngFor="let field of fieldsInTile; let first = first"
+          [class]="first ? 'info-window-title' : 'info-window-data'">
+          <format-field-value [fields]="data.customFields"
+            [plainText]="true"
+            [fieldName]="field"
+            [object]="row"
+            [customValues]="customValues(row)">
+            <br>
+          </format-field-value>
+        </div>
+        <div class="info-window-data">
+          <div *ngIf="addr.addressLine1">{{ addr.addressLine1 }}</div>
+          <div *ngIf="addr.addressLine2">{{ addr.addressLine2 }}</div>
+          <div *ngIf="addr.street">{{ addressStreet(addr) }}</div>
+        </div>
       </agm-info-window>
     </agm-marker>
   </ng-container>

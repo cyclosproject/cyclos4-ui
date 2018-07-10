@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Injector, Input, EventEmitter, Output } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Injector, Input, EventEmitter, Output, ViewChildren, QueryList } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { AdDataForSearch, AdResult, Currency, AdCategoryWithChildren } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
@@ -6,8 +6,9 @@ import { FormControl } from '@angular/forms';
 import { ResultType } from 'app/shared/result-type';
 import { TableDataSource } from 'app/shared/table-datasource';
 import { MapsService } from 'app/core/maps.service';
-import { LatLngBounds } from '@agm/core';
+import { LatLngBounds, AgmInfoWindow } from '@agm/core';
 import { fitBounds, empty } from 'app/shared/helper';
+import { ApiHelper } from 'app/shared/api-helper';
 
 const MAX_COLUMNS = 5;
 const MAX_TILE_FIELDS = 1;
@@ -49,6 +50,10 @@ export class AdsResultsComponent extends BaseComponent {
   noCategoriesWithChildren = true;
 
   mapFitBounds = new BehaviorSubject<LatLngBounds>(null);
+
+  addressStreet = ApiHelper.addressStreet;
+
+  @ViewChildren(AgmInfoWindow) infoWindows: QueryList<AgmInfoWindow>;
 
   constructor(
     injector: Injector,
@@ -213,4 +218,7 @@ export class AdsResultsComponent extends BaseComponent {
     return (this.lookupCurrency(ad) || {}).decimalDigits || 0;
   }
 
+  closeAllInfoWindows() {
+    this.infoWindows.forEach(iw => iw.close());
+  }
 }

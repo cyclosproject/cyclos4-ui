@@ -1,6 +1,6 @@
 import {
   Entity,
-  CustomFieldDetailed, PasswordInput, PasswordModeEnum, Transfer, Transaction, AccountHistoryResult
+  CustomFieldDetailed, PasswordInput, PasswordModeEnum, Transfer, Transaction, AccountHistoryResult, Address
 } from 'app/api/models';
 import { environment } from 'environments/environment';
 import { FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
@@ -181,5 +181,23 @@ export class ApiHelper {
         return messages.addressZip();
     }
     return null;
+  }
+
+  /**
+   * Returns street, buildingNumber, complement if the given address has an address, otherwise, null
+   * @param address Tha address
+   */
+  static addressStreet(address: Address): string {
+    if (address == null || address.street == null) {
+      return null;
+    }
+    let result = address.street;
+    if (address.buildingNumber) {
+      result += ', ' + address.buildingNumber;
+    }
+    if (address.complement) {
+      result += ', ' + address.complement;
+    }
+    return result;
   }
 }

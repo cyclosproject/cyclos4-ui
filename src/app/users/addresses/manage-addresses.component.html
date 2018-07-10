@@ -9,26 +9,40 @@
         icon="place"
         [actions]="actions(address)"
         fxFlex="nogrow">
-        <div *ngIf="address.addressLine1"
-          class="tile-data">{{ address.addressLine1 }}</div>
-        <div *ngIf="address.addressLine2"
-          class="tile-data">{{ address.addressLine2 }}</div>
-        <div *ngIf="address.street"
-          class="tile-data">
-          {{ address.street }}
-          <ng-container *ngIf="address.buildingNumber">, {{ address.buildingNumber }}</ng-container>
-          <ng-container *ngIf="address.complement">, {{ address.complement }}</ng-container>
-        </div>
-        <div *ngIf="address.zip"
-          class="tile-data">{{ address.zip }}</div>
-        <div *ngIf="address.neighborhood"
-          class="tile-data">{{ address.neighborhood }}</div>
-        <div *ngIf="address.city"
-          class="tile-data">{{ address.city }}</div>
-        <div *ngIf="address.region"
-          class="tile-data">{{ address.region }}</div>
-        <div *ngIf="address.country"
-          class="tile-data">{{ country(address.country) }}</div>
+        <ng-container *ngIf="enabled('addressLine1')">
+          <div *ngIf="address.addressLine1; else blankLine"
+            class="tile-data">{{ address.addressLine1 }}</div>
+        </ng-container>
+        <ng-container *ngIf="enabled('addressLine2')">
+          <div *ngIf="address.addressLine2; else blankLine"
+            class="tile-data">{{ address.addressLine2 }}</div>
+        </ng-container>
+        <ng-container *ngIf="enabled('street')">
+          <div *ngIf="address.street; else blankLine"
+            class="tile-data">
+            {{ addressStreet(address) }}
+          </div>
+        </ng-container>
+        <ng-container *ngIf="enabled('zip')">
+          <div *ngIf="address.zip; else blankLine"
+            class="tile-data">{{ address.zip }}</div>
+        </ng-container>
+        <ng-container *ngIf="enabled('neighborhood')">
+          <div *ngIf="address.neighborhood; else blankLine"
+            class="tile-data">{{ address.neighborhood }}</div>
+        </ng-container>
+        <ng-container *ngIf="enabled('city')">
+          <div *ngIf="address.city; else blankLine"
+            class="tile-data">{{ address.city }}</div>
+        </ng-container>
+        <ng-container *ngIf="enabled('region')">
+          <div *ngIf="address.region; else blankLine"
+            class="tile-data">{{ address.region }}</div>
+        </ng-container>
+        <ng-container *ngIf="enabled('country')">
+          <div *ngIf="address.country; else blankLine"
+            class="tile-data">{{ country(address.country) }}</div>
+        </ng-container>
         <div class="tile-data">
           {{ address.hidden ? messages.visibilityPrivate() : messages.visibilityPublic() }}
         </div>
@@ -40,6 +54,11 @@
     </fab>
   </page-content>
 </page-layout>
+<ng-template #blankLine>
+  <div class="tile-data">
+    <br>
+  </div>
+</ng-template>
 <ng-template #noResults>
   <div class="no-results">{{ messages.addressNoResults() }}</div>
 </ng-template>

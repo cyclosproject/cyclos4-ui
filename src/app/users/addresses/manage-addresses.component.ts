@@ -3,7 +3,7 @@ import { Component, ChangeDetectionStrategy, Injector } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { BaseComponent } from 'app/shared/base.component';
 import { AddressesService } from 'app/api/services';
-import { UserAddressesListData, AddressResult } from 'app/api/models';
+import { UserAddressesListData, AddressResult, AddressFieldEnum } from 'app/api/models';
 import { ApiHelper } from 'app/shared/api-helper';
 import { Action } from 'app/shared/action';
 import { MatDialog } from '@angular/material';
@@ -22,7 +22,12 @@ import { CountriesResolve } from 'app/countries.resolve';
 export class ManageAddressesComponent extends BaseComponent {
 
   loaded = new BehaviorSubject(false);
+
   data: UserAddressesListData;
+
+  addressStreet = ApiHelper.addressStreet;
+
+  enabledFields: string[];
 
   constructor(
     injector: Injector,
@@ -37,6 +42,16 @@ export class ManageAddressesComponent extends BaseComponent {
     this.addressesService.getUserAddressesListData({ user: ApiHelper.SELF })
       .subscribe(data => {
         this.data = data;
+
+        this.enabledFields = [];
+        for (const addr of this.data.addresses || []) {
+          for (const prop in addr) {
+            if (addr.hasOwnProperty(prop)) {
+              this.enabledFields.push(prop);
+            }
+          }
+        }
+
         this.loaded.next(true);
       });
   }
@@ -112,6 +127,10 @@ export class ManageAddressesComponent extends BaseComponent {
         }
       });
     });
+  }
+
+  enabled(field: AddressFieldEnum): boolean {
+    return this.enabledFields.includes(field);
   }
 
   private reload() {
