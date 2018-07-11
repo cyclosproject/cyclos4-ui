@@ -2,6 +2,7 @@ import { AbstractControl, FormGroup, FormArray, FormControl } from '@angular/for
 import { GeographicalCoordinate, Address } from 'app/api/models';
 import { } from '@types/googlemaps';
 import { LatLngBounds } from '@agm/core';
+import { Messages } from '../messages/messages';
 
 /**
  * Copies all properties from the given source to the given destination object
@@ -103,4 +104,24 @@ export function fitBounds(locations: GeographicalCoordinate[] | Address[]): LatL
     }
   }
   return bounds.isEmpty() ? null : bounds as any as LatLngBounds;
+}
+
+/**
+ * Labels each located address, that is, sets an additional property called `label` on each address with values 'A', 'B', ...
+ * Also sets another additional property called `fullName` which is the label plus the name
+ * @param addresses The addresses
+ * @returns The located addresses
+ */
+export function labelAddresses(addresses: Address[], messages: Messages): Address[] {
+  const locatedAddresses = addresses.filter(addr => addr.location);
+  if (locatedAddresses.length > 1) {
+    // Label each address
+    let label = 'A';
+    for (const addr of locatedAddresses) {
+      addr['label'] = label;
+      addr['fullName'] = messages.addressFullName(label, addr.name);
+      label = label === 'Z' ? 'A' : String.fromCharCode(label.charCodeAt(0) + 1);
+    }
+  }
+  return locatedAddresses;
 }

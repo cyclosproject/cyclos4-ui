@@ -3,12 +3,14 @@ import { Component, ChangeDetectionStrategy, Injector, Inject } from '@angular/c
 import { BehaviorSubject } from 'rxjs';
 import { BaseComponent } from 'app/shared/base.component';
 import { AddressesService } from 'app/api/services';
-import { AddressDataForEdit, AddressDataForNew, AddressFieldEnum } from 'app/api/models';
+import { AddressDataForEdit, AddressDataForNew, AddressFieldEnum, GeographicalCoordinate } from 'app/api/models';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { copyProperties } from 'app/shared/helper';
 import { ApiHelper } from 'app/shared/api-helper';
 import { CountriesResolve } from 'app/countries.resolve';
+import { debounceTime } from 'rxjs/operators';
+import { MapsService } from '../../core/maps.service';
 
 /**
  * Either create or edit a address
@@ -16,6 +18,7 @@ import { CountriesResolve } from 'app/countries.resolve';
 @Component({
   selector: 'address-form',
   templateUrl: 'address-form.component.html',
+  styleUrls: ['address-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AddressFormComponent extends BaseComponent {
@@ -25,13 +28,16 @@ export class AddressFormComponent extends BaseComponent {
   title: string;
   managePrivacy = false;
 
+  location = new BehaviorSubject<GeographicalCoordinate>(null);
+
   constructor(
     injector: Injector,
     formBuilder: FormBuilder,
     public dialogRef: MatDialogRef<AddressFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: AddressDataForNew | AddressDataForEdit,
     public countriesResolve: CountriesResolve,
-    private addressesService: AddressesService) {
+    private addressesService: AddressesService,
+    private maps: MapsService) {
     super(injector);
 
     this.id = data['id'];
@@ -49,6 +55,30 @@ export class AddressFormComponent extends BaseComponent {
     this.form = formBuilder.group({
       name: [address.name, Validators.required]
     });
+    if (maps.enabled) {
+      this.location.next(address.location);
+      this.subscriptions.push(this.form.valueChanges.pipe(
+        debounceTime(ApiHelper.DEBOUNCE_TIME)
+      ).subscribe(value => {
+        // Only attempt to geocode if there is at least the address line 1 or street name
+        if (value.addressLine1 || value.street) {
+          const fields: string[] = [];
+          for (const field of data.enabledFields) {
+            if (field === AddressFieldEnum.COMPLEMENT || field === AddressFieldEnum.PO_BOX) {
+              // These fields are not useful for geocoding
+              continue;
+            }
+            fields.push(value[field]);
+          }
+          this.subscriptions.push(maps.geocode(fields).subscribe(loc => {
+            this.location.next(loc);
+          }));
+        } else {
+          this.location.next(null);
+        }
+      }));
+    }
+
     data.enabledFields.forEach(f => {
       const val = data.requiredFields.includes(f) ? Validators.required : null;
       this.form.setControl(f, formBuilder.control(address[f], val));
@@ -70,6 +100,7 @@ export class AddressFormComponent extends BaseComponent {
       return;
     }
     copyProperties(this.form.value, this.data.address, ['confirmationPassword']);
+    this.data.address.location = this.location.value;
     if (this.id == null) {
       // Creating a new address
       this.addressesService.createAddress({

@@ -38,6 +38,15 @@
     </ng-container>
     <mat-checkbox *ngIf="managePrivacy"
       formControlName="hidden">{{ messages.addressPrivate() }}</mat-checkbox>
+    <agm-map *ngIf="(location | async) as loc"
+      [latitude]="loc.latitude"
+      [longitude]="loc.longitude"
+      [zoom]="16"
+      [maxZoom]="18">
+      <agm-marker [latitude]="loc.latitude"
+        [longitude]="loc.longitude">
+      </agm-marker>
+    </agm-map>
     <confirmation-password *ngIf="data.confirmationPasswordInput"
       formControlName="confirmationPassword"
       [passwordInput]="data.confirmationPasswordInput"

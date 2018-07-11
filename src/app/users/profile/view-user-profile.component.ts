@@ -10,7 +10,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Action } from 'app/shared/action';
 import { MapsService } from 'app/core/maps.service';
 import { LatLngBounds } from '@agm/core';
-import { fitBounds } from 'app/shared/helper';
+import { fitBounds, labelAddresses } from 'app/shared/helper';
 import { ApiHelper } from 'app/shared/api-helper';
 
 /**
@@ -83,16 +83,7 @@ export class ViewUserProfileComponent extends BaseComponent {
 
     // Get the located addresses
     if (this.maps.enabled) {
-      this.locatedAddresses = this.user.addresses.filter(addr => addr.location);
-      if (this.locatedAddresses.length > 1) {
-        // Label each address
-        let label = 'A';
-        for (const addr of this.locatedAddresses) {
-          addr['label'] = label;
-          addr['fullName'] = this.messages.addressFullName(label, addr.name);
-          label = label === 'Z' ? 'A' : String.fromCharCode(label.charCodeAt(0) + 1);
-        }
-      }
+      this.locatedAddresses = labelAddresses(this.user.addresses, this.messages);
     }
 
     // Get the actions

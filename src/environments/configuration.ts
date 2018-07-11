@@ -41,6 +41,17 @@ const AD_CATEGORY_ICONS = {
   'leisure': 'mood',
   'services': 'room_service'
 };
+// This defines a mapping between advertisement category internal name and icon colors
+const AD_CATEGORY_COLORS = {
+  'community': '#029487',
+  'food': '#f04d4e',
+  'goods': '#ff9700',
+  'housing': '#2196f3',
+  'jobs': '#6739b6',
+  'labor': '#ea1e63',
+  'leisure': '#4a68be',
+  'services': '#8ec63f'
+};
 
 export const configuration = {
   appTitle: APP_TITLE,
@@ -51,5 +62,6 @@ export const configuration = {
   quickSearchPageSize: QUICK_SEARCH_PAGE_SIZE,
   translations: TRANSLATIONS,
   locales: LOCALES,
-  adCategoryIcons: AD_CATEGORY_ICONS
+  adCategoryIcons: AD_CATEGORY_ICONS,
+  adCategoryColors: AD_CATEGORY_COLORS
 };

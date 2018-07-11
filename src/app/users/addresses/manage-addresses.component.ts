@@ -3,12 +3,15 @@ import { Component, ChangeDetectionStrategy, Injector } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { BaseComponent } from 'app/shared/base.component';
 import { AddressesService } from 'app/api/services';
-import { UserAddressesListData, AddressResult, AddressFieldEnum } from 'app/api/models';
+import { UserAddressesListData, AddressResult, AddressFieldEnum, Address } from 'app/api/models';
 import { ApiHelper } from 'app/shared/api-helper';
 import { Action } from 'app/shared/action';
 import { MatDialog } from '@angular/material';
 import { AddressFormComponent } from 'app/users/addresses/address-form.component';
 import { CountriesResolve } from 'app/countries.resolve';
+import { LatLngBounds } from '@agm/core';
+import { fitBounds, labelAddresses } from '../../shared/helper';
+import { MapsService } from 'app/core/maps.service';
 
 /**
  * Manages the addresses of a user.
@@ -17,6 +20,7 @@ import { CountriesResolve } from 'app/countries.resolve';
 @Component({
   selector: 'manage-addresses',
   templateUrl: 'manage-addresses.component.html',
+  styleUrls: ['manage-addresses.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ManageAddressesComponent extends BaseComponent {
@@ -29,11 +33,14 @@ export class ManageAddressesComponent extends BaseComponent {
 
   enabledFields: string[];
 
+  locatedAddresses: Address[];
+
   constructor(
     injector: Injector,
     private dialog: MatDialog,
     private addressesService: AddressesService,
-    private countriesResolve: CountriesResolve) {
+    private countriesResolve: CountriesResolve,
+    public maps: MapsService) {
     super(injector);
   }
 
@@ -51,6 +58,9 @@ export class ManageAddressesComponent extends BaseComponent {
             }
           }
         }
+
+        // Label each address
+        this.locatedAddresses = labelAddresses(this.data.addresses, this.messages);
 
         this.loaded.next(true);
       });
@@ -140,5 +150,9 @@ export class ManageAddressesComponent extends BaseComponent {
 
   country(code: string): string {
     return this.countriesResolve.name(code);
+  }
+
+  get mapBounds(): LatLngBounds {
+    return fitBounds(this.locatedAddresses);
   }
 }

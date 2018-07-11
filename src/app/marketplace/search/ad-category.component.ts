@@ -50,6 +50,11 @@ export class AdCategoryComponent extends BaseComponent {
     return icons[this.category.internalName];
   }
 
+  get color(): string {
+    const colors = environment.adCategoryColors || {};
+    return colors[this.category.internalName];
+  }
+
   get image(): Image {
     return this.icon ? null : this.category.image;
   }

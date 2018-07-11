@@ -16,12 +16,14 @@
       top: imageTop + 'px'
     }">
 </div>
-<mat-icon *ngIf="image == null && svgIcon != null"
-  [color]="iconColor"
-  [ngClass]="iconClass"
-  [svgIcon]="svgIcon"></mat-icon>
-<mat-icon *ngIf="image == null && svgIcon == null"
-  [color]="iconColor"
-  [ngClass]="iconClass">
-  {{ icon }}
-</mat-icon>
+<span [ngStyle]="{color: iconCustomColor}">
+  <mat-icon *ngIf="image == null && svgIcon != null"
+    [color]="iconColor"
+    [ngClass]="iconClass"
+    [svgIcon]="svgIcon"></mat-icon>
+  <mat-icon *ngIf="image == null && svgIcon == null"
+    [color]="iconColor"
+    [ngClass]="iconClass">
+    {{ icon }}
+  </mat-icon>
+  <span>

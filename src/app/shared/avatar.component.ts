@@ -47,6 +47,8 @@ export class AvatarComponent extends BaseComponent {
 
   @Input() iconColor: string;
 
+  @Input() iconCustomColor: string;
+
   @Input() roundBorders = true;
 
   @Input() useLightbox = false;

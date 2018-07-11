@@ -11,6 +11,8 @@
         fxLayoutAlign="center center">
         <avatar [image]="image"
           [icon]="icon || 'shopping_basket'"
+          [iconColor]="color == null ? 'accent' : ''"
+          [iconCustomColor]="color"
           size="small"></avatar>
       </div>
       <a class="title-text"
