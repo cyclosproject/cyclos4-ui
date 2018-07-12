@@ -39,6 +39,15 @@
             </ng-template>
           </ng-container>
         </ng-container>
+        <agm-map *ngIf="(location | async) as loc"
+          [latitude]="loc.latitude"
+          [longitude]="loc.longitude"
+          [zoom]="16"
+          [maxZoom]="18">
+          <agm-marker [latitude]="loc.latitude"
+            [longitude]="loc.longitude">
+          </agm-marker>
+        </agm-map>
       </ng-container>
     </div>
   </ng-container>
