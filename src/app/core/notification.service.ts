@@ -3,7 +3,7 @@ import { Notification } from 'app/shared/notification';
 import { NotificationType } from 'app/shared/notification-type';
 import { MatDialog, MatDialogRef, MatSnackBarRef, MatSnackBar, SimpleSnackBar } from '@angular/material';
 import { NotificationComponent } from 'app/shared/notification.component';
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { BehaviorSubject } from 'rxjs';
 import { YesNoComponent } from 'app/shared/yes-no.component';
 import { PasswordInput } from 'app/api/models';

@@ -173,7 +173,7 @@
 
 <tiled-results *ngIf="resultType === ResultType.TILES"
   [standalone]="true"
-  [tileWidth]="196"
+  [tileWidth]="tileWidth"
   (rendered)="notifyLoad()">
   <ng-container *ngFor="let row of dataSource.data.value; let last = last;">
     <tiled-result [image]="user(row).image"
@@ -218,7 +218,7 @@
       (markerClick)="closeAllInfoWindows()">
       <agm-info-window>
         <avatar size="custom"
-          [customSize]="196"
+          [customSize]="tileWidth"
           [image]="user(row).image"
           [roundBorders]="false"
           icon="account_circle"></avatar>

@@ -1,13 +1,4 @@
 import { Component, Input, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
-import { Action } from 'app/shared/action';
-import {
-  trigger,
-  state,
-  style,
-  animate,
-  transition,
-  query,
-} from '@angular/animations';
 
 /**
  * A floating action button which presents a speed dial (actions revealed on click)

@@ -1,7 +1,6 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy, HostBinding, Inject, forwardRef, Optional } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Image } from 'app/api/models';
 import { Action } from 'app/shared/action';
-import { TiledResultsComponent } from 'app/shared/tiled-results.component';
 import { LayoutService } from 'app/core/layout.service';
 import { AvatarSize } from 'app/shared/avatar.component';
 
@@ -14,12 +13,10 @@ import { AvatarSize } from 'app/shared/avatar.component';
   styleUrls: ['tiled-result.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TiledResultComponent implements OnInit {
+export class TiledResultComponent {
   constructor(
-    @Optional() @Inject(forwardRef(() => TiledResultsComponent)) public tiledResults,
-    public layout: LayoutService
-  ) {
-  }
+    public layout: LayoutService,
+    public changeDetector: ChangeDetectorRef) { }
 
   @Input() avatarPosition: 'left' | 'top' = 'left';
 
@@ -53,9 +50,4 @@ export class TiledResultComponent implements OnInit {
   /** The tile width. If there's a wrapper `<tiled-results>`, will read from it */
   @Input() tileWidth: number;
 
-  ngOnInit() {
-    if (this.tileWidth == null && this.tiledResults != null) {
-      this.tileWidth = this.tiledResults.tileWidth;
-    }
-  }
 }

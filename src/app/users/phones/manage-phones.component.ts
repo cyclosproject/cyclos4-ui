@@ -10,8 +10,6 @@ import { MatDialog } from '@angular/material';
 import { PhoneFormComponent } from 'app/users/phones/phone-form.component';
 import { VerifyPhoneComponent } from 'app/users/phones/verify-phone.component';
 
-const BASIC_FIELDS = ['name', 'username', 'email'];
-
 /**
  * Manages the phones of a user.
  * Currently implemented only for the logged user's phones

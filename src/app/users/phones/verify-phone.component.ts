@@ -1,13 +1,10 @@
 import { Component, ChangeDetectionStrategy, Injector, Inject, ViewChild, ElementRef } from '@angular/core';
 
-import { BehaviorSubject } from 'rxjs';
 import { BaseComponent } from 'app/shared/base.component';
 import { PhonesService } from 'app/api/services';
-import { PhoneDataForEdit, PhoneDataForNew, PhoneKind, PhoneResult, CodeVerificationStatusEnum } from 'app/api/models';
+import { PhoneResult, CodeVerificationStatusEnum } from 'app/api/models';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
-import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { copyProperties } from 'app/shared/helper';
-import { ApiHelper } from 'app/shared/api-helper';
+import { FormBuilder, Validators, FormControl } from '@angular/forms';
 
 /**
  * Form used to verify a phone

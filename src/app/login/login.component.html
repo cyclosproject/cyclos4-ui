@@ -3,8 +3,7 @@
   contentSize="small">
   <page-content *ngIf="loaded | async">
     <form [formGroup]="form"
-      fxLayout="column"
-      focusFirst>
+      fxLayout="column">
       <h1>{{ messages.loginTitle() }}</h1>
       <div class="text">
         {{ text }}
@@ -16,7 +15,7 @@
           formControlName="principal"
           type="text"
           required
-          [focused]
+          focused
           [placeholder]="messages.loginPrincipal()"
           (keyup.enter)="passwordComponent.focus()">
         <mat-icon matPrefix

@@ -37,7 +37,7 @@ export class AddressFormComponent extends BaseComponent {
     @Inject(MAT_DIALOG_DATA) public data: AddressDataForNew | AddressDataForEdit,
     public countriesResolve: CountriesResolve,
     private addressesService: AddressesService,
-    private maps: MapsService) {
+    maps: MapsService) {
     super(injector);
 
     this.id = data['id'];

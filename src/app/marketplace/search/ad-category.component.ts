@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Injector, Input, EventEmitter, Output, Optional } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Injector, Input, EventEmitter, Output } from '@angular/core';
 import { BaseComponent } from 'app/shared/base.component';
 import { AdCategoryWithChildren, Image } from 'app/api/models';
 import { environment } from 'environments/environment';

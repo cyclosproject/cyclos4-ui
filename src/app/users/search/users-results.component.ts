@@ -6,7 +6,7 @@ import { ResultType } from 'app/shared/result-type';
 import { TableDataSource } from 'app/shared/table-datasource';
 import { MapsService } from 'app/core/maps.service';
 import { LatLngBounds, AgmInfoWindow } from '@agm/core';
-import { fitBounds } from 'app/shared/helper';
+import { fitBounds, TILE_WIDTH } from 'app/shared/helper';
 import { ApiHelper } from 'app/shared/api-helper';
 
 const MAX_COLUMNS = 7;
@@ -22,6 +22,9 @@ const MAX_TILE_FIELDS = 2;
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UsersResultsComponent extends BaseComponent {
+
+  tileWidth = TILE_WIDTH;
+
   displayedColumns = new BehaviorSubject<string[]>([]);
 
   // Export enum to the template

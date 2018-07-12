@@ -4,11 +4,18 @@
 :host ::ng-deep .title .mat-icon {
   opacity: 1 !important;
 }
+:host {
+  margin-bottom: 18px;
+}
 .avatar-container {
   padding: 8px;
+  padding-left: 12px;
 }
-:host ::ng-deep .mat-card-content {
-  padding: 0;
+:host ::ng-deep {
+  .mat-card, .mat-card-content {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
 }
 .sub-category {
   display: block;
@@ -39,9 +46,9 @@
 .children {
   a, .space {
     display: block;
-    margin: 8px 0 0 0;
     padding: 0;
     opacity: 0.8;
+    margin-top: 6px;
   }
 }
 .children {

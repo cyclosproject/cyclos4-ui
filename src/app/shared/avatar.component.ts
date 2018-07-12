@@ -61,7 +61,14 @@ export class AvatarComponent extends BaseComponent {
   /**
    * The pixel size when `size` is `custom`.
    */
-  @Input() customSize: number;
+  private _customSize: number;
+  @Input() get customSize(): number {
+    return this._customSize;
+  }
+  set customSize(customSize: number) {
+    this._customSize = customSize;
+    this.initImage();
+  }
 
   private _image: Image;
   /**

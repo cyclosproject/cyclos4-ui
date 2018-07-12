@@ -1,6 +1,4 @@
-<div class="form-info">{{ preview.pendingAuthorization ? messages.paymentPreviewAuthMessage() : messages.paymentPreviewMessage()
-  }}
-</div>
+<div class="form-info">{{ preview.pendingAuthorization ? messages.paymentPreviewAuthMessage() : messages.paymentPreviewMessage() }}</div>
 
 <label-value [label]="messages.transactionFrom()">
   <user-link [account]="preview.fromAccount"></user-link>

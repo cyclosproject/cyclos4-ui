@@ -299,9 +299,6 @@ export class FormatFieldValueComponent implements OnInit {
   }
 
   downloadImage(event: MouseEvent, image: Image) {
-    const url = image.url;
-    const sep = url.lastIndexOf('/');
-    const file = url.substr(sep + 1);
     this.imagesService.getImageContentById({ id: image.id }).subscribe(blob => {
       download(blob, image.name, image.contentType);
     });

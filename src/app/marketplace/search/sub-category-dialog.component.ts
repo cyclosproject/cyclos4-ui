@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Input, Optional, Inject } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Inject } from '@angular/core';
 import { AdCategoryWithChildren, Image } from 'app/api/models';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Messages } from 'app/messages/messages';

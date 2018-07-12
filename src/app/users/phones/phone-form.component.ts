@@ -1,6 +1,5 @@
 import { Component, ChangeDetectionStrategy, Injector, Inject } from '@angular/core';
 
-import { BehaviorSubject } from 'rxjs';
 import { BaseComponent } from 'app/shared/base.component';
 import { PhonesService } from 'app/api/services';
 import { PhoneDataForEdit, PhoneDataForNew, PhoneKind } from 'app/api/models';

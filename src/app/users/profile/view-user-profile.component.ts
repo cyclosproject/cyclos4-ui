@@ -3,7 +3,7 @@ import { Component, ChangeDetectionStrategy, Injector } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { BaseComponent } from 'app/shared/base.component';
 import { UsersService, ContactsService } from 'app/api/services';
-import { UserView, Country, Address, ContactNew } from 'app/api/models';
+import { UserView, Country, Address } from 'app/api/models';
 import { CountriesResolve } from 'app/countries.resolve';
 import { ErrorStatus } from 'app/core/error-status';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -128,7 +128,7 @@ export class ViewUserProfileComponent extends BaseComponent {
   }
 
   get myProfile(): boolean {
-    return (this.login.user || {}).id === this.user.id;
+    return !!this.user && (this.login.user || {}).id === this.user.id;
   }
 
   get title(): string {

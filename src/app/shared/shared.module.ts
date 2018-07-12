@@ -44,7 +44,6 @@ import { CurrencyPipe } from 'app/shared/currency.pipe';
 import { AccountPipe } from 'app/shared/account.pipe';
 import { MaskDirective } from 'app/shared/mask.directive';
 import { NumbersOnlyDirective } from 'app/shared/numbers-only.directive';
-import { FocusFirstDirective } from 'app/shared/focus-first.directive';
 import { NotificationComponent } from 'app/shared/notification.component';
 import { YesNoComponent } from 'app/shared/yes-no.component';
 import { ConfirmWithPasswordComponent } from 'app/shared/confirm-with-password.component';
@@ -120,7 +119,6 @@ import { SpinnerComponent } from 'app/shared/spinner.component';
     CaptchaComponent,
     NotFoundComponent,
 
-    FocusFirstDirective,
     FocusedDirective,
     MaskDirective,
     NumbersOnlyDirective,
@@ -226,7 +224,6 @@ import { SpinnerComponent } from 'app/shared/spinner.component';
     CaptchaComponent,
     NotFoundComponent,
 
-    FocusFirstDirective,
     FocusedDirective,
     MaskDirective,
     NumbersOnlyDirective,

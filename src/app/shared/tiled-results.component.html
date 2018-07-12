@@ -1,4 +1,5 @@
-<div class="tiled-results"
+<div #container
+  class="tiled-results"
   [ngClass]="{
     'standalone': standalone,
     'tiles-1': layout.xs || actualTiles === 1,
@@ -8,9 +9,10 @@
   }"
   fxLayout="row wrap"
   fxLayout.xs="column"
-  fxLayoutAlign="start stretch"
+  fxLayoutAlign="space-between stretch"
   fxLayoutAlign.xs="center stretch">
   <ng-content></ng-content>
-  <div class="empty"
-    *ngFor="let i of [0, 1, 2, 3, 4, 5, 6, 7]"></div>
+  <div fxHide.xs
+    [ngStyle]="{width: tileWidth + 'px'}"
+    *ngFor="let i of (emptySpaces | async)"></div>
 </div>

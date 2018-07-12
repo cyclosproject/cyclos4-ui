@@ -4,8 +4,6 @@ import { BehaviorSubject } from 'rxjs';
 import { BaseComponent } from 'app/shared/base.component';
 import { MarketplaceService } from 'app/api/services';
 import { AdView, Country, AdCategoryWithParent } from 'app/api/models';
-import { ErrorStatus } from 'app/core/error-status';
-import { HttpErrorResponse } from '@angular/common/http';
 import { Action } from 'app/shared/action';
 
 /**

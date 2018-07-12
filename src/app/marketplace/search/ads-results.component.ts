@@ -1,13 +1,15 @@
-import { Component, ChangeDetectionStrategy, Injector, Input, EventEmitter, Output, ViewChildren, QueryList } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import {
+  Component, ChangeDetectionStrategy, Injector, Input, EventEmitter, Output,
+  ViewChildren, QueryList, ViewChild, ElementRef, AfterViewInit
+} from '@angular/core';
+import { BehaviorSubject, fromEvent } from 'rxjs';
 import { AdDataForSearch, AdResult, Currency, AdCategoryWithChildren } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
-import { FormControl } from '@angular/forms';
 import { ResultType } from 'app/shared/result-type';
 import { TableDataSource } from 'app/shared/table-datasource';
 import { MapsService } from 'app/core/maps.service';
 import { LatLngBounds, AgmInfoWindow } from '@agm/core';
-import { fitBounds, empty } from 'app/shared/helper';
+import { fitBounds, empty, TILE_WIDTH } from 'app/shared/helper';
 import { ApiHelper } from 'app/shared/api-helper';
 
 const MAX_COLUMNS = 5;
@@ -22,7 +24,10 @@ const MAX_TILE_FIELDS = 1;
   styleUrls: ['ads-results.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AdsResultsComponent extends BaseComponent {
+export class AdsResultsComponent extends BaseComponent implements AfterViewInit {
+
+  tileWidth = TILE_WIDTH;
+
   displayedColumns = new BehaviorSubject<string[]>([]);
 
   // Export enum to the template
@@ -46,6 +51,10 @@ export class AdsResultsComponent extends BaseComponent {
   @Output() load = new EventEmitter<null>();
 
   @Output() categorySelected = new EventEmitter<AdCategoryWithChildren>();
+
+  @ViewChild('categories') categoriesContainer: ElementRef;
+
+  emptyCategories = new BehaviorSubject<Array<any>>([]);
 
   noCategoriesWithChildren = true;
 
@@ -74,6 +83,14 @@ export class AdsResultsComponent extends BaseComponent {
       this.updateDisplayedColumns();
       this.adjustMap();
     });
+
+    // We need the exact pixel dimensions to calculate the categories empty spaces
+    this.subscriptions.push(fromEvent(window, 'resize').subscribe(() =>
+      this.updateEmptyCategories()));
+  }
+
+  ngAfterViewInit() {
+    this.updateEmptyCategories();
   }
 
   /**
@@ -220,5 +237,22 @@ export class AdsResultsComponent extends BaseComponent {
 
   closeAllInfoWindows() {
     this.infoWindows.forEach(iw => iw.close());
+  }
+
+  private updateEmptyCategories() {
+    if (!this.categoriesContainer) {
+      return;
+    }
+    if (this.layout.gtxs) {
+      const width = <number>this.categoriesContainer.nativeElement.clientWidth;
+      const tilesPerRow = Math.floor(width / this.tileWidth);
+      const lastRow = this.data.categories.length % tilesPerRow;
+      const missing = tilesPerRow - lastRow;
+      this.emptyCategories.next(missing === 0 ? [] : ' '.repeat(missing).split(''));
+    } else if (this.emptyCategories.value.length > 0) {
+      this.emptyCategories.next([]);
+    }
+
+
   }
 }

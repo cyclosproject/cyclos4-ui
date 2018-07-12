@@ -1,6 +1,10 @@
-import { Component, Input, ChangeDetectionStrategy, Injector, EventEmitter, Output, AfterContentChecked } from '@angular/core';
+import {
+  Component, Input, ChangeDetectionStrategy, Injector, EventEmitter,
+  Output, AfterContentInit, AfterContentChecked, ElementRef, QueryList, ViewChild, ContentChildren,
+} from '@angular/core';
 import { BaseComponent } from 'app/shared/base.component';
-import { fromEvent } from 'rxjs';
+import { fromEvent, BehaviorSubject } from 'rxjs';
+import { TiledResultComponent } from 'app/shared/tiled-result.component';
 
 export type TilesPerRow = 1 | 2 | 3 | 4 | 'auto';
 
@@ -13,7 +17,7 @@ export type TilesPerRow = 1 | 2 | 3 | 4 | 'auto';
   styleUrls: ['tiled-results.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TiledResultsComponent extends BaseComponent implements AfterContentChecked {
+export class TiledResultsComponent extends BaseComponent implements AfterContentInit, AfterContentChecked {
   constructor(injector: Injector) {
     super(injector);
   }
@@ -34,13 +38,17 @@ export class TiledResultsComponent extends BaseComponent implements AfterContent
     return this._tilesPerRow;
   }
 
+  @ViewChild('container') container: ElementRef;
+
+  @ContentChildren(TiledResultComponent) results: QueryList<TiledResultComponent>;
+
+  emptySpaces = new BehaviorSubject<Array<any>>([]);
+
   ngOnInit() {
     super.ngOnInit();
-    if (this.tilesPerRow === 'auto') {
-      // We need the exact pixel dimensions for the auto size to work ok
-      this.subscriptions.push(fromEvent(window, 'resize').subscribe(() =>
-        this.onDisplayChange()));
-    }
+    // We need the exact pixel dimensions to calculate either auto tile size or number of empty tiles
+    this.subscriptions.push(fromEvent(window, 'resize').subscribe(() =>
+      this.onDisplayChange()));
   }
 
   set tilesPerRow(tiles: TilesPerRow) {
@@ -59,9 +67,35 @@ export class TiledResultsComponent extends BaseComponent implements AfterContent
     } else {
       this.actualTiles = this._tilesPerRow;
     }
+
+    if (this.tileWidth != null && this.results && this.container && this.layout.gtxs) {
+      const width = <number>this.container.nativeElement.clientWidth;
+      const tilesPerRow = Math.floor(width / this.tileWidth);
+      const lastRow = this.results.length % tilesPerRow;
+      const missing = tilesPerRow - lastRow;
+      this.emptySpaces.next(missing === 0 ? [] : ' '.repeat(missing).split(''));
+    } else if (this.emptySpaces.value.length > 0) {
+      this.emptySpaces.next([]);
+    }
   }
 
   ngAfterContentChecked() {
     this.rendered.next(null);
+  }
+
+  ngAfterContentInit() {
+    if (this.tileWidth == null) {
+      // Will only control the number of tiles if they have a fixed width
+      return;
+    }
+    const processResults = () => {
+      this.results.forEach(res => {
+        res.tileWidth = this.tileWidth;
+        res.changeDetector.detectChanges();
+      });
+      this.onDisplayChange();
+    };
+    this.results.changes.subscribe(processResults);
+    processResults();
   }
 }

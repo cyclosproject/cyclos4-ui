@@ -4,6 +4,8 @@ import { } from '@types/googlemaps';
 import { LatLngBounds } from '@agm/core';
 import { Messages } from '../messages/messages';
 
+export const TILE_WIDTH = 196;
+
 /**
  * Copies all properties from the given source to the given destination object
  * @param src The source object

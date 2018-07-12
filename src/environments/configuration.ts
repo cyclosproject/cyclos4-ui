@@ -43,10 +43,10 @@ const AD_CATEGORY_ICONS = {
 };
 // This defines a mapping between advertisement category internal name and icon colors
 const AD_CATEGORY_COLORS = {
-  'community': '#029487',
+  'community': '#2196f3',
   'food': '#f04d4e',
   'goods': '#ff9700',
-  'housing': '#2196f3',
+  'housing': '#029487',
   'jobs': '#6739b6',
   'labor': '#ea1e63',
   'leisure': '#4a68be',
