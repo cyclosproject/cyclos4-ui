@@ -1,7 +1,6 @@
 @import '~@angular/material/theming';
 
 @mixin ad-category-component-theme($theme) {
-  $accent: map-get($theme, accent);
   $foreground: map-get($theme, foreground);
   $background: map-get($theme, background);
 

@@ -1,0 +1,13 @@
+@import '~@angular/material/theming';
+
+@mixin sub-category-dialog-component-theme($theme) {
+  $foreground: map-get($theme, foreground);
+
+  /* Cannot filter by component tag because it runs in a popup dialog */
+  .children {
+    a.sub-category, a.sub-catory:hover {
+      color: map-get($foreground, text);
+    }
+
+  }
+}

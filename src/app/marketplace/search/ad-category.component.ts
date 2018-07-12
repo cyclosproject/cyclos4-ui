@@ -81,7 +81,8 @@ export class AdCategoryComponent extends BaseComponent {
       data: {
         category: this.category,
         icon: this.icon,
-        image: this.image
+        image: this.image,
+        color: this.color
       },
       autoFocus: false,
       width: '400px'

@@ -17,6 +17,7 @@ export class SubCategoryDialogComponent {
   category: AdCategoryWithChildren;
   icon: string;
   image: Image;
+  color: string;
 
   constructor(
     public dialogRef: MatDialogRef<SubCategoryDialogComponent>,
@@ -25,6 +26,7 @@ export class SubCategoryDialogComponent {
     this.category = data.category;
     this.icon = data.icon;
     this.image = data.image;
+    this.color = data.color;
   }
 
   select(child: AdCategoryWithChildren) {
