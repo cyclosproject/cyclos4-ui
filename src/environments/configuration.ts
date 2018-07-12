@@ -47,9 +47,9 @@ const AD_CATEGORY_COLORS = {
   'food': '#f04d4e',
   'goods': '#ff9700',
   'housing': '#029487',
-  'jobs': '#6739b6',
-  'labor': '#ea1e63',
-  'leisure': '#4a68be',
+  'jobs': '#8062b3',
+  'labor': '#de3eaa',
+  'leisure': '#687ebd',
   'services': '#8ec63f'
 };
 
