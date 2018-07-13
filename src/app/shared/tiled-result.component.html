@@ -1,6 +1,7 @@
 <mat-card [ngClass]="{
     'with-top-avatar': avatarPosition === 'top',
-    'with-actions': actions != null && actions.length > 0
+    'with-actions': actions != null && actions.length > 0,
+    'with-hover-animation': hoverAnimation
   }">
   <mat-card-content [ngStyle]="{
       width: tileWidth == null || layout.xs ? 'auto' : tileWidth + 'px'

@@ -27,7 +27,7 @@
     fxHide.gt-xs
     fxFlex="grow"></div>
   <a #personalMenuToggle
-    *ngIf="user != null"
+    *ngIf="(login.user$ | async) as user"
     href="#"
     class="personalMenuToggle"
     fxLayout="row"

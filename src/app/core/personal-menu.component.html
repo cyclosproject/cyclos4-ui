@@ -1,14 +1,15 @@
 <div #container
   style="display:none"
   class="container">
-  <div class="popup mat-elevation-z6"
+  <div *ngIf="(login.user$ | async) as user"
+    class="popup mat-elevation-z6"
     fxLayout="row"
     fxLayoutAlign="center center">
     <a routerLink="/users/my-profile"
       class="avatar-container"
       (click)="clearState()"
       [ngClass]="{'no-image': user?.image == null}">
-      <avatar [image]="user?.image"
+      <avatar [image]="user.image"
         icon="account_circle"
         size="huge"></avatar>
     </a>
@@ -17,8 +18,8 @@
       <a class="details"
         (click)="clearState()"
         routerLink="/users/my-profile">
-        <div class="display">{{ user?.display }}</div>
-        <div class="principal">{{ auth?.principal }}</div>
+        <div class="display">{{ user.display }}</div>
+        <div class="principal">{{ login.auth.principal }}</div>
       </a>
       <div class="menu"
         fxLayout="column">

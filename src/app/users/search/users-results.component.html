@@ -180,6 +180,7 @@
       [url]="path(row)"
       icon="account_circle"
       avatarPosition="top"
+      [hoverAnimation]="true"
       [title]="user(row).display">
       <ng-container *ngFor="let field of fieldsInTile; let first = first">
         <div *ngIf="first && user(row).display"

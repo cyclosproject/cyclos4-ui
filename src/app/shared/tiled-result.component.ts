@@ -23,6 +23,9 @@ export class TiledResultComponent {
   /** The size of rendered avatar when showing the left avatar */
   @Input() leftAvatarSize: AvatarSize = 'large';
 
+  /** Whether to animate the mouse hover */
+  @Input() hoverAnimation = false;
+
   /** The icon to show */
   @Input() icon: string;
 

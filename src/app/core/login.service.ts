@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Injectable, ApplicationRef, NgZone } from '@angular/core';
 import { Auth, User, Permissions } from 'app/api/models';
 import { AuthService } from 'app/api/services/auth.service';
-import { Subscription } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { NextRequestState } from 'app/core/next-request-state';
@@ -20,6 +20,7 @@ export enum LoginPageState {
 @Injectable()
 export class LoginService {
   private _loggingOut = new BehaviorSubject(false);
+  user$ = new BehaviorSubject<User>(null);
 
   private _redirectUrl: string;
 
@@ -42,7 +43,20 @@ export class LoginService {
     private dataForUiHolder: DataForUiHolder,
     private nextRequestState: NextRequestState,
     private authService: AuthService,
-    private router: Router) {
+    private router: Router,
+    app: ApplicationRef,
+    zone: NgZone) {
+    dataForUiHolder.subscribe(dataForUi => {
+      const auth = (dataForUi || {}).auth;
+      this.user$.next((auth || {}).user);
+    });
+  }
+
+  /**
+   * Returns the currently authenticated user
+   */
+  get user(): User {
+    return this.user$.value;
   }
 
   /**
@@ -50,14 +64,6 @@ export class LoginService {
    */
   subscribeForLoggingOut(next?: (value: boolean) => void, error?: (error: any) => void, complete?: () => void): Subscription {
     return this._loggingOut.subscribe(next, error, complete);
-  }
-
-  /**
-   * Returns the currently authenticated user
-   */
-  get user(): User {
-    const auth = this.auth;
-    return auth == null ? null : auth.user;
   }
 
   /**

@@ -6,8 +6,18 @@
   [tightContent]="true"
   [invisibleContent]="resultType.value === ResultType.CATEGORIES || !(dataSource.empty | async) && resultType.value === ResultType.TILES">
   <page-header>
-    <result-type-field [formControl]="resultType"
-      [allowedResultTypes]="resultTypes"></result-type-field>
+    <div fxLayout="column">
+      <mat-form-field>
+        <input formControlName="keywords"
+          matInput
+          focused
+          [placeholder]="messages.keywords()">
+      </mat-form-field>
+
+      <result-type-field fxFlex="nogrow"
+        [formControl]="resultType"
+        [allowedResultTypes]="resultTypes"></result-type-field>
+    </div>
   </page-header>
   <page-filters>
     <form fxLayout="column"

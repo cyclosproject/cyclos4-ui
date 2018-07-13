@@ -22,6 +22,7 @@ import { ContactInfoFormComponent } from 'app/users/contact-infos/contact-info-f
 import { ManageContactInfosComponent } from 'app/users/contact-infos/manage-contact-infos.component';
 import { ContactListComponent } from 'app/users/contacts/contact-list.component';
 import { UsersResultsComponent } from 'app/users/search/users-results.component';
+import { ReorderImagesComponent } from 'app/users/images/reorder-images.component';
 
 /**
  * Users module
@@ -56,6 +57,7 @@ import { UsersResultsComponent } from 'app/users/search/users-results.component'
     AddressFormComponent,
 
     ManageImagesComponent,
+    ReorderImagesComponent,
 
     ManageContactInfosComponent,
     ContactInfoFormComponent,
@@ -66,7 +68,8 @@ import { UsersResultsComponent } from 'app/users/search/users-results.component'
     PhoneFormComponent,
     VerifyPhoneComponent,
     AddressFormComponent,
-    ContactInfoFormComponent
+    ContactInfoFormComponent,
+    ReorderImagesComponent
   ]
 })
 export class UsersModule {

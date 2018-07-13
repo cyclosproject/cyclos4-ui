@@ -1,7 +1,8 @@
-import { Component, ChangeDetectionStrategy, Injector } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Injector, ViewChild, ApplicationRef } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { BaseComponent } from 'app/shared/base.component';
 import { BehaviorSubject } from 'rxjs';
+import { PersonalMenuComponent } from 'app/core/personal-menu.component';
 
 @Component({
   selector: 'app-root',
@@ -12,6 +13,7 @@ import { BehaviorSubject } from 'rxjs';
 export class AppComponent extends BaseComponent {
   constructor(
     injector: Injector,
+    private app: ApplicationRef,
     private title: Title
   ) {
     super(injector);
@@ -20,6 +22,8 @@ export class AppComponent extends BaseComponent {
   initialized = new BehaviorSubject(false);
 
   loggingOut = new BehaviorSubject(false);
+
+  @ViewChild(PersonalMenuComponent) personalMenu: PersonalMenuComponent;
 
   ngOnInit() {
     super.ngOnInit();

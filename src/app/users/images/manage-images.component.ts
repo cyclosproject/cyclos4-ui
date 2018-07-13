@@ -6,6 +6,9 @@ import { ImagesService } from 'app/api/services';
 import { ImagesListData, Image, UserImageKind } from 'app/api/models';
 import { ApiHelper } from 'app/shared/api-helper';
 import { Action } from 'app/shared/action';
+import { MatDialog } from '@angular/material';
+import { ReorderImagesComponent } from 'app/users/images/reorder-images.component';
+import { cloneDeep } from 'lodash';
 
 /**
  * Manages the images of a user.
@@ -21,9 +24,11 @@ export class ManageImagesComponent extends BaseComponent {
   loaded = new BehaviorSubject(false);
   data: ImagesListData;
   createActions: Action[];
+  titleActions: Action[];
 
   constructor(
     injector: Injector,
+    private dialog: MatDialog,
     private imagesService: ImagesService) {
     super(injector);
   }
@@ -33,6 +38,25 @@ export class ManageImagesComponent extends BaseComponent {
     this.imagesService.getUserImagesListData({ user: ApiHelper.SELF })
       .subscribe(data => {
         this.data = data;
+        if ((data.images || []).length > 1) {
+          this.titleActions = [
+            new Action('reorder', this.messages.imageReorder(), () => {
+              this.dialog.open(ReorderImagesComponent, this.layout.formDialogConfig(data.images)).afterClosed().subscribe(saved => {
+                if (saved) {
+                  this.notification.snackBar(this.messages.imageReorderDone());
+                  this.reload();
+                }
+              });
+            })
+          ];
+        }
+
+        // Update the logged user, so the image above is correct
+        const user = cloneDeep(this.login.user);
+        const images = this.data.images || [];
+        user.image = images.length === 0 ? null : this.data.images[0];
+        this.login.user$.next(user);
+
         this.loaded.next(true);
       });
   }
@@ -46,6 +70,7 @@ export class ManageImagesComponent extends BaseComponent {
   }
 
   uploadImages(files: File | FileList) {
+    const hadNoImages = (this.data.images || []).length === 0;
     const observables: Observable<any>[] = [];
     if (files instanceof File) {
       observables.push(this.imagesService.uploadUserImage({

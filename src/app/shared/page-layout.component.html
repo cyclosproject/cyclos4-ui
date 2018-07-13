@@ -131,10 +131,10 @@
       class="filters-wrapper">
       <ng-content select="page-filters"></ng-content>
     </div>
-    <actions>
+    <actions root
+      buttonSpace="equidistant">
       <button mat-raised-button
         (click)="clearFilters()">{{ messages.filtersClear() }}</button>
-      <div fxFlex="grow"></div>
       <button mat-raised-button
         *ngIf="showLeft | async"
         (click)="hideFilters()">{{ messages.filtersHide() }}</button>

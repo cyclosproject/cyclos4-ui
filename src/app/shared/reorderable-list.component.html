@@ -1,0 +1,15 @@
+<div class="dnd"
+  dndDropzone
+  (dndDrop)="onDrop($event)"
+  dndEffectAllowed="move">
+  <div *ngFor="let item of items"
+    [dndDraggable]="item"
+    dndEffectAllowed="move"
+    class="dndItem">
+    <ng-container *ngTemplateOutlet="itemTemplate; context: {$implicit: item}"></ng-container>
+  </div>
+  <div class="dndPlaceholder"
+    dndPlaceholderRef>
+    <ng-container *ngTemplateOutlet="placeholderTemplate"></ng-container>
+  </div>
+</div>

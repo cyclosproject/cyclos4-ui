@@ -25,7 +25,11 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { CovalentStepsModule } from '@covalent/core/steps';
 import { CovalentFileModule } from '@covalent/core/file';
 
+import { AgmCoreModule } from '@agm/core';
+
 import { SatPopoverModule } from '@ncstate/sat-popover';
+
+import { DndModule } from 'ngx-drag-drop';
 
 import { PageLayoutComponent } from 'app/shared/page-layout.component';
 import { PageFiltersComponent } from 'app/shared/page-filters.component';
@@ -74,8 +78,10 @@ import { CaptchaComponent } from 'app/shared/captcha.component';
 import { ImageViewerComponent } from './image-viewer.component';
 import { UserLinkComponent } from './user-link.component';
 import { PageTitleComponent } from 'app/shared/page-title.component';
-import { AgmCoreModule } from '@agm/core';
 import { SpinnerComponent } from 'app/shared/spinner.component';
+import { ReorderableListComponent } from 'app/shared/reorderable-list.component';
+import { ReorderableItemDirective } from 'app/shared/reorderable-item.directive';
+import { ReorderablePlaceholderDirective } from 'app/shared/reorderable-placeholder.directive';
 
 /**
  * Module that configures UI elements
@@ -114,6 +120,9 @@ import { SpinnerComponent } from 'app/shared/spinner.component';
     FabComponent,
     TiledResultsComponent,
     TiledResultComponent,
+    ReorderableListComponent,
+    ReorderableItemDirective,
+    ReorderablePlaceholderDirective,
     UserLinkComponent,
     ImageViewerComponent,
     CaptchaComponent,
@@ -157,7 +166,8 @@ import { SpinnerComponent } from 'app/shared/spinner.component';
     CovalentStepsModule,
     CovalentFileModule,
     SatPopoverModule,
-    AgmCoreModule
+    AgmCoreModule,
+    DndModule
   ],
   exports: [
     CommonModule,
@@ -186,6 +196,7 @@ import { SpinnerComponent } from 'app/shared/spinner.component';
     CovalentFileModule,
     SatPopoverModule,
     AgmCoreModule,
+    DndModule,
 
     PageLayoutComponent,
     SideMenuComponent,
@@ -219,6 +230,9 @@ import { SpinnerComponent } from 'app/shared/spinner.component';
     FabComponent,
     TiledResultsComponent,
     TiledResultComponent,
+    ReorderableListComponent,
+    ReorderableItemDirective,
+    ReorderablePlaceholderDirective,
     UserLinkComponent,
     ImageViewerComponent,
     CaptchaComponent,

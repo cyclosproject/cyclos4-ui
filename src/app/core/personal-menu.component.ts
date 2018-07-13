@@ -1,9 +1,9 @@
-import { Component, ElementRef, ViewChild, ChangeDetectionStrategy, Injector } from '@angular/core';
+import { Component, ElementRef, ViewChild, ChangeDetectionStrategy, Injector, Input } from '@angular/core';
 import { BaseComponent } from 'app/shared/base.component';
 import { User, Auth } from 'app/api/models';
 import { MenuEntry, RootMenu, MenuType, RootMenuEntry } from 'app/shared/menu';
 import { MenuService } from 'app/shared/menu.service';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 /**
@@ -24,8 +24,11 @@ export class PersonalMenuComponent extends BaseComponent {
 
   menuEntries: Observable<MenuEntry[]>;
 
-  @ViewChild('container')
-  container: ElementRef;
+  showContent = new BehaviorSubject(false);
+
+  @ViewChild('container') container: ElementRef;
+
+  private anchor: any;
 
   private listener: any;
 
@@ -49,7 +52,16 @@ export class PersonalMenuComponent extends BaseComponent {
       })
     );
     this.listener = (e: MouseEvent) => {
-      if (!e.srcElement.classList.contains('popup')) {
+      let src = e.srcElement;
+      let ignore = false;
+      while (src != null) {
+        if (src.classList.contains('popup') || src === this.anchor) {
+          ignore = true;
+          break;
+        }
+        src = src.parentElement;
+      }
+      if (!ignore) {
         this.hide();
       }
     };
@@ -60,14 +72,6 @@ export class PersonalMenuComponent extends BaseComponent {
     this.hide();
   }
 
-  get user(): User {
-    return this.login.user;
-  }
-
-  get auth(): Auth {
-    return this.login.auth;
-  }
-
   toggle(a: HTMLElement) {
     if (this.container) {
       if (this.visible) {
@@ -75,36 +79,48 @@ export class PersonalMenuComponent extends BaseComponent {
         this.hide();
       } else {
         // Show
-        const style = this.container.nativeElement.style as CSSStyleDeclaration;
-        style.visibility = 'hidden';
-        style.opacity = '0';
-        style.display = '';
-        let topAnchor: HTMLElement = null;
-        let parent = a.parentElement;
-        while (parent != null) {
-          if (parent.tagName.toLowerCase() === 'top-bar') {
-            topAnchor = parent;
-          }
-          parent = parent.parentElement;
-        }
-        topAnchor = topAnchor || a;
-        style.top = (topAnchor.offsetTop + topAnchor.offsetHeight) + 'px';
-        if (this.layout.xs) {
-          style.left = '0';
-        } else {
-          const el = this.container.nativeElement as HTMLElement;
-          style.left = (a.offsetLeft + a.offsetWidth - el.offsetWidth) + 'px';
-        }
-        style.visibility = 'visible';
-        style.opacity = '1';
-        document.body.addEventListener('click', this.listener, true);
+        this.show(a);
       }
     }
   }
 
   get visible(): boolean {
     const style = this.container.nativeElement.style as CSSStyleDeclaration;
-    return !(style.display === 'none' || parseFloat(style.opacity) === 0);
+    return !(style.display === 'none' || parseFloat(style.opacity) === 0.0);
+  }
+
+  show(a: HTMLElement) {
+    if (this.visible) {
+      // Already visible
+      return;
+    }
+    this.anchor = a;
+    const style = this.container.nativeElement.style as CSSStyleDeclaration;
+    style.visibility = 'hidden';
+    style.opacity = '0';
+    style.display = '';
+    let topAnchor: HTMLElement = null;
+    let parent = a.parentElement;
+    while (parent != null) {
+      if (parent.tagName.toLowerCase() === 'top-bar') {
+        topAnchor = parent;
+      }
+      parent = parent.parentElement;
+    }
+    topAnchor = topAnchor || a;
+    this.showContent.next(true);
+    setTimeout(() => {
+      style.top = (topAnchor.offsetTop + topAnchor.offsetHeight) + 'px';
+      if (this.layout.xs) {
+        style.left = '0';
+      } else {
+        const el = this.container.nativeElement as HTMLElement;
+        style.left = (a.offsetLeft + a.offsetWidth - el.offsetWidth) + 'px';
+      }
+      style.visibility = 'visible';
+      style.opacity = '1';
+      document.body.addEventListener('click', this.listener, true);
+    }, 1);
   }
 
   hide() {
@@ -114,7 +130,10 @@ export class PersonalMenuComponent extends BaseComponent {
     }
     const style = this.container.nativeElement.style as CSSStyleDeclaration;
     style.opacity = '0';
-    setTimeout(() => style.display = 'none', 500);
+    setTimeout(() => {
+      style.display = 'none';
+      this.showContent.next(false);
+    }, 500);
     document.body.removeEventListener('click', this.listener, true);
   }
 

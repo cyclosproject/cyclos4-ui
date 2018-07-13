@@ -39,12 +39,9 @@ export class TopBarComponent extends BaseComponent {
   }
 
   personalMenuToggleClick(event: MouseEvent) {
-    this.togglePersonalMenu.emit(this.personalMenuToggle.nativeElement);
     event.preventDefault();
     event.stopPropagation();
+    this.togglePersonalMenu.emit(this.personalMenuToggle.nativeElement);
   }
 
-  get user(): User {
-    return this.login.user;
-  }
 }

@@ -38,7 +38,6 @@ export class ActionsComponent implements OnInit, AfterViewInit {
       let el = this.el.nativeElement;
       while (el != null && el.tagName !== 'HTML') {
         if (el.tagName === 'MAT-DIALOG-ACTIONS') {
-          console.log('In dialog!');
           this.inDialogActions = true;
           break;
         }
