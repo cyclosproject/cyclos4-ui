@@ -14,8 +14,8 @@
     "ng": "ng",
     "ng-swagger-gen": "ng-swagger-gen",
     "ng-translation-gen": "ng-translation-gen",
-    "start": "npm run ng-swagger-gen && npm run ng-translation-gen && npm run ng serve",
-    "build": "npm run ng-swagger-gen && npm run ng-translation-gen && npm run ng build --prod --aot --output-hashing=all --progress=false",
+    "start": "npm run ng-swagger-gen && npm run ng-translation-gen && npm run ng -- serve",
+    "build": "npm run ng-swagger-gen && npm run ng-translation-gen && npm run ng -- build --prod --aot --output-hashing=all --progress=false",
     "lint": "npm run ng lint",
     "e2e": "npm run ng e2e"
   },
