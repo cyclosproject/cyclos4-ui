@@ -1,0 +1,37 @@
+<label-value *ngIf="label; else widget" [formField]="self">
+  <ng-container *ngTemplateOutlet="widget"></ng-container>
+</label-value>
+
+<ng-template #widget>
+  <!-- Need a relatively-positioned element to position the dropdown corretcly -->
+  <div style="position:relative" dropdown #dropdown="bs-dropdown" (onShown)="onShown()">
+    <button #toggleButton dropdownToggle [id]="id" type="button" class="form-control text-left custom-select w-100"
+      [title]="display$ | async" attr.aria-controls="'multi-selectdropdown-' + id"
+      [ngClass]="{
+        'is-invalid': (formControl.statusChanges | async) === 'INVALID' && formControl.touched
+      }">
+      <div class="w-100 mw-100 text-truncate" [innerHTML]="display$ | async | trust"></div>
+    </button>
+
+    <div #dropDownMenu class="dropdown-menu" *dropdownMenu role="menu" attr.id="'multi-selectdropdown-' + id"
+      attr.aria-labelledby="id" (click)="$event.preventDefault(); $event.stopPropagation();">
+      <ng-container *ngFor="let category of categories | async; let firstCat = first">
+        <div *ngIf="category.name" class="mt-3 font-weight-bold">{{ category.name
+          }}
+        </div>
+        <div #check *ngFor="let option of category.options | async; let firstOpt = first"
+          class="custom-control custom-checkbox d-flex align-content-center" [ngClass]="{
+            'mt-1': !(firstCat && firstOpt)
+          }" (click)="toggle(option.value)" (keydown.space)="$event.preventDefault(); $event.stopPropagation()"
+          (keyup.enter)="toggle(option.value)" (keyup.esc)="close()">
+          <input type="checkbox" [name]="name" class="custom-control-input" [id]="id + '_' + option.value"
+            [value]="option.value" [checked]="isSelected(option)">
+          <label class="custom-control-label" [for]="id + '_' + option.value">
+            {{ option.text }}
+          </label>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+  <field-errors [control]="formControl"></field-errors>
+</ng-template>

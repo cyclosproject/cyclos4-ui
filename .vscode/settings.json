@@ -9,7 +9,9 @@
   "typescript.preferences.quoteStyle": "single",
   "typescript.preferences.importModuleSpecifier": "non-relative",
   "html.format.endWithNewline": true,
-  "html.format.wrapLineLength": 80,
+  "html.format.wrapLineLength": 78,
   "html.format.preserveNewLines": true,
-  "html.format.wrapAttributes": "force"
+  "html.format.maxPreserveNewLines": 1,
+  "html.format.contentUnformatted": "pre,code,textarea",
+  "html.format.wrapAttributes": "auto"
 }

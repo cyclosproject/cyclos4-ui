@@ -1,5 +1,170 @@
+@import 'src/definitions';
+
 :host {
-  display: flex !important;
-  flex-direction: column !important;
-  flex: 1 1 100% !important;
+  display: flex;
+  width: 100%;
+}
+
+.content-title {
+  border-bottom: 1px solid $section-border-color;
+  height: $title-height-xxs;
+
+  .title-text {
+    font-size: 1.4em;
+    line-height: 1.4em;
+    margin-left: $layout-spacer-xxs;
+  }
+}
+
+@include media-breakpoint-up(xs) {
+  .content-title {
+    height: $title-height-xs;
+
+    .title-text {
+      margin-left: $layout-spacer-xs;
+    }
+  }
+}
+@include media-breakpoint-up(md) {
+  .content-title {
+    height: $title-height;
+
+    .title-text {
+      margin-left: $layout-spacer;
+    }
+  }
+
+  :host ::ng-deep .mode-normal.tight-labels .page-content-body {
+    padding-top: $layout-spacer;
+  }
+}
+.layout-centered {
+  text-align: center;
+
+  .content-title {
+    margin-top: 1.6rem;
+    padding: 0;
+    border-bottom: none;
+
+    .title-text {
+      justify-content: center;
+    }
+  }
+}
+
+@include media-breakpoint-up(md) {
+  :host {
+    margin-top: $section-margin;
+  }
+  .layout-centered .content-title {
+      margin-top: 1.75rem;
+  }
+}
+
+.back-button + .title-text {
+  margin-left: 0;
+}
+
+.page-content:not(.mode-transparent) {
+  box-shadow: $box-shadow-sm;
+}
+
+.page-content:not(.mode-normal):not(.mode-filters) {
+  .page-content-body {
+    padding: 0;
+  }
+}
+
+.page-content.mode-table ::ng-deep table.table {
+  margin-bottom: 0;
+}
+
+.page-content.mode-table {
+  border-top: none;
+}
+
+.mode-transparent {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  .page-content-body {
+    padding: 0;
+  }
+}
+
+.mode-full-height {
+  .page-content-body {
+    height: 100%;
+    display: flex;
+  }
+}
+
+.lt-md :host ::ng-deep .page-content {
+  border: none;
+  box-shadow: none;
+}
+
+.page-content-body {
+  padding: $layout-spacer-xxs;
+}
+@include media-breakpoint-up(xs) {
+  .page-content-body {
+    padding: $layout-spacer-xs;
+  }
+}
+@include media-breakpoint-up(sm) {
+  .page-content-body {
+    padding: $card-spacer-x;
+  }
+
+  .mode-filters .page-content-body {
+    padding: 0 $layout-spacer;
+  }
+
+  :host ::ng-deep .mode-filters .page-content-body form {
+    padding-top: 0;
+    padding-bottom: 1rem;
+
+    .any-label-value {
+      margin-top: 1rem;
+    }
+  }
+}
+
+.back-button {
+  width: auto;
+  height: 100%;
+  padding: 0 $layout-spacer-xxs;
+  color: $button-icon-color;
+}
+@include media-breakpoint-up(xs) {
+  .back-button {
+    padding: 0 $layout-spacer-xs;
+  }
+}
+@include media-breakpoint-up(sm) {
+  .back-button {
+    padding: 0 $layout-spacer;
+  }
+}
+
+.heading-action {
+  height: 100%;
+  border-color: $title-button-border-color;
+  border-width: 0 0 0 1px;
+  background-color: $title-button-bg;
+  color: $title-button-color;
+  padding: 0.2rem;
+
+  &:focus, &:active {
+    outline: 0;
+    border: none;
+    box-shadow: $btn-focus-box-shadow;
+  }
+}
+
+@include media-breakpoint-up(xs) {
+  .heading-action {
+    padding: 1rem;
+  }
 }

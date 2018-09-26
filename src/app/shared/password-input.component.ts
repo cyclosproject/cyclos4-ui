@@ -1,42 +1,16 @@
 import {
-  ElementRef, Component, Input, Output, EventEmitter, ViewChild, AfterViewInit,
-  ChangeDetectorRef, forwardRef, Provider, ChangeDetectionStrategy, OnDestroy, SkipSelf, Host, Optional
+  ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Host, Input, OnInit, Optional, Output, SkipSelf, ViewChild
 } from '@angular/core';
-import {
-  NG_VALUE_ACCESSOR, NG_VALIDATORS, Validator,
-  AbstractControl, ValidationErrors, ControlContainer
-} from '@angular/forms';
-import { PasswordInput } from 'app/api/models';
-import { PasswordInputMethodEnum } from 'app/api/models';
-import { SendMediumEnum } from 'app/api/models';
-
+import { AbstractControl, ControlContainer, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator } from '@angular/forms';
+import { I18n } from '@ngx-translate/i18n-polyfill';
+import { PasswordInput, PasswordInputMethodEnum, PasswordModeEnum, SendMediumEnum } from 'app/api/models';
 import { AuthService } from 'app/api/services/auth.service';
-
 import { NotificationService } from 'app/core/notification.service';
-import { Messages } from 'app/messages/messages';
-
-import { MatGridList } from '@angular/material';
-import { Subscription } from 'rxjs';
+import { Action } from 'app/shared/action';
 import { BaseControlComponent } from 'app/shared/base-control.component';
+import { truthyAttr } from 'app/shared/helper';
 
-// Contains a mapping between OTP send mediums and material icon ligatures
-const OTP_ICONS = {};
-OTP_ICONS[SendMediumEnum.EMAIL] = 'email';
-OTP_ICONS[SendMediumEnum.SMS] = 'textsms';
 
-// Definition of the exported NG_VALUE_ACCESSOR provider
-export const PASSWORD_INPUT_VALUE_ACCESSOR: Provider = {
-  provide: NG_VALUE_ACCESSOR,
-  useExisting: forwardRef(() => PasswordInputComponent),
-  multi: true
-};
-
-// Definition of the exported NG_VALIDATORS provider
-export const PASSWORD_INPUT_VALIDATOR: Provider = {
-  provide: NG_VALIDATORS,
-  useExisting: forwardRef(() => PasswordInputComponent),
-  multi: true
-};
 
 /**
  * Component used to display a password input
@@ -44,94 +18,103 @@ export const PASSWORD_INPUT_VALIDATOR: Provider = {
 @Component({
   selector: 'password-input',
   templateUrl: 'password-input.component.html',
-  styleUrls: ['password-input.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
-    PASSWORD_INPUT_VALUE_ACCESSOR,
-    PASSWORD_INPUT_VALIDATOR
+    { provide: NG_VALUE_ACCESSOR, useExisting: PasswordInputComponent, multi: true },
+    { provide: NG_VALIDATORS, useExisting: PasswordInputComponent, multi: true }
   ]
 })
 export class PasswordInputComponent
   extends BaseControlComponent<string>
-  implements OnDestroy, AfterViewInit, Validator {
+  implements OnInit, Validator {
 
-  // Contains the current characters combination shown in the VK
-  currentVKCombinations: string[];
-  enteredVKPassword: string[] = [];
-
-  @ViewChild('passwordComponent')
-  passwordComponent: ElementRef;
-
-  @ViewChild('vkButtons')
-  vkButtons: MatGridList;
+  @Input() passwordInput: PasswordInput;
 
   @Input() placeholder: string;
 
-  @Input() showIcon: boolean;
+  @Input() autocomplete: string;
+
+  private _showIcon: boolean | string = false;
+  @Input() get showIcon(): boolean | string {
+    return this._showIcon;
+  }
+  set showIcon(showIcon: boolean | string) {
+    this._showIcon = truthyAttr(showIcon);
+  }
 
   @Output() enter = new EventEmitter<string>();
 
   @Output() otpSent = new EventEmitter<void>();
 
+  @ViewChild('passwordField') passwordField: ElementRef;
+
   virtualKeyboard: boolean;
-  otpIcons: any = OTP_ICONS;
-  otpMediums: any;
+  currentVKCombinations: string[];
+  enteredVKPassword: string[];
 
-  private _passwordInput: PasswordInput;
-
-  private subscriptions: Subscription[] = [];
+  otp: boolean;
+  otpActions: Action[];
 
   constructor(
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
     private authService: AuthService,
     private notificationService: NotificationService,
-    private messages: Messages,
-    private changeDetector: ChangeDetectorRef) {
+    private i18n: I18n) {
     super(controlContainer);
   }
 
   ngOnInit(): void {
     super.ngOnInit();
-    this.otpMediums = {};
-    this.otpMediums[SendMediumEnum.EMAIL] = this.messages.passwordOtpMediumEmail();
-    this.otpMediums[SendMediumEnum.SMS] = this.messages.passwordOtpMediumSms();
+    const input = this.passwordInput;
 
+    // Initialize the one-time-password fields
+    this.otp = input.mode === PasswordModeEnum.OTP;
+    if (this.otp) {
+      this.otpActions = (input.otpSendMediums || [])
+        .map(medium => this.requestOtpAction(medium))
+        .filter(action => action != null);
+    }
+
+    // Initialize the virtual keyboard fields
+    this.virtualKeyboard = input.inputMethod === PasswordInputMethodEnum.VIRTUAL_KEYBOARD;
+    if (this.virtualKeyboard) {
+      this.enteredVKPassword = [];
+      this.updateVKButtons();
+    }
+
+    // Ensure we have a proper placeholder
     if (this.placeholder == null) {
       this.placeholder = this.passwordInput.name;
     }
   }
 
-  ngOnDestroy() {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
-  }
-
-  ngAfterViewInit(): void {
-    if (this.passwordComponent) {
-      this.passwordComponent.nativeElement.focus();
-      this.changeDetector.detectChanges();
+  /**
+   * Returns an action to request a new OTP
+   * @param medium The send medium
+   */
+  private requestOtpAction(medium: SendMediumEnum): Action {
+    let icon: string;
+    let label: string;
+    switch (medium) {
+      case SendMediumEnum.EMAIL:
+        icon = 'email';
+        label = this.i18n('E-mail');
+        break;
+      case SendMediumEnum.SMS:
+        icon = 'textsms';
+        label = this.i18n('SMS');
+        break;
+      default:
+        return null;
     }
-    // For some reason, Firefox don't respect height, but only min-height
-    // on the MatGridList. We hope this doesn't break in future Angular Material versions.
-    if (this.vkButtons) {
-      const vk = <any>this.vkButtons;
-      const ref: ElementRef = vk._element;
-      const el: HTMLElement = ref.nativeElement;
-      el.style.minHeight = el.style.height;
-    }
-  }
-
-  @Input()
-  set passwordInput(value: PasswordInput) {
-    this._passwordInput = value;
-    this.virtualKeyboard = value.inputMethod === PasswordInputMethodEnum.VIRTUAL_KEYBOARD;
-    if (this.virtualKeyboard) {
-      this.enteredVKPassword = [];
-      this.updateVKButtons();
-    }
-  }
-
-  get passwordInput(): PasswordInput {
-    return this._passwordInput;
+    return new Action(icon, label, () => {
+      this.addSub(this.authService.newOtp(medium).subscribe(res => {
+        this.notificationService.snackBar(this.i18n('The password was sent to {{dest}}', {
+          dest: (res || []).join(', ')
+        }));
+        this.otpSent.emit(null);
+      }));
+    });
   }
 
   vkKey(combination: string) {
@@ -149,51 +132,22 @@ export class PasswordInputComponent
     this.updateVKButtons();
   }
 
-  requestOtp(medium: SendMediumEnum): void {
-    this.authService.newOtp(medium)
-      .subscribe(mediums => {
-        const arg = mediums.join(', ');
-        let message: string;
-        switch (medium) {
-          case SendMediumEnum.EMAIL:
-            message = this.messages.passwordOtpSentEmail(arg);
-            break;
-          case SendMediumEnum.SMS:
-            message = this.messages.passwordOtpSentSms(arg);
-            break;
-          default:
-            // Unhandled medium
-            message = 'The OTP was sent to ' + arg;
-            break;
-        }
-        const dialog$ = this.notificationService.info(message);
-        this.otpSent.emit(null);
-        if (this.passwordComponent) {
-          // There are 2 subscriptions here: one for the dialog result, another one for the afterClosed() event
-          this.subscriptions.push(dialog$.subscribe(dialog => {
-            this.subscriptions.push(dialog.afterClosed().subscribe(() => {
-              this.passwordComponent.nativeElement.focus();
-            }));
-          }));
-        }
-      });
-  }
-
   private updateVKButtons(): void {
-    if (this.passwordComponent) {
-      // update the input to simulate a new entered character
-      this.passwordComponent.nativeElement.value = '*'.repeat(this.enteredVKPassword.length);
-    }
-    if (this.enteredVKPassword.length < this._passwordInput.buttons.length) {
+    if (this.enteredVKPassword.length < this.passwordInput.buttons.length) {
       this.currentVKCombinations = this.passwordInput.buttons[this.enteredVKPassword.length];
     }
-    this.formControl.setValue(this._passwordInput.id + '|' + this.enteredVKPassword.join('|'));
+    this.formControl.setValue(this.enteredVKPassword.length === 0 ? '' : this.passwordInput.id + '|' + this.enteredVKPassword.join('|'));
   }
 
   onDisabledChange(isDisabled: boolean): void {
-    this.disabled = isDisabled;
-    if (this.passwordComponent) {
-      this.passwordComponent.nativeElement.disabled = isDisabled;
+    if (this.passwordField && this.passwordField.nativeElement) {
+      this.passwordField.nativeElement.disabled = true;
+    }
+  }
+
+  focus() {
+    if (this.passwordField && this.passwordField.nativeElement) {
+      this.passwordField.nativeElement.focus();
     }
   }
 
@@ -219,10 +173,7 @@ export class PasswordInputComponent
     }
     return null;
   }
-  registerOnValidatorChange(fn: () => void): void {
-  }
 
-  focus() {
-    this.passwordComponent.nativeElement.focus();
+  registerOnValidatorChange(fn: () => void): void {
   }
 }

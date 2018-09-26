@@ -1,36 +1,41 @@
-import { Component, ChangeDetectionStrategy, Injector } from '@angular/core';
-import { DataForLogin } from 'app/api/models';
-import { BaseComponent } from 'app/shared/base.component';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { BehaviorSubject } from 'rxjs';
-import { LoginPageState } from '../core/login.service';
+import { ChangeDetectionStrategy, Component, Injector, OnInit, ViewChild } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { DataForLogin, DataForUi } from 'app/api/models';
+import { LoginReason, LoginState } from 'app/core/login-state';
+import { BasePageComponent } from 'app/shared/base-page.component';
+import { PasswordInputComponent } from 'app/shared/password-input.component';
+import { NextRequestState } from 'app/core/next-request-state';
 
 /**
  * Component used to show a login form.
  * Also has a link to the forgot password functionality.
  */
 @Component({
-  selector: 'app-login',
+  // tslint:disable-next-line:component-selector
+  selector: 'login',
   templateUrl: 'login.component.html',
   styleUrls: ['login.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LoginComponent extends BaseComponent {
+export class LoginComponent
+  extends BasePageComponent<DataForLogin>
+  implements OnInit {
 
   form: FormGroup;
-  loaded = new BehaviorSubject(false);
-  dataForLogin: DataForLogin;
+
+  @ViewChild('password') passwordInput: PasswordInputComponent;
 
   get forgotPasswordEnabled(): boolean {
-    return (this.dataForLogin.forgotPasswordMediums || []).length > 0;
+    return (this.data.forgotPasswordMediums || []).length > 0;
   }
 
   constructor(
     injector: Injector,
-    formBuilder: FormBuilder
+    private loginState: LoginState,
+    private nextRequestState: NextRequestState
   ) {
     super(injector);
-    this.form = formBuilder.group({
+    this.form = this.formBuilder.group({
       principal: '',
       password: ''
     });
@@ -38,13 +43,29 @@ export class LoginComponent extends BaseComponent {
 
   ngOnInit() {
     super.ngOnInit();
-    const dataForUi = this.dataForUiHolder.dataForUi;
-    if (dataForUi.auth != null) {
-      this.router.navigateByUrl(this.login.redirectUrl || '');
-    } else {
-      this.dataForLogin = dataForUi.dataForLogin;
-      setTimeout(() => this.loaded.next(true), 50);
+    if (this.nextRequestState.sessionToken) {
+      this.router.navigateByUrl(this.loginState.redirectUrl || '');
+      return;
     }
+
+    // After closing the error notification, clear and focus the password field
+    this.addSub(this.notification.onClosed.subscribe(() => {
+      this.form.patchValue({ password: '' });
+      this.passwordInput.focus();
+    }));
+
+    const dataForUi = this.dataForUiHolder.dataForUi;
+    if (dataForUi == null || dataForUi.dataForLogin == null) {
+      // Either the dataForUi is not loaded (?) or still points to a user. Reload first
+      this.dataForUiHolder.reload().subscribe(d4ui => this.initialize(d4ui));
+    } else {
+      // Can initialize directly
+      this.initialize(dataForUi);
+    }
+  }
+
+  private initialize(dataForUi: DataForUi) {
+    this.data = dataForUi.dataForLogin;
   }
 
   /**
@@ -55,14 +76,13 @@ export class LoginComponent extends BaseComponent {
       return;
     }
     const value = this.form.value;
-    this.login.login(value.principal, value.password);
+    this.login.login(value.principal, value.password).subscribe(() => {
+      // Redirect to the correct URL
+      this.router.navigateByUrl(this.loginState.redirectUrl || '');
+    });
   }
 
-  get text(): string {
-    if (this.login.loginPageState === LoginPageState.LOGGED_OUT) {
-      return this.messages.loginMessageDisconnected();
-    } else {
-      return this.messages.loginMessage();
-    }
+  get loggedOut(): boolean {
+    return this.loginState.reason === LoginReason.LOGGED_OUT;
   }
 }

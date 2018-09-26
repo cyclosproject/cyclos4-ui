@@ -1,0 +1,22 @@
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="loaded$ | async; else loading">
+    <page-content mode="filters" i18n-heading heading="Contact list">
+      <div class="filters-row">
+        <result-type-field [formControl]="resultTypeControl">
+        </result-type-field>
+      </div>
+    </page-content>
+    <users-results #usersResults resultKind="contact" [ngClass]="{
+          'd-none': (rendering$ | async)
+        }"
+      [results]="results$ | async" [rendering$]="rendering$" [data]="data$ | async"
+      [resultType]="resultType$ | async" (update)="update($event)">
+    </users-results>
+  </ng-container>
+</page-layout>
+
+<ng-template #loading>
+  <page-content>
+    <spinner></spinner>
+  </page-content>
+</ng-template>

@@ -1,0 +1,99 @@
+<notification class="mb-3" *ngIf="preview.pendingAuthorization" type="warning"
+  i18n>
+  The payment will require authorization
+</notification>
+
+<label-value i18n-label label="From account">
+  {{ ApiHelper.accountDisplay(preview.fromAccount) }}
+</label-value>
+<label-value *ngIf="preview.toAccount.kind === 'system'; else toUser"
+  i18n-label label="To account">{{
+  ApiHelper.accountDisplay(preview.toAccount) }}</label-value>
+<ng-template #toUser>
+  <label-value i18n-label label="To user">
+    {{ preview.toAccount.user.display }}
+    <span *ngIf="preview.toAccount.number"> - {{ preview.toAccount.number }}</span>
+  </label-value>
+</ng-template>
+<label-value *ngIf="showPaymentType" i18n-label label="Payment type">
+  {{ preview.paymentType.name }}
+</label-value>
+<label-value *ngIf="preview.mainAmount != null && preview.totalAmount !== preview.mainAmount"
+  i18n-label label="Amount">
+  {{ preview.mainAmount | currency:preview.currency }}
+</label-value>
+<label-value *ngIf="fees?.length > 0" i18n-label label="Applied fees">
+  <div *ngFor="let feePreview of fees">
+    {{ feePreview.fee.name }}: {{ feePreview.amount |
+    currency:preview.currency }}
+  </div>
+</label-value>
+<custom-field-value *ngFor="let fv of preview.customValues" [fieldValue]="fv"></custom-field-value>
+<label-value *ngIf="preview.installments?.length === 1" i18n-label label="Due date">
+  {{ preview.installments[0].dueDate | date }}
+</label-value>
+<label-value *ngIf="preview.installments?.length > 1" i18n-label label="Installments">
+  <table class="table table-hover">
+    <thead *ngIf="layout.gtxs$ | async">
+      <th i18n>Number</th>
+      <th i18n>Due date</th>
+      <th i18n class="text-right">Amount</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let installment of preview.installments">
+        <td>
+          {{ installment.number }}
+        </td>
+        <td>
+          {{ installment.dueDate | date }}
+        </td>
+        <td class="text-right">
+          {{ installment.mainAmount | currency:preview.currency }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</label-value>
+<label-value *ngIf="preview.payment.scheduling === 'recurring'" i18n-label
+  label="Recurring payment">
+  <ng-container *ngIf="preview.payment.firstOccurrenceDate == null; else occurrencesDateSet">
+    <ng-container *ngIf="preview.payment.occurrencesCount == null" i18n>
+      Repeats until manually canceled, starting now
+    </ng-container>
+    <ng-container *ngIf="preview.payment.occurrencesCount != null" i18n>
+      Repeats {{ preview.payment.occurrencesCount }} times, starting now
+    </ng-container>
+  </ng-container>
+  <ng-template #occurrencesDateSet>
+    <ng-container *ngIf="preview.payment.occurrencesCount == null" i18n>
+      Repeats until manually canceled, starting at {{
+      preview.payment.firstOccurrenceDate | date }}
+    </ng-container>
+    <ng-container *ngIf="preview.payment.occurrencesCount != null" i18n>
+      Repeats {{ preview.payment.occurrencesCount }} times, starting at {{
+      preview.payment.firstOccurrenceDate | date }}
+    </ng-container>
+  </ng-template>
+</label-value>
+<label-value i18n-label label="Description" *ngIf="preview.payment.description"
+  [value]="preview.payment.description" valueFormat="break"></label-value>
+<hr>
+<label-value i18n-label label="Total amount">
+  <div class="totalAmount">
+    {{ preview.totalAmount | currency:preview.currency }}
+  </div>
+</label-value>
+<ng-container *ngIf="(preview.confirmationMessage || '').length > 0">
+  <hr>
+  <div class="break-nl">{{preview.confirmationMessage}}</div>
+</ng-container>
+<ng-container *ngIf="preview.confirmationPasswordInput">
+  <hr>
+  <form [formGroup]="form">
+    <div class="mb-3" i18n>Supply your {{
+      preview.confirmationPasswordInput.name
+      }} to confirm this payment</div>
+    <confirmation-password focused formControlName="confirmationPassword"
+      [passwordInput]="preview.confirmationPasswordInput"></confirmation-password>
+  </form>
+</ng-container>

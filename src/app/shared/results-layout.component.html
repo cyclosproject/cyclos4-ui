@@ -1,0 +1,74 @@
+<page-content *ngIf="(rendering$ | async) && results == null">
+  <spinner></spinner>
+</page-content>
+
+<content-monitor *ngIf="categoryTemplate && categories?.length > 0 && resultType === 'categories'"
+  (ready)="notifyReady()" [ngClass]="{'d-none': rendering$ | async}">
+  <page-content mode="transparent">
+    <div class="row category-results">
+      <div class="col-12 col-xs-6 col-sm-4" *ngFor="let cat of categories" [ngClass]="{
+        'col-md-3': login.user == null,
+        'col-xl-3': login.user != null,
+        'col-xl-2': login.user == null
+      }">
+        <ng-container *ngTemplateOutlet="categoryTemplate; context: {$implicit: cat}"></ng-container>
+      </div>
+    </div>
+  </page-content>
+</content-monitor>
+
+<ng-container *ngIf="results?.hasResults; else noResults">
+  <content-monitor *ngIf="tableTemplate && resultType === 'list'" (ready)="notifyReady()"
+    [ngClass]="{'d-none': rendering$ | async}">
+    <page-content mode="table">
+      <ng-container *ngTemplateOutlet="tableTemplate"></ng-container>
+      <div class="paginator-container" *ngIf="showPaginator(results)" mode="transparent">
+        <paginator [results]="results" (update)="update.emit($event)"></paginator>
+      </div>
+    </page-content>
+  </content-monitor>
+
+  <content-monitor *ngIf="tileTemplate && resultType === 'tiles'" (ready)="notifyReady()"
+    [ngClass]="{'d-none': rendering$ | async}">
+    <page-content mode="transparent">
+      <div class="row tiled-results">
+        <div class="tiled-result col-12 col-xs-6 col-sm-4" *ngFor="let row of results.results"
+          [ngClass]="{
+          'col-md-3': login.user == null,
+          'col-xl-3': login.user != null,
+          'col-xl-2': login.user == null
+        }">
+          <ng-container *ngTemplateOutlet="tileTemplate; context: {$implicit: row}"></ng-container>
+        </div>
+      </div>
+    </page-content>
+  </content-monitor>
+
+  <content-monitor *ngIf="resultType === 'map'" (ready)="mapLoaded ? notifyReady() : null"
+    class="d-flex flex-grow-1" [ngClass]="{'d-none': rendering$ | async}">
+    <page-content mode="fullHeightTight">
+      <agm-map [fitBounds]="mapBounds$ | async" [latitude]="maps.data?.defaultLocation?.latitude"
+        [longitude]="maps.data?.defaultLocation?.longitude" [fullscreenControl]="true"
+        maxZoom="17" minZoom="2" (mapClick)="closeAllInfoWindows()" (mapReady)="adjustMap();">
+        <ng-container *ngFor="let row of results.results">
+          <ng-container *ngIf="toAddress(row) as addr">
+            <agm-marker [title]="toMarkerTitle(row)" [latitude]="addr.location.latitude" [longitude]="addr.location.longitude"
+              (markerClick)="closeAllInfoWindows()">
+              <agm-info-window>
+                <ng-container *ngTemplateOutlet="infoWindowTemplate; context: {$implicit: row, address: addr}"></ng-container>
+              </agm-info-window>
+            </agm-marker>
+          </ng-container>
+        </ng-container>
+      </agm-map>
+    </page-content>
+  </content-monitor>
+</ng-container>
+
+<ng-template #noResults>
+  <content-monitor *ngIf="results && resultType !== 'categories'" (ready)="notifyReady()">
+    <page-content i18n>
+      No results match the search criteria {{ notifyReady() }}
+    </page-content>
+  </content-monitor>
+</ng-template>

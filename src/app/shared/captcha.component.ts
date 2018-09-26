@@ -1,15 +1,15 @@
-import { Component, ChangeDetectionStrategy, Input, ViewChild, ElementRef, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, ViewChild, ElementRef, AfterViewInit, OnDestroy, HostBinding } from '@angular/core';
 import { CaptchaService } from 'app/api/services';
 import { FormGroup } from '@angular/forms';
 
 @Component({
   // tslint:disable-next-line:component-selector
   selector: 'captcha',
-  templateUrl: './captcha.component.html',
+  templateUrl: 'captcha.component.html',
+  styleUrls: ['captcha.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CaptchaComponent implements AfterViewInit, OnDestroy {
-  constructor(private captchaService: CaptchaService) { }
 
   @Input() group: string;
 
@@ -22,6 +22,11 @@ export class CaptchaComponent implements AfterViewInit, OnDestroy {
   @ViewChild('image') image: ElementRef;
 
   currentUrl: string;
+
+  constructor(
+    private captchaService: CaptchaService,
+    private element: ElementRef
+  ) { }
 
   ngAfterViewInit() {
     this.newCaptcha();
@@ -38,6 +43,10 @@ export class CaptchaComponent implements AfterViewInit, OnDestroy {
     }
   }
 
+  get img(): HTMLImageElement {
+    return this.image.nativeElement;
+  }
+
   newCaptcha() {
     this.captchaService.newCaptchaResponse(this.group)
       .subscribe(response => {
@@ -49,8 +58,14 @@ export class CaptchaComponent implements AfterViewInit, OnDestroy {
         this.captchaService.getCaptchaContent({ id: id, group: this.group }).subscribe(blob => {
           this.revokeCurrent();
           this.currentUrl = URL.createObjectURL(blob);
-          this.image.nativeElement.src = this.currentUrl;
+          this.img.src = this.currentUrl;
+          this.updateWidth();
         });
       });
+  }
+
+  updateWidth() {
+    const el = this.element.nativeElement as HTMLElement;
+    el.style.width = `${this.img.getBoundingClientRect().width}px`;
   }
 }

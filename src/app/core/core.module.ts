@@ -1,80 +1,79 @@
-import { NgModule, Optional, SkipSelf, Provider, forwardRef } from '@angular/core';
+import { NgModule, Optional, SkipSelf, Provider, forwardRef, TRANSLATIONS, TRANSLATIONS_FORMAT } from '@angular/core';
 
-import { SidenavMenuComponent } from 'app/core/sidenav-menu.component';
-import { LayoutBarComponent } from 'app/core/layout-bar.component';
-import { TopBarComponent } from 'app/core/top-bar.component';
-import { MenuBarComponent } from 'app/core/menu-bar.component';
-
-import { SharedModule } from 'app/shared/shared.module';
-import { Messages } from 'app/messages/messages';
 import { NotificationService } from 'app/core/notification.service';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
 import { FormatService } from 'app/core/format.service';
 import { MapsService } from 'app/core/maps.service';
-import { TranslationLoaderService } from 'app/core/translation-loader.service';
-import { LayoutService } from 'app/core/layout.service';
 import { LoginService } from 'app/core/login.service';
-import { PersonalMenuComponent } from 'app/core/personal-menu.component';
-import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material';
-import { ApiDateAdapter } from 'app/core/api-date-adapter';
-import { MenuService } from 'app/shared/menu.service';
+import { MenuService } from 'app/core/menu.service';
 import { StateManager } from 'app/core/state-manager';
 import { PushNotificationsService } from 'app/core/push-notifications.service';
 import { ApiInterceptor } from 'app/core/api.interceptor';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CountriesResolve } from 'app/countries.resolve';
-import { BreadcrumbService } from './breadcrumb.service';
 import { LightboxModule } from 'ngx-lightbox';
 import { NextRequestState } from './next-request-state';
 import { SvgIconRegistry } from 'app/core/svg-icon-registry';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
+import { UserCacheService } from 'app/core/user-cache.service';
+import { SharedModule } from 'app/shared/shared.module';
+
+import { I18n } from '@ngx-translate/i18n-polyfill';
+import { BreadcrumbService } from 'app/core/breadcrumb.service';
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { LayoutService } from 'app/shared/layout.service';
+import { TopBarComponent } from 'app/core/top-bar.component';
+
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { MenuBarComponent } from 'app/core/menu-bar.component';
+import { PersonalMenuComponent } from 'app/core/personal-menu.component';
+import { SidenavComponent } from 'app/core/sidenav.component';
+import { SnackBarComponent } from 'app/core/snack-bar.component';
+import { LoginState } from 'app/core/login-state';
+import { TransactionStatusService } from 'app/core/transaction-status.service';
 
 export const API_INTERCEPTOR_PROVIDER: Provider = {
   provide: HTTP_INTERCEPTORS,
   useExisting: forwardRef(() => ApiInterceptor),
   multi: true
 };
-export const DATE_ADAPTER_PROVIDER: Provider = {
-  provide: DateAdapter,
-  useExisting: forwardRef(() => ApiDateAdapter)
-};
-export function materialDateFormatsFactory(formatService: FormatService) {
-  return formatService.materialDateFormats.value;
-}
-export const DATE_FORMATS_PROVIDER: Provider = {
-  provide: MAT_DATE_FORMATS,
-  useFactory: materialDateFormatsFactory,
-  deps: [FormatService]
-};
+
+// Use the require method provided by webpack
+declare const require;
+export const translations = require(`raw-loader!../../i18n/cyclos4-ui.en.xlf`);
 
 /**
  * Module that declares components used only by the core app module
  */
 @NgModule({
   declarations: [
-    LayoutBarComponent,
     TopBarComponent,
+    PersonalMenuComponent,
     MenuBarComponent,
-    SidenavMenuComponent,
-    PersonalMenuComponent
+    SidenavComponent,
+    SnackBarComponent
   ],
   imports: [
     SharedModule,
     LightboxModule
   ],
   exports: [
-    LayoutBarComponent,
+    LightboxModule,
     TopBarComponent,
-    MenuBarComponent,
-    SidenavMenuComponent,
     PersonalMenuComponent,
-    LightboxModule
+    MenuBarComponent,
+    SidenavComponent,
+    SnackBarComponent
   ],
   providers: [
     NextRequestState,
     ApiInterceptor,
-    Messages,
-    TranslationLoaderService,
+    // format of translations that you use
+    { provide: TRANSLATIONS_FORMAT, useValue: 'xlf' },
+    // the translations that you need to load on your own
+    { provide: TRANSLATIONS, useValue: translations },
+    I18n,
+    BreakpointObserver,
     DataForUiHolder,
     ErrorHandlerService,
     FormatService,
@@ -84,14 +83,15 @@ export const DATE_FORMATS_PROVIDER: Provider = {
     BreadcrumbService,
     StateManager,
     LoginService,
+    LoginState,
     MenuService,
     PushNotificationsService,
     CountriesResolve,
-    ApiDateAdapter,
     SvgIconRegistry,
+    UserCacheService,
+    TransactionStatusService,
     API_INTERCEPTOR_PROVIDER,
-    DATE_ADAPTER_PROVIDER,
-    DATE_FORMATS_PROVIDER
+    BsModalService
   ]
 })
 export class CoreModule {

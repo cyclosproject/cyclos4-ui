@@ -1,3 +1,5 @@
-:host ::ng-deep .mat-icon {
-  opacity: 0.7;
+@import 'src/definitions';
+
+button {
+  height: $input-height;
 }

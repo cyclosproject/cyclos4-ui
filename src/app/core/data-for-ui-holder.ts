@@ -1,56 +1,72 @@
 import { Injectable } from '@angular/core';
 import { DataForUi, UiKind } from 'app/api/models';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { BehaviorSubject } from 'rxjs';
 import { NextRequestState } from 'app/core/next-request-state';
 import { UIService } from 'app/api/services';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ErrorStatus } from 'app/core/error-status';
-import { TranslationLoaderService } from './translation-loader.service';
-import { Messages } from 'app/messages/messages';
+import { tap, catchError } from 'rxjs/operators';
+import { I18n } from '@ngx-translate/i18n-polyfill';
+
+declare const setRootAlert: (boolean) => void;
+declare const setReloadButton: (boolean) => void;
 
 /**
  * Injectable used to hold the `DataForUi` instance used by the application
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class DataForUiHolder {
   private _dataForUi = new BehaviorSubject(null as DataForUi);
 
   constructor(
     private nextRequestState: NextRequestState,
     private uiService: UIService,
-    private translationLoaderService: TranslationLoaderService,
-    private messages: Messages) {
+    private i18n: I18n) {
   }
 
   /**
-   * Reloads the `DataForUi` instance, returning a promise called when it is complete
+   * Returns a cold observer for initializing the `DataForUi` instance
    */
-  reload(): Promise<DataForUi> {
-    let retried = false;
+  initialize(): Observable<DataForUi> {
     this.nextRequestState.ignoreNextError = true;
-    return this.uiService.dataForUi({ kind: UiKind.CUSTOM })
-      .toPromise()
-      .then(dataForUi => {
-        // We're initializing the DataForUi. Also load the corresponding translation
-        return this.translationLoaderService.load(dataForUi.language.code, dataForUi.country)
-          .then(messages => {
-            this.messages.initialize(messages);
-            // Only after the messages are initialized, initialize the DataForUi instance
-            this.dataForUi = dataForUi;
-            return dataForUi;
-          });
-      })
-      .catch((resp: HttpErrorResponse) => {
-        if (!retried && this.nextRequestState.sessionToken != null
-          && (resp.status === ErrorStatus.FORBIDDEN || resp.status === ErrorStatus.UNAUTHORIZED)) {
-          retried = true;
+    return this.uiService.dataForUi({ kind: UiKind.CUSTOM }).pipe(
+      tap(dataForUi => {
+        this.dataForUi = dataForUi;
+      }),
+      catchError((resp: HttpErrorResponse, caught) => {
+        if (resp.status === 0) {
+          // The server couldn't be contacted
+          setRootAlert(this.i18n(`The server couldn't be contacted.
+          <br>Please, try again later.`));
+          setReloadButton(this.i18n('Reload page'));
+          return;
+        }
+        // Maybe we're using an old session data. In that case, we have to clear the session and try again
+        if (this.nextRequestState.sessionToken && [ErrorStatus.FORBIDDEN, ErrorStatus.UNAUTHORIZED].includes(resp.status)) {
           // Clear the session token and try again
           this.nextRequestState.sessionToken = null;
-          return this.reload();
+          return this.uiService.dataForUi({ kind: UiKind.CUSTOM }).pipe(
+            tap(dataForUi => {
+              this.dataForUi = dataForUi;
+            })
+          );
         }
-        throw resp;
-      });
+      })
+    );
+  }
+
+  /**
+   * Reloads a cold observer for reloading the `DataForUi` instance
+   */
+  reload(): Observable<DataForUi> {
+    return this.uiService.dataForUi({ kind: UiKind.CUSTOM }).pipe(
+      tap(dataForUi => {
+        this.dataForUi = dataForUi;
+      })
+    );
   }
 
   get dataForUi(): DataForUi {

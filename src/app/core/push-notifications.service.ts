@@ -5,9 +5,13 @@ import { Auth, AccountWithStatus } from 'app/api/models';
 import { ApiConfiguration } from 'app/api/api-configuration';
 import { Observable } from 'rxjs';
 import { NotificationService } from 'app/core/notification.service';
-import { Messages } from 'app/messages/messages';
 import { Subscription } from 'rxjs';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
+import { I18n } from '@ngx-translate/i18n-polyfill';
+import { LoginState } from 'app/core/login-state';
+import { Router } from '@angular/router';
+import { NextRequestState } from 'app/core/next-request-state';
+import { empty } from 'app/shared/helper';
 
 export const LOGGED_OUT = 'loggedOut';
 export const ACCOUNT_STATUS = 'accountStatus';
@@ -17,7 +21,9 @@ const KINDS = [LOGGED_OUT, ACCOUNT_STATUS];
 /**
  * Handles the registration and notitification of push events
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class PushNotificationsService {
 
   private eventSource: EventSourcePolyfill;
@@ -27,11 +33,14 @@ export class PushNotificationsService {
 
   constructor(
     dataForUiHolder: DataForUiHolder,
-    private messages: Messages,
     private apiConfiguration: ApiConfiguration,
     private login: LoginService,
+    private i18n: I18n,
     private notification: NotificationService,
-    private zone: NgZone
+    private zone: NgZone,
+    private loginState: LoginState,
+    private nextRequestState: NextRequestState,
+    private router: Router
   ) {
     dataForUiHolder.subscribe(dataForUi => {
       const auth = (dataForUi || {}).auth;
@@ -59,12 +68,15 @@ export class PushNotificationsService {
   }
 
   private open(auth: Auth) {
+    if (auth == null || !auth.user) {
+      return;
+    }
     this.close();
     const accounts = (auth.permissions.banking || {}).accounts;
-    const accountIds = accounts == null ? null : accounts.map(a => a.account.id);
+    const accountIds = empty(accounts) ? [] : accounts.map(a => a.account.id);
     const clientId = Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
     const kinds = new Set<string>(KINDS);
-    if (accountIds == null || accountIds.length === 0) {
+    if (empty(accountIds)) {
       kinds.delete(ACCOUNT_STATUS);
     }
     let url = this.apiConfiguration.rootUrl + '/push/subscribe?clientId=' + clientId;
@@ -78,8 +90,20 @@ export class PushNotificationsService {
     this.eventSource.addEventListener(LOGGED_OUT, (event: any) => {
       this.zone.run(() => {
         this.close();
-        this.notification.error(this.messages.errorSessionExpired());
+        if (this.login.user == null) {
+          return;
+        }
         this.login.clear();
+        this.nextRequestState.sessionToken = null;
+        this.notification.confirm({
+          title: this.i18n('Session expired'),
+          message: this.i18n('You have been logged-out.<br>You can keep viewing the same page or login again now.'),
+          confirmLabel: this.i18n('Login again'),
+          callback: () => {
+            this.loginState.redirectUrl = this.router.url;
+            this.router.navigateByUrl('/login');
+          }
+        });
       });
     });
 

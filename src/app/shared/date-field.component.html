@@ -1,17 +1,2 @@
-<mat-form-field fxFlex="grow" *ngIf="formatService.materialDateFormats | async">
-  <input #input matInput
-    [matDatepicker]="datepicker"
-    [focused]="focused"
-    [placeholder]="placeholder"
-    [required]="required"
-    [formControl]="formControl"
-    (blur)="onBlur($event)">
-  <mat-datepicker-toggle matSuffix [for]="datepicker"></mat-datepicker-toggle>
-  <span matSuffix *ngIf="privacyControl != null && name != null">
-    <field-privacy [field]="name" [control]="privacyControl"></field-privacy>
-  </span>
-  <mat-error>
-    {{ formControl?.getError('message') }}
-  </mat-error>
-</mat-form-field>
-<mat-datepicker [touchUi]="layout.xs" #datepicker></mat-datepicker>
+<input-field #inputField [copyFrom]="self" [formControl]="internalControl"
+  [placeholder]="pattern" (onblur)="formControl.markAsTouched()"></input-field>

@@ -13,10 +13,7 @@ import { FormatFieldValueComponent } from './format-field-value.component';
 })
 export class CustomFieldValueComponent {
 
-  @HostBinding('class') hostClass = 'has-label-value';
-
   @Input() fieldValue: CustomFieldValue;
-  @Input() labelWidth: string;
 
   @ViewChild('formatFieldValue') formatFieldValue: FormatFieldValueComponent;
 

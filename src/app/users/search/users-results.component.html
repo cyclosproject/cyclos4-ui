@@ -1,253 +1,64 @@
-<table *ngIf="resultType == ResultType.LIST"
-  mat-table
-  #table
-  [dataSource]="dataSource">
-  <!-- Avatar column -->
-  <ng-container matColumnDef="avatar">
-    <th mat-header-cell
-      *matHeaderCellDef
-      class="avatar"></th>
-    <td mat-cell
-      *matCellDef="let row"
-      class="avatar">
-      <avatar [image]="user(row).image"></avatar>
-    </td>
-  </ng-container>
+<results-layout (update)="update.emit($event)" [results]="results"
+  [rendering$]="rendering$" [resultType]="resultType" [toAddress]="address"
+  [toMarkerTitle]="displayFunction()">
 
-  <!-- Aggregated (for small devices) -->
-  <ng-container matColumnDef="aggregated">
-    <th mat-header-cell
-      *matHeaderCellDef></th>
-    <td mat-cell
-      *matCellDef="let row">
-      <a [routerLink]="path(row)">
-        <div *ngIf="fieldsInList.length == 0"
-          class="cell-text cell-main">{{ user(row).display }}</div>
-        <ng-container *ngFor="let field of fieldsInList; let first = first">
-          <div [ngClass]="{
-              'cell-text': true,
-              'cell-main': first
-            }">
-            <format-field-value [fields]="data.customFields"
-              [plainText]="true"
-              [fieldName]="field"
-              [object]="row"
-              [customValues]="customValues(row)"></format-field-value>
-          </div>
-        </ng-container>
-      </a>
-    </td>
-  </ng-container>
+  <table *resultTable class="table table-hover cursor-pointer">
+    <thead *ngIf="(layout.gtxs$ | async) && showTableHeader">
+      <th class="avatar"></th>
+      <th *ngFor="let field of fieldsInList">{{ fieldName(field) }}</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of results.results" (click)="router.navigate(path(row))">
+        <td class="avatar">
+          <avatar [image]="user(row).image"></avatar>
+        </td>
+        <td *ngIf="layout.ltsm$ | async; else tableCells">
+          <!-- Aggregated cell for xs -->
+          <a [routerLink]="path(row)">
+            <ng-container *ngFor="let field of fieldsInTile; let first = first">
+              <div [ngClass]="{
+                  'font-weight-bold': first
+                }">
+                <format-field-value [fields]="data.customFields" [plainText]="true"
+                  [fieldName]="field" [object]="user(row)" [customValues]="customValues(row)"></format-field-value>
+              </div>
+            </ng-container>
+          </a>
+        </td>
+        <ng-template #tableCells>
+          <td *ngFor="let field of fieldsInList">
+            <format-field-value [fields]="data.customFields" [plainText]="true"
+              [fieldName]="field" [object]="user(row)" [customValues]="customValues(row)"></format-field-value>
+          </td>
+        </ng-template>
+      </tr>
+    </tbody>
+  </table>
 
-  <!-- Display column -->
-  <ng-container matColumnDef="display">
-    <th mat-header-cell
-      *matHeaderCellDef>{{ messages.user() }}</th>
-    <td mat-cell
-      *matCellDef="let row">
-      <a [routerLink]="path(row)">
-        {{ user(row).display }}
-      </a>
-    </td>
-  </ng-container>
-
-  <!-- As material table don't work with dynamic column definitions, we have to hardcode with up to a fixed number of columns -->
-  <ng-container matColumnDef="field0">
-    <th mat-header-cell
-      *matHeaderCellDef>{{ fieldName(0) }}</th>
-    <td mat-cell
-      *matCellDef="let row">
-      <a [routerLink]="path(row)">
-        <format-field-value [fields]="data.customFields"
-          [plainText]="true"
-          [fieldName]="fieldInternalName(0)"
-          [object]="row"
-          [customValues]="customValues(row)"></format-field-value>
-      </a>
-    </td>
-  </ng-container>
-
-  <ng-container matColumnDef="field1">
-    <th mat-header-cell
-      *matHeaderCellDef>{{ fieldName(1) }}</th>
-    <td mat-cell
-      *matCellDef="let row">
-      <a [routerLink]="path(row)">
-        <format-field-value [fields]="data.customFields"
-          [plainText]="true"
-          [fieldName]="fieldInternalName(1)"
-          [object]="row"
-          [customValues]="customValues(row)"></format-field-value>
-      </a>
-    </td>
-  </ng-container>
-
-  <ng-container matColumnDef="field2">
-    <th mat-header-cell
-      *matHeaderCellDef>{{ fieldName(2) }}</th>
-    <td mat-cell
-      *matCellDef="let row">
-      <a [routerLink]="path(row)">
-        <format-field-value [fields]="data.customFields"
-          [plainText]="true"
-          [fieldName]="fieldInternalName(2)"
-          [object]="row"
-          [customValues]="customValues(row)"></format-field-value>
-      </a>
-    </td>
-  </ng-container>
-
-  <ng-container matColumnDef="field3">
-    <th mat-header-cell
-      *matHeaderCellDef>{{ fieldName(3) }}</th>
-    <td mat-cell
-      *matCellDef="let row">
-      <a [routerLink]="path(row)">
-        <format-field-value [fields]="data.customFields"
-          [plainText]="true"
-          [fieldName]="fieldInternalName(3)"
-          [object]="row"
-          [customValues]="customValues(row)"></format-field-value>
-      </a>
-    </td>
-  </ng-container>
-
-  <ng-container matColumnDef="field4">
-    <th mat-header-cell
-      *matHeaderCellDef>{{ fieldName(4) }}</th>
-    <td mat-cell
-      *matCellDef="let row">
-      <a [routerLink]="path(row)">
-        <format-field-value [fields]="data.customFields"
-          [plainText]="true"
-          [fieldName]="fieldInternalName(4)"
-          [object]="row"
-          [customValues]="customValues(row)"></format-field-value>
-      </a>
-    </td>
-  </ng-container>
-
-  <ng-container matColumnDef="field5">
-    <th mat-header-cell
-      *matHeaderCellDef>{{ fieldName(5) }}</th>
-    <td mat-cell
-      *matCellDef="let row">
-      <a [routerLink]="path(row)">
-        <format-field-value [fields]="data.customFields"
-          [plainText]="true"
-          [fieldName]="fieldInternalName(5)"
-          [object]="row"
-          [customValues]="customValues(row)"></format-field-value>
-      </a>
-    </td>
-  </ng-container>
-
-  <ng-container matColumnDef="field6">
-    <th mat-header-cell
-      *matHeaderCellDef>{{ fieldName(6) }}</th>
-    <td mat-cell
-      *matCellDef="let row">
-      <a [routerLink]="path(row)">
-        <format-field-value [fields]="data.customFields"
-          [plainText]="true"
-          [fieldName]="fieldInternalName(6)"
-          [object]="row"
-          [customValues]="customValues(row)"></format-field-value>
-      </a>
-    </td>
-  </ng-container>
-
-  <ng-container *ngIf="showHeader">
-    <tr mat-header-row
-      *matHeaderRowDef="displayedColumns | async"></tr>
-  </ng-container>
-  <tr mat-row
-    *matRowDef="let row; columns: displayedColumns | async;"
-    ngClass.xs="dynamic"
-    ngClass="clickable"
-    (click)="router.navigate(path(row))"></tr>
-  <tr mat-footer-row
-    style="display:none"
-    *matFooterRowDef>{{ notifyLoad() || '' }}</tr>
-</table>
-
-<tiled-results *ngIf="resultType === ResultType.TILES"
-  [standalone]="true"
-  [tileWidth]="tileWidth"
-  (rendered)="notifyLoad()">
-  <ng-container *ngFor="let row of dataSource.data.value; let last = last;">
-    <tiled-result [image]="user(row).image"
-      [url]="path(row)"
-      icon="account_circle"
-      avatarPosition="top"
-      [hoverAnimation]="true"
-      [title]="user(row).display">
-      <ng-container *ngFor="let field of fieldsInTile; let first = first">
-        <div *ngIf="first && user(row).display"
-          class="tile-title">
-          {{ user(row).display }}
-        </div>
-        <div [class]="first && user(row).display == null ? 'tile-title' : 'tile-data'">
-          <format-field-value [fields]="data.customFields"
-            [plainText]="true"
-            [fieldName]="field"
-            [object]="row"
-            [customValues]="customValues(row)">
-            <br>
+  <a *resultTile="let row" [routerLink]="path(row)">
+    <div class="card">
+      <avatar ngClass="card-img-top" [roundBorders]="false" [image]="user(row).image"
+        size="full" imageSize="200" iconSize="8rem"></avatar>
+      <div class="card-body">
+        <div *ngFor="let field of fieldsInTile; let first = first" [ngClass]="first ? 'card-title' : 'card-text'">
+          <format-field-value [fields]="data.customFields" [plainText]="true"
+            [fieldName]="field" [object]="user(row)" [customValues]="customValues(row)">
+            &nbsp;
           </format-field-value>
         </div>
-      </ng-container>
-    </tiled-result>
-  </ng-container>
-</tiled-results>
+      </div>
+    </div>
+  </a>
 
-<agm-map *ngIf="resultType === ResultType.MAP"
-  fxFlex="grow"
-  [zoom]="layout.xs ? maps.data?.defaultZoomMobile : maps.data?.defaultZoom"
-  [fitBounds]="mapFitBounds | async"
-  [latitude]="maps.data?.defaultLocation?.latitude"
-  [longitude]="maps.data?.defaultLocation?.longitude"
-  [fullscreenControl]="true"
-  maxZoom="17"
-  (mapClick)="closeAllInfoWindows()"
-  (mapReady)="mapReady = true; adjustMap();">
-  <ng-container *ngFor="let row of dataSource.data | async">
-    <agm-marker *ngIf="address(row) as addr"
-      [title]="user(row).display"
-      [latitude]="addr.location.latitude"
-      [longitude]="addr.location.longitude"
-      (markerClick)="closeAllInfoWindows()">
-      <agm-info-window>
-        <avatar size="custom"
-          [customSize]="tileWidth"
-          [image]="user(row).image"
-          [roundBorders]="false"
-          icon="account_circle"></avatar>
-        <div *ngIf="fieldsInTile.length == 0"
-          class="info-window-title">
-          {{ user(row).display }}
-        </div>
-        <div *ngFor="let field of fieldsInTile; let first = first"
-          [class]="first ? 'info-window-title' : 'info-window-data'">
-          <format-field-value [fields]="data.customFields"
-            [plainText]="true"
-            [fieldName]="field"
-            [object]="row"
-            [customValues]="customValues(row)">
-            <br>
-          </format-field-value>
-        </div>
-        <div class="info-window-data">
-          <div *ngIf="addr.addressLine1">{{ addr.addressLine1 }}</div>
-          <div *ngIf="addr.addressLine2">{{ addr.addressLine2 }}</div>
-          <div *ngIf="addr.street">{{ addressStreet(addr) }}</div>
-        </div>
-      </agm-info-window>
-    </agm-marker>
-  </ng-container>
-</agm-map>
+  <ng-container *resultInfoWindow="let row; let addr = address">
+    <avatar ngClass="card-img-top" [roundBorders]="false" [image]="user(row).image"
+      size="200" iconSize="8rem"></avatar>
 
-<paginator *ngIf="resultType !== ResultType.MAP"
-  (update)="triggerUpdate()"
-  [query]="query"
-  [dataSource]="dataSource"></paginator>
+    <div *ngFor="let field of fieldsInTile; let first = first" [ngClass]="first ? 'font-weight-bold my-2' : ''">
+      <format-field-value [fields]="data.customFields" [plainText]="true"
+        [fieldName]="field" [object]="user(row)" [customValues]="customValues(row)">
+      </format-field-value>
+    </div>
+    <address-details [address]="addr" elementClass="card-text"></address-details>
+  </ng-container>
+</results-layout>

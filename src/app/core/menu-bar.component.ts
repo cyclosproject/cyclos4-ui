@@ -1,13 +1,13 @@
-import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
-import { BaseComponent } from 'app/shared/base.component';
-import { RootMenuEntry, MenuType, RootMenu } from 'app/shared/menu';
-import { MenuService } from 'app/shared/menu.service';
-import { BehaviorSubject } from 'rxjs';
-import { Subscription } from 'rxjs';
+import { Component, ChangeDetectionStrategy, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
+import { RootMenuEntry, RootMenu, MenuType } from 'app/shared/menu';
+import { MenuService } from 'app/core/menu.service';
+import { StateManager } from 'app/core/state-manager';
+import { BreadcrumbService } from 'app/core/breadcrumb.service';
+import { Router } from '@angular/router';
 
 /**
- * A bar displayed below the top bar, with menu items
+ * A bar displayed on large layouts with the root menu items
  */
 @Component({
   selector: 'menu-bar',
@@ -15,33 +15,25 @@ import { Observable } from 'rxjs';
   styleUrls: ['menu-bar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MenuBarComponent extends BaseComponent {
+export class MenuBarComponent implements OnInit {
   constructor(
-    injector: Injector,
-    private menuService: MenuService) {
-    super(injector);
+    private router: Router,
+    private menu: MenuService,
+    private stateManager: StateManager,
+    private breadcrumb: BreadcrumbService) {
   }
 
   roots: Observable<RootMenuEntry[]>;
-  activeRoot = new BehaviorSubject<RootMenu>(null);
-
-  private menuSubscription: Subscription;
-
-  ngOnInit() {
-    super.ngOnInit();
-    this.roots = this.menuService.menu(MenuType.BAR);
-    this.subscriptions.push(this.layout.menu.subscribe(menu => {
-      if (menu != null) {
-        this.activeRoot.next(menu.root);
-      }
-    }));
+  private _activeRoot: RootMenu;
+  @Input() get activeRoot(): RootMenu {
+    return this._activeRoot;
+  }
+  set activeRoot(root: RootMenu) {
+    this._activeRoot = root;
   }
 
-  ngOnDestroy() {
-    super.ngOnDestroy();
-    if (this.menuSubscription) {
-      this.menuSubscription.unsubscribe();
-    }
+  ngOnInit(): void {
+    this.roots = this.menu.menu(MenuType.BAR);
   }
 
   onClick(event: MouseEvent, root: RootMenuEntry) {

@@ -1,75 +1,35 @@
 @import 'src/definitions';
 
 :host {
-  flex: 1 1 100%;
-  width: 100%;
+  margin-top: 2rem;
 }
-.actions.top-margin-none {
-  margin-top: 0;
-}
-.actions.top-margin-small {
-  margin-top: 8px;
-}
-.actions.top-margin-half {
-  margin-top: 12px;
-}
-.actions.top-margin-normal {
-  margin-top: 24px;
-}
-.actions.top-margin-double {
-  margin-top: 48px;
-}
-.gt-xs :host ::ng-deep .actions.root {
-  button, a {
-    min-width: 120px !important;
-  }
-}
-.gt-xs :host ::ng-deep .actions.button-space-normal {
-  button, a {
-    margin-right: 22px;
-  }
-}
-.gt-xs :host ::ng-deep .actions.button-space-small {
-  button, a {
-    margin-right: 4px;
-  }
-}
-.gt-xs :host ::ng-deep .actions.button-space-equidistant {
-  justify-content: space-between !important;
 
-  button, a {
-    margin-right: 0;
+:host ::ng-deep {
+  button + button {
+    margin-top: 1rem;
   }
 }
 
-.gt-xs :host ::ng-deep {
-  *:last-child {
-    margin-right: 0;
+@include media-breakpoint-up(xs) {
+  :host.force-row ::ng-deep {
+    button, a, input[type=button], input[type=submit] {
+      min-width: 7rem;
+    }
+
+    button + button {
+      margin-top: 0;
+    }
   }
 }
 
-:host .actions ::ng-deep {
-  button, a {
-    padding-left: 8px;
-    padding-right: 8px;
-  }
-}
+@include media-breakpoint-up(sm) {
+  :host ::ng-deep {
+      button, a, input[type=button], input[type=submit] {
+        min-width: 10rem;
+      }
 
-.lt-sm :host .actions:not(.xs-row) ::ng-deep {
-  button, a {
-    flex: 1 1 100%;
-    margin-bottom: 12px;
-  }
-
-  *:last-child {
-    margin-bottom: 0;
-  }
-}
-.xs mat-dialog-actions :host ::ng-deep .actions {
-  justify-content: space-between !important;
-
-  button, a {
-    margin-right: 0;
-    min-width: 100px !important;
+      button + button {
+        margin-top: 0;
+      }
   }
 }

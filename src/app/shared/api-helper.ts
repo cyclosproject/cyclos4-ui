@@ -1,18 +1,31 @@
 import {
-  Entity,
-  CustomFieldDetailed, PasswordInput, PasswordModeEnum, Transfer, Transaction, AccountHistoryResult, Address
+  Entity, CustomFieldDetailed, PasswordInput, PasswordModeEnum, Transfer,
+  Transaction, AccountHistoryResult, Address, AddressConfiguration, Account,
+  TransactionView, ScheduledPaymentStatusEnum,
+  RecurringPaymentStatusEnum, PaymentRequestStatusEnum, TicketStatusEnum,
+  ExternalPaymentStatusEnum,
+  CustomFieldTypeEnum,
+  LinkedEntityTypeEnum,
+  BaseTransferDataForSearch,
+  TransactionDataForSearch,
+  PreselectedPeriod,
+  TransactionResult,
+  TransactionAuthorizationStatusEnum
 } from 'app/api/models';
 import { environment } from 'environments/environment';
-import { FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AsyncValidatorFn } from '@angular/forms/src/directives/validators';
 import { AddressFieldEnum } from 'app/api/models/address-field-enum';
-import { Messages } from 'app/messages/messages';
+import { I18n } from '@ngx-translate/i18n-polyfill';
+import { NextRequestState } from 'app/core/next-request-state';
+import { FieldOption } from 'app/shared/field-option';
+import { FormatService } from 'app/core/format.service';
+import { empty } from 'app/shared/helper';
 
 /**
  * Helper methods for working with API model
  */
 export class ApiHelper {
-
   /** Value separator for custom fields */
   static VALUE_SEPARATOR = '|';
 
@@ -27,6 +40,9 @@ export class ApiHelper {
 
   /** The available options of page sizes in the paginator */
   static PAGE_SIZES = [40, 100, 200];
+
+  /** The number of results to fetch on autocomplete queries */
+  static AUTOCOMPLETE_SIZE = 10;
 
   /** Time (in ms) to wait between keystrokes to make a request */
   static DEBOUNCE_TIME = 400;
@@ -59,6 +75,18 @@ export class ApiHelper {
       `-${actualPrefix}permissions.operations`,
       `-${actualPrefix}permissions.accounts`,
     ];
+  }
+
+  /**
+   * Returns a display label for the given account
+   * @param account The account
+   */
+  static accountDisplay(account: Account) {
+    if (account.number) {
+      return `${account.type.name} - ${account.number}`;
+    } else {
+      return account.type.name;
+    }
   }
 
   /**
@@ -121,20 +149,33 @@ export class ApiHelper {
    * Returns a FormGroup which contains a form control for each of the given custom fields
    * @param formBuilder The form builder
    * @param customFields The custom fields
-   * @param asyncValProvider If provided will be called for each custom field to provide an additional,
-   *                         asynchronous validation
+   * @param options A bag of options with the following:
+   *
+   * - `currentValues`: If provided will contain the field values by internal name. If not, use the default value
+   * - `disabledProvider`: If provided will be called for each custom field to determine whether the field should be disabled
+   * - `asyncValProvider`: If provided will be called for each custom field to provide an additional, asynchronous validation
    * @returns The FormGroup
    */
   static customValuesFormGroup(formBuilder: FormBuilder, customFields: CustomFieldDetailed[],
-    asyncValProvider?: (CustomFieldDetailed) => AsyncValidatorFn): FormGroup {
+    options?: {
+      currentValues?: any,
+      disabledProvider?: (CustomFieldDetailed) => boolean,
+      asyncValProvider?: (CustomFieldDetailed) => AsyncValidatorFn
+    }): FormGroup {
+    options = options || {};
+    const currentValues = options.currentValues || {};
+    const disabledProvider = options.disabledProvider || (() => false);
+    const asyncValProvider = options.asyncValProvider;
     const customValues = {};
     for (const cf of customFields) {
-      const val: ValidatorFn[] = [];
-      if (cf.required) {
-        val.push(Validators.required);
-      }
-      const defVal: any = cf.defaultValue;
-      customValues[cf.internalName] = [defVal, val, asyncValProvider ? asyncValProvider(cf) : null];
+      customValues[cf.internalName] = [
+        {
+          value: currentValues.hasOwnProperty(cf.internalName) ? currentValues[cf.internalName] : cf.defaultValue,
+          disabled: disabledProvider(cf)
+        },
+        cf.required ? Validators.required : null,
+        asyncValProvider ? asyncValProvider(cf) : null
+      ];
     }
     return formBuilder.group(customValues);
   }
@@ -151,34 +192,55 @@ export class ApiHelper {
   }
 
   /**
+   * Builds a `FormGroup` containing controls for all enabled fields, plus id, version and name
+   */
+  static addressFormGroup(config: AddressConfiguration, formBuilder: FormBuilder): FormGroup {
+    const form = formBuilder.group({
+      id: null,
+      version: null,
+      hidden: null,
+      name: [null, Validators.required],
+      location: formBuilder.group({
+        latitude: null,
+        longitude: null
+      })
+    });
+    for (const field of config.enabledFields) {
+      const val = config.requiredFields.includes(field) ? Validators.required : null;
+      form.setControl(field, formBuilder.control(null, val));
+    }
+    return form;
+  }
+
+  /**
    * Returns the label of an address field
    * @param field The address field
-   * @param messages The message source
+   * @param i18n The internationalization service
    */
-  static addressFieldLabel(field: AddressFieldEnum, messages: Messages): string {
+  static addressFieldLabel(field: AddressFieldEnum, i18n: I18n): string {
     switch (field) {
       case AddressFieldEnum.ADDRESS_LINE_1:
-        return messages.addressAddressLine1();
+        return i18n('Address line 1');
       case AddressFieldEnum.ADDRESS_LINE_2:
-        return messages.addressAddressLine2();
+        return i18n('Address line 2');
       case AddressFieldEnum.BUILDING_NUMBER:
-        return messages.addressBuildingNumber();
+        return i18n('Building number');
       case AddressFieldEnum.CITY:
-        return messages.addressCity();
+        return i18n('City');
       case AddressFieldEnum.COMPLEMENT:
-        return messages.addressComplement();
+        return i18n('Complement');
       case AddressFieldEnum.COUNTRY:
-        return messages.addressCountry();
+        return i18n('Country');
       case AddressFieldEnum.NEIGHBORHOOD:
-        return messages.addressNeighborhood();
+        return i18n('Neighborhood');
       case AddressFieldEnum.PO_BOX:
-        return messages.addressPoBox();
+        return i18n('Post-office box');
       case AddressFieldEnum.REGION:
-        return messages.addressRegion();
+        return i18n('Region / state');
       case AddressFieldEnum.STREET:
-        return messages.addressStreet();
+        return i18n('Street');
       case AddressFieldEnum.ZIP:
-        return messages.addressZip();
+        return i18n('Zip code');
     }
     return null;
   }
@@ -200,4 +262,120 @@ export class ApiHelper {
     }
     return result;
   }
+
+  /**
+   * Appends the session token to the given URL
+   * @param url The base URL
+   * @param nextRequestState The next request state
+   */
+  static appendAuth(url: string, nextRequestState: NextRequestState): string {
+    const sessionToken = nextRequestState.sessionToken;
+    if (sessionToken == null || sessionToken === '') {
+      return url;
+    }
+    const sep = url.includes('?') ? '&' : '?';
+    return url + sep + 'Session-Token=' + sessionToken;
+  }
+
+  /**
+   * Returns the `FieldOption` which represent the available options of the given custom field
+   * @param field The custom field
+   * @param format The shared format service
+   */
+  static fieldOptions(field: CustomFieldDetailed, format: FormatService): FieldOption[] {
+    if (!field.hasValuesList) {
+      return null;
+    }
+    switch (field.type) {
+      case CustomFieldTypeEnum.STRING:
+      case CustomFieldTypeEnum.TEXT:
+      case CustomFieldTypeEnum.RICH_TEXT:
+      case CustomFieldTypeEnum.URL:
+        return (field.stringValues || []).map(v => ({ value: v, text: v }));
+      case CustomFieldTypeEnum.DATE:
+        return (field.dateValues || []).map(v => ({ value: v, text: format.formatAsDate(v) }));
+      case CustomFieldTypeEnum.DECIMAL:
+        return (field.decimalValues || []).map(v => ({ value: v, text: format.formatAsNumber(v, field.decimalDigits) }));
+      case CustomFieldTypeEnum.INTEGER:
+        return (field.integerValues || []).map(v => ({ value: String(v), text: format.formatAsNumber(v, 0) }));
+      case CustomFieldTypeEnum.DYNAMIC_SELECTION:
+        return (field.dynamicValues || []).map(v => ({ value: v.value, text: v.label }));
+      case CustomFieldTypeEnum.SINGLE_SELECTION:
+      case CustomFieldTypeEnum.MULTI_SELECTION:
+        return (field.possibleValues || []).map(v => ({
+          value: ApiHelper.internalNameOrId(v), id: v.id, internalName: v.internalName,
+          text: v.value, category: v.category == null ? null : v.category.name
+        }));
+      case CustomFieldTypeEnum.LINKED_ENTITY:
+        switch (field.linkedEntityType) {
+          case LinkedEntityTypeEnum.ADVERTISEMENT:
+            return (field.adValues || []).map(v => ({ value: v.id, text: v.name }));
+          case LinkedEntityTypeEnum.RECORD:
+            return (field.recordValues || []).map(v => ({ value: v.id, text: v.display }));
+          case LinkedEntityTypeEnum.TRANSACTION:
+            return (field.transactionValues || []).map(v => ({ value: v.id, internalName: v.transactionNumber, text: v.display }));
+          case LinkedEntityTypeEnum.TRANSFER:
+            return (field.transferValues || []).map(v => ({ value: v.id, internalName: v.transactionNumber, text: v.display }));
+          case LinkedEntityTypeEnum.USER:
+            return (field.userValues || []).map(v => ({ value: v.id, text: v.display }));
+        }
+    }
+    return [];
+  }
+
+  /**
+   * Returns a suitable representation for using custom field values in searches
+   * @param customValues The custom values map
+   */
+  static toCustomValuesFilter(customValues: { [key: string]: string }): string[] {
+    const result: string[] = [];
+    for (const key in customValues || {}) {
+      if (customValues.hasOwnProperty(key)) {
+        const value = customValues[key];
+        if (!empty(value)) {
+          result.push(key + ':' + customValues[key]);
+        }
+      }
+    }
+    return result;
+  }
+
+  /**
+   * This method does 2 things:
+   * - Makes sure that the data has at least one preselected period
+   * - Patches the form value with the default preselected period (doesn't emit the event)
+   * @param data The data
+   * @param form The filters form
+   */
+  static preProcessPreselectedPeriods(data: BaseTransferDataForSearch | TransactionDataForSearch, form: FormGroup): void {
+    // Select the default preselected period
+    if ((data.preselectedPeriods || []).length === 0) {
+      // No preselected periods? Create one, so we don't break the logic
+      data.preselectedPeriods = [
+        { defaultOption: true }
+      ];
+    }
+    const preselectedPeriod = data.preselectedPeriods.find(p => p.defaultOption);
+    form.patchValue({ preselectedPeriod: preselectedPeriod }, { emitEvent: false });
+  }
+
+  /**
+   * Returns the date period value for transfers / transactions query.
+   * Assumes the filters value has a `preselectedPeriod`, as well as separated `periodBegin` and `periodEnd` fields.
+   * @param filters The form filters value
+   */
+  static resolveDatePeriod(filters: any): string[] {
+    const preselectedPeriod = filters.preselectedPeriod as PreselectedPeriod;
+    let beginDate: string = null;
+    let endDate: string = null;
+    if (preselectedPeriod && preselectedPeriod.begin && preselectedPeriod.end) {
+      beginDate = preselectedPeriod.begin;
+      endDate = preselectedPeriod.end;
+    } else {
+      beginDate = filters.periodBegin;
+      endDate = filters.periodEnd;
+    }
+    return empty(beginDate) && empty(endDate) ? null : [beginDate, endDate];
+  }
+
 }

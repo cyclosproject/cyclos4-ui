@@ -1,1 +1,29 @@
-<ng-content></ng-content>
+<div class="page-content card mx-auto d-flex flex-grow-1" [ngClass]="{
+    'layout-normal': layout === 'normal',
+    'layout-centered': layout === 'centered',
+    'mode-normal': mode === 'normal' || mode === 'fullHeight',
+    'mode-table': mode === 'table',
+    'mode-tight': mode === 'tight' || mode === 'fullHeightTight',
+    'mode-filters': mode === 'filters',
+    'mode-transparent': mode === 'transparent',
+    'mode-full-height': mode === 'fullHeight' || mode === 'fullHeightTight'
+  }">
+  <div *ngIf="heading != null" class="content-title d-flex">
+    <button tabindex="0" *ngIf="(breadcrumb.breadcrumb$ | async)?.length > 1"
+      class="back-button btn btn-transparent" (click)="breadcrumb.back()">
+      <icon icon="arrow_back"></icon>
+    </button>
+    <div class="title-text text-truncate flex-grow-1 d-flex align-items-center">
+      {{ heading }}
+    </div>
+    <div class="d-flex heading-actions" *ngIf="headingActions?.length > 0">
+      <button *ngFor="let action of headingActions" class="heading-action"
+        (click)="action.onClick()">
+        {{ action.label }}
+      </button>
+    </div>
+  </div>
+  <div class="page-content-body card-body d-flex flex-column">
+    <ng-content></ng-content>
+  </div>
+</div>

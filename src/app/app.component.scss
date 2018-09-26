@@ -1,58 +1,12 @@
-@import 'src/definitions';
-
 :host {
-  min-height: 100vh;
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
 }
-
-.app-loading {
-  opacity: 0.6;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+.main-container {
+  margin-top: 1.5rem;
 }
-
-// Sidenav
-:host ::ng-deep .mat-sidenav-container {
-  flex: 1 1 100%;
-}
-:host ::ng-deep mat-sidenav-content {
-  overflow: visible;
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  width: 100%;
-  flex-direction: column !important;
-}
-.gt-sm :host ::ng-deep mat-sidenav-content {
-  max-width: $max-layout-width;
-  margin-left: auto !important;
-  margin-right: auto !important;
-  flex-direction: row !important;
-}
-
-// Main area
-.gt-sm :host ::ng-deep .main {
-  padding: $parts-margin 0;
-}
-@media (max-width: $max-layout-width + 16px) {
-  .md :host ::ng-deep .main {
-    padding-left: 16px;
-    padding-right: 16px;
-  }
-}
-.lt-md :host ::ng-deep .main {
+.lt-md :host ::ng-deep .main-container {
   padding: 0;
-}
-
-:host ::ng-deep .main > * {
-  flex: 1 1 100%;
-  display: flex;
-  flex-direction: column;
-}
-:host ::ng-deep .main > router-outlet {
-  display: none;
+  margin-top: 0;
 }

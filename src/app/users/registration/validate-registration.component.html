@@ -1,18 +1,10 @@
-<page-layout [loaded]="loaded"
-  [hasMenu]="false"
-  contentSize="small">
-  <page-content *ngIf="result | async">
-    <registration-done [result]="result.value"></registration-done>
+<page-layout [ready]="data$ | async" size="medium" hideMenu>
+
+  <page-content *ngIf="result">
+    <registration-step-done [result]="result"></registration-step-done>
+    <actions ngClass="mt-3" forceRow>
+      <button class="btn btn-primary" (click)="goToLogin()" i18n>Login</button>
+    </actions>
   </page-content>
 
-  <actions root
-    fxLayout="row"
-    fxLayout.xs="column-reverse"
-    fxLayoutAlign="center">
-    <button mat-raised-button
-      color="accent"
-      (click)="goToLogin()">
-      {{ messages.registrationDoneGoToLogin() }}
-    </button>
-  </actions>
 </page-layout>

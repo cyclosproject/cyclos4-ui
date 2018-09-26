@@ -1,39 +1,61 @@
 @import 'src/definitions';
 
-.indicators {
+.account-indicators {
   display: flex;
+  flex-direction: column;
+  padding-top: 0.2rem;
+}
+.account-indicator {
+  display: flex;
+  width: 100%;
   flex-direction: row;
-  overflow-x: auto;
-}
-.xs :host ::ng-deep .indicators {
-  padding: 0 16px;
-}
-.indicator {
-  display: inline-flex;
-  flex-direction: column-reverse;
   flex: 1;
   align-items: baseline;
+
+  .account-indicator-label {
+    text-align: left;
+    white-space: nowrap;
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 0.9em;
+    padding-right: 1px;
+  }
+  .account-indicator-amount {
+    font-size: 16px;
+    font-weight: $font-weight-bold;
+    opacity: 0.85;
+    text-align: right;
+    white-space: nowrap;
+    flex: 1;
+  }
 }
-.indicator .label {
-  font-size: 12px;
-  opacity: 0.75;
-  text-align: right;
-  margin-top: 4px;
-  white-space: nowrap;
-  max-width: 150px;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.account-indicator-separator {
+  display: none;
 }
-.indicator .amount {
-  font-size: 16px;
-  font-weight: 500;
-  opacity: 0.85;
-  text-align: right;
-  white-space: nowrap;
-}
-.indicator-separator {
-  margin: 0 16px;
-  border-left-width: 1px;
-  border-left-style: solid;
-  width: 1px;
+
+@include media-breakpoint-up(sm) {
+  .account-indicators {
+    padding: 0;
+    flex-direction: row;
+    overflow-x: auto;
+  }
+  .account-indicator {
+    width: auto;
+    display: inline-flex;
+    flex-direction: column-reverse;
+    padding: 0.7rem 0;
+
+    .account-indicator-label {
+      text-align: right;
+      font-size: 0.9em;
+    }
+  }
+
+  .account-indicator-separator {
+    display: block;
+    margin: 0 1rem;
+    border-left: 1px solid $section-border-color;
+    width: 1px;
+  }
 }

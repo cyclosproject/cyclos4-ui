@@ -1,50 +1,36 @@
-<page-layout [loaded]="loaded"
-  [hasMenu]="false"
-  contentSize="small">
-  <page-content *ngIf="loaded | async">
-    <form [formGroup]="form"
-      fxLayout="column">
-      <h1>{{ messages.loginTitle() }}</h1>
-      <div class="text">
-        {{ text }}
+<page-layout [ready]="data$ | async" size="small" hideMenu>
+  <page-content *ngIf="data" layout="centered" heading="Login" i18n-heading="Login page title">
+    <form [formGroup]="form" (submit)="$event.preventDefault()">
+      <div *ngIf="loggedOut; else regularMessage" class="mb-4" i18n>
+        You have been disconnected.
+        <br> Please, login again in order to view the requested page.
+      </div>
+      <ng-template #regularMessage>
+        <div class="mb-4" i18n>
+          You can login with your username and password
+        </div>
+      </ng-template>
+
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text input-group-icon">
+            <icon size="1.3rem" icon="account_circle"></icon>
+          </span>
+        </div>
+        <input type="text" formControlName="principal" autocomplete="username"
+          class="form-control" focused placeholder="User" (keyup.enter)="password.focus()"
+          i18n-placeholder="User on login form">
       </div>
 
-      <mat-form-field fxFlex="grow"
-        floatLabel="never">
-        <input matInput
-          formControlName="principal"
-          type="text"
-          required
-          focused
-          [placeholder]="messages.loginPrincipal()"
-          (keyup.enter)="passwordComponent.focus()">
-        <mat-icon matPrefix
-          ngClass="mat-24">account_circle</mat-icon>
-      </mat-form-field>
+      <password-input #password class="d-block mb-3" formControlName="password"
+        autocomplete="password" showIcon [passwordInput]="data?.loginPasswordInput"
+        (enter)="doLogin()" i18n-placeholder="Password on login form"
+        placeholder="Password"></password-input>
 
-      <password-input #passwordComponent
-        fxFlex="grow"
-        [showIcon]="true"
-        [placeholder]="messages.loginPassword()"
-        [passwordInput]="dataForLogin.loginPasswordInput"
-        formControlName="password"
-        (enter)="doLogin()">
-      </password-input>
+      <button type="button" class="btn btn-primary my-3 px-5" i18n (click)="doLogin();$event.preventDefault();">Submit</button>
 
-      <actions root
-        fxFlex="grow"
-        fxLayout="row"
-        fxLayoutAlign="center">
-        <button mat-raised-button
-          color="accent"
-          (click)="doLogin()">
-          {{ messages.submit() }}
-        </button>
-      </actions>
-
-      <a class="forgotPassword"
-        routerLink="/forgot-password">
-        {{ messages.loginForgotPassword() }}
+      <a class="d-block my-3" routerLink="/forgot-password" i18n>
+        Forgot your password?
       </a>
     </form>
   </page-content>

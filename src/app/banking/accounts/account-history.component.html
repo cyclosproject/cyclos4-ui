@@ -1,159 +1,128 @@
-<page-layout [title]="title"
-  [tightContent]="true"
-  [loaded]="loaded"
-  [filtersForm]="form"
-  [hasHeader]="(status | async).length > 1">
-  <page-header>
-    <div class="indicators">
-      <ng-container *ngFor="let indicator of (status | async); let i = index; let last = last">
-        <div *ngIf="i < maxIndicators"
-          class="indicator">
-          <div class="label">{{ indicator.label }}</div>
-          <div [ngClass]="{
-            amount: true,
-            negative:(indicator.alwaysNegative || format.isNegative(indicator.amount)),
-            positive:(!indicator.alwaysNegative && format.isPositive(indicator.amount))
-          }">
-            {{ indicator.amount | currency:currency }}
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="loaded$ | async; else loading">
+    <page-content mode="filters" [heading]="title" [headingActions]="headingActions$ | async">
+      <form [formGroup]="form" class="filters-form border-bottom">
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <single-selection-field labelPosition="side" formControlName="preselectedPeriod"
+              i18n-label label="Period">
+              <field-option *ngFor="let period of data.preselectedPeriods"
+                [value]="period" [text]="period.name"></field-option>
+            </single-selection-field>
           </div>
+          <div *ngIf="data.transferFilters?.length > 0" class="col-12 col-md-6">
+            <single-selection-field labelPosition="side" formControlName="transferFilter"
+              i18n-label label="Filter" i18n-emptyOption emptyOption="Not applied">
+              <field-option *ngFor="let filter of data.transferFilters"
+                [value]="filter" [text]="filter.name"></field-option>
+            </single-selection-field>
+          </div>
+          <ng-container *ngIf="moreFilters$ | async">
+            <div class="col-12 col-md-6">
+              <user-field labelPosition="side" formControlName="user"
+                i18n-label label="User"></user-field>
+            </div>
+            <div *ngIf="data.transactionNumberMask" class="col-12 col-md-6">
+              <input-field labelPosition="side" formControlName="transactionNumber"
+                [mask]="data.transactionNumberMask" i18n-label label="Transaction number"></input-field>
+            </div>
+            <div *ngIf="data.operators?.length > 0" class="col-12 col-md-6">
+              <single-selection-field labelPosition="side" formControlName="by"
+                i18n-label label="Operator" i18n-emptyOption emptyOption="Any">
+                <field-option *ngFor="let operator of data.operators" [value]="operator.id"
+                  [text]="operator.display"></field-option>
+              </single-selection-field>
+            </div>
+          </ng-container>
         </div>
-        <div *ngIf="!last && i < maxIndicators - 1"
-          class="indicator-separator"></div>
-      </ng-container>
-    </div>
-  </page-header>
-  <page-filters>
-    <form *ngIf="query != null"
-      fxLayout="column"
-      [formGroup]="form">
-      <mat-form-field *ngIf="transferFilters.length > 1">
-        <mat-select fxFlex="grow"
-          focused
-          [placeholder]="messages.accountTransferFilter()"
-          formControlName="transferFilter">
-          <mat-option [value]="">{{ messages.searchAll() }}</mat-option>
-          <mat-option *ngFor="let filter of transferFilters"
-            [value]="filter">{{ filter.name }}</mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field *ngIf="preselectedPeriods.length > 1">
-        <mat-select fxFlex="grow"
-          [placeholder]="messages.period()"
-          formControlName="preselectedPeriod">
-          <mat-option *ngFor="let period of preselectedPeriods"
-            [value]="period">{{ period.name }}</mat-option>
-        </mat-select>
-      </mat-form-field>
-      <date-field *ngIf="form.value?.preselectedPeriod?.begin == null"
-        formControlName="periodBegin"
-        fxFlex="grow"
-        [placeholder]="messages.periodBegin()"></date-field>
-      <date-field *ngIf="form.value?.preselectedPeriod?.end == null"
-        formControlName="periodEnd"
-        fxFlex="grow"
-        [placeholder]="messages.periodEnd()"></date-field>
-    </form>
-  </page-filters>
-  <page-content>
-    <table *ngIf="!(dataSource.empty | async)"
-      mat-table
-      #table
-      [dataSource]="dataSource">
-      <!-- Avatar column -->
-      <ng-container matColumnDef="avatar">
-        <th mat-header-cell
-          *matHeaderCellDef
-          class="avatar"></th>
-        <td mat-cell
-          *matCellDef="let row"
-          class="avatar">
-          <avatar [icon]="avatarIcon(row)"
-            [image]="avatarImage(row)">
-          </avatar>
-        </td>
-      </ng-container>
+      </form>
+      <div *ngIf="indicators$ | async; else loadingIndicators" class="account-indicators">
+        <ng-container *ngFor="let indicator of (indicators$ | async); let i = index; let last = last">
+          <div *ngIf="i < maxIndicators" class="account-indicator">
+            <div class="account-indicator-label">{{ indicator.label }}</div>
+            <div class="account-indicator-amount" [ngClass]="{
+                  negative:(indicator.alwaysNegative || format.isNegative(indicator.amount)),
+                  positive:(!indicator.alwaysNegative && format.isPositive(indicator.amount))
+                }">
+              {{ indicator.amount | currency:currency }}
+            </div>
+          </div>
+          <div *ngIf="!last && i < maxIndicators - 1" class="account-indicator-separator"></div>
+        </ng-container>
+      </div>
+    </page-content>
 
-      <!-- Aggregated (for small devices) -->
-      <ng-container matColumnDef="aggregated">
-        <th mat-header-cell
-          *matHeaderCellDef></th>
-        <td mat-cell
-          *matCellDef="let row">
-          <a [routerLink]="path(row)">
-            <div class="cell-text cell-main">{{ subjectName(row) }}</div>
-            <div class="cell-text cell-date">{{ row.date | dateTime }}</div>
-            <div *ngIf="row.description"
-              class="cell-text cell-small">{{ row.description }}</div>
-          </a>
-        </td>
-      </ng-container>
-
-      <!-- Date column -->
-      <ng-container matColumnDef="date">
-        <th mat-header-cell
-          *matHeaderCellDef>{{ messages.transactionDate() }}</th>
-        <td mat-cell
-          *matCellDef="let row">
-          <a [routerLink]="path(row)">
-            {{ row.date | date }}
-          </a>
-        </td>
-      </ng-container>
-
-      <!-- Date column -->
-      <ng-container matColumnDef="transactionNumber">
-        <th mat-header-cell
-          *matHeaderCellDef>{{ messages.transactionNumber() }}</th>
-        <td mat-cell
-          *matCellDef="let row">
-          <a *ngIf="row.transactionNumber"
-            [routerLink]="path(row)">
-            {{ row.transactionNumber }}
-          </a>
-        </td>
-      </ng-container>
-
-      <!-- Subject column -->
-      <ng-container matColumnDef="subject">
-        <th mat-header-cell
-          *matHeaderCellDef>{{ messages.transactionSubject() }}</th>
-        <td mat-cell
-          *matCellDef="let row">
-          <a [routerLink]="path(row)">
-            {{ subjectName(row) }}
-          </a>
-        </td>
-      </ng-container>
-
-      <!-- Amount column -->
-      <ng-container matColumnDef="amount">
-        <th mat-header-cell
-          *matHeaderCellDef
-          style="text-align: end">{{ messages.transactionAmount() }}</th>
-        <td mat-cell
-          *matCellDef="let row"
-          style="text-align: end">
-          <a [routerLink]="path(row)"
-            [ngClass]="{
-              positive: format.isPositive(row.amount),
-              negative: format.isNegative(row.amount)
-            }">
-            {{ row.amount | currency:currency:true }}
-          </a>
-        </td>
-      </ng-container>
-
-      <tr *matHeaderRowDef="layout.xs ? [] : displayedColumns"
-        mat-header-row
-        ngStyle.xs="display:none"></tr>
-      <tr *matRowDef="let row; columns: displayedColumns;"
-        mat-row
-        ngClass.xs="dynamic"
-        ngClass="clickable"
-        (click)="router.navigate(path(row))"></tr>
-    </table>
-    <paginator (update)="update()"
-      [query]="query"
-      [dataSource]="dataSource"></paginator>
-  </page-content>
+    <results-layout resultType="list" [results]="results$ | async" (update)="update($event)">
+      <table *resultTable class="table table-hover cursor-pointer">
+        <thead *ngIf="layout.gtxs$ | async">
+          <th class="avatar"></th>
+          <th i18n>Date</th>
+          <th i18n>From / to</th>
+          <th *ngIf="layout.gtsm$ | async" width="30%" i18n>Description</th>
+          <th i18n class="text-right">Amount</th>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let row of (results$ | async).results">
+            <tr (click)="router.navigate(path(row))">
+              <td class="avatar" [ngClass]="{'pb-0': layout.xxs$ | async}">
+                <avatar [image]="avatarImage(row)" [icon]="avatarIcon(row)"></avatar>
+              </td>
+              <td *ngIf="layout.xs$ | async">
+                <!-- Aggregated cell for xs -->
+                <a [routerLink]="path(row)">
+                  <div class="cell-text cell-main">{{ subjectName(row) }}</div>
+                  <div class="cell-text cell-date">{{ row.date | dateTime }}</div>
+                  <div *ngIf="row.description" class="cell-text cell-small">
+                    {{ row.description }}
+                  </div>
+                </a>
+              </td>
+              <td *ngIf="layout.gtxs$ | async">
+                <a [routerLink]="path(row)">
+                  {{ row.date | date }}
+                </a>
+              </td>
+              <td *ngIf="layout.gtxs$ | async">
+                <a [routerLink]="path(row)">
+                  {{ subjectName(row) }}
+                </a>
+              </td>
+              <td *ngIf="layout.gtsm$ | async">
+                <a *ngIf="row.description" class="d-inline-block"
+                  [routerLink]="path(row)">
+                  {{ row.description }}
+                </a>
+              </td>
+              <td class="text-right" [ngClass]="{'pb-0': layout.xxs$ | async}">
+                <a [routerLink]="path(row)" [ngClass]="{
+                        positive: format.isPositive(row.amount),
+                        negative: format.isNegative(row.amount)
+                      }">
+                  {{ row.amount | currency:currency:true }}
+                </a>
+              </td>
+            </tr>
+            <tr *ngIf="layout.xxs$ | async" (click)="router.navigate(path(row))">
+              <td class="border-0 pt-0" colspan="3">
+                <a [routerLink]="path(row)">
+                  <div class="cell-text cell-main">{{ subjectName(row) }}</div>
+                  <div class="cell-text cell-date">{{ row.date | dateTime }}</div>
+                </a>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </results-layout>
+  </ng-container>
 </page-layout>
+
+<ng-template #loading>
+  <page-content>
+    <spinner></spinner>
+  </page-content>
+</ng-template>
+
+<ng-template #loadingIndicators>
+  <spinner class="p-3"></spinner>
+</ng-template>

@@ -5,12 +5,12 @@ import {
   StoredFile,
   Image
 } from 'app/api/models';
-import { Messages } from 'app/messages/messages';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BehaviorSubject } from 'rxjs';
 import { NextRequestState } from 'app/core/next-request-state';
 import * as download from 'downloadjs';
 import { FilesService, ImagesService } from 'app/api/services';
+import { I18n } from '@ngx-translate/i18n-polyfill';
 
 /** Types whose values are rendered directly */
 const DIRECT_TYPES = [
@@ -34,7 +34,7 @@ const DIRECT_TYPES = [
 })
 export class FormatFieldValueComponent implements OnInit {
   constructor(
-    private messages: Messages,
+    private i18n: I18n,
     private nextRequestState: NextRequestState,
     private filesService: FilesService,
     private imagesService: ImagesService) {
@@ -74,8 +74,8 @@ export class FormatFieldValueComponent implements OnInit {
 
   field: CustomField;
   type: CustomFieldTypeEnum;
-  value = new BehaviorSubject<any>(null);
-  hasValue = new BehaviorSubject(false);
+  value: any;
+  hasValue = false;
 
   get directValue(): boolean {
     return DIRECT_TYPES.includes(this.type);
@@ -101,8 +101,8 @@ export class FormatFieldValueComponent implements OnInit {
     if (this.plainText && [CustomFieldTypeEnum.RICH_TEXT, CustomFieldTypeEnum.TEXT].includes(this.type)) {
       this.type = CustomFieldTypeEnum.STRING;
     }
-    this.value.next(value);
-    this.hasValue.next(value != null && (value.length === undefined || value.length > 0));
+    this.value = value;
+    this.hasValue = value != null && (value.length === undefined || value.length > 0);
   }
 
   private getValue(): any {
@@ -110,8 +110,8 @@ export class FormatFieldValueComponent implements OnInit {
       case CustomFieldTypeEnum.BOOLEAN:
         if (this.fieldValue.booleanValue != null) {
           return this.fieldValue.booleanValue
-            ? this.messages.yes()
-            : this.messages.no();
+            ? this.i18n('Yes')
+            : this.i18n('No');
         }
         break;
       case CustomFieldTypeEnum.DATE:
@@ -225,7 +225,7 @@ export class FormatFieldValueComponent implements OnInit {
           const cf = (fieldValue.field as CustomFieldDetailed);
           const possibleValues = (cf || {}).possibleValues;
           if (possibleValues) {
-            return possibleValues.find(pv => pv.id === value || pv.internalName === value);
+            return possibleValues.find(pv => pv.id === ref || pv.internalName === ref);
           }
           return null;
         });
@@ -282,12 +282,7 @@ export class FormatFieldValueComponent implements OnInit {
   }
 
   appendAuth(url: string): string {
-    const sessionToken = this.nextRequestState.sessionToken;
-    if (sessionToken == null || sessionToken === '') {
-      return url;
-    }
-    const sep = url.includes('?') ? '&' : '?';
-    return url + sep + 'Session-Token=' + sessionToken;
+    return ApiHelper.appendAuth(url, this.nextRequestState);
   }
 
   downloadFile(event: MouseEvent, file: StoredFile) {

@@ -1,0 +1,27 @@
+@import 'src/definitions';
+
+:host {
+  display: flex;
+  flex-grow: 1;
+}
+
+.tiled-results, .category-results {
+  margin-top: 1rem;
+}
+
+@include media-breakpoint-up(sm) {
+  :host {
+    margin-top: 0;
+  }
+  .tiled-results, .category-results {
+    margin-top: 0;
+  }
+}
+
+agm-map {
+  flex-grow: 1;
+  height: 100%;
+}
+:host ::ng-deep .agm-map-container-inner {
+  flex-grow: 1;
+}

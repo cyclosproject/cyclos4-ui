@@ -1,0 +1,16 @@
+<h1 class="d-flex justify-content-center">
+  <avatar [image]="image" size="medium" [icon]="icon" [iconColor]="color"></avatar>
+  <a class="ml-3 pt-1 flex-grow-1 text-body" href="#" (click)="emit(category, $event)">
+    {{ category.name }}
+  </a>
+</h1>
+
+<a *ngFor="let sub of category.children" class="d-block mb-1 text-body" href="#"
+  (click)="emit(sub, $event)">
+  {{ sub.name }}
+</a>
+
+<actions>
+  <span></span>
+  <button class="btn btn-outline-primary" i18n (click)="modalRef.hide()">Cancel</button>
+</actions>

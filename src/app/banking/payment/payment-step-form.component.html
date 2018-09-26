@@ -1,0 +1,153 @@
+<ng-container [formGroup]="form">
+  <label-value *ngIf="singleAccount; else multipleAccounts" labelSize="large"
+    [label]="data.accounts[0].type.name">
+    <!-- Single account -->
+    <div class="row">
+      <div class="col col-6 col-sm-8">
+        <ng-container *ngIf="singleAccount.number">
+          <br *ngIf="layout.xs$ | async; else separator">
+          <ng-template #separator> - </ng-template>
+          {{ singleAccount.number }}
+        </ng-container>
+      </div>
+      <div class="col col-6 col-sm-4 text-right font-weight-bold" [ngClass]="{
+        positive: format.isPositive(singleAccount.status.availableBalance),
+        negative: format.isNegative(singleAccount.status.availableBalance)
+      }">
+        {{ singleAccount.status.balance | currency:singleAccount.currency }}
+      </div>
+    </div>
+  </label-value>
+  <ng-template #multipleAccounts>
+    <!-- Multiple accounts -->
+    <label-value i18n-label label="From account" labelSize="large" required
+      kind="field">
+      <div class="row no-gutters" *ngFor="let account of data.accounts">
+        <div class="col-7 col-sm-8">
+          <div class="custom-control custom-radio">
+            <input type="radio" formControlName="account" class="custom-control-input"
+              [id]="'from_' + account.id" [value]="account.type.id">
+            <label class="custom-control-label" [for]="'from_' + account.id">
+              <div class="ml-1">
+                {{ account.type.name }}
+                <ng-container *ngIf="account.number">
+                  <ng-template #separator> - </ng-template>
+                  <br *ngIf="layout.ltsm$ | async; else separator"> {{
+                  account.number
+                  }}
+                </ng-container>
+              </div>
+            </label>
+          </div>
+        </div>
+        <div class="col-5 col-sm-4 text-right pt-1 font-weight-bold"
+          [ngClass]="{
+          positive: format.isPositive(account.status.availableBalance),
+          negative: format.isNegative(account.status.availableBalance),
+          'mt-1': !first
+        }">
+          {{ account.status.balance | currency:account.currency }}
+        </div>
+      </div>
+      <field-errors [control]="form.get('account')"></field-errors>
+    </label-value>
+  </ng-template>
+
+  <label-value *ngIf="!fixedDestination" kind="field" required i18n-label
+    labelSize="large" label="Select user">
+    <single-selection-field focused formControlName="subject" *ngIf="fixedUsersList; else toUserField">
+      <!-- A fixed user list to pay to. Generally only applicable to restricted operators -->
+      <field-option *ngFor="let user of data.allowedUsers" [value]="user.id"
+        [text]="user.display"></field-option>
+    </single-selection-field>
+    <ng-template #toUserField>
+      <user-field focused formControlName="subject" [allowContacts]="allowContacts"
+        [allowSearch]="allowSearch" [allowPrincipal]="allowPrincipal"
+        (selected)="$event ? amount.focus() : null"></user-field>
+    </ng-template>
+  </label-value>
+
+  <label-value *ngIf="fixedUser" i18n-label kind="fieldView" labelSize="large"
+    label="To user">
+    {{ fixedUser.display }}
+  </label-value>
+
+  <single-selection-field formControlName="type" *ngIf="(paymentTypes$ | async)?.length > 1"
+    required i18n-label label="Payment type">
+    <field-option *ngFor="let pt of paymentTypes$ | async" [value]="pt.id"
+      [text]="pt.name"></field-option>
+  </single-selection-field>
+
+  <decimal-field #amount [focused]="fixedDestination" formControlName="amount"
+    required i18n-label label="Amount" [scale]="currency?.decimalDigits"
+    [prefix]="currency?.prefix" [suffix]="currency?.suffix">
+  </decimal-field>
+
+  <ng-container *ngIf="(paymentTypeData$ | async)?.customFields?.length > 0">
+    <custom-field-input *ngFor="let cf of paymentTypeData$.value.customFields"
+      [field]="cf" [formControl]="form.get('customValues').get(cf.internalName)"></custom-field-input>
+  </ng-container>
+
+  <single-selection-field formControlName="scheduling" required i18n-label
+    label="Scheduling" *ngIf="(paymentTypeData$ | async)?.allowsRecurringPayments || (paymentTypeData$ | async)?.maxInstallments > 0">
+    <field-option value='direct' i18n-text text="Pay directly"></field-option>
+    <field-option *ngIf="paymentTypeData$.value.maxInstallments > 0" value='futureDate'
+      i18n-text text="Scheduled"></field-option>
+    <field-option *ngIf="paymentTypeData$.value.maxInstallments > 1" value='scheduled'
+      i18n-text text="Monthly installments"></field-option>
+    <field-option *ngIf="paymentTypeData$.value.allowsRecurringPayments"
+      value='recurring' i18n-text text="Repeat monthly"></field-option>
+  </single-selection-field>
+
+  <ng-container [ngSwitch]="form.get('scheduling').valueChanges | async">
+
+    <date-field *ngSwitchCase="'futureDate'" formControlName="firstInstallmentDate"
+      required i18n-label label="Due date">
+    </date-field>
+
+    <ng-container *ngSwitchCase="'scheduled'">
+      <input-field type="number" required numbersOnly formControlName="installmentsCount"
+        required i18n-label label="Number of installments">
+      </input-field>
+
+      <radio-group-field formControlName="firstInstallmentIsNow" i18n-label
+        label="First installment">
+        <field-option [value]="true" i18n-text text="Now"></field-option>
+        <field-option [value]="false" i18n-text text="Future date"></field-option>
+      </radio-group-field>
+
+      <date-field *ngIf="(form.get('firstInstallmentIsNow').valueChanges | async) === false"
+        formControlName="firstInstallmentDate" required i18n-label label="First installment date">
+      </date-field>
+    </ng-container>
+
+    <ng-container *ngSwitchCase="'recurring'">
+      <radio-group-field formControlName="firstOccurrenceIsNow" i18n-label
+        label="First occurrence">
+        <field-option [value]="true" i18n-text text="Now"></field-option>
+        <field-option [value]="false" i18n-text text="Future date"></field-option>
+      </radio-group-field>
+
+      <date-field *ngIf="(form.get('firstOccurrenceIsNow').valueChanges | async) === false"
+        formControlName="firstOccurrenceDate" required i18n-label label="First occurrence date">
+      </date-field>
+
+      <radio-group-field formControlName="repeatUntilCanceled" i18n-label
+        label="Repeat until">
+        <field-option [value]="true" i18n-text text="Manually cancel"></field-option>
+        <field-option [value]="false" i18n-text text="Fixed number of occurrences"></field-option>
+      </radio-group-field>
+
+      <input-field *ngIf="(form.get('repeatUntilCanceled').valueChanges | async) === false"
+        type="number" numbersOnly formControlName="occurrencesCount" required
+        i18n-label label="Number of occurrences">
+      </input-field>
+    </ng-container>
+  </ng-container>
+
+  <ng-container *ngIf="(paymentTypeData$ | async)?.descriptionAvailability || 'disabled' as descriptionAvailability">
+    <textarea-field *ngIf="descriptionAvailability !== 'disabled'" [required]="descriptionAvailability === 'required'"
+      formControlName="description" required i18n-label label="Description"></textarea-field>
+  </ng-container>
+
+</ng-container>

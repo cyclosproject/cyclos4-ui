@@ -1,134 +1,75 @@
-<!-- string, integer, URL or entity -->
-<mat-form-field *ngIf="input"
-  #stringComponent
-  fxFlex="grow"
-  [class]="type == 'integer' ? 'small' : 'field-' + field.size">
-  <input #stringInput
-    matInput
-    [placeholder]="field.name"
-    [required]="field.required"
-    [focused]="focused"
-    [type]="type == 'integer' ? 'number' : type == 'url' ? 'url' : 'text'"
-    [numbersOnly]="type == 'integer'"
-    [mask]="field.pattern"
-    [formControl]="formControl">
-  <span matSuffix
-    *ngIf="privacyControl">
-    <field-privacy [field]="field.internalName"
-      [control]="privacyControl"></field-privacy>
-  </span>
-  <mat-error>
-    {{ formControl?.getError('message') }}
-  </mat-error>
-</mat-form-field>
+<!-- A read-only label-value rendered when the control is disabled -->
+<label-value *ngIf="disabled || (disabledChange | async); else controlTemplate"
+  [label]="field.name">
+  <format-field-value [fields]="[field]" [object]="disabledValueObject" [fieldName]="field.internalName"></format-field-value>
+</label-value>
 
-<!-- text or rich text (no WYSIWYG editor yet!) -->
-<mat-form-field *ngIf="textarea"
-  #textComponent
-  fxFlex="grow">
-  <textarea #textInput
-    matInput
-    matTextareaAutosize
-    [placeholder]="field.name"
-    mdAutosizeMinRows="3"
-    [required]="field.required"
-    [focused]="focused"
-    [type]="type == 'url' ? 'url' : 'text'"
-    [numbersOnly]="type == 'integer'"
-    [formControl]="formControl"></textarea>
-  <span matSuffix
-    *ngIf="privacyControl">
-    <field-privacy [field]="field.internalName"
-      [control]="privacyControl"></field-privacy>
-  </span>
-  <mat-error>
-    {{ formControl?.getError('message') }}
-  </mat-error>
-</mat-form-field>
+<!-- Template rendered when the field is editable, that is, there's a control -->
+<ng-template #controlTemplate>
+  <ng-container *ngIf="hasValuesList; else specificTemplate">
+    <radio-group-field #radioGroupField *ngIf="control == 'radio'; else singleSelectionTemplate"
+      [copyFrom]="self" [formControl]="formControl" [fieldOptions]="fieldOptions">
+    </radio-group-field>
+  </ng-container>
+</ng-template>
 
-<!-- boolean -->
-<div *ngIf="type == 'boolean'"
-  fxFlex="grow"
-  fxLayout="row">
-  <mat-checkbox #booleanComponent
-    fxFlex="grow"
-    [formControl]="formControl">
-    {{ field.name }}
-  </mat-checkbox>
-  <span fxFlex="nogrow"
-    *ngIf="privacyControl">
-    <field-privacy [field]="field.internalName"
-      [control]="privacyControl"></field-privacy>
-  </span>
-</div>
+<ng-template #singleSelectionTemplate>
+  <single-selection-field #singleSelectionField [copyFrom]="self" [formControl]="formControl"
+    emptyOption [fieldOptions]="fieldOptions">
+  </single-selection-field>
+</ng-template>
 
-<!-- decimal -->
-<decimal-field #decimalComponent
-  fxFlex="grow"
-  *ngIf="type == 'decimal'"
-  [name]="field.internalName"
-  [placeholder]="field.name"
-  [scale]="field.decimalDigits"
-  [required]="field.required"
-  [focused]="focused"
-  [formControl]="formControl"
-  [privacyControl]="privacyControl">
-</decimal-field>
+<ng-template #specificTemplate>
+  <!-- string, integer, URL or entity -->
+  <input-field #inputField *ngIf="input" [copyFrom]="self" [formControl]="formControl"
+    [type]="type == 'integer' ? 'number' : type == 'url' ? 'url' : 'text'" [mask]="field.pattern"></input-field>
 
-<!-- date -->
-<date-field #dateComponent
-  fxFlex="grow"
-  *ngIf="type == 'date'"
-  [name]="field.internalName"
-  [placeholder]="field.name"
-  [required]="field.required"
-  [focused]="focused"
-  [formControl]="formControl"
-  [privacyControl]="privacyControl">
-</date-field>
+  <!-- text or rich text (no WYSIWYG editor yet!) -->
+  <textarea-field #textareaField *ngIf="textarea" #textComponent [copyFrom]="self"
+    [formControl]="formControl"></textarea-field>
 
-<!-- single / multi selection -->
-<mat-form-field *ngIf="type == 'singleSelection' || type == 'multiSelection'">
-  <mat-select #selectComponent
-    fxFlex="grow"
-    [formControl]="type == 'multiSelection' ? multiSelectControl : formControl"
-    [required]="field.required"
-    [placeholder]="field.name"
-    [multiple]="type == 'multiSelection'">
-    <mat-option *ngIf="type == 'singleSelection'"></mat-option>
-    <mat-option *ngFor="let pv of field.possibleValues"
-      [value]="ApiHelper.internalNameOrId(pv)">
-      <span *ngIf="pv.category">{{ pv.category.name }} - </span>
-      {{ pv.value }}
-    </mat-option>
-  </mat-select>
-  <span matSuffix
-    *ngIf="privacyControl">
-    <field-privacy [field]="field.internalName"
-      [control]="privacyControl"></field-privacy>
-  </span>
-  <mat-error>
-    {{ formControl?.getError('message') }}
-  </mat-error>
-</mat-form-field>
+  <!-- boolean -->
+  <boolean-field #booleanField *ngIf="type == 'boolean'" [copyFrom]="self" [formControl]="formControl"
+    type="string">
+  </boolean-field>
 
-<!-- dynamic selection -->
-<mat-form-field *ngIf="type == 'dynamicSelection'">
-  <mat-select #dynamicComponent
-    fxFlex="grow"
-    [formControl]="formControl"
-    [required]="field.required"
-    [placeholder]="field.name">
-    <mat-option *ngFor="let pv of field.dynamicValues"
-      [value]="pv.value">{{ pv.label }}</mat-option>
-  </mat-select>
-  <span matSuffix
-    *ngIf="privacyControl">
-    <field-privacy [field]="field.internalName"
-      [control]="privacyControl"></field-privacy>
-  </span>
-  <mat-error>
-    {{ formControl?.getError('message') }}
-  </mat-error>
-</mat-form-field>
-<!-- no support for file / image so far -->
+  <!-- decimal -->
+  <decimal-field #decimalField *ngIf="type == 'decimal'" [copyFrom]="self" [formControl]="formControl"
+    [scale]="field.decimalDigits">
+  </decimal-field>
+
+  <!-- date -->
+  <date-field #dateField *ngIf="type == 'date'" [copyFrom]="self" [formControl]="formControl">
+  </date-field>
+
+  <!-- single selection -->
+  <single-selection-field #singleSelectionField *ngIf="type == 'singleSelection' && control == 'singleSelection'"
+    [copyFrom]="self" [formControl]="formControl" emptyOption [fieldOptions]="fieldOptions">
+  </single-selection-field>
+  <radio-group-field #radioGroupField *ngIf="type == 'singleSelection' && control == 'radio'"
+    [copyFrom]="self" [formControl]="formControl" [fieldOptions]="fieldOptions">
+  </radio-group-field>
+
+  <!-- multi selection -->
+  <multi-selection-field #multiSelectionField *ngIf="type == 'multiSelection' && control == 'multiSelection'"
+    [copyFrom]="self" [formControl]="formControl" [separator]="ApiHelper.VALUE_SEPARATOR"
+    [fieldOptions]="fieldOptions">
+  </multi-selection-field>
+  <checkbox-group-field #cheboxGroupField *ngIf="type == 'multiSelection' && control == 'checkbox'"
+    [copyFrom]="self" [formControl]="formControl" [separator]="ApiHelper.VALUE_SEPARATOR"
+    [fieldOptions]="fieldOptions">
+  </checkbox-group-field>
+
+  <!-- images -->
+  <images-field #imagesField *ngIf="type == 'image'" [copyFrom]="self" [formControl]="formControl"
+    [initialImages]="binaryValues?.imageValues[field.internalName]" target="customValue"
+    [customField]="field" [separator]="ApiHelper.VALUE_SEPARATOR" [maxFiles]="field.maxFiles">
+  </images-field>
+
+  <!-- files -->
+  <files-field #filesField *ngIf="type == 'file'" [copyFrom]="self" [formControl]="formControl"
+    [initialFiles]="binaryValues?.fileValues[field.internalName]" [customField]="field"
+    [separator]="ApiHelper.VALUE_SEPARATOR" [maxFiles]="field.maxFiles" [mimeTypes]="field.mimeTypes">
+  </files-field>
+
+</ng-template>

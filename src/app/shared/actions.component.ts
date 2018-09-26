@@ -1,57 +1,45 @@
-import { Component, AfterViewInit, Input, ElementRef, ChangeDetectorRef, OnInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, HostBinding, ElementRef, Input, OnInit } from '@angular/core';
+import { truthyAttr } from 'app/shared/helper';
 
-/**
- * Displays actions, normally buttons
- */
 @Component({
   // tslint:disable-next-line:component-selector
   selector: 'actions',
   templateUrl: 'actions.component.html',
-  styleUrls: ['actions.component.scss']
+  styleUrls: ['actions.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ActionsComponent implements OnInit, AfterViewInit {
+export class ActionsComponent implements OnInit {
 
-  @Input() root: boolean | string = false;
-  @Input() reverse: boolean | string = false;
-  @Input() topMargin: 'normal' | 'double' | 'half' | 'small' | 'none' = 'normal';
-  @Input() align: string;
-  @Input() buttonSpace: 'normal' | 'small' | 'equidistant' | 'none' = 'normal';
-  @Input() xsMode: 'column' | 'column-reverse' | 'row' = 'column-reverse';
-  inDialogActions = false;
+  private _forceRow: boolean | string;
+  @Input() get forceRow(): boolean | string {
+    return this._forceRow;
+  }
+  set forceRow(forceRow: boolean | string) {
+    this._forceRow = truthyAttr(forceRow);
+  }
 
-  constructor(
-    private el: ElementRef,
-    private changeDetector: ChangeDetectorRef) {
+  private _reverseRow: boolean | string;
+  @Input() get reverseRow(): boolean | string {
+    return this._reverseRow;
+  }
+  set reverseRow(reverseRow: boolean | string) {
+    this._reverseRow = truthyAttr(reverseRow);
+  }
+
+  constructor(private element: ElementRef) {
   }
 
   ngOnInit() {
-    if (this.root === '' || this.root === 'true') {
-      this.root = true;
-    }
-    if (this.reverse === '' || this.reverse === 'true') {
-      this.reverse = true;
-    }
-  }
-
-  ngAfterViewInit() {
-    if (this.el && this.el.nativeElement) {
-      let el = this.el.nativeElement;
-      while (el != null && el.tagName !== 'HTML') {
-        if (el.tagName === 'MAT-DIALOG-ACTIONS') {
-          this.inDialogActions = true;
-          break;
-        }
-        el = el.parentElement;
-      }
-    }
-    // Set some defaults when inside a dialog actions section
-    if (this.inDialogActions) {
-      this.topMargin = 'half';
-      this.buttonSpace = 'equidistant';
-      this.xsMode = 'row';
-      this.root = true;
-      this.changeDetector.detectChanges();
+    const el = this.element.nativeElement as HTMLElement;
+    el.className = 'actions d-flex justify-content-between ' + el.className;
+    el.classList.add('flex-column');
+    // The reverse is actually reversed :)
+    const suffix = this.reverseRow ? 'row' : 'row-reverse';
+    if (this.forceRow) {
+      el.classList.add(`flex-xs-${suffix}`);
+      el.classList.add('force-row');
+    } else {
+      el.classList.add(`flex-sm-${suffix}`);
     }
   }
-
 }

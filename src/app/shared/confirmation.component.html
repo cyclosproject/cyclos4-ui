@@ -1,0 +1,30 @@
+<h1 *ngIf="title">{{ title }}</h1>
+<form [formGroup]="form">
+  <div *ngIf="message" class="mb-1" [ngClass]="{'mt-3': title != null}"
+    [innerHTML]="message | trust"></div>
+
+  <custom-field-input *ngFor="let cf of customFields; let first = first"
+    [field]="cf" [focused]="first" [labelPosition]="labelPosition"
+    [formControl]="form.get('customValues').get(cf.internalName)">
+  </custom-field-input>
+
+  <ng-container *ngIf="passwordInput">
+    <div class="mb-2" [ngClass]="{
+        'mt-3': hasFields || message == null,
+        'mt-4': !hasFields && message != null
+      }"
+      i18n>
+      In order to confirm, you need to supply your {{ passwordInput.name }}
+    </div>
+    <confirmation-password formControlName="confirmationPassword" [focused]="!hasFields"
+      [passwordInput]="passwordInput"></confirmation-password>
+  </ng-container>
+
+  <actions forceRow>
+    <button class="btn btn-primary" [disabled]="hasForm && (!form.valid || (form.statusChanges | async) !== 'VALID')"
+      (click)="confirm()">{{ confirmLabel }}</button>
+    <button class="btn btn-outline-primary" (click)="modalRef.hide()">
+      {{ cancelLabel }}
+    </button>
+  </actions>
+</form>

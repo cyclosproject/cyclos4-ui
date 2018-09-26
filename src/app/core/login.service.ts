@@ -1,53 +1,34 @@
-import { Injectable, ApplicationRef, NgZone } from '@angular/core';
-import { Auth, User, Permissions } from 'app/api/models';
-import { AuthService } from 'app/api/services/auth.service';
-import { Subscription, Subject } from 'rxjs';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
-import { NextRequestState } from 'app/core/next-request-state';
+import { Auth, Permissions, User } from 'app/api/models';
+import { AuthService } from 'app/api/services/auth.service';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
-
-export enum LoginPageState {
-  NORMAL,
-  LOGGED_OUT,
-  FORGOT_PASSWORD_GENERATED,
-  FORGOT_PASSWORD_MANUAL
-}
+import { LoginState } from 'app/core/login-state';
+import { NextRequestState } from 'app/core/next-request-state';
+import { empty } from 'app/shared/helper';
+import { BehaviorSubject, Subscription, Observable } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 /**
  * Service used to manage the login status
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class LoginService {
   private _loggingOut = new BehaviorSubject(false);
   user$ = new BehaviorSubject<User>(null);
-
-  private _redirectUrl: string;
-
-  get redirectUrl(): string {
-    return this._redirectUrl;
-  }
-
-  set redirectUrl(redirectUrl: string) {
-    this._redirectUrl = redirectUrl;
-    this._loginPageState = redirectUrl == null ? LoginPageState.NORMAL : LoginPageState.LOGGED_OUT;
-  }
-
-  private _loginPageState: LoginPageState = LoginPageState.NORMAL;
-
-  get loginPageState(): LoginPageState {
-    return this._loginPageState;
-  }
+  auth$ = new BehaviorSubject<Auth>(null);
 
   constructor(
     private dataForUiHolder: DataForUiHolder,
     private nextRequestState: NextRequestState,
     private authService: AuthService,
-    private router: Router,
-    app: ApplicationRef,
-    zone: NgZone) {
+    private loginState: LoginState,
+    private router: Router) {
     dataForUiHolder.subscribe(dataForUi => {
       const auth = (dataForUi || {}).auth;
+      this.auth$.next(auth);
       this.user$.next((auth || {}).user);
     });
   }
@@ -78,8 +59,23 @@ export class LoginService {
    * Returns the current authentication
    */
   get auth(): Auth {
-    const dataForUi = this.dataForUiHolder.dataForUi;
-    return dataForUi == null ? null : dataForUi.auth;
+    return this.auth$.value;
+  }
+
+  /**
+   * Returns a key used for guests to upload temporary images / files
+   */
+  get guestKey(): string {
+    if (this.user != null) {
+      return '';
+    }
+    const name = 'GuestKey';
+    let key = localStorage.getItem(name);
+    if (empty(key)) {
+      key = `${new Date().getTime()}_${Math.random() * Number.MAX_SAFE_INTEGER}`;
+      localStorage.setItem(name, key);
+    }
+    return key;
   }
 
   /**
@@ -90,37 +86,32 @@ export class LoginService {
   }
 
   /**
-   * Performs the login, returning a Promise with the session token.
+   * Returns a cold observable for logging the user in the login.
    * Once logged in, will automatically redirect the user to the correct page.
    * @param principal The user principal
    * @param password The user password
    */
-  login(principal: string, password): Promise<string> {
+  login(principal: string, password): Observable<Auth> {
     // Setup the basic authentication for the login request
     this.nextRequestState.nextAsBasic(principal, password);
-    // Then attempt to do the login
+
     return this.authService.login({
       fields: ['sessionToken']
-    }).toPromise()
-      .then(auth => {
+    }).pipe(
+      switchMap(auth => {
         // Store the session token
         this.nextRequestState.sessionToken = auth.sessionToken;
 
         // Then reload the DataForUi instance (as user)
-        return this.dataForUiHolder.reload()
-          .then(() => {
-            // Redirect to the correct URL
-            this.router.navigateByUrl(this.redirectUrl || '');
-            return auth.sessionToken;
-          });
-      });
+        return this.dataForUiHolder.reload();
+      }));
   }
 
   /**
    * Directly clears the logged user state
    */
   clear(): void {
-    this.redirectUrl = null;
+    this.loginState.redirectUrl = null;
     this.nextRequestState.sessionToken = null;
   }
 
@@ -128,28 +119,20 @@ export class LoginService {
    * Performs the logout, optionally redirecting to a custom URL
    */
   logout(redirectUrl: string = null): void {
-    this.redirectUrl = null;
-    if (this.auth == null) {
+    this.loginState.redirectUrl = null;
+    if (this.nextRequestState.sessionToken == null) {
       // No one logged in
       return;
     }
     this._loggingOut.next(true);
-    this.authService.logout()
-      .toPromise()
-      .then(() => {
-        this.clear();
+    this.authService.logout().subscribe(() => {
+      this.clear();
 
-        // Then reload the DataForUi instance (as guest)
-        return this.dataForUiHolder.reload()
-          .then(() => {
-            this._loggingOut.next(false);
-            this.router.navigateByUrl(redirectUrl || '/login');
-            return null;
-          });
+      // Then reload the DataForUi instance (as guest)
+      return this.dataForUiHolder.reload().subscribe(() => {
+        this._loggingOut.next(false);
+        this.router.navigateByUrl(redirectUrl || '/login');
       });
-  }
-
-  forgottenPasswordChanged(generated: boolean): void {
-    this._loginPageState = generated ? LoginPageState.FORGOT_PASSWORD_GENERATED : LoginPageState.FORGOT_PASSWORD_MANUAL;
+    });
   }
 }

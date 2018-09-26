@@ -1,11 +1,9 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy, Optional } from '@angular/core';
-import { Notification } from 'app/shared/notification';
+import { Component, ChangeDetectionStrategy, Input, OnInit, Optional } from '@angular/core';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 import { NotificationType } from 'app/shared/notification-type';
-import { MatDialogRef } from '@angular/material';
-import { Messages } from 'app/messages/messages';
 
 /**
- * Component used to show a notification
+ * Shows a notification message. May be in a popup or directly
  */
 @Component({
   // tslint:disable-next-line:component-selector
@@ -15,40 +13,34 @@ import { Messages } from 'app/messages/messages';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NotificationComponent implements OnInit {
-  constructor(
-    public messages: Messages,
-    @Optional()
-    public dialogRef: MatDialogRef<NotificationComponent>
-  ) { }
 
-  public containerClass: string;
-  public iconColor: string;
+  @Input() type: NotificationType = 'info';
+  @Input() message: string;
+  @Input() allowClose = true;
 
-  @Input()
-  public notification: Notification;
+  alertType: string;
+  icon: string;
 
-  @Input()
-  public allowClose = true;
+  constructor(@Optional() public modalRef: BsModalRef) {
+  }
 
   ngOnInit() {
-    if (this.dialogRef == null) {
-      // Don't allow closing if there' no dialog!
+    if (this.modalRef == null) {
       this.allowClose = false;
     }
-    this.containerClass = 'notification';
-    this.iconColor = '';
-    if (this.notification != null) {
-      const type = this.notification.type;
-      this.containerClass += ' notification--' + type;
-      this.iconColor = type === NotificationType.ERROR
-        ? 'warn' : type === NotificationType.INFO
-          ? 'primary' : 'accent';
+    switch (this.type) {
+      case 'info':
+        this.alertType = 'success';
+        break;
+      case 'warning':
+        this.alertType = 'warning';
+        break;
+      default:
+        this.alertType = 'danger';
+        break;
     }
+    // The material icon ligatures matches the notification types we use
+    this.icon = this.type;
   }
 
-  close() {
-    if (this.dialogRef) {
-      this.dialogRef.close();
-    }
-  }
 }

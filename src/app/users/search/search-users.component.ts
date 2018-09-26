@@ -1,17 +1,15 @@
-import { Component, ChangeDetectionStrategy, Injector, ViewChild } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Injector } from '@angular/core';
 
-import { BehaviorSubject } from 'rxjs';
-import { BaseComponent } from 'app/shared/base.component';
-import { TableDataSource } from 'app/shared/table-datasource';
-import { ApiHelper } from 'app/shared/api-helper';
-import { FormGroup, FormBuilder, FormControl } from '@angular/forms';
-import { tap } from 'rxjs/operators';
-import { debounceTime } from 'rxjs/operators';
 import { UsersService } from 'app/api/services';
-import { UserDataForSearch, UserDataForMap } from 'app/api/models';
+import { UserDataForSearch, UserDataForMap, Country, CustomFieldDetailed } from 'app/api/models';
 import { UserResult } from 'app/api/models/user-result';
 import { ResultType } from 'app/shared/result-type';
-import { UsersResultsComponent } from 'app/users/search/users-results.component';
+import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
+import { CountriesResolve } from 'app/countries.resolve';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { empty } from 'app/shared/helper';
+import { ApiHelper } from 'app/shared/api-helper';
+import { cloneDeep } from 'lodash';
 
 /**
  * Search for users
@@ -21,41 +19,38 @@ import { UsersResultsComponent } from 'app/users/search/users-results.component'
   templateUrl: 'search-users.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SearchUsersComponent extends BaseComponent {
+export class SearchUsersComponent
+  extends BaseSearchPageComponent<UserDataForSearch | UserDataForMap, UserResult> {
 
   // Export enum to the template
   ResultType = ResultType;
+  empty = empty;
 
-  data = new BehaviorSubject<UserDataForSearch | UserDataForMap>(null);
-
-  renderingResults = new BehaviorSubject(true);
-
-  form: FormGroup;
-  resultType: FormControl;
-  previousResultType: ResultType;
   canSearch: boolean;
   canViewMap: boolean;
   allowedResultTypes: ResultType[];
+  countries$: Observable<Country[]>;
+  fieldsInSearch$ = new BehaviorSubject<CustomFieldDetailed[]>([]);
 
-  query: any;
-  dataSource = new TableDataSource<UserResult>(null);
-  loaded = new BehaviorSubject(false);
-
-  @ViewChild('results') results: UsersResultsComponent;
+  // As the custom fields are dynamically fetched, and form.setControl doesn't have a way to avoid emitting the value.
+  // Hence, we need to control the update externally.
+  // See https://github.com/angular/angular/issues/20439
+  ignoreNextUpdate = false;
 
   constructor(
     injector: Injector,
     private usersService: UsersService,
-    formBuilder: FormBuilder
+    countriesResolve: CountriesResolve
   ) {
     super(injector);
+
     // Get the permissions to search users and view map directory
     const permissions = this.login.permissions || {};
     const users = permissions.users || {};
     this.canSearch = !!users.search;
     this.canViewMap = !!users.map;
     if (!this.canSearch && !this.canViewMap) {
-      this.notification.error(this.messages.errorPermission());
+      this.errorHandler.handleForbiddenError({});
       return;
     }
     this.allowedResultTypes = [];
@@ -66,86 +61,71 @@ export class SearchUsersComponent extends BaseComponent {
     if (this.canViewMap) {
       this.allowedResultTypes.push(ResultType.MAP);
     }
-    this.previousResultType = this.canSearch ? ResultType.TILES : ResultType.MAP;
-    this.form = formBuilder.group({
-      keywords: null,
-      customValues: null
-    });
-    this.resultType = formBuilder.control(this.previousResultType);
-    this.form.setControl('resultType', this.resultType);
-    this.resultType.valueChanges.subscribe(rt => this.updateResultType(rt));
 
-    this.stateManager.manage(this.form);
-    this.subscriptions.push(this.form.valueChanges.pipe(
-      debounceTime(ApiHelper.DEBOUNCE_TIME)
-    ).subscribe(value => {
-      this.update(value);
-    }));
+    this.countries$ = countriesResolve.data;
   }
 
-  ngOnInit() {
-    super.ngOnInit();
-
-    this.updateResultType(this.previousResultType, true);
-  }
-
-  update(value?: any) {
-    if (value == null) {
-      value = this.form.value;
+  shouldUpdateOnChange(value: any, previousValue: any): boolean {
+    if (this.ignoreNextUpdate) {
+      this.ignoreNextUpdate = false;
+      return false;
     }
-    if (value) {
-      // Update the query from the current form value
-      this.query.keywords = value.keywords;
-    }
-
-    // Update the results
-    this.dataSource.next(null);
-    const search = this.resultType.value === ResultType.MAP
-      ? this.usersService.searchMapDirectoryResponse(this.query)
-      : this.usersService.searchUsersResponse(this.query);
-    const results = search.pipe(
-      tap(response => {
-        this.layout.fullHeightContent.next(response.body.length > 0 && this.resultType.value === ResultType.MAP);
-        // When no rows state that results are not being rendered
-        if (response.body.length === 0) {
-          this.renderingResults.next(false);
-        }
-      }));
-    this.renderingResults.next(true);
-    this.dataSource.subscribe(results);
+    return super.shouldUpdateOnChange(value, previousValue);
   }
 
-  private updateResultType(resultType: ResultType, force = false) {
+  protected getFormControlNames() {
+    return ['keywords', 'customValues', 'orderBy'];
+  }
+
+  getInitialResultType() {
+    return this.layout.xxs ? ResultType.LIST : ResultType.TILES;
+  }
+
+  protected onResultTypeChanged(resultType: ResultType, previousResultType: ResultType) {
     const isMap = resultType === ResultType.MAP;
-    const wasMap = this.previousResultType === ResultType.MAP;
+    const wasMap = previousResultType === ResultType.MAP;
+    const force = previousResultType == null;
     if (isMap !== wasMap || force) {
-      // Have to reload the data
-      this.data.next(null);
-      if (this.query) {
-        // When changing between map / no-map, reset the page
-        this.query.page = 0;
-        this.query.pageSize = null;
+      // Have to reload the data, or load the data for the first time
+      this.data = null;
+
+      // When changing between map / no-map, reset the page
+      this.resetPage();
+    }
+
+    const setData = (data: UserDataForSearch | UserDataForMap) => {
+      if (empty(data.fieldsInList)) {
+        // When there are no fields in list, set the display
+        data.fieldsInList = ['display'];
+      }
+      const fieldsInSearch = data.customFields.filter(cf => data.fieldsInSearch.includes(cf.internalName));
+      // See the comment on ignoreNextUpdate
+      this.ignoreNextUpdate = true;
+      this.form.setControl('customValues', ApiHelper.customValuesFormGroup(this.formBuilder, fieldsInSearch));
+      this.fieldsInSearch$.next(fieldsInSearch);
+      this.data = data;
+    };
+
+    if (this.data == null) {
+      this.rendering = true;
+      if (isMap) {
+        // Get data for showing the map
+        this.stateManager.cache('dataForMap', this.usersService.getDataForMapDirectory())
+          .subscribe(setData);
+      } else {
+        // Get the data for regular user search
+        this.stateManager.cache('dataForSearch', this.usersService.getUserDataForSearch())
+          .subscribe(setData);
       }
     }
-    const afterData = (data: UserDataForSearch | UserDataForMap) => {
-      this.data.next(data);
-      this.loaded.next(true);
-      // Initialize the query
-      this.query = this.stateManager.get('query', () => {
-        return data.query;
-      });
-      // Perform the search
-      this.update();
-    };
-    if (isMap && !wasMap || force && isMap) {
-      // Get data for showing the map
-      this.stateManager.cache('dataForMap',
-        this.usersService.getDataForMapDirectory()).subscribe(afterData);
-    } else if (!isMap && wasMap || force && !isMap) {
-      // Get the data for user search
-      this.stateManager.cache('dataForSearch',
-        this.usersService.getUserDataForSearch()).subscribe(afterData);
-    }
-    this.previousResultType = resultType;
+  }
+
+  doSearch(query) {
+    const value = cloneDeep(query);
+    value.profileFields = ApiHelper.toCustomValuesFilter(query.customValues);
+    delete value.customValues;
+    return this.resultType === ResultType.MAP
+      ? this.usersService.searchMapDirectoryResponse(value)
+      : this.usersService.searchUsersResponse(value);
   }
 }

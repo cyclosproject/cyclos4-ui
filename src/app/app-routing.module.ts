@@ -7,7 +7,6 @@ import { NotFoundComponent } from 'app/shared/not-found.component';
 import { SharedModule } from 'app/shared/shared.module';
 import { LoggedUserGuard } from 'app/logged-user-guard';
 import { Menu } from 'app/shared/menu';
-import { SettingsComponent } from 'app/settings/settings.component';
 import { ForgotPasswordComponent } from 'app/login/forgot-password.component';
 import { ChangeForgottenPasswordComponent } from 'app/login/change-forgotten-password.component';
 
@@ -50,13 +49,6 @@ const rootRoutes: Routes = [
     }
   },
   {
-    path: 'settings',
-    component: SettingsComponent,
-    data: {
-      menu: Menu.SETTINGS
-    }
-  },
-  {
     path: 'banking',
     loadChildren: 'app/banking/banking.module#BankingModule'
   },
@@ -68,10 +60,10 @@ const rootRoutes: Routes = [
     path: 'marketplace',
     loadChildren: 'app/marketplace/marketplace.module#MarketplaceModule'
   },
-  {
-    path: 'personal',
-    loadChildren: 'app/personal/personal.module#PersonalModule'
-  },
+  // {
+  //   path: 'personal',
+  //   loadChildren: 'app/personal/personal.module#PersonalModule'
+  // },
   {
     path: '**',
     component: NotFoundComponent
@@ -87,10 +79,6 @@ const rootRoutes: Routes = [
       onSameUrlNavigation: 'reload'
     }),
     SharedModule
-  ],
-  declarations: [
-    HomeComponent,
-    DashboardComponent
   ],
   exports: [
     RouterModule

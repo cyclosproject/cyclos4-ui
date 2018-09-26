@@ -8,7 +8,9 @@ const SESSION_TOKEN = 'Session-Token';
 /**
  * Stores data which will be set in the next API request
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class NextRequestState {
 
   private nextAuth: string;

@@ -1,23 +1,20 @@
+import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { AppComponent } from 'app/app.component';
-import { AppRoutingModule } from 'app/app-routing.module';
-import { SharedModule } from 'app/shared/shared.module';
+
+import { AppComponent } from './app.component';
 import { ApiModule } from 'app/api/api.module';
-import { INITIALIZE } from 'app/initialize';
-import { LoginModule } from 'app/login/login.module';
 import { CoreModule } from 'app/core/core.module';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { SettingsModule } from './settings/settings.module';
-import 'hammerjs';
-import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material';
-import { LAZY_MAPS_API_CONFIG, LazyMapsAPILoader, MapsAPILoader } from '@agm/core';
+import { SharedModule } from 'app/shared/shared.module';
+import { AppRoutingModule } from 'app/app-routing.module';
+import { LoginModule } from 'app/login/login.module';
+import { HomeModule } from 'app/home/home.module';
+
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { DataForUi } from 'app/api/models';
 import { BROWSER_GLOBALS_PROVIDERS } from '@agm/core/utils/browser-globals';
+import { INITIALIZE } from 'app/initialize';
+import { MapsAPILoader, LazyMapsAPILoader, LAZY_MAPS_API_CONFIG } from '@agm/core';
 
-/**
- * Root application module
- */
 @NgModule({
   declarations: [
     AppComponent
@@ -26,20 +23,15 @@ import { BROWSER_GLOBALS_PROVIDERS } from '@agm/core/utils/browser-globals';
     ApiModule,
     CoreModule,
     SharedModule,
-    BrowserAnimationsModule,
+    BrowserModule,
     AppRoutingModule,
 
     // Eagerly loaded modules
     LoginModule,
-    SettingsModule
+    HomeModule
   ],
   providers: [
     INITIALIZE,
-    {
-      provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {
-        duration: 3500
-      }
-    },
     {
       provide: MapsAPILoader,
       useClass: LazyMapsAPILoader
@@ -59,8 +51,6 @@ import { BROWSER_GLOBALS_PROVIDERS } from '@agm/core/utils/browser-globals';
       deps: [DataForUiHolder]
     }
   ],
-  bootstrap: [
-    AppComponent
-  ]
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

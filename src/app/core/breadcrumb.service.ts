@@ -10,13 +10,15 @@ const IGNORE_BREADCRUMB = ['', '/home', '/login'];
 /**
  * Service used to navigate between pages and managing the component state
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class BreadcrumbService {
 
   /**
    * The current breadcrumb entries
    */
-  breadcrumb = new BehaviorSubject<string[]>([]);
+  breadcrumb$ = new BehaviorSubject<string[]>([]);
 
   constructor(
     private router: Router,
@@ -36,7 +38,7 @@ export class BreadcrumbService {
    * Clears the navigation state
    */
   clear(): void {
-    this.breadcrumb.next([]);
+    this.breadcrumb$.next([]);
   }
 
   private onRouterEvent(event: NavigationStart): void {
@@ -45,7 +47,7 @@ export class BreadcrumbService {
       return;
     }
 
-    let entries = this.breadcrumb.value;
+    let entries = this.breadcrumb$.value;
 
     // Find the breadcrumb entry for this path
     let index = -1;
@@ -63,14 +65,14 @@ export class BreadcrumbService {
       entries = entries.slice();
       entries.push(event.url);
     }
-    this.breadcrumb.next(entries);
+    this.breadcrumb$.next(entries);
   }
 
   /**
    * Goes back one level
    */
   back() {
-    const breadcrumb = this.breadcrumb.value;
+    const breadcrumb = this.breadcrumb$.value;
     if (breadcrumb.length > 1) {
       this.router.navigateByUrl(breadcrumb[breadcrumb.length - 2]);
     }

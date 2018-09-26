@@ -1,18 +1,17 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { Menu } from 'app/shared/menu';
-import { PublicRegistrationComponent } from 'app/users/registration/public-registration.component';
-import { SearchUsersComponent } from 'app/users/search/search-users.component';
-import { ViewUserProfileComponent } from 'app/users/profile/view-user-profile.component';
-import { EditUserProfileComponent } from 'app/users/profile/edit-user-profile.component';
 import { CountriesResolve } from 'app/countries.resolve';
 import { LoggedUserGuard } from 'app/logged-user-guard';
+
+import { ViewProfileComponent } from 'app/users/profile/view-profile.component';
+import { EditProfileComponent } from 'app/users/profile/edit-profile.component';
+import { SearchUsersComponent } from 'app/users/search/search-users.component';
+import { ContactListComponent } from 'app/users/search/contact-list.component';
+import { ManagePasswordsComponent } from 'app/users/passwords/manage-passwords.component';
+import { PublicRegistrationComponent } from 'app/users/registration/public-registration.component';
 import { ValidateRegistrationComponent } from 'app/users/registration/validate-registration.component';
-import { ManagePhonesComponent } from './phones/manage-phones.component';
-import { ManageAddressesComponent } from 'app/users/addresses/manage-addresses.component';
-import { ManageImagesComponent } from 'app/users/images/manage-images.component';
-import { ManageContactInfosComponent } from 'app/users/contact-infos/manage-contact-infos.component';
-import { ContactListComponent } from 'app/users/contacts/contact-list.component';
+import { ValidateEmailChangeComponent } from 'app/users/profile/validate-email-change.component';
 
 const usersRoutes: Routes = [
   {
@@ -27,7 +26,7 @@ const usersRoutes: Routes = [
       },
       {
         path: 'profile/:key',
-        component: ViewUserProfileComponent,
+        component: ViewProfileComponent,
         resolve: {
           countries: CountriesResolve
         },
@@ -38,7 +37,7 @@ const usersRoutes: Routes = [
 
       {
         path: 'my-profile',
-        component: ViewUserProfileComponent,
+        component: ViewProfileComponent,
         canActivate: [LoggedUserGuard],
         resolve: {
           countries: CountriesResolve
@@ -49,45 +48,17 @@ const usersRoutes: Routes = [
       },
       {
         path: 'my-profile/edit',
-        component: EditUserProfileComponent,
+        component: EditProfileComponent,
         canActivate: [LoggedUserGuard],
         data: {
           menu: Menu.EDIT_MY_PROFILE
         }
       },
       {
-        path: 'my-profile/phones',
-        component: ManagePhonesComponent,
-        canActivate: [LoggedUserGuard],
+        path: 'validate-email-change/:key',
+        component: ValidateEmailChangeComponent,
         data: {
-          menu: Menu.MY_PHONES
-        }
-      },
-      {
-        path: 'my-profile/addresses',
-        component: ManageAddressesComponent,
-        resolve: {
-          countries: CountriesResolve
-        },
-        canActivate: [LoggedUserGuard],
-        data: {
-          menu: Menu.MY_ADDRESSES
-        }
-      },
-      {
-        path: 'my-profile/images',
-        component: ManageImagesComponent,
-        canActivate: [LoggedUserGuard],
-        data: {
-          menu: Menu.MY_IMAGES
-        }
-      },
-      {
-        path: 'my-profile/contact-infos',
-        component: ManageContactInfosComponent,
-        canActivate: [LoggedUserGuard],
-        data: {
-          menu: Menu.MY_CONTACT_INFOS
+          menu: Menu.REGISTRATION
         }
       },
       {
@@ -100,7 +71,8 @@ const usersRoutes: Routes = [
       },
       {
         path: 'contact-profile/:key',
-        component: ViewUserProfileComponent,
+        component: ViewProfileComponent,
+        canActivate: [LoggedUserGuard],
         resolve: {
           countries: CountriesResolve
         },
@@ -124,7 +96,16 @@ const usersRoutes: Routes = [
         data: {
           menu: Menu.REGISTRATION
         }
-      }
+      },
+
+      {
+        path: 'passwords',
+        component: ManagePasswordsComponent,
+        canActivate: [LoggedUserGuard],
+        data: {
+          menu: Menu.PASSWORDS
+        }
+      },
     ]
   }
 ];

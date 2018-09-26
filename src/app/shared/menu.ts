@@ -24,55 +24,42 @@ export module RootMenu {
   }
 }
 
-/** Contains the floating menus, that is, those which have no dedicated root menu, but do have a side menu */
-export type FloatingMenu = 'editMyProfile';
-export module FloatingMenu {
-  export const EDIT_MY_PROFILE: FloatingMenu = 'editMyProfile';
-  export function values(): FloatingMenu[] {
-    return [EDIT_MY_PROFILE];
-  }
-}
-
 /** Represents an available menu item */
 export class Menu {
   constructor(
-    public root: RootMenu,
-    public floating: FloatingMenu = null
-  ) { }
+    public readonly root: RootMenu,
+    public readonly name: string) { }
 }
 export module Menu {
   // Standalone
-  export const HOME = new Menu(RootMenu.HOME);
-  export const LOGIN = new Menu(RootMenu.LOGIN);
-  export const REGISTRATION = new Menu(RootMenu.REGISTRATION);
+  export const HOME = new Menu(RootMenu.HOME, 'HOME');
+  export const LOGIN = new Menu(RootMenu.LOGIN, 'LOGIN');
+  export const REGISTRATION = new Menu(RootMenu.REGISTRATION, 'REGISTRATION');
 
   // Banking
-  export const ACCOUNT_HISTORY = new Menu(RootMenu.BANKING);
-  export const VIEW_TRANSFER = new Menu(RootMenu.BANKING);
-  export const VIEW_TRANSACTION = new Menu(RootMenu.BANKING);
-  export const PERFORM_PAYMENT = new Menu(RootMenu.BANKING);
-  export const SCHEDULED_PAYMENTS = new Menu(RootMenu.BANKING);
-  export const RECURRING_PAYMENTS = new Menu(RootMenu.BANKING);
+  export const ACCOUNT_HISTORY = new Menu(RootMenu.BANKING, 'ACCOUNT_HISTORY');
+  export const VIEW_TRANSFER = new Menu(RootMenu.BANKING, 'VIEW_TRANSFER');
+  export const VIEW_TRANSACTION = new Menu(RootMenu.BANKING, 'VIEW_TRANSACTION');
+  export const PAYMENT_TO_USER = new Menu(RootMenu.BANKING, 'PAYMENT_TO_USER');
+  export const PAYMENT_TO_SELF = new Menu(RootMenu.BANKING, 'PAYMENT_TO_SELF');
+  export const PAYMENT_TO_SYSTEM = new Menu(RootMenu.BANKING, 'PAYMENT_TO_SYSTEM');
+  export const SCHEDULED_PAYMENTS = new Menu(RootMenu.BANKING, 'SCHEDULED_PAYMENTS');
+  export const RECURRING_PAYMENTS = new Menu(RootMenu.BANKING, 'RECURRING_PAYMENTS');
+  export const AUTHORIZED_PAYMENTS = new Menu(RootMenu.BANKING, 'AUTHORIZED_PAYMENTS');
 
   // Marketplace
-  export const SEARCH_USERS = new Menu(RootMenu.MARKETPLACE);
-  export const USER_PROFILE = new Menu(RootMenu.MARKETPLACE);
-  export const SEARCH_ADS = new Menu(RootMenu.MARKETPLACE);
-  export const VIEW_AD = new Menu(RootMenu.MARKETPLACE);
+  export const SEARCH_USERS = new Menu(RootMenu.MARKETPLACE, 'SEARCH_USERS');
+  export const USER_PROFILE = new Menu(RootMenu.MARKETPLACE, 'USER_PROFILE');
+  export const SEARCH_ADS = new Menu(RootMenu.MARKETPLACE, 'SEARCH_ADS');
+  export const VIEW_AD = new Menu(RootMenu.MARKETPLACE, 'VIEW_AD');
 
   // Personal
-  export const MY_PROFILE = new Menu(RootMenu.PERSONAL);
-  export const EDIT_MY_PROFILE = new Menu(RootMenu.PERSONAL, FloatingMenu.EDIT_MY_PROFILE);
-  export const MY_PHONES = new Menu(RootMenu.PERSONAL, FloatingMenu.EDIT_MY_PROFILE);
-  export const MY_ADDRESSES = new Menu(RootMenu.PERSONAL, FloatingMenu.EDIT_MY_PROFILE);
-  export const MY_IMAGES = new Menu(RootMenu.PERSONAL, FloatingMenu.EDIT_MY_PROFILE);
-  export const MY_CONTACT_INFOS = new Menu(RootMenu.PERSONAL, FloatingMenu.EDIT_MY_PROFILE);
-  export const BACK_TO_PERSONAL = new Menu(RootMenu.PERSONAL, FloatingMenu.EDIT_MY_PROFILE);
-  export const SETTINGS = new Menu(RootMenu.PERSONAL);
-  export const CONTACTS = new Menu(RootMenu.PERSONAL);
-  export const CONTACT_PROFILE = new Menu(RootMenu.PERSONAL);
-  export const PASSWORDS = new Menu(RootMenu.PERSONAL);
-  export const LOGOUT = new Menu(RootMenu.PERSONAL);
+  export const MY_PROFILE = new Menu(RootMenu.PERSONAL, 'MY_PROFILE');
+  export const EDIT_MY_PROFILE = new Menu(RootMenu.PERSONAL, 'EDIT_MY_PROFILE');
+  export const CONTACTS = new Menu(RootMenu.PERSONAL, 'CONTACTS');
+  export const CONTACT_PROFILE = new Menu(RootMenu.PERSONAL, 'CONTACTS_PROFILE');
+  export const PASSWORDS = new Menu(RootMenu.PERSONAL, 'PASSWORDS');
+  export const LOGOUT = new Menu(RootMenu.PERSONAL, 'LOGOUT');
 }
 
 

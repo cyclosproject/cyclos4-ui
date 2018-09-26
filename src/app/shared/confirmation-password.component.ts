@@ -8,23 +8,9 @@ import {
   AbstractControl, ValidationErrors, ControlContainer
 } from '@angular/forms';
 import { PasswordInputComponent } from 'app/shared/password-input.component';
-import { Messages } from 'app/messages/messages';
 import { Subscription } from 'rxjs';
 import { BaseControlComponent } from 'app/shared/base-control.component';
-
-// Definition of the exported NG_VALUE_ACCESSOR provider
-export const CONFIRMATION_PASSWORD_VALUE_ACCESSOR: Provider = {
-  provide: NG_VALUE_ACCESSOR,
-  useExisting: forwardRef(() => ConfirmationPasswordComponent),
-  multi: true
-};
-
-// Definition of the exported NG_VALIDATORS provider
-export const CONFIRMATION_PASSWORD_VALIDATOR: Provider = {
-  provide: NG_VALIDATORS,
-  useExisting: forwardRef(() => ConfirmationPasswordComponent),
-  multi: true
-};
+import { I18n } from '@ngx-translate/i18n-polyfill';
 
 /**
  * Component used to input a password to confirm an action
@@ -35,15 +21,13 @@ export const CONFIRMATION_PASSWORD_VALIDATOR: Provider = {
   styleUrls: ['confirmation-password.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
-    CONFIRMATION_PASSWORD_VALUE_ACCESSOR,
-    CONFIRMATION_PASSWORD_VALIDATOR
+    { provide: NG_VALUE_ACCESSOR, useExisting: ConfirmationPasswordComponent, multi: true },
+    { provide: NG_VALIDATORS, useExisting: ConfirmationPasswordComponent, multi: true }
   ]
 })
 export class ConfirmationPasswordComponent extends BaseControlComponent<string> implements OnChanges, Validator {
 
   @Input() passwordInput: PasswordInput;
-
-  @Input() message: string;
 
   otpRenewable: boolean;
 
@@ -54,7 +38,7 @@ export class ConfirmationPasswordComponent extends BaseControlComponent<string> 
 
   constructor(
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
-    public messages: Messages
+    public i18n: I18n
   ) {
     super(controlContainer);
   }
@@ -90,14 +74,22 @@ export class ConfirmationPasswordComponent extends BaseControlComponent<string> 
     const name = this.passwordInput.name;
     if (otp) {
       if (!this.hasOtpSendMediums) {
-        return this.messages.passwordConfirmationOtpNoMediums(name);
+        return this.i18n(`In order to confirm you need a {{name}}, but you cannot request a new password.
+          Please, contact the administration.`, {
+            name: name
+          });
       } else if (this.activePassword) {
-        return this.messages.passwordConfirmationOtpExisting(name);
+        return this.i18n(`In order to confirm, please, supply your {{name}}.
+          You can use the previously sent password or request for a new one.`, {
+            name: name
+          });
       } else {
-        return this.messages.passwordConfirmationOtp();
+        return this.i18n('Please, request a password below in order to confirm.');
       }
     } else {
-      return this.messages.passwordConfirmationNotActive(name);
+      return this.i18n(`In order to confirm you need a {{name}}, but you do not have any.`, {
+        name: name
+      });
     }
   }
 
@@ -115,5 +107,9 @@ export class ConfirmationPasswordComponent extends BaseControlComponent<string> 
     return null;
   }
   registerOnValidatorChange(fn: () => void): void {
+  }
+
+  focus() {
+    this.passwordComponent.focus();
   }
 }

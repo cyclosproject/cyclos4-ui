@@ -1,11 +1,11 @@
-import { Component, Input, ElementRef, ViewChild, ChangeDetectionStrategy, Injector, EventEmitter, Output } from '@angular/core';
-import { MatSidenav } from '@angular/material';
-import { BaseComponent } from 'app/shared/base.component';
+import { Component, OnInit, ChangeDetectionStrategy, Output, EventEmitter, Input } from '@angular/core';
+import { FormatService } from 'app/core/format.service';
 import { User } from 'app/api/models';
-import { Subject } from 'rxjs';
+import { LayoutService } from 'app/shared/layout.service';
+import { BreadcrumbService } from 'app/core/breadcrumb.service';
 
 /**
- * The top bar with the application title, main menu, personal menu, etc.
+ * The top bar, which is always visible
  */
 @Component({
   selector: 'top-bar',
@@ -13,35 +13,18 @@ import { Subject } from 'rxjs';
   styleUrls: ['top-bar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TopBarComponent extends BaseComponent {
+export class TopBarComponent implements OnInit {
+  constructor(
+    public breadcrumb: BreadcrumbService,
+    public format: FormatService,
+    public layout: LayoutService) { }
 
-  constructor(injector: Injector) {
-    super(injector);
+  @Input() user: User;
+  @Input() principal: string;
+
+  @Output() togglePersonalMenu = new EventEmitter<HTMLElement>();
+  @Output() toggleSidenav = new EventEmitter<void>();
+
+  ngOnInit(): void {
   }
-
-  @Input()
-  sidenav: MatSidenav;
-
-  @Output()
-  togglePersonalMenu = new EventEmitter<HTMLElement>();
-
-  @ViewChild('personalMenuToggle')
-  personalMenuToggle: ElementRef;
-
-  hideTitle = new Subject<boolean>();
-
-  ngOnInit() {
-    super.ngOnInit();
-    if (this.sidenav) {
-      this.subscriptions.push(this.sidenav.openedStart.subscribe(() => this.hideTitle.next(true)));
-      this.subscriptions.push(this.sidenav.closedStart.subscribe(() => this.hideTitle.next(false)));
-    }
-  }
-
-  personalMenuToggleClick(event: MouseEvent) {
-    event.preventDefault();
-    event.stopPropagation();
-    this.togglePersonalMenu.emit(this.personalMenuToggle.nativeElement);
-  }
-
 }

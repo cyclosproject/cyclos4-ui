@@ -1,9 +1,11 @@
-import { Component, ChangeDetectionStrategy, Injector } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Injector, OnInit } from '@angular/core';
 import { DataForChangeForgottenPassword } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
 import { FormBuilder, FormGroup, Validators, ValidatorFn } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs';
 import { AuthService } from 'app/api/services';
+import { BasePageComponent } from 'app/shared/base-page.component';
+import { LoginState } from 'app/core/login-state';
 
 /** Validator function that ensures password and confirmation match */
 const PASSWORDS_MATCH_VAL: ValidatorFn = control => {
@@ -26,23 +28,21 @@ const PASSWORDS_MATCH_VAL: ValidatorFn = control => {
 @Component({
   selector: 'change-forgotten-password',
   templateUrl: 'change-forgotten-password.component.html',
-  // Actually uses the same styles as the login component
-  styleUrls: ['login.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ChangeForgottenPasswordComponent extends BaseComponent {
+export class ChangeForgottenPasswordComponent
+  extends BasePageComponent<DataForChangeForgottenPassword>
+  implements OnInit {
 
   form: FormGroup;
-  loaded = new BehaviorSubject(false);
-  data = new BehaviorSubject<DataForChangeForgottenPassword>(null);
 
   constructor(
     injector: Injector,
-    private formBuilder: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private loginState: LoginState
   ) {
     super(injector);
-    this.form = formBuilder.group({
+    this.form = this.formBuilder.group({
       key: ['', Validators.required]
     });
   }
@@ -57,7 +57,7 @@ export class ChangeForgottenPasswordComponent extends BaseComponent {
     const key = this.route.snapshot.params.key;
     this.form.patchValue({ key: key });
     this.authService.getDataForChangeForgottenPassword({ key: key }).subscribe(data => {
-      this.data.next(data);
+      this.data = data;
       if (data.securityQuestion) {
         this.form.setControl('securityAnswer', this.formBuilder.control('', Validators.required));
       }
@@ -67,17 +67,22 @@ export class ChangeForgottenPasswordComponent extends BaseComponent {
         this.form.setControl('newPasswordConfirmation', this.formBuilder.control('',
           Validators.compose([Validators.required, PASSWORDS_MATCH_VAL])));
       }
-      this.loaded.next(true);
     });
   }
 
   submit() {
     this.authService.changeForgottenPassword(this.form.value)
       .subscribe(() => {
-        const generated = this.data.value.generated;
-        this.notification.info(generated ? this.messages.forgotPasswordDoneGenerated() : this.messages.forgotPasswordDoneManual());
+        const generated = this.data.generated;
+        let message: string;
+        if (generated) {
+          message = this.i18n('You should receive shortly an e-mail with your new password.');
+        } else {
+          message = this.i18n('Your password has been successfully changed. You can now use it to login.');
+        }
+        this.notification.info(message);
         // Mark the login page as affected by the forgotten password change and go to login
-        this.login.forgottenPasswordChanged(generated);
+        this.loginState.forgottenPasswordChanged(generated);
         this.router.navigateByUrl('/login');
       });
   }

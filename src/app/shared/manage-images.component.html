@@ -1,0 +1,25 @@
+<h1 i18n>Reorder / remove images</h1>
+
+<div class="mb-3" i18n>You can drag / drop images to reorder them</div>
+
+<ng-template #imageTemplate let-item="item">
+  <div class="d-flex justify-items-center mb-2 cursor-move">
+    <avatar size="medium" [image]="item.value"></avatar>
+    <div class="ml-2 flex-grow-1 d-flex align-items-center text-truncate">
+      {{ item.value.name }}
+    </div>
+    <div class="ml-2">
+      <button class="btn btn-light btn-icon" (click)="remove(item.value)">
+        <icon icon="clear"></icon>
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<bs-sortable [itemTemplate]="imageTemplate" [formControl]="order">
+</bs-sortable>
+
+<actions>
+  <button class="btn btn-primary" i18n (click)="ok()">Confirm</button>
+  <button class="btn btn-outline-primary" i18n (click)="modalRef.hide()">Cancel</button>
+</actions>

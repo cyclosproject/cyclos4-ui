@@ -1,28 +1,27 @@
-import { Directive, ElementRef, AfterViewInit, ChangeDetectorRef, Input, Optional, OnInit } from '@angular/core';
-import { MatSelect, MatInput } from '@angular/material';
-import { PageLayoutComponent } from 'app/shared/page-layout.component';
+import { Directive, ElementRef, AfterViewInit, ChangeDetectorRef, Input, Optional, Inject } from '@angular/core';
+import { truthyAttr } from 'app/shared/helper';
+import { NG_VALUE_ACCESSOR, DefaultValueAccessor } from '@angular/forms';
+import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 
-@Directive({ selector: 'mat-select[focused],input[focused],select[focused],textarea[focused],button[focused],a[focused]' })
-export class FocusedDirective implements OnInit, AfterViewInit {
+/**
+ * Input fields with this directive will receive an initial focus
+ */
+@Directive({
+  selector: '[focused]'
+})
+export class FocusedDirective implements AfterViewInit {
   constructor(
-    private el: ElementRef,
-    @Optional() private select: MatSelect,
-    @Optional() private input: MatInput,
-    @Optional() private pageLayout: PageLayoutComponent,
+    @Optional() private el: ElementRef,
+    @Optional() @Inject(NG_VALUE_ACCESSOR) private valueAccessor,
     private changeDetector: ChangeDetectorRef
   ) { }
 
-  @Input()
-  focused: string | boolean;
-
-  ngOnInit() {
-    if (this.pageLayout) {
-      this.pageLayout.filtersShown.subscribe(filtersVisible => {
-        if (filtersVisible) {
-          this.setFocus();
-        }
-      });
-    }
+  _focused: boolean | string = false;
+  @Input() get focused(): boolean | string {
+    return this._focused;
+  }
+  set focused(focused: boolean | string) {
+    this._focused = truthyAttr(focused);
   }
 
   ngAfterViewInit(): void {
@@ -30,23 +29,29 @@ export class FocusedDirective implements OnInit, AfterViewInit {
   }
 
   private setFocus() {
-    if (this.focused === '' || this.focused === true || this.focused === 'true') {
-      const run = () => {
-        if (this.select != null) {
-          this.select.focus();
-        } else if (this.input != null) {
-          this.input.focus();
-        } else {
-          this.el.nativeElement.focus();
-          this.changeDetector.detectChanges();
-        }
-      };
-      if (this.el.nativeElement.clientWidth === 0) {
-        // The field is still hidden
-        setTimeout(run, 100);
-      } else {
-        // The field is visible - invoke directly
-        run();
+    if (this._focused) {
+      let toFocus = null;
+      if (this.valueAccessor instanceof Array) {
+        toFocus = this.valueAccessor[0];
+      } else if (this.valueAccessor) {
+        toFocus = this.valueAccessor;
+      } else if (this.el) {
+        toFocus = this.el;
+      }
+      if (toFocus instanceof DefaultValueAccessor) {
+        toFocus = (<any>toFocus)._elementRef;
+      }
+      if (toFocus instanceof ElementRef) {
+        toFocus = toFocus.nativeElement;
+      }
+      if (toFocus) {
+        setTimeout(() => {
+          try {
+            toFocus.focus();
+            this.changeDetector.detectChanges();
+          } catch (ex) {
+          }
+        }, 100);
       }
     }
   }

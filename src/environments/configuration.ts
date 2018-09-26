@@ -23,12 +23,6 @@ const QUICK_SEARCH_PAGE_SIZE = 10;
 // will prevent additional requests from being performed on runtime, but will force
 // a single language for the application.
 
-const TRANSLATIONS = null;
-// import * as TRANSLATIONS from '../translations/messages.json';
-
-// This defines the available locales. Not used when translations are statically compiled.
-const LOCALES = ['en'];
-
 // This defines a mapping between advertisement category internal name and material icons.
 // See https://material.io/tools/icons
 const AD_CATEGORY_ICONS = {
@@ -60,8 +54,6 @@ export const configuration = {
   apiRoot: API_URL,
   searchPageSizes: SEARCH_PAGE_SIZES,
   quickSearchPageSize: QUICK_SEARCH_PAGE_SIZE,
-  translations: TRANSLATIONS,
-  locales: LOCALES,
   adCategoryIcons: AD_CATEGORY_ICONS,
   adCategoryColors: AD_CATEGORY_COLORS
 };

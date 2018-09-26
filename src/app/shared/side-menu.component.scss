@@ -1,53 +1,38 @@
 @import 'src/definitions';
 
-a {
-  display: block;
-  text-decoration: none;
+.navbar {
+  padding: 0;
 }
-a.account a.account {
-  margin-top: 12px;
-}
-a.account mat-icon {
-  margin-right: 10px;
-  opacity: 0.65;
-}
-a.account .name {
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  opacity: 0.65;
-}
-a.account .balance {
-  text-align: right;
-  white-space: nowrap;
-  opacity: 1;
-  font-weight: 500;
-}
-a.active .name {
-  opacity: 1;
+.side-menu-title {
+  border-bottom: 1px solid $section-border-color;
+  font-size: 1.2em;
+  padding: 0.75rem 1.25rem;
+  height: $title-height;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-:host ::ng-deep a.account .mat-button-wrapper {
-  align-items: center;
-  flex: 1;
+.card {
+  background-color: $side-menu-bg;
 }
-a.account, :host ::ng-deep menu-item a {
-  border-top-width: 1px;
-  border-top-style: solid;
-  text-align: left;
-  width: 100%;
-  height: 58px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  font-weight: 400;
+
+a.nav-item {
+  color: $side-menu-inactive-color;
+  padding: 1rem;
+  border-bottom: 1px solid $personal-menu-item-border-color;
+  font-size: 1.1em;
 }
-:host ::ng-deep menu-item a.active, a.active {
-  opacity: 1;
-  .mat-icon {
-    opacity: 1 !important;
-  }
+a.nav-item:last-child {
+  border-bottom: none;
 }
-:host ::ng-deep a:not(.active) .mat-icon {
-  opacity: 0.60 !important;
+a.nav-item:hover {
+  text-decoration: none;
+}
+a.nav-item:not(.active):hover {
+  background-color: $side-menu-inactive-hover-bg;
+}
+a.nav-item.active {
+  color: $side-menu-active-color;
+  background-color: $side-menu-active-bg;
 }

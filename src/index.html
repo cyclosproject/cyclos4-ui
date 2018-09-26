@@ -1,14 +1,79 @@
 <!doctype html>
 <html lang="en">
+
 <head>
+  <style>
+    html {
+      height: 100%;
+    }
+
+    body {
+      min-height: 100%;
+      overflow-y: scroll;
+      display: flex;
+    }
+
+    #rootSpinner,
+    #rootAlertContainer {
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    #rootSpinner img {
+      width: 64px;
+      height: 64px;
+    }
+
+  </style>
+  <script>
+    function setSpinnerVisible(visible) {
+      document.getElementById('rootSpinner').style.display = visible ? '' : 'none';
+    }
+    function setRootAlert(text) {
+      var rootAlertContainer = document.getElementById('rootAlertContainer');
+      var rootAlert = document.getElementById('rootAlert');
+      rootAlert.innerHTML = text || '';
+      var empty = text == null || text.length === 0;
+      rootAlertContainer.style.display = empty ? 'none' : '';
+      if (!empty) {
+        setSpinnerVisible(false);
+      }
+    }
+    function setReloadButton(text) {
+      var reloadButton = document.getElementById('reloadButton');
+      reloadButton.innerHTML = text || '';
+      var empty = text == null || text.length === 0;
+      reloadButton.style.display = empty ? 'none' : '';
+    }
+  </script>
   <meta charset="utf-8">
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet">
-  <link id="pageIcon" rel="icon" href="data:image/png;base64,iVBORw0KGgo=">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,500">
+  <link rel="icon" href="images/logo.png">
 </head>
+
 <body>
-  <app-root></app-root>
+  <div id="rootSpinner">
+    <img src="images/spinner.svg" alt="loading">
+  </div>
+  <div id="rootAlertContainer" style="display: none">
+    <div class="d-flex flex-column alert alert-danger p-4 text-center" role="alert">
+      <div id="rootAlert"></div>
+      <button type="button" id="reloadButton" style="display:none" class="btn btn-primary mt-4"
+        onclick="location.reload()"></button>
+    </div>
+  </div>
+  <app-root class="d-flex flex-grow-1"></app-root>
 </body>
+
 </html>

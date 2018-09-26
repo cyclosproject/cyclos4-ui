@@ -1,0 +1,331 @@
+<page-layout [ready]="ready$ | async">
+  <page-content *ngIf="data != null" i18n-heading heading="Edit profile">
+
+    <!-- Image -->
+    <ng-container *ngIf="imagesAvailability !== 'disabled'">
+      <ng-container *ngIf="imagesAvailability === 'single'">
+        <h2 class="border-0" i18n>Profile image</h2>
+        <div class="row">
+          <div class="col-12 col-sm-6">
+            <div class="d-flex justify-content-center justify-content-sm-start">
+              <avatar *ngIf="images.length > 0" [image]="images[0]" size="huge"
+                useLightbox>
+              </avatar>
+              <ng-container *ngIf="images.length === 0" i18n>
+                You don't have a profile image
+              </ng-container>
+            </div>
+            <image-upload #singleUpload containerClass="mt-3" target="userProfile"
+              [user]="key" (uploadDone)="onUploadDone($event)"></image-upload>
+          </div>
+          <div class="col-12 col-sm-6 mt-3 mt-sm-0 d-flex justify-content-between justify-content-sm-end align-items-end"
+            *ngIf="canEdit('image') && !(singleUpload.uploading$ | async)">
+            <button class="btn btn-outline-primary" (click)="singleUpload.perform()"
+              i18n>
+              Upload new
+            </button>
+            <button *ngIf="images.length > 0" class="ml-3 btn btn-outline-primary"
+              (click)="removeSingleImage()" i18n>Remove</button>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="imagesAvailability === 'multiple'">
+        <h2 class="border-0 d-flex flex-column flex-xs-row justify-content-between">
+          <div [ngClass]="{'mb-2': layout.xxs$ | async}" i18n>Profile images</div>
+          <button *ngIf="canUploadImages && !(multiUpload.uploading$ | async)"
+            class="btn btn-outline-primary" (click)="multiUpload.perform()"
+            i18n>Upload new</button>
+        </h2>
+        <div class="row mb-3">
+          <div class="col-12 col-xs-6 col-sm-4 col-md-3 d-flex justify-content-center justify-content-center"
+            *ngFor="let image of images">
+            <avatar [image]="image" size="huge" useLightbox
+              [additionalImages]="images" additionalImagesHidden [ngClass]="{
+              'mb-1': layout.xxs$ | async,
+              'mb-3': layout.gtxxs$ | async
+            }">
+            </avatar>
+          </div>
+          <ng-container *ngIf="images.length === 0">
+            <div class="col-12" i18n>
+              You don't have any profile images
+            </div>
+          </ng-container>
+        </div>
+        <div class="d-flex justify-content-end">
+          <button *ngIf="canEdit('image')" class="btn btn-outline-primary"
+            (click)="manageImages()" i18n>Reorder / remove images</button>
+        </div>
+        <image-upload #multiUpload target="userProfile" [user]="key" [max]="data.imageConfiguration.maxImages"
+          (uploadDone)="onUploadDone($event)"></image-upload>
+      </ng-container>
+    </ng-container>
+
+    <!-- Basic profile fields-->
+    <h2 class="mt-4" i18n>Profile fields</h2>
+    <ng-container [formGroup]="user">
+      <input-field *ngIf="hasField('name')" formControlName="name" i18n-label
+        label="Full name" [required]="canEdit('name')"></input-field>
+      <input-field *ngIf="hasField('username')" formControlName="username"
+        i18n-label label="Login name" [required]="canEdit('username')"></input-field>
+      <label-value *ngIf="hasField('email')" i18n-label label="E-mail" [kind]="canEdit('email') ? 'field' : 'fieldView'"
+        [ignoreExtraCell]="!canManagePrivacy('email')">
+        <input-field formControlName="email" [required]="canEdit('email')"></input-field>
+        <field-privacy *extraCell field="email" [control]="user.get('hiddenFields')"></field-privacy>
+      </label-value>
+      <label-value *ngIf="hasField('email') && data.userConfiguration.emailPendingValidation"
+        i18n-label label="E-mail pending validation" kind="fieldView">
+        {{ data.userConfiguration.emailPendingValidation }}
+      </label-value>
+    </ng-container>
+
+    <!-- Custom profile fields -->
+    <ng-container *ngFor="let cf of data.userConfiguration.customFields"
+      [formGroup]="user.get('customValues')">
+      <!-- Don't show custom values that are empty and non-editable -->
+      <label-value *ngIf="canEdit(cf) || !isEmpty(cf)" [label]="cf.name"
+        [kind]="canEdit(cf) ? 'field' : 'fieldView'" [ignoreExtraCell]="!canManagePrivacy(cf)"
+        [fieldSize]="cf.size" [required]="cf.required">
+        <custom-field-input [field]="cf" hideLabel [formControlName]="cf.internalName"
+          [binaryValues]="data.userConfiguration.binaryValues"></custom-field-input>
+        <field-privacy *extraCell [field]="cf.internalName" [control]="user.get('hiddenFields')"></field-privacy>
+      </label-value>
+    </ng-container>
+
+    <!-- Single mobile phone -->
+    <ng-container *ngIf="singleMobile" [formGroup]="singleMobile">
+      <label-value i18n-label label="Mobile phone" [required]="data.phoneConfiguration.mobileAvailability === 'required'"
+        kind="field">
+        <input-field formControlName="number" [placeholder]="data.phoneConfiguration.mobileExample"></input-field>
+        <field-privacy *extraCell [control]="singleMobile.get('hidden')"></field-privacy>
+      </label-value>
+
+      <boolean-field *ngIf="data.phoneConfiguration.smsEnabled" i18n-label
+        label="Enabled for SMS" [formControl]="singleMobile.get('enabledForSms')"
+        (click)="maybeVerify(singleMobile.value.id, $event)">
+      </boolean-field>
+    </ng-container>
+
+    <!-- Single land-line phone -->
+    <ng-container *ngIf="singleLandLine" [formGroup]="singleLandLine">
+      <label-value i18n-label label="Land-line phone" [required]="data.phoneConfiguration.landLineAvailability === 'required'"
+        kind="field">
+        <input-field formControlName="number" [placeholder]="data.phoneConfiguration.landLineExample"></input-field>
+        <field-privacy *extraCell [control]="singleLandLine.get('hidden')"></field-privacy>
+      </label-value>
+      <input-field *ngIf="data.phoneConfiguration.extensionEnabled"
+        formControlName="extension" fieldSize="tiny" i18n-label label="Land-line extension"></input-field>
+    </ng-container>
+
+    <!-- Single address -->
+    <ng-container *ngIf="singleAddress">
+      <h2 class="mt-4" i18n>Address</h2>
+      <boolean-field *ngIf="data.addressConfiguration.availability !== 'required'"
+        [formControl]="defineSingleAddress" i18n-label label="Define address"></boolean-field>
+      <address-form *ngIf="defineSingleAddress.value" [addressForm]="singleAddress"
+        [configuration]="data.addressConfiguration" [managePrivacy]="data.addressConfiguration.managePrivacy">
+      </address-form>
+      <ng-container *ngTemplateOutlet="mapTemplate"></ng-container>
+    </ng-container>
+
+    <!-- Multiple phones -->
+    <ng-container *ngIf="landLineAvailability === 'multiple' || mobileAvailability === 'multiple'">
+      <h2 class="mt-4 d-flex flex-column flex-xs-row justify-content-between">
+        <div class="mt-2" [ngClass]="{'mb-2': layout.xxs$ | async}" i18n>Phones</div>
+
+        <!-- When can create both land-line and mobile, use a dropdown -->
+        <div *ngIf="canCreateLandLine && canCreateMobile" style="position:relative"
+          dropdown>
+          <button dropdownToggle type="button" type="button" class="btn btn-outline-primary dropdown-toggle"
+            aria-controls="newPhoneDropDown" i18n>
+            Add phone
+          </button>
+          <div #dropDownMenu class="dropdown-menu dropdown-menu-right"
+            *dropdownMenu role="listbox" id="newPhoneDropDown">
+            <button class="dropdown-item" (click)="addLandLine()" i18n>
+              Add new land-line phone
+            </button>
+            <button class="dropdown-item" (click)="addMobile()" i18n>
+              Add new mobile phone
+            </button>
+          </div>
+        </div>
+
+        <button *ngIf="canCreateLandLine && !canCreateMobile" class="btn btn-outline-primary"
+          (click)="addLandLine()" i18n>Add land-line</button>
+        <button *ngIf="!canCreateLandLine && canCreateMobile" class="btn btn-outline-primary"
+          (click)="addMobile()" i18n>Add mobile</button>
+      </h2>
+      <div *ngIf="phones.length == 0" i18n>
+        There are currently no phones
+      </div>
+      <ng-container *ngFor="let phone of phones; let last = last" [formGroup]="phone['form']">
+        <input-field [id]="'phone_name' + phone['idSuffix']" formControlName="name"
+          required [label]="phoneNameLabel(phone)"></input-field>
+        <input-field type="tel" [id]="'phone_number' + phone['idSuffix']"
+          formControlName="number" required [label]="phoneNumberLabel(phone)"
+          [placeholder]="phoneExample(phone)"></input-field>
+        <input-field *ngIf="hasExtension(phone)" [id]="'phone_extension' + phone['idSuffix']"
+          type="tel" formControlName="extension" i18n-label label="Extension"></input-field>
+        <boolean-field *ngIf="phoneHasSms(phone)" i18n-label label="Enabled for SMS"
+          formControlName="enabledForSms" (click)="maybeVerify(phone['id'], $event)">
+        </boolean-field>
+        <label-value *ngIf="data.phoneConfiguration.managePrivacy" i18n-label
+          label="Phone privacy" kind="field">
+          <div class="d-flex justify-content-between">
+            <field-privacy [control]="phone['form'].get('hidden')"
+              justifyStart></field-privacy>
+            <button *ngIf="(layout.gtxs$ | async)" class="btn btn-outline-primary"
+              type="button" (click)="removePhone(phone)" i18n>
+              Remove this phone
+            </button>
+          </div>
+        </label-value>
+        <div *ngIf="(layout.ltsm$ | async) || !data.phoneConfiguration.managePrivacy"
+          class="d-flex justify-content-end">
+          <button class="btn btn-outline-primary" type="button" (click)="removePhone(phone)"
+            i18n>
+            Remove this phone</button>
+        </div>
+        <hr *ngIf="!last">
+      </ng-container>
+    </ng-container>
+
+    <!-- Multiple addresses -->
+    <ng-container *ngIf="addressAvailability === 'multiple'">
+      <h2 class="mt-4 d-flex flex-column flex-xs-row justify-content-between">
+        <div class="mt-2" [ngClass]="{'mb-2': layout.xxs$ | async}" i18n>Addresses</div>
+        <button *ngIf="canCreateAddress" class="btn btn-outline-primary"
+          (click)="addAddress()" i18n>
+          Add address
+        </button>
+      </h2>
+      <div *ngIf="data.addresses.length == 0" i18n>
+        There are currently no addresses
+      </div>
+      <ng-container *ngTemplateOutlet="mapTemplate"></ng-container>
+      <ng-container *ngFor="let address of addresses; let last = last"
+        [formGroup]="address['form']">
+        <input-field [id]="'address_name' + address['idSuffix']"
+          formControlName="name" required i18n-label label="Name"></input-field>
+        <address-form [addressForm]="address['form']" [configuration]="data.addressConfiguration"
+          idPrefix="address_" [idSuffix]="address['idSuffix']"
+          [managePrivacy]="false">
+        </address-form>
+        <label-value *ngIf="data.addressConfiguration.managePrivacy"
+          i18n-label label="Phone privacy" kind="field">
+          <div class="d-flex justify-content-between">
+            <field-privacy [control]="address['form'].get('hidden')"
+              justifyStart></field-privacy>
+            <button *ngIf="(layout.gtxs$ | async)" class="btn btn-outline-primary"
+              type="button" (click)="removeAddress(address)">
+              Remove this address
+            </button>
+          </div>
+        </label-value>
+        <div *ngIf="(layout.ltsm$ | async) || !data.addressConfiguration.managePrivacy"
+          class="d-flex justify-content-end">
+          <button class="btn btn-outline-primary" type="button" (click)="removeAddress(address)">
+            Remove this address
+          </button>
+        </div>
+        <hr *ngIf="!last">
+      </ng-container>
+    </ng-container>
+
+    <!-- Additional contacts -->
+    <!--
+      It would be a strange configuration to have a maximum of 1 additional contact.
+      Hence we don't handle the case of a single additional contact, but always as multiple.
+    -->
+    <ng-container *ngIf="contactInfoAvailability !== 'disabled'">
+      <h2 class="mt-4 d-flex flex-column flex-xs-row justify-content-between">
+        <div class="mt-2" [ngClass]="{'mb-2': layout.xxs$ | async}" i18n>Additional
+          contacts</div>
+        <button *ngIf="canCreateContactInfo" class="btn btn-outline-primary"
+          (click)="addContactInfo()" i18n>Add contact</button>
+      </h2>
+      <div *ngIf="contactInfos.length == 0" i18n>
+        There are currently no additional contacts
+      </div>
+      <ng-container *ngFor="let contactInfo of contactInfos; let last = last"
+        [formGroup]="contactInfo['form']">
+        <images-field formControlName="image" target="contactInfo" i18n-label
+          label="Image" separator="@" avatarSize="xlarge" [initialImages]="data.contactInfoBinaryValues[contactInfo['id']]?.image"></images-field>
+        <input-field [id]="'contact-info_name' + contactInfo['idSuffix']"
+          formControlName="name" required i18n-label label="Name"></input-field>
+        <input-field [id]="'contact-info_email' + contactInfo['idSuffix']"
+          formControlName="email" i18n-label label="E-mail"></input-field>
+        <input-field [id]="'contact-info_mobilePhone' + contactInfo['idSuffix']"
+          formControlName="mobilePhone" i18n-label label="Mobile phone"></input-field>
+        <input-field [id]="'contact-info_landLinePhone' + contactInfo['idSuffix']"
+          formControlName="landLinePhone" i18n-label label="Land-line phone"></input-field>
+        <input-field [id]="'contact-info_landLineExtension' + contactInfo['idSuffix']"
+          formControlName="landLineExtension" i18n-label label="Extension"></input-field>
+        <single-selection-field [id]="'contact-info_address' + contactInfo['idSuffix']"
+          formControlName="address" i18n-label label="Address">
+          <ng-container *ngFor="let address of data.addresses">
+            <field-option *ngIf="address.id" [value]="address.id" [text]="address.name"></field-option>
+          </ng-container>
+        </single-selection-field>
+        <ng-container *ngFor="let cf of data.contactInfoConfiguration.customFields"
+          [formGroup]="contactInfo['form'].get('customValues')">
+          <custom-field-input [field]="cf" [formControlName]="cf.internalName"
+            [binaryValues]="data.contactInfoBinaryValues[contactInfo['id']]"></custom-field-input>
+        </ng-container>
+        <label-value *ngIf="data.contactInfoConfiguration.managePrivacy"
+          i18n-label label="Privacy" kind="field">
+          <div class="d-flex justify-content-between">
+            <field-privacy [control]="contactInfo['form'].get('hidden')"
+              justifyStart></field-privacy>
+            <button *ngIf="(layout.gtxs$ | async)" class="btn btn-outline-primary"
+              type="button" (click)="removeContactInfo(contactInfo)" i18n>
+              Remove this additional contact
+            </button>
+          </div>
+        </label-value>
+        <div *ngIf="(layout.ltsm$ | async) || !data.contactInfoConfiguration.managePrivacy"
+          class="d-flex justify-content-end">
+          <button class="btn btn-outline-primary" type="button" (click)="removeContactInfo(contactInfo)">
+            Remove this additional contact
+          </button>
+        </div>
+
+        <hr *ngIf="!last">
+      </ng-container>
+    </ng-container>
+    <ng-container *ngIf="data.confirmationPasswordInput">
+      <h2 class="mt-5 mb-4" i18n>Confirmation</h2>
+      <form [formGroup]="user">
+        <confirmation-password [passwordInput]="data.confirmationPasswordInput"
+          [formControl]="confirmationPassword" i18n>
+          <div class="mt-3">
+            To save your profile, provide your
+            {{data.confirmationPasswordInput.name}}
+          </div>
+        </confirmation-password>
+      </form>
+    </ng-container>
+    <actions>
+      <button class="btn btn-primary" i18n (click)="save()">Save</button>
+    </actions>
+  </page-content>
+</page-layout>
+
+<ng-template #mapTemplate>
+  <agm-map *ngIf="maps.enabled" [ngClass]="{
+    'd-block': true,
+    'mb-3': true,
+    'd-none': mapBounds$ | async
+  }"
+    [fitBounds]="mapBounds$ | async" [fullscreenControl]="true" maxZoom="17"
+    (mapReady)="adjustMapBounds()">
+    <agm-marker *ngFor="let addr of locatedAddresses" [title]="addr.name"
+      [label]="addr['label']" [latitude]="addr.location.latitude" [longitude]="addr.location.longitude">
+      <agm-info-window>
+        <h3 class="mt-0">{{ addr.name }}</h3>
+        <address-details [address]="addr"></address-details>
+      </agm-info-window>
+    </agm-marker>
+  </agm-map>
+</ng-template>

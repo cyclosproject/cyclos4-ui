@@ -1,40 +1,24 @@
 import { Injectable } from '@angular/core';
-import { DataForUi, Currency } from 'app/api/models';
-import * as moment from 'moment-mini-ts';
 import { ApiConfiguration } from 'app/api/api-configuration';
-
-import { environment } from 'environments/environment';
-import { Messages } from 'app/messages/messages';
-import { MatDateFormats } from '@angular/material';
-import { BehaviorSubject } from 'rxjs';
-
+import { Currency, DataForUi } from 'app/api/models';
 import Big from 'big.js';
+import { environment } from 'environments/environment';
+import * as moment from 'moment-mini-ts';
 import { DataForUiHolder } from './data-for-ui-holder';
-import { ObservableMedia } from '@angular/flex-layout';
-
-/**
- * Names for week days or months, in several forms:
- * - long: Full name, such as 'December'
- * - short: 3-letter name, such as 'Dec'
- * - narrow: Single letter name, such as 'D'
- */
-export type Names = {
-  'long': string[],
-  'short': string[],
-  'narrow': string[]
-};
+import { I18n } from '@ngx-translate/i18n-polyfill';
 
 /**
  * Holds a shared instance of DataForUi and knows how to format dates and numbers
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class FormatService {
 
   constructor(
     dataForUiHolder: DataForUiHolder,
     private apiConfiguration: ApiConfiguration,
-    private messages: Messages,
-    private media: ObservableMedia) {
+    private i18n: I18n) {
     dataForUiHolder.subscribe(dataForUi => this.initialize(dataForUi));
     // If already loaded, initialize right away
     if (dataForUiHolder.dataForUi) {
@@ -46,40 +30,8 @@ export class FormatService {
   timeFormat: string;
   groupingSeparator: string;
   decimalSeparator: string;
-  dateParser: any;
-  materialDateFormats = new BehaviorSubject<MatDateFormats>(null);
 
   private _dataForUi: DataForUi;
-  private _monthNames: Names;
-  private _dayNames: Names;
-
-  get monthNames(): Names {
-    if (this._monthNames == null) {
-      this._monthNames = this.getNames(
-        this.messages.monthsLong(),
-        this.messages.monthsShort(),
-        this.messages.monthsNarrow());
-    }
-    return this._monthNames;
-  }
-
-  get dayNames(): Names {
-    if (this._dayNames == null) {
-      this._dayNames = this.getNames(
-        this.messages.daysLong(),
-        this.messages.daysShort(),
-        this.messages.daysNarrow());
-    }
-    return this._dayNames;
-  }
-
-  private getNames(long: string, short: string, narrow: string): Names {
-    return {
-      'long': long.split(','),
-      'short': short.split(','),
-      'narrow': narrow.split(',')
-    };
-  }
 
   initialize(dataForUi: DataForUi): void {
     if (dataForUi == null) {
@@ -94,40 +46,20 @@ export class FormatService {
     this.decimalSeparator = dataForUi.decimalSeparator || '.';
 
     this._dataForUi = dataForUi;
-
-    this.materialDateFormats.next({
-      parse: {
-        dateInput: this.dateFormat
-      },
-      display: {
-        dateInput: this.dateFormat,
-        monthYearLabel: this.monthYearLabel,
-        dateA11yLabel: this.dateFormat,
-        monthYearA11yLabel: this.monthYearLabel
-      }
-    });
-
-  }
-
-  private get monthYearLabel(): string {
-    const match = /\w+(.).+/.exec(this.dateFormat);
-    if (!match) {
-      return this.dateFormat;
-    }
-    const sep = match[1];
-    // Remove the day part
-    let fmt = this.dateFormat.replace('DD', '').replace(sep + sep, sep);
-    if (fmt.startsWith(sep)) {
-      fmt = fmt.substr(1);
-    }
-    return fmt;
   }
 
   /**
    * Returns the application title
    */
   public get appTitle(): string {
-    return this.media.isActive('xs') ? environment.appTitleSmall : environment.appTitle;
+    return environment.appTitle;
+  }
+
+  /**
+   * Returns the application title for xs devices
+   */
+  public get appTitleSmall(): string {
+    return environment.appTitleSmall || environment.appTitle;
   }
 
   /**
@@ -144,6 +76,25 @@ export class FormatService {
     return this.apiConfiguration.rootUrl
       + '/../content/images/currentConfiguration/'
       + id + '?' + this._dataForUi.resourceCacheKey;
+  }
+
+  /**
+   * Parses a date, returning `null` if the input is empty, `undefined` if the date is invalid or else, the date.
+   * @param date The native Date or string in the user format according to Cyclos settings
+   * @returns An ISO-8601 date, or `undefined` if the input is invalid
+   */
+  parseAsDate(value: Date | string): string {
+    if (value == null || value === '') {
+      return null;
+    }
+    if (typeof value === 'string' && value.length !== this.dateFormat.length) {
+      return undefined;
+    }
+    const mm = moment(value, this.dateFormat);
+    if (!mm.isValid()) {
+      return undefined;
+    }
+    return mm.format('YYYY-MM-DD');
   }
 
   /**
@@ -181,6 +132,7 @@ export class FormatService {
    * Returns a string representing a number with a fixed number of decimals
    * @param num The number (or string)
    * @param scale The number of decimal digits
+   * @returns The string representing the number, or `undefined` if the input is invalid
    */
   numberToFixed(num: number | string, scale: number): string {
     if (num == null) {
@@ -191,7 +143,7 @@ export class FormatService {
     try {
       bignum = Big(num);
     } catch (Error) {
-      return null;
+      return undefined;
     }
 
     return bignum.toFixed(scale);
@@ -297,5 +249,27 @@ export class FormatService {
     const prefix = currency.prefix || '';
     const suffix = currency.suffix || '';
     return prefix + this.formatAsNumber(num, decimals, forceSign) + suffix;
+  }
+
+  /**
+   * Returns a human-friendly byte-size label
+   * @param bytes The number of bytes
+   */
+  formatFileSize(bytes: number): string {
+    if (bytes < 1024) {
+      return this.i18n('{{n}} bytes', {
+        n: bytes
+      });
+    }
+    bytes /= 1024;
+    if (bytes < 1024) {
+      return this.i18n('{{n}}KB', {
+        n: this.formatAsNumber(bytes, 1)
+      });
+    }
+    bytes /= 1024;
+    return this.i18n('{{n}}MB', {
+      n: this.formatAsNumber(bytes, 1)
+    });
   }
 }

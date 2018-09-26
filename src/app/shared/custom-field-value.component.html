@@ -1,9 +1,3 @@
-<ng-template #value>
-  <format-field-value #formatFieldValue
-    [fieldValue]="fieldValue"></format-field-value>
-</ng-template>
-<label-value [fxShow]="formatFieldValue?.hasValue | async"
-  [label]="fieldValue?.field?.name"
-  [labelWidth]="labelWidth">
-  <ng-container *ngTemplateOutlet="value"></ng-container>
+<label-value [hidden]="!formatFieldValue.hasValue" [label]="fieldValue?.field?.name">
+  <format-field-value #formatFieldValue [fieldValue]="fieldValue"></format-field-value>
 </label-value>

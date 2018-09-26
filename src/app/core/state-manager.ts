@@ -10,7 +10,9 @@ import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 /**
  * Service used to navigate between pages and managing the component state
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class StateManager {
 
   private state = new Map<string, any>();
@@ -27,7 +29,7 @@ export class StateManager {
    */
   clear(): void {
     this.subscriptions.forEach(s => s.unsubscribe());
-    this.subscriptions.splice(0, this.subscriptions.length);
+    this.subscriptions = [];
     this.state.clear();
   }
 

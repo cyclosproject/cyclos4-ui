@@ -1,0 +1,99 @@
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="loaded$ | async; else loading">
+    <page-content mode="filters" i18n-heading heading="Authorized payments">
+      <form [formGroup]="form" class="filters-form">
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <single-selection-field labelPosition="side" formControlName="status"
+              i18n-label label="Status" [fieldOptions]="statusOptions">
+            </single-selection-field>
+          </div>
+          <div class="col-12 col-md-6" *ngIf="data.accountTypes?.length > 1">
+            <single-selection-field labelPosition="side" formControlName="accountType"
+              i18n-label label="Account" i18n-emptyOption emptyOption="Any account">
+              <field-option *ngFor="let at of data.accountTypes" [value]="at.id"
+                [text]="at.name"></field-option>
+            </single-selection-field>
+          </div>
+          <div class="col-12 col-md-6">
+            <single-selection-field labelPosition="side" formControlName="preselectedPeriod"
+              i18n-label label="Period">
+              <field-option *ngFor="let period of data.preselectedPeriods"
+                [value]="period" [text]="period.name"></field-option>
+            </single-selection-field>
+          </div>
+        </div>
+      </form>
+    </page-content>
+
+    <results-layout resultType="list" [results]="results$ | async" (update)="update($event)">
+      <table *resultTable class="table table-hover cursor-pointer">
+        <thead *ngIf="layout.gtxs$ | async">
+          <th class="avatar"></th>
+          <th i18n>Date</th>
+          <th i18n>From / to</th>
+          <th i18n>Scheduling</th>
+          <th i18n class="text-right">Amount</th>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let row of (results$ | async).results">
+            <tr (click)="router.navigate(path(row))">
+              <td class="avatar" [ngClass]="{'pb-0': layout.xxs$ | async}">
+                <avatar [image]="avatarImage(row)" [icon]="avatarIcon(row)"></avatar>
+              </td>
+              <td *ngIf="layout.xs$ | async">
+                <!-- Aggregated cell for xs -->
+                <a [routerLink]="path(row)">
+                  <div class="cell-text cell-main">{{ subjectName(row) }}</div>
+                  <div class="cell-text cell-date">{{ row.date | dateTime }}</div>
+                </a>
+              </td>
+              <td *ngIf="layout.gtxs$ | async">
+                <a [routerLink]="path(row)">
+                  {{ row.date | date }}
+                </a>
+              </td>
+              <td *ngIf="layout.gtxs$ | async">
+                <a [routerLink]="path(row)">
+                  {{ subjectName(row) }}
+                </a>
+              </td>
+              <td>
+                <a class="d-inline-block" [routerLink]="path(row)">
+                  {{ scheduling(row) }}
+                </a>
+              </td>
+              <td class="text-right" [ngClass]="{'pb-0': layout.xxs$ | async}">
+                <a [routerLink]="path(row)" [ngClass]="{
+                        positive: format.isPositive(row.amount),
+                        negative: format.isNegative(row.amount)
+                      }">
+                  {{ row.amount | currency:currencies.get(row.currency):true
+                  }}
+                </a>
+              </td>
+            </tr>
+            <tr *ngIf="layout.xxs$ | async" (click)="router.navigate(path(row))">
+              <td class="border-0" colspan="3">
+                <a [routerLink]="path(row)">
+                  <div class="cell-text cell-main">{{ subjectName(row) }}</div>
+                  <div class="cell-text cell-date">{{ row.date | dateTime }}</div>
+                </a>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </results-layout>
+  </ng-container>
+</page-layout>
+
+<ng-template #loading>
+  <page-content>
+    <spinner></spinner>
+  </page-content>
+</ng-template>
+
+<ng-template #loadingIndicators>
+  <spinner class="p-3"></spinner>
+</ng-template>

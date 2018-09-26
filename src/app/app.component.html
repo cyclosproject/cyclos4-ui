@@ -1,37 +1,17 @@
-<!-- The personal menu is initially hidden -->
-<personal-menu #personalMenu></personal-menu>
-
-<div *ngIf="!(initialized | async)"
-  class="app-loading">
-  <mat-progress-spinner color="accent"
-    [diameter]="50"
-    mode="indeterminate"></mat-progress-spinner>
-</div>
-
-<ng-container *ngIf="initialized | async">
-
-  <!-- Top bars shown in desktop layout -->
-  <top-bar *ngIf="layout.gtsm"
-    (togglePersonalMenu)="personalMenu.toggle($event)"></top-bar>
-  <menu-bar *ngIf="layout.gtsm"></menu-bar>
-
-  <!-- The sidenav is used only on mobile.
-    However we need a single router-outlet, or resizing a browser window
-    will cause weird effects -->
-  <mat-sidenav-container fxLayout="column">
-    <mat-sidenav #sidenav
-      mode="over">
-      <sidenav-menu fxLayout="column"
-        [sidenav]="sidenav"></sidenav-menu>
-    </mat-sidenav>
-    <top-bar [sidenav]="sidenav"
-      *ngIf="layout.ltmd"
-      (togglePersonalMenu)="personalMenu.toggle($event)"></top-bar>
-    <div fxLayout="row"
-      fxFlex="grow"
-      class="main">
-      <router-outlet *ngIf="!(loggingOut | async)"></router-outlet>
-    </div>
-  </mat-sidenav-container>
-
+<ng-container *ngIf="initialized | async; else loading">
+  <personal-menu #personalMenu [user]="login.user$ | async" [principal]="(login.auth$ | async)?.principal"></personal-menu>
+  <snack-bar #snackBar></snack-bar>
+  <sidenav #sidenav></sidenav>
+  <top-bar [user]="login.user$ | async" [principal]="(login.auth$ | async)?.principal"
+    (togglePersonalMenu)="personalMenu.toggle($event)" (toggleSidenav)="sidenav.toggle()"></top-bar>
+  <menu-bar *ngIf="layout.gtmd$ | async" [activeRoot]="menu.activeRootMenu$ | async"></menu-bar>
+  <div class="main-container d-flex flex-column flex-grow-1" [ngClass]="{
+      container: layout.gtsm$ | async,
+      'container-fluid': layout.ltmd$ | async
+    }">
+    <router-outlet *ngIf="!(loggingOut | async)"></router-outlet>
+  </div>
 </ng-container>
+<ng-template #loading>
+  TODO (show spinner)
+</ng-template>

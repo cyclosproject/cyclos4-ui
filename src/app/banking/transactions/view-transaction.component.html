@@ -1,44 +1,158 @@
-<page-layout [loaded]="loaded"
-  [title]="title">
-  <page-content *ngIf="loaded | async">
-    <view-transfer-details *ngIf="transaction.transfer != null"
-      [transfer]="transaction.transfer">
-    </view-transfer-details>
-    <ng-container *ngIf="transaction.transfer == null">
-      <label-value [label]="messages.transactionDate()">
-        {{ transaction.date | dateTime }}
-      </label-value>
-      <label-value [label]="messages.transactionAmount()">
-        {{ transaction.amount | currency:transaction.currency }}
-      </label-value>
-      <label-value *ngIf="transaction.by"
-        [label]="messages.transactionBy()">
-        {{ transaction.by.display }}
-      </label-value>
-      <label-value *ngIf="transaction.channel"
-        [label]="messages.transactionChannel()">
-        {{ transaction.channel.name }}
-      </label-value>
-      <label-value [label]="messages.transactionFrom()">
-        <user-link *ngIf="transaction.fromUser != null"
-          [user]="transaction.fromUser"></user-link>
-        <ng-container *ngIf="transaction.fromUser == null">
-          {{ transaction.type.from.name }}
-        </ng-container>
-      </label-value>
-      <label-value [label]="messages.transactionTo()">
-        <user-link *ngIf="transaction.toUser != null"
-          [user]="transaction.toUser"></user-link>
-        <ng-container *ngIf="transaction.toUser == null">
-          {{ transaction.type.to.name }}
-        </ng-container>
-      </label-value>
-      <label-value [label]="messages.transactionType()">
-        {{ transaction.type.name }}
-      </label-value>
-      <custom-field-value *ngFor="let value of transaction.customValues"
-        [fieldValue]="value">
-      </custom-field-value>
-    </ng-container>
+<page-layout [ready]="data$ | async">
+  <page-content *ngIf="data$ | async" [heading]="title">
+    <transfer-details *ngIf="transaction.transfer; else transactionFields"
+      [transfer]="transaction.transfer"></transfer-details>
+    <actions reverseRow *ngIf="actions.length > 0">
+      <button *ngFor="let action of actions" class="btn btn-outline-primary"
+        (click)="action.onClick()">
+        {{ action.label }}
+      </button>
+    </actions>
   </page-content>
 </page-layout>
+
+<ng-template #transactionFields>
+  <label-value i18n-label label="Status" [value]="status"></label-value>
+  <label-value i18n-label label="Date">
+    {{ transaction.date | dateTime }}
+  </label-value>
+  <label-value i18n-label label="Amount">
+    {{ transaction.amount | currency:transaction.currency }}
+  </label-value>
+  <label-value *ngIf="hasDueAmount" i18n-label label="Due amount">
+    {{ transaction.dueAmount | currency:transaction.currency }}
+  </label-value>
+  <label-value i18n-label label="From">
+    <user-link *ngIf="transaction.fromUser; else fromSystem" [user]="transaction.fromUser"></user-link>
+    <ng-template #fromSystem>
+      {{ transaction.type.from.name }}
+    </ng-template>
+  </label-value>
+  <label-value i18n-label label="To">
+    <user-link *ngIf="transaction.toUser; else toSystem" [user]="transaction.toUser"></user-link>
+    <ng-template #toSystem>
+      {{ transaction.type.to.name }}
+    </ng-template>
+  </label-value>
+  <label-value i18n-label label="Payment type">
+    {{ transaction.type.name }}
+  </label-value>
+  <custom-field-value *ngFor="let value of transaction.customValues"
+    [fieldValue]="value">
+  </custom-field-value>
+  <label-value *ngIf="transaction.channel" i18n-label label="Channel">
+    {{ transaction.channel.name }}
+  </label-value>
+  <label-value *ngIf="transaction.by" i18n-label label="By">
+    {{ transaction.by.display }}
+  </label-value>
+
+  <label-value *ngIf="(transaction.installments || []).length === 1"
+    i18n-label label="Due date">
+    {{ transaction.installments[0].dueDate | date }}
+  </label-value>
+
+  <label-value *ngIf="transaction.nextOccurrenceDate" i18n-label label="Next occurrence">
+    {{ transaction.nextOccurrenceDate | date }}
+  </label-value>
+
+  <label-value *ngIf="transaction.occurrencesCount" i18n-label label="Total number of occurrences">
+    {{ transaction.occurrencesCount }}
+  </label-value>
+
+  <label-value *ngIf="transaction.description" i18n-label label="Description"
+    [value]="transaction.description" valueFormat="break">
+  </label-value>
+
+  <ng-container *ngIf="(transaction.installments || []).length > 1">
+    <h2 class="border-0" i18n>Installments</h2>
+    <table class="table table-hover">
+      <thead *ngIf="layout.gtxs$ | async">
+        <th i18n>Number</th>
+        <th i18n>Due date</th>
+        <th i18n>Status</th>
+        <th i18n class="text-right">Amount</th>
+        <th style="width: 1rem;" *ngIf="hasInstallmentActions"></th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let installment of transaction.installments" [ngClass]="{'cursor-pointer': path(installment)}"
+          (click)="path(installment) ? router.navigate(path(installment)) : null">
+          <td>
+            <maybe-link [link]="path(installment)">
+              {{ installment.number }}
+            </maybe-link>
+          </td>
+          <td>
+            <maybe-link [link]="path(installment)">
+              {{ installment.dueDate | date }}
+            </maybe-link>
+          </td>
+          <td>
+            <maybe-link [link]="path(installment)">
+              {{ installmentStatus(installment.status) }}
+            </maybe-link>
+          </td>
+          <td class="text-right">
+            <maybe-link [link]="path(installment)">
+              {{ installment.amount | currency:transaction.currency }}
+            </maybe-link>
+          </td>
+          <td *ngIf="hasInstallmentActions" class="text-right">
+            <button *ngIf="installment.canProcess" i18n-tooltip tooltip="Process this installment"
+              class="btn btn-light btn-icon" (click)="processInstallment(installment)">
+              <icon icon="play_circle_outline"></icon>
+            </button>
+            <button *ngIf="installment.canSettle" i18n-tooltip tooltip="Settle this installment"
+              class="btn btn-light btn-icon" (click)="settleInstallment(installment)">
+              <icon icon="thumb_up"></icon>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </ng-container>
+
+  <ng-container *ngIf="(transaction.occurrences || []).length > 0">
+    <h2 class="border-0" i18n>Occurrences</h2>
+    <table class="table table-hover cursor-pointer">
+      <thead *ngIf="layout.gtxs$ | async">
+        <th i18n>Number</th>
+        <th i18n>Date</th>
+        <th i18n>Status</th>
+        <th i18n class="text-right">Amount</th>
+        <th style="width: 1rem;" *ngIf="hasOccurrenceActions"></th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let occurrence of transaction.occurrences" [ngClass]="{'cursor-pointer': path(occurrence)}"
+          (click)="path(occurrence) ? router.navigate(path(occurrence)) : null">
+          <td>
+            <maybe-link [link]="path(occurrence)">
+              {{ occurrence.number }}
+            </maybe-link>
+          </td>
+          <td>
+            <maybe-link [link]="path(occurrence)">
+              {{ occurrence.date | date }}
+            </maybe-link>
+          </td>
+          <td>
+            <maybe-link [link]="path(occurrence)">
+              {{ occurrenceStatus(occurrence.status) }}
+            </maybe-link>
+          </td>
+          <td class="text-right">
+            <maybe-link [link]="path(occurrence)">
+              {{ occurrence.amount | currency:transaction.currency }}
+            </maybe-link>
+          </td>
+          <td *ngIf="hasOccurrenceActions">
+            <button *ngIf="occurrence.canProcess" i18n-tooltip tooltip="Process this failed occurrence"
+              class="btn btn-light btn-icon" (click)="processOcurrence(occurrence)">
+              <icon icon="play_circle_outline"></icon>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </ng-container>
+</ng-template>

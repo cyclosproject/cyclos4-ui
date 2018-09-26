@@ -1,0 +1,19 @@
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter, HostBinding } from '@angular/core';
+import { Image } from 'app/api/models';
+
+/**
+ * Shows a chip, which has an optional image / icon and an optional close icon
+ */
+@Component({
+  // tslint:disable-next-line:component-selector
+  selector: 'chip',
+  templateUrl: 'chip.component.html',
+  styleUrls: ['chip.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class ChipComponent {
+  @Input() image: Image;
+  @Input() icon: string;
+  @Input() closeable = true;
+  @Output() close = new EventEmitter<void>();
+}

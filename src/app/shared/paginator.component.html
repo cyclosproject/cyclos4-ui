@@ -1,64 +1,14 @@
-<div class="no-data"
-  *ngIf="dataSource.empty | async">
-  {{ messages.searchNoResults() }}
-</div>
-<div class="paginator"
-  [formGroup]="form"
-  fxLayout="row"
-  fxLayoutAlign="start center"
-  fxLayoutAlign.xs="center center"
-  *ngIf="!(dataSource.empty | async) && (dataSource.pagination | async)">
-  <div *ngIf="layout.gtxs"
-    fxLayout="row"
-    fxFlex.gt-xs="grow">
-    <div class="page-label"
-      fxFlex="grow">
-      {{ messages.paginationPageSize() }}
-    </div>
-    <mat-select formControlName="pageSize">
-      <mat-option *ngFor="let size of pageSizes"
-        [value]="size">{{ size }}</mat-option>
-    </mat-select>
+<div *ngIf="results" class="d-flex flex-column flex-sm-row justify-content-between align-items-center"
+  [formGroup]="form">
+  <div *ngIf="results.hasTotalCount; else noTotalCount" i18n>Showing {{results.firstItem}}
+    - {{results.lastItem}} of {{results.totalCount}} results
   </div>
-  <div fxLayout="row"
-    class="items"
-    [matTooltip]="messages.paginationCurrent(pagination.page + 1)">
-    <ng-container *ngIf="pagination.hasTotalCount">
-      {{ messages.paginationShowingTotal(pagination.firstItem, pagination.lastItem, pagination.totalCount) }}
-    </ng-container>
-    <ng-container *ngIf="!pagination.hasTotalCount">
-      {{ messages.paginationShowingNoTotal(pagination.firstItem, pagination.lastItem) }}
-    </ng-container>
-  </div>
-  <div fxLayout="row">
-    <button mat-icon-button
-      ngClass="nav-first"
-      [disabled]="pagination.page == 0"
-      (click)="first()"
-      [matTooltip]="messages.paginationFirst()">
-      <mat-icon ngClass="mat-24">first_page</mat-icon>
-    </button>
-    <button mat-icon-button
-      ngClass="nav-prev"
-      [disabled]="pagination.page == 0"
-      (click)="previous()"
-      [matTooltip]="messages.paginationPrevious()">
-      <mat-icon ngClass="mat-24">navigate_before</mat-icon>
-    </button>
-    <button mat-icon-button
-      ngClass="nav-next"
-      [disabled]="!pagination.hasNext"
-      (click)="next()"
-      [matTooltip]="messages.paginationNext()">
-      <mat-icon ngClass="mat-24">navigate_next</mat-icon>
-    </button>
-    <button mat-icon-button
-      ngClass="nav-last"
-      *ngIf="pagination.hasTotalCount"
-      [disabled]="!pagination.hasNext"
-      [matTooltip]="messages.paginationLast()"
-      (click)="last()">
-      <mat-icon ngClass="mat-24">last_page</mat-icon>
-    </button>
+  <ng-template #noTotalCount>
+    <div i18n>Showing {{results.firstItem}} - {{results.lastItem}} results</div>
+  </ng-template>
+  <div *ngIf="results.hasNext || results.page > 0" [ngClass]="{'mt-2': layout.xxs$ | async}">
+    <pagination [totalItems]="totalCount" [itemsPerPage]="results.pageSize" [maxSize]="(layout.xxs$ | async) ? 3 : (layout.md$ | async) ? 5 : 7"
+      formControlName="pageNumber" [rotate]="true" [boundaryLinks]="results.hasTotalCount && (layout.gtxs$ | async)"
+      previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"></pagination>
   </div>
 </div>

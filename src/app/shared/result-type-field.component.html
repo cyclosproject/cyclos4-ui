@@ -1,6 +1,6 @@
-<mat-button-toggle-group [formControl]="formControl">
-  <mat-button-toggle *ngFor="let resultType of allowedResultTypes"
-    [value]="resultType">
-    <mat-icon>{{ icon(resultType) }}</mat-icon>
-  </mat-button-toggle>
-</mat-button-toggle-group>
+<div class="btn-group" btnRadioGroup [formControl]="formControl">
+  <label class="btn btn-light btn-icon m-0" *ngFor="let resultType of allowedResultTypes"
+    [btnRadio]="resultType" tabindex="0" role="button">
+    <icon size="1.4rem" [icon]="icon(resultType)"></icon>
+  </label>
+</div>

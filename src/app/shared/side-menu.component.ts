@@ -1,15 +1,19 @@
-import { Component, Input, ChangeDetectionStrategy, Injector } from '@angular/core';
-import { BaseComponent } from 'app/shared/base.component';
+import { Component, Input, ChangeDetectionStrategy, OnInit } from '@angular/core';
 
 import { RootMenu, Menu, SideMenuEntries } from 'app/shared/menu';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BehaviorSubject } from 'rxjs';
-import { MenuService } from 'app/shared/menu.service';
+import { MenuService } from 'app/core/menu.service';
 import { AccountWithCurrency } from 'app/api/models';
 import { Subscription } from 'rxjs';
+import { LayoutService } from 'app/shared/layout.service';
+import { Router } from '@angular/router';
+import { LoginService } from 'app/core/login.service';
+import { BreadcrumbService } from 'app/core/breadcrumb.service';
+import { StateManager } from 'app/core/state-manager';
 
 /**
- * A context-specific menu shown on the side of the layout for medium-large screens
+ * A context-specific menu shown on the side of the layout for medium+ screens
  */
 @Component({
   selector: 'side-menu',
@@ -17,52 +21,57 @@ import { Subscription } from 'rxjs';
   styleUrls: ['side-menu.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SideMenuComponent extends BaseComponent {
+export class SideMenuComponent implements OnInit {
   constructor(
-    injector: Injector,
-    public menuService: MenuService
-  ) {
-    super(injector);
-  }
+    public layout: LayoutService,
+    public menu: MenuService,
+    private router: Router,
+    private login: LoginService,
+    private breadcrumb: BreadcrumbService,
+    private stateManager: StateManager
+  ) { }
 
   // Namespace for template
   ApiHelper = ApiHelper;
 
-  @Input()
-  hideTitle: boolean;
-
   get banking(): boolean {
-    const menu = this.layout.menu.value;
+    const menu = this.menu.activeMenu;
     return menu != null && menu.root === RootMenu.BANKING;
   }
 
-  entries = new BehaviorSubject<SideMenuEntries>(null);
+  entries$ = new BehaviorSubject<SideMenuEntries>(null);
   subscription: Subscription;
 
   ngOnInit() {
-    super.ngOnInit();
-
-    this.layout.menu.subscribe(menu => {
+    this.menu.activeMenu$.subscribe(menu => {
       this.updateFrom(menu);
     });
-    this.updateFrom(this.layout.menu.value);
+    this.updateFrom(this.menu.activeMenu);
   }
 
   private updateFrom(menu: Menu) {
     if (this.subscription != null) {
       this.subscription.unsubscribe();
     }
-    this.subscription = this.menuService.sideMenu(menu)
-      .subscribe(entries => this.entries.next(entries));
+    this.subscription = this.menu.sideMenu(menu)
+      .subscribe(entries => this.entries$.next(entries));
   }
 
   onAccountClicked(event: MouseEvent, account: AccountWithCurrency) {
+    this.goTo(event, this.accountLink(account));
+  }
+
+  goTo(event: MouseEvent, url: string | string[]) {
     // Clear the shared state
     this.breadcrumb.clear();
     this.stateManager.clear();
 
-    // Navigate to the account history details page
-    this.router.navigate(this.accountLink(account));
+    // Navigate
+    if (typeof url === 'string') {
+      this.router.navigateByUrl(url);
+    } else {
+      this.router.navigate(url);
+    }
 
     // Stop the event
     event.preventDefault();

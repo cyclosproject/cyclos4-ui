@@ -1,4 +1,6 @@
 import { Directive, HostListener, Input } from '@angular/core';
+import { truthyAttr } from 'app/shared/helper';
+import { FormatService } from 'app/core/format.service';
 
 const ALLOWED = [
   'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown',
@@ -16,14 +18,29 @@ const ALLOWED = [
 export class NumbersOnlyDirective {
   private enabled: boolean;
 
-  @Input()
-  public set numbersOnly(numbersOnly: boolean | string) {
-    this.enabled = numbersOnly === '' || numbersOnly === 'true' || numbersOnly === true;
+  @Input() set numbersOnly(numbersOnly: boolean | string) {
+    this.enabled = truthyAttr(numbersOnly);
+  }
+
+  private _allowDecimalSeparator: boolean | string = false;
+  @Input() get allowDecimalSeparator(): boolean | string {
+    return this._allowDecimalSeparator;
+  }
+  set allowDecimalSeparator(allow: boolean | string) {
+    this._allowDecimalSeparator = truthyAttr(allow);
+  }
+
+  constructor(private format: FormatService) {
   }
 
   @HostListener('keydown', ['$event']) onKeyDown(event: KeyboardEvent) {
     if (this.enabled) {
-      if (!event.ctrlKey && !event.altKey && ALLOWED.indexOf(event.key) < 0) {
+      let allowed = !event.ctrlKey && !event.altKey;
+      if (allowed) {
+        allowed = this.allowDecimalSeparator && this.format.decimalSeparator === event.key
+          || ALLOWED.includes(event.key);
+      }
+      if (!allowed) {
         event.preventDefault();
       }
     }
@@ -32,7 +49,8 @@ export class NumbersOnlyDirective {
   @HostListener('paste', ['$event']) onPaste(event: ClipboardEvent) {
     if (this.enabled) {
       const data = event.clipboardData.getData('text/plain');
-      if (!/^\d+$/.test(data)) {
+      const regexp = this.allowDecimalSeparator ? new RegExp(`^[\\d\\${this.format.decimalSeparator}]+$`) : /^\d+$/;
+      if (!regexp.test(data)) {
         event.preventDefault();
       }
     }

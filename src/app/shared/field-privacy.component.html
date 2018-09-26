@@ -1,7 +1,4 @@
-<button mat-icon-button
-  (click)="toggle($event)"
-  [matTooltip]="hidden ? messages.visibilityPrivate() : messages.visibilityPublic()">
-  <mat-icon ngClass="mat-24">
-    {{ icon }}
-  </mat-icon>
+<button #ttip="bs-tooltip" class="btn btn-light btn-icon d-flex align-content-center"
+  (click)="toggle()" [tooltip]="tooltip">
+  <icon [icon]="icon"></icon>
 </button>

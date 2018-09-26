@@ -1,44 +1,28 @@
 @import 'src/definitions';
 
-:host ::ng-deep .outer {
-  border-bottom-width: 1px;
-  border-bottom-style: solid;
-  padding: 0 16px;
+:host {
+  display: block;
 }
 
-:host ::ng-deep .mat-icon {
-  margin-right: 8px;
+nav {
+  background-color: $menu-bar-bg;
+  padding: 0 0.7rem;
+  border-bottom: 1px solid $section-border-color;
 }
-:host ::ng-deep a {
-  opacity: 1 !important;
+a {
+  color: $menu-bar-color;
+  padding: 0.9rem 2rem;
 }
-:host ::ng-deep a:not(.mat-tab-label-active) {
-  .item-text, .mat-icon {
-    opacity: 0.65 !important;
-  }
+.menu-text {
+  font-size: 1.2em;
 }
-:host ::ng-deep a.mat-tab-label-active {
-  .mat-icon {
-    opacity: 1 !important;
-  }
+a:not(.active) {
+  color: $menu-bar-inactive-color;
 }
-:host ::ng-deep .mat-button-focus-overlay {
-  display: none !important;
+a:hover {
+  background-color: $menu-bar-hover-bg;
+  text-decoration: none;
 }
-
-:host ::ng-deep .mat-tab-link {
-  height: 60px !important;
-  padding: 10px !important;
-  min-width: 150px;
-}
-:host ::ng-deep {
-  .item-text, .mat-icon {
-    font-weight: 400;
-  }
-  .item-text {
-    font-size: 1.2em;
-  }
-}
-:host ::ng-deep .mat-tab-nav-bar {
-  border-bottom-width: 0px !important;
+a.active {
+  box-shadow: inset 0 -2px 0 0 $menu-bar-active-border;
 }

@@ -1,21 +1,12 @@
 import {
-  Component, Input, Output, ViewChild, EventEmitter, forwardRef,
-  Provider, ChangeDetectionStrategy, SkipSelf, Host, Optional
+  Component, Input, Output, EventEmitter, ChangeDetectionStrategy, SkipSelf, Host, Optional, OnInit
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, FormControl, ControlContainer } from '@angular/forms';
-import { FormatService } from 'app/core/format.service';
-import { LayoutService } from 'app/core/layout.service';
 import { BaseControlComponent } from 'app/shared/base-control.component';
 import { ResultType } from 'app/shared/result-type';
-import { MatButtonToggleGroup } from '@angular/material';
 import { MapsService } from 'app/core/maps.service';
-
-// Definition of the exported NG_VALUE_ACCESSOR provider
-export const RESULT_TYPE_FIELD_VALUE_ACCESSOR: Provider = {
-  provide: NG_VALUE_ACCESSOR,
-  useExisting: forwardRef(() => ResultTypeFieldComponent),
-  multi: true
-};
+import { FormatService } from 'app/core/format.service';
+import { LayoutService } from 'app/shared/layout.service';
 
 /**
  * Renders a widget for a result type field
@@ -26,10 +17,10 @@ export const RESULT_TYPE_FIELD_VALUE_ACCESSOR: Provider = {
   styleUrls: ['result-type-field.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
-    RESULT_TYPE_FIELD_VALUE_ACCESSOR
+    { provide: NG_VALUE_ACCESSOR, useExisting: ResultTypeFieldComponent, multi: true }
   ]
 })
-export class ResultTypeFieldComponent extends BaseControlComponent<ResultType> {
+export class ResultTypeFieldComponent extends BaseControlComponent<ResultType> implements OnInit {
   @Input() name: string;
   @Input() required: boolean;
   @Input() placeholder: string;
@@ -41,11 +32,9 @@ export class ResultTypeFieldComponent extends BaseControlComponent<ResultType> {
   @Output() change: EventEmitter<string> = new EventEmitter();
   @Output() blur: EventEmitter<string> = new EventEmitter();
 
-  @ViewChild(MatButtonToggleGroup) group: MatButtonToggleGroup;
-
   constructor(
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
-    public formatService: FormatService,
+    public format: FormatService,
     public layout: LayoutService,
     private maps: MapsService
   ) {
@@ -53,15 +42,13 @@ export class ResultTypeFieldComponent extends BaseControlComponent<ResultType> {
   }
 
   ngOnInit() {
+    super.ngOnInit();
+
     if (!this.maps.enabled) {
       // If maps would be allowed but is not enabled by configuration, remove it
       const mapIndex = this.allowedResultTypes.indexOf(ResultType.MAP);
       this.allowedResultTypes.splice(mapIndex, 1);
     }
-  }
-
-  onDisabledChange(isDisabled: boolean) {
-    this.group.disabled = isDisabled;
   }
 
   icon(resultType: ResultType): string {

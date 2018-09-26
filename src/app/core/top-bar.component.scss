@@ -1,54 +1,53 @@
 @import 'src/definitions';
 
-.title {
-  justify-content: center;
-  display: flex;
-  flex-direction: column;
-}
-.xs :host .title {
-  position: absolute;
-  left: 0;
-  right: 0;
-  text-align: center;
-  z-index: 0;
-}
-.lt-md .title {
-  left: -6px;
-  position: relative;
-}
-.title span {
-  font-size: 21px;
+:host {
+  display: block;
 }
 .logo {
+  max-width: 64px;
   max-height: 32px;
-  margin: 0 12px;
 }
-:host ::ng-deep .outer {
-  padding: 16px;
-  min-height: 36px;
+.navbar {
+  color: $top-bar-color;
+  background-color: $top-bar-bg;
+  padding: 0 0.4rem;
+  min-height: 2.6rem;
 }
-.lt-md :host ::ng-deep .outer {
-  padding-top: 8px;
-  padding-bottom: 8px;
+.navbar-brand {
+  font-size: 1.5em;
 }
-:host ::ng-deep .inner {
-  align-items: center;
-}
-.menu-toggle {
-  left: -10px;
-}
-.xs :host ::ng-deep {
-  .menu-toggle, .back {
-    left: -6px;
-    z-index: 1;
+@include media-breakpoint-up(xs) {
+  .navbar-brand {
+    font-size: 1.6em;
+  }
+  .navbar {
+    padding: 0.4rem;
   }
 }
-.personalMenuToggle {
+@include media-breakpoint-up(md) {
+  .navbar {
+    padding: 0.7rem;
+  }
+}
+a {
+  color: $top-bar-color;
+  display: block;
+}
+a:hover {
   text-decoration: none;
 }
-.gt-xs :host .personalMenuToggle avatar {
-  margin-right: 8px;
+
+:host ::ng-deep .personal-menu-toggle icon {
+  opacity: 0.6;
 }
-.user {
-  white-space: nowrap;
+
+@include media-breakpoint-up(xs) {
+  .personal-menu-toggle {
+    margin-right: 0.5rem;
+  }
+}
+@include media-breakpoint-up(md) {
+  .personal-menu-toggle {
+    margin-right: 0;
+  }
 }

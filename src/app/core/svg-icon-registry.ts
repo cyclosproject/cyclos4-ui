@@ -1,24 +1,48 @@
 import { Injectable } from '@angular/core';
-import { MatIconRegistry } from '@angular/material';
-import { DomSanitizer } from '@angular/platform-browser';
+import { HttpClient } from '@angular/common/http';
+import { Observable, of } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
+
+// Use the require method provided by webpack
+declare const require;
 
 /**
  * Intercepts requests to set the correct headers and handle errors
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class SvgIconRegistry {
 
-  private registeredNames: string[] = [];
+  private names: string[] = [];
+  private registry = new Map<string, SVGElement>();
 
-  constructor(
-    private matIconRegistry: MatIconRegistry,
-    private sanitizer: DomSanitizer) {
-    this.register('account_balance_circle');
+  constructor(private http: HttpClient) {
+    this.names.push('account_balance_circle');
   }
 
-  private register(name: string): void {
-    this.matIconRegistry.addSvgIcon(name, this.sanitizer.bypassSecurityTrustResourceUrl(`images/${name}.svg`));
-    this.registeredNames.push(name);
+  /**
+   * Returns the SVG element for the given icon
+   * @param name The icon name
+   */
+  svg(name: string): Observable<SVGElement> {
+    const cached = this.registry.get(name);
+    if (cached) {
+      return of(cached.cloneNode(true) as SVGElement);
+    }
+    const url = `images/${name}.svg`;
+    return this.http.get(url, { responseType: 'text' }).pipe(
+      map(content => {
+        const div = document.createElement('div');
+        div.innerHTML = content;
+        const svg = div.querySelector('svg') as SVGElement;
+        if (!svg) {
+          throw Error('<svg> tag not found');
+        }
+        return svg;
+      }),
+      tap(svg => this.registry.set(name, svg))
+    );
   }
 
   /**
@@ -26,7 +50,7 @@ export class SvgIconRegistry {
    * @param name The icon name
    */
   isSvgIcon(name: string) {
-    return this.registeredNames.includes(name);
+    return this.names.includes(name);
   }
 
 }

@@ -1,12 +1,12 @@
-:host {
-  opacity: 0.6;
-  display: block;
-  margin: 64px auto !important;
-  width: 64px;
-  height: 64px;
-}
+@import 'src/definitions';
 
-mat-progress-spinner {
+:host {
+  padding: 3rem;
   display: block;
   margin: auto;
+}
+
+img {
+  width: 64px;
+  height: 64px;
 }

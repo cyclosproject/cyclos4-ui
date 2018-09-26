@@ -1,0 +1,46 @@
+<label-value *ngIf="label; else widget" [formField]="self">
+  <ng-container *ngTemplateOutlet="widget"></ng-container>
+</label-value>
+
+<ng-template #widget>
+  <!-- This div will just capture the focus when the field is invalid -->
+  <div #focusHolder style="width:0;height:0;" tabindex="0" [ngClass]="{
+      'is-invalid': (formControl.statusChanges | async) === 'INVALID' && formControl.touched
+    }"></div>
+
+  <div class="d-flex">
+    <div class="pt-2 flex-grow-1" [ngClass]="{'mb-2': layout.xxs$ | async}">
+      <ng-container *ngIf="files.length === 0 && maxFiles === 1" i18n>
+        No file
+      </ng-container>
+      <ng-container *ngIf="files.length === 0 && maxFiles > 1" i18n>
+        No files
+      </ng-container>
+      <ng-container *ngFor="let file of files; let last = last;">
+        <a [href]="appendAuth(file.url)" [type]="file.contentType" target="_blank"
+          (click)="downloadFile($event, file)" [download]="file.name">
+          {{ file.name }}
+        </a>
+        <ng-container *ngIf="!last">, <br></ng-container>
+      </ng-container>
+    </div>
+    <div class="d-flex ml-2">
+      <button *ngIf="maxFiles === 1 || files.length < maxFiles" class="btn btn-light btn-icon d-flex align-content-center"
+        i18n-tooltip tooltip="Upload a new file" (click)="fileUpload.perform()">
+        <icon icon="cloud_upload"></icon>
+      </button>
+      <button *ngIf="maxFiles > 1" class="ml-2 btn btn-light btn-icon d-flex align-content-center"
+        i18n-tooltip tooltip="Remove or reorder files" (click)="manageFiles()">
+        <icon icon="edit"></icon>
+      </button>
+      <button *ngIf="maxFiles === 1 && files.length > 0" class="ml-2 btn btn-light btn-icon d-flex align-content-center"
+        i18n-tooltip tooltip="Remove this file" (click)="removeAllFiles()">
+        <icon icon="delete"></icon>
+      </button>
+    </div>
+  </div>
+  <file-upload #fileUpload containerClass="mt-3" [max]="maxFiles == 1 ? 1 : maxFiles - files.length"
+    [customField]="customField" (uploadDone)="onFilesUploaded($event)"
+    [mimeTypes]="mimeTypes"></file-upload>
+  <field-errors [control]="formControl"></field-errors>
+</ng-template>

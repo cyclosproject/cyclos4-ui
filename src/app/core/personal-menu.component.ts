@@ -1,10 +1,14 @@
-import { Component, ElementRef, ViewChild, ChangeDetectionStrategy, Injector, Input } from '@angular/core';
-import { BaseComponent } from 'app/shared/base.component';
-import { User, Auth } from 'app/api/models';
-import { MenuEntry, RootMenu, MenuType, RootMenuEntry } from 'app/shared/menu';
-import { MenuService } from 'app/shared/menu.service';
+import { Component, ElementRef, ViewChild, ChangeDetectionStrategy, Input, OnInit } from '@angular/core';
+import { MenuEntry, RootMenu, MenuType, RootMenuEntry, Menu } from 'app/shared/menu';
+import { MenuService } from 'app/core/menu.service';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { User } from 'app/api/models/user';
+import { LayoutService } from 'app/shared/layout.service';
+import { Router } from '@angular/router';
+import { LoginService } from 'app/core/login.service';
+import { BreadcrumbService } from 'app/core/breadcrumb.service';
+import { StateManager } from 'app/core/state-manager';
 
 /**
  * A popup menu shown when clicking the personal icon on top
@@ -15,12 +19,19 @@ import { map } from 'rxjs/operators';
   styleUrls: ['personal-menu.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PersonalMenuComponent extends BaseComponent {
+export class PersonalMenuComponent implements OnInit {
   constructor(
-    injector: Injector,
-    private menuService: MenuService) {
-    super(injector);
-  }
+    public layout: LayoutService,
+    public menu: MenuService,
+    private router: Router,
+    private login: LoginService,
+    private breadcrumb: BreadcrumbService,
+    private stateManager: StateManager
+
+  ) { }
+
+  @Input() user: User;
+  @Input() principal: string;
 
   menuEntries: Observable<MenuEntry[]>;
 
@@ -33,8 +44,7 @@ export class PersonalMenuComponent extends BaseComponent {
   private listener: any;
 
   ngOnInit() {
-    super.ngOnInit();
-    this.menuEntries = this.menuService.menu(MenuType.PERSONAL).pipe(
+    this.menuEntries = this.menu.menu(MenuType.PERSONAL).pipe(
       map(roots => {
         if (this.login.user == null) {
           // If there's no logged user, there's also no personal menu to show
@@ -51,6 +61,9 @@ export class PersonalMenuComponent extends BaseComponent {
         return (personal || {} as RootMenuEntry).entries || [];
       })
     );
+
+    this.layout.breakpointChanges.subscribe(() => this.hide());
+
     this.listener = (e: MouseEvent) => {
       let src = e.srcElement;
       let ignore = false;
@@ -65,11 +78,6 @@ export class PersonalMenuComponent extends BaseComponent {
         this.hide();
       }
     };
-  }
-
-  protected onDisplayChange() {
-    super.onDisplayChange();
-    this.hide();
   }
 
   toggle(a: HTMLElement) {
@@ -111,7 +119,7 @@ export class PersonalMenuComponent extends BaseComponent {
     this.showContent.next(true);
     setTimeout(() => {
       style.top = (topAnchor.offsetTop + topAnchor.offsetHeight) + 'px';
-      if (this.layout.xs) {
+      if (this.layout.ltsm) {
         style.left = '0';
       } else {
         const el = this.container.nativeElement as HTMLElement;
@@ -140,5 +148,15 @@ export class PersonalMenuComponent extends BaseComponent {
   clearState() {
     this.breadcrumb.clear();
     this.stateManager.clear();
+  }
+
+  menuClicked(entry: MenuEntry) {
+    const menu = entry.menu;
+    if (menu === Menu.LOGOUT) {
+      this.login.logout();
+    } else if (entry.url) {
+      this.clearState();
+      this.router.navigateByUrl(entry.url);
+    }
   }
 }

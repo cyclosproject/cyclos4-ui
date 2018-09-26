@@ -1,9 +1,19 @@
-<page-layout [loaded]="loaded"
-  [hasMenu]="false"
-  [title]="title">
-  <page-content>
-    <div *ngIf="login.user == null"
-      [innerHTML]="homeContent | trust"></div>
-    <dashboard *ngIf="login.user != null"></dashboard>
-  </page-content>
+<page-layout [ready]="content | async" hideMenu>
+  <ng-container *ngIf="login.user; else guest">
+    <page-content>
+      <dashboard></dashboard>
+    </page-content>
+    <page-content>
+      <div [innerHTML]="content.value | trust"></div>
+    </page-content>
+  </ng-container>
 </page-layout>
+
+<ng-template #guest>
+  <page-content i18n-heading heading="Welcome to {{format.appTitle}}">
+    <dashboard></dashboard>
+  </page-content>
+  <page-content>
+    <div [innerHTML]="content.value | trust"></div>
+  </page-content>
+</ng-template>

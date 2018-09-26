@@ -1,0 +1,46 @@
+@import 'src/definitions';
+
+.dashboard-container {
+  margin: -0.4rem 0 0 -0.4rem;
+}
+
+.dashboard-item {
+  border: $border-width solid $dashboard-border-color;
+  background-color: $dashboard-bg;
+  color: $dashboard-color;
+  text-decoration: none;
+  padding: 1rem 0.1rem;
+  @include border-radius($border-radius);
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0.4rem 0 0 0.4rem;
+
+  icon {
+    margin-bottom: 0.8rem;
+    color: $dashboard-icon-color;
+  }
+}
+.dashboard-item:hover {
+  text-decoration: none;
+  background-color: $dashboard-hover-bg;
+  color: $dashboard-hover-color;
+  border-color: $dashboard-hover-border-color;
+
+  icon {
+    margin-bottom: 0.8rem;
+    color: $dashboard-hover-icon-color;
+  }
+}
+
+@include media-breakpoint-up(sm) {
+  .dashboard-container {
+    margin: -1rem 0 0 -1rem;
+  }
+
+  .dashboard-item, .dashboard-item:hover {
+    margin: 1rem 0 0 1rem;
+  }
+}

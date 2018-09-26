@@ -1,27 +1,12 @@
-<div id="notification"
-  fxLayout="column"
-  fxLayoutAlign="baseline end"
-  fxLayoutGap="20px"
-  [class]="containerClass">
-
-  <div fxLayout="row"
-    fxLayoutAlign="start center"
-    fxFlex="grow"
-    style="width: 100%">
-    <mat-icon fxFlex="nogrow"
-      [color]="iconColor"
-      ngClass="mat-36">{{ notification.type }}</mat-icon>
-    <div fxFlex="grow"
-      class="notificationMessage"
-      [innerHTML]="notification.message | trust"></div>
+<alert [type]="alertType" [dismissible]="allowClose" (onClose)="modalRef.hide()">
+  <div class="d-flex flex-column flex-xs-row align-items-center">
+    <icon size="2rem" [icon]="icon"></icon>
+    <div class="ml-3" *ngIf="message; else renderContent" [innerHTML]="message | trust"></div>
   </div>
+</alert>
 
-  <button *ngIf="allowClose"
-    fxFlex="nogrow"
-    fxFlexAlign="end"
-    mat-raised-button
-    color="accent"
-    (click)="close()">
-    {{ messages.close() }}
-  </button>
-</div>
+<ng-template #renderContent>
+  <div class="ml-3">
+    <ng-content></ng-content>
+  </div>
+</ng-template>

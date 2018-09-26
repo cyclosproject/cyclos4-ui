@@ -1,0 +1,24 @@
+@import 'src/definitions';
+
+:host {
+  opacity: 0;
+  min-width: 10rem;
+  width: 90%;
+  background-color: $snack-bar-bg;
+  color: $snack-bar-color;
+  text-align: center;
+  border-top-left-radius: 0.2rem;
+  border-top-right-radius: 0.2rem;
+  padding: 1rem 2rem;
+  position: fixed;
+  z-index: 1;
+  left: 50%;
+  bottom: 0;
+  transform: translate(-50%, 100%);
+  transition: transform 0.3s, opacity 0.3s;
+}
+@include media-breakpoint-up(sm) {
+  :host {
+    width: auto;
+  }
+}

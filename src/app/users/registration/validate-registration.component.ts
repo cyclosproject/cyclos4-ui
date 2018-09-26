@@ -1,8 +1,9 @@
-import { Component, ChangeDetectionStrategy, Injector } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Injector, OnInit } from '@angular/core';
 import { UserRegistrationResult } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
 import { BehaviorSubject } from 'rxjs';
 import { UsersService } from 'app/api/services';
+import { BasePageComponent } from 'app/shared/base-page.component';
 
 /**
  * Component shown after the user clicks the received link to
@@ -13,10 +14,13 @@ import { UsersService } from 'app/api/services';
   templateUrl: 'validate-registration.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ValidateRegistrationComponent extends BaseComponent {
+export class ValidateRegistrationComponent
+  extends BasePageComponent<UserRegistrationResult>
+  implements OnInit {
 
-  loaded = new BehaviorSubject(false);
-  result = new BehaviorSubject<UserRegistrationResult>(null);
+  get result() {
+    return this.data;
+  }
 
   constructor(
     injector: Injector,
@@ -28,8 +32,7 @@ export class ValidateRegistrationComponent extends BaseComponent {
   ngOnInit() {
     const key = this.route.snapshot.params.key;
     this.usersService.validateUserRegistration({ key: key }).subscribe(result => {
-      this.loaded.next(true);
-      this.result.next(result);
+      this.data = result;
     });
   }
 

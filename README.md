@@ -5,15 +5,14 @@ This project aims to create a modern, simple and intuitive user interface for [C
 
 The initial planned scope is to have end-user functionality in this application. Administration functionality will still be available in Cyclos' default web interface.
 
-This user interface is still in very early days of development, and not yet useful for production. Cyclos 4.10 or newer is required for the back-end.
+This user interface is still in very early days of development, and not yet useful for production. Cyclos 4.11 or newer is required for the back-end.
 
 ## Technical details
 
-- This application is built using [Angular Material](https://material.angular.io/);
+- This application is built using [Angular](https://angular.io/) and [Bootstrap](https://getbootstrap.com), using the [ngx-bootstrap](https://valor-software.com/ngx-bootstrap/) integration library;
 - It uses Cyclos' REST API for integration. The [ng-swagger-gen](https://github.com/cyclosproject/ng-swagger-gen) project is used to generate the client services and web service models;
-- The application doesn't uses Angular's i18n support for internationalization, as it only supports translations in Angular templates, not in components. Also, the built-in Angular i18n requires a different compilation per language. Instead, translations are done using the [ng-translation-gen](https://github.com/cyclosproject/ng-translation-gen) project;
 - The translations are done separatedly from the Cyclos installation. This way they cannot be customized in Cyclos, but allows the user interface to grow independently from the deployed Cyclos version;
-- Requests to the Cyclos server are performed directly from the browser. That means that either this front-end should be deployed in the same domain as Cyclos, or CORS should be enabled in Cyclos by setting `cyclos.cors.origin = cyclos4-ui-domain` in the `cyclos.properties` file.
+- Requests to the Cyclos server are performed directly from the browser. That means that either this front-end should be deployed in the same domain as Cyclos, or CORS should be enabled in Cyclos by setting `cyclos.cors.origin = <cyclos4-ui-domain>` in the `cyclos.properties` file.
 
 ## Requirements
 
@@ -31,16 +30,20 @@ cd cyclos4-ui
 npm install
 ```
 
+The project will not yet fully compile because it depends on generated classes.
+
 ## Setting the Cyclos server URL
 On the `src/environments/configuration.ts` you will find the file that needs to be configured for your project.
 The most important settings are the following:
 ```typescript
 // The root URL for the API. Don't forget to include the /api in the end
-const API_URL = 'http://localhost:8888/england/api';
+const API_URL = 'http://localhost:8888/api';
 // Application title
 const APP_TITLE = 'Cyclos Local';
+// Application title on small devices (constrained space)
+const APP_TITLE_SMALL = 'Cyclos';
 // The application title displayed on the title bar inside the menu on small devices
-const APP_TITLE_MENU = 'Cyclos';
+const APP_TITLE_MENU = 'Cyclos menu';
 ```
 
 ## Building
@@ -54,8 +57,14 @@ After the build process (which can take a few minutes) you will have the `dist` 
 Angular assumes the application is deployed in the root path of your domain. For example, this is the case for `https://ui.my-project.com`. If this is not the case, such as `https://www.my-project.com/ui` you need to pass in the path name to Angular at compilation time, like:
 ```bash
 # Replace /ui/ with your path. Don't forget both leading and trailing slashes.
-npm run build -- -bh /ui/
+npm run build -- --base-href /ui/
+```
+
+## Debugging
+To start the development server, with hot reload, which should be accessible at http://localhost:4200/, run the following command:
+```bash
+npm start
 ```
 
 ## Status
-The 
+This is a project is not yet stable, and shouldn't be used on production until it reaches the `1.0` version.

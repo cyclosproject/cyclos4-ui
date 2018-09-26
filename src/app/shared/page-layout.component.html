@@ -1,149 +1,29 @@
-<div #pageLayout
-  [ngClass]="{
-    'page-layout': true,
-    'extra-margin': extraMargin,
-    'full-height-content': layout.fullHeightContent | async
-  }"
-  fxFlex="grow"
-  [fxLayout]="(showLeft | async) && hasMenu ? 'row' : 'column'"
-  [fxLayoutAlign]="(showLeft | async) && hasMenu ? 'stretch' : 'start center'">
-  <div *ngIf="(showLeft | async) && hasMenu"
-    [ngClass]="{
-      left: true,
-      'filters-hidden': !(filtersShown | async)
+<ng-container *ngIf="ready == null || !!ready; else loading">
+  <div class="page-layout" [ngClass]="{
+      'justify-content-center': !(showLeftArea | async)
     }">
-    <mat-card ngClass="layout">
-      <mat-tab-group #tabGroup>
-        <mat-tab [label]="(sideMenu.entries | async)?.title || messages.menu()">
-          <side-menu #sideMenu></side-menu>
-        </mat-tab>
-        <mat-tab *ngIf="hasFilters && (filtersShown | async)"
-          [label]="messages.filtersTitle()">
-          <div class="filters">
-            <ng-container *ngTemplateOutlet="filtersTpl"></ng-container>
-          </div>
-        </mat-tab>
-      </mat-tab-group>
-    </mat-card>
-  </div>
-  <div [ngClass]="{
-      'page-wrapper': true,
-      'page-wrapper-standalone': !((showLeft | async) && hasMenu),
-      'page-wrapper-full': contentSize === 'full',
-      'page-wrapper-medium': contentSize === 'medium',
-      'page-wrapper-small': contentSize === 'small'
-    }"
-    fxLayout="column"
-    fxFlex="grow"
-    fxLayoutAlign="start start">
-    <ng-container *ngIf="(showLeft | async)">
-      <!-- There is a left area: separated containers for header and content -->
-      <div *ngIf="hasHeader && (loaded == null || (loaded | async))"
-        #header
-        class="header"
-        fxFlex="nogrow"
-        fxLayout="column">
-        <mat-card ngClass="layout">
-          <mat-card-content>
-            <page-title *ngIf="title != null && title.length > 0"
-              #pageTitle
-              [pageLayout]="this"
-              [title]="title"
-              [showFiltersVisible]="showFiltersVisible"
-              [actions]="titleActions"></page-title>
-            <div #headerWrapper
-              class="header-wrapper">
-              <ng-container *ngTemplateOutlet="headerTpl"></ng-container>
-            </div>
-          </mat-card-content>
-        </mat-card>
-      </div>
-      <div class="content"
-        [ngClass]="{
-          'tight-content': tightContent,
-          'invisible': invisibleContent && !(loaded != null && !(loaded | async) && showSpinner)
-        }"
-        fxFlex="grow"
-        fxLayout="column">
-        <mat-card ngClass="layout">
-          <mat-card-content>
-            <spinner *ngIf="loaded != null && !(loaded | async) && showSpinner"></spinner>
-            <ng-container *ngIf="loaded == null || (loaded | async)">
-              <page-title *ngIf="!hasHeader && title != null && title.length > 0"
-                [pageLayout]="this"
-                [title]="title"
-                [showFiltersVisible]="showFiltersVisible"
-                [actions]="titleActions"></page-title>
-              <div #contentWrapper
-                class="content-wrapper">
-                <ng-container *ngTemplateOutlet="contentTpl"></ng-container>
-              </div>
-            </ng-container>
-          </mat-card-content>
-        </mat-card>
-      </div>
-    </ng-container>
-    <ng-container *ngIf="!(showLeft | async)">
-      <!-- No left area (mobile): Everything is together (no cards) -->
-      <spinner *ngIf="loaded != null && !(loaded | async) && showSpinner"></spinner>
-      <ng-container *ngIf="(loaded == null || (loaded | async))">
-        <page-title *ngIf="title != null && title.length > 0"
-          [noBottomMargin]="true"
-          [pageLayout]="this"
-          [title]="title"
-          [showFiltersVisible]="showFiltersVisible"
-          [actions]="titleActions"></page-title>
-        <div [ngClass]="{
-          'inline-header': true,
-          'tight-content': tightContent
-          }"
-          *ngIf="hasHeader">
-          <ng-container *ngTemplateOutlet="headerTpl"></ng-container>
-        </div>
-        <div [ngClass]="{
-          'inline-filters': true,
-          'tight-content': tightContent
-          }"
-          *ngIf="hasFilters && (filtersShown | async)">
-          <div *ngIf="tightContent && !hasHeader"
-            class="filters-extra-margin"></div>
-          <div class="inline-filters-wrapper">
-            <ng-container *ngTemplateOutlet="filtersTpl"></ng-container>
-          </div>
-        </div>
-        <div #inlineContent
-          [ngClass]="{
-          'inline-content': true,
-          'tight-content': tightContent
-          }"
-          fxFlex="grow"
-          fxLayout="column">
-          <ng-container *ngIf="loaded == null || (loaded | async)">
-            <ng-container *ngTemplateOutlet="contentTpl"></ng-container>
-          </ng-container>
-        </div>
-      </ng-container>
-    </ng-container>
-  </div>
-
-  <ng-template #filtersTpl>
-    <div #filtersWrapper
-      class="filters-wrapper">
-      <ng-content select="page-filters"></ng-content>
+    <div *ngIf="showLeftArea | async" class="side-area">
+      <side-menu></side-menu>
     </div>
-    <actions root
-      buttonSpace="equidistant">
-      <button mat-raised-button
-        (click)="clearFilters()">{{ messages.filtersClear() }}</button>
-      <button mat-raised-button
-        *ngIf="showLeft | async"
-        (click)="hideFilters()">{{ messages.filtersHide() }}</button>
-    </actions>
-  </ng-template>
-  <ng-template #headerTpl>
-    <ng-content select="page-header"></ng-content>
-  </ng-template>
-  <ng-template #contentTpl>
-    <ng-content select="page-content"></ng-content>
-  </ng-template>
-</div>
+
+    <div class="content-area d-flex flex-column" [ngClass]="{
+      'content-area-small': size === 'small',
+      'content-area-medium': size === 'medium'
+    }">
+      <ng-content></ng-content>
+    </div>
+  </div>
+</ng-container>
+
+<ng-template #loading>
+  <div class="page-layout justify-content-center">
+    <div class="content-area d-flex flex-column" [ngClass]="{
+      'content-area-small': size === 'small',
+      'content-area-medium': size === 'medium'
+    }">
+      <page-content>
+        <spinner></spinner>
+      </page-content>
+    </div>
+  </div>
+</ng-template>

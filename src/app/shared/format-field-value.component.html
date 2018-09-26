@@ -1,31 +1,31 @@
-<ng-container *ngIf="(hasValue | async); else empty">
-  <ng-container *ngIf="directValue">{{ value.value }}</ng-container>
-  <div *ngIf="type == 'text'"
-    class="break-nl">{{ value.value }}</div>
-  <div *ngIf="type == 'richText'"
-    [innerHTML]="value.value | trust"></div>
-  <a *ngIf="type == 'url'"
-    [href]="value.value">{{ value.value }}</a>
-  <span *ngIf="type == 'date'">{{ value.value | date }}</span>
-  <span *ngIf="type == 'integer'">{{ value.value | number }}</span>
-  <span *ngIf="type == 'decimal'">{{ value.value | number:field.decimalDigits }}</span>
+<ng-container *ngIf="hasValue; else empty">
+  <ng-container *ngIf="directValue">{{ value }}</ng-container>
+  <div *ngIf="type == 'text'" class="break-nl">{{ value }}</div>
+  <div *ngIf="type == 'richText'" [innerHTML]="value | trust"></div>
+  <a *ngIf="type == 'url'" [href]="value">{{ value }}</a>
+  <span *ngIf="type == 'date'">{{ value | date }}</span>
+  <span *ngIf="type == 'integer'">{{ value | number }}</span>
+  <span *ngIf="type == 'decimal'">{{ value | number:field.decimalDigits }}</span>
   <ng-container *ngIf="type == 'singleSelection' || type == 'multiSelection'">
-    <span *ngFor="let pv of value.value; let last = last;">
-      <span *ngIf="pv.category">{{ pv.category.name }} - </span>{{ pv.value + (last ? '' : ', ') }}
+    <span *ngFor="let pv of value; let last = last;">
+      <span *ngIf="pv.category">{{ pv.category.name }} - </span>{{ pv.value +
+      (last
+      ? '' : ', ') }}
     </span>
   </ng-container>
-  <ng-container *ngIf="type == 'file' && (value.value || []).length > 0">
-    <ng-container *ngFor="let file of value.value; let last = last;">
-      <a [href]="appendAuth(file.url)"
-        [type]="file.contentType"
-        target="_blank"
-        (click)="downloadFile($event, file)"
-        [download]="file.name">{{ file.name }}</a>
+  <ng-container *ngIf="type == 'file' && (value || []).length > 0">
+    <ng-container *ngFor="let file of value; let last = last;">
+      <a [href]="appendAuth(file.url)" [type]="file.contentType" target="_blank"
+        (click)="downloadFile($event, file)" [download]="file.name">{{
+        file.name }}</a>
       <ng-container *ngIf="!last">, </ng-container>
     </ng-container>
   </ng-container>
-  <ng-container *ngIf="type == 'image' && (value.value || []).length > 0">
-    <image-viewer [additionalImages]="value.value"></image-viewer>
+  <ng-container *ngIf="type == 'image' && (value || []).length > 0">
+    <div class="d-flex flex-wrap">
+      <avatar class="d-block mr-1" *ngFor="let img of value" size="small"
+        useLightbox [image]="img" additionalImagesHidden [additionalImages]="value"></avatar>
+    </div>
   </ng-container>
 </ng-container>
 <ng-template #empty>

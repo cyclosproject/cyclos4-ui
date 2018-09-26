@@ -1,54 +1,181 @@
-<page-layout [title]="messages.adSearchTitle()"
-  [hasHeader]="true"
-  [loaded]="loaded"
-  [filtersForm]="form"
-  [showFiltersVisible]="showFiltersVisible | async"
-  [tightContent]="true"
-  [invisibleContent]="resultType.value === ResultType.CATEGORIES || !(dataSource.empty | async) && resultType.value === ResultType.TILES">
-  <page-header>
-    <div fxLayout="column">
-      <mat-form-field>
-        <input formControlName="keywords"
-          matInput
-          focused
-          [placeholder]="messages.keywords()">
-      </mat-form-field>
+<page-layout [ready]="data$ | async" [hideMenu]="login.user == null">
+  <ng-container *ngIf="loaded$ | async; else loading">
+    <page-content mode="filters" i18n-heading heading="Products and services">
+      <form [formGroup]="form" class="filters-form border-bottom">
+        <div class="row">
+          <div class="col col-md-6">
+            <input-field labelPosition="side" formControlName="keywords"
+              i18n-label label="Keywords"></input-field>
+          </div>
+        </div>
+      </form>
+      <div class="row filters-row">
+        <div class="col-12 col-xs-7 col-md-9">
+          <result-type-field [allowedResultTypes]="allowedResultTypes"
+            [formControl]="resultTypeControl">
+          </result-type-field>
+        </div>
+        <div *ngIf="resultType !== 'categories' && (layout.gtxxs$ | async)"
+          class="col-12 col-xs-5 col-md-3">
+          <single-selection-field [formControl]="form.get('orderBy')"
+            i18n-display display="Order by" i18n-emptyOption emptyOption="Relevance">
+            <field-option value="date" i18n-text text="Last published"></field-option>
+            <field-option value="priceAsc" i18n-text text="Lowest price"></field-option>
+            <field-option value="priceDesc" i18n-text text="Highest price"></field-option>
+          </single-selection-field>
+        </div>
+      </div>
+    </page-content>
 
-      <result-type-field fxFlex="nogrow"
-        [formControl]="resultType"
-        [allowedResultTypes]="resultTypes"></result-type-field>
-    </div>
-  </page-header>
-  <page-filters>
-    <form fxLayout="column"
-      [formGroup]="form">
-      <mat-form-field>
-        <input formControlName="keywords"
-          matInput
-          focused
-          [placeholder]="messages.keywords()">
-      </mat-form-field>
-    </form>
-  </page-filters>
-  <page-content>
-    <ng-container *ngIf="loaded | async">
-      <ads-results [ngClass]="{
-          hidden: resultType.value !== ResultType.CATEGORIES && ((renderingResults | async) || (dataSource.data | async)?.length === 0)
-        }"
-        fxFlex="grow"
-        fxLayout="column"
-        [dataSource]="dataSource"
-        [rendering]="renderingResults | async"
-        [query]="query"
-        [data]="data"
-        [resultType]="resultType$ | async"
-        (update)="update()"
-        (load)="renderingResults.next(false)"
-        (categorySelected)="selectCategory($event)"></ads-results>
-      <div *ngIf="(dataSource.data | async)?.length === 0
-        && resultType.value !== ResultType.CATEGORIES"
-        class="no-results">{{ messages.searchNoResults() }}</div>
-      <spinner *ngIf="renderingResults | async"></spinner>
-    </ng-container>
-  </page-content>
+    <page-content *ngIf="(categoryTrail$ | async)?.length > 0">
+      <nav class="breadcrumb">
+        <ol class="breadcrumb">
+          <li *ngFor="let cat of categoryTrail$ | async; let last = last"
+            class="breadcrumb-item" [ngClass]="{active: last}">
+            <ng-container *ngIf="last">{{ cat.name }}</ng-container>
+            <a *ngIf="!last" href="#" (click)="$event.preventDefault(); selectCategory(cat)">{{
+              cat.name }}</a>
+            <!-- Don't leave trailing spaces or they generate an extra space -->
+          </li>
+        </ol>
+      </nav>
+    </page-content>
+
+    <ng-container *ngTemplateOutlet="resultsTemplate"></ng-container>
+  </ng-container>
 </page-layout>
+
+<ng-template #loading>
+  <page-content>
+    <spinner></spinner>
+  </page-content>
+</ng-template>
+
+<ng-template #resultsTemplate>
+  <results-layout (update)="update()" [categories]="data.categories"
+    [results]="results$ | async" [rendering$]="rendering$" [resultType]="resultType$ | async"
+    [toAddress]="toAddress" [toMarkerTitle]="toMarkerTitle">
+
+    <div *resultCategory="let cat" class="card">
+      <div class="category-title">
+        <avatar [image]="categoryImage(cat)" size="small" [icon]="categoryIcon(cat)"
+          [iconColor]="categoryColor(cat)"></avatar>
+        <a class="category-title-text" href="#" (click)="$event.preventDefault(); selectCategory(cat)">
+          {{ cat.name }}
+        </a>
+      </div>
+      <div class="card-body">
+        <ng-container *ngFor="let child of categoryChildren(cat)">
+          <a class="sub-category-text" href="#" (click)="$event.preventDefault(); selectCategory(child)">
+            {{ child.name }}
+          </a>
+        </ng-container>
+      </div>
+      <a *ngIf="hasMoreChildren(cat)" class="category-footer" href="#"
+        (click)="$event.preventDefault(); showAllChildren(cat)" i18n>
+        Show all
+      </a>
+    </div>
+
+    <table *resultTable class="table table-hover cursor-pointer">
+      <thead *ngIf="(layout.gtxs$ | async)">
+        <th class="avatar"></th>
+        <th i18n>Title</th>
+        <th colspan="2" i18n>Owner</th>
+        <th *ngFor="let field of data.fieldsInList">{{ fieldName(field) }}</th>
+        <th class="text-right" i18n>Price</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let ad of results.results" (click)="router.navigate(path(ad))">
+          <td class="avatar">
+            <avatar [image]="ad.image" icon="shopping_basket"></avatar>
+          </td>
+          <td *ngIf="layout.ltsm$ | async">
+            <!-- Aggregated cell for xs -->
+            <a [routerLink]="path(ad)">
+              <div *ngIf="ad.price" class="font-weight-bold">
+                <span *ngIf="ad.promotionalPrice" class="promo-price">
+                  {{ ad.price | number:decimals(ad) }}
+                </span>
+                {{ (ad.promotionalPrice || ad.price) |
+                currency:lookupCurrency(ad) }}
+              </div>
+              <div class="font-weight-bold">
+                {{ ad.name }}
+              </div>
+              <div i18n>
+                Published by {{ ad.owner.display }}
+              </div>
+              <div *ngFor="let field of data.fieldsInList">
+                <format-field-value [fields]="data.customFields" [plainText]="true"
+                  [fieldName]="field" [object]="ad"></format-field-value>
+              </div>
+            </a>
+          </td>
+          <td>
+            {{ ad.name }}
+          </td>
+          <td class="avatar">
+            <avatar [image]="ad.owner.image"></avatar>
+          </td>
+          <td>
+            {{ ad.owner.display }}
+          </td>
+          <td *ngFor="let field of data.fieldsInList">
+            <format-field-value [fields]="data.customFields" [plainText]="true"
+              [fieldName]="field" [object]="ad"></format-field-value>
+          </td>
+          <td class="text-right">
+            <span *ngIf="ad.promotionalPrice" class="promo-price">
+              {{ ad.price | number:decimals(ad) }}
+            </span>
+            {{ (ad.promotionalPrice || ad.price) |
+            currency:lookupCurrency(ad) }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <a *resultTile="let ad" [routerLink]="path(ad)">
+      <div class="card">
+        <avatar ngClass="card-img-top" [roundBorders]="false" [image]="ad.image"
+          size="full" imageSize="200" icon="shopping_basket" iconSize="8rem"></avatar>
+        <div class="card-body" [ngStyle]="{position: 'relative'}">
+          <avatar [image]="ad.owner.image" [ngStyle]="{position: 'absolute', right: 0, top: 0, transform: 'translateY(-55%)'}"
+            [tooltip]="ad.owner.display"></avatar>
+          <div *ngIf="ad.price; else blankPrice" class="card-title">
+            <span *ngIf="ad.promotionalPrice" class="promo-price">
+              {{ ad.price | number:decimals(ad) }}
+            </span>
+            {{ (ad.promotionalPrice || ad.price) |
+            currency:lookupCurrency(ad) }}
+          </div>
+          <ng-template #blankPrice>
+            <div class="card-title">
+              <br>
+            </div>
+          </ng-template>
+          <div class="card-text">
+            {{ ad.name }}
+          </div>
+        </div>
+      </div>
+    </a>
+
+    <ng-container *resultInfoWindow="let ad; let addr = address">
+      <avatar ngClass="card-img-top" [roundBorders]="false" [image]="ad.image"
+        size="full" imageSize="200" icon="shopping_basket" iconSize="8rem"></avatar>
+
+      <div *ngIf="ad.price" class="font-weight-bold">
+        <span *ngIf="ad.promotionalPrice" class="promo-price">
+          {{ ad.price | number:decimals(ad) }}
+        </span>
+        {{ (ad.promotionalPrice || ad.price) | currency:lookupCurrency(ad) }}
+      </div>
+
+      <div>{{ ad.name }}</div>
+      <div i18n>Published by {{ ad.owner.display }}</div>
+      <address-details [address]="addr"></address-details>
+    </ng-container>
+  </results-layout>
+</ng-template>

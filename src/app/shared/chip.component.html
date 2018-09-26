@@ -1,0 +1,10 @@
+<div class="chip d-flex justify-content-center align-items-center">
+  <avatar *ngIf="image || icon" size="small" ngClass="mr-2" [image]="image"
+    [icon]="icon"></avatar>
+  <div>
+    <ng-content></ng-content>
+  </div>
+  <a *ngIf="closeable" class="ml-2" href="#" (click)="$event.preventDefault(); close.emit(null)">
+    <icon icon="clear"></icon>
+  </a>
+</div>

@@ -1,49 +1,21 @@
-<div class="decimalField"
-  fxLayout="row"
-  fxLayoutAlign="center center"
-  [formGroup]="form">
-  <mat-form-field fxFlex="grow">
-    <input #integerField
-      matInput
-      type="number"
-      maxlength="15"
-      numbersOnly
-      [required]="required"
-      [focused]="focused"
-      (keydown)="onKeyUp($event)"
-      [placeholder]="placeholder"
-      formControlName="integer"
-      (blur)="onBlur($event)">
-    <span matPrefix
-      *ngIf="prefix">{{ prefix + '&nbsp;' }}</span>
-    <mat-error>
-      {{ formControl?.getError('message') }}
-    </mat-error>
-  </mat-form-field>
-  <div *ngIf="scale > 0"
-    class="separator"
-    fxFlex="10px">
-    {{ '&nbsp;' + (decimalSeparator | async) + '&nbsp;' }}
+<label-value *ngIf="label; else widget" [formField]="self">
+  <ng-container *ngTemplateOutlet="widget"></ng-container>
+</label-value>
+
+<ng-template #widget>
+  <div class="input-group">
+    <div class="input-group-prepend" *ngIf="prefix">
+      <span class="input-group-text">{{ prefix }}</span>
+    </div>
+    <!-- Using type="tel" instead of "number" because maxLength doesn't work with type="number" -->
+    <input #inputField [id]="id" type="tel" numbersOnly allowDecimalSeparator [formControl]="internalControl"
+      class="form-control text-right" [placeholder]="format.formatAsNumber('0', this.scale)"
+      (blur)="onBlur($event)" [ngClass]="{
+        'is-invalid': (formControl.statusChanges | async) === 'INVALID' && formControl.touched
+      }">
+    <div class="input-group-append" *ngIf="suffix">
+      <span class="input-group-text">{{ suffix }}</span>
+    </div>
   </div>
-  <mat-form-field *ngIf="scale > 0"
-    fxFlex="nogrow"
-    [ngStyle]="{width: decimalWidth}"
-    floatLabel="never">
-    <input #decimalField
-      matInput
-      type="number"
-      [maxlength]="scale"
-      numbersOnly
-      style="text-align:right"
-      formControlName="decimal"
-      (focus)="decimalField.select()"
-      (blur)="onBlur($event)">
-    <span matSuffix
-      *ngIf="suffix">{{ '&nbsp;' + suffix }}</span>
-    <span matSuffix
-      *ngIf="privacyControl != null && name != null">
-      <field-privacy [field]="name"
-        [control]="privacyControl"></field-privacy>
-    </span>
-  </mat-form-field>
-</div>
+  <field-errors [control]="formControl"></field-errors>
+</ng-template>

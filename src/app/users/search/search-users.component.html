@@ -1,45 +1,43 @@
-<page-layout [title]="messages.userSearchTitle()"
-  [hasHeader]="true"
-  [loaded]="loaded"
-  [filtersForm]="form"
-  [tightContent]="true"
-  [invisibleContent]="!(dataSource.empty | async) && resultType.value === ResultType.TILES">
-  <page-header>
-    <result-type-field *ngIf="(allowedResultTypes || []).length > 1"
-      [formControl]="resultType"
-      [allowedResultTypes]="allowedResultTypes"></result-type-field>
-  </page-header>
-  <page-filters>
-    <form *ngIf="query != null"
-      fxLayout="column"
-      [formGroup]="form">
-      <mat-form-field>
-        <input formControlName="keywords"
-          matInput
-          focused
-          [placeholder]="messages.keywords()">
-      </mat-form-field>
-    </form>
-  </page-filters>
-  <page-content>
-    <ng-container *ngIf="data | async">
-      <users-results [ngClass]="{
-          hidden: (renderingResults | async) || (dataSource.data | async)?.length === 0
-        }"
-        fxFlex="grow"
-        fxLayout="column"
-        [dataSource]="dataSource"
-        [rendering]="renderingResults | async"
-        [query]="query"
-        [data]="data | async"
-        [resultType]="(resultType.valueChanges | async) || previousResultType"
-        (update)="update()"
-        (load)="renderingResults.next(false)"></users-results>
-      <div *ngIf="(dataSource.data | async) != null
-        && dataSource.data.value != null
-        && dataSource.data.value.length === 0"
-        class="no-results">{{ messages.searchNoResults() }}</div>
-      <spinner *ngIf="renderingResults | async"></spinner>
-    </ng-container>
-  </page-content>
+<page-layout [ready]="data$ | async" [hideMenu]="login.user == null">
+  <ng-container *ngIf="loaded$ | async; else loading">
+    <page-content mode="filters" i18n-heading heading="Business directory">
+      <form [formGroup]="form" class="filters-form border-bottom">
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <input-field labelPosition="side" formControlName="keywords"
+              i18n-label label="Keywords"></input-field>
+          </div>
+          <div class="col-12 col-md-6" *ngFor="let cf of fieldsInSearch$ | async">
+            <custom-field-filter labelPosition="side" [field]="cf"
+              [formControl]="form.get('customValues').get(cf.internalName)">
+            </custom-field-filter>
+          </div>
+        </div>
+      </form>
+      <div class="row filters-row">
+        <div class="col-12 col-xs-7 col-md-9">
+          <result-type-field [allowedResultTypes]="allowedResultTypes"
+            [formControl]="resultTypeControl">
+          </result-type-field>
+        </div>
+        <div *ngIf="(layout.gtxxs$ | async)" class="col-12 col-xs-5 col-md-3">
+          <single-selection-field [formControl]="form.get('orderBy')"
+            i18n-display display="Order by" i18n-emptyOption emptyOption="Relevance">
+            <field-option value="alphabeticallyAsc" i18n-text text="Name (A-Z)"></field-option>
+            <field-option value="alphabeticallyDesc" i18n-text text="Name (Z-A)"></field-option>
+          </single-selection-field>
+        </div>
+      </div>
+    </page-content>
+
+    <users-results [results]="results$ | async" [rendering$]="rendering$"
+      [data]="data$ | async" [resultType]="resultType$ | async" (update)="update($event)">
+    </users-results>
+  </ng-container>
 </page-layout>
+
+<ng-template #loading>
+  <page-content>
+    <spinner></spinner>
+  </page-content>
+</ng-template>

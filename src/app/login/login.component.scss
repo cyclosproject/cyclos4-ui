@@ -1,43 +1,12 @@
 @import 'src/definitions';
 
-h1 {
-  text-align: center;
-  padding-top: 0;
-  border: none;
-  font-size: 24px;
-  margin-bottom: 24px;
+@include media-breakpoint-up(md) {
+  :host ::ng-deep page-content {
+    margin-top: 3rem;
+  }
 }
-.text {
-  text-align: center;
-  opacity: 0.7;
-  margin-bottom: 16px;
-}
-.forgotPassword {
-  text-align: center;
-  margin: 12px 0 22px 0;
-  text-decoration: none;
-  display: block;
-}
-.forgotPassword:hover {
-  text-decoration: underline;
-}
-:host ::ng-deep actions {
-  margin: 40px 0 24px 0;
-}
-:host ::ng-deep actions button {
-  min-height: 40px;
-  min-width: 150px !important;
-}
-:host ::ng-deep input {
-  margin-bottom: 7px;
-}
-:host ::ng-deep .mat-input-prefix .mat-icon {
-  position: relative;
-  top: 0px;
-  width: 24px;
-  height: 24px;
-  font-size: 24px;
-}
-:host ::ng-deep captcha .wrapper {
-  margin: auto;
+@include media-breakpoint-up(lg) {
+  :host ::ng-deep page-content {
+    margin-top: 5rem;
+  }
 }

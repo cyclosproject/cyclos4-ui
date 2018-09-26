@@ -1,29 +1,36 @@
-<div *ngIf="image != null"
-  class="container"
-  [ngClass]="{
-    'round-borders': roundBorders
-  }"
-  [ngStyle]="{
-    width: maxSize + 'px',
-    height: maxSize + 'px'
-  }">
-  <img [src]="url"
-    (click)="showLightbox()"
-    [ngStyle]="{
-      width: imageWidth + 'px',
-      height: imageHeight + 'px',
-      left: imageLeft + 'px',
-      top: imageTop + 'px'
+<ng-container *ngIf="image; else iconTemplate">
+  <ng-container *ngIf="url">
+    <div class="avatar-container" (click)="showLightbox()" [ngClass]="{
+      'with-lightbox': url != null && useLightbox,
+      'round-borders': url != null && roundBorders,
+      'full-size': fullSize
+    }"
+      [ngStyle]="{
+      backgroundImage: 'url(' + url + ')',
+      width: fullSize ? '' : size + 'px',
+      height: fullSize ? '' : size + 'px'
     }">
-</div>
-<span [ngStyle]="{color: iconCustomColor}">
-  <mat-icon *ngIf="image == null && svgIcon != null"
-    [color]="iconColor"
-    [ngClass]="iconClass"
-    [svgIcon]="svgIcon"></mat-icon>
-  <mat-icon *ngIf="image == null && svgIcon == null"
-    [color]="iconColor"
-    [ngClass]="iconClass">
-    {{ icon }}
-  </mat-icon>
-  <span>
+    </div>
+    <div *ngIf="!additionalImagesHidden && additionalImagesToShow?.length > 0"
+      class="additional-images">
+      <ng-container *ngFor="let additional of additionalImagesToShow; let index = index">
+        <avatar [useLightbox]="useLightbox" [ngClass]="['additional', 'additional-' + index]"
+          size="large" [image]="additional" [additionalImages]="allImages"
+          additionalImagesHidden>
+        </avatar>
+      </ng-container>
+    </div>
+  </ng-container>
+</ng-container>
+
+<ng-template #iconTemplate>
+  <div class="avatar-container" (click)="click.emit($event)" [ngClass]="{
+      'full-size': fullSize
+    }"
+    [ngStyle]="{
+      width: fullSize ? '' : size + 'px',
+      height: fullSize ? '' : size + 'px'
+    }">
+    <icon [icon]="icon" [size]="iconSize || size" [ngStyle]="{color: iconColor}"></icon>
+  </div>
+</ng-template>

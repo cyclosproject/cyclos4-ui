@@ -26,7 +26,7 @@ export function initialize(
     lightboxConfig.wrapAround = true;
 
     // Load the data for UI
-    dataForUiHolder.reload();
+    return dataForUiHolder.initialize().toPromise();
   };
 }
 export const INITIALIZE: Provider = {

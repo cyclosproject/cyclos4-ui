@@ -1,0 +1,15 @@
+<ng-container *ngFor="let field of configuration.enabledFields" [formGroup]="addressForm">
+  <single-selection-field [id]="idPrefix + field + idSuffix" *ngIf="field === 'country'; else inputTemplate"
+    formControlName="country" [label]="getLabel(field)" [required]="isRequired(field)">
+    <field-option *ngFor="let country of countriesResolve.data | async"
+      [value]="country.code" [text]="country.name">
+    </field-option>
+  </single-selection-field>
+  <ng-template #inputTemplate>
+    <input-field [id]="idPrefix + field + idSuffix" [formControlName]="field"
+      [label]="getLabel(field)" [required]="isRequired(field)"></input-field>
+  </ng-template>
+</ng-container>
+<label-value *ngIf="managePrivacy" i18n-label label="Address privacy" kind="field">
+  <field-privacy [control]="addressForm.get('hidden')" justifyStart></field-privacy>
+</label-value>

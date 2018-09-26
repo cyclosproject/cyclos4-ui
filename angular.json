@@ -43,12 +43,10 @@
             "tsConfig": "src/tsconfig.app.json",
             "assets": [
               "src/images",
-              "src/translations",
-              "src/content"
+              "src/content",
+              "src/i18n"
             ],
             "styles": [
-              "node_modules/@covalent/core/common/platform.scss",
-              "node_modules/normalize.css/normalize.css",
               "node_modules/ngx-lightbox/lightbox.css",
               "src/styles.scss"
             ],
@@ -89,6 +87,23 @@
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
             "browserTarget": "cyclos4-ui:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "src/test.ts",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "src/tsconfig.spec.json",
+            "karmaConfig": "src/karma.conf.js",
+            "styles": [
+              "src/styles.scss"
+            ],
+            "scripts": [],
+            "assets": [
+              "src/favicon.ico",
+              "src/assets"
+            ]
           }
         },
         "lint": {

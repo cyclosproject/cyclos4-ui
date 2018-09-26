@@ -1,63 +1,118 @@
 import { Injectable } from '@angular/core';
-import { Notification } from 'app/shared/notification';
+import { PasswordInput, AvailabilityEnum, CustomFieldDetailed } from 'app/api/models';
+import { BehaviorSubject, Observable, of, Subject, Subscription } from 'rxjs';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { NotificationType } from 'app/shared/notification-type';
-import { MatDialog, MatDialogRef, MatSnackBarRef, MatSnackBar, SimpleSnackBar } from '@angular/material';
 import { NotificationComponent } from 'app/shared/notification.component';
-import { Observable } from 'rxjs';
-import { BehaviorSubject } from 'rxjs';
-import { YesNoComponent } from 'app/shared/yes-no.component';
-import { PasswordInput } from 'app/api/models';
-import { ConfirmWithPasswordComponent } from 'app/shared/confirm-with-password.component';
+import { map, filter, take } from 'rxjs/operators';
+import { SnackBarProvider } from 'app/core/snack-bar-provider';
+import { ConfirmationComponent } from 'app/shared/confirmation.component';
+import { FieldLabelPosition } from 'app/shared/base-form-field.component';
+
+/**
+ * Reference to a notification
+ */
+export class NotificationRef {
+  private _sub: Subscription;
+  private _onClosed = new Subject<void>();
+
+  constructor(
+    private _ref: BsModalRef,
+    onClosed: Observable<NotificationComponent>) {
+    this._sub = onClosed.subscribe(other => {
+      if (this.notification === other) {
+        this._onClosed.next(null);
+        this._onClosed.complete();
+        this._sub.unsubscribe();
+      }
+    });
+  }
+
+  get onClosed(): Observable<void> {
+    return this._onClosed.asObservable();
+  }
+
+  get notification(): NotificationComponent {
+    return this._ref.content;
+  }
+
+  close() {
+    this._ref.hide();
+  }
+}
+
+/**
+ * The confirm calls its callback using this parameter
+ */
+export interface ConfirmCallbackParams {
+  confirmationPassword?: string;
+  customValues?: { [key: string]: string };
+}
 
 /**
  * Service used to manage notifications being displayed for users
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class NotificationService {
 
   /** The currently open notification */
-  private open: MatDialogRef<NotificationComponent>;
+  private currentNotification: NotificationRef;
 
-  constructor(
-    private dialog: MatDialog,
-    private snack: MatSnackBar
-  ) { }
-
-  /**
-   * Shows a message with the yes / no buttons
-   * @param message The message to show
-   * @returns An `Observable` which emits true / false according to the user selection
-   */
-  yesNo(message: string): Observable<Boolean> {
-    return this.dialog.open(YesNoComponent, {
-      autoFocus: false,
-      data: message
-    }).afterClosed();
+  private _snackBarProvider: SnackBarProvider;
+  set snackBarProvider(provider: SnackBarProvider) {
+    this._snackBarProvider = provider;
   }
 
-  /**
-   * Shows a message and a confirmation password to confirm a given action
-   * @param message The message to show
-   * @param passwordInput The `PasswordInput` received from the server
-   * @param confirmationMessage A message passed in to the `ConfirmationPasswordComponent`
-   * @returns An `Observable` which emits the selected confirmation password or null if canceled
-   */
-  confirmWithPassword(message: string, passwordInput: PasswordInput, confirmationMessage?: string): Observable<string> {
-    return this.dialog.open(ConfirmWithPasswordComponent, {
-      autoFocus: false,
-      data: {
-        message: message,
-        passwordInput: passwordInput,
-        confirmationMessage: confirmationMessage
+  public onClosed = new Subject<NotificationComponent>();
+
+  constructor(
+    private modal: BsModalService
+  ) {
+    this.modal.onHidden.subscribe(() => {
+      if (this.currentNotification) {
+        this.onClosed.next(this.currentNotification.notification);
+        this.currentNotification = null;
       }
-    }).afterClosed();
+    });
   }
 
   /**
    * Shows a snack bar message (quick message on the bottom)
    */
-  snackBar(message: string): MatSnackBarRef<SimpleSnackBar> {
-    return this.snack.open(message);
+  snackBar(message: string): void {
+    this._snackBarProvider.show(message);
+  }
+
+  /**
+   * Shows a confirmation dialog, invoking a callback when the user confirms.
+   * Supports a confirmation password.
+   * @param options The confirmation options:
+   * - title: An optional title for the dialog
+   * - message: An optional message
+   * - cancelLabel: Allows overriding the cancel label
+   * - confirmLabel: Allows overriding the confirm label
+   * - customFields: When set, shows additional fields in the confirmation dialog
+   * - labelPosition: When additional fields are shown, represents their label's position
+   * - passwordInput: If a confirmation password is required to confirm
+   * - callback: Function called when confirming. When a confirmation password is used,
+   *   the typed password is passed as parameter.
+   */
+  confirm(options: {
+    title?: string,
+    message?: string,
+    cancelLabel?: string,
+    confirmLabel?: string,
+    labelPosition?: FieldLabelPosition,
+    customFields?: CustomFieldDetailed[],
+    callback: (params: ConfirmCallbackParams) => void,
+    passwordInput?: PasswordInput
+  }): void {
+    this.modal.show(ConfirmationComponent, {
+      class: 'modal-form',
+      initialState: options
+    });
   }
 
   /**
@@ -65,7 +120,7 @@ export class NotificationService {
    * @param message The notification message
    * @returns The dialog reference
    */
-  error(message: string, allowClose = true): Observable<MatDialogRef<NotificationComponent>> {
+  error(message: string, allowClose = true): NotificationRef {
     return this.showNotification(NotificationType.ERROR, message, allowClose);
   }
 
@@ -74,7 +129,7 @@ export class NotificationService {
    * @param message The notification message
    * @returns The dialog reference
    */
-  warning(message: string, allowClose = true): Observable<MatDialogRef<NotificationComponent>> {
+  warning(message: string, allowClose = true): NotificationRef {
     return this.showNotification(NotificationType.WARNING, message, allowClose);
   }
 
@@ -83,7 +138,7 @@ export class NotificationService {
    * @param message The notification message
    * @returns The dialog reference
    */
-  info(message: string, allowClose = true): Observable<MatDialogRef<NotificationComponent>> {
+  info(message: string, allowClose = true): NotificationRef {
     return this.showNotification(NotificationType.INFO, message, allowClose);
   }
 
@@ -93,37 +148,30 @@ export class NotificationService {
    * @param message The notification message
    * @returns The dialog reference
    */
-  showNotification(type: NotificationType, message: string, allowClose = true):
-    Observable<MatDialogRef<NotificationComponent>> {
-
+  showNotification(type: NotificationType, message: string, allowClose = true): NotificationRef {
     // Close the current notification, if any
     this.close();
 
-    const result = new BehaviorSubject<MatDialogRef<NotificationComponent>>(null);
-    const openDialog = () => {
-      const ref = this.dialog.open(NotificationComponent, {
-        disableClose: !allowClose
-      });
-      ref.afterClosed().subscribe(() => {
-        this.open = null;
-      });
-      const component = ref.componentInstance;
-      component.notification = new Notification(type, message.replace('\n', '<br>'));
-      component.allowClose = allowClose;
-      this.open = ref;
-      result.next(ref);
-    };
-    window.setTimeout(openDialog, 100);
-    return result.asObservable();
+    const modalRef = this.modal.show(NotificationComponent, {
+      class: 'notification',
+      initialState: {
+        type: type,
+        message: message,
+        allowClose: allowClose
+      }
+    });
+
+    // Store the currently opened notification
+    this.currentNotification = new NotificationRef(modalRef, this.onClosed);
+    return this.currentNotification;
   }
 
   /**
    * Closes the currently visible notification, if any
    */
   close(): void {
-    if (this.open) {
-      this.open.close();
-      this.open = null;
+    if (this.currentNotification) {
+      this.currentNotification.close();
     }
   }
 }

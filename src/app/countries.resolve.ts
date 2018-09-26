@@ -7,7 +7,9 @@ import { SingletonResolve } from 'app/singleton.resolve';
 /**
  * Loads the possible groups for registration
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class CountriesResolve extends SingletonResolve<Country[]> {
   countries: { [code: string]: string };
 

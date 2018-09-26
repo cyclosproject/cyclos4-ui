@@ -1,16 +1,19 @@
+/// <reference types="@types/googlemaps" />
+
 import { Injectable } from '@angular/core';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
-import { MapData, GeographicalCoordinate } from 'app/api/models';
+import { MapData, GeographicalCoordinate, AddressManage } from 'app/api/models';
 import { Observable, of, from } from 'rxjs';
 import { MapsAPILoader } from '@agm/core';
-import { } from '@types/googlemaps';
 import { empty } from 'app/shared/helper';
 import { mergeMap } from 'rxjs/operators';
 
 /**
  * Helper classes to work with Google Maps
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class MapsService {
 
   private geocoder: google.maps.Geocoder;
@@ -41,7 +44,7 @@ export class MapsService {
    * Geocodes the given address fields, that is, transforms an address to a geographical coordinate
    * @param fields The address field values
    */
-  geocode(fields: string[]): Observable<GeographicalCoordinate> {
+  geocode(fields: AddressManage | string[]): Observable<GeographicalCoordinate> {
     if (!this.enabled || fields == null) {
       return of(null);
     }
@@ -53,7 +56,26 @@ export class MapsService {
     );
   }
 
-  private doGeocode(fields: string[]): Observable<GeographicalCoordinate> {
+  private doGeocode(fieldsOrAddress: AddressManage | string[]): Observable<GeographicalCoordinate> {
+    let fields: string[];
+    if (fieldsOrAddress instanceof Array) {
+      // When the input is an array of fields, use it directly
+      fields = fieldsOrAddress;
+    } else {
+      // When an address, extract each field
+      const a = fieldsOrAddress as AddressManage;
+      fields = [
+        a.addressLine1,
+        a.addressLine2,
+        a.street,
+        a.buildingNumber,
+        a.neighborhood,
+        a.city,
+        a.zip,
+        a.region,
+        a.country
+      ];
+    }
     fields = (fields || []).filter(f => !empty(f));
     if (fields.length === 0) {
       return of(null);

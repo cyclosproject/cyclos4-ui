@@ -1,10 +1,8 @@
-import { Component, ChangeDetectionStrategy, Injector } from '@angular/core';
-
-import { BehaviorSubject } from 'rxjs';
-import { BaseComponent } from 'app/shared/base.component';
+import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
+import { AdCategoryWithParent, AdView } from 'app/api/models';
 import { MarketplaceService } from 'app/api/services';
-import { AdView, Country, AdCategoryWithParent } from 'app/api/models';
-import { Action } from 'app/shared/action';
+import { BasePageComponent } from 'app/shared/base-page.component';
+
 
 /**
  * Displays an advertisement details
@@ -12,10 +10,9 @@ import { Action } from 'app/shared/action';
 @Component({
   selector: 'view-ad',
   templateUrl: 'view-ad.component.html',
-  styleUrls: ['view-ad.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ViewAdComponent extends BaseComponent {
+export class ViewAdComponent extends BasePageComponent<AdView> implements OnInit {
 
   constructor(
     injector: Injector,
@@ -23,25 +20,21 @@ export class ViewAdComponent extends BaseComponent {
     super(injector);
   }
 
-  loaded = new BehaviorSubject(false);
-  ad: AdView;
-  countries: BehaviorSubject<Country[]>;
-  titleActions = new BehaviorSubject<Action[]>(null);
+  get ad(): AdView {
+    return this.data;
+  }
 
   ngOnInit() {
     super.ngOnInit();
     const id = this.route.snapshot.paramMap.get('id');
-    if (id == null) {
-      this.notification.error(this.messages.errorPermission());
-      this.loaded.next(true);
-      return;
-    } else {
-      this.marketplaceService.viewAd({ ad: id })
-        .subscribe(ad => {
-          this.ad = ad;
-          this.loaded.next(true);
-        });
-    }
+    this.marketplaceService.viewAd({ ad: id })
+      .subscribe(ad => {
+        this.data = ad;
+      });
+  }
+
+  get categoryLabel(): string {
+    return (this.ad.categories || []).length === 1 ? this.i18n('Category') : this.i18n('Categories');
   }
 
   categoryLevels(category: AdCategoryWithParent) {

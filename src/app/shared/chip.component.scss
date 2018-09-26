@@ -1,0 +1,21 @@
+@import 'src/definitions';
+
+:host {
+  display: inline-block;
+}
+.chip {
+  border: $input-border-width solid $input-border-color;
+  border-radius: 1rem;
+  background-color: $input-bg;
+  padding: 0.3rem;
+}
+a {
+  color: $input-color;
+  padding: 0.1rem 0.2rem 0 0;
+}
+a:hover {
+  text-decoration: none;
+}
+:host ::ng-deep icon {
+  color: $faded-color;
+}

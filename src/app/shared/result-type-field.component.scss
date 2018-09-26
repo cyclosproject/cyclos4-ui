@@ -1,3 +1,14 @@
-:host, .mat-button-toggle-group, .mat-button-toggle {
-  display: inline-block;
+@import 'src/definitions';
+
+:host {
+  display: block;
+}
+.btn, .btn:hover {
+  box-shadow: none !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: $input-height;
+  width: 2.8rem;
+  padding: 0;
 }

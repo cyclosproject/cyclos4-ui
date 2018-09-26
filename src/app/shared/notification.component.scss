@@ -1,7 +1,25 @@
-.notificationMessage {
-  padding: 0 0 2px 8px;
-}
+@import 'src/definitions';
 
-:host .mat-icon {
-  opacity: 1;
+:host {
+  display: block;
+}
+:host ::ng-deep {
+  .alert {
+    margin: 0rem !important;
+    padding: 0.4rem 0;
+  }
+  icon {
+    margin-bottom: 0.4rem;
+  }
+  .close {
+    width: auto;
+  }
+}
+@include media-breakpoint-up(xs) {
+  :host ::ng-deep .alert {
+    padding: 0.75rem 1.25rem;
+  }
+  icon {
+    margin-bottom: 0;
+  }
 }

@@ -1,8 +1,11 @@
-<page-layout [loaded]="loaded"
-  [title]="messages.transferViewTitle()">
-  <page-content *ngIf="loaded | async">
-    <div class="form-wrapper">
-      <view-transfer-details [transfer]="transfer"></view-transfer-details>
-    </div>
+<page-layout [ready]="data$ | async">
+  <page-content *ngIf="transfer" i18n-heading heading="Transfer details">
+    <transfer-details [transfer]="transfer"></transfer-details>
+    <actions reverseRow *ngIf="actions.length > 0">
+      <button *ngFor="let action of actions" class="btn btn-outline-primary"
+        (click)="action.onClick()">
+        {{ action.label }}
+      </button>
+    </actions>
   </page-content>
 </page-layout>

@@ -1,8 +1,15 @@
-import { Component, ChangeDetectionStrategy, Injector, ViewChild, ApplicationRef } from '@angular/core';
+import { Component, Injector, ChangeDetectionStrategy, ApplicationRef, Renderer2, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { BaseComponent } from 'app/shared/base.component';
 import { BehaviorSubject } from 'rxjs';
-import { PersonalMenuComponent } from 'app/core/personal-menu.component';
+import { BaseComponent } from 'app/shared/base.component';
+import { MenuService } from 'app/core/menu.service';
+import { Router } from '@angular/router';
+import { DataForUiHolder } from 'app/core/data-for-ui-holder';
+import { FormatService } from 'app/core/format.service';
+import { LoginService } from 'app/core/login.service';
+import { LayoutService } from 'app/shared/layout.service';
+
+declare const setSpinnerVisible: (boolean) => void;
 
 @Component({
   selector: 'app-root',
@@ -10,23 +17,21 @@ import { PersonalMenuComponent } from 'app/core/personal-menu.component';
   styleUrls: ['./app.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AppComponent extends BaseComponent {
+export class AppComponent implements OnInit {
   constructor(
-    injector: Injector,
-    private app: ApplicationRef,
-    private title: Title
-  ) {
-    super(injector);
-  }
+    private title: Title,
+    private router: Router,
+    private format: FormatService,
+    private dataForUiHolder: DataForUiHolder,
+    public login: LoginService,
+    public menu: MenuService,
+    public layout: LayoutService
+  ) { }
 
   initialized = new BehaviorSubject(false);
-
   loggingOut = new BehaviorSubject(false);
 
-  @ViewChild(PersonalMenuComponent) personalMenu: PersonalMenuComponent;
-
   ngOnInit() {
-    super.ngOnInit();
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.title.setTitle(this.format.appTitle);
     this.dataForUiHolder.subscribe(dataForUi => {
@@ -39,5 +44,6 @@ export class AppComponent extends BaseComponent {
       this.initialized.next(true);
     }
     this.login.subscribeForLoggingOut(flag => this.loggingOut.next(flag));
+    setSpinnerVisible(false);
   }
 }

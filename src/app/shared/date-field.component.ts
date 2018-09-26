@@ -1,104 +1,107 @@
 import {
-  Component, Input, Output, ViewChild, EventEmitter, forwardRef, ElementRef,
-  Provider, ChangeDetectionStrategy, SkipSelf, Host, Optional
+  Component, ChangeDetectionStrategy, SkipSelf, Host, Optional, ViewChild, OnInit
 } from '@angular/core';
 import {
-  NG_VALUE_ACCESSOR, NG_VALIDATORS, Validator,
-  AbstractControl, ValidationErrors, FormControl, ControlContainer
+  NG_VALUE_ACCESSOR, AbstractControl, ControlContainer, NG_VALIDATORS, Validator, ValidationErrors, FormControl, FormBuilder, ValidatorFn
 } from '@angular/forms';
 import { FormatService } from 'app/core/format.service';
-import { LayoutService } from 'app/core/layout.service';
-import { MatDatepickerInput } from '@angular/material';
-import { ApiHelper } from 'app/shared/api-helper';
-import { BaseControlComponent } from 'app/shared/base-control.component';
-
-// Definition of the exported NG_VALUE_ACCESSOR provider
-export const DATE_FIELD_VALUE_ACCESSOR: Provider = {
-  provide: NG_VALUE_ACCESSOR,
-  useExisting: forwardRef(() => DateFieldComponent),
-  multi: true
-};
-
-// Definition of the exported NG_VALIDATORS provider
-export const DATE_VALIDATOR: Provider = {
-  provide: NG_VALIDATORS,
-  useExisting: forwardRef(() => DateFieldComponent),
-  multi: true
-};
+import { empty } from 'app/shared/helper';
+import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
+import { InputFieldComponent } from 'app/shared/input-field.component';
+import { CustomFieldSizeEnum } from 'app/api/models';
 
 /**
- * Renders a widget for a date field
+ * Input used to edit a single date
  */
 @Component({
   selector: 'date-field',
   templateUrl: 'date-field.component.html',
-  styleUrls: ['date-field.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
-    DATE_FIELD_VALUE_ACCESSOR,
-    DATE_VALIDATOR
+    { provide: NG_VALUE_ACCESSOR, useExisting: DateFieldComponent, multi: true },
+    { provide: NG_VALIDATORS, useExisting: DateFieldComponent, multi: true }
   ]
 })
-export class DateFieldComponent extends BaseControlComponent<string> implements Validator {
-  @Input() name: string;
-  @Input() required: boolean;
-  @Input() placeholder: string;
-  @Input() focused: boolean;
-  @Input() privacyControl: FormControl;
+export class DateFieldComponent
+  extends BaseFormFieldComponent<string> implements Validator, OnInit {
 
-  @Output() change: EventEmitter<string> = new EventEmitter();
-  @Output() blur: EventEmitter<string> = new EventEmitter();
+  internalControl: FormControl;
 
-  @ViewChild(MatDatepickerInput)
-  private input: MatDatepickerInput<string>;
+  @ViewChild('inputField') inputField: InputFieldComponent;
 
-  @ViewChild('input')
-  private inputRef: ElementRef;
+  pattern: string;
 
   constructor(
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
-    public formatService: FormatService,
-    public layout: LayoutService
-  ) {
+    private format: FormatService) {
     super(controlContainer);
   }
 
-  focus() {
-    this.inputRef.nativeElement.focus();
-  }
+  ngOnInit() {
+    super.ngOnInit();
+    this.fieldSize = CustomFieldSizeEnum.SMALL;
+    this.pattern = this.format.dateFormat;
 
-  onBlur(event) {
-    this.touchedCallback();
-    const control = this.formControl;
-    if (control) {
-      const formatted = this.formatService.formatAsDate(control.value);
-      const input = this.inputRef.nativeElement;
-      if (input.value !== formatted) {
-        input.value = formatted;
+    const validator: ValidatorFn = control => {
+      const value = control.value;
+      if (empty(value)) {
+        // Don't validate empty values
+        return null;
       }
-    }
-    this.blur.emit(event);
+      const parsed = this.format.parseAsDate(value);
+      if (parsed === undefined) {
+        return this.dateError;
+      }
+      return null;
+    };
+    this.internalControl = new FormControl(null, validator);
+
+    this.addSub(this.internalControl.valueChanges.subscribe((input: string) => {
+      if (empty(input)) {
+        this.value = null;
+      } else {
+        this.value = this.format.parseAsDate(input);
+      }
+      this.formControl.markAsTouched();
+    }));
+
+    this.addSub(this.formControl.statusChanges.subscribe(() => {
+      this.internalControl.setErrors(this.formControl.errors);
+    }));
   }
 
-  onDisabledChange(isDisabled: boolean) {
-    this.input.disabled = isDisabled;
+  onValueInitialized(raw: string): void {
+    this.internalControl.setValue(this.format.formatAsDate(raw), { emitEvent: false });
+  }
+
+  protected getFocusableControl() {
+    return this.inputField;
+  }
+
+  protected getDisabledValue(): string {
+    return this.format.formatAsDate(this.value);
   }
 
   // Validator methods
   validate(c: AbstractControl): ValidationErrors {
-    if (c.value === ApiHelper.INVALID_DATE) {
-      // Invalid date
-      return {
-        dateFormat: {
-          format: this.formatService.dateFormat
-        }
-      };
-    }
-    if (!this.required && (c.value === '' || c.value === null)) {
+    const value = c.value;
+    if (empty(value)) {
+      // Don't validate empty values
       return null;
     }
-    return this.input.validate(c);
+    // The value is already pre-validated, as we validate the internal control
+    if (value === undefined) {
+      return this.dateError;
+    }
+    return null;
   }
-  registerOnValidatorChange(fn: () => void): void {
+
+  private get dateError(): ValidationErrors {
+    return {
+      date: {
+        format: this.format.dateFormat
+      }
+    };
   }
+
 }

@@ -1,0 +1,15 @@
+<label-value *ngIf="label; else widget" [formField]="self">
+  <ng-container *ngTemplateOutlet="widget"></ng-container>
+</label-value>
+
+<ng-template #widget>
+  <div class="custom-control custom-checkbox d-flex align-content-center mt-1">
+    <input #checkbox type="checkbox" [name]="name" class="custom-control-input"
+      [id]="id" (click)="click.emit($event)" [formControl]="formControl"
+      [checked]="formControl.value || (formControl.valueChanges | async)">
+    <label class="custom-control-label" [for]="id">
+      <ng-content></ng-content>
+    </label>
+  </div>
+  <field-errors [control]="formControl"></field-errors>
+</ng-template>

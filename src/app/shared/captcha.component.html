@@ -1,18 +1,11 @@
-<div [formGroup]="form"
-  fxFlex="nogrow"
-  fxLayout="column"
-  fxLayoutAlign="center"
-  class="wrapper">
-  <img #image
-    alt="captcha">
-  <div fxLayout="row">
-    <mat-form-field>
-      <input matInput
-        formControlName="response">
-    </mat-form-field>
-    <button mat-icon-button
-      (click)="newCaptcha()">
-      <mat-icon>refresh</mat-icon>
+<ng-container [formGroup]="form">
+  <div class="flex-grow-1 d-flex justify-content-center mb-1">
+    <img #image alt="captcha" (load)="updateWidth()">
+  </div>
+  <div class="d-flex">
+    <input class="form-control" formControlName="response">
+    <button class="btn btn-light btn-icon" (click)="newCaptcha()">
+      <icon icon="refresh"></icon>
     </button>
   </div>
-</div>
+</ng-container>

@@ -1,6 +1,10 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, HostBinding, ViewChild, OnInit } from '@angular/core';
+import { BaseControlComponent } from 'app/shared/base-control.component';
+import { I18n } from '@ngx-translate/i18n-polyfill';
 import { FormControl } from '@angular/forms';
-import { Messages } from 'app/messages/messages';
+import { BehaviorSubject } from 'rxjs';
+import { TooltipDirective } from 'ngx-bootstrap/tooltip';
+import { truthyAttr } from 'app/shared/helper';
 
 /**
  * A widget that switches between field visibilities.
@@ -14,16 +18,37 @@ import { Messages } from 'app/messages/messages';
   styleUrls: ['field-privacy.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FieldPrivacyComponent {
+export class FieldPrivacyComponent implements OnInit {
+  private _justifyStart: boolean | string = false;
+  @Input() get justifyStart(): boolean | string {
+    return this._justifyStart;
+  }
+  set justifyStart(justify: boolean | string) {
+    this._justifyStart = truthyAttr(justify);
+    this.updateClass();
+  }
   @Input() field: string;
   @Input() control: FormControl;
+  @ViewChild('ttip') ttip: TooltipDirective;
 
-  constructor(public messages: Messages) {
+  @HostBinding('class') clazz;
+
+  icon$ = new BehaviorSubject<string>(null);
+
+  constructor(public i18n: I18n) {
+  }
+
+  ngOnInit() {
+    this.updateClass();
+  }
+
+  private updateClass() {
+    this.clazz = 'h-100 d-flex align-items-center' + (this._justifyStart ? 'justify-content-start' : 'justify-content-end');
   }
 
   get hidden(): boolean {
     if (this.field) {
-      const hiddenFields = <string[]>this.control.value;
+      const hiddenFields = <string[]>this.control.value || [];
       return hiddenFields.includes(this.field);
     } else {
       return this.control.value === true;
@@ -31,21 +56,31 @@ export class FieldPrivacyComponent {
   }
 
   get icon(): string {
-    return this.hidden ? 'visibility_off' : 'visibility';
+    return this.hidden ? 'lock' : 'public';
   }
 
-  toggle(event) {
+  toggle() {
     if (this.field) {
-      let hiddenFields = <string[]>this.control.value;
+      let hiddenFields = <string[]>this.control.value || [];
       if (hiddenFields.includes(this.field)) {
         hiddenFields = hiddenFields.filter(el => el !== this.field);
       } else {
-        hiddenFields.push(this.field);
+        hiddenFields = [...hiddenFields, this.field];
       }
       this.control.setValue(hiddenFields);
     } else {
       this.control.setValue(!this.control.value);
     }
-    event.stopPropagation();
+    // Manually mark the control as touched because this field isn't a real NG_VALUE_ACCESSOR
+    this.control.markAsTouched();
+    this.ttip.hide();
+  }
+
+  get tooltip(): string {
+    if (this.hidden) {
+      return this.i18n('This field is private. Click to allow other to view it.');
+    } else {
+      return this.i18n('This field is visible by others. Click to make it private.');
+    }
   }
 }

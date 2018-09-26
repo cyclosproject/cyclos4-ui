@@ -1,0 +1,43 @@
+<nav class="navbar navbar-expand-md">
+  <div class="d-flex container-fluid" style="display: none" [ngClass]="{
+      'px-1': layout.ltmd$ | async
+    }">
+    <span class="navbar-brand flex-grow-1">
+      <span class="d-inline-block ml-2">{{ format.appTitleMenu }}</span>
+    </span>
+    <span>
+      <a class="d-table-cell" [ngClass]="{'px-2': layout.gtxxs$ | async}"
+        href="#" (click)="toggle(); $event.preventDefault()">
+        <icon size="1.5rem" icon="clear"></icon>
+      </a>
+    </span>
+  </div>
+</nav>
+<div class="sidenav-menu d-flex flex-column">
+  <ng-container *ngFor="let root of roots$ | async; let last = last">
+    <ng-container *ngIf="(login.user$ | async) == null || root.rootMenu === 'home'">
+      <div class="menu-standalone">
+        <ng-container *ngTemplateOutlet="menuEntry; context: {$implicit: root.entries[0]}"></ng-container>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="(login.user$ | async) != null && root.rootMenu !== 'home'">
+      <div class="menu-group" [ngClass]="{'border-bottom-0': last}">
+        <div class="group-title" *ngIf="root.rootMenu !== 'home'">
+          {{ root.label }}
+        </div>
+        <div class="group-entries">
+          <ng-container *ngFor="let entry of root.entries">
+            <ng-container *ngTemplateOutlet="menuEntry; context: {$implicit: entry}"></ng-container>
+          </ng-container>
+        </div>
+      </div>
+    </ng-container>
+  </ng-container>
+</div>
+
+<ng-template #menuEntry let-entry>
+  <a [routerLink]="entry.url" (click)="onClick(entry, $event)" class="d-flex align-items-center">
+    <icon class="mr-3" size="1.4rem" [icon]="entry.icon"></icon>
+    <span class="menu-text">{{ entry.label }}</span>
+  </a>
+</ng-template>

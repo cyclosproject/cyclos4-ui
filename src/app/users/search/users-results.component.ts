@@ -1,13 +1,13 @@
-import { Component, ChangeDetectionStrategy, Injector, Input, EventEmitter, Output, ViewChildren, QueryList } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { User, UserDataForSearch, ContactListDataForSearch, ContactResult, UserResult, Address, UserDataForMap } from 'app/api/models';
-import { BaseComponent } from 'app/shared/base.component';
+import { Component, ChangeDetectionStrategy, Injector, Input, Output, EventEmitter, HostBinding } from '@angular/core';
+import {
+  User, UserDataForSearch, ContactListDataForSearch, ContactResult, UserResult,
+  Address, UserDataForMap, Country
+} from 'app/api/models';
 import { ResultType } from 'app/shared/result-type';
-import { TableDataSource } from 'app/shared/table-datasource';
-import { MapsService } from 'app/core/maps.service';
-import { LatLngBounds, AgmInfoWindow } from '@agm/core';
-import { fitBounds, TILE_WIDTH } from 'app/shared/helper';
-import { ApiHelper } from 'app/shared/api-helper';
+import { PageData } from 'app/shared/page-data';
+import { PagedResults } from 'app/shared/paged-results';
+import { BaseComponent } from 'app/shared/base.component';
+import { BehaviorSubject } from 'rxjs';
 
 const MAX_COLUMNS = 7;
 const MAX_TILE_FIELDS = 2;
@@ -18,55 +18,48 @@ const MAX_TILE_FIELDS = 2;
 @Component({
   selector: 'users-results',
   templateUrl: 'users-results.component.html',
-  styleUrls: ['users-results.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UsersResultsComponent extends BaseComponent {
 
-  tileWidth = TILE_WIDTH;
+  @HostBinding('class') clazz = 'flex-grow-1 d-flex';
 
-  displayedColumns = new BehaviorSubject<string[]>([]);
+  @Input() resultType: ResultType;
+  @Input() rendering$: BehaviorSubject<boolean>;
 
-  // Export enum to the template
-  ResultType = ResultType;
+  private _data: UserDataForSearch | UserDataForMap | ContactListDataForSearch;
+  @Input() set data(data: UserDataForSearch | UserDataForMap | ContactListDataForSearch) {
+    this._data = data;
+    const fieldsInList = (data || {}).fieldsInList || [];
+    this.fieldsInList = fieldsInList.slice(0, Math.min(fieldsInList.length, MAX_COLUMNS));
+    this.fieldsInTile = fieldsInList.slice(0, Math.min(fieldsInList.length, MAX_TILE_FIELDS));
+    this.showTableHeader = this.fieldsInList.length > 1;
+  }
+  get data(): UserDataForSearch | UserDataForMap | ContactListDataForSearch {
+    return this._data;
+  }
 
-  mapReady = false;
+  @Input() results: PagedResults<UserResult | ContactResult>;
 
   @Input() resultKind: 'user' | 'contact' = 'user';
 
-  @Input() query: any;
+  @Output() update = new EventEmitter<PageData>();
 
-  /** This input is here only to force a change in an @Input() field, so change detection properly works with OnPush */
-  @Input() rendering = false;
-
-  @Input() dataSource: TableDataSource<any>;
-
-  @Input() data: UserDataForSearch | UserDataForMap | ContactListDataForSearch;
-
-  @Input() resultType: ResultType;
-
-  @Output() update = new EventEmitter<null>();
-
-  @Output() load = new EventEmitter<null>();
-
-  @ViewChildren(AgmInfoWindow) infoWindows: QueryList<AgmInfoWindow>;
-
-  mapFitBounds = new BehaviorSubject<LatLngBounds>(null);
-
-  addressStreet = ApiHelper.addressStreet;
+  fieldsInList: string[];
+  fieldsInTile: string[];
+  showTableHeader: boolean;
 
   constructor(
-    injector: Injector,
-    public maps: MapsService) {
+    injector: Injector
+  ) {
     super(injector);
   }
 
-  ngOnInit() {
-    super.ngOnInit();
-    this.dataSource.data.subscribe(rows => {
-      this.updateDisplayedColumns();
-      this.adjustMap();
-    });
+  onDataInitialized(data: UserDataForSearch | UserDataForMap | ContactListDataForSearch) {
+    const fieldsInList = (data || {}).fieldsInList || [];
+    this.fieldsInList = fieldsInList.slice(0, Math.min(fieldsInList.length, MAX_COLUMNS));
+    this.fieldsInTile = fieldsInList.slice(0, Math.min(fieldsInList.length, MAX_TILE_FIELDS));
+    this.showTableHeader = this.fieldsInList.length > 1;
   }
 
   /**
@@ -78,6 +71,25 @@ export class UsersResultsComponent extends BaseComponent {
       return (row as ContactResult).contact;
     }
     return row as User;
+  }
+
+  /**
+   * Returns a function that formats the user
+   */
+  displayFunction(): Function {
+    return row => {
+      const user = this.user(row);
+      if (user.display) {
+        return user.display;
+      }
+      // Is a user result
+      const res = user as UserResult;
+      const field = this.fieldsInList[0];
+      if (res.hasOwnProperty(field)) {
+        return res[field];
+      }
+      return (res.customValues || {})[field];
+    };
   }
 
   /**
@@ -106,35 +118,28 @@ export class UsersResultsComponent extends BaseComponent {
   }
 
   /**
-   * Returns the identifiers of fields to show in the result list
+   * Returns the display name of the given field
+   * @param field The field identifier
    */
-  get fieldsInList(): string[] {
-    let arr = this.data.fieldsInList || [];
-    if (arr.length > MAX_COLUMNS) {
-      arr = arr.slice(0, MAX_COLUMNS);
+  fieldName(field: string): string {
+    switch (field) {
+      case 'display':
+        return this.i18n('User');
+      case 'name':
+        return this.i18n('Full name');
+      case 'username':
+        return this.i18n('Login name');
+      case 'email':
+        return this.i18n('E-mail');
+      case 'phone':
+        return this.i18n('Phone number');
+      case 'accountNumber':
+        return this.i18n('Account number');
+      default:
+        const customField = this.data.customFields.find(cf => cf.internalName === field);
+        return (customField || {}).name;
     }
-    return arr;
   }
-
-  /**
-   * Returns the identifiers of fields to show in tiled view
-   */
-  get fieldsInTile(): string[] {
-    let arr = this.data.fieldsInList || [];
-    if (arr.length > MAX_TILE_FIELDS) {
-      arr = arr.slice(0, MAX_TILE_FIELDS);
-    }
-    return arr;
-  }
-
-  /**
-   * Returns whether the table header should be shown.
-   * We don't show it if there are no profile fields in list, or with XS devices
-   */
-  get showHeader(): boolean {
-    return this.layout.gtxs && this.fieldsInList.length > 0;
-  }
-
 
   /**
    * Returns the route components for the given row
@@ -152,103 +157,4 @@ export class UsersResultsComponent extends BaseComponent {
     // Go to the user profile
     return ['/users', 'profile', this.user(row).id];
   }
-
-  /**
-   * Returns the internal name of the field with the given index
-   * @param field The field index
-   */
-  fieldInternalName(field: number): string {
-    return this.fieldsInList[field];
-  }
-
-  /**
-   * Returns the display name of the given field
-   * @param field The field identifier
-   */
-  fieldName(field: string | number): string {
-    if (typeof field === 'number') {
-      // Lookup the field id by index
-      return this.fieldName(this.fieldInternalName(field));
-    }
-    switch (field) {
-      case 'name':
-        return this.messages.userName();
-      case 'username':
-        return this.messages.userUsername();
-      case 'email':
-        return this.messages.userEmail();
-      case 'phone':
-        return this.messages.userPhone();
-      case 'accountNumber':
-        return this.messages.userAccountNumber();
-      default:
-        for (const cf of this.data.customFields) {
-          if (cf.internalName === field) {
-            return cf.name;
-          }
-        }
-    }
-    return null;
-  }
-
-  private updateDisplayedColumns() {
-    const fieldsInList = this.fieldsInList;
-    if (fieldsInList.length > 0) {
-      // There are specific fields in list
-      if (this.layout.xs) {
-        // In mobile layout there's an aggregated column
-        this.displayedColumns.next(['avatar', 'aggregated']);
-      } else {
-        // In other layouts show the specific columns, plus the avatar
-        // As the columns cannot be dynamically defined, we define up to
-        // 5 columns, named field0, field1, ...
-        const fields: string[] = [];
-        fields.push('avatar');
-        if (this.resultKind === 'contact') {
-          // For contacts, always show the user display as well
-          fields.push('display');
-        }
-        for (let i = 0; i < this.fieldsInList.length; i++) {
-          fields.push('field' + i);
-        }
-        this.displayedColumns.next(fields);
-      }
-    } else {
-      // No specific fields - show the display only
-      this.displayedColumns.next(['avatar', 'display']);
-    }
-  }
-
-  triggerUpdate() {
-    this.update.next(null);
-  }
-
-  onDisplayChange() {
-    super.onDisplayChange();
-    this.updateDisplayedColumns();
-  }
-
-  adjustMap() {
-    if (this.resultType !== ResultType.MAP) {
-      return;
-    }
-    const mapData = this.maps.data;
-    const rows = this.dataSource.data.value;
-    if (mapData != null && mapData.defaultLocation == null) {
-      // Only fit the map to locations if there's no default location
-      this.mapFitBounds.next(rows == null ? null : fitBounds(rows.map(row => this.address(row))));
-    }
-    if (rows != null && this.mapReady) {
-      this.notifyLoad();
-    }
-  }
-
-  notifyLoad() {
-    this.load.emit(null);
-  }
-
-  closeAllInfoWindows() {
-    this.infoWindows.forEach(iw => iw.close());
-  }
-
 }

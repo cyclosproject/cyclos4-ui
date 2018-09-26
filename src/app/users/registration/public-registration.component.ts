@@ -1,26 +1,18 @@
-import { Component, ChangeDetectionStrategy, Injector, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injector, OnDestroy, OnInit } from '@angular/core';
+import { AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import {
-  FormGroup, FormBuilder, Validators, ValidatorFn, AsyncValidatorFn,
-  AbstractControl, ValidationErrors
-} from '@angular/forms';
-import { BaseComponent } from 'app/shared/base.component';
-import { GroupForRegistration } from 'app/api/models/group-for-registration';
-import { BehaviorSubject } from 'rxjs';
+  AddressNew, AvailabilityEnum, GroupForRegistration, Image, PhoneNew,
+  UserDataForNew, UserNew, UserRegistrationResult
+} from 'app/api/models';
+import { ImagesService, UsersService } from 'app/api/services';
 import { ApiHelper } from 'app/shared/api-helper';
-import { UsersService } from 'app/api/services/users.service';
-import { UserDataForNew } from 'app/api/models';
-import { LinearStepperControlComponent } from 'app/shared/linear-stepper-control.component';
-import { TdStepComponent } from '@covalent/core';
-import { Observable } from 'rxjs';
-import { of as observableOf } from 'rxjs';
-import { timer as observableTimer } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { switchMap } from 'rxjs/operators';
-import { UserNew } from 'app/api/models/user-new';
-import { AfterViewInit } from '@angular/core/src/metadata/lifecycle_hooks';
-import { copyProperties, empty, getAllErrors } from 'app/shared/helper';
-import { UserRegistrationResult } from 'app/api/models/user-registration-result';
-import { AvailabilityEnum } from 'app/api/models/availability-enum';
+import { BasePageComponent } from 'app/shared/base-page.component';
+import { blank, copyProperties, empty, scrollTop } from 'app/shared/helper';
+import { BehaviorSubject, Observable, of, timer } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
+
+export type RegistrationStep = 'group' | 'fields' | 'confirm' | 'done';
+
 
 /** Validator function that ensures password and confirmation match */
 const PASSWORDS_MATCH_VAL: ValidatorFn = control => {
@@ -52,130 +44,142 @@ const SEGURITY_ANSWER_VAL: ValidatorFn = control => {
   return null;
 };
 
+/**
+ * User registration from guest
+ */
 @Component({
   selector: 'public-registration',
-  templateUrl: './public-registration.component.html',
+  templateUrl: 'public-registration.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PublicRegistrationComponent extends BaseComponent implements AfterViewInit {
-  loaded = new BehaviorSubject(false);
+export class PublicRegistrationComponent
+  extends BasePageComponent<UserDataForNew>
+  implements OnInit, OnDestroy {
 
-  @ViewChild('stepperControl')
-  stepperControl: LinearStepperControlComponent;
-
-  // Group step
-  @ViewChild('groupStep') groupStep: TdStepComponent;
-  groups: GroupForRegistration[];
-  group = new BehaviorSubject<GroupForRegistration>(null);
-  groupForm: FormGroup;
-
-  // Fields step
-  data = new BehaviorSubject<UserDataForNew>(null);
-  @ViewChild('fieldsStep') fieldsStep: TdStepComponent;
-  user: UserNew = {};
-  fieldsForm: FormGroup;
+  steps: RegistrationStep[] = ['group', 'fields', 'confirm', 'done'];
+  group: FormControl;
+  form: FormGroup;
+  mobileForm: FormGroup;
+  landLineForm: FormGroup;
+  defineAddress: FormControl;
   addressForm: FormGroup;
-  fieldsValid = new BehaviorSubject(false);
-  counter = new BehaviorSubject(0);
-
-  // Confirmation step
-  @ViewChild('confirmStep') confirmStep: TdStepComponent;
   confirmForm: FormGroup;
+  image: Image;
 
-  // done step
-  @ViewChild('doneStep') doneStep: TdStepComponent;
-  result = new BehaviorSubject<UserRegistrationResult>(null);
+  step$ = new BehaviorSubject<RegistrationStep>(null);
+  get step(): RegistrationStep {
+    return this.step$.value;
+  }
+  set step(step: RegistrationStep) {
+    this.step$.next(step);
+  }
+
+  fieldsValid$ = new BehaviorSubject(false);
+  get fieldsValid(): boolean {
+    return this.fieldsValid$.value;
+  }
+  set fieldsValid(valid: boolean) {
+    this.fieldsValid$.next(valid);
+  }
+
+  result$ = new BehaviorSubject<UserRegistrationResult>(null);
+  get result(): UserRegistrationResult {
+    return this.result$.value;
+  }
+  set result(result: UserRegistrationResult) {
+    this.result$.next(result);
+  }
 
   constructor(
     injector: Injector,
-    private formBuilder: FormBuilder,
-    private usersService: UsersService) {
+    private usersService: UsersService,
+    private imagesService: ImagesService) {
     super(injector);
+  }
 
-    // Form for group selection
-    this.groupForm = formBuilder.group({
-      group: [null, Validators.required]
-    });
-    this.subscriptions.push(this.groupForm.valueChanges.subscribe(value =>
-      this.group.next(value.group)));
-
-    // Form for field (fully dynamic)
-    this.fieldsForm = formBuilder.group({
-    });
-
-    // Form for address (fully dynamic)
-    // As the address is optionally defined, this confuses validations if the address is set to not defined
-    // Hence we use a separated form
-    this.addressForm = formBuilder.group({
-    });
-
-    // Update the valid status whenever either form status changes
-    const updateValidity = () => this.updateFieldsValid();
-    this.subscriptions.push(this.fieldsForm.statusChanges.subscribe(updateValidity));
-    this.subscriptions.push(this.addressForm.statusChanges.subscribe(updateValidity));
-    this.subscriptions.push(this.addressForm.valueChanges.subscribe(updateValidity));
-
-    // Form for confirmation (fully dynamic)
-    this.confirmForm = formBuilder.group({
-    });
+  get groups(): GroupForRegistration[] {
+    return this.dataForUiHolder.dataForUi.publicRegistrationGroups;
   }
 
   ngOnInit() {
     super.ngOnInit();
 
-    // Because the fields form has async validators, we have to make sure changes are detected on status change
-    this.subscriptions.push(this.fieldsForm.statusChanges.subscribe(() => this.detectChanges()));
+    const groups = this.groups;
 
-    this.groups = (this.dataForUiHolder.dataForUi.publicRegistrationGroups || []);
-    if (this.groups.length === 0) {
-      // No groups for registration!
-      this.notification.error(this.messages.registrationErrorNoGroups());
-    } else if (this.groups.length === 1) {
-      // There is a single group - select it
-      const group = this.groups[0];
-      this.group.next(group);
-      this.groupForm.patchValue({
-        group: group
-      });
-      // After getting the registration data for this group, will mark as loaded
-      this.nextFromGroup();
+    if (this.login.user || empty(groups)) {
+      // This component is only for guests. Also, there must be registration groups
+      this.router.navigateByUrl('/');
+      return;
+    }
+
+    // Initialize the group value
+    this.group = new FormControl(groups[0].id, Validators.required);
+    if (groups.length === 1) {
+      // When there's a single group, fetch the data already
+      this.steps = this.steps.filter(s => s !== 'group');
+      this.showFields();
     } else {
-      // The page is fully loaded
-      this.loaded.next(true);
+      // Initialize on the groups step
+      this.step = 'group';
     }
   }
 
-  ngAfterViewInit() {
-    if (this.groups.length > 0) {
-      window.setTimeout(() => this.stepperControl.activate(this.groupStep), 0);
+  ngOnDestroy() {
+    super.ngOnDestroy();
+    if (this.image) {
+      // When a temp image was uploaded, immediately remove it
+      this.errorHandler.requestWithCustomErrorHandler(() => {
+        this.imagesService.deleteImage(this.image.id).subscribe();
+      });
     }
   }
 
-  private get groupId(): string {
-    return this.group.value.id;
-  }
-
-  nextFromGroup() {
-    this.usersService.getUserDataForNew({ group: this.groupId })
+  showFields() {
+    this.usersService.getUserDataForNew({ group: this.group.value })
       .subscribe(data => {
-        this.prepareFieldsForm(data);
+        this.data = data;
+        this.prepareForms(data);
       });
   }
 
-  private prepareFieldsForm(data: UserDataForNew) {
+  backToGroup() {
+    this.form = null;
+    this.data = null;
+    this.step = 'group';
+  }
+
+  backToFields() {
+    this.confirmForm = null;
+    this.step = 'fields';
+  }
+
+  private updateFieldsValid() {
+    this.fieldsValid = this.form.valid
+      && (!this.mobileForm || this.mobileForm.valid)
+      && (!this.landLineForm || this.landLineForm.valid)
+      && (!this.addressForm || !this.defineAddress.value || this.addressForm.valid);
+  }
+
+  private prepareForms(data: UserDataForNew) {
     const user = data.user;
+
+    this.form = this.formBuilder.group({
+      group: this.group.value,
+      hiddenFields: [user.hiddenFields || []]
+    });
+    this.addSub(this.form.statusChanges.subscribe(() => this.updateFieldsValid()));
 
     // Full name
     const nameActions = data.profileFieldActions.name;
     if (nameActions && nameActions.edit) {
-      this.fieldsForm.setControl('name',
+      this.form.setControl('name',
         this.formBuilder.control(user.name, Validators.required, this.serverSideValidator('name'))
       );
     }
     // Login name
     const usernameActions = data.profileFieldActions.username;
     if (usernameActions && usernameActions.edit && !data.generatedUsername) {
-      this.fieldsForm.setControl('username',
+      this.form.setControl('username',
         this.formBuilder.control(user.username, Validators.required, this.serverSideValidator('username'))
       );
     }
@@ -187,88 +191,116 @@ export class PublicRegistrationComponent extends BaseComponent implements AfterV
         val.push(Validators.required);
       }
       val.push(Validators.email);
-      this.fieldsForm.setControl('email',
+      this.form.setControl('email',
         this.formBuilder.control(user.email, val, this.serverSideValidator('email'))
       );
     }
 
+    // Custom fields
+    this.form.setControl('customValues',
+      ApiHelper.customValuesFormGroup(this.formBuilder, data.customFields, {
+        asyncValProvider: cf => this.serverSideValidator(cf.internalName)
+      }));
+
     // Phones
     const phoneConfiguration = data.phoneConfiguration;
-
-    // Land-line
-    const landLineAvailability = phoneConfiguration.landLineAvailability;
-    if (landLineAvailability !== AvailabilityEnum.DISABLED) {
-      const val = landLineAvailability === AvailabilityEnum.REQUIRED ? Validators.required : null;
-      const phone = phoneConfiguration.landLinePhone;
-      const landLineForm = this.formBuilder.group({
-        number: [phone.number, val, this.serverSideValidator('landLinePhone')],
-        hidden: phone.hidden
-      });
-      if (phoneConfiguration.extensionEnabled) {
-        landLineForm.setControl('extension', this.formBuilder.control(phone.extension));
-      }
-      this.fieldsForm.setControl('landLinePhone', landLineForm);
-    }
 
     // Mobile
     const mobileAvailability = phoneConfiguration.mobileAvailability;
     if (mobileAvailability !== AvailabilityEnum.DISABLED) {
       const val = mobileAvailability === AvailabilityEnum.REQUIRED ? Validators.required : null;
       const phone = phoneConfiguration.mobilePhone;
-      const mobileForm = this.formBuilder.group({
+      this.mobileForm = this.formBuilder.group({
+        name: phone.name,
         number: [phone.number, val, this.serverSideValidator('mobilePhone')],
         hidden: phone.hidden
       });
-      this.fieldsForm.setControl('mobilePhone', mobileForm);
+      this.addSub(this.mobileForm.statusChanges.subscribe(() => this.updateFieldsValid()));
+    } else {
+      this.mobileForm = null;
+    }
+
+    // Land-line
+    const landLineAvailability = phoneConfiguration.landLineAvailability;
+    if (landLineAvailability !== AvailabilityEnum.DISABLED) {
+      const val = landLineAvailability === AvailabilityEnum.REQUIRED ? Validators.required : null;
+      const phone = phoneConfiguration.landLinePhone;
+      this.landLineForm = this.formBuilder.group({
+        name: phone.name,
+        number: [phone.number, val, this.serverSideValidator('landLinePhone')],
+        hidden: phone.hidden
+      });
+      if (phoneConfiguration.extensionEnabled) {
+        this.landLineForm.setControl('extension', this.formBuilder.control(phone.extension));
+      }
+      this.addSub(this.landLineForm.statusChanges.subscribe(() => this.updateFieldsValid()));
+    } else {
+      this.landLineForm = null;
     }
 
     // Address
     const addressConfiguration = data.addressConfiguration;
     const addressAvailability = addressConfiguration.availability;
     if (addressAvailability !== AvailabilityEnum.DISABLED) {
+      this.defineAddress = this.formBuilder.control(addressAvailability === AvailabilityEnum.REQUIRED);
       const address = addressConfiguration.address;
-
       this.addressForm = this.formBuilder.group({
+        name: address.name,
         hidden: address.hidden
       });
-      const addressDefined = this.formBuilder.control(
-        addressAvailability === AvailabilityEnum.REQUIRED);
-      this.fieldsForm.setControl('addressDefined', addressDefined);
       for (const field of addressConfiguration.enabledFields) {
         const val = addressConfiguration.requiredFields.includes(field) ? Validators.required : null;
         this.addressForm.setControl(field, this.formBuilder.control(address[field], val));
       }
+      this.addSub(this.addressForm.statusChanges.subscribe(() => this.updateFieldsValid()));
+      this.addSub(this.defineAddress.valueChanges.subscribe(() => this.updateFieldsValid()));
+    } else {
+      this.addressForm = null;
+      this.defineAddress = null;
     }
 
-    // Custom fields
-    this.fieldsForm.setControl('customValues',
-      ApiHelper.customValuesFormGroup(this.formBuilder, data.customFields,
-        cf => this.serverSideValidator(cf.internalName)));
+    this.data = data;
 
-    // Hidden fields (both basic and custom)
-    this.fieldsForm.setControl('hiddenFields',
-      this.formBuilder.control(user.hiddenFields));
+    // Put the page on the fields step
+    this.step = 'fields';
+  }
 
-    this.data.next(data);
+  private serverSideValidator(field: string): AsyncValidatorFn {
+    return (c: AbstractControl): Observable<ValidationErrors | null> => {
+      let val = c.value;
+      if (empty(val) || !c.dirty) {
+        // Don't validate empty value (will fail validation required), nor fields that haven't been modified yet
+        return of(null);
+      }
 
-    if (!this.loaded.value) {
-      // If there is a single group, just now we will finish loading
-      this.loaded.next(true);
+      // Multi selections hold the value as array, but we must pass it as pipe-separated
+      if (val instanceof Array) {
+        val = val.join('|');
+      }
+
+      return timer(ApiHelper.DEBOUNCE_TIME).pipe(
+        switchMap(() => {
+          return this.usersService.validateUserRegistrationField({
+            group: this.group.value, field: field, value: val
+          });
+        }),
+        map(msg => {
+          return msg ? { message: msg } : null;
+        })
+      );
+    };
+  }
+
+  showConfirm() {
+    if (!this.fieldsValid) {
+      return;
     }
 
-    this.stepperControl.activate(this.fieldsStep);
-  }
+    const data = this.data;
 
-  previousFromFields() {
-    this.stepperControl.activate(this.groupStep);
-  }
-
-  nextFromFields() {
-    this.prepareConfirmForm();
-  }
-
-  private prepareConfirmForm() {
-    const data = this.data.value;
+    // Setup the confirmation form
+    this.confirmForm = this.formBuilder.group({
+    });
 
     // Passwords
     const passwordControls: FormGroup[] = [];
@@ -283,131 +315,61 @@ export class PublicRegistrationComponent extends BaseComponent implements AfterV
     this.confirmForm.setControl('passwords', this.formBuilder.array(passwordControls));
 
     // Security question
-    if (data.securityQuestions != null && data.securityQuestions.length > 0) {
+    if (!empty(data.securityQuestions)) {
       this.confirmForm.setControl('securityQuestion', this.formBuilder.control(''));
       this.confirmForm.setControl('securityAnswer', this.formBuilder.control('', SEGURITY_ANSWER_VAL));
     }
 
     // Agreements
     if (data.agreements != null && data.agreements.length > 0) {
-      this.confirmForm.setControl('acceptAgreement',
-        this.formBuilder.control(false, Validators.requiredTrue));
+      this.confirmForm.setControl('acceptAgreement', this.formBuilder.control(false, Validators.requiredTrue));
     }
 
     // Captcha
     if (data.captchaType != null) {
-      this.confirmForm.setControl('captcha',
-        ApiHelper.captchaFormGroup(this.formBuilder));
+      this.confirmForm.setControl('captcha', ApiHelper.captchaFormGroup(this.formBuilder));
     }
 
-    this.stepperControl.activate(this.confirmStep);
+    this.step = 'confirm';
+
+    scrollTop();
   }
 
-  previousFromConfirm() {
-    this.stepperControl.activate(this.fieldsStep);
-  }
-
-  nextFromConfirm() {
-    const user = this.userNew;
-    this.usersService.createUser(user)
+  register() {
+    this.usersService.createUser(this.userNew)
       .subscribe(result => {
-        this.result.next(result);
-        this.stepperControl.complete();
+        this.result = result;
+        this.step = 'done';
       });
   }
 
-  private get userNew(): UserNew {
-    const data = this.data.value;
+  get userNew(): UserNew {
+    const data = this.data;
 
-    const user: UserNew = {};
-
-    // Set the group
-    user.group = this.groupId;
-
-    // Copy the basic fields
-    copyProperties(this.fieldsForm.value, user, ['landLinePhone', 'mobilePhone', 'addressDefined']);
-
-    // Set the land line phone
-    if (data.phoneConfiguration.landLineAvailability !== AvailabilityEnum.DISABLED) {
-      const landLinePhone = { ...data.phoneConfiguration.landLinePhone };
-      copyProperties(this.fieldsForm.value.landLinePhone, landLinePhone);
-      if (!empty(landLinePhone.number)) {
-        user.landLinePhones = [landLinePhone];
-      }
+    const user: UserNew = this.form.value;
+    const mobile: PhoneNew = (this.mobileForm || {} as FormGroup).value;
+    const landLine: PhoneNew = (this.landLineForm || {} as FormGroup).value;
+    const address: AddressNew = (this.addressForm || {} as FormGroup).value;
+    if (this.image) {
+      user.images = [this.image.id];
     }
-
-    // Set the mobile phone
-    if (data.phoneConfiguration.mobileAvailability !== AvailabilityEnum.DISABLED) {
-      const mobilePhone = { ...data.phoneConfiguration.mobilePhone };
-      copyProperties(this.fieldsForm.value.mobilePhone, mobilePhone);
-      if (!empty(mobilePhone.number)) {
-        user.mobilePhones = [mobilePhone];
-      }
+    if (mobile && !blank(mobile.number)) {
+      user.mobilePhones = [mobile];
     }
-
-    // Set the address
-    if (data.addressConfiguration.availability !== AvailabilityEnum.DISABLED) {
-      // But only if defined
-      if (this.fieldsForm.value.addressDefined) {
-        const address = { ...data.addressConfiguration.address };
-        copyProperties(this.addressForm.value, address);
-        user.addresses = [address];
-      }
+    if (landLine && !blank(landLine.number)) {
+      user.landLinePhones = [landLine];
+    }
+    if (address && this.defineAddress.value) {
+      user.addresses = [address];
     }
 
     // Copy the fields in the confirmation form
     copyProperties(this.confirmForm.value, user);
+
     return user;
   }
 
   goToLogin() {
     this.router.navigateByUrl('/login');
   }
-
-  private updateFieldsValid() {
-    let valid = false;
-    if (this.fieldsForm.valid) {
-      const addressDefinedControl = this.fieldsForm.get('addressDefined');
-      const addressDefined = addressDefinedControl != null && addressDefinedControl.value === true;
-      valid = !addressDefined || this.addressForm.valid;
-    }
-    if (this.fieldsValid.value !== valid) {
-      this.fieldsValid.next(valid);
-      this.counter.next(this.counter.value + 1);
-    }
-  }
-
-  get errors() {
-    return {
-      fields: getAllErrors(this.fieldsForm),
-      address: getAllErrors(this.addressForm)
-    };
-  }
-
-  private serverSideValidator(field: string): AsyncValidatorFn {
-    return (c: AbstractControl): Observable<ValidationErrors | null> => {
-      let val = c.value;
-      if (empty(val) || !c.dirty) {
-        // Don't validate empty value (will fail validation required), nor fields that haven't been modified yet
-        return observableOf(null);
-      }
-
-      // Multi selections hold the value as array, but we must pass it as pipe-separated
-      if (val instanceof Array) {
-        val = val.join('|');
-      }
-
-      return observableTimer(ApiHelper.DEBOUNCE_TIME).pipe(
-        switchMap(() => {
-          return this.usersService.validateUserRegistrationField({
-            group: this.groupId, field: field, value: val
-          });
-        }),
-        map(msg => {
-          return msg ? { message: msg } : null;
-        })
-      );
-    };
-  }
-
 }

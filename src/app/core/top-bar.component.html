@@ -1,42 +1,29 @@
-<layout-bar>
-  <button class="menu-toggle"
-    fxHide.gt-sm
-    mat-icon-button
-    (click)="sidenav ? sidenav.toggle() : null">
-    <mat-icon ngClass="mat-24">menu</mat-icon>
-  </button>
-  <button class="back"
-    fxHide.gt-sm
-    [ngStyle]="{
-      visibility: ((breadcrumb.breadcrumb | async)?.length > 1) ? 'visible' : 'hidden'
-    }"
-    mat-icon-button
-    (click)="breadcrumb.back()">
-    <mat-icon ngClass="mat-24">arrow_back</mat-icon>
-  </button>
-  <img fxHide.xs
-    class="logo"
-    src="images/logo.png">
-  <div class="title"
-    fxFlex="grow">
-    <span [fxHide.lt-md]="hideTitle | async">
-      {{ format.appTitle }}
+<nav class="navbar navbar-expand-md">
+  <div [ngClass]="{
+      container: layout.gtsm$ | async,
+      'container-fluid': layout.ltmd$ | async,
+      'px-1': (layout.xs$ | async) || (layout.sm$ | async)
+    }">
+    <span class="d-flex justify-content-center mr-2" *ngIf="layout.ltlg$ | async">
+      <a class="d-table-cell" [ngClass]="{'px-2': layout.gtxxs$ | async}"
+        href="#" (click)="toggleSidenav.emit(); $event.preventDefault()">
+        <icon size="1.5rem" icon="menu"></icon>
+      </a>
     </span>
+    <span class="navbar-brand flex-grow-1">
+      <img *ngIf="layout.gtxs$ | async" class="logo d-inline-block align-top mr-3"
+        src="images/logo.png">
+      <span class="d-inline-block">
+        {{ (layout.ltsm$ | async) ? format.appTitleSmall : format.appTitle }}
+      </span>
+    </span>
+    <div *ngIf="user != null" class="personal-menu-toggle">
+      <a #personalMenuLink href="#" class="d-flex align-items-center" (click)="togglePersonalMenu.emit(personalMenuLink); $event.preventDefault()">
+        <avatar [image]="user.image" icon="account_circle"></avatar>
+        <div *ngIf="layout.gtsm$ | async" class="ml-2 personal-menu-toggle-text dropdown-toggle">
+          {{ user.display }}
+        </div>
+      </a>
+    </div>
   </div>
-  <div class="spacer"
-    fxHide.gt-xs
-    fxFlex="grow"></div>
-  <a #personalMenuToggle
-    *ngIf="(login.user$ | async) as user"
-    href="#"
-    class="personalMenuToggle"
-    fxLayout="row"
-    fxLayoutAlign="center center"
-    (click)="personalMenuToggleClick($event)">
-    <avatar [image]="user.image"></avatar>
-    <span fxHide.xs
-      class="user">{{ user.display }}</span>
-    <mat-icon fxHide.xs
-      ngClass="mat-24">arrow_drop_down</mat-icon>
-  </a>
-</layout-bar>
+</nav>

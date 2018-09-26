@@ -25,7 +25,7 @@
       true,
       "spaces"
     ],
-    "interface-over-type-literal": false,
+    "interface-over-type-literal": true,
     "label-position": true,
     "max-line-length": [
       true,
@@ -72,9 +72,8 @@
     "no-trailing-whitespace": true,
     "no-unnecessary-initializer": true,
     "no-unused-expression": true,
-    "no-use-before-declare": false,
+    "no-use-before-declare": true,
     "no-var-keyword": true,
-    "no-unused-variable": true,
     "object-literal-sort-keys": false,
     "one-line": [
       true,
@@ -117,29 +116,13 @@
       "check-separator",
       "check-type"
     ],
-    "directive-selector": [
-      true,
-      "attribute",
-      "",
-      "camelCase"
-    ],
-    "component-selector": [
-      true,
-      "element",
-      "",
-      "kebab-case"
-    ],
-    "angular-whitespace": [
-      true,
-      "check-interpolation"
-    ],
     "no-output-on-prefix": true,
     "use-input-property-decorator": true,
     "use-output-property-decorator": true,
     "use-host-property-decorator": true,
     "no-input-rename": true,
     "no-output-rename": true,
-    "use-life-cycle-interface": false,
+    "use-life-cycle-interface": true,
     "use-pipe-transform-interface": true,
     "component-class-suffix": true,
     "directive-class-suffix": true

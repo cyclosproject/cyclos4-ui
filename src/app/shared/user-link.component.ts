@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Injector, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
 import { BaseComponent } from 'app/shared/base.component';
 import { User, AccountWithOwner } from 'app/api/models';
 
@@ -10,10 +10,9 @@ import { User, AccountWithOwner } from 'app/api/models';
 @Component({
   selector: 'user-link',
   templateUrl: 'user-link.component.html',
-  styleUrls: ['user-link.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UserLinkComponent extends BaseComponent {
+export class UserLinkComponent extends BaseComponent implements OnInit {
   constructor(injector: Injector) {
     super(injector);
   }

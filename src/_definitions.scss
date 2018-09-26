@@ -1,32 +1,118 @@
-// Angular material theme
-@import '~@angular/material/theming';
+// From Cyclos logo: $primary: #176ea6;
+$primary: #1e88e5;
+$faded-color: #757575;
 
-// For the available palletes, see https://material.io/guidelines/style/color.html#color-color-palette
+$font-family-sans-serif: Roboto, sans-serif;
+$font-size-base: 0.875rem;
+$font-weight-light: 300;
+$font-weight-normal: 400;
+$font-weight-bold: 500;
 
-// *** Primary color palletes ***
-$primary: mat-palette($mat-blue, 600, 400, 700);
-$accent: mat-palette($mat-blue, 500, 400, 700);
-$warn: mat-palette($mat-red);
-$positive: mat-palette($mat-green);
-$negative: mat-palette($mat-red);
+// Toggle for enabling / disabling shadows on most parts
+$enable-shadows: true;
 
-// *** Angular Material theme ***
-$light-theme: mat-light-theme($primary, $accent, $warn);
-$dark-theme: mat-dark-theme($primary, $accent, $warn);
-$typography: mat-typography-config();
+$grid-breakpoints: (
+  xxs: 0,
+  xs: 326px,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px
+) !default;
 
-// *** General variables ***
-// Maximum width for layout area
-$max-layout-width: 1160px;
-// Width of the left area on medium to large displays
-$left-area-width: 320px;
-// Width of the main content area
-$max-content-width: $max-layout-width - $left-area-width;
-$small-content-width: 400px;
-$medium-content-width: 600px;
-// Margin between parts like left area, header and page in medium - large displays
-$parts-margin: 28px;
-// Width of the login card
-$login-width: 400px;
-// Side margin in small - xsmall displays
-$small-margin: 8px;
+@import "node_modules/bootstrap/scss/functions";
+@import "node_modules/bootstrap/scss/variables";
+@import "node_modules/bootstrap/scss/mixins";
+
+@if $enable-shadows == false {
+  .shadow, .shadow-sm, .shadow-lg {
+    box-shadow: none !important;
+  }
+}
+
+$layout-spacer-xxs: 0.4rem;
+$layout-spacer-xs: 0.7rem;
+$layout-spacer: 1.25rem;
+
+$body-bg: $gray-100;
+$body-color: $gray-800;
+$table-icon-color: #c8c8c8;
+$table-hover-bg: $list-group-hover-bg;
+
+$section-border-color: $gray-300;
+$section-margin: 1.5rem;
+
+$h1-color: $primary;
+$h2-color: $primary;
+$h3-color: $primary;
+
+$positive-color: $green;
+$negative-color: $red;
+$total-amount-color: $green;
+$total-amount-size: 2rem;
+
+$required-marker-color: $red;
+$input-placeholder-color: $gray-500;
+$input-group-addon-bg: $gray-100;
+$button-icon-color: $gray-700;
+
+$label-weight: $font-weight-bold;
+$label-color: $gray-700;
+
+$top-bar-bg: $primary;
+$top-bar-color: white;
+
+$title-height-xxs: 2.7rem;
+$title-height-xs: 3rem;
+$title-height: 3.4rem;
+$title-button-bg: $light;
+$title-button-color: color-yiq($light);
+$title-button-border-color: $section-border-color;
+
+$menu-bar-bg: $input-bg;
+$menu-bar-color: $input-color;
+$menu-bar-inactive-color: $faded-color;
+$menu-bar-hover-bg: $list-group-hover-bg;
+$menu-bar-active-border: $primary;
+
+$side-menu-bg: $menu-bar-bg;
+$side-menu-active-bg: lighten($primary, 40%);
+$side-menu-active-color: $menu-bar-color;
+$side-menu-inactive-color: $menu-bar-inactive-color;
+$side-menu-inactive-hover-bg: $menu-bar-hover-bg;
+
+$dashboard-bg: $input-bg;
+$dashboard-color: $primary;
+$dashboard-icon-color: $primary;
+$dashboard-border-color: $primary;
+$dashboard-hover-bg: $primary;
+$dashboard-hover-color: color-yiq($primary);
+$dashboard-hover-border-color: darken($primary, 15%);
+$dashboard-hover-icon-color: color-yiq($primary);
+
+$sidenav-bar-bg: $top-bar-bg;
+$sidenav-bar-color: $top-bar-color;
+$sidenav-bg: $menu-bar-bg;
+$sidenav-color: $menu-bar-color;
+$sidenav-active-bg: $menu-bar-hover-bg;
+$sidenav-icon-color: $faded-color;
+
+$personal-menu-bg: $menu-bar-bg;
+$personal-menu-color: $menu-bar-color;
+$personal-menu-active-bg: $side-menu-active-bg;
+$personal-menu-item-color: $menu-bar-inactive-color;
+$personal-menu-item-border-color: $gray-200;
+$personal-menu-hover-bg: $menu-bar-hover-bg;
+
+$snack-bar-bg: $gray-900;
+$snack-bar-color: white;
+
+$card-border-color: $section-border-color;
+$tiled-results-spacing: 8px;
+$tiled-results-icon-color: $table-icon-color;
+
+$breadcrumb-divider: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjkiPjxwYXRoIGQ9Ik0yLjUgMEwxIDEuNSAzLjUgNCAxIDYuNSAyLjUgOGw0LTQtNC00eiIgZmlsbD0iIzc1NzU3NSIvPjwvc3ZnPg==);
+$breadcrumb-padding-y: 0;
+$breadcrumb-padding-x: 0;
+$breadcrumb-margin-bottom: 0;
+$breadcrumb-bg: transparent;

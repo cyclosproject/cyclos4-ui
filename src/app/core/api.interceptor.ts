@@ -9,7 +9,9 @@ import { NextRequestState } from 'app/core/next-request-state';
 /**
  * Intercepts requests to set the correct headers and handle errors
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class ApiInterceptor implements HttpInterceptor {
 
   constructor(

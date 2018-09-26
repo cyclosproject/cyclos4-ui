@@ -1,13 +1,29 @@
 @import 'src/definitions';
 
-.label {
-  font-weight: 500;
+.label-value-label {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
 }
 
-.value {
-  margin-left: 12px;
+@include media-breakpoint-up(sm) {
+  :host.field .label-value-label,
+  :host.field-view .label-value-label,
+  :host.field-view .label-value-value {
+    padding-top: calc(#{$input-padding-y} + #{$input-border-width}) !important;
+    padding-bottom: calc(#{$input-padding-y} + #{$input-border-width}) !important;
+  }
 }
 
-.break-nl {
-  white-space: pre-wrap;
+.lt-sm :host ::ng-deep {
+  .label-large {
+    font-size: 1.2em !important;
+  }
+
+  .label-small {
+    font-size: 0.8em !important;
+  }
+}
+
+.lt-sm :host {
+  padding-bottom: 0.5rem;
 }
