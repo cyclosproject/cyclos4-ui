@@ -10,16 +10,17 @@ const MAX_THUMB_WIDTH = 160;
 const MAX_THUMB_HEIGHT = 100;
 
 /** Maximum number of additional images to show */
-const MAX_ADDITIONAL = 5;
+const MAX_ADDITIONAL = 3;
 
 /**
  * The size for rendered avatars.
  * Profile is a special value that adapts to the max image width / height and layout size
  */
-export type AvatarSize = 'small' | 'medium' | 'large' | 'xlarge' | 'huge' | 'full';
+export type AvatarSize = 'small' | 'medium' | 'medium-large' | 'large' | 'xlarge' | 'huge' | 'full';
 export const SIZES: { [key: string]: number } = {
   'small': 24,
   'medium': 36,
+  'medium-large': 50,
   'large': 64,
   'xlarge': 96,
   'huge': 128

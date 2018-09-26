@@ -15,7 +15,7 @@
       class="additional-images">
       <ng-container *ngFor="let additional of additionalImagesToShow; let index = index">
         <avatar [useLightbox]="useLightbox" [ngClass]="['additional', 'additional-' + index]"
-          size="large" [image]="additional" [additionalImages]="allImages"
+          size="medium-large" [image]="additional" [additionalImages]="allImages"
           additionalImagesHidden>
         </avatar>
       </ng-container>
