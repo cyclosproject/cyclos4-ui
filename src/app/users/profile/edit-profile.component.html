@@ -307,7 +307,8 @@
       </form>
     </ng-container>
     <actions>
-      <button class="btn btn-primary" i18n (click)="save()">Save</button>
+      <button class="btn btn-primary" i18n [disabled]="requesting$ | async"
+        (click)="save()">Save</button>
     </actions>
   </page-content>
 </page-layout>
