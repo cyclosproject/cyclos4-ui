@@ -1,5 +1,7 @@
-import { Injectable } from '@angular/core';
 import { HttpRequest } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { distinctUntilChanged, map } from 'rxjs/operators';
 
 const CHANNEL = 'Channel';
 const AUTHORIZATION = 'Authorization';
@@ -13,8 +15,18 @@ const SESSION_TOKEN = 'Session-Token';
 })
 export class NextRequestState {
 
+  private pending$ = new BehaviorSubject<HttpRequest<any>[]>([]);
+  requesting$: Observable<boolean>;
+
   private nextAuth: string;
   ignoreNextError: boolean;
+
+  constructor() {
+    this.requesting$ = this.pending$.asObservable().pipe(
+      map(reqs => reqs.length > 0),
+      distinctUntilChanged()
+    );
+  }
 
   /**
    * Applies the current authorization headers to the next request
@@ -46,9 +58,22 @@ export class NextRequestState {
     this.nextAuth = null;
 
     // Apply the headers to the request
-    return req.clone({
+    const result = req.clone({
       setHeaders: headers
     });
+
+    // Append the resulting request in the pending list
+    this.pending$.next([result, ...this.pending$.value]);
+
+    return result;
+  }
+
+  /**
+   * Removes the given request from the pending list
+   * @param req The request
+   */
+  finish(req: HttpRequest<any>) {
+    this.pending$.next(this.pending$.value.filter(r => r !== req));
   }
 
   /**

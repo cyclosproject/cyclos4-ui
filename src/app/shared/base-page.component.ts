@@ -2,7 +2,8 @@ import { OnInit, OnDestroy, Injector, HostBinding } from '@angular/core';
 import { BaseComponent } from 'app/shared/base.component';
 import { AbstractControl } from '@angular/forms';
 import { FormControlLocator } from 'app/shared/form-control-locator';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { ApiInterceptor } from 'app/core/api.interceptor';
 
 /**
  * Base class implemented by components which are actually 'pages', that is, are displayed in the `<router-outlet>`.

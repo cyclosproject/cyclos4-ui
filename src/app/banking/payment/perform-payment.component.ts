@@ -8,7 +8,7 @@ import {
 import { PaymentsService } from 'app/api/services';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BasePageComponent } from 'app/shared/base-page.component';
-import { empty, scrollTop, clearValidatorsAndErrors, locateControl } from 'app/shared/helper';
+import { empty, scrollTop, clearValidatorsAndErrors, locateControl, validateBeforeSubmit } from 'app/shared/helper';
 import { Menu } from 'app/shared/menu';
 import { cloneDeep, isEqual } from 'lodash';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -177,11 +177,11 @@ export class PerformPaymentComponent extends BasePageComponent<DataForTransactio
       scheduling: [PaymentSchedulingEnum.DIRECT, Validators.required],
       installmentsCount: null,
       firstInstallmentIsNow: true,
-      firstInstallmentDate: null,
+      firstInstallmentDate: [null, FIRST_INSTALLMENT_DATE_VAL],
       repeatUntilCanceled: true,
-      occurrencesCount: null,
+      occurrencesCount: [null, OCCURRENCES_COUNT_VAL],
       firstOccurrenceIsNow: true,
-      firstOccurrenceDate: null
+      firstOccurrenceDate: [null, FIRST_OCCURRENCE_DATE_VAL]
     });
     // The confirmation password is hold in a separated control
     this.confirmationPassword = this.formBuilder.control(null);
@@ -289,7 +289,7 @@ export class PerformPaymentComponent extends BasePageComponent<DataForTransactio
   }
 
   toConfirm() {
-    if (!this.form.valid) {
+    if (!validateBeforeSubmit(this.form)) {
       return;
     }
     this.addSub(this.confirmDataRequest().subscribe(preview => {
@@ -302,6 +302,9 @@ export class PerformPaymentComponent extends BasePageComponent<DataForTransactio
   }
 
   perform() {
+    if (!validateBeforeSubmit(this.confirmationPassword)) {
+      return;
+    }
     this.addSub(this.performPaymentRequest().subscribe(performed => {
       this.performed = performed;
       this.step = 'done';

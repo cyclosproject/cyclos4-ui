@@ -9,6 +9,7 @@ import { FormBuilder, Validators, FormControl } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { BehaviorSubject } from 'rxjs';
 import { InputFieldComponent } from 'app/shared/input-field.component';
+import { validateBeforeSubmit } from 'app/shared/helper';
 
 /**
  * Form used to verify a phone
@@ -60,7 +61,7 @@ export class VerifyPhoneComponent extends BaseComponent implements OnInit {
    * Performs the phone verification
    */
   verify() {
-    if (!this.code.valid) {
+    if (!validateBeforeSubmit(this.code)) {
       return;
     }
     this.phonesService.verifyPhone({

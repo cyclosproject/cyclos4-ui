@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
-import { PasswordInput, AvailabilityEnum, CustomFieldDetailed } from 'app/api/models';
-import { BehaviorSubject, Observable, of, Subject, Subscription } from 'rxjs';
-import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { CustomFieldDetailed, PasswordInput } from 'app/api/models';
+import { SnackBarProvider } from 'app/core/snack-bar-provider';
+import { FieldLabelPosition } from 'app/shared/base-form-field.component';
+import { ConfirmationComponent } from 'app/shared/confirmation.component';
 import { NotificationType } from 'app/shared/notification-type';
 import { NotificationComponent } from 'app/shared/notification.component';
-import { map, filter, take } from 'rxjs/operators';
-import { SnackBarProvider } from 'app/core/snack-bar-provider';
-import { ConfirmationComponent } from 'app/shared/confirmation.component';
-import { FieldLabelPosition } from 'app/shared/base-form-field.component';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { Observable, Subject, Subscription } from 'rxjs';
 
 /**
  * Reference to a notification

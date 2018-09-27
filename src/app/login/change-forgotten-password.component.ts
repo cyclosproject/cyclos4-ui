@@ -6,6 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 import { AuthService } from 'app/api/services';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { LoginState } from 'app/core/login-state';
+import { validateBeforeSubmit } from 'app/shared/helper';
 
 /** Validator function that ensures password and confirmation match */
 const PASSWORDS_MATCH_VAL: ValidatorFn = control => {
@@ -71,6 +72,9 @@ export class ChangeForgottenPasswordComponent
   }
 
   submit() {
+    if (!validateBeforeSubmit(this.form)) {
+      return;
+    }
     this.authService.changeForgottenPassword(this.form.value)
       .subscribe(() => {
         const generated = this.data.generated;

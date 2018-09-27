@@ -1,4 +1,5 @@
-<page-layout [ready]="data$ | async" [ngSwitch]="step$ | async" size="medium" hideMenu>
+<page-layout [ready]="data$ | async" [ngSwitch]="step$ | async" size="medium"
+  hideMenu>
   <page-content *ngSwitchCase="'group'" i18n-heading heading="User registration"
     [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'">
     <div class="flex-grow-1">
@@ -13,15 +14,16 @@
     [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'">
     <div class="flex-grow-1">
       <registration-step-fields [data]="data" [form]="form" [mobileForm]="mobileForm"
-        [landLineForm]="landLineForm" [defineAddress]="defineAddress" [addressForm]="addressForm"
-        (imageUploaded)="this.image = $event" (imageRemoved)="this.image = null">
+        [landLineForm]="landLineForm" [defineAddress]="defineAddress"
+        [addressForm]="addressForm" (imageUploaded)="this.image = $event"
+        (imageRemoved)="this.image = null">
       </registration-step-fields>
     </div>
     <actions ngClass="mt-3" forceRow>
-      <button class="btn btn-primary" [disabled]="!(fieldsValid$ | async)" (click)="showConfirm()"
-        i18n>Next</button>
-      <button *ngIf="groups.length > 1" class="btn btn-outline-primary" (click)="backToGroup()"
-        i18n>Back</button>
+      <button class="btn btn-primary" [disabled]="requesting$ | async"
+        (click)="showConfirm()" i18n>Next</button>
+      <button *ngIf="groups.length > 1" class="btn btn-outline-primary"
+        (click)="backToGroup()" i18n>Back</button>
     </actions>
   </page-content>
 
@@ -33,7 +35,7 @@
       </registration-step-confirm>
     </div>
     <actions ngClass="mt-3" forceRow>
-      <button class="btn btn-primary" [disabled]="(confirmForm.statusChanges | async) !== 'VALID'"
+      <button class="btn btn-primary" [disabled]="requesting$ | async"
         (click)="register()" i18n>Submit</button>
       <button class="btn btn-outline-primary" (click)="backToFields()" i18n>Back</button>
     </actions>

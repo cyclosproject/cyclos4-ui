@@ -3,9 +3,12 @@
     <img #image alt="captcha" (load)="updateWidth()">
   </div>
   <div class="d-flex">
-    <input class="form-control" formControlName="response">
+    <input class="form-control" formControlName="response" [ngClass]="{
+      'is-invalid': (form.get('response').statusChanges | async) === 'INVALID' && form.get('response').touched
+    }">
     <button class="btn btn-light btn-icon" (click)="newCaptcha()">
       <icon icon="refresh"></icon>
     </button>
   </div>
+  <field-errors [control]="form.get('response')"></field-errors>
 </ng-container>

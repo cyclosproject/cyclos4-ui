@@ -6,7 +6,7 @@
       </payment-step-form>
     </div>
     <actions ngClass="mt-3" forceRow>
-      <button class="btn btn-primary" [disabled]="(form.statusChanges | async) !== 'VALID' || (paymentTypeData$ | async) == null"
+      <button class="btn btn-primary" [disabled]="requesting$ | async"
         (click)="toConfirm()" i18n>Next</button>
     </actions>
   </page-content>
@@ -18,7 +18,7 @@
         [showPaymentType]="(availablePaymentTypes || []).length > 1"></payment-step-confirm>
     </div>
     <actions ngClass="mt-3" forceRow>
-      <button class="btn btn-primary" [disabled]="!confirmationPassword.valid"
+      <button class="btn btn-primary" [disabled]="requesting$ | async"
         (click)="perform()" i18n>Confirm</button>
       <button class="btn btn-outline-primary" (click)="backToForm()" i18n>Previous</button>
     </actions>

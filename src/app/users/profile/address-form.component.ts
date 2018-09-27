@@ -15,7 +15,6 @@ import { CountriesResolve } from 'app/countries.resolve';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AddressFormComponent extends BaseComponent {
-
   constructor(
     injector: Injector,
     public countriesResolve: CountriesResolve

@@ -315,7 +315,7 @@
 <ng-template #mapTemplate>
   <agm-map *ngIf="maps.enabled" [ngClass]="{
     'd-block': true,
-    'mb-3': true,
+    'my-3': true,
     'd-none': mapBounds$ | async
   }"
     [fitBounds]="mapBounds$ | async" [fullscreenControl]="true" maxZoom="17"

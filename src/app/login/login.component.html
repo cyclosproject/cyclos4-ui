@@ -27,7 +27,8 @@
         (enter)="doLogin()" i18n-placeholder="Password on login form"
         placeholder="Password"></password-input>
 
-      <button type="button" class="btn btn-primary my-3 px-5" i18n (click)="doLogin();$event.preventDefault();">Submit</button>
+      <button type="button" class="btn btn-primary my-3 px-5" i18n [disabled]="requesting$ | async"
+        (click)="doLogin();$event.preventDefault();">Submit</button>
 
       <a class="d-block my-3" routerLink="/forgot-password" i18n>
         Forgot your password?

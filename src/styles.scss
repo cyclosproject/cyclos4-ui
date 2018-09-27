@@ -344,12 +344,21 @@ button.btn-transparent {
   vertical-align: 0.15em;
 }
 
-.any-label-value + .any-label-value {
-  margin-top: 0.6rem;
-}
-@include media-breakpoint-up(sm) {
-  .any-label-value + .any-label-value {
-    margin-top: 1rem;
+$spaced-label-values: (
+  '.any-label-value',
+  'h1',
+  'h2',
+  'h3',
+  'address-form'
+);
+@each $item in $spaced-label-values {
+  #{'.any-label-value'} + #{$item} {
+    margin-top: 0.6rem;
+  }
+  @include media-breakpoint-up(sm) {
+    #{'.any-label-value'} + #{$item} {
+      margin-top: 1rem;
+    }
   }
 }
 .any-label-value .any-label-value {
@@ -482,6 +491,9 @@ h3 {
   color: $button-icon-color;
 }
 
+agm-map {
+  display: block;
+}
 agm-map, .map-container, .agm-map-container-inner {
   height: 100%;
   min-height: 16rem;

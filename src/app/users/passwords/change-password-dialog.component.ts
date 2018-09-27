@@ -7,6 +7,7 @@ import { FormBuilder, FormGroup, Validators, ValidatorFn } from '@angular/forms'
 import { ApiHelper } from 'app/shared/api-helper';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { cloneDeep } from 'lodash';
+import { validateBeforeSubmit } from 'app/shared/helper';
 
 /** Validator function that ensures password and confirmation match */
 const PASSWORDS_MATCH_VAL: ValidatorFn = control => {
@@ -53,7 +54,7 @@ export class ChangePasswordDialogComponent extends BaseComponent {
   }
 
   submit() {
-    if (!this.form.valid) {
+    if (!validateBeforeSubmit(this.form)) {
       return;
     }
     const params: ChangePassword = cloneDeep(this.form.value);

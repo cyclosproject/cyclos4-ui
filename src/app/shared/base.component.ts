@@ -1,19 +1,20 @@
-import { OnInit, OnDestroy, Injector } from '@angular/core';
-import { FormatService } from 'app/core/format.service';
-import { ErrorHandlerService } from 'app/core/error-handler.service';
-import { LoginService } from 'app/core/login.service';
-import { NotificationService } from 'app/core/notification.service';
-import { Subscription } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
-import { StateManager } from '../core/state-manager';
-import { BreadcrumbService } from '../core/breadcrumb.service';
-import { DataForUiHolder } from 'app/core/data-for-ui-holder';
-import { I18n } from '@ngx-translate/i18n-polyfill';
-import { LayoutService } from 'app/shared/layout.service';
-import { MenuService } from 'app/core/menu.service';
-import { MapsService } from 'app/core/maps.service';
+import { Injector, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { I18n } from '@ngx-translate/i18n-polyfill';
+import { DataForUiHolder } from 'app/core/data-for-ui-holder';
+import { ErrorHandlerService } from 'app/core/error-handler.service';
+import { FormatService } from 'app/core/format.service';
+import { LoginService } from 'app/core/login.service';
+import { MapsService } from 'app/core/maps.service';
+import { MenuService } from 'app/core/menu.service';
+import { NextRequestState } from 'app/core/next-request-state';
+import { NotificationService } from 'app/core/notification.service';
 import { ApiHelper } from 'app/shared/api-helper';
+import { LayoutService } from 'app/shared/layout.service';
+import { Observable, Subscription } from 'rxjs';
+import { BreadcrumbService } from '../core/breadcrumb.service';
+import { StateManager } from '../core/state-manager';
 
 /**
  * Base class to meant to be inherited by other components.
@@ -39,6 +40,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
   router: Router;
   route: ActivatedRoute;
   formBuilder: FormBuilder;
+  requesting$: Observable<boolean>;
 
   private operationalSubs: Subscription[] = [];
   private lifecycleSubs: Subscription[] = [];
@@ -58,6 +60,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
     this.router = injector.get(Router);
     this.route = injector.get(ActivatedRoute);
     this.formBuilder = new FormBuilder();
+    this.requesting$ = injector.get(NextRequestState).requesting$;
   }
 
   protected addSub(sub: Subscription, lifeCycle = false) {

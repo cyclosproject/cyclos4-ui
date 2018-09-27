@@ -1,23 +1,18 @@
 <form [formGroup]="form">
-  <div class="tight-labels">
-    <label-value i18n-label label="Group" *ngIf="group" [value]="group.name"></label-value>
-    <label-value i18n-label label="Full name" *ngIf="!empty(name)" [value]="name"></label-value>
-    <label-value i18n-label label="Login name" *ngIf="!empty(username)"
-      [value]="username"></label-value>
-    <label-value i18n-label label="E-mail" *ngIf="!empty(email)" [value]="email"></label-value>
-    <label-value *ngFor="let cf of customFields" [label]="cf.name"
-      valueFormat="component">
-      <format-field-value [fields]="customFields" [fieldName]="cf.internalName"
-        [object]="user"></format-field-value>
-    </label-value>
-    <label-value i18n-label label="Mobile phone" *ngIf="!empty(mobile)"
-      [value]="mobile"></label-value>
-    <label-value i18n-label label="Land-line phone" *ngIf="!empty(landLine)"
-      [value]="landLine"></label-value>
-    <label-value i18n-label label="Address" *ngIf="address" valueFormat="component">
-      <address-details [address]="address"></address-details>
-    </label-value>
-  </div>
+  <label-value i18n-label label="Group" *ngIf="group" [value]="group.name"></label-value>
+  <label-value i18n-label label="Full name" *ngIf="!empty(name)" [value]="name"></label-value>
+  <label-value i18n-label label="Login name" *ngIf="!empty(username)" [value]="username"></label-value>
+  <label-value i18n-label label="E-mail" *ngIf="!empty(email)" [value]="email"></label-value>
+  <label-value *ngFor="let cf of customFields" [label]="cf.name" valueFormat="component">
+    <format-field-value [fields]="customFields" [fieldName]="cf.internalName"
+      [object]="user"></format-field-value>
+  </label-value>
+  <label-value i18n-label label="Mobile phone" *ngIf="!empty(mobile)" [value]="mobile"></label-value>
+  <label-value i18n-label label="Land-line phone" *ngIf="!empty(landLine)"
+    [value]="landLine"></label-value>
+  <label-value i18n-label label="Address" *ngIf="address" valueFormat="component">
+    <address-details [address]="address"></address-details>
+  </label-value>
 
   <ng-container *ngFor="let pt of data.passwordTypes; let i = index">
     <h2>{{ pt.name }}</h2>
@@ -31,23 +26,21 @@
 
   <ng-container *ngIf="data.securityQuestions?.length > 0">
     <h2 i18n>Security question</h2>
-    <div class="d-flex flex-column">
-      <div class="mb-2" i18n>
-        If you happen to forget your password, you will need to correctly
-        answer the security question in order to reset the password.
-        <br> This can be set later, but keep in mind that the password
-        recovery won't work without it.
-      </div>
-      <single-selection-field formControlName="securityQuestion" i18n-label
-        label="Security question" i18n-emptyOption emptyOption="Leave blank">
-        <field-option *ngFor="let q of data.securityQuestions" [value]="q.internalName"
-          [text]="q.name">
-        </field-option>
-      </single-selection-field>
-      <input-field #securityAnswer *ngIf="!empty(form.get('securityQuestion').valueChanges | async)"
-        formControlName="securityAnswer" required i18n-label label="Your answer">
-      </input-field>
+    <div class="mb-2" i18n>
+      If you happen to forget your password, you will need to correctly
+      answer the security question in order to reset the password.
+      <br> This can be set later, but keep in mind that the password
+      recovery won't work without it.
     </div>
+    <single-selection-field formControlName="securityQuestion" i18n-label
+      label="Security question" i18n-emptyOption emptyOption="Leave blank">
+      <field-option *ngFor="let q of data.securityQuestions" [value]="q.internalName"
+        [text]="q.name">
+      </field-option>
+    </single-selection-field>
+    <input-field #securityAnswer *ngIf="!empty(form.get('securityQuestion').valueChanges | async)"
+      formControlName="securityAnswer" required i18n-label label="Your answer">
+    </input-field>
   </ng-container>
 
   <h2 *ngIf="data.agreements?.length > 0 || data.captchaType != null" i18n>Registration

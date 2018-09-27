@@ -126,6 +126,18 @@ export function locateControl(container, locator: FormControlLocator, customValu
 }
 
 /**
+ * Sets the focus to the first field
+ */
+export function focusFirstField() {
+  setTimeout(() => {
+    const elements = document.getElementsByClassName('form-control');
+    if (elements.length > 0) {
+      (elements.item(0) as HTMLInputElement).focus();
+    }
+  }, 10);
+}
+
+/**
  * Sets the focus to the first invalid field
  */
 export function focusFirstInvalid() {
@@ -189,6 +201,37 @@ export function getAllErrors(control: AbstractControl): { [key: string]: any; } 
   } else {
     return null;
   }
+}
+
+/**
+ * Validates the given form control. Should be called before submitting forms.
+ * Returns whether the form is valid
+ */
+export function validateBeforeSubmit(control: AbstractControl): boolean {
+  let result = true;
+  if (control instanceof FormControl) {
+    control.markAsTouched({ onlySelf: true });
+    control.markAsPending({ onlySelf: true, emitEvent: false });
+    control.updateValueAndValidity({ onlySelf: true });
+    result = control.valid;
+  } else if (control instanceof FormArray) {
+    control.controls.forEach(current => {
+      if (!validateBeforeSubmit(current)) {
+        result = false;
+      }
+    });
+  } else if (control instanceof FormGroup) {
+    Object.keys(control.controls).forEach(current => {
+      if (!validateBeforeSubmit(control.controls[current])) {
+        result = false;
+      }
+    });
+  }
+  if (!result) {
+    // Focus the first invalid field
+    focusFirstInvalid();
+  }
+  return result;
 }
 
 /**

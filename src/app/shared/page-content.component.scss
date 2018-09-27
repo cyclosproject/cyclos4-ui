@@ -33,10 +33,6 @@
       margin-left: $layout-spacer;
     }
   }
-
-  :host ::ng-deep .mode-normal.tight-labels .page-content-body {
-    padding-top: $layout-spacer;
-  }
 }
 .layout-centered {
   text-align: center;

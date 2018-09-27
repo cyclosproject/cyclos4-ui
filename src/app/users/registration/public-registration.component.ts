@@ -7,8 +7,8 @@ import {
 import { ImagesService, UsersService } from 'app/api/services';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BasePageComponent } from 'app/shared/base-page.component';
-import { blank, copyProperties, empty, scrollTop } from 'app/shared/helper';
-import { BehaviorSubject, Observable, of, timer } from 'rxjs';
+import { blank, copyProperties, empty, scrollTop, validateBeforeSubmit, getAllErrors, focusFirstField } from 'app/shared/helper';
+import { BehaviorSubject, Observable, of, timer, Subscription } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
 export type RegistrationStep = 'group' | 'fields' | 'confirm' | 'done';
@@ -65,6 +65,7 @@ export class PublicRegistrationComponent
   addressForm: FormGroup;
   confirmForm: FormGroup;
   image: Image;
+  validationSub: Subscription;
 
   step$ = new BehaviorSubject<RegistrationStep>(null);
   get step(): RegistrationStep {
@@ -72,14 +73,6 @@ export class PublicRegistrationComponent
   }
   set step(step: RegistrationStep) {
     this.step$.next(step);
-  }
-
-  fieldsValid$ = new BehaviorSubject(false);
-  get fieldsValid(): boolean {
-    return this.fieldsValid$.value;
-  }
-  set fieldsValid(valid: boolean) {
-    this.fieldsValid$.next(valid);
   }
 
   result$ = new BehaviorSubject<UserRegistrationResult>(null);
@@ -139,6 +132,7 @@ export class PublicRegistrationComponent
       .subscribe(data => {
         this.data = data;
         this.prepareForms(data);
+        focusFirstField();
       });
   }
 
@@ -153,13 +147,6 @@ export class PublicRegistrationComponent
     this.step = 'fields';
   }
 
-  private updateFieldsValid() {
-    this.fieldsValid = this.form.valid
-      && (!this.mobileForm || this.mobileForm.valid)
-      && (!this.landLineForm || this.landLineForm.valid)
-      && (!this.addressForm || !this.defineAddress.value || this.addressForm.valid);
-  }
-
   private prepareForms(data: UserDataForNew) {
     const user = data.user;
 
@@ -167,7 +154,6 @@ export class PublicRegistrationComponent
       group: this.group.value,
       hiddenFields: [user.hiddenFields || []]
     });
-    this.addSub(this.form.statusChanges.subscribe(() => this.updateFieldsValid()));
 
     // Full name
     const nameActions = data.profileFieldActions.name;
@@ -215,7 +201,6 @@ export class PublicRegistrationComponent
         number: [phone.number, val, this.serverSideValidator('mobilePhone')],
         hidden: phone.hidden
       });
-      this.addSub(this.mobileForm.statusChanges.subscribe(() => this.updateFieldsValid()));
     } else {
       this.mobileForm = null;
     }
@@ -233,7 +218,6 @@ export class PublicRegistrationComponent
       if (phoneConfiguration.extensionEnabled) {
         this.landLineForm.setControl('extension', this.formBuilder.control(phone.extension));
       }
-      this.addSub(this.landLineForm.statusChanges.subscribe(() => this.updateFieldsValid()));
     } else {
       this.landLineForm = null;
     }
@@ -252,8 +236,6 @@ export class PublicRegistrationComponent
         const val = addressConfiguration.requiredFields.includes(field) ? Validators.required : null;
         this.addressForm.setControl(field, this.formBuilder.control(address[field], val));
       }
-      this.addSub(this.addressForm.statusChanges.subscribe(() => this.updateFieldsValid()));
-      this.addSub(this.defineAddress.valueChanges.subscribe(() => this.updateFieldsValid()));
     } else {
       this.addressForm = null;
       this.defineAddress = null;
@@ -292,10 +274,40 @@ export class PublicRegistrationComponent
   }
 
   showConfirm() {
-    if (!this.fieldsValid) {
-      return;
+    // Build a full form, so it can all be validated once
+    const fullForm = new FormGroup({
+      user: this.form
+    });
+    if (this.mobileForm) {
+      fullForm.setControl('mobile', this.mobileForm);
     }
+    if (this.landLineForm && !validateBeforeSubmit(this.landLineForm)) {
+      fullForm.setControl('landLine', this.landLineForm);
+    }
+    if (this.addressForm && this.defineAddress.value) {
+      fullForm.setControl('address', this.addressForm);
+    }
+    if (validateBeforeSubmit(fullForm)) {
+      // The form is already valid
+      this.doShowConfirm();
+    } else {
+      // It might be either invalid or pending (this form has server-side validations)
+      if (fullForm.status === 'PENDING') {
+        this.validationSub = fullForm.statusChanges.subscribe(status => {
+          if (status === 'PENDING') {
+            // Still pending...
+            return;
+          }
+          this.validationSub.unsubscribe();
+          if (status === 'VALID') {
+            this.doShowConfirm();
+          }
+        });
+      }
+    }
+  }
 
+  private doShowConfirm() {
     const data = this.data;
 
     // Setup the confirmation form
@@ -336,6 +348,9 @@ export class PublicRegistrationComponent
   }
 
   register() {
+    if (!validateBeforeSubmit(this.confirmForm)) {
+      return;
+    }
     this.usersService.createUser(this.userNew)
       .subscribe(result => {
         this.result = result;

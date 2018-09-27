@@ -77,7 +77,7 @@
   <address-form *ngIf="defineAddress.value" [addressForm]="addressForm"
     [configuration]="data.addressConfiguration" [managePrivacy]="data.addressConfiguration.managePrivacy">
   </address-form>
-  <agm-map *ngIf="(location$ | async) as loc" [latitude]="loc.latitude"
+  <agm-map *ngIf="(location$ | async) as loc" class="my-3" [latitude]="loc.latitude"
     [longitude]="loc.longitude" [zoom]="16" [maxZoom]="18">
     <agm-marker [latitude]="loc.latitude" [longitude]="loc.longitude">
     </agm-marker>

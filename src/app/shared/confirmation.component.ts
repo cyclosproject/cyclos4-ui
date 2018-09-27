@@ -1,12 +1,14 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { I18n } from '@ngx-translate/i18n-polyfill';
-import { PasswordInput, AvailabilityEnum, CustomFieldDetailed } from 'app/api/models';
-import { blank, empty } from 'app/shared/helper';
-import { BsModalRef } from 'ngx-bootstrap/modal';
-import { FormControl, Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { CustomFieldDetailed, PasswordInput } from 'app/api/models';
+import { NextRequestState } from 'app/core/next-request-state';
 import { ConfirmCallbackParams } from 'app/core/notification.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { FieldLabelPosition } from 'app/shared/base-form-field.component';
+import { blank, empty, validateBeforeSubmit } from 'app/shared/helper';
+import { BsModalRef } from 'ngx-bootstrap/modal';
+import { Observable } from 'rxjs';
 
 /**
  * Component shown in a dialog, to present a confirmation message, optionally with a confirmation password
@@ -30,12 +32,16 @@ export class ConfirmationComponent implements OnInit {
   form: FormGroup;
   hasFields = false;
   hasForm = false;
+  requesting$: Observable<boolean>;
 
   constructor(
     private i18n: I18n,
     public modalRef: BsModalRef,
-    private formBuilder: FormBuilder
-  ) { }
+    private formBuilder: FormBuilder,
+    nextRequestState: NextRequestState
+  ) {
+    this.requesting$ = nextRequestState.requesting$;
+  }
 
   ngOnInit() {
     this.form = this.formBuilder.group({});
@@ -59,7 +65,7 @@ export class ConfirmationComponent implements OnInit {
   confirm() {
     let value: ConfirmCallbackParams;
     if (this.hasForm) {
-      if (!this.form.valid) {
+      if (!validateBeforeSubmit(this.form)) {
         return;
       }
       value = this.form.value;
