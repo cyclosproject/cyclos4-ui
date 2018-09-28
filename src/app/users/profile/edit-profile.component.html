@@ -1,4 +1,4 @@
-<page-layout [ready]="ready$ | async">
+<page-layout [ready]="data$ | async">
   <page-content *ngIf="data != null" i18n-heading heading="Edit profile">
 
     <!-- Image -->
@@ -62,7 +62,7 @@
     </ng-container>
 
     <!-- Basic profile fields-->
-    <h2 class="mt-4" i18n>Profile fields</h2>
+    <h2 class="mt-4 mb-3" i18n>Profile fields</h2>
     <ng-container [formGroup]="user">
       <input-field *ngIf="hasField('name')" formControlName="name" i18n-label
         label="Full name" [required]="canEdit('name')"></input-field>
@@ -171,17 +171,17 @@
           formControlName="enabledForSms" (click)="maybeVerify(phone['id'], $event)">
         </boolean-field>
         <label-value *ngIf="data.phoneConfiguration.managePrivacy" i18n-label
-          label="Phone privacy" kind="field">
+          label="Privacy" kind="field">
           <div class="d-flex justify-content-between">
             <field-privacy [control]="phone['form'].get('hidden')"
               justifyStart></field-privacy>
-            <button *ngIf="(layout.gtxs$ | async)" class="btn btn-outline-primary"
+            <button *ngIf="(layout.gtxxs$ | async)" class="btn btn-outline-primary"
               type="button" (click)="removePhone(phone)" i18n>
               Remove this phone
             </button>
           </div>
         </label-value>
-        <div *ngIf="(layout.ltsm$ | async) || !data.phoneConfiguration.managePrivacy"
+        <div *ngIf="(layout.xxs$ | async) || !data.phoneConfiguration.managePrivacy"
           class="d-flex justify-content-end">
           <button class="btn btn-outline-primary" type="button" (click)="removePhone(phone)"
             i18n>
@@ -213,17 +213,17 @@
           [managePrivacy]="false">
         </address-form>
         <label-value *ngIf="data.addressConfiguration.managePrivacy"
-          i18n-label label="Phone privacy" kind="field">
+          i18n-label label="Privacy" kind="field">
           <div class="d-flex justify-content-between">
             <field-privacy [control]="address['form'].get('hidden')"
               justifyStart></field-privacy>
-            <button *ngIf="(layout.gtxs$ | async)" class="btn btn-outline-primary"
+            <button *ngIf="(layout.gtxxs$ | async)" class="btn btn-outline-primary"
               type="button" (click)="removeAddress(address)">
               Remove this address
             </button>
           </div>
         </label-value>
-        <div *ngIf="(layout.ltsm$ | async) || !data.addressConfiguration.managePrivacy"
+        <div *ngIf="(layout.xxs$ | async) || !data.addressConfiguration.managePrivacy"
           class="d-flex justify-content-end">
           <button class="btn btn-outline-primary" type="button" (click)="removeAddress(address)">
             Remove this address
@@ -278,13 +278,13 @@
           <div class="d-flex justify-content-between">
             <field-privacy [control]="contactInfo['form'].get('hidden')"
               justifyStart></field-privacy>
-            <button *ngIf="(layout.gtxs$ | async)" class="btn btn-outline-primary"
+            <button *ngIf="(layout.gtxxs$ | async)" class="btn btn-outline-primary"
               type="button" (click)="removeContactInfo(contactInfo)" i18n>
               Remove this additional contact
             </button>
           </div>
         </label-value>
-        <div *ngIf="(layout.ltsm$ | async) || !data.contactInfoConfiguration.managePrivacy"
+        <div *ngIf="(layout.xxs$ | async) || !data.contactInfoConfiguration.managePrivacy"
           class="d-flex justify-content-end">
           <button class="btn btn-outline-primary" type="button" (click)="removeContactInfo(contactInfo)">
             Remove this additional contact

@@ -3,7 +3,8 @@
 </label-value>
 
 <ng-template #widget>
-  <div class="custom-control custom-checkbox d-flex align-content-center mt-1">
+  <div class="custom-control custom-checkbox d-flex align-content-center"
+    [ngClass]="{'mt-1': layout.gtxs$ | async}">
     <input #checkbox type="checkbox" [name]="name" class="custom-control-input"
       [id]="id" (click)="click.emit($event)" [formControl]="formControl"
       [checked]="formControl.value || (formControl.valueChanges | async)">

@@ -21,7 +21,7 @@
       'content-area-small': size === 'small',
       'content-area-medium': size === 'medium'
     }">
-      <page-content>
+      <page-content [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'">
         <spinner></spinner>
       </page-content>
     </div>

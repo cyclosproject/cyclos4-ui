@@ -19,6 +19,7 @@ const MAX_CHILDREN = 5;
 @Component({
   selector: 'search-ads',
   templateUrl: 'search-ads.component.html',
+  styleUrls: ['search-ads.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchAdsComponent
@@ -144,7 +145,7 @@ export class SearchAdsComponent
       trail.unshift(parent);
     }
     const root: AdCategoryWithChildren = {
-      name: this.i18n('Root')
+      name: this.i18n('Main')
     };
     trail.unshift(root);
     this.categoryTrail$.next(trail);

@@ -6,6 +6,7 @@ import { BaseControlComponent } from 'app/shared/base-control.component';
 import { nextId } from 'app/shared/helper';
 import { BaseFormFieldComponent, FORM_FIELD } from 'app/shared/base-form-field.component';
 import { I18n } from '@ngx-translate/i18n-polyfill';
+import { LayoutService } from 'app/shared/layout.service';
 
 /**
  * Field used to edit a boolean
@@ -28,7 +29,8 @@ export class BooleanFieldComponent
 
   constructor(
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
-    private i18n: I18n) {
+    private i18n: I18n,
+    public layout: LayoutService) {
     super(controlContainer);
   }
 

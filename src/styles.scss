@@ -352,13 +352,19 @@ $spaced-label-values: (
   'h3',
   'address-form'
 );
-@each $item in $spaced-label-values {
-  #{'.any-label-value'} + #{$item} {
-    margin-top: 0.6rem;
+@each $lv1 in $spaced-label-values {
+  @each $lv2 in $spaced-label-values {
+    #{$lv1} + #{$lv2} {
+      margin-top: 0.6rem;
+    }
   }
-  @include media-breakpoint-up(sm) {
-    #{'.any-label-value'} + #{$item} {
-      margin-top: 1rem;
+}
+@include media-breakpoint-up(sm) {
+  @each $lv1 in $spaced-label-values {
+    @each $lv2 in $spaced-label-values {
+      #{$lv1} + #{$lv2} {
+        margin-top: 1rem;
+      }
     }
   }
 }
@@ -397,13 +403,15 @@ $spaced-label-values: (
 h1, h2, h3 {
   font-weight: $font-weight-normal;
   border-color: $section-border-color;
+}
+h1, h2, h3, hr {
   margin-left: -$layout-spacer-xxs;
   margin-right: -$layout-spacer-xxs;
   padding-left: $layout-spacer-xxs;
   padding-right: $layout-spacer-xxs;
 }
 @include media-breakpoint-up(xs) {
-  h1, h2, h3 {
+  h1, h2, h3, hr {
     margin-left: -$layout-spacer-xs;
     margin-right: -$layout-spacer-xs;
     padding-left: $layout-spacer-xs;
@@ -411,7 +419,7 @@ h1, h2, h3 {
   }
 }
 @include media-breakpoint-up(sm) {
-  h1, h2, h3 {
+  h1, h2, h3, hr {
     margin-left: -$layout-spacer;
     margin-right: -$layout-spacer;
     padding-left: $layout-spacer;
@@ -476,10 +484,6 @@ h3 {
   .modal-content {
     padding: 1rem;
   }
-}
-
-.modal-dialog.modal-small {
-  width: 24rem;
 }
 
 .btn-icon {
