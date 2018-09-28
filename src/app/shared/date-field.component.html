@@ -1,2 +1,18 @@
-<input-field #inputField [copyFrom]="self" [formControl]="internalControl"
-  [placeholder]="pattern" (onblur)="formControl.markAsTouched()"></input-field>
+<label-value *ngIf="label; else widget" [formField]="self">
+  <ng-container *ngTemplateOutlet="widget"></ng-container>
+</label-value>
+
+<ng-template #widget>
+  <input #inputField [id]="id" class="form-control" [placeholder]="pattern"
+    (onblur)="formControl.markAsTouched()" [formControl]="internalControl"
+    bsDatepicker [bsConfig]="{
+      dateInputFormat: pattern,
+      containerClass: 'theme-default',
+      showWeekNumbers: false,
+      locale: 'cyclos'
+    }"
+    [ngClass]="{
+      'is-invalid': (formControl.statusChanges | async) === 'INVALID' && formControl.touched
+    }">
+  <field-errors [control]="formControl"></field-errors>
+</ng-template>

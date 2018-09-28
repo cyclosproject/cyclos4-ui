@@ -84,17 +84,27 @@ export class FormatService {
    * @returns An ISO-8601 date, or `undefined` if the input is invalid
    */
   parseAsDate(value: Date | string): string {
+    const mm = this.parseAsMoment(value);
+    if (mm === null) {
+      // Empty input
+      return null;
+    }
+    // Returns either the ISO-formatted date or undefined (if invalid)
+    return mm.isValid() ? mm.format('YYYY-MM-DD') : undefined;
+  }
+
+  /**
+   * Parses the given date / string in the user locale as a Moment
+   * @param value The moment, or undefined if null
+   */
+  parseAsMoment(value: Date | string): moment.Moment {
     if (value == null || value === '') {
       return null;
     }
     if (typeof value === 'string' && value.length !== this.dateFormat.length) {
-      return undefined;
+      return moment(undefined);
     }
-    const mm = moment(value, this.dateFormat);
-    if (!mm.isValid()) {
-      return undefined;
-    }
-    return mm.format('YYYY-MM-DD');
+    return moment(value, this.dateFormat);
   }
 
   /**

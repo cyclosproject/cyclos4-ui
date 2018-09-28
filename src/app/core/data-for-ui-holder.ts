@@ -8,6 +8,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ErrorStatus } from 'app/core/error-status';
 import { tap, catchError } from 'rxjs/operators';
 import { I18n } from '@ngx-translate/i18n-polyfill';
+import { defineLocale } from 'ngx-bootstrap/chronos';
 
 declare const setRootAlert: (boolean) => void;
 declare const setReloadButton: (boolean) => void;
@@ -75,6 +76,7 @@ export class DataForUiHolder {
 
   set dataForUi(dataForUi: DataForUi) {
     if (dataForUi != null) {
+      this.defineDatePickerLocale(dataForUi);
       this._dataForUi.next(dataForUi);
     }
   }
@@ -86,4 +88,110 @@ export class DataForUiHolder {
     return this._dataForUi.subscribe(next, error, complete);
   }
 
+  private defineDatePickerLocale(dataForUi: DataForUi) {
+    const dateFormat = dataForUi.dateFormat.toUpperCase();
+    let timeFormat = dataForUi.timeFormat;
+    if (timeFormat.includes('a')) {
+      // ngx-bootstrap datepicker expects hh as 12 hour, and the medidian must be uppercase
+      timeFormat = timeFormat.replace(/H/g, 'h').replace('a', 'A');
+    }
+    defineLocale('cyclos', {
+      abbr: 'cyclos',
+      months: [
+        this.i18n({ meaning: 'Long month', value: 'January' }),
+        this.i18n({ meaning: 'Long month', value: 'February' }),
+        this.i18n({ meaning: 'Long month', value: 'March' }),
+        this.i18n({ meaning: 'Long month', value: 'April' }),
+        this.i18n({ meaning: 'Long month', value: 'May' }),
+        this.i18n({ meaning: 'Long month', value: 'June' }),
+        this.i18n({ meaning: 'Long month', value: 'July' }),
+        this.i18n({ meaning: 'Long month', value: 'August' }),
+        this.i18n({ meaning: 'Long month', value: 'September' }),
+        this.i18n({ meaning: 'Long month', value: 'October' }),
+        this.i18n({ meaning: 'Long month', value: 'November' }),
+        this.i18n({ meaning: 'Long month', value: 'December' })
+      ],
+      monthsShort: [
+        'Jan',
+        'Feb',
+        'Mar',
+        'Apr',
+        'May',
+        'Jun',
+        'Jul',
+        'Aug',
+        'Sep',
+        'Ouc',
+        'Nov',
+        'Dec'
+      ],
+      monthsParseExact: true,
+      weekdays: [
+        'Sunday',
+        'Monday',
+        'Tuesday',
+        'Wednesday',
+        'Thursday',
+        'Friday',
+        'Saturday'
+      ],
+      weekdaysShort: [
+        this.i18n({ meaning: 'Short day of week', value: 'Sun' }),
+        this.i18n({ meaning: 'Short day of week', value: 'Mon' }),
+        this.i18n({ meaning: 'Short day of week', value: 'Tue' }),
+        this.i18n({ meaning: 'Short day of week', value: 'Wed' }),
+        this.i18n({ meaning: 'Short day of week', value: 'Thu' }),
+        this.i18n({ meaning: 'Short day of week', value: 'Fri' }),
+        this.i18n({ meaning: 'Short day of week', value: 'Sat' })
+      ],
+      weekdaysMin: [
+        'Su',
+        'Mo',
+        'Tu',
+        'We',
+        'Th',
+        'Fr',
+        'Sa'
+      ],
+      weekdaysParseExact: true,
+      longDateFormat: {
+        LT: timeFormat,
+        LTS: timeFormat,
+        L: dateFormat,
+        LL: dateFormat,
+        LLL: dateFormat,
+        LLLL: dateFormat
+      },
+      calendar: {
+        sameDay: '[Today at] LT',
+        nextDay: '[Tomorrow at] LT',
+        nextWeek: 'dddd [at] LT',
+        lastDay: '[Yesterday at] LT',
+        lastWeek: '[Last] dddd [at] LT',
+        sameElse: 'L'
+      },
+      relativeTime: {
+        future: 'in %s',
+        past: '%s ago',
+        s: 'a few seconds',
+        ss: '%d seconds',
+        m: 'a minute',
+        mm: '%d minutes',
+        h: 'an hour',
+        hh: '%d hours',
+        d: 'a day',
+        dd: '%d days',
+        M: 'a month',
+        MM: '%d months',
+        y: 'a year',
+        yy: '%d years'
+      },
+      dayOfMonthOrdinalParse: /\d{1,2}/,
+      ordinal: '%d',
+      week: {
+        dow: 1,
+        doy: 4
+      }
+    });
+  }
 }

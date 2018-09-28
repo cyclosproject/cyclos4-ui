@@ -22,6 +22,7 @@ import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { SortableModule } from 'ngx-bootstrap/sortable';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 import { LayoutModule } from '@angular/cdk/layout';
 import { SpinnerComponent } from 'app/shared/spinner.component';
@@ -165,6 +166,7 @@ export function initTooltipConfig(): TooltipConfig {
     ProgressbarModule.forRoot(),
     SortableModule.forRoot(),
     TooltipModule.forRoot(),
+    BsDatepickerModule.forRoot(),
 
     LayoutModule,
 
@@ -183,6 +185,7 @@ export function initTooltipConfig(): TooltipConfig {
     ProgressbarModule,
     SortableModule,
     TooltipModule,
+    BsDatepickerModule,
 
     LayoutModule,
 

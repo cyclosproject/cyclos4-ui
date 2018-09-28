@@ -5,10 +5,11 @@ import {
   NG_VALUE_ACCESSOR, AbstractControl, ControlContainer, NG_VALIDATORS, Validator, ValidationErrors, FormControl, FormBuilder, ValidatorFn
 } from '@angular/forms';
 import { FormatService } from 'app/core/format.service';
-import { empty } from 'app/shared/helper';
+import { empty, blank } from 'app/shared/helper';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { InputFieldComponent } from 'app/shared/input-field.component';
 import { CustomFieldSizeEnum } from 'app/api/models';
+import * as moment from 'moment-mini-ts';
 
 /**
  * Input used to edit a single date
@@ -26,6 +27,7 @@ export class DateFieldComponent
   extends BaseFormFieldComponent<string> implements Validator, OnInit {
 
   internalControl: FormControl;
+  pickerControl: FormControl;
 
   @ViewChild('inputField') inputField: InputFieldComponent;
 
@@ -33,14 +35,14 @@ export class DateFieldComponent
 
   constructor(
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
-    private format: FormatService) {
+    public format: FormatService) {
     super(controlContainer);
   }
 
   ngOnInit() {
     super.ngOnInit();
     this.fieldSize = CustomFieldSizeEnum.SMALL;
-    this.pattern = this.format.dateFormat;
+    this.pattern = this.format.dateFormat.toUpperCase();
 
     const validator: ValidatorFn = control => {
       const value = control.value;
@@ -55,6 +57,7 @@ export class DateFieldComponent
       return null;
     };
     this.internalControl = new FormControl(null, validator);
+    this.pickerControl = new FormControl(null);
 
     this.addSub(this.internalControl.valueChanges.subscribe((input: string) => {
       if (empty(input)) {
@@ -72,6 +75,9 @@ export class DateFieldComponent
 
   onValueInitialized(raw: string): void {
     this.internalControl.setValue(this.format.formatAsDate(raw), { emitEvent: false });
+    if (!blank(raw)) {
+      this.pickerControl.setValue(moment(raw).toDate());
+    }
   }
 
   protected getFocusableControl() {

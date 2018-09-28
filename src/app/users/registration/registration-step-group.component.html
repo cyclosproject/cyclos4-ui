@@ -1,9 +1,9 @@
 <div class="mb-3" i18n>Choose the group you want to participate</div>
 <div class="row" *ngFor="let group of groups">
-  <div class="col col-6 col-sm-8">
+  <div class="col-12 col-6 col-sm-8">
     <div class="custom-control custom-radio">
-      <input type="radio" [formControl]="control" class="custom-control-input" [id]="'group_' + group.id"
-        [value]="group.id">
+      <input type="radio" [formControl]="control" class="custom-control-input"
+        [id]="'group_' + group.id" [value]="group.id">
       <label class="custom-control-label" [for]="'group_' + group.id">
         <div class="ml-1">
           {{ group.name }}
