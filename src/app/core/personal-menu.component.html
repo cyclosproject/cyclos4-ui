@@ -1,17 +1,18 @@
 <div #container style="display:none" class="personal-menu-container">
-  <div *ngIf="user" class="personal-menu-popup shadow p-4 pr-5 d-flex justify-content-center align-items-center">
+  <div *ngIf="user" class="personal-menu-popup shadow p-4 d-flex justify-content-center align-items-center">
     <a routerLink="/users/my-profile" class="d-flex mr-4 flex-column justify-content-center"
       (click)="clearState()" [ngClass]="{'no-image': user?.image == null}">
       <avatar [image]="user.image" icon="account_circle" size="huge"></avatar>
     </a>
     <div class="d-flex flex-column">
-      <a class="personal-menu-user d-block px-3 py-1" (click)="clearState()" routerLink="/users/my-profile">
+      <a class="personal-menu-user d-block px-3 py-1" (click)="clearState()"
+        routerLink="/users/my-profile">
         <div class="font-weight-bold">{{ user.display }}</div>
         <div>{{ principal }}</div>
       </a>
       <div class="personal-menu-actions mt-2 pr-4 d-flex flex-column">
-        <a *ngFor="let entry of menuEntries | async" [routerLink]="entry.url" class="d-flex align-items-center px-3 py-2"
-          (click)="menuClicked(entry); $event.preventDefault();">
+        <a *ngFor="let entry of menuEntries | async" [routerLink]="entry.url"
+          class="d-flex align-items-center px-3 py-2" (click)="menuClicked(entry); $event.preventDefault();">
           <icon size="1.1rem" [icon]="entry.icon"></icon>
           <div class="ml-2 font-weight-bold">{{ entry.label }}</div>
         </a>

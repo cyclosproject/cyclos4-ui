@@ -5,15 +5,15 @@
     <ng-container *ngIf="imagesAvailability !== 'disabled'">
       <ng-container *ngIf="imagesAvailability === 'single'">
         <h2 class="border-0" i18n>Profile image</h2>
-        <div class="row">
+        <div class="row no-gutters">
           <div class="col-12 col-sm-6">
             <div class="d-flex justify-content-center justify-content-sm-start">
               <avatar *ngIf="images.length > 0" [image]="images[0]" size="huge"
                 useLightbox>
               </avatar>
-              <ng-container *ngIf="images.length === 0" i18n>
+              <div class="my-3" *ngIf="images.length === 0" i18n>
                 You don't have a profile image
-              </ng-container>
+              </div>
             </div>
             <image-upload #singleUpload containerClass="mt-3" target="userProfile"
               [user]="key" (uploadDone)="onUploadDone($event)"></image-upload>
@@ -36,7 +36,7 @@
             class="btn btn-outline-primary" (click)="multiUpload.perform()"
             i18n>Upload new</button>
         </h2>
-        <div class="row mb-3">
+        <div class="row no-gutters mb-3">
           <div class="col-12 col-xs-6 col-sm-4 col-md-3 d-flex justify-content-center justify-content-center"
             *ngFor="let image of images">
             <avatar [image]="image" size="huge" useLightbox

@@ -1,19 +1,18 @@
 <ng-container [formGroup]="form">
   <label-value *ngIf="singleAccount; else multipleAccounts" labelSize="large"
-    [label]="data.accounts[0].type.name">
+    [label]="data.accounts[0].type.name" kind="fieldView">
     <!-- Single account -->
-    <div class="row">
-      <div class="col col-6 col-sm-8">
+    <div class="row no-gutters">
+      <div class="col-6 col-sm-8">
         <ng-container *ngIf="singleAccount.number">
-          <br *ngIf="layout.xs$ | async; else separator">
-          <ng-template #separator> - </ng-template>
           {{ singleAccount.number }}
         </ng-container>
       </div>
-      <div class="col col-6 col-sm-4 text-right font-weight-bold" [ngClass]="{
-        positive: format.isPositive(singleAccount.status.availableBalance),
-        negative: format.isNegative(singleAccount.status.availableBalance)
-      }">
+      <div class="col-6 col-sm-4 text-right text-nowrap font-weight-bold"
+        [ngClass]="{
+          positive: format.isPositive(singleAccount.status.balance),
+          negative: format.isNegative(singleAccount.status.balance)
+        }">
         {{ singleAccount.status.balance | currency:singleAccount.currency }}
       </div>
     </div>
