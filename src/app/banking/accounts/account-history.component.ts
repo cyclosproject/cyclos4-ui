@@ -119,13 +119,12 @@ export class AccountHistoryComponent
     ).subscribe(data => {
       ApiHelper.preProcessPreselectedPeriods(data, this.form);
 
+      // Set the heading action
+      this.headingActions = [this.moreFiltersAction];
+
       // Only initialize the data once the form is filled-in
       this.data = data;
     });
-  }
-
-  hasMoreFilters() {
-    return true;
   }
 
   doSearch(value) {

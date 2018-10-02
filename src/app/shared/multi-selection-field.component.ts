@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, SkipSelf, Host, Optional, Input } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlContainer } from '@angular/forms';
 import { FORM_FIELD_WITH_OPTIONS, FIELD_OPTIONS_SORTER } from 'app/shared/base-form-field-with-options.component';
-import { empty, preprocessValueWithSeparator, getValueAsArray } from 'app/shared/helper';
+import { empty, preprocessValueWithSeparator, getValueAsArray, blank } from 'app/shared/helper';
 import { I18n } from '@ngx-translate/i18n-polyfill';
 import { BaseSelectionFieldComponent } from 'app/shared/base-selection-field.component';
 import { FieldOption } from 'app/shared/field-option';
@@ -26,6 +26,11 @@ export class MultiSelectionFieldComponent extends BaseSelectionFieldComponent<st
    * Otherwise, the value will be a string array.
    */
   @Input() separator: string = null;
+
+  /**
+   * Text displayed when no options is selected
+   */
+  @Input() emptyLabel: string = null;
 
   constructor(
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
@@ -52,7 +57,11 @@ export class MultiSelectionFieldComponent extends BaseSelectionFieldComponent<st
   protected getDisplay(): string {
     const selected = this.selectedOptions;
     if (empty(selected)) {
-      return this.i18n('No options selected');
+      if (!blank(this.emptyLabel)) {
+        return this.emptyLabel;
+      } else {
+        return this.i18n('No options selected');
+      }
     } else {
       return selected.sort(FIELD_OPTIONS_SORTER).map(opt => opt.text).join(', ');
     }

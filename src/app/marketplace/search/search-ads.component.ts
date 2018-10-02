@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { AdAddressResultEnum, AdCategoryWithChildren, AdResult, Currency, Image } from 'app/api/models';
+import { AdAddressResultEnum, AdCategoryWithChildren, AdResult, Currency, Image, CustomFieldDetailed } from 'app/api/models';
 import { AdDataForSearch } from 'app/api/models/ad-data-for-search';
 import { MarketplaceService } from 'app/api/services';
 import { ShowSubCategoriesComponent } from 'app/marketplace/search/show-sub-categories.component';
@@ -26,12 +26,12 @@ export class SearchAdsComponent
   extends BaseSearchPageComponent<AdDataForSearch, AdResult>
   implements OnInit {
 
-  // Export enum to the template
-  ResultType = ResultType;
+  // Export to the template
   empty = empty;
 
-  allowedResultTypes = [ResultType.CATEGORIES, ResultType.TILES, ResultType.LIST, ResultType.MAP];
   categoryTrail$ = new BehaviorSubject<AdCategoryWithChildren[]>(null);
+  basicFields: CustomFieldDetailed[];
+  advancedFields: CustomFieldDetailed[];
 
   constructor(
     injector: Injector,
@@ -43,7 +43,7 @@ export class SearchAdsComponent
   }
 
   protected getFormControlNames() {
-    return ['keywords', 'category', 'addressResult', 'orderBy'];
+    return ['keywords', 'category', 'addressResult', 'customValues', 'orderBy'];
   }
 
   getInitialResultType() {
@@ -52,8 +52,18 @@ export class SearchAdsComponent
 
   ngOnInit() {
     super.ngOnInit();
+    this.allowedResultTypes = [ResultType.CATEGORIES, ResultType.TILES, ResultType.LIST, ResultType.MAP];
     this.stateManager.cache('data', this.marketplaceService.getAdDataForSearch({}))
       .subscribe(data => this.data = data);
+  }
+
+  onDataInitialized(data: AdDataForSearch) {
+    const customField = name => data.customFields.find(f => f.internalName === name);
+    this.basicFields = data.fieldsInBasicSearch.map(customField);
+    this.advancedFields = data.fieldsInAdvancedSearch.map(customField);
+    this.form.setControl('customValues', ApiHelper.customValuesFormGroup(this.formBuilder, data.customFields));
+    this.headingActions = empty(this.advancedFields) ? [] : [this.moreFiltersAction];
+    super.onDataInitialized(data);
   }
 
   doSearch(value) {
@@ -226,6 +236,4 @@ export class SearchAdsComponent
       this.selectCategory(sub);
     }));
   }
-
-
 }

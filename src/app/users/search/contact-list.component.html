@@ -2,7 +2,8 @@
   <ng-container *ngIf="loaded$ | async; else loading">
     <page-content mode="filters" i18n-heading heading="Contact list">
       <div class="filters-row">
-        <result-type-field [formControl]="resultTypeControl">
+        <result-type-field [formControl]="resultTypeControl"
+          [allowedResultTypes]="allowedResultTypes$ | async">
         </result-type-field>
       </div>
     </page-content>

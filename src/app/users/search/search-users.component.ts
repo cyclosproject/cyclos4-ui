@@ -28,7 +28,6 @@ export class SearchUsersComponent
 
   canSearch: boolean;
   canViewMap: boolean;
-  allowedResultTypes: ResultType[];
   countries$: Observable<Country[]>;
   fieldsInSearch$ = new BehaviorSubject<CustomFieldDetailed[]>([]);
 
@@ -53,14 +52,15 @@ export class SearchUsersComponent
       this.errorHandler.handleForbiddenError({});
       return;
     }
-    this.allowedResultTypes = [];
+    const allowedResultTypes = [];
     if (this.canSearch) {
-      this.allowedResultTypes.push(ResultType.TILES);
-      this.allowedResultTypes.push(ResultType.LIST);
+      allowedResultTypes.push(ResultType.TILES);
+      allowedResultTypes.push(ResultType.LIST);
     }
     if (this.canViewMap) {
-      this.allowedResultTypes.push(ResultType.MAP);
+      allowedResultTypes.push(ResultType.MAP);
     }
+    this.allowedResultTypes = allowedResultTypes;
 
     this.countries$ = countriesResolve.data;
   }
@@ -104,6 +104,7 @@ export class SearchUsersComponent
       this.form.setControl('customValues', ApiHelper.customValuesFormGroup(this.formBuilder, fieldsInSearch));
       this.fieldsInSearch$.next(fieldsInSearch);
       this.data = data;
+      this.headingActions = empty(fieldsInSearch) ? [] : [this.moreFiltersAction];
     };
 
     if (this.data == null) {

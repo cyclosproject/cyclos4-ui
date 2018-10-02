@@ -24,8 +24,6 @@ export class ContactListComponent
   // Export enum to the template
   ResultType = ResultType;
 
-  allowedResultTypes = [ResultType.TILES, ResultType.LIST];
-
   @ViewChild('usersResults') usersResults: UsersResultsComponent;
 
   constructor(
@@ -45,6 +43,7 @@ export class ContactListComponent
 
   ngOnInit() {
     super.ngOnInit();
+    this.allowedResultTypes = [ResultType.TILES, ResultType.LIST];
     this.form.patchValue({ 'user': ApiHelper.SELF }, { emitEvent: false });
     this.stateManager.cache('data', this.contactsService.getContactListDataForSearch({
       user: ApiHelper.SELF

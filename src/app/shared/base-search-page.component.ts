@@ -18,10 +18,13 @@ import { Action } from 'app/shared/action';
  * @param R The result type
  */
 export abstract class BaseSearchPageComponent<D, R> extends BasePageComponent<D> implements OnInit {
+  // Export ResultType to the template
+  ResultType = ResultType;
 
   results$ = new BehaviorSubject<PagedResults<R>>(null);
   resultType$ = new BehaviorSubject<ResultType>(null);
   headingActions$ = new BehaviorSubject<Action[]>(null);
+  allowedResultTypes$ = new BehaviorSubject([ResultType.LIST]);
   loaded$ = new BehaviorSubject(false);
   rendering$ = new BehaviorSubject(false);
   moreFilters$ = new BehaviorSubject(false);
@@ -94,6 +97,13 @@ export abstract class BaseSearchPageComponent<D, R> extends BasePageComponent<D>
     this.loaded$.next(loaded);
   }
 
+  get allowedResultTypes(): ResultType[] {
+    return this.allowedResultTypes$.value;
+  }
+  set allowedResultTypes(resultTypes: ResultType[]) {
+    this.allowedResultTypes$.next(resultTypes);
+  }
+
   get moreFilters(): boolean {
     return this.moreFilters$.value;
   }
@@ -117,13 +127,6 @@ export abstract class BaseSearchPageComponent<D, R> extends BasePageComponent<D>
   }
   set pageData(pageData: PageData) {
     this.form.patchValue(pageData);
-  }
-
-  /**
-   * May be overridden to define that the page has more filters
-   */
-  protected hasMoreFilters(): boolean {
-    return false;
   }
 
   /**
@@ -171,11 +174,10 @@ export abstract class BaseSearchPageComponent<D, R> extends BasePageComponent<D>
   ngOnInit() {
     super.ngOnInit();
     this.resultType = this.getInitialResultType();
-    if (this.hasMoreFilters) {
-      this.headingActions = [
-        new Action('filter_list', this.i18n('More filters'), () => this.moreFilters = !this.moreFilters)
-      ];
-    }
+  }
+
+  protected get moreFiltersAction(): Action {
+    return new Action('filter_list', this.i18n('More filters'), () => this.moreFilters = !this.moreFilters);
   }
 
   /**

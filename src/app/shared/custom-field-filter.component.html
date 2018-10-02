@@ -1,13 +1,15 @@
 <ng-container *ngIf="hasValuesList; else specificTemplate">
-  <multi-selection-field #singleSelectionField [copyFrom]="self" [formControl]="formControl"
-    [fieldOptions]="fieldOptions">
+  <multi-selection-field #singleSelectionField [copyFrom]="self"
+    [formControl]="formControl" [fieldOptions]="fieldOptions" i18n-emptyLabel
+    emptyLabel="Filter not applied">
   </multi-selection-field>
 </ng-container>
 
 <ng-template #specificTemplate>
   <!-- string, URL, text -->
   <input-field #inputField *ngIf="input" [copyFrom]="self" [formControl]="formControl"
-    [type]="type == 'integer' ? 'number' : type == 'url' ? 'url' : 'text'" [mask]="field.pattern"></input-field>
+    [type]="type == 'integer' ? 'number' : type == 'url' ? 'url' : 'text'"
+    [mask]="field.pattern"></input-field>
 
   <!-- boolean -->
   <radio-group-field #radioGroupField *ngIf="type == 'boolean'" [copyFrom]="self"
@@ -19,7 +21,8 @@
 
   <!-- multi selection -->
   <multi-selection-field #multiSelectionField *ngIf="enumerated" [copyFrom]="self"
-    [formControl]="formControl" [separator]="ApiHelper.VALUE_SEPARATOR" [fieldOptions]="fieldOptions">
+    [formControl]="formControl" [separator]="ApiHelper.VALUE_SEPARATOR"
+    [fieldOptions]="fieldOptions">
   </multi-selection-field>
 
   <!-- linked entity: user (other linked entities are also handled as input -->

@@ -65,10 +65,10 @@
       <ng-container *ngIf="(user.addresses || []).length > 1">
         <h2 class="mt-3" i18n>Addresses</h2>
         <div class="row">
-          <div *ngIf="layout.ltsm$ | async" class="col col-12 mb-3">
+          <div *ngIf="layout.ltsm$ | async" class="col-12 mb-3">
             <ng-container *ngTemplateOutlet="addressesMap"></ng-container>
           </div>
-          <div class="col col-12 col-md-6 col-xl-5">
+          <div class="col-12 col-md-6 col-xl-5">
             <ng-container *ngFor="let address of user.addresses; let first = first">
               <h3 class="mb-0" [ngClass]="{'mt-0': first, 'mt-3': !first}">{{
                 address['fullName']
@@ -76,7 +76,7 @@
               <address-details [address]="address"></address-details>
             </ng-container>
           </div>
-          <div *ngIf="layout.gtxs$ | async" class="col col-md-6 col-xl-7 mt-3">
+          <div *ngIf="layout.gtxs$ | async" class="col-12 col-md-6 col-xl-7 mt-3">
             <ng-container *ngTemplateOutlet="addressesMap"></ng-container>
           </div>
         </div>
@@ -86,10 +86,10 @@
       <ng-container *ngIf="(user.addresses || []).length === 1">
         <h2 class="mt-3" i18n>Address</h2>
         <div class="row">
-          <div class="col col-12 col-md-6 col-xl-5 mb-3">
+          <div class="col-12 col-md-6 col-xl-5 mb-3">
             <address-details [address]="user.addresses[0]"></address-details>
           </div>
-          <div class="col col-12 col-md-6 col-xl-7">
+          <div class="col-12 col-md-6 col-xl-7">
             <ng-container *ngTemplateOutlet="addressesMap"></ng-container>
           </div>
         </div>
