@@ -14,6 +14,7 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 @Component({
   selector: 'manage-passwords',
   templateUrl: 'manage-passwords.component.html',
+  styleUrls: ['manage-passwords.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ManagePasswordsComponent

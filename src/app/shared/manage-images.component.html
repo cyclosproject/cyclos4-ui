@@ -19,6 +19,10 @@
 <bs-sortable [itemTemplate]="imageTemplate" [formControl]="order">
 </bs-sortable>
 
+<div class="mt-4 text-primary" i18n>After confirmation, please make sure to
+  click the Save button in
+  order for the changes to be applied.</div>
+
 <actions>
   <button class="btn btn-primary" i18n (click)="ok()">Confirm</button>
   <button class="btn btn-outline-primary" i18n (click)="modalRef.hide()">Cancel</button>

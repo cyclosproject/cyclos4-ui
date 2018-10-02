@@ -1,12 +1,13 @@
 <alert [type]="alertType" [dismissible]="allowClose" (onClose)="modalRef.hide()">
   <div class="d-flex flex-column flex-xs-row align-items-center">
     <icon size="2rem" [icon]="icon"></icon>
-    <div class="ml-3" *ngIf="message; else renderContent" [innerHTML]="message | trust"></div>
+    <div class="notification-message" *ngIf="message; else renderContent"
+      [innerHTML]="message | trust"></div>
   </div>
 </alert>
 
 <ng-template #renderContent>
-  <div class="ml-3">
+  <div class="notification-message">
     <ng-content></ng-content>
   </div>
 </ng-template>

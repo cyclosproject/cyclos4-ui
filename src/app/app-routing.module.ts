@@ -2,13 +2,13 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from 'app/login/login.component';
 import { HomeComponent } from 'app/home/home.component';
-import { DashboardComponent } from 'app/home/dashboard.component';
 import { NotFoundComponent } from 'app/shared/not-found.component';
 import { SharedModule } from 'app/shared/shared.module';
 import { LoggedUserGuard } from 'app/logged-user-guard';
 import { Menu } from 'app/shared/menu';
 import { ForgotPasswordComponent } from 'app/login/forgot-password.component';
 import { ChangeForgottenPasswordComponent } from 'app/login/change-forgotten-password.component';
+import { ChangeExpiredPasswordComponent } from 'app/login/change-expired-password.component';
 
 const rootRoutes: Routes = [
   {
@@ -49,6 +49,14 @@ const rootRoutes: Routes = [
     }
   },
   {
+    path: 'expired-password',
+    canActivate: [LoggedUserGuard],
+    component: ChangeExpiredPasswordComponent,
+    data: {
+      menu: Menu.LOGIN
+    }
+  },
+  {
     path: 'banking',
     loadChildren: 'app/banking/banking.module#BankingModule'
   },
@@ -60,10 +68,6 @@ const rootRoutes: Routes = [
     path: 'marketplace',
     loadChildren: 'app/marketplace/marketplace.module#MarketplaceModule'
   },
-  // {
-  //   path: 'personal',
-  //   loadChildren: 'app/personal/personal.module#PersonalModule'
-  // },
   {
     path: '**',
     component: NotFoundComponent

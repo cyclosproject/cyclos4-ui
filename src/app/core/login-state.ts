@@ -26,7 +26,8 @@ export class LoginState {
   }
 
   set redirectUrl(redirectUrl: string) {
-    if (redirectUrl === '/login') {
+    if (redirectUrl && redirectUrl.startsWith('/login')) {
+      // Avoid infinite loop if it is login
       redirectUrl = null;
     }
     this._redirectUrl = redirectUrl;

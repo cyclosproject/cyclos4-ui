@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Auth, Permissions, User } from 'app/api/models';
+import { Auth, Permissions, User, DataForUi } from 'app/api/models';
 import { AuthService } from 'app/api/services/auth.service';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { LoginState } from 'app/core/login-state';
 import { NextRequestState } from 'app/core/next-request-state';
 import { empty } from 'app/shared/helper';
 import { BehaviorSubject, Subscription, Observable } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, map } from 'rxjs/operators';
 
 /**
  * Service used to manage the login status
@@ -103,7 +103,9 @@ export class LoginService {
         this.nextRequestState.sessionToken = auth.sessionToken;
 
         // Then reload the DataForUi instance (as user)
-        return this.dataForUiHolder.reload();
+        return this.dataForUiHolder.reload().pipe(
+          map(dataForUi => dataForUi.auth)
+        );
       }));
   }
 

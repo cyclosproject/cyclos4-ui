@@ -20499,7 +20499,7 @@
         "tags" : [ "Passwords" ],
         "summary" : "Returns complete data of the given password the given user have.",
         "description" : "Returns the password status and the permissions on which operations are \nenabled for a given user. \n",
-        "operationId" : "getUserPasswordaData",
+        "operationId" : "getUserPasswordsData",
         "parameters" : [ {
           "name" : "fields",
           "in" : "query",
@@ -24099,6 +24099,14 @@
           "type" : "string",
           "description" : "The principal (user identification) used on authentication. Can be the\nvalue of the login name, e-mail, account number, custom field or token\nused on authentication or at the moment of login. Is not returned when\nthe authentication was performed via access client.\n"
         },
+        "passwordType" : {
+          "description" : "Returns a reference to the password type used on this channel.\n",
+          "$ref" : "#/definitions/PasswordType"
+        },
+        "secondaryPasswordType" : {
+          "description" : "Returns a reference to the secondary password type used on this\nchannel, if any.\n",
+          "$ref" : "#/definitions/PasswordType"
+        },
         "expiredPassword" : {
           "type" : "boolean",
           "description" : "Returns whether the current access password is expired.\nIf so, the user will have to change the password,\nor all other actions will be denied.\n"
@@ -24113,7 +24121,7 @@
         },
         "pendingSecondaryPassword" : {
           "type" : "boolean",
-          "description" : "Returns whether the current session is pending by validation\nIf so, the user will have to validate it using its secondary access \npasswordchange,\nor all other actions will be denied.\n"
+          "description" : "Returns whether the current session requires a secondary password.\nIf so, the user will have to validate it using its secondary access \npassword, otherwise, all other actions will be denied.\n"
         }
       },
       "description" : "Contains relevant information for the authenticated user and his granted\npermissions. \n",
@@ -26397,6 +26405,10 @@
           "type" : "integer",
           "description" : "Maximum size (in bytes) for uploaded files"
         },
+        "jpegQuality" : {
+          "type" : "integer",
+          "description" : "Quality for JPEG image types (higher means better quality)"
+        },
         "language" : {
           "description" : "The language set in the configuration",
           "$ref" : "#/definitions/Language"
@@ -27473,6 +27485,10 @@
         "maxUploadSize" : {
           "type" : "integer",
           "description" : "Maximum size (in bytes) for uploaded files"
+        },
+        "jpegQuality" : {
+          "type" : "integer",
+          "description" : "Quality for JPEG image types (higher means better quality)"
         }
       },
       "description" : "Contains basic definitions for the data for UI results for the mobile  \n"
@@ -28501,6 +28517,10 @@
           "type" : {
             "description" : "The password type along with the description",
             "$ref" : "#/definitions/PasswordTypeWithDescription"
+          },
+          "requireOldPasswordForChange" : {
+            "type" : "boolean",
+            "description" : "Indicates whether the `change` action, if enabled, requires the old password to be sent. This is the case when changing the password of the logged user, and the current password was ever set and is not currently expired / reset.\n"
           },
           "permissions" : {
             "description" : "The permissions over actions the authenticated user can perform on\nthis password\n",

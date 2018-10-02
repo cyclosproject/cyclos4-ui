@@ -4,6 +4,7 @@ import { SharedModule } from 'app/shared/shared.module';
 import { LoginComponent } from 'app/login/login.component';
 import { ForgotPasswordComponent } from 'app/login/forgot-password.component';
 import { ChangeForgottenPasswordComponent } from 'app/login/change-forgotten-password.component';
+import { ChangeExpiredPasswordComponent } from 'app/login/change-expired-password.component';
 
 /**
  * Module comprising the login functionality
@@ -12,7 +13,8 @@ import { ChangeForgottenPasswordComponent } from 'app/login/change-forgotten-pas
   declarations: [
     LoginComponent,
     ForgotPasswordComponent,
-    ChangeForgottenPasswordComponent
+    ChangeForgottenPasswordComponent,
+    ChangeExpiredPasswordComponent
   ],
   imports: [
     SharedModule

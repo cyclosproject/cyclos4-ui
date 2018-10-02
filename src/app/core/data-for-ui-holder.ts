@@ -60,7 +60,7 @@ export class DataForUiHolder {
   }
 
   /**
-   * Reloads a cold observer for reloading the `DataForUi` instance
+   * Returns a cold observer for reloading the `DataForUi` instance
    */
   reload(): Observable<DataForUi> {
     return this.uiService.dataForUi({ kind: UiKind.CUSTOM }).pipe(

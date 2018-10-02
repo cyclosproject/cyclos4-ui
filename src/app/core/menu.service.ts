@@ -26,11 +26,9 @@ export class MenuService {
 
   private _activeMenu = new BehaviorSubject<Menu>(null);
   private _fullMenu: BehaviorSubject<RootMenuEntry[]>;
-  private _accountStatuses = new BehaviorSubject<Map<String, AccountStatus>>(new Map());
 
   constructor(
     private pushNotifications: PushNotificationsService,
-    private accountsService: AccountsService,
     private i18n: I18n,
     private dataForUiHolder: DataForUiHolder
   ) {
@@ -41,27 +39,11 @@ export class MenuService {
 
     if (initialDataForUi != null) {
       this._fullMenu.next(this.buildFullMenu(initialAuth));
-      if (initialAuth != null && initialAuth.user != null) {
-        // Fetch the data initially - there is a logged user
-        this.fetchData();
-      }
     }
     // Whenever the authenticated user changes, reload the menu
     dataForUiHolder.subscribe(dataForUi => {
       const auth = (dataForUi || {}).auth;
       this._fullMenu.next(this.buildFullMenu(auth));
-      if (auth == null || auth.user == null) {
-        // Logged out: clear the data
-        this.clearData();
-      } else {
-        // Logged in: fetch the data
-        this.fetchData();
-      }
-    });
-    this.pushNotifications.subscribeForAccountStatus(account => {
-      const statuses = this._accountStatuses.value;
-      statuses.set(account.id, account.status);
-      this._accountStatuses.next(statuses);
     });
     this.activeMenu$ = this._activeMenu.asObservable().pipe(
       distinctUntilChanged()
@@ -80,13 +62,6 @@ export class MenuService {
 
   get activeMenu(): Menu {
     return this._activeMenu.value;
-  }
-
-  get accountStatuses(): BehaviorSubject<Map<String, AccountStatus>> {
-    if (this._accountStatuses == null) {
-      this.fetchData();
-    }
-    return this._accountStatuses;
   }
 
   /**
@@ -166,25 +141,6 @@ export class MenuService {
     );
   }
 
-  private fetchData() {
-    // Get the balance for each account
-    this.accountsService.listAccountsByOwner({
-      owner: ApiHelper.SELF,
-      fields: ['id', 'status.balance']
-    })
-      .subscribe(accounts => {
-        const accountStatuses = new Map<String, AccountStatus>();
-        for (const account of accounts) {
-          accountStatuses.set(account.id, account.status);
-        }
-        this.accountStatuses.next(accountStatuses);
-      });
-  }
-
-  private clearData() {
-    this.accountStatuses.next(null);
-  }
-
   /**
    * Build the full menu structure from the given authentication
    */
@@ -192,6 +148,7 @@ export class MenuService {
     const auth = maybeNullAuth || {};
     const permissions = auth.permissions;
     const user = auth.user;
+    const restrictedAccess = auth.expiredPassword || auth.pendingAgreements;
 
     const roots = new Map<RootMenu, RootMenuEntry>();
     // Lambda that adds a root menu
@@ -214,87 +171,94 @@ export class MenuService {
       root.entries.push(new MenuEntry(menu, url, icon, label, showIn));
     };
     // Add the submenus
-    add(Menu.HOME, '/', home.icon, home.label);
-    if (user == null) {
-      // Guest
-      const registrationGroups = (this.dataForUiHolder.dataForUi || {}).publicRegistrationGroups || [];
-      add(Menu.LOGIN, '/login', login.icon, login.label);
-      if (registrationGroups.length > 0) {
-        add(Menu.REGISTRATION, '/users/registration', register.icon, register.label);
-      }
-    } else {
-      const banking = permissions.banking || {};
-      const users = permissions.users || {};
-      const marketplace = permissions.marketplace || {};
-      const accounts = banking.accounts || [];
-
-      // Banking
-      if (accounts.length > 0) {
-        for (const account of accounts) {
-          const type = account.account.type;
-          add(Menu.ACCOUNT_HISTORY, '/banking/account/' + ApiHelper.internalNameOrId(type),
-            'account_balance', type.name, [MenuType.BAR, MenuType.SIDENAV]);
-        }
-      }
-      const payments = banking.payments || {};
-      if (payments.user) {
-        add(Menu.PAYMENT_TO_USER, '/banking/payment', 'payment',
-          this.i18n({ value: 'Payment to user', description: 'Menu' }));
-      }
-      if (payments.self) {
-        add(Menu.PAYMENT_TO_SELF, '/banking/payment/self', 'payment',
-          this.i18n({ value: 'Payment to self', description: 'Menu' }));
-      }
-      if (payments.system) {
-        add(Menu.PAYMENT_TO_SYSTEM, '/banking/payment/system', 'payment',
-          this.i18n({ value: 'Payment to system', description: 'Menu' }));
-      }
-      if ((banking.scheduledPayments || {}).view) {
-        add(Menu.SCHEDULED_PAYMENTS, '/banking/scheduled-payments', 'schedule',
-          this.i18n({ value: 'Scheduled payments', description: 'Menu' }));
-      }
-      if ((banking.recurringPayments || {}).view) {
-        add(Menu.RECURRING_PAYMENTS, '/banking/recurring-payments', 'repeat',
-          this.i18n({ value: 'Recurring payments', description: 'Menu' }));
-      }
-      if ((banking.authorizations || {}).view) {
-        add(Menu.AUTHORIZED_PAYMENTS, '/banking/authorized-payments', 'assignment_turned_in',
-          this.i18n({ value: 'Authorized payments', description: 'Menu' }));
-      }
-
-      // Marketplace
-      if (users.search || users.map) {
-        add(Menu.SEARCH_USERS, '/users/search', 'group',
-          this.i18n({ value: 'Business directory', description: 'Menu' }));
-      }
-      if (marketplace.search) {
-        add(Menu.SEARCH_ADS, '/marketplace/search', 'shopping_cart',
-          this.i18n({ value: 'Products and services', description: 'Menu' }));
-      }
-
-      // Personal
-      const myProfile = permissions.myProfile || {};
-      add(Menu.MY_PROFILE, '/users/my-profile', 'account_box',
-        this.i18n({ value: 'My profile', description: 'Menu' }),
-        [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
-      if (myProfile.editProfile) {
-        add(Menu.EDIT_MY_PROFILE, '/users/my-profile/edit', 'account_box',
-          this.i18n({ value: 'Edit profile', description: 'Menu' }),
-          [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
-      }
-      if (users.contacts) {
-        add(Menu.CONTACTS, '/users/contacts', 'import_contacts',
-          this.i18n({ value: 'Contacts', description: 'Menu' }),
-          [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
-      }
-      if ((permissions.passwords || {}).manage) {
-        add(Menu.PASSWORDS, '/users/passwords', 'vpn_key',
-          this.i18n({ value: 'Passwords', description: 'Menu' }),
-          [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
-      }
+    if (restrictedAccess) {
+      // Only show the logout
       add(Menu.LOGOUT, null, 'exit_to_app',
         this.i18n({ value: 'Logout', description: 'Menu' }),
         [MenuType.PERSONAL, MenuType.SIDENAV]);
+    } else {
+      add(Menu.HOME, '/', home.icon, home.label);
+      if (user == null) {
+        // Guest
+        const registrationGroups = (this.dataForUiHolder.dataForUi || {}).publicRegistrationGroups || [];
+        add(Menu.LOGIN, '/login', login.icon, login.label);
+        if (registrationGroups.length > 0) {
+          add(Menu.REGISTRATION, '/users/registration', register.icon, register.label);
+        }
+      } else {
+        const banking = permissions.banking || {};
+        const users = permissions.users || {};
+        const marketplace = permissions.marketplace || {};
+        const accounts = banking.accounts || [];
+
+        // Banking
+        if (accounts.length > 0) {
+          for (const account of accounts) {
+            const type = account.account.type;
+            add(Menu.ACCOUNT_HISTORY, '/banking/account/' + ApiHelper.internalNameOrId(type),
+              'account_balance', type.name, [MenuType.BAR, MenuType.SIDENAV]);
+          }
+        }
+        const payments = banking.payments || {};
+        if (payments.user) {
+          add(Menu.PAYMENT_TO_USER, '/banking/payment', 'payment',
+            this.i18n({ value: 'Payment to user', description: 'Menu' }));
+        }
+        if (payments.self) {
+          add(Menu.PAYMENT_TO_SELF, '/banking/payment/self', 'payment',
+            this.i18n({ value: 'Payment to self', description: 'Menu' }));
+        }
+        if (payments.system) {
+          add(Menu.PAYMENT_TO_SYSTEM, '/banking/payment/system', 'payment',
+            this.i18n({ value: 'Payment to system', description: 'Menu' }));
+        }
+        if ((banking.scheduledPayments || {}).view) {
+          add(Menu.SCHEDULED_PAYMENTS, '/banking/scheduled-payments', 'schedule',
+            this.i18n({ value: 'Scheduled payments', description: 'Menu' }));
+        }
+        if ((banking.recurringPayments || {}).view) {
+          add(Menu.RECURRING_PAYMENTS, '/banking/recurring-payments', 'repeat',
+            this.i18n({ value: 'Recurring payments', description: 'Menu' }));
+        }
+        if ((banking.authorizations || {}).view) {
+          add(Menu.AUTHORIZED_PAYMENTS, '/banking/authorized-payments', 'assignment_turned_in',
+            this.i18n({ value: 'Authorized payments', description: 'Menu' }));
+        }
+
+        // Marketplace
+        if (users.search || users.map) {
+          add(Menu.SEARCH_USERS, '/users/search', 'group',
+            this.i18n({ value: 'Business directory', description: 'Menu' }));
+        }
+        if (marketplace.search) {
+          add(Menu.SEARCH_ADS, '/marketplace/search', 'shopping_cart',
+            this.i18n({ value: 'Products and services', description: 'Menu' }));
+        }
+
+        // Personal
+        const myProfile = permissions.myProfile || {};
+        add(Menu.MY_PROFILE, '/users/my-profile', 'account_box',
+          this.i18n({ value: 'My profile', description: 'Menu' }),
+          [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
+        if (myProfile.editProfile) {
+          add(Menu.EDIT_MY_PROFILE, '/users/my-profile/edit', 'account_box',
+            this.i18n({ value: 'Edit profile', description: 'Menu' }),
+            [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
+        }
+        if (users.contacts) {
+          add(Menu.CONTACTS, '/users/contacts', 'import_contacts',
+            this.i18n({ value: 'Contacts', description: 'Menu' }),
+            [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
+        }
+        if ((permissions.passwords || {}).manage) {
+          add(Menu.PASSWORDS, '/users/passwords', 'vpn_key',
+            this.i18n({ value: 'Passwords', description: 'Menu' }),
+            [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
+        }
+        add(Menu.LOGOUT, null, 'exit_to_app',
+          this.i18n({ value: 'Logout', description: 'Menu' }),
+          [MenuType.PERSONAL, MenuType.SIDENAV]);
+      }
     }
 
     // Populate the menu in the root declaration order

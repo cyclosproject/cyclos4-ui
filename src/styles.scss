@@ -350,21 +350,13 @@ $spaced-label-values: (
   'h1',
   'h2',
   'h3',
-  'address-form'
+  'address-form',
+  'custom-field-value'
 );
 @each $lv1 in $spaced-label-values {
   @each $lv2 in $spaced-label-values {
     #{$lv1} + #{$lv2} {
       margin-top: 0.6rem;
-    }
-  }
-}
-@include media-breakpoint-up(sm) {
-  @each $lv1 in $spaced-label-values {
-    @each $lv2 in $spaced-label-values {
-      #{$lv1} + #{$lv2} {
-        margin-top: 1rem;
-      }
     }
   }
 }
@@ -464,7 +456,7 @@ h3 {
   font-size: 1.1em;
   color: $h3-color;
   margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.6rem;
 }
 
 .modal-dialog.notification {

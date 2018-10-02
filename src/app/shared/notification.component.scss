@@ -14,6 +14,11 @@
   .close {
     width: auto;
   }
+
+  .notification-message {
+    margin-top: 1rem;
+    text-align: start;
+  }
 }
 @include media-breakpoint-up(xs) {
   :host ::ng-deep .alert {
@@ -21,5 +26,10 @@
   }
   icon {
     margin-bottom: 0;
+  }
+
+  .notification-message {
+    margin-top: 0;
+    margin-left: 1rem;
   }
 }

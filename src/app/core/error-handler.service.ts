@@ -432,15 +432,15 @@ export class ErrorHandlerService {
           type: passwordType
         });
       case ForbiddenErrorCode.EXPIRED_PASSWORD:
-        return this.i18n('{{type}} is has expired. Please, contact the administration', {
+        return this.i18n('{{type}} has expired. Please, contact the administration', {
           type: passwordType
         });
       case ForbiddenErrorCode.TEMPORARILY_BLOCKED:
-        return this.i18n('{{type}} is temporarily blocked by exceeding the maximum tries. Please, contact the administration', {
+        return this.i18n('{{type}} temporarily blocked by exceeding the maximum tries. Please, contact the administration', {
           type: passwordType
         });
       case ForbiddenErrorCode.INDEFINITELY_BLOCKED:
-        return this.i18n('{{type}} is disabled by exceeding the maximum tries. Please, contact the administration', {
+        return this.i18n('{{type}} disabled by exceeding the maximum tries. Please, contact the administration', {
           type: passwordType
         });
       default:
