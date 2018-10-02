@@ -27,7 +27,6 @@ export class DateFieldComponent
   extends BaseFormFieldComponent<string> implements Validator, OnInit {
 
   internalControl: FormControl;
-  pickerControl: FormControl;
 
   @ViewChild('inputField') inputField: InputFieldComponent;
 
@@ -57,7 +56,6 @@ export class DateFieldComponent
       return null;
     };
     this.internalControl = new FormControl(null, validator);
-    this.pickerControl = new FormControl(null);
 
     this.addSub(this.internalControl.valueChanges.subscribe((input: string) => {
       if (empty(input)) {
@@ -74,9 +72,8 @@ export class DateFieldComponent
   }
 
   onValueInitialized(raw: string): void {
-    this.internalControl.setValue(this.format.formatAsDate(raw), { emitEvent: false });
     if (!blank(raw)) {
-      this.pickerControl.setValue(moment(raw).toDate());
+      this.internalControl.setValue(moment(raw).toDate());
     }
   }
 
