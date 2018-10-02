@@ -51,14 +51,16 @@
   </a>
 
   <ng-container *resultInfoWindow="let row; let addr = address">
-    <avatar ngClass="card-img-top" [roundBorders]="false" [image]="user(row).image"
-      size="200" iconSize="8rem"></avatar>
+    <a [routerLink]="path(row)" class="plain">
+      <avatar ngClass="card-img-top" [roundBorders]="false" [image]="user(row).image"
+        size="200" iconSize="8rem"></avatar>
 
-    <div *ngFor="let field of fieldsInTile; let first = first" [ngClass]="first ? 'font-weight-bold my-2' : ''">
-      <format-field-value [fields]="data.customFields" [plainText]="true"
-        [fieldName]="field" [object]="user(row)" [customValues]="customValues(row)">
-      </format-field-value>
-    </div>
-    <address-details [address]="addr" elementClass="card-text"></address-details>
+      <div *ngFor="let field of fieldsInTile; let first = first" [ngClass]="first ? 'font-weight-bold my-2' : ''">
+        <format-field-value [fields]="data.customFields" [plainText]="true"
+          [fieldName]="field" [object]="user(row)" [customValues]="customValues(row)">
+        </format-field-value>
+      </div>
+      <address-details [address]="addr" elementClass="card-text"></address-details>
+    </a>
   </ng-container>
 </results-layout>

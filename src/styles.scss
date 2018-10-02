@@ -163,6 +163,13 @@ table.table {
   }
 }
 
+a.plain {
+  color: $body-color;
+  &:hover {
+    text-decoration: none;
+  }
+}
+
 .cursor-pointer {
   cursor: pointer !important;
 }

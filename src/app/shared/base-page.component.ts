@@ -16,21 +16,16 @@ export abstract class BasePageComponent<D> extends BaseComponent implements OnIn
   @HostBinding('style.flex-direction') styleFlexDirection = 'column';
   @HostBinding('style.flex-grow') styleFlexGrow = '1';
 
-  dataAlreadyInitialized = false;
   data$ = new BehaviorSubject<D>(null);
 
   get data(): D {
     return this.data$.value;
   }
   set data(data: D) {
-    if (!this.dataAlreadyInitialized) {
-      this.dataAlreadyInitialized = true;
+    if (this.data == null && data != null) {
       this.onDataInitialized(data);
     }
     this.data$.next(data);
-    if (data != null) {
-      this.onAfterSetData(data);
-    }
   }
 
   /**
@@ -38,16 +33,8 @@ export abstract class BasePageComponent<D> extends BaseComponent implements OnIn
    */
   protected reload() {
     this.data = null;
-    this.dataAlreadyInitialized = false;
     this.unsubscribe();
     this.ngOnInit();
-  }
-
-  /**
-   * Callback invoked every time the data is set
-   * @param data The data instance
-   */
-  protected onAfterSetData(data: D) {
   }
 
   /**

@@ -52,7 +52,7 @@ export class SearchAdsComponent
 
   ngOnInit() {
     super.ngOnInit();
-    this.stateManager.cache('dataForMap', this.marketplaceService.getAdDataForSearch({}))
+    this.stateManager.cache('data', this.marketplaceService.getAdDataForSearch({}))
       .subscribe(data => this.data = data);
   }
 
@@ -76,7 +76,7 @@ export class SearchAdsComponent
         // Should change the address result
         this.results = null;
         this.resetPage();
-        this.form.patchValue({ addressResult: addressResult });
+        this.form.patchValue({ addressResult: addressResult }, { emitEvent: false });
       }
     }
   }

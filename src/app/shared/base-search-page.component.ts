@@ -40,11 +40,9 @@ export abstract class BaseSearchPageComponent<D, R> extends BasePageComponent<D>
       this.previousValue = value;
     }), true);
     this.loaded = true;
-  }
 
-  protected onAfterSetData(data: D) {
     // When starting with categories, don't initially search
-    if (this.getInitialResultType() !== ResultType.CATEGORIES) {
+    if (this.previousValue.resultType !== ResultType.CATEGORIES) {
       this.update();
     }
   }
@@ -145,7 +143,12 @@ export abstract class BaseSearchPageComponent<D, R> extends BasePageComponent<D>
     if (previous == null || previous !== resultType) {
       this.rendering = true;
       this.resultType$.next(resultType);
+      // We cannot emit the event, or an extra search will be triggered...
       this.resultTypeControl.setValue(resultType, { emitEvent: false });
+      // .. however, we must update the state, otherwise the result type isn't remembered
+      if (previous != null) {
+        this.stateManager.set('form', this.form.value);
+      }
       this.onResultTypeChanged(resultType, previous);
     }
   }

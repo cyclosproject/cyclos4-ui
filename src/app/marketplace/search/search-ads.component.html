@@ -163,19 +163,22 @@
     </a>
 
     <ng-container *resultInfoWindow="let ad; let addr = address">
-      <avatar ngClass="card-img-top" [roundBorders]="false" [image]="ad.image"
-        size="full" imageSize="200" icon="shopping_basket" iconSize="8rem"></avatar>
+      <a class="plain" [routerLink]="path(ad)">
+        <avatar ngClass="card-img-top" [roundBorders]="false" [image]="ad.image"
+          size="full" imageSize="200" icon="shopping_basket" iconSize="8rem"></avatar>
 
-      <div *ngIf="ad.price" class="font-weight-bold">
-        <span *ngIf="ad.promotionalPrice" class="promo-price">
-          {{ ad.price | number:decimals(ad) }}
-        </span>
-        {{ (ad.promotionalPrice || ad.price) | currency:lookupCurrency(ad) }}
-      </div>
+        <div *ngIf="ad.price" class="font-weight-bold">
+          <span *ngIf="ad.promotionalPrice" class="promo-price">
+            {{ ad.price | number:decimals(ad) }}
+          </span>
+          {{ (ad.promotionalPrice || ad.price) | currency:lookupCurrency(ad)
+          }}
+        </div>
 
-      <div>{{ ad.name }}</div>
-      <div i18n>Published by {{ ad.owner.display }}</div>
-      <address-details [address]="addr"></address-details>
+        <div>{{ ad.name }}</div>
+        <div i18n>Published by {{ ad.owner.display }}</div>
+        <address-details [address]="addr"></address-details>
+      </a>
     </ng-container>
   </results-layout>
 </ng-template>

@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
+import { cloneDeep } from 'lodash';
 
 /**
  * Service used to navigate between pages and managing the component state
@@ -59,7 +60,7 @@ export class StateManager {
       value = value.value;
     }
     const k = key + '@' + this.router.url;
-    this.state.set(k, value);
+    this.state.set(k, cloneDeep(value));
   }
 
   /**
