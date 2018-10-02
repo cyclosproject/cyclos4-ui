@@ -1,13 +1,12 @@
-import { Component, ChangeDetectionStrategy, Injector, OnInit } from '@angular/core';
-import { DataForChangeForgottenPassword, PasswordStatusAndActions, PasswordModeEnum } from 'app/api/models';
-import { BaseComponent } from 'app/shared/base.component';
-import { FormBuilder, FormGroup, Validators, ValidatorFn } from '@angular/forms';
-import { BehaviorSubject } from 'rxjs';
-import { AuthService, PasswordsService } from 'app/api/services';
-import { BasePageComponent } from 'app/shared/base-page.component';
+import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
+import { FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { PasswordModeEnum, PasswordStatusAndActions } from 'app/api/models';
+import { PasswordsService } from 'app/api/services';
 import { LoginState } from 'app/core/login-state';
-import { validateBeforeSubmit, getAllErrors } from 'app/shared/helper';
 import { ApiHelper } from 'app/shared/api-helper';
+import { BasePageComponent } from 'app/shared/base-page.component';
+import { validateBeforeSubmit } from 'app/shared/helper';
+import { BehaviorSubject } from 'rxjs';
 
 /** Validator function that ensures password and confirmation match */
 const PASSWORDS_MATCH_VAL: ValidatorFn = control => {
@@ -40,7 +39,6 @@ export class ChangeExpiredPasswordComponent
   typeId: string;
   generated = false;
 
-  getAllErrors = getAllErrors;
   generatedValue$ = new BehaviorSubject<string>(null);
 
   constructor(

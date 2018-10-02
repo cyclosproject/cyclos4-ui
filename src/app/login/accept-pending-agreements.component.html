@@ -1,0 +1,18 @@
+<page-layout [ready]="data$ | async" size="small" hideMenu>
+  <page-content *ngIf="data" layout="centered" i18n-heading heading="Updated agreement">
+    <notification type="warning">
+      The registration agreement has been updated.
+      In order to continue, you must agree with the new terms.
+    </notification>
+    <div class="mt-3 text-left">
+      <boolean-field [formControl]="accept">
+        <div #agreementsContent class="pl-2"></div>
+      </boolean-field>
+    </div>
+    <actions>
+      <button class="btn btn-primary" [disabled]="requesting$ | async"
+        (click)="submit()" i18n>Submit</button>
+      <button class="btn btn-outline-primary" (click)="cancel()" i18n>Cancel</button>
+    </actions>
+  </page-content>
+</page-layout>

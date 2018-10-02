@@ -79,7 +79,9 @@ export class LoginComponent
     this.login.login(value.principal, value.password).subscribe(auth => {
       // Handle the exceptional cases
       let initialUrl = this.loginState.redirectUrl || '';
-      if (auth.expiredPassword) {
+      if (auth.pendingAgreements) {
+        initialUrl = '/pending-agreements';
+      } else if (auth.expiredPassword) {
         initialUrl = '/expired-password';
       }
       // Redirect to the correct URL

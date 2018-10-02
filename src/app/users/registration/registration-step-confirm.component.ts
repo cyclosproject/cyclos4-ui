@@ -6,9 +6,9 @@ import { FormArray, FormGroup } from '@angular/forms';
 import { Address, CustomFieldDetailed, GroupForRegistration, Image, UserDataForNew, UserNew } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
 import { blank, empty } from 'app/shared/helper';
-import { RegistrationAgreementsComponent } from 'app/users/registration/registration-agreements.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { InputFieldComponent } from 'app/shared/input-field.component';
+import { RegistrationAgreementsComponent } from 'app/login/registration-agreements.component';
 
 /**
  * Public registration step: confirmation

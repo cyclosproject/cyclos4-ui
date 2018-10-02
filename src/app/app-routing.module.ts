@@ -9,6 +9,7 @@ import { Menu } from 'app/shared/menu';
 import { ForgotPasswordComponent } from 'app/login/forgot-password.component';
 import { ChangeForgottenPasswordComponent } from 'app/login/change-forgotten-password.component';
 import { ChangeExpiredPasswordComponent } from 'app/login/change-expired-password.component';
+import { AcceptPendingAgreementsComponent } from 'app/login/accept-pending-agreements.component';
 
 const rootRoutes: Routes = [
   {
@@ -44,6 +45,14 @@ const rootRoutes: Routes = [
   {
     path: 'forgot-password/:key',
     component: ChangeForgottenPasswordComponent,
+    data: {
+      menu: Menu.LOGIN
+    }
+  },
+  {
+    path: 'pending-agreements',
+    canActivate: [LoggedUserGuard],
+    component: AcceptPendingAgreementsComponent,
     data: {
       menu: Menu.LOGIN
     }

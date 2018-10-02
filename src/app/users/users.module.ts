@@ -15,7 +15,6 @@ import { PublicRegistrationComponent } from 'app/users/registration/public-regis
 import { RegistrationStepGroupComponent } from 'app/users/registration/registration-step-group.component';
 import { RegistrationStepFieldsComponent } from 'app/users/registration/registration-step-fields.component';
 import { RegistrationStepConfirmComponent } from 'app/users/registration/registration-step-confirm.component';
-import { RegistrationAgreementsComponent } from 'app/users/registration/registration-agreements.component';
 import { RegistrationStepDoneComponent } from 'app/users/registration/registration-step-done.component';
 import { ValidateRegistrationComponent } from 'app/users/registration/validate-registration.component';
 import { ValidateEmailChangeComponent } from 'app/users/profile/validate-email-change.component';
@@ -44,7 +43,6 @@ import { ValidateEmailChangeComponent } from 'app/users/profile/validate-email-c
     RegistrationStepGroupComponent,
     RegistrationStepFieldsComponent,
     RegistrationStepConfirmComponent,
-    RegistrationAgreementsComponent,
     RegistrationStepDoneComponent,
     ValidateRegistrationComponent,
 
@@ -53,8 +51,7 @@ import { ValidateEmailChangeComponent } from 'app/users/profile/validate-email-c
   ],
   entryComponents: [
     VerifyPhoneComponent,
-    ChangePasswordDialogComponent,
-    RegistrationAgreementsComponent
+    ChangePasswordDialogComponent
   ]
 })
 export class UsersModule {

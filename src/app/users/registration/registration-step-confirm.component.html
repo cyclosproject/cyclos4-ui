@@ -47,8 +47,8 @@
     confirmation
   </h2>
   <boolean-field *ngIf="data.agreements?.length > 0" formControlName="acceptAgreement"
-    i18n-label label="Registration agreement" i18n>
-    <div #agreementsContent></div>
+    i18n-label label="Registration agreement">
+    <div #agreementsContent class="pl-2"></div>
   </boolean-field>
 
   <ng-container *ngIf="data.captchaType != null">

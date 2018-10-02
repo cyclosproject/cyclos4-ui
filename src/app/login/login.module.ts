@@ -5,6 +5,8 @@ import { LoginComponent } from 'app/login/login.component';
 import { ForgotPasswordComponent } from 'app/login/forgot-password.component';
 import { ChangeForgottenPasswordComponent } from 'app/login/change-forgotten-password.component';
 import { ChangeExpiredPasswordComponent } from 'app/login/change-expired-password.component';
+import { AcceptPendingAgreementsComponent } from 'app/login/accept-pending-agreements.component';
+import { RegistrationAgreementsComponent } from 'app/login/registration-agreements.component';
 
 /**
  * Module comprising the login functionality
@@ -14,10 +16,15 @@ import { ChangeExpiredPasswordComponent } from 'app/login/change-expired-passwor
     LoginComponent,
     ForgotPasswordComponent,
     ChangeForgottenPasswordComponent,
-    ChangeExpiredPasswordComponent
+    ChangeExpiredPasswordComponent,
+    AcceptPendingAgreementsComponent,
+    RegistrationAgreementsComponent
   ],
   imports: [
     SharedModule
+  ],
+  entryComponents: [
+    RegistrationAgreementsComponent
   ]
 })
 export class LoginModule { }

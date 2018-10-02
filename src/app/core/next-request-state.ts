@@ -65,6 +65,13 @@ export class NextRequestState {
     // Append the resulting request in the pending list
     this.pending$.next([result, ...this.pending$.value]);
 
+    // Just as a fallback, after 15 seconds, remove the request from the pending list
+    setTimeout(() => {
+      if (this.pending$.value.includes(result)) {
+        this.pending$.next(this.pending$.value.filter(r => r !== result));
+      }
+    }, 15000);
+
     return result;
   }
 
