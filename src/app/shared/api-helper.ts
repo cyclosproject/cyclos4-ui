@@ -375,7 +375,24 @@ export class ApiHelper {
       beginDate = filters.periodBegin;
       endDate = filters.periodEnd;
     }
-    return empty(beginDate) && empty(endDate) ? null : [beginDate, endDate];
+    return ApiHelper.rangeFilter(beginDate, endDate);
+  }
+
+  /**
+   * Returns the given min / max value as a range, suitable for query filters on the API
+   */
+  static rangeFilter(min: string, max: string): string[] {
+    const hasMin = !empty(min);
+    const hasMax = !empty(max);
+    if (hasMin && hasMax) {
+      return [min, max];
+    } else if (hasMin) {
+      return [min, ''];
+    } else if (hasMax) {
+      return ['', max];
+    } else {
+      return [];
+    }
   }
 
 }

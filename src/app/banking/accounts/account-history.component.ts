@@ -90,6 +90,7 @@ export class AccountHistoryComponent
     return [
       'transferFilter', 'preselectedPeriod',
       'periodBegin', 'periodEnd',
+      'minAmount', 'maxAmount',
       'transactionNumber', 'direction',
       'user', 'by'
     ];
@@ -134,6 +135,7 @@ export class AccountHistoryComponent
       page: value.page, pageSize: value.pageSize,
       transferFilters: filter == null ? [] : [filter.id],
       datePeriod: ApiHelper.resolveDatePeriod(value),
+      amountRange: ApiHelper.rangeFilter(value.minAmount, value.maxAmount),
       user: value.user,
       by: value.by,
       transactionNumber: value.transactionNumber,

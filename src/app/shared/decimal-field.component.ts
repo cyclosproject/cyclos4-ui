@@ -76,7 +76,9 @@ export class DecimalFieldComponent extends BaseFormFieldComponent<string> implem
 
   ngOnInit() {
     super.ngOnInit();
-    this.fieldSize = CustomFieldSizeEnum.SMALL;
+    if (this.fieldSize == null) {
+      this.fieldSize = CustomFieldSizeEnum.SMALL;
+    }
     this.internalControl = new FormControl();
     this.addSub(this.internalControl.valueChanges.subscribe((input: string) => {
       if (empty(input)) {

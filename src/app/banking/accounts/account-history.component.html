@@ -3,14 +3,14 @@
     <page-content mode="filters" [heading]="title" [headingActions]="headingActions$ | async">
       <form [formGroup]="form" class="filters-form border-bottom">
         <div class="row">
-          <div class="col-12 col-md-6">
+          <div *ngIf="data.preselectedPeriods?.length > 1" class="col-12 col-md-6">
             <single-selection-field labelPosition="side" formControlName="preselectedPeriod"
               i18n-label label="Period">
               <field-option *ngFor="let period of data.preselectedPeriods"
                 [value]="period" [text]="period.name"></field-option>
             </single-selection-field>
           </div>
-          <div *ngIf="data.transferFilters?.length > 0" class="col-12 col-md-6">
+          <div *ngIf="data.transferFilters?.length > 1" class="col-12 col-md-6">
             <single-selection-field labelPosition="side" formControlName="transferFilter"
               i18n-label label="Filter" i18n-emptyOption emptyOption="Not applied">
               <field-option *ngFor="let filter of data.transferFilters"
@@ -18,6 +18,30 @@
             </single-selection-field>
           </div>
           <ng-container *ngIf="moreFilters$ | async">
+            <div *ngIf="(form.value || (form.valueChanges | async))?.preselectedPeriod?.begin === null"
+              class="col-12 col-md-6">
+              <date-field labelPosition="side" formControlName="periodBegin"
+                i18n-label label="Begin date" fieldSize="full">
+              </date-field>
+            </div>
+            <div *ngIf="(form.value || (form.valueChanges | async))?.preselectedPeriod?.end === null"
+              class="col-12 col-md-6">
+              <date-field labelPosition="side" formControlName="periodEnd"
+                i18n-label label="End date" fieldSize="full">
+              </date-field>
+            </div>
+            <div class="col-12 col-md-6">
+              <decimal-field labelPosition="side" formControlName="minAmount"
+                i18n-label label="Minimum amount" fieldSize="full" [prefix]="currency.prefix"
+                [suffix]="currency.suffix" [scale]="currency.decimalDigits">
+              </decimal-field>
+            </div>
+            <div class="col-12 col-md-6">
+              <decimal-field labelPosition="side" formControlName="maxAmount"
+                i18n-label label="Maximum amount" fieldSize="full" [prefix]="currency.prefix"
+                [suffix]="currency.suffix" [scale]="currency.decimalDigits">
+              </decimal-field>
+            </div>
             <div class="col-12 col-md-6">
               <user-field labelPosition="side" formControlName="user"
                 i18n-label label="User"></user-field>

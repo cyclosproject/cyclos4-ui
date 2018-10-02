@@ -40,7 +40,9 @@ export class DateFieldComponent
 
   ngOnInit() {
     super.ngOnInit();
-    this.fieldSize = CustomFieldSizeEnum.SMALL;
+    if (this.fieldSize == null) {
+      this.fieldSize = CustomFieldSizeEnum.SMALL;
+    }
     this.pattern = this.format.dateFormat.toUpperCase();
 
     const validator: ValidatorFn = control => {

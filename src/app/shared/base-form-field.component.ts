@@ -66,12 +66,12 @@ export abstract class BaseFormFieldComponent<T> extends BaseControlComponent<T> 
   disabledFormat: ValueFormat = 'plain';
 
   /** The field size */
-  private _fieldSize = CustomFieldSizeEnum.FULL;
+  private _fieldSize;
   @Input() get fieldSize(): CustomFieldSizeEnum {
     return this._fieldSize;
   }
   set fieldSize(size: CustomFieldSizeEnum) {
-    this._fieldSize = CustomFieldSizeEnum.values().includes(size) ? size : CustomFieldSizeEnum.FULL;
+    this._fieldSize = size;
   }
 
   constructor(protected controlContainer: ControlContainer) {
