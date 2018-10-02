@@ -5,7 +5,7 @@ import { filter } from 'rxjs/operators';
 import { map } from 'rxjs/operators';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 
-const IGNORE_BREADCRUMB = ['', '/home', '/login'];
+const IGNORE_BREADCRUMB = ['', '/home', '/login', '/forgot-password'];
 
 /**
  * Service used to navigate between pages and managing the component state

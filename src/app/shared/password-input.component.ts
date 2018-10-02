@@ -162,15 +162,6 @@ export class PasswordInputComponent
         required: true
       };
     }
-    const length = value.length;
-    if (length < this.passwordInput.minLength) {
-      return {
-        'minlength': {
-          'requiredLength': this.passwordInput.minLength,
-          'actualLength': length
-        }
-      };
-    }
     return null;
   }
 
