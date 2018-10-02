@@ -41,8 +41,8 @@
         </div>
         <div class="col-5 col-sm-4 text-right pt-1 font-weight-bold"
           [ngClass]="{
-          positive: format.isPositive(account.status.availableBalance),
-          negative: format.isNegative(account.status.availableBalance),
+          positive: format.isPositive(account.status.balance),
+          negative: format.isNegative(account.status.balance),
           'mt-1': !first
         }">
           {{ account.status.balance | currency:account.currency }}
