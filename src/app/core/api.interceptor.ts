@@ -1,10 +1,10 @@
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
-import { NotificationService } from 'app/core/notification.service';
-import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpResponse } from '@angular/common/http';
-import { Observable, BehaviorSubject } from 'rxjs';
-import { tap, map, distinctUntilChanged } from 'rxjs/operators';
 import { NextRequestState } from 'app/core/next-request-state';
+import { NotificationService } from 'app/core/notification.service';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 /**
  * Intercepts requests to set the correct headers and handle errors
@@ -21,7 +21,7 @@ export class ApiInterceptor implements HttpInterceptor {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (!req.url.includes('/api/')) {
+    if (!req.url.includes('/api/') && !req.url.startsWith('api/')) {
       // This is not a request to the API! proceed as is
       return next.handle(req);
     }
