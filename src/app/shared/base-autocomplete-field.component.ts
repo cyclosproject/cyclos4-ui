@@ -1,6 +1,6 @@
 import { ControlContainer, FormControl } from '@angular/forms';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
-import { ViewChild, ElementRef, OnDestroy, OnInit, Output, EventEmitter, AfterViewChecked, AfterViewInit } from '@angular/core';
+import { ViewChild, ElementRef, OnDestroy, OnInit, Output, EventEmitter, AfterViewChecked, AfterViewInit, Input } from '@angular/core';
 import { BsDropdownDirective } from 'ngx-bootstrap/dropdown';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { empty, blank } from 'app/shared/helper';
@@ -19,6 +19,8 @@ export abstract class BaseAutocompleteFieldComponent<T, A>
   @ViewChild('inputField') inputField: InputFieldComponent;
   @ViewChild('dropdown') dropdown: BsDropdownDirective;
   @ViewChild('dropDownMenu') menuRef: ElementRef;
+
+  @Input() autoSearch = true;
 
   @Output() selected = new EventEmitter<A>();
   selection$ = new BehaviorSubject<A>(null);
@@ -48,21 +50,23 @@ export abstract class BaseAutocompleteFieldComponent<T, A>
     ).subscribe(() => {
       this.close();
     }));
-    this.addSub(this.inputFieldControl.valueChanges.pipe(
-      filter(text => !blank(text)),
-      debounceTime(ApiHelper.DEBOUNCE_TIME),
-      distinctUntilChanged(),
-      switchMap(text => this.query(text))
-    ).subscribe(rows => {
-      if (blank(this.inputFieldControl.value)) {
-        this.options$.next([]);
-      } else {
-        this.options$.next(rows);
-        if (!empty(rows)) {
-          this.open();
+    if (this.autoSearch) {
+      this.addSub(this.inputFieldControl.valueChanges.pipe(
+        filter(text => !blank(text)),
+        debounceTime(ApiHelper.DEBOUNCE_TIME),
+        distinctUntilChanged(),
+        switchMap(text => this.query(text))
+      ).subscribe(rows => {
+        if (blank(this.inputFieldControl.value)) {
+          this.options$.next([]);
+        } else {
+          this.options$.next(rows);
+          if (!empty(rows)) {
+            this.open();
+          }
         }
-      }
-    }));
+      }));
+    }
     this.addSub(this.formControl.statusChanges.subscribe(status => {
       // We should delegate the error to the input field control, so it is correctly marked as error
       if (status === 'INVALID') {
@@ -72,6 +76,23 @@ export abstract class BaseAutocompleteFieldComponent<T, A>
       }
     }));
     this.bodyListener = e => this.close();
+  }
+
+  search(text?: string) {
+    if (blank(text)) {
+      text = this.inputFieldControl.value;
+    }
+    if (blank(text)) {
+      this.options$.next([]);
+      this.close();
+    } else {
+      this.addSub(this.query(text).subscribe(rows => {
+        this.options$.next(rows);
+        if (!empty(rows)) {
+          this.open();
+        }
+      }));
+    }
   }
 
   ngAfterViewInit() {

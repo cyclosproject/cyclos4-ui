@@ -53,7 +53,7 @@
       <ng-container *ngIf="actions.length > 0">
         <h2 class="mt-3 mb-2" i18n>Actions</h2>
         <div class="profileActions">
-          <a *ngFor="let action of actions; let first = first" class="action link-with-icon mt-1"
+          <a *ngFor="let action of actions; let first = first" class="action link-with-icon mt-1 mb-2"
             href="#" (click)="action.onClick(); $event.preventDefault()">
             <icon [icon]="action.icon"></icon>
             <span>{{ action.label }}</span>
@@ -70,7 +70,7 @@
           </div>
           <div class="col-12 col-md-6 col-xl-5">
             <ng-container *ngFor="let address of user.addresses; let first = first">
-              <h3 class="mb-0" [ngClass]="{'mt-0': first, 'mt-3': !first}">{{
+              <h3 [ngClass]="{'mt-0': first, 'mt-3': !first}">{{
                 address['fullName']
                 || address.name }}</h3>
               <address-details [address]="address"></address-details>
@@ -103,7 +103,7 @@
             <div class="flex-grow-1">
               <h3>{{ contactInfo.name }}</h3>
               <div *ngIf="contactInfo.image && (layout.ltsm$ | async)" class="d-flex justify-content-center mb-4">
-                <avatar size="160" imageSize="200" useLightbox [image]="contactInfo.image"></avatar>
+                <avatar size="120" imageSize="120" useLightbox [image]="contactInfo.image"></avatar>
               </div>
               <label-value *ngIf="contactInfo.email" i18n-label label="E-mail">
                 <a [href]="'mailto:' + contactInfo.email" class="link-with-icon">

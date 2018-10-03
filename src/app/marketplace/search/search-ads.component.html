@@ -154,8 +154,10 @@
         <avatar ngClass="card-img-top" [roundBorders]="false" [image]="ad.image"
           size="full" imageSize="200" icon="shopping_basket" iconSize="8rem"></avatar>
         <div class="card-body" [ngStyle]="{position: 'relative'}">
-          <avatar [image]="ad.owner.image" [ngStyle]="{position: 'absolute', right: '0.5rem', top: 0, transform: 'translateY(-75%)'}"
-            [tooltip]="ad.owner.display" size="medium-large"></avatar>
+          <div class="tile-floating-avatar">
+            <avatar [image]="ad.owner.image" [tooltip]="ad.owner.display"
+              size="medium-large"></avatar>
+          </div>
           <div *ngIf="ad.price; else blankPrice" class="card-title">
             <span *ngIf="ad.promotionalPrice" class="promo-price">
               {{ ad.price | number:decimals(ad) }}

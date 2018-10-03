@@ -51,12 +51,6 @@ $negative-color: $red;
 $total-amount-color: $green;
 $total-amount-size: 2rem;
 
-$required-marker-color: $red;
-$list-group-hover-bg: $gray-200;
-$input-placeholder-color: $gray-500;
-$input-group-addon-bg: $gray-100;
-$button-icon-color: $gray-700;
-
 $label-weight: $font-weight-bold;
 $label-color: $gray-700;
 
@@ -73,7 +67,7 @@ $title-button-border-color: $section-border-color;
 $menu-bar-bg: $input-bg;
 $menu-bar-color: $input-color;
 $menu-bar-inactive-color: $faded-color;
-$menu-bar-hover-bg: $gray-100;
+$menu-bar-hover-bg: lighten($primary, 45%);
 $menu-bar-active-border: $primary;
 
 $side-menu-bg: $menu-bar-bg;
@@ -105,6 +99,12 @@ $personal-menu-item-color: $menu-bar-inactive-color;
 $personal-menu-item-border-color: $gray-200;
 $personal-menu-hover-bg: $menu-bar-hover-bg;
 
+$required-marker-color: $red;
+$list-group-hover-bg: $menu-bar-hover-bg;
+$input-placeholder-color: $gray-500;
+$input-group-addon-bg: $gray-100;
+$button-icon-color: $gray-700;
+
 $snack-bar-bg: $gray-900;
 $snack-bar-color: white;
 
@@ -119,6 +119,7 @@ $breadcrumb-margin-bottom: 0;
 $breadcrumb-bg: transparent;
 
 $manage-passwords-icon-color: $gray-500;
+$account-indicator-font-size: 16px;
 
 // Theme for the Bootstrap date picker
 $theme-list: ('default': $primary);

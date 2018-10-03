@@ -24,6 +24,6 @@
   }
 }
 
-.lt-sm :host {
+.lt-sm :host.field, .lt-sm :host.field-view {
   padding-bottom: 0.5rem;
 }

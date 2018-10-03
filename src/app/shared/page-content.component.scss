@@ -103,13 +103,19 @@
 .page-content-body {
   padding: $layout-spacer-xxs;
 }
+.page-content.mode-normal .page-content-body {
+  padding: #{$layout-spacer-xxs * 2} $layout-spacer-xxs;
+}
 @include media-breakpoint-up(xs) {
   .page-content-body {
     padding: $layout-spacer-xs;
   }
+  .page-content.mode-normal .page-content-body {
+    padding: #{$layout-spacer-xs * 2} $layout-spacer-xs;
+  }
 }
 @include media-breakpoint-up(sm) {
-  .page-content-body {
+  .page-content-body, .page-content.mode-normal .page-content-body {
     padding: $card-spacer-x;
   }
 
@@ -151,6 +157,7 @@
   background-color: $title-button-bg;
   color: $title-button-color;
   padding: 0.2rem;
+  line-height: 1.2em;
 
   &:focus, &:active {
     outline: 0;

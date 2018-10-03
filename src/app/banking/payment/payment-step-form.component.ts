@@ -3,16 +3,17 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnIn
 import { FormGroup } from '@angular/forms';
 import {
   AccountWithStatus, Currency, DataForTransaction,
-  TransactionTypeData, TransferType, User
+  TransactionTypeData, TransferType, User, NotFoundError
 } from 'app/api/models';
 import { PaymentsService } from 'app/api/services';
 import { ErrorStatus } from 'app/core/error-status';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseComponent } from 'app/shared/base.component';
 import { DecimalFieldComponent } from 'app/shared/decimal-field.component';
-import { empty, getAllErrors } from 'app/shared/helper';
+import { empty, getAllErrors, blank } from 'app/shared/helper';
 import { BehaviorSubject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { UserFieldComponent } from 'app/shared/user-field.component';
 
 
 const IGNORED_STATUSES = [ErrorStatus.FORBIDDEN, ErrorStatus.UNAUTHORIZED, ErrorStatus.NOT_FOUND];
@@ -23,11 +24,10 @@ const IGNORED_STATUSES = [ErrorStatus.FORBIDDEN, ErrorStatus.UNAUTHORIZED, Error
 @Component({
   selector: 'payment-step-form',
   templateUrl: 'payment-step-form.component.html',
+  styleUrls: ['payment-step-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PaymentStepFormComponent extends BaseComponent implements OnInit {
-
-  getAllErrors = getAllErrors;
 
   @Input() data: DataForTransaction;
   @Input() form: FormGroup;
@@ -37,6 +37,7 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
   @Output() availablePaymentTypes = new EventEmitter<TransferType[]>();
 
   @ViewChild('amount') amountField: DecimalFieldComponent;
+  @ViewChild('toUser') userField: UserFieldComponent;
 
   fixedDestination = false;
   fixedUser: User;
@@ -98,25 +99,32 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
       this.addSub(this.paymentsService.dataForPerformPayment({
         owner: ApiHelper.SELF,
         to: subject,
-        fields: ['paymentTypes', 'paymentTypeData']
+        fields: ['toUser', 'paymentTypes', 'paymentTypeData']
       }).subscribe(data => {
         this.setFetchedPaymentTypes(data);
       }, (err: HttpErrorResponse) => {
-        if (IGNORED_STATUSES.includes(err.status)) {
-          this.markSubjectAsInvalid();
-        } else {
+        if (this.allowPrincipal && this.userField && err.status === ErrorStatus.NOT_FOUND) {
+          // The typed value for the user may be a principal
+          let error = err.error;
+          if (typeof error === 'string') {
+            try {
+              error = JSON.parse(error);
+            } catch (e) {
+              error = {};
+            }
+          }
+          const entityType = (error as NotFoundError).entityType;
+          if (!blank(entityType) && entityType.endsWith('User')) {
+            // The user couldn't be located. Perform the search in the user field
+            this.userField.search();
+            return;
+          }
+        }
+        if (!IGNORED_STATUSES.includes(err.status)) {
           defaultHandling(err);
         }
       }));
     });
-  }
-
-  private markSubjectAsInvalid() {
-    const subject = this.form.get('subject');
-    subject.setErrors({
-      message: this.i18n('The given user is invalid')
-    });
-    subject.markAsTouched();
   }
 
   private adjustPaymentTypes() {
@@ -153,6 +161,9 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
   }
 
   private setFetchedPaymentTypes(data: DataForTransaction) {
+    if (this.userField) {
+      this.userField.user = data.toUser;
+    }
     this.fetchedPaymentTypes = data.paymentTypes;
     const typeData = data.paymentTypeData;
     if (typeData) {
@@ -188,9 +199,7 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
         const typeData = data.paymentTypeData;
         this.setPaymentTypeData(typeData);
       }, (err: HttpErrorResponse) => {
-        if (IGNORED_STATUSES.includes(err.status)) {
-          this.markSubjectAsInvalid();
-        } else {
+        if (!IGNORED_STATUSES.includes(err.status)) {
           defaultHandling(err);
         }
       }));

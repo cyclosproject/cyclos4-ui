@@ -1,27 +1,27 @@
-<div [ngClass]="elementClass" *ngIf="address.addressLine1">
+<div [ngClass]="classNames" *ngIf="address.addressLine1">
   {{ address.addressLine1 }}
 </div>
-<div [ngClass]="elementClass" *ngIf="address.addressLine2">
+<div [ngClass]="classNames" *ngIf="address.addressLine2">
   {{ address.addressLine1 }}
 </div>
-<div [ngClass]="elementClass" *ngIf="address.street">
+<div [ngClass]="classNames" *ngIf="address.street">
   {{ ApiHelper.addressStreet(address) }}
 </div>
-<div [ngClass]="elementClass" *ngIf="address.neighborhood">
+<div [ngClass]="classNames" *ngIf="address.neighborhood">
   {{ address.neighborhood }}
 </div>
-<div [ngClass]="elementClass" *ngIf="address.poBox" i18n>
+<div [ngClass]="classNames" *ngIf="address.poBox" i18n>
   PO box: {{ address.poBox }}
 </div>
-<div [ngClass]="elementClass" *ngIf="address.zip" i18n>
+<div [ngClass]="classNames" *ngIf="address.zip" i18n>
   ZIP code: {{ address.zip }}
 </div>
-<div [ngClass]="elementClass" *ngIf="address.city">
+<div [ngClass]="classNames" *ngIf="address.city">
   {{ address.city }}
 </div>
-<div [ngClass]="elementClass" *ngIf="address.region">
+<div [ngClass]="classNames" *ngIf="address.region">
   {{ address.region }}
 </div>
-<div [ngClass]="elementClass" *ngIf="address.country && countriesResolve.data | async">
+<div [ngClass]="classNames" *ngIf="address.country && countriesResolve.data | async">
   {{ country }}
 </div>

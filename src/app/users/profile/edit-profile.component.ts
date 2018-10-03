@@ -17,6 +17,7 @@ import { VerifyPhoneComponent } from 'app/users/profile/verify-phone.component';
 import { take, debounceTime } from 'rxjs/operators';
 import { ManageImagesComponent } from 'app/shared/manage-images.component';
 import { LatLngBounds } from '@agm/core';
+import { Action } from 'app/shared/action';
 
 const BASIC_FIELDS = ['name', 'username', 'email'];
 export type Availability = 'disabled' | 'single' | 'multiple';
@@ -43,6 +44,7 @@ export class EditProfileComponent
   editableFields: Set<string>;
   managePrivacyFields: Set<string>;
   userCustomFields: Map<string, CustomFieldDetailed>;
+  headingActions: Action[];
 
   // Forms which will be submitted. Need to keep track in order to match the validation errors
   user: FormGroup;
@@ -90,6 +92,12 @@ export class EditProfileComponent
   ngOnInit() {
     super.ngOnInit();
     this.key = ApiHelper.SELF;
+
+    this.headingActions = [{
+      icon: 'view', label: this.i18n('View'), onClick: () => {
+        this.router.navigate(['users', 'my-profile']);
+      }
+    }];
 
     this.usersService.getDataForEditFullProfile({ user: this.key }).subscribe(data => {
       this.data = data;

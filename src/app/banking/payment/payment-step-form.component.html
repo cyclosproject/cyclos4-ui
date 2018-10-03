@@ -1,27 +1,18 @@
 <ng-container [formGroup]="form">
-  <label-value *ngIf="singleAccount; else multipleAccounts" labelSize="large"
-    [label]="data.accounts[0].type.name" kind="fieldView">
+  <label-value *ngIf="singleAccount; else multipleAccounts" i18n-label label="Account balance"
+    kind="fieldView" labelPosition="side">
     <!-- Single account -->
-    <div class="row no-gutters">
-      <div class="col-6 col-sm-8">
-        <ng-container *ngIf="singleAccount.number">
-          {{ singleAccount.number }}
-        </ng-container>
-      </div>
-      <div class="col-6 col-sm-4 text-right text-nowrap font-weight-bold"
-        [ngClass]="{
-          positive: format.isPositive(singleAccount.status.balance),
-          negative: format.isNegative(singleAccount.status.balance)
-        }">
-        {{ singleAccount.status.balance | currency:singleAccount.currency }}
-      </div>
-    </div>
+    <span class="account-balance text-nowrap font-weight-bold" [ngClass]="{
+        positive: format.isPositive(singleAccount.status.balance),
+        negative: format.isNegative(singleAccount.status.balance)
+      }">
+      {{ singleAccount.status.balance | currency:singleAccount.currency }}
+    </span>
   </label-value>
   <ng-template #multipleAccounts>
     <!-- Multiple accounts -->
-    <label-value i18n-label label="From account" labelSize="large" required
-      kind="field">
-      <div class="row no-gutters" *ngFor="let account of data.accounts">
+    <label-value i18n-label label="From account" required kind="field">
+      <div class="row no-gutters mb-2" *ngFor="let account of data.accounts">
         <div class="col-7 col-sm-8">
           <div class="custom-control custom-radio">
             <input type="radio" formControlName="account" class="custom-control-input"
@@ -39,11 +30,10 @@
             </label>
           </div>
         </div>
-        <div class="col-5 col-sm-4 text-right pt-1 font-weight-bold"
+        <div class="col-5 col-sm-4 text-right font-weight-bold account-balance"
           [ngClass]="{
           positive: format.isPositive(account.status.balance),
-          negative: format.isNegative(account.status.balance),
-          'mt-1': !first
+          negative: format.isNegative(account.status.balance)
         }">
           {{ account.status.balance | currency:account.currency }}
         </div>
@@ -53,21 +43,21 @@
   </ng-template>
 
   <label-value *ngIf="!fixedDestination" kind="field" required i18n-label
-    labelSize="large" label="Select user">
+    label="Select user">
     <single-selection-field focused formControlName="subject" *ngIf="fixedUsersList; else toUserField">
       <!-- A fixed user list to pay to. Generally only applicable to restricted operators -->
       <field-option *ngFor="let user of data.allowedUsers" [value]="user.id"
         [text]="user.display"></field-option>
     </single-selection-field>
     <ng-template #toUserField>
-      <user-field focused formControlName="subject" [allowContacts]="allowContacts"
+      <user-field #toUser focused [autoSearch]="!allowPrincipal"
+        formControlName="subject" [allowContacts]="allowContacts"
         [allowSearch]="allowSearch" [allowPrincipal]="allowPrincipal"
         (selected)="$event ? amount.focus() : null"></user-field>
     </ng-template>
   </label-value>
 
-  <label-value *ngIf="fixedUser" i18n-label kind="fieldView" labelSize="large"
-    label="To user">
+  <label-value *ngIf="fixedUser" i18n-label kind="fieldView" label="To user">
     {{ fixedUser.display }}
   </label-value>
 
@@ -89,7 +79,7 @@
 
   <single-selection-field formControlName="scheduling" required i18n-label
     label="Scheduling" *ngIf="(paymentTypeData$ | async)?.allowsRecurringPayments || (paymentTypeData$ | async)?.maxInstallments > 0">
-    <field-option value='direct' i18n-text text="Pay directly"></field-option>
+    <field-option value='direct' i18n-text text="Pay now"></field-option>
     <field-option *ngIf="paymentTypeData$.value.maxInstallments > 0" value='futureDate'
       i18n-text text="Scheduled"></field-option>
     <field-option *ngIf="paymentTypeData$.value.maxInstallments > 1" value='scheduled'

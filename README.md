@@ -83,7 +83,7 @@ Angular assumes the application is deployed in the root path of your domain. For
 npm run build -- --base-href /path/
 ```
 
-## Deploying on the server
+## Deploying to the server
 Angular, by default, uses `HTML5`'s [history.pushState](https://developer.mozilla.org/en-US/docs/Web/API/History_API#The_pushState()_method) method, which produces URLs with paths which are undistinguishable from regular nested paths, but without producing a new request. Besides producing natural URLs, this method allows future expansions, such as using [server-side rendering](https://angular.io/guide/universal).
 
 In order to correctly support the application, the server must also respond to deep links, even if they don't physically exist on the server. For example, if the frontend is deployed on `https://account.example.org`, and the user clicks on the pay user menu, he will see the URL `https://account.example.org/banking/payment`. However, there is no `banking/payment` directory in the generated folder (`dist`). Without specific configuration, clicking directly on that link, or refreshing the browser page while in this URL would present a `404` error page.
@@ -143,6 +143,30 @@ Alternatively, if the frontend is deployed in a sub path, the path must be speci
 ```
 
 For other HTTP servers, please, consult their documentation on how to achieve the same result.
+
+## Improving performance on the HTTP server
+Angular generates some large, yet minified, JavaScript and CSS files. Two techniques can make loading the page much faster:
+
+- Compression: Compresses the files when sending them to the client;
+- Cache: Clients don't need to fetch again unchanged files.
+
+These should be enabled on the web server. On Apache, the following configuration can be applied:
+
+```apache
+  <IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE application/javascript
+  </IfModule>
+  <IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/* "access plus 1 days"
+    ExpiresByType text/css "access plus 1 year"
+    ExpiresByType text/javascript "access plus 1 year"
+  </IfModule>
+```
+
+It is safe to set a very large expiration date for CSS / JavaScript files because we explicitly enable the hashing on generated file names, making the file name change whenever the content changes.
 
 ## Generating links on the Cyclos backend that point to the frontend
 Cyclos generates some links which are sent by e-mail to users. Examples include the e-mail to validate a registration, or some notification. It is desired that when the user clicks on such links, he is forwarded to the deployed front-end application, not to the Cyclos default web interface.
