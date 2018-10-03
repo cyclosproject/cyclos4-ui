@@ -53,7 +53,7 @@ The project will not compile yet because it depends on classes which are generat
 On the `src/environments/configuration.ts` you will find the file that needs to be configured for your project.
 The most important settings are the following:
 ```typescript
-// The root URL for the API. Don't forget to include the /api in the end
+// The root URL for the API. Either 'api' when using a proxy, or the full URL (with protocol) to the Cyclos backend, ending with /api. See below on 'Access to the API backend'.
 const API_URL = 'http://localhost:8888/api';
 // Application title
 const APP_TITLE = 'Cyclos Local';
@@ -88,7 +88,7 @@ Angular, by default, uses `HTML5`'s [history.pushState](https://developer.mozill
 
 In order to correctly support the application, the server must also respond to deep links, even if they don't physically exist on the server. For example, if the frontend is deployed on `https://account.example.org`, and the user clicks on the pay user menu, he will see the URL `https://account.example.org/banking/payment`. However, there is no `banking/payment` directory in the generated folder (`dist`). Without specific configuration, clicking directly on that link, or refreshing the browser page while in this URL would present a `404` error page.
 
-To solve this problem the server must include the `index.html` content on any request to files that don't physically exist on the server. For Apache, the following configuration should be specified, for example, in a `.htaccess` file:
+To solve this problem the server must include the `index.html` content on any request to files that don't physically exist on the server. For Apache, make sure the `mod_rewrite` is enabled, and the following configuration is applied:
 
 ```apache
 <IfModule mod_rewrite.c>
@@ -101,7 +101,81 @@ To solve this problem the server must include the `index.html` content on any re
 </IfModule>
 ```
 
+However, if the application is deployed in a sub path, then both `RewriteBase` and `RewriteRule` must be changed, like this (assuming `/path`):
+
+```apache
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /path/
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /path/index.html [L]
+</IfModule>
+```
+
 If you deploy on another HTTP server, please consult its documentation on how to achieve a similar result.
+
+## Access to the API backend
+There are 2 alternatives for the frontend application to access the Cyclos backend:
+
+- Using CORS: The browser perform requests directly to the backend;
+- Proxying the `api` directory: The HTTP server has a directory named `api` (must be this name!) proxying requests to the backend.
+
+The CORS approach is faster / easier to deploy. In order for it to work, on the Cyclos backend's `cyclos.properties` file, set the `cyclos.cors.origin` to either `*` (any URL, not recommended for production) or to specific URLs (comma-separated list of allowed URLs). However, this approach has a drawback that before each actual request, the browser needs to send a preflight request, to ensure the actual request is allowed, because the Cyclos backend and the frontend run on different domains.
+
+The second approach exposes a directory called `api` in the frontend application. For the browser, that directory is in the same domain as the frontend application itself. On the backend, the HTTP server (for example, Apache) will proxy all requests to `/api` to the Cyclos backend, which probably runs on the same server / datacenter. To do so, in Apache, make sure the `mod_proxy` and `mod_proxy_http` modules are enabled. Then apply the following configuration, replacing `http://localhost:8888/api` with the correct backend URL (don't forget to include the `/api` in the end):
+
+```apache
+<IfModule mod_proxy.c>
+  ProxyPass "/api"  "http://localhost:8888/api"
+  ProxyPassReverse "/api"  "http://localhost:8888/api"
+</IfModule>
+```
+
+Alternatively, if the frontend is deployed in a sub path, the path must be specified:
+
+```apache
+<IfModule mod_proxy.c>
+  ProxyPass "/path/api"  "http://localhost:8888/api"
+  ProxyPassReverse "/path/api"  "http://localhost:8888/api"
+</IfModule>
+```
+
+For other HTTP servers, please, consult their documentation on how to achieve the same result.
+
+## Generating links on the Cyclos backend that point to the frontend
+Cyclos generates some links which are sent by e-mail to users. Examples include the e-mail to validate a registration, or some notification. It is desired that when the user clicks on such links, he is forwarded to the deployed front-end application, not to the Cyclos default web interface.
+
+To achieve this, Cyclos allows using a script to generate links. As a global administrator (which may be switched to the network), in 'System > Tools > Script', create a script of type 'Link generation', with the following content:
+
+```groovy
+import org.cyclos.impl.utils.LinkType
+
+if (user != null && user.admin) {
+    // Don't generate custom links for admins
+    return null
+}
+
+String root = scriptParameters.rootUrl
+switch (type) {
+    case LinkType.REGISTRATION_VALIDATION:
+        return "${root}/users/validate-registration/${validationKey}"
+    case LinkType.EMAIL_CHANGE:
+        return "${root}/users/validate-email-change/${validationKey}"
+    case LinkType.FORGOT_PASSWORD:
+        return "${root}/forgot-password/${validationKey}"
+    case LinkType.LOGIN:
+        return "${root}/login"
+}
+// Other link types are not yet handled in the the frontend
+```
+
+Then, in 'System > System configuration > Configurations' select the configuration applied to users (or the default one) and mark the 'Link generation' field for customization. Then select the script you created and set the following as parameters, replacing the URL with your deployed URL:
+
+```properties
+rootUrl = https://account.example.com
+```
 
 ## Translating
 `TODO`
