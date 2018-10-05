@@ -63,7 +63,7 @@
     </ng-container>
 
     <!-- Basic profile fields-->
-    <h2 class="mt-4 mb-2" i18n>Profile fields</h2>
+    <h2 class="mt-4 mb-3" i18n>Profile fields</h2>
     <ng-container [formGroup]="user">
       <input-field *ngIf="hasField('name')" formControlName="name" i18n-label
         label="Full name" [required]="canEdit('name')"></input-field>
@@ -120,7 +120,7 @@
 
     <!-- Single address -->
     <ng-container *ngIf="singleAddress">
-      <h2 i18n>Address</h2>
+      <h2 class="mb-3" i18n>Address</h2>
       <boolean-field *ngIf="data.addressConfiguration.availability !== 'required'"
         [formControl]="defineSingleAddress" i18n-label label="Define address"></boolean-field>
       <address-form *ngIf="defineSingleAddress.value" [addressForm]="singleAddress"
@@ -131,7 +131,7 @@
 
     <!-- Multiple phones -->
     <ng-container *ngIf="landLineAvailability === 'multiple' || mobileAvailability === 'multiple'">
-      <h2 class="mt-4 mb-2 d-flex flex-column flex-xs-row justify-content-between">
+      <h2 class="mt-4 mb-3 d-flex flex-column flex-xs-row justify-content-between">
         <div [ngClass]="{'mb-2': layout.xxs$ | async}" i18n>Phones</div>
 
         <!-- When can create both land-line and mobile, use a dropdown -->
@@ -150,12 +150,16 @@
               Add new mobile phone
             </button>
           </div>
-        </div>
 
-        <button *ngIf="canCreateLandLine && !canCreateMobile" class="btn btn-outline-primary"
-          (click)="addLandLine()" i18n>Add land-line</button>
-        <button *ngIf="!canCreateLandLine && canCreateMobile" class="btn btn-outline-primary"
-          (click)="addMobile()" i18n>Add mobile</button>
+          <div *ngIf="canCreateLandLine && !canCreateMobile" class="section-title-action">
+            <button class="btn btn-outline-primary" (click)="addLandLine()"
+              i18n>Add land-line</button>
+          </div>
+          <div *ngIf="!canCreateLandLine && canCreateMobile" class="section-title-action">
+            <button class="btn btn-outline-primary" (click)="addMobile()"
+              i18n>Add mobile</button>
+          </div>
+        </div>
       </h2>
       <div *ngIf="phones.length == 0" i18n>
         There are currently no phones
@@ -194,7 +198,7 @@
 
     <!-- Multiple addresses -->
     <ng-container *ngIf="addressAvailability === 'multiple'">
-      <h2 class="mt-4 mb-2 d-flex flex-column flex-xs-row justify-content-between">
+      <h2 class="mt-4 mb-3 d-flex flex-column flex-xs-row justify-content-between">
         <div [ngClass]="{'mb-2': layout.xxs$ | async}" i18n>Addresses</div>
         <div class="section-title-action">
           <button *ngIf="canCreateAddress" class="btn btn-outline-primary"
@@ -242,7 +246,7 @@
       Hence we don't handle the case of a single additional contact, but always as multiple.
     -->
     <ng-container *ngIf="contactInfoAvailability !== 'disabled'">
-      <h2 class="mt-4 mb-2 d-flex flex-column flex-xs-row justify-content-between">
+      <h2 class="mt-4 mb-3 d-flex flex-column flex-xs-row justify-content-between">
         <div [ngClass]="{'mb-2': layout.xxs$ | async}" i18n>Additional
           contacts</div>
         <div class="section-title-action">

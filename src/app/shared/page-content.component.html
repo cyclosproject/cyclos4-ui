@@ -17,9 +17,9 @@
       {{ heading }}
     </div>
     <div class="d-flex heading-actions" *ngIf="headingActions?.length > 0">
-      <button *ngFor="let action of headingActions" class="heading-action"
+      <button *ngFor="let action of headingActions" class="heading-action d-flex"
         (click)="action.onClick()">
-        {{ action.label }}
+        <div class="flex-grow-1">{{ action.label }}</div>
       </button>
     </div>
   </div>

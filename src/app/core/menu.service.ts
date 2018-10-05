@@ -223,7 +223,7 @@ export class MenuService {
         }
         if ((banking.authorizations || {}).view) {
           add(Menu.AUTHORIZED_PAYMENTS, '/banking/authorized-payments', 'assignment_turned_in',
-            this.i18n({ value: 'Authorized payments', description: 'Menu' }));
+            this.i18n({ value: 'Payment authorizations', description: 'Menu' }));
         }
 
         // Marketplace

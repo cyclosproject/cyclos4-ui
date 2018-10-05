@@ -1,6 +1,6 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="loaded$ | async; else loading">
-    <page-content mode="filters" i18n-heading heading="Authorized payments">
+    <page-content mode="filters" i18n-heading heading="Payment authorizations">
       <form [formGroup]="form" class="filters-form">
         <div class="row">
           <div class="col-12 col-md-6">

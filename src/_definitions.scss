@@ -74,21 +74,22 @@ $menu-bar-active-color: $primary;
 $menu-bar-active-border: $primary;
 
 $side-menu-bg: $menu-bar-bg;
-$side-menu-active-bg: $menu-bar-bg; // #e3f2fd;
+$side-menu-active-bg: $menu-bar-bg;
 $side-menu-active-color: $primary;
+$side-menu-active-hover-bg: $menu-bar-hover-bg;
 $side-menu-active-icon-color: $primary;
 $side-menu-inactive-color: $menu-bar-inactive-color;
 $side-menu-inactive-icon-color: $menu-bar-inactive-icon-color;
-$side-menu-inactive-hover-bg: #f1f9ff;
+$side-menu-inactive-hover-bg: $menu-bar-hover-bg;
 
 $dashboard-bg: $input-bg;
 $dashboard-color: $primary;
 $dashboard-icon-color: $primary;
-$dashboard-border-color: $primary;
-$dashboard-hover-bg: $primary;
-$dashboard-hover-color: color-yiq($primary);
-$dashboard-hover-border-color: darken($primary, 15%);
-$dashboard-hover-icon-color: color-yiq($primary);
+$dashboard-border-color: $section-border-color;
+$dashboard-hover-bg: #f1f9ff;
+$dashboard-hover-color: $primary;
+$dashboard-hover-border-color: $dashboard-border-color;
+$dashboard-hover-icon-color: $dashboard-icon-color;
 
 $sidenav-bar-bg: $top-bar-bg;
 $sidenav-bar-color: $top-bar-color;

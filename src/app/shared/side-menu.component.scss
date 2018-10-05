@@ -41,6 +41,9 @@ a.nav-item.active {
   color: $side-menu-active-color;
   background-color: $side-menu-active-bg;
   //box-shadow: inset 2px 0 0 0 $menu-bar-active-border;
+  &:hover {
+    background-color: $side-menu-active-hover-bg;
+  }
   icon {
     color: $side-menu-active-icon-color;
   }
