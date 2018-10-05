@@ -1,13 +1,14 @@
 <ng-container [formGroup]="form">
   <label-value *ngIf="singleAccount; else multipleAccounts" i18n-label label="Account balance"
-    kind="fieldView" labelPosition="side">
+    kind="fieldView" labelPosition="side" noWrapLabel>
     <!-- Single account -->
-    <span class="account-balance text-nowrap font-weight-bold" [ngClass]="{
+    <div class="account-balance text-nowrap font-weight-bold" [ngClass]="{
         positive: format.isPositive(singleAccount.status.balance),
-        negative: format.isNegative(singleAccount.status.balance)
+        negative: format.isNegative(singleAccount.status.balance),
+        'text-right': layout.ltsm$ | async
       }">
       {{ singleAccount.status.balance | currency:singleAccount.currency }}
-    </span>
+    </div>
   </label-value>
   <ng-template #multipleAccounts>
     <!-- Multiple accounts -->

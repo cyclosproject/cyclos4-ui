@@ -156,7 +156,7 @@
         <div class="card-body" [ngStyle]="{position: 'relative'}">
           <div class="tile-floating-avatar">
             <avatar [image]="ad.owner.image" [tooltip]="ad.owner.display"
-              size="medium-large"></avatar>
+              size="medium-large" (click)="$event.preventDefault(); $event.stopPropagation; router.navigate(['users', 'profile', ad.owner.id])"></avatar>
           </div>
           <div *ngIf="ad.price; else blankPrice" class="card-title">
             <span *ngIf="ad.promotionalPrice" class="promo-price">

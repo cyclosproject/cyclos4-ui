@@ -65,7 +65,7 @@
   </label-value>
 
   <ng-container *ngIf="(transaction.installments || []).length > 1">
-    <h2 class="border-0" i18n>Installments</h2>
+    <h2 class="border-0 mt-4" i18n>Installments</h2>
     <table class="table table-hover">
       <thead *ngIf="layout.gtxs$ | async">
         <th i18n>Number</th>
@@ -97,7 +97,7 @@
               {{ installment.amount | currency:transaction.currency }}
             </maybe-link>
           </td>
-          <td *ngIf="hasInstallmentActions" class="text-right">
+          <td *ngIf="hasInstallmentActions" class="actions">
             <button *ngIf="installment.canProcess" i18n-tooltip tooltip="Process this installment"
               class="btn btn-light btn-icon" (click)="processInstallment(installment)">
               <icon icon="play_circle_outline"></icon>
@@ -113,7 +113,7 @@
   </ng-container>
 
   <ng-container *ngIf="(transaction.occurrences || []).length > 0">
-    <h2 class="border-0" i18n>Occurrences</h2>
+    <h2 class="border-0 mt-4" i18n>Occurrences</h2>
     <table class="table table-hover cursor-pointer">
       <thead *ngIf="layout.gtxs$ | async">
         <th i18n>Number</th>
@@ -145,7 +145,7 @@
               {{ occurrence.amount | currency:transaction.currency }}
             </maybe-link>
           </td>
-          <td *ngIf="hasOccurrenceActions">
+          <td *ngIf="hasOccurrenceActions" class="actions">
             <button *ngIf="occurrence.canProcess" i18n-tooltip tooltip="Process this failed occurrence"
               class="btn btn-light btn-icon" (click)="processOcurrence(occurrence)">
               <icon icon="play_circle_outline"></icon>

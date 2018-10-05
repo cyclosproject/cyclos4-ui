@@ -69,6 +69,15 @@ export class LabelValueComponent implements OnInit, OnDestroy {
     this._required = truthyAttr(required);
   }
 
+  /** Whether to prevent line wrapping on labels */
+  private _noWrapLabel = false;
+  @Input() get noWrapLabel(): boolean | string {
+    return this._noWrapLabel;
+  }
+  set noWrapLabel(noWrapLabel: boolean | string) {
+    this._noWrapLabel = truthyAttr(noWrapLabel);
+  }
+
   /** The size for the value part */
   @Input() fieldSize: CustomFieldSizeEnum | number = CustomFieldSizeEnum.FULL;
 
@@ -155,6 +164,9 @@ export class LabelValueComponent implements OnInit, OnDestroy {
       classes.push('label-large');
     } else if (this.labelSize === 'small') {
       classes.push('label-small');
+    }
+    if (this.noWrapLabel) {
+      classes.push('text-nowrap');
     }
     return classes;
   }

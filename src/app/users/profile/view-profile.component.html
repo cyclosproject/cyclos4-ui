@@ -52,8 +52,8 @@
     <div class="d-flex flex-grow-1 flex-column">
       <ng-container *ngIf="actions.length > 0">
         <h2 class="mt-3 mb-2" i18n>Actions</h2>
-        <div class="profileActions">
-          <a *ngFor="let action of actions; let first = first" class="action link-with-icon mt-1 mb-2"
+        <div class="profile-actions">
+          <a *ngFor="let action of actions" class="profile-action link-with-icon"
             href="#" (click)="action.onClick(); $event.preventDefault()">
             <icon [icon]="action.icon"></icon>
             <span>{{ action.label }}</span>
@@ -70,13 +70,13 @@
           </div>
           <div class="col-12 col-md-6 col-xl-5">
             <ng-container *ngFor="let address of user.addresses; let first = first">
-              <h3 [ngClass]="{'mt-0': first, 'mt-3': !first}">{{
+              <h3 [ngClass]="{'mt-0': first, 'mt-4': !first}">{{
                 address['fullName']
                 || address.name }}</h3>
               <address-details [address]="address"></address-details>
             </ng-container>
           </div>
-          <div *ngIf="layout.gtxs$ | async" class="col-12 col-md-6 col-xl-7 mt-3">
+          <div *ngIf="layout.gtxs$ | async" class="col-12 col-md-6 col-xl-7 pt-1">
             <ng-container *ngTemplateOutlet="addressesMap"></ng-container>
           </div>
         </div>
@@ -89,7 +89,7 @@
           <div class="col-12 col-md-6 col-xl-5 mb-3">
             <address-details [address]="user.addresses[0]"></address-details>
           </div>
-          <div class="col-12 col-md-6 col-xl-7">
+          <div class="col-12 col-md-6 col-xl-7 pt-1">
             <ng-container *ngTemplateOutlet="addressesMap"></ng-container>
           </div>
         </div>
@@ -99,11 +99,11 @@
       <ng-container *ngIf="(user.contactInfos || []).length > 0">
         <h2 class="mt-3" i18n>Additional contact information</h2>
         <div *ngFor="let contactInfo of user.contactInfos; let first=first">
+          <h3>{{ contactInfo.name }}</h3>
           <div class="d-flex" [ngClass]="{'mt-0': first, 'mt-3': !first}">
             <div class="flex-grow-1">
-              <h3>{{ contactInfo.name }}</h3>
               <div *ngIf="contactInfo.image && (layout.ltsm$ | async)" class="d-flex justify-content-center mb-4">
-                <avatar size="120" imageSize="120" useLightbox [image]="contactInfo.image"></avatar>
+                <avatar size="120" useLightbox [image]="contactInfo.image"></avatar>
               </div>
               <label-value *ngIf="contactInfo.email" i18n-label label="E-mail">
                 <a [href]="'mailto:' + contactInfo.email" class="link-with-icon">
@@ -136,14 +136,14 @@
                 </label-value>
               </ng-container>
             </div>
-            <ng-container *ngIf="layout.gtxs$ | async">
-              <avatar *ngIf="contactInfo.image; else emptySpace" size="200"
+            <div *ngIf="layout.gtxs$ | async">
+              <avatar *ngIf="contactInfo.image; else emptySpace" size="120"
                 useLightbox [image]="contactInfo.image"></avatar>
               <ng-template #emptySpace>
                 <!-- Need this empty space to make contact infos with and without image take the same space -->
-                <div style="width: 200px; height: 200px"></div>
+                <div style="width: 120px; height: 120px"></div>
               </ng-template>
-            </ng-container>
+            </div>
           </div>
         </div>
       </ng-container>

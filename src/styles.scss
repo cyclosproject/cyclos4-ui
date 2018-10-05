@@ -47,7 +47,7 @@ body.gt-sm {
     box-shadow: $box-shadow-sm;
 
     .card-body {
-      padding: 0.5rem;
+      padding: 0.6rem;
 
       .card-title {
         font-weight: $font-weight-bold;
@@ -105,7 +105,7 @@ body.gt-sm {
     border-bottom: 1px solid $card-border-color;
     justify-content: center;
     align-items: center;
-    padding: 0.5rem 0.8rem;
+    padding: 0.6rem 0.8rem;
   }
   .category-title-text {
     flex-grow: 1;
@@ -119,13 +119,14 @@ body.gt-sm {
     display: block;
     border-top: 1px solid $card-border-color;
     text-align: center;
-    padding: 0.5rem;
+    padding: 0.6rem 0.5rem;
   }
 }
 
 table.table {
   td {
     vertical-align: middle;
+    height: 3.8rem;
   }
   th {
     font-weight: $font-weight-bold;
@@ -162,6 +163,26 @@ table.table {
       }
     }
   }
+  td.actions {
+    text-align: right;
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
+  }
+}
+
+@include media-breakpoint-up(md) {
+  table.table {
+    td {
+      padding: 0.75rem;
+    }
+    td.avatar {
+      padding-left: 1rem;
+    }
+    td.actions {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+  }
 }
 
 .tile-floating-avatar {
@@ -182,17 +203,6 @@ table.table {
   svg path {
     width: $avatar-size !important;
     height: $avatar-size !important;
-  }
-}
-
-@include media-breakpoint-up(md) {
-  table.table {
-    td {
-      padding: 0.75rem;
-    }
-    td.avatar {
-      padding-left: 1rem;
-    }
   }
 }
 
@@ -323,6 +333,9 @@ input[type=number] {
   font-size: 1.5em;
 }
 
+.custom-control-label {
+  padding-left: 0.2rem;
+}
 .custom-control-label::before {
   background-color: $input-bg;
   background-clip: padding-box;
@@ -625,5 +638,13 @@ bs-datepicker-navigation-view {
   }
   .bs-datepicker-body table td:before, .bs-datepicker-body table td span:before {
     display: none !important;
+  }
+}
+
+.profile-actions {
+  padding-top: 0.6rem;
+
+  .profile-action + .profile-action {
+    margin-top: 0.6rem;
   }
 }

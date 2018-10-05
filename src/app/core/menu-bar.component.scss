@@ -18,6 +18,9 @@ a {
 }
 a:not(.active) {
   color: $menu-bar-inactive-color;
+  icon {
+    color: $menu-bar-inactive-icon-color;
+  }
 }
 a:hover {
   background-color: $menu-bar-hover-bg;
@@ -25,4 +28,8 @@ a:hover {
 }
 a.active {
   box-shadow: inset 0 -2px 0 0 $menu-bar-active-border;
+  color: $menu-bar-active-color;
+  icon {
+    color: $menu-bar-active-icon-color;
+  }
 }

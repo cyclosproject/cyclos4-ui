@@ -10,7 +10,7 @@
   height: $title-height-xxs;
 
   .title-text {
-    font-size: 1.4em;
+    font-size: 1.1rem;
     line-height: 1.4em;
     margin-left: $layout-spacer-xxs;
   }
@@ -21,7 +21,7 @@
     height: $title-height-xs;
 
     .title-text {
-      margin-left: $layout-spacer-xs;
+      margin-left: 1.1rem;
     }
   }
 }
@@ -31,6 +31,7 @@
 
     .title-text {
       margin-left: $layout-spacer;
+      font-size: $layout-spacer;
     }
   }
 }

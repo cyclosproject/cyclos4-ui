@@ -29,10 +29,19 @@ a.nav-item:last-child {
 a.nav-item:hover {
   text-decoration: none;
 }
-a.nav-item:not(.active):hover {
-  background-color: $side-menu-inactive-hover-bg;
+a.nav-item:not(.active) {
+  icon {
+    color: $side-menu-inactive-icon-color;
+  }
+  &:hover {
+    background-color: $side-menu-inactive-hover-bg;
+  }
 }
 a.nav-item.active {
   color: $side-menu-active-color;
   background-color: $side-menu-active-bg;
+  //box-shadow: inset 2px 0 0 0 $menu-bar-active-border;
+  icon {
+    color: $side-menu-active-icon-color;
+  }
 }

@@ -188,6 +188,7 @@ export class MenuService {
       } else {
         const banking = permissions.banking || {};
         const users = permissions.users || {};
+        const contacts = permissions.contacts || {};
         const marketplace = permissions.marketplace || {};
         const accounts = banking.accounts || [];
 
@@ -245,7 +246,7 @@ export class MenuService {
             this.i18n({ value: 'Edit profile', description: 'Menu' }),
             [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
         }
-        if (users.contacts) {
+        if (contacts.enable) {
           add(Menu.CONTACTS, '/users/contacts', 'import_contacts',
             this.i18n({ value: 'Contacts', description: 'Menu' }),
             [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
