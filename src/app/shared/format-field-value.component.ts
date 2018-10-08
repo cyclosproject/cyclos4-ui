@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy, HostBinding } from '@angular/core';
 import {
   CustomFieldValue, CustomField, CustomFieldTypeEnum, CustomFieldDetailed,
   LinkedEntityTypeEnum,
@@ -11,6 +11,7 @@ import { NextRequestState } from 'app/core/next-request-state';
 import * as download from 'downloadjs';
 import { FilesService, ImagesService } from 'app/api/services';
 import { I18n } from '@ngx-translate/i18n-polyfill';
+import { truthyAttr } from 'app/shared/helper';
 
 /** Types whose values are rendered directly */
 const DIRECT_TYPES = [
@@ -70,7 +71,13 @@ export class FormatFieldValueComponent implements OnInit {
   /**
    * Indicates that multi-line / rich text should be rendered as plain text with no line breaks
    */
-  @Input() plainText = false;
+  private _plainText: boolean | string = false;
+  @Input() get plainText(): boolean | string {
+    return this._plainText;
+  }
+  set plainText(plainText: boolean | string) {
+    this._plainText = truthyAttr(plainText);
+  }
 
   field: CustomField;
   type: CustomFieldTypeEnum;

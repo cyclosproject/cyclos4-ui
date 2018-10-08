@@ -41,8 +41,8 @@
         size="full" imageSize="200" iconSize="8rem"></avatar>
       <div class="card-body">
         <div *ngFor="let field of fieldsInTile; let first = first" [ngClass]="first ? 'card-title' : 'card-text'">
-          <format-field-value [fields]="data.customFields" [plainText]="true"
-            [fieldName]="field" [object]="user(row)" [customValues]="customValues(row)">
+          <format-field-value class="d-block text-truncate" [fields]="data.customFields"
+            plainText [fieldName]="field" [object]="user(row)" [customValues]="customValues(row)">
             &nbsp;
           </format-field-value>
         </div>

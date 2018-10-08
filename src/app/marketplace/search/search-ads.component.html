@@ -3,7 +3,7 @@
     <page-content mode="filters" i18n-heading heading="Products and services"
       [headingActions]="headingActions$ | async">
       <form [formGroup]="form" class="filters-form border-bottom">
-        <div class="row">
+        <div class="row no-gutters">
           <div class="col-12 col-md-6">
             <input-field labelPosition="side" formControlName="keywords"
               i18n-label label="Keywords"></input-field>
@@ -22,7 +22,7 @@
           </ng-container>
         </div>
       </form>
-      <div class="row filters-row">
+      <div class="row no-gutters filters-row">
         <div class="col-12 col-xs-7 col-md-9">
           <result-type-field [allowedResultTypes]="allowedResultTypes$ | async"
             [formControl]="resultTypeControl">
@@ -117,7 +117,7 @@
                 {{ ad.name }}
               </div>
               <div i18n>
-                Published by {{ ad.owner.display }}
+                By {{ ad.owner.display }}
               </div>
               <div *ngFor="let field of data.fieldsInList">
                 <format-field-value [fields]="data.customFields" [plainText]="true"
@@ -125,20 +125,22 @@
               </div>
             </a>
           </td>
-          <td>
+          <td *ngIf="layout.gtxs$ | async">
             {{ ad.name }}
           </td>
-          <td class="avatar">
+          <td class="avatar" *ngIf="layout.gtxs$ | async">
             <avatar [image]="ad.owner.image"></avatar>
           </td>
-          <td>
+          <td *ngIf="layout.gtxs$ | async">
             {{ ad.owner.display }}
           </td>
-          <td *ngFor="let field of data.fieldsInList">
-            <format-field-value [fields]="data.customFields" [plainText]="true"
-              [fieldName]="field" [object]="ad"></format-field-value>
-          </td>
-          <td class="text-right">
+          <ng-container *ngIf="layout.gtxs$ | async">
+            <td *ngFor="let field of data.fieldsInList">
+              <format-field-value [fields]="data.customFields" [plainText]="true"
+                [fieldName]="field" [object]="ad"></format-field-value>
+            </td>
+          </ng-container>
+          <td *ngIf="layout.gtxs$ | async" class="text-right">
             <span *ngIf="ad.promotionalPrice" class="promo-price">
               {{ ad.price | number:decimals(ad) }}
             </span>

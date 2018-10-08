@@ -6,7 +6,8 @@
   (ready)="notifyReady()" [ngClass]="{'d-none': rendering$ | async}">
   <page-content mode="transparent">
     <div class="row category-results">
-      <div class="col-12 col-xs-6 col-sm-4" *ngFor="let cat of categories" [ngClass]="{
+      <div class="category-result col-12 col-xs-6 col-sm-4" *ngFor="let cat of categories"
+        [ngClass]="{
         'col-md-3': login.user == null,
         'col-xl-3': login.user != null,
         'col-xl-2': login.user == null
@@ -48,12 +49,13 @@
     class="d-flex flex-grow-1" [ngClass]="{'d-none': rendering$ | async}">
     <page-content mode="fullHeightTight">
       <agm-map [fitBounds]="mapBounds$ | async" [latitude]="maps.data?.defaultLocation?.latitude"
-        [longitude]="maps.data?.defaultLocation?.longitude" [fullscreenControl]="true"
-        maxZoom="17" minZoom="2" (mapClick)="closeAllInfoWindows()" (mapReady)="adjustMap();">
+        [longitude]="maps.data?.defaultLocation?.longitude"
+        [fullscreenControl]="true" maxZoom="17" minZoom="2" (mapClick)="closeAllInfoWindows()"
+        (mapReady)="adjustMap();">
         <ng-container *ngFor="let row of results.results">
           <ng-container *ngIf="toAddress(row) as addr">
-            <agm-marker [title]="toMarkerTitle(row)" [latitude]="addr.location.latitude" [longitude]="addr.location.longitude"
-              (markerClick)="closeAllInfoWindows()">
+            <agm-marker [title]="toMarkerTitle(row)" [latitude]="addr.location.latitude"
+              [longitude]="addr.location.longitude" (markerClick)="closeAllInfoWindows()">
               <agm-info-window>
                 <ng-container *ngTemplateOutlet="infoWindowTemplate; context: {$implicit: row, address: addr}"></ng-container>
               </agm-info-window>

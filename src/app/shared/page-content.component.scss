@@ -10,8 +10,8 @@
   height: $title-height-xxs;
 
   .title-text {
-    font-size: 1.1rem;
-    line-height: 1.4em;
+    font-size: 1rem;
+    line-height: 1.2em;
     margin-left: $layout-spacer-xxs;
   }
 }
@@ -22,6 +22,8 @@
 
     .title-text {
       margin-left: 1.1rem;
+      font-size: 1.1rem;
+      line-height: 1.1rem;
     }
   }
 }
@@ -31,7 +33,8 @@
 
     .title-text {
       margin-left: $layout-spacer;
-      font-size: $layout-spacer;
+      font-size: 1.2rem;
+      line-height: 1.2rem;
     }
   }
 }
@@ -158,7 +161,8 @@
   background-color: $title-button-bg;
   color: $title-button-color;
   padding: 0.2rem;
-  line-height: 1.2em;
+  font-size: 0.8rem;
+  line-height: 1rem;
 
   &:focus, &:active {
     outline: 0;

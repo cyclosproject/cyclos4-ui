@@ -37,7 +37,7 @@ $layout-spacer: 1.25rem;
 $body-bg: $gray-100;
 $body-color: $gray-800;
 $table-icon-color: #ccc;
-$table-hover-bg: $list-group-hover-bg;
+$table-hover-bg: #f9f9f9;
 
 $section-border-color: $gray-300;
 $section-margin: 1.5rem;
@@ -66,9 +66,9 @@ $title-button-border-color: $section-border-color;
 
 $menu-bar-bg: $input-bg;
 $menu-bar-color: $faded-color;
-$menu-bar-hover-bg: #f1f9ff;
+$menu-bar-hover-bg: #f5f5f5;
 $menu-bar-inactive-color: $faded-color;
-$menu-bar-inactive-icon-color: #9c9c9c;
+$menu-bar-inactive-icon-color: $faded-color;
 $menu-bar-active-icon-color: $primary;
 $menu-bar-active-color: $primary;
 $menu-bar-active-border: $primary;
@@ -86,7 +86,7 @@ $dashboard-bg: $input-bg;
 $dashboard-color: $primary;
 $dashboard-icon-color: $primary;
 $dashboard-border-color: $section-border-color;
-$dashboard-hover-bg: #f1f9ff;
+$dashboard-hover-bg: $menu-bar-hover-bg;
 $dashboard-hover-color: $primary;
 $dashboard-hover-border-color: $dashboard-border-color;
 $dashboard-hover-icon-color: $dashboard-icon-color;
@@ -115,7 +115,9 @@ $snack-bar-bg: $gray-900;
 $snack-bar-color: white;
 
 $card-border-color: $section-border-color;
-$tiled-results-spacing: 8px;
+$tiled-results-spacing-xxs: 0.4rem;
+$tiled-results-spacing-xs: 0.7rem;
+$tiled-results-spacing: 0.8rem;
 $tiled-results-icon-color: #ddd;
 
 $breadcrumb-divider: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjkiPjxwYXRoIGQ9Ik0yLjUgMEwxIDEuNSAzLjUgNCAxIDYuNSAyLjUgOGw0LTQtNC00eiIgZmlsbD0iIzc1NzU3NSIvPjwvc3ZnPg==);

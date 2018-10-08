@@ -70,7 +70,7 @@
           </div>
           <div class="col-12 col-md-6 col-xl-5">
             <ng-container *ngFor="let address of user.addresses; let first = first">
-              <h3 [ngClass]="{'mt-0': first, 'mt-4': !first}">{{
+              <h3 [ngClass]="{'mt-1': first, 'mt-4': !first}">{{
                 address['fullName']
                 || address.name }}</h3>
               <address-details [address]="address"></address-details>

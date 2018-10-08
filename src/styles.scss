@@ -26,23 +26,32 @@ body.gt-sm {
 
 .tiled-results, .category-results {
   width: 100%;
-  margin-right: -0.2rem;
-  margin-left: -0.2rem;
-  padding-left: 0.4rem;
+  margin-right: -$tiled-results-spacing-xxs / 2;
+  margin-left: -$tiled-results-spacing-xxs / 2;
+  padding-left: $tiled-results-spacing-xxs;
 
   > .col,
   > [class*="col-"] {
-    padding-right: 0.2rem;
-    padding-left: 0.2rem;
+    padding-right: $tiled-results-spacing-xxs / 2;
+    padding-left: $tiled-results-spacing-xxs / 2;
   }
 
   a, a:hover {
     color: $body-color;
   }
 
+  .tiled-result, .category-result {
+    display: flex;
+    justify-content: stretch;
+  }
+
+  .tiled-result > a, .card {
+    width: 100%;
+  }
+
   .card {
-    margin-bottom: 0.4rem;
-    height: calc(100% - 0.4rem);
+    margin-bottom: $tiled-results-spacing-xxs;
+    height: calc(100% - $tiled-results-spacing-xxs);
     cursor: pointer;
     box-shadow: $box-shadow-sm;
 
@@ -64,38 +73,55 @@ body.gt-sm {
   }
 }
 
-.tiled-results .tiled-result {
-  max-width: 80%;
-  margin: auto;
-}
-
-@include media-breakpoint-up(sm) {
-  .tiled-results .tiled-result {
-    max-width: 100%;
-    margin: unset;
-  }
-
+@include media-breakpoint-up(xs) {
   .tiled-results, .category-results {
-    padding-left: 22px;
-    padding-right: 14px;
-    margin-right: -$tiled-results-spacing / 2;
-    margin-left: -$tiled-results-spacing / 2;
+    margin-right: -$tiled-results-spacing-xs / 2;
+    margin-left: -$tiled-results-spacing-xs / 2;
+    padding-left: $tiled-results-spacing-xs;
 
     > .col,
     > [class*="col-"] {
-      padding-right: $tiled-results-spacing / 2;
-      padding-left: $tiled-results-spacing / 2;
+      padding-right: $tiled-results-spacing-xs / 2;
+      padding-left: $tiled-results-spacing-xs / 2;
     }
+
+    .card {
+      margin-bottom: $tiled-results-spacing-xs;
+      height: calc(100% - $tiled-results-spacing-xs);
+    }
+  }
+}
+
+.xxs {
+  .tiled-result {
+    max-width: 70%;
+    margin: auto;
+  }
+  .tiled-result, .category-result {
+    margin-bottom: 1rem;
   }
 }
 
 @include media-breakpoint-up(sm) {
   .tiled-results, .category-results {
     width: auto;
+    padding-left: 22px;
+    padding-right: 14px;
     margin-right: -$tiled-results-spacing / 2;
     margin-left: -$tiled-results-spacing / 2;
     padding-left: 0;
     padding-right: 0;
+
+    > .col,
+    > [class*="col-"] {
+      padding-right: $tiled-results-spacing / 2;
+      padding-left: $tiled-results-spacing / 2;
+    }
+
+    .card {
+      margin-bottom: $tiled-results-spacing;
+      height: calc(100% - $tiled-results-spacing);
+    }
   }
 }
 
@@ -284,31 +310,38 @@ label {
   border-color: $section-border-color;
   padding: 0;
   margin: 0;
+  margin-left: -$layout-spacer-xxs;
+  margin-right: -$layout-spacer-xxs;
+  padding-left: $layout-spacer-xxs;
+  padding-right: $layout-spacer-xxs;
 }
 .filters-row {
   margin-top: 1rem;
+}
+@include media-breakpoint-up(xs) {
+  .filters-form {
+    padding: 0.4rem;
+    margin-left: -$layout-spacer-xs;
+    margin-right: -$layout-spacer-xs;
+    padding-left: $layout-spacer-xs;
+    padding-right: $layout-spacer-xs;
+  }
 }
 @include media-breakpoint-up(sm) {
   .filters-row {
     margin-bottom: 1rem;
   }
 }
-
-@include media-breakpoint-up(xs) {
-  .filters-form {
-    padding: 0.4rem;
-  }
-}
 @include media-breakpoint-up(md) {
   .filters-form {
     padding-bottom: 0;
-    margin-left: -$card-spacer-x;
-    margin-right: -$card-spacer-x;
+    margin-left: -$layout-spacer;
+    margin-right: -$layout-spacer;
     padding-left: 0;
-    padding-right: $card-spacer-x;
+    padding-right: $layout-spacer;
 
     .col-form-label {
-      padding-left: $card-spacer-x;
+      padding-left: $layout-spacer;
     }
   }
 }
@@ -364,6 +397,11 @@ button.btn-transparent {
   background: transparent;
   border: none;
   box-shadow: none;
+}
+.lt-sm {
+  button.btn-main {
+    height: 3rem;
+  }
 }
 
 .custom-control-label::before,
@@ -461,7 +499,7 @@ h1, h2, h3, hr {
 .section-title-action {
   position: absolute;
   right: $layout-spacer-xxs;
-  top: 0.7rem;
+  top: 0.75rem;
 }
 @include media-breakpoint-up(xs) {
   h1, h2, h3, hr {
@@ -483,7 +521,6 @@ h1, h2, h3, hr {
   }
   .section-title-action {
     right: $layout-spacer;
-    top: 1rem;
   }
 }
 h1, h2 {
@@ -493,13 +530,12 @@ h1, h2 {
 }
 @include media-breakpoint-up(xs) {
   h1, h2 {
-    padding-top: $layout-spacer-xs;
+    padding-top: $layout-spacer;
     margin-bottom: $layout-spacer-xs;
   }
 }
 @include media-breakpoint-up(sm) {
   h1, h2 {
-    padding-top: $layout-spacer;
     margin-bottom: $layout-spacer;
   }
 }
