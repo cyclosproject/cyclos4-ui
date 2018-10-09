@@ -16,12 +16,32 @@
     <div class="title-text text-truncate flex-grow-1 d-flex align-items-center">
       {{ heading }}
     </div>
-    <div class="d-flex heading-actions" *ngIf="headingActions?.length > 0">
-      <button *ngFor="let action of headingActions" class="heading-action d-flex"
-        (click)="action.onClick()">
-        <div class="flex-grow-1">{{ action.label }}</div>
-      </button>
-    </div>
+
+    <ng-container *ngIf="headingActions?.length > 0">
+      <!-- We have actions. They may be grouped or not -->
+      <div class="heading-actions" *ngIf="groupActions; else rootActions"
+        dropdown placement="bottom right" #dropdown="bs-dropdown">
+        <button dropdownToggle class="heading-action dropdown-toggle" i18n>
+          Actions
+        </button>
+        <div class="heading-actions-menu dropdown-menu dropdown-menu-right"
+          *dropdownMenu role="listbox" attr.id="'actions-menu'"
+          attr.aria-labelledby="id" (click)="$event.preventDefault(); $event.stopPropagation();">
+          <a *ngFor="let action of headingActions; let first = first" class="heading-action-option"
+            (click)="dropdown.hide();action.onClick()">
+            {{ action.label }}
+          </a>
+        </div>
+      </div>
+      <ng-template #rootActions>
+        <div class="d-flex heading-actions">
+          <button *ngFor="let action of headingActions" class="heading-action d-flex"
+            (click)="action.onClick()">
+            {{ action.label }}
+          </button>
+        </div>
+      </ng-template>
+    </ng-container>
   </div>
   <div class="page-content-body card-body d-flex flex-column">
     <ng-content></ng-content>

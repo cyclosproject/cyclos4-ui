@@ -48,7 +48,11 @@ export class ContactListComponent
     this.stateManager.cache('data', this.contactsService.getContactListDataForSearch({
       user: ApiHelper.SELF
     })).subscribe(data => {
-      data.fieldsInList = ['display', ...(data.fieldsInList || [])];
+      const fieldsInList = (data.fieldsInList || []).slice();
+      if (!fieldsInList.includes('display')) {
+        fieldsInList.unshift('display');
+        data.fieldsInList = fieldsInList;
+      }
       this.data = data;
     });
   }

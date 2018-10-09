@@ -1,13 +1,7 @@
 <page-layout [ready]="data$ | async">
-  <page-content *ngIf="data$ | async" [heading]="title">
+  <page-content *ngIf="data$ | async" [heading]="title" [headingActions]="headingActions$ | async">
     <transfer-details *ngIf="transaction.transfer; else transactionFields"
       [transfer]="transaction.transfer"></transfer-details>
-    <actions reverseRow *ngIf="actions.length > 0">
-      <button *ngFor="let action of actions" class="btn btn-outline-primary"
-        (click)="action.onClick()">
-        {{ action.label }}
-      </button>
-    </actions>
   </page-content>
 </page-layout>
 

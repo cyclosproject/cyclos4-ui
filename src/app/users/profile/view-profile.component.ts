@@ -1,16 +1,15 @@
-import { Component, ChangeDetectionStrategy, Injector, OnInit } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { UsersService, ContactsService } from 'app/api/services';
-import { UserView, Country, Address, PhoneView, PhoneKind } from 'app/api/models';
-import { CountriesResolve } from 'app/countries.resolve';
-import { ErrorStatus } from 'app/core/error-status';
-import { HttpErrorResponse } from '@angular/common/http';
-import { Action } from 'app/shared/action';
-import { MapsService } from 'app/core/maps.service';
 import { LatLngBounds } from '@agm/core';
-import { fitBounds, labelAddresses } from 'app/shared/helper';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
+import { Address, PhoneKind, PhoneView, UserView } from 'app/api/models';
+import { ContactsService, UsersService } from 'app/api/services';
+import { ErrorStatus } from 'app/core/error-status';
+import { MapsService } from 'app/core/maps.service';
+import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BasePageComponent } from 'app/shared/base-page.component';
+import { fitBounds, labelAddresses } from 'app/shared/helper';
+import { BehaviorSubject } from 'rxjs';
 
 /**
  * Displays an user profile
@@ -32,13 +31,11 @@ export class ViewProfileComponent extends BasePageComponent<UserView> implements
 
   key: string;
   locatedAddresses: Address[];
-  actions: Action[];
   mobilePhone: PhoneView;
   landLinePhone: PhoneView;
   mobilePhones: PhoneView[];
   landLinePhones: PhoneView[];
 
-  titleActions$ = new BehaviorSubject<Action[]>(null);
   addressMapFitBounds$ = new BehaviorSubject<LatLngBounds>(null);
 
   get user(): UserView {
@@ -67,15 +64,6 @@ export class ViewProfileComponent extends BasePageComponent<UserView> implements
   }
 
   onDataInitialized(user: UserView) {
-    if ((this.login.user || {}).id === user.id && user.permissions.profile.editProfile) {
-      // Can edit the profile
-      this.titleActions$.next([
-        new Action('mode_edit', this.i18n('Edit'), () => {
-          this.router.navigate(['users', 'my-profile', 'edit']);
-        })
-      ]);
-    }
-
     // Get the located addresses
     if (this.maps.enabled) {
       this.locatedAddresses = labelAddresses(user.addresses, this.i18n);
@@ -94,25 +82,37 @@ export class ViewProfileComponent extends BasePageComponent<UserView> implements
     }
 
     // Get the actions
-    this.actions = [];
+    const actions: HeadingAction[] = [];
     const permissions = user.permissions || {};
     const contact = permissions.contact || {};
     const payment = permissions.payment || {};
+    if ((this.login.user || {}).id === user.id && user.permissions.profile.editProfile) {
+      actions.push(new HeadingAction(this.i18n('Edit'), () => {
+        this.router.navigate(['users', 'my-profile', 'edit']);
+      }, true));
+    }
     if (contact.add) {
-      this.actions.push(new Action('perm_contact_calendar', this.i18n('Add to contacts'), () => {
+      actions.push(new HeadingAction(this.i18n('Add {{name}} to my contacts', {
+        name: user.display
+      }), () => {
         this.addContact();
       }));
     }
     if (contact.remove) {
-      this.actions.push(new Action('remove_circle_outline', this.i18n('Remove from contacts'), () => {
+      actions.push(new HeadingAction(this.i18n('Remove {{name}} from my contacts', {
+        name: user.display
+      }), () => {
         this.removeContact();
       }));
     }
     if (payment.userToUser) {
-      this.actions.push(new Action('payment', this.i18n('Perform payment'), () => {
+      actions.push(new HeadingAction(this.i18n('Pay {{name}}', {
+        name: user.display
+      }), () => {
         this.router.navigate(['/banking', 'payment', this.key]);
       }));
     }
+    this.headingActions = actions;
   }
 
   private addContact(): any {

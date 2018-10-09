@@ -1,9 +1,9 @@
-import { OnInit, OnDestroy, Injector, HostBinding } from '@angular/core';
-import { BaseComponent } from 'app/shared/base.component';
+import { HostBinding, Injector, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
+import { HeadingAction } from 'app/shared/action';
+import { BaseComponent } from 'app/shared/base.component';
 import { FormControlLocator } from 'app/shared/form-control-locator';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { ApiInterceptor } from 'app/core/api.interceptor';
+import { BehaviorSubject } from 'rxjs';
 
 /**
  * Base class implemented by components which are actually 'pages', that is, are displayed in the `<router-outlet>`.
@@ -26,6 +26,15 @@ export abstract class BasePageComponent<D> extends BaseComponent implements OnIn
       this.onDataInitialized(data);
     }
     this.data$.next(data);
+  }
+
+  headingActions$ = new BehaviorSubject<HeadingAction[]>(null);
+
+  get headingActions(): HeadingAction[] {
+    return this.headingActions$.value;
+  }
+  set headingActions(headingActions: HeadingAction[]) {
+    this.headingActions$.next(headingActions);
   }
 
   /**

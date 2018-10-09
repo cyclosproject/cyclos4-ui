@@ -5,18 +5,18 @@
 
   <nav class="navbar d-flex flex-column align-items-stretch">
     <ng-container *ngIf="banking">
-      <a *ngFor="let account of this.accounts" class="account-link nav-item d-inline-flex align-items-center"
+      <a *ngFor="let account of this.accounts" class="account-link nav-item"
         [routerLink]="accountLink(account)" [ngClass]="{active: isAccountActive(account)}"
         (click)="onAccountClicked($event, account)">
         <icon size="1.4rem" icon="account_balance"></icon>
-        <div class="ml-2">{{ account.type.name }}</div>
+        <div class="nav-item-text">{{ account.type.name }}</div>
       </a>
     </ng-container>
-    <a *ngFor="let entry of (entries$ | async)?.entries" class="nav-item d-inline-flex align-items-center"
-      [routerLink]="entry.url" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
-      (click)="goTo($event, entry.url)">
+    <a *ngFor="let entry of (entries$ | async)?.entries" class="nav-item"
+      [routerLink]="entry.url" routerLinkActive="active"
+      [routerLinkActiveOptions]="{exact: true}" (click)="goTo($event, entry.url)">
       <icon size="1.4rem" [icon]="entry.icon"></icon>
-      <div class="ml-2">{{ entry.label }}</div>
+      <div class="nav-item-text">{{ entry.label }}</div>
     </a>
   </nav>
 </div>

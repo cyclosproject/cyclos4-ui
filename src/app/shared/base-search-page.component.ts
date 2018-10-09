@@ -1,16 +1,16 @@
-import { OnInit, Injector } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { PagedResults } from 'app/shared/paged-results';
-import { ApiHelper } from 'app/shared/api-helper';
-import { ResultType } from 'app/shared/result-type';
 import { HttpResponse } from '@angular/common/http';
-import { debounceTime } from 'rxjs/operators';
-import { PageData } from 'app/shared/page-data';
+import { Injector, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { HeadingAction } from 'app/shared/action';
+import { ApiHelper } from 'app/shared/api-helper';
 import { BasePageComponent } from 'app/shared/base-page.component';
-import { isEqual } from 'lodash';
 import { scrollTop } from 'app/shared/helper';
-import { Action } from 'app/shared/action';
+import { PageData } from 'app/shared/page-data';
+import { PagedResults } from 'app/shared/paged-results';
+import { ResultType } from 'app/shared/result-type';
+import { isEqual } from 'lodash';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 /**
  * Base class implemented by search pages.
@@ -23,7 +23,6 @@ export abstract class BaseSearchPageComponent<D, R> extends BasePageComponent<D>
 
   results$ = new BehaviorSubject<PagedResults<R>>(null);
   resultType$ = new BehaviorSubject<ResultType>(null);
-  headingActions$ = new BehaviorSubject<Action[]>(null);
   allowedResultTypes$ = new BehaviorSubject([ResultType.LIST]);
   loaded$ = new BehaviorSubject(false);
   rendering$ = new BehaviorSubject(false);
@@ -111,12 +110,6 @@ export abstract class BaseSearchPageComponent<D, R> extends BasePageComponent<D>
     this.moreFilters$.next(moreFilters);
   }
 
-  get headingActions(): Action[] {
-    return this.headingActions$.value;
-  }
-  set headingActions(headingActions: Action[]) {
-    this.headingActions$.next(headingActions);
-  }
 
   get pageData(): PageData {
     const val = this.form.value;
@@ -176,8 +169,8 @@ export abstract class BaseSearchPageComponent<D, R> extends BasePageComponent<D>
     this.resultType = this.getInitialResultType();
   }
 
-  protected get moreFiltersAction(): Action {
-    return new Action('filter_list', this.i18n('More filters'), () => this.moreFilters = !this.moreFilters);
+  protected get moreFiltersAction(): HeadingAction {
+    return new HeadingAction(this.i18n('More filters'), () => this.moreFilters = !this.moreFilters, true);
   }
 
   /**

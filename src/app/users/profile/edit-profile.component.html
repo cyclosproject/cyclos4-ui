@@ -1,6 +1,6 @@
 <page-layout [ready]="data$ | async">
   <page-content *ngIf="data != null" i18n-heading heading="Edit profile"
-    [headingActions]="headingActions">
+    [headingActions]="headingActions$ | async">
 
     <!-- Image -->
     <ng-container *ngIf="imagesAvailability !== 'disabled'">

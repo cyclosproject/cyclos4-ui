@@ -40,32 +40,32 @@ export class ManagePasswordsComponent
     const actions: Action[] = [];
     const permissions = password.permissions || {};
     if (permissions.change) {
-      actions.push(new Action('edit', this.i18n('Change'), () => {
+      actions.push(new Action(this.i18n('Change'), () => {
         this.change(password);
       }));
     }
     if (permissions.changeGenerated) {
-      actions.push(new Action('edit', this.i18n('Change'), () => {
+      actions.push(new Action(this.i18n('Change'), () => {
         this.changeGenerated(password);
       }));
     }
     if (permissions.unblock) {
-      actions.push(new Action('lock_open', this.i18n('Unblock'), () => {
+      actions.push(new Action(this.i18n('Unblock'), () => {
         this.unblock(password);
       }));
     }
     if (permissions.generate) {
-      actions.push(new Action('get_app', this.i18n('Activate'), () => {
+      actions.push(new Action(this.i18n('Activate'), () => {
         this.generate(password);
       }));
     }
     if (permissions.enable) {
-      actions.push(new Action('check_circle_outline', this.i18n('Enable'), () => {
+      actions.push(new Action(this.i18n('Enable'), () => {
         this.enable(password);
       }));
     }
     if (permissions.disable) {
-      actions.push(new Action('block', this.i18n('Disable'), () => {
+      actions.push(new Action(this.i18n('Disable'), () => {
         this.disable(password);
       }));
     }

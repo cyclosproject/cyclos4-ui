@@ -6,7 +6,7 @@ import { I18n } from '@ngx-translate/i18n-polyfill';
 import { PasswordInput, PasswordInputMethodEnum, PasswordModeEnum, SendMediumEnum } from 'app/api/models';
 import { AuthService } from 'app/api/services/auth.service';
 import { NotificationService } from 'app/core/notification.service';
-import { Action } from 'app/shared/action';
+import { Action, ActionWithIcon } from 'app/shared/action';
 import { BaseControlComponent } from 'app/shared/base-control.component';
 import { truthyAttr } from 'app/shared/helper';
 
@@ -53,7 +53,7 @@ export class PasswordInputComponent
   enteredVKPassword: string[];
 
   otp: boolean;
-  otpActions: Action[];
+  otpActions: ActionWithIcon[];
 
   constructor(
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
@@ -92,7 +92,7 @@ export class PasswordInputComponent
    * Returns an action to request a new OTP
    * @param medium The send medium
    */
-  private requestOtpAction(medium: SendMediumEnum): Action {
+  private requestOtpAction(medium: SendMediumEnum): ActionWithIcon {
     let icon: string;
     let label: string;
     switch (medium) {
@@ -107,7 +107,7 @@ export class PasswordInputComponent
       default:
         return null;
     }
-    return new Action(icon, label, () => {
+    return new ActionWithIcon(icon, label, () => {
       this.addSub(this.authService.newOtp(medium).subscribe(res => {
         this.notificationService.snackBar(this.i18n('The password was sent to {{dest}}', {
           dest: (res || []).join(', ')

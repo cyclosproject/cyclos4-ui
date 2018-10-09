@@ -1,17 +1,17 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
-  RecurringPaymentOccurrenceView, RecurringPaymentOccurrenceStatusEnum,
-  ScheduledPaymentInstallmentView, ScheduledPaymentInstallmentStatusEnum,
-  TransactionKind, TransactionView, AvailabilityEnum, CustomFieldDetailed, CustomFieldTypeEnum
+  CustomFieldDetailed, CustomFieldTypeEnum, RecurringPaymentOccurrenceStatusEnum,
+  RecurringPaymentOccurrenceView, ScheduledPaymentInstallmentStatusEnum,
+  ScheduledPaymentInstallmentView, TransactionKind, TransactionView
 } from 'app/api/models';
 import { TransactionsService, TransfersService } from 'app/api/services';
+import { PendingPaymentsService } from 'app/api/services/pending-payments.service';
+import { RecurringPaymentsService } from 'app/api/services/recurring-payments.service';
+import { ScheduledPaymentsService } from 'app/api/services/scheduled-payments.service';
+import { TransactionStatusService } from 'app/core/transaction-status.service';
+import { Action, HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BasePageComponent } from 'app/shared/base-page.component';
-import { TransactionStatusService } from 'app/core/transaction-status.service';
-import { Action } from 'app/shared/action';
-import { PendingPaymentsService } from 'app/api/services/pending-payments.service';
-import { ScheduledPaymentsService } from 'app/api/services/scheduled-payments.service';
-import { RecurringPaymentsService } from 'app/api/services/recurring-payments.service';
 
 
 /**
@@ -25,7 +25,6 @@ import { RecurringPaymentsService } from 'app/api/services/recurring-payments.se
 export class ViewTransactionComponent extends BasePageComponent<TransactionView> implements OnInit {
 
   title: string;
-  actions: Action[];
   hasDueAmount = false;
   hasInstallmentActions = false;
   hasOccurrenceActions = false;
@@ -56,7 +55,7 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
     this.transactionsService.viewTransaction({ key: key })
       .subscribe(transaction => {
         this.title = this.initTitle(transaction.kind);
-        this.actions = this.initActions(transaction);
+        this.headingActions = this.initActions(transaction);
         this.hasDueAmount = transaction.dueAmount && !this.format.isZero(transaction.dueAmount);
         this.hasInstallmentActions = (transaction.installments || []).filter(i => i.canProcess || i.canSettle).length > 0;
         this.hasOccurrenceActions = (transaction.occurrences || []).filter(o => o.canProcess).length > 0;
@@ -64,61 +63,61 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
       });
   }
 
-  private initActions(transaction: TransactionView): Action[] {
-    const actions: Action[] = [];
+  private initActions(transaction: TransactionView): HeadingAction[] {
+    const actions: HeadingAction[] = [];
     const auth = transaction.authorizationPermissions || {};
     if (auth.authorize) {
-      actions.push(new Action('thumb_up', this.i18n('Authorize'), () => {
+      actions.push(new HeadingAction(this.i18n('Authorize this pending payment'), () => {
         this.authorize();
       }));
     }
     if (auth.deny) {
-      actions.push(new Action('thumb_down', this.i18n('Deny'), () => {
+      actions.push(new HeadingAction(this.i18n('Deny this pending payment'), () => {
         this.deny();
       }));
     }
     if (auth.authorize) {
-      actions.push(new Action('cancel', this.i18n('Cancel'), () => {
+      actions.push(new HeadingAction(this.i18n('Cancel the authorization process'), () => {
         this.cancelAuthorization();
       }));
     }
 
     const scheduled = transaction.scheduledPaymentPermissions || {};
     if (scheduled.block) {
-      actions.push(new Action('block', this.i18n('Block'), () => {
+      actions.push(new HeadingAction(this.i18n('Block scheduling'), () => {
         this.blockScheduled();
       }));
     }
     if (scheduled.unblock) {
-      actions.push(new Action('schedule', this.i18n('Unblock'), () => {
+      actions.push(new HeadingAction(this.i18n('Unblock scheduling'), () => {
         this.unblockScheduled();
       }));
     }
     if (scheduled.cancel) {
-      actions.push(new Action('cancel', this.i18n('Cancel'), () => {
+      actions.push(new HeadingAction(this.i18n('Cancel this scheduled payment'), () => {
         this.cancelScheduled();
       }));
     }
     if (scheduled.settle) {
-      actions.push(new Action('done_all', this.i18n('Settle'), () => {
+      actions.push(new HeadingAction(this.i18n('Settle this entire scheduled payment'), () => {
         this.settleScheduled();
       }));
     }
 
     const recurring = transaction.recurringPaymentPermissions || {};
     if (recurring.cancel) {
-      actions.push(new Action('cancel', this.i18n('Cancel'), () => {
+      actions.push(new HeadingAction(this.i18n('Cancel this recurring payment'), () => {
         this.cancelRecurring();
       }));
     }
 
     if ((transaction.transfer || {}).canChargeback) {
-      actions.push(new Action('undo', this.i18n('Chargeback'), () => {
+      actions.push(new HeadingAction(this.i18n('Chargeback this transfer'), () => {
         this.chargeback();
       }));
     }
     if ((transaction.transfer || {}).chargedBackBy) {
-      actions.push(new Action('view', this.i18n('View chargeback'), () => {
+      actions.push(new HeadingAction(this.i18n('View chargeback transfer'), () => {
         this.router.navigate(['/banking', 'transfer', ApiHelper.transactionNumberOrId(transaction.transfer.chargedBackBy)]);
       }));
     }
@@ -203,6 +202,7 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
   private blockScheduled() {
     this.notification.confirm({
       title: this.i18n('Block scheduling'),
+      message: this.i18n('This will prevent scheduled installments from being automatically processed'),
       passwordInput: this.transaction.confirmationPasswordInput,
       callback: res => {
         this.scheduledPaymentsService.blockScheduledPayment({
@@ -219,6 +219,7 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
   private unblockScheduled() {
     this.notification.confirm({
       title: this.i18n('Unblock scheduling'),
+      message: this.i18n('This will result automatic processing of scheduled installments'),
       passwordInput: this.transaction.confirmationPasswordInput,
       callback: res => {
         this.scheduledPaymentsService.unblockScheduledPayment({
@@ -235,6 +236,7 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
   private cancelScheduled() {
     this.notification.confirm({
       title: this.i18n('Cancel scheduled payment'),
+      message: this.i18n('This will permanently cancel all remaining installments'),
       passwordInput: this.transaction.confirmationPasswordInput,
       callback: res => {
         this.scheduledPaymentsService.cancelScheduledPayment({
@@ -250,7 +252,8 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
 
   private settleScheduled() {
     this.notification.confirm({
-      title: this.i18n('Settle scheduled payment'),
+      title: this.i18n('Settle remaining installments'),
+      message: this.i18n('This will mark all remaining installments as settled'),
       passwordInput: this.transaction.confirmationPasswordInput,
       callback: res => {
         this.scheduledPaymentsService.settleScheduledPayment({
@@ -267,6 +270,7 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
   private cancelRecurring() {
     this.notification.confirm({
       title: this.i18n('Cancel recurring payment'),
+      message: this.i18n('This will permanently cancel the recurring payment and prevent any future occurrence'),
       passwordInput: this.transaction.confirmationPasswordInput,
       callback: res => {
         this.recurringPaymentsService.cancelRecurringPayment({
@@ -282,14 +286,15 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
 
   private chargeback() {
     this.notification.confirm({
-      title: this.i18n('Chargeback payment'),
+      title: this.i18n('Chargeback transfer'),
+      message: this.i18n('This return the amount to the payer'),
       passwordInput: this.transaction.confirmationPasswordInput,
       callback: res => {
         this.transfersService.chargebackTransfer({
           key: this.transaction.transfer.id,
           confirmationPassword: res.confirmationPassword
         }).subscribe(() => {
-          this.notification.snackBar(this.i18n('This payment was charged back'));
+          this.notification.snackBar(this.i18n('This transfer was charged back'));
           this.reload();
         });
       }

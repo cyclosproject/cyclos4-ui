@@ -22,6 +22,17 @@ a.nav-item {
   padding: 1rem;
   border-bottom: 1px solid $personal-menu-item-border-color;
   font-size: 1.1em;
+  display: flex;
+  flex-direction: row;
+
+  icon {
+    top: -0.1rem;
+  }
+
+  .nav-item-text {
+    margin-left: 0.5rem;
+    flex-grow: 1;
+  }
 }
 a.nav-item:last-child {
   border-bottom: none;

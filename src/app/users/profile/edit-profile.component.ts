@@ -1,23 +1,24 @@
-import { Component, ChangeDetectionStrategy, Injector, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
-
-import { BehaviorSubject } from 'rxjs';
-import { UsersService, PhonesService, ImagesService } from 'app/api/services';
+import { LatLngBounds } from '@agm/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnDestroy, OnInit } from '@angular/core';
+import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import {
-  DataForEditFullProfile, CustomFieldDetailed, FullProfileEdit, AddressManage,
-  PhoneManage, AvailabilityEnum, ContactInfoManage, PhoneKind, CustomField, PhoneEditWithId, Image
+  AddressManage, AvailabilityEnum, ContactInfoManage, CustomField,
+  CustomFieldDetailed, DataForEditFullProfile, FullProfileEdit, Image,
+  PhoneEditWithId, PhoneKind, PhoneManage
 } from 'app/api/models';
+import { ImagesService, PhonesService, UsersService } from 'app/api/services';
+import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
-import { FormGroup, Validators, FormControl, AbstractControl } from '@angular/forms';
-import { empty, isTouched, locateControl, fitBounds, labelAddresses, scrollTop } from 'app/shared/helper';
-import { cloneDeep } from 'lodash';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { FormControlLocator } from 'app/shared/form-control-locator';
-import { BsModalService } from 'ngx-bootstrap/modal';
-import { VerifyPhoneComponent } from 'app/users/profile/verify-phone.component';
-import { take, debounceTime } from 'rxjs/operators';
+import { empty, fitBounds, isTouched, labelAddresses, locateControl, scrollTop } from 'app/shared/helper';
 import { ManageImagesComponent } from 'app/shared/manage-images.component';
-import { LatLngBounds } from '@agm/core';
-import { Action } from 'app/shared/action';
+import { VerifyPhoneComponent } from 'app/users/profile/verify-phone.component';
+import { cloneDeep } from 'lodash';
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { BehaviorSubject } from 'rxjs';
+import { debounceTime, take } from 'rxjs/operators';
+
 
 const BASIC_FIELDS = ['name', 'username', 'email'];
 export type Availability = 'disabled' | 'single' | 'multiple';
@@ -44,7 +45,6 @@ export class EditProfileComponent
   editableFields: Set<string>;
   managePrivacyFields: Set<string>;
   userCustomFields: Map<string, CustomFieldDetailed>;
-  headingActions: Action[];
 
   // Forms which will be submitted. Need to keep track in order to match the validation errors
   user: FormGroup;
@@ -93,11 +93,11 @@ export class EditProfileComponent
     super.ngOnInit();
     this.key = ApiHelper.SELF;
 
-    this.headingActions = [{
-      icon: 'view', label: this.i18n('View'), onClick: () => {
+    this.headingActions = [
+      new HeadingAction(this.i18n('View'), () => {
         this.router.navigate(['users', 'my-profile']);
-      }
-    }];
+      }, true)
+    ];
 
     this.usersService.getDataForEditFullProfile({ user: this.key }).subscribe(data => {
       this.data = data;
