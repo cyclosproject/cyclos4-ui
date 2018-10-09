@@ -3,7 +3,7 @@ import { I18n } from '@ngx-translate/i18n-polyfill';
 import {
   ExternalPaymentStatusEnum, PaymentRequestStatusEnum, RecurringPaymentStatusEnum,
   ScheduledPaymentStatusEnum, TicketStatusEnum, TransactionAuthorizationStatusEnum,
-  TransactionKind, TransactionResult, TransactionView, ScheduledPaymentInstallmentStatusEnum, RecurringPaymentOccurrenceStatusEnum
+  TransactionKind, TransactionResult, TransactionView, ScheduledPaymentInstallmentStatusEnum, RecurringPaymentOccurrenceStatusEnum, TransactionAuthorizationActionEnum
 } from 'app/api/models';
 
 /**
@@ -172,6 +172,19 @@ export class TransactionStatusService {
     }
   }
 
+  /**
+   * Returns the display for the given authorization action
+   */
+  authorizationAction(action: string): string {
+    switch (action) {
+      case TransactionAuthorizationActionEnum.AUTHORIZED:
+        return this.i18n('Authorized');
+      case TransactionAuthorizationActionEnum.DENIED:
+        return this.i18n('Denied');
+      case TransactionAuthorizationActionEnum.CANCELED:
+        return this.i18n('Canceled');
+    }
+  }
 
 }
 

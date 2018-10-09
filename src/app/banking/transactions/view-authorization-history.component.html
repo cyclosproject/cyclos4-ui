@@ -1,0 +1,25 @@
+<page-layout [ready]="data$ | async">
+  <page-content *ngIf="data$ | async" i18n-heading heading="Authorization history">
+    <ng-container *ngIf="transaction.transactionNumber">
+      <label-value i18n-label label="Transaction number">
+        {{ transaction.transactionNumber }}
+      </label-value>
+      <hr>
+    </ng-container>
+    <ng-container *ngFor="let auth of transaction.authorizations; let first = first">
+      <hr *ngIf="!first">
+      <label-value i18n-label label="Action">
+        {{ actionLabel(auth) }}
+      </label-value>
+      <label-value *ngIf="auth.by" i18n-label label="By">
+        {{ auth.by.display}}
+      </label-value>
+      <label-value i18n-label label="Date">
+        {{ auth.date | dateTime}}
+      </label-value>
+      <label-value *ngIf="auth.comments" i18n-label label="Comments" [value]="auth.comments"
+        valueFormat="break">
+      </label-value>
+    </ng-container>
+  </page-content>
+</page-layout>

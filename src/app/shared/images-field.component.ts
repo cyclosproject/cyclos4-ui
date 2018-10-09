@@ -123,7 +123,7 @@ export class ImagesFieldComponent extends BaseFormFieldComponent<string | string
     const ref = this.modal.show(ManageImagesComponent, {
       class: 'modal-form',
       initialState: {
-        files: this.images
+        images: this.images
       }
     });
     const component = ref.content as ManageImagesComponent;

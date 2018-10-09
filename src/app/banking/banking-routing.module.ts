@@ -9,6 +9,7 @@ import { ViewTransactionComponent } from 'app/banking/transactions/view-transact
 import { SearchScheduledPaymentsComponent } from 'app/banking/transactions/search-scheduled-payments.component';
 import { SearchRecurringPaymentsComponent } from 'app/banking/transactions/search-recurring-payments.component';
 import { SearchAuthorizedPaymentsComponent } from 'app/banking/transactions/search-authorized-payments.component';
+import { ViewAuthorizationHistoryComponent } from 'app/banking/transactions/view-authorization-history.component';
 
 const bankingRoutes: Routes = [
   {
@@ -39,6 +40,13 @@ const bankingRoutes: Routes = [
       {
         path: 'transaction/:key',
         component: ViewTransactionComponent,
+        data: {
+          menu: Menu.VIEW_TRANSACTION
+        }
+      },
+      {
+        path: 'transaction/:key/authorization-history',
+        component: ViewAuthorizationHistoryComponent,
         data: {
           menu: Menu.VIEW_TRANSACTION
         }

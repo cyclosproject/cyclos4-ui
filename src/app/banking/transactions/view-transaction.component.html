@@ -6,6 +6,9 @@
 </page-layout>
 
 <ng-template #transactionFields>
+  <label-value *ngIf="transaction.transactionNumber" i18n-label label="Transaction number">
+    {{ transaction.transactionNumber }}
+  </label-value>
   <label-value i18n-label label="Status" [value]="status"></label-value>
   <label-value i18n-label label="Date">
     {{ transaction.date | dateTime }}

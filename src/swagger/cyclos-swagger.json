@@ -22507,6 +22507,11 @@
       "description" : "The kind of a token principal type. Possible values are:\n* barcode: A barcode with the token\n* nfcDevice: A device (e.g. cell phone) with support for NFC\n* nfcTag: A NFC tag/card \n* other: Any other type containing a token\n* qrcode: A QR code containing a token\n* swipe: A swipe/magnetic card containing the token\n",
       "enum" : [ "barcode", "nfcDevice", "nfcTag", "other", "qrcode", "swipe" ]
     },
+    "TransactionAuthorizationActionEnum" : {
+      "type" : "string",
+      "description" : "An action performed when a transaction was pending authorization Possible values are:\n* authorized: The transaction was authorized\n* canceled: The authorization process was canceled by the payer\n* denied: The transaction was denied (rejected)\n",
+      "enum" : [ "authorized", "canceled", "denied" ]
+    },
     "TransactionAuthorizationStatusEnum" : {
       "type" : "string",
       "description" : "The status regarding authorization a transaction is in. If configured, transactions can require one or more levels of authorization in order to be processed. If a transaction has the this status null, it means it never went through the authorization process.  Possible values are:\n* authorized: The transaction was fully authorized and is processed\n* canceled: The authorization submission was canceled by the submitter\n* denied: The authorization was denied\n* pending: The transaction is pending authorization\n",
@@ -30950,7 +30955,12 @@
       }, {
         "type" : "object",
         "properties" : {
+          "action" : {
+            "description" : "The performed action",
+            "$ref" : "#/definitions/TransactionAuthorizationActionEnum"
+          },
           "by" : {
+            "description" : "The user that performed the authorization action",
             "$ref" : "#/definitions/User"
           },
           "comments" : {

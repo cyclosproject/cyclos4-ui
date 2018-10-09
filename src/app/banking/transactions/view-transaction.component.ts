@@ -12,6 +12,7 @@ import { TransactionStatusService } from 'app/core/transaction-status.service';
 import { Action, HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BasePageComponent } from 'app/shared/base-page.component';
+import { empty } from 'app/shared/helper';
 
 
 /**
@@ -49,10 +50,13 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
     return this.data;
   }
 
+  get key(): string {
+    return this.route.snapshot.paramMap.get('key');
+  }
+
   ngOnInit() {
     super.ngOnInit();
-    const key = this.route.snapshot.paramMap.get('key');
-    this.transactionsService.viewTransaction({ key: key })
+    this.transactionsService.viewTransaction({ key: this.key })
       .subscribe(transaction => {
         this.title = this.initTitle(transaction.kind);
         this.headingActions = this.initActions(transaction);
@@ -66,6 +70,11 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
   private initActions(transaction: TransactionView): HeadingAction[] {
     const actions: HeadingAction[] = [];
     const auth = transaction.authorizationPermissions || {};
+    if (!empty(transaction.authorizations)) {
+      actions.push(new HeadingAction(this.i18n('View authorizations'), () => {
+        this.router.navigate(['banking', 'transaction', this.key, 'authorization-history']);
+      }));
+    }
     if (auth.authorize) {
       actions.push(new HeadingAction(this.i18n('Authorize this pending payment'), () => {
         this.authorize();

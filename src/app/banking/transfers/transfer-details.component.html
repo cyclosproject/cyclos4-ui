@@ -55,15 +55,17 @@
   </label-value>
   <label-value i18n-label label="From">
     <user-link [account]="transfer.parent.from"></user-link>
-  </label-value>
-  <label-value *ngIf="transfer.from.number" i18n-label label="From account number">
-    {{ transfer.parent.from.number }}
+    <ng-container *ngIf="transfer.parent.from.number">
+      <ng-container *ngIf="layout.gtxs$ | async"> - </ng-container>
+      <br *ngIf="layout.ltsm$ | async" /> {{ transfer.parent.from.number }}
+    </ng-container>
   </label-value>
   <label-value i18n-label label="To">
     <user-link [account]="transfer.parent.to"></user-link>
-  </label-value>
-  <label-value *ngIf="transfer.to.number" i18n-label label="To account number">
-    {{ transfer.parent.to.number }}
+    <ng-container *ngIf="transfer.parent.to.number">
+      <ng-container *ngIf="layout.gtxs$ | async"> - </ng-container>
+      <br *ngIf="layout.ltsm$ | async" /> {{ transfer.parent.to.number }}
+    </ng-container>
   </label-value>
   <label-value i18n-label label="Payment type">
     {{ transfer.parent.type.name }}

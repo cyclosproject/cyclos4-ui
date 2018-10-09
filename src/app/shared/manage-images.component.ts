@@ -25,7 +25,7 @@ export class ManageImagesResult {
 })
 export class ManageImagesComponent extends BaseComponent implements OnInit {
 
-  @Input() images: Image[];
+  @Input() images: Image[] = [];
   @Output() result = new EventEmitter<ManageImagesResult>();
 
   removedIds: string[];

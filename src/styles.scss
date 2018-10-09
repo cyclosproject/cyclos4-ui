@@ -153,9 +153,12 @@ table.table {
   td {
     vertical-align: middle;
     height: 3.8rem;
+    border-top: none;
+    border-bottom: 1px solid $table-border-color;
   }
   th {
     font-weight: $font-weight-bold;
+    border-bottom-width: 1px;
   }
   a {
     color: $body-color;
@@ -209,6 +212,10 @@ table.table {
       padding-bottom: 0;
     }
   }
+}
+
+.paginator-container {
+  border: none !important;
 }
 
 .tile-floating-avatar {

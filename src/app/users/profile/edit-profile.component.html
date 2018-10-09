@@ -53,9 +53,9 @@
             </div>
           </ng-container>
         </div>
-        <div class="d-flex justify-content-end">
-          <button *ngIf="canEdit('image')" class="btn btn-outline-primary"
-            (click)="manageImages()" i18n>Reorder / remove images</button>
+        <div *ngIf="canEdit('image') && images.length > 0" class="d-flex justify-content-end">
+          <button class="btn btn-outline-primary" (click)="manageImages()"
+            i18n>Reorder / remove images</button>
         </div>
         <image-upload #multiUpload target="userProfile" [user]="key" [max]="data.imageConfiguration.maxImages"
           (uploadDone)="onUploadDone($event)"></image-upload>
