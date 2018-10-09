@@ -51,7 +51,7 @@ export abstract class BaseTransactionsSearch
       });
 
       // Initialize the query statuses
-      this.form.patchValue({ 'status': this.getInitialStatus() });
+      this.form.patchValue({ 'status': this.getInitialStatus() }, { emitEvent: false });
 
       // Only initialize the data once the form is filled-in
       this.data = data;

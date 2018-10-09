@@ -143,6 +143,9 @@
   padding: 0 $layout-spacer-xxs;
   color: $button-icon-color;
 }
+.back-button:focus, .back-button:active {
+  box-shadow: none !important;
+}
 @include media-breakpoint-up(xs) {
   .back-button {
     padding: 0 $layout-spacer-xs;
