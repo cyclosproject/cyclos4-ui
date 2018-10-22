@@ -199,6 +199,10 @@ table.table {
   }
 }
 
+.lt-md table.table {
+  border-top: 1px solid $table-border-color;
+}
+
 @include media-breakpoint-up(md) {
   table.table {
     td {
@@ -321,12 +325,6 @@ label {
   margin-right: -$layout-spacer-xxs;
   padding-left: $layout-spacer-xxs;
   padding-right: $layout-spacer-xxs;
-
-  label {
-    text-align: right;
-    padding-left: 0.5rem !important;
-    padding-right: 1rem !important;
-  }
 }
 .filters-row {
   margin-top: 1rem;
@@ -574,6 +572,15 @@ h3 {
   color: $h3-color;
   margin-top: 0.5rem;
   margin-bottom: 0.6rem;
+}
+
+.agm-info-window-content {
+  h1, h2, h3 {
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;
+  }
 }
 
 .modal-dialog.notification {

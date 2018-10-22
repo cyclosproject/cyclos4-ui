@@ -144,15 +144,16 @@ export class LabelValueComponent implements OnInit, OnDestroy {
 
   private resolveLabelClasses(): string[] {
     const classes: string[] = [];
+    classes.push('col-12');
     switch (this.labelPosition) {
       case 'above':
-        classes.push('col-12');
+        // Leave only col-12
         break;
       case 'side':
-        classes.push('col-4');
+        // Except for xxs, use 4 columns
+        classes.push('col-xs-4');
         break;
       default:
-        classes.push('col-12');
         if (this.kind === 'view') {
           classes.push('col-xs-5');
         } else {
@@ -196,7 +197,7 @@ export class LabelValueComponent implements OnInit, OnDestroy {
       case 'above':
         return this.extraCell ? ['col-10', `col-sm-11`] : ['col-12'];
       case 'side':
-        return this.extraCell ? ['col-6', `col-sm-${cols - 1}`] : ['col-8', `col-sm-${cols}`];
+        return this.extraCell ? ['col-10', `col-sm-${cols - 1}`] : ['col-12', 'col-xs-8', `col-sm-${cols}`];
       default:
         if (this.kind === 'view') {
           // Readonly shows the value on the same line, even on XS (but not on XXS)

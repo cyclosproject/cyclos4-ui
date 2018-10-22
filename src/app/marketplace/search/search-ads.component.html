@@ -181,8 +181,11 @@
 
     <ng-container *resultInfoWindow="let ad; let addr = address">
       <a class="plain" [routerLink]="path(ad)">
-        <avatar ngClass="card-img-top" [roundBorders]="false" [image]="ad.image"
-          size="full" imageSize="200" icon="shopping_basket" iconSize="8rem"></avatar>
+        <avatar *ngIf="ad.image" ngClass="card-img-top mb-3" [roundBorders]="false"
+          [image]="ad.image" size="full" imageSize="200"></avatar>
+
+        <icon class="d-block mx-auto my-3" *ngIf="ad.image == null" size="8rem"
+          icon="shopping_basket"></icon>
 
         <div *ngIf="ad.price" class="font-weight-bold">
           <span *ngIf="ad.promotionalPrice" class="promo-price">

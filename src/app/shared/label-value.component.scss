@@ -5,6 +5,16 @@
   padding-bottom: 3px !important;
 }
 
+@include media-breakpoint-up(xs) {
+  .filters-form :host ::ng-deep .label-value-label {
+    padding-top: calc(#{$input-padding-y} + #{$input-border-width}) !important;
+    padding-bottom: calc(#{$input-padding-y} + #{$input-border-width}) !important;
+    text-align: right;
+    padding-left: 0.5rem !important;
+    padding-right: 1rem !important;
+  }
+}
+
 @include media-breakpoint-up(sm) {
   :host.field .label-value-label,
   :host.field-view .label-value-label,

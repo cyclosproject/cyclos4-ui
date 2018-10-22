@@ -88,7 +88,10 @@
         <tbody>
           <ng-container *ngFor="let row of (results$ | async).results">
             <tr (click)="router.navigate(path(row))">
-              <td class="avatar" [ngClass]="{'pb-0': layout.xxs$ | async}">
+              <td class="avatar" [ngClass]="{
+                  'pb-0': layout.xxs$ | async,
+                  'border-0': layout.xxs$ | async
+                }">
                 <avatar [image]="avatarImage(row)" [icon]="avatarIcon(row)"></avatar>
               </td>
               <td *ngIf="layout.xs$ | async">
@@ -117,7 +120,10 @@
                   {{ row.description }}
                 </a>
               </td>
-              <td class="text-right" [ngClass]="{'pb-0': layout.xxs$ | async}">
+              <td class="text-right" [ngClass]="{
+                  'pb-0': layout.xxs$ | async,
+                  'border-0': layout.xxs$ | async
+                }">
                 <a [routerLink]="path(row)" [ngClass]="{
                         positive: format.isPositive(row.amount),
                         negative: format.isNegative(row.amount)
@@ -127,7 +133,7 @@
               </td>
             </tr>
             <tr *ngIf="layout.xxs$ | async" (click)="router.navigate(path(row))">
-              <td class="border-0 pt-0" colspan="3">
+              <td class="border-bottom-1 pt-0" colspan="3">
                 <a [routerLink]="path(row)">
                   <div class="cell-text cell-main">{{ subjectName(row) }}</div>
                   <div class="cell-text cell-date">{{ row.date | dateTime }}</div>
