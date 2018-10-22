@@ -94,7 +94,7 @@ export class EditProfileComponent
     this.key = ApiHelper.SELF;
 
     this.headingActions = [
-      new HeadingAction(this.i18n('View'), () => {
+      new HeadingAction('view', this.i18n('View'), () => {
         this.router.navigate(['users', 'my-profile']);
       }, true)
     ];

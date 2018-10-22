@@ -29,6 +29,7 @@
           attr.aria-labelledby="id" (click)="$event.preventDefault(); $event.stopPropagation();">
           <a *ngFor="let action of headingActions; let first = first" class="heading-action-option"
             (click)="dropdown.hide();action.onClick()">
+            <icon size="1.2rem" [icon]="action.icon"></icon>
             {{ action.label }}
           </a>
         </div>

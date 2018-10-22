@@ -42,12 +42,12 @@ export class ViewTransferComponent extends BasePageComponent<TransferView> imple
   private initActions(transfer: TransferView): HeadingAction[] {
     const actions: HeadingAction[] = [];
     if (transfer.canChargeback) {
-      actions.push(new HeadingAction(this.i18n('Chargeback transfer'), () => {
+      actions.push(new HeadingAction('undo', this.i18n('Chargeback transfer'), () => {
         this.chargeback();
       }));
     }
     if (transfer.chargedBackBy) {
-      actions.push(new HeadingAction(this.i18n('View chargeback'), () => {
+      actions.push(new HeadingAction('view', this.i18n('View chargeback'), () => {
         this.router.navigate(['/banking', 'transfer', ApiHelper.transactionNumberOrId(transfer.chargedBackBy)]);
       }));
     }

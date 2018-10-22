@@ -8,8 +8,10 @@ import { MapsService } from 'app/core/maps.service';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BasePageComponent } from 'app/shared/base-page.component';
-import { fitBounds, labelAddresses } from 'app/shared/helper';
+import { fitBounds, labelAddresses, words } from 'app/shared/helper';
 import { BehaviorSubject } from 'rxjs';
+
+export const MAX_SIZE_SHORT_NAME = 25;
 
 /**
  * Displays an user profile
@@ -30,6 +32,7 @@ export class ViewProfileComponent extends BasePageComponent<UserView> implements
   }
 
   key: string;
+  shortName: string;
   locatedAddresses: Address[];
   mobilePhone: PhoneView;
   landLinePhone: PhoneView;
@@ -69,6 +72,8 @@ export class ViewProfileComponent extends BasePageComponent<UserView> implements
       this.locatedAddresses = labelAddresses(user.addresses, this.i18n);
     }
 
+    this.shortName = words(user.name || user.display, MAX_SIZE_SHORT_NAME);
+
     // We'll show the phones either as single or multiple
     this.mobilePhones = user.phones.filter(p => p.type === PhoneKind.MOBILE);
     this.landLinePhones = user.phones.filter(p => p.type === PhoneKind.LAND_LINE);
@@ -87,27 +92,27 @@ export class ViewProfileComponent extends BasePageComponent<UserView> implements
     const contact = permissions.contact || {};
     const payment = permissions.payment || {};
     if ((this.login.user || {}).id === user.id && user.permissions.profile.editProfile) {
-      actions.push(new HeadingAction(this.i18n('Edit'), () => {
+      actions.push(new HeadingAction('edit', this.i18n('Edit'), () => {
         this.router.navigate(['users', 'my-profile', 'edit']);
       }, true));
     }
     if (contact.add) {
-      actions.push(new HeadingAction(this.i18n('Add {{name}} to my contacts', {
-        name: user.display
+      actions.push(new HeadingAction('add_circle_outline', this.i18n('Add {{name}} to my contacts', {
+        name: this.shortName
       }), () => {
         this.addContact();
       }));
     }
     if (contact.remove) {
-      actions.push(new HeadingAction(this.i18n('Remove {{name}} from my contacts', {
-        name: user.display
+      actions.push(new HeadingAction('remove_circle_outline', this.i18n('Remove {{name}} from my contacts', {
+        name: this.shortName
       }), () => {
         this.removeContact();
       }));
     }
     if (payment.userToUser) {
-      actions.push(new HeadingAction(this.i18n('Pay {{name}}', {
-        name: user.display
+      actions.push(new HeadingAction('payment', this.i18n('Pay {{name}}', {
+        name: this.shortName
       }), () => {
         this.router.navigate(['/banking', 'payment', this.key]);
       }));
@@ -123,7 +128,7 @@ export class ViewProfileComponent extends BasePageComponent<UserView> implements
       }
     }).subscribe(() => {
       this.notification.snackBar(this.i18n('{{user}} was added to your contact list', {
-        user: this.user.display
+        user: this.shortName
       }));
       this.reload();
     });
@@ -132,7 +137,7 @@ export class ViewProfileComponent extends BasePageComponent<UserView> implements
   private removeContact(): any {
     this.contactsService.deleteContact(this.user.contact.id).subscribe(() => {
       this.notification.snackBar(this.i18n('{{user}} was removed to your contact list', {
-        user: this.user.display
+        user: this.shortName
       }));
       this.reload();
     });
@@ -143,7 +148,7 @@ export class ViewProfileComponent extends BasePageComponent<UserView> implements
   }
 
   get title(): string {
-    return this.myProfile ? this.i18n('My profile') : (this.user || {}).display;
+    return this.myProfile ? this.i18n('My profile') : this.shortName;
   }
 
   fitAddressesBounds() {

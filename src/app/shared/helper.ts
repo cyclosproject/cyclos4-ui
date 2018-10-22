@@ -445,3 +445,22 @@ export function scrollTop(base?: number | HTMLElement) {
   document.body.scrollTop = base;
   document.documentElement.scrollTop = base;
 }
+
+/**
+ * Returns the first words of a text, up to a maximum length.
+ * For example: words('Social Trade Organization', 15) will return 'Social Trade'
+ */
+export function words(text: string, maxLength: number): string {
+  if (blank(text)) {
+    return '';
+  }
+  let result = '';
+  for (const part of text.split(/\s+/)) {
+    if (result === '' || result.length + part.length + 1 < maxLength) {
+      result += ' ' + part;
+    } else {
+      break;
+    }
+  }
+  return result;
+}

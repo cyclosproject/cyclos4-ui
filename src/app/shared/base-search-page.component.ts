@@ -170,7 +170,7 @@ export abstract class BaseSearchPageComponent<D, R> extends BasePageComponent<D>
   }
 
   protected get moreFiltersAction(): HeadingAction {
-    return new HeadingAction(this.i18n('More filters'), () => this.moreFilters = !this.moreFilters, true);
+    return new HeadingAction('filter_list', this.i18n('More filters'), () => this.moreFilters = !this.moreFilters, true);
   }
 
   /**

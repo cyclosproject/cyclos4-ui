@@ -71,62 +71,62 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
     const actions: HeadingAction[] = [];
     const auth = transaction.authorizationPermissions || {};
     if (!empty(transaction.authorizations)) {
-      actions.push(new HeadingAction(this.i18n('View authorizations'), () => {
+      actions.push(new HeadingAction('view', this.i18n('View authorizations'), () => {
         this.router.navigate(['banking', 'transaction', this.key, 'authorization-history']);
       }));
     }
     if (auth.authorize) {
-      actions.push(new HeadingAction(this.i18n('Authorize this pending payment'), () => {
+      actions.push(new HeadingAction('thumb_up', this.i18n('Authorize this pending payment'), () => {
         this.authorize();
       }));
     }
     if (auth.deny) {
-      actions.push(new HeadingAction(this.i18n('Deny this pending payment'), () => {
+      actions.push(new HeadingAction('thumb_down', this.i18n('Deny this pending payment'), () => {
         this.deny();
       }));
     }
     if (auth.authorize) {
-      actions.push(new HeadingAction(this.i18n('Cancel the authorization process'), () => {
+      actions.push(new HeadingAction('cancel', this.i18n('Cancel the authorization process'), () => {
         this.cancelAuthorization();
       }));
     }
 
     const scheduled = transaction.scheduledPaymentPermissions || {};
     if (scheduled.block) {
-      actions.push(new HeadingAction(this.i18n('Block scheduling'), () => {
+      actions.push(new HeadingAction('block', this.i18n('Block scheduling'), () => {
         this.blockScheduled();
       }));
     }
     if (scheduled.unblock) {
-      actions.push(new HeadingAction(this.i18n('Unblock scheduling'), () => {
+      actions.push(new HeadingAction('schedule', this.i18n('Unblock scheduling'), () => {
         this.unblockScheduled();
       }));
     }
     if (scheduled.cancel) {
-      actions.push(new HeadingAction(this.i18n('Cancel this scheduled payment'), () => {
+      actions.push(new HeadingAction('cancel', this.i18n('Cancel this scheduled payment'), () => {
         this.cancelScheduled();
       }));
     }
     if (scheduled.settle) {
-      actions.push(new HeadingAction(this.i18n('Settle this entire scheduled payment'), () => {
+      actions.push(new HeadingAction('done_all', this.i18n('Settle this entire scheduled payment'), () => {
         this.settleScheduled();
       }));
     }
 
     const recurring = transaction.recurringPaymentPermissions || {};
     if (recurring.cancel) {
-      actions.push(new HeadingAction(this.i18n('Cancel this recurring payment'), () => {
+      actions.push(new HeadingAction('cancel', this.i18n('Cancel this recurring payment'), () => {
         this.cancelRecurring();
       }));
     }
 
     if ((transaction.transfer || {}).canChargeback) {
-      actions.push(new HeadingAction(this.i18n('Chargeback this transfer'), () => {
+      actions.push(new HeadingAction('undo', this.i18n('Chargeback this transfer'), () => {
         this.chargeback();
       }));
     }
     if ((transaction.transfer || {}).chargedBackBy) {
-      actions.push(new HeadingAction(this.i18n('View chargeback transfer'), () => {
+      actions.push(new HeadingAction('view', this.i18n('View chargeback transfer'), () => {
         this.router.navigate(['/banking', 'transfer', ApiHelper.transactionNumberOrId(transaction.transfer.chargedBackBy)]);
       }));
     }

@@ -321,6 +321,12 @@ label {
   margin-right: -$layout-spacer-xxs;
   padding-left: $layout-spacer-xxs;
   padding-right: $layout-spacer-xxs;
+
+  label {
+    text-align: right;
+    padding-left: 0.5rem !important;
+    padding-right: 1rem !important;
+  }
 }
 .filters-row {
   margin-top: 1rem;
