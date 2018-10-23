@@ -84,11 +84,11 @@ $side-menu-inactive-icon-color: $menu-bar-inactive-icon-color;
 $side-menu-inactive-hover-bg: $menu-bar-hover-bg;
 
 $dashboard-bg: $input-bg;
-$dashboard-color: $primary;
-$dashboard-icon-color: $primary;
+$dashboard-color: darken($primary, 20%);
+$dashboard-icon-color: $dashboard-color;
 $dashboard-border-color: $section-border-color;
 $dashboard-hover-bg: $menu-bar-hover-bg;
-$dashboard-hover-color: $primary;
+$dashboard-hover-color: $dashboard-color;
 $dashboard-hover-border-color: $dashboard-border-color;
 $dashboard-hover-icon-color: $dashboard-icon-color;
 

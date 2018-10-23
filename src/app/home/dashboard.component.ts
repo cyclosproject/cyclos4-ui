@@ -36,9 +36,9 @@ export class DashboardComponent extends BaseComponent implements OnInit {
     const auth = dataForUi.auth;
     const permissions = auth.permissions;
     if (auth.user == null) {
-      this.actions.push(new DashboardAction('lock_open', this.i18n('Login'), ['login']));
+      this.actions.push(new DashboardAction('login', this.i18n('Login'), ['login']));
       if (!empty(dataForUi.publicRegistrationGroups)) {
-        this.actions.push(new DashboardAction('input', this.i18n('Register'), ['users', 'registration']));
+        this.actions.push(new DashboardAction('register', this.i18n('Register'), ['users', 'registration']));
       }
     }
     if (permissions.banking) {
@@ -47,21 +47,21 @@ export class DashboardComponent extends BaseComponent implements OnInit {
         if (account.visible) {
           const type = account.account.type;
           const label = accounts.length === 1 ? this.i18n('Account') : type.name;
-          this.actions.push(new DashboardAction('account_balance', label, ['banking', 'account', ApiHelper.internalNameOrId(type)]));
+          this.actions.push(new DashboardAction('account', label, ['banking', 'account', ApiHelper.internalNameOrId(type)]));
         }
       }
       if (permissions.banking.payments.user) {
-        this.actions.push(new DashboardAction('payment', this.i18n('Pay user'), ['banking', 'payment']));
+        this.actions.push(new DashboardAction('pay', this.i18n('Pay user'), ['banking', 'payment']));
       }
     }
     if (permissions.users && (permissions.users.search || permissions.users.map)) {
-      this.actions.push(new DashboardAction('group', this.i18n('Users'), ['users', 'search']));
+      this.actions.push(new DashboardAction('search_users', this.i18n('Users'), ['users', 'search']));
     }
     if (permissions.marketplace && permissions.marketplace.search) {
-      this.actions.push(new DashboardAction('shopping_cart', this.i18n('Marketplace'), ['marketplace', 'search']));
+      this.actions.push(new DashboardAction('marketplace', this.i18n('Marketplace'), ['marketplace', 'search']));
     }
     if (permissions.myProfile && permissions.myProfile.editProfile) {
-      this.actions.push(new DashboardAction('account_box', this.i18n('Edit profile'), ['users', 'my-profile', 'edit']));
+      this.actions.push(new DashboardAction('edit_profile', this.i18n('Edit profile'), ['users', 'my-profile', 'edit']));
     }
   }
 

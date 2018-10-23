@@ -19,6 +19,13 @@ export class SvgIconRegistry {
 
   constructor(private http: HttpClient) {
     this.names.push('account_balance_circle');
+    this.names.push('login');
+    this.names.push('search_users');
+    this.names.push('marketplace');
+    this.names.push('register');
+    this.names.push('edit_profile');
+    this.names.push('account');
+    this.names.push('pay');
   }
 
   /**
