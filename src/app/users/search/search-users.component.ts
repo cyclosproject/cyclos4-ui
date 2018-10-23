@@ -29,7 +29,8 @@ export class SearchUsersComponent
   canSearch: boolean;
   canViewMap: boolean;
   countries$: Observable<Country[]>;
-  fieldsInSearch$ = new BehaviorSubject<CustomFieldDetailed[]>([]);
+  basicField$ = new BehaviorSubject<CustomFieldDetailed>(null);
+  advancedFields$ = new BehaviorSubject<CustomFieldDetailed[]>([]);
 
   // As the custom fields are dynamically fetched, and form.setControl doesn't have a way to avoid emitting the value.
   // Hence, we need to control the update externally.
@@ -102,9 +103,11 @@ export class SearchUsersComponent
       // See the comment on ignoreNextUpdate
       this.ignoreNextUpdate = true;
       this.form.setControl('customValues', ApiHelper.customValuesFormGroup(this.formBuilder, fieldsInSearch));
-      this.fieldsInSearch$.next(fieldsInSearch);
+      this.ignoreNextUpdate = false;
+      this.basicField$.next(fieldsInSearch.length === 0 ? null : fieldsInSearch[0]);
+      this.advancedFields$.next(fieldsInSearch.length > 1 ? fieldsInSearch.slice(1) : []);
       this.data = data;
-      this.headingActions = empty(fieldsInSearch) ? [] : [this.moreFiltersAction];
+      this.headingActions = empty(this.advancedFields$.value) ? [] : [this.moreFiltersAction];
     };
 
     if (this.data == null) {

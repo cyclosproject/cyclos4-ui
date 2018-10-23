@@ -8,8 +8,13 @@
             <input-field labelPosition="side" formControlName="keywords"
               i18n-label label="Keywords"></input-field>
           </div>
+          <div class="col-12 col-md-6" *ngIf="(basicField$ | async) as cf">
+            <custom-field-filter labelPosition="side" [field]="cf"
+              [formControl]="form.get('customValues').get(cf.internalName)">
+            </custom-field-filter>
+          </div>
           <ng-container *ngIf="moreFilters$ | async">
-            <div class="col-12 col-md-6" *ngFor="let cf of fieldsInSearch$ | async">
+            <div class="col-12 col-md-6" *ngFor="let cf of advancedFields$ | async">
               <custom-field-filter labelPosition="side" [field]="cf"
                 [formControl]="form.get('customValues').get(cf.internalName)">
               </custom-field-filter>

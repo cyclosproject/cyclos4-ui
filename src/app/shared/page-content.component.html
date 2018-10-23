@@ -27,8 +27,8 @@
         <div class="heading-actions-menu dropdown-menu dropdown-menu-right"
           *dropdownMenu role="listbox" attr.id="'actions-menu'"
           attr.aria-labelledby="id" (click)="$event.preventDefault(); $event.stopPropagation();">
-          <a *ngFor="let action of headingActions; let first = first" class="heading-action-option"
-            (click)="dropdown.hide();action.onClick()">
+          <a #actionLink *ngFor="let action of headingActions; let first = first"
+            class="heading-action-option" (click)="dropdown.hide();action.onClick(actionLink)">
             <icon size="1.2rem" [icon]="action.icon"></icon>
             {{ action.label }}
           </a>
@@ -36,8 +36,8 @@
       </div>
       <ng-template #rootActions>
         <div class="d-flex heading-actions">
-          <button *ngFor="let action of headingActions" class="heading-action d-flex"
-            (click)="action.onClick()">
+          <button #actionButton *ngFor="let action of headingActions" class="heading-action d-flex"
+            (click)="action.onClick(actionButton)">
             {{ action.label }}
           </button>
         </div>

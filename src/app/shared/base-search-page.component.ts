@@ -32,6 +32,8 @@ export abstract class BaseSearchPageComponent<D, R> extends BasePageComponent<D>
   readonly form: FormGroup;
   previousValue: any;
 
+  private _moreFiltersAction: HeadingAction;
+
   protected onDataInitialized(data: D) {
     this.stateManager.manage(this.form);
     this.previousValue = this.form.value;
@@ -170,7 +172,19 @@ export abstract class BaseSearchPageComponent<D, R> extends BasePageComponent<D>
   }
 
   protected get moreFiltersAction(): HeadingAction {
-    return new HeadingAction('filter_list', this.i18n('More filters'), () => this.moreFilters = !this.moreFilters, true);
+    if (this._moreFiltersAction) {
+      return this._moreFiltersAction;
+    }
+
+    const more = this.i18n('More filters');
+    const less = this.i18n('Less filters');
+
+    this._moreFiltersAction = new HeadingAction('filter_list', more, button => {
+      this.moreFilters = !this.moreFilters;
+      this._moreFiltersAction.label = this.moreFilters ? less : more;
+    }, true);
+
+    return this._moreFiltersAction;
   }
 
   /**

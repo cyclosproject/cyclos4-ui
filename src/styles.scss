@@ -440,6 +440,10 @@ button.btn-transparent {
   overflow-x: hidden;
   overflow-y: auto;
   transform: none !important;
+
+  .custom-checkbox {
+    margin-left: 0.6rem;
+  }
 }
 
 .dropdown-toggle::after {

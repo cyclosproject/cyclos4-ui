@@ -4,7 +4,7 @@
 export class Action {
   constructor(
     public label: string,
-    public onClick: () => void
+    public onClick: (any) => void
   ) {
   }
 }
@@ -16,7 +16,7 @@ export class ActionWithIcon extends Action {
   constructor(
     public icon: string,
     label: string,
-    onClick: () => void
+    onClick: (any) => void
   ) {
     super(label, onClick);
   }
@@ -34,7 +34,7 @@ export class HeadingAction extends ActionWithIcon {
   constructor(
     icon: string,
     label: string,
-    onClick: () => void,
+    onClick: (any) => void,
     public maybeRoot = false
   ) {
     super(icon, label, onClick);
