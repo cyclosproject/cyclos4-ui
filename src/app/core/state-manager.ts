@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { of as observableOf } from 'rxjs';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
@@ -89,6 +89,20 @@ export class StateManager {
       form.patchValue(value);
     }
     this.subscriptions.push(form.valueChanges.subscribe(val => this.set(key, val)));
+    return value != null;
+  }
+
+  /**
+   * Initializes the given value with the current state, if any, and store the state whenever the value changes
+   * @param value The value holder, as a BehaviorSubject
+   * @returns Whether a previous value was used
+   */
+  manageValue(subject: BehaviorSubject<any>, key: string): boolean {
+    const value = this.get(key);
+    if (value) {
+      subject.next(value);
+    }
+    this.subscriptions.push(subject.subscribe(val => this.set(key, val)));
     return value != null;
   }
 

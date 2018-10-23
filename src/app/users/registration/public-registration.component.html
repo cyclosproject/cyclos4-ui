@@ -1,4 +1,4 @@
-<page-layout [ready]="data$ | async" [ngSwitch]="step$ | async" size="medium"
+<page-layout [ready]="data$ | async" [ngSwitch]="step$ | async" size="large"
   hideMenu>
   <page-content *ngSwitchCase="'group'" i18n-heading heading="User registration"
     [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'">

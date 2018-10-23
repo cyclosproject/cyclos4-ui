@@ -70,6 +70,16 @@ body.gt-sm {
     icon {
       color: $tiled-results-icon-color;
     }
+
+    .avatar-container {
+      -webkit-transition: all ease-out 0.4s;
+      transition: all ease-out 0.4s;
+
+      &:hover {
+        -webkit-filter: brightness(90%);
+        filter: brightness(90%);
+      }
+    }
   }
 }
 

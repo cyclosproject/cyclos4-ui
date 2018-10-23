@@ -19,7 +19,9 @@
 .content-area-medium {
   max-width: 600px;
 }
-
+.content-area-large {
+  max-width: 786px;
+}
 
 @include media-breakpoint-up(md) {
   .content-area {

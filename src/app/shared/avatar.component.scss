@@ -26,12 +26,12 @@
 }
 .avatar-container.with-lightbox {
   cursor: pointer;
+  -webkit-transition: all ease-out 0.4s;
+  transition: all ease-out 0.4s;
 }
 .avatar-container.with-lightbox:hover {
   -webkit-filter: brightness(90%);
   filter: brightness(90%);
-  -webkit-transition: all ease-out 0.4s;
-  transition: all ease-out 0.4s;
 }
 
 .avatar-container {

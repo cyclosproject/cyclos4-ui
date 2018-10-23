@@ -36,6 +36,7 @@ export abstract class BaseSearchPageComponent<D, R> extends BasePageComponent<D>
 
   protected onDataInitialized(data: D) {
     this.stateManager.manage(this.form);
+    this.stateManager.manageValue(this.moreFilters$, 'moreFilters');
     this.previousValue = this.form.value;
     this.addSub(this.form.valueChanges.pipe(debounceTime(ApiHelper.DEBOUNCE_TIME)).subscribe(value => {
       if (this.shouldUpdateOnChange(value, this.previousValue)) {
@@ -57,10 +58,6 @@ export abstract class BaseSearchPageComponent<D, R> extends BasePageComponent<D>
    * @param previousValue The previous form value
    */
   protected shouldUpdateOnChange(value: any, previousValue: any): boolean {
-    if (value.resultType === ResultType.CATEGORIES) {
-      // Switching to the categories result type shouldn't perform a results search
-      return false;
-    }
     if (previousValue == null || previousValue.resultType === ResultType.CATEGORIES) {
       // Either first time or switching from categories. Update.
       return true;
@@ -226,6 +223,10 @@ export abstract class BaseSearchPageComponent<D, R> extends BasePageComponent<D>
     this.rendering = true;
     this.results = null;
     this.addSub(this.doSearch(this.form.value).subscribe(response => {
+      if (this.resultType === ResultType.CATEGORIES) {
+        // Switch to the first allowed result type that isn't categories
+        this.resultType = this.allowedResultTypes.find(rt => rt !== ResultType.CATEGORIES);
+      }
       this.results = PagedResults.from(response);
     }));
   }

@@ -18,7 +18,7 @@ import { truthyAttr } from 'app/shared/helper';
 export class PageLayoutComponent implements OnInit {
   @Input() heading: string;
   @Input() ready: boolean;
-  @Input() size: 'small' | 'medium' | 'full' = 'full';
+  @Input() size: 'small' | 'medium' | 'large' | 'full' = 'full';
 
   private _hideMenu = false;
   @Input() get hideMenu(): boolean | string {

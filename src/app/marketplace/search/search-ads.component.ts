@@ -10,6 +10,7 @@ import { ResultType } from 'app/shared/result-type';
 import { environment } from 'environments/environment';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BehaviorSubject } from 'rxjs';
+import { cloneDeep } from 'lodash';
 
 const MAX_CHILDREN = 5;
 
@@ -67,7 +68,10 @@ export class SearchAdsComponent
   }
 
   doSearch(value) {
-    return this.marketplaceService.searchAdsResponse(value);
+    const params = cloneDeep(value) as MarketplaceService.SearchAdsParams;
+    delete params['customValues'];
+    params.customFields = ApiHelper.toCustomValuesFilter(value.customValues);
+    return this.marketplaceService.searchAdsResponse(params);
   }
 
   onResultTypeChanged(resultType: ResultType, previousResultType: ResultType) {
