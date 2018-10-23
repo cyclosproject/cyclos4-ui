@@ -26,6 +26,7 @@ export class SvgIconRegistry {
     this.names.push('edit_profile');
     this.names.push('account');
     this.names.push('pay');
+    this.names.push('contact_list');
   }
 
   /**

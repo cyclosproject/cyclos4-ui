@@ -71,7 +71,7 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
     const actions: HeadingAction[] = [];
     const auth = transaction.authorizationPermissions || {};
     if (!empty(transaction.authorizations)) {
-      actions.push(new HeadingAction('view', this.i18n('View authorizations'), () => {
+      actions.push(new HeadingAction('check_circle_outline', this.i18n('View authorizations'), () => {
         this.router.navigate(['banking', 'transaction', this.key, 'authorization-history']);
       }));
     }

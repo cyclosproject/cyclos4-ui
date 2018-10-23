@@ -96,8 +96,8 @@
     </date-field>
 
     <ng-container *ngSwitchCase="'scheduled'">
-      <input-field type="number" required numbersOnly formControlName="installmentsCount"
-        required i18n-label label="Number of installments">
+      <input-field type="number" fieldSize="small" required numbersOnly
+        formControlName="installmentsCount" required i18n-label label="Number of installments">
       </input-field>
 
       <radio-group-field formControlName="firstInstallmentIsNow" i18n-label
@@ -129,8 +129,8 @@
       </radio-group-field>
 
       <input-field *ngIf="(form.get('repeatUntilCanceled').valueChanges | async) === false"
-        type="number" numbersOnly formControlName="occurrencesCount" required
-        i18n-label label="Number of occurrences">
+        type="number" fieldSize="small" numbersOnly formControlName="occurrencesCount"
+        required i18n-label label="Number of occurrences">
       </input-field>
     </ng-container>
   </ng-container>

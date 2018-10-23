@@ -54,6 +54,9 @@ export class DashboardComponent extends BaseComponent implements OnInit {
         this.actions.push(new DashboardAction('pay', this.i18n('Pay user'), ['banking', 'payment']));
       }
     }
+    if (permissions.contacts && (permissions.contacts.enable)) {
+      this.actions.push(new DashboardAction('contact_list', this.i18n('Contacts'), ['users', 'contacts']));
+    }
     if (permissions.users && (permissions.users.search || permissions.users.map)) {
       this.actions.push(new DashboardAction('search_users', this.i18n('Users'), ['users', 'search']));
     }

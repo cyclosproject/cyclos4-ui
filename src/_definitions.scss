@@ -36,7 +36,7 @@ $layout-spacer: 1.25rem;
 
 $body-bg: $gray-100;
 $body-color: $gray-800;
-$table-icon-color: #ccc;
+$table-icon-color: #cecece;
 $table-hover-bg: #f9f9f9;
 
 $section-border-color: $gray-300;
@@ -63,7 +63,7 @@ $title-height: 3.4rem;
 $title-button-bg: $light;
 $title-button-color: color-yiq($light);
 $title-button-border-color: $section-border-color;
-$title-button-icon-color: $gray-500;
+$title-button-icon-color: $faded-color;
 
 $menu-bar-bg: $input-bg;
 $menu-bar-color: $faded-color;
@@ -84,7 +84,7 @@ $side-menu-inactive-icon-color: $menu-bar-inactive-icon-color;
 $side-menu-inactive-hover-bg: $menu-bar-hover-bg;
 
 $dashboard-bg: $input-bg;
-$dashboard-color: darken($primary, 20%);
+$dashboard-color: darken($primary, 15%);
 $dashboard-icon-color: $dashboard-color;
 $dashboard-border-color: $section-border-color;
 $dashboard-hover-bg: $menu-bar-hover-bg;
