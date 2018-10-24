@@ -1,7 +1,7 @@
 <div class="chip d-flex justify-content-center align-items-center">
   <avatar *ngIf="image || icon" size="small" ngClass="mr-2" [image]="image"
     [icon]="icon"></avatar>
-  <div>
+  <div class="text-truncate mw-100">
     <ng-content></ng-content>
   </div>
   <a *ngIf="closeable" class="ml-2" href="#" (click)="$event.preventDefault(); close.emit(null)">

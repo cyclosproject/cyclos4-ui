@@ -6,7 +6,7 @@ import { BaseAutocompleteFieldComponent } from 'app/shared/base-autocomplete-fie
 import { User } from 'app/api/models';
 import { Observable, Subscription, of } from 'rxjs';
 import { UserCacheService } from 'app/core/user-cache.service';
-import { map, distinctUntilChanged } from 'rxjs/operators';
+import { distinctUntilChanged } from 'rxjs/operators';
 import { UsersService } from 'app/api/services';
 import { LoginService } from 'app/core/login.service';
 import { ApiHelper } from 'app/shared/api-helper';

@@ -42,6 +42,9 @@
   {{ status.name }}
 </label-value>
 
+<label-value *ngIf="transfer.transaction?.description" i18n-label label="Description"
+  valueFormat="break" [value]="transfer.transaction.description"></label-value>
+
 <ng-container *ngIf="transfer.parent">
   <h2 class="mt-4" i18n>Transfer that generated this one</h2>
   <label-value *ngIf="transfer.parent.transactionNumber" i18n-label label="Transaction number">

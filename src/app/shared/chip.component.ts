@@ -12,6 +12,8 @@ import { Image } from 'app/api/models';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ChipComponent {
+  @HostBinding('class.mw-100') classMaxWidth = true;
+
   @Input() image: Image;
   @Input() icon: string;
   @Input() closeable = true;
