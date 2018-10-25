@@ -13,6 +13,6 @@
     <ng-content></ng-content>
   </ng-container>
 </div>
-<div *ngIf="extraCell" class="col-2 col-sm-1 d-flex justify-content-end">
+<div *ngIf="extraCell" class="d-flex justify-content-end" [ngClass]="extraClasses">
   <ng-container *ngTemplateOutlet="extraCell"></ng-container>
 </div>

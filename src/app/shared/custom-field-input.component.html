@@ -1,75 +1,97 @@
 <!-- A read-only label-value rendered when the control is disabled -->
 <label-value *ngIf="disabled || (disabledChange | async); else controlTemplate"
   [label]="field.name">
-  <format-field-value [fields]="[field]" [object]="disabledValueObject" [fieldName]="field.internalName"></format-field-value>
+  <format-field-value [fields]="[field]" [object]="disabledValueObject"
+    [fieldName]="field.internalName"></format-field-value>
 </label-value>
 
 <!-- Template rendered when the field is editable, that is, there's a control -->
 <ng-template #controlTemplate>
   <ng-container *ngIf="hasValuesList; else specificTemplate">
     <radio-group-field #radioGroupField *ngIf="control == 'radio'; else singleSelectionTemplate"
-      [copyFrom]="self" [formControl]="formControl" [fieldOptions]="fieldOptions">
+      [id]="id" [label]="label" [name]="name" [labelPosition]="labelPosition"
+      [fieldSize]="fieldSize" [required]="required" [formControl]="formControl"
+      [fieldOptions]="fieldOptions">
     </radio-group-field>
   </ng-container>
 </ng-template>
 
 <ng-template #singleSelectionTemplate>
-  <single-selection-field #singleSelectionField [copyFrom]="self" [formControl]="formControl"
-    emptyOption [fieldOptions]="fieldOptions">
+  <single-selection-field #singleSelectionField [id]="id" [label]="label"
+    [name]="name" [labelPosition]="labelPosition" [fieldSize]="fieldSize"
+    [required]="required" [formControl]="formControl" emptyOption
+    [fieldOptions]="fieldOptions">
   </single-selection-field>
 </ng-template>
 
 <ng-template #specificTemplate>
   <!-- string, integer, URL or entity -->
-  <input-field #inputField *ngIf="input" [copyFrom]="self" [formControl]="formControl"
-    [type]="type == 'integer' ? 'number' : type == 'url' ? 'url' : 'text'" [mask]="field.pattern"></input-field>
+  <input-field #inputField *ngIf="input" [id]="id" [label]="label" [name]="name"
+    [labelPosition]="labelPosition" [fieldSize]="fieldSize" [required]="required"
+    [formControl]="formControl" [type]="type == 'integer' ? 'number' : type == 'url' ? 'url' : 'text'"
+    [mask]="field.pattern"></input-field>
 
   <!-- text or rich text (no WYSIWYG editor yet!) -->
-  <textarea-field #textareaField *ngIf="textarea" #textComponent [copyFrom]="self"
-    [formControl]="formControl"></textarea-field>
+  <textarea-field #textareaField *ngIf="textarea" #textComponent [id]="id"
+    [label]="label" [name]="name" [labelPosition]="labelPosition" [fieldSize]="fieldSize"
+    [required]="required" [formControl]="formControl"></textarea-field>
 
   <!-- boolean -->
-  <boolean-field #booleanField *ngIf="type == 'boolean'" [copyFrom]="self" [formControl]="formControl"
-    type="string">
+  <boolean-field #booleanField *ngIf="type == 'boolean'" [id]="id" [label]="label"
+    [name]="name" [labelPosition]="labelPosition" [fieldSize]="fieldSize"
+    [required]="required" [formControl]="formControl" type="string">
   </boolean-field>
 
   <!-- decimal -->
-  <decimal-field #decimalField *ngIf="type == 'decimal'" [copyFrom]="self" [formControl]="formControl"
-    [scale]="field.decimalDigits">
+  <decimal-field #decimalField *ngIf="type == 'decimal'" [id]="id" [label]="label"
+    [name]="name" [labelPosition]="labelPosition" [fieldSize]="fieldSize"
+    [required]="required" [formControl]="formControl" [scale]="field.decimalDigits">
   </decimal-field>
 
   <!-- date -->
-  <date-field #dateField *ngIf="type == 'date'" [copyFrom]="self" [formControl]="formControl">
+  <date-field #dateField *ngIf="type == 'date'" [id]="id" [label]="label"
+    [name]="name" [labelPosition]="labelPosition" [fieldSize]="fieldSize"
+    [required]="required" [formControl]="formControl">
   </date-field>
 
   <!-- single selection -->
   <single-selection-field #singleSelectionField *ngIf="type == 'singleSelection' && control == 'singleSelection'"
-    [copyFrom]="self" [formControl]="formControl" emptyOption [fieldOptions]="fieldOptions">
+    [id]="id" [label]="label" [name]="name" [labelPosition]="labelPosition"
+    [fieldSize]="fieldSize" [required]="required" [formControl]="formControl"
+    emptyOption [fieldOptions]="fieldOptions">
   </single-selection-field>
   <radio-group-field #radioGroupField *ngIf="type == 'singleSelection' && control == 'radio'"
-    [copyFrom]="self" [formControl]="formControl" [fieldOptions]="fieldOptions">
+    [id]="id" [label]="label" [name]="name" [labelPosition]="labelPosition"
+    [fieldSize]="fieldSize" [required]="required" [formControl]="formControl"
+    [fieldOptions]="fieldOptions">
   </radio-group-field>
 
   <!-- multi selection -->
   <multi-selection-field #multiSelectionField *ngIf="type == 'multiSelection' && control == 'multiSelection'"
-    [copyFrom]="self" [formControl]="formControl" [separator]="ApiHelper.VALUE_SEPARATOR"
-    [fieldOptions]="fieldOptions">
+    [id]="id" [label]="label" [name]="name" [labelPosition]="labelPosition"
+    [fieldSize]="fieldSize" [required]="required" [formControl]="formControl"
+    [separator]="ApiHelper.VALUE_SEPARATOR" [fieldOptions]="fieldOptions">
   </multi-selection-field>
   <checkbox-group-field #cheboxGroupField *ngIf="type == 'multiSelection' && control == 'checkbox'"
-    [copyFrom]="self" [formControl]="formControl" [separator]="ApiHelper.VALUE_SEPARATOR"
-    [fieldOptions]="fieldOptions">
+    [id]="id" [label]="label" [name]="name" [labelPosition]="labelPosition"
+    [fieldSize]="fieldSize" [required]="required" [formControl]="formControl"
+    [separator]="ApiHelper.VALUE_SEPARATOR" [fieldOptions]="fieldOptions">
   </checkbox-group-field>
 
   <!-- images -->
-  <images-field #imagesField *ngIf="type == 'image'" [copyFrom]="self" [formControl]="formControl"
-    [initialImages]="binaryValues?.imageValues[field.internalName]" target="customValue"
-    [customField]="field" [separator]="ApiHelper.VALUE_SEPARATOR" [maxFiles]="field.maxFiles">
+  <images-field #imagesField *ngIf="type == 'image'" [id]="id" [label]="label"
+    [name]="name" [labelPosition]="labelPosition" [fieldSize]="fieldSize"
+    [required]="required" [formControl]="formControl" [initialImages]="binaryValues?.imageValues[field.internalName]"
+    target="customValue" [customField]="field" [separator]="ApiHelper.VALUE_SEPARATOR"
+    [maxFiles]="field.maxFiles">
   </images-field>
 
   <!-- files -->
-  <files-field #filesField *ngIf="type == 'file'" [copyFrom]="self" [formControl]="formControl"
-    [initialFiles]="binaryValues?.fileValues[field.internalName]" [customField]="field"
-    [separator]="ApiHelper.VALUE_SEPARATOR" [maxFiles]="field.maxFiles" [mimeTypes]="field.mimeTypes">
+  <files-field #filesField *ngIf="type == 'file'" [id]="id" [label]="label"
+    [name]="name" [labelPosition]="labelPosition" [fieldSize]="fieldSize"
+    [required]="required" [formControl]="formControl" [initialFiles]="binaryValues?.fileValues[field.internalName]"
+    [customField]="field" [separator]="ApiHelper.VALUE_SEPARATOR" [maxFiles]="field.maxFiles"
+    [mimeTypes]="field.mimeTypes">
   </files-field>
 
 </ng-template>

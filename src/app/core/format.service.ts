@@ -7,6 +7,8 @@ import * as moment from 'moment-mini-ts';
 import { DataForUiHolder } from './data-for-ui-holder';
 import { I18n } from '@ngx-translate/i18n-polyfill';
 
+export const ISO_DATE = 'YYYY-MM-DD';
+
 /**
  * Holds a shared instance of DataForUi and knows how to format dates and numbers
  */
@@ -26,19 +28,66 @@ export class FormatService {
     }
   }
 
+  /** Uppercase date format. Example: `'DD/MM/YYYY'` */
   dateFormat: string;
+
+  /** Separator for date fields. Example: `'/'` */
+  dateSeparator: string;
+
+  /** Date parts in the order they appear in the format. Example: `['MM', 'DD', 'YYYY']` */
+  dateParts: string[];
+
+  /** Date fields in the order they appear in the format. Example: `['date', 'month', 'year']` */
+  dateFields: string[];
+
+  /** Time format, such as `'hh:mm A'` or `'HH:mm'` */
   timeFormat: string;
+
+  /** Separator used to group thousands. Example: `'.'` for `'999.999,99'` */
   groupingSeparator: string;
+
+  /** Separator between whole / decimal parts. Example: `','` for `'999.999,99'` */
   decimalSeparator: string;
 
   private _dataForUi: DataForUi;
+
+  /**
+   * Sorts the given array according to the current date fields order.
+   * The input must be in the ISO-8861 order (year, month, day).
+   * So, for example, if the date patter is `'DD/MM/YYYY'`, the result will
+   * be sorted as `[isoInput[2], isoInput[1], isoInput[0]]`
+   */
+  applyDateFields<T>(isoInput: T[]): T[] {
+    if (isoInput == null || isoInput.length !== this.dateParts.length) {
+      return isoInput;
+    }
+    return this.dateParts.map(f => {
+      if (f.includes('D')) {
+        return isoInput[2];
+      } else if (f.includes('M')) {
+        return isoInput[1];
+      } else {
+        return isoInput[0];
+      }
+    });
+  }
 
   initialize(dataForUi: DataForUi): void {
     if (dataForUi == null) {
       return;
     }
     // Cyclos uses Java format, such as dd/MM/yyyy. Moment uses all uppercase for those.
-    this.dateFormat = (dataForUi.dateFormat || 'YYYY-MM-DD').toUpperCase();
+    this.dateFormat = (dataForUi.dateFormat || ISO_DATE).toUpperCase();
+    let arr = /(\w+)(.)(\w+)(.)(\w+)/.exec(this.dateFormat);
+    if (arr == null || arr.input !== this.dateFormat) {
+      // Invalid pattern. Assume the default.
+      this.dateFormat = ISO_DATE;
+      arr = /(\w+)(.)(\w+)(.)(\w+)/.exec(this.dateFormat);
+    }
+    // The array is: [matched_string, part0, sep, part1, sep, part2]
+    this.dateSeparator = arr[2];
+    this.dateParts = [arr[1], arr[3], arr[5]];
+    this.dateFields = this.applyDateFields(['year', 'month', 'date']);
 
     // The time format is consistent, except that we want uppercase AM/PM markers.
     this.timeFormat = (dataForUi.timeFormat || 'HH:mm').replace('a', 'A');
@@ -90,7 +139,7 @@ export class FormatService {
       return null;
     }
     // Returns either the ISO-formatted date or undefined (if invalid)
-    return mm.isValid() ? mm.format('YYYY-MM-DD') : undefined;
+    return mm.isValid() ? mm.format(ISO_DATE) : undefined;
   }
 
   /**

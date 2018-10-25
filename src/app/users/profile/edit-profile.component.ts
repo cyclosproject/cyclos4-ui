@@ -781,4 +781,8 @@ export class EditProfileComponent
     this.locatedAddresses = labelAddresses(this.addresses, this.i18n);
     this.mapBounds$.next(fitBounds(this.addresses));
   }
+
+  fieldSize(cf: CustomFieldDetailed) {
+    return ApiHelper.fieldSize(cf);
+  }
 }

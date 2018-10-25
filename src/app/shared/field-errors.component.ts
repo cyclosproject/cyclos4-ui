@@ -28,9 +28,7 @@ export class FieldErrorsComponent {
       }
       return message;
     } else if (errors.date) {
-      return this.i18n('Invalid date. Expected format: {{format}}.', {
-        format: errors.date.format
-      });
+      return this.i18n('Invalid date');
     } else if (errors.number) {
       return this.i18n('Invalid numeric value');
     } else if (errors.minlength) {

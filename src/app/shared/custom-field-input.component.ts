@@ -59,11 +59,7 @@ export class CustomFieldInputComponent extends BaseFormFieldComponent<string> im
       if (!this.hideLabel) {
         this.label = field.name;
       }
-      this.fieldSize = field.size;
-      if ([CustomFieldTypeEnum.DATE, CustomFieldTypeEnum.DECIMAL].includes(field.type) && !field.hasValuesList) {
-        // Regular date / decimal inputs are small
-        this.fieldSize = CustomFieldSizeEnum.SMALL;
-      }
+      this.fieldSize = ApiHelper.fieldSize(field);
       this.required = field.required;
     }
   }

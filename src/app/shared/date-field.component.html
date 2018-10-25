@@ -3,6 +3,34 @@
 </label-value>
 
 <ng-template #widget>
+  <div class="date-field d-flex align-items-center">
+    <ng-container *ngFor="let control of partControls.controls; let index = index">
+      <div *ngIf="index > 0" [ngClass]="{
+          'mx-2': layout.gtxs$ | async,
+          'mx-1': layout.ltsm$ | async
+        }">
+        {{ format.dateSeparator }}
+      </div>
+      <select class="custom-select" [attr.id]="id + '_0'" [formControl]="control"
+        (change)="notifyTouched()" [ngClass]="{
+          'is-invalid': (formControl.statusChanges | async) === 'INVALID' && formControl.touched,
+          'field-year': format.dateFields[index] === 'year',
+          'field-month': format.dateFields[index] === 'month',
+          'field-date': format.dateFields[index] === 'date'
+        }">
+        <option value="">{{ (layout.ltsm$ | async) ? fieldInitials[index] :
+          fieldNames[index] }}</option>
+        <option *ngFor="let opt of options[index]" [value]="opt">{{ opt }}</option>
+      </select>
+    </ng-container>
+    <button class="ml-2 btn btn-light btn-icon" bsDatepicker [bsValue]="valueAsDate"
+      (bsValueChange)="setFromDate($event)" [bsConfig]=" {
+      dateInputFormat: format.datePattern, containerClass: 'theme-default' ,
+      showWeekNumbers: false, locale: 'cyclos' }">
+      <icon icon="calendar_today"></icon>
+    </button>
+  </div>
+  <!--
   <input #inputField [id]="id" class="form-control" [placeholder]="pattern"
     (onblur)="formControl.markAsTouched()" [formControl]="internalControl"
     bsDatepicker [bsConfig]="{
@@ -13,6 +41,6 @@
     }"
     [ngClass]="{
       'is-invalid': (formControl.statusChanges | async) === 'INVALID' && formControl.touched
-    }">
-  <field-errors [control]="formControl"></field-errors>
+    }"> -->
+
 </ng-template>

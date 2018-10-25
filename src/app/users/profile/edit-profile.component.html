@@ -86,7 +86,7 @@
       <!-- Don't show custom values that are empty and non-editable -->
       <label-value *ngIf="canEdit(cf) || !isEmpty(cf)" [label]="cf.name"
         [kind]="canEdit(cf) ? 'field' : 'fieldView'" [ignoreExtraCell]="!canManagePrivacy(cf)"
-        [fieldSize]="cf.size" [required]="cf.required">
+        [fieldSize]="fieldSize(cf)" [required]="cf.required">
         <custom-field-input [field]="cf" hideLabel [formControlName]="cf.internalName"
           [binaryValues]="data.userConfiguration.binaryValues"></custom-field-input>
         <field-privacy *extraCell [field]="cf.internalName" [control]="user.get('hiddenFields')"></field-privacy>
@@ -96,7 +96,7 @@
     <!-- Single mobile phone -->
     <ng-container *ngIf="singleMobile" [formGroup]="singleMobile">
       <label-value i18n-label label="Mobile phone" [required]="data.phoneConfiguration.mobileAvailability === 'required'"
-        kind="field">
+        kind="field" fieldSize="small">
         <input-field formControlName="number" [placeholder]="data.phoneConfiguration.mobileExample"></input-field>
         <field-privacy *extraCell [control]="singleMobile.get('hidden')"></field-privacy>
       </label-value>
@@ -110,7 +110,7 @@
     <!-- Single land-line phone -->
     <ng-container *ngIf="singleLandLine" [formGroup]="singleLandLine">
       <label-value i18n-label label="Land-line phone" [required]="data.phoneConfiguration.landLineAvailability === 'required'"
-        kind="field">
+        kind="field" fieldSize="small">
         <input-field formControlName="number" [placeholder]="data.phoneConfiguration.landLineExample"></input-field>
         <field-privacy *extraCell [control]="singleLandLine.get('hidden')"></field-privacy>
       </label-value>

@@ -12,13 +12,12 @@ import { NextRequestState } from './next-request-state';
 import { ErrorStatus } from './error-status';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { Router } from '@angular/router';
-import { LoginService } from 'app/core/login.service';
 import { I18n } from '@ngx-translate/i18n-polyfill';
 import { LayoutService } from 'app/shared/layout.service';
 import { empty, focusFirstInvalid } from 'app/shared/helper';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { FormControlLocator } from 'app/shared/form-control-locator';
-import { LoginState, LoginReason } from 'app/core/login-state';
+import { LoginState } from 'app/core/login-state';
 
 /**
  * Service used to handle application errors

@@ -1,32 +1,38 @@
 <ng-container *ngIf="hasValuesList; else specificTemplate">
-  <multi-selection-field #singleSelectionField [copyFrom]="self"
-    [formControl]="formControl" [fieldOptions]="fieldOptions" i18n-emptyLabel
-    emptyLabel="Filter not applied">
+  <multi-selection-field #singleSelectionField [id]="id" [label]="label"
+    [name]="name" [labelPosition]="labelPosition" [fieldSize]="fieldSize"
+    [required]="required" [formControl]="formControl" [fieldOptions]="fieldOptions"
+    i18n-emptyLabel emptyLabel="Filter not applied">
   </multi-selection-field>
 </ng-container>
 
 <ng-template #specificTemplate>
   <!-- string, URL, text -->
-  <input-field #inputField *ngIf="input" [copyFrom]="self" [formControl]="formControl"
-    [type]="type == 'integer' ? 'number' : type == 'url' ? 'url' : 'text'"
+  <input-field #inputField *ngIf="input" [id]="id" [label]="label" [name]="name"
+    [labelPosition]="labelPosition" [fieldSize]="fieldSize" [required]="required"
+    [formControl]="formControl" [type]="type == 'integer' ? 'number' : type == 'url' ? 'url' : 'text'"
     [mask]="field.pattern"></input-field>
 
   <!-- boolean -->
-  <radio-group-field #radioGroupField *ngIf="type == 'boolean'" [copyFrom]="self"
-    [formControl]="formControl">
+  <radio-group-field #radioGroupField *ngIf="type == 'boolean'" [id]="id"
+    [label]="label" [name]="name" [labelPosition]="labelPosition" [fieldSize]="fieldSize"
+    [required]="required" [formControl]="formControl">
     <field-option [value]="null" i18n-text text="All"></field-option>
     <field-option [value]="true" i18n-text text="Yes"></field-option>
     <field-option [value]="false" i18n-text text="No"></field-option>
   </radio-group-field>
 
   <!-- multi selection -->
-  <multi-selection-field #multiSelectionField *ngIf="enumerated" [copyFrom]="self"
-    [formControl]="formControl" [separator]="ApiHelper.VALUE_SEPARATOR"
+  <multi-selection-field #multiSelectionField *ngIf="enumerated" [id]="id"
+    [label]="label" [name]="name" [labelPosition]="labelPosition" [fieldSize]="fieldSize"
+    [required]="required" [formControl]="formControl" [separator]="ApiHelper.VALUE_SEPARATOR"
     [fieldOptions]="fieldOptions">
   </multi-selection-field>
 
   <!-- linked entity: user (other linked entities are also handled as input -->
-  <user-field #userField *ngIf="user" [copyFrom]="self" [formControl]="formControl">
+  <user-field #userField *ngIf="user" [id]="id" [label]="label" [name]="name"
+    [labelPosition]="labelPosition" [fieldSize]="fieldSize" [required]="required"
+    [formControl]="formControl">
   </user-field>
 
   <!-- TODO: No support for integer, decimal or date for now (all those should be ranges) -->

@@ -18,13 +18,13 @@
             </single-selection-field>
           </div>
           <ng-container *ngIf="moreFilters$ | async">
-            <div *ngIf="(form.value || (form.valueChanges | async))?.preselectedPeriod?.begin === null"
+            <div *ngIf="(form.valueChanges | async)?.preselectedPeriod?.begin == null"
               class="col-12 col-md-6">
               <date-field labelPosition="side" formControlName="periodBegin"
                 i18n-label label="Begin date" fieldSize="full">
               </date-field>
             </div>
-            <div *ngIf="(form.value || (form.valueChanges | async))?.preselectedPeriod?.end === null"
+            <div *ngIf="(form.valueChanges | async)?.preselectedPeriod?.end == null"
               class="col-12 col-md-6">
               <date-field labelPosition="side" formControlName="periodEnd"
                 i18n-label label="End date" fieldSize="full">

@@ -1,13 +1,18 @@
 import {
-  Component, OnInit, Input, ChangeDetectionStrategy, OnDestroy, ChangeDetectorRef,
-  ContentChild, TemplateRef, HostBinding
+  ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChild,
+  HostBinding, Input, OnDestroy, OnInit, TemplateRef
 } from '@angular/core';
-import { truthyAttr } from 'app/shared/helper';
 import { CustomFieldSizeEnum } from 'app/api/models';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
+import { ExtraCellDirective } from 'app/shared/extra-cell.directive';
+import { truthyAttr } from 'app/shared/helper';
 import { ValueFormat } from 'app/shared/value-format';
 import { Subscription } from 'rxjs';
-import { ExtraCellDirective } from 'app/shared/extra-cell.directive';
+
+export const COLS = 12;
+
+type Breakpoint = 'xxs' | 'xs' | 'sm';
+const BREAKPOINTS: Breakpoint[] = ['xxs', 'xs', 'sm'];
 
 /**
  * Displays a label / value pair
@@ -83,6 +88,7 @@ export class LabelValueComponent implements OnInit, OnDestroy {
 
   labelClasses: string[];
   valueClasses: string[];
+  extraClasses: string[];
 
   /** Optional control id for which this label refers to */
   @Input() forId = '';
@@ -134,85 +140,139 @@ export class LabelValueComponent implements OnInit, OnDestroy {
       this.valueFormat = field.disabledFormat;
       this.updateFieldDisabled(field.disabled);
     }
-    this.labelClasses = this.resolveLabelClasses();
-    this.valueClasses = this.resolveValueClasses();
+    this.initClasses();
     if (field) {
       // As we've modified @Input() properties, manually trigger change detection
       this.changeDetector.detectChanges();
     }
   }
 
-  private resolveLabelClasses(): string[] {
-    const classes: string[] = [];
-    classes.push('col-12');
-    switch (this.labelPosition) {
-      case 'above':
-        // Leave only col-12
-        break;
-      case 'side':
-        // Except for xxs, use 4 columns
-        classes.push('col-xs-4');
-        break;
-      default:
-        if (this.kind === 'view') {
-          classes.push('col-xs-5');
-        } else {
-          classes.push('col-sm-4');
-        }
-        break;
-    }
-    if (this.labelSize === 'large') {
-      classes.push('label-large');
-    } else if (this.labelSize === 'small') {
-      classes.push('label-small');
-    }
-    if (this.noWrapLabel) {
-      classes.push('text-nowrap');
-    }
-    return classes;
-  }
+  /**
+   * Initializes the classes for label, value and extra.
+   * The extra cell, if used, takes 2 cols in xxs / xs, and 1 col for larger.
+   */
+  private initClasses() {
+    this.labelClasses = [];
+    this.valueClasses = [];
+    this.extraClasses = [];
 
-  private resolveValueClasses(): string[] {
-    let cols: number;
-    if (typeof this.fieldSize === 'number') {
-      cols = this.fieldSize;
-    } else {
-      switch (this.fieldSize) {
-        case CustomFieldSizeEnum.TINY:
-          cols = 2;
-          break;
-        case CustomFieldSizeEnum.SMALL:
-          cols = 3;
-          break;
-        case CustomFieldSizeEnum.MEDIUM:
-          cols = 5;
-          break;
-        default:
-          cols = 8;
-          break;
+    for (const breakpoint of BREAKPOINTS) {
+      const cols = this.getCols(breakpoint);
+      const prefix = breakpoint === 'xxs' ? '' : `-${breakpoint}`;
+      this.labelClasses.push(`col${prefix}-${cols.label}`);
+      this.valueClasses.push(`col${prefix}-${cols.value}`);
+      if (this.extraCell) {
+        this.extraClasses.push(`col${prefix}-${cols.extra}`);
       }
     }
+  }
 
-    switch (this.labelPosition) {
-      case 'above':
-        return this.extraCell ? ['col-10', `col-sm-11`] : ['col-12'];
-      case 'side':
-        return this.extraCell ? ['col-10', `col-sm-${cols - 1}`] : ['col-12', 'col-xs-8', `col-sm-${cols}`];
+  /**
+   * Returns whether, for the given breakpoint, labels should be rendered on side.
+   */
+  private isLabelOnSide(breakpoint: Breakpoint): boolean {
+    switch (breakpoint) {
+      case 'xxs':
+        // Never allow labels on side on xxs - they don't fit!
+        return false;
+      case 'xs':
+        // For xs, the labelPosition 'auto' will render on side for view or fieldView
+        return this.labelPosition === 'side' || this.labelPosition === 'auto' && ['view', 'fieldView'].includes(this.kind);
       default:
-        if (this.kind === 'view') {
-          // Readonly shows the value on the same line, even on XS (but not on XXS)
-          if (this.extraCell) {
-            return ['col-10', 'col-xs-6', `col-sm-${cols - 2}`];
-          } else {
-            return ['col-12', 'col-xs-7', `col-sm-${cols - 1}`];
-          }
-        } else {
-          if (this.extraCell) {
-            return ['col-10', `col-sm-${cols - 1}`];
-          } else {
-            return ['col-12', `col-sm-${cols}`];
-          }
-        }
+        // For larger resolutions, will always use labels on side, unless explicitly stated as above
+        return this.labelPosition !== 'above';
+    }
+  }
+
+  /**
+   * Returns the number of columns used by each aspect: label, value and extra
+   * @param breakpoint The resolution breakpoint
+   */
+  private getCols(breakpoint: Breakpoint): { label: number, value: number, extra: number } {
+    const labelCols = this.getLabelCols(breakpoint);
+
+    let valueCols = this.getValueCols(labelCols, breakpoint);
+    let extraCols = this.getExtraCols(breakpoint);
+
+    if (this.extraCell) {
+      const totalCols = valueCols + labelCols + extraCols;
+      if (totalCols > COLS) {
+        // Sacrifice the value cols, taking all remaining cols
+        valueCols = (COLS === labelCols ? COLS : COLS - labelCols) - extraCols;
+      } else if (totalCols < COLS) {
+        // There are less cols - expand the extra cols
+        extraCols = (COLS === labelCols ? COLS : COLS - labelCols) - valueCols;
+      }
+    }
+    return { label: labelCols, value: valueCols, extra: extraCols };
+  }
+
+  /**
+   * Returns the number of columns used by labels in the given breakpoint
+   */
+  private getLabelCols(breakpoint: Breakpoint): number {
+    const labelOnSide = this.isLabelOnSide(breakpoint);
+    if (labelOnSide) {
+      switch (breakpoint) {
+        case 'xxs':
+          // On xxs it is the same as if labels are forced above
+          return COLS;
+        case 'xs':
+          // On xs use 5 cols for view mode, 4 for form mode
+          return this.kind === 'view' ? 5 : 4;
+        default:
+          // On larger resolutions, always use 4 cols for labels
+          return 4;
+      }
+    } else {
+      // Use all columns
+      return COLS;
+    }
+  }
+
+  /**
+   * Returns the number of columns used by values
+   */
+  private getValueCols(labelCols: number, breakpoint: Breakpoint): number {
+    if (breakpoint === 'xxs') {
+      // For xxs always use all columns
+      return COLS;
+    } else if (typeof this.fieldSize === 'number') {
+      // Specific number of columns
+      return this.fieldSize;
+    } else if (this.labelPosition === 'above') {
+      // Take all cols for value
+      return COLS;
+    } else {
+      // Depends on field size
+      switch (this.fieldSize) {
+        case CustomFieldSizeEnum.TINY:
+          return breakpoint === 'xs' ? 4 : 2;
+        case CustomFieldSizeEnum.SMALL:
+          return breakpoint === 'xs' ? 6 : 3;
+        case CustomFieldSizeEnum.MEDIUM:
+          return breakpoint === 'xs' ? 8 : 5;
+        default:
+          return labelCols === COLS ? COLS : COLS - labelCols;
+      }
+    }
+  }
+
+  /**
+   * Returns the number of columns used by extra widgets
+   */
+  private getExtraCols(breakpoint: Breakpoint): number {
+    if (this.extraCell) {
+      switch (breakpoint) {
+        case 'xxs':
+          return 3;
+        case 'xs':
+          return 2;
+        default:
+          return 1;
+      }
+    } else {
+      return 0;
     }
   }
 

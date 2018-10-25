@@ -1,0 +1,11 @@
+.custom-select {
+  width: auto;
+  padding: 0 0.5rem;
+  background: none;
+}
+.xxs :host ::ng-deep .custom-select {
+  padding: 0 0.3rem;
+}
+.field-year {
+  width: 100%;
+}

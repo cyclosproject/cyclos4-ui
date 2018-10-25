@@ -15,6 +15,8 @@ export type FieldLabelPosition = 'side' | 'above' | 'auto';
  */
 export abstract class BaseFormFieldComponent<T> extends BaseControlComponent<T> {
 
+  protected copiedFrom: BaseFormFieldComponent<any>;
+
   @HostBinding('class.w-100') classW100 = true;
   @HostBinding('class.d-block') classDBlock = true;
   @HostBinding('class.any-label-value') get classAnyLabelValue() {
@@ -37,17 +39,6 @@ export abstract class BaseFormFieldComponent<T> extends BaseControlComponent<T> 
   /** Expose this reference as self to access in templates */
   get self(): BaseFormFieldComponent<T> {
     return this;
-  }
-
-  /** Easily copy attributes from a form field to another one */
-  @Input() set copyFrom(other: BaseFormFieldComponent<any>) {
-    this._id = other._id;
-    this.name = other.name;
-    this.label = other.label;
-    this.labelPosition = other.labelPosition;
-    this.fieldSize = other.fieldSize;
-    this.required = other.required;
-    // We cannot copy formControl because the [formControl] directive is required to trigger NG_VALUE_ACCESSOR
   }
 
   /** The HTML input name */
@@ -104,5 +95,4 @@ export abstract class BaseFormFieldComponent<T> extends BaseControlComponent<T> 
    * Must be implemented to return the value displayed when the field is disabled.
    */
   protected abstract getDisabledValue(): string;
-
 }

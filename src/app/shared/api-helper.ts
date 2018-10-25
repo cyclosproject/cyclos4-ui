@@ -10,7 +10,8 @@ import {
   TransactionDataForSearch,
   PreselectedPeriod,
   TransactionResult,
-  TransactionAuthorizationStatusEnum
+  TransactionAuthorizationStatusEnum,
+  CustomFieldSizeEnum
 } from 'app/api/models';
 import { environment } from 'environments/environment';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -392,6 +393,23 @@ export class ApiHelper {
       return ['', max];
     } else {
       return [];
+    }
+  }
+
+  /**
+   * Returns the actual displayed field size.
+   * Some types, such as date and decimal are always shown as small, except if they have a values list.
+   */
+  static fieldSize(field: CustomFieldDetailed): CustomFieldSizeEnum {
+    if (field.hasValuesList) {
+      return CustomFieldSizeEnum.FULL;
+    }
+    if (field.type === CustomFieldTypeEnum.DATE) {
+      return CustomFieldSizeEnum.MEDIUM;
+    } else if ([CustomFieldTypeEnum.INTEGER, CustomFieldTypeEnum.DECIMAL].includes(field.type)) {
+      return CustomFieldSizeEnum.SMALL;
+    } else {
+      return field.size;
     }
   }
 
