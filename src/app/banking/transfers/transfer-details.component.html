@@ -13,17 +13,9 @@
 </label-value>
 <label-value i18n-label label="From">
   <user-link [account]="transfer.from"></user-link>
-  <ng-container *ngIf="transfer.from.number">
-    <ng-container *ngIf="layout.gtxs$ | async"> - </ng-container>
-    <br *ngIf="layout.ltsm$ | async" /> {{ transfer.from.number }}
-  </ng-container>
 </label-value>
 <label-value i18n-label label="To">
   <user-link [account]="transfer.to"></user-link>
-  <ng-container *ngIf="transfer.to.number">
-    <ng-container *ngIf="layout.gtxs$ | async"> - </ng-container>
-    <br *ngIf="layout.ltsm$ | async" /> {{ transfer.to.number }}
-  </ng-container>
 </label-value>
 <label-value i18n-label label="Payment type">
   {{ transfer.type.name }}
@@ -58,17 +50,9 @@
   </label-value>
   <label-value i18n-label label="From">
     <user-link [account]="transfer.parent.from"></user-link>
-    <ng-container *ngIf="transfer.parent.from.number">
-      <ng-container *ngIf="layout.gtxs$ | async"> - </ng-container>
-      <br *ngIf="layout.ltsm$ | async" /> {{ transfer.parent.from.number }}
-    </ng-container>
   </label-value>
   <label-value i18n-label label="To">
     <user-link [account]="transfer.parent.to"></user-link>
-    <ng-container *ngIf="transfer.parent.to.number">
-      <ng-container *ngIf="layout.gtxs$ | async"> - </ng-container>
-      <br *ngIf="layout.ltsm$ | async" /> {{ transfer.parent.to.number }}
-    </ng-container>
   </label-value>
   <label-value i18n-label label="Payment type">
     {{ transfer.parent.type.name }}

@@ -24,8 +24,8 @@
 </label-value>
 <label-value *ngIf="fees?.length > 0" i18n-label label="Applied fees">
   <div *ngFor="let feePreview of fees">
-    {{ feePreview.fee.name }}: {{ feePreview.amount |
-    currency:preview.currency }}
+    {{ feePreview.fee.name }}:
+    {{ feePreview.amount | currency:preview.currency }}
   </div>
 </label-value>
 <custom-field-value *ngFor="let fv of preview.customValues" [fieldValue]="fv"></custom-field-value>

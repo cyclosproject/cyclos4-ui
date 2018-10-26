@@ -1,0 +1,10 @@
+@import 'src/definitions';
+
+.display-text {
+  flex-grow: 1;
+  line-height: 1.5rem;
+}
+
+:host ::ng-deep icon {
+  color: $link-color;
+}

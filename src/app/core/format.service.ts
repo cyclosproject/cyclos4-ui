@@ -160,7 +160,7 @@ export class FormatService {
    * Formats the given date (or ISO-8601 string) as date according to the current settings
    * @param date The input date or string
    */
-  formatAsDate(date: Date | string): string {
+  formatAsDate(date: Date | string | moment.Moment): string {
     return this.doFormat(date, this.dateFormat);
   }
 
@@ -168,7 +168,7 @@ export class FormatService {
    * Formats the given date (or ISO-8601 string) as time according to the current settings
    * @param date The input date or string
    */
-  formatAsTime(date: Date | string): string {
+  formatAsTime(date: Date | string | moment.Moment): string {
     return this.doFormat(date, this.timeFormat);
   }
 
@@ -176,13 +176,17 @@ export class FormatService {
    * Formats the given date (or ISO-8601 string) as date / time according to the current settings
    * @param date The input date or string
    */
-  formatAsDateTime(date: Date | string): string {
+  formatAsDateTime(date: Date | string | moment.Moment): string {
     return this.doFormat(date, this.dateFormat + ' ' + this.timeFormat);
   }
 
-  private doFormat(date: Date | string, format: string): string {
+  private doFormat(date: Date | string | moment.Moment, format: string): string {
     if (date == null) {
       return '';
+    }
+    if (date['format']) {
+      // Already a moment
+      return date['format'](format);
     }
     return moment(date).parseZone().format(format);
   }

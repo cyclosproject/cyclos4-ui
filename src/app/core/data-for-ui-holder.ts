@@ -9,6 +9,7 @@ import { ErrorStatus } from 'app/core/error-status';
 import { tap, catchError } from 'rxjs/operators';
 import { I18n } from '@ngx-translate/i18n-polyfill';
 import { defineLocale } from 'ngx-bootstrap/chronos';
+import * as moment from 'moment-mini-ts';
 
 declare const setRootAlert: (boolean) => void;
 declare const setReloadButton: (boolean) => void;
@@ -20,7 +21,8 @@ declare const setReloadButton: (boolean) => void;
   providedIn: 'root'
 })
 export class DataForUiHolder {
-  private _dataForUi = new BehaviorSubject(null as DataForUi);
+  private dataForUi$ = new BehaviorSubject<DataForUi>(null);
+  private timeDiff: number;
 
   constructor(
     private nextRequestState: NextRequestState,
@@ -71,13 +73,24 @@ export class DataForUiHolder {
   }
 
   get dataForUi(): DataForUi {
-    return this._dataForUi.value;
+    return this.dataForUi$.value;
+  }
+
+  /**
+   * As the client clock may be wrong, we consider the server clock
+   */
+  now(): moment.Moment {
+    const date = new Date();
+    date.setTime(date.getTime() + this.timeDiff);
+    return moment(date);
   }
 
   set dataForUi(dataForUi: DataForUi) {
     if (dataForUi != null) {
       this.defineDatePickerLocale(dataForUi);
-      this._dataForUi.next(dataForUi);
+      this.dataForUi$.next(dataForUi);
+      // Store the time diff
+      this.timeDiff = new Date().getTime() - moment(dataForUi.currentClientTime).toDate().getTime();
     }
   }
 
@@ -85,7 +98,7 @@ export class DataForUiHolder {
    * Adds a new observer notified when the user logs-in (auth != null) or logs out (auth == null)
    */
   subscribe(next?: (dataForUi: DataForUi) => void, error?: (error: any) => void, complete?: () => void): Subscription {
-    return this._dataForUi.subscribe(next, error, complete);
+    return this.dataForUi$.subscribe(next, error, complete);
   }
 
   private defineDatePickerLocale(dataForUi: DataForUi) {

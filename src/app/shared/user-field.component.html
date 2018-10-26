@@ -5,7 +5,7 @@
 <ng-template #widget>
   <div class="d-flex mw-100">
     <div class="d-flex flex-grow-1 mw-100">
-      <div style="position:relative" class="mw-100 d-flex align-items-center"
+      <div style="position:relative" class="w-100 d-flex align-items-center"
         dropdown #dropdown="bs-dropdown" (onShown)="onShown()">
 
         <chip *ngIf="selection$ | async" [image]="user.image" icon="account_circle"

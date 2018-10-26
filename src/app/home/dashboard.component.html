@@ -1,7 +1,7 @@
 <div class="row no-gutters dashboard-container">
   <div class="col-6 col-xs-4 col-sm-3 col-lg-2 d-flex" *ngFor="let action of actions">
     <a [routerLink]="action.url" class="dashboard-item">
-      <icon size="2.2rem" [icon]="action.icon"></icon>
+      <icon [size]="(layout.ltsm$ | async) ? '1.8rem' : '2.2rem'" [icon]="action.icon"></icon>
       <div class="text-center">
         {{ action.label }}
       </div>

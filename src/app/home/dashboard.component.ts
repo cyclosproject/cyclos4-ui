@@ -58,7 +58,7 @@ export class DashboardComponent extends BaseComponent implements OnInit {
       this.actions.push(new DashboardAction('contact_list', this.i18n('Contacts'), ['users', 'contacts']));
     }
     if (permissions.users && (permissions.users.search || permissions.users.map)) {
-      this.actions.push(new DashboardAction('search_users', this.i18n('Users'), ['users', 'search']));
+      this.actions.push(new DashboardAction('search_users', this.i18n('Directory'), ['users', 'search']));
     }
     if (permissions.marketplace && permissions.marketplace.search) {
       this.actions.push(new DashboardAction('marketplace', this.i18n('Marketplace'), ['marketplace', 'search']));

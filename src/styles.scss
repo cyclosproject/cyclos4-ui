@@ -162,7 +162,6 @@ body.gt-sm {
 table.table {
   td {
     vertical-align: middle;
-    height: 3.8rem;
     border-top: none;
     border-bottom: 1px solid $table-border-color;
   }
@@ -179,7 +178,7 @@ table.table {
     }
   }
   td {
-    padding: 0.4rem;
+    padding: 0.8rem 0.4rem;
   }
   td.avatar {
     padding-left: 0.9rem;
@@ -661,11 +660,6 @@ notification data {
 }
 
 // DatePicker tweaks
-@include media-breakpoint-up(sm) {
-  .bs-datepicker {
-    transform: translateX(-22px);
-  }
-}
 .bs-datepicker-container {
   padding: 0;
   border: none;

@@ -1,4 +1,16 @@
-<ng-container *ngIf="path == null">{{ display }}</ng-container>
-<a *ngIf="path != null" [routerLink]="path">
-  {{ display }}
+<a *ngIf="path != null; else displayTpl" [routerLink]="path" class="d-flex flex-row">
+  <ng-container *ngTemplateOutlet="displayTpl"></ng-container>
 </a>
+
+<ng-template #displayTpl>
+  <div class="d-flex flex-row">
+    <avatar ngClass="mr-2" [image]="user?.image" [icon]="user ? 'account_circle' : 'account_balance_circle'"
+      size="small"></avatar>
+    <div class="display-text">
+      {{ display }}
+      <ng-container *ngIf="account?.number">
+        ({{ account.number }})
+      </ng-container>
+    </div>
+  </div>
+</ng-template>

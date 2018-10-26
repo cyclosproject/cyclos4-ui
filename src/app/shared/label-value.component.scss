@@ -4,6 +4,9 @@
   padding-top: 0 !important;
   padding-bottom: 3px !important;
 }
+.label-value-value {
+  min-height: 22px;
+}
 
 @include media-breakpoint-up(xs) {
   .filters-form :host ::ng-deep .label-value-label {

@@ -44,7 +44,7 @@
   </ng-template>
 
   <label-value *ngIf="!fixedDestination" kind="field" required i18n-label
-    label="Select user">
+    label="To user">
     <single-selection-field focused formControlName="subject" *ngIf="fixedUsersList; else toUserField">
       <!-- A fixed user list to pay to. Generally only applicable to restricted operators -->
       <field-option *ngFor="let user of data.allowedUsers" [value]="user.id"
@@ -92,7 +92,7 @@
   <ng-container [ngSwitch]="form.get('scheduling').valueChanges | async">
 
     <date-field *ngSwitchCase="'futureDate'" formControlName="firstInstallmentDate"
-      required i18n-label label="Due date">
+      required i18n-label label="Due date" minDate="tomorrow">
     </date-field>
 
     <ng-container *ngSwitchCase="'scheduled'">
@@ -119,7 +119,8 @@
       </radio-group-field>
 
       <date-field *ngIf="(form.get('firstOccurrenceIsNow').valueChanges | async) === false"
-        formControlName="firstOccurrenceDate" required i18n-label label="First occurrence date">
+        formControlName="firstOccurrenceDate" minDate="tomorrow" required
+        i18n-label label="First occurrence date">
       </date-field>
 
       <radio-group-field formControlName="repeatUntilCanceled" i18n-label
