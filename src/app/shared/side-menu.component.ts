@@ -1,16 +1,15 @@
-import { Component, Input, ChangeDetectionStrategy, OnInit } from '@angular/core';
-
-import { RootMenu, Menu, SideMenuEntries } from 'app/shared/menu';
-import { ApiHelper } from 'app/shared/api-helper';
-import { BehaviorSubject } from 'rxjs';
-import { MenuService } from 'app/core/menu.service';
-import { AccountWithCurrency } from 'app/api/models';
-import { Subscription } from 'rxjs';
-import { LayoutService } from 'app/shared/layout.service';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { LoginService } from 'app/core/login.service';
+import { AccountWithCurrency } from 'app/api/models';
 import { BreadcrumbService } from 'app/core/breadcrumb.service';
+import { LoginService } from 'app/core/login.service';
+import { MenuService } from 'app/core/menu.service';
 import { StateManager } from 'app/core/state-manager';
+import { ApiHelper } from 'app/shared/api-helper';
+import { LayoutService } from 'app/shared/layout.service';
+import { Menu, RootMenu, SideMenuEntries } from 'app/shared/menu';
+import { BehaviorSubject, Subscription } from 'rxjs';
+
 
 /**
  * A context-specific menu shown on the side of the layout for medium+ screens

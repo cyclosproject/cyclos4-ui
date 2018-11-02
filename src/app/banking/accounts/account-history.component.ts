@@ -56,7 +56,6 @@ export class AccountHistoryComponent
   }
 
   get transferFilters(): TransferFilter[] {
-    const data = this.data;
     return this.data == null ? null : this.data.transferFilters;
   }
 

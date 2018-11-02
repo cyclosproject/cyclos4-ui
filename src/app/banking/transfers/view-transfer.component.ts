@@ -1,10 +1,10 @@
-import { Component, ChangeDetectionStrategy, Injector, OnInit } from '@angular/core';
-
-import { TransfersService } from 'app/api/services';
+import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { TransferView } from 'app/api/models';
-import { BasePageComponent } from 'app/shared/base-page.component';
-import { Action, HeadingAction } from 'app/shared/action';
+import { TransfersService } from 'app/api/services';
+import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
+import { BasePageComponent } from 'app/shared/base-page.component';
+
 
 /**
  * Displays a transfer details

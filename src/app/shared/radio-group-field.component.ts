@@ -1,8 +1,7 @@
-import { Component, ChangeDetectionStrategy, SkipSelf, Host, Optional, HostBinding } from '@angular/core';
-import { NG_VALUE_ACCESSOR, ControlContainer } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, Host, HostBinding, Optional, SkipSelf } from '@angular/core';
+import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { BaseFormFieldWithOptionsComponent, FORM_FIELD_WITH_OPTIONS } from 'app/shared/base-form-field-with-options.component';
 import { empty } from 'app/shared/helper';
-import { I18n } from '@ngx-translate/i18n-polyfill';
-import { FORM_FIELD_WITH_OPTIONS, BaseFormFieldWithOptionsComponent } from 'app/shared/base-form-field-with-options.component';
 
 /**
  * Component used to display a group of radios to use as a single-selection field
@@ -21,8 +20,7 @@ export class RadioGroupFieldComponent extends BaseFormFieldWithOptionsComponent<
   @HostBinding('class') clazz = 'd-block';
 
   constructor(
-    @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
-    private i18n: I18n
+    @Optional() @Host() @SkipSelf() controlContainer: ControlContainer
   ) {
     super(controlContainer);
   }

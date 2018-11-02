@@ -9,7 +9,7 @@ import { PendingPaymentsService } from 'app/api/services/pending-payments.servic
 import { RecurringPaymentsService } from 'app/api/services/recurring-payments.service';
 import { ScheduledPaymentsService } from 'app/api/services/scheduled-payments.service';
 import { TransactionStatusService } from 'app/core/transaction-status.service';
-import { Action, HeadingAction } from 'app/shared/action';
+import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { empty } from 'app/shared/helper';

@@ -1,7 +1,6 @@
-import { Directive, ElementRef, AfterViewInit, ChangeDetectorRef, Input, Optional, Inject } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Directive, ElementRef, Inject, Input, Optional } from '@angular/core';
+import { DefaultValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { truthyAttr } from 'app/shared/helper';
-import { NG_VALUE_ACCESSOR, DefaultValueAccessor } from '@angular/forms';
-import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 
 /**
  * Input fields with this directive will receive an initial focus

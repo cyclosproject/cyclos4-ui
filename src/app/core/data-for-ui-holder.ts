@@ -39,7 +39,7 @@ export class DataForUiHolder {
       tap(dataForUi => {
         this.dataForUi = dataForUi;
       }),
-      catchError((resp: HttpErrorResponse, caught) => {
+      catchError((resp: HttpErrorResponse) => {
         if (resp.status === 0) {
           // The server couldn't be contacted
           setRootAlert(this.i18n(`The server couldn't be contacted.

@@ -1,13 +1,11 @@
-import { Component, ChangeDetectionStrategy, Injector, ViewChild, OnInit } from '@angular/core';
-
+import { ChangeDetectionStrategy, Component, Injector, OnInit, ViewChild } from '@angular/core';
+import { ContactListDataForSearch, ContactResult } from 'app/api/models';
 import { ContactsService } from 'app/api/services';
-import { ContactListDataForSearch, ContactResult, Country } from 'app/api/models';
+import { ApiHelper } from 'app/shared/api-helper';
+import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { ResultType } from 'app/shared/result-type';
 import { UsersResultsComponent } from 'app/users/search/users-results.component';
-import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
-import { ApiHelper } from 'app/shared/api-helper';
-import { CountriesResolve } from 'app/countries.resolve';
-import { Observable } from 'rxjs';
+
 
 /**
  * Search the user's contact list

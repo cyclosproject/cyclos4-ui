@@ -1,12 +1,13 @@
 import {
-  ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Host, Input, OnInit, Optional, Output, SkipSelf, ViewChild
+  ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Host, Input,
+  OnInit, Optional, Output, SkipSelf, ViewChild
 } from '@angular/core';
 import { AbstractControl, ControlContainer, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator } from '@angular/forms';
 import { I18n } from '@ngx-translate/i18n-polyfill';
 import { PasswordInput, PasswordInputMethodEnum, PasswordModeEnum, SendMediumEnum } from 'app/api/models';
 import { AuthService } from 'app/api/services/auth.service';
 import { NotificationService } from 'app/core/notification.service';
-import { Action, ActionWithIcon } from 'app/shared/action';
+import { ActionWithIcon } from 'app/shared/action';
 import { BaseControlComponent } from 'app/shared/base-control.component';
 import { truthyAttr } from 'app/shared/helper';
 
@@ -141,7 +142,7 @@ export class PasswordInputComponent
 
   onDisabledChange(isDisabled: boolean): void {
     if (this.passwordField && this.passwordField.nativeElement) {
-      this.passwordField.nativeElement.disabled = true;
+      this.passwordField.nativeElement.disabled = isDisabled;
     }
   }
 
@@ -165,6 +166,6 @@ export class PasswordInputComponent
     return null;
   }
 
-  registerOnValidatorChange(fn: () => void): void {
+  registerOnValidatorChange() {
   }
 }

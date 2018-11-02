@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
+import { ScheduledPaymentStatusEnum, TransactionKind } from 'app/api/models';
 import { TransactionsService } from 'app/api/services';
 import { BaseTransactionsSearch } from 'app/banking/transactions/base-transactions-search.component';
-import { TransactionKind, ScheduledPaymentStatusEnum } from 'app/api/models';
-import { ApiHelper } from 'app/shared/api-helper';
 import { TransactionStatusService } from 'app/core/transaction-status.service';
 
 /**

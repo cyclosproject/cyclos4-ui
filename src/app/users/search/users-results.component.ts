@@ -1,12 +1,9 @@
-import { Component, ChangeDetectionStrategy, Injector, Input, Output, EventEmitter, HostBinding } from '@angular/core';
-import {
-  User, UserDataForSearch, ContactListDataForSearch, ContactResult, UserResult,
-  Address, UserDataForMap, Country
-} from 'app/api/models';
-import { ResultType } from 'app/shared/result-type';
+import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Injector, Input, Output } from '@angular/core';
+import { Address, ContactListDataForSearch, ContactResult, User, UserDataForMap, UserDataForSearch, UserResult } from 'app/api/models';
+import { BaseComponent } from 'app/shared/base.component';
 import { PageData } from 'app/shared/page-data';
 import { PagedResults } from 'app/shared/paged-results';
-import { BaseComponent } from 'app/shared/base.component';
+import { ResultType } from 'app/shared/result-type';
 import { BehaviorSubject } from 'rxjs';
 
 const MAX_COLUMNS = 7;

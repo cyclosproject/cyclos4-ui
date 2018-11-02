@@ -1,10 +1,9 @@
-import { Component, ChangeDetectionStrategy, Input, HostBinding, ViewChild, OnInit } from '@angular/core';
-import { BaseControlComponent } from 'app/shared/base-control.component';
-import { I18n } from '@ngx-translate/i18n-polyfill';
+import { ChangeDetectionStrategy, Component, HostBinding, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { BehaviorSubject } from 'rxjs';
-import { TooltipDirective } from 'ngx-bootstrap/tooltip';
+import { I18n } from '@ngx-translate/i18n-polyfill';
 import { truthyAttr } from 'app/shared/helper';
+import { TooltipDirective } from 'ngx-bootstrap/tooltip';
+import { BehaviorSubject } from 'rxjs';
 
 /**
  * A widget that switches between field visibilities.

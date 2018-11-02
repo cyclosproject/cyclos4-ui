@@ -1,14 +1,11 @@
 import { Injectable } from '@angular/core';
-import { MenuType, Menu, RootMenuEntry, MenuEntry, RootMenu, SideMenuEntries } from 'app/shared/menu';
-import { ApiHelper } from 'app/shared/api-helper';
-import { BehaviorSubject } from 'rxjs';
-import { AccountStatus, Auth } from 'app/api/models';
-import { AccountsService } from 'app/api/services';
-import { PushNotificationsService } from 'app/core/push-notifications.service';
-import { Observable } from 'rxjs';
-import { map, filter, distinctUntilChanged } from 'rxjs/operators';
-import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { I18n } from '@ngx-translate/i18n-polyfill';
+import { Auth } from 'app/api/models';
+import { DataForUiHolder } from 'app/core/data-for-ui-holder';
+import { ApiHelper } from 'app/shared/api-helper';
+import { Menu, MenuEntry, MenuType, RootMenu, RootMenuEntry, SideMenuEntries } from 'app/shared/menu';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { distinctUntilChanged, filter, map } from 'rxjs/operators';
 
 /**
  * Holds shared data for the menu, plus logic regarding the currently visible menu
@@ -28,7 +25,6 @@ export class MenuService {
   private _fullMenu: BehaviorSubject<RootMenuEntry[]>;
 
   constructor(
-    private pushNotifications: PushNotificationsService,
     private i18n: I18n,
     private dataForUiHolder: DataForUiHolder
   ) {

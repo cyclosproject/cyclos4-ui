@@ -1,11 +1,10 @@
 import {
-  Component, Input, forwardRef, Provider, ChangeDetectionStrategy, SkipSelf, Host, Optional, ViewChild, ElementRef, EventEmitter, Output
+  ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Host, Input,
+  Optional, Output, SkipSelf, ViewChild
 } from '@angular/core';
-import { NG_VALUE_ACCESSOR, ControlContainer } from '@angular/forms';
-import { BaseControlComponent } from 'app/shared/base-control.component';
-import { nextId } from 'app/shared/helper';
-import { BaseFormFieldComponent, FORM_FIELD } from 'app/shared/base-form-field.component';
+import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { I18n } from '@ngx-translate/i18n-polyfill';
+import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { LayoutService } from 'app/shared/layout.service';
 
 /**

@@ -1,10 +1,10 @@
-import { Component, ChangeDetectionStrategy, Injector, Input, HostBinding } from '@angular/core';
-import { BaseComponent } from 'app/shared/base.component';
-import { Country, AddressConfiguration, AddressFieldEnum } from 'app/api/models';
-import { ApiHelper } from 'app/shared/api-helper';
+import { ChangeDetectionStrategy, Component, Injector, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { truthyAttr } from 'app/shared/helper';
+import { AddressConfiguration, AddressFieldEnum, Country } from 'app/api/models';
 import { CountriesResolve } from 'app/countries.resolve';
+import { ApiHelper } from 'app/shared/api-helper';
+import { BaseComponent } from 'app/shared/base.component';
+import { truthyAttr } from 'app/shared/helper';
 
 /**
  * Form used to input all fields of an address

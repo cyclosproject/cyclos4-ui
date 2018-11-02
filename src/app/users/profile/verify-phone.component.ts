@@ -1,15 +1,13 @@
-import {
-  Component, ChangeDetectionStrategy, Injector, ViewChild, Input, OnInit, Output, EventEmitter
-} from '@angular/core';
-
-import { BaseComponent } from 'app/shared/base.component';
-import { PhonesService } from 'app/api/services';
+import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
 import { CodeVerificationStatusEnum, PhoneEditWithId } from 'app/api/models';
-import { FormBuilder, Validators, FormControl } from '@angular/forms';
+import { PhonesService } from 'app/api/services';
+import { BaseComponent } from 'app/shared/base.component';
+import { validateBeforeSubmit } from 'app/shared/helper';
+import { InputFieldComponent } from 'app/shared/input-field.component';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { BehaviorSubject } from 'rxjs';
-import { InputFieldComponent } from 'app/shared/input-field.component';
-import { validateBeforeSubmit } from 'app/shared/helper';
+
 
 /**
  * Form used to verify a phone
@@ -47,7 +45,9 @@ export class VerifyPhoneComponent extends BaseComponent implements OnInit {
   /** Sends the verification code */
   sendCode() {
     this.phonesService.sendPhoneVerificationCode(this.phone.id).subscribe(number => {
-      this.message = this.i18n('The verification code has been sent');
+      this.message = this.i18n('The verification code was sent to {{number}}', {
+        number: number
+      });
       this.code.setValue(null);
       this.codeField.focus();
     });

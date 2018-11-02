@@ -15,6 +15,16 @@ import { BROWSER_GLOBALS_PROVIDERS } from '@agm/core/utils/browser-globals';
 import { INITIALIZE } from 'app/initialize';
 import { MapsAPILoader, LazyMapsAPILoader, LAZY_MAPS_API_CONFIG } from '@agm/core';
 
+export function lazyMapsApiConfig(dataForUiHolder: DataForUiHolder) {
+  const config: any = {};
+  dataForUiHolder.subscribe((dataForUi: DataForUi) => {
+    if (dataForUi != null && dataForUi.mapData && dataForUi.mapData.googleMapsApiKey) {
+      config.apiKey = dataForUi.mapData.googleMapsApiKey;
+    }
+  });
+  return config;
+}
+
 @NgModule({
   declarations: [
     AppComponent
@@ -39,15 +49,7 @@ import { MapsAPILoader, LazyMapsAPILoader, LAZY_MAPS_API_CONFIG } from '@agm/cor
     ...BROWSER_GLOBALS_PROVIDERS,
     {
       provide: LAZY_MAPS_API_CONFIG,
-      useFactory: (dataForUiHolder: DataForUiHolder) => {
-        const config: any = {};
-        dataForUiHolder.subscribe((dataForUi: DataForUi) => {
-          if (dataForUi != null && dataForUi.mapData && dataForUi.mapData.googleMapsApiKey) {
-            config.apiKey = dataForUi.mapData.googleMapsApiKey;
-          }
-        });
-        return config;
-      },
+      useFactory: lazyMapsApiConfig,
       deps: [DataForUiHolder]
     }
   ],

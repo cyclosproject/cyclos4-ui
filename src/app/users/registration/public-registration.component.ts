@@ -7,8 +7,8 @@ import {
 import { ImagesService, UsersService } from 'app/api/services';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BasePageComponent } from 'app/shared/base-page.component';
-import { blank, copyProperties, empty, scrollTop, validateBeforeSubmit, getAllErrors, focusFirstField } from 'app/shared/helper';
-import { BehaviorSubject, Observable, of, timer, Subscription } from 'rxjs';
+import { blank, copyProperties, empty, focusFirstField, scrollTop, validateBeforeSubmit } from 'app/shared/helper';
+import { BehaviorSubject, Observable, of, Subscription, timer } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
 export type RegistrationStep = 'group' | 'fields' | 'confirm' | 'done';
@@ -359,8 +359,6 @@ export class PublicRegistrationComponent
   }
 
   get userNew(): UserNew {
-    const data = this.data;
-
     const user: UserNew = this.form.value;
     const mobile: PhoneNew = (this.mobileForm || {} as FormGroup).value;
     const landLine: PhoneNew = (this.landLineForm || {} as FormGroup).value;

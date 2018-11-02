@@ -1,9 +1,5 @@
-import { Component, ChangeDetectionStrategy, Input, ElementRef, OnInit, HostBinding } from '@angular/core';
-import { SvgIconRegistry } from 'app/core/svg-icon-registry';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { empty } from 'app/shared/helper';
-
-// Use the require method provided by webpack
-declare const require;
 
 /**
  * Shows either an anchor surrounding the content or the content itself if there's no link

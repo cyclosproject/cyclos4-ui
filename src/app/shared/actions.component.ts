@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, HostBinding, ElementRef, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Input, OnInit } from '@angular/core';
 import { truthyAttr } from 'app/shared/helper';
 
 @Component({

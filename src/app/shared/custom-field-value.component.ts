@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy, ViewChild, HostBinding } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, ViewChild } from '@angular/core';
 import { CustomFieldValue } from 'app/api/models';
 import { FormatFieldValueComponent } from './format-field-value.component';
 

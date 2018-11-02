@@ -1,16 +1,10 @@
-import {
-  Component, ChangeDetectionStrategy, Input, Provider, forwardRef,
-  ViewChild, OnChanges, SkipSelf, Host, Optional
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Host, Input, OnChanges, Optional, SkipSelf, ViewChild } from '@angular/core';
+import { AbstractControl, ControlContainer, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator } from '@angular/forms';
+import { I18n } from '@ngx-translate/i18n-polyfill';
 import { PasswordInput, PasswordModeEnum } from 'app/api/models';
-import {
-  NG_VALUE_ACCESSOR, NG_VALIDATORS, Validator,
-  AbstractControl, ValidationErrors, ControlContainer
-} from '@angular/forms';
+import { BaseControlComponent } from 'app/shared/base-control.component';
 import { PasswordInputComponent } from 'app/shared/password-input.component';
 import { Subscription } from 'rxjs';
-import { BaseControlComponent } from 'app/shared/base-control.component';
-import { I18n } from '@ngx-translate/i18n-polyfill';
 
 /**
  * Component used to input a password to confirm an action
@@ -106,7 +100,7 @@ export class ConfirmationPasswordComponent extends BaseControlComponent<string> 
     }
     return null;
   }
-  registerOnValidatorChange(fn: () => void): void {
+  registerOnValidatorChange() {
   }
 
   focus() {

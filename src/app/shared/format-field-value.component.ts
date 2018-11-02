@@ -1,17 +1,14 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy, HostBinding } from '@angular/core';
-import {
-  CustomFieldValue, CustomField, CustomFieldTypeEnum, CustomFieldDetailed,
-  LinkedEntityTypeEnum,
-  StoredFile,
-  Image
-} from 'app/api/models';
-import { ApiHelper } from 'app/shared/api-helper';
-import { BehaviorSubject } from 'rxjs';
-import { NextRequestState } from 'app/core/next-request-state';
-import * as download from 'downloadjs';
-import { FilesService, ImagesService } from 'app/api/services';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { I18n } from '@ngx-translate/i18n-polyfill';
+import {
+  CustomField, CustomFieldDetailed, CustomFieldTypeEnum, CustomFieldValue,
+  Image, LinkedEntityTypeEnum, StoredFile
+} from 'app/api/models';
+import { FilesService, ImagesService } from 'app/api/services';
+import { NextRequestState } from 'app/core/next-request-state';
+import { ApiHelper } from 'app/shared/api-helper';
 import { truthyAttr } from 'app/shared/helper';
+import * as download from 'downloadjs';
 
 /** Types whose values are rendered directly */
 const DIRECT_TYPES = [

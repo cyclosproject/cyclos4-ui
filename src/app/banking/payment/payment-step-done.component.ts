@@ -1,9 +1,7 @@
-import { Component, ChangeDetectionStrategy, Injector, OnInit, Input } from '@angular/core';
-
-import { PaymentsService } from 'app/api/services';
+import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
 import { Transaction } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
-import { ApiHelper } from 'app/shared/api-helper';
+
 
 /**
  * Payment final step
@@ -17,9 +15,7 @@ export class PaymentStepDoneComponent extends BaseComponent implements OnInit {
 
   @Input() performed: Transaction;
 
-  constructor(
-    injector: Injector,
-    private paymentsService: PaymentsService) {
+  constructor(injector: Injector) {
     super(injector);
   }
 

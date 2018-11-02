@@ -1,8 +1,6 @@
 import { ChangeDetectionStrategy, Component, Host, Input, Optional, SkipSelf, ViewChild } from '@angular/core';
-import {
-  AbstractControl, ControlContainer, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator
-} from '@angular/forms';
-import { CustomFieldBinaryValues, CustomFieldDetailed, CustomFieldTypeEnum, LinkedEntityTypeEnum } from 'app/api/models';
+import { ControlContainer, NG_VALIDATORS, NG_VALUE_ACCESSOR, Validator } from '@angular/forms';
+import { CustomFieldDetailed, CustomFieldTypeEnum, LinkedEntityTypeEnum } from 'app/api/models';
 import { FormatService } from 'app/core/format.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
@@ -111,7 +109,7 @@ export class CustomFieldFilterComponent extends BaseFormFieldComponent<string> i
   }
 
   // Validator methods
-  validate(c: AbstractControl): ValidationErrors {
+  validate() {
     // TODO validate dates (no support for dates yet)
     return null;
   }

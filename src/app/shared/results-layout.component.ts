@@ -12,7 +12,7 @@ import { LayoutService } from 'app/shared/layout.service';
 import { MapsService } from 'app/core/maps.service';
 import { BehaviorSubject } from 'rxjs';
 import { PageData } from 'app/shared/page-data';
-import { empty, fitBounds, scrollTop } from 'app/shared/helper';
+import { empty, fitBounds } from 'app/shared/helper';
 import { ResultInfoWindowDirective } from 'app/shared/result-info-window.directive';
 import { LoginService } from 'app/core/login.service';
 

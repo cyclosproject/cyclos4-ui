@@ -48,9 +48,9 @@ export abstract class BasePageComponent<D> extends BaseComponent implements OnIn
 
   /**
    * Callback invoked the first time the data is initialized
-   * @param data The data instance
+   * @param _data The data instance
    */
-  protected onDataInitialized(data: D) {
+  protected onDataInitialized(_data: D) {
   }
 
   constructor(injector: Injector) {
@@ -73,7 +73,7 @@ export abstract class BasePageComponent<D> extends BaseComponent implements OnIn
    * Should be implemented by pages to correctly locate a form control.
    * Is important, for example, to match validation errors to fields.
    */
-  locateControl(locator: FormControlLocator): AbstractControl {
+  locateControl(_locator: FormControlLocator): AbstractControl {
     return null;
   }
 }

@@ -1,13 +1,13 @@
-import { Component, ChangeDetectionStrategy, Injector, Inject, Input, Output, EventEmitter } from '@angular/core';
-
-import { BaseComponent } from 'app/shared/base.component';
-import { PasswordsService } from 'app/api/services';
+import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, Output } from '@angular/core';
+import { FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { ChangePassword, PasswordType } from 'app/api/models';
-import { FormBuilder, FormGroup, Validators, ValidatorFn } from '@angular/forms';
+import { PasswordsService } from 'app/api/services';
 import { ApiHelper } from 'app/shared/api-helper';
-import { BsModalRef } from 'ngx-bootstrap/modal';
-import { cloneDeep } from 'lodash';
+import { BaseComponent } from 'app/shared/base.component';
 import { validateBeforeSubmit } from 'app/shared/helper';
+import { cloneDeep } from 'lodash';
+import { BsModalRef } from 'ngx-bootstrap/modal';
+
 
 /** Validator function that ensures password and confirmation match */
 const PASSWORDS_MATCH_VAL: ValidatorFn = control => {

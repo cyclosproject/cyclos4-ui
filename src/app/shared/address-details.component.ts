@@ -1,8 +1,7 @@
-import { Component, ChangeDetectionStrategy, Injector, Input, HostBinding } from '@angular/core';
-import { BaseComponent } from 'app/shared/base.component';
-import { AddressView, Country } from 'app/api/models';
-import { ApiHelper } from 'app/shared/api-helper';
+import { ChangeDetectionStrategy, Component, Injector, Input } from '@angular/core';
+import { AddressView } from 'app/api/models';
 import { CountriesResolve } from 'app/countries.resolve';
+import { BaseComponent } from 'app/shared/base.component';
 
 /**
  * Component used to show the details of an address

@@ -1,12 +1,12 @@
+import { AfterViewChecked, AfterViewInit, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { ControlContainer, FormControl } from '@angular/forms';
+import { ApiHelper } from 'app/shared/api-helper';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
-import { ViewChild, ElementRef, OnDestroy, OnInit, Output, EventEmitter, AfterViewChecked, AfterViewInit, Input } from '@angular/core';
+import { blank, empty } from 'app/shared/helper';
+import { InputFieldComponent } from 'app/shared/input-field.component';
 import { BsDropdownDirective } from 'ngx-bootstrap/dropdown';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { empty, blank } from 'app/shared/helper';
-import { InputFieldComponent } from 'app/shared/input-field.component';
-import { debounceTime, distinctUntilChanged, switchMap, filter } from 'rxjs/operators';
-import { ApiHelper } from 'app/shared/api-helper';
+import { debounceTime, distinctUntilChanged, filter, switchMap } from 'rxjs/operators';
 
 /**
  * Base class for fields that present a text field and searches for keywords
@@ -75,7 +75,7 @@ export abstract class BaseAutocompleteFieldComponent<T, A>
         this.inputFieldControl.setErrors(null);
       }
     }));
-    this.bodyListener = e => this.close();
+    this.bodyListener = () => this.close();
   }
 
   search(text?: string) {

@@ -1,19 +1,16 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import {
-  AccountWithStatus, Currency, DataForTransaction,
-  TransactionTypeData, TransferType, User, NotFoundError
-} from 'app/api/models';
+import { AccountWithStatus, Currency, DataForTransaction, NotFoundError, TransactionTypeData, TransferType, User } from 'app/api/models';
 import { PaymentsService } from 'app/api/services';
 import { ErrorStatus } from 'app/core/error-status';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseComponent } from 'app/shared/base.component';
 import { DecimalFieldComponent } from 'app/shared/decimal-field.component';
-import { empty, getAllErrors, blank } from 'app/shared/helper';
+import { blank, empty } from 'app/shared/helper';
+import { UserFieldComponent } from 'app/shared/user-field.component';
 import { BehaviorSubject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { UserFieldComponent } from 'app/shared/user-field.component';
 
 
 const IGNORED_STATUSES = [ErrorStatus.FORBIDDEN, ErrorStatus.UNAUTHORIZED, ErrorStatus.NOT_FOUND];

@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { HttpRequest } from '@angular/common/http';
 
 /**
  * The possible reasons for the user to be taken to the login page

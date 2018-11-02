@@ -1,11 +1,9 @@
-import { Component, ChangeDetectionStrategy, Injector, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
+import { FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { DataForChangeForgottenPassword } from 'app/api/models';
-import { BaseComponent } from 'app/shared/base.component';
-import { FormBuilder, FormGroup, Validators, ValidatorFn } from '@angular/forms';
-import { BehaviorSubject } from 'rxjs';
 import { AuthService } from 'app/api/services';
-import { BasePageComponent } from 'app/shared/base-page.component';
 import { LoginState } from 'app/core/login-state';
+import { BasePageComponent } from 'app/shared/base-page.component';
 import { validateBeforeSubmit } from 'app/shared/helper';
 
 /** Validator function that ensures password and confirmation match */

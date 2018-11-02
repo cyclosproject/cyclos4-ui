@@ -3,9 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 
-// Use the require method provided by webpack
-declare const require;
-
 /**
  * Intercepts requests to set the correct headers and handle errors
  */

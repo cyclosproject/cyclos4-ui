@@ -1,5 +1,5 @@
-import { Input, OnInit, Output, EventEmitter, OnDestroy, AfterViewInit } from '@angular/core';
-import { ControlValueAccessor, FormControl, ControlContainer } from '@angular/forms';
+import { EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { ControlContainer, ControlValueAccessor, FormControl } from '@angular/forms';
 import { ApiHelper } from 'app/shared/api-helper';
 import { empty } from 'app/shared/helper';
 import { Observable, Subscription } from 'rxjs';
@@ -109,7 +109,7 @@ export abstract class BaseControlComponent<T> implements OnInit, OnDestroy, Cont
     return value;
   }
 
-  protected onValueInitialized(value: T) {
+  protected onValueInitialized(_value: T) {
   }
 
   registerOnChange(fn: any): void {
@@ -136,8 +136,7 @@ export abstract class BaseControlComponent<T> implements OnInit, OnDestroy, Cont
     this.changeCallback(value);
   }
 
-  protected onDisabledChange(isDisabled: boolean): void {
+  protected onDisabledChange(_isDisabled: boolean): void {
   }
-
 
 }

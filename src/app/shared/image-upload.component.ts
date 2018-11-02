@@ -1,15 +1,14 @@
-import {
-  Component, ChangeDetectionStrategy, Input, ViewChild,
-  ElementRef, Output, EventEmitter, ChangeDetectorRef, OnDestroy
-} from '@angular/core';
-import { BehaviorSubject, Subscription, Observable, forkJoin } from 'rxjs';
-import { Image, TempImageTargetEnum, CustomField, DataForUi } from 'app/api/models';
 import { HttpClient, HttpEventType } from '@angular/common/http';
+import {
+  ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef,
+  EventEmitter, Input, OnDestroy, Output, ViewChild
+} from '@angular/core';
 import { ApiConfiguration } from 'app/api/api-configuration';
-import { ImagesService } from 'app/api/services';
+import { CustomField, Image, TempImageTargetEnum } from 'app/api/models';
+import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { LoginService } from 'app/core/login.service';
 import { resizeImage, ResizeResult } from 'app/shared/helper';
-import { DataForUiHolder } from 'app/core/data-for-ui-holder';
+import { BehaviorSubject, forkJoin, Observable, Subscription } from 'rxjs';
 
 /**
  * Represents an image file being uploaded

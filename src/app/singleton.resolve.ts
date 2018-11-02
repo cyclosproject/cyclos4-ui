@@ -1,8 +1,5 @@
-import { Resolve, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
-import { Observable } from 'rxjs';
-import { of as observableOf } from 'rxjs';
-import { Subscription } from 'rxjs';
+import { Resolve } from '@angular/router';
+import { BehaviorSubject, Observable, of as observableOf, Subscription } from 'rxjs';
 
 /**
  * Base class to be extended by resolvers that fetch data once and the data is
@@ -22,7 +19,7 @@ export abstract class SingletonResolve<T> implements Resolve<T> {
           this._done = true;
           this._data.next(data);
           this.onFetched(data);
-        }, err => {
+        }, () => {
           // On error, clear the requested flag, so it could eventually retry
           this._requested = false;
         });
@@ -38,7 +35,7 @@ export abstract class SingletonResolve<T> implements Resolve<T> {
    */
   protected abstract onFetched(data: T);
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<T> {
+  resolve(): Observable<T> {
     if (this._data.value !== null) {
       // Already resolved
       return observableOf(this._data.value);

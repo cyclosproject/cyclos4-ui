@@ -16,15 +16,15 @@ export class LoggedUserGuard implements CanActivate, CanActivateChild, CanLoad {
     private router: Router
   ) { }
 
-  canLoad(route: Route): boolean {
+  canLoad(_route: Route): boolean {
     return this.checkLoggedIn(null);
   }
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+  canActivate(_route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     return this.checkLoggedIn(state.url);
   }
 
-  canActivateChild(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | Promise<boolean> {
+  canActivateChild(_childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | Promise<boolean> {
     return this.checkLoggedIn(state.url);
   }
 

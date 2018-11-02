@@ -87,7 +87,7 @@ export class PushNotificationsService {
     });
 
     // Listen for logged out events
-    this.eventSource.addEventListener(LOGGED_OUT, (event: any) => {
+    this.eventSource.addEventListener(LOGGED_OUT, () => {
       this.zone.run(() => {
         this.close();
         if (this.login.user == null) {

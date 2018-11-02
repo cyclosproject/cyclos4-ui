@@ -16,27 +16,6 @@ import { FormControlLocator } from 'app/shared/form-control-locator';
 
 export type PaymentStep = 'form' | 'confirm' | 'done';
 
-/** Validates that installments count is required and > 2 when payment is scheduled */
-const INSTALLMENTS_COUNT_VAL: ValidatorFn = control => {
-  const parent = control.parent;
-  if (parent) {
-    const scheduling = parent.get('scheduling').value;
-    if (scheduling === PaymentSchedulingEnum.SCHEDULED) {
-      const number = parseInt(control.value, 10);
-      if (isNaN(number)) {
-        // The installments count is required
-        return {
-          required: true
-        };
-      } else {
-        // Needs at least 2 installments
-        return Validators.min(2)(control);
-      }
-    }
-  }
-  return null;
-};
-
 /** Validates that the first installment date is required when scheduled to a future date */
 const FIRST_INSTALLMENT_DATE_VAL: ValidatorFn = control => {
   const parent = control.parent;

@@ -1,12 +1,10 @@
-import {
-  Component, ChangeDetectionStrategy, Injector, Input, Output, EventEmitter, OnInit
-} from '@angular/core';
-
-import { BaseComponent } from 'app/shared/base.component';
+import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { Image } from 'app/api/models';
-import { BsModalRef } from 'ngx-bootstrap/modal';
-import { FormBuilder, FormControl } from '@angular/forms';
+import { BaseComponent } from 'app/shared/base.component';
 import { isEqual } from 'lodash';
+import { BsModalRef } from 'ngx-bootstrap/modal';
+
 
 export class ManageImagesResult {
   constructor(

@@ -1,27 +1,19 @@
-import {
-  Entity, CustomFieldDetailed, PasswordInput, PasswordModeEnum, Transfer,
-  Transaction, AccountHistoryResult, Address, AddressConfiguration, Account,
-  TransactionView, ScheduledPaymentStatusEnum,
-  RecurringPaymentStatusEnum, PaymentRequestStatusEnum, TicketStatusEnum,
-  ExternalPaymentStatusEnum,
-  CustomFieldTypeEnum,
-  LinkedEntityTypeEnum,
-  BaseTransferDataForSearch,
-  TransactionDataForSearch,
-  PreselectedPeriod,
-  TransactionResult,
-  TransactionAuthorizationStatusEnum,
-  CustomFieldSizeEnum
-} from 'app/api/models';
-import { environment } from 'environments/environment';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AsyncValidatorFn } from '@angular/forms/src/directives/validators';
-import { AddressFieldEnum } from 'app/api/models/address-field-enum';
 import { I18n } from '@ngx-translate/i18n-polyfill';
+import {
+  Account, AccountHistoryResult, Address, AddressConfiguration,
+  BaseTransferDataForSearch, CustomFieldDetailed, CustomFieldSizeEnum,
+  CustomFieldTypeEnum, Entity, LinkedEntityTypeEnum, PasswordInput,
+  PasswordModeEnum, PreselectedPeriod, Transaction, TransactionDataForSearch,
+  Transfer
+} from 'app/api/models';
+import { AddressFieldEnum } from 'app/api/models/address-field-enum';
+import { FormatService } from 'app/core/format.service';
 import { NextRequestState } from 'app/core/next-request-state';
 import { FieldOption } from 'app/shared/field-option';
-import { FormatService } from 'app/core/format.service';
 import { empty } from 'app/shared/helper';
+import { environment } from 'environments/environment';
 
 /**
  * Helper methods for working with API model

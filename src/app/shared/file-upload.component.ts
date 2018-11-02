@@ -1,12 +1,12 @@
-import { Component, ChangeDetectionStrategy, Input, ViewChild, ElementRef, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
-import { BehaviorSubject, Subscription, Observable, forkJoin } from 'rxjs';
-import { CustomField, StoredFile, CustomFieldDetailed, InputError, InputErrorCode } from 'app/api/models';
 import { HttpClient, HttpEventType } from '@angular/common/http';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { ApiConfiguration } from 'app/api/api-configuration';
+import { CustomFieldDetailed, InputErrorCode, StoredFile } from 'app/api/models';
 import { FilesService } from 'app/api/services';
-import { LoginService } from 'app/core/login.service';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
+import { LoginService } from 'app/core/login.service';
+import { BehaviorSubject, forkJoin, Observable, Subscription } from 'rxjs';
 
 /**
  * Represents a file being uploaded

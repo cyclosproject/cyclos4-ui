@@ -1,28 +1,21 @@
-import {
-  Component, Input, ViewChild, ChangeDetectionStrategy, Optional, Host, SkipSelf, OnInit
-} from '@angular/core';
-import {
-  NG_VALUE_ACCESSOR, AbstractControl, ValidationErrors, Validator, NG_VALIDATORS, ControlContainer,
-} from '@angular/forms';
-import {
-  CustomFieldTypeEnum, CustomFieldDetailed, CustomFieldSizeEnum,
-  CustomFieldControlEnum, LinkedEntityTypeEnum, CustomFieldBinaryValues,
-} from 'app/api/models';
-import { ApiHelper } from 'app/shared/api-helper';
-import { DateFieldComponent } from 'app/shared/date-field.component';
-import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
-import { FieldOption } from 'app/shared/field-option';
+import { ChangeDetectionStrategy, Component, Host, Input, OnInit, Optional, SkipSelf, ViewChild } from '@angular/core';
+import { AbstractControl, ControlContainer, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator } from '@angular/forms';
+import { CustomFieldBinaryValues, CustomFieldControlEnum, CustomFieldDetailed, CustomFieldTypeEnum } from 'app/api/models';
 import { FormatService } from 'app/core/format.service';
-import { truthyAttr } from 'app/shared/helper';
-import { InputFieldComponent } from 'app/shared/input-field.component';
-import { DecimalFieldComponent } from 'app/shared/decimal-field.component';
+import { ApiHelper } from 'app/shared/api-helper';
+import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { BooleanFieldComponent } from 'app/shared/boolean-field.component';
-import { SingleSelectionFieldComponent } from 'app/shared/single-selection-field.component';
-import { MultiSelectionFieldComponent } from 'app/shared/multi-selection-field.component';
 import { CheckboxGroupFieldComponent } from 'app/shared/checkbox-group-field.component';
-import { RadioGroupFieldComponent } from 'app/shared/radio-group-field.component';
+import { DateFieldComponent } from 'app/shared/date-field.component';
+import { DecimalFieldComponent } from 'app/shared/decimal-field.component';
+import { FieldOption } from 'app/shared/field-option';
 import { FilesFieldComponent } from 'app/shared/files-field.component';
+import { truthyAttr } from 'app/shared/helper';
 import { ImagesFieldComponent } from 'app/shared/images-field.component';
+import { InputFieldComponent } from 'app/shared/input-field.component';
+import { MultiSelectionFieldComponent } from 'app/shared/multi-selection-field.component';
+import { RadioGroupFieldComponent } from 'app/shared/radio-group-field.component';
+import { SingleSelectionFieldComponent } from 'app/shared/single-selection-field.component';
 import { TextAreaFieldComponent } from 'app/shared/textarea-field.component';
 
 const INPUT_TYPES = [CustomFieldTypeEnum.STRING, CustomFieldTypeEnum.INTEGER, CustomFieldTypeEnum.URL, CustomFieldTypeEnum.LINKED_ENTITY];

@@ -1,10 +1,9 @@
-import { Component, ChangeDetectionStrategy, Injector, OnInit, Input } from '@angular/core';
-
-import { PaymentsService } from 'app/api/services';
+import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { PaymentPreview, TransferFeePreview } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
-import { FormControl, FormGroup } from '@angular/forms';
 import { empty } from 'app/shared/helper';
+
 
 /**
  * Payment step: confirm the payment
@@ -24,8 +23,7 @@ export class PaymentStepConfirmComponent extends BaseComponent implements OnInit
   form: FormGroup;
 
   constructor(
-    injector: Injector,
-    private paymentsService: PaymentsService) {
+    injector: Injector) {
     super(injector);
   }
 

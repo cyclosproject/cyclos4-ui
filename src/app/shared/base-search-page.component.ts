@@ -34,7 +34,7 @@ export abstract class BaseSearchPageComponent<D, R> extends BasePageComponent<D>
 
   private _moreFiltersAction: HeadingAction;
 
-  protected onDataInitialized(data: D) {
+  protected onDataInitialized(_data: D) {
     this.stateManager.manage(this.form);
     this.stateManager.manageValue(this.moreFilters$, 'moreFilters');
     this.previousValue = this.form.value;
@@ -176,7 +176,7 @@ export abstract class BaseSearchPageComponent<D, R> extends BasePageComponent<D>
     const more = this.i18n('More filters');
     const less = this.i18n('Less filters');
 
-    this._moreFiltersAction = new HeadingAction('filter_list', more, button => {
+    this._moreFiltersAction = new HeadingAction('filter_list', more, () => {
       this.moreFilters = !this.moreFilters;
       this._moreFiltersAction.label = this.moreFilters ? less : more;
     }, true);
@@ -186,10 +186,10 @@ export abstract class BaseSearchPageComponent<D, R> extends BasePageComponent<D>
 
   /**
    * Callback invoked whenever the result type changes
-   * @param resultType The new result type
-   * @param previous The previous result type
+   * @param _resultType The new result type
+   * @param _previous The previous result type
    */
-  protected onResultTypeChanged(resultType: ResultType, previous: ResultType): void {
+  protected onResultTypeChanged(_resultType: ResultType, _previous: ResultType): void {
   }
 
   /**

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Auth, Permissions, User, DataForUi } from 'app/api/models';
+import { Auth, Permissions, User } from 'app/api/models';
 import { AuthService } from 'app/api/services/auth.service';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { LoginState } from 'app/core/login-state';

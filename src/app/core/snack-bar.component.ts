@@ -1,12 +1,7 @@
-import { Component, ChangeDetectionStrategy, Input, OnInit, ElementRef } from '@angular/core';
-import { Observable, BehaviorSubject } from 'rxjs';
-import { RootMenuEntry, RootMenu, MenuType } from 'app/shared/menu';
-import { MenuService } from 'app/core/menu.service';
-import { StateManager } from 'app/core/state-manager';
-import { BreadcrumbService } from 'app/core/breadcrumb.service';
-import { Router } from '@angular/router';
+import { ChangeDetectionStrategy, Component, ElementRef, OnInit } from '@angular/core';
 import { NotificationService } from 'app/core/notification.service';
 import { SnackBarProvider } from 'app/core/snack-bar-provider';
+import { BehaviorSubject } from 'rxjs';
 
 /**
  * A snackbar is a quick message shown in the page bottom

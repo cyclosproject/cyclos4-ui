@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
 import { I18n } from '@ngx-translate/i18n-polyfill';
 import {
-  ExternalPaymentStatusEnum, PaymentRequestStatusEnum, RecurringPaymentStatusEnum,
-  ScheduledPaymentStatusEnum, TicketStatusEnum, TransactionAuthorizationStatusEnum,
-  TransactionKind, TransactionResult, TransactionView, ScheduledPaymentInstallmentStatusEnum, RecurringPaymentOccurrenceStatusEnum, TransactionAuthorizationActionEnum
+  ExternalPaymentStatusEnum, PaymentRequestStatusEnum,
+  RecurringPaymentOccurrenceStatusEnum, RecurringPaymentStatusEnum,
+  ScheduledPaymentInstallmentStatusEnum, ScheduledPaymentStatusEnum,
+  TicketStatusEnum, TransactionAuthorizationActionEnum,
+  TransactionAuthorizationStatusEnum, TransactionKind, TransactionResult,
+  TransactionView
 } from 'app/api/models';
 
 /**

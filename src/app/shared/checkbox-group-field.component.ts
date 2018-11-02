@@ -1,8 +1,7 @@
-import { Component, ChangeDetectionStrategy, SkipSelf, Host, Optional, Input, HostBinding } from '@angular/core';
-import { NG_VALUE_ACCESSOR, ControlContainer } from '@angular/forms';
-import { empty, preprocessValueWithSeparator, getValueAsArray } from 'app/shared/helper';
-import { I18n } from '@ngx-translate/i18n-polyfill';
-import { FORM_FIELD_WITH_OPTIONS, BaseFormFieldWithOptionsComponent } from 'app/shared/base-form-field-with-options.component';
+import { ChangeDetectionStrategy, Component, Host, HostBinding, Input, Optional, SkipSelf } from '@angular/core';
+import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { BaseFormFieldWithOptionsComponent, FORM_FIELD_WITH_OPTIONS } from 'app/shared/base-form-field-with-options.component';
+import { getValueAsArray, preprocessValueWithSeparator } from 'app/shared/helper';
 
 /**
  * Component used to display a group of checkboxes to use as a multi-selection field
@@ -27,8 +26,7 @@ export class CheckboxGroupFieldComponent extends BaseFormFieldWithOptionsCompone
   @Input() separator: string = null;
 
   constructor(
-    @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
-    private i18n: I18n
+    @Optional() @Host() @SkipSelf() controlContainer: ControlContainer
   ) {
     super(controlContainer);
   }

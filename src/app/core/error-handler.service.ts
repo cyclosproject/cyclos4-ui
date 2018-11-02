@@ -1,23 +1,24 @@
-import { Injectable } from '@angular/core';
-import { NotificationService } from 'app/core/notification.service';
-import { FormatService } from 'app/core/format.service';
-import {
-  ErrorKind, NotFoundError, InputError, InputErrorCode,
-  UnauthorizedError, UnauthorizedErrorCode, PasswordStatusEnum, ForbiddenError,
-  ForbiddenErrorCode, PaymentError, PaymentErrorCode, ForgottenPasswordError,
-  ForgottenPasswordErrorCode, ConflictError, ConflictErrorCode, OtpError, NestedError
-} from 'app/api/models';
 import { HttpErrorResponse } from '@angular/common/http';
-import { NextRequestState } from './next-request-state';
-import { ErrorStatus } from './error-status';
-import { DataForUiHolder } from 'app/core/data-for-ui-holder';
+import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { I18n } from '@ngx-translate/i18n-polyfill';
-import { LayoutService } from 'app/shared/layout.service';
-import { empty, focusFirstInvalid } from 'app/shared/helper';
+import {
+  ConflictError, ConflictErrorCode, ErrorKind, ForbiddenError,
+  ForbiddenErrorCode, ForgottenPasswordError, ForgottenPasswordErrorCode,
+  InputError, InputErrorCode, NestedError, NotFoundError, OtpError,
+  PasswordStatusEnum, PaymentError, PaymentErrorCode, UnauthorizedError,
+  UnauthorizedErrorCode
+} from 'app/api/models';
+import { DataForUiHolder } from 'app/core/data-for-ui-holder';
+import { FormatService } from 'app/core/format.service';
+import { LoginState } from 'app/core/login-state';
+import { NotificationService } from 'app/core/notification.service';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { FormControlLocator } from 'app/shared/form-control-locator';
-import { LoginState } from 'app/core/login-state';
+import { empty, focusFirstInvalid } from 'app/shared/helper';
+import { LayoutService } from 'app/shared/layout.service';
+import { ErrorStatus } from './error-status';
+import { NextRequestState } from './next-request-state';
 
 /**
  * Service used to handle application errors
@@ -133,7 +134,7 @@ export class ErrorHandlerService {
       // Was logged out. Fetch the DataForUi again (as guest) and go to the login page.
       this.nextRequestState.sessionToken = null;
       this.dataForUiHolder.reload()
-        .subscribe(dataForUi => {
+        .subscribe(() => {
           this.loginState.redirectUrl = this.router.url;
           this.router.navigateByUrl('/login');
         });
@@ -495,7 +496,7 @@ export class ErrorHandlerService {
    * Returns the error message for an OtpError
    * @param error The error
    */
-  public otpErrorMessage(error: OtpError): string {
+  public otpErrorMessage(_error: OtpError): string {
     return this.i18n('There was an error when sending the password. Please, try again later.');
   }
 

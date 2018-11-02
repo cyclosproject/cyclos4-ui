@@ -1,6 +1,6 @@
-import { Component, ChangeDetectionStrategy, Input, ViewChild, ElementRef, AfterViewInit, OnDestroy, HostBinding } from '@angular/core';
-import { CaptchaService } from 'app/api/services';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input, OnDestroy, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { CaptchaService } from 'app/api/services';
 
 @Component({
   // tslint:disable-next-line:component-selector

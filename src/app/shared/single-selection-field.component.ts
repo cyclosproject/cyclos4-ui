@@ -1,9 +1,8 @@
-import { Component, ChangeDetectionStrategy, SkipSelf, Host, Optional, Input } from '@angular/core';
-import { NG_VALUE_ACCESSOR, ControlContainer } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, Host, Input, Optional, SkipSelf } from '@angular/core';
+import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { FORM_FIELD_WITH_OPTIONS } from 'app/shared/base-form-field-with-options.component';
 import { BaseSelectionFieldComponent } from 'app/shared/base-selection-field.component';
 import { empty } from 'app/shared/helper';
-import { FieldOption } from 'app/shared/field-option';
 
 /**
  * Component used to display a single selection field (using a `select` tag).

@@ -1,12 +1,12 @@
-import { Component, ChangeDetectionStrategy, Injector, Input, Output, EventEmitter, OnInit } from '@angular/core';
-
+import { ChangeDetectionStrategy, Component, EventEmitter, Injector, OnInit, Output } from '@angular/core';
 import { User } from 'app/api/models';
+import { ContactsService } from 'app/api/services';
+import { ApiHelper } from 'app/shared/api-helper';
 import { BaseComponent } from 'app/shared/base.component';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Observable } from 'rxjs';
-import { ContactsService } from 'app/api/services';
-import { ApiHelper } from 'app/shared/api-helper';
 import { map } from 'rxjs/operators';
+
 
 /**
  * A component to be shown in a dialog, showing the user contact list

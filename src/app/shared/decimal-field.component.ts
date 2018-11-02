@@ -93,7 +93,7 @@ export class DecimalFieldComponent extends BaseFormFieldComponent<string> implem
     }));
   }
 
-  onBlur(event) {
+  onBlur() {
     this.setInternalControlValue();
     this.notifyTouched();
   }

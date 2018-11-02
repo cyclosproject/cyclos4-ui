@@ -1,12 +1,10 @@
-import { ChangeDetectionStrategy, Component, Injector, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
-import { BaseComponent } from 'app/shared/base.component';
-import { QueryFilters } from 'app/api/models';
-import { PagedResults } from 'app/shared/paged-results';
-import { ApiHelper } from 'app/shared/api-helper';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { ApiHelper } from 'app/shared/api-helper';
 import { LayoutService } from 'app/shared/layout.service';
 import { PageData } from 'app/shared/page-data';
+import { PagedResults } from 'app/shared/paged-results';
+import { Subscription } from 'rxjs';
 
 /**
  * Renders a paginator, which allows the user to change the visible results in a table

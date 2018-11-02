@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { TransactionView, TransactionAuthorization, TransactionAuthorizationActionEnum } from 'app/api/models';
+import { TransactionAuthorization, TransactionView } from 'app/api/models';
 import { TransactionsService } from 'app/api/services';
-import { BasePageComponent } from 'app/shared/base-page.component';
 import { TransactionStatusService } from 'app/core/transaction-status.service';
+import { BasePageComponent } from 'app/shared/base-page.component';
 
 /**
  * Displays the authorization history of a transaction

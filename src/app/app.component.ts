@@ -1,13 +1,12 @@
-import { Component, Injector, ChangeDetectionStrategy, ApplicationRef, Renderer2, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { BehaviorSubject } from 'rxjs';
-import { BaseComponent } from 'app/shared/base.component';
-import { MenuService } from 'app/core/menu.service';
 import { Router } from '@angular/router';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { FormatService } from 'app/core/format.service';
 import { LoginService } from 'app/core/login.service';
+import { MenuService } from 'app/core/menu.service';
 import { LayoutService } from 'app/shared/layout.service';
+import { BehaviorSubject } from 'rxjs';
 
 declare const setSpinnerVisible: (boolean) => void;
 

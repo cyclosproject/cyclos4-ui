@@ -1,9 +1,7 @@
-import { Component, ChangeDetectionStrategy, Input, ElementRef, OnInit, HostBinding } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, HostBinding, Input } from '@angular/core';
 import { SvgIconRegistry } from 'app/core/svg-icon-registry';
 import { empty } from 'app/shared/helper';
 
-// Use the require method provided by webpack
-declare const require;
 
 /**
  * Shows a material icon.
