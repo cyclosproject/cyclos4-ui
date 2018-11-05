@@ -81,10 +81,10 @@
     "description" : "Vouchers are the way by which a user (possibly external) can buy at \nplaces that  accept payments in Cyclos.  \n"
   }, {
     "name" : "Tickets",
-    "description" : "Provide access to tickets. A ticket represents a payment with a destinatary\nbut possibly without a defined payer. They allow to a user (e.g a shop) \ngenerate a ticket for himself and send it to another user to allow pay it.       \n"
+    "description" : "Provide access to tickets. A ticket represents a payment with a\ndestinatary but possibly without a defined payer. They allow to a user\n(e.g a shop) generate a ticket for himself and send it to another user\nto allow pay it.       \n"
   }, {
     "name" : "Mobile",
-    "description" : "Contains operations used by the Cyclos mobile application, but can also\nbe useful for third-party mobile applications.\n"
+    "description" : "Contains operations used by the Cyclos mobile application. Unlike others,\nthese operations aren't meant to be generic, and this API can change\nwithout further notice. \n"
   }, {
     "name" : "Notifications",
     "description" : "Provides access to the notifications the authenticated user has received. \n"
