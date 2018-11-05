@@ -45,7 +45,7 @@
                 <!-- Aggregated cell for xs -->
                 <a [routerLink]="path(row)">
                   <div class="cell-text cell-main">{{ subjectName(row) }}</div>
-                  <div class="cell-text cell-date">{{ row.date | dateTime }}</div>
+                  <div class="cell-text cell-date">{{ row.date | date }}</div>
                 </a>
               </td>
               <td *ngIf="layout.gtxs$ | async">

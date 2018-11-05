@@ -218,8 +218,8 @@ export class LabelValueComponent implements OnInit, OnDestroy {
           // On xxs it is the same as if labels are forced above
           return COLS;
         case 'xs':
-          // On xs use 5 cols for view mode, 4 for form mode
-          return this.kind === 'view' ? 5 : 4;
+          // On xs use 5 cols
+          return 5;
         default:
           // On larger resolutions, always use 4 cols for labels
           return 4;

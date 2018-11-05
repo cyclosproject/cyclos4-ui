@@ -53,7 +53,7 @@
                 <!-- Aggregated cell for xs -->
                 <a [routerLink]="path(row)">
                   <div class="cell-text cell-main">{{ subjectName(row) }}</div>
-                  <div class="cell-text cell-date">{{ row.date | dateTime }}</div>
+                  <div class="cell-text cell-date">{{ row.date | date }}</div>
                 </a>
               </td>
               <td *ngIf="layout.gtxs$ | async">
@@ -68,10 +68,14 @@
               </td>
               <td>
                 <a class="d-inline-block" [routerLink]="path(row)">
-                  {{ status(row) }}
+                  {{ status(row) }}<ng-container *ngIf="layout.ltsm$ | async">
+                    <br>
+                    {{ row.processedInstallments }} / {{ row.installmentCount
+                    }}
+                  </ng-container>
                 </a>
               </td>
-              <td>
+              <td *ngIf="layout.gtxs$ | async">
                 <a class="d-inline-block" [routerLink]="path(row)">
                   {{ row.processedInstallments }} / {{ row.installmentCount
                   }}
