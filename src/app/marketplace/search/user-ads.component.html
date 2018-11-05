@@ -1,0 +1,21 @@
+<page-layout [ready]="data$ | async" [hideMenu]="login.user == null">
+  <ng-container *ngIf="loaded$ | async; else loading">
+    <page-content mode="filters" i18n-heading heading="User products and services">
+      <div class="filters-row">
+        <result-type-field [formControl]="resultTypeControl"
+          [allowedResultTypes]="allowedResultTypes$ | async">
+        </result-type-field>
+      </div>
+    </page-content>
+    <ads-results [results]="results$ | async" [rendering$]="rendering$"
+      singleUser [data]="data$ | async" [resultType]="resultType$ | async"
+      (update)="update($event)" (categorySelected)="onCategorySelected($event)">
+    </ads-results>
+  </ng-container>
+</page-layout>
+
+<ng-template #loading>
+  <page-content>
+    <spinner></spinner>
+  </page-content>
+</ng-template>

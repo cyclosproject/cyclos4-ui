@@ -52,13 +52,6 @@ export class UsersResultsComponent extends BaseComponent {
     super(injector);
   }
 
-  onDataInitialized(data: UserDataForSearch | UserDataForMap | ContactListDataForSearch) {
-    const fieldsInList = (data || {}).fieldsInList || [];
-    this.fieldsInList = fieldsInList.slice(0, Math.min(fieldsInList.length, MAX_COLUMNS));
-    this.fieldsInTile = fieldsInList.slice(0, Math.min(fieldsInList.length, MAX_TILE_FIELDS));
-    this.showTableHeader = this.fieldsInList.length > 1;
-  }
-
   /**
    * Returns the user displayed for the given result row
    * @param row The result from the search

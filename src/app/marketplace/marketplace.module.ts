@@ -4,6 +4,8 @@ import { MarketplaceRoutingModule } from 'app/marketplace/marketplace-routing.mo
 import { SearchAdsComponent } from 'app/marketplace/search/search-ads.component';
 import { ViewAdComponent } from 'app/marketplace/view/view-ad.component';
 import { ShowSubCategoriesComponent } from 'app/marketplace/search/show-sub-categories.component';
+import { AdsResultsComponent } from 'app/marketplace/search/ads-results.component';
+import { UserAdsComponent } from 'app/marketplace/search/user-ads.component';
 
 /**
  * Marketplace module
@@ -16,6 +18,8 @@ import { ShowSubCategoriesComponent } from 'app/marketplace/search/show-sub-cate
   exports: [],
   declarations: [
     SearchAdsComponent,
+    UserAdsComponent,
+    AdsResultsComponent,
     ViewAdComponent,
     ShowSubCategoriesComponent
   ],

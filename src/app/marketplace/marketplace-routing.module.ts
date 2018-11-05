@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { Menu } from 'app/shared/menu';
 import { SearchAdsComponent } from 'app/marketplace/search/search-ads.component';
 import { ViewAdComponent } from 'app/marketplace/view/view-ad.component';
+import { UserAdsComponent } from 'app/marketplace/search/user-ads.component';
 
 const marketplaceRoutes: Routes = [
   {
@@ -13,6 +14,13 @@ const marketplaceRoutes: Routes = [
         component: SearchAdsComponent,
         data: {
           menu: Menu.SEARCH_ADS
+        }
+      },
+      {
+        path: 'user/:user',
+        component: UserAdsComponent,
+        data: {
+          menu: Menu.SEARCH_USERS
         }
       },
       {

@@ -91,6 +91,7 @@ export class ViewProfileComponent extends BasePageComponent<UserView> implements
     const permissions = user.permissions || {};
     const contact = permissions.contact || {};
     const payment = permissions.payment || {};
+    const marketplace = permissions.marketplace || {};
     if ((this.login.user || {}).id === user.id && user.permissions.profile.editProfile) {
       actions.push(new HeadingAction('edit', this.i18n('Edit'), () => {
         this.router.navigate(['users', 'my-profile', 'edit']);
@@ -115,6 +116,13 @@ export class ViewProfileComponent extends BasePageComponent<UserView> implements
         name: this.shortName
       }), () => {
         this.router.navigate(['/banking', 'payment', this.key]);
+      }));
+    }
+    if (marketplace.viewAdvertisements || marketplace.viewWebshop) {
+      actions.push(new HeadingAction('shopping_basket', this.i18n('View products and services from {{name}}', {
+        name: this.shortName
+      }), () => {
+        this.router.navigate(['/marketplace', 'user', this.key]);
       }));
     }
     this.headingActions = actions;
