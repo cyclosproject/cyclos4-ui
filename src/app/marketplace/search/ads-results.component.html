@@ -1,6 +1,6 @@
-<results-layout (update)="update()" [categories]="data.categories" [results]="results"
-  [rendering$]="rendering$" [resultType]="resultType" [toAddress]="toAddress"
-  [toMarkerTitle]="toMarkerTitle">
+<results-layout (update)="update.emit($event)" [categories]="data.categories"
+  [results]="results" [rendering$]="rendering$" [resultType]="resultType"
+  [toAddress]="toAddress" [toMarkerTitle]="toMarkerTitle">
 
   <div *resultCategory="let cat" class="card">
     <div class="category-title">
