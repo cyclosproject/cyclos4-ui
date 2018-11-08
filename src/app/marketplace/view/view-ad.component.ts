@@ -10,6 +10,7 @@ import { BasePageComponent } from 'app/shared/base-page.component';
 @Component({
   selector: 'view-ad',
   templateUrl: 'view-ad.component.html',
+  styleUrls: ['../../users/profile/view-profile.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ViewAdComponent extends BasePageComponent<AdView> implements OnInit {

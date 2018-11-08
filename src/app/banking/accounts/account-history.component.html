@@ -83,7 +83,7 @@
           <th i18n>Date</th>
           <th i18n>From / to</th>
           <th *ngIf="layout.gtsm$ | async" width="30%" i18n>Description</th>
-          <th i18n class="text-right">Amount</th>
+          <th i18n class="amount">Amount</th>
         </thead>
         <tbody>
           <ng-container *ngFor="let row of (results$ | async).results">
@@ -120,7 +120,7 @@
                   {{ row.description }}
                 </a>
               </td>
-              <td class="text-right" [ngClass]="{
+              <td class="amount" [ngClass]="{
                   'pb-0': layout.xxs$ | async,
                   'border-0': layout.xxs$ | async
                 }">

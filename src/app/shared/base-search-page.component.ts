@@ -58,7 +58,12 @@ export abstract class BaseSearchPageComponent<D, R> extends BasePageComponent<D>
    * @param previousValue The previous form value
    */
   protected shouldUpdateOnChange(value: any, previousValue: any): boolean {
-    if (previousValue == null || previousValue.resultType === ResultType.CATEGORIES) {
+    const wasCategoriesOrNull = previousValue == null || previousValue.resultType === ResultType.CATEGORIES;
+    const isCategories = value != null && value.resultType === ResultType.CATEGORIES;
+    if (isCategories && !wasCategoriesOrNull) {
+      // Switching to categories - don't update results
+      return false;
+    } else if (wasCategoriesOrNull) {
       // Either first time or switching from categories. Update.
       return true;
     }

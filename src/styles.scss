@@ -179,6 +179,11 @@ table.table {
   td {
     padding: 0.8rem 0.4rem;
   }
+  td.amount, th.amount {
+    padding-left: 0.1rem;
+    padding-right: 0.9rem;
+    text-align: right;
+  }
   td.avatar {
     padding-left: 0.9rem;
     padding-right: 0.1rem;
@@ -215,6 +220,9 @@ table.table {
   table.table {
     td {
       padding: 0.75rem;
+    }
+    td.amount, th.amount {
+      padding-right: 1rem;
     }
     td.avatar {
       padding-left: 1rem;

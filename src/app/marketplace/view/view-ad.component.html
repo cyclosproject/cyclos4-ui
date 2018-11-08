@@ -7,8 +7,9 @@
     </div>
 
     <div class="d-flex flex-row-reverse">
-      <div *ngIf="ad.image && (layout.gtxs$ | async)" class="ml-4">
-        <avatar size="200" useLightbox [image]="ad.image" [additionalImages]="ad.additionalImages"></avatar>
+      <div *ngIf="layout.gtxs$ | async" class="image ml-4">
+        <avatar [size]="ad.image ? 200 : 128" iconSize="128px" useLightbox
+          icon="shopping_basket" [image]="ad.image" [additionalImages]="ad.additionalImages"></avatar>
       </div>
       <div class="d-flex flex-grow-1 flex-column">
         <label-value i18n-label label="Title" [value]="ad.name"></label-value>

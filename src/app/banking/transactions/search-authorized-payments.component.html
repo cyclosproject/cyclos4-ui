@@ -33,7 +33,7 @@
           <th i18n>Date</th>
           <th i18n>From / to</th>
           <th i18n>Scheduling</th>
-          <th i18n class="text-right">Amount</th>
+          <th i18n class="amount">Amount</th>
         </thead>
         <tbody>
           <ng-container *ngFor="let row of (results$ | async).results">
@@ -63,7 +63,7 @@
                   {{ scheduling(row) }}
                 </a>
               </td>
-              <td class="text-right" [ngClass]="{'pb-0': layout.xxs$ | async}">
+              <td class="amount" [ngClass]="{'pb-0': layout.xxs$ | async}">
                 <a [routerLink]="path(row)" [ngClass]="{
                         positive: format.isPositive(row.amount),
                         negative: format.isNegative(row.amount)
