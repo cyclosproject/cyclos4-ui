@@ -107,7 +107,9 @@ export class MaskDirective {
         // Any other is literal
         field = new MaskField(c, true);
       }
-      this.fields.push(field);
+      if (field) {
+        this.fields.push(field);
+      }
       wasEscape = isEscape;
       wasCapital = isCapital;
     }

@@ -19,7 +19,7 @@
             <single-selection-field labelPosition="side" formControlName="preselectedPeriod"
               i18n-label label="Period">
               <field-option *ngFor="let period of data.preselectedPeriods"
-                [value]="period" [text]="period.name"></field-option>
+                [id]="period['id']" [value]="period" [text]="period.name"></field-option>
             </single-selection-field>
           </div>
           <div *ngIf="(transferFilters$ | async)?.length > 0" class="col-12 col-md-6">

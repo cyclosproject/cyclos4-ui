@@ -30,10 +30,4 @@ export class FieldOptionDirective implements OnInit, OnDestroy, FieldOption {
     this.component.removeOption(this);
   }
 
-  matches(value: string): boolean {
-    return value === this.value
-      || this.id != null && value === this.id
-      || this.internalName != null && value === this.internalName;
-  }
-
 }

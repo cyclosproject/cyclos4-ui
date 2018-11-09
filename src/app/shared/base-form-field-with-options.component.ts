@@ -78,7 +78,7 @@ export abstract class BaseFormFieldWithOptionsComponent<T> extends BaseFormField
   findOption(value: string): FieldOption {
     for (const category of this.categories.value) {
       for (const option of category.options.value) {
-        if (option.value === value) {
+        if (fieldOptionMatches(option, value)) {
           return option;
         }
       }

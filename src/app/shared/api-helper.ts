@@ -350,11 +350,13 @@ export class ApiHelper {
    */
   static preProcessPreselectedPeriods(data: BaseTransferDataForSearch | TransactionDataForSearch, form: FormGroup): void {
     // Select the default preselected period
-    if ((data.preselectedPeriods || []).length === 0) {
+    if (empty(data.preselectedPeriods || [])) {
       // No preselected periods? Create one, so we don't break the logic
-      data.preselectedPeriods = [
-        { defaultOption: true }
-      ];
+      data.preselectedPeriods = [{ defaultOption: true }];
+    }
+    // Assing an id for each period
+    for (let i = 0; i < data.preselectedPeriods.length; i++) {
+      data.preselectedPeriods[i]['id'] = i;
     }
     const preselectedPeriod = data.preselectedPeriods.find(p => p.defaultOption);
     form.patchValue({ preselectedPeriod: preselectedPeriod }, { emitEvent: false });

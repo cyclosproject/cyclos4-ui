@@ -4,7 +4,7 @@ import { ViewChild, ElementRef, OnDestroy, OnInit, Input } from '@angular/core';
 import { BsDropdownDirective } from 'ngx-bootstrap/dropdown';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { empty } from 'app/shared/helper';
-import { FieldOption } from 'app/shared/field-option';
+import { FieldOption, fieldOptionMatches } from 'app/shared/field-option';
 
 /**
  * Base class for single / multi selection fields
@@ -49,7 +49,7 @@ export abstract class BaseSelectionFieldComponent<T> extends BaseFormFieldWithOp
   addOption(option: FieldOption) {
     super.addOption(option);
     const selected = this.selectedValues;
-    if (!empty(selected) && selected.includes(option.value)) {
+    if (!empty(selected) && selected.findIndex(s => fieldOptionMatches(option, s)) >= 0) {
       this.updateDisplay();
     }
   }
