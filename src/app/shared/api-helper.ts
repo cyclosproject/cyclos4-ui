@@ -12,7 +12,7 @@ import { AddressFieldEnum } from 'app/api/models/address-field-enum';
 import { FormatService } from 'app/core/format.service';
 import { NextRequestState } from 'app/core/next-request-state';
 import { FieldOption } from 'app/shared/field-option';
-import { empty } from 'app/shared/helper';
+import { empty, blank } from 'app/shared/helper';
 import { environment } from 'environments/environment';
 
 /**
@@ -83,22 +83,30 @@ export class ApiHelper {
   }
 
   /**
+   * If the given value is fully numeric, escape it by prepending a single quote.
+   * This is the Cyclos' way to distinguish between ids and other keys
+   * @param value The value
+   */
+  static escapeNumeric(value: string): string {
+    if (/^[\-\+]?\d+$/.test(value)) {
+      // The transaction number is fully numeric. Escape it to avoid clashing with id
+      return `'${value}`;
+    } else {
+      return value;
+    }
+  }
+
+  /**
    * Given an object representing a transfer / transaction, if it has a transaction number,
    * returns it, taking care of escaping the value if it is fully numeric.
    * Otherwise, returns the id.
    * @param trans Either the transfer or transaction
    */
   static transactionNumberOrId(trans: Transfer | Transaction | AccountHistoryResult): string {
-    const number = trans.transactionNumber;
-    if (number != null && number !== '') {
-      if (/^\d+$/.test(number)) {
-        // The transaction number is fully numeric. Escape it to avoid clashing with id
-        return `'${number}`;
-      } else {
-        return number;
-      }
+    if (trans == null) {
+      return null;
     }
-    return trans.id;
+    return blank(trans.transactionNumber) ? trans.id : this.escapeNumeric(trans.transactionNumber);
   }
 
   /**

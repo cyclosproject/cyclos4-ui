@@ -14,6 +14,7 @@ import { ApiHelper } from 'app/shared/api-helper';
 import * as download from 'downloadjs';
 import { NextRequestState } from 'app/core/next-request-state';
 import { LayoutService } from 'app/shared/layout.service';
+import { ErrorHandlerService } from 'app/core/error-handler.service';
 
 /**
  * Renders a widget for a field that allows uploading files
@@ -62,6 +63,7 @@ export class FilesFieldComponent extends BaseFormFieldComponent<string | string[
   constructor(
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
     public layout: LayoutService,
+    private errorHandler: ErrorHandlerService,
     private filesService: FilesService,
     private changeDetector: ChangeDetectorRef,
     private nextRequestState: NextRequestState,
@@ -148,7 +150,12 @@ export class FilesFieldComponent extends BaseFormFieldComponent<string | string[
 
   removeAllFiles() {
     // Remove all uploaded temporary files
-    this.uploadedFiles.forEach(i => this.filesService.deleteRawFile(i.id).subscribe());
+    this.uploadedFiles.forEach(f => {
+      this.errorHandler.requestWithCustomErrorHandler(() => {
+        this.filesService.deleteRawFile(f.id).subscribe();
+      });
+    });
+
     this.files = [];
     this.value = [];
     // Manually mark the control as touched, as there's no native inputs

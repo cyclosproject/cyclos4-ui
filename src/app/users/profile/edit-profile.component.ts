@@ -1,6 +1,6 @@
 import { LatLngBounds } from '@agm/core';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnDestroy, OnInit } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
 import {
   AddressManage, AvailabilityEnum, ContactInfoManage, CustomField,
   CustomFieldDetailed, DataForEditFullProfile, FullProfileEdit, Image,
@@ -11,7 +11,7 @@ import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { FormControlLocator } from 'app/shared/form-control-locator';
-import { empty, fitBounds, isTouched, labelAddresses, locateControl, scrollTop } from 'app/shared/helper';
+import { empty, fitBounds, isTouched, labelAddresses, locateControl, scrollTop, validateBeforeSubmit } from 'app/shared/helper';
 import { ManageImagesComponent } from 'app/shared/manage-images.component';
 import { VerifyPhoneComponent } from 'app/users/profile/verify-phone.component';
 import { cloneDeep } from 'lodash';
@@ -195,6 +195,24 @@ export class EditProfileComponent
   }
 
   save() {
+    const fullForm = new FormGroup({
+      user: this.user,
+      createLandLinePhones: new FormArray(this.createLandLinePhones),
+      modifyLandLinePhones: new FormArray(this.modifyLandLinePhones),
+      createMobilePhones: new FormArray(this.createMobilePhones),
+      modifyMobilePhones: new FormArray(this.modifyMobilePhones),
+      createAddresses: new FormArray(this.createAddresses),
+      modifyAddresses: new FormArray(this.modifyAddresses),
+      createContactInfos: new FormArray(this.createContactInfos),
+      modifyContactInfos: new FormArray(this.modifyContactInfos)
+    });
+    if (this.confirmationPassword) {
+      fullForm.setControl('confirmationPassword', this.confirmationPassword);
+    }
+    if (!validateBeforeSubmit(fullForm)) {
+      return;
+    }
+
     let confirmationPassword = '';
     if (this.confirmationPassword) {
       confirmationPassword = this.confirmationPassword.value;
@@ -316,7 +334,7 @@ export class EditProfileComponent
     // Initialize the forms
     this.user = this.buildUserForm();
     if (data.confirmationPasswordInput) {
-      this.confirmationPassword = this.formBuilder.control('');
+      this.confirmationPassword = this.formBuilder.control('', Validators.required);
     }
 
     this.images = this.data.images.slice();

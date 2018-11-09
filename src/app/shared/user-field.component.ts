@@ -57,7 +57,7 @@ export class UserFieldComponent
       .pipe(distinctUntilChanged())
       .subscribe(value => {
         if (this.allowPrincipal) {
-          this.value = value;
+          this.value = ApiHelper.escapeNumeric(value);
         }
       });
   }

@@ -12,6 +12,7 @@ import { ImagesService } from 'app/api/services';
 import { ManageImagesComponent } from 'app/shared/manage-images.component';
 import { take } from 'rxjs/operators';
 import { AvatarSize } from 'app/shared/avatar.component';
+import { ErrorHandlerService } from 'app/core/error-handler.service';
 
 /**
  * Renders a widget for a field that allows uploading images
@@ -70,6 +71,7 @@ export class ImagesFieldComponent extends BaseFormFieldComponent<string | string
   constructor(
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
     public layout: LayoutService,
+    private errorHandler: ErrorHandlerService,
     private imagesService: ImagesService,
     private changeDetector: ChangeDetectorRef,
     private modal: BsModalService) {
@@ -155,7 +157,11 @@ export class ImagesFieldComponent extends BaseFormFieldComponent<string | string
 
   removeAllImages() {
     // Remove all uploaded temporary files
-    this.uploadedImages.forEach(i => this.imagesService.deleteImage(i.id).subscribe());
+    this.uploadedImages.forEach(i => {
+      this.errorHandler.requestWithCustomErrorHandler(() => {
+        this.imagesService.deleteImage(i.id).subscribe();
+      });
+    });
     this.images = [];
     this.value = [];
     // Manually mark the control as touched, as there's no native inputs

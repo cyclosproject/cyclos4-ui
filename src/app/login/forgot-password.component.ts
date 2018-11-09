@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
-import { DataForLogin, PrincipalTypeInput } from 'app/api/models';
+import { DataForLogin, PrincipalTypeInput, ForgottenPasswordRequest } from 'app/api/models';
 import { AuthService } from 'app/api/services';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BasePageComponent } from 'app/shared/base-page.component';
+import { cloneDeep } from 'lodash';
 
 /**
  * Component used to show the forgot password page.
@@ -47,7 +48,12 @@ export class ForgotPasswordComponent extends BasePageComponent<DataForLogin> imp
   }
 
   submit() {
-    this.authService.forgottenPasswordRequest(this.form.value)
+    if (!this.form.valid) {
+      return;
+    }
+    const params: ForgottenPasswordRequest = cloneDeep(this.form.value);
+    params.user = ApiHelper.escapeNumeric(params.user);
+    this.authService.forgottenPasswordRequest(params)
       .subscribe(() => {
         this.notification.info(this.i18n(`You will receive shortly an e-mail with your user identification
           and instructions on how to reset your password`));
