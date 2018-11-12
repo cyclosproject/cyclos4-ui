@@ -46,8 +46,14 @@ export abstract class BaseSearchPageComponent<D, R> extends BasePageComponent<D>
       if (this.shouldUpdateOnChange(this.form.value)) {
         this.update();
       }
-      this.resultType$.next(rt);
+      const previous = this.previousResultType;
+      if (previous == null || previous !== rt) {
+        this.rendering = true;
+        this.stateManager.set('resultType', rt);
+        this.onResultTypeChanged(rt, previous);
+      }
       this.previousResultType = rt;
+      this.resultType$.next(rt);
     }));
     this.addSub(this.form.valueChanges.pipe(debounceTime(ApiHelper.DEBOUNCE_TIME)).subscribe(value => {
       if (this.shouldUpdateOnChange(value)) {
@@ -136,16 +142,7 @@ export abstract class BaseSearchPageComponent<D, R> extends BasePageComponent<D>
     if (resultType == null) {
       resultType = this.getInitialResultType();
     }
-    const previous = this.resultType;
-    if (previous == null || previous !== resultType) {
-      this.rendering = true;
-      this.resultTypeControl.setValue(resultType);
-      // .. however, we must update the state, otherwise the result type isn't remembered
-      if (previous != null) {
-        this.stateManager.set('resultType', resultType);
-      }
-      this.onResultTypeChanged(resultType, previous);
-    }
+    this.resultTypeControl.setValue(resultType);
   }
 
   constructor(injector: Injector) {
@@ -158,9 +155,6 @@ export abstract class BaseSearchPageComponent<D, R> extends BasePageComponent<D>
       controls[name] = null;
     }
     this.form = this.formBuilder.group(controls);
-    this.addSub(this.resultTypeControl.valueChanges.subscribe(resultType => {
-      this.resultType = resultType;
-    }), false);
   }
 
   ngOnInit() {

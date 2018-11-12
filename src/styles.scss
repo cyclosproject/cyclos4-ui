@@ -25,6 +25,7 @@ body.gt-sm {
 
 .tiled-results, .category-results {
   width: 100%;
+  margin-top: $layout-spacer-xxs;
   margin-right: -$tiled-results-spacing-xxs / 2;
   margin-left: -$tiled-results-spacing-xxs / 2;
   padding-left: $tiled-results-spacing-xxs;
@@ -84,6 +85,7 @@ body.gt-sm {
 
 @include media-breakpoint-up(xs) {
   .tiled-results, .category-results {
+    margin-top: $layout-spacer-xs;
     margin-right: -$tiled-results-spacing-xs / 2;
     margin-left: -$tiled-results-spacing-xs / 2;
     padding-left: $tiled-results-spacing-xs;
@@ -101,6 +103,26 @@ body.gt-sm {
   }
 }
 
+@include media-breakpoint-up(sm) {
+  .tiled-results, .category-results {
+    margin-top: 0;
+    margin-right: -$tiled-results-spacing / 2;
+    margin-left: -$tiled-results-spacing / 2;
+    padding-left: $tiled-results-spacing;
+
+    > .col,
+    > [class*="col-"] {
+      padding-right: $tiled-results-spacing / 2;
+      padding-left: $tiled-results-spacing / 2;
+    }
+
+    .card {
+      margin-bottom: $tiled-results-spacing;
+      height: calc(100% - $tiled-results-spacing);
+    }
+  }
+}
+
 .xxs {
   .tiled-result {
     max-width: 70%;
@@ -111,7 +133,7 @@ body.gt-sm {
   }
 }
 
-@include media-breakpoint-up(sm) {
+@include media-breakpoint-up(md) {
   .tiled-results, .category-results {
     width: auto;
     padding-left: 22px;
@@ -344,7 +366,7 @@ label {
   padding-right: $layout-spacer-xxs;
 }
 .filters-row {
-  margin-top: 1rem;
+  margin-top: $layout-spacer-xxs;
 }
 @include media-breakpoint-up(xs) {
   .filters-form {
@@ -354,13 +376,15 @@ label {
     padding-left: $layout-spacer-xs;
     padding-right: $layout-spacer-xs;
   }
+  .filters-row {
+    margin-top: $layout-spacer-xs;
+  }
 }
 @include media-breakpoint-up(sm) {
   .filters-row {
+    margin-top: 1rem;
     margin-bottom: 1rem;
   }
-}
-@include media-breakpoint-up(md) {
   .filters-form {
     padding-bottom: 0;
     margin-left: -$layout-spacer;

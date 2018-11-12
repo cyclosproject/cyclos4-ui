@@ -111,16 +111,26 @@
 
 .page-content-body {
   padding: $layout-spacer-xxs;
+  padding-bottom: 0;
 }
 .page-content.mode-normal .page-content-body {
-  padding: #{$layout-spacer-xxs * 2} $layout-spacer-xxs;
+  padding: $layout-spacer-xxs;
+  padding-bottom: 0;
+}
+.mode-table .page-content-body, .mode-full-height .page-content-body {
+  margin-top: $layout-spacer-xxs;
 }
 @include media-breakpoint-up(xs) {
   .page-content-body {
     padding: $layout-spacer-xs;
+    padding-bottom: 0;
   }
   .page-content.mode-normal .page-content-body {
-    padding: #{$layout-spacer-xs * 2} $layout-spacer-xs;
+    padding: $layout-spacer-xs;
+    padding-bottom: 0;
+  }
+  .mode-table .page-content-body, .mode-full-height .page-content-body {
+    margin-top: $layout-spacer-xs;
   }
 }
 @include media-breakpoint-up(sm) {
@@ -130,6 +140,10 @@
 
   .mode-filters .page-content-body {
     padding: 0 $layout-spacer;
+  }
+
+  .mode-table .page-content-body, .mode-full-height .page-content-body {
+    margin-top: 0;
   }
 
   :host ::ng-deep .mode-filters .page-content-body form {
