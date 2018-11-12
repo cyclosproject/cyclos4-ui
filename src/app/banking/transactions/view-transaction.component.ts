@@ -26,6 +26,7 @@ import { empty } from 'app/shared/helper';
 export class ViewTransactionComponent extends BasePageComponent<TransactionView> implements OnInit {
 
   title: string;
+  lastAuthComment: string;
   hasDueAmount = false;
   hasInstallmentActions = false;
   hasOccurrenceActions = false;
@@ -64,6 +65,9 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
         this.hasInstallmentActions = (transaction.installments || []).filter(i => i.canProcess || i.canSettle).length > 0;
         this.hasOccurrenceActions = (transaction.occurrences || []).filter(o => o.canProcess).length > 0;
         this.data = transaction;
+        if (!empty(transaction.authorizations)) {
+          this.lastAuthComment = transaction.authorizations[0].comments;
+        }
       });
   }
 

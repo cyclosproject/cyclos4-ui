@@ -4,6 +4,7 @@ import { TransfersService } from 'app/api/services';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BasePageComponent } from 'app/shared/base-page.component';
+import { empty } from 'app/shared/helper';
 
 
 /**
@@ -41,6 +42,12 @@ export class ViewTransferComponent extends BasePageComponent<TransferView> imple
 
   private initActions(transfer: TransferView): HeadingAction[] {
     const actions: HeadingAction[] = [];
+    const transaction = transfer.transaction || {};
+    if (!empty(transaction.authorizations)) {
+      actions.push(new HeadingAction('check_circle_outline', this.i18n('View authorizations'), () => {
+        this.router.navigate(['banking', 'transaction', ApiHelper.transactionNumberOrId(transaction), 'authorization-history']);
+      }));
+    }
     if (transfer.canChargeback) {
       actions.push(new HeadingAction('undo', this.i18n('Chargeback transfer'), () => {
         this.chargeback();

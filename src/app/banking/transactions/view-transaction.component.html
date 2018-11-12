@@ -57,6 +57,10 @@
     {{ transaction.occurrencesCount }}
   </label-value>
 
+  <label-value *ngIf="lastAuthComment" i18n-label label="Authorization comments"
+    [value]="lastAuthComment" valueFormat="break">
+  </label-value>
+
   <label-value *ngIf="transaction.description" i18n-label label="Description"
     [value]="transaction.description" valueFormat="break">
   </label-value>
