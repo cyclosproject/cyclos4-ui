@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Injector } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Injector, OnInit } from '@angular/core';
 
 import { UsersService } from 'app/api/services';
 import { UserDataForSearch, UserDataForMap, Country, CustomFieldDetailed } from 'app/api/models';
@@ -20,7 +20,7 @@ import { cloneDeep } from 'lodash';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchUsersComponent
-  extends BaseSearchPageComponent<UserDataForSearch | UserDataForMap, UserResult> {
+  extends BaseSearchPageComponent<UserDataForSearch | UserDataForMap, UserResult> implements OnInit {
 
   // Export enum to the template
   ResultType = ResultType;
@@ -80,6 +80,11 @@ export class SearchUsersComponent
 
   getInitialResultType() {
     return this.layout.xxs ? ResultType.LIST : ResultType.TILES;
+  }
+
+  ngOnInit() {
+    super.ngOnInit();
+    this.onResultTypeChanged(this.resultType, null);
   }
 
   protected onResultTypeChanged(resultType: ResultType, previousResultType: ResultType) {

@@ -31998,6 +31998,10 @@
       }, {
         "type" : "object",
         "properties" : {
+          "user" : {
+            "description" : "Reference to the user",
+            "$ref" : "#/definitions/User"
+          },
           "createNew" : {
             "type" : "boolean",
             "description" : "Indicates whether the authenticated user can create new advertisements for this user"
