@@ -37,7 +37,7 @@ export class PageLayoutComponent implements OnInit {
 
   ngOnInit() {
     const updateShowLeft = () => {
-      this.showLeftArea.next(!this.hideMenu && this.layout.gtmd && this.menu.activeMenu != null);
+      this.showLeftArea.next(!this.hideMenu && this.login.user != null && this.layout.gtmd && this.menu.activeMenu != null);
     };
     this.layout.gtmd$.subscribe(updateShowLeft);
     this.login.user$.subscribe(updateShowLeft);

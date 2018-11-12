@@ -8,13 +8,13 @@
       <th *ngFor="let field of fieldsInList">{{ fieldName(field) }}</th>
     </thead>
     <tbody>
-      <tr *ngFor="let row of results.results" (click)="router.navigate(path(row))">
+      <tr *ngFor="let row of results.results" (click)="path(row) ? router.navigate(path(row)) : null">
         <td class="avatar">
           <avatar [image]="user(row).image"></avatar>
         </td>
         <td *ngIf="layout.ltsm$ | async; else tableCells">
           <!-- Aggregated cell for xs -->
-          <a [routerLink]="path(row)">
+          <maybe-link [link]="path(row)">
             <ng-container *ngFor="let field of fieldsInTile; let first = first">
               <div [ngClass]="{
                   'font-weight-bold': first
@@ -23,7 +23,7 @@
                   [fieldName]="field" [object]="user(row)" [customValues]="customValues(row)"></format-field-value>
               </div>
             </ng-container>
-          </a>
+          </maybe-link>
         </td>
         <ng-template #tableCells>
           <td *ngFor="let field of fieldsInList">
@@ -35,7 +35,7 @@
     </tbody>
   </table>
 
-  <a *resultTile="let row" [routerLink]="path(row)">
+  <maybe-link *resultTile="let row" [link]="path(row)">
     <div class="card">
       <avatar ngClass="card-img-top" [roundBorders]="false" [image]="user(row).image"
         size="full" imageSize="200" iconSize="8rem"></avatar>
@@ -48,10 +48,10 @@
         </div>
       </div>
     </div>
-  </a>
+  </maybe-link>
 
   <ng-container *resultInfoWindow="let row; let addr = address">
-    <a [routerLink]="path(row)" class="plain">
+    <maybe-link [link]="path(row)" class="plain">
       <avatar ngClass="card-img-top" [roundBorders]="false" [image]="user(row).image"
         size="200" iconSize="8rem"></avatar>
 
@@ -61,6 +61,6 @@
         </format-field-value>
       </div>
       <address-details [address]="addr" elementClass="card-text"></address-details>
-    </a>
+    </maybe-link>
   </ng-container>
 </results-layout>

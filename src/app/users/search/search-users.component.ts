@@ -66,12 +66,12 @@ export class SearchUsersComponent
     this.countries$ = countriesResolve.data;
   }
 
-  shouldUpdateOnChange(value: any, previousValue: any): boolean {
+  shouldUpdateOnChange(value: any): boolean {
     if (this.ignoreNextUpdate) {
       this.ignoreNextUpdate = false;
       return false;
     }
-    return super.shouldUpdateOnChange(value, previousValue);
+    return super.shouldUpdateOnChange(value);
   }
 
   protected getFormControlNames() {

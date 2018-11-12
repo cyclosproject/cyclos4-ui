@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Injector, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Injector, Input, Output, OnInit } from '@angular/core';
 import { Address, ContactListDataForSearch, ContactResult, User, UserDataForMap, UserDataForSearch, UserResult } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
 import { PageData } from 'app/shared/page-data';
@@ -17,7 +17,7 @@ const MAX_TILE_FIELDS = 2;
   templateUrl: 'users-results.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class UsersResultsComponent extends BaseComponent {
+export class UsersResultsComponent extends BaseComponent implements OnInit {
 
   @HostBinding('class') clazz = 'flex-grow-1 d-flex';
 
@@ -45,11 +45,20 @@ export class UsersResultsComponent extends BaseComponent {
   fieldsInList: string[];
   fieldsInTile: string[];
   showTableHeader: boolean;
+  canViewProfile: boolean;
 
   constructor(
     injector: Injector
   ) {
     super(injector);
+  }
+
+  ngOnInit() {
+    super.ngOnInit();
+    const auth = this.dataForUiHolder.dataForUi.auth || {};
+    const permissions = auth.permissions || {};
+    const users = (permissions.users || {});
+    this.canViewProfile = users.viewProfile === true;
   }
 
   /**
@@ -136,6 +145,9 @@ export class UsersResultsComponent extends BaseComponent {
    * @param row The user or contact
    */
   path(row: any): string[] {
+    if (!this.canViewProfile) {
+      return null;
+    }
     if (this.resultKind === 'contact') {
       // When supporting contact custom fields, check for
       // (this.data as ContactListDataForSearch).hasVisibleFields

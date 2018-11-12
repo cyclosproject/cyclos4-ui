@@ -36,8 +36,6 @@ export class AdsResultsComponent extends BaseComponent {
     this._singleUser = truthyAttr(single);
   }
 
-  categoryTrail$ = new BehaviorSubject<AdCategoryWithChildren[]>(null);
-
   @Input() data: AdDataForSearch;
 
   @Input() results: PagedResults<AdResult>;
@@ -101,7 +99,6 @@ export class AdsResultsComponent extends BaseComponent {
     if (category.id == null) {
       // Root category
       this.resultType = ResultType.CATEGORIES;
-      this.categoryTrail$.next([]);
       return;
     }
 
@@ -109,28 +106,7 @@ export class AdsResultsComponent extends BaseComponent {
     this.resultType = this.layout.xxs ? ResultType.LIST : ResultType.TILES;
     this.results = null;
 
-    const trail: AdCategoryWithChildren[] = [];
-    trail.unshift(category);
-    const parent = this.findParent(category);
-    if (parent) {
-      trail.unshift(parent);
-    }
-    const root: AdCategoryWithChildren = {
-      name: this.i18n('Main')
-    };
-    trail.unshift(root);
-    this.categoryTrail$.next(trail);
-
     this.categorySelected.emit(category);
-  }
-
-  private findParent(category: AdCategoryWithChildren): AdCategoryWithChildren {
-    for (const cat of this.data.categories) {
-      if (cat.children.includes(category)) {
-        return cat;
-      }
-    }
-    return null;
   }
 
   /**

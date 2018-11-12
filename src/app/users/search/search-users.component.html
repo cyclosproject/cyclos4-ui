@@ -1,4 +1,4 @@
-<page-layout [ready]="data$ | async" [hideMenu]="login.user == null">
+<page-layout [ready]="data$ | async">
   <ng-container *ngIf="loaded$ | async; else loading">
     <page-content mode="filters" i18n-heading heading="Business directory"
       [headingActions]="headingActions$ | async">

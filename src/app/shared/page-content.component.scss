@@ -8,6 +8,7 @@
 .content-title {
   border-bottom: 1px solid $section-border-color;
   height: $title-height-xxs;
+  position: relative;
 
   .title-text {
     font-size: 1rem;
@@ -48,6 +49,10 @@
 
     .title-text {
       justify-content: center;
+    }
+    .back-button {
+      position: absolute;
+      left: 0;
     }
   }
 }

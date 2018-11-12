@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject } from 'rxjs';
-import { of as observableOf } from 'rxjs';
-import { AbstractControl, FormGroup } from '@angular/forms';
-import { Subscription } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { cloneDeep } from 'lodash';
+import { BehaviorSubject, Observable, of as observableOf, Subscription } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 /**
  * Service used to navigate between pages and managing the component state
@@ -79,16 +77,16 @@ export class StateManager {
   }
 
   /**
-   * Initializes the form value with the current state, if any, and store the state whenever the form value changes
-   * @param form The form
+   * Initializes the control value with the current state, if any, and store the state whenever the value changes
+   * @param control The form control
    * @returns Whether a previous value was used
    */
-  manage(form: FormGroup, key = 'form'): boolean {
+  manage(control: AbstractControl, key = 'form'): boolean {
     const value = this.get(key);
     if (value) {
-      form.patchValue(value);
+      control.patchValue(value);
     }
-    this.subscriptions.push(form.valueChanges.subscribe(val => this.set(key, val)));
+    this.subscriptions.push(control.valueChanges.subscribe(val => this.set(key, val)));
     return value != null;
   }
 

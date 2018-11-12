@@ -86,6 +86,34 @@ export class SearchAdsComponent
   }
 
   onCategorySelected(category: AdCategoryWithChildren) {
-    this.form.patchValue({ 'category': ApiHelper.internalNameOrId(category) });
+    const key = ApiHelper.internalNameOrId(category);
+    const trail: AdCategoryWithChildren[] = [];
+    if (key) {
+      // A valid category is selected
+      this.form.patchValue({ 'category': key });
+      trail.unshift(category);
+      const parent = this.findParent(category);
+      if (parent) {
+        trail.unshift(parent);
+      }
+      const root: AdCategoryWithChildren = {
+        name: this.i18n('Main')
+      };
+      trail.unshift(root);
+    } else {
+      // Going back to the main category
+      this.form.patchValue({ 'category': key }, { emitEvent: false });
+      this.resultType = ResultType.CATEGORIES;
+    }
+    this.categoryTrail$.next(trail);
+  }
+
+  private findParent(category: AdCategoryWithChildren): AdCategoryWithChildren {
+    for (const cat of this.data.categories) {
+      if (cat.children.includes(category)) {
+        return cat;
+      }
+    }
+    return null;
   }
 }

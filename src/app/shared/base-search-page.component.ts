@@ -21,8 +21,9 @@ export abstract class BaseSearchPageComponent<D, R> extends BasePageComponent<D>
   // Export ResultType to the template
   ResultType = ResultType;
 
-  results$ = new BehaviorSubject<PagedResults<R>>(null);
   resultType$ = new BehaviorSubject<ResultType>(null);
+  resultTypeControl = new FormControl(null);
+  results$ = new BehaviorSubject<PagedResults<R>>(null);
   allowedResultTypes$ = new BehaviorSubject([ResultType.LIST]);
   loaded$ = new BehaviorSubject(false);
   rendering$ = new BehaviorSubject(false);
@@ -36,10 +37,20 @@ export abstract class BaseSearchPageComponent<D, R> extends BasePageComponent<D>
 
   protected onDataInitialized(_data: D) {
     this.stateManager.manage(this.form);
+    this.stateManager.manage(this.resultTypeControl, 'resultType');
     this.stateManager.manageValue(this.moreFilters$, 'moreFilters');
     this.previousValue = this.form.value;
+    this.previousResultType = this.resultType;
+    this.resultType$.next(this.previousResultType);
+    this.addSub(this.resultTypeControl.valueChanges.subscribe(rt => {
+      if (this.shouldUpdateOnChange(this.form.value)) {
+        this.update();
+      }
+      this.resultType$.next(rt);
+      this.previousResultType = rt;
+    }));
     this.addSub(this.form.valueChanges.pipe(debounceTime(ApiHelper.DEBOUNCE_TIME)).subscribe(value => {
-      if (this.shouldUpdateOnChange(value, this.previousValue)) {
+      if (this.shouldUpdateOnChange(value)) {
         this.update();
       }
       this.previousValue = value;
@@ -47,7 +58,7 @@ export abstract class BaseSearchPageComponent<D, R> extends BasePageComponent<D>
     this.loaded = true;
 
     // When starting with categories, don't initially search
-    if (this.previousValue.resultType !== ResultType.CATEGORIES) {
+    if (this.previousResultType !== ResultType.CATEGORIES) {
       this.update();
     }
   }
@@ -55,11 +66,12 @@ export abstract class BaseSearchPageComponent<D, R> extends BasePageComponent<D>
   /**
    * By default will just skip the update if only the result type has changed
    * @param value The current form value
-   * @param previousValue The previous form value
    */
-  protected shouldUpdateOnChange(value: any, previousValue: any): boolean {
-    const wasCategoriesOrNull = previousValue == null || previousValue.resultType === ResultType.CATEGORIES;
-    const isCategories = value != null && value.resultType === ResultType.CATEGORIES;
+  protected shouldUpdateOnChange(value: any): boolean {
+    const previousResultType = this.previousResultType;
+    const resultType = this.resultType;
+    const wasCategoriesOrNull = previousResultType == null || previousResultType === ResultType.CATEGORIES;
+    const isCategories = resultType === ResultType.CATEGORIES;
     if (isCategories && !wasCategoriesOrNull) {
       // Switching to categories - don't update results
       return false;
@@ -67,16 +79,7 @@ export abstract class BaseSearchPageComponent<D, R> extends BasePageComponent<D>
       // Either first time or switching from categories. Update.
       return true;
     }
-    const previousResultType = previousValue.resultType;
-    const resultType = previousValue.resultType;
-    try {
-      delete previousValue.resultType;
-      delete value.resultType;
-      return !isEqual(previousValue, value);
-    } finally {
-      previousValue.resultType = previousResultType;
-      value.resultType = resultType;
-    }
+    return !isEqual(this.previousValue, value);
   }
 
   get results(): PagedResults<R> {
@@ -126,14 +129,8 @@ export abstract class BaseSearchPageComponent<D, R> extends BasePageComponent<D>
     this.form.patchValue(pageData);
   }
 
-  /**
-   * Returns the result type control
-   */
-  get resultTypeControl(): FormControl {
-    return this.form.get('resultType') as FormControl;
-  }
   get resultType(): ResultType {
-    return this.resultType$.value;
+    return this.resultTypeControl.value;
   }
   set resultType(resultType: ResultType) {
     if (resultType == null) {
@@ -142,12 +139,10 @@ export abstract class BaseSearchPageComponent<D, R> extends BasePageComponent<D>
     const previous = this.resultType;
     if (previous == null || previous !== resultType) {
       this.rendering = true;
-      this.resultType$.next(resultType);
-      // We cannot emit the event, or an extra search will be triggered...
-      this.resultTypeControl.setValue(resultType, { emitEvent: false });
+      this.resultTypeControl.setValue(resultType);
       // .. however, we must update the state, otherwise the result type isn't remembered
       if (previous != null) {
-        this.stateManager.set('form', this.form.value);
+        this.stateManager.set('resultType', resultType);
       }
       this.onResultTypeChanged(resultType, previous);
     }

@@ -43,7 +43,7 @@ export abstract class BaseControlComponent<T> implements OnInit, OnDestroy, Cont
     }
     this.formControl.valueChanges.subscribe(value => {
       if (this.value !== value) {
-        this.value = value;
+        this.setValue(value, false);
       }
     });
   }

@@ -1,4 +1,4 @@
-<page-layout [ready]="data$ | async" [hideMenu]="login.user == null">
+<page-layout [ready]="data$ | async">
   <ng-container *ngIf="loaded$ | async; else loading">
     <page-content mode="filters" i18n-heading heading="Products and services"
       [headingActions]="headingActions$ | async">
@@ -46,7 +46,7 @@
           <li *ngFor="let cat of categoryTrail$ | async; let last = last"
             class="breadcrumb-item" [ngClass]="{active: last}">
             <ng-container *ngIf="last">{{ cat.name }}</ng-container>
-            <a *ngIf="!last" href="#" (click)="$event.preventDefault(); selectCategory(cat)">{{
+            <a *ngIf="!last" href="#" (click)="$event.preventDefault(); onCategorySelected(cat)">{{
               cat.name }}</a>
             <!-- Don't leave trailing spaces or they generate an extra space -->
           </li>

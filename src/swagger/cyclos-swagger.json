@@ -1,9 +1,9 @@
 {
   "swagger" : "2.0",
   "info" : {
-    "description" : "The REST API for Cyclos 4.11",
-    "version" : "4.11",
-    "title" : "Cyclos 4.11 API"
+    "description" : "The REST API for Cyclos 4.11.1",
+    "version" : "4.11.1",
+    "title" : "Cyclos 4.11.1 API"
   },
   "host" : "localhost:8888",
   "basePath" : "/api",
@@ -5068,13 +5068,6 @@
             }
           }
         },
-        "security" : [ {
-          "basic" : [ ]
-        }, {
-          "session" : [ ]
-        }, {
-          "accessClient" : [ ]
-        } ],
         "x-accepts" : "application/json",
         "x-contentType" : "application/json"
       },

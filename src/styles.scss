@@ -45,14 +45,13 @@ body.gt-sm {
     justify-content: stretch;
   }
 
-  .tiled-result > a, .card {
+  .tiled-result > a, .tiled-result > maybe-link, .card {
     width: 100%;
   }
 
   .card {
     margin-bottom: $tiled-results-spacing-xxs;
     height: calc(100% - $tiled-results-spacing-xxs);
-    cursor: pointer;
     box-shadow: $box-shadow-sm;
 
     .card-body {
