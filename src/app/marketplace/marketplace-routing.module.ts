@@ -17,6 +17,13 @@ const marketplaceRoutes: Routes = [
         }
       },
       {
+        path: 'public-search',
+        component: SearchAdsComponent,
+        data: {
+          menu: Menu.PUBLIC_MARKETPLACE
+        }
+      },
+      {
         path: 'user/:user',
         component: UserAdsComponent,
         data: {

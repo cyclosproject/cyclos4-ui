@@ -7,6 +7,7 @@ $font-size-base: 0.875rem;
 $font-weight-light: 300;
 $font-weight-normal: 400;
 $font-weight-bold: 500;
+$input-btn-padding-y: .475rem;
 
 // Toggle for enabling / disabling shadows on most parts
 $enable-shadows: true;
@@ -57,8 +58,8 @@ $label-color: $gray-700;
 $top-bar-bg: $primary;
 $top-bar-color: color-yiq($primary);
 
-$title-height-xxs: 2.7rem;
-$title-height-xs: 3rem;
+$title-height-xxs: 3.2rem;
+$title-height-xs: 3.7rem;
 $title-height: 3.4rem;
 $title-button-bg: $light;
 $title-button-color: color-yiq($light);

@@ -145,6 +145,8 @@ export class MenuService {
     const permissions = auth.permissions;
     const user = auth.user;
     const restrictedAccess = auth.expiredPassword || auth.pendingAgreements;
+    const users = permissions.users || {};
+    const marketplace = permissions.marketplace || {};
 
     const roots = new Map<RootMenu, RootMenuEntry>();
     // Lambda that adds a root menu
@@ -157,6 +159,9 @@ export class MenuService {
     const home = addRoot(RootMenu.HOME, 'home', this.i18n({ value: 'Home', description: 'Menu' }));
     const login = addRoot(RootMenu.LOGIN, 'lock', this.i18n({ value: 'Login', description: 'Menu' }));
     const register = addRoot(RootMenu.REGISTRATION, 'input', this.i18n({ value: 'Register', description: 'Menu' }));
+    const publicDirectory = addRoot(RootMenu.PUBLIC_DIRECTORY, 'group', this.i18n({ value: 'Directory', description: 'Menu' }));
+    const publicMarketplace = addRoot(RootMenu.PUBLIC_MARKETPLACE,
+      'shopping_cart', this.i18n({ value: 'Advertisements', description: 'Menu' }));
     addRoot(RootMenu.BANKING, 'account_balance', this.i18n({ value: 'Banking', description: 'Menu' }));
     addRoot(RootMenu.MARKETPLACE, 'shopping_cart', this.i18n({ value: 'Marketplace', description: 'Menu' }));
     addRoot(RootMenu.PERSONAL, 'account_box', this.i18n({ value: 'Personal', description: 'Menu' }));
@@ -181,11 +186,15 @@ export class MenuService {
         if (registrationGroups.length > 0) {
           add(Menu.REGISTRATION, '/users/registration', register.icon, register.label);
         }
+        if (users.search || users.map) {
+          add(Menu.PUBLIC_DIRECTORY, '/users/public-search', publicDirectory.icon, publicDirectory.label);
+        }
+        if (marketplace.search) {
+          add(Menu.PUBLIC_MARKETPLACE, '/marketplace/public-search', publicMarketplace.icon, publicMarketplace.label);
+        }
       } else {
         const banking = permissions.banking || {};
-        const users = permissions.users || {};
         const contacts = permissions.contacts || {};
-        const marketplace = permissions.marketplace || {};
         const accounts = banking.accounts || [];
 
         // Banking
@@ -229,7 +238,7 @@ export class MenuService {
         }
         if (marketplace.search) {
           add(Menu.SEARCH_ADS, '/marketplace/search', 'shopping_cart',
-            this.i18n({ value: 'Products and services', description: 'Menu' }));
+            this.i18n({ value: 'Advertisements', description: 'Menu' }));
         }
 
         // Personal

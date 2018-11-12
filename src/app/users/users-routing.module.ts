@@ -25,6 +25,13 @@ const usersRoutes: Routes = [
         }
       },
       {
+        path: 'public-search',
+        component: SearchUsersComponent,
+        data: {
+          menu: Menu.PUBLIC_DIRECTORY
+        }
+      },
+      {
         path: 'profile/:key',
         component: ViewProfileComponent,
         resolve: {

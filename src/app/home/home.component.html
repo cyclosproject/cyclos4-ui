@@ -10,10 +10,10 @@
 </page-layout>
 
 <ng-template #guest>
-  <page-content i18n-heading heading="Welcome to {{format.appTitle}}">
+  <page-content *ngIf="layout.ltlg$ | async" [heading]="title">
     <dashboard></dashboard>
   </page-content>
-  <page-content [mode]="(layout.ltsm$ | async) ? 'tight' : 'normal'">
+  <page-content [heading]="(layout.gtmd$ | async) ? title : null" [mode]="(layout.ltsm$ | async) ? 'tight' : 'normal'">
     <div [ngClass]="{'px-3': layout.ltsm$ | async }" [innerHTML]="content.value | trust"></div>
   </page-content>
 </ng-template>

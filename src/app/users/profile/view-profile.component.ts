@@ -119,7 +119,7 @@ export class ViewProfileComponent extends BasePageComponent<UserView> implements
       }));
     }
     if (marketplace.viewAdvertisements || marketplace.viewWebshop) {
-      actions.push(new HeadingAction('shopping_basket', this.i18n('View products and services from {{name}}', {
+      actions.push(new HeadingAction('shopping_basket', this.i18n('View advertisements of {{name}}', {
         name: this.shortName
       }), () => {
         this.router.navigate(['/marketplace', 'user', this.key]);

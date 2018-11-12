@@ -37,6 +37,7 @@ body.gt-sm {
 
   a, a:hover {
     color: $body-color;
+    text-decoration: none !important;
   }
 
   .tiled-result, .category-result {
@@ -168,8 +169,9 @@ table.table {
     font-weight: $font-weight-bold;
     border-bottom-width: 1px;
   }
-  a {
+  a, a:hover {
     color: $body-color;
+    text-decoration: none !important;
   }
   avatar {
     icon {

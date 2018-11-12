@@ -17,9 +17,10 @@
   align-items: center;
   margin: 0.4rem 0 0 0.4rem;
   transition: background-color .4s;
+  min-height: 6.2rem;
 
   icon {
-    margin-bottom: 0.8rem;
+    margin-bottom: 0.4rem;
     color: $dashboard-icon-color;
     opacity: 0.8;
   }
@@ -31,7 +32,6 @@
   border-color: $dashboard-hover-border-color;
 
   icon {
-    margin-bottom: 0.8rem;
     color: $dashboard-hover-icon-color;
   }
 }
@@ -43,6 +43,10 @@
 
   .dashboard-item, .dashboard-item:hover {
     margin: 1rem 0 0 1rem;
+  }
+
+  .dashboard-item icon {
+    margin-bottom: 0.8rem;
   }
 }
 

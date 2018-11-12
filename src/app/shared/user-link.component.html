@@ -5,7 +5,7 @@
 <ng-template #displayTpl>
   <div class="d-flex flex-row">
     <avatar ngClass="mr-2" [image]="user?.image" [icon]="user ? 'account_circle' : 'account_balance_circle'"
-      size="small"></avatar>
+      size="small" iconSize="28px"></avatar>
     <div class="display-text">
       {{ display }}
       <ng-container *ngIf="account?.number">

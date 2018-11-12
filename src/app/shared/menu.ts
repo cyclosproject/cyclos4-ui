@@ -11,16 +11,21 @@ export enum MenuType {
 }
 
 /** Contains the top-level (root) menus */
-export type RootMenu = 'home' | 'login' | 'registration' | 'banking' | 'marketplace' | 'personal';
+export type RootMenu =
+  'home' | 'login' | 'registration' | 'publicDirectory' | 'publicMarketplace' | 'banking' | 'marketplace' | 'personal';
 export module RootMenu {
   export const HOME: RootMenu = 'home';
   export const LOGIN: RootMenu = 'login';
   export const REGISTRATION: RootMenu = 'registration';
+  export const PUBLIC_DIRECTORY: RootMenu = 'publicDirectory';
+  export const PUBLIC_MARKETPLACE: RootMenu = 'publicMarketplace';
   export const BANKING: RootMenu = 'banking';
   export const MARKETPLACE: RootMenu = 'marketplace';
   export const PERSONAL: RootMenu = 'personal';
   export function values(): RootMenu[] {
-    return [HOME, LOGIN, REGISTRATION, BANKING, MARKETPLACE, PERSONAL];
+    return [
+      HOME, LOGIN, REGISTRATION, PUBLIC_DIRECTORY, PUBLIC_MARKETPLACE, BANKING, MARKETPLACE, PERSONAL
+    ];
   }
 }
 
@@ -35,6 +40,8 @@ export module Menu {
   export const HOME = new Menu(RootMenu.HOME, 'HOME');
   export const LOGIN = new Menu(RootMenu.LOGIN, 'LOGIN');
   export const REGISTRATION = new Menu(RootMenu.REGISTRATION, 'REGISTRATION');
+  export const PUBLIC_DIRECTORY = new Menu(RootMenu.PUBLIC_DIRECTORY, 'PUBLIC_DIRECTORY');
+  export const PUBLIC_MARKETPLACE = new Menu(RootMenu.PUBLIC_MARKETPLACE, 'PUBLIC_MARKETPLACE');
 
   // Banking
   export const ACCOUNT_HISTORY = new Menu(RootMenu.BANKING, 'ACCOUNT_HISTORY');

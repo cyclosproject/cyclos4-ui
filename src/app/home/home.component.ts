@@ -25,9 +25,11 @@ export class HomeComponent extends BasePageComponent<void> implements OnInit {
 
   ngOnInit() {
     super.ngOnInit();
-    this.title = this.i18n('Home');
-
     const guest = this.login.user == null;
+
+    this.title = guest ? this.i18n('Welcome to {{name}}', {
+      name: this.format.appTitle
+    }) : this.i18n('Home');
 
     // Load the home page content
     const contentFile = guest ? 'guests-home' : 'users-home';
