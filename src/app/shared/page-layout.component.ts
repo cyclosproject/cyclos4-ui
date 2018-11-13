@@ -1,10 +1,10 @@
-import { Component, Input, ChangeDetectionStrategy, OnInit, ContentChildren, QueryList, OnDestroy, AfterContentInit } from '@angular/core';
-import { LayoutService } from 'app/shared/layout.service';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { LoginService } from 'app/core/login.service';
 import { MenuService } from 'app/core/menu.service';
-import { BehaviorSubject, Subscription } from 'rxjs';
 import { truthyAttr } from 'app/shared/helper';
+import { LayoutService } from 'app/shared/layout.service';
 import { PageContentComponent } from 'app/shared/page-content.component';
+import { BehaviorSubject, Subscription } from 'rxjs';
 
 /**
  * The page layout, which may show a menu on the left,
@@ -16,11 +16,12 @@ import { PageContentComponent } from 'app/shared/page-content.component';
   styleUrls: ['page-layout.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PageLayoutComponent implements OnInit, OnDestroy, AfterContentInit {
+export class PageLayoutComponent implements OnInit, OnDestroy {
   @Input() heading: string;
   @Input() ready: boolean;
   @Input() size: 'small' | 'medium' | 'large' | 'full' = 'full';
-  @ContentChildren(PageContentComponent) contents: QueryList<PageContentComponent>;
+
+  private contents$ = new BehaviorSubject<PageContentComponent[]>([]);
 
   private sub: Subscription;
 
@@ -47,12 +48,9 @@ export class PageLayoutComponent implements OnInit, OnDestroy, AfterContentInit 
     this.login.user$.subscribe(updateShowLeft);
     this.menu.activeMenu$.subscribe(updateShowLeft);
     updateShowLeft();
-  }
-
-  ngAfterContentInit() {
-    this.sub = this.contents.changes.subscribe(() => {
-      const length = this.contents.length;
-      this.contents.forEach((c, i) => {
+    this.sub = this.contents$.subscribe(contents => {
+      const length = contents.length;
+      contents.forEach((c, i) => {
         c.first = i === 0;
         c.last = i === length - 1;
       });
@@ -61,5 +59,12 @@ export class PageLayoutComponent implements OnInit, OnDestroy, AfterContentInit 
 
   ngOnDestroy() {
     this.sub.unsubscribe();
+  }
+
+  addContent(content: PageContentComponent) {
+    const contents = this.contents$.value;
+    if (!contents.includes(content)) {
+      this.contents$.next([...contents, content]);
+    }
   }
 }

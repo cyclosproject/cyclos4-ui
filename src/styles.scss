@@ -3,12 +3,13 @@
 
 body.lt-md {
   background-color: $card-bg;
+  overflow-x: hidden;
 }
 body.gt-sm {
   padding-bottom: 1rem;
 }
 
-.no-gutters, .filters-form > .row {
+.no-gutters, .filters-form > .row, .filters-row {
   margin-right: 0;
   margin-left: 0;
 

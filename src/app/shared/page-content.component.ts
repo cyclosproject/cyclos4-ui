@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, Component, HostBinding, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, Input, OnInit, Optional } from '@angular/core';
 import { BreadcrumbService } from 'app/core/breadcrumb.service';
 import { HeadingAction } from 'app/shared/action';
 import { LayoutService } from 'app/shared/layout.service';
 import { BehaviorSubject } from 'rxjs';
+import { PageLayoutComponent } from 'app/shared/page-layout.component';
 
 /**
  * Represents a box in the layout which contains an optional heading (title) and content.
@@ -13,11 +14,9 @@ import { BehaviorSubject } from 'rxjs';
   styleUrls: ['page-content.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PageContentComponent {
+export class PageContentComponent implements OnInit {
 
-  @HostBinding('style.flex-grow') get flexGrow(): string {
-    return this.mode === 'fullHeight' ? '1' : '0';
-  }
+  @HostBinding('style.flex-grow') flexGrow: string;
 
   first$ = new BehaviorSubject(false);
   set first(first: boolean) {
@@ -42,11 +41,19 @@ export class PageContentComponent {
 
   constructor(
     public layoutService: LayoutService,
-    public breadcrumb: BreadcrumbService
+    public breadcrumb: BreadcrumbService,
+    @Optional() private pageLayout: PageLayoutComponent
   ) { }
 
   get groupActions(): boolean {
     const singleAction = (this.headingActions || []).length === 1 ? this.headingActions[0] : null;
     return singleAction ? !singleAction.maybeRoot : true;
+  }
+
+  ngOnInit(): void {
+    this.flexGrow = ['fullHeight', 'fullHeightTight'].includes(this.mode) ? '1' : '0';
+    if (this.pageLayout) {
+      this.pageLayout.addContent(this);
+    }
   }
 }

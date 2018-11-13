@@ -1,14 +1,19 @@
 <div *ngIf="results" class="d-flex flex-column flex-sm-row justify-content-between align-items-center"
   [formGroup]="form">
-  <div *ngIf="results.hasTotalCount; else noTotalCount" i18n>Showing {{results.firstItem}}
-    - {{results.lastItem}} of {{results.totalCount}} results
+  <div [ngClass]="{'mb-3': layout.ltsm$ | async}" *ngIf="results.hasTotalCount; else noTotalCount"
+    i18n>Showing {{results.firstItem}} - {{results.lastItem}} of
+    {{results.totalCount}} results
   </div>
   <ng-template #noTotalCount>
-    <div i18n>Showing {{results.firstItem}} - {{results.lastItem}} results</div>
+    <div [ngClass]="{'mb-3': layout.ltsm$ | async}" i18n>
+      Showing {{results.firstItem}} - {{results.lastItem}} results
+    </div>
   </ng-template>
   <div *ngIf="results.hasNext || results.page > 0" [ngClass]="{'mt-2': layout.xxs$ | async}">
-    <pagination [totalItems]="totalCount" [itemsPerPage]="results.pageSize" [maxSize]="(layout.xxs$ | async) ? 3 : (layout.md$ | async) ? 5 : 7"
+    <pagination [totalItems]="totalCount" [itemsPerPage]="results.pageSize"
+      [maxSize]="(layout.xxs$ | async) ? 3 : (layout.md$ | async) ? 5 : 7"
       formControlName="pageNumber" [rotate]="true" [boundaryLinks]="results.hasTotalCount && (layout.gtxs$ | async)"
-      previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"></pagination>
+      previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;"
+      lastText="&raquo;"></pagination>
   </div>
 </div>

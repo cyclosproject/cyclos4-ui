@@ -123,9 +123,11 @@
 @include media-breakpoint-up(xs) {
   .page-content-body {
     padding: $layout-spacer-xs;
+    padding-bottom: 0;
   }
   .page-content.mode-normal .page-content-body {
     padding: $layout-spacer-xs;
+    padding-bottom: 0;
   }
   .mode-table .page-content-body, .mode-full-height .page-content-body {
     margin-top: $layout-spacer-xs;
@@ -154,10 +156,10 @@
   }
 }
 
-.xxs :host ::ng-deep .page-content.last {
+.xxs :host ::ng-deep .page-content.last:not(.mode-tight) {
   margin-bottom: $layout-spacer-xxs;
 }
-.xs :host ::ng-deep .page-content.last {
+.xs :host ::ng-deep .page-content.last:not(.mode-tight) {
   margin-bottom: $layout-spacer-xs;
 }
 

@@ -47,13 +47,13 @@ export abstract class BaseSearchPageComponent<D, R> extends BasePageComponent<D>
         this.update();
       }
       const previous = this.previousResultType;
+      this.previousResultType = rt;
+      this.resultType$.next(rt);
       if (previous == null || previous !== rt) {
         this.rendering = true;
         this.stateManager.set('resultType', rt);
         this.onResultTypeChanged(rt, previous);
       }
-      this.previousResultType = rt;
-      this.resultType$.next(rt);
     }));
     this.addSub(this.form.valueChanges.pipe(debounceTime(ApiHelper.DEBOUNCE_TIME)).subscribe(value => {
       if (this.shouldUpdateOnChange(value)) {
