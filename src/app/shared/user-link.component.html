@@ -1,6 +1,6 @@
-<a *ngIf="path != null; else displayTpl" [routerLink]="path" class="d-flex flex-row">
+<maybe-link *ngIf="path != null; else displayTpl" [link]="path" class="d-flex flex-row">
   <ng-container *ngTemplateOutlet="displayTpl"></ng-container>
-</a>
+</maybe-link>
 
 <ng-template #displayTpl>
   <div class="d-flex flex-row">

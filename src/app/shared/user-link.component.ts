@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
 import { BaseComponent } from 'app/shared/base.component';
 import { User, AccountWithOwner } from 'app/api/models';
+import { truthyAttr } from 'app/shared/helper';
 
 /**
  * Shows a link to a user profile, and a popup on hover with more details.
@@ -21,6 +22,14 @@ export class UserLinkComponent extends BaseComponent implements OnInit {
   @Input()
   user: User;
 
+  private _hideLink: boolean | string = false;
+  @Input() get hideLink() {
+    return this._hideLink;
+  }
+  set hideLink(hideLink: boolean | string) {
+    this._hideLink = truthyAttr(hideLink);
+  }
+
   @Input()
   account: AccountWithOwner;
 
@@ -33,7 +42,7 @@ export class UserLinkComponent extends BaseComponent implements OnInit {
     if (this.account != null && this.user == null) {
       this.user = this.account.user;
     }
-    if (this.user != null && this.user.id != null) {
+    if (this.user != null && this.user.id != null && !this.hideLink) {
       const loggedUser = this.login.user;
       if (loggedUser != null && loggedUser.id === this.user.id) {
         this.path = '/users/my-profile';

@@ -63,7 +63,7 @@
   </label-value>
 
   <label-value *ngIf="fixedUser" i18n-label kind="fieldView" label="To user">
-    {{ fixedUser.display }}
+    <user-link [user]="fixedUser" hideLink></user-link>
   </label-value>
 
   <single-selection-field formControlName="type" *ngIf="(paymentTypes$ | async)?.length > 1"

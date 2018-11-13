@@ -419,6 +419,7 @@ input[type=number] {
 }
 
 .custom-control-label {
+  padding-top: 0.05rem !important;
   padding-left: 0.2rem;
 }
 .custom-control-label::before {
