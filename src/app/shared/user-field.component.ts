@@ -12,6 +12,7 @@ import { LoginService } from 'app/core/login.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { PickContactComponent } from 'app/shared/pick-contact.component';
+import { I18n } from '@ngx-translate/i18n-polyfill';
 
 /**
  * Field used to select a user
@@ -42,12 +43,15 @@ export class UserFieldComponent
   private contactSub: Subscription;
   private fieldSub: Subscription;
 
+  placeholder: string;
+
   constructor(
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
     private userCache: UserCacheService,
     private usersService: UsersService,
     private login: LoginService,
-    private modal: BsModalService) {
+    private modal: BsModalService,
+    private i18n: I18n) {
     super(controlContainer);
   }
 
@@ -60,6 +64,11 @@ export class UserFieldComponent
           this.value = ApiHelper.escapeNumeric(value);
         }
       });
+    if (this.allowSearch) {
+      this.placeholder = this.i18n('Type to search');
+    } else if (this.allowPrincipal) {
+      this.placeholder = this.i18n('Type the user identifier');
+    }
   }
 
   ngOnDestroy() {

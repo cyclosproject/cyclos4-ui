@@ -14,6 +14,7 @@
 
   .account-indicator-label {
     text-align: left;
+    font-weight: $font-weight-bold;
     white-space: nowrap;
     max-width: 150px;
     overflow: hidden;
@@ -47,6 +48,7 @@
     .account-indicator-label {
       text-align: right;
       font-size: 0.9em;
+      font-weight: $font-weight-normal;
     }
   }
 

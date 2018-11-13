@@ -62,7 +62,7 @@
       </form>
       <div *ngIf="indicators$ | async; else loadingIndicators" class="account-indicators">
         <ng-container *ngFor="let indicator of (indicators$ | async); let i = index; let last = last">
-          <div *ngIf="i < maxIndicators" class="account-indicator">
+          <div *ngIf="i < maxIndicators || (layout.ltmd$ | async)" class="account-indicator">
             <div class="account-indicator-label">{{ indicator.label }}</div>
             <div class="account-indicator-amount" [ngClass]="{
                   negative:(indicator.alwaysNegative || format.isNegative(indicator.amount)),

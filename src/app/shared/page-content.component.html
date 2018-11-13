@@ -1,6 +1,8 @@
 <div class="page-content card mx-auto d-flex flex-grow-1" [ngClass]="{
     'layout-normal': layout === 'normal',
     'layout-centered': layout === 'centered',
+    'first': first$ | async,
+    'last': last$ | async,
     'mode-normal': mode === 'normal' || mode === 'fullHeight',
     'mode-table': mode === 'table',
     'mode-tight': mode === 'tight' || mode === 'fullHeightTight',

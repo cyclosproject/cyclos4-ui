@@ -282,7 +282,7 @@ table.table {
   }
 }
 
-a.plain {
+a.plain, maybe-link.plain a {
   color: $body-color;
   &:hover {
     text-decoration: none;

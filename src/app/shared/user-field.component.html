@@ -14,7 +14,8 @@
         </chip>
 
         <input-field #inputField *ngIf="(selection$ | async) == null"
-          [formControl]="inputFieldControl" autocomplete="off" (keyup.enter)="(options$.value || []).length > 1 ? select(options$.value[0]) : null"
+          [placeholder]="placeholder" [formControl]="inputFieldControl"
+          autocomplete="off" (keyup.enter)="(options$.value || []).length > 1 ? select(options$.value[0]) : null"
           (keyup.esc)="allowPrincipal ? close() : select(null)"></input-field>
         <!-- When a principal is allowed, pressing esc will just close the popup, and leave the value there -->
 

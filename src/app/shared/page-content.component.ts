@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, HostBinding, Input } from '@angular
 import { BreadcrumbService } from 'app/core/breadcrumb.service';
 import { HeadingAction } from 'app/shared/action';
 import { LayoutService } from 'app/shared/layout.service';
+import { BehaviorSubject } from 'rxjs';
 
 /**
  * Represents a box in the layout which contains an optional heading (title) and content.
@@ -16,6 +17,22 @@ export class PageContentComponent {
 
   @HostBinding('style.flex-grow') get flexGrow(): string {
     return this.mode === 'fullHeight' ? '1' : '0';
+  }
+
+  first$ = new BehaviorSubject(false);
+  set first(first: boolean) {
+    this.first$.next(first);
+  }
+  get first(): boolean {
+    return this.first$.value;
+  }
+
+  last$ = new BehaviorSubject(false);
+  set last(last: boolean) {
+    this.last$.next(last);
+  }
+  get last(): boolean {
+    return this.last$.value;
   }
 
   @Input() heading: string;

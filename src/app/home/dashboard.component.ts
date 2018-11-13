@@ -61,7 +61,7 @@ export class DashboardComponent extends BaseComponent implements OnInit {
       this.actions.push(new DashboardAction('search_users', this.i18n('Directory'), ['users', 'search']));
     }
     if (permissions.marketplace && permissions.marketplace.search) {
-      this.actions.push(new DashboardAction('marketplace', this.i18n('Marketplace'), ['marketplace', 'search']));
+      this.actions.push(new DashboardAction('marketplace', this.i18n('Advertisements'), ['marketplace', 'search']));
     }
     if (permissions.myProfile && permissions.myProfile.editProfile) {
       this.actions.push(new DashboardAction('edit_profile', this.i18n('Edit profile'), ['users', 'my-profile', 'edit']));

@@ -1,6 +1,7 @@
 import { AfterViewInit, ChangeDetectorRef, Directive, ElementRef, Inject, Input, Optional } from '@angular/core';
 import { DefaultValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { truthyAttr } from 'app/shared/helper';
+import { LayoutService } from 'app/shared/layout.service';
 
 /**
  * Input fields with this directive will receive an initial focus
@@ -10,6 +11,7 @@ import { truthyAttr } from 'app/shared/helper';
 })
 export class FocusedDirective implements AfterViewInit {
   constructor(
+    private layout: LayoutService,
     @Optional() private el: ElementRef,
     @Optional() @Inject(NG_VALUE_ACCESSOR) private valueAccessor,
     private changeDetector: ChangeDetectorRef
@@ -28,7 +30,7 @@ export class FocusedDirective implements AfterViewInit {
   }
 
   private setFocus() {
-    if (this._focused) {
+    if (this._focused && this.layout.gtxs) {
       let toFocus = null;
       if (this.valueAccessor instanceof Array) {
         toFocus = this.valueAccessor[0];

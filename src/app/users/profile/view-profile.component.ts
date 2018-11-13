@@ -112,7 +112,7 @@ export class ViewProfileComponent extends BasePageComponent<UserView> implements
       }));
     }
     if (payment.userToUser) {
-      actions.push(new HeadingAction('payment', this.i18n('Pay {{name}}', {
+      actions.push(new HeadingAction('payment', this.i18n('Make payment to {{name}}', {
         name: this.shortName
       }), () => {
         this.router.navigate(['/banking', 'payment', this.key]);

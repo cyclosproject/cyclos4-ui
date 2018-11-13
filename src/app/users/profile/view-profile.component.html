@@ -1,7 +1,7 @@
 <page-layout [ready]="data$ | async">
   <page-content *ngIf="user != null" [heading]="title" [headingActions]="headingActions$ | async">
 
-    <div *ngIf="user.image && (layout.ltsm$ | async)" class="image d-flex justify-content-center mb-4">
+    <div *ngIf="user.image && (layout.ltsm$ | async)" class="image d-flex justify-content-center mt-3 mb-4">
       <avatar size="160" imageSize="200" useLightbox [image]="user.image"
         [additionalImages]="user.additionalImages"></avatar>
     </div>
