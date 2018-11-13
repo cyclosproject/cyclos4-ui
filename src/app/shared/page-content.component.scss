@@ -74,7 +74,7 @@
   box-shadow: $box-shadow-sm;
 }
 
-.page-content:not(.mode-normal):not(.mode-filters) {
+.page-content:not(.mode-normal):not(.mode-view-form):not(.mode-filters) {
   .page-content-body {
     padding: 0;
   }
@@ -113,8 +113,9 @@
   padding: $layout-spacer-xxs;
   padding-bottom: 0;
 }
-.page-content.mode-normal .page-content-body {
+.page-content.mode-view-form .page-content-body {
   padding: $layout-spacer-xxs;
+  padding-top: 1rem;
   padding-bottom: 0;
 }
 .mode-table .page-content-body, .mode-full-height .page-content-body {
@@ -125,8 +126,9 @@
     padding: $layout-spacer-xs;
     padding-bottom: 0;
   }
-  .page-content.mode-normal .page-content-body {
+  .page-content.mode-view-form .page-content-body {
     padding: $layout-spacer-xs;
+    padding-top: 1rem;
     padding-bottom: 0;
   }
   .mode-table .page-content-body, .mode-full-height .page-content-body {
@@ -134,12 +136,16 @@
   }
 }
 @include media-breakpoint-up(sm) {
-  .page-content-body, .page-content.mode-normal .page-content-body {
+  .page-content-body {
     padding: $card-spacer-x;
   }
 
   .mode-filters .page-content-body {
     padding: 0 $layout-spacer;
+  }
+
+  .page-content.mode-view-form .page-content-body {
+    padding: #{$layout-spacer * 1.2} $layout-spacer;
   }
 
   .mode-table .page-content-body, .mode-full-height .page-content-body {

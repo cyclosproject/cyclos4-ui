@@ -37,7 +37,7 @@ export class PageContentComponent implements OnInit {
   @Input() heading: string;
   @Input() headingActions: HeadingAction[];
   @Input() layout: 'normal' | 'centered' = 'normal';
-  @Input() mode: 'normal' | 'filters' | 'table' | 'tight' | 'transparent' | 'fullHeight' | 'fullHeightTight' = 'normal';
+  @Input() mode: 'normal' | 'viewForm' | 'filters' | 'table' | 'tight' | 'transparent' | 'fullHeight' | 'fullHeightTight' = 'normal';
 
   constructor(
     public layoutService: LayoutService,
