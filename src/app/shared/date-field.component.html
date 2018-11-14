@@ -14,7 +14,7 @@
       locale: 'cyclos'
     }">
     <ng-container *ngFor="let control of partControls.controls; let index = index">
-      <div *ngIf="index > 0" [ngClass]="{
+      <div *ngIf="index > 0 && (layout.gtxs$ | async)" [ngClass]="{
           'mx-2': layout.gtxs$ | async,
           'mx-1': layout.ltsm$ | async
         }">
