@@ -8,7 +8,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ErrorStatus } from 'app/core/error-status';
 import { tap, catchError } from 'rxjs/operators';
 import { I18n } from '@ngx-translate/i18n-polyfill';
-import { defineLocale } from 'ngx-bootstrap/chronos';
+import { defineLocale, LocaleData } from 'ngx-bootstrap/chronos';
 import * as moment from 'moment-mini-ts';
 
 declare const setRootAlert: (boolean) => void;
@@ -23,6 +23,7 @@ declare const setReloadButton: (boolean) => void;
 export class DataForUiHolder {
   private dataForUi$ = new BehaviorSubject<DataForUi>(null);
   private timeDiff: number;
+  localeData: LocaleData;
 
   constructor(
     private nextRequestState: NextRequestState,
@@ -87,7 +88,8 @@ export class DataForUiHolder {
 
   set dataForUi(dataForUi: DataForUi) {
     if (dataForUi != null) {
-      this.defineDatePickerLocale(dataForUi);
+      this.localeData = this.createLocaleData(dataForUi);
+      defineLocale('cyclos', this.localeData);
       this.dataForUi$.next(dataForUi);
       // Store the time diff
       this.timeDiff = new Date().getTime() - moment(dataForUi.currentClientTime).toDate().getTime();
@@ -101,14 +103,15 @@ export class DataForUiHolder {
     return this.dataForUi$.subscribe(next, error, complete);
   }
 
-  private defineDatePickerLocale(dataForUi: DataForUi) {
+  private createLocaleData(dataForUi: DataForUi): LocaleData {
     const dateFormat = dataForUi.dateFormat.toUpperCase();
     let timeFormat = dataForUi.timeFormat;
     if (timeFormat.includes('a')) {
       // ngx-bootstrap datepicker expects hh as 12 hour, and the medidian must be uppercase
       timeFormat = timeFormat.replace(/H/g, 'h').replace('a', 'A');
     }
-    defineLocale('cyclos', {
+
+    return {
       abbr: 'cyclos',
       months: [
         this.i18n({ meaning: 'Long month', value: 'January' }),
@@ -125,37 +128,37 @@ export class DataForUiHolder {
         this.i18n({ meaning: 'Long month', value: 'December' })
       ],
       monthsShort: [
-        'Jan',
-        'Feb',
-        'Mar',
-        'Apr',
-        'May',
-        'Jun',
-        'Jul',
-        'Aug',
-        'Sep',
-        'Ouc',
-        'Nov',
-        'Dec'
+        this.i18n({ meaning: 'Short month', value: 'Jan' }),
+        this.i18n({ meaning: 'Short month', value: 'Feb' }),
+        this.i18n({ meaning: 'Short month', value: 'Mar' }),
+        this.i18n({ meaning: 'Short month', value: 'Apr' }),
+        this.i18n({ meaning: 'Short month', value: 'May' }),
+        this.i18n({ meaning: 'Short month', value: 'Jun' }),
+        this.i18n({ meaning: 'Short month', value: 'Jul' }),
+        this.i18n({ meaning: 'Short month', value: 'Aug' }),
+        this.i18n({ meaning: 'Short month', value: 'Sep' }),
+        this.i18n({ meaning: 'Short month', value: 'Oct' }),
+        this.i18n({ meaning: 'Short month', value: 'Nov' }),
+        this.i18n({ meaning: 'Short month', value: 'Dec' })
       ],
       monthsParseExact: true,
       weekdays: [
-        'Sunday',
-        'Monday',
-        'Tuesday',
-        'Wednesday',
-        'Thursday',
-        'Friday',
-        'Saturday'
+        this.i18n({ meaning: 'Long weekday', value: 'Sunday' }),
+        this.i18n({ meaning: 'Long weekday', value: 'Monday' }),
+        this.i18n({ meaning: 'Long weekday', value: 'Tuesday' }),
+        this.i18n({ meaning: 'Long weekday', value: 'Wednesday' }),
+        this.i18n({ meaning: 'Long weekday', value: 'Thursday' }),
+        this.i18n({ meaning: 'Long weekday', value: 'Friday' }),
+        this.i18n({ meaning: 'Long weekday', value: 'Saturday' })
       ],
       weekdaysShort: [
-        this.i18n({ meaning: 'Short day of week', value: 'Sun' }),
-        this.i18n({ meaning: 'Short day of week', value: 'Mon' }),
-        this.i18n({ meaning: 'Short day of week', value: 'Tue' }),
-        this.i18n({ meaning: 'Short day of week', value: 'Wed' }),
-        this.i18n({ meaning: 'Short day of week', value: 'Thu' }),
-        this.i18n({ meaning: 'Short day of week', value: 'Fri' }),
-        this.i18n({ meaning: 'Short day of week', value: 'Sat' })
+        this.i18n({ meaning: 'Short weekday', value: 'Sun' }),
+        this.i18n({ meaning: 'Short weekday', value: 'Mon' }),
+        this.i18n({ meaning: 'Short weekday', value: 'Tue' }),
+        this.i18n({ meaning: 'Short weekday', value: 'Wed' }),
+        this.i18n({ meaning: 'Short weekday', value: 'Thu' }),
+        this.i18n({ meaning: 'Short weekday', value: 'Fri' }),
+        this.i18n({ meaning: 'Short weekday', value: 'Sat' })
       ],
       weekdaysMin: [
         'Su',
@@ -205,6 +208,6 @@ export class DataForUiHolder {
         dow: 1,
         doy: 4
       }
-    });
+    };
   }
 }

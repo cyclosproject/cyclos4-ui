@@ -38,6 +38,7 @@ export class DateFieldComponent
   partControls: FormArray;
   dateControl: FormControl;
   options: string[][];
+  optionLabels: string[][];
   fieldNames: string[];
   fieldInitials: string[];
 
@@ -150,13 +151,18 @@ export class DateFieldComponent
     const now = this.dataForUiHolder.now();
     const min = this.minDateAsMoment;
     const max = this.maxDateAsMoment;
-    this.options = this.format.applyDateFields([
-      range(
-        min == null ? now.year() - 100 : min.year(),
-        (max == null ? now.year() + 10 : max.year()) + 1
-      ).map(String).reverse(),
-      range(1, 13).map(String),
-      range(1, 32).map(String),
+    const yearOptions = range(
+      min == null ? now.year() - 100 : min.year(),
+      (max == null ? now.year() + 10 : max.year()) + 1
+    ).map(String).reverse();
+    const monthOptions = range(1, 13);
+    const dateOptions = range(1, 32).map(String);
+    const localeData = this.dataForUiHolder.localeData;
+    this.options = this.format.applyDateFields([yearOptions, monthOptions.map(String), dateOptions]);
+    this.optionLabels = this.format.applyDateFields([
+      yearOptions,
+      monthOptions.map(i => localeData.monthsShort[i - 1]),
+      dateOptions
     ]);
   }
 

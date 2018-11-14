@@ -35,7 +35,7 @@ export class FieldErrorsComponent {
       });
     } else if (errors.maxDate) {
       return this.i18n('Should be {{max}} or before', {
-        min: errors.maxDate.max
+        max: errors.maxDate.max
       });
     } else if (errors.number) {
       return this.i18n('Invalid numeric value');

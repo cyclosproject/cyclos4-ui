@@ -28,7 +28,9 @@
           'field-date': format.dateFields[index] === 'date'
         }">
         <option value="">{{ fieldInitials[index] }}</option>
-        <option *ngFor="let opt of options[index]" [value]="opt">{{ opt }}</option>
+        <option *ngFor="let opt of options[index]; let ix = index" [value]="opt">
+          {{ optionLabels[index][ix] }}
+        </option>
       </select>
     </ng-container>
     <button class="ml-2 btn btn-light btn-icon" (click)="datePicker.toggle()">

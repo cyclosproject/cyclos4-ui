@@ -16,7 +16,6 @@ export const ISO_DATE = 'YYYY-MM-DD';
   providedIn: 'root'
 })
 export class FormatService {
-
   constructor(
     dataForUiHolder: DataForUiHolder,
     private apiConfiguration: ApiConfiguration,
@@ -335,4 +334,5 @@ export class FormatService {
       n: this.formatAsNumber(bytes, 1)
     });
   }
+
 }
