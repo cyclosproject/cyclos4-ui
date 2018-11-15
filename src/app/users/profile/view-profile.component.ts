@@ -1,15 +1,13 @@
-import { LatLngBounds } from '@agm/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { Address, PhoneKind, PhoneView, UserView } from 'app/api/models';
+import { PhoneKind, PhoneView, UserView } from 'app/api/models';
 import { ContactsService, UsersService } from 'app/api/services';
 import { ErrorStatus } from 'app/core/error-status';
 import { MapsService } from 'app/core/maps.service';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BasePageComponent } from 'app/shared/base-page.component';
-import { fitBounds, labelAddresses, words } from 'app/shared/helper';
-import { BehaviorSubject } from 'rxjs';
+import { words } from 'app/shared/helper';
 
 export const MAX_SIZE_SHORT_NAME = 25;
 
@@ -33,13 +31,10 @@ export class ViewProfileComponent extends BasePageComponent<UserView> implements
 
   key: string;
   shortName: string;
-  locatedAddresses: Address[];
   mobilePhone: PhoneView;
   landLinePhone: PhoneView;
   mobilePhones: PhoneView[];
   landLinePhones: PhoneView[];
-
-  addressMapFitBounds$ = new BehaviorSubject<LatLngBounds>(null);
 
   get user(): UserView {
     return this.data;
@@ -67,11 +62,6 @@ export class ViewProfileComponent extends BasePageComponent<UserView> implements
   }
 
   onDataInitialized(user: UserView) {
-    // Get the located addresses
-    if (this.maps.enabled) {
-      this.locatedAddresses = labelAddresses(user.addresses, this.i18n);
-    }
-
     this.shortName = words(user.name || user.display, MAX_SIZE_SHORT_NAME);
 
     // We'll show the phones either as single or multiple
@@ -157,10 +147,6 @@ export class ViewProfileComponent extends BasePageComponent<UserView> implements
 
   get title(): string {
     return this.myProfile ? this.i18n('My profile') : this.shortName;
-  }
-
-  fitAddressesBounds() {
-    this.addressMapFitBounds$.next(fitBounds(this.locatedAddresses));
   }
 
 }
