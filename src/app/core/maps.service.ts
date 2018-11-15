@@ -7,6 +7,11 @@ import { Observable, of, from } from 'rxjs';
 import { MapsAPILoader } from '@agm/core';
 import { empty } from 'app/shared/helper';
 import { mergeMap } from 'rxjs/operators';
+import { Address } from 'app/api/models';
+
+const STATIC_URL = 'https://maps.googleapis.com/maps/api/staticmap';
+const EXTERNAL_URL = 'https://www.google.com/maps/search/?api=1';
+
 
 /**
  * Helper classes to work with Google Maps
@@ -15,7 +20,6 @@ import { mergeMap } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class MapsService {
-
   private geocoder: google.maps.Geocoder;
   private geocoderCache = new Map<string, GeographicalCoordinate>();
 
@@ -54,6 +58,39 @@ export class MapsService {
     return from(this.mapsAPILoader.load()).pipe(
       mergeMap(() => this.doGeocode(fields))
     );
+  }
+
+  /**
+   * Returns the URL for a static map showing the given address / location, with the given dimensions
+   * @param location Wither an `Address` or a `GeographicalCoordinate`
+   * @param width The image width
+   * @param width The image height
+   */
+  staticUrl(location: Address | GeographicalCoordinate, width: number, height: number): string {
+    const coords = this.coords(location);
+    if (coords == null) {
+      return null;
+    }
+    const key = this.data.googleMapsApiKey;
+    const scale = (window.devicePixelRatio || 0) >= 2 ? 2 : 1;
+    return `${STATIC_URL}?size=${width}x${height}&scale=${scale}&zoom=15`
+      + `&markers=size:small%7C${coords.latitude},${coords.longitude}&key=${key}`;
+  }
+
+  /**
+   * Returns the URL for an external map view of a specific location
+   * @param location Wither an `Address` or a `GeographicalCoordinate`
+   */
+  externalUrl(location: Address | GeographicalCoordinate): string {
+    const coords = this.coords(location);
+    if (coords == null) {
+      return null;
+    }
+    return `${EXTERNAL_URL}&query=${coords.latitude},${coords.longitude}`;
+  }
+
+  private coords(location: Address | GeographicalCoordinate): GeographicalCoordinate {
+    return (location as Address).location ? (location as any).location : location;
   }
 
   private doGeocode(fieldsOrAddress: AddressManage | string[]): Observable<GeographicalCoordinate> {

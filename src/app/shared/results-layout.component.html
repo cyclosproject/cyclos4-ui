@@ -50,8 +50,8 @@
     <page-content mode="fullHeightTight">
       <agm-map [fitBounds]="mapBounds$ | async" [latitude]="maps.data?.defaultLocation?.latitude"
         [longitude]="maps.data?.defaultLocation?.longitude"
-        [fullscreenControl]="true" maxZoom="17" minZoom="2" (mapClick)="closeAllInfoWindows()"
-        (mapReady)="adjustMap();">
+        [fullscreenControl]="true" [streetViewControl]="false" maxZoom="17"
+        minZoom="2" (mapClick)="closeAllInfoWindows()" (mapReady)="adjustMap();">
         <ng-container *ngFor="let row of results.results">
           <ng-container *ngIf="toAddress(row) as addr">
             <agm-marker [title]="toMarkerTitle(row)" [latitude]="addr.location.latitude"

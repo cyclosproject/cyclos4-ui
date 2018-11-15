@@ -1,10 +1,5 @@
 @import 'src/definitions';
 
-agm-map {
-  height: 100%;
-  min-height: 16rem;
-}
-
 :host ::ng-deep .image {
   icon {
     color: $tiled-results-icon-color;
