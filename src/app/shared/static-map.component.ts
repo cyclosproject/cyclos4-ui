@@ -23,6 +23,8 @@ export class StaticMapComponent implements OnInit, AfterViewInit {
   url: string;
   externalUrl: string;
   title: string;
+  imageWidth: string;
+  imageHeight: string;
 
   constructor(
     private maps: MapsService,
@@ -55,6 +57,8 @@ export class StaticMapComponent implements OnInit, AfterViewInit {
   private doInitUrl() {
     if (typeof this.width === 'number' && typeof this.height === 'number') {
       this.url = this.maps.staticUrl(this.address, this.width, this.height);
+      this.imageWidth = this.width + 'px';
+      this.imageHeight = this.height + 'px';
       this.cd.detectChanges();
     }
   }

@@ -1,3 +1,6 @@
 <a [href]="externalUrl" target="_blank">
-  <img *ngIf="url" [src]="url" [alt]="title" [title]="title">
+  <img *ngIf="url" [src]="url" [alt]="title" [title]="title" [ngStyle]="{
+    width: imageWidth,
+    height: imageHeight
+  }">
 </a>
