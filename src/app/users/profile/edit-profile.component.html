@@ -5,7 +5,8 @@
     <!-- Image -->
     <ng-container *ngIf="imagesAvailability !== 'disabled'">
       <ng-container *ngIf="imagesAvailability === 'single'">
-        <h2 class="mt-2 mb-3 border-0" i18n>Profile image</h2>
+        <h2 class="mb-3 border-0" [ngClass]="{'mt-2': layout.ltmd$ | async}"
+          i18n>Profile image</h2>
         <div class="row no-gutters">
           <div class="col-12 col-sm-6">
             <div class="d-flex justify-content-center justify-content-sm-start">
@@ -31,7 +32,8 @@
         </div>
       </ng-container>
       <ng-container *ngIf="imagesAvailability === 'multiple'">
-        <h2 class="border-0 d-flex mt-2 mb-3 flex-column flex-xs-row justify-content-between">
+        <h2 class="border-0 d-flex mb-3 flex-column flex-xs-row justify-content-between"
+          [ngClass]="{'mt-2': layout.ltmd$ | async}">
           <div [ngClass]="{'mb-2': layout.xxs$ | async}" i18n>Profile images</div>
           <button *ngIf="canUploadImages && !(multiUpload.uploading$ | async)"
             class="btn btn-outline-primary" (click)="multiUpload.perform()"
@@ -239,7 +241,7 @@
           </div>
         </label-value>
         <label-value i18n-label label="Map" kind="field" *ngIf="maps.enabled && address['form'].get('location').value.latitude != null">
-          <static-map [address]="address['form'].value"></static-map>
+          <static-map class="mb-3" [address]="address['form'].value"></static-map>
         </label-value>
         <div *ngIf="maps.enabled || (layout.xxs$ | async) || !data.addressConfiguration.managePrivacy">
           <actions class="mt-0" forceRow>

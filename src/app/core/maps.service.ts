@@ -74,7 +74,7 @@ export class MapsService {
     const key = this.data.googleMapsApiKey;
     const scale = (window.devicePixelRatio || 0) >= 2 ? 2 : 1;
     return `${STATIC_URL}?size=${width}x${height}&scale=${scale}&zoom=15`
-      + `&markers=size:small%7C${coords.latitude},${coords.longitude}&key=${key}`;
+      + `&markers=${coords.latitude},${coords.longitude}&key=${key}`;
   }
 
   /**

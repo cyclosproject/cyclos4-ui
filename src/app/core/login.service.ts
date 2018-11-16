@@ -133,7 +133,7 @@ export class LoginService {
       // Then reload the DataForUi instance (as guest)
       return this.dataForUiHolder.reload().subscribe(() => {
         this._loggingOut.next(false);
-        this.router.navigateByUrl(redirectUrl || '/login');
+        this.router.navigateByUrl(redirectUrl || '/');
       });
     });
   }

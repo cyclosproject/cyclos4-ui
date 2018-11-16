@@ -13,7 +13,7 @@
           <div *ngIf="data.transferFilters?.length > 1" class="col-12 col-md-6">
             <single-selection-field labelPosition="side" formControlName="transferFilter"
               i18n-label label="Filter" i18n-emptyOption emptyOption="Not applied">
-              <field-option *ngFor="let filter of data.transferFilters"
+              <field-option *ngFor="let filter of data.transferFilters" [id]="filter.id"
                 [value]="filter" [text]="filter.name"></field-option>
             </single-selection-field>
           </div>

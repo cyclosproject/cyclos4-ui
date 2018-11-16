@@ -35,12 +35,6 @@ export class DashboardComponent extends BaseComponent implements OnInit {
     const dataForUi = this.dataForUiHolder.dataForUi;
     const auth = dataForUi.auth;
     const permissions = auth.permissions;
-    if (auth.user == null) {
-      this.actions.push(new DashboardAction('login', this.i18n('Login'), ['login']));
-      if (!empty(dataForUi.publicRegistrationGroups)) {
-        this.actions.push(new DashboardAction('register', this.i18n('Register'), ['users', 'registration']));
-      }
-    }
     if (permissions.banking) {
       const accounts = permissions.banking.accounts;
       for (const account of accounts) {
@@ -65,6 +59,12 @@ export class DashboardComponent extends BaseComponent implements OnInit {
     }
     if (permissions.myProfile && permissions.myProfile.editProfile) {
       this.actions.push(new DashboardAction('edit_profile', this.i18n('Edit profile'), ['users', 'my-profile', 'edit']));
+    }
+    if (auth.user == null) {
+      this.actions.push(new DashboardAction('login', this.i18n('Login'), ['login']));
+      if (!empty(dataForUi.publicRegistrationGroups)) {
+        this.actions.push(new DashboardAction('register', this.i18n('Register'), ['users', 'registration']));
+      }
     }
   }
 

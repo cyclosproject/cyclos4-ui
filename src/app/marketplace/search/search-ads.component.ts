@@ -30,11 +30,10 @@ export class SearchAdsComponent
     private marketplaceService: MarketplaceService
   ) {
     super(injector);
-    this.form.patchValue({ addressResult: AdAddressResultEnum.NONE }, { emitEvent: false });
   }
 
   protected getFormControlNames() {
-    return ['keywords', 'category', 'addressResult', 'customValues', 'orderBy'];
+    return ['keywords', 'category', 'customValues', 'orderBy'];
   }
 
   getInitialResultType() {
@@ -61,6 +60,7 @@ export class SearchAdsComponent
     const params = cloneDeep(value) as MarketplaceService.SearchAdsParams;
     delete params['customValues'];
     params.customFields = ApiHelper.toCustomValuesFilter(value.customValues);
+    params.addressResult = this.resultType === ResultType.MAP ? AdAddressResultEnum.ALL : AdAddressResultEnum.NONE;
     return this.marketplaceService.searchAdsResponse(params);
   }
 
@@ -73,14 +73,14 @@ export class SearchAdsComponent
       if (previousResultType === ResultType.CATEGORIES) {
         // Force a new query when changing from categories
         this.results = null;
-      }
-      const isMap = resultType === ResultType.MAP;
-      const addressResult = isMap ? AdAddressResultEnum.ALL : AdAddressResultEnum.NONE;
-      if (this.form.value.addressResult !== addressResult) {
-        // Should change the address result
-        this.results = null;
-        this.resetPage();
-        this.form.patchValue({ addressResult: addressResult }, { emitEvent: false });
+      } else {
+        const isMap = resultType === ResultType.MAP;
+        const wasMap = previousResultType === ResultType.MAP;
+        if (isMap !== wasMap) {
+          // Should update again, as the `addressResult` will change
+          this.results = null;
+          this.resetPage();
+        }
       }
     }
   }

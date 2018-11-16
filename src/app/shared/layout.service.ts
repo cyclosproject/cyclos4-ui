@@ -47,7 +47,7 @@ export class LayoutService {
   private breakpointObservers = new Map<string, Observable<boolean>>();
 
   private _breakpointChanges = new BehaviorSubject<Set<string>>(new Set());
-  breakpointChanges = this._breakpointChanges.asObservable();
+  breakpointChanges = this._breakpointChanges.asObservable().pipe(distinctUntilChanged());
 
   constructor(observer: BreakpointObserver) {
     this.breakpointObservers = new Map();

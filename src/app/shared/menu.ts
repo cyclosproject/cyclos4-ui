@@ -24,7 +24,7 @@ export module RootMenu {
   export const PERSONAL: RootMenu = 'personal';
   export function values(): RootMenu[] {
     return [
-      HOME, LOGIN, REGISTRATION, PUBLIC_DIRECTORY, PUBLIC_MARKETPLACE, BANKING, MARKETPLACE, PERSONAL
+      HOME, PUBLIC_DIRECTORY, PUBLIC_MARKETPLACE, BANKING, MARKETPLACE, PERSONAL, LOGIN, REGISTRATION
     ];
   }
 }
