@@ -69,7 +69,8 @@
               </h3>
               <address-details [address]="address"></address-details>
             </div>
-            <div *ngIf="address.location" class="col-12 col-md-6" [ngClass]="{'pt-2': layout.ltsm$ | async}">
+            <div *ngIf="maps.enabled && address.location" class="col-12 col-md-6"
+              [ngClass]="{'pt-2': layout.ltsm$ | async}">
               <static-map [address]="address"></static-map>
             </div>
           </div>

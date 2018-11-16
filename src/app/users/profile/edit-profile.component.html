@@ -123,10 +123,19 @@
       <h2 class="mb-2" i18n>Address</h2>
       <boolean-field *ngIf="data.addressConfiguration.availability !== 'required'"
         [formControl]="defineSingleAddress" i18n-label label="Define address"></boolean-field>
-      <address-form *ngIf="defineSingleAddress.value" [addressForm]="singleAddress"
-        [configuration]="data.addressConfiguration" [managePrivacy]="data.addressConfiguration.managePrivacy">
-      </address-form>
-      <ng-container *ngTemplateOutlet="mapTemplate"></ng-container>
+      <ng-container *ngIf="defineSingleAddress.value">
+        <address-form [addressForm]="singleAddress" [configuration]="data.addressConfiguration"
+          [managePrivacy]="data.addressConfiguration.managePrivacy">
+        </address-form>
+        <label-value i18n-label label="Map" kind="field" *ngIf="maps.enabled">
+          <static-map *ngIf="singleAddress.get('location').value.latitude != null"
+            [address]="singleAddress.value"></static-map>
+          <button *ngIf="singleAddress.get('location').value.latitude == null"
+            class="btn btn-outline-primary" type="button" (click)="locateAddress(singleAddress)">
+            View map
+          </button>
+        </label-value>
+      </ng-container>
     </ng-container>
 
     <!-- Multiple phones -->
@@ -210,7 +219,6 @@
       <div *ngIf="data.addresses.length == 0" i18n>
         There are currently no addresses
       </div>
-      <ng-container *ngTemplateOutlet="mapTemplate"></ng-container>
       <ng-container *ngFor="let address of addresses; let last = last"
         [formGroup]="address['form']">
         <input-field [id]="'address_name' + address['idSuffix']"
@@ -224,17 +232,25 @@
           <div class="d-flex justify-content-between">
             <field-privacy [control]="address['form'].get('hidden')"
               justifyStart></field-privacy>
-            <button *ngIf="(layout.gtxxs$ | async)" class="btn btn-outline-primary"
+            <button *ngIf="!maps.enabled && (layout.gtxxs$ | async)" class="btn btn-outline-primary"
               type="button" (click)="removeAddress(address)">
               Remove this address
             </button>
           </div>
         </label-value>
-        <div *ngIf="(layout.xxs$ | async) || !data.addressConfiguration.managePrivacy"
-          class="d-flex justify-content-end">
-          <button class="btn btn-outline-primary" type="button" (click)="removeAddress(address)">
-            Remove this address
-          </button>
+        <label-value i18n-label label="Map" kind="field" *ngIf="maps.enabled && address['form'].get('location').value.latitude != null">
+          <static-map [address]="address['form'].value"></static-map>
+        </label-value>
+        <div *ngIf="maps.enabled || (layout.xxs$ | async) || !data.addressConfiguration.managePrivacy">
+          <actions class="mt-0" forceRow>
+            <button class="btn btn-outline-primary" type="button" (click)="removeAddress(address)">
+              Remove this address
+            </button>
+            <button *ngIf="address['form'].get('location').value.latitude == null"
+              class="btn btn-outline-primary" type="button" (click)="locateAddress(address['form'])">
+              View map
+            </button>
+          </actions>
         </div>
         <hr *ngIf="!last">
       </ng-container>
@@ -321,21 +337,3 @@
     </actions>
   </page-content>
 </page-layout>
-
-<ng-template #mapTemplate>
-  <agm-map *ngIf="maps.enabled" [ngClass]="{
-    'd-block': true,
-    'my-3': true,
-    'd-none': mapBounds$ | async
-  }"
-    [fitBounds]="mapBounds$ | async" [fullscreenControl]="true" maxZoom="17"
-    (mapReady)="adjustMapBounds()">
-    <agm-marker *ngFor="let addr of locatedAddresses" [title]="addr.name"
-      [label]="addr['label']" [latitude]="addr.location.latitude" [longitude]="addr.location.longitude">
-      <agm-info-window>
-        <h3 class="mt-0">{{ addr.name }}</h3>
-        <address-details [address]="addr"></address-details>
-      </agm-info-window>
-    </agm-marker>
-  </agm-map>
-</ng-template>

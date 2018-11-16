@@ -1,6 +1,5 @@
-import { LatLngBounds } from '@agm/core';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnDestroy, OnInit } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, Validators, FormArray } from '@angular/forms';
+import { AbstractControl, FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import {
   AddressManage, AvailabilityEnum, ContactInfoManage, CustomField,
   CustomFieldDetailed, DataForEditFullProfile, FullProfileEdit, Image,
@@ -11,13 +10,13 @@ import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { FormControlLocator } from 'app/shared/form-control-locator';
-import { empty, fitBounds, isTouched, labelAddresses, locateControl, scrollTop, validateBeforeSubmit } from 'app/shared/helper';
+import { empty, isTouched, locateControl, scrollTop, validateBeforeSubmit } from 'app/shared/helper';
 import { ManageImagesComponent } from 'app/shared/manage-images.component';
 import { VerifyPhoneComponent } from 'app/users/profile/verify-phone.component';
 import { cloneDeep } from 'lodash';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BehaviorSubject } from 'rxjs';
-import { debounceTime, take } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 
 
 const BASIC_FIELDS = ['name', 'username', 'email'];
@@ -40,7 +39,6 @@ export class EditProfileComponent
   key: string;
 
   ready$ = new BehaviorSubject(false);
-  mapBounds$ = new BehaviorSubject<LatLngBounds>(null);
   enabledFields: Set<string>;
   editableFields: Set<string>;
   managePrivacyFields: Set<string>;
@@ -398,7 +396,6 @@ export class EditProfileComponent
         ? this.buildAddressForm(data.addressConfiguration.address)
         : data.addresses[0]['form'];
     }
-    this.adjustMapBounds();
 
     // Prepare the contact-info forms
     (data.contactInfos || []).forEach(p => {
@@ -488,13 +485,15 @@ export class EditProfileComponent
     const data = this.data.addressConfiguration;
     const form = ApiHelper.addressFormGroup(data, this.formBuilder);
     this.stampDataAndInitForm(address, form);
-    this.addSub(form.valueChanges.pipe(debounceTime(ApiHelper.DEBOUNCE_TIME)).subscribe(value => {
-      this.addSub(this.maps.geocode(value).subscribe(location => {
-        address.location = location;
-        form.patchValue({ location: location }, { emitEvent: false });
-        this.adjustMapBounds();
+    for (const field of data.enabledFields) {
+      let previous = address[field] || null;
+      this.addSub(form.get(field).valueChanges.subscribe(newVal => {
+        if (previous !== newVal) {
+          form.get('location').patchValue({ latitude: null, longitude: null });
+        }
+        previous = newVal;
       }));
-    }));
+    }
     return form;
   }
 
@@ -646,7 +645,6 @@ export class EditProfileComponent
       const form = address['form'];
       this.createAddresses = this.createAddresses.filter(f => f !== form);
     }
-    this.adjustMapBounds();
   }
 
   removeContactInfo(contactInfo: ContactInfoManage) {
@@ -795,12 +793,15 @@ export class EditProfileComponent
     }));
   }
 
-  adjustMapBounds() {
-    this.locatedAddresses = labelAddresses(this.addresses, this.i18n);
-    this.mapBounds$.next(fitBounds(this.addresses));
-  }
-
   fieldSize(cf: CustomFieldDetailed) {
     return ApiHelper.fieldSize(cf);
+  }
+
+  locateAddress(addressForm: FormGroup) {
+    const value = addressForm.value;
+    this.addSub(this.maps.geocode(value).subscribe(coords => {
+      addressForm.patchValue({ location: coords });
+      this.changeDetector.detectChanges();
+    }));
   }
 }
