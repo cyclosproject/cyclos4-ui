@@ -128,7 +128,7 @@ The second approach exposes a directory called `api` in the frontend application
 
 ```apache
 <IfModule mod_proxy.c>
-  ProxyPass "/api"  "http://localhost:8888/api"
+  ProxyPass "/api"  "http://localhost:8888/api" keepalive=On connectiontimeout=10 timeout=60
   ProxyPassReverse "/api"  "http://localhost:8888/api"
 </IfModule>
 ```
@@ -137,10 +137,12 @@ Alternatively, if the frontend is deployed in a sub path, the path must be speci
 
 ```apache
 <IfModule mod_proxy.c>
-  ProxyPass "/path/api"  "http://localhost:8888/api"
+  ProxyPass "/path/api"  "http://localhost:8888/api" keepalive=On connectiontimeout=10 timeout=60
   ProxyPassReverse "/path/api"  "http://localhost:8888/api"
 </IfModule>
 ```
+
+Note that it is important to set `keepalive=On` for [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events) to work. It is also recommented to have a timeout larger than 40 seconds, which is the time Cyclos keeps open event stream connections.
 
 For other HTTP servers, please, consult their documentation on how to achieve the same result.
 

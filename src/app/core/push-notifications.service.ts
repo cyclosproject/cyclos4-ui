@@ -1,22 +1,17 @@
 import { Injectable, NgZone } from '@angular/core';
-import { EventSourcePolyfill } from 'ng-event-source';
-import { LoginService } from 'app/core/login.service';
-import { Auth, AccountWithStatus } from 'app/api/models';
-import { ApiConfiguration } from 'app/api/api-configuration';
-import { Observable } from 'rxjs';
-import { NotificationService } from 'app/core/notification.service';
-import { Subscription } from 'rxjs';
-import { DataForUiHolder } from 'app/core/data-for-ui-holder';
-import { I18n } from '@ngx-translate/i18n-polyfill';
-import { LoginState } from 'app/core/login-state';
 import { Router } from '@angular/router';
+import { I18n } from '@ngx-translate/i18n-polyfill';
+import { ApiConfiguration } from 'app/api/api-configuration';
+import { Auth } from 'app/api/models';
+import { DataForUiHolder } from 'app/core/data-for-ui-holder';
+import { LoginState } from 'app/core/login-state';
+import { LoginService } from 'app/core/login.service';
 import { NextRequestState } from 'app/core/next-request-state';
-import { empty } from 'app/shared/helper';
+import { NotificationService } from 'app/core/notification.service';
+import { EventSourcePolyfill } from 'ng-event-source';
 
 export const LOGGED_OUT = 'loggedOut';
-export const ACCOUNT_STATUS = 'accountStatus';
-
-const KINDS = [LOGGED_OUT, ACCOUNT_STATUS];
+const KINDS = [LOGGED_OUT];
 
 /**
  * Handles the registration and notitification of push events
@@ -28,11 +23,8 @@ export class PushNotificationsService {
 
   private eventSource: EventSourcePolyfill;
 
-  private accountStatusObserver;
-  private accountStatus: Observable<AccountWithStatus>;
-
   constructor(
-    dataForUiHolder: DataForUiHolder,
+    private dataForUiHolder: DataForUiHolder,
     private apiConfiguration: ApiConfiguration,
     private login: LoginService,
     private i18n: I18n,
@@ -42,29 +34,24 @@ export class PushNotificationsService {
     private nextRequestState: NextRequestState,
     private router: Router
   ) {
-    dataForUiHolder.subscribe(dataForUi => {
-      const auth = (dataForUi || {}).auth;
-      if (auth == null) {
+  }
+
+  public initialize() {
+    console.log('Initializing push notifications service');
+    this.dataForUiHolder.subscribe(dataForUi => {
+      const auth = (dataForUi || {}).auth || {};
+      if (auth.user == null) {
+        console.log('No user - closing EventSource');
         this.close();
       } else {
+        console.log('Has user - open EventSource');
         this.open(auth);
       }
     });
-    this.accountStatus = Observable.create(observer => {
-      this.accountStatusObserver = observer;
-    });
-    if (login.user) {
+    if (this.login.user) {
       // Open the event source initially - there is a logged user
-      this.open(login.auth);
+      this.open(this.login.auth);
     }
-  }
-
-  /**
-   * Subscribes to be notified whenever an account status has changed
-   * @param callback The callback function
-   */
-  subscribeForAccountStatus(callback: (value: AccountWithStatus) => void): Subscription {
-    return this.accountStatus.subscribe(callback);
   }
 
   private open(auth: Auth) {
@@ -72,16 +59,10 @@ export class PushNotificationsService {
       return;
     }
     this.close();
-    const accounts = (auth.permissions.banking || {}).accounts;
-    const accountIds = empty(accounts) ? [] : accounts.map(a => a.account.id);
     const clientId = Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
     const kinds = new Set<string>(KINDS);
-    if (empty(accountIds)) {
-      kinds.delete(ACCOUNT_STATUS);
-    }
     let url = this.apiConfiguration.rootUrl + '/push/subscribe?clientId=' + clientId;
     kinds.forEach(kind => url += '&kinds=' + kind);
-    accountIds.forEach(id => url += '&accountIds=' + id);
     this.eventSource = new EventSourcePolyfill(url, {
       headers: { 'Session-Token': auth.sessionToken }
     });
@@ -105,12 +86,6 @@ export class PushNotificationsService {
           }
         });
       });
-    });
-
-    // Listen for account status events
-    this.eventSource.addEventListener(ACCOUNT_STATUS, (event: any) => {
-      const account = JSON.parse(event.data) as AccountWithStatus;
-      this.zone.run(() => this.accountStatusObserver.next(account));
     });
   }
 

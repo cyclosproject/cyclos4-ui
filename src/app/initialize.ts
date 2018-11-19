@@ -1,8 +1,8 @@
-import { Provider, APP_INITIALIZER } from '@angular/core';
+import { APP_INITIALIZER, Provider } from '@angular/core';
 import { ApiConfiguration } from 'app/api/api-configuration';
+import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { environment } from 'environments/environment';
 import { LightboxConfig } from 'ngx-lightbox';
-import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 
 // Initializes the shared services
 export function initialize(

@@ -1,7 +1,8 @@
 // This file defines the environment variables shared by both development and production
 
-// The root URL for the API. Don't forget to include the /api in the end
-const API_URL = 'http://localhost:8888/api';
+// The root URL for the API. Either 'api' (without slashes) when using a proxy, or the full URL
+// (with protocol) to the Cyclos backend, ending with /api.
+const API_URL = 'api';
 
 // Application title
 const APP_TITLE = 'Cyclos Local';

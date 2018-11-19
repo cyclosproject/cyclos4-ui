@@ -7,6 +7,7 @@ import { LoginService } from 'app/core/login.service';
 import { MenuService } from 'app/core/menu.service';
 import { LayoutService } from 'app/shared/layout.service';
 import { BehaviorSubject } from 'rxjs';
+import { PushNotificationsService } from 'app/core/push-notifications.service';
 
 declare const setSpinnerVisible: (boolean) => void;
 
@@ -24,13 +25,18 @@ export class AppComponent implements OnInit {
     private dataForUiHolder: DataForUiHolder,
     public login: LoginService,
     public menu: MenuService,
-    public layout: LayoutService
+    public layout: LayoutService,
+    // PushNotificationsService is here because it is not directly used by any
+    // other component / service, but handles itself the push notifications.
+    // It would otherwise be removed from the built app by tree-shaking.
+    private push: PushNotificationsService
   ) { }
 
   initialized = new BehaviorSubject(false);
   loggingOut = new BehaviorSubject(false);
 
   ngOnInit() {
+    this.push.initialize();
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.title.setTitle(this.format.appTitle);
     this.dataForUiHolder.subscribe(dataForUi => {

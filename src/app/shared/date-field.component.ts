@@ -13,6 +13,7 @@ import { InputFieldComponent } from 'app/shared/input-field.component';
 import { LayoutService } from 'app/shared/layout.service';
 import { range } from 'lodash';
 import * as moment from 'moment-mini-ts';
+import { BsLocaleService } from 'ngx-bootstrap/datepicker';
 
 export type DateConstraint = 'any' | 'today' | 'tomorrow' | 'yesterday' | string;
 
@@ -50,6 +51,7 @@ export class DateFieldComponent
     private dataForUiHolder: DataForUiHolder,
     public format: FormatService,
     public layout: LayoutService,
+    private bsLocaleService: BsLocaleService,
     private i18n: I18n) {
     super(controlContainer);
     this.partControls = formBuilder.array(new Array(format.dateFields.length).fill(''));
@@ -139,6 +141,7 @@ export class DateFieldComponent
 
   ngOnInit() {
     super.ngOnInit();
+    this.bsLocaleService.use('cyclos');
     if (this.fieldSize == null) {
       this.fieldSize = CustomFieldSizeEnum.SMALL;
     }

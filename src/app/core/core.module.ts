@@ -1,36 +1,34 @@
-import { NgModule, Optional, SkipSelf, Provider, forwardRef, TRANSLATIONS, TRANSLATIONS_FORMAT } from '@angular/core';
-
-import { NotificationService } from 'app/core/notification.service';
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { forwardRef, NgModule, Optional, Provider, SkipSelf, TRANSLATIONS, TRANSLATIONS_FORMAT } from '@angular/core';
+import { I18n } from '@ngx-translate/i18n-polyfill';
+import { ApiInterceptor } from 'app/core/api.interceptor';
+import { BreadcrumbService } from 'app/core/breadcrumb.service';
+import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
 import { FormatService } from 'app/core/format.service';
-import { MapsService } from 'app/core/maps.service';
+import { LoginState } from 'app/core/login-state';
 import { LoginService } from 'app/core/login.service';
-import { MenuService } from 'app/core/menu.service';
-import { StateManager } from 'app/core/state-manager';
-import { PushNotificationsService } from 'app/core/push-notifications.service';
-import { ApiInterceptor } from 'app/core/api.interceptor';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { CountriesResolve } from 'app/countries.resolve';
-import { LightboxModule } from 'ngx-lightbox';
-import { NextRequestState } from './next-request-state';
-import { SvgIconRegistry } from 'app/core/svg-icon-registry';
-import { DataForUiHolder } from 'app/core/data-for-ui-holder';
-import { UserCacheService } from 'app/core/user-cache.service';
-import { SharedModule } from 'app/shared/shared.module';
-
-import { I18n } from '@ngx-translate/i18n-polyfill';
-import { BreadcrumbService } from 'app/core/breadcrumb.service';
-import { BsModalService } from 'ngx-bootstrap/modal';
-import { LayoutService } from 'app/shared/layout.service';
-import { TopBarComponent } from 'app/core/top-bar.component';
-
-import { BreakpointObserver } from '@angular/cdk/layout';
+import { MapsService } from 'app/core/maps.service';
 import { MenuBarComponent } from 'app/core/menu-bar.component';
+import { MenuService } from 'app/core/menu.service';
+import { NotificationService } from 'app/core/notification.service';
 import { PersonalMenuComponent } from 'app/core/personal-menu.component';
+import { PushNotificationsService } from 'app/core/push-notifications.service';
 import { SidenavComponent } from 'app/core/sidenav.component';
 import { SnackBarComponent } from 'app/core/snack-bar.component';
-import { LoginState } from 'app/core/login-state';
+import { StateManager } from 'app/core/state-manager';
+import { SvgIconRegistry } from 'app/core/svg-icon-registry';
+import { TopBarComponent } from 'app/core/top-bar.component';
 import { TransactionStatusService } from 'app/core/transaction-status.service';
+import { UserCacheService } from 'app/core/user-cache.service';
+import { CountriesResolve } from 'app/countries.resolve';
+import { LayoutService } from 'app/shared/layout.service';
+import { SharedModule } from 'app/shared/shared.module';
+import { BsLocaleService } from 'ngx-bootstrap/datepicker';
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { LightboxModule } from 'ngx-lightbox';
+import { NextRequestState } from './next-request-state';
 
 export const API_INTERCEPTOR_PROVIDER: Provider = {
   provide: HTTP_INTERCEPTORS,
@@ -91,7 +89,8 @@ export const translations = require(`raw-loader!../../i18n/cyclos4-ui.en.xlf`);
     UserCacheService,
     TransactionStatusService,
     API_INTERCEPTOR_PROVIDER,
-    BsModalService
+    BsModalService,
+    BsLocaleService
   ]
 })
 export class CoreModule {

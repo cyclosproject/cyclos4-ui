@@ -11,6 +11,7 @@ import { I18n } from '@ngx-translate/i18n-polyfill';
 import { defineLocale, LocaleData } from 'ngx-bootstrap/chronos';
 import * as moment from 'moment-mini-ts';
 
+
 declare const setRootAlert: (boolean) => void;
 declare const setReloadButton: (boolean) => void;
 
