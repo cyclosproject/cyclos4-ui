@@ -430,6 +430,15 @@ input[type=number] {
   @include box-shadow($input-box-shadow);
 }
 
+.custom-select, .form-control, .custom-select option {
+  padding: 0 0.4rem;
+}
+@include media-breakpoint-up(sm) {
+  .custom-select, .form-control, .custom-select option {
+    padding: $input-padding-y $input-padding-x;
+  }
+}
+
 .custom-control-input:checked ~ .custom-control-label::before {
   border: none;
 }
@@ -527,7 +536,7 @@ $spaced-label-values: (
 // Select-options are used both in single-selection field and autocomplete fields
 .select-option {
   display: block;
-  padding: 0.2rem 0.7rem;
+  padding: 0.2rem 0.4rem;
   min-height: 1.5em;
   cursor: default;
   color: color-yiq($white) !important;
@@ -540,7 +549,11 @@ $spaced-label-values: (
   background-color: $primary !important;
   color: color-yiq($primary) !important;
 }
-
+@include media-breakpoint-up(sm) {
+  .select-option {
+    padding: 0.2rem 0.7rem;
+  }
+}
 
 // Titles
 h1, h2, h3 {

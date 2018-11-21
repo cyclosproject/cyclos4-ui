@@ -1,17 +1,16 @@
 @import 'src/definitions';
 
 .custom-select {
-  padding: 0 0.2rem;
   background: none;
 }
 .field-year {
-  width: 3.7rem;
+  width: 4rem;
 }
 .field-month {
-  width: 3.5rem;
+  width: 3.6rem;
 }
 .field-date {
-  width: 2rem;
+  width: 2.7rem;
 }
 
 .date-field {
@@ -32,16 +31,36 @@
   padding: 0;
 }
 
+.calendar-toggle {
+  margin-left: 0.2rem;
+}
+
 @include media-breakpoint-up(xs) {
+  .field-year {
+    width: 3.8rem;
+  }
+  .field-month {
+    width: 3.2rem;
+  }
+  .field-date {
+    width: 2.5rem;
+  }
+}
+
+@include media-breakpoint-up(sm) {
+  .calendar-toggle {
+    margin-left: 0.5rem;
+  }
   .custom-select {
     padding: 0 0.7rem;
-    background: none;
   }
-
   .field-year {
-    width: 4rem;
+    width: 4.3rem;
   }
-  .field-month, .field-date {
+  .field-month {
+    width: 3.6rem;
+  }
+  .field-date {
     width: 3.2rem;
   }
 }

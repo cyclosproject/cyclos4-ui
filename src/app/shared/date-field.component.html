@@ -8,10 +8,7 @@
     (onShown)="onShown()">
     <div class="date-field d-flex align-items-center">
       <ng-container *ngFor="let control of partControls.controls; let index = index">
-        <div *ngIf="index > 0 && (layout.gtxs$ | async)" [ngClass]="{
-            'mx-2': layout.gtxs$ | async,
-            'mx-1': layout.ltsm$ | async
-          }">
+        <div *ngIf="index > 0 && (layout.gtxs$ | async)" class="mx-1">
           {{ format.dateSeparator }}
         </div>
         <select #part class="custom-select" [attr.id]="id + '_0'"
@@ -28,7 +25,7 @@
           </option>
         </select>
       </ng-container>
-      <button #toggleButton dropdownToggle [id]="id" class="ml-2 btn btn-light btn-icon">
+      <button #toggleButton dropdownToggle [id]="id" class="calendar-toggle btn btn-light btn-icon">
         <icon icon="calendar_today"></icon>
       </button>
     </div>
