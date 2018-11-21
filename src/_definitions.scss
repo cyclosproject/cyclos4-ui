@@ -131,5 +131,11 @@ $calendar-selected-bg: $primary;
 $calendar-selected-color: color-yiq($calendar-selected-bg);
 $calendar-disabled-color: $faded-color;
 
+$breadcrumb-divider: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjkiPjxwYXRoIGQ9Ik0yLjUgMEwxIDEuNSAzLjUgNCAxIDYuNSAyLjUgOGw0LTQtNC00eiIgZmlsbD0iIzc1NzU3NSIvPjwvc3ZnPg==);
+$breadcrumb-padding-y: 0;
+$breadcrumb-padding-x: 0;
+$breadcrumb-margin-bottom: 0;
+$breadcrumb-bg: transparent;
+
 $manage-passwords-icon-color: $gray-500;
 $account-indicator-font-size: 16px;
