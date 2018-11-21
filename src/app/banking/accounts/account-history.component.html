@@ -20,13 +20,15 @@
           <div *ngIf="(form.value || (form.valueChanges | async))?.preselectedPeriod?.begin == null"
             class="col-12 col-md-6">
             <date-field labelPosition="side" formControlName="periodBegin"
-              i18n-label label="Begin date" maxDate="today" fieldSize="full">
+              i18n-label label="Begin date" minDate="past5" maxDate="today"
+              fieldSize="full">
             </date-field>
           </div>
           <div *ngIf="(form.value || (form.valueChanges | async))?.preselectedPeriod?.end == null"
             class="col-12 col-md-6">
             <date-field labelPosition="side" formControlName="periodEnd"
-              i18n-label label="End date" maxDate="today" fieldSize="full">
+              i18n-label label="End date" minDate="past5" maxDate="today"
+              fieldSize="full">
             </date-field>
           </div>
           <ng-container *ngIf="moreFilters$ | async">

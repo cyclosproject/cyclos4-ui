@@ -51,7 +51,8 @@
   <!-- date -->
   <date-field #dateField *ngIf="type == 'date'" [id]="id" [label]="label"
     [name]="name" [labelPosition]="labelPosition" [fieldSize]="fieldSize"
-    [required]="required" [formControl]="formControl">
+    [required]="required" [formControl]="formControl" minDate="past100"
+    maxDate="future100">
   </date-field>
 
   <!-- single selection -->

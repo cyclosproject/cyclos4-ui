@@ -1,4 +1,7 @@
-import { ChangeDetectionStrategy, Component, Host, Input, OnInit, Optional, SkipSelf, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy, Component, ElementRef, Host, Input, OnInit, Optional,
+  QueryList, SkipSelf, ViewChild, ViewChildren
+} from '@angular/core';
 import {
   AbstractControl, ControlContainer, FormArray, FormBuilder, FormControl,
   NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator
@@ -8,14 +11,13 @@ import { CustomFieldSizeEnum } from 'app/api/models';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { FormatService, ISO_DATE } from 'app/core/format.service';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
+import { DateConstraint, dateConstraintAsMoment } from 'app/shared/date-constraint';
 import { empty } from 'app/shared/helper';
-import { InputFieldComponent } from 'app/shared/input-field.component';
 import { LayoutService } from 'app/shared/layout.service';
 import { range } from 'lodash';
 import * as moment from 'moment-mini-ts';
-import { BsLocaleService } from 'ngx-bootstrap/datepicker';
-
-export type DateConstraint = 'any' | 'today' | 'tomorrow' | 'yesterday' | string;
+import { BsDropdownDirective } from 'ngx-bootstrap/dropdown';
+import { CalendarComponent } from 'app/shared/calendar.component';
 
 /**
  * Input used to edit a single date
@@ -36,6 +38,9 @@ export class DateFieldComponent
   @Input() minDate: DateConstraint = 'any';
   @Input() maxDate: DateConstraint = 'any';
 
+  min: moment.Moment;
+  max: moment.Moment;
+
   partControls: FormArray;
   dateControl: FormControl;
   options: string[][];
@@ -43,7 +48,11 @@ export class DateFieldComponent
   fieldNames: string[];
   fieldInitials: string[];
 
-  @ViewChild('inputField') inputField: InputFieldComponent;
+  @ViewChildren('part') parts: QueryList<ElementRef>;
+  @ViewChild('toggleButton') toggleRef: ElementRef;
+  @ViewChild('dropdown') dropdown: BsDropdownDirective;
+  @ViewChild('dropDownMenu') menuRef: ElementRef;
+  @ViewChild('calendar') calendar: CalendarComponent;
 
   constructor(
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
@@ -51,7 +60,6 @@ export class DateFieldComponent
     private dataForUiHolder: DataForUiHolder,
     public format: FormatService,
     public layout: LayoutService,
-    private bsLocaleService: BsLocaleService,
     private i18n: I18n) {
     super(controlContainer);
     this.partControls = formBuilder.array(new Array(format.dateFields.length).fill(''));
@@ -93,43 +101,6 @@ export class DateFieldComponent
     this.value = this.format.parseAsDate(date);
   }
 
-  get minDateAsDate(): Date {
-    const min = this.minDateAsMoment;
-    return min ? min.toDate() : null;
-  }
-
-  get minDateAsMoment(): moment.Moment {
-    return this.dateConstraintAsMoment(this.minDate);
-  }
-
-  get maxDateAsDate(): Date {
-    const max = this.maxDateAsMoment;
-    return max ? max.toDate() : null;
-  }
-
-  get maxDateAsMoment(): moment.Moment {
-    return this.dateConstraintAsMoment(this.maxDate);
-  }
-
-  private dateConstraintAsMoment(date: DateConstraint): moment.Moment {
-    switch (date || 'any') {
-      case 'any':
-        return null;
-      case 'today':
-        return this.dataForUiHolder.now();
-      case 'yesterday':
-        return this.dataForUiHolder.now().subtract(1, 'day');
-      case 'tomorrow':
-        return this.dataForUiHolder.now().add(1, 'day');
-      default:
-        const min = moment(date);
-        if (!min.isValid()) {
-          throw new Error(`Got an invalid date constraint: ${date}`);
-        }
-        return min;
-    }
-  }
-
   get valueAsDate(): Date {
     const value = this.value;
     if (empty(value)) {
@@ -141,7 +112,6 @@ export class DateFieldComponent
 
   ngOnInit() {
     super.ngOnInit();
-    this.bsLocaleService.use('cyclos');
     if (this.fieldSize == null) {
       this.fieldSize = CustomFieldSizeEnum.SMALL;
     }
@@ -150,13 +120,13 @@ export class DateFieldComponent
       this.i18n('Month'),
       this.i18n('Day'),
     ]);
-    this.fieldInitials = this.fieldNames.map(n => n.charAt(0));
     const now = this.dataForUiHolder.now();
-    const min = this.minDateAsMoment;
-    const max = this.maxDateAsMoment;
+    this.min = dateConstraintAsMoment(this.minDate, now);
+    this.max = dateConstraintAsMoment(this.maxDate, now);
+    this.fieldInitials = this.fieldNames.map(n => n.charAt(0));
     const yearOptions = range(
-      min == null ? now.year() - 100 : min.year(),
-      (max == null ? now.year() + 10 : max.year()) + 1
+      this.min == null ? now.year() - 100 : this.min.year(),
+      (this.max == null ? now.year() + 5 : this.max.year()) + 1
     ).map(String).reverse();
     const monthOptions = range(1, 13);
     const dateOptions = range(1, 32).map(String);
@@ -191,7 +161,7 @@ export class DateFieldComponent
   }
 
   protected getFocusableControl() {
-    return this.inputField;
+    return this.parts.first;
   }
 
   protected getDisabledValue(): string {
@@ -213,16 +183,14 @@ export class DateFieldComponent
       if (!mmnt.isValid()) {
         errors.date = true;
       }
-      const min = this.minDateAsMoment;
-      if (min != null && mmnt.isBefore(min)) {
+      if (this.min != null && mmnt.isBefore(this.min)) {
         errors.minDate = {
-          min: this.format.formatAsDate(min)
+          min: this.format.formatAsDate(this.min)
         };
       }
-      const max = this.maxDateAsMoment;
-      if (max != null && mmnt.isAfter(max)) {
+      if (this.max != null && mmnt.isAfter(this.max)) {
         errors.maxDate = {
-          max: this.format.formatAsDate(max)
+          max: this.format.formatAsDate(this.max)
         };
       }
     }
@@ -237,4 +205,20 @@ export class DateFieldComponent
     this.notifyTouched();
   }
 
+  onShown() {
+    if (!this.menuRef) {
+      return;
+    }
+    this.calendar.prepare();
+
+    const toggle: HTMLElement = this.toggleRef.nativeElement;
+    const menu: HTMLElement = this.menuRef.nativeElement;
+
+    const rect = toggle.getBoundingClientRect();
+    const docHeight = (window.innerHeight || document.documentElement.clientHeight);
+    this.dropdown.dropup = rect.bottom > docHeight - 100;
+
+    // Workaround: ngx-bootstrap sets top sometimes when we set dropup, which causes a position error
+    setTimeout(() => menu.style.top = '', 1);
+  }
 }

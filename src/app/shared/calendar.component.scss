@@ -1,0 +1,112 @@
+@import 'src/definitions';
+
+$header-height: 2.5rem;
+$cell-height: 2rem;
+$month-width: 7rem;
+$year-width: 4rem;
+
+:host {
+  width: 16.15rem;
+  display: flex;
+  flex-direction: column;
+}
+
+button {
+  border: 1px solid transparent;
+  background: transparent;
+  border-radius: $header-height;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1em;
+  transition:background-color 0.4s;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $calendar-hover-bg;
+    color: $calendar-hover-color !important;
+  }
+  &, &:hover, &:focus, &:active {
+    outline: none;
+  }
+}
+
+.calendar-header {
+  display: flex;
+  margin-bottom: 0.5rem;
+  color: $calendar-header-color;
+  background-color: $calendar-header-bg;
+  padding: 0.4rem;
+
+  button, .year-range {
+    height: $header-height;
+    color: $calendar-header-color;
+  }
+  button[disabled], button[disabled]:hover {
+    cursor: default !important;
+    background-color: transparent !important;
+    color: transparent !important;
+  }
+  .month {
+    width: $month-width;
+  }
+  .year {
+    width: $year-width;
+  }
+  .calendar-nav {
+    width: $header-height;
+  }
+  .year-range {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1em;
+  }
+}
+
+.calendar-body {
+  height: calc(#{7 * $cell-height} + 2px);
+}
+.calendar-days, .calendar-months, .calendar-years {
+  width: 100%;
+  padding: 0.4rem;
+}
+
+.weekday {
+  text-align: center;
+  font-weight: $font-weight-bold;
+  color: $faded-color;
+}
+
+.select-day, .select-month, .select-year {
+  height: $cell-height;
+  text-align: center;
+  display: block;
+  margin: 0 auto;
+}
+.select-day {
+  width: $cell-height;
+}
+.select-month {
+  width: $month-width;
+}
+.select-year {
+  width: $year-width;
+}
+.today, .today:hover,
+.this-month, .this-month:hover,
+.this-year, .this-year:hover {
+  border: 1px solid $calendar-today-border-color;
+}
+.calendar-days, .calendar-months, .calendar-years {
+  button[disabled] {
+    cursor: default;
+    background-color: transparent;
+    color: $calendar-disabled-color !important;
+  }
+}
+.select-day.selected-date, .select-day.selected-date:hover {
+  background-color: $calendar-selected-bg !important;
+  color: $calendar-selected-color !important;
+}

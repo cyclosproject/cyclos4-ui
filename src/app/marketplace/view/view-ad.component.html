@@ -1,7 +1,7 @@
 <page-layout [ready]="data$ | async">
   <page-content *ngIf="ad" mode="viewForm" [heading]="ad.name">
 
-    <div *ngIf="ad.image && (layout.ltsm$ | async)" class="d-flex justify-content-center mb-4">
+    <div *ngIf="ad.image && (layout.ltsm$ | async)" class="d-flex justify-content-center mt-2 mb-4">
       <avatar size="160" imageSize="200" useLightbox [image]="ad.image"
         [additionalImages]="ad.additionalImages"></avatar>
     </div>

@@ -8,7 +8,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ErrorStatus } from 'app/core/error-status';
 import { tap, catchError } from 'rxjs/operators';
 import { I18n } from '@ngx-translate/i18n-polyfill';
-import { defineLocale, LocaleData } from 'ngx-bootstrap/chronos';
+import { defineLocale, LocaleData, getSetGlobalLocale } from 'ngx-bootstrap/chronos';
 import * as moment from 'moment-mini-ts';
 
 
@@ -91,6 +91,7 @@ export class DataForUiHolder {
     if (dataForUi != null) {
       this.localeData = this.createLocaleData(dataForUi);
       defineLocale('cyclos', this.localeData);
+      getSetGlobalLocale('cyclos');
       this.dataForUi$.next(dataForUi);
       // Store the time diff
       this.timeDiff = new Date().getTime() - moment(dataForUi.currentClientTime).toDate().getTime();

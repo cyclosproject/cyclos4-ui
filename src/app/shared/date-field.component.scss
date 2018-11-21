@@ -26,6 +26,12 @@
   pointer-events: none;
 }
 
+.dropdown-menu {
+  max-height: 18.4rem;
+  height: 18.4rem;
+  padding: 0;
+}
+
 @include media-breakpoint-up(xs) {
   .custom-select {
     padding: 0 0.7rem;
@@ -36,6 +42,6 @@
     width: 4rem;
   }
   .field-month, .field-date {
-    width: 3rem;
+    width: 3.2rem;
   }
 }

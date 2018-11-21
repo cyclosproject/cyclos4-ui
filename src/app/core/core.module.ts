@@ -25,7 +25,6 @@ import { UserCacheService } from 'app/core/user-cache.service';
 import { CountriesResolve } from 'app/countries.resolve';
 import { LayoutService } from 'app/shared/layout.service';
 import { SharedModule } from 'app/shared/shared.module';
-import { BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { LightboxModule } from 'ngx-lightbox';
 import { NextRequestState } from './next-request-state';
@@ -89,8 +88,7 @@ export const translations = require(`raw-loader!../../i18n/cyclos4-ui.en.xlf`);
     UserCacheService,
     TransactionStatusService,
     API_INTERCEPTOR_PROVIDER,
-    BsModalService,
-    BsLocaleService
+    BsModalService
   ]
 })
 export class CoreModule {

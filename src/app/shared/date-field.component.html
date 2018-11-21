@@ -3,39 +3,40 @@
 </label-value>
 
 <ng-template #widget>
-  <div class="date-field d-flex align-items-center">
-    <input class="date-input" tabindex="-1" #datePicker="bsDatepicker"
-      bsDatepicker [formControl]="dateControl" [bsConfig]=" {
-      minDate: minDateAsDate,
-      maxDate: maxDateAsDate,
-      dateInputFormat: format.datePattern,
-      containerClass: 'theme-default',
-      showWeekNumbers: false,
-      locale: 'cyclos'
-    }">
-    <ng-container *ngFor="let control of partControls.controls; let index = index">
-      <div *ngIf="index > 0 && (layout.gtxs$ | async)" [ngClass]="{
-          'mx-2': layout.gtxs$ | async,
-          'mx-1': layout.ltsm$ | async
-        }">
-        {{ format.dateSeparator }}
-      </div>
-      <select class="custom-select" [attr.id]="id + '_0'" [formControl]="control"
-        (input)="onPartChanged($event)" [ngClass]="{
-          'is-invalid': (formControl.statusChanges | async) === 'INVALID' && formControl.touched,
-          'field-year': format.dateFields[index] === 'year',
-          'field-month': format.dateFields[index] === 'month',
-          'field-date': format.dateFields[index] === 'date'
-        }">
-        <option value="">{{ fieldInitials[index] }}</option>
-        <option *ngFor="let opt of options[index]; let ix = index" [value]="opt">
-          {{ optionLabels[index][ix] }}
-        </option>
-      </select>
-    </ng-container>
-    <button class="ml-2 btn btn-light btn-icon" (click)="datePicker.toggle()">
-      <icon icon="calendar_today"></icon>
-    </button>
+  <!-- Need a relatively-positioned element to position the dropdown corretcly -->
+  <div class="d-inline-block" style="position:relative" dropdown #dropdown="bs-dropdown"
+    (onShown)="onShown()">
+    <div class="date-field d-flex align-items-center">
+      <ng-container *ngFor="let control of partControls.controls; let index = index">
+        <div *ngIf="index > 0 && (layout.gtxs$ | async)" [ngClass]="{
+            'mx-2': layout.gtxs$ | async,
+            'mx-1': layout.ltsm$ | async
+          }">
+          {{ format.dateSeparator }}
+        </div>
+        <select #part class="custom-select" [attr.id]="id + '_0'"
+          [formControl]="control" (click)="dropdown.hide()" (input)="onPartChanged($event)"
+          [ngClass]="{
+            'is-invalid': (formControl.statusChanges | async) === 'INVALID' && formControl.touched,
+            'field-year': format.dateFields[index] === 'year',
+            'field-month': format.dateFields[index] === 'month',
+            'field-date': format.dateFields[index] === 'date'
+          }">
+          <option value="">{{ fieldInitials[index] }}</option>
+          <option *ngFor="let opt of options[index]; let ix = index" [value]="opt">
+            {{ optionLabels[index][ix] }}
+          </option>
+        </select>
+      </ng-container>
+      <button #toggleButton dropdownToggle [id]="id" class="ml-2 btn btn-light btn-icon">
+        <icon icon="calendar_today"></icon>
+      </button>
+    </div>
+    <div #dropDownMenu class="dropdown-menu" *dropdownMenu role="dialog"
+      attr.id="'calendar-' + id" attr.aria-labelledby="id" (click)="$event.preventDefault(); $event.stopPropagation();">
+      <calendar #calendar [formControl]="formControl" [minDate]="minDate"
+        [maxDate]="maxDate" (select)="dropdown.hide()"></calendar>
+    </div>
   </div>
   <field-errors [control]="formControl"></field-errors>
 </ng-template>

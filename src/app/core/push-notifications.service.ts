@@ -37,14 +37,11 @@ export class PushNotificationsService {
   }
 
   public initialize() {
-    console.log('Initializing push notifications service');
     this.dataForUiHolder.subscribe(dataForUi => {
       const auth = (dataForUi || {}).auth || {};
       if (auth.user == null) {
-        console.log('No user - closing EventSource');
         this.close();
       } else {
-        console.log('Has user - open EventSource');
         this.open(auth);
       }
     });

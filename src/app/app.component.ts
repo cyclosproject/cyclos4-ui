@@ -5,9 +5,9 @@ import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { FormatService } from 'app/core/format.service';
 import { LoginService } from 'app/core/login.service';
 import { MenuService } from 'app/core/menu.service';
+import { PushNotificationsService } from 'app/core/push-notifications.service';
 import { LayoutService } from 'app/shared/layout.service';
 import { BehaviorSubject } from 'rxjs';
-import { PushNotificationsService } from 'app/core/push-notifications.service';
 
 declare const setSpinnerVisible: (boolean) => void;
 
@@ -18,6 +18,7 @@ declare const setSpinnerVisible: (boolean) => void;
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent implements OnInit {
+
   constructor(
     private title: Title,
     private router: Router,

@@ -48,6 +48,15 @@ export class FormatService {
   /** Separator between whole / decimal parts. Example: `','` for `'999.999,99'` */
   decimalSeparator: string;
 
+  /** Month names - long */
+  longMonthNames: string[];
+
+  /** Month names - short */
+  shortMonthNames: string[];
+
+  /** Weekday names - minimal */
+  minWeekdayNames: string[];
+
   private _dataForUi: DataForUi;
 
   /**
@@ -92,6 +101,46 @@ export class FormatService {
     this.timeFormat = (dataForUi.timeFormat || 'HH:mm').replace('a', 'A');
     this.groupingSeparator = dataForUi.groupingSeparator || ',';
     this.decimalSeparator = dataForUi.decimalSeparator || '.';
+
+    this.longMonthNames = [
+      this.i18n({ meaning: 'Long month', value: 'January' }),
+      this.i18n({ meaning: 'Long month', value: 'February' }),
+      this.i18n({ meaning: 'Long month', value: 'March' }),
+      this.i18n({ meaning: 'Long month', value: 'April' }),
+      this.i18n({ meaning: 'Long month', value: 'May' }),
+      this.i18n({ meaning: 'Long month', value: 'June' }),
+      this.i18n({ meaning: 'Long month', value: 'July' }),
+      this.i18n({ meaning: 'Long month', value: 'August' }),
+      this.i18n({ meaning: 'Long month', value: 'September' }),
+      this.i18n({ meaning: 'Long month', value: 'October' }),
+      this.i18n({ meaning: 'Long month', value: 'November' }),
+      this.i18n({ meaning: 'Long month', value: 'December' })
+    ];
+
+    this.shortMonthNames = [
+      this.i18n({ meaning: 'Short month', value: 'Jan' }),
+      this.i18n({ meaning: 'Short month', value: 'Feb' }),
+      this.i18n({ meaning: 'Short month', value: 'Mar' }),
+      this.i18n({ meaning: 'Short month', value: 'Apr' }),
+      this.i18n({ meaning: 'Short month', value: 'May' }),
+      this.i18n({ meaning: 'Short month', value: 'Jun' }),
+      this.i18n({ meaning: 'Short month', value: 'Jul' }),
+      this.i18n({ meaning: 'Short month', value: 'Aug' }),
+      this.i18n({ meaning: 'Short month', value: 'Sep' }),
+      this.i18n({ meaning: 'Short month', value: 'Oct' }),
+      this.i18n({ meaning: 'Short month', value: 'Nov' }),
+      this.i18n({ meaning: 'Short month', value: 'Dec' })
+    ];
+
+    this.minWeekdayNames = [
+      this.i18n({ meaning: 'Min weekday', value: 'S' }),
+      this.i18n({ meaning: 'Min weekday', value: 'M' }),
+      this.i18n({ meaning: 'Min weekday', value: 'T' }),
+      this.i18n({ meaning: 'Min weekday', value: 'W' }),
+      this.i18n({ meaning: 'Min weekday', value: 'T' }),
+      this.i18n({ meaning: 'Min weekday', value: 'F' }),
+      this.i18n({ meaning: 'Min weekday', value: 'S' })
+    ];
 
     this._dataForUi = dataForUi;
   }
@@ -333,6 +382,30 @@ export class FormatService {
     return this.i18n('{{n}}MB', {
       n: this.formatAsNumber(bytes, 1)
     });
+  }
+
+  /**
+   * The long name of a given month
+   * @param month The month number, from 0 to 11
+   */
+  longMonthName(month: number): string {
+    return this.longMonthNames[month];
+  }
+
+  /**
+   * The short name of a given month
+   * @param month The month number, from 0 to 11
+   */
+  shortMonthName(month: number): string {
+    return this.shortMonthNames[month];
+  }
+
+  /**
+   * The minimum name of a given weekday
+   * @param weekday The weekday number, from 0 to 6
+   */
+  minWeekdayName(weekday: number): string {
+    return this.minWeekdayName[weekday];
   }
 
 }

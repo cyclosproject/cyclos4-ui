@@ -122,14 +122,14 @@ $tiled-results-spacing-xs: 0.5rem;
 $tiled-results-spacing: 0.6rem;
 $tiled-results-icon-color: #ddd;
 
-$breadcrumb-divider: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjkiPjxwYXRoIGQ9Ik0yLjUgMEwxIDEuNSAzLjUgNCAxIDYuNSAyLjUgOGw0LTQtNC00eiIgZmlsbD0iIzc1NzU3NSIvPjwvc3ZnPg==);
-$breadcrumb-padding-y: 0;
-$breadcrumb-padding-x: 0;
-$breadcrumb-margin-bottom: 0;
-$breadcrumb-bg: transparent;
+$calendar-header-bg: $primary;
+$calendar-header-color: color-yiq($calendar-header-bg);
+$calendar-hover-bg: $gray-200;
+$calendar-hover-color: color-yiq($gray-200);
+$calendar-today-border-color: $secondary;
+$calendar-selected-bg: $primary;
+$calendar-selected-color: color-yiq($calendar-selected-bg);
+$calendar-disabled-color: $faded-color;
 
 $manage-passwords-icon-color: $gray-500;
 $account-indicator-font-size: 16px;
-
-// Theme for the Bootstrap date picker
-$theme-list: ('default': $primary);

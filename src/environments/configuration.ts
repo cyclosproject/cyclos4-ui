@@ -16,14 +16,6 @@ const SEARCH_PAGE_SIZES = [40, 100, 200];
 // Number of results displayed on quick searches, such as on user selection
 const QUICK_SEARCH_PAGE_SIZE = 10;
 
-// Translations
-// It is possible to set the application to be statically translated by commenting the
-// var declarations, uncommenting the import statements and adjusting the json files
-// to include the correct language, such as '../translations/messages_es.json' for Spanish.
-// This will embed the translations in the generated web application resources and
-// will prevent additional requests from being performed on runtime, but will force
-// a single language for the application.
-
 // This defines a mapping between advertisement category internal name and material icons.
 // See https://material.io/tools/icons
 const AD_CATEGORY_ICONS = {

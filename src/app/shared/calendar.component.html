@@ -1,0 +1,86 @@
+<div class="calendar-header">
+  <button class="calendar-nav" (click)="previous()" [disabled]="previousDisabled">
+    <icon icon="navigate_before"></icon>
+  </button>
+  <div class="flex-grow-1"></div>
+  <ng-container *ngIf="type === 'month'">
+    <button class="month" (click)="type = 'year'">
+      {{ format.longMonthName(month$ | async) }}
+    </button>
+  </ng-container>
+  <ng-container *ngIf="type === 'month' || type === 'year'">
+    <div *ngIf="type === 'month'" class="flex-grow-1"></div>
+    <button class="year" (click)="type = 'multiYear'">
+      {{ year$ | async }}
+    </button>
+  </ng-container>
+  <div *ngIf="type === 'multiYear'" class="year-range">
+    {{ minYear$ | async }} - {{ maxYear$ | async }}
+  </div>
+  <div class="flex-grow-1"></div>
+  <button class="calendar-nav" (click)="next()" [disabled]="nextDisabled">
+    <icon icon="navigate_next"></icon>
+  </button>
+</div>
+<div class="calendar-body">
+  <table *ngIf="type === 'month'" class="calendar-days">
+    <colgroup>
+      <col *ngFor="let _ of [1, 2, 3, 4, 5, 6, 7]" [attr.width]="100 / 7">
+    </colgroup>
+    <thead>
+      <tr>
+        <th *ngFor="let day of ['S', 'M', 'T', 'W', 'T', 'F', 'S']"
+          [attr.width]="100 / 7" class="weekday">
+          {{ day }}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let week of days$ | async">
+        <td *ngFor="let day of week" class="day-cell">
+          <button *ngIf="day" class="select-day" [disabled]="!isSelectable(year, month, day)"
+            (click)="selectDate(day)" [ngClass]="{
+              today: isToday(day),
+              'selected-date': isSelected(day)
+            }">
+            {{ day }}
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <table *ngIf="type === 'year'" class="calendar-months">
+    <colgroup>
+      <col *ngFor="let _ of months[0]" [attr.width]="100 / months[0].length">
+    </colgroup>
+    <tbody>
+      <tr *ngFor="let row of months">
+        <td *ngFor="let month of row" class="month-cell">
+          <button class="select-month" (click)="selectMonth(month)"
+            [disabled]="!isSelectable(year, month)" [ngClass]="{
+            'this-month': isThisMonth(month)
+          }">
+            {{ format.longMonthName(month) }}
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <table *ngIf="type === 'multiYear'" class="calendar-years">
+    <colgroup>
+      <col *ngFor="let _ of yearsRow" [attr.width]="100 / yearsPerRow">
+    </colgroup>
+    <tbody>
+      <tr *ngFor="let row of years$ | async">
+        <td *ngFor="let year of row" class="year-cell">
+          <button class="select-year" (click)="selectYear(year)" [disabled]="!isSelectable(year)"
+            [ngClass]="{
+            'this-year': isThisYear(year)
+          }">
+            {{ year }}
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

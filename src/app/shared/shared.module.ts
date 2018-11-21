@@ -22,7 +22,6 @@ import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { SortableModule } from 'ngx-bootstrap/sortable';
-import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 import { LayoutModule } from '@angular/cdk/layout';
 import { SpinnerComponent } from 'app/shared/spinner.component';
@@ -77,6 +76,7 @@ import { CaptchaComponent } from 'app/shared/captcha.component';
 import { ConfirmationComponent } from 'app/shared/confirmation.component';
 import { MaybeLinkComponent } from 'app/shared/maybe-link.component';
 import { StaticMapComponent } from 'app/shared/static-map.component';
+import { CalendarComponent } from 'app/shared/calendar.component';
 
 
 export function initTooltipConfig(): TooltipConfig {
@@ -128,6 +128,7 @@ export function initTooltipConfig(): TooltipConfig {
     MultiSelectionFieldComponent,
     CheckboxGroupFieldComponent,
     RadioGroupFieldComponent,
+    CalendarComponent,
     DateFieldComponent,
     DecimalFieldComponent,
     CustomFieldInputComponent,
@@ -168,7 +169,6 @@ export function initTooltipConfig(): TooltipConfig {
     ProgressbarModule.forRoot(),
     SortableModule.forRoot(),
     TooltipModule.forRoot(),
-    BsDatepickerModule.forRoot(),
 
     LayoutModule,
 
@@ -187,7 +187,6 @@ export function initTooltipConfig(): TooltipConfig {
     ProgressbarModule,
     SortableModule,
     TooltipModule,
-    BsDatepickerModule,
 
     LayoutModule,
 
@@ -226,6 +225,7 @@ export function initTooltipConfig(): TooltipConfig {
     MultiSelectionFieldComponent,
     CheckboxGroupFieldComponent,
     RadioGroupFieldComponent,
+    CalendarComponent,
     DateFieldComponent,
     DecimalFieldComponent,
     CustomFieldInputComponent,
