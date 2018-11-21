@@ -1,5 +1,5 @@
 <page-layout [ready]="data$ | async">
-  <page-content *ngIf="transfer" mode="viewForm" i18n-heading heading="Transfer details"
+  <page-content *ngIf="transfer" last mode="viewForm" i18n-heading heading="Transfer details"
     [headingActions]="headingActions$ | async">
     <transfer-details [transfer]="transfer"></transfer-details>
   </page-content>

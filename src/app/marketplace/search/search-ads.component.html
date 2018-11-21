@@ -40,8 +40,8 @@
       </div>
     </page-content>
 
-    <page-content *ngIf="(categoryTrail$ | async)?.length > 0">
-      <nav class="breadcrumb">
+    <page-content [ngClass]="(categoryTrail$ | async)?.length ? '' : 'd-none'">
+      <nav *ngIf="(categoryTrail$ | async)?.length > 0" class="breadcrumb">
         <ol class="breadcrumb">
           <li *ngFor="let cat of categoryTrail$ | async; let last = last"
             class="breadcrumb-item" [ngClass]="{active: last}">

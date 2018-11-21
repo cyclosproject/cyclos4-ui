@@ -1,9 +1,8 @@
-import { ChangeDetectionStrategy, Component, HostBinding, Input, OnInit, Optional } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, Input, OnInit } from '@angular/core';
 import { BreadcrumbService } from 'app/core/breadcrumb.service';
 import { HeadingAction } from 'app/shared/action';
 import { LayoutService } from 'app/shared/layout.service';
-import { BehaviorSubject } from 'rxjs';
-import { PageLayoutComponent } from 'app/shared/page-layout.component';
+import { truthyAttr } from 'app/shared/helper';
 
 /**
  * Represents a box in the layout which contains an optional heading (title) and content.
@@ -18,31 +17,22 @@ export class PageContentComponent implements OnInit {
 
   @HostBinding('style.flex-grow') flexGrow: string;
 
-  first$ = new BehaviorSubject(false);
-  set first(first: boolean) {
-    this.first$.next(first);
-  }
-  get first(): boolean {
-    return this.first$.value;
-  }
-
-  last$ = new BehaviorSubject(false);
-  set last(last: boolean) {
-    this.last$.next(last);
-  }
-  get last(): boolean {
-    return this.last$.value;
-  }
-
   @Input() heading: string;
   @Input() headingActions: HeadingAction[];
   @Input() layout: 'normal' | 'centered' = 'normal';
   @Input() mode: 'normal' | 'viewForm' | 'filters' | 'table' | 'tight' | 'transparent' | 'fullHeight' | 'fullHeightTight' = 'normal';
 
+  private _last: boolean | string = false;
+  @Input() get last(): boolean | string {
+    return this._last;
+  }
+  set last(last: boolean | string) {
+    this._last = truthyAttr(last);
+  }
+
   constructor(
     public layoutService: LayoutService,
-    public breadcrumb: BreadcrumbService,
-    @Optional() private pageLayout: PageLayoutComponent
+    public breadcrumb: BreadcrumbService
   ) { }
 
   get groupActions(): boolean {
@@ -52,8 +42,5 @@ export class PageContentComponent implements OnInit {
 
   ngOnInit(): void {
     this.flexGrow = ['fullHeight', 'fullHeightTight'].includes(this.mode) ? '1' : '0';
-    if (this.pageLayout) {
-      this.pageLayout.addContent(this);
-    }
   }
 }

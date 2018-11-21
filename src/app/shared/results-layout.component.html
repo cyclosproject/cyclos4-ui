@@ -4,7 +4,7 @@
 
 <content-monitor *ngIf="categoryTemplate && categories?.length > 0 && resultType === 'categories'"
   (ready)="notifyReady()" [ngClass]="{'d-none': rendering$ | async}">
-  <page-content mode="transparent">
+  <page-content mode="transparent" last>
     <div class="row category-results">
       <div class="category-result col-12 col-xs-6 col-sm-4" *ngFor="let cat of categories"
         [ngClass]="{
@@ -21,7 +21,7 @@
 <ng-container *ngIf="results?.hasResults; else noResults">
   <content-monitor *ngIf="tableTemplate && resultType === 'list'" (ready)="notifyReady()"
     [ngClass]="{'d-none': rendering$ | async}">
-    <page-content mode="table">
+    <page-content mode="table" last>
       <ng-container *ngTemplateOutlet="tableTemplate"></ng-container>
       <div class="paginator-container" *ngIf="showPaginator(results)" mode="transparent">
         <paginator [results]="results" (update)="update.emit($event)"></paginator>
@@ -31,7 +31,7 @@
 
   <content-monitor *ngIf="tileTemplate && resultType === 'tiles'" (ready)="notifyReady()"
     [ngClass]="{'d-none': rendering$ | async}">
-    <page-content mode="transparent">
+    <page-content mode="transparent" last>
       <div class="row tiled-results">
         <div class="tiled-result col-12 col-xs-6 col-sm-4" *ngFor="let row of results.results"
           [ngClass]="{
@@ -47,7 +47,7 @@
 
   <content-monitor *ngIf="resultType === 'map'" (ready)="mapLoaded ? notifyReady() : null"
     class="d-flex flex-grow-1" [ngClass]="{'d-none': rendering$ | async}">
-    <page-content mode="fullHeightTight">
+    <page-content mode="fullHeightTight" last>
       <agm-map [fitBounds]="mapBounds$ | async" [latitude]="maps.data?.defaultLocation?.latitude"
         [longitude]="maps.data?.defaultLocation?.longitude"
         [fullscreenControl]="true" [streetViewControl]="false" maxZoom="17"
@@ -69,7 +69,7 @@
 
 <ng-template #noResults>
   <content-monitor *ngIf="results && resultType !== 'categories'" (ready)="notifyReady()">
-    <page-content i18n>
+    <page-content last i18n>
       No results match the search criteria {{ notifyReady() }}
     </page-content>
   </content-monitor>

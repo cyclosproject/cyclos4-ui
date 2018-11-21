@@ -3,7 +3,6 @@ import { LoginService } from 'app/core/login.service';
 import { MenuService } from 'app/core/menu.service';
 import { truthyAttr } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
-import { PageContentComponent } from 'app/shared/page-content.component';
 import { BehaviorSubject, Subscription } from 'rxjs';
 
 /**
@@ -20,8 +19,6 @@ export class PageLayoutComponent implements OnInit, OnDestroy {
   @Input() heading: string;
   @Input() ready: boolean;
   @Input() size: 'small' | 'medium' | 'large' | 'full' = 'full';
-
-  private contents$ = new BehaviorSubject<PageContentComponent[]>([]);
 
   private sub: Subscription;
 
@@ -48,25 +45,11 @@ export class PageLayoutComponent implements OnInit, OnDestroy {
     this.login.user$.subscribe(updateShowLeft);
     this.menu.activeMenu$.subscribe(updateShowLeft);
     updateShowLeft();
-    this.sub = this.contents$.subscribe(contents => {
-      const length = contents.length;
-      contents.forEach((c, i) => {
-        c.first = i === 0;
-        c.last = i === length - 1;
-      });
-    });
   }
 
   ngOnDestroy() {
     if (this.sub) {
       this.sub.unsubscribe();
-    }
-  }
-
-  addContent(content: PageContentComponent) {
-    const contents = this.contents$.value;
-    if (!contents.includes(content)) {
-      this.contents$.next([...contents, content]);
     }
   }
 }
