@@ -11,6 +11,12 @@
   <ng-container i18n>This transfer has been charged back at {{
     transfer.chargedBackBy.date | dateTime }}</ng-container>
 </label-value>
+<label-value *ngIf="transfer.transaction?.by" i18n-label label="Performed by">
+  {{ transfer.transaction.by.display }}
+</label-value>
+<label-value *ngIf="transfer.transaction?.receivedBy" i18n-label label="Received by">
+  {{ transfer.transaction.receivedBy.display }}
+</label-value>
 <label-value i18n-label label="From">
   <user-link [account]="transfer.from"></user-link>
 </label-value>
@@ -19,9 +25,6 @@
 </label-value>
 <label-value i18n-label label="Payment type">
   {{ transfer.type.name }}
-</label-value>
-<label-value *ngIf="transfer.transaction?.by" i18n-label label="Performed by">
-  {{ transfer.transaction.by.display }}
 </label-value>
 <label-value *ngIf="transfer.transaction?.channel" i18n-label label="Channel">
   {{ transfer.transaction.channel.name }}

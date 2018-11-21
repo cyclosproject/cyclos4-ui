@@ -20,6 +20,12 @@
   <label-value *ngIf="hasDueAmount" i18n-label label="Due amount">
     {{ transaction.dueAmount | currency:transaction.currency }}
   </label-value>
+  <label-value *ngIf="transaction.by" i18n-label label="Performed by">
+    {{ transaction.by.display }}
+  </label-value>
+  <label-value *ngIf="transaction?.receivedBy" i18n-label label="Received by">
+    {{ transaction.receivedBy.display }}
+  </label-value>
   <label-value i18n-label label="From">
     <user-link *ngIf="transaction.fromUser; else fromSystem" [user]="transaction.fromUser"></user-link>
     <ng-template #fromSystem>
