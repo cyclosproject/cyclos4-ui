@@ -23,7 +23,7 @@
     [ngClass]="{'d-none': rendering$ | async}">
     <page-content mode="table" last>
       <ng-container *ngTemplateOutlet="tableTemplate"></ng-container>
-      <div class="paginator-container" *ngIf="showPaginator(results)" mode="transparent">
+      <div class="paginator-container" *ngIf="showPaginator(results)">
         <paginator [results]="results" (update)="update.emit($event)"></paginator>
       </div>
     </page-content>
@@ -31,7 +31,7 @@
 
   <content-monitor *ngIf="tileTemplate && resultType === 'tiles'" (ready)="notifyReady()"
     [ngClass]="{'d-none': rendering$ | async}">
-    <page-content mode="transparent" last>
+    <page-content mode="transparent" [last]="!showPaginator(results)">
       <div class="row tiled-results">
         <div class="tiled-result col-12 col-xs-6 col-sm-4" *ngFor="let row of results.results"
           [ngClass]="{
@@ -42,6 +42,9 @@
           <ng-container *ngTemplateOutlet="tileTemplate; context: {$implicit: row}"></ng-container>
         </div>
       </div>
+    </page-content>
+    <page-content last *ngIf="showPaginator(results)">
+      <paginator [results]="results" (update)="update.emit($event)"></paginator>
     </page-content>
   </content-monitor>
 
