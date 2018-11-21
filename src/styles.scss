@@ -717,3 +717,15 @@ notification data {
     margin-top: 0.6rem;
   }
 }
+
+@media print {
+  body {
+    background-color: transparent;
+  }
+  a, a:hover, h1, h2, h3 {
+    color: $body-color;
+  }
+  a {
+    text-decoration: none !important;
+  }
+}

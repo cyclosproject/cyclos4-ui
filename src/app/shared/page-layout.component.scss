@@ -28,3 +28,9 @@
     margin-top: -$section-margin;
   }
 }
+
+@media print {
+  .side-area {
+    display: none;
+  }
+}

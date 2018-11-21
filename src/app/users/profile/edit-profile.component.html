@@ -241,7 +241,7 @@
           </div>
         </label-value>
         <label-value i18n-label label="Map" kind="field" *ngIf="maps.enabled && address['form'].get('location').value.latitude != null">
-          <static-map class="mb-3" [address]="address['form'].value"></static-map>
+          <static-map [ngClass]="{'mb-3': layout.gtxs$ | async }" [address]="address['form'].value"></static-map>
         </label-value>
         <div *ngIf="maps.enabled || (layout.xxs$ | async) || !data.addressConfiguration.managePrivacy">
           <actions class="mt-0" forceRow>

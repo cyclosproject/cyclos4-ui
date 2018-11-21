@@ -20,7 +20,7 @@ export class StaticMapComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @Input() address: Address;
   @Input() width: number | 'auto' = 'auto';
-  @Input() height: number | 'auto' = 200;
+  @Input() height: number | 'auto' = 260;
 
   url: string;
   externalUrl: string;

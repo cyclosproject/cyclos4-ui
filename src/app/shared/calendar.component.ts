@@ -164,7 +164,7 @@ export class CalendarComponent extends BaseControlComponent<string> implements O
   }
   selectYear(year: number) {
     this.year = year;
-    this.type = 'year';
+    this.type = 'month';
   }
 
   isToday(date: number) {
