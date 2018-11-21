@@ -1,0 +1,46 @@
+<page-content mode="filters" [heading]="heading">
+  <form [formGroup]="form" class="filters-form">
+    <div class="row">
+      <div class="col-12 col-md-6">
+        <single-selection-field labelPosition="side" formControlName="status"
+          i18n-label label="Status" [fieldOptions]="statusOptions">
+        </single-selection-field>
+      </div>
+      <div class="col-12 col-md-6" *ngIf="data.accountTypes?.length > 1">
+        <single-selection-field labelPosition="side" formControlName="accountType"
+          i18n-label label="Account" i18n-emptyOption emptyOption="Any account">
+          <field-option *ngFor="let at of data.accountTypes" [value]="at.id"
+            [text]="at.name"></field-option>
+        </single-selection-field>
+      </div>
+      <div class="col-12 col-md-6">
+        <single-selection-field labelPosition="side" formControlName="preselectedPeriod"
+          i18n-label label="Period">
+          <field-option *ngFor="let period of data.preselectedPeriods" [id]="period['id']"
+            [value]="period" [text]="period.name"></field-option>
+        </single-selection-field>
+      </div>
+      <div *ngIf="(transferFilters$ | async)?.length > 0" class="col-12 col-md-6">
+        <single-selection-field labelPosition="side" formControlName="transferFilter"
+          i18n-label label="Filter" i18n-emptyOption emptyOption="Not applied">
+          <field-option *ngFor="let filter of transferFilters$.value" [value]="filter"
+            [text]="filter.name"></field-option>
+        </single-selection-field>
+      </div>
+      <div *ngIf="(form.value || (form.valueChanges | async))?.preselectedPeriod?.begin == null"
+        class="col-12 col-md-6">
+        <date-field labelPosition="side" formControlName="periodBegin"
+          i18n-label label="Begin date" minDate="past5" maxDate="today"
+          fieldSize="full">
+        </date-field>
+      </div>
+      <div *ngIf="(form.value || (form.valueChanges | async))?.preselectedPeriod?.end == null"
+        class="col-12 col-md-6">
+        <date-field labelPosition="side" formControlName="periodEnd"
+          i18n-label label="End date" minDate="past5" maxDate="today"
+          fieldSize="full">
+        </date-field>
+      </div>
+    </div>
+  </form>
+</page-content>

@@ -1,30 +1,7 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="loaded$ | async; else loading">
-    <page-content mode="filters" i18n-heading heading="Payment authorizations">
-      <form [formGroup]="form" class="filters-form">
-        <div class="row">
-          <div class="col-12 col-md-6">
-            <single-selection-field labelPosition="side" formControlName="status"
-              i18n-label label="Status" [fieldOptions]="statusOptions">
-            </single-selection-field>
-          </div>
-          <div class="col-12 col-md-6" *ngIf="data.accountTypes?.length > 1">
-            <single-selection-field labelPosition="side" formControlName="accountType"
-              i18n-label label="Account" i18n-emptyOption emptyOption="Any account">
-              <field-option *ngFor="let at of data.accountTypes" [value]="at.id"
-                [text]="at.name"></field-option>
-            </single-selection-field>
-          </div>
-          <div class="col-12 col-md-6">
-            <single-selection-field labelPosition="side" formControlName="preselectedPeriod"
-              i18n-label label="Period">
-              <field-option *ngFor="let period of data.preselectedPeriods"
-                [id]="period['id']" [value]="period" [text]="period.name"></field-option>
-            </single-selection-field>
-          </div>
-        </div>
-      </form>
-    </page-content>
+    <transaction-filters i18n-heading heading="Payment authorizations" [form]="form"
+      [data]="data" [statusOptions]="statusOptions"></transaction-filters>
 
     <results-layout resultType="list" [results]="results$ | async" (update)="update($event)">
       <table *resultTable class="table table-hover cursor-pointer">

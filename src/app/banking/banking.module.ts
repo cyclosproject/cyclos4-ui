@@ -13,6 +13,7 @@ import { SearchScheduledPaymentsComponent } from 'app/banking/transactions/searc
 import { SearchRecurringPaymentsComponent } from 'app/banking/transactions/search-recurring-payments.component';
 import { SearchAuthorizedPaymentsComponent } from 'app/banking/transactions/search-authorized-payments.component';
 import { ViewAuthorizationHistoryComponent } from 'app/banking/transactions/view-authorization-history.component';
+import { TransactionFitersComponentComponent } from 'app/banking/transactions/transaction-filters.component';
 
 /**
  * Banking module
@@ -32,6 +33,7 @@ import { ViewAuthorizationHistoryComponent } from 'app/banking/transactions/view
     SearchScheduledPaymentsComponent,
     SearchRecurringPaymentsComponent,
     SearchAuthorizedPaymentsComponent,
+    TransactionFitersComponentComponent,
     ViewTransactionComponent,
 
     PerformPaymentComponent,
