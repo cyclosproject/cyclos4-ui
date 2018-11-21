@@ -20,10 +20,10 @@
             [value]="period" [text]="period.name"></field-option>
         </single-selection-field>
       </div>
-      <div *ngIf="(transferFilters$ | async)?.length > 0" class="col-12 col-md-6">
+      <div *ngIf="transferFilters?.length > 0" class="col-12 col-md-6">
         <single-selection-field labelPosition="side" formControlName="transferFilter"
           i18n-label label="Filter" i18n-emptyOption emptyOption="Not applied">
-          <field-option *ngFor="let filter of transferFilters$.value" [value]="filter"
+          <field-option *ngFor="let filter of transferFilters" [value]="filter"
             [text]="filter.name"></field-option>
         </single-selection-field>
       </div>

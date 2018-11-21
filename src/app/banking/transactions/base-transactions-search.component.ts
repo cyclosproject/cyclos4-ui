@@ -1,11 +1,11 @@
 import { Injector, OnInit } from '@angular/core';
-import { AccountType, Currency, Image, TransactionDataForSearch, TransactionKind, TransactionResult, TransferFilter } from 'app/api/models';
+import { Currency, Image, TransactionDataForSearch, TransactionKind, TransactionResult, TransferFilter } from 'app/api/models';
 import { TransactionsService } from 'app/api/services';
+import { TransactionStatusService } from 'app/core/transaction-status.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { empty } from 'app/shared/helper';
 import { BehaviorSubject } from 'rxjs';
-import { TransactionStatusService } from 'app/core/transaction-status.service';
 
 /**
  * Base implementation for pages that search for transaction
@@ -58,9 +58,10 @@ export abstract class BaseTransactionsSearch
     });
 
     // Whenever the account type changes, also update the transfer filters
-    this.addSub(this.form.get('accountType').valueChanges.subscribe((at: AccountType) => {
+    this.addSub(this.form.get('accountType').valueChanges.subscribe(at => {
       this.form.patchValue({ transferFilter: null }, { emitEvent: false });
-      this.transferFilters$.next(this.data.transferFilters.filter(tf => tf.accountType.id === at.id));
+      const filters = this.data.transferFilters.filter(tf => tf.accountType.id === at);
+      this.transferFilters$.next(filters);
     }));
   }
 

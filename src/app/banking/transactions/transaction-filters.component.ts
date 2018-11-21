@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Injector, Input } from '@angular/co
 import { FormGroup } from '@angular/forms';
 import { BaseComponent } from 'app/shared/base.component';
 import { FieldOption } from 'app/shared/field-option';
-import { TransactionDataForSearch } from 'app/api/models';
+import { TransactionDataForSearch, TransferFilter } from 'app/api/models';
 
 /**
  * Filters used to search transactions (scheduled / recurring / authorized payments)
@@ -19,6 +19,7 @@ export class TransactionFitersComponentComponent
   @Input() heading: string;
   @Input() form: FormGroup;
   @Input() statusOptions: FieldOption[];
+  @Input() transferFilters: TransferFilter[];
 
   constructor(injector: Injector) {
     super(injector);
