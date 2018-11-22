@@ -12,6 +12,8 @@
 .content-title {
   border-bottom: 1px solid $section-border-color;
   height: $title-height-xxs;
+  min-height: $title-height-xxs;
+  max-height: $title-height-xxs;
   position: relative;
 
   .title-text {
@@ -24,6 +26,8 @@
 @include media-breakpoint-up(xs) {
   .content-title {
     height: $title-height-xs;
+    min-height: $title-height-xs;
+    max-height: $title-height-xs;
 
     .title-text {
       margin-left: 1.1rem;
@@ -35,6 +39,8 @@
 @include media-breakpoint-up(md) {
   .content-title {
     height: $title-height;
+    min-height: $title-height;
+    max-height: $title-height;
 
     .title-text {
       margin-left: $layout-spacer;
