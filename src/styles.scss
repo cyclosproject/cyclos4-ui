@@ -1,5 +1,6 @@
 @import 'definitions';
 @import '../node_modules/bootstrap/scss/bootstrap';
+@import url(#{$font-import-url});
 
 body.lt-md {
   background-color: $card-bg;

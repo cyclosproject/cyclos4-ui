@@ -1,8 +1,14 @@
-// From Cyclos logo: $primary: #176ea6;
+// Import the basic Bootstrap definitions, so we can override the variables
+@import "node_modules/bootstrap/scss/functions";
+@import "node_modules/bootstrap/scss/variables";
+@import "node_modules/bootstrap/scss/mixins";
+
 $primary: #1e88e5;
 $faded-color: #757575;
 
-$font-family-sans-serif: Roboto, sans-serif;
+// Make sure the font import URL and the font family (sans serif) are in sync
+$font-import-url: "https://fonts.googleapis.com/css?family=Roboto:400,500";
+$font-family-sans-serif: 'Roboto', sans-serif;
 $font-size-base: 0.875rem;
 $font-weight-light: 300;
 $font-weight-normal: 400;
@@ -19,11 +25,7 @@ $grid-breakpoints: (
   md: 768px,
   lg: 992px,
   xl: 1200px
-) !default;
-
-@import "node_modules/bootstrap/scss/functions";
-@import "node_modules/bootstrap/scss/variables";
-@import "node_modules/bootstrap/scss/mixins";
+);
 
 @if $enable-shadows == false {
   .shadow, .shadow-sm, .shadow-lg {

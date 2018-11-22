@@ -8,6 +8,7 @@ import { MenuService } from 'app/core/menu.service';
 import { PushNotificationsService } from 'app/core/push-notifications.service';
 import { LayoutService } from 'app/shared/layout.service';
 import { BehaviorSubject } from 'rxjs';
+import { blank } from 'app/shared/helper';
 
 declare const setSpinnerVisible: (boolean) => void;
 
@@ -43,13 +44,30 @@ export class AppComponent implements OnInit {
     this.dataForUiHolder.subscribe(dataForUi => {
       if (dataForUi != null) {
         this.initialized.next(true);
+        this.applyThemeColor();
       }
     });
     if (this.dataForUiHolder.dataForUi) {
       // Already initialized?!?
       this.initialized.next(true);
+      this.applyThemeColor();
     }
     this.login.subscribeForLoggingOut(flag => this.loggingOut.next(flag));
     setSpinnerVisible(false);
+  }
+
+  private applyThemeColor() {
+    const primaryColor = getComputedStyle(document.body).getPropertyValue('--primary').trim();
+    if (blank(primaryColor)) {
+      return;
+    }
+    let meta: HTMLMetaElement = document.getElementById('themeColorMeta') as HTMLMetaElement;
+    if (!meta) {
+      meta = document.createElement('meta');
+      meta.id = 'themeColorMeta';
+      meta.name = 'theme-color';
+      document.head.appendChild(meta);
+    }
+    meta.content = primaryColor;
   }
 }
