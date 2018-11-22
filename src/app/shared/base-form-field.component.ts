@@ -71,6 +71,10 @@ export abstract class BaseFormFieldComponent<T> extends BaseControlComponent<T> 
 
   /** Focus the current control */
   focus() {
+    if (document && document.body.classList.contains('lt-sm')) {
+      // Never focus elements on mobile
+      return;
+    }
     try {
       this.getFocusableControl().focus();
     } catch (e) {

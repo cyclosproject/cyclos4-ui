@@ -5,6 +5,10 @@
   width: 100%;
 }
 
+:host[mode=fullHeight], :host[mode=fullHeightTight] {
+  flex-grow: 1;
+}
+
 .content-title {
   border-bottom: 1px solid $section-border-color;
   height: $title-height-xxs;
@@ -262,18 +266,29 @@
 }
 
 @media print {
-  .heading-actions {
+  .heading-actions, .back-button {
     display: none !important;
   }
 
   :host, .page-content, .content-title {
-    border: none;
+    border: none !important;
+    border-radius: 0 !important;
     margin-top: 0 !important;
     padding: 0 !important;
   }
 
+  .page-content {
+    border-top: 1px solid black !important;
+    border-bottom: 1px solid black !important;
+  }
+  .page-content.mode-filters {
+    border-bottom-width: 0 !important;
+  }
+  .content-title {
+    border-bottom: 1px solid black !important;
+  }
   .content-title .title-text {
-    font-size: 1.5rem;
+    font-size: 1.5rem !important;
   }
 
   .page-content {

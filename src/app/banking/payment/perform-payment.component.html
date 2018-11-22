@@ -1,5 +1,6 @@
 <page-layout [ready]="data$ | async" [ngSwitch]="step$ | async">
-  <page-content *ngSwitchCase="'form'" [heading]="title" [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'">
+  <page-content *ngSwitchCase="'form'" [heading]="title" [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'"
+    last>
     <div class="flex-grow-1">
       <payment-step-form [data]="data" [form]="form" [currency]="currency$ | async"
         (paymentTypeData)="paymentTypeData = $event" (availablePaymentTypes)="availablePaymentTypes = $event">
@@ -12,7 +13,7 @@
   </page-content>
 
   <page-content *ngSwitchCase="'confirm'" i18n-heading heading="Payment confirmation"
-    [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'">
+    [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'" last>
     <div class="flex-grow-1 d-flex flex-column" [ngSwitch]="step$ | async">
       <payment-step-confirm [preview]="preview" [confirmationPassword]="confirmationPassword"
         [showPaymentType]="(availablePaymentTypes || []).length > 1"></payment-step-confirm>
@@ -24,7 +25,8 @@
     </actions>
   </page-content>
 
-  <page-content *ngSwitchCase="'done'" [heading]="doneTitle" [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'">
+  <page-content *ngSwitchCase="'done'" [heading]="doneTitle" [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'"
+    last>
     <div class="flex-grow-1 d-flex flex-column" [ngSwitch]="step$ | async">
       <payment-step-done [performed]="performed"></payment-step-done>
     </div>

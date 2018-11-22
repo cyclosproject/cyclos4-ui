@@ -9,3 +9,9 @@
   color: $link-color;
   opacity: 0.8;
 }
+
+@media print {
+  avatar {
+    display: none;
+  }
+}

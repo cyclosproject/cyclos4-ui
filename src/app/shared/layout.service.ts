@@ -5,24 +5,25 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 
 const BREAKPOINTS = {
-  xxs: 'screen and (max-width: 325px)',
-  xs: 'screen and (min-width: 326px) and (max-width: 575px)',
-  sm: 'screen and (min-width: 576px) and (max-width: 767px)',
-  md: 'screen and (min-width: 768px) and (max-width: 991px)',
-  lg: 'screen and (min-width: 992px) and (max-width: 1199px)',
-  xl: 'screen and (min-width: 1200px)',
+  xxs: '(max-width: 325px)',
+  xs: '(min-width: 326px) and (max-width: 575px)',
+  sm: '(min-width: 576px) and (max-width: 767px)',
+  md: '(min-width: 768px) and (max-width: 991px)',
+  lg: '(min-width: 992px) and (max-width: 1199px)',
+  xl: '(min-width: 1200px)',
 
-  'lt-xs': 'screen and (max-width: 325px)',
-  'lt-sm': 'screen and (max-width: 575px)',
-  'lt-md': 'screen and (max-width: 767px)',
-  'lt-lg': 'screen and (max-width: 991px)',
-  'lt-xl': 'screen and (max-width: 1199px)',
+  'lt-xs': '(max-width: 325px)',
+  'lt-sm': '(max-width: 575px)',
+  'lt-md': '(max-width: 767px)',
+  'lt-lg': '(max-width: 991px)',
+  'lt-xl': '(max-width: 1199px)',
 
-  'gt-xxs': 'screen and (min-width: 326px)',
-  'gt-xs': 'screen and (min-width: 576px)',
-  'gt-sm': 'screen and (min-width: 768px)',
-  'gt-md': 'screen and (min-width: 992px)',
-  'gt-lg': 'screen and (min-width: 1200px)'
+  'gt-xxs': '(min-width: 326px)',
+  'gt-xs': '(min-width: 576px)',
+  'gt-sm': '(min-width: 768px)',
+  'gt-md': '(min-width: 992px)',
+  'gt-lg': '(min-width: 1200px)'
+
 };
 
 /**

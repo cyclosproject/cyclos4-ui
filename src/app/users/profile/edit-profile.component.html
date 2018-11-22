@@ -1,6 +1,6 @@
 <page-layout [ready]="data$ | async">
   <page-content *ngIf="data != null" i18n-heading heading="Edit profile"
-    [headingActions]="headingActions$ | async">
+    [headingActions]="headingActions$ | async" last>
 
     <!-- Image -->
     <ng-container *ngIf="imagesAvailability !== 'disabled'">
@@ -240,8 +240,9 @@
             </button>
           </div>
         </label-value>
-        <label-value i18n-label label="Map" kind="field" *ngIf="maps.enabled && address['form'].get('location').value.latitude != null">
-          <static-map [ngClass]="{'mb-3': layout.gtxs$ | async }" [address]="address['form'].value"></static-map>
+        <label-value kind="field" *ngIf="maps.enabled && address['form'].get('location').value.latitude != null"
+          i18n-label label="Map" class="pb-0 mb-3">
+          <static-map [address]="address['form'].value"></static-map>
         </label-value>
         <div *ngIf="maps.enabled || (layout.xxs$ | async) || !data.addressConfiguration.managePrivacy">
           <actions class="mt-0" forceRow>
