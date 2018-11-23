@@ -1,7 +1,7 @@
-import { Component, ChangeDetectionStrategy, Injector, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject } from 'rxjs';
+import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { BasePageComponent } from 'app/shared/base-page.component';
+import { environment } from 'environments/environment';
+import { BehaviorSubject } from 'rxjs';
 
 /**
  * Displays the home page
@@ -18,8 +18,7 @@ export class HomeComponent extends BasePageComponent<void> implements OnInit {
   title: string;
 
   constructor(
-    injector: Injector,
-    private httpClient: HttpClient) {
+    private injector: Injector) {
     super(injector);
   }
 
@@ -32,12 +31,10 @@ export class HomeComponent extends BasePageComponent<void> implements OnInit {
     }) : this.i18n('Home');
 
     // Load the home page content
-    const contentFile = guest ? 'guests-home' : 'users-home';
-    this.httpClient.get(`content/${contentFile}.html`, {
-      responseType: 'text'
-    })
-      .subscribe(content => {
-        this.content.next(content);
-      });
+    const getter = guest ? environment.guestsHome : environment.usersHome;
+    this.addSub(getter.get({
+      user: this.login.user,
+      injector: this.injector
+    }).subscribe(content => this.content.next(content)));
   }
 }
