@@ -117,7 +117,7 @@
   </a>
 
   <ng-container *resultInfoWindow="let ad; let addr = address">
-    <a class="plain" [routerLink]="path(ad)">
+    <a class="plain d-block pt-1" [routerLink]="path(ad)">
       <avatar *ngIf="ad.image" ngClass="card-img-top mb-3" [roundBorders]="false"
         [image]="ad.image" size="full" imageSize="200"></avatar>
 

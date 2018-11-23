@@ -51,7 +51,7 @@
   </maybe-link>
 
   <ng-container *resultInfoWindow="let row; let addr = address">
-    <maybe-link [link]="path(row)" class="plain p-2" style="overflow:hidden">
+    <maybe-link [link]="path(row)" class="plain d-block pt-1">
       <!-- Use the same image size as the tiled results, so the browser can cache -->
       <avatar [roundBorders]="false" [image]="user(row).image" size="120"
         imageSize="200" iconSize="8rem"></avatar>
