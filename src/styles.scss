@@ -730,7 +730,7 @@ notification data {
   a {
     text-decoration: none !important;
   }
-  .link-with-icon icon, td.avatar, th.avatar, pagination {
+  .link-with-icon icon, td.avatar, th.avatar, td.row-actions, th.row-actions, pagination {
     display: none;
   }
 }

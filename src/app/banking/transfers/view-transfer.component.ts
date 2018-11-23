@@ -41,7 +41,7 @@ export class ViewTransferComponent extends BasePageComponent<TransferView> imple
 
 
   private initActions(transfer: TransferView): HeadingAction[] {
-    const actions: HeadingAction[] = [];
+    const actions: HeadingAction[] = [this.printAction];
     const transaction = transfer.transaction || {};
     if (!empty(transaction.authorizations)) {
       actions.push(new HeadingAction('check_circle_outline', this.i18n('View authorizations'), () => {

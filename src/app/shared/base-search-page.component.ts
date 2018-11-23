@@ -33,6 +33,7 @@ export abstract class BaseSearchPageComponent<D, R> extends BasePageComponent<D>
   readonly form: FormGroup;
   previousValue: any;
 
+  protected printable = false;
   private _moreFiltersAction: HeadingAction;
 
   protected onDataInitialized(_data: D) {
@@ -167,8 +168,8 @@ export abstract class BaseSearchPageComponent<D, R> extends BasePageComponent<D>
       return this._moreFiltersAction;
     }
 
-    const more = this.i18n('More filters');
-    const less = this.i18n('Less filters');
+    const more = this.printable ? this.i18n('Show more filters') : this.i18n('More filters');
+    const less = this.printable ? this.i18n('Show less filters') : this.i18n('Less filters');
 
     this._moreFiltersAction = new HeadingAction('filter_list', more, () => {
       this.moreFilters = !this.moreFilters;

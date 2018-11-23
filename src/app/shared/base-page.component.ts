@@ -17,7 +17,6 @@ export abstract class BasePageComponent<D> extends BaseComponent implements OnIn
   @HostBinding('style.flex-grow') styleFlexGrow = '1';
 
   data$ = new BehaviorSubject<D>(null);
-
   get data(): D {
     return this.data$.value;
   }
@@ -29,12 +28,22 @@ export abstract class BasePageComponent<D> extends BaseComponent implements OnIn
   }
 
   headingActions$ = new BehaviorSubject<HeadingAction[]>(null);
-
   get headingActions(): HeadingAction[] {
     return this.headingActions$.value;
   }
   set headingActions(headingActions: HeadingAction[]) {
     this.headingActions$.next(headingActions);
+  }
+
+  private _printAction: HeadingAction;
+  protected get printAction(): HeadingAction {
+    if (this._printAction) {
+      return this._printAction;
+    }
+    this._printAction = new HeadingAction('print', this.i18n('Print'), () => {
+      self.print();
+    }, true);
+    return this._printAction;
   }
 
   /**

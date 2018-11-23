@@ -120,7 +120,11 @@ export class AccountHistoryComponent
       ApiHelper.preProcessPreselectedPeriods(data, this.form);
 
       // Set the heading action
-      this.headingActions = [this.moreFiltersAction];
+      this.printable = true;
+      this.headingActions = [
+        this.moreFiltersAction,
+        this.printAction
+      ];
 
       // Only initialize the data once the form is filled-in
       this.data = data;

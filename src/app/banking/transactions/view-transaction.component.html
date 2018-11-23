@@ -79,8 +79,8 @@
         <th i18n>Number</th>
         <th i18n>Due date</th>
         <th i18n>Status</th>
-        <th i18n class="text-right">Amount</th>
-        <th style="width: 1rem;" *ngIf="hasInstallmentActions"></th>
+        <th i18n class="amount">Amount</th>
+        <th class="row-actions" style="width: 1rem;" *ngIf="hasInstallmentActions"></th>
       </thead>
       <tbody>
         <tr *ngFor="let installment of transaction.installments" [ngClass]="{'cursor-pointer': path(installment)}"
@@ -105,7 +105,7 @@
               {{ installment.amount | currency:transaction.currency }}
             </maybe-link>
           </td>
-          <td *ngIf="hasInstallmentActions" class="actions">
+          <td *ngIf="hasInstallmentActions" class="row-actions">
             <button *ngIf="installment.canProcess" i18n-tooltip tooltip="Process this installment"
               class="btn btn-light btn-icon" (click)="processInstallment(installment)">
               <icon icon="play_circle_outline"></icon>
@@ -128,7 +128,7 @@
         <th i18n>Date</th>
         <th i18n>Status</th>
         <th i18n class="text-right">Amount</th>
-        <th style="width: 1rem;" *ngIf="hasOccurrenceActions"></th>
+        <th class="row-actions" style="width: 1rem;" *ngIf="hasOccurrenceActions"></th>
       </thead>
       <tbody>
         <tr *ngFor="let occurrence of transaction.occurrences" [ngClass]="{'cursor-pointer': path(occurrence)}"
@@ -153,7 +153,7 @@
               {{ occurrence.amount | currency:transaction.currency }}
             </maybe-link>
           </td>
-          <td *ngIf="hasOccurrenceActions" class="actions">
+          <td *ngIf="hasOccurrenceActions" class="row-actions">
             <button *ngIf="occurrence.canProcess" i18n-tooltip tooltip="Process this failed occurrence"
               class="btn btn-light btn-icon" (click)="processOcurrence(occurrence)">
               <icon icon="play_circle_outline"></icon>
