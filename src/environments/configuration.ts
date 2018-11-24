@@ -59,6 +59,17 @@ const GUESTS_HOME: ContentGetter = new UrlContentGetter('content/guests-home.htm
 // Content for logged users's home page
 const USERS_HOME: ContentGetter = new UrlContentGetter('content/users-home.html');
 
+// The time each content is cached, by key, in minutes.
+// If not speciied, will be 24 hours.
+// If set to 0, will not cache.
+// If set to a negative number, will cache indefinitely.
+const CACHE_TIMEOUTS: { [key: string]: number } = {
+  guestsHome: 60,
+  usersHome: 60
+};
+
+
+
 // **** Final configuration. Please, don't modify it **** //
 export const configuration = {
   production: true,
@@ -71,5 +82,6 @@ export const configuration = {
   adCategoryIcons: AD_CATEGORY_ICONS,
   adCategoryColors: AD_CATEGORY_COLORS,
   guestsHome: GUESTS_HOME,
-  usersHome: USERS_HOME
+  usersHome: USERS_HOME,
+  cacheTimeouts: CACHE_TIMEOUTS
 };

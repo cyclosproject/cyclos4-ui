@@ -15,6 +15,7 @@ a {
 }
 .menu-text {
   font-size: 1.2em;
+  line-height: 1em;
 }
 a:not(.active) {
   color: $menu-bar-inactive-color;

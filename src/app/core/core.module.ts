@@ -28,6 +28,7 @@ import { SharedModule } from 'app/shared/shared.module';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { LightboxModule } from 'ngx-lightbox';
 import { NextRequestState } from './next-request-state';
+import { CacheService } from 'app/core/cache.service';
 
 export const API_INTERCEPTOR_PROVIDER: Provider = {
   provide: HTTP_INTERCEPTORS,
@@ -79,6 +80,7 @@ export const translations = require(`raw-loader!../../i18n/cyclos4-ui.en.xlf`);
     NotificationService,
     BreadcrumbService,
     StateManager,
+    CacheService,
     LoginService,
     LoginState,
     MenuService,

@@ -25,16 +25,19 @@ export class HomeComponent extends BasePageComponent<void> implements OnInit {
   ngOnInit() {
     super.ngOnInit();
     const guest = this.login.user == null;
+    const key = guest ? 'guestsHome' : 'usersHome';
 
     this.title = guest ? this.i18n('Welcome to {{name}}', {
       name: this.format.appTitle
     }) : this.i18n('Home');
 
-    // Load the home page content
-    const getter = guest ? environment.guestsHome : environment.usersHome;
-    this.addSub(getter.get({
-      user: this.login.user,
-      injector: this.injector
+    // The content is cached
+    this.addSub(this.cache.get(key, () => {
+      const getter = guest ? environment.guestsHome : environment.usersHome;
+      return getter.get({
+        user: this.login.user,
+        injector: this.injector
+      });
     }).subscribe(content => this.content.next(content)));
   }
 }

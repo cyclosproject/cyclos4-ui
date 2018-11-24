@@ -239,6 +239,7 @@
   background-color: $title-button-bg;
   color: $title-button-color;
   white-space: nowrap;
+  align-items: center;
   icon {
     margin: 0.075rem 0.8rem 0 0;
     color: $title-button-icon-color;
@@ -262,7 +263,7 @@
 }
 
 .heading-action-option-text {
-  line-height: 1.5rem;
+  line-height: 1em;
 }
 
 @include media-breakpoint-up(md) {

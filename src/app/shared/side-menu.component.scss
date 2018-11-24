@@ -6,7 +6,7 @@
 .side-menu-title {
   border-bottom: 1px solid $section-border-color;
   font-size: 1.2em;
-  padding: 0.75rem 1.25rem;
+  padding: 0.85rem 1.25rem 0.75rem 1.25rem;
   height: $title-height;
   display: flex;
   align-items: center;
@@ -24,14 +24,12 @@ a.nav-item {
   font-size: 1.1em;
   display: flex;
   flex-direction: row;
-
-  icon {
-    top: -0.1rem;
-  }
+  align-items: center;
 
   .nav-item-text {
     margin-left: 0.8rem;
     flex-grow: 1;
+    line-height: 1em;
   }
 }
 a.nav-item:last-child {
