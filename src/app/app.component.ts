@@ -9,6 +9,7 @@ import { PushNotificationsService } from 'app/core/push-notifications.service';
 import { LayoutService } from 'app/shared/layout.service';
 import { BehaviorSubject } from 'rxjs';
 import { blank } from 'app/shared/helper';
+import { trim } from 'lodash';
 
 declare const setSpinnerVisible: (boolean) => void;
 
@@ -44,27 +45,52 @@ export class AppComponent implements OnInit {
     this.dataForUiHolder.subscribe(dataForUi => {
       if (dataForUi != null) {
         this.initialized.next(true);
-        this.applyThemeColor();
+        this.prepareContent();
       }
     });
     if (this.dataForUiHolder.dataForUi) {
       // Already initialized?!?
       this.initialized.next(true);
-      this.applyThemeColor();
+      this.prepareContent();
     }
     this.login.subscribeForLoggingOut(flag => this.loggingOut.next(flag));
     setSpinnerVisible(false);
   }
 
-  private applyThemeColor() {
-    const primaryColor = getComputedStyle(document.body).getPropertyValue('--primary').trim();
+  private prepareContent() {
+    const style = getComputedStyle(document.body);
+    this.applyFont(style);
+    this.applyThemeColor(style);
+  }
+
+  private applyFont(style: CSSStyleDeclaration) {
+    const url = trim(style.getPropertyValue('--font-import-url'), '\" ');
+    if (blank(url)) {
+      return;
+    }
+    const id = 'fontStyle';
+    let element: HTMLLinkElement = document.getElementById(id) as HTMLLinkElement;
+    if (!element) {
+      element = document.createElement('link');
+      element.id = id;
+      element.rel = 'stylesheet';
+      document.head.appendChild(element);
+      element.href = url;
+    } else if (element.href !== url) {
+      element.href = url;
+    }
+  }
+
+  private applyThemeColor(style: CSSStyleDeclaration) {
+    const primaryColor = style.getPropertyValue('--primary').trim();
     if (blank(primaryColor)) {
       return;
     }
-    let meta: HTMLMetaElement = document.getElementById('themeColorMeta') as HTMLMetaElement;
+    const id = 'themeColorMeta';
+    let meta: HTMLMetaElement = document.getElementById(id) as HTMLMetaElement;
     if (!meta) {
       meta = document.createElement('meta');
-      meta.id = 'themeColorMeta';
+      meta.id = id;
       meta.name = 'theme-color';
       document.head.appendChild(meta);
     }

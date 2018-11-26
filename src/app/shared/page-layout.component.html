@@ -4,6 +4,7 @@
     }">
     <div *ngIf="showLeftArea | async" class="side-area">
       <side-menu></side-menu>
+      <banner *ngFor="let card of banner.banners$ | async" [banners]="card"></banner>
     </div>
 
     <div class="content-area d-flex flex-column" [ngClass]="{

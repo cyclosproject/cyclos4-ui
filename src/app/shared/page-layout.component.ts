@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { BannerService } from 'app/core/banner.service';
 import { LoginService } from 'app/core/login.service';
 import { MenuService } from 'app/core/menu.service';
 import { truthyAttr } from 'app/shared/helper';
@@ -35,7 +36,8 @@ export class PageLayoutComponent implements OnInit, OnDestroy {
   constructor(
     public layout: LayoutService,
     public login: LoginService,
-    public menu: MenuService) { }
+    public menu: MenuService,
+    public banner: BannerService) { }
 
   ngOnInit() {
     const updateShowLeft = () => {

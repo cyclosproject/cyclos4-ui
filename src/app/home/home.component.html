@@ -1,6 +1,6 @@
 <page-layout [ready]="content | async" hideMenu>
   <ng-container *ngIf="login.user; else guest">
-    <page-content>
+    <page-content [heading]="(layout.gtmd$ | async) ? title : null">
       <dashboard></dashboard>
     </page-content>
     <page-content>

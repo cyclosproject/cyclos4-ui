@@ -1,17 +1,14 @@
-import { RootMenu, Menu } from 'app/shared/menu';
-import { User } from 'app/api/models';
 import { Injector } from '@angular/core';
+import { User } from 'app/api/models';
+import { Menu } from 'app/shared/menu';
 
 /**
  * Parameters used to select which banners to show
  */
 export interface BannerFilter {
 
-  /** The last selected root */
-  root: RootMenu;
-
   /** The last selected menu item  */
-  menu?: Menu;
+  menu: Menu;
 
   /** The logged user, or null for guests */
   user?: User;

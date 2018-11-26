@@ -1,3 +1,4 @@
+import { BannerResolver } from 'app/content/banners-resolver';
 import { ContentGetter } from 'app/content/content-getter';
 import { UrlContentGetter } from 'app/content/url-content-getter';
 
@@ -58,6 +59,8 @@ const AD_CATEGORY_COLORS = {
 const GUESTS_HOME: ContentGetter = new UrlContentGetter('content/guests-home.html');
 // Content for logged users's home page
 const USERS_HOME: ContentGetter = new UrlContentGetter('content/users-home.html');
+// Banner resolver
+const BANNER_RESOLVER: BannerResolver = null;
 
 // The time each content is cached, by key, in minutes.
 // If not speciied, will be 24 hours.
@@ -83,5 +86,6 @@ export const configuration = {
   adCategoryColors: AD_CATEGORY_COLORS,
   guestsHome: GUESTS_HOME,
   usersHome: USERS_HOME,
+  bannerResolver: BANNER_RESOLVER,
   cacheTimeouts: CACHE_TIMEOUTS
 };

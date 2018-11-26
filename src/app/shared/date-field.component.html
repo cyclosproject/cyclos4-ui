@@ -14,6 +14,7 @@
         <select #part class="custom-select" [attr.id]="id + '_0'"
           [formControl]="control" (click)="dropdown.hide()" (input)="onPartChanged($event)"
           [ngClass]="{
+            'mx-1': index === 1 && (layout.ltsm$ | async),
             'is-invalid': (formControl.statusChanges | async) === 'INVALID' && formControl.touched,
             'field-year': format.dateFields[index] === 'year',
             'field-month': format.dateFields[index] === 'month',

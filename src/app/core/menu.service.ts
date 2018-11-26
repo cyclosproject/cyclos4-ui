@@ -15,21 +15,34 @@ import { distinctUntilChanged, filter, map } from 'rxjs/operators';
 })
 export class MenuService {
 
-  /** The active menu */
+  /** The active menu, according to the visible page */
   activeMenu$: Observable<Menu>;
 
-  /** The active root menu */
+  /** The active root menu, according to the visible page */
   activeRootMenu$: Observable<RootMenu>;
 
+  /**
+   * The last menu item which was selected by the user.
+   * If the user navigates through links will not correspond to the active menu.
+   */
+  lastSelectedMenu$: Observable<Menu>;
+
+  /** The last menu which was selected by the user */
+  private _lastSelectedMenu = new BehaviorSubject<Menu>(null);
+  get lastSelectedMenu(): Menu {
+    return this._lastSelectedMenu.value;
+  }
+  set lastSelectedMenu(menu: Menu) {
+    this._lastSelectedMenu.next(menu);
+  }
+
   private _activeMenu = new BehaviorSubject<Menu>(null);
-  private _fullMenu: BehaviorSubject<RootMenuEntry[]>;
+  private _fullMenu = new BehaviorSubject<RootMenuEntry[]>([]);
 
   constructor(
     private i18n: I18n,
     private dataForUiHolder: DataForUiHolder
   ) {
-    // Clear the status whenever the logged user changes
-    this._fullMenu = new BehaviorSubject<RootMenuEntry[]>([]);
     const initialDataForUi = this.dataForUiHolder.dataForUi;
     const initialAuth = (initialDataForUi || {}).auth;
 
@@ -47,6 +60,9 @@ export class MenuService {
     this.activeRootMenu$ = this.activeMenu$.pipe(
       map(menu => menu == null ? null : menu.root),
       filter(rootMenu => rootMenu != null),
+      distinctUntilChanged()
+    );
+    this.lastSelectedMenu$ = this._lastSelectedMenu.asObservable().pipe(
       distinctUntilChanged()
     );
   }

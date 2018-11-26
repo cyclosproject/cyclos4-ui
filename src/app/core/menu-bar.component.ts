@@ -39,6 +39,9 @@ export class MenuBarComponent implements OnInit {
   onClick(event: MouseEvent, root: RootMenuEntry) {
     const entry = root.entries[0];
     if (entry && entry.url != null) {
+      // Update the last selected menu
+      this.menu.lastSelectedMenu = entry.menu;
+
       // Whenever a menu is clicked, clear the state, because a new navigation path starts
       this.stateManager.clear();
       this.breadcrumb.clear();

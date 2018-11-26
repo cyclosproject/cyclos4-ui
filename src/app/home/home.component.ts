@@ -29,7 +29,7 @@ export class HomeComponent extends BasePageComponent<void> implements OnInit {
 
     this.title = guest ? this.i18n('Welcome to {{name}}', {
       name: this.format.appTitle
-    }) : this.i18n('Home');
+    }) : this.i18n('Quick access');
 
     // The content is cached
     this.addSub(this.cache.get(key, () => {

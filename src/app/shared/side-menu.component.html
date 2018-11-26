@@ -14,7 +14,7 @@
     </ng-container>
     <a *ngFor="let entry of (entries$ | async)?.entries" class="nav-item"
       [routerLink]="entry.url" routerLinkActive="active"
-      [routerLinkActiveOptions]="{exact: true}" (click)="goTo($event, entry.url)">
+      [routerLinkActiveOptions]="{exact: true}" (click)="goTo($event, entry.menu, entry.url)">
       <icon size="1.4rem" [icon]="entry.icon"></icon>
       <div class="nav-item-text">{{ entry.label }}</div>
     </a>

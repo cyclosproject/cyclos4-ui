@@ -57,10 +57,13 @@ export class SideMenuComponent implements OnInit {
   }
 
   onAccountClicked(event: MouseEvent, account: AccountWithCurrency) {
-    this.goTo(event, this.accountLink(account));
+    this.goTo(event, Menu.ACCOUNT_HISTORY, this.accountLink(account));
   }
 
-  goTo(event: MouseEvent, url: string | string[]) {
+  goTo(event: MouseEvent, menu: Menu, url: string | string[]) {
+    // Update the last selected menu entry
+    this.menu.lastSelectedMenu = menu;
+
     // Clear the shared state
     this.breadcrumb.clear();
     this.stateManager.clear();

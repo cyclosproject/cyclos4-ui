@@ -27,6 +27,7 @@ export class ViewAdComponent extends BasePageComponent<AdView> implements OnInit
 
   ngOnInit() {
     super.ngOnInit();
+    this.headingActions = [this.printAction];
     const id = this.route.snapshot.paramMap.get('id');
     this.marketplaceService.viewAd({ ad: id })
       .subscribe(ad => {

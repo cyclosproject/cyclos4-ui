@@ -121,6 +121,8 @@ export class AccountHistoryComponent
 
       // Set the heading action
       this.printable = true;
+      const print = this.printAction;
+      print.label = this.i18n('Print transactions');
       this.headingActions = [
         this.moreFiltersAction,
         this.printAction

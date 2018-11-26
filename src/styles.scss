@@ -1,6 +1,9 @@
 @import 'definitions';
 @import '../node_modules/bootstrap/scss/bootstrap';
-@import url(#{$font-import-url});
+
+:root {
+  --font-import-url: "#{$font-import-url}";
+}
 
 body.lt-md {
   background-color: $card-bg;
@@ -722,6 +725,7 @@ notification data {
 @media print {
   body {
     background-color: transparent;
+    padding-top: 1rem;
   }
   a, a:hover, h1, h2, h3, td, th, tr, table, .positive, .negative {
     color: $body-color !important;

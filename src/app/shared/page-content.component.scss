@@ -215,6 +215,15 @@
     box-shadow: none;
   }
 }
+.heading-action-with-icon {
+  display: flex;
+  align-items: center;
+
+  icon {
+    margin-right: 0.5rem;
+    opacity: 0.6;
+  }
+}
 .heading-action.dropdown-toggle::after {
   margin-top: 14%;
   margin-left: 0.3rem;

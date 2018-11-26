@@ -3,7 +3,9 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { forwardRef, NgModule, Optional, Provider, SkipSelf, TRANSLATIONS, TRANSLATIONS_FORMAT } from '@angular/core';
 import { I18n } from '@ngx-translate/i18n-polyfill';
 import { ApiInterceptor } from 'app/core/api.interceptor';
+import { BannerService } from 'app/core/banner.service';
 import { BreadcrumbService } from 'app/core/breadcrumb.service';
+import { CacheService } from 'app/core/cache.service';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
 import { FormatService } from 'app/core/format.service';
@@ -28,7 +30,6 @@ import { SharedModule } from 'app/shared/shared.module';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { LightboxModule } from 'ngx-lightbox';
 import { NextRequestState } from './next-request-state';
-import { CacheService } from 'app/core/cache.service';
 
 export const API_INTERCEPTOR_PROVIDER: Provider = {
   provide: HTTP_INTERCEPTORS,
@@ -81,6 +82,7 @@ export const translations = require(`raw-loader!../../i18n/cyclos4-ui.en.xlf`);
     BreadcrumbService,
     StateManager,
     CacheService,
+    BannerService,
     LoginService,
     LoginState,
     MenuService,

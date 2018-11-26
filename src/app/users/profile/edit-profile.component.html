@@ -241,19 +241,24 @@
           </div>
         </label-value>
         <label-value kind="field" *ngIf="maps.enabled && address['form'].get('location').value.latitude != null"
-          i18n-label label="Map" class="pb-0 mb-3">
+          i18n-label label="Map" class="pb-0">
           <static-map [address]="address['form'].value"></static-map>
         </label-value>
-        <div *ngIf="maps.enabled || (layout.xxs$ | async) || !data.addressConfiguration.managePrivacy">
-          <actions class="mt-0" forceRow>
-            <button class="btn btn-outline-primary" type="button" (click)="removeAddress(address)">
-              Remove this address
-            </button>
-            <button *ngIf="address['form'].get('location').value.latitude == null"
-              class="btn btn-outline-primary" type="button" (click)="locateAddress(address['form'])">
-              View map
-            </button>
-          </actions>
+        <div class="row mt-3 no-gutters" *ngIf="maps.enabled || (layout.xxs$ | async) || !data.addressConfiguration.managePrivacy">
+          <div *ngIf="layout.gtxs$ | async" class="col-4"></div>
+          <div class="col-12 col-sm-8">
+            <actions class="mt-0" forceRow>
+              <button class="btn btn-outline-primary" type="button" (click)="removeAddress(address)">
+                Remove this address
+              </button>
+              <ng-container *ngIf="address['form'].get('location').value.latitude == null">
+                <div class="flex-grow-1"></div>
+                <button class="btn btn-outline-primary" type="button" (click)="locateAddress(address['form'])">
+                  View map
+                </button>
+              </ng-container>
+            </actions>
+          </div>
         </div>
         <hr *ngIf="!last">
       </ng-container>
