@@ -9,6 +9,8 @@
 .side-area {
   width: 300px;
   margin-right: $section-margin;
+  display: flex;
+  flex-direction: column;
 }
 .content-area {
   flex: 1;

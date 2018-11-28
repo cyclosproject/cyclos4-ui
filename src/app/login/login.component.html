@@ -1,5 +1,6 @@
 <page-layout [ready]="data$ | async" size="small" hideMenu>
-  <page-content *ngIf="data" layout="centered" heading="Login" i18n-heading="Login page title">
+  <page-content *ngIf="data" layout="centered" heading="Login" i18n-heading="Login page title"
+    [ngClass]="{'with-left-area': layout.leftAreaVisible$ | async}">
     <form [formGroup]="form" (submit)="$event.preventDefault()">
       <div *ngIf="loggedOut; else regularMessage" class="mb-4" i18n>
         You have been disconnected.

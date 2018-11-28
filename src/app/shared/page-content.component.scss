@@ -208,6 +208,7 @@
   padding-left: 0.2rem;
   padding-right: 0.2rem;
   font-size: 0.8rem;
+  cursor: pointer;
 
   &:focus, &:active {
     outline: 0;
@@ -220,6 +221,7 @@
   align-items: center;
 
   icon {
+    transform: translateX(-0.1rem);
     margin-right: 0.5rem;
     opacity: 0.6;
   }
@@ -242,9 +244,9 @@
 
 .heading-action-option {
   display: flex;
-  padding: 0.6rem 1rem;
+  padding: 0.6rem 1.1rem 0.6rem 1rem;
   min-height: 1.5em;
-  cursor: default;
+  cursor: pointer;
   background-color: $title-button-bg;
   color: $title-button-color;
   white-space: nowrap;

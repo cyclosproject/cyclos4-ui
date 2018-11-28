@@ -53,6 +53,7 @@ export class ViewProfileComponent extends BasePageComponent<UserView> implements
         }, (resp: HttpErrorResponse) => {
           if ([ErrorStatus.FORBIDDEN, ErrorStatus.UNAUTHORIZED].includes(resp.status)) {
             this.notification.error(this.i18n('You don\'t have permission to view the profile of this user'));
+            this.breadcrumb.back();
             this.data = {};
           } else {
             defaultHandling(resp);

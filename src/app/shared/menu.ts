@@ -33,15 +33,16 @@ export module RootMenu {
 export class Menu {
   constructor(
     public readonly root: RootMenu,
-    public readonly name: string) { }
+    public readonly name: string,
+    public readonly menuVisible = true) { }
 }
 export module Menu {
   // Standalone
-  export const HOME = new Menu(RootMenu.HOME, 'HOME');
-  export const LOGIN = new Menu(RootMenu.LOGIN, 'LOGIN');
-  export const REGISTRATION = new Menu(RootMenu.REGISTRATION, 'REGISTRATION');
-  export const PUBLIC_DIRECTORY = new Menu(RootMenu.PUBLIC_DIRECTORY, 'PUBLIC_DIRECTORY');
-  export const PUBLIC_MARKETPLACE = new Menu(RootMenu.PUBLIC_MARKETPLACE, 'PUBLIC_MARKETPLACE');
+  export const HOME = new Menu(RootMenu.HOME, 'HOME', false);
+  export const LOGIN = new Menu(RootMenu.LOGIN, 'LOGIN', false);
+  export const REGISTRATION = new Menu(RootMenu.REGISTRATION, 'REGISTRATION', false);
+  export const PUBLIC_DIRECTORY = new Menu(RootMenu.PUBLIC_DIRECTORY, 'PUBLIC_DIRECTORY', false);
+  export const PUBLIC_MARKETPLACE = new Menu(RootMenu.PUBLIC_MARKETPLACE, 'PUBLIC_MARKETPLACE', false);
 
   // Banking
   export const ACCOUNT_HISTORY = new Menu(RootMenu.BANKING, 'ACCOUNT_HISTORY');
@@ -66,7 +67,7 @@ export module Menu {
   export const CONTACTS = new Menu(RootMenu.PERSONAL, 'CONTACTS');
   export const CONTACT_PROFILE = new Menu(RootMenu.PERSONAL, 'CONTACTS_PROFILE');
   export const PASSWORDS = new Menu(RootMenu.PERSONAL, 'PASSWORDS');
-  export const LOGOUT = new Menu(RootMenu.PERSONAL, 'LOGOUT');
+  export const LOGOUT = new Menu(RootMenu.PERSONAL, 'LOGOUT', false);
 }
 
 

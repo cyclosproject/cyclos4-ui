@@ -1,20 +1,21 @@
+import { AgmMarker, LatLngBounds } from '@agm/core';
 import {
-  Component, ChangeDetectionStrategy, Input, TemplateRef, ContentChild, Output, EventEmitter, QueryList, ViewChildren
+  ChangeDetectionStrategy, Component, ContentChild, EventEmitter, Input, Output,
+  QueryList, TemplateRef, ViewChildren
 } from '@angular/core';
 import { Address } from 'app/api/models';
-import { ResultType } from 'app/shared/result-type';
-import { AgmMarker, LatLngBounds } from '@agm/core';
+import { LoginService } from 'app/core/login.service';
+import { MapsService } from 'app/core/maps.service';
+import { empty, fitBounds } from 'app/shared/helper';
+import { LayoutService } from 'app/shared/layout.service';
+import { PageData } from 'app/shared/page-data';
 import { PagedResults } from 'app/shared/paged-results';
+import { ResultCategoryDirective } from 'app/shared/result-category.directive';
+import { ResultInfoWindowDirective } from 'app/shared/result-info-window.directive';
 import { ResultTableDirective } from 'app/shared/result-table.directive';
 import { ResultTileDirective } from 'app/shared/result-tile.directive';
-import { ResultCategoryDirective } from 'app/shared/result-category.directive';
-import { LayoutService } from 'app/shared/layout.service';
-import { MapsService } from 'app/core/maps.service';
+import { ResultType } from 'app/shared/result-type';
 import { BehaviorSubject } from 'rxjs';
-import { PageData } from 'app/shared/page-data';
-import { empty, fitBounds } from 'app/shared/helper';
-import { ResultInfoWindowDirective } from 'app/shared/result-info-window.directive';
-import { LoginService } from 'app/core/login.service';
 
 /**
  * Template for rendering results of distinct `ResultType`s

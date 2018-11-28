@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
+import { ContentService } from 'app/core/content.service';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { environment } from 'environments/environment';
 import { BehaviorSubject } from 'rxjs';
@@ -14,30 +15,24 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class HomeComponent extends BasePageComponent<void> implements OnInit {
 
-  content = new BehaviorSubject('');
+  content$ = new BehaviorSubject<string>(null);
   title: string;
 
   constructor(
-    private injector: Injector) {
+    injector: Injector,
+    private contentService: ContentService) {
     super(injector);
   }
 
   ngOnInit() {
     super.ngOnInit();
     const guest = this.login.user == null;
-    const key = guest ? 'guestsHome' : 'usersHome';
 
     this.title = guest ? this.i18n('Welcome to {{name}}', {
       name: this.format.appTitle
     }) : this.i18n('Quick access');
 
-    // The content is cached
-    this.addSub(this.cache.get(key, () => {
-      const getter = guest ? environment.guestsHome : environment.usersHome;
-      return getter.get({
-        user: this.login.user,
-        injector: this.injector
-      });
-    }).subscribe(content => this.content.next(content)));
+    const home = guest ? environment.guestsHome : environment.usersHome;
+    this.addSub(this.contentService.get(home).subscribe(content => this.content$.next(content)));
   }
 }

@@ -1,12 +1,13 @@
 import { Injectable, Injector } from '@angular/core';
 import { Banner } from 'app/content/banner';
-import { BannerFilter } from 'app/content/banner-filter';
+import { BannerCard } from 'app/content/banner-card';
 import { BannerResolver } from 'app/content/banners-resolver';
-import { StaticContentGetter } from 'app/content/static-content-getter';
 import { LoginService } from 'app/core/login.service';
 import { MenuService } from 'app/core/menu.service';
+import { empty as isEmpty, blank } from 'app/shared/helper';
 import { environment } from 'environments/environment';
-import { BehaviorSubject, Observable, Subscription, of } from 'rxjs';
+import { BehaviorSubject, empty, Observable, forkJoin, Subscription } from 'rxjs';
+import { distinctUntilChanged } from 'rxjs/operators';
 
 /** The default number of seconds a banner is shown before rotating */
 const DEFAULT_TIMEOUT_SECONDS = 10;
@@ -19,89 +20,173 @@ const DEFAULT_TIMEOUT_SECONDS = 10;
 })
 export class BannerService {
 
-  private _banners = new BehaviorSubject<Banner[][]>([]);
-  banners$: Observable<Banner[][]>;
-  private resolver: BannerResolver;
-  private nextId = 0;
+  /** An observable with the visible banner cards for the current context */
+  cards$: Observable<BannerCard[]>;
+  get cards(): BannerCard[] {
+    return this.currentCards.value;
+  }
 
+  private allCards: BannerCard[];
+  private currentCards = new BehaviorSubject<BannerCard[]>([]);
+  private resolver: BannerResolver;
   private sub: Subscription;
+  private currentBanners = new Map<BannerCard, BehaviorSubject<Banner>>();
 
   constructor(
     private injector: Injector,
-    private login: LoginService,
-    private menu: MenuService) {
-
-    this.banners$ = this._banners.asObservable();
-
+    private menu: MenuService,
+    private login: LoginService) {
+    this.cards$ = this.currentCards.asObservable();
     this.resolver = environment.bannerResolver;
-    if (this.resolver) {
-      // When there's no resolver, banners will always be empty
-      menu.lastSelectedMenu$.subscribe(() => this.update());
-      login.user$.subscribe(() => this.update());
+  }
+
+  initialize() {
+    if (!this.resolver) {
+      // Nothing to do
+      return;
     }
+    const cards = this.resolver.resolveCards(this.injector);
+    if (cards == null) {
+      this.doInitialize([]);
+    } else if (cards instanceof Array) {
+      this.doInitialize(cards);
+    } else {
+      cards.subscribe(c => this.doInitialize(c));
+    }
+  }
+
+  private doInitialize(cards: BannerCard[]) {
+    // Initialize the defaults for each card
+    this.allCards = cards || [];
+    for (const card of this.allCards) {
+      if (typeof card.index !== 'number' || card.index < 0) {
+        card.index = 0;
+      }
+      const firstBanner = this.preProcessBannersArray(card);
+      this.currentBanners.set(card, new BehaviorSubject(firstBanner));
+    }
+
+    // Whenever either the menu or logged user changes, fetch the banners
+    this.menu.lastSelectedMenu$.subscribe(() => this.update());
+    this.login.user$.subscribe(() => this.update());
+    // Initially update
+    this.update();
+  }
+
+  getCurrentBanner(card: BannerCard): Observable<Banner> {
+    const subject = this.currentBanners.get(card);
+    return subject ? subject.asObservable().pipe(distinctUntilChanged()) : empty();
   }
 
   private update(): void {
-    const filter = this.filter;
-    if (filter == null) {
-      return;
-    }
-    const observable = this.resolver.list(filter) || of([]);
-    this.sub = observable.subscribe(banners => {
-      this._banners.next(this.fillBannersDefaults(banners));
-      if (this.sub) {
-        this.sub.unsubscribe();
-      }
-    });
-  }
-
-  private fillBannersDefaults(banners: Banner[][]): Banner[][] {
-    if (!banners == null) {
-      return [];
-    }
-    for (let i = 0; i < banners.length; i++) {
-      let card = banners[i];
-      if (card == null) {
-        card = [];
-        banners[i] = card;
-      }
-      for (let j = 0; j < card.length; j++) {
-        const banner = card[j];
-        card[j] = this.fillBannerDefaults(banner);
-      }
-    }
-    return banners;
-  }
-
-  private fillBannerDefaults(banner: Banner): Banner {
-    if (banner == null) {
-      banner = { id: null, content: null };
-    }
-    if (banner.id == null) {
-      banner.id = `banner_${++this.nextId}`;
-    }
-    if (banner.seconds == null) {
-      banner.seconds = DEFAULT_TIMEOUT_SECONDS;
-    }
-    if (typeof banner.showCard !== 'boolean') {
-      banner.showCard = true;
-    }
-    if (!banner.content) {
-      banner.content = new StaticContentGetter('This banner has no content!');
-    }
-    return banner;
-  }
-
-  private get filter(): BannerFilter {
+    // Resolve the current context
     const menu = this.menu.lastSelectedMenu;
     if (menu == null) {
-      return null;
+      return;
     }
-    return {
-      injector: this.injector,
-      user: this.login.user,
-      menu: menu
+    const guest = this.login.user == null;
+
+    // Get the previously visible cards, and clear their timeouts
+    const oldVisible = this.currentCards.value || [];
+    for (const card of oldVisible) {
+      clearTimeout(card['timeoutHandle']);
+    }
+
+    // Resolve the visible cards
+    const visible = this.allCards.filter(card => {
+      const forGuests = card.guests === true;
+      const forLoggedUsers = card.loggedUsers !== false;
+      if (
+        (!isEmpty(card.rootMenus) && !card.rootMenus.includes(menu.root))
+        || (!isEmpty(card.menus) && !card.menus.includes(menu))
+        || (guest && !forGuests)
+        || (!guest && !forLoggedUsers)
+      ) {
+        return false;
+      }
+      return true;
+    });
+
+    // Function that schedules the timers for each visible card and sets the currentCards
+    const done = () => {
+      for (const card of visible) {
+        const banners = card.banners as Banner[];
+        if (banners.length > 1) {
+          this.scheduleNext(card);
+        }
+      }
+      this.currentCards.next(visible);
     };
+
+    // For each of the visible cards, find those whose banners are still an Observable
+    const needsFetching = visible.filter(c => c.banners['subscribe']);
+    if (isEmpty(needsFetching)) {
+      // No banners needs to be resolved
+      done();
+    } else {
+      // Fetch the banners first
+      this.sub = forkJoin(needsFetching.map(c => c.banners as Observable<Banner[]>)).subscribe(matrix => {
+        // Replace the Observable by the banners array
+        for (let i = 0; i < matrix.length; i++) {
+          const card = needsFetching[i];
+          const banners = matrix[i];
+          card.banners = banners;
+          this.preProcessBannersArray(card);
+        }
+        this.sub.unsubscribe();
+        // Only now we're done
+        done();
+      });
+    }
   }
 
+  private scheduleNext(card: BannerCard) {
+    // At this point, the banners are already resolved - must be an array
+    const banners = card.banners as Banner[];
+
+    // Get the current banner, as it dictates the timeout
+    const currentBanner = card.banners[card.index];
+
+    // Get the next banner
+    let nextIndex = card.index + 1;
+    if (nextIndex >= banners.length) {
+      nextIndex = 0;
+    }
+    const nextBanner = banners[nextIndex];
+
+    // After the timeout, replace the banner ...
+    card['timeoutHandle'] = setTimeout(() => {
+      card.index = nextIndex;
+      this.currentBanners.get(card).next(nextBanner);
+      // ... and already schedule the next one
+      this.scheduleNext(card);
+    }, currentBanner.timeout * 1000);
+  }
+
+  /**
+   * If the card banners is an array, fill in the defaults
+   * @returns The first banner in the card
+   */
+  private preProcessBannersArray(card: BannerCard): Banner {
+    let banners = card.banners;
+    if (!(banners instanceof Array)) {
+      return null;
+    }
+    banners = card.banners = banners.filter(b => b != null);
+    for (const banner of banners) {
+      if (banner.timeout == null) {
+        banner.timeout = DEFAULT_TIMEOUT_SECONDS;
+      }
+      if (banner.content == null) {
+        banner.content = 'This banner has no content!';
+      }
+      if (blank(banner.linkTarget)) {
+        banner.linkTarget = '_self';
+      }
+    }
+    if (card.index >= banners.length) {
+      card.index = 0;
+    }
+    return banners[card.index];
+  }
 }

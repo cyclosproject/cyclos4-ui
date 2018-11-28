@@ -3,12 +3,7 @@ import * as lscache from 'lscache';
 import { Observable, of, empty } from 'rxjs';
 import { tap, take } from 'rxjs/operators';
 import { environment } from 'environments/environment';
-
-/** The number of minutes cached entries expire: 1 day. */
-const DEFAULT_EXPIRATION_MINUTES = 24 * 60;
-
-/** The number of minutes for caches that "never expire": 1 year */
-const NEVER_EXPIRE_MINUTES = 24 * 60 * 365;
+import { DEFAULT_CACHE_SECONDS } from 'app/content/content';
 
 /**
  * Service used to manage the persistent cache
@@ -19,6 +14,8 @@ const NEVER_EXPIRE_MINUTES = 24 * 60 * 365;
 export class CacheService {
 
   constructor() {
+    // This method is not in the current @types/lscache
+    lscache['setExpiryMilliseconds'](1000);
     lscache.flushExpired();
   }
 
@@ -29,9 +26,8 @@ export class CacheService {
    * @param key The cache key
    * @param producer The producer function, called when the value for the given key is not found
    */
-  get<T>(key: string, producer?: (string) => Observable<T>): Observable<T> {
-    const timeout = this.getTimeout(key);
-    if (timeout === 0) {
+  get<T>(key: string, producer?: (string) => Observable<T>, timeoutSeconds = DEFAULT_CACHE_SECONDS): Observable<T> {
+    if (timeoutSeconds === 0 || !environment.production) {
       // Don't cache
       return producer(key);
     }
@@ -43,22 +39,10 @@ export class CacheService {
     if (producer) {
       return producer(key).pipe(
         take(1),
-        tap(value => lscache.set(key, value, timeout))
+        tap(value => lscache.set(key, value, timeoutSeconds))
       );
     } else {
       return empty();
     }
-  }
-
-  private getTimeout(key: string): number {
-    const timeout = environment.cacheTimeouts[key];
-    if (timeout === undefined) {
-      // No specific timeout - use the default
-      return DEFAULT_EXPIRATION_MINUTES;
-    } else if (timeout < 0) {
-      // Cache "forever"
-      return NEVER_EXPIRE_MINUTES;
-    }
-    return timeout;
   }
 }

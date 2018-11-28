@@ -1,7 +1,8 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { Injectable } from '@angular/core';
 import { BasePageComponent } from 'app/shared/base-page.component';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { PageLayoutComponent } from 'app/shared/page-layout.component';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 
 const BREAKPOINTS = {
@@ -41,14 +42,31 @@ export class LayoutService {
     this.currentPage$.next(page);
   }
 
-  private _canvas: HTMLCanvasElement;
-  private _ctx: CanvasRenderingContext2D;
+  currentPageLayout$ = new BehaviorSubject<PageLayoutComponent>(null);
+  get currentPageLayout(): PageLayoutComponent {
+    return this.currentPageLayout$.value;
+  }
+  set currentPageLayout(pageLayout: PageLayoutComponent) {
+    this.currentPageLayout$.next(pageLayout);
+  }
+
+  leftAreaVisible$ = new BehaviorSubject(false);
+  get leftAreaVisible(): boolean {
+    return this.leftAreaVisible$.value;
+  }
+  set leftAreaVisible(visible: boolean) {
+    if (visible !== this.leftAreaVisible) {
+      this.leftAreaVisible$.next(visible);
+    }
+  }
 
   private activeBreakpoints = new Set<string>();
   private breakpointObservers = new Map<string, Observable<boolean>>();
 
   private _breakpointChanges = new BehaviorSubject<Set<string>>(new Set());
   breakpointChanges = this._breakpointChanges.asObservable().pipe(distinctUntilChanged());
+
+  private leftAreaVisibleSub: Subscription;
 
   constructor(observer: BreakpointObserver) {
     this.breakpointObservers = new Map();
@@ -78,6 +96,19 @@ export class LayoutService {
     }
     this._breakpointChanges.subscribe(activeBreakpoints => this.updateBodyStyles(activeBreakpoints));
     this.updateBodyStyles(this.activeBreakpoints);
+
+    this.currentPageLayout$.subscribe(pageLayout => {
+      if (this.leftAreaVisibleSub) {
+        this.leftAreaVisibleSub.unsubscribe();
+        this.leftAreaVisibleSub = null;
+      }
+      if (pageLayout) {
+        this.leftAreaVisible = pageLayout.leftAreaVisible$.value;
+        this.leftAreaVisibleSub = pageLayout.leftAreaVisible$.subscribe(visible => this.leftAreaVisible = visible);
+      } else {
+        this.leftAreaVisible = false;
+      }
+    });
   }
 
   private updateBodyStyles(breakpoints: Set<string>) {
@@ -95,28 +126,6 @@ export class LayoutService {
         classes.remove(name);
       }
     }
-  }
-
-  /**
-   * Returns the text width, in pixels
-   * @param text The text to measure
-   */
-  textWidth(text: string): number {
-    return this.context2d.measureText(text).width;
-  }
-
-  private get context2d(): CanvasRenderingContext2D {
-    if (this._canvas == null) {
-      this._canvas = document.createElement('canvas');
-      this._canvas.style.width = '0px';
-      this._canvas.style.height = '0px';
-      this._canvas.style.visibility = 'hidden';
-      document.body.appendChild(this._canvas);
-      this._ctx = this._canvas.getContext('2d');
-      const bodyStyle = window.getComputedStyle(document.body);
-      this._ctx.font = bodyStyle.font;
-    }
-    return this._ctx;
   }
 
   /**

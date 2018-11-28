@@ -77,7 +77,7 @@ import { ConfirmationComponent } from 'app/shared/confirmation.component';
 import { MaybeLinkComponent } from 'app/shared/maybe-link.component';
 import { StaticMapComponent } from 'app/shared/static-map.component';
 import { CalendarComponent } from 'app/shared/calendar.component';
-import { BannerComponent } from 'app/shared/banner.component';
+import { BannerCardComponent } from 'app/shared/banner-card.component';
 
 
 export function initTooltipConfig(): TooltipConfig {
@@ -106,7 +106,7 @@ export function initTooltipConfig(): TooltipConfig {
     SpinnerComponent,
     PageLayoutComponent,
     PageContentComponent,
-    BannerComponent,
+    BannerCardComponent,
     ResultsLayoutComponent,
     StaticMapComponent,
     ResultCategoryDirective,
@@ -204,7 +204,7 @@ export function initTooltipConfig(): TooltipConfig {
     SpinnerComponent,
     PageLayoutComponent,
     PageContentComponent,
-    BannerComponent,
+    BannerCardComponent,
     ResultsLayoutComponent,
     StaticMapComponent,
     ResultCategoryDirective,

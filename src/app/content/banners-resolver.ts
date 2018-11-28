@@ -1,6 +1,6 @@
-import { BannerFilter } from 'app/content/banner-filter';
+import { Injector } from '@angular/core';
+import { BannerCard } from 'app/content/banner-card';
 import { Observable } from 'rxjs';
-import { Banner } from 'app/content/banner';
 
 /**
  * Interface used to resolve the banners which are shown in the side area
@@ -8,12 +8,10 @@ import { Banner } from 'app/content/banner';
 export interface BannerResolver {
 
   /**
-   * Returns the banners shown in a given context.
-   * Is 2-dimensional array. The 1st dimension determines how many cards will be displayed.
-   * The 2nd dimension contains the banners shown on each card. When there's more than 1 banner,
-   * will rotate them after a given number of seconds.
-   * @param filter The filter used to retrieve the banners
+   * Returns each of the banner cards shown in the given context.
+   * @param injector The Angular injector, used to access shared services
+   * @returns Either the banner cards or an observable of the banner cards
    */
-  list(filter: BannerFilter): Observable<Banner[][]>;
+  resolveCards(injector: Injector): BannerCard[] | Observable<BannerCard[]>;
 
 }

@@ -70,6 +70,9 @@ export class MenuService {
   /** Indicates the next menu item */
   nextMenu(menu: Menu) {
     this._activeMenu.next(menu);
+    if (this.lastSelectedMenu == null) {
+      this.lastSelectedMenu = menu;
+    }
   }
 
   get activeMenu(): Menu {

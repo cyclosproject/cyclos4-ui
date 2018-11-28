@@ -6,6 +6,7 @@ import { ApiInterceptor } from 'app/core/api.interceptor';
 import { BannerService } from 'app/core/banner.service';
 import { BreadcrumbService } from 'app/core/breadcrumb.service';
 import { CacheService } from 'app/core/cache.service';
+import { ContentService } from 'app/core/content.service';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
 import { FormatService } from 'app/core/format.service';
@@ -82,6 +83,7 @@ export const translations = require(`raw-loader!../../i18n/cyclos4-ui.en.xlf`);
     BreadcrumbService,
     StateManager,
     CacheService,
+    ContentService,
     BannerService,
     LoginService,
     LoginState,
@@ -103,6 +105,5 @@ export class CoreModule {
       throw new Error('CoreModule is already loaded. '
         + 'It should only be imported in AppModule');
     }
-
   }
 }

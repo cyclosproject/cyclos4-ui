@@ -15,7 +15,6 @@ import { LayoutService } from 'app/shared/layout.service';
 import { Observable, Subscription } from 'rxjs';
 import { BreadcrumbService } from '../core/breadcrumb.service';
 import { StateManager } from '../core/state-manager';
-import { CacheService } from 'app/core/cache.service';
 
 /**
  * Base class to meant to be inherited by other components.
@@ -37,7 +36,6 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
   maps: MapsService;
   menu: MenuService;
   stateManager: StateManager;
-  cache: CacheService;
   breadcrumb: BreadcrumbService;
   router: Router;
   route: ActivatedRoute;
@@ -58,7 +56,6 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
     this.maps = injector.get(MapsService);
     this.menu = injector.get(MenuService);
     this.stateManager = injector.get(StateManager);
-    this.cache = injector.get(CacheService);
     this.breadcrumb = injector.get(BreadcrumbService);
     this.router = injector.get(Router);
     this.route = injector.get(ActivatedRoute);

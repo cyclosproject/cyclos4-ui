@@ -10,6 +10,7 @@ import { LayoutService } from 'app/shared/layout.service';
 import { BehaviorSubject } from 'rxjs';
 import { blank } from 'app/shared/helper';
 import { trim } from 'lodash';
+import { BannerService } from 'app/core/banner.service';
 
 declare const setSpinnerVisible: (boolean) => void;
 
@@ -29,6 +30,7 @@ export class AppComponent implements OnInit {
     public login: LoginService,
     public menu: MenuService,
     public layout: LayoutService,
+    private banner: BannerService,
     // PushNotificationsService is here because it is not directly used by any
     // other component / service, but handles itself the push notifications.
     // It would otherwise be removed from the built app by tree-shaking.
@@ -40,6 +42,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.push.initialize();
+    this.banner.initialize();
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.title.setTitle(this.format.appTitle);
     this.dataForUiHolder.subscribe(dataForUi => {

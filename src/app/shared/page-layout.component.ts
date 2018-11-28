@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { BannerService } from 'app/core/banner.service';
 import { LoginService } from 'app/core/login.service';
 import { MenuService } from 'app/core/menu.service';
-import { truthyAttr } from 'app/shared/helper';
+import { empty, truthyAttr } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
 import { BehaviorSubject, Subscription } from 'rxjs';
 
@@ -21,7 +21,9 @@ export class PageLayoutComponent implements OnInit, OnDestroy {
   @Input() ready: boolean;
   @Input() size: 'small' | 'medium' | 'large' | 'full' = 'full';
 
-  private sub: Subscription;
+  @Output() sideAreaVisible = new EventEmitter<boolean>();
+
+  private sub: Subscription[] = [];
 
   private _hideMenu = false;
   @Input() get hideMenu(): boolean | string {
@@ -31,7 +33,7 @@ export class PageLayoutComponent implements OnInit, OnDestroy {
     this._hideMenu = truthyAttr(hideMenu);
   }
 
-  showLeftArea = new BehaviorSubject(false);
+  leftAreaVisible$ = new BehaviorSubject(false);
 
   constructor(
     public layout: LayoutService,
@@ -40,18 +42,26 @@ export class PageLayoutComponent implements OnInit, OnDestroy {
     public banner: BannerService) { }
 
   ngOnInit() {
-    const updateShowLeft = () => {
-      this.showLeftArea.next(!this.hideMenu && this.login.user != null && this.layout.gtmd && this.menu.activeMenu != null);
+    this.layout.currentPageLayout = this;
+
+    const updateSideAreaVisible = () => {
+      const hasCards = !empty(this.banner.cards);
+      const loggedIn = this.login.user != null;
+      const hasMenu = loggedIn && !this.hideMenu && this.menu.activeMenu != null;
+      const visible = this.layout.gtmd && (hasCards || hasMenu);
+      this.leftAreaVisible$.next(visible);
+      this.sideAreaVisible.emit(visible);
     };
-    this.layout.gtmd$.subscribe(updateShowLeft);
-    this.login.user$.subscribe(updateShowLeft);
-    this.menu.activeMenu$.subscribe(updateShowLeft);
-    updateShowLeft();
+    this.sub.push(this.layout.gtmd$.subscribe(updateSideAreaVisible));
+    this.sub.push(this.login.user$.subscribe(updateSideAreaVisible));
+    this.sub.push(this.menu.activeMenu$.subscribe(updateSideAreaVisible));
+    this.sub.push(this.banner.cards$.subscribe(updateSideAreaVisible));
+    updateSideAreaVisible();
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.layout.currentPageLayout = null;
+
+    this.sub.forEach(s => s.unsubscribe());
   }
 }

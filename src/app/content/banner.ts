@@ -1,26 +1,23 @@
-import { ContentGetter } from 'app/content/content-getter';
+import { Content } from 'app/content/content';
 
 /** A banner which is shown in the side area */
-export interface Banner {
-
-  /** The banner id */
-  id: string;
+export interface Banner extends Content {
 
   /**
-   * Whether to show the banner inside a card (with border and shadow).
-   * When undefined shows the banner inside a card.
+   * An optional link URL. When set
    */
-  showCard?: boolean;
+  link?: string | any[];
+
+  /**
+   * An optional link target. Same as HTML `<a target="xxx">` attribute.
+   * When not specified, assumes `_self`.
+   */
+  linkTarget?: string;
 
   /**
    * Seconds to show the banner before showing the next banner.
    * When undefined, shows the banner for 10 seconds.
    */
-  seconds?: number;
-
-  /**
-   * Getter of the banner content
-   */
-  content: ContentGetter;
+  timeout?: number;
 
 }

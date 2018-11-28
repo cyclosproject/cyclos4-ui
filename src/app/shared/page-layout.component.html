@@ -1,10 +1,13 @@
 <ng-container *ngIf="ready == null || !!ready; else loading">
   <div class="page-layout" [ngClass]="{
-      'justify-content-center': !(showLeftArea | async)
+      'has-left-area': leftAreaVisible$ | async,
+      'justify-content-center': !(leftAreaVisible$ | async)
     }">
-    <div *ngIf="showLeftArea | async" class="side-area">
-      <side-menu></side-menu>
-      <banner *ngFor="let card of banner.banners$ | async" [banners]="card"></banner>
+    <div *ngIf="leftAreaVisible$ | async" class="side-area">
+      <side-menu *ngIf="(login.user$ | async) && (menu.activeMenu$ | async)?.menuVisible"></side-menu>
+      <banner-card *ngFor="let card of banner.cards$ | async; let first = first"
+        [card]="card" [firstInLayout]="first && !((login.user$ | async) && (menu.activeMenu$ | async)?.menuVisible)"
+        [ngClass]="card.ngClass" [ngStyle]="card.ngStyle"></banner-card>
     </div>
 
     <div class="content-area d-flex flex-column" [ngClass]="{

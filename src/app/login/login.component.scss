@@ -1,12 +1,12 @@
 @import 'src/definitions';
 
 @include media-breakpoint-up(md) {
-  :host ::ng-deep page-content {
+  :host ::ng-deep page-content:not(.with-left-area) {
     margin-top: 3rem;
   }
 }
 @include media-breakpoint-up(lg) {
-  :host ::ng-deep page-content {
+  :host ::ng-deep page-content:not(.with-left-area) {
     margin-top: 5rem;
   }
 }

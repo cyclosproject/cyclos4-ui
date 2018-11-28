@@ -1,0 +1,10 @@
+<ng-container *ngIf="banner$ | async as banner">
+  <a class="banner-container" *ngIf="banner.link; else plain" [ngClass]="card.ngClass"
+    [ngStyle]="card.ngStyle" [routerLink]="routerLink" [attr.href]="externalUrl"
+    [target]="banner.linkTarget" [innerHTML]="content$ | async">
+  </a>
+  <ng-template #plain>
+    <div class="banner-container" [ngClass]="card.ngClass" [ngStyle]="card.ngStyle"
+      [innerHTML]="content$ | async"></div>
+  </ng-template>
+</ng-container>

@@ -8,9 +8,9 @@
     <div class="row category-results">
       <div class="category-result col-12 col-xs-6 col-sm-4" *ngFor="let cat of categories"
         [ngClass]="{
-        'col-md-3': login.user == null,
-        'col-xl-3': login.user != null,
-        'col-xl-2': login.user == null
+        'col-md-3': !(layout.leftAreaVisible$ | async),
+        'col-xl-3': layout.leftAreaVisible$ | async,
+        'col-xl-2': !(layout.leftAreaVisible$ | async)
       }">
         <ng-container *ngTemplateOutlet="categoryTemplate; context: {$implicit: cat}"></ng-container>
       </div>
@@ -35,9 +35,9 @@
       <div class="row tiled-results">
         <div class="tiled-result col-12 col-xs-6 col-sm-4" *ngFor="let row of results.results"
           [ngClass]="{
-          'col-md-3': login.user == null,
-          'col-xl-3': login.user != null,
-          'col-xl-2': login.user == null
+          'col-md-3': !(layout.leftAreaVisible$ | async),
+          'col-xl-3': layout.leftAreaVisible$ | async,
+          'col-xl-2': !(layout.leftAreaVisible$ | async)
         }">
           <ng-container *ngTemplateOutlet="tileTemplate; context: {$implicit: row}"></ng-container>
         </div>
