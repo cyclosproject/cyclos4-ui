@@ -1,7 +1,7 @@
 import { Injectable, Injector } from '@angular/core';
 import { Banner } from 'app/content/banner';
 import { BannerCard } from 'app/content/banner-card';
-import { BannerResolver } from 'app/content/banners-resolver';
+import { BannerResolver } from 'app/content/banner-resolver';
 import { LoginService } from 'app/core/login.service';
 import { MenuService } from 'app/core/menu.service';
 import { empty as isEmpty, blank } from 'app/shared/helper';

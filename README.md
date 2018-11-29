@@ -203,5 +203,58 @@ Then, in 'System > System configuration > Configurations' select the configurati
 rootUrl = https://account.example.com
 ```
 
+## Customizing content
+
+There are different contents that can be customized in the frontend. Mostly:
+
+- The home page for guest users on a tablet / desktop, which is likely a full-screen layout;
+- The home page for guests on a mobile, which is placed after the quick access buttons;
+- The dashboard page for logged users;
+- Banners;
+- Content pages (not implemented yet).
+
+Customizing these contents require a bit of programming in TypeScript. So, using an editor with strong support for the TypeScript language (such as [Visual Studio Code](https://code.visualstudio.com/)) is recommended.
+
+The `src/environments/configuration.ts` file is the one that centralizes all content configuration. Mostly, the following are the relevant:
+
+```typescript
+// Content for guests' home page
+const GUESTS_HOME: Content = {
+  cacheKey: 'guestsHome',
+  cacheSeconds: DEFAULT_CACHE_SECONDS,
+  content: ContentGetter.url('content/users-home.html')
+};
+// Content for logged users's home page
+const USERS_HOME: Content = {
+  cacheKey: 'usersHome',
+  cacheSeconds: DEFAULT_CACHE_SECONDS,
+  content: ContentGetter.url('content/users-home.html')
+};
+// Banner resolver
+const BANNER_RESOLVER: BannerResolver = null;
+```
+
+By default, some HTML files deployed together with the frontend, under `content/*` are used to generate the content, and no banners are shown.
+
+The `Content` interface (defined in `src/app/content/content.ts`) has a property called `content`, which is either a string, with the static content (compiled in the code), or a `ContentGetter`, which is able to fetch content from an external source.  There are 2 built-in `ContentGetter` implementations:
+- `ContentGetter.url(href)`: Performs an HTTP GET request and resolves the content body;
+- `ContentGetter.cyclosPage(href)`: Fetches the content of a Cyclos floating page, created in 'Content' > 'Content management' > 'Menu and pages'. From there, select a configuration (if multiple), create a new Floating page and, after saving it, copy the URL. That URL is the parameter to be passed as parameter. This implemnentation uses Cyclos' `WEB-RPC` mechanism to fetch the content, using the following URL: `<root>/web-rpc/menuEntry/menuItemDetails/<id>`. As such, it is also possible to setup a proxy for the `/web-rpc/menuEntry/menuItemDetails/` path, similar to the proxy to `/api` (as described above), and using a relative URL. Example: `/menuItemDetails/*` is proxied to `<root>/web-rpc/menuEntry/menuItemDetails/*`. In such case, the parameter would be `menuItemDetails/<id>`.
+
+When content has a `cacheKey`, it is cached in the browser, by default, for 1 hour. It is possible to change the `cacheSeconds` property to the desired number. If set to a negative number, the cache will never expires. The cache uses the browser local storage, so clearing the browser cache won't invalidade cached content. Instead, to locally remove cached content, browsers offer ways to remove website data.
+
+So, fetching content for the sections in the home page is straightforward. Banners, on the other hand, require a bit more work, as described below.
+
+### Banners
+
+Banners are shown in cards (boxes) below the left menu in the large layout. No banners are ever shown in mobile. Cards have the definition on which cases they show up:
+- For logged users (yes by default);
+- For guests (no by default);
+- For a specific root menu (all but home by default);
+- For a specific menu item (all but home by default).
+
+Each card has one or more banners. When it has multiple banners, they will rotate after a given number of seconds. The `Banner` interface (defined in `src/app/content/banner.ts`) extends the `Content` interface, adding a few properties, such as the `timeout`, which defines the number of seconds it is shown when there are multiple banners (10 seconds by default) and `link`, which is an URL (either internal, starting with `/` or external) to navigate if the banner is clicked (no link by default). Being a `Content`, its HTML content can be either a static string or a `ContentGetter` function to fetch from an external resource. Cache applies as well (by setting a `cacheKey` property).
+
+To use banners, create a class that implements the `BannerResolver` interface, defined in `app/content/banner-resolver`. Implement the method `resolveCards(injector: Injector): BannerCard[] | Observable<BannerCard[]>`. It should return which banner cards are available for the entire application. Later on they will be filtered out according to the menu item and logged user. The Angular injector is used to access shared services, such as `HttpClient` or the `LoginService` (to check which user is logged-in). It can either return a fixed list of banner cards or an `Observable`, for example, when querying an external service to determine which banners are available. Here is an [example BannerResolver](https://github.com/cyclosproject/cyclos4-ui/blob/master/src/environments/example-banner-resolver.ts).
+
 ## Translating
 `TODO`

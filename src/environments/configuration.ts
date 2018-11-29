@@ -1,4 +1,4 @@
-import { BannerResolver } from 'app/content/banners-resolver';
+import { BannerResolver } from 'app/content/banner-resolver';
 import { Content, DEFAULT_CACHE_SECONDS } from 'app/content/content';
 import { ContentGetter } from 'app/content/content-getter';
 
@@ -53,7 +53,7 @@ const AD_CATEGORY_COLORS = {
 const GUESTS_HOME: Content = {
   cacheKey: 'guestsHome',
   cacheSeconds: DEFAULT_CACHE_SECONDS,
-  content: ContentGetter.url('content/users-home.html')
+  content: ContentGetter.cyclosPage('menuItemDetails/-808362123121454779')
 };
 // Content for logged users's home page
 const USERS_HOME: Content = {
