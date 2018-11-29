@@ -49,11 +49,16 @@ const AD_CATEGORY_COLORS = {
 // **** Content **** //
 // See the project home page for help on how to customize content
 
-// Content for guests' home page
-const GUESTS_HOME: Content = {
-  cacheKey: 'guestsHome',
+// Content for guests' home page on mobile
+const GUESTS_MOBILE_HOME: Content = {
+  cacheKey: 'guestsMobileHome',
   cacheSeconds: DEFAULT_CACHE_SECONDS,
-  content: ContentGetter.cyclosPage('menuItemDetails/-808362123121454779')
+  content: ContentGetter.url('content/guests-mobile-home.html')
+};
+const GUESTS_DESKTOP_HOME: Content = {
+  cacheKey: 'guestsDesktopHome',
+  cacheSeconds: DEFAULT_CACHE_SECONDS,
+  content: ContentGetter.url('content/guests-desktop-home.html')
 };
 // Content for logged users's home page
 const USERS_HOME: Content = {
@@ -77,7 +82,8 @@ export const configuration = {
   quickSearchPageSize: QUICK_SEARCH_PAGE_SIZE,
   adCategoryIcons: AD_CATEGORY_ICONS,
   adCategoryColors: AD_CATEGORY_COLORS,
-  guestsHome: GUESTS_HOME,
+  guestsMobileHome: GUESTS_MOBILE_HOME,
+  guestsDesktopHome: GUESTS_DESKTOP_HOME,
   usersHome: USERS_HOME,
   bannerResolver: BANNER_RESOLVER
 };

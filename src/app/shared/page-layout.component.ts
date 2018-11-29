@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { BannerService } from 'app/core/banner.service';
 import { LoginService } from 'app/core/login.service';
 import { MenuService } from 'app/core/menu.service';
@@ -21,8 +21,6 @@ export class PageLayoutComponent implements OnInit, OnDestroy {
   @Input() ready: boolean;
   @Input() size: 'small' | 'medium' | 'large' | 'full' = 'full';
 
-  @Output() sideAreaVisible = new EventEmitter<boolean>();
-
   private sub: Subscription[] = [];
 
   private _hideMenu = false;
@@ -34,6 +32,9 @@ export class PageLayoutComponent implements OnInit, OnDestroy {
   }
 
   leftAreaVisible$ = new BehaviorSubject(false);
+  get leftAreaVisible(): boolean {
+    return this.leftAreaVisible$.value;
+  }
 
   constructor(
     public layout: LayoutService,
@@ -50,7 +51,6 @@ export class PageLayoutComponent implements OnInit, OnDestroy {
       const hasMenu = loggedIn && !this.hideMenu && this.menu.activeMenu != null;
       const visible = this.layout.gtmd && (hasCards || hasMenu);
       this.leftAreaVisible$.next(visible);
-      this.sideAreaVisible.emit(visible);
     };
     this.sub.push(this.layout.gtmd$.subscribe(updateSideAreaVisible));
     this.sub.push(this.login.user$.subscribe(updateSideAreaVisible));

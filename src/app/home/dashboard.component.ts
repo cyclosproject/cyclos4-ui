@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Injector, OnInit, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseComponent } from 'app/shared/base.component';
 import { empty } from 'app/shared/helper';
@@ -22,8 +22,6 @@ export class DashboardAction {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DashboardComponent extends BaseComponent implements OnInit {
-
-  @Input() sideAreaVisible: boolean;
 
   actions: DashboardAction[];
 

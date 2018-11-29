@@ -1,6 +1,6 @@
 <div class="row no-gutters dashboard-container">
   <div class="col-6 col-xs-4 col-sm-3 d-flex" *ngFor="let action of actions"
-    [ngClass]="{'col-lg-2': !sideAreaVisible}">
+    [ngClass]="{'col-lg-2': layout.leftAreaVisible$ | async}">
     <a [routerLink]="action.url" class="dashboard-item">
       <icon [size]="(layout.ltsm$ | async) ? '1.8rem' : '2.2rem'" [icon]="action.icon"></icon>
       <div class="text-center">
