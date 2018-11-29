@@ -55,9 +55,17 @@ export class LayoutService {
     return this.leftAreaVisible$.value;
   }
   set leftAreaVisible(visible: boolean) {
-    if (visible !== this.leftAreaVisible) {
+    if (visible !== this.leftAreaVisible$.value) {
       this.leftAreaVisible$.next(visible);
     }
+  }
+
+  fullWidth$ = new BehaviorSubject<boolean>(null);
+  get fullWidth(): boolean {
+    return this.fullWidth$.value;
+  }
+  set fullWidth(pageLayout: boolean) {
+    this.fullWidth$.next(pageLayout);
   }
 
   private activeBreakpoints = new Set<string>();

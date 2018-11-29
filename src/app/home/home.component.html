@@ -1,4 +1,4 @@
 <page-layout hideMenu>
   <user-home *ngIf="login.user != null"></user-home>
-  <guest-home *ngIf="login.user == null"></guest-home>
+  <home-content *ngIf="(layout.gtsm$ | async) && login.user == null"></home-content>
 </page-layout>

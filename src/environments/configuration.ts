@@ -1,6 +1,7 @@
 import { BannerResolver } from 'app/content/banner-resolver';
 import { Content, DEFAULT_CACHE_SECONDS } from 'app/content/content';
 import { ContentGetter } from 'app/content/content-getter';
+import { HomeContent } from 'app/content/home-content';
 
 // This file defines the environment variables shared by both development and production
 
@@ -49,16 +50,14 @@ const AD_CATEGORY_COLORS = {
 // **** Content **** //
 // See the project home page for help on how to customize content
 
-// Content for guests' home page on mobile
-const GUESTS_MOBILE_HOME: Content = {
-  cacheKey: 'guestsMobileHome',
+// Content for the home page shown on large displays
+const HOME_CONTENT: HomeContent = {
+  cacheKey: 'home',
   cacheSeconds: DEFAULT_CACHE_SECONDS,
-  content: ContentGetter.url('content/guests-mobile-home.html')
-};
-const GUESTS_DESKTOP_HOME: Content = {
-  cacheKey: 'guestsDesktopHome',
-  cacheSeconds: DEFAULT_CACHE_SECONDS,
-  content: ContentGetter.url('content/guests-desktop-home.html')
+  // Layout can be 'full', 'center' or 'card' (when 'card', a title can be set)
+  layout: 'card',
+  title: `Welcome to ${APP_TITLE}`,
+  content: ContentGetter.url('content/home.html')
 };
 // Content for logged users's home page
 const USERS_HOME: Content = {
@@ -82,8 +81,7 @@ export const configuration = {
   quickSearchPageSize: QUICK_SEARCH_PAGE_SIZE,
   adCategoryIcons: AD_CATEGORY_ICONS,
   adCategoryColors: AD_CATEGORY_COLORS,
-  guestsMobileHome: GUESTS_MOBILE_HOME,
-  guestsDesktopHome: GUESTS_DESKTOP_HOME,
+  homeContent: HOME_CONTENT,
   usersHome: USERS_HOME,
   bannerResolver: BANNER_RESOLVER
 };

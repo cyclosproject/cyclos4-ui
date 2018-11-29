@@ -74,8 +74,12 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.addSub(this.route.data.subscribe(data => {
       if (data.menu) {
+        let menu = data.menu;
+        if (typeof data.menu === 'object') {
+          menu = this.login.user ? menu.loggedUsers : menu.guests;
+        }
         // Need to defer the next menu setting, or this will give problems with change detection
-        setTimeout(() => this.menu.nextMenu(data.menu), 0);
+        setTimeout(() => this.menu.nextMenu(menu), 0);
       }
     }));
   }

@@ -5,6 +5,7 @@ import { LoginReason, LoginState } from 'app/core/login-state';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { PasswordInputComponent } from 'app/shared/password-input.component';
 import { NextRequestState } from 'app/core/next-request-state';
+import { empty } from 'app/shared/helper';
 
 /**
  * Component used to show a login form.
@@ -26,7 +27,12 @@ export class LoginComponent
   @ViewChild('password') passwordInput: PasswordInputComponent;
 
   get forgotPasswordEnabled(): boolean {
-    return (this.data.forgotPasswordMediums || []).length > 0;
+    return !empty(this.data.forgotPasswordMediums);
+  }
+
+  get registrationEnabled(): boolean {
+    const dataForUi = this.dataForUiHolder.dataForUi;
+    return !empty(dataForUi.publicRegistrationGroups);
   }
 
   constructor(

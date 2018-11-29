@@ -69,6 +69,7 @@ export abstract class BasePageComponent<D> extends BaseComponent implements OnIn
   ngOnInit() {
     super.ngOnInit();
     this.layout.currentPage = this;
+    this.layout.fullWidth = false;
   }
 
   ngOnDestroy(): void {

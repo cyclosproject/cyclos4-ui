@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { BasePageComponent } from 'app/shared/base-page.component';
 
 /**
@@ -10,10 +10,23 @@ import { BasePageComponent } from 'app/shared/base-page.component';
   templateUrl: 'home.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HomeComponent extends BasePageComponent<void> {
+export class HomeComponent extends BasePageComponent<void> implements OnInit {
 
   constructor(injector: Injector) {
     super(injector);
+  }
+
+  ngOnInit() {
+    super.ngOnInit();
+    this.addSub(this.layout.ltmd$.subscribe(() => this.goToLoginIfNeeded()));
+    this.goToLoginIfNeeded();
+  }
+
+  private goToLoginIfNeeded() {
+    if (this.login.user == null && this.layout.ltmd) {
+      // Guests on mobile don't have a home page - go to login directly
+      this.router.navigate(['/login']);
+    }
   }
 
 }

@@ -17,7 +17,10 @@ const rootRoutes: Routes = [
     component: HomeComponent,
     pathMatch: 'full',
     data: {
-      menu: Menu.HOME
+      menu: {
+        guests: Menu.HOME,
+        loggedUsers: Menu.DASHBOARD
+      }
     }
   },
   {
@@ -25,7 +28,10 @@ const rootRoutes: Routes = [
     component: HomeComponent,
     pathMatch: 'full',
     data: {
-      menu: Menu.HOME
+      menu: {
+        guests: Menu.HOME,
+        loggedUsers: Menu.DASHBOARD
+      }
     }
   },
   {

@@ -1,7 +1,7 @@
 <page-layout [ready]="data$ | async" [ngSwitch]="step$ | async" size="large"
   hideMenu>
   <page-content *ngSwitchCase="'group'" i18n-heading heading="User registration"
-    [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'">
+    [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'" last>
     <div class="flex-grow-1">
       <registration-step-group [groups]="groups" [control]="group"></registration-step-group>
     </div>
@@ -11,7 +11,7 @@
   </page-content>
 
   <page-content *ngSwitchCase="'fields'" i18n-heading heading="User registration"
-    [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'">
+    [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'" last>
     <div class="flex-grow-1">
       <registration-step-fields [data]="data" [form]="form" [mobileForm]="mobileForm"
         [landLineForm]="landLineForm" [defineAddress]="defineAddress"
@@ -28,7 +28,7 @@
   </page-content>
 
   <page-content *ngSwitchCase="'confirm'" i18n-heading heading="Registration confirmation"
-    [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'">
+    [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'" last>
     <div class="flex-grow-1">
       <registration-step-confirm [data]="data" [form]="confirmForm" [user]="userNew"
         [image]="image">
@@ -42,7 +42,7 @@
   </page-content>
 
   <page-content *ngSwitchCase="'done'" i18n-heading heading="Registration successful"
-    [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'">
+    [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'" last>
     <div class="flex-grow-1">
       <registration-step-done [result]="result$ | async">
       </registration-step-done>

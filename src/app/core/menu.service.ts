@@ -34,6 +34,21 @@ export class MenuService {
   }
   set lastSelectedMenu(menu: Menu) {
     this._lastSelectedMenu.next(menu);
+
+    // Whenever the last selected menu changes, update the classes in the body element
+    const classes = document.body.classList;
+    RootMenu.values().forEach(root => {
+      const current = `root-menu--${root}`;
+      if (menu.root === root) {
+        if (!classes.contains(current)) {
+          classes.add(current);
+        }
+      } else {
+        if (classes.contains(current)) {
+          classes.remove(current);
+        }
+      }
+    });
   }
 
   private _activeMenu = new BehaviorSubject<Menu>(null);
@@ -175,7 +190,10 @@ export class MenuService {
       return entry;
     };
     // Create the root menu entries
-    const home = addRoot(RootMenu.HOME, 'home', this.i18n({ value: 'Home', description: 'Menu' }));
+    const home = addRoot(RootMenu.HOME, 'home', this.i18n({ value: 'Home', description: 'Menu' }), null, [MenuType.BAR]);
+    const dashboard = addRoot(RootMenu.DASHBOARD, 'dashboard',
+      this.i18n({ value: 'Dashboard', description: 'Menu' }), null,
+      [MenuType.BAR, MenuType.SIDE]);
     const publicDirectory = addRoot(RootMenu.PUBLIC_DIRECTORY, 'group', this.i18n({ value: 'Directory', description: 'Menu' }));
     const publicMarketplace = addRoot(RootMenu.PUBLIC_MARKETPLACE,
       'shopping_cart', this.i18n({ value: 'Advertisements', description: 'Menu' }));
@@ -196,94 +214,95 @@ export class MenuService {
       add(Menu.LOGOUT, null, 'exit_to_app',
         this.i18n({ value: 'Logout', description: 'Menu' }),
         [MenuType.PERSONAL, MenuType.SIDENAV]);
-    } else {
+    } else if (user == null) {
+      // Guest
       add(Menu.HOME, '/', home.icon, home.label);
-      if (user == null) {
-        // Guest
-        if (users.search || users.map) {
-          add(Menu.PUBLIC_DIRECTORY, '/users/public-search', publicDirectory.icon, publicDirectory.label);
-        }
-        if (marketplace.search) {
-          add(Menu.PUBLIC_MARKETPLACE, '/marketplace/public-search', publicMarketplace.icon, publicMarketplace.label);
-        }
-        add(Menu.LOGIN, '/login', login.icon, login.label);
-        const registrationGroups = (this.dataForUiHolder.dataForUi || {}).publicRegistrationGroups || [];
-        if (registrationGroups.length > 0) {
-          add(Menu.REGISTRATION, '/users/registration', register.icon, register.label);
-        }
-      } else {
-        const banking = permissions.banking || {};
-        const contacts = permissions.contacts || {};
-        const accounts = banking.accounts || [];
-
-        // Banking
-        if (accounts.length > 0) {
-          for (const account of accounts) {
-            const type = account.account.type;
-            add(Menu.ACCOUNT_HISTORY, '/banking/account/' + ApiHelper.internalNameOrId(type),
-              'account_balance', type.name, [MenuType.BAR, MenuType.SIDENAV]);
-          }
-        }
-        const payments = banking.payments || {};
-        if (payments.user) {
-          add(Menu.PAYMENT_TO_USER, '/banking/payment', 'payment',
-            this.i18n({ value: 'Payment to user', description: 'Menu' }));
-        }
-        if (payments.self) {
-          add(Menu.PAYMENT_TO_SELF, '/banking/payment/self', 'payment',
-            this.i18n({ value: 'Payment to self', description: 'Menu' }));
-        }
-        if (payments.system) {
-          add(Menu.PAYMENT_TO_SYSTEM, '/banking/payment/system', 'payment',
-            this.i18n({ value: 'Payment to system', description: 'Menu' }));
-        }
-        if ((banking.scheduledPayments || {}).view) {
-          add(Menu.SCHEDULED_PAYMENTS, '/banking/scheduled-payments', 'schedule',
-            this.i18n({ value: 'Scheduled payments', description: 'Menu' }));
-        }
-        if ((banking.recurringPayments || {}).view) {
-          add(Menu.RECURRING_PAYMENTS, '/banking/recurring-payments', 'repeat',
-            this.i18n({ value: 'Recurring payments', description: 'Menu' }));
-        }
-        if ((banking.authorizations || {}).view) {
-          add(Menu.AUTHORIZED_PAYMENTS, '/banking/authorized-payments', 'assignment_turned_in',
-            this.i18n({ value: 'Payment authorizations', description: 'Menu' }));
-        }
-
-        // Marketplace
-        if (users.search || users.map) {
-          add(Menu.SEARCH_USERS, '/users/search', 'group',
-            this.i18n({ value: 'Business directory', description: 'Menu' }));
-        }
-        if (marketplace.search) {
-          add(Menu.SEARCH_ADS, '/marketplace/search', 'shopping_cart',
-            this.i18n({ value: 'Advertisements', description: 'Menu' }));
-        }
-
-        // Personal
-        const myProfile = permissions.myProfile || {};
-        add(Menu.MY_PROFILE, '/users/my-profile', 'account_box',
-          this.i18n({ value: 'My profile', description: 'Menu' }),
-          [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
-        if (myProfile.editProfile) {
-          add(Menu.EDIT_MY_PROFILE, '/users/my-profile/edit', 'account_box',
-            this.i18n({ value: 'Edit profile', description: 'Menu' }),
-            [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
-        }
-        if (contacts.enable) {
-          add(Menu.CONTACTS, '/users/contacts', 'import_contacts',
-            this.i18n({ value: 'Contacts', description: 'Menu' }),
-            [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
-        }
-        if ((permissions.passwords || {}).manage) {
-          add(Menu.PASSWORDS, '/users/passwords', 'vpn_key',
-            this.i18n({ value: 'Passwords', description: 'Menu' }),
-            [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
-        }
-        add(Menu.LOGOUT, null, 'exit_to_app',
-          this.i18n({ value: 'Logout', description: 'Menu' }),
-          [MenuType.PERSONAL, MenuType.SIDENAV]);
+      if (users.search || users.map) {
+        add(Menu.PUBLIC_DIRECTORY, '/users/public-search', publicDirectory.icon, publicDirectory.label);
       }
+      if (marketplace.search) {
+        add(Menu.PUBLIC_MARKETPLACE, '/marketplace/public-search', publicMarketplace.icon, publicMarketplace.label);
+      }
+      add(Menu.LOGIN, '/login', login.icon, login.label);
+      const registrationGroups = (this.dataForUiHolder.dataForUi || {}).publicRegistrationGroups || [];
+      if (registrationGroups.length > 0) {
+        add(Menu.REGISTRATION, '/users/registration', register.icon, register.label);
+      }
+    } else {
+      // Logged user
+      add(Menu.DASHBOARD, '/', dashboard.icon, dashboard.label);
+
+      const banking = permissions.banking || {};
+      const contacts = permissions.contacts || {};
+      const accounts = banking.accounts || [];
+
+      // Banking
+      if (accounts.length > 0) {
+        for (const account of accounts) {
+          const type = account.account.type;
+          add(Menu.ACCOUNT_HISTORY, '/banking/account/' + ApiHelper.internalNameOrId(type),
+            'account_balance', type.name, [MenuType.BAR, MenuType.SIDENAV]);
+        }
+      }
+      const payments = banking.payments || {};
+      if (payments.user) {
+        add(Menu.PAYMENT_TO_USER, '/banking/payment', 'payment',
+          this.i18n({ value: 'Payment to user', description: 'Menu' }));
+      }
+      if (payments.self) {
+        add(Menu.PAYMENT_TO_SELF, '/banking/payment/self', 'payment',
+          this.i18n({ value: 'Payment to self', description: 'Menu' }));
+      }
+      if (payments.system) {
+        add(Menu.PAYMENT_TO_SYSTEM, '/banking/payment/system', 'payment',
+          this.i18n({ value: 'Payment to system', description: 'Menu' }));
+      }
+      if ((banking.scheduledPayments || {}).view) {
+        add(Menu.SCHEDULED_PAYMENTS, '/banking/scheduled-payments', 'schedule',
+          this.i18n({ value: 'Scheduled payments', description: 'Menu' }));
+      }
+      if ((banking.recurringPayments || {}).view) {
+        add(Menu.RECURRING_PAYMENTS, '/banking/recurring-payments', 'repeat',
+          this.i18n({ value: 'Recurring payments', description: 'Menu' }));
+      }
+      if ((banking.authorizations || {}).view) {
+        add(Menu.AUTHORIZED_PAYMENTS, '/banking/authorized-payments', 'assignment_turned_in',
+          this.i18n({ value: 'Payment authorizations', description: 'Menu' }));
+      }
+
+      // Marketplace
+      if (users.search || users.map) {
+        add(Menu.SEARCH_USERS, '/users/search', 'group',
+          this.i18n({ value: 'Business directory', description: 'Menu' }));
+      }
+      if (marketplace.search) {
+        add(Menu.SEARCH_ADS, '/marketplace/search', 'shopping_cart',
+          this.i18n({ value: 'Advertisements', description: 'Menu' }));
+      }
+
+      // Personal
+      const myProfile = permissions.myProfile || {};
+      add(Menu.MY_PROFILE, '/users/my-profile', 'account_box',
+        this.i18n({ value: 'My profile', description: 'Menu' }),
+        [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
+      if (myProfile.editProfile) {
+        add(Menu.EDIT_MY_PROFILE, '/users/my-profile/edit', 'account_box',
+          this.i18n({ value: 'Edit profile', description: 'Menu' }),
+          [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
+      }
+      if (contacts.enable) {
+        add(Menu.CONTACTS, '/users/contacts', 'import_contacts',
+          this.i18n({ value: 'Contacts', description: 'Menu' }),
+          [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
+      }
+      if ((permissions.passwords || {}).manage) {
+        add(Menu.PASSWORDS, '/users/passwords', 'vpn_key',
+          this.i18n({ value: 'Passwords', description: 'Menu' }),
+          [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
+      }
+      add(Menu.LOGOUT, null, 'exit_to_app',
+        this.i18n({ value: 'Logout', description: 'Menu' }),
+        [MenuType.PERSONAL, MenuType.SIDENAV]);
     }
 
     // Populate the menu in the root declaration order

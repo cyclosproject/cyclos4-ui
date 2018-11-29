@@ -4,10 +4,10 @@
   <sidenav #sidenav></sidenav>
   <top-bar [user]="login.user$ | async" [principal]="(login.auth$ | async)?.principal"
     (togglePersonalMenu)="personalMenu.toggle($event)" (toggleSidenav)="sidenav.toggle()"></top-bar>
-  <menu-bar *ngIf="layout.gtmd$ | async" [activeRoot]="menu.activeRootMenu$ | async"></menu-bar>
+  <menu-bar [ngClass]="{'d-none': layout.ltlg$ | async}" [activeRoot]="menu.activeRootMenu$ | async"></menu-bar>
   <div class="main-container d-flex flex-column flex-grow-1" [ngClass]="{
-      container: layout.gtsm$ | async,
-      'container-fluid': layout.ltmd$ | async
+      container: (layout.gtsm$ | async) && !(layout.fullWidth$ | async),
+      'container-fluid': (layout.ltmd$ | async) && !(layout.fullWidth$ | async)
     }">
     <router-outlet *ngIf="!(loggingOut | async)"></router-outlet>
   </div>

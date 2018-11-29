@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { DashboardComponent } from 'app/home/dashboard.component';
-import { GuestHomeComponent } from 'app/home/guest-home.component';
 import { HomeComponent } from 'app/home/home.component';
+import { HomeContentComponent } from 'app/home/home-content.component';
 import { UserHomeComponent } from 'app/home/user-home.component';
 import { SharedModule } from 'app/shared/shared.module';
 
@@ -12,7 +12,7 @@ import { SharedModule } from 'app/shared/shared.module';
 @NgModule({
   declarations: [
     HomeComponent,
-    GuestHomeComponent,
+    HomeContentComponent,
     UserHomeComponent,
     DashboardComponent
   ],
