@@ -741,3 +741,13 @@ notification data {
     display: none;
   }
 }
+
+top-bar nav {
+  transition: background-color ease-in-out 0.4s;
+}
+body.root-menu--home {
+  top-bar nav {
+    background-color: transparent;
+    color: black;
+  }
+}

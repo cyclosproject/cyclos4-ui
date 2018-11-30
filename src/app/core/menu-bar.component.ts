@@ -5,6 +5,7 @@ import { MenuService } from 'app/core/menu.service';
 import { StateManager } from 'app/core/state-manager';
 import { BreadcrumbService } from 'app/core/breadcrumb.service';
 import { Router } from '@angular/router';
+import { LayoutService } from 'app/shared/layout.service';
 
 /**
  * A bar displayed on large layouts with the root menu items
@@ -20,7 +21,8 @@ export class MenuBarComponent implements OnInit {
     private router: Router,
     private menu: MenuService,
     private stateManager: StateManager,
-    private breadcrumb: BreadcrumbService) {
+    private breadcrumb: BreadcrumbService,
+    public layout: LayoutService) {
   }
 
   roots: Observable<RootMenuEntry[]>;

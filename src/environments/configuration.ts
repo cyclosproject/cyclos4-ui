@@ -55,8 +55,7 @@ const HOME_CONTENT: HomeContent = {
   cacheKey: 'home',
   cacheSeconds: DEFAULT_CACHE_SECONDS,
   // Layout can be 'full', 'center' or 'card' (when 'card', a title can be set)
-  layout: 'card',
-  title: `Welcome to ${APP_TITLE}`,
+  layout: 'full',
   content: ContentGetter.url('content/home.html')
 };
 // Content for logged users's home page

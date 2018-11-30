@@ -1,4 +1,7 @@
-<nav class="navbar shadow-sm">
+<nav class="navbar shadow-sm" [ngStyle]="{
+  boxShadow: (layout.fullWidth$ | async) ? 'none' : '',
+  border: (layout.fullWidth$ | async) ? 'none' : ''
+}">
   <div class="container justify-content-start">
     <ng-container *ngFor="let root of roots | async">
       <a *ngIf="root.entries[0]" [routerLink]="root.entries[0].url" (click)="onClick($event, root);$event.target.blur()"

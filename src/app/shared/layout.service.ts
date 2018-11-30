@@ -64,8 +64,13 @@ export class LayoutService {
   get fullWidth(): boolean {
     return this.fullWidth$.value;
   }
-  set fullWidth(pageLayout: boolean) {
-    this.fullWidth$.next(pageLayout);
+  set fullWidth(fullWidth: boolean) {
+    this.fullWidth$.next(fullWidth);
+    if (fullWidth) {
+      document.body.classList.add('pb-0');
+    } else {
+      document.body.classList.remove('pb-0');
+    }
   }
 
   private activeBreakpoints = new Set<string>();
