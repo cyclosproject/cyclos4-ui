@@ -21,7 +21,7 @@ export class PageLayoutComponent implements OnInit, OnDestroy {
   @Input() ready: boolean;
   @Input() size: 'small' | 'medium' | 'large' | 'full' = 'full';
 
-  private sub: Subscription[] = [];
+  private subs: Subscription[] = [];
 
   private _hideMenu = false;
   @Input() get hideMenu(): boolean | string {
@@ -45,23 +45,23 @@ export class PageLayoutComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.layout.currentPageLayout = this;
 
-    const updateSideAreaVisible = () => {
+    const updateLeftAreaVisible = () => {
       const hasCards = !empty(this.banner.cards);
       const loggedIn = this.login.user != null;
       const hasMenu = loggedIn && !this.hideMenu && this.menu.activeMenu != null;
       const visible = this.layout.gtmd && (hasCards || hasMenu);
       this.leftAreaVisible$.next(visible);
     };
-    this.sub.push(this.layout.gtmd$.subscribe(updateSideAreaVisible));
-    this.sub.push(this.login.user$.subscribe(updateSideAreaVisible));
-    this.sub.push(this.menu.activeMenu$.subscribe(updateSideAreaVisible));
-    this.sub.push(this.banner.cards$.subscribe(updateSideAreaVisible));
-    updateSideAreaVisible();
+    this.subs.push(this.layout.gtmd$.subscribe(updateLeftAreaVisible));
+    this.subs.push(this.login.user$.subscribe(updateLeftAreaVisible));
+    this.subs.push(this.menu.activeMenu$.subscribe(updateLeftAreaVisible));
+    this.subs.push(this.banner.cards$.subscribe(updateLeftAreaVisible));
+    updateLeftAreaVisible();
   }
 
   ngOnDestroy() {
     this.layout.currentPageLayout = null;
 
-    this.sub.forEach(s => s.unsubscribe());
+    this.subs.forEach(s => s.unsubscribe());
   }
 }

@@ -15,6 +15,7 @@ import { LayoutService } from 'app/shared/layout.service';
 import { Observable, Subscription } from 'rxjs';
 import { BreadcrumbService } from '../core/breadcrumb.service';
 import { StateManager } from '../core/state-manager';
+import { Menu } from 'app/shared/menu';
 
 /**
  * Base class to meant to be inherited by other components.
@@ -75,7 +76,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
     this.addSub(this.route.data.subscribe(data => {
       if (data.menu) {
         let menu = data.menu;
-        if (typeof data.menu === 'object') {
+        if (!(menu instanceof Menu) && typeof data.menu === 'object') {
           menu = this.login.user ? menu.loggedUsers : menu.guests;
         }
         // Need to defer the next menu setting, or this will give problems with change detection
