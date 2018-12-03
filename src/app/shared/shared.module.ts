@@ -78,7 +78,7 @@ import { MaybeLinkComponent } from 'app/shared/maybe-link.component';
 import { StaticMapComponent } from 'app/shared/static-map.component';
 import { CalendarComponent } from 'app/shared/calendar.component';
 import { BannerCardComponent } from 'app/shared/banner-card.component';
-
+import { ContentPageComponent } from 'app/shared/content-page.component';
 
 export function initTooltipConfig(): TooltipConfig {
   const config = new TooltipConfig();
@@ -107,6 +107,7 @@ export function initTooltipConfig(): TooltipConfig {
     PageLayoutComponent,
     PageContentComponent,
     BannerCardComponent,
+    ContentPageComponent,
     ResultsLayoutComponent,
     StaticMapComponent,
     ResultCategoryDirective,
@@ -205,6 +206,7 @@ export function initTooltipConfig(): TooltipConfig {
     PageLayoutComponent,
     PageContentComponent,
     BannerCardComponent,
+    ContentPageComponent,
     ResultsLayoutComponent,
     StaticMapComponent,
     ResultCategoryDirective,

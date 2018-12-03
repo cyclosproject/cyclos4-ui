@@ -1,5 +1,11 @@
 @import 'src/definitions';
 
+form {
+  max-width: 400px;
+  display: block;
+  margin: auto
+}
+
 @include media-breakpoint-up(md) {
   :host ::ng-deep page-content:not(.with-left-area) {
     margin-top: 3rem;

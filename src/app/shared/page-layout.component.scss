@@ -15,19 +15,19 @@
 .content-area {
   flex: 1;
 }
-.content-area-small {
-  max-width: 400px;
-}
-.content-area-medium {
-  max-width: 600px;
-}
-.content-area-large {
-  max-width: 786px;
-}
 
 @include media-breakpoint-up(md) {
   .content-area {
     margin-top: -$section-margin;
+  }
+  .content-area-small {
+    max-width: 400px;
+  }
+  .content-area-medium {
+    max-width: 600px;
+  }
+  .content-area-large {
+    max-width: 786px;
   }
 }
 

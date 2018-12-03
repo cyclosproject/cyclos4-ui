@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { environment } from 'environments/environment';
 
@@ -11,29 +11,18 @@ import { environment } from 'environments/environment';
   templateUrl: 'home.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HomeComponent extends BasePageComponent<void> implements OnInit {
+export class HomeComponent extends BasePageComponent<void> {
+
+  homePage = environment.homePage;
 
   constructor(injector: Injector) {
     super(injector);
   }
 
-  ngOnInit() {
-    super.ngOnInit();
-    this.addSub(this.layout.ltmd$.subscribe(() => this.goToLoginIfNeeded()));
-    this.goToLoginIfNeeded();
-  }
-
-  private goToLoginIfNeeded() {
-    if (this.login.user == null && this.layout.ltmd) {
-      // Guests on mobile don't have a home page - go to login directly
-      this.router.navigate(['/login']);
-    }
-  }
-
   defaultFullWidthLayout(): boolean {
-    if (this.login.user == null && this.layout.gtsm) {
+    if (this.login.user == null) {
       // Home content page may be full width
-      return environment.homeContent.layout === 'full';
+      return this.homePage.layout === 'full';
     }
     return false;
   }

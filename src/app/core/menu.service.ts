@@ -190,10 +190,9 @@ export class MenuService {
       return entry;
     };
     // Create the root menu entries
-    const home = addRoot(RootMenu.HOME, 'home', this.i18n({ value: 'Home', description: 'Menu' }), null, [MenuType.BAR]);
+    const home = addRoot(RootMenu.HOME, 'home', this.i18n({ value: 'Home', description: 'Menu' }), null);
     const dashboard = addRoot(RootMenu.DASHBOARD, 'dashboard',
-      this.i18n({ value: 'Dashboard', description: 'Menu' }), null,
-      [MenuType.BAR, MenuType.SIDE]);
+      this.i18n({ value: 'Dashboard', description: 'Menu' }), null);
     const publicDirectory = addRoot(RootMenu.PUBLIC_DIRECTORY, 'group', this.i18n({ value: 'Directory', description: 'Menu' }));
     const publicMarketplace = addRoot(RootMenu.PUBLIC_MARKETPLACE,
       'shopping_cart', this.i18n({ value: 'Advertisements', description: 'Menu' }));

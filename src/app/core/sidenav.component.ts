@@ -1,15 +1,14 @@
-import { Component, ChangeDetectionStrategy, OnInit, ElementRef } from '@angular/core';
-import { Observable } from 'rxjs';
-import { RootMenuEntry, MenuType, Menu, MenuEntry, RootMenu } from 'app/shared/menu';
-import { MenuService } from 'app/core/menu.service';
-import { FormatService } from 'app/core/format.service';
-import { LayoutService } from 'app/shared/layout.service';
-import { blank } from 'app/shared/helper';
-import { LoginService } from 'app/core/login.service';
+import { ChangeDetectionStrategy, Component, ElementRef, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { BreadcrumbService } from 'app/core/breadcrumb.service';
+import { FormatService } from 'app/core/format.service';
+import { LoginService } from 'app/core/login.service';
+import { MenuService } from 'app/core/menu.service';
 import { StateManager } from 'app/core/state-manager';
-import { map } from 'rxjs/operators';
+import { blank } from 'app/shared/helper';
+import { LayoutService } from 'app/shared/layout.service';
+import { Menu, MenuEntry, MenuType, RootMenuEntry } from 'app/shared/menu';
+import { Observable } from 'rxjs';
 
 /**
  * The sidenav contains the menu on small devices
@@ -36,23 +35,7 @@ export class SidenavComponent implements OnInit {
   roots$: Observable<RootMenuEntry[]>;
 
   ngOnInit() {
-    this.roots$ = this.menu.menu(MenuType.SIDENAV).pipe(
-      map(roots => {
-        if (this.login.user == null) {
-          // Generally login / registration are shown in the end.
-          // For the sidenav, put them first.
-          const login = roots.find(r => r.rootMenu === RootMenu.LOGIN);
-          const registration = roots.find(r => r.rootMenu === RootMenu.REGISTRATION);
-          const head = [login];
-          if (registration) {
-            head.push(registration);
-          }
-          const tail = roots.filter(r => !head.includes(r));
-          return [...head, ...tail];
-        }
-        return roots;
-      })
-    );
+    this.roots$ = this.menu.menu(MenuType.SIDENAV);
     this.layout.gtsm$.subscribe(() => this.close());
   }
 

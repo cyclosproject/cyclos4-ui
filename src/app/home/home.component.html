@@ -1,4 +1,7 @@
 <page-layout hideMenu>
-  <user-home *ngIf="login.user != null"></user-home>
-  <home-content *ngIf="(layout.gtsm$ | async) && login.user == null"></home-content>
+  <content-page [contentPage]="homePage" *ngIf="login.user == null; else dashboard"></content-page>
 </page-layout>
+
+<ng-template #dashboard>
+  Here goes the logged user dashboard
+</ng-template>

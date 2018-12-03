@@ -3,7 +3,7 @@ import { ApiHelper } from 'app/shared/api-helper';
 import { BaseComponent } from 'app/shared/base.component';
 import { empty } from 'app/shared/helper';
 
-export class DashboardAction {
+export class QuickAccessAction {
   constructor(
     public icon: string,
     public label: string,
@@ -12,18 +12,18 @@ export class DashboardAction {
 }
 
 /**
- * Displays the dashboard, which are shortcuts to actions in the home page
+ * Displays the quick access, which are links to common actions
  */
 @Component({
   // tslint:disable-next-line:component-selector
-  selector: 'dashboard',
-  templateUrl: 'dashboard.component.html',
-  styleUrls: ['dashboard.component.scss'],
+  selector: 'quick-access',
+  templateUrl: 'quick-access.component.html',
+  styleUrls: ['quick-access.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DashboardComponent extends BaseComponent implements OnInit {
+export class QuickAccessComponent extends BaseComponent implements OnInit {
 
-  actions: DashboardAction[];
+  actions: QuickAccessAction[];
 
   constructor(injector: Injector) {
     super(injector);
@@ -41,29 +41,29 @@ export class DashboardComponent extends BaseComponent implements OnInit {
         if (account.visible) {
           const type = account.account.type;
           const label = accounts.length === 1 ? this.i18n('Account') : type.name;
-          this.actions.push(new DashboardAction('account', label, ['banking', 'account', ApiHelper.internalNameOrId(type)]));
+          this.actions.push(new QuickAccessAction('account', label, ['banking', 'account', ApiHelper.internalNameOrId(type)]));
         }
       }
       if (permissions.banking.payments.user) {
-        this.actions.push(new DashboardAction('pay', this.i18n('Pay user'), ['banking', 'payment']));
+        this.actions.push(new QuickAccessAction('pay', this.i18n('Pay user'), ['banking', 'payment']));
       }
     }
     if (permissions.contacts && (permissions.contacts.enable)) {
-      this.actions.push(new DashboardAction('contact_list', this.i18n('Contacts'), ['users', 'contacts']));
+      this.actions.push(new QuickAccessAction('contact_list', this.i18n('Contacts'), ['users', 'contacts']));
     }
     if (permissions.users && (permissions.users.search || permissions.users.map)) {
-      this.actions.push(new DashboardAction('search_users', this.i18n('Directory'), ['users', 'search']));
+      this.actions.push(new QuickAccessAction('search_users', this.i18n('Directory'), ['users', 'search']));
     }
     if (permissions.marketplace && permissions.marketplace.search) {
-      this.actions.push(new DashboardAction('marketplace', this.i18n('Advertisements'), ['marketplace', 'search']));
+      this.actions.push(new QuickAccessAction('marketplace', this.i18n('Advertisements'), ['marketplace', 'search']));
     }
     if (permissions.myProfile && permissions.myProfile.editProfile) {
-      this.actions.push(new DashboardAction('edit_profile', this.i18n('Edit profile'), ['users', 'my-profile', 'edit']));
+      this.actions.push(new QuickAccessAction('edit_profile', this.i18n('Edit profile'), ['users', 'my-profile', 'edit']));
     }
     if (auth.user == null) {
-      this.actions.push(new DashboardAction('login', this.i18n('Login'), ['login']));
+      this.actions.push(new QuickAccessAction('login', this.i18n('Login'), ['login']));
       if (!empty(dataForUi.publicRegistrationGroups)) {
-        this.actions.push(new DashboardAction('register', this.i18n('Register'), ['users', 'registration']));
+        this.actions.push(new QuickAccessAction('register', this.i18n('Register'), ['users', 'registration']));
       }
     }
   }

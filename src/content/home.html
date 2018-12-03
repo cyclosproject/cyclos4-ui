@@ -1,30 +1,26 @@
 <style>
   @import url(https://fonts.googleapis.com/css?family=Roboto:300);
 
-  @media screen and (min-width: 800px) {
-    .mobile-break {
-      display: none;
-    }
-  }
-
   #front-page {
     background-color: #1b1b1b;
     background-image: url(https://www.cyclos.org/documents/front-page-background.jpg);
     background-size: cover;
     background-position: center 30%;
-    height: 20rem;
+    min-height: 20rem;
     color: white;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     line-height: 2rem;
     text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3), 0px 1px 1px rgba(0, 0, 0, 0.5);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    padding: 2rem 0;
   }
 
   .front-page-title {
-    font-size: 2.2rem;
+    font-size: 1.8rem;
+    line-height: 2.2rem;
     margin-bottom: 2rem !important;
   }
 
@@ -68,12 +64,13 @@
     border-radius: 0.2rem;
     text-align: center;
     padding: 0.2rem 1rem;
-    margin: 0 1rem;
+    margin: 0.5rem 1rem;
     font-size: 1rem !important;
     color: white !important;
     text-shadow: none;
     border: none;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1), 0px 1px 1px rgba(0, 0, 0, 0.3);
+    width: 100%;
   }
 
   .front-page-buttons a:hover {
@@ -83,7 +80,7 @@
   }
 
   .stripe {
-    padding: 4rem 3rem;
+    padding: 4rem 0 2rem 0;
     border-width: 1px 0;
     border-style: solid;
   }
@@ -155,8 +152,17 @@
     font-weight: 300;
   }
 
+  .award img {
+    max-width: 100%;
+  }
+
+  .award h1,
+  .award div {
+    text-align: center !important;
+  }
+
   .footer {
-    padding: 4rem 3rem;
+    padding: 1rem 2rem 2rem 2rem;
     background-color: #555555;
     border-top: 1px solid black;
   }
@@ -177,6 +183,7 @@
   .footer h3 {
     font-weight: 500 !important;
     color: #ededed !important;
+    margin-top: 2rem !important;
     margin-bottom: 1rem !important;
   }
 
@@ -200,21 +207,42 @@
     color: #ededed !important;
   }
 
+  /* md */
+  @media screen and (min-width: 768px) {
+    .front-page-buttons a {
+      width: auto;
+    }
+  }
+
+  /* lg */
+  @media screen and (min-width: 992px) {
+    .stripe {
+      padding: 4rem 3rem;
+    }
+
+    .footer {
+      padding-top: 2rem;
+    }
+  }
+
 </style>
 <div class="home-content" role="main">
 
   <div id="front-page">
     <div class="container">
       <p class="front-page-title">
-        CYCLOS 4 PRO
-        <br class="mobile-break">
-        PAYMENT SOFTWARE
+        <span class="no-wrap">CYCLOS 4 PRO</span>
+        <span class="no-wrap">PAYMENT SOFTWARE</span>
       </p>
-      <p>Developed to deliver high security, flexibility,
-        <br class="mobile-break"> scalability, combined with a solid quality.
-        <br>Have a look at the main Cyclos 4 PRO features:
+      <p>
+        <span class="no-wrap">Developed to deliver high security,</span>
+        <span class="no-wrap">flexibility and scalability,</span>
+        <span class="no-wrap">combined with a solid quality.</span></p>
+      <p>
+        <span class="no-wrap">Have a look at the main</span>
+        <span class="no-wrap">Cyclos 4 PRO features:</span>
       </p>
-      <p class="front-page-buttons">
+      <p class="front-page-buttons d-flex flex-column flex-sm-row">
         <a class="button-link" target="_blank" href="https://www.cyclos.org">
           Cyclos website
         </a>
@@ -230,7 +258,7 @@
     <div class="container">
       <div class="row">
 
-        <div class="col-6">
+        <div class="col-12 col-lg-6">
           <div class="stripe-item">
             <div class="stripe-item-icon">
               <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -253,7 +281,7 @@
           </div>
         </div>
 
-        <div class="col-6">
+        <div class="col-12 col-lg-6">
           <div class="stripe-item">
             <div class="stripe-item-icon">
               <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -276,7 +304,7 @@
           </div>
         </div>
 
-        <div class="col-6">
+        <div class="col-12 col-lg-6">
           <div class="stripe-item">
             <div class="stripe-item-icon">
               <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -299,7 +327,7 @@
           </div>
         </div>
 
-        <div class="col-6">
+        <div class="col-12 col-lg-6">
           <div class="stripe-item">
             <div class="stripe-item-icon">
               <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -325,7 +353,7 @@
           </div>
         </div>
 
-        <div class="col-6">
+        <div class="col-12 col-lg-6">
           <div class="stripe-item">
             <div class="stripe-item-icon">
               <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -348,7 +376,7 @@
           </div>
         </div>
 
-        <div class="col-6">
+        <div class="col-12 col-lg-6">
           <div class="stripe-item">
             <div class="stripe-item-icon">
               <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -373,7 +401,7 @@
           </div>
         </div>
 
-        <div class="col-6">
+        <div class="col-12 col-lg-6">
           <div class="stripe-item">
             <div class="stripe-item-icon">
               <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -397,7 +425,7 @@
           </div>
         </div>
 
-        <div class="col-6">
+        <div class="col-12 col-lg-6">
           <div class="stripe-item">
             <div class="stripe-item-icon">
               <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -430,7 +458,7 @@
     <div class="container">
       <div class="row">
 
-        <div class="col-6">
+        <div class="col-12 col-lg-6">
           <div class="stripe-item">
             <div class="stripe-item-icon">
               <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -460,7 +488,7 @@
           </div>
         </div>
 
-        <div class="col-6">
+        <div class="col-12 col-lg-6">
           <div class="stripe-item">
             <div class="stripe-item-icon">
               <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -483,7 +511,7 @@
           </div>
         </div>
 
-        <div class="col-6">
+        <div class="col-12 col-lg-6">
           <div class="stripe-item">
             <div class="stripe-item-icon">
               <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -514,7 +542,7 @@
           </div>
         </div>
 
-        <div class="col-6">
+        <div class="col-12 col-lg-6">
           <div class="stripe-item">
             <div class="stripe-item-icon">
               <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -549,7 +577,7 @@
     <div class="container">
       <div class="row">
 
-        <div class="col-6">
+        <div class="col-12 col-lg-6">
           <div class="stripe-item">
             <div class="stripe-item-icon">
               <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -580,7 +608,7 @@
           </div>
         </div>
 
-        <div class="col-6">
+        <div class="col-12 col-lg-6">
           <div class="stripe-item">
             <div class="stripe-item-icon">
               <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -606,7 +634,7 @@
           </div>
         </div>
 
-        <div class="col-6">
+        <div class="col-12 col-lg-6">
           <div class="stripe-item">
             <div class="stripe-item-icon">
               <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -632,7 +660,7 @@
           </div>
         </div>
 
-        <div class="col-6">
+        <div class="col-12 col-lg-6">
           <div class="stripe-item">
             <div class="stripe-item-icon">
               <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -669,7 +697,7 @@
     <div class="container">
       <div class="row">
 
-        <div class="col-6">
+        <div class="col-12 col-lg-6">
           <div class="stripe-item">
             <div class="stripe-item-icon">
               <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -695,7 +723,7 @@
           </div>
         </div>
 
-        <div class="col-6">
+        <div class="col-12 col-lg-6">
           <div class="stripe-item">
             <div class="stripe-item-icon">
               <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -719,7 +747,7 @@
           </div>
         </div>
 
-        <div class="col-6">
+        <div class="col-12 col-lg-6">
           <div class="stripe-item">
             <div class="stripe-item-icon">
               <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -742,7 +770,7 @@
           </div>
         </div>
 
-        <div class="col-6">
+        <div class="col-12 col-lg-6">
           <div class="stripe-item">
             <div class="stripe-item-icon">
               <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -766,7 +794,7 @@
           </div>
         </div>
 
-        <div class="col-6">
+        <div class="col-12 col-lg-6">
           <div class="stripe-item">
             <div class="stripe-item-icon">
               <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -791,7 +819,7 @@
           </div>
         </div>
 
-        <div class="col-6">
+        <div class="col-12 col-lg-6">
           <div class="stripe-item">
             <div class="stripe-item-icon">
               <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -824,13 +852,13 @@
 
   <div class="stripe stripe-white award">
     <div class="container smaller-container">
-      <div class="row">
-        <div class="col-6">
+      <div class="row flex-column-reverse flex-lg-row">
+        <div class="col-12 col-lg-6 award-image-content p-3">
           <img src="https://www.cyclos.org/wp-content/uploads/2014/04/award.png">
         </div>
-        <div class="col-6 stripe-item-content">
+        <div class="col-12 col-lg-6 stripe-item-content">
           <h1>Award winning payment software</h1>
-          <p>As early as
+          <p class="my-5">As early as
             2014 the payment industry awarded Cyclos at the TRANSACT
             conference for being the most innovative payment software.</p>
         </div>
@@ -841,7 +869,7 @@
   <div class="footer">
     <div class="container smaller-container">
       <div class="row no-gutters">
-        <div class="col-3">
+        <div class="col-12 col-sm-6 col-lg-3">
           <h3>About us</h3>
           <p>
             <a href="https://www.socialtrade.org">Social TRade Organisation
@@ -854,7 +882,7 @@
             <a href="https://www.cyclos.org/contact/">Contact</a>
           </p>
         </div>
-        <div class="col-3">
+        <div class="col-12 col-sm-6 col-lg-3">
           <h3>Documentation</h3>
           <p>
             <a href="https://www.cyclos.org/documentation">Overview</a>
@@ -867,7 +895,7 @@
             <a href="https://wiki4.cyclos.org">Cyclos 4 Wiki</a>
           </p>
         </div>
-        <div class="col-3">
+        <div class="col-12 col-sm-6 col-lg-3">
           <h3>Help</h3>
           <p>
             <a href="https://www.cyclos.org/faq/">FAQ</a>
@@ -879,7 +907,7 @@
             <a href="https://www.cyclos.org/support/">Support</a>
           </p>
         </div>
-        <div class="col-3">
+        <div class="col-12 col-sm-6 col-lg-3">
           <h3>Cyclos developed by STRO</h3>
           <p style="font-size: 0.9em">Cyclos is developed by STRO, a leading
             organisation in monetary innovations. STRO’s mission is to enable

@@ -16,6 +16,10 @@ body, top-bar nav, menu-bar nav {
   transition: background ease-in-out 0.4s, color ease-in-out 0.4s;
 }
 
+.no-wrap {
+  white-space: nowrap;
+}
+
 .no-gutters, .filters-form > .row, .filters-row {
   margin-right: 0;
   margin-left: 0;

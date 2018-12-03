@@ -50,8 +50,8 @@ const AD_CATEGORY_COLORS = {
 // **** Content **** //
 // See the project home page for help on how to customize content
 
-// Content for the home page shown on large displays
-const HOME_CONTENT: ContentPage = {
+// Definitions for the home page
+const HOME_PAGE: ContentPage = {
   cacheKey: 'home',
   cacheSeconds: DEFAULT_CACHE_SECONDS,
   // Layout can be 'full', 'center' or 'card' (when 'card', a title can be set)
@@ -80,7 +80,7 @@ export const configuration = {
   quickSearchPageSize: QUICK_SEARCH_PAGE_SIZE,
   adCategoryIcons: AD_CATEGORY_ICONS,
   adCategoryColors: AD_CATEGORY_COLORS,
-  homeContent: HOME_CONTENT,
+  homePage: HOME_PAGE,
   usersHome: USERS_HOME,
   bannerResolver: BANNER_RESOLVER
 };
