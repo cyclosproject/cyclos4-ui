@@ -7,14 +7,15 @@
     }
   }
 
-  #content-front-page {
+  #front-page {
+    background-color: #1b1b1b;
     background-image: url(https://www.cyclos.org/documents/front-page-background.jpg);
     background-size: cover;
     background-position: center 30%;
-    height: 24rem;
+    height: 20rem;
     color: white;
-    font-size: 1.6rem;
-    line-height: 2.7rem;
+    font-size: 1.4rem;
+    line-height: 2rem;
     text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3), 0px 1px 1px rgba(0, 0, 0, 0.5);
     display: flex;
     flex-direction: column;
@@ -22,7 +23,12 @@
     justify-content: center;
   }
 
-  #content-front-page p {
+  .front-page-title {
+    font-size: 2.2rem;
+    margin-bottom: 2rem !important;
+  }
+
+  #front-page p {
     text-align: center;
   }
 
@@ -47,6 +53,33 @@
 
   .home-content h1 {
     text-transform: uppercase;
+  }
+
+  .front-page-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 2rem auto 0 auto;
+  }
+
+  .front-page-buttons a {
+    background-color: #f2883a;
+    font-weight: 500;
+    border-radius: 0.2rem;
+    text-align: center;
+    padding: 0.2rem 1rem;
+    margin: 0 1rem;
+    font-size: 1rem !important;
+    color: white !important;
+    text-shadow: none;
+    border: none;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1), 0px 1px 1px rgba(0, 0, 0, 0.3);
+  }
+
+  .front-page-buttons a:hover {
+    color: white !important;
+    background-color: #ce7431;
+    text-shadow: none;
   }
 
   .stripe {
@@ -170,9 +203,9 @@
 </style>
 <div class="home-content" role="main">
 
-  <div id="content-front-page">
+  <div id="front-page">
     <div class="container">
-      <p style="font-size: 1.2em">
+      <p class="front-page-title">
         CYCLOS 4 PRO
         <br class="mobile-break">
         PAYMENT SOFTWARE
@@ -180,6 +213,14 @@
       <p>Developed to deliver high security, flexibility,
         <br class="mobile-break"> scalability, combined with a solid quality.
         <br>Have a look at the main Cyclos 4 PRO features:
+      </p>
+      <p class="front-page-buttons">
+        <a class="button-link" target="_blank" href="https://www.cyclos.org">
+          Cyclos website
+        </a>
+        <a class="button-link" target="_blank" href="https://license.cyclos.org">
+          Download Cyclos
+        </a>
       </p>
     </div>
   </div>
