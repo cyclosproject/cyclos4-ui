@@ -1,7 +1,7 @@
 import { Content } from 'app/content/content';
 
-/** The home page content */
-export interface HomeContent extends Content {
+/** A content page to be displayed */
+export interface ContentPage extends Content {
 
   /**
    * How to show the home page content.

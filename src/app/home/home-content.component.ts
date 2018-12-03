@@ -25,7 +25,6 @@ export class HomeContentComponent extends BaseComponent implements OnInit {
   ngOnInit() {
     super.ngOnInit();
     const layout = this.home.layout || 'full';
-    this.layout.fullWidth = layout === 'full';
 
     if (layout !== 'card') {
       // When the content is not card, fetch the content and update the innerHTML directly

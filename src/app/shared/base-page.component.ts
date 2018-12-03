@@ -69,7 +69,7 @@ export abstract class BasePageComponent<D> extends BaseComponent implements OnIn
   ngOnInit() {
     super.ngOnInit();
     this.layout.currentPage = this;
-    this.layout.fullWidth = false;
+    this.layout.fullWidth = this.defaultFullWidthLayout();
   }
 
   ngOnDestroy(): void {
@@ -85,5 +85,12 @@ export abstract class BasePageComponent<D> extends BaseComponent implements OnIn
    */
   locateControl(_locator: FormControlLocator): AbstractControl {
     return null;
+  }
+
+  /**
+   * May be overritten in order to determine whether the layout should be full width
+   */
+  protected defaultFullWidthLayout(): boolean {
+    return false;
   }
 }

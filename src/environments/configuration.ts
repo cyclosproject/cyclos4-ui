@@ -1,7 +1,7 @@
 import { BannerResolver } from 'app/content/banner-resolver';
 import { Content, DEFAULT_CACHE_SECONDS } from 'app/content/content';
 import { ContentGetter } from 'app/content/content-getter';
-import { HomeContent } from 'app/content/home-content';
+import { ContentPage } from 'app/content/content-page';
 
 // This file defines the environment variables shared by both development and production
 
@@ -51,7 +51,7 @@ const AD_CATEGORY_COLORS = {
 // See the project home page for help on how to customize content
 
 // Content for the home page shown on large displays
-const HOME_CONTENT: HomeContent = {
+const HOME_CONTENT: ContentPage = {
   cacheKey: 'home',
   cacheSeconds: DEFAULT_CACHE_SECONDS,
   // Layout can be 'full', 'center' or 'card' (when 'card', a title can be set)

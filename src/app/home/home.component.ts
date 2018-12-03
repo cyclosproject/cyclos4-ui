@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { BasePageComponent } from 'app/shared/base-page.component';
+import { environment } from 'environments/environment';
 
 /**
  * Displays the home page
@@ -27,6 +28,14 @@ export class HomeComponent extends BasePageComponent<void> implements OnInit {
       // Guests on mobile don't have a home page - go to login directly
       this.router.navigate(['/login']);
     }
+  }
+
+  defaultFullWidthLayout(): boolean {
+    if (this.login.user == null && this.layout.gtsm) {
+      // Home content page may be full width
+      return environment.homeContent.layout === 'full';
+    }
+    return false;
   }
 
 }
