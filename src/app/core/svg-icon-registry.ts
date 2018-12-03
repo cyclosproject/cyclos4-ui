@@ -1,29 +1,39 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+
+declare const require;
 
 /**
- * Intercepts requests to set the correct headers and handle errors
+ * A registry of SVG icons, which are statically loaded in the application
  */
 @Injectable({
   providedIn: 'root'
 })
 export class SvgIconRegistry {
 
-  private names: string[] = [];
   private registry = new Map<string, SVGElement>();
 
-  constructor(private http: HttpClient) {
-    this.names.push('account_balance_circle');
-    this.names.push('login');
-    this.names.push('search_users');
-    this.names.push('marketplace');
-    this.names.push('register');
-    this.names.push('edit_profile');
-    this.names.push('account');
-    this.names.push('pay');
-    this.names.push('contact_list');
+  constructor() {
+    this.register('account_balance_circle');
+    this.register('login');
+    this.register('search_users');
+    this.register('marketplace');
+    this.register('register');
+    this.register('edit_profile');
+    this.register('account');
+    this.register('pay');
+    this.register('contact_list');
+  }
+
+  private register(name: string) {
+    const content = require(`!raw-loader!../icons/${name}.svg`);
+    const div = document.createElement('div');
+    div.innerHTML = content;
+    const svg = div.querySelector('svg') as SVGElement;
+    if (!svg) {
+      throw Error('<svg> tag not found');
+    }
+    this.registry.set(name, svg);
   }
 
   /**
@@ -35,19 +45,7 @@ export class SvgIconRegistry {
     if (cached) {
       return of(cached.cloneNode(true) as SVGElement);
     }
-    const url = `images/${name}.svg`;
-    return this.http.get(url, { responseType: 'text' }).pipe(
-      map(content => {
-        const div = document.createElement('div');
-        div.innerHTML = content;
-        const svg = div.querySelector('svg') as SVGElement;
-        if (!svg) {
-          throw Error('<svg> tag not found');
-        }
-        return svg;
-      }),
-      tap(svg => this.registry.set(name, svg))
-    );
+    throw new Error(`No such SVG icon: ${name}`);
   }
 
   /**
@@ -55,7 +53,7 @@ export class SvgIconRegistry {
    * @param name The icon name
    */
   isSvgIcon(name: string) {
-    return this.names.includes(name);
+    return this.registry.has(name);
   }
 
 }
