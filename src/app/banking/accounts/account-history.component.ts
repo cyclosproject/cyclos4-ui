@@ -1,21 +1,14 @@
-import { Component, ChangeDetectionStrategy, Injector, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
-  DataForAccountHistory, Currency, EntityReference, PreselectedPeriod,
-  AccountHistoryResult, AccountKind, AccountHistoryStatus, TransferFilter, Image
+  AccountHistoryResult, AccountKind, AccountWithHistoryStatus, Currency,
+  DataForAccountHistory, EntityReference, Image, PreselectedPeriod, TransferFilter
 } from 'app/api/models';
 import { AccountsService } from 'app/api/services';
-
-import { BehaviorSubject } from 'rxjs';
 import { ApiHelper } from 'app/shared/api-helper';
-import { tap } from 'rxjs/operators';
 import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
+import { BehaviorSubject } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
-/** Information for an account status element shown on top */
-export interface StatusIndicator {
-  label: string;
-  amount: string;
-  alwaysNegative: boolean;
-}
 
 /**
  * Displays the account history of a given account
@@ -30,14 +23,14 @@ export class AccountHistoryComponent
   extends BaseSearchPageComponent<DataForAccountHistory, AccountHistoryResult>
   implements OnInit {
 
+  status$ = new BehaviorSubject<AccountWithHistoryStatus>(null);
+
   constructor(
     injector: Injector,
     private accountsService: AccountsService
   ) {
     super(injector);
   }
-
-  indicators$ = new BehaviorSubject<StatusIndicator[]>(null);
 
   get type(): EntityReference {
     return this.data == null ? null : this.data.account.type;
@@ -70,19 +63,6 @@ export class AccountHistoryComponent
 
   get typeId(): string {
     return this.route.snapshot.params.type;
-  }
-
-  get maxIndicators(): number {
-    const width = this.layout.width;
-    if (width < 400) {
-      return 2;
-    } else if (width < 450) {
-      return 3;
-    } else if (width < 1100) {
-      return 4;
-    } else {
-      return 5;
-    }
   }
 
   getFormControlNames() {
@@ -147,48 +127,13 @@ export class AccountHistoryComponent
       direction: value.direction
     };
     return this.accountsService.searchAccountHistoryResponse(query).pipe(tap(() => {
-      this.indicators$.next(null);
+      this.status$.next(null);
       query.fields = ['status'];
-      this.addSub(this.accountsService.getAccountStatusByOwnerAndType(query).subscribe(account => {
-        this.indicators$.next(this.toIndicators(account.status));
+      this.addSub(this.accountsService.getAccountStatusByOwnerAndType(query).subscribe(status => {
+        const accountWithStatus = { ...this.data.account, status: status.status };
+        this.status$.next(accountWithStatus);
       }));
     }));
-  }
-
-  private toIndicators(status: AccountHistoryStatus): StatusIndicator[] {
-    const result: StatusIndicator[] = [];
-    const add = (amount: string, label: string, alwaysNegative: boolean = false) => {
-      if (amount) {
-        result.push({ amount: amount, label: label, alwaysNegative: alwaysNegative });
-      }
-    };
-    if (status.availableBalance !== status.balance) {
-      add(status.availableBalance, this.i18n('Available balance'));
-    }
-    add(status.balance, this.i18n('Balance'));
-    if (status.reservedAmount && !this.format.isZero(status.reservedAmount)) {
-      add(status.reservedAmount, this.i18n('Reserved amount'), true);
-    }
-    if (status.creditLimit && !this.format.isZero(status.creditLimit)) {
-      add(status.creditLimit, this.i18n('Negative limit'));
-    }
-    if (status.upperCreditLimit && !this.format.isZero(status.upperCreditLimit)) {
-      add(status.upperCreditLimit, this.i18n('Positive limit'));
-    }
-    if (status.balanceAtBegin != null) {
-      add(status.balanceAtBegin, this.i18n('Balance on {{date}}', {
-        date: this.format.formatAsDate(status.beginDate)
-      }));
-    }
-    if (status.balanceAtEnd != null) {
-      add(status.balanceAtEnd, this.i18n('Balance on {{date}}', {
-        date: this.format.formatAsDate(status.endDate)
-      }));
-    }
-    if (status.netInflow != null) {
-      add(status.netInflow, this.i18n('Net inflow'));
-    }
-    return result;
   }
 
   private get firstAccountType(): string {

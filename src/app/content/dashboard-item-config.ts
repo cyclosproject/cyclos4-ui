@@ -58,7 +58,7 @@ namespace DashboardItemConfig {
         { type: QuickAccessType.SEARCH_USERS },
         { type: QuickAccessType.SEARCH_ADS },
         { type: QuickAccessType.EDIT_PROFILE },
-        { type: QuickAccessType.PASSWORDS, breakpoints: ['gt-sm'] },
+        { type: QuickAccessType.PASSWORDS },
       ];
     }
     return {

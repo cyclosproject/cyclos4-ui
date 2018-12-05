@@ -1,7 +1,8 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="loaded$ | async; else loading">
     <page-content mode="filters" [heading]="title" [headingActions]="headingActions$ | async">
-      <form [formGroup]="form" class="filters-form border-bottom">
+      <form *ngIf="moreFilters$ | async; else accountStatus" [formGroup]="form"
+        class="filters-form border-bottom">
         <div class="row">
           <div *ngIf="data.preselectedPeriods?.length > 1" class="col-12 col-md-6">
             <single-selection-field labelPosition="side" formControlName="preselectedPeriod"
@@ -31,51 +32,41 @@
               fieldSize="full">
             </date-field>
           </div>
-          <ng-container *ngIf="moreFilters$ | async">
-            <div class="col-12 col-md-6">
-              <decimal-field labelPosition="side" formControlName="minAmount"
-                i18n-label label="From amount" fieldSize="full" [prefix]="currency.prefix"
-                [suffix]="currency.suffix" [scale]="currency.decimalDigits">
-              </decimal-field>
-            </div>
-            <div class="col-12 col-md-6">
-              <decimal-field labelPosition="side" formControlName="maxAmount"
-                i18n-label label="To amount" fieldSize="full" [prefix]="currency.prefix"
-                [suffix]="currency.suffix" [scale]="currency.decimalDigits">
-              </decimal-field>
-            </div>
-            <div class="col-12 col-md-6">
-              <user-field labelPosition="side" formControlName="user"
-                i18n-label label="User"></user-field>
-            </div>
-            <div *ngIf="data.transactionNumberMask" class="col-12 col-md-6">
-              <input-field labelPosition="side" formControlName="transactionNumber"
-                [mask]="data.transactionNumberMask" i18n-label label="Transaction number"></input-field>
-            </div>
-            <div *ngIf="data.operators?.length > 0" class="col-12 col-md-6">
-              <single-selection-field labelPosition="side" formControlName="by"
-                i18n-label label="Operator" i18n-emptyOption emptyOption="Any">
-                <field-option *ngFor="let operator of data.operators" [value]="operator.id"
-                  [text]="operator.display"></field-option>
-              </single-selection-field>
-            </div>
-          </ng-container>
+          <div class="col-12 col-md-6">
+            <decimal-field labelPosition="side" formControlName="minAmount"
+              i18n-label label="From amount" fieldSize="full" [prefix]="currency.prefix"
+              [suffix]="currency.suffix" [scale]="currency.decimalDigits">
+            </decimal-field>
+          </div>
+          <div class="col-12 col-md-6">
+            <decimal-field labelPosition="side" formControlName="maxAmount"
+              i18n-label label="To amount" fieldSize="full" [prefix]="currency.prefix"
+              [suffix]="currency.suffix" [scale]="currency.decimalDigits">
+            </decimal-field>
+          </div>
+          <div class="col-12 col-md-6">
+            <user-field labelPosition="side" formControlName="user"
+              i18n-label label="User"></user-field>
+          </div>
+          <div *ngIf="data.transactionNumberMask" class="col-12 col-md-6">
+            <input-field labelPosition="side" formControlName="transactionNumber"
+              [mask]="data.transactionNumberMask" i18n-label label="Transaction number"></input-field>
+          </div>
+          <div *ngIf="data.operators?.length > 0" class="col-12 col-md-6">
+            <single-selection-field labelPosition="side" formControlName="by"
+              i18n-label label="Operator" i18n-emptyOption emptyOption="Any">
+              <field-option *ngFor="let operator of data.operators" [value]="operator.id"
+                [text]="operator.display"></field-option>
+            </single-selection-field>
+          </div>
         </div>
       </form>
-      <div *ngIf="indicators$ | async; else loadingIndicators" class="account-indicators">
-        <ng-container *ngFor="let indicator of (indicators$ | async); let i = index; let last = last">
-          <div *ngIf="i < maxIndicators || (layout.ltmd$ | async)" class="account-indicator">
-            <div class="account-indicator-label">{{ indicator.label }}</div>
-            <div class="account-indicator-amount" [ngClass]="{
-                  negative:(indicator.alwaysNegative || format.isNegative(indicator.amount)),
-                  positive:(!indicator.alwaysNegative && format.isPositive(indicator.amount))
-                }">
-              {{ indicator.amount | currency:currency }}
-            </div>
-          </div>
-          <div *ngIf="!last && i < maxIndicators - 1" class="account-indicator-separator"></div>
-        </ng-container>
-      </div>
+      <ng-template #accountStatus>
+        <div *ngIf="status$ | async as status" [ngClass]="{'py-3': layout.gtsm$ | async}">
+          <account-status-view [account]="status"></account-status-view>
+        </div>
+        <spinner *ngIf="(status$ | async) == null"></spinner>
+      </ng-template>
     </page-content>
 
     <results-layout resultType="list" [results]="results$ | async" (update)="update($event)">

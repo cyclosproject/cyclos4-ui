@@ -3,7 +3,7 @@
     mode="tight" heading="Login" i18n-heading="Login page title" [ngClass]="{'with-left-area': layout.leftAreaVisible$ | async}">
     <form [formGroup]="form" (submit)="$event.preventDefault()">
       <div class="text-center p-3">
-        <div class="text-center" [ngClass]="{'mb-3': layout.ltmd$ | async, 'mb-4': layout.gtsm$ | async}">
+        <div class="text-center" [ngClass]="{'my-3': layout.ltmd$ | async, 'mb-4': layout.gtsm$ | async}">
           <ng-container *ngIf="loggedOut; else regularMessage" i18n>
             You have been disconnected.
             <br>Please, login again in order to view the requested page.

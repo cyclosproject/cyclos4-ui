@@ -20,7 +20,7 @@
 
   .front-page-title {
     font-size: 1.8rem;
-    line-height: 2.2rem;
+    line-height: 2.6rem;
     margin-bottom: 2rem !important;
   }
 
@@ -63,7 +63,7 @@
     font-weight: 500;
     border-radius: 0.2rem;
     text-align: center;
-    padding: 0.2rem 1rem;
+    padding: 0.4rem 2.4rem;
     margin: 0.5rem 1rem;
     font-size: 1rem !important;
     color: white !important;
@@ -150,15 +150,20 @@
   .award p {
     font-size: 1.3rem;
     font-weight: 300;
+    text-align: start !important;
   }
 
   .award img {
     max-width: 100%;
+    margin-top: 1rem;
   }
 
-  .award h1,
   .award div {
     text-align: center !important;
+  }
+
+  .award>.container {
+    margin-bottom: 2rem;
   }
 
   .footer {
@@ -212,6 +217,14 @@
     .front-page-buttons a {
       width: auto;
     }
+
+    .award>.container {
+      margin-bottom: 0;
+    }
+
+    .award img {
+      margin-top: 0;
+    }
   }
 
   /* lg */
@@ -242,7 +255,7 @@
         <span class="no-wrap">Have a look at the main</span>
         <span class="no-wrap">Cyclos 4 PRO features:</span>
       </p>
-      <p class="front-page-buttons d-flex flex-column flex-sm-row">
+      <p class="front-page-buttons d-flex flex-column flex-sm-row px-5">
         <a class="button-link" target="_blank" href="https://www.cyclos.org">
           Cyclos website
         </a>
@@ -853,12 +866,12 @@
   <div class="stripe stripe-white award">
     <div class="container smaller-container">
       <div class="row flex-column-reverse flex-lg-row">
-        <div class="col-12 col-lg-6 award-image-content p-3">
+        <div class="col-12 col-lg-6 award-image-content">
           <img src="https://www.cyclos.org/wp-content/uploads/2014/04/award.png">
         </div>
         <div class="col-12 col-lg-6 stripe-item-content">
           <h1>Award winning payment software</h1>
-          <p class="my-5">As early as
+          <p class="mt-4">As early as
             2014 the payment industry awarded Cyclos at the TRANSACT
             conference for being the most innovative payment software.</p>
         </div>

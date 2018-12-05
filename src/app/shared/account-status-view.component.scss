@@ -3,4 +3,15 @@
 .status-label, .status-value {
   font-weight: $font-weight-bold;
   white-space: nowrap;
+  margin: 0.2rem 0;
+}
+
+.status-value {
+  text-align: right;
+}
+
+@include media-breakpoint-up(md) {
+  .status-value {
+    text-align: left;
+  }
 }
