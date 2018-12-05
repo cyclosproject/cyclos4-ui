@@ -54,7 +54,6 @@ namespace DashboardItemConfig {
       descriptors = [
         { type: QuickAccessType.ACCOUNT, breakpoints: ['lt-md'] },
         { type: QuickAccessType.PAY_USER },
-        // { type: QuickAccessType.PAY_SYSTEM },
         { type: QuickAccessType.CONTACTS },
         { type: QuickAccessType.SEARCH_USERS },
         { type: QuickAccessType.SEARCH_ADS },

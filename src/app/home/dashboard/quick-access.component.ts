@@ -50,7 +50,8 @@ export class QuickAccessComponent extends BaseDashboardComponent implements OnIn
         this.actions.push({
           icon: icon,
           label: label,
-          url: url
+          url: url,
+          breakpoints: desc.breakpoints
         });
       }
     };
@@ -87,7 +88,8 @@ export class QuickAccessComponent extends BaseDashboardComponent implements OnIn
       addAction(QuickAccessType.EDIT_PROFILE, 'edit_profile', this.i18n('Edit profile'), ['users', 'my-profile', 'edit']);
     }
     if (permissions.passwords && !empty(permissions.passwords.passwords)) {
-      addAction(QuickAccessType.PASSWORDS, 'passwords', this.i18n('Password'), ['users', 'passwords']);
+      const passwordsLabel = permissions.passwords.passwords.length === 1 ? this.i18n('Password') : this.i18n('Passwords');
+      addAction(QuickAccessType.PASSWORDS, 'passwords', passwordsLabel, ['users', 'passwords']);
     }
     // Must be asynchronous or sometimes will never hide the spinner
     setTimeout(() => this.notifyReady(), 1);

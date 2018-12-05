@@ -23,6 +23,7 @@ export class SvgIconRegistry {
     this.register('account');
     this.register('pay');
     this.register('contact_list');
+    this.register('passwords');
   }
 
   private register(name: string) {
