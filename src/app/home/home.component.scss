@@ -1,0 +1,8 @@
+@import 'src/definitions';
+
+@include media-breakpoint-up(lg) {
+  .dashboard {
+    column-count: 2;
+    column-gap: $layout-spacer;
+  }
+}

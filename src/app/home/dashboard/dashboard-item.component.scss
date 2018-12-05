@@ -1,0 +1,10 @@
+:host {
+  display: inline-block;
+  width: 100%;
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
+:host > * {
+  display: flex;
+  flex-direction: column;
+}

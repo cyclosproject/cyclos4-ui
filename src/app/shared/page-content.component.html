@@ -11,7 +11,7 @@
     'mode-full-height': mode === 'fullHeight' || mode === 'fullHeightTight'
   }">
   <div *ngIf="heading != null" class="content-title d-flex">
-    <button tabindex="0" *ngIf="(breadcrumb.breadcrumb$ | async)?.length > 1"
+    <button tabindex="0" *ngIf="!hideBack && (breadcrumb.breadcrumb$ | async)?.length > 1"
       class="back-button btn btn-transparent" (click)="breadcrumb.back()">
       <icon icon="arrow_back"></icon>
     </button>

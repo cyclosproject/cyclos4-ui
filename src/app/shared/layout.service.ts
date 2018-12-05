@@ -4,6 +4,7 @@ import { BasePageComponent } from 'app/shared/base-page.component';
 import { PageLayoutComponent } from 'app/shared/page-layout.component';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
+import { empty } from 'app/shared/helper';
 
 const BREAKPOINTS = {
   xxs: '(max-width: 325px)',
@@ -24,8 +25,12 @@ const BREAKPOINTS = {
   'gt-sm': '(min-width: 768px)',
   'gt-md': '(min-width: 992px)',
   'gt-lg': '(min-width: 1200px)'
-
 };
+
+/**
+ * The existing breakpoints
+ */
+export type Breakpoint = keyof typeof BREAKPOINTS;
 
 /**
  * Shared definitions for the application layout
@@ -73,40 +78,42 @@ export class LayoutService {
     }
   }
 
-  private activeBreakpoints = new Set<string>();
-  private breakpointObservers = new Map<string, Observable<boolean>>();
+  private activeBreakpoints = new Set<Breakpoint>();
+  private breakpointObservers = new Map<Breakpoint, Observable<boolean>>();
 
-  private _breakpointChanges = new BehaviorSubject<Set<string>>(new Set());
-  breakpointChanges = this._breakpointChanges.asObservable().pipe(distinctUntilChanged());
+  private _breakpointChanges = new BehaviorSubject<Set<Breakpoint>>(new Set());
+  breakpointChanges$ = this._breakpointChanges.asObservable().pipe(distinctUntilChanged());
 
   private leftAreaVisibleSub: Subscription;
 
   constructor(observer: BreakpointObserver) {
     this.breakpointObservers = new Map();
-    for (const name in BREAKPOINTS) {
-      if (!BREAKPOINTS.hasOwnProperty(name)) {
+    for (const name of Object.keys(BREAKPOINTS)) {
+      const breakpoint = name as Breakpoint;
+      if (!BREAKPOINTS.hasOwnProperty(breakpoint)) {
         continue;
       }
-      const query = BREAKPOINTS[name];
+      const query = BREAKPOINTS[breakpoint];
       const breakpointObserver = observer.observe(query).pipe(
         map(res => res.matches),
         distinctUntilChanged()
       );
-      this.breakpointObservers.set(name, breakpointObserver);
+      this.breakpointObservers.set(breakpoint, breakpointObserver);
       // Observe any changes in active breakpoints
       breakpointObserver.subscribe(matches => {
         if (matches) {
-          this.activeBreakpoints.add(name);
+          this.activeBreakpoints.add(breakpoint);
         } else {
-          this.activeBreakpoints.delete(name);
+          this.activeBreakpoints.delete(breakpoint);
         }
         this._breakpointChanges.next(new Set(this.activeBreakpoints));
       });
       // Set the initial state of the active breakpoints
       if (observer.isMatched(query)) {
-        this.activeBreakpoints.add(name);
+        this.activeBreakpoints.add(breakpoint);
       }
     }
+    this._breakpointChanges.next(this.activeBreakpoints);
     this._breakpointChanges.subscribe(activeBreakpoints => this.updateBodyStyles(activeBreakpoints));
     this.updateBodyStyles(this.activeBreakpoints);
 
@@ -164,7 +171,7 @@ export class LayoutService {
    * Returns whether a specific breakpoint is active
    * @param name The breakpoint name
    */
-  isActive(name: string) {
+  isActive(name: Breakpoint) {
     return this.activeBreakpoints.has(name);
   }
 
@@ -223,7 +230,7 @@ export class LayoutService {
    * Returns an observable that notifies every time a breakpoint activation changes
    * @param name The breakpoint name
    */
-  observeBreakpoint(name: string): Observable<boolean> {
+  observeBreakpoint(name: Breakpoint): Observable<boolean> {
     return this.breakpointObservers.get(name);
   }
 
@@ -276,6 +283,21 @@ export class LayoutService {
   }
   get gtlg$(): Observable<boolean> {
     return this.observeBreakpoint('gt-lg');
+  }
+
+  /**
+   * Returns whether an element allowed on a given set of breakpoints should be visible, given the active breakpoints.
+   * @param allowedBreakpoints The breakpoints in which the element is visible. When null or empty, is always visible
+   * @param activeBreakpoints The active breakpoints. If not passed in, gets the currently active breakpoints
+   */
+  visible(allowedBreakpoints: Breakpoint[], activeBreakpoints?: Set<Breakpoint>): boolean {
+    if (empty(allowedBreakpoints)) {
+      return true;
+    }
+    if (empty(activeBreakpoints)) {
+      activeBreakpoints = this._breakpointChanges.value;
+    }
+    return allowedBreakpoints.find(b => activeBreakpoints.has(b)) != null;
   }
 
 }

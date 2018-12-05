@@ -29,6 +29,14 @@ export class PageContentComponent {
     this._last = truthyAttr(last);
   }
 
+  private _hideBack: boolean | string = false;
+  @Input() get hideBack(): boolean | string {
+    return this._hideBack;
+  }
+  set hideBack(hideBack: boolean | string) {
+    this._hideBack = truthyAttr(hideBack);
+  }
+
   constructor(
     public layoutService: LayoutService,
     public breadcrumb: BreadcrumbService

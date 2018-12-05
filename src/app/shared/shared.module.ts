@@ -79,6 +79,7 @@ import { StaticMapComponent } from 'app/shared/static-map.component';
 import { CalendarComponent } from 'app/shared/calendar.component';
 import { BannerCardComponent } from 'app/shared/banner-card.component';
 import { ContentPageComponent } from 'app/shared/content-page.component';
+import { AccountStatusViewComponent } from 'app/shared/account-status-view.component';
 
 export function initTooltipConfig(): TooltipConfig {
   const config = new TooltipConfig();
@@ -151,6 +152,7 @@ export function initTooltipConfig(): TooltipConfig {
     ContentMonitorComponent,
     ChipComponent,
     CaptchaComponent,
+    AccountStatusViewComponent,
 
     TrustPipe,
     DatePipe,
@@ -250,6 +252,7 @@ export function initTooltipConfig(): TooltipConfig {
     ContentMonitorComponent,
     ChipComponent,
     CaptchaComponent,
+    AccountStatusViewComponent,
 
     FocusedDirective,
     NumbersOnlyDirective,

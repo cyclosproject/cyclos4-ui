@@ -16,7 +16,7 @@
         <source>Login</source><target state="final">Login</target>
         
         <note priority="1" from="description">Login page title</note>
-      <context-group purpose="location"><context context-type="sourcefile">app/login/login.component.html</context><context context-type="linenumber">2</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/registration/public-registration.component.html</context><context context-type="linenumber">51</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/registration/validate-registration.component.html</context><context context-type="linenumber">6</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/profile/validate-email-change.component.html</context><context context-type="linenumber">8</context></context-group></trans-unit><trans-unit id="4010aca9722107da9e2fdc6db1715af16c471115" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/login/login.component.html</context><context context-type="linenumber">3</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/registration/public-registration.component.html</context><context context-type="linenumber">51</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/registration/validate-registration.component.html</context><context context-type="linenumber">6</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/profile/validate-email-change.component.html</context><context context-type="linenumber">8</context></context-group></trans-unit><trans-unit id="4010aca9722107da9e2fdc6db1715af16c471115" datatype="html">
         <source>
         Here you can recover your password. Fill in your user identification below. You
         can use one of the following:
@@ -134,314 +134,60 @@
       </trans-unit><trans-unit id="9ab7c8c02d999a341917be9f9f6745ea11b0bf1b" datatype="html">
         <source>Period</source><target state="final">Period</target>
         
-      <context-group purpose="location"><context context-type="sourcefile">app/banking/accounts/account-history.component.html</context><context context-type="linenumber">8</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/search-scheduled-payments.component.html</context><context context-type="linenumber">20</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/search-recurring-payments.component.html</context><context context-type="linenumber">20</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/search-authorized-payments.component.html</context><context context-type="linenumber">20</context></context-group></trans-unit><trans-unit id="5ca707824ab93066c7d9b44e1b8bf216725c2c22" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/banking/accounts/account-history.component.html</context><context context-type="linenumber">8</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/transaction-filters.component.html</context><context context-type="linenumber">18</context></context-group></trans-unit><trans-unit id="5ca707824ab93066c7d9b44e1b8bf216725c2c22" datatype="html">
         <source>Filter</source><target state="final">Filter</target>
         
-      <context-group purpose="location"><context context-type="sourcefile">app/banking/accounts/account-history.component.html</context><context context-type="linenumber">15</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/search-scheduled-payments.component.html</context><context context-type="linenumber">27</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/search-recurring-payments.component.html</context><context context-type="linenumber">27</context></context-group></trans-unit><trans-unit id="28b2ecd8df996b5b9522f4ac8e1ff8cbf133a8c0" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/banking/accounts/account-history.component.html</context><context context-type="linenumber">15</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/transaction-filters.component.html</context><context context-type="linenumber">25</context></context-group></trans-unit><trans-unit id="28b2ecd8df996b5b9522f4ac8e1ff8cbf133a8c0" datatype="html">
         <source>Not applied</source><target state="final">Not applied</target>
         
-      <context-group purpose="location"><context context-type="sourcefile">app/banking/accounts/account-history.component.html</context><context context-type="linenumber">15</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/search-scheduled-payments.component.html</context><context context-type="linenumber">27</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/search-recurring-payments.component.html</context><context context-type="linenumber">27</context></context-group></trans-unit><trans-unit id="a676dbd6466310898a08eb820c33d1b7cc7d263b" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/banking/accounts/account-history.component.html</context><context context-type="linenumber">15</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/transaction-filters.component.html</context><context context-type="linenumber">25</context></context-group></trans-unit><trans-unit id="a676dbd6466310898a08eb820c33d1b7cc7d263b" datatype="html">
         <source>Begin date</source><target state="final">Begin date</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/banking/accounts/account-history.component.html</context>
-          <context context-type="linenumber">23</context>
-        </context-group>
-      </trans-unit><trans-unit id="f60960faa2cd3e0db11e48688774d05dfa9d715b" datatype="html">
+        
+      <context-group purpose="location"><context context-type="sourcefile">app/banking/accounts/account-history.component.html</context><context context-type="linenumber">23</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/transaction-filters.component.html</context><context context-type="linenumber">33</context></context-group></trans-unit><trans-unit id="f60960faa2cd3e0db11e48688774d05dfa9d715b" datatype="html">
         <source>End date</source><target state="final">End date</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/banking/accounts/account-history.component.html</context>
-          <context context-type="linenumber">29</context>
-        </context-group>
-      </trans-unit><trans-unit id="b13b5429207af4280a3bd30b64410069c88630a4" datatype="html">
+        
+      <context-group purpose="location"><context context-type="sourcefile">app/banking/accounts/account-history.component.html</context><context context-type="linenumber">30</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/transaction-filters.component.html</context><context context-type="linenumber">40</context></context-group></trans-unit><trans-unit id="b13b5429207af4280a3bd30b64410069c88630a4" datatype="html">
         <source>From amount</source><target state="final">From amount</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/banking/accounts/account-history.component.html</context>
-          <context context-type="linenumber">35</context>
-        </context-group>
-      </trans-unit><trans-unit id="c880f8c2ccea31ebd29e6fc771b189ca6ecf8c2e" datatype="html">
+        
+      <context-group purpose="location"><context context-type="sourcefile">app/banking/accounts/account-history.component.html</context><context context-type="linenumber">37</context></context-group></trans-unit><trans-unit id="c880f8c2ccea31ebd29e6fc771b189ca6ecf8c2e" datatype="html">
         <source>To amount</source><target state="final">To amount</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/banking/accounts/account-history.component.html</context>
-          <context context-type="linenumber">41</context>
-        </context-group>
-      </trans-unit>
-      
-      <trans-unit id="95f37e8b25c55d17f4159df880e6e28fabd3483a" datatype="html">
-        <source>There was an error when sending the password. Please, try again later.</source><target state="final">There was an error when sending the password. Please, try again later.</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/error-handler.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit>
-      
-      <trans-unit id="ff063c31f7a6d29c8ecf49d2a2f7930adeeca8a5" datatype="html">
-        <source>The action couldn't be processed, as there were validation errors</source><target state="final">The action couldn't be processed, as there were validation errors</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/error-handler.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="757c0a76c5f297a40e3204d1dabf4a1630fb78f5" datatype="html">
-        <source>This data cannot be saved because it has been modified by someone else.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/>
-          Please, load the page again and restart the operation.</source><target state="final">This data cannot be saved because it has been modified by someone else.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/>
-          Please, load the page again and restart the operation.</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/error-handler.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="13b510083565e810f886b2d2d01794f598d5eba2" datatype="html">
-        <source>This data cannot be removed because it is currently in use</source><target state="final">This data cannot be removed because it is currently in use</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/error-handler.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="afc6a1ed11620aa64580fe2f3651dc175aa8019c" datatype="html">
-        <source>There was an unexpected error while processing your request</source><target state="final">There was an unexpected error while processing your request</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/error-handler.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="863db006376a50fc99db1ceb50ca9a4f4ae49bc6" datatype="html">
-        <source>The requested data could not be found: <x id="INTERPOLATION" equiv-text="{{type}}"/> with key <x id="INTERPOLATION_1" equiv-text="{{key}}"/></source><target state="final">The requested data could not be found: <x id="INTERPOLATION" equiv-text="{{type}}"/> with key <x id="INTERPOLATION_1" equiv-text="{{key}}"/></target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/error-handler.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="25a381f781e24828f454bf40f6a73489e9c64039" datatype="html">
-        <source>The requested data could not be found: <x id="INTERPOLATION" equiv-text="{{type}}"/></source><target state="final">The requested data could not be found: <x id="INTERPOLATION" equiv-text="{{type}}"/></target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/error-handler.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="730a9385e3a22c21e9b705e37220383bc6191dee" datatype="html">
-        <source>The location you typed or tried to access was not found</source><target state="final">The location you typed or tried to access was not found</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/error-handler.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="e14188d4bc772cf4ad90576a670c26e188053437" datatype="html">
-        <source>Your user account has been disabled. Please, contact the administration.</source><target state="final">Your user account has been disabled. Please, contact the administration.</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/error-handler.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="45cef95609c043692c83cf24b9688474afebe502" datatype="html">
-        <source>Your password has been reset</source><target state="final">Your password has been reset</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/error-handler.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="6737c1529497734d59d301bb5694680b81b4f81d" datatype="html">
-        <source>Your login password has been disabled by exceeding the maximum tries. Please, contact the administration.</source><target state="final">Your login password has been disabled by exceeding the maximum tries. Please, contact the administration.</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/error-handler.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="b1e516828f387180cc77c40fd1de311d86731198" datatype="html">
-        <source>Your password is temporarily blocked by exceeding the maximum tries</source><target state="final">Your password is temporarily blocked by exceeding the maximum tries</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/error-handler.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="80c7688da27d2afd0dbb8cd8245908d623f2c11e" datatype="html">
-        <source>Your password has expired. Please, contact the administration.</source><target state="final">Your password has expired. Please, contact the administration.</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/error-handler.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="a2424a160687d8431c18f2c45606b10083dfde30" datatype="html">
-        <source>Your user account is pending for activation. Please, contact the administration for more information.</source><target state="final">Your user account is pending for activation. Please, contact the administration for more information.</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/error-handler.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="e5156a6c7d75fba5af507d4861560df106bb90e0" datatype="html">
-        <source>The given name / password are incorrect. Please, try again.</source><target state="final">The given name / password are incorrect. Please, try again.</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/error-handler.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit><trans-unit id="62177eb0211cb33109ea254737dcd55b65e40cb6" datatype="html">
-        <source>Your IP address is blocked for exceeding login attempts</source><target state="final">Your IP address is blocked for exceeding login attempts</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/error-handler.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit><trans-unit id="766ac4c70981be5e84060ef63be964f4376b7b9d" datatype="html">
-        <source>Your IP address is not allowed to login</source><target state="final">Your IP address is not allowed to login</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/error-handler.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit><trans-unit id="f7ca4cdfca9104031cab6bab16b8c9cc3052877f" datatype="html">
-        <source>Access is not allowed from this URL</source><target state="final">Access is not allowed from this URL</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/error-handler.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="9cd203f90498b43134459b8389a8bb58af22551e" datatype="html">
-        <source>You have been disconnected. Please, login again and repeat the operation.</source><target state="final">You have been disconnected. Please, login again and repeat the operation.</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/error-handler.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="3b4dd7ef88965bed954319b9295e055dc5b37759" datatype="html">
-        <source>You don't have sufficient permissions to perform the requested action</source><target state="final">You don't have sufficient permissions to perform the requested action</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/error-handler.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/error-handler.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="5e6ebc8699723a68973c3121cd2a1c82204d1ea6" datatype="html">
-        <source>The action you attempted to perform is invalid</source><target state="final">The action you attempted to perform is invalid</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/error-handler.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="7832fcf591d14f05e817afa4cb8eb509bbc94c34" datatype="html">
-        <source><x id="INTERPOLATION" equiv-text="{{type}}"/> is invalid</source><target state="final"><x id="INTERPOLATION" equiv-text="{{type}}"/> is invalid</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/error-handler.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit><trans-unit id="f95cb8db532eadfea621afdfae2f41009d527ac5" datatype="html">
-        <source><x id="INTERPOLATION" equiv-text="{{type}}"/> has expired. Please, contact the administration</source><target state="final"><x id="INTERPOLATION" equiv-text="{{type}}"/> has expired. Please, contact the administration</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/error-handler.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit><trans-unit id="7feda60c50c69df2f0f9483e37fb2b23806a5911" datatype="html">
-        <source><x id="INTERPOLATION" equiv-text="{{type}}"/> temporarily blocked by exceeding the maximum tries. Please, contact the administration</source><target state="final"><x id="INTERPOLATION" equiv-text="{{type}}"/> temporarily blocked by exceeding the maximum tries. Please, contact the administration</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/error-handler.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit><trans-unit id="ab35dc91e6d3792fe6e3330be36067de2f4f28ef" datatype="html">
-        <source><x id="INTERPOLATION" equiv-text="{{type}}"/> disabled by exceeding the maximum tries. Please, contact the administration</source><target state="final"><x id="INTERPOLATION" equiv-text="{{type}}"/> disabled by exceeding the maximum tries. Please, contact the administration</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/error-handler.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit>
+        
+      <context-group purpose="location"><context context-type="sourcefile">app/banking/accounts/account-history.component.html</context><context context-type="linenumber">43</context></context-group></trans-unit>
       
       
       
-      <trans-unit id="50f55945acf8352680708e1937d38bec1df5c120" datatype="html">
-        <source>A minimum period of time should be awaited to make a payment of this type.</source><target state="final">A minimum period of time should be awaited to make a payment of this type.</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/error-handler.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="d06af687e469b7a4e24217525af158d5eca7da73" datatype="html">
-        <source>Insufficient balance to perform this operation</source><target state="final">Insufficient balance to perform this operation</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/error-handler.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="16b168c4efe78387c6dd816cee7fd4a7d197890d" datatype="html">
-        <source>You cannot perform this payment because the upper balance limit of the destination account has been exceeded</source><target state="final">You cannot perform this payment because the upper balance limit of the destination account has been exceeded</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/error-handler.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="83689444fb1ed39a2ebd56d0f004e62f5ceaf039" datatype="html">
-        <source>The maximum amount per day (<x id="INTERPOLATION" equiv-text="{{amount}}"/>) was exceeded</source><target state="final">The maximum amount per day (<x id="INTERPOLATION" equiv-text="{{amount}}"/>) was exceeded</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/error-handler.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="225350b9f7c8f137a1298bf7ea05f4b4eed2c284" datatype="html">
-        <source>The maximum amount of payments per day (<x id="INTERPOLATION" equiv-text="{{count}}"/>) was exceeded</source><target state="final">The maximum amount of payments per day (<x id="INTERPOLATION" equiv-text="{{count}}"/>) was exceeded</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/error-handler.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="b2d55f23adb17c81c767ba84b44e427263b340f3" datatype="html">
-        <source>The maximum amount per week (<x id="INTERPOLATION" equiv-text="{{amount}}"/>) was exceeded</source><target state="final">The maximum amount per week (<x id="INTERPOLATION" equiv-text="{{amount}}"/>) was exceeded</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/error-handler.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="d612a629e889109e369a76f9b7da86afa602c54e" datatype="html">
-        <source>The maximum amount of payments per week (<x id="INTERPOLATION" equiv-text="{{count}}"/>) was exceeded</source><target state="final">The maximum amount of payments per week (<x id="INTERPOLATION" equiv-text="{{count}}"/>) was exceeded</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/error-handler.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="939d92776104b5154dee121a8578c07c21c73d67" datatype="html">
-        <source>The maximum amount per month (<x id="INTERPOLATION" equiv-text="{{amount}}"/>) was exceeded</source><target state="final">The maximum amount per month (<x id="INTERPOLATION" equiv-text="{{amount}}"/>) was exceeded</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/error-handler.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="62274d93d8762f3b6d934c14675b6a7a4ca88c64" datatype="html">
-        <source>The maximum amount of payments per month (<x id="INTERPOLATION" equiv-text="{{count}}"/>) was exceeded</source><target state="final">The maximum amount of payments per month (<x id="INTERPOLATION" equiv-text="{{count}}"/>) was exceeded</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/error-handler.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="ae7b5b0eb81a0fe8b90dd39c650b668b14bfb7c2" datatype="html">
-        <source>By exceeding the number of security question attempts, this request has been aborted.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/>
-            Please, contact the administration.</source><target state="final">By exceeding the number of security question attempts, this request has been aborted.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/>
-            Please, contact the administration.</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/error-handler.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="41401d6b598261dbbb668bf3b58cf9c07a5360bc" datatype="html">
-        <source>The given security answer is invalid</source><target state="final">The given security answer is invalid</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/error-handler.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit><trans-unit id="58d00c256f9b489e8e649edb2e24a10259ffd1a1" datatype="html">
-        <source><x id="INTERPOLATION" equiv-text="{{n}}"/> bytes</source><target state="final"><x id="INTERPOLATION" equiv-text="{{n}}"/> bytes</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/format.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit><trans-unit id="b89a9b47026c2b3a241c8345a4be96227f523719" datatype="html">
-        <source><x id="INTERPOLATION" equiv-text="{{n}}"/>KB</source><target state="final"><x id="INTERPOLATION" equiv-text="{{n}}"/>KB</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/format.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit><trans-unit id="c2ecbc3af195eefabaaabc3f32e7e5560df12e2c" datatype="html">
-        <source><x id="INTERPOLATION" equiv-text="{{n}}"/>MB</source><target state="final"><x id="INTERPOLATION" equiv-text="{{n}}"/>MB</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/format.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
       <trans-unit id="859e5acecbd67ad14b81174f8b7a556411c840dd" datatype="html">
         <source>Edit profile</source><target state="final">Edit profile</target>
         
@@ -454,82 +200,12 @@
         <source>Name (Z-A)</source><target state="final">Name (Z-A)</target>
         
       <context-group purpose="location"><context context-type="sourcefile">app/users/search/search-users.component.html</context><context context-type="linenumber">35</context></context-group></trans-unit>
-      <trans-unit id="92eee6be6de0b11c924e3ab27db30257159c0a7c" datatype="html">
-        <source>Home</source><target state="final">Home</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/menu.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <note priority="1" from="description">Menu</note>
-      </trans-unit><trans-unit id="03d84645f6e019c5a43909bbf2ea1696ee88332c" datatype="html">
-        <source>Directory</source><target state="final">Directory</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/menu.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <note priority="1" from="description">Menu</note>
-      </trans-unit>
       
-      <trans-unit id="cfc2f436ec2beffb042e7511a73c89c372e86a6c" datatype="html">
-        <source>Register</source><target state="final">Register</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/menu.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <note priority="1" from="description">Menu</note>
-      </trans-unit>
-      <trans-unit id="928bc01fcde86fd3c44b842c363baeee3bbef5f2" datatype="html">
-        <source>Banking</source><target state="final">Banking</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/menu.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <note priority="1" from="description">Menu</note>
-      </trans-unit>
-      <trans-unit id="975d7a14bb4b923caf6fff68273730235ebeaf2d" datatype="html">
-        <source>Marketplace</source><target state="final">Marketplace</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/menu.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <note priority="1" from="description">Menu</note>
-      </trans-unit>
-      <trans-unit id="6e13bcf2d8d1de114a75137968ec3ec328ae54d6" datatype="html">
-        <source>Personal</source><target state="final">Personal</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/menu.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <note priority="1" from="description">Menu</note>
-      </trans-unit><trans-unit id="858ad46952d8e542ceee1b21a0e57538aa5a5dbd" datatype="html">
-        <source>Payment to user</source><target state="final">Payment to user</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/menu.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <note priority="1" from="description">Menu</note>
-      </trans-unit><trans-unit id="c9f457b9757d7a3ba0b959f2291a9603dc1b8a59" datatype="html">
-        <source>Payment to self</source><target state="final">Payment to self</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/menu.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <note priority="1" from="description">Menu</note>
-      </trans-unit><trans-unit id="e53ef500134cc6ab0bceb79665358f63f1ba2918" datatype="html">
-        <source>Payment to system</source><target state="final">Payment to system</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/menu.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <note priority="1" from="description">Menu</note>
-      </trans-unit><trans-unit id="3ac9a098a34b04923bf20ec0c754bab138750b79" datatype="html">
-        <source>My profile</source><target state="final">My profile</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/menu.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <note priority="1" from="description">Menu</note>
-      </trans-unit>
+      
+      
+      
+      
+      
       
       <trans-unit id="6187359f9d059cfe0f62f8f1c1cc98a08a7a798b" datatype="html">
         <source>Business directory</source><target state="final">Business directory</target>
@@ -568,15 +244,15 @@
         <source>Title</source><target state="final">Title</target>
         
         
-      <context-group purpose="location"><context context-type="sourcefile">app/marketplace/view/view-ad.component.html</context><context context-type="linenumber">15</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/marketplace/search/ads-results.component.html</context><context context-type="linenumber">29</context></context-group></trans-unit><trans-unit id="0ee5132a8da30e0b7f9f5c70dbc91928d17dd909" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/marketplace/view/view-ad.component.html</context><context context-type="linenumber">16</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/marketplace/search/ads-results.component.html</context><context context-type="linenumber">29</context></context-group></trans-unit><trans-unit id="0ee5132a8da30e0b7f9f5c70dbc91928d17dd909" datatype="html">
         <source>Owner</source><target state="final">Owner</target>
         
         
-      <context-group purpose="location"><context context-type="sourcefile">app/marketplace/view/view-ad.component.html</context><context context-type="linenumber">28</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/marketplace/search/ads-results.component.html</context><context context-type="linenumber">30</context></context-group></trans-unit><trans-unit id="4d6ee53858628de558a18623894a03c8673bce9e" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/marketplace/view/view-ad.component.html</context><context context-type="linenumber">29</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/marketplace/search/ads-results.component.html</context><context context-type="linenumber">30</context></context-group></trans-unit><trans-unit id="4d6ee53858628de558a18623894a03c8673bce9e" datatype="html">
         <source>Price</source><target state="final">Price</target>
         
         
-      <context-group purpose="location"><context context-type="sourcefile">app/marketplace/view/view-ad.component.html</context><context context-type="linenumber">31</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/marketplace/search/ads-results.component.html</context><context context-type="linenumber">32</context></context-group></trans-unit><trans-unit id="1a468493b80ee9d47f1c2e2ac364f59f81fd170f" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/marketplace/view/view-ad.component.html</context><context context-type="linenumber">32</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/marketplace/search/ads-results.component.html</context><context context-type="linenumber">32</context></context-group></trans-unit><trans-unit id="1a468493b80ee9d47f1c2e2ac364f59f81fd170f" datatype="html">
         <source>Published by <x id="INTERPOLATION" equiv-text="{{ ad.owner.display }}"/></source><target state="final">Published by <x id="INTERPOLATION" equiv-text="{{ ad.owner.display }}"/></target>
         
       <context-group purpose="location"><context context-type="sourcefile">app/marketplace/search/ads-results.component.html</context><context context-type="linenumber">136</context></context-group></trans-unit>
@@ -601,14 +277,7 @@
       
       
       
-      <trans-unit id="9b475bb63675494482effde989c7f1f18c232620" datatype="html">
-        <source>Contacts</source><target state="final">Contacts</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/menu.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <note priority="1" from="description">Menu</note>
-      </trans-unit>
+      
       <trans-unit id="0dc31e70ac239624271d9335019e62a6ea894baa" datatype="html">
         <source>Passwords</source><target state="final">Passwords</target>
         
@@ -749,650 +418,44 @@
           <context context-type="sourcefile">app/users/registration/registration-step-done.component.html</context>
           <context context-type="linenumber">16</context>
         </context-group>
-      </trans-unit><trans-unit id="fcd01a83b63ea36d93ece5f552aff2885e0295d5" datatype="html">
-        <source>The server couldn't be contacted.
-          <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/>Please, try again later.</source><target state="final">The server couldn't be contacted.
-          <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/>Please, try again later.</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit><trans-unit id="90376a2a610447a7ee94f90e27413d61d37af492" datatype="html">
-        <source>Reload page</source><target state="final">Reload page</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit><trans-unit id="1b13847e153abb3712f28b1cba7ff5b42efd548f" datatype="html">
-        <source>January</source><target state="final">January</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <note priority="1" from="meaning">Long month</note>
-      </trans-unit><trans-unit id="6cc2e1b0505c258c3499953d3d62da782ad3c20e" datatype="html">
-        <source>February</source><target state="final">February</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <note priority="1" from="meaning">Long month</note>
-      </trans-unit><trans-unit id="d6a7ea23d17a6949fe94628f468da0ef6ac3b339" datatype="html">
-        <source>March</source><target state="final">March</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <note priority="1" from="meaning">Long month</note>
-      </trans-unit><trans-unit id="9d28050869f7f6c3db31f8607c3debfc5df1f6dd" datatype="html">
-        <source>April</source><target state="final">April</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <note priority="1" from="meaning">Long month</note>
-      </trans-unit><trans-unit id="1ddbe87786f9283b793d5f20255e2e24d73ac74a" datatype="html">
-        <source>May</source><target state="final">May</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <note priority="1" from="meaning">Long month</note>
-      </trans-unit><trans-unit id="a7094b56146061ad41ef93d85e3d3658174fa490" datatype="html">
-        <source>June</source><target state="final">June</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <note priority="1" from="meaning">Long month</note>
-      </trans-unit><trans-unit id="4c554d43c1b22ee0d82ede664f08b7b3d61bf63b" datatype="html">
-        <source>July</source><target state="final">July</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <note priority="1" from="meaning">Long month</note>
-      </trans-unit><trans-unit id="20e2ab2dfa725dccd9bd721d4cc50d7dd6bcefc5" datatype="html">
-        <source>August</source><target state="final">August</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <note priority="1" from="meaning">Long month</note>
-      </trans-unit><trans-unit id="7d1e5e373d6c4b67198b9076cf0319208a26fb0f" datatype="html">
-        <source>September</source><target state="final">September</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <note priority="1" from="meaning">Long month</note>
-      </trans-unit><trans-unit id="6b39d129a81b8a3b158f9ab71f0a1c8b4c3a8395" datatype="html">
-        <source>October</source><target state="final">October</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <note priority="1" from="meaning">Long month</note>
-      </trans-unit><trans-unit id="66358eee75ca48e73dc3f941128d2d0607e9cf55" datatype="html">
-        <source>November</source><target state="final">November</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <note priority="1" from="meaning">Long month</note>
-      </trans-unit><trans-unit id="2649aaccb292a4c4ad981366612b8b948cf5f9bb" datatype="html">
-        <source>December</source><target state="final">December</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <note priority="1" from="meaning">Long month</note>
-      </trans-unit><trans-unit id="16f25ca780390fef6710af930b456a7254e9512f" datatype="html">
-        <source>Jan</source><target state="final">Jan</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <note priority="1" from="meaning">Short month</note>
-      </trans-unit><trans-unit id="112c88e022b4a27cb050b00a446827a37a958d0f" datatype="html">
-        <source>Feb</source><target state="final">Feb</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <note priority="1" from="meaning">Short month</note>
-      </trans-unit><trans-unit id="211509ee61dfad1848771a65247a639b26bfb2f9" datatype="html">
-        <source>Mar</source><target state="final">Mar</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <note priority="1" from="meaning">Short month</note>
-      </trans-unit><trans-unit id="f47e4f9a9268c7c1888b322b021e1feec3135f07" datatype="html">
-        <source>Apr</source><target state="final">Apr</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <note priority="1" from="meaning">Short month</note>
-      </trans-unit><trans-unit id="8323eb24bc7b62a6ca93e2ee870331b22ab27c19" datatype="html">
-        <source>May</source><target state="final">May</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <note priority="1" from="meaning">Short month</note>
-      </trans-unit><trans-unit id="46767dde200a2b12d5f7c72b3a149e2ce332979c" datatype="html">
-        <source>Jun</source><target state="final">Jun</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <note priority="1" from="meaning">Short month</note>
-      </trans-unit><trans-unit id="470a940ad382e26fa0b495ad358c3410577ee113" datatype="html">
-        <source>Jul</source><target state="final">Jul</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <note priority="1" from="meaning">Short month</note>
-      </trans-unit><trans-unit id="3c3e9800fe7db520721ee8d54e68a5dc429f0e2d" datatype="html">
-        <source>Aug</source><target state="final">Aug</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <note priority="1" from="meaning">Short month</note>
-      </trans-unit><trans-unit id="7708e7f954c5d3ae07c959aebf35d51995489987" datatype="html">
-        <source>Sep</source><target state="final">Sep</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <note priority="1" from="meaning">Short month</note>
-      </trans-unit><trans-unit id="2478cb9b2bac6beea5a4c243f4183133ec0ca234" datatype="html">
-        <source>Oct</source><target state="final">Oct</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <note priority="1" from="meaning">Short month</note>
-      </trans-unit><trans-unit id="b19fc60d8c02232d264f3d122630f41e9193a9e2" datatype="html">
-        <source>Nov</source><target state="final">Nov</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <note priority="1" from="meaning">Short month</note>
-      </trans-unit><trans-unit id="26a2d9096addd46db512063b12f0ad3dc5a47b5a" datatype="html">
-        <source>Dec</source><target state="final">Dec</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <note priority="1" from="meaning">Short month</note>
-      </trans-unit><trans-unit id="694b99677b7e5bfa112cb22c55cd429a02bca566" datatype="html">
-        <source>Sunday</source><target state="final">Sunday</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <note priority="1" from="meaning">Long weekday</note>
-      </trans-unit><trans-unit id="914cdad7f45e85d2e8048d04c2109d312e0fe2f0" datatype="html">
-        <source>Monday</source><target state="final">Monday</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <note priority="1" from="meaning">Long weekday</note>
-      </trans-unit><trans-unit id="64fe5617e2a507794f61faafe33295745cc9d715" datatype="html">
-        <source>Tuesday</source><target state="final">Tuesday</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <note priority="1" from="meaning">Long weekday</note>
-      </trans-unit><trans-unit id="114c411a5d1fad15a0ccc2abdfb791f1bca72f01" datatype="html">
-        <source>Wednesday</source><target state="final">Wednesday</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <note priority="1" from="meaning">Long weekday</note>
-      </trans-unit><trans-unit id="d767773f966b09c624ee0d07ff476609d226b0bf" datatype="html">
-        <source>Thursday</source><target state="final">Thursday</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <note priority="1" from="meaning">Long weekday</note>
-      </trans-unit><trans-unit id="0db39dbeb0a6a01d624de25014d9ed60b1267def" datatype="html">
-        <source>Friday</source><target state="final">Friday</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <note priority="1" from="meaning">Long weekday</note>
-      </trans-unit><trans-unit id="705e2f9ca4366807a6ee0f4ad50ca45600af8851" datatype="html">
-        <source>Saturday</source><target state="final">Saturday</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <note priority="1" from="meaning">Long weekday</note>
-      </trans-unit><trans-unit id="030c627c04fdb2174095608300dcea90a912e490" datatype="html">
-        <source>Sun</source><target state="final">Sun</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <note priority="1" from="meaning">Short weekday</note>
-      </trans-unit><trans-unit id="898c3b7d20bccea99c7ca15fb9f10b5ef56bc178" datatype="html">
-        <source>Mon</source><target state="final">Mon</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <note priority="1" from="meaning">Short weekday</note>
-      </trans-unit><trans-unit id="636dbef41b5b897788a6e6d3337286105086656a" datatype="html">
-        <source>Tue</source><target state="final">Tue</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <note priority="1" from="meaning">Short weekday</note>
-      </trans-unit><trans-unit id="eedcaea271347a9326ab632c82d5f1ed361acf8f" datatype="html">
-        <source>Wed</source><target state="final">Wed</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <note priority="1" from="meaning">Short weekday</note>
-      </trans-unit><trans-unit id="9cee22ff1fdcff59c08c9c3e96a912295132d206" datatype="html">
-        <source>Thu</source><target state="final">Thu</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <note priority="1" from="meaning">Short weekday</note>
-      </trans-unit><trans-unit id="e4a776a8a47b258f2aa69622b281ed87e6ae59a5" datatype="html">
-        <source>Fri</source><target state="final">Fri</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <note priority="1" from="meaning">Short weekday</note>
-      </trans-unit><trans-unit id="424b9890a76b6a7e213f12596cd9898c92102d24" datatype="html">
-        <source>Sat</source><target state="final">Sat</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <note priority="1" from="meaning">Short weekday</note>
-      </trans-unit><trans-unit id="adc411d7f531ee35f555fbac435a4e22586d8e98" datatype="html">
-        <source>It is not possible to connect to the server.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/>
-    Please make sure you are connected to the Internet and try again in a few seconds.</source><target state="final">It is not possible to connect to the server.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/>
-    Please make sure you are connected to the Internet and try again in a few seconds.</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/error-handler.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit><trans-unit id="70f11b3871cdf658e6d187fb2d5ac21a4bbe549a" datatype="html">
-        <source>Invalid keywords</source><target state="final">Invalid keywords</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/error-handler.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit><trans-unit id="394a37f3d4d37e1d316ff534564417c1c7f78509" datatype="html">
-        <source>The uploaded file exceeds the maximum allowed size of <x id="INTERPOLATION" equiv-text="{{size}}"/></source><target state="final">The uploaded file exceeds the maximum allowed size of <x id="INTERPOLATION" equiv-text="{{size}}"/></target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/error-handler.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit><trans-unit id="4c2bf364bc460dba99618edc825c4943181f0764" datatype="html">
-        <source>Cannot add more than <x id="INTERPOLATION" equiv-text="{{max}}"/> elements</source><target state="final">Cannot add more than <x id="INTERPOLATION" equiv-text="{{max}}"/> elements</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/error-handler.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
       </trans-unit>
-      <trans-unit id="bb694b49d408265c91c62799c2b3a7e3151c824d" datatype="html">
-        <source>Logout</source><target state="final">Logout</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/menu.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <note priority="1" from="description">Menu</note>
-      </trans-unit><trans-unit id="8c048996296af41b5d61ca345707ff42daf67e4c" datatype="html">
-        <source>Session expired</source><target state="final">Session expired</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/push-notifications.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit><trans-unit id="21cec8f22541566bf884b474906b76812d8f1635" datatype="html">
-        <source>You have been logged-out.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/>You can keep viewing the same page or login again now.</source><target state="final">You have been logged-out.<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/>You can keep viewing the same page or login again now.</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/push-notifications.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit><trans-unit id="987ff596536fb9cb1a23f2e8f2a82b7a20df3af7" datatype="html">
-        <source>Login again</source><target state="final">Login again</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/push-notifications.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit><trans-unit id="ca3f621456d6a55b924062fb4ceb0aaa65bfa7fb" datatype="html">
-        <source>Authorized</source><target state="final">Authorized</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/transaction-status.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit><trans-unit id="096974389f6baee30b5096665f9a677db56df29e" datatype="html">
-        <source>Pending authorization</source><target state="final">Pending authorization</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/transaction-status.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit><trans-unit id="51f4b425225192808bf62691b8196ff98533ef0f" datatype="html">
-        <source>Denied</source><target state="final">Denied</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/transaction-status.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/transaction-status.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit><trans-unit id="96d56ec71c6e78cb4d6204c4a9359a3d38fcdb59" datatype="html">
-        <source>Canceled</source><target state="final">Canceled</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/transaction-status.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/transaction-status.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/transaction-status.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/transaction-status.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/transaction-status.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/transaction-status.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/transaction-status.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit><trans-unit id="c9039b1b13b3ef165b66b3c5d79f810ab1ebb050" datatype="html">
-        <source>Open</source><target state="final">Open</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/transaction-status.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/transaction-status.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/transaction-status.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/transaction-status.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit><trans-unit id="1d3781d7296d4b4e04e7f023aec1052fb2955c4d" datatype="html">
-        <source>Blocked</source><target state="final">Blocked</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/transaction-status.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/transaction-status.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit><trans-unit id="4804b8e78964cee9e5c85f31fd982639b97780b2" datatype="html">
-        <source>Closed</source><target state="final">Closed</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/transaction-status.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/transaction-status.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit><trans-unit id="ffde7468d7b5cad6990095ed68ddee3d67cd02f8" datatype="html">
-        <source>Expired</source><target state="final">Expired</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/transaction-status.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/transaction-status.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/transaction-status.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit><trans-unit id="84b516c4d38a09d8bbe8312569aeddfac65cdf6a" datatype="html">
-        <source>Processed</source><target state="final">Processed</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/transaction-status.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/transaction-status.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/transaction-status.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/transaction-status.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/transaction-status.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit><trans-unit id="48f6d7edad116a39618612c19d20ed2089b54acb" datatype="html">
-        <source>Approved</source><target state="final">Approved</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/transaction-status.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit><trans-unit id="e6a27066251ca1e04c5be86ad758380856df2506" datatype="html">
-        <source>Pending</source><target state="final">Pending</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/transaction-status.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit><trans-unit id="64b582e0d8e3a28331a14d2a1017fa5d6ffb8d93" datatype="html">
-        <source>Failed</source><target state="final">Failed</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/transaction-status.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/transaction-status.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/transaction-status.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit><trans-unit id="61280477b7cb9816b425f082d0143a10fb5ea314" datatype="html">
-        <source>Settled</source><target state="final">Settled</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/core/transaction-status.service.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="67eae4982e9a8040ede7b7afc32d8be4f2ce5117" datatype="html">
-        <source>In order to confirm you need a <x id="INTERPOLATION" equiv-text="{{name}}"/>, but you cannot request a new password.
-          Please, contact the administration.</source><target state="final">In order to confirm you need a <x id="INTERPOLATION" equiv-text="{{name}}"/>, but you cannot request a new password.
-          Please, contact the administration.</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/shared/confirmation-password.component.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit><trans-unit id="3b9fb595bee1bfb37c733235765942e38dfdfe0d" datatype="html">
-        <source>In order to confirm, please, supply your <x id="INTERPOLATION" equiv-text="{{name}}"/>.
-          You can use the previously sent password or request for a new one.</source><target state="final">In order to confirm, please, supply your <x id="INTERPOLATION" equiv-text="{{name}}"/>.
-          You can use the previously sent password or request for a new one.</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/shared/confirmation-password.component.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit><trans-unit id="854282450e13aea35babe28569a3e32ad9d69f73" datatype="html">
-        <source>Please, request a password below in order to confirm.</source><target state="final">Please, request a password below in order to confirm.</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/shared/confirmation-password.component.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit><trans-unit id="2c90a8bb6107b9aa56b4439df716b19484489b07" datatype="html">
-        <source>In order to confirm you need a <x id="INTERPOLATION" equiv-text="{{name}}"/>, but you do not have any.</source><target state="final">In order to confirm you need a <x id="INTERPOLATION" equiv-text="{{name}}"/>, but you do not have any.</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/shared/confirmation-password.component.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit><trans-unit id="f6e04edea3bb3a59d5904725bfbc2c440e793001" datatype="html">
-        <source>Year</source><target state="final">Year</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/shared/date-field.component.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit><trans-unit id="5bb4a09a669f55893c9a37a8480c8fa3f7ce5702" datatype="html">
-        <source>Month</source><target state="final">Month</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/shared/date-field.component.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit><trans-unit id="efffb64bda94fa4f4493322c5e3717e845d5dc30" datatype="html">
-        <source>Day</source><target state="final">Day</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/shared/date-field.component.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit><trans-unit id="fd3b94ceb0850f37382a7de42af9c5e0d9e05f76" datatype="html">
-        <source>Invalid date</source><target state="final">Invalid date</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/shared/field-errors.component.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit><trans-unit id="aa5c2b875648859c95fee465384979ebbd58831f" datatype="html">
-        <source>Should be <x id="INTERPOLATION" equiv-text="{{min}}"/> or later</source><target state="final">Should be <x id="INTERPOLATION" equiv-text="{{min}}"/> or later</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/shared/field-errors.component.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit><trans-unit id="1f73389f1437e872815d8ebb6026de3bcccab12c" datatype="html">
-        <source>Should be <x id="INTERPOLATION" equiv-text="{{max}}"/> or before</source><target state="final">Should be <x id="INTERPOLATION" equiv-text="{{max}}"/> or before</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/shared/field-errors.component.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit><trans-unit id="bc298ec2f787a74b6ae6d6b7aec7bf7510d2d42a" datatype="html">
-        <source>Invalid numeric value</source><target state="final">Invalid numeric value</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/shared/field-errors.component.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit><trans-unit id="ecc657fa12dbf8c05230e520925a49ce32cf74b1" datatype="html">
-        <source>Should have at least <x id="INTERPOLATION" equiv-text="{{min}}"/> characters.</source><target state="final">Should have at least <x id="INTERPOLATION" equiv-text="{{min}}"/> characters.</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/shared/field-errors.component.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit><trans-unit id="7cbdabcece469fab89cfa687ab152bca18b97498" datatype="html">
-        <source>This field is required.</source><target state="final">This field is required.</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/shared/field-errors.component.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit><trans-unit id="cd0d6131e1eddad2523a49794622371280e589bc" datatype="html">
-        <source>The passwords don't match.</source><target state="final">The passwords don't match.</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/shared/field-errors.component.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit><trans-unit id="ba30f516f5f32cfd87f3219ae103f9e1c23cdec7" datatype="html">
-        <source>This field is invalid</source><target state="final">This field is invalid</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/shared/field-errors.component.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit><trans-unit id="e578b2c0410ee02b409f18b11dac6b510902e226" datatype="html">
-        <source>This field is private. Click to allow other to view it.</source><target state="final">This field is private. Click to allow other to view it.</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/shared/field-privacy.component.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit><trans-unit id="ffdc8df64346674820e74c15f02105d5b3e3494c" datatype="html">
-        <source>This field is visible by others. Click to make it private.</source><target state="final">This field is visible by others. Click to make it private.</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/shared/field-privacy.component.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit>
+      
+      
     <trans-unit id="c32ef07f8803a223a83ed17024b38e8d82292407" datatype="html">
         <source>Password</source><target state="final">Password</target>
         
         <note priority="1" from="description">Password on login form</note>
-      <context-group purpose="location"><context context-type="sourcefile">app/login/login.component.html</context><context context-type="linenumber">28</context></context-group></trans-unit><trans-unit id="e08a77594f3d89311cdf6da5090044270909c194" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/login/login.component.html</context><context context-type="linenumber">32</context></context-group></trans-unit><trans-unit id="e08a77594f3d89311cdf6da5090044270909c194" datatype="html">
         <source>User</source><target state="final">User</target>
         
         <note priority="1" from="description">User on login form</note>
-      <context-group purpose="location"><context context-type="sourcefile">app/login/login.component.html</context><context context-type="linenumber">21</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/login/forgot-password.component.html</context><context context-type="linenumber">19</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/accounts/account-history.component.html</context><context context-type="linenumber">47</context></context-group></trans-unit><trans-unit id="71c77bb8cecdf11ec3eead24dd1ba506573fa9cd" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/login/login.component.html</context><context context-type="linenumber">25</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/login/forgot-password.component.html</context><context context-type="linenumber">19</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/accounts/account-history.component.html</context><context context-type="linenumber">49</context></context-group></trans-unit><trans-unit id="71c77bb8cecdf11ec3eead24dd1ba506573fa9cd" datatype="html">
         <source>Submit</source><target state="final">Submit</target>
         
-      <context-group purpose="location"><context context-type="sourcefile">app/login/login.component.html</context><context context-type="linenumber">31</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/login/forgot-password.component.html</context><context context-type="linenumber">32</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/login/change-forgotten-password.component.html</context><context context-type="linenumber">27</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/login/change-expired-password.component.html</context><context context-type="linenumber">40</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/login/accept-pending-agreements.component.html</context><context context-type="linenumber">14</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/passwords/change-password-dialog.component.html</context><context context-type="linenumber">14</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/registration/public-registration.component.html</context><context context-type="linenumber">39</context></context-group></trans-unit><trans-unit id="404d32d7f0ad99387f33d2df3e542c89e08165c5" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/login/login.component.html</context><context context-type="linenumber">35</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/login/forgot-password.component.html</context><context context-type="linenumber">32</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/login/change-forgotten-password.component.html</context><context context-type="linenumber">27</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/login/change-expired-password.component.html</context><context context-type="linenumber">40</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/login/accept-pending-agreements.component.html</context><context context-type="linenumber">14</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/passwords/change-password-dialog.component.html</context><context context-type="linenumber">14</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/registration/public-registration.component.html</context><context context-type="linenumber">39</context></context-group></trans-unit><trans-unit id="23f0666995a825119c0e6cfbe64fbdd6fe4b47c5" datatype="html">
         <source>
-        Forgot your password?
-      </source><target state="final">
-        Forgot your password?
-      </target>
-        
-      <context-group purpose="location"><context context-type="sourcefile">app/login/login.component.html</context><context context-type="linenumber">33</context></context-group></trans-unit><trans-unit id="f85dc01e7aab1a5c282d14b74650255ae4042fe0" datatype="html">
+          Forgot your password?
+        </source><target state="final">
+          Forgot your password?
+        </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/login/login.component.html</context>
+          <context context-type="linenumber">38</context>
+        </context-group>
+      </trans-unit><trans-unit id="c29fa1ca317856d8e38c232f223737692967b102" datatype="html">
+        <source>
+          Not a user yet? Register here.
+        </source><target state="final">
+          Not a user yet? Register here.
+        </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/login/login.component.html</context>
+          <context context-type="linenumber">43</context>
+        </context-group>
+      </trans-unit><trans-unit id="f85dc01e7aab1a5c282d14b74650255ae4042fe0" datatype="html">
         <source>E-mail</source><target state="final">E-mail</target>
         
-      <context-group purpose="location"><context context-type="sourcefile">app/users/profile/view-profile.component.html</context><context context-type="linenumber">19</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/profile/view-profile.component.html</context><context context-type="linenumber">90</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/profile/edit-profile.component.html</context><context context-type="linenumber">74</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/profile/edit-profile.component.html</context><context context-type="linenumber">285</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/registration/registration-step-fields.component.html</context><context context-type="linenumber">37</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/registration/registration-step-confirm.component.html</context><context context-type="linenumber">5</context></context-group></trans-unit><trans-unit id="9cfc24b69059eceab71ce2989a0edde02e75db0c" datatype="html">
-        <source>SMS</source><target state="final">SMS</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/shared/password-input.component.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit><trans-unit id="36af63424e892d12775eb4d854121bc25a2dfe34" datatype="html">
-        <source>The password was sent to <x id="INTERPOLATION" equiv-text="{{dest}}"/></source><target state="final">The password was sent to <x id="INTERPOLATION" equiv-text="{{dest}}"/></target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/shared/password-input.component.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit><trans-unit id="06d89d48cfdcd846399ef6f6b86d31d8d98aab0e" datatype="html">
-        <source>Type to search</source><target state="final">Type to search</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/shared/user-field.component.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit><trans-unit id="5f470d99872392b2255dadf7e67a3c1b95b53ae1" datatype="html">
-        <source>Type the user identifier</source><target state="final">Type the user identifier</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/shared/user-field.component.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit><trans-unit id="5ef892b1420d01a8f24a6c7db8b869db24005f59" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/users/profile/view-profile.component.html</context><context context-type="linenumber">19</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/profile/view-profile.component.html</context><context context-type="linenumber">90</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/profile/edit-profile.component.html</context><context context-type="linenumber">74</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/profile/edit-profile.component.html</context><context context-type="linenumber">291</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/registration/registration-step-fields.component.html</context><context context-type="linenumber">37</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/registration/registration-step-confirm.component.html</context><context context-type="linenumber">5</context></context-group></trans-unit><trans-unit id="5ef892b1420d01a8f24a6c7db8b869db24005f59" datatype="html">
         <source>The location you have typed was not found</source><target state="final">The location you have typed was not found</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/shared/not-found.component.html</context>
@@ -1404,18 +467,15 @@
         </source><target state="final">
           Actions
         </target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/shared/page-content.component.html</context>
-          <context context-type="linenumber">27</context>
-        </context-group>
-      </trans-unit><trans-unit id="ec0290ea82bcd93aa2734b1abcf4fc944e055113" datatype="html">
+        
+      <context-group purpose="location"><context context-type="sourcefile">app/shared/page-content.component.html</context><context context-type="linenumber">26</context></context-group></trans-unit><trans-unit id="ec0290ea82bcd93aa2734b1abcf4fc944e055113" datatype="html">
         <source>
       No results match the search criteria <x id="INTERPOLATION" equiv-text="{{ notifyReady() }}"/>
     </source><target state="final">
       No results match the search criteria <x id="INTERPOLATION" equiv-text="{{ notifyReady() }}"/>
     </target>
         
-      <context-group purpose="location"><context context-type="sourcefile">app/shared/results-layout.component.html</context><context context-type="linenumber">72</context></context-group></trans-unit><trans-unit id="5f348df6f67a864abb3479dc8f85ae6113a643b8" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/shared/results-layout.component.html</context><context context-type="linenumber">75</context></context-group></trans-unit><trans-unit id="5f348df6f67a864abb3479dc8f85ae6113a643b8" datatype="html">
         <source>Showing <x id="INTERPOLATION" equiv-text="{{results.firstItem}}"/> - <x id="INTERPOLATION_1" equiv-text="{{results.lastItem}}"/> of
     <x id="INTERPOLATION_2" equiv-text="{{results.totalCount}}"/> results
   </source><target state="final">Showing <x id="INTERPOLATION" equiv-text="{{results.firstItem}}"/> - <x id="INTERPOLATION_1" equiv-text="{{results.lastItem}}"/> of
@@ -1453,7 +513,7 @@
         
         
         
-      <context-group purpose="location"><context context-type="sourcefile">app/shared/manage-files.component.html</context><context context-type="linenumber">22</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/shared/manage-images.component.html</context><context context-type="linenumber">27</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/payment/perform-payment.component.html</context><context context-type="linenumber">22</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/profile/verify-phone.component.html</context><context context-type="linenumber">18</context></context-group></trans-unit><trans-unit id="d7b35c384aecd25a516200d6921836374613dfe7" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/shared/manage-files.component.html</context><context context-type="linenumber">22</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/shared/manage-images.component.html</context><context context-type="linenumber">27</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/payment/perform-payment.component.html</context><context context-type="linenumber">23</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/profile/verify-phone.component.html</context><context context-type="linenumber">18</context></context-group></trans-unit><trans-unit id="d7b35c384aecd25a516200d6921836374613dfe7" datatype="html">
         <source>Cancel</source><target state="final">Cancel</target>
         
         
@@ -1569,41 +629,19 @@
       </trans-unit><trans-unit id="dfc3c34e182ea73c5d784ff7c8135f087992dac1" datatype="html">
         <source>All</source><target state="final">All</target>
         
-      <context-group purpose="location"><context context-type="sourcefile">app/shared/custom-field-filter.component.html</context><context context-type="linenumber">20</context></context-group></trans-unit><trans-unit id="51f9ef30b55fb612d18a32fc3f5346e66d53ac63" datatype="html">
-        <source>
-        You have been disconnected.
-        <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/> Please, login again in order to view the requested page.
-      </source><target state="final">
-        You have been disconnected.
-        <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/> Please, login again in order to view the requested page.
-      </target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/login/login.component.html</context>
-          <context context-type="linenumber">4</context>
-        </context-group>
-      </trans-unit><trans-unit id="a5b79a423c86a2de88034c94d51043febd8e17f2" datatype="html">
-        <source>
-          You can login with your username and password
-        </source><target state="final">
-          You can login with your username and password
-        </target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/login/login.component.html</context>
-          <context context-type="linenumber">9</context>
-        </context-group>
-      </trans-unit><trans-unit id="2f933b826a570836cab04f683970a2d22068458c" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/shared/custom-field-filter.component.html</context><context context-type="linenumber">20</context></context-group></trans-unit><trans-unit id="2f933b826a570836cab04f683970a2d22068458c" datatype="html">
         <source>Date</source><target state="final">Date</target>
         
-      <context-group purpose="location"><context context-type="sourcefile">app/banking/accounts/account-history.component.html</context><context context-type="linenumber">83</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">14</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">122</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/search-scheduled-payments.component.html</context><context context-type="linenumber">40</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/search-recurring-payments.component.html</context><context context-type="linenumber">40</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/search-authorized-payments.component.html</context><context context-type="linenumber">33</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-authorization-history.component.html</context><context context-type="linenumber">17</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context><context context-type="linenumber">4</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context><context context-type="linenumber">49</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context><context context-type="linenumber">76</context></context-group></trans-unit><trans-unit id="cac1b822524b009262fb1a229fb3f199f59c0bb0" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/banking/accounts/account-history.component.html</context><context context-type="linenumber">85</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">14</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">128</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/search-scheduled-payments.component.html</context><context context-type="linenumber">10</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/search-recurring-payments.component.html</context><context context-type="linenumber">10</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/search-authorized-payments.component.html</context><context context-type="linenumber">10</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-authorization-history.component.html</context><context context-type="linenumber">17</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context><context context-type="linenumber">4</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context><context context-type="linenumber">52</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context><context context-type="linenumber">79</context></context-group></trans-unit><trans-unit id="cac1b822524b009262fb1a229fb3f199f59c0bb0" datatype="html">
         <source>From / to</source><target state="final">From / to</target>
         
-      <context-group purpose="location"><context context-type="sourcefile">app/banking/accounts/account-history.component.html</context><context context-type="linenumber">84</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/search-scheduled-payments.component.html</context><context context-type="linenumber">41</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/search-recurring-payments.component.html</context><context context-type="linenumber">41</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/search-authorized-payments.component.html</context><context context-type="linenumber">34</context></context-group></trans-unit><trans-unit id="eec715de352a6b114713b30b640d319fa78207a0" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/banking/accounts/account-history.component.html</context><context context-type="linenumber">86</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/search-scheduled-payments.component.html</context><context context-type="linenumber">11</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/search-recurring-payments.component.html</context><context context-type="linenumber">11</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/search-authorized-payments.component.html</context><context context-type="linenumber">11</context></context-group></trans-unit><trans-unit id="eec715de352a6b114713b30b640d319fa78207a0" datatype="html">
         <source>Description</source><target state="final">Description</target>
         
-      <context-group purpose="location"><context context-type="sourcefile">app/banking/accounts/account-history.component.html</context><context context-type="linenumber">85</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">65</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context><context context-type="linenumber">41</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/payment/payment-step-form.component.html</context><context context-type="linenumber">145</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/payment/payment-step-confirm.component.html</context><context context-type="linenumber">78</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/marketplace/view/view-ad.component.html</context><context context-type="linenumber">47</context></context-group></trans-unit><trans-unit id="dfc2fb58e2a04ed944a4bd80f0a2087775134068" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/banking/accounts/account-history.component.html</context><context context-type="linenumber">87</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">71</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context><context context-type="linenumber">44</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/payment/payment-step-form.component.html</context><context context-type="linenumber">146</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/payment/payment-step-confirm.component.html</context><context context-type="linenumber">78</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/marketplace/view/view-ad.component.html</context><context context-type="linenumber">48</context></context-group></trans-unit><trans-unit id="dfc2fb58e2a04ed944a4bd80f0a2087775134068" datatype="html">
         <source>Amount</source><target state="final">Amount</target>
         
-      <context-group purpose="location"><context context-type="sourcefile">app/banking/accounts/account-history.component.html</context><context context-type="linenumber">86</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">17</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">76</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">124</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/search-scheduled-payments.component.html</context><context context-type="linenumber">44</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/search-recurring-payments.component.html</context><context context-type="linenumber">44</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/search-authorized-payments.component.html</context><context context-type="linenumber">36</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context><context context-type="linenumber">7</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context><context context-type="linenumber">52</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context><context context-type="linenumber">79</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/payment/payment-step-form.component.html</context><context context-type="linenumber">76</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/payment/payment-step-confirm.component.html</context><context context-type="linenumber">22</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/payment/payment-step-confirm.component.html</context><context context-type="linenumber">40</context></context-group></trans-unit><trans-unit id="8ea1f6c2e5fb5a0e0709e8f3c188e087d20379b2" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/banking/accounts/account-history.component.html</context><context context-type="linenumber">88</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">17</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">82</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">130</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/search-scheduled-payments.component.html</context><context context-type="linenumber">14</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/search-recurring-payments.component.html</context><context context-type="linenumber">14</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/search-authorized-payments.component.html</context><context context-type="linenumber">13</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context><context context-type="linenumber">7</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context><context context-type="linenumber">55</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context><context context-type="linenumber">82</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/payment/payment-step-form.component.html</context><context context-type="linenumber">76</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/payment/payment-step-confirm.component.html</context><context context-type="linenumber">22</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/payment/payment-step-confirm.component.html</context><context context-type="linenumber">40</context></context-group></trans-unit><trans-unit id="8ea1f6c2e5fb5a0e0709e8f3c188e087d20379b2" datatype="html">
         <source>Transfer details</source><target state="final">Transfer details</target>
         
       <context-group purpose="location"><context context-type="sourcefile">app/banking/transfers/view-transfer.component.html</context><context context-type="linenumber">2</context></context-group></trans-unit><trans-unit id="f732c304c7433e5a83ffcd862c3dce709a0f4982" datatype="html">
@@ -1611,32 +649,26 @@
         
         
         
-      <context-group purpose="location"><context context-type="sourcefile">app/banking/payment/perform-payment.component.html</context><context context-type="linenumber">10</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/search-recurring-payments.component.html</context><context context-type="linenumber">43</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/registration/public-registration.component.html</context><context context-type="linenumber">9</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/registration/public-registration.component.html</context><context context-type="linenumber">24</context></context-group></trans-unit><trans-unit id="680d5c75b7fd8d37961083608b9fcdc4167b4c43" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/banking/payment/perform-payment.component.html</context><context context-type="linenumber">11</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/search-recurring-payments.component.html</context><context context-type="linenumber">13</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/registration/public-registration.component.html</context><context context-type="linenumber">9</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/registration/public-registration.component.html</context><context context-type="linenumber">24</context></context-group></trans-unit><trans-unit id="680d5c75b7fd8d37961083608b9fcdc4167b4c43" datatype="html">
         <source>Previous</source><target state="final">Previous</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/banking/payment/perform-payment.component.html</context>
-          <context context-type="linenumber">23</context>
-        </context-group>
-      </trans-unit><trans-unit id="6da2b78ea23c10630ced36401990f7d4248c08b8" datatype="html">
+        
+      <context-group purpose="location"><context context-type="sourcefile">app/banking/payment/perform-payment.component.html</context><context context-type="linenumber">24</context></context-group></trans-unit><trans-unit id="6da2b78ea23c10630ced36401990f7d4248c08b8" datatype="html">
         <source>Payment confirmation</source><target state="final">Payment confirmation</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/banking/payment/perform-payment.component.html</context>
-          <context context-type="linenumber">14</context>
-        </context-group>
-      </trans-unit><trans-unit id="f74f4a9d1b3b7b4f8f64087006a5774375689cc9" datatype="html">
+        
+      <context-group purpose="location"><context context-type="sourcefile">app/banking/payment/perform-payment.component.html</context><context context-type="linenumber">15</context></context-group></trans-unit><trans-unit id="f74f4a9d1b3b7b4f8f64087006a5774375689cc9" datatype="html">
         <source>View
         payment</source><target state="final">View
         payment</target>
         
-      <context-group purpose="location"><context context-type="sourcefile">app/banking/payment/perform-payment.component.html</context><context context-type="linenumber">32</context></context-group></trans-unit><trans-unit id="fc6f5727e3e741791354b74f42ecb804a927ab66" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/banking/payment/perform-payment.component.html</context><context context-type="linenumber">34</context></context-group></trans-unit><trans-unit id="fc6f5727e3e741791354b74f42ecb804a927ab66" datatype="html">
         <source>New
         payment</source><target state="final">New
         payment</target>
         
-      <context-group purpose="location"><context context-type="sourcefile">app/banking/payment/perform-payment.component.html</context><context context-type="linenumber">34</context></context-group></trans-unit><trans-unit id="81b97b8ea996ad1e4f9fca8415021850214884b1" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/banking/payment/perform-payment.component.html</context><context context-type="linenumber">36</context></context-group></trans-unit><trans-unit id="81b97b8ea996ad1e4f9fca8415021850214884b1" datatype="html">
         <source>Status</source><target state="final">Status</target>
         
-      <context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">13</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">75</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">123</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/search-scheduled-payments.component.html</context><context context-type="linenumber">8</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/search-scheduled-payments.component.html</context><context context-type="linenumber">42</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/search-recurring-payments.component.html</context><context context-type="linenumber">8</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/search-recurring-payments.component.html</context><context context-type="linenumber">42</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/search-authorized-payments.component.html</context><context context-type="linenumber">8</context></context-group></trans-unit><trans-unit id="1c3734b62addb7c06b7a77347cc64494336882cb" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">13</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">81</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">129</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/search-scheduled-payments.component.html</context><context context-type="linenumber">12</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/search-recurring-payments.component.html</context><context context-type="linenumber">12</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/transaction-filters.component.html</context><context context-type="linenumber">6</context></context-group></trans-unit><trans-unit id="1c3734b62addb7c06b7a77347cc64494336882cb" datatype="html">
         <source>Due amount</source><target state="final">Due amount</target>
         
       <context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">20</context></context-group></trans-unit><trans-unit id="d5e0dbc9fd4651759df915cdc6ba26fe3f17475f" datatype="html">
@@ -1647,7 +679,7 @@
         
         
         
-      <context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">23</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context><context context-type="linenumber">14</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context><context context-type="linenumber">55</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context><context context-type="linenumber">77</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context><context context-type="linenumber">87</context></context-group></trans-unit><trans-unit id="63c9c3aa536dbd11120ae8feab62186c47838028" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">29</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context><context context-type="linenumber">20</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context><context context-type="linenumber">58</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context><context context-type="linenumber">80</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context><context context-type="linenumber">90</context></context-group></trans-unit><trans-unit id="63c9c3aa536dbd11120ae8feab62186c47838028" datatype="html">
         <source>To</source><target state="final">To</target>
         
         
@@ -1656,94 +688,70 @@
         
         
         
-      <context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">29</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context><context context-type="linenumber">17</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context><context context-type="linenumber">58</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context><context context-type="linenumber">78</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context><context context-type="linenumber">91</context></context-group></trans-unit><trans-unit id="7f75bebe8bef23c15673eeef000749c2e0a775a8" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">35</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context><context context-type="linenumber">23</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context><context context-type="linenumber">61</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context><context context-type="linenumber">81</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context><context context-type="linenumber">94</context></context-group></trans-unit><trans-unit id="7f75bebe8bef23c15673eeef000749c2e0a775a8" datatype="html">
         <source>Payment type</source><target state="final">Payment type</target>
         
         
         
         
         
-      <context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">35</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context><context context-type="linenumber">20</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context><context context-type="linenumber">61</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/payment/payment-step-form.component.html</context><context context-type="linenumber">70</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/payment/payment-step-confirm.component.html</context><context context-type="linenumber">18</context></context-group></trans-unit><trans-unit id="0cc554f4d7bb6a87515d2d95438e183b50702071" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">41</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context><context context-type="linenumber">26</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context><context context-type="linenumber">64</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/payment/payment-step-form.component.html</context><context context-type="linenumber">70</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/payment/payment-step-confirm.component.html</context><context context-type="linenumber">18</context></context-group></trans-unit><trans-unit id="0cc554f4d7bb6a87515d2d95438e183b50702071" datatype="html">
         <source>Channel</source><target state="final">Channel</target>
         
         
-      <context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">41</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context><context context-type="linenumber">26</context></context-group></trans-unit><trans-unit id="e703d1a5af39f0eb011f3eb416924fb81ac251b7" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">47</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context><context context-type="linenumber">29</context></context-group></trans-unit><trans-unit id="e703d1a5af39f0eb011f3eb416924fb81ac251b7" datatype="html">
         <source>By</source><target state="final">By</target>
         
-      <context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">44</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-authorization-history.component.html</context><context context-type="linenumber">14</context></context-group></trans-unit><trans-unit id="f2f085b2c292ce0d2f66de3c3754750b9fed1793" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">50</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-authorization-history.component.html</context><context context-type="linenumber">14</context></context-group></trans-unit><trans-unit id="f2f085b2c292ce0d2f66de3c3754750b9fed1793" datatype="html">
         <source>Due date</source><target state="final">Due date</target>
         
         
         
         
         
-      <context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">49</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">74</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/payment/payment-step-form.component.html</context><context context-type="linenumber">99</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/payment/payment-step-confirm.component.html</context><context context-type="linenumber">32</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/payment/payment-step-confirm.component.html</context><context context-type="linenumber">39</context></context-group></trans-unit><trans-unit id="951fa8b66ceba459fba2039b94532d61977c411d" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">55</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">80</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/payment/payment-step-form.component.html</context><context context-type="linenumber">99</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/payment/payment-step-confirm.component.html</context><context context-type="linenumber">32</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/payment/payment-step-confirm.component.html</context><context context-type="linenumber">39</context></context-group></trans-unit><trans-unit id="951fa8b66ceba459fba2039b94532d61977c411d" datatype="html">
         <source>Next occurrence</source><target state="final">Next occurrence</target>
         
-      <context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">53</context></context-group></trans-unit><trans-unit id="9edb53df001e255b7d2bdc7a36c3ad08342d94e4" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">59</context></context-group></trans-unit><trans-unit id="9edb53df001e255b7d2bdc7a36c3ad08342d94e4" datatype="html">
         <source>Total number of occurrences</source><target state="final">Total number of occurrences</target>
         
-      <context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">57</context></context-group></trans-unit><trans-unit id="62bab7e24a295267426faa097bf1da7ab1284cd6" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">63</context></context-group></trans-unit><trans-unit id="62bab7e24a295267426faa097bf1da7ab1284cd6" datatype="html">
         <source>Authorization comments</source><target state="final">Authorization comments</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context>
-          <context context-type="linenumber">61</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context>
-          <context context-type="linenumber">37</context>
-        </context-group>
-      </trans-unit><trans-unit id="aaef22824187d0b331f72fd6d8660e620c04f18e" datatype="html">
+        
+        
+      <context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">67</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context><context context-type="linenumber">40</context></context-group></trans-unit><trans-unit id="aaef22824187d0b331f72fd6d8660e620c04f18e" datatype="html">
         <source>Installments</source><target state="final">Installments</target>
         
         
         
-      <context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">70</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/search-scheduled-payments.component.html</context><context context-type="linenumber">43</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/payment/payment-step-confirm.component.html</context><context context-type="linenumber">35</context></context-group></trans-unit><trans-unit id="fbcb0d75afbe6aec04269381598a737f4bd19db7" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">76</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/search-scheduled-payments.component.html</context><context context-type="linenumber">13</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/payment/payment-step-confirm.component.html</context><context context-type="linenumber">35</context></context-group></trans-unit><trans-unit id="fbcb0d75afbe6aec04269381598a737f4bd19db7" datatype="html">
         <source>Number</source><target state="final">Number</target>
         
         
         
-      <context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">73</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">121</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/payment/payment-step-confirm.component.html</context><context context-type="linenumber">38</context></context-group></trans-unit><trans-unit id="fa7574a5be4a36256a17abbdf5739a32da8be719" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">79</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">127</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/payment/payment-step-confirm.component.html</context><context context-type="linenumber">38</context></context-group></trans-unit><trans-unit id="fa7574a5be4a36256a17abbdf5739a32da8be719" datatype="html">
         <source>Process this installment</source><target state="final">Process this installment</target>
         
-      <context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">103</context></context-group></trans-unit><trans-unit id="20e1d9a51b1f1c3ae55958a3e88b5784368c3511" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">109</context></context-group></trans-unit><trans-unit id="20e1d9a51b1f1c3ae55958a3e88b5784368c3511" datatype="html">
         <source>Settle this installment</source><target state="final">Settle this installment</target>
         
-      <context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">107</context></context-group></trans-unit><trans-unit id="8ee3e8acd5b7476f7ab6f63107c83b9e1d74ac0a" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">113</context></context-group></trans-unit><trans-unit id="8ee3e8acd5b7476f7ab6f63107c83b9e1d74ac0a" datatype="html">
         <source>Occurrences</source><target state="final">Occurrences</target>
         
-      <context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">118</context></context-group></trans-unit><trans-unit id="9f60d7d088df3d02f1261e4bf2f177e8edb7fa80" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">124</context></context-group></trans-unit><trans-unit id="9f60d7d088df3d02f1261e4bf2f177e8edb7fa80" datatype="html">
         <source>Process this failed occurrence</source><target state="final">Process this failed occurrence</target>
         
-      <context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">151</context></context-group></trans-unit><trans-unit id="29881a45dafbe5aa05cd9d0441a4c0c2fb06df92" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">157</context></context-group></trans-unit><trans-unit id="29881a45dafbe5aa05cd9d0441a4c0c2fb06df92" datatype="html">
         <source>Account</source><target state="final">Account</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/banking/transactions/search-scheduled-payments.component.html</context>
-          <context context-type="linenumber">13</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/banking/transactions/search-recurring-payments.component.html</context>
-          <context context-type="linenumber">13</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/banking/transactions/search-authorized-payments.component.html</context>
-          <context context-type="linenumber">13</context>
-        </context-group>
-      </trans-unit><trans-unit id="e7653ac7465dad4c0433f690bf949f29b2814511" datatype="html">
+        
+        
+        
+      <context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/transaction-filters.component.html</context><context context-type="linenumber">11</context></context-group></trans-unit><trans-unit id="e7653ac7465dad4c0433f690bf949f29b2814511" datatype="html">
         <source>Any account</source><target state="final">Any account</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/banking/transactions/search-scheduled-payments.component.html</context>
-          <context context-type="linenumber">13</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/banking/transactions/search-recurring-payments.component.html</context>
-          <context context-type="linenumber">13</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/banking/transactions/search-authorized-payments.component.html</context>
-          <context context-type="linenumber">13</context>
-        </context-group>
-      </trans-unit><trans-unit id="808207255c5bdcfbbfacdc50fd30e184019210a1" datatype="html">
+        
+        
+        
+      <context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/transaction-filters.component.html</context><context context-type="linenumber">11</context></context-group></trans-unit><trans-unit id="808207255c5bdcfbbfacdc50fd30e184019210a1" datatype="html">
         <source>Scheduled payments</source><target state="final">Scheduled payments</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transactions/search-scheduled-payments.component.html</context>
@@ -1765,7 +773,7 @@
         <source>Scheduling</source><target state="final">Scheduling</target>
         
         
-      <context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/search-authorized-payments.component.html</context><context context-type="linenumber">35</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/payment/payment-step-form.component.html</context><context context-type="linenumber">86</context></context-group></trans-unit><trans-unit id="1bd5e17c9582661e20763a7634ef07881e33bbd7" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/search-authorized-payments.component.html</context><context context-type="linenumber">12</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/payment/payment-step-form.component.html</context><context context-type="linenumber">86</context></context-group></trans-unit><trans-unit id="1bd5e17c9582661e20763a7634ef07881e33bbd7" datatype="html">
         <source>Action</source><target state="final">Action</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transactions/view-authorization-history.component.html</context>
@@ -1787,13 +795,13 @@
         <source>Transaction number</source><target state="final">Transaction number</target>
         
         
-      <context-group purpose="location"><context context-type="sourcefile">app/banking/accounts/account-history.component.html</context><context context-type="linenumber">51</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">10</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-authorization-history.component.html</context><context context-type="linenumber">4</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context><context context-type="linenumber">1</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context><context context-type="linenumber">46</context></context-group></trans-unit><trans-unit id="c39d43f18d10f925621abc77ad15de80a9cc7516" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/banking/accounts/account-history.component.html</context><context context-type="linenumber">53</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">10</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-authorization-history.component.html</context><context context-type="linenumber">4</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context><context context-type="linenumber">1</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context><context context-type="linenumber">49</context></context-group></trans-unit><trans-unit id="c39d43f18d10f925621abc77ad15de80a9cc7516" datatype="html">
         <source>Operator</source><target state="final">Operator</target>
         
-      <context-group purpose="location"><context context-type="sourcefile">app/banking/accounts/account-history.component.html</context><context context-type="linenumber">55</context></context-group></trans-unit><trans-unit id="16d449549ab7bc61caf3d636372a4a56b5870383" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/banking/accounts/account-history.component.html</context><context context-type="linenumber">57</context></context-group></trans-unit><trans-unit id="16d449549ab7bc61caf3d636372a4a56b5870383" datatype="html">
         <source>Any</source><target state="final">Any</target>
         
-      <context-group purpose="location"><context context-type="sourcefile">app/banking/accounts/account-history.component.html</context><context context-type="linenumber">55</context></context-group></trans-unit><trans-unit id="e1558b027884cb390ce48bc911f1b84d72904825" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/banking/accounts/account-history.component.html</context><context context-type="linenumber">57</context></context-group></trans-unit><trans-unit id="e1558b027884cb390ce48bc911f1b84d72904825" datatype="html">
         <source>This transfer has been charged back at <x id="INTERPOLATION" equiv-text="{{
     transfer.chargedBackBy.date | dateTime }}"/></source><target state="final">This transfer has been charged back at <x id="INTERPOLATION" equiv-text="{{
     transfer.chargedBackBy.date | dateTime }}"/></target>
@@ -1810,20 +818,30 @@
       </trans-unit><trans-unit id="0f633bb137fd735b429da4b79ebe78b4c8fc5f32" datatype="html">
         <source>Performed by</source><target state="final">Performed by</target>
         
-      <context-group purpose="location"><context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context><context context-type="linenumber">23</context></context-group></trans-unit><trans-unit id="ca5f5861b432e2f3082cbf0db6927aed6bc7baf2" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context><context context-type="linenumber">23</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context><context context-type="linenumber">14</context></context-group></trans-unit><trans-unit id="9184ea35e4d7ea90a95287daa9609c606e8c6707" datatype="html">
+        <source>Received by</source><target state="final">Received by</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit><trans-unit id="ca5f5861b432e2f3082cbf0db6927aed6bc7baf2" datatype="html">
         <source>Transfer that generated this one</source><target state="final">Transfer that generated this one</target>
         
-      <context-group purpose="location"><context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context><context context-type="linenumber">45</context></context-group></trans-unit><trans-unit id="914570664a27e498c5d2d8234a294c2cc630aa5b" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context><context context-type="linenumber">48</context></context-group></trans-unit><trans-unit id="914570664a27e498c5d2d8234a294c2cc630aa5b" datatype="html">
         <source>
       View this transfer
     </source><target state="final">
       View this transfer
     </target>
         
-      <context-group purpose="location"><context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context><context context-type="linenumber">66</context></context-group></trans-unit><trans-unit id="b580b8899e66e6de0bd10fee6977b821a5edf3f8" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context><context context-type="linenumber">69</context></context-group></trans-unit><trans-unit id="b580b8899e66e6de0bd10fee6977b821a5edf3f8" datatype="html">
         <source>Transfers generated by this one</source><target state="final">Transfers generated by this one</target>
         
-      <context-group purpose="location"><context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context><context context-type="linenumber">73</context></context-group></trans-unit><trans-unit id="c606833ccc74fc0c65cc235d72546c9306d9e7a7" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context><context context-type="linenumber">76</context></context-group></trans-unit><trans-unit id="c606833ccc74fc0c65cc235d72546c9306d9e7a7" datatype="html">
         <source>To user</source><target state="final">To user</target>
         
         
@@ -1849,11 +867,11 @@
         <source>Now</source><target state="final">Now</target>
         
         
-      <context-group purpose="location"><context context-type="sourcefile">app/banking/payment/payment-step-form.component.html</context><context context-type="linenumber">109</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/payment/payment-step-form.component.html</context><context context-type="linenumber">121</context></context-group></trans-unit><trans-unit id="0895afaf98938344e3ba9bc6bf6fdd43498c6ae1" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/banking/payment/payment-step-form.component.html</context><context context-type="linenumber">109</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/payment/payment-step-form.component.html</context><context context-type="linenumber">122</context></context-group></trans-unit><trans-unit id="0895afaf98938344e3ba9bc6bf6fdd43498c6ae1" datatype="html">
         <source>Future date</source><target state="final">Future date</target>
         
         
-      <context-group purpose="location"><context context-type="sourcefile">app/banking/payment/payment-step-form.component.html</context><context context-type="linenumber">110</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/payment/payment-step-form.component.html</context><context context-type="linenumber">122</context></context-group></trans-unit><trans-unit id="7a8ed796c9f5ca86a4fdbac8ef91a8ca139e4a1f" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/banking/payment/payment-step-form.component.html</context><context context-type="linenumber">110</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/banking/payment/payment-step-form.component.html</context><context context-type="linenumber">123</context></context-group></trans-unit><trans-unit id="7a8ed796c9f5ca86a4fdbac8ef91a8ca139e4a1f" datatype="html">
         <source>First installment</source><target state="final">First installment</target>
         
       <context-group purpose="location"><context context-type="sourcefile">app/banking/payment/payment-step-form.component.html</context><context context-type="linenumber">108</context></context-group></trans-unit><trans-unit id="970663a073f8fc58f8b68e28bd74d85276dfacaf" datatype="html">
@@ -1862,22 +880,22 @@
       <context-group purpose="location"><context context-type="sourcefile">app/banking/payment/payment-step-form.component.html</context><context context-type="linenumber">114</context></context-group></trans-unit><trans-unit id="b76e494e7efe59e1b89bf3e7b24e05f3ab4e43d9" datatype="html">
         <source>First occurrence</source><target state="final">First occurrence</target>
         
-      <context-group purpose="location"><context context-type="sourcefile">app/banking/payment/payment-step-form.component.html</context><context context-type="linenumber">120</context></context-group></trans-unit><trans-unit id="38e364fa38649ab028cf210cf0c4d7b19609bd76" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/banking/payment/payment-step-form.component.html</context><context context-type="linenumber">121</context></context-group></trans-unit><trans-unit id="38e364fa38649ab028cf210cf0c4d7b19609bd76" datatype="html">
         <source>First occurrence date</source><target state="final">First occurrence date</target>
         
-      <context-group purpose="location"><context context-type="sourcefile">app/banking/payment/payment-step-form.component.html</context><context context-type="linenumber">127</context></context-group></trans-unit><trans-unit id="61df4730d8d2c7d7394dca08de00185f74ea2aea" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/banking/payment/payment-step-form.component.html</context><context context-type="linenumber">128</context></context-group></trans-unit><trans-unit id="61df4730d8d2c7d7394dca08de00185f74ea2aea" datatype="html">
         <source>Manually cancel</source><target state="final">Manually cancel</target>
         
-      <context-group purpose="location"><context context-type="sourcefile">app/banking/payment/payment-step-form.component.html</context><context context-type="linenumber">132</context></context-group></trans-unit><trans-unit id="447687038e1c2accce44f02676b7a3d60408367f" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/banking/payment/payment-step-form.component.html</context><context context-type="linenumber">133</context></context-group></trans-unit><trans-unit id="447687038e1c2accce44f02676b7a3d60408367f" datatype="html">
         <source>Fixed number of occurrences</source><target state="final">Fixed number of occurrences</target>
         
-      <context-group purpose="location"><context context-type="sourcefile">app/banking/payment/payment-step-form.component.html</context><context context-type="linenumber">133</context></context-group></trans-unit><trans-unit id="6d829e95038e742c8405d9714670dd98153b4fb2" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/banking/payment/payment-step-form.component.html</context><context context-type="linenumber">134</context></context-group></trans-unit><trans-unit id="6d829e95038e742c8405d9714670dd98153b4fb2" datatype="html">
         <source>Repeat until</source><target state="final">Repeat until</target>
         
-      <context-group purpose="location"><context context-type="sourcefile">app/banking/payment/payment-step-form.component.html</context><context context-type="linenumber">131</context></context-group></trans-unit><trans-unit id="55647701d556d49e761de83127df6a2b1bff347f" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/banking/payment/payment-step-form.component.html</context><context context-type="linenumber">132</context></context-group></trans-unit><trans-unit id="55647701d556d49e761de83127df6a2b1bff347f" datatype="html">
         <source>Number of occurrences</source><target state="final">Number of occurrences</target>
         
-      <context-group purpose="location"><context context-type="sourcefile">app/banking/payment/payment-step-form.component.html</context><context context-type="linenumber">138</context></context-group></trans-unit><trans-unit id="cfdd8cf93511b6d13244d0b9ff30a03c89938697" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/banking/payment/payment-step-form.component.html</context><context context-type="linenumber">139</context></context-group></trans-unit><trans-unit id="cfdd8cf93511b6d13244d0b9ff30a03c89938697" datatype="html">
         <source>
   The payment will require authorization
 </source><target state="final">
@@ -2051,7 +1069,7 @@
         <source>Address</source><target state="final">Address</target>
         
         
-      <context-group purpose="location"><context context-type="sourcefile">app/users/profile/view-profile.component.html</context><context context-type="linenumber">116</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/profile/edit-profile.component.html</context><context context-type="linenumber">125</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/profile/edit-profile.component.html</context><context context-type="linenumber">293</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/registration/registration-step-fields.component.html</context><context context-type="linenumber">74</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/registration/registration-step-confirm.component.html</context><context context-type="linenumber">13</context></context-group></trans-unit><trans-unit id="3fec0777a7d4f828289779beb1c74a788e59aba1" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/users/profile/view-profile.component.html</context><context context-type="linenumber">116</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/profile/edit-profile.component.html</context><context context-type="linenumber">125</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/profile/edit-profile.component.html</context><context context-type="linenumber">299</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/registration/registration-step-fields.component.html</context><context context-type="linenumber">74</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/registration/registration-step-confirm.component.html</context><context context-type="linenumber">13</context></context-group></trans-unit><trans-unit id="3fec0777a7d4f828289779beb1c74a788e59aba1" datatype="html">
         <source>Advertisements of <x id="INTERPOLATION" equiv-text="{{shortName}}"/></source><target state="final">Advertisements of <x id="INTERPOLATION" equiv-text="{{shortName}}"/></target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/marketplace/search/user-ads.component.html</context>
@@ -2085,7 +1103,7 @@
         
         
         
-      <context-group purpose="location"><context context-type="sourcefile">app/users/profile/view-profile.component.html</context><context context-type="linenumber">25</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/profile/view-profile.component.html</context><context context-type="linenumber">96</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/profile/edit-profile.component.html</context><context context-type="linenumber">100</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/profile/edit-profile.component.html</context><context context-type="linenumber">287</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/registration/registration-step-fields.component.html</context><context context-type="linenumber">55</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/registration/registration-step-confirm.component.html</context><context context-type="linenumber">10</context></context-group></trans-unit><trans-unit id="41384aefb8221a3227bdf4227f3fb37e6dbc7202" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/users/profile/view-profile.component.html</context><context context-type="linenumber">25</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/profile/view-profile.component.html</context><context context-type="linenumber">96</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/profile/edit-profile.component.html</context><context context-type="linenumber">100</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/profile/edit-profile.component.html</context><context context-type="linenumber">293</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/registration/registration-step-fields.component.html</context><context context-type="linenumber">55</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/registration/registration-step-confirm.component.html</context><context context-type="linenumber">10</context></context-group></trans-unit><trans-unit id="41384aefb8221a3227bdf4227f3fb37e6dbc7202" datatype="html">
         <source>
                   ext. <x id="INTERPOLATION" equiv-text="{{ contactInfo.landLineExtension }}"/>
                 </source><target state="final">
@@ -2166,15 +1184,9 @@
         
       <context-group purpose="location"><context context-type="sourcefile">app/users/profile/edit-profile.component.html</context><context context-type="linenumber">127</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/registration/registration-step-fields.component.html</context><context context-type="linenumber">76</context></context-group></trans-unit><trans-unit id="d2a2915d79ff31439a174fc3a147004542291e29" datatype="html">
         <source>Map</source><target state="final">Map</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/users/profile/edit-profile.component.html</context>
-          <context context-type="linenumber">132</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/users/profile/edit-profile.component.html</context>
-          <context context-type="linenumber">243</context>
-        </context-group>
-      </trans-unit><trans-unit id="2160767aa9684471cecdcf1226707dd1f2164f85" datatype="html">
+        
+        
+      <context-group purpose="location"><context context-type="sourcefile">app/users/profile/edit-profile.component.html</context><context context-type="linenumber">132</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/profile/edit-profile.component.html</context><context context-type="linenumber">244</context></context-group></trans-unit><trans-unit id="2160767aa9684471cecdcf1226707dd1f2164f85" datatype="html">
         <source>Phones</source><target state="final">Phones</target>
         
       <context-group purpose="location"><context context-type="sourcefile">app/users/profile/edit-profile.component.html</context><context context-type="linenumber">146</context></context-group></trans-unit><trans-unit id="3d0814125c76a998503cc2bb331035e89d3effcc" datatype="html">
@@ -2215,7 +1227,7 @@
         <source>Land-line phone</source><target state="final">Land-line phone</target>
         
         
-      <context-group purpose="location"><context context-type="sourcefile">app/users/profile/view-profile.component.html</context><context context-type="linenumber">37</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/profile/view-profile.component.html</context><context context-type="linenumber">102</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/profile/edit-profile.component.html</context><context context-type="linenumber">114</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/profile/edit-profile.component.html</context><context context-type="linenumber">289</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/registration/registration-step-fields.component.html</context><context context-type="linenumber">63</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/registration/registration-step-confirm.component.html</context><context context-type="linenumber">11</context></context-group></trans-unit><trans-unit id="d8eeb34b37b5aea8b22d8404fe0c62ff533277f9" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/users/profile/view-profile.component.html</context><context context-type="linenumber">37</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/profile/view-profile.component.html</context><context context-type="linenumber">102</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/profile/edit-profile.component.html</context><context context-type="linenumber">114</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/profile/edit-profile.component.html</context><context context-type="linenumber">295</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/registration/registration-step-fields.component.html</context><context context-type="linenumber">63</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/registration/registration-step-confirm.component.html</context><context context-type="linenumber">11</context></context-group></trans-unit><trans-unit id="d8eeb34b37b5aea8b22d8404fe0c62ff533277f9" datatype="html">
         <source>
             Addresses
           </source><target state="final">
@@ -2238,7 +1250,7 @@
       </trans-unit><trans-unit id="0fbcd2c82423d1993425feb326319aa386791eee" datatype="html">
         <source>Extension</source><target state="final">Extension</target>
         
-      <context-group purpose="location"><context context-type="sourcefile">app/users/profile/edit-profile.component.html</context><context context-type="linenumber">185</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/profile/edit-profile.component.html</context><context context-type="linenumber">291</context></context-group></trans-unit><trans-unit id="a26ac4134b8612e70a7046f6de89b10fd8881ba4" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/users/profile/edit-profile.component.html</context><context context-type="linenumber">185</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/profile/edit-profile.component.html</context><context context-type="linenumber">297</context></context-group></trans-unit><trans-unit id="a26ac4134b8612e70a7046f6de89b10fd8881ba4" datatype="html">
         <source>
               Remove this phone
             </source><target state="final">
@@ -2261,38 +1273,38 @@
         <source>Name</source><target state="final">Name</target>
         
         
-      <context-group purpose="location"><context context-type="sourcefile">app/users/profile/edit-profile.component.html</context><context context-type="linenumber">227</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/profile/edit-profile.component.html</context><context context-type="linenumber">283</context></context-group></trans-unit><trans-unit id="9472792e4cfc8f634e651e310d507ad14ed601ff" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/users/profile/edit-profile.component.html</context><context context-type="linenumber">227</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/profile/edit-profile.component.html</context><context context-type="linenumber">289</context></context-group></trans-unit><trans-unit id="9472792e4cfc8f634e651e310d507ad14ed601ff" datatype="html">
         <source>Additional
           contacts</source><target state="final">Additional
           contacts</target>
         
-      <context-group purpose="location"><context context-type="sourcefile">app/users/profile/edit-profile.component.html</context><context context-type="linenumber">268</context></context-group></trans-unit><trans-unit id="adb5945792ccf57a5589bfc6f35ca63396bf3f55" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/users/profile/edit-profile.component.html</context><context context-type="linenumber">274</context></context-group></trans-unit><trans-unit id="adb5945792ccf57a5589bfc6f35ca63396bf3f55" datatype="html">
         <source>Add contact</source><target state="final">Add contact</target>
         
-      <context-group purpose="location"><context context-type="sourcefile">app/users/profile/edit-profile.component.html</context><context context-type="linenumber">272</context></context-group></trans-unit><trans-unit id="8bb9066505a76099771e2e4865393cd1793070ec" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/users/profile/edit-profile.component.html</context><context context-type="linenumber">278</context></context-group></trans-unit><trans-unit id="8bb9066505a76099771e2e4865393cd1793070ec" datatype="html">
         <source>
         There are currently no additional contacts
       </source><target state="final">
         There are currently no additional contacts
       </target>
         
-      <context-group purpose="location"><context context-type="sourcefile">app/users/profile/edit-profile.component.html</context><context context-type="linenumber">275</context></context-group></trans-unit><trans-unit id="a5f9ba9bb9faa8284bcadb1cdbc6aaf969e9c4bb" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/users/profile/edit-profile.component.html</context><context context-type="linenumber">281</context></context-group></trans-unit><trans-unit id="a5f9ba9bb9faa8284bcadb1cdbc6aaf969e9c4bb" datatype="html">
         <source>Image</source><target state="final">Image</target>
         
-      <context-group purpose="location"><context context-type="sourcefile">app/users/profile/edit-profile.component.html</context><context context-type="linenumber">281</context></context-group></trans-unit><trans-unit id="a05497adf94ecc038a61d07b839082275b8d5ec8" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/users/profile/edit-profile.component.html</context><context context-type="linenumber">287</context></context-group></trans-unit><trans-unit id="a05497adf94ecc038a61d07b839082275b8d5ec8" datatype="html">
         <source>
               Remove this additional contact
             </source><target state="final">
               Remove this additional contact
             </target>
         
-      <context-group purpose="location"><context context-type="sourcefile">app/users/profile/edit-profile.component.html</context><context context-type="linenumber">309</context></context-group></trans-unit><trans-unit id="3c78b53bca33467190c0b7a01320bc093a2b1427" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/users/profile/edit-profile.component.html</context><context context-type="linenumber">315</context></context-group></trans-unit><trans-unit id="3c78b53bca33467190c0b7a01320bc093a2b1427" datatype="html">
         <source>Privacy</source><target state="final">Privacy</target>
         
-      <context-group purpose="location"><context context-type="sourcefile">app/users/profile/edit-profile.component.html</context><context context-type="linenumber">190</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/profile/edit-profile.component.html</context><context context-type="linenumber">233</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/profile/edit-profile.component.html</context><context context-type="linenumber">304</context></context-group></trans-unit><trans-unit id="0295e37c88ba1f28e569a35e3c6871b90529f8fa" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/users/profile/edit-profile.component.html</context><context context-type="linenumber">190</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/profile/edit-profile.component.html</context><context context-type="linenumber">233</context></context-group><context-group purpose="location"><context context-type="sourcefile">app/users/profile/edit-profile.component.html</context><context context-type="linenumber">310</context></context-group></trans-unit><trans-unit id="0295e37c88ba1f28e569a35e3c6871b90529f8fa" datatype="html">
         <source>Confirmation</source><target state="final">Confirmation</target>
         
-      <context-group purpose="location"><context context-type="sourcefile">app/users/profile/edit-profile.component.html</context><context context-type="linenumber">325</context></context-group></trans-unit><trans-unit id="a9c8cb5082cb22c3934ea57b6f220ecd75831047" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/users/profile/edit-profile.component.html</context><context context-type="linenumber">331</context></context-group></trans-unit><trans-unit id="a9c8cb5082cb22c3934ea57b6f220ecd75831047" datatype="html">
         <source>
           <x id="START_TAG_DIV" ctype="x-div" equiv-text="&lt;div>"/>
             To save your profile, provide your
@@ -2305,10 +1317,10 @@
           <x id="CLOSE_TAG_DIV" ctype="x-div" equiv-text="&lt;/div>"/>
         </target>
         
-      <context-group purpose="location"><context context-type="sourcefile">app/users/profile/edit-profile.component.html</context><context context-type="linenumber">328</context></context-group></trans-unit><trans-unit id="52c9a103b812f258bcddc3d90a6e3f46871d25fe" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/users/profile/edit-profile.component.html</context><context context-type="linenumber">334</context></context-group></trans-unit><trans-unit id="52c9a103b812f258bcddc3d90a6e3f46871d25fe" datatype="html">
         <source>Save</source><target state="final">Save</target>
         
-      <context-group purpose="location"><context context-type="sourcefile">app/users/profile/edit-profile.component.html</context><context context-type="linenumber">338</context></context-group></trans-unit><trans-unit id="3f1e16c8005f346edd4fce73d27a70c1cd39bc0b" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/users/profile/edit-profile.component.html</context><context context-type="linenumber">344</context></context-group></trans-unit><trans-unit id="3f1e16c8005f346edd4fce73d27a70c1cd39bc0b" datatype="html">
         <source>
   PO box: <x id="INTERPOLATION" equiv-text="{{ address.poBox }}"/>
 </source><target state="final">
@@ -2322,7 +1334,29 @@
   ZIP code: <x id="INTERPOLATION" equiv-text="{{ address.zip }}"/>
 </target>
         
-      <context-group purpose="location"><context context-type="sourcefile">app/shared/address-details.component.html</context><context context-type="linenumber">16</context></context-group></trans-unit><trans-unit id="4f20f2d5a6882190892e58b85f6ccbedfa737952" datatype="html">
+      <context-group purpose="location"><context context-type="sourcefile">app/shared/address-details.component.html</context><context context-type="linenumber">16</context></context-group></trans-unit><trans-unit id="036fbf21a9037ff5c1b6a57d1f5bc87c37b6b605" datatype="html">
+        <source>
+            You have been disconnected.
+            <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/>Please, login again in order to view the requested page.
+          </source><target state="final">
+            You have been disconnected.
+            <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/>"/>Please, login again in order to view the requested page.
+          </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/login/login.component.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit><trans-unit id="e74dd470b5f4d41e3d88c28b14f6cf5257f3da8d" datatype="html">
+        <source>
+              You can login with your username and password
+            </source><target state="final">
+              You can login with your username and password
+            </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/login/login.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit><trans-unit id="4f20f2d5a6882190892e58b85f6ccbedfa737952" datatype="html">
         <source>Yes</source><target state="final">Yes</target>
         
         
@@ -2330,12 +1364,6 @@
         <source>No</source><target state="final">No</target>
         
         
-      <context-group purpose="location"><context context-type="sourcefile">app/shared/custom-field-filter.component.html</context><context context-type="linenumber">22</context></context-group></trans-unit><trans-unit id="9d331c60a2093a264b8369260eae58c9637388b9" datatype="html">
-        <source>No options selected</source><target state="final">No options selected</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/shared/multi-selection-field.component.ts</context>
-          <context context-type="linenumber">1</context>
-        </context-group>
-      </trans-unit></body>
+      <context-group purpose="location"><context context-type="sourcefile">app/shared/custom-field-filter.component.html</context><context context-type="linenumber">22</context></context-group></trans-unit></body>
   </file>
 </xliff>

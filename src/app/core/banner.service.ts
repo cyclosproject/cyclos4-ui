@@ -37,7 +37,15 @@ export class BannerService {
     private menu: MenuService,
     private login: LoginService) {
     this.cards$ = this.currentCards.asObservable();
-    this.resolver = environment.bannerResolver;
+    if (environment.bannerResolver instanceof Array) {
+      this.resolver = {
+        resolveCards() {
+          return environment.bannerResolver as BannerCard[];
+        }
+      };
+    } else {
+      this.resolver = environment.bannerResolver;
+    }
   }
 
   initialize() {

@@ -1,0 +1,6 @@
+@import 'src/definitions';
+
+.status-label, .status-value {
+  font-weight: $font-weight-bold;
+  white-space: nowrap;
+}

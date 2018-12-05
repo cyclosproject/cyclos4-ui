@@ -62,7 +62,7 @@ export class PersonalMenuComponent implements OnInit {
       })
     );
 
-    this.layout.breakpointChanges.subscribe(() => this.hide());
+    this.layout.breakpointChanges$.subscribe(() => this.hide());
 
     this.listener = (e: MouseEvent) => {
       let src = e.srcElement;

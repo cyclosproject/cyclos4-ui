@@ -1,0 +1,10 @@
+<spinner *ngIf="!(ready$ | async)"></spinner>
+<div [ngSwitch]="config.type" [ngClass]="{'d-none': !(ready$ | async)}">
+
+  <quick-access *ngSwitchCase="DashboardItemType.QUICK_ACCESS" [descriptors]="data.descriptors"
+    (ready)="notifyReady()">
+  </quick-access>
+
+  <account-status *ngSwitchCase="DashboardItemType.ACCOUNT_STATUS" [accounts]="data.accounts"
+    (ready)="notifyReady()"></account-status>
+</div>

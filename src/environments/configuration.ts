@@ -1,7 +1,11 @@
+import { BannerCard } from 'app/content/banner-card';
 import { BannerResolver } from 'app/content/banner-resolver';
-import { Content, DEFAULT_CACHE_SECONDS } from 'app/content/content';
+import { DEFAULT_CACHE_SECONDS } from 'app/content/content';
 import { ContentGetter } from 'app/content/content-getter';
 import { ContentPage } from 'app/content/content-page';
+import { DashboardItemConfig } from 'app/content/dashboard-item-config';
+import { DashboardResolver } from 'app/content/dashboard-resolver';
+import { DefaultDashboardResolver } from 'environments/default-dashboard-resolver';
 
 // This file defines the environment variables shared by both development and production
 
@@ -58,14 +62,10 @@ const HOME_PAGE: ContentPage = {
   layout: 'full',
   content: ContentGetter.url('content/home.html')
 };
-// Content for logged users's home page
-const USERS_HOME: Content = {
-  cacheKey: 'usersHome',
-  cacheSeconds: DEFAULT_CACHE_SECONDS,
-  content: ContentGetter.url('content/users-home.html')
-};
+// Dashboard resolver
+const DASHBOARD_RESOLVER: DashboardResolver | DashboardItemConfig[] = new DefaultDashboardResolver();
 // Banner resolver
-const BANNER_RESOLVER: BannerResolver = null;
+const BANNER_RESOLVER: BannerResolver | BannerCard[] = null;
 
 
 //////////////////////////////////////////////////////////////////////
@@ -81,6 +81,6 @@ export const configuration = {
   adCategoryIcons: AD_CATEGORY_ICONS,
   adCategoryColors: AD_CATEGORY_COLORS,
   homePage: HOME_PAGE,
-  usersHome: USERS_HOME,
+  dashboardResolver: DASHBOARD_RESOLVER,
   bannerResolver: BANNER_RESOLVER
 };

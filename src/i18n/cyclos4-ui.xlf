@@ -22,7 +22,7 @@
         </source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/shared/page-content.component.html</context>
-          <context context-type="linenumber">27</context>
+          <context context-type="linenumber">26</context>
         </context-group>
       </trans-unit><trans-unit id="ec0290ea82bcd93aa2734b1abcf4fc944e055113" datatype="html">
         <source>
@@ -30,7 +30,7 @@
     </source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/shared/results-layout.component.html</context>
-          <context context-type="linenumber">72</context>
+          <context context-type="linenumber">75</context>
         </context-group>
       </trans-unit><trans-unit id="5f348df6f67a864abb3479dc8f85ae6113a643b8" datatype="html">
         <source>Showing <x id="INTERPOLATION" equiv-text="{{results.firstItem}}"/> - <x id="INTERPOLATION_1" equiv-text="{{results.lastItem}}"/> of
@@ -72,7 +72,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/payment/perform-payment.component.html</context>
-          <context context-type="linenumber">22</context>
+          <context context-type="linenumber">23</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/users/profile/verify-phone.component.html</context>
@@ -272,28 +272,28 @@
           <context context-type="sourcefile">app/shared/address-details.component.html</context>
           <context context-type="linenumber">16</context>
         </context-group>
-      </trans-unit><trans-unit id="51f9ef30b55fb612d18a32fc3f5346e66d53ac63" datatype="html">
+      </trans-unit><trans-unit id="036fbf21a9037ff5c1b6a57d1f5bc87c37b6b605" datatype="html">
         <source>
-        You have been disconnected.
-        <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/> Please, login again in order to view the requested page.
-      </source>
+            You have been disconnected.
+            <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br/&gt;"/>Please, login again in order to view the requested page.
+          </source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/login/login.component.html</context>
-          <context context-type="linenumber">4</context>
+          <context context-type="linenumber">7</context>
         </context-group>
-      </trans-unit><trans-unit id="a5b79a423c86a2de88034c94d51043febd8e17f2" datatype="html">
+      </trans-unit><trans-unit id="e74dd470b5f4d41e3d88c28b14f6cf5257f3da8d" datatype="html">
         <source>
-          You can login with your username and password
-        </source>
+              You can login with your username and password
+            </source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/login/login.component.html</context>
-          <context context-type="linenumber">9</context>
+          <context context-type="linenumber">12</context>
         </context-group>
       </trans-unit><trans-unit id="e08a77594f3d89311cdf6da5090044270909c194" datatype="html">
         <source>User</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/login/login.component.html</context>
-          <context context-type="linenumber">21</context>
+          <context context-type="linenumber">25</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/login/forgot-password.component.html</context>
@@ -301,21 +301,21 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/accounts/account-history.component.html</context>
-          <context context-type="linenumber">47</context>
+          <context context-type="linenumber">49</context>
         </context-group>
         <note priority="1" from="description">User on login form</note>
       </trans-unit><trans-unit id="c32ef07f8803a223a83ed17024b38e8d82292407" datatype="html">
         <source>Password</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/login/login.component.html</context>
-          <context context-type="linenumber">28</context>
+          <context context-type="linenumber">32</context>
         </context-group>
         <note priority="1" from="description">Password on login form</note>
       </trans-unit><trans-unit id="71c77bb8cecdf11ec3eead24dd1ba506573fa9cd" datatype="html">
         <source>Submit</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/login/login.component.html</context>
-          <context context-type="linenumber">31</context>
+          <context context-type="linenumber">35</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/login/forgot-password.component.html</context>
@@ -341,19 +341,27 @@
           <context context-type="sourcefile">app/users/registration/public-registration.component.html</context>
           <context context-type="linenumber">39</context>
         </context-group>
-      </trans-unit><trans-unit id="404d32d7f0ad99387f33d2df3e542c89e08165c5" datatype="html">
+      </trans-unit><trans-unit id="23f0666995a825119c0e6cfbe64fbdd6fe4b47c5" datatype="html">
         <source>
-        Forgot your password?
-      </source>
+          Forgot your password?
+        </source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/login/login.component.html</context>
-          <context context-type="linenumber">33</context>
+          <context context-type="linenumber">38</context>
+        </context-group>
+      </trans-unit><trans-unit id="c29fa1ca317856d8e38c232f223737692967b102" datatype="html">
+        <source>
+          Not a user yet? Register here.
+        </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/login/login.component.html</context>
+          <context context-type="linenumber">43</context>
         </context-group>
       </trans-unit><trans-unit id="6765b4c916060f6bc42d9bb69e80377dbcb5e4e9" datatype="html">
         <source>Login</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/login/login.component.html</context>
-          <context context-type="linenumber">2</context>
+          <context context-type="linenumber">3</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/users/registration/public-registration.component.html</context>
@@ -547,16 +555,8 @@
           <context context-type="linenumber">8</context>
         </context-group>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/banking/transactions/search-scheduled-payments.component.html</context>
-          <context context-type="linenumber">20</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/banking/transactions/search-recurring-payments.component.html</context>
-          <context context-type="linenumber">20</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/banking/transactions/search-authorized-payments.component.html</context>
-          <context context-type="linenumber">20</context>
+          <context context-type="sourcefile">app/banking/transactions/transaction-filters.component.html</context>
+          <context context-type="linenumber">18</context>
         </context-group>
       </trans-unit><trans-unit id="5ca707824ab93066c7d9b44e1b8bf216725c2c22" datatype="html">
         <source>Filter</source>
@@ -565,12 +565,8 @@
           <context context-type="linenumber">15</context>
         </context-group>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/banking/transactions/search-scheduled-payments.component.html</context>
-          <context context-type="linenumber">27</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/banking/transactions/search-recurring-payments.component.html</context>
-          <context context-type="linenumber">27</context>
+          <context context-type="sourcefile">app/banking/transactions/transaction-filters.component.html</context>
+          <context context-type="linenumber">25</context>
         </context-group>
       </trans-unit><trans-unit id="28b2ecd8df996b5b9522f4ac8e1ff8cbf133a8c0" datatype="html">
         <source>Not applied</source>
@@ -579,12 +575,8 @@
           <context context-type="linenumber">15</context>
         </context-group>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/banking/transactions/search-scheduled-payments.component.html</context>
-          <context context-type="linenumber">27</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/banking/transactions/search-recurring-payments.component.html</context>
-          <context context-type="linenumber">27</context>
+          <context context-type="sourcefile">app/banking/transactions/transaction-filters.component.html</context>
+          <context context-type="linenumber">25</context>
         </context-group>
       </trans-unit><trans-unit id="a676dbd6466310898a08eb820c33d1b7cc7d263b" datatype="html">
         <source>Begin date</source>
@@ -592,29 +584,37 @@
           <context context-type="sourcefile">app/banking/accounts/account-history.component.html</context>
           <context context-type="linenumber">23</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/banking/transactions/transaction-filters.component.html</context>
+          <context context-type="linenumber">33</context>
+        </context-group>
       </trans-unit><trans-unit id="f60960faa2cd3e0db11e48688774d05dfa9d715b" datatype="html">
         <source>End date</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/accounts/account-history.component.html</context>
-          <context context-type="linenumber">29</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/banking/transactions/transaction-filters.component.html</context>
+          <context context-type="linenumber">40</context>
         </context-group>
       </trans-unit><trans-unit id="b13b5429207af4280a3bd30b64410069c88630a4" datatype="html">
         <source>From amount</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/accounts/account-history.component.html</context>
-          <context context-type="linenumber">35</context>
+          <context context-type="linenumber">37</context>
         </context-group>
       </trans-unit><trans-unit id="c880f8c2ccea31ebd29e6fc771b189ca6ecf8c2e" datatype="html">
         <source>To amount</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/accounts/account-history.component.html</context>
-          <context context-type="linenumber">41</context>
+          <context context-type="linenumber">43</context>
         </context-group>
       </trans-unit><trans-unit id="a9eb55299b26ad4ae297c0980c04a321504a16c3" datatype="html">
         <source>Transaction number</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/accounts/account-history.component.html</context>
-          <context context-type="linenumber">51</context>
+          <context context-type="linenumber">53</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context>
@@ -630,25 +630,25 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context>
-          <context context-type="linenumber">46</context>
+          <context context-type="linenumber">49</context>
         </context-group>
       </trans-unit><trans-unit id="c39d43f18d10f925621abc77ad15de80a9cc7516" datatype="html">
         <source>Operator</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/accounts/account-history.component.html</context>
-          <context context-type="linenumber">55</context>
+          <context context-type="linenumber">57</context>
         </context-group>
       </trans-unit><trans-unit id="16d449549ab7bc61caf3d636372a4a56b5870383" datatype="html">
         <source>Any</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/accounts/account-history.component.html</context>
-          <context context-type="linenumber">55</context>
+          <context context-type="linenumber">57</context>
         </context-group>
       </trans-unit><trans-unit id="2f933b826a570836cab04f683970a2d22068458c" datatype="html">
         <source>Date</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/accounts/account-history.component.html</context>
-          <context context-type="linenumber">83</context>
+          <context context-type="linenumber">85</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context>
@@ -656,19 +656,19 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context>
-          <context context-type="linenumber">122</context>
+          <context context-type="linenumber">128</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transactions/search-scheduled-payments.component.html</context>
-          <context context-type="linenumber">40</context>
+          <context context-type="linenumber">10</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transactions/search-recurring-payments.component.html</context>
-          <context context-type="linenumber">40</context>
+          <context context-type="linenumber">10</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transactions/search-authorized-payments.component.html</context>
-          <context context-type="linenumber">33</context>
+          <context context-type="linenumber">10</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transactions/view-authorization-history.component.html</context>
@@ -680,47 +680,47 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context>
-          <context context-type="linenumber">49</context>
+          <context context-type="linenumber">52</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context>
-          <context context-type="linenumber">76</context>
+          <context context-type="linenumber">79</context>
         </context-group>
       </trans-unit><trans-unit id="cac1b822524b009262fb1a229fb3f199f59c0bb0" datatype="html">
         <source>From / to</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/accounts/account-history.component.html</context>
-          <context context-type="linenumber">84</context>
+          <context context-type="linenumber">86</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transactions/search-scheduled-payments.component.html</context>
-          <context context-type="linenumber">41</context>
+          <context context-type="linenumber">11</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transactions/search-recurring-payments.component.html</context>
-          <context context-type="linenumber">41</context>
+          <context context-type="linenumber">11</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transactions/search-authorized-payments.component.html</context>
-          <context context-type="linenumber">34</context>
+          <context context-type="linenumber">11</context>
         </context-group>
       </trans-unit><trans-unit id="eec715de352a6b114713b30b640d319fa78207a0" datatype="html">
         <source>Description</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/accounts/account-history.component.html</context>
-          <context context-type="linenumber">85</context>
+          <context context-type="linenumber">87</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context>
-          <context context-type="linenumber">65</context>
+          <context context-type="linenumber">71</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context>
-          <context context-type="linenumber">41</context>
+          <context context-type="linenumber">44</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/payment/payment-step-form.component.html</context>
-          <context context-type="linenumber">145</context>
+          <context context-type="linenumber">146</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/payment/payment-step-confirm.component.html</context>
@@ -728,13 +728,13 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/marketplace/view/view-ad.component.html</context>
-          <context context-type="linenumber">47</context>
+          <context context-type="linenumber">48</context>
         </context-group>
       </trans-unit><trans-unit id="dfc2fb58e2a04ed944a4bd80f0a2087775134068" datatype="html">
         <source>Amount</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/accounts/account-history.component.html</context>
-          <context context-type="linenumber">86</context>
+          <context context-type="linenumber">88</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context>
@@ -742,23 +742,23 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context>
-          <context context-type="linenumber">76</context>
+          <context context-type="linenumber">82</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context>
-          <context context-type="linenumber">124</context>
+          <context context-type="linenumber">130</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transactions/search-scheduled-payments.component.html</context>
-          <context context-type="linenumber">44</context>
+          <context context-type="linenumber">14</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transactions/search-recurring-payments.component.html</context>
-          <context context-type="linenumber">44</context>
+          <context context-type="linenumber">14</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transactions/search-authorized-payments.component.html</context>
-          <context context-type="linenumber">36</context>
+          <context context-type="linenumber">13</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context>
@@ -766,11 +766,11 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context>
-          <context context-type="linenumber">52</context>
+          <context context-type="linenumber">55</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context>
-          <context context-type="linenumber">79</context>
+          <context context-type="linenumber">82</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/payment/payment-step-form.component.html</context>
@@ -794,11 +794,11 @@
         <source>Next</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/payment/perform-payment.component.html</context>
-          <context context-type="linenumber">10</context>
+          <context context-type="linenumber">11</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transactions/search-recurring-payments.component.html</context>
-          <context context-type="linenumber">43</context>
+          <context context-type="linenumber">13</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/users/registration/public-registration.component.html</context>
@@ -812,27 +812,27 @@
         <source>Previous</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/payment/perform-payment.component.html</context>
-          <context context-type="linenumber">23</context>
+          <context context-type="linenumber">24</context>
         </context-group>
       </trans-unit><trans-unit id="6da2b78ea23c10630ced36401990f7d4248c08b8" datatype="html">
         <source>Payment confirmation</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/payment/perform-payment.component.html</context>
-          <context context-type="linenumber">14</context>
+          <context context-type="linenumber">15</context>
         </context-group>
       </trans-unit><trans-unit id="f74f4a9d1b3b7b4f8f64087006a5774375689cc9" datatype="html">
         <source>View
         payment</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/payment/perform-payment.component.html</context>
-          <context context-type="linenumber">32</context>
+          <context context-type="linenumber">34</context>
         </context-group>
       </trans-unit><trans-unit id="fc6f5727e3e741791354b74f42ecb804a927ab66" datatype="html">
         <source>New
         payment</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/payment/perform-payment.component.html</context>
-          <context context-type="linenumber">34</context>
+          <context context-type="linenumber">36</context>
         </context-group>
       </trans-unit><trans-unit id="81b97b8ea996ad1e4f9fca8415021850214884b1" datatype="html">
         <source>Status</source>
@@ -842,31 +842,23 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context>
-          <context context-type="linenumber">75</context>
+          <context context-type="linenumber">81</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context>
-          <context context-type="linenumber">123</context>
+          <context context-type="linenumber">129</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transactions/search-scheduled-payments.component.html</context>
-          <context context-type="linenumber">8</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/banking/transactions/search-scheduled-payments.component.html</context>
-          <context context-type="linenumber">42</context>
+          <context context-type="linenumber">12</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transactions/search-recurring-payments.component.html</context>
-          <context context-type="linenumber">8</context>
+          <context context-type="linenumber">12</context>
         </context-group>
         <context-group purpose="location">
-          <context context-type="sourcefile">app/banking/transactions/search-recurring-payments.component.html</context>
-          <context context-type="linenumber">42</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/banking/transactions/search-authorized-payments.component.html</context>
-          <context context-type="linenumber">8</context>
+          <context context-type="sourcefile">app/banking/transactions/transaction-filters.component.html</context>
+          <context context-type="linenumber">6</context>
         </context-group>
       </trans-unit><trans-unit id="1c3734b62addb7c06b7a77347cc64494336882cb" datatype="html">
         <source>Due amount</source>
@@ -874,8 +866,8 @@
           <context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context>
           <context context-type="linenumber">20</context>
         </context-group>
-      </trans-unit><trans-unit id="d5e0dbc9fd4651759df915cdc6ba26fe3f17475f" datatype="html">
-        <source>From</source>
+      </trans-unit><trans-unit id="0f633bb137fd735b429da4b79ebe78b4c8fc5f32" datatype="html">
+        <source>Performed by</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context>
           <context context-type="linenumber">23</context>
@@ -884,45 +876,21 @@
           <context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context>
           <context context-type="linenumber">14</context>
         </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context>
-          <context context-type="linenumber">55</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context>
-          <context context-type="linenumber">77</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context>
-          <context context-type="linenumber">87</context>
-        </context-group>
-      </trans-unit><trans-unit id="63c9c3aa536dbd11120ae8feab62186c47838028" datatype="html">
-        <source>To</source>
+      </trans-unit><trans-unit id="9184ea35e4d7ea90a95287daa9609c606e8c6707" datatype="html">
+        <source>Received by</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context>
-          <context context-type="linenumber">29</context>
+          <context context-type="linenumber">26</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context>
           <context context-type="linenumber">17</context>
         </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context>
-          <context context-type="linenumber">58</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context>
-          <context context-type="linenumber">78</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context>
-          <context context-type="linenumber">91</context>
-        </context-group>
-      </trans-unit><trans-unit id="7f75bebe8bef23c15673eeef000749c2e0a775a8" datatype="html">
-        <source>Payment type</source>
+      </trans-unit><trans-unit id="d5e0dbc9fd4651759df915cdc6ba26fe3f17475f" datatype="html">
+        <source>From</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context>
-          <context context-type="linenumber">35</context>
+          <context context-type="linenumber">29</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context>
@@ -930,7 +898,51 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context>
+          <context context-type="linenumber">58</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context>
+          <context context-type="linenumber">80</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context>
+          <context context-type="linenumber">90</context>
+        </context-group>
+      </trans-unit><trans-unit id="63c9c3aa536dbd11120ae8feab62186c47838028" datatype="html">
+        <source>To</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context>
+          <context context-type="linenumber">35</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context>
           <context context-type="linenumber">61</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context>
+          <context context-type="linenumber">81</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context>
+          <context context-type="linenumber">94</context>
+        </context-group>
+      </trans-unit><trans-unit id="7f75bebe8bef23c15673eeef000749c2e0a775a8" datatype="html">
+        <source>Payment type</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context>
+          <context context-type="linenumber">41</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context>
+          <context context-type="linenumber">64</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/payment/payment-step-form.component.html</context>
@@ -944,17 +956,17 @@
         <source>Channel</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context>
-          <context context-type="linenumber">41</context>
+          <context context-type="linenumber">47</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context>
-          <context context-type="linenumber">26</context>
+          <context context-type="linenumber">29</context>
         </context-group>
       </trans-unit><trans-unit id="e703d1a5af39f0eb011f3eb416924fb81ac251b7" datatype="html">
         <source>By</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context>
-          <context context-type="linenumber">44</context>
+          <context context-type="linenumber">50</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transactions/view-authorization-history.component.html</context>
@@ -964,11 +976,11 @@
         <source>Due date</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context>
-          <context context-type="linenumber">49</context>
+          <context context-type="linenumber">55</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context>
-          <context context-type="linenumber">74</context>
+          <context context-type="linenumber">80</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/payment/payment-step-form.component.html</context>
@@ -986,33 +998,33 @@
         <source>Next occurrence</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context>
-          <context context-type="linenumber">53</context>
+          <context context-type="linenumber">59</context>
         </context-group>
       </trans-unit><trans-unit id="9edb53df001e255b7d2bdc7a36c3ad08342d94e4" datatype="html">
         <source>Total number of occurrences</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context>
-          <context context-type="linenumber">57</context>
+          <context context-type="linenumber">63</context>
         </context-group>
       </trans-unit><trans-unit id="62bab7e24a295267426faa097bf1da7ab1284cd6" datatype="html">
         <source>Authorization comments</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context>
-          <context context-type="linenumber">61</context>
+          <context context-type="linenumber">67</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context>
-          <context context-type="linenumber">37</context>
+          <context context-type="linenumber">40</context>
         </context-group>
       </trans-unit><trans-unit id="aaef22824187d0b331f72fd6d8660e620c04f18e" datatype="html">
         <source>Installments</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context>
-          <context context-type="linenumber">70</context>
+          <context context-type="linenumber">76</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transactions/search-scheduled-payments.component.html</context>
-          <context context-type="linenumber">43</context>
+          <context context-type="linenumber">13</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/payment/payment-step-confirm.component.html</context>
@@ -1022,11 +1034,11 @@
         <source>Number</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context>
-          <context context-type="linenumber">73</context>
+          <context context-type="linenumber">79</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context>
-          <context context-type="linenumber">121</context>
+          <context context-type="linenumber">127</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/payment/payment-step-confirm.component.html</context>
@@ -1036,53 +1048,25 @@
         <source>Process this installment</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context>
-          <context context-type="linenumber">103</context>
+          <context context-type="linenumber">109</context>
         </context-group>
       </trans-unit><trans-unit id="20e1d9a51b1f1c3ae55958a3e88b5784368c3511" datatype="html">
         <source>Settle this installment</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context>
-          <context context-type="linenumber">107</context>
+          <context context-type="linenumber">113</context>
         </context-group>
       </trans-unit><trans-unit id="8ee3e8acd5b7476f7ab6f63107c83b9e1d74ac0a" datatype="html">
         <source>Occurrences</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context>
-          <context context-type="linenumber">118</context>
+          <context context-type="linenumber">124</context>
         </context-group>
       </trans-unit><trans-unit id="9f60d7d088df3d02f1261e4bf2f177e8edb7fa80" datatype="html">
         <source>Process this failed occurrence</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transactions/view-transaction.component.html</context>
-          <context context-type="linenumber">151</context>
-        </context-group>
-      </trans-unit><trans-unit id="29881a45dafbe5aa05cd9d0441a4c0c2fb06df92" datatype="html">
-        <source>Account</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/banking/transactions/search-scheduled-payments.component.html</context>
-          <context context-type="linenumber">13</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/banking/transactions/search-recurring-payments.component.html</context>
-          <context context-type="linenumber">13</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/banking/transactions/search-authorized-payments.component.html</context>
-          <context context-type="linenumber">13</context>
-        </context-group>
-      </trans-unit><trans-unit id="e7653ac7465dad4c0433f690bf949f29b2814511" datatype="html">
-        <source>Any account</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/banking/transactions/search-scheduled-payments.component.html</context>
-          <context context-type="linenumber">13</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/banking/transactions/search-recurring-payments.component.html</context>
-          <context context-type="linenumber">13</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/banking/transactions/search-authorized-payments.component.html</context>
-          <context context-type="linenumber">13</context>
+          <context context-type="linenumber">157</context>
         </context-group>
       </trans-unit><trans-unit id="808207255c5bdcfbbfacdc50fd30e184019210a1" datatype="html">
         <source>Scheduled payments</source>
@@ -1106,7 +1090,7 @@
         <source>Scheduling</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transactions/search-authorized-payments.component.html</context>
-          <context context-type="linenumber">35</context>
+          <context context-type="linenumber">12</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/payment/payment-step-form.component.html</context>
@@ -1143,17 +1127,11 @@
           <context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context>
           <context context-type="linenumber">10</context>
         </context-group>
-      </trans-unit><trans-unit id="0f633bb137fd735b429da4b79ebe78b4c8fc5f32" datatype="html">
-        <source>Performed by</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context>
-          <context context-type="linenumber">23</context>
-        </context-group>
       </trans-unit><trans-unit id="ca5f5861b432e2f3082cbf0db6927aed6bc7baf2" datatype="html">
         <source>Transfer that generated this one</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context>
-          <context context-type="linenumber">45</context>
+          <context context-type="linenumber">48</context>
         </context-group>
       </trans-unit><trans-unit id="914570664a27e498c5d2d8234a294c2cc630aa5b" datatype="html">
         <source>
@@ -1161,13 +1139,25 @@
     </source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context>
-          <context context-type="linenumber">66</context>
+          <context context-type="linenumber">69</context>
         </context-group>
       </trans-unit><trans-unit id="b580b8899e66e6de0bd10fee6977b821a5edf3f8" datatype="html">
         <source>Transfers generated by this one</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/transfers/transfer-details.component.html</context>
-          <context context-type="linenumber">73</context>
+          <context context-type="linenumber">76</context>
+        </context-group>
+      </trans-unit><trans-unit id="29881a45dafbe5aa05cd9d0441a4c0c2fb06df92" datatype="html">
+        <source>Account</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/banking/transactions/transaction-filters.component.html</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+      </trans-unit><trans-unit id="e7653ac7465dad4c0433f690bf949f29b2814511" datatype="html">
+        <source>Any account</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/banking/transactions/transaction-filters.component.html</context>
+          <context context-type="linenumber">11</context>
         </context-group>
       </trans-unit><trans-unit id="d1b895755c6243c92ad0eb120da3174c899ab9db" datatype="html">
         <source>From account</source>
@@ -1241,7 +1231,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/payment/payment-step-form.component.html</context>
-          <context context-type="linenumber">121</context>
+          <context context-type="linenumber">122</context>
         </context-group>
       </trans-unit><trans-unit id="0895afaf98938344e3ba9bc6bf6fdd43498c6ae1" datatype="html">
         <source>Future date</source>
@@ -1251,7 +1241,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/payment/payment-step-form.component.html</context>
-          <context context-type="linenumber">122</context>
+          <context context-type="linenumber">123</context>
         </context-group>
       </trans-unit><trans-unit id="7a8ed796c9f5ca86a4fdbac8ef91a8ca139e4a1f" datatype="html">
         <source>First installment</source>
@@ -1269,37 +1259,37 @@
         <source>First occurrence</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/payment/payment-step-form.component.html</context>
-          <context context-type="linenumber">120</context>
+          <context context-type="linenumber">121</context>
         </context-group>
       </trans-unit><trans-unit id="38e364fa38649ab028cf210cf0c4d7b19609bd76" datatype="html">
         <source>First occurrence date</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/payment/payment-step-form.component.html</context>
-          <context context-type="linenumber">127</context>
+          <context context-type="linenumber">128</context>
         </context-group>
       </trans-unit><trans-unit id="61df4730d8d2c7d7394dca08de00185f74ea2aea" datatype="html">
         <source>Manually cancel</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/payment/payment-step-form.component.html</context>
-          <context context-type="linenumber">132</context>
+          <context context-type="linenumber">133</context>
         </context-group>
       </trans-unit><trans-unit id="447687038e1c2accce44f02676b7a3d60408367f" datatype="html">
         <source>Fixed number of occurrences</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/payment/payment-step-form.component.html</context>
-          <context context-type="linenumber">133</context>
+          <context context-type="linenumber">134</context>
         </context-group>
       </trans-unit><trans-unit id="6d829e95038e742c8405d9714670dd98153b4fb2" datatype="html">
         <source>Repeat until</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/payment/payment-step-form.component.html</context>
-          <context context-type="linenumber">131</context>
+          <context context-type="linenumber">132</context>
         </context-group>
       </trans-unit><trans-unit id="55647701d556d49e761de83127df6a2b1bff347f" datatype="html">
         <source>Number of occurrences</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/banking/payment/payment-step-form.component.html</context>
-          <context context-type="linenumber">138</context>
+          <context context-type="linenumber">139</context>
         </context-group>
       </trans-unit><trans-unit id="cfdd8cf93511b6d13244d0b9ff30a03c89938697" datatype="html">
         <source>
@@ -1467,7 +1457,7 @@
         <source>Title</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/marketplace/view/view-ad.component.html</context>
-          <context context-type="linenumber">15</context>
+          <context context-type="linenumber">16</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/marketplace/search/ads-results.component.html</context>
@@ -1477,7 +1467,7 @@
         <source>Owner</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/marketplace/view/view-ad.component.html</context>
-          <context context-type="linenumber">28</context>
+          <context context-type="linenumber">29</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/marketplace/search/ads-results.component.html</context>
@@ -1487,7 +1477,7 @@
         <source>Price</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/marketplace/view/view-ad.component.html</context>
-          <context context-type="linenumber">31</context>
+          <context context-type="linenumber">32</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/marketplace/search/ads-results.component.html</context>
@@ -1545,7 +1535,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/users/profile/edit-profile.component.html</context>
-          <context context-type="linenumber">285</context>
+          <context context-type="linenumber">291</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/users/registration/registration-step-fields.component.html</context>
@@ -1571,7 +1561,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/users/profile/edit-profile.component.html</context>
-          <context context-type="linenumber">287</context>
+          <context context-type="linenumber">293</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/users/registration/registration-step-fields.component.html</context>
@@ -1597,7 +1587,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/users/profile/edit-profile.component.html</context>
-          <context context-type="linenumber">289</context>
+          <context context-type="linenumber">295</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/users/registration/registration-step-fields.component.html</context>
@@ -1649,7 +1639,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/users/profile/edit-profile.component.html</context>
-          <context context-type="linenumber">293</context>
+          <context context-type="linenumber">299</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/users/registration/registration-step-fields.component.html</context>
@@ -1815,7 +1805,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/users/profile/edit-profile.component.html</context>
-          <context context-type="linenumber">243</context>
+          <context context-type="linenumber">244</context>
         </context-group>
       </trans-unit><trans-unit id="2160767aa9684471cecdcf1226707dd1f2164f85" datatype="html">
         <source>Phones</source>
@@ -1875,7 +1865,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/users/profile/edit-profile.component.html</context>
-          <context context-type="linenumber">291</context>
+          <context context-type="linenumber">297</context>
         </context-group>
       </trans-unit><trans-unit id="a26ac4134b8612e70a7046f6de89b10fd8881ba4" datatype="html">
         <source>
@@ -1897,7 +1887,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/users/profile/edit-profile.component.html</context>
-          <context context-type="linenumber">304</context>
+          <context context-type="linenumber">310</context>
         </context-group>
       </trans-unit><trans-unit id="11b7f8b504a2da6667d98d6e91c11c72d38e01f9" datatype="html">
         <source>
@@ -1936,20 +1926,20 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">app/users/profile/edit-profile.component.html</context>
-          <context context-type="linenumber">283</context>
+          <context context-type="linenumber">289</context>
         </context-group>
       </trans-unit><trans-unit id="9472792e4cfc8f634e651e310d507ad14ed601ff" datatype="html">
         <source>Additional
           contacts</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/users/profile/edit-profile.component.html</context>
-          <context context-type="linenumber">268</context>
+          <context context-type="linenumber">274</context>
         </context-group>
       </trans-unit><trans-unit id="adb5945792ccf57a5589bfc6f35ca63396bf3f55" datatype="html">
         <source>Add contact</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/users/profile/edit-profile.component.html</context>
-          <context context-type="linenumber">272</context>
+          <context context-type="linenumber">278</context>
         </context-group>
       </trans-unit><trans-unit id="8bb9066505a76099771e2e4865393cd1793070ec" datatype="html">
         <source>
@@ -1957,13 +1947,13 @@
       </source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/users/profile/edit-profile.component.html</context>
-          <context context-type="linenumber">275</context>
+          <context context-type="linenumber">281</context>
         </context-group>
       </trans-unit><trans-unit id="a5f9ba9bb9faa8284bcadb1cdbc6aaf969e9c4bb" datatype="html">
         <source>Image</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/users/profile/edit-profile.component.html</context>
-          <context context-type="linenumber">281</context>
+          <context context-type="linenumber">287</context>
         </context-group>
       </trans-unit><trans-unit id="a05497adf94ecc038a61d07b839082275b8d5ec8" datatype="html">
         <source>
@@ -1971,13 +1961,13 @@
             </source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/users/profile/edit-profile.component.html</context>
-          <context context-type="linenumber">309</context>
+          <context context-type="linenumber">315</context>
         </context-group>
       </trans-unit><trans-unit id="0295e37c88ba1f28e569a35e3c6871b90529f8fa" datatype="html">
         <source>Confirmation</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/users/profile/edit-profile.component.html</context>
-          <context context-type="linenumber">325</context>
+          <context context-type="linenumber">331</context>
         </context-group>
       </trans-unit><trans-unit id="a9c8cb5082cb22c3934ea57b6f220ecd75831047" datatype="html">
         <source>
@@ -1988,13 +1978,13 @@
         </source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/users/profile/edit-profile.component.html</context>
-          <context context-type="linenumber">328</context>
+          <context context-type="linenumber">334</context>
         </context-group>
       </trans-unit><trans-unit id="52c9a103b812f258bcddc3d90a6e3f46871d25fe" datatype="html">
         <source>Save</source>
         <context-group purpose="location">
           <context context-type="sourcefile">app/users/profile/edit-profile.component.html</context>
-          <context context-type="linenumber">338</context>
+          <context context-type="linenumber">344</context>
         </context-group>
       </trans-unit><trans-unit id="859e5acecbd67ad14b81174f8b7a556411c840dd" datatype="html">
         <source>Edit profile</source>
@@ -2210,12 +2200,20 @@
           <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
           <context context-type="linenumber">1</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/format.service.ts</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
         <note priority="1" from="meaning">Long month</note>
       </trans-unit>
       <trans-unit id="6cc2e1b0505c258c3499953d3d62da782ad3c20e" datatype="html">
         <source>February</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/format.service.ts</context>
           <context context-type="linenumber">1</context>
         </context-group>
         <note priority="1" from="meaning">Long month</note>
@@ -2226,12 +2224,20 @@
           <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
           <context context-type="linenumber">1</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/format.service.ts</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
         <note priority="1" from="meaning">Long month</note>
       </trans-unit>
       <trans-unit id="9d28050869f7f6c3db31f8607c3debfc5df1f6dd" datatype="html">
         <source>April</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/format.service.ts</context>
           <context context-type="linenumber">1</context>
         </context-group>
         <note priority="1" from="meaning">Long month</note>
@@ -2242,12 +2248,20 @@
           <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
           <context context-type="linenumber">1</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/format.service.ts</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
         <note priority="1" from="meaning">Long month</note>
       </trans-unit>
       <trans-unit id="a7094b56146061ad41ef93d85e3d3658174fa490" datatype="html">
         <source>June</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/format.service.ts</context>
           <context context-type="linenumber">1</context>
         </context-group>
         <note priority="1" from="meaning">Long month</note>
@@ -2258,12 +2272,20 @@
           <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
           <context context-type="linenumber">1</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/format.service.ts</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
         <note priority="1" from="meaning">Long month</note>
       </trans-unit>
       <trans-unit id="20e2ab2dfa725dccd9bd721d4cc50d7dd6bcefc5" datatype="html">
         <source>August</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/format.service.ts</context>
           <context context-type="linenumber">1</context>
         </context-group>
         <note priority="1" from="meaning">Long month</note>
@@ -2274,12 +2296,20 @@
           <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
           <context context-type="linenumber">1</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/format.service.ts</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
         <note priority="1" from="meaning">Long month</note>
       </trans-unit>
       <trans-unit id="6b39d129a81b8a3b158f9ab71f0a1c8b4c3a8395" datatype="html">
         <source>October</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/format.service.ts</context>
           <context context-type="linenumber">1</context>
         </context-group>
         <note priority="1" from="meaning">Long month</note>
@@ -2290,12 +2320,20 @@
           <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
           <context context-type="linenumber">1</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/format.service.ts</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
         <note priority="1" from="meaning">Long month</note>
       </trans-unit>
       <trans-unit id="2649aaccb292a4c4ad981366612b8b948cf5f9bb" datatype="html">
         <source>December</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/format.service.ts</context>
           <context context-type="linenumber">1</context>
         </context-group>
         <note priority="1" from="meaning">Long month</note>
@@ -2306,12 +2344,20 @@
           <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
           <context context-type="linenumber">1</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/format.service.ts</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
         <note priority="1" from="meaning">Short month</note>
       </trans-unit>
       <trans-unit id="112c88e022b4a27cb050b00a446827a37a958d0f" datatype="html">
         <source>Feb</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/format.service.ts</context>
           <context context-type="linenumber">1</context>
         </context-group>
         <note priority="1" from="meaning">Short month</note>
@@ -2322,12 +2368,20 @@
           <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
           <context context-type="linenumber">1</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/format.service.ts</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
         <note priority="1" from="meaning">Short month</note>
       </trans-unit>
       <trans-unit id="f47e4f9a9268c7c1888b322b021e1feec3135f07" datatype="html">
         <source>Apr</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/format.service.ts</context>
           <context context-type="linenumber">1</context>
         </context-group>
         <note priority="1" from="meaning">Short month</note>
@@ -2338,12 +2392,20 @@
           <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
           <context context-type="linenumber">1</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/format.service.ts</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
         <note priority="1" from="meaning">Short month</note>
       </trans-unit>
       <trans-unit id="46767dde200a2b12d5f7c72b3a149e2ce332979c" datatype="html">
         <source>Jun</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/format.service.ts</context>
           <context context-type="linenumber">1</context>
         </context-group>
         <note priority="1" from="meaning">Short month</note>
@@ -2354,12 +2416,20 @@
           <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
           <context context-type="linenumber">1</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/format.service.ts</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
         <note priority="1" from="meaning">Short month</note>
       </trans-unit>
       <trans-unit id="3c3e9800fe7db520721ee8d54e68a5dc429f0e2d" datatype="html">
         <source>Aug</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/format.service.ts</context>
           <context context-type="linenumber">1</context>
         </context-group>
         <note priority="1" from="meaning">Short month</note>
@@ -2370,12 +2440,20 @@
           <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
           <context context-type="linenumber">1</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/format.service.ts</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
         <note priority="1" from="meaning">Short month</note>
       </trans-unit>
       <trans-unit id="2478cb9b2bac6beea5a4c243f4183133ec0ca234" datatype="html">
         <source>Oct</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/format.service.ts</context>
           <context context-type="linenumber">1</context>
         </context-group>
         <note priority="1" from="meaning">Short month</note>
@@ -2386,12 +2464,20 @@
           <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
           <context context-type="linenumber">1</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/format.service.ts</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
         <note priority="1" from="meaning">Short month</note>
       </trans-unit>
       <trans-unit id="26a2d9096addd46db512063b12f0ad3dc5a47b5a" datatype="html">
         <source>Dec</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/core/data-for-ui-holder.ts</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/format.service.ts</context>
           <context context-type="linenumber">1</context>
         </context-group>
         <note priority="1" from="meaning">Short month</note>
@@ -2795,6 +2881,54 @@
           <context context-type="linenumber">1</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="6faf9e968008d760015f6229e88c5fb0ba0f5f7a" datatype="html">
+        <source>S</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/format.service.ts</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/format.service.ts</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+        <note priority="1" from="meaning">Min weekday</note>
+      </trans-unit>
+      <trans-unit id="9cf7cc56294ac4fc01a62100669f0a7ef5f86af2" datatype="html">
+        <source>M</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/format.service.ts</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+        <note priority="1" from="meaning">Min weekday</note>
+      </trans-unit>
+      <trans-unit id="db0ca04b60f345cfe4a955ff54e4a0bbe088bb34" datatype="html">
+        <source>T</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/format.service.ts</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/format.service.ts</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+        <note priority="1" from="meaning">Min weekday</note>
+      </trans-unit>
+      <trans-unit id="9fd842863b260ab51f93d26857ba7e034b04cf1f" datatype="html">
+        <source>W</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/format.service.ts</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+        <note priority="1" from="meaning">Min weekday</note>
+      </trans-unit>
+      <trans-unit id="64be4ed9b6320ee815edbe3f33db3e2ac9b0e18b" datatype="html">
+        <source>F</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/format.service.ts</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+        <note priority="1" from="meaning">Min weekday</note>
+      </trans-unit>
       <trans-unit id="58d00c256f9b489e8e649edb2e24a10259ffd1a1" datatype="html">
         <source><x id="INTERPOLATION" equiv-text="{{n}}"/> bytes</source>
         <context-group purpose="location">
@@ -2818,6 +2952,14 @@
       </trans-unit>
       <trans-unit id="92eee6be6de0b11c924e3ab27db30257159c0a7c" datatype="html">
         <source>Home</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/core/menu.service.ts</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+        <note priority="1" from="description">Menu</note>
+      </trans-unit>
+      <trans-unit id="f65253954b66e929a8b4d5ecaf61f9129f8cec64" datatype="html">
+        <source>Dashboard</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/core/menu.service.ts</context>
           <context context-type="linenumber">1</context>

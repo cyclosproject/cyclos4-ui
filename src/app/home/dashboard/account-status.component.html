@@ -1,0 +1,6 @@
+<page-content *ngFor="let account of accounts$ | async" [heading]="title(account)"
+  [headingActions]="headingActions(account)" hideBack>
+  <a class="plain" [routerLink]="['/banking', 'account', account.type.internalName || account.type.id]">
+    <account-status-view [account]="account"></account-status-view>
+  </a>
+</page-content>

@@ -1,0 +1,59 @@
+@import 'src/definitions';
+
+/*
+.quick-access-container {
+  margin: -0.4rem 0 0 -0.4rem;
+}
+*/
+
+.quick-access-item {
+  background-color: $quick-access-bg;
+  color: $quick-access-color;
+  text-decoration: none;
+  padding: 1rem 0.1rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /*margin: 0.4rem 0 0 0.4rem;*/
+  transition: background-color .4s;
+  min-height: 6.2rem;
+
+  icon {
+    margin-bottom: 0.4rem;
+    color: $quick-access-icon-color;
+    opacity: 0.8;
+  }
+}
+.quick-access-item:hover {
+  text-decoration: none;
+  background-color: $quick-access-hover-bg;
+  color: $quick-access-hover-color;
+
+  icon {
+    color: $quick-access-hover-icon-color;
+  }
+}
+
+$spacing: 0.2rem;
+@include media-breakpoint-up(sm) {
+  .quick-access-container {
+    margin: -$spacing 0 0 -$spacing;
+    padding: 0.3rem 0.3rem 0.5rem 0.1rem;
+  }
+
+  .quick-access-item, .quick-access-item:hover {
+    margin: $spacing 0 0 $spacing;
+  }
+
+  .quick-access-item icon {
+    margin-bottom: 0.8rem;
+  }
+}
+
+@include media-breakpoint-up(md) {
+  .quick-access-item {
+    padding: $spacing;
+  }
+}

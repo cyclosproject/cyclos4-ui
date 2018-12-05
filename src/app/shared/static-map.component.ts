@@ -43,7 +43,7 @@ export class StaticMapComponent implements OnInit, OnDestroy, AfterViewInit {
     this.externalUrl = this.maps.externalUrl(this.address);
     this.widthWasAuto = this.width === 'auto';
     this.heightWasAuto = this.height === 'auto';
-    this.sub = this.layout.breakpointChanges.subscribe(() => {
+    this.sub = this.layout.breakpointChanges$.subscribe(() => {
       if (this.widthWasAuto) {
         this.width = 'auto';
       }

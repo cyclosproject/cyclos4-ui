@@ -86,14 +86,12 @@ $side-menu-inactive-color: $menu-bar-inactive-color;
 $side-menu-inactive-icon-color: $menu-bar-inactive-icon-color;
 $side-menu-inactive-hover-bg: $menu-bar-hover-bg;
 
-$dashboard-bg: $input-bg;
-$dashboard-color: darken($primary, 15%);
-$dashboard-icon-color: $dashboard-color;
-$dashboard-border-color: $section-border-color;
-$dashboard-hover-bg: $menu-bar-hover-bg;
-$dashboard-hover-color: $dashboard-color;
-$dashboard-hover-border-color: $dashboard-border-color;
-$dashboard-hover-icon-color: $dashboard-icon-color;
+$quick-access-bg: $input-bg;
+$quick-access-color: darken($primary, 15%);
+$quick-access-icon-color: $quick-access-color;
+$quick-access-hover-bg: $menu-bar-hover-bg;
+$quick-access-hover-color: $quick-access-color;
+$quick-access-hover-icon-color: $quick-access-icon-color;
 
 $sidenav-bar-bg: $top-bar-bg;
 $sidenav-bar-color: $top-bar-color;

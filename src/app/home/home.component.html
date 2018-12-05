@@ -1,7 +1,14 @@
-<page-layout hideMenu>
+<page-layout hideMenu [ready]="ready$ | async">
   <content-page [contentPage]="homePage" *ngIf="login.user == null; else dashboard"></content-page>
 </page-layout>
 
 <ng-template #dashboard>
-  Here goes the logged user dashboard
+  <div class="row">
+    <ng-container *ngFor="let config of configs$ | async">
+      <div *ngIf="layout.visible(config.breakpoints, layout.breakpointChanges$ | async)"
+        class="col-12 col-lg-6">
+        <dashboard-item [config]="config"></dashboard-item>
+      </div>
+    </ng-container>
+  </div>
 </ng-template>
