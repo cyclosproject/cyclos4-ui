@@ -180,4 +180,16 @@ export class AccountHistoryComponent
   avatarImage(row: AccountHistoryResult): Image {
     return row.relatedAccount.kind === 'user' ? row.relatedAccount.user.image : null;
   }
+
+  showMoreFiltersLabel() {
+    return this.i18n('Show filters');
+  }
+
+  showLessFiltersLabel() {
+    return this.i18n('Show account status');
+  }
+
+  showLessFiltersIcon() {
+    return 'account_balance';
+  }
 }

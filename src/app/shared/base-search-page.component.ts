@@ -168,15 +168,41 @@ export abstract class BaseSearchPageComponent<D, R> extends BasePageComponent<D>
       return this._moreFiltersAction;
     }
 
-    const more = this.printable ? this.i18n('Show more filters') : this.i18n('More filters');
-    const less = this.printable ? this.i18n('Show less filters') : this.i18n('Less filters');
-
-    this._moreFiltersAction = new HeadingAction('filter_list', more, () => {
+    this._moreFiltersAction = new HeadingAction(this.showMoreFiltersIcon(), this.showMoreFiltersLabel(), () => {
       this.moreFilters = !this.moreFilters;
-      this._moreFiltersAction.label = this.moreFilters ? less : more;
+      this._moreFiltersAction.icon = this.moreFilters ? this.showLessFiltersIcon() : this.showMoreFiltersIcon();
+      this._moreFiltersAction.label = this.moreFilters ? this.showLessFiltersLabel() : this.showMoreFiltersLabel();
     }, true);
 
     return this._moreFiltersAction;
+  }
+
+  /**
+   * Returns the label for showing more filters action
+   */
+  protected showMoreFiltersLabel(): string {
+    return this.printable ? this.i18n('Show more filters') : this.i18n('More filters');
+  }
+
+  /**
+   * Returns the label for showing less filters action
+   */
+  protected showLessFiltersLabel(): string {
+    return this.printable ? this.i18n('Show less filters') : this.i18n('Less filters');
+  }
+
+  /**
+   * Returns the icon for showing more filters action
+   */
+  protected showMoreFiltersIcon(): string {
+    return 'filter_list';
+  }
+
+  /**
+   * Returns the icon for showing less filters action
+   */
+  protected showLessFiltersIcon(): string {
+    return 'filter_list';
   }
 
   /**
