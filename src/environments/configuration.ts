@@ -1,6 +1,5 @@
 import { BannerCard } from 'app/content/banner-card';
 import { BannerResolver } from 'app/content/banner-resolver';
-import { DEFAULT_CACHE_SECONDS } from 'app/content/content';
 import { ContentGetter } from 'app/content/content-getter';
 import { ContentPage } from 'app/content/content-page';
 import { DashboardItemConfig } from 'app/content/dashboard-item-config';
@@ -54,12 +53,18 @@ const AD_CATEGORY_COLORS = {
 // **** Content **** //
 // See the project home page for help on how to customize content
 
-// Definitions for the home page
+// The home page shown for guests
 const HOME_PAGE: ContentPage = {
-  cacheKey: 'home',
-  cacheSeconds: DEFAULT_CACHE_SECONDS,
+
+  // To enable cache, set a cache key and a number of seconds
+  // cacheKey: 'home',
+  // cacheSeconds: 360, // 360 seconds = 1 hour
+
   // Layout can be 'full', 'center' or 'card' (when 'card', a title can be set)
   layout: 'full',
+
+  // The content can be obtained by fetching a URL, or by a Cyclos floating content page
+  // See the documentation on ContentGetter for more details.
   content: ContentGetter.url('content/home.html')
 };
 // Dashboard resolver
