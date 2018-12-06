@@ -89,6 +89,7 @@ export class AppComponent implements OnInit {
     if (blank(primaryColor)) {
       return;
     }
+    this.layout.primaryColor = primaryColor;
     const id = 'themeColorMeta';
     let meta: HTMLMetaElement = document.getElementById(id) as HTMLMetaElement;
     if (!meta) {

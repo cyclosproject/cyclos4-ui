@@ -39,6 +39,8 @@ export type Breakpoint = keyof typeof BREAKPOINTS;
   providedIn: 'root'
 })
 export class LayoutService {
+  primaryColor: string;
+
   currentPage$ = new BehaviorSubject<BasePageComponent<any>>(null);
   get currentPage(): BasePageComponent<any> {
     return this.currentPage$.value;

@@ -1,6 +1,14 @@
-<page-content *ngFor="let account of accounts$ | async" [heading]="title(account)"
-  [headingActions]="headingActions(account)" hideBack>
-  <a class="plain" [routerLink]="['/banking', 'account', account.type.internalName || account.type.id]">
-    <account-status-view [account]="account"></account-status-view>
-  </a>
+<page-content *ngFor="let history of histories$ | async" [heading]="title(history)"
+  [headingActions]="headingActions(history)" hideBack>
+  <div class="row mb-3">
+    <div class="col-6 balance-label" i18n>Balance</div>
+    <div class="col-6 balance-value" [ngClass]="{
+      negative:format.isNegative(history.account.status.balance),
+      positive:format.isPositive(history.account.status.balance)
+    }">
+      {{ history.account.status.balance | currency:history.account.currency
+      }}
+    </div>
+  </div>
+  <canvas balanceHistoryChart [history]="history" width="400" height="140"></canvas>
 </page-content>

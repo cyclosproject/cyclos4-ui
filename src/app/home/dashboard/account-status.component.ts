@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
-import { Account, AccountWithStatus } from 'app/api/models';
+import { Account, AccountBalanceHistoryResult, TimeFieldEnum } from 'app/api/models';
 import { AccountsService } from 'app/api/services';
+import { ISO_DATE } from 'app/core/format.service';
 import { BaseDashboardComponent } from 'app/home/dashboard/base-dashboard.component';
-import { ApiHelper } from 'app/shared/api-helper';
-import { BehaviorSubject } from 'rxjs';
 import { HeadingAction } from 'app/shared/action';
+import { ApiHelper } from 'app/shared/api-helper';
+import { forkJoin, Observable, BehaviorSubject } from 'rxjs';
 
 /**
  * Displays the status of an account.
@@ -13,13 +14,14 @@ import { HeadingAction } from 'app/shared/action';
 @Component({
   selector: 'account-status',
   templateUrl: 'account-status.component.html',
+  styleUrls: ['account-status.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AccountStatusComponent extends BaseDashboardComponent implements OnInit {
 
   @Input() accounts: Account[];
 
-  accounts$ = new BehaviorSubject<AccountWithStatus[]>(null);
+  histories$ = new BehaviorSubject<AccountBalanceHistoryResult[]>(null);
 
   constructor(injector: Injector,
     private accountsService: AccountsService) {
@@ -29,46 +31,43 @@ export class AccountStatusComponent extends BaseDashboardComponent implements On
   ngOnInit() {
     super.ngOnInit();
 
-    // const now = this.dataForUiHolder.now();
-    // this.addSub(this.accountsService.searchAccountHistory({
-    //   owner: ApiHelper.SELF,
-    //   accountType: this.accountType,
-    //   orderBy: 'dateDesc',
-    //   pageSize: 50,
-    //   datePeriod: [now.subtract(6, 'months').startOf('month').toISOString()],
-    //   fields: ['date', 'amount']
-    // }).subscribe(transfers => {
-
-    // }));
-
-    this.addSub(this.accountsService.listAccountsByOwner({
-      owner: ApiHelper.SELF
-    }).subscribe(accounts => {
-      this.accounts$.next(accounts);
+    const observables: Observable<AccountBalanceHistoryResult>[] = [];
+    for (const account of this.accounts) {
+      observables.push(this.accountsService.getAccountBalanceHistory({
+        owner: ApiHelper.SELF,
+        accountType: account.type.id,
+        datePeriod: [this.dataForUiHolder.now().subtract(6, 'months').startOf('month').format(ISO_DATE)],
+        intervalUnit: TimeFieldEnum.MONTHS
+      }));
+    }
+    this.addSub(forkJoin(observables).subscribe(h => {
+      this.histories$.next(h);
       this.notifyReady();
     }));
   }
 
-  title(account: Account) {
+  title(history: AccountBalanceHistoryResult) {
     if (this.accounts.length === 1) {
       // Single account, use a generic 'Account status' title
       return this.i18n('Account status');
     } else {
       // Multiple accounts: use the account type name as title
-      return account.type.name;
+      return history.account.type.name;
     }
-
   }
 
+  path(history: AccountBalanceHistoryResult): string[] {
+    const type = history.account.type;
+    return ['/banking', 'account', ApiHelper.internalNameOrId(type)];
+  }
 
-  headingActions(account: Account): HeadingAction[] {
+  headingActions(history: AccountBalanceHistoryResult): HeadingAction[] {
     return [{
       icon: 'search',
       label: this.i18n('View'),
       maybeRoot: true,
-      onClick: () => this.router.navigate(['/banking', 'account', ApiHelper.internalNameOrId(account.type)])
+      onClick: () => this.router.navigate(this.path(history))
     }];
   }
-
 
 }

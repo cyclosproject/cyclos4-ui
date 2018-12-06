@@ -15837,6 +15837,104 @@
         "x-contentType" : "application/json"
       }
     },
+    "/{owner}/accounts/{accountType}/balances-history" : {
+      "get" : {
+        "tags" : [ "Accounts" ],
+        "summary" : "Returns the account balances over time",
+        "description" : "Receives a period and an interval, returning the balance over each\ncorresponding date. The maximum number of data points is 60, so it is\npossible to get the balances per day over 2 months. For larger periods,\nuse weeks or months.\nWhen no period is given, assumes the beginning of current year or the\naccount creation date, whichever is newer.\nWhen no interval is given, one is assumed.\nAlso returns status of the given account\n",
+        "operationId" : "getAccountBalanceHistory",
+        "parameters" : [ {
+          "name" : "owner",
+          "in" : "path",
+          "description" : "Can be one of:\n* a user identification value, such as id, username, e-mail, phone, etc.\n  Id is always allowed, others depend on Cyclos configuration. Note that\n  a valid numeric value is always considered as id. For example, when\n  using another identification method that can be numeric only, prefix\n  the value with a single quote (like in Excel spreadsheets), for\n  example, `'1234567890`;\n   \n* `self` for the currently authenticated user;\n* `system` for data that belongs to the system.\n",
+          "required" : true,
+          "type" : "string",
+          "x-dotInPath" : true
+        }, {
+          "name" : "accountType",
+          "in" : "path",
+          "description" : "The account type",
+          "required" : true,
+          "type" : "string"
+        }, {
+          "name" : "fields",
+          "in" : "query",
+          "description" : "Select which fields to include on returned data. If nothing is set, all object fields are returned. Unprefixed field names will be handled like a whitelist (only listed fields will be included), while names starting with a minus (-) or exclamation mark (!) will be handled as blacklist (listed fields will not be included). This works for nesting as well. For example: `a,b.b1,c.-c1,c.-c2` will return the fields `a`, `b` (containing only the `b1` field) and `c` (containing all its fields except for `c1` or `c2`). \n",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string"
+          },
+          "collectionFormat" : "multi"
+        }, {
+          "name" : "datePeriod",
+          "in" : "query",
+          "description" : "The minimum / maximum transfer date. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma.\n",
+          "required" : false,
+          "type" : "array",
+          "items" : {
+            "type" : "string",
+            "format" : "date-time",
+            "description" : ""
+          }
+        }, {
+          "name" : "intervalUnit",
+          "in" : "query",
+          "description" : "The time unit for the data point interval Possible values are:\n* days: Day(s)\n* hours: Hour(s)\n* millis: Millisecond(s)\n* minutes: Minute(s)\n* months: Month(s)\n* seconds: Second(s)\n* weeks: Week(s)\n* years: Year(s)\n",
+          "required" : false,
+          "type" : "string",
+          "enum" : [ "days", "hours", "millis", "minutes", "months", "seconds", "weeks", "years" ],
+          "x-type" : "TimeFieldEnum"
+        }, {
+          "name" : "intervalCount",
+          "in" : "query",
+          "description" : "A data point every X units. For example, it is possible to request the balance every 3 days. Defaults to 1.\n",
+          "required" : false,
+          "type" : "integer"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "The account balances over each datapoint",
+            "schema" : {
+              "$ref" : "#/definitions/AccountBalanceHistoryResult"
+            }
+          },
+          "401" : {
+            "description" : "Unauthorized access. Missing or invalid crendentials supplied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/UnauthorizedError"
+            }
+          },
+          "403" : {
+            "description" : "Permission denied for such operation",
+            "schema" : {
+              "$ref" : "#/definitions/ForbiddenError"
+            }
+          },
+          "404" : {
+            "description" : "An expected data was not found",
+            "schema" : {
+              "$ref" : "#/definitions/NotFoundError"
+            }
+          },
+          "500" : {
+            "description" : "Unexpected error",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "security" : [ {
+          "basic" : [ ]
+        }, {
+          "session" : [ ]
+        }, {
+          "accessClient" : [ ]
+        } ],
+        "x-accepts" : "application/json",
+        "x-contentType" : "application/json"
+      }
+    },
     "/{owner}/accounts/{accountType}/data-for-history" : {
       "get" : {
         "tags" : [ "Accounts" ],
@@ -22655,6 +22753,47 @@
       } ],
       "description" : "Contains basic data for an account"
     },
+    "AccountBalanceEntry" : {
+      "type" : "object",
+      "properties" : {
+        "date" : {
+          "type" : "string",
+          "format" : "date-time",
+          "description" : "The balance date"
+        },
+        "amount" : {
+          "type" : "string",
+          "format" : "number",
+          "description" : "The balance"
+        }
+      },
+      "description" : "Contains the balance on a given date"
+    },
+    "AccountBalanceHistoryResult" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/Entity"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "account" : {
+            "description" : "The account with status",
+            "$ref" : "#/definitions/AccountWithHistoryStatus"
+          },
+          "interval" : {
+            "description" : "The actually used interval between data points. Specially useful when no interval is passed as parameter, and one is assumed.\n",
+            "$ref" : "#/definitions/TimeInterval"
+          },
+          "balances" : {
+            "type" : "array",
+            "description" : "Each data point",
+            "items" : {
+              "$ref" : "#/definitions/AccountBalanceEntry"
+            }
+          }
+        }
+      } ],
+      "description" : "The result for an account balance history request"
+    },
     "AccountHistoryQueryFilters" : {
       "allOf" : [ {
         "$ref" : "#/definitions/BaseTransferQueryFilters"
@@ -23798,7 +23937,7 @@
           },
           "hidden" : {
             "type" : "boolean",
-            "description" : "Indicates whether this address is hidden for other users. Is only returned if the authenticated user manages the owner of this phone.\n"
+            "description" : "Indicates whether this address is hidden for other users. It always returns false if the authenticated user doesn't manage the owner of this address.\n"
           }
         }
       } ],
@@ -23813,10 +23952,6 @@
           "user" : {
             "description" : "The user which owns this address",
             "$ref" : "#/definitions/User"
-          },
-          "hidden" : {
-            "type" : "boolean",
-            "description" : "Indicates whether this address should be hidden for other users  \n"
           }
         }
       } ],
@@ -29237,7 +29372,7 @@
           },
           "hidden" : {
             "type" : "boolean",
-            "description" : "Indicates whether this phone is hidden for other users. Is only returned if the authenticated user manages the owner of this phone.\n"
+            "description" : "Indicates whether this phone is hidden for other users. It always returns false if the authenticated user doesn't manage the owner of this phone.\n"
           },
           "verificationCodeSendDate" : {
             "type" : "string",
