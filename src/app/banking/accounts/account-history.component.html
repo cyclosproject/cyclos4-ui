@@ -1,8 +1,7 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="loaded$ | async; else loading">
     <page-content mode="filters" [heading]="title" [headingActions]="headingActions$ | async">
-      <form *ngIf="moreFilters$ | async; else accountStatus" [formGroup]="form"
-        class="filters-form border-bottom">
+      <form *ngIf="moreFilters$ | async" [formGroup]="form" class="filters-form border-bottom">
         <div class="row">
           <div *ngIf="data.preselectedPeriods?.length > 1" class="col-12 col-md-6">
             <single-selection-field labelPosition="side" formControlName="preselectedPeriod"
@@ -61,12 +60,10 @@
           </div>
         </div>
       </form>
-      <ng-template #accountStatus>
-        <div *ngIf="status$ | async as status" [ngClass]="{'py-3': layout.gtsm$ | async}">
-          <account-status-view [account]="status"></account-status-view>
-        </div>
-        <spinner *ngIf="(status$ | async) == null"></spinner>
-      </ng-template>
+      <div *ngIf="status$ | async as status" [ngClass]="{'py-3': layout.gtsm$ | async}">
+        <account-status-view [account]="status" [mode]="(moreFilters$ | async) ? 'period' : 'current'"></account-status-view>
+      </div>
+      <spinner *ngIf="(status$ | async) == null"></spinner>
     </page-content>
 
     <results-layout resultType="list" [results]="results$ | async" (update)="update($event)">

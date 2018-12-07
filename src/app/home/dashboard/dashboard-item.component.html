@@ -1,6 +1,8 @@
-<spinner *ngIf="!(ready$ | async)"></spinner>
-<div [ngSwitch]="config.type" [ngClass]="{'d-none': !(ready$ | async)}">
+<page-content *ngIf="!(ready$ | async)">
+  <spinner></spinner>
+</page-content>
 
+<div [ngSwitch]="config.type" [ngClass]="{'d-none': !(ready$ | async)}">
   <quick-access *ngSwitchCase="DashboardItemType.QUICK_ACCESS" [descriptors]="data.descriptors"
     (ready)="notifyReady()">
   </quick-access>

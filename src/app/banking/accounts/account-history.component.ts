@@ -186,10 +186,7 @@ export class AccountHistoryComponent
   }
 
   showLessFiltersLabel() {
-    return this.i18n('Show account status');
+    return this.i18n('Hide filters');
   }
 
-  showLessFiltersIcon() {
-    return 'account_balance';
-  }
 }
