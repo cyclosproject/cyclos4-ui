@@ -60,10 +60,16 @@
           </div>
         </div>
       </form>
-      <div *ngIf="status$ | async as status" [ngClass]="{'py-3': layout.gtsm$ | async}">
-        <account-status-view [account]="status" [mode]="(moreFilters$ | async) ? 'period' : 'current'"></account-status-view>
+
+      <!-- Account status -->
+      <div *ngIf="status$ | async as account" [ngClass]="{
+          'py-3': layout.gtsm$ | async,
+          'pt-ls': (layout.ltmd$ | async) && (moreFilters$ | async)
+        }">
+        <account-status-view [account]="account" [mode]="(moreFilters$ | async) ? 'period' : 'current'"></account-status-view>
       </div>
       <spinner *ngIf="(status$ | async) == null"></spinner>
+
     </page-content>
 
     <results-layout resultType="list" [results]="results$ | async" (update)="update($event)">

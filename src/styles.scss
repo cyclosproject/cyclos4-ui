@@ -645,6 +645,84 @@ h3 {
   margin-bottom: 0.6rem;
 }
 
+/* Margins / paddings according to the layout spacer */
+.my-ls, .mt-ls {
+  margin-top: $layout-spacer-xxs !important;
+}
+.my-ls, .mb-ls {
+  margin-bottom: $layout-spacer-xxs !important;
+}
+.mx-ls, .ml-ls {
+  margin-left: $layout-spacer-xxs !important;
+}
+.mx-ls, .mr-ls {
+  margin-right: $layout-spacer-xxs !important;
+}
+.py-ls, .pt-ls {
+  padding-top: $layout-spacer-xxs !important;
+}
+.py-ls, .pb-ls {
+  padding-bottom: $layout-spacer-xxs !important;
+}
+.px-ls, .pl-ls {
+  padding-left: $layout-spacer-xxs !important;
+}
+.px-ls, .pr-ls {
+  padding-right: $layout-spacer-xxs !important;
+}
+@include media-breakpoint-up(xs) {
+  .my-ls, .mt-ls {
+    margin-top: $layout-spacer-xs !important;
+  }
+  .my-ls, .mb-ls {
+    margin-bottom: $layout-spacer-xs !important;
+  }
+  .mx-ls, .ml-ls {
+    margin-left: $layout-spacer-xs !important;
+  }
+  .mx-ls, .mr-ls {
+    margin-right: $layout-spacer-xs !important;
+  }
+  .py-ls, .pt-ls {
+    padding-top: $layout-spacer-xs !important;
+  }
+  .py-ls, .pb-ls {
+    padding-bottom: $layout-spacer-xs !important;
+  }
+  .px-ls, .pl-ls {
+    padding-left: $layout-spacer-xs !important;
+  }
+  .px-ls, .pr-ls {
+    padding-right: $layout-spacer-xs !important;
+  }
+}
+@include media-breakpoint-up(sm) {
+  .my-ls, .mt-ls {
+    margin-top: $layout-spacer !important;
+  }
+  .my-ls, .mb-ls {
+    margin-bottom: $layout-spacer !important;
+  }
+  .mx-ls, .ml-ls {
+    margin-left: $layout-spacer !important;
+  }
+  .mx-ls, .mr-ls {
+    margin-right: $layout-spacer !important;
+  }
+  .py-ls, .pt-ls {
+    padding-top: $layout-spacer !important;
+  }
+  .py-ls, .pb-ls {
+    padding-bottom: $layout-spacer !important;
+  }
+  .px-ls, .pl-ls {
+    padding-left: $layout-spacer !important;
+  }
+  .px-ls, .pr-ls {
+    padding-right: $layout-spacer !important;
+  }
+}
+
 .gm-style-iw > div {
   overflow: visible !important;
 }
@@ -708,7 +786,6 @@ hr {
   width: 100%;
   display: block;
 }
-
 
 // This is actually used to show generated password values
 notification data {

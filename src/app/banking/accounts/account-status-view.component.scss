@@ -6,8 +6,10 @@
   margin: 0.2rem 0;
 }
 
-.status-value {
-  text-align: right;
+@include media-breakpoint-up(xs) {
+  .status-value {
+    text-align: right;
+  }
 }
 
 @include media-breakpoint-up(md) {

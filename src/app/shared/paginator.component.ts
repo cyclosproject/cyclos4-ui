@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ApiHelper } from 'app/shared/api-helper';
-import { LayoutService } from 'app/shared/layout.service';
+import { LayoutService, Breakpoint } from 'app/shared/layout.service';
 import { PageData } from 'app/shared/page-data';
 import { PagedResults } from 'app/shared/paged-results';
 import { Subscription } from 'rxjs';
@@ -63,6 +63,16 @@ export class PaginatorComponent<T> implements OnDestroy {
   ngOnDestroy(): void {
     if (this.formSub) {
       this.formSub.unsubscribe();
+    }
+  }
+
+  maxSize(breakpoints: Set<Breakpoint>): number {
+    if (breakpoints.has('xxs')) {
+      return 3;
+    } else if (breakpoints.has('md')) {
+      return 5;
+    } else {
+      return 7;
     }
   }
 

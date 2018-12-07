@@ -11,8 +11,8 @@
   </ng-template>
   <div *ngIf="results.hasNext || results.page > 0" [ngClass]="{'mt-2': layout.xxs$ | async}">
     <pagination [totalItems]="totalCount" [itemsPerPage]="results.pageSize"
-      [maxSize]="(layout.xxs$ | async) ? 3 : (layout.md$ | async) ? 5 : 7"
-      formControlName="pageNumber" [rotate]="true" [boundaryLinks]="results.hasTotalCount && (layout.gtxs$ | async)"
+      [maxSize]="maxSize(layout.breakpointChanges$ | async)" formControlName="pageNumber"
+      [rotate]="true" [boundaryLinks]="results.hasTotalCount && (layout.gtxs$ | async)"
       previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;"
       lastText="&raquo;"></pagination>
   </div>
