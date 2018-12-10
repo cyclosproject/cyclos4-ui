@@ -31973,6 +31973,10 @@
             "description" : "Reference to the transfer that has charged back this transfer.\nOnly returned if this transfer has been charged back.\n",
             "$ref" : "#/definitions/Transfer"
           },
+          "chargebackOf" : {
+            "description" : "Reference to the transfer that this transfer has charged back.\nOnly returned if this transfer is a chargeback.\n",
+            "$ref" : "#/definitions/Transfer"
+          },
           "transaction" : {
             "description" : "If this balance transfer was originated from a transaction (like\na payment or scheduled payment), contains the reference to this\ntransaction. Only returned if this `TransferView` is not already\nin a `TransactionView`.\n",
             "$ref" : "#/definitions/TransactionView"

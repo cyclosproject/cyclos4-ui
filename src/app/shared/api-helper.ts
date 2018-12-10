@@ -6,7 +6,8 @@ import {
   BaseTransferDataForSearch, CustomFieldDetailed, CustomFieldSizeEnum,
   CustomFieldTypeEnum, Entity, LinkedEntityTypeEnum, PasswordInput,
   PasswordModeEnum, PreselectedPeriod, Transaction, TransactionDataForSearch,
-  Transfer
+  Transfer,
+  AccountKind
 } from 'app/api/models';
 import { AddressFieldEnum } from 'app/api/models/address-field-enum';
 import { FormatService } from 'app/core/format.service';
@@ -412,6 +413,21 @@ export class ApiHelper {
       return CustomFieldSizeEnum.SMALL;
     } else {
       return field.size;
+    }
+  }
+
+  /**
+   * Returns the related user / system account display name
+   */
+  static subjectName(row: AccountHistoryResult, format: FormatService): string {
+    if (row.relatedAccount.kind === AccountKind.USER) {
+      // Show the user display
+      return row.relatedAccount.user.display;
+    } else {
+      // Show the system account type name
+      return format.isNegative(row.amount)
+        ? row.type.to.name
+        : row.type.from.name;
     }
   }
 

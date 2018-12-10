@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
-  AccountHistoryResult, AccountKind, AccountWithHistoryStatus, Currency,
-  DataForAccountHistory, EntityReference, Image, PreselectedPeriod, TransferFilter
+  AccountHistoryResult, AccountWithHistoryStatus, Currency, DataForAccountHistory,
+  EntityReference, Image, PreselectedPeriod, TransferFilter
 } from 'app/api/models';
 import { AccountsService } from 'app/api/services';
 import { ApiHelper } from 'app/shared/api-helper';
@@ -146,15 +146,7 @@ export class AccountHistoryComponent
   }
 
   subjectName(row: AccountHistoryResult): string {
-    if (row.relatedAccount.kind === AccountKind.USER) {
-      // Show the user display
-      return row.relatedAccount.user.display;
-    } else {
-      // Show the system account type name
-      return this.format.isNegative(row.amount)
-        ? row.type.to.name
-        : row.type.from.name;
-    }
+    return ApiHelper.subjectName(row, this.format);
   }
 
   /**

@@ -8,8 +8,12 @@
   {{ transfer.amount | currency:transfer.currency }}
 </label-value>
 <label-value *ngIf="transfer.chargedBackBy" i18n-label label="Chargeback">
-  <ng-container i18n>This transfer has been charged back at {{
-    transfer.chargedBackBy.date | dateTime }}</ng-container>
+  <a [routerLink]="path(transfer.chargedBackBy)" i18n>This transfer has been
+    charged back at {{transfer.chargedBackBy.date | dateTime }}</a>
+</label-value>
+<label-value *ngIf="transfer.chargebackOf" i18n-label label="Chargeback of">
+  <a [routerLink]="path(transfer.chargebackOf)">{{
+    transfer.chargebackOf.display }}</a>
 </label-value>
 <label-value *ngIf="transfer.transaction?.by" i18n-label label="Performed by">
   {{ transfer.transaction.by.display }}

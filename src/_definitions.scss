@@ -1,10 +1,11 @@
+$primary: #1e88e5;
+$secondary: #f29220;
+$faded-color: #757575;
+
 // Import the basic Bootstrap definitions, so we can override the variables
 @import "node_modules/bootstrap/scss/functions";
 @import "node_modules/bootstrap/scss/variables";
 @import "node_modules/bootstrap/scss/mixins";
-
-$primary: #1e88e5;
-$faded-color: #757575;
 
 // Make sure the font import URL and the font family (sans serif) are in sync
 $font-import-url: "https://fonts.googleapis.com/css?family=Roboto:400,500";
@@ -87,11 +88,11 @@ $side-menu-inactive-icon-color: $menu-bar-inactive-icon-color;
 $side-menu-inactive-hover-bg: $menu-bar-hover-bg;
 
 $quick-access-bg: $input-bg;
-$quick-access-color: darken($primary, 15%);
+$quick-access-color: $primary;
 $quick-access-icon-color: $quick-access-color;
-$quick-access-hover-bg: $menu-bar-hover-bg;
-$quick-access-hover-color: $quick-access-color;
-$quick-access-hover-icon-color: $quick-access-icon-color;
+$quick-access-hover-bg: $quick-access-bg;
+$quick-access-hover-color: $secondary;
+$quick-access-hover-icon-color: $quick-access-hover-color;
 
 $sidenav-bar-bg: $top-bar-bg;
 $sidenav-bar-color: $top-bar-color;

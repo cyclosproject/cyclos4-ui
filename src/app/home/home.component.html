@@ -3,7 +3,7 @@
 </page-layout>
 
 <ng-template #dashboard>
-  <div class="row">
+  <div class="row" [ngClass]="{'no-gutters': layout.ltsm$ | async}">
     <ng-container *ngFor="let config of configs$ | async">
       <div *ngIf="layout.visible(config.breakpoints, layout.breakpointChanges$ | async)"
         class="col-12 col-lg-6">

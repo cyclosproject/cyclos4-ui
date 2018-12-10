@@ -3,12 +3,15 @@
     <ng-container *ngFor="let action of actions">
       <div *ngIf="layout.visible(action.breakpoints, layout.breakpointChanges$ | async)"
         class="col-6 col-sm-4">
-        <a [routerLink]="action.url" class="quick-access-item">
-          <icon [size]="(layout.ltsm$ | async) ? '1.8rem' : '2.2rem'" [icon]="action.icon"></icon>
-          <div class="text-center">
-            {{ action.label }}
-          </div>
-        </a>
+        <div class="text-center">
+          <a [routerLink]="action.url" class="quick-access-item">
+            <icon [size]="(layout.ltsm$ | async) ? '1.8rem' : '2.2rem'"
+              [icon]="action.icon"></icon>
+            <div class="text-center">
+              {{ action.label }}
+            </div>
+          </a>
+        </div>
       </div>
     </ng-container>
   </div>

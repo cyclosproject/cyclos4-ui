@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
-import { Account, AccountBalanceHistoryResult, TimeFieldEnum } from 'app/api/models';
+import { Account, AccountBalanceHistoryResult, TimeFieldEnum, AccountHistoryResult } from 'app/api/models';
 import { AccountsService } from 'app/api/services';
 import { ISO_DATE } from 'app/core/format.service';
 import { BaseDashboardComponent } from 'app/home/dashboard/base-dashboard.component';
@@ -22,6 +22,7 @@ export class AccountStatusComponent extends BaseDashboardComponent implements On
   @Input() accounts: Account[];
 
   histories$ = new BehaviorSubject<AccountBalanceHistoryResult[]>(null);
+  lastPayments: { [key: string]: BehaviorSubject<AccountHistoryResult[]> } = {};
 
   constructor(injector: Injector,
     private accountsService: AccountsService) {
@@ -34,16 +35,29 @@ export class AccountStatusComponent extends BaseDashboardComponent implements On
     const observables: Observable<AccountBalanceHistoryResult>[] = [];
     for (const account of this.accounts) {
       observables.push(this.accountsService.getAccountBalanceHistory({
+        fields: ['account.id', 'account.status.balance', 'account.currency', 'account.type', 'balances'],
         owner: ApiHelper.SELF,
         accountType: account.type.id,
         datePeriod: [this.dataForUiHolder.now().subtract(6, 'months').startOf('month').format(ISO_DATE)],
         intervalUnit: TimeFieldEnum.MONTHS
       }));
+      this.lastPayments[account.id] = new BehaviorSubject(null);
     }
     this.addSub(forkJoin(observables).subscribe(h => {
       this.histories$.next(h);
       this.notifyReady();
     }));
+    for (const account of this.accounts) {
+      this.addSub(this.accountsService.searchAccountHistory({
+        fields: [],
+        owner: 'self',
+        accountType: account.type.id,
+        direction: 'credit',
+        pageSize: 3
+      }).subscribe(transfers => {
+        this.lastPayments[account.id].next(transfers);
+      }));
+    }
   }
 
   title(history: AccountBalanceHistoryResult) {
@@ -56,7 +70,7 @@ export class AccountStatusComponent extends BaseDashboardComponent implements On
     }
   }
 
-  path(history: AccountBalanceHistoryResult): string[] {
+  accountPath(history: AccountBalanceHistoryResult): string[] {
     const type = history.account.type;
     return ['/banking', 'account', ApiHelper.internalNameOrId(type)];
   }
@@ -66,8 +80,15 @@ export class AccountStatusComponent extends BaseDashboardComponent implements On
       icon: 'search',
       label: this.i18n('View'),
       maybeRoot: true,
-      onClick: () => this.router.navigate(this.path(history))
+      onClick: () => this.router.navigate(this.accountPath(history))
     }];
   }
 
+  subjectName(row: AccountHistoryResult): string {
+    return ApiHelper.subjectName(row, this.format);
+  }
+
+  transferPath(row: AccountHistoryResult): string[] {
+    return ['/banking', 'transfer', ApiHelper.transactionNumberOrId(row)];
+  }
 }

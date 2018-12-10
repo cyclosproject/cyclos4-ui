@@ -1,11 +1,5 @@
 @import 'src/definitions';
 
-/*
-.quick-access-container {
-  margin: -0.4rem 0 0 -0.4rem;
-}
-*/
-
 .quick-access-item {
   background-color: $quick-access-bg;
   color: $quick-access-color;
@@ -16,7 +10,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  /*margin: 0.4rem 0 0 0.4rem;*/
+  margin: auto;
   transition: background-color .4s;
   min-height: 6.2rem;
 
@@ -40,11 +34,11 @@
   padding: 1rem;
 }
 
-$spacing: 0.2rem;
+$spacing: 0.5rem;
 @include media-breakpoint-up(sm) {
   .quick-access-container {
     margin: -$spacing 0 0 -$spacing;
-    padding: 1rem 0.5rem 1.1rem 0.3rem;
+    padding: 2rem 0.5rem 2.1rem 0.3rem;
   }
 
   .quick-access-item, .quick-access-item:hover {

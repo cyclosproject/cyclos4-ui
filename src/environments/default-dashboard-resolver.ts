@@ -26,7 +26,7 @@ export class DefaultDashboardResolver implements DashboardResolver {
     const accounts = (banking.accounts || []).filter(a => a.visible).map(p => p.account);
     if (!empty(accounts)) {
       // There's at least one visible account - add the account status
-      result.push(DashboardItemConfig.accountStatus(accounts, ['gt-md']));
+      result.push(DashboardItemConfig.accountStatus(accounts, ['gt-sm']));
 
       for (const acctPerm of banking.accounts) {
         if (!acctPerm.visible) {
