@@ -5,9 +5,10 @@
         class="col-12 col-xs-6 col-sm-4">
         <div class="text-center">
           <a [routerLink]="action.url" class="quick-access-item">
-            <icon [size]="(layout.ltsm$ | async) ? '2.2rem' : '2.4rem'"
-              [icon]="action.icon"></icon>
-            <div class="text-center">
+            <div class="quick-access-icon">
+              <icon [icon]="action.icon" size="2.2rem"></icon>
+            </div>
+            <div class="quick-access-text">
               {{ action.label }}
             </div>
           </a>

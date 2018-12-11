@@ -1,8 +1,6 @@
 @import 'src/definitions';
 
 .quick-access-item {
-  background-color: $quick-access-bg;
-  color: $quick-access-color;
   text-decoration: none;
   padding: 1rem 0.1rem;
   flex-grow: 1;
@@ -13,21 +11,37 @@
   margin: auto;
   transition: background-color .4s;
   min-height: 6.2rem;
-
-  icon {
-    margin-bottom: 0.4rem;
-    color: $quick-access-icon-color;
-  }
 }
+
+.quick-access-icon {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background-color: $quick-access-bg;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.4rem;
+  color: $quick-access-icon-color;
+}
+
+.quick-access-text {
+  text-align: center;
+  color: $quick-access-color;
+}
+
 .quick-access-item:hover {
   text-decoration: none;
-  background-color: $quick-access-hover-bg;
-  color: $quick-access-hover-color;
 
-  icon {
+  .quick-access-text {
+    color: $quick-access-hover-color;
+  }
+  .quick-access-icon {
     color: $quick-access-hover-icon-color;
+    background-color: $quick-access-hover-bg;
   }
 }
+
 
 .quick-access-container {
   padding: 1rem;
@@ -44,7 +58,7 @@ $spacing: 0.5rem;
     margin: $spacing 0 0 $spacing;
   }
 
-  .quick-access-item icon {
+  .quick-access-icon {
     margin-bottom: 0.8rem;
   }
 }

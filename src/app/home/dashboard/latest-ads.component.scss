@@ -12,18 +12,25 @@
   margin-top: 0.5rem;
 }
 
-.avatar-container {
+.images {
   display: inline-block;
   position: relative;
   text-align: center;
+  width: 128px;
+  height: 128px;
 }
 
 .owner-image {
   position: absolute;
-  right: -0.4rem;
+  right: 0;
   bottom: 0;
+  transform: translate(25%,25%);
 }
 
 a {
   margin-top: 2rem;
+}
+
+a:hover {
+  filter: brightness(80%);
 }
