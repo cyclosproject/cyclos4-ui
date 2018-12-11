@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Input, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { BannerService } from 'app/core/banner.service';
 import { LoginService } from 'app/core/login.service';
 import { MenuService } from 'app/core/menu.service';
@@ -20,6 +20,8 @@ export class PageLayoutComponent implements OnInit, OnDestroy {
   @Input() heading: string;
   @Input() ready: boolean;
   @Input() size: 'small' | 'medium' | 'large' | 'full' = 'full';
+
+  @ViewChildren('contentArea') contentArea: QueryList<ElementRef>;
 
   private subs: Subscription[] = [];
 
@@ -63,5 +65,13 @@ export class PageLayoutComponent implements OnInit, OnDestroy {
     this.layout.currentPageLayout = null;
 
     this.subs.forEach(s => s.unsubscribe());
+  }
+
+  /**
+   * Returns the offset width of the content area
+   */
+  get contentWidth() {
+    const first = this.contentArea.first;
+    return first == null ? 0 : first.nativeElement.offsetWidth;
   }
 }

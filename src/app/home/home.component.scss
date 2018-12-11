@@ -1,8 +1,25 @@
 @import 'src/definitions';
 
-@include media-breakpoint-up(lg) {
-  .dashboard {
-    column-count: 2;
-    column-gap: $layout-spacer;
+.one-column, .two-columns {
+  margin-top: $layout-spacer;
+}
+
+.two-columns {
+  display: flex;
+
+  .first-column, .second-column {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
   }
+  .first-column {
+    padding-right: $layout-spacer / 2;
+  }
+  .second-column {
+    padding-left: $layout-spacer / 2;
+  }
+}
+
+:host ::ng-deep page-content {
+  margin-top: 0 !important;
 }

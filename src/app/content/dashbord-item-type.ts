@@ -9,24 +9,19 @@ export enum DashboardItemType {
   QUICK_ACCESS,
 
   /**
-   * Shows the account status
+   * Shows the account status together with the last incoming transfers
    */
   ACCOUNT_STATUS,
 
   /**
-   * Shows the last transfers
-   */
-  LAST_TRANSFERS,
-
-  /**
    * Shows the last users that joined the system
    */
-  NEW_USERS,
+  LATEST_USERS,
 
   /**
    * Shows the last published advertisements
    */
-  NEW_ADS,
+  LATEST_ADS,
 
   /**
    * Shows a content page

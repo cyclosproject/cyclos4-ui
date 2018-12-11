@@ -6,6 +6,8 @@ import { BasePageComponent } from 'app/shared/base-page.component';
 import { environment } from 'environments/environment';
 import { BehaviorSubject, Observable } from 'rxjs';
 
+export const GUTTER = 20;
+
 /**
  * Displays the home page
  */
@@ -21,6 +23,8 @@ export class HomeComponent extends BasePageComponent<void> implements OnInit {
   ready$ = new BehaviorSubject(false);
   homePage: ContentPage;
   configs$ = new BehaviorSubject<DashboardItemConfig[]>(null);
+  leftColumnConfigs$ = new BehaviorSubject<DashboardItemConfig[]>(null);
+  rightColumnConfigs$ = new BehaviorSubject<DashboardItemConfig[]>(null);
   resolver: DashboardItemConfig[] | DashboardResolver;
 
   constructor(private injector: Injector) {
@@ -54,6 +58,8 @@ export class HomeComponent extends BasePageComponent<void> implements OnInit {
 
   private initializeItems(configs: DashboardItemConfig[]) {
     this.configs$.next(configs);
+    this.leftColumnConfigs$.next(configs.filter(c => c.column == null || c.column === 'left'));
+    this.rightColumnConfigs$.next(configs.filter(c => c.column === 'right'));
     this.ready$.next(true);
   }
 

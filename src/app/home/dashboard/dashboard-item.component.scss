@@ -1,9 +1,12 @@
+@import 'src/definitions';
+
 :host {
   display: inline-block;
   width: 100%;
-  page-break-inside: avoid;
+  margin-bottom: $layout-spacer;
   break-inside: avoid;
 }
+
 :host > * {
   display: flex;
   flex-direction: column;

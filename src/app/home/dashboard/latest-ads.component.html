@@ -1,0 +1,5 @@
+<page-content i18n-heading heading="Latest advertisements" hideBack>
+  <ng-container *ngFor="let ad of ads$ | async">
+    <avatar size="large" [image]="ad.image"></avatar>
+  </ng-container>
+</page-content>

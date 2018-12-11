@@ -3,12 +3,32 @@
 </page-layout>
 
 <ng-template #dashboard>
-  <div class="row" [ngClass]="{'no-gutters': layout.ltsm$ | async}">
-    <ng-container *ngFor="let config of configs$ | async">
-      <div *ngIf="layout.visible(config.breakpoints, layout.breakpointChanges$ | async)"
-        class="col-12 col-lg-6">
-        <dashboard-item [config]="config"></dashboard-item>
-      </div>
-    </ng-container>
+  <ng-container *ngIf="layout.ltlg$ | async; else twoColumns">
+    <div class="one-column">
+      <ng-container *ngFor="let config of configs$ | async">
+        <ng-container *ngIf="layout.visible(config.breakpoints, layout.breakpointChanges$ | async)">
+          <dashboard-item [config]="config"></dashboard-item>
+        </ng-container>
+      </ng-container>
+    </div>
+  </ng-container>
+</ng-template>
+
+<ng-template #twoColumns>
+  <div class="two-columns">
+    <div class="first-column">
+      <ng-container *ngFor="let config of leftColumnConfigs$ | async">
+        <ng-container *ngIf="layout.visible(config.breakpoints, layout.breakpointChanges$ | async)">
+          <dashboard-item [config]="config"></dashboard-item>
+        </ng-container>
+      </ng-container>
+    </div>
+    <div class="second-column">
+      <ng-container *ngFor="let config of rightColumnConfigs$ | async">
+        <ng-container *ngIf="layout.visible(config.breakpoints, layout.breakpointChanges$ | async)">
+          <dashboard-item [config]="config"></dashboard-item>
+        </ng-container>
+      </ng-container>
+    </div>
   </div>
 </ng-template>

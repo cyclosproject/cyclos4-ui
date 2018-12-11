@@ -10,7 +10,7 @@
         [ngClass]="card.ngClass" [ngStyle]="card.ngStyle"></banner-card>
     </div>
 
-    <div class="content-area d-flex flex-column" [ngClass]="{
+    <div #contentArea class="content-area d-flex flex-column" [ngClass]="{
       'content-area-small': size === 'small',
       'content-area-medium': size === 'medium',
       'content-area-large': size === 'large'

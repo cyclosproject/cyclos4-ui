@@ -4,9 +4,13 @@
 
 <div [ngSwitch]="config.type" [ngClass]="{'d-none': !(ready$ | async)}">
   <quick-access *ngSwitchCase="DashboardItemType.QUICK_ACCESS" [descriptors]="data.descriptors"
-    (ready)="notifyReady()">
+    (ready)="notifyReady($event)">
   </quick-access>
 
-  <account-status *ngSwitchCase="DashboardItemType.ACCOUNT_STATUS" [accounts]="data.accounts"
-    (ready)="notifyReady()"></account-status>
+  <account-status *ngSwitchCase="DashboardItemType.ACCOUNT_STATUS" [account]="data.account"
+    [maxTransfers]="data.maxTransfers" (ready)="notifyReady($event)"></account-status>
+
+  <latest-ads *ngSwitchCase="DashboardItemType.LATEST_ADS" [groups]="data.groups"
+    [max]="data.max" (ready)="notifyReady($event)"></latest-ads>
+
 </div>

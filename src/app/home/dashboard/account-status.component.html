@@ -1,20 +1,29 @@
-<page-content *ngFor="let history of histories$ | async" [heading]="title(history)"
-  [headingActions]="headingActions(history)" hideBack>
+<page-content *ngIf="history$ | async as history" [heading]="title"
+  [headingActions]="headingActions" hideBack>
   <div class="row mb-3">
     <div class="col-6 balance-label" i18n>Balance</div>
     <div class="col-6 balance-value" [ngClass]="{
-      negative: format.isNegative(history.account.status.balance),
-      positive: format.isPositive(history.account.status.balance)
+      negative: format.isNegative(balance),
+      positive: format.isPositive(balance)
     }">
-      {{ history.account.status.balance | currency:history.account.currency
-      }}
+      {{ balance | currency:currency }}
     </div>
   </div>
-  <canvas balanceHistoryChart [history]="history" width="400" height="140"></canvas>
+
+  <canvas balanceHistoryChart [history]="history" width="400" height="172"></canvas>
+
+  <ng-container *ngIf="maxTransfers > 0">
+    <ng-container *ngTemplateOutlet="transfersTpl"></ng-container>
+  </ng-container>
+
+</page-content>
+
+<ng-template #transfersTpl>
+
   <h3 class="border-0 mt-3 mb-2 text-body" i18n>Last incoming payments</h3>
-  <ng-container *ngIf="(lastPayments[history.account.id] | async) != null; else loadingTransfers">
-    <table class="table table-hover mb-0 cursor-pointer" *ngIf="(lastPayments[history.account.id] | async).length > 0; else noTransfers">
-      <tr *ngFor="let transfer of lastPayments[history.account.id].value; let last = last"
+  <ng-container *ngIf="(lastPayments$ | async) != null; else loadingTransfers">
+    <table class="table table-hover mb-0 cursor-pointer" *ngIf="lastPayments$.value?.length > 0; else noTransfers">
+      <tr *ngFor="let transfer of lastPayments$.value; let last = last"
         (click)="router.navigate(transferPath(transfer))">
         <td style="width:20%" class="text-left p-1 pl-0 text-muted" [ngClass]="{'border-0': last}">
           {{ transfer.date | date }}
@@ -23,11 +32,11 @@
           {{ subjectName(transfer) }}
         </td>
         <td style="width:35%" class="text-right p-1" [ngClass]="{
-          negative: format.isNegative(transfer.amount),
-          positive: format.isPositive(transfer.amount),
-          'border-0': last
-        }">
-          {{ transfer.amount | currency: history.account.currency }}
+            negative: format.isNegative(transfer.amount),
+            positive: format.isPositive(transfer.amount),
+            'border-0': last
+          }">
+          {{ transfer.amount | currency: currency }}
         </td>
       </tr>
     </table>
@@ -38,4 +47,5 @@
   <ng-template #loadingTransfers>
     <spinner></spinner>
   </ng-template>
-</page-content>
+
+</ng-template>

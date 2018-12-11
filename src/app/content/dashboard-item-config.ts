@@ -1,10 +1,8 @@
 
 import { Account } from 'app/api/models';
 import { DashboardItemType } from 'app/content/dashbord-item-type';
-import { Breakpoint } from 'app/shared/layout.service';
 import { QuickAccessDescriptor } from 'app/content/quick-access-descriptor';
-import { empty } from 'app/shared/helper';
-import { QuickAccessType } from 'app/content/quick-access-type';
+import { Breakpoint } from 'app/shared/layout.service';
 
 /**
  * Configuration for a dashboard item
@@ -28,6 +26,11 @@ interface DashboardItemConfig {
   breakpoints?: Breakpoint[];
 
   /**
+   * In which column should the item be displayed?
+   */
+  column?: 'left' | 'right';
+
+  /**
    * Configuration data, specific for each item type
    */
   data?: any;
@@ -36,49 +39,67 @@ interface DashboardItemConfig {
 
 namespace DashboardItemConfig {
 
+  export interface DashboardItemParams {
+    breakpoints?: Breakpoint[];
+    column?: 'left' | 'right';
+  }
+
+  export interface QuickAccessParams extends DashboardItemParams {
+    descriptors: QuickAccessDescriptor[];
+  }
+
   /**
-   * Returns the configuration for a quick access
-   * @param descriptors Describes the quick access links that should be shown.
-   * When not set, will render the following:
-   * - Accounts (only for mobile devices, as for larger displays an account status item will be shown per account)
-   * - Pay user
-   * - Contacts
-   * - Search users (business directory)
-   * - Search ads (marketplace)
-   * - Edit profile
-   * - Manage password (only for desktop / tablet, to fill in 6 items)
-   * @param breakpoints The media query breakpoints to show the item
+   * Returns a generic dashboard item configuration
+   * @param type The dashboard item type
+   * @param params The dashboard item parameters
+   * @param data The data to be passed in to the component
    */
-  export function quickAccess(descriptors?: QuickAccessDescriptor[], breakpoints?: Breakpoint[]): DashboardItemConfig {
-    if (empty(descriptors)) {
-      descriptors = [
-        { type: QuickAccessType.ACCOUNT, breakpoints: ['lt-md'] },
-        { type: QuickAccessType.PAY_USER },
-        { type: QuickAccessType.CONTACTS },
-        { type: QuickAccessType.SEARCH_USERS },
-        { type: QuickAccessType.SEARCH_ADS },
-        { type: QuickAccessType.EDIT_PROFILE },
-        { type: QuickAccessType.PASSWORDS },
-      ];
-    }
+  export function config(type: DashboardItemType, params: DashboardItemParams, data: any): DashboardItemConfig {
     return {
-      type: DashboardItemType.QUICK_ACCESS,
-      data: { descriptors: descriptors },
-      breakpoints: breakpoints
+      type: type,
+      data: data,
+      breakpoints: params.breakpoints,
+      column: params.column
     };
   }
 
   /**
-   * Returns the configuration for the status of one or more accounts
-   * @param accounts The accounts to show
-   * @param breakpoints The media query breakpoints to show the item
+   * Returns the configuration for a quick access
    */
-  export function accountStatus(accounts: Account[], breakpoints?: Breakpoint[]): DashboardItemConfig {
-    return {
-      type: DashboardItemType.ACCOUNT_STATUS,
-      data: { accounts: accounts },
-      breakpoints: breakpoints
-    };
+  export function quickAccess(params: QuickAccessParams): DashboardItemConfig {
+    return config(DashboardItemType.QUICK_ACCESS, params, {
+      descriptors: params.descriptors
+    });
+  }
+
+  export interface AccountStatusParams extends DashboardItemParams {
+    account: Account;
+    maxTransfers?: number;
+  }
+
+  /**
+   * Returns the configuration for the status of an account
+   */
+  export function accountStatus(params: AccountStatusParams): DashboardItemConfig {
+    return config(DashboardItemType.ACCOUNT_STATUS, params, {
+      account: params.account,
+      maxTransfers: params.maxTransfers
+    });
+  }
+
+  export interface LatestAdsParams extends DashboardItemParams {
+    groups?: string[];
+    max?: number;
+  }
+
+  /**
+   * Returns the configuration for the latest advertisements
+   */
+  export function latestAds(params: LatestAdsParams): DashboardItemConfig {
+    return config(DashboardItemType.LATEST_ADS, params, {
+      groups: params.groups,
+      max: params.max == null ? 6 : params.max
+    });
   }
 
 }
