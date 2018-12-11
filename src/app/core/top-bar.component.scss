@@ -10,13 +10,14 @@
 .navbar {
   color: $top-bar-color;
   background-color: $top-bar-bg;
-  padding: 0 0.4rem;
   min-height: 2.6rem;
+  padding: 0;
 }
 .navbar-container {
   display: flex;
   flex-grow: 1;
   margin: auto;
+  padding: 0 0.4rem;
   @include make-container-max-widths();
 }
 .navbar-brand {
@@ -41,6 +42,10 @@ a {
 }
 a:hover {
   text-decoration: none;
+}
+
+.personal-menu-toggle {
+  display: flex;
 }
 
 :host ::ng-deep .personal-menu-toggle icon {

@@ -2,7 +2,7 @@
   <div class="navbar-container" [ngClass]="{
       'px-1': (layout.xs$ | async) || (layout.sm$ | async)
     }">
-    <span class="d-flex justify-content-center mr-2" *ngIf="layout.ltlg$ | async">
+    <span class="d-flex justify-content-center align-items-center mr-2" *ngIf="layout.ltlg$ | async">
       <a class="d-table-cell" [ngClass]="{'px-2': layout.gtxxs$ | async}"
         href="#" (click)="toggleSidenav.emit(); $event.preventDefault()">
         <icon size="1.5rem" icon="menu"></icon>
@@ -17,7 +17,8 @@
       </span>
     </span>
     <div *ngIf="user != null" class="personal-menu-toggle">
-      <a #personalMenuLink href="#" class="d-flex align-items-center" (click)="togglePersonalMenu.emit(personalMenuLink); $event.preventDefault()">
+      <a #personalMenuLink href="#" class="d-flex align-items-center flex-grow-1"
+        (click)="togglePersonalMenu.emit(personalMenuLink); $event.preventDefault()">
         <avatar [image]="user.image" icon="account_circle"></avatar>
         <div *ngIf="layout.gtsm$ | async" class="ml-2 personal-menu-toggle-text dropdown-toggle">
           {{ user.display }}

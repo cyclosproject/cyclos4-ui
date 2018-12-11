@@ -3,6 +3,8 @@
 
 :root {
   --font-import-url: "#{$font-import-url}";
+  // Will be updated dynamically
+  --window-width: "1000px";
 }
 
 body.lt-md {
@@ -18,6 +20,10 @@ body, top-bar nav, menu-bar nav {
 
 .no-wrap {
   white-space: nowrap;
+}
+
+.window-width {
+  width: var(--window-width);
 }
 
 .no-gutters, .filters-form > .row, .filters-row {

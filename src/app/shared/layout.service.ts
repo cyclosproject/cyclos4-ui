@@ -1,10 +1,10 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { Injectable } from '@angular/core';
 import { BasePageComponent } from 'app/shared/base-page.component';
+import { empty } from 'app/shared/helper';
 import { PageLayoutComponent } from 'app/shared/page-layout.component';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
-import { empty } from 'app/shared/helper';
 
 const BREAKPOINTS = {
   xxs: '(max-width: 325px)',
@@ -132,6 +132,12 @@ export class LayoutService {
         this.leftAreaVisible = false;
       }
     });
+
+    const updateWindowWidth = () => {
+      document.body.style.setProperty('--window-width', document.documentElement.clientWidth + 'px');
+    };
+    window.addEventListener('resize', updateWindowWidth, false);
+    updateWindowWidth();
   }
 
   private updateBodyStyles(breakpoints: Set<string>) {

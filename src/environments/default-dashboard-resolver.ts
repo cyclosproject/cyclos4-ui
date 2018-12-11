@@ -63,8 +63,9 @@ export class DefaultDashboardResolver implements DashboardResolver {
     const marketplace = permissions.marketplace || {};
     if (marketplace.search) {
       result.push(DashboardItemConfig.latestAds({
-        breakpoints: ['gt-sm'],
-        column: 'left'
+        max: 6,
+        column: 'left',
+        breakpoints: ['gt-sm']
       }));
     }
 

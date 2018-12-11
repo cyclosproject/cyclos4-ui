@@ -5,7 +5,7 @@
 <ng-template #dashboard>
   <div class="dashboard">
     <ng-container *ngIf="layout.ltlg$ | async; else twoColumns">
-      <div class="one-column">
+      <div class="one-column window-width">
         <ng-container *ngFor="let config of configs$ | async">
           <ng-container *ngIf="layout.visible(config.breakpoints, layout.breakpointChanges$ | async)">
             <dashboard-item [config]="config"></dashboard-item>
@@ -17,7 +17,7 @@
 </ng-template>
 
 <ng-template #twoColumns>
-  <div class="two-columns">
+  <div class="two-columns window-width">
     <div class="first-column">
       <ng-container *ngFor="let config of leftConfigs$ | async">
         <ng-container *ngIf="layout.visible(config.breakpoints, layout.breakpointChanges$ | async)">
@@ -33,7 +33,7 @@
       </ng-container>
     </div>
   </div>
-  <div class="full-columns">
+  <div class="full-columns window-width">
     <ng-container *ngFor="let config of fullConfigs$ | async">
       <ng-container *ngIf="layout.visible(config.breakpoints, layout.breakpointChanges$ | async)">
         <dashboard-item [config]="config"></dashboard-item>

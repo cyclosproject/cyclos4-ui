@@ -2,7 +2,7 @@
   <div class="row no-gutters quick-access-container">
     <ng-container *ngFor="let action of actions">
       <div *ngIf="layout.visible(action.breakpoints, layout.breakpointChanges$ | async)"
-        class="col-6 col-sm-4">
+        class="col-12 col-xs-6 col-sm-4">
         <div class="text-center">
           <a [routerLink]="action.url" class="quick-access-item">
             <icon [size]="(layout.ltsm$ | async) ? '1.8rem' : '2.2rem'"
