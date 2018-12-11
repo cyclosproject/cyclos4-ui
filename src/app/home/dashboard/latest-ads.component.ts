@@ -5,7 +5,7 @@ import { BaseDashboardComponent } from 'app/home/dashboard/base-dashboard.compon
 import { BehaviorSubject } from 'rxjs';
 
 /**
- * Displays the latest
+ * Displays the latest advertisements
  */
 @Component({
   selector: 'latest-ads',

@@ -3,6 +3,7 @@ import { Account } from 'app/api/models';
 import { DashboardItemType } from 'app/content/dashbord-item-type';
 import { QuickAccessDescriptor } from 'app/content/quick-access-descriptor';
 import { Breakpoint } from 'app/shared/layout.service';
+import { Content } from 'app/content/content';
 
 export type DashboardColumn = 'left' | 'right' | 'full';
 
@@ -104,6 +105,20 @@ namespace DashboardItemConfig {
     });
   }
 
+
+  export interface ContentParams extends DashboardItemParams, Content {
+    title?: string;
+  }
+
+  /**
+   * Returns the configuration for a content in the dashboard
+   */
+  export function content(params: ContentParams): DashboardItemConfig {
+    return config(DashboardItemType.CONTENT, params, {
+      content: params,
+      title: params.title
+    });
+  }
 }
 
 export { DashboardItemConfig };

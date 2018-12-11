@@ -1,5 +1,5 @@
 <page-layout *ngIf="contentPage.layout === 'card'" class="mt-4">
   <page-content [heading]="contentPage.title">
-    <div [innerHTML]="contentService.get(contentPage) | async"></div>
+    <div [innerHTML]="contentService.get(contentPage) | async | trust"></div>
   </page-content>
 </page-layout>

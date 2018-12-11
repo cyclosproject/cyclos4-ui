@@ -1,0 +1,3 @@
+<page-content [heading]="title" hideBack>
+  <div [innerHTML]="content$ | async | trust"></div>
+</page-content>

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { AccountStatusComponent } from 'app/home/dashboard/account-status.component';
 import { BalanceHistoryChartDirective } from 'app/home/dashboard/balance-history-chart.directive';
+import { DashboardContentComponent } from 'app/home/dashboard/dashboard-content.component';
 import { DashboardItemComponent } from 'app/home/dashboard/dashboard-item.component';
 import { LatestAdsComponent } from 'app/home/dashboard/latest-ads.component';
 import { QuickAccessComponent } from 'app/home/dashboard/quick-access.component';
@@ -18,7 +19,8 @@ import { SharedModule } from 'app/shared/shared.module';
     QuickAccessComponent,
     AccountStatusComponent,
     BalanceHistoryChartDirective,
-    LatestAdsComponent
+    LatestAdsComponent,
+    DashboardContentComponent
   ],
   imports: [
     SharedModule
