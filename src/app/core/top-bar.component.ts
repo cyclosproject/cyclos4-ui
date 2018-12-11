@@ -4,7 +4,9 @@ import { User } from 'app/api/models';
 import { BreadcrumbService } from 'app/core/breadcrumb.service';
 import { FormatService } from 'app/core/format.service';
 import { LoginService } from 'app/core/login.service';
+import { MenuService } from 'app/core/menu.service';
 import { LayoutService } from 'app/shared/layout.service';
+import { Menu } from 'app/shared/menu';
 
 /**
  * The top bar, which is always visible
@@ -21,6 +23,7 @@ export class TopBarComponent implements OnInit {
     public format: FormatService,
     public login: LoginService,
     public layout: LayoutService,
+    public menu: MenuService,
     public router: Router) {
   }
 
@@ -31,5 +34,12 @@ export class TopBarComponent implements OnInit {
   @Output() toggleSidenav = new EventEmitter<void>();
 
   ngOnInit(): void {
+  }
+
+  goToLogin(event: MouseEvent) {
+    this.menu.lastSelectedMenu = Menu.LOGIN;
+    this.router.navigateByUrl('/login');
+    event.stopPropagation();
+    event.preventDefault();
   }
 }
