@@ -1,7 +1,10 @@
 @import 'src/definitions';
 
-.one-column, .two-columns {
-  margin-top: $layout-spacer;
+.dashboard {
+  padding-top: $layout-spacer;
+}
+.one-column, .two-columns, .full-columns {
+  @include make-container-max-widths();
 }
 
 .two-columns {

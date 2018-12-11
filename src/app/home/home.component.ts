@@ -23,8 +23,9 @@ export class HomeComponent extends BasePageComponent<void> implements OnInit {
   ready$ = new BehaviorSubject(false);
   homePage: ContentPage;
   configs$ = new BehaviorSubject<DashboardItemConfig[]>(null);
-  leftColumnConfigs$ = new BehaviorSubject<DashboardItemConfig[]>(null);
-  rightColumnConfigs$ = new BehaviorSubject<DashboardItemConfig[]>(null);
+  leftConfigs$ = new BehaviorSubject<DashboardItemConfig[]>(null);
+  rightConfigs$ = new BehaviorSubject<DashboardItemConfig[]>(null);
+  fullConfigs$ = new BehaviorSubject<DashboardItemConfig[]>(null);
   resolver: DashboardItemConfig[] | DashboardResolver;
 
   constructor(private injector: Injector) {
@@ -58,8 +59,9 @@ export class HomeComponent extends BasePageComponent<void> implements OnInit {
 
   private initializeItems(configs: DashboardItemConfig[]) {
     this.configs$.next(configs);
-    this.leftColumnConfigs$.next(configs.filter(c => c.column == null || c.column === 'left'));
-    this.rightColumnConfigs$.next(configs.filter(c => c.column === 'right'));
+    this.leftConfigs$.next(configs.filter(c => c.column === 'left'));
+    this.rightConfigs$.next(configs.filter(c => c.column === 'right'));
+    this.fullConfigs$.next(configs.filter(c => c.column == null || c.column === 'full'));
     this.ready$.next(true);
   }
 

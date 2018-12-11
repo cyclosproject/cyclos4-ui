@@ -1,7 +1,5 @@
 <nav class="navbar navbar-expand-md">
-  <div [ngClass]="{
-      container: layout.gtsm$ | async,
-      'container-fluid': layout.ltmd$ | async,
+  <div class="navbar-container" [ngClass]="{
       'px-1': (layout.xs$ | async) || (layout.sm$ | async)
     }">
     <span class="d-flex justify-content-center mr-2" *ngIf="layout.ltlg$ | async">
@@ -14,7 +12,8 @@
       <img *ngIf="layout.gtxs$ | async" class="logo d-inline-block align-top mr-3"
         src="images/logo.png">
       <span class="d-inline-block">
-        {{ (layout.ltsm$ | async) ? format.appTitleSmall : format.appTitle }}
+        {{ (layout.ltsm$ | async) ? format.appTitleSmall : format.appTitle
+        }}
       </span>
     </span>
     <div *ngIf="user != null" class="personal-menu-toggle">

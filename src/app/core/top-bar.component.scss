@@ -13,6 +13,12 @@
   padding: 0 0.4rem;
   min-height: 2.6rem;
 }
+.navbar-container {
+  display: flex;
+  flex-grow: 1;
+  margin: auto;
+  @include make-container-max-widths();
+}
 .navbar-brand {
   font-size: 1.5em;
 }

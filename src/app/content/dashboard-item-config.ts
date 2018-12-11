@@ -4,6 +4,8 @@ import { DashboardItemType } from 'app/content/dashbord-item-type';
 import { QuickAccessDescriptor } from 'app/content/quick-access-descriptor';
 import { Breakpoint } from 'app/shared/layout.service';
 
+export type DashboardColumn = 'left' | 'right' | 'full';
+
 /**
  * Configuration for a dashboard item
  */
@@ -28,7 +30,7 @@ interface DashboardItemConfig {
   /**
    * In which column should the item be displayed?
    */
-  column?: 'left' | 'right';
+  column?: DashboardColumn;
 
   /**
    * Configuration data, specific for each item type
@@ -41,7 +43,7 @@ namespace DashboardItemConfig {
 
   export interface DashboardItemParams {
     breakpoints?: Breakpoint[];
-    column?: 'left' | 'right';
+    column?: DashboardColumn;
   }
 
   export interface QuickAccessParams extends DashboardItemParams {

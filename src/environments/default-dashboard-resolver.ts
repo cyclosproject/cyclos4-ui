@@ -42,12 +42,14 @@ export class DefaultDashboardResolver implements DashboardResolver {
     // Account status
     const banking = permissions.banking || {};
     const accounts = (banking.accounts || []).filter(a => a.visible).map(p => p.account);
-    for (const account of accounts) {
+    for (let i = 0; i < accounts.length; i++) {
+      const account = accounts[i];
       result.push(DashboardItemConfig.accountStatus({
         account: account,
         maxTransfers: 3,
         breakpoints: ['gt-sm'],
-        column: 'right'
+        // After the 3rd account, toggle left / right
+        column: (i > 1) && (i % 2 === 0) ? 'left' : 'right'
       }));
 
       for (const acctPerm of banking.accounts) {

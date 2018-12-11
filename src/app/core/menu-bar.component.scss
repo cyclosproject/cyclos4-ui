@@ -9,6 +9,12 @@ nav {
   padding: 0 0.7rem;
   border-bottom: 1px solid $section-border-color;
 }
+.navbar-container {
+  display: flex;
+  margin: auto;
+  flex-grow: 1;
+  @include make-container-max-widths();
+}
 a {
   color: $menu-bar-color;
   padding: 0.9rem 2rem;
