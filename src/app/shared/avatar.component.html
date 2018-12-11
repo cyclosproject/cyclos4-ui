@@ -6,10 +6,10 @@
       'full-size': fullSize
     }"
       [ngStyle]="{
-      backgroundImage: 'url(' + url + ')',
-      width: fullSize ? '' : size + 'px',
-      height: fullSize ? '' : size + 'px'
-    }">
+        backgroundImage: 'url(' + url + ')',
+        width: fullSize ? '' : size + 'px',
+        height: fullSize ? '' : size + 'px'
+      }">
     </div>
     <div *ngIf="!additionalImagesHidden && additionalImagesToShow?.length > 0"
       class="additional-images">
