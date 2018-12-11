@@ -1,11 +1,18 @@
 @import 'src/definitions';
 
-.one-column, .two-columns {
+.one-column, .full-columns {
   display: flex;
   flex-direction: column;
 }
 
+.two-columns, .full-columns {
+  @include make-container-max-widths();
+}
+
 .two-columns {
+  display: flex;
+  flex-direction: row;
+
   .first-column, .second-column {
     width: 50%;
     display: flex;

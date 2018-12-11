@@ -4,7 +4,7 @@
   flex-direction: column;
 }
 .main-container {
-  margin-top: 1.5rem;
+  margin: 1.5rem auto 0 auto;
 }
 .lt-md :host ::ng-deep .main-container {
   padding: 0;

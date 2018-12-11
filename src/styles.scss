@@ -7,6 +7,10 @@
   --window-width: "1000px";
 }
 
+.max-container-widths {
+  @include make-container-max-widths();
+}
+
 body.lt-md {
   background-color: $card-bg;
   overflow-x: hidden;
