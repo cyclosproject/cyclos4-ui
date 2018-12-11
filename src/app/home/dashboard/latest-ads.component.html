@@ -6,7 +6,7 @@
           <a class="d-flex flex-column plain" [routerLink]="path(ad)">
             <div class="text-center">
               <div class="avatar-container">
-                <avatar class="main-image" size="huge" [image]="ad.image"></avatar>
+                <avatar class="main-image" size="xlarge" [image]="ad.image"></avatar>
                 <avatar *ngIf="ad.owner.image" class="owner-image" size="medium-large"
                   [image]="ad.owner.image" [tooltip]="ad.owner.display"
                   (click)="navigateToOwner(ad, $event)"></avatar>

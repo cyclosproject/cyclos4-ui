@@ -25,8 +25,8 @@
         </div>
       </a>
     </div>
-    <div *ngIf="user == null && (layout.ltlg$ | async) && (router.events | async) && router.url !== '/login'"
-      class="d-flex justify-content-center mr-2">
+    <div *ngIf="(login.user$ | async) == null && (layout.ltlg$ | async)"
+      class="d-flex justify-content-center mr-2 login-icon">
       <a routerLink="/login" class="d-flex align-items-center">
         <icon icon="input"></icon>
       </a>

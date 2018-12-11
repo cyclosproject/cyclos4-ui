@@ -833,6 +833,10 @@ notification data {
   }
 }
 
+body.root-menu--login .login-icon {
+  display: none !important;
+}
+
 top-bar nav {
   transition: background-color ease-in-out 0.4s;
 }

@@ -72,6 +72,9 @@ export class SidenavComponent implements OnInit {
   }
 
   onClick(entry: MenuEntry, event: MouseEvent) {
+    // Update the last selected menu
+    this.menu.lastSelectedMenu = entry.menu;
+
     if (entry.menu === Menu.LOGOUT) {
       this.login.logout();
     } else {

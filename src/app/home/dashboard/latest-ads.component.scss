@@ -1,13 +1,13 @@
 @import 'src/definitions';
 
 .container {
-  margin-top: -2rem;
+  margin-top: -1.4rem;
+  margin-bottom: 0.6rem;
 }
 
 .content-text {
   flex-grow: 1;
   @include text-truncate;
-  color: $text-muted;
   text-align: center;
   margin-top: 0.5rem;
 }
@@ -20,8 +20,8 @@
 
 .owner-image {
   position: absolute;
-  right: 0.5rem;
-  bottom: 0.5rem;
+  right: -0.4rem;
+  bottom: 0;
 }
 
 a {

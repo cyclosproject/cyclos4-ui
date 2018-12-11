@@ -20,18 +20,18 @@
 
 <ng-template #transfersTpl>
 
-  <h3 class="border-0 mt-3 mb-2 text-body" i18n>Last incoming payments</h3>
+  <h3 class="border-0 mt-4 mb-2 text-body" i18n>Last incoming payments</h3>
   <ng-container *ngIf="(lastPayments$ | async) != null; else loadingTransfers">
     <table class="table table-hover mb-0 cursor-pointer" *ngIf="lastPayments$.value?.length > 0; else noTransfers">
       <tr *ngFor="let transfer of lastPayments$.value; let last = last"
         (click)="router.navigate(transferPath(transfer))">
-        <td style="width:20%" class="text-left p-1 pl-0 text-muted" [ngClass]="{'border-0': last}">
+        <td style="width:20%" class="text-left pl-0 text-muted" [ngClass]="{'border-0': last}">
           {{ transfer.date | date }}
         </td>
-        <td style="width:45%" class="text-center p-1 text-muted" [ngClass]="{'border-0': last}">
+        <td style="width:45%" class="text-center text-muted" [ngClass]="{'border-0': last}">
           {{ subjectName(transfer) }}
         </td>
-        <td style="width:35%" class="text-right p-1" [ngClass]="{
+        <td style="width:35%" class="text-right" [ngClass]="{
             negative: format.isNegative(transfer.amount),
             positive: format.isPositive(transfer.amount),
             'border-0': last
