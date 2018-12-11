@@ -51,7 +51,7 @@ $spacing: 0.5rem;
 @include media-breakpoint-up(sm) {
   .quick-access-container {
     margin: -$spacing 0 0 -$spacing;
-    padding: 1.6rem 0.5rem 2.4rem 0.3rem;
+    padding: 1.4rem 0.5rem 1.8rem 0.3rem;
   }
 
   .quick-access-item, .quick-access-item:hover {
