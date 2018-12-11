@@ -19,9 +19,9 @@
   }
 
   .front-page-title {
-    font-size: 1.8rem;
+    font-size: 2.2rem;
     line-height: 2.6rem;
-    margin-bottom: 2rem !important;
+    margin-bottom: 1rem !important;
   }
 
   #front-page p {
@@ -56,7 +56,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 2rem auto 0 auto;
+    margin: 1.6rem auto 0 auto;
   }
 
   .front-page-buttons a {
@@ -226,10 +226,6 @@
     .award>.container {
       margin-bottom: 0;
     }
-
-    .award img {
-      margin-top: 0;
-    }
   }
 
   /* lg */
@@ -240,6 +236,10 @@
 
     .footer {
       padding-top: 2rem;
+    }
+
+    .award img {
+      margin-top: 0;
     }
   }
 
@@ -252,7 +252,7 @@
         <span class="no-wrap">CYCLOS 4 PRO</span>
         <span class="no-wrap">PAYMENT SOFTWARE</span>
       </p>
-      <p>
+      <p class="mb-0">
         <span class="no-wrap">Developed to deliver high security,</span>
         <span class="no-wrap">flexibility and scalability,</span>
         <span class="no-wrap">combined with a solid quality.</span></p>
@@ -874,11 +874,13 @@
         <div class="col-12 col-lg-6 award-image-content">
           <img src="https://www.cyclos.org/wp-content/uploads/2014/04/award.png">
         </div>
-        <div class="col-12 col-lg-6 stripe-item-content">
-          <h1>Award winning payment software</h1>
-          <p class="mt-4">As early as
-            2014 the payment industry awarded Cyclos at the TRANSACT
-            conference for being the most innovative payment software.</p>
+        <div class="col-12 col-lg-6 stripe-item-content d-flex align-items-center">
+          <div>
+            <h1>Award winning software</h1>
+            <p class="mt-4 mb-0">As early as
+              2014 the payment industry awarded Cyclos at the TRANSACT
+              conference for being the most innovative payment software.</p>
+          </div>
         </div>
       </div>
     </div>
