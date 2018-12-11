@@ -20,6 +20,10 @@
   height: 128px;
 }
 
+:host ::ng-deep .main-image .avatar-container {
+  border: 1px solid $section-border-color !important;
+}
+
 .owner-image {
   position: absolute;
   right: 0;
