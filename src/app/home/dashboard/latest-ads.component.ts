@@ -33,7 +33,7 @@ export class LatestAdsComponent extends BaseDashboardComponent implements OnInit
       groups: this.groups,
       hasImages: true,
       orderBy: AdOrderByEnum.DATE,
-      fields: ['id', 'owner.display', 'image', 'name'],
+      fields: ['id', 'owner', 'image', 'name'],
       pageSize: this.max
     }).subscribe(ads => {
       this.ads$.next(ads);
@@ -43,5 +43,11 @@ export class LatestAdsComponent extends BaseDashboardComponent implements OnInit
 
   path(ad: AdResult): string[] {
     return ['/marketplace', 'view', ad.id];
+  }
+
+  navigateToOwner(ad: AdResult, event: MouseEvent) {
+    this.router.navigate(['/users', 'profile', ad.owner.id]);
+    event.preventDefault();
+    event.stopPropagation();
   }
 }

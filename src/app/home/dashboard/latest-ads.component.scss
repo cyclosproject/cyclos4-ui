@@ -1,10 +1,28 @@
-.balance-label {
-  font-size: 1.2rem;
-  line-height: 2rem;
-  text-align: end;
+@import 'src/definitions';
+
+.container {
+  margin-top: -2rem;
 }
 
-.balance-value {
-  font-size: 1.4rem;
-  line-height: 2rem;
+.content-text {
+  flex-grow: 1;
+  @include text-truncate;
+  color: $text-muted;
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
+.avatar-container {
+  position: relative;
+  text-align: center;
+}
+
+.owner-image {
+  position: absolute;
+  right: 0.5rem;
+  bottom: 0.5rem;
+}
+
+a {
+  margin-top: 2rem;
 }

@@ -1,5 +1,20 @@
 <page-content i18n-heading heading="Latest advertisements" hideBack>
-  <ng-container *ngFor="let ad of ads$ | async">
-    <avatar size="large" [image]="ad.image"></avatar>
-  </ng-container>
+  <div class="container">
+    <div class="row">
+      <ng-container *ngFor="let ad of ads$ | async">
+        <div class="col-6 col-lg-4">
+          <a class="d-flex flex-column plain" [routerLink]="path(ad)">
+            <div class="avatar-container">
+              <avatar class="main-image" size="huge" [image]="ad.image"></avatar>
+              <avatar *ngIf="ad.owner.image" class="owner-image" size="medium-large"
+                [image]="ad.owner.image" [tooltip]="ad.owner.display" (click)="navigateToOwner(ad, $event)"></avatar>
+            </div>
+            <div class="content-text" [title]="ad.name">
+              {{ ad.name }}
+            </div>
+          </a>
+        </div>
+      </ng-container>
+    </div>
+  </div>
 </page-content>
