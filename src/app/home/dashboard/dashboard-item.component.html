@@ -13,6 +13,9 @@
   <latest-ads *ngSwitchCase="DashboardItemType.LATEST_ADS" [groups]="data.groups"
     [max]="data.max" (ready)="notifyReady($event)"></latest-ads>
 
+  <latest-users *ngSwitchCase="DashboardItemType.LATEST_USERS" [groups]="data.groups"
+    [max]="data.max" (ready)="notifyReady($event)"></latest-users>
+
   <dashboard-content *ngSwitchCase="DashboardItemType.CONTENT" [content]="data.content"
     [title]="data.title" [tight]="data.tight" (ready)="notifyReady($event)"></dashboard-content>
 

@@ -135,6 +135,32 @@ namespace DashboardItemConfig {
     });
   }
 
+
+  /**
+   * Parameters for showing the latest users
+   */
+  export interface LatestUsersParams extends DashboardItemParams {
+    /**
+     * A list of user groups (internal names / ids)
+     */
+    groups?: string[];
+
+    /**
+     * Maximum number of users
+     */
+    max?: number;
+  }
+
+  /**
+   * Returns the configuration for the latest users
+   */
+  export function latestUsers(params: LatestUsersParams): DashboardItemConfig {
+    return config(DashboardItemType.LATEST_USERS, params, {
+      groups: params.groups,
+      max: params.max == null ? 6 : params.max
+    });
+  }
+
   /**
    * Parameters for a custom content
    */

@@ -1,0 +1,21 @@
+<page-content i18n-heading heading="Latest users" hideBack>
+  <div class="container">
+    <div class="row">
+      <ng-container *ngFor="let user of users$ | async">
+        <div class="col-12 col-xs-6 col-lg-4">
+          <a class="d-flex flex-column plain" [routerLink]="path(user)">
+            <div class="text-center">
+              <div class="images">
+                <avatar [roundBorders]="false" class="main-image" size="huge"
+                  [image]="user.image"></avatar>
+              </div>
+            </div>
+            <div class="content-text" [title]="user.display">
+              {{ user.display }}
+            </div>
+          </a>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</page-content>
