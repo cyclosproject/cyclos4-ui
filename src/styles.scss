@@ -104,6 +104,15 @@ body, top-bar nav, menu-bar nav {
   }
 }
 
+.category-results {
+  a:hover {
+    background-color: $tiled-results-hover-bg;
+  }
+  .card-body {
+    padding: 0.3rem 0 !important;
+  }
+}
+
 @include media-breakpoint-up(xs) {
   .tiled-results, .category-results {
     margin-top: $layout-spacer-xs;
@@ -183,15 +192,22 @@ body, top-bar nav, menu-bar nav {
     border-bottom: 1px solid $card-border-color;
     justify-content: center;
     align-items: center;
-    padding: 0.6rem 0.8rem;
+  }
+  avatar {
+    margin-right: 0.6rem;
   }
   .category-title-text {
     flex-grow: 1;
     padding: 0.1rem 0 0 0.5rem;
     font-weight: $font-weight-bold;
+    padding: 0.6rem 0.8rem;
+    display: flex;
+    align-items: center;
+    line-height: 1em;
   }
   .sub-category-text {
     display: block;
+    padding: 0.3rem 0.7rem;
   }
   .category-footer {
     display: block;
@@ -732,9 +748,6 @@ h3 {
   }
 }
 
-.gm-style-iw > div {
-  overflow: visible !important;
-}
 .agm-info-window-content {
   h1, h2, h3 {
     margin-left: 0;
@@ -818,7 +831,7 @@ notification data {
 @media print {
   body {
     background-color: transparent;
-    padding-top: 1rem;
+    padding-top: 1cm;
   }
   a, a:hover, h1, h2, h3, td, th, tr, table, .positive, .negative {
     color: $body-color !important;
@@ -829,6 +842,9 @@ notification data {
   }
   .link-with-icon icon, td.avatar, th.avatar, td.row-actions, th.row-actions, pagination {
     display: none;
+  }
+  .avatar-container.round-borders {
+    border-radius: 0 !important;
   }
 }
 

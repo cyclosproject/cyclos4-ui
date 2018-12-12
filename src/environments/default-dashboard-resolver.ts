@@ -70,6 +70,13 @@ export class DefaultDashboardResolver implements DashboardResolver {
       }));
     }
 
+    // Latest users
+    result.push(DashboardItemConfig.latestUsers({
+      max: 6,
+      column: 'left',
+      breakpoints: ['gt-sm']
+    }));
+
     // Content
     result.push(DashboardItemConfig.content({
       title: 'Upcoming events',

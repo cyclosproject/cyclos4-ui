@@ -4,9 +4,9 @@
 
   <div *resultCategory="let cat" class="card">
     <div class="category-title">
-      <avatar [image]="categoryImage(cat)" size="small" [icon]="categoryIcon(cat)"
-        [iconColor]="categoryColor(cat)"></avatar>
       <a class="category-title-text" href="#" (click)="$event.preventDefault(); selectCategory(cat)">
+        <avatar [image]="categoryImage(cat)" size="small" [icon]="categoryIcon(cat)"
+          [iconColor]="categoryColor(cat)"></avatar>
         {{ cat.name }}
       </a>
     </div>

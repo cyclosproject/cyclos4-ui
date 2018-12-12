@@ -15,6 +15,9 @@ export class SvgIconRegistry {
 
   constructor() {
     this.register('account_balance_circle');
+    this.register('registration');
+
+    // Quick access
     this.register('search_users');
     this.register('marketplace');
     this.register('edit_profile');

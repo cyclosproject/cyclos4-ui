@@ -12,21 +12,21 @@ export enum MenuType {
 
 /** Contains the top-level (root) menus */
 export type RootMenu =
-  'home' | 'login' | 'registration' | 'publicDirectory' | 'publicMarketplace' |
+  'home' | 'publicDirectory' | 'publicMarketplace' | 'registration' | 'login' |
   'dashboard' | 'banking' | 'marketplace' | 'personal';
 export module RootMenu {
   export const HOME: RootMenu = 'home';
   export const PUBLIC_DIRECTORY: RootMenu = 'publicDirectory';
   export const PUBLIC_MARKETPLACE: RootMenu = 'publicMarketplace';
-  export const LOGIN: RootMenu = 'login';
   export const REGISTRATION: RootMenu = 'registration';
+  export const LOGIN: RootMenu = 'login';
   export const DASHBOARD: RootMenu = 'dashboard';
   export const BANKING: RootMenu = 'banking';
   export const MARKETPLACE: RootMenu = 'marketplace';
   export const PERSONAL: RootMenu = 'personal';
   export function values(): RootMenu[] {
     return [
-      HOME, PUBLIC_DIRECTORY, PUBLIC_MARKETPLACE, LOGIN, REGISTRATION,
+      HOME, PUBLIC_DIRECTORY, PUBLIC_MARKETPLACE, REGISTRATION, LOGIN,
       DASHBOARD, BANKING, MARKETPLACE, PERSONAL
     ];
   }
@@ -42,11 +42,11 @@ export class Menu {
 export module Menu {
   // Standalone
   export const HOME = new Menu(RootMenu.HOME, 'HOME', false);
+  export const DASHBOARD = new Menu(RootMenu.DASHBOARD, 'DASHBOARD', false);
   export const PUBLIC_DIRECTORY = new Menu(RootMenu.PUBLIC_DIRECTORY, 'PUBLIC_DIRECTORY', false);
   export const PUBLIC_MARKETPLACE = new Menu(RootMenu.PUBLIC_MARKETPLACE, 'PUBLIC_MARKETPLACE', false);
-  export const LOGIN = new Menu(RootMenu.LOGIN, 'LOGIN', false);
   export const REGISTRATION = new Menu(RootMenu.REGISTRATION, 'REGISTRATION', false);
-  export const DASHBOARD = new Menu(RootMenu.DASHBOARD, 'DASHBOARD', false);
+  export const LOGIN = new Menu(RootMenu.LOGIN, 'LOGIN', false);
 
   // Banking
   export const ACCOUNT_HISTORY = new Menu(RootMenu.BANKING, 'ACCOUNT_HISTORY');

@@ -199,8 +199,8 @@ export class MenuService {
     addRoot(RootMenu.BANKING, 'account_balance', this.i18n({ value: 'Banking', description: 'Menu' }));
     addRoot(RootMenu.MARKETPLACE, 'shopping_cart', this.i18n({ value: 'Marketplace', description: 'Menu' }));
     addRoot(RootMenu.PERSONAL, 'account_box', this.i18n({ value: 'Personal', description: 'Menu' }));
-    const login = addRoot(RootMenu.LOGIN, 'lock', this.i18n({ value: 'Login', description: 'Menu' }));
-    const register = addRoot(RootMenu.REGISTRATION, 'input', this.i18n({ value: 'Register', description: 'Menu' }));
+    const register = addRoot(RootMenu.REGISTRATION, 'registration', this.i18n({ value: 'Register', description: 'Menu' }));
+    const login = addRoot(RootMenu.LOGIN, 'input', this.i18n({ value: 'Login', description: 'Menu' }));
 
     // Lambda that adds a submenu to a root menu
     const add = (menu: Menu, url: string, icon: string, label: string, showIn: MenuType[] = null) => {
@@ -222,11 +222,11 @@ export class MenuService {
       if (marketplace.search) {
         add(Menu.PUBLIC_MARKETPLACE, '/marketplace/public-search', publicMarketplace.icon, publicMarketplace.label);
       }
-      add(Menu.LOGIN, '/login', login.icon, login.label);
       const registrationGroups = (this.dataForUiHolder.dataForUi || {}).publicRegistrationGroups || [];
       if (registrationGroups.length > 0) {
         add(Menu.REGISTRATION, '/users/registration', register.icon, register.label);
       }
+      add(Menu.LOGIN, '/login', login.icon, login.label);
     } else {
       // Logged user
       add(Menu.DASHBOARD, '/', dashboard.icon, dashboard.label);

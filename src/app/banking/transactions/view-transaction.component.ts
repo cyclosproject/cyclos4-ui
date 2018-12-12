@@ -10,7 +10,6 @@ import { RecurringPaymentsService } from 'app/api/services/recurring-payments.se
 import { ScheduledPaymentsService } from 'app/api/services/scheduled-payments.service';
 import { TransactionStatusService } from 'app/core/transaction-status.service';
 import { HeadingAction } from 'app/shared/action';
-import { ApiHelper } from 'app/shared/api-helper';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { empty } from 'app/shared/helper';
 
@@ -127,11 +126,6 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
     if ((transaction.transfer || {}).canChargeback) {
       actions.push(new HeadingAction('undo', this.i18n('Chargeback this transfer'), () => {
         this.chargeback();
-      }));
-    }
-    if ((transaction.transfer || {}).chargedBackBy) {
-      actions.push(new HeadingAction('view', this.i18n('View chargeback transfer'), () => {
-        this.router.navigate(['/banking', 'transfer', ApiHelper.transactionNumberOrId(transaction.transfer.chargedBackBy)]);
       }));
     }
     return actions;

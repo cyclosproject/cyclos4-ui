@@ -53,11 +53,6 @@ export class ViewTransferComponent extends BasePageComponent<TransferView> imple
         this.chargeback();
       }));
     }
-    if (transfer.chargedBackBy) {
-      actions.push(new HeadingAction('view', this.i18n('View chargeback'), () => {
-        this.router.navigate(['/banking', 'transfer', ApiHelper.transactionNumberOrId(transfer.chargedBackBy)]);
-      }));
-    }
     return actions;
   }
 

@@ -19,7 +19,6 @@ const MAX_CHILDREN = 5;
 @Component({
   selector: 'ads-results',
   templateUrl: 'ads-results.component.html',
-  styleUrls: ['ads-results.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AdsResultsComponent extends BaseComponent {
