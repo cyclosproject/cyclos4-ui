@@ -3,6 +3,7 @@ import { DashboardItemConfig } from 'app/content/dashboard-item-config';
 import { DashboardResolver } from 'app/content/dashboard-resolver';
 import { QuickAccessType } from 'app/content/quick-access-type';
 import { LoginService } from 'app/core/login.service';
+import { ContentGetter } from 'app/content/content-getter';
 
 /**
  * By default, the dashboard is comprised of:
@@ -68,6 +69,14 @@ export class DefaultDashboardResolver implements DashboardResolver {
         breakpoints: ['gt-sm']
       }));
     }
+
+    // Content
+    result.push(DashboardItemConfig.content({
+      title: 'Upcoming events',
+      column: 'right',
+      tight: true,
+      content: ContentGetter.url('content/events.html')
+    }));
 
     return result;
   }

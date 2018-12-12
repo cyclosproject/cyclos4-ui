@@ -1,7 +1,54 @@
-<table class="table border-0">
+<style>
+  .events {
+    margin-top: -0.5rem;
+  }
 
-  <tr>
-    <td style="width: 6rem">
+  .event {
+    margin-top: 0.5rem;
+    padding: 0.5rem 0;
+    display: flex;
+    border-bottom: 1px solid #dee2e6;
+  }
+
+  .event-date,
+  .event-description {
+    padding: 0.5rem
+  }
+
+  .event-date {
+    width: 7rem;
+    border-right: 1px solid #dee2e6;
+    text-align: center;
+  }
+
+  .year {
+    font-size: 0.9em;
+  }
+
+  .day-of-month {
+    font-weight: 500;
+    font-size: 1.2em;
+  }
+
+  .event-description {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    padding-left: 1rem;
+  }
+
+  .notice {
+    font-size: 0.9em;
+    font-style: italic;
+    color: #757575;
+    text-align: center;
+    padding: 1rem;
+  }
+
+</style>
+<div class="events">
+  <div class="event">
+    <div class="event-date">
       <div class="day-of-week">
         Tue
       </div>
@@ -11,14 +58,14 @@
       <div class="year">
         2018
       </div>
-    </td>
-    <td>
+    </div>
+    <div class="event-description">
       Christmas day
-    </td>
-  </tr>
+    </div>
+  </div>
 
-  <tr>
-    <td class="border-bottom-0" style="width: 6rem">
+  <div class="event">
+    <div class="event-date">
       <div class="day-of-week">
         Tue
       </div>
@@ -28,10 +75,13 @@
       <div class="year">
         2019
       </div>
-    </td>
-    <td class="border-bottom-0">
+    </div>
+    <div class="event-description">
       New year
-    </td>
-  </tr>
-
-</table>
+    </div>
+  </div>
+</div>
+<div class="notice">
+  This is just an example of a content page that could be fetched from an
+  external source
+</div>

@@ -42,12 +42,21 @@ interface DashboardItemConfig {
 
 namespace DashboardItemConfig {
 
+  /**
+   * Common parameters for all dashboard item types
+   */
   export interface DashboardItemParams {
     breakpoints?: Breakpoint[];
     column?: DashboardColumn;
   }
 
+  /**
+   * Parameters for the quick access
+   */
   export interface QuickAccessParams extends DashboardItemParams {
+    /**
+     * Which quick access descriptors to show
+     */
     descriptors: QuickAccessDescriptor[];
   }
 
@@ -75,8 +84,19 @@ namespace DashboardItemConfig {
     });
   }
 
+  /**
+   * Parameters for an account status
+   */
   export interface AccountStatusParams extends DashboardItemParams {
+    /**
+     * Which account to show
+     */
     account: Account;
+
+    /**
+     * The maximum number of transfers to show in the last incoming payments.
+     * When set to zero, incoming payments are not shown.
+     */
     maxTransfers?: number;
   }
 
@@ -90,8 +110,18 @@ namespace DashboardItemConfig {
     });
   }
 
+  /**
+   * Parameters for showing the latest advertisements
+   */
   export interface LatestAdsParams extends DashboardItemParams {
+    /**
+     * A list of user groups (internal names / ids)
+     */
     groups?: string[];
+
+    /**
+     * Maximum number of advertisements
+     */
     max?: number;
   }
 
@@ -105,9 +135,21 @@ namespace DashboardItemConfig {
     });
   }
 
-
+  /**
+   * Parameters for a custom content
+   */
   export interface ContentParams extends DashboardItemParams, Content {
+
+    /**
+     * The optional dashboard item title
+     */
     title?: string;
+
+    /**
+     * Whether the dashboard item will have no padding.
+     * By default the item will have the regular padding.
+     */
+    tight?: boolean;
   }
 
   /**
@@ -116,7 +158,8 @@ namespace DashboardItemConfig {
   export function content(params: ContentParams): DashboardItemConfig {
     return config(DashboardItemType.CONTENT, params, {
       content: params,
-      title: params.title
+      title: params.title,
+      tight: params.tight
     });
   }
 }

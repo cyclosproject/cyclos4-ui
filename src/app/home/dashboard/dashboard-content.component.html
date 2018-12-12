@@ -1,3 +1,3 @@
-<page-content [heading]="title" hideBack>
+<page-content [heading]="title" hideBack [mode]="tight ? 'tight' : 'normal'">
   <div [innerHTML]="content$ | async | trust"></div>
 </page-content>
