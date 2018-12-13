@@ -16,8 +16,6 @@ import { BehaviorSubject } from 'rxjs';
 export class DashboardItemComponent extends BaseComponent implements OnInit {
   DashboardItemType = DashboardItemType;
 
-  @Input() debug: string;
-
   @Input() config: DashboardItemConfig;
   @Output() ready = new EventEmitter<boolean>(true);
 
@@ -35,8 +33,6 @@ export class DashboardItemComponent extends BaseComponent implements OnInit {
     this.layout.activeBreakpoints.forEach(b => {
       breakpoints.push(b);
     });
-    console.log(`${this.debug}, ${breakpoints}`);
-    console.dir(this.config);
   }
 
   notifyReady(event: boolean) {

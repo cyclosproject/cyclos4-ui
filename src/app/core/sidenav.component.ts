@@ -7,8 +7,9 @@ import { MenuService } from 'app/core/menu.service';
 import { StateManager } from 'app/core/state-manager';
 import { blank } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
-import { Menu, MenuEntry, MenuType, RootMenuEntry, RootMenu } from 'app/shared/menu';
+import { Menu, MenuEntry, MenuType, RootMenuEntry, RootMenu, BaseMenuEntry } from 'app/shared/menu';
 import { Observable } from 'rxjs';
+import { I18n } from '@ngx-translate/i18n-polyfill';
 
 /**
  * The sidenav contains the menu on small devices
@@ -23,6 +24,7 @@ import { Observable } from 'rxjs';
 export class SidenavComponent implements OnInit {
 
   private glass: HTMLElement;
+  private escHandler;
 
   constructor(
     private _element: ElementRef,
@@ -32,7 +34,8 @@ export class SidenavComponent implements OnInit {
     private stateManager: StateManager,
     public login: LoginService,
     public format: FormatService,
-    public layout: LayoutService) {
+    public layout: LayoutService,
+    private i18n: I18n) {
   }
 
   roots$: Observable<RootMenuEntry[]>;
@@ -40,6 +43,11 @@ export class SidenavComponent implements OnInit {
   ngOnInit() {
     this.roots$ = this.menu.menu(MenuType.SIDENAV);
     this.layout.gtsm$.subscribe(() => this.close());
+    this.escHandler = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        this.close();
+      }
+    };
   }
 
   toggle() {
@@ -70,7 +78,8 @@ export class SidenavComponent implements OnInit {
       if (this.glass == null) {
         this.glass = document.createElement('div');
         this.glass.className = 'glass';
-        this.glass.addEventListener('click', () => this.close(), false);
+        this.glass.addEventListener('click', () => this.close(), true);
+        document.body.addEventListener('keydown', this.escHandler, false);
         document.body.appendChild(this.glass);
       }
       setTimeout(() => this.glass.style.opacity = '1', 1);
@@ -83,6 +92,7 @@ export class SidenavComponent implements OnInit {
       style.transform = '';
       this.rootContainer.style.transform = '';
       this.glass.style.opacity = '';
+      document.body.removeEventListener('keydown', this.escHandler, false);
       setTimeout(() => {
         this.glass.parentElement.removeChild(this.glass);
         this.glass = null;
@@ -109,5 +119,21 @@ export class SidenavComponent implements OnInit {
 
   isHome(root: RootMenuEntry) {
     return [RootMenu.HOME, RootMenu.DASHBOARD].includes(root.rootMenu);
+  }
+
+  icon(entry: BaseMenuEntry) {
+    if (entry instanceof MenuEntry && entry.menu === Menu.DASHBOARD && this.layout.ltmd) {
+      // For mobile, the dashboard is shown as home
+      return 'home';
+    }
+    return entry.icon;
+  }
+
+  label(entry: BaseMenuEntry) {
+    if (entry instanceof MenuEntry && entry.menu === Menu.DASHBOARD && this.layout.ltmd) {
+      // For mobile, the dashboard is shown as home
+      return this.i18n({ value: 'Home', description: 'Menu' });
+    }
+    return entry.label;
   }
 }
