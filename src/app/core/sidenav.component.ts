@@ -7,7 +7,7 @@ import { MenuService } from 'app/core/menu.service';
 import { StateManager } from 'app/core/state-manager';
 import { blank } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
-import { Menu, MenuEntry, MenuType, RootMenuEntry } from 'app/shared/menu';
+import { Menu, MenuEntry, MenuType, RootMenuEntry, RootMenu } from 'app/shared/menu';
 import { Observable } from 'rxjs';
 
 /**
@@ -105,5 +105,9 @@ export class SidenavComponent implements OnInit {
 
     event.stopPropagation();
     this.close();
+  }
+
+  isHome(root: RootMenuEntry) {
+    return [RootMenu.HOME, RootMenu.DASHBOARD].includes(root.rootMenu);
   }
 }

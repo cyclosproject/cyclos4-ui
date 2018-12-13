@@ -5,6 +5,7 @@ import { empty } from 'app/shared/helper';
 import { PageLayoutComponent } from 'app/shared/page-layout.component';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
+import { isEqual } from 'lodash';
 
 const BREAKPOINTS = {
   xxs: '(max-width: 325px)',
@@ -31,6 +32,7 @@ const BREAKPOINTS = {
  * The existing breakpoints
  */
 export type Breakpoint = keyof typeof BREAKPOINTS;
+export const ALL_BREAKPOINTS = Object.keys(BREAKPOINTS) as Breakpoint[];
 
 /**
  * Shared definitions for the application layout
@@ -81,44 +83,36 @@ export class LayoutService {
     }
   }
 
-  private activeBreakpoints = new Set<Breakpoint>();
   private breakpointObservers = new Map<Breakpoint, Observable<boolean>>();
 
-  private _breakpointChanges = new BehaviorSubject<Set<Breakpoint>>(new Set());
-  breakpointChanges$ = this._breakpointChanges.asObservable().pipe(distinctUntilChanged());
+  private _activeBreakpoints: BehaviorSubject<Set<Breakpoint>>;
+  breakpointChanges$: Observable<Set<Breakpoint>>;
 
   private leftAreaVisibleSub: Subscription;
 
-  constructor(observer: BreakpointObserver) {
+  constructor(private observer: BreakpointObserver) {
     this.breakpointObservers = new Map();
-    for (const name of Object.keys(BREAKPOINTS)) {
-      const breakpoint = name as Breakpoint;
-      if (!BREAKPOINTS.hasOwnProperty(breakpoint)) {
-        continue;
-      }
+    // Set the initial state of the active breakpoints, and initialize the observers
+    const initialBreakpoints = new Set<Breakpoint>();
+    for (const breakpoint of ALL_BREAKPOINTS) {
       const query = BREAKPOINTS[breakpoint];
       const breakpointObserver = observer.observe(query).pipe(
         map(res => res.matches),
         distinctUntilChanged()
       );
       this.breakpointObservers.set(breakpoint, breakpointObserver);
-      // Observe any changes in active breakpoints
-      breakpointObserver.subscribe(matches => {
-        if (matches) {
-          this.activeBreakpoints.add(breakpoint);
-        } else {
-          this.activeBreakpoints.delete(breakpoint);
-        }
-        this._breakpointChanges.next(new Set(this.activeBreakpoints));
-      });
-      // Set the initial state of the active breakpoints
       if (observer.isMatched(query)) {
-        this.activeBreakpoints.add(breakpoint);
+        initialBreakpoints.add(breakpoint);
       }
     }
-    this._breakpointChanges.next(this.activeBreakpoints);
-    this._breakpointChanges.subscribe(activeBreakpoints => this.updateBodyStyles(activeBreakpoints));
-    this.updateBodyStyles(this.activeBreakpoints);
+
+    // Initialize the active breakpoints behavior subject
+    this._activeBreakpoints = new BehaviorSubject(initialBreakpoints);
+    this.breakpointChanges$ = this._activeBreakpoints.asObservable().pipe(
+      distinctUntilChanged()
+    );
+    this._activeBreakpoints.subscribe(activeBreakpoints => this.updateBodyStyles(activeBreakpoints));
+    this.updateBodyStyles(initialBreakpoints);
 
     this.currentPageLayout$.subscribe(pageLayout => {
       if (this.leftAreaVisibleSub) {
@@ -133,26 +127,29 @@ export class LayoutService {
       }
     });
 
-    const updateWindowWidth = () => {
+    const onWindowResized = () => {
       document.body.style.setProperty('--window-width', document.documentElement.clientWidth + 'px');
+
+      // Observe any changes in active breakpoints
+      const active = this.activeBreakpoints;
+      if (!isEqual(active, this._activeBreakpoints.value)) {
+        this._activeBreakpoints.next(active);
+      }
     };
-    window.addEventListener('resize', updateWindowWidth, false);
-    updateWindowWidth();
+    window.addEventListener('resize', onWindowResized, false);
+    onWindowResized();
   }
 
-  private updateBodyStyles(breakpoints: Set<string>) {
+  private updateBodyStyles(breakpoints: Set<Breakpoint>) {
     if (!document) {
       return;
     }
     const classes = document.body.classList;
-    for (const name in BREAKPOINTS) {
-      if (!BREAKPOINTS.hasOwnProperty(name)) {
-        continue;
-      }
-      if (breakpoints.has(name)) {
-        classes.add(name);
+    for (const breakpoint of ALL_BREAKPOINTS) {
+      if (breakpoints.has(breakpoint as Breakpoint)) {
+        classes.add(breakpoint);
       } else {
-        classes.remove(name);
+        classes.remove(breakpoint);
       }
     }
   }
@@ -176,12 +173,24 @@ export class LayoutService {
     return Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
   }
 
+  get activeBreakpoints(): Set<Breakpoint> {
+    const active = new Set<Breakpoint>();
+    for (const breakpoint of ALL_BREAKPOINTS) {
+      const query = BREAKPOINTS[breakpoint];
+      if (this.observer.isMatched(query)) {
+        active.add(breakpoint);
+      }
+    }
+    return active;
+  }
+
   /**
    * Returns whether a specific breakpoint is active
-   * @param name The breakpoint name
+   * @param breakpoint The breakpoint
    */
-  isActive(name: Breakpoint) {
-    return this.activeBreakpoints.has(name);
+  isActive(breakpoint: Breakpoint) {
+    const query = BREAKPOINTS[breakpoint];
+    return this.observer.isMatched(query);
   }
 
   get xxs(): boolean {
@@ -237,10 +246,10 @@ export class LayoutService {
 
   /**
    * Returns an observable that notifies every time a breakpoint activation changes
-   * @param name The breakpoint name
+   * @param breakpoint The breakpoint
    */
-  observeBreakpoint(name: Breakpoint): Observable<boolean> {
-    return this.breakpointObservers.get(name);
+  observeBreakpoint(breakpoint: Breakpoint): Observable<boolean> {
+    return this.breakpointObservers.get(breakpoint);
   }
 
   get xxs$(): Observable<boolean> {
@@ -304,7 +313,7 @@ export class LayoutService {
       return true;
     }
     if (empty(activeBreakpoints)) {
-      activeBreakpoints = this._breakpointChanges.value;
+      activeBreakpoints = this._activeBreakpoints.value;
     }
     return allowedBreakpoints.find(b => activeBreakpoints.has(b)) != null;
   }

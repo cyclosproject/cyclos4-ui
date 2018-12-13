@@ -12,6 +12,8 @@
   position: relative;
   background-size: cover;
   background-position: center 30%;
+  -webkit-print-color-adjust: exact;
+  color-adjust: exact;
 }
 .avatar-container.full-size {
   width: 100%;

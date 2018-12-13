@@ -4,40 +4,40 @@
 
 <ng-template #dashboard>
   <div class="dashboard">
-    <ng-container *ngIf="layout.ltlg$ | async; else twoColumns">
-      <div class="one-column window-width">
-        <ng-container *ngFor="let config of configs$ | async">
+
+    <!-- Mobile / tablet -->
+    <div class="one-column window-width" *ngIf="layout.ltlg$ | async">
+      <ng-container *ngFor="let config of configs$ | async">
+        <ng-container *ngIf="layout.visible(config.breakpoints, layout.breakpointChanges$ | async)">
+          <dashboard-item debug="OneColumn" [config]="config"></dashboard-item>
+        </ng-container>
+      </ng-container>
+    </div>
+
+    <!-- Desktop -->
+    <div class="two-columns" *ngIf="layout.gtmd$ | async">
+      <div class="left-column">
+        <ng-container *ngFor="let config of leftConfigs$ | async">
           <ng-container *ngIf="layout.visible(config.breakpoints, layout.breakpointChanges$ | async)">
-            <dashboard-item [config]="config"></dashboard-item>
+            <dashboard-item debug="TwoColumns-Left" [config]="config"></dashboard-item>
           </ng-container>
         </ng-container>
       </div>
-    </ng-container>
-  </div>
-</ng-template>
+      <div class="right-column">
+        <ng-container *ngFor="let config of rightConfigs$ | async">
+          <ng-container *ngIf="layout.visible(config.breakpoints, layout.breakpointChanges$ | async)">
+            <dashboard-item debug="TwoColumns-Right" [config]="config"></dashboard-item>
+          </ng-container>
+        </ng-container>
+      </div>
+    </div>
+    <div class="full-columns">
+      <ng-container *ngFor="let config of fullConfigs$ | async">
+        <ng-container *ngIf="layout.visible(config.breakpoints, layout.breakpointChanges$ | async)">
+          <dashboard-item debug="FullColumns" [config]="config"></dashboard-item>
+        </ng-container>
+      </ng-container>
+    </div>
 
-<ng-template #twoColumns>
-  <div class="two-columns">
-    <div class="first-column">
-      <ng-container *ngFor="let config of leftConfigs$ | async">
-        <ng-container *ngIf="layout.visible(config.breakpoints, layout.breakpointChanges$ | async)">
-          <dashboard-item [config]="config"></dashboard-item>
-        </ng-container>
-      </ng-container>
-    </div>
-    <div class="second-column">
-      <ng-container *ngFor="let config of rightConfigs$ | async">
-        <ng-container *ngIf="layout.visible(config.breakpoints, layout.breakpointChanges$ | async)">
-          <dashboard-item [config]="config"></dashboard-item>
-        </ng-container>
-      </ng-container>
-    </div>
-  </div>
-  <div class="full-columns">
-    <ng-container *ngFor="let config of fullConfigs$ | async">
-      <ng-container *ngIf="layout.visible(config.breakpoints, layout.breakpointChanges$ | async)">
-        <dashboard-item [config]="config"></dashboard-item>
-      </ng-container>
-    </ng-container>
   </div>
 </ng-template>

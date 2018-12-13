@@ -31,5 +31,10 @@ export class DashboardContentComponent extends BaseDashboardComponent implements
       this.content$.next(html);
       this.notifyReady();
     }));
+    this.addSub(this.layout.breakpointChanges$.subscribe(() => {
+      if (this.content$.value != null) {
+        this.notifyReady();
+      }
+    }));
   }
 }

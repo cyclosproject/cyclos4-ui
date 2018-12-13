@@ -53,9 +53,13 @@
   <ng-container *resultInfoWindow="let row; let addr = address">
     <maybe-link [link]="path(row)" class="plain d-block pt-1">
       <!-- Use the same image size as the tiled results, so the browser can cache -->
-      <avatar [roundBorders]="false" [image]="user(row).image" size="120"
-        imageSize="200" iconSize="8rem"></avatar>
-      <div *ngFor="let field of fieldsInTile; let first = first" [ngClass]="first ? 'font-weight-bold mt-3 mb-1' : ''">
+      <avatar *ngIf="user(row).image" [roundBorders]="false" [image]="user(row).image"
+        size="120" imageSize="200"></avatar>
+      <div *ngFor="let field of fieldsInTile; let first = first" [ngClass]="{
+          'font-weight-bold': first,
+          'mt-3': first && user(row).image,
+          'mb-1': first
+        }">
         <format-field-value [fields]="data.customFields" [plainText]="true"
           [fieldName]="field" [object]="user(row)" [customValues]="customValues(row)">
         </format-field-value>

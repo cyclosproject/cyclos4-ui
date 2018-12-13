@@ -66,7 +66,9 @@ export class BannerCardComponent implements OnInit, OnDestroy {
 
         const element: HTMLElement = this.elementRef.nativeElement;
         element.innerHTML = content;
-        this.contentSub.unsubscribe();
+        if (this.contentSub) {
+          this.contentSub.unsubscribe();
+        }
       });
     });
   }

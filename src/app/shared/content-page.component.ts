@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, ElementRef, Injector, OnInit, Input
 import { ContentService } from 'app/core/content.service';
 import { BaseComponent } from 'app/shared/base.component';
 import { ContentPage } from 'app/content/content-page';
+import { BehaviorSubject } from 'rxjs';
 
 /**
  * Shows a content page
@@ -15,6 +16,8 @@ export class ContentPageComponent extends BaseComponent implements OnInit {
 
   @Input() contentPage: ContentPage;
 
+  content$ = new BehaviorSubject<string>(null);
+
   constructor(
     injector: Injector,
     public contentService: ContentService,
@@ -26,13 +29,15 @@ export class ContentPageComponent extends BaseComponent implements OnInit {
     super.ngOnInit();
     const layout = this.contentPage.layout || 'full';
 
-    if (layout !== 'card') {
-      // When the content is not card, fetch the content and update the innerHTML directly
-      // When is card, will be handled in the template
-      this.addSub(this.contentService.get(this.contentPage).subscribe(content => {
+    this.addSub(this.contentService.get(this.contentPage).subscribe(content => {
+      if (layout === 'card') {
+        // When card the template will render the content
+        this.content$.next(content);
+      } else {
+        // When not card, replace this element's inner HTML
         const element: HTMLElement = this.element.nativeElement;
         element.innerHTML = content;
-      }));
-    }
+      }
+    }));
   }
 }

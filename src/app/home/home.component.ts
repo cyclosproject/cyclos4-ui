@@ -72,4 +72,5 @@ export class HomeComponent extends BasePageComponent<void> implements OnInit {
     }
     return false;
   }
+
 }
