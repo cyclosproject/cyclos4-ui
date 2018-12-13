@@ -12,5 +12,8 @@
   margin-top: 0;
 }
 .root-container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
   transition: transform 0.3s;
 }
