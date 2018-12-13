@@ -1,8 +1,8 @@
 <page-content *ngIf="history$ | async as history" [heading]="title"
   [headingActions]="headingActions" hideBack>
-  <div class="row mb-3">
-    <div class="col-6 balance-label" i18n>Balance</div>
-    <div class="col-6 balance-value" [ngClass]="{
+  <div class="balance">
+    <div class="balance-label" i18n>Balance</div>
+    <div class="balance-value" [ngClass]="{
       negative: format.isNegative(balance),
       positive: format.isPositive(balance)
     }">
@@ -20,7 +20,8 @@
 
 <ng-template #transfersTpl>
 
-  <h3 class="border-0 mt-4 mb-2 text-body" i18n>Last incoming payments</h3>
+  <h3 class="border-0 mb-2 text-body" [ngClass]="{'mt-4': layout.lg$ | async}"
+    i18n>Last incoming payments</h3>
   <ng-container *ngIf="(lastPayments$ | async) != null; else loadingTransfers">
     <table class="table table-hover mb-0 cursor-pointer" *ngIf="lastPayments$.value?.length > 0; else noTransfers">
       <tr *ngFor="let transfer of lastPayments$.value; let last = last"

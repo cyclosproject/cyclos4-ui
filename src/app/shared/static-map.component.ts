@@ -1,4 +1,7 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, HostBinding, Input, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import {
+  AfterViewInit, ChangeDetectionStrategy, Component, ElementRef,
+  HostBinding, Input, OnInit, ChangeDetectorRef, OnDestroy
+} from '@angular/core';
 import { Address } from 'app/api/models';
 import { MapsService } from 'app/core/maps.service';
 import { ApiHelper } from 'app/shared/api-helper';

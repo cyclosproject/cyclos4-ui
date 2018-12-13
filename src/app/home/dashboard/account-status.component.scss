@@ -1,7 +1,13 @@
+.balance {
+  display: flex;
+  margin: 0.2rem auto 0.8rem auto;
+}
+
 .balance-label {
   font-size: 1.2rem;
   line-height: 2rem;
   text-align: end;
+  margin-right: 1rem;
 }
 
 .balance-value {

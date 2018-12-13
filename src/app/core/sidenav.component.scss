@@ -12,8 +12,7 @@
   background-color: $sidenav-bg;
   color: $sidenav-color;
   transform: translateX(-100%);
-  opacity: 0;
-  transition: transform 0.3s, opacity 0.3s;
+  transition: transform 0.3s;
 }
 
 .sidenav-menu icon {
@@ -24,7 +23,7 @@
   color: $top-bar-color;
   background-color: $top-bar-bg;
   padding: 0 0 0 0.4rem;
-  min-height: 2.6rem;
+  height: $top-bar-height-xxs;
 
   a {
     color: $sidenav-bar-color;
@@ -35,12 +34,20 @@
 }
 @include media-breakpoint-up(xs) {
   .navbar {
-    padding: 0.4rem;
+    padding-left: 0.4rem;
+    padding-right: 0.4rem;
+    height: $top-bar-height-xs;
   }
 }
 @include media-breakpoint-up(md) {
+  :host {
+    max-width: 20rem;
+    box-shadow: $box-shadow;
+  }
   .navbar {
-    padding: 0.7rem;
+    padding-left: 0.7rem;
+    padding-right: 0.7rem;
+    height: $top-bar-height;
   }
 }
 

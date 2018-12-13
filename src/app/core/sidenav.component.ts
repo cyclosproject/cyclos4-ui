@@ -21,6 +21,9 @@ import { Observable } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SidenavComponent implements OnInit {
+
+  private glass: HTMLElement;
+
   constructor(
     private _element: ElementRef,
     private menu: MenuService,
@@ -55,11 +58,22 @@ export class SidenavComponent implements OnInit {
     return !blank(this.element.style.transform);
   }
 
+  get rootContainer(): HTMLElement {
+    return document.getElementsByClassName('root-container')[0] as HTMLElement;
+  }
+
   open() {
     if (!this.opened) {
       const style = this.element.style;
       style.transform = 'translateX(0)';
-      style.opacity = '1';
+      this.rootContainer.style.transform = `translateX(${this.element.clientWidth}px)`;
+      if (this.glass == null) {
+        this.glass = document.createElement('div');
+        this.glass.className = 'glass';
+        this.glass.addEventListener('click', () => this.close(), false);
+        document.body.appendChild(this.glass);
+      }
+      setTimeout(() => this.glass.style.opacity = '1', 1);
     }
   }
 
@@ -67,7 +81,12 @@ export class SidenavComponent implements OnInit {
     if (this.opened) {
       const style = this.element.style;
       style.transform = '';
-      style.opacity = '';
+      this.rootContainer.style.transform = '';
+      this.glass.style.opacity = '';
+      setTimeout(() => {
+        this.glass.parentElement.removeChild(this.glass);
+        this.glass = null;
+      }, 300);
     }
   }
 

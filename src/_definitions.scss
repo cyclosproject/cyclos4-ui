@@ -19,6 +19,7 @@ $input-btn-padding-y: .475rem;
 // Toggle for enabling / disabling shadows on most parts
 $enable-shadows: true;
 
+// Bootstrap grid system breakpoints. Basically we add xxs
 $grid-breakpoints: (
   xxs: 0,
   xs: 316px,
@@ -34,41 +35,30 @@ $grid-breakpoints: (
   }
 }
 
+// Main body
+$body-bg: $gray-100;
+$body-color: $gray-800;
+
+// Global layout
 $layout-spacer-xxs: 0.4rem;
 $layout-spacer-xs: 0.7rem;
 $layout-spacer: 1.25rem;
-
-$body-bg: $gray-100;
-$body-color: $gray-800;
-$table-icon-color: #cecece;
-$table-hover-bg: #f9f9f9;
-
 $section-border-color: $gray-300;
 $section-margin: 1.5rem;
 
+// Headers
 $h1-color: $primary;
 $h2-color: $primary;
 $h3-color: $primary;
 
-$positive-color: $green;
-$negative-color: $red;
-$total-amount-color: $green;
-$total-amount-size: 2rem;
-
-$label-weight: $font-weight-bold;
-$label-color: $gray-700;
-
+// Top bar (shows title, hamburger menu on mobile / tabled and personal menu toggle)
 $top-bar-bg: $primary;
 $top-bar-color: color-yiq($primary);
+$top-bar-height-xxs: 3rem;
+$top-bar-height-xs: 3.4rem;
+$top-bar-height: 4rem;
 
-$title-height-xxs: 3.2rem;
-$title-height-xs: 3.4rem;
-$title-height: 3.4rem;
-$title-button-bg: $light;
-$title-button-color: color-yiq($light);
-$title-button-border-color: $section-border-color;
-$title-button-icon-color: $faded-color;
-
+// Menu bar (main menu on desktop)
 $menu-bar-bg: $input-bg;
 $menu-bar-color: $faded-color;
 $menu-bar-hover-bg: #f5f5f5;
@@ -78,6 +68,7 @@ $menu-bar-active-icon-color: $primary;
 $menu-bar-active-color: $primary;
 $menu-bar-active-border: $primary;
 
+// Side menu (second-level menu on desktop)
 $side-menu-bg: $menu-bar-bg;
 $side-menu-active-bg: $menu-bar-bg;
 $side-menu-active-color: $primary;
@@ -87,6 +78,7 @@ $side-menu-inactive-color: $menu-bar-inactive-color;
 $side-menu-inactive-icon-color: $menu-bar-inactive-icon-color;
 $side-menu-inactive-hover-bg: $menu-bar-hover-bg;
 
+// Quick access (icons in the dashboard)
 $quick-access-bg: $menu-bar-hover-bg;
 $quick-access-color: $body-color;
 $quick-access-icon-color: $primary;
@@ -94,6 +86,7 @@ $quick-access-hover-bg: darken($menu-bar-hover-bg, 5%);
 $quick-access-hover-color: $body-color;
 $quick-access-hover-icon-color: $primary;
 
+// Sidenav (menu revealed on the left for mobiles / tablets)
 $sidenav-bar-bg: $top-bar-bg;
 $sidenav-bar-color: $top-bar-color;
 $sidenav-bg: $menu-bar-bg;
@@ -101,6 +94,7 @@ $sidenav-color: $menu-bar-color;
 $sidenav-active-bg: $menu-bar-hover-bg;
 $sidenav-icon-color: $faded-color;
 
+// Personal menu (shown when clicking the logged user avatar, on top-right)
 $personal-menu-bg: $menu-bar-bg;
 $personal-menu-color: $menu-bar-color;
 $personal-menu-active-bg: $side-menu-active-bg;
@@ -108,15 +102,29 @@ $personal-menu-item-color: $menu-bar-inactive-color;
 $personal-menu-item-border-color: $gray-200;
 $personal-menu-hover-bg: $menu-bar-hover-bg;
 
+// Forms
 $required-marker-color: $red;
 $list-group-hover-bg: $menu-bar-hover-bg;
 $input-placeholder-color: $gray-500;
 $input-group-addon-bg: $gray-100;
 $button-icon-color: $gray-700;
+$label-weight: $font-weight-bold;
+$label-color: $gray-700;
 
+// Snack bars (small and non-intrusive notifications shown on bottom)
 $snack-bar-bg: $gray-900;
 $snack-bar-color: white;
 
+// Page title
+$title-height-xxs: 3.2rem;
+$title-height-xs: 3.4rem;
+$title-height: 3.4rem;
+$title-button-bg: $light;
+$title-button-color: color-yiq($light);
+$title-button-border-color: $section-border-color;
+$title-button-icon-color: $faded-color;
+
+// Tiled results
 $card-border-color: $section-border-color;
 $tiled-results-spacing-xxs: 0.3rem;
 $tiled-results-spacing-xs: 0.5rem;
@@ -124,6 +132,7 @@ $tiled-results-spacing: 0.6rem;
 $tiled-results-icon-color: #ddd;
 $tiled-results-hover-bg: $personal-menu-hover-bg;
 
+// Date-picker calendar
 $calendar-header-bg: $primary;
 $calendar-header-color: color-yiq($calendar-header-bg);
 $calendar-hover-bg: $gray-200;
@@ -133,11 +142,20 @@ $calendar-selected-bg: $primary;
 $calendar-selected-color: color-yiq($calendar-selected-bg);
 $calendar-disabled-color: $faded-color;
 
+// Breadcrumb (shown when selecting an advertisement category)
 $breadcrumb-divider: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjkiPjxwYXRoIGQ9Ik0yLjUgMEwxIDEuNSAzLjUgNCAxIDYuNSAyLjUgOGw0LTQtNC00eiIgZmlsbD0iIzc1NzU3NSIvPjwvc3ZnPg==);
 $breadcrumb-padding-y: 0;
 $breadcrumb-padding-x: 0;
 $breadcrumb-margin-bottom: 0;
 $breadcrumb-bg: transparent;
 
+// General
 $manage-passwords-icon-color: $gray-500;
 $account-indicator-font-size: 16px;
+$positive-color: $green;
+$negative-color: $red;
+$total-amount-color: $green;
+$total-amount-size: 2rem;
+$table-icon-color: #cecece;
+$table-hover-bg: #f9f9f9;
+$glass-color: rgba(0, 0, 0, 0.75);

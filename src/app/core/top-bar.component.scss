@@ -10,7 +10,7 @@
 .navbar {
   color: $top-bar-color;
   background-color: $top-bar-bg;
-  min-height: 2.6rem;
+  height: $top-bar-height-xxs;
   padding: 0;
 }
 .navbar-container {
@@ -18,7 +18,6 @@
   flex-grow: 1;
   margin: auto;
   padding: 0 0.4rem;
-  @include make-container-max-widths();
 }
 .navbar-brand {
   font-size: 1.5em;
@@ -28,14 +27,22 @@
     font-size: 1.3rem;
   }
   .navbar {
-    padding: 0.4rem;
+    height: $top-bar-height-xs;
   }
 }
 @include media-breakpoint-up(md) {
   .navbar {
-    padding: 0.7rem;
+    padding-left: 0.7rem;
+    padding-right: 0.7rem;
+    height: $top-bar-height;
   }
 }
+@include media-breakpoint-up(lg) {
+  .navbar-container {
+    @include make-container-max-widths();
+  }
+}
+
 a {
   color: $top-bar-color;
   display: block;

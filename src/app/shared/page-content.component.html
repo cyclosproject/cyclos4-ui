@@ -23,7 +23,8 @@
       <!-- We have actions. They may be grouped or not -->
       <div class="heading-actions" *ngIf="groupActions; else rootActions"
         dropdown placement="bottom right" #dropdown="bs-dropdown">
-        <button dropdownToggle class="heading-action dropdown-toggle" i18n>
+        <button dropdownToggle class="heading-action heading-action-dropdown dropdown-toggle"
+          i18n>
           Actions
         </button>
         <div class="heading-actions-menu dropdown-menu dropdown-menu-right"

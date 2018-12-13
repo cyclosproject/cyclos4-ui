@@ -64,3 +64,7 @@ $spacing: 0.5rem;
     padding: $spacing;
   }
 }
+
+.lg :host ::ng-deep .quick-access-container {
+  padding: 1.2rem 0.5rem 1.7rem 0.3rem;
+}

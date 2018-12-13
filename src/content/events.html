@@ -7,7 +7,7 @@
 
   .event-date,
   .event-description {
-    padding: 0.5rem
+    padding: 0.31rem;
   }
 
   .event-date {
@@ -23,13 +23,24 @@
   .day-of-month {
     font-weight: 500;
     font-size: 1.2em;
+    color: #1e88e5;
   }
 
   .event-description {
     flex-grow: 1;
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    justify-content: center;
     padding-left: 1rem;
+  }
+
+  .event-title {
+    font-weight: 500;
+    margin-bottom: 0.1rem;
+  }
+
+  .event-text {
+    color: #757575;
   }
 
   .notice {
@@ -55,7 +66,8 @@
       </div>
     </div>
     <div class="event-description">
-      Christmas day
+      <div class="event-title">Christmas day</div>
+      <div class="event-text">Christmas dinner at eight o'clock</div>
     </div>
   </div>
 
@@ -72,9 +84,48 @@
       </div>
     </div>
     <div class="event-description">
-      New year
+      <div class="event-title">New year</div>
+      <div class="event-text">Happy new year to everybody!</div>
     </div>
   </div>
+
+  <div class="event">
+    <div class="event-date">
+      <div class="day-of-week">
+        Thu
+      </div>
+      <div class="day-of-month">
+        Jan 17
+      </div>
+      <div class="year">
+        2019
+      </div>
+    </div>
+    <div class="event-description">
+      <div class="event-title">Cyclos meeting</div>
+      <div class="event-text">New exciting plans for the coming year</div>
+    </div>
+  </div>
+
+  <div class="event">
+    <div class="event-date">
+      <div class="day-of-week">
+        Tue
+      </div>
+      <div class="day-of-month">
+        Mar 5
+      </div>
+      <div class="year">
+        2019
+      </div>
+    </div>
+    <div class="event-description">
+      <div class="event-title">Carnaval</div>
+      <div class="event-text">Let's enjoy the traditional Carnaval at Rio de
+        Janeiro</div>
+    </div>
+  </div>
+
 </div>
 <div class="notice">
   This is just an example of a content page that could be fetched from an
