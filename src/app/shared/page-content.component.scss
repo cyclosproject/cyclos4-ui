@@ -18,7 +18,7 @@
 
   .title-text {
     font-size: 1rem;
-    line-height: 1.2em;
+    line-height: 1em;
     margin-left: $layout-spacer-xxs;
   }
 }
@@ -32,7 +32,6 @@
     .title-text {
       margin-left: 1.1rem;
       font-size: 1.1rem;
-      line-height: 1.1rem;
     }
   }
 }
@@ -44,8 +43,7 @@
 
     .title-text {
       margin-left: $layout-spacer;
-      font-size: 1.2rem;
-      line-height: 1.2rem;
+      font-size: 1.1rem;
     }
   }
 }

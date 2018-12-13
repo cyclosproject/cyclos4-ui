@@ -20,8 +20,7 @@
 
 <ng-template #transfersTpl>
 
-  <h3 class="border-0 mb-2 text-body" [ngClass]="{'mt-4': layout.lg$ | async}"
-    i18n>Last incoming payments</h3>
+  <h3 class="last-transfers" i18n>Last incoming payments</h3>
   <ng-container *ngIf="(lastPayments$ | async) != null; else loadingTransfers">
     <table class="table table-hover mb-0 cursor-pointer" *ngIf="lastPayments$.value?.length > 0; else noTransfers">
       <tr *ngFor="let transfer of lastPayments$.value; let last = last"

@@ -11,9 +11,9 @@
   }
 
   .event-date {
-    width: 7rem;
     border-right: 1px solid #dee2e6;
     text-align: center;
+    flex: 0 0 6rem;
   }
 
   .year {
@@ -49,6 +49,13 @@
     color: #757575;
     text-align: center;
     padding: 1rem;
+  }
+
+  /* md */
+  @media screen and (min-width: 768px) {
+    .event-date {
+      flex-basis: 7rem;
+    }
   }
 
 </style>
@@ -128,6 +135,5 @@
 
 </div>
 <div class="notice">
-  This is just an example of a content page that could be fetched from an
-  external source
+  This is an example of content that could be fetched from an external source
 </div>
