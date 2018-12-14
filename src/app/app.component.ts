@@ -118,6 +118,6 @@ export class AppComponent implements OnInit {
       meta.name = 'theme-color';
       document.head.appendChild(meta);
     }
-    meta.content = primaryColor;
+    meta.content = style.getPropertyValue('--theme-color').trim();
   }
 }

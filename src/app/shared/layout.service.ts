@@ -43,6 +43,7 @@ export const ALL_BREAKPOINTS = Object.keys(BREAKPOINTS) as Breakpoint[];
 export class LayoutService {
   primaryColor: string;
   secondaryColor: string;
+  themeColor: string;
 
   currentPage$ = new BehaviorSubject<BasePageComponent<any>>(null);
   get currentPage(): BasePageComponent<any> {

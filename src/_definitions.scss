@@ -1,11 +1,14 @@
+// Primary and secondary colors
 $primary: #1e88e5;
 $secondary: #f29220;
-$faded-color: #757575;
 
 // Import the basic Bootstrap definitions, so we can override the variables
-@import "node_modules/bootstrap/scss/functions";
-@import "node_modules/bootstrap/scss/variables";
-@import "node_modules/bootstrap/scss/mixins";
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+
+$faded-color: #757575;
+$theme-color: darken($primary, 10%);
 
 // Make sure the font import URL and the font family (sans serif) are in sync
 $font-import-url: "https://fonts.googleapis.com/css?family=Roboto:400,500";

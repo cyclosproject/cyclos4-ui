@@ -1,8 +1,9 @@
 @import 'definitions';
-@import '../node_modules/bootstrap/scss/bootstrap';
+@import '~bootstrap/scss/bootstrap';
 
 :root {
   --font-import-url: "#{$font-import-url}";
+  --theme-color: #{$theme-color};
   // Will be updated dynamically
   --window-width: "1000px";
 }
@@ -19,7 +20,7 @@ body.gt-sm {
   padding-bottom: 1rem;
 }
 body, top-bar nav, menu-bar nav {
-  transition: background ease-in-out 0.4s, color ease-in-out 0.4s;
+  transition: background-color ease-in-out 0.4s, color ease-in-out 0.4s;
 }
 
 .no-wrap {
