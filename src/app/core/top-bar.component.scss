@@ -2,6 +2,11 @@
 
 :host {
   display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
 }
 .logo {
   max-width: 64px;
@@ -38,6 +43,12 @@
   }
 }
 @include media-breakpoint-up(lg) {
+  :host {
+    position: unset;
+    top: unset;
+    left: unset;
+    width: unset;
+  }
   .navbar-container {
     @include make-container-max-widths();
   }
