@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit, ViewChildren, QueryList, ElementRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Input, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { Router } from '@angular/router';
 import { BreadcrumbService } from 'app/core/breadcrumb.service';
 import { MenuService } from 'app/core/menu.service';
@@ -38,15 +38,6 @@ export class MenuBarComponent implements OnInit {
 
   ngOnInit(): void {
     this.roots = this.menu.menu(MenuType.BAR);
-
-    // Some browsers (like Firefox) show an outline on focused anchors. After the page is loaded, blur the menus, so none will be outlined
-    this.layout.currentPage$.subscribe(() => {
-      if (this.rootLinks) {
-        this.rootLinks.forEach(ref => {
-          ref.nativeElement.blur();
-        });
-      }
-    });
   }
 
   onClick(event: MouseEvent, root: RootMenuEntry) {

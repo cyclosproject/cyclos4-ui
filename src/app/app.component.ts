@@ -64,6 +64,18 @@ export class AppComponent implements OnInit {
         this.menu.lastSelectedMenu = data.menu;
       }
     });
+
+    // Some browsers (like Firefox) show an outline on focused anchors.
+    // After the page is loaded, blur the menus, so none will be outlined
+    this.layout.currentPage$.subscribe(() => {
+      const focused = document.activeElement as HTMLElement;
+      if (focused.tagName === 'A') {
+        try {
+          focused.blur();
+        } catch (e) { }
+      }
+    });
+
     setSpinnerVisible(false);
   }
 
