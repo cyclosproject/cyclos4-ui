@@ -116,9 +116,13 @@ export class MenuService {
 
   /**
    * Returns the available `RootMenuEntry` for the given `RootMenu`, if any, or null if none matches
-   * @param root The root menu
+   * @param root The root menu. If not specified, will use the active root menu.
    */
-  rootEntry(root: RootMenu): RootMenuEntry {
+  rootEntry(root?: RootMenu): RootMenuEntry {
+    if (root == null) {
+      const menu = this._activeMenu.value;
+      root = menu.root;
+    }
     const roots = this._fullMenu.value || [];
     for (const rootEntry of roots) {
       if (rootEntry.rootMenu === root) {
@@ -198,7 +202,7 @@ export class MenuService {
     const publicMarketplace = addRoot(RootMenu.PUBLIC_MARKETPLACE,
       'shopping_cart', this.i18n({ value: 'Advertisements', description: 'Menu' }));
     addRoot(RootMenu.BANKING, 'account_balance', this.i18n({ value: 'Banking', description: 'Menu' }));
-    addRoot(RootMenu.MARKETPLACE, 'shopping_cart', this.i18n({ value: 'Marketplace', description: 'Menu' }));
+    const marketplaceRoot = addRoot(RootMenu.MARKETPLACE, 'shopping_cart', this.i18n({ value: 'Marketplace', description: 'Menu' }));
     addRoot(RootMenu.PERSONAL, 'account_box', this.i18n({ value: 'Personal', description: 'Menu' }));
     const register = addRoot(RootMenu.REGISTRATION, 'registration', this.i18n({ value: 'Register', description: 'Menu' }));
     const login = addRoot(RootMenu.LOGIN, 'exit_to_app', this.i18n({ value: 'Login', description: 'Menu' }));
@@ -278,6 +282,10 @@ export class MenuService {
       if (marketplace.search) {
         add(Menu.SEARCH_ADS, '/marketplace/search', 'shopping_cart',
           this.i18n({ value: 'Advertisements', description: 'Menu' }));
+      } else {
+        // As the search ads won't be visible, show as user directory instead
+        marketplaceRoot.icon = publicDirectory.icon;
+        marketplaceRoot.label = publicDirectory.label;
       }
 
       // Personal

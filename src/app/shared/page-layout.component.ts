@@ -5,6 +5,7 @@ import { MenuService } from 'app/core/menu.service';
 import { empty, truthyAttr } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
 import { BehaviorSubject, Subscription } from 'rxjs';
+import { MenuType } from 'app/shared/menu';
 
 /**
  * The page layout, which may show a menu on the left,
@@ -52,13 +53,18 @@ export class PageLayoutComponent implements OnInit, OnDestroy {
     const updateLeftAreaVisible = () => {
       const hasCards = !empty(this.banner.cards);
       const loggedIn = this.login.user != null;
-      const hasMenu = loggedIn && !this.hideMenu && this.menu.activeMenu != null;
+      let hasMenu = loggedIn && !this.hideMenu && this.menu.activeMenu != null;
+      const root = this.menu.rootEntry();
+      if (root == null || (root.entries || []).length <= 1) {
+        hasMenu = false;
+      }
       const visible = this.layout.gtmd && (hasCards || hasMenu);
       this.leftAreaVisible$.next(visible);
     };
     this.subs.push(this.layout.gtmd$.subscribe(updateLeftAreaVisible));
     this.subs.push(this.login.user$.subscribe(updateLeftAreaVisible));
     this.subs.push(this.menu.activeMenu$.subscribe(updateLeftAreaVisible));
+    this.subs.push(this.menu.menu(MenuType.SIDE).subscribe(updateLeftAreaVisible));
     this.subs.push(this.banner.cards$.subscribe(updateLeftAreaVisible));
     updateLeftAreaVisible();
 
