@@ -1,11 +1,9 @@
-import { ChangeDetectionStrategy, Component, ElementRef, HostBinding, Input } from '@angular/core';
-import { SvgIconRegistry } from 'app/core/svg-icon-registry';
+import { ChangeDetectionStrategy, Component, ElementRef, Input } from '@angular/core';
 import { empty } from 'app/shared/helper';
-
+import { ICON_NAMES, ICON_CONTENTS } from 'app/shared/icon';
 
 /**
- * Shows a material icon.
- * Also supports svg icons.
+ * Shows either an SVG icon or a glyph from the material icon font
  */
 @Component({
   // tslint:disable-next-line:component-selector
@@ -15,13 +13,16 @@ import { empty } from 'app/shared/helper';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class IconComponent {
-  @HostBinding('class.material-icons') regularIcon: string;
-
   @Input() set icon(icon: string) {
-    if (this.svgIconRegistry.isSvgIcon(icon)) {
-      this.svgIconRegistry.svg(icon).subscribe(svg => this.setSvgElement(svg));
+    const element = this.element;
+    if (ICON_NAMES.includes(icon)) {
+      // An SVG icon
+      element.classList.remove('material-icons');
+      this.element.innerHTML = ICON_CONTENTS[icon];
     } else {
-      this.regularIcon = icon;
+      // A font icon
+      element.classList.add('material-icons');
+      this.element.innerHTML = icon;
     }
   }
 
@@ -37,50 +38,18 @@ export class IconComponent {
     } else {
       this._size = size;
     }
-    if (this.element.nativeElement) {
-      const style = (<HTMLElement>this.element.nativeElement).style;
-      style.fontSize = this._size;
-      style.height = this._size;
-      style.width = this._size;
-      style.lineHeight = this._size;
-    }
+    const style = this.element.style;
+    style.fontSize = this._size;
+    style.height = this._size;
+    style.width = this._size;
+    style.lineHeight = this._size;
   }
 
-  constructor(
-    private element: ElementRef,
-    private svgIconRegistry: SvgIconRegistry
-  ) {
+  private get element(): HTMLElement {
+    return this.elementRef.nativeElement as HTMLElement;
+  }
+
+  constructor(private elementRef: ElementRef) {
     this.size = null;
-  }
-
-  private setSvgElement(svg: SVGElement) {
-    this.clearSvgElement();
-
-    // Workaround for IE11 and Edge ignoring `style` tags inside dynamically-created SVGs.
-    // See: https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/10898469/
-    // Do this before inserting the element into the DOM, in order to avoid a style recalculation.
-    const styleTags = svg.querySelectorAll('style') as NodeListOf<HTMLStyleElement>;
-
-    for (let i = 0; i < styleTags.length; i++) {
-      styleTags[i].textContent += ' ';
-    }
-    this.element.nativeElement.appendChild(svg);
-  }
-
-  private clearSvgElement() {
-    const layoutElement: HTMLElement = this.element.nativeElement;
-    let childCount = layoutElement.childNodes.length;
-
-    // Remove existing non-element child nodes and SVGs, and add the new SVG element. Note that
-    // we can't use innerHTML, because IE will throw if the element has a data binding.
-    while (childCount--) {
-      const child = layoutElement.childNodes[childCount];
-
-      // 1 corresponds to Node.ELEMENT_NODE. We remove all non-element nodes in order to get rid
-      // of any loose text nodes, as well as any SVG elements in order to remove any old icons.
-      if (child.nodeType !== 1 || child.nodeName.toLowerCase() === 'svg') {
-        layoutElement.removeChild(child);
-      }
-    }
   }
 }

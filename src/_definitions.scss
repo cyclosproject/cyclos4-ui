@@ -51,7 +51,7 @@ $h1-color: $primary;
 $h2-color: $primary;
 $h3-color: $primary;
 
-// Top bar (shows title, hamburger menu on mobile / tabled and personal menu toggle)
+// Top bar (shows title, hamburger menu on mobile / tablet, profile link, logout)
 $top-bar-bg: $primary;
 $top-bar-color: color-yiq($primary);
 $top-bar-height-xxs: 3rem;
@@ -94,14 +94,6 @@ $sidenav-color: $menu-bar-color;
 $sidenav-active-bg: $menu-bar-hover-bg;
 $sidenav-icon-color: $faded-color;
 
-// Personal menu (shown when clicking the logged user avatar, on top-right)
-$personal-menu-bg: $menu-bar-bg;
-$personal-menu-color: $menu-bar-color;
-$personal-menu-active-bg: $side-menu-active-bg;
-$personal-menu-item-color: $menu-bar-inactive-color;
-$personal-menu-item-border-color: $gray-200;
-$personal-menu-hover-bg: $menu-bar-hover-bg;
-
 // Forms
 $required-marker-color: $red;
 $list-group-hover-bg: $menu-bar-hover-bg;
@@ -130,7 +122,7 @@ $tiled-results-spacing-xxs: 0.3rem;
 $tiled-results-spacing-xs: 0.5rem;
 $tiled-results-spacing: 0.6rem;
 $tiled-results-icon-color: #ddd;
-$tiled-results-hover-bg: $personal-menu-hover-bg;
+$tiled-results-hover-bg: $menu-bar-hover-bg;
 
 // Date-picker calendar
 $calendar-header-bg: $primary;

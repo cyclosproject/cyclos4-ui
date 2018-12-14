@@ -32,6 +32,19 @@
       height: 64px;
     }
 
+    noscript {
+      display: flex;
+      justify-content: center;
+      font-family: sans-serif;
+      font-size: 1rem;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      align-items: center;
+      text-align: center;
+    }
   </style>
   <script>
     function setSpinnerVisible(visible) {
@@ -62,7 +75,7 @@
 </head>
 
 <body>
-  <div id="rootSpinner">
+  <div id="rootSpinner" style="display: none">
     <img src="images/spinner.svg" alt="loading">
   </div>
   <div id="rootAlertContainer" style="display: none">
@@ -73,6 +86,15 @@
     </div>
   </div>
   <app-root class="d-flex flex-grow-1"></app-root>
+  <script>
+    setSpinnerVisible(true);
+  </script>
+  <noscript>
+    This application requires JavaScript, but your browser either doesn't
+    support it or has disabled it.
+    <br><br>
+    Please, enable JavaScript if possible, or use another browser.
+  </noscript>
 </body>
 
 </html>

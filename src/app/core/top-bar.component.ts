@@ -7,6 +7,7 @@ import { LoginService } from 'app/core/login.service';
 import { MenuService } from 'app/core/menu.service';
 import { LayoutService } from 'app/shared/layout.service';
 import { Menu } from 'app/shared/menu';
+import { StateManager } from 'app/core/state-manager';
 
 /**
  * The top bar, which is always visible
@@ -24,21 +25,36 @@ export class TopBarComponent implements OnInit {
     public login: LoginService,
     public layout: LayoutService,
     public menu: MenuService,
-    public router: Router) {
+    public router: Router,
+    private stateManager: StateManager) {
   }
 
   @Input() user: User;
   @Input() principal: string;
 
-  @Output() togglePersonalMenu = new EventEmitter<HTMLElement>();
   @Output() toggleSidenav = new EventEmitter<void>();
 
   ngOnInit(): void {
   }
 
+  goToProfile(event: MouseEvent) {
+    this.menu.lastSelectedMenu = Menu.MY_PROFILE;
+    this.router.navigateByUrl('/users/my-profile');
+    this.breadcrumb.clear();
+    this.stateManager.clear();
+    event.stopPropagation();
+    event.preventDefault();
+  }
+
   goToLogin(event: MouseEvent) {
     this.menu.lastSelectedMenu = Menu.LOGIN;
     this.router.navigateByUrl('/login');
+    event.stopPropagation();
+    event.preventDefault();
+  }
+
+  logout(event: MouseEvent) {
+    this.login.logout();
     event.stopPropagation();
     event.preventDefault();
   }

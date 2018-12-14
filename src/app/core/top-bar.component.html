@@ -16,19 +16,25 @@
         }}
       </span>
     </span>
-    <div *ngIf="user != null" class="personal-menu-toggle">
-      <a #personalMenuLink href="#" class="d-flex align-items-center flex-grow-1"
-        (click)="togglePersonalMenu.emit(personalMenuLink); $event.preventDefault()">
+    <div *ngIf="user != null" class="d-flex">
+      <a [routerLink]="['users', 'my-profile']" class="d-flex align-items-center flex-grow-1"
+        (click)="goToProfile($event)">
         <avatar [image]="user.image" icon="account_circle"></avatar>
-        <div *ngIf="layout.gtsm$ | async" class="ml-2 personal-menu-toggle-text dropdown-toggle">
+        <div *ngIf="layout.gtsm$ | async" class="ml-2">
           {{ user.display }}
+        </div>
+      </a>
+      <a href="#" class="d-flex ml-3 align-items-center flex-grow-1" (click)="logout($event)">
+        <icon size="1.4rem" icon="logout" class="mx-2"></icon>
+        <div *ngIf="layout.gtsm$ | async" i18n>
+          Logout
         </div>
       </a>
     </div>
     <div *ngIf="(login.user$ | async) == null && (layout.ltlg$ | async)"
       class="d-flex justify-content-center mr-2 login-icon">
-      <a routerLink="/login" (click)="goToLogin($event)" class="d-flex align-items-center">
-        <icon icon="input"></icon>
+      <a routerLink="/login" class="d-flex align-items-center" (click)="goToLogin($event)">
+        <icon size="1.4rem" icon="exit_to_app" class="mx-2"></icon>
       </a>
     </div>
   </div>

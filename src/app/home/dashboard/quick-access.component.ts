@@ -5,6 +5,7 @@ import { empty } from 'app/shared/helper';
 import { QuickAccessDescriptor } from 'app/content/quick-access-descriptor';
 import { QuickAccessType } from 'app/content/quick-access-type';
 import { Breakpoint } from 'app/shared/layout.service';
+import { Icon } from 'app/shared/icon';
 
 export interface QuickAccessAction {
   icon: string;
@@ -39,7 +40,7 @@ export class QuickAccessComponent extends BaseDashboardComponent implements OnIn
     const auth = dataForUi.auth;
     const permissions = auth.permissions;
     const addAction = (descriptor: QuickAccessDescriptor | QuickAccessType,
-      icon: string, label: string, url: string[]): void => {
+      icon: Icon, label: string, url: string[]): void => {
       let desc: QuickAccessDescriptor;
       if (typeof descriptor === 'string') {
         desc = desc = this.descriptors.find(d => d.type === descriptor);
@@ -65,31 +66,32 @@ export class QuickAccessComponent extends BaseDashboardComponent implements OnIn
           || generalAccountDescriptor;
         if (accountDescriptor) {
           const accountLabel = accounts.length === 1 ? this.i18n('Account') : accountType.name;
-          addAction(accountDescriptor, 'account', accountLabel, ['banking', 'account', ApiHelper.internalNameOrId(accountType)]);
+          const url = ['banking', 'account', ApiHelper.internalNameOrId(accountType)];
+          addAction(accountDescriptor, 'quick_access_account', accountLabel, url);
         }
       }
       if (permissions.banking.payments.user) {
-        addAction(QuickAccessType.PAY_USER, 'pay', this.i18n('Pay user'), ['banking', 'payment']);
+        addAction(QuickAccessType.PAY_USER, 'quick_access_pay', this.i18n('Pay user'), ['banking', 'payment']);
       }
       if (permissions.banking.payments.system) {
-        addAction(QuickAccessType.PAY_SYSTEM, 'pay', this.i18n('Pay system'), ['banking', 'payment', 'system']);
+        addAction(QuickAccessType.PAY_SYSTEM, 'quick_access_pay', this.i18n('Pay system'), ['banking', 'payment', 'system']);
       }
     }
     if (permissions.contacts && (permissions.contacts.enable)) {
-      addAction(QuickAccessType.CONTACTS, 'contact_list', this.i18n('Contacts'), ['users', 'contacts']);
+      addAction(QuickAccessType.CONTACTS, 'quick_access_contact_list', this.i18n('Contacts'), ['users', 'contacts']);
     }
     if (permissions.users && (permissions.users.search || permissions.users.map)) {
-      addAction(QuickAccessType.SEARCH_USERS, 'search_users', this.i18n('Directory'), ['users', 'search']);
+      addAction(QuickAccessType.SEARCH_USERS, 'quick_access_search_users', this.i18n('Directory'), ['users', 'search']);
     }
     if (permissions.marketplace && permissions.marketplace.search) {
-      addAction(QuickAccessType.SEARCH_ADS, 'marketplace', this.i18n('Advertisements'), ['marketplace', 'search']);
+      addAction(QuickAccessType.SEARCH_ADS, 'quick_access_marketplace', this.i18n('Advertisements'), ['marketplace', 'search']);
     }
     if (permissions.myProfile && permissions.myProfile.editProfile) {
-      addAction(QuickAccessType.EDIT_PROFILE, 'edit_profile', this.i18n('Edit profile'), ['users', 'my-profile', 'edit']);
+      addAction(QuickAccessType.EDIT_PROFILE, 'quick_access_edit_profile', this.i18n('Edit profile'), ['users', 'my-profile', 'edit']);
     }
     if (permissions.passwords && !empty(permissions.passwords.passwords)) {
       const passwordsLabel = permissions.passwords.passwords.length === 1 ? this.i18n('Password') : this.i18n('Passwords');
-      addAction(QuickAccessType.PASSWORDS, 'passwords', passwordsLabel, ['users', 'passwords']);
+      addAction(QuickAccessType.PASSWORDS, 'quick_access_passwords', passwordsLabel, ['users', 'passwords']);
     }
     // Must be asynchronous or sometimes will never hide the spinner
     setTimeout(() => this.notifyReady(), 1);

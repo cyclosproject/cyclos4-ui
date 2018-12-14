@@ -4,7 +4,7 @@
   display: block;
   position: -webkit-sticky; /* Safari */
   position: sticky;
-  z-index: 2000;
+  z-index: $zindex-sticky;
   top: 0;
 }
 .logo {
@@ -59,21 +59,17 @@ a:hover {
   text-decoration: none;
 }
 
-.personal-menu-toggle {
-  display: flex;
-}
-
-:host ::ng-deep .personal-menu-toggle icon {
+:host ::ng-deep .profile-link icon {
   opacity: 0.6;
 }
 
 @include media-breakpoint-up(xs) {
-  .personal-menu-toggle {
+  .profile-link {
     margin-right: 0.5rem;
   }
 }
 @include media-breakpoint-up(md) {
-  .personal-menu-toggle {
+  .profile-link {
     margin-right: 0;
   }
 }

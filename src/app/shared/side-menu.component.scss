@@ -6,11 +6,12 @@
 .side-menu-title {
   border-bottom: 1px solid $section-border-color;
   font-size: 1.1rem;
-  padding: 0.85rem 1.25rem 0.75rem 1.25rem;
   height: $title-height;
   display: flex;
   align-items: center;
   justify-content: center;
+  line-height: 1em;
+  padding-top: 0.1rem;
 }
 
 .card {
@@ -20,7 +21,7 @@
 a.nav-item {
   color: $side-menu-inactive-color;
   padding: 1rem;
-  border-bottom: 1px solid $personal-menu-item-border-color;
+  border-bottom: 1px solid $section-border-color;
   font-size: 1.1em;
   display: flex;
   flex-direction: row;

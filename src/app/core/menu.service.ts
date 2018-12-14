@@ -201,7 +201,7 @@ export class MenuService {
     addRoot(RootMenu.MARKETPLACE, 'shopping_cart', this.i18n({ value: 'Marketplace', description: 'Menu' }));
     addRoot(RootMenu.PERSONAL, 'account_box', this.i18n({ value: 'Personal', description: 'Menu' }));
     const register = addRoot(RootMenu.REGISTRATION, 'registration', this.i18n({ value: 'Register', description: 'Menu' }));
-    const login = addRoot(RootMenu.LOGIN, 'input', this.i18n({ value: 'Login', description: 'Menu' }));
+    const login = addRoot(RootMenu.LOGIN, 'exit_to_app', this.i18n({ value: 'Login', description: 'Menu' }));
 
     // Lambda that adds a submenu to a root menu
     const add = (menu: Menu, url: string, icon: string, label: string, showIn: MenuType[] = null) => {
@@ -211,7 +211,7 @@ export class MenuService {
     // Add the submenus
     if (restrictedAccess) {
       // Only show the logout
-      add(Menu.LOGOUT, null, 'exit_to_app',
+      add(Menu.LOGOUT, null, 'logout',
         this.i18n({ value: 'Logout', description: 'Menu' }),
         [MenuType.PERSONAL, MenuType.SIDENAV]);
     } else if (user == null) {
@@ -300,7 +300,7 @@ export class MenuService {
           this.i18n({ value: 'Passwords', description: 'Menu' }),
           [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
       }
-      add(Menu.LOGOUT, null, 'exit_to_app',
+      add(Menu.LOGOUT, null, 'logout',
         this.i18n({ value: 'Logout', description: 'Menu' }),
         [MenuType.PERSONAL, MenuType.SIDENAV]);
     }

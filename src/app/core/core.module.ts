@@ -16,12 +16,10 @@ import { MapsService } from 'app/core/maps.service';
 import { MenuBarComponent } from 'app/core/menu-bar.component';
 import { MenuService } from 'app/core/menu.service';
 import { NotificationService } from 'app/core/notification.service';
-import { PersonalMenuComponent } from 'app/core/personal-menu.component';
 import { PushNotificationsService } from 'app/core/push-notifications.service';
 import { SidenavComponent } from 'app/core/sidenav.component';
 import { SnackBarComponent } from 'app/core/snack-bar.component';
 import { StateManager } from 'app/core/state-manager';
-import { SvgIconRegistry } from 'app/core/svg-icon-registry';
 import { TopBarComponent } from 'app/core/top-bar.component';
 import { TransactionStatusService } from 'app/core/transaction-status.service';
 import { UserCacheService } from 'app/core/user-cache.service';
@@ -48,7 +46,6 @@ export const translations = require(`raw-loader!../../i18n/cyclos4-ui.en.xlf`);
 @NgModule({
   declarations: [
     TopBarComponent,
-    PersonalMenuComponent,
     MenuBarComponent,
     SidenavComponent,
     SnackBarComponent
@@ -60,7 +57,6 @@ export const translations = require(`raw-loader!../../i18n/cyclos4-ui.en.xlf`);
   exports: [
     LightboxModule,
     TopBarComponent,
-    PersonalMenuComponent,
     MenuBarComponent,
     SidenavComponent,
     SnackBarComponent
@@ -90,7 +86,6 @@ export const translations = require(`raw-loader!../../i18n/cyclos4-ui.en.xlf`);
     MenuService,
     PushNotificationsService,
     CountriesResolve,
-    SvgIconRegistry,
     UserCacheService,
     TransactionStatusService,
     API_INTERCEPTOR_PROVIDER,
