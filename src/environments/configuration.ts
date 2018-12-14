@@ -86,6 +86,6 @@ export const configuration = {
   adCategoryIcons: AD_CATEGORY_ICONS,
   adCategoryColors: AD_CATEGORY_COLORS,
   homePage: HOME_PAGE,
-  dashboardResolver: DASHBOARD_RESOLVER,
-  bannerResolver: BANNER_RESOLVER
+  dashboardResolver: DASHBOARD_RESOLVER as DashboardResolver | DashboardItemConfig[],
+  bannerResolver: BANNER_RESOLVER as BannerResolver | BannerCard[]
 };
