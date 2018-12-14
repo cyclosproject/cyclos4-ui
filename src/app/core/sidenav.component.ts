@@ -23,9 +23,6 @@ import { I18n } from '@ngx-translate/i18n-polyfill';
 })
 export class SidenavComponent implements OnInit {
 
-  private glass: HTMLElement;
-  private escHandler;
-
   constructor(
     private _element: ElementRef,
     private menu: MenuService,
@@ -43,11 +40,6 @@ export class SidenavComponent implements OnInit {
   ngOnInit() {
     this.roots$ = this.menu.menu(MenuType.SIDENAV);
     this.layout.gtsm$.subscribe(() => this.close());
-    this.escHandler = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        this.close();
-      }
-    };
   }
 
   toggle() {
@@ -75,14 +67,7 @@ export class SidenavComponent implements OnInit {
       const style = this.element.style;
       style.transform = 'translateX(0)';
       this.rootContainer.style.transform = `translateX(${this.element.clientWidth}px)`;
-      if (this.glass == null) {
-        this.glass = document.createElement('div');
-        this.glass.className = 'glass';
-        this.glass.addEventListener('click', () => this.close(), true);
-        document.body.addEventListener('keydown', this.escHandler, false);
-        document.body.appendChild(this.glass);
-      }
-      setTimeout(() => this.glass.style.opacity = '1', 1);
+      this.layout.showBackdrop(() => this.close());
     }
   }
 
@@ -91,12 +76,7 @@ export class SidenavComponent implements OnInit {
       const style = this.element.style;
       style.transform = '';
       this.rootContainer.style.transform = '';
-      this.glass.style.opacity = '';
-      document.body.removeEventListener('keydown', this.escHandler, false);
-      setTimeout(() => {
-        this.glass.parentElement.removeChild(this.glass);
-        this.glass = null;
-      }, 300);
+      this.layout.hideBackdrop();
     }
   }
 

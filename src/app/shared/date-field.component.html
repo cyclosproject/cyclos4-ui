@@ -5,7 +5,7 @@
 <ng-template #widget>
   <!-- Need a relatively-positioned element to position the dropdown corretcly -->
   <div class="d-inline-block" style="position:relative" dropdown #dropdown="bs-dropdown"
-    (onShown)="onShown()">
+    (onShown)="onShown()" (onHidden)="onHidden()">
     <div class="date-field d-flex align-items-center">
       <ng-container *ngFor="let control of partControls.controls; let index = index">
         <div *ngIf="index > 0 && (layout.gtxs$ | async)" class="mx-1">
@@ -30,10 +30,10 @@
         <icon icon="calendar_today"></icon>
       </button>
     </div>
-    <div #dropDownMenu class="dropdown-menu" *dropdownMenu role="dialog"
-      attr.id="'calendar-' + id" attr.aria-labelledby="id" (click)="$event.preventDefault(); $event.stopPropagation();">
-      <calendar #calendar [formControl]="formControl" [minDate]="minDate"
-        [maxDate]="maxDate" (select)="dropdown.hide()"></calendar>
+    <div class="dropdown-menu" *dropdownMenu role="dialog" attr.id="'calendar-' + id"
+      attr.aria-labelledby="id" (click)="$event.preventDefault(); $event.stopPropagation();">
+      <calendar [formControl]="formControl" [minDate]="minDate" [maxDate]="maxDate"
+        (select)="dropdown.hide()"></calendar>
     </div>
   </div>
   <field-errors [control]="formControl"></field-errors>

@@ -90,6 +90,9 @@ export class LayoutService {
 
   private leftAreaVisibleSub: Subscription;
 
+  private backdrop: HTMLElement;
+  private escHandler: any;
+
   constructor(private observer: BreakpointObserver) {
     this.breakpointObservers = new Map();
     // Set the initial state of the active breakpoints, and initialize the observers
@@ -316,6 +319,46 @@ export class LayoutService {
       activeBreakpoints = this._activeBreakpoints.value;
     }
     return allowedBreakpoints.find(b => activeBreakpoints.has(b)) != null;
+  }
+
+  /**
+   * Shows the backdrop, which is an absolutely positioned DIV that occupies the full screen.
+   * @param closeHandler Function to be called when the backdrop is clicked or when the escape key is pressed
+   */
+  showBackdrop(closeHandler: () => void) {
+    // First, remove and re-apply the ESC key handler
+    this.removeBackdropEscHandler();
+    this.escHandler = closeHandler;
+    document.body.addEventListener('keydown', this.escHandler, false);
+
+    if (this.backdrop == null) {
+      this.backdrop = document.createElement('div');
+      this.backdrop.className = 'backdrop';
+      this.backdrop.addEventListener('click', closeHandler, true);
+      document.body.appendChild(this.backdrop);
+    }
+    setTimeout(() => this.backdrop.style.opacity = '1', 1);
+  }
+
+  /**
+   * Hides the backdrop, if any
+   */
+  hideBackdrop() {
+    this.removeBackdropEscHandler();
+    if (this.backdrop != null) {
+      this.backdrop.style.opacity = '';
+      setTimeout(() => {
+        this.backdrop.parentElement.removeChild(this.backdrop);
+        this.backdrop = null;
+      }, 300);
+    }
+  }
+
+  private removeBackdropEscHandler() {
+    if (this.escHandler) {
+      document.body.removeEventListener('keydown', this.escHandler, false);
+      this.escHandler = null;
+    }
   }
 
 }

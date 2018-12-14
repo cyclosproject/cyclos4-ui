@@ -51,8 +51,7 @@ export class DateFieldComponent
   @ViewChildren('part') parts: QueryList<ElementRef>;
   @ViewChild('toggleButton') toggleRef: ElementRef;
   @ViewChild('dropdown') dropdown: BsDropdownDirective;
-  @ViewChild('dropDownMenu') menuRef: ElementRef;
-  @ViewChild('calendar') calendar: CalendarComponent;
+  @ViewChildren(CalendarComponent) calendar: QueryList<CalendarComponent>;
 
   constructor(
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
@@ -206,19 +205,24 @@ export class DateFieldComponent
   }
 
   onShown() {
-    if (!this.menuRef) {
-      return;
-    }
-    this.calendar.prepare();
+    this.calendar.forEach(c => c.prepare());
 
     const toggle: HTMLElement = this.toggleRef.nativeElement;
-    const menu: HTMLElement = this.menuRef.nativeElement;
 
     const rect = toggle.getBoundingClientRect();
     const docHeight = (window.innerHeight || document.documentElement.clientHeight);
     this.dropdown.dropup = rect.bottom > docHeight - 100;
 
     // Workaround: ngx-bootstrap sets top sometimes when we set dropup, which causes a position error
-    setTimeout(() => menu.style.top = '', 1);
+    // setTimeout(() => menu.style.top = '', 1);
+
+    if (this.layout.ltmd) {
+      // For small screens, the datepicker is shown centered with a backdrop
+      this.layout.showBackdrop(() => this.dropdown.hide());
+    }
+  }
+
+  onHidden() {
+    this.layout.hideBackdrop();
   }
 }
