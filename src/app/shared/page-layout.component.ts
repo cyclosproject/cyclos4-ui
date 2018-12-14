@@ -38,6 +38,8 @@ export class PageLayoutComponent implements OnInit, OnDestroy {
     return this.leftAreaVisible$.value;
   }
 
+  loggingOut$ = new BehaviorSubject(false);
+
   constructor(
     public layout: LayoutService,
     public login: LoginService,
@@ -59,6 +61,10 @@ export class PageLayoutComponent implements OnInit, OnDestroy {
     this.subs.push(this.menu.activeMenu$.subscribe(updateLeftAreaVisible));
     this.subs.push(this.banner.cards$.subscribe(updateLeftAreaVisible));
     updateLeftAreaVisible();
+
+    this.subs.push(this.login.subscribeForLoggingOut(flag => {
+      this.loggingOut$.next(flag);
+    }));
   }
 
   ngOnDestroy() {

@@ -39,7 +39,7 @@ export class MenuService {
     const classes = document.body.classList;
     RootMenu.values().forEach(root => {
       const current = `root-menu--${root}`;
-      if (menu.root === root) {
+      if (menu && menu.root === root) {
         if (!classes.contains(current)) {
           classes.add(current);
         }
@@ -68,6 +68,7 @@ export class MenuService {
     dataForUiHolder.subscribe(dataForUi => {
       const auth = (dataForUi || {}).auth;
       this._fullMenu.next(this.buildFullMenu(auth));
+      this.lastSelectedMenu = null;
     });
     this.activeMenu$ = this._activeMenu.asObservable().pipe(
       distinctUntilChanged()

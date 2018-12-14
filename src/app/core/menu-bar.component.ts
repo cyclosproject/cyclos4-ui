@@ -1,11 +1,11 @@
-import { Component, ChangeDetectionStrategy, Input, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { RootMenuEntry, RootMenu, MenuType } from 'app/shared/menu';
+import { ChangeDetectionStrategy, Component, Input, OnInit, ViewChildren, QueryList, ElementRef } from '@angular/core';
+import { Router } from '@angular/router';
+import { BreadcrumbService } from 'app/core/breadcrumb.service';
 import { MenuService } from 'app/core/menu.service';
 import { StateManager } from 'app/core/state-manager';
-import { BreadcrumbService } from 'app/core/breadcrumb.service';
-import { Router } from '@angular/router';
 import { LayoutService } from 'app/shared/layout.service';
+import { MenuType, RootMenu, RootMenuEntry } from 'app/shared/menu';
+import { Observable } from 'rxjs';
 
 /**
  * A bar displayed on large layouts with the root menu items
@@ -25,6 +25,8 @@ export class MenuBarComponent implements OnInit {
     public layout: LayoutService) {
   }
 
+  @ViewChildren('rootLink') rootLinks: QueryList<ElementRef>;
+
   roots: Observable<RootMenuEntry[]>;
   private _activeRoot: RootMenu;
   @Input() get activeRoot(): RootMenu {
@@ -36,6 +38,15 @@ export class MenuBarComponent implements OnInit {
 
   ngOnInit(): void {
     this.roots = this.menu.menu(MenuType.BAR);
+
+    // Some browsers (like Firefox) show an outline on focused anchors. After the page is loaded, blur the menus, so none will be outlined
+    this.layout.currentPage$.subscribe(() => {
+      if (this.rootLinks) {
+        this.rootLinks.forEach(ref => {
+          ref.nativeElement.blur();
+        });
+      }
+    });
   }
 
   onClick(event: MouseEvent, root: RootMenuEntry) {

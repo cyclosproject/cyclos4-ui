@@ -1,18 +1,18 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { BannerService } from 'app/core/banner.service';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { FormatService } from 'app/core/format.service';
 import { LoginService } from 'app/core/login.service';
 import { MenuService } from 'app/core/menu.service';
 import { PushNotificationsService } from 'app/core/push-notifications.service';
-import { LayoutService } from 'app/shared/layout.service';
-import { BehaviorSubject } from 'rxjs';
 import { blank } from 'app/shared/helper';
+import { LayoutService } from 'app/shared/layout.service';
 import { trim } from 'lodash';
-import { BannerService } from 'app/core/banner.service';
+import { BehaviorSubject } from 'rxjs';
 
-declare const setSpinnerVisible: (boolean) => void;
+declare const setSpinnerVisible: (visible: boolean) => void;
 
 @Component({
   selector: 'app-root',
@@ -25,6 +25,7 @@ export class AppComponent implements OnInit {
   constructor(
     private title: Title,
     private router: Router,
+    private route: ActivatedRoute,
     private format: FormatService,
     private dataForUiHolder: DataForUiHolder,
     public login: LoginService,
@@ -57,6 +58,12 @@ export class AppComponent implements OnInit {
       this.prepareContent();
     }
     this.login.subscribeForLoggingOut(flag => this.loggingOut.next(flag));
+    this.layout.currentPage$.subscribe(() => {
+      if (this.menu.lastSelectedMenu == null) {
+        const data = this.route.snapshot.data || {};
+        this.menu.lastSelectedMenu = data.menu;
+      }
+    });
     setSpinnerVisible(false);
   }
 

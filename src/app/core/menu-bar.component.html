@@ -4,8 +4,9 @@
 }">
   <div class="navbar-container justify-content-start">
     <ng-container *ngFor="let root of roots | async">
-      <a *ngIf="root.entries[0]" [routerLink]="root.entries[0].url" (click)="onClick($event, root);$event.target.blur()"
-        class="nav-item d-inline-flex align-items-center" [ngClass]="{active: activeRoot === root.rootMenu}">
+      <a *ngIf="root.entries[0]" #rootLink [routerLink]="root.entries[0].url"
+        (click)="onClick($event, root);$event.target.blur()" class="nav-item d-inline-flex align-items-center"
+        [ngClass]="{active: activeRoot === root.rootMenu}">
         <icon class="mr-2" size="1.4rem" [icon]="root.icon"></icon>
         <span class="menu-text">{{ root.label }}</span>
       </a>
