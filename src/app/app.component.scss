@@ -18,15 +18,4 @@
   flex-direction: column;
   flex-grow: 1;
   transition: transform 0.3s;
-  padding-top: $top-bar-height-xxs;
-}
-@include media-breakpoint-up(xs) {
-  .root-container {
-    padding-top: $top-bar-height-xs;
-  }
-}
-@include media-breakpoint-up(md) {
-  .root-container {
-    padding-top: $top-bar-height;
-  }
 }

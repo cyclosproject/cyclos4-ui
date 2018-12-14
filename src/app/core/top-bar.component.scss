@@ -2,11 +2,10 @@
 
 :host {
   display: block;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
   z-index: 10;
+  top: 0;
 }
 .logo {
   max-width: 64px;
@@ -44,11 +43,9 @@
 }
 @include media-breakpoint-up(lg) {
   :host {
-    position: unset;
-    top: unset;
-    left: unset;
-    width: unset;
+    position: relative;
   }
+
   .navbar-container {
     @include make-container-max-widths();
   }
