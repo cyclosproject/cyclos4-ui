@@ -44,6 +44,13 @@
             </decimal-field>
           </div>
           <div class="col-12 col-md-6">
+            <single-selection-field labelPosition="side" formControlName="direction"
+              i18n-label label="Direction" i18n-emptyOption emptyOption="Any">
+              <field-option value="credit" i18n-text text="Credits"></field-option>
+              <field-option value="debit" i18n-text text="Debits"></field-option>
+            </single-selection-field>
+          </div>
+          <div class="col-12 col-md-6">
             <user-field labelPosition="side" formControlName="user"
               i18n-label label="User"></user-field>
           </div>

@@ -113,7 +113,7 @@ export class AccountHistoryComponent
     });
   }
 
-  doSearch(value) {
+  doSearch(value: any) {
     const filter = value.transferFilter as TransferFilter;
     const query: AccountsService.SearchAccountHistoryParams | AccountsService.GetAccountStatusByOwnerAndTypeParams = {
       owner: ApiHelper.SELF, accountType: this.typeId,
