@@ -24,7 +24,7 @@
         <single-selection-field labelPosition="side" formControlName="transferFilter"
           i18n-label label="Filter" i18n-emptyOption emptyOption="Not applied">
           <field-option *ngFor="let filter of transferFilters" [value]="filter"
-            [text]="filter.name"></field-option>
+            [id]="filter.id" [text]="filter.name"></field-option>
         </single-selection-field>
       </div>
       <div *ngIf="(form.value || (form.valueChanges | async))?.preselectedPeriod?.begin == null"
