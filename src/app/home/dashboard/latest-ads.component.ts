@@ -49,6 +49,9 @@ export class LatestAdsComponent extends BaseDashboardComponent implements OnInit
    * Attempt to leave a single ad per user. If not possible, then repeat ads
    */
   private preprocess(ads: AdResult[]): AdResult[] {
+    if (ads.length < this.max) {
+      return ads;
+    }
     const result = this.onePerOwner(ads).slice(0, this.max);
     while (result.length < this.max) {
       // We still need more results, yet, from different owners

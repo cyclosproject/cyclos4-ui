@@ -3,9 +3,11 @@ import { I18n } from '@ngx-translate/i18n-polyfill';
 import { Auth } from 'app/api/models';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { ApiHelper } from 'app/shared/api-helper';
-import { Menu, MenuEntry, MenuType, RootMenu, RootMenuEntry, SideMenuEntries } from 'app/shared/menu';
+import { LayoutService } from 'app/shared/layout.service';
+import { Menu, MenuEntry, MenuType, RootMenu, RootMenuEntry, SideMenuEntries, ConditionalMenu } from 'app/shared/menu';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { distinctUntilChanged, filter, map } from 'rxjs/operators';
+import { LoginService } from 'app/core/login.service';
 
 /**
  * Holds shared data for the menu, plus logic regarding the currently visible menu
@@ -28,9 +30,9 @@ export class MenuService {
   lastSelectedMenu$: Observable<Menu>;
 
   /** The last menu which was selected by the user */
-  private _lastSelectedMenu = new BehaviorSubject<Menu>(null);
+  private _lastSelectedMenu = new BehaviorSubject<Menu | ConditionalMenu>(null);
   get lastSelectedMenu(): Menu {
-    return this._lastSelectedMenu.value;
+    return this.resolveMenu(this._lastSelectedMenu.value);
   }
   set lastSelectedMenu(menu: Menu) {
     this._lastSelectedMenu.next(menu);
@@ -56,7 +58,9 @@ export class MenuService {
 
   constructor(
     private i18n: I18n,
-    private dataForUiHolder: DataForUiHolder
+    private dataForUiHolder: DataForUiHolder,
+    private login: LoginService,
+    layout: LayoutService
   ) {
     const initialDataForUi = this.dataForUiHolder.dataForUi;
     const initialAuth = (initialDataForUi || {}).auth;
@@ -79,8 +83,19 @@ export class MenuService {
       distinctUntilChanged()
     );
     this.lastSelectedMenu$ = this._lastSelectedMenu.asObservable().pipe(
+      map(v => this.resolveMenu(v)),
       distinctUntilChanged()
     );
+    layout.currentPage$.subscribe(p => {
+      if (p && this.shouldUpdateLastMenu) {
+        this._lastSelectedMenu.next(p.menuItem);
+      }
+    });
+  }
+
+  private get shouldUpdateLastMenu(): boolean {
+    const last = this.lastSelectedMenu;
+    return last == null || last === Menu.HOME || last === Menu.DASHBOARD;
   }
 
   /** Indicates the next menu item */
@@ -121,7 +136,9 @@ export class MenuService {
   rootEntry(root?: RootMenu): RootMenuEntry {
     if (root == null) {
       const menu = this._activeMenu.value;
-      root = menu.root;
+      if (menu) {
+        root = menu.root;
+      }
     }
     const roots = this._fullMenu.value || [];
     for (const rootEntry of roots) {
@@ -320,5 +337,13 @@ export class MenuService {
       }
     }
     return rootMenus;
+  }
+
+  private resolveMenu(value: Menu | ConditionalMenu): Menu {
+    if (value instanceof ConditionalMenu) {
+      return this.login.user ? value.loggedUsers : value.guests;
+    }
+    return this._lastSelectedMenu.value as Menu;
+
   }
 }

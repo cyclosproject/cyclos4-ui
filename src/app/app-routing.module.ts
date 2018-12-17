@@ -5,7 +5,7 @@ import { HomeComponent } from 'app/home/home.component';
 import { NotFoundComponent } from 'app/shared/not-found.component';
 import { SharedModule } from 'app/shared/shared.module';
 import { LoggedUserGuard } from 'app/logged-user-guard';
-import { Menu } from 'app/shared/menu';
+import { Menu, ConditionalMenu } from 'app/shared/menu';
 import { ForgotPasswordComponent } from 'app/login/forgot-password.component';
 import { ChangeForgottenPasswordComponent } from 'app/login/change-forgotten-password.component';
 import { ChangeExpiredPasswordComponent } from 'app/login/change-expired-password.component';
@@ -17,10 +17,7 @@ const rootRoutes: Routes = [
     component: HomeComponent,
     pathMatch: 'full',
     data: {
-      menu: {
-        guests: Menu.HOME,
-        loggedUsers: Menu.DASHBOARD
-      }
+      menu: new ConditionalMenu(Menu.HOME, Menu.DASHBOARD)
     }
   },
   {
@@ -28,10 +25,7 @@ const rootRoutes: Routes = [
     component: HomeComponent,
     pathMatch: 'full',
     data: {
-      menu: {
-        guests: Menu.HOME,
-        loggedUsers: Menu.DASHBOARD
-      }
+      menu: new ConditionalMenu(Menu.HOME, Menu.DASHBOARD)
     }
   },
   {

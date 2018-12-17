@@ -126,3 +126,10 @@ export class SideMenuEntries {
   ) {
   }
 }
+
+/**
+ * A menu definition which depends on whether there's a logged user
+ */
+export class ConditionalMenu {
+  constructor(public guests: Menu, public loggedUsers: Menu) { }
+}
