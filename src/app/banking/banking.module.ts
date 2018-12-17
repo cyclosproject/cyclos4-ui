@@ -7,7 +7,6 @@ import { PaymentStepDoneComponent } from 'app/banking/payment/payment-step-done.
 import { PaymentStepFormComponent } from 'app/banking/payment/payment-step-form.component';
 import { PerformPaymentComponent } from 'app/banking/payment/perform-payment.component';
 import { SearchAuthorizedPaymentsComponent } from 'app/banking/transactions/search-authorized-payments.component';
-import { SearchRecurringPaymentsComponent } from 'app/banking/transactions/search-recurring-payments.component';
 import { SearchScheduledPaymentsComponent } from 'app/banking/transactions/search-scheduled-payments.component';
 import { TransactionFitersComponentComponent } from 'app/banking/transactions/transaction-filters.component';
 import { ViewAuthorizationHistoryComponent } from 'app/banking/transactions/view-authorization-history.component';
@@ -33,7 +32,6 @@ import { SharedModule } from 'app/shared/shared.module';
     ViewAuthorizationHistoryComponent,
 
     SearchScheduledPaymentsComponent,
-    SearchRecurringPaymentsComponent,
     SearchAuthorizedPaymentsComponent,
     TransactionFitersComponentComponent,
     ViewTransactionComponent,

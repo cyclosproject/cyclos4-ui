@@ -261,13 +261,11 @@ export class MenuService {
         add(Menu.PAYMENT_TO_SYSTEM, '/banking/payment/system', 'payment',
           this.i18n({ value: 'Payment to system', description: 'Menu' }));
       }
-      if ((banking.scheduledPayments || {}).view) {
+      const scheduledPayments = (banking.scheduledPayments || {});
+      const recurringPayments = (banking.recurringPayments || {});
+      if (scheduledPayments.view || recurringPayments.view) {
         add(Menu.SCHEDULED_PAYMENTS, '/banking/scheduled-payments', 'schedule',
           this.i18n({ value: 'Scheduled payments', description: 'Menu' }));
-      }
-      if ((banking.recurringPayments || {}).view) {
-        add(Menu.RECURRING_PAYMENTS, '/banking/recurring-payments', 'repeat',
-          this.i18n({ value: 'Recurring payments', description: 'Menu' }));
       }
       if ((banking.authorizations || {}).view) {
         add(Menu.AUTHORIZED_PAYMENTS, '/banking/authorized-payments', 'assignment_turned_in',

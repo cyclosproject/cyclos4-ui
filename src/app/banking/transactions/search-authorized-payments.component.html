@@ -1,7 +1,8 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="loaded$ | async; else loading">
     <transaction-filters i18n-heading heading="Payment authorizations" [form]="form"
-      [data]="data" [statusOptions]="statusOptions" [transferFilters]="transferFilters$ | async"></transaction-filters>
+      [data]="data" statusField="authorizationStatuses" [statusOptions]="statusOptions"
+      [transferFilters]="transferFilters$ | async"></transaction-filters>
 
     <results-layout resultType="list" [results]="results$ | async" (update)="update($event)">
       <table *resultTable class="table table-hover cursor-pointer">

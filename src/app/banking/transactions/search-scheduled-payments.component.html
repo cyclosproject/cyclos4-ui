@@ -9,8 +9,7 @@
           <th class="avatar"></th>
           <th i18n>Date</th>
           <th i18n>From / to</th>
-          <th i18n>Status</th>
-          <th i18n>Installments</th>
+          <th i18n>Scheduling</th>
           <th i18n class="amount">Amount</th>
         </thead>
         <tbody>
@@ -38,17 +37,7 @@
               </td>
               <td>
                 <a class="d-inline-block" [routerLink]="path(row)">
-                  {{ status(row) }}<ng-container *ngIf="layout.ltsm$ | async">
-                    <br>
-                    {{ row.processedInstallments }} / {{ row.installmentCount
-                    }}
-                  </ng-container>
-                </a>
-              </td>
-              <td *ngIf="layout.gtxs$ | async">
-                <a class="d-inline-block" [routerLink]="path(row)">
-                  {{ row.processedInstallments }} / {{ row.installmentCount
-                  }}
+                  {{ scheduling(row) }}
                 </a>
               </td>
               <td class="amount" [ngClass]="{'pb-0': layout.xxs$ | async}">

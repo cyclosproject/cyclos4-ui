@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, Injector } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
+import { TransactionAuthorizationStatusEnum, TransactionKind } from 'app/api/models';
 import { TransactionsService } from 'app/api/services';
 import { BaseTransactionsSearch } from 'app/banking/transactions/base-transactions-search.component';
-import { TransactionKind, TransactionAuthorizationStatusEnum, TransactionResult } from 'app/api/models';
 import { TransactionStatusService } from 'app/core/transaction-status.service';
 
 /**
@@ -13,7 +13,7 @@ import { TransactionStatusService } from 'app/core/transaction-status.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchAuthorizedPaymentsComponent
-  extends BaseTransactionsSearch {
+  extends BaseTransactionsSearch implements OnInit {
 
   constructor(
     injector: Injector,
@@ -23,19 +23,19 @@ export class SearchAuthorizedPaymentsComponent
     super(injector, transactionsService, transactionStatusService);
   }
 
-  getStatusesPropertyName() {
-    return 'authorizationStatuses';
-  }
-
-  getInitialStatus() {
-    return TransactionAuthorizationStatusEnum.PENDING;
-  }
-
   getKinds() {
     return [
       TransactionKind.PAYMENT, TransactionKind.ORDER,
       TransactionKind.SCHEDULED_PAYMENT, TransactionKind.RECURRING_PAYMENT
     ];
+  }
+
+  ngOnInit() {
+    super.ngOnInit();
+    this.form.patchValue(
+      { authorizationStatuses: TransactionAuthorizationStatusEnum.PENDING },
+      { emitEvent: false }
+    );
   }
 
   get statusOptions() {
@@ -45,21 +45,10 @@ export class SearchAuthorizedPaymentsComponent
     }));
   }
 
-  scheduling(row: TransactionResult) {
-    switch (row.kind) {
-      case TransactionKind.SCHEDULED_PAYMENT:
-        if (row.installmentCount === 1) {
-          return this.i18n('Future date');
-        } else {
-          return this.i18n('{{count}} installments', {
-            count: row.installmentCount
-          });
-        }
-      case TransactionKind.RECURRING_PAYMENT:
-        return this.i18n('Repeat monthly');
-      default:
-        return this.i18n('Direct payment');
-    }
+  protected buildQuery(value: any): TransactionsService.SearchTransactionsParams {
+    const query = super.buildQuery(value);
+    query.authorizationStatuses = [value.status];
+    return query;
   }
 
 }

@@ -1,5 +1,8 @@
 import { Injector, OnInit } from '@angular/core';
-import { Currency, Image, TransactionDataForSearch, TransactionKind, TransactionResult, TransferFilter } from 'app/api/models';
+import {
+  Currency, Image, RecurringPaymentStatusEnum, TransactionDataForSearch,
+  TransactionKind, TransactionResult, TransferFilter
+} from 'app/api/models';
 import { TransactionsService } from 'app/api/services';
 import { TransactionStatusService } from 'app/core/transaction-status.service';
 import { ApiHelper } from 'app/shared/api-helper';
@@ -50,9 +53,6 @@ export abstract class BaseTransactionsSearch
         }
       });
 
-      // Initialize the query statuses
-      this.form.patchValue({ 'status': this.getInitialStatus() }, { emitEvent: false });
-
       // Only initialize the data once the form is filled-in
       this.data = data;
     });
@@ -69,35 +69,25 @@ export abstract class BaseTransactionsSearch
   }
 
   /**
-   * Must be implemented to return the initial status value
-   */
-  protected abstract getInitialStatus(): string;
-
-  /**
-   * Must be implemented to return the actual property name on the statuses filter
-   */
-  protected abstract getStatusesPropertyName(): string;
-
-  /**
    * Must be implemented to return the actual kinds of transactions to be returned
    */
   protected abstract getKinds(): TransactionKind[];
 
-  doSearch(value) {
-    const query: any = {
+  doSearch(value: any) {
+    const query = this.buildQuery(value);
+    return this.transactionsService.searchTransactionsResponse(query);
+  }
+
+  protected buildQuery(value: any): TransactionsService.SearchTransactionsParams {
+    const query: TransactionsService.SearchTransactionsParams = {
       page: value.page, pageSize: value.pageSize,
       owner: ApiHelper.SELF,
       accountTypes: value.accountType ? [value.accountType] : null,
       transferFilters: value.transferFilter ? [value.transferFilter] : null,
       datePeriod: ApiHelper.resolveDatePeriod(value)
     };
-    const statusesProperty = this.getStatusesPropertyName();
-    const kinds = this.getKinds();
-    if (!empty(statusesProperty)) {
-      query[statusesProperty] = [value.status];
-    }
-    query.kinds = kinds;
-    return this.transactionsService.searchTransactionsResponse(query);
+    query.kinds = this.getKinds();
+    return query;
   }
 
   /**
@@ -142,5 +132,46 @@ export abstract class BaseTransactionsSearch
    */
   status(row: TransactionResult): string {
     return this.transactionStatusService.transactionStatus(row);
+  }
+
+  /**
+   * Returns the scheduling label for the given transaction result
+   */
+  scheduling(row: TransactionResult) {
+    switch (row.kind) {
+      case TransactionKind.SCHEDULED_PAYMENT:
+        if (row.installmentCount === 1) {
+          const installment = row.firstInstallment;
+          return this.i18n('Scheduled to {{dueDate}}', {
+            dueDate: this.format.formatAsDate(installment == null ? null : installment.dueDate)
+          });
+        } else {
+          const count = row.installmentCount;
+          const firstOpen = row.firstOpenInstallment;
+          if (firstOpen) {
+            return this.i18n('{{count}} installments, next on {{dueDate}}', {
+              count: count,
+              dueDate: this.format.formatAsDate(firstOpen.dueDate)
+            });
+          } else {
+            return this.i18n('{{count}} installments', {
+              count: count
+            });
+          }
+        }
+      case TransactionKind.RECURRING_PAYMENT:
+        switch (row.recurringPaymentStatus) {
+          case RecurringPaymentStatusEnum.CLOSED:
+            return this.i18n('Closed recurring payment');
+          case RecurringPaymentStatusEnum.CANCELED:
+            return this.i18n('Canceled recurring payment');
+          default:
+            return this.i18n('Recurring payment, next at {{date}}', {
+              date: this.format.formatAsDate(row.nextOccurrenceDate)
+            });
+        }
+      default:
+        return this.i18n('Direct payment');
+    }
   }
 }

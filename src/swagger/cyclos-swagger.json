@@ -30314,6 +30314,34 @@
       },
       "x-parent" : "HashMap<String, Object>"
     },
+    "ScheduledPaymentInstallment" : {
+      "allOf" : [ {
+        "$ref" : "#/definitions/Entity"
+      }, {
+        "type" : "object",
+        "properties" : {
+          "number" : {
+            "type" : "integer",
+            "description" : "The installment number."
+          },
+          "dueDate" : {
+            "type" : "string",
+            "format" : "date-time",
+            "description" : "The installment due date."
+          },
+          "amount" : {
+            "type" : "string",
+            "format" : "number",
+            "description" : "The installment amount"
+          },
+          "status" : {
+            "description" : "The status of a scheduled payment installment Possible values are:\n* blocked: The installment is blocked, and won't be automatically processed on its due date\n* canceled: The installment was canceled\n* failed: The installment processing failed, for example, because there was no funds in the source account\n* processed: The installment was processed, generating a transfer\n* scheduled: The installment is scheduled for a future date\n* settled: The installment was marked as settled by the receiver\n",
+            "$ref" : "#/definitions/ScheduledPaymentInstallmentStatusEnum"
+          }
+        }
+      } ],
+      "description" : "Reference to a scheduled payment installment\n"
+    },
     "ScheduledPaymentInstallmentPreview" : {
       "type" : "object",
       "properties" : {
@@ -30348,28 +30376,10 @@
     },
     "ScheduledPaymentInstallmentView" : {
       "allOf" : [ {
-        "$ref" : "#/definitions/Entity"
+        "$ref" : "#/definitions/ScheduledPaymentInstallment"
       }, {
         "type" : "object",
         "properties" : {
-          "number" : {
-            "type" : "integer",
-            "description" : "The installment number."
-          },
-          "dueDate" : {
-            "type" : "string",
-            "format" : "date-time",
-            "description" : "The installment due date."
-          },
-          "amount" : {
-            "type" : "string",
-            "format" : "number",
-            "description" : "The installment amount"
-          },
-          "status" : {
-            "description" : "The status of a scheduled payment installment Possible values are:\n* blocked: The installment is blocked, and won't be automatically processed on its due date\n* canceled: The installment was canceled\n* failed: The installment processing failed, for example, because there was no funds in the source account\n* processed: The installment was processed, generating a transfer\n* scheduled: The installment is scheduled for a future date\n* settled: The installment was marked as settled by the receiver\n",
-            "$ref" : "#/definitions/ScheduledPaymentInstallmentStatusEnum"
-          },
           "by" : {
             "description" : "The user that performed an status change. For example, who\nmanually paid, settled or canceled an open installment\n",
             "$ref" : "#/definitions/User"
@@ -31374,6 +31384,14 @@
           "scheduledPaymentStatus" : {
             "description" : "The scheduled payment status. Only returned if `kind` is `scheduledPayment`. Possible values are:\n* blocked: The scheduled payment is blocked - won't have any installment processed until being unblocked again\n* canceled: The scheduled payment, as well as all open installments were canceled\n* closed: The scheduled payment is closed\n* open: The scheduled payment has open installments\n",
             "$ref" : "#/definitions/ScheduledPaymentStatusEnum"
+          },
+          "firstInstallment" : {
+            "description" : "A reference to the first installment of this scheduled payment. Only returned if `kind` is `scheduledPayment`.\n",
+            "$ref" : "#/definitions/ScheduledPaymentInstallment"
+          },
+          "firstOpenInstallment" : {
+            "description" : "A reference to the first installment which is still open. Only returned if `kind` is `scheduledPayment`.\n",
+            "$ref" : "#/definitions/ScheduledPaymentInstallment"
           },
           "nextOccurrenceDate" : {
             "type" : "string",

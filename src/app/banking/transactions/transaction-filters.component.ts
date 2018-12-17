@@ -18,6 +18,7 @@ export class TransactionFitersComponentComponent
   @Input() data: TransactionDataForSearch;
   @Input() heading: string;
   @Input() form: FormGroup;
+  @Input() statusField: string;
   @Input() statusOptions: FieldOption[];
   @Input() transferFilters: TransferFilter[];
 

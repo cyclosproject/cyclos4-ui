@@ -7,7 +7,6 @@ import { ViewTransferComponent } from 'app/banking/transfers/view-transfer.compo
 import { PerformPaymentComponent } from 'app/banking/payment/perform-payment.component';
 import { ViewTransactionComponent } from 'app/banking/transactions/view-transaction.component';
 import { SearchScheduledPaymentsComponent } from 'app/banking/transactions/search-scheduled-payments.component';
-import { SearchRecurringPaymentsComponent } from 'app/banking/transactions/search-recurring-payments.component';
 import { SearchAuthorizedPaymentsComponent } from 'app/banking/transactions/search-authorized-payments.component';
 import { ViewAuthorizationHistoryComponent } from 'app/banking/transactions/view-authorization-history.component';
 
@@ -77,13 +76,6 @@ const bankingRoutes: Routes = [
         component: SearchScheduledPaymentsComponent,
         data: {
           menu: Menu.SCHEDULED_PAYMENTS
-        }
-      },
-      {
-        path: 'recurring-payments',
-        component: SearchRecurringPaymentsComponent,
-        data: {
-          menu: Menu.RECURRING_PAYMENTS
         }
       },
       {
