@@ -3,7 +3,7 @@
   The payment will require authorization
 </notification>
 
-<label-value i18n-label label="From account">
+<label-value *ngIf="layout.gtxxs$ | async" i18n-label label="From account">
   {{ ApiHelper.accountDisplay(preview.fromAccount) }}
 </label-value>
 <label-value *ngIf="preview.toAccount.kind === 'system'; else toUser"

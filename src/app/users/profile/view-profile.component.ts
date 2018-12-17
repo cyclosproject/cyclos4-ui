@@ -89,30 +89,22 @@ export class ViewProfileComponent extends BasePageComponent<UserView> implements
       }, true));
     }
     if (contact.add) {
-      actions.push(new HeadingAction('add_circle_outline', this.i18n('Add {{name}} to my contacts', {
-        name: this.shortName
-      }), () => {
+      actions.push(new HeadingAction('add_circle_outline', this.i18n('Add to my contacts'), () => {
         this.addContact();
       }));
     }
     if (contact.remove) {
-      actions.push(new HeadingAction('remove_circle_outline', this.i18n('Remove {{name}} from my contacts', {
-        name: this.shortName
-      }), () => {
+      actions.push(new HeadingAction('remove_circle_outline', this.i18n('Remove from my contacts'), () => {
         this.removeContact();
       }));
     }
     if (payment.userToUser) {
-      actions.push(new HeadingAction('payment', this.i18n('Make payment to {{name}}', {
-        name: this.shortName
-      }), () => {
+      actions.push(new HeadingAction('payment', this.i18n('Make payment'), () => {
         this.router.navigate(['/banking', 'payment', this.key]);
       }));
     }
     if (marketplace.viewAdvertisements || marketplace.viewWebshop) {
-      actions.push(new HeadingAction('shopping_basket', this.i18n('View advertisements of {{name}}', {
-        name: this.shortName
-      }), () => {
+      actions.push(new HeadingAction('shopping_basket', this.i18n('View advertisements'), () => {
         this.router.navigate(['/marketplace', 'user', this.key]);
       }));
     }

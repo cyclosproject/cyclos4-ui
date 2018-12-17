@@ -1,9 +1,10 @@
 <ng-container [formGroup]="form">
   <ng-container *ngIf="singleAccount; else multipleAccounts">
-    <label-value i18n-label label="From account" kind="fieldView">
+    <label-value *ngIf="layout.gtxxs$ | async" i18n-label label="From account"
+      kind="fieldView">
       {{ ApiHelper.accountDisplay(singleAccount) }}
     </label-value>
-    <label-value i18n-label label="Account balance" kind="fieldView"
+    <label-value [label]="accountBalanceLabel$ | async" kind="fieldView"
       labelPosition="side" noWrapLabel>
       <!-- Single account -->
       <div class="account-balance text-nowrap font-weight-bold" [ngClass]="{

@@ -1,15 +1,14 @@
 import { ChangeDetectionStrategy, Component, ElementRef, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { I18n } from '@ngx-translate/i18n-polyfill';
 import { BreadcrumbService } from 'app/core/breadcrumb.service';
 import { FormatService } from 'app/core/format.service';
 import { LoginService } from 'app/core/login.service';
 import { MenuService } from 'app/core/menu.service';
 import { StateManager } from 'app/core/state-manager';
-import { blank } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
-import { Menu, MenuEntry, MenuType, RootMenuEntry, RootMenu, BaseMenuEntry } from 'app/shared/menu';
-import { Observable } from 'rxjs';
-import { I18n } from '@ngx-translate/i18n-polyfill';
+import { BaseMenuEntry, Menu, MenuEntry, MenuType, RootMenu, RootMenuEntry } from 'app/shared/menu';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 /**
  * The sidenav contains the menu on small devices
@@ -37,6 +36,14 @@ export class SidenavComponent implements OnInit {
 
   roots$: Observable<RootMenuEntry[]>;
 
+  opened$ = new BehaviorSubject(false);
+  get opened(): boolean {
+    return this.opened$.value;
+  }
+  set opened(opened: boolean) {
+    this.opened$.next(opened);
+  }
+
   ngOnInit() {
     this.roots$ = this.menu.menu(MenuType.SIDENAV);
     this.layout.gtsm$.subscribe(() => this.close());
@@ -54,10 +61,6 @@ export class SidenavComponent implements OnInit {
     return this._element.nativeElement;
   }
 
-  get opened(): boolean {
-    return !blank(this.element.style.transform);
-  }
-
   get rootContainer(): HTMLElement {
     return document.getElementsByClassName('root-container')[0] as HTMLElement;
   }
@@ -67,7 +70,12 @@ export class SidenavComponent implements OnInit {
       const style = this.element.style;
       style.transform = 'translateX(0)';
       this.rootContainer.style.transform = `translateX(${this.element.clientWidth}px)`;
+      const first = this.element.getElementsByClassName('menu-item')[0] as HTMLElement;
+      if (first) {
+        setTimeout(() => first.focus(), 1);
+      }
       this.layout.showBackdrop(() => this.close());
+      this.opened = true;
     }
   }
 
@@ -77,6 +85,8 @@ export class SidenavComponent implements OnInit {
       style.transform = '';
       this.rootContainer.style.transform = '';
       this.layout.hideBackdrop();
+      this.opened = false;
+      document.body.focus();
     }
   }
 

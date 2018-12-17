@@ -1,18 +1,20 @@
 <ng-container *ngIf="performed.authorizationStatus === 'pending'; else processed">
-  <div class="py-4" *ngIf="performed.transactionNumber" i18n>
+  <div class="payment-message" *ngIf="performed.transactionNumber" i18n>
     The payment with transaction number {{performed.transactionNumber}} was
     successfully submitted for further authorization.
   </div>
-  <div class="py-4" *ngIf="performed.transactionNumber == null" i18n>
+  <div class="payment-message" *ngIf="performed.transactionNumber == null"
+    i18n>
     The payment was successfully submitted for further authorization.
   </div>
 </ng-container>
 <ng-template #processed>
-  <div class="py-4" *ngIf="performed.transactionNumber" i18n>
+  <div class="payment-message" *ngIf="performed.transactionNumber" i18n>
     The payment with transaction number {{performed.transactionNumber}} was
     successfully processed.
   </div>
-  <div class="py-4" *ngIf="performed.transactionNumber == null" i18n>
+  <div class="payment-message" *ngIf="performed.transactionNumber == null"
+    i18n>
     The payment was successfully processed.
   </div>
 </ng-template>

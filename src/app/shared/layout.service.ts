@@ -329,7 +329,11 @@ export class LayoutService {
   showBackdrop(closeHandler: () => void) {
     // First, remove and re-apply the ESC key handler
     this.removeBackdropEscHandler();
-    this.escHandler = closeHandler;
+    this.escHandler = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        closeHandler();
+      }
+    };
     document.body.addEventListener('keydown', this.escHandler, false);
 
     if (this.backdrop == null) {

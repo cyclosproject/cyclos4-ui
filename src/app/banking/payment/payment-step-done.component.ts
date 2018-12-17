@@ -9,6 +9,7 @@ import { BaseComponent } from 'app/shared/base.component';
 @Component({
   selector: 'payment-step-done',
   templateUrl: 'payment-step-done.component.html',
+  styleUrls: ['payment-step-done.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PaymentStepDoneComponent extends BaseComponent implements OnInit {

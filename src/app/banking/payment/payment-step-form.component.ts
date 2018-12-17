@@ -36,6 +36,7 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
   @ViewChild('amount') amountField: DecimalFieldComponent;
   @ViewChild('toUser') userField: UserFieldComponent;
 
+  accountBalanceLabel$ = new BehaviorSubject<string>(null);
   fixedDestination = false;
   fixedUser: User;
 
@@ -74,6 +75,17 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
     // Whenever the type changes, fetch the payment type data
     this.addSub(this.form.get('type').valueChanges
       .subscribe(type => this.fetchPaymentTypeData(type)));
+
+    this.addSub(this.layout.xxs$.subscribe(() => this.updateAccountBalanceLabel()));
+    this.updateAccountBalanceLabel();
+  }
+
+  private updateAccountBalanceLabel() {
+    if (this.layout.xxs) {
+      this.accountBalanceLabel$.next(this.i18n('My account balance'));
+    } else {
+      this.accountBalanceLabel$.next(this.i18n('Account balance'));
+    }
   }
 
   private fetchPaymentTypes() {

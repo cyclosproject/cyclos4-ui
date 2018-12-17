@@ -46,4 +46,5 @@ export class PageContentComponent {
     const singleAction = (this.headingActions || []).length === 1 ? this.headingActions[0] : null;
     return singleAction ? !singleAction.maybeRoot : true;
   }
+
 }

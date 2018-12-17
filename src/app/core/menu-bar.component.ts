@@ -6,6 +6,7 @@ import { StateManager } from 'app/core/state-manager';
 import { LayoutService } from 'app/shared/layout.service';
 import { MenuType, RootMenu, RootMenuEntry } from 'app/shared/menu';
 import { Observable } from 'rxjs';
+import { LoginService } from 'app/core/login.service';
 
 /**
  * A bar displayed on large layouts with the root menu items
@@ -22,7 +23,8 @@ export class MenuBarComponent implements OnInit {
     private menu: MenuService,
     private stateManager: StateManager,
     private breadcrumb: BreadcrumbService,
-    public layout: LayoutService) {
+    public layout: LayoutService,
+    public login: LoginService) {
   }
 
   @ViewChildren('rootLink') rootLinks: QueryList<ElementRef>;
@@ -53,5 +55,11 @@ export class MenuBarComponent implements OnInit {
       event.preventDefault();
       event.stopPropagation();
     }
+  }
+
+  logout(event: MouseEvent) {
+    this.login.logout();
+    event.stopPropagation();
+    event.preventDefault();
   }
 }

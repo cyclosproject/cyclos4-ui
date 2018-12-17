@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BannerService } from 'app/core/banner.service';
@@ -7,6 +7,7 @@ import { FormatService } from 'app/core/format.service';
 import { LoginService } from 'app/core/login.service';
 import { MenuService } from 'app/core/menu.service';
 import { PushNotificationsService } from 'app/core/push-notifications.service';
+import { SidenavComponent } from 'app/core/sidenav.component';
 import { blank } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
 import { trim } from 'lodash';
@@ -21,6 +22,11 @@ declare const setSpinnerVisible: (visible: boolean) => void;
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent implements OnInit {
+
+  @ViewChild(SidenavComponent) sidenav: SidenavComponent;
+
+  initialized = new BehaviorSubject(false);
+  loggingOut = new BehaviorSubject(false);
 
   constructor(
     private title: Title,
@@ -37,9 +43,6 @@ export class AppComponent implements OnInit {
     // It would otherwise be removed from the built app by tree-shaking.
     private push: PushNotificationsService
   ) { }
-
-  initialized = new BehaviorSubject(false);
-  loggingOut = new BehaviorSubject(false);
 
   ngOnInit() {
     this.push.initialize();

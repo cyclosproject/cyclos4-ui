@@ -14,14 +14,11 @@
 }
 
 .quick-access-icon {
-  width: 96px;
-  height: 96px;
-  border-radius: 50%;
-  background-color: $quick-access-bg;
+  width: 3rem;
+  height: 3rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 0.7rem;
   color: $quick-access-icon-color;
 }
 
@@ -38,13 +35,26 @@
   }
   .quick-access-icon {
     color: $quick-access-hover-icon-color;
-    background-color: $quick-access-hover-bg;
   }
 }
 
 
-.quick-access-container {
-  padding: 1rem;
+@include media-breakpoint-up(xs) {
+  .quick-access-container {
+    padding: 1rem;
+  }
+  .quick-access-icon {
+    width: 5rem;
+    height: 5rem;
+    border-radius: 50%;
+    background-color: $quick-access-bg;
+    margin-bottom: 0.7rem;
+  }
+  .quick-access-item:hover {
+    .quick-access-icon {
+      background-color: $quick-access-hover-bg;
+    }
+  }
 }
 
 $spacing: 0.5rem;

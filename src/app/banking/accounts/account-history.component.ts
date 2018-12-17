@@ -127,7 +127,6 @@ export class AccountHistoryComponent
       direction: value.direction
     };
     return this.accountsService.searchAccountHistoryResponse(query).pipe(tap(() => {
-      this.status$.next(null);
       query.fields = ['status'];
       this.addSub(this.accountsService.getAccountStatusByOwnerAndType(query).subscribe(status => {
         const accountWithStatus = { ...this.data.account, status: status.status };

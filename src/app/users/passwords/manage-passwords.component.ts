@@ -6,6 +6,7 @@ import { ApiHelper } from 'app/shared/api-helper';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { ChangePasswordDialogComponent } from 'app/users/passwords/change-password-dialog.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
+import { BehaviorSubject } from 'rxjs';
 
 
 /**
@@ -21,6 +22,9 @@ export class ManagePasswordsComponent
   extends BasePageComponent<DataForUserPasswords>
   implements OnInit {
 
+  multiple$ = new BehaviorSubject(false);
+  title$ = new BehaviorSubject<string>(null);
+
   constructor(
     injector: Injector,
     private modal: BsModalService,
@@ -34,6 +38,12 @@ export class ManagePasswordsComponent
       .subscribe(data => {
         this.data = data;
       });
+  }
+
+  onDataInitialized(data: DataForUserPasswords) {
+    const multiple = data.passwords.length > 1;
+    this.multiple$.next(multiple);
+    this.title$.next(multiple ? this.i18n('Passwords') : this.i18n('Password'));
   }
 
   actions(password: PasswordStatusAndActions): Action[] {
