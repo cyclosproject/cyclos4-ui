@@ -1,11 +1,11 @@
-import { ChangeDetectionStrategy, Component, Injector, OnInit, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
+import { QuickAccessDescriptor } from 'app/content/quick-access-descriptor';
+import { QuickAccessType } from 'app/content/quick-access-type';
 import { BaseDashboardComponent } from 'app/home/dashboard/base-dashboard.component';
 import { ApiHelper } from 'app/shared/api-helper';
 import { empty } from 'app/shared/helper';
-import { QuickAccessDescriptor } from 'app/content/quick-access-descriptor';
-import { QuickAccessType } from 'app/content/quick-access-type';
-import { Breakpoint } from 'app/shared/layout.service';
 import { Icon } from 'app/shared/icon';
+import { Breakpoint } from 'app/shared/layout.service';
 
 export interface QuickAccessAction {
   icon: string;

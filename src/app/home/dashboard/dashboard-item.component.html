@@ -2,7 +2,12 @@
   <spinner></spinner>
 </page-content>
 
-<div [ngSwitch]="config.type" [ngClass]="{'d-none': !(ready$ | async)}">
+<div [ngSwitch]="config.type" [ngClass]="{
+    'd-none': !(ready$ | async),
+    'd-flex': ready$ | async,
+    'flex-column': ready$ | async
+  }"
+  [ngStyle]="{ minHeight: (layout.gtmd$ | async) ? config.minHeight || '' : '' }">
   <quick-access *ngSwitchCase="DashboardItemType.QUICK_ACCESS" [descriptors]="data.descriptors"
     (ready)="notifyReady($event)">
   </quick-access>

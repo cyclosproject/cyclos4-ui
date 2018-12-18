@@ -29,9 +29,14 @@ interface DashboardItemConfig {
   breakpoints?: Breakpoint[];
 
   /**
-   * In which column should the item be displayed?
+   * In desktop layout, on which column should the item be displayed?
    */
   column?: DashboardColumn;
+
+  /**
+   * In desktop layout, which is the minimum item height?
+   */
+  minHeight?: string;
 
   /**
    * Configuration data, specific for each item type
@@ -46,8 +51,23 @@ namespace DashboardItemConfig {
    * Common parameters for all dashboard item types
    */
   export interface DashboardItemParams {
+    /**
+     * On which breakpoints should this item be visible?
+     * If not set, will be always visible.
+     */
     breakpoints?: Breakpoint[];
+
+    /**
+     * On which column (in desktop layout) should this item be visible?
+     * Can be either `left`, `right` or `full`.
+     */
     column?: DashboardColumn;
+
+    /**
+     * What is the minimum height of the item when in desktop layout?
+     * When empty, no minimum height is set.
+     */
+    minHeight?: string;
   }
 
   /**
@@ -71,6 +91,7 @@ namespace DashboardItemConfig {
       type: type,
       data: data,
       breakpoints: params.breakpoints,
+      minHeight: params.minHeight,
       column: params.column
     };
   }

@@ -26,6 +26,8 @@ export class DefaultDashboardResolver implements DashboardResolver {
     const permissions = login.auth.permissions;
     const result: DashboardItemConfig[] = [];
 
+    const minHeight = '25rem';
+
     // The quick access is always there
     result.push(DashboardItemConfig.quickAccess({
       descriptors: [
@@ -37,7 +39,8 @@ export class DefaultDashboardResolver implements DashboardResolver {
         { type: QuickAccessType.EDIT_PROFILE },
         { type: QuickAccessType.PASSWORDS },
       ],
-      column: 'left'
+      column: 'left',
+      minHeight: minHeight
     }));
 
     // Account status
@@ -50,7 +53,8 @@ export class DefaultDashboardResolver implements DashboardResolver {
         maxTransfers: 3,
         breakpoints: ['gt-sm'],
         // After the 3rd account, toggle left / right
-        column: (i > 1) && (i % 2 === 0) ? 'left' : 'right'
+        column: (i > 1) && (i % 2 === 0) ? 'left' : 'right',
+        minHeight: minHeight
       }));
 
       for (const acctPerm of banking.accounts) {
@@ -66,7 +70,8 @@ export class DefaultDashboardResolver implements DashboardResolver {
       result.push(DashboardItemConfig.latestAds({
         max: 6,
         column: 'left',
-        breakpoints: ['gt-sm']
+        breakpoints: ['gt-sm'],
+        minHeight: minHeight
       }));
     }
 
@@ -74,7 +79,8 @@ export class DefaultDashboardResolver implements DashboardResolver {
     // result.push(DashboardItemConfig.latestUsers({
     //   max: 6,
     //   column: 'left',
-    //   breakpoints: ['gt-sm']
+    //   breakpoints: ['gt-sm'],
+    //   minHeight: minHeight
     // }));
 
     // Content
@@ -82,7 +88,8 @@ export class DefaultDashboardResolver implements DashboardResolver {
       title: 'Upcoming events',
       column: 'right',
       tight: true,
-      content: ContentGetter.url('content/events.html')
+      content: ContentGetter.url('content/events.html'),
+      minHeight: minHeight
     }));
 
     return result;
