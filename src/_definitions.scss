@@ -22,10 +22,11 @@ $input-btn-padding-y: .475rem;
 // Toggle for enabling / disabling shadows on most parts
 $enable-shadows: true;
 
-// Bootstrap grid system breakpoints. Basically we add xxs
+// Bootstrap grid system breakpoints. Basically we add xxs.
+// Attention! If modified, adjust the `BREAKPOINTS` in `layout.service.ts` as well.
 $grid-breakpoints: (
   xxs: 0,
-  xs: 290px,
+  xs: 316px,
   sm: 576px,
   md: 768px,
   lg: 992px,

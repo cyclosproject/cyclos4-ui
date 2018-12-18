@@ -7,21 +7,25 @@ import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 import { isEqual } from 'lodash';
 
+/**
+ * The available media query breakpoints.
+ * Attention! If modified, adjust the `$grid-breakpoints` variable in `_definieions.scss` as well.
+ */
 const BREAKPOINTS = {
-  xxs: '(max-width: 325px)',
-  xs: '(min-width: 326px) and (max-width: 575px)',
+  xxs: '(max-width: 315px)',
+  xs: '(min-width: 316px) and (max-width: 575px)',
   sm: '(min-width: 576px) and (max-width: 767px)',
   md: '(min-width: 768px) and (max-width: 991px)',
   lg: '(min-width: 992px) and (max-width: 1199px)',
   xl: '(min-width: 1200px)',
 
-  'lt-xs': '(max-width: 325px)',
+  'lt-xs': '(max-width: 315px)',
   'lt-sm': '(max-width: 575px)',
   'lt-md': '(max-width: 767px)',
   'lt-lg': '(max-width: 991px)',
   'lt-xl': '(max-width: 1199px)',
 
-  'gt-xxs': '(min-width: 326px)',
+  'gt-xxs': '(min-width: 316px)',
   'gt-xs': '(min-width: 576px)',
   'gt-sm': '(min-width: 768px)',
   'gt-md': '(min-width: 992px)',
