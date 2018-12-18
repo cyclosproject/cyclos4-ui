@@ -129,6 +129,9 @@ export function locateControl(container, locator: FormControlLocator, customValu
  * Sets the focus to the first field
  */
 export function focusFirstField() {
+  if (document.body.classList.contains('lt-md')) {
+    return;
+  }
   setTimeout(() => {
     const elements = document.getElementsByClassName('form-control');
     if (elements.length > 0) {

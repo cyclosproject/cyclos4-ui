@@ -25,7 +25,7 @@ $enable-shadows: true;
 // Bootstrap grid system breakpoints. Basically we add xxs
 $grid-breakpoints: (
   xxs: 0,
-  xs: 316px,
+  xs: 290px,
   sm: 576px,
   md: 768px,
   lg: 992px,
@@ -111,7 +111,7 @@ $snack-bar-bg: $gray-900;
 $snack-bar-color: white;
 
 // Page title
-$title-height-xxs: 2.4rem;
+$title-height-xxs: 2.6rem;
 $title-height-xs: 3.4rem;
 $title-height: 3.4rem;
 $title-button-bg: $light;

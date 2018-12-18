@@ -10,7 +10,7 @@ import { DefaultDashboardResolver } from 'environments/default-dashboard-resolve
 
 // The root URL for the API. Either 'api' (without slashes) when using a proxy, or the full URL
 // (with protocol) to the Cyclos backend, ending with /api.
-const API_URL = 'http://localhost:8888/api';
+const API_URL = 'http://192.168.0.22:8888/api';
 
 // Application title
 const APP_TITLE = 'Cyclos Local';

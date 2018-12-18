@@ -52,7 +52,7 @@
 }
 
 .navbar-brand {
-  font-size: 1.2em;
+  font-size: 1.2rem;
 }
 
 .sidenav-menu {
@@ -71,7 +71,7 @@
 
 @include media-breakpoint-up(xs) {
   .navbar-brand {
-    font-size: 1.6em;
+    font-size: 1.3rem;
   }
   .sidenav-menu {
     a {
@@ -81,7 +81,7 @@
 }
 
 .menu-standalone {
-  padding: 0.5rem;
+  padding: 0.3rem 0.5rem;
   border-bottom: 1px solid $section-border-color;
   font-size: 1.1em;
   font-weight: $font-weight-bold;

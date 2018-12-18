@@ -135,7 +135,7 @@
         <field-option value="false" i18n-text text="Fixed number of occurrences"></field-option>
       </radio-group-field>
 
-      <input-field *ngIf="(form.get('repeatUntilCanceled').valueChanges | async) === false"
+      <input-field *ngIf="(form.get('repeatUntilCanceled').valueChanges | async) === 'false'"
         type="number" fieldSize="small" numbersOnly formControlName="occurrencesCount"
         required i18n-label label="Number of occurrences">
       </input-field>

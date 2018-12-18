@@ -118,21 +118,18 @@
 
   <ng-container *resultInfoWindow="let ad; let addr = address">
     <a class="plain d-block pt-1" [routerLink]="path(ad)">
-      <avatar *ngIf="ad.image" ngClass="card-img-top mb-3" [roundBorders]="false"
-        [image]="ad.image" size="full" imageSize="200"></avatar>
+      <div class="font-weight-bold mb-2">{{ ad.name }}</div>
 
-      <icon class="d-block mx-auto my-3" *ngIf="ad.image == null" size="8rem"
-        icon="shopping_basket"></icon>
+      <avatar *ngIf="ad.image" ngClass="card-img-top mb-2" [roundBorders]="false"
+        [image]="ad.image" size="full" imageSize="200"></avatar>
 
       <div *ngIf="ad.price" class="font-weight-bold">
         <span *ngIf="ad.promotionalPrice" class="promo-price">
           {{ ad.price | number:decimals(ad) }}
         </span>
-        {{ (ad.promotionalPrice || ad.price) | currency:lookupCurrency(ad)
-        }}
+        {{ (ad.promotionalPrice || ad.price) | currency:lookupCurrency(ad) }}
       </div>
 
-      <div>{{ ad.name }}</div>
       <div i18n>Published by {{ ad.owner.display }}</div>
       <address-details [address]="addr"></address-details>
     </a>

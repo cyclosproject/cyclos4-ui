@@ -30,6 +30,11 @@ form {
   .login-margin-bottom {
     margin-bottom: 1rem;
   }
+  .pre-login-text {
+    text-align: center;
+    padding-bottom: 2rem;
+    margin-top: 1rem;
+  }
 }
 
 @include media-breakpoint-up(md) {
@@ -38,6 +43,9 @@ form {
     form {
       margin-bottom: 1.75rem;
     }
+  }
+  .pre-login-text {
+    margin-top: 0;
   }
 }
 @include media-breakpoint-up(lg) {
