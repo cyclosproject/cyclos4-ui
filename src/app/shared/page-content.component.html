@@ -23,9 +23,18 @@
       <!-- We have actions. They may be grouped or not -->
       <div class="heading-actions" *ngIf="groupActions; else rootActions"
         dropdown placement="bottom right" #dropdown="bs-dropdown">
-        <button dropdownToggle class="heading-action heading-action-dropdown dropdown-toggle"
-          i18n>
-          Actions
+        <button dropdownToggle class="heading-action heading-action-dropdown"
+          [ngClass]="{
+            'dropdown-toggle': layoutService.gtxs$ | async,
+            'px-2': layoutService.xxs$ | async
+          }">
+          <icon *ngIf="(layoutService.ltsm$ | async); else actionsLabel" icon="more_vert"
+            class="mx-2"></icon>
+          <ng-template #actionsLabel>
+            <ng-container i18n>
+              Actions
+            </ng-container>
+          </ng-template>
         </button>
         <div class="heading-actions-menu dropdown-menu dropdown-menu-right"
           *dropdownMenu role="listbox" attr.id="'actions-menu'"
