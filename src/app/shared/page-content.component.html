@@ -25,10 +25,10 @@
         dropdown placement="bottom right" #dropdown="bs-dropdown">
         <button dropdownToggle class="heading-action heading-action-dropdown"
           [ngClass]="{
-            'dropdown-toggle': layoutService.gtxs$ | async,
+            'dropdown-toggle': layoutService.gtxxs$ | async,
             'px-2': layoutService.xxs$ | async
           }">
-          <icon *ngIf="(layoutService.ltsm$ | async); else actionsLabel" icon="more_vert"
+          <icon *ngIf="(layoutService.xxs$ | async); else actionsLabel" icon="more_vert"
             class="mx-2"></icon>
           <ng-template #actionsLabel>
             <ng-container i18n>
