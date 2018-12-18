@@ -1,11 +1,8 @@
 <nav class="navbar navbar-expand-md">
   <div class="navbar-container">
-    <span class="d-flex justify-content-center align-items-center" *ngIf="layout.ltlg$ | async">
-      <a class="d-flex align-items-center justify-content-center" href="#"
-        (click)="toggleSidenav.emit(); $event.preventDefault()">
-        <icon size="1.5rem" icon="menu"></icon>
-      </a>
-    </span>
+    <a *ngIf="layout.ltlg$ | async" id="sidenav-trigger" href="#" (click)="toggleSidenav.emit(); $event.preventDefault()">
+      <icon size="1.5rem" icon="menu"></icon>
+    </a>
     <span class="navbar-brand flex-grow-1">
       <img *ngIf="layout.gtxs$ | async" class="logo d-inline-block align-top mr-3"
         src="images/logo.png">
@@ -15,8 +12,7 @@
       </span>
     </span>
     <div *ngIf="user != null" class="d-flex">
-      <a [routerLink]="['users', 'my-profile']" class="d-flex align-items-center justify-content-center flex-grow-1"
-        (click)="goToProfile($event)">
+      <a [routerLink]="['users', 'my-profile']" id="profile-link" (click)="goToProfile($event)">
         <avatar *ngIf="user.image && (layout.xxs$ | async)" size="small"
           [image]="user.image"></avatar>
         <avatar *ngIf="user.image && (layout.gtxxs$ | async)" size="medium"
@@ -27,14 +23,14 @@
         </div>
       </a>
       <a href="#" *ngIf="(login.user$ | async) != null && (layout.ltlg$ | async)"
-        class="d-flex align-items-center flex-grow-1" (click)="logout($event)">
+        id="logout-trigger" (click)="logout($event)">
         <icon size="1.4rem" icon="logout"></icon>
         <div *ngIf="layout.gtsm$ | async" class="ml-2" i18n>
           Logout
         </div>
       </a>
     </div>
-    <div *ngIf="(login.user$ | async) == null && (layout.ltlg$ | async)"
+    <div *ngIf="(login.user$ | async) == null && (layout.ltlg$ | async)" id="login-trigger"
       class="d-flex justify-content-center login-icon">
       <a routerLink="/login" class="d-flex align-items-center" (click)="goToLogin($event)">
         <icon size="1.4rem" icon="exit_to_app"></icon>

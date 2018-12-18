@@ -145,7 +145,7 @@ export class LayoutService {
       }
     };
     window.addEventListener('resize', onWindowResized, false);
-    onWindowResized();
+    setTimeout(onWindowResized, 1);
   }
 
   private updateBodyStyles(breakpoints: Set<Breakpoint>) {

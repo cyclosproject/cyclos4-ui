@@ -3,8 +3,8 @@
     "target": "http://localhost:8888/",
     "secure": false
   },
-  "/menuItemDetails": {
-    "target": "http://localhost:8888/frontend-content/web-rpc/menuEntry/",
+  "/web-rpc": {
+    "target": "http://localhost:8888/",
     "secure": false
   }
 }

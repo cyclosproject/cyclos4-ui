@@ -1,7 +1,7 @@
 @import 'src/definitions';
 
 :host {
-  margin-top: $layout-spacer;
+  margin-top: $section-margin;
   position: relative;
   display: flex;
   flex-direction: column;
