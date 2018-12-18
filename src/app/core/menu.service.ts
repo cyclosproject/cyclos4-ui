@@ -95,7 +95,7 @@ export class MenuService {
 
   private get shouldUpdateLastMenu(): boolean {
     const last = this.lastSelectedMenu;
-    return last == null || last === Menu.HOME || last === Menu.DASHBOARD;
+    return last == null || [Menu.HOME, Menu.DASHBOARD, Menu.LOGIN].includes(last);
   }
 
   /** Indicates the next menu item */
