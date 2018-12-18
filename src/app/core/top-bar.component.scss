@@ -55,6 +55,9 @@ a {
     padding-right: 0.7rem;
     height: $top-bar-height;
   }
+  .navbar-brand {
+    padding-left: 0;
+  }
 }
 @include media-breakpoint-up(lg) {
   :host {
