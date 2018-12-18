@@ -10,10 +10,7 @@ import { tap, catchError } from 'rxjs/operators';
 import { I18n } from '@ngx-translate/i18n-polyfill';
 import { defineLocale, LocaleData, getSetGlobalLocale } from 'ngx-bootstrap/chronos';
 import * as moment from 'moment-mini-ts';
-
-
-declare const setRootAlert: (boolean) => void;
-declare const setReloadButton: (boolean) => void;
+import { setRootAlert, setReloadButton } from 'app/shared/helper';
 
 /**
  * Injectable used to hold the `DataForUi` instance used by the application

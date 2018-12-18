@@ -9,11 +9,40 @@ import { Observable } from 'rxjs';
 const FIRST_LABEL = 'A';
 const LAST_LABEL = '|';
 
-let idCounter = 0;
+/**
+ * Sets whether the root spinner in the page is visible
+ */
+export function setRootSpinnerVisible(visible: boolean): void {
+  const rootSpinner = document.getElementById('rootSpinner') as HTMLElement;
+  rootSpinner.style.display = visible ? '' : 'none';
+}
+
+/**
+ * Sets the text of the root alert
+ */
+export function setRootAlert(text: string): void {
+  const rootAlertContainer = document.getElementById('rootAlertContainer');
+  const rootAlert = document.getElementById('rootAlert');
+  rootAlert.innerHTML = text || '';
+  rootAlertContainer.style.display = empty(text) ? 'none' : '';
+  if (!empty(text)) {
+    setRootSpinnerVisible(true);
+  }
+}
+
+/**
+ * Sets the text of the reload application button
+ */
+export function setReloadButton(text: string): void {
+  const reloadButton = document.getElementById('reloadButton');
+  reloadButton.innerHTML = text || '';
+  reloadButton.style.display = empty(text) ? 'none' : '';
+}
 
 /**
  * Returns an unique id
  */
+let idCounter = 0;
 export function nextId() {
   return `id_${++idCounter}`;
 }

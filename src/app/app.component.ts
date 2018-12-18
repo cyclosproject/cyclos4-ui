@@ -8,12 +8,10 @@ import { LoginService } from 'app/core/login.service';
 import { MenuService } from 'app/core/menu.service';
 import { PushNotificationsService } from 'app/core/push-notifications.service';
 import { SidenavComponent } from 'app/core/sidenav.component';
-import { blank } from 'app/shared/helper';
+import { blank, setRootSpinnerVisible } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
 import { trim } from 'lodash';
 import { BehaviorSubject } from 'rxjs';
-
-declare const setSpinnerVisible: (visible: boolean) => void;
 
 @Component({
   selector: 'app-root',
@@ -79,7 +77,8 @@ export class AppComponent implements OnInit {
       }
     });
 
-    setSpinnerVisible(false);
+    // Hide the spinner, showing the application
+    setRootSpinnerVisible(false);
   }
 
   private prepareContent() {
