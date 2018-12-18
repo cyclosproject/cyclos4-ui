@@ -3,12 +3,33 @@
 .status-label, .status-value {
   font-weight: $font-weight-bold;
   white-space: nowrap;
-  margin: 0.2rem 0;
+  margin: 0;
+}
+
+.status-label, .status-value {
+  line-height: 1.2rem;
+}
+
+.status-value:not(.status-value-last) {
+  margin-bottom: 0.4rem;
+}
+
+:host {
+  margin: 1rem auto;
 }
 
 @include media-breakpoint-up(xs) {
+  .status-label, .status-value {
+    margin: 0.2rem 0;
+  }
+
+  .status-label {
+    padding-left: 0.4rem;
+  }
+
   .status-value {
     text-align: right;
+    padding-right: 0.2rem;
   }
 }
 
