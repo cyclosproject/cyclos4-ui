@@ -5,7 +5,6 @@ import { ContentPage } from 'app/content/content-page';
 import { DashboardItemConfig } from 'app/content/dashboard-item-config';
 import { DashboardResolver } from 'app/content/dashboard-resolver';
 import { DefaultDashboardResolver } from 'environments/default-dashboard-resolver';
-import { TestUiBannerResolver } from 'environments/test-ui-banner-resolver';
 
 // This file defines the environment variables shared by both development and production
 
@@ -71,7 +70,7 @@ const HOME_PAGE: ContentPage = {
 // Dashboard resolver
 const DASHBOARD_RESOLVER: DashboardResolver | DashboardItemConfig[] = new DefaultDashboardResolver();
 // Banner resolver
-const BANNER_RESOLVER: BannerResolver | BannerCard[] = new TestUiBannerResolver();
+const BANNER_RESOLVER: BannerResolver | BannerCard[] = null;
 
 
 //////////////////////////////////////////////////////////////////////
