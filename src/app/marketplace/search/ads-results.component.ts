@@ -1,15 +1,16 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Injector, Input, Output } from '@angular/core';
 import { AdCategoryWithChildren, AdResult, Currency, Image } from 'app/api/models';
 import { AdDataForSearch } from 'app/api/models/ad-data-for-search';
+import { AdCategoryConfiguration } from 'app/content/ac-category-configuration';
 import { ShowSubCategoriesComponent } from 'app/marketplace/search/show-sub-categories.component';
 import { BaseComponent } from 'app/shared/base.component';
+import { truthyAttr } from 'app/shared/helper';
 import { PageData } from 'app/shared/page-data';
 import { PagedResults } from 'app/shared/paged-results';
 import { ResultType } from 'app/shared/result-type';
 import { environment } from 'environments/environment';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BehaviorSubject } from 'rxjs';
-import { truthyAttr } from 'app/shared/helper';
 
 const MAX_CHILDREN = 5;
 
@@ -108,13 +109,23 @@ export class AdsResultsComponent extends BaseComponent {
     this.categorySelected.emit(category);
   }
 
+  private categoryConfiguration(cat: AdCategoryWithChildren): AdCategoryConfiguration {
+    let config: AdCategoryConfiguration = null;
+    if (cat.internalName) {
+      config = (environment.adCategories || {})[cat.internalName];
+    }
+    if (cat == null) {
+      config = (environment.adCategories || {})[cat.id];
+    }
+    return config || {};
+  }
+
   /**
    * Returns the configured display color for the given category
    * @param cat The category
    */
   categoryColor(cat: AdCategoryWithChildren): string {
-    const colors = environment.adCategoryColors || {};
-    return colors[cat.internalName];
+    return this.categoryConfiguration(cat).color;
   }
 
   /**
@@ -122,8 +133,7 @@ export class AdsResultsComponent extends BaseComponent {
    * @param cat The category
    */
   categoryIcon(cat: AdCategoryWithChildren): string {
-    const icons = environment.adCategoryIcons || {};
-    return icons[cat.internalName] || 'category';
+    return this.categoryConfiguration(cat).icon;
   }
 
   /**

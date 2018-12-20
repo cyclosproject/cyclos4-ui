@@ -1,3 +1,4 @@
+import { AdCategoryConfiguration } from 'app/content/ac-category-configuration';
 import { BannerCard } from 'app/content/banner-card';
 import { BannerResolver } from 'app/content/banner-resolver';
 import { ContentGetter } from 'app/content/content-getter';
@@ -7,8 +8,6 @@ import { ContentWithLayout } from 'app/content/content-with-layout';
 import { DashboardItemConfig } from 'app/content/dashboard-item-config';
 import { DashboardResolver } from 'app/content/dashboard-resolver';
 import { DefaultDashboardResolver } from 'environments/default-dashboard-resolver';
-import { ExampleBannerResolver } from 'environments/example-banner-resolver';
-import { ExampleContentPagesResolver } from 'environments/example-content-pages-resolver';
 
 // This file defines the environment variables shared by both development and production
 
@@ -29,29 +28,16 @@ const SEARCH_PAGE_SIZES = [40, 100, 200];
 const QUICK_SEARCH_PAGE_SIZE = 10;
 
 // **** Advertisements category customization **** //
-
-// This defines a mapping between advertisement category internal name and material icons.
-// See https://material.io/tools/icons
-const AD_CATEGORY_ICONS = {
-  'community': 'people',
-  'food': 'restaurant',
-  'goods': 'pages',
-  'housing': 'location_city',
-  'jobs': 'work',
-  'labor': 'business',
-  'leisure': 'mood',
-  'services': 'room_service'
-};
-// This defines a mapping between advertisement category internal name and icon colors
-const AD_CATEGORY_COLORS = {
-  'community': '#2196f3',
-  'food': '#f04d4e',
-  'goods': '#ff9700',
-  'housing': '#029487',
-  'jobs': '#8062b3',
-  'labor': '#de3eaa',
-  'leisure': '#687ebd',
-  'services': '#8ec63f'
+// Configuration by category internal name or id
+const AD_CATEGORIES: { [internalName: string]: AdCategoryConfiguration } = {
+  'community': { icon: 'people', color: '#2196f3' },
+  'food': { icon: 'restaurant', color: '#f04d4e' },
+  'goods': { icon: 'pages', color: '#ff9700' },
+  'housing': { icon: 'location_city', color: '#029487' },
+  'jobs': { icon: 'work', color: '#8062b3' },
+  'labor': { icon: 'business', color: '#de3eaa' },
+  'leisure': { icon: 'mood', color: '#687ebd' },
+  'services': { icon: 'room_service', color: '#8ec63f' }
 };
 
 // **** Content **** //
@@ -90,8 +76,7 @@ export const configuration = {
   apiRoot: API_URL,
   searchPageSizes: SEARCH_PAGE_SIZES,
   quickSearchPageSize: QUICK_SEARCH_PAGE_SIZE,
-  adCategoryIcons: AD_CATEGORY_ICONS,
-  adCategoryColors: AD_CATEGORY_COLORS,
+  adCategories: AD_CATEGORIES as { [internalName: string]: AdCategoryConfiguration },
   homePage: HOME_PAGE,
   dashboardResolver: DASHBOARD_RESOLVER as DashboardResolver | DashboardItemConfig[],
   contentPagesResolver: CONTENT_PAGES_RESOLVER as ContentPagesResolver | ContentPage[],
