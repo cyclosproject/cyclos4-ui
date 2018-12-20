@@ -79,6 +79,9 @@
   margin-left: 0;
 }
 
+.page-content {
+  max-width: var(--window-width);
+}
 .page-content:not(.mode-transparent) {
   box-shadow: $box-shadow-sm;
 }
@@ -315,6 +318,9 @@
 @include media-breakpoint-up(md) {
   .heading-actions-menu {
     transform: translate(1px, -2px) !important;
+  }
+  .page-content {
+    @include make-container-max-widths();
   }
 }
 
