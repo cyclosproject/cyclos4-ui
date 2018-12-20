@@ -5,6 +5,7 @@ import { BannerResolver } from 'app/content/banner-resolver';
 import { LoginService } from 'app/core/login.service';
 import { MenuService } from 'app/core/menu.service';
 import { blank, empty as isEmpty } from 'app/shared/helper';
+import { Menu } from 'app/shared/menu';
 import { environment } from 'environments/environment';
 import { BehaviorSubject, empty, forkJoin, Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
@@ -92,28 +93,14 @@ export class BannerService {
       return;
     }
 
-    const guest = this.login.user == null;
-
     // Get the previously visible cards, and clear their timeouts
     const oldVisible = this.currentCards.value || [];
     for (const card of oldVisible) {
       clearTimeout(card['timeoutHandle']);
     }
 
-    // Resolve the visible cards
-    const visible = this.allCards.filter(card => {
-      const forGuests = card.guests === true;
-      const forLoggedUsers = card.loggedUsers !== false;
-      if (
-        (!isEmpty(card.rootMenus) && !card.rootMenus.includes(menu.root))
-        || (!isEmpty(card.menus) && !card.menus.includes(menu))
-        || (guest && !forGuests)
-        || (!guest && !forLoggedUsers)
-      ) {
-        return false;
-      }
-      return true;
-    });
+    const visible = this.visibleCards(menu);
+
 
     // Function that schedules the timers for each visible card and sets the currentCards
     const done = () => {
@@ -146,6 +133,28 @@ export class BannerService {
         done();
       });
     }
+  }
+
+  private visibleCards(menu: Menu): BannerCard[] {
+    if (menu === Menu.DASHBOARD) {
+      // Never show any banner in the dashboard, as it would break the layout
+      return [];
+    }
+
+    const guest = this.login.user == null;
+    return this.allCards.filter(card => {
+      const forGuests = card.guests === true;
+      const forLoggedUsers = card.loggedUsers !== false;
+      if (
+        (!isEmpty(card.rootMenus) && !card.rootMenus.includes(menu.root))
+        || (!isEmpty(card.menus) && !card.menus.includes(menu))
+        || (guest && !forGuests)
+        || (!guest && !forLoggedUsers)
+      ) {
+        return false;
+      }
+      return true;
+    });
   }
 
   private scheduleNext(card: BannerCard) {
