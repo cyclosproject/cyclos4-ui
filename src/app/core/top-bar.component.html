@@ -17,7 +17,7 @@
           [image]="user.image"></avatar>
         <avatar *ngIf="user.image && (layout.gtxxs$ | async)" size="medium"
           [image]="user.image"></avatar>
-        <icon *ngIf="!user.image" icon="account_circle"></icon>
+        <icon *ngIf="!user.image" size="1.5rem" icon="account_circle"></icon>
         <div *ngIf="layout.gtsm$ | async" class="ml-2">
           {{ user.display }}
         </div>

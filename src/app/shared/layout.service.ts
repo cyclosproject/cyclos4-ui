@@ -82,9 +82,9 @@ export class LayoutService {
   set fullWidth(fullWidth: boolean) {
     this.fullWidth$.next(fullWidth);
     if (fullWidth) {
-      document.body.classList.add('pb-0');
+      document.body.classList.add('full-width');
     } else {
-      document.body.classList.remove('pb-0');
+      document.body.classList.remove('full-width');
     }
   }
 

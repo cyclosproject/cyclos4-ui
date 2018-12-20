@@ -31,9 +31,9 @@
           <icon *ngIf="(layoutService.xxs$ | async); else actionsLabel" icon="more_vert"
             class="mx-2"></icon>
           <ng-template #actionsLabel>
-            <ng-container i18n>
+            <div class="action-label" i18n>
               Actions
-            </ng-container>
+            </div>
           </ng-template>
         </button>
         <div class="heading-actions-menu dropdown-menu dropdown-menu-right"
@@ -51,7 +51,7 @@
           <button #actionButton *ngFor="let action of headingActions" class="heading-action heading-action-with-icon d-flex"
             (click)="action.onClick(actionButton)">
             <icon size="1.3rem" [icon]="action.icon"></icon>
-            <div>{{ action.label }}</div>
+            <div class="action-label">{{ action.label }}</div>
           </button>
         </div>
       </ng-template>

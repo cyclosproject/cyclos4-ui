@@ -48,10 +48,10 @@ a:hover {
   text-decoration: none;
 }
 :host ::ng-deep #profile-link icon {
-  opacity: 0.6;
+  opacity: 0.8;
 }
 #profile-link {
-  margin-right: -0.5rem;
+  margin-right: -0.6rem;
 }
 
 @include media-breakpoint-up(xs) {
@@ -84,5 +84,9 @@ a:hover {
   .navbar-container {
     padding: 0;
     @include make-container-max-widths();
+  }
+
+  .navbar-brand {
+    margin-left: 0;
   }
 }

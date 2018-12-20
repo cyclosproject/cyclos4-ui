@@ -2,7 +2,7 @@
   <div class="row no-gutters flex-grow-1 quick-access-container">
     <ng-container *ngFor="let action of actions">
       <div *ngIf="layout.visible(action.breakpoints, layout.breakpointChanges$ | async)"
-        class="col-6 col-sm-4">
+        class="d-flex col-6 col-sm-4 justify-content-center align-items-center">
         <div class="text-center">
           <a [routerLink]="action.url" class="quick-access-item">
             <div class="quick-access-icon">

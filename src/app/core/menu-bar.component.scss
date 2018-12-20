@@ -1,31 +1,52 @@
 @import 'src/definitions';
 
 :host {
-  display: block;
+  display: flex;
   position: -webkit-sticky; /* Safari */
   position: sticky;
   top: 0;
   z-index: $zindex-sticky;
+  height: $menu-bar-height;
 }
 
 nav {
   background-color: $menu-bar-bg;
   padding: 0 0.7rem;
   border-bottom: 1px solid $section-border-color;
+  flex-grow: 1;
+  display: flex;
+  align-items: stretch;
 }
 .navbar-container {
   display: flex;
-  margin: auto;
+  padding: 0;
+  margin: 0 auto;
   flex-grow: 1;
   @include make-container-max-widths();
 }
+.nav-item {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+}
+.sub-menu-item {
+  display: flex;
+  align-items: center;
+}
+.dropdown-menu {
+  transform: translateY(-2px) !important;
+}
 a {
   color: $menu-bar-color;
-  padding: 0.9rem 2rem;
+  padding: 0.9rem 1.4rem;
 }
-.menu-text {
+a.sub-menu-item {
+  padding: 0.7rem 1.6rem 0.7rem 1.4rem;
+}
+.menu-text, .sub-menu-text {
   font-size: 1.2em;
   line-height: 1em;
+  white-space: nowrap;
 }
 a:not(.active) {
   color: $menu-bar-inactive-color;
@@ -44,6 +65,34 @@ a.active {
     color: $menu-bar-active-icon-color;
   }
 }
+.dropdown-menu {
+  icon {
+    color: $menu-bar-inactive-icon-color !important;
+  }
+}
+.dropdown-menu a.active {
+  box-shadow: none !important;
+  icon {
+    color: $menu-bar-active-icon-color !important;
+  }
+}
+
 .logout a {
-  margin-right: -2rem;
+  margin-right: -1.4rem;
+}
+
+.dropdown-toggle::after {
+  margin-left: 0.5rem;
+}
+
+@include media-breakpoint-up(xl) {
+  a {
+    padding: 0.9rem 2rem;
+  }
+  a.sub-menu-item {
+    padding: 0.7rem 2.2rem 0.7rem 2rem;
+  }
+  .logout a {
+    margin-right: -2rem;
+  }
 }

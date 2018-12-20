@@ -1,0 +1,5 @@
+<page-layout *ngIf="content.layout === 'card'">
+  <page-content [heading]="content.title">
+    <div [innerHTML]="content$ | async | trust"></div>
+  </page-content>
+</page-layout>

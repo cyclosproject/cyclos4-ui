@@ -1,5 +1,6 @@
 <page-layout hideMenu [ready]="ready$ | async">
-  <content-page [contentPage]="homePage" *ngIf="login.user == null; else dashboard"></content-page>
+  <show-content [content]="homePage" *ngIf="login.user == null; else dashboard">
+  </show-content>
 </page-layout>
 
 <ng-template #dashboard>

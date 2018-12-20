@@ -52,16 +52,21 @@ export class PageLayoutComponent implements OnInit, OnDestroy {
 
     const updateLeftAreaVisible = () => {
       const hasCards = !empty(this.banner.cards);
+      const fullWidth = this.layout.fullWidth;
       const loggedIn = this.login.user != null;
-      let hasMenu = loggedIn && !this.hideMenu && this.menu.activeMenu != null;
+      const activeMenu = this.menu.activeMenu;
+      let hasMenu = loggedIn && !this.hideMenu && activeMenu != null;
       const root = this.menu.rootEntry();
       if (root == null || (root.entries || []).length <= 1) {
         hasMenu = false;
       }
-      const visible = this.layout.gtmd && (hasCards || hasMenu);
+      const rootEntry = activeMenu == null ? null : this.menu.rootEntry(activeMenu.root);
+      const rootIsDropDown = rootEntry != null && rootEntry.dropdown;
+      const visible = !fullWidth && this.layout.gtmd && (hasCards || hasMenu) && !rootIsDropDown;
       this.leftAreaVisible$.next(visible);
     };
     this.subs.push(this.layout.gtmd$.subscribe(updateLeftAreaVisible));
+    this.subs.push(this.layout.fullWidth$.subscribe(updateLeftAreaVisible));
     this.subs.push(this.login.user$.subscribe(updateLeftAreaVisible));
     this.subs.push(this.menu.activeMenu$.subscribe(updateLeftAreaVisible));
     this.subs.push(this.menu.menu(MenuType.SIDE).subscribe(updateLeftAreaVisible));

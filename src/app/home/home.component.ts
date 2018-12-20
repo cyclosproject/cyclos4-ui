@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { ContentPage } from 'app/content/content-page';
+import { handleFullWidthLayout } from 'app/content/content-with-layout';
 import { DashboardItemConfig } from 'app/content/dashboard-item-config';
 import { DashboardResolver } from 'app/content/dashboard-resolver';
 import { BasePageComponent } from 'app/shared/base-page.component';
@@ -36,7 +37,7 @@ export class HomeComponent extends BasePageComponent<void> implements OnInit {
     super.ngOnInit();
     if (this.login.user == null) {
       // For guests, just fetch the content
-      this.homePage = environment.homePage;
+      this.homePage = environment.homePage || { content: '' };
       this.ready$.next(true);
     } else {
       // For logged users, resolve the dashboard items
@@ -68,7 +69,7 @@ export class HomeComponent extends BasePageComponent<void> implements OnInit {
   defaultFullWidthLayout(): boolean {
     if (this.login.user == null) {
       // Home content page may be full width
-      return environment.homePage.layout === 'full';
+      return handleFullWidthLayout(environment.homePage);
     }
     return false;
   }

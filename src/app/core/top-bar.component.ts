@@ -38,7 +38,7 @@ export class TopBarComponent implements OnInit {
   }
 
   goToProfile(event: MouseEvent) {
-    this.menu.lastSelectedMenu = Menu.MY_PROFILE;
+    this.menu.setLastSelectedMenu(Menu.MY_PROFILE);
     this.router.navigateByUrl('/users/my-profile');
     this.breadcrumb.clear();
     this.stateManager.clear();
@@ -47,7 +47,7 @@ export class TopBarComponent implements OnInit {
   }
 
   goToLogin(event: MouseEvent) {
-    this.menu.lastSelectedMenu = Menu.LOGIN;
+    this.menu.setLastSelectedMenu(Menu.LOGIN);
     this.router.navigateByUrl('/login');
     event.stopPropagation();
     event.preventDefault();

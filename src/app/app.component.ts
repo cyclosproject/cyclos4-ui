@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { BannerService } from 'app/core/banner.service';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { FormatService } from 'app/core/format.service';
@@ -29,7 +29,6 @@ export class AppComponent implements OnInit {
   constructor(
     private title: Title,
     private router: Router,
-    private route: ActivatedRoute,
     private format: FormatService,
     private dataForUiHolder: DataForUiHolder,
     public login: LoginService,
@@ -59,12 +58,6 @@ export class AppComponent implements OnInit {
       this.prepareContent();
     }
     this.login.subscribeForLoggingOut(flag => this.loggingOut.next(flag));
-    this.layout.currentPage$.subscribe(() => {
-      if (this.menu.lastSelectedMenu == null) {
-        const data = this.route.snapshot.data || {};
-        this.menu.lastSelectedMenu = data.menu;
-      }
-    });
 
     // Some browsers (like Firefox) show an outline on focused anchors.
     // After the page is loaded, blur the menus, so none will be outlined
@@ -76,6 +69,9 @@ export class AppComponent implements OnInit {
         } catch (e) { }
       }
     });
+
+    // Indicate that Cyclos has finished loading, to prevent the root spinner from being shown on the onload event
+    self['cyclosLoaded'] = true;
 
     // Hide the spinner, showing the application
     setRootSpinnerVisible(false);

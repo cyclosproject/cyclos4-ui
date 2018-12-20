@@ -224,22 +224,32 @@
     transform: translateX(-0.1rem);
     margin-right: 0.4rem;
     opacity: 0.6;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
   }
 }
 .heading-action.dropdown-toggle::after {
   margin-left: 0;
 }
 
+.action-label {
+  display: none;
+}
+
 @include media-breakpoint-up(xs) {
+  .action-label {
+    display: inline;
+  }
   .heading-action-with-icon {
     icon {
+      margin-left: 0;
       margin-right: 0.5rem;
     }
   }
   .heading-action.dropdown-toggle::after {
     margin-left: 0.3rem;
   }
-    .heading-action {
+  .heading-action {
     padding-left: 1rem;
     padding-right: 1.2rem;
   }

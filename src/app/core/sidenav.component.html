@@ -16,12 +16,12 @@
 </nav>
 <div class="sidenav-menu d-flex flex-column">
   <ng-container *ngFor="let root of roots$ | async; let last = last">
-    <ng-container *ngIf="(login.user$ | async) == null || isHome(root)">
+    <ng-container *ngIf="!root.dropdown && (login.user$ | async) == null || isHome(root)">
       <div class="menu-standalone">
         <ng-container *ngTemplateOutlet="menuEntry; context: {$implicit: root.entries[0]}"></ng-container>
       </div>
     </ng-container>
-    <ng-container *ngIf="(login.user$ | async) != null && !isHome(root)">
+    <ng-container *ngIf="root.dropdown || ((login.user$ | async) != null && !isHome(root))">
       <div class="menu-group" [ngClass]="{'border-bottom-0': last}">
         <div class="group-title">
           {{ root.label }}

@@ -4,9 +4,9 @@ import { BannerCard } from 'app/content/banner-card';
 import { BannerResolver } from 'app/content/banner-resolver';
 import { LoginService } from 'app/core/login.service';
 import { MenuService } from 'app/core/menu.service';
-import { empty as isEmpty, blank } from 'app/shared/helper';
+import { blank, empty as isEmpty } from 'app/shared/helper';
 import { environment } from 'environments/environment';
-import { BehaviorSubject, empty, Observable, forkJoin, Subscription } from 'rxjs';
+import { BehaviorSubject, empty, forkJoin, Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 
 /** The default number of seconds a banner is shown before rotating */
@@ -87,11 +87,11 @@ export class BannerService {
   }
 
   private update(): void {
-    // Resolve the current context
     const menu = this.menu.lastSelectedMenu;
     if (menu == null) {
       return;
     }
+
     const guest = this.login.user == null;
 
     // Get the previously visible cards, and clear their timeouts

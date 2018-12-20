@@ -2,15 +2,19 @@ import { BannerCard } from 'app/content/banner-card';
 import { BannerResolver } from 'app/content/banner-resolver';
 import { ContentGetter } from 'app/content/content-getter';
 import { ContentPage } from 'app/content/content-page';
+import { ContentPagesResolver } from 'app/content/content-pages-resolver';
+import { ContentWithLayout } from 'app/content/content-with-layout';
 import { DashboardItemConfig } from 'app/content/dashboard-item-config';
 import { DashboardResolver } from 'app/content/dashboard-resolver';
 import { DefaultDashboardResolver } from 'environments/default-dashboard-resolver';
+import { ExampleBannerResolver } from 'environments/example-banner-resolver';
+import { ExampleContentPagesResolver } from 'environments/example-content-pages-resolver';
 
 // This file defines the environment variables shared by both development and production
 
 // The root URL for the API. Either 'api' (without slashes) when using a proxy, or the full URL
 // (with protocol) to the Cyclos backend, ending with /api.
-const API_URL = 'http://192.168.0.22:8888/api';
+const API_URL = 'http://localhost:8888/api';
 
 // Application title
 const APP_TITLE = 'Cyclos Local';
@@ -54,27 +58,31 @@ const AD_CATEGORY_COLORS = {
 // See the project home page for help on how to customize content
 
 // The home page shown for guests
-const HOME_PAGE: ContentPage = {
+const HOME_PAGE: ContentWithLayout = {
 
-  // To enable cache, set a cache key and a number of seconds
+  // To enable local cache, set a cache key and a number of seconds
   // cacheKey: 'home',
   // cacheSeconds: 360, // 360 seconds = 1 hour
-
-  // Layout can be 'full', 'center' or 'card' (when 'card', a title can be set)
-  layout: 'full',
 
   // The content can be obtained by fetching a URL, or by a Cyclos floating content page
   // See the documentation on ContentGetter for more details.
   content: ContentGetter.url('content/home.html')
 };
+
 // Dashboard resolver
 const DASHBOARD_RESOLVER: DashboardResolver | DashboardItemConfig[] = new DefaultDashboardResolver();
+
+// Content pages resolver
+const CONTENT_PAGES_RESOLVER: ContentPagesResolver | ContentPage[] =
+  new ExampleContentPagesResolver();
+
 // Banner resolver
-const BANNER_RESOLVER: BannerResolver | BannerCard[] = null;
+const BANNER_RESOLVER: BannerResolver | BannerCard[] = new ExampleBannerResolver();
 
 
-//////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////
 // **** Final configuration. Please, don't modify it **** //
+////////////////////////////////////////////////////////////
 export const configuration = {
   production: true,
   appTitle: APP_TITLE,
@@ -87,5 +95,6 @@ export const configuration = {
   adCategoryColors: AD_CATEGORY_COLORS,
   homePage: HOME_PAGE,
   dashboardResolver: DASHBOARD_RESOLVER as DashboardResolver | DashboardItemConfig[],
+  contentPagesResolver: CONTENT_PAGES_RESOLVER as ContentPagesResolver | ContentPage[],
   bannerResolver: BANNER_RESOLVER as BannerResolver | BannerCard[]
 };

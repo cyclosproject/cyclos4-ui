@@ -14,6 +14,7 @@ import { DataForUi } from 'app/api/models';
 import { BROWSER_GLOBALS_PROVIDERS } from '@agm/core/utils/browser-globals';
 import { INITIALIZE } from 'app/initialize';
 import { MapsAPILoader, LazyMapsAPILoader, LAZY_MAPS_API_CONFIG } from '@agm/core';
+import { ContentModule } from 'app/content/content.module';
 
 export function lazyMapsApiConfig(dataForUiHolder: DataForUiHolder) {
   const config: any = {};
@@ -38,7 +39,8 @@ export function lazyMapsApiConfig(dataForUiHolder: DataForUiHolder) {
 
     // Eagerly loaded modules
     LoginModule,
-    HomeModule
+    HomeModule,
+    ContentModule
   ],
   providers: [
     INITIALIZE,

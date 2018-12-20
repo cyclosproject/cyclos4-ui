@@ -15,6 +15,8 @@ const IGNORE_BREADCRUMB = ['', '/home', '/login', '/forgot-password'];
 })
 export class BreadcrumbService {
 
+  url$ = new BehaviorSubject<string>(null);
+
   /**
    * The current breadcrumb entries
    */
@@ -42,6 +44,8 @@ export class BreadcrumbService {
   }
 
   private onRouterEvent(event: NavigationStart): void {
+    this.url$.next(event.url);
+
     if (IGNORE_BREADCRUMB.includes(event.url)) {
       // Ignore the breadcrumb for this URL
       return;

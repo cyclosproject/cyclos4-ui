@@ -62,7 +62,7 @@ export class SideMenuComponent implements OnInit {
 
   goTo(event: MouseEvent, menu: Menu, url: string | string[]) {
     // Update the last selected menu entry
-    this.menu.lastSelectedMenu = menu;
+    this.menu.setLastSelectedMenu(menu);
 
     // Clear the shared state
     this.breadcrumb.clear();

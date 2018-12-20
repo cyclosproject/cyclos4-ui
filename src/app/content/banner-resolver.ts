@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 export interface BannerResolver {
 
   /**
-   * Returns each of the banner cards shown in the given context.
+   * Returns the available banner cards in the application.
    * @param injector The Angular injector, used to access shared services
    * @returns Either the banner cards or an observable of the banner cards
    */

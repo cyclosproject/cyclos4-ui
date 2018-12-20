@@ -205,56 +205,77 @@ rootUrl = https://account.example.com
 
 ## Customizing content
 
-There are different contents that can be customized in the frontend. Mostly:
+The Cyclos frontend supports several kinds of content that can be customized:
 
-- The home page for guest users on a tablet / desktop, which is likely a full-screen layout;
-- The home page for guests on a mobile, which is placed after the quick access buttons;
-- The dashboard page for logged users;
-- Banners;
-- Content pages (not implemented yet).
+- The home page, shown for guests;
+- Content pages, which are custom pages that show up in the menu;
+- Custom content in the dashboard;
+- Banners, shown on desktop layout.
 
 Customizing these contents require a bit of programming in TypeScript. So, using an editor with strong support for the TypeScript language (such as [Visual Studio Code](https://code.visualstudio.com/)) is recommended.
 
 The `src/environments/configuration.ts` file is the one that centralizes all content configuration. Mostly, the following are the relevant:
 
 ```typescript
-// Content for guests' home page
-const GUESTS_HOME: Content = {
-  cacheKey: 'guestsHome',
-  cacheSeconds: DEFAULT_CACHE_SECONDS,
-  content: ContentGetter.url('content/users-home.html')
+// The home page shown for guests
+const HOME_PAGE: ContentWithLayout = {
+  content: ContentGetter.url('content/home.html')
 };
-// Content for logged users's home page
-const USERS_HOME: Content = {
-  cacheKey: 'usersHome',
-  cacheSeconds: DEFAULT_CACHE_SECONDS,
-  content: ContentGetter.url('content/users-home.html')
-};
+
+// Dashboard resolver
+const DASHBOARD_RESOLVER: DashboardResolver | DashboardItemConfig[] =
+  new DefaultDashboardResolver();
+
+// Content pages resolver
+const CONTENT_PAGES_RESOLVER: ContentPagesResolver | ContentPage[] = null;
+
 // Banner resolver
-const BANNER_RESOLVER: BannerResolver = null;
+const BANNER_RESOLVER: BannerResolver | BannerCard[] = null;
 ```
 
-By default, some HTML files deployed together with the frontend, under `content/*` are used to generate the content, and no banners are shown.
+By default, the file `content/home.html` is used to generate the home content. Either it can be customized, or a different strategy can be used to obtain the content page, through a `ContentGetter`. More on this subject is presented ahead. Also, by default, there are no custom content pages or banners.
 
-The `Content` interface (defined in `src/app/content/content.ts`) has a property called `content`, which is either a string, with the static content (compiled in the code), or a `ContentGetter`, which is able to fetch content from an external source.  There are 2 built-in `ContentGetter` implementations:
+Every content implement the `Content` interface (defined in `src/app/content/content.ts`) which has a property called `content`. It can either be a string, with the static content (compiled in the code), or a `ContentGetter`, which is able to fetch content from an external source. There are 2 built-in `ContentGetter` implementations:
 - `ContentGetter.url(href)`: Performs an HTTP GET request and resolves the content body;
 - `ContentGetter.cyclosPage(href)`: Fetches the content of a Cyclos floating page, created in 'Content' > 'Content management' > 'Menu and pages'. From there, select a configuration (if multiple), create a new Floating page and, after saving it, copy the URL. That URL is the parameter to be passed as parameter. This implemnentation uses Cyclos' `WEB-RPC` mechanism to fetch the content, using the following URL: `<root>/web-rpc/menuEntry/menuItemDetails/<id>`. As such, it is also possible to setup a proxy for the `/web-rpc/menuEntry/menuItemDetails/` path, similar to the proxy to `/api` (as described above), and using a relative URL. Example: `/menuItemDetails/*` is proxied to `<root>/web-rpc/menuEntry/menuItemDetails/*`. In such case, the parameter would be `menuItemDetails/<id>`.
 
-When content has a `cacheKey`, it is cached in the browser, by default, for 1 hour. It is possible to change the `cacheSeconds` property to the desired number. If set to a negative number, the cache will never expires. The cache uses the browser local storage, so clearing the browser cache won't invalidade cached content. Instead, to locally remove cached content, browsers offer ways to remove website data.
+When content has a `cacheKey`, it is cached locally in the browser, by default, for 1 hour. It is possible to change the `cacheSeconds` property to the desired number. If set to a negative number, the cache will never expire. The cache uses the browser local storage, so clearing the browser cache won't invalidade cached content. Instead, to locally remove cached content, browsers offer ways to remove website data.
 
-So, fetching content for the sections in the home page is straightforward. Banners, on the other hand, require a bit more work, as described below.
+The content object defining the home page is a `ContentWithLayout`, which also adds the following:
+
+- `layout`: Can be either `full`, indicating that the content takes the entire available width and height, or `card`, in which case the content is shown inside a regular box, optionally with a title. When not set will be either `full` or `card` depending on whether there's a title or not;
+- `title`: The title used when `layout` is `card`.
+
+So, fetching content for the home page is straightforward. Content pages and banners, on the other hand, require a bit more work, as described below.
+
+### Content pages
+
+Custom content pages can be very useful for projects that want to add a manual, some additional information pages, simple contact forms and so on. They are available both for guests and logged users, and in case of logged users, can be placed in a dedicated root menu item (internally called `content`) or in some other root menu (banking, marketplace or personal). **Important:** For logged users, if there is at least one visible content page with full layout, the root menu will be a dropdown, as the left menu will not be shown on full layout. However, if all pages for logged users use the `card` layout, then a side menu will be shown. For guests we never show a left menu, so the content menu is always a dropdown.
+
+To enable content pages you must create an implementation of the `ContentPagesResolver` interface, defined in `src/app/content/content-pages-resolver.ts`. It has a single method called `resolveContentPages`, receiving the The Angular injector reference (used to obtain shared services) and must return either a `ContentPage[]` or an observable of it.
+
+Each content page, defined in `src/app/content/content-page.ts` extend `ContentWithLayout`, and add a few other important fields:
+
+- `slug`: A part of the URL which is used to identify this content page. When not set, one is generated, but it is recommended to always set one;
+- `label`: The label displayed on the menu. Can be shorter than the title. When not set, will be the same as the title;
+- `icon`: A custom icon for this page on the menu;
+- `guests`: If set to false, the page won't be displayed for guests;
+- `loggedUsers`: If set to false, the page won't be displayed for logged users;
+- `rootMenu`: Indicates that this page is shown in another root menu instead of the default (Information). Can be either `content` (default), `banking`, `marketplace` or `personal`.
+
+Here are are some examples: [one that uses some static pages](https://github.com/cyclosproject/cyclos4-ui/blob/master/src/environments/example-content-pages-resolver.ts) and [one that fetches pages from a Wordpress instance](https://github.com/cyclosproject/cyclos4-ui/blob/master/src/app/content/wordpress-content-pages-resolver.ts) (needs the full URL to the REST API as constructor argument).
 
 ### Banners
 
 Banners are shown in cards (boxes) below the left menu in the large layout. No banners are ever shown in mobile. Cards have the definition on which cases they show up:
 - For logged users (yes by default);
 - For guests (no by default);
-- For a specific root menu (all but home by default);
+- For a specific root menu (all but home by default) - please, note that there are distinct root menus for the advertisements / users directory as guest and marketplace as logged user; see the `src/app/shared/menu.ts` file for more details;
 - For a specific menu item (all but home by default).
 
 Each card has one or more banners. When it has multiple banners, they will rotate after a given number of seconds. The `Banner` interface (defined in `src/app/content/banner.ts`) extends the `Content` interface, adding a few properties, such as the `timeout`, which defines the number of seconds it is shown when there are multiple banners (10 seconds by default) and `link`, which is an URL (either internal, starting with `/` or external) to navigate if the banner is clicked (no link by default). Being a `Content`, its HTML content can be either a static string or a `ContentGetter` function to fetch from an external resource. Cache applies as well (by setting a `cacheKey` property).
 
-To use banners, create a class that implements the `BannerResolver` interface, defined in `app/content/banner-resolver`. Implement the method `resolveCards(injector: Injector): BannerCard[] | Observable<BannerCard[]>`. It should return which banner cards are available for the entire application. Later on they will be filtered out according to the menu item and logged user. The Angular injector is used to access shared services, such as `HttpClient` or the `LoginService` (to check which user is logged-in). It can either return a fixed list of banner cards or an `Observable`, for example, when querying an external service to determine which banners are available. Here is an [example BannerResolver](https://github.com/cyclosproject/cyclos4-ui/blob/master/src/environments/example-banner-resolver.ts).
+To use banners, create a class that implements the `BannerResolver` interface, defined in `src/app/content/banner-resolver`. Implement the method `resolveCards(injector: Injector): BannerCard[] | Observable<BannerCard[]>`. It should return which banner cards are available for the entire application. Later on they will be filtered out according to the menu item and logged user. The Angular injector is used to access shared services, such as `HttpClient` or the `LoginService` (to check which user is logged-in). It can either return a fixed list of banner cards or an `Observable`, for example, when querying an external service to determine which banners are available. Here is an [example BannerResolver](https://github.com/cyclosproject/cyclos4-ui/blob/master/src/environments/example-banner-resolver.ts).
 
 ## Translating
 `TODO`

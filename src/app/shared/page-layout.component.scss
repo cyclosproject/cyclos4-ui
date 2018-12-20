@@ -17,7 +17,7 @@
 }
 
 @include media-breakpoint-up(md) {
-  .content-area {
+  body:not(.full-width) :host ::ng-deep .content-area {
     margin-top: -$section-margin;
   }
   .content-area-small {

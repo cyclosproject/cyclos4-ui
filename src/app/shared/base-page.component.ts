@@ -4,7 +4,7 @@ import { HeadingAction } from 'app/shared/action';
 import { BaseComponent } from 'app/shared/base.component';
 import { FormControlLocator } from 'app/shared/form-control-locator';
 import { BehaviorSubject } from 'rxjs';
-import { Menu } from 'app/shared/menu';
+import { Menu, ConditionalMenu } from 'app/shared/menu';
 
 /**
  * Base class implemented by components which are actually 'pages', that is, are displayed in the `<router-outlet>`.
@@ -17,7 +17,7 @@ export abstract class BasePageComponent<D> extends BaseComponent implements OnIn
   @HostBinding('style.flex-direction') styleFlexDirection = 'column';
   @HostBinding('style.flex-grow') styleFlexGrow = '1';
 
-  menuItem: Menu;
+  menuItem: Menu | ConditionalMenu;
 
   data$ = new BehaviorSubject<D>(null);
   get data(): D {

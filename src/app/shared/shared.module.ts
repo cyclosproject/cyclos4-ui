@@ -17,7 +17,7 @@ import { ChipComponent } from 'app/shared/chip.component';
 import { ConfirmationPasswordComponent } from 'app/shared/confirmation-password.component';
 import { ConfirmationComponent } from 'app/shared/confirmation.component';
 import { ContentMonitorComponent } from 'app/shared/content-monitor.component';
-import { ContentPageComponent } from 'app/shared/content-page.component';
+import { ShowContentComponent } from 'app/shared/show-content.component';
 import { CurrencyPipe } from 'app/shared/currency.pipe';
 import { CustomFieldFilterComponent } from 'app/shared/custom-field-filter.component';
 import { CustomFieldInputComponent } from 'app/shared/custom-field-input.component';
@@ -107,7 +107,7 @@ export function initTooltipConfig(): TooltipConfig {
     PageLayoutComponent,
     PageContentComponent,
     BannerCardComponent,
-    ContentPageComponent,
+    ShowContentComponent,
     ResultsLayoutComponent,
     StaticMapComponent,
     ResultCategoryDirective,
@@ -206,7 +206,7 @@ export function initTooltipConfig(): TooltipConfig {
     PageLayoutComponent,
     PageContentComponent,
     BannerCardComponent,
-    ContentPageComponent,
+    ShowContentComponent,
     ResultsLayoutComponent,
     StaticMapComponent,
     ResultCategoryDirective,

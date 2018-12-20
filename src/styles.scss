@@ -12,12 +12,18 @@
   @include make-container-max-widths();
 }
 
-body.lt-md {
+body.lt-md, body.full-width, body.full-width.md {
   background-color: $card-bg;
   overflow-x: hidden;
 }
 body.gt-sm {
   padding-bottom: 1rem;
+}
+body.full-width {
+  padding-bottom: 0;
+}
+body.full-width .main-container {
+  margin: 0;
 }
 body, top-bar nav, menu-bar nav {
   transition: background-color ease-in-out 0.4s, color ease-in-out 0.4s;
@@ -632,14 +638,18 @@ h1, h2, h3, hr {
   }
 }
 h1, h2 {
+  margin-bottom: $layout-spacer-xxs;
+}
+h2 {
   border-top: 1px solid $section-border-color;
   padding-top: $layout-spacer-xxs;
-  margin-bottom: $layout-spacer-xxs;
 }
 @include media-breakpoint-up(xs) {
   h1, h2 {
-    padding-top: $layout-spacer;
     margin-bottom: $layout-spacer-xs;
+  }
+  h2 {
+    padding-top: $layout-spacer;
   }
 }
 @include media-breakpoint-up(sm) {
@@ -648,12 +658,12 @@ h1, h2 {
   }
 }
 .modal-content {
-  h1, h2 {
+  h2 {
     border-top: none;
     padding-top: 0;
   }
 }
-h1.border-0, h1.border-top-0, h2.border-0, h2.border-top-0 {
+h2.border-0, h2.border-top-0 {
   padding-top: 0;
 }
 h1 {

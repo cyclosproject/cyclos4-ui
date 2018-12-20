@@ -1,17 +1,20 @@
-import { HttpClient } from '@angular/common/http';
-import { Injector } from '@angular/core';
-import { Banner } from 'app/content/banner';
 import { BannerCard } from 'app/content/banner-card';
 import { BannerResolver } from 'app/content/banner-resolver';
-import { ContentGetter } from 'app/content/content-getter';
 import { RootMenu } from 'app/shared/menu';
-import { forkJoin, Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
 
-/** Fictional root URL of our API backend */
-const BACKEND_ROOT = 'https://backend/banners';
-const BANKING_CONTENT = BACKEND_ROOT + '/banking';
-const PROMOTED_CONTENT = BACKEND_ROOT + '/promoted';
+const CONTENT = `
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+  Sed quis vulputate erat, quis euismod felis. Nam ut ex nisl.
+  Phasellus sed odio fringilla, aliquam sem id, consequat velit.
+  Sed elit urna, pharetra non magna quis, porttitor finibus ipsum.
+  Integer vitae ligula sapien. In nec consectetur leo, ut rhoncus ligula.
+  Fusce metus dolor, sollicitudin a porta pulvinar, ornare eu felis.
+  Vestibulum porta nisl at eleifend hendrerit. Ut eget dictum libero,
+  sit amet sollicitudin leo. Praesent tincidunt vel turpis eu placerat.
+  Integer felis est, dapibus in interdum in, elementum posuere nisi.
+  Duis accumsan facilisis ante, a facilisis nisl tincidunt ut. Sed nec
+  egestas nulla, scelerisque rutrum nulla. Duis scelerisque posuere odio,
+  ut ullamcorper nunc efficitur at. Aliquam et lobortis sem.`;
 
 /** Defines the objects fetched from the server */
 export interface PromotedContent {
@@ -28,42 +31,35 @@ export interface PromotedContent {
 export class ExampleBannerResolver implements BannerResolver {
 
   /**
-   * Returns a cold Observable that resolves all the banner cards
-   * @param injector The Angular injector
+   * Returns some example banners
    */
-  resolveCards(injector: Injector): BannerCard[] | Observable<BannerCard[]> {
-    const http = injector.get(HttpClient);
+  resolveCards(): BannerCard[] {
 
     // The fixed card for the banking root menu
     const banking: BannerCard = {
       rootMenus: [RootMenu.BANKING],
       banners: [{
-        cacheKey: 'banking-banner',
-        content: ContentGetter.url(BANKING_CONTENT)
+        content: CONTENT
       }]
     };
 
     // We fetch the promoted content as a card with rotating banners
-    const promoted = http.get<PromotedContent[]>(PROMOTED_CONTENT).pipe(
-      map(contents => this.promotedCard(contents))
-    );
-
-    // Assemble all banner cards
-    return forkJoin(of(banking), promoted);
-  }
-
-  private promotedCard(contents: PromotedContent[]): BannerCard {
-    return {
-      rootMenus: [RootMenu.MARKETPLACE],
-      banners: contents.map(content => this.promotedBanner(content))
+    const promoted: BannerCard = {
+      //      rootMenus: [RootMenu.MARKETPLACE, RootMenu.PUBLIC_MARKETPLACE],
+      loggedUsers: true,
+      guests: true,
+      banners: [{
+        content: 'First banner showing on marketplace'
+      },
+      {
+        content: 'Second banner showing on marketplace'
+      },
+      {
+        content: 'Third banner showing on marketplace'
+      }]
     };
-  }
 
-  private promotedBanner(content: PromotedContent): Banner {
-    return {
-      cacheKey: `promoted_${content.id}`,
-      content: ContentGetter.url(content.url)
-    };
+    return [banking, promoted];
   }
 
 }

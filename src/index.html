@@ -53,7 +53,7 @@
   <link rel="icon" href="images/logo.png">
 </head>
 
-<body onload="document.getElementById('rootSpinner').style.display = ''">
+<body onload="self.cyclosLoaded === true ? null : document.getElementById('rootSpinner').style.display = ''">
   <div id="rootSpinner" style="display: none">
     <img src="images/spinner.svg" alt="loading">
   </div>

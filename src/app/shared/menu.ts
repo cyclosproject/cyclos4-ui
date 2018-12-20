@@ -1,3 +1,6 @@
+import { Injector } from '@angular/core';
+import { Observable } from 'rxjs';
+
 /** The types of menus in the application */
 export enum MenuType {
   /** The sidenav shown on small devices */
@@ -5,29 +8,30 @@ export enum MenuType {
   /** The horizontal bar shown on medium+ devices */
   BAR,
   /** The second-level side menu shown on medium+ devices */
-  SIDE,
-  /** The popup personal menu shown on clicking the logged user avatar */
-  PERSONAL
+  SIDE
 }
 
 /** Contains the top-level (root) menus */
 export type RootMenu =
-  'home' | 'publicDirectory' | 'publicMarketplace' | 'registration' | 'login' |
-  'dashboard' | 'banking' | 'marketplace' | 'personal';
+  'dashboard' | 'banking' | 'marketplace' | 'personal' |
+  'home' | 'publicDirectory' | 'publicMarketplace' |
+  'content' | 'registration' | 'login';
 export module RootMenu {
-  export const HOME: RootMenu = 'home';
-  export const PUBLIC_DIRECTORY: RootMenu = 'publicDirectory';
-  export const PUBLIC_MARKETPLACE: RootMenu = 'publicMarketplace';
-  export const REGISTRATION: RootMenu = 'registration';
-  export const LOGIN: RootMenu = 'login';
   export const DASHBOARD: RootMenu = 'dashboard';
   export const BANKING: RootMenu = 'banking';
   export const MARKETPLACE: RootMenu = 'marketplace';
   export const PERSONAL: RootMenu = 'personal';
+  export const HOME: RootMenu = 'home';
+  export const PUBLIC_DIRECTORY: RootMenu = 'publicDirectory';
+  export const PUBLIC_MARKETPLACE: RootMenu = 'publicMarketplace';
+  export const CONTENT: RootMenu = 'content';
+  export const REGISTRATION: RootMenu = 'registration';
+  export const LOGIN: RootMenu = 'login';
   export function values(): RootMenu[] {
     return [
-      HOME, PUBLIC_DIRECTORY, PUBLIC_MARKETPLACE, REGISTRATION, LOGIN,
-      DASHBOARD, BANKING, MARKETPLACE, PERSONAL
+      DASHBOARD, BANKING, MARKETPLACE, PERSONAL,
+      HOME, PUBLIC_DIRECTORY, PUBLIC_MARKETPLACE,
+      CONTENT, REGISTRATION, LOGIN
     ];
   }
 }
@@ -71,6 +75,12 @@ export module Menu {
   export const CONTACT_PROFILE = new Menu(RootMenu.PERSONAL, 'CONTACTS_PROFILE');
   export const PASSWORDS = new Menu(RootMenu.PERSONAL, 'PASSWORDS');
   export const LOGOUT = new Menu(RootMenu.PERSONAL, 'LOGOUT', false);
+
+  // Content (one per root menu)
+  export const CONTENT_PAGE_BANKING = new Menu(RootMenu.BANKING, 'CONTENT_PAGE_BANKING');
+  export const CONTENT_PAGE_MARKETPLACE = new Menu(RootMenu.MARKETPLACE, 'CONTENT_PAGE_MARKETPLACE');
+  export const CONTENT_PAGE_PERSONAL = new Menu(RootMenu.PERSONAL, 'CONTENT_PAGE_PERSONAL');
+  export const CONTENT_PAGE_CONTENT = new Menu(RootMenu.CONTENT, 'CONTENT_PAGE_CONTENT');
 }
 
 
@@ -89,7 +99,8 @@ export class RootMenuEntry extends BaseMenuEntry {
     icon: string,
     label: string,
     public title: string = null,
-    showIn: MenuType[] = null
+    showIn: MenuType[] = null,
+    public dropdown = false
   ) {
     super(icon, label, showIn);
     if (this.title == null) {
@@ -128,8 +139,6 @@ export class SideMenuEntries {
 }
 
 /**
- * A menu definition which depends on whether there's a logged user
+ * A dynamic menu condition
  */
-export class ConditionalMenu {
-  constructor(public guests: Menu, public loggedUsers: Menu) { }
-}
+export type ConditionalMenu = (injector: Injector) => Menu | Observable<Menu>;

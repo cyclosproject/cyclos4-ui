@@ -1,12 +1,13 @@
-import { ChangeDetectionStrategy, Component, ElementRef, Input, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { Router } from '@angular/router';
 import { BreadcrumbService } from 'app/core/breadcrumb.service';
+import { LoginService } from 'app/core/login.service';
 import { MenuService } from 'app/core/menu.service';
 import { StateManager } from 'app/core/state-manager';
 import { LayoutService } from 'app/shared/layout.service';
-import { MenuType, RootMenu, RootMenuEntry } from 'app/shared/menu';
+import { BaseMenuEntry, Menu, MenuEntry, MenuType, RootMenu, RootMenuEntry } from 'app/shared/menu';
+import { BsDropdownDirective } from 'ngx-bootstrap/dropdown/public_api';
 import { Observable } from 'rxjs';
-import { LoginService } from 'app/core/login.service';
 
 /**
  * A bar displayed on large layouts with the root menu items
@@ -22,38 +23,46 @@ export class MenuBarComponent implements OnInit {
     private router: Router,
     private menu: MenuService,
     private stateManager: StateManager,
-    private breadcrumb: BreadcrumbService,
+    public breadcrumb: BreadcrumbService,
     public layout: LayoutService,
     public login: LoginService) {
   }
 
-  @ViewChildren('rootLink') rootLinks: QueryList<ElementRef>;
-
   roots: Observable<RootMenuEntry[]>;
-  private _activeRoot: RootMenu;
-  @Input() get activeRoot(): RootMenu {
-    return this._activeRoot;
+  @Input() activeMenu: Menu;
+
+  get activeRoot(): RootMenu {
+    return this.activeMenu == null ? null : this.activeMenu.root;
   }
-  set activeRoot(root: RootMenu) {
-    this._activeRoot = root;
-  }
+
+  @ViewChildren('dropdown') dropdowns: QueryList<BsDropdownDirective>;
 
   ngOnInit(): void {
     this.roots = this.menu.menu(MenuType.BAR);
   }
 
-  onClick(event: MouseEvent, root: RootMenuEntry) {
-    const entry = root.entries[0];
+  onClick(event: MouseEvent, base: BaseMenuEntry) {
+    event.preventDefault();
+    event.stopPropagation();
+    const target = event.target as HTMLElement;
+    target.blur();
+    this.dropdowns.forEach(d => d.hide());
+
+    let entry: MenuEntry = null;
+    if (base instanceof MenuEntry) {
+      entry = base;
+    } else if (base instanceof RootMenuEntry) {
+      entry = base.entries[0];
+    }
+
     if (entry && entry.url != null) {
       // Update the last selected menu
-      this.menu.lastSelectedMenu = entry.menu;
+      this.menu.setLastSelectedMenu(entry.menu);
 
       // Whenever a menu is clicked, clear the state, because a new navigation path starts
       this.stateManager.clear();
       this.breadcrumb.clear();
       this.router.navigateByUrl(entry.url);
-      event.preventDefault();
-      event.stopPropagation();
     }
   }
 
