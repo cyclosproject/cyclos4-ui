@@ -73,11 +73,10 @@ const HOME_PAGE: ContentWithLayout = {
 const DASHBOARD_RESOLVER: DashboardResolver | DashboardItemConfig[] = new DefaultDashboardResolver();
 
 // Content pages resolver
-const CONTENT_PAGES_RESOLVER: ContentPagesResolver | ContentPage[] =
-  new ExampleContentPagesResolver();
+const CONTENT_PAGES_RESOLVER: ContentPagesResolver | ContentPage[] = null;
 
 // Banner resolver
-const BANNER_RESOLVER: BannerResolver | BannerCard[] = new ExampleBannerResolver();
+const BANNER_RESOLVER: BannerResolver | BannerCard[] = null;
 
 
 ////////////////////////////////////////////////////////////

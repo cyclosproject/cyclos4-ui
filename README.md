@@ -1,7 +1,7 @@
 # Cyclos 4 user interface
 
 <img src="cyclos.png" align="right" width="120" alt="Cyclos"/>
-This project aims to create a modern, simple and intuitive user interface for [Cyclos](https://www.cyclos.org/) version 4.11 and up. The interface should be easy to customize and add functionality needed by specific projects.
+This project aims to create a modern, simple and intuitive user interface for (Cyclos)[https://www.cyclos.org/] version 4.11 and up. The interface should be easy to customize and add functionality needed by specific projects.
 
 The initial planned scope is to have only end-user functionality in this application. Administration functionality will still be available in Cyclos' default web interface.
 
@@ -34,7 +34,7 @@ More functionality will be added in future versions.
 
 ## Requirements
 
-- [Cyclos](https://www.cyclos.org/) version 4.11+ (for the backend);
+- [Cyclos](https://www.cyclos.org/) version 4.11.2+ (for the backend);
 - [NodeJS](https://nodejs.org/) version 8+;
 - [NPM](https://www.npmjs.com/) version 5+.
 
