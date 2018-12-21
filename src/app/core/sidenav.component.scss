@@ -27,6 +27,12 @@
 
   a {
     color: $sidenav-bar-color;
+    display: flex;
+    align-items: center;
+    height: 2rem;
+    margin: 0;
+    padding: 0 0.5rem;
+    line-height: 1em;
   }
   a, a:hover {
     text-decoration: none;

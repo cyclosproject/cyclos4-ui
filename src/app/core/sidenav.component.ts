@@ -67,6 +67,9 @@ export class SidenavComponent implements OnInit {
 
   open() {
     if (!this.opened) {
+      // Sometimes the --window-width variable is not updated, and the close icon is not visible
+      this.layout.updateWindowWidth();
+
       const style = this.element.style;
       style.transform = 'translateX(0)';
       this.rootContainer.style.transform = `translateX(${this.element.clientWidth}px)`;
@@ -125,5 +128,12 @@ export class SidenavComponent implements OnInit {
       return this.i18n({ value: 'Home', description: 'Menu' });
     }
     return entry.label;
+  }
+
+  logout(event: MouseEvent) {
+    this.login.logout();
+    event.stopPropagation();
+    event.preventDefault();
+    this.close();
   }
 }

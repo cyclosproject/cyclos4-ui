@@ -135,17 +135,18 @@ export class LayoutService {
       }
     });
 
-    const onWindowResized = () => {
-      document.body.style.setProperty('--window-width', document.documentElement.clientWidth + 'px');
+    window.addEventListener('resize', () => this.updateWindowWidth(), false);
+    setTimeout(() => this.updateWindowWidth(), 1);
+  }
 
-      // Observe any changes in active breakpoints
-      const active = this.activeBreakpoints;
-      if (!isEqual(active, this._activeBreakpoints.value)) {
-        this._activeBreakpoints.next(active);
-      }
-    };
-    window.addEventListener('resize', onWindowResized, false);
-    setTimeout(onWindowResized, 1);
+  updateWindowWidth() {
+    document.body.style.setProperty('--window-width', document.documentElement.clientWidth + 'px');
+
+    // Observe any changes in active breakpoints
+    const active = this.activeBreakpoints;
+    if (!isEqual(active, this._activeBreakpoints.value)) {
+      this._activeBreakpoints.next(active);
+    }
   }
 
   private updateBodyStyles(breakpoints: Set<Breakpoint>) {
