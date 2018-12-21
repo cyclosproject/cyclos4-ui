@@ -1,5 +1,8 @@
 @import 'src/definitions';
 
+$lg-padding: 1.4rem;
+$xl-padding: 1.8rem;
+
 :host {
   display: flex;
   position: -webkit-sticky; /* Safari */
@@ -38,10 +41,10 @@ nav {
 }
 a {
   color: $menu-bar-color;
-  padding: 0.9rem 1.4rem;
+  padding: 0.9rem $lg-padding;
 }
 a.sub-menu-item {
-  padding: 0.7rem 1.6rem 0.7rem 1.4rem;
+  padding: 0.7rem calc(#{$lg-padding} + 0.2rem) 0.7rem $lg-padding;
 }
 .menu-text, .sub-menu-text {
   font-size: 1.2em;
@@ -78,7 +81,7 @@ a.active {
 }
 
 .logout a {
-  margin-right: -1.4rem;
+  margin-right: -$lg-padding;
 }
 
 .dropdown-toggle::after {
@@ -87,12 +90,13 @@ a.active {
 
 @include media-breakpoint-up(xl) {
   a {
-    padding: 0.9rem 2rem;
+    padding: 0 $xl-padding;
   }
   a.sub-menu-item {
-    padding: 0.7rem 2.2rem 0.7rem 2rem;
+    padding-left: $xl-padding;
+    padding-right: calc(#{$xl-padding} + 0.2rem);
   }
   .logout a {
-    margin-right: -2rem;
+    margin-right: -$xl-padding;
   }
 }
