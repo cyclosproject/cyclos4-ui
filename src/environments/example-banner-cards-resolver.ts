@@ -1,14 +1,14 @@
 import { BannerCard } from 'app/content/banner-card';
-import { BannerResolver } from 'app/content/banner-resolver';
+import { BannerCardsResolver } from 'app/content/banner-cards-resolver';
 import { RootMenu } from 'app/shared/menu';
 
 /**
- * This is an example `BannerResolver`. It has a fixed banner card for the banking
+ * This is an example `BannerCardsResolver`. It has a fixed banner card for the banking
  * root menu (which could, for example, offer some banking service to users, such
  * as loans or cards) and a card that rotates promoted content (which could be
  * businesses or advertisements) to be shown in the marketplace root menu.
  */
-export class ExampleBannerResolver implements BannerResolver {
+export class ExampleBannerCardsResolver implements BannerCardsResolver {
 
   /**
    * Returns some example banners

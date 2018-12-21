@@ -1,7 +1,6 @@
 import { Injectable, Injector } from '@angular/core';
 import { Banner } from 'app/content/banner';
 import { BannerCard } from 'app/content/banner-card';
-import { BannerResolver } from 'app/content/banner-resolver';
 import { LoginService } from 'app/core/login.service';
 import { MenuService } from 'app/core/menu.service';
 import { blank, empty as isEmpty } from 'app/shared/helper';
@@ -29,7 +28,6 @@ export class BannerService {
 
   private allCards: BannerCard[];
   private currentCards = new BehaviorSubject<BannerCard[]>([]);
-  private resolver: BannerResolver;
   private sub: Subscription;
   private currentBanners = new Map<BannerCard, BehaviorSubject<Banner>>();
 
@@ -38,23 +36,11 @@ export class BannerService {
     private menu: MenuService,
     private login: LoginService) {
     this.cards$ = this.currentCards.asObservable();
-    if (environment.bannerResolver instanceof Array) {
-      this.resolver = {
-        resolveCards() {
-          return environment.bannerResolver as BannerCard[];
-        }
-      };
-    } else {
-      this.resolver = environment.bannerResolver;
-    }
   }
 
   initialize() {
-    if (!this.resolver) {
-      // Nothing to do
-      return;
-    }
-    const cards = this.resolver.resolveCards(this.injector);
+    const resolver = environment.bannerCardsResolver;
+    const cards = resolver == null ? null : resolver.resolveCards(this.injector);
     if (cards == null) {
       this.doInitialize([]);
     } else if (cards instanceof Array) {

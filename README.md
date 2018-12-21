@@ -225,14 +225,13 @@ const HOME_PAGE: ContentWithLayout = {
 };
 
 // Dashboard resolver
-const DASHBOARD_RESOLVER: DashboardResolver | DashboardItemConfig[] =
-  new DefaultDashboardResolver();
+const DASHBOARD_RESOLVER = new DefaultDashboardResolver();
 
 // Content pages resolver
-const CONTENT_PAGES_RESOLVER: ContentPagesResolver | ContentPage[] = null;
+const CONTENT_PAGES_RESOLVER = null;
 
-// Banner resolver
-const BANNER_RESOLVER: BannerResolver | BannerCard[] = null;
+// Banner cards resolver
+const BANNER_CARDS_RESOLVER = null;
 ```
 
 By default, the file `content/home.html` is used to generate the home content. Either it can be customized, or a different strategy can be used to obtain the content page, through a `ContentGetter`. More on this subject is presented ahead. Also, by default, there are no custom content pages or banners.
@@ -254,30 +253,95 @@ So, fetching content for the home page is straightforward. Content pages and ban
 
 Custom content pages can be very useful for projects that want to add a manual, some additional information pages, simple contact forms and so on. They are available both for guests and logged users, and in case of logged users, can be placed in a dedicated root menu item (internally called `content`) or in some other root menu (banking, marketplace or personal). **Important:** For logged users, if there is at least one visible content page with full layout, the root menu will be a dropdown, as the left menu will not be shown on full layout. However, if all pages for logged users use the `card` layout, then a side menu will be shown. For guests we never show a left menu, so the content menu is always a dropdown.
 
-To enable content pages you must create an implementation of the `ContentPagesResolver` interface, defined in `src/app/content/content-pages-resolver.ts`. It has a single method called `resolveContentPages`, receiving the The Angular injector reference (used to obtain shared services) and must return either a `ContentPage[]` or an observable of it.
+To enable content pages you must create an implementation of the `ContentPagesResolver` interface, defined in `src/app/content/content-pages-resolver.ts`. It has a single method called `resolveContentPages`, receiving the The Angular injector reference (used to obtain shared services) and must return either a `ContentPage[]` or an observable of it. Then, in the `configuration.ts` file, create an instance of that class, assigning it to the `CONTENT_PAGES_RESOLVER` constant (which is set to `null` by default), like this:
+
+```typescript
+// ...
+import { ExampleContentPagesResolver } from './example-content-pages-resolver';
+// ...
+// Content pages resolver
+const CONTENT_PAGES_RESOLVER = new ExampleContentPagesResolver();
+```
 
 Each content page, defined in `src/app/content/content-page.ts` extend `ContentWithLayout`, and add a few other important fields:
 
 - `slug`: A part of the URL which is used to identify this content page. When not set, one is generated, but it is recommended to always set one;
 - `label`: The label displayed on the menu. Can be shorter than the title. When not set, will be the same as the title;
 - `icon`: A custom icon for this page on the menu;
-- `guests`: If set to false, the page won't be displayed for guests;
-- `loggedUsers`: If set to false, the page won't be displayed for logged users;
+- `loggedUsers`: Indicates whether this page is shown to logged users, yes by default;
+- `guests`: Indicates whether this page is shown to guests, yes by default;
 - `rootMenu`: Indicates that this page is shown in another root menu instead of the default (Information). Can be either `content` (default), `banking`, `marketplace` or `personal`.
 
 Here are are some examples: [one that uses some static pages](https://github.com/cyclosproject/cyclos4-ui/blob/master/src/environments/example-content-pages-resolver.ts) and [one that fetches pages from a Wordpress instance](https://github.com/cyclosproject/cyclos4-ui/blob/master/src/app/content/wordpress-content-pages-resolver.ts) (needs the full URL to the REST API as constructor argument).
 
 ### Banners
 
-Banners are shown in cards (boxes) below the left menu in the large layout. No banners are ever shown in mobile. Cards have the definition on which cases they show up:
-- For logged users (yes by default);
-- For guests (no by default);
-- For a specific root menu (all but home by default) - please, note that there are distinct root menus for the advertisements / users directory as guest and marketplace as logged user; see the `src/app/shared/menu.ts` file for more details;
-- For a specific menu item (all but home by default).
+Banners are shown in cards (boxes) below the left menu in the large layout. No banners are ever shown in mobile or in the dashboard page. Each card has one or more banners. When there are multiple banners, they will rotate after a given number of seconds.
 
-Each card has one or more banners. When it has multiple banners, they will rotate after a given number of seconds. The `Banner` interface (defined in `src/app/content/banner.ts`) extends the `Content` interface, adding a few properties, such as the `timeout`, which defines the number of seconds it is shown when there are multiple banners (10 seconds by default) and `link`, which is an URL (either internal, starting with `/` or external) to navigate if the banner is clicked (no link by default). Being a `Content`, its HTML content can be either a static string or a `ContentGetter` function to fetch from an external resource. Cache applies as well (by setting a `cacheKey` property).
+To use banners you must create an implementation of the `BannerCardsResolver` interface, defined in `src/app/content/banner-cards-resolver.ts`. It has a single method called `resolveCards`, receiving the The Angular injector reference (used to obtain shared services) and must return either a `BannerCard[]` or an observable of it. Then, in the `configuration.ts` file, create an instance of that class, assigning it to the `BANNER_CARDS_RESOLVER` constant (which is set to `null` by default), like this:
 
-To use banners, create a class that implements the `BannerResolver` interface, defined in `src/app/content/banner-resolver`. Implement the method `resolveCards(injector: Injector): BannerCard[] | Observable<BannerCard[]>`. It should return which banner cards are available for the entire application. Later on they will be filtered out according to the menu item and logged user. The Angular injector is used to access shared services, such as `HttpClient` or the `LoginService` (to check which user is logged-in). It can either return a fixed list of banner cards or an `Observable`, for example, when querying an external service to determine which banners are available. Here is an [example BannerResolver](https://github.com/cyclosproject/cyclos4-ui/blob/master/src/environments/example-banner-resolver.ts).
+```typescript
+// ...
+import { ExampleBannerCardsResolver } from './example-banner-cards-resolver';
+// ...
+// Banner cards resolver
+const BANNER_CARDS_RESOLVER = new ExampleBannerCardsResolver();
+```
+
+The `BannerCard` interface, defined in `src/app/content/banner-card.ts`) has the following properties:
+
+- `banners`: Which banners to show. Can be either an array of `Banner`s or an observable of it. This is the only required property. More on the `Banner` interface below;
+- `loggedUsers`: Indicates whether this card shows up for logged users, yes by default;
+- `guests`: Indicates whether this card shows up for guests, no by default;
+- `rootMenus`: Indicates on which root menus this card shows up. By default will be shown on all except home / dashboard. Note that there are distinct root menus for the advertisements / users directory for guests and marketplace for logged users, see the `src/app/shared/menu.ts` file for more details;
+- `menus`: Indicates on which specific menus this card shows up. By default will be shown on all except home / dashboard;
+- `ngClass` / `ngStyle`: Data passed to Angular's `ngClass` and `ngStyle` attributes on the card element. Useful, for example, to remove the border and padding around banners, set `ngClass` to `['border-0', 'p-0']`. Also, to make a banner card have a dark background and light text, set `ngClass` to `['background-dark', 'text-light']`.
+
+The `Banner` interface (defined in `src/app/content/banner.ts`) extends `Content`, thus, retaining the `content` field which is either a string or a `ContentGetter` and local cache capabilities. It also adds the following properties:
+
+- `timeout`: When there are multiple banners in the card, represents the number of seconds, 10 by default, before changing to the next banner;
+- `link`: Can be set to an URL to which the user navigates when clicking the banner. Can both be an internal URL, starting with `/`, or external URL, starting with the scheme (https / http). By default, the banner has no link;
+- `linkTarget`: When set, is the `target` attribute of the `<a>` tag used to create the banner link. If set to `_blank` will open the link in a new tab / window.
+
+There is [an example BannerCardsResolver here](https://github.com/cyclosproject/cyclos4-ui/blob/master/src/environments/example-banner-cards-resolver.ts).
+
+### Customizing the dashboard
+
+The dashboard is the home page for logged users. It contains several items that present useful information for users. Each item is an independent component that can be customized. Also, each item can be enabled only for some resolution breakpoints, namely:
+
+- `xxs`: Very small displays, such as KaiOS' smart feature phones;
+- `xs`: Mobile devices  / very small browser windows;
+- `sm`: Tablets in portrait mode / small desktop windows;
+- `md`: Tablets in landscape mode / medium desktop windows;
+- `lg`: Desktop browsers with not-so-large resolutions;
+- `xg`: Desktop browsers with large resolutions.
+
+Also, greater-than and lower-than variations are available: `gt-xxs` (`xxs` or greater) up to `gt-lg`, as well as `lt-xg` up to `lt-xs`.
+
+The following dashboard items are available:
+
+- **Quick access**: Presents a list with links to common actions. Each link has an icon and a label. Allows specifying which links are shown and on which resolution breakpoints they are shown;
+- **Account status**: Shows relevant data for an account, namely the current balance, a chart with the account balance over the last few months and a list with the last incoming transfers. Also has a button to view the account history;
+- **Latest advertisements**: Shows some of the lastest advertisements;
+- **Latest users**: Shows some of the users that have been activated last;
+- **Content**: Shows a custom content.
+
+The default dashboard is comprised of:
+
+- Quick access on all breakpoints, but only showing account links for `lt-md`, as larger breakpoints will have a dedicated account status item;
+- Account status for each account the logged user has, only for breakpoint `gt-sm`;
+- Latest advertisements, only for breakpoint `gt-sm`;
+- A content page, showing a sample events static page, on all breakpoints.
+
+To customize the dashboard, make a copy of the `src/environments/default-dashboard-resolver.ts` file to another file, then customize the `resolveItems` method. Finally, set its reference in the configuration, like:
+
+```typescript
+// ...
+import { CustomDashboardResolver } from './custom-dashboard-resolver';
+// ...
+// Dashboard resolver
+const DASHBOARD_RESOLVER = new CustomDashboardResolver();
+```
 
 ## Translating
 `TODO`

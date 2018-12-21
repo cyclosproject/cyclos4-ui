@@ -1,11 +1,8 @@
 import { AdCategoryConfiguration } from 'app/content/ac-category-configuration';
-import { BannerCard } from 'app/content/banner-card';
-import { BannerResolver } from 'app/content/banner-resolver';
+import { BannerCardsResolver } from 'app/content/banner-cards-resolver';
 import { ContentGetter } from 'app/content/content-getter';
-import { ContentPage } from 'app/content/content-page';
 import { ContentPagesResolver } from 'app/content/content-pages-resolver';
 import { ContentWithLayout } from 'app/content/content-with-layout';
-import { DashboardItemConfig } from 'app/content/dashboard-item-config';
 import { DashboardResolver } from 'app/content/dashboard-resolver';
 import { DefaultDashboardResolver } from 'environments/default-dashboard-resolver';
 
@@ -50,19 +47,25 @@ const HOME_PAGE: ContentWithLayout = {
   // cacheKey: 'home',
   // cacheSeconds: 360, // 360 seconds = 1 hour
 
+  // By default, the page is shown using the full width. You can set it to card, instead
+  // layout: 'card',
+
+  // When setting a title it will be on layout card by default
+  // title: 'Welcome',
+
   // The content can be obtained by fetching a URL, or by a Cyclos floating content page
   // See the documentation on ContentGetter for more details.
   content: ContentGetter.url('content/home.html')
 };
 
 // Dashboard resolver
-const DASHBOARD_RESOLVER: DashboardResolver | DashboardItemConfig[] = new DefaultDashboardResolver();
+const DASHBOARD_RESOLVER = new DefaultDashboardResolver();
 
 // Content pages resolver
-const CONTENT_PAGES_RESOLVER: ContentPagesResolver | ContentPage[] = null;
+const CONTENT_PAGES_RESOLVER = null;
 
-// Banner resolver
-const BANNER_RESOLVER: BannerResolver | BannerCard[] = null;
+// Banner cards resolver
+const BANNER_CARDS_RESOLVER = null;
 
 
 ////////////////////////////////////////////////////////////
@@ -77,8 +80,8 @@ export const configuration = {
   searchPageSizes: SEARCH_PAGE_SIZES,
   quickSearchPageSize: QUICK_SEARCH_PAGE_SIZE,
   adCategories: AD_CATEGORIES as { [internalName: string]: AdCategoryConfiguration },
-  homePage: HOME_PAGE,
-  dashboardResolver: DASHBOARD_RESOLVER as DashboardResolver | DashboardItemConfig[],
-  contentPagesResolver: CONTENT_PAGES_RESOLVER as ContentPagesResolver | ContentPage[],
-  bannerResolver: BANNER_RESOLVER as BannerResolver | BannerCard[]
+  homePage: HOME_PAGE as ContentWithLayout,
+  dashboardResolver: DASHBOARD_RESOLVER as DashboardResolver,
+  contentPagesResolver: CONTENT_PAGES_RESOLVER as ContentPagesResolver,
+  bannerCardsResolver: BANNER_CARDS_RESOLVER as BannerCardsResolver
 };

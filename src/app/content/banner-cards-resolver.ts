@@ -3,9 +3,9 @@ import { BannerCard } from 'app/content/banner-card';
 import { Observable } from 'rxjs';
 
 /**
- * Interface used to resolve the banners which are shown in the side area
+ * Interface used to resolve the banner cards which are shown in the side area
  */
-export interface BannerResolver {
+export interface BannerCardsResolver {
 
   /**
    * Returns the available banner cards in the application.
