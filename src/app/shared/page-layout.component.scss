@@ -4,16 +4,39 @@
   display: flex;
   width: 100%;
   flex-grow: 1;
+  @include make-container-max-widths();
 }
 
 .side-area {
-  width: 300px;
+  width: $side-area-width;
   margin-right: $section-margin;
   display: flex;
   flex-direction: column;
 }
 .content-area {
   flex: 1;
+}
+
+// Size the content area to prevent content from breaking
+@include media-breakpoint-up(sm) {
+  .content-area {
+    max-width: var(--window-width);
+  }
+}
+@include media-breakpoint-up(md) {
+  .content-area {
+    max-width: map-get($container-max-widths, md);
+  }
+}
+@include media-breakpoint-up(lg) {
+  .content-area {
+    max-width: calc(#{map-get($container-max-widths, lg)} - #{$side-area-width} - #{$section-margin});
+  }
+}
+@include media-breakpoint-up(xl) {
+  .content-area {
+    max-width: calc(#{map-get($container-max-widths, xl)} - #{$side-area-width} - #{$section-margin});
+  }
 }
 
 @include media-breakpoint-up(md) {
