@@ -4,7 +4,6 @@
   display: flex;
   width: 100%;
   flex-grow: 1;
-  @include make-container-max-widths();
 }
 
 .side-area {
@@ -38,19 +37,37 @@
     max-width: calc(#{map-get($container-max-widths, xl)} - #{$side-area-width} - #{$section-margin});
   }
 }
+.page-layout:not(.has-left-area) {
+  // When there's no left area, on large displays the content can get up to the container size
+  @include media-breakpoint-up(lg) {
+    .content-area {
+      max-width: map-get($container-max-widths, lg);
+    }
+  }
+  @include media-breakpoint-up(xl) {
+    .content-area {
+      max-width: map-get($container-max-widths, xl);
+    }
+  }
+}
+body.full-width :host ::ng-deep .content-area {
+  width: var(--window-width);
+  max-width: var(--window-width);
+  min-width: var(--window-width);
+}
 
 @include media-breakpoint-up(md) {
   body:not(.full-width) :host ::ng-deep .content-area {
     margin-top: -$section-margin;
   }
   .content-area-small {
-    max-width: 400px;
+    max-width: 400px !important;
   }
   .content-area-medium {
-    max-width: 600px;
+    max-width: 600px !important;
   }
   .content-area-large {
-    max-width: 786px;
+    max-width: 786px !important;
   }
 }
 

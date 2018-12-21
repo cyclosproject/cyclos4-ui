@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, Component, ElementRef, Input, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { BannerCard } from 'app/content/banner-card';
 import { BannerService } from 'app/core/banner.service';
 import { LoginService } from 'app/core/login.service';
 import { MenuService } from 'app/core/menu.service';
 import { empty, truthyAttr } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
-import { BehaviorSubject, Subscription, Observable } from 'rxjs';
 import { MenuType } from 'app/shared/menu';
-import { BannerCard } from 'app/content/banner-card';
-import { first, tap } from 'rxjs/operators';
+import { BehaviorSubject, Subscription } from 'rxjs';
+import { first } from 'rxjs/operators';
 
 /**
  * The page layout, which may show a menu on the left,
@@ -42,7 +42,7 @@ export class PageLayoutComponent implements OnInit, OnDestroy {
   }
 
   loggingOut$ = new BehaviorSubject(false);
-  bannerCards$: Observable<BannerCard[]>;
+  bannerCards$ = new BehaviorSubject<BannerCard[]>(null);
 
   constructor(
     public layout: LayoutService,
@@ -53,10 +53,8 @@ export class PageLayoutComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.layout.currentPageLayout = this;
 
-    let bannerCards: BannerCard[] = null;
-
     const updateLeftAreaVisible = () => {
-      const hasCards = !empty(bannerCards);
+      const hasCards = !empty(this.bannerCards$.value);
       const fullWidth = this.layout.fullWidth;
       const loggedIn = this.login.user != null;
       const activeMenu = this.menu.activeMenu;
@@ -76,18 +74,15 @@ export class PageLayoutComponent implements OnInit, OnDestroy {
     this.subs.push(this.menu.activeMenu$.subscribe(updateLeftAreaVisible));
     this.subs.push(this.menu.menu(MenuType.SIDE).subscribe(updateLeftAreaVisible));
     this.subs.push(this.banner.cards$.subscribe(updateLeftAreaVisible));
-    updateLeftAreaVisible();
-
-    this.bannerCards$ = this.banner.cards$.pipe(
-      first(),
-      tap(cards => {
-        bannerCards = cards;
-        updateLeftAreaVisible();
-      }));
-
+    this.subs.push(this.banner.cards$.pipe(first()).subscribe(cards => {
+      this.bannerCards$.next(cards);
+      updateLeftAreaVisible();
+    }));
     this.subs.push(this.login.subscribeForLoggingOut(flag => {
       this.loggingOut$.next(flag);
     }));
+
+    updateLeftAreaVisible();
   }
 
   ngOnDestroy() {
