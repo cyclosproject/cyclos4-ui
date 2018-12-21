@@ -216,6 +216,11 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
   }
 
   setPaymentTypeData(typeData: TransactionTypeData) {
+    const oldId = (this.paymentTypeData$.value || {}).id || null;
+    const newId = (typeData || {}).id || null;
+    if (oldId === newId) {
+      return;
+    }
     this.paymentTypeData.emit(typeData);
     this.paymentTypeData$.next(typeData);
     if (typeData) {

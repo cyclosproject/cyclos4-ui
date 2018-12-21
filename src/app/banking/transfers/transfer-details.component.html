@@ -33,7 +33,6 @@
 <label-value *ngIf="transfer.transaction?.channel" i18n-label label="Channel">
   {{ transfer.transaction.channel.name }}
 </label-value>
-
 <custom-field-value *ngFor="let value of transfer.transaction?.customValues"
   [fieldValue]="value">
 </custom-field-value>
