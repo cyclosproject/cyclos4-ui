@@ -83,9 +83,14 @@ export abstract class BasePageComponent<D> extends BaseComponent implements OnIn
     this.layout.fullWidth = this.defaultFullWidthLayout();
 
     // Set the title menu according to the menu item
-    this.menu.resolveMenu(this.menuItem).pipe(first()).subscribe(menu => {
-      this.layout.setTitle(this.menu.menuEntry(menu).label);
-    });
+    if (this.updateTitleFrom() === 'menu') {
+      this.menu.resolveMenu(this.menuItem).pipe(first()).subscribe(menu => {
+        const entry = this.menu.menuEntry(menu);
+        if (entry) {
+          this.layout.setTitle(entry.label);
+        }
+      });
+    }
   }
 
   ngOnDestroy(): void {
