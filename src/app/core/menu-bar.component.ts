@@ -2,10 +2,10 @@ import { ChangeDetectionStrategy, Component, Input, OnInit, QueryList, ViewChild
 import { Router } from '@angular/router';
 import { BreadcrumbService } from 'app/core/breadcrumb.service';
 import { LoginService } from 'app/core/login.service';
-import { MenuService } from 'app/core/menu.service';
+import { ActiveMenu, MenuService } from 'app/core/menu.service';
 import { StateManager } from 'app/core/state-manager';
 import { LayoutService } from 'app/shared/layout.service';
-import { BaseMenuEntry, Menu, MenuEntry, MenuType, RootMenu, RootMenuEntry } from 'app/shared/menu';
+import { BaseMenuEntry, MenuEntry, MenuType, RootMenu, RootMenuEntry } from 'app/shared/menu';
 import { BsDropdownDirective } from 'ngx-bootstrap/dropdown/public_api';
 import { Observable } from 'rxjs';
 
@@ -29,10 +29,10 @@ export class MenuBarComponent implements OnInit {
   }
 
   roots: Observable<RootMenuEntry[]>;
-  @Input() activeMenu: Menu;
+  @Input() activeMenu: ActiveMenu;
 
   get activeRoot(): RootMenu {
-    return this.activeMenu == null ? null : this.activeMenu.root;
+    return this.activeMenu == null ? null : this.activeMenu.menu.root;
   }
 
   @ViewChildren('dropdown') dropdowns: QueryList<BsDropdownDirective>;
