@@ -7,8 +7,7 @@
       <img *ngIf="layout.gtxs$ | async" class="logo d-inline-block align-top mr-3"
         src="images/logo.png">
       <span class="d-inline-block">
-        {{ (layout.ltsm$ | async) ? format.appTitleSmall : format.appTitle
-        }}
+        {{ (layout.ltsm$ | async) ? format.appTitleSmall : format.appTitle }}
       </span>
     </span>
     <div *ngIf="user != null" class="d-flex">

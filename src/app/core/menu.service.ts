@@ -1,17 +1,30 @@
 import { Injectable, Injector } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { I18n } from '@ngx-translate/i18n-polyfill';
 import { Auth } from 'app/api/models';
 import { ContentPage } from 'app/content/content-page';
 import { handleFullWidthLayout } from 'app/content/content-with-layout';
+import { BreadcrumbService } from 'app/core/breadcrumb.service';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
+import { LoginService } from 'app/core/login.service';
+import { StateManager } from 'app/core/state-manager';
 import { ApiHelper } from 'app/shared/api-helper';
 import { empty } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
 import { ConditionalMenu, Menu, MenuEntry, MenuType, RootMenu, RootMenuEntry, SideMenuEntries } from 'app/shared/menu';
 import { environment } from 'environments/environment';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { distinctUntilChanged, filter, first, map, mergeMap } from 'rxjs/operators';
+import { distinctUntilChanged, first, map } from 'rxjs/operators';
+
+/**
+ * Contains information about the active menu
+ */
+export interface ActiveMenu {
+  menu?: Menu;
+  accountTypeId?: string;
+  contentPageSlug?: string;
+  matches(entry: MenuEntry): boolean;
+}
 
 const VALID_CONTENT_PAGES_ROOT_MENUS = [RootMenu.CONTENT, RootMenu.BANKING, RootMenu.MARKETPLACE, RootMenu.PERSONAL];
 /**
@@ -26,27 +39,31 @@ export class MenuService {
   contentPages$: Observable<ContentPage[]>;
 
   /**
-   * Observer for the currently active menu
+   * The current active menu descriptor
    */
-  activeMenu$: Observable<Menu>;
+  activeMenu$: Observable<ActiveMenu>;
+  private _activeMenu = new BehaviorSubject<ActiveMenu>(null);
 
-  /** The last resolved menu which was selected */
-  private _activeMenu = new BehaviorSubject<Menu>(null);
-
-  get activeMenu(): Menu {
+  get activeMenu(): ActiveMenu {
     return this._activeMenu.value;
   }
 
   private _fullMenu = new BehaviorSubject<RootMenuEntry[]>(null);
+  get fullMenu(): RootMenuEntry[] {
+    return this._fullMenu.value;
+  }
+
   private _contentPages = new BehaviorSubject<ContentPage[]>(null);
 
   constructor(
     private i18n: I18n,
     private injector: Injector,
     private dataForUiHolder: DataForUiHolder,
-    private activatedRoute: ActivatedRoute,
-    layout: LayoutService,
-    router: Router
+    private router: Router,
+    private login: LoginService,
+    private breadcrumb: BreadcrumbService,
+    private stateManager: StateManager,
+    layout: LayoutService
   ) {
     const initialDataForUi = this.dataForUiHolder.dataForUi;
     const initialAuth = (initialDataForUi || {}).auth;
@@ -61,38 +78,47 @@ export class MenuService {
       this._activeMenu.next(null);
     });
 
-    // When navigating, assing the active menu if none yet
-    router.events.pipe(
-      filter(e => e instanceof NavigationEnd),
-      map(() => this.activatedRoute),
-      map(route => {
-        while (route.firstChild) {
-          route = route.firstChild;
-        }
-        return route;
-      }),
-      filter(route => route.outlet === 'primary'),
-      mergeMap(route => route.data),
-      filter(data => data.menu),
-      mergeMap((menu: Menu | ConditionalMenu) => this.resolveMenu(menu))
-    )
-      .subscribe((menu: Menu) => {
-        if (this.activeMenu == null) {
-          this._activeMenu.next(menu);
-        }
-      });
-
     this.contentPages$ = this._contentPages.asObservable().pipe(
       distinctUntilChanged()
     );
-    this.activeMenu$ = this._activeMenu.asObservable().pipe(
-      distinctUntilChanged()
-    );
+    this._activeMenu.subscribe(active => {
+      // Update the body classes
+      this.updateBodyClasses(active ? active.menu : null);
+    });
+    this.activeMenu$ = this._activeMenu.asObservable();
     layout.currentPage$.subscribe(p => {
-      if (p && this.shouldUpdateLastMenu) {
+      if (p && this.activeMenu == null) {
         this.setActiveMenu(p.menuItem);
       }
     });
+  }
+
+  /**
+   * Navigates to a menu entry
+   */
+  navigate(entry: MenuEntry, event?: Event) {
+    if (event) {
+      event.stopPropagation();
+      event.preventDefault();
+      const target = event.target as HTMLElement;
+      target.blur();
+    }
+
+    // Clear the shared state
+    this.breadcrumb.clear();
+    this.stateManager.clear();
+
+    // Either perform the logout or navigate
+    let menu = entry.menu;
+    if (entry.menu === Menu.LOGOUT) {
+      this.login.logout();
+      menu = Menu.HOME;
+    } else {
+      this.router.navigateByUrl(entry.url);
+    }
+
+    // Update the active state
+    this.updateActiveMenu(menu, entry.accountTypeId, entry.contentPageSlug);
   }
 
   /**
@@ -100,28 +126,53 @@ export class MenuService {
    */
   setActiveMenu(menu: Menu | ConditionalMenu): void {
     // Whenever the last selected menu changes, update the classes in the body element
-    this.resolveMenu(menu).pipe(first()).subscribe(m => {
-      this._activeMenu.next(m);
+    this.resolveMenu(menu).pipe(first()).subscribe(m => this.updateActiveMenu(m, null, null));
+  }
 
-      const classes = document.body.classList;
-      RootMenu.values().forEach(root => {
-        const current = `root-menu--${root}`;
-        if (m && m.root === root) {
-          if (!classes.contains(current)) {
-            classes.add(current);
-          }
-        } else {
-          if (classes.contains(current)) {
-            classes.remove(current);
-          }
-        }
-      });
+  /**
+   * Sets the id of the active account type from the menu.
+   */
+  setActiveAccountTypeId(id: string): void {
+    this.updateActiveMenu(Menu.ACCOUNT_HISTORY, id, null);
+  }
+
+  /**
+   * Sets the slug of the active content page.
+   */
+  setActiveContentPageSlug(slug: string): void {
+    const entry = this.contentPageEntry(slug);
+    if (entry) {
+      this.updateActiveMenu(entry.menu, null, entry.contentPageSlug);
+    }
+  }
+
+  private updateActiveMenu(menu: Menu, accountTypeId: string, contentPageSlug: string) {
+    this._activeMenu.next({
+      menu: menu,
+      accountTypeId: accountTypeId,
+      contentPageSlug: contentPageSlug,
+      matches: entry => {
+        return entry.menu === menu
+          && (entry.accountTypeId || '') === (accountTypeId || '')
+          && (entry.contentPageSlug || '') === (contentPageSlug || '');
+      }
     });
   }
 
-  private get shouldUpdateLastMenu(): boolean {
-    const last = this.activeMenu;
-    return last == null || ([Menu.HOME, Menu.DASHBOARD, Menu.LOGIN] as any[]).includes(last);
+  private updateBodyClasses(menu: Menu) {
+    const classes = document.body.classList;
+    RootMenu.values().forEach(root => {
+      const current = `root-menu--${root}`;
+      if (menu && menu.root === root) {
+        if (!classes.contains(current)) {
+          classes.add(current);
+        }
+      } else {
+        if (classes.contains(current)) {
+          classes.remove(current);
+        }
+      }
+    });
   }
 
   /**
@@ -142,6 +193,37 @@ export class MenuService {
     return null;
   }
 
+  /**
+   * Returns the available `MenuEntry` for the account type with the given id
+   * @param typeId The account type identifier
+   */
+  accountEntry(typeId: string): MenuEntry {
+    const roots = this._fullMenu.value || [];
+    for (const rootEntry of roots) {
+      for (const entry of rootEntry.entries || []) {
+        if (entry.accountTypeId === typeId) {
+          return entry;
+        }
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Returns the available `MenuEntry` for the content page with the given slug
+   * @param slug The content page slug
+   */
+  contentPageEntry(slug: string): MenuEntry {
+    const roots = this._fullMenu.value || [];
+    for (const rootEntry of roots) {
+      for (const entry of rootEntry.entries || []) {
+        if (entry.contentPageSlug === slug) {
+          return entry;
+        }
+      }
+    }
+    return null;
+  }
 
   /**
    * Returns the available `RootMenuEntry` for the given `RootMenu`, if any, or null if none matches
@@ -151,7 +233,7 @@ export class MenuService {
     if (root == null) {
       const menu = this._activeMenu.value;
       if (menu) {
-        root = menu.root;
+        root = menu.menu.root;
       }
     }
     const roots = this._fullMenu.value || [];
@@ -266,11 +348,14 @@ export class MenuService {
     const content = addRoot(RootMenu.CONTENT, 'info', this.i18n({ value: 'Information', description: 'Menu' }));
     const register = addRoot(RootMenu.REGISTRATION, 'registration', this.i18n({ value: 'Register', description: 'Menu' }));
     const login = addRoot(RootMenu.LOGIN, 'exit_to_app', this.i18n({ value: 'Login', description: 'Menu' }));
+    const logout = addRoot(RootMenu.LOGOUT, 'logout', this.i18n({ value: 'Logout', description: 'Menu' }), null, []);
 
     // Lambda that adds a submenu to a root menu
-    const add = (menu: Menu, url: string, icon: string, label: string, showIn: MenuType[] = null) => {
+    const add = (menu: Menu, url: string, icon: string, label: string, showIn: MenuType[] = null): MenuEntry => {
       const root = roots.get(menu.root);
-      root.entries.push(new MenuEntry(menu, url, icon, label, showIn));
+      const entry = new MenuEntry(menu, url, icon, label, showIn);
+      root.entries.push(entry);
+      return entry;
     };
 
     // Lambda that adds all content pages to the given root menu entry
@@ -281,13 +366,15 @@ export class MenuService {
             || user != null && p.loggedUsers !== false));
       });
       for (const page of pages) {
-        add(menu, `/page/${page.slug}`, page.icon, page.label);
+        const entry = add(menu, `/page/${page.slug}`, page.icon, page.label);
+        entry.contentPageSlug = page.slug;
       }
       return pages;
     };
 
     // Add the submenus
     if (restrictedAccess) {
+      // No menus in restricted access
     } else if (user == null) {
       // Guest
       add(Menu.HOME, '/', home.icon, home.label);
@@ -314,8 +401,9 @@ export class MenuService {
       if (accounts.length > 0) {
         for (const account of accounts) {
           const type = account.account.type;
-          add(Menu.ACCOUNT_HISTORY, '/banking/account/' + ApiHelper.internalNameOrId(type),
-            'account_balance', type.name, [MenuType.BAR, MenuType.SIDENAV]);
+          const entry = add(Menu.ACCOUNT_HISTORY, '/banking/account/' + ApiHelper.internalNameOrId(type),
+            'account_balance', type.name);
+          entry.accountTypeId = type.id;
         }
       }
       const payments = banking.payments || {};
@@ -383,6 +471,10 @@ export class MenuService {
 
     // Content pages in the content root menu
     const pagesInContent = addContentPages(Menu.CONTENT_PAGE_CONTENT);
+
+    // Add the logout, which doesn't shows in any menu, but is handled when using navigate()
+    add(Menu.LOGOUT, null, logout.icon, logout.label, logout.showIn);
+
     // For guests, content will always be dropdown.
     // For logged users, only if at least 1 content page with layout full is used
     content.dropdown = user == null || (pagesInContent || []).findIndex(p => p.layout === 'full') >= 0;

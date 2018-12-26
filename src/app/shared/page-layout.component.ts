@@ -63,7 +63,7 @@ export class PageLayoutComponent implements OnInit, OnDestroy {
       if (root == null || (root.entries || []).length <= 1) {
         hasMenu = false;
       }
-      const rootEntry = activeMenu == null ? null : this.menu.rootEntry(activeMenu.root);
+      const rootEntry = activeMenu == null ? null : this.menu.rootEntry(activeMenu.menu.root);
       const rootIsDropDown = rootEntry != null && rootEntry.dropdown;
       const visible = !fullWidth && this.layout.gtmd && (hasCards || hasMenu) && !rootIsDropDown;
       this.leftAreaVisible$.next(visible);

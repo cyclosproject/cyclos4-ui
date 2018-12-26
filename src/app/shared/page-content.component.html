@@ -49,7 +49,7 @@
       <ng-template #rootActions>
         <div class="d-flex heading-actions">
           <button #actionButton *ngFor="let action of headingActions" class="heading-action heading-action-with-icon d-flex"
-            (click)="action.onClick(actionButton)">
+            (click)="action.onClick($event, actionButton)">
             <icon size="1.3rem" [icon]="action.icon"></icon>
             <div class="action-label">{{ action.label }}</div>
           </button>

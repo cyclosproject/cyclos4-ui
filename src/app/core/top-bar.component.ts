@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Router } from '@angular/router';
 import { User } from 'app/api/models';
 import { BreadcrumbService } from 'app/core/breadcrumb.service';
 import { FormatService } from 'app/core/format.service';
@@ -7,7 +6,6 @@ import { LoginService } from 'app/core/login.service';
 import { MenuService } from 'app/core/menu.service';
 import { LayoutService } from 'app/shared/layout.service';
 import { Menu } from 'app/shared/menu';
-import { StateManager } from 'app/core/state-manager';
 
 /**
  * The top bar, which is always visible
@@ -24,9 +22,7 @@ export class TopBarComponent implements OnInit {
     public format: FormatService,
     public login: LoginService,
     public layout: LayoutService,
-    public menu: MenuService,
-    public router: Router,
-    private stateManager: StateManager) {
+    public menu: MenuService) {
   }
 
   @Input() user: User;
@@ -38,24 +34,21 @@ export class TopBarComponent implements OnInit {
   }
 
   goToProfile(event: MouseEvent) {
-    this.menu.setActiveMenu(Menu.MY_PROFILE);
-    this.router.navigateByUrl('/users/my-profile');
-    this.breadcrumb.clear();
-    this.stateManager.clear();
-    event.stopPropagation();
-    event.preventDefault();
+    this.navigate(Menu.MY_PROFILE, event);
   }
 
   goToLogin(event: MouseEvent) {
-    this.menu.setActiveMenu(Menu.LOGIN);
-    this.router.navigateByUrl('/login');
-    event.stopPropagation();
-    event.preventDefault();
+    this.navigate(Menu.LOGIN, event);
   }
 
   logout(event: MouseEvent) {
-    this.login.logout();
-    event.stopPropagation();
-    event.preventDefault();
+    this.navigate(Menu.LOGOUT, event);
+  }
+
+  private navigate(menu: Menu, event: MouseEvent) {
+    const entry = this.menu.menuEntry(menu);
+    if (entry) {
+      this.menu.navigate(entry, event);
+    }
   }
 }

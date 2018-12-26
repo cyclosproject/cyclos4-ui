@@ -15,7 +15,7 @@ export enum MenuType {
 export type RootMenu =
   'dashboard' | 'banking' | 'marketplace' | 'personal' |
   'home' | 'publicDirectory' | 'publicMarketplace' |
-  'content' | 'registration' | 'login';
+  'content' | 'registration' | 'login' | 'logout';
 export module RootMenu {
   export const DASHBOARD: RootMenu = 'dashboard';
   export const BANKING: RootMenu = 'banking';
@@ -27,11 +27,12 @@ export module RootMenu {
   export const CONTENT: RootMenu = 'content';
   export const REGISTRATION: RootMenu = 'registration';
   export const LOGIN: RootMenu = 'login';
+  export const LOGOUT: RootMenu = 'logout';
   export function values(): RootMenu[] {
     return [
       DASHBOARD, BANKING, MARKETPLACE, PERSONAL,
       HOME, PUBLIC_DIRECTORY, PUBLIC_MARKETPLACE,
-      CONTENT, REGISTRATION, LOGIN
+      CONTENT, REGISTRATION, LOGIN, LOGOUT
     ];
   }
 }
@@ -40,17 +41,17 @@ export module RootMenu {
 export class Menu {
   constructor(
     public readonly root: RootMenu,
-    public readonly name: string,
-    public readonly menuVisible = true) { }
+    public readonly name: string) { }
 }
 export module Menu {
   // Standalone
-  export const HOME = new Menu(RootMenu.HOME, 'HOME', false);
-  export const DASHBOARD = new Menu(RootMenu.DASHBOARD, 'DASHBOARD', false);
-  export const PUBLIC_DIRECTORY = new Menu(RootMenu.PUBLIC_DIRECTORY, 'PUBLIC_DIRECTORY', false);
-  export const PUBLIC_MARKETPLACE = new Menu(RootMenu.PUBLIC_MARKETPLACE, 'PUBLIC_MARKETPLACE', false);
-  export const REGISTRATION = new Menu(RootMenu.REGISTRATION, 'REGISTRATION', false);
-  export const LOGIN = new Menu(RootMenu.LOGIN, 'LOGIN', false);
+  export const HOME = new Menu(RootMenu.HOME, 'HOME');
+  export const DASHBOARD = new Menu(RootMenu.DASHBOARD, 'DASHBOARD');
+  export const PUBLIC_DIRECTORY = new Menu(RootMenu.PUBLIC_DIRECTORY, 'PUBLIC_DIRECTORY');
+  export const PUBLIC_MARKETPLACE = new Menu(RootMenu.PUBLIC_MARKETPLACE, 'PUBLIC_MARKETPLACE');
+  export const REGISTRATION = new Menu(RootMenu.REGISTRATION, 'REGISTRATION');
+  export const LOGIN = new Menu(RootMenu.LOGIN, 'LOGIN');
+  export const LOGOUT = new Menu(RootMenu.LOGOUT, 'LOGOUT');
 
   // Banking
   export const ACCOUNT_HISTORY = new Menu(RootMenu.BANKING, 'ACCOUNT_HISTORY');
@@ -74,13 +75,19 @@ export module Menu {
   export const CONTACTS = new Menu(RootMenu.PERSONAL, 'CONTACTS');
   export const CONTACT_PROFILE = new Menu(RootMenu.PERSONAL, 'CONTACTS_PROFILE');
   export const PASSWORDS = new Menu(RootMenu.PERSONAL, 'PASSWORDS');
-  export const LOGOUT = new Menu(RootMenu.PERSONAL, 'LOGOUT', false);
 
   // Content (one per root menu)
   export const CONTENT_PAGE_BANKING = new Menu(RootMenu.BANKING, 'CONTENT_PAGE_BANKING');
   export const CONTENT_PAGE_MARKETPLACE = new Menu(RootMenu.MARKETPLACE, 'CONTENT_PAGE_MARKETPLACE');
   export const CONTENT_PAGE_PERSONAL = new Menu(RootMenu.PERSONAL, 'CONTENT_PAGE_PERSONAL');
   export const CONTENT_PAGE_CONTENT = new Menu(RootMenu.CONTENT, 'CONTENT_PAGE_CONTENT');
+
+  /**
+   * Returns the various `Menu` that represents content pages in distinct root menus
+   */
+  export function contentPages(): Menu[] {
+    return [CONTENT_PAGE_BANKING, CONTENT_PAGE_MARKETPLACE, CONTENT_PAGE_PERSONAL, CONTENT_PAGE_CONTENT];
+  }
 }
 
 
@@ -121,7 +128,9 @@ export class MenuEntry extends BaseMenuEntry {
     public url: string,
     icon: string,
     label: string,
-    showIn: MenuType[] = null
+    showIn: MenuType[] = null,
+    public accountTypeId?: string,
+    public contentPageSlug?: string
   ) {
     super(icon, label, showIn);
   }

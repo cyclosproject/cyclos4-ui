@@ -2,7 +2,7 @@ import { Injectable, Injector } from '@angular/core';
 import { Banner } from 'app/content/banner';
 import { BannerCard } from 'app/content/banner-card';
 import { LoginService } from 'app/core/login.service';
-import { MenuService } from 'app/core/menu.service';
+import { MenuService, ActiveMenu } from 'app/core/menu.service';
 import { blank, empty as isEmpty } from 'app/shared/helper';
 import { Menu } from 'app/shared/menu';
 import { environment } from 'environments/environment';
@@ -121,7 +121,8 @@ export class BannerService {
     }
   }
 
-  private visibleCards(menu: Menu): BannerCard[] {
+  private visibleCards(activeMenu: ActiveMenu): BannerCard[] {
+    const menu = activeMenu.menu;
     if (menu === Menu.DASHBOARD) {
       // Never show any banner in the dashboard, as it would break the layout
       return [];

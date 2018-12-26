@@ -4,17 +4,9 @@
   </div>
 
   <nav class="navbar d-flex flex-column align-items-stretch">
-    <ng-container *ngIf="banking">
-      <a *ngFor="let account of this.accounts" class="account-link nav-item"
-        [routerLink]="accountLink(account)" [ngClass]="{active: isAccountActive(account) | async}"
-        (click)="onAccountClicked($event, account)">
-        <icon size="1.4rem" icon="account_balance"></icon>
-        <div class="nav-item-text">{{ account.type.name }}</div>
-      </a>
-    </ng-container>
     <a *ngFor="let entry of (entries$ | async)?.entries" class="nav-item"
-      [routerLink]="entry.url" [ngClass]="{active: (menu.activeMenu$ | async) === entry.menu}"
-      (click)="goTo($event, entry.menu, entry.url)">
+      [routerLink]="entry.url" [ngClass]="{active: (menu.activeMenu$ | async)?.matches(entry)}"
+      (click)="menu.navigate(entry, $event)">
       <icon size="1.4rem" [icon]="entry.icon"></icon>
       <div class="nav-item-text">{{ entry.label }}</div>
     </a>

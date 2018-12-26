@@ -57,7 +57,7 @@ export class MenuBarComponent implements OnInit {
 
     if (entry && entry.url != null) {
       // Update the last selected menu
-      this.menu.setActiveMenu(entry.menu);
+      this.menu.navigate(entry);
 
       // Whenever a menu is clicked, clear the state, because a new navigation path starts
       this.stateManager.clear();

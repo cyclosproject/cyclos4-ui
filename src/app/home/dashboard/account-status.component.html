@@ -24,7 +24,7 @@
     <ng-container *ngIf="(lastPayments$ | async) != null; else loadingTransfers">
       <table class="table table-hover mb-0 cursor-pointer" *ngIf="lastPayments$.value?.length > 0; else noTransfers">
         <tr *ngFor="let transfer of lastPayments$.value; let last = last"
-          (click)="router.navigate(transferPath(transfer))">
+          (click)="viewTransfer(transfer)">
           <td style="width:20%" class="text-left pl-0 text-muted" [ngClass]="{'border-0': last}">
             {{ transfer.date | date }}
           </td>

@@ -39,7 +39,7 @@
 
 <ng-template #menuEntry let-entry>
   <a [routerLink]="entry.url" [attr.tabindex]="(opened$ | async) ? undefined : '-1'"
-    (click)="onClick(entry, $event)" class="menu-item d-flex align-items-center">
+    (click)="menu.navigate(entry, $event); close()" class="menu-item d-flex align-items-center">
     <icon class="mr-3" size="1.4rem" [icon]="icon(entry)"></icon>
     <span class="menu-text">{{ label(entry) }}</span>
   </a>

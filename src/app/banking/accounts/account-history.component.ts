@@ -97,6 +97,8 @@ export class AccountHistoryComponent
         owner: ApiHelper.SELF, accountType: type
       })
     ).subscribe(data => {
+      this.menu.setActiveAccountTypeId(data.account.type.id);
+
       ApiHelper.preProcessPreselectedPeriods(data, this.form);
 
       // Set the heading action

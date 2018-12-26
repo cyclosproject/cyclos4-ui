@@ -1,11 +1,8 @@
 import { ChangeDetectionStrategy, Component, ElementRef, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { I18n } from '@ngx-translate/i18n-polyfill';
-import { BreadcrumbService } from 'app/core/breadcrumb.service';
 import { FormatService } from 'app/core/format.service';
 import { LoginService } from 'app/core/login.service';
 import { MenuService } from 'app/core/menu.service';
-import { StateManager } from 'app/core/state-manager';
 import { LayoutService } from 'app/shared/layout.service';
 import { BaseMenuEntry, Menu, MenuEntry, MenuType, RootMenu, RootMenuEntry } from 'app/shared/menu';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -24,10 +21,7 @@ export class SidenavComponent implements OnInit {
 
   constructor(
     private _element: ElementRef,
-    private menu: MenuService,
-    private router: Router,
-    private breadcrumb: BreadcrumbService,
-    private stateManager: StateManager,
+    public menu: MenuService,
     public login: LoginService,
     public format: FormatService,
     public layout: LayoutService,
@@ -95,19 +89,7 @@ export class SidenavComponent implements OnInit {
   }
 
   onClick(entry: MenuEntry, event: MouseEvent) {
-    // Update the last selected menu
-    this.menu.setActiveMenu(entry.menu);
-
-    if (entry.menu === Menu.LOGOUT) {
-      this.login.logout();
-    } else {
-      this.router.navigateByUrl(entry.url);
-    }
-    // Clear the shared state
-    this.breadcrumb.clear();
-    this.stateManager.clear();
-
-    event.stopPropagation();
+    this.menu.navigate(entry, event);
     this.close();
   }
 

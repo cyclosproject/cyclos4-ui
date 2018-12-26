@@ -54,7 +54,7 @@ export class AccountStatusComponent extends BaseDashboardComponent implements On
       icon: 'search',
       label: this.i18n('View'),
       maybeRoot: true,
-      onClick: () => this.router.navigate(['/banking', 'account', ApiHelper.internalNameOrId(this.account.type)])
+      onClick: event => this.menu.navigate(this.menu.accountEntry(this.account.type.id), event)
     }];
 
     // Fetch the balance history
@@ -91,7 +91,8 @@ export class AccountStatusComponent extends BaseDashboardComponent implements On
     return ApiHelper.subjectName(row, this.format);
   }
 
-  transferPath(row: AccountHistoryResult): string[] {
-    return ['/banking', 'transfer', ApiHelper.transactionNumberOrId(row)];
+  viewTransfer(row: AccountHistoryResult) {
+    this.menu.setActiveAccountTypeId(this.account.type.id);
+    this.router.navigate(['/banking', 'transfer', ApiHelper.transactionNumberOrId(row)]);
   }
 }

@@ -24,6 +24,7 @@ export class ContentPageComponent extends BasePageComponent<ContentPage> impleme
   ngOnInit() {
     super.ngOnInit();
     const slug = this.route.snapshot.params.slug;
+    this.menu.setActiveContentPageSlug(slug);
     this.addSub(this.menu.contentPages$.subscribe(pages => {
       if (pages == null) {
         return;
