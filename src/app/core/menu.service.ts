@@ -1,5 +1,5 @@
 import { Injectable, Injector } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { I18n } from '@ngx-translate/i18n-polyfill';
 import { Auth } from 'app/api/models';
 import { ContentPage } from 'app/content/content-page';
@@ -14,16 +14,23 @@ import { LayoutService } from 'app/shared/layout.service';
 import { ConditionalMenu, Menu, MenuEntry, MenuType, RootMenu, RootMenuEntry, SideMenuEntries } from 'app/shared/menu';
 import { environment } from 'environments/environment';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { distinctUntilChanged, first, map } from 'rxjs/operators';
+import { distinctUntilChanged, first, map, filter } from 'rxjs/operators';
 
 /**
  * Contains information about the active menu
  */
-export interface ActiveMenu {
-  menu?: Menu;
-  accountTypeId?: string;
-  contentPageSlug?: string;
-  matches(entry: MenuEntry): boolean;
+export class ActiveMenu {
+  constructor(
+    public menu: Menu,
+    public accountTypeId?: string,
+    public contentPageSlug?: string) {
+  }
+
+  matches(entry: MenuEntry): boolean {
+    return entry.menu === this.menu
+      && (entry.accountTypeId || '') === (this.accountTypeId || '')
+      && (entry.contentPageSlug || '') === (this.contentPageSlug || '');
+  }
 }
 
 const VALID_CONTENT_PAGES_ROOT_MENUS = [RootMenu.CONTENT, RootMenu.BANKING, RootMenu.MARKETPLACE, RootMenu.PERSONAL];
@@ -78,6 +85,18 @@ export class MenuService {
       this._activeMenu.next(null);
     });
 
+    // Whenever we navigate back to home, update the active menu to match
+    router.events.pipe(
+      filter(e => e instanceof NavigationEnd),
+      map(e => e as NavigationEnd),
+      filter(e => e.url === '/' || e.url === '/home')
+    ).subscribe(e => {
+      const entry = this.menuEntry(e.url);
+      if (entry) {
+        this.updateActiveMenuFromEntry(entry);
+      }
+    });
+
     this.contentPages$ = this._contentPages.asObservable().pipe(
       distinctUntilChanged()
     );
@@ -109,16 +128,14 @@ export class MenuService {
     this.stateManager.clear();
 
     // Either perform the logout or navigate
-    let menu = entry.menu;
     if (entry.menu === Menu.LOGOUT) {
       this.login.logout();
-      menu = Menu.HOME;
     } else {
       this.router.navigateByUrl(entry.url);
     }
 
     // Update the active state
-    this.updateActiveMenu(menu, entry.accountTypeId, entry.contentPageSlug);
+    this.updateActiveMenuFromEntry(entry);
   }
 
   /**
@@ -147,16 +164,12 @@ export class MenuService {
   }
 
   private updateActiveMenu(menu: Menu, accountTypeId: string, contentPageSlug: string) {
-    this._activeMenu.next({
-      menu: menu,
-      accountTypeId: accountTypeId,
-      contentPageSlug: contentPageSlug,
-      matches: entry => {
-        return entry.menu === menu
-          && (entry.accountTypeId || '') === (accountTypeId || '')
-          && (entry.contentPageSlug || '') === (contentPageSlug || '');
-      }
-    });
+    this._activeMenu.next(new ActiveMenu(menu, accountTypeId, contentPageSlug));
+  }
+
+  private updateActiveMenuFromEntry(entry: MenuEntry) {
+    const menu = entry.menu === Menu.LOGOUT ? Menu.HOME : entry.menu;
+    this._activeMenu.next(new ActiveMenu(menu, entry.accountTypeId, entry.contentPageSlug));
   }
 
   private updateBodyClasses(menu: Menu) {
@@ -179,12 +192,26 @@ export class MenuService {
    * Returns the available `MenuEntry` for the given `Menu`, if any, or null if none matches
    * @param menu The menu indication
    */
-  menuEntry(menu: Menu): MenuEntry {
-    const roots = this._fullMenu.value || [];
-    for (const rootEntry of roots) {
-      if (rootEntry.rootMenu === menu.root) {
-        for (const entry of rootEntry.entries) {
-          if (entry.menu === menu) {
+  menuEntry(activeMenu: Menu | ActiveMenu | string): MenuEntry {
+    if (typeof (activeMenu) === 'string') {
+      // The activeMenu is actually the URL
+      const roots = this._fullMenu.value || [];
+      for (const rootEntry of roots) {
+        for (const entry of rootEntry.entries || []) {
+          if (entry.url === activeMenu) {
+            return entry;
+          }
+        }
+      }
+    } else {
+      // Either a Menu or ActiveMenu. Make sure it is an ActiveMenu
+      if (activeMenu instanceof Menu) {
+        activeMenu = new ActiveMenu(activeMenu);
+      }
+      const roots = this._fullMenu.value || [];
+      for (const rootEntry of roots) {
+        for (const entry of rootEntry.entries || []) {
+          if (activeMenu.matches(entry)) {
             return entry;
           }
         }

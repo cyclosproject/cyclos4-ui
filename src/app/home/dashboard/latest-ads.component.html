@@ -3,7 +3,7 @@
     <div class="row">
       <ng-container *ngFor="let ad of ads$ | async">
         <div class="col-12 col-xs-6 col-sm-4">
-          <a class="d-flex flex-column plain" [routerLink]="path(ad)">
+          <a class="d-flex flex-column plain" [routerLink]="path(ad)" (click)="navigate(ad, $event)">
             <div class="text-center">
               <div class="images">
                 <avatar [roundBorders]="false" class="main-image" size="huge"

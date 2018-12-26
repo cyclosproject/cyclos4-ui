@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@an
 import { AdAddressResultEnum, AdOrderByEnum, AdResult } from 'app/api/models';
 import { MarketplaceService } from 'app/api/services';
 import { BaseDashboardComponent } from 'app/home/dashboard/base-dashboard.component';
+import { Menu } from 'app/shared/menu';
 import { BehaviorSubject } from 'rxjs';
 
 /**
@@ -87,9 +88,20 @@ export class LatestAdsComponent extends BaseDashboardComponent implements OnInit
     return ['/marketplace', 'view', ad.id];
   }
 
+  navigate(ad: AdResult, event: MouseEvent) {
+    this.doNavigate(this.path(ad), event);
+  }
+
   navigateToOwner(ad: AdResult, event: MouseEvent) {
-    this.router.navigate(['/users', 'profile', ad.owner.id]);
+    this.doNavigate(['/users', 'profile', ad.owner.id], event);
+  }
+
+  private doNavigate(url: string[], event: MouseEvent) {
+    this.menu.setActiveMenu(Menu.SEARCH_ADS);
+    this.router.navigate(url);
     event.preventDefault();
     event.stopPropagation();
+    this.breadcrumb.clear();
+    this.stateManager.clear();
   }
 }

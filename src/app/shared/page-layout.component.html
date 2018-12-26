@@ -7,7 +7,7 @@
       <ng-container *ngIf="!(loggingOut$ | async)">
         <side-menu *ngIf="(login.user$ | async) && (menu.activeMenu$ | async)"></side-menu>
         <banner-card *ngFor="let card of bannerCards$ | async; let first = first"
-          [card]="card" [firstInLayout]="first && !((login.user$ | async) && (menu.activeMenu$ | async)?.menuVisible)"
+          [card]="card" [firstInLayout]="first && !(leftMenuVisible$ | async)"
           [ngClass]="card.ngClass" [ngStyle]="card.ngStyle"></banner-card>
       </ng-container>
     </div>

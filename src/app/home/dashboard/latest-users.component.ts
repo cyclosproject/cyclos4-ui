@@ -3,6 +3,7 @@ import { AdAddressResultEnum, UserOrderByEnum, UserResult } from 'app/api/models
 import { UsersService } from 'app/api/services';
 import { BaseDashboardComponent } from 'app/home/dashboard/base-dashboard.component';
 import { BehaviorSubject } from 'rxjs';
+import { Menu } from 'app/shared/menu';
 
 /**
  * Displays the latest users
@@ -44,5 +45,14 @@ export class LatestUsersComponent extends BaseDashboardComponent implements OnIn
 
   path(user: UserResult): string[] {
     return ['/users', 'profile', user.id];
+  }
+
+  navigate(user: UserResult, event: MouseEvent) {
+    this.menu.setActiveMenu(Menu.SEARCH_USERS);
+    this.router.navigate(this.path(user));
+    event.preventDefault();
+    event.stopPropagation();
+    this.breadcrumb.clear();
+    this.stateManager.clear();
   }
 }

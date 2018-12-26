@@ -4,7 +4,8 @@
       <div *ngIf="layout.visible(action.breakpoints, layout.breakpointChanges$ | async)"
         class="d-flex col-6 col-sm-4 justify-content-center align-items-center">
         <div class="text-center">
-          <a [routerLink]="action.url" class="quick-access-item">
+          <a [routerLink]="action.entry.url" class="quick-access-item"
+            (click)="menu.navigate(action.entry, $event)">
             <div class="quick-access-icon">
               <icon [icon]="action.icon" size="2.2rem"></icon>
             </div>

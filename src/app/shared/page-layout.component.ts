@@ -41,6 +41,11 @@ export class PageLayoutComponent implements OnInit, OnDestroy {
     return this.leftAreaVisible$.value;
   }
 
+  leftMenuVisible$ = new BehaviorSubject(false);
+  get leftMenuVisible(): boolean {
+    return this.leftMenuVisible$.value;
+  }
+
   loggingOut$ = new BehaviorSubject(false);
   bannerCards$ = new BehaviorSubject<BannerCard[]>(null);
 
@@ -53,26 +58,33 @@ export class PageLayoutComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.layout.currentPageLayout = this;
 
-    const updateLeftAreaVisible = () => {
-      const hasCards = !empty(this.bannerCards$.value);
+    // There are several factors that influence whether the left menu is visible
+    const updateLeftMenuVisible = () => {
       const fullWidth = this.layout.fullWidth;
       const loggedIn = this.login.user != null;
       const activeMenu = this.menu.activeMenu;
-      let hasMenu = loggedIn && !this.hideMenu && activeMenu != null;
+      let hasMenu = !fullWidth && loggedIn && !this.hideMenu && activeMenu != null;
       const root = this.menu.rootEntry();
-      if (root == null || (root.entries || []).length <= 1) {
+      if (hasMenu && (root == null || (root.entries || []).length <= 1)) {
         hasMenu = false;
       }
-      const rootEntry = activeMenu == null ? null : this.menu.rootEntry(activeMenu.menu.root);
-      const rootIsDropDown = rootEntry != null && rootEntry.dropdown;
-      const visible = !fullWidth && this.layout.gtmd && (hasCards || hasMenu) && !rootIsDropDown;
-      this.leftAreaVisible$.next(visible);
+      this.leftMenuVisible$.next(hasMenu);
     };
-    this.subs.push(this.layout.gtmd$.subscribe(updateLeftAreaVisible));
+    this.subs.push(this.layout.gtmd$.subscribe(updateLeftMenuVisible));
+    this.subs.push(this.layout.fullWidth$.subscribe(updateLeftMenuVisible));
+    this.subs.push(this.login.user$.subscribe(updateLeftMenuVisible));
+    this.subs.push(this.menu.activeMenu$.subscribe(updateLeftMenuVisible));
+    this.subs.push(this.menu.menu(MenuType.SIDE).subscribe(updateLeftMenuVisible));
+
+    // The left area is visible if not in full-width layout and there's either the left menu or banners
+    const updateLeftAreaVisible = () => {
+      const fullWidth = this.layout.fullWidth;
+      const hasLeftMenu = this.leftMenuVisible;
+      const hasCards = !empty(this.bannerCards$.value);
+      this.leftAreaVisible$.next(!fullWidth && (hasLeftMenu || hasCards));
+    };
+    this.subs.push(this.leftMenuVisible$.subscribe(updateLeftAreaVisible));
     this.subs.push(this.layout.fullWidth$.subscribe(updateLeftAreaVisible));
-    this.subs.push(this.login.user$.subscribe(updateLeftAreaVisible));
-    this.subs.push(this.menu.activeMenu$.subscribe(updateLeftAreaVisible));
-    this.subs.push(this.menu.menu(MenuType.SIDE).subscribe(updateLeftAreaVisible));
     this.subs.push(this.banner.cards$.subscribe(updateLeftAreaVisible));
     this.subs.push(this.banner.cards$.pipe(first()).subscribe(cards => {
       this.bannerCards$.next(cards);
