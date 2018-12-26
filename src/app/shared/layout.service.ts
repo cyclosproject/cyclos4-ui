@@ -346,6 +346,7 @@ export class LayoutService {
       this.backdrop.className = 'backdrop';
       this.backdrop.addEventListener('click', closeHandler, true);
       document.body.appendChild(this.backdrop);
+      document.body.classList.add('backdrop-visible');
     }
     setTimeout(() => this.backdrop.style.opacity = '1', 1);
   }
@@ -357,6 +358,7 @@ export class LayoutService {
     this.removeBackdropEscHandler();
     if (this.backdrop != null) {
       this.backdrop.style.opacity = '';
+      document.body.classList.remove('backdrop-visible');
       setTimeout(() => {
         this.backdrop.parentElement.removeChild(this.backdrop);
         this.backdrop = null;
