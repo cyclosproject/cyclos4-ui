@@ -1,4 +1,5 @@
 import { Injectable, Injector } from '@angular/core';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { I18n } from '@ngx-translate/i18n-polyfill';
 import { Auth } from 'app/api/models';
 import { ContentPage } from 'app/content/content-page';
@@ -10,7 +11,7 @@ import { LayoutService } from 'app/shared/layout.service';
 import { ConditionalMenu, Menu, MenuEntry, MenuType, RootMenu, RootMenuEntry, SideMenuEntries } from 'app/shared/menu';
 import { environment } from 'environments/environment';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { distinctUntilChanged, filter, first, map } from 'rxjs/operators';
+import { distinctUntilChanged, filter, first, map, mergeMap } from 'rxjs/operators';
 
 const VALID_CONTENT_PAGES_ROOT_MENUS = [RootMenu.CONTENT, RootMenu.BANKING, RootMenu.MARKETPLACE, RootMenu.PERSONAL];
 /**
@@ -21,29 +22,21 @@ const VALID_CONTENT_PAGES_ROOT_MENUS = [RootMenu.CONTENT, RootMenu.BANKING, Root
 })
 export class MenuService {
 
-  /** The active menu, according to the visible page */
-  activeMenu$: Observable<Menu>;
-
-  /** The active root menu, according to the visible page */
-  activeRootMenu$: Observable<RootMenu>;
-
   /** All current content pages */
   contentPages$: Observable<ContentPage[]>;
 
   /**
-   * Observer for the last selected menu
+   * Observer for the currently active menu
    */
-  lastSelectedMenu$: Observable<Menu>;
+  activeMenu$: Observable<Menu>;
 
   /** The last resolved menu which was selected */
-  private _lastSelectedMenu = new BehaviorSubject<Menu>(null);
+  private _activeMenu = new BehaviorSubject<Menu>(null);
 
-  get lastSelectedMenu(): Menu {
-    return this._lastSelectedMenu.value;
+  get activeMenu(): Menu {
+    return this._activeMenu.value;
   }
 
-
-  private _activeMenu = new BehaviorSubject<Menu>(null);
   private _fullMenu = new BehaviorSubject<RootMenuEntry[]>(null);
   private _contentPages = new BehaviorSubject<ContentPage[]>(null);
 
@@ -51,7 +44,9 @@ export class MenuService {
     private i18n: I18n,
     private injector: Injector,
     private dataForUiHolder: DataForUiHolder,
-    layout: LayoutService
+    private activatedRoute: ActivatedRoute,
+    layout: LayoutService,
+    router: Router
   ) {
     const initialDataForUi = this.dataForUiHolder.dataForUi;
     const initialAuth = (initialDataForUi || {}).auth;
@@ -63,37 +58,50 @@ export class MenuService {
     dataForUiHolder.subscribe(dataForUi => {
       const auth = (dataForUi || {}).auth;
       this.buildFullMenu(auth).subscribe(m => this._fullMenu.next(m));
-      this._lastSelectedMenu.next(null);
+      this._activeMenu.next(null);
     });
-    this.activeMenu$ = this._activeMenu.asObservable().pipe(
-      distinctUntilChanged()
-    );
-    this.activeRootMenu$ = this.activeMenu$.pipe(
-      map(menu => menu == null ? null : menu.root),
-      filter(rootMenu => rootMenu != null),
-      distinctUntilChanged()
-    );
+
+    // When navigating, assing the active menu if none yet
+    router.events.pipe(
+      filter(e => e instanceof NavigationEnd),
+      map(() => this.activatedRoute),
+      map(route => {
+        while (route.firstChild) {
+          route = route.firstChild;
+        }
+        return route;
+      }),
+      filter(route => route.outlet === 'primary'),
+      mergeMap(route => route.data),
+      filter(data => data.menu),
+      mergeMap((menu: Menu | ConditionalMenu) => this.resolveMenu(menu))
+    )
+      .subscribe((menu: Menu) => {
+        if (this.activeMenu == null) {
+          this._activeMenu.next(menu);
+        }
+      });
+
     this.contentPages$ = this._contentPages.asObservable().pipe(
       distinctUntilChanged()
     );
-    this.lastSelectedMenu$ = this._lastSelectedMenu.asObservable().pipe(
+    this.activeMenu$ = this._activeMenu.asObservable().pipe(
       distinctUntilChanged()
     );
     layout.currentPage$.subscribe(p => {
       if (p && this.shouldUpdateLastMenu) {
-        this.setLastSelectedMenu(p.menuItem);
+        this.setActiveMenu(p.menuItem);
       }
     });
   }
 
-
   /**
-   * Sets the last menu definition which was set by the user
+   * Sets the active menu
    */
-  setLastSelectedMenu(menu: Menu | ConditionalMenu): void {
+  setActiveMenu(menu: Menu | ConditionalMenu): void {
     // Whenever the last selected menu changes, update the classes in the body element
     this.resolveMenu(menu).pipe(first()).subscribe(m => {
-      this._lastSelectedMenu.next(m);
+      this._activeMenu.next(m);
 
       const classes = document.body.classList;
       RootMenu.values().forEach(root => {
@@ -112,24 +120,8 @@ export class MenuService {
   }
 
   private get shouldUpdateLastMenu(): boolean {
-    const last = this.lastSelectedMenu;
+    const last = this.activeMenu;
     return last == null || ([Menu.HOME, Menu.DASHBOARD, Menu.LOGIN] as any[]).includes(last);
-  }
-
-  /** Sets the active */
-  setActiveMenu(menu: Menu | ConditionalMenu) {
-    if (menu) {
-      this.resolveMenu(menu).pipe(first()).subscribe(m => {
-        this._activeMenu.next(m);
-        if (this.lastSelectedMenu == null) {
-          this._lastSelectedMenu.next(m);
-        }
-      });
-    }
-  }
-
-  get activeMenu(): Menu {
-    return this._activeMenu.value;
   }
 
   /**

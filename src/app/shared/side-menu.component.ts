@@ -8,7 +8,9 @@ import { StateManager } from 'app/core/state-manager';
 import { ApiHelper } from 'app/shared/api-helper';
 import { LayoutService } from 'app/shared/layout.service';
 import { Menu, RootMenu, SideMenuEntries } from 'app/shared/menu';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription, Observable } from 'rxjs';
+import { map, filter } from 'rxjs/operators';
+import { empty } from 'app/shared/helper';
 
 
 /**
@@ -62,7 +64,7 @@ export class SideMenuComponent implements OnInit {
 
   goTo(event: MouseEvent, menu: Menu, url: string | string[]) {
     // Update the last selected menu entry
-    this.menu.setLastSelectedMenu(menu);
+    this.menu.setActiveMenu(menu);
 
     // Clear the shared state
     this.breadcrumb.clear();
@@ -91,7 +93,10 @@ export class SideMenuComponent implements OnInit {
     return ['banking', 'account', ApiHelper.internalNameOrId(account.type)];
   }
 
-  isAccountActive(account: AccountWithCurrency): boolean {
-    return this.router.url.endsWith('/banking/account/' + account.type.internalName);
+  isAccountActive(account: AccountWithCurrency): Observable<boolean> {
+    return this.breadcrumb.breadcrumb$.pipe(
+      filter(bc => !empty(bc)),
+      map(bc => bc[0].includes('/banking/account/' + account.type.internalName))
+    );
   }
 }

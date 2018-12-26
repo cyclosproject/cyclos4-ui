@@ -62,7 +62,7 @@ export class BannerService {
     }
 
     // Whenever either the menu or logged user changes, fetch the banners
-    this.menu.lastSelectedMenu$.subscribe(() => this.update());
+    this.menu.activeMenu$.subscribe(() => this.update());
     this.login.user$.subscribe(() => this.update());
     // Initially update
     this.update();
@@ -74,7 +74,7 @@ export class BannerService {
   }
 
   private update(): void {
-    const menu = this.menu.lastSelectedMenu;
+    const menu = this.menu.activeMenu;
     if (menu == null) {
       return;
     }
