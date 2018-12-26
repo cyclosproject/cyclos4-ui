@@ -33,6 +33,7 @@ export class ContentPageComponent extends BasePageComponent<ContentPage> impleme
       if (page) {
         this.data = page;
         this.layout.fullWidth = page.layout === 'full';
+        this.layout.setTitle(page.title || page.label);
       } else {
         this.errorHandler.handleNotFoundError({});
       }

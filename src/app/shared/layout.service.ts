@@ -6,6 +6,8 @@ import { PageLayoutComponent } from 'app/shared/page-layout.component';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 import { isEqual } from 'lodash';
+import { FormatService } from 'app/core/format.service';
+import { Title } from '@angular/platform-browser';
 
 /**
  * The available media query breakpoints.
@@ -98,7 +100,10 @@ export class LayoutService {
   private backdrop: HTMLElement;
   private escHandler: any;
 
-  constructor(private observer: BreakpointObserver) {
+  constructor(
+    private observer: BreakpointObserver,
+    private format: FormatService,
+    private title: Title) {
     this.breakpointObservers = new Map();
     // Set the initial state of the active breakpoints, and initialize the observers
     const initialBreakpoints = new Set<Breakpoint>();
@@ -325,6 +330,18 @@ export class LayoutService {
       activeBreakpoints = this._activeBreakpoints.value;
     }
     return allowedBreakpoints.find(b => activeBreakpoints.has(b)) != null;
+  }
+
+
+  /**
+   * Sets the window title, followed by the application title from configuration
+   */
+  setTitle(title?: string) {
+    if (title) {
+      this.title.setTitle(`${title} - ${this.format.appTitle}`);
+    } else {
+      this.title.setTitle(this.format.appTitle);
+    }
   }
 
   /**

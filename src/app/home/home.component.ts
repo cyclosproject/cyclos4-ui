@@ -3,7 +3,7 @@ import { ContentPage } from 'app/content/content-page';
 import { handleFullWidthLayout } from 'app/content/content-with-layout';
 import { DashboardItemConfig } from 'app/content/dashboard-item-config';
 import { DashboardResolver } from 'app/content/dashboard-resolver';
-import { BasePageComponent } from 'app/shared/base-page.component';
+import { BasePageComponent, UpdateTitleFrom } from 'app/shared/base-page.component';
 import { environment } from 'environments/environment';
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -72,6 +72,10 @@ export class HomeComponent extends BasePageComponent<void> implements OnInit {
       return handleFullWidthLayout(environment.homePage);
     }
     return false;
+  }
+
+  updateTitleFrom(): UpdateTitleFrom {
+    return 'menu';
   }
 
 }

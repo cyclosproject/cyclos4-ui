@@ -541,7 +541,11 @@ export class MenuService {
     return contentPages;
   }
 
-  private resolveMenu(value: Menu | ConditionalMenu): Observable<Menu> {
+  /**
+   * Resolves the given menu or conditional menu to an actual `Menu`.
+   * @param value Either a `Menu` or `ConditionalMenu`
+   */
+  resolveMenu(value: Menu | ConditionalMenu): Observable<Menu> {
     if (value instanceof Function) {
       const result = value(this.injector);
       if (result instanceof Menu) {

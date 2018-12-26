@@ -1,9 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
-import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { BannerService } from 'app/core/banner.service';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
-import { FormatService } from 'app/core/format.service';
 import { LoginService } from 'app/core/login.service';
 import { MenuService } from 'app/core/menu.service';
 import { PushNotificationsService } from 'app/core/push-notifications.service';
@@ -27,9 +25,7 @@ export class AppComponent implements OnInit {
   loggingOut = new BehaviorSubject(false);
 
   constructor(
-    private title: Title,
     private router: Router,
-    private format: FormatService,
     private dataForUiHolder: DataForUiHolder,
     public login: LoginService,
     public menu: MenuService,
@@ -45,7 +41,7 @@ export class AppComponent implements OnInit {
     this.push.initialize();
     this.banner.initialize();
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    this.title.setTitle(this.format.appTitle);
+    this.layout.setTitle();
     this.dataForUiHolder.subscribe(dataForUi => {
       if (dataForUi != null) {
         this.initialized.next(true);

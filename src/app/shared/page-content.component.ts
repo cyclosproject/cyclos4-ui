@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, HostBinding, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { BreadcrumbService } from 'app/core/breadcrumb.service';
 import { HeadingAction } from 'app/shared/action';
-import { truthyAttr } from 'app/shared/helper';
+import { truthyAttr, blank } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
 
 /**
@@ -13,7 +13,7 @@ import { LayoutService } from 'app/shared/layout.service';
   styleUrls: ['page-content.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PageContentComponent {
+export class PageContentComponent implements OnInit, OnChanges {
 
   @Input() heading: string;
   @Input() headingActions: HeadingAction[];
@@ -45,6 +45,23 @@ export class PageContentComponent {
   get groupActions(): boolean {
     const singleAction = (this.headingActions || []).length === 1 ? this.headingActions[0] : null;
     return singleAction ? !singleAction.maybeRoot : true;
+  }
+
+  ngOnInit() {
+    this.maybeUpdateTitle();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['heading']) {
+      this.maybeUpdateTitle();
+    }
+  }
+
+  private maybeUpdateTitle() {
+    const page = this.layoutService.currentPage;
+    if (!blank(this.heading) && page && page.updateTitleFrom() === 'content') {
+      this.layoutService.setTitle(this.heading);
+    }
   }
 
 }

@@ -5,6 +5,9 @@ import { BaseComponent } from 'app/shared/base.component';
 import { FormControlLocator } from 'app/shared/form-control-locator';
 import { BehaviorSubject } from 'rxjs';
 import { Menu, ConditionalMenu } from 'app/shared/menu';
+import { first } from 'rxjs/operators';
+
+export type UpdateTitleFrom = 'menu' | 'content';
 
 /**
  * Base class implemented by components which are actually 'pages', that is, are displayed in the `<router-outlet>`.
@@ -78,6 +81,11 @@ export abstract class BasePageComponent<D> extends BaseComponent implements OnIn
     }
     this.layout.currentPage = this;
     this.layout.fullWidth = this.defaultFullWidthLayout();
+
+    // Set the title menu according to the menu item
+    this.menu.resolveMenu(this.menuItem).pipe(first()).subscribe(menu => {
+      this.layout.setTitle(this.menu.menuEntry(menu).label);
+    });
   }
 
   ngOnDestroy(): void {
@@ -100,5 +108,12 @@ export abstract class BasePageComponent<D> extends BaseComponent implements OnIn
    */
   protected defaultFullWidthLayout(): boolean {
     return false;
+  }
+
+  /**
+   * Indicates whether the window title is updated from the menu or from a page content
+   */
+  updateTitleFrom(): UpdateTitleFrom {
+    return 'content';
   }
 }

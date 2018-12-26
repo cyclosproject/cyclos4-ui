@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
+import { I18n } from '@ngx-translate/i18n-polyfill';
 import { ApiConfiguration } from 'app/api/api-configuration';
 import { Currency, DataForUi } from 'app/api/models';
 import Big from 'big.js';
 import { environment } from 'environments/environment';
 import * as moment from 'moment-mini-ts';
 import { DataForUiHolder } from './data-for-ui-holder';
-import { I18n } from '@ngx-translate/i18n-polyfill';
 
 export const ISO_DATE = 'YYYY-MM-DD';
 
