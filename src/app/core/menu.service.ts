@@ -175,7 +175,7 @@ export class MenuService {
   private updateBodyClasses(menu: Menu) {
     const classes = document.body.classList;
     RootMenu.values().forEach(root => {
-      const current = `root-menu--${root}`;
+      const current = `${root}-menu`;
       if (menu && menu.root === root) {
         if (!classes.contains(current)) {
           classes.add(current);

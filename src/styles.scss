@@ -876,16 +876,10 @@ notification data {
   }
 }
 
-body.root-menu--login .login-icon {
+body.login-menu .login-icon {
   display: none !important;
 }
 
 top-bar nav {
-  transition: background-color ease-in-out 0.4s;
-}
-body.root-menu--home {
-  top-bar nav {
-    background-color: transparent;
-    color: black;
-  }
+  transition: background-color ease-in-out 0.3s, color ease-in-out 0.4s;
 }

@@ -42,8 +42,10 @@ export class SideMenuComponent implements OnInit {
     if (this.subscription != null) {
       this.subscription.unsubscribe();
     }
-    this.subscription = this.menu.sideMenu(activeMenu.menu)
-      .subscribe(entries => this.entries$.next(entries));
+    if (activeMenu != null) {
+      this.subscription = this.menu.sideMenu(activeMenu.menu)
+        .subscribe(entries => this.entries$.next(entries));
+    }
   }
 
 }
