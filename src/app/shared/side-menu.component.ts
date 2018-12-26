@@ -8,8 +8,8 @@ import { StateManager } from 'app/core/state-manager';
 import { ApiHelper } from 'app/shared/api-helper';
 import { LayoutService } from 'app/shared/layout.service';
 import { Menu, RootMenu, SideMenuEntries } from 'app/shared/menu';
-import { BehaviorSubject, Subscription, Observable } from 'rxjs';
-import { map, filter } from 'rxjs/operators';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { empty } from 'app/shared/helper';
 
 
@@ -42,6 +42,7 @@ export class SideMenuComponent implements OnInit {
 
   entries$ = new BehaviorSubject<SideMenuEntries>(null);
   subscription: Subscription;
+  accountActiveObservables: { [key: string]: Observable<boolean> } = {};
 
   ngOnInit() {
     this.menu.activeMenu$.subscribe(menu => {
@@ -94,9 +95,23 @@ export class SideMenuComponent implements OnInit {
   }
 
   isAccountActive(account: AccountWithCurrency): Observable<boolean> {
-    return this.breadcrumb.breadcrumb$.pipe(
-      filter(bc => !empty(bc)),
-      map(bc => bc[0].includes('/banking/account/' + account.type.internalName))
-    );
+    const type = account.type;
+    return this.accountActiveObservable(ApiHelper.internalNameOrId(type));
+  }
+
+  private accountActiveObservable(type: string) {
+    let observable = this.accountActiveObservables[type];
+    if (!observable) {
+      // 2 assignments
+      observable = this.accountActiveObservables[type] = this.breadcrumb.breadcrumb$.pipe(
+        map(bc => {
+          const accounts = (bc || [])
+            .filter(url => url.includes('/banking/account/'))
+            .map(url => url.slice(url.lastIndexOf('/') + 1));
+          return !empty(accounts) && accounts[0] === type;
+        })
+      );
+    }
+    return observable;
   }
 }
