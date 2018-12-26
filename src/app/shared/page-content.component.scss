@@ -222,13 +222,13 @@
 .heading-action-with-icon {
   display: flex;
   align-items: center;
+  align-items: center;
+  padding: 0 0.5rem;
 
   icon {
-    transform: translateX(-0.1rem);
-    margin-right: 0.4rem;
     opacity: 0.6;
-    margin-left: 0.5rem;
-    margin-right: 0.5rem;
+    margin: 0;
+    transform: translateY(0.1rem);
   }
 }
 .heading-action.dropdown-toggle::after {
@@ -247,6 +247,7 @@
     icon {
       margin-left: 0;
       margin-right: 0.5rem;
+      transform: translateX(-0.1rem);
     }
   }
   .heading-action.dropdown-toggle::after {

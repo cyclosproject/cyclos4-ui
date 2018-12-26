@@ -271,7 +271,7 @@ export class MenuService {
     addRoot(RootMenu.BANKING, 'account_balance', this.i18n({ value: 'Banking', description: 'Menu' }));
     const marketplaceRoot = addRoot(RootMenu.MARKETPLACE, 'shopping_cart', this.i18n({ value: 'Marketplace', description: 'Menu' }));
     addRoot(RootMenu.PERSONAL, 'account_box', this.i18n({ value: 'Personal', description: 'Menu' }));
-    const content = addRoot(RootMenu.CONTENT, 'content', this.i18n({ value: 'Information', description: 'Menu' }));
+    const content = addRoot(RootMenu.CONTENT, 'info', this.i18n({ value: 'Information', description: 'Menu' }));
     const register = addRoot(RootMenu.REGISTRATION, 'registration', this.i18n({ value: 'Register', description: 'Menu' }));
     const login = addRoot(RootMenu.LOGIN, 'exit_to_app', this.i18n({ value: 'Login', description: 'Menu' }));
 
@@ -415,7 +415,7 @@ export class MenuService {
         page.label = page.title || 'Untitled page';
       }
       if (empty(page.icon)) {
-        page.icon = 'content_page';
+        page.icon = 'description';
       }
       if (empty(page.slug)) {
         page.slug = `page_${++nextId}`;

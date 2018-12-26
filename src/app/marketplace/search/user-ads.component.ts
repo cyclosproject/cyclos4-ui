@@ -61,6 +61,7 @@ export class UserAdsComponent
   onDataInitialized(data: UserAdsDataForSearch) {
     super.onDataInitialized(data);
     this.shortName = words(data.user.display, MAX_SIZE_SHORT_NAME);
+    this.updateTitle();
   }
 
   doSearch(value: any) {

@@ -7,7 +7,7 @@
   <div class="dashboard">
 
     <!-- Mobile / tablet -->
-    <div class="one-column window-width" *ngIf="layout.ltlg$ | async">
+    <div class="one-column" *ngIf="layout.ltlg$ | async" [ngClass]="{'window-width': layout.ltmd$ | async}">
       <ng-container *ngFor="let config of configs$ | async">
         <ng-container *ngIf="layout.visible(config.breakpoints, layout.breakpointChanges$ | async)">
           <dashboard-item [config]="config"></dashboard-item>

@@ -29,10 +29,10 @@
 .navbar-brand {
   font-size: 1.2rem;
   margin: 0;
-  margin-left: 0.5rem;
   display: flex;
   align-items: center;
   line-height: 1em;
+  margin-left: 0.5rem;
 }
 a {
   color: $top-bar-color;
@@ -41,7 +41,6 @@ a {
   height: 2rem;
   margin: 0;
   margin-left: 0.5rem;
-  padding: 0 0.5rem;
   line-height: 1em;
 }
 a:hover {
@@ -49,9 +48,6 @@ a:hover {
 }
 :host ::ng-deep #profile-link icon {
   opacity: 0.8;
-}
-#profile-link {
-  margin-right: -0.6rem;
 }
 
 @include media-breakpoint-up(xs) {
@@ -63,6 +59,10 @@ a:hover {
   }
   a {
     height: 2.6rem;
+    padding: 0 0.5rem;
+  }
+  #profile-link {
+    margin-right: -0.6rem;
   }
 }
 @include media-breakpoint-up(md) {

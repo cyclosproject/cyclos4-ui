@@ -27,7 +27,7 @@
     <thead *ngIf="(layout.gtxs$ | async)">
       <th class="avatar"></th>
       <th i18n>Title</th>
-      <th *ngIf="!singleUser" colspan="2" i18n>Owner</th>
+      <th *ngIf="!singleUser" colspan="2" i18n>Publisher</th>
       <th *ngFor="let field of data.fieldsInList">{{ fieldName(field) }}</th>
       <th class="text-right" i18n>Price</th>
     </thead>

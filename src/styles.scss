@@ -28,6 +28,10 @@ body.full-width .main-container {
 body, top-bar nav, menu-bar nav {
   transition: background-color ease-in-out 0.4s, color ease-in-out 0.4s;
 }
+body.sidenav-open {
+  overflow: hidden;
+  position: fixed;
+}
 
 .no-wrap {
   white-space: nowrap;

@@ -69,6 +69,7 @@ export class SidenavComponent implements OnInit {
     if (!this.opened) {
       // Sometimes the --window-width variable is not updated, and the close icon is not visible
       this.layout.updateWindowWidth();
+      document.body.classList.add('sidenav-open');
 
       const style = this.element.style;
       style.transform = 'translateX(0)';
@@ -84,6 +85,7 @@ export class SidenavComponent implements OnInit {
 
   close() {
     if (this.opened) {
+      document.body.classList.remove('sidenav-open');
       const style = this.element.style;
       style.transform = '';
       this.rootContainer.style.transform = '';

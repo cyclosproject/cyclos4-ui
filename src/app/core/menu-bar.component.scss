@@ -80,10 +80,6 @@ a.active {
   }
 }
 
-.logout a {
-  margin-right: -$lg-padding;
-}
-
 .dropdown-toggle::after {
   margin-left: 0.5rem;
 }
@@ -96,7 +92,8 @@ a.active {
     padding-left: $xl-padding;
     padding-right: calc(#{$xl-padding} + 0.2rem);
   }
-  .logout a {
-    margin-right: -$xl-padding;
-  }
+}
+
+.logout a {
+  padding: 0 0.5rem;
 }
