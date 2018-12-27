@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Host, Input, OnInit, Optional, SkipSelf, ViewChild } from '@angular/core';
 import { AbstractControl, ControlContainer, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator } from '@angular/forms';
-import { CustomFieldBinaryValues, CustomFieldControlEnum, CustomFieldDetailed, CustomFieldTypeEnum } from 'app/api/models';
+import { CustomFieldBinaryValues, CustomFieldControlEnum, CustomFieldDetailed, CustomFieldTypeEnum, LinkedEntityTypeEnum } from 'app/api/models';
 import { FormatService } from 'app/core/format.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
@@ -17,6 +17,7 @@ import { MultiSelectionFieldComponent } from 'app/shared/multi-selection-field.c
 import { RadioGroupFieldComponent } from 'app/shared/radio-group-field.component';
 import { SingleSelectionFieldComponent } from 'app/shared/single-selection-field.component';
 import { TextAreaFieldComponent } from 'app/shared/textarea-field.component';
+import { UserFieldComponent } from 'app/shared/user-field.component';
 
 const INPUT_TYPES = [CustomFieldTypeEnum.STRING, CustomFieldTypeEnum.INTEGER, CustomFieldTypeEnum.URL, CustomFieldTypeEnum.LINKED_ENTITY];
 const TEXTAREA_TYPES = [CustomFieldTypeEnum.TEXT, CustomFieldTypeEnum.RICH_TEXT];
@@ -45,6 +46,7 @@ export class CustomFieldInputComponent extends BaseFormFieldComponent<string> im
     if (field) {
       this.type = this.field.type;
       this.control = this.field.control;
+      this.linkedEntityType = this.type === CustomFieldTypeEnum.LINKED_ENTITY ? this.field.linkedEntityType : null;
 
       // Set the BaseFormField inputs
       this._id = field.internalName;
@@ -59,6 +61,7 @@ export class CustomFieldInputComponent extends BaseFormFieldComponent<string> im
   @Input() focused: boolean | string;
 
   type: CustomFieldTypeEnum;
+  linkedEntityType: LinkedEntityTypeEnum;
   control: CustomFieldControlEnum;
 
   disabledValueObject: any;
@@ -74,6 +77,7 @@ export class CustomFieldInputComponent extends BaseFormFieldComponent<string> im
   @ViewChild('radioGroupField') radioGroupField: RadioGroupFieldComponent;
   @ViewChild('imagesField') imagesField: ImagesFieldComponent;
   @ViewChild('filesField') filesField: FilesFieldComponent;
+  @ViewChild('userField') userField: UserFieldComponent;
 
   _hideLabel: boolean | string = false;
   @Input() get hideLabel(): boolean | string {
@@ -99,8 +103,8 @@ export class CustomFieldInputComponent extends BaseFormFieldComponent<string> im
     if (value == null) {
       return '';
     }
-    if (this.type === CustomFieldTypeEnum.DYNAMIC_SELECTION) {
-      // The dynamic can have a separator between value and text. Keep only the value
+    if ([CustomFieldTypeEnum.DYNAMIC_SELECTION, CustomFieldTypeEnum.LINKED_ENTITY].includes(this.type)) {
+      // Both dynamic and linked entities can have a separator between value and text. Keep only the value.
       return value.split(ApiHelper.VALUE_SEPARATOR)[0];
     }
     return value;
@@ -139,7 +143,7 @@ export class CustomFieldInputComponent extends BaseFormFieldComponent<string> im
   }
 
   get input(): boolean {
-    return INPUT_TYPES.includes(this.type);
+    return INPUT_TYPES.includes(this.type) && this.linkedEntityType !== LinkedEntityTypeEnum.USER;
   }
 
   get textarea(): boolean {
@@ -166,7 +170,8 @@ export class CustomFieldInputComponent extends BaseFormFieldComponent<string> im
       this.checkboxGroupField,
       this.radioGroupField,
       this.imagesField,
-      this.filesField
+      this.filesField,
+      this.userField
     ].find(c => c != null);
   }
 

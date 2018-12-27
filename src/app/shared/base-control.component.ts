@@ -83,12 +83,10 @@ export abstract class BaseControlComponent<T> implements OnInit, OnDestroy, Cont
     const doInitialize = (value: T) => {
       this._value = value;
       this.onValueInitialized(this._value);
-      if (empty(this._value) !== empty(obj) && this._value !== obj) {
-        if (this.formControl != null) {
-          // If the value was already modified, notify the new value
-          this.notifyValueChange(this._value);
-          this.formControl.setValue(this._value);
-        }
+      if (this.formControl != null && (empty(this._value) !== empty(obj) || this._value !== obj)) {
+        // If the value was already modified, notify the new value
+        this.notifyValueChange(this._value);
+        this.formControl.setValue(this._value);
       }
     };
     const preprocessed = this.preprocessValue(obj);

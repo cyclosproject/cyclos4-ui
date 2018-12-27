@@ -95,4 +95,10 @@
     [mimeTypes]="field.mimeTypes">
   </files-field>
 
+  <!-- Linked user -->
+  <user-field #userField *ngIf="linkedEntityType === 'user'" [id]="id"
+    [label]="label" [name]="name" [labelPosition]="labelPosition" [fieldSize]="fieldSize"
+    [required]="required" [formControl]="formControl">
+  </user-field>
+
 </ng-template>
