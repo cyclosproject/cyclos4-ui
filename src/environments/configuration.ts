@@ -5,6 +5,7 @@ import { ContentPagesResolver } from 'app/content/content-pages-resolver';
 import { ContentWithLayout } from 'app/content/content-with-layout';
 import { DashboardResolver } from 'app/content/dashboard-resolver';
 import { DefaultDashboardResolver } from 'environments/default-dashboard-resolver';
+import { TestUiContentPagesResolver } from 'environments/test-ui-content-pages-resolver';
 
 // This file defines the environment variables shared by both development and production
 
@@ -62,7 +63,7 @@ const HOME_PAGE: ContentWithLayout = {
 const DASHBOARD_RESOLVER = new DefaultDashboardResolver();
 
 // Content pages resolver
-const CONTENT_PAGES_RESOLVER = null;
+const CONTENT_PAGES_RESOLVER = new TestUiContentPagesResolver;
 
 // Banner cards resolver
 const BANNER_CARDS_RESOLVER = null;

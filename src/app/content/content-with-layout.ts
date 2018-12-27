@@ -1,5 +1,6 @@
 import { Content } from 'app/content/content';
 import { empty } from 'app/shared/helper';
+import { CardMode } from 'app/content/card-mode';
 
 /**
  * How a content is laid out.
@@ -23,6 +24,12 @@ export interface ContentWithLayout extends Content {
    * The title shown when `layout` is `card`
    */
   title?: string;
+
+  /**
+   * The card mode when `layout` is `card`.
+   * By default is `normal`.
+   */
+  cardMode?: CardMode;
 
 }
 

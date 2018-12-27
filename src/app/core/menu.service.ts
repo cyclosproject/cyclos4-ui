@@ -470,6 +470,7 @@ export class MenuService {
         // As the search ads won't be visible, show as user directory instead
         marketplaceRoot.icon = publicDirectory.icon;
         marketplaceRoot.label = publicDirectory.label;
+        marketplaceRoot.title = publicDirectory.label;
       }
       addContentPages(Menu.CONTENT_PAGE_MARKETPLACE);
 

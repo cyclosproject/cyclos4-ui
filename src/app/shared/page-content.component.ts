@@ -3,6 +3,7 @@ import { BreadcrumbService } from 'app/core/breadcrumb.service';
 import { HeadingAction } from 'app/shared/action';
 import { truthyAttr, blank } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
+import { CardMode } from 'app/content/card-mode';
 
 /**
  * Represents a box in the layout which contains an optional heading (title) and content.
@@ -19,7 +20,7 @@ export class PageContentComponent implements OnInit, OnChanges {
   @Input() headingActions: HeadingAction[];
   @Input() layout: 'normal' | 'centered' = 'normal';
   @HostBinding('attr.mode') @Input()
-  mode: 'normal' | 'viewForm' | 'filters' | 'table' | 'tight' | 'transparent' | 'fullHeight' | 'fullHeightTight' = 'normal';
+  mode: CardMode = 'normal';
 
   private _last: boolean | string = false;
   @Input() get last(): boolean | string {

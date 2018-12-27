@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, ElementRef, Injector, OnInit, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Injector, OnInit, Input, HostBinding } from '@angular/core';
 import { ContentService } from 'app/core/content.service';
 import { BaseComponent } from 'app/shared/base.component';
 import { ContentWithLayout } from 'app/content/content-with-layout';
@@ -13,6 +13,10 @@ import { BehaviorSubject } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ShowContentComponent extends BaseComponent implements OnInit {
+
+  @HostBinding('class.d-flex') classFlex = true;
+  @HostBinding('class.flex-column') classFlexColumn = true;
+  @HostBinding('class.flex-grow-1') classFlexGrow = true;
 
   @Input() content: ContentWithLayout;
 

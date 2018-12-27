@@ -856,6 +856,12 @@ notification data {
   transition: opacity 0.3s;
 }
 
+.custom-content-container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
 @media print {
   body {
     background-color: transparent;
