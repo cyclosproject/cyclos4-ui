@@ -103,8 +103,8 @@
         <field-privacy *extraCell [control]="singleMobile.get('hidden')"></field-privacy>
       </label-value>
 
-      <boolean-field *ngIf="data.phoneConfiguration.smsEnabled" i18n-label
-        label="Enabled for SMS" [formControl]="singleMobile.get('enabledForSms')"
+      <boolean-field *ngIf="data.phoneConfiguration.smsEnabled && singleMobile.value.id"
+        i18n-label label="Enabled for SMS" [formControl]="singleMobile.get('enabledForSms')"
         (click)="maybeVerify(singleMobile.value.id, $event)">
       </boolean-field>
     </ng-container>

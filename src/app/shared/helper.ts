@@ -440,15 +440,21 @@ export function resizeImage(original: Blob, maxWidth: number, maxHeight: number)
  * but handle them either as string[] or as string with a separator
  * @param value The raw value
  * @param separator The separator
+ * @param isValid When passed in, is a validation function that will retain only valid values
  */
-export function preprocessValueWithSeparator(value: any, separator: string): string | string[] {
+export function preprocessValueWithSeparator(value: any, separator: string, isValid?: (val: string) => boolean): string | string[] {
+  let array: string[];
   if (separator == null) {
     // No separator means value is string[]
-    return value == null ? [] : value instanceof Array ? value : String(value).split(separator);
+    array = value == null ? [] : value instanceof Array ? value : [String(value)];
   } else {
     // Has a separator: value is a single string
-    return value == null ? null : value instanceof Array ? value.join(separator) : String(value);
+    array = value == null ? [] : value instanceof Array ? value : String(value).split(separator);
   }
+  if (isValid != null) {
+    array = array.filter(isValid);
+  }
+  return (separator == null) ? array : array.join(separator);
 }
 
 /**

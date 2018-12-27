@@ -544,7 +544,7 @@ export class EditProfileComponent
     if (!this.data.phoneConfiguration.smsEnabled) {
       return false;
     }
-    return phone['kind'] === PhoneKind.MOBILE;
+    return phone['id'] && phone['kind'] === PhoneKind.MOBILE;
   }
 
   hasExtension(phone: PhoneManage): boolean {
@@ -664,7 +664,12 @@ export class EditProfileComponent
   }
 
   public maybeVerify(id: string, event: MouseEvent) {
-    const phone = this.phones.find(p => p['id'] === id);
+    let phone: PhoneManage;
+    if (this.singleMobile) {
+      phone = this.singleMobile.value;
+    } else {
+      phone = this.phones.find(p => p['id'] === id);
+    }
     if (phone == null) {
       throw new Error(`Mobile phone not found: ${id}`);
     }

@@ -50,7 +50,7 @@ export class MultiSelectionFieldComponent extends BaseSelectionFieldComponent<st
   }
 
   preprocessValue(value: any): string | string[] {
-    return preprocessValueWithSeparator(value, this.separator);
+    return preprocessValueWithSeparator(value, this.separator, val => !!this.findOption(val));
   }
 
   protected getDisplay(): string {
