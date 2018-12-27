@@ -228,10 +228,10 @@ export class CalendarComponent extends BaseControlComponent<string> implements O
   isSelectable(year: number, month?: number, date?: number) {
     if (this.min || this.max) {
       const ref = moment({ year: year, month: month || 0, date: date || 1 });
-      if (this.min && ref.isBefore(this.min)) {
+      if (this.min && ref.clone().startOf('day').isBefore(this.min.clone().startOf('day'))) {
         return false;
       }
-      if (this.max && ref.isAfter(this.max)) {
+      if (this.max && ref.clone().endOf('day').isAfter(this.max.clone().endOf('day'))) {
         return false;
       }
     }

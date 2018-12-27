@@ -33,11 +33,11 @@ export function dateConstraintAsMoment(constraint: DateConstraint, now: moment.M
     case 'any':
       return null;
     case 'today':
-      return now.clone();
+      return now.clone().startOf('day');
     case 'yesterday':
-      return now.clone().subtract(1, 'day');
+      return now.clone().subtract(1, 'day').startOf('day');
     case 'tomorrow':
-      return now.clone().add(1, 'day');
+      return now.clone().add(1, 'day').endOf('day');
     case 'past100':
       return now.clone().subtract(100, 'years').startOf('year');
     case 'future100':

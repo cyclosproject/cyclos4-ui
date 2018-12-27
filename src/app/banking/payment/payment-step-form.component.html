@@ -83,16 +83,16 @@
 
   <single-selection-field formControlName="scheduling" required i18n-label
     label="Scheduling" *ngIf="(paymentTypeData$ | async)?.allowsRecurringPayments || (paymentTypeData$ | async)?.maxInstallments > 0">
-    <field-option value='direct' i18n-text text="Pay now"></field-option>
-    <field-option *ngIf="paymentTypeData$.value?.maxInstallments > 0" value='futureDate'
+    <field-option value="direct" i18n-text text="Pay now"></field-option>
+    <field-option *ngIf="paymentTypeData$.value?.maxInstallments > 0" value="futureDate"
       i18n-text text="Scheduled"></field-option>
-    <field-option *ngIf="paymentTypeData$.value?.maxInstallments > 1" value='scheduled'
+    <field-option *ngIf="paymentTypeData$.value?.maxInstallments > 1" value="scheduled"
       i18n-text text="Monthly installments"></field-option>
     <field-option *ngIf="paymentTypeData$.value?.allowsRecurringPayments"
-      value='recurring' i18n-text text="Repeat monthly"></field-option>
+      value="recurring" i18n-text text="Repeat monthly"></field-option>
   </single-selection-field>
 
-  <ng-container [ngSwitch]="form.get('scheduling').valueChanges | async">
+  <ng-container [ngSwitch]="form.value.scheduling">
 
     <date-field *ngSwitchCase="'futureDate'" formControlName="firstInstallmentDate"
       required i18n-label label="Due date" minDate="tomorrow" maxDate="future5">
@@ -105,11 +105,11 @@
 
       <radio-group-field formControlName="firstInstallmentIsNow" i18n-label
         label="First installment">
-        <field-option value="true" i18n-text text="Now"></field-option>
-        <field-option value="false" i18n-text text="Future date"></field-option>
+        <field-option [value]="true" i18n-text text="Now"></field-option>
+        <field-option [value]="false" i18n-text text="Future date"></field-option>
       </radio-group-field>
 
-      <date-field *ngIf="(form.get('firstInstallmentIsNow').valueChanges | async) === 'false'"
+      <date-field *ngIf="form.value.firstInstallmentIsNow === false"
         formControlName="firstInstallmentDate" required i18n-label label="First installment date"
         minDate="tomorrow" maxDate="future5">
       </date-field>
@@ -118,23 +118,23 @@
     <ng-container *ngSwitchCase="'recurring'">
       <radio-group-field formControlName="firstOccurrenceIsNow" i18n-label
         label="First occurrence">
-        <field-option value="true" i18n-text text="Now"></field-option>
-        <field-option value="false" i18n-text text="Future date"></field-option>
+        <field-option [value]="true" i18n-text text="Now"></field-option>
+        <field-option [value]="false" i18n-text text="Future date"></field-option>
       </radio-group-field>
 
-      <date-field *ngIf="(form.get('firstOccurrenceIsNow').valueChanges | async) === 'false'"
+      <date-field *ngIf="form.value.firstOccurrenceIsNow === false"
         formControlName="firstOccurrenceDate" minDate="tomorrow" required
         minDate="tomorrow" maxDate="future5" i18n-label label="First occurrence date">
       </date-field>
 
       <radio-group-field formControlName="repeatUntilCanceled" i18n-label
         label="Repeat until">
-        <field-option value="true" i18n-text text="Manually cancel"></field-option>
-        <field-option value="false" i18n-text text="Fixed number of occurrences"></field-option>
+        <field-option [value]="true" i18n-text text="Manually cancel"></field-option>
+        <field-option [value]="false" i18n-text text="Fixed number of occurrences"></field-option>
       </radio-group-field>
 
-      <input-field *ngIf="(form.get('repeatUntilCanceled').valueChanges | async) === 'false'"
-        type="number" fieldSize="small" numbersOnly formControlName="occurrencesCount"
+      <input-field *ngIf="form.value.repeatUntilCanceled === false" type="number"
+        fieldSize="small" numbersOnly formControlName="occurrencesCount"
         required i18n-label label="Number of occurrences">
       </input-field>
     </ng-container>

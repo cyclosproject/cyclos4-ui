@@ -8,14 +8,14 @@ export function fieldOptionMatches(option: FieldOption, value: string | FieldOpt
   if (option == null || value == null) {
     return false;
   }
-  if (typeof value === 'string') {
-    return option.value === value
-      || option.id != null && option.id === value
-      || option.internalName != null && option.internalName === value;
-  } else {
+  if (typeof value === 'object') {
     return option === value
       || option.id != null && option.id === value.id
       || option.internalName != null && option.internalName === value.internalName;
+  } else {
+    return option.value === value
+      || option.id != null && option.id === value
+      || option.internalName != null && option.internalName === value;
   }
 }
 
