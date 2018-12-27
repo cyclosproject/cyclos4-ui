@@ -21,9 +21,8 @@
         (click)="select(''); $event.preventDefault()">{{
         emptyLabel }}</a>
       <ng-container *ngFor="let category of categories | async; let firstCat = first">
-        <div *ngIf="category.name" class="mt-3 ml-2 font-weight-bold">{{
-          category.name
-          }}
+        <div *ngIf="category.name" class="pl-2 font-weight-bold" [ngClass]="{'mt-3': !firstCat}">
+          {{ category.name }}
         </div>
         <a *ngFor="let option of category.options | async; let firstOpt = first"
           class="select-option" [ngClass]="{

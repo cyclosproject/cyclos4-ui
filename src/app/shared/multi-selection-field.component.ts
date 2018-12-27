@@ -62,7 +62,7 @@ export class MultiSelectionFieldComponent extends BaseSelectionFieldComponent<st
         return this.i18n('No options selected');
       }
     } else {
-      return selected.sort(FIELD_OPTIONS_SORTER).map(opt => opt.text).join(', ');
+      return selected.sort(FIELD_OPTIONS_SORTER).map(opt => opt.category ? `${opt.category} - ${opt.text}` : opt.text).join(', ');
     }
   }
 
