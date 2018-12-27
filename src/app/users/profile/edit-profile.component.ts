@@ -62,6 +62,11 @@ export class EditProfileComponent
   singleLandLine: FormGroup;
   singleAddress: FormGroup;
 
+  // Single models
+  singleMobileManage: PhoneManage;
+  singleLandLineManage: PhoneManage;
+  singleAddressManage: PhoneManage;
+
   // Arrays to keep the visible models
   images: Image[];
   uploadedImages: Image[];
@@ -340,61 +345,64 @@ export class EditProfileComponent
     this.phones = [];
 
     // Prepare the mobile forms
-    (data.mobilePhones || []).forEach(p => {
-      const form = this.buildMobileForm(p);
-      if (this.mobileAvailability === 'multiple') {
-        this.phones.push(p);
-        this.addSub(form.valueChanges.subscribe(() => {
-          if (!this.modifyMobilePhones.includes(form)) {
-            this.modifyMobilePhones.push(form);
-          }
-        }));
-      }
-    });
     if (this.mobileAvailability === 'single') {
-      this.singleMobile = empty(data.mobilePhones)
-        ? this.buildMobileForm(data.phoneConfiguration.mobilePhone)
-        : data.mobilePhones[0]['form'];
+      this.singleMobileManage = empty(data.mobilePhones)
+        ? data.phoneConfiguration.mobilePhone
+        : data.mobilePhones[0];
+      this.singleMobile = this.buildMobileForm(this.singleMobileManage);
+    } else {
+      (data.mobilePhones || []).forEach(p => {
+        const form = this.buildMobileForm(p);
+        if (this.mobileAvailability === 'multiple') {
+          this.phones.push(p);
+          this.addSub(form.valueChanges.subscribe(() => {
+            if (!this.modifyMobilePhones.includes(form)) {
+              this.modifyMobilePhones.push(form);
+            }
+          }));
+        }
+      });
     }
 
     // Prepare the land-line forms
-    (data.landLinePhones || []).forEach(p => {
-      const form = this.buildLandLineForm(p);
-      if (this.landLineAvailability === 'multiple') {
-        this.phones.push(p);
-        this.addSub(form.valueChanges.subscribe(() => {
-          if (!this.modifyLandLinePhones.includes(form)) {
-            this.modifyLandLinePhones.push(form);
-          }
-        }));
-      }
-    });
     if (this.landLineAvailability === 'single') {
-      this.singleLandLine = empty(data.landLinePhones)
-        ? this.buildLandLineForm(data.phoneConfiguration.landLinePhone)
-        : data.landLinePhones[0]['form'];
+      this.singleLandLineManage = empty(data.landLinePhones)
+        ? data.phoneConfiguration.landLinePhone
+        : data.landLinePhones[0];
+      this.singleLandLine = this.buildLandLineForm(this.singleLandLineManage);
+    } else {
+      (data.landLinePhones || []).forEach(p => {
+        const form = this.buildLandLineForm(p);
+        if (this.landLineAvailability === 'multiple') {
+          this.phones.push(p);
+          this.addSub(form.valueChanges.subscribe(() => {
+            if (!this.modifyLandLinePhones.includes(form)) {
+              this.modifyLandLinePhones.push(form);
+            }
+          }));
+        }
+      });
     }
 
     // Prepare the address forms
     if (this.addressAvailability === 'single') {
       this.defineSingleAddress = this.formBuilder.control(data.addressConfiguration.availability === 'required');
-    }
-
-    (data.addresses || []).forEach(p => {
-      const form = this.buildAddressForm(p);
-      if (this.addressAvailability === 'multiple') {
-        this.addSub(form.valueChanges.subscribe(() => {
-          if (!this.modifyAddresses.includes(form)) {
-            this.modifyAddresses.push(form);
-          }
-        }));
-      }
-    });
-    this.addresses = (data.addresses || []).slice();
-    if (this.addressAvailability === 'single') {
-      this.singleAddress = empty(data.addresses)
-        ? this.buildAddressForm(data.addressConfiguration.address)
-        : data.addresses[0]['form'];
+      this.singleAddressManage = empty(data.addresses)
+        ? data.addressConfiguration.address
+        : data.addresses[0];
+      this.singleAddress = this.buildAddressForm(this.singleAddressManage);
+    } else {
+      (data.addresses || []).forEach(p => {
+        const form = this.buildAddressForm(p);
+        if (this.addressAvailability === 'multiple') {
+          this.addSub(form.valueChanges.subscribe(() => {
+            if (!this.modifyAddresses.includes(form)) {
+              this.modifyAddresses.push(form);
+            }
+          }));
+        }
+      });
+      this.addresses = (data.addresses || []).slice();
     }
 
     // Prepare the contact-info forms
@@ -540,11 +548,14 @@ export class EditProfileComponent
     }
   }
 
+  /**
+   * A phone has the SMS field it the configuration alloes, the phone is a persistent mobile phone and its number is untouched
+   */
   phoneHasSms(phone: PhoneManage): boolean {
     if (!this.data.phoneConfiguration.smsEnabled) {
       return false;
     }
-    return phone['id'] && phone['kind'] === PhoneKind.MOBILE;
+    return phone['id'] && phone['kind'] === PhoneKind.MOBILE && phone.number === phone['form'].value.number;
   }
 
   hasExtension(phone: PhoneManage): boolean {
@@ -663,10 +674,10 @@ export class EditProfileComponent
     setTimeout(() => document.getElementById(id).focus(), 10);
   }
 
-  public maybeVerify(id: string, event: MouseEvent) {
+  public maybeVerify(event: MouseEvent, id?: string) {
     let phone: PhoneManage;
     if (this.singleMobile) {
-      phone = this.singleMobile.value;
+      phone = this.singleMobileManage;
     } else {
       phone = this.phones.find(p => p['id'] === id);
     }
