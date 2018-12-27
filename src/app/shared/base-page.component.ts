@@ -56,9 +56,7 @@ export abstract class BasePageComponent<D> extends BaseComponent implements OnIn
    * Reloads the current page
    */
   protected reload() {
-    this.data = null;
-    this.unsubscribe();
-    this.ngOnInit();
+    this.router.navigateByUrl(this.router.url);
   }
 
   /**
