@@ -177,7 +177,9 @@ export abstract class BaseAutocompleteFieldComponent<T, A>
     this.selection = value;
     this.selected.emit(value);
     this.close();
-    this.inputFieldControl.setValue(value);
+    if (this.inputFieldControl.value !== value) {
+      this.inputFieldControl.setValue(value);
+    }
     this.focusInput = value == null;
   }
 

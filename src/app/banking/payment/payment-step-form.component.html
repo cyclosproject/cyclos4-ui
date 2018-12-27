@@ -78,19 +78,17 @@
     [prefix]="currency?.prefix" [suffix]="currency?.suffix">
   </decimal-field>
 
-  <ng-container *ngIf="(paymentTypeData$ | async)?.customFields?.length > 0">
-    <custom-field-input *ngFor="let cf of paymentTypeData$.value.customFields"
-      [field]="cf" [formControl]="form.get('customValues').get(cf.internalName)"></custom-field-input>
-  </ng-container>
+  <custom-field-input *ngFor="let cf of (paymentTypeData$ | async)?.customFields"
+    [field]="cf" [formControl]="customValuesControlGetter(cf)"></custom-field-input>
 
   <single-selection-field formControlName="scheduling" required i18n-label
     label="Scheduling" *ngIf="(paymentTypeData$ | async)?.allowsRecurringPayments || (paymentTypeData$ | async)?.maxInstallments > 0">
     <field-option value='direct' i18n-text text="Pay now"></field-option>
-    <field-option *ngIf="paymentTypeData$.value.maxInstallments > 0" value='futureDate'
+    <field-option *ngIf="paymentTypeData$.value?.maxInstallments > 0" value='futureDate'
       i18n-text text="Scheduled"></field-option>
-    <field-option *ngIf="paymentTypeData$.value.maxInstallments > 1" value='scheduled'
+    <field-option *ngIf="paymentTypeData$.value?.maxInstallments > 1" value='scheduled'
       i18n-text text="Monthly installments"></field-option>
-    <field-option *ngIf="paymentTypeData$.value.allowsRecurringPayments"
+    <field-option *ngIf="paymentTypeData$.value?.allowsRecurringPayments"
       value='recurring' i18n-text text="Repeat monthly"></field-option>
   </single-selection-field>
 

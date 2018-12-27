@@ -3,7 +3,8 @@
     last>
     <div class="flex-grow-1">
       <payment-step-form [data]="data" [form]="form" [currency]="currency$ | async"
-        (paymentTypeData)="paymentTypeData = $event" (availablePaymentTypes)="availablePaymentTypes = $event">
+        [paymentTypeData$]="paymentTypeData$" (availablePaymentTypes)="availablePaymentTypes = $event"
+        [customValuesControlGetter]="customValuesControlGetter">
       </payment-step-form>
     </div>
     <actions ngClass="mt-3" forceRow>

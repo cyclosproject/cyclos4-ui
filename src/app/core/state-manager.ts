@@ -78,16 +78,19 @@ export class StateManager {
 
   /**
    * Initializes the control value with the current state, if any, and store the state whenever the value changes
-   * @param control The form control
+   * @param control Either the form control or a function that produces it
    * @returns Whether a previous value was used
    */
-  manage(control: AbstractControl, key = 'form'): boolean {
-    const value = this.get(key);
+  manage<C extends AbstractControl>(control: C | (() => C), key = 'form'): C {
+    const value = this.get(key, control instanceof Function ? control : null);
+    if (control instanceof Function) {
+      control = control();
+    }
     if (value) {
       control.patchValue(value);
     }
     this.subscriptions.push(control.valueChanges.subscribe(val => this.set(key, val)));
-    return value != null;
+    return control;
   }
 
   /**

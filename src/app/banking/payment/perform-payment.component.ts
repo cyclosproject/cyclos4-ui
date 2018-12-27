@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit, ChangeDetectorRef } from '@angular/core';
-import { FormControl, FormGroup, Validators, ValidatorFn } from '@angular/forms';
+import { FormControl, FormGroup, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 import {
   AccountWithCurrency, TransactionAuthorizationStatusEnum, Currency, DataForTransaction,
   PaymentPreview, PaymentSchedulingEnum, PerformPayment, Transaction,
-  TransactionTypeData, TransferType, AvailabilityEnum
+  TransactionTypeData, TransferType, AvailabilityEnum, CustomFieldDetailed
 } from 'app/api/models';
 import { PaymentsService } from 'app/api/services';
 import { ApiHelper } from 'app/shared/api-helper';
@@ -91,7 +91,9 @@ export class PerformPaymentComponent extends BasePageComponent<DataForTransactio
   performed: Transaction;
   paymentTypeData$ = new BehaviorSubject<TransactionTypeData>(null);
   availablePaymentTypes: TransferType[];
+  lastPaymentTypeData: TransactionTypeData;
   lastValue: any;
+  customValuesControls = new Map<string, FormControl>();
 
   get step(): PaymentStep {
     return this.step$.value;
@@ -147,21 +149,8 @@ export class PerformPaymentComponent extends BasePageComponent<DataForTransactio
     }
 
     // Build the form
-    this.form = this.formBuilder.group({
-      account: null,
-      subject: [this.toParam, Validators.required],
-      type: [null, Validators.required],
-      amount: [null, Validators.required],
-      customValues: this.formBuilder.group({}), // Custom values are dynamic
-      scheduling: [PaymentSchedulingEnum.DIRECT, Validators.required],
-      installmentsCount: null,
-      firstInstallmentIsNow: true,
-      firstInstallmentDate: [null, FIRST_INSTALLMENT_DATE_VAL],
-      repeatUntilCanceled: true,
-      occurrencesCount: [null, OCCURRENCES_COUNT_VAL],
-      firstOccurrenceIsNow: true,
-      firstOccurrenceDate: [null, FIRST_OCCURRENCE_DATE_VAL]
-    });
+    this.form = this.buildForm();
+
     // The confirmation password is hold in a separated control
     this.confirmationPassword = this.formBuilder.control(null);
 
@@ -175,10 +164,34 @@ export class PerformPaymentComponent extends BasePageComponent<DataForTransactio
     this.addSub(this.form.get('account').valueChanges.subscribe(type => this.updateCurrency(this.data, type)));
 
     // When the payment type data changes, update the form validation and fields
-    this.addSub(this.paymentTypeData$.subscribe(typeData => this.adjustForm(typeData)));
+    this.addSub(this.paymentTypeData$.subscribe(typeData => {
+      if (this.lastPaymentTypeData == null || !isEqual(this.lastPaymentTypeData, typeData)) {
+        this.adjustForm(typeData);
+      }
+      this.lastPaymentTypeData = typeData;
+    }));
 
     // Adjust the conditional validators (for example, for scheduling)
     this.addSub(this.form.valueChanges.subscribe(value => this.adjustFormValidators(value)));
+  }
+
+  private buildForm(): FormGroup {
+    // Custom values are handled separatedly
+    return this.formBuilder.group({
+      account: null,
+      subject: [this.toParam, Validators.required],
+      type: [null, Validators.required],
+      amount: [null, Validators.required],
+      description: null,
+      scheduling: [PaymentSchedulingEnum.DIRECT, Validators.required],
+      installmentsCount: null,
+      firstInstallmentIsNow: true,
+      firstInstallmentDate: [null, FIRST_INSTALLMENT_DATE_VAL],
+      repeatUntilCanceled: true,
+      occurrencesCount: [null, OCCURRENCES_COUNT_VAL],
+      firstOccurrenceIsNow: true,
+      firstOccurrenceDate: [null, FIRST_OCCURRENCE_DATE_VAL]
+    });
   }
 
   private updateCurrency(data: DataForTransaction, type: string) {
@@ -190,14 +203,13 @@ export class PerformPaymentComponent extends BasePageComponent<DataForTransactio
   }
 
   private adjustForm(typeData: TransactionTypeData) {
-    const description = (typeData || {}).descriptionAvailability;
-    if (description == null || description === AvailabilityEnum.DISABLED) {
-      this.form.removeControl('description');
+    const description = this.form.get('description');
+    if ((typeData || {}).descriptionAvailability === AvailabilityEnum.REQUIRED) {
+      description.setValidators(Validators.required);
     } else {
-      const descriptionValidator = description === AvailabilityEnum.REQUIRED ? Validators.required : null;
-      this.form.setControl('description', this.formBuilder.control(this.form.value.description, descriptionValidator));
+      clearValidatorsAndErrors(description);
     }
-    this.form.setControl('customValues', ApiHelper.customValuesFormGroup(this.formBuilder, typeData ? typeData.customFields : []));
+    // Custom fields are handled separatedly
   }
 
   adjustFormValidators(value: any) {
@@ -268,6 +280,15 @@ export class PerformPaymentComponent extends BasePageComponent<DataForTransactio
   }
 
   toConfirm() {
+    // Before proceeding, copy the value of all valid custom fields
+    const customValueControls: { [key: string]: AbstractControl } = {};
+    const typeData = this.paymentTypeData;
+    if (typeData && typeData.customFields) {
+      for (const cf of typeData.customFields) {
+        customValueControls[cf.internalName] = this.customValuesControlGetter(cf);
+      }
+    }
+    this.form.setControl('customValues', new FormGroup(customValueControls));
     if (!validateBeforeSubmit(this.form)) {
       return;
     }
@@ -357,5 +378,17 @@ export class PerformPaymentComponent extends BasePageComponent<DataForTransactio
 
   locateControl(locator: FormControlLocator) {
     return locateControl(this.form, locator);
+  }
+
+  get customValuesControlGetter(): Function {
+    return (cf: CustomFieldDetailed) => {
+      const name = cf.internalName;
+      let control = this.customValuesControls.get(name);
+      if (control == null) {
+        control = this.formBuilder.control(cf.defaultValue, cf.required ? Validators.required : null);
+        this.customValuesControls.set(name, control);
+      }
+      return control;
+    };
   }
 }

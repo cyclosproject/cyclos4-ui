@@ -3,6 +3,7 @@ import { ControlContainer, ControlValueAccessor, FormControl } from '@angular/fo
 import { ApiHelper } from 'app/shared/api-helper';
 import { empty } from 'app/shared/helper';
 import { Observable, Subscription } from 'rxjs';
+import { isEqual } from 'lodash';
 
 /**
  * Base class for custom form controls
@@ -67,7 +68,7 @@ export abstract class BaseControlComponent<T> implements OnInit, OnDestroy, Cont
         this.setValue(val, this._value !== val);
       }));
     } else {
-      this.setValue(preprocessed, this._value !== preprocessed);
+      this.setValue(preprocessed, this._value !== preprocessed && !isEqual(this._value, preprocessed));
     }
   }
 

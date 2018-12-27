@@ -1,7 +1,10 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { AccountWithStatus, Currency, DataForTransaction, NotFoundError, TransactionTypeData, TransferType, User } from 'app/api/models';
+import { FormControl, FormGroup } from '@angular/forms';
+import {
+  AccountWithStatus, Currency, CustomFieldDetailed, DataForTransaction,
+  NotFoundError, TransactionTypeData, TransferType, User
+} from 'app/api/models';
 import { PaymentsService } from 'app/api/services';
 import { ErrorStatus } from 'app/core/error-status';
 import { ApiHelper } from 'app/shared/api-helper';
@@ -29,8 +32,8 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
   @Input() data: DataForTransaction;
   @Input() form: FormGroup;
   @Input() currency: Currency;
+  @Input() paymentTypeData$: BehaviorSubject<TransactionTypeData>;
 
-  @Output() paymentTypeData = new EventEmitter<TransactionTypeData>();
   @Output() availablePaymentTypes = new EventEmitter<TransferType[]>();
 
   @ViewChild('amount') amountField: DecimalFieldComponent;
@@ -40,10 +43,11 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
   fixedDestination = false;
   fixedUser: User;
 
-  private dataCache = new Map<string, TransactionTypeData>();
   fetchedPaymentTypes: TransferType[];
   paymentTypes$ = new BehaviorSubject<TransferType[]>(null);
-  paymentTypeData$ = new BehaviorSubject<TransactionTypeData>(null);
+  private dataCache: Map<string, TransactionTypeData>;
+
+  @Input() customValuesControlGetter: (cf: CustomFieldDetailed) => FormControl;
 
   constructor(
     injector: Injector,
@@ -53,6 +57,8 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
 
   ngOnInit() {
     super.ngOnInit();
+
+    this.dataCache = this.stateManager.get('dataCache', () => new Map());
 
     this.fixedDestination = this.data.toKind != null;
     this.fixedUser = this.data.toUser;
@@ -221,12 +227,11 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
     if (oldId === newId) {
       return;
     }
-    this.paymentTypeData.emit(typeData);
-    this.paymentTypeData$.next(typeData);
     if (typeData) {
       this.dataCache.set(typeData.id, typeData);
-      this.amountField.focus();
+      this.focusDelayed(this.amountField);
     }
+    this.paymentTypeData$.next(typeData);
   }
 
   get fixedUsersList(): boolean {
