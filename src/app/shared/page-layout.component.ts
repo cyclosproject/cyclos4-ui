@@ -60,10 +60,11 @@ export class PageLayoutComponent implements OnInit, OnDestroy {
 
     // There are several factors that influence whether the left menu is visible
     const updateLeftMenuVisible = () => {
+      const gtmd = this.layout.gtmd;
       const fullWidth = this.layout.fullWidth;
       const loggedIn = this.login.user != null;
       const activeMenu = this.menu.activeMenu;
-      let hasMenu = !fullWidth && loggedIn && !this.hideMenu && activeMenu != null;
+      let hasMenu = gtmd && !fullWidth && loggedIn && !this.hideMenu && activeMenu != null;
       const root = this.menu.rootEntry();
       if (hasMenu && (root == null || (root.entries || []).length <= 1)) {
         hasMenu = false;
@@ -78,11 +79,13 @@ export class PageLayoutComponent implements OnInit, OnDestroy {
 
     // The left area is visible if not in full-width layout and there's either the left menu or banners
     const updateLeftAreaVisible = () => {
+      const gtmd = this.layout.gtmd;
       const fullWidth = this.layout.fullWidth;
       const hasLeftMenu = this.leftMenuVisible;
       const hasCards = !empty(this.bannerCards$.value);
-      this.leftAreaVisible$.next(!fullWidth && (hasLeftMenu || hasCards));
+      this.leftAreaVisible$.next(gtmd && !fullWidth && (hasLeftMenu || hasCards));
     };
+    this.subs.push(this.layout.gtmd$.subscribe(updateLeftAreaVisible));
     this.subs.push(this.leftMenuVisible$.subscribe(updateLeftAreaVisible));
     this.subs.push(this.layout.fullWidth$.subscribe(updateLeftAreaVisible));
     this.subs.push(this.banner.cards$.subscribe(updateLeftAreaVisible));
