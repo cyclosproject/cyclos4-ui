@@ -63,7 +63,7 @@ const HOME_PAGE: ContentWithLayout = {
 const DASHBOARD_RESOLVER = new DefaultDashboardResolver();
 
 // Content pages resolver
-const CONTENT_PAGES_RESOLVER = new TestUiContentPagesResolver;
+const CONTENT_PAGES_RESOLVER = null;
 
 // Banner cards resolver
 const BANNER_CARDS_RESOLVER = null;
