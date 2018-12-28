@@ -4,19 +4,20 @@
  * @param option The option to match
  * @param value The value to match
  */
-export function fieldOptionMatches(option: FieldOption, value: string | FieldOption) {
+export function fieldOptionMatches(option: FieldOption, value: any) {
   if (option == null || value == null) {
     return false;
   }
-  if (typeof value === 'object') {
-    return option === value
-      || option.id != null && option.id === value.id
-      || option.internalName != null && option.internalName === value.internalName;
-  } else {
-    return option.value === value
-      || option.id != null && option.id === value
-      || option.internalName != null && option.internalName === value;
+  if (option.value === value || option.value === value.value) {
+    return true;
   }
+  if (option.id && option.id === value.id) {
+    return true;
+  }
+  if (option.internalName && option.internalName === value.internalName) {
+    return true;
+  }
+  return false;
 }
 
 /**

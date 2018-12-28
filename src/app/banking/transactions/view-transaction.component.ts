@@ -91,7 +91,7 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
         this.deny();
       }));
     }
-    if (auth.authorize) {
+    if (auth.cancel) {
       actions.push(new HeadingAction('cancel', this.i18n('Cancel the authorization process'), () => {
         this.cancelAuthorization();
       }));

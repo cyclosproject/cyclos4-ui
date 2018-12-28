@@ -3,6 +3,7 @@ import { TransactionAuthorizationStatusEnum, TransactionKind } from 'app/api/mod
 import { TransactionsService } from 'app/api/services';
 import { BaseTransactionsSearch } from 'app/banking/transactions/base-transactions-search.component';
 import { TransactionStatusService } from 'app/core/transaction-status.service';
+import { FieldOption } from 'app/shared/field-option';
 
 /**
  * Search for authorized payments
@@ -33,12 +34,12 @@ export class SearchAuthorizedPaymentsComponent
   ngOnInit() {
     super.ngOnInit();
     this.form.patchValue(
-      { authorizationStatuses: TransactionAuthorizationStatusEnum.PENDING },
+      { status: TransactionAuthorizationStatusEnum.PENDING },
       { emitEvent: false }
     );
   }
 
-  get statusOptions() {
+  get statusOptions(): FieldOption[] {
     return TransactionAuthorizationStatusEnum.values().map(st => ({
       value: st,
       text: this.transactionStatusService.authorizationStatus(st)
