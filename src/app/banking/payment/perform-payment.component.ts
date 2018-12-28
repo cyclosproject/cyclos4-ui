@@ -88,6 +88,7 @@ export class PerformPaymentComponent extends BasePageComponent<DataForTransactio
   title: string;
   actualData: DataForTransaction;
   preview: PaymentPreview;
+  canConfirm: boolean;
   performed: Transaction;
   paymentTypeData$ = new BehaviorSubject<TransactionTypeData>(null);
   availablePaymentTypes: TransferType[];
@@ -295,6 +296,10 @@ export class PerformPaymentComponent extends BasePageComponent<DataForTransactio
     this.addSub(this.confirmDataRequest().subscribe(preview => {
       this.preview = preview;
       this.step = 'confirm';
+      this.canConfirm = ApiHelper.canConfirm(preview.confirmationPasswordInput);
+      if (!this.canConfirm) {
+        this.notification.warning(ApiHelper.getConfirmationMessage(preview.confirmationPasswordInput, this.i18n));
+      }
       const val = preview.confirmationPasswordInput ? Validators.required : null;
       this.confirmationPassword.setValidators(val);
       scrollTop();

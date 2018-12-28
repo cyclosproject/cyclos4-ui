@@ -59,7 +59,7 @@ export class ViewTransferComponent extends BasePageComponent<TransferView> imple
   private chargeback() {
     this.notification.confirm({
       title: this.i18n('Chargeback transfer'),
-      message: this.i18n('This return the amount to the payer'),
+      message: this.i18n('This will return the amount to the payer'),
       passwordInput: this.transfer.confirmationPasswordInput,
       callback: res => {
         this.transfersService.chargebackTransfer({

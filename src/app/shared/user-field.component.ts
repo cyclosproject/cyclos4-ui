@@ -1,18 +1,17 @@
-import {
-  Component, Input, ChangeDetectionStrategy, SkipSelf, Host, Optional, ViewChild, ElementRef, OnInit, OnDestroy
-} from '@angular/core';
-import { NG_VALUE_ACCESSOR, ControlContainer } from '@angular/forms';
-import { BaseAutocompleteFieldComponent } from 'app/shared/base-autocomplete-field.component';
+import { ChangeDetectionStrategy, Component, ElementRef, Host, Input, OnDestroy, OnInit, Optional, SkipSelf, ViewChild } from '@angular/core';
+import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { I18n } from '@ngx-translate/i18n-polyfill';
 import { User } from 'app/api/models';
-import { Observable, Subscription, of } from 'rxjs';
-import { UserCacheService } from 'app/core/user-cache.service';
-import { distinctUntilChanged } from 'rxjs/operators';
 import { UsersService } from 'app/api/services';
 import { LoginService } from 'app/core/login.service';
+import { NextRequestState } from 'app/core/next-request-state';
+import { UserCacheService } from 'app/core/user-cache.service';
 import { ApiHelper } from 'app/shared/api-helper';
-import { BsModalService } from 'ngx-bootstrap/modal';
+import { BaseAutocompleteFieldComponent } from 'app/shared/base-autocomplete-field.component';
 import { PickContactComponent } from 'app/shared/pick-contact.component';
-import { I18n } from '@ngx-translate/i18n-polyfill';
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { Observable, of, Subscription } from 'rxjs';
+import { distinctUntilChanged } from 'rxjs/operators';
 
 /**
  * Field used to select a user
@@ -50,6 +49,7 @@ export class UserFieldComponent
     private userCache: UserCacheService,
     private usersService: UsersService,
     private login: LoginService,
+    private nextRequestState: NextRequestState,
     private modal: BsModalService,
     private i18n: I18n) {
     super(controlContainer);
@@ -103,6 +103,7 @@ export class UserFieldComponent
     }
     const loggedUser = this.login.user;
     const toExclude = loggedUser ? [loggedUser.id] : [];
+    this.nextRequestState.leaveNotification = true;
     return this.usersService.searchUsers({
       keywords: text,
       ignoreProfileFieldsInList: true,

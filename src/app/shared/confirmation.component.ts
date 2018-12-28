@@ -33,6 +33,7 @@ export class ConfirmationComponent implements OnInit {
   hasFields = false;
   hasForm = false;
   requesting$: Observable<boolean>;
+  canConfirm: boolean;
 
   constructor(
     private i18n: I18n,
@@ -49,6 +50,7 @@ export class ConfirmationComponent implements OnInit {
       this.form.setControl('confirmationPassword', this.formBuilder.control(null, Validators.required));
       this.hasForm = true;
     }
+    this.canConfirm = ApiHelper.canConfirm(this.passwordInput);
     this.hasFields = !empty(this.customFields);
     if (this.hasFields) {
       this.form.setControl('customValues', ApiHelper.customValuesFormGroup(this.formBuilder, this.customFields));

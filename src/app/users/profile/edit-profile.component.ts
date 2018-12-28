@@ -43,6 +43,7 @@ export class EditProfileComponent
   editableFields: Set<string>;
   managePrivacyFields: Set<string>;
   userCustomFields: Map<string, CustomFieldDetailed>;
+  canConfirm: boolean;
 
   // Forms which will be submitted. Need to keep track in order to match the validation errors
   user: FormGroup;
@@ -114,6 +115,14 @@ export class EditProfileComponent
       });
 
       this.initialize(data);
+
+      // Handle the case that the confirmation password cannot be used
+      this.canConfirm = ApiHelper.canConfirm(data.confirmationPasswordInput);
+      if (!this.canConfirm) {
+        this.notification.warning(ApiHelper.getConfirmationMessage(data.confirmationPasswordInput, this.i18n));
+        this.router.navigate(['users', 'my-profile']);
+      }
+
       this.ready$.next(true);
     });
   }

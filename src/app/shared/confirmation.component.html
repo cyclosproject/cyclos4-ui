@@ -1,6 +1,6 @@
 <h1 *ngIf="title">{{ title }}</h1>
 <form [formGroup]="form">
-  <div *ngIf="message" class="mb-1" [ngClass]="{'mt-3': title != null}"
+  <div *ngIf="message && canConfirm" class="mb-1" [ngClass]="{'mt-3': title != null}"
     [innerHTML]="message | trust"></div>
 
   <custom-field-input *ngFor="let cf of customFields; let first = first"
@@ -8,21 +8,20 @@
     [formControl]="form.get('customValues').get(cf.internalName)">
   </custom-field-input>
 
-  <ng-container *ngIf="passwordInput">
-    <div class="mb-2" [ngClass]="{
-        'mt-3': hasFields || message == null,
-        'mt-4': !hasFields && message != null
-      }"
-      i18n>
-      In order to confirm, you need to supply your {{ passwordInput.name }}
-    </div>
-    <confirmation-password formControlName="confirmationPassword" [focused]="!hasFields"
-      [passwordInput]="passwordInput"></confirmation-password>
-  </ng-container>
+  <confirmation-password formControlName="confirmationPassword" [focused]="!hasFields"
+    [passwordInput]="passwordInput" [ngClass]="{
+      'mt-3': hasFields || message == null,
+      'mt-4': !hasFields && message != null
+    }"
+    i18n>
+    In order to confirm, you need to supply your {{ passwordInput.name }}
+  </confirmation-password>
 
   <actions forceRow>
-    <button class="btn btn-primary" [disabled]="requesting$ | async" (click)="confirm()">{{
-      confirmLabel }}</button>
+    <button class="btn btn-primary" [disabled]="!canConfirm || (requesting$ | async)"
+      (click)="confirm()">
+      {{ confirmLabel }}
+    </button>
     <button class="btn btn-outline-primary" (click)="modalRef.hide()">
       {{ cancelLabel }}
     </button>

@@ -15,11 +15,23 @@ const SESSION_TOKEN = 'Session-Token';
 })
 export class NextRequestState {
 
-  private pending$ = new BehaviorSubject<HttpRequest<any>[]>([]);
+  /**
+   * Observable indicating if a request is currently being performed
+   */
   requesting$: Observable<boolean>;
 
-  private nextAuth: string;
+  /**
+   * Flag to disable default error handling on next request
+   */
   ignoreNextError: boolean;
+
+  /**
+   * Flag to not close notification on next request
+   */
+  leaveNotification: boolean;
+
+  private pending$ = new BehaviorSubject<HttpRequest<any>[]>([]);
+  private nextAuth: string;
 
   constructor() {
     this.requesting$ = this.pending$.asObservable().pipe(

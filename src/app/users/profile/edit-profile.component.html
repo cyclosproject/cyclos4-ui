@@ -338,7 +338,7 @@
         </confirmation-password>
       </form>
     </ng-container>
-    <actions>
+    <actions *ngIf="canConfirm">
       <button class="btn btn-primary btn-main" i18n [disabled]="requesting$ | async"
         (click)="save()">Save</button>
     </actions>

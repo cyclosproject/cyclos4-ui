@@ -90,10 +90,10 @@
 <ng-container *ngIf="preview.confirmationPasswordInput">
   <hr>
   <form [formGroup]="form">
-    <div class="mb-3" i18n>Supply your {{
-      preview.confirmationPasswordInput.name
-      }} to confirm this payment</div>
     <confirmation-password focused formControlName="confirmationPassword"
-      [passwordInput]="preview.confirmationPasswordInput"></confirmation-password>
+      [passwordInput]="preview.confirmationPasswordInput" i18n>
+      Supply your {{preview.confirmationPasswordInput.name}} to confirm this
+      payment
+    </confirmation-password>
   </form>
 </ng-container>

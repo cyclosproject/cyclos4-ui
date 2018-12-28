@@ -32,7 +32,10 @@ export class ApiInterceptor implements HttpInterceptor {
     this.nextRequestState.ignoreNextError = false;
 
     // Close any notification before sending a request
-    this.notification.close();
+    if (!this.nextRequestState.leaveNotification) {
+      this.notification.close();
+    }
+    this.nextRequestState.leaveNotification = false;
 
     // Apply the headers
     req = this.nextRequestState.apply(req);
