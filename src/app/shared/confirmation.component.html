@@ -8,8 +8,8 @@
     [formControl]="form.get('customValues').get(cf.internalName)">
   </custom-field-input>
 
-  <confirmation-password formControlName="confirmationPassword" [focused]="!hasFields"
-    [passwordInput]="passwordInput" [ngClass]="{
+  <confirmation-password *ngIf="passwordInput" formControlName="confirmationPassword"
+    [focused]="!hasFields" [passwordInput]="passwordInput" [ngClass]="{
       'mt-3': hasFields || message == null,
       'mt-4': !hasFields && message != null
     }"
