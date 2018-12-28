@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, Output, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { ChangePassword, PasswordType } from 'app/api/models';
 import { PasswordsService } from 'app/api/services';
@@ -32,25 +32,32 @@ const PASSWORDS_MATCH_VAL: ValidatorFn = control => {
   templateUrl: 'change-password-dialog.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ChangePasswordDialogComponent extends BaseComponent {
+export class ChangePasswordDialogComponent extends BaseComponent implements OnInit {
 
   @Input() type: PasswordType;
+  @Input() requireOld: boolean;
   @Output() done = new EventEmitter<void>();
 
   form: FormGroup;
 
   constructor(
     injector: Injector,
-    formBuilder: FormBuilder,
     public modalRef: BsModalRef,
     private passwordsService: PasswordsService) {
     super(injector);
+  }
 
-    this.form = formBuilder.group({
-      oldPassword: [null, Validators.required],
+  ngOnInit() {
+    super.ngOnInit();
+
+    this.form = this.formBuilder.group({
       newPassword: [null, Validators.required],
       newPasswordConfirmation: [null, Validators.compose([Validators.required, PASSWORDS_MATCH_VAL])],
     });
+
+    if (this.requireOld) {
+      this.form.setControl('oldPassword', this.formBuilder.control(null, Validators.required));
+    }
   }
 
   submit() {

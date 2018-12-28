@@ -107,7 +107,8 @@ export class ManagePasswordsComponent
     const ref = this.modal.show(ChangePasswordDialogComponent, {
       class: 'modal-form',
       initialState: {
-        type: password.type
+        type: password.type,
+        requireOld: password.requireOldPasswordForChange
       }
     });
     const component = ref.content as ChangePasswordDialogComponent;
