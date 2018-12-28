@@ -107,7 +107,9 @@ export class SearchUsersComponent
       const fieldsInSearch = data.customFields.filter(cf => data.fieldsInSearch.includes(cf.internalName));
       // See the comment on ignoreNextUpdate
       this.ignoreNextUpdate = true;
-      this.form.setControl('customValues', ApiHelper.customValuesFormGroup(this.formBuilder, fieldsInSearch));
+      this.form.setControl('customValues', ApiHelper.customValuesFormGroup(this.formBuilder, fieldsInSearch, {
+        useDefaults: false
+      }));
       this.ignoreNextUpdate = false;
       this.basicField$.next(fieldsInSearch.length === 0 ? null : fieldsInSearch[0]);
       this.advancedFields$.next(fieldsInSearch.length > 1 ? fieldsInSearch.slice(1) : []);

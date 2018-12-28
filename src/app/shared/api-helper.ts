@@ -154,6 +154,7 @@ export class ApiHelper {
    * @param options A bag of options with the following:
    *
    * - `currentValues`: If provided will contain the field values by internal name. If not, use the default value
+   * - `useDefaults`: When set to false will not use the default values for fields. Defaults to true.
    * - `disabledProvider`: If provided will be called for each custom field to determine whether the field should be disabled
    * - `asyncValProvider`: If provided will be called for each custom field to provide an additional, asynchronous validation
    * @returns The FormGroup
@@ -161,18 +162,24 @@ export class ApiHelper {
   static customValuesFormGroup(formBuilder: FormBuilder, customFields: CustomFieldDetailed[],
     options?: {
       currentValues?: any,
+      useDefaults?: boolean,
       disabledProvider?: (CustomFieldDetailed) => boolean,
       asyncValProvider?: (CustomFieldDetailed) => AsyncValidatorFn
     }): FormGroup {
     options = options || {};
     const currentValues = options.currentValues || {};
+    const useDefaults = options.useDefaults !== false;
     const disabledProvider = options.disabledProvider || (() => false);
     const asyncValProvider = options.asyncValProvider;
     const customValues = {};
     for (const cf of customFields) {
+      let value: string = currentValues[cf.internalName];
+      if (value == null && useDefaults) {
+        value = cf.defaultValue;
+      }
       customValues[cf.internalName] = [
         {
-          value: currentValues.hasOwnProperty(cf.internalName) ? currentValues[cf.internalName] : cf.defaultValue,
+          value: value,
           disabled: disabledProvider(cf)
         },
         cf.required ? Validators.required : null,

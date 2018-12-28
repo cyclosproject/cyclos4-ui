@@ -48,15 +48,17 @@ export class SearchAdsComponent
   }
 
   onDataInitialized(data: AdDataForSearch) {
-    const customField = name => data.customFields.find(f => f.internalName === name);
+    const customField = (name: string) => data.customFields.find(f => f.internalName === name);
     this.basicFields = data.fieldsInBasicSearch.map(customField);
     this.advancedFields = data.fieldsInAdvancedSearch.map(customField);
-    this.form.setControl('customValues', ApiHelper.customValuesFormGroup(this.formBuilder, data.customFields));
+    this.form.setControl('customValues', ApiHelper.customValuesFormGroup(this.formBuilder, data.customFields, {
+      useDefaults: false
+    }));
     this.headingActions = empty(this.advancedFields) ? [] : [this.moreFiltersAction];
     super.onDataInitialized(data);
   }
 
-  doSearch(value) {
+  doSearch(value: any) {
     const params = cloneDeep(value) as MarketplaceService.SearchAdsParams;
     delete params['customValues'];
     params.customFields = ApiHelper.toCustomValuesFilter(value.customValues);
