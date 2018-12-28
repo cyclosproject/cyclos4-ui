@@ -10,8 +10,7 @@ import { NotificationService } from 'app/core/notification.service';
 import { ActionWithIcon } from 'app/shared/action';
 import { BaseControlComponent } from 'app/shared/base-control.component';
 import { truthyAttr } from 'app/shared/helper';
-
-
+import { chunk } from 'lodash';
 
 /**
  * Component used to display a password input
@@ -19,6 +18,7 @@ import { truthyAttr } from 'app/shared/helper';
 @Component({
   selector: 'password-input',
   templateUrl: 'password-input.component.html',
+  styleUrls: ['password-input.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     { provide: NG_VALUE_ACCESSOR, useExisting: PasswordInputComponent, multi: true },
@@ -48,9 +48,10 @@ export class PasswordInputComponent
   @Output() otpSent = new EventEmitter<void>();
 
   @ViewChild('passwordField') passwordField: ElementRef;
+  @ViewChild('vkDisplay') vkDisplay: ElementRef;
 
   virtualKeyboard: boolean;
-  currentVKCombinations: string[];
+  currentVKCombinations: string[][];
   enteredVKPassword: string[];
 
   otp: boolean;
@@ -135,7 +136,7 @@ export class PasswordInputComponent
 
   private updateVKButtons(): void {
     if (this.enteredVKPassword.length < this.passwordInput.buttons.length) {
-      this.currentVKCombinations = this.passwordInput.buttons[this.enteredVKPassword.length];
+      this.currentVKCombinations = chunk(this.passwordInput.buttons[this.enteredVKPassword.length], this.passwordInput.buttonsPerRow);
     }
     this.formControl.setValue(this.enteredVKPassword.length === 0 ? '' : this.passwordInput.id + '|' + this.enteredVKPassword.join('|'));
   }

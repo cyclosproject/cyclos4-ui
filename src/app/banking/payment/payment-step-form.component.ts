@@ -2,8 +2,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import {
-  AccountWithStatus, Currency, CustomFieldDetailed, DataForTransaction,
-  NotFoundError, TransactionTypeData, TransferType, User
+  AccountWithStatus, Currency, CustomFieldDetailed, DataForTransaction, NotFoundError,
+  TransactionTypeData, TransferType, User
 } from 'app/api/models';
 import { PaymentsService } from 'app/api/services';
 import { ErrorStatus } from 'app/core/error-status';
@@ -80,6 +80,7 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
     );
     // Whenever the type changes, fetch the payment type data
     this.addSub(this.form.get('type').valueChanges
+      .pipe(distinctUntilChanged(), debounceTime(ApiHelper.DEBOUNCE_TIME))
       .subscribe(type => this.fetchPaymentTypeData(type)));
 
     this.addSub(this.layout.xxs$.subscribe(() => this.updateAccountBalanceLabel()));
@@ -190,7 +191,7 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
 
   private fetchPaymentTypeData(type: string) {
     const value = this.form.value;
-    if (empty(value.subject)) {
+    if (empty(value.subject) || empty(type)) {
       return;
     }
     const cached = this.dataCache.get(type);

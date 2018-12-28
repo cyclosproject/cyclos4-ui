@@ -1,15 +1,15 @@
 <div *ngIf="results" class="d-flex flex-column flex-sm-row justify-content-between align-items-center"
   [formGroup]="form">
-  <div [ngClass]="{'mb-3': layout.ltsm$ | async}" *ngIf="results.hasTotalCount; else noTotalCount"
+  <div class="mb-3 mb-sm-0" *ngIf="results.hasTotalCount; else noTotalCount"
     i18n>Showing {{results.firstItem}} - {{results.lastItem}} of
     {{results.totalCount}} results
   </div>
   <ng-template #noTotalCount>
-    <div [ngClass]="{'mb-3': layout.ltsm$ | async}" i18n>
+    <div class="mb-3 mb-sm-0" i18n>
       Showing {{results.firstItem}} - {{results.lastItem}} results
     </div>
   </ng-template>
-  <div *ngIf="results.hasNext || results.page > 0" [ngClass]="{'mt-2': layout.xxs$ | async}">
+  <div *ngIf="results.hasNext || results.page > 0" class="mt-2 mt-xs-0">
     <pagination [totalItems]="totalCount" [itemsPerPage]="results.pageSize"
       [maxSize]="maxSize(layout.breakpointChanges$ | async)" formControlName="pageNumber"
       [rotate]="true" [boundaryLinks]="results.hasTotalCount && (layout.gtxs$ | async)"

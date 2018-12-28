@@ -5,8 +5,7 @@
     <!-- Image -->
     <ng-container *ngIf="imagesAvailability !== 'disabled'">
       <ng-container *ngIf="imagesAvailability === 'single'">
-        <h2 class="mb-3 border-0" [ngClass]="{'mt-2': layout.ltmd$ | async}"
-          i18n>Profile image</h2>
+        <h2 class="mb-3 border-0 mt-2 mt-md-0" i18n>Profile image</h2>
         <div class="row no-gutters">
           <div class="col-12 col-sm-6">
             <div class="d-flex justify-content-center justify-content-sm-start">
@@ -32,9 +31,8 @@
         </div>
       </ng-container>
       <ng-container *ngIf="imagesAvailability === 'multiple'">
-        <h2 class="border-0 d-flex mb-3 flex-column flex-xs-row justify-content-between"
-          [ngClass]="{'mt-2': layout.ltmd$ | async}">
-          <div [ngClass]="{'mb-2': layout.xxs$ | async}" i18n>Profile images</div>
+        <h2 class="border-0 d-flex mb-3 flex-column flex-xs-row justify-content-between mt-2 mt-md-0">
+          <div class="mb-2 mb-xs-0" i18n>Profile images</div>
           <button *ngIf="canUploadImages && !(multiUpload.uploading$ | async)"
             class="btn btn-outline-primary" (click)="multiUpload.perform()"
             i18n>Upload new</button>
@@ -43,10 +41,7 @@
           <div class="col-12 col-xs-6 col-sm-4 col-md-3 d-flex justify-content-center justify-content-center"
             *ngFor="let image of images">
             <avatar [image]="image" size="huge" useLightbox
-              [additionalImages]="images" additionalImagesHidden [ngClass]="{
-              'mb-1': layout.xxs$ | async,
-              'mb-3': layout.gtxxs$ | async
-            }">
+              [additionalImages]="images" additionalImagesHidden class="mb-1 mb-xs-3">
             </avatar>
           </div>
           <ng-container *ngIf="images.length === 0">
@@ -142,7 +137,7 @@
     <!-- Multiple phones -->
     <ng-container *ngIf="landLineAvailability === 'multiple' || mobileAvailability === 'multiple'">
       <h2 class="mt-4 mb-2 d-flex flex-column flex-xs-row justify-content-between">
-        <div [ngClass]="{'mb-2': layout.xxs$ | async}" i18n>Phones</div>
+        <div class="mb-2 mb-xs-0" i18n>Phones</div>
 
         <!-- When can create both land-line and mobile, use a dropdown -->
         <div *ngIf="canCreateLandLine && canCreateMobile" class="section-title-action"
@@ -209,7 +204,7 @@
     <!-- Multiple addresses -->
     <ng-container *ngIf="addressAvailability === 'multiple'">
       <h2 class="mt-4 mb-2 d-flex flex-column flex-xs-row justify-content-between">
-        <div [ngClass]="{'mb-2': layout.xxs$ | async}" i18n>Addresses</div>
+        <div class="mb-2 mb-xs-0" i18n>Addresses</div>
         <div class="section-title-action">
           <button *ngIf="canCreateAddress" class="btn btn-outline-primary"
             (click)="addAddress()" i18n>
@@ -270,8 +265,7 @@
     -->
     <ng-container *ngIf="contactInfoAvailability !== 'disabled'">
       <h2 class="mt-4 mb-2 d-flex flex-column flex-xs-row justify-content-between">
-        <div [ngClass]="{'mb-2': layout.xxs$ | async}" i18n>Additional
-          contacts</div>
+        <div class="mb-2 mb-xs-0" i18n>Additional contacts</div>
         <div class="section-title-action">
           <button *ngIf="canCreateContactInfo" class="btn btn-outline-primary"
             (click)="addContactInfo()" i18n>Add contact</button>

@@ -41,6 +41,7 @@ export class ConfirmationPasswordComponent extends BaseControlComponent<string> 
   }
 
   ngOnInit() {
+    super.ngOnInit();
     this.canConfirm = ApiHelper.canConfirm(this.passwordInput);
     this.confirmationMessage = ApiHelper.getConfirmationMessage(this.passwordInput, this.i18n);
   }

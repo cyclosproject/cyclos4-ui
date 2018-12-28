@@ -69,7 +69,7 @@
       </form>
 
       <!-- Account status -->
-      <div *ngIf="status$ | async as account" [ngClass]="{
+      <div *ngIf="status$ | async as account" class="py-md-3" [ngClass]="{
           'py-3': layout.gtsm$ | async,
           'pt-ls': (layout.ltmd$ | async) && (moreFilters$ | async)
         }">

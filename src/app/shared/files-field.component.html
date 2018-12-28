@@ -8,23 +8,24 @@
       'is-invalid': (formControl.statusChanges | async) === 'INVALID' && formControl.touched
     }"></div>
 
-  <div class="d-flex">
-    <div class="pt-2 flex-grow-1" [ngClass]="{'mb-2': layout.xxs$ | async}">
+  <div class="d-flex flex-column flex-xs-row">
+    <div class="flex-grow-1 mb-2 mb-xs-0">
       <ng-container *ngIf="files.length === 0 && maxFiles === 1" i18n>
         No file
       </ng-container>
       <ng-container *ngIf="files.length === 0 && maxFiles > 1" i18n>
         No files
       </ng-container>
-      <ng-container *ngFor="let file of files; let last = last;">
+      <div class="text-truncate" *ngFor="let file of files; let last = last;">
         <a [href]="appendAuth(file.url)" [type]="file.contentType" target="_blank"
-          (click)="downloadFile($event, file)" [download]="file.name">
-          {{ file.name }}
-        </a>
-        <ng-container *ngIf="!last">, <br></ng-container>
-      </ng-container>
+          (click)="downloadFile($event, file)" [download]="file.name">{{
+          file.name
+          }}</a>{{
+        last ? '' : ','
+        }}
+      </div>
     </div>
-    <div class="d-flex ml-2">
+    <div class="d-flex ml-xs-2">
       <button *ngIf="maxFiles === 1 || files.length < maxFiles" class="btn btn-light btn-icon d-flex align-content-center"
         i18n-tooltip tooltip="Upload a new file" (click)="fileUpload.perform()">
         <icon icon="cloud_upload"></icon>

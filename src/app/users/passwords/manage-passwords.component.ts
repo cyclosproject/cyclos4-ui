@@ -123,10 +123,9 @@ export class ManagePasswordsComponent
   private generate(password: PasswordStatusAndActions) {
     this.notification.confirm({
       title: this.i18n('Activate'),
-      message: this.i18n(`This will activate your {{name}}, and the generated value will be displayed only once.
-        <br>Are you sure?`, {
-          name: password.type.name
-        }),
+      message: this.i18n(`This will activate your {{name}}, and the generated value will be displayed only once. Are you sure?`, {
+        name: password.type.name
+      }),
       callback: () => this.doGenerate(password)
     });
   }
@@ -145,10 +144,9 @@ export class ManagePasswordsComponent
   private changeGenerated(password: PasswordStatusAndActions) {
     this.notification.confirm({
       title: this.i18n('Change'),
-      message: this.i18n(`This will generate a new {{name}}, and the value will be displayed only once.
-        <br>Are you sure?`, {
-          name: password.type.name
-        }),
+      message: this.i18n(`This will generate a new {{name}}, and the value will be displayed only once. Are you sure?`, {
+        name: password.type.name
+      }),
       passwordInput: this.data.confirmationPasswordInput,
       callback: res => this.doChangeGenerated(password, res.confirmationPassword)
     });
