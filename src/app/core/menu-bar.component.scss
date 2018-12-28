@@ -97,3 +97,9 @@ a.active {
 .logout a {
   padding: 0 0.5rem;
 }
+
+@media print {
+  :host {
+    display: none;
+  }
+}

@@ -90,3 +90,9 @@ a:hover {
     margin-left: 0;
   }
 }
+
+@media print {
+  :host {
+    display: none;
+  }
+}

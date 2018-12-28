@@ -16,12 +16,12 @@
 
   <ng-container *ngFor="let pt of data.passwordTypes; let i = index">
     <h2>{{ pt.name }}</h2>
-    <div class="d-flex flex-column" [formGroup]="passwordForm(i)">
+    <ng-container [formGroup]="passwordForm(i)">
       <div *ngIf="pt.description" class="mb-2">{{ pt.description }}</div>
       <input-field required formControlName="value" type="password" [label]="pt.name"></input-field>
       <input-field required formControlName="confirmationValue" type="password"
         i18n-label label="{{pt.name}} confirmation"></input-field>
-    </div>
+    </ng-container>
   </ng-container>
 
   <ng-container *ngIf="data.securityQuestions?.length > 0">

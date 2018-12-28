@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, Output, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
+import { FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { ChangePassword, PasswordType } from 'app/api/models';
 import { PasswordsService } from 'app/api/services';
 import { ApiHelper } from 'app/shared/api-helper';
