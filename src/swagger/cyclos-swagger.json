@@ -22405,7 +22405,7 @@
     },
     "OperationPageContextEnum" : {
       "type" : "string",
-      "description" : "The context an operation with `resultType` is `$enum:OperationResultTypeEnum.resultPage` runs Possible values are:\n* csv: Export results as Comma-Separated-Values (CSV)\n* page: Normal search, returning the data as rows in the result\n* pdf: Export results as printable PDF\n",
+      "description" : "The context an operation with `resultType` is `resultPage` runs Possible values are:\n* csv: Export results as Comma-Separated-Values (CSV)\n* page: Normal search, returning the data as rows in the result\n* pdf: Export results as printable PDF\n",
       "enum" : [ "csv", "page", "pdf" ]
     },
     "OperationResultTypeEnum" : {
