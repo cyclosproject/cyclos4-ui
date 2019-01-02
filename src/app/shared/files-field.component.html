@@ -10,11 +10,8 @@
 
   <div class="d-flex flex-column flex-xs-row">
     <div class="flex-grow-1 mb-2 mb-xs-0">
-      <ng-container *ngIf="files.length === 0 && maxFiles === 1" i18n>
-        No file
-      </ng-container>
-      <ng-container *ngIf="files.length === 0 && maxFiles > 1" i18n>
-        No files
+      <ng-container *ngIf="files.length === 0" i18n>
+        {maxFiles, plural, =1 {No file} other {No files}}
       </ng-container>
       <div class="text-truncate" *ngFor="let file of files; let last = last;">
         <a [href]="appendAuth(file.url)" [type]="file.contentType" target="_blank"

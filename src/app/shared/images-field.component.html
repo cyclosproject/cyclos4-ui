@@ -10,11 +10,8 @@
 
   <div class="d-flex flex-column flex-xs-row">
     <div class="d-flex flex-wrap flex-grow-1 pt-2 mb-2 mb-xs-0">
-      <ng-container *ngIf="images.length === 0 && maxFiles === 1" i18n>
-        No image
-      </ng-container>
-      <ng-container *ngIf="images.length === 0 && maxFiles > 1" i18n>
-        No images
+      <ng-container *ngIf="images.length === 0" i18n>
+        {maxFiles, plural, =1 {No image} other {No images}}
       </ng-container>
       <avatar class="d-block mr-1" *ngFor="let img of images" [size]="avatarSize"
         useLightbox [image]="img" [additionalImages]="images"
