@@ -2,9 +2,10 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { I18n } from '@ngx-translate/i18n-polyfill';
 import { CustomFieldDetailed, PasswordInput } from 'app/api/models';
+import { AuthHelperService } from 'app/core/auth-helper.service';
+import { FieldHelperService } from 'app/core/field-helper.service';
 import { NextRequestState } from 'app/core/next-request-state';
 import { ConfirmCallbackParams } from 'app/core/notification.service';
-import { ApiHelper } from 'app/shared/api-helper';
 import { FieldLabelPosition } from 'app/shared/base-form-field.component';
 import { blank, empty, validateBeforeSubmit } from 'app/shared/helper';
 import { BsModalRef } from 'ngx-bootstrap/modal';
@@ -39,6 +40,8 @@ export class ConfirmationComponent implements OnInit {
     private i18n: I18n,
     public modalRef: BsModalRef,
     private formBuilder: FormBuilder,
+    private fieldHelper: FieldHelperService,
+    private authHelper: AuthHelperService,
     nextRequestState: NextRequestState
   ) {
     this.requesting$ = nextRequestState.requesting$;
@@ -50,10 +53,10 @@ export class ConfirmationComponent implements OnInit {
       this.form.setControl('confirmationPassword', this.formBuilder.control(null, Validators.required));
       this.hasForm = true;
     }
-    this.canConfirm = ApiHelper.canConfirm(this.passwordInput);
+    this.canConfirm = this.authHelper.canConfirm(this.passwordInput);
     this.hasFields = !empty(this.customFields);
     if (this.hasFields) {
-      this.form.setControl('customValues', ApiHelper.customValuesFormGroup(this.formBuilder, this.customFields));
+      this.form.setControl('customValues', this.fieldHelper.customValuesFormGroup(this.customFields));
       this.hasForm = true;
     }
     if (blank(this.cancelLabel)) {

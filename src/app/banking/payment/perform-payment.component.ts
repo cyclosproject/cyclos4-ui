@@ -13,6 +13,9 @@ import { Menu } from 'app/shared/menu';
 import { cloneDeep, isEqual } from 'lodash';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { FormControlLocator } from 'app/shared/form-control-locator';
+import { I18n } from '@ngx-translate/i18n-polyfill';
+import { AuthHelperService } from 'app/core/auth-helper.service';
+import { BankingHelperService } from 'app/core/banking-helper.service';
 
 export type PaymentStep = 'form' | 'confirm' | 'done';
 
@@ -120,9 +123,12 @@ export class PerformPaymentComponent extends BasePageComponent<DataForTransactio
 
   constructor(
     injector: Injector,
+    i18n: I18n,
+    private authHelper: AuthHelperService,
+    private bankingHelper: BankingHelperService,
     private paymentsService: PaymentsService,
     private changeDetector: ChangeDetectorRef) {
-    super(injector);
+    super(injector, i18n);
   }
 
   ngOnInit() {
@@ -296,9 +302,9 @@ export class PerformPaymentComponent extends BasePageComponent<DataForTransactio
     this.addSub(this.confirmDataRequest().subscribe(preview => {
       this.preview = preview;
       this.step = 'confirm';
-      this.canConfirm = ApiHelper.canConfirm(preview.confirmationPasswordInput);
+      this.canConfirm = this.authHelper.canConfirm(preview.confirmationPasswordInput);
       if (!this.canConfirm) {
-        this.notification.warning(ApiHelper.getConfirmationMessage(preview.confirmationPasswordInput, this.i18n));
+        this.notification.warning(this.authHelper.getConfirmationMessage(preview.confirmationPasswordInput));
       }
       const val = preview.confirmationPasswordInput ? Validators.required : null;
       this.confirmationPassword.setValidators(val);
@@ -371,7 +377,7 @@ export class PerformPaymentComponent extends BasePageComponent<DataForTransactio
   }
 
   viewPerformed() {
-    this.router.navigate(['banking', 'transaction', ApiHelper.transactionNumberOrId(this.performed)]);
+    this.router.navigate(['banking', 'transaction', this.bankingHelper.transactionNumberOrId(this.performed)]);
   }
 
   reload() {

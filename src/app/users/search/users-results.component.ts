@@ -5,6 +5,7 @@ import { PageData } from 'app/shared/page-data';
 import { PagedResults } from 'app/shared/paged-results';
 import { ResultType } from 'app/shared/result-type';
 import { BehaviorSubject } from 'rxjs';
+import { I18n } from '@ngx-translate/i18n-polyfill';
 
 const MAX_COLUMNS = 7;
 const MAX_TILE_FIELDS = 2;
@@ -48,7 +49,8 @@ export class UsersResultsComponent extends BaseComponent implements OnInit {
   canViewProfile: boolean;
 
   constructor(
-    injector: Injector
+    injector: Injector,
+    private i18n: I18n
   ) {
     super(injector);
   }
@@ -65,7 +67,7 @@ export class UsersResultsComponent extends BaseComponent implements OnInit {
    * Returns the user displayed for the given result row
    * @param row The result from the search
    */
-  user(row): User {
+  user(row: any): User {
     if (this.resultKind === 'contact') {
       return (row as ContactResult).contact;
     }
@@ -76,7 +78,7 @@ export class UsersResultsComponent extends BaseComponent implements OnInit {
    * Returns a function that formats the user
    */
   displayFunction(): Function {
-    return row => {
+    return (row: any) => {
       const user = this.user(row);
       if (user.display) {
         return user.display;
@@ -95,7 +97,7 @@ export class UsersResultsComponent extends BaseComponent implements OnInit {
    * Returns the custom values holder for the given result row
    * @param row The result from the search
    */
-  customValues(row): any {
+  customValues(row: any): any {
     if (row == null) {
       return null;
     }
@@ -109,7 +111,7 @@ export class UsersResultsComponent extends BaseComponent implements OnInit {
    * Returns the address displayed for the given result row
    * @param row The result from the search
    */
-  address(row): Address {
+  address(row: any): Address {
     if (this.resultKind === 'contact') {
       return null;
     }

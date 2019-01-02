@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Host, Input, Optional, SkipSelf, ViewChild } from '@angular/core';
 import { ControlContainer, NG_VALIDATORS, NG_VALUE_ACCESSOR, Validator } from '@angular/forms';
 import { CustomFieldDetailed, CustomFieldTypeEnum, LinkedEntityTypeEnum } from 'app/api/models';
-import { FormatService } from 'app/core/format.service';
+import { FieldHelperService } from 'app/core/field-helper.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { FieldOption } from 'app/shared/field-option';
@@ -38,6 +38,7 @@ export class CustomFieldFilterComponent extends BaseFormFieldComponent<string> i
     if (field) {
       this.type = this.field.type;
       this.linkedEntityType = this.field.linkedEntityType;
+      this.fieldOptions = this.fieldHelper.fieldOptions(field);
 
       // Set the BaseFormField inputs
       this._id = field.internalName;
@@ -52,6 +53,7 @@ export class CustomFieldFilterComponent extends BaseFormFieldComponent<string> i
 
   type: CustomFieldTypeEnum;
   linkedEntityType: LinkedEntityTypeEnum;
+  fieldOptions: FieldOption[];
 
   @ViewChild('inputField') inputField: InputFieldComponent;
   @ViewChild('multiSelectionField') multiSelectionField: MultiSelectionFieldComponent;
@@ -71,7 +73,7 @@ export class CustomFieldFilterComponent extends BaseFormFieldComponent<string> i
 
   constructor(
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
-    private format: FormatService
+    private fieldHelper: FieldHelperService
   ) {
     super(controlContainer);
   }
@@ -102,10 +104,6 @@ export class CustomFieldFilterComponent extends BaseFormFieldComponent<string> i
   get hasValuesList(): boolean {
     // Don't handle enumerated as with values list because they are already rendered correctly, and have categories
     return this.field.hasValuesList && !this.enumerated;
-  }
-
-  get fieldOptions(): FieldOption[] {
-    return ApiHelper.fieldOptions(this.field, this.format);
   }
 
   // Validator methods

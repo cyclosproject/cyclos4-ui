@@ -6,6 +6,7 @@ import { DashboardResolver } from 'app/content/dashboard-resolver';
 import { BasePageComponent, UpdateTitleFrom } from 'app/shared/base-page.component';
 import { environment } from 'environments/environment';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { I18n } from '@ngx-translate/i18n-polyfill';
 
 export const GUTTER = 20;
 
@@ -29,8 +30,10 @@ export class HomeComponent extends BasePageComponent<void> implements OnInit {
   fullConfigs$ = new BehaviorSubject<DashboardItemConfig[]>(null);
   resolver: DashboardItemConfig[] | DashboardResolver;
 
-  constructor(private injector: Injector) {
-    super(injector);
+  constructor(
+    private injector: Injector,
+    i18n: I18n) {
+    super(injector, i18n);
   }
 
   ngOnInit() {

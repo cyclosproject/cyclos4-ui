@@ -8,6 +8,8 @@ import { ApiHelper } from 'app/shared/api-helper';
 import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { I18n } from '@ngx-translate/i18n-polyfill';
+import { BankingHelperService } from 'app/core/banking-helper.service';
 
 
 /**
@@ -27,9 +29,11 @@ export class AccountHistoryComponent
 
   constructor(
     injector: Injector,
-    private accountsService: AccountsService
+    i18n: I18n,
+    private accountsService: AccountsService,
+    private bankingHelper: BankingHelperService
   ) {
-    super(injector);
+    super(injector, i18n);
   }
 
   get type(): EntityReference {
@@ -99,7 +103,7 @@ export class AccountHistoryComponent
     ).subscribe(data => {
       this.menu.setActiveAccountTypeId(data.account.type.id);
 
-      ApiHelper.preProcessPreselectedPeriods(data, this.form);
+      this.bankingHelper.preProcessPreselectedPeriods(data, this.form);
 
       // Set the heading action
       this.printable = true;
@@ -121,7 +125,7 @@ export class AccountHistoryComponent
       owner: ApiHelper.SELF, accountType: this.typeId,
       page: value.page, pageSize: value.pageSize,
       transferFilters: filter == null ? [] : [filter.id],
-      datePeriod: ApiHelper.resolveDatePeriod(value),
+      datePeriod: this.bankingHelper.resolveDatePeriod(value),
       amountRange: ApiHelper.rangeFilter(value.minAmount, value.maxAmount),
       user: value.user,
       by: value.by,
@@ -147,7 +151,7 @@ export class AccountHistoryComponent
   }
 
   subjectName(row: AccountHistoryResult): string {
-    return ApiHelper.subjectName(row, this.format);
+    return this.bankingHelper.subjectName(row);
   }
 
   /**
@@ -155,7 +159,7 @@ export class AccountHistoryComponent
    * @param row The row
    */
   path(row: AccountHistoryResult): string[] {
-    return ['/banking', 'transfer', ApiHelper.transactionNumberOrId(row)];
+    return ['/banking', 'transfer', this.bankingHelper.transactionNumberOrId(row)];
   }
 
   /**

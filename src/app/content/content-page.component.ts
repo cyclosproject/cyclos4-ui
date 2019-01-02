@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { ContentPage } from 'app/content/content-page';
 import { BasePageComponent } from 'app/shared/base-page.component';
+import { I18n } from '@ngx-translate/i18n-polyfill';
 
 /**
  * Displays a content page with layout
@@ -17,8 +18,9 @@ export class ContentPageComponent extends BasePageComponent<ContentPage> impleme
   }
 
   constructor(
-    injector: Injector) {
-    super(injector);
+    injector: Injector,
+    i18n: I18n) {
+    super(injector, i18n);
   }
 
   ngOnInit() {

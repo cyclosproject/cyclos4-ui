@@ -5,6 +5,7 @@ import { AuthService } from 'app/api/services';
 import { LoginState } from 'app/core/login-state';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { validateBeforeSubmit } from 'app/shared/helper';
+import { I18n } from '@ngx-translate/i18n-polyfill';
 
 /** Validator function that ensures password and confirmation match */
 const PASSWORDS_MATCH_VAL: ValidatorFn = control => {
@@ -37,10 +38,11 @@ export class ChangeForgottenPasswordComponent
 
   constructor(
     injector: Injector,
+    i18n: I18n,
     private authService: AuthService,
     private loginState: LoginState
   ) {
-    super(injector);
+    super(injector, i18n);
     this.form = this.formBuilder.group({
       key: ['', Validators.required]
     });

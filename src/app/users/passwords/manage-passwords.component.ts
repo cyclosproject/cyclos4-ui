@@ -7,6 +7,7 @@ import { BasePageComponent } from 'app/shared/base-page.component';
 import { ChangePasswordDialogComponent } from 'app/users/passwords/change-password-dialog.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BehaviorSubject } from 'rxjs';
+import { I18n } from '@ngx-translate/i18n-polyfill';
 
 
 /**
@@ -27,9 +28,10 @@ export class ManagePasswordsComponent
 
   constructor(
     injector: Injector,
+    i18n: I18n,
     private modal: BsModalService,
     private passwordsService: PasswordsService) {
-    super(injector);
+    super(injector, i18n);
   }
 
   ngOnInit() {

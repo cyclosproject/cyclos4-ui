@@ -1,7 +1,6 @@
 import { Injector, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { I18n } from '@ngx-translate/i18n-polyfill';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
 import { FormatService } from 'app/core/format.service';
@@ -26,7 +25,6 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
   // Export ApiHelper to templates
   ApiHelper = ApiHelper;
 
-  i18n: I18n;
   dataForUiHolder: DataForUiHolder;
   format: FormatService;
   errorHandler: ErrorHandlerService;
@@ -47,7 +45,6 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
 
   constructor(injector: Injector) {
     this.dataForUiHolder = injector.get(DataForUiHolder);
-    this.i18n = injector.get(I18n);
     this.format = injector.get(FormatService);
     this.errorHandler = injector.get(ErrorHandlerService);
     this.login = injector.get(LoginService);

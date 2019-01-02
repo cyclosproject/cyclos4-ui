@@ -11,6 +11,7 @@ import { ResultType } from 'app/shared/result-type';
 import { isEqual } from 'lodash';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import { I18n } from '@ngx-translate/i18n-polyfill';
 
 /**
  * Base class implemented by search pages.
@@ -146,8 +147,8 @@ export abstract class BaseSearchPageComponent<D, R> extends BasePageComponent<D>
     this.resultTypeControl.setValue(resultType);
   }
 
-  constructor(injector: Injector) {
-    super(injector);
+  constructor(injector: Injector, i18n: I18n) {
+    super(injector, i18n);
     const controls: any = {};
     controls.page = 0;
     controls.pageSize = null;

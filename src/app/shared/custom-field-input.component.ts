@@ -1,7 +1,10 @@
 import { ChangeDetectionStrategy, Component, Host, Input, OnInit, Optional, SkipSelf, ViewChild } from '@angular/core';
 import { AbstractControl, ControlContainer, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator } from '@angular/forms';
-import { CustomFieldBinaryValues, CustomFieldControlEnum, CustomFieldDetailed, CustomFieldTypeEnum, LinkedEntityTypeEnum } from 'app/api/models';
-import { FormatService } from 'app/core/format.service';
+import {
+  CustomFieldBinaryValues, CustomFieldControlEnum, CustomFieldDetailed,
+  CustomFieldTypeEnum, LinkedEntityTypeEnum
+} from 'app/api/models';
+import { FieldHelperService } from 'app/core/field-helper.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { BooleanFieldComponent } from 'app/shared/boolean-field.component';
@@ -47,6 +50,7 @@ export class CustomFieldInputComponent extends BaseFormFieldComponent<string> im
       this.type = this.field.type;
       this.control = this.field.control;
       this.linkedEntityType = this.type === CustomFieldTypeEnum.LINKED_ENTITY ? this.field.linkedEntityType : null;
+      this.fieldOptions = this.fieldHelper.fieldOptions(field);
 
       // Set the BaseFormField inputs
       this._id = field.internalName;
@@ -54,7 +58,7 @@ export class CustomFieldInputComponent extends BaseFormFieldComponent<string> im
       if (!this.hideLabel) {
         this.label = field.name;
       }
-      this.fieldSize = ApiHelper.fieldSize(field);
+      this.fieldSize = this.fieldHelper.fieldSize(field);
       this.required = field.required;
     }
   }
@@ -63,6 +67,7 @@ export class CustomFieldInputComponent extends BaseFormFieldComponent<string> im
   type: CustomFieldTypeEnum;
   linkedEntityType: LinkedEntityTypeEnum;
   control: CustomFieldControlEnum;
+  fieldOptions: FieldOption[];
 
   disabledValueObject: any;
 
@@ -94,7 +99,7 @@ export class CustomFieldInputComponent extends BaseFormFieldComponent<string> im
 
   constructor(
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
-    private format: FormatService
+    private fieldHelper: FieldHelperService
   ) {
     super(controlContainer);
   }
@@ -128,10 +133,6 @@ export class CustomFieldInputComponent extends BaseFormFieldComponent<string> im
   get hasValuesList(): boolean {
     // Don't handle enumerated as with values list because they are already rendered correctly, and have categories
     return this.field.hasValuesList && !ENUMERATED.includes(this.type);
-  }
-
-  get fieldOptions(): FieldOption[] {
-    return ApiHelper.fieldOptions(this.field, this.format);
   }
 
   get valueAsArray(): string[] {

@@ -1,11 +1,15 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { I18n } from '@ngx-translate/i18n-polyfill';
 import {
   AddressManage, AvailabilityEnum, ContactInfoManage, CustomField,
   CustomFieldDetailed, DataForEditFullProfile, FullProfileEdit, Image,
   PhoneEditWithId, PhoneKind, PhoneManage
 } from 'app/api/models';
 import { ImagesService, PhonesService, UsersService } from 'app/api/services';
+import { AddressHelperService } from 'app/core/address-helper.service';
+import { AuthHelperService } from 'app/core/auth-helper.service';
+import { FieldHelperService } from 'app/core/field-helper.service';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BasePageComponent } from 'app/shared/base-page.component';
@@ -85,12 +89,16 @@ export class EditProfileComponent
 
   constructor(
     injector: Injector,
+    i18n: I18n,
+    private authHelper: AuthHelperService,
+    private fieldHelper: FieldHelperService,
     private usersService: UsersService,
     private imagesService: ImagesService,
     private phonesService: PhonesService,
+    private addressHelper: AddressHelperService,
     private modal: BsModalService,
     private changeDetector: ChangeDetectorRef) {
-    super(injector);
+    super(injector, i18n);
   }
 
   ngOnInit() {
@@ -117,9 +125,9 @@ export class EditProfileComponent
       this.initialize(data);
 
       // Handle the case that the confirmation password cannot be used
-      this.canConfirm = ApiHelper.canConfirm(data.confirmationPasswordInput);
+      this.canConfirm = this.authHelper.canConfirm(data.confirmationPasswordInput);
       if (!this.canConfirm) {
-        this.notification.warning(ApiHelper.getConfirmationMessage(data.confirmationPasswordInput, this.i18n));
+        this.notification.warning(this.authHelper.getConfirmationMessage(data.confirmationPasswordInput));
         this.router.navigate(['users', 'my-profile']);
       }
 
@@ -447,7 +455,7 @@ export class EditProfileComponent
       }
     }
     // Set the custom fields control
-    form.setControl('customValues', ApiHelper.customValuesFormGroup(this.formBuilder, data.customFields, {
+    form.setControl('customValues', this.fieldHelper.customValuesFormGroup(data.customFields, {
       currentValues: user.customValues,
       disabledProvider: cf => !this.canEdit(cf.internalName)
     }));
@@ -500,7 +508,7 @@ export class EditProfileComponent
 
   private buildAddressForm(address: AddressManage): FormGroup {
     const data = this.data.addressConfiguration;
-    const form = ApiHelper.addressFormGroup(data, this.formBuilder);
+    const form = this.addressHelper.addressFormGroup(data);
     this.stampDataAndInitForm(address, form);
     for (const field of data.enabledFields) {
       let previous = address[field] || null;
@@ -528,7 +536,7 @@ export class EditProfileComponent
       landLineExtension: null,
       address: null
     });
-    form.setControl('customValues', ApiHelper.customValuesFormGroup(this.formBuilder, data.customFields));
+    form.setControl('customValues', this.fieldHelper.customValuesFormGroup(data.customFields));
     this.stampDataAndInitForm(contactInfo, form);
     return form;
   }
@@ -819,7 +827,7 @@ export class EditProfileComponent
   }
 
   fieldSize(cf: CustomFieldDetailed) {
-    return ApiHelper.fieldSize(cf);
+    return this.fieldHelper.fieldSize(cf);
   }
 
   locateAddress(addressForm: FormGroup) {

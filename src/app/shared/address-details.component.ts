@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, Injector, Input } from '@angular/co
 import { AddressView } from 'app/api/models';
 import { CountriesResolve } from 'app/countries.resolve';
 import { BaseComponent } from 'app/shared/base.component';
+import { AddressHelperService } from 'app/core/address-helper.service';
 
 /**
  * Component used to show the details of an address
@@ -14,6 +15,7 @@ import { BaseComponent } from 'app/shared/base.component';
 export class AddressDetailsComponent extends BaseComponent {
   constructor(
     injector: Injector,
+    public addressHelper: AddressHelperService,
     public countriesResolve: CountriesResolve
   ) {
     super(injector);

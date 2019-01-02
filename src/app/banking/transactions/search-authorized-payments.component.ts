@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
+import { I18n } from '@ngx-translate/i18n-polyfill';
 import { TransactionAuthorizationStatusEnum, TransactionKind } from 'app/api/models';
 import { TransactionsService } from 'app/api/services';
 import { BaseTransactionsSearch } from 'app/banking/transactions/base-transactions-search.component';
-import { TransactionStatusService } from 'app/core/transaction-status.service';
 import { FieldOption } from 'app/shared/field-option';
 
 /**
@@ -18,10 +18,9 @@ export class SearchAuthorizedPaymentsComponent
 
   constructor(
     injector: Injector,
-    transactionsService: TransactionsService,
-    transactionStatusService: TransactionStatusService
+    i18n: I18n
   ) {
-    super(injector, transactionsService, transactionStatusService);
+    super(injector, i18n);
   }
 
   getKinds() {

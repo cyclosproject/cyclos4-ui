@@ -6,6 +6,8 @@ import { BaseDashboardComponent } from 'app/home/dashboard/base-dashboard.compon
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BehaviorSubject } from 'rxjs';
+import { I18n } from '@ngx-translate/i18n-polyfill';
+import { BankingHelperService } from 'app/core/banking-helper.service';
 
 /**
  * Displays the status of an account.
@@ -30,6 +32,8 @@ export class AccountStatusComponent extends BaseDashboardComponent implements On
   balance: string;
 
   constructor(injector: Injector,
+    private i18n: I18n,
+    private bankingHelper: BankingHelperService,
     private accountsService: AccountsService) {
     super(injector);
   }
@@ -88,11 +92,11 @@ export class AccountStatusComponent extends BaseDashboardComponent implements On
   }
 
   subjectName(row: AccountHistoryResult): string {
-    return ApiHelper.subjectName(row, this.format);
+    return this.bankingHelper.subjectName(row);
   }
 
   viewTransfer(row: AccountHistoryResult) {
     this.menu.setActiveAccountTypeId(this.account.type.id);
-    this.router.navigate(['/banking', 'transfer', ApiHelper.transactionNumberOrId(row)]);
+    this.router.navigate(['/banking', 'transfer', this.bankingHelper.transactionNumberOrId(row)]);
   }
 }

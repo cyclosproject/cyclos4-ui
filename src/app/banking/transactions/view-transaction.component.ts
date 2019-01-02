@@ -12,6 +12,7 @@ import { TransactionStatusService } from 'app/core/transaction-status.service';
 import { HeadingAction } from 'app/shared/action';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { empty } from 'app/shared/helper';
+import { I18n } from '@ngx-translate/i18n-polyfill';
 
 
 /**
@@ -32,6 +33,7 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
 
   constructor(
     injector: Injector,
+    i18n: I18n,
     private transactionsService: TransactionsService,
     private transactionStatusService: TransactionStatusService,
     private pendingPaymentsService: PendingPaymentsService,
@@ -39,7 +41,7 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
     private recurringPaymentsService: RecurringPaymentsService,
     private transfersService: TransfersService
   ) {
-    super(injector);
+    super(injector, i18n);
   }
 
   get status(): string {

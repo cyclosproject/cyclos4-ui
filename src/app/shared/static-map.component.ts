@@ -4,9 +4,9 @@ import {
 } from '@angular/core';
 import { Address } from 'app/api/models';
 import { MapsService } from 'app/core/maps.service';
-import { ApiHelper } from 'app/shared/api-helper';
 import { LayoutService } from 'app/shared/layout.service';
 import { Subscription } from 'rxjs';
+import { AddressHelperService } from 'app/core/address-helper.service';
 
 /**
  * Shows a static image for an address location
@@ -38,11 +38,12 @@ export class StaticMapComponent implements OnInit, OnDestroy, AfterViewInit {
     private maps: MapsService,
     private el: ElementRef,
     private cd: ChangeDetectorRef,
+    private addressHelper: AddressHelperService,
     private layout: LayoutService) {
   }
 
   ngOnInit() {
-    this.title = this.address.addressLine1 || ApiHelper.addressStreet(this.address);
+    this.title = this.address.addressLine1 || this.addressHelper.addressStreet(this.address);
     this.externalUrl = this.maps.externalUrl(this.address);
     this.widthWasAuto = this.width === 'auto';
     this.heightWasAuto = this.height === 'auto';

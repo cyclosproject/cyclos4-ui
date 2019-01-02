@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { ScheduledPaymentStatusEnum, TransactionKind, RecurringPaymentStatusEnum } from 'app/api/models';
+import { I18n } from '@ngx-translate/i18n-polyfill';
+import { RecurringPaymentStatusEnum, ScheduledPaymentStatusEnum, TransactionKind } from 'app/api/models';
 import { TransactionsService } from 'app/api/services';
 import { BaseTransactionsSearch } from 'app/banking/transactions/base-transactions-search.component';
-import { TransactionStatusService } from 'app/core/transaction-status.service';
 
 /**
  * Search for scheduled payments
@@ -17,10 +17,9 @@ export class SearchScheduledPaymentsComponent
 
   constructor(
     injector: Injector,
-    transactionsService: TransactionsService,
-    transactionStatusService: TransactionStatusService
+    i18n: I18n
   ) {
-    super(injector, transactionsService, transactionStatusService);
+    super(injector, i18n);
   }
 
   ngOnInit() {

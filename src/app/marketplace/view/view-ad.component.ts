@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/c
 import { AdCategoryWithParent, AdView } from 'app/api/models';
 import { MarketplaceService } from 'app/api/services';
 import { BasePageComponent } from 'app/shared/base-page.component';
+import { I18n } from '@ngx-translate/i18n-polyfill';
 
 
 /**
@@ -17,8 +18,9 @@ export class ViewAdComponent extends BasePageComponent<AdView> implements OnInit
 
   constructor(
     injector: Injector,
+    i18n: I18n,
     private marketplaceService: MarketplaceService) {
-    super(injector);
+    super(injector, i18n);
   }
 
   get ad(): AdView {

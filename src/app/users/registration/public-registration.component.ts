@@ -10,6 +10,9 @@ import { BasePageComponent } from 'app/shared/base-page.component';
 import { blank, copyProperties, empty, focusFirstField, scrollTop, validateBeforeSubmit } from 'app/shared/helper';
 import { BehaviorSubject, Observable, of, Subscription, timer } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
+import { I18n } from '@ngx-translate/i18n-polyfill';
+import { FieldHelperService } from 'app/core/field-helper.service';
+import { AuthHelperService } from 'app/core/auth-helper.service';
 
 export type RegistrationStep = 'group' | 'fields' | 'confirm' | 'done';
 
@@ -85,9 +88,12 @@ export class PublicRegistrationComponent
 
   constructor(
     injector: Injector,
+    i18n: I18n,
+    private fieldHelper: FieldHelperService,
+    private authHelper: AuthHelperService,
     private usersService: UsersService,
     private imagesService: ImagesService) {
-    super(injector);
+    super(injector, i18n);
   }
 
   get groups(): GroupForRegistration[] {
@@ -184,7 +190,7 @@ export class PublicRegistrationComponent
 
     // Custom fields
     this.form.setControl('customValues',
-      ApiHelper.customValuesFormGroup(this.formBuilder, data.customFields, {
+      this.fieldHelper.customValuesFormGroup(data.customFields, {
         asyncValProvider: cf => this.serverSideValidator(cf.internalName)
       }));
 
@@ -339,7 +345,7 @@ export class PublicRegistrationComponent
 
     // Captcha
     if (data.captchaType != null) {
-      this.confirmForm.setControl('captcha', ApiHelper.captchaFormGroup(this.formBuilder));
+      this.confirmForm.setControl('captcha', this.authHelper.captchaFormGroup());
     }
 
     this.step = 'confirm';

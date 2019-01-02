@@ -14,6 +14,7 @@ import { blank, empty } from 'app/shared/helper';
 import { UserFieldComponent } from 'app/shared/user-field.component';
 import { BehaviorSubject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { I18n } from '@ngx-translate/i18n-polyfill';
 
 
 const IGNORED_STATUSES = [ErrorStatus.FORBIDDEN, ErrorStatus.UNAUTHORIZED, ErrorStatus.NOT_FOUND];
@@ -51,6 +52,7 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
 
   constructor(
     injector: Injector,
+    private i18n: I18n,
     private paymentsService: PaymentsService) {
     super(injector);
   }

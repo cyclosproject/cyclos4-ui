@@ -1,9 +1,9 @@
-import { Component, ChangeDetectionStrategy, Injector, Input, OnInit } from '@angular/core';
-
-import { TransferView, Transfer } from 'app/api/models';
+import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
+import { Transfer, TransferView } from 'app/api/models';
+import { BankingHelperService } from 'app/core/banking-helper.service';
 import { BaseComponent } from 'app/shared/base.component';
-import { ApiHelper } from 'app/shared/api-helper';
 import { empty } from 'app/shared/helper';
+
 
 /**
  * Displays fields of a transfer or payment
@@ -19,7 +19,8 @@ export class TransferDetailsComponent extends BaseComponent implements OnInit {
   lastAuthComment: string;
 
   constructor(
-    injector: Injector) {
+    injector: Injector,
+    private bankingHelper: BankingHelperService) {
     super(injector);
   }
 
@@ -32,6 +33,6 @@ export class TransferDetailsComponent extends BaseComponent implements OnInit {
   }
 
   path(transfer: Transfer): string[] {
-    return ['/banking', 'transfer', ApiHelper.transactionNumberOrId(transfer)];
+    return ['/banking', 'transfer', this.bankingHelper.transactionNumberOrId(transfer)];
   }
 }

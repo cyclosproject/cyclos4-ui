@@ -9,6 +9,7 @@ import { blank, empty } from 'app/shared/helper';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { InputFieldComponent } from 'app/shared/input-field.component';
 import { RegistrationAgreementsComponent } from 'app/login/registration-agreements.component';
+import { I18n } from '@ngx-translate/i18n-polyfill';
 
 /**
  * Public registration step: confirmation
@@ -36,6 +37,7 @@ export class RegistrationStepConfirmComponent
 
   constructor(
     injector: Injector,
+    private i18n: I18n,
     private modal: BsModalService) {
     super(injector);
   }

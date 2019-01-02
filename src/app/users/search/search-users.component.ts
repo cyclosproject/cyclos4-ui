@@ -1,15 +1,16 @@
-import { Component, ChangeDetectionStrategy, Injector, OnInit } from '@angular/core';
-
-import { UsersService } from 'app/api/services';
-import { UserDataForSearch, UserDataForMap, Country, CustomFieldDetailed } from 'app/api/models';
+import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
+import { I18n } from '@ngx-translate/i18n-polyfill';
+import { Country, CustomFieldDetailed, UserDataForMap, UserDataForSearch } from 'app/api/models';
 import { UserResult } from 'app/api/models/user-result';
-import { ResultType } from 'app/shared/result-type';
-import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
+import { UsersService } from 'app/api/services';
+import { FieldHelperService } from 'app/core/field-helper.service';
 import { CountriesResolve } from 'app/countries.resolve';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { empty } from 'app/shared/helper';
-import { ApiHelper } from 'app/shared/api-helper';
+import { ResultType } from 'app/shared/result-type';
 import { cloneDeep } from 'lodash';
+import { BehaviorSubject, Observable } from 'rxjs';
+
 
 /**
  * Search for users
@@ -39,10 +40,12 @@ export class SearchUsersComponent
 
   constructor(
     injector: Injector,
+    i18n: I18n,
+    private fieldHelper: FieldHelperService,
     private usersService: UsersService,
     countriesResolve: CountriesResolve
   ) {
-    super(injector);
+    super(injector, i18n);
 
     // Get the permissions to search users and view map directory
     const permissions = this.login.permissions || {};
@@ -107,7 +110,7 @@ export class SearchUsersComponent
       const fieldsInSearch = data.customFields.filter(cf => data.fieldsInSearch.includes(cf.internalName));
       // See the comment on ignoreNextUpdate
       this.ignoreNextUpdate = true;
-      this.form.setControl('customValues', ApiHelper.customValuesFormGroup(this.formBuilder, fieldsInSearch, {
+      this.form.setControl('customValues', this.fieldHelper.customValuesFormGroup(fieldsInSearch, {
         useDefaults: false
       }));
       this.ignoreNextUpdate = false;
@@ -133,7 +136,7 @@ export class SearchUsersComponent
 
   doSearch(query) {
     const value = cloneDeep(query);
-    value.profileFields = ApiHelper.toCustomValuesFilter(query.customValues);
+    value.profileFields = this.fieldHelper.toCustomValuesFilter(query.customValues);
     delete value.customValues;
     return this.resultType === ResultType.MAP
       ? this.usersService.searchMapDirectoryResponse(value)

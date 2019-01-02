@@ -14,7 +14,8 @@ import { FormControl } from '@angular/forms';
 export class FieldErrorsComponent {
   @Input() control: FormControl;
 
-  constructor(private i18n: I18n) { }
+  constructor(private i18n: I18n) {
+  }
 
   get message(): string {
     const errors = this.control.errors;

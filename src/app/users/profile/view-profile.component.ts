@@ -8,6 +8,7 @@ import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { words } from 'app/shared/helper';
+import { I18n } from '@ngx-translate/i18n-polyfill';
 
 export const MAX_SIZE_SHORT_NAME = 25;
 
@@ -23,10 +24,11 @@ export const MAX_SIZE_SHORT_NAME = 25;
 export class ViewProfileComponent extends BasePageComponent<UserView> implements OnInit {
   constructor(
     injector: Injector,
+    i18n: I18n,
     private usersService: UsersService,
     private contactsService: ContactsService,
     public maps: MapsService) {
-    super(injector);
+    super(injector, i18n);
   }
 
   key: string;

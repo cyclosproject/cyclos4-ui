@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { I18n } from '@ngx-translate/i18n-polyfill';
 import {
-  CustomField, CustomFieldDetailed, CustomFieldTypeEnum, CustomFieldValue,
-  Image, LinkedEntityTypeEnum, StoredFile
+  CustomField, CustomFieldDetailed, CustomFieldTypeEnum, CustomFieldValue, Image,
+  LinkedEntityTypeEnum, StoredFile
 } from 'app/api/models';
 import { FilesService, ImagesService } from 'app/api/services';
-import { NextRequestState } from 'app/core/next-request-state';
+import { AuthHelperService } from 'app/core/auth-helper.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { truthyAttr } from 'app/shared/helper';
 import * as download from 'downloadjs';
@@ -33,7 +33,7 @@ const DIRECT_TYPES = [
 export class FormatFieldValueComponent implements OnInit {
   constructor(
     private i18n: I18n,
-    private nextRequestState: NextRequestState,
+    private authHelper: AuthHelperService,
     private filesService: FilesService,
     private imagesService: ImagesService) {
   }
@@ -286,7 +286,7 @@ export class FormatFieldValueComponent implements OnInit {
   }
 
   appendAuth(url: string): string {
-    return ApiHelper.appendAuth(url, this.nextRequestState);
+    return this.authHelper.appendAuth(url);
   }
 
   downloadFile(event: MouseEvent, file: StoredFile) {

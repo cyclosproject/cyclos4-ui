@@ -6,6 +6,7 @@ import { FormControlLocator } from 'app/shared/form-control-locator';
 import { BehaviorSubject } from 'rxjs';
 import { Menu, ConditionalMenu } from 'app/shared/menu';
 import { first } from 'rxjs/operators';
+import { I18n } from '@ngx-translate/i18n-polyfill';
 
 export type UpdateTitleFrom = 'menu' | 'content';
 
@@ -66,7 +67,9 @@ export abstract class BasePageComponent<D> extends BaseComponent implements OnIn
   protected onDataInitialized(_data: D) {
   }
 
-  constructor(injector: Injector) {
+  constructor(
+    injector: Injector,
+    protected i18n: I18n) {
     super(injector);
   }
 

@@ -7,6 +7,7 @@ import { ApiHelper } from 'app/shared/api-helper';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { validateBeforeSubmit } from 'app/shared/helper';
 import { BehaviorSubject } from 'rxjs';
+import { I18n } from '@ngx-translate/i18n-polyfill';
 
 /** Validator function that ensures password and confirmation match */
 const PASSWORDS_MATCH_VAL: ValidatorFn = control => {
@@ -43,10 +44,11 @@ export class ChangeExpiredPasswordComponent
 
   constructor(
     injector: Injector,
+    i18n: I18n,
     private passwordsService: PasswordsService,
     private loginState: LoginState
   ) {
-    super(injector);
+    super(injector, i18n);
     this.form = this.formBuilder.group({
     });
   }

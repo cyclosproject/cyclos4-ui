@@ -3,6 +3,7 @@ import { TransactionAuthorization, TransactionView } from 'app/api/models';
 import { TransactionsService } from 'app/api/services';
 import { TransactionStatusService } from 'app/core/transaction-status.service';
 import { BasePageComponent } from 'app/shared/base-page.component';
+import { I18n } from '@ngx-translate/i18n-polyfill';
 
 /**
  * Displays the authorization history of a transaction
@@ -16,10 +17,11 @@ export class ViewAuthorizationHistoryComponent extends BasePageComponent<Transac
 
   constructor(
     injector: Injector,
+    i18n: I18n,
     private transactionsService: TransactionsService,
     private transactionStatusService: TransactionStatusService
   ) {
-    super(injector);
+    super(injector, i18n);
   }
 
   get transaction(): TransactionView {

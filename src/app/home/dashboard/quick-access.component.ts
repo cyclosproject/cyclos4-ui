@@ -7,6 +7,7 @@ import { empty } from 'app/shared/helper';
 import { Icon } from 'app/shared/icon';
 import { Breakpoint } from 'app/shared/layout.service';
 import { Menu, MenuEntry } from 'app/shared/menu';
+import { I18n } from '@ngx-translate/i18n-polyfill';
 
 export interface QuickAccessAction {
   icon: string;
@@ -30,7 +31,9 @@ export class QuickAccessComponent extends BaseDashboardComponent implements OnIn
 
   actions: QuickAccessAction[];
 
-  constructor(injector: Injector) {
+  constructor(
+    injector: Injector,
+    private i18n: I18n) {
     super(injector);
   }
 

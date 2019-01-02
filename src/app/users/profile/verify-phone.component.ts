@@ -7,6 +7,7 @@ import { validateBeforeSubmit } from 'app/shared/helper';
 import { InputFieldComponent } from 'app/shared/input-field.component';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { BehaviorSubject } from 'rxjs';
+import { I18n } from '@ngx-translate/i18n-polyfill';
 
 
 /**
@@ -30,6 +31,7 @@ export class VerifyPhoneComponent extends BaseComponent implements OnInit {
 
   constructor(
     injector: Injector,
+    private i18n: I18n,
     public modalRef: BsModalRef,
     private phonesService: PhonesService) {
     super(injector);

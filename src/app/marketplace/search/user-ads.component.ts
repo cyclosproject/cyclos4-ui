@@ -7,6 +7,7 @@ import { ResultType } from 'app/shared/result-type';
 import { MAX_SIZE_SHORT_NAME } from 'app/users/profile/view-profile.component';
 import { cloneDeep } from 'lodash';
 import { BehaviorSubject } from 'rxjs';
+import { I18n } from '@ngx-translate/i18n-polyfill';
 
 /**
  * Lists the advertisements of a given user
@@ -26,9 +27,10 @@ export class UserAdsComponent
 
   constructor(
     injector: Injector,
+    i18n: I18n,
     private marketplaceService: MarketplaceService
   ) {
-    super(injector);
+    super(injector, i18n);
   }
 
   protected getFormControlNames() {

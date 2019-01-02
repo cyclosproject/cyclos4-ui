@@ -5,6 +5,7 @@ import { ApiHelper } from 'app/shared/api-helper';
 import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { ResultType } from 'app/shared/result-type';
 import { UsersResultsComponent } from 'app/users/search/users-results.component';
+import { I18n } from '@ngx-translate/i18n-polyfill';
 
 
 /**
@@ -26,9 +27,10 @@ export class ContactListComponent
 
   constructor(
     injector: Injector,
+    i18n: I18n,
     private contactsService: ContactsService
   ) {
-    super(injector);
+    super(injector, i18n);
   }
 
   protected getFormControlNames() {

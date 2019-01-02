@@ -5,6 +5,8 @@ import { AuthService } from 'app/api/services';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { cloneDeep } from 'lodash';
+import { I18n } from '@ngx-translate/i18n-polyfill';
+import { AuthHelperService } from 'app/core/auth-helper.service';
 
 /**
  * Component used to show the forgot password page.
@@ -20,9 +22,11 @@ export class ForgotPasswordComponent extends BasePageComponent<DataForLogin> imp
 
   constructor(
     injector: Injector,
+    i18n: I18n,
+    private authHelper: AuthHelperService,
     private authService: AuthService
   ) {
-    super(injector);
+    super(injector, i18n);
     this.form = this.formBuilder.group({
       user: ['', Validators.required]
     });
@@ -42,7 +46,7 @@ export class ForgotPasswordComponent extends BasePageComponent<DataForLogin> imp
       this.data = dataForUi.dataForLogin;
       // Captcha
       if (this.data.forgotPasswordCaptchaProvider != null) {
-        this.form.setControl('captcha', ApiHelper.captchaFormGroup(this.formBuilder));
+        this.form.setControl('captcha', this.authHelper.captchaFormGroup());
       }
     }
   }

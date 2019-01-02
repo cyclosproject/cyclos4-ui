@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@an
 import { UserRegistrationResult } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
 import { empty } from 'app/shared/helper';
+import { I18n } from '@ngx-translate/i18n-polyfill';
 
 /**
  * Public registration step: done
@@ -17,7 +18,9 @@ export class RegistrationStepDoneComponent
 
   @Input() result: UserRegistrationResult;
 
-  constructor(injector: Injector) {
+  constructor(
+    injector: Injector,
+    private i18n: I18n) {
     super(injector);
   }
 

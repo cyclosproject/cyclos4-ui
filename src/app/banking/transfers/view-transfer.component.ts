@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
+import { I18n } from '@ngx-translate/i18n-polyfill';
 import { TransferView } from 'app/api/models';
 import { TransfersService } from 'app/api/services';
+import { BankingHelperService } from 'app/core/banking-helper.service';
 import { HeadingAction } from 'app/shared/action';
-import { ApiHelper } from 'app/shared/api-helper';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { empty } from 'app/shared/helper';
 
@@ -21,8 +22,10 @@ export class ViewTransferComponent extends BasePageComponent<TransferView> imple
 
   constructor(
     injector: Injector,
+    i18n: I18n,
+    private bankingHelper: BankingHelperService,
     private transfersService: TransfersService) {
-    super(injector);
+    super(injector, i18n);
   }
 
   get transfer(): TransferView {
@@ -45,7 +48,7 @@ export class ViewTransferComponent extends BasePageComponent<TransferView> imple
     const transaction = transfer.transaction || {};
     if (!empty(transaction.authorizations)) {
       actions.push(new HeadingAction('check_circle_outline', this.i18n('View authorizations'), () => {
-        this.router.navigate(['banking', 'transaction', ApiHelper.transactionNumberOrId(transaction), 'authorization-history']);
+        this.router.navigate(['banking', 'transaction', this.bankingHelper.transactionNumberOrId(transaction), 'authorization-history']);
       }));
     }
     if (transfer.canChargeback) {

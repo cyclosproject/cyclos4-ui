@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, Injector, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { AddressConfiguration, AddressFieldEnum, Country } from 'app/api/models';
+import { AddressHelperService } from 'app/core/address-helper.service';
 import { CountriesResolve } from 'app/countries.resolve';
-import { ApiHelper } from 'app/shared/api-helper';
 import { BaseComponent } from 'app/shared/base.component';
 import { truthyAttr } from 'app/shared/helper';
 
@@ -17,6 +17,7 @@ import { truthyAttr } from 'app/shared/helper';
 export class AddressFormComponent extends BaseComponent {
   constructor(
     injector: Injector,
+    private addressHelper: AddressHelperService,
     public countriesResolve: CountriesResolve
   ) {
     super(injector);
@@ -37,7 +38,7 @@ export class AddressFormComponent extends BaseComponent {
   }
 
   getLabel(field: AddressFieldEnum): string {
-    return ApiHelper.addressFieldLabel(field, this.i18n);
+    return this.addressHelper.addressFieldLabel(field);
   }
 
   isRequired(field: AddressFieldEnum): boolean {

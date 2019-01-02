@@ -9,6 +9,8 @@ import { ApiHelper } from 'app/shared/api-helper';
 import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { empty } from 'app/shared/helper';
 import { BehaviorSubject } from 'rxjs';
+import { I18n } from '@ngx-translate/i18n-polyfill';
+import { BankingHelperService } from 'app/core/banking-helper.service';
 
 /**
  * Base implementation for pages that search for transaction
@@ -20,12 +22,17 @@ export abstract class BaseTransactionsSearch
   transferFilters$ = new BehaviorSubject<TransferFilter[]>([]);
   currencies = new Map<string, Currency>();
 
+  protected transactionsService: TransactionsService;
+  protected transactionStatusService: TransactionStatusService;
+  protected bankingHelper: BankingHelperService;
+
   constructor(
     injector: Injector,
-    protected transactionsService: TransactionsService,
-    protected transactionStatusService: TransactionStatusService
-  ) {
-    super(injector);
+    i18n: I18n) {
+    super(injector, i18n);
+    this.transactionsService = injector.get(TransactionsService);
+    this.transactionStatusService = injector.get(TransactionStatusService);
+    this.bankingHelper = injector.get(BankingHelperService);
   }
 
   getFormControlNames() {
@@ -42,7 +49,7 @@ export abstract class BaseTransactionsSearch
         fields: ['accountTypes', 'transferFilters', 'preselectedPeriods', 'query']
       })
     ).subscribe(data => {
-      ApiHelper.preProcessPreselectedPeriods(data, this.form);
+      this.bankingHelper.preProcessPreselectedPeriods(data, this.form);
 
       // Initialize the currencies Map to make lookups easier
       (data.accountTypes || []).forEach(at => {
@@ -84,7 +91,7 @@ export abstract class BaseTransactionsSearch
       owner: ApiHelper.SELF,
       accountTypes: value.accountType ? [value.accountType] : null,
       transferFilters: value.transferFilter ? [value.transferFilter] : null,
-      datePeriod: ApiHelper.resolveDatePeriod(value)
+      datePeriod: this.bankingHelper.resolveDatePeriod(value)
     };
     query.kinds = this.getKinds();
     return query;
@@ -95,7 +102,7 @@ export abstract class BaseTransactionsSearch
    * @param row The row
    */
   path(row: TransactionResult): string[] {
-    return ['/banking', 'transaction', ApiHelper.transactionNumberOrId(row)];
+    return ['/banking', 'transaction', this.bankingHelper.transactionNumberOrId(row)];
   }
 
   /**

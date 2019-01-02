@@ -29,6 +29,10 @@ import { SharedModule } from 'app/shared/shared.module';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { LightboxModule } from 'ngx-lightbox';
 import { NextRequestState } from './next-request-state';
+import { AddressHelperService } from 'app/core/address-helper.service';
+import { AuthHelperService } from 'app/core/auth-helper.service';
+import { FieldHelperService } from 'app/core/field-helper.service';
+import { BankingHelperService } from 'app/core/banking-helper.service';
 
 export const API_INTERCEPTOR_PROVIDER: Provider = {
   provide: HTTP_INTERCEPTORS,
@@ -87,6 +91,10 @@ export const translations = require(`raw-loader!../../i18n/cyclos4-ui.en.xlf`);
     PushNotificationsService,
     CountriesResolve,
     UserCacheService,
+    AuthHelperService,
+    FieldHelperService,
+    BankingHelperService,
+    AddressHelperService,
     TransactionStatusService,
     API_INTERCEPTOR_PROVIDER,
     BsModalService

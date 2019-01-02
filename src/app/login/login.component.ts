@@ -6,6 +6,7 @@ import { BasePageComponent } from 'app/shared/base-page.component';
 import { PasswordInputComponent } from 'app/shared/password-input.component';
 import { NextRequestState } from 'app/core/next-request-state';
 import { empty } from 'app/shared/helper';
+import { I18n } from '@ngx-translate/i18n-polyfill';
 
 /**
  * Component used to show a login form.
@@ -37,10 +38,11 @@ export class LoginComponent
 
   constructor(
     injector: Injector,
+    i18n: I18n,
     private loginState: LoginState,
     private nextRequestState: NextRequestState
   ) {
-    super(injector);
+    super(injector, i18n);
     this.form = this.formBuilder.group({
       principal: '',
       password: ''

@@ -34,7 +34,7 @@ export class FieldPrivacyComponent implements OnInit {
 
   icon$ = new BehaviorSubject<string>(null);
 
-  constructor(public i18n: I18n) {
+  constructor(private i18n: I18n) {
   }
 
   ngOnInit() {

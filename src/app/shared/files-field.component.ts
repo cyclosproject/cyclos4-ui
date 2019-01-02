@@ -1,20 +1,16 @@
-import {
-  Component, Input, ViewChild, ElementRef, Optional, Host,
-  SkipSelf, OnInit, ChangeDetectorRef
-} from '@angular/core';
-import { NG_VALUE_ACCESSOR, ControlContainer } from '@angular/forms';
-import { empty, preprocessValueWithSeparator, getValueAsArray } from 'app/shared/helper';
-import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
-import { StoredFile, CustomField } from 'app/api/models';
-import { BsModalService } from 'ngx-bootstrap/modal';
+import { ChangeDetectorRef, Component, ElementRef, Host, Input, OnInit, Optional, SkipSelf, ViewChild } from '@angular/core';
+import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { CustomField, StoredFile } from 'app/api/models';
 import { FilesService } from 'app/api/services';
-import { ManageFilesComponent } from 'app/shared/manage-files.component';
-import { take } from 'rxjs/operators';
-import { ApiHelper } from 'app/shared/api-helper';
-import * as download from 'downloadjs';
-import { NextRequestState } from 'app/core/next-request-state';
-import { LayoutService } from 'app/shared/layout.service';
+import { AuthHelperService } from 'app/core/auth-helper.service';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
+import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
+import { empty, getValueAsArray, preprocessValueWithSeparator } from 'app/shared/helper';
+import { LayoutService } from 'app/shared/layout.service';
+import { ManageFilesComponent } from 'app/shared/manage-files.component';
+import * as download from 'downloadjs';
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { take } from 'rxjs/operators';
 
 /**
  * Renders a widget for a field that allows uploading files
@@ -62,11 +58,11 @@ export class FilesFieldComponent extends BaseFormFieldComponent<string | string[
 
   constructor(
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
+    private authHelper: AuthHelperService,
     public layout: LayoutService,
     private errorHandler: ErrorHandlerService,
     private filesService: FilesService,
     private changeDetector: ChangeDetectorRef,
-    private nextRequestState: NextRequestState,
     private modal: BsModalService) {
     super(controlContainer);
   }
@@ -172,7 +168,7 @@ export class FilesFieldComponent extends BaseFormFieldComponent<string | string[
   }
 
   appendAuth(url: string): string {
-    return ApiHelper.appendAuth(url, this.nextRequestState);
+    return this.authHelper.appendAuth(url);
   }
 
   downloadFile(event: MouseEvent, file: StoredFile) {

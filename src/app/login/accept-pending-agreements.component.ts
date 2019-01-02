@@ -7,6 +7,7 @@ import { RegistrationAgreementsComponent } from 'app/login/registration-agreemen
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { empty, validateBeforeSubmit } from 'app/shared/helper';
 import { BsModalService } from 'ngx-bootstrap/modal';
+import { I18n } from '@ngx-translate/i18n-polyfill';
 
 /**
  * Component shown after the user logs-in with pending agreements
@@ -26,11 +27,12 @@ export class AcceptPendingAgreementsComponent
 
   constructor(
     injector: Injector,
+    i18n: I18n,
     private agreementsService: AgreementsService,
     private loginState: LoginState,
     private modal: BsModalService
   ) {
-    super(injector);
+    super(injector, i18n);
   }
 
   get agreements(): Agreement[] {

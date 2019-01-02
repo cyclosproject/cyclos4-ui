@@ -8,6 +8,8 @@ import { empty } from 'app/shared/helper';
 import { ResultType } from 'app/shared/result-type';
 import { cloneDeep } from 'lodash';
 import { BehaviorSubject } from 'rxjs';
+import { I18n } from '@ngx-translate/i18n-polyfill';
+import { FieldHelperService } from 'app/core/field-helper.service';
 
 /**
  * Search for advertisements
@@ -27,9 +29,11 @@ export class SearchAdsComponent
 
   constructor(
     injector: Injector,
+    i18n: I18n,
+    private fieldHelper: FieldHelperService,
     private marketplaceService: MarketplaceService
   ) {
-    super(injector);
+    super(injector, i18n);
   }
 
   protected getFormControlNames() {
@@ -51,7 +55,7 @@ export class SearchAdsComponent
     const customField = (name: string) => data.customFields.find(f => f.internalName === name);
     this.basicFields = data.fieldsInBasicSearch.map(customField);
     this.advancedFields = data.fieldsInAdvancedSearch.map(customField);
-    this.form.setControl('customValues', ApiHelper.customValuesFormGroup(this.formBuilder, data.customFields, {
+    this.form.setControl('customValues', this.fieldHelper.customValuesFormGroup(data.customFields, {
       useDefaults: false
     }));
     this.headingActions = empty(this.advancedFields) ? [] : [this.moreFiltersAction];
@@ -61,7 +65,7 @@ export class SearchAdsComponent
   doSearch(value: any) {
     const params = cloneDeep(value) as MarketplaceService.SearchAdsParams;
     delete params['customValues'];
-    params.customFields = ApiHelper.toCustomValuesFilter(value.customValues);
+    params.customFields = this.fieldHelper.toCustomValuesFilter(value.customValues);
     params.addressResult = this.resultType === ResultType.MAP ? AdAddressResultEnum.ALL : AdAddressResultEnum.NONE;
     return this.marketplaceService.searchAdsResponse(params);
   }

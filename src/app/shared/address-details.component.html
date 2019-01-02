@@ -5,7 +5,7 @@
   {{ address.addressLine2 }}
 </div>
 <div [ngClass]="classNames" *ngIf="address.street">
-  {{ ApiHelper.addressStreet(address) }}
+  {{ addressHelper.addressStreet(address) }}
 </div>
 <div [ngClass]="classNames" *ngIf="address.neighborhood">
   {{ address.neighborhood }}
