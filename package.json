@@ -25,7 +25,7 @@
     "i18n-merge": "npm run xliffmerge -- --profile xliffmerge.json",
     "i18n": "npm run i18n-html && npm run i18n-ts && npm run i18n-trim && npm run i18n-merge",
     "start": "npm run generate && npm run ng -- serve --proxy-config proxy.json",
-    "build": "npm run generate && npm run ng -- build --prod --aot --output-hashing=all --progress=false",
+    "build": "npm run generate && npm run ng -- build --prod --progress=false",
     "lint": "npm run ng lint"
   },
   "private": true,
