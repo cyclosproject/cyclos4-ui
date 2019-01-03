@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes, Router } from '@angular/router';
+import { RouterModule, Routes, Router, PreloadAllModules } from '@angular/router';
 import { ContentPageComponent } from 'app/content/content-page.component';
 import { LoginService } from 'app/core/login.service';
 import { MenuService } from 'app/core/menu.service';
@@ -136,7 +136,8 @@ const rootRoutes: Routes = [
 @NgModule({
   imports: [
     RouterModule.forRoot(rootRoutes, {
-      onSameUrlNavigation: 'reload'
+      onSameUrlNavigation: 'reload',
+      preloadingStrategy: PreloadAllModules
     }),
     SharedModule
   ],

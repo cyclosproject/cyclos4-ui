@@ -1,14 +1,18 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { forwardRef, NgModule, Optional, Provider, SkipSelf, TRANSLATIONS, TRANSLATIONS_FORMAT } from '@angular/core';
+import { forwardRef, LOCALE_ID, NgModule, Optional, Provider, SkipSelf, TRANSLATIONS_FORMAT, TRANSLATIONS } from '@angular/core';
 import { I18n } from '@ngx-translate/i18n-polyfill';
+import { AddressHelperService } from 'app/core/address-helper.service';
 import { ApiInterceptor } from 'app/core/api.interceptor';
+import { AuthHelperService } from 'app/core/auth-helper.service';
+import { BankingHelperService } from 'app/core/banking-helper.service';
 import { BannerService } from 'app/core/banner.service';
 import { BreadcrumbService } from 'app/core/breadcrumb.service';
 import { CacheService } from 'app/core/cache.service';
 import { ContentService } from 'app/core/content.service';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
+import { FieldHelperService } from 'app/core/field-helper.service';
 import { FormatService } from 'app/core/format.service';
 import { LoginState } from 'app/core/login-state';
 import { LoginService } from 'app/core/login.service';
@@ -29,10 +33,6 @@ import { SharedModule } from 'app/shared/shared.module';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { LightboxModule } from 'ngx-lightbox';
 import { NextRequestState } from './next-request-state';
-import { AddressHelperService } from 'app/core/address-helper.service';
-import { AuthHelperService } from 'app/core/auth-helper.service';
-import { FieldHelperService } from 'app/core/field-helper.service';
-import { BankingHelperService } from 'app/core/banking-helper.service';
 
 export const API_INTERCEPTOR_PROVIDER: Provider = {
   provide: HTTP_INTERCEPTORS,
@@ -40,9 +40,21 @@ export const API_INTERCEPTOR_PROVIDER: Provider = {
   multi: true
 };
 
-// Use the require method provided by webpack
+// Translations configuration
+export const TRANSLATION_FORMAT_PROVIDER: Provider = {
+  provide: TRANSLATIONS_FORMAT,
+  useValue: 'xlf'
+};
 declare const require;
-export const translations = require(`raw-loader!../../i18n/cyclos4-ui.en.xlf`);
+export function translationsProvider(locale: string) {
+  return require(`raw-loader!../../locale/cyclos4-ui.${locale}.xlf`);
+}
+export const TRANSLATIONS_PROVIDER: Provider = {
+  provide: TRANSLATIONS,
+  useFactory: translationsProvider,
+  deps: [LOCALE_ID]
+};
+
 
 /**
  * Module that declares components used only by the core app module
@@ -68,10 +80,8 @@ export const translations = require(`raw-loader!../../i18n/cyclos4-ui.en.xlf`);
   providers: [
     NextRequestState,
     ApiInterceptor,
-    // format of translations that you use
-    { provide: TRANSLATIONS_FORMAT, useValue: 'xlf' },
-    // the translations that you need to load on your own
-    { provide: TRANSLATIONS, useValue: translations },
+    TRANSLATION_FORMAT_PROVIDER,
+    TRANSLATIONS_PROVIDER,
     I18n,
     BreakpointObserver,
     DataForUiHolder,

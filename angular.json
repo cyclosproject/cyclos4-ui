@@ -80,6 +80,9 @@
           "configurations": {
             "production": {
               "browserTarget": "cyclos4-ui:build:production"
+            },
+            "pt-BR": {
+              "browserTarget": "cyclos4-ui:build:pt-BR"
             }
           }
         },
@@ -87,23 +90,6 @@
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
             "browserTarget": "cyclos4-ui:build"
-          }
-        },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "src/test.ts",
-            "polyfills": "src/polyfills.ts",
-            "tsConfig": "src/tsconfig.spec.json",
-            "karmaConfig": "src/karma.conf.js",
-            "styles": [
-              "src/styles.scss"
-            ],
-            "scripts": [],
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ]
           }
         },
         "lint": {

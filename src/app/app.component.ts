@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, ViewChild, Inject, LOCALE_ID, Renderer2 } from '@angular/core';
 import { Router } from '@angular/router';
 import { BannerService } from 'app/core/banner.service';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
@@ -10,6 +10,7 @@ import { blank, setRootSpinnerVisible } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
 import { trim } from 'lodash';
 import { BehaviorSubject } from 'rxjs';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -34,8 +35,13 @@ export class AppComponent implements OnInit {
     // PushNotificationsService is here because it is not directly used by any
     // other component / service, but handles itself the push notifications.
     // It would otherwise be removed from the built app by tree-shaking.
-    private push: PushNotificationsService
-  ) { }
+    private push: PushNotificationsService,
+    @Inject(DOCUMENT) doc: Document,
+    @Inject(LOCALE_ID) locale: string,
+    renderer: Renderer2
+  ) {
+    renderer.setAttribute(doc.documentElement, 'lang', locale);
+  }
 
   ngOnInit() {
     this.push.initialize();

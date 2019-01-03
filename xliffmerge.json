@@ -1,7 +1,7 @@
 {
   "xliffmergeOptions": {
-    "srcDir": "src/i18n",
-    "genDir": "src/i18n",
+    "srcDir": "src/locale",
+    "genDir": "src/locale",
     "i18nFile": "cyclos4-ui.xlf",
     "i18nBaseFile": "cyclos4-ui",
     "i18nFormat": "xlf",

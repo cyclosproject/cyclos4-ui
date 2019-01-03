@@ -136,14 +136,23 @@
         </context-group>
       </trans-unit><trans-unit id="da8047e9b6393115e517b24375827159317326a9" datatype="html">
         <source>Upload a new file</source><target state="final">Upload a new file</target>
-        
-      <context-group purpose="location"><context context-type="sourcefile">app/shared/files-field.component.html</context><context context-type="linenumber">27</context></context-group></trans-unit><trans-unit id="5f4905035ac18cf47121bb5d9ec9c0c3fdf4a968" datatype="html">
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/shared/files-field.component.html</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+      </trans-unit><trans-unit id="5f4905035ac18cf47121bb5d9ec9c0c3fdf4a968" datatype="html">
         <source>Remove or reorder files</source><target state="final">Remove or reorder files</target>
-        
-      <context-group purpose="location"><context context-type="sourcefile">app/shared/files-field.component.html</context><context context-type="linenumber">31</context></context-group></trans-unit><trans-unit id="863dd2a93b7fd01af5b70c95fa77eead81b93cdf" datatype="html">
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/shared/files-field.component.html</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+      </trans-unit><trans-unit id="863dd2a93b7fd01af5b70c95fa77eead81b93cdf" datatype="html">
         <source>Remove this file</source><target state="final">Remove this file</target>
-        
-      <context-group purpose="location"><context context-type="sourcefile">app/shared/files-field.component.html</context><context context-type="linenumber">35</context></context-group></trans-unit><trans-unit id="8eea512feee0fbcccc8b469ed17dcce71316b3fe" datatype="html">
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/shared/files-field.component.html</context>
+          <context context-type="linenumber">35</context>
+        </context-group>
+      </trans-unit><trans-unit id="8eea512feee0fbcccc8b469ed17dcce71316b3fe" datatype="html">
         <source>Reorder / remove images</source><target state="final">Reorder / remove images</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/shared/manage-images.component.html</context>
@@ -183,14 +192,23 @@ order for the changes to be applied.</target>
         </context-group>
       </trans-unit><trans-unit id="c5c281d2a6ad1cb04f06a9893dc6ddb44cf03d55" datatype="html">
         <source>Upload a new image</source><target state="final">Upload a new image</target>
-        
-      <context-group purpose="location"><context context-type="sourcefile">app/shared/images-field.component.html</context><context context-type="linenumber">22</context></context-group></trans-unit><trans-unit id="dc2335e75c0c1fbe3cb97db1ab0797c54327af4b" datatype="html">
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/shared/images-field.component.html</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+      </trans-unit><trans-unit id="dc2335e75c0c1fbe3cb97db1ab0797c54327af4b" datatype="html">
         <source>Remove or reorder images</source><target state="final">Remove or reorder images</target>
-        
-      <context-group purpose="location"><context context-type="sourcefile">app/shared/images-field.component.html</context><context context-type="linenumber">26</context></context-group></trans-unit><trans-unit id="8e02c22a9c6f185fadecb023bee9a575c1663a0b" datatype="html">
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/shared/images-field.component.html</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+      </trans-unit><trans-unit id="8e02c22a9c6f185fadecb023bee9a575c1663a0b" datatype="html">
         <source>Remove this image</source><target state="final">Remove this image</target>
-        
-      <context-group purpose="location"><context context-type="sourcefile">app/shared/images-field.component.html</context><context context-type="linenumber">30</context></context-group></trans-unit><trans-unit id="ca7aca120484da77fdda5992a28db54caadbe9af" datatype="html">
+        <context-group purpose="location">
+          <context context-type="sourcefile">app/shared/images-field.component.html</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
+      </trans-unit><trans-unit id="ca7aca120484da77fdda5992a28db54caadbe9af" datatype="html">
         <source>Select a contact</source><target state="final">Select a contact</target>
         <context-group purpose="location">
           <context context-type="sourcefile">app/shared/pick-contact.component.html</context>
