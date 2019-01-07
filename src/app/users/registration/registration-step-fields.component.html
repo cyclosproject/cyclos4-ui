@@ -1,6 +1,6 @@
 <!-- Image -->
 <ng-container *ngIf="imageAvailability !== 'disabled'">
-  <h2 class="border-0" i18n>Profile image</h2>
+  <h2 class="border-0">{{ messages.user.title.image }}</h2>
   <div class="row">
     <div class="col-12 col-sm-6">
       <div class="d-flex justify-content-center justify-content-sm-start">
@@ -8,9 +8,7 @@
           useLightbox>
         </avatar>
         <ng-template #noImage>
-          <ng-container i18n>
-            No profile image
-          </ng-container>
+          {{ messages.user.noImage }}
         </ng-template>
       </div>
       <image-upload #upload containerClass="mt-3" target="userRegistration"
@@ -18,23 +16,24 @@
     </div>
     <div class="col-12 col-sm-6 mt-3 mt-sm-0 d-flex justify-content-between justify-content-sm-end align-items-end"
       *ngIf="!(upload.uploading$ | async)">
-      <button class="btn btn-outline-primary" (click)="upload.perform()" i18n>
-        Upload new
+      <button class="btn btn-outline-primary" (click)="upload.perform()">
+        {{ messages.field.image.upload }}
       </button>
-      <button *ngIf="image" class="mr-3 btn btn-outline-primary" (click)="removeImage()"
-        i18n>Remove</button>
+      <button *ngIf="image" class="mr-3 btn btn-outline-primary" (click)="removeImage()">
+        {{ messages.field.image.remove }}
+      </button>
     </div>
   </div>
 </ng-container>
 
 <!-- Basic profile fields-->
-<h2 class="mt-4" i18n>Profile fields</h2>
+<h2 class="mt-4">{{ messages.user.title.fields }}</h2>
 <ng-container [formGroup]="form">
-  <input-field *ngIf="canEdit('name')" formControlName="name" i18n-label
-    label="Full name" required></input-field>
-  <input-field *ngIf="canEdit('username')" formControlName="username"
-    i18n-label label="Login name" required></input-field>
-  <label-value *ngIf="canEdit('email')" i18n-label label="E-mail" kind="field"
+  <input-field *ngIf="canEdit('name')" formControlName="name" [label]="messages.user.name"
+    required></input-field>
+  <input-field *ngIf="canEdit('username')" formControlName="username" [label]="messages.user.username"
+    required></input-field>
+  <label-value *ngIf="canEdit('email')" [label]="messages.user.email" kind="field"
     [ignoreExtraCell]="!canManagePrivacy('email')" [required]="data.emailRequired">
     <input-field formControlName="email" [required]="data.emailRequired"></input-field>
     <field-privacy *extraCell field="email" [control]="form.get('hiddenFields')"></field-privacy>
@@ -52,7 +51,7 @@
 </ng-container>
 
 <!-- Mobile phone -->
-<label-value *ngIf="mobileAvailability !== 'disabled'" i18n-label label="Mobile phone"
+<label-value *ngIf="mobileAvailability !== 'disabled'" [label]="messages.phone.mobile"
   [required]="mobileAvailability === 'required'" kind="field" [formGroup]="mobileForm">
   <input-field formControlName="number" [placeholder]="data.phoneConfiguration.mobileExample"></input-field>
   <field-privacy *extraCell [control]="mobileForm.get('hidden')"></field-privacy>
@@ -60,20 +59,20 @@
 
 <!-- Land-line phone -->
 <ng-container *ngIf="landLineAvailability !== 'disabled'" [formGroup]="landLineForm">
-  <label-value i18n-label label="Land-line phone" [required]="data.phoneConfiguration.landLineAvailability === 'required'"
+  <label-value [label]="messages.phone.landLine" [required]="data.phoneConfiguration.landLineAvailability === 'required'"
     kind="field">
     <input-field formControlName="number" [placeholder]="data.phoneConfiguration.landLineExample"></input-field>
     <field-privacy *extraCell [control]="landLineForm.get('hidden')"></field-privacy>
   </label-value>
   <input-field *ngIf="data.phoneConfiguration.extensionEnabled"
-    formControlName="extension" fieldSize="tiny" i18n-label label="Land-line extension"></input-field>
+    formControlName="extension" fieldSize="tiny" [label]="messages.phone.extension"></input-field>
 </ng-container>
 
 <!-- Address -->
 <ng-container *ngIf="addressAvailability !== 'disabled'">
-  <h2 class="mt-4" i18n>Address</h2>
+  <h2 class="mt-4">{{ messages.address.address }}</h2>
   <boolean-field *ngIf="data.addressConfiguration.availability !== 'required'"
-    [formControl]="defineAddress" i18n-label label="Define address"></boolean-field>
+    [formControl]="defineAddress" [label]="messages.user.addressDefine"></boolean-field>
   <address-form *ngIf="defineAddress.value" [addressForm]="addressForm"
     [configuration]="data.addressConfiguration" [managePrivacy]="data.addressConfiguration.managePrivacy">
   </address-form>

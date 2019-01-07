@@ -1,20 +1,31 @@
-<h1 i18n>Verify {{phone.number}} for SMS</h1>
+<h1>
+  {{ messages.phone.verify.title(phone.number) }}
+</h1>
 
 <div class="row">
-  <div class="col-3 col-form-label"><label for="smsCode" i18n>Code</label></div>
+  <div class="col-3 col-form-label">
+    <label for="smsCode">
+      {{ messages.phone.verify.code }}
+    </label>
+  </div>
   <div class="col-6">
     <input-field #codeField id="smsCode" [formControl]="code" fieldSize="4"
       type="number" focused></input-field>
   </div>
   <div class="col-3">
-    <button class="btn btn-primary d-block w-100" (click)="sendCode()" i18n>Send</button>
+    <button class="btn btn-primary d-block w-100" (click)="sendCode()">
+      {{ messages.phone.verify.send }}
+    </button>
   </div>
 </div>
 
 <div class="mt-3 pb-1">{{ message$ | async }}</div>
 
 <actions ngClass="mt-4">
-  <button class="btn btn-primary" i18n [disabled]="requesting$ | async"
-    (click)="verify()">Confirm</button>
-  <button class="btn btn-light" i18n (click)="modalRef.hide()">Cancel</button>
+  <button class="btn btn-primary" [disabled]="requesting$ | async" (click)="verify()">
+    {{ messages.general.confirm }}
+  </button>
+  <button class="btn btn-light" (click)="modalRef.hide()">
+    {{ messages.general.cancel }}
+  </button>
 </actions>

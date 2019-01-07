@@ -4,7 +4,7 @@ import {
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlContainer } from '@angular/forms';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
-import * as autosize from 'autosize';
+import autosize from 'autosize';
 
 /**
  * Component used to display a text area

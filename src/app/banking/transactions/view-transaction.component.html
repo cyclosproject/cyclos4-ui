@@ -7,79 +7,75 @@
 </page-layout>
 
 <ng-template #transactionFields>
-  <label-value *ngIf="transaction.transactionNumber" i18n-label label="Transaction number">
+  <label-value *ngIf="transaction.transactionNumber" [label]="messages.transaction.number">
     {{ transaction.transactionNumber }}
   </label-value>
-  <label-value i18n-label label="Status" [value]="status"></label-value>
-  <label-value i18n-label label="Date">
+  <label-value [label]="messages.transaction.status.name" [value]="status"></label-value>
+  <label-value [label]="messages.general.date">
     {{ transaction.date | dateTime }}
   </label-value>
-  <label-value i18n-label label="Amount">
+  <label-value [label]="messages.transaction.amount">
     {{ transaction.amount | currency:transaction.currency }}
   </label-value>
-  <label-value *ngIf="hasDueAmount" i18n-label label="Due amount">
+  <label-value *ngIf="hasDueAmount" [label]="messages.transaction.dueAmount">
     {{ transaction.dueAmount | currency:transaction.currency }}
   </label-value>
-  <label-value *ngIf="transaction.by" i18n-label label="Performed by">
+  <label-value *ngIf="transaction.by" [label]="messages.general.performedBy">
     {{ transaction.by.display }}
   </label-value>
-  <label-value *ngIf="transaction?.receivedBy" i18n-label label="Received by">
+  <label-value *ngIf="transaction?.receivedBy" [label]="messages.transaction.receivedBy">
     {{ transaction.receivedBy.display }}
   </label-value>
-  <label-value i18n-label label="From">
+  <label-value [label]="messages.transaction.from">
     <user-link *ngIf="transaction.fromUser; else fromSystem" [user]="transaction.fromUser"></user-link>
     <ng-template #fromSystem>
       {{ transaction.type.from.name }}
     </ng-template>
   </label-value>
-  <label-value i18n-label label="To">
+  <label-value [label]="messages.transaction.to">
     <user-link *ngIf="transaction.toUser; else toSystem" [user]="transaction.toUser"></user-link>
     <ng-template #toSystem>
       {{ transaction.type.to.name }}
     </ng-template>
   </label-value>
-  <label-value i18n-label label="Payment type">
+  <label-value [label]="messages.transaction.type">
     {{ transaction.type.name }}
   </label-value>
   <custom-field-value *ngFor="let value of transaction.customValues"
     [fieldValue]="value">
   </custom-field-value>
-  <label-value *ngIf="transaction.channel" i18n-label label="Channel">
+  <label-value *ngIf="transaction.channel" [label]="messages.transaction.channel">
     {{ transaction.channel.name }}
   </label-value>
-  <label-value *ngIf="transaction.by" i18n-label label="By">
-    {{ transaction.by.display }}
-  </label-value>
 
-  <label-value *ngIf="(transaction.installments || []).length === 1"
-    i18n-label label="Due date">
+  <label-value *ngIf="(transaction.installments || []).length === 1" [label]="messages.transaction.dueDate">
     {{ transaction.installments[0].dueDate | date }}
   </label-value>
 
-  <label-value *ngIf="transaction.nextOccurrenceDate" i18n-label label="Next occurrence">
+  <label-value *ngIf="transaction.nextOccurrenceDate" [label]="messages.transaction.nextOccurrence">
     {{ transaction.nextOccurrenceDate | date }}
   </label-value>
 
-  <label-value *ngIf="transaction.occurrencesCount" i18n-label label="Total number of occurrences">
+  <label-value *ngIf="transaction.occurrencesCount" [label]="messages.transaction.occurrencesCount">
     {{ transaction.occurrencesCount }}
   </label-value>
 
-  <label-value *ngIf="lastAuthComment" i18n-label label="Authorization comments"
+  <label-value *ngIf="lastAuthComment" [label]="messages.transaction.authorizationComments"
     [value]="lastAuthComment" valueFormat="break">
   </label-value>
 
-  <label-value *ngIf="transaction.description" i18n-label label="Description"
+  <label-value *ngIf="transaction.description" [label]="messages.general.description"
     [value]="transaction.description" valueFormat="break">
   </label-value>
 
   <ng-container *ngIf="(transaction.installments || []).length > 1">
-    <h2 class="border-0 mt-4" i18n>Installments</h2>
+    <h2 class="border-0 mt-4">{{ messages.transaction.installments }}</h2>
     <table class="table table-hover">
       <thead *ngIf="layout.gtxs$ | async">
-        <th i18n>Number</th>
-        <th i18n>Due date</th>
-        <th i18n>Status</th>
-        <th i18n class="amount">Amount</th>
+        <th>{{ messages.transaction.installmentNumber }}</th>
+        <th>{{ messages.transaction.dueDate }}</th>
+        <th>{{ messages.transaction.status.name }}</th>
+        <th class="amount">{{ messages.transaction.amount }}</th>
         <th class="row-actions" style="width: 1rem;" *ngIf="hasInstallmentActions"></th>
       </thead>
       <tbody>
@@ -106,11 +102,11 @@
             </maybe-link>
           </td>
           <td *ngIf="hasInstallmentActions" class="row-actions">
-            <button *ngIf="installment.canProcess" i18n-tooltip tooltip="Process this installment"
+            <button *ngIf="installment.canProcess" [tooltip]="messages.transaction.processInstallment"
               class="btn btn-light btn-icon" (click)="processInstallment(installment)">
               <icon icon="play_circle_outline"></icon>
             </button>
-            <button *ngIf="installment.canSettle" i18n-tooltip tooltip="Settle this installment"
+            <button *ngIf="installment.canSettle" [tooltip]="messages.transaction.settleInstallment"
               class="btn btn-light btn-icon" (click)="settleInstallment(installment)">
               <icon icon="thumb_up"></icon>
             </button>
@@ -121,13 +117,15 @@
   </ng-container>
 
   <ng-container *ngIf="(transaction.occurrences || []).length > 0">
-    <h2 class="border-0 mt-4" i18n>Occurrences</h2>
+    <h2 class="border-0 mt-4">
+      {{ messages.transaction.occurrences }}
+    </h2>
     <table class="table table-hover cursor-pointer">
       <thead *ngIf="layout.gtxs$ | async">
-        <th i18n>Number</th>
-        <th i18n>Date</th>
-        <th i18n>Status</th>
-        <th i18n class="text-right">Amount</th>
+        <th>{{ messages.transaction.installmentNumber }}</th>
+        <th>{{ messages.general.date }}</th>
+        <th>{{ messages.transaction.status.name }}</th>
+        <th class="text-right">{{ messages.transaction.amount }}</th>
         <th class="row-actions" style="width: 1rem;" *ngIf="hasOccurrenceActions"></th>
       </thead>
       <tbody>
@@ -154,7 +152,7 @@
             </maybe-link>
           </td>
           <td *ngIf="hasOccurrenceActions" class="row-actions">
-            <button *ngIf="occurrence.canProcess" i18n-tooltip tooltip="Process this failed occurrence"
+            <button *ngIf="occurrence.canProcess" [tooltip]="messages.transaction.processFailedOccurrence"
               class="btn btn-light btn-icon" (click)="processOcurrence(occurrence)">
               <icon icon="play_circle_outline"></icon>
             </button>

@@ -1,4 +1,4 @@
-<page-content i18n-heading heading="Latest advertisements" hideBack>
+<page-content [heading]="messages.dashboard.latestAds.title" hideBack>
   <div class="container">
     <div class="row">
       <ng-container *ngFor="let ad of ads$ | async">

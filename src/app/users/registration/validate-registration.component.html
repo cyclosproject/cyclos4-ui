@@ -3,7 +3,9 @@
   <page-content *ngIf="result">
     <registration-step-done [result]="result"></registration-step-done>
     <actions ngClass="mt-3" forceRow>
-      <button class="btn btn-primary" (click)="goToLogin()" i18n>Login</button>
+      <button class="btn btn-primary" (click)="goToLogin()">
+        {{ messages.menu.login }}
+      </button>
     </actions>
   </page-content>
 

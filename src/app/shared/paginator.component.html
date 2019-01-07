@@ -1,12 +1,18 @@
 <div *ngIf="results" class="d-flex flex-column flex-sm-row justify-content-between align-items-center"
   [formGroup]="form">
-  <div class="mb-3 mb-sm-0" *ngIf="results.hasTotalCount; else noTotalCount"
-    i18n>Showing {{results.firstItem}} - {{results.lastItem}} of
-    {{results.totalCount}} results
+  <div class="mb-3 mb-sm-0" *ngIf="results.hasTotalCount; else noTotalCount">
+    {{ messages.general.results.withTotal({
+    first: results.firstItem,
+    last: results.lastItem,
+    total: results.totalCount
+    }) }}
   </div>
   <ng-template #noTotalCount>
-    <div class="mb-3 mb-sm-0" i18n>
-      Showing {{results.firstItem}} - {{results.lastItem}} results
+    <div class="mb-3 mb-sm-0">
+      {{ messages.general.results.noTotal({
+      first: results.firstItem,
+      last: results.lastItem
+      }) }}
     </div>
   </ng-template>
   <div *ngIf="results.hasNext || results.page > 0" class="mt-2 mt-xs-0">

@@ -10,7 +10,6 @@ import { BasePageComponent } from 'app/shared/base-page.component';
 import { blank, copyProperties, empty, focusFirstField, scrollTop, validateBeforeSubmit } from 'app/shared/helper';
 import { BehaviorSubject, Observable, of, Subscription, timer } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import { I18n } from '@ngx-translate/i18n-polyfill';
 import { FieldHelperService } from 'app/core/field-helper.service';
 import { AuthHelperService } from 'app/core/auth-helper.service';
 
@@ -88,12 +87,11 @@ export class PublicRegistrationComponent
 
   constructor(
     injector: Injector,
-    i18n: I18n,
     private fieldHelper: FieldHelperService,
     private authHelper: AuthHelperService,
     private usersService: UsersService,
     private imagesService: ImagesService) {
-    super(injector, i18n);
+    super(injector);
   }
 
   get groups(): GroupForRegistration[] {

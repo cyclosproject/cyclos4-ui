@@ -8,7 +8,6 @@ import { ApiHelper } from 'app/shared/api-helper';
 import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { I18n } from '@ngx-translate/i18n-polyfill';
 import { BankingHelperService } from 'app/core/banking-helper.service';
 
 
@@ -29,11 +28,10 @@ export class AccountHistoryComponent
 
   constructor(
     injector: Injector,
-    i18n: I18n,
     private accountsService: AccountsService,
     private bankingHelper: BankingHelperService
   ) {
-    super(injector, i18n);
+    super(injector);
   }
 
   get type(): EntityReference {
@@ -86,7 +84,7 @@ export class AccountHistoryComponent
       // No account type given - get the first one
       const firstType = this.firstAccountType;
       if (firstType == null) {
-        this.notification.error(this.i18n('You have no accounts'));
+        this.notification.error(this.messages.account.noAccounts);
       } else {
         this.router.navigateByUrl('/banking/account/' + this.firstAccountType);
       }
@@ -108,7 +106,7 @@ export class AccountHistoryComponent
       // Set the heading action
       this.printable = true;
       const print = this.printAction;
-      print.label = this.i18n('Print transactions');
+      print.label = this.messages.account.printTransactions;
       this.headingActions = [
         this.moreFiltersAction,
         this.printAction
@@ -179,11 +177,11 @@ export class AccountHistoryComponent
   }
 
   showMoreFiltersLabel() {
-    return this.i18n('Show filters');
+    return this.messages.general.showFilters;
   }
 
   showLessFiltersLabel() {
-    return this.i18n('Hide filters');
+    return this.messages.general.hideFilters;
   }
 
 }

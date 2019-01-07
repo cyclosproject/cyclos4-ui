@@ -3,9 +3,9 @@ import {
   Optional, Output, SkipSelf, ViewChild
 } from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { I18n } from '@ngx-translate/i18n-polyfill';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { LayoutService } from 'app/shared/layout.service';
+import { Messages } from 'app/messages/messages';
 
 /**
  * Field used to edit a boolean
@@ -28,7 +28,7 @@ export class BooleanFieldComponent
 
   constructor(
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
-    private i18n: I18n,
+    private messages: Messages,
     public layout: LayoutService) {
     super(controlContainer);
   }
@@ -50,6 +50,6 @@ export class BooleanFieldComponent
 
   protected getDisabledValue(): string {
     const bool = this.value === true || this.value === 'true';
-    return bool ? this.i18n('Yes') : this.i18n('No');
+    return bool ? this.messages.general.yes : this.messages.general.no;
   }
 }

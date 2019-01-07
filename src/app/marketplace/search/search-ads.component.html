@@ -1,12 +1,12 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="loaded$ | async; else loading">
-    <page-content mode="filters" i18n-heading heading="Advertisements"
+    <page-content mode="filters" [heading]="messages.ad.title.search"
       [headingActions]="headingActions$ | async">
       <form [formGroup]="form" class="filters-form border-bottom">
         <div class="row no-gutters">
           <div class="col-12 col-md-6">
             <input-field labelPosition="side" formControlName="keywords"
-              i18n-label label="Keywords"></input-field>
+              [label]="messages.general.keywords"></input-field>
           </div>
           <div class="col-12 col-md-6" *ngFor="let cf of basicFields">
             <custom-field-filter labelPosition="side" [field]="cf"
@@ -31,10 +31,10 @@
         <div *ngIf="resultType !== 'categories' && (layout.gtxxs$ | async)"
           class="col-12 col-xs-5 col-md-3">
           <single-selection-field [formControl]="form.get('orderBy')"
-            i18n-display display="Order by" i18n-emptyOption emptyOption="Relevance">
-            <field-option value="date" i18n-text text="Last published"></field-option>
-            <field-option value="priceAsc" i18n-text text="Lowest price"></field-option>
-            <field-option value="priceDesc" i18n-text text="Highest price"></field-option>
+            [display]="messages.general.orderBy" [emptyOption]="messages.general.orderByRelevance">
+            <field-option value="date" [text]="messages.ad.orderBy.date"></field-option>
+            <field-option value="priceAsc" [text]="messages.ad.orderBy.priceAsc"></field-option>
+            <field-option value="priceDesc" [text]="messages.ad.orderBy.priceDesc"></field-option>
           </single-selection-field>
         </div>
       </div>

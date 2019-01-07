@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import { I18n } from '@ngx-translate/i18n-polyfill';
 import {
   AddressManage, AvailabilityEnum, ContactInfoManage, CustomField,
   CustomFieldDetailed, DataForEditFullProfile, FullProfileEdit, Image,
@@ -89,7 +88,6 @@ export class EditProfileComponent
 
   constructor(
     injector: Injector,
-    i18n: I18n,
     private authHelper: AuthHelperService,
     private fieldHelper: FieldHelperService,
     private usersService: UsersService,
@@ -98,7 +96,7 @@ export class EditProfileComponent
     private addressHelper: AddressHelperService,
     private modal: BsModalService,
     private changeDetector: ChangeDetectorRef) {
-    super(injector, i18n);
+    super(injector);
   }
 
   ngOnInit() {
@@ -106,7 +104,7 @@ export class EditProfileComponent
     this.key = ApiHelper.SELF;
 
     this.headingActions = [
-      new HeadingAction('search', this.i18n('View'), () => {
+      new HeadingAction('search', this.messages.general.view, () => {
         this.router.navigate(['users', 'my-profile']);
       }, true)
     ];
@@ -243,7 +241,7 @@ export class EditProfileComponent
       confirmationPassword: confirmationPassword,
       body: this.editForSubmit()
     }).subscribe(() => {
-      this.notification.snackBar(this.i18n('The profile was saved'));
+      this.notification.snackBar(this.messages.user.profileSaved);
       this.uploadedImages = null;
       this.reload();
       scrollTop();
@@ -543,9 +541,9 @@ export class EditProfileComponent
 
   phoneNameLabel(phone: PhoneManage): string {
     if (phone['kind'] === PhoneKind.LAND_LINE) {
-      return this.i18n('Land-line phone name');
+      return this.messages.phone.nameLandLine;
     } else {
-      return this.i18n('Mobile phone name');
+      return this.messages.phone.nameMobile;
     }
   }
 
@@ -559,9 +557,9 @@ export class EditProfileComponent
 
   phoneNumberLabel(phone: PhoneManage): string {
     if (phone['kind'] === PhoneKind.LAND_LINE) {
-      return this.i18n('Land-line phone number');
+      return this.messages.phone.numberLandLine;
     } else {
-      return this.i18n('Mobile phone number');
+      return this.messages.phone.numberMobile;
     }
   }
 

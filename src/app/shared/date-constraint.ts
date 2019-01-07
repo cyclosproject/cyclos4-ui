@@ -1,4 +1,4 @@
-import * as moment from 'moment-mini-ts';
+import moment from 'moment-mini-ts';
 
 /**
  * A constraint to be used either as minimum / maximum date

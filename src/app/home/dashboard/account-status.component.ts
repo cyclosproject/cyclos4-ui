@@ -6,7 +6,6 @@ import { BaseDashboardComponent } from 'app/home/dashboard/base-dashboard.compon
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BehaviorSubject } from 'rxjs';
-import { I18n } from '@ngx-translate/i18n-polyfill';
 import { BankingHelperService } from 'app/core/banking-helper.service';
 
 /**
@@ -32,7 +31,6 @@ export class AccountStatusComponent extends BaseDashboardComponent implements On
   balance: string;
 
   constructor(injector: Injector,
-    private i18n: I18n,
     private bankingHelper: BankingHelperService,
     private accountsService: AccountsService) {
     super(injector);
@@ -47,7 +45,7 @@ export class AccountStatusComponent extends BaseDashboardComponent implements On
     const singleAccount = accounts.length === 1;
     if (singleAccount) {
       // Single account - use a generig title
-      this.title = this.i18n('Account status');
+      this.title = this.messages.dashboard.accountStatus;
     } else {
       // Multiple accounts - use the account type name
       this.title = this.account.type.name;
@@ -56,7 +54,7 @@ export class AccountStatusComponent extends BaseDashboardComponent implements On
     // The heading actions
     this.headingActions = [{
       icon: 'search',
-      label: this.i18n('View'),
+      label: this.messages.general.view,
       maybeRoot: true,
       onClick: event => this.menu.navigate(this.menu.accountEntry(this.account.type.id), event)
     }];

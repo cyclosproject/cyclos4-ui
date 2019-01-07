@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import * as lscache from 'lscache';
+import lscache from 'lscache';
 import { Observable, of, empty } from 'rxjs';
 import { tap, take } from 'rxjs/operators';
 import { environment } from 'environments/environment';

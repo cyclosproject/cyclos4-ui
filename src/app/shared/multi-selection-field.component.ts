@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, Host, Input, Optional, SkipSelf } from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { I18n } from '@ngx-translate/i18n-polyfill';
 import { FIELD_OPTIONS_SORTER, FORM_FIELD_WITH_OPTIONS } from 'app/shared/base-form-field-with-options.component';
 import { BaseSelectionFieldComponent } from 'app/shared/base-selection-field.component';
 import { blank, empty, getValueAsArray, preprocessValueWithSeparator } from 'app/shared/helper';
+import { Messages } from 'app/messages/messages';
 
 /**
  * Component used to display a multi selection field (using a `select` tag).
@@ -33,7 +33,7 @@ export class MultiSelectionFieldComponent extends BaseSelectionFieldComponent<st
 
   constructor(
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
-    private i18n: I18n
+    private messages: Messages
   ) {
     super(controlContainer);
   }
@@ -59,7 +59,7 @@ export class MultiSelectionFieldComponent extends BaseSelectionFieldComponent<st
       if (!blank(this.emptyLabel)) {
         return this.emptyLabel;
       } else {
-        return this.i18n('No options selected');
+        return this.messages.general.noOptionsSelected;
       }
     } else {
       return selected.sort(FIELD_OPTIONS_SORTER).map(opt => opt.category ? `${opt.category} - ${opt.text}` : opt.text).join(', ');

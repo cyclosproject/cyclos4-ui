@@ -5,7 +5,6 @@ import { PageData } from 'app/shared/page-data';
 import { PagedResults } from 'app/shared/paged-results';
 import { ResultType } from 'app/shared/result-type';
 import { BehaviorSubject } from 'rxjs';
-import { I18n } from '@ngx-translate/i18n-polyfill';
 
 const MAX_COLUMNS = 7;
 const MAX_TILE_FIELDS = 2;
@@ -48,10 +47,7 @@ export class UsersResultsComponent extends BaseComponent implements OnInit {
   showTableHeader: boolean;
   canViewProfile: boolean;
 
-  constructor(
-    injector: Injector,
-    private i18n: I18n
-  ) {
+  constructor(injector: Injector) {
     super(injector);
   }
 
@@ -125,17 +121,17 @@ export class UsersResultsComponent extends BaseComponent implements OnInit {
   fieldName(field: string): string {
     switch (field) {
       case 'display':
-        return this.i18n('User');
+        return this.messages.general.user;
       case 'name':
-        return this.i18n('Full name');
+        return this.messages.user.name;
       case 'username':
-        return this.i18n('Login name');
+        return this.messages.user.username;
       case 'email':
-        return this.i18n('E-mail');
+        return this.messages.user.email;
       case 'phone':
-        return this.i18n('Phone number');
+        return this.messages.phone.phoneNumber;
       case 'accountNumber':
-        return this.i18n('Account number');
+        return this.messages.account.number;
       default:
         const customField = this.data.customFields.find(cf => cf.internalName === field);
         return (customField || {}).name;

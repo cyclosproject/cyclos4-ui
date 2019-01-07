@@ -9,7 +9,6 @@ import { blank, empty } from 'app/shared/helper';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { InputFieldComponent } from 'app/shared/input-field.component';
 import { RegistrationAgreementsComponent } from 'app/login/registration-agreements.component';
-import { I18n } from '@ngx-translate/i18n-polyfill';
 
 /**
  * Public registration step: confirmation
@@ -37,7 +36,6 @@ export class RegistrationStepConfirmComponent
 
   constructor(
     injector: Injector,
-    private i18n: I18n,
     private modal: BsModalService) {
     super(injector);
   }
@@ -52,11 +50,11 @@ export class RegistrationStepConfirmComponent
   ngAfterViewInit() {
     if (this.agreementsContent && this.agreementsContent.nativeElement) {
       const el: HTMLElement = this.agreementsContent.nativeElement;
-      let html = this.i18n('I agree with the following registration agreements: {{agreements}}', {
-        agreements: `<a>${this.data.agreements.map(a => a.name).join(', ')}</a>`
-      });
-      html = html.replace('<a>', `<a href="#" onclick="event.preventDefault();event.stopPropagation();showAgreements()">`);
-      el.innerHTML = html;
+      el.innerHTML = this.messages.auth.pendingAgreements.agree(
+        `<a href="#" onclick="event.preventDefault();event.stopPropagation();showAgreements()">
+        ${this.data.agreements.map(a => a.name).join(', ')}
+        </a>`
+      );
       window['showAgreements'] = () => {
         this.modal.show(RegistrationAgreementsComponent, {
           class: 'modal-form',
@@ -122,7 +120,7 @@ export class RegistrationStepConfirmComponent
     if (extension === '') {
       return number;
     } else {
-      return this.i18n('{{number}} ext. {{extension}}', {
+      return this.messages.phone.numberExtensionValue({
         number: number,
         extension: extension
       });

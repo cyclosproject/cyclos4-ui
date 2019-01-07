@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
-import { I18n } from '@ngx-translate/i18n-polyfill';
 import { FormControl } from '@angular/forms';
+import { Messages } from 'app/messages/messages';
 
 /**
  * Shows errors in a field
@@ -14,7 +14,7 @@ import { FormControl } from '@angular/forms';
 export class FieldErrorsComponent {
   @Input() control: FormControl;
 
-  constructor(private i18n: I18n) {
+  constructor(private messages: Messages) {
   }
 
   get message(): string {
@@ -29,27 +29,21 @@ export class FieldErrorsComponent {
       }
       return message;
     } else if (errors.date) {
-      return this.i18n('Invalid date');
+      return this.messages.error.field.date;
     } else if (errors.minDate) {
-      return this.i18n('Should be {{min}} or later', {
-        min: errors.minDate.min
-      });
+      return this.messages.error.field.minDate(errors.minDate.min);
     } else if (errors.maxDate) {
-      return this.i18n('Should be {{max}} or before', {
-        max: errors.maxDate.max
-      });
+      return this.messages.error.field.minDate(errors.maxDate.max);
     } else if (errors.number) {
-      return this.i18n('Invalid numeric value');
+      return this.messages.error.field.number;
     } else if (errors.minlength) {
-      return this.i18n('Should have at least {{min}} characters.', {
-        min: errors.minlength.requiredLength
-      });
+      return this.messages.error.field.minLength(errors.minlength.requiredLength);
     } else if (errors.required) {
-      return this.i18n('This field is required.');
+      return this.messages.error.field.required;
     } else if (errors.passwordsMatch) {
-      return this.i18n('The passwords don\'t match.');
+      return this.messages.error.field.passwordsMatch;
     } else {
-      return this.i18n('This field is invalid');
+      return this.messages.error.field.invalid;
     }
   }
 }

@@ -1,4 +1,4 @@
-<page-content i18n-heading heading="Latest users" hideBack>
+<page-content [heading]="messages.dashboard.latestUsers" hideBack>
   <div class="container">
     <div class="row">
       <ng-container *ngFor="let user of users$ | async">

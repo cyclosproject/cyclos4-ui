@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { I18n } from '@ngx-translate/i18n-polyfill';
 import { Country, CustomFieldDetailed, UserDataForMap, UserDataForSearch } from 'app/api/models';
 import { UserResult } from 'app/api/models/user-result';
 import { UsersService } from 'app/api/services';
@@ -40,12 +39,11 @@ export class SearchUsersComponent
 
   constructor(
     injector: Injector,
-    i18n: I18n,
     private fieldHelper: FieldHelperService,
     private usersService: UsersService,
     countriesResolve: CountriesResolve
   ) {
-    super(injector, i18n);
+    super(injector);
 
     // Get the permissions to search users and view map directory
     const permissions = this.login.permissions || {};

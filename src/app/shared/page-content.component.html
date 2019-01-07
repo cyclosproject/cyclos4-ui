@@ -31,8 +31,8 @@
           <icon *ngIf="(layoutService.xxs$ | async); else actionsLabel" icon="more_vert"
             class="mx-2"></icon>
           <ng-template #actionsLabel>
-            <div class="action-label" i18n>
-              Actions
+            <div class="action-label">
+              {{ messages.general.actions }}
             </div>
           </ng-template>
         </button>

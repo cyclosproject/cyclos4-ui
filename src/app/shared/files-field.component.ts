@@ -8,9 +8,10 @@ import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { empty, getValueAsArray, preprocessValueWithSeparator } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
 import { ManageFilesComponent } from 'app/shared/manage-files.component';
-import * as download from 'downloadjs';
+import download from 'downloadjs';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { take } from 'rxjs/operators';
+import { Messages } from 'app/messages/messages';
 
 /**
  * Renders a widget for a field that allows uploading files
@@ -58,6 +59,7 @@ export class FilesFieldComponent extends BaseFormFieldComponent<string | string[
 
   constructor(
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
+    public messages: Messages,
     private authHelper: AuthHelperService,
     public layout: LayoutService,
     private errorHandler: ErrorHandlerService,

@@ -3,6 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { PaymentPreview, TransferFeePreview } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
 import { empty } from 'app/shared/helper';
+import { BankingHelperService } from 'app/core/banking-helper.service';
 
 
 /**
@@ -22,8 +23,8 @@ export class PaymentStepConfirmComponent extends BaseComponent implements OnInit
 
   form: FormGroup;
 
-  constructor(
-    injector: Injector) {
+  constructor(injector: Injector,
+    public bankingHelper: BankingHelperService) {
     super(injector);
   }
 

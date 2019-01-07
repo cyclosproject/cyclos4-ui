@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { I18n } from '@ngx-translate/i18n-polyfill';
 import { TransferView } from 'app/api/models';
 import { TransfersService } from 'app/api/services';
 import { BankingHelperService } from 'app/core/banking-helper.service';
@@ -22,10 +21,9 @@ export class ViewTransferComponent extends BasePageComponent<TransferView> imple
 
   constructor(
     injector: Injector,
-    i18n: I18n,
     private bankingHelper: BankingHelperService,
     private transfersService: TransfersService) {
-    super(injector, i18n);
+    super(injector);
   }
 
   get transfer(): TransferView {
@@ -47,12 +45,12 @@ export class ViewTransferComponent extends BasePageComponent<TransferView> imple
     const actions: HeadingAction[] = [this.printAction];
     const transaction = transfer.transaction || {};
     if (!empty(transaction.authorizations)) {
-      actions.push(new HeadingAction('check_circle_outline', this.i18n('View authorizations'), () => {
+      actions.push(new HeadingAction('check_circle_outline', this.messages.transaction.viewAuthorizations, () => {
         this.router.navigate(['banking', 'transaction', this.bankingHelper.transactionNumberOrId(transaction), 'authorization-history']);
       }));
     }
     if (transfer.canChargeback) {
-      actions.push(new HeadingAction('undo', this.i18n('Chargeback transfer'), () => {
+      actions.push(new HeadingAction('undo', this.messages.transaction.chargebackTransfer, () => {
         this.chargeback();
       }));
     }
@@ -61,15 +59,15 @@ export class ViewTransferComponent extends BasePageComponent<TransferView> imple
 
   private chargeback() {
     this.notification.confirm({
-      title: this.i18n('Chargeback transfer'),
-      message: this.i18n('This will return the amount to the payer'),
+      title: this.messages.transaction.chargebackTransfer,
+      message: this.messages.transaction.chargebackTransferMessage,
       passwordInput: this.transfer.confirmationPasswordInput,
       callback: res => {
         this.transfersService.chargebackTransfer({
           key: this.transfer.id,
           confirmationPassword: res.confirmationPassword
         }).subscribe(() => {
-          this.notification.snackBar(this.i18n('This transfer was charged back'));
+          this.notification.snackBar(this.messages.transaction.chargebackTransferDone);
           this.reload();
         });
       }

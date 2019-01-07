@@ -1,6 +1,5 @@
 import { Injectable, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
-import { I18n } from '@ngx-translate/i18n-polyfill';
 import { ApiConfiguration } from 'app/api/api-configuration';
 import { Auth } from 'app/api/models';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
@@ -9,6 +8,7 @@ import { LoginService } from 'app/core/login.service';
 import { NextRequestState } from 'app/core/next-request-state';
 import { NotificationService } from 'app/core/notification.service';
 import { EventSourcePolyfill } from 'ng-event-source';
+import { Messages } from 'app/messages/messages';
 
 export const LOGGED_OUT = 'loggedOut';
 const KINDS = [LOGGED_OUT];
@@ -27,7 +27,7 @@ export class PushNotificationsService {
     private dataForUiHolder: DataForUiHolder,
     private apiConfiguration: ApiConfiguration,
     private login: LoginService,
-    private i18n: I18n,
+    private messages: Messages,
     private notification: NotificationService,
     private zone: NgZone,
     private loginState: LoginState,
@@ -74,9 +74,9 @@ export class PushNotificationsService {
         this.login.clear();
         this.nextRequestState.sessionToken = null;
         this.notification.confirm({
-          title: this.i18n('Session expired'),
-          message: this.i18n('You have been logged-out.<br>You can keep viewing the same page or login again now.'),
-          confirmLabel: this.i18n('Login again'),
+          title: this.messages.general.sessionExpired.title,
+          message: this.messages.general.sessionExpired.message,
+          confirmLabel: this.messages.general.sessionExpired.loginAgain,
           callback: () => {
             this.loginState.redirectUrl = this.router.url;
             this.router.navigateByUrl('/login');

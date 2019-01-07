@@ -7,7 +7,6 @@ import { ApiHelper } from 'app/shared/api-helper';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { validateBeforeSubmit } from 'app/shared/helper';
 import { BehaviorSubject } from 'rxjs';
-import { I18n } from '@ngx-translate/i18n-polyfill';
 
 /** Validator function that ensures password and confirmation match */
 const PASSWORDS_MATCH_VAL: ValidatorFn = control => {
@@ -38,17 +37,17 @@ export class ChangeExpiredPasswordComponent
 
   form: FormGroup;
   typeId: string;
+  typeName: string;
   generated = false;
 
   generatedValue$ = new BehaviorSubject<string>(null);
 
   constructor(
     injector: Injector,
-    i18n: I18n,
     private passwordsService: PasswordsService,
     private loginState: LoginState
   ) {
-    super(injector, i18n);
+    super(injector);
     this.form = this.formBuilder.group({
     });
   }
@@ -69,6 +68,7 @@ export class ChangeExpiredPasswordComponent
       fields: ['status', 'permissions']
     }).subscribe(data => {
       this.data = data;
+      this.typeName = data.type.name;
       this.generated = data.type.mode === PasswordModeEnum.GENERATED;
       if (!this.generated) {
         this.form.setControl('checkConfirmation', this.formBuilder.control(true));
@@ -94,9 +94,7 @@ export class ChangeExpiredPasswordComponent
         type: this.typeId,
         params: this.form.value
       }).subscribe(() => {
-        this.notification.snackBar(this.i18n('Your {{name}} was changed', {
-          name: type.name
-        }));
+        this.notification.snackBar(this.messages.auth.password.expired.changed(type.name));
         this.reload();
       });
     }

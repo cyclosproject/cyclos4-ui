@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { I18n } from '@ngx-translate/i18n-polyfill';
 import { CustomFieldDetailed, PasswordInput } from 'app/api/models';
 import { AuthHelperService } from 'app/core/auth-helper.service';
 import { FieldHelperService } from 'app/core/field-helper.service';
@@ -10,6 +9,7 @@ import { FieldLabelPosition } from 'app/shared/base-form-field.component';
 import { blank, empty, validateBeforeSubmit } from 'app/shared/helper';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Observable } from 'rxjs';
+import { Messages } from 'app/messages/messages';
 
 /**
  * Component shown in a dialog, to present a confirmation message, optionally with a confirmation password
@@ -37,7 +37,7 @@ export class ConfirmationComponent implements OnInit {
   canConfirm: boolean;
 
   constructor(
-    private i18n: I18n,
+    public messages: Messages,
     public modalRef: BsModalRef,
     private formBuilder: FormBuilder,
     private fieldHelper: FieldHelperService,
@@ -60,10 +60,10 @@ export class ConfirmationComponent implements OnInit {
       this.hasForm = true;
     }
     if (blank(this.cancelLabel)) {
-      this.cancelLabel = this.i18n('Cancel');
+      this.cancelLabel = this.messages.general.cancel;
     }
     if (blank(this.confirmLabel)) {
-      this.confirmLabel = this.i18n('Confirm');
+      this.confirmLabel = this.messages.general.confirm;
     }
   }
 

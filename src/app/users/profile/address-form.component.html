@@ -10,6 +10,6 @@
       [label]="getLabel(field)" [required]="isRequired(field)"></input-field>
   </ng-template>
 </ng-container>
-<label-value *ngIf="managePrivacy" i18n-label label="Address privacy" kind="field">
+<label-value *ngIf="managePrivacy" [label]="messages.field.privacy.name" kind="field">
   <field-privacy [control]="addressForm.get('hidden')" justifyStart></field-privacy>
 </label-value>

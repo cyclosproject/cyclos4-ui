@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, HostBinding, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { I18n } from '@ngx-translate/i18n-polyfill';
 import { truthyAttr } from 'app/shared/helper';
 import { TooltipDirective } from 'ngx-bootstrap/tooltip';
 import { BehaviorSubject } from 'rxjs';
+import { Messages } from 'app/messages/messages';
 
 /**
  * A widget that switches between field visibilities.
@@ -34,7 +34,7 @@ export class FieldPrivacyComponent implements OnInit {
 
   icon$ = new BehaviorSubject<string>(null);
 
-  constructor(private i18n: I18n) {
+  constructor(private messages: Messages) {
   }
 
   ngOnInit() {
@@ -77,9 +77,9 @@ export class FieldPrivacyComponent implements OnInit {
 
   get tooltip(): string {
     if (this.hidden) {
-      return this.i18n('This field is private. Click to allow other to view it.');
+      return this.messages.field.privacy.privateTooltip;
     } else {
-      return this.i18n('This field is visible by others. Click to make it private.');
+      return this.messages.field.privacy.publicTooltip;
     }
   }
 }

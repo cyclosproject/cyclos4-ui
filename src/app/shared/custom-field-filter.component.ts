@@ -10,6 +10,7 @@ import { InputFieldComponent } from 'app/shared/input-field.component';
 import { MultiSelectionFieldComponent } from 'app/shared/multi-selection-field.component';
 import { RadioGroupFieldComponent } from 'app/shared/radio-group-field.component';
 import { UserFieldComponent } from 'app/shared/user-field.component';
+import { Messages } from 'app/messages/messages';
 
 const INPUT = [
   CustomFieldTypeEnum.STRING, CustomFieldTypeEnum.TEXT,
@@ -73,6 +74,7 @@ export class CustomFieldFilterComponent extends BaseFormFieldComponent<string> i
 
   constructor(
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
+    public messages: Messages,
     private fieldHelper: FieldHelperService
   ) {
     super(controlContainer);

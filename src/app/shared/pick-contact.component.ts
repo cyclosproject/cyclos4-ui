@@ -4,9 +4,7 @@ import { ContactsService } from 'app/api/services';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseComponent } from 'app/shared/base.component';
 import { BsModalRef } from 'ngx-bootstrap/modal';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-
+import { BehaviorSubject } from 'rxjs';
 
 /**
  * A component to be shown in a dialog, showing the user contact list
@@ -20,7 +18,7 @@ export class PickContactComponent extends BaseComponent implements OnInit {
 
   @Output() select = new EventEmitter<User>();
 
-  contacts$: Observable<User[]>;
+  contacts$ = new BehaviorSubject<User[]>(null);
 
   constructor(
     injector: Injector,
@@ -32,12 +30,12 @@ export class PickContactComponent extends BaseComponent implements OnInit {
 
   ngOnInit() {
     super.ngOnInit();
-    this.contacts$ = this.contactsService.searchContactList({
+    this.addSub(this.contactsService.searchContactList({
       user: ApiHelper.SELF,
       fields: ['contact']
-    }).pipe(
-      map(contacts => contacts.map(c => c.contact))
-    );
+    }).subscribe(c => {
+      this.contacts$.next(c || []);
+    }));
   }
 
   emit(contact: User, event: MouseEvent) {

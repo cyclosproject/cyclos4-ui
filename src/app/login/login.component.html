@@ -1,16 +1,12 @@
 <page-layout [ready]="data$ | async" size="small" hideMenu>
   <page-content *ngIf="data" [layout]="(layout.ltmd$ | async) ? 'normal' : 'centered'"
-    mode="tight" heading="Login" i18n-heading="Login page title" [ngClass]="{'with-left-area': layout.leftAreaVisible$ | async}">
+    mode="tight" [heading]="messages.auth.login.title" [ngClass]="{'with-left-area': layout.leftAreaVisible$ | async}">
     <form [formGroup]="form" (submit)="$event.preventDefault()">
       <div class="pre-login-text" *ngIf="loggedOut || (layout.gtxxs$ | async)">
-        <ng-container *ngIf="loggedOut; else regularMessage" i18n>
-          You have been disconnected.
-          <br>Please, login again in order to view the requested page.
-        </ng-container>
+        <div *ngIf="loggedOut; else regularMessage" [innerHTML]="messages.auth.login.disconnected | trust">
+        </div>
         <ng-template #regularMessage>
-          <ng-container i18n>
-            You can login with your username and password
-          </ng-container>
+          {{ messages.auth.login.message }}
         </ng-template>
       </div>
 
@@ -21,26 +17,28 @@
           </span>
         </div>
         <input type="text" formControlName="principal" autocomplete="username"
-          class="form-control" focused placeholder="User" (keyup.enter)="password.focus()"
-          i18n-placeholder="User on login form">
+          class="form-control" focused (keyup.enter)="password.focus()"
+          [placeholder]="messages.auth.login.principal">
       </div>
 
       <password-input #password class="d-block login-margin-bottom"
         formControlName="password" autocomplete="password" showIcon
         [passwordInput]="data?.loginPasswordInput" (enter)="doLogin()"
-        i18n-placeholder="Password on login form" placeholder="Password"></password-input>
+        [placeholder]="messages.auth.login.password"></password-input>
 
       <button type="button" class="btn btn-primary login-margin-top login-margin-bottom px-5"
-        i18n [disabled]="requesting$ | async" (click)="doLogin();$event.preventDefault();">Submit</button>
+        [disabled]="requesting$ | async" (click)="doLogin();$event.preventDefault();">
+        {{ messages.general.submit }}
+      </button>
 
       <a *ngIf="forgotPasswordEnabled" class="d-block login-margin-top login-margin-bottom"
-        routerLink="/forgot-password" i18n>
-        Forgot your password?
+        routerLink="/forgot-password">
+        {{ messages.auth.login.forgotPassword }}
       </a>
 
       <a *ngIf="registrationEnabled" class="d-block login-margin-top"
-        routerLink="/users/registration" i18n>
-        Not a user yet? Register here.
+        routerLink="/users/registration">
+        {{ messages.auth.login.register }}
       </a>
     </form>
   </page-content>

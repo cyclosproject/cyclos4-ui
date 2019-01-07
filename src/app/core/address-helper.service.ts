@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { I18n } from '@ngx-translate/i18n-polyfill';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AddressConfiguration, AddressFieldEnum, Address } from 'app/api/models';
+import { Messages } from 'app/messages/messages';
 
 /**
  * Helper service for handling address fields
@@ -12,8 +12,8 @@ import { AddressConfiguration, AddressFieldEnum, Address } from 'app/api/models'
 export class AddressHelperService {
 
   constructor(
-    private i18n: I18n,
-    private formBuilder: FormBuilder) {
+    private formBuilder: FormBuilder,
+    private messages: Messages) {
   }
 
   /**
@@ -45,27 +45,27 @@ export class AddressHelperService {
   addressFieldLabel(field: AddressFieldEnum): string {
     switch (field) {
       case AddressFieldEnum.ADDRESS_LINE_1:
-        return this.i18n('Address line 1');
+        return this.messages.address.line1;
       case AddressFieldEnum.ADDRESS_LINE_2:
-        return this.i18n('Address line 2');
+        return this.messages.address.line2;
       case AddressFieldEnum.BUILDING_NUMBER:
-        return this.i18n('Building number');
+        return this.messages.address.buildingNumber;
       case AddressFieldEnum.CITY:
-        return this.i18n('City');
+        return this.messages.address.city;
       case AddressFieldEnum.COMPLEMENT:
-        return this.i18n('Complement');
+        return this.messages.address.complement;
       case AddressFieldEnum.COUNTRY:
-        return this.i18n('Country');
+        return this.messages.address.country;
       case AddressFieldEnum.NEIGHBORHOOD:
-        return this.i18n('Neighborhood');
+        return this.messages.address.neighborhood;
       case AddressFieldEnum.PO_BOX:
-        return this.i18n('Post-office box');
+        return this.messages.address.poBox;
       case AddressFieldEnum.REGION:
-        return this.i18n('Region / state');
+        return this.messages.address.region;
       case AddressFieldEnum.STREET:
-        return this.i18n('Street');
+        return this.messages.address.street;
       case AddressFieldEnum.ZIP:
-        return this.i18n('Zip code');
+        return this.messages.address.zip;
     }
     return null;
   }

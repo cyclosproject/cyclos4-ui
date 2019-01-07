@@ -1,0 +1,8 @@
+{
+  "$schema": "./node_modules/ng-translation-gen/ng-translation-gen-schema.json",
+  "input": "src/locale",
+  "output": "src/app/messages/",
+  "mapping": {
+    "cyclos4-ui.json": "Messages"
+  }
+}

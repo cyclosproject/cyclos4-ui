@@ -10,11 +10,17 @@
 <div [ngClass]="classNames" *ngIf="address.neighborhood">
   {{ address.neighborhood }}
 </div>
-<div [ngClass]="classNames" *ngIf="address.poBox" i18n>
-  PO box: {{ address.poBox }}
+<div [ngClass]="classNames" *ngIf="address.poBox">
+  {{ messages.general.labelValue({
+  label: messages.address.poBox,
+  value: address.poBox
+  }) }}
 </div>
-<div [ngClass]="classNames" *ngIf="address.zip" i18n>
-  ZIP code: {{ address.zip }}
+<div [ngClass]="classNames" *ngIf="address.zip">
+  {{ messages.general.labelValue({
+  label: messages.address.zip,
+  value: address.zip
+  }) }}
 </div>
 <div [ngClass]="classNames" *ngIf="address.city">
   {{ address.city }}

@@ -73,9 +73,7 @@
 <ng-template #noResults>
   <content-monitor *ngIf="results && resultType !== 'categories'" (ready)="notifyReady()">
     <page-content last>
-      <ng-container i18n>
-        No results match the search criteria
-      </ng-container>
+      {{ messages.general.results.none }}
       {{ notifyReady() }}
     </page-content>
   </content-monitor>

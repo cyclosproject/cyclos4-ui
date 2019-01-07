@@ -24,8 +24,8 @@
       <a href="#" *ngIf="(login.user$ | async) != null && (layout.ltlg$ | async)"
         id="logout-trigger" (click)="logout($event)">
         <icon size="1.4rem" icon="logout"></icon>
-        <div *ngIf="layout.gtsm$ | async" class="ml-2" i18n>
-          Logout
+        <div *ngIf="layout.gtsm$ | async" class="ml-2">
+          {{ messages.menu.logout }}
         </div>
       </a>
     </div>

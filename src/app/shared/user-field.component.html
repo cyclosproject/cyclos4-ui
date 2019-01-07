@@ -34,7 +34,7 @@
     </div>
     <div *ngIf="user == null" class="d-flex ml-2">
       <button class="btn btn-light btn-icon" *ngIf="allowContacts"
-        #contactListButton i18n-tooltip tooltip="Pick from contact list"
+        #contactListButton [tooltip]="messages.field.user.contactTooltip"
         (click)="showContactList()">
         <icon icon="import_contacts"></icon>
       </button>

@@ -6,7 +6,6 @@ import {
   AbstractControl, ControlContainer, FormArray, FormBuilder, FormControl,
   NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator
 } from '@angular/forms';
-import { I18n } from '@ngx-translate/i18n-polyfill';
 import { CustomFieldSizeEnum } from 'app/api/models';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { FormatService, ISO_DATE } from 'app/core/format.service';
@@ -15,9 +14,10 @@ import { DateConstraint, dateConstraintAsMoment } from 'app/shared/date-constrai
 import { empty } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
 import { range } from 'lodash';
-import * as moment from 'moment-mini-ts';
+import moment from 'moment-mini-ts';
 import { BsDropdownDirective } from 'ngx-bootstrap/dropdown';
 import { CalendarComponent } from 'app/shared/calendar.component';
+import { Messages } from 'app/messages/messages';
 
 /**
  * Input used to edit a single date
@@ -59,7 +59,7 @@ export class DateFieldComponent
     private dataForUiHolder: DataForUiHolder,
     public format: FormatService,
     public layout: LayoutService,
-    private i18n: I18n) {
+    private messages: Messages) {
     super(controlContainer);
     this.partControls = formBuilder.array(new Array(format.dateFields.length).fill(''));
     this.addSub(this.partControls.valueChanges.subscribe(parts => this.setFromParts(parts)));
@@ -115,9 +115,9 @@ export class DateFieldComponent
       this.fieldSize = CustomFieldSizeEnum.SMALL;
     }
     this.fieldNames = this.format.applyDateFields([
-      this.i18n('Year'),
-      this.i18n('Month'),
-      this.i18n('Day'),
+      this.messages.general.datePart.long.year,
+      this.messages.general.datePart.long.month,
+      this.messages.general.datePart.long.day,
     ]);
     const now = this.dataForUiHolder.now();
     this.min = dateConstraintAsMoment(this.minDate, now);
@@ -129,11 +129,10 @@ export class DateFieldComponent
     ).map(String).reverse();
     const monthOptions = range(1, 13);
     const dateOptions = range(1, 32).map(String);
-    const localeData = this.dataForUiHolder.localeData;
     this.options = this.format.applyDateFields([yearOptions, monthOptions.map(String), dateOptions]);
     this.optionLabels = this.format.applyDateFields([
       yearOptions,
-      monthOptions.map(i => localeData.monthsShort[i - 1]),
+      monthOptions.map(i => this.format.shortMonthName(i - 1)),
       dateOptions
     ]);
   }

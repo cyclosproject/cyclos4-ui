@@ -8,7 +8,6 @@ import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { words } from 'app/shared/helper';
-import { I18n } from '@ngx-translate/i18n-polyfill';
 
 export const MAX_SIZE_SHORT_NAME = 25;
 
@@ -24,11 +23,10 @@ export const MAX_SIZE_SHORT_NAME = 25;
 export class ViewProfileComponent extends BasePageComponent<UserView> implements OnInit {
   constructor(
     injector: Injector,
-    i18n: I18n,
     private usersService: UsersService,
     private contactsService: ContactsService,
     public maps: MapsService) {
-    super(injector, i18n);
+    super(injector);
   }
 
   key: string;
@@ -54,7 +52,7 @@ export class ViewProfileComponent extends BasePageComponent<UserView> implements
           this.data = user;
         }, (resp: HttpErrorResponse) => {
           if ([ErrorStatus.FORBIDDEN, ErrorStatus.UNAUTHORIZED].includes(resp.status)) {
-            this.notification.error(this.i18n('You don\'t have permission to view the profile of this user'));
+            this.notification.error(this.messages.user.profile.noPermission);
             this.breadcrumb.back();
             this.data = {};
           } else {
@@ -86,27 +84,27 @@ export class ViewProfileComponent extends BasePageComponent<UserView> implements
     const payment = permissions.payment || {};
     const marketplace = permissions.marketplace || {};
     if ((this.login.user || {}).id === user.id && user.permissions.profile.editProfile) {
-      actions.push(new HeadingAction('edit', this.i18n('Edit'), () => {
+      actions.push(new HeadingAction('edit', this.messages.general.edit, () => {
         this.router.navigate(['users', 'my-profile', 'edit']);
       }, true));
     }
     if (contact.add) {
-      actions.push(new HeadingAction('add_circle_outline', this.i18n('Add to my contacts'), () => {
+      actions.push(new HeadingAction('add_circle_outline', this.messages.user.profile.addContact, () => {
         this.addContact();
       }));
     }
     if (contact.remove) {
-      actions.push(new HeadingAction('remove_circle_outline', this.i18n('Remove from my contacts'), () => {
+      actions.push(new HeadingAction('remove_circle_outline', this.messages.user.profile.removeContact, () => {
         this.removeContact();
       }));
     }
     if (payment.userToUser) {
-      actions.push(new HeadingAction('payment', this.i18n('Make payment'), () => {
+      actions.push(new HeadingAction('payment', this.messages.user.profile.pay, () => {
         this.router.navigate(['/banking', 'payment', this.key]);
       }));
     }
     if (marketplace.viewAdvertisements || marketplace.viewWebshop) {
-      actions.push(new HeadingAction('shopping_basket', this.i18n('View advertisements'), () => {
+      actions.push(new HeadingAction('shopping_basket', this.messages.user.profile.viewAds, () => {
         this.router.navigate(['/marketplace', 'user', this.key]);
       }));
     }
@@ -120,18 +118,14 @@ export class ViewProfileComponent extends BasePageComponent<UserView> implements
         contact: this.user.id
       }
     }).subscribe(() => {
-      this.notification.snackBar(this.i18n('{{user}} was added to your contact list', {
-        user: this.shortName
-      }));
+      this.notification.snackBar(this.messages.user.profile.addContactDone(this.shortName));
       this.reload();
     });
   }
 
   private removeContact(): any {
     this.contactsService.deleteContact(this.user.contact.id).subscribe(() => {
-      this.notification.snackBar(this.i18n('{{user}} was removed to your contact list', {
-        user: this.shortName
-      }));
+      this.notification.snackBar(this.messages.user.profile.removeContactDone(this.shortName));
       this.reload();
     });
   }
@@ -141,7 +135,7 @@ export class ViewProfileComponent extends BasePageComponent<UserView> implements
   }
 
   get title(): string {
-    return this.myProfile ? this.i18n('My profile') : this.shortName;
+    return this.myProfile ? this.messages.user.title.myProfile : this.shortName;
   }
 
 }

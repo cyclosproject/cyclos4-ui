@@ -12,9 +12,8 @@
     [focused]="!hasFields" [passwordInput]="passwordInput" [ngClass]="{
       'mt-3': hasFields || message == null,
       'mt-4': !hasFields && message != null
-    }"
-    i18n>
-    In order to confirm, you need to supply your {{ passwordInput.name }}
+    }">
+    {{ messages.auth.password.confirmationMessage }}
   </confirmation-password>
 
   <actions forceRow>

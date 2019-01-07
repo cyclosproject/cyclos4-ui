@@ -8,7 +8,7 @@ import { FormatService, ISO_DATE } from 'app/core/format.service';
 import { BaseControlComponent } from 'app/shared/base-control.component';
 import { DateConstraint, dateConstraintAsMoment } from 'app/shared/date-constraint';
 import { chunk, range } from 'lodash';
-import * as moment from 'moment-mini-ts';
+import moment from 'moment-mini-ts';
 import { BehaviorSubject } from 'rxjs';
 
 export type CalendarType = 'month' | 'year' | 'multiYear';

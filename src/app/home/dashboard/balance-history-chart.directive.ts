@@ -1,7 +1,7 @@
 import { Directive, ElementRef, Input, OnInit } from '@angular/core';
 import { AccountBalanceHistoryResult } from 'app/api/models';
 import { Chart } from 'chart.js';
-import * as moment from 'moment-mini-ts';
+import moment from 'moment-mini-ts';
 import { FormatService } from 'app/core/format.service';
 import { LayoutService } from 'app/shared/layout.service';
 

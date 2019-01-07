@@ -1,7 +1,6 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { I18n } from '@ngx-translate/i18n-polyfill';
+import { ChangeDetectionStrategy, Component, Injector, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { AccountHistoryStatus, AccountWithHistoryStatus, Currency } from 'app/api/models';
-import { FormatService } from 'app/core/format.service';
+import { BaseComponent } from 'app/shared/base.component';
 import { BehaviorSubject } from 'rxjs';
 
 
@@ -21,16 +20,15 @@ export interface StatusIndicator {
   styleUrls: ['account-status-view.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AccountStatusViewComponent implements OnInit, OnChanges {
+export class AccountStatusViewComponent extends BaseComponent implements OnInit, OnChanges {
 
   @Input() account: AccountWithHistoryStatus;
   @Input() mode: 'current' | 'period' = 'current';
 
   indicators$ = new BehaviorSubject<StatusIndicator[]>(null);
 
-  constructor(
-    private i18n: I18n,
-    private format: FormatService) {
+  constructor(injector: Injector) {
+    super(injector);
   }
 
   ngOnInit() {
@@ -58,38 +56,34 @@ export class AccountStatusViewComponent implements OnInit, OnChanges {
       }
     };
     if (this.mode === 'current') {
-      add(status.balance, this.i18n('Balance'));
+      add(status.balance, this.messages.account.balance);
       if (status.availableBalance !== status.balance) {
-        add(status.availableBalance, this.i18n('Available balance'));
+        add(status.availableBalance, this.messages.account.availableBalance);
       }
       if (status.reservedAmount && !this.format.isZero(status.reservedAmount)) {
-        add(status.reservedAmount, this.i18n('Reserved amount'), true);
+        add(status.reservedAmount, this.messages.account.reservedAmount, true);
       }
       if (status.creditLimit && !this.format.isZero(status.creditLimit)) {
-        add(status.creditLimit, this.i18n('Negative limit'));
+        add(status.creditLimit, this.messages.account.negativeLimit);
       }
       if (status.upperCreditLimit && !this.format.isZero(status.upperCreditLimit)) {
-        add(status.upperCreditLimit, this.i18n('Positive limit'));
+        add(status.upperCreditLimit, this.messages.account.positiveLimit);
       }
     } else {
       if (status.balanceAtBegin != null) {
-        add(status.balanceAtBegin, this.i18n('Balance on {{date}}', {
-          date: this.format.formatAsDate(status.beginDate)
-        }));
+        add(status.balanceAtBegin, this.messages.account.balanceOn(this.format.formatAsDate(status.beginDate)));
       }
       if (status.balanceAtEnd != null) {
-        add(status.balanceAtEnd, this.i18n('Balance on {{date}}', {
-          date: this.format.formatAsDate(status.endDate)
-        }));
+        add(status.balanceAtEnd, this.messages.account.balanceOn(this.format.formatAsDate(status.endDate)));
       }
       if (status.incoming != null && status.incoming.sum) {
-        add(status.incoming.sum, this.i18n('Total income'));
+        add(status.incoming.sum, this.messages.account.totalIncome);
       }
       if (status.outgoing != null && status.outgoing.sum) {
-        add(status.outgoing.sum, this.i18n('Total outflow'));
+        add(status.outgoing.sum, this.messages.account.totalOutflow);
       }
       if (status.netInflow != null) {
-        add(status.netInflow, this.i18n('Net inflow'));
+        add(status.netInflow, this.messages.account.netInflow);
       }
     }
     this.indicators$.next(indicators);

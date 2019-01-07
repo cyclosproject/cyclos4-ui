@@ -2,7 +2,7 @@
   <multi-selection-field #singleSelectionField [id]="id" [label]="label"
     [name]="name" [labelPosition]="labelPosition" [fieldSize]="fieldSize"
     [required]="required" [formControl]="formControl" [fieldOptions]="fieldOptions"
-    i18n-emptyLabel emptyLabel="Filter not applied">
+    [emptyLabel]="messages.general.notApplied">
   </multi-selection-field>
 </ng-container>
 
@@ -17,9 +17,9 @@
   <radio-group-field #radioGroupField *ngIf="type == 'boolean'" [id]="id"
     [label]="label" [name]="name" [labelPosition]="labelPosition" [fieldSize]="fieldSize"
     [required]="required" [formControl]="formControl">
-    <field-option [value]="null" i18n-text text="All"></field-option>
-    <field-option [value]="true" i18n-text text="Yes"></field-option>
-    <field-option [value]="false" i18n-text text="No"></field-option>
+    <field-option [value]="null" [text]="messages.general.notApplied"></field-option>
+    <field-option [value]="true" [text]="messages.general.yes"></field-option>
+    <field-option [value]="false" [text]="messages.general.no"></field-option>
   </radio-group-field>
 
   <!-- multi selection -->

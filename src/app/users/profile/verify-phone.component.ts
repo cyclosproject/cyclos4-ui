@@ -7,7 +7,6 @@ import { validateBeforeSubmit } from 'app/shared/helper';
 import { InputFieldComponent } from 'app/shared/input-field.component';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { BehaviorSubject } from 'rxjs';
-import { I18n } from '@ngx-translate/i18n-polyfill';
 
 
 /**
@@ -31,7 +30,6 @@ export class VerifyPhoneComponent extends BaseComponent implements OnInit {
 
   constructor(
     injector: Injector,
-    private i18n: I18n,
     public modalRef: BsModalRef,
     private phonesService: PhonesService) {
     super(injector);
@@ -41,15 +39,13 @@ export class VerifyPhoneComponent extends BaseComponent implements OnInit {
 
   ngOnInit() {
     super.ngOnInit();
-    this.message = this.i18n('Click the button above to send the verification code to your phone');
+    this.message = this.messages.phone.verify.message;
   }
 
   /** Sends the verification code */
   sendCode() {
     this.phonesService.sendPhoneVerificationCode(this.phone.id).subscribe(number => {
-      this.message = this.i18n('The verification code was sent to {{number}}', {
-        number: number
-      });
+      this.message = this.messages.phone.verify.done(number);
       this.code.setValue(null);
       this.codeField.focus();
     });
@@ -73,15 +69,13 @@ export class VerifyPhoneComponent extends BaseComponent implements OnInit {
       switch (status) {
         case CodeVerificationStatusEnum.CODE_NOT_SENT:
         case CodeVerificationStatusEnum.EXPIRED:
-          this.notification.error(this.i18n(`The verification code was not sent or has expired.<br>
-          Please, send the code again to your phone and restart the process.`));
+          this.notification.error(this.messages.phone.verify.errorExpired);
           break;
         case CodeVerificationStatusEnum.FAILED:
-          this.notification.error(this.i18n('Invalid verification code'));
+          this.notification.error(this.messages.phone.verify.errorInvalid);
           break;
         case CodeVerificationStatusEnum.MAX_ATTEMPTS_REACHED:
-          this.notification.error(this.i18n(`You have exceeded the number of allowed attempts.<br>
-          Please, send the code again to your phone and restart the process.`));
+          this.notification.error(this.messages.phone.verify.errorMaxAttempts);
           break;
         case CodeVerificationStatusEnum.SUCCESS:
           this.disabled = true;

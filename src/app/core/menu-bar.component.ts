@@ -8,6 +8,7 @@ import { LayoutService } from 'app/shared/layout.service';
 import { BaseMenuEntry, MenuEntry, MenuType, RootMenu, RootMenuEntry } from 'app/shared/menu';
 import { BsDropdownDirective } from 'ngx-bootstrap/dropdown/public_api';
 import { Observable } from 'rxjs';
+import { Messages } from 'app/messages/messages';
 
 /**
  * A bar displayed on large layouts with the root menu items
@@ -25,7 +26,8 @@ export class MenuBarComponent implements OnInit {
     private stateManager: StateManager,
     public breadcrumb: BreadcrumbService,
     public layout: LayoutService,
-    public login: LoginService) {
+    public login: LoginService,
+    public messages: Messages) {
   }
 
   roots: Observable<RootMenuEntry[]>;

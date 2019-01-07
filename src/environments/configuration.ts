@@ -40,6 +40,12 @@ const AD_CATEGORIES: { [internalName: string]: AdCategoryConfiguration } = {
 // **** Content **** //
 // See the project home page for help on how to customize content
 
+// A static application translation file
+// May be left to null to resolve dynamically according to the Cyclos configuration,
+// or set here to prevent an additional request to load the translation values
+import translationValues from 'locale/cyclos4-ui.json';
+const TRANSLATION: any = translationValues;
+
 // The home page shown for guests
 const HOME_PAGE: ContentWithLayout = {
 
@@ -80,6 +86,7 @@ export const configuration = {
   searchPageSizes: SEARCH_PAGE_SIZES,
   quickSearchPageSize: QUICK_SEARCH_PAGE_SIZE,
   adCategories: AD_CATEGORIES as { [internalName: string]: AdCategoryConfiguration },
+  translationValues: TRANSLATION as any,
   homePage: HOME_PAGE as ContentWithLayout,
   dashboardResolver: DASHBOARD_RESOLVER as DashboardResolver,
   contentPagesResolver: CONTENT_PAGES_RESOLVER as ContentPagesResolver,

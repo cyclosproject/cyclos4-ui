@@ -12,5 +12,7 @@
 
 <actions>
   <span></span>
-  <button class="btn btn-outline-primary" i18n (click)="modalRef.hide()">Cancel</button>
+  <button class="btn btn-outline-primary" (click)="modalRef.hide()">
+    {{ messages.general.cancel }}
+  </button>
 </actions>

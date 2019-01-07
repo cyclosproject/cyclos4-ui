@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { UsersService } from 'app/api/services';
 import { BasePageComponent } from 'app/shared/base-page.component';
-import { I18n } from '@ngx-translate/i18n-polyfill';
 
 /**
  * Component shown after the user clicks the received link to
@@ -22,10 +21,9 @@ export class ValidateEmailChangeComponent
 
   constructor(
     injector: Injector,
-    i18n: I18n,
     private usersService: UsersService
   ) {
-    super(injector, i18n);
+    super(injector);
   }
 
   ngOnInit() {
@@ -34,7 +32,7 @@ export class ValidateEmailChangeComponent
       if (this.login.user && this.login.user.id !== result) {
         // Was logged-in as a different user
         this.login.logout();
-        this.notification.info(this.i18n('Your new e-mail address was successfully confirmed'));
+        this.notification.info(this.messages.user.newEmailConfirmed);
       } else {
         // Show the page normally
         this.data = result;

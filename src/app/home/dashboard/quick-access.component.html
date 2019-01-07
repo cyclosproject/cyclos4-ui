@@ -1,4 +1,5 @@
-<page-content i18n-heading heading="Quick access" mode="tight" hideBack>
+<page-content [heading]="messages.dashboard.quickAccess" mode="tight"
+  hideBack>
   <div class="row no-gutters flex-grow-1 quick-access-container">
     <ng-container *ngFor="let action of actions">
       <div *ngIf="layout.visible(action.breakpoints, layout.breakpointChanges$ | async)"

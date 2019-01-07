@@ -1,6 +1,5 @@
 import { Injectable, Injector } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { I18n } from '@ngx-translate/i18n-polyfill';
 import { Auth } from 'app/api/models';
 import { ContentPage } from 'app/content/content-page';
 import { handleFullWidthLayout } from 'app/content/content-with-layout';
@@ -15,6 +14,7 @@ import { ConditionalMenu, Menu, MenuEntry, MenuType, RootMenu, RootMenuEntry, Si
 import { environment } from 'environments/environment';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { distinctUntilChanged, first, map, filter } from 'rxjs/operators';
+import { Messages } from 'app/messages/messages';
 
 /**
  * Contains information about the active menu
@@ -63,7 +63,7 @@ export class MenuService {
   private _contentPages = new BehaviorSubject<ContentPage[]>(null);
 
   constructor(
-    private i18n: I18n,
+    private messages: Messages,
     private injector: Injector,
     private dataForUiHolder: DataForUiHolder,
     private router: Router,
@@ -363,19 +363,17 @@ export class MenuService {
       return entry;
     };
     // Create the root menu entries
-    const home = addRoot(RootMenu.HOME, 'home', this.i18n({ value: 'Home', description: 'Menu' }), null);
-    const dashboard = addRoot(RootMenu.DASHBOARD, 'dashboard',
-      this.i18n({ value: 'Dashboard', description: 'Menu' }), null);
-    const publicDirectory = addRoot(RootMenu.PUBLIC_DIRECTORY, 'group', this.i18n({ value: 'Directory', description: 'Menu' }));
-    const publicMarketplace = addRoot(RootMenu.PUBLIC_MARKETPLACE,
-      'shopping_cart', this.i18n({ value: 'Advertisements', description: 'Menu' }));
-    addRoot(RootMenu.BANKING, 'account_balance', this.i18n({ value: 'Banking', description: 'Menu' }));
-    const marketplaceRoot = addRoot(RootMenu.MARKETPLACE, 'shopping_cart', this.i18n({ value: 'Marketplace', description: 'Menu' }));
-    addRoot(RootMenu.PERSONAL, 'account_box', this.i18n({ value: 'Personal', description: 'Menu' }));
-    const content = addRoot(RootMenu.CONTENT, 'info', this.i18n({ value: 'Information', description: 'Menu' }));
-    const register = addRoot(RootMenu.REGISTRATION, 'registration', this.i18n({ value: 'Register', description: 'Menu' }));
-    const login = addRoot(RootMenu.LOGIN, 'exit_to_app', this.i18n({ value: 'Login', description: 'Menu' }));
-    const logout = addRoot(RootMenu.LOGOUT, 'logout', this.i18n({ value: 'Logout', description: 'Menu' }), null, []);
+    const home = addRoot(RootMenu.HOME, 'home', this.messages.menu.home, null);
+    const dashboard = addRoot(RootMenu.DASHBOARD, 'dashboard', this.messages.menu.dashboard, null);
+    const publicDirectory = addRoot(RootMenu.PUBLIC_DIRECTORY, 'group', this.messages.menu.marketplaceDirectory);
+    const publicMarketplace = addRoot(RootMenu.PUBLIC_MARKETPLACE, 'shopping_cart', this.messages.menu.marketplaceAdvertisements);
+    addRoot(RootMenu.BANKING, 'account_balance', this.messages.menu.banking);
+    const marketplaceRoot = addRoot(RootMenu.MARKETPLACE, 'shopping_cart', this.messages.menu.marketplace);
+    addRoot(RootMenu.PERSONAL, 'account_box', this.messages.menu.personal);
+    const content = addRoot(RootMenu.CONTENT, 'info', this.messages.menu.content);
+    const register = addRoot(RootMenu.REGISTRATION, 'registration', this.messages.menu.register);
+    const login = addRoot(RootMenu.LOGIN, 'exit_to_app', this.messages.menu.login);
+    const logout = addRoot(RootMenu.LOGOUT, 'logout', this.messages.menu.logout, null, []);
 
     // Lambda that adds a submenu to a root menu
     const add = (menu: Menu, url: string, icon: string, label: string, showIn: MenuType[] = null): MenuEntry => {
@@ -435,37 +433,30 @@ export class MenuService {
       }
       const payments = banking.payments || {};
       if (payments.user) {
-        add(Menu.PAYMENT_TO_USER, '/banking/payment', 'payment',
-          this.i18n({ value: 'Payment to user', description: 'Menu' }));
+        add(Menu.PAYMENT_TO_USER, '/banking/payment', 'payment', this.messages.menu.bankingPayUser);
       }
       if (payments.self) {
-        add(Menu.PAYMENT_TO_SELF, '/banking/payment/self', 'payment',
-          this.i18n({ value: 'Payment to self', description: 'Menu' }));
+        add(Menu.PAYMENT_TO_SELF, '/banking/payment/self', 'payment', this.messages.menu.bankingPaySelf);
       }
       if (payments.system) {
-        add(Menu.PAYMENT_TO_SYSTEM, '/banking/payment/system', 'payment',
-          this.i18n({ value: 'Payment to system', description: 'Menu' }));
+        add(Menu.PAYMENT_TO_SYSTEM, '/banking/payment/system', 'payment', this.messages.menu.bankingPaySystem);
       }
       const scheduledPayments = (banking.scheduledPayments || {});
       const recurringPayments = (banking.recurringPayments || {});
       if (scheduledPayments.view || recurringPayments.view) {
-        add(Menu.SCHEDULED_PAYMENTS, '/banking/scheduled-payments', 'schedule',
-          this.i18n({ value: 'Scheduled payments', description: 'Menu' }));
+        add(Menu.SCHEDULED_PAYMENTS, '/banking/scheduled-payments', 'schedule', this.messages.menu.bankingScheduledPayments);
       }
       if ((banking.authorizations || {}).view) {
-        add(Menu.AUTHORIZED_PAYMENTS, '/banking/authorized-payments', 'assignment_turned_in',
-          this.i18n({ value: 'Payment authorizations', description: 'Menu' }));
+        add(Menu.AUTHORIZED_PAYMENTS, '/banking/authorized-payments', 'assignment_turned_in', this.messages.menu.bankingAuthorizations);
       }
       addContentPages(Menu.CONTENT_PAGE_BANKING);
 
       // Marketplace
       if (users.search || users.map) {
-        add(Menu.SEARCH_USERS, '/users/search', 'group',
-          this.i18n({ value: 'Business directory', description: 'Menu' }));
+        add(Menu.SEARCH_USERS, '/users/search', 'group', this.messages.menu.marketplaceBusinessDirectory);
       }
       if (marketplace.search) {
-        add(Menu.SEARCH_ADS, '/marketplace/search', 'shopping_cart',
-          this.i18n({ value: 'Advertisements', description: 'Menu' }));
+        add(Menu.SEARCH_ADS, '/marketplace/search', 'shopping_cart', this.messages.menu.marketplaceAdvertisements);
       } else {
         // As the search ads won't be visible, show as user directory instead
         marketplaceRoot.icon = publicDirectory.icon;
@@ -476,22 +467,24 @@ export class MenuService {
 
       // Personal
       const myProfile = permissions.myProfile || {};
-      add(Menu.MY_PROFILE, '/users/my-profile', 'account_box',
-        this.i18n({ value: 'My profile', description: 'Menu' }),
+      add(Menu.MY_PROFILE, '/users/my-profile', 'account_box', this.messages.menu.personalViewProfile,
         [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
       if (myProfile.editProfile) {
-        add(Menu.EDIT_MY_PROFILE, '/users/my-profile/edit', 'account_box',
-          this.i18n({ value: 'Edit profile', description: 'Menu' }),
+        add(Menu.EDIT_MY_PROFILE, '/users/my-profile/edit', 'account_box', this.messages.menu.personalEditProfile,
           [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
       }
       if (contacts.enable) {
-        add(Menu.CONTACTS, '/users/contacts', 'import_contacts',
-          this.i18n({ value: 'Contacts', description: 'Menu' }),
+        add(Menu.CONTACTS, '/users/contacts', 'import_contacts', this.messages.menu.personalContacts,
           [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
       }
       if ((permissions.passwords || {}).manage) {
-        add(Menu.PASSWORDS, '/users/passwords', 'vpn_key',
-          this.i18n({ value: 'Passwords', description: 'Menu' }),
+        let passwordsLabel: string;
+        if ((permissions.passwords.passwords || []).length === 1) {
+          passwordsLabel = this.messages.menu.personalPassword;
+        } else {
+          passwordsLabel = this.messages.menu.personalPasswords;
+        }
+        add(Menu.PASSWORDS, '/users/passwords', 'vpn_key', passwordsLabel,
           [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
       }
       addContentPages(Menu.CONTENT_PAGE_PERSONAL);

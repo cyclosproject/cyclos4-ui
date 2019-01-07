@@ -5,7 +5,6 @@ import { AuthService } from 'app/api/services';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { cloneDeep } from 'lodash';
-import { I18n } from '@ngx-translate/i18n-polyfill';
 import { AuthHelperService } from 'app/core/auth-helper.service';
 
 /**
@@ -22,11 +21,10 @@ export class ForgotPasswordComponent extends BasePageComponent<DataForLogin> imp
 
   constructor(
     injector: Injector,
-    i18n: I18n,
     private authHelper: AuthHelperService,
     private authService: AuthService
   ) {
-    super(injector, i18n);
+    super(injector);
     this.form = this.formBuilder.group({
       user: ['', Validators.required]
     });
@@ -59,8 +57,7 @@ export class ForgotPasswordComponent extends BasePageComponent<DataForLogin> imp
     params.user = ApiHelper.escapeNumeric(params.user);
     this.authService.forgottenPasswordRequest(params)
       .subscribe(() => {
-        this.notification.info(this.i18n(`You will receive shortly an e-mail with your user identification
-          and instructions on how to reset your password`));
+        this.notification.info(this.messages.auth.password.forgotten.email);
         this.cancel();
       });
   }

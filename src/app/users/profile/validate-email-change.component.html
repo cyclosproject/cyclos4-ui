@@ -1,11 +1,13 @@
 <page-layout [ready]="data$ | async" size="medium" hideMenu>
 
   <page-content *ngIf="data">
-    <notification [allowClose]="false" i18n>
-      Your new e-mail address was successfully confirmed
+    <notification [allowClose]="false">
+      {{ messages.user.newEmailConfirmed }}
     </notification>
     <actions *ngIf="(login.user$ | async) == null" ngClass="mt-3" forceRow>
-      <button class="btn btn-primary" (click)="goToLogin()" i18n>Login</button>
+      <button class="btn btn-primary" (click)="goToLogin()">
+        {{ messages.menu.login }}
+      </button>
     </actions>
   </page-content>
 

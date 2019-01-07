@@ -36,9 +36,7 @@
     <div *ngIf="(login.user$ | async) != null" class="logout d-flex align-items-stretch flex-grow-1 justify-content-end">
       <a href="#" class="nav-item d-inline-flex align-items-center" (click)="logout($event)">
         <icon class="mr-2" size="1.4rem" icon="logout"></icon>
-        <span class="menu-text" i18n>
-          Logout
-        </span>
+        <span class="menu-text">{{ messages.menu.logout }}</span>
       </a>
     </div>
   </div>

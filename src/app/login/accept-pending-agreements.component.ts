@@ -7,7 +7,6 @@ import { RegistrationAgreementsComponent } from 'app/login/registration-agreemen
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { empty, validateBeforeSubmit } from 'app/shared/helper';
 import { BsModalService } from 'ngx-bootstrap/modal';
-import { I18n } from '@ngx-translate/i18n-polyfill';
 
 /**
  * Component shown after the user logs-in with pending agreements
@@ -27,12 +26,11 @@ export class AcceptPendingAgreementsComponent
 
   constructor(
     injector: Injector,
-    i18n: I18n,
     private agreementsService: AgreementsService,
     private loginState: LoginState,
     private modal: BsModalService
   ) {
-    super(injector, i18n);
+    super(injector);
   }
 
   get agreements(): Agreement[] {
@@ -60,11 +58,11 @@ export class AcceptPendingAgreementsComponent
   ngAfterViewChecked() {
     if (!this.initialized && this.agreementsContent) {
       const el: HTMLElement = this.agreementsContent.nativeElement;
-      let html = this.i18n('I agree with the following registration agreements: {{agreements}}', {
-        agreements: `<a>${this.agreements.map(a => a.name).join(', ')}</a>`
-      });
-      html = html.replace('<a>', `<a href="#" onclick="event.preventDefault();event.stopPropagation();showAgreements()">`);
-      el.innerHTML = html;
+      el.innerHTML = this.messages.auth.pendingAgreements.agree(
+        `<a href="#" onclick="event.preventDefault();event.stopPropagation();showAgreements()">
+        ${this.agreements.map(a => a.name).join(', ')}
+        </a>`
+      );
       window['showAgreements'] = () => {
         this.modal.show(RegistrationAgreementsComponent, {
           class: 'modal-form',

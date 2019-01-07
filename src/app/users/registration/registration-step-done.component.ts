@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@an
 import { UserRegistrationResult } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
 import { empty } from 'app/shared/helper';
-import { I18n } from '@ngx-translate/i18n-polyfill';
 
 /**
  * Public registration step: done
@@ -19,8 +18,7 @@ export class RegistrationStepDoneComponent
   @Input() result: UserRegistrationResult;
 
   constructor(
-    injector: Injector,
-    private i18n: I18n) {
+    injector: Injector) {
     super(injector);
   }
 
@@ -34,18 +32,18 @@ export class RegistrationStepDoneComponent
     }
     if (principals.length === 1) {
       const principal = principals[0];
-      return this.i18n('You can use your {{principal}} ({{value}}) on {{channels}}', {
+      return this.messages.user.registration.principalSingle({
         principal: principal.type.name,
         value: principal.value,
         channels: principal.channels.map(c => c.name).join(', ')
       });
     }
     const buf: string[] = [];
-    buf.push(this.i18n('You can login with the following data:'));
+    buf.push(this.messages.user.registration.principalMultiplePreface);
     buf.push('<ul>');
     for (const principal of principals) {
       buf.push('<li>');
-      buf.push(this.i18n('<b>{{principal}}</b> ({{value}}): can be used on {{channels}}', {
+      buf.push(this.messages.user.registration.principalMultipleItem({
         principal: principal.type.name,
         value: principal.value,
         channels: principal.channels.map(c => c.name).join(', ')
@@ -59,16 +57,13 @@ export class RegistrationStepDoneComponent
   get passwordsMessage(): string {
     const passwords = this.result.generatedPasswords;
     if (empty(passwords)) {
-      return this.i18n('You can now login with the password you have informed');
+      return this.messages.user.registration.generatedPasswordsNone;
     } else if (passwords.length === 1) {
       const password = passwords[0];
-      return this.i18n('You will receive an e-mail shortly with your generated {{type}}', {
-        type: password.name
-      });
+      return this.messages.user.registration.generatedPasswordsSingle(password.name);
     } else {
-      return this.i18n('You will receive an e-mail shortly with the following generated passwords: {{types}}', {
-        types: passwords.map(p => p.name).join(', ')
-      });
+      return this.messages.user.registration.generatedPasswordsMultiple(
+        passwords.map(p => p.name).join(', '));
     }
   }
 }

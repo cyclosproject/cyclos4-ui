@@ -1,21 +1,20 @@
-import { ChangeDetectionStrategy, Component, Injector, OnInit, ChangeDetectorRef } from '@angular/core';
-import { FormControl, FormGroup, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnInit } from '@angular/core';
+import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import {
-  AccountWithCurrency, TransactionAuthorizationStatusEnum, Currency, DataForTransaction,
-  PaymentPreview, PaymentSchedulingEnum, PerformPayment, Transaction,
-  TransactionTypeData, TransferType, AvailabilityEnum, CustomFieldDetailed
+  AccountWithCurrency, AvailabilityEnum, Currency, CustomFieldDetailed,
+  DataForTransaction, PaymentPreview, PaymentSchedulingEnum, PerformPayment,
+  Transaction, TransactionAuthorizationStatusEnum, TransactionTypeData, TransferType
 } from 'app/api/models';
 import { PaymentsService } from 'app/api/services';
+import { AuthHelperService } from 'app/core/auth-helper.service';
+import { BankingHelperService } from 'app/core/banking-helper.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BasePageComponent } from 'app/shared/base-page.component';
-import { empty, scrollTop, clearValidatorsAndErrors, locateControl, validateBeforeSubmit } from 'app/shared/helper';
+import { FormControlLocator } from 'app/shared/form-control-locator';
+import { clearValidatorsAndErrors, empty, locateControl, scrollTop, validateBeforeSubmit } from 'app/shared/helper';
 import { Menu } from 'app/shared/menu';
 import { cloneDeep, isEqual } from 'lodash';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { FormControlLocator } from 'app/shared/form-control-locator';
-import { I18n } from '@ngx-translate/i18n-polyfill';
-import { AuthHelperService } from 'app/core/auth-helper.service';
-import { BankingHelperService } from 'app/core/banking-helper.service';
 
 export type PaymentStep = 'form' | 'confirm' | 'done';
 
@@ -123,12 +122,11 @@ export class PerformPaymentComponent extends BasePageComponent<DataForTransactio
 
   constructor(
     injector: Injector,
-    i18n: I18n,
     private authHelper: AuthHelperService,
     private bankingHelper: BankingHelperService,
     private paymentsService: PaymentsService,
     private changeDetector: ChangeDetectorRef) {
-    super(injector, i18n);
+    super(injector);
   }
 
   ngOnInit() {
@@ -141,17 +139,17 @@ export class PerformPaymentComponent extends BasePageComponent<DataForTransactio
       case Menu.PAYMENT_TO_SYSTEM:
         // Payment to system account
         this.toParam = ApiHelper.SYSTEM;
-        this.title = this.i18n('Payment to system');
+        this.title = this.messages.transaction.title.paymentToSystem;
         break;
       case Menu.PAYMENT_TO_SELF:
         // Payment between own accounts
         this.toParam = ApiHelper.SELF;
-        this.title = this.i18n('Payment between own accounts');
+        this.title = this.messages.transaction.title.paymentToSelf;
         break;
       default:
         // To user. Maybe null.
         this.toParam = route.params['to'];
-        this.title = this.i18n('Payment to user');
+        this.title = this.messages.transaction.title.paymentToUser;
         break;
     }
 
@@ -259,7 +257,7 @@ export class PerformPaymentComponent extends BasePageComponent<DataForTransactio
   onDataInitialized(data: DataForTransaction) {
     if (empty(data.accounts)) {
       // No accounts
-      this.notification.error(this.i18n('You don\'t have any accounts to perform the payment'));
+      this.notification.error(this.messages.transaction.noAccounts);
     } else {
       // Set the initial step
       this.step = 'form';
@@ -371,8 +369,8 @@ export class PerformPaymentComponent extends BasePageComponent<DataForTransactio
   get doneTitle(): string {
     if (this.performed) {
       return this.performed.authorizationStatus === TransactionAuthorizationStatusEnum.PENDING
-        ? this.i18n('Payment submitted for authorization')
-        : this.i18n('Payment performed');
+        ? this.messages.transaction.title.pendingPayment
+        : this.messages.transaction.title.processedPayment;
     }
   }
 

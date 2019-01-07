@@ -1,14 +1,14 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
-import { I18n } from '@ngx-translate/i18n-polyfill';
 import {
-  CustomField, CustomFieldDetailed, CustomFieldTypeEnum, CustomFieldValue, Image,
-  LinkedEntityTypeEnum, StoredFile
+  CustomField, CustomFieldDetailed, CustomFieldTypeEnum, CustomFieldValue,
+  Image, LinkedEntityTypeEnum, StoredFile
 } from 'app/api/models';
 import { FilesService, ImagesService } from 'app/api/services';
 import { AuthHelperService } from 'app/core/auth-helper.service';
+import { Messages } from 'app/messages/messages';
 import { ApiHelper } from 'app/shared/api-helper';
 import { truthyAttr } from 'app/shared/helper';
-import * as download from 'downloadjs';
+import download from 'downloadjs';
 
 /** Types whose values are rendered directly */
 const DIRECT_TYPES = [
@@ -32,7 +32,7 @@ const DIRECT_TYPES = [
 })
 export class FormatFieldValueComponent implements OnInit {
   constructor(
-    private i18n: I18n,
+    public messages: Messages,
     private authHelper: AuthHelperService,
     private filesService: FilesService,
     private imagesService: ImagesService) {
@@ -114,8 +114,8 @@ export class FormatFieldValueComponent implements OnInit {
       case CustomFieldTypeEnum.BOOLEAN:
         if (this.fieldValue.booleanValue != null) {
           return this.fieldValue.booleanValue
-            ? this.i18n('Yes')
-            : this.i18n('No');
+            ? this.messages.general.yes
+            : this.messages.general.no;
         }
         break;
       case CustomFieldTypeEnum.DATE:

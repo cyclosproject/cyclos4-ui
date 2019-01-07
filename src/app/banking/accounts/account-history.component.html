@@ -5,14 +5,14 @@
         <div class="row">
           <div *ngIf="data.preselectedPeriods?.length > 1" class="col-12 col-md-6">
             <single-selection-field labelPosition="side" formControlName="preselectedPeriod"
-              i18n-label label="Period">
+              [label]="messages.general.period">
               <field-option *ngFor="let period of data.preselectedPeriods"
                 [id]="period['id']" [value]="period" [text]="period.name"></field-option>
             </single-selection-field>
           </div>
           <div *ngIf="data.transferFilters?.length > 1" class="col-12 col-md-6">
             <single-selection-field labelPosition="side" formControlName="transferFilter"
-              i18n-label label="Filter" i18n-emptyOption emptyOption="Not applied">
+              [label]="messages.account.transferFilter" [emptyOption]="messages.general.notApplied">
               <field-option *ngFor="let filter of data.transferFilters" [id]="filter.id"
                 [value]="filter" [text]="filter.name"></field-option>
             </single-selection-field>
@@ -20,47 +20,46 @@
           <div *ngIf="(form.value || (form.valueChanges | async))?.preselectedPeriod?.begin == null"
             class="col-12 col-md-6">
             <date-field labelPosition="side" formControlName="periodBegin"
-              i18n-label label="Begin date" minDate="past5" maxDate="today"
+              [label]="messages.general.beginDate" minDate="past5" maxDate="today"
               fieldSize="full">
             </date-field>
           </div>
           <div *ngIf="(form.value || (form.valueChanges | async))?.preselectedPeriod?.end == null"
             class="col-12 col-md-6">
             <date-field labelPosition="side" formControlName="periodEnd"
-              i18n-label label="End date" minDate="past5" maxDate="today"
+              [label]="messages.general.endDate" minDate="past5" maxDate="today"
               fieldSize="full">
             </date-field>
           </div>
           <div class="col-12 col-md-6">
             <decimal-field labelPosition="side" formControlName="minAmount"
-              i18n-label label="From amount" fieldSize="full" [prefix]="currency.prefix"
+              [label]="messages.account.minAmount" fieldSize="full" [prefix]="currency.prefix"
               [suffix]="currency.suffix" [scale]="currency.decimalDigits">
             </decimal-field>
           </div>
           <div class="col-12 col-md-6">
             <decimal-field labelPosition="side" formControlName="maxAmount"
-              i18n-label label="To amount" fieldSize="full" [prefix]="currency.prefix"
+              [label]="messages.account.maxAmount" fieldSize="full" [prefix]="currency.prefix"
               [suffix]="currency.suffix" [scale]="currency.decimalDigits">
             </decimal-field>
           </div>
           <div class="col-12 col-md-6">
             <single-selection-field labelPosition="side" formControlName="direction"
-              i18n-label label="Direction" i18n-emptyOption emptyOption="Any">
-              <field-option value="credit" i18n-text text="Incoming"></field-option>
-              <field-option value="debit" i18n-text text="Outgoing"></field-option>
+              [label]="messages.account.direction" [emptyOption]="messages.general.notApplied">
+              <field-option value="credit" [text]="messages.account.incoming"></field-option>
+              <field-option value="debit" [text]="messages.account.outgoing"></field-option>
             </single-selection-field>
           </div>
           <div class="col-12 col-md-6">
-            <user-field labelPosition="side" formControlName="user"
-              i18n-label label="User"></user-field>
+            <user-field labelPosition="side" formControlName="user" [label]="messages.general.user"></user-field>
           </div>
           <div *ngIf="data.transactionNumberMask" class="col-12 col-md-6">
             <input-field labelPosition="side" formControlName="transactionNumber"
-              [mask]="data.transactionNumberMask" i18n-label label="Transaction number"></input-field>
+              [mask]="data.transactionNumberMask" [label]="messages.transaction.number"></input-field>
           </div>
           <div *ngIf="data.operators?.length > 0" class="col-12 col-md-6">
             <single-selection-field labelPosition="side" formControlName="by"
-              i18n-label label="Operator" i18n-emptyOption emptyOption="Any">
+              [label]="messages.general.operator" [emptyOption]="messages.general.notApplied">
               <field-option *ngFor="let operator of data.operators" [value]="operator.id"
                 [text]="operator.display"></field-option>
             </single-selection-field>
@@ -83,10 +82,11 @@
       <table *resultTable class="table table-hover cursor-pointer">
         <thead *ngIf="layout.gtxs$ | async">
           <th class="avatar"></th>
-          <th i18n>Date</th>
-          <th i18n>From / to</th>
-          <th *ngIf="layout.gtsm$ | async" width="30%" i18n>Description</th>
-          <th i18n class="amount">Amount</th>
+          <th>{{ messages.transaction.date }}</th>
+          <th>{{ messages.transaction.fromTo }}</th>
+          <th *ngIf="layout.gtsm$ | async" width="30%">{{
+            messages.general.description }}</th>
+          <th class="amount">{{ messages.transaction.amount }}</th>
         </thead>
         <tbody>
           <ng-container *ngFor="let row of (results$ | async).results">

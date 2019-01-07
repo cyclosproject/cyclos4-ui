@@ -5,6 +5,7 @@ import { LayoutService, Breakpoint } from 'app/shared/layout.service';
 import { PageData } from 'app/shared/page-data';
 import { PagedResults } from 'app/shared/paged-results';
 import { Subscription } from 'rxjs';
+import { Messages } from 'app/messages/messages';
 
 /**
  * Renders a paginator, which allows the user to change the visible results in a table
@@ -18,6 +19,7 @@ import { Subscription } from 'rxjs';
 export class PaginatorComponent<T> implements OnDestroy {
   constructor(
     public layout: LayoutService,
+    public messages: Messages,
     formBuilder: FormBuilder) {
     this.form = formBuilder.group({
       // PageNumber is always page + 1, as NgxBootstrap is 1-based, and we're 0-based

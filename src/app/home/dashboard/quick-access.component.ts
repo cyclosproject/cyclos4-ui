@@ -7,7 +7,6 @@ import { empty } from 'app/shared/helper';
 import { Icon } from 'app/shared/icon';
 import { Breakpoint } from 'app/shared/layout.service';
 import { Menu, MenuEntry } from 'app/shared/menu';
-import { I18n } from '@ngx-translate/i18n-polyfill';
 
 export interface QuickAccessAction {
   icon: string;
@@ -32,8 +31,7 @@ export class QuickAccessComponent extends BaseDashboardComponent implements OnIn
   actions: QuickAccessAction[];
 
   constructor(
-    injector: Injector,
-    private i18n: I18n) {
+    injector: Injector) {
     super(injector);
   }
 
@@ -69,31 +67,39 @@ export class QuickAccessComponent extends BaseDashboardComponent implements OnIn
         const accountDescriptor = this.descriptors.find(d => d.type === QuickAccessType.ACCOUNT && ids.includes(d.accountType))
           || generalAccountDescriptor;
         if (accountDescriptor) {
-          const accountLabel = accounts.length === 1 ? this.i18n('Account') : accountType.name;
+          const accountLabel = accounts.length === 1 ? this.messages.dashboard.action.account : accountType.name;
           addAction(accountDescriptor, 'quick_access_account', accountLabel, new ActiveMenu(Menu.ACCOUNT_HISTORY, accountType.id));
         }
       }
       if (permissions.banking.payments.user) {
-        addAction(QuickAccessType.PAY_USER, 'quick_access_pay', this.i18n('Pay user'), new ActiveMenu(Menu.PAYMENT_TO_USER));
+        addAction(QuickAccessType.PAY_USER, 'quick_access_pay',
+          this.messages.dashboard.action.payUser, new ActiveMenu(Menu.PAYMENT_TO_USER));
       }
       if (permissions.banking.payments.system) {
-        addAction(QuickAccessType.PAY_SYSTEM, 'quick_access_pay', this.i18n('Pay system'), new ActiveMenu(Menu.PAYMENT_TO_SYSTEM));
+        addAction(QuickAccessType.PAY_SYSTEM, 'quick_access_pay',
+          this.messages.dashboard.action.paySystem, new ActiveMenu(Menu.PAYMENT_TO_SYSTEM));
       }
     }
     if (permissions.contacts && (permissions.contacts.enable)) {
-      addAction(QuickAccessType.CONTACTS, 'quick_access_contact_list', this.i18n('Contacts'), new ActiveMenu(Menu.CONTACTS));
+      addAction(QuickAccessType.CONTACTS, 'quick_access_contact_list',
+        this.messages.dashboard.action.contacts, new ActiveMenu(Menu.CONTACTS));
     }
     if (permissions.users && (permissions.users.search || permissions.users.map)) {
-      addAction(QuickAccessType.SEARCH_USERS, 'quick_access_search_users', this.i18n('Directory'), new ActiveMenu(Menu.SEARCH_USERS));
+      addAction(QuickAccessType.SEARCH_USERS, 'quick_access_search_users',
+        this.messages.dashboard.action.directory, new ActiveMenu(Menu.SEARCH_USERS));
     }
     if (permissions.marketplace && permissions.marketplace.search) {
-      addAction(QuickAccessType.SEARCH_ADS, 'quick_access_marketplace', this.i18n('Advertisements'), new ActiveMenu(Menu.SEARCH_ADS));
+      addAction(QuickAccessType.SEARCH_ADS, 'quick_access_marketplace',
+        this.messages.dashboard.action.advertisements, new ActiveMenu(Menu.SEARCH_ADS));
     }
     if (permissions.myProfile && permissions.myProfile.editProfile) {
-      addAction(QuickAccessType.EDIT_PROFILE, 'quick_access_edit_profile', this.i18n('Edit profile'), new ActiveMenu(Menu.EDIT_MY_PROFILE));
+      addAction(QuickAccessType.EDIT_PROFILE, 'quick_access_edit_profile',
+        this.messages.dashboard.action.editProfile, new ActiveMenu(Menu.EDIT_MY_PROFILE));
     }
     if (permissions.passwords && !empty(permissions.passwords.passwords)) {
-      const passwordsLabel = permissions.passwords.passwords.length === 1 ? this.i18n('Password') : this.i18n('Passwords');
+      const passwordsLabel = permissions.passwords.passwords.length === 1 ?
+        this.messages.dashboard.action.password :
+        this.messages.dashboard.action.passwords;
       addAction(QuickAccessType.PASSWORDS, 'quick_access_passwords', passwordsLabel, new ActiveMenu(Menu.PASSWORDS));
     }
     // Must be asynchronous or sometimes will never hide the spinner

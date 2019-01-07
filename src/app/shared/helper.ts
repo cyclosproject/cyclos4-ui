@@ -2,12 +2,8 @@
 import { AbstractControl, FormGroup, FormArray, FormControl } from '@angular/forms';
 import { GeographicalCoordinate, Address } from 'app/api/models';
 import { LatLngBounds } from '@agm/core';
-import { I18n } from '@ngx-translate/i18n-polyfill';
 import { FormControlLocator } from 'app/shared/form-control-locator';
 import { Observable } from 'rxjs';
-
-const FIRST_LABEL = 'A';
-const LAST_LABEL = '|';
 
 /**
  * Sets whether the root spinner in the page is visible
@@ -324,57 +320,6 @@ export function fitBounds(locations: GeographicalCoordinate[] | Address[]): LatL
     }
   }
   return bounds.isEmpty() ? null : bounds as any as LatLngBounds;
-}
-
-/**
- * Labels each located address, that is, sets an additional property called `label` on each address with values 'A', 'B', ...
- * Also sets another additional property called `fullName` which is the label plus the name
- * @param addresses The addresses
- * @returns The located addresses
- */
-export function labelAddresses(addresses: Address[], i18n: I18n): Address[] {
-  const locatedAddresses = addresses.filter(addr => addr.location);
-  if (locatedAddresses.length > 1) {
-    // Label each address
-    let label = null;
-
-    // First, check if there are existing labels
-    for (const addr of locatedAddresses) {
-      const existing = addr['label'];
-      if (existing && (label == null || existing > label)) {
-        label = existing;
-      }
-    }
-
-    if (label == null) {
-      // When no previous label exists, start anew
-      label = FIRST_LABEL;
-    } else {
-      // Already increment the label
-      label = nextLabel(label);
-    }
-
-    for (const addr of locatedAddresses) {
-      if (addr['label']) {
-        // The address is already labeled
-        continue;
-      }
-      addr['label'] = label;
-      addr['fullName'] = i18n({
-        value: '{{label}} - {{name}}',
-        meaning: 'Address with a map label (single letter), such as `A - Home`'
-      }, {
-          label: label,
-          name: addr.name
-        });
-      label = nextLabel(label);
-    }
-  }
-  return locatedAddresses;
-}
-
-function nextLabel(label: string) {
-  return label === LAST_LABEL ? FIRST_LABEL : String.fromCharCode(label.charCodeAt(0) + 1);
 }
 
 export interface ResizeResult {

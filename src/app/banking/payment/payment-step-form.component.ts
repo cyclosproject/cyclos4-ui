@@ -14,7 +14,7 @@ import { blank, empty } from 'app/shared/helper';
 import { UserFieldComponent } from 'app/shared/user-field.component';
 import { BehaviorSubject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { I18n } from '@ngx-translate/i18n-polyfill';
+import { BankingHelperService } from 'app/core/banking-helper.service';
 
 
 const IGNORED_STATUSES = [ErrorStatus.FORBIDDEN, ErrorStatus.UNAUTHORIZED, ErrorStatus.NOT_FOUND];
@@ -52,7 +52,7 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
 
   constructor(
     injector: Injector,
-    private i18n: I18n,
+    public bankingHelper: BankingHelperService,
     private paymentsService: PaymentsService) {
     super(injector);
   }
@@ -91,9 +91,9 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
 
   private updateAccountBalanceLabel() {
     if (this.layout.xxs) {
-      this.accountBalanceLabel$.next(this.i18n('My account balance'));
+      this.accountBalanceLabel$.next(this.messages.transaction.myAccountBalance);
     } else {
-      this.accountBalanceLabel$.next(this.i18n('Account balance'));
+      this.accountBalanceLabel$.next(this.messages.transaction.accountBalance);
     }
   }
 
@@ -154,14 +154,14 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
 
     const allPaymentTypes = this.fetchedPaymentTypes || [];
     if (empty(allPaymentTypes)) {
-      this.notification.error(this.i18n('There are no possible payment types'));
+      this.notification.error(this.messages.transaction.noTypes);
     }
     // Filter the payment types from the selected account type
     const paymentTypes = allPaymentTypes.filter(tt => tt.from.id === value.account);
     let type: string = null;
     let error: any = null;
     if (empty(paymentTypes)) {
-      const msg = this.i18n('There are no possible payment types from this account to the selected user');
+      const msg = this.messages.transaction.noTypesSelection;
       error = { message: msg };
     } else {
       this.paymentTypes$.next(paymentTypes);

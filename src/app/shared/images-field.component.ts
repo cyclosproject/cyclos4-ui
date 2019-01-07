@@ -13,6 +13,7 @@ import { ManageImagesComponent } from 'app/shared/manage-images.component';
 import { take } from 'rxjs/operators';
 import { AvatarSize } from 'app/shared/avatar.component';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
+import { Messages } from 'app/messages/messages';
 
 /**
  * Renders a widget for a field that allows uploading images
@@ -70,6 +71,7 @@ export class ImagesFieldComponent extends BaseFormFieldComponent<string | string
 
   constructor(
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
+    public messages: Messages,
     public layout: LayoutService,
     private errorHandler: ErrorHandlerService,
     private imagesService: ImagesService,

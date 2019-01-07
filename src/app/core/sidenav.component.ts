@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, ElementRef, OnInit } from '@angular/core';
-import { I18n } from '@ngx-translate/i18n-polyfill';
 import { FormatService } from 'app/core/format.service';
 import { LoginService } from 'app/core/login.service';
 import { MenuService } from 'app/core/menu.service';
 import { LayoutService } from 'app/shared/layout.service';
 import { BaseMenuEntry, Menu, MenuEntry, MenuType, RootMenu, RootMenuEntry } from 'app/shared/menu';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { Messages } from 'app/messages/messages';
 
 /**
  * The sidenav contains the menu on small devices
@@ -25,7 +25,7 @@ export class SidenavComponent implements OnInit {
     public login: LoginService,
     public format: FormatService,
     public layout: LayoutService,
-    private i18n: I18n) {
+    private messages: Messages) {
   }
 
   roots$: Observable<RootMenuEntry[]>;
@@ -108,7 +108,7 @@ export class SidenavComponent implements OnInit {
   label(entry: BaseMenuEntry) {
     if (entry instanceof MenuEntry && entry.menu === Menu.DASHBOARD && this.layout.ltmd) {
       // For mobile, the dashboard is shown as home
-      return this.i18n({ value: 'Home', description: 'Menu' });
+      return this.messages.menu.home;
     }
     return entry.label;
   }

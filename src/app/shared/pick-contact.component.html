@@ -1,18 +1,24 @@
-<h1 i18n>Select a contact</h1>
+<h1>{{ messages.field.user.contactTitle }}</h1>
 
-<ng-container *ngIf="(contacts$ | async) as contacts">
-  <div *ngIf="(contacts || []).length === 0; else contactLinks" i18n>
-    Your contact list is empty
+<ng-container *ngIf="(contacts$ | async) as contacts; else spinner">
+  <div *ngIf="(contacts || []).length === 0; else contactLinks">
+    {{ messages.field.user.contactEmpty }}
   </div>
   <ng-template #contactLinks>
-    <a *ngFor="let user of contacts$ | async" class="d-block mb-1 text-body" href="#"
-      (click)="emit(user, $event)">
+    <a *ngFor="let user of contacts$ | async" class="d-block mb-1 text-body"
+      href="#" (click)="emit(user, $event)">
       {{ user.display }}
     </a>
   </ng-template>
 </ng-container>
 
+<ng-template #spinner>
+  <spinner class="mx-auto my-3"></spinner>
+</ng-template>
+
 <actions>
   <span></span>
-  <button class="btn btn-outline-primary" i18n (click)="modalRef.hide()">Cancel</button>
+  <button class="btn btn-outline-primary" (click)="modalRef.hide()">
+    {{ messages.general.cancel }}
+  </button>
 </actions>

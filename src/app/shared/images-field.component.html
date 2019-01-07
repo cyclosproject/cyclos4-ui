@@ -10,8 +10,9 @@
 
   <div class="d-flex flex-column flex-xs-row">
     <div class="d-flex flex-wrap flex-grow-1 pt-2 mb-2 mb-xs-0">
-      <ng-container *ngIf="images.length === 0" i18n>
-        {maxFiles, plural, =1 {No image} other {No images}}
+      <ng-container *ngIf="images.length === 0">
+        {{ maxFiles > 1 ? messages.field.image.noImages :
+        messages.field.image.noImage}}
       </ng-container>
       <avatar class="d-block mr-1" *ngFor="let img of images" [size]="avatarSize"
         useLightbox [image]="img" [additionalImages]="images"
@@ -19,15 +20,15 @@
     </div>
     <div class="d-flex ml-xs-2">
       <button *ngIf="maxFiles === 1 || images.length < maxFiles" class="btn btn-light btn-icon d-flex align-content-center"
-        i18n-tooltip tooltip="Upload a new image" (click)="imageUpload.perform()">
+        [tooltip]="messages.field.image.upload" (click)="imageUpload.perform()">
         <icon icon="cloud_upload"></icon>
       </button>
       <button *ngIf="maxFiles > 1" class="ml-2 btn btn-light btn-icon d-flex align-content-center"
-        i18n-tooltip tooltip="Remove or reorder images" (click)="manageImages()">
+        [tooltip]="messages.field.image.manage" (click)="manageImages()">
         <icon icon="edit"></icon>
       </button>
       <button *ngIf="maxFiles === 1 && images.length > 0" class="ml-2 btn btn-light btn-icon d-flex align-content-center"
-        i18n-tooltip tooltip="Remove this image" (click)="removeAllImages()">
+        [tooltip]="messages.field.image.remove" (click)="removeAllImages()">
         <icon icon="delete"></icon>
       </button>
     </div>

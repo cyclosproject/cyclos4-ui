@@ -7,8 +7,6 @@ import { BasePageComponent } from 'app/shared/base-page.component';
 import { ChangePasswordDialogComponent } from 'app/users/passwords/change-password-dialog.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BehaviorSubject } from 'rxjs';
-import { I18n } from '@ngx-translate/i18n-polyfill';
-
 
 /**
  * Manages the user passwords
@@ -28,10 +26,9 @@ export class ManagePasswordsComponent
 
   constructor(
     injector: Injector,
-    i18n: I18n,
     private modal: BsModalService,
     private passwordsService: PasswordsService) {
-    super(injector, i18n);
+    super(injector);
   }
 
   ngOnInit() {
@@ -45,39 +42,41 @@ export class ManagePasswordsComponent
   onDataInitialized(data: DataForUserPasswords) {
     const multiple = data.passwords.length > 1;
     this.multiple$.next(multiple);
-    this.title$.next(multiple ? this.i18n('Passwords') : this.i18n('Password'));
+    this.title$.next(multiple ?
+      this.messages.auth.password.title.manageMultiple :
+      this.messages.auth.password.title.manageSingle);
   }
 
   actions(password: PasswordStatusAndActions): Action[] {
     const actions: Action[] = [];
     const permissions = password.permissions || {};
     if (permissions.change) {
-      actions.push(new Action(this.i18n('Change'), () => {
+      actions.push(new Action(this.messages.auth.password.action.change, () => {
         this.change(password);
       }));
     }
     if (permissions.changeGenerated) {
-      actions.push(new Action(this.i18n('Change'), () => {
+      actions.push(new Action(this.messages.auth.password.action.change, () => {
         this.changeGenerated(password);
       }));
     }
     if (permissions.unblock) {
-      actions.push(new Action(this.i18n('Unblock'), () => {
+      actions.push(new Action(this.messages.auth.password.action.unblock, () => {
         this.unblock(password);
       }));
     }
     if (permissions.generate) {
-      actions.push(new Action(this.i18n('Activate'), () => {
+      actions.push(new Action(this.messages.auth.password.action.activate, () => {
         this.generate(password);
       }));
     }
     if (permissions.enable) {
-      actions.push(new Action(this.i18n('Enable'), () => {
+      actions.push(new Action(this.messages.auth.password.action.enable, () => {
         this.enable(password);
       }));
     }
     if (permissions.disable) {
-      actions.push(new Action(this.i18n('Disable'), () => {
+      actions.push(new Action(this.messages.auth.password.action.disable, () => {
         this.disable(password);
       }));
     }
@@ -87,21 +86,21 @@ export class ManagePasswordsComponent
   status(password: PasswordStatusAndActions) {
     switch (password.status) {
       case PasswordStatusEnum.ACTIVE:
-        return this.i18n('Active');
+        return this.messages.auth.password.status.active;
       case PasswordStatusEnum.DISABLED:
-        return this.i18n('Disabled');
+        return this.messages.auth.password.status.disabled;
       case PasswordStatusEnum.EXPIRED:
-        return this.i18n('Expired');
+        return this.messages.auth.password.status.expired;
       case PasswordStatusEnum.INDEFINITELY_BLOCKED:
-        return this.i18n('Blocked');
+        return this.messages.auth.password.status.indefinitelyBlocked;
       case PasswordStatusEnum.NEVER_CREATED:
-        return this.i18n('Never created');
+        return this.messages.auth.password.status.neverCreated;
       case PasswordStatusEnum.PENDING:
-        return this.i18n('Pending');
+        return this.messages.auth.password.status.pending;
       case PasswordStatusEnum.RESET:
-        return this.i18n('Reset');
+        return this.messages.auth.password.status.reset;
       case PasswordStatusEnum.TEMPORARILY_BLOCKED:
-        return this.i18n('Temporarily blocked');
+        return this.messages.auth.password.status.temporarilyBlocked;
     }
   }
 
@@ -115,40 +114,33 @@ export class ManagePasswordsComponent
     });
     const component = ref.content as ChangePasswordDialogComponent;
     this.addSub(component.done.subscribe(() => {
-      this.notification.snackBar(this.i18n('Your {{name}} was changed', {
-        name: password.type.name
-      }));
+      this.notification.snackBar(this.messages.auth.password.action.changeDone(password.type.name));
       this.reload();
     }));
   }
 
   private generate(password: PasswordStatusAndActions) {
     this.notification.confirm({
-      title: this.i18n('Activate'),
-      message: this.i18n(`This will activate your {{name}}, and the generated value will be displayed only once. Are you sure?`, {
-        name: password.type.name
-      }),
+      title: this.messages.auth.password.action.activate,
+      message: this.messages.auth.password.action.activateConfirm(password.type.name),
       callback: () => this.doGenerate(password)
     });
   }
 
   private doGenerate(password: PasswordStatusAndActions) {
     this.passwordsService.generatePassword(password.type.id).subscribe(newValue => {
-      this.notification.info(this.i18n(`The value for {{name}} is <data>{{value}}</data>.
-        <br>Make sure to memorize it, as it won't be displayed again.`, {
-          name: password.type.name,
-          value: newValue
-        }));
+      this.notification.info(this.messages.auth.password.action.changeGeneratedDone({
+        type: password.type.name,
+        value: newValue
+      }));
       this.reload();
     });
   }
 
   private changeGenerated(password: PasswordStatusAndActions) {
     this.notification.confirm({
-      title: this.i18n('Change'),
-      message: this.i18n(`This will generate a new {{name}}, and the value will be displayed only once. Are you sure?`, {
-        name: password.type.name
-      }),
+      title: this.messages.auth.password.action.change,
+      message: this.messages.auth.password.action.changeGeneratedConfirm(password.type.name),
       passwordInput: this.data.confirmationPasswordInput,
       callback: res => this.doChangeGenerated(password, res.confirmationPassword)
     });
@@ -159,9 +151,9 @@ export class ManagePasswordsComponent
       type: password.type.id,
       confirmationPassword: confirmationPassword
     }).subscribe(newValue => {
-      this.notification.info(this.i18n(`The value for {{name}} is <data>{{value}}</data>.
-        <br>Make sure to memorize it, as it won't be displayed again.`, {
-          name: password.type.name,
+      this.notification.info(
+        this.messages.auth.password.action.changeGeneratedDone({
+          type: password.type.name,
           value: newValue
         }));
       this.reload();
@@ -170,10 +162,8 @@ export class ManagePasswordsComponent
 
   private unblock(password: PasswordStatusAndActions) {
     this.notification.confirm({
-      title: this.i18n('Unblock'),
-      message: this.i18n(`Are you sure to unblock your {{name}}?`, {
-        name: password.type.name
-      }),
+      title: this.messages.auth.password.action.unblock,
+      message: this.messages.auth.password.action.unblockConfirm(password.type.name),
       callback: () => this.doUnblock(password)
     });
   }
@@ -183,19 +173,15 @@ export class ManagePasswordsComponent
       user: ApiHelper.SELF,
       type: password.type.id
     }).subscribe(() => {
-      this.notification.snackBar(this.i18n('Your {{name}} was unblocked', {
-        name: password.type.name
-      }));
+      this.notification.snackBar(this.messages.auth.password.action.unblockDone(password.type.name));
       this.reload();
     });
   }
 
   private enable(password: PasswordStatusAndActions) {
     this.notification.confirm({
-      title: this.i18n('Enable'),
-      message: this.i18n(`Are you sure to enable your {{name}}?`, {
-        name: password.type.name
-      }),
+      title: this.messages.auth.password.action.enable,
+      message: this.messages.auth.password.action.enableConfirm(password.type.name),
       callback: () => this.doEnable(password)
     });
   }
@@ -205,19 +191,15 @@ export class ManagePasswordsComponent
       user: ApiHelper.SELF,
       type: password.type.id
     }).subscribe(() => {
-      this.notification.snackBar(this.i18n('Your {{name}} was enabled', {
-        name: password.type.name
-      }));
+      this.notification.snackBar(this.messages.auth.password.action.enableDone(password.type.name));
       this.reload();
     });
   }
 
   private disable(password: PasswordStatusAndActions) {
     this.notification.confirm({
-      title: this.i18n('Disable'),
-      message: this.i18n(`Are you sure to disable your {{name}}?`, {
-        name: password.type.name
-      }),
+      title: this.messages.auth.password.action.disable,
+      message: this.messages.auth.password.action.disableConfirm(password.type.name),
       callback: () => this.doDisable(password)
     });
   }
@@ -227,9 +209,7 @@ export class ManagePasswordsComponent
       user: ApiHelper.SELF,
       type: password.type.id
     }).subscribe(() => {
-      this.notification.snackBar(this.i18n('Your {{name}} was disabled', {
-        name: password.type.name
-      }));
+      this.notification.snackBar(this.messages.auth.password.action.disableDone(password.type.name));
       this.reload();
     });
   }

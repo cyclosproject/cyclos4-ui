@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { I18n } from '@ngx-translate/i18n-polyfill';
 import { ApiConfiguration } from 'app/api/api-configuration';
 import { Currency, DataForUi } from 'app/api/models';
+import { Messages } from 'app/messages/messages';
 import Big from 'big.js';
 import { environment } from 'environments/environment';
-import * as moment from 'moment-mini-ts';
+import moment from 'moment-mini-ts';
 import { DataForUiHolder } from './data-for-ui-holder';
 
 export const ISO_DATE = 'YYYY-MM-DD';
@@ -19,7 +19,7 @@ export class FormatService {
   constructor(
     dataForUiHolder: DataForUiHolder,
     private apiConfiguration: ApiConfiguration,
-    private i18n: I18n) {
+    private messages: Messages) {
     dataForUiHolder.subscribe(dataForUi => this.initialize(dataForUi));
     // If already loaded, initialize right away
     if (dataForUiHolder.dataForUi) {
@@ -103,43 +103,43 @@ export class FormatService {
     this.decimalSeparator = dataForUi.decimalSeparator || '.';
 
     this.longMonthNames = [
-      this.i18n({ meaning: 'Long month', value: 'January' }),
-      this.i18n({ meaning: 'Long month', value: 'February' }),
-      this.i18n({ meaning: 'Long month', value: 'March' }),
-      this.i18n({ meaning: 'Long month', value: 'April' }),
-      this.i18n({ meaning: 'Long month', value: 'May' }),
-      this.i18n({ meaning: 'Long month', value: 'June' }),
-      this.i18n({ meaning: 'Long month', value: 'July' }),
-      this.i18n({ meaning: 'Long month', value: 'August' }),
-      this.i18n({ meaning: 'Long month', value: 'September' }),
-      this.i18n({ meaning: 'Long month', value: 'October' }),
-      this.i18n({ meaning: 'Long month', value: 'November' }),
-      this.i18n({ meaning: 'Long month', value: 'December' })
+      this.messages.general.month.long.jan,
+      this.messages.general.month.long.feb,
+      this.messages.general.month.long.mar,
+      this.messages.general.month.long.apr,
+      this.messages.general.month.long.may,
+      this.messages.general.month.long.jun,
+      this.messages.general.month.long.jul,
+      this.messages.general.month.long.aug,
+      this.messages.general.month.long.sep,
+      this.messages.general.month.long.oct,
+      this.messages.general.month.long.nov,
+      this.messages.general.month.long.dec
     ];
 
     this.shortMonthNames = [
-      this.i18n({ meaning: 'Short month', value: 'Jan' }),
-      this.i18n({ meaning: 'Short month', value: 'Feb' }),
-      this.i18n({ meaning: 'Short month', value: 'Mar' }),
-      this.i18n({ meaning: 'Short month', value: 'Apr' }),
-      this.i18n({ meaning: 'Short month', value: 'May' }),
-      this.i18n({ meaning: 'Short month', value: 'Jun' }),
-      this.i18n({ meaning: 'Short month', value: 'Jul' }),
-      this.i18n({ meaning: 'Short month', value: 'Aug' }),
-      this.i18n({ meaning: 'Short month', value: 'Sep' }),
-      this.i18n({ meaning: 'Short month', value: 'Oct' }),
-      this.i18n({ meaning: 'Short month', value: 'Nov' }),
-      this.i18n({ meaning: 'Short month', value: 'Dec' })
+      this.messages.general.month.short.jan,
+      this.messages.general.month.short.feb,
+      this.messages.general.month.short.mar,
+      this.messages.general.month.short.apr,
+      this.messages.general.month.short.may,
+      this.messages.general.month.short.jun,
+      this.messages.general.month.short.jul,
+      this.messages.general.month.short.aug,
+      this.messages.general.month.short.sep,
+      this.messages.general.month.short.oct,
+      this.messages.general.month.short.nov,
+      this.messages.general.month.short.dec
     ];
 
     this.minWeekdayNames = [
-      this.i18n({ meaning: 'Min weekday', value: 'S' }),
-      this.i18n({ meaning: 'Min weekday', value: 'M' }),
-      this.i18n({ meaning: 'Min weekday', value: 'T' }),
-      this.i18n({ meaning: 'Min weekday', value: 'W' }),
-      this.i18n({ meaning: 'Min weekday', value: 'T' }),
-      this.i18n({ meaning: 'Min weekday', value: 'F' }),
-      this.i18n({ meaning: 'Min weekday', value: 'S' })
+      this.messages.general.weekday.min.sun,
+      this.messages.general.weekday.min.mon,
+      this.messages.general.weekday.min.tue,
+      this.messages.general.weekday.min.wed,
+      this.messages.general.weekday.min.thu,
+      this.messages.general.weekday.min.fri,
+      this.messages.general.weekday.min.sat
     ];
 
     this._dataForUi = dataForUi;
@@ -368,20 +368,14 @@ export class FormatService {
    */
   formatFileSize(bytes: number): string {
     if (bytes < 1024) {
-      return this.i18n('{{n}} bytes', {
-        n: bytes
-      });
+      return this.messages.general.fileSize.b(String(bytes));
     }
     bytes /= 1024;
     if (bytes < 1024) {
-      return this.i18n('{{n}}KB', {
-        n: this.formatAsNumber(bytes, 1)
-      });
+      return this.messages.general.fileSize.k(this.formatAsNumber(bytes, 1));
     }
     bytes /= 1024;
-    return this.i18n('{{n}}MB', {
-      n: this.formatAsNumber(bytes, 1)
-    });
+    return this.messages.general.fileSize.m(this.formatAsNumber(bytes, 1));
   }
 
   /**

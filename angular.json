@@ -44,7 +44,8 @@
             "assets": [
               "src/images",
               "src/content",
-              "src/i18n"
+              "src/i18n",
+              "src/locale"
             ],
             "styles": [
               "node_modules/ngx-lightbox/lightbox.css",
@@ -68,8 +69,7 @@
               "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
-              "buildOptimizer": true,
-              "i18nLocale": "en"
+              "buildOptimizer": true
             }
           }
         },

@@ -16,6 +16,7 @@ import { ResultTableDirective } from 'app/shared/result-table.directive';
 import { ResultTileDirective } from 'app/shared/result-tile.directive';
 import { ResultType } from 'app/shared/result-type';
 import { BehaviorSubject } from 'rxjs';
+import { Messages } from 'app/messages/messages';
 
 /**
  * Template for rendering results of distinct `ResultType`s
@@ -63,7 +64,8 @@ export class ResultsLayoutComponent<C, R> {
   constructor(
     public layout: LayoutService,
     public maps: MapsService,
-    public login: LoginService
+    public login: LoginService,
+    public messages: Messages
   ) { }
 
   notifyReady() {

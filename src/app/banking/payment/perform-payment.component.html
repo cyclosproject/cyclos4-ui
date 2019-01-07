@@ -9,11 +9,11 @@
     </div>
     <actions ngClass="mt-3" forceRow>
       <button class="btn btn-primary" [disabled]="requesting$ | async"
-        (click)="toConfirm()" i18n>Next</button>
+        (click)="toConfirm()">{{ messages.general.next }}</button>
     </actions>
   </page-content>
 
-  <page-content *ngSwitchCase="'confirm'" i18n-heading heading="Payment confirmation"
+  <page-content *ngSwitchCase="'confirm'" [heading]="messages.transaction.title.paymentConfirmation"
     [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'" last>
     <div class="flex-grow-1 d-flex flex-column" [ngSwitch]="step$ | async">
       <payment-step-confirm [preview]="preview" [confirmationPassword]="confirmationPassword"
@@ -21,8 +21,12 @@
     </div>
     <actions ngClass="mt-3" forceRow>
       <button class="btn btn-primary" [disabled]="!canConfirm || (requesting$ | async)"
-        (click)="perform()" i18n>Confirm</button>
-      <button class="btn btn-outline-primary" (click)="backToForm()" i18n>Previous</button>
+        (click)="perform()">
+        {{ messages.general.confirm }}
+      </button>
+      <button class="btn btn-outline-primary" (click)="backToForm()">
+        {{ messages.general.previous }}
+      </button>
     </actions>
   </page-content>
 
@@ -32,10 +36,12 @@
       <payment-step-done [performed]="performed"></payment-step-done>
     </div>
     <actions ngClass="mt-3" forceRow>
-      <button class="btn btn-primary" (click)="viewPerformed()" i18n>View
-        payment</button>
-      <button class="btn btn-outline-primary" (click)="reload()" i18n>New
-        payment</button>
+      <button class="btn btn-primary" (click)="viewPerformed()">
+        {{ messages.transaction.doneView }}
+      </button>
+      <button class="btn btn-outline-primary" (click)="reload()">
+        {{ messages.transaction.doneNew }}
+      </button>
     </actions>
   </page-content>
 

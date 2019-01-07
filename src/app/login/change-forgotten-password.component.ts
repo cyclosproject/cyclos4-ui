@@ -5,7 +5,6 @@ import { AuthService } from 'app/api/services';
 import { LoginState } from 'app/core/login-state';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { validateBeforeSubmit } from 'app/shared/helper';
-import { I18n } from '@ngx-translate/i18n-polyfill';
 
 /** Validator function that ensures password and confirmation match */
 const PASSWORDS_MATCH_VAL: ValidatorFn = control => {
@@ -38,11 +37,10 @@ export class ChangeForgottenPasswordComponent
 
   constructor(
     injector: Injector,
-    i18n: I18n,
     private authService: AuthService,
     private loginState: LoginState
   ) {
-    super(injector, i18n);
+    super(injector);
     this.form = this.formBuilder.group({
       key: ['', Validators.required]
     });
@@ -80,9 +78,9 @@ export class ChangeForgottenPasswordComponent
         const generated = this.data.generated;
         let message: string;
         if (generated) {
-          message = this.i18n('You should receive shortly an e-mail with your new password.');
+          message = this.messages.auth.password.forgotten.generatedDone;
         } else {
-          message = this.i18n('Your password has been successfully changed. You can now use it to login.');
+          message = this.messages.auth.password.forgotten.manualDone;
         }
         this.notification.info(message);
         // Mark the login page as affected by the forgotten password change and go to login

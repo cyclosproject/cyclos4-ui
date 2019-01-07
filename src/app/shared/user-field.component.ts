@@ -1,11 +1,14 @@
-import { ChangeDetectionStrategy, Component, ElementRef, Host, Input, OnDestroy, OnInit, Optional, SkipSelf, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy, Component, ElementRef, Host, Input,
+  OnDestroy, OnInit, Optional, SkipSelf, ViewChild
+} from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { I18n } from '@ngx-translate/i18n-polyfill';
 import { User } from 'app/api/models';
 import { UsersService } from 'app/api/services';
 import { LoginService } from 'app/core/login.service';
 import { NextRequestState } from 'app/core/next-request-state';
 import { UserCacheService } from 'app/core/user-cache.service';
+import { Messages } from 'app/messages/messages';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseAutocompleteFieldComponent } from 'app/shared/base-autocomplete-field.component';
 import { PickContactComponent } from 'app/shared/pick-contact.component';
@@ -51,7 +54,7 @@ export class UserFieldComponent
     private login: LoginService,
     private nextRequestState: NextRequestState,
     private modal: BsModalService,
-    private i18n: I18n) {
+    public messages: Messages) {
     super(controlContainer);
   }
 
@@ -65,9 +68,9 @@ export class UserFieldComponent
         }
       });
     if (this.allowSearch) {
-      this.placeholder = this.i18n('Type to search');
+      this.placeholder = this.messages.field.user.placeholderAllowSearch;
     } else if (this.allowPrincipal) {
-      this.placeholder = this.i18n('Type the user identifier');
+      this.placeholder = this.messages.field.user.placeholderPrincipal;
     }
   }
 

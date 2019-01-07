@@ -9,7 +9,6 @@ import { ApiHelper } from 'app/shared/api-helper';
 import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { empty } from 'app/shared/helper';
 import { BehaviorSubject } from 'rxjs';
-import { I18n } from '@ngx-translate/i18n-polyfill';
 import { BankingHelperService } from 'app/core/banking-helper.service';
 
 /**
@@ -26,10 +25,8 @@ export abstract class BaseTransactionsSearch
   protected transactionStatusService: TransactionStatusService;
   protected bankingHelper: BankingHelperService;
 
-  constructor(
-    injector: Injector,
-    i18n: I18n) {
-    super(injector, i18n);
+  constructor(injector: Injector) {
+    super(injector);
     this.transactionsService = injector.get(TransactionsService);
     this.transactionStatusService = injector.get(TransactionStatusService);
     this.bankingHelper = injector.get(BankingHelperService);
@@ -122,12 +119,12 @@ export abstract class BaseTransactionsSearch
   }
 
   /**
-   * Returns wither the user display or 'System'
+   * Returns wither the user display or 'System account'
    * @param row The row
    */
   subjectName(row: TransactionResult): string {
     if (row.relatedKind === 'system') {
-      return this.i18n('System');
+      return this.messages.account.system;
     } else {
       return (row.relatedUser || {}).display;
     }
@@ -148,37 +145,31 @@ export abstract class BaseTransactionsSearch
     switch (row.kind) {
       case TransactionKind.SCHEDULED_PAYMENT:
         if (row.installmentCount === 1) {
-          const installment = row.firstInstallment;
-          return this.i18n('Scheduled to {{dueDate}}', {
-            dueDate: this.format.formatAsDate(installment == null ? null : installment.dueDate)
-          });
+          const installment = row.firstInstallment || {};
+          return this.messages.transaction.schedulingStatus.scheduledToDate(installment.dueDate);
         } else {
           const count = row.installmentCount;
           const firstOpen = row.firstOpenInstallment;
           if (firstOpen) {
-            return this.i18n('{{count}} installments, next on {{dueDate}}', {
-              count: count,
+            return this.messages.transaction.schedulingStatus.openInstallments({
+              count: String(count),
               dueDate: this.format.formatAsDate(firstOpen.dueDate)
             });
           } else {
-            return this.i18n('{{count}} installments', {
-              count: count
-            });
+            return this.messages.transaction.schedulingStatus.closedInstallments(String(count));
           }
         }
       case TransactionKind.RECURRING_PAYMENT:
         switch (row.recurringPaymentStatus) {
           case RecurringPaymentStatusEnum.CLOSED:
-            return this.i18n('Closed recurring payment');
+            return this.messages.transaction.schedulingStatus.closedRecurring;
           case RecurringPaymentStatusEnum.CANCELED:
-            return this.i18n('Canceled recurring payment');
+            return this.messages.transaction.schedulingStatus.canceledRecurring;
           default:
-            return this.i18n('Recurring payment, next at {{date}}', {
-              date: this.format.formatAsDate(row.nextOccurrenceDate)
-            });
+            return this.messages.transaction.schedulingStatus.openRecurring(this.format.formatAsDate(row.nextOccurrenceDate));
         }
       default:
-        return this.i18n('Direct payment');
+        return this.messages.transaction.schedulingStatus.direct;
     }
   }
 }

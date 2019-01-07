@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/c
 import { UserRegistrationResult } from 'app/api/models';
 import { UsersService } from 'app/api/services';
 import { BasePageComponent } from 'app/shared/base-page.component';
-import { I18n } from '@ngx-translate/i18n-polyfill';
 
 /**
  * Component shown after the user clicks the received link to
@@ -23,10 +22,9 @@ export class ValidateRegistrationComponent
 
   constructor(
     injector: Injector,
-    i18n: I18n,
     private usersService: UsersService
   ) {
-    super(injector, i18n);
+    super(injector);
   }
 
   ngOnInit() {

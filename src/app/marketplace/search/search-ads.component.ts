@@ -8,7 +8,6 @@ import { empty } from 'app/shared/helper';
 import { ResultType } from 'app/shared/result-type';
 import { cloneDeep } from 'lodash';
 import { BehaviorSubject } from 'rxjs';
-import { I18n } from '@ngx-translate/i18n-polyfill';
 import { FieldHelperService } from 'app/core/field-helper.service';
 
 /**
@@ -29,11 +28,10 @@ export class SearchAdsComponent
 
   constructor(
     injector: Injector,
-    i18n: I18n,
     private fieldHelper: FieldHelperService,
     private marketplaceService: MarketplaceService
   ) {
-    super(injector, i18n);
+    super(injector);
   }
 
   protected getFormControlNames() {
@@ -103,7 +101,7 @@ export class SearchAdsComponent
         trail.unshift(parent);
       }
       const root: AdCategoryWithChildren = {
-        name: this.i18n('Main')
+        name: this.messages.ad.rootCategory
       };
       trail.unshift(root);
     } else {

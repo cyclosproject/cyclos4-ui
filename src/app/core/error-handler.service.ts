@@ -1,18 +1,17 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { I18n } from '@ngx-translate/i18n-polyfill';
 import {
-  ConflictError, ConflictErrorCode, ErrorKind, ForbiddenError,
-  ForbiddenErrorCode, ForgottenPasswordError, ForgottenPasswordErrorCode,
-  InputError, InputErrorCode, NestedError, NotFoundError, OtpError,
-  PasswordStatusEnum, PaymentError, PaymentErrorCode, UnauthorizedError,
-  UnauthorizedErrorCode
+  ConflictError, ConflictErrorCode, ErrorKind, ForbiddenError, ForbiddenErrorCode,
+  ForgottenPasswordError, ForgottenPasswordErrorCode, InputError, InputErrorCode,
+  NestedError, NotFoundError, OtpError, PasswordStatusEnum, PaymentError,
+  PaymentErrorCode, UnauthorizedError, UnauthorizedErrorCode
 } from 'app/api/models';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { FormatService } from 'app/core/format.service';
 import { LoginState } from 'app/core/login-state';
 import { NotificationService } from 'app/core/notification.service';
+import { Messages } from 'app/messages/messages';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { FormControlLocator } from 'app/shared/form-control-locator';
 import { empty, focusFirstInvalid } from 'app/shared/helper';
@@ -36,7 +35,7 @@ export class ErrorHandlerService {
     private nextRequestState: NextRequestState,
     private loginState: LoginState,
     private dataForUiHolder: DataForUiHolder,
-    private i18n: I18n
+    private messages: Messages
   ) { }
 
   /**
@@ -121,8 +120,7 @@ export class ErrorHandlerService {
   }
 
   public handleInvalidRequest() {
-    this.notification.error(this.i18n(`It is not possible to connect to the server.<br>
-    Please make sure you are connected to the Internet and try again in a few seconds.`));
+    this.notification.error(this.messages.error.invalidRequest);
   }
 
   public handleUnauthorizedError(error: UnauthorizedError) {
@@ -306,22 +304,18 @@ export class ErrorHandlerService {
         });
         return this.validationErrorMessage(errors);
       case InputErrorCode.QUERY_PARSE:
-        return this.i18n('Invalid keywords');
+        return this.messages.error.queryParse;
       case InputErrorCode.FILE_UPLOAD_SIZE:
-        return this.i18n('The uploaded file exceeds the maximum allowed size of {{size}}', {
-          size: this.format.formatFileSize(error.maxFileSize)
-        });
+        return this.messages.error.uploadSizeExceeded(this.format.formatFileSize(error.maxFileSize));
       case InputErrorCode.MAX_ITEMS:
-        return this.i18n('Cannot add more than {{max}} elements', {
-          max: error.maxItems
-        });
+        return this.messages.error.maxItems(String(error.maxItems));
       default:
         return this.validation;
     }
   }
 
   private get validation(): string {
-    return this.i18n('The action couldn\'t be processed, as there were validation errors');
+    return this.messages.error.validation;
   }
 
   private validationErrorMessage(errors: string[]): string {
@@ -343,17 +337,16 @@ export class ErrorHandlerService {
     error = error || {} as ConflictError;
     switch (error.code) {
       case ConflictErrorCode.STALE_ENTITY:
-        return this.i18n(`This data cannot be saved because it has been modified by someone else.<br>
-          Please, load the page again and restart the operation.`);
+        return this.messages.error.staleEntity;
       case ConflictErrorCode.CONSTRAINT_VIOLATED_ON_REMOVE:
-        return this.i18n('This data cannot be removed because it is currently in use');
+        return this.messages.error.removeDataInUse;
       default:
         return this.general;
     }
   }
 
   private get general(): string {
-    return this.i18n('There was an unexpected error while processing your request');
+    return this.messages.error.general;
   }
 
   /**
@@ -366,17 +359,15 @@ export class ErrorHandlerService {
     }
     if (error.entityType) {
       if (error.key) {
-        return this.i18n('The requested data could not be found: {{type}} with key {{key}}', {
+        return this.messages.error.notFoundTypeKey({
           type: error.entityType,
           key: error.key
         });
       } else {
-        return this.i18n('The requested data could not be found: {{type}}', {
-          type: error.entityType
-        });
+        return this.messages.error.notFoundType(error.entityType);
       }
     } else {
-      return this.i18n('The location you typed or tried to access was not found');
+      return this.messages.error.notFound;
     }
   }
 
@@ -390,30 +381,30 @@ export class ErrorHandlerService {
       case UnauthorizedErrorCode.LOGIN:
         switch (error.passwordStatus) {
           case PasswordStatusEnum.DISABLED:
-            return this.i18n('Your user account has been disabled. Please, contact the administration.');
+            return this.messages.error.passwordDisabled;
           case PasswordStatusEnum.RESET:
-            return this.i18n('Your password has been reset');
+            return this.messages.error.passwordReset;
           case PasswordStatusEnum.INDEFINITELY_BLOCKED:
-            return this.i18n('Your login password has been disabled by exceeding the maximum tries. Please, contact the administration.');
+            return this.messages.error.passwordIndefinitelyBlocked;
           case PasswordStatusEnum.TEMPORARILY_BLOCKED:
-            return this.i18n('Your password is temporarily blocked by exceeding the maximum tries');
+            return this.messages.error.passwordTemporarilyBlocked;
           case PasswordStatusEnum.EXPIRED:
-            return this.i18n('Your password has expired. Please, contact the administration.');
+            return this.messages.error.passwordExpired;
           case PasswordStatusEnum.PENDING:
-            return this.i18n('Your user account is pending for activation. Please, contact the administration for more information.');
+            return this.messages.error.passwordPending;
           default:
-            return this.i18n('The given name / password are incorrect. Please, try again.');
+            return this.messages.error.login;
         }
       case UnauthorizedErrorCode.REMOTE_ADDRESS_BLOCKED:
-        return this.i18n('Your IP address is blocked for exceeding login attempts');
+        return this.messages.error.remoteAddressBlocked;
       case UnauthorizedErrorCode.UNAUTHORIZED_ADDRESS:
-        return this.i18n('Your IP address is not allowed to login');
+        return this.messages.error.unauthorizedAddress;
       case UnauthorizedErrorCode.UNAUTHORIZED_URL:
-        return this.i18n('Access is not allowed from this URL');
+        return this.messages.error.unauthorizedUrl;
       case UnauthorizedErrorCode.LOGGED_OUT:
-        return this.i18n('You have been disconnected. Please, login again and repeat the operation.');
+        return this.messages.error.loggedOut;
       default:
-        return this.i18n('You don\'t have sufficient permissions to perform the requested action');
+        return this.messages.error.permission;
     }
   }
 
@@ -423,28 +414,19 @@ export class ErrorHandlerService {
    */
   public forbiddenErrorMessage(error: ForbiddenError): string {
     error = error || {} as ForbiddenError;
-    const passwordType = (error.passwordType || {}).name;
     switch (error.code) {
       case ForbiddenErrorCode.ILLEGAL_ACTION:
-        return this.i18n('The action you attempted to perform is invalid');
+        return this.messages.error.illegalAction;
       case ForbiddenErrorCode.INVALID_PASSWORD:
-        return this.i18n('{{type}} is invalid', {
-          type: passwordType
-        });
+        return this.messages.error.passwordInvalid((error.passwordType || {}).name);
       case ForbiddenErrorCode.EXPIRED_PASSWORD:
-        return this.i18n('{{type}} has expired. Please, contact the administration', {
-          type: passwordType
-        });
+        return this.messages.error.passwordExpired;
       case ForbiddenErrorCode.TEMPORARILY_BLOCKED:
-        return this.i18n('{{type}} temporarily blocked by exceeding the maximum tries. Please, contact the administration', {
-          type: passwordType
-        });
+        return this.messages.error.passwordTemporarilyBlocked;
       case ForbiddenErrorCode.INDEFINITELY_BLOCKED:
-        return this.i18n('{{type}} disabled by exceeding the maximum tries. Please, contact the administration', {
-          type: passwordType
-        });
+        return this.messages.error.passwordIndefinitelyBlocked;
       default:
-        return this.i18n('You don\'t have sufficient permissions to perform the requested action');
+        return this.messages.error.permission;
     }
   }
 
@@ -458,35 +440,23 @@ export class ErrorHandlerService {
     const amount = () => this.format.formatAsCurrency(error.currency, error.maxAmount);
     switch (error.code) {
       case PaymentErrorCode.TIME_BETWEEN_PAYMENTS_NOT_MET:
-        return this.i18n('A minimum period of time should be awaited to make a payment of this type.');
+        return this.messages.transaction.error.minTime;
       case PaymentErrorCode.INSUFFICIENT_BALANCE:
-        return this.i18n('Insufficient balance to perform this operation');
+        return this.messages.transaction.error.balance;
       case PaymentErrorCode.DESTINATION_UPPER_LIMIT_REACHED:
-        return this.i18n('You cannot perform this payment because the upper balance limit of the destination account has been exceeded');
+        return this.messages.transaction.error.upperLimit;
       case PaymentErrorCode.DAILY_AMOUNT_EXCEEDED:
-        return this.i18n('The maximum amount per day ({{amount}}) was exceeded', {
-          amount: amount()
-        });
+        return this.messages.transaction.error.dailyAmount(amount());
       case PaymentErrorCode.DAILY_PAYMENTS_EXCEEDED:
-        return this.i18n('The maximum amount of payments per day ({{count}}) was exceeded', {
-          count: count()
-        });
+        return this.messages.transaction.error.dailyCount(count());
       case PaymentErrorCode.WEEKLY_AMOUNT_EXCEEDED:
-        return this.i18n('The maximum amount per week ({{amount}}) was exceeded', {
-          amount: amount()
-        });
+        return this.messages.transaction.error.weeklyAmount(amount());
       case PaymentErrorCode.WEEKLY_PAYMENTS_EXCEEDED:
-        return this.i18n('The maximum amount of payments per week ({{count}}) was exceeded', {
-          count: count()
-        });
+        return this.messages.transaction.error.weeklyCount(count());
       case PaymentErrorCode.MONTHLY_AMOUNT_EXCEEDED:
-        return this.i18n('The maximum amount per month ({{amount}}) was exceeded', {
-          amount: amount()
-        });
+        return this.messages.transaction.error.monthlyAmount(amount());
       case PaymentErrorCode.MONTHLY_PAYMENTS_EXCEEDED:
-        return this.i18n('The maximum amount of payments per month ({{count}}) was exceeded', {
-          count: count()
-        });
+        return this.messages.transaction.error.monthlyCount(count());
       default:
         return this.general;
     }
@@ -497,7 +467,7 @@ export class ErrorHandlerService {
    * @param error The error
    */
   public otpErrorMessage(_error: OtpError): string {
-    return this.i18n('There was an error when sending the password. Please, try again later.');
+    return this.messages.error.otp;
   }
 
   /**
@@ -509,10 +479,9 @@ export class ErrorHandlerService {
     switch (error.code) {
       case ForgottenPasswordErrorCode.INVALID_SECURITY_ANSWER:
         if (error.keyInvalidated) {
-          return this.i18n(`By exceeding the number of security question attempts, this request has been aborted.<br>
-            Please, contact the administration.`);
+          return this.messages.error.securityAnswerDisabled;
         } else {
-          return this.i18n('The given security answer is invalid');
+          return this.messages.error.securityAnswer;
         }
       default:
         return this.general;

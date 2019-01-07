@@ -6,6 +6,7 @@ import { LoginService } from 'app/core/login.service';
 import { MenuService } from 'app/core/menu.service';
 import { LayoutService } from 'app/shared/layout.service';
 import { Menu } from 'app/shared/menu';
+import { Messages } from 'app/messages/messages';
 
 /**
  * The top bar, which is always visible
@@ -22,7 +23,8 @@ export class TopBarComponent implements OnInit {
     public format: FormatService,
     public login: LoginService,
     public layout: LayoutService,
-    public menu: MenuService) {
+    public menu: MenuService,
+    public messages: Messages) {
   }
 
   @Input() user: User;

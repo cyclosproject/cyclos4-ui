@@ -6,7 +6,6 @@ import { FormControlLocator } from 'app/shared/form-control-locator';
 import { BehaviorSubject } from 'rxjs';
 import { Menu, ConditionalMenu } from 'app/shared/menu';
 import { first } from 'rxjs/operators';
-import { I18n } from '@ngx-translate/i18n-polyfill';
 
 export type UpdateTitleFrom = 'menu' | 'content';
 
@@ -47,7 +46,7 @@ export abstract class BasePageComponent<D> extends BaseComponent implements OnIn
     if (this._printAction) {
       return this._printAction;
     }
-    this._printAction = new HeadingAction('print', this.i18n('Print'), () => {
+    this._printAction = new HeadingAction('print', this.messages.general.print, () => {
       self.print();
     }, true);
     return this._printAction;
@@ -67,9 +66,7 @@ export abstract class BasePageComponent<D> extends BaseComponent implements OnIn
   protected onDataInitialized(_data: D) {
   }
 
-  constructor(
-    injector: Injector,
-    protected i18n: I18n) {
+  constructor(injector: Injector) {
     super(injector);
   }
 

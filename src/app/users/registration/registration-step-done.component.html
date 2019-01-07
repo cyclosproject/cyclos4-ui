@@ -1,24 +1,17 @@
 <div [ngSwitch]="result.status">
 
   <div *ngSwitchCase="'active'">
-    <p i18n>You have been successfully registered, and your account is now active.</p>
+    <p [innerHTML]="messages.user.registration.active | trust"></p>
     <p [innerHTML]="principalsHtml | trust"></p>
     <p>{{ passwordsMessage }}</p>
   </div>
 
   <div *ngSwitchCase="'inactive'">
-    <p i18n>Your account was successfully created.
-      <br>However, you will need to be activated by the administration.
-      <br>You will be notified when your account is active.</p>
+    <p [innerHTML]="messages.user.registration.inactive | trust"></p>
   </div>
 
   <div *ngSwitchCase="'emailValidation'">
-    <p i18n>Your registration has been submitted, and needs to be verified.
-      <br>You should receive an e-mail shortly with instructions on how to activate
-      your account.
-      <br>If you don't receive the e-mail, make sure to check your spam / junk
-      folder.
-    </p>
+    <p [innerHTML]="messages.user.registration.pending | trust"></p>
   </div>
 
 </div>

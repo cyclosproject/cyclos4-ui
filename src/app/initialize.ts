@@ -3,12 +3,14 @@ import { ApiConfiguration } from 'app/api/api-configuration';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { environment } from 'environments/environment';
 import { LightboxConfig } from 'ngx-lightbox';
+import { Messages } from 'app/messages/messages';
 
 // Initializes the shared services
 export function initialize(
   apiConfig: ApiConfiguration,
   lightboxConfig: LightboxConfig,
-  dataForUiHolder: DataForUiHolder
+  dataForUiHolder: DataForUiHolder,
+  messages: Messages,
 ): Function {
   return () => {
     // Initialize the API configuration
@@ -25,6 +27,11 @@ export function initialize(
     lightboxConfig.disableScrolling = true;
     lightboxConfig.wrapAround = true;
 
+    // If the translations are statically set, initialize the translation values
+    if (environment.translationValues) {
+      messages.initialize(environment.translationValues);
+    }
+
     // Load the data for UI
     return dataForUiHolder.initialize().toPromise();
   };
@@ -32,6 +39,6 @@ export function initialize(
 export const INITIALIZE: Provider = {
   provide: APP_INITIALIZER,
   useFactory: initialize,
-  deps: [ApiConfiguration, LightboxConfig, DataForUiHolder],
+  deps: [ApiConfiguration, LightboxConfig, DataForUiHolder, Messages],
   multi: true
 };

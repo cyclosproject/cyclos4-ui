@@ -7,7 +7,6 @@ import { ResultType } from 'app/shared/result-type';
 import { MAX_SIZE_SHORT_NAME } from 'app/users/profile/view-profile.component';
 import { cloneDeep } from 'lodash';
 import { BehaviorSubject } from 'rxjs';
-import { I18n } from '@ngx-translate/i18n-polyfill';
 
 /**
  * Lists the advertisements of a given user
@@ -27,10 +26,9 @@ export class UserAdsComponent
 
   constructor(
     injector: Injector,
-    i18n: I18n,
     private marketplaceService: MarketplaceService
   ) {
-    super(injector, i18n);
+    super(injector);
   }
 
   protected getFormControlNames() {
@@ -52,11 +50,9 @@ export class UserAdsComponent
 
   private updateTitle() {
     if (this.layout.xxs) {
-      this.title$.next(this.i18n('Advertisements'));
+      this.title$.next(this.messages.ad.title.search);
     } else {
-      this.title$.next(this.i18n('Advertisements of {{name}}', {
-        name: this.shortName
-      }));
+      this.title$.next(this.messages.ad.title.owner(this.shortName));
     }
   }
 

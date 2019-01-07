@@ -25,6 +25,8 @@ export class AppComponent implements OnInit {
   initialized = new BehaviorSubject(false);
   loggingOut = new BehaviorSubject(false);
 
+  title: string;
+
   constructor(
     private router: Router,
     private dataForUiHolder: DataForUiHolder,
