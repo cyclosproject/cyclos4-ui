@@ -115,7 +115,7 @@
     "invalidRequest": "It is not possible to connect to the server.<br>Please make sure you are connected to the Internet and try again in a few seconds.",
     "queryParse": "Invalid keywords",
     "uploadSizeExceeded": "The uploaded file exceeds the maximum allowed size of {size}",
-    "maxItems": "Cannle add more than {max} elements",
+    "maxItems": "Cannot add more than {max} elements",
     "validation": "The action couldn't be processed, as there were validation errors",
     "staleEntity": "This data cannot be saved because it has been modified by someone else.<br>Please, load the page again and restart the operation.",
     "removeDataInUse": "This data cannot be removed because it is currently in use.",
