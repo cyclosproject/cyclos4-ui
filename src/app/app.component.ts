@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit, ViewChild, Inject, LOCALE_ID, Renderer2 } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { BannerService } from 'app/core/banner.service';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
@@ -6,11 +6,11 @@ import { LoginService } from 'app/core/login.service';
 import { MenuService } from 'app/core/menu.service';
 import { PushNotificationsService } from 'app/core/push-notifications.service';
 import { SidenavComponent } from 'app/core/sidenav.component';
+import { Messages } from 'app/messages/messages';
 import { blank, setRootSpinnerVisible } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
 import { trim } from 'lodash';
 import { BehaviorSubject } from 'rxjs';
-import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -22,8 +22,8 @@ export class AppComponent implements OnInit {
 
   @ViewChild(SidenavComponent) sidenav: SidenavComponent;
 
-  initialized = new BehaviorSubject(false);
-  loggingOut = new BehaviorSubject(false);
+  initialized$ = new BehaviorSubject(false);
+  loggingOut$ = new BehaviorSubject(false);
 
   title: string;
 
@@ -34,15 +34,12 @@ export class AppComponent implements OnInit {
     public menu: MenuService,
     public layout: LayoutService,
     private banner: BannerService,
+    public messages: Messages,
     // PushNotificationsService is here because it is not directly used by any
     // other component / service, but handles itself the push notifications.
     // It would otherwise be removed from the built app by tree-shaking.
     private push: PushNotificationsService,
-    @Inject(DOCUMENT) doc: Document,
-    @Inject(LOCALE_ID) locale: string,
-    renderer: Renderer2
   ) {
-    renderer.setAttribute(doc.documentElement, 'lang', locale);
   }
 
   ngOnInit() {
@@ -52,16 +49,16 @@ export class AppComponent implements OnInit {
     this.layout.setTitle();
     this.dataForUiHolder.subscribe(dataForUi => {
       if (dataForUi != null) {
-        this.initialized.next(true);
+        this.initialized$.next(true);
         this.prepareContent();
       }
     });
     if (this.dataForUiHolder.dataForUi) {
       // Already initialized?!?
-      this.initialized.next(true);
+      this.initialized$.next(true);
       this.prepareContent();
     }
-    this.login.subscribeForLoggingOut(flag => this.loggingOut.next(flag));
+    this.login.subscribeForLoggingOut(flag => this.loggingOut$.next(flag));
 
     // Some browsers (like Firefox) show an outline on focused anchors.
     // After the page is loaded, blur the menus, so none will be outlined

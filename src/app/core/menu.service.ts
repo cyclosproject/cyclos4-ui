@@ -1,6 +1,6 @@
 import { Injectable, Injector } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
-import { Auth } from 'app/api/models';
+import { Auth, DataForUi } from 'app/api/models';
 import { ContentPage } from 'app/content/content-page';
 import { handleFullWidthLayout } from 'app/content/content-with-layout';
 import { BreadcrumbService } from 'app/core/breadcrumb.service';
@@ -75,15 +75,21 @@ export class MenuService {
     const initialDataForUi = this.dataForUiHolder.dataForUi;
     const initialAuth = (initialDataForUi || {}).auth;
 
-    if (initialDataForUi != null) {
+    // If initially with a DataForUi instance and using static locale
+    if (initialDataForUi != null && this.dataForUiHolder.staticLocale) {
       this.buildFullMenu(initialAuth).subscribe(m => this._fullMenu.next(m));
     }
+
     // Whenever the authenticated user changes, reload the menu
-    dataForUiHolder.subscribe(dataForUi => {
-      const auth = (dataForUi || {}).auth;
-      this.buildFullMenu(auth).subscribe(m => this._fullMenu.next(m));
-      this._activeMenu.next(null);
-    });
+    const buildMenu = (dataForUi: DataForUi) => {
+      if (this.messages.initialized$.value) {
+        const auth = (dataForUi || {}).auth;
+        this.buildFullMenu(auth).subscribe(m => this._fullMenu.next(m));
+        this._activeMenu.next(null);
+      }
+    };
+    dataForUiHolder.subscribe(buildMenu);
+    dataForUiHolder.subscribeForLocale(() => buildMenu(dataForUiHolder.dataForUi));
 
     // Whenever we navigate back to home, update the active menu to match
     router.events.pipe(

@@ -1,4 +1,4 @@
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { DataForUi, UiKind } from 'app/api/models';
 import { UIService } from 'app/api/services';
@@ -17,13 +17,25 @@ import { catchError, tap } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class DataForUiHolder {
+  _staticLocale: string;
+  get staticLocale(): string {
+    return this._staticLocale;
+  }
+  set staticLocale(locale: string) {
+    this._staticLocale = locale;
+    this.locale$.next(locale);
+  }
+
   private dataForUi$ = new BehaviorSubject<DataForUi>(null);
+  private locale$ = new BehaviorSubject<string>(null);
   private timeDiff: number;
+  private cachedTranslations = new Map<string, any>();
 
   constructor(
     private nextRequestState: NextRequestState,
     private uiService: UIService,
-    private messages: Messages) {
+    private messages: Messages,
+    private http: HttpClient) {
   }
 
   /**
@@ -85,14 +97,53 @@ export class DataForUiHolder {
       this.dataForUi$.next(dataForUi);
       // Store the time diff
       this.timeDiff = new Date().getTime() - moment(dataForUi.currentClientTime).toDate().getTime();
+      // Fetch the translations, if not statically set
+      if (this._staticLocale == null) {
+        this.setTranslation((dataForUi.language || { code: 'en' }).code, dataForUi.country);
+      }
     }
   }
 
   /**
-   * Adds a new observer notified when the user logs-in (auth != null) or logs out (auth == null)
+   * Adds a new observer subscription for DataForUi change events
    */
   subscribe(next?: (dataForUi: DataForUi) => void, error?: (error: any) => void, complete?: () => void): Subscription {
     return this.dataForUi$.subscribe(next, error, complete);
+  }
+
+  /**
+   * Adds a new observer subscription for locale change events.
+   * The event is only triggered when the translations are fetched
+   */
+  subscribeForLocale(next?: (locale: string) => void, error?: (error: any) => void, complete?: () => void): Subscription {
+    return this.locale$.subscribe(next, error, complete);
+  }
+
+  private setTranslation(language: string, country: string) {
+    const locales = Messages.locales();
+    let locale: string;
+    if (locales.includes(`${language}-${country}`)) {
+      locale = `${language}-${country}`;
+    } else if (locales.includes(language)) {
+      locale = language;
+    } else {
+      locale = 'en';
+    }
+    const setLocale = (values: any) => {
+      this.messages.initialize(values);
+      this.locale$.next(locale);
+    };
+    const fileName = Messages.fileName(locale);
+    if (this.cachedTranslations.has(fileName)) {
+      setLocale(this.cachedTranslations.get(fileName));
+    } else {
+      // Load the translation
+      this.messages.initialized$.next(false);
+      this.http.get(`locale/${fileName}`).subscribe(values => {
+        this.cachedTranslations.set(fileName, values);
+        setLocale(values);
+      });
+    }
   }
 
 }

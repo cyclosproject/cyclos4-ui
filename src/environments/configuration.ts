@@ -41,10 +41,17 @@ const AD_CATEGORIES: { [internalName: string]: AdCategoryConfiguration } = {
 // See the project home page for help on how to customize content
 
 // A static application translation file
-// May be left to null to resolve dynamically according to the Cyclos configuration,
-// or set here to prevent an additional request to load the translation values
-import translationValues from 'locale/cyclos4-ui.json';
-const TRANSLATION: any = translationValues;
+// May be set to null to resolve dynamically according to the Cyclos configuration,
+// or set here to prevent an additional request to load the translation values.
+// Either both STATIC_LOCALE and STATIC_TRANSLATIONS must be null or non-null.
+
+// The locale identifier for the static translations
+const STATIC_LOCALE: string = null;
+
+// The static translation values. When set, also set STATIC_LOCALE and
+// uncomment the line below with the correct translation file
+// import staticTranslations from 'locale/cyclos4-ui.json';
+const STATIC_TRANSLATIONS: any = null; // staticTranslations;
 
 // The home page shown for guests
 const HOME_PAGE: ContentWithLayout = {
@@ -86,7 +93,8 @@ export const configuration = {
   searchPageSizes: SEARCH_PAGE_SIZES,
   quickSearchPageSize: QUICK_SEARCH_PAGE_SIZE,
   adCategories: AD_CATEGORIES as { [internalName: string]: AdCategoryConfiguration },
-  translationValues: TRANSLATION as any,
+  staticLocale: STATIC_LOCALE as string,
+  staticTranslations: STATIC_TRANSLATIONS as any,
   homePage: HOME_PAGE as ContentWithLayout,
   dashboardResolver: DASHBOARD_RESOLVER as DashboardResolver,
   contentPagesResolver: CONTENT_PAGES_RESOLVER as ContentPagesResolver,

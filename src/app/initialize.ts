@@ -28,8 +28,9 @@ export function initialize(
     lightboxConfig.wrapAround = true;
 
     // If the translations are statically set, initialize the translation values
-    if (environment.translationValues) {
-      messages.initialize(environment.translationValues);
+    if (environment.staticLocale && environment.staticTranslations) {
+      dataForUiHolder.staticLocale = environment.staticLocale;
+      messages.initialize(environment.staticTranslations);
     }
 
     // Load the data for UI
