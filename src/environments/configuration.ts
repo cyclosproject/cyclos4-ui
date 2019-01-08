@@ -46,12 +46,13 @@ const AD_CATEGORIES: { [internalName: string]: AdCategoryConfiguration } = {
 // Either both STATIC_LOCALE and STATIC_TRANSLATIONS must be null or non-null.
 
 // The locale identifier for the static translations
-const STATIC_LOCALE: string = null;
+const STATIC_LOCALE = null;
 
 // The static translation values. When set, also set STATIC_LOCALE and
 // uncomment the line below with the correct translation file
-// import staticTranslations from 'locale/cyclos4-ui.json';
-const STATIC_TRANSLATIONS: any = null; // staticTranslations;
+// import STATIC_TRANSLATIONS from 'locale/cyclos4-ui.json';
+// If the above line is uncommented, comment the next line as well
+const STATIC_TRANSLATIONS = null;
 
 // The home page shown for guests
 const HOME_PAGE: ContentWithLayout = {

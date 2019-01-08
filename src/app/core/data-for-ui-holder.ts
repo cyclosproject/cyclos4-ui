@@ -129,21 +129,27 @@ export class DataForUiHolder {
     } else {
       locale = 'en';
     }
-    const setLocale = (values: any) => {
-      this.messages.initialize(values);
-      this.locale$.next(locale);
-    };
     const fileName = Messages.fileName(locale);
     if (this.cachedTranslations.has(fileName)) {
-      setLocale(this.cachedTranslations.get(fileName));
+      this._setLocale(locale, this.cachedTranslations.get(fileName));
     } else {
       // Load the translation
       this.messages.initialized$.next(false);
       this.http.get(`locale/${fileName}`).subscribe(values => {
         this.cachedTranslations.set(fileName, values);
-        setLocale(values);
+        this._setLocale(locale, values);
       });
     }
+  }
+
+  /**
+   * Sets the locale and translation values.
+   * Shouldn't be called by regular components, only by initializations.
+   */
+  _setLocale(locale: string, translationValues: any) {
+    this.messages.initialize(translationValues);
+    this.locale$.next(locale);
+    document.documentElement.lang = locale.toLowerCase();
   }
 
 }

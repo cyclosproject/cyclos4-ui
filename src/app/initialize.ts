@@ -3,14 +3,12 @@ import { ApiConfiguration } from 'app/api/api-configuration';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { environment } from 'environments/environment';
 import { LightboxConfig } from 'ngx-lightbox';
-import { Messages } from 'app/messages/messages';
 
 // Initializes the shared services
 export function initialize(
   apiConfig: ApiConfiguration,
   lightboxConfig: LightboxConfig,
-  dataForUiHolder: DataForUiHolder,
-  messages: Messages,
+  dataForUiHolder: DataForUiHolder
 ): Function {
   return () => {
     // Initialize the API configuration
@@ -29,8 +27,7 @@ export function initialize(
 
     // If the translations are statically set, initialize the translation values
     if (environment.staticLocale && environment.staticTranslations) {
-      dataForUiHolder.staticLocale = environment.staticLocale;
-      messages.initialize(environment.staticTranslations);
+      dataForUiHolder._setLocale(environment.staticLocale, environment.staticTranslations);
     }
 
     // Load the data for UI
@@ -40,6 +37,6 @@ export function initialize(
 export const INITIALIZE: Provider = {
   provide: APP_INITIALIZER,
   useFactory: initialize,
-  deps: [ApiConfiguration, LightboxConfig, DataForUiHolder, Messages],
+  deps: [ApiConfiguration, LightboxConfig, DataForUiHolder],
   multi: true
 };

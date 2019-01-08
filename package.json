@@ -15,7 +15,6 @@
     "ng-swagger-gen": "ng-swagger-gen",
     "ng-translation-gen": "ng-translation-gen",
     "ngx-extractor": "ngx-extractor",
-    "xliffmerge": "xliffmerge",
     "svgo": "svgo",
     "generate-icons": "node tools/generate-icons.js",
     "generate": "npm run ng-swagger-gen && npm run ng-translation-gen && npm run generate-icons",
