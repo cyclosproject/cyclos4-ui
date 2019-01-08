@@ -25,6 +25,9 @@ export class FormatService {
     if (dataForUiHolder.dataForUi) {
       this.initialize(dataForUiHolder.dataForUi);
     }
+    dataForUiHolder.subscribeForLocale(() => {
+      this.initialize(dataForUiHolder.dataForUi);
+    });
   }
 
   /** Uppercase date format. Example: `'DD/MM/YYYY'` */

@@ -22,8 +22,11 @@ export class BalanceHistoryChartDirective implements OnInit {
     private format: FormatService,
     private layout: LayoutService) {
   }
-
   ngOnInit() {
+    setTimeout(() => this.initialize(), 100);
+  }
+
+  private initialize() {
     const canvas: HTMLCanvasElement = this.element.nativeElement;
     const amounts = this.history.balances.map(b => parseFloat(b.amount));
     const hasNegative = amounts.find(a => a < 0);
@@ -43,6 +46,9 @@ export class BalanceHistoryChartDirective implements OnInit {
       options: {
         legend: {
           display: false
+        },
+        animation: {
+          duration: 0
         },
         tooltips: {
           callbacks: {
