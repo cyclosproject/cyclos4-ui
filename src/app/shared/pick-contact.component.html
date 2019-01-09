@@ -1,13 +1,13 @@
 <h1>{{ messages.field.user.contactTitle }}</h1>
 
-<ng-container *ngIf="(contacts$ | async) as contacts; else spinner">
-  <div *ngIf="(contacts || []).length === 0; else contactLinks">
+<ng-container *ngIf="(ready$ | async); else spinner">
+  <div *ngIf="(contacts$ | async)?.length === 0; else contactLinks">
     {{ messages.field.user.contactEmpty }}
   </div>
   <ng-template #contactLinks>
-    <a *ngFor="let user of contacts$ | async" class="d-block mb-1 text-body"
-      href="#" (click)="emit(user, $event)">
-      {{ user.display }}
+    <a *ngFor="let c of contacts$ | async" class="d-block mb-1 text-body"
+      href="#" (click)="emit(c.contact, $event)">
+      {{ c.contact.display }}
     </a>
   </ng-template>
 </ng-container>

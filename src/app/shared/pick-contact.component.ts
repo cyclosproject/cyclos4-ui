@@ -5,6 +5,7 @@ import { ApiHelper } from 'app/shared/api-helper';
 import { BaseComponent } from 'app/shared/base.component';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { BehaviorSubject } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 /**
  * A component to be shown in a dialog, showing the user contact list
@@ -19,6 +20,8 @@ export class PickContactComponent extends BaseComponent implements OnInit {
   @Output() select = new EventEmitter<User>();
 
   contacts$ = new BehaviorSubject<User[]>(null);
+
+  ready$ = this.contacts$.asObservable().pipe(map(c => c !== null));
 
   constructor(
     injector: Injector,
