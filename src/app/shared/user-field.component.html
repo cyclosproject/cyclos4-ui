@@ -32,7 +32,7 @@
         </div>
       </div>
     </div>
-    <div *ngIf="user == null" class="d-flex ml-2">
+    <div *ngIf="user == null && allowContacts" class="d-flex ml-2">
       <button class="btn btn-light btn-icon" *ngIf="allowContacts"
         #contactListButton [tooltip]="messages.field.user.contactTooltip"
         (click)="showContactList()">

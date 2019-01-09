@@ -124,7 +124,10 @@ export class PublicRegistrationComponent
   ngOnDestroy() {
     super.ngOnDestroy();
     if (this.image) {
-      // When a temp image was uploaded, immediately remove it
+      // When a temp image was uploaded, revoke its URL...
+      URL.revokeObjectURL(this.image.url);
+
+      // ... and remove it server-side
       this.errorHandler.requestWithCustomErrorHandler(() => {
         this.imagesService.deleteImage(this.image.id).subscribe();
       });
@@ -358,6 +361,7 @@ export class PublicRegistrationComponent
     this.usersService.createUser(this.userNew)
       .subscribe(result => {
         this.result = result;
+        this.image = null;
         this.step = 'done';
       });
   }

@@ -1,20 +1,34 @@
-<form [formGroup]="form">
-  <label-value [label]="messages.user.group" *ngIf="group" [value]="group.name"></label-value>
-  <label-value [label]="messages.user.name" *ngIf="!empty(name)" [value]="name"></label-value>
-  <label-value [label]="messages.user.username" *ngIf="!empty(username)"
-    [value]="username"></label-value>
-  <label-value [label]="messages.user.email" *ngIf="!empty(email)" [value]="email"></label-value>
-  <label-value *ngFor="let cf of customFields" [label]="cf.name" valueFormat="component">
-    <format-field-value [fields]="customFields" [fieldName]="cf.internalName"
-      [object]="user"></format-field-value>
-  </label-value>
-  <label-value [label]="messages.phone.mobile" *ngIf="!empty(mobile)" [value]="mobile"></label-value>
-  <label-value [label]="messages.user.phoneAddLandLine" *ngIf="!empty(landLine)"
-    [value]="landLine"></label-value>
-  <label-value [label]="messages.address.address" *ngIf="address" valueFormat="component">
-    <address-details [address]="address"></address-details>
-  </label-value>
+<div *ngIf="image && (layout.ltsm$ | async)" class="image d-flex justify-content-center mt-2 mb-4">
+  <avatar size="160" imageSize="200" useLightbox [image]="image"></avatar>
+</div>
 
+<div class="d-flex flex-row-reverse">
+  <div *ngIf="image && (layout.gtxs$ | async)" class="image ml-4 mb-3">
+    <avatar [size]="image ? 200 : 128" iconSize="128px" useLightbox [image]="image"></avatar>
+  </div>
+  <div class="flex-grow-1">
+    <label-value [label]="messages.user.group" *ngIf="group" [value]="group.name"></label-value>
+    <label-value [label]="messages.user.name" *ngIf="!empty(name)" [value]="name"></label-value>
+    <label-value [label]="messages.user.username" *ngIf="!empty(username)"
+      [value]="username"></label-value>
+    <label-value [label]="messages.user.email" *ngIf="!empty(email)" [value]="email"></label-value>
+    <label-value *ngFor="let cf of customFields" [label]="cf.name"
+      valueFormat="component">
+      <format-field-value [fields]="customFields" [fieldName]="cf.internalName"
+        [object]="user"></format-field-value>
+    </label-value>
+    <label-value [label]="messages.phone.mobile" *ngIf="!empty(mobile)"
+      [value]="mobile"></label-value>
+    <label-value [label]="messages.user.phoneAddLandLine" *ngIf="!empty(landLine)"
+      [value]="landLine"></label-value>
+    <label-value [label]="messages.address.address" *ngIf="address"
+      valueFormat="component">
+      <address-details [address]="address"></address-details>
+    </label-value>
+  </div>
+</div>
+
+<form [formGroup]="form">
   <ng-container *ngFor="let pt of data.passwordTypes; let i = index">
     <h2>{{ pt.name }}</h2>
     <ng-container [formGroup]="passwordForm(i)">

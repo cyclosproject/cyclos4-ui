@@ -7,7 +7,7 @@ import { ApiConfiguration } from 'app/api/api-configuration';
 import { CustomField, Image, TempImageTargetEnum } from 'app/api/models';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { LoginService } from 'app/core/login.service';
-import { resizeImage, ResizeResult } from 'app/shared/helper';
+import { resizeImage, ResizeResult, truthyAttr } from 'app/shared/helper';
 import { BehaviorSubject, forkJoin, Observable, Subscription } from 'rxjs';
 
 /**
@@ -59,6 +59,14 @@ export class ImageUploadComponent implements OnDestroy {
   @Output() uploadDone = new EventEmitter<Image[]>();
   @ViewChild('inputField') inputField: ElementRef;
 
+  private _keepUrls: boolean | string = false;
+  @Input() get keepUrls(): boolean | string {
+    return this._keepUrls;
+  }
+  set keepUrls(keep: boolean | string) {
+    this._keepUrls = truthyAttr(keep);
+  }
+
   files = new BehaviorSubject<ImageToUpload[]>(null);
   private urlsToRevoke: string[] = [];
   private subscription: Subscription;
@@ -72,8 +80,10 @@ export class ImageUploadComponent implements OnDestroy {
   }
 
   ngOnDestroy() {
-    for (const url of this.urlsToRevoke) {
-      URL.revokeObjectURL(url);
+    if (!this.keepUrls) {
+      for (const url of this.urlsToRevoke) {
+        URL.revokeObjectURL(url);
+      }
     }
     if (this.subscription) {
       this.subscription.unsubscribe();

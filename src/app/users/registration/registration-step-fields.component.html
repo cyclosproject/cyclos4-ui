@@ -12,14 +12,14 @@
         </ng-template>
       </div>
       <image-upload #upload containerClass="mt-3" target="userRegistration"
-        (uploadDone)="onUploadDone($event[0])"></image-upload>
+        keepUrls (uploadDone)="onUploadDone($event[0])"></image-upload>
     </div>
     <div class="col-12 col-sm-6 mt-3 mt-sm-0 d-flex justify-content-between justify-content-sm-end align-items-end"
       *ngIf="!(upload.uploading$ | async)">
       <button class="btn btn-outline-primary" (click)="upload.perform()">
         {{ messages.field.image.upload }}
       </button>
-      <button *ngIf="image" class="mr-3 btn btn-outline-primary" (click)="removeImage()">
+      <button *ngIf="image" class="ml-3 btn btn-outline-primary" (click)="removeImage()">
         {{ messages.field.image.remove }}
       </button>
     </div>

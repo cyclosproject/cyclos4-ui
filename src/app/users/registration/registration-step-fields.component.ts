@@ -1,11 +1,11 @@
-import { ChangeDetectionStrategy, Component, Injector, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
-import { UserDataForNew, Image, AvailabilityEnum, CustomField, CustomFieldDetailed, GeographicalCoordinate } from 'app/api/models';
-import { BaseComponent } from 'app/shared/base.component';
-import { BehaviorSubject } from 'rxjs';
+import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { AvailabilityEnum, CustomField, CustomFieldDetailed, GeographicalCoordinate, Image, UserDataForNew } from 'app/api/models';
 import { ImagesService } from 'app/api/services';
-import { debounceTime } from 'rxjs/operators';
 import { ApiHelper } from 'app/shared/api-helper';
+import { BaseComponent } from 'app/shared/base.component';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { debounceTime, first } from 'rxjs/operators';
 
 /**
  * Public registration step: fill in the profile fields
@@ -106,17 +106,27 @@ export class RegistrationStepFieldsComponent
   }
 
   onUploadDone(image: Image) {
-    this.removeImage();
-    this.image = image;
-    this.imageUploaded.emit(this.image);
+    // First remove any previous image, then emit that a new image is uploaded
+    this.removeImage().pipe(first()).subscribe(() => {
+      this.image = image;
+      this.imageUploaded.emit(this.image);
+    });
   }
 
-  removeImage() {
+  removeImage(): Observable<Image> {
     if (this.image) {
-      this.imagesService.deleteImage(this.image.id).subscribe(() => {
-        this.imageRemoved.emit(this.image);
-        this.image = null;
+      const result = this.image;
+      return this.errorHandler.requestWithCustomErrorHandler(() => {
+        return new Observable(obs => {
+          this.imagesService.deleteImage(this.image.id).subscribe(() => {
+            this.imageRemoved.emit(this.image);
+            this.image = null;
+            obs.next(result);
+          });
+        });
       });
+    } else {
+      return of(null);
     }
   }
 

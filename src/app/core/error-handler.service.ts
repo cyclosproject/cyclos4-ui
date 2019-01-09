@@ -46,9 +46,9 @@ export class ErrorHandlerService {
    * error handling, so, the custom error handler can call it on unhandled cases.
    * @param callback The function that actually performs the HTTP request
    */
-  requestWithCustomErrorHandler(callback: (defaultHandling: (response: HttpErrorResponse) => void) => any) {
+  requestWithCustomErrorHandler<T>(callback: (defaultHandling: (response: HttpErrorResponse) => void) => T): T {
     this.nextRequestState.ignoreNextError = true;
-    callback(resp => this.handleHttpError(resp));
+    return callback(resp => this.handleHttpError(resp));
   }
 
   /**

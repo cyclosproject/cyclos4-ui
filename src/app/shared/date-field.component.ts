@@ -145,7 +145,7 @@ export class DateFieldComponent
   onValueInitialized(raw: string): void {
     let partValue = ['', '', ''];
     let dateValue: Date = null;
-    if (raw !== null || raw !== '') {
+    if (!empty(raw)) {
       const mmt = moment(raw);
       if (mmt.isValid()) {
         partValue = this.format.applyDateFields(

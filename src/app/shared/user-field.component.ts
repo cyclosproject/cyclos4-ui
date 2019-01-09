@@ -72,6 +72,20 @@ export class UserFieldComponent
     } else if (this.allowPrincipal) {
       this.placeholder = this.messages.field.user.placeholderPrincipal;
     }
+
+    const permissions = this.login.auth.permissions || {};
+
+    // When the user has no permissions for search, disable the option
+    const users = permissions.users || {};
+    if (!users.search) {
+      this.allowSearch = false;
+    }
+
+    // When the user has no permissions for contacts, disable the option
+    const contacts = permissions.contacts || {};
+    if (!contacts.enable) {
+      this.allowContacts = false;
+    }
   }
 
   ngOnDestroy() {

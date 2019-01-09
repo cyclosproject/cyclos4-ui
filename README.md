@@ -197,6 +197,7 @@ switch (type) {
         return "${root}/login"
 }
 // Other link types are not yet handled in the the frontend
+return null
 ```
 
 Then, in 'System > System configuration > Configurations' select the configuration applied to users (or the default one) and mark the 'Link generation' field for customization. Then select the script you created and set the following as parameters, replacing the URL with your deployed URL:
