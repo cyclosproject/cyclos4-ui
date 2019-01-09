@@ -1,0 +1,14 @@
+<h1>{{ messages.user.title.addContact }}</h1>
+
+<user-field #field focused [allowContacts]="false" [allowPrincipal]="false"
+  [formControl]="control" [label]="messages.user.contact">
+</user-field>
+
+<actions forceRow>
+  <button class="btn btn-primary" [disabled]="requesting$ | async" (click)="addContact()">
+    {{ messages.general.submit }}
+  </button>
+  <button class="btn btn-outline-primary" (click)="modalRef.hide()">
+    {{ messages.general.cancel }}
+  </button>
+</actions>

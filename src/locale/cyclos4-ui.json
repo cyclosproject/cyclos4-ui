@@ -35,6 +35,7 @@
     "close": "Close",
     "submit": "Submit",
     "save": "Save",
+    "addNew": "Add new",
     "yes": "Yes",
     "no": "No",
     "map": "Map",
@@ -494,6 +495,7 @@
       "registration.confirmation": "Registration confirmation",
       "registration.done": "Registration successful",
       "contactList": "Contact list",
+      "addContact": "Add a new contact",
       "search": "Business directory"
     },
     "group": "Group",
@@ -523,6 +525,7 @@
     "securityQuestion.message": "If you happen to forget your password, you will need to correctly answer the security question in order to reset the password.<br>This can be set later, but keep in mind that the password recovery won't work without it.",
     "securityQuestion.empty": "Leave blank",
     "captcha": "Visual validation",
+    "contact": "Contact",
     "profile": {
       "noPermission": "You don't have permission to view the profile of this user",
       "addContact": "Add to my contacts",

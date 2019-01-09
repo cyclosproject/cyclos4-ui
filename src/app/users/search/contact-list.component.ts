@@ -1,10 +1,13 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { ContactListDataForSearch, ContactResult } from 'app/api/models';
 import { ContactsService } from 'app/api/services';
+import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { ResultType } from 'app/shared/result-type';
 import { UsersResultsComponent } from 'app/users/search/users-results.component';
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { AddContactDialogComponent } from 'app/users/search/add-contact-dialog.component';
 
 /**
  * Search the user's contact list
@@ -25,6 +28,7 @@ export class ContactListComponent
 
   constructor(
     injector: Injector,
+    private modal: BsModalService,
     private contactsService: ContactsService
   ) {
     super(injector);
@@ -50,11 +54,26 @@ export class ContactListComponent
         fieldsInList.unshift('display');
         data.fieldsInList = fieldsInList;
       }
+      this.headingActions = [
+        new HeadingAction('add', this.messages.general.addNew, () => this.addNew(), true)
+      ];
       this.data = data;
     });
   }
 
   doSearch(value) {
     return this.contactsService.searchContactListResponse(value);
+  }
+
+  private addNew() {
+    const ref = this.modal.show(AddContactDialogComponent, {
+      class: 'modal-form'
+    });
+    const component = ref.content as AddContactDialogComponent;
+    this.addSub(component.done.subscribe(user => {
+      this.notification.snackBar(this.messages.user.profile.addContactDone(user.display));
+      this.reload();
+    }));
+
   }
 }

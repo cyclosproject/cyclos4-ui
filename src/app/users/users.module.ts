@@ -18,6 +18,7 @@ import { RegistrationStepConfirmComponent } from 'app/users/registration/registr
 import { RegistrationStepDoneComponent } from 'app/users/registration/registration-step-done.component';
 import { ValidateRegistrationComponent } from 'app/users/registration/validate-registration.component';
 import { ValidateEmailChangeComponent } from 'app/users/profile/validate-email-change.component';
+import { AddContactDialogComponent } from 'app/users/search/add-contact-dialog.component';
 
 /**
  * Users module
@@ -32,6 +33,7 @@ import { ValidateEmailChangeComponent } from 'app/users/profile/validate-email-c
     SearchUsersComponent,
     UsersResultsComponent,
     ContactListComponent,
+    AddContactDialogComponent,
 
     ViewProfileComponent,
     EditProfileComponent,
@@ -51,7 +53,8 @@ import { ValidateEmailChangeComponent } from 'app/users/profile/validate-email-c
   ],
   entryComponents: [
     VerifyPhoneComponent,
-    ChangePasswordDialogComponent
+    ChangePasswordDialogComponent,
+    AddContactDialogComponent
   ]
 })
 export class UsersModule {

@@ -71,8 +71,8 @@ export class ChangePasswordDialogComponent extends BaseComponent implements OnIn
       type: this.type.id,
       params: params
     }).subscribe(() => {
-      this.modalRef.hide();
       this.done.emit();
+      this.modalRef.hide();
     });
   }
 }

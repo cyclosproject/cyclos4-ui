@@ -97,6 +97,7 @@ body.backdrop-visible {
       }
       .card-title, .card-text {
         text-align: center;
+        @include text-truncate();
       }
     }
 
