@@ -1,14 +1,20 @@
-import { APP_INITIALIZER, Provider } from '@angular/core';
+import { APP_INITIALIZER, Provider, Injector } from '@angular/core';
 import { ApiConfiguration } from 'app/api/api-configuration';
+import { DataForUi } from 'app/api/models';
+import { ContentPage } from 'app/content/content-page';
+import { ContentService } from 'app/core/content.service';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { environment } from 'environments/environment';
 import { LightboxConfig } from 'ngx-lightbox';
+import { forkJoin, Observable, of } from 'rxjs';
 
 // Initializes the shared services
 export function initialize(
+  injector: Injector,
   apiConfig: ApiConfiguration,
   lightboxConfig: LightboxConfig,
-  dataForUiHolder: DataForUiHolder
+  dataForUiHolder: DataForUiHolder,
+  content: ContentService
 ): Function {
   return () => {
     // Initialize the API configuration
@@ -30,13 +36,33 @@ export function initialize(
       dataForUiHolder._setLocale(environment.staticLocale, environment.staticTranslations);
     }
 
-    // Load the data for UI
-    return dataForUiHolder.initialize().toPromise();
+    const contentPagesResolver = environment.contentPagesResolver;
+    let contentPages: ContentPage[] | Observable<ContentPage[]>;
+    if (contentPagesResolver instanceof Array) {
+      // The resolver is already the list of content pages
+      contentPages = contentPagesResolver;
+    } else if (contentPagesResolver == null) {
+      // There is no resolver - no content pages
+      contentPages = [];
+    } else {
+      // The resolver is a 'resolver'
+      contentPages = contentPagesResolver.resolveContentPages(injector) || [];
+    }
+    if (contentPages instanceof Array) {
+      // The pages are already available
+      contentPages = of(contentPages);
+    }
+
+    // Load both content pages and data for UI
+    return forkJoin(contentPages, dataForUiHolder.initialize()).toPromise()
+      .then((result: [ContentPage[], DataForUi]) => {
+        content.contentPages = result[0];
+      });
   };
 }
 export const INITIALIZE: Provider = {
   provide: APP_INITIALIZER,
   useFactory: initialize,
-  deps: [ApiConfiguration, LightboxConfig, DataForUiHolder],
+  deps: [Injector, ApiConfiguration, LightboxConfig, DataForUiHolder, ContentService],
   multi: true
 };

@@ -1,5 +1,6 @@
 import { ContentWithLayout } from 'app/content/content-with-layout';
 import { RootMenu } from 'app/shared/menu';
+import { Injector } from '@angular/core';
 
 /** A content page to be displayed */
 export interface ContentPage extends ContentWithLayout {
@@ -33,13 +34,21 @@ export interface ContentPage extends ContentWithLayout {
   /**
    * Determines whether this content is visible for guests.
    * True by default.
+   * Shorthand for defining a `isVisible()` method that checks whether there's no logged user
    */
   guests?: boolean;
 
   /**
    * Determines whether this card is visible for logged.
    * True by default.
+   * Shorthand for defining a `isVisible()` method that checks whether there's a logged user
    */
   loggedUsers?: boolean;
+
+  /**
+   * Returns whether this page is visible for the current context.
+   * Called when the menu is re-calculated.
+   */
+  isVisible?(injector: Injector): boolean;
 
 }

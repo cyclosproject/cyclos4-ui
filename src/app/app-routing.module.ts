@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes, Router, PreloadAllModules } from '@angular/router';
+import { PreloadAllModules, Router, RouterModule, Routes } from '@angular/router';
+import { ContentPageGuard } from 'app/content-page-guard';
 import { ContentPageComponent } from 'app/content/content-page.component';
+import { ContentService } from 'app/core/content.service';
 import { LoginService } from 'app/core/login.service';
-import { MenuService } from 'app/core/menu.service';
 import { HomeComponent } from 'app/home/home.component';
 import { LoggedUserGuard } from 'app/logged-user-guard';
 import { AcceptPendingAgreementsComponent } from 'app/login/accept-pending-agreements.component';
@@ -13,7 +14,6 @@ import { LoginComponent } from 'app/login/login.component';
 import { ConditionalMenu, Menu, RootMenu } from 'app/shared/menu';
 import { NotFoundComponent } from 'app/shared/not-found.component';
 import { SharedModule } from 'app/shared/shared.module';
-import { map } from 'rxjs/operators';
 
 /**
  * A conditional menu resolver for the home page - either DASHBOARD or HOME
@@ -33,22 +33,19 @@ const ContentMenu: ConditionalMenu = injector => {
     return Menu.CONTENT_PAGE_CONTENT;
   }
   const slug = result[1];
-  return injector.get(MenuService).contentPages$.pipe(
-    map(contentPages => (contentPages || []).find(p => p.slug === slug)),
-    map(page => {
-      const rootMenu = page == null ? RootMenu.CONTENT : page.rootMenu;
-      switch (rootMenu) {
-        case RootMenu.BANKING:
-          return Menu.CONTENT_PAGE_BANKING;
-        case RootMenu.MARKETPLACE:
-          return Menu.CONTENT_PAGE_MARKETPLACE;
-        case RootMenu.PERSONAL:
-          return Menu.CONTENT_PAGE_PERSONAL;
-        default:
-          return Menu.CONTENT_PAGE_CONTENT;
-      }
-    })
-  );
+  const pages = (injector.get(ContentService).contentPages || []);
+  const page = pages.find(p => p.slug === slug);
+  const rootMenu = page == null ? RootMenu.CONTENT : page.rootMenu;
+  switch (rootMenu) {
+    case RootMenu.BANKING:
+      return Menu.CONTENT_PAGE_BANKING;
+    case RootMenu.MARKETPLACE:
+      return Menu.CONTENT_PAGE_MARKETPLACE;
+    case RootMenu.PERSONAL:
+      return Menu.CONTENT_PAGE_PERSONAL;
+    default:
+      return Menu.CONTENT_PAGE_CONTENT;
+  }
 };
 
 const rootRoutes: Routes = [
@@ -108,6 +105,7 @@ const rootRoutes: Routes = [
   {
     path: 'page/:slug',
     component: ContentPageComponent,
+    canActivate: [ContentPageGuard],
     data: {
       menu: ContentMenu
     }
@@ -145,7 +143,8 @@ const rootRoutes: Routes = [
     RouterModule
   ],
   providers: [
-    LoggedUserGuard
+    LoggedUserGuard,
+    ContentPageGuard
   ]
 })
 export class AppRoutingModule { }

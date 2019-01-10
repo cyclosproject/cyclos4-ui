@@ -1,20 +1,17 @@
 import { Injectable, Injector } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { Auth, DataForUi } from 'app/api/models';
-import { ContentPage } from 'app/content/content-page';
-import { handleFullWidthLayout } from 'app/content/content-with-layout';
 import { BreadcrumbService } from 'app/core/breadcrumb.service';
+import { ContentService } from 'app/core/content.service';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { LoginService } from 'app/core/login.service';
 import { StateManager } from 'app/core/state-manager';
+import { Messages } from 'app/messages/messages';
 import { ApiHelper } from 'app/shared/api-helper';
-import { empty } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
 import { ConditionalMenu, Menu, MenuEntry, MenuType, RootMenu, RootMenuEntry, SideMenuEntries } from 'app/shared/menu';
-import { environment } from 'environments/environment';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { distinctUntilChanged, first, map, filter } from 'rxjs/operators';
-import { Messages } from 'app/messages/messages';
+import { filter, first, map } from 'rxjs/operators';
 
 /**
  * Contains information about the active menu
@@ -33,7 +30,6 @@ export class ActiveMenu {
   }
 }
 
-const VALID_CONTENT_PAGES_ROOT_MENUS = [RootMenu.CONTENT, RootMenu.BANKING, RootMenu.MARKETPLACE, RootMenu.PERSONAL];
 /**
  * Holds shared data for the menu, plus logic regarding the currently visible menu
  */
@@ -41,9 +37,6 @@ const VALID_CONTENT_PAGES_ROOT_MENUS = [RootMenu.CONTENT, RootMenu.BANKING, Root
   providedIn: 'root'
 })
 export class MenuService {
-
-  /** All current content pages */
-  contentPages$: Observable<ContentPage[]>;
 
   /**
    * The current active menu descriptor
@@ -60,8 +53,6 @@ export class MenuService {
     return this._fullMenu.value;
   }
 
-  private _contentPages = new BehaviorSubject<ContentPage[]>(null);
-
   constructor(
     private messages: Messages,
     private injector: Injector,
@@ -70,6 +61,7 @@ export class MenuService {
     private login: LoginService,
     private breadcrumb: BreadcrumbService,
     private stateManager: StateManager,
+    private content: ContentService,
     layout: LayoutService
   ) {
     const initialDataForUi = this.dataForUiHolder.dataForUi;
@@ -77,14 +69,14 @@ export class MenuService {
 
     // If initially with a DataForUi instance and using static locale
     if (initialDataForUi != null && this.dataForUiHolder.staticLocale) {
-      this.buildFullMenu(initialAuth).subscribe(m => this._fullMenu.next(m));
+      this._fullMenu.next(this.buildFullMenu(initialAuth));
     }
 
     // Whenever the authenticated user changes, reload the menu
     const buildMenu = (dataForUi: DataForUi) => {
       if (this.messages.initialized$.value) {
         const auth = (dataForUi || {}).auth;
-        this.buildFullMenu(auth).subscribe(m => this._fullMenu.next(m));
+        this._fullMenu.next(this.buildFullMenu(auth));
         this._activeMenu.next(null);
       }
     };
@@ -103,9 +95,6 @@ export class MenuService {
       }
     });
 
-    this.contentPages$ = this._contentPages.asObservable().pipe(
-      distinctUntilChanged()
-    );
     this._activeMenu.subscribe(active => {
       // Update the body classes
       this.updateBodyClasses(active ? active.menu : null);
@@ -168,6 +157,7 @@ export class MenuService {
       this.updateActiveMenu(entry.menu, null, entry.contentPageSlug);
     }
   }
+
 
   private updateActiveMenu(menu: Menu, accountTypeId: string, contentPageSlug: string) {
     this._activeMenu.next(new ActiveMenu(menu, accountTypeId, contentPageSlug));
@@ -325,41 +315,15 @@ export class MenuService {
   /**
    * Build the full menu structure from the given authentication
    */
-  private buildFullMenu(maybeNullAuth: Auth): Observable<RootMenuEntry[]> {
-    const contentPagesResolver = environment.contentPagesResolver;
-    let contentPages: ContentPage[] | Observable<ContentPage[]>;
-    if (contentPagesResolver instanceof Array) {
-      // The resolver is already the list of content pages
-      contentPages = contentPagesResolver;
-    } else if (contentPagesResolver == null) {
-      // There is no resolver - no content pages
-      contentPages = [];
-    } else {
-      // The resolver is a 'resolver'
-      contentPages = contentPagesResolver.resolveContentPages(this.injector) || [];
-    }
-    if (contentPages instanceof Array) {
-      // The pages are already available
-      return of(this.doBuildFullMenu(maybeNullAuth, contentPages));
-    } else {
-      // First fetch the content pages, then build the menu
-      return contentPages.pipe(
-        map(p => this.doBuildFullMenu(maybeNullAuth, p))
-      );
-    }
-  }
+  private buildFullMenu(maybeNullAuth: Auth): RootMenuEntry[] {
+    const contentPages = this.content.contentPages;
 
-  private doBuildFullMenu(maybeNullAuth: Auth, contentPages: ContentPage[]): RootMenuEntry[] {
     const auth = maybeNullAuth || {};
     const permissions = auth.permissions;
     const user = auth.user;
     const restrictedAccess = auth.expiredPassword || auth.pendingAgreements;
     const users = permissions.users || {};
     const marketplace = permissions.marketplace || {};
-
-    // Preprocess and store the content pages
-    contentPages = this.preprocessContentPages(contentPages);
-    this._contentPages.next(contentPages);
 
     const roots = new Map<RootMenu, RootMenuEntry>();
     // Lambda that adds a root menu
@@ -392,9 +356,7 @@ export class MenuService {
     // Lambda that adds all content pages to the given root menu entry
     const addContentPages = (menu: Menu) => {
       const pages = contentPages.filter(p => {
-        return (p.rootMenu === menu.root
-          && (user == null && p.guests !== false
-            || user != null && p.loggedUsers !== false));
+        return p.rootMenu === menu.root && p.isVisible(this.injector);
       });
       for (const page of pages) {
         const entry = add(menu, `/page/${page.slug}`, page.icon, page.label);
@@ -515,30 +477,6 @@ export class MenuService {
       }
     }
     return rootMenus;
-  }
-
-  private preprocessContentPages(contentPages: ContentPage[]): ContentPage[] {
-    contentPages = (contentPages || []).filter(p => p != null);
-    let nextId = 0;
-    for (const page of contentPages) {
-      handleFullWidthLayout(page);
-      if (empty(page.label)) {
-        page.label = page.title || 'Untitled page';
-      }
-      if (empty(page.icon)) {
-        page.icon = 'description';
-      }
-      if (empty(page.slug)) {
-        page.slug = `page_${++nextId}`;
-      } else {
-        // Make sure the slug doesn't contain invalid characters
-        page.slug = page.slug.replace(/[\/\?\#\s\%\:]/g, '-');
-      }
-      if (!VALID_CONTENT_PAGES_ROOT_MENUS.includes(page.rootMenu)) {
-        page.rootMenu = RootMenu.CONTENT;
-      }
-    }
-    return contentPages;
   }
 
   /**
