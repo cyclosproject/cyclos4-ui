@@ -13,14 +13,7 @@ type ContentGetter = (injector: Injector) => Observable<string>;
  */
 namespace ContentGetter {
 
-  /**
-   * Returns a fixed text
-   */
-  export function text(content: string): ContentGetter {
-    const res = _ => of(content);
-    res.toString = () => content;
-    return res;
-  }
+  let _nextId = 0;
 
   /**
    * Fetches a content from a URL, via a GET request.
@@ -34,6 +27,33 @@ namespace ContentGetter {
       });
     };
     res.toString = () => rawUrl;
+    return res;
+  }
+
+  /**
+    * An IFrame that hosts the given URL.
+    * Loads the host page a script to allow the iframe be adjusted according to the content.
+    * The page hosted inside the iFrame must include the following script:
+    * https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.6.3/iframeResizer.contentWindow.min.js
+    */
+  export function iframe(iframeUrl: string): ContentGetter {
+    const id = 'iframeResizerScript';
+    let script = document.getElementById(id) as HTMLScriptElement;
+    if (script == null) {
+      script = document.createElement('script');
+      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.6.3/iframeResizer.min.js';
+      script.id = id;
+      document.head.appendChild(script);
+    }
+    const iframeId = `iframe_${_nextId++}`;
+    const res = () => {
+      return of(`<iframe id="${iframeId}"
+        src="${iframeUrl}"
+        onload="iFrameResize({log:true}, '#${iframeId}')"
+        class="border-0 flex-grow-1"
+        style="width:1px; min-width: 100%;" >`);
+    };
+    res.toString = () => `iframe@${iframeUrl}`;
     return res;
   }
 
