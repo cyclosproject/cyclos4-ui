@@ -122,8 +122,9 @@ export class DataForUiHolder {
   private setTranslation(language: string, country: string) {
     const locales = Messages.locales();
     let locale: string;
-    if (locales.includes(`${language}-${country}`)) {
-      locale = `${language}-${country}`;
+    const withCountry = `${language}_${country}`;
+    if (locales.includes(withCountry)) {
+      locale = withCountry;
     } else if (locales.includes(language)) {
       locale = language;
     } else {
