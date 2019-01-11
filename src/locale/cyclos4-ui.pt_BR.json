@@ -34,6 +34,8 @@
     "cancel": "Cancelar",
     "close": "Fechar",
     "submit": "Enviar",
+    "save": "Save",
+    "addNew": "Add new",
     "yes": "Sim",
     "no": "Não",
     "map": "Mapa",
@@ -493,6 +495,7 @@
       "registration.confirmation": "Confirmação de Cadastro",
       "registration.done": "Cadastrado com sucesso",
       "contactList": "Lista de contatos",
+      "addContact": "Add a new contact",
       "search": "Diretório de negócios"
     },
     "group": "Grupo",
@@ -522,6 +525,7 @@
     "securityQuestion.message": "Se acontecer de você esquecer sua senha, você precisará responder corretamente a pergunta de segurança a fim de redefinir a senha.<br>Isto pode ser definido mais tarde, mas tenha em mente que a recuperação de senha não funcionará sem ela.",
     "securityQuestion.empty": "Deixar em branco",
     "captcha": "Validação visual",
+    "contact": "Contact",
     "profile": {
       "noPermission": "Você não tem permissão para ver o perfil deste usuário",
       "addContact": "Adicionar aos meus contatos",
