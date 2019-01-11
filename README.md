@@ -348,24 +348,22 @@ const DASHBOARD_RESOLVER = new CustomDashboardResolver();
 ## Translating
 This application doesn't uses [Angular's built-in I18N](https://angular.io/guide/i18n) because it is very static, requiring a translated copy of the application to be built for each supported language. Instead, the Cyclos frontend uses [ng-translation-gen](https://github.com/cyclosproject/ng-translation-gen), so the translation keys are read from a JSON file, and generate TypeScript classes which are used on the application. Then, in runtime, the translated JSON is set, which allows dynamic translations.
 
-Most systems are single language. In that case, it is recommended to set the translations value statically, so a separated request to fetch the translations is not needed. To do so, set the following on `src/environments/configuration.ts`:
+Most systems are single language. In that case, it is recommended to set the translations value statically, so a separated request to fetch the translations is not needed. To do so, in the `src/environments/configuration.ts`, comment the line with `const STATIC_TRANSLATIONS = null;` set the `STATIC_LOCALE` to the actual locale and import the translations as `STATIC_TRANSLATIONS`, like the following:
 
 ```typescript
 const STATIC_LOCALE = 'en';
-import staticTranslations from 'locale/cyclos4-ui.json';
-const STATIC_TRANSLATIONS: any = staticTranslations;
+import STATIC_TRANSLATIONS from 'locale/cyclos4-ui.json';
 ```
 
 or
 
 ```typescript
-const STATIC_LOCALE = 'pt-BR';
-import staticTranslations from 'locale/cyclos4-ui.pt-BR.json';
-const STATIC_TRANSLATIONS: any = staticTranslations;
+const STATIC_LOCALE = 'pt_BR';
+import STATIC_TRANSLATIONS from 'locale/cyclos4-ui.pt_BR.json';
 ```
 
-For systems that are multi language, where each user can have distinct languages, just leave both `STATIC_LOCALE` and `STATIC_TRANSLATIONS` to `null`, which is the default. In this case, the language used by user in Cyclos will be the one used to fetch the translations in the front-end.
+For systems that are multi language, where each user can have distinct languages, just leave both `STATIC_LOCALE` and `STATIC_TRANSLATIONS` set to `null`, which is the default. In this case, the language used by user in Cyclos will be the one used to fetch the translations in the front-end.
 
-Translating values is a matter of making sure the corresponding locale is added to the `locales` array in `ng-translation-gen.json`. Then, to create the file with defaults, or import new translation keys, run `npm run merge-translations`. Then, either reference it as a static translation, or, if the locale matches the language set in Cyclos, it will be automatically used.
+To add a translation to a new language locally, simply add the locale to the `locales` array in `ng-translation-gen.json`. Then, to create the file with defaults, or import new translation keys, run `npm run merge-translations`. Then, either reference it as a static translation, or, if the locale matches the language set in Cyclos, it will be automatically used.
 
-The official translations are done in https://crowdin.com/project/cyclos4-ui. If you want to help translating the Cyclos frontend, login to Crowdin and request permission for the project.
+The official translations are done in https://crowdin.com/project/cyclos4-ui. If you want to help translating the Cyclos frontend, login to Crowdin and request permission for the project. It has an integration with GitHub, so translations done in Crowdin will be automatically applied to the project.
