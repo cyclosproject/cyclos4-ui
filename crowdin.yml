@@ -1,0 +1,3 @@
+files:
+  - source: /src/locale/cyclos4-ui.json
+    translation: /src/locale/cyclos4-ui.%osx_locale%.json
