@@ -8,6 +8,8 @@
   "defaultLocale": "en",
   "locales": [
     "en",
+    "es",
+    "nl",
     "pt_BR"
   ]
 }
