@@ -113,10 +113,10 @@
   },
   "error": {
     "general": "Ha ocurrido un error inesperado durante el procesamiento de su solicitud",
-    "serverOffline": "The server couldn't be contacted.<br>Please, try again later.",
-    "invalidRequest": "It is not possible to connect to the server.<br>Please make sure you are connected to the Internet and try again in a few seconds.",
+    "serverOffline": "No es posible conectarse al servidor.<br> Por favor, intente nuevamente más tarde.",
+    "invalidRequest": "No se pudo establecer comunicación con el servidor.<br> Por favor asegúrese que posee conexión a Internet e intente nuevamente después de unos segundos.",
     "queryParse": "Palabra clave no válida",
-    "uploadSizeExceeded": "The uploaded file exceeds the maximum allowed size of {size}",
+    "uploadSizeExceeded": "El archivo cargado excede el tamaño máximo de archivo permitido ({size})",
     "maxItems": "Cannot add more than {max} elements",
     "validation": "The action couldn't be processed, as there were validation errors",
     "staleEntity": "This data cannot be saved because it has been modified by someone else.<br>Please, load the page again and restart the operation.",
@@ -457,7 +457,7 @@
     "image": {
       "noImage": "No image",
       "noImages": "No images",
-      "upload": "Upload a new image",
+      "upload": "Cargar una imagen",
       "manage": "Reorder or remove images",
       "remove": "Remove this image",
       "manageMessage": "You can drag / drop images to reorder them",
@@ -466,7 +466,7 @@
     "file": {
       "noFile": "No file",
       "noFiles": "No files",
-      "upload": "Upload a new file",
+      "upload": "Cargar un archivo",
       "manage": "Reorder or remove files",
       "remove": "Remove this file",
       "manage.message": "You can drag / drop files to reorder them"
