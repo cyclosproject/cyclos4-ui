@@ -106,8 +106,8 @@
       "m": "{n}MB"
     },
     "results": {
-      "withTotal": "Showing {first} - {last} of {total} results",
-      "noTotal": "Showing {first} - {last} results",
+      "withTotal": "Mostrando resultados {first} - {last} de {total}",
+      "noTotal": "Resultados {first} - {last}",
       "none": "No existen resultados para el criterio de búsqueda"
     }
   },
@@ -115,7 +115,7 @@
     "general": "There was an unexpected error while processing your request",
     "serverOffline": "The server couldn't be contacted.<br>Please, try again later.",
     "invalidRequest": "It is not possible to connect to the server.<br>Please make sure you are connected to the Internet and try again in a few seconds.",
-    "queryParse": "Invalid keywords",
+    "queryParse": "Palabra clave no válida",
     "uploadSizeExceeded": "The uploaded file exceeds the maximum allowed size of {size}",
     "maxItems": "Cannot add more than {max} elements",
     "validation": "The action couldn't be processed, as there were validation errors",
