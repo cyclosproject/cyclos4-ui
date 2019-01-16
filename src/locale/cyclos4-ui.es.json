@@ -154,7 +154,7 @@
   },
   "menu": {
     "login": "Acceder",
-    "register": "Register",
+    "register": "Registrar",
     "logout": "Salir",
     "home": "Inicio",
     "dashboard": "Dashboard",
@@ -165,16 +165,16 @@
     "banking.scheduledPayments": "Pagos agendados",
     "banking.authorizations": "Autorización de pagos",
     "marketplace": "Comercio electrónico",
-    "marketplace.directory": "Directory",
-    "marketplace.businessDirectory": "Business directory",
+    "marketplace.directory": "Directorio",
+    "marketplace.businessDirectory": "Directorio de empresas",
     "marketplace.advertisements": "Anuncios",
     "personal": "Personal",
-    "personal.viewProfile": "My profile",
-    "personal.editProfile": "Edit profile",
-    "personal.contacts": "Contacts",
+    "personal.viewProfile": "Mi perfil",
+    "personal.editProfile": "Editar perfil",
+    "personal.contacts": "Contactos",
     "personal.password": "Password",
-    "personal.passwords": "Passwords",
-    "content": "Information"
+    "personal.passwords": "Contraseñas",
+    "content": "Información"
   },
   "auth": {
     "login": {
