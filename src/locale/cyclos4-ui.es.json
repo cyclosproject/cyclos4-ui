@@ -153,7 +153,7 @@
     }
   },
   "menu": {
-    "login": "Login",
+    "login": "Acceder",
     "register": "Register",
     "logout": "Salir",
     "home": "Inicio",
