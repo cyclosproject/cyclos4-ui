@@ -108,7 +108,7 @@
     "results": {
       "withTotal": "Showing {first} - {last} of {total} results",
       "noTotal": "Showing {first} - {last} results",
-      "none": "No results match the search criteria"
+      "none": "No existen resultados para el criterio de búsqueda"
     }
   },
   "error": {
@@ -604,7 +604,7 @@
       "priceDesc": "Highest price"
     },
     "title": {
-      "search": "Advertisements",
+      "search": "Anuncios",
       "owner": "Advertisements of {name}"
     }
   }
