@@ -193,18 +193,18 @@
       "confirm.otp.active": "You can use the previously sent confirmation password or request a new one",
       "confirm.otp.request": "Please, request a confirmation password below in order to confirm",
       "otp.sent": "The password was sent to {dest}",
-      "oldPassword": "Old password",
-      "newPassword": "New password",
+      "oldPassword": "Contraseña actual",
+      "newPassword": "Nueva contraseña",
       "passwordConfirmation": "Password confirmation",
       "title": {
-        "change": "Change your password",
-        "manage.single": "Manage your password",
-        "manage.multiple": "Manage your passwords"
+        "change": "Cambiar su contraseña",
+        "manage.single": "Administrar su contraseña",
+        "manage.multiple": "Administrar sus contraseñas"
       },
       "forgotten": {
-        "title": "Recover your password",
+        "title": "Recuperar su contraseña",
         "preface": "Here you can recover your password. Fill in your user identification below. You can use one of the following:",
-        "principal": "User",
+        "principal": "Usuario",
         "captcha": "Type in the characters below",
         "email": "You will receive shortly an e-mail with your user identification and instructions on how to reset your password",
         "generated.message": "Once you submit, a new password will be generated and sent to your e-mail address",
@@ -212,7 +212,7 @@
         "manual.done": "Your password has been successfully changed. You can now use it to login."
       },
       "expired": {
-        "preface": "Your {type} has expired.",
+        "preface": "Su {type} ha expirado.",
         "message.manual": "In order to proceed, you must change it.",
         "message.generated": "In order to proceed, a new value must be generated.<br>This value will only be displayed once, so, make sure you either memorize it or write it down.",
         "generatedValue": "The value for {type} is <data>{value}</data>.<br>This value won't be displayed again, so, make sure you either memorize it or write it down.",
@@ -579,12 +579,12 @@
     "address": "Dirección",
     "line1": "Línea 1 de dirección",
     "line2": "Línea 2 de dirección",
-    "buildingNumber": "Building number",
+    "buildingNumber": "Número",
     "city": "Ciudad",
     "complement": "Unidad",
     "country": "País",
     "neighborhood": "Barrio",
-    "poBox": "Post-office box",
+    "poBox": "Código postal",
     "region": "Estado o región",
     "street": "Calle",
     "zip": "Código postal"
