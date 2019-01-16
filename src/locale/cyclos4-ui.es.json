@@ -35,27 +35,27 @@
     "close": "Cerrar",
     "submit": "Aceptar",
     "save": "Guardar",
-    "addNew": "Add new",
-    "yes": "Yes",
+    "addNew": "Agregar",
+    "yes": "Si",
     "no": "No",
-    "map": "Map",
-    "map.view": "View map",
-    "noOptionsSelected": "No options selected",
+    "map": "Mapa",
+    "map.view": "Ver mapa",
+    "noOptionsSelected": "Sin opciones seleccionadas",
     "sendMedium": {
-      "email": "E-mail",
+      "email": "Correo electrónico",
       "sms": "SMS"
     },
     "labelValue": "{label}: {value}",
-    "reloadPage": "Reload page",
+    "reloadPage": "Recargar página",
     "sessionExpired": {
-      "title": "Session expired",
+      "title": "La sesión ha expirado",
       "message": "You have been logged-out.<br>You can keep viewing the same page or login again now.",
       "loginAgain": "Login again"
     },
     "datePart": {
       "long": {
-        "year": "Year",
-        "month": "Month",
+        "year": "Año",
+        "month": "Mes",
         "day": "Day"
       }
     },
@@ -122,9 +122,9 @@
     "staleEntity": "This data cannot be saved because it has been modified by someone else.<br>Please, load the page again and restart the operation.",
     "removeDataInUse": "This data cannot be removed because it is currently in use.",
     "notFound": "The location you typed or tried to access was not found",
-    "notFound.type": "The requested data could not be found: {type}",
-    "notFound.typeKey": "The requested data could not be found: {type} with key {key}",
-    "login": "The given name / password are incorrect. Please, try again.",
+    "notFound.type": "El siguiente dato no pudo ser encontrado: {type}",
+    "notFound.typeKey": "El siguiente dato no pudo ser encontrado: {type} con clave {key}",
+    "login": "El usuario o la contraseña no son correctos. Por favor intente nuevamente.",
     "password.disabled": "Your password has been disabled. Please, contact the administration.",
     "password.reset": "Your password has been reset.",
     "password.indefinitelyBlocked": "Your password has been disabled by exceeding the maximum tries. Please, contact the administration.",
