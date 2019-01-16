@@ -172,7 +172,7 @@
     "personal.viewProfile": "Mi perfil",
     "personal.editProfile": "Editar perfil",
     "personal.contacts": "Contactos",
-    "personal.password": "Password",
+    "personal.password": "Contraseñas",
     "personal.passwords": "Contraseñas",
     "content": "Información"
   },
@@ -181,8 +181,8 @@
       "title": "Acceso",
       "message": "Para acceder, utilice su nombre de usuario y contraseña",
       "disconnected": "You have been disconnected.<br>Please, login again in order to view the requested page.",
-      "principal": "User",
-      "password": "Password",
+      "principal": "Usuario",
+      "password": "Contraseña",
       "forgotPassword": "Forgot your password?",
       "register": "Not a user yet? Register here."
     },
