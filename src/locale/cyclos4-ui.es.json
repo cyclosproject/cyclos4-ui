@@ -56,47 +56,47 @@
       "long": {
         "year": "Año",
         "month": "Mes",
-        "day": "Day"
+        "day": "Día"
       }
     },
     "month": {
       "long": {
-        "jan": "January",
-        "feb": "February",
-        "mar": "March",
-        "apr": "April",
-        "may": "May",
-        "jun": "June",
-        "jul": "July",
-        "aug": "August",
-        "sep": "September",
-        "oct": "October",
-        "nov": "November",
-        "dec": "December"
+        "jan": "Enero",
+        "feb": "Febrero",
+        "mar": "Marzo",
+        "apr": "Abril",
+        "may": "Mayo",
+        "jun": "Junio",
+        "jul": "Julio",
+        "aug": "Agosto",
+        "sep": "Setiembre",
+        "oct": "Octubre",
+        "nov": "Noviembre",
+        "dec": "Diciembre"
       },
       "short": {
-        "jan": "Jan",
+        "jan": "Ene",
         "feb": "Feb",
         "mar": "Mar",
-        "apr": "Apr",
+        "apr": "Abr",
         "may": "May",
         "jun": "Jun",
         "jul": "Jul",
-        "aug": "Aug",
-        "sep": "Sep",
+        "aug": "Ago",
+        "sep": "Set",
         "oct": "Oct",
         "nov": "Nov",
-        "dec": "Dec"
+        "dec": "Dic"
       }
     },
     "weekday": {
       "min": {
-        "sun": "S",
-        "mon": "M",
-        "tue": "T",
-        "wed": "W",
-        "thu": "T",
-        "fri": "F",
+        "sun": "D",
+        "mon": "L",
+        "tue": "M",
+        "wed": "M",
+        "thu": "J",
+        "fri": "V",
         "sat": "S"
       }
     },
@@ -138,8 +138,8 @@
     "unauthorized.url": "El acceso no esta permitido desde esta URL",
     "loggedOut": "Usted ha sido desconectado, por favor ingrese nuevamente y reintente la operación.",
     "otp": "Se ha producido un error al enviar la contraseña. Por favor, intente más tarde.",
-    "securityAnswer": "The given security answer is invalid",
-    "securityAnswer.disabled": "By exceeding the number of security question attempts, this request has been aborted. Please, contact the administration",
+    "securityAnswer": "La respuesta de seguridad no es válida",
+    "securityAnswer.disabled": "Por exceder el número de intentos de respuesta para la pregunta de seguridad, esta solicitud ha sido abortada. Por favor, contacte a la administración",
     "illegalAction": "The action you attempted to perform is invalid",
     "field": {
       "invalid": "This field is invalid",
