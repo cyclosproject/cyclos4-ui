@@ -188,8 +188,8 @@
     },
     "password": {
       "confirmationMessage": "Ingrese su {passwordType} para confirmar la operación",
-      "confirm.noPassword": "In order to confirm you need a {passwordType}, but you do not have any",
-      "confirm.otp.noMediums": "In order to confirm you need a confirmation password, but there are no possible mediums to receive it.<br>Please, contact the administration.",
+      "confirm.noPassword": "Para confirmar usted debe ingresar su {passwordType}, pero aún no le ha registrado un valor",
+      "confirm.otp.noMediums": "Para confirmar usted necesita una contraseña de confirmación, pero no posee ningún medio para recibirla. <br> Por favor contacte a la administración.",
       "confirm.otp.active": "You can use the previously sent confirmation password or request a new one",
       "confirm.otp.request": "Please, request a confirmation password below in order to confirm",
       "otp.sent": "The password was sent to {dest}",
