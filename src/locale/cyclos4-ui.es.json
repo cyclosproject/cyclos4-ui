@@ -145,9 +145,9 @@
       "invalid": "Este campo no es válido",
       "required": "Este campo es requerido",
       "passwordsMatch": "Las contraseñas no son iguales",
-      "minLength": "Should have at least {min} characters",
-      "number": "Invalid numeric value",
-      "date": "Invalid date",
+      "minLength": "Debe tener al menos {min} caracteres",
+      "number": "Valor numérico no válido",
+      "date": "Fecha no válida",
       "minDate": "Should be {min} or after",
       "maxDate": "Should be {max} or before"
     }
