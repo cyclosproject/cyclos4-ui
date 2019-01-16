@@ -142,9 +142,9 @@
     "securityAnswer.disabled": "Por exceder el número de intentos de respuesta para la pregunta de seguridad, esta solicitud ha sido abortada. Por favor, contacte a la administración",
     "illegalAction": "The action you attempted to perform is invalid",
     "field": {
-      "invalid": "This field is invalid",
-      "required": "This field is required",
-      "passwordsMatch": "The passwords don't match",
+      "invalid": "Este campo no es válido",
+      "required": "Este campo es requerido",
+      "passwordsMatch": "Las contraseñas no son iguales",
       "minLength": "Should have at least {min} characters",
       "number": "Invalid numeric value",
       "date": "Invalid date",
@@ -178,8 +178,8 @@
   },
   "auth": {
     "login": {
-      "title": "Login",
-      "message": "You can login with your username and password",
+      "title": "Acceso",
+      "message": "Para acceder, utilice su nombre de usuario y contraseña",
       "disconnected": "You have been disconnected.<br>Please, login again in order to view the requested page.",
       "principal": "User",
       "password": "Password",
