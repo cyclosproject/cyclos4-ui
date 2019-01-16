@@ -50,7 +50,7 @@
     "sessionExpired": {
       "title": "La sesión ha expirado",
       "message": "You have been logged-out.<br>You can keep viewing the same page or login again now.",
-      "loginAgain": "Login again"
+      "loginAgain": "Acceder nuevamente"
     },
     "datePart": {
       "long": {
