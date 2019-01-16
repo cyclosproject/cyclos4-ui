@@ -183,11 +183,11 @@
       "disconnected": "You have been disconnected.<br>Please, login again in order to view the requested page.",
       "principal": "Usuario",
       "password": "Contraseña",
-      "forgotPassword": "Forgot your password?",
-      "register": "Not a user yet? Register here."
+      "forgotPassword": "Olvidó su contraseña?",
+      "register": "Aun no posee usuario? Registrarse aquí."
     },
     "password": {
-      "confirmationMessage": "Supply your {passwordType} to confirm this operation",
+      "confirmationMessage": "Ingrese su {passwordType} para confirmar la operación",
       "confirm.noPassword": "In order to confirm you need a {passwordType}, but you do not have any",
       "confirm.otp.noMediums": "In order to confirm you need a confirmation password, but there are no possible mediums to receive it.<br>Please, contact the administration.",
       "confirm.otp.active": "You can use the previously sent confirmation password or request a new one",
