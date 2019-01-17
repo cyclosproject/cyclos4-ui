@@ -170,7 +170,7 @@
     "marketplace.advertisements": "Anuncios",
     "personal": "Personal",
     "personal.viewProfile": "Mi perfil",
-    "personal.editProfile": "Mi perfil",
+    "personal.editProfile": "Editar perfil",
     "personal.contacts": "Contactos",
     "personal.password": "Contraseñas",
     "personal.passwords": "Contraseñas",
@@ -237,7 +237,7 @@
         "change.generated.done": "The value for {type} is <data>{value}</data>.<br>Make sure to memorize it, as it won't be displayed again.",
         "unblock": "Desbloquear",
         "unblock.confirm": "Are you sure to unblock your {type}?",
-        "unblock.done": "Your {type} was unblocked",
+        "unblock.done": "Su {type} ha sido desbloqueda",
         "activate": "Activar",
         "activate.confirm": "This will activate your {type}, and the generated value will be displayed only once. Are you sure?",
         "enable": "Habilitar",
@@ -295,7 +295,7 @@
     "totalIncome": "Total income",
     "totalOutflow": "Total outflow",
     "netInflow": "Net inflow",
-    "noAccounts": "You have no accounts",
+    "noAccounts": "Usted no posee cuentas",
     "printTransactions": "Print transactions",
     "system": "Cuenta de sistema"
   },
@@ -455,8 +455,8 @@
       "public.tooltip": "This field is visible by others. Click to make it private."
     },
     "image": {
-      "noImage": "No image",
-      "noImages": "No images",
+      "noImage": "Sin imagen cargada",
+      "noImages": "Sin imágenes cargadas",
       "upload": "Cargar una imagen",
       "manage": "Reorder or remove images",
       "remove": "Eliminar esta imagen",
@@ -464,8 +464,8 @@
       "manageAfterConfirm": "After confirmation, please make sure to click the Save button in order for the changes to be applied."
     },
     "file": {
-      "noFile": "No file",
-      "noFiles": "No files",
+      "noFile": "Sin archivo cargado",
+      "noFiles": "Sin archivos cargados",
       "upload": "Cargar un archivo",
       "manage": "Reorder or remove files",
       "remove": "Eliminar este arxchivo",
@@ -481,7 +481,7 @@
   },
   "user": {
     "title": {
-      "myProfile": "My profile",
+      "myProfile": "Mi perfil",
       "editProfile": "Perfil de usuario",
       "image": "Profile image",
       "images": "Profile images",
