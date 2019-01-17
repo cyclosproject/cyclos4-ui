@@ -242,13 +242,13 @@
         "activate.confirm": "This will activate your {type}, and the generated value will be displayed only once. Are you sure?",
         "enable": "Habilitar",
         "enable.confirm": "¿Usted está seguro que quiere habilitar su \"{type}\"?",
-        "enable.done": "Your {type} was enabled",
-        "disable": "Disable",
-        "disable.confirm": "Are you sure to disable your {type}?",
-        "disable.done": "Your {type} was disabled"
+        "enable.done": "Su {type} ha sido habilitada",
+        "disable": "Deshabilitar",
+        "disable.confirm": "¿Está seguro que desea deshabilitar su \"{type}\"?",
+        "disable.done": "Su \"{type}\" ha sido deshabilitada"
       }
     },
-    "registrationAgreement": "Registration agreement",
+    "registrationAgreement": "Términos de acuerdo",
     "pendingAgreements": {
       "title": "Updated agreement",
       "message": "The registration agreement has been updated.<br><br>In order to continue, you must agree with the new terms.",
