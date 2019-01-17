@@ -191,11 +191,11 @@
       "confirm.noPassword": "Para confirmar usted debe ingresar su {passwordType}, pero aún no le ha registrado un valor",
       "confirm.otp.noMediums": "Para confirmar usted necesita una contraseña de confirmación, pero no posee ningún medio para recibirla. <br> Por favor contacte a la administración.",
       "confirm.otp.active": "Puede utilizar la contraseña de confirmación que le fue enviada previamente o solicitar una nueva",
-      "confirm.otp.request": "Please, request a confirmation password below in order to confirm",
-      "otp.sent": "The password was sent to {dest}",
+      "confirm.otp.request": "Por favor, solicite una contraseña de confirmación a continuación, para confirmar",
+      "otp.sent": "La contraseña fue enviada a su {dest}",
       "oldPassword": "Contraseña actual",
       "newPassword": "Nueva contraseña",
-      "passwordConfirmation": "Password confirmation",
+      "passwordConfirmation": "Confirmación de contraseña",
       "title": {
         "change": "Cambiar su contraseña",
         "manage.single": "Administrar su contraseña",
@@ -216,8 +216,8 @@
         "message.manual": "In order to proceed, you must change it.",
         "message.generated": "In order to proceed, a new value must be generated.<br>This value will only be displayed once, so, make sure you either memorize it or write it down.",
         "generatedValue": "The value for {type} is <data>{value}</data>.<br>This value won't be displayed again, so, make sure you either memorize it or write it down.",
-        "generateNew": "Generate new",
-        "changed": "Your {type} was changed"
+        "generateNew": "Generar nuevo",
+        "changed": "Su {type} fue modificado"
       },
       "statusSince": "Since {date}",
       "status": {
@@ -521,7 +521,7 @@
     "confirmation.message": "To save your profile, provide your {type}",
     "profileSaved": "The profile was saved",
     "newEmailConfirmed": "Your new e-mail address was successfully confirmed",
-    "passwordConfirmation": "{type} confirmation",
+    "passwordConfirmation": "Confirmación de {type}",
     "securityQuestion.message": "If you happen to forget your password, you will need to correctly answer the security question in order to reset the password.<br>This can be set later, but keep in mind that the password recovery won't work without it.",
     "securityQuestion.empty": "Leave blank",
     "captcha": "Visual validation",
