@@ -184,7 +184,7 @@
       "principal": "Usuario",
       "password": "Contraseña",
       "forgotPassword": "Olvidó su contraseña?",
-      "register": "Aun no posee usuario? Registrarse aquí."
+      "register": "Aun no posee un usuario? Regístrese aquí."
     },
     "password": {
       "confirmationMessage": "Ingrese su {passwordType} para confirmar la operación",
@@ -365,11 +365,11 @@
     "done.new": "New payment",
     "status": {
       "name": "Status",
-      "open": "Open",
-      "closed": "Closed",
-      "canceled": "Canceled",
-      "expired": "Expired",
-      "approved": "Approved",
+      "open": "Abierto",
+      "closed": "Cerrado",
+      "canceled": "Cancelado",
+      "expired": "Expirado",
+      "approved": "Aprobado",
       "processed": "Processed",
       "authorized": "Authorized",
       "pending": "Pending authorization",
