@@ -250,27 +250,27 @@
     },
     "registrationAgreement": "Términos de acuerdo",
     "pendingAgreements": {
-      "title": "Updated agreement",
+      "title": "Terminos de acuerdo actualizados",
       "message": "The registration agreement has been updated.<br><br>In order to continue, you must agree with the new terms.",
       "agree": "I agree with the following registration agreements: {agreements}"
     },
     "securityQuestion": {
-      "question": "Security question",
-      "answer": "Your answer"
+      "question": "Pregunta de seguridad",
+      "answer": "Su respuesta"
     }
   },
   "dashboard": {
-    "quickAccess": "Quick access",
+    "quickAccess": "Acceso rápido",
     "action": {
-      "account": "Account",
-      "payUser": "Pay user",
-      "paySystem": "Pay system",
-      "contacts": "Contacts",
-      "directory": "Directory",
+      "account": "Cuentas",
+      "payUser": "Pago a usuario",
+      "paySystem": "Pago a sistema",
+      "contacts": "Contactos",
+      "directory": "Directorio",
       "advertisements": "Advertisements",
-      "editProfile": "Edit profile",
-      "password": "Password",
-      "passwords": "Passwords"
+      "editProfile": "Editar perfil",
+      "password": "Contraseña",
+      "passwords": "Contraseñas"
     },
     "accountStatus": "Account status",
     "lastIncomingPayments": "Last incoming payments",
@@ -482,7 +482,7 @@
   "user": {
     "title": {
       "myProfile": "My profile",
-      "editProfile": "Edit profile",
+      "editProfile": "Perfil de usuario",
       "image": "Profile image",
       "images": "Profile images",
       "fields": "Profile fields",
