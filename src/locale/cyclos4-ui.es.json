@@ -154,7 +154,7 @@
   },
   "menu": {
     "login": "Acceder",
-    "register": "Registrar",
+    "register": "Registrarse",
     "logout": "Salir",
     "home": "Inicio",
     "dashboard": "Panel de acciones",
@@ -380,7 +380,7 @@
       "settled": "Saldado"
     },
     "title": {
-      "paymentToSystem": "Payment to system",
+      "paymentToSystem": "Pago a cuenta de sistema",
       "paymentToSelf": "Payment between own accounts",
       "paymentToUser": "Payment to user",
       "paymentConfirmation": "Payment confirmation",
@@ -486,12 +486,12 @@
       "image": "Profile image",
       "images": "Profile images",
       "fields": "Profile fields",
-      "group": "Choose the group you want to participate",
+      "group": "Elija el grupo en el que desea registrarse",
       "phones": "Phones",
       "addresses": "Direcciones",
       "contactInfos": "Additional contacts",
       "confirmation": "Confirmation",
-      "registration": "User registration",
+      "registration": "Registro de usuario",
       "registration.confirmation": "Registration confirmation",
       "registration.done": "Registration successful",
       "contactList": "Contact list",
