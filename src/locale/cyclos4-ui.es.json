@@ -203,7 +203,7 @@
       },
       "forgotten": {
         "title": "Recuperar su contraseña",
-        "preface": "Here you can recover your password. Fill in your user identification below. You can use one of the following:",
+        "preface": "Aquí puede recuperar su contraseña. Complete su identificación de usuario a continuación, puede utilizar uno de los siguientes valores:",
         "principal": "Usuario",
         "captcha": "Type in the characters below",
         "email": "You will receive shortly an e-mail with your user identification and instructions on how to reset your password",
@@ -279,7 +279,7 @@
     "latestUsers": "Latest users"
   },
   "account": {
-    "number": "Account number",
+    "number": "Número de cuenta",
     "transferFilter": "Filter",
     "minAmount": "From amount",
     "maxAmount": "To amount",
