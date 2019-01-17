@@ -157,7 +157,7 @@
     "register": "Registrar",
     "logout": "Salir",
     "home": "Inicio",
-    "dashboard": "Dashboard",
+    "dashboard": "Panel de acciones",
     "banking": "Banca",
     "banking.payUser": "Pago a usuario",
     "banking.paySystem": "Pago a sistema",
@@ -267,7 +267,7 @@
       "paySystem": "Pago a sistema",
       "contacts": "Contactos",
       "directory": "Directorio",
-      "advertisements": "Advertisements",
+      "advertisements": "Anuncios",
       "editProfile": "Editar perfil",
       "password": "Contraseña",
       "passwords": "Contraseñas"
