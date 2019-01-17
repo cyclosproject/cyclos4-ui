@@ -500,7 +500,7 @@
     },
     "group": "Group",
     "name": "Nombre completo",
-    "username": "Login name",
+    "username": "Nombre de usuario",
     "email": "Correo electrónico",
     "email.pending": "E-mail pending validation",
     "noImage": "No ha cargado imagen de perfil",
