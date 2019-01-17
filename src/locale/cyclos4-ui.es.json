@@ -160,7 +160,7 @@
     "dashboard": "Panel de acciones",
     "banking": "Banca",
     "banking.payUser": "Pago a usuario",
-    "banking.paySystem": "Pago a sistema",
+    "banking.paySystem": "Pago al sistema",
     "banking.paySelf": "Auto pago",
     "banking.scheduledPayments": "Pagos agendados",
     "banking.authorizations": "Pagos con autorización",
@@ -380,9 +380,9 @@
       "settled": "Saldado"
     },
     "title": {
-      "paymentToSystem": "Pago a cuenta de sistema",
+      "paymentToSystem": "Pago al sistema",
       "paymentToSelf": "Payment between own accounts",
-      "paymentToUser": "Payment to user",
+      "paymentToUser": "Pago a usuario",
       "paymentConfirmation": "Payment confirmation",
       "pendingPayment": "Payment submitted for authorization",
       "processedPayment": "Payment performed",
