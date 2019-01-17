@@ -280,7 +280,7 @@
   },
   "account": {
     "number": "Número de cuenta",
-    "transferFilter": "Filter",
+    "transferFilter": "Filtro",
     "minAmount": "From amount",
     "maxAmount": "To amount",
     "direction": "Direction",
@@ -297,7 +297,7 @@
     "netInflow": "Net inflow",
     "noAccounts": "You have no accounts",
     "printTransactions": "Print transactions",
-    "system": "System account"
+    "system": "Cuenta de sistema"
   },
   "transaction": {
     "number": "Transaction number",
@@ -306,7 +306,7 @@
     "fromTo": "From / to",
     "from": "From",
     "to": "To",
-    "account": "Account",
+    "account": "Cuenta",
     "fromAccount": "From account",
     "toAccount": "To account",
     "toUser": "To user",
