@@ -552,7 +552,7 @@
     }
   },
   "phone": {
-    "mobile": "Mobile phone",
+    "mobile": "Teléfono móvil",
     "landLine": "Land-line phone",
     "name.mobile": "Mobile phone name",
     "name.landLine": "Land-line phone name",
