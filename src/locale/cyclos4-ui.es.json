@@ -49,7 +49,7 @@
     "reloadPage": "Recargar página",
     "sessionExpired": {
       "title": "La sesión ha expirado",
-      "message": "You have been logged-out.<br>You can keep viewing the same page or login again now.",
+      "message": "Su sesión ha terminado.\nPuede continuar viendo la misma página o acceder nuevamente al sistema.",
       "loginAgain": "Acceder nuevamente"
     },
     "datePart": {
@@ -121,7 +121,7 @@
     "validation": "La acción no puede ser procesada, debido a que existen errores de validación",
     "staleEntity": "Los datos que usted está guardando, han sido modificados por otro usuario o proceso.\nPor favor, recargue la página e inténtelo nuevamente.",
     "removeDataInUse": "Este dato no puede ser eliminado ya que se encuentra actualmente en uso.",
-    "notFound": "The location you typed or tried to access was not found",
+    "notFound": "La ubicación que ha ingresado o intenta acceder no fue encontrada",
     "notFound.type": "El siguiente dato no pudo ser encontrado: {type}",
     "notFound.typeKey": "El siguiente dato no pudo ser encontrado: {type} con clave {key}",
     "login": "El usuario o la contraseña no son correctos. Por favor intente nuevamente.",
@@ -140,7 +140,7 @@
     "otp": "Se ha producido un error al enviar la contraseña. Por favor, intente más tarde.",
     "securityAnswer": "La respuesta de seguridad no es válida",
     "securityAnswer.disabled": "Por exceder el número de intentos de respuesta para la pregunta de seguridad, esta solicitud ha sido abortada. Por favor, contacte a la administración",
-    "illegalAction": "The action you attempted to perform is invalid",
+    "illegalAction": "La acción que usted ha efectuado es inválida",
     "field": {
       "invalid": "Este campo no es válido",
       "required": "Este campo es requerido",
