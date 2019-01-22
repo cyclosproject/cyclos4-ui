@@ -51,7 +51,7 @@ namespace ContentGetter {
         src="${iframeUrl}"
         onload="iFrameResize({checkOrigin:false}, '#${iframeId}')"
         class="border-0 flex-grow-1"
-        style="width:1px; min-width: 100%;" >`);
+        style="width:1px; min-width:100%; height:31rem">`);
     };
     res.toString = () => `iframe@${iframeUrl}`;
     return res;
