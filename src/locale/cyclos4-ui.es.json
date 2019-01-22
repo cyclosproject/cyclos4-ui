@@ -351,7 +351,7 @@
     "installmentsCount": "Number of installments",
     "firstInstallment": "Primer cuota",
     "firstInstallment.date": "Fecha de la primera cuota",
-    "repeatUntil": "Repeat until",
+    "repeatUntil": "Repetir hasta",
     "repeatUntil.manual": "Ser cancelados manualmente",
     "repeatUntil.fixed": "Un número fijo de ocurrencias",
     "occurrencesCount": "Número de ocurrencias",
@@ -361,7 +361,7 @@
     "processed.withNumber": "The payment with transaction number {number} was successfully processed",
     "pending": "El pago fue procesado y se encuentra pendiente de autorización",
     "pending.withNumber": "El pago con número de transacción {number} fue enviado para su futura autorización",
-    "done.view": "View payment",
+    "done.view": "Ver pago",
     "done.new": "Nuevo pago",
     "status": {
       "name": "Estado",
