@@ -348,7 +348,7 @@
     "recurringPayment.dateManual": "Repeats until manually canceled, starting at {date}",
     "recurringPayment.nowFixed": "Repeats {count} times, starting now",
     "recurringPayment.dateFixed": "Repeats {count} times, starting at {date}",
-    "installmentsCount": "Number of installments",
+    "installmentsCount": "Cantidad de cuotas",
     "firstInstallment": "Primer cuota",
     "firstInstallment.date": "Fecha de la primera cuota",
     "repeatUntil": "Repetir hasta",
