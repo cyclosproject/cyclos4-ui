@@ -309,7 +309,7 @@
     "account": "Cuenta",
     "fromAccount": "Cuenta origen",
     "toAccount": "Cuenta de destino",
-    "toUser": "To user",
+    "toUser": "Usuario",
     "requiresAuthorization": "The payment will require authorization",
     "appliedFees": "Cargos aplicados",
     "totalAmount": "Monto total",
@@ -321,7 +321,7 @@
     "chargebackOf": "Devolución de",
     "chargedBackBy": "Devuelto por",
     "authorizationComments": "Comentarios",
-    "accountBalance": "Account balance",
+    "accountBalance": "Saldo",
     "myAccountBalance": "My account balance",
     "installments": "Cuotas",
     "installmentNumber": "Número",
@@ -475,7 +475,7 @@
       "placeholder.allowSearch": "Type to search",
       "placeholder.principal": "Type the user identifier",
       "contact.tooltip": "Pick from your contact list",
-      "contact.title": "Select a contact",
+      "contact.title": "Seleccione un contacto",
       "contact.empty": "Your contact list is empty"
     }
   },
