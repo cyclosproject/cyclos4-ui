@@ -180,7 +180,7 @@
     "login": {
       "title": "Acceso",
       "message": "Para acceder, utilice su nombre de usuario y contraseña",
-      "disconnected": "You have been disconnected.<br>Please, login again in order to view the requested page.",
+      "disconnected": "Usted ha sido desconectado.<br>por Favor, acceda nuevamente para ver la página solicitada.",
       "principal": "Usuario",
       "password": "Contraseña",
       "forgotPassword": "Olvidó su contraseña?",
@@ -207,7 +207,7 @@
         "principal": "Usuario",
         "captcha": "Type in the characters below",
         "email": "Usted recibirá en breve un correo electrónico con su código de usuario y las instrucciones para restablecer su contraseña",
-        "generated.message": "Once you submit, a new password will be generated and sent to your e-mail address",
+        "generated.message": "Una vez que acepte los datos, una nueva contraseña será generada y le será enviada mediante correo electrónico",
         "generated.done": "Usted recibirá en breve un correo electrónico con su nueva contraseña.",
         "manual.done": "Su contraseña ha sido restablecida con éxito.\nUsted ya puede utilizarla para acceder al sistema."
       },
@@ -272,9 +272,9 @@
       "password": "Contraseña",
       "passwords": "Contraseñas"
     },
-    "accountStatus": "Account status",
-    "lastIncomingPayments": "Last incoming payments",
-    "noIncomingPayments": "No incoming payments",
+    "accountStatus": "Estado de cuenta",
+    "lastIncomingPayments": "Ultimos pagos recibidos",
+    "noIncomingPayments": "No hay pagos recibidos",
     "latestAds": "Últimos anuncios",
     "latestUsers": "Ultimos usuarios"
   },
@@ -284,8 +284,8 @@
     "minAmount": "From amount",
     "maxAmount": "To amount",
     "direction": "Direction",
-    "incoming": "Incoming",
-    "outgoing": "Outgoing",
+    "incoming": "Recibidas",
+    "outgoing": "Realizadas",
     "balance": "Saldo",
     "reservedAmount": "Reserved amount",
     "availableBalance": "Saldo disponible",
@@ -360,7 +360,7 @@
     "processed": "El pago ha sido procesado exitosamente",
     "processed.withNumber": "The payment with transaction number {number} was successfully processed",
     "pending": "El pago fue procesado y se encuentra pendiente de autorización",
-    "pending.withNumber": "The payment with transaction number {number} was submitted for further authorization",
+    "pending.withNumber": "El pago con número de transacción {number} fue enviado para su futura autorización",
     "done.view": "View payment",
     "done.new": "Nuevo pago",
     "status": {
