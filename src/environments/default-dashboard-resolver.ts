@@ -21,12 +21,12 @@ import { ContentGetter } from 'app/content/content-getter';
  */
 export class DefaultDashboardResolver implements DashboardResolver {
 
+  protected minHeight = '25rem';
+
   resolveItems(injector: Injector): DashboardItemConfig[] {
     const login = injector.get(LoginService);
     const permissions = login.auth.permissions;
     const result: DashboardItemConfig[] = [];
-
-    const minHeight = '25rem';
 
     // The quick access is always there
     result.push(DashboardItemConfig.quickAccess({
@@ -40,7 +40,7 @@ export class DefaultDashboardResolver implements DashboardResolver {
         { type: QuickAccessType.PASSWORDS },
       ],
       column: 'left',
-      minHeight: minHeight
+      minHeight: this.minHeight
     }));
 
     // Account status
@@ -54,7 +54,7 @@ export class DefaultDashboardResolver implements DashboardResolver {
         breakpoints: ['gt-sm'],
         // After the 3rd account, toggle left / right
         column: (i > 1) && (i % 2 === 0) ? 'left' : 'right',
-        minHeight: minHeight
+        minHeight: this.minHeight
       }));
 
       for (const acctPerm of banking.accounts) {
@@ -71,7 +71,7 @@ export class DefaultDashboardResolver implements DashboardResolver {
         max: 6,
         column: 'left',
         breakpoints: ['gt-sm'],
-        minHeight: minHeight
+        minHeight: this.minHeight
       }));
     }
 
@@ -89,7 +89,7 @@ export class DefaultDashboardResolver implements DashboardResolver {
       column: 'right',
       tight: true,
       content: ContentGetter.url('content/events.html'),
-      minHeight: minHeight
+      minHeight: this.minHeight
     }));
 
     return result;
