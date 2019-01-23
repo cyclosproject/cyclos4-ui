@@ -389,7 +389,7 @@
       "authorizations": "Autorizaciones de pago",
       "authorizationHistory": "Historial de autorizaciones",
       "scheduled": "Pagos agendados",
-      "details.payment": "Detalle de pago",
+      "details.payment": "Detalles del pago",
       "details.scheduled": "Detalles del pago agendado",
       "details.recurring": "Recurring payment details",
       "details.request": "Payment request details",
