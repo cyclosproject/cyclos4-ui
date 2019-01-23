@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injector } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 /**
@@ -33,10 +33,10 @@ namespace ContentGetter {
   /**
     * An IFrame that hosts the given URL.
     * Loads the host page a script to allow the iframe be adjusted according to the content.
-    * The page hosted inside the iFrame must include the following script:
+    * The page hosted inside the iFrame must include the following script for the auto resize to work:
     * https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.6.3/iframeResizer.contentWindow.min.js
     */
-  export function iframe(iframeUrl: string): ContentGetter {
+  export function iframe(iframeUrl: string): string {
     const id = 'iframeResizerScript';
     let script = document.getElementById(id) as HTMLScriptElement;
     if (script == null) {
@@ -49,29 +49,26 @@ namespace ContentGetter {
     const wrapperId = `wrapper_${idIx}`;
     const iframeId = `iframe_${idIx}`;
     const spinnerId = `spinner_${idIx}`;
-    const res = () => {
-      return of(`
+    return `
       <div id="${spinnerId}" class="spinner"><img src="images/spinner.svg"></div>
-      <div id="${wrapperId}" class="embed-responsive" style="position:absolute; top:-1000rem; visibility:hidden;">
+      <div id="${wrapperId}" style="position:absolute; top:-1000rem; visibility:hidden;">
         <iframe id="${iframeId}"
           src="${iframeUrl}"
+          class="border-0 flex-grow-1"
+          style="display:block;width:1px; min-width:100%; height:35rem;"
           onload="
             iFrameResize({
               heightCalculationMethod: (navigator.userAgent.indexOf('MSIE') !== -1) ? 'max' : 'lowestElement',
-              checkOrigin: false,
+              warningTimeout: 0,
               interval: -32 }, '#${iframeId}');
             document.getElementById('${spinnerId}').style.display = 'none';
             document.getElementById('${wrapperId}').style.visibility = '';
             document.getElementById('${wrapperId}').style.position = 'relative';
             document.getElementById('${wrapperId}').style.top = '';
-          "
-          class="embed-responsive-item border-0 flex-grow-1">
+          ">
         </iframe>
       </div>
-      `);
-    };
-    res.toString = () => `iframe@${iframeUrl}`;
-    return res;
+    `;
   }
 
   /**
