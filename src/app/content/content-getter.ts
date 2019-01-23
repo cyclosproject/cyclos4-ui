@@ -46,12 +46,19 @@ namespace ContentGetter {
       document.head.appendChild(script);
     }
     const iframeId = `iframe_${_nextId++}`;
+    const spinnerId = `spinner_${_nextId}`;
     const res = () => {
-      return of(`<iframe id="${iframeId}"
+      return of(`
+      <div id="${spinnerId}" class="spinner"><img src="images/spinner.svg"></img>
+      <iframe id="${iframeId}"
         src="${iframeUrl}"
-        onload="iFrameResize({checkOrigin:false}, '#${iframeId}')"
+        onload="
+          iFrameResize({checkOrigin:false}, '#${iframeId}');
+          document.getElementById('${spinnerId}').style.display = 'none';
+          document.getElementById('${iframeId}').style.visibility = '';
+        "
         class="border-0 flex-grow-1"
-        style="width:1px; min-width:100%; height:31rem">`);
+        style="visibility:hidden; width:1px; min-width:100%; height:50rem">`);
     };
     res.toString = () => `iframe@${iframeUrl}`;
     return res;
