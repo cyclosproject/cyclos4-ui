@@ -498,7 +498,7 @@
       "addContact": "Add a new contact",
       "search": "Business directory"
     },
-    "group": "Group",
+    "group": "Grupo",
     "name": "Nombre completo",
     "username": "Nombre de usuario",
     "email": "Correo electrónico",
@@ -516,7 +516,7 @@
     "phone.none": "There are currently no phones",
     "contactInfo": "Additional contact information",
     "contactInfo.add": "Agregar contacto",
-    "contactInfo.remove": "Remove contact",
+    "contactInfo.remove": "Eliminar información de contacto adicional",
     "contactInfo.none": "There are currently no additional contacts",
     "confirmation.message": "Para guardar el perfil ingrese su {type}",
     "profileSaved": "El perfil se ha guardado",
