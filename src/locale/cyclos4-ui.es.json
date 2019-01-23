@@ -469,7 +469,7 @@
       "upload": "Cargar un archivo",
       "manage": "Reordenar o eliminar archivos",
       "remove": "Eliminar este arxchivo",
-      "manage.message": "You can drag / drop files to reorder them"
+      "manage.message": "Puede arrastrar y soltar archivos para reordenarlos"
     },
     "user": {
       "placeholder.allowSearch": "Type to search",
