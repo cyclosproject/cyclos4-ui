@@ -537,12 +537,12 @@
     },
     "registration": {
       "active": "Ha sido registrado exitosamente y su cuenta ya se encuentra activa.",
-      "inactive": "Your account was successfully created.<br>However, you will need to be activated by the administration.<br>You will be notified when your account is active.",
+      "inactive": "Su cuenta ha sido creada con éxito, sin embargo debe ser activada por la \nadministración. \nUsted será notificado cuando su cuenta se encuentre activa.",
       "pending": "Su registro se ha realizado y debe ser verificado.\nUsted recibirá un e-mail con instrucciones para la activación de su cuenta. Si no recibe el mencionado e-mail, por favor, asegúrese de revisar la carpeta de spam.",
-      "principal.single": "You can use your {principal} ({value}) on {channels}",
-      "principal.multiple.preface": "You can login with the following data:",
+      "principal.single": "Usted puede utilizar su {principal} ({value}) en {channels}",
+      "principal.multiple.preface": "Puede acceder al sistema con los siguientes datos:",
       "principal.multiple.item": "<b>{principal}</b> ({value}): can be used on {channels}",
-      "generatedPasswords.none": "You can now login with the password you have informed.",
+      "generatedPasswords.none": "Ahora puede acceder al sistema con la contraseña que ha informado.",
       "generatedPasswords.single": "En breve, recibirá un e-mail con su {type} generado.",
       "generatedPasswords.multiple": "En breve, recibirá un e-mail con las siguientes contraseñas generadas: {types}."
     },
@@ -592,16 +592,16 @@
   "ad": {
     "name": "Title",
     "owner": "Publisher",
-    "price": "Price",
+    "price": "Precio",
     "category": "Category",
     "categories": "Categories",
     "byOwner": "By {owner}",
     "showAllCategories": "Show all",
-    "rootCategory": "Main",
+    "rootCategory": "Principal",
     "orderBy": {
-      "date": "Last published",
-      "priceAsc": "Lowest price",
-      "priceDesc": "Highest price"
+      "date": "Ultimos publicados",
+      "priceAsc": "Precio inferior",
+      "priceDesc": "Precio superior"
     },
     "title": {
       "search": "Anuncios",
