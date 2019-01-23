@@ -57,10 +57,10 @@ namespace ContentGetter {
         <iframe id="${iframeId}"
           src="${iframeUrl}"
           class="border-0 flex-grow-1"
-          style="display:block;width:1px; min-width:100%; height:35rem;"
+          style="display:block;width:1px; min-width:100%;"
           onload="
             iFrameResize({
-              heightCalculationMethod: 'max',
+              heightCalculationMethod: navigator.userAgent.indexOf('MSIE') < 0 ? 'lowestElement' : 'max',
               checkOrigin: false,
               warningTimeout: 0
             }, '#${iframeId}');
