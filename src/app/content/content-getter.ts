@@ -57,7 +57,7 @@ namespace ContentGetter {
           src="${iframeUrl}"
           onload="
             iFrameResize({
-              heightCalculationMethod: (navigator.userAgent.indexOf("MSIE") !== -1) ? 'max' : 'lowestElement',
+              heightCalculationMethod: (navigator.userAgent.indexOf('MSIE') !== -1) ? 'max' : 'lowestElement',
               checkOrigin: false,
               interval: -32 }, '#${iframeId}');
             document.getElementById('${spinnerId}').style.display = 'none';
