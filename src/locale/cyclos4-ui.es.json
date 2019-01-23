@@ -328,7 +328,7 @@
     "occurrences": "Ocurrencias",
     "noAccounts": "No posee ninguna cuenta para poder realizar el pago",
     "noTypes": "No hay tipos de transacción posibles",
-    "noTypesSelection": "There are no possible payment types from this account to the selected user",
+    "noTypesSelection": "No hay tipos de transacción posibles desde esta cuenta al usuario seleccionado",
     "scheduling": "Agendado",
     "scheduling.direct": "No agendar (pagar de inmediato)",
     "scheduling.single": "Agendado a futuro",
@@ -337,9 +337,9 @@
     "schedulingStatus": {
       "direct": "Pago directo",
       "scheduledToDate": "Agendado para el {date}",
-      "openInstallments": "{count} installments, next on {dueDate}",
+      "openInstallments": "{count} cuotas, próximo pago el {dueDate}",
       "closedInstallments": "{count} cuotas",
-      "closedRecurring": "Closed recurring payment",
+      "closedRecurring": "Pagos recurrentes cerrados",
       "canceledRecurring": "Pago recurrente cancelado",
       "openRecurring": "Pago recurrente, próximo pago el {date}"
     },
