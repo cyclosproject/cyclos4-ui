@@ -50,7 +50,9 @@ namespace ContentGetter {
     const iframeId = `iframe_${idIx}`;
     const spinnerId = `spinner_${idIx}`;
     return `
-      <div id="${spinnerId}" class="spinner"><img src="images/spinner.svg"></div>
+      <div id="${spinnerId}" class="spinner">
+        <img src="images/spinner.svg">
+      </div>
       <div id="${wrapperId}" style="position:absolute; top:-1000rem; visibility:hidden;">
         <iframe id="${iframeId}"
           src="${iframeUrl}"
@@ -58,9 +60,10 @@ namespace ContentGetter {
           style="display:block;width:1px; min-width:100%; height:35rem;"
           onload="
             iFrameResize({
-              heightCalculationMethod: (navigator.userAgent.indexOf('MSIE') !== -1) ? 'max' : 'lowestElement',
-              warningTimeout: 0,
-              interval: -32 }, '#${iframeId}');
+              heightCalculationMethod: 'max',
+              checkOrigin: false,
+              warningTimeout: 0
+            }, '#${iframeId}');
             document.getElementById('${spinnerId}').style.display = 'none';
             document.getElementById('${wrapperId}').style.visibility = '';
             document.getElementById('${wrapperId}').style.position = 'relative';
