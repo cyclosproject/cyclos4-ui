@@ -46,22 +46,29 @@ namespace ContentGetter {
       document.head.appendChild(script);
     }
     const idIx = _nextId++;
+    const wrapperId = `wrapper_${idIx}`;
     const iframeId = `iframe_${idIx}`;
     const spinnerId = `spinner_${idIx}`;
     const res = () => {
       return of(`
       <div id="${spinnerId}" class="spinner"><img src="images/spinner.svg"></div>
-      <iframe id="${iframeId}"
-        src="${iframeUrl}"
-        onload="
-          iFrameResize({ checkOrigin:false, interval:-32 }, '#${iframeId}');
-          document.getElementById('${spinnerId}').style.display = 'none';
-          document.getElementById('${iframeId}').style.visibility = '';
-          document.getElementById('${iframeId}').style.position = 'relative';
-          document.getElementById('${iframeId}').style.top = '';
-        "
-        class="border-0 flex-grow-1"
-        style="position:absolute; top:-1000rem; visibility:hidden; width:1px; min-width:100%; height:35rem">`);
+      <div id="${wrapperId}" class="embed-responsive" style="position:absolute; top:-1000rem; visibility:hidden;">
+        <iframe id="${iframeId}"
+          src="${iframeUrl}"
+          onload="
+            iFrameResize({
+              heightCalculationMethod: (navigator.userAgent.indexOf("MSIE") !== -1) ? 'max' : 'lowestElement',
+              checkOrigin: false,
+              interval: -32 }, '#${iframeId}');
+            document.getElementById('${spinnerId}').style.display = 'none';
+            document.getElementById('${wrapperId}').style.visibility = '';
+            document.getElementById('${wrapperId}').style.position = 'relative';
+            document.getElementById('${wrapperId}').style.top = '';
+          "
+          class="embed-responsive-item border-0 flex-grow-1">
+        </iframe>
+      </div>
+      `);
     };
     res.toString = () => `iframe@${iframeUrl}`;
     return res;
