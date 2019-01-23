@@ -520,12 +520,12 @@
     "contactInfo.none": "No se encontró información de contactos adicionales",
     "confirmation.message": "Para guardar el perfil ingrese su {type}",
     "profileSaved": "El perfil se ha guardado",
-    "newEmailConfirmed": "Your new e-mail address was successfully confirmed",
+    "newEmailConfirmed": "Su nuevo correo electrónico fue confirmado",
     "passwordConfirmation": "Confirmación de {type}",
-    "securityQuestion.message": "If you happen to forget your password, you will need to correctly answer the security question in order to reset the password.<br>This can be set later, but keep in mind that the password recovery won't work without it.",
+    "securityQuestion.message": "Si usted olvida su contraseña, necesitará contestar correctamente a la pregunta de seguridad para poder restablecerla.\nPuede definir la pregunta mas tarde, pero tenga en cuenta que la recuperación de contraseña no funcionará hasta que la haya definido.",
     "securityQuestion.empty": "Dejar en blanco",
     "captcha": "Validación visual",
-    "contact": "Contact",
+    "contact": "Contacto",
     "profile": {
       "noPermission": "No posee permisos suficientes para ver el perfil de este usuario",
       "addContact": "Agregar a contactos",
@@ -543,12 +543,12 @@
       "principal.multiple.preface": "You can login with the following data:",
       "principal.multiple.item": "<b>{principal}</b> ({value}): can be used on {channels}",
       "generatedPasswords.none": "You can now login with the password you have informed.",
-      "generatedPasswords.single": "You will receive an e-mail shortly with your generated {type}.",
-      "generatedPasswords.multiple": "You will receive an e-mail shortly with the following generated passwords: {types}."
+      "generatedPasswords.single": "En breve, recibirá un e-mail con su {type} generado.",
+      "generatedPasswords.multiple": "En breve, recibirá un e-mail con las siguientes contraseñas generadas: {types}."
     },
     "orderBy": {
-      "alphabeticallyAsc": "Name (A-Z)",
-      "alphabeticallyDesc": "Name (Z-A)"
+      "alphabeticallyAsc": "Nombre (A - Z)",
+      "alphabeticallyDesc": "Nombre (Z - A)"
     }
   },
   "phone": {
