@@ -419,7 +419,7 @@
     "cancelScheduled.message": "This will permanently cancel this scheduled payment",
     "cancelScheduled.done": "This scheduled payment has been canceled",
     "settleScheduled": "Saldar el pago agendado",
-    "settleScheduled.message": "This will permanently mark all remaining installments as settled",
+    "settleScheduled.message": "Marcará permanentemente como saldadas todas las cuotas restantes",
     "settleScheduled.done": "This scheduled payment has been settled",
     "cancelRecurring": "Cancel this recurring payment",
     "cancelRecurring.message": "This will permanently cancel the recurring payment and prevent any future occurrence",
