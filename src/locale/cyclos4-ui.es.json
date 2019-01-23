@@ -474,9 +474,9 @@
     "user": {
       "placeholder.allowSearch": "Type to search",
       "placeholder.principal": "Type the user identifier",
-      "contact.tooltip": "Pick from your contact list",
+      "contact.tooltip": "Seleccionar de la lista de contactos",
       "contact.title": "Seleccione un contacto",
-      "contact.empty": "Your contact list is empty"
+      "contact.empty": "Su lista de contactos se encuentra vacía"
     }
   },
   "user": {
@@ -487,7 +487,7 @@
       "images": "Imágenes de perfil",
       "fields": "Campos de perfil",
       "group": "Elija el grupo en el que desea registrarse",
-      "phones": "Phones",
+      "phones": "Teléfonos",
       "addresses": "Direcciones",
       "contactInfos": "Additional contacts",
       "confirmation": "Confirmation",
