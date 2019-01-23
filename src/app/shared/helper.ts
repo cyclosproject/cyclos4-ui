@@ -27,14 +27,13 @@ export function setRootAlert(text: string): void {
 }
 
 /**
- * Removes a substring from the start of the given text, if it really starts with that substring.
- * Otherwise, returns the text as is.
+ * Converts the given relative path, or full URL, in a full URL
  */
-export function removeStart(text: string, toRemove: string): string {
-  if (text == null || !text.startsWith(toRemove)) {
-    return text;
+export function toFullUrl(path: string): string {
+  if (blank(path)) {
+    return null;
   }
-  return text.substring(toRemove.length);
+  return new URL(path, window.location.href).href;
 }
 
 /**

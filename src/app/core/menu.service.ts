@@ -8,11 +8,11 @@ import { LoginService } from 'app/core/login.service';
 import { StateManager } from 'app/core/state-manager';
 import { Messages } from 'app/messages/messages';
 import { ApiHelper } from 'app/shared/api-helper';
+import { toFullUrl } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
 import { ConditionalMenu, Menu, MenuEntry, MenuType, RootMenu, RootMenuEntry, SideMenuEntries } from 'app/shared/menu';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { filter, first, map } from 'rxjs/operators';
-import { removeStart } from 'app/shared/helper';
 
 /**
  * Contains information about the active menu
@@ -154,10 +154,11 @@ export class MenuService {
    * @param url The URL
    */
   entryByUrl(url: string): MenuEntry {
-    url = removeStart(url, '/');
+    url = toFullUrl(url);
     for (const root of this.fullMenu || []) {
       for (const entry of root.entries || []) {
-        if (removeStart(entry.url, '/') === url) {
+        const entryUrl = toFullUrl(entry.url);
+        if (entryUrl && entryUrl === url) {
           return entry;
         }
       }
