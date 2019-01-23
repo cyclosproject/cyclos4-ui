@@ -590,13 +590,13 @@
     "zip": "Código postal"
   },
   "ad": {
-    "name": "Title",
-    "owner": "Publisher",
+    "name": "Título",
+    "owner": "Dueño",
     "price": "Precio",
-    "category": "Category",
-    "categories": "Categories",
-    "byOwner": "By {owner}",
-    "showAllCategories": "Show all",
+    "category": "Categoría",
+    "categories": "Categorías",
+    "byOwner": "Por {owner}",
+    "showAllCategories": "Mostrar todas",
     "rootCategory": "Principal",
     "orderBy": {
       "date": "Ultimos publicados",
@@ -605,7 +605,7 @@
     },
     "title": {
       "search": "Anuncios",
-      "owner": "Advertisements of {name}"
+      "owner": "Anuncios de {name}"
     }
   }
 }
