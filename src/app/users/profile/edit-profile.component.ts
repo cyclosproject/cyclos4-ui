@@ -401,7 +401,8 @@ export class EditProfileComponent
 
     // Prepare the address forms
     if (this.addressAvailability === 'single') {
-      this.defineSingleAddress = this.formBuilder.control(data.addressConfiguration.availability === 'required');
+      this.defineSingleAddress = this.formBuilder.control(
+        !empty(data.addresses) || data.addressConfiguration.availability === 'required');
       this.singleAddressManage = empty(data.addresses)
         ? data.addressConfiguration.address
         : data.addresses[0];
