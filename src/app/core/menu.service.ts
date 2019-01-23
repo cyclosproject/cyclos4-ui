@@ -12,6 +12,7 @@ import { LayoutService } from 'app/shared/layout.service';
 import { ConditionalMenu, Menu, MenuEntry, MenuType, RootMenu, RootMenuEntry, SideMenuEntries } from 'app/shared/menu';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { filter, first, map } from 'rxjs/operators';
+import { removeStart } from 'app/shared/helper';
 
 /**
  * Contains information about the active menu
@@ -110,7 +111,20 @@ export class MenuService {
   /**
    * Navigates to a menu entry
    */
-  navigate(entry: MenuEntry, event?: Event) {
+  navigate(entryOrUrl: MenuEntry | string, event?: Event) {
+    let entry: MenuEntry = null;
+    let url: string;
+    if (typeof entryOrUrl === 'string') {
+      url = entryOrUrl;
+      entry = this.entryByUrl(entryOrUrl);
+      if (entry) {
+        // Still use the entry URL
+        url = entry.url;
+      }
+    } else {
+      entry = entryOrUrl;
+      url = entry.url;
+    }
     if (event) {
       event.stopPropagation();
       event.preventDefault();
@@ -123,14 +137,32 @@ export class MenuService {
     this.stateManager.clear();
 
     // Either perform the logout or navigate
-    if (entry.menu === Menu.LOGOUT) {
+    if (entry && entry.menu === Menu.LOGOUT) {
       this.login.logout();
     } else {
-      this.router.navigateByUrl(entry.url);
+      this.router.navigateByUrl(url);
     }
 
     // Update the active state
-    this.updateActiveMenuFromEntry(entry);
+    if (entry) {
+      this.updateActiveMenuFromEntry(entry);
+    }
+  }
+
+  /**
+   * Finds a menu entry that points to a given URL
+   * @param url The URL
+   */
+  entryByUrl(url: string): MenuEntry {
+    url = removeStart(url, '/');
+    for (const root of this.fullMenu || []) {
+      for (const entry of root.entries || []) {
+        if (removeStart(entry.url, '/') === url) {
+          return entry;
+        }
+      }
+    }
+    return null;
   }
 
   /**

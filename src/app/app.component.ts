@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, NgZone, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { BannerService } from 'app/core/banner.service';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
@@ -28,6 +28,7 @@ export class AppComponent implements OnInit {
   title: string;
 
   constructor(
+    private ngZone: NgZone,
     private router: Router,
     private dataForUiHolder: DataForUiHolder,
     public login: LoginService,
@@ -43,6 +44,11 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+    window['navigate'] = (url: string, event?: Event) => {
+      this.ngZone.run(() => {
+        this.menu.navigate(url, event);
+      });
+    };
     this.push.initialize();
     this.banner.initialize();
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;

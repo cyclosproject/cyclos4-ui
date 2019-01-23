@@ -27,6 +27,17 @@ export function setRootAlert(text: string): void {
 }
 
 /**
+ * Removes a substring from the start of the given text, if it really starts with that substring.
+ * Otherwise, returns the text as is.
+ */
+export function removeStart(text: string, toRemove: string): string {
+  if (text == null || !text.startsWith(toRemove)) {
+    return text;
+  }
+  return text.substring(toRemove.length);
+}
+
+/**
  * Sets the text of the reload application button
  */
 export function setReloadButton(text: string): void {
