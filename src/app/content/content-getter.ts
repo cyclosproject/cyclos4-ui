@@ -56,10 +56,11 @@ namespace ContentGetter {
         onload="
           iFrameResize({ checkOrigin:false, interval:-32 }, '#${iframeId}');
           document.getElementById('${spinnerId}').style.display = 'none';
-          document.getElementById('${iframeId}').style.visibility = '';
+          document.getElementById('${iframeId}').style.position = 'relative';
+          document.getElementById('${iframeId}').style.top = '';
         "
         class="border-0 flex-grow-1"
-        style="visibility:hidden; width:1px; min-width:100%; height:50rem">`);
+        style="position:absolute; top:-1000rem; visibility:hidden; width:1px; min-width:100%; height:35rem">`);
     };
     res.toString = () => `iframe@${iframeUrl}`;
     return res;
