@@ -213,8 +213,8 @@
       },
       "expired": {
         "preface": "Su {type} ha expirado.",
-        "message.manual": "In order to proceed, you must change it.",
-        "message.generated": "In order to proceed, a new value must be generated.<br>This value will only be displayed once, so, make sure you either memorize it or write it down.",
+        "message.manual": "Antes de continuar, debe cambiar su valor.",
+        "message.generated": "Para continuar, se ha de generar un nuevo valor.\nEste valor será mostrado por única vez. Por favor, asegúrese de memorizarlo o documentarlo adecuadamente.",
         "generatedValue": "The value for {type} is <data>{value}</data>.<br>This value won't be displayed again, so, make sure you either memorize it or write it down.",
         "generateNew": "Generar nuevo",
         "changed": "Su {type} fue modificado"
