@@ -468,7 +468,7 @@
       "noFiles": "Sin archivos cargados",
       "upload": "Cargar un archivo",
       "manage": "Reordenar o eliminar archivos",
-      "remove": "Eliminar este arxchivo",
+      "remove": "Eliminar archivo",
       "manage.message": "Puede arrastrar y soltar archivos para reordenarlos"
     },
     "user": {
@@ -512,7 +512,7 @@
     "phone.add": "Agregar teléfono",
     "phone.add.mobile": "Agregar teléfono fijo",
     "phone.add.landLine": "Agregar teléfono móvil",
-    "phone.remove": "Eliminar este teléfono",
+    "phone.remove": "Eliminar teléfono",
     "phone.none": "No hay teléfonos registrados",
     "contactInfo": "Información de contacto adicional",
     "contactInfo.add": "Agregar contacto",
