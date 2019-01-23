@@ -251,8 +251,8 @@
     "registrationAgreement": "Términos de acuerdo",
     "pendingAgreements": {
       "title": "Terminos de acuerdo actualizados",
-      "message": "The registration agreement has been updated.<br><br>In order to continue, you must agree with the new terms.",
-      "agree": "I agree with the following registration agreements: {agreements}"
+      "message": "Los términos de acuerdo ha sido actualizado.\n\nUsted debe aceptar los nuevos términos de acuerdo para poder continuar.",
+      "agree": "He aceptado los siguientes términos de acuerdo: {agreements}"
     },
     "securityQuestion": {
       "question": "Pregunta de seguridad",
@@ -493,7 +493,7 @@
       "confirmation": "Confirmación",
       "registration": "Registro de usuario",
       "registration.confirmation": "Registration confirmation",
-      "registration.done": "Registration successful",
+      "registration.done": "Registro exitoso",
       "contactList": "Contact list",
       "addContact": "Add a new contact",
       "search": "Business directory"
@@ -536,9 +536,9 @@
       "viewAds": "Ver anuncios"
     },
     "registration": {
-      "active": "You have been successfully registered, and your account is now active.",
+      "active": "Ha sido registrado exitosamente y su cuenta ya se encuentra activa.",
       "inactive": "Your account was successfully created.<br>However, you will need to be activated by the administration.<br>You will be notified when your account is active.",
-      "pending": "Your registration has been submitted, and needs to be verified.<br>You should receive an e-mail shortly with instructions on how to activate your account.<br>If you don't receive the e-mail, make sure to check your spam / junk folder.",
+      "pending": "Su registro se ha realizado y debe ser verificado.\nUsted recibirá un e-mail con instrucciones para la activación de su cuenta. Si no recibe el mencionado e-mail, por favor, asegúrese de revisar la carpeta de spam.",
       "principal.single": "You can use your {principal} ({value}) on {channels}",
       "principal.multiple.preface": "You can login with the following data:",
       "principal.multiple.item": "<b>{principal}</b> ({value}): can be used on {channels}",
