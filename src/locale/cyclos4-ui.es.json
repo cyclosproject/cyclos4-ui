@@ -148,8 +148,8 @@
       "minLength": "Debe tener al menos {min} caracteres",
       "number": "Valor numérico no válido",
       "date": "Fecha no válida",
-      "minDate": "Should be {min} or after",
-      "maxDate": "Should be {max} or before"
+      "minDate": "Debe ser {min} o posterior",
+      "maxDate": "Debe ser {max} o anterior"
     }
   },
   "menu": {
@@ -450,24 +450,24 @@
   },
   "field": {
     "privacy": {
-      "name": "Privacy",
-      "private.tooltip": "This field is private. Click to allow other to view it.",
-      "public.tooltip": "This field is visible by others. Click to make it private."
+      "name": "Privacidad",
+      "private.tooltip": "El campo es privado. Haga click para permitir a otros usuarios ver el campo.",
+      "public.tooltip": "El campo es visible para otros usuarios. Haga click para hacerlo en privado."
     },
     "image": {
       "noImage": "Sin imagen cargada",
       "noImages": "Sin imágenes cargadas",
       "upload": "Cargar una imagen",
-      "manage": "Reorder or remove images",
+      "manage": "Reordenar o eliminar imágenes",
       "remove": "Eliminar esta imagen",
-      "manageMessage": "You can drag / drop images to reorder them",
+      "manageMessage": "Puede arrastrar y soltar las imágenes para reordenarlas",
       "manageAfterConfirm": "After confirmation, please make sure to click the Save button in order for the changes to be applied."
     },
     "file": {
       "noFile": "Sin archivo cargado",
       "noFiles": "Sin archivos cargados",
       "upload": "Cargar un archivo",
-      "manage": "Reorder or remove files",
+      "manage": "Reordenar o eliminar archivos",
       "remove": "Eliminar este arxchivo",
       "manage.message": "You can drag / drop files to reorder them"
     },
