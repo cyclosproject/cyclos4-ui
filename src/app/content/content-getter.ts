@@ -45,11 +45,12 @@ namespace ContentGetter {
       script.id = id;
       document.head.appendChild(script);
     }
-    const iframeId = `iframe_${_nextId++}`;
-    const spinnerId = `spinner_${_nextId}`;
+    const idIx = _nextId++;
+    const iframeId = `iframe_${idIx}`;
+    const spinnerId = `spinner_${idIx}`;
     const res = () => {
       return of(`
-      <div id="${spinnerId}" class="spinner"><img src="images/spinner.svg"></img>
+      <div id="${spinnerId}" class="spinner"><img src="images/spinner.svg"></div>
       <iframe id="${iframeId}"
         src="${iframeUrl}"
         onload="
