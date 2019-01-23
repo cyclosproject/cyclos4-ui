@@ -56,6 +56,7 @@ namespace ContentGetter {
         onload="
           iFrameResize({ checkOrigin:false, interval:-32 }, '#${iframeId}');
           document.getElementById('${spinnerId}').style.display = 'none';
+          document.getElementById('${iframeId}').style.visibility = '';
           document.getElementById('${iframeId}').style.position = 'relative';
           document.getElementById('${iframeId}').style.top = '';
         "
