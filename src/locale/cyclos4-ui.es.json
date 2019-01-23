@@ -296,7 +296,7 @@
     "totalOutflow": "Total de salida",
     "netInflow": "Entrada neta",
     "noAccounts": "Usted no posee cuentas",
-    "printTransactions": "Print transactions",
+    "printTransactions": "Imprimir transacciones",
     "system": "Cuenta de sistema"
   },
   "transaction": {
@@ -326,8 +326,8 @@
     "installments": "Cuotas",
     "installmentNumber": "Número",
     "occurrences": "Ocurrencias",
-    "noAccounts": "You don't have any accounts to perform the payment",
-    "noTypes": "There are no possible payment types",
+    "noAccounts": "No posee ninguna cuenta para poder realizar el pago",
+    "noTypes": "No hay tipos de transacción posibles",
     "noTypesSelection": "There are no possible payment types from this account to the selected user",
     "scheduling": "Agendado",
     "scheduling.direct": "No agendar (pagar de inmediato)",
@@ -461,7 +461,7 @@
       "manage": "Reordenar o eliminar imágenes",
       "remove": "Eliminar esta imagen",
       "manageMessage": "Puede arrastrar y soltar las imágenes para reordenarlas",
-      "manageAfterConfirm": "After confirmation, please make sure to click the Save button in order for the changes to be applied."
+      "manageAfterConfirm": "Después de la confirmación, por favor asegúrese de hacer clic en el botón Guardar para que los cambios sean aplicados."
     },
     "file": {
       "noFile": "Sin archivo cargado",
@@ -568,11 +568,11 @@
       "title": "Verificar {number} para SMS",
       "code": "Código de verificación",
       "send": "Send",
-      "message": "Click the button above to send the verification code to your phone",
+      "message": "Haga click en el botón de arriba para enviar el código de verificación a tu teléfono",
       "done": "El código de verificación fue enviado al número {number}",
-      "error.expired": "The verification code was not sent or has expired.<br> Please, send the code again to your phone and restart the process.",
+      "error.expired": "El código de verificación no fue enviado o ha caducado.\nPor Favor, envíe el código de verificación nuevamente a su teléfono y reinicie el proceso.",
       "error.invalid": "Código de verificación inválido",
-      "error.maxAttempts": "You have exceeded the number of allowed attempts.<br>Please, send the code again to your phone and restart the process."
+      "error.maxAttempts": "Ha excedido el número de intentos permitidos.\nPor favor, envíe un nuevo el código de verificación a su teléfono nuevamente y reinicie el proceso."
     }
   },
   "address": {
