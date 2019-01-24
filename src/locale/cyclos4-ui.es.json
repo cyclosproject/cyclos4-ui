@@ -437,15 +437,15 @@
     "processFailedOccurrence.message": "¿Está seguro que desea procesar la ocurrencia número {number} ahora?",
     "processFailedOccurrence.done": "La ocurrencia ha sido procesada",
     "error": {
-      "minTime": "A minimum period of time should be awaited to make a payment of this type.",
-      "balance": "Insufficient balance to perform this operation",
+      "minTime": "Un plazo mínimo de tiempo debe ser aguardado para poder realizar un pago de este tipo.",
+      "balance": "Saldo insuficiente para realizar esta operación",
       "upperLimit": "No es posible realizar el pago, debido a restricciones en la cuenta destino",
-      "daily.amount": "El monto máximo por día de {amount} ha sido superado",
-      "daily.count": "The maximum allowed number of payments per day is {count}",
-      "weekly.amount": "The maximum weekly amount of {amount} was exceeded",
-      "weekly.count": "The maximum allowed number of payments per week is {count}",
-      "monthly.amount": "The maximum monthly amount of {amount} was exceeded",
-      "monthly.count": "The maximum allowed number of payments per month is {count}"
+      "daily.amount": "El monto máximo por día, de {amount}, ha sido superado",
+      "daily.count": "El número máximo de pagos permitidos por día es de {count}",
+      "weekly.amount": "El monto máximo por semana, de {amount}, ha sido superado",
+      "weekly.count": "El número máximo de pagos permitidos por semana es de {count}",
+      "monthly.amount": "El monto máximo por mes, de {amount}, ha sido superado",
+      "monthly.count": "El número máximo de pagos permitidos por mes es de {count}"
     }
   },
   "field": {
