@@ -205,7 +205,7 @@
         "title": "Recuperar su contraseña",
         "preface": "Aquí puede recuperar su contraseña. Complete su identificación de usuario a continuación, puede utilizar uno de los siguientes valores:",
         "principal": "Usuario",
-        "captcha": "Type in the characters below",
+        "captcha": "Escriba los caracteres a continuación",
         "email": "Usted recibirá en breve un correo electrónico con su código de usuario y las instrucciones para restablecer su contraseña",
         "generated.message": "Una vez que acepte los datos, una nueva contraseña será generada y le será enviada mediante correo electrónico",
         "generated.done": "Usted recibirá en breve un correo electrónico con su nueva contraseña.",
