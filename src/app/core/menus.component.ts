@@ -1,12 +1,13 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { BreadcrumbService } from 'app/core/breadcrumb.service';
 import { LoginService } from 'app/core/login.service';
 import { ActiveMenu, MenuService } from 'app/core/menu.service';
 import { Messages } from 'app/messages/messages';
 import { LayoutService } from 'app/shared/layout.service';
 import { BaseMenuEntry, MenuEntry, MenuType, RootMenu, RootMenuEntry } from 'app/shared/menu';
+import { environment } from 'environments/environment';
 import { BsDropdownDirective } from 'ngx-bootstrap/dropdown/public_api';
 import { Observable } from 'rxjs';
-import { environment } from 'environments/environment';
 
 /**
  * Renders menus in a bar, either the top bar or a dedicated menu bar
@@ -31,6 +32,7 @@ export class MenusComponent implements OnInit {
     private menu: MenuService,
     public layout: LayoutService,
     public login: LoginService,
+    public breadcrumb: BreadcrumbService,
     public messages: Messages) {
   }
 
