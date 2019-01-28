@@ -11,6 +11,7 @@ import { blank, setRootSpinnerVisible } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
 import { trim } from 'lodash';
 import { BehaviorSubject } from 'rxjs';
+import { environment } from 'environments/environment.prod';
 
 @Component({
   selector: 'app-root',
@@ -26,6 +27,7 @@ export class AppComponent implements OnInit {
   loggingOut$ = new BehaviorSubject(false);
 
   title: string;
+  splitMenuBar: boolean;
 
   constructor(
     private ngZone: NgZone,
@@ -52,6 +54,7 @@ export class AppComponent implements OnInit {
         this.menu.navigate(url, event);
       });
     };
+    this.splitMenuBar = environment.splitMenuBar;
     this.push.initialize();
     this.banner.initialize();
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;

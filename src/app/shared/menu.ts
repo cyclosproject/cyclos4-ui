@@ -3,10 +3,16 @@ import { Observable } from 'rxjs';
 
 /** The types of menus in the application */
 export enum MenuType {
+
   /** The sidenav shown on small devices */
   SIDENAV,
-  /** The horizontal bar shown on medium+ devices */
+
+  /** The horizontal bar shown on medium+ devices when using a single top bar */
+  TOP,
+
+  /** The horizontal bar shown on medium+ devices when splitting the top and the menu bar */
   BAR,
+
   /** The second-level side menu shown on medium+ devices */
   SIDE
 }

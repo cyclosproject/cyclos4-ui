@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-md">
   <div class="navbar-container">
     <span class="navbar-brand flex-grow-1">
-      <span class="d-inline-block ml-2">{{ format.appTitleMenu }}</span>
+      <span class="top-title">{{ format.appTitleMenu }}</span>
     </span>
     <a href="#" class="icon" [attr.tabindex]="(opened$ | async) ? undefined : '-1'"
       *ngIf="(login.user$ | async) != null" (click)="logout($event)">

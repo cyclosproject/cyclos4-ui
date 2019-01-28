@@ -61,8 +61,12 @@ $top-bar-bg: $primary;
 $top-bar-color: color-yiq($primary);
 $top-bar-height-xxs: 2.6rem;
 $top-bar-height-xs: 3.4rem;
+//// Recommented for split top and menu bar (setting SPLIT_MENU_BAR = true in configuration.ts)
 $top-bar-height: 3.25rem;
 $top-icon-size: 1.6rem;
+//// Recommented for single top bar (setting SPLIT_MENU_BAR = false in configuration.ts)
+// $top-icon-size: 1.4rem;
+// $top-bar-height: 4rem;
 
 // Menu bar (main menu on desktop)
 $menu-bar-height: 3.2rem;

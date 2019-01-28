@@ -388,9 +388,9 @@ export class MenuService {
     const marketplaceRoot = addRoot(RootMenu.MARKETPLACE, 'shopping_cart', this.messages.menu.marketplace);
     addRoot(RootMenu.PERSONAL, 'account_box', this.messages.menu.personal);
     const content = addRoot(RootMenu.CONTENT, 'information', this.messages.menu.content);
-    const register = addRoot(RootMenu.REGISTRATION, 'registration', this.messages.menu.register, null, [MenuType.SIDENAV]);
-    const login = addRoot(RootMenu.LOGIN, 'exit_to_app', this.messages.menu.login, null, [MenuType.SIDENAV]);
-    const logout = addRoot(RootMenu.LOGOUT, 'logout', this.messages.menu.logout, null, []);
+    const register = addRoot(RootMenu.REGISTRATION, 'registration', this.messages.menu.register, null, [MenuType.SIDENAV, MenuType.TOP]);
+    const login = addRoot(RootMenu.LOGIN, 'exit_to_app', this.messages.menu.login, null, [MenuType.SIDENAV, MenuType.TOP]);
+    const logout = addRoot(RootMenu.LOGOUT, 'logout', this.messages.menu.logout, null, [MenuType.TOP]);
 
     // Lambda that adds a submenu to a root menu
     const add = (menu: Menu, url: string, icon: string, label: string, showIn: MenuType[] = null): MenuEntry => {
@@ -482,15 +482,12 @@ export class MenuService {
 
       // Personal
       const myProfile = permissions.myProfile || {};
-      add(Menu.MY_PROFILE, '/users/my-profile', 'account_box', this.messages.menu.personalViewProfile,
-        [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
+      add(Menu.MY_PROFILE, '/users/my-profile', 'account_box', this.messages.menu.personalViewProfile);
       if (myProfile.editProfile) {
-        add(Menu.EDIT_MY_PROFILE, '/users/my-profile/edit', 'account_box', this.messages.menu.personalEditProfile,
-          [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
+        add(Menu.EDIT_MY_PROFILE, '/users/my-profile/edit', 'account_box', this.messages.menu.personalEditProfile);
       }
       if (contacts.enable) {
-        add(Menu.CONTACTS, '/users/contacts', 'import_contacts', this.messages.menu.personalContacts,
-          [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
+        add(Menu.CONTACTS, '/users/contacts', 'import_contacts', this.messages.menu.personalContacts);
       }
       if ((permissions.passwords || {}).manage) {
         let passwordsLabel: string;
@@ -499,17 +496,16 @@ export class MenuService {
         } else {
           passwordsLabel = this.messages.menu.personalPasswords;
         }
-        add(Menu.PASSWORDS, '/users/passwords', 'vpn_key', passwordsLabel,
-          [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
+        add(Menu.PASSWORDS, '/users/passwords', 'vpn_key', passwordsLabel);
       }
       addContentPages(Menu.CONTENT_PAGE_PERSONAL);
+
+      // Add the logout
+      add(Menu.LOGOUT, null, logout.icon, logout.label, logout.showIn);
     }
 
     // Content pages in the content root menu
     const pagesInContent = addContentPages(Menu.CONTENT_PAGE_CONTENT);
-
-    // Add the logout, which doesn't shows in any menu, but is handled when using navigate()
-    add(Menu.LOGOUT, null, logout.icon, logout.label, logout.showIn);
 
     // For guests, content will always be dropdown.
     // For logged users, only if at least 1 content page with layout full is used

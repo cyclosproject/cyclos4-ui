@@ -33,6 +33,7 @@ import { SharedModule } from 'app/shared/shared.module';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { LightboxModule } from 'ngx-lightbox';
 import { NextRequestState } from './next-request-state';
+import { MenusComponent } from 'app/core/menus.component';
 
 export const API_INTERCEPTOR_PROVIDER: Provider = {
   provide: HTTP_INTERCEPTORS,
@@ -47,6 +48,7 @@ export const API_INTERCEPTOR_PROVIDER: Provider = {
   declarations: [
     TopBarComponent,
     MenuBarComponent,
+    MenusComponent,
     SidenavComponent,
     SnackBarComponent
   ],
@@ -58,6 +60,7 @@ export const API_INTERCEPTOR_PROVIDER: Provider = {
     LightboxModule,
     TopBarComponent,
     MenuBarComponent,
+    MenusComponent,
     SidenavComponent,
     SnackBarComponent
   ],

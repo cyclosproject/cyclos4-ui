@@ -12,9 +12,38 @@
   max-width: 64px;
   max-height: 32px;
 }
+.menu-container {
+  display: flex;
+  flex-direction: row;
+}
 
 @include media-breakpoint-up(lg) {
-  :host {
+  :host:not(.has-menu) {
     position: relative;
   }
 }
+
+:host.has-menu ::ng-deep .navbar {
+  @include media-breakpoint-up(lg) {
+    a {
+      padding: 0 1.2rem !important;
+    }
+    a:not(.never-active):hover::after, a:not(.never-active).active::after {
+      content: " ";
+      display: block;
+      position: absolute;
+      left: 0;
+      bottom: -1px;
+      height: 2px;
+      width: 100%;
+      background-color: $top-bar-color;
+    }
+    a:hover::after {
+      opacity: 0.8;
+    }
+    a.active::after {
+      opacity: 1;
+    }
+  }
+}
+

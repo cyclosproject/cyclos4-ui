@@ -880,10 +880,9 @@ notification data {
   width: $top-icon-size !important;
   font-size: $top-icon-size !important;
   line-height: $top-icon-size !important;
-  opacity: 0.7;
 }
-.top-icon-opaque {
-  opacity: 1;
+.top-icon-faded {
+  opacity: 0.7;
 }
 
 @media print {
@@ -913,3 +912,5 @@ body.login-menu .login-icon {
 top-bar nav {
   transition: background-color ease-in-out 0.3s, color ease-in-out 0.4s;
 }
+
+@import 'custom';

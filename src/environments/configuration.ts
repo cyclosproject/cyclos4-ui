@@ -37,6 +37,11 @@ const AD_CATEGORIES: { [internalName: string]: AdCategoryConfiguration } = {
   'services': { icon: 'room_service', color: '#8ec63f' }
 };
 
+// **** Splitted menu bar (on desktops) **** //
+// Determines whether the menu will be displayed on a separated bar (true)
+// or merged in the top bar (false)
+const SPLIT_MENU_BAR = true;
+
 // **** Content **** //
 // See the project home page for help on how to customize content
 
@@ -96,6 +101,7 @@ export const configuration = {
   adCategories: AD_CATEGORIES as { [internalName: string]: AdCategoryConfiguration },
   staticLocale: STATIC_LOCALE as string,
   staticTranslations: STATIC_TRANSLATIONS as any,
+  splitMenuBar: !!SPLIT_MENU_BAR,
   homePage: HOME_PAGE as ContentWithLayout,
   dashboardResolver: DASHBOARD_RESOLVER as DashboardResolver,
   contentPagesResolver: CONTENT_PAGES_RESOLVER as ContentPagesResolver,

@@ -1,47 +1,53 @@
-<nav class="navbar navbar-expand-md">
+<nav class="navbar navbar-expand-md" [ngClass]="{
+  'shadow-sm': hasMenu && !(layout.fullWidth$ | async)
+}">
   <div class="navbar-container">
-    <a *ngIf="layout.ltlg$ | async" id="sidenav-trigger" href="#" (click)="toggleSidenav.emit(); $event.preventDefault()">
-      <icon class="top-icon top-icon-opaque" icon="menu"></icon>
+    <a class="never-active" *ngIf="layout.ltlg$ | async" id="sidenav-trigger"
+      href="#" (click)="toggleSidenav.emit(); $event.preventDefault();">
+      <icon class="top-icon" icon="menu"></icon>
     </a>
     <span class="navbar-brand flex-grow-1">
       <img *ngIf="layout.gtxs$ | async" class="logo d-inline-block align-top mr-3"
         src="images/logo.png">
-      <span class="d-inline-block">
+      <span class="top-title">
         {{ (layout.ltsm$ | async) ? format.appTitleSmall : format.appTitle }}
       </span>
     </span>
-    <div class="d-flex">
-      <ng-container *ngIf="user != null">
-        <a [routerLink]="['users', 'my-profile']" id="profile-link" (click)="menu.navigate(Menu.MY_PROFILE, $event)">
-          <avatar *ngIf="user.image" size="small-medium" [image]="user.image"></avatar>
-          <icon *ngIf="!user.image" class="top-icon" icon="user"></icon>
-          <div *ngIf="layout.gtsm$ | async" class="ml-2">
-            {{ user.display }}
-          </div>
-        </a>
-        <a href="#" *ngIf="(login.user$ | async) != null" id="logout-trigger"
-          (click)="menu.navigate(Menu.LOGOUT, $event)">
-          <icon class="top-icon top-icon-opaque" icon="logout"></icon>
-          <div *ngIf="layout.gtsm$ | async" class="ml-2">
-            {{ messages.menu.logout }}
-          </div>
-        </a>
-      </ng-container>
-      <ng-container *ngIf="user == null">
-        <a *ngIf="menu.menuEntry(Menu.REGISTRATION)" routerLink="/register"
-          id="register-link" (click)="menu.navigate(Menu.REGISTRATION, $event)">
-          <icon class="top-icon top-icon-opaque" icon="registration"></icon>
-          <div *ngIf="layout.gtsm$ | async" class="ml-2">
-            {{ messages.menu.register }}
-          </div>
-        </a>
-        <a routerLink="/login" id="login-link" (click)="menu.navigate(Menu.LOGIN, $event)">
-          <icon class="top-icon top-icon-opaque" icon="exit_to_app"></icon>
-          <div *ngIf="layout.gtsm$ | async" class="ml-2">
-            {{ messages.menu.login }}
-          </div>
-        </a>
-      </ng-container>
+    <div class="menu-container">
+      <menus *ngIf="hasMenu && (layout.gtmd$ | async); else customMenus"
+        [menuType]="MenuType.TOP" [activeMenu]="activeMenu"></menus>
     </div>
   </div>
 </nav>
+<ng-template #customMenus>
+  <ng-container *ngIf="user != null">
+    <a [routerLink]="['users', 'my-profile']" id="profile-link" (click)="menu.navigate(Menu.MY_PROFILE, $event)">
+      <avatar *ngIf="user.image" size="small-medium" [image]="user.image"></avatar>
+      <icon *ngIf="!user.image" class="top-icon top-icon-faded" icon="user"></icon>
+      <div *ngIf="layout.gtsm$ | async" class="ml-2">
+        {{ user.display }}
+      </div>
+    </a>
+    <a href="#" id="logout-trigger" (click)="menu.navigate(Menu.LOGOUT, $event)">
+      <icon class="top-icon" icon="logout"></icon>
+      <div *ngIf="layout.gtsm$ | async" class="ml-2">
+        {{ messages.menu.logout }}
+      </div>
+    </a>
+  </ng-container>
+  <ng-container *ngIf="user == null">
+    <a *ngIf="menu.menuEntry(Menu.REGISTRATION)" routerLink="/register" id="register-link"
+      (click)="menu.navigate(Menu.REGISTRATION, $event)">
+      <icon class="top-icon" icon="registration"></icon>
+      <div *ngIf="layout.gtsm$ | async" class="ml-2">
+        {{ messages.menu.register }}
+      </div>
+    </a>
+    <a routerLink="/login" id="login-link" (click)="menu.navigate(Menu.LOGIN, $event)">
+      <icon class="top-icon" icon="exit_to_app"></icon>
+      <div *ngIf="layout.gtsm$ | async" class="ml-2">
+        {{ messages.menu.login }}
+      </div>
+    </a>
+  </ng-container>
+</ng-template>
