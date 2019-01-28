@@ -18,6 +18,9 @@ import { Messages } from 'app/messages/messages';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TopBarComponent implements OnInit {
+  // Export to template
+  Menu = Menu;
+
   constructor(
     public breadcrumb: BreadcrumbService,
     public format: FormatService,
@@ -33,24 +36,5 @@ export class TopBarComponent implements OnInit {
   @Output() toggleSidenav = new EventEmitter<void>();
 
   ngOnInit(): void {
-  }
-
-  goToProfile(event: MouseEvent) {
-    this.navigate(Menu.MY_PROFILE, event);
-  }
-
-  goToLogin(event: MouseEvent) {
-    this.navigate(Menu.LOGIN, event);
-  }
-
-  logout(event: MouseEvent) {
-    this.navigate(Menu.LOGOUT, event);
-  }
-
-  private navigate(menu: Menu, event: MouseEvent) {
-    const entry = this.menu.menuEntry(menu);
-    if (entry) {
-      this.menu.navigate(entry, event);
-    }
   }
 }

@@ -4,7 +4,7 @@
 
 <ng-template #displayTpl>
   <div class="d-flex flex-row">
-    <avatar ngClass="mr-2" [image]="user?.image" [icon]="user ? 'account_circle' : 'account_balance_circle'"
+    <avatar ngClass="mr-2" [image]="user?.image" [icon]="user ? 'user' : 'account_balance_circle'"
       size="small" iconSize="28px"></avatar>
     <div class="display-text">
       {{ display }}

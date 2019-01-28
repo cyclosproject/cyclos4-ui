@@ -111,7 +111,7 @@ export class MenuService {
   /**
    * Navigates to a menu entry
    */
-  navigate(entryOrUrl: MenuEntry | string, event?: Event) {
+  navigate(entryOrUrl: Menu | MenuEntry | string, event?: Event) {
     let entry: MenuEntry = null;
     let url: string;
     if (typeof entryOrUrl === 'string') {
@@ -122,6 +122,9 @@ export class MenuService {
         url = entry.url;
       }
     } else {
+      if (entryOrUrl instanceof Menu) {
+        entryOrUrl = this.menuEntry(entryOrUrl);
+      }
       entry = entryOrUrl;
       url = entry.url;
     }
@@ -139,6 +142,17 @@ export class MenuService {
     // Either perform the logout or navigate
     if (entry && entry.menu === Menu.LOGOUT) {
       this.login.logout();
+    } else if (url.startsWith('http')) {
+      // An absolute URL
+      const absoluteRoot = toFullUrl('/');
+      if (url.startsWith(absoluteRoot)) {
+        // Is an internal link
+        url = url.substring(absoluteRoot.length);
+        this.router.navigateByUrl(url);
+      } else {
+        // Is an external link - all we can do is assign the location
+        location.assign(url);
+      }
     } else {
       this.router.navigateByUrl(url);
     }
@@ -373,9 +387,9 @@ export class MenuService {
     addRoot(RootMenu.BANKING, 'account_balance', this.messages.menu.banking);
     const marketplaceRoot = addRoot(RootMenu.MARKETPLACE, 'shopping_cart', this.messages.menu.marketplace);
     addRoot(RootMenu.PERSONAL, 'account_box', this.messages.menu.personal);
-    const content = addRoot(RootMenu.CONTENT, 'info', this.messages.menu.content);
-    const register = addRoot(RootMenu.REGISTRATION, 'registration', this.messages.menu.register);
-    const login = addRoot(RootMenu.LOGIN, 'exit_to_app', this.messages.menu.login);
+    const content = addRoot(RootMenu.CONTENT, 'information', this.messages.menu.content);
+    const register = addRoot(RootMenu.REGISTRATION, 'registration', this.messages.menu.register, null, [MenuType.SIDENAV]);
+    const login = addRoot(RootMenu.LOGIN, 'exit_to_app', this.messages.menu.login, null, [MenuType.SIDENAV]);
     const logout = addRoot(RootMenu.LOGOUT, 'logout', this.messages.menu.logout, null, []);
 
     // Lambda that adds a submenu to a root menu

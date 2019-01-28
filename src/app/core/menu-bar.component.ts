@@ -67,10 +67,4 @@ export class MenuBarComponent implements OnInit {
       this.router.navigateByUrl(entry.url);
     }
   }
-
-  logout(event: MouseEvent) {
-    this.login.logout();
-    event.stopPropagation();
-    event.preventDefault();
-  }
 }

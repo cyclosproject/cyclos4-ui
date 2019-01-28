@@ -44,8 +44,11 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
-    window['navigate'] = (url: string, event?: Event) => {
+    window['navigate'] = (url: string | HTMLAnchorElement, event?: Event) => {
       this.ngZone.run(() => {
+        if (typeof url === 'object') {
+          url = url.href;
+        }
         this.menu.navigate(url, event);
       });
     };

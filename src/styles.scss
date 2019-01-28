@@ -875,6 +875,17 @@ notification data {
   }
 }
 
+.top-icon {
+  height: $top-icon-size !important;
+  width: $top-icon-size !important;
+  font-size: $top-icon-size !important;
+  line-height: $top-icon-size !important;
+  opacity: 0.7;
+}
+.top-icon-opaque {
+  opacity: 1;
+}
+
 @media print {
   body {
     background-color: transparent;

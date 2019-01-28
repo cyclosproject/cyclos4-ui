@@ -1,0 +1,85 @@
+@import 'src/definitions';
+
+// Contains shared definitions for top-bar and sidenav, as both shows similar top bars
+
+.navbar {
+  color: $top-bar-color;
+  background-color: $top-bar-bg;
+  height: $top-bar-height-xxs;
+  padding: 0;
+
+  a {
+    color: $top-bar-color;
+    display: flex;
+    align-items: center;
+    height: 2rem;
+    margin: 0;
+    padding: 0.2rem;
+    line-height: 1em;
+  }
+  a:hover {
+    text-decoration: none;
+  }
+}
+.navbar-container {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  margin: 0 auto;
+  padding: 0 0.2rem;
+  height: 100%;
+}
+.navbar-brand {
+  font-size: 1.2rem;
+  margin: 0;
+  padding: 0 0 0.2rem 0;
+  display: flex;
+  align-items: center;
+  line-height: 1em;
+  margin-left: 0.5rem;
+}
+
+@include media-breakpoint-up(xs) {
+  .navbar {
+    height: $top-bar-height-xs;
+    a {
+      height: 2.6rem;
+      padding: 0 0.5rem;
+    }
+  }
+  .navbar-container {
+    padding: 0 0.5rem;
+  }
+  .navbar-brand {
+    font-size: 1.3rem;
+    padding: 0 0 0.1rem 0;
+  }
+}
+@include media-breakpoint-up(md) {
+  .navbar {
+    height: $top-bar-height;
+    a {
+      height: 3rem;
+      padding: 0 0.8rem;
+    }
+  }
+  .navbar-container {
+    padding: 0 1rem 0 0.5rem;
+  }
+}
+@include media-breakpoint-up(lg) {
+  .navbar-container {
+    padding: 0;
+    @include make-container-max-widths();
+  }
+
+  .navbar-brand {
+    margin-left: 0;
+  }
+}
+
+@media print {
+  :host {
+    display: none;
+  }
+}

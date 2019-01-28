@@ -1,17 +1,15 @@
 <nav class="navbar navbar-expand-md">
-  <div class="d-flex container-fluid" style="display: none" [ngClass]="{
-      'px-1': layout.ltmd$ | async
-    }">
+  <div class="navbar-container">
     <span class="navbar-brand flex-grow-1">
       <span class="d-inline-block ml-2">{{ format.appTitleMenu }}</span>
     </span>
     <a href="#" class="icon" [attr.tabindex]="(opened$ | async) ? undefined : '-1'"
       *ngIf="(login.user$ | async) != null" (click)="logout($event)">
-      <icon size="1.4rem" icon="logout"></icon>
+      <icon class="top-icon" icon="logout"></icon>
     </a>
     <a href="#" class="icon" [attr.tabindex]="(opened$ | async) ? undefined : '-1'"
       (click)="toggle(); $event.preventDefault()">
-      <icon size="1.4rem" icon="clear"></icon>
+      <icon class="top-icon" icon="clear"></icon>
     </a>
   </div>
 </nav>

@@ -345,6 +345,17 @@ import { CustomDashboardResolver } from './custom-dashboard-resolver';
 const DASHBOARD_RESOLVER = new CustomDashboardResolver();
 ```
 
+### Creating links to other pages
+When linking to other pages from a custom page, special care is needed to not trigger a full page reload, as simply assigning a new URL would make the browser reload the entire application, hurting the user experience.
+
+For that matter, the frontend registers a JavaScript function `navigate(url|anchor, event)`. It should be called on the anchor's `onclick` event, like the following example:
+
+```html
+You can login <a href="/login" onclick="navigate(this, event)">here</a>.
+```
+
+Note that using this method will have the same effect as clicking on the corresponding menu entry. So, the above example will only take the user to the login page if viewing it as guest. If viewing as logged user, the user will actually be taken to the dashboard. This method also takes care of highlighting the correct menu item.
+
 ## Translating
 This application doesn't uses [Angular's built-in I18N](https://angular.io/guide/i18n) because it is very static, requiring a translated copy of the application to be built for each supported language. Instead, the Cyclos frontend uses [ng-translation-gen](https://github.com/cyclosproject/ng-translation-gen), so the translation keys are read from a JSON file, and generate TypeScript classes which are used on the application. Then, in runtime, the translated JSON is set, which allows dynamic translations.
 
