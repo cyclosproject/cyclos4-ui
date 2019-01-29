@@ -14,8 +14,8 @@
 
     <div #contentArea class="content-area d-flex flex-column" [ngClass]="{
       'content-area-small': size === 'small',
-      'content-area-medium': size === 'medium',
-      'content-area-large': size === 'large'
+      'content-area-medium': (leftAreaVisible$ | async) ? false : size === 'medium',
+      'content-area-large': (leftAreaVisible$ | async) ? false : size === 'large'
     }">
       <ng-content></ng-content>
     </div>
