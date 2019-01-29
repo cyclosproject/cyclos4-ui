@@ -386,8 +386,8 @@ export class MenuService {
     const publicMarketplace = addRoot(RootMenu.PUBLIC_MARKETPLACE, 'shopping_cart', this.messages.menu.marketplaceAdvertisements);
     addRoot(RootMenu.BANKING, 'account_balance', this.messages.menu.banking);
     const marketplaceRoot = addRoot(RootMenu.MARKETPLACE, 'shopping_cart', this.messages.menu.marketplace);
-    addRoot(RootMenu.PERSONAL, 'account_box', this.messages.menu.personal);
     const content = addRoot(RootMenu.CONTENT, 'information', this.messages.menu.content);
+    addRoot(RootMenu.PERSONAL, 'account_box', this.messages.menu.personal);
     const register = addRoot(RootMenu.REGISTRATION, 'registration', this.messages.menu.register, null, [MenuType.SIDENAV, MenuType.TOP]);
     const login = addRoot(RootMenu.LOGIN, 'exit_to_app', this.messages.menu.login, null, [MenuType.SIDENAV, MenuType.TOP]);
     const logout = addRoot(RootMenu.LOGOUT, 'logout', this.messages.menu.logout, null, [MenuType.TOP]);

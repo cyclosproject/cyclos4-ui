@@ -28,13 +28,31 @@
 }
 
 :host.has-menu ::ng-deep .navbar {
+
+  .dropdown-menu {
+    color: $top-bar-color;
+    background-color: $top-bar-bg;
+    transform: translateY(0.3rem) !important;
+    border: none !important;
+    padding: 0 !important;
+  }
+  .sub-menu-item {
+    white-space: nowrap;
+  }
+  .sub-menu-item {
+    border-bottom: 1px solid darken($top-bar-bg, 10%);
+  }
+  .sub-menu-item:last-of-type {
+    border-bottom: none;
+  }
+
   @include media-breakpoint-up(lg) {
     height: $top-bar-with-menu-height;
 
     a {
       padding: 0 $top-bar-with-menu-item-padding !important;
     }
-    a:not(.never-active)::before {
+    a:not(.never-active):not(.sub-menu-item)::before {
       content: " ";
       display: block;
       position: absolute;
@@ -46,11 +64,9 @@
       transition: opacity ease-in-out 0.4s;
       opacity: 0;
     }
-    a:not(.never-active):hover::before {
-      opacity: 0.5;
-    }
+    a:not(.never-active):hover::before,
     a.active:not(.never-active)::before {
-      opacity: 0.8;
+      opacity: 0.9;
     }
   }
 }
