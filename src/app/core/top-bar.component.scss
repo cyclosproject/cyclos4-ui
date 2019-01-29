@@ -64,7 +64,9 @@
       transition: opacity ease-in-out 0.4s;
       opacity: 0;
     }
-    a:not(.never-active):hover::before,
+    a:not(.never-active):hover::before {
+      opacity: 0.8;
+    }
     a.active:not(.never-active)::before {
       opacity: 0.9;
     }

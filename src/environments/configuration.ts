@@ -41,7 +41,7 @@ const AD_CATEGORIES: { [internalName: string]: AdCategoryConfiguration } = {
 // **** Dedicated menu bar (on desktops) **** //
 // Determines whether the menu will be displayed on a separated bar (true)
 // or merged in the top bar (false)
-const MENU_BAR = false;
+const MENU_BAR = true;
 
 // **** Content **** //
 // See the project home page for help on how to customize content
@@ -82,7 +82,7 @@ const HOME_PAGE: ContentWithLayout = {
 const DASHBOARD_RESOLVER = new DefaultDashboardResolver();
 
 // Content pages resolver
-const CONTENT_PAGES_RESOLVER = new TestUiContentPagesResolver;
+const CONTENT_PAGES_RESOLVER = null;
 
 // Banner cards resolver
 const BANNER_CARDS_RESOLVER = null;
