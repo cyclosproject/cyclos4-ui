@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-md" [ngClass]="{
-  'shadow-sm': hasMenu && !(layout.fullWidth$ | async)
+  'with-menu': hasMenu && !(layout.fullWidth$ | async)
 }">
   <div class="navbar-container">
     <a class="never-active" *ngIf="layout.ltlg$ | async" id="sidenav-trigger"
@@ -36,8 +36,8 @@
     </a>
   </ng-container>
   <ng-container *ngIf="user == null">
-    <a *ngIf="menu.menuEntry(Menu.REGISTRATION)" routerLink="/register" id="register-link"
-      (click)="menu.navigate(Menu.REGISTRATION, $event)">
+    <a *ngIf="(layout.gtsm$ | async) && menu.menuEntry(Menu.REGISTRATION)"
+      routerLink="/register" id="register-link" (click)="menu.navigate(Menu.REGISTRATION, $event)">
       <icon class="top-icon" icon="registration"></icon>
       <div *ngIf="layout.gtsm$ | async" class="ml-2">
         {{ messages.menu.register }}

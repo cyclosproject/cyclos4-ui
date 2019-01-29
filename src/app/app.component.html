@@ -4,7 +4,7 @@
   <div class="root-container">
     <top-bar [user]="login.user$ | async" [principal]="(login.auth$ | async)?.principal"
       [activeMenu]="menu.activeMenu$ | async" (toggleSidenav)="sidenav.toggle()"></top-bar>
-    <menu-bar *ngIf="splitMenuBar" [ngClass]="{'d-none': layout.ltlg$ | async}"
+    <menu-bar *ngIf="menuBar" [ngClass]="{'d-none': layout.ltlg$ | async}"
       [activeMenu]="menu.activeMenu$ | async"></menu-bar>
     <div class="main-container d-flex flex-column flex-grow-1">
       <router-outlet *ngIf="!(loggingOut$ | async)"></router-outlet>

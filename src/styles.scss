@@ -876,14 +876,24 @@ notification data {
 }
 
 .top-icon {
-  height: $top-icon-size !important;
-  width: $top-icon-size !important;
-  font-size: $top-icon-size !important;
-  line-height: $top-icon-size !important;
+  height: $top-icon-size-xs !important;
+  width: $top-icon-size-xs !important;
+  font-size: $top-icon-size-xs !important;
+  line-height: $top-icon-size-xs !important;
 }
 .top-icon-faded {
   opacity: 0.7;
 }
+
+@include media-breakpoint-up(sm) {
+  .top-icon {
+    height: $top-icon-size !important;
+    width: $top-icon-size !important;
+    font-size: $top-icon-size !important;
+    line-height: $top-icon-size !important;
+  }
+}
+
 
 @media print {
   body {

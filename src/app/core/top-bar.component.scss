@@ -25,6 +25,8 @@
 
 :host.has-menu ::ng-deep .navbar {
   @include media-breakpoint-up(lg) {
+    height: $top-bar-with-menu-height;
+
     a {
       padding: 0 1.2rem !important;
     }

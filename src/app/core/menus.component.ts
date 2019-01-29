@@ -44,7 +44,7 @@ export class MenusComponent implements OnInit {
 
   ngOnInit(): void {
     this.roots = this.menu.menu(this.menuType);
-    this.onTop = this.mergePersonal = !environment.splitMenuBar;
+    this.onTop = this.mergePersonal = !environment.menuBar;
   }
 
   onClick(event: MouseEvent, base: BaseMenuEntry) {

@@ -27,7 +27,7 @@ export class AppComponent implements OnInit {
   loggingOut$ = new BehaviorSubject(false);
 
   title: string;
-  splitMenuBar: boolean;
+  menuBar: boolean;
 
   constructor(
     private ngZone: NgZone,
@@ -54,7 +54,7 @@ export class AppComponent implements OnInit {
         this.menu.navigate(url, event);
       });
     };
-    this.splitMenuBar = environment.splitMenuBar;
+    this.menuBar = environment.menuBar;
     this.push.initialize();
     this.banner.initialize();
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;

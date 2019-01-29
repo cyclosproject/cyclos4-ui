@@ -44,7 +44,7 @@ export class TopBarComponent implements OnInit {
   @Output() toggleSidenav = new EventEmitter<void>();
 
   ngOnInit(): void {
-    if (!environment.splitMenuBar) {
+    if (!environment.menuBar) {
       this.hasMenu = true;
       this.roots = this.menu.menu(MenuType.BAR);
     }

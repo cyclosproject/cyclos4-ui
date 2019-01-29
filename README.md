@@ -224,12 +224,7 @@ You can also create custom styles for the application. To do so, just edit the `
 
 Currently the Cyclos frontend offers the following options in the configuration for layout: Whether to show the menu on desktop on the top bar on in a separated bar, and advertisement category icon customization. They are set in the `src/environments/configuration.ts` file.
 
-By default, on desktop resolutions, the menu is displayed in a separated bar, below the top bar. An alternative is to have the menu displayed in the top bar itself. To configure this, just set the `SPLIT_MENU_BAR` constant to `true`. If doing so, it is also recommended to change the following settings on definitions:
-
-```sass
-$top-icon-size: 1.4rem;
-$top-bar-height: 4rem;
-```
+By default, on desktop resolutions, the menu is displayed in a separated bar, below the top bar. An alternative is to have the menu displayed in the top bar itself. To configure this, just set the `MENU_BAR` constant to `true`.
 
 It is also possible to customize the advertisements category icons, which are shown when selecting the marketplace menu item. It is recommended that all the root advertisement categories in Cyclos have an internal name. Then, customize the `AD_CATEGORIES` constant in the `configuration.ts` file. By root category internal name, it is possible to set a fixed icon and color. The default matches the categories created by default when creating a network in Cyclos via the wizard, which is:
 
