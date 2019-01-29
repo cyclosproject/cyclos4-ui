@@ -32,7 +32,7 @@
   .dropdown-menu {
     color: $top-bar-color;
     background-color: $top-bar-bg;
-    transform: translateY(0.3rem) !important;
+    transform: translateY(0.4rem) !important;
     border: none !important;
     padding: 0 !important;
   }
@@ -44,6 +44,9 @@
   }
   .sub-menu-item:last-of-type {
     border-bottom: none;
+  }
+  .sub-menu-item:hover {
+    background-color: darken($top-bar-bg, 5%);
   }
 
   @include media-breakpoint-up(lg) {
@@ -65,7 +68,7 @@
       opacity: 0;
     }
     a:not(.never-active):hover::before {
-      opacity: 0.8;
+      opacity: 0.7;
     }
     a.active:not(.never-active)::before {
       opacity: 0.9;

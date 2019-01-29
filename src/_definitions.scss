@@ -81,9 +81,12 @@ $menu-bar-inactive-color: $faded-color;
 $menu-bar-inactive-icon-color: lighten($faded-color, 5%);
 $menu-bar-active-icon-color: $primary;
 $menu-bar-active-color: $primary;
-$menu-bar-active-border: $primary;
+$menu-bar-active-border-color: $primary;
 
 // Side menu (second-level menu on desktop)
+$side-menu-title-bg: $menu-bar-bg;
+$side-menu-title-color: $body-color;
+$side-menu-border-color: $section-border-color;
 $side-menu-bg: $menu-bar-bg;
 $side-menu-active-bg: $menu-bar-bg;
 $side-menu-active-color: $primary;
@@ -123,6 +126,8 @@ $snack-bar-bg: $gray-900;
 $snack-bar-color: white;
 
 // Page title
+$title-bg: $input-bg;
+$title-color: $body-color;
 $title-height-xxs: 2.6rem;
 $title-height-xs: 3.4rem;
 $title-height: 3.4rem;

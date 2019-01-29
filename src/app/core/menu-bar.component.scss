@@ -76,7 +76,7 @@ nav.full-width {
   }
   a.active:not(.sub-menu-item)::before {
     content: "";
-    background-color: $menu-bar-active-border;
+    background-color: $menu-bar-active-border-color;
     height: 2px;
     bottom: -1px;
     width: 100%;
