@@ -12,7 +12,7 @@ export class TrustPipe implements PipeTransform {
   constructor(private sanitizer: DomSanitizer) {
   }
 
-  public transform(value: string, type: string): SafeHtml | SafeStyle | SafeScript | SafeUrl | SafeResourceUrl {
+  public transform(value: string, type?: string): SafeHtml | SafeStyle | SafeScript | SafeUrl | SafeResourceUrl {
     switch (type) {
       case 'style':
         return this.sanitizer.bypassSecurityTrustStyle(value);

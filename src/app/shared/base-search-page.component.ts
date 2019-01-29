@@ -233,7 +233,7 @@ export abstract class BaseSearchPageComponent<D, R> extends BasePageComponent<D>
   /**
    * Updates the search results
    */
-  protected update(pageData?: PageData) {
+  update(pageData?: PageData) {
     if (pageData) {
       // Scroll to the beginning of the results before updating
       const results = document.getElementsByTagName('results-layout');

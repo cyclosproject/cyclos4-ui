@@ -33,6 +33,10 @@ body.backdrop-visible {
   position: fixed;
 }
 
+app-root {
+  overflow-x: hidden;
+}
+
 .no-wrap {
   white-space: nowrap;
 }
@@ -882,7 +886,7 @@ notification data {
   line-height: $top-icon-size-xs !important;
 }
 .top-icon-faded {
-  opacity: 0.7;
+  opacity: 0.7 !important;
 }
 
 @include media-breakpoint-up(sm) {
@@ -891,6 +895,7 @@ notification data {
     width: $top-icon-size !important;
     font-size: $top-icon-size !important;
     line-height: $top-icon-size !important;
+    opacity: 0.9;
   }
 }
 

@@ -23,29 +23,34 @@
   }
 }
 
+:host ::ng-deep .dropdown-toggle::after {
+  margin-left: 0.5rem;
+}
+
 :host.has-menu ::ng-deep .navbar {
   @include media-breakpoint-up(lg) {
     height: $top-bar-with-menu-height;
 
     a {
-      padding: 0 1.2rem !important;
+      padding: 0 $top-bar-with-menu-item-padding !important;
     }
-    a:not(.never-active):hover::after, a:not(.never-active).active::after {
+    a:not(.never-active)::before {
       content: " ";
       display: block;
       position: absolute;
-      left: 0;
-      bottom: -1px;
+      left: 0.8 * $top-bar-with-menu-item-padding;
+      bottom: 2px;
       height: 2px;
-      width: 100%;
+      width: calc(100% - #{1.6 * $top-bar-with-menu-item-padding});
       background-color: $top-bar-color;
+      transition: opacity ease-in-out 0.4s;
+      opacity: 0;
     }
-    a:hover::after {
+    a:not(.never-active):hover::before {
+      opacity: 0.5;
+    }
+    a.active:not(.never-active)::before {
       opacity: 0.8;
-    }
-    a.active::after {
-      opacity: 1;
     }
   }
 }
-

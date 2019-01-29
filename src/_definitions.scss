@@ -67,8 +67,12 @@ $top-icon-size: 1.4rem;
 $top-bar-height: 3.25rem;
 // Height when the menu is in the tpop bar (setting MENU_BAR = false in configuration.ts)
 $top-bar-with-menu-height: 4rem;
+$top-bar-item-padding-xxs: 0.2rem;
+$top-bar-item-padding-xs: 0.5rem;
+$top-bar-item-padding: 0.8rem;
+$top-bar-with-menu-item-padding: 1.2rem;
 
-// Menu bar (main menu on desktop)
+// Menu bar (main menu on desktop, only shown when MENU_BAR = true in configuration.ts)
 $menu-bar-height: 3.2rem;
 $menu-bar-bg: $input-bg;
 $menu-bar-color: $faded-color;

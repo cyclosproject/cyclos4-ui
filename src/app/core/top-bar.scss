@@ -14,7 +14,7 @@
       align-items: center;
       height: 2rem;
       margin: 0;
-      padding: 0.2rem;
+      padding: 0 $top-bar-item-padding-xxs;
       line-height: 1em;
       position: relative;
     }
@@ -27,7 +27,7 @@
     display: flex;
     align-items: center;
     margin: 0 auto;
-    padding: 0 0.2rem;
+    padding: 0 $top-bar-item-padding-xxs;
     height: 100%;
   }
   .navbar-brand {
@@ -47,11 +47,11 @@
       height: $top-bar-height-xs;
       a {
         height: 2.6rem;
-        padding: 0 0.5rem;
+        padding: 0 $top-bar-item-padding-xs;
       }
     }
     .navbar-container {
-      padding: 0 0.5rem;
+      padding: 0 $top-bar-item-padding-xs;
     }
     .navbar-brand {
       font-size: 1.3rem;
@@ -62,11 +62,11 @@
       height: $top-bar-height;
       a {
         height: 3rem;
-        padding: 0 0.8rem;
+        padding: 0 $top-bar-item-padding;
       }
     }
     .navbar-container {
-      padding: 0 1rem 0 0.5rem;
+      padding: 0 $top-bar-item-padding;
     }
   }
   @include media-breakpoint-up(lg) {

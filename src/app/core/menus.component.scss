@@ -1,4 +1,15 @@
+@import 'src/definitions';
+
 :host {
   display: flex;
   flex-grow: 1;
+}
+
+.sub-menu-item {
+  background-color: $menu-bar-bg !important;
+  color: $menu-bar-color !important;
+  white-space: nowrap;
+}
+.sub-menu-item:hover {
+  background-color: $menu-bar-hover-bg !important;
 }
