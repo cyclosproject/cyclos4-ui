@@ -520,7 +520,7 @@
     "contactInfo.none": "Atualmente não existem contatos adicionais",
     "confirmation.message": "Para salvar o seu perfil, forneça seu {type}",
     "profileSaved": "O perfil foi salvo",
-    "imagesChanged": "To actually save the changes on images, the profile needs to be saved",
+    "imagesChanged": "Para que as mudanças nas imagens sejam concluídas é necessário salvar o perfil",
     "newEmailConfirmed": "Seu novo endereço de e-mail foi confirmado com sucesso",
     "passwordConfirmation": "{type} confirmação",
     "securityQuestion.message": "Se acontecer de você esquecer sua senha, você precisará responder corretamente a pergunta de segurança a fim de redefinir a senha.<br>Isto pode ser definido mais tarde, mas tenha em mente que a recuperação de senha não funcionará sem ela.",
