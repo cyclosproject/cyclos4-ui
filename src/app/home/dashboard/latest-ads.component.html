@@ -1,5 +1,5 @@
 <page-content [heading]="messages.dashboard.latestAds" hideBack [ngStyle]="{minHeight: minHeight}">
-  <div *ngIf="(ads$ | async) != null" class="container">
+  <div *ngIf="(ads$ | async) != null; else spinner" class="container">
     <div class="row">
       <ng-container *ngFor="let ad of ads$.value">
         <div class="col-12 col-xs-6 col-sm-4">
