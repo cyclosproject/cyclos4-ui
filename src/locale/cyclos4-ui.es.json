@@ -520,6 +520,7 @@
     "contactInfo.none": "No se encontró información de contactos adicionales",
     "confirmation.message": "Para guardar el perfil ingrese su {type}",
     "profileSaved": "El perfil se ha guardado",
+    "imagesChanged": "To actually save the changes on images, the profile needs to be saved",
     "newEmailConfirmed": "Su nuevo correo electrónico fue confirmado",
     "passwordConfirmation": "Confirmación de {type}",
     "securityQuestion.message": "Si usted olvida su contraseña, necesitará contestar correctamente a la pregunta de seguridad para poder restablecerla.\nPuede definir la pregunta mas tarde, pero tenga en cuenta que la recuperación de contraseña no funcionará hasta que la haya definido.",
