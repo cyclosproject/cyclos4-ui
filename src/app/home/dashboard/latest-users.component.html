@@ -1,7 +1,7 @@
-<page-content [heading]="messages.dashboard.latestUsers" hideBack>
-  <div class="container">
+<page-content [heading]="messages.dashboard.latestUsers" hideBack [ngStyle]="{minHeight: minHeight}">
+  <div *ngIf="(users$ | async) != null; else spinner" class="container">
     <div class="row">
-      <ng-container *ngFor="let user of users$ | async">
+      <ng-container *ngFor="let user of users$.value">
         <div class="col-12 col-xs-6 col-lg-4">
           <a class="d-flex flex-column plain" [routerLink]="path(user)">
             <div class="text-center">
@@ -18,4 +18,7 @@
       </ng-container>
     </div>
   </div>
+  <ng-template #spinner>
+    <spinner class="flex-grow-1"></spinner>
+  </ng-template>
 </page-content>

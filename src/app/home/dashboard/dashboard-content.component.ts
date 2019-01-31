@@ -28,13 +28,7 @@ export class DashboardContentComponent extends BaseDashboardComponent implements
   ngOnInit() {
     super.ngOnInit();
     this.addSub(this.contentService.get(this.content).subscribe(html => {
-      this.content$.next(html);
-      this.notifyReady();
-    }));
-    this.addSub(this.layout.breakpointChanges$.subscribe(() => {
-      if (this.content$.value != null) {
-        this.notifyReady();
-      }
+      this.content$.next(html || '');
     }));
   }
 }

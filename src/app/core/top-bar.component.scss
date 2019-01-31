@@ -10,11 +10,13 @@
 }
 .logo {
   max-width: 64px;
-  max-height: 32px;
+  max-height: 30px;
+  margin-right: 1.5rem;
 }
 .menu-container {
   display: flex;
   flex-direction: row;
+  flex-grow: 1;
 }
 
 @include media-breakpoint-up(lg) {
@@ -23,11 +25,23 @@
   }
 }
 
-:host ::ng-deep .dropdown-toggle::after {
-  margin-left: 0.5rem;
+:host ::ng-deep {
+  .dropdown-toggle::after {
+    margin-left: 0.5rem;
+  }
+  .menu-container, menus {
+    justify-content: flex-end;
+  }
+}
+
+.navbar-brand {
+  flex-grow: 1;
 }
 
 :host.has-menu ::ng-deep .navbar {
+  .navbar-brand {
+    flex-grow: 0;
+  }
 
   .dropdown-menu {
     color: $top-bar-color;
@@ -51,6 +65,10 @@
 
   @include media-breakpoint-up(lg) {
     height: $top-bar-with-menu-height;
+
+    .logo {
+      margin: 0 $top-bar-with-menu-item-padding / 2 0 $top-bar-with-menu-item-padding;
+    }
 
     a {
       padding: 0 $top-bar-with-menu-item-padding !important;

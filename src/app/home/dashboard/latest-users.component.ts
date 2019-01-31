@@ -39,7 +39,6 @@ export class LatestUsersComponent extends BaseDashboardComponent implements OnIn
       pageSize: this.max
     }).subscribe(ads => {
       this.users$.next(ads);
-      this.notifyReady();
     }));
   }
 

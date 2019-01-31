@@ -402,6 +402,9 @@ export class MenuService {
 
     // Lambda that adds all content pages to the given root menu entry
     const addContentPages = (menu: Menu) => {
+      if (restrictedAccess) {
+        return;
+      }
       const pages = contentPages.filter(p => {
         return p.rootMenu === menu.root && p.isVisible(this.injector);
       });

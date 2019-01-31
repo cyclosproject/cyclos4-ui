@@ -21,7 +21,7 @@ import { Observable } from 'rxjs';
 })
 export class MenusComponent implements OnInit {
 
-  @Input() test: 'a' | 'b';
+  @Input() userName: string;
   @Input() activeMenu: ActiveMenu;
   @Input() menuType: MenuType;
 

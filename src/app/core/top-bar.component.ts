@@ -9,6 +9,9 @@ import { Menu, RootMenuEntry, MenuType } from 'app/shared/menu';
 import { Messages } from 'app/messages/messages';
 import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
+import { words } from 'app/shared/helper';
+
+const MAX_USER_DISPLAY_SIZE = 20;
 
 /**
  * The top bar, which is always visible
@@ -23,6 +26,8 @@ export class TopBarComponent implements OnInit {
   // Export to template
   Menu = Menu;
   MenuType = MenuType;
+
+  userName: string;
 
   @HostBinding('class.has-menu') hasMenu = false;
 
@@ -44,6 +49,9 @@ export class TopBarComponent implements OnInit {
   @Output() toggleSidenav = new EventEmitter<void>();
 
   ngOnInit(): void {
+    this.login.user$.subscribe(user => {
+      this.userName = user == null ? '' : words(user.display, MAX_USER_DISPLAY_SIZE);
+    });
     if (!environment.menuBar) {
       this.hasMenu = true;
       this.roots = this.menu.menu(MenuType.BAR);

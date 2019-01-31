@@ -1,21 +1,17 @@
+import { Injector, Input } from '@angular/core';
 import { BaseComponent } from 'app/shared/base.component';
-import { Injector, EventEmitter, Output, HostBinding } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 /**
  * Base class for components which are dashboard items
  */
 export class BaseDashboardComponent extends BaseComponent {
 
-  @HostBinding('class.d-flex') classFlex = true;
-  @HostBinding('class.flex-grow-1') classFlexGrow = true;
+  @Input() minHeight: string;
 
-  @Output() ready = new EventEmitter<boolean>();
+  minHeight$ = new BehaviorSubject<string>(null);
 
   constructor(injector: Injector) {
     super(injector);
-  }
-
-  notifyReady() {
-    this.ready.next(true);
   }
 }

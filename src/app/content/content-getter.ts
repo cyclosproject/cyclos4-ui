@@ -50,27 +50,24 @@ namespace ContentGetter {
     const iframeId = `iframe_${idIx}`;
     const spinnerId = `spinner_${idIx}`;
     return `
-      <div id="${spinnerId}" class="spinner">
-        <img src="images/spinner.svg">
-      </div>
-      <div id="${wrapperId}" style="position:absolute; top:-1000rem; visibility:hidden;">
-        <iframe id="${iframeId}"
-          src="${iframeUrl}"
-          class="border-0 flex-grow-1"
-          style="display:block;width:1px; min-width:100%;"
-          onload="
-            iFrameResize({
-              heightCalculationMethod: navigator.userAgent.indexOf('MSIE') < 0 ? 'lowestElement' : 'max',
-              checkOrigin: false,
-              warningTimeout: 0
-            }, '#${iframeId}');
-            document.getElementById('${spinnerId}').style.display = 'none';
-            document.getElementById('${wrapperId}').style.visibility = '';
-            document.getElementById('${wrapperId}').style.position = 'relative';
-            document.getElementById('${wrapperId}').style.top = '';
-          ">
-        </iframe>
-      </div>
+        <div id="${wrapperId}" class="iframe-content-wrapper">
+          <div id="${spinnerId}" class="spinner iframe-loading-spinner">
+            <img src="images/spinner.svg">
+          </div>
+          <iframe id="${iframeId}"
+            src="${iframeUrl}"
+            class="iframe-content"
+            style="display:block;width:1px;min-width:100%;"
+            onload="
+              iFrameResize({
+                heightCalculationMethod: navigator.userAgent.indexOf('MSIE') < 0 ? 'lowestElement' : 'max',
+                checkOrigin: false,
+                warningTimeout: 0
+              }, '#${iframeId}');
+              document.getElementById('${wrapperId}').removeChild(document.getElementById('${spinnerId}'));
+            ">
+          </iframe>
+        </div>
     `;
   }
 

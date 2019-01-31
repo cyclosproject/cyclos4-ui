@@ -6,16 +6,15 @@
       href="#" (click)="toggleSidenav.emit(); $event.preventDefault();">
       <icon class="top-icon" icon="menu"></icon>
     </a>
-    <span class="navbar-brand flex-grow-1">
-      <img *ngIf="layout.gtxs$ | async" class="logo d-inline-block align-top mr-3"
-        src="images/logo.png">
+    <span class="navbar-brand">
+      <img *ngIf="layout.gtxs$ | async" class="logo" src="images/logo.png">
       <span class="top-title">
         {{ (layout.ltsm$ | async) ? format.appTitleSmall : format.appTitle }}
       </span>
     </span>
     <div class="menu-container">
       <menus *ngIf="hasMenu && (layout.gtmd$ | async); else customMenus"
-        [menuType]="MenuType.TOP" [activeMenu]="activeMenu"></menus>
+        [menuType]="MenuType.TOP" [activeMenu]="activeMenu" [userName]="userName"></menus>
     </div>
   </div>
 </nav>
@@ -25,7 +24,7 @@
       <avatar *ngIf="user.image" size="small-medium" [image]="user.image"></avatar>
       <icon *ngIf="!user.image" class="top-icon top-icon-faded" icon="user"></icon>
       <div *ngIf="layout.gtsm$ | async" class="ml-2">
-        {{ user.display }}
+        {{ userName }}
       </div>
     </a>
     <a href="#" id="logout-trigger" (click)="menu.navigate(Menu.LOGOUT, $event)">

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CustomFieldDetailed, PasswordInput } from 'app/api/models';
-import { SnackBarProvider } from 'app/core/snack-bar-provider';
+import { SnackBarProvider, SnackBarOptions } from 'app/core/snack-bar-provider';
 import { FieldLabelPosition } from 'app/shared/base-form-field.component';
 import { ConfirmationComponent } from 'app/shared/confirmation.component';
 import { NotificationType } from 'app/shared/notification-type';
@@ -80,8 +80,8 @@ export class NotificationService {
   /**
    * Shows a snack bar message (quick message on the bottom)
    */
-  snackBar(message: string): void {
-    this._snackBarProvider.show(message);
+  snackBar(message: string, options?: SnackBarOptions): void {
+    this._snackBarProvider.show(message, options);
   }
 
   /**

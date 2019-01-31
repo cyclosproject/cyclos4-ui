@@ -21,6 +21,7 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 import { BehaviorSubject } from 'rxjs';
 import { take } from 'rxjs/operators';
 
+const IMAGE_MANAGED_TIMEOUT = 10_000;
 
 const BASIC_FIELDS = ['name', 'username', 'email'];
 export type Availability = 'disabled' | 'single' | 'multiple';
@@ -760,6 +761,7 @@ export class EditProfileComponent
   removeSingleImage() {
     this.removeAllTempImages();
     this.removeExistingImages();
+    this.notification.snackBar(this.messages.user.imagesChanged, { timeout: IMAGE_MANAGED_TIMEOUT });
   }
 
   private removeAllTempImages() {
@@ -787,6 +789,7 @@ export class EditProfileComponent
       // Multiple images: append them
       this.images = [...this.images, ...images];
     }
+    this.notification.snackBar(this.messages.user.imagesChanged, { timeout: IMAGE_MANAGED_TIMEOUT });
     this.uploadedImages = images;
   }
 
@@ -799,7 +802,8 @@ export class EditProfileComponent
     });
     const component = ref.content as ManageImagesComponent;
     this.addSub(component.result.pipe(take(1)).subscribe(result => {
-      if (!empty(result.removedImages)) {
+      const hasRemovedImages = !empty(result.removedImages);
+      if (hasRemovedImages) {
         // At least one removed image
         for (const removed of result.removedImages) {
           if (!this.removedImages.includes(removed) && (this.data.images || []).find(i => i.id === removed) != null) {
@@ -814,12 +818,16 @@ export class EditProfileComponent
         this.images = this.images.filter(i => !result.removedImages.includes(i.id));
         this.uploadedImages = this.uploadedImages.filter(i => !result.removedImages.includes(i.id));
       }
-      if (!empty(result.order)) {
+      const hasOrderChanged = !empty(result.order);
+      if (hasOrderChanged) {
         // The order has changed
         this.reorderImages = result.order;
         this.images = this.reorderImages.map(id => {
           return this.images.find(i => i.id === id);
         });
+      }
+      if (hasRemovedImages || hasOrderChanged) {
+        this.notification.snackBar(this.messages.user.imagesChanged, { timeout: IMAGE_MANAGED_TIMEOUT });
       }
       ref.hide();
     }));

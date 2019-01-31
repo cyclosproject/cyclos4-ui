@@ -1,3 +1,8 @@
-<page-content [heading]="title" hideBack [mode]="tight ? 'tight' : 'normal'">
-  <div class="custom-content-container" [innerHTML]="content$ | async | trust"></div>
+<page-content [heading]="title" hideBack [mode]="tight ? 'tight' : 'normal'"
+  [ngStyle]="{minHeight: minHeight}">
+  <div *ngIf="(content$ | async) != null; else spinner" class="custom-content-container"
+    [innerHTML]="content$.value | trust"></div>
+  <ng-template #spinner>
+    <spinner class="flex-grow-1"></spinner>
+  </ng-template>
 </page-content>

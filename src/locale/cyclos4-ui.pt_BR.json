@@ -549,7 +549,8 @@
     "orderBy": {
       "alphabeticallyAsc": "Nome (A-Z)",
       "alphabeticallyDesc": "Nome (Z-A)"
-    }
+    },
+    "imagesChanged": "To actually save the changes on images, the profile needs to be saved"
   },
   "phone": {
     "mobile": "Telefone celular",

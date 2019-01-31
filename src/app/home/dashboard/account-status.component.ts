@@ -71,7 +71,6 @@ export class AccountStatusComponent extends BaseDashboardComponent implements On
       this.currency = history.account.currency;
       this.account = history.account;
       this.balance = history.account.status.balance;
-      this.notifyReady();
     }));
 
     // If we need to show the max transfers, fetch them
@@ -84,7 +83,6 @@ export class AccountStatusComponent extends BaseDashboardComponent implements On
         pageSize: 3
       }).subscribe(transfers => {
         this.lastPayments$.next(transfers);
-        this.notifyReady();
       }));
     }
   }
