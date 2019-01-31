@@ -50,12 +50,15 @@ export class QuickAccessComponent extends BaseDashboardComponent implements OnIn
         desc = descriptor;
       }
       if (desc) {
-        this.actions.push({
-          icon: icon,
-          label: label,
-          entry: this.menu.menuEntry(activeMenu),
-          breakpoints: desc.breakpoints
-        });
+        const entry = this.menu.menuEntry(activeMenu);
+        if (entry) {
+          this.actions.push({
+            icon: icon,
+            label: label,
+            entry: entry,
+            breakpoints: desc.breakpoints
+          });
+        }
       }
     };
     if (permissions.banking) {
@@ -102,8 +105,6 @@ export class QuickAccessComponent extends BaseDashboardComponent implements OnIn
         this.messages.dashboard.action.passwords;
       addAction(QuickAccessType.PASSWORDS, 'quick_access_passwords', passwordsLabel, new ActiveMenu(Menu.PASSWORDS));
     }
-    // Must be asynchronous or sometimes will never hide the spinner
-    setTimeout(() => this.notifyReady(), 1);
   }
 
 }

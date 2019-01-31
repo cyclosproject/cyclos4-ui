@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, NgZone, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { BannerService } from 'app/core/banner.service';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
@@ -11,6 +11,10 @@ import { blank, setRootSpinnerVisible } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
 import { trim } from 'lodash';
 import { BehaviorSubject } from 'rxjs';
+import { environment } from 'environments/environment.prod';
+import { DataForUi } from 'app/api/models';
+import { StateManager } from 'app/core/state-manager';
+import { BreadcrumbService } from 'app/core/breadcrumb.service';
 
 @Component({
   selector: 'app-root',
@@ -26,8 +30,10 @@ export class AppComponent implements OnInit {
   loggingOut$ = new BehaviorSubject(false);
 
   title: string;
+  menuBar: boolean;
 
   constructor(
+    private ngZone: NgZone,
     private router: Router,
     private dataForUiHolder: DataForUiHolder,
     public login: LoginService,
@@ -35,6 +41,8 @@ export class AppComponent implements OnInit {
     public layout: LayoutService,
     private banner: BannerService,
     public messages: Messages,
+    private stateManager: StateManager,
+    private breadcrumb: BreadcrumbService,
     // PushNotificationsService is here because it is not directly used by any
     // other component / service, but handles itself the push notifications.
     // It would otherwise be removed from the built app by tree-shaking.
@@ -43,20 +51,26 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {
+    window['navigate'] = (url: string | HTMLAnchorElement, event?: Event) => {
+      this.ngZone.run(() => {
+        if (typeof url === 'object') {
+          url = url.href;
+        }
+        this.menu.navigate(url, event);
+      });
+    };
+    this.menuBar = environment.menuBar;
     this.push.initialize();
     this.banner.initialize();
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.layout.setTitle();
     this.dataForUiHolder.subscribe(dataForUi => {
       if (dataForUi != null) {
-        this.initialized$.next(true);
-        this.prepareContent();
+        this.doInitialize(dataForUi);
       }
     });
     if (this.dataForUiHolder.dataForUi) {
-      // Already initialized?!?
-      this.initialized$.next(true);
-      this.prepareContent();
+      this.doInitialize(this.dataForUiHolder.dataForUi);
     }
     this.login.subscribeForLoggingOut(flag => this.loggingOut$.next(flag));
 
@@ -76,6 +90,27 @@ export class AppComponent implements OnInit {
 
     // Hide the spinner, showing the application
     setRootSpinnerVisible(false);
+  }
+
+  private doInitialize(dataForUi: DataForUi) {
+    this.initialized$.next(true);
+    this.prepareContent();
+
+    // Handle redirects on urgent situations
+    const auth = (dataForUi || {}).auth || {};
+    let redirect: string = null;
+    if (auth.expiredPassword) {
+      redirect = '/expired-password';
+    } else if (auth.pendingAgreements) {
+      redirect = '/pending-agreements';
+    }
+    if (redirect && this.router.url !== redirect) {
+      setTimeout(() => {
+        this.breadcrumb.clear();
+        this.stateManager.clear();
+        this.router.navigateByUrl(redirect);
+      }, 1);
+    }
   }
 
   private prepareContent() {

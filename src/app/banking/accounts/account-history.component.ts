@@ -165,7 +165,7 @@ export class AccountHistoryComponent
    * @param row The row
    */
   avatarIcon(row: AccountHistoryResult): string {
-    return row.relatedAccount.kind === 'user' ? 'account_circle' : 'account_balance_circle';
+    return row.relatedAccount.kind === 'user' ? 'user' : 'account_balance_circle';
   }
 
   /**

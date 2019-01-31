@@ -3,36 +3,42 @@ import { Observable } from 'rxjs';
 
 /** The types of menus in the application */
 export enum MenuType {
+
   /** The sidenav shown on small devices */
   SIDENAV,
-  /** The horizontal bar shown on medium+ devices */
+
+  /** The horizontal bar shown on medium+ devices when using a single top bar */
+  TOP,
+
+  /** The horizontal bar shown on medium+ devices when splitting the top and the menu bar */
   BAR,
+
   /** The second-level side menu shown on medium+ devices */
   SIDE
 }
 
 /** Contains the top-level (root) menus */
 export type RootMenu =
-  'dashboard' | 'banking' | 'marketplace' | 'personal' |
-  'home' | 'publicDirectory' | 'publicMarketplace' |
-  'content' | 'registration' | 'login' | 'logout';
+  'dashboard' | 'banking' | 'marketplace' | 'home' |
+  'publicDirectory' | 'publicMarketplace' | 'content' |
+  'personal' | 'registration' | 'login' | 'logout';
 export module RootMenu {
   export const DASHBOARD: RootMenu = 'dashboard';
   export const BANKING: RootMenu = 'banking';
   export const MARKETPLACE: RootMenu = 'marketplace';
-  export const PERSONAL: RootMenu = 'personal';
   export const HOME: RootMenu = 'home';
   export const PUBLIC_DIRECTORY: RootMenu = 'publicDirectory';
   export const PUBLIC_MARKETPLACE: RootMenu = 'publicMarketplace';
   export const CONTENT: RootMenu = 'content';
+  export const PERSONAL: RootMenu = 'personal';
   export const REGISTRATION: RootMenu = 'registration';
   export const LOGIN: RootMenu = 'login';
   export const LOGOUT: RootMenu = 'logout';
   export function values(): RootMenu[] {
     return [
-      DASHBOARD, BANKING, MARKETPLACE, PERSONAL,
+      DASHBOARD, BANKING, MARKETPLACE,
       HOME, PUBLIC_DIRECTORY, PUBLIC_MARKETPLACE,
-      CONTENT, REGISTRATION, LOGIN, LOGOUT
+      CONTENT, PERSONAL, REGISTRATION, LOGIN, LOGOUT
     ];
   }
 }

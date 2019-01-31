@@ -8,7 +8,7 @@
       <div style="position:relative" class="w-100 d-flex align-items-center"
         dropdown #dropdown="bs-dropdown" (onShown)="onShown()">
 
-        <chip *ngIf="selection$ | async" [image]="user.image" icon="account_circle"
+        <chip *ngIf="selection$ | async" [image]="user.image" icon="user"
           (close)="select(null)">
           {{ user.display }}
         </chip>

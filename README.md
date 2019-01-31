@@ -206,6 +206,41 @@ Then, in 'System > System configuration > Configurations' select the configurati
 rootUrl = https://account.example.com
 ```
 
+## Customizing layout
+
+There are basically 2 areas where the layout can be customized: modifying the style (CSS) and modifying the configuration.
+
+### Customizing the style
+
+The layout is built using [Bootstrap 4](https://getbootstrap.com/). Bootstrap allows customizing several variables in [SASS](https://sass-lang.com/).
+
+The main file to define these is `src/_definitions.scss`. The most visible changes are the `$primary` and `$secondary` variables, which defines the main colors which are shown in the layout.
+
+It is possible to change the font, by replacing the `$font-import-url` variable by an URL (for example, from Google Fonts) and then the `$font-family-sans-serif` to actually set the font. The default font is Roboto, Android's default font. It is widely used, but lacks support to some character sets. If you use Cyclos in a language that has glyphs not covered by Roboto, you can use, for example, [Noto Sans](https://fonts.google.com/specimen/Noto+Sans). Just take care that the default font weight for bolds used in the frontend is 500, which is not available in Noto Sans. If switching, also change the `$font-weight-bold` to `700`.
+
+You can also create custom styles for the application. To do so, just edit the `src/custom.scss` file. This is a SASS file, which is a superset of the standard CSS.
+
+### Layout configuration
+
+Currently the Cyclos frontend offers the following options in the configuration for layout: Whether to show the menu on desktop on the top bar on in a separated bar, and advertisement category icon customization. They are set in the `src/environments/configuration.ts` file.
+
+By default, on desktop resolutions, the menu is displayed in a separated bar, below the top bar. An alternative is to have the menu displayed in the top bar itself. To configure this, just set the `MENU_BAR` constant to `true`.
+
+It is also possible to customize the advertisements category icons, which are shown when selecting the marketplace menu item. It is recommended that all the root advertisement categories in Cyclos have an internal name. Then, customize the `AD_CATEGORIES` constant in the `configuration.ts` file. By root category internal name, it is possible to set a fixed icon and color. The default matches the categories created by default when creating a network in Cyclos via the wizard, which is:
+
+```typescript
+const AD_CATEGORIES: { [internalName: string]: AdCategoryConfiguration } = {
+  'community': { icon: 'people', color: '#2196f3' },
+  'food': { icon: 'restaurant', color: '#f04d4e' },
+  'goods': { icon: 'pages', color: '#ff9700' },
+  'housing': { icon: 'location_city', color: '#029487' },
+  'jobs': { icon: 'work', color: '#8062b3' },
+  'labor': { icon: 'business', color: '#de3eaa' },
+  'leisure': { icon: 'mood', color: '#687ebd' },
+  'services': { icon: 'room_service', color: '#8ec63f' }
+};
+```
+
 ## Customizing content
 
 The Cyclos frontend supports several kinds of content that can be customized:
@@ -345,27 +380,36 @@ import { CustomDashboardResolver } from './custom-dashboard-resolver';
 const DASHBOARD_RESOLVER = new CustomDashboardResolver();
 ```
 
+### Creating links to other pages
+When linking to other pages from a custom page, special care is needed to not trigger a full page reload, as simply assigning a new URL would make the browser reload the entire application, hurting the user experience.
+
+For that matter, the frontend registers a JavaScript function `navigate(url|anchor, event)`. It should be called on the anchor's `onclick` event, like the following example:
+
+```html
+You can login <a href="/login" onclick="navigate(this, event)">here</a>.
+```
+
+Note that using this method will have the same effect as clicking on the corresponding menu entry. So, the above example will only take the user to the login page if viewing it as guest. If viewing as logged user, the user will actually be taken to the dashboard. This method also takes care of highlighting the correct menu item.
+
 ## Translating
 This application doesn't uses [Angular's built-in I18N](https://angular.io/guide/i18n) because it is very static, requiring a translated copy of the application to be built for each supported language. Instead, the Cyclos frontend uses [ng-translation-gen](https://github.com/cyclosproject/ng-translation-gen), so the translation keys are read from a JSON file, and generate TypeScript classes which are used on the application. Then, in runtime, the translated JSON is set, which allows dynamic translations.
 
-Most systems are single language. In that case, it is recommended to set the translations value statically, so a separated request to fetch the translations is not needed. To do so, set the following on `src/environments/configuration.ts`:
+Most systems are single language. In that case, it is recommended to set the translations value statically, so a separated request to fetch the translations is not needed. To do so, in the `src/environments/configuration.ts`, comment the line with `const STATIC_TRANSLATIONS = null;` set the `STATIC_LOCALE` to the actual locale and import the translations as `STATIC_TRANSLATIONS`, like the following:
 
 ```typescript
 const STATIC_LOCALE = 'en';
-import staticTranslations from 'locale/cyclos4-ui.json';
-const STATIC_TRANSLATIONS: any = staticTranslations;
+import STATIC_TRANSLATIONS from 'locale/cyclos4-ui.json';
 ```
 
 or
 
 ```typescript
-const STATIC_LOCALE = 'pt-BR';
-import staticTranslations from 'locale/cyclos4-ui.pt-BR.json';
-const STATIC_TRANSLATIONS: any = staticTranslations;
+const STATIC_LOCALE = 'pt_BR';
+import STATIC_TRANSLATIONS from 'locale/cyclos4-ui.pt_BR.json';
 ```
 
-For systems that are multi language, where each user can have distinct languages, just leave both `STATIC_LOCALE` and `STATIC_TRANSLATIONS` to `null`, which is the default. In this case, the language used by user in Cyclos will be the one used to fetch the translations in the front-end.
+For systems that are multi language, where each user can have distinct languages, just leave both `STATIC_LOCALE` and `STATIC_TRANSLATIONS` set to `null`, which is the default. In this case, the language used by user in Cyclos will be the one used to fetch the translations in the front-end.
 
-Translating values is a matter of making sure the corresponding locale is added to the `locales` array in `ng-translation-gen.json`. Then, to create the file with defaults, or import new translation keys, run `npm run merge-translations`. Then, either reference it as a static translation, or, if the locale matches the language set in Cyclos, it will be automatically used.
+To add a translation to a new language locally, simply add the locale to the `locales` array in `ng-translation-gen.json`. Then, to create the file with defaults, or import new translation keys, run `npm run merge-translations`. Then, either reference it as a static translation, or, if the locale matches the language set in Cyclos, it will be automatically used.
 
-The official translations are done in https://crowdin.com/project/cyclos4-ui. If you want to help translating the Cyclos frontend, login to Crowdin and request permission for the project.
+The official translations are done in https://crowdin.com/project/cyclos4-ui. If you want to help translating the Cyclos frontend, login to Crowdin and request permission for the project. It has an integration with GitHub, so translations done in Crowdin will be automatically applied to the project.

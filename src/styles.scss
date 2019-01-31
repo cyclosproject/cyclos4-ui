@@ -863,6 +863,65 @@ notification data {
   flex-grow: 1;
 }
 
+.spinner {
+  padding: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+
+  img {
+    width: 64px;
+    height: 64px;
+  }
+}
+
+.iframe-content-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.iframe-loading-spinner {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  z-index: $zindex-popover;
+  background-color: $card-bg;
+}
+.iframe-content {
+  border: 0;
+  flex-grow: 1;
+}
+@include media-breakpoint-up(lg) {
+  .iframe-content {
+    height: 32rem;
+  }
+}
+
+.top-icon {
+  height: $top-icon-size-xs !important;
+  width: $top-icon-size-xs !important;
+  font-size: $top-icon-size-xs !important;
+  line-height: $top-icon-size-xs !important;
+}
+.top-icon-faded {
+  opacity: 0.7 !important;
+}
+
+@include media-breakpoint-up(sm) {
+  .top-icon {
+    height: $top-icon-size !important;
+    width: $top-icon-size !important;
+    font-size: $top-icon-size !important;
+    line-height: $top-icon-size !important;
+    opacity: 0.9;
+  }
+}
+
+
 @media print {
   body {
     background-color: transparent;
@@ -890,3 +949,5 @@ body.login-menu .login-icon {
 top-bar nav {
   transition: background-color ease-in-out 0.3s, color ease-in-out 0.4s;
 }
+
+@import 'custom';

@@ -82,16 +82,9 @@ export class LoginComponent
       return;
     }
     const value = this.form.value;
-    this.login.login(value.principal, value.password).subscribe(auth => {
-      // Handle the exceptional cases
-      let initialUrl = this.loginState.redirectUrl || '';
-      if (auth.pendingAgreements) {
-        initialUrl = '/pending-agreements';
-      } else if (auth.expiredPassword) {
-        initialUrl = '/expired-password';
-      }
+    this.login.login(value.principal, value.password).subscribe(() => {
       // Redirect to the correct URL
-      this.router.navigateByUrl(initialUrl);
+      this.router.navigateByUrl(this.loginState.redirectUrl || '');
     });
   }
 

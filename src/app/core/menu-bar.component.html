@@ -1,43 +1,5 @@
-<nav class="navbar shadow-sm" [ngStyle]="{
-  boxShadow: (layout.fullWidth$ | async) ? 'none' : '',
-  border: (layout.fullWidth$ | async) ? 'none' : ''
-}">
+<nav class="navbar shadow-sm" [ngClass]="(layout.fullWidth$ | async) ? 'full-width' : ''">
   <div class="navbar-container justify-content-start">
-    <ng-container *ngFor="let root of roots | async">
-      <a *ngIf="root.dropdown" class="nav-item dropdown-toggle" href="#"
-        [attr.aria-controls]="'menu-dropdown-' + root.rootMenu" (click)="$event.preventDefault()"
-        dropdown dropdownToggle #dropdown="bs-dropdown" [ngClass]="{
-            active: activeRoot === root.rootMenu
-          }">
-        <icon class="mr-2" size="1.4rem" [icon]="root.icon"></icon>
-        <div class="menu-text">{{ root.label }}</div>
-
-        <div *dropdownMenu class="dropdown-menu" role="listbox" [attr.id]="'menu-dropdown-' + root.rootMenu"
-          attr.aria-labelledby="id" (click)="$event.preventDefault(); $event.stopPropagation();">
-          <ng-container *ngFor="let entry of root.entries">
-            <a *ngIf="entry.url" [routerLink]="entry.url" (click)="onClick($event, entry)"
-              class="sub-menu-item" [ngClass]="{
-                active: (breadcrumb.url$ | async) === entry.url
-              }">
-              <icon class="mr-2" size="1.4rem" [icon]="entry.icon"></icon>
-              <div class="sub-menu-text">{{ entry.label }}</div>
-            </a>
-          </ng-container>
-        </div>
-      </a>
-      <a *ngIf="!root.dropdown && root.entries[0]" [routerLink]="root.entries[0].url"
-        (click)="onClick($event, root)" class="nav-item" [ngClass]="{
-          active: activeRoot === root.rootMenu
-        }">
-        <icon class="mr-2" size="1.4rem" [icon]="root.icon"></icon>
-        <div class="menu-text">{{ root.label }}</div>
-      </a>
-    </ng-container>
-    <div *ngIf="(login.user$ | async) != null" class="logout d-flex align-items-stretch flex-grow-1 justify-content-end">
-      <a href="#" class="nav-item d-inline-flex align-items-center" (click)="logout($event)">
-        <icon class="mr-2" size="1.4rem" icon="logout"></icon>
-        <span class="menu-text">{{ messages.menu.logout }}</span>
-      </a>
-    </div>
+    <menus test="c" [menuType]="MenuType.BAR" [activeMenu]="activeMenu"></menus>
   </div>
 </nav>

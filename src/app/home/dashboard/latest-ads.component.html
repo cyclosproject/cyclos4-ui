@@ -1,7 +1,7 @@
-<page-content [heading]="messages.dashboard.latestAds" hideBack>
-  <div class="container">
+<page-content [heading]="messages.dashboard.latestAds" hideBack [ngStyle]="{minHeight: minHeight}">
+  <div *ngIf="(ads$ | async) != null" class="container">
     <div class="row">
-      <ng-container *ngFor="let ad of ads$ | async">
+      <ng-container *ngFor="let ad of ads$.value">
         <div class="col-12 col-xs-6 col-sm-4">
           <a class="d-flex flex-column plain" [routerLink]="path(ad)" (click)="navigate(ad, $event)">
             <div class="text-center">
@@ -21,4 +21,7 @@
       </ng-container>
     </div>
   </div>
+  <ng-template #spinner>
+    <spinner class="flex-grow-1"></spinner>
+  </ng-template>
 </page-content>

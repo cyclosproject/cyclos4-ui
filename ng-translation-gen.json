@@ -5,9 +5,12 @@
   "mapping": {
     "cyclos4-ui": "Messages"
   },
+  "argumentType": "string | number",
   "defaultLocale": "en",
   "locales": [
     "en",
+    "es",
+    "nl",
     "pt_BR"
   ]
 }

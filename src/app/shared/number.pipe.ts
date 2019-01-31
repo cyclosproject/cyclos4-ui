@@ -12,7 +12,7 @@ export class NumberPipe implements PipeTransform {
   constructor(private formatService: FormatService) {
   }
 
-  public transform(value: string | number, scale: number): string {
-    return this.formatService.formatAsNumber(value, scale || 0);
+  public transform(value: string | number, scale = 0): string {
+    return this.formatService.formatAsNumber(value, scale);
   }
 }

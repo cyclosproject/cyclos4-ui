@@ -27,6 +27,16 @@ export function setRootAlert(text: string): void {
 }
 
 /**
+ * Converts the given relative path, or full URL, in a full URL
+ */
+export function toFullUrl(path: string): string {
+  if (blank(path)) {
+    return null;
+  }
+  return new URL(path, window.location.href).href;
+}
+
+/**
  * Sets the text of the reload application button
  */
 export function setReloadButton(text: string): void {

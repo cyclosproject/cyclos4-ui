@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, ElementRef, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, OnInit, HostListener } from '@angular/core';
 import { NotificationService } from 'app/core/notification.service';
-import { SnackBarProvider } from 'app/core/snack-bar-provider';
+import { SnackBarProvider, SnackBarOptions } from 'app/core/snack-bar-provider';
 import { BehaviorSubject } from 'rxjs';
 
 /**
@@ -20,6 +20,7 @@ export class SnackBarComponent implements OnInit, SnackBarProvider {
   }
 
   message$ = new BehaviorSubject('');
+  private timeoutHandle: any;
 
   ngOnInit() {
     this.notification.snackBarProvider = this;
@@ -29,15 +30,24 @@ export class SnackBarComponent implements OnInit, SnackBarProvider {
     return this._element.nativeElement;
   }
 
-  show(message: string) {
+  @HostListener('click') onClick() {
+    this.hide();
+  }
+
+  show(message: string, options?: SnackBarOptions) {
+    const timeout = (options || {}).timeout || 3000;
     this.message$.next(message);
     const style = this.element.style;
     style.opacity = '1';
     style.transform = 'translate(-50%, 0)';
-    setTimeout(() => this.hide(), 3000);
+    this.timeoutHandle = setTimeout(() => this.hide(), timeout);
   }
 
   hide() {
+    if (this.timeoutHandle) {
+      clearTimeout(this.timeoutHandle);
+      this.timeoutHandle = null;
+    }
     const style = this.element.style;
     style.opacity = '';
     style.transform = '';

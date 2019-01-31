@@ -1,4 +1,5 @@
 @import 'src/definitions';
+@import './top-bar';
 
 :host {
   display: block;
@@ -9,90 +10,86 @@
 }
 .logo {
   max-width: 64px;
-  max-height: 32px;
+  max-height: 30px;
+  margin-right: 1.5rem;
 }
-.navbar {
-  color: $top-bar-color;
-  background-color: $top-bar-bg;
-  height: $top-bar-height-xxs;
-  padding: 0;
-}
-.navbar-container {
+.menu-container {
+  display: flex;
+  flex-direction: row;
   flex-grow: 1;
-  display: flex;
-  align-items: center;
-  margin: 0 auto;
-  padding: 0;
-  padding-right: 0.5rem;
-  height: 100%;
-}
-.navbar-brand {
-  font-size: 1.2rem;
-  margin: 0;
-  display: flex;
-  align-items: center;
-  line-height: 1em;
-  margin-left: 0.5rem;
-}
-a {
-  color: $top-bar-color;
-  display: flex;
-  align-items: center;
-  height: 2rem;
-  margin: 0;
-  margin-left: 0.5rem;
-  line-height: 1em;
-}
-a:hover {
-  text-decoration: none;
-}
-:host ::ng-deep #profile-link icon {
-  opacity: 0.8;
 }
 
-@include media-breakpoint-up(xs) {
-  .navbar-brand {
-    font-size: 1.3rem;
-  }
-  .navbar {
-    height: $top-bar-height-xs;
-  }
-  a {
-    height: 2.6rem;
-    padding: 0 0.5rem;
-  }
-  #profile-link {
-    margin-right: -0.6rem;
-  }
-}
-@include media-breakpoint-up(md) {
-  .navbar {
-    height: $top-bar-height;
-  }
-  a {
-    height: 3rem;
-  }
-  .navbar-container {
-    padding: 0 1rem 0 0.5rem;
-  }
-}
 @include media-breakpoint-up(lg) {
-  :host {
+  :host:not(.has-menu) {
     position: relative;
   }
+}
 
-  .navbar-container {
-    padding: 0;
-    @include make-container-max-widths();
+:host ::ng-deep {
+  .dropdown-toggle::after {
+    margin-left: 0.5rem;
   }
-
-  .navbar-brand {
-    margin-left: 0;
+  .menu-container, menus {
+    justify-content: flex-end;
   }
 }
 
-@media print {
-  :host {
-    display: none;
+.navbar-brand {
+  flex-grow: 1;
+}
+
+:host.has-menu ::ng-deep .navbar {
+  .navbar-brand {
+    flex-grow: 0;
+  }
+
+  .dropdown-menu {
+    color: $top-bar-color;
+    background-color: $top-bar-bg;
+    transform: translateY(0.4rem) !important;
+    border: none !important;
+    padding: 0 !important;
+  }
+  .sub-menu-item {
+    white-space: nowrap;
+  }
+  .sub-menu-item {
+    border-bottom: 1px solid darken($top-bar-bg, 10%);
+  }
+  .sub-menu-item:last-of-type {
+    border-bottom: none;
+  }
+  .sub-menu-item:hover {
+    background-color: darken($top-bar-bg, 5%);
+  }
+
+  @include media-breakpoint-up(lg) {
+    height: $top-bar-with-menu-height;
+
+    .logo {
+      margin: 0 $top-bar-with-menu-item-padding / 2 0 $top-bar-with-menu-item-padding;
+    }
+
+    a {
+      padding: 0 $top-bar-with-menu-item-padding !important;
+    }
+    a:not(.never-active):not(.sub-menu-item)::before {
+      content: " ";
+      display: block;
+      position: absolute;
+      left: 0.8 * $top-bar-with-menu-item-padding;
+      bottom: 2px;
+      height: 2px;
+      width: calc(100% - #{1.6 * $top-bar-with-menu-item-padding});
+      background-color: $top-bar-color;
+      transition: opacity ease-in-out 0.4s;
+      opacity: 0;
+    }
+    a:not(.never-active):hover::before {
+      opacity: 0.7;
+    }
+    a.active:not(.never-active)::before {
+      opacity: 0.9;
+    }
   }
 }

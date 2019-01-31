@@ -42,7 +42,6 @@ export class LatestAdsComponent extends BaseDashboardComponent implements OnInit
       pageSize: this.max * 3
     }).subscribe(ads => {
       this.ads$.next(this.preprocess(ads));
-      this.notifyReady();
     }));
   }
 

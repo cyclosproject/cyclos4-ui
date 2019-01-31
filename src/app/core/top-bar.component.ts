@@ -1,12 +1,17 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, HostBinding } from '@angular/core';
 import { User } from 'app/api/models';
 import { BreadcrumbService } from 'app/core/breadcrumb.service';
 import { FormatService } from 'app/core/format.service';
 import { LoginService } from 'app/core/login.service';
-import { MenuService } from 'app/core/menu.service';
+import { MenuService, ActiveMenu } from 'app/core/menu.service';
 import { LayoutService } from 'app/shared/layout.service';
-import { Menu } from 'app/shared/menu';
+import { Menu, RootMenuEntry, MenuType } from 'app/shared/menu';
 import { Messages } from 'app/messages/messages';
+import { environment } from 'environments/environment';
+import { Observable } from 'rxjs';
+import { words } from 'app/shared/helper';
+
+const MAX_USER_DISPLAY_SIZE = 20;
 
 /**
  * The top bar, which is always visible
@@ -18,6 +23,17 @@ import { Messages } from 'app/messages/messages';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TopBarComponent implements OnInit {
+  // Export to template
+  Menu = Menu;
+  MenuType = MenuType;
+
+  userName: string;
+
+  @HostBinding('class.has-menu') hasMenu = false;
+
+  roots: Observable<RootMenuEntry[]>;
+  @Input() activeMenu: ActiveMenu;
+
   constructor(
     public breadcrumb: BreadcrumbService,
     public format: FormatService,
@@ -33,24 +49,12 @@ export class TopBarComponent implements OnInit {
   @Output() toggleSidenav = new EventEmitter<void>();
 
   ngOnInit(): void {
-  }
-
-  goToProfile(event: MouseEvent) {
-    this.navigate(Menu.MY_PROFILE, event);
-  }
-
-  goToLogin(event: MouseEvent) {
-    this.navigate(Menu.LOGIN, event);
-  }
-
-  logout(event: MouseEvent) {
-    this.navigate(Menu.LOGOUT, event);
-  }
-
-  private navigate(menu: Menu, event: MouseEvent) {
-    const entry = this.menu.menuEntry(menu);
-    if (entry) {
-      this.menu.navigate(entry, event);
+    this.login.user$.subscribe(user => {
+      this.userName = user == null ? '' : words(user.display, MAX_USER_DISPLAY_SIZE);
+    });
+    if (!environment.menuBar) {
+      this.hasMenu = true;
+      this.roots = this.menu.menu(MenuType.BAR);
     }
   }
 }

@@ -1,22 +1,26 @@
-<page-content *ngIf="history$ | async as history" [heading]="title"
-  [headingActions]="headingActions" hideBack>
-  <div class="balance">
-    <div class="balance-label">{{ messages.account.balance }}</div>
-    <div class="balance-value" [ngClass]="{
+<page-content [heading]="title" [headingActions]="headingActions" hideBack
+  [ngStyle]="{minHeight: minHeight}">
+  <ng-container *ngIf="history$ | async; else spinner">
+    <div class="balance">
+      <div class="balance-label">{{ messages.account.balance }}</div>
+      <div class="balance-value" [ngClass]="{
       negative: format.isNegative(balance),
       positive: format.isPositive(balance)
     }">
-      {{ balance | currency:currency }}
+        {{ balance | currency:currency }}
+      </div>
     </div>
-  </div>
 
-  <canvas balanceHistoryChart [history]="history" width="400" height="100"></canvas>
-
-  <ng-container *ngIf="maxTransfers > 0">
-    <ng-container *ngTemplateOutlet="transfersTpl"></ng-container>
+    <canvas balanceHistoryChart [history]="history$.value" width="400" height="100"></canvas>
+    <ng-container *ngIf="maxTransfers > 0">
+      <ng-container *ngTemplateOutlet="transfersTpl"></ng-container>
+    </ng-container>
   </ng-container>
-
 </page-content>
+
+<ng-template #spinner>
+  <spinner class="flex-grow-1"></spinner>
+</ng-template>
 
 <ng-template #transfersTpl>
   <div class="flex-grow-1 d-flex flex-column justify-content-end">

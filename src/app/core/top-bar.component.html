@@ -1,39 +1,52 @@
-<nav class="navbar navbar-expand-md">
+<nav class="navbar navbar-expand-md" [ngClass]="{
+  'with-menu': hasMenu && !(layout.fullWidth$ | async)
+}">
   <div class="navbar-container">
-    <a *ngIf="layout.ltlg$ | async" id="sidenav-trigger" href="#" (click)="toggleSidenav.emit(); $event.preventDefault()">
-      <icon size="1.5rem" icon="menu"></icon>
+    <a class="never-active" *ngIf="layout.ltlg$ | async" id="sidenav-trigger"
+      href="#" (click)="toggleSidenav.emit(); $event.preventDefault();">
+      <icon class="top-icon" icon="menu"></icon>
     </a>
-    <span class="navbar-brand flex-grow-1">
-      <img *ngIf="layout.gtxs$ | async" class="logo d-inline-block align-top mr-3"
-        src="images/logo.png">
-      <span class="d-inline-block">
+    <span class="navbar-brand">
+      <img *ngIf="layout.gtxs$ | async" class="logo" src="images/logo.png">
+      <span class="top-title">
         {{ (layout.ltsm$ | async) ? format.appTitleSmall : format.appTitle }}
       </span>
     </span>
-    <div *ngIf="user != null" class="d-flex">
-      <a [routerLink]="['users', 'my-profile']" id="profile-link" (click)="goToProfile($event)">
-        <avatar *ngIf="user.image && (layout.xxs$ | async)" size="small"
-          [image]="user.image"></avatar>
-        <avatar *ngIf="user.image && (layout.gtxxs$ | async)" size="medium"
-          [image]="user.image"></avatar>
-        <icon *ngIf="!user.image" size="1.5rem" icon="account_circle"></icon>
-        <div *ngIf="layout.gtsm$ | async" class="ml-2">
-          {{ user.display }}
-        </div>
-      </a>
-      <a href="#" *ngIf="(login.user$ | async) != null && (layout.ltlg$ | async)"
-        id="logout-trigger" (click)="logout($event)">
-        <icon size="1.4rem" icon="logout"></icon>
-        <div *ngIf="layout.gtsm$ | async" class="ml-2">
-          {{ messages.menu.logout }}
-        </div>
-      </a>
-    </div>
-    <div *ngIf="(login.user$ | async) == null && (layout.ltlg$ | async)" id="login-trigger"
-      class="d-flex justify-content-center login-icon">
-      <a routerLink="/login" class="d-flex align-items-center" (click)="goToLogin($event)">
-        <icon size="1.4rem" icon="exit_to_app"></icon>
-      </a>
+    <div class="menu-container">
+      <menus *ngIf="hasMenu && (layout.gtmd$ | async); else customMenus"
+        [menuType]="MenuType.TOP" [activeMenu]="activeMenu" [userName]="userName"></menus>
     </div>
   </div>
 </nav>
+<ng-template #customMenus>
+  <ng-container *ngIf="user != null">
+    <a [routerLink]="['users', 'my-profile']" id="profile-link" (click)="menu.navigate(Menu.MY_PROFILE, $event)">
+      <avatar *ngIf="user.image" size="small-medium" [image]="user.image"></avatar>
+      <icon *ngIf="!user.image" class="top-icon top-icon-faded" icon="user"></icon>
+      <div *ngIf="layout.gtsm$ | async" class="ml-2">
+        {{ userName }}
+      </div>
+    </a>
+    <a href="#" id="logout-trigger" (click)="menu.navigate(Menu.LOGOUT, $event)">
+      <icon class="top-icon" icon="logout"></icon>
+      <div *ngIf="layout.gtsm$ | async" class="ml-2">
+        {{ messages.menu.logout }}
+      </div>
+    </a>
+  </ng-container>
+  <ng-container *ngIf="user == null">
+    <a *ngIf="(layout.gtsm$ | async) && menu.menuEntry(Menu.REGISTRATION)"
+      routerLink="/register" id="register-link" (click)="menu.navigate(Menu.REGISTRATION, $event)">
+      <icon class="top-icon" icon="registration"></icon>
+      <div *ngIf="layout.gtsm$ | async" class="ml-2">
+        {{ messages.menu.register }}
+      </div>
+    </a>
+    <a routerLink="/login" id="login-link" (click)="menu.navigate(Menu.LOGIN, $event)">
+      <icon class="top-icon" icon="exit_to_app"></icon>
+      <div *ngIf="layout.gtsm$ | async" class="ml-2">
+        {{ messages.menu.login }}
+      </div>
+    </a>
+  </ng-container>
+</ng-template>

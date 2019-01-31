@@ -2,11 +2,7 @@
 $primary: #1e88e5;
 $secondary: #f29220;
 
-// Import the basic Bootstrap definitions, so we can override the variables
-@import "~bootstrap/scss/functions";
-@import "~bootstrap/scss/variables";
-@import "~bootstrap/scss/mixins";
-
+// Additional colors
 $faded-color: #757575;
 $theme-color: darken($primary, 10%);
 
@@ -39,6 +35,11 @@ $grid-breakpoints: (
   }
 }
 
+// Import the basic Bootstrap definitions
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+
 // Main body
 $body-bg: $gray-100;
 $body-color: $gray-800;
@@ -61,9 +62,18 @@ $top-bar-bg: $primary;
 $top-bar-color: color-yiq($primary);
 $top-bar-height-xxs: 2.6rem;
 $top-bar-height-xs: 3.4rem;
-$top-bar-height: 3.8rem;
+$top-icon-size-xs: 1.6rem;
+$top-icon-size: 1.4rem;
+// Height when using a dedicated menu bar (setting MENU_BAR = true in configuration.ts)
+$top-bar-height: 3.25rem;
+// Height when the menu is in the tpop bar (setting MENU_BAR = false in configuration.ts)
+$top-bar-with-menu-height: 4rem;
+$top-bar-item-padding-xxs: 0.2rem;
+$top-bar-item-padding-xs: 0.5rem;
+$top-bar-item-padding: 0.8rem;
+$top-bar-with-menu-item-padding: 1.2rem;
 
-// Menu bar (main menu on desktop)
+// Menu bar (main menu on desktop, only shown when MENU_BAR = true in configuration.ts)
 $menu-bar-height: 3.2rem;
 $menu-bar-bg: $input-bg;
 $menu-bar-color: $faded-color;
@@ -72,9 +82,12 @@ $menu-bar-inactive-color: $faded-color;
 $menu-bar-inactive-icon-color: lighten($faded-color, 5%);
 $menu-bar-active-icon-color: $primary;
 $menu-bar-active-color: $primary;
-$menu-bar-active-border: $primary;
+$menu-bar-active-border-color: $primary;
 
 // Side menu (second-level menu on desktop)
+$side-menu-title-bg: $menu-bar-bg;
+$side-menu-title-color: $body-color;
+$side-menu-border-color: $section-border-color;
 $side-menu-bg: $menu-bar-bg;
 $side-menu-active-bg: $menu-bar-bg;
 $side-menu-active-color: $primary;
@@ -114,6 +127,8 @@ $snack-bar-bg: $gray-900;
 $snack-bar-color: white;
 
 // Page title
+$title-bg: $input-bg;
+$title-color: $body-color;
 $title-height-xxs: 2.6rem;
 $title-height-xs: 3.4rem;
 $title-height: 3.4rem;

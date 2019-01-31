@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding } from '@angular/core';
 
 /**
  * Shows a spinner to indicate that some processing is taking place
@@ -7,7 +7,10 @@ import { Component } from '@angular/core';
   // tslint:disable-next-line:component-selector
   selector: 'spinner',
   templateUrl: 'spinner.component.html',
-  styleUrls: ['spinner.component.scss']
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpinnerComponent {
+
+  @HostBinding('class.spinner') classSpinner = true;
+
 }

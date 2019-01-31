@@ -107,7 +107,7 @@ export abstract class BaseTransactionsSearch
    * @param row The row
    */
   avatarIcon(row: TransactionResult): string {
-    return row.relatedKind === 'user' ? 'account_circle' : 'account_balance_circle';
+    return row.relatedKind === 'user' ? 'user' : 'account_balance_circle';
   }
 
   /**

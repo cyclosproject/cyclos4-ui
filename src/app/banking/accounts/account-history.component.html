@@ -82,7 +82,7 @@
       <table *resultTable class="table table-hover cursor-pointer">
         <thead *ngIf="layout.gtxs$ | async">
           <th class="avatar"></th>
-          <th>{{ messages.transaction.date }}</th>
+          <th>{{ messages.general.date }}</th>
           <th>{{ messages.transaction.fromTo }}</th>
           <th *ngIf="layout.gtsm$ | async" width="30%">{{
             messages.general.description }}</th>

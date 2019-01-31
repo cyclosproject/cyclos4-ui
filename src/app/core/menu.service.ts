@@ -8,6 +8,7 @@ import { LoginService } from 'app/core/login.service';
 import { StateManager } from 'app/core/state-manager';
 import { Messages } from 'app/messages/messages';
 import { ApiHelper } from 'app/shared/api-helper';
+import { toFullUrl } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
 import { ConditionalMenu, Menu, MenuEntry, MenuType, RootMenu, RootMenuEntry, SideMenuEntries } from 'app/shared/menu';
 import { BehaviorSubject, Observable, of } from 'rxjs';
@@ -110,7 +111,23 @@ export class MenuService {
   /**
    * Navigates to a menu entry
    */
-  navigate(entry: MenuEntry, event?: Event) {
+  navigate(entryOrUrl: Menu | MenuEntry | string, event?: Event) {
+    let entry: MenuEntry = null;
+    let url: string;
+    if (typeof entryOrUrl === 'string') {
+      url = entryOrUrl;
+      entry = this.entryByUrl(entryOrUrl);
+      if (entry) {
+        // Still use the entry URL
+        url = entry.url;
+      }
+    } else {
+      if (entryOrUrl instanceof Menu) {
+        entryOrUrl = this.menuEntry(entryOrUrl);
+      }
+      entry = entryOrUrl;
+      url = entry.url;
+    }
     if (event) {
       event.stopPropagation();
       event.preventDefault();
@@ -123,14 +140,44 @@ export class MenuService {
     this.stateManager.clear();
 
     // Either perform the logout or navigate
-    if (entry.menu === Menu.LOGOUT) {
+    if (entry && entry.menu === Menu.LOGOUT) {
       this.login.logout();
+    } else if (url.startsWith('http')) {
+      // An absolute URL
+      const absoluteRoot = toFullUrl('/');
+      if (url.startsWith(absoluteRoot)) {
+        // Is an internal link
+        url = url.substring(absoluteRoot.length);
+        this.router.navigateByUrl(url);
+      } else {
+        // Is an external link - all we can do is assign the location
+        location.assign(url);
+      }
     } else {
-      this.router.navigateByUrl(entry.url);
+      this.router.navigateByUrl(url);
     }
 
     // Update the active state
-    this.updateActiveMenuFromEntry(entry);
+    if (entry) {
+      this.updateActiveMenuFromEntry(entry);
+    }
+  }
+
+  /**
+   * Finds a menu entry that points to a given URL
+   * @param url The URL
+   */
+  entryByUrl(url: string): MenuEntry {
+    url = toFullUrl(url);
+    for (const root of this.fullMenu || []) {
+      for (const entry of root.entries || []) {
+        const entryUrl = toFullUrl(entry.url);
+        if (entryUrl && entryUrl === url) {
+          return entry;
+        }
+      }
+    }
+    return null;
   }
 
   /**
@@ -339,11 +386,11 @@ export class MenuService {
     const publicMarketplace = addRoot(RootMenu.PUBLIC_MARKETPLACE, 'shopping_cart', this.messages.menu.marketplaceAdvertisements);
     addRoot(RootMenu.BANKING, 'account_balance', this.messages.menu.banking);
     const marketplaceRoot = addRoot(RootMenu.MARKETPLACE, 'shopping_cart', this.messages.menu.marketplace);
+    const content = addRoot(RootMenu.CONTENT, 'information', this.messages.menu.content);
     addRoot(RootMenu.PERSONAL, 'account_box', this.messages.menu.personal);
-    const content = addRoot(RootMenu.CONTENT, 'info', this.messages.menu.content);
-    const register = addRoot(RootMenu.REGISTRATION, 'registration', this.messages.menu.register);
-    const login = addRoot(RootMenu.LOGIN, 'exit_to_app', this.messages.menu.login);
-    const logout = addRoot(RootMenu.LOGOUT, 'logout', this.messages.menu.logout, null, []);
+    const register = addRoot(RootMenu.REGISTRATION, 'registration', this.messages.menu.register, null, [MenuType.SIDENAV, MenuType.TOP]);
+    const login = addRoot(RootMenu.LOGIN, 'exit_to_app', this.messages.menu.login, null, [MenuType.SIDENAV, MenuType.TOP]);
+    const logout = addRoot(RootMenu.LOGOUT, 'logout', this.messages.menu.logout, null, [MenuType.TOP]);
 
     // Lambda that adds a submenu to a root menu
     const add = (menu: Menu, url: string, icon: string, label: string, showIn: MenuType[] = null): MenuEntry => {
@@ -355,6 +402,9 @@ export class MenuService {
 
     // Lambda that adds all content pages to the given root menu entry
     const addContentPages = (menu: Menu) => {
+      if (restrictedAccess) {
+        return;
+      }
       const pages = contentPages.filter(p => {
         return p.rootMenu === menu.root && p.isVisible(this.injector);
       });
@@ -435,15 +485,12 @@ export class MenuService {
 
       // Personal
       const myProfile = permissions.myProfile || {};
-      add(Menu.MY_PROFILE, '/users/my-profile', 'account_box', this.messages.menu.personalViewProfile,
-        [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
+      add(Menu.MY_PROFILE, '/users/my-profile', 'account_box', this.messages.menu.personalViewProfile);
       if (myProfile.editProfile) {
-        add(Menu.EDIT_MY_PROFILE, '/users/my-profile/edit', 'account_box', this.messages.menu.personalEditProfile,
-          [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
+        add(Menu.EDIT_MY_PROFILE, '/users/my-profile/edit', 'account_box', this.messages.menu.personalEditProfile);
       }
       if (contacts.enable) {
-        add(Menu.CONTACTS, '/users/contacts', 'import_contacts', this.messages.menu.personalContacts,
-          [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
+        add(Menu.CONTACTS, '/users/contacts', 'import_contacts', this.messages.menu.personalContacts);
       }
       if ((permissions.passwords || {}).manage) {
         let passwordsLabel: string;
@@ -452,17 +499,16 @@ export class MenuService {
         } else {
           passwordsLabel = this.messages.menu.personalPasswords;
         }
-        add(Menu.PASSWORDS, '/users/passwords', 'vpn_key', passwordsLabel,
-          [MenuType.BAR, MenuType.SIDENAV, MenuType.SIDE]);
+        add(Menu.PASSWORDS, '/users/passwords', 'vpn_key', passwordsLabel);
       }
       addContentPages(Menu.CONTENT_PAGE_PERSONAL);
+
+      // Add the logout
+      add(Menu.LOGOUT, null, logout.icon, logout.label, logout.showIn);
     }
 
     // Content pages in the content root menu
     const pagesInContent = addContentPages(Menu.CONTENT_PAGE_CONTENT);
-
-    // Add the logout, which doesn't shows in any menu, but is handled when using navigate()
-    add(Menu.LOGOUT, null, logout.icon, logout.label, logout.showIn);
 
     // For guests, content will always be dropdown.
     // For logged users, only if at least 1 content page with layout full is used

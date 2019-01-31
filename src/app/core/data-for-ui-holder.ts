@@ -1,4 +1,4 @@
-import { HttpErrorResponse, HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { DataForUi, UiKind } from 'app/api/models';
 import { UIService } from 'app/api/services';

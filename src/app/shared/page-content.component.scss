@@ -11,12 +11,16 @@
 
 .content-title {
   border-bottom: 1px solid $section-border-color;
+  border-top-left-radius: $card-border-radius;
+  border-top-right-radius: $card-border-radius;
   height: $title-height-xxs;
   min-height: $title-height-xxs;
   max-height: $title-height-xxs;
   position: relative;
+  background-color: $title-bg;
 
   .title-text {
+    color: $title-color;
     font-size: 1rem;
     line-height: 1em;
     margin-left: 0.6rem;
@@ -205,6 +209,7 @@
   height: 100%;
   border-color: $title-button-border-color;
   border-width: 0 0 0 1px;
+  border-top-right-radius: $card-border-radius;
   background-color: $title-button-bg;
   color: $title-button-color;
   padding-left: 0.2rem;
