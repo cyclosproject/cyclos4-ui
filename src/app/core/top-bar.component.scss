@@ -66,6 +66,10 @@
   @include media-breakpoint-up(lg) {
     height: $top-bar-with-menu-height;
 
+    .logo {
+      max-height: 32px;
+    }
+
     a {
       padding: 0 $top-bar-with-menu-item-padding !important;
     }
