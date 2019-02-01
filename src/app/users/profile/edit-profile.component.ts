@@ -21,7 +21,7 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 import { BehaviorSubject } from 'rxjs';
 import { take } from 'rxjs/operators';
 
-const IMAGE_MANAGED_TIMEOUT = 10_000;
+const IMAGE_MANAGED_TIMEOUT = 6_000;
 
 const BASIC_FIELDS = ['name', 'username', 'email'];
 export type Availability = 'disabled' | 'single' | 'multiple';

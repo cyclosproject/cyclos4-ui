@@ -11,7 +11,7 @@
 .logo {
   max-width: 64px;
   max-height: 30px;
-  margin-right: 1.5rem;
+  margin-right: 1.2rem;
 }
 .menu-container {
   display: flex;
@@ -65,10 +65,6 @@
 
   @include media-breakpoint-up(lg) {
     height: $top-bar-with-menu-height;
-
-    .logo {
-      margin: 0 $top-bar-with-menu-item-padding / 2 0 $top-bar-with-menu-item-padding;
-    }
 
     a {
       padding: 0 $top-bar-with-menu-item-padding !important;
