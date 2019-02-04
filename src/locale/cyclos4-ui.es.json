@@ -106,8 +106,8 @@
       "m": "{n}MB"
     },
     "results": {
-      "withTotal": "Resultados {first} - {last} de {total}",
-      "noTotal": "Resultados {first} - {last}",
+      "withTotal": "Mostrando {first} - {last} de {total} resultados",
+      "noTotal": "Mostrando {first} - {last} resultados",
       "none": "No existen resultados para el criterio de búsqueda"
     }
   },
