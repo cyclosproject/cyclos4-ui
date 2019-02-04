@@ -358,7 +358,7 @@
     "firstOccurrence": "Primera ocurrencia",
     "firstOccurrence.date": "Primera fecha de ocurrencia",
     "processed": "El pago ha sido procesado exitosamente",
-    "processed.withNumber": "El pago con número de transacción {number} fue exitosamente procesado",
+    "processed.withNumber": "El pago con número de transacción {number} fue procesado exitosamente",
     "pending": "El pago fue procesado y se encuentra pendiente de autorización",
     "pending.withNumber": "El pago con número de transacción {number} fue enviado para su futura autorización",
     "done.view": "Ver pago",
