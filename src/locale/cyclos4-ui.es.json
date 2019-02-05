@@ -113,8 +113,8 @@
   },
   "error": {
     "general": "Ha ocurrido un error inesperado durante el procesamiento de su solicitud",
-    "serverOffline": "No es posible conectarse al servidor.<br> Por favor, intente nuevamente más tarde.",
-    "invalidRequest": "No se pudo establecer comunicación con el servidor.<br> Por favor asegúrese que posee conexión a Internet e intente nuevamente después de unos segundos.",
+    "serverOffline": "No es posible conectarse al servidor.\nPor favor, intente nuevamente más tarde.",
+    "invalidRequest": "No se pudo establecer comunicación con el servidor. \nPor favor asegúrese que posee conexión a Internet e intente nuevamente después de unos segundos.",
     "queryParse": "Palabra clave no válida",
     "uploadSizeExceeded": "El archivo cargado excede el tamaño máximo de archivo permitido ({size})",
     "maxItems": "No puede agregar más de {max} elementos",
@@ -180,7 +180,7 @@
     "login": {
       "title": "Acceso",
       "message": "Para acceder al sistema, utilice su nombre de usuario y contraseña",
-      "disconnected": "Usted ha sido desconectado.<br>por Favor, acceda nuevamente para ver la página solicitada.",
+      "disconnected": "Usted ha sido desconectado. \nPor favor, acceda nuevamente para ver la página solicitada.",
       "principal": "Usuario",
       "password": "Contraseña",
       "forgotPassword": "Olvidó su contraseña?",
@@ -189,7 +189,7 @@
     "password": {
       "confirmationMessage": "Ingrese su {passwordType} para confirmar la operación",
       "confirm.noPassword": "Para confirmar usted debe ingresar su {passwordType}, pero aún no le ha registrado un valor",
-      "confirm.otp.noMediums": "Para confirmar usted necesita una contraseña de confirmación, pero no posee ningún medio para recibirla. <br> Por favor contacte a la administración.",
+      "confirm.otp.noMediums": "Para confirmar usted necesita una contraseña de confirmación, pero no posee ningún medio para recibirla. \nPor favor contacte a la administración.",
       "confirm.otp.active": "Puede utilizar la contraseña de confirmación que le fue enviada previamente o solicitar una nueva",
       "confirm.otp.request": "Por favor, solicite una contraseña de confirmación a continuación, para confirmar",
       "otp.sent": "La contraseña fue enviada a su {dest}",
@@ -215,7 +215,7 @@
         "preface": "Su {type} ha expirado.",
         "message.manual": "Antes de continuar, debe cambiar su valor.",
         "message.generated": "Para continuar, se ha de generar un nuevo valor.\nEste valor será mostrado por única vez. Por favor, asegúrese de memorizarlo o documentarlo adecuadamente.",
-        "generatedValue": "El valor de {type} es <data>{value}</data>.<br>Este valor será mostrado por única vez. Por favor, asegúrese de memorizarlo o documentarlo adecuadamente.",
+        "generatedValue": "El valor de {type} es <data>{value}</data>. \nEste valor será mostrado por única vez. Por favor, asegúrese de memorizarlo o documentarlo adecuadamente.",
         "generateNew": "Generar nuevo",
         "changed": "Su {type} fue modificado"
       },
