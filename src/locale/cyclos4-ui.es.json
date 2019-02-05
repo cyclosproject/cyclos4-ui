@@ -384,7 +384,7 @@
       "paymentToSelf": "Pago entre cuentas propias",
       "paymentToUser": "Pago a usuario",
       "paymentConfirmation": "Confirmación de pago",
-      "pendingPayment": "Payment submitted for authorization",
+      "pendingPayment": "Pago enviado para su autorización",
       "processedPayment": "Pago realizado",
       "authorizations": "Autorizaciones de pago",
       "authorizationHistory": "Historial de autorizaciones",
@@ -472,7 +472,7 @@
       "manage.message": "Puede arrastrar y soltar archivos para reordenarlos"
     },
     "user": {
-      "placeholder.allowSearch": "Type to search",
+      "placeholder.allowSearch": "Escriba para buscar",
       "placeholder.principal": "Type the user identifier",
       "contact.tooltip": "Seleccionar de la lista de contactos",
       "contact.title": "Seleccione un contacto",
@@ -520,7 +520,7 @@
     "contactInfo.none": "No se encontró información de contactos adicionales",
     "confirmation.message": "Para guardar el perfil ingrese su {type}",
     "profileSaved": "El perfil se ha guardado",
-    "imagesChanged": "To actually save the changes on images, the profile needs to be saved",
+    "imagesChanged": "Para guardar los cambios en las imágenes, el perfil debe ser guardado",
     "newEmailConfirmed": "Su nuevo correo electrónico fue confirmado",
     "passwordConfirmation": "Confirmación de {type}",
     "securityQuestion.message": "Si usted olvida su contraseña, necesitará contestar correctamente a la pregunta de seguridad para poder restablecerla.\nPuede definir la pregunta mas tarde, pero tenga en cuenta que la recuperación de contraseña no funcionará hasta que la haya definido.",
