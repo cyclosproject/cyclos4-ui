@@ -415,7 +415,7 @@
     "unblockScheduling": "Desbloquear pago agendado",
     "unblockScheduling.message": "Esto reanudará el procesamiento automático para las cuotas agendadas",
     "unblockScheduling.done": "El pago agendado será procesado automáticamente",
-    "cancelScheduled": "Cancela el pago agendado",
+    "cancelScheduled": "Cancelar el pago agendado",
     "cancelScheduled.message": "Esto cancelará el pago agendado en forma permanente",
     "cancelScheduled.done": "El pago agendado ha sido cancelado",
     "settleScheduled": "Saldar el pago agendado",
