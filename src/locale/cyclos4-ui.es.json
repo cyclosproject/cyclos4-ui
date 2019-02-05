@@ -203,7 +203,7 @@
       },
       "forgotten": {
         "title": "Recuperar su contraseña",
-        "preface": "Aquí puede recuperar su contraseña.<br>Complete su identificación de usuario a continuación, puede utilizar uno de los siguientes valores:",
+        "preface": "Aquí puede recuperar su contraseña.\nComplete su identificación de usuario a continuación, puede utilizar uno de los siguientes valores:",
         "principal": "Usuario",
         "captcha": "Escriba los caracteres a continuación",
         "email": "Usted recibirá en breve un correo electrónico con su código de usuario y las instrucciones para restablecer su contraseña",
