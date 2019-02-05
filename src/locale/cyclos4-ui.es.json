@@ -542,7 +542,7 @@
       "pending": "Su registro se ha realizado y debe ser verificado.\nUsted recibirá un e-mail con instrucciones para la activación de su cuenta. Si no recibe el mencionado e-mail, por favor, asegúrese de revisar la carpeta de spam.",
       "principal.single": "Usted puede utilizar su {principal} ({value}) en {channels}",
       "principal.multiple.preface": "Puede acceder al sistema con los siguientes datos:",
-      "principal.multiple.item": "<b>{principal}</b> ({value}): can be used on {channels}",
+      "principal.multiple.item": "<b>{principal}</b> ({value}): puede ser utilizado en {channels}",
       "generatedPasswords.none": "Ahora puede acceder al sistema con la contraseña que ha informado.",
       "generatedPasswords.single": "En breve, recibirá un e-mail con su {type} generado.",
       "generatedPasswords.multiple": "En breve, recibirá un e-mail con las siguientes contraseñas generadas: {types}."
