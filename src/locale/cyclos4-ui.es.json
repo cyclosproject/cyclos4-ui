@@ -234,7 +234,7 @@
         "change": "Modificar",
         "change.done": "Su {type} fue modificada",
         "change.generated.confirm": "Se generará un nuevo {type}, y el valor generado será mostrado por única vez. Está seguro de continuar?",
-        "change.generated.done": "The value for {type} is <data>{value}</data>.<br>Make sure to memorize it, as it won't be displayed again.",
+        "change.generated.done": "El valor para {type} es <data>{value}</data>. \n Por favor, asegúrese de memorizarlo o documentarlo adecuadamente ya que no le será mostrado nuevamente.",
         "unblock": "Desbloquear",
         "unblock.confirm": "Esta seguro de desbloquear su {type}?",
         "unblock.done": "Su {type} ha sido desbloqueda",
