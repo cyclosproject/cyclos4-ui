@@ -1,6 +1,6 @@
 {
-  "$schema": "./node_modules/ng-swagger-gen/ng-swagger-gen-schema.json",
-  "swagger": "src/swagger/cyclos-swagger.json",
+  "$schema": "./node_modules/ng-openapi-gen/ng-openapi-gen-schema.json",
+  "input": "src/openapi/cyclos-openapi.yaml",
   "output": "src/app/api",
   "includeTags": [
     "Auth",
@@ -24,5 +24,5 @@
     "Files",
     "Images"
   ],
-  "minParamsForContainer": 2
+  "enumStyle": "upper"
 }

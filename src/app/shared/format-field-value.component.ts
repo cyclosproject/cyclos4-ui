@@ -290,7 +290,7 @@ export class FormatFieldValueComponent implements OnInit {
   }
 
   downloadFile(event: MouseEvent, file: StoredFile) {
-    this.filesService.getRawFileContent(file.id).subscribe(blob => {
+    this.filesService.getRawFileContent({ id: file.id }).subscribe(blob => {
       download(blob, file.name, file.contentType);
     });
     event.stopPropagation();

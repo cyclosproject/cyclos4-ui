@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { TransactionAuthorizationStatusEnum, TransactionKind } from 'app/api/models';
-import { TransactionsService } from 'app/api/services';
 import { BaseTransactionsSearch } from 'app/banking/transactions/base-transactions-search.component';
 import { FieldOption } from 'app/shared/field-option';
 
@@ -35,13 +34,14 @@ export class SearchAuthorizedPaymentsComponent
   }
 
   get statusOptions(): FieldOption[] {
-    return TransactionAuthorizationStatusEnum.values().map(st => ({
+    const statuses = Object.values(TransactionAuthorizationStatusEnum) as TransactionAuthorizationStatusEnum[];
+    return statuses.map(st => ({
       value: st,
       text: this.transactionStatusService.authorizationStatus(st)
     }));
   }
 
-  protected buildQuery(value: any): TransactionsService.SearchTransactionsParams {
+  protected buildQuery(value: any): any {
     const query = super.buildQuery(value);
     query.authorizationStatuses = [value.status];
     return query;

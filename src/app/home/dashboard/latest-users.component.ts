@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
-import { AdAddressResultEnum, UserOrderByEnum, UserResult } from 'app/api/models';
+import { UserAddressResultEnum, UserOrderByEnum, UserResult } from 'app/api/models';
 import { UsersService } from 'app/api/services';
 import { BaseDashboardComponent } from 'app/home/dashboard/base-dashboard.component';
-import { BehaviorSubject } from 'rxjs';
 import { Menu } from 'app/shared/menu';
+import { BehaviorSubject } from 'rxjs';
 
 /**
  * Displays the latest users
@@ -30,7 +30,7 @@ export class LatestUsersComponent extends BaseDashboardComponent implements OnIn
   ngOnInit() {
     super.ngOnInit();
     this.addSub(this.usersService.searchUsers({
-      addressResult: AdAddressResultEnum.NONE,
+      addressResult: UserAddressResultEnum.NONE,
       groups: this.groups,
       ignoreProfileFieldsInList: true,
       orderBy: UserOrderByEnum.CREATION_DATE,

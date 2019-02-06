@@ -354,14 +354,14 @@ export class PerformPaymentComponent extends BasePageComponent<DataForTransactio
     // Preview
     return this.paymentsService.previewPayment({
       owner: ApiHelper.SELF,
-      payment: payment
+      body: payment
     });
   }
 
   private performPaymentRequest(): Observable<Transaction> {
     return this.paymentsService.performPayment({
       owner: ApiHelper.SELF,
-      payment: this.preview.payment,
+      body: this.preview.payment,
       confirmationPassword: this.confirmationPassword.value
     });
   }

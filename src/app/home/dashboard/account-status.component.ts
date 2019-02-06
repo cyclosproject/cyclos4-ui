@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
-import { Account, AccountBalanceHistoryResult, AccountHistoryResult, Currency, TimeFieldEnum } from 'app/api/models';
+import { Account, AccountBalanceHistoryResult, AccountHistoryResult, Currency, TimeFieldEnum, TransferDirectionEnum } from 'app/api/models';
 import { AccountsService } from 'app/api/services';
 import { ISO_DATE } from 'app/core/format.service';
 import { BaseDashboardComponent } from 'app/home/dashboard/base-dashboard.component';
@@ -79,7 +79,7 @@ export class AccountStatusComponent extends BaseDashboardComponent implements On
         fields: [],
         owner: 'self',
         accountType: this.account.type.id,
-        direction: 'credit',
+        direction: TransferDirectionEnum.CREDIT,
         pageSize: 3
       }).subscribe(transfers => {
         this.lastPayments$.next(transfers);

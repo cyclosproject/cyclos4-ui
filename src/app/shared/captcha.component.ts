@@ -48,9 +48,8 @@ export class CaptchaComponent implements AfterViewInit, OnDestroy {
   }
 
   newCaptcha() {
-    this.captchaService.newCaptchaResponse(this.group)
-      .subscribe(response => {
-        const id = response.body;
+    this.captchaService.newCaptcha({ group: this.group })
+      .subscribe(id => {
         this.form.patchValue({
           challenge: id,
           response: ''

@@ -114,7 +114,7 @@ export class ViewProfileComponent extends BasePageComponent<UserView> implements
   private addContact(): any {
     this.contactsService.createContact({
       user: ApiHelper.SELF,
-      contact: {
+      body: {
         contact: this.user.id
       }
     }).subscribe(() => {
@@ -124,7 +124,7 @@ export class ViewProfileComponent extends BasePageComponent<UserView> implements
   }
 
   private removeContact(): any {
-    this.contactsService.deleteContact(this.user.contact.id).subscribe(() => {
+    this.contactsService.deleteContact({ id: this.user.contact.id }).subscribe(() => {
       this.notification.snackBar(this.messages.user.profile.removeContactDone(this.shortName));
       this.reload();
     });

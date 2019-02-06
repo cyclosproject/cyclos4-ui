@@ -129,7 +129,7 @@ export class PublicRegistrationComponent
 
       // ... and remove it server-side
       this.errorHandler.requestWithCustomErrorHandler(() => {
-        this.imagesService.deleteImage(this.image.id).subscribe();
+        this.imagesService.deleteImage({ idOrKey: this.image.id }).subscribe();
       });
     }
   }
@@ -358,7 +358,7 @@ export class PublicRegistrationComponent
     if (!validateBeforeSubmit(this.confirmForm)) {
       return;
     }
-    this.usersService.createUser(this.userNew)
+    this.usersService.createUser({ body: this.userNew })
       .subscribe(result => {
         this.result = result;
         this.image = null;

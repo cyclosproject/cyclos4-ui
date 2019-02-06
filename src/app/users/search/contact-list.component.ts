@@ -62,7 +62,7 @@ export class ContactListComponent
   }
 
   doSearch(value) {
-    return this.contactsService.searchContactListResponse(value);
+    return this.contactsService.searchContactList$Response(value);
   }
 
   private addNew() {

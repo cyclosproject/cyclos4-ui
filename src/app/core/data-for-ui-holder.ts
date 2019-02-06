@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { DataForUi, UiKind } from 'app/api/models';
-import { UIService } from 'app/api/services';
+import { UiService } from 'app/api/services';
 import { ErrorStatus } from 'app/core/error-status';
 import { NextRequestState } from 'app/core/next-request-state';
 import { Messages } from 'app/messages/messages';
@@ -33,7 +33,7 @@ export class DataForUiHolder {
 
   constructor(
     private nextRequestState: NextRequestState,
-    private uiService: UIService,
+    private uiService: UiService,
     private messages: Messages,
     private http: HttpClient) {
   }

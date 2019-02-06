@@ -44,7 +44,7 @@ export class VerifyPhoneComponent extends BaseComponent implements OnInit {
 
   /** Sends the verification code */
   sendCode() {
-    this.phonesService.sendPhoneVerificationCode(this.phone.id).subscribe(number => {
+    this.phonesService.sendPhoneVerificationCode({ id: this.phone.id }).subscribe(number => {
       this.message = this.messages.phone.verify.done(number);
       this.code.setValue(null);
       this.codeField.focus();

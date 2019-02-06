@@ -55,7 +55,7 @@ export class ForgotPasswordComponent extends BasePageComponent<DataForLogin> imp
     }
     const params: ForgottenPasswordRequest = cloneDeep(this.form.value);
     params.user = ApiHelper.escapeNumeric(params.user);
-    this.authService.forgottenPasswordRequest(params)
+    this.authService.forgottenPasswordRequest({ body: params })
       .subscribe(() => {
         this.notification.info(this.messages.auth.password.forgotten.email);
         this.cancel();

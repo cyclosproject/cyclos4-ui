@@ -137,7 +137,7 @@ export class SearchUsersComponent
     value.profileFields = this.fieldHelper.toCustomValuesFilter(query.customValues);
     delete value.customValues;
     return this.resultType === ResultType.MAP
-      ? this.usersService.searchMapDirectoryResponse(value)
-      : this.usersService.searchUsersResponse(value);
+      ? this.usersService.searchMapDirectory$Response(value)
+      : this.usersService.searchUsers$Response(value);
   }
 }

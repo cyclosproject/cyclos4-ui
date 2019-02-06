@@ -80,7 +80,7 @@ export class AcceptPendingAgreementsComponent
       return;
     }
     const ids = this.agreements.map(a => a.id);
-    this.agreementsService.acceptPendingAgreement(ids).subscribe(() => this.reload());
+    this.agreementsService.acceptPendingAgreement({ agreements: ids }).subscribe(() => this.reload());
   }
 
   reload() {

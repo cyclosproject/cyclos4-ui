@@ -39,7 +39,7 @@ export class AddContactDialogComponent extends BaseComponent {
     const user = this.field.selection;
     this.contactsService.createContact({
       user: ApiHelper.SELF,
-      contact: {
+      body: {
         contact: this.control.value
       }
     }).subscribe(() => {

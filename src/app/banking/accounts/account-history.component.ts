@@ -119,7 +119,8 @@ export class AccountHistoryComponent
 
   doSearch(value: any) {
     const filter = value.transferFilter as TransferFilter;
-    const query: AccountsService.SearchAccountHistoryParams | AccountsService.GetAccountStatusByOwnerAndTypeParams = {
+    const query = {
+      fields: [],
       owner: ApiHelper.SELF, accountType: this.typeId,
       page: value.page, pageSize: value.pageSize,
       transferFilters: filter == null ? [] : [filter.id],
@@ -130,7 +131,7 @@ export class AccountHistoryComponent
       transactionNumber: value.transactionNumber,
       direction: value.direction
     };
-    return this.accountsService.searchAccountHistoryResponse(query).pipe(tap(() => {
+    return this.accountsService.searchAccountHistory$Response(query).pipe(tap(() => {
       query.fields = ['status'];
       this.addSub(this.accountsService.getAccountStatusByOwnerAndType(query).subscribe(status => {
         const accountWithStatus = { ...this.data.account, status: status.status };

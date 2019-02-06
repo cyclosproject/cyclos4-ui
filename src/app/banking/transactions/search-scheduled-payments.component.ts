@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { RecurringPaymentStatusEnum, ScheduledPaymentStatusEnum, TransactionKind } from 'app/api/models';
-import { TransactionsService } from 'app/api/services';
 import { BaseTransactionsSearch } from 'app/banking/transactions/base-transactions-search.component';
 
 /**
@@ -31,17 +30,19 @@ export class SearchScheduledPaymentsComponent
   }
 
   get statusOptions() {
-    return ScheduledPaymentStatusEnum.values().map(st => ({
+    const statuses = Object.values(ScheduledPaymentStatusEnum) as ScheduledPaymentStatusEnum[];
+    return statuses.map(st => ({
       value: st,
       text: this.transactionStatusService.scheduledPaymentStatus(st)
     }));
   }
 
-  protected buildQuery(value: any): TransactionsService.SearchTransactionsParams {
+  protected buildQuery(value: any): any {
     const query = super.buildQuery(value);
     const status = value.status as ScheduledPaymentStatusEnum;
     query.scheduledPaymentStatuses = [status];
-    const recurringStatus = RecurringPaymentStatusEnum.values().includes(value.status) ? value.status as RecurringPaymentStatusEnum : null;
+    const recurringStatuses = Object.values(RecurringPaymentStatusEnum);
+    const recurringStatus = recurringStatuses.includes(value.status) ? value.status as RecurringPaymentStatusEnum : null;
     if (recurringStatus) {
       query.recurringPaymentStatuses = [recurringStatus];
     } else {

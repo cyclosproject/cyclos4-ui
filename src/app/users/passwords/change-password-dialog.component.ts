@@ -69,7 +69,7 @@ export class ChangePasswordDialogComponent extends BaseComponent implements OnIn
     this.passwordsService.changePassword({
       user: ApiHelper.SELF,
       type: this.type.id,
-      params: params
+      body: params
     }).subscribe(() => {
       this.done.emit();
       this.modalRef.hide();

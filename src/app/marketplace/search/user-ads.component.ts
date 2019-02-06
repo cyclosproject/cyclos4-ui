@@ -63,8 +63,8 @@ export class UserAdsComponent
   }
 
   doSearch(value: any) {
-    const params = cloneDeep(value) as MarketplaceService.SearchUserAdsParams;
+    const params = cloneDeep(value);
     params.user = this.user;
-    return this.marketplaceService.searchUserAdsResponse(params);
+    return this.marketplaceService.searchUserAds$Response(params);
   }
 }

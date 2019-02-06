@@ -85,14 +85,14 @@ export class ChangeExpiredPasswordComponent
     }
     const type = this.data.type;
     if (this.generated) {
-      this.passwordsService.generatePassword(this.typeId).subscribe(newValue => {
+      this.passwordsService.generatePassword({ type: this.typeId }).subscribe(newValue => {
         this.generatedValue$.next(newValue);
       });
     } else {
       this.passwordsService.changePassword({
         user: ApiHelper.SELF,
         type: this.typeId,
-        params: this.form.value
+        body: this.form.value
       }).subscribe(() => {
         this.notification.snackBar(this.messages.auth.password.expired.changed(type.name));
         this.reload();

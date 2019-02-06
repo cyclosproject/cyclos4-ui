@@ -766,7 +766,7 @@ export class EditProfileComponent
 
   private removeAllTempImages() {
     (this.uploadedImages || []).forEach(img => {
-      this.imagesService.deleteImage(img.id).subscribe();
+      this.imagesService.deleteImage({ idOrKey: img.id }).subscribe();
     });
     this.uploadedImages = [];
   }
@@ -811,7 +811,7 @@ export class EditProfileComponent
             this.removedImages = [removed, ...this.removedImages];
           } else if (this.uploadedImages.find(i => i.id === removed) != null) {
             // This removed image is an uploaded temp image
-            this.imagesService.deleteImage(removed).subscribe();
+            this.imagesService.deleteImage({ idOrKey: removed }).subscribe();
           }
         }
         // Update the images and uploaded images lists

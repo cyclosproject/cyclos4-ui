@@ -79,19 +79,18 @@ export abstract class BaseTransactionsSearch
 
   doSearch(value: any) {
     const query = this.buildQuery(value);
-    return this.transactionsService.searchTransactionsResponse(query);
+    return this.transactionsService.searchTransactions$Response(query);
   }
 
-  protected buildQuery(value: any): TransactionsService.SearchTransactionsParams {
-    const query: TransactionsService.SearchTransactionsParams = {
+  protected buildQuery(value: any): any {
+    return {
       page: value.page, pageSize: value.pageSize,
       owner: ApiHelper.SELF,
       accountTypes: value.accountType ? [value.accountType] : null,
       transferFilters: value.transferFilter ? [value.transferFilter] : null,
-      datePeriod: this.bankingHelper.resolveDatePeriod(value)
+      datePeriod: this.bankingHelper.resolveDatePeriod(value),
+      kinds: this.getKinds()
     };
-    query.kinds = this.getKinds();
-    return query;
   }
 
   /**

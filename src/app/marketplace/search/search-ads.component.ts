@@ -2,13 +2,13 @@ import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/c
 import { AdAddressResultEnum, AdCategoryWithChildren, AdResult, CustomFieldDetailed } from 'app/api/models';
 import { AdDataForSearch } from 'app/api/models/ad-data-for-search';
 import { MarketplaceService } from 'app/api/services';
+import { FieldHelperService } from 'app/core/field-helper.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { empty } from 'app/shared/helper';
 import { ResultType } from 'app/shared/result-type';
 import { cloneDeep } from 'lodash';
 import { BehaviorSubject } from 'rxjs';
-import { FieldHelperService } from 'app/core/field-helper.service';
 
 /**
  * Search for advertisements
@@ -61,11 +61,11 @@ export class SearchAdsComponent
   }
 
   doSearch(value: any) {
-    const params = cloneDeep(value) as MarketplaceService.SearchAdsParams;
+    const params = cloneDeep(value);
     delete params['customValues'];
     params.customFields = this.fieldHelper.toCustomValuesFilter(value.customValues);
     params.addressResult = this.resultType === ResultType.MAP ? AdAddressResultEnum.ALL : AdAddressResultEnum.NONE;
-    return this.marketplaceService.searchAdsResponse(params);
+    return this.marketplaceService.searchAds$Response(params);
   }
 
   onResultTypeChanged(resultType: ResultType, previousResultType: ResultType) {

@@ -110,7 +110,7 @@ export class PasswordInputComponent
         return null;
     }
     return new ActionWithIcon(icon, label, () => {
-      this.addSub(this.authService.newOtp(medium).subscribe(res => {
+      this.addSub(this.authService.newOtp({ medium: medium }).subscribe(res => {
         this.notificationService.snackBar(this.messages.auth.password.otpSent((res || []).join(', ')));
         this.otpSent.emit(null);
       }));

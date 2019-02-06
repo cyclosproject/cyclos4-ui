@@ -118,7 +118,7 @@ export class RegistrationStepFieldsComponent
       const result = this.image;
       return this.errorHandler.requestWithCustomErrorHandler(() => {
         return new Observable(obs => {
-          this.imagesService.deleteImage(this.image.id).subscribe(() => {
+          this.imagesService.deleteImage({ idOrKey: this.image.id }).subscribe(() => {
             this.imageRemoved.emit(this.image);
             this.image = null;
             obs.next(result);

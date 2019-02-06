@@ -60,8 +60,8 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
         this.title = this.initTitle(transaction.kind);
         this.headingActions = this.initActions(transaction);
         this.hasDueAmount = transaction.dueAmount && !this.format.isZero(transaction.dueAmount);
-        this.hasInstallmentActions = (transaction.installments || []).filter(i => i.canProcess || i.canSettle).length > 0;
-        this.hasOccurrenceActions = (transaction.occurrences || []).filter(o => o.canProcess).length > 0;
+        this.hasInstallmentActions = !!(transaction.installments || []).find(i => i.canProcess || i.canSettle);
+        this.hasOccurrenceActions = false;
         this.data = transaction;
         if (transaction.transfer) {
           transaction.transfer.transaction = transaction;
@@ -151,7 +151,7 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
         this.pendingPaymentsService.authorizePendingPayment({
           key: this.transaction.id,
           confirmationPassword: res.confirmationPassword,
-          params: {
+          body: {
             comments: res.customValues.comments
           }
         }).subscribe(nextLevel => {
@@ -176,7 +176,7 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
         this.pendingPaymentsService.denyPendingPayment({
           key: this.transaction.id,
           confirmationPassword: res.confirmationPassword,
-          params: {
+          body: {
             comments: res.customValues.comments
           }
         }).subscribe(() => {
@@ -197,7 +197,7 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
         this.pendingPaymentsService.cancelPendingPayment({
           key: this.transaction.id,
           confirmationPassword: res.confirmationPassword,
-          params: {
+          body: {
             comments: res.customValues.comments
           }
         }).subscribe(() => {

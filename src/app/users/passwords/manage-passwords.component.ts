@@ -128,7 +128,7 @@ export class ManagePasswordsComponent
   }
 
   private doGenerate(password: PasswordStatusAndActions) {
-    this.passwordsService.generatePassword(password.type.id).subscribe(newValue => {
+    this.passwordsService.generatePassword({ type: password.type.id }).subscribe(newValue => {
       this.notification.info(this.messages.auth.password.action.changeGeneratedDone({
         type: password.type.name,
         value: newValue
