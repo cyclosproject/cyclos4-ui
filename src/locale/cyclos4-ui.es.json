@@ -131,7 +131,7 @@
     "password.temporarilyBlocked": "Su contraseña ha sido temporalmente bloqueada por exceder el número máximo de intentos incorrectos permitidos.",
     "password.expired": "Su contraseña ha expirado. Por favor, contacte a la administración.",
     "password.pending": "Su contraseña está pendiente de ser activada. Por favor, contacte a la administración.",
-    "password.invalid": "El {type} dado no es válido",
+    "password.invalid": "El {type} ingresado no es válido",
     "remoteAddressBlocked": "Su dirección IP ha sido bloqueada temporalmente por exceder el número máximo de intentos de acceso",
     "permission": "Usted no posee permisos para realizar la acción solicitada",
     "unauthorized.address": "Su dirección IP no es permitida para el acceso",
