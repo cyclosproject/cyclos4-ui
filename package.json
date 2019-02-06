@@ -67,7 +67,7 @@
     "@angular/language-service": "^7.2.4",
     "@types/node": "^10.12.21",
     "codelyzer": "~4.5.0",
-    "ng-openapi-gen": "^0.1.6",
+    "ng-openapi-gen": "^0.1.7",
     "ng-translation-gen": "^0.3.0",
     "svgo": "^1.1.1",
     "ts-node": "~7.0.1",
