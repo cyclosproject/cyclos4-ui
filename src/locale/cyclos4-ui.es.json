@@ -360,7 +360,7 @@
     "processed": "El pago ha sido procesado exitosamente",
     "processed.withNumber": "El pago con número de transacción {number} fue procesado exitosamente",
     "pending": "El pago fue procesado y se encuentra pendiente de autorización",
-    "pending.withNumber": "El pago con número de transacción {number} fue enviado para su futura autorización",
+    "pending.withNumber": "El pago con número de transacción {number} fue enviado para su autorización",
     "done.view": "Ver pago",
     "done.new": "Nuevo pago",
     "status": {
