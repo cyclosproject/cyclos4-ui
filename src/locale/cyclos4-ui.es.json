@@ -310,7 +310,7 @@
     "fromAccount": "Cuenta origen",
     "toAccount": "Cuenta de destino",
     "toUser": "Usuario",
-    "requiresAuthorization": "Este pago requerirá autorización",
+    "requiresAuthorization": "Este pago requiere, y quedará pendiente de autorización",
     "appliedFees": "Cargos aplicados",
     "totalAmount": "Monto total",
     "dueAmount": "Monto adeudado",
@@ -473,7 +473,7 @@
     },
     "user": {
       "placeholder.allowSearch": "Escriba para buscar",
-      "placeholder.principal": "Type the user identifier",
+      "placeholder.principal": "Ingrese el identificador de usuario",
       "contact.tooltip": "Seleccionar de la lista de contactos",
       "contact.title": "Seleccione un contacto",
       "contact.empty": "Su lista de contactos se encuentra vacía"
