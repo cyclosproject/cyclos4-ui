@@ -162,7 +162,7 @@ export class ImageUploadComponent implements OnDestroy {
     return new Observable(observer => {
       const url = `${this.apiConfiguration.rootUrl}/images/temp`;
       const data = new FormData();
-      data.append('file', file.content, file.name);
+      data.append('image', file.content, file.name);
 
       file.subscription = this.http.post(url, data, {
         observe: 'events',

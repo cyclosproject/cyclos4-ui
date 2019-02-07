@@ -5203,7 +5203,7 @@ A note for dynamic custom fields&#58; If a script is used to generate possible v
             schema:
               type: object
               properties:
-                file:
+                image:
                   type: string
                   format: binary
                   description: >-
@@ -5493,7 +5493,7 @@ A note for dynamic custom fields&#58; If a script is used to generate possible v
             schema:
               type: object
               properties:
-                file:
+                image:
                   type: string
                   format: binary
                   description: >-
@@ -5677,7 +5677,7 @@ A note for dynamic custom fields&#58; If a script is used to generate possible v
             schema:
               type: object
               properties:
-                file:
+                image:
                   type: string
                   format: binary
                   description: >-
@@ -5811,7 +5811,7 @@ A note for dynamic custom fields&#58; If a script is used to generate possible v
             schema:
               type: object
               properties:
-                file:
+                image:
                   type: string
                   format: binary
                   description: >-
@@ -5891,7 +5891,7 @@ A note for dynamic custom fields&#58; If a script is used to generate possible v
             schema:
               type: object
               properties:
-                file:
+                image:
                   type: string
                   format: binary
                   description: >-
