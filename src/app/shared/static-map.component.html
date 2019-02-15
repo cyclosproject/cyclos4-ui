@@ -1,4 +1,5 @@
-<a [href]="externalUrl" target="_blank">
+<a [href]="externalUrl" target="_blank"
+  [ngStyle]="{ display: 'block', minHeight: anchorHeight }">
   <img *ngIf="url" [src]="url" [alt]="title" [title]="title" [ngStyle]="{
     maxWidth: imageWidth,
     maxHeight: imageHeight

@@ -32,6 +32,7 @@ export class StaticMapComponent implements OnInit, OnDestroy, AfterViewInit {
   heightWasAuto: boolean;
   imageWidth: string;
   imageHeight: string;
+  anchorHeight: string;
   private sub: Subscription;
 
   constructor(
@@ -73,6 +74,11 @@ export class StaticMapComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   private checkSizes() {
+    if (typeof this.height === 'number') {
+      this.anchorHeight = `${this.height}px`;
+    } else {
+      this.anchorHeight = null;
+    }
     if (this.width === 'auto' || this.height === 'auto') {
       setTimeout(() => {
         const element = this.element;
