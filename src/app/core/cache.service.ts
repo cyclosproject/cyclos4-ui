@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import lscache from 'lscache';
-import { Observable, of, empty } from 'rxjs';
-import { tap, take } from 'rxjs/operators';
-import { environment } from 'environments/environment';
 import { DEFAULT_CACHE_SECONDS } from 'app/content/content';
+import { environment } from 'environments/environment';
+import lscache from 'lscache';
+import { EMPTY, Observable, of } from 'rxjs';
+import { take, tap } from 'rxjs/operators';
 
 /**
  * Service used to manage the persistent cache
@@ -42,7 +42,7 @@ export class CacheService {
         tap(value => lscache.set(key, value, timeoutSeconds))
       );
     } else {
-      return empty();
+      return EMPTY;
     }
   }
 }

@@ -2,11 +2,11 @@ import { Injectable, Injector } from '@angular/core';
 import { Banner } from 'app/content/banner';
 import { BannerCard } from 'app/content/banner-card';
 import { LoginService } from 'app/core/login.service';
-import { MenuService, ActiveMenu } from 'app/core/menu.service';
+import { ActiveMenu, MenuService } from 'app/core/menu.service';
 import { blank, empty as isEmpty } from 'app/shared/helper';
 import { Menu } from 'app/shared/menu';
 import { environment } from 'environments/environment';
-import { BehaviorSubject, empty, forkJoin, Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, EMPTY, forkJoin, Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 
 /** The default number of seconds a banner is shown before rotating */
@@ -70,7 +70,7 @@ export class BannerService {
 
   getCurrentBanner(card: BannerCard): Observable<Banner> {
     const subject = this.currentBanners.get(card);
-    return subject ? subject.asObservable().pipe(distinctUntilChanged()) : empty();
+    return subject ? subject.asObservable().pipe(distinctUntilChanged()) : EMPTY;
   }
 
   private update(): void {

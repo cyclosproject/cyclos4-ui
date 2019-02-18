@@ -2,7 +2,7 @@ import { Injectable, Injector } from '@angular/core';
 import { ContentGetter } from 'app/content/content-getter';
 import { Content, DEFAULT_CACHE_SECONDS } from 'app/content/content';
 import { CacheService } from 'app/core/cache.service';
-import { Observable, of, empty } from 'rxjs';
+import { Observable, of, EMPTY } from 'rxjs';
 import { blank } from 'app/shared/helper';
 import { tap } from 'rxjs/operators';
 import { ContentPage } from 'app/content/content-page';
@@ -39,7 +39,7 @@ export class ContentService {
    */
   get(content: Content): Observable<string> {
     if (content == null) {
-      return empty();
+      return EMPTY;
     }
     if (typeof content.content === 'string') {
       return of(content.content);

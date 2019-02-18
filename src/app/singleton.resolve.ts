@@ -42,7 +42,7 @@ export abstract class SingletonResolve<T> implements Resolve<T> {
     }
     // Return an observable
     let subscription: Subscription = null;
-    return Observable.create(observer => {
+    return new Observable(observer => {
       subscription = this.data.subscribe(data => {
         // Ensure we're not getting the initial null data
         if (this._done) {

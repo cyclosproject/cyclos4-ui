@@ -1,7 +1,7 @@
 /**
  * How the layout is made within a card.
  * Possible options:
- * 
+ *
  * - `normal`: The card pads the content, and the height is adjusted according to the content.
  * - `tight`: No padding is added to the content, and the height is adjusted according to the content.
  * - `viewForm`: The card has slightly more vertical than horizontal padding, and is used when a read-only form is presented.

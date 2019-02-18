@@ -10,7 +10,7 @@ The initial planned scope is to have only end-user functionality in this applica
 ## Technical details
 
 - This application is built using [Angular](https://angular.io/) and [Bootstrap](https://getbootstrap.com), using the [ngx-bootstrap](https://valor-software.com/ngx-bootstrap/) integration library;
-- It uses Cyclos' REST API for integration. The [ng-swagger-gen](https://github.com/cyclosproject/ng-swagger-gen) project is used to generate the client services and web service models;
+- It uses Cyclos' REST API for integration. The [ng-openapi-gen](https://github.com/cyclosproject/ng-openapi-gen) project is used to generate the client services and web service models. Starting with Cyclos 4.12, the API will be described using OpenAPI 3 instead of Swagger 2. But a copy of the Cyclos 12 OpenAPI 3 descriptor (which is backwards compatible with 4.11) is already committed in this repository, and is used to generate the services;
 - Translations are done separatedly from the Cyclos installation. This way they cannot be customized in Cyclos, but allows the user interface to grow independently from the deployed Cyclos version;
 - Requests to the Cyclos server are performed directly from the browser. That means that either this front-end should be deployed in the same domain as Cyclos, or CORS should be enabled in Cyclos by setting `cyclos.cors.origin = <cyclos4-ui-domain>` in the `cyclos.properties` file.
 
