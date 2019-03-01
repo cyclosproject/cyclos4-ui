@@ -1,7 +1,7 @@
 {
   "general": {
-    "period": "Period",
-    "now": "Now",
+    "period": "Periode",
+    "now": "Nu",
     "action": "Action",
     "actions": "Actions",
     "date": "Date",
@@ -550,8 +550,7 @@
     "orderBy": {
       "alphabeticallyAsc": "Name (A-Z)",
       "alphabeticallyDesc": "Name (Z-A)"
-    },
-    "imagesChanged": "To actually save the changes on images, the profile needs to be saved"
+    }
   },
   "phone": {
     "mobile": "Mobile phone",
