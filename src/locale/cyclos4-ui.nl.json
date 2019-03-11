@@ -138,7 +138,7 @@
     "unauthorized.url": "Toegang is niet toegestaan voor deze URL",
     "loggedOut": "De verbinding is verbroken. Gelieve in te loggen opnieuw in te loggen.",
     "otp": "Er is een fout opgetreden bij het versturen van het wachtwoord. Gelieve later opnieuw te proberen.",
-    "securityAnswer": "De veiligheid gegeven antwoord is ongeldig",
+    "securityAnswer": "Het veiligheid antwoord is ongeldig",
     "securityAnswer.disabled": "Bij overschrijding van het aantal antwoordpogingen, dit verzoek is afgebroken. Neem dan contact op met de administratie",
     "illegalAction": "De actie die u probeert uit te voeren, is ongeldig",
     "field": {
