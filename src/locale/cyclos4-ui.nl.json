@@ -49,7 +49,7 @@
     "reloadPage": "Pagina herladen",
     "sessionExpired": {
       "title": "Sessie verlopen",
-      "message": "U zijn ingelogd.<br>U kunt blijven bekijken op dezelfde pagina of in te loggen nu weer.",
+      "message": "Je bent uitgelogged.<br>Je kunt op de pagina blijven of opnieuw inloggen.",
       "loginAgain": "Opnieuw inloggen"
     },
     "datePart": {
@@ -91,13 +91,13 @@
     },
     "weekday": {
       "min": {
-        "sun": "S",
+        "sun": "Z",
         "mon": "M",
-        "tue": "T",
+        "tue": "D",
         "wed": "W",
-        "thu": "T",
-        "fri": "F",
-        "sat": "S"
+        "thu": "D",
+        "fri": "V",
+        "sat": "Z"
       }
     },
     "fileSize": {
@@ -106,7 +106,7 @@
       "m": "{n}MB"
     },
     "results": {
-      "withTotal": "Het tonen van {first} - {last} van {total} resultaten",
+      "withTotal": "Zoekresultaten {first} - {last} van {total}",
       "noTotal": "Het tonen van {first} - {last} resultaten",
       "none": "Geen resultaten overeenkomen met de zoekcriteria"
     }
