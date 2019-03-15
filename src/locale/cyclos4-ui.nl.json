@@ -49,7 +49,7 @@
     "reloadPage": "Pagina herladen",
     "sessionExpired": {
       "title": "Sessie verlopen",
-      "message": "U zijn ingelogd.<br>U kunt blijven bekijken op dezelfde pagina of in te loggen nu weer.",
+      "message": "Je bent uitgelogged.<br>Je kunt op de pagina blijven of opnieuw inloggen.",
       "loginAgain": "Opnieuw inloggen"
     },
     "datePart": {
@@ -91,13 +91,13 @@
     },
     "weekday": {
       "min": {
-        "sun": "S",
+        "sun": "Z",
         "mon": "M",
-        "tue": "T",
+        "tue": "D",
         "wed": "W",
-        "thu": "T",
-        "fri": "F",
-        "sat": "S"
+        "thu": "D",
+        "fri": "V",
+        "sat": "Z"
       }
     },
     "fileSize": {
@@ -106,39 +106,39 @@
       "m": "{n}MB"
     },
     "results": {
-      "withTotal": "Het tonen van {first} - {last} van {total} resultaten",
+      "withTotal": "Zoekresultaten {first} - {last} van {total}",
       "noTotal": "Het tonen van {first} - {last} resultaten",
       "none": "Geen resultaten overeenkomen met de zoekcriteria"
     }
   },
   "error": {
     "general": "Er is een onverwachte fout opgetreden bij het verwerken van uw verzoek",
-    "serverOffline": "De server kan geen contact worden gemaakt.<br>Gelieve later opnieuw te proberen.",
-    "invalidRequest": "Het is niet mogelijk om verbinding te maken met de server.<br>zorg ervoor dat u bent verbonden met het Internet en probeer het over een paar seconden.",
+    "serverOffline": "Er kan geen contact met de server worden gemaakt.<br>Probeer het Gelieve later opnieuw.",
+    "invalidRequest": "Er kan geen verbinding met de server gemaakt worden. Zorg ervoor dat u met het internet verbonden bent en probeert u het over enkele seconden opnieuw.",
     "queryParse": "Ongeldige trefwoorden",
     "uploadSizeExceeded": "Het geüploade bestand is groter dan de maximale toegestane grootte van {size}",
-    "maxItems": "Niet meer dan {max} elementen",
+    "maxItems": "Kan niet meer dan {max} elementen toevoegen",
     "validation": "De actie kan niet worden verwerkt, omdat er validatiefouten zijn",
-    "staleEntity": "Deze gegevens kunnen niet worden opgeslagen omdat deze is gewijzigd door iemand anders.<br>Neem dan laad de pagina nogmaals en start de bewerking.",
-    "removeDataInUse": "Deze gegevens kunnen niet worden verwijderd, omdat deze is momenteel in gebruik.",
+    "staleEntity": "Deze gegevens kunnen niet worden opgeslagen omdat het is gewijzigd door iemand anders.<br>Laad de pagina opnieuw en herstart de bewerking.",
+    "removeDataInUse": "Deze gegevens kunnen niet worden verwijderd, omdat het momenteel in gebruik is.",
     "notFound": "De locatie die u hebt getypt of geprobeerd te openen is niet gevonden",
-    "notFound.type": "De gevraagde gegevens niet kan worden gevonden: {type}",
-    "notFound.typeKey": "De gevraagde gegevens niet kan worden gevonden: {type} met de belangrijkste {key}",
+    "notFound.type": "De gevraagde gegevens kunnen niet worden gevonden: {type}",
+    "notFound.typeKey": "De gevraagde gegevens kunnen niet worden gevonden: {type} met de sleutel {key}",
     "login": "De opgegeven inlognaam of wachtwoord is onjuist. Alstublieft, probeer het opnieuw.",
     "password.disabled": "Uw wachtwoord is uitgeschakeld. Neem dan contact op met de administratie.",
-    "password.reset": "Uw wachtwoord is gereset.",
-    "password.indefinitelyBlocked": "Uw wachtwoord is uitgeschakeld door de overschrijding van de maximale probeert. Neem dan contact op met de administratie.",
+    "password.reset": "Uw wachtwoord is hersteld.",
+    "password.indefinitelyBlocked": "Uw wachtwoord is uitgeschakeld door de overschrijding van het maximale aantal pogingen Gelieve contact op te nemen met de administratie.",
     "password.temporarilyBlocked": "Uw wachtwoord wordt tijdelijk geblokkeerd door overschrijding van het maximaal aantal pogingen. Probeer het later opnieuw.",
     "password.expired": "Uw wachtwoord is verlopen. Neem dan contact op met de administratie.",
-    "password.pending": "Uw wachtwoord is in afwachting van de activering. Neem dan contact op met de administratie.",
-    "password.invalid": "De gegeven {type} is ongeldig",
+    "password.pending": "Uw wachtwoord is in afwachting van de activering. Neem contact op met de administratie.",
+    "password.invalid": "Wachtwoord type: {type} is ongeldig",
     "remoteAddressBlocked": "Uw IP-adres is geblokkeerd voor het overschrijden van inlog pogingen",
     "permission": "Je hebt niet de voldoende rechten om de gevraagde actie uit te voeren",
-    "unauthorized.address": "Uw IP adres is niet toegestaan om in te loggen",
+    "unauthorized.address": "Het is vanaf uw locatie niet toegestaan om in te loggen",
     "unauthorized.url": "Toegang is niet toegestaan voor deze URL",
-    "loggedOut": "U is verbroken. Gelieve in te loggen opnieuw op en herhaal de handeling.",
+    "loggedOut": "De verbinding is verbroken. Gelieve in te loggen opnieuw in te loggen.",
     "otp": "Er is een fout opgetreden bij het versturen van het wachtwoord. Gelieve later opnieuw te proberen.",
-    "securityAnswer": "De veiligheid gegeven antwoord is ongeldig",
+    "securityAnswer": "Het veiligheid antwoord is ongeldig",
     "securityAnswer.disabled": "Bij overschrijding van het aantal antwoordpogingen, dit verzoek is afgebroken. Neem dan contact op met de administratie",
     "illegalAction": "De actie die u probeert uit te voeren, is ongeldig",
     "field": {
@@ -165,7 +165,7 @@
     "banking.scheduledPayments": "Geautoriseerde betalingen",
     "banking.authorizations": "Betalingsautorisaties",
     "marketplace": "Marktplaats",
-    "marketplace.directory": "Map",
+    "marketplace.directory": "Bedrijven",
     "marketplace.businessDirectory": "Business directory",
     "marketplace.advertisements": "Advertenties",
     "personal": "Persoonlijk",
@@ -266,13 +266,13 @@
       "payUser": "Betaal",
       "paySystem": "Betaal systeem",
       "contacts": "Contacten",
-      "directory": "Map",
+      "directory": "Bedrijven",
       "advertisements": "Advertenties",
       "editProfile": "Profiel bewerken",
       "password": "Wachtwoord",
       "passwords": "Wachtwoorden"
     },
-    "accountStatus": "Account status",
+    "accountStatus": "Rekeningoverzicht",
     "lastIncomingPayments": "Laatste inkomende betalingen",
     "noIncomingPayments": "Geen inkomende betalingen",
     "latestAds": "Nieuwste advertenties",
