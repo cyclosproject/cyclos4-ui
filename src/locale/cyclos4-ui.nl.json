@@ -158,7 +158,7 @@
     "logout": "Uitloggen",
     "home": "Start",
     "dashboard": "Dashboard",
-    "banking": "Bank",
+    "banking": "Geldzaken",
     "banking.payUser": "Betaling aan gebruiker",
     "banking.paySystem": "Betaling aan systeem",
     "banking.paySelf": "De betaling zelf",
@@ -166,7 +166,7 @@
     "banking.authorizations": "Betalingsautorisaties",
     "marketplace": "Marktplaats",
     "marketplace.directory": "Bedrijven",
-    "marketplace.businessDirectory": "Business directory",
+    "marketplace.businessDirectory": "Gebruikers",
     "marketplace.advertisements": "Advertenties",
     "personal": "Persoonlijk",
     "personal.viewProfile": "Mijn profiel",
@@ -276,7 +276,7 @@
     "lastIncomingPayments": "Laatste inkomende betalingen",
     "noIncomingPayments": "Geen inkomende betalingen",
     "latestAds": "Nieuwste advertenties",
-    "latestUsers": "Laatste gebruikers"
+    "latestUsers": "Nieuwe bedrijven"
   },
   "account": {
     "number": "Rekeningnummer",
