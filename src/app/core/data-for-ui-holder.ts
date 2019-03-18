@@ -50,8 +50,15 @@ export class DataForUiHolder {
       catchError((resp: HttpErrorResponse) => {
         if (resp.status === 0) {
           // The server couldn't be contacted
-          setRootAlert(this.messages.error.serverOffline);
-          setReloadButton(this.messages.general.reloadPage);
+          let serverOffline = this.messages.error.serverOffline;
+          let reloadPage = this.messages.general.reloadPage;
+          if (serverOffline.startsWith('???')) {
+            // We're so early that we couldn't even fetch translations
+            serverOffline = 'The server couldn\'t be contacted.<br>Please, try again later.';
+            reloadPage = 'Reload';
+          }
+          setRootAlert(serverOffline);
+          setReloadButton(reloadPage);
           return;
         }
         // Maybe we're using an old session data. In that case, we have to clear the session and try again
