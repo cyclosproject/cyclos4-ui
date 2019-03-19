@@ -96,14 +96,15 @@ export class LoginService {
   login(principal: string, password: string): Observable<Auth> {
     // Setup the basic authentication for the login request
     this.nextRequestState.nextAsBasic(principal, password);
+    const useCookie = isSameOrigin(this.apiConfiguration.rootUrl);
 
     return this.authService.login({
-      cookie: true,
+      cookie: useCookie,
       fields: ['sessionToken']
     }).pipe(
       switchMap(auth => {
         // Store the session token
-        this.nextRequestState.setSessionToken(auth.sessionToken, true);
+        this.nextRequestState.setSessionToken(auth.sessionToken, useCookie);
 
         // Then reload the DataForUi instance (as user)
         return this.dataForUiHolder.reload().pipe(

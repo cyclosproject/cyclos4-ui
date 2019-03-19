@@ -51,7 +51,9 @@ export class LoginComponent
     super.ngOnInit();
     if (this.nextRequestState.hasSession) {
       // Already logged in
-      this.router.navigateByUrl(this.loginState.redirectUrl || '');
+      this.addSub(this.dataForUiHolder.reload().subscribe(() =>
+        this.router.navigateByUrl(this.loginState.redirectUrl || '')
+      ));
       return;
     }
 
