@@ -56,7 +56,10 @@ export class AppComponent implements OnInit {
         if (typeof url === 'object') {
           url = url.href;
         }
-        this.menu.navigate(url, event);
+        this.menu.navigate({
+          url: url,
+          event: event
+        });
       });
     };
     this.menuBar = environment.menuBar;

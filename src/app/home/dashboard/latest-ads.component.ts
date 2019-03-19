@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@an
 import { AdAddressResultEnum, AdOrderByEnum, AdResult } from 'app/api/models';
 import { MarketplaceService } from 'app/api/services';
 import { BaseDashboardComponent } from 'app/home/dashboard/base-dashboard.component';
-import { Menu } from 'app/shared/menu';
 import { BehaviorSubject } from 'rxjs';
+import { Menu, ActiveMenu } from 'app/shared/menu';
 
 /**
  * Displays the latest advertisements
@@ -83,24 +83,23 @@ export class LatestAdsComponent extends BaseDashboardComponent implements OnInit
     return result;
   }
 
-  path(ad: AdResult): string[] {
-    return ['/marketplace', 'view', ad.id];
+  path(ad: AdResult): string {
+    return `/marketplace/view/${ad.id}`;
   }
 
   navigate(ad: AdResult, event: MouseEvent) {
-    this.doNavigate(this.path(ad), event);
+    this.menu.navigate({
+      url: this.path(ad),
+      menu: new ActiveMenu(Menu.VIEW_AD),
+      event: event
+    });
   }
 
   navigateToOwner(ad: AdResult, event: MouseEvent) {
-    this.doNavigate(['/users', 'profile', ad.owner.id], event);
-  }
-
-  private doNavigate(url: string[], event: MouseEvent) {
-    this.menu.setActiveMenu(Menu.SEARCH_ADS);
-    this.router.navigate(url);
-    event.preventDefault();
-    event.stopPropagation();
-    this.breadcrumb.clear();
-    this.stateManager.clear();
+    this.menu.navigate({
+      url: this.path(ad),
+      menu: new ActiveMenu(Menu.USER_PROFILE),
+      event: event
+    });
   }
 }

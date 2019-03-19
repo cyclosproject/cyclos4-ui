@@ -76,12 +76,12 @@ export class DefaultDashboardResolver implements DashboardResolver {
     }
 
     // Latest users
-    // result.push(DashboardItemConfig.latestUsers({
-    //   max: 6,
-    //   column: 'left',
-    //   breakpoints: ['gt-sm'],
-    //   minHeight: minHeight
-    // }));
+    result.push(DashboardItemConfig.latestUsers({
+      max: 6,
+      column: 'left',
+      breakpoints: ['gt-sm'],
+      minHeight: this.minHeight
+    }));
 
     // Content
     result.push(DashboardItemConfig.content({

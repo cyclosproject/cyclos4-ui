@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { BreadcrumbService } from 'app/core/breadcrumb.service';
 import { LoginService } from 'app/core/login.service';
-import { ActiveMenu, MenuService } from 'app/core/menu.service';
+import { MenuService } from 'app/core/menu.service';
 import { Messages } from 'app/messages/messages';
 import { LayoutService } from 'app/shared/layout.service';
-import { BaseMenuEntry, MenuEntry, MenuType, RootMenu, RootMenuEntry } from 'app/shared/menu';
+import { ActiveMenu, BaseMenuEntry, MenuEntry, MenuType, RootMenu, RootMenuEntry } from 'app/shared/menu';
 import { environment } from 'environments/environment';
 import { BsDropdownDirective } from 'ngx-bootstrap/dropdown/public_api';
 import { Observable } from 'rxjs';
@@ -57,6 +57,9 @@ export class MenusComponent implements OnInit {
     } else if (base instanceof RootMenuEntry) {
       entry = base.entries[0];
     }
-    this.menu.navigate(entry, event);
+    this.menu.navigate({
+      entry: entry,
+      event: event
+    });
   }
 }

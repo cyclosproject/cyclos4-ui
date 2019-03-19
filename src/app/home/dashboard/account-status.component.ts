@@ -56,7 +56,10 @@ export class AccountStatusComponent extends BaseDashboardComponent implements On
       icon: 'search',
       label: this.messages.general.view,
       maybeRoot: true,
-      onClick: event => this.menu.navigate(this.menu.accountEntry(this.account.type.id), event)
+      onClick: event => this.menu.navigate({
+        entry: this.menu.accountEntry(this.account.type.id),
+        event: event
+      })
     }];
 
     // Fetch the balance history

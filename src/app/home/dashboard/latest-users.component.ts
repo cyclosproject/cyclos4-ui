@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@an
 import { UserAddressResultEnum, UserOrderByEnum, UserResult } from 'app/api/models';
 import { UsersService } from 'app/api/services';
 import { BaseDashboardComponent } from 'app/home/dashboard/base-dashboard.component';
-import { Menu } from 'app/shared/menu';
 import { BehaviorSubject } from 'rxjs';
+import { Menu, ActiveMenu } from 'app/shared/menu';
 
 /**
  * Displays the latest users
@@ -42,16 +42,15 @@ export class LatestUsersComponent extends BaseDashboardComponent implements OnIn
     }));
   }
 
-  path(user: UserResult): string[] {
-    return ['/users', 'profile', user.id];
+  path(user: UserResult): string {
+    return `/users/profile/${user.id}`;
   }
 
   navigate(user: UserResult, event: MouseEvent) {
-    this.menu.setActiveMenu(Menu.SEARCH_USERS);
-    this.router.navigate(this.path(user));
-    event.preventDefault();
-    event.stopPropagation();
-    this.breadcrumb.clear();
-    this.stateManager.clear();
+    this.menu.navigate({
+      url: this.path(user),
+      menu: new ActiveMenu(Menu.USER_PROFILE),
+      event: event
+    });
   }
 }

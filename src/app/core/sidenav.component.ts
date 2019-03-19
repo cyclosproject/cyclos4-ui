@@ -89,7 +89,7 @@ export class SidenavComponent implements OnInit {
   }
 
   onClick(entry: MenuEntry, event: MouseEvent) {
-    this.menu.navigate(entry, event);
+    this.menu.navigate({ entry: entry, event: event });
     this.close();
   }
 

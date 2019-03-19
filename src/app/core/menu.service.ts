@@ -10,25 +10,25 @@ import { Messages } from 'app/messages/messages';
 import { ApiHelper } from 'app/shared/api-helper';
 import { toFullUrl } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
-import { ConditionalMenu, Menu, MenuEntry, MenuType, RootMenu, RootMenuEntry, SideMenuEntries } from 'app/shared/menu';
+import { ConditionalMenu, Menu, MenuEntry, MenuType, RootMenu, RootMenuEntry, SideMenuEntries, ActiveMenu } from 'app/shared/menu';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { filter, first, map } from 'rxjs/operators';
 
 /**
- * Contains information about the active menu
+ * Parameters accepted by the `navigate` method
  */
-export class ActiveMenu {
-  constructor(
-    public menu: Menu,
-    public accountTypeId?: string,
-    public contentPageSlug?: string) {
-  }
+export interface NavigateParams {
+  /** The URL to navigate to */
+  url?: string;
 
-  matches(entry: MenuEntry): boolean {
-    return entry.menu === this.menu
-      && (entry.accountTypeId || '') === (this.accountTypeId || '')
-      && (entry.contentPageSlug || '') === (this.contentPageSlug || '');
-  }
+  /** The active menu to use */
+  menu?: ActiveMenu;
+
+  /** The menu entry to navigate to */
+  entry?: MenuEntry;
+
+  /** An UI event to cancel */
+  event?: Event;
 }
 
 /**
@@ -92,7 +92,7 @@ export class MenuService {
     ).subscribe(e => {
       const entry = this.menuEntry(e.url);
       if (entry) {
-        this.updateActiveMenuFromEntry(entry);
+        this.updateActiveMenu(entry.activeMenu);
       }
     });
 
@@ -111,23 +111,34 @@ export class MenuService {
   /**
    * Navigates to a menu entry
    */
-  navigate(entryOrUrl: Menu | MenuEntry | string, event?: Event) {
-    let entry: MenuEntry = null;
+  navigate(params: NavigateParams) {
     let url: string;
-    if (typeof entryOrUrl === 'string') {
-      url = entryOrUrl;
-      entry = this.entryByUrl(entryOrUrl);
-      if (entry) {
-        // Still use the entry URL
-        url = entry.url;
+    if (params.url) {
+      // An URL was given. Attempt to find a matching entry
+      url = toFullUrl(params.url);
+      if (!params.entry) {
+        params.entry = this.entryByUrl(url);
+        if (params.entry) {
+          // Use the entry URL, as it is more "correct"
+          url = params.entry.url;
+          params.menu = params.entry.activeMenu;
+        }
       }
-    } else {
-      if (entryOrUrl instanceof Menu) {
-        entryOrUrl = this.menuEntry(entryOrUrl);
+    } else if (params.menu) {
+      // A Menu instance was given. Attempt to find an entry for it
+      params.entry = this.menuEntry(params.menu);
+      if (params.entry) {
+        // Use the entry URL, as it is more "correct"
+        url = params.entry.url;
+      } else {
+        throw new Error(`Cannot navigate to ${params.menu}`);
       }
-      entry = entryOrUrl;
-      url = entry.url;
+    } else if (params.entry) {
+      // An already resolved menu entry
+      url = params.entry.url;
+      params.menu = params.entry.activeMenu;
     }
+
     if (event) {
       event.stopPropagation();
       event.preventDefault();
@@ -140,9 +151,9 @@ export class MenuService {
     this.stateManager.clear();
 
     // Either perform the logout or navigate
-    if (entry && entry.menu === Menu.LOGOUT) {
+    if (params.entry && params.entry.menu === Menu.LOGOUT) {
       this.login.logout();
-    } else if (url.startsWith('http')) {
+    } else if (url && url.startsWith('http')) {
       // An absolute URL
       const absoluteRoot = toFullUrl('/');
       if (url.startsWith(absoluteRoot)) {
@@ -153,13 +164,13 @@ export class MenuService {
         // Is an external link - all we can do is assign the location
         location.assign(url);
       }
-    } else {
+    } else if (url) {
       this.router.navigateByUrl(url);
     }
 
     // Update the active state
-    if (entry) {
-      this.updateActiveMenuFromEntry(entry);
+    if (params.menu) {
+      this.updateActiveMenu(params.menu);
     }
   }
 
@@ -185,14 +196,14 @@ export class MenuService {
    */
   setActiveMenu(menu: Menu | ConditionalMenu): void {
     // Whenever the last selected menu changes, update the classes in the body element
-    this.resolveMenu(menu).pipe(first()).subscribe(m => this.updateActiveMenu(m, null, null));
+    this.resolveMenu(menu).pipe(first()).subscribe(m => this.updateActiveMenu(new ActiveMenu(m)));
   }
 
   /**
    * Sets the id of the active account type from the menu.
    */
   setActiveAccountTypeId(id: string): void {
-    this.updateActiveMenu(Menu.ACCOUNT_HISTORY, id, null);
+    this.updateActiveMenu(new ActiveMenu(Menu.ACCOUNT_HISTORY, id));
   }
 
   /**
@@ -201,18 +212,15 @@ export class MenuService {
   setActiveContentPageSlug(slug: string): void {
     const entry = this.contentPageEntry(slug);
     if (entry) {
-      this.updateActiveMenu(entry.menu, null, entry.contentPageSlug);
+      this.updateActiveMenu(entry.activeMenu);
     }
   }
 
-
-  private updateActiveMenu(menu: Menu, accountTypeId: string, contentPageSlug: string) {
-    this._activeMenu.next(new ActiveMenu(menu, accountTypeId, contentPageSlug));
-  }
-
-  private updateActiveMenuFromEntry(entry: MenuEntry) {
-    const menu = entry.menu === Menu.LOGOUT ? Menu.HOME : entry.menu;
-    this._activeMenu.next(new ActiveMenu(menu, entry.accountTypeId, entry.contentPageSlug));
+  private updateActiveMenu(activeMenu: ActiveMenu) {
+    if (activeMenu.menu === Menu.LOGOUT) {
+      activeMenu = new ActiveMenu(Menu.HOME);
+    }
+    this._activeMenu.next(activeMenu);
   }
 
   private updateBodyClasses(menu: Menu) {

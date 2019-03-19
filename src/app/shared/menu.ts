@@ -140,6 +140,10 @@ export class MenuEntry extends BaseMenuEntry {
   ) {
     super(icon, label, showIn);
   }
+
+  get activeMenu(): ActiveMenu {
+    return new ActiveMenu(this.menu, this.accountTypeId, this.contentPageSlug);
+  }
 }
 
 /**
@@ -157,3 +161,21 @@ export class SideMenuEntries {
  * A dynamic menu condition
  */
 export type ConditionalMenu = (injector: Injector) => Menu | Observable<Menu>;
+
+
+/**
+ * Contains information about the active menu
+ */
+export class ActiveMenu {
+  constructor(
+    public menu: Menu,
+    public accountTypeId?: string,
+    public contentPageSlug?: string) {
+  }
+
+  matches(entry: MenuEntry): boolean {
+    return entry.menu === this.menu
+      && (entry.accountTypeId || '') === (this.accountTypeId || '')
+      && (entry.contentPageSlug || '') === (this.contentPageSlug || '');
+  }
+}
