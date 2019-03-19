@@ -331,8 +331,12 @@ table.table {
   }
 }
 
+a {
+  cursor: pointer;
+}
 a.plain, maybe-link.plain a {
   color: $body-color;
+  cursor: default;
   &:hover {
     text-decoration: none;
   }
