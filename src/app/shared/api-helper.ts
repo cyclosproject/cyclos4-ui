@@ -42,7 +42,6 @@ export class ApiHelper {
     return null;
   }
 
-
   /**
    * If the given value is fully numeric, escape it by prepending a single quote.
    * This is the Cyclos' way to distinguish between ids and other keys

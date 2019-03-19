@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import {
-  CustomField, CustomFieldDetailed, CustomFieldTypeEnum, CustomFieldValue,
-  Image, LinkedEntityTypeEnum, StoredFile
+  CustomField, CustomFieldDetailed, CustomFieldTypeEnum,
+  CustomFieldValue, Image, LinkedEntityTypeEnum, StoredFile
 } from 'app/api/models';
 import { FilesService, ImagesService } from 'app/api/services';
-import { AuthHelperService } from 'app/core/auth-helper.service';
+import { NextRequestState } from 'app/core/next-request-state';
 import { Messages } from 'app/messages/messages';
 import { ApiHelper } from 'app/shared/api-helper';
 import { truthyAttr } from 'app/shared/helper';
@@ -33,7 +33,7 @@ const DIRECT_TYPES = [
 export class FormatFieldValueComponent implements OnInit {
   constructor(
     public messages: Messages,
-    private authHelper: AuthHelperService,
+    private nextRequestState: NextRequestState,
     private filesService: FilesService,
     private imagesService: ImagesService) {
   }
@@ -286,7 +286,7 @@ export class FormatFieldValueComponent implements OnInit {
   }
 
   appendAuth(url: string): string {
-    return this.authHelper.appendAuth(url);
+    return this.nextRequestState.appendAuth(url);
   }
 
   downloadFile(event: MouseEvent, file: StoredFile) {

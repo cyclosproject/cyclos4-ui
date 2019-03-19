@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { ApiConfiguration } from 'app/api/api-configuration';
 import { Auth, Permissions, User } from 'app/api/models';
 import { AuthService } from 'app/api/services/auth.service';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { LoginState } from 'app/core/login-state';
 import { NextRequestState } from 'app/core/next-request-state';
-import { empty } from 'app/shared/helper';
-import { BehaviorSubject, Subscription, Observable } from 'rxjs';
-import { switchMap, map } from 'rxjs/operators';
+import { empty, isSameOrigin } from 'app/shared/helper';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 /**
  * Service used to manage the login status
@@ -25,7 +26,8 @@ export class LoginService {
     private nextRequestState: NextRequestState,
     private authService: AuthService,
     private loginState: LoginState,
-    private router: Router) {
+    private router: Router,
+    private apiConfiguration: ApiConfiguration) {
     dataForUiHolder.subscribe(dataForUi => {
       const auth = (dataForUi || {}).auth;
       this.auth$.next(auth);
@@ -91,16 +93,17 @@ export class LoginService {
    * @param principal The user principal
    * @param password The user password
    */
-  login(principal: string, password): Observable<Auth> {
+  login(principal: string, password: string): Observable<Auth> {
     // Setup the basic authentication for the login request
     this.nextRequestState.nextAsBasic(principal, password);
 
     return this.authService.login({
+      cookie: true,
       fields: ['sessionToken']
     }).pipe(
       switchMap(auth => {
         // Store the session token
-        this.nextRequestState.sessionToken = auth.sessionToken;
+        this.nextRequestState.setSessionToken(auth.sessionToken, true);
 
         // Then reload the DataForUi instance (as user)
         return this.dataForUiHolder.reload().pipe(
@@ -114,7 +117,7 @@ export class LoginService {
    */
   clear(): void {
     this.loginState.redirectUrl = null;
-    this.nextRequestState.sessionToken = null;
+    this.nextRequestState.setSessionToken(null);
   }
 
   /**
@@ -122,12 +125,14 @@ export class LoginService {
    */
   logout(redirectUrl: string = null): void {
     this.loginState.redirectUrl = null;
-    if (this.nextRequestState.sessionToken == null) {
+    if (!this.nextRequestState.hasSession == null) {
       // No one logged in
       return;
     }
     this._loggingOut.next(true);
-    this.authService.logout().subscribe(() => {
+    this.authService.logout({
+      cookie: isSameOrigin(this.apiConfiguration.rootUrl)
+    }).subscribe(() => {
       this.clear();
 
       // Then reload the DataForUi instance (as guest)

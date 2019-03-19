@@ -2,8 +2,9 @@ import { ChangeDetectorRef, Component, ElementRef, Host, Input, OnInit, Optional
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CustomField, StoredFile } from 'app/api/models';
 import { FilesService } from 'app/api/services';
-import { AuthHelperService } from 'app/core/auth-helper.service';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
+import { NextRequestState } from 'app/core/next-request-state';
+import { Messages } from 'app/messages/messages';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { empty, getValueAsArray, preprocessValueWithSeparator } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
@@ -11,7 +12,6 @@ import { ManageFilesComponent } from 'app/shared/manage-files.component';
 import download from 'downloadjs';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { take } from 'rxjs/operators';
-import { Messages } from 'app/messages/messages';
 
 /**
  * Renders a widget for a field that allows uploading files
@@ -60,7 +60,7 @@ export class FilesFieldComponent extends BaseFormFieldComponent<string | string[
   constructor(
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
     public messages: Messages,
-    private authHelper: AuthHelperService,
+    private nextRequestState: NextRequestState,
     public layout: LayoutService,
     private errorHandler: ErrorHandlerService,
     private filesService: FilesService,
@@ -170,7 +170,7 @@ export class FilesFieldComponent extends BaseFormFieldComponent<string | string[
   }
 
   appendAuth(url: string): string {
-    return this.authHelper.appendAuth(url);
+    return this.nextRequestState.appendAuth(url);
   }
 
   downloadFile(event: MouseEvent, file: StoredFile) {

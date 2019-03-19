@@ -7,7 +7,7 @@ import { BasePageComponent, UpdateTitleFrom } from 'app/shared/base-page.compone
 import { environment } from 'environments/environment';
 import { BehaviorSubject, Observable } from 'rxjs';
 
-export const GUTTER = 20;
+export const SessionToken = 'sessionToken';
 
 /**
  * Displays the home page
@@ -35,6 +35,7 @@ export class HomeComponent extends BasePageComponent<void> implements OnInit {
 
   ngOnInit() {
     super.ngOnInit();
+
     if (this.login.user == null) {
       // For guests, just fetch the content
       this.homePage = environment.homePage || { content: '' };

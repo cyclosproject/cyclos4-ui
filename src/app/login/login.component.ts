@@ -49,7 +49,8 @@ export class LoginComponent
 
   ngOnInit() {
     super.ngOnInit();
-    if (this.nextRequestState.sessionToken) {
+    if (this.nextRequestState.hasSession) {
+      // Already logged in
       this.router.navigateByUrl(this.loginState.redirectUrl || '');
       return;
     }

@@ -72,7 +72,7 @@ export class PushNotificationsService {
           return;
         }
         this.login.clear();
-        this.nextRequestState.sessionToken = null;
+        this.nextRequestState.setSessionToken(null);
         this.notification.confirm({
           title: this.messages.general.sessionExpired.title,
           message: this.messages.general.sessionExpired.message,

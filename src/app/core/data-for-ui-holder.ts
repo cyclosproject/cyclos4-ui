@@ -1,14 +1,16 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
+import { Router } from '@angular/router';
+import { ApiConfiguration } from 'app/api/api-configuration';
 import { DataForUi, UiKind } from 'app/api/models';
-import { UiService } from 'app/api/services';
+import { AuthService, UiService } from 'app/api/services';
 import { ErrorStatus } from 'app/core/error-status';
 import { NextRequestState } from 'app/core/next-request-state';
 import { Messages } from 'app/messages/messages';
-import { setReloadButton, setRootAlert } from 'app/shared/helper';
+import { isSameOrigin, setReloadButton, setRootAlert } from 'app/shared/helper';
 import moment from 'moment-mini-ts';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
 
 /**
  * Injectable used to hold the `DataForUi` instance used by the application
@@ -32,47 +34,30 @@ export class DataForUiHolder {
   private cachedTranslations = new Map<string, any>();
 
   constructor(
-    private nextRequestState: NextRequestState,
+    private apiConfiguration: ApiConfiguration,
     private uiService: UiService,
+    private authService: AuthService,
     private messages: Messages,
-    private http: HttpClient) {
+    private http: HttpClient,
+    private injector: Injector) {
   }
 
   /**
    * Returns a cold observer for initializing the `DataForUi` instance
    */
   initialize(): Observable<DataForUi> {
-    this.nextRequestState.ignoreNextError = true;
-    return this.uiService.dataForUi({ kind: UiKind.CUSTOM }).pipe(
-      tap(dataForUi => {
-        this.dataForUi = dataForUi;
-      }),
-      catchError((resp: HttpErrorResponse) => {
-        if (resp.status === 0) {
-          // The server couldn't be contacted
-          let serverOffline = this.messages.error.serverOffline;
-          let reloadPage = this.messages.general.reloadPage;
-          if (serverOffline.startsWith('???')) {
-            // We're so early that we couldn't even fetch translations
-            serverOffline = 'The server couldn\'t be contacted.<br>Please, try again later.';
-            reloadPage = 'Reload';
-          }
-          setRootAlert(serverOffline);
-          setReloadButton(reloadPage);
-          return;
-        }
-        // Maybe we're using an old session data. In that case, we have to clear the session and try again
-        if (this.nextRequestState.sessionToken && [ErrorStatus.FORBIDDEN, ErrorStatus.UNAUTHORIZED].includes(resp.status)) {
-          // Clear the session token and try again
-          this.nextRequestState.sessionToken = null;
-          return this.uiService.dataForUi({ kind: UiKind.CUSTOM }).pipe(
-            tap(dataForUi => {
-              this.dataForUi = dataForUi;
-            })
-          );
-        }
-      })
-    );
+    // When initializing with a session token parameter,
+    // replace it with another token and only then initialize
+    const match = /[\?\&]sessionToken=([\w\.\-\+]+)/.exec(window.location.search);
+    if (match) {
+      const sessionToken = match[1];
+      return this.replaceSession(sessionToken).pipe(
+        switchMap(() => this.doInitialize()),
+        tap(() => this.injector.get(Router).navigateByUrl('/'))
+      );
+    }
+
+    return this.doInitialize();
   }
 
   /**
@@ -158,6 +143,75 @@ export class DataForUiHolder {
     this.messages.initialize(translationValues);
     this.locale$.next(locale);
     document.documentElement.lang = locale.toLowerCase();
+  }
+
+
+  /**
+   * Replaces the given session token with a new one.
+   * Handles any exception and uses the session token as is,
+   * because this operation is only supported in Cyclos 4.12
+   */
+  private replaceSession(sessionToken: string): Observable<void> {
+    const nextRequestState = this.injector.get(NextRequestState);
+
+    // Setup the basic authentication for the login request
+    nextRequestState.nextAsGuest();
+    nextRequestState.ignoreNextError = true;
+    return this.authService.replaceSession({
+      sessionToken: sessionToken,
+      cookie: isSameOrigin(this.apiConfiguration.rootUrl)
+    }).pipe(
+      map(newSessionToken => {
+        // Store the session token
+        nextRequestState.setSessionToken(newSessionToken, isSameOrigin(this.apiConfiguration.rootUrl));
+        return null;
+      }),
+      catchError((response: HttpErrorResponse) => {
+        let actualSessionValue = null;
+        if (response.status === ErrorStatus.NOT_FOUND) {
+          // Not found means that the server is Cyclos 4.11, which doesn't implement replaceSession
+          actualSessionValue = sessionToken;
+        }
+        nextRequestState.setSessionToken(actualSessionValue);
+        return of(null);
+      })
+    );
+  }
+
+  private doInitialize(): Observable<DataForUi> {
+    const nextRequestState = this.injector.get(NextRequestState);
+
+    nextRequestState.ignoreNextError = true;
+    return this.uiService.dataForUi({ kind: UiKind.CUSTOM }).pipe(
+      tap(dataForUi => {
+        this.dataForUi = dataForUi;
+      }),
+      catchError((resp: HttpErrorResponse) => {
+        if (resp.status === 0) {
+          // The server couldn't be contacted
+          let serverOffline = this.messages.error.serverOffline;
+          let reloadPage = this.messages.general.reloadPage;
+          if (serverOffline.startsWith('???')) {
+            // We're so early that we couldn't even fetch translations
+            serverOffline = 'The server couldn\'t be contacted.<br>Please, try again later.';
+            reloadPage = 'Reload';
+          }
+          setRootAlert(serverOffline);
+          setReloadButton(reloadPage);
+          return;
+        }
+        // Maybe we're using an old session data. In that case, we have to clear the session and try again
+        if (nextRequestState.hasSession && [ErrorStatus.FORBIDDEN, ErrorStatus.UNAUTHORIZED].includes(resp.status)) {
+          // Clear the session token and try again
+          nextRequestState.setSessionToken(null);
+          return this.uiService.dataForUi({ kind: UiKind.CUSTOM }).pipe(
+            tap(dataForUi => {
+              this.dataForUi = dataForUi;
+            })
+          );
+        }
+      })
+    );
   }
 
 }

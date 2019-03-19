@@ -130,7 +130,7 @@ export class ErrorHandlerService {
       this.router.navigateByUrl('/login');
     } else if (error.code === UnauthorizedErrorCode.LOGGED_OUT) {
       // Was logged out. Fetch the DataForUi again (as guest) and go to the login page.
-      this.nextRequestState.sessionToken = null;
+      this.nextRequestState.setSessionToken(null);
       this.dataForUiHolder.reload()
         .subscribe(() => {
           this.loginState.redirectUrl = this.router.url;

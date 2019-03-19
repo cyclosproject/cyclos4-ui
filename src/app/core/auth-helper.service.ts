@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { PasswordInput, PasswordModeEnum } from 'app/api/models';
-import { NextRequestState } from 'app/core/next-request-state';
 import { Messages } from 'app/messages/messages';
 import { empty } from 'app/shared/helper';
 
@@ -15,7 +14,6 @@ export class AuthHelperService {
 
   constructor(
     private messages: Messages,
-    private nextRequestState: NextRequestState,
     private formBuilder: FormBuilder) {
   }
 
@@ -89,19 +87,4 @@ export class AuthHelperService {
       response: ['', Validators.required]
     });
   }
-
-  /**
-   * Appends the session token to the given URL
-   * @param url The base URL
-   * @param nextRequestState The next request state
-   */
-  appendAuth(url: string): string {
-    const sessionToken = this.nextRequestState.sessionToken;
-    if (sessionToken == null || sessionToken === '') {
-      return url;
-    }
-    const sep = url.includes('?') ? '&' : '?';
-    return url + sep + 'Session-Token=' + sessionToken;
-  }
-
 }

@@ -2,10 +2,12 @@ import { HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
+import { empty } from 'app/shared/helper';
 
-const CHANNEL = 'Channel';
-const AUTHORIZATION = 'Authorization';
-const SESSION_TOKEN = 'Session-Token';
+const Channel = 'Channel';
+const Authorization = 'Authorization';
+const SessionToken = 'Session-Token';
+const SessionPrefix = 'Session-Prefix';
 
 /**
  * Stores data which will be set in the next API request
@@ -48,21 +50,26 @@ export class NextRequestState {
     const headers = {};
 
     // This front-end is presented as main channel
-    headers[CHANNEL] = 'main';
+    headers[Channel] = 'main';
 
     // If the next request must be done as guest, don't modify the headers
     if (this.nextAuth !== 'GUEST') {
       // Set the user authentication, if any
       if (this.nextAuth) {
         // Send the request as basic auth
-        headers[AUTHORIZATION] = this.nextAuth;
+        headers[Authorization] = this.nextAuth;
         // Prevent subsequent requests from using this auth again
         this.nextAuth = null;
       } else {
-        // Send the session token if any
-        const sessionToken = localStorage.getItem(SESSION_TOKEN);
-        if (sessionToken) {
-          headers[SESSION_TOKEN] = sessionToken;
+        // Send the session prefix if any (when using the session token cookie)
+        const prefix = localStorage.getItem(SessionPrefix);
+        if (!empty(prefix)) {
+          headers[SessionPrefix] = localStorage.getItem(SessionPrefix);
+        }
+        // Send the session prefix if any (when using the full session token)
+        const token = localStorage.getItem(SessionToken);
+        if (!empty(token)) {
+          headers[SessionToken] = localStorage.getItem(SessionToken);
         }
       }
     }
@@ -115,18 +122,39 @@ export class NextRequestState {
   /**
    * Sets the value of the session token
    */
-  set sessionToken(sessionToken: string) {
+  setSessionToken(sessionToken: string, useCookie = false) {
+    localStorage.removeItem(SessionToken);
+    localStorage.removeItem(SessionPrefix);
     if (sessionToken) {
-      localStorage.setItem(SESSION_TOKEN, sessionToken);
-    } else {
-      localStorage.removeItem(SESSION_TOKEN);
+      localStorage.setItem(useCookie ? SessionPrefix : SessionToken, sessionToken);
     }
   }
 
   /**
-   * Returns the value of the session prefix
+   * Returns whether a session is used
    */
-  get sessionToken(): string {
-    return localStorage.getItem(SESSION_TOKEN);
+  get hasSession(): boolean {
+    return !empty(localStorage.getItem(SessionToken))
+      || !empty(localStorage.getItem(SessionPrefix));
   }
+
+  /**
+   * Appends the session token to the given URL
+   * @param url The base URL
+   * @param nextRequestState The next request state
+   */
+  appendAuth(url: string): string {
+    const sep = url.includes('?') ? '&' : '?';
+    const token = localStorage.getItem(SessionToken);
+    if (!empty(token)) {
+      return `${url}${sep}${SessionToken}=${encodeURIComponent(token)}`;
+    }
+    const prefix = localStorage.getItem(SessionPrefix);
+    if (!empty(prefix)) {
+      return `${url}${sep}${SessionPrefix}=${encodeURIComponent(prefix)}`;
+    }
+    return url;
+  }
+
+
 }

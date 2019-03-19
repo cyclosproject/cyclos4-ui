@@ -281,6 +281,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /auth/data-for-login:
     get:
       operationId: getDataForLogin
@@ -343,6 +344,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /auth/session:
     post:
       security:
@@ -363,8 +365,9 @@ paths:
           in: query
           required: false
           description: >-
-            If true then the server add the `Session-Token` cookie to the response
-            containing only the second half of the session token.
+            If true then the server adds the `Session-Token` cookie to the
+            response containing only the second half of the session token.
+            The returned `sessionToken` field will contain the first half. 
           schema:
             type: boolean
         - name: timeoutInSeconds
@@ -449,8 +452,9 @@ paths:
           in: query
           required: false
           description: >-
-            If true then the server add the `Session-Token` cookie with a null
-            value to erase it.
+            If true then the server adds the `Session-Token` cookie to the
+            response containing only the second half of the session token.
+            The returned `sessionToken` field will contain the first half. 
           schema:
             type: boolean
       security:
@@ -495,6 +499,82 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
+  /auth/session/replace/{sessionToken}:
+    post:
+      operationId: replaceSession
+      summary: >-
+        Replaces a session token previously obtained
+      description: >-
+        This operation is intended to be used by custom frontends which log-in
+        users externally. In those cases, the full session token is obtained.
+        This operation replaces that session token, assuming it could be
+        compromised by being sent through other mediums (e-mail, etc) by a new
+        session token. The given session token is validated and removed, and a
+        new session is created.
+        Also accepts the `cookie` parameter with the same meaning as the
+        `login` / `logout` operations.
+        
+        
+        This operation can only be invoked as guest.
+      tags:
+        - Auth
+      parameters:
+        - name: sessionToken
+          in: path
+          required: true
+          schema:
+            type: string
+          description: >-
+            The full session token obtained externally
+        - name: cookie
+          in: query
+          required: false
+          schema:
+            type: boolean
+          description: >-
+            If true then the server adds the `Session-Token` cookie to the
+            response containing only the second half of the session token.
+            The returned `sessionToken` field will contain the first half. 
+      responses:
+        '200':
+          description: >-
+            The new session token, either just half of it or full, according
+            to the `cookie` parameter.
+          content:
+            text/plain:
+              schema:
+                type: string
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
   /auth/session/secondary-password:
     get:
       security:
@@ -598,6 +678,7 @@ paths:
           application/json:
             schema:
               type: string
+  
   /auth/access-client:
     delete:
       operationId: disconnectCurrentClient
@@ -723,6 +804,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OtpError'
+  
   /auth/forgotten-password/request:
     post:
       operationId: forgottenPasswordRequest
@@ -778,6 +860,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/ForgottenPasswordRequest'
+  
   /auth/forgotten-password/data-for-change:
     get:
       operationId: getDataForChangeForgottenPassword
@@ -839,6 +922,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /auth/forgotten-password:
     post:
       operationId: changeForgottenPassword
@@ -8400,7 +8484,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - accessClient: []
       parameters:
         - $ref: '#/components/parameters/id'
-        - $ref: '#/components/parameters/confirmationPassword'
       responses:
         '204':
           description: >-
@@ -8441,12 +8524,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /device-confirmations:
     post:
       operationId: createDeviceConfirmation
       summary: >-
-        Creates a pending for approval / rejection device confirmation for the
-        authenticated user.
+        Creates a pending device confirmation for the authenticated user.
       description: >-
         Creates a device confirmation for an operation that must be confirmed. The
         confirmation will have a QR code that can be read (e.g with the Mobile
@@ -8519,8 +8602,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
       summary: >-
         Shows the details of a device confirmation for the authenticated user.
       description: >-
-        Shows the details of a device confirmation for the authenticated user only
-        if it was not already approved / rejected.
+        Shows the details of a device confirmation for the authenticated user.
       tags:
         - Devices
       security:
@@ -13087,12 +13169,11 @@ A note for dynamic custom fields: If a script is used to generate possible value
           application/json:
             schema:
               $ref: '#/components/schemas/PerformPayment'
-  /pos/device-confirmation:
+  /pos/device-confirmations:
     post:
       operationId: receivePaymentCreateDeviceConfirmation
       summary: >-
-        Creates a pending for approval / rejection device confirmation for a pos
-        payment.
+        Creates a pending device confirmation for a pos payment.
       description: >-
         Creates a device confirmation to confirm a pos payment. The confirmation
         will have a QR code that can be read (e.g with the Mobile App) to be
@@ -13160,11 +13241,98 @@ A note for dynamic custom fields: If a script is used to generate possible value
           application/json:
             schema:
               $ref: '#/components/schemas/PerformPayment'
-  /pos/device-confirmation/{id}:
+  
+  /pos/device-confirmations/{id}:
+    get:
+      operationId: receivePaymentViewDeviceConfirmation
+      summary: >-
+        Shows the details of a device confirmation for a POS payer.
+      description: >-
+        Shows the details of a device confirmation for POS payer. The confirmation belongs to the payer but must had been
+        created by the authenticated user. The entire payment object must be sent on the request body. 
+        This is the same object which is sent both either preview or actually receive the payment
+      tags:
+        - POS
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/id'
+        - name: payer
+          in: query
+          required: true
+          description: >-
+            A user identification value, such as id, username, e-mail, phone, etc. Id
+            is always allowed, others depend on Cyclos configuration. Note that a
+            valid numeric value is always considered as id. For example, when using
+            another identification method that can be numeric only, prefix the value
+            with a single quote (like in Excel spreadsheets), for example,
+            `'1234567890`;
+          schema:
+            type: string
+        - name: currency
+          in: query
+          required: false        
+          description: >-
+            The currency id or internal name. Only used when not specifying a
+            payment type. In this case, will narrow the search for the payment type.
+          schema:
+            type: string
+        - name: type
+          in: query
+          required: false
+          description: >-
+            The payment type, either the id or qualified internal name (in the form
+            `fromAccountType.paymentType`). If no payment type is specified, if a
+            single one is possible, it will be used. If a currency is specified, it
+            will be taken into account in order to find the payment type. If,
+            however, there would be multiple possibilities, a validation error is
+            returned.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >-
+            The device confirmation details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceConfirmationView'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
     delete:
       operationId: receivePaymentDeleteDeviceConfirmation
       summary: >-
-        Deletes a device confirmation for a pos payment.
+        Deletes a device confirmation for a POS payer.
       description: >-
         Deletes a device confirmation for the payer of pos payment. The
         confirmation belongs to the payer, not the authenticated user. The entire
@@ -13178,6 +13346,38 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - accessClient: []
       parameters:
         - $ref: '#/components/parameters/id'
+        - name: payer
+          in: query
+          required: true
+          description: >-
+            A user identification value, such as id, username, e-mail, phone, etc. Id
+            is always allowed, others depend on Cyclos configuration. Note that a
+            valid numeric value is always considered as id. For example, when using
+            another identification method that can be numeric only, prefix the value
+            with a single quote (like in Excel spreadsheets), for example,
+            `'1234567890`;
+          schema:
+            type: string
+        - name: currency
+          in: query
+          required: false        
+          description: >-
+            The currency id or internal name. Only used when not specifying a
+            payment type. In this case, will narrow the search for the payment type.
+          schema:
+            type: string
+        - name: type
+          in: query  
+          required: false     
+          description: >-
+            The payment type, either the id or qualified internal name (in the form
+            `fromAccountType.paymentType`). If no payment type is specified, if a
+            single one is possible, it will be used. If a currency is specified, it
+            will be taken into account in order to find the payment type. If,
+            however, there would be multiple possibilities, a validation error is
+            returned.
+          schema:
+            type: string
       responses:
         '204':
           description: >-
@@ -13218,15 +13418,8 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-      requestBody:
-        description: >-
-          The receive payment parameters
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PerformPayment'
-  /pos/device-confirmation/{id}/qr-code:
+        
+  /pos/device-confirmations/{id}/qr-code:
     get:
       operationId: receivePaymentDeviceConfirmationQrCode
       summary: >-
@@ -21621,7 +21814,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
     post:
       operationId: getOtpForPersonalizeNfc
       summary: >-
-        Generates a new One-Time-Password (OTP) for a personalizing a NFC tag
+        Generates a new One-Time-Password (OTP) for personalizing a NFC tag
       description: >-
         Sends a new OTP for the customer which will own the NFC tag. The OTP
         belongs to the NFC tag owner, not the authenticated user.
@@ -21679,7 +21872,301 @@ A note for dynamic custom fields: If a script is used to generate possible value
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/NfcPersonalizeOtpParameter'
+              $ref: '#/components/schemas/NfcPersonalizeDataParameter'
+  
+  /nfc/personalize/device-confirmations:
+    post:
+      operationId: createDeviceConfirmationForPersonalizeNfc
+      summary: >-
+        Creates a pending device confirmation for personalizing a NFC tag.
+      description: >-
+        Creates a device confirmation for the customer which will own the NFC tag. The confirmation must be approved
+        by the NFC tag owner, not the authenticated user, i.e the confirmation QR-code must be read (e.g with the Mobile
+        App) by the customer. After the confirmation being processed the authenticated user will be notified.
+      tags:
+        - NFC
+      parameters: []
+      responses:
+        '201':
+          description: >-
+            Returns the identifier of the new confirmation.
+          content:
+            text/plain:
+              schema:
+                type: string
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: >-
+            Input error. Either a validation error or the maximum allowed items was
+            exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      requestBody:
+        description: >-
+          The parameters identifying the token and the user
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NfcPersonalizeDataParameter'
+  
+  /nfc/personalize/device-confirmations/{id}:
+    get:
+      operationId: viewDeviceConfirmationForPersonalizeNfc
+      summary: >-
+        Shows the details of a device confirmation that was created to confirm the personalize nfc-tag operation.
+      description: >-
+        Shows a device confirmation for the user which will own the NFC tag. The confirmation belongs to that user, 
+        not the authenticated user. The same parameters used for the creation must be sent for this operation too.
+      tags:
+        - NFC
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/id'
+        - name: user
+          description: >-
+            The principal (id, login name,  etc) of the user who will own the tag. 
+            Note that a valid numeric value is always considered as id.
+            For example, when using another identification method that can be
+            numeric only, prefix the value with a single quote (like in Excel
+            spreadsheets), for example, `'1234567890`.
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: type
+          description: >-
+            Either the identifier or internal name of fhe NFC token type
+          in: query
+          required: true
+          schema:
+            type: string      
+      responses:
+        '200':
+          description: >-
+            The device confirmation details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeviceConfirmationView'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+    delete:
+      operationId: deleteDeviceConfirmationForPersonalizeNfc
+      summary: >-
+        Deletes a device confirmation that was created to confirm the personalize nfc-tag operation.
+      description: >-
+        Deletes a device confirmation for the user which will own the NFC tag. The confirmation belongs to that user, 
+        not the authenticated user. The same parameters used for the creation must be sent for this operation too.
+      tags:
+        - NFC
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/id'
+        - name: user
+          description: >-
+            The principal (id, login name,  etc) of the user who will own the tag. 
+            Note that a valid numeric value is always considered as id.
+            For example, when using another identification method that can be
+            numeric only, prefix the value with a single quote (like in Excel
+            spreadsheets), for example, `'1234567890`.
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: type
+          description: >-
+            Either the identifier or internal name of fhe NFC token type
+          in: query
+          required: true
+          schema:
+            type: string      
+      responses:
+        '204':
+          description: >-
+            The device confirmation was removed.
+        '409':
+          description: >-
+            This operation expected an entity state, but it has resulted in a conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictError'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              
+  /nfc/personalize/device-confirmations/{id}/qr-code:
+    get:
+      operationId: getDeviceConfirmationQrCodeForPersonalizeNfc
+      summary: >-
+        Returns the QR-code image for the given device confirmation only if it was
+        not yet approved / rejected
+      description: >-
+        This request will return the image contents as expected but our
+        api  documentation page (or any other usage of an &lt;img&gt; tag),
+        created  using swagger-ui, generates a second request to include the image
+        in the page. This new (GET) request won't send the authentication
+        parameters and  as this path requires authentication the image will be
+        shown as broken. Optionally, to solve the problem described above and to
+        allow authenticate the user when using sessions, a `sessionToken` or
+        `accessClientToken`  query parameter could be specified.
+      tags:
+        - NFC
+      parameters:
+        - $ref: '#/components/parameters/id'
+        - name: user
+          description: >-
+            The principal (id, login name,  etc) of the user who will own the tag. 
+            Note that a valid numeric value is always considered as id.
+            For example, when using another identification method that can be
+            numeric only, prefix the value with a single quote (like in Excel
+            spreadsheets), for example, `'1234567890`.
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: type
+          description: >-
+            Either the identifier or internal name of fhe NFC token type
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: size
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/ImageSizeEnum'
+      responses:
+        '200':
+          description: >-
+            The image content
+          content:
+            application/json:
+              schema:
+                type: string
+                format: binary
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
   /nfc/cancel:
     post:
       operationId: cancelNfc
@@ -23082,31 +23569,43 @@ components:
         
         - `acceptOrder`: A confirmation for accepting a pending order as buyer
         
+        - `approveTicket`: A confirmation for approving a pending ticket as payer
+        
         - `buyVouchers`: A confirmation for buying vouchers
         
         - `changeAccountLimits`: A confirmation for change the account limits of a user account
         
         - `chargeback`: A confirmation for transfer chargeback
         
+        - `clientAction`: A confirmation for an action over an access client
+        
         - `editProfile`: A confirmation for editing the profile of his own
         
+        - `generatePassword`: A confirmation for generating a new password
+        
         - `generateVouchers`: A confirmation for generating vouchers
+        
+        - `importPayments`: A confirmation for importin payments as admin
+        
+        - `importUserPayments`: A confirmation for batch payments as user
         
         - `manageAddress`: A confirmation for managing an user address of his own
         
         - `manageAuthorization`: A confirmation for managing a pending payment authorization
         
-        - `manageClient`: A confirmation for managing an access client
-        
         - `manageContactInfo`: A confirmation for managing an additional contact information of his own
         
         - `manageExternalPayment`: A confirmation for managing an external payment
+        
+        - `manageFailedOccurrence`: A confirmation for managing a recurring payment failed occurrence
         
         - `manageInstallment`: A confirmation for managing a scheduled payment installment
         
         - `managePaymentRequest`: A confirmation for managing a payment request
         
         - `managePhone`: A confirmation for managing a phone of his own
+        
+        - `manageRecurringPayment`: A confirmation for managing a recurring payment
         
         - `manageScheduledPayment`: A confirmation for managing a scheduled payment
         
@@ -23116,6 +23615,8 @@ components:
         
         - `performPayment`: A confirmation for performing a payment
         
+        - `personalizeNfc`: A confirmation for personalizing a NFC tag
+        
         - `runOperation`: A confirmation for running a custom operation
         
         - `secondaryLogin`: A confirmation for the secondary login
@@ -23124,23 +23625,30 @@ components:
       type: string
       enum:
         - acceptOrder
+        - approveTicket
         - buyVouchers
         - changeAccountLimits
         - chargeback
+        - clientAction
         - editProfile
+        - generatePassword
         - generateVouchers
+        - importPayments
+        - importUserPayments
         - manageAddress
         - manageAuthorization
-        - manageClient
         - manageContactInfo
         - manageExternalPayment
+        - manageFailedOccurrence
         - manageInstallment
         - managePaymentRequest
         - managePhone
+        - manageRecurringPayment
         - manageScheduledPayment
         - manageVoucher
         - performExternalPayment
         - performPayment
+        - personalizeNfc
         - runOperation
         - secondaryLogin
         - shoppingCartCheckout
@@ -23263,6 +23771,19 @@ components:
         - failed
         - pending
         - processed
+
+    FailedOccurrenceActionEnum:
+      description: >
+        Possible actions that could be confirmed with a device for a recurring payment failed occurrence
+        
+
+        Possible values are:
+
+        
+        - `process`: Process the recurring payment failed occurrence
+      type: string
+      enum:
+        - process
 
     FileMimeTypeEnum:
       description: >
@@ -24456,6 +24977,8 @@ components:
         
         - `monthlyPaymentsExceeded`: The maximum count of payments allowed per month was exceeded.
         
+        - `paymentAmountExceeded`: The maximum amount allowed in the payment type was exceeded.
+        
         - `pos`: A POS exception has happened when performing this payment. See the `posError` field for more details.   
         
         - `timeBetweenPaymentsNotMet`: The minimum time between payments was not met.
@@ -24473,6 +24996,7 @@ components:
         - insufficientBalance
         - monthlyAmountExceeded
         - monthlyPaymentsExceeded
+        - paymentAmountExceeded
         - pos
         - timeBetweenPaymentsNotMet
         - unexpected
@@ -24742,6 +25266,19 @@ components:
         - list
         - single
         - tiled
+
+    RecurringPaymentActionEnum:
+      description: >
+        Possible actions that could be confirmed with a device for a recurring payment
+        
+
+        Possible values are:
+
+        
+        - `cancel`: Cancel the recurring payment
+      type: string
+      enum:
+        - cancel
 
     RecurringPaymentOccurrenceStatusEnum:
       description: >
@@ -28895,7 +29432,7 @@ components:
 
     CreateDeviceConfirmation:
       description: >-
-        Contains data for create device confirmation.
+        Contains data for create a pending device confirmation.
       type: object
       properties:
         from:
@@ -28933,8 +29470,9 @@ components:
             The payment type id or qualified internal name (in the form
             `fromAccountType.paymentType`). 
             Required only if type is `performPayment`, 
-            `performExternalPayment` or
-            `shoppingCartCheckout`.
+            `performExternalPayment`,
+            `shoppingCartCheckout` or
+            `importUserPayments`.
         amount:
           type: string
           format: number
@@ -28948,11 +29486,13 @@ components:
         transaction:
           type: string
           description: >-
-            Either the id or number of the transaction. 
+            Either the id or number of the transaction (or ticket number if type is `approveTicket`). 
             Required only if type is `manageAuthorization`,
             `manageExternalPayment`, 
-            `manageScheduledPayment` or
-            `managePaymentRequest`.
+            `manageScheduledPayment`,
+            `manageRecurringPayment`,
+            `managePaymentRequest` or
+            `approveTicket`.
         transfer:
           type: string
           description: >-
@@ -28968,18 +29508,23 @@ components:
           description:
             The id of a scheduled payment installment. 
             Required only if type is `manageInstallment`.
+        failedOccurrence:
+          type: string
+          description:
+            The id of a recurring payment failed occurrence. 
+            Required only if type is `manageFailedOccurrence`.
         client:
           type: string
           description: >-
             The access client id or token. Required only if type
-            is  `manageClient`.
+            is  `clientAction`.
         name:
           type: string
           description: >-
             The entity's name for which this confirmation is created for.
             Required only if type is either `manageAddress`,
-            `managePhone`, `manageContactInfo` or
-            `runOperation`.
+            `managePhone`, `manageContactInfo`,
+            `runOperation` or `generatePassword`.
         type:
           $ref: '#/components/schemas/DeviceConfirmationTypeEnum'
         externalPaymentAction:
@@ -28992,11 +29537,21 @@ components:
             The action being applied to the scheduled payment. Required only if type
             is `manageScheduledPayment`.
           $ref: '#/components/schemas/ScheduledPaymentActionEnum'
+        recurringPaymentAction:
+          description: >-
+            The action being applied to the recurring payment.
+            Required only if type is `manageRecurringPayment`.
+          $ref: '#/components/schemas/RecurringPaymentActionEnum'
         installmentAction:
           description: >-
             The action being applied to the scheduled payment installment. 
             Required only if type is `manageInstallment`.
           $ref: '#/components/schemas/InstallmentActionEnum'
+        failedOccurrenceAction:
+          description: >-
+            The action being applied to the recurring payment failed occurrence. 
+            Required only if type is `manageFailedOccurrence`.
+          $ref: '#/components/schemas/FailedOccurrenceActionEnum'
         authorizationAction:
           description: >-
             The action being applied to the payment authorization. Required only if
@@ -29010,7 +29565,7 @@ components:
         clientAction:
           description: >-
             The action being applied to the access client. Required only if type is
-            `manageClient`.
+            `clientAction`.
           $ref: '#/components/schemas/ClientActionEnum'
         seller:
           type: string
@@ -31580,15 +32135,14 @@ components:
             generated according the the pattern defined.
           type: string
 
-    NfcPersonalizeOtpParameter:
+    NfcPersonalizeDataParameter:
       description: >-
-        Parameters for requesting an OTP (One Time Password) when personalizing an
-        NFC tag.
+        Parameters used to identify the NFC token type and user who will own a NFC tag.
       type: object
       properties:
         user:
           description: >-
-            a user to whom this tag is being personalized
+            A user to whom this tag is being personalized
           type: string
         type:
           description: >-

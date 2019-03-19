@@ -37,6 +37,19 @@ export function toFullUrl(path: string): string {
 }
 
 /**
+ * Returns whether the given path or URL is on the same origin as the current page
+ */
+export function isSameOrigin(pathOrurl: string): boolean {
+  if (blank(pathOrurl)) {
+    // Assume is the same url as base
+    return true;
+  }
+  const current = new URL(window.location.href);
+  const url = new URL(pathOrurl, window.location.href);
+  return current.origin === url.origin;
+}
+
+/**
  * Sets the text of the reload application button
  */
 export function setReloadButton(text: string): void {
