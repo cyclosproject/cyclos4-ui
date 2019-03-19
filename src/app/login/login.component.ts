@@ -6,6 +6,7 @@ import { BasePageComponent } from 'app/shared/base-page.component';
 import { PasswordInputComponent } from 'app/shared/password-input.component';
 import { NextRequestState } from 'app/core/next-request-state';
 import { empty } from 'app/shared/helper';
+import { environment } from 'environments/environment.prod';
 
 /**
  * Component used to show a login form.
@@ -54,6 +55,15 @@ export class LoginComponent
       this.addSub(this.dataForUiHolder.reload().subscribe(() =>
         this.router.navigateByUrl(this.loginState.redirectUrl || '')
       ));
+      return;
+    } else if (environment.externalLoginUrl) {
+      // Login is handled in an external frontend
+      let url = environment.externalLoginUrl;
+      if (environment.externalLoginParam && !empty(this.loginState.redirectUrl)) {
+        // Also send the redirect url
+        url += (url.includes('?') ? '&' : '?') + environment.externalLoginParam + '=' + encodeURIComponent(this.loginState.redirectUrl);
+      }
+      location.assign(url);
       return;
     }
 

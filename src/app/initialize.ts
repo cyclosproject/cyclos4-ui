@@ -1,6 +1,5 @@
-import { APP_INITIALIZER, Provider, Injector } from '@angular/core';
+import { APP_INITIALIZER, Injector, Provider } from '@angular/core';
 import { ApiConfiguration } from 'app/api/api-configuration';
-import { DataForUi } from 'app/api/models';
 import { ContentPage } from 'app/content/content-page';
 import { ContentService } from 'app/core/content.service';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
@@ -16,7 +15,7 @@ export function initialize(
   dataForUiHolder: DataForUiHolder,
   content: ContentService
 ): Function {
-  return () => {
+  return async () => {
     // Initialize the API configuration
     let root = environment.apiRoot as string;
     if (root.endsWith('/')) {
@@ -54,10 +53,8 @@ export function initialize(
     }
 
     // Load both content pages and data for UI
-    return forkJoin(contentPages, dataForUiHolder.initialize()).toPromise()
-      .then((result: [ContentPage[], DataForUi]) => {
-        content.contentPages = result[0];
-      });
+    const result = await forkJoin(contentPages, dataForUiHolder.initialize()).toPromise();
+    content.contentPages = result[0];
   };
 }
 export const INITIALIZE: Provider = {

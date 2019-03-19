@@ -12,6 +12,16 @@ import { DefaultDashboardResolver } from 'environments/default-dashboard-resolve
 // (with protocol) to the Cyclos backend, ending with /api.
 const API_URL = 'http://localhost:8888/api';
 
+// When using an external frontend to login users, it is generally desirable that
+// instead of showing the login form in this frontend, users are redirected to
+// the external login page.
+const EXTERNAL_LOGIN_URL: string = null;
+// When using an external login URL may send as a parameter the next page the user
+// should be redirected to after logging in.
+const EXTERNAL_LOGIN_PARAM: string = null;
+// Likewise, after logging out, users should be redirected to a given URL, if any.
+const AFTER_LOGOUT_URL: string = null;
+
 // Application title
 const APP_TITLE = 'Cyclos Local';
 // Application title on small devices (constrained space)
@@ -95,6 +105,9 @@ export const configuration = {
   appTitle: APP_TITLE,
   appTitleSmall: APP_TITLE_SMALL,
   appTitleMenu: APP_TITLE_MENU,
+  externalLoginUrl: EXTERNAL_LOGIN_URL,
+  externalLoginParam: EXTERNAL_LOGIN_PARAM,
+  afterLogoutUrl: AFTER_LOGOUT_URL,
   apiRoot: API_URL,
   searchPageSizes: SEARCH_PAGE_SIZES,
   quickSearchPageSize: QUICK_SEARCH_PAGE_SIZE,
