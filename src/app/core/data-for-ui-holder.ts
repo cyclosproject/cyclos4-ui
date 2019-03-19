@@ -185,6 +185,10 @@ export class DataForUiHolder {
     return this.uiService.dataForUi({ kind: UiKind.CUSTOM }).pipe(
       tap(dataForUi => {
         this.dataForUi = dataForUi;
+        if (dataForUi.auth == null || dataForUi.auth.user == null) {
+          // When not logged-in, clear any previous cruft on the stored session token
+          nextRequestState.setSessionToken(null);
+        }
       }),
       catchError((resp: HttpErrorResponse) => {
         if (resp.status === 0) {
