@@ -33,7 +33,7 @@
     "confirm": "Bevestigen",
     "cancel": "Annuleer",
     "close": "Sluiten",
-    "submit": "Inwisselen",
+    "submit": "Verzenden",
     "save": "Opslaan",
     "addNew": "Nieuw",
     "yes": "Ja",
@@ -264,7 +264,7 @@
     "action": {
       "account": "Rekening",
       "payUser": "Betaal",
-      "paySystem": "Betaal systeem",
+      "paySystem": "Euro's kopen",
       "contacts": "Contacten",
       "directory": "Bedrijven",
       "advertisements": "Advertenties",
