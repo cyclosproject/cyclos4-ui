@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { MenuService } from 'app/core/menu.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { LayoutService } from 'app/shared/layout.service';
-import { ActiveMenu, RootMenu, SideMenuEntries } from 'app/shared/menu';
+import { ActiveMenu, RootMenu, SideMenuEntries, MenuEntry } from 'app/shared/menu';
 import { BehaviorSubject, Subscription } from 'rxjs';
 
 /**
@@ -36,6 +36,10 @@ export class SideMenuComponent implements OnInit {
       this.updateFrom(activeMenu);
     });
     this.updateFrom(this.menu.activeMenu);
+  }
+
+  navigate(entry: MenuEntry, event: MouseEvent) {
+    this.menu.navigate({ entry: entry, event: event });
   }
 
   private updateFrom(activeMenu: ActiveMenu) {

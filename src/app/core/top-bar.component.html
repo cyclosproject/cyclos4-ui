@@ -14,20 +14,24 @@
     </span>
     <div class="menu-container">
       <menus *ngIf="hasMenu && (layout.gtmd$ | async); else customMenus"
-        [menuType]="MenuType.TOP" [activeMenu]="activeMenu" [userName]="userName"></menus>
+        [menuType]="MenuType.TOP" [activeMenu]="activeMenu"
+        [userName]="userName"></menus>
     </div>
   </div>
 </nav>
 <ng-template #customMenus>
   <ng-container *ngIf="user != null">
-    <a [routerLink]="['users', 'my-profile']" id="profile-link" (click)="menu.navigate(Menu.MY_PROFILE, $event)">
-      <avatar *ngIf="user.image" size="small-medium" [image]="user.image"></avatar>
-      <icon *ngIf="!user.image" class="top-icon top-icon-faded" icon="user"></icon>
+    <a [routerLink]="['users', 'my-profile']" id="profile-link"
+      (click)="navigate(Menu.MY_PROFILE, $event)">
+      <avatar *ngIf="user.image" size="small-medium" [image]="user.image">
+      </avatar>
+      <icon *ngIf="!user.image" class="top-icon top-icon-faded" icon="user">
+      </icon>
       <div *ngIf="layout.gtsm$ | async" class="ml-2">
         {{ userName }}
       </div>
     </a>
-    <a href="#" id="logout-trigger" (click)="menu.navigate(Menu.LOGOUT, $event)">
+    <a href="#" id="logout-trigger" (click)="navigate(Menu.LOGOUT, $event)">
       <icon class="top-icon" icon="logout"></icon>
       <div *ngIf="layout.gtsm$ | async" class="ml-2">
         {{ messages.menu.logout }}
@@ -36,13 +40,15 @@
   </ng-container>
   <ng-container *ngIf="user == null">
     <a *ngIf="(layout.gtsm$ | async) && menu.menuEntry(Menu.REGISTRATION)"
-      routerLink="/register" id="register-link" (click)="menu.navigate(Menu.REGISTRATION, $event)">
+      routerLink="/register" id="register-link"
+      (click)="navigate(Menu.REGISTRATION, $event)">
       <icon class="top-icon" icon="registration"></icon>
       <div *ngIf="layout.gtsm$ | async" class="ml-2">
         {{ messages.menu.register }}
       </div>
     </a>
-    <a routerLink="/login" id="login-link" (click)="menu.navigate(Menu.LOGIN, $event)">
+    <a routerLink="/login" id="login-link"
+      (click)="navigate(Menu.LOGIN, $event)">
       <icon class="top-icon" icon="exit_to_app"></icon>
       <div *ngIf="layout.gtsm$ | async" class="ml-2">
         {{ messages.menu.login }}

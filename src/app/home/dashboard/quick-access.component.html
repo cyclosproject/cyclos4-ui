@@ -1,12 +1,13 @@
-<page-content [heading]="messages.dashboard.quickAccess" mode="tight"
-  hideBack [ngStyle]="{minHeight: minHeight}">
+<page-content [heading]="messages.dashboard.quickAccess" mode="tight" hideBack
+  [ngStyle]="{minHeight: minHeight}">
   <div class="row no-gutters flex-grow-1 quick-access-container">
     <ng-container *ngFor="let action of actions">
-      <div *ngIf="action.entry && layout.visible(action.breakpoints, layout.breakpointChanges$ | async)"
+      <div
+        *ngIf="action.entry && layout.visible(action.breakpoints, layout.breakpointChanges$ | async)"
         class="d-flex col-6 col-sm-4 justify-content-center align-items-center">
         <div class="text-center">
           <a [routerLink]="action.entry.url" class="quick-access-item"
-            (click)="menu.navigate(action.entry, $event)">
+            (click)="navigate(action, $event)">
             <div class="quick-access-icon">
               <icon [icon]="action.icon" size="2.2rem"></icon>
             </div>

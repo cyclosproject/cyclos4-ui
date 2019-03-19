@@ -113,6 +113,10 @@ export class SidenavComponent implements OnInit {
     return entry.label;
   }
 
+  navigate(entry: MenuEntry, event: MouseEvent) {
+    this.menu.navigate({ entry: entry, event: event });
+  }
+
   logout(event: MouseEvent) {
     this.login.logout();
     event.stopPropagation();

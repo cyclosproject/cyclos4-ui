@@ -106,4 +106,8 @@ export class QuickAccessComponent extends BaseDashboardComponent implements OnIn
     }
   }
 
+  navigate(action: QuickAccessAction, event: MouseEvent) {
+    this.menu.navigate({ entry: action.entry, event: event });
+  }
+
 }

@@ -57,4 +57,8 @@ export class TopBarComponent implements OnInit {
       this.roots = this.menu.menu(MenuType.BAR);
     }
   }
+
+  navigate(menu: Menu, event: MouseEvent) {
+    this.menu.navigate({ menu: new ActiveMenu(menu), event: event });
+  }
 }
