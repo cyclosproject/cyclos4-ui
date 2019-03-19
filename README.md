@@ -410,4 +410,4 @@ For systems that are multi language, where each user can have distinct languages
 
 To add a translation to a new language locally, simply add the locale to the `locales` array in `ng-translation-gen.json`. Then, to create the file with defaults, or import new translation keys, run `npm run merge-translations`. Then, either reference it as a static translation, or, if the locale matches the language set in Cyclos, it will be automatically used.
 
-The official translations are done in https://crowdin.com/project/cyclos4-ui. If you want to help translating the Cyclos frontend, login to Crowdin and request permission for the project. It has an integration with GitHub, so translations done in Crowdin will be automatically applied to the project.
+The official translations are done in https://crowdin.com/project/cyclos4-ui. If you want to help translating the Cyclos frontend, login to Crowdin and request permission for the project. It has an integration with GitHub, so translations done in Crowdin will be automatically applied to the project. Alternatively, you can submit a GitHub pull request with your translation file.
