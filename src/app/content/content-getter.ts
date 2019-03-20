@@ -20,7 +20,7 @@ namespace ContentGetter {
    * When referencing an external URL, make sure that CORS is enabled
    */
   export function url(rawUrl: string): ContentGetter {
-    const res = injector => {
+    const res: ContentGetter = injector => {
       const http = injector.get(HttpClient);
       return http.get(rawUrl, {
         responseType: 'text'
@@ -31,7 +31,20 @@ namespace ContentGetter {
   }
 
   /**
-    * An IFrame that hosts the given URL.
+   * The HTML content for displaying an image, optionally defining whether
+   * it shows as full with (true by default) and an alternative text.
+   */
+  export function image(imageUrl: string, options?: { fullWidth?: boolean, altText?: string }): string {
+    if (!options) {
+      options = {};
+    }
+    const fullWidth = options.fullWidth !== false;
+    const altText = options.altText || '';
+    return `<img class="${fullWidth ? 'w-100' : ''}" alt="${altText}" src="${imageUrl}">`;
+  }
+
+  /**
+    * The HTML content with an IFrame that hosts the given URL.
     * Loads the host page a script to allow the iframe be adjusted according to the content.
     * The page hosted inside the iFrame must include the following script for the auto resize to work:
     * https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.6.3/iframeResizer.contentWindow.min.js
@@ -80,7 +93,7 @@ namespace ContentGetter {
    * @param rawUrl The URL, including the content id
    */
   export function cyclosPage(rawUrl: string): ContentGetter {
-    const res = injector => {
+    const res: ContentGetter = injector => {
       const http = injector.get(HttpClient);
       const finalUrl = rawUrl.replace('#page-content!id=', '/web-rpc/menuEntry/menuItemDetails/');
       return http.get(finalUrl).pipe(map((response: any) => {

@@ -1,11 +1,11 @@
 import { Injectable, Injector } from '@angular/core';
+import { Configuration } from 'app/configuration';
 import { Banner } from 'app/content/banner';
 import { BannerCard } from 'app/content/banner-card';
 import { LoginService } from 'app/core/login.service';
 import { MenuService } from 'app/core/menu.service';
 import { blank, empty as isEmpty } from 'app/shared/helper';
-import { Menu, ActiveMenu } from 'app/shared/menu';
-import { environment } from 'environments/environment';
+import { ActiveMenu, Menu } from 'app/shared/menu';
 import { BehaviorSubject, EMPTY, forkJoin, Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 
@@ -39,8 +39,8 @@ export class BannerService {
   }
 
   initialize() {
-    const resolver = environment.bannerCardsResolver;
-    const cards = resolver == null ? null : resolver.resolveCards(this.injector);
+    const resolver = Configuration.banners;
+    const cards = resolver == null ? null : resolver.bannerCards(this.injector);
     if (cards == null) {
       this.doInitialize([]);
     } else if (cards instanceof Array) {

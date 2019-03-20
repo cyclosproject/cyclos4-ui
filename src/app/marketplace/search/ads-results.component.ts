@@ -1,14 +1,14 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Injector, Input, Output } from '@angular/core';
 import { AdCategoryWithChildren, AdResult, Currency, Image } from 'app/api/models';
 import { AdDataForSearch } from 'app/api/models/ad-data-for-search';
-import { AdCategoryConfiguration } from 'app/content/ac-category-configuration';
+import { Configuration } from 'app/configuration';
+import { AdCategoryConfiguration } from 'app/content/ad-category-configuration';
 import { ShowSubCategoriesComponent } from 'app/marketplace/search/show-sub-categories.component';
 import { BaseComponent } from 'app/shared/base.component';
 import { truthyAttr } from 'app/shared/helper';
 import { PageData } from 'app/shared/page-data';
 import { PagedResults } from 'app/shared/paged-results';
 import { ResultType } from 'app/shared/result-type';
-import { environment } from 'environments/environment';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BehaviorSubject } from 'rxjs';
 
@@ -112,10 +112,10 @@ export class AdsResultsComponent extends BaseComponent {
   private categoryConfiguration(cat: AdCategoryWithChildren): AdCategoryConfiguration {
     let config: AdCategoryConfiguration = null;
     if (cat.internalName) {
-      config = (environment.adCategories || {})[cat.internalName];
+      config = (Configuration.adCategories || {})[cat.internalName];
     }
     if (cat == null) {
-      config = (environment.adCategories || {})[cat.id];
+      config = (Configuration.adCategories || {})[cat.id];
     }
     return config || {};
   }

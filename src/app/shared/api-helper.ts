@@ -1,6 +1,5 @@
 import { Entity } from 'app/api/models';
 import { empty } from 'app/shared/helper';
-import { environment } from 'environments/environment';
 
 /**
  * Helper methods for working with API model
@@ -54,27 +53,6 @@ export class ApiHelper {
     } else {
       return value;
     }
-  }
-
-  /**
-   * Returns the available options for page sizes on searches
-   */
-  static get searchPageSizes(): number[] {
-    return environment.searchPageSizes || [40, 100, 200];
-  }
-
-  /**
-   * Returns the available options for page sizes on searches
-   */
-  static get defaultSearchPageSize(): number {
-    return ApiHelper.searchPageSizes[0];
-  }
-
-  /**
-   * Returns the number of results to be returned in a quick search
-   */
-  static get quickSearchPageSize(): number {
-    return environment.quickSearchPageSize || 10;
   }
 
   /**

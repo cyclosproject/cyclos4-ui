@@ -1,11 +1,11 @@
 import { APP_INITIALIZER, Injector, Provider } from '@angular/core';
 import { ApiConfiguration } from 'app/api/api-configuration';
-import { ContentPage } from 'app/content/content-page';
+import { Configuration } from 'app/configuration';
 import { ContentService } from 'app/core/content.service';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
-import { environment } from 'environments/environment';
+import { setup } from 'app/setup';
 import { LightboxConfig } from 'ngx-lightbox';
-import { forkJoin, Observable, of } from 'rxjs';
+import { forkJoin, of } from 'rxjs';
 
 // Initializes the shared services
 export function initialize(
@@ -16,12 +16,14 @@ export function initialize(
   content: ContentService
 ): Function {
   return async () => {
-    // Initialize the API configuration
-    let root = environment.apiRoot as string;
-    if (root.endsWith('/')) {
-      root = root.substr(0, root.length - 1);
+    // First setup the configuration
+    setup();
+    if (Configuration.apiRoot.endsWith('/')) {
+      Configuration.apiRoot = Configuration.apiRoot.substring(0, Configuration.apiRoot.length - 1);
     }
-    apiConfig.rootUrl = root;
+
+    // Initialize the API configuration
+    apiConfig.rootUrl = Configuration.apiRoot;
 
     // Initialize the Lightbox configuration
     lightboxConfig.centerVertically = true;
@@ -31,21 +33,13 @@ export function initialize(
     lightboxConfig.wrapAround = true;
 
     // If the translations are statically set, initialize the translation values
-    if (environment.staticLocale && environment.staticTranslations) {
-      dataForUiHolder._setLocale(environment.staticLocale, environment.staticTranslations);
+    if (Configuration.staticLocale && Configuration.staticTranslations) {
+      dataForUiHolder._setLocale(Configuration.staticLocale, Configuration.staticTranslations);
     }
 
-    const contentPagesResolver = environment.contentPagesResolver;
-    let contentPages: ContentPage[] | Observable<ContentPage[]>;
-    if (contentPagesResolver instanceof Array) {
-      // The resolver is already the list of content pages
-      contentPages = contentPagesResolver;
-    } else if (contentPagesResolver == null) {
-      // There is no resolver - no content pages
+    let contentPages = Configuration.contentPages ? Configuration.contentPages.contentPages(injector) : null;
+    if (!contentPages) {
       contentPages = [];
-    } else {
-      // The resolver is a 'resolver'
-      contentPages = contentPagesResolver.resolveContentPages(injector) || [];
     }
     if (contentPages instanceof Array) {
       // The pages are already available

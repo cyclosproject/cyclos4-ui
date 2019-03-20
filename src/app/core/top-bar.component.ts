@@ -7,9 +7,9 @@ import { MenuService } from 'app/core/menu.service';
 import { LayoutService } from 'app/shared/layout.service';
 import { ActiveMenu, Menu, RootMenuEntry, MenuType } from 'app/shared/menu';
 import { Messages } from 'app/messages/messages';
-import { environment } from 'environments/environment';
 import { Observable } from 'rxjs';
 import { words } from 'app/shared/helper';
+import { Configuration } from 'app/configuration';
 
 const MAX_USER_DISPLAY_SIZE = 20;
 
@@ -52,7 +52,7 @@ export class TopBarComponent implements OnInit {
     this.login.user$.subscribe(user => {
       this.userName = user == null ? '' : words(user.display, MAX_USER_DISPLAY_SIZE);
     });
-    if (!environment.menuBar) {
+    if (!Configuration.menuBar) {
       this.hasMenu = true;
       this.roots = this.menu.menu(MenuType.BAR);
     }

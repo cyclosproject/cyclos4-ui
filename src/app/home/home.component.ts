@@ -1,11 +1,10 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
+import { Configuration } from 'app/configuration';
 import { ContentPage } from 'app/content/content-page';
 import { handleFullWidthLayout } from 'app/content/content-with-layout';
 import { DashboardItemConfig } from 'app/content/dashboard-item-config';
-import { DashboardResolver } from 'app/content/dashboard-resolver';
 import { BasePageComponent, UpdateTitleFrom } from 'app/shared/base-page.component';
-import { environment } from 'environments/environment';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 export const SessionToken = 'sessionToken';
 
@@ -27,7 +26,6 @@ export class HomeComponent extends BasePageComponent<void> implements OnInit {
   leftConfigs$ = new BehaviorSubject<DashboardItemConfig[]>(null);
   rightConfigs$ = new BehaviorSubject<DashboardItemConfig[]>(null);
   fullConfigs$ = new BehaviorSubject<DashboardItemConfig[]>(null);
-  resolver: DashboardItemConfig[] | DashboardResolver;
 
   constructor(private injector: Injector) {
     super(injector);
@@ -38,17 +36,11 @@ export class HomeComponent extends BasePageComponent<void> implements OnInit {
 
     if (this.login.user == null) {
       // For guests, just fetch the content
-      this.homePage = environment.homePage || { content: '' };
+      this.homePage = Configuration.homePage || { content: '' };
       this.ready$.next(true);
     } else {
       // For logged users, resolve the dashboard items
-      this.resolver = environment.dashboardResolver as any;
-      let configs: DashboardItemConfig[] | Observable<DashboardItemConfig[]>;
-      if (this.resolver instanceof Array) {
-        configs = this.resolver;
-      } else {
-        configs = this.resolver.resolveItems(this.injector);
-      }
+      const configs = Configuration.dashboard ? Configuration.dashboard.dashboardItems(this.injector) : null;
       if (configs instanceof Array) {
         this.initializeItems(configs);
       } else {
@@ -70,7 +62,7 @@ export class HomeComponent extends BasePageComponent<void> implements OnInit {
   defaultFullWidthLayout(): boolean {
     if (this.login.user == null) {
       // Home content page may be full width
-      return handleFullWidthLayout(environment.homePage);
+      return handleFullWidthLayout(Configuration.homePage);
     }
     return false;
   }

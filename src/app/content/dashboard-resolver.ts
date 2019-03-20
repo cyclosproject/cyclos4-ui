@@ -12,6 +12,6 @@ export interface DashboardResolver {
    * @param injector The Angular injector, used to access shared services
    * @returns Either the dashboard items or an observable of the dashboard items
    */
-  resolveItems(injector: Injector): DashboardItemConfig[] | Observable<DashboardItemConfig[]>;
+  dashboardItems(injector: Injector): DashboardItemConfig[] | Observable<DashboardItemConfig[]>;
 
 }

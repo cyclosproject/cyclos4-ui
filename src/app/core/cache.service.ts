@@ -26,7 +26,7 @@ export class CacheService {
    * @param key The cache key
    * @param producer The producer function, called when the value for the given key is not found
    */
-  get<T>(key: string, producer?: (string) => Observable<T>, timeoutSeconds = DEFAULT_CACHE_SECONDS): Observable<T> {
+  get<T>(key: string, producer?: (key: string) => Observable<T>, timeoutSeconds = DEFAULT_CACHE_SECONDS): Observable<T> {
     if (timeoutSeconds === 0 || !environment.production) {
       // Don't cache
       return producer(key);

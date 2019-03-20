@@ -5,9 +5,9 @@ import { MenuService } from 'app/core/menu.service';
 import { Messages } from 'app/messages/messages';
 import { LayoutService } from 'app/shared/layout.service';
 import { ActiveMenu, BaseMenuEntry, MenuEntry, MenuType, RootMenu, RootMenuEntry } from 'app/shared/menu';
-import { environment } from 'environments/environment';
 import { BsDropdownDirective } from 'ngx-bootstrap/dropdown/public_api';
 import { Observable } from 'rxjs';
+import { Configuration } from 'app/configuration';
 
 /**
  * Renders menus in a bar, either the top bar or a dedicated menu bar
@@ -45,7 +45,7 @@ export class MenusComponent implements OnInit {
 
   ngOnInit(): void {
     this.roots = this.menu.menu(this.menuType);
-    this.onTop = this.mergePersonal = !environment.menuBar;
+    this.onTop = this.mergePersonal = !Configuration.menuBar;
   }
 
   onClick(event: MouseEvent, base: BaseMenuEntry) {

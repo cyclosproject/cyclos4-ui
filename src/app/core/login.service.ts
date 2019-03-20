@@ -9,7 +9,7 @@ import { NextRequestState } from 'app/core/next-request-state';
 import { empty, isSameOrigin } from 'app/shared/helper';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import { environment } from 'environments/environment';
+import { Configuration } from 'app/configuration';
 
 /**
  * Service used to manage the login status
@@ -140,8 +140,8 @@ export class LoginService {
       // Then reload the DataForUi instance (as guest)
       return this.dataForUiHolder.reload().subscribe(() => {
         this._loggingOut.next(false);
-        if (environment.afterLogoutUrl) {
-          location.assign(environment.afterLogoutUrl);
+        if (Configuration.afterLogoutUrl) {
+          location.assign(Configuration.afterLogoutUrl);
         } else {
           this.router.navigateByUrl(redirectUrl || '/');
         }

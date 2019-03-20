@@ -12,6 +12,6 @@ export interface BannerCardsResolver {
    * @param injector The Angular injector, used to access shared services
    * @returns Either the banner cards or an observable of the banner cards
    */
-  resolveCards(injector: Injector): BannerCard[] | Observable<BannerCard[]>;
+  bannerCards(injector: Injector): BannerCard[] | Observable<BannerCard[]>;
 
 }

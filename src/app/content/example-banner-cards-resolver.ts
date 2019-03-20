@@ -13,7 +13,7 @@ export class ExampleBannerCardsResolver implements BannerCardsResolver {
   /**
    * Returns some example banners
    */
-  resolveCards(): BannerCard[] {
+  bannerCards(): BannerCard[] {
 
     // A general banner
     const general: BannerCard = {

@@ -1,7 +1,6 @@
 import { ContentPage } from 'app/content/content-page';
 import { ContentPagesResolver } from 'app/content/content-pages-resolver';
 import { RootMenu } from 'app/shared/menu';
-import { Observable } from 'rxjs';
 
 const CONTENT = `
 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
@@ -50,7 +49,7 @@ export class ExampleContentPagesResolver implements ContentPagesResolver {
   /**
    * Returns the application content pages
    */
-  resolveContentPages(): ContentPage[] | Observable<ContentPage[]> {
+  contentPages(): ContentPage[] {
     return [
       {
         slug: 'help',

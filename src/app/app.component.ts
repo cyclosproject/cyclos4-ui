@@ -11,10 +11,10 @@ import { blank, setRootSpinnerVisible } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
 import { trim } from 'lodash';
 import { BehaviorSubject } from 'rxjs';
-import { environment } from 'environments/environment.prod';
 import { DataForUi } from 'app/api/models';
 import { StateManager } from 'app/core/state-manager';
 import { BreadcrumbService } from 'app/core/breadcrumb.service';
+import { Configuration } from 'app/configuration';
 
 @Component({
   selector: 'app-root',
@@ -56,13 +56,10 @@ export class AppComponent implements OnInit {
         if (typeof url === 'object') {
           url = url.href;
         }
-        this.menu.navigate({
-          url: url,
-          event: event
-        });
+        this.menu.navigate({ url: url, event: event });
       });
     };
-    this.menuBar = environment.menuBar;
+    this.menuBar = Configuration.menuBar;
     this.push.initialize();
     this.banner.initialize();
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;

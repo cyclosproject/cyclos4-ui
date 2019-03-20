@@ -3,9 +3,9 @@ import { ApiConfiguration } from 'app/api/api-configuration';
 import { Currency, DataForUi } from 'app/api/models';
 import { Messages } from 'app/messages/messages';
 import Big from 'big.js';
-import { environment } from 'environments/environment';
 import moment from 'moment-mini-ts';
 import { DataForUiHolder } from './data-for-ui-holder';
+import { Configuration } from 'app/configuration';
 
 export const ISO_DATE = 'YYYY-MM-DD';
 
@@ -152,21 +152,21 @@ export class FormatService {
    * Returns the application title
    */
   public get appTitle(): string {
-    return environment.appTitle;
+    return Configuration.appTitle;
   }
 
   /**
    * Returns the application title for xs devices
    */
   public get appTitleSmall(): string {
-    return environment.appTitleSmall || environment.appTitle;
+    return Configuration.appTitleSmall || Configuration.appTitle;
   }
 
   /**
    * Returns the application title used inside the menu on small devices
    */
   public get appTitleMenu(): string {
-    return environment.appTitleMenu || this.appTitle;
+    return Configuration.appTitleMenu || this.appTitle;
   }
 
   /**

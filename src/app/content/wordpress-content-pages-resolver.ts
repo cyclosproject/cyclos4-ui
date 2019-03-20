@@ -17,7 +17,7 @@ export class WordpressContentPagesResolver implements ContentPagesResolver {
 
   constructor(private url: string) { }
 
-  resolveContentPages(injector: Injector): Observable<ContentPage[]> {
+  contentPages(injector: Injector): Observable<ContentPage[]> {
     return injector.get(HttpClient).get(this.url).pipe(map((res: any[]) => {
       return res.map(p => this.toContentPage(p));
     }));
