@@ -53,7 +53,7 @@ The project will not compile yet because it depends on classes which are generat
 
 ## Basic setup
 
-On the `src/setup.ts` you will find the file that needs to be configured for your project.
+On the `src/app/setup.ts` you will find the file that needs to be configured for your project.
 The most important settings are the following:
 
 ```typescript
@@ -234,7 +234,7 @@ Currently the Cyclos frontend offers the following options in the configuration 
 
 ### Use a separated menu bar or join the menu on the top bar
 
-By default, on desktop resolutions, the menu is displayed in a separated bar, below the top bar. An alternative is to have the menu displayed in the top bar itself. To configure this, set in the `src/setup.ts` file:
+By default, on desktop resolutions, the menu is displayed in a separated bar, below the top bar. An alternative is to have the menu displayed in the top bar itself. To configure this, set in the `src/app/setup.ts` file:
 
 ```typescript
 export function setup() {
@@ -243,7 +243,7 @@ export function setup() {
 }
 ```
 
-It is also possible to customize the advertisements category icons and colors, which are shown when selecting the marketplace menu item. It is recommended that all the oot advertisement categories in Cyclos have an internal name. The default settings in the frontend matches the categories created by default when creating a network in Cyclos via the wizard. Here is an example of the `src/setup.ts` file with the default settings:
+It is also possible to customize the advertisements category icons and colors, which are shown when selecting the marketplace menu item. It is recommended that all the oot advertisement categories in Cyclos have an internal name. The default settings in the frontend matches the categories created by default when creating a network in Cyclos via the wizard. Here is an example of the `src/app/setup.ts` file with the default settings:
 
 ```typescript
 export function setup() {
@@ -270,7 +270,7 @@ The Cyclos frontend supports several kinds of content that can be customized:
 - Content pages, which are custom pages that show up in the menu;
 - Banners, shown on desktop layout.
 
-All these aspects are configured in the `src/setup.ts` file. By default, the file `content/home.html` is used to generate the home content for guests. Projects can either customize that file or set a different strategy to fetch the home content. More on this subject is presented ahead. Also, by default, there are no custom content pages or banners.
+All these aspects are configured in the `src/app/setup.ts` file. By default, the file `content/home.html` is used to generate the home content for guests. Projects can either customize that file or set a different strategy to fetch the home content. More on this subject is presented ahead. Also, by default, there are no custom content pages or banners.
 
 Every content implement the `Content` interface (defined in `src/app/content/content.ts`) which has a property called `content`. It can either be a string, with the static content (compiled into the code), or a `ContentGetter`, which is able to fetch content from an external source. There are the following built-in `ContentGetter` implementations:
 
@@ -413,7 +413,7 @@ Note that using this method will have the same effect as clicking on the corresp
 
 This application doesn't uses [Angular's built-in I18N](https://angular.io/guide/i18n) because it is very static, requiring a translated copy of the application to be built for each supported language. Instead, the Cyclos frontend uses [ng-translation-gen](https://github.com/cyclosproject/ng-translation-gen), so the translation keys are read from a JSON file, and generate TypeScript classes which are used on the application. Then, in runtime, the translated JSON is set, which allows dynamic translations.
 
-Most systems are single language. In that case, it is recommended to set the translations value statically, so a separated request to fetch the translations is not needed. This is configured in `src/setup.ts`. Here is an example for the English translation:
+Most systems are single language. In that case, it is recommended to set the translations value statically, so a separated request to fetch the translations is not needed. This is configured in `src/app/setup.ts`. Here is an example for the English translation:
 
 ```typescript
 import TranslationValues from 'locale/cyclos4-ui.json';
@@ -449,7 +449,7 @@ In these cases, the external system should login the user using an administrator
 
 But it is also desirable that whenever the user session expires, the user gets redirected back to the external form for the login, to present users a consistent experience. Similarly, when users logs out of the Cyclos frontend, it would be expected that they are redirected back to the external website on which they logged-in.
 
-These aspects are configured in the `src/setup.ts` file, like in this example:
+These aspects are configured in the `src/app/setup.ts` file, like in this example:
 
 ```typescript
 export function setup() {
