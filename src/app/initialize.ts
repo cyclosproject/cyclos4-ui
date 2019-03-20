@@ -48,7 +48,7 @@ export function initialize(
 
     // Load both content pages and data for UI
     const result = await forkJoin(contentPages, dataForUiHolder.initialize()).toPromise();
-    content.contentPages = result[0];
+    content.contentPages = (result[0] || []).filter(p => !!p);
   };
 }
 export const INITIALIZE: Provider = {

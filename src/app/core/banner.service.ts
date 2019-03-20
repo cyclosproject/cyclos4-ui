@@ -52,7 +52,7 @@ export class BannerService {
 
   private doInitialize(cards: BannerCard[]) {
     // Initialize the defaults for each card
-    this.allCards = cards || [];
+    this.allCards = (cards || []).filter(b => !!b);
     for (const card of this.allCards) {
       if (typeof card.index !== 'number' || card.index < 0) {
         card.index = 0;
@@ -176,7 +176,7 @@ export class BannerService {
     if (!(banners instanceof Array)) {
       return null;
     }
-    banners = card.banners = banners.filter(b => b != null);
+    banners = card.banners = banners.filter(b => !!b);
     for (const banner of banners) {
       if (banner.timeout == null) {
         banner.timeout = DEFAULT_TIMEOUT_SECONDS;

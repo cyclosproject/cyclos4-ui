@@ -52,6 +52,7 @@ export class HomeComponent extends BasePageComponent<void> implements OnInit {
   }
 
   private initializeItems(configs: DashboardItemConfig[]) {
+    configs = configs.filter(i => !!i);
     this.configs$.next(configs);
     this.leftConfigs$.next(configs.filter(c => c.column === 'left'));
     this.rightConfigs$.next(configs.filter(c => c.column === 'right'));
