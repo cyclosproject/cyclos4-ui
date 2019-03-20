@@ -20,7 +20,7 @@ export class Configuration {
   static appTitle = 'Cyclos';
 
   /** Application title displayed on small devices */
-  static appTitleSmall = 'Cyclos frontend';
+  static appTitleSmall = 'Cyclos';
 
   /** Application title displayed on the sidenav menu small devices */
   static appTitleMenu = 'Cyclos menu';
