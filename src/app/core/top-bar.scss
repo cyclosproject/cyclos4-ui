@@ -37,12 +37,15 @@
     margin-left: 0.5rem;
   }
   .top-title {
-    font-size: 1.2rem;
+    font-size: 1rem;
     padding: 0 0 0.1rem 0;
     line-height: 1em;
   }
 
   @include media-breakpoint-up(xs) {
+    .top-title {
+      font-size: 1.2rem;
+    }
     .navbar {
       height: $top-bar-height-xs;
       a {
