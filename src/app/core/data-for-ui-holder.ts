@@ -11,6 +11,7 @@ import { isSameOrigin, setReloadButton, setRootAlert } from 'app/shared/helper';
 import moment from 'moment-mini-ts';
 import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { Configuration } from 'app/configuration';
 
 /**
  * Injectable used to hold the `DataForUi` instance used by the application
@@ -180,6 +181,12 @@ export class DataForUiHolder {
 
   private doInitialize(): Observable<DataForUi> {
     const nextRequestState = this.injector.get(NextRequestState);
+
+    if (Configuration.redirectGuests && !nextRequestState.hasSession) {
+      // Guests aren't handled at all in this frontend. Redirect them.
+      location.assign(Configuration.redirectGuests);
+      return of(null);
+    }
 
     nextRequestState.ignoreNextError = true;
     return this.uiService.dataForUi({ kind: UiKind.CUSTOM }).pipe(

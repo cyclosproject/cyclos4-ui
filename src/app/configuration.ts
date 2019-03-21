@@ -1,105 +1,101 @@
 import { AdCategoryConfiguration } from 'app/content/ad-category-configuration';
 import { BannerCardsResolver } from 'app/content/banner-cards-resolver';
-import { ContentGetter } from 'app/content/content-getter';
 import { ContentPagesResolver } from 'app/content/content-pages-resolver';
 import { ContentWithLayout } from 'app/content/content-with-layout';
 import { DashboardResolver } from 'app/content/dashboard-resolver';
-import { DefaultDashboardResolver } from 'app/content/default-dashboard-resolver';
 
 /**
  * The global configuration
  */
-export class Configuration {
+export interface ConfigurationDefinitions {
   /*
    * The root URL for the API. Either 'api' (without slashes) when using a proxy,
    * or the full URL (with protocol) to the Cyclos backend, ending with /api.
    */
-  static apiRoot = 'api';
+  apiRoot: string;
 
   /** Application title */
-  static appTitle = 'Cyclos';
+  appTitle: string;
 
   /** Application title displayed on small devices */
-  static appTitleSmall = 'Cyclos';
+  appTitleSmall: string;
 
   /** Application title displayed on the sidenav menu small devices */
-  static appTitleMenu = 'Cyclos menu';
+  appTitleMenu: string;
 
   /** Available page sizes for search results */
-  static searchPageSizes = [40, 100, 200];
+  searchPageSizes: number[];
 
   /** Default page size for search results */
-  static defaultPageSize = Configuration.searchPageSizes[0];
+  defaultPageSize: number;
 
   /** Page size on quick search / autocomplete */
-  static quickSearchPageSize = 10;
+  quickSearchPageSize: number;
 
   /** Custom configuration for ad categories, by category internal name */
-  static adCategories: { [internalName: string]: AdCategoryConfiguration } = {
-    'community': { icon: 'people', color: '#2196f3' },
-    'food': { icon: 'restaurant', color: '#f04d4e' },
-    'goods': { icon: 'pages', color: '#ff9700' },
-    'housing': { icon: 'location_city', color: '#029487' },
-    'jobs': { icon: 'work', color: '#8062b3' },
-    'labor': { icon: 'business', color: '#de3eaa' },
-    'leisure': { icon: 'mood', color: '#687ebd' },
-    'services': { icon: 'room_service', color: '#8ec63f' }
-  };
+  adCategories: { [internalName: string]: AdCategoryConfiguration };
 
   /** Whether to use a separated menu bar (true) or merge the menu and top bar (false) */
-  static menuBar = true;
+  menuBar: boolean;
 
   /**
    * Identifier for a static locale. A static locale is compiled into the generated
    * JavaScript code, without needing to perform an additional request to fetch the
    * translations content.
    */
-  static staticLocale?: string;
+  staticLocale: string;
 
   /**
    * Object containing the translation values of the static translation
    */
-  static staticTranslations?: any;
+  staticTranslations: any;
 
   /**
    * Some systems use an external site to login users, then redirect the client with
    * the session token to Cyclos. When that is the case, this is the URL which contains
    * the external login form.
    */
-  static externalLoginUrl?: string;
+  externalLoginUrl: string;
 
   /**
    * When using an external login, and supported, will send this parameter containing the
    * internal path to which users should be redirected after logging in.
    */
-  static externalLoginParam?: string;
+  externalLoginParam: string;
 
   /**
    * When using an external login, is the URL to where users are redirected after logging-out.
    */
-  static afterLogoutUrl?: string;
+  afterLogoutUrl: string;
+
+  /**
+   * For systems that use this frontend strictly to logged users, and not for guests, via an
+   * external login page, this setting can be defined. In this case, whenever clients
+   * attempts to access the frontend without being logged in, they will be redirected.
+   */
+  redirectGuests: string;
 
   /**
    * The content displayed on the home page for guests
    */
-  static homePage: ContentWithLayout = {
-    content: ContentGetter.url('content/home.html')
-  };
+  homePage: ContentWithLayout;
 
   /**
    * The resolver for the dashboard elements
    */
-  static dashboard: DashboardResolver = new DefaultDashboardResolver();
+  dashboard: DashboardResolver;
 
   /**
    * The resolver for content pages
    */
-  static contentPages?: ContentPagesResolver;
+  contentPages: ContentPagesResolver;
 
   /**
    * The resolver for banners
    */
-  static banners?: BannerCardsResolver;
+  banners: BannerCardsResolver;
 
 }
 
+/** The global configuration */
+export const Configuration = {} as ConfigurationDefinitions;

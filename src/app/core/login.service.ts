@@ -135,17 +135,17 @@ export class LoginService {
     this.authService.logout({
       cookie: isSameOrigin(this.apiConfiguration.rootUrl)
     }).subscribe(() => {
-      this.clear();
+      if (Configuration.afterLogoutUrl) {
+        location.assign(Configuration.afterLogoutUrl);
+      } else {
+        this.clear();
 
-      // Then reload the DataForUi instance (as guest)
-      return this.dataForUiHolder.reload().subscribe(() => {
-        this._loggingOut.next(false);
-        if (Configuration.afterLogoutUrl) {
-          location.assign(Configuration.afterLogoutUrl);
-        } else {
+        // Then reload the DataForUi instance (as guest)
+        return this.dataForUiHolder.reload().subscribe(() => {
+          this._loggingOut.next(false);
           this.router.navigateByUrl(redirectUrl || '/');
-        }
-      });
+        });
+      }
     });
   }
 }

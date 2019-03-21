@@ -6,6 +6,37 @@ import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { setup } from 'app/setup';
 import { LightboxConfig } from 'ngx-lightbox';
 import { forkJoin, of } from 'rxjs';
+import { DefaultDashboardResolver } from 'app/content/default-dashboard-resolver';
+import { ContentGetter } from 'app/content/content-getter';
+
+/**
+ * Sets the default values on the global configuration
+ */
+function setupConfigurationDefaults() {
+  Configuration.apiRoot = 'api';
+  Configuration.appTitle = 'Cyclos';
+  Configuration.appTitleSmall = 'Cyclos';
+  Configuration.appTitleMenu = 'Cyclos menu';
+  Configuration.searchPageSizes = [40, 100, 200];
+  Configuration.defaultPageSize = Configuration.searchPageSizes[0];
+  Configuration.quickSearchPageSize = 10;
+  Configuration.adCategories = {
+    'community': { icon: 'people', color: '#2196f3' },
+    'food': { icon: 'restaurant', color: '#f04d4e' },
+    'goods': { icon: 'pages', color: '#ff9700' },
+    'housing': { icon: 'location_city', color: '#029487' },
+    'jobs': { icon: 'work', color: '#8062b3' },
+    'labor': { icon: 'business', color: '#de3eaa' },
+    'leisure': { icon: 'mood', color: '#687ebd' },
+    'services': { icon: 'room_service', color: '#8ec63f' }
+  };
+  Configuration.menuBar = true;
+  Configuration.homePage = {
+    content: ContentGetter.url('content/home.html')
+  };
+  Configuration.dashboard = new DefaultDashboardResolver();
+}
+
 
 // Initializes the shared services
 export function initialize(
@@ -16,7 +47,9 @@ export function initialize(
   content: ContentService
 ): Function {
   return async () => {
-    // First setup the configuration
+    // First setup the configuration with the defaults
+    setupConfigurationDefaults();
+    // Then call the customizable function to setup it
     setup();
     if (Configuration.apiRoot.endsWith('/')) {
       Configuration.apiRoot = Configuration.apiRoot.substring(0, Configuration.apiRoot.length - 1);

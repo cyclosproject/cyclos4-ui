@@ -457,7 +457,8 @@ export function setup() {
   Configuration.externalLoginUrl = `${externalRoot}/login`;
   Configuration.externalLoginParam = 'page';
   Configuration.afterLogoutUrl = externalRoot;
+  Configuration.redirectGuests = externalRoot;
 }
 ```
 
-In the example, when the user session expires, for example, when they are in the `/banking/payment` page, the Cyclos frontend will redirect the user to `https://www.mysystem.com/login?page=%2Fbanking%2Fpayment` (which is the URI-encoded value). As such, the external page should present the login form and, after logged-in, the user should be sent back to the frontend on that page, for example, `https://account.mysystem.com/banking/payment?sessionToken=ABCDEFGH123456`.
+In the example, when the user session expires, for example, when they are in the `/banking/payment` page, the Cyclos frontend will redirect the user to `https://www.mysystem.com/login?page=%2Fbanking%2Fpayment` (which is the URI-encoded value). As such, the external page should present the login form and, after logged-in, the user should be sent back to the frontend on that page, for example, `https://account.mysystem.com/banking/payment?sessionToken=ABCDEFGH123456`. Also, because `redirectGuests` is set, the frontend will not even allow users browsing without being logged-in.
