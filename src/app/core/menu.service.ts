@@ -13,6 +13,7 @@ import { LayoutService } from 'app/shared/layout.service';
 import { ConditionalMenu, Menu, MenuEntry, MenuType, RootMenu, RootMenuEntry, SideMenuEntries, ActiveMenu } from 'app/shared/menu';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { filter, first, map } from 'rxjs/operators';
+import { Configuration } from 'app/configuration';
 
 /**
  * Parameters accepted by the `navigate` method
@@ -439,7 +440,7 @@ export class MenuService {
       if (registrationGroups.length > 0) {
         add(Menu.REGISTRATION, '/users/registration', register.icon, register.label);
       }
-      add(Menu.LOGIN, '/login', login.icon, login.label);
+      add(Menu.LOGIN, Configuration.externalLoginUrl || '/login', login.icon, login.label);
     } else {
       // Logged user
       add(Menu.DASHBOARD, '/', dashboard.icon, dashboard.label);

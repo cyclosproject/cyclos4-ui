@@ -63,6 +63,6 @@ export class ForgotPasswordComponent extends BasePageComponent<DataForLogin> imp
   }
 
   cancel() {
-    this.router.navigateByUrl('/login');
+    this.login.goToLoginPage('');
   }
 }

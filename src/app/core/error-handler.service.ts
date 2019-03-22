@@ -1,15 +1,10 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import {
-  ConflictError, ConflictErrorCode, ErrorKind, ForbiddenError, ForbiddenErrorCode,
-  ForgottenPasswordError, ForgottenPasswordErrorCode, InputError, InputErrorCode,
-  NestedError, NotFoundError, OtpError, PasswordStatusEnum, PaymentError,
-  PaymentErrorCode, UnauthorizedError, UnauthorizedErrorCode
-} from 'app/api/models';
+import { ConflictError, ConflictErrorCode, ErrorKind, ForbiddenError, ForbiddenErrorCode, ForgottenPasswordError, ForgottenPasswordErrorCode, InputError, InputErrorCode, NestedError, NotFoundError, OtpError, PasswordStatusEnum, PaymentError, PaymentErrorCode, UnauthorizedError, UnauthorizedErrorCode } from 'app/api/models';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { FormatService } from 'app/core/format.service';
-import { LoginState } from 'app/core/login-state';
+import { LoginService } from 'app/core/login.service';
 import { NotificationService } from 'app/core/notification.service';
 import { Messages } from 'app/messages/messages';
 import { BasePageComponent } from 'app/shared/base-page.component';
@@ -33,7 +28,7 @@ export class ErrorHandlerService {
     private format: FormatService,
     private layout: LayoutService,
     private nextRequestState: NextRequestState,
-    private loginState: LoginState,
+    private login: LoginService,
     private dataForUiHolder: DataForUiHolder,
     private messages: Messages
   ) { }
@@ -126,15 +121,13 @@ export class ErrorHandlerService {
   public handleUnauthorizedError(error: UnauthorizedError) {
     if (error.code === UnauthorizedErrorCode.MISSING_AUTHORIZATION) {
       // Should be logged-in. Redirect to login page.
-      this.loginState.redirectUrl = this.router.url;
-      this.router.navigateByUrl('/login');
+      this.login.goToLoginPage(this.router.url);
     } else if (error.code === UnauthorizedErrorCode.LOGGED_OUT) {
       // Was logged out. Fetch the DataForUi again (as guest) and go to the login page.
       this.nextRequestState.setSessionToken(null);
       this.dataForUiHolder.reload()
         .subscribe(() => {
-          this.loginState.redirectUrl = this.router.url;
-          this.router.navigateByUrl('/login');
+          this.login.goToLoginPage(this.router.url);
         });
     } else {
       this.notification.error(this.unauthorizedErrorMessage(error));

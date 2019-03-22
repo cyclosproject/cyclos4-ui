@@ -51,6 +51,26 @@ export class LoginService {
   }
 
   /**
+   * Redirects the user to the login page.
+   * @param redirectUrl Where to go after logging in
+   */
+  goToLoginPage(redirectUrl: string) {
+    if (Configuration.externalLoginUrl) {
+      // Login is handled in an external frontend
+      let url = Configuration.externalLoginUrl;
+      if (Configuration.externalLoginParam && !empty(redirectUrl)) {
+        // Also send the redirect url
+        url += (url.includes('?') ? '&' : '?') + Configuration.externalLoginParam + '=' + encodeURIComponent(redirectUrl);
+      }
+      location.assign(url);
+    } else {
+      // Go to the login page
+      this.loginState.redirectUrl = redirectUrl;
+      this.router.navigateByUrl('/login');
+    }
+  }
+
+  /**
    * Returns the current user permissions, or null if not logged in
    */
   get permissions(): Permissions {

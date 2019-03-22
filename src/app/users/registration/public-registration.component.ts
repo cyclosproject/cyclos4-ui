@@ -391,6 +391,6 @@ export class PublicRegistrationComponent
   }
 
   goToLogin() {
-    this.router.navigateByUrl('/login');
+    this.login.goToLoginPage('');
   }
 }

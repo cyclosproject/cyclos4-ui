@@ -1,7 +1,6 @@
 import { Injectable, Injector } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate, RouterStateSnapshot } from '@angular/router';
 import { ContentService } from 'app/core/content.service';
-import { LoginState } from 'app/core/login-state';
 import { LoginService } from 'app/core/login.service';
 
 /**
@@ -13,10 +12,8 @@ import { LoginService } from 'app/core/login.service';
 export class ContentPageGuard implements CanActivate {
   constructor(
     private content: ContentService,
-    private router: Router,
     private injector: Injector,
-    private login: LoginService,
-    private loginState: LoginState
+    private login: LoginService
   ) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
@@ -25,8 +22,7 @@ export class ContentPageGuard implements CanActivate {
     const visible = page != null && page.isVisible(this.injector);
     if (!visible && this.login.user == null) {
       // Login and try again
-      this.loginState.redirectUrl = state.url;
-      this.router.navigateByUrl('/login');
+      this.login.goToLoginPage(state.url);
     }
     return visible;
   }

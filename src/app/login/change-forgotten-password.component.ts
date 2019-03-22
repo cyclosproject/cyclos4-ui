@@ -85,12 +85,12 @@ export class ChangeForgottenPasswordComponent
         this.notification.info(message);
         // Mark the login page as affected by the forgotten password change and go to login
         this.loginState.forgottenPasswordChanged(generated);
-        this.router.navigateByUrl('/login');
+        this.login.goToLoginPage('');
       });
   }
 
   cancel() {
     // Go back to the login page
-    this.router.navigateByUrl('/login');
+    this.login.goToLoginPage('');
   }
 }

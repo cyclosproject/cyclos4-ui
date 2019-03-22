@@ -3,12 +3,11 @@ import { Router } from '@angular/router';
 import { ApiConfiguration } from 'app/api/api-configuration';
 import { Auth } from 'app/api/models';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
-import { LoginState } from 'app/core/login-state';
 import { LoginService } from 'app/core/login.service';
 import { NextRequestState } from 'app/core/next-request-state';
 import { NotificationService } from 'app/core/notification.service';
-import { EventSourcePolyfill } from 'ng-event-source';
 import { Messages } from 'app/messages/messages';
+import { EventSourcePolyfill } from 'ng-event-source';
 
 export const LOGGED_OUT = 'loggedOut';
 const KINDS = [LOGGED_OUT];
@@ -30,7 +29,6 @@ export class PushNotificationsService {
     private messages: Messages,
     private notification: NotificationService,
     private zone: NgZone,
-    private loginState: LoginState,
     private nextRequestState: NextRequestState,
     private router: Router
   ) {
@@ -78,8 +76,7 @@ export class PushNotificationsService {
           message: this.messages.general.sessionExpired.message,
           confirmLabel: this.messages.general.sessionExpired.loginAgain,
           callback: () => {
-            this.loginState.redirectUrl = this.router.url;
-            this.router.navigateByUrl('/login');
+            this.login.goToLoginPage(this.router.url);
           }
         });
       });

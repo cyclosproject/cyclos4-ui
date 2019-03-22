@@ -41,6 +41,6 @@ export class ValidateEmailChangeComponent
   }
 
   goToLogin() {
-    this.router.navigateByUrl('/login');
+    this.login.goToLoginPage('');
   }
 }

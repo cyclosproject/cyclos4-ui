@@ -57,13 +57,8 @@ export class LoginComponent
       ));
       return;
     } else if (Configuration.externalLoginUrl) {
-      // Login is handled in an external frontend
-      let url = Configuration.externalLoginUrl;
-      if (Configuration.externalLoginParam && !empty(this.loginState.redirectUrl)) {
-        // Also send the redirect url
-        url += (url.includes('?') ? '&' : '?') + Configuration.externalLoginParam + '=' + encodeURIComponent(this.loginState.redirectUrl);
-      }
-      location.assign(url);
+      // Redirect to the external URL
+      this.login.goToLoginPage(this.loginState.redirectUrl);
       return;
     }
 

@@ -35,6 +35,6 @@ export class ValidateRegistrationComponent
   }
 
   goToLogin() {
-    this.router.navigateByUrl('/login');
+    this.login.goToLoginPage('');
   }
 }
