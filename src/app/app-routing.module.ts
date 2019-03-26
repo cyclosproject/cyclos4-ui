@@ -123,6 +123,10 @@ const rootRoutes: Routes = [
     loadChildren: 'app/marketplace/marketplace.module#MarketplaceModule'
   },
   {
+    path: 'personal',
+    loadChildren: 'app/personal/personal.module#PersonalModule'
+  },
+  {
     path: '**',
     component: NotFoundComponent
   }

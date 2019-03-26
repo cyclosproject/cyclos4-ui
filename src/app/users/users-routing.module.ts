@@ -8,7 +8,6 @@ import { ViewProfileComponent } from 'app/users/profile/view-profile.component';
 import { EditProfileComponent } from 'app/users/profile/edit-profile.component';
 import { SearchUsersComponent } from 'app/users/search/search-users.component';
 import { ContactListComponent } from 'app/users/search/contact-list.component';
-import { ManagePasswordsComponent } from 'app/users/passwords/manage-passwords.component';
 import { PublicRegistrationComponent } from 'app/users/registration/public-registration.component';
 import { ValidateRegistrationComponent } from 'app/users/registration/validate-registration.component';
 import { ValidateEmailChangeComponent } from 'app/users/profile/validate-email-change.component';
@@ -103,16 +102,7 @@ const usersRoutes: Routes = [
         data: {
           menu: Menu.REGISTRATION
         }
-      },
-
-      {
-        path: 'passwords',
-        component: ManagePasswordsComponent,
-        canActivate: [LoggedUserGuard],
-        data: {
-          menu: Menu.PASSWORDS
-        }
-      },
+      }
     ]
   }
 ];

@@ -27,7 +27,6 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
   lastAuthComment: string;
   hasDueAmount = false;
   hasInstallmentActions = false;
-  hasOccurrenceActions = false;
 
   constructor(
     injector: Injector,
@@ -61,7 +60,6 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
         this.headingActions = this.initActions(transaction);
         this.hasDueAmount = transaction.dueAmount && !this.format.isZero(transaction.dueAmount);
         this.hasInstallmentActions = !!(transaction.installments || []).find(i => i.canProcess || i.canSettle);
-        this.hasOccurrenceActions = false;
         this.data = transaction;
         if (transaction.transfer) {
           transaction.transfer.transaction = transaction;

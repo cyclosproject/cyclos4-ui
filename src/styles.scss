@@ -277,10 +277,14 @@ table.table {
       }
     }
   }
+  th.actions, td.actions {
+    width: 1rem;
+  }
   td.actions {
     text-align: right;
     padding-top: 0.2rem;
     padding-bottom: 0.2rem;
+    white-space: nowrap;
   }
 }
 
@@ -938,7 +942,7 @@ notification data {
   a {
     text-decoration: none !important;
   }
-  .link-with-icon icon, td.avatar, th.avatar, td.row-actions, th.row-actions, pagination {
+  .link-with-icon icon, td.avatar, th.avatar, td.actions, th.actions, pagination {
     display: none;
   }
   .avatar-container.round-borders {

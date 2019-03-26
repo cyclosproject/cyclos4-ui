@@ -7,10 +7,12 @@
 </page-layout>
 
 <ng-template #transactionFields>
-  <label-value *ngIf="transaction.transactionNumber" [label]="messages.transaction.number">
+  <label-value *ngIf="transaction.transactionNumber"
+    [label]="messages.transaction.number">
     {{ transaction.transactionNumber }}
   </label-value>
-  <label-value [label]="messages.transaction.status.name" [value]="status"></label-value>
+  <label-value [label]="messages.transaction.status.name" [value]="status">
+  </label-value>
   <label-value [label]="messages.general.date">
     {{ transaction.date | dateTime }}
   </label-value>
@@ -23,17 +25,20 @@
   <label-value *ngIf="transaction.by" [label]="messages.general.performedBy">
     {{ transaction.by.display }}
   </label-value>
-  <label-value *ngIf="transaction?.receivedBy" [label]="messages.transaction.receivedBy">
+  <label-value *ngIf="transaction?.receivedBy"
+    [label]="messages.transaction.receivedBy">
     {{ transaction.receivedBy.display }}
   </label-value>
   <label-value [label]="messages.transaction.from">
-    <user-link *ngIf="transaction.fromUser; else fromSystem" [user]="transaction.fromUser"></user-link>
+    <user-link *ngIf="transaction.fromUser; else fromSystem"
+      [user]="transaction.fromUser"></user-link>
     <ng-template #fromSystem>
       {{ transaction.type.from.name }}
     </ng-template>
   </label-value>
   <label-value [label]="messages.transaction.to">
-    <user-link *ngIf="transaction.toUser; else toSystem" [user]="transaction.toUser"></user-link>
+    <user-link *ngIf="transaction.toUser; else toSystem"
+      [user]="transaction.toUser"></user-link>
     <ng-template #toSystem>
       {{ transaction.type.to.name }}
     </ng-template>
@@ -44,28 +49,34 @@
   <custom-field-value *ngFor="let value of transaction.customValues"
     [fieldValue]="value">
   </custom-field-value>
-  <label-value *ngIf="transaction.channel" [label]="messages.transaction.channel">
+  <label-value *ngIf="transaction.channel"
+    [label]="messages.transaction.channel">
     {{ transaction.channel.name }}
   </label-value>
 
-  <label-value *ngIf="(transaction.installments || []).length === 1" [label]="messages.transaction.dueDate">
+  <label-value *ngIf="(transaction.installments || []).length === 1"
+    [label]="messages.transaction.dueDate">
     {{ transaction.installments[0].dueDate | date }}
   </label-value>
 
-  <label-value *ngIf="transaction.nextOccurrenceDate" [label]="messages.transaction.nextOccurrence">
+  <label-value *ngIf="transaction.nextOccurrenceDate"
+    [label]="messages.transaction.nextOccurrence">
     {{ transaction.nextOccurrenceDate | date }}
   </label-value>
 
-  <label-value *ngIf="transaction.occurrencesCount" [label]="messages.transaction.occurrencesCount">
+  <label-value *ngIf="transaction.occurrencesCount"
+    [label]="messages.transaction.occurrencesCount">
     {{ transaction.occurrencesCount }}
   </label-value>
 
-  <label-value *ngIf="lastAuthComment" [label]="messages.transaction.authorizationComments"
+  <label-value *ngIf="lastAuthComment"
+    [label]="messages.transaction.authorizationComments"
     [value]="lastAuthComment" valueFormat="break">
   </label-value>
 
-  <label-value *ngIf="transaction.description" [label]="messages.general.description"
-    [value]="transaction.description" valueFormat="break">
+  <label-value *ngIf="transaction.description"
+    [label]="messages.general.description" [value]="transaction.description"
+    valueFormat="break">
   </label-value>
 
   <ng-container *ngIf="(transaction.installments || []).length > 1">
@@ -76,10 +87,11 @@
         <th>{{ messages.transaction.dueDate }}</th>
         <th>{{ messages.transaction.status.name }}</th>
         <th class="amount">{{ messages.transaction.amount }}</th>
-        <th class="row-actions" style="width: 1rem;" *ngIf="hasInstallmentActions"></th>
+        <th class="actions" *ngIf="hasInstallmentActions"></th>
       </thead>
       <tbody>
-        <tr *ngFor="let installment of transaction.installments" [ngClass]="{'cursor-pointer': path(installment)}"
+        <tr *ngFor="let installment of transaction.installments"
+          [ngClass]="{'cursor-pointer': path(installment)}"
           (click)="path(installment) ? router.navigate(path(installment)) : null">
           <td>
             <maybe-link [link]="path(installment)">
@@ -101,13 +113,17 @@
               {{ installment.amount | currency:transaction.currency }}
             </maybe-link>
           </td>
-          <td *ngIf="hasInstallmentActions" class="row-actions">
-            <button *ngIf="installment.canProcess" [tooltip]="messages.transaction.processInstallment"
-              class="btn btn-light btn-icon" (click)="processInstallment(installment)">
+          <td *ngIf="hasInstallmentActions" class="actions">
+            <button *ngIf="installment.canProcess"
+              [tooltip]="messages.transaction.processInstallment"
+              class="btn btn-light btn-icon"
+              (click)="processInstallment(installment)">
               <icon icon="play_circle_outline"></icon>
             </button>
-            <button *ngIf="installment.canSettle" [tooltip]="messages.transaction.settleInstallment"
-              class="btn btn-light btn-icon" (click)="settleInstallment(installment)">
+            <button *ngIf="installment.canSettle"
+              [tooltip]="messages.transaction.settleInstallment"
+              class="btn btn-light btn-icon"
+              (click)="settleInstallment(installment)">
               <icon icon="thumb_up"></icon>
             </button>
           </td>
@@ -126,10 +142,10 @@
         <th>{{ messages.general.date }}</th>
         <th>{{ messages.transaction.status.name }}</th>
         <th class="text-right">{{ messages.transaction.amount }}</th>
-        <th class="row-actions" style="width: 1rem;" *ngIf="hasOccurrenceActions"></th>
       </thead>
       <tbody>
-        <tr *ngFor="let occurrence of transaction.occurrences" [ngClass]="{'cursor-pointer': path(occurrence)}"
+        <tr *ngFor="let occurrence of transaction.occurrences"
+          [ngClass]="{'cursor-pointer': path(occurrence)}"
           (click)="path(occurrence) ? router.navigate(path(occurrence)) : null">
           <td>
             <maybe-link [link]="path(occurrence)">
@@ -150,12 +166,6 @@
             <maybe-link [link]="path(occurrence)">
               {{ occurrence.amount | currency:transaction.currency }}
             </maybe-link>
-          </td>
-          <td *ngIf="hasOccurrenceActions" class="row-actions">
-            <button *ngIf="occurrence.canProcess" [tooltip]="messages.transaction.processFailedOccurrence"
-              class="btn btn-light btn-icon" (click)="processOcurrence(occurrence)">
-              <icon icon="play_circle_outline"></icon>
-            </button>
           </td>
         </tr>
       </tbody>

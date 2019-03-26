@@ -508,7 +508,10 @@ export class MenuService {
         } else {
           passwordsLabel = this.messages.menu.personalPasswords;
         }
-        add(Menu.PASSWORDS, '/users/passwords', 'vpn_key', passwordsLabel);
+        add(Menu.PASSWORDS, '/personal/passwords', 'vpn_key', passwordsLabel);
+      }
+      if ((permissions.notifications || {}).enable) {
+        add(Menu.NOTIFICATIONS, '/personal/notifications', 'notifications', this.messages.menu.personalNotifications);
       }
       addContentPages(Menu.CONTENT_PAGE_PERSONAL);
 

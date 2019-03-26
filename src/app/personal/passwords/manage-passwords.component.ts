@@ -4,7 +4,7 @@ import { PasswordsService } from 'app/api/services';
 import { Action } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BasePageComponent } from 'app/shared/base-page.component';
-import { ChangePasswordDialogComponent } from 'app/users/passwords/change-password-dialog.component';
+import { ChangePasswordDialogComponent } from 'app/personal/passwords/change-password-dialog.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BehaviorSubject } from 'rxjs';
 

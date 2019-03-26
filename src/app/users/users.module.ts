@@ -9,8 +9,6 @@ import { VerifyPhoneComponent } from 'app/users/profile/verify-phone.component';
 import { SearchUsersComponent } from 'app/users/search/search-users.component';
 import { UsersResultsComponent } from 'app/users/search/users-results.component';
 import { ContactListComponent } from 'app/users/search/contact-list.component';
-import { ManagePasswordsComponent } from 'app/users/passwords/manage-passwords.component';
-import { ChangePasswordDialogComponent } from 'app/users/passwords/change-password-dialog.component';
 import { PublicRegistrationComponent } from 'app/users/registration/public-registration.component';
 import { RegistrationStepGroupComponent } from 'app/users/registration/registration-step-group.component';
 import { RegistrationStepFieldsComponent } from 'app/users/registration/registration-step-fields.component';
@@ -46,14 +44,10 @@ import { AddContactDialogComponent } from 'app/users/search/add-contact-dialog.c
     RegistrationStepFieldsComponent,
     RegistrationStepConfirmComponent,
     RegistrationStepDoneComponent,
-    ValidateRegistrationComponent,
-
-    ManagePasswordsComponent,
-    ChangePasswordDialogComponent
+    ValidateRegistrationComponent
   ],
   entryComponents: [
     VerifyPhoneComponent,
-    ChangePasswordDialogComponent,
     AddContactDialogComponent
   ]
 })

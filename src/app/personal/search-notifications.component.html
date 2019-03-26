@@ -1,0 +1,60 @@
+<page-layout>
+  <page-content mode="filters" [heading]="messages.notification.title"
+    [headingActions]="headingActions$ | async">
+    <form [formGroup]="form" class="filters-form border-bottom">
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <boolean-field labelPosition="side" formControlName="onlyUnread"
+            [label]="messages.notification.onlyUnread"></boolean-field>
+        </div>
+      </div>
+    </form>
+
+  </page-content>
+  <results-layout resultType="list" [results]="results$ | async"
+    (update)="update($event)">
+    <table *resultTable class="table table-hover cursor-pointer">
+      <thead *ngIf="layout.gtxs$ | async">
+        <th class="avatar"></th>
+        <th>{{ messages.general.date }}</th>
+        <th>{{ messages.notification.message }}</th>
+        <th class="actions"></th>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let row of (results$ | async).results">
+          <tr (click)="onClick(row)"
+            [ngClass]="{'font-weight-bold': !row.read}">
+            <td class="avatar" [ngClass]="{
+              'pb-0': layout.xxs$ | async,
+              'border-0': layout.xxs$ | async
+            }">
+              <avatar [image]="row.relatedUser?.image"
+                [tooltip]="row.relatedUser?.display"
+                icon="notifications_none"></avatar>
+            </td>
+            <td *ngIf="layout.ltsm$ | async; else cells">
+              <!-- Aggregated cell for xs -->
+              <maybe-link [link]="path(row)">
+                <div class="cell-text">{{ row.subject }}</div>
+                <div class="cell-text cell-date" [tooltip]="row.message">
+                  {{ row.date | dateTime }}
+                </div>
+              </maybe-link>
+            </td>
+            <ng-template #cells>
+              <td>{{ row.date | dateTime }}</td>
+              <td>{{ row.message }}</td>
+            </ng-template>
+            <td class="actions">
+              <button [tooltip]="messages.notification.actions.remove"
+                class="btn btn-light btn-icon"
+                (click)="remove(row); $event.stopPropagation()">
+                <icon icon="clear"></icon>
+              </button>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </results-layout>
+</page-layout>

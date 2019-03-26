@@ -81,6 +81,7 @@ export module Menu {
   export const CONTACTS = new Menu(RootMenu.PERSONAL, 'CONTACTS');
   export const CONTACT_PROFILE = new Menu(RootMenu.PERSONAL, 'CONTACTS_PROFILE');
   export const PASSWORDS = new Menu(RootMenu.PERSONAL, 'PASSWORDS');
+  export const NOTIFICATIONS = new Menu(RootMenu.PERSONAL, 'NOTIFICATIONS');
 
   // Content (one per root menu)
   export const CONTENT_PAGE_BANKING = new Menu(RootMenu.BANKING, 'CONTENT_PAGE_BANKING');
