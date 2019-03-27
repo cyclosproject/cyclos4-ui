@@ -1,0 +1,18 @@
+@import 'src/definitions';
+
+:host {
+  display: inline-block;
+  position: relative;
+}
+
+.counter {
+  border-radius: 100%;
+  color: $icon-with-counter-color;
+  background-color: $icon-with-counter-bg;
+  position: absolute;
+  top: -0.2rem;
+  right: -0.2rem;
+  font-size: 0.7rem;
+  text-align: center;
+  min-width: 0.9rem;
+}

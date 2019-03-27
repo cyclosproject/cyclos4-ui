@@ -1,7 +1,7 @@
 import { Injectable, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiConfiguration } from 'app/api/api-configuration';
-import { Auth } from 'app/api/models';
+import { Auth, NotificationsStatus, Notification } from 'app/api/models';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { LoginService } from 'app/core/login.service';
 import { NextRequestState } from 'app/core/next-request-state';
@@ -10,7 +10,8 @@ import { Messages } from 'app/messages/messages';
 import { EventSourcePolyfill } from 'ng-event-source';
 
 export const LOGGED_OUT = 'loggedOut';
-const KINDS = [LOGGED_OUT];
+export const NEW_NOTIFICATION = 'newNotification';
+const KINDS = [LOGGED_OUT, NEW_NOTIFICATION];
 
 /**
  * Handles the registration and notitification of push events
@@ -34,7 +35,7 @@ export class PushNotificationsService {
   ) {
   }
 
-  public initialize() {
+  initialize() {
     this.dataForUiHolder.subscribe(dataForUi => {
       const auth = (dataForUi || {}).auth || {};
       if (auth.user == null) {
@@ -60,6 +61,15 @@ export class PushNotificationsService {
     kinds.forEach(kind => url += '&kinds=' + kind);
     this.eventSource = new EventSourcePolyfill(url, {
       headers: { 'Session-Token': auth.sessionToken }
+    });
+
+    // Listen for new notification events
+    this.eventSource.addEventListener(NEW_NOTIFICATION, (event: any) => {
+      this.zone.run(() => {
+        const status = JSON.parse(event.data) as NotificationsStatus & { notification: Notification };
+        this.notification.notificationsStatus$.next(status);
+        this.notification.newNotificationPush(status.notification);
+      });
     });
 
     // Listen for logged out events

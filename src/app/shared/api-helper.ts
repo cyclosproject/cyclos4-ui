@@ -1,4 +1,4 @@
-import { Entity } from 'app/api/models';
+import { Entity, Notification, NotificationEntityTypeEnum } from 'app/api/models';
 import { empty } from 'app/shared/helper';
 
 /**
@@ -71,5 +71,22 @@ export class ApiHelper {
       return [];
     }
   }
+
+  /**
+   * Returns the path to where a notification should point to
+   * @param notification The Cyclos notification
+   */
+  static notificationPath(notification: Notification): string {
+    switch (notification.entityType) {
+      case NotificationEntityTypeEnum.USER:
+        return `/users/profile/${notification.entityId}`;
+      case NotificationEntityTypeEnum.TRANSACTION:
+        return `/banking/transaction/${notification.entityId}`;
+      case NotificationEntityTypeEnum.TRANSFER:
+        return `/banking/transfer/${notification.entityId}`;
+    }
+    return undefined;
+  }
+
 
 }

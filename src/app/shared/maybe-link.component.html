@@ -1,4 +1,5 @@
-<a *ngIf="hasLink; else content" [routerLink]="link">
+<a *ngIf="hasLink; else content" [routerLink]="link"
+  (click)="click.emit($event)">
   <ng-container *ngTemplateOutlet="content"></ng-container>
 </a>
 <ng-template #content>

@@ -1,12 +1,17 @@
 import { Injectable } from '@angular/core';
-import { CustomFieldDetailed, PasswordInput } from 'app/api/models';
+import { CustomFieldDetailed, PasswordInput, NotificationsStatus, Notification } from 'app/api/models';
 import { SnackBarProvider, SnackBarOptions } from 'app/core/snack-bar-provider';
 import { FieldLabelPosition } from 'app/shared/base-form-field.component';
 import { ConfirmationComponent } from 'app/shared/confirmation.component';
 import { NotificationType } from 'app/shared/notification-type';
 import { NotificationComponent } from 'app/shared/notification.component';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { Observable, Subject, Subscription } from 'rxjs';
+import { Observable, Subject, Subscription, BehaviorSubject } from 'rxjs';
+import { DataForUiHolder } from 'app/core/data-for-ui-holder';
+import { NotificationsService } from 'app/api/services';
+import { first } from 'rxjs/operators';
+import { NextRequestState } from 'app/core/next-request-state';
+import { PushNotificationProvider } from 'app/core/push-notification-provider';
 
 /**
  * Reference to a notification
@@ -64,15 +69,38 @@ export class NotificationService {
     this._snackBarProvider = provider;
   }
 
-  public onClosed = new Subject<NotificationComponent>();
+  private _pushNotificationProvider: PushNotificationProvider;
+  set pushNotificationProvider(provider: PushNotificationProvider) {
+    this._pushNotificationProvider = provider;
+  }
+
+  onClosed = new Subject<NotificationComponent>();
+
+  notificationsStatus$ = new BehaviorSubject<NotificationsStatus>(null);
 
   constructor(
-    private modal: BsModalService
+    private modal: BsModalService,
+    nextRequestState: NextRequestState,
+    notificationsService: NotificationsService,
+    dataForUiHolder: DataForUiHolder
   ) {
     this.modal.onHidden.subscribe(() => {
       if (this.currentNotification) {
         this.onClosed.next(this.currentNotification.notification);
         this.currentNotification = null;
+      }
+    });
+    // Subscript for user changes: update the notification status
+    dataForUiHolder.subscribe(dataForUi => {
+      const auth = (dataForUi ? dataForUi.auth : null) || {};
+      if (auth.user) {
+        nextRequestState.ignoreNextError = true;
+        notificationsService.notificationsStatus().pipe(first()).subscribe(status => {
+          this.notificationsStatus$.next(status);
+        });
+        this.notificationsStatus$.next(null);
+      } else {
+        this.notificationsStatus$.next(null);
       }
     });
   }
@@ -82,6 +110,14 @@ export class NotificationService {
    */
   snackBar(message: string, options?: SnackBarOptions): void {
     this._snackBarProvider.show(message, options);
+  }
+
+  /**
+   * Shows a Cyclos notification that was pushed to the client
+   * @param notification The incoming notification
+   */
+  newNotificationPush(notification: Notification): void {
+    this._pushNotificationProvider.show(notification);
   }
 
   /**
@@ -173,4 +209,5 @@ export class NotificationService {
       this.currentNotification.close();
     }
   }
+
 }

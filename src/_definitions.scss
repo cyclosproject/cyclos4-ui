@@ -162,6 +162,10 @@ $breadcrumb-padding-x: 0;
 $breadcrumb-margin-bottom: 0;
 $breadcrumb-bg: transparent;
 
+// Icon with counter (such as notifications indicator)
+$icon-with-counter-bg: $danger;
+$icon-with-counter-color: color-yiq($icon-with-counter-bg);
+
 // General
 $manage-passwords-icon-color: $gray-500;
 $account-indicator-font-size: 16px;

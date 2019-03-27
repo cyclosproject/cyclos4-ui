@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter } from '@angular/core';
 import { empty } from 'app/shared/helper';
 
 /**
@@ -11,6 +11,7 @@ import { empty } from 'app/shared/helper';
 })
 export class MaybeLinkComponent {
   @Input() link: string | string[];
+  @Output() click = new EventEmitter<MouseEvent>();
 
   get hasLink() {
     return !empty(this.link);

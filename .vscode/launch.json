@@ -1,0 +1,22 @@
+{
+  // Use o IntelliSense para aprender sobre possíveis atributos.
+  // Passe o mouse para ver as descrições dos atributos existentes.
+  // Para obter mais informações, visite: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Chrome on http://localhost:4200",
+      "url": "http://localhost:4200",
+      "runtimeExecutable": "/usr/bin/chromium",
+      "runtimeArgs": [
+        "--new-window",
+        "-user-data-dir=\"${workspaceFolder}/.vscode/chrome-profile\"",
+        "--remote-debugging-port=9222",
+        "--disable-background-networking"
+      ],
+      "webRoot": "${workspaceFolder}"
+    }
+  ]
+}

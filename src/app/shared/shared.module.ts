@@ -77,6 +77,7 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { SortableModule } from 'ngx-bootstrap/sortable';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
+import { IconWithCounterComponent } from 'app/shared/icon-with-counter.component';
 
 
 
@@ -151,6 +152,7 @@ export function initTooltipConfig(): TooltipConfig {
     ContentMonitorComponent,
     ChipComponent,
     CaptchaComponent,
+    IconWithCounterComponent,
 
     TrustPipe,
     DatePipe,
@@ -250,6 +252,7 @@ export function initTooltipConfig(): TooltipConfig {
     ContentMonitorComponent,
     ChipComponent,
     CaptchaComponent,
+    IconWithCounterComponent,
 
     FocusedDirective,
     NumbersOnlyDirective,

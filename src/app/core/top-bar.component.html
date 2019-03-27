@@ -21,7 +21,16 @@
 </nav>
 <ng-template #customMenus>
   <ng-container *ngIf="user != null">
-    <a [routerLink]="['users', 'my-profile']" id="profile-link"
+    <ng-container *ngIf="notification.notificationsStatus$ | async as status">
+      <a *ngIf="status" routerLink="/personal/notifications"
+        id="notifications-link">
+        <icon-with-counter icon="notifications"
+          [counter]="status.newNotifications">
+        </icon-with-counter>
+      </a>
+    </ng-container>
+
+    <a routerLink="/users/my-profile" id="profile-link"
       (click)="navigate(Menu.MY_PROFILE, $event)">
       <avatar *ngIf="user.image" size="small-medium" [image]="user.image">
       </avatar>

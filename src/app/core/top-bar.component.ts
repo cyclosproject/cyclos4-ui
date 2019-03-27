@@ -10,6 +10,7 @@ import { Messages } from 'app/messages/messages';
 import { Observable } from 'rxjs';
 import { words } from 'app/shared/helper';
 import { Configuration } from 'app/configuration';
+import { NotificationService } from 'app/core/notification.service';
 
 const MAX_USER_DISPLAY_SIZE = 20;
 
@@ -40,7 +41,8 @@ export class TopBarComponent implements OnInit {
     public login: LoginService,
     public layout: LayoutService,
     public menu: MenuService,
-    public messages: Messages) {
+    public messages: Messages,
+    public notification: NotificationService) {
   }
 
   @Input() user: User;

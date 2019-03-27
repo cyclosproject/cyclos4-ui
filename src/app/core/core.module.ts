@@ -34,6 +34,8 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 import { LightboxModule } from 'ngx-lightbox';
 import { NextRequestState } from './next-request-state';
 import { MenusComponent } from 'app/core/menus.component';
+import { PushNotificationsComponent } from 'app/core/push-notifications.component';
+import { PushNotificationComponent } from 'app/core/push-notification.component';
 
 export const API_INTERCEPTOR_PROVIDER: Provider = {
   provide: HTTP_INTERCEPTORS,
@@ -50,7 +52,9 @@ export const API_INTERCEPTOR_PROVIDER: Provider = {
     MenuBarComponent,
     MenusComponent,
     SidenavComponent,
-    SnackBarComponent
+    SnackBarComponent,
+    PushNotificationsComponent,
+    PushNotificationComponent
   ],
   imports: [
     SharedModule,
@@ -62,7 +66,9 @@ export const API_INTERCEPTOR_PROVIDER: Provider = {
     MenuBarComponent,
     MenusComponent,
     SidenavComponent,
-    SnackBarComponent
+    SnackBarComponent,
+    PushNotificationsComponent,
+    PushNotificationComponent
   ],
   providers: [
     NextRequestState,
@@ -93,6 +99,9 @@ export const API_INTERCEPTOR_PROVIDER: Provider = {
     TransactionStatusService,
     API_INTERCEPTOR_PROVIDER,
     BsModalService
+  ],
+  entryComponents: [
+    PushNotificationComponent
   ]
 })
 export class CoreModule {
