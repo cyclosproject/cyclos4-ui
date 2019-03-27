@@ -1,8 +1,7 @@
 import { Injectable, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiConfiguration } from 'app/api/api-configuration';
-import { Auth, NotificationsStatus, Notification } from 'app/api/models';
-import { DataForUiHolder } from 'app/core/data-for-ui-holder';
+import { Notification, NotificationsStatus } from 'app/api/models';
 import { LoginService } from 'app/core/login.service';
 import { NextRequestState } from 'app/core/next-request-state';
 import { NotificationService } from 'app/core/notification.service';
@@ -24,7 +23,6 @@ export class PushNotificationsService {
   private eventSource: EventSourcePolyfill;
 
   constructor(
-    private dataForUiHolder: DataForUiHolder,
     private apiConfiguration: ApiConfiguration,
     private login: LoginService,
     private messages: Messages,
@@ -36,31 +34,27 @@ export class PushNotificationsService {
   }
 
   initialize() {
-    this.dataForUiHolder.subscribe(dataForUi => {
-      const auth = (dataForUi || {}).auth || {};
-      if (auth.user == null) {
-        this.close();
+    this.login.user$.subscribe(user => {
+      if (user) {
+        this.open();
       } else {
-        this.open(auth);
+        this.close();
       }
     });
     if (this.login.user) {
       // Open the event source initially - there is a logged user
-      this.open(this.login.auth);
+      this.open();
     }
   }
 
-  private open(auth: Auth) {
-    if (auth == null || !auth.user) {
-      return;
-    }
+  private open() {
     this.close();
     const clientId = Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
     const kinds = new Set<string>(KINDS);
     let url = this.apiConfiguration.rootUrl + '/push/subscribe?clientId=' + clientId;
     kinds.forEach(kind => url += '&kinds=' + kind);
     this.eventSource = new EventSourcePolyfill(url, {
-      headers: { 'Session-Token': auth.sessionToken }
+      headers: this.nextRequestState.headers
     });
 
     // Listen for new notification events

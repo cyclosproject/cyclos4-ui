@@ -61,15 +61,10 @@ export class NextRequestState {
         // Prevent subsequent requests from using this auth again
         this.nextAuth = null;
       } else {
-        // Send the session prefix if any (when using the session token cookie)
-        const prefix = localStorage.getItem(SessionPrefix);
-        if (!empty(prefix)) {
-          headers[SessionPrefix] = localStorage.getItem(SessionPrefix);
-        }
-        // Send the session prefix if any (when using the full session token)
-        const token = localStorage.getItem(SessionToken);
-        if (!empty(token)) {
-          headers[SessionToken] = localStorage.getItem(SessionToken);
+        // Send the session headers
+        const toApply = this.headers;
+        for (const key of Object.keys(toApply)) {
+          headers[key] = toApply[key];
         }
       }
     }
@@ -154,6 +149,22 @@ export class NextRequestState {
       return `${url}${sep}${SessionPrefix}=${encodeURIComponent(prefix)}`;
     }
     return url;
+  }
+
+  /**
+   * Returns headers for requests using the current session
+   */
+  get headers(): { [key: string]: string } {
+    const result: { [key: string]: string } = {};
+    const token = localStorage.getItem(SessionToken);
+    if (!empty(token)) {
+      result[SessionToken] = token;
+    }
+    const prefix = localStorage.getItem(SessionPrefix);
+    if (!empty(prefix)) {
+      result[SessionPrefix] = prefix;
+    }
+    return result;
   }
 
 
