@@ -4,7 +4,9 @@
 
 This project aims to create a modern, simple and intuitive user interface for 
 [Cyclos](https://www.cyclos.org/) version 4.11 and up. The interface should be easy to customize and add functionality needed by specific projects.
+
 A demo of the front-end can be seen at: https://demo-ui-bar.cyclos.org/
+
 The initial planned scope is to have only end-user functionality in this application. Administration functionality will still be available in Cyclos' default web interface.
 
 ## Technical details
