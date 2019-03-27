@@ -1,24 +1,25 @@
 <h1 *ngIf="title">{{ title }}</h1>
 <form [formGroup]="form">
-  <div *ngIf="message && canConfirm" class="mb-1" [ngClass]="{'mt-3': title != null}"
-    [innerHTML]="message | trust"></div>
+  <div *ngIf="message && canConfirm" class="mb-1"
+    [ngClass]="{'mt-3': title != null}" [innerHTML]="message | trust"></div>
 
   <custom-field-input *ngFor="let cf of customFields; let first = first"
     [field]="cf" [focused]="first" [labelPosition]="labelPosition"
     [formControl]="form.get('customValues').get(cf.internalName)">
   </custom-field-input>
 
-  <confirmation-password *ngIf="passwordInput" formControlName="confirmationPassword"
-    [focused]="!hasFields" [passwordInput]="passwordInput" [ngClass]="{
+  <confirmation-password *ngIf="passwordInput"
+    formControlName="confirmationPassword" [focused]="!hasFields"
+    [passwordInput]="passwordInput" [ngClass]="{
       'mt-3': hasFields || message == null,
       'mt-4': !hasFields && message != null
     }">
-    {{ messages.auth.password.confirmationMessage }}
+    {{ messages.auth.password.confirmationMessage(passwordInput?.name) }}
   </confirmation-password>
 
   <actions forceRow>
-    <button class="btn btn-primary" [disabled]="!canConfirm || (requesting$ | async)"
-      (click)="confirm()">
+    <button class="btn btn-primary"
+      [disabled]="!canConfirm || (requesting$ | async)" (click)="confirm()">
       {{ confirmLabel }}
     </button>
     <button class="btn btn-outline-primary" (click)="modalRef.hide()">

@@ -362,7 +362,7 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
   processInstallment(installment: ScheduledPaymentInstallmentView) {
     this.notification.confirm({
       title: this.messages.transaction.processInstallment,
-      message: this.messages.transaction.processInstallmentMessage(String(installment.number)),
+      message: this.messages.transaction.processInstallmentMessage(installment.number),
       passwordInput: this.transaction.confirmationPasswordInput,
       callback: res => {
         this.scheduledPaymentsService.processScheduledPaymentInstallment({

@@ -110,11 +110,9 @@
   <form [formGroup]="form">
     <confirmation-password focused formControlName="confirmationPassword"
       [passwordInput]="preview.confirmationPasswordInput">
-      <div class="mt-2">
-        {{
-        messages.auth.password.confirmationMessage(preview.confirmationPasswordInput.name)
-        }}
-      </div>
+      {{
+      messages.auth.password.confirmationMessage(preview.confirmationPasswordInput.name)
+      }}
     </confirmation-password>
   </form>
 </ng-container>
