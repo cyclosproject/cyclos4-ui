@@ -12,6 +12,7 @@ import moment from 'moment-mini-ts';
 import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { Configuration } from 'app/configuration';
+import { Location } from '@angular/common';
 
 /**
  * Injectable used to hold the `DataForUi` instance used by the application
@@ -40,7 +41,8 @@ export class DataForUiHolder {
     private authService: AuthService,
     private messages: Messages,
     private http: HttpClient,
-    private injector: Injector) {
+    private injector: Injector,
+    private location: Location) {
   }
 
   /**
@@ -49,12 +51,14 @@ export class DataForUiHolder {
   initialize(): Observable<DataForUi> {
     // When initializing with a session token parameter,
     // replace it with another token and only then initialize
-    const match = /[\?\&]sessionToken=([\w\.\-\+]+)/.exec(window.location.search);
+    const path = this.location.path();
+    const match = /[\?\&]sessionToken=([\w\.\-\+]+)/.exec(path);
     if (match) {
       const sessionToken = match[1];
+      const newUrl = path.replace('sessionToken=' + sessionToken, '');
       return this.replaceSession(sessionToken).pipe(
         switchMap(() => this.doInitialize()),
-        tap(() => this.injector.get(Router).navigateByUrl('/'))
+        tap(() => this.injector.get(Router).navigateByUrl(newUrl))
       );
     }
 
