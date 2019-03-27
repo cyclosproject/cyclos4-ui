@@ -13,36 +13,48 @@
       </span>
     </span>
     <div class="menu-container">
-      <menus *ngIf="hasMenu && (layout.gtmd$ | async); else customMenus"
-        [menuType]="MenuType.TOP" [activeMenu]="activeMenu"
-        [userName]="userName"></menus>
+      <ng-container *ngIf="hasMenu && (layout.gtmd$ | async)">
+        <menus [menuType]="MenuType.TOP" [activeMenu]="activeMenu"
+          [userName]="userName"></menus>
+        <div class="menu-separator"></div>
+      </ng-container>
+      <ng-container *ngTemplateOutlet="customMenus"></ng-container>
     </div>
   </div>
 </nav>
 <ng-template #customMenus>
-  <ng-container *ngIf="user != null">
-    <ng-container *ngIf="notification.notificationsStatus$ | async as status">
-      <a *ngIf="status" routerLink="/personal/notifications"
-        id="notifications-link">
-        <icon-with-counter icon="notifications"
-          [counter]="status.newNotifications">
-        </icon-with-counter>
-      </a>
-    </ng-container>
-
+  <ng-container *ngIf="(user != null) && (layout.gtxxs$ | async)">
     <a routerLink="/users/my-profile" id="profile-link"
-      (click)="navigate(Menu.MY_PROFILE, $event)">
+      (click)="navigate(Menu.MY_PROFILE, $event)" class="nav-item custom-menu"
+      [ngClass]="{
+        active: hasMenu && [Menu.MY_PROFILE, Menu.EDIT_MY_PROFILE].includes(activeMenu?.menu)
+      }">
       <avatar *ngIf="user.image" size="small-medium" [image]="user.image">
       </avatar>
       <icon *ngIf="!user.image" class="top-icon top-icon-faded" icon="user">
       </icon>
-      <div *ngIf="layout.gtsm$ | async" class="ml-2">
+      <div *ngIf="(layout.gtsm$ | async)" class="ml-2">
         {{ userName }}
       </div>
     </a>
+    <ng-container *ngIf="notification.notificationsStatus$ | async as status">
+      <a *ngIf="status && (layout.gtxxs$ | async)"
+        routerLink="/personal/notifications" id="notifications-link"
+        (click)="navigate(Menu.NOTIFICATIONS, $event)"
+        class="nav-item custom-menu" [ngClass]="{
+            active: hasMenu && activeMenu?.menu == Menu.NOTIFICATIONS
+          }">
+        <icon-with-counter icon="notifications"
+          [counter]="status.newNotifications">
+        </icon-with-counter>
+        <div *ngIf="(layout.gtsm$ | async) && !hasMenu" class="ml-2">
+          {{ messages.menu.personalNotifications }}
+        </div>
+      </a>
+    </ng-container>
     <a href="#" id="logout-trigger" (click)="navigate(Menu.LOGOUT, $event)">
       <icon class="top-icon" icon="logout"></icon>
-      <div *ngIf="layout.gtsm$ | async" class="ml-2">
+      <div *ngIf="(layout.gtsm$ | async) && !hasMenu" class="ml-2">
         {{ messages.menu.logout }}
       </div>
     </a>

@@ -16,6 +16,14 @@
   transition: transform 0.1s;
 }
 
+nav {
+  display: block;
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  z-index: $zindex-sticky;
+  top: 0;
+}
+
 .sidenav-menu icon {
   color: $sidenav-icon-color;
 }

@@ -1,13 +1,14 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Configuration } from 'app/configuration';
 import { BreadcrumbService } from 'app/core/breadcrumb.service';
 import { LoginService } from 'app/core/login.service';
 import { MenuService } from 'app/core/menu.service';
+import { NotificationService } from 'app/core/notification.service';
 import { Messages } from 'app/messages/messages';
 import { LayoutService } from 'app/shared/layout.service';
 import { ActiveMenu, BaseMenuEntry, MenuEntry, MenuType, RootMenu, RootMenuEntry } from 'app/shared/menu';
 import { BsDropdownDirective } from 'ngx-bootstrap/dropdown/public_api';
 import { Observable } from 'rxjs';
-import { Configuration } from 'app/configuration';
 
 /**
  * Renders menus in a bar, either the top bar or a dedicated menu bar
@@ -27,14 +28,14 @@ export class MenusComponent implements OnInit {
 
   roots: Observable<RootMenuEntry[]>;
   onTop: boolean;
-  mergePersonal: boolean;
 
   constructor(
     private menu: MenuService,
     public layout: LayoutService,
     public login: LoginService,
     public breadcrumb: BreadcrumbService,
-    public messages: Messages) {
+    public messages: Messages,
+    public notification: NotificationService) {
   }
 
   get activeRoot(): RootMenu {
@@ -44,8 +45,8 @@ export class MenusComponent implements OnInit {
   @ViewChildren('dropdown') dropdowns: QueryList<BsDropdownDirective>;
 
   ngOnInit(): void {
+    this.onTop = !Configuration.menuBar;
     this.roots = this.menu.menu(this.menuType);
-    this.onTop = this.mergePersonal = !Configuration.menuBar;
   }
 
   onClick(event: MouseEvent, base: BaseMenuEntry) {

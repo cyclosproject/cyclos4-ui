@@ -47,7 +47,16 @@ export module RootMenu {
 export class Menu {
   constructor(
     public readonly root: RootMenu,
-    public readonly name: string) { }
+    public readonly name: string) {
+  }
+
+  toString() {
+    return `${this.root}.${this.name}`;
+  }
+
+  equals(o: Menu) {
+    return this.root === o.root && this.name === o.name;
+  }
 }
 export module Menu {
   // Standalone

@@ -32,7 +32,8 @@ As of version 1.0, this frontend implements the following functionality:
 - Manage passwords (change, generate new, unblock, disable / enable);
 - Edit own profile (images, basic / custom fields, phones, addresses and additional contact information);
 - Public user registration;
-- Search advertisements, advertisement details (no shopping cart so far).
+- Search advertisements, advertisement details (no shopping cart so far);
+- Access notifications, and receive push notifications.
 
 More functionality will be added in future versions.
 
@@ -138,8 +139,9 @@ The second approach exposes a directory called `api` in the frontend application
 
 ```apache
 <IfModule mod_proxy.c>
-  ProxyPass "/api"  "http://localhost:8888/api" keepalive=On connectiontimeout=10 timeout=60
-  ProxyPassReverse "/api"  "http://localhost:8888/api"
+  ProxyPass "/api" "http://localhost:8080/cyclos/api" keepalive=On connectiontimeout=10 timeout=60
+  ProxyPassReverse "/api" "http://localhost:8080/cyclos/api"
+  ProxyPassReverseCookiePath "/cyclos/" "/"
 </IfModule>
 ```
 
@@ -147,12 +149,13 @@ Alternatively, if the frontend is deployed in a sub path, the path must be speci
 
 ```apache
 <IfModule mod_proxy.c>
-  ProxyPass "/path/api"  "http://localhost:8888/api" keepalive=On connectiontimeout=10 timeout=60
-  ProxyPassReverse "/path/api"  "http://localhost:8888/api"
+  ProxyPass "/path/api" "http://localhost:8080/cyclos/api" keepalive=On connectiontimeout=10 timeout=60
+  ProxyPassReverse "/path/api" "http://localhost:8080/cyclos/api"
+  ProxyPassReverseCookiePath "/cyclos/" "/ui/"
 </IfModule>
 ```
 
-Note that it is important to set `keepalive=On` for [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events) to work. It is also recommented to have a timeout larger than 40 seconds, which is the time Cyclos keeps open event stream connections.
+Note that it is important to set `keepalive=On` for [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events) to work. It is also recommented to have a timeout larger than 40 seconds, which is the time Cyclos keeps open event stream connections. Also note the `ProxyPassReverseCookiePath` directive. If you happen to have problems logging in while using a proxy is because the cookie path, sent by the backend Tomcat does not match the front-end path visible to users.
 
 For other HTTP servers, please, consult their documentation on how to achieve the same result.
 

@@ -1,44 +1,38 @@
 <ng-container *ngFor="let root of roots | async">
+
   <a *ngIf="root.dropdown" class="nav-item dropdown-toggle" href="#"
-    [attr.aria-controls]="'menu-dropdown-' + root.rootMenu" (click)="$event.preventDefault()"
-    dropdown dropdownToggle #dropdown="bs-dropdown" [ngClass]="{
+    [attr.aria-controls]="'menu-dropdown-' + root.rootMenu"
+    (click)="$event.preventDefault()" dropdown dropdownToggle
+    #dropdown="bs-dropdown" [ngClass]="{
             active: activeRoot === root.rootMenu
           }">
     <icon class="mr-2" [ngClass]="onTop ? 'top-icon' : null" size="1.4rem"
       [icon]="root.icon"></icon>
     <div class="menu-text">{{ root.label }}</div>
-    <div *dropdownMenu class="dropdown-menu" role="listbox" [attr.id]="'menu-dropdown-' + root.rootMenu"
-      attr.aria-labelledby="id" (click)="$event.preventDefault(); $event.stopPropagation();">
+    <div *dropdownMenu class="dropdown-menu" role="listbox"
+      [attr.id]="'menu-dropdown-' + root.rootMenu" attr.aria-labelledby="id"
+      (click)="$event.preventDefault(); $event.stopPropagation();">
       <ng-container *ngFor="let entry of root.entries">
-        <a *ngIf="entry.url" [routerLink]="entry.url" (click)="onClick($event, entry)"
-          class="sub-menu-item" [ngClass]="{
+        <a *ngIf="entry.url" [routerLink]="entry.url"
+          (click)="onClick($event, entry)" class="sub-menu-item" [ngClass]="{
                 active: (breadcrumb.url$ | async) === entry.url
               }">
-          <icon class="mr-2" [ngClass]="onTop ? 'top-icon' : null" size="1.4rem"
-            [icon]="entry.icon"></icon>
+          <icon class="mr-2" [ngClass]="onTop ? 'top-icon' : null"
+            size="1.4rem" [icon]="entry.icon"></icon>
           <div class="sub-menu-text">{{ entry.label }}</div>
         </a>
       </ng-container>
     </div>
   </a>
-  <a *ngIf="!root.dropdown && root.entries[0]" [routerLink]="root.entries[0].url"
-    (click)="onClick($event, root)" class="nav-item" [ngClass]="{
+
+  <a *ngIf="!root.dropdown && root.entries[0]"
+    [routerLink]="root.entries[0].url" (click)="onClick($event, root)"
+    class="nav-item" [ngClass]="{
           active: activeRoot === root.rootMenu
         }">
-    <ng-container *ngIf="mergePersonal && root.rootMenu === 'personal'; else normal">
-      <avatar *ngIf="(login.user$ | async)?.image as image; else noImage"
-        size="small-medium" [image]="image"></avatar>
-      <ng-template #noImage>
-        <icon class="top-icon top-icon-faded" icon="user"></icon>
-      </ng-template>
-      <div *ngIf="layout.gtsm$ | async" class="ml-2">
-        {{ userName }}
-      </div>
-    </ng-container>
-    <ng-template #normal>
-      <icon class="mr-2" [ngClass]="onTop ? 'top-icon' : null" size="1.4rem"
-        [icon]="root.icon"></icon>
-      <div class="menu-text">{{ root.label }}</div>
-    </ng-template>
+    <icon class="mr-2" [ngClass]="onTop ? 'top-icon' : null" size="1.4rem"
+      [icon]="root.icon"></icon>
+    <div class="menu-text">{{ root.label }}</div>
   </a>
+
 </ng-container>
