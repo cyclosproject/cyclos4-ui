@@ -616,6 +616,7 @@
     "onlyUnread": "Solo los pendientes",
     "actions": {
       "remove": "Eliminar esta notificación",
+      "removeAll": "Remove all",
       "markAllRead": "Marcar todo como leído"
     }
   }
