@@ -613,7 +613,7 @@
   "notification": {
     "message": "Mensaje",
     "title": "Notificaciones",
-    "onlyUnread": "Unread only",
+    "onlyUnread": "Solo los pendientes",
     "actions": {
       "remove": "Eliminar esta notificación",
       "markAllRead": "Marcar todo como leído"
