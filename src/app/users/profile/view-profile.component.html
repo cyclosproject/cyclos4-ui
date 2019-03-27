@@ -2,7 +2,8 @@
   <page-content *ngIf="user != null" last mode="viewForm" [heading]="title"
     [headingActions]="headingActions$ | async">
 
-    <div *ngIf="user.image && (layout.ltsm$ | async)" class="image d-flex justify-content-center mt-2 mb-4">
+    <div *ngIf="user.image && (layout.ltsm$ | async)"
+      class="image d-flex justify-content-center mt-2 mb-4">
       <avatar size="160" imageSize="200" useLightbox [image]="user.image"
         [additionalImages]="user.additionalImages"></avatar>
     </div>
@@ -10,10 +11,12 @@
     <div class="d-flex flex-row-reverse">
       <div *ngIf="(layout.gtxs$ | async)" class="image ml-4">
         <avatar [size]="user.image ? 200 : 128" iconSize="128px" useLightbox
-          [image]="user.image" [additionalImages]="user.additionalImages"></avatar>
+          [image]="user.image" [additionalImages]="user.additionalImages">
+        </avatar>
       </div>
       <div class="d-flex flex-grow-1 flex-column">
-        <label-value *ngIf="user.name" [label]="messages.user.name" [value]="user.name"></label-value>
+        <label-value *ngIf="user.name" [label]="messages.user.name"
+          [value]="user.name"></label-value>
         <label-value *ngIf="user.username" [label]="messages.user.username"
           [value]="user.username"></label-value>
         <label-value *ngIf="user.email" [label]="messages.user.email">
@@ -23,7 +26,8 @@
           </a>
         </label-value>
         <label-value *ngIf="mobilePhone" [label]="messages.phone.mobile">
-          <a [href]="'tel:' + mobilePhone.normalizedNumber" class="link-with-icon">
+          <a [href]="'tel:' + mobilePhone.normalizedNumber"
+            class="link-with-icon">
             <icon icon="smartphone"></icon>
             <span>{{ mobilePhone.number }}</span>
           </a>
@@ -35,12 +39,14 @@
           </a>
         </label-value>
         <label-value *ngIf="landLinePhone" [label]="messages.phone.landLine">
-          <a [href]="'tel:' + landLinePhone.normalizedNumber" class="link-with-icon">
+          <a [href]="'tel:' + landLinePhone.normalizedNumber"
+            class="link-with-icon">
             <icon icon="phone"></icon>
             <span>{{ landLinePhone.number }}</span>
           </a>
         </label-value>
-        <label-value *ngFor="let phone of landLinePhones" [label]="phone.name">
+        <label-value *ngFor="let phone of landLinePhones"
+          [label]="phone.name">
           <a [href]="'tel:' + phone.normalizedNumber" class="link-with-icon">
             <icon icon="phone"></icon>
             <span>{{ phone.number }}</span>
@@ -61,7 +67,8 @@
             {{ messages.address.address }}
           </ng-container>
         </h2>
-        <ng-container *ngFor="let address of user.addresses; let first = first; let last = last">
+        <ng-container
+          *ngFor="let address of user.addresses; let first = first; let last = last">
           <div class="row no-gutters" [ngClass]="{'mt-3': !first}">
             <div class="col-12 col-md-6">
               <h3 *ngIf="user.addresses.length > 1" class="mt-0">
@@ -69,7 +76,8 @@
               </h3>
               <address-details [address]="address"></address-details>
             </div>
-            <div *ngIf="maps.enabled && address.location" class="col-12 col-md-6"
+            <div *ngIf="maps.enabled && address.location"
+              class="col-12 col-md-6"
               [ngClass]="{'pt-2': layout.ltsm$ | async, 'mb-2': !last}">
               <static-map [address]="address"></static-map>
             </div>
@@ -84,39 +92,43 @@
           <h3>{{ contactInfo.name }}</h3>
           <div class="d-flex" [ngClass]="{'mt-0': first, 'mt-3': !first}">
             <div class="flex-grow-1">
-              <div *ngIf="contactInfo.image && (layout.ltsm$ | async)" class="d-flex justify-content-center mb-4">
-                <avatar size="120" useLightbox [image]="contactInfo.image"></avatar>
+              <div *ngIf="contactInfo.image && (layout.ltsm$ | async)"
+                class="d-flex justify-content-center mb-4">
+                <avatar size="120" useLightbox [image]="contactInfo.image">
+                </avatar>
               </div>
-              <label-value *ngIf="contactInfo.email" [label]="messages.user.email">
-                <a [href]="'mailto:' + contactInfo.email" class="link-with-icon">
+              <label-value *ngIf="contactInfo.email"
+                [label]="messages.user.email">
+                <a [href]="'mailto:' + contactInfo.email"
+                  class="link-with-icon">
                   <icon icon="email"></icon>
                   <span>{{ contactInfo.email }}</span>
                 </a>
               </label-value>
-              <label-value *ngIf="contactInfo.mobilePhone" [label]="messages.phone.mobile">
-                <a [href]="'tel:' + contactInfo.normalizedMobilePhone" class="link-with-icon">
+              <label-value *ngIf="contactInfo.mobilePhone"
+                [label]="messages.phone.mobile">
+                <a [href]="'tel:' + contactInfo.normalizedMobilePhone"
+                  class="link-with-icon">
                   <icon icon="smartphone"></icon>
                   <span>{{ contactInfo.mobilePhone }}</span>
                 </a>
               </label-value>
-              <label-value *ngIf="contactInfo.landLinePhone" [label]="messages.phone.landLine">
+              <label-value *ngIf="contactInfo.landLinePhone"
+                [label]="messages.phone.landLine">
                 <a [href]="'tel:' + contactInfo.normalizedLandLinePhone"
                   class="link-with-icon">
                   <icon icon="phone"></icon>
                   <span>{{ contactInfo.landLinePhone }}</span>
                 </a>
-                <ng-container *ngIf="contactInfo.landLineExtension">
-                  {{
-                  messages.phone.extensionValue(contactInfo.landLineExtension)
-                  }}
-                </ng-container>
               </label-value>
-              <custom-field-value *ngFor="let value of contactInfo.customValues"
+              <custom-field-value
+                *ngFor="let value of contactInfo.customValues"
                 [fieldValue]="value">
               </custom-field-value>
               <ng-container *ngIf="contactInfo.address">
                 <label-value [label]="messages.address.address">
-                  <address-details [address]="contactInfo.address"></address-details>
+                  <address-details [address]="contactInfo.address">
+                  </address-details>
                 </label-value>
               </ng-container>
             </div>
