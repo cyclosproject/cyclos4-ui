@@ -37,7 +37,7 @@ export function dateConstraintAsMoment(constraint: DateConstraint, now: moment.M
     case 'yesterday':
       return now.clone().subtract(1, 'day').startOf('day');
     case 'tomorrow':
-      return now.clone().add(1, 'day').endOf('day');
+      return now.clone().add(1, 'day').startOf('day');
     case 'past100':
       return now.clone().subtract(100, 'years').startOf('year');
     case 'future100':
@@ -45,7 +45,7 @@ export function dateConstraintAsMoment(constraint: DateConstraint, now: moment.M
     case 'past5':
       return now.clone().subtract(5, 'years').startOf('year');
     case 'future5':
-      return now.clone().add(5, 'years').endOf('year');
+      return now.clone().add(5, 'years').endOf('year').startOf('day');
     default:
       const date = moment(constraint);
       if (!date.isValid()) {

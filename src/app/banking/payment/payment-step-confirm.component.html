@@ -1,37 +1,46 @@
-<notification class="mb-3" *ngIf="preview.pendingAuthorization" type="warning">
+<notification class="mb-3" *ngIf="preview.pendingAuthorization"
+  type="warning">
   {{ messages.transaction.requiresAuthorization }}
 </notification>
 
-<label-value *ngIf="layout.gtxxs$ | async" [label]="messages.transaction.fromAccount">
+<label-value *ngIf="layout.gtxxs$ | async"
+  [label]="messages.transaction.fromAccount">
   {{ bankingHelper.accountDisplay(preview.fromAccount) }}
 </label-value>
-<label-value *ngIf="preview.toAccount.kind === 'system'; else toUser" [label]="messages.transaction.toAccount">>
+<label-value *ngIf="preview.toAccount.kind === 'system'; else toUser"
+  [label]="messages.transaction.toAccount">>
   {{ bankingHelper.accountDisplay(preview.toAccount) }}
 </label-value>
 <ng-template #toUser>
   <label-value [label]="messages.transaction.toUser">
     {{ preview.toAccount.user.display }}
-    <span *ngIf="preview.toAccount.number"> - {{ preview.toAccount.number }}</span>
+    <span *ngIf="preview.toAccount.number"> -
+      {{ preview.toAccount.number }}</span>
   </label-value>
 </ng-template>
 <label-value *ngIf="showPaymentType" [label]="messages.transaction.type">
   {{ preview.paymentType.name }}
 </label-value>
-<label-value *ngIf="preview.mainAmount != null && preview.totalAmount !== preview.mainAmount"
+<label-value
+  *ngIf="preview.mainAmount != null && preview.totalAmount !== preview.mainAmount"
   [label]="messages.transaction.amount">
   {{ preview.mainAmount | currency:preview.currency }}
 </label-value>
-<label-value *ngIf="fees?.length > 0" [label]="messages.transaction.appliedFees">
+<label-value *ngIf="fees?.length > 0"
+  [label]="messages.transaction.appliedFees">
   <div *ngFor="let feePreview of fees">
     {{ feePreview.fee.name }}:
     {{ feePreview.amount | currency:preview.currency }}
   </div>
 </label-value>
-<custom-field-value *ngFor="let fv of preview.customValues" [fieldValue]="fv"></custom-field-value>
-<label-value *ngIf="preview.installments?.length === 1" [label]="messages.transaction.dueDate">
+<custom-field-value *ngFor="let fv of preview.customValues" [fieldValue]="fv">
+</custom-field-value>
+<label-value *ngIf="preview.installments?.length === 1"
+  [label]="messages.transaction.dueDate">
   {{ preview.installments[0].dueDate | date }}
 </label-value>
-<label-value *ngIf="preview.installments?.length > 1" [label]="messages.transaction.installments">
+<label-value *ngIf="preview.installments?.length > 1"
+  [label]="messages.transaction.installments">
   <table class="table table-hover">
     <thead *ngIf="layout.gtxs$ | async">
       <th>{{ messages.transaction.installmentNumber }}</th>
@@ -53,8 +62,10 @@
     </tbody>
   </table>
 </label-value>
-<label-value *ngIf="preview.payment.scheduling === 'recurring'" [label]="messages.transaction.recurringPayment">
-  <ng-container *ngIf="preview.payment.firstOccurrenceDate == null; else occurrencesDateSet">
+<label-value *ngIf="preview.payment.scheduling === 'recurring'"
+  [label]="messages.transaction.recurringPayment">
+  <ng-container
+    *ngIf="preview.payment.firstOccurrenceDate == null; else occurrencesDateSet">
     <ng-container *ngIf="preview.payment.occurrencesCount == null">
       {{ messages.transaction.recurringPaymentNowManual }}
     </ng-container>
@@ -79,14 +90,17 @@
     </ng-container>
   </ng-template>
 </label-value>
-<label-value [label]="messages.general.description" *ngIf="preview.payment.description"
-  [value]="preview.payment.description" valueFormat="break"></label-value>
+<label-value [label]="messages.general.description"
+  *ngIf="preview.payment.description" [value]="preview.payment.description"
+  valueFormat="break"></label-value>
 <hr>
-<label-value [label]="messages.transaction.totalAmount">
-  <div class="totalAmount">
-    {{ preview.totalAmount | currency:preview.currency }}
-  </div>
-</label-value>
+<div class="pt-3">
+  <label-value [label]="messages.transaction.totalAmount">
+    <div class="totalAmount">
+      {{ preview.totalAmount | currency:preview.currency }}
+    </div>
+  </label-value>
+</div>
 <ng-container *ngIf="(preview.confirmationMessage || '').length > 0">
   <hr>
   <div class="break-nl">{{preview.confirmationMessage}}</div>
@@ -96,9 +110,11 @@
   <form [formGroup]="form">
     <confirmation-password focused formControlName="confirmationPassword"
       [passwordInput]="preview.confirmationPasswordInput">
-      {{
-      messages.auth.password.confirmationMessage(preview.confirmationPasswordInput.name)
-      }}
+      <div class="mt-2">
+        {{
+        messages.auth.password.confirmationMessage(preview.confirmationPasswordInput.name)
+        }}
+      </div>
     </confirmation-password>
   </form>
 </ng-container>
