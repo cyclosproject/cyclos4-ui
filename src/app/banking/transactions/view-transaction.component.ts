@@ -101,7 +101,7 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
       }));
     }
     if (scheduled.unblock) {
-      actions.push(new HeadingAction('schedule', this.messages.transaction.cancelScheduled, () => {
+      actions.push(new HeadingAction('schedule', this.messages.transaction.unblockScheduling, () => {
         this.unblockScheduled();
       }));
     }
