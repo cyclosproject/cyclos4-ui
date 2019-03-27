@@ -141,7 +141,7 @@ export class AccountHistoryComponent
   }
 
   private get firstAccountType(): string {
-    const accounts = ((this.login.auth || {}).permissions || {}).banking.accounts;
+    const accounts = ((this.login.auth || {}).permissions || {}).banking.accounts.filter(a => a.visible !== false);
     if (accounts && accounts.length > 0) {
       return ApiHelper.internalNameOrId(accounts[0].account.type);
     } else {

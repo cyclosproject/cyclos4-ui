@@ -452,6 +452,9 @@ export class MenuService {
       // Banking
       if (accounts.length > 0) {
         for (const account of accounts) {
+          if (account.visible === false) {
+            continue;
+          }
           const type = account.account.type;
           const entry = add(Menu.ACCOUNT_HISTORY, '/banking/account/' + ApiHelper.internalNameOrId(type),
             'account_balance', type.name);
