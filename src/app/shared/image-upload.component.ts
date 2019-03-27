@@ -9,6 +9,8 @@ import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { LoginService } from 'app/core/login.service';
 import { resizeImage, ResizeResult, truthyAttr } from 'app/shared/helper';
 import { BehaviorSubject, forkJoin, Observable, Subscription } from 'rxjs';
+import { ImagesService } from 'app/api/services';
+import { first } from 'rxjs/operators';
 
 /**
  * Represents an image file being uploaded
@@ -76,6 +78,7 @@ export class ImageUploadComponent implements OnDestroy {
     private apiConfiguration: ApiConfiguration,
     private login: LoginService,
     private dataForUiHolder: DataForUiHolder,
+    private imagesService: ImagesService,
     private changeDetector: ChangeDetectorRef) {
   }
 
@@ -182,20 +185,12 @@ export class ImageUploadComponent implements OnDestroy {
           // Once the upload is complete, we have to fetch the image model
           file.subscription.unsubscribe();
           file.uploadDone = true;
-          const blobUrl = URL.createObjectURL(file.content);
-          this.urlsToRevoke.push(blobUrl);
-          file.image = {
-            id: event.body,
-            name: file.name,
-            contentType: file.content.type,
-            height: file.height,
-            width: file.width,
-            length: file.content.size,
-            url: blobUrl
-          };
-          observer.next(file.image);
-          observer.complete();
-          this.changeDetector.detectChanges();
+          this.imagesService.viewImage({ idOrKey: event.body }).pipe(first()).subscribe(image => {
+            file.image = image;
+            observer.next(file.image);
+            observer.complete();
+            this.changeDetector.detectChanges();
+          });
         }
       }, err => {
         (this.files.value || []).forEach(f => {
