@@ -174,7 +174,7 @@
     "personal.contacts": "Contactos",
     "personal.password": "Contraseñas",
     "personal.passwords": "Contraseñas",
-    "personal.notifications": "Notifications",
+    "personal.notifications": "Notificaciones",
     "content": "Información"
   },
   "auth": {
@@ -611,11 +611,11 @@
     }
   },
   "notification": {
-    "message": "Message",
-    "title": "Notifications",
+    "message": "Mensaje",
+    "title": "Notificaciones",
     "onlyUnread": "Unread only",
     "actions": {
-      "remove": "Remove this notification",
+      "remove": "Eliminar esta notificación",
       "markAllRead": "Mark all as read"
     }
   }
