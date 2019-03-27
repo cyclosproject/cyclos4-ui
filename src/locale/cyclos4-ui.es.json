@@ -616,7 +616,7 @@
     "onlyUnread": "Unread only",
     "actions": {
       "remove": "Eliminar esta notificación",
-      "markAllRead": "Mark all as read"
+      "markAllRead": "Marcar todo como leído"
     }
   }
 }
