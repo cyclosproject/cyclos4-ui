@@ -616,6 +616,7 @@
     "onlyUnread": "Unread only",
     "actions": {
       "remove": "Remove this notification",
+      "removeAll": "Remove all",
       "markAllRead": "Mark all as read"
     }
   }
