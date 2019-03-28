@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, Host, Input, Optional, SkipSelf, Vi
 import { ControlContainer, NG_VALIDATORS, NG_VALUE_ACCESSOR, Validator } from '@angular/forms';
 import { CustomFieldDetailed, CustomFieldTypeEnum, LinkedEntityTypeEnum } from 'app/api/models';
 import { FieldHelperService } from 'app/core/field-helper.service';
+import { Messages } from 'app/messages/messages';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { FieldOption } from 'app/shared/field-option';
@@ -10,7 +11,6 @@ import { InputFieldComponent } from 'app/shared/input-field.component';
 import { MultiSelectionFieldComponent } from 'app/shared/multi-selection-field.component';
 import { RadioGroupFieldComponent } from 'app/shared/radio-group-field.component';
 import { UserFieldComponent } from 'app/shared/user-field.component';
-import { Messages } from 'app/messages/messages';
 
 const INPUT = [
   CustomFieldTypeEnum.STRING, CustomFieldTypeEnum.TEXT,
@@ -84,7 +84,7 @@ export class CustomFieldFilterComponent extends BaseFormFieldComponent<string> i
     if (value == null) {
       return '';
     }
-    if (this.type === CustomFieldTypeEnum.DYNAMIC_SELECTION) {
+    if (this.type === CustomFieldTypeEnum.DYNAMIC_SELECTION && typeof value === 'string') {
       // The dynamic can have a separator between value and text. Keep only the value
       return value.split(ApiHelper.VALUE_SEPARATOR)[0];
     }
@@ -92,7 +92,9 @@ export class CustomFieldFilterComponent extends BaseFormFieldComponent<string> i
   }
 
   get input(): boolean {
-    return INPUT.includes(this.type) || (this.type === CustomFieldTypeEnum.LINKED_ENTITY && !this.user);
+    return INPUT.includes(this.type)
+      || (this.type === CustomFieldTypeEnum.DYNAMIC_SELECTION && !this.field.hasValuesList)
+      || (this.type === CustomFieldTypeEnum.LINKED_ENTITY && !this.user);
   }
 
   get enumerated(): boolean {

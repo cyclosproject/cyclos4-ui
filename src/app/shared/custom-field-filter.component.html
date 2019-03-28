@@ -1,38 +1,41 @@
 <ng-container *ngIf="hasValuesList; else specificTemplate">
-  <multi-selection-field #singleSelectionField [id]="id" [label]="label"
+  <multi-selection-field #multiSelectionField [id]="id" [label]="label"
     [name]="name" [labelPosition]="labelPosition" [fieldSize]="fieldSize"
-    [required]="required" [formControl]="formControl" [fieldOptions]="fieldOptions"
+    [required]="required" [formControl]="formControl"
+    [separator]="ApiHelper.VALUE_SEPARATOR" [fieldOptions]="fieldOptions"
     [emptyLabel]="messages.general.notApplied">
   </multi-selection-field>
 </ng-container>
 
 <ng-template #specificTemplate>
   <!-- string, URL, text -->
-  <input-field #inputField *ngIf="input" [id]="id" [label]="label" [name]="name"
-    [labelPosition]="labelPosition" [fieldSize]="fieldSize" [required]="required"
-    [formControl]="formControl" [type]="type == 'integer' ? 'number' : type == 'url' ? 'url' : 'text'"
+  <input-field #inputField *ngIf="input" [id]="id" [label]="label"
+    [name]="name" [labelPosition]="labelPosition" [fieldSize]="fieldSize"
+    [required]="required" [formControl]="formControl"
+    [type]="type == 'integer' ? 'number' : type == 'url' ? 'url' : 'text'"
     [mask]="field.pattern"></input-field>
 
   <!-- boolean -->
   <radio-group-field #radioGroupField *ngIf="type == 'boolean'" [id]="id"
-    [label]="label" [name]="name" [labelPosition]="labelPosition" [fieldSize]="fieldSize"
-    [required]="required" [formControl]="formControl">
-    <field-option [value]="null" [text]="messages.general.notApplied"></field-option>
+    [label]="label" [name]="name" [labelPosition]="labelPosition"
+    [fieldSize]="fieldSize" [required]="required" [formControl]="formControl">
+    <field-option [value]="null" [text]="messages.general.notApplied">
+    </field-option>
     <field-option [value]="true" [text]="messages.general.yes"></field-option>
     <field-option [value]="false" [text]="messages.general.no"></field-option>
   </radio-group-field>
 
   <!-- multi selection -->
   <multi-selection-field #multiSelectionField *ngIf="enumerated" [id]="id"
-    [label]="label" [name]="name" [labelPosition]="labelPosition" [fieldSize]="fieldSize"
-    [required]="required" [formControl]="formControl" [separator]="ApiHelper.VALUE_SEPARATOR"
-    [fieldOptions]="fieldOptions">
+    [label]="label" [name]="name" [labelPosition]="labelPosition"
+    [fieldSize]="fieldSize" [required]="required" [formControl]="formControl"
+    [separator]="ApiHelper.VALUE_SEPARATOR" [fieldOptions]="fieldOptions">
   </multi-selection-field>
 
   <!-- linked entity: user (other linked entities are also handled as input -->
   <user-field #userField *ngIf="user" [id]="id" [label]="label" [name]="name"
-    [labelPosition]="labelPosition" [fieldSize]="fieldSize" [required]="required"
-    [formControl]="formControl">
+    [labelPosition]="labelPosition" [fieldSize]="fieldSize"
+    [required]="required" [formControl]="formControl">
   </user-field>
 
   <!-- TODO: No support for integer, decimal or date for now (all those should be ranges) -->
