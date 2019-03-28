@@ -4,16 +4,17 @@
 
 <ng-template #widget>
   <!-- Need a relatively-positioned element to position the dropdown corretcly -->
-  <div class="d-inline-block" style="position:relative" dropdown #dropdown="bs-dropdown"
-    (onShown)="onShown()" (onHidden)="onHidden()">
+  <div class="d-inline-block" style="position:relative" dropdown
+    #dropdown="bs-dropdown" (onShown)="onShown()" (onHidden)="onHidden()">
     <div class="date-field d-flex align-items-center">
-      <ng-container *ngFor="let control of partControls.controls; let index = index">
+      <ng-container
+        *ngFor="let control of partControls.controls; let index = index">
         <div *ngIf="index > 0 && (layout.gtxs$ | async)" class="mx-1">
           {{ format.dateSeparator }}
         </div>
         <select #part class="custom-select" [attr.id]="id + '_0'"
-          [formControl]="control" (click)="dropdown.hide()" (input)="onPartChanged($event)"
-          [ngClass]="{
+          [formControl]="control" (click)="dropdown.hide()"
+          (input)="onPartChanged($event)" [ngClass]="{
             'mx-1': index === 1 && (layout.ltsm$ | async),
             'is-invalid': (formControl.statusChanges | async) === 'INVALID' && formControl.touched,
             'field-year': format.dateFields[index] === 'year',
@@ -21,19 +22,23 @@
             'field-date': format.dateFields[index] === 'date'
           }">
           <option value="">{{ fieldInitials[index] }}</option>
-          <option *ngFor="let opt of options[index]; let ix = index" [value]="opt">
+          <option *ngFor="let opt of options[index]; let ix = index"
+            [value]="opt">
             {{ optionLabels[index][ix] }}
           </option>
         </select>
       </ng-container>
-      <button #toggleButton dropdownToggle [id]="id" class="calendar-toggle btn btn-light btn-icon">
+      <button #toggleButton dropdownToggle [id]="id"
+        class="calendar-toggle btn btn-light btn-icon">
         <icon icon="calendar_today"></icon>
       </button>
-    </div>
-    <div class="dropdown-menu" *dropdownMenu role="dialog" attr.id="'calendar-' + id"
-      attr.aria-labelledby="id" (click)="$event.preventDefault(); $event.stopPropagation();">
-      <calendar [formControl]="formControl" [minDate]="minDate" [maxDate]="maxDate"
-        (select)="dropdown.hide()"></calendar>
+      <div class="dropdown-menu" *dropdownMenu role="dialog"
+        attr.id="'calendar-' + id" attr.aria-labelledby="id"
+        (click)="$event.preventDefault(); $event.stopPropagation();">
+        <calendar [formControl]="formControl" [minDate]="minDate"
+          [maxDate]="maxDate" (select)="dropdown.hide()">
+        </calendar>
+      </div>
     </div>
   </div>
   <field-errors [control]="formControl"></field-errors>
