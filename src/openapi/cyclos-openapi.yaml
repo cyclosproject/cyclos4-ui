@@ -146,6 +146,9 @@ tags:
         or confirming a webshop order. Depending on the configuration, can
       require
         authorization to be processed.
+  - name: EasyInvoices
+    description: >-
+      Provides access for performing direct payments from easy invoices.        
   - name: Payments
     description: >-
       Provides access for performing payments or scheduled payments.
@@ -749,6 +752,19 @@ paths:
         - session: []
         - accessClient: []
       parameters:
+        - name: otpChannel
+          in: query
+          required: false
+          description: >-
+            The channel name in which the OTP will be used to confirm the operation.
+            Please do not confuse with the parameter used to specify the channel 
+            through the client is connecting with Cyclos. 
+            The configuration for the given channel will be used to validate the request.
+            E.g. when confirming an easy invoice / ticket through a custom front using a channel other than
+            `easyInvoice` / `ticket` then the channel `easyInvoice` / `ticket` must be set at the moment of
+            requesting an OTP.
+          schema:
+            type: string    
         - name: medium
           in: query
           required: true
@@ -1101,6 +1117,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /captcha/{id}:
     get:
       operationId: getCaptchaContent
@@ -1144,7 +1161,7 @@ paths:
           description: >-
             The image content
           content:
-            application/json:
+            'image/*':
               schema:
                 type: string
                 format: binary
@@ -4989,6 +5006,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /images/content/{idOrKey}:
     get:
       operationId: getImageContent
@@ -5031,7 +5049,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           description: >-
             The image content
           content:
-            application/json:
+            'image/*':
               schema:
                 type: string
                 format: binary
@@ -5064,6 +5082,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /{user}/images/list-data:
     get:
       operationId: getUserImagesListData
@@ -5134,6 +5153,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /{user}/images:
     get:
       operationId: listUserImages
@@ -5290,6 +5310,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
                   format: binary
                   description: >-
                     The image being uploaded
+  
   /{user}/images/order:
     put:
       operationId: reorderProfileImages
@@ -5348,6 +5369,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /images/temp:
     get:
       operationId: listTempImages
@@ -5580,6 +5602,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
                   format: binary
                   description: >-
                     The image being uploaded
+  
   /marketplace/{ad}/images/list-data:
     get:
       operationId: getAdImagesListData
@@ -5636,6 +5659,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /marketplace/{ad}/images:
     get:
       operationId: listAdImages
@@ -6036,7 +6060,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           description: >-
             The image content
           content:
-            application/json:
+            'image/*':
               schema:
                 type: string
                 format: binary
@@ -6110,7 +6134,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           description: >-
             The image content
           content:
-            application/json:
+            'image/*':
               schema:
                 type: string
                 format: binary
@@ -6165,7 +6189,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           description: >-
             The file content
           content:
-            application/json:
+            '*/*':
               schema:
                 type: string
                 format: binary
@@ -6198,6 +6222,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /files/{id}:
     get:
       operationId: viewRawFile
@@ -6297,6 +6322,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /files/temp:
     get:
       operationId: listTempFiles
@@ -8871,7 +8897,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           description: >-
             The image content.
           content:
-            application/json:
+            image/png:
               schema:
                 type: string
                 format: binary
@@ -11241,7 +11267,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
       summary: >-
         Performs a payment from the given owner
       description: >-
-        Performs either a direct or scheduled payment from the owner indicated on
+        Performs either a direct, scheduled or recurring payment from the owner indicated on
         the path to the owner specified on the body. The destination user should
         be informed in the `subject` parameter. If the `subject` is `system`, it
         will be a payment to a system account. The payment id is returned on the
@@ -11356,194 +11382,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           application/json:
             schema:
               $ref: '#/components/schemas/PerformPayment'
-  /payments/easy-invoice-qr-code/{to}:
-    get:
-      operationId: getPaymentQrCode
-      summary: >-
-        Returns the QR-code image for the given payment's parameters
-      description: >-
-        The generated image could be scanned (e.g by the mobile application)
-        to  create a payment ready to be confirmed.
-      tags:
-        - Payments
-      parameters:
-        - name: to
-          in: path
-          required: true
-          description: >-
-            The user which will receive the easy invoice. Unlike other cases of
-            user reference, in this case `self` cannot be used, because the URL
-            may be shared with others, hence, `self` makes no sense.
-          schema:
-            type: string
-        - name: amount
-          in: query
-          required: false
-          description: >-
-            The easy invoice amount. If provided and the user has multiple
-            currencies, either `type` or `currency` is required.
-          schema:
-            type: string
-            format: number
-        - name: currency
-          in: query
-          required: false
-          description: >-
-            The currency id or internal name. Either this or `type` should be
-            informed if an `amount` was given and the user has multiple
-            currencies.
-          schema:
-            type: string
-        - name: description
-          in: query
-          required: false
-          description: >-
-            The payment description
-          schema:
-            type: string
-        - name: type
-          in: query
-          description: >-
-            The payment type id or qualified internal name (in the form
-            `fromAccountType.paymentType`). Either this or `currency` should be
-            informed if an `amount` was given and the user has multiple
-            currencies.
-          schema:
-            type: string
-        - $ref: '#/components/parameters/customFields'
-        - name: size
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/ImageSizeEnum'
-      responses:
-        '200':
-          description: >-
-            The image content
-          content:
-            application/json:
-              schema:
-                type: string
-                format: binary
-        '401':
-          description: >-
-            Unauthorized access. Missing or invalid crendentials supplied for such
-            operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UnauthorizedError'
-        '403':
-          description: >-
-            Permission denied for such operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ForbiddenError'
-        '404':
-          description: >-
-            An expected data was not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/NotFoundError'
-        '500':
-          description: >-
-            Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-  /payments/data-for-easy-invoice/{to}:
-    get:
-      operationId: getDataForEasyInvoice
-      summary: >-
-        Returns data for an easy invoice to the given user
-      description: >-
-        An easy invoice is a pre-filled payment to an user. Other users can use
-        this for a payment template to that user, with pre-filled data. If an
-        amount is specified, then either there must be only payment types of a
-        single currency to the given user, or either a payment type or currency
-        must be informed.
-      tags:
-        - Payments
-      parameters:
-        - $ref: '#/components/parameters/fields'
-        - name: to
-          in: path
-          required: true
-          description: >-
-            The user which will receive the easy invoice. Unlike other cases of
-            user reference, in this case `self` cannot be used, because the URL
-            may be shared with others, hence, `self` makes no sense.
-          schema:
-            type: string
-        - name: amount
-          in: query
-          required: false
-          description: >-
-            The easy invoice amount. If provided and the user has multiple
-            currencies, either `type` or `currency` is required.
-          schema:
-            type: string
-            format: number
-        - name: type
-          in: query
-          required: false
-          description: >-
-            The payment type id or qualified internal name (in the form
-            `fromAccountType.paymentType`). Either this or `currency` should be
-            informed if an `amount` was given and the user has multiple
-            currencies.
-          schema:
-            type: string
-        - name: currency
-          in: query
-          required: false
-          description: >-
-            The currency id or internal name. Either this or `type` should be
-            informed if an `amount` was given and the user has multiple
-            currencies.
-          schema:
-            type: string
-        - $ref: '#/components/parameters/customFields'
-      responses:
-        '200':
-          description: >-
-            The data for easy invoice
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/DataForEasyInvoice'
-        '401':
-          description: >-
-            Unauthorized access. Missing or invalid crendentials supplied for such
-            operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UnauthorizedError'
-        '403':
-          description: >-
-            Permission denied for such operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ForbiddenError'
-        '404':
-          description: >-
-            An expected data was not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/NotFoundError'
-        '500':
-          description: >-
-            Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
   /{owner}/payments/installments:
     get:
       operationId: calculatePerformPaymentInstallments
@@ -11661,6 +11499,327 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /easy-invoices/qr-code/{to}:
+    get:
+      operationId: getEasyInvoiceQrCode
+      summary: >-
+        Returns the QR-code image for the given easy invoice's parameters
+      description: >-
+        The generated image could be scanned (e.g by the mobile application)
+        to create a payment ready to be confirmed.
+        The `easyInvoice` channel will be used to perform this operation, i.e the access and perform payment 
+        configurations of that channel will be applied.               
+      tags:
+        - EasyInvoices
+      parameters:
+        - name: to
+          in: path
+          x-dotInPath: true
+          required: true
+          description: >-
+            The user which will receive the easy invoice. Unlike other cases of
+            user reference, in this case `self` cannot be used, because the URL
+            may be shared with others, hence, `self` makes no sense.
+          schema:
+            type: string
+        - name: amount
+          in: query
+          required: false
+          description: >-
+            The easy invoice amount. If provided and the user has multiple
+            currencies, either `type` or `currency` is required.
+          schema:
+            type: string
+            format: number
+        - name: currency
+          in: query
+          required: false
+          description: >-
+            The currency id or internal name. Either this or `type` should be
+            informed if an `amount` was given and the user has multiple
+            currencies.
+          schema:
+            type: string
+        - name: description
+          in: query
+          required: false
+          description: >-
+            The payment description
+          schema:
+            type: string
+        - name: type
+          in: query
+          description: >-
+            The payment type id or qualified internal name (in the form
+            `fromAccountType.paymentType`). Either this or `currency` should be
+            informed if an `amount` was given and the user has multiple
+            currencies.
+          schema:
+            type: string
+        - $ref: '#/components/parameters/customFields'
+        - name: size
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/ImageSizeEnum'
+      responses:
+        '200':
+          description: >-
+            The image content
+          content:
+            image/png:
+              schema:
+                type: string
+                format: binary
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        
+  /easy-invoices/data-for-perform/{to}:
+    get:
+      operationId: dataForPerformEasyInvoice
+      summary: >-
+        Returns data for an easy invoice to the given user.
+      description: >-
+        An easy invoice is a pre-filled payment from the authenticated user 
+        to another user. 
+        Other users can use this for a payment template to that user, with 
+        pre-filled data. If an amount is specified, then either there must be 
+        only payment types of a single currency to the given user, or either a
+        payment type or currency must be informed.
+        The `easyInvoice` channel will be used to perform this operation, i.e the access and perform payment 
+        configurations of that channel will be applied.         
+      tags:
+        - EasyInvoices
+      parameters:
+        - $ref: '#/components/parameters/fields'
+        - name: to
+          in: path
+          x-dotInPath: true
+          required: true
+          description: >-
+            The user which will receive the easy invoice. Unlike other cases of
+            user reference, in this case `self` cannot be used, because the URL
+            may be shared with others, hence, `self` makes no sense.
+          schema:
+            type: string
+        - name: amount
+          in: query
+          required: false
+          description: >-
+            The easy invoice amount. If provided and the user has multiple
+            currencies, either `type` or `currency` is required.
+          schema:
+            type: string
+            format: number
+        - name: type
+          in: query
+          required: false
+          description: >-
+            The payment type id or qualified internal name (in the form
+            `fromAccountType.paymentType`). Either this or `currency` should be
+            informed if an `amount` was given and the user has multiple
+            currencies.
+          schema:
+            type: string
+        - name: currency
+          in: query
+          required: false
+          description: >-
+            The currency id or internal name. Either this or `type` should be
+            informed if an `amount` was given and the user has multiple
+            currencies.
+          schema:
+            type: string
+        - $ref: '#/components/parameters/customFields'
+      responses:
+        '200':
+          description: >-
+            The data for easy invoice
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataForEasyInvoice'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        
+  /easy-invoices:
+    post:
+      operationId: performEasyInvoice
+      summary: >-
+        Performs a direct payment from an easy invoice.
+      description: >-
+        Performs a direct payment from the authenticated user to the owner specified on the body. 
+        The destination user should be informed in the `subject` parameter (the subject `system` is not allowed).
+        The payment id is returned on the
+        response, and a link to the transaction details is returned on the
+        `Location` header.
+        The `easyInvoice` channel will be used to perform this operation, i.e the access and perform payment 
+        configurations of that channel will be applied.         
+      tags:
+        - EasyInvoices
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+        - $ref: '#/components/parameters/confirmationPassword'
+      responses:
+        '201':
+          description: >-
+            The created payment
+          headers:
+            Location:
+              description: >-
+                URL for viewing the transaction details
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+        '500':
+          description: >-
+            If a payment error has occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentError'
+      requestBody:
+        description: >-
+          The perform payment parameters
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PerformPayment'
+        
+  /easy-invoices/preview:
+    post:
+      operationId: previewEasyInvoice
+      summary: >-
+        Previews a direct payment from an easy invoice before performing it.
+      description: >-
+        Previews a direct payment from the logged created from an easy invoice. The actual balance
+        checking is not performed in the preview. 
+        The `easyInvoice` channel will be used to perform this operation, i.e the access and perform payment 
+        configurations of that channel will be applied.   
+      tags:
+        - EasyInvoices
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            The payment preview
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentPreview'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: >-
+            Input error. Either a validation error or the maximum allowed items was
+            exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      requestBody:
+        description: >-
+          The perform payment parameters
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PerformPayment'
+        
   /scheduled-payments/{key}/block:
     post:
       operationId: blockScheduledPayment
@@ -13460,7 +13619,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           description: >-
             The image content
           content:
-            application/json:
+            image/png:
               schema:
                 type: string
                 format: binary
@@ -14041,6 +14200,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /notifications/{id}:
     get:
       operationId: viewNotification
@@ -14144,6 +14304,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /notifications/mark-as-read:
     post:
       operationId: markNotificationsAsRead
@@ -14175,6 +14336,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/ConflictError'
+  
   /notifications/status:
     get:
       operationId: notificationsStatus
@@ -14222,6 +14384,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /notifications/viewed:
     post:
       operationId: markAsViewed
@@ -15267,7 +15430,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           description: >-
             The image content
           content:
-            application/json:
+            image/png:
               schema:
                 type: string
                 format: binary
@@ -22133,7 +22296,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           description: >-
             The image content
           content:
-            application/json:
+            image/png:
               schema:
                 type: string
                 format: binary
@@ -25030,18 +25193,21 @@ components:
 
     PaymentRequestSchedulingEnum:
       description: >
-        Determines how a payment request is scheduled. When not specified, the payment request is processed directly.
+        Determines how the generated payment of a payment request is scheduled. When not specified, the generated payment is processed directly.
         
 
         Possible values are:
 
         
-        - `direct`: The scheduled payment won't be scheduled, but paid directly
+        - `direct`: The generated payment won't be scheduled, but paid directly
         
-        - `scheduled`: The scheduled payment will be scheduled, once accepting, triggering a given number of installments
+        - `recurring`: The generated payment will be recurring
+        
+        - `scheduled`: The generated payment will be scheduled, once accepting, triggering a given number of installments
       type: string
       enum:
         - direct
+        - recurring
         - scheduled
 
     PaymentRequestStatusEnum:
@@ -30016,6 +30182,12 @@ components:
             contain those without a fixed value.
           allOf:
             - $ref: '#/components/schemas/TransactionTypeData'
+        deviceConfirmationAvailability: 
+          description: >- 
+            Only returned if there is not a logged user. Whether the confirmation with 
+            a trusted device is not used, optional or required. 
+          allOf: 
+            - $ref: '#/components/schemas/AvailabilityEnum' 
         paymentTypes:
           description: >-
             Only returned if there is a logged user, and a specific payment type was
@@ -35006,6 +35178,20 @@ components:
               minimum: 1
             scheduling:
               $ref: '#/components/schemas/PaymentRequestSchedulingEnum'
+            occurrencesCount:
+              description: >-
+                Represents the number of occurrences. When not specified, assumes a
+                the payment will continue until be manually canceled. Used only if 
+                `scheduling` is `enum:PaymentRequestSchedulingEnum.recurring`.
+              type: integer
+            firstOccurrenceIsImmediate:
+              description: >-
+                Indicates whether the first occurrence should be immediately
+                processed once the recurring payment is accepted. Used only if
+                `scheduling` is `enum:PaymentRequestSchedulingEnum.recurring`. When
+                not explicitly set to `false` will process the first occurrence
+                immediately.
+              type: boolean
 
     SetDeliveryMethod:
       description: >-
@@ -36233,10 +36419,23 @@ components:
               type: string
             scheduled:
               description: >-
+                See the documentation of `scheduling` instead.
+    
+    
+    
                 Only returned if the `kind` is `paymentRequest`. Indicates whether a
-                scheduled payment (`true`) or a regular payment (`false`) will be
-                generated once this payment request is confirmed.
+                scheduled payment (`true`)  will be generated once this payment 
+                request is confirmed.
+              deprecated: true
+              x-remove-version: 4.14
               type: boolean
+            scheduling:
+              description: >-
+                Only returned if the `kind` is `paymentRequest`. Indicates whether 
+                the generated payment will be a scheduled, recurring or regular
+                payment once this payment request is confirmed.
+              allOf:
+                - $ref: '#/components/schemas/PaymentRequestSchedulingEnum' 
             installmentsCount:
               description: >-
                 Only returned if the `kind` is `paymentRequest` and `scheduled` is
@@ -36248,6 +36447,13 @@ components:
                 `true`. Indicates whether the first installment should be processed
                 immediately when the payment request is confirmed.
               type: boolean
+            firstOccurrenceIsImmediate:
+              description: >-
+                Only returned if the `kind` is `paymentRequest` and `scheduling` is
+                `recurring`. Indicates whether 
+                the first occurrence should be processed immediately when the 
+                payment request is confirmed.
+              type: boolean  
             toPrincipalType:
               description: >-
                 Only returned if the `kind` is `externalPayment`. Is the user
