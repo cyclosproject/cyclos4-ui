@@ -397,8 +397,8 @@ export class MenuService {
     const marketplaceRoot = addRoot(RootMenu.MARKETPLACE, 'shopping_cart', this.messages.menu.marketplace);
     const content = addRoot(RootMenu.CONTENT, 'information', this.messages.menu.content);
     addRoot(RootMenu.PERSONAL, 'account_box', this.messages.menu.personal, null, [MenuType.SIDENAV, MenuType.BAR, MenuType.SIDE]);
-    const register = addRoot(RootMenu.REGISTRATION, 'registration', this.messages.menu.register, null, [MenuType.SIDENAV, MenuType.TOP]);
-    const login = addRoot(RootMenu.LOGIN, 'exit_to_app', this.messages.menu.login, null, [MenuType.SIDENAV, MenuType.TOP]);
+    const register = addRoot(RootMenu.REGISTRATION, 'registration', this.messages.menu.register, null, [MenuType.SIDENAV]);
+    const login = addRoot(RootMenu.LOGIN, 'exit_to_app', this.messages.menu.login, null, [MenuType.SIDENAV]);
     const logout = addRoot(RootMenu.LOGOUT, 'logout', this.messages.menu.logout, null, []);
 
     // Lambda that adds a submenu to a root menu
