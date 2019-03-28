@@ -124,7 +124,7 @@ export abstract class BaseAutocompleteFieldComponent<T, A>
   onValueInitialized() {
     if (!empty(this.value)) {
       this.fetch(this.value).subscribe(res => {
-        this.select(res);
+        this.select(res, this.value);
       });
     }
   }
@@ -170,17 +170,21 @@ export abstract class BaseAutocompleteFieldComponent<T, A>
 
   /**
    * Selects the given autocomplete value, emitting the event
-   * @param value The value
+   * @param selected The selected value
+   * @param value The internal value to be set
    */
-  select(value: A) {
-    this.value = value == null ? null : this.toValue(value);
-    this.selection = value;
-    this.selected.emit(value);
-    this.close();
-    if (this.inputFieldControl.value !== value) {
-      this.inputFieldControl.setValue(value);
+  select(selected: A, value?: T) {
+    const newValue = value || (selected == null ? null : this.toValue(selected));
+    if (this.value !== newValue) {
+      this.value = newValue;
     }
-    this.focusInput = value == null;
+    this.selection = selected;
+    this.selected.emit(selected);
+    this.close();
+    if (this.inputFieldControl.value !== newValue) {
+      this.inputFieldControl.setValue(newValue);
+    }
+    this.focusInput = selected == null;
   }
 
   protected getDisabledValue(): string {

@@ -15,6 +15,7 @@ import { clearValidatorsAndErrors, empty, locateControl, scrollTop, validateBefo
 import { Menu } from 'app/shared/menu';
 import { cloneDeep, isEqual } from 'lodash';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { distinctUntilChanged } from 'rxjs/operators';
 
 export type PaymentStep = 'form' | 'confirm' | 'done';
 
@@ -155,6 +156,18 @@ export class PerformPaymentComponent extends BasePageComponent<DataForTransactio
 
     // Build the form
     this.form = this.buildForm();
+
+    // TODO Remove this
+    this.form.get('subject').valueChanges.pipe(distinctUntilChanged()).subscribe(newSubject => {
+      if (typeof newSubject === 'object') {
+        console.log(`Subject IS OBJECT!!! ${JSON.stringify(newSubject)}`);
+      } else {
+        console.log(`Subject changed: ${newSubject}`);
+      }
+    });
+    this.form.get('type').valueChanges.pipe(distinctUntilChanged()).subscribe(newTT => {
+      console.log(`Payment type changed: ${newTT}`);
+    });
 
     // The confirmation password is hold in a separated control
     this.confirmationPassword = this.formBuilder.control(null);

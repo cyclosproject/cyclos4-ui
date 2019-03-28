@@ -85,7 +85,7 @@ export abstract class BaseControlComponent<T> implements OnInit, OnDestroy, Cont
       if ((this._value || '') !== (obj || '')) {
         // If the value was already modified, notify the new value
         this.notifyValueChange(this._value);
-        if (this.formControl != null) {
+        if (this.formControl != null && this.formControl.value !== this._value) {
           this.formControl.setValue(this._value);
         }
       }

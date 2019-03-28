@@ -75,12 +75,12 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
       .pipe(distinctUntilChanged(), debounceTime(ApiHelper.DEBOUNCE_TIME))
       .subscribe(() => this.adjustPaymentTypes())
     );
-    // Whenever the subject, adjust the payemnt types
+    // Whenever the subject, fetch the payment data for that new subject
     this.addSub(this.form.get('subject').valueChanges
       .pipe(distinctUntilChanged(), debounceTime(ApiHelper.DEBOUNCE_TIME))
       .subscribe(() => this.fetchPaymentTypes())
     );
-    // Whenever the type changes, fetch the payment type data
+    // Whenever the payment type changes, fetch the payment type data for it
     this.addSub(this.form.get('type').valueChanges
       .pipe(distinctUntilChanged(), debounceTime(ApiHelper.DEBOUNCE_TIME))
       .subscribe(type => this.fetchPaymentTypeData(type)));
@@ -158,14 +158,17 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
     }
     // Filter the payment types from the selected account type
     const paymentTypes = allPaymentTypes.filter(tt => tt.from.id === value.account);
-    let type: string = null;
+    let type: string = this.form.value.type;
     let error: any = null;
     if (empty(paymentTypes)) {
       const msg = this.messages.transaction.noTypesSelection;
       error = { message: msg };
     } else {
       this.paymentTypes$.next(paymentTypes);
-      type = paymentTypes[0].id;
+      if (!paymentTypes.find(t => t.id === type)) {
+        // The previously selected payment type is either null or invalid. Select the first one.
+        type = paymentTypes[0].id;
+      }
       this.form.get('account').setErrors(null);
     }
     this.form.patchValue({ type: type });

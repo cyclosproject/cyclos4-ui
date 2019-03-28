@@ -93,16 +93,6 @@ export class UserFieldComponent
     this.fieldSub.unsubscribe();
   }
 
-  preprocessValue(value: any): string {
-    if (value == null) {
-      return null;
-    } else if (typeof value === 'object') {
-      return (value as User).id;
-    } else {
-      return value;
-    }
-  }
-
   onDisabledChange(isDisabled: boolean): void {
     super.onDisabledChange(isDisabled);
     if (this.contactListButton && this.contactListButton.nativeElement) {
