@@ -93,7 +93,7 @@ export class NotificationService {
     // Subscript for user changes: update the notification status
     dataForUiHolder.subscribe(dataForUi => {
       const auth = (dataForUi ? dataForUi.auth : null) || {};
-      if (auth.user) {
+      if (auth.user && ((auth.permissions || {}).notifications || {}).enable) {
         nextRequestState.ignoreNextError = true;
         notificationsService.notificationsStatus().pipe(first()).subscribe(status => {
           this.notificationsStatus$.next(status);
