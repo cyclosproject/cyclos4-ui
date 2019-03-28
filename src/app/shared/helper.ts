@@ -468,5 +468,8 @@ export function words(text: string, maxLength: number): string {
       break;
     }
   }
+  if (result.length > maxLength) {
+    result = result.substring(0, maxLength) + '...';
+  }
   return result;
 }
