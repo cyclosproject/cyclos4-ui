@@ -1,10 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
-import {
-  AccountWithCurrency, AvailabilityEnum, Currency, CustomFieldDetailed,
-  DataForTransaction, PaymentPreview, PaymentSchedulingEnum, PerformPayment,
-  Transaction, TransactionAuthorizationStatusEnum, TransactionTypeData, TransferType
-} from 'app/api/models';
+import { AccountWithCurrency, AvailabilityEnum, Currency, CustomFieldDetailed, DataForTransaction, PaymentPreview, PaymentSchedulingEnum, PerformPayment, Transaction, TransactionAuthorizationStatusEnum, TransactionTypeData, TransferType } from 'app/api/models';
 import { PaymentsService } from 'app/api/services';
 import { AuthHelperService } from 'app/core/auth-helper.service';
 import { BankingHelperService } from 'app/core/banking-helper.service';
@@ -15,7 +11,6 @@ import { clearValidatorsAndErrors, empty, locateControl, scrollTop, validateBefo
 import { Menu } from 'app/shared/menu';
 import { cloneDeep, isEqual } from 'lodash';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { distinctUntilChanged } from 'rxjs/operators';
 
 export type PaymentStep = 'form' | 'confirm' | 'done';
 
@@ -156,18 +151,6 @@ export class PerformPaymentComponent extends BasePageComponent<DataForTransactio
 
     // Build the form
     this.form = this.buildForm();
-
-    // TODO Remove this
-    this.form.get('subject').valueChanges.pipe(distinctUntilChanged()).subscribe(newSubject => {
-      if (typeof newSubject === 'object') {
-        console.log(`Subject IS OBJECT!!! ${JSON.stringify(newSubject)}`);
-      } else {
-        console.log(`Subject changed: ${newSubject}`);
-      }
-    });
-    this.form.get('type').valueChanges.pipe(distinctUntilChanged()).subscribe(newTT => {
-      console.log(`Payment type changed: ${newTT}`);
-    });
 
     // The confirmation password is hold in a separated control
     this.confirmationPassword = this.formBuilder.control(null);
