@@ -27,10 +27,12 @@ export class SearchAuthorizedPaymentsComponent
 
   ngOnInit() {
     super.ngOnInit();
-    this.form.patchValue(
-      { status: TransactionAuthorizationStatusEnum.PENDING },
-      { emitEvent: false }
-    );
+    if (!this.form.value.status) {
+      this.form.patchValue(
+        { status: TransactionAuthorizationStatusEnum.PENDING },
+        { emitEvent: false }
+      );
+    }
   }
 
   get statusOptions(): FieldOption[] {

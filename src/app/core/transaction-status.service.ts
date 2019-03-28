@@ -33,6 +33,8 @@ export class TransactionStatusService {
         return this.messages.transaction.status.denied;
       case TransactionAuthorizationStatusEnum.CANCELED:
         return this.messages.transaction.status.canceled;
+      case TransactionAuthorizationStatusEnum.EXPIRED:
+        return this.messages.transaction.status.expired;
     }
   }
 

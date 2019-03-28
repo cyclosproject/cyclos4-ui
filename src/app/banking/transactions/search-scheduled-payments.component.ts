@@ -19,10 +19,12 @@ export class SearchScheduledPaymentsComponent
 
   ngOnInit() {
     super.ngOnInit();
-    this.form.patchValue(
-      { status: ScheduledPaymentStatusEnum.OPEN },
-      { emitEvent: false }
-    );
+    if (!this.form.value.status) {
+      this.form.patchValue(
+        { status: ScheduledPaymentStatusEnum.OPEN },
+        { emitEvent: false }
+      );
+    }
   }
 
   getKinds() {
