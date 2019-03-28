@@ -21,7 +21,7 @@
 .menu-separator {
   opacity: 0.3;
   border-left: 1px solid white;
-  margin: 0.5rem 0.2rem 0.5rem 1.2rem;
+  margin: 0.7rem 0.8rem 0.7rem 1.2rem;
 }
 
 @include media-breakpoint-up(lg) {
@@ -87,7 +87,7 @@
       position: absolute;
       left: 0.8 * $top-bar-with-menu-item-padding;
       bottom: 4px;
-      height: 2px;
+      height: 1px;
       width: calc(100% - #{1.6 * $top-bar-with-menu-item-padding});
       background-color: $top-bar-color;
       transition: opacity ease-in-out 0.4s;
@@ -100,7 +100,7 @@
       opacity: 0.7;
     }
     a.active:not(.never-active)::before {
-      opacity: 0.9;
+      opacity: 1;
     }
   }
 }

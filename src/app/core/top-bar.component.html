@@ -62,14 +62,19 @@
   <ng-container *ngIf="user == null">
     <a *ngIf="(layout.gtsm$ | async) && menu.menuEntry(Menu.REGISTRATION)"
       routerLink="/register" id="register-link"
-      (click)="navigate(Menu.REGISTRATION, $event)">
+      (click)="navigate(Menu.REGISTRATION, $event)" class="nav-item"
+      [ngClass]="{
+        active: hasMenu && activeMenu?.menu == Menu.REGISTRATION
+      }">
       <icon class="top-icon" icon="registration"></icon>
       <div *ngIf="layout.gtsm$ | async" class="ml-2">
         {{ messages.menu.register }}
       </div>
     </a>
     <a routerLink="/login" id="login-link"
-      (click)="navigate(Menu.LOGIN, $event)">
+      (click)="navigate(Menu.LOGIN, $event)" class="nav-item" [ngClass]="{
+        active: hasMenu && activeMenu?.menu == Menu.LOGIN
+      }">
       <icon class="top-icon" icon="exit_to_app"></icon>
       <div *ngIf="layout.gtsm$ | async" class="ml-2">
         {{ messages.menu.login }}
