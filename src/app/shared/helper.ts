@@ -454,7 +454,8 @@ export function scrollTop(base?: number | HTMLElement) {
 
 /**
  * Returns the first words of a text, up to a maximum length.
- * For example: words('Social Trade Organization', 15) will return 'Social Trade'
+ * For example: words('Social Trade Organization', 15) will return 'Social Trade'.
+ * If the first word is larger than maxLength, truncates it, appending an ellipsis in the end.
  */
 export function words(text: string, maxLength: number): string {
   if (blank(text)) {
@@ -469,7 +470,7 @@ export function words(text: string, maxLength: number): string {
     }
   }
   if (result.length > maxLength) {
-    result = result.substring(0, maxLength) + '...';
+    result = result.substring(0, maxLength) + '…';
   }
   return result;
 }
