@@ -9,7 +9,7 @@ import { NotificationsService } from 'app/api/services';
 import { first } from 'rxjs/operators';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
 
-const TimeoutMillis = 600000;
+const TimeoutMillis = 6000;
 
 /**
  * Shows a single push notification
@@ -58,7 +58,9 @@ export class PushNotificationComponent {
   markAsRead() {
     this.errorHandler.requestWithCustomErrorHandler(() => {
       this.notificationsService.markNotificationsAsRead({ ids: [this.notification.id] })
-        .pipe(first()).subscribe();
+        .pipe(first()).subscribe(() => {
+          this.closed.emit();
+        });
     });
   }
 
