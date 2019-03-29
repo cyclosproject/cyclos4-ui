@@ -23,6 +23,9 @@
   border-left: 1px solid white;
   margin: 0.7rem 0.8rem 0.7rem 1.2rem;
 }
+:host.has-menu ::ng-deep .menu-separator {
+  margin-right: 0.2rem;
+}
 
 @include media-breakpoint-up(lg) {
   :host:not(.has-menu) {
