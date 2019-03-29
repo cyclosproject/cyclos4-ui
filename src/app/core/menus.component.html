@@ -2,8 +2,9 @@
 
   <a *ngIf="root.dropdown" class="nav-item dropdown-toggle" href="#"
     [attr.aria-controls]="'menu-dropdown-' + root.rootMenu"
-    (click)="$event.preventDefault()" dropdown dropdownToggle
-    #dropdown="bs-dropdown" [ngClass]="{
+    (mouseenter)="dropdown.show()" (mouseleave)="dropdown.hide()"
+    (click)="dropdown.isOpen ? '' : dropdown.show(); $event.preventDefault(); $event.stopPropagation()"
+    dropdown #dropdown="bs-dropdown" [ngClass]="{
             active: activeRoot === root.rootMenu
           }">
     <icon class="mr-2" [ngClass]="onTop ? 'top-icon' : null" size="1.4rem"

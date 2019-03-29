@@ -1,5 +1,12 @@
 @import 'src/definitions';
 
+.navbar-brand {
+  padding: 0px;
+}
+.menu-container {
+  height: 100%;
+}
+
 // Contains shared definitions for top-bar and sidenav, as both shows similar top bars
 :host ::ng-deep {
   .navbar {
@@ -64,7 +71,7 @@
     .navbar {
       height: $top-bar-height;
       a {
-        height: 3rem;
+        height: 100%;
         padding: 0 $top-bar-item-padding;
       }
     }

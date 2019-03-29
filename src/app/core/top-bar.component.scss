@@ -51,12 +51,14 @@
   .dropdown-menu {
     color: $top-bar-color;
     background-color: $top-bar-bg;
-    transform: translateY(7px) !important;
+    transform: translateY(-2px) !important;
     border: none !important;
     padding: 0 !important;
   }
   .sub-menu-item {
     white-space: nowrap;
+    padding-top: 0.7rem !important;
+    padding-bottom: 0.7rem !important;
   }
   .sub-menu-item {
     border-bottom: 1px solid darken($top-bar-bg, 10%);
@@ -86,7 +88,7 @@
       display: block;
       position: absolute;
       left: 0.8 * $top-bar-with-menu-item-padding;
-      bottom: 4px;
+      bottom: 10px;
       height: 1px;
       width: calc(100% - #{1.6 * $top-bar-with-menu-item-padding});
       background-color: $top-bar-color;
