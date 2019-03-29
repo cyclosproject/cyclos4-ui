@@ -9,7 +9,7 @@ import { FieldOption } from 'app/shared/field-option';
 import { truthyAttr } from 'app/shared/helper';
 import { InputFieldComponent } from 'app/shared/input-field.component';
 import { MultiSelectionFieldComponent } from 'app/shared/multi-selection-field.component';
-import { RadioGroupFieldComponent } from 'app/shared/radio-group-field.component';
+import { SingleSelectionFieldComponent } from 'app/shared/single-selection-field.component';
 import { UserFieldComponent } from 'app/shared/user-field.component';
 
 const INPUT = [
@@ -58,7 +58,7 @@ export class CustomFieldFilterComponent extends BaseFormFieldComponent<string> i
 
   @ViewChild('inputField') inputField: InputFieldComponent;
   @ViewChild('multiSelectionField') multiSelectionField: MultiSelectionFieldComponent;
-  @ViewChild('radioGroupField') radioGroupField: RadioGroupFieldComponent;
+  @ViewChild('singleSelectionField') singleSelectionField: SingleSelectionFieldComponent;
   @ViewChild('userField') userField: UserFieldComponent;
 
   _hideLabel: boolean | string = false;
@@ -120,7 +120,7 @@ export class CustomFieldFilterComponent extends BaseFormFieldComponent<string> i
     return [
       this.inputField,
       this.multiSelectionField,
-      this.radioGroupField,
+      this.singleSelectionField,
       this.userField
     ].find(c => c != null);
   }

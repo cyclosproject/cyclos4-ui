@@ -16,14 +16,13 @@
     [mask]="field.pattern"></input-field>
 
   <!-- boolean -->
-  <radio-group-field #radioGroupField *ngIf="type == 'boolean'" [id]="id"
-    [label]="label" [name]="name" [labelPosition]="labelPosition"
-    [fieldSize]="fieldSize" [required]="required" [formControl]="formControl">
-    <field-option [value]="null" [text]="messages.general.notApplied">
-    </field-option>
+  <single-selection-field #singleSelectionField *ngIf="type == 'boolean'"
+    [id]="id" [label]="label" [name]="name" [labelPosition]="labelPosition"
+    [fieldSize]="fieldSize" [required]="required" [formControl]="formControl"
+    [emptyOption]="messages.general.notApplied">
     <field-option [value]="true" [text]="messages.general.yes"></field-option>
     <field-option [value]="false" [text]="messages.general.no"></field-option>
-  </radio-group-field>
+  </single-selection-field>
 
   <!-- multi selection -->
   <multi-selection-field #multiSelectionField *ngIf="enumerated" [id]="id"
