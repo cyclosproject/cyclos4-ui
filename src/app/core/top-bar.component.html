@@ -1,5 +1,6 @@
 <nav class="navbar navbar-expand-md" [ngClass]="{
-  'with-menu': hasMenu && !(layout.fullWidth$ | async)
+  'with-menu': hasMenu && !(layout.fullWidth$ | async),
+  'with-user': (login.user$ | async)
 }">
   <div class="navbar-container">
     <a class="never-active" *ngIf="layout.ltlg$ | async" id="sidenav-trigger"
