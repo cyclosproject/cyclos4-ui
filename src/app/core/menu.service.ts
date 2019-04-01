@@ -28,6 +28,9 @@ export interface NavigateParams {
   /** The menu entry to navigate to */
   entry?: MenuEntry;
 
+  /** Whether the clear the current navigation (default) or not */
+  clear?: boolean;
+
   /** An UI event to cancel */
   event?: Event;
 }
@@ -148,8 +151,10 @@ export class MenuService {
     }
 
     // Clear the shared state
-    this.breadcrumb.clear();
-    this.stateManager.clear();
+    if (params.clear !== false) {
+      this.breadcrumb.clear();
+      this.stateManager.clear();
+    }
 
     // Either perform the logout or navigate
     if (params.entry && params.entry.menu === Menu.LOGOUT) {

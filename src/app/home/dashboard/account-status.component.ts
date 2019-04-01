@@ -58,6 +58,7 @@ export class AccountStatusComponent extends BaseDashboardComponent implements On
       maybeRoot: true,
       onClick: event => this.menu.navigate({
         entry: this.menu.accountEntry(this.account.type.id),
+        clear: false,
         event: event
       })
     }];
@@ -94,8 +95,13 @@ export class AccountStatusComponent extends BaseDashboardComponent implements On
     return this.bankingHelper.subjectName(row);
   }
 
-  viewTransfer(row: AccountHistoryResult) {
+  viewTransfer(row: AccountHistoryResult, event: MouseEvent) {
     this.menu.setActiveAccountTypeId(this.account.type.id);
-    this.router.navigate(['/banking', 'transfer', this.bankingHelper.transactionNumberOrId(row)]);
+    const tx = this.bankingHelper.transactionNumberOrId(row);
+    this.menu.navigate({
+      url: `/banking/transfer/${tx}`,
+      clear: false,
+      event: event
+    });
   }
 }

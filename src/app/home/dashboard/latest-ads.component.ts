@@ -91,6 +91,7 @@ export class LatestAdsComponent extends BaseDashboardComponent implements OnInit
     this.menu.navigate({
       url: this.path(ad),
       menu: new ActiveMenu(Menu.VIEW_AD),
+      clear: false,
       event: event
     });
   }
@@ -99,6 +100,7 @@ export class LatestAdsComponent extends BaseDashboardComponent implements OnInit
     this.menu.navigate({
       url: this.path(ad),
       menu: new ActiveMenu(Menu.USER_PROFILE),
+      clear: false,
       event: event
     });
   }

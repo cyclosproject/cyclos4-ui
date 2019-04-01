@@ -50,6 +50,7 @@ export class LatestUsersComponent extends BaseDashboardComponent implements OnIn
     this.menu.navigate({
       url: this.path(user),
       menu: new ActiveMenu(Menu.USER_PROFILE),
+      clear: false,
       event: event
     });
   }
