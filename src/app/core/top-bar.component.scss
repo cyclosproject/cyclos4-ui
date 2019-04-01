@@ -56,6 +56,9 @@
     background-color: $top-bar-bg;
     transform: translateY(-2px) !important;
     border: none !important;
+    border-top: 1px solid $top-bar-item-border-color !important;
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
     padding: 0 !important;
   }
   .sub-menu-item {
@@ -64,7 +67,7 @@
     padding-bottom: 0.7rem !important;
   }
   .sub-menu-item {
-    border-bottom: 1px solid darken($top-bar-bg, 10%);
+    border-bottom: 1px solid $top-bar-item-border-color;
   }
   .sub-menu-item:last-of-type {
     border-bottom: none;
