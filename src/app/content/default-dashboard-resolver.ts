@@ -15,7 +15,7 @@ import { AccountWithCurrency, Permissions } from 'app/api/models';
  */
 export class DefaultDashboardResolver implements DashboardResolver {
 
-  constructor(public minHeight = '25rem') {
+  constructor(public minHeight = '25.5rem') {
   }
 
   /**
