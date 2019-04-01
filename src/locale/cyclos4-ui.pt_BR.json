@@ -174,7 +174,7 @@
     "personal.contacts": "Contatos",
     "personal.password": "Senha",
     "personal.passwords": "Senhas",
-    "personal.notifications": "Notifications",
+    "personal.notifications": "Notificações",
     "content": "Informação"
   },
   "auth": {
@@ -511,8 +511,8 @@
     "address.remove": "Remover este endereço",
     "address.none": "Atualmente não existem endereços",
     "phone.add": "Adicionar telefone",
-    "phone.add.mobile": "Add mobile phone",
-    "phone.add.landLine": "Add land-line phone",
+    "phone.add.mobile": "Adicionar telefone celular",
+    "phone.add.landLine": "Adicionar telefone fixo",
     "phone.remove": "Remover este telefone",
     "phone.none": "Atualmente não existem telefones",
     "contactInfo": "Informação de contato adicional",
@@ -611,13 +611,13 @@
     }
   },
   "notification": {
-    "message": "Message",
-    "title": "Notifications",
-    "onlyUnread": "Unread only",
+    "message": "Mensagem",
+    "title": "Notificações",
+    "onlyUnread": "Somente Não Lido",
     "actions": {
-      "remove": "Remove this notification",
-      "removeAll": "Remove all",
-      "markAllRead": "Mark all as read"
+      "remove": "Remover esta notificação",
+      "removeAll": "Remover tudo",
+      "markAllRead": "Marcar todas como lida"
     }
   }
 }
