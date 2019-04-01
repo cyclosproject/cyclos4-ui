@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
-import { SharedModule } from 'app/shared/shared.module';
-import { SearchNotificationsComponent } from 'app/personal/search-notifications.component';
-import { PersonalRoutingModule } from 'app/personal/personal-routing.module';
-import { ManagePasswordsComponent } from 'app/personal/passwords/manage-passwords.component';
+import { SearchNotificationsComponent } from 'app/personal/notifications/search-notifications.component';
 import { ChangePasswordDialogComponent } from 'app/personal/passwords/change-password-dialog.component';
+import { ManagePasswordsComponent } from 'app/personal/passwords/manage-passwords.component';
+import { PersonalRoutingModule } from 'app/personal/personal-routing.module';
+import { SharedModule } from 'app/shared/shared.module';
 
 
 /**

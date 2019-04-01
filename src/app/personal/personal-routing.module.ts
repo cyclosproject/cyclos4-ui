@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoggedUserGuard } from 'app/logged-user-guard';
 import { ManagePasswordsComponent } from 'app/personal/passwords/manage-passwords.component';
-import { SearchNotificationsComponent } from 'app/personal/search-notifications.component';
+import { SearchNotificationsComponent } from 'app/personal/notifications/search-notifications.component';
 import { Menu } from 'app/shared/menu';
 
 const personalRoutes: Routes = [
