@@ -8,26 +8,5 @@ export function setup() {
   Configuration.appTitle = 'Cyclos';
   Configuration.appTitleSmall = 'Cyclos frontend';
   Configuration.appTitleMenu = 'Cyclos menu';
-  Configuration.menuBar = false;
-  Configuration.contentPages = {
-    contentPages: () => [
-      {
-        title: 'AAA',
-        content: 'AAAAAAAAAAAAAAAAAAAAAAAA'
-      },
-      {
-        title: 'BBB',
-        content: 'BBBBBBBBBBBBBBBBBBBBBBBB'
-      },
-      {
-        title: 'CCC',
-        content: 'CCCCCCCCCCCCCCCCCCCCCCCC'
-      },
-      {
-        title: 'DDD',
-        content: 'DDDDDDDDDDDDDDDDDDDDDDDD'
-      }
-    ]
-  };
 }
 
