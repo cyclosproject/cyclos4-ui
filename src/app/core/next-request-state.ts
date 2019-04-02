@@ -1,8 +1,9 @@
 import { HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Params } from '@angular/router';
+import { empty } from 'app/shared/helper';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
-import { empty } from 'app/shared/helper';
 
 const Channel = 'Channel';
 const Authorization = 'Authorization';
@@ -31,6 +32,11 @@ export class NextRequestState {
    * Flag to not close notification on next request
    */
   leaveNotification: boolean;
+
+  /**
+   * Additional query parameters to send on the next request
+   */
+  queryParams: Params;
 
   private pending$ = new BehaviorSubject<HttpRequest<any>[]>([]);
   private nextAuth: string;
@@ -72,9 +78,21 @@ export class NextRequestState {
     this.nextAuth = null;
 
     // Apply the headers to the request
-    const result = req.clone({
+    let result = req.clone({
       setHeaders: headers
     });
+
+    // When there are additional parameters to append, do it
+    if (this.queryParams) {
+      let httpParams = result.params;
+      for (const key of Object.keys(this.queryParams)) {
+        httpParams = httpParams.append(key, this.queryParams[key]);
+      }
+      result = result.clone({
+        params: httpParams
+      });
+      this.queryParams = null;
+    }
 
     // Append the resulting request in the pending list
     this.pending$.next([result, ...this.pending$.value]);

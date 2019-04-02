@@ -23,7 +23,8 @@
     "UI",
     "Captcha",
     "Files",
-    "Images"
+    "Images",
+    "Operations"
   ],
   "enumStyle": "upper"
 }

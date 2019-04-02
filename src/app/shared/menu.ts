@@ -1,5 +1,7 @@
 import { Injector } from '@angular/core';
 import { Observable } from 'rxjs';
+import { isEqual } from 'lodash';
+import { AccountType, Operation } from 'app/api/models';
 
 /** The types of menus in the application */
 export enum MenuType {
@@ -92,6 +94,14 @@ export module Menu {
   export const PASSWORDS = new Menu(RootMenu.PERSONAL, 'PASSWORDS');
   export const NOTIFICATIONS = new Menu(RootMenu.PERSONAL, 'NOTIFICATIONS');
 
+  // Custom operations (one per root menu in owner, also one per operation container)
+  export const RUN_OPERATION_BANKING = new Menu(RootMenu.BANKING, 'RUN_OPERATION_BANKING');
+  export const RUN_OPERATION_MARKETPLACE = new Menu(RootMenu.MARKETPLACE, 'RUN_OPERATION_MARKETPLACE');
+  export const RUN_OPERATION_PERSONAL = new Menu(RootMenu.PERSONAL, 'RUN_OPERATION_PERSONAL');
+  export const RUN_USER_OPERATION = new Menu(RootMenu.MARKETPLACE, 'RUN_USER_OPERATION');
+  export const RUN_MARKETPLACE_OPERATION = new Menu(RootMenu.MARKETPLACE, 'RUN_MARKETPLACE_OPERATION');
+  export const RUN_ACTION_OPERATION = new Menu(RootMenu.BANKING, 'RUN_ACTION_OPERATION');
+
   // Content (one per root menu)
   export const CONTENT_PAGE_BANKING = new Menu(RootMenu.BANKING, 'CONTENT_PAGE_BANKING');
   export const CONTENT_PAGE_MARKETPLACE = new Menu(RootMenu.MARKETPLACE, 'CONTENT_PAGE_MARKETPLACE');
@@ -139,20 +149,20 @@ export class RootMenuEntry extends BaseMenuEntry {
 
 /** Resolved menu entry */
 export class MenuEntry extends BaseMenuEntry {
+  public menu: Menu;
+  public activeMenu: ActiveMenu;
+
   constructor(
-    public menu: Menu,
+    menu: Menu | ActiveMenu,
     public url: string,
     icon: string,
     label: string,
     showIn: MenuType[] = null,
-    public accountTypeId?: string,
-    public contentPageSlug?: string
+    public menuData?: ActiveMenuData
   ) {
     super(icon, label, showIn);
-  }
-
-  get activeMenu(): ActiveMenu {
-    return new ActiveMenu(this.menu, this.accountTypeId, this.contentPageSlug);
+    this.menu = menu instanceof ActiveMenu ? menu.menu : menu;
+    this.activeMenu = menu instanceof ActiveMenu ? menu : new ActiveMenu(menu);
   }
 }
 
@@ -172,6 +182,14 @@ export class SideMenuEntries {
  */
 export type ConditionalMenu = (injector: Injector) => Menu | Observable<Menu>;
 
+/**
+ * Additional identifier for a dynamic active menu
+ */
+export interface ActiveMenuData {
+  accountType?: AccountType;
+  contentPage?: string;
+  operation?: Operation;
+}
 
 /**
  * Contains information about the active menu
@@ -179,13 +197,11 @@ export type ConditionalMenu = (injector: Injector) => Menu | Observable<Menu>;
 export class ActiveMenu {
   constructor(
     public menu: Menu,
-    public accountTypeId?: string,
-    public contentPageSlug?: string) {
+    public data?: ActiveMenuData
+  ) {
   }
 
   matches(entry: MenuEntry): boolean {
-    return entry.menu === this.menu
-      && (entry.accountTypeId || '') === (this.accountTypeId || '')
-      && (entry.contentPageSlug || '') === (this.contentPageSlug || '');
+    return isEqual(this, entry.activeMenu);
   }
 }

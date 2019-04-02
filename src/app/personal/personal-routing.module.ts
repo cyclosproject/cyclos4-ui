@@ -12,6 +12,7 @@ const personalRoutes: Routes = [
       {
         path: 'notifications',
         component: SearchNotificationsComponent,
+        canActivate: [LoggedUserGuard],
         data: {
           menu: Menu.NOTIFICATIONS
         }

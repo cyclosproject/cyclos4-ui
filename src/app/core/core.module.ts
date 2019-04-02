@@ -36,6 +36,7 @@ import { NextRequestState } from './next-request-state';
 import { MenusComponent } from 'app/core/menus.component';
 import { PushNotificationsComponent } from 'app/core/push-notifications.component';
 import { PushNotificationComponent } from 'app/core/push-notification.component';
+import { OperationHelperService } from 'app/core/operation-helper.service';
 
 export const API_INTERCEPTOR_PROVIDER: Provider = {
   provide: HTTP_INTERCEPTORS,
@@ -97,6 +98,7 @@ export const API_INTERCEPTOR_PROVIDER: Provider = {
     BankingHelperService,
     AddressHelperService,
     TransactionStatusService,
+    OperationHelperService,
     API_INTERCEPTOR_PROVIDER,
     BsModalService
   ],

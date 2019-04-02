@@ -99,7 +99,7 @@ export class AccountHistoryComponent
         owner: ApiHelper.SELF, accountType: type
       })
     ).subscribe(data => {
-      this.menu.setActiveAccountTypeId(data.account.type.id);
+      this.menu.setActiveAccountType(data.account.type);
 
       this.bankingHelper.preProcessPreselectedPeriods(data, this.form);
 

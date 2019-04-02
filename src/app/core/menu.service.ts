@@ -1,6 +1,7 @@
 import { Injectable, Injector } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { Auth, DataForUi } from 'app/api/models';
+import { AccountType, Auth, DataForUi, Operation } from 'app/api/models';
+import { Configuration } from 'app/configuration';
 import { BreadcrumbService } from 'app/core/breadcrumb.service';
 import { ContentService } from 'app/core/content.service';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
@@ -10,10 +11,9 @@ import { Messages } from 'app/messages/messages';
 import { ApiHelper } from 'app/shared/api-helper';
 import { toFullUrl } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
-import { ConditionalMenu, Menu, MenuEntry, MenuType, RootMenu, RootMenuEntry, SideMenuEntries, ActiveMenu } from 'app/shared/menu';
+import { ActiveMenu, ConditionalMenu, Menu, MenuEntry, MenuType, RootMenu, RootMenuEntry, SideMenuEntries } from 'app/shared/menu';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { filter, first, map } from 'rxjs/operators';
-import { Configuration } from 'app/configuration';
 
 /**
  * Parameters accepted by the `navigate` method
@@ -43,17 +43,9 @@ export interface NavigateParams {
 })
 export class MenuService {
 
-  /**
-   * The current active menu descriptor
-   */
-  activeMenu$: Observable<ActiveMenu>;
-  private _activeMenu = new BehaviorSubject<ActiveMenu>(null);
-
   get activeMenu(): ActiveMenu {
     return this._activeMenu.value;
   }
-
-  private _fullMenu = new BehaviorSubject<RootMenuEntry[]>(null);
   get fullMenu(): RootMenuEntry[] {
     return this._fullMenu.value;
   }
@@ -111,6 +103,13 @@ export class MenuService {
       }
     });
   }
+
+  /**
+   * The current active menu descriptor
+   */
+  activeMenu$: Observable<ActiveMenu>;
+  private _activeMenu = new BehaviorSubject<ActiveMenu>(null);
+  private _fullMenu = new BehaviorSubject<RootMenuEntry[]>(null);
 
   /**
    * Navigates to a menu entry
@@ -202,18 +201,38 @@ export class MenuService {
    */
   setActiveMenu(menu: Menu | ConditionalMenu): void {
     // Whenever the last selected menu changes, update the classes in the body element
-    this.resolveMenu(menu).pipe(first()).subscribe(m => this.updateActiveMenu(new ActiveMenu(m)));
+    const observable = this.resolveMenu(menu);
+    if (observable) {
+      observable.pipe(first()).subscribe(m => this.updateActiveMenu(new ActiveMenu(m)));
+    }
   }
 
   /**
-   * Sets the id of the active account type from the menu.
+   * Sets the menu to the account history of the given account type
    */
-  setActiveAccountTypeId(id: string): void {
-    this.updateActiveMenu(new ActiveMenu(Menu.ACCOUNT_HISTORY, id));
+  setActiveAccountType(accountType: AccountType): void {
+    this.updateActiveMenu(new ActiveMenu(Menu.ACCOUNT_HISTORY, { accountType: accountType }));
   }
 
   /**
-   * Sets the slug of the active content page.
+   * Sets the menu to run the given custom operation as owner, ie, not inside an advertisement or user
+   */
+  setActiveOwnerOperation(operation: Operation): void {
+    const menu = ApiHelper.menuForOwnerOperation(operation);
+    if (menu != null) {
+      this.updateActiveMenu(new ActiveMenu(menu, { operation: operation }));
+    }
+  }
+
+  /**
+   * Sets the menu to run the given custom operation as an action, that is, standalone
+   */
+  setActiveActionOperation(operation: Operation): void {
+    this.updateActiveMenu(new ActiveMenu(Menu.RUN_ACTION_OPERATION, { operation: operation }));
+  }
+
+  /**
+   * Sets the menu to the content page with the given slug
    */
   setActiveContentPageSlug(slug: string): void {
     const entry = this.contentPageEntry(slug);
@@ -285,7 +304,8 @@ export class MenuService {
     const roots = this._fullMenu.value || [];
     for (const rootEntry of roots) {
       for (const entry of rootEntry.entries || []) {
-        if (entry.accountTypeId === typeId) {
+        const data = entry.activeMenu.data;
+        if (data && data.accountType === typeId) {
           return entry;
         }
       }
@@ -301,7 +321,26 @@ export class MenuService {
     const roots = this._fullMenu.value || [];
     for (const rootEntry of roots) {
       for (const entry of rootEntry.entries || []) {
-        if (entry.contentPageSlug === slug) {
+        const data = entry.activeMenu.data;
+        if (data && data.contentPage === slug) {
+          return entry;
+        }
+      }
+    }
+    return null;
+  }
+
+
+  /**
+   * Returns the available `MenuEntry` for the custom operation with the given id or internal name
+   * @param op The operation id or internal name
+   */
+  operationEntry(op: string): MenuEntry {
+    const roots = this._fullMenu.value || [];
+    for (const rootEntry of roots) {
+      for (const entry of rootEntry.entries || []) {
+        const data = entry.activeMenu.data;
+        if (data && data.operation === op) {
           return entry;
         }
       }
@@ -380,11 +419,14 @@ export class MenuService {
     const contentPages = this.content.contentPages;
 
     const auth = maybeNullAuth || {};
-    const permissions = auth.permissions;
+    const permissions = auth.permissions || {};
     const user = auth.user;
     const restrictedAccess = auth.expiredPassword || auth.pendingAgreements;
     const users = permissions.users || {};
     const marketplace = permissions.marketplace || {};
+    const operations = permissions.operations || {};
+    const userOperations = (operations.user || []).filter(o => o.run).map(o => o.operation);
+    const systemOperations = (operations.system || []).filter(o => o.run).map(o => o.operation);
 
     const roots = new Map<RootMenu, RootMenuEntry>();
     // Lambda that adds a root menu
@@ -407,9 +449,9 @@ export class MenuService {
     const logout = addRoot(RootMenu.LOGOUT, 'logout', this.messages.menu.logout, null, []);
 
     // Lambda that adds a submenu to a root menu
-    const add = (menu: Menu, url: string, icon: string, label: string, showIn: MenuType[] = null): MenuEntry => {
-      const root = roots.get(menu.root);
+    const add = (menu: Menu | ActiveMenu, url: string, icon: string, label: string, showIn: MenuType[] = null): MenuEntry => {
       const entry = new MenuEntry(menu, url, icon, label, showIn);
+      const root = roots.get(entry.menu.root);
       root.entries.push(entry);
       return entry;
     };
@@ -423,10 +465,50 @@ export class MenuService {
         return p.rootMenu === menu.root && p.isVisible(this.injector);
       });
       for (const page of pages) {
-        const entry = add(menu, `/page/${page.slug}`, page.icon, page.label);
-        entry.contentPageSlug = page.slug;
+        const activeMenu = new ActiveMenu(menu, {
+          contentPage: page.slug
+        });
+        add(activeMenu, `/page/${page.slug}`, page.icon, page.label);
       }
       return pages;
+    };
+
+
+    // Lambda that adds all custom operations the given root menu entry
+    const addOperations = (root: RootMenu) => {
+      if (restrictedAccess) {
+        return;
+      }
+      let ops: Operation[];
+      let opMenu: Menu;
+      switch (root) {
+        case RootMenu.BANKING:
+          opMenu = Menu.RUN_OPERATION_BANKING;
+          break;
+        case RootMenu.MARKETPLACE:
+          opMenu = Menu.RUN_OPERATION_MARKETPLACE;
+          break;
+        case RootMenu.PERSONAL:
+          opMenu = Menu.RUN_OPERATION_PERSONAL;
+          break;
+        default:
+          // Invalid root menu for operations
+          return;
+      }
+
+      // First add the system operations
+      ops = systemOperations.filter(o => ApiHelper.adminMenuMatches(root, o.adminMenu));
+      for (const op of ops) {
+        const activeMenu = new ActiveMenu(opMenu, { operation: op });
+        add(activeMenu, `/operations/system/${ApiHelper.internalNameOrId(op)}`, 'chevron_right', op.label);
+      }
+
+      // Then add the user operations
+      ops = userOperations.filter(o => ApiHelper.userMenuMatches(root, o.userMenu));
+      for (const op of ops) {
+        const activeMenu = new ActiveMenu(opMenu, { operation: op });
+        add(activeMenu, `/operations/self/${ApiHelper.internalNameOrId(op)}`, 'chevron_right', op.label);
+      }
     };
 
     // Add the submenus
@@ -461,9 +543,8 @@ export class MenuService {
             continue;
           }
           const type = account.account.type;
-          const entry = add(Menu.ACCOUNT_HISTORY, '/banking/account/' + ApiHelper.internalNameOrId(type),
-            'account_balance', type.name);
-          entry.accountTypeId = type.id;
+          const activeMenu = new ActiveMenu(Menu.ACCOUNT_HISTORY, { accountType: type });
+          add(activeMenu, `/banking/account/${ApiHelper.internalNameOrId(type)}`, 'account_balance', type.name);
         }
       }
       const payments = banking.payments || {};
@@ -484,6 +565,7 @@ export class MenuService {
       if ((banking.authorizations || {}).view) {
         add(Menu.AUTHORIZED_PAYMENTS, '/banking/authorized-payments', 'assignment_turned_in', this.messages.menu.bankingAuthorizations);
       }
+      addOperations(RootMenu.BANKING);
       addContentPages(Menu.CONTENT_PAGE_BANKING);
 
       // Marketplace
@@ -498,6 +580,7 @@ export class MenuService {
         marketplaceRoot.label = publicDirectory.label;
         marketplaceRoot.title = publicDirectory.label;
       }
+      addOperations(RootMenu.MARKETPLACE);
       addContentPages(Menu.CONTENT_PAGE_MARKETPLACE);
 
       // Personal
@@ -521,6 +604,7 @@ export class MenuService {
       if ((permissions.notifications || {}).enable) {
         add(Menu.NOTIFICATIONS, '/personal/notifications', 'notifications', this.messages.menu.personalNotifications);
       }
+      addOperations(RootMenu.PERSONAL);
       addContentPages(Menu.CONTENT_PAGE_PERSONAL);
 
       // Add the logout
@@ -560,4 +644,5 @@ export class MenuService {
     }
     return of(value);
   }
+
 }

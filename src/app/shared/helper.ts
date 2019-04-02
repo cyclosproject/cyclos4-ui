@@ -4,6 +4,8 @@ import { GeographicalCoordinate, Address } from 'app/api/models';
 import { LatLngBounds } from '@agm/core';
 import { FormControlLocator } from 'app/shared/form-control-locator';
 import { Observable } from 'rxjs';
+import { HttpResponse } from '@angular/common/http';
+import download from 'downloadjs';
 
 /**
  * Sets whether the root spinner in the page is visible
@@ -473,4 +475,17 @@ export function words(text: string, maxLength: number): string {
     result = result.substring(0, maxLength) + '…';
   }
   return result;
+}
+
+/**
+ * Downloads the content of a response, attempting to get the filename from the `Content-Disposition` header
+ */
+export function downloadResponse(response: HttpResponse<Blob>) {
+  const matcher = (response.headers.get('Content-Disposition') || '').match(/filename=\"([^;]+)\"/);
+  let filename = null;
+  if (matcher) {
+    filename = matcher[1];
+  }
+  const blob = response.body;
+  download(blob, filename);
 }

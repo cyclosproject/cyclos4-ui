@@ -1,0 +1,81 @@
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="isSearch; else regular">
+    <!-- When a result page, render a filters section -->
+    <page-content [heading]="data.name" mode="filters"
+      [headingActions]="headingActions$ | async">
+      <ng-container *ngTemplateOutlet="theForm"></ng-container>
+      <actions *ngIf="!runDirectly" class="mb-3 mt-0">
+        <button class="btn btn-primary" [disabled]="(requesting$ | async)"
+          (click)="run()">
+          {{ data.customSubmitLabel || messages.general.submit }}
+        </button>
+      </actions>
+    </page-content>
+    <!-- And, if already executed, show results table -->
+    <results-layout *ngIf="pageResults$ | async" resultType="list"
+      [results]="pageResults" (update)="updatePage($event)">
+      <table *resultTable class="table table-hover"
+        [ngClass]="{'cursor-pointer': data.rowAction}">
+        <thead>
+          <th *ngFor="let col of (result$ | async).columns" [ngStyle]="{
+              textAlign: col.align,
+              width: col.width
+            }">
+            {{ col.header }}
+          </th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of (result$ | async).rows"
+            (click)="rowClick(row)">
+            <td *ngFor="let col of (result$ | async).columns" [ngStyle]="{
+                textAlign: col.align
+              }" [innerHTML]="row[col.property] | trust">
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </results-layout>
+  </ng-container>
+</page-layout>
+
+<ng-template #regular>
+  <page-content *ngIf="data && !runDirectly && !(result$ | async)"
+    [heading]="data.name">
+    <alert type="info" *ngIf="data.informationText">
+      <div [innerHTML]="data.informationText | trust"></div>
+    </alert>
+    <ng-container *ngTemplateOutlet="theForm"></ng-container>
+    <actions>
+      <button class="btn btn-primary" [disabled]="(requesting$ | async)"
+        (click)="run()">
+        {{ data.customSubmitLabel || messages.general.submit }}
+      </button>
+    </actions>
+  </page-content>
+
+  <page-content *ngIf="isContent && (result$ | async)"
+    [heading]="result.title || data.name"
+    [headingActions]="headingActions$ | async">
+    <div *ngIf="result.resultType === 'richText'"
+      [innerHTML]="result.content | trust"></div>
+    <div *ngIf="result.resultType === 'plainText'" class="break-nl">
+      {{ result.content }}</div>
+    <actions *ngIf="!runDirectly">
+      <button class="btn btn-primary" [disabled]="(requesting$ | async)"
+        (click)="reload()">
+        {{ messages.general.close }}
+      </button>
+    </actions>
+  </page-content>
+</ng-template>
+
+<ng-template #theForm>
+  <form [formGroup]="form">
+    <ng-container *ngFor="let cf of formFields; let first = first">
+      <custom-field-input [field]="cf" [formControlName]="cf.internalName"
+        [focused]="!isSearch && first"
+        [labelPosition]="isSearch ? 'left' : 'auto'">
+      </custom-field-input>
+    </ng-container>
+  </form>
+</ng-template>

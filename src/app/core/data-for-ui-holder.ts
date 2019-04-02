@@ -1,9 +1,11 @@
+import { Location } from '@angular/common';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiConfiguration } from 'app/api/api-configuration';
 import { DataForUi, UiKind } from 'app/api/models';
 import { AuthService, UiService } from 'app/api/services';
+import { Configuration } from 'app/configuration';
 import { ErrorStatus } from 'app/core/error-status';
 import { NextRequestState } from 'app/core/next-request-state';
 import { Messages } from 'app/messages/messages';
@@ -11,8 +13,6 @@ import { isSameOrigin, setReloadButton, setRootAlert } from 'app/shared/helper';
 import moment from 'moment-mini-ts';
 import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
-import { Configuration } from 'app/configuration';
-import { Location } from '@angular/common';
 
 /**
  * Injectable used to hold the `DataForUi` instance used by the application

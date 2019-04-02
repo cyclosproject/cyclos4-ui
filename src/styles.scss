@@ -33,6 +33,10 @@ body.backdrop-visible {
   position: fixed;
 }
 
+b, strong {
+  font-weight: $font-weight-bold;
+}
+
 .no-wrap {
   white-space: nowrap;
 }

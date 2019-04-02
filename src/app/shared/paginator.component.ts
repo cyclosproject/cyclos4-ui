@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ApiHelper } from 'app/shared/api-helper';
-import { LayoutService, Breakpoint } from 'app/shared/layout.service';
+import { Configuration } from 'app/configuration';
+import { Messages } from 'app/messages/messages';
+import { Breakpoint, LayoutService } from 'app/shared/layout.service';
 import { PageData } from 'app/shared/page-data';
 import { PagedResults } from 'app/shared/paged-results';
 import { Subscription } from 'rxjs';
-import { Messages } from 'app/messages/messages';
 
 /**
  * Renders a paginator, which allows the user to change the visible results in a table
@@ -79,7 +79,7 @@ export class PaginatorComponent<T> implements OnDestroy {
   }
 
   get pageSizes(): number[] {
-    return ApiHelper.PAGE_SIZES;
+    return Configuration.searchPageSizes;
   }
 
   get totalCount(): number {

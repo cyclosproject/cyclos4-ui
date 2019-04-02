@@ -70,7 +70,9 @@ export class QuickAccessComponent extends BaseDashboardComponent implements OnIn
           || generalAccountDescriptor;
         if (accountDescriptor) {
           const accountLabel = accounts.length === 1 ? this.messages.dashboard.action.account : accountType.name;
-          addAction(accountDescriptor, 'quick_access_account', accountLabel, new ActiveMenu(Menu.ACCOUNT_HISTORY, accountType.id));
+          addAction(accountDescriptor, 'quick_access_account', accountLabel, new ActiveMenu(Menu.ACCOUNT_HISTORY, {
+            accountType: accountType
+          }));
         }
       }
       if (permissions.banking.payments.user) {

@@ -17038,6 +17038,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /{owner}/operations/{operation}/data-for-run:
     get:
       operationId: getOwnerOperationDataForRun
@@ -17101,6 +17102,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /{owner}/operations/{operation}/run:
     post:
       operationId: runOwnerOperation
@@ -17163,6 +17165,10 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/RunOperationResult'
+            '*/*':
+              schema:
+                type: string
+                format: binary
         '401':
           description: >-
             Unauthorized access. Missing or invalid crendentials supplied for such
@@ -17200,6 +17206,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           application/json:
             schema:
               $ref: '#/components/schemas/RunOperation'
+              
   /{owner}/operations/{operation}/run-upload:
     post:
       operationId: runOwnerOperationWithUpload
@@ -17264,6 +17271,10 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/RunOperationResult'
+            '*/*':
+              schema:
+                type: string
+                format: binary
         '401':
           description: >-
             Unauthorized access. Missing or invalid crendentials supplied for such
@@ -17308,6 +17319,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
                   format: binary
                   description: >-
                     The file being uploaded
+  
   /operations/{operation}/data-for-run:
     get:
       operationId: getOperationDataForRun
@@ -17371,6 +17383,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /operations/{operation}/run:
     post:
       operationId: runOperation
@@ -17432,6 +17445,10 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/RunOperationResult'
+            '*/*':
+              schema:
+                type: string
+                format: binary
         '401':
           description: >-
             Unauthorized access. Missing or invalid crendentials supplied for such
@@ -17469,6 +17486,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           application/json:
             schema:
               $ref: '#/components/schemas/RunOperation'
+  
   /operations/{operation}/run-upload:
     post:
       operationId: runOperationWithUpload
@@ -17531,6 +17549,10 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/RunOperationResult'
+            '*/*':
+              schema:
+                type: string
+                format: binary
         '401':
           description: >-
             Unauthorized access. Missing or invalid crendentials supplied for such
@@ -17575,6 +17597,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
                   format: binary
                   description: >-
                     The file being uploaded
+  
   /operations/callback/{id}:
     post:
       operationId: runCustomOperationCallback
@@ -17611,11 +17634,16 @@ A note for dynamic custom fields: If a script is used to generate possible value
       responses:
         '200':
           description: >-
-            The custom operation result as `RunOperationResult`
+            The custom operation result, either as `RunOperationResult` or as the
+            file itself
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/RunOperationResult'
+            '*/*':
+              schema:
+                type: string
+                format: binary
         '401':
           description: >-
             Unauthorized access. Missing or invalid crendentials supplied for such
@@ -17653,6 +17681,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           application/json:
             schema:
               $ref: '#/components/schemas/HttpRequestData'
+  
   /marketplace/{ad}/operations:
     get:
       operationId: listOperationsByAd
@@ -17710,6 +17739,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /marketplace/{ad}/operations/{operation}/data-for-run:
     get:
       operationId: getAdOperationDataForRun
@@ -17772,6 +17802,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /marketplace/{ad}/operations/{operation}/run:
     post:
       operationId: runAdOperation
@@ -17833,6 +17864,10 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/RunOperationResult'
+            '*/*':
+              schema:
+                type: string
+                format: binary
         '401':
           description: >-
             Unauthorized access. Missing or invalid crendentials supplied for such
@@ -17870,6 +17905,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           application/json:
             schema:
               $ref: '#/components/schemas/RunOperation'
+  
   /marketplace/{ad}/operations/{operation}/run-upload:
     post:
       operationId: runAdOperationWithUpload
@@ -17932,6 +17968,10 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/RunOperationResult'
+            '*/*':
+              schema:
+                type: string
+                format: binary
         '401':
           description: >-
             Unauthorized access. Missing or invalid crendentials supplied for such
@@ -17976,6 +18016,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
                   format: binary
                   description: >-
                     The file being uploaded
+  
   /records/{id}/operations:
     get:
       operationId: listOperationsByRecord
@@ -18033,6 +18074,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /records/{id}/operations/{operation}/data-for-run:
     get:
       operationId: getRecordOperationDataForRun
@@ -18094,6 +18136,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /records/{id}/operations/{operation}/run:
     post:
       operationId: runRecordOperation
@@ -18155,6 +18198,10 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/RunOperationResult'
+            '*/*':
+              schema:
+                type: string
+                format: binary
         '401':
           description: >-
             Unauthorized access. Missing or invalid crendentials supplied for such
@@ -18192,6 +18239,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           application/json:
             schema:
               $ref: '#/components/schemas/RunOperation'
+  
   /records/{id}/operations/{operation}/run-upload:
     post:
       operationId: runRecordOperationWithUpload
@@ -18254,6 +18302,10 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/RunOperationResult'
+            '*/*':
+              schema:
+                type: string
+                format: binary
         '401':
           description: >-
             Unauthorized access. Missing or invalid crendentials supplied for such
@@ -18298,6 +18350,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
                   format: binary
                   description: >-
                     The file being uploaded
+  
   /transfers/{key}/operations:
     get:
       operationId: listOperationsByTransfer
@@ -18361,6 +18414,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /transfer/{key}/operations/{operation}/data-for-run:
     get:
       operationId: getTransferOperationDataForRun
@@ -18428,6 +18482,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /transfers/{key}/operations/{operation}/run:
     post:
       operationId: runTransferOperation
@@ -18495,6 +18550,10 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/RunOperationResult'
+            '*/*':
+              schema:
+                type: string
+                format: binary
         '401':
           description: >-
             Unauthorized access. Missing or invalid crendentials supplied for such
@@ -18532,6 +18591,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           application/json:
             schema:
               $ref: '#/components/schemas/RunOperation'
+  
   /transfers/{key}/operations/{operation}/run-upload:
     post:
       operationId: runTransferOperationWithUpload
@@ -18600,6 +18660,10 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/RunOperationResult'
+            '*/*':
+              schema:
+                type: string
+                format: binary
         '401':
           description: >-
             Unauthorized access. Missing or invalid crendentials supplied for such
@@ -18644,6 +18708,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
                   format: binary
                   description: >-
                     The file being uploaded
+  
   /contact-list/{id}/operations:
     get:
       operationId: listOperationsByContact
@@ -18701,6 +18766,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /contact-list/{id}/operations/{operation}/data-for-run:
     get:
       operationId: getContactOperationDataForRun
@@ -18762,6 +18828,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /contact-list/{id}/operations/{operation}/run:
     post:
       operationId: runContactOperation
@@ -18823,6 +18890,10 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/RunOperationResult'
+            '*/*':
+              schema:
+                type: string
+                format: binary
         '401':
           description: >-
             Unauthorized access. Missing or invalid crendentials supplied for such
@@ -18860,6 +18931,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           application/json:
             schema:
               $ref: '#/components/schemas/RunOperation'
+  
   /contact-list/{id}/operations/{operation}/run-upload:
     post:
       operationId: runContactOperationWithUpload
@@ -18922,6 +18994,10 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/RunOperationResult'
+            '*/*':
+              schema:
+                type: string
+                format: binary
         '401':
           description: >-
             Unauthorized access. Missing or invalid crendentials supplied for such
@@ -18966,6 +19042,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
                   format: binary
                   description: >-
                     The file being uploaded
+  
   /contact-infos/{id}/operations:
     get:
       operationId: listOperationsByContactInfo
@@ -19023,6 +19100,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /contact-infos/{id}/operations/{operation}/data-for-run:
     get:
       operationId: getContactInfoOperationDataForRun
@@ -19086,6 +19164,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /contact-infos/{id}/operations/{operation}/run:
     post:
       operationId: runContactInfoOperation
@@ -19148,6 +19227,10 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/RunOperationResult'
+            '*/*':
+              schema:
+                type: string
+                format: binary
         '401':
           description: >-
             Unauthorized access. Missing or invalid crendentials supplied for such
@@ -19185,6 +19268,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           application/json:
             schema:
               $ref: '#/components/schemas/RunOperation'
+  
   /contact-infos/{id}/operations/{operation}/run-upload:
     post:
       operationId: runContactInfoOperationWithUpload
@@ -19249,6 +19333,10 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/RunOperationResult'
+            '*/*':
+              schema:
+                type: string
+                format: binary
         '401':
           description: >-
             Unauthorized access. Missing or invalid crendentials supplied for such
@@ -20359,7 +20447,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
       requestBody:
         required: true
         content:
-          application/json:
+          text/plain:
             schema:
               type: string
   /questions/{id}:
@@ -23269,6 +23357,31 @@ components:
         - region
         - zip
 
+    AdminMenuEnum:
+      description: >
+        Which administration menu should a data be displayed
+        
+
+        Possible values are:
+
+        
+        - `contentManagement`: Content management
+        
+        - `reports`: Reports
+        
+        - `systemBanking`: System accounts
+        
+        - `systemManagement`: System management
+        
+        - `userManagement`: User management
+      type: string
+      enum:
+        - contentManagement
+        - reports
+        - systemBanking
+        - systemManagement
+        - userManagement
+
     AuthorizationActionEnum:
       description: >
         Possible actions that could be confirmed with a device for a payment authorization
@@ -26128,6 +26241,28 @@ components:
       enum:
         - custom
         - profile
+
+    UserMenuEnum:
+      description: >
+        Which user menu should a data be displayed
+        
+
+        Possible values are:
+
+        
+        - `banking`: Banking / accounts
+        
+        - `community`: Interaction with other users
+        
+        - `marketplace`: Marketplace / advertisements
+        
+        - `personal`: Personal data
+      type: string
+      enum:
+        - banking
+        - community
+        - marketplace
+        - personal
 
     UserOrderByEnum:
       description: >
@@ -30434,6 +30569,12 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/Principal'
+            scanQr:
+              description: >-
+                Indicates whether the scan QR code option (global) should be displayed by checking
+                if the user can approve a ticket, or has a QR/Barcode for make payments, or has
+                an easy invoice channel enabled
+              type: boolean    
             enableBluetoothPrinter:
               description: >-
                 Whether the bluetooth printer is enabled or not
@@ -32614,6 +32755,11 @@ components:
               $ref: '#/components/schemas/OperationScopeEnum'
             resultType:
               $ref: '#/components/schemas/OperationResultTypeEnum'
+            adminMenu:
+              $ref: '#/components/schemas/AdminMenuEnum'
+            userMenu:
+              $ref: '#/components/schemas/UserMenuEnum'
+              
 
     OperationDataForRun:
       description: >-

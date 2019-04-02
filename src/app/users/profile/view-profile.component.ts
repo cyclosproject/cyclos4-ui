@@ -8,6 +8,7 @@ import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { words } from 'app/shared/helper';
+import { OperationHelperService } from 'app/core/operation-helper.service';
 
 export const MAX_SIZE_SHORT_NAME = 25;
 
@@ -25,6 +26,7 @@ export class ViewProfileComponent extends BasePageComponent<UserView> implements
     injector: Injector,
     private usersService: UsersService,
     private contactsService: ContactsService,
+    private operationsHelper: OperationHelperService,
     public maps: MapsService) {
     super(injector);
   }
@@ -107,6 +109,10 @@ export class ViewProfileComponent extends BasePageComponent<UserView> implements
       actions.push(new HeadingAction('shopping_basket', this.messages.user.profile.viewAds, () => {
         this.router.navigate(['/marketplace', 'user', this.key]);
       }));
+    }
+    // Custom operations
+    for (const operation of permissions.operations || []) {
+      actions.push(this.operationsHelper.headingAction(operation, user.id));
     }
     this.headingActions = actions;
   }

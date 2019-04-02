@@ -127,6 +127,10 @@ const rootRoutes: Routes = [
     loadChildren: 'app/personal/personal.module#PersonalModule'
   },
   {
+    path: 'operations',
+    loadChildren: 'app/operations/operations.module#OperationsModule'
+  },
+  {
     path: '**',
     component: NotFoundComponent
   }

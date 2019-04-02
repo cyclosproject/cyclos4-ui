@@ -15,6 +15,7 @@ import { PickContactComponent } from 'app/shared/pick-contact.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { Observable, of, Subscription } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
+import { Configuration } from 'app/configuration';
 
 /**
  * Field used to select a user
@@ -115,7 +116,7 @@ export class UserFieldComponent
       keywords: text,
       ignoreProfileFieldsInList: true,
       usersToExclude: toExclude,
-      pageSize: ApiHelper.AUTOCOMPLETE_SIZE
+      pageSize: Configuration.quickSearchPageSize
     });
   }
 
