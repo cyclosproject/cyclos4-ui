@@ -621,7 +621,7 @@
     }
   },
   "operation": {
-    "fileUpload": "File upload",
-    "redirecting": "You are being redirected..."
+    "fileUpload": "Envio de arquivo",
+    "redirecting": "Você está sendo redirecionado..."
   }
 }
