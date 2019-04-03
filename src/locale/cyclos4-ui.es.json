@@ -109,8 +109,7 @@
       "withTotal": "Mostrando {first} - {last} de {total} resultados",
       "noTotal": "Mostrando {first} - {last} resultados",
       "none": "No existen resultados para el criterio de búsqueda"
-    },
-    "redirecting": "You are being redirected..."
+    }
   },
   "error": {
     "general": "Ha ocurrido un error inesperado durante el procesamiento de su solicitud",
@@ -620,5 +619,9 @@
       "removeAll": "Remove all",
       "markAllRead": "Marcar todo como leído"
     }
+  },
+  "operation": {
+    "fileUpload": "File upload",
+    "redirecting": "You are being redirected..."
   }
 }
