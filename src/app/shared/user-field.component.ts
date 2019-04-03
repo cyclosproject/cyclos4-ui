@@ -14,7 +14,7 @@ import { BaseAutocompleteFieldComponent } from 'app/shared/base-autocomplete-fie
 import { PickContactComponent } from 'app/shared/pick-contact.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { Observable, of, Subscription } from 'rxjs';
-import { distinctUntilChanged } from 'rxjs/operators';
+import { distinctUntilChanged, first } from 'rxjs/operators';
 import { Configuration } from 'app/configuration';
 
 /**
@@ -43,7 +43,6 @@ export class UserFieldComponent
   @Input() allowContacts = true;
 
   @ViewChild('contactListButton') contactListButton: ElementRef;
-  private contactSub: Subscription;
   private fieldSub: Subscription;
 
   placeholder: string;
@@ -125,7 +124,7 @@ export class UserFieldComponent
   }
 
   toValue(user: User): string {
-    return user.id;
+    return `id:${user.id}`;
   }
 
   showContactList() {
@@ -133,9 +132,6 @@ export class UserFieldComponent
       class: 'modal-form'
     });
     const component = ref.content as PickContactComponent;
-    this.contactSub = component.select.subscribe(contact => {
-      this.select(contact);
-      this.contactSub.unsubscribe();
-    });
+    component.select.pipe(first()).subscribe(u => this.select(u));
   }
 }
