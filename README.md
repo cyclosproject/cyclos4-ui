@@ -192,6 +192,7 @@ To achieve this, Cyclos allows using a script to generate links. As a global adm
 
 ```groovy
 import org.cyclos.impl.utils.LinkType
+import org.cyclos.entities.system.ExternalRedirectExecution
 
 if (user != null && user.admin) {
     // Don't generate custom links for admins
@@ -208,9 +209,10 @@ switch (type) {
         return "${root}/forgot-password/${validationKey}"
     case LinkType.LOGIN:
         return "${root}/login"
+    case LinkType.EXTERNAL_REDIRECT:
+        ExternalRedirectExecution e = binding.externalRedirectExecution
+        return "${root}/operations/callback/${maskId(e.id)}/${e.verificationToken}"
 }
-// Other link types are not yet handled in the the frontend
-return null
 ```
 
 Then, in 'System > System configuration > Configurations' select the configuration applied to users (or the default one) and mark the 'Link generation' field for customization. Then select the script you created and set the following as parameters, replacing the URL with your deployed URL:

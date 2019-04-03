@@ -736,6 +736,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /auth/otp:
     post:
       operationId: newOtp
@@ -1242,6 +1243,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /users:
     get:
       operationId: searchUsers
@@ -1635,6 +1637,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           application/json:
             schema:
               $ref: '#/components/schemas/UserNew'
+  
   /users/validate/{group}/{field}:
     get:
       operationId: validateUserRegistrationField
@@ -1730,6 +1733,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /users/groups-for-registration:
     get:
       operationId: getGroupsForUserRegistration
@@ -1794,6 +1798,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /users/validate/registration/{key}:
     post:
       operationId: validateUserRegistration
@@ -1854,6 +1859,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /users/validate/email-change/{key}:
     post:
       operationId: validateEmailChange
@@ -1912,6 +1918,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /users/data-for-new:
     get:
       operationId: getUserDataForNew
@@ -1982,6 +1989,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /users/{user}:
     get:
       operationId: viewUser
@@ -2104,6 +2112,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           application/json:
             schema:
               $ref: '#/components/schemas/UserEdit'
+  
   /users/{user}/data-for-edit:
     get:
       operationId: getUserDataForEdit
@@ -2157,6 +2166,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /users/{user}/data-for-edit-profile:
     get:
       operationId: getDataForEditFullProfile
@@ -2208,6 +2218,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /users/{user}/profile:
     post:
       operationId: saveUserFullProfile
@@ -2246,6 +2257,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           application/json:
             schema:
               $ref: '#/components/schemas/FullProfileEdit'
+  
   /users/map/data-for-search:
     get:
       operationId: getDataForMapDirectory
@@ -2295,6 +2307,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /users/map:
     get:
       operationId: searchMapDirectory
@@ -2640,6 +2653,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /{user}/operators:
     get:
       operationId: searchUserOperators
@@ -2769,6 +2783,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /operators/data-for-search:
     get:
       operationId: getGeneralOperatorsDataForSearch
@@ -2819,6 +2834,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /operators:
     get:
       operationId: searchGeneralOperators
@@ -3619,6 +3635,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /{user}/phones:
     get:
       operationId: listPhonesByUser
@@ -3745,6 +3762,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           application/json:
             schema:
               $ref: '#/components/schemas/PhoneNew'
+  
   /{user}/phones/data-for-new:
     get:
       operationId: getPhoneDataForNew
@@ -3803,6 +3821,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /phones/{id}/data-for-edit:
     get:
       operationId: getPhoneDataForEdit
@@ -3857,6 +3876,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /phones/{id}:
     get:
       operationId: viewPhone
@@ -4036,6 +4056,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           application/json:
             schema:
               $ref: '#/components/schemas/PhoneEdit'
+  
   /phones/{id}/password-for-remove:
     get:
       operationId: getPasswordInputForRemovePhone
@@ -4091,6 +4112,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /phones/{id}/send-verification-code:
     post:
       operationId: sendPhoneVerificationCode
@@ -4143,6 +4165,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/OtpError'
+  
   /phones/{id}/verify:
     post:
       operationId: verifyPhone
@@ -4170,7 +4193,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           description: >-
             The verification status
           content:
-            application/json:
+            plain/text:
               schema:
                 $ref: '#/components/schemas/CodeVerificationStatusEnum'
         '401':
@@ -4202,6 +4225,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /phones/{id}/enable-for-sms:
     post:
       operationId: enablePhoneForSms
@@ -4254,6 +4278,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /phones/{id}/disable-for-sms:
     post:
       operationId: disablePhoneForSms
@@ -4308,6 +4333,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /phones/{id}/password-for-disable-sms:
     get:
       operationId: getPasswordInputForDisablePhoneForSms
@@ -4420,6 +4446,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /{user}/contact-infos:
     get:
       operationId: listContactInfosByUser
@@ -4546,6 +4573,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           application/json:
             schema:
               $ref: '#/components/schemas/ContactInfoNew'
+  
   /{user}/contact-infos/data-for-new:
     get:
       operationId: getContactInfoDataForNew
@@ -4600,6 +4628,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /contact-infos/{id}/data-for-edit:
     get:
       operationId: getContactInfoDataForEdit
@@ -4655,6 +4684,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /contact-infos/{id}:
     get:
       operationId: viewContactInfo
@@ -4834,6 +4864,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /contact-infos/{id}/password-for-remove:
     get:
       operationId: getPasswordInputForRemoveContactInfo
@@ -6681,6 +6712,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /{user}/contact-list:
     get:
       operationId: searchContactList
@@ -6874,6 +6906,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           application/json:
             schema:
               $ref: '#/components/schemas/ContactNew'
+  
   /{user}/contact-list/data-for-search:
     get:
       operationId: getContactListDataForSearch
@@ -6928,6 +6961,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /{user}/contact-list/data-for-new:
     get:
       operationId: getContactListDataForNew
@@ -6990,6 +7024,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /contact-list/{id}/data-for-edit:
     get:
       operationId: getContactDataForEdit
@@ -7044,6 +7079,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /contact-list/{id}:
     get:
       operationId: viewContact
@@ -7278,6 +7314,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /agreements/accept:
     post:
       operationId: acceptPendingAgreement
@@ -7394,6 +7431,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /{user}/passwords/list-data:
     get:
       operationId: getUserPasswordsListData
@@ -7450,6 +7488,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /{user}/passwords:
     get:
       operationId: listUserPasswords
@@ -7505,6 +7544,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /{user}/passwords/{type}/change:
     post:
       operationId: changePassword
@@ -7571,6 +7611,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           application/json:
             schema:
               $ref: '#/components/schemas/ChangePassword'
+  
   /passwords/{type}/change-generated:
     post:
       operationId: changeGenerated
@@ -7630,6 +7671,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /passwords/{type}/generate:
     post:
       operationId: generatePassword
@@ -7697,6 +7739,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /{user}/passwords/{type}/allow-generation:
     post:
       operationId: allowGeneration
@@ -7755,6 +7798,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /{user}/passwords/{type}/reset-generated:
     post:
       operationId: resetGeneratedPassword
@@ -7812,6 +7856,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /{user}/passwords/{type}/reset-and-send:
     post:
       operationId: resetAndSendPassword
@@ -7882,6 +7927,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /{user}/passwords/{type}/disable:
     post:
       operationId: disablePassword
@@ -7937,6 +7983,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /{user}/passwords/{type}/enable:
     post:
       operationId: enablePassword
@@ -7992,6 +8039,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /{user}/passwords/{type}/unblock:
     post:
       operationId: unblockPassword
@@ -8107,6 +8155,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /devices/data-for-send:
     get:
       operationId: getDeviceDataForSend
@@ -8160,6 +8209,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /devices/send-activation-code:
     post:
       operationId: sendDeviceActivationCode
@@ -8231,6 +8281,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           application/json:
             schema:
               $ref: '#/components/schemas/SendActivationCodeRequest'
+  
   /devices/{id}/resend-activation-code:
     post:
       operationId: resendDeviceActivationCode
@@ -8303,6 +8354,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           application/json:
             schema:
               $ref: '#/components/schemas/ResendActivationCodeRequest'
+  
   /devices/activate:
     post:
       operationId: deviceActivation
@@ -8369,6 +8421,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /devices/{id}/data-for-edit:
     get:
       operationId: getDeviceDataForEdit
@@ -8423,6 +8476,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /devices/{id}:
     put:
       operationId: updateDevice
@@ -8622,6 +8676,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           application/json:
             schema:
               $ref: '#/components/schemas/CreateDeviceConfirmation'
+  
   /device-confirmations/{id}:
     get:
       operationId: viewDeviceConfirmation
@@ -8728,6 +8783,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /device-confirmations/{id}/approve:
     post:
       operationId: approveDeviceConfirmation
@@ -8798,6 +8854,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           application/json:
             schema:
               $ref: '#/components/schemas/DeviceConfirmationActionParams'
+  
   /device-confirmations/{id}/reject:
     post:
       operationId: rejectDeviceConfirmation
@@ -8865,6 +8922,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           application/json:
             schema:
               $ref: '#/components/schemas/DeviceConfirmationActionParams'
+  
   /device-confirmations/{id}/qr-code:
     get:
       operationId: getDeviceConfirmationQrCode
@@ -8989,6 +9047,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /{owner}/accounts/{accountType}:
     get:
       operationId: getAccountStatusByOwnerAndType
@@ -9230,6 +9289,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /{owner}/accounts/{accountType}/data-for-history:
     get:
       operationId: getAccountHistoryDataByOwnerAndType
@@ -9291,6 +9351,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /{owner}/accounts/{accountType}/history:
     get:
       operationId: searchAccountHistory
@@ -9562,6 +9623,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /{owner}/accounts/{accountType}/balances-history:
     get:
       operationId: getAccountBalanceHistory
@@ -9656,6 +9718,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /accounts/data-for-user-balances:
     get:
       operationId: getUserBalancesData
@@ -9710,6 +9773,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /accounts/{accountType}/user-balances/summary:
     get:
       operationId: getUserBalancesSummary
@@ -10004,6 +10068,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /accounts/{accountType}/user-balances:
     get:
       operationId: searchUsersWithBalances
@@ -10391,6 +10456,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /transfers/{key}/chargeback:
     post:
       operationId: chargebackTransfer
@@ -10458,6 +10524,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/PaymentError'
+  
   /transfers/data-for-search:
     get:
       operationId: getTransferDataForSearch
@@ -10512,6 +10579,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /transfers:
     get:
       operationId: searchTransfers
@@ -10829,6 +10897,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /{owner}/transactions:
     get:
       operationId: searchTransactions
@@ -11132,6 +11201,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /transactions/{key}:
     get:
       operationId: viewTransaction
@@ -11261,6 +11331,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /{owner}/payments:
     post:
       operationId: performPayment
@@ -11312,6 +11383,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           application/json:
             schema:
               $ref: '#/components/schemas/PerformPayment'
+  
   /{owner}/payments/preview:
     post:
       operationId: previewPayment
@@ -11382,6 +11454,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           application/json:
             schema:
               $ref: '#/components/schemas/PerformPayment'
+  
   /{owner}/payments/installments:
     get:
       operationId: calculatePerformPaymentInstallments
@@ -11878,6 +11951,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /scheduled-payments/{key}/unblock:
     post:
       operationId: unblockScheduledPayment
@@ -11935,6 +12009,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /scheduled-payments/{key}/cancel:
     post:
       operationId: cancelScheduledPayment
@@ -11993,6 +12068,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /scheduled-payments/{key}/settle-remaining:
     post:
       operationId: settleScheduledPayment
@@ -12052,6 +12128,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /scheduled-payments/installments/{id}/process:
     post:
       operationId: processScheduledPaymentInstallment
@@ -12115,6 +12192,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /scheduled-payments/installments/{id}/settle:
     post:
       operationId: settleScheduledPaymentInstallment
@@ -12223,6 +12301,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /recurring-payments/occurrences/{id}/process-failed:
     post:
       operationId: processFailedRecurringPaymentOccurrence
@@ -12356,6 +12435,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /{owner}/payment-requests:
     post:
       operationId: sendPaymentRequest
@@ -12408,6 +12488,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           application/json:
             schema:
               $ref: '#/components/schemas/SendPaymentRequest'
+  
   /payment-requests/{key}/accept:
     post:
       operationId: acceptPaymentRequest
@@ -12471,6 +12552,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           application/json:
             schema:
               $ref: '#/components/schemas/AcceptOrReschedulePaymentRequest'
+  
   /payment-requests/{key}/reschedule:
     post:
       operationId: reschedulePaymentRequest
@@ -12533,6 +12615,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           application/json:
             schema:
               $ref: '#/components/schemas/AcceptOrReschedulePaymentRequest'
+  
   /payment-requests/{key}/preview:
     get:
       operationId: previewPaymentRequest
@@ -12602,6 +12685,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /payment-requests/{key}/change-expiration:
     post:
       operationId: changePaymentRequestExpirationDate
@@ -12648,6 +12732,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           application/json:
             schema:
               $ref: '#/components/schemas/ChangePaymentRequestExpirationDate'
+  
   /payment-requests/{key}/reject:
     post:
       operationId: rejectPaymentRequest
@@ -12713,6 +12798,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           application/json:
             schema:
               type: string
+  
   /payment-requests/{key}/cancel:
     post:
       operationId: cancelPaymentRequest
@@ -12831,6 +12917,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           application/json:
             schema:
               $ref: '#/components/schemas/PendingPaymentActionParams'
+  
   /pending-payments/{key}/deny:
     post:
       operationId: denyPendingPayment
@@ -12896,6 +12983,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           application/json:
             schema:
               $ref: '#/components/schemas/PendingPaymentActionParams'
+  
   /pending-payments/{key}/cancel:
     post:
       operationId: cancelPendingPayment
@@ -13030,6 +13118,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/PosError'
+  
   /pos:
     post:
       operationId: receivePayment
@@ -13078,6 +13167,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           application/json:
             schema:
               $ref: '#/components/schemas/PerformPayment'
+  
   /pos/preview:
     post:
       operationId: previewReceivePayment
@@ -13147,6 +13237,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           application/json:
             schema:
               $ref: '#/components/schemas/PerformPayment'
+  
   /pos/installments:
     get:
       operationId: calculateReceivePaymentInstallments
@@ -13263,6 +13354,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/PosError'
+  
   /pos/otp:
     post:
       operationId: receivePaymentOtp
@@ -13328,6 +13420,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           application/json:
             schema:
               $ref: '#/components/schemas/PerformPayment'
+  
   /pos/device-confirmations:
     post:
       operationId: receivePaymentCreateDeviceConfirmation
@@ -13715,6 +13808,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /clients/activate:
     post:
       operationId: activateClient
@@ -13787,6 +13881,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /clients/{key}:
     get:
       operationId: viewClient
@@ -13846,6 +13941,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /clients/{key}/unassign:
     post:
       operationId: unassignClient
@@ -13976,6 +14072,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /mobile/data-for-user:
     get:
       operationId: dataForMobileUser
@@ -14065,6 +14162,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /mobile/page/{id}:
     get:
       operationId: mobilePageContent
@@ -14467,6 +14565,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /{user}/vouchers:
     get:
       operationId: searchUserVouchers
@@ -14642,6 +14741,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /vouchers/{key}:
     get:
       operationId: viewVoucher
@@ -14703,6 +14803,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /vouchers/{key}/qr-code:
     get:
       operationId: getVoucherQrCode
@@ -14766,6 +14867,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /{user}/vouchers/types-for-buy:
     get:
       operationId: listVoucherTypesForBuy
@@ -14822,6 +14924,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /{user}/vouchers/data-for-buy:
     get:
       operationId: getVoucherDataForBuy
@@ -14882,6 +14985,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /{user}/vouchers/buy:
     post:
       operationId: buyVouchers
@@ -14948,6 +15052,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           application/json:
             schema:
               $ref: '#/components/schemas/BuyVoucher'
+  
   /{user}/vouchers/buy-with-status:
     post:
       operationId: buyVouchersWithStatus
@@ -15011,6 +15116,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           application/json:
             schema:
               $ref: '#/components/schemas/BuyVoucher'
+  
   /{user}/vouchers/data-for-redeem:
     get:
       operationId: getVoucherInitialDataForRedeem
@@ -15064,6 +15170,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /{user}/vouchers/{token}/data-for-redeem:
     get:
       operationId: getVoucherDataForRedeem
@@ -15124,6 +15231,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/RedeemVoucherError'
+  
   /{user}/vouchers/{token}/redeem:
     post:
       operationId: redeemVoucher
@@ -15263,6 +15371,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /tickets/{ticket}:
     get:
       operationId: viewTicket
@@ -15318,6 +15427,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /tickets:
     post:
       operationId: newTicket
@@ -15395,6 +15505,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           application/json:
             schema:
               $ref: '#/components/schemas/TicketNew'
+  
   /tickets/{ticket}/qr-code:
     get:
       operationId: getTicketQrCode
@@ -15463,6 +15574,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /tickets/{ticket}/preview:
     post:
       operationId: previewTicket
@@ -15534,6 +15646,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /tickets/{ticket}/cancel:
     post:
       operationId: cancelTicket
@@ -15589,6 +15702,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /tickets/{ticket}/approve:
     post:
       operationId: approveTicket
@@ -15633,6 +15747,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/PaymentError'
+  
   /tickets/{ticket}/process:
     post:
       operationId: processTicket
@@ -15745,6 +15860,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /{owner}/record-types/{type}:
     get:
       operationId: getRecordTypeByOwner
@@ -15806,6 +15922,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /{owner}/records/{type}/data-for-search:
     get:
       operationId: getRecordDataForOwnerSearch
@@ -15867,6 +15984,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /{owner}/records/{type}:
     get:
       operationId: searchOwnerRecords
@@ -16123,6 +16241,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           application/json:
             schema:
               $ref: '#/components/schemas/RecordNew'
+  
   /{owner}/records/{type}/data-for-new:
     get:
       operationId: getRecordDataForNew
@@ -16185,6 +16304,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /records/{id}/data-for-edit:
     get:
       operationId: getRecordDataForEdit
@@ -16239,6 +16359,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /records/{id}:
     get:
       operationId: viewRecord
@@ -16416,6 +16537,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /general-records/record-types:
     get:
       operationId: listRecordTypesForGeneralSearch
@@ -16472,6 +16594,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /general-records/{type}/data-for-search:
     get:
       operationId: getRecordDataForGeneralSearch
@@ -16533,6 +16656,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /general-records/{type}:
     get:
       operationId: searchGeneralRecords
@@ -16729,6 +16853,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /shared-records/data-for-search:
     get:
       operationId: getRecordDataForSharedSearch
@@ -16782,6 +16907,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /shared-records:
     get:
       operationId: searchSharedRecords
@@ -17640,10 +17766,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/RunOperationResult'
-            '*/*':
-              schema:
-                type: string
-                format: binary
         '401':
           description: >-
             Unauthorized access. Missing or invalid crendentials supplied for such
@@ -19446,6 +19568,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /marketplace:
     get:
       operationId: searchAds
@@ -19724,6 +19847,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /{user}/marketplace/data-for-search:
     get:
       operationId: getUserAdsDataForSearch
@@ -19781,6 +19905,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /{user}/marketplace/data-for-new:
     get:
       operationId: getAdDataForNew
@@ -19839,6 +19964,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /{user}/marketplace:
     get:
       operationId: searchUserAds
@@ -20159,6 +20285,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           application/json:
             schema:
               $ref: '#/components/schemas/AdNew'
+  
   /marketplace/{ad}/data-for-edit:
     get:
       operationId: getAdDataForEdit
@@ -20208,6 +20335,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /marketplace/{ad}:
     get:
       operationId: viewAd
@@ -20381,6 +20509,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /marketplace/{ad}/questions:
     post:
       operationId: createAdQuestion
@@ -21698,6 +21827,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /nfc/external-auth:
     post:
       operationId: nfcExternalAuth
@@ -21776,6 +21906,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           application/json:
             schema:
               $ref: '#/components/schemas/NfcExternalAuthenticateParameter'
+  
   /nfc/data-for-initialize:
     get:
       operationId: getNfcDataForInitialize
@@ -21830,6 +21961,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /nfc/initialize:
     post:
       operationId: initializeNfc
@@ -21908,6 +22040,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           application/json:
             schema:
               $ref: '#/components/schemas/NfcInitializeParameter'
+  
   /nfc/data-for-personalize:
     get:
       operationId: getNfcDataForPersonalize
@@ -21980,6 +22113,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /nfc/personalize:
     post:
       operationId: personalizeNfc
@@ -22061,6 +22195,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           application/json:
             schema:
               $ref: '#/components/schemas/NfcPersonalizeParameter'
+  
   /nfc/personalize/otp:
     post:
       operationId: getOtpForPersonalizeNfc
@@ -22701,6 +22836,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /validate/registration/{key}:
     post:
       operationId: validateUserRegistration
@@ -22820,6 +22956,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /localization/settings:
     post:
       operationId: saveLocalizationSettings

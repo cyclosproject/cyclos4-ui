@@ -7,6 +7,7 @@ import { ApiHelper } from 'app/shared/api-helper';
 import { ConditionalMenu, Menu } from 'app/shared/menu';
 import { trim } from 'lodash';
 import { OperationRunScope } from 'app/operations/operation-run-scope';
+import { OperationCallbackComponent } from 'app/operations/operation-callback.component';
 
 /**
  * A conditional menu resolver for content, which finds the content page by slug to resolve the correct menu
@@ -90,6 +91,13 @@ const operationRoutes: Routes = [
         data: {
           menu: Menu.RUN_MARKETPLACE_OPERATION,
           runScope: OperationRunScope.Ad
+        }
+      },
+      {
+        path: 'callback/:id/:token',
+        component: OperationCallbackComponent,
+        data: {
+          menu: Menu.RUN_OPERATION_BANKING
         }
       }
     ]

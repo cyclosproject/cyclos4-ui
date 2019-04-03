@@ -1,0 +1,9 @@
+<page-layout [ready]="data$ | async">
+
+  <page-content *ngIf="data$ | async" [heading]="data.title">
+    <alert [type]="alertType">
+      <div class="break-nl">{{ data.notification }}</div>
+    </alert>
+  </page-content>
+
+</page-layout>

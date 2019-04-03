@@ -109,7 +109,8 @@
       "withTotal": "Showing {first} - {last} of {total} results",
       "noTotal": "Showing {first} - {last} results",
       "none": "No results match the search criteria"
-    }
+    },
+    "redirecting": "You are being redirected..."
   },
   "error": {
     "general": "There was an unexpected error while processing your request",

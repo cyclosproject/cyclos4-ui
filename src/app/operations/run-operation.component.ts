@@ -18,7 +18,7 @@ import { empty, validateBeforeSubmit } from 'app/shared/helper';
 import { PageData } from 'app/shared/page-data';
 import { PagedResults } from 'app/shared/paged-results';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { first } from 'rxjs/operators';
+import { first, tap } from 'rxjs/operators';
 import { OperationRunScope } from 'app/operations/operation-run-scope';
 
 /**
@@ -38,6 +38,7 @@ export class RunOperationComponent
   form: FormGroup;
   result$ = new BehaviorSubject<RunOperationResult>(null);
   pageResults$ = new BehaviorSubject<PagedResults<any>>(null);
+  redirecting$ = new BehaviorSubject(false);
   pageData: PageData = { page: 0, pageSize: Configuration.defaultPageSize };
   formFields: CustomFieldDetailed[];
   isSearch: boolean;
@@ -224,8 +225,12 @@ export class RunOperationComponent
     // Append the query parameters
     this.nextRequestState.queryParams = route.queryParams;
 
-    // Perform the request
-    request.pipe(first()).subscribe(response => this.afterRun(response));
+    // Perform the request. If there's any error, clear the redirecting flag
+    request.pipe(first(), tap(r => r, () => this.redirecting$.next(false)))
+      .subscribe(response => this.afterRun(response));
+
+    // When an external redirect, set the redirecting flag, so a message is show to the user
+    this.redirecting$.next(data.resultType === OperationResultTypeEnum.EXTERNAL_REDIRECT);
   }
 
   private afterRun(response: HttpResponse<any>) {
@@ -235,7 +240,7 @@ export class RunOperationComponent
       return;
     }
 
-    // At this point, we need to handle either a result page or a content
+    // At this point the response is not a blob
     const result = response.body as RunOperationResult;
 
     // Store the result

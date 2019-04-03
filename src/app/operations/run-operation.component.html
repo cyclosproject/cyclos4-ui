@@ -45,12 +45,15 @@
       <div [innerHTML]="data.informationText | trust"></div>
     </alert>
     <ng-container *ngTemplateOutlet="theForm"></ng-container>
-    <actions>
+    <actions *ngIf="!(redirecting$ | async)">
       <button class="btn btn-primary" [disabled]="(requesting$ | async)"
         (click)="run()">
         {{ data.customSubmitLabel || messages.general.submit }}
       </button>
     </actions>
+    <div class="mt-3 text-right" *ngIf="redirecting$ | async">
+      {{ messages.general.redirecting }}
+    </div>
   </page-content>
 
   <page-content *ngIf="isContent && (result$ | async)"
