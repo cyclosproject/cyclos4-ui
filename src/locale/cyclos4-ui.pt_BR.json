@@ -109,7 +109,8 @@
       "withTotal": "Mostrando {first} - {last} de {total} resultados",
       "noTotal": "Mostrando {first} - {last} resultados",
       "none": "Nenhum resultado corresponde aos critérios de pesquisa"
-    }
+    },
+    "redirecting": "You are being redirected..."
   },
   "error": {
     "general": "Ocorreu um erro inesperado durante o processamento da sua solicitação",
