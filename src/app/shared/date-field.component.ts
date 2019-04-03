@@ -170,7 +170,7 @@ export class DateFieldComponent
   validate(c: AbstractControl): ValidationErrors {
     const errors: ValidationErrors = {};
     const value = c.value;
-    if (value === null || value === '') {
+    if (empty(value)) {
       // Don't validate empty values
       return null;
     } else if (value === undefined) {

@@ -2,6 +2,8 @@ import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/c
 import { AdCategoryWithParent, AdView } from 'app/api/models';
 import { MarketplaceService } from 'app/api/services';
 import { BasePageComponent } from 'app/shared/base-page.component';
+import { HeadingAction } from 'app/shared/action';
+import { OperationHelperService } from 'app/core/operation-helper.service';
 
 
 /**
@@ -17,6 +19,7 @@ export class ViewAdComponent extends BasePageComponent<AdView> implements OnInit
 
   constructor(
     injector: Injector,
+    private operationHelper: OperationHelperService,
     private marketplaceService: MarketplaceService) {
     super(injector);
   }
@@ -33,6 +36,15 @@ export class ViewAdComponent extends BasePageComponent<AdView> implements OnInit
       .subscribe(ad => {
         this.data = ad;
       });
+  }
+
+  onDataInitialized(ad: AdView) {
+    const headingActions: HeadingAction[] = [];
+    headingActions.push(this.printAction);
+    for (const operation of ad.operations || []) {
+      headingActions.push(this.operationHelper.headingAction(operation, ad.id));
+    }
+    this.headingActions = headingActions;
   }
 
   get categoryLabel(): string {
