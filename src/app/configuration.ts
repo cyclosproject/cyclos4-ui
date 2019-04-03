@@ -3,6 +3,7 @@ import { BannerCardsResolver } from 'app/content/banner-cards-resolver';
 import { ContentPagesResolver } from 'app/content/content-pages-resolver';
 import { ContentWithLayout } from 'app/content/content-with-layout';
 import { DashboardResolver } from 'app/content/dashboard-resolver';
+import { OperationConfiguration } from 'app/content/operation-configuration';
 
 /**
  * The global configuration
@@ -23,6 +24,9 @@ export interface ConfigurationDefinitions {
   /** Application title displayed on the sidenav menu small devices */
   appTitleMenu: string;
 
+  /** Whether to use a separated menu bar (true) or merge the menu and top bar (false) */
+  menuBar: boolean;
+
   /** Available page sizes for search results */
   searchPageSizes: number[];
 
@@ -35,8 +39,8 @@ export interface ConfigurationDefinitions {
   /** Custom configuration for ad categories, by category internal name */
   adCategories: { [internalName: string]: AdCategoryConfiguration };
 
-  /** Whether to use a separated menu bar (true) or merge the menu and top bar (false) */
-  menuBar: boolean;
+  /** Custom configuration for custom operations, by operation internal name */
+  operations: { [internalName: string]: OperationConfiguration };
 
   /**
    * Identifier for a static locale. A static locale is compiled into the generated

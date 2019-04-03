@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router, Params } from '@angular/router';
 import {
   NotificationLevelEnum, Operation, OperationDataForRun,
-  OperationResultTypeEnum, OperationScopeEnum, RunOperationResult
+  OperationResultTypeEnum, OperationScopeEnum, RunOperationResult, RunOperation
 } from 'app/api/models';
 import { OperationsService } from 'app/api/services';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
@@ -14,6 +14,8 @@ import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { BreadcrumbService } from 'app/core/breadcrumb.service';
 import { HeadingAction } from 'app/shared/action';
+import { PageData } from 'app/shared/page-data';
+import { Configuration } from 'app/configuration';
 
 /**
  * Types which can run actions directly without going to the run page
@@ -79,43 +81,12 @@ export class OperationHelperService {
       return;
     }
     if (this.canRunDirectly(operation)) {
-      const asDownload = operation.resultType === OperationResultTypeEnum.FILE_DOWNLOAD;
       // Run the operation right now
-      let request: Observable<HttpResponse<any>>;
-      const params: any = {
-        operation: operation.id,
-        body: { formParameters: formParameters }
-      };
-      switch (operation.scope) {
-        case OperationScopeEnum.USER:
-          params.owner = scopeId || loggedUser.id;
-          request = asDownload
-            ? this.operationsService.runOwnerOperation$Any$Response(params)
-            : this.operationsService.runOwnerOperation$Json$Response(params);
-          break;
-        case OperationScopeEnum.SYSTEM:
-        case OperationScopeEnum.INTERNAL:
-        case OperationScopeEnum.MENU:
-          request = asDownload
-            ? this.operationsService.runOperation$Any$Response(params)
-            : this.operationsService.runOperation$Json$Response(params);
-          break;
-        case OperationScopeEnum.ADVERTISEMENT:
-          params.ad = scopeId;
-          request = asDownload
-            ? this.operationsService.runAdOperation$Any$Response(params)
-            : this.operationsService.runAdOperation$Json$Response(params);
-          break;
-        case OperationScopeEnum.TRANSFER:
-          params.key = scopeId;
-          request = asDownload
-            ? this.operationsService.runTransferOperation$Any$Response(params)
-            : this.operationsService.runTransferOperation$Json$Response(params);
-          break;
-      }
-      if (request) {
-        request.pipe(first()).subscribe(response => this.handleResult(response));
-      }
+      this.runRequest(operation, {
+        scopeId: scopeId,
+        formParameters: formParameters
+      }).pipe(first())
+        .subscribe(response => this.handleResult(response));
     } else {
       // Go to the run page
       const parts = ['operations'];
@@ -146,6 +117,71 @@ export class OperationHelperService {
   }
 
   /**
+   * Returns the request to run the given custom operation
+   */
+  runRequest(operation: Operation, options: {
+    scopeId?: string,
+    confirmationPassword?: string,
+    formParameters?: { [key: string]: string },
+    pageData?: PageData,
+    upload?: Blob
+  }): Observable<HttpResponse<any>> {
+
+    // The request body (RunOperation)
+    const run: RunOperation = {};
+    run.formParameters = options.formParameters;
+    run.confirmationPassword = options.confirmationPassword;
+    if (options.pageData) {
+      run.page = options.pageData.page;
+      run.pageSize = options.pageData.pageSize;
+    }
+
+    // If asDownload, request the blob version
+    const asDownload = operation.resultType === OperationResultTypeEnum.FILE_DOWNLOAD;
+
+    // The parameters (still needs the owner parameter)
+    const params: any = {
+      operation: operation.id,
+      body: {
+        params: run,
+        file: options.upload
+      }
+    };
+
+    const scopeId = options.scopeId;
+
+    switch (operation.scope) {
+      case OperationScopeEnum.USER:
+        // Over a user
+        params.owner = scopeId || ApiHelper.SELF;
+        return asDownload
+          ? this.operationsService.runOwnerOperationWithUpload$Any$Response(params)
+          : this.operationsService.runOwnerOperationWithUpload$Json$Response(params);
+
+      case OperationScopeEnum.ADVERTISEMENT:
+        // Over an advertisement
+        params.ad = scopeId;
+        return asDownload
+          ? this.operationsService.runAdOperationWithUpload$Any$Response(params)
+          : this.operationsService.runAdOperationWithUpload$Json$Response(params);
+        break;
+
+      case OperationScopeEnum.TRANSFER:
+        // Over a transfer
+        params.key = scopeId;
+        return asDownload
+          ? this.operationsService.runTransferOperationWithUpload$Any$Response(params)
+          : this.operationsService.runTransferOperationWithUpload$Json$Response(params);
+
+      default:
+        // No additional context (system, internal action, ...)
+        return asDownload
+          ? this.operationsService.runOperationWithUpload$Any$Response(params)
+          : this.operationsService.runOperationWithUpload$Json$Response(params);
+    }
+  }
+
+  /**
    * Can the given action be executed directly from another page, without going to the run operation page?
    * @param operation The operation
    * @param onlyTypesThatCanRunOnHostPage If true (the default) will only return true if the operation can be
@@ -172,10 +208,19 @@ export class OperationHelperService {
   }
 
   /**
+   * Returns the icon name that should be used for the given operation
+   */
+  icon(operation: Operation): string {
+    const config = (Configuration.operations || {})[operation.internalName || '#'];
+    const customIcon = (config || {}).icon;
+    return customIcon || 'chevron_right';
+  }
+
+  /**
    * Returns a heading action suitable to run the given custom operation
    */
   headingAction(operation: Operation, scopeId: string, formParameters?: { [key: string]: string }): HeadingAction {
-    return new HeadingAction('chevron_right', operation.label, () => this.run(operation, scopeId, formParameters));
+    return new HeadingAction(this.icon(operation), operation.label, () => this.run(operation, scopeId, formParameters));
   }
 
   /**

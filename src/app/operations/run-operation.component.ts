@@ -4,7 +4,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Params } from '@angular/router';
 import {
   CustomFieldDetailed, OperationDataForRun, OperationResultTypeEnum,
-  OperationRowActionEnum, RunOperation, RunOperationResult
+  OperationRowActionEnum, RunOperationResult
 } from 'app/api/models';
 import { OperationsService } from 'app/api/services/operations.service';
 import { Configuration } from 'app/configuration';
@@ -35,6 +35,7 @@ export class RunOperationComponent
 
   /** The scope is only set when not running over own user */
   runScope: OperationRunScope;
+  scopeId: string;
   form: FormGroup;
   fileControl: FormControl;
   result$ = new BehaviorSubject<RunOperationResult>(null);
@@ -80,19 +81,19 @@ export class RunOperationComponent
     switch (this.runScope) {
       case OperationRunScope.User:
         // Either another user or the logged user
-        params.owner = route.params.user || this.login.user.id;
+        this.scopeId = params.owner = route.params.user || this.login.user.id;
         request = this.operationsService.getOwnerOperationDataForRun(params);
         break;
 
       case OperationRunScope.Ad:
         // An advertisement
-        params.ad = route.params.ad;
+        this.scopeId = params.ad = route.params.ad;
         request = this.operationsService.getAdOperationDataForRun(params);
         break;
 
       case OperationRunScope.Transfer:
         // A transfer
-        params.key = route.params.transfer;
+        this.scopeId = params.key = route.params.transfer;
         request = this.operationsService.getTransferOperationDataForRun(params);
         break;
 
@@ -114,9 +115,7 @@ export class RunOperationComponent
     this.isContent = [OperationResultTypeEnum.PLAIN_TEXT, OperationResultTypeEnum.RICH_TEXT].includes(data.resultType);
     const formFields = data.formParameters || [];
     this.form = this.fieldsHelper.customValuesFormGroup(formFields);
-    if (data.hasFileUpload) {
-      this.fileControl = this.formBuilder.control(null);
-    }
+    this.fileControl = this.formBuilder.control(null);
     this.runDirectly = this.operationHelper.canRunDirectly(data, false);
 
     if (formFields.length > 0) {
@@ -186,68 +185,17 @@ export class RunOperationComponent
   }
 
   private doRun(data: OperationDataForRun, confirmationPassword: string) {
-    const route = this.route.snapshot;
-
-    // The request body (RunOperation)
-    const run: RunOperation = {};
-    run.formParameters = this.form.value;
-    run.confirmationPassword = confirmationPassword;
-    if (this.pageData) {
-      run.page = this.pageData.page;
-      run.pageSize = this.pageData.pageSize;
-    }
-
-    // If asDownload, request the blob version
-    const asDownload = data.resultType === OperationResultTypeEnum.FILE_DOWNLOAD;
-    const upload = this.fileControl.value as File;
-
-    // The parameters (still needs the owner parameter)
-    const params: any = {
-      operation: data.id,
-      body: {
-        params: run,
-        file: upload
-      }
-    };
-    if (upload) {
-      // Will use the upload variant
-    }
-
-    let request: Observable<HttpResponse<any>>;
-    switch (this.runScope) {
-      case OperationRunScope.User:
-        // A user (maybe also the logged user)
-        params.owner = route.params.user || ApiHelper.SELF;
-        request = asDownload
-          ? this.operationsService.runOwnerOperationWithUpload$Any$Response(params)
-          : this.operationsService.runOwnerOperationWithUpload$Json$Response(params);
-        break;
-
-      case OperationRunScope.Ad:
-        // An advertisement
-        params.ad = route.paramMap.get('ad');
-        request = asDownload
-          ? this.operationsService.runAdOperationWithUpload$Any$Response(params)
-          : this.operationsService.runAdOperationWithUpload$Json$Response(params);
-        break;
-
-      case OperationRunScope.Transfer:
-        // A transfer
-        params.key = route.paramMap.get('transfer');
-        request = asDownload
-          ? this.operationsService.runTransferOperationWithUpload$Any$Response(params)
-          : this.operationsService.runTransferOperationWithUpload$Json$Response(params);
-        break;
-
-      default:
-        // Standalone (system or internal action)
-        request = asDownload
-          ? this.operationsService.runOperationWithUpload$Any$Response(params)
-          : this.operationsService.runOperationWithUpload$Json$Response(params);
-        break;
-    }
+    // Get the request from OperationHelperService
+    const request = this.operationHelper.runRequest(this.data, {
+      scopeId: this.scopeId,
+      confirmationPassword: confirmationPassword,
+      formParameters: this.form.value,
+      pageData: this.pageData,
+      upload: this.fileControl.value
+    });
 
     // Append the query parameters
+    const route = this.route.snapshot;
     this.nextRequestState.queryParams = route.queryParams;
 
     // Perform the request. If there's any error, clear the redirecting flag

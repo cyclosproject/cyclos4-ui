@@ -33,7 +33,8 @@ As of version 1.0, this frontend implements the following functionality:
 - Edit own profile (images, basic / custom fields, phones, addresses and additional contact information);
 - Public user registration;
 - Search advertisements, advertisement details (no shopping cart so far);
-- Access notifications, and receive push notifications.
+- Access notifications, and receive push notifications;
+- Run custom operations (self, advertisements and transfers).
 
 More functionality will be added in future versions.
 
@@ -250,7 +251,39 @@ export function setup() {
 }
 ```
 
-It is also possible to customize the advertisements category icons and colors, which are shown when selecting the marketplace menu item. It is recommended that all the oot advertisement categories in Cyclos have an internal name. The default settings in the frontend matches the categories created by default when creating a network in Cyclos via the wizard. Here is an example of the `src/app/setup.ts` file with the default settings:
+### Customize the advertisement categories
+
+It is possible to customize the advertisements category icons and colors, which are shown when selecting the marketplace menu item. It is recommended that all the oot advertisement categories in Cyclos have an internal name. The default settings in the frontend matches the categories created by default when creating a network in Cyclos via the wizard. Here is an example of the `src/app/setup.ts` file with the default settings:
+
+```typescript
+export function setup() {
+  // The key is the ad category internal name, the value defines the icon and color
+  Configuration.adCategories = {
+    'community': { icon: 'people', color: '#2196f3' },
+    'food': { icon: 'restaurant', color: '#f04d4e' },
+    'goods': { icon: 'pages', color: '#ff9700' },
+    'housing': { icon: 'location_city', color: '#029487' },
+    'jobs': { icon: 'work', color: '#8062b3' },
+    'labor': { icon: 'business', color: '#de3eaa' },
+    'leisure': { icon: 'mood', color: '#687ebd' },
+    'services': { icon: 'room_service', color: '#8ec63f' }
+  };
+}
+```
+
+### Customize the custom operations
+
+Similarly to advertisement categories, it is also possible to set a custom icon for custom operations, by internal name. Here is an example of the `src/app/setup.ts`:
+
+```typescript
+export function setup() {
+  // The key is the custom operation internal name, the value defines the icon
+  Configuration.operations = {
+    operation1: { icon: 'format_paint' },
+    operation2: { icon: 'get_app' }
+  };
+}
+```
 
 ```typescript
 export function setup() {

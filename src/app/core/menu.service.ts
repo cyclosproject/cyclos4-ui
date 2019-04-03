@@ -14,6 +14,7 @@ import { LayoutService } from 'app/shared/layout.service';
 import { ActiveMenu, ConditionalMenu, Menu, MenuEntry, MenuType, RootMenu, RootMenuEntry, SideMenuEntries } from 'app/shared/menu';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { filter, first, map } from 'rxjs/operators';
+import { OperationHelperService } from 'app/core/operation-helper.service';
 
 /**
  * Parameters accepted by the `navigate` method
@@ -59,6 +60,7 @@ export class MenuService {
     private breadcrumb: BreadcrumbService,
     private stateManager: StateManager,
     private content: ContentService,
+    private operationHelper: OperationHelperService,
     layout: LayoutService
   ) {
     const initialDataForUi = this.dataForUiHolder.dataForUi;
@@ -479,7 +481,6 @@ export class MenuService {
       if (restrictedAccess) {
         return;
       }
-      let ops: Operation[];
       let opMenu: Menu;
       switch (root) {
         case RootMenu.BANKING:
@@ -496,19 +497,17 @@ export class MenuService {
           return;
       }
 
-      // First add the system operations
-      ops = systemOperations.filter(o => ApiHelper.adminMenuMatches(root, o.adminMenu));
-      for (const op of ops) {
-        const activeMenu = new ActiveMenu(opMenu, { operation: op });
-        add(activeMenu, `/operations/system/${ApiHelper.internalNameOrId(op)}`, 'chevron_right', op.label);
-      }
+      const doAddOperations = (path: string, ops: Operation[]) => {
+        for (const op of ops) {
+          const activeMenu = new ActiveMenu(opMenu, { operation: op });
+          const icon = this.operationHelper.icon(op);
+          add(activeMenu, `/operations/${path}/${ApiHelper.internalNameOrId(op)}`, icon, op.label);
+        }
+      };
 
-      // Then add the user operations
-      ops = userOperations.filter(o => ApiHelper.userMenuMatches(root, o.userMenu));
-      for (const op of ops) {
-        const activeMenu = new ActiveMenu(opMenu, { operation: op });
-        add(activeMenu, `/operations/self/${ApiHelper.internalNameOrId(op)}`, 'chevron_right', op.label);
-      }
+      // Add both system and self operations
+      doAddOperations('system', systemOperations.filter(o => ApiHelper.adminMenuMatches(root, o.adminMenu)));
+      doAddOperations('self', userOperations.filter(o => ApiHelper.userMenuMatches(root, o.userMenu)));
     };
 
     // Add the submenus
