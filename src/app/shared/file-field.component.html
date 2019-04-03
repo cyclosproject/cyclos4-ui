@@ -1,0 +1,21 @@
+<label-value *ngIf="label; else widget" [formField]="self">
+  <ng-container *ngTemplateOutlet="widget"></ng-container>
+</label-value>
+
+<ng-template #widget>
+  <input #inputField class="d-none" type="file"
+    (change)="filesSelected(inputField.files)" [accept]="accept"
+    [multiple]="maxFiles > 1">
+  <div class="d-flex flex-wrap">
+    <button *ngIf="!disabled"
+      class="btn btn-light btn-icon d-flex align-content-center flex-grow-0 mr-3"
+      [tooltip]="messages.field.file.upload" (click)="inputField.click()">
+      <icon icon="cloud_upload"></icon>
+    </button>
+    <div *ngFor="let file of files"
+      class="flex-grow-0 mr-3 d-flex align-items-center">
+      {{ file.name }} ({{ format.formatFileSize(file.size) }})
+    </div>
+  </div>
+  <field-errors [control]="formControl"></field-errors>
+</ng-template>

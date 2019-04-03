@@ -100,6 +100,7 @@ export module Menu {
   export const RUN_OPERATION_PERSONAL = new Menu(RootMenu.PERSONAL, 'RUN_OPERATION_PERSONAL');
   export const RUN_USER_OPERATION = new Menu(RootMenu.MARKETPLACE, 'RUN_USER_OPERATION');
   export const RUN_MARKETPLACE_OPERATION = new Menu(RootMenu.MARKETPLACE, 'RUN_MARKETPLACE_OPERATION');
+  export const RUN_TRANSFER_OPERATION = new Menu(RootMenu.BANKING, 'RUN_TRANSFER_OPERATION');
   export const RUN_ACTION_OPERATION = new Menu(RootMenu.BANKING, 'RUN_ACTION_OPERATION');
 
   // Content (one per root menu)

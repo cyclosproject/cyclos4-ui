@@ -17,7 +17,6 @@ import { ChipComponent } from 'app/shared/chip.component';
 import { ConfirmationPasswordComponent } from 'app/shared/confirmation-password.component';
 import { ConfirmationComponent } from 'app/shared/confirmation.component';
 import { ContentMonitorComponent } from 'app/shared/content-monitor.component';
-import { ShowContentComponent } from 'app/shared/show-content.component';
 import { CurrencyPipe } from 'app/shared/currency.pipe';
 import { CustomFieldFilterComponent } from 'app/shared/custom-field-filter.component';
 import { CustomFieldInputComponent } from 'app/shared/custom-field-input.component';
@@ -30,10 +29,11 @@ import { ExtraCellDirective } from 'app/shared/extra-cell.directive';
 import { FieldErrorsComponent } from 'app/shared/field-errors.component';
 import { FieldOptionDirective } from 'app/shared/field-option.directive';
 import { FieldPrivacyComponent } from 'app/shared/field-privacy.component';
-import { FileUploadComponent } from 'app/shared/file-upload.component';
+import { FileFieldComponent } from 'app/shared/file-field.component';
 import { FilesFieldComponent } from 'app/shared/files-field.component';
 import { FocusedDirective } from 'app/shared/focused.directive';
 import { FormatFieldValueComponent } from 'app/shared/format-field-value.component';
+import { IconWithCounterComponent } from 'app/shared/icon-with-counter.component';
 import { IconComponent } from 'app/shared/icon.component';
 import { ImageUploadComponent } from 'app/shared/image-upload.component';
 import { ImagesFieldComponent } from 'app/shared/images-field.component';
@@ -60,10 +60,12 @@ import { ResultTableDirective } from 'app/shared/result-table.directive';
 import { ResultTileDirective } from 'app/shared/result-tile.directive';
 import { ResultTypeFieldComponent } from 'app/shared/result-type-field.component';
 import { ResultsLayoutComponent } from 'app/shared/results-layout.component';
+import { ShowContentComponent } from 'app/shared/show-content.component';
 import { SideMenuComponent } from 'app/shared/side-menu.component';
 import { SingleSelectionFieldComponent } from 'app/shared/single-selection-field.component';
 import { SpinnerComponent } from 'app/shared/spinner.component';
 import { StaticMapComponent } from 'app/shared/static-map.component';
+import { TempFileUploadComponent } from 'app/shared/temp-file-upload.component';
 import { TextAreaFieldComponent } from 'app/shared/textarea-field.component';
 import { TimePipe } from 'app/shared/time.pipe';
 import { TrustPipe } from 'app/shared/trust.pipe';
@@ -77,7 +79,6 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { SortableModule } from 'ngx-bootstrap/sortable';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
-import { IconWithCounterComponent } from 'app/shared/icon-with-counter.component';
 
 
 
@@ -141,8 +142,9 @@ export function initTooltipConfig(): TooltipConfig {
     ImagesFieldComponent,
     ImageUploadComponent,
     ManageImagesComponent,
+    FileFieldComponent,
     FilesFieldComponent,
-    FileUploadComponent,
+    TempFileUploadComponent,
     ManageFilesComponent,
     ResultTypeFieldComponent,
     AddressDetailsComponent,
@@ -241,8 +243,9 @@ export function initTooltipConfig(): TooltipConfig {
     ImagesFieldComponent,
     ImageUploadComponent,
     ManageImagesComponent,
+    FileFieldComponent,
     FilesFieldComponent,
-    FileUploadComponent,
+    TempFileUploadComponent,
     ManageFilesComponent,
     ResultTypeFieldComponent,
     AddressDetailsComponent,

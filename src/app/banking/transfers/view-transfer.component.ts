@@ -5,6 +5,7 @@ import { BankingHelperService } from 'app/core/banking-helper.service';
 import { HeadingAction } from 'app/shared/action';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { empty } from 'app/shared/helper';
+import { OperationHelperService } from 'app/core/operation-helper.service';
 
 
 /**
@@ -22,7 +23,8 @@ export class ViewTransferComponent extends BasePageComponent<TransferView> imple
   constructor(
     injector: Injector,
     private bankingHelper: BankingHelperService,
-    private transfersService: TransfersService) {
+    private transfersService: TransfersService,
+    private operationHelper: OperationHelperService) {
     super(injector);
   }
 
@@ -53,6 +55,9 @@ export class ViewTransferComponent extends BasePageComponent<TransferView> imple
       actions.push(new HeadingAction('undo', this.messages.transaction.chargebackTransfer, () => {
         this.chargeback();
       }));
+    }
+    for (const operation of transfer.operations || []) {
+      actions.push(this.operationHelper.headingAction(operation, transfer.id));
     }
     return actions;
   }

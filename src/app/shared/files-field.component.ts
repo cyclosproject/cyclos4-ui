@@ -14,7 +14,7 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 import { take } from 'rxjs/operators';
 
 /**
- * Renders a widget for a field that allows uploading files
+ * Renders for uploading temporary files, which will be used in a custom field value of type file
  */
 @Component({
   selector: 'files-field',

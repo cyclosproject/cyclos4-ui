@@ -12,6 +12,7 @@ import { TransactionStatusService } from 'app/core/transaction-status.service';
 import { HeadingAction } from 'app/shared/action';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { empty } from 'app/shared/helper';
+import { OperationHelperService } from 'app/core/operation-helper.service';
 
 /**
  * Displays a transaction details
@@ -35,7 +36,8 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
     private pendingPaymentsService: PendingPaymentsService,
     private scheduledPaymentsService: ScheduledPaymentsService,
     private recurringPaymentsService: RecurringPaymentsService,
-    private transfersService: TransfersService
+    private transfersService: TransfersService,
+    private operationHelper: OperationHelperService
   ) {
     super(injector);
   }
@@ -128,6 +130,11 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
         this.chargeback();
       }));
     }
+
+    for (const operation of (transaction.transfer || {}).operations || []) {
+      actions.push(this.operationHelper.headingAction(operation, transaction.transfer.id));
+    }
+
     return actions;
   }
 

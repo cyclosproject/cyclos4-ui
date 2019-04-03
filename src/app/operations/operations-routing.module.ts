@@ -39,6 +39,9 @@ const OperationMenu: ConditionalMenu = injector => {
     case 'marketplace':
       // An operation over an advertisement
       return Menu.RUN_MARKETPLACE_OPERATION;
+    case 'transfer':
+      // An operation over a transfer
+      return Menu.RUN_TRANSFER_OPERATION;
   }
   // Invalid URL
   return null;
@@ -91,6 +94,15 @@ const operationRoutes: Routes = [
         data: {
           menu: Menu.RUN_MARKETPLACE_OPERATION,
           runScope: OperationRunScope.Ad
+        }
+      },
+      {
+        path: 'transfer/:transfer/:operation',
+        component: RunOperationComponent,
+        canActivate: [LoggedUserGuard],
+        data: {
+          menu: Menu.RUN_TRANSFER_OPERATION,
+          runScope: OperationRunScope.Transfer
         }
       },
       {

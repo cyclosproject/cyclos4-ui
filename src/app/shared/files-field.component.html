@@ -15,8 +15,9 @@
         messages.field.file.noFile}}
       </ng-container>
       <div class="text-truncate" *ngFor="let file of files; let last = last;">
-        <a [href]="appendAuth(file.url)" [type]="file.contentType" target="_blank"
-          (click)="downloadFile($event, file)" [download]="file.name">{{
+        <a [href]="appendAuth(file.url)" [type]="file.contentType"
+          target="_blank" (click)="downloadFile($event, file)"
+          [download]="file.name">{{
           file.name
           }}</a>{{
         last ? '' : ','
@@ -24,22 +25,26 @@
       </div>
     </div>
     <div class="d-flex ml-xs-2">
-      <button *ngIf="maxFiles === 1 || files.length < maxFiles" class="btn btn-light btn-icon d-flex align-content-center"
+      <button *ngIf="maxFiles === 1 || files.length < maxFiles"
+        class="btn btn-light btn-icon d-flex align-content-center"
         [tooltip]="messages.field.file.upload" (click)="fileUpload.perform()">
         <icon icon="cloud_upload"></icon>
       </button>
-      <button *ngIf="maxFiles > 1" class="ml-2 btn btn-light btn-icon d-flex align-content-center"
+      <button *ngIf="maxFiles > 1"
+        class="ml-2 btn btn-light btn-icon d-flex align-content-center"
         [tooltip]="messages.field.file.manage" (click)="manageFiles()">
         <icon icon="edit"></icon>
       </button>
-      <button *ngIf="maxFiles === 1 && files.length > 0" class="ml-2 btn btn-light btn-icon d-flex align-content-center"
+      <button *ngIf="maxFiles === 1 && files.length > 0"
+        class="ml-2 btn btn-light btn-icon d-flex align-content-center"
         [tooltip]="messages.field.file.remove" (click)="removeAllFiles()">
         <icon icon="delete"></icon>
       </button>
     </div>
   </div>
-  <file-upload #fileUpload containerClass="mt-3" [max]="maxFiles == 1 ? 1 : maxFiles - files.length"
+  <temp-file-upload #fileUpload containerClass="mt-3"
+    [max]="maxFiles == 1 ? 1 : maxFiles - files.length"
     [customField]="customField" (uploadDone)="onFilesUploaded($event)"
-    [mimeTypes]="mimeTypes"></file-upload>
+    [mimeTypes]="mimeTypes"></temp-file-upload>
   <field-errors [control]="formControl"></field-errors>
 </ng-template>

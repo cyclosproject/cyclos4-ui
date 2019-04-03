@@ -7,6 +7,7 @@ import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
 import { LoginService } from 'app/core/login.service';
 import { BehaviorSubject, forkJoin, Observable, Subscription } from 'rxjs';
+import { empty } from 'app/shared/helper';
 
 /**
  * Represents a file being uploaded
@@ -49,11 +50,11 @@ export class FileToUpload {
  * Component used to upload temporary files
  */
 @Component({
-  selector: 'file-upload',
-  templateUrl: 'file-upload.component.html',
+  selector: 'temp-file-upload',
+  templateUrl: 'temp-file-upload.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FileUploadComponent {
+export class TempFileUploadComponent {
 
   uploading$ = new BehaviorSubject(false);
 
@@ -66,8 +67,13 @@ export class FileUploadComponent {
   /**
    * The allowed mime types to be uploaded
    */
-  @Input() mimeTypes: string[] = ['*/*'];
-
+  accept: string;
+  @Input() get mimeTypes(): string[] {
+    return (this.accept || '').split(',').map(a => a.trim());
+  }
+  set mimeTypes(mimeTypes: string[]) {
+    this.accept = empty(mimeTypes) ? null : mimeTypes.join();
+  }
 
   constructor(
     private http: HttpClient,

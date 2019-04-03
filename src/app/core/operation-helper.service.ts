@@ -106,6 +106,12 @@ export class OperationHelperService {
             ? this.operationsService.runAdOperation$Any$Response(params)
             : this.operationsService.runAdOperation$Json$Response(params);
           break;
+        case OperationScopeEnum.TRANSFER:
+          params.key = scopeId;
+          request = asDownload
+            ? this.operationsService.runTransferOperation$Any$Response(params)
+            : this.operationsService.runTransferOperation$Json$Response(params);
+          break;
       }
       if (request) {
         request.pipe(first()).subscribe(response => this.handleResult(response));
