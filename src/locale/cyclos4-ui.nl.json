@@ -109,8 +109,7 @@
       "withTotal": "Zoekresultaten {first} - {last} van {total}",
       "noTotal": "Het tonen van {first} - {last} resultaten",
       "none": "Geen resultaten overeenkomen met de zoekcriteria"
-    },
-    "redirecting": "You are being redirected..."
+    }
   },
   "error": {
     "general": "Er is een onverwachte fout opgetreden bij het verwerken van uw verzoek",
@@ -620,5 +619,9 @@
       "removeAll": "Remove all",
       "markAllRead": "Mark all as read"
     }
+  },
+  "operation": {
+    "fileUpload": "File upload",
+    "redirecting": "You are being redirected..."
   }
 }
