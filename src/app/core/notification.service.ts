@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CustomFieldDetailed, PasswordInput, NotificationsStatus, Notification } from 'app/api/models';
+import { CustomFieldDetailed, PasswordInput, NotificationsStatus } from 'app/api/models';
 import { SnackBarProvider, SnackBarOptions } from 'app/core/snack-bar-provider';
 import { FieldLabelPosition } from 'app/shared/base-form-field.component';
 import { ConfirmationComponent } from 'app/shared/confirmation.component';
@@ -12,6 +12,7 @@ import { NotificationsService } from 'app/api/services';
 import { first } from 'rxjs/operators';
 import { NextRequestState } from 'app/core/next-request-state';
 import { PushNotificationProvider } from 'app/core/push-notification-provider';
+import { PushNotificationsService } from 'app/core/push-notifications.service';
 
 /**
  * Reference to a notification
@@ -81,6 +82,7 @@ export class NotificationService {
   constructor(
     private modal: BsModalService,
     nextRequestState: NextRequestState,
+    pushNotifications: PushNotificationsService,
     notificationsService: NotificationsService,
     dataForUiHolder: DataForUiHolder
   ) {
@@ -90,7 +92,7 @@ export class NotificationService {
         this.currentNotification = null;
       }
     });
-    // Subscript for user changes: update the notification status
+    // Subscribe for user changes: update the notification status
     dataForUiHolder.subscribe(dataForUi => {
       const auth = (dataForUi ? dataForUi.auth : null) || {};
       if (auth.user && ((auth.permissions || {}).notifications || {}).enable) {
@@ -103,6 +105,12 @@ export class NotificationService {
         this.notificationsStatus$.next(null);
       }
     });
+
+    // Subscribe for notification pushes
+    pushNotifications.newNotifications$.subscribe(event => {
+      this.notificationsStatus$.next(event);
+      this._pushNotificationProvider.show(event.notification);
+    });
   }
 
   /**
@@ -110,14 +118,6 @@ export class NotificationService {
    */
   snackBar(message: string, options?: SnackBarOptions): void {
     this._snackBarProvider.show(message, options);
-  }
-
-  /**
-   * Shows a Cyclos notification that was pushed to the client
-   * @param notification The incoming notification
-   */
-  newNotificationPush(notification: Notification): void {
-    this._pushNotificationProvider.show(notification);
   }
 
   /**

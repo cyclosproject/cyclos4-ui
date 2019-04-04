@@ -52,7 +52,7 @@ export class BalanceHistoryChartDirective implements OnInit {
         },
         tooltips: {
           callbacks: {
-            label: n => this.format.formatAsCurrency(currency, amounts[n.index])
+            label: n => 'aaa' + this.format.formatAsCurrency(currency, amounts[n.index])
           },
           displayColors: false
         },

@@ -5,7 +5,7 @@ import {
 import { FormArray, FormGroup } from '@angular/forms';
 import { Address, CustomFieldDetailed, GroupForRegistration, Image, UserDataForNew, UserNew } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
-import { blank, empty } from 'app/shared/helper';
+import { blank, empty, focus } from 'app/shared/helper';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { InputFieldComponent } from 'app/shared/input-field.component';
 import { RegistrationAgreementsComponent } from 'app/login/registration-agreements.component';
@@ -68,7 +68,7 @@ export class RegistrationStepConfirmComponent
 
   ngAfterViewChecked() {
     if (this.focusSecurityAnswer) {
-      this.securityAnswer.forEach(f => this.focusDelayed(f));
+      this.securityAnswer.forEach(f => focus(f));
       this.focusSecurityAnswer = false;
     }
   }

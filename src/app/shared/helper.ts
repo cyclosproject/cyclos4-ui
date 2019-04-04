@@ -489,3 +489,12 @@ export function downloadResponse(response: HttpResponse<Blob>) {
   const blob = response.body;
   download(blob, filename);
 }
+
+/**
+ * Sets the focus on the given control, but only on the desktop
+ */
+export function focus(control: any) {
+  if (control && control.focus && document.body.classList.contains('gt-sm')) {
+    setTimeout(() => control.focus(), 100);
+  }
+}

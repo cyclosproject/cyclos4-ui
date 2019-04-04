@@ -109,10 +109,10 @@
   <hr>
   <form [formGroup]="form">
     <confirmation-password focused formControlName="confirmationPassword"
-      [passwordInput]="preview.confirmationPasswordInput">
-      {{
-      messages.auth.password.confirmationMessage(preview.confirmationPasswordInput.name)
-      }}
+      [passwordInput]="preview.confirmationPasswordInput"
+      [createDeviceConfirmation]="createDeviceConfirmation"
+      (modeChanged)="confirmationMode.emit($event)"
+      (confirmedWithDevice)="confirmedWithDevice.emit($event)">
     </confirmation-password>
   </form>
 </ng-container>

@@ -10,6 +10,9 @@ import { empty, isSameOrigin } from 'app/shared/helper';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { Configuration } from 'app/configuration';
+import { PushNotificationsService } from 'app/core/push-notifications.service';
+import { NotificationService } from 'app/core/notification.service';
+import { Messages } from 'app/messages/messages';
 
 /**
  * Service used to manage the login status
@@ -28,11 +31,37 @@ export class LoginService {
     private authService: AuthService,
     private loginState: LoginState,
     private router: Router,
+    private messages: Messages,
+    private notification: NotificationService,
+    private pushNotifications: PushNotificationsService,
     private apiConfiguration: ApiConfiguration) {
+
+    // Whenever the data for ui changes, update the current status
     dataForUiHolder.subscribe(dataForUi => {
       const auth = (dataForUi || {}).auth;
+      const user = (auth || {}).user;
       this.auth$.next(auth);
-      this.user$.next((auth || {}).user);
+      this.user$.next(user);
+      if (user) {
+        this.pushNotifications.open();
+      } else {
+        this.pushNotifications.close();
+      }
+    });
+
+    // Whenever the user is logged out, clear the status
+    pushNotifications.loggedOut$.subscribe(() => {
+      this.clear();
+      this.nextRequestState.setSessionToken(null);
+      // Also ask the user if he/she wants to login again
+      this.notification.confirm({
+        title: this.messages.general.sessionExpired.title,
+        message: this.messages.general.sessionExpired.message,
+        confirmLabel: this.messages.general.sessionExpired.loginAgain,
+        callback: () => {
+          this.goToLoginPage(this.router.url);
+        }
+      });
     });
   }
 

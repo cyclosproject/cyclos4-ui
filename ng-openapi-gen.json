@@ -4,6 +4,7 @@
   "output": "src/app/api",
   "includeTags": [
     "Auth",
+    "DeviceConfirmations",
     "Notifications",
     "Passwords",
     "Agreements",

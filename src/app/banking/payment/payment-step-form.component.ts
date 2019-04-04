@@ -10,7 +10,7 @@ import { ErrorStatus } from 'app/core/error-status';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseComponent } from 'app/shared/base.component';
 import { DecimalFieldComponent } from 'app/shared/decimal-field.component';
-import { blank, empty } from 'app/shared/helper';
+import { blank, empty, focus } from 'app/shared/helper';
 import { UserFieldComponent } from 'app/shared/user-field.component';
 import { BehaviorSubject } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
@@ -235,7 +235,7 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
     }
     if (typeData) {
       this.dataCache.set(typeData.id, typeData);
-      this.focusDelayed(this.amountField);
+      focus(this.amountField);
     }
     this.paymentTypeData$.next(typeData);
   }

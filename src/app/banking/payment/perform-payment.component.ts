@@ -1,6 +1,10 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
-import { AccountWithCurrency, AvailabilityEnum, Currency, CustomFieldDetailed, DataForTransaction, PaymentPreview, PaymentSchedulingEnum, PerformPayment, Transaction, TransactionAuthorizationStatusEnum, TransactionTypeData, TransferType } from 'app/api/models';
+import {
+  AccountWithCurrency, AvailabilityEnum, Currency, CustomFieldDetailed,
+  DataForTransaction, PaymentPreview, PaymentSchedulingEnum, PerformPayment,
+  Transaction, TransactionAuthorizationStatusEnum, TransactionTypeData, TransferType
+} from 'app/api/models';
 import { PaymentsService } from 'app/api/services';
 import { AuthHelperService } from 'app/core/auth-helper.service';
 import { BankingHelperService } from 'app/core/banking-helper.service';
@@ -11,6 +15,7 @@ import { clearValidatorsAndErrors, empty, locateControl, scrollTop, validateBefo
 import { Menu } from 'app/shared/menu';
 import { cloneDeep, isEqual } from 'lodash';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { ConfirmationMode } from 'app/shared/confirmation-mode';
 
 export type PaymentStep = 'form' | 'confirm' | 'done';
 
@@ -77,6 +82,8 @@ const FIRST_OCCURRENCE_DATE_VAL: ValidatorFn = control => {
 })
 export class PerformPaymentComponent extends BasePageComponent<DataForTransaction> implements OnInit {
 
+  ConfirmationMode = ConfirmationMode;
+
   steps: PaymentStep[] = ['form', 'confirm', 'done'];
   step$ = new BehaviorSubject<PaymentStep>(null);
   form: FormGroup;
@@ -93,6 +100,7 @@ export class PerformPaymentComponent extends BasePageComponent<DataForTransactio
   lastPaymentTypeData: TransactionTypeData;
   lastValue: any;
   customValuesControls = new Map<string, FormControl>();
+  confirmationMode$ = new BehaviorSubject<ConfirmationMode>(null);
 
   get step(): PaymentStep {
     return this.step$.value;
@@ -306,7 +314,10 @@ export class PerformPaymentComponent extends BasePageComponent<DataForTransactio
     }));
   }
 
-  perform() {
+  perform(confirmationPassword?: string) {
+    if (confirmationPassword) {
+      this.confirmationPassword.setValue(confirmationPassword);
+    }
     if (!validateBeforeSubmit(this.confirmationPassword)) {
       return;
     }

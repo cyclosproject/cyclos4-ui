@@ -80,12 +80,6 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
     this.unsubscribe(false);
   }
 
-  focusDelayed(control: any) {
-    if (control.focus) {
-      setTimeout(() => control.focus(), 100);
-    }
-  }
-
   protected unsubscribe(lifeCycle = true) {
     if (lifeCycle) {
       this.lifecycleSubs.forEach(sub => sub.unsubscribe());

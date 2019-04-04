@@ -1,20 +1,19 @@
 import { ChangeDetectionStrategy, Component, NgZone, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { DataForUi } from 'app/api/models';
+import { Configuration } from 'app/configuration';
 import { BannerService } from 'app/core/banner.service';
+import { BreadcrumbService } from 'app/core/breadcrumb.service';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { LoginService } from 'app/core/login.service';
 import { MenuService } from 'app/core/menu.service';
-import { PushNotificationsService } from 'app/core/push-notifications.service';
 import { SidenavComponent } from 'app/core/sidenav.component';
+import { StateManager } from 'app/core/state-manager';
 import { Messages } from 'app/messages/messages';
 import { blank, setRootSpinnerVisible } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
 import { trim } from 'lodash';
 import { BehaviorSubject } from 'rxjs';
-import { DataForUi } from 'app/api/models';
-import { StateManager } from 'app/core/state-manager';
-import { BreadcrumbService } from 'app/core/breadcrumb.service';
-import { Configuration } from 'app/configuration';
 
 @Component({
   selector: 'app-root',
@@ -42,11 +41,7 @@ export class AppComponent implements OnInit {
     private banner: BannerService,
     public messages: Messages,
     private stateManager: StateManager,
-    private breadcrumb: BreadcrumbService,
-    // PushNotificationsService is here because it is not directly used by any
-    // other component / service, but handles itself the push notifications.
-    // It would otherwise be removed from the built app by tree-shaking.
-    private push: PushNotificationsService,
+    private breadcrumb: BreadcrumbService
   ) {
   }
 
@@ -60,7 +55,6 @@ export class AppComponent implements OnInit {
       });
     };
     this.menuBar = Configuration.menuBar;
-    this.push.initialize();
     this.banner.initialize();
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.layout.setTitle();

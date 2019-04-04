@@ -1,9 +1,11 @@
-import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injector, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { PaymentPreview, TransferFeePreview } from 'app/api/models';
+import { PaymentPreview, TransferFeePreview, CreateDeviceConfirmation, DeviceConfirmationTypeEnum } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
 import { empty } from 'app/shared/helper';
 import { BankingHelperService } from 'app/core/banking-helper.service';
+import { ConfirmationMode } from 'app/shared/confirmation-mode';
+import { ApiHelper } from 'app/shared/api-helper';
 
 
 /**
@@ -19,9 +21,14 @@ export class PaymentStepConfirmComponent extends BaseComponent implements OnInit
   @Input() preview: PaymentPreview;
   @Input() confirmationPassword: FormControl;
   @Input() showPaymentType: boolean;
+  @Output() confirmationMode = new EventEmitter<ConfirmationMode>();
+  @Output() confirmedWithDevice = new EventEmitter<string>();
+
   fees: TransferFeePreview[];
 
   form: FormGroup;
+
+  createDeviceConfirmation: () => CreateDeviceConfirmation;
 
   constructor(injector: Injector,
     public bankingHelper: BankingHelperService) {
@@ -37,6 +44,15 @@ export class PaymentStepConfirmComponent extends BaseComponent implements OnInit
       // Show the preview of the single installment instead
       this.fees = this.preview.installments[0].fees;
     }
+    this.createDeviceConfirmation = () => {
+      return {
+        type: DeviceConfirmationTypeEnum.PERFORM_PAYMENT,
+        from: ApiHelper.accountOwner(this.preview.fromAccount),
+        to: ApiHelper.accountOwner(this.preview.toAccount),
+        paymentType: this.preview.paymentType.id,
+        amount: this.preview.payment.amount
+      };
+    };
   }
 
 }

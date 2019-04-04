@@ -1,6 +1,6 @@
 import {
   AdminMenuEnum, Entity, Notification, NotificationEntityTypeEnum,
-  Operation, OperationScopeEnum, UserMenuEnum
+  Operation, OperationScopeEnum, UserMenuEnum, AccountWithOwner
 } from 'app/api/models';
 import { empty } from 'app/shared/helper';
 import { Menu, RootMenu } from 'app/shared/menu';
@@ -32,6 +32,17 @@ export class ApiHelper {
   static internalNameOrId(entity: Entity): string {
     if (entity) {
       return entity['internalName'] || entity.id;
+    }
+    return null;
+  }
+
+  /**
+   * Returns the account owner identifier: either the user id or `system`
+   */
+  static accountOwner(account: AccountWithOwner): string {
+    if (account) {
+      const user = account.user;
+      return user ? user.id : ApiHelper.SYSTEM;
     }
     return null;
   }

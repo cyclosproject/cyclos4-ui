@@ -1,11 +1,25 @@
-import { ChangeDetectionStrategy, Component, Host, Input, OnChanges, OnInit, Optional, SkipSelf, ViewChild } from '@angular/core';
-import { AbstractControl, ControlContainer, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator } from '@angular/forms';
-import { PasswordInput, PasswordModeEnum } from 'app/api/models';
+import {
+  ChangeDetectionStrategy, Component, EventEmitter, Host, Input,
+  OnChanges, OnInit, Optional, Output, SkipSelf, ViewChild, OnDestroy
+} from '@angular/core';
+import {
+  AbstractControl, ControlContainer, FormControl,
+  NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator
+} from '@angular/forms';
+import {
+  CreateDeviceConfirmation, PasswordInput, PasswordModeEnum,
+  ImageSizeEnum, DeviceConfirmationView, DeviceConfirmationStatusEnum
+} from 'app/api/models';
 import { AuthHelperService } from 'app/core/auth-helper.service';
+import { Messages } from 'app/messages/messages';
 import { BaseControlComponent } from 'app/shared/base-control.component';
+import { ConfirmationMode } from 'app/shared/confirmation-mode';
 import { empty } from 'app/shared/helper';
 import { PasswordInputComponent } from 'app/shared/password-input.component';
-import { Subscription } from 'rxjs';
+import { Subscription, BehaviorSubject } from 'rxjs';
+import { DeviceConfirmationsService } from 'app/api/services';
+import { first } from 'rxjs/operators';
+import { PushNotificationsService } from 'app/core/push-notifications.service';
 
 /**
  * Component used to input a password to confirm an action
@@ -20,20 +34,35 @@ import { Subscription } from 'rxjs';
     { provide: NG_VALIDATORS, useExisting: ConfirmationPasswordComponent, multi: true }
   ]
 })
-export class ConfirmationPasswordComponent extends BaseControlComponent<string> implements OnInit, OnChanges, Validator {
+export class ConfirmationPasswordComponent extends BaseControlComponent<string> implements OnInit, OnDestroy, OnChanges, Validator {
+
+  ConfirmationMode = ConfirmationMode;
 
   @Input() passwordInput: PasswordInput;
+  @Input() createDeviceConfirmation: () => CreateDeviceConfirmation;
+  @Output() modeChanged = new EventEmitter<ConfirmationMode>();
+  @Output() confirmedWithDevice = new EventEmitter<string>();
 
   canConfirm: boolean;
+  allowDevice: boolean;
+  allowPassword: boolean;
   confirmationMessage: string;
   otpRenewable: boolean;
+  confirmationModeControl: FormControl;
+  deviceConfirmationId: string;
 
   @ViewChild('passwordComponent') private passwordComponent: PasswordInputComponent;
 
   private otpSubscription: Subscription;
 
+  currentUrl$ = new BehaviorSubject<string>(null);
+  rejected$ = new BehaviorSubject(false);
+
   constructor(
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
+    private deviceConfirmationsService: DeviceConfirmationsService,
+    public messages: Messages,
+    private pushNotifications: PushNotificationsService,
     private authHelper: AuthHelperService
   ) {
     super(controlContainer);
@@ -42,7 +71,33 @@ export class ConfirmationPasswordComponent extends BaseControlComponent<string> 
   ngOnInit() {
     super.ngOnInit();
     this.canConfirm = this.authHelper.canConfirm(this.passwordInput);
+    this.allowDevice = this.authHelper.canConfirmWithDevice(this.passwordInput);
+    this.allowPassword = this.authHelper.canConfirmWithPassword(this.passwordInput);
     this.confirmationMessage = this.authHelper.getConfirmationMessage(this.passwordInput);
+    this.confirmationModeControl = new FormControl(null);
+    this.addSub(this.confirmationModeControl.valueChanges.subscribe(mode => {
+      if (!this.deviceConfirmationId) {
+        this.newQR();
+      }
+      this.modeChanged.emit(mode);
+    }));
+
+    this.addSub(this.pushNotifications.deviceConfirmations$.subscribe(c =>
+      this.onDeviceConfirmation(c)));
+
+    // Set the initial value for the confirmation mode
+    setTimeout(() => {
+      if (this.allowDevice) {
+        this.confirmationModeControl.setValue(ConfirmationMode.Device);
+      } else if (this.allowPassword) {
+        this.confirmationModeControl.setValue(ConfirmationMode.Password);
+      }
+    }, 1);
+  }
+
+  ngOnDestroy() {
+    super.ngOnDestroy();
+    this.revokeCurrent();
   }
 
   ngOnChanges() {
@@ -80,5 +135,45 @@ export class ConfirmationPasswordComponent extends BaseControlComponent<string> 
 
   focus() {
     this.passwordComponent.focus();
+  }
+
+  newQR() {
+    this.rejected$.next(false);
+    this.deviceConfirmationsService.createDeviceConfirmation({
+      body: this.createDeviceConfirmation()
+    }).pipe(first())
+      .subscribe(id => {
+        this.deviceConfirmationId = id;
+        this.deviceConfirmationsService.getDeviceConfirmationQrCode({ id: id, size: ImageSizeEnum.MEDIUM }).subscribe(blob => {
+          this.revokeCurrent();
+          this.currentUrl$.next(URL.createObjectURL(blob));
+        });
+      });
+  }
+
+  private revokeCurrent() {
+    const url = this.currentUrl$.value;
+    if (url) {
+      URL.revokeObjectURL(url);
+      this.currentUrl$.next(null);
+    }
+  }
+
+  private onDeviceConfirmation(confirmation: DeviceConfirmationView) {
+    if ((confirmation || {}).id !== this.deviceConfirmationId) {
+      // Some other confirmation - ignore it
+      return;
+    }
+    switch (confirmation.status) {
+      case DeviceConfirmationStatusEnum.APPROVED:
+        // Notify that the confirmation is approved
+        this.confirmedWithDevice.emit(`confirmation:${confirmation.id}`);
+        break;
+      case DeviceConfirmationStatusEnum.REJECTED:
+        // Invalidate the current confirmation
+        this.deviceConfirmationId = null;
+        this.rejected$.next(true);
+        break;
+    }
   }
 }
