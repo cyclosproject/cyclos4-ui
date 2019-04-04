@@ -511,8 +511,8 @@
     "address.remove": "Eliminar esta dirección",
     "address.none": "Actualmente no hay ninguna dirección definida",
     "phone.add": "Agregar teléfono",
-    "phone.add.mobile": "Add mobile phone",
-    "phone.add.landLine": "Add land-line phone",
+    "phone.add.mobile": "Agregar teléfono móvil",
+    "phone.add.landLine": "Agregar teléfono de línea fija",
     "phone.remove": "Eliminar teléfono",
     "phone.none": "No hay teléfonos registrados",
     "contactInfo": "Información de contacto adicional",
@@ -616,12 +616,12 @@
     "onlyUnread": "Solo los pendientes",
     "actions": {
       "remove": "Eliminar esta notificación",
-      "removeAll": "Remove all",
+      "removeAll": "Eliminar todo",
       "markAllRead": "Marcar todo como leído"
     }
   },
   "operation": {
-    "fileUpload": "File upload",
-    "redirecting": "You are being redirected..."
+    "fileUpload": "Cargar archivo",
+    "redirecting": "Esta siendo redirigido..."
   }
 }
