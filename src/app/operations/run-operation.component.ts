@@ -193,7 +193,7 @@ export class RunOperationComponent
 
   private doRun(data: OperationDataForRun, confirmationPassword: string) {
     // Get the request from OperationHelperService
-    const request = this.operationHelper.runRequest(this.data, {
+    const request = this.operationHelper.runRequest(data, {
       scopeId: this.scopeId,
       confirmationPassword: confirmationPassword,
       formParameters: this.form.value,

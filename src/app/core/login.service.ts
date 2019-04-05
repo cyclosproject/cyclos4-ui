@@ -51,6 +51,10 @@ export class LoginService {
 
     // Whenever the user is logged out, clear the status
     pushNotifications.loggedOut$.subscribe(() => {
+      if (this._loggingOut.value) {
+        // In the middle of a logout
+        return;
+      }
       this.clear();
       this.nextRequestState.setSessionToken(null);
       // Also ask the user if he/she wants to login again
