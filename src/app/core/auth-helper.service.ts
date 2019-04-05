@@ -129,12 +129,8 @@ export class AuthHelperService {
     }
 
     // At this point, the confirmation is with password only
-    if (passwordUsable && !otp) {
-      // The 'normal' case is that the user has an active password. In that case, show no additional message.
-      // However, for OTP it is possible to request a new password, so we do show a message in this case.
-      return null;
-    }
     if (otp) {
+      // The messages for OTP are distinct
       if (!hasOtpSendMediums) {
         return this.messages.auth.password.confirmOtpNoMediums;
       } else if (passwordInput.hasActiveDevice) {
@@ -143,7 +139,12 @@ export class AuthHelperService {
         return this.messages.auth.password.confirmOtpRequest;
       }
     } else {
-      return this.messages.auth.password.confirmNoPassword(passwordInput.name);
+      // A regular password
+      if (passwordUsable) {
+        return this.messages.auth.password.confirmationMessage(passwordInput.name);
+      } else {
+        return this.messages.auth.password.confirmNoPassword(passwordInput.name);
+      }
     }
   }
 

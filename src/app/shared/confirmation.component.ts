@@ -1,15 +1,16 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CustomFieldDetailed, PasswordInput } from 'app/api/models';
+import { CustomFieldDetailed, PasswordInput, CreateDeviceConfirmation } from 'app/api/models';
 import { AuthHelperService } from 'app/core/auth-helper.service';
 import { FieldHelperService } from 'app/core/field-helper.service';
 import { NextRequestState } from 'app/core/next-request-state';
 import { ConfirmCallbackParams } from 'app/core/notification.service';
+import { Messages } from 'app/messages/messages';
 import { FieldLabelPosition } from 'app/shared/base-form-field.component';
+import { ConfirmationMode } from 'app/shared/confirmation-mode';
 import { blank, empty, validateBeforeSubmit } from 'app/shared/helper';
 import { BsModalRef } from 'ngx-bootstrap/modal';
-import { Observable } from 'rxjs';
-import { Messages } from 'app/messages/messages';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 /**
  * Component shown in a dialog, to present a confirmation message, optionally with a confirmation password
@@ -21,12 +22,16 @@ import { Messages } from 'app/messages/messages';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ConfirmationComponent implements OnInit {
+
+  ConfirmationMode = ConfirmationMode;
+
   @Input() title: string;
   @Input() message: string;
   @Input() cancelLabel: string;
   @Input() confirmLabel: string;
   @Input() customFields: CustomFieldDetailed[];
   @Input() labelPosition: FieldLabelPosition;
+  @Input() createDeviceConfirmation: () => CreateDeviceConfirmation;
   @Input() callback: (params: ConfirmCallbackParams) => void;
   @Input() passwordInput: PasswordInput;
 
@@ -34,6 +39,7 @@ export class ConfirmationComponent implements OnInit {
   hasFields = false;
   hasForm = false;
   requesting$: Observable<boolean>;
+  confirmationMode$ = new BehaviorSubject<ConfirmationMode>(null);
   canConfirm: boolean;
 
   constructor(
@@ -67,7 +73,7 @@ export class ConfirmationComponent implements OnInit {
     }
   }
 
-  confirm() {
+  confirm(confirmationPassword?: string) {
     let value: ConfirmCallbackParams;
     if (this.hasForm) {
       if (!validateBeforeSubmit(this.form)) {
@@ -77,6 +83,10 @@ export class ConfirmationComponent implements OnInit {
     } else {
       // There's no input
       value = {};
+    }
+    if (confirmationPassword) {
+      // When we got a confirmation password, set it
+      value.confirmationPassword = confirmationPassword;
     }
     this.callback(value);
     this.modalRef.hide();

@@ -1,18 +1,20 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
-  CustomFieldDetailed, CustomFieldTypeEnum, RecurringPaymentOccurrenceStatusEnum,
-  RecurringPaymentOccurrenceView, ScheduledPaymentInstallmentStatusEnum,
-  ScheduledPaymentInstallmentView, TransactionKind, TransactionView
+  AuthorizationActionEnum, CreateDeviceConfirmation, CustomFieldDetailed,
+  CustomFieldTypeEnum, DeviceConfirmationTypeEnum, RecurringPaymentActionEnum,
+  RecurringPaymentOccurrenceStatusEnum, RecurringPaymentOccurrenceView,
+  ScheduledPaymentActionEnum, ScheduledPaymentInstallmentStatusEnum,
+  ScheduledPaymentInstallmentView, TransactionKind, TransactionView, InstallmentActionEnum
 } from 'app/api/models';
 import { TransactionsService, TransfersService } from 'app/api/services';
 import { PendingPaymentsService } from 'app/api/services/pending-payments.service';
 import { RecurringPaymentsService } from 'app/api/services/recurring-payments.service';
 import { ScheduledPaymentsService } from 'app/api/services/scheduled-payments.service';
+import { OperationHelperService } from 'app/core/operation-helper.service';
 import { TransactionStatusService } from 'app/core/transaction-status.service';
 import { HeadingAction } from 'app/shared/action';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { empty } from 'app/shared/helper';
-import { OperationHelperService } from 'app/core/operation-helper.service';
 
 /**
  * Displays a transaction details
@@ -146,12 +148,21 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
     }];
   }
 
+  private authDeviceConfirmation(action: AuthorizationActionEnum): () => CreateDeviceConfirmation {
+    return () => ({
+      type: DeviceConfirmationTypeEnum.MANAGE_AUTHORIZATION,
+      transaction: this.transaction.id,
+      authorizationAction: action
+    });
+  }
+
   private authorize() {
     this.notification.confirm({
       title: this.messages.transaction.authorizePending,
       labelPosition: 'above',
       customFields: this.authorizationFields,
       passwordInput: this.transaction.confirmationPasswordInput,
+      createDeviceConfirmation: this.authDeviceConfirmation(AuthorizationActionEnum.AUTHORIZE),
       callback: res => {
         this.pendingPaymentsService.authorizePendingPayment({
           key: this.transaction.id,
@@ -176,6 +187,7 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
       title: this.messages.transaction.denyPending,
       labelPosition: 'above',
       customFields: this.authorizationFields,
+      createDeviceConfirmation: this.authDeviceConfirmation(AuthorizationActionEnum.DENY),
       passwordInput: this.transaction.confirmationPasswordInput,
       callback: res => {
         this.pendingPaymentsService.denyPendingPayment({
@@ -197,6 +209,7 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
       title: this.messages.transaction.cancelAuthorization,
       labelPosition: 'above',
       customFields: this.authorizationFields,
+      createDeviceConfirmation: this.authDeviceConfirmation(AuthorizationActionEnum.CANCEL),
       passwordInput: this.transaction.confirmationPasswordInput,
       callback: res => {
         this.pendingPaymentsService.cancelPendingPayment({
@@ -213,10 +226,19 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
     });
   }
 
+  private schedDeviceConfirmation(action: ScheduledPaymentActionEnum): () => CreateDeviceConfirmation {
+    return () => ({
+      type: DeviceConfirmationTypeEnum.MANAGE_SCHEDULED_PAYMENT,
+      transaction: this.transaction.id,
+      scheduledPaymentAction: action
+    });
+  }
+
   private blockScheduled() {
     this.notification.confirm({
       title: this.messages.transaction.blockScheduling,
       message: this.messages.transaction.blockSchedulingMessage,
+      createDeviceConfirmation: this.schedDeviceConfirmation(ScheduledPaymentActionEnum.BLOCK),
       passwordInput: this.transaction.confirmationPasswordInput,
       callback: res => {
         this.scheduledPaymentsService.blockScheduledPayment({
@@ -234,6 +256,7 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
     this.notification.confirm({
       title: this.messages.transaction.unblockScheduling,
       message: this.messages.transaction.unblockSchedulingMessage,
+      createDeviceConfirmation: this.schedDeviceConfirmation(ScheduledPaymentActionEnum.UNBLOCK),
       passwordInput: this.transaction.confirmationPasswordInput,
       callback: res => {
         this.scheduledPaymentsService.unblockScheduledPayment({
@@ -251,6 +274,7 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
     this.notification.confirm({
       title: this.messages.transaction.cancelScheduled,
       message: this.messages.transaction.cancelScheduledMessage,
+      createDeviceConfirmation: this.schedDeviceConfirmation(ScheduledPaymentActionEnum.CANCEL),
       passwordInput: this.transaction.confirmationPasswordInput,
       callback: res => {
         this.scheduledPaymentsService.cancelScheduledPayment({
@@ -268,6 +292,7 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
     this.notification.confirm({
       title: this.messages.transaction.settleScheduled,
       message: this.messages.transaction.settleScheduledMessage,
+      createDeviceConfirmation: this.schedDeviceConfirmation(ScheduledPaymentActionEnum.SETTLE),
       passwordInput: this.transaction.confirmationPasswordInput,
       callback: res => {
         this.scheduledPaymentsService.settleScheduledPayment({
@@ -281,10 +306,19 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
     });
   }
 
+  private recurrDeviceConfirmation(action: RecurringPaymentActionEnum): () => CreateDeviceConfirmation {
+    return () => ({
+      type: DeviceConfirmationTypeEnum.MANAGE_RECURRING_PAYMENT,
+      transaction: this.transaction.id,
+      recurringPaymentAction: action
+    });
+  }
+
   private cancelRecurring() {
     this.notification.confirm({
       title: this.messages.transaction.cancelRecurring,
       message: this.messages.transaction.cancelRecurringMessage,
+      createDeviceConfirmation: this.recurrDeviceConfirmation(RecurringPaymentActionEnum.CANCEL),
       passwordInput: this.transaction.confirmationPasswordInput,
       callback: res => {
         this.recurringPaymentsService.cancelRecurringPayment({
@@ -298,10 +332,18 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
     });
   }
 
+  private chargebackDeviceConfirmation(): () => CreateDeviceConfirmation {
+    return () => ({
+      type: DeviceConfirmationTypeEnum.CHARGEBACK,
+      transfer: this.transaction.transfer.id
+    });
+  }
+
   private chargeback() {
     this.notification.confirm({
       title: this.messages.transaction.chargebackTransfer,
       message: this.messages.transaction.chargebackTransferMessage,
+      createDeviceConfirmation: this.chargebackDeviceConfirmation(),
       passwordInput: this.transaction.confirmationPasswordInput,
       callback: res => {
         this.transfersService.chargebackTransfer({
@@ -349,10 +391,23 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
     }
   }
 
+
+  private installmentDeviceConfirmation(
+    action: InstallmentActionEnum,
+    installment: ScheduledPaymentInstallmentView): () => CreateDeviceConfirmation {
+
+    return () => ({
+      type: DeviceConfirmationTypeEnum.MANAGE_INSTALLMENT,
+      transaction: installment.id,
+      installmentAction: action
+    });
+  }
+
   settleInstallment(installment: ScheduledPaymentInstallmentView) {
     this.notification.confirm({
       title: this.messages.transaction.settleInstallment,
       message: this.messages.transaction.settleInstallmentMessage(String(installment.number)),
+      createDeviceConfirmation: this.installmentDeviceConfirmation(InstallmentActionEnum.SETTLE, installment),
       passwordInput: this.transaction.confirmationPasswordInput,
       callback: res => {
         this.scheduledPaymentsService.settleScheduledPaymentInstallment({
@@ -370,6 +425,7 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
     this.notification.confirm({
       title: this.messages.transaction.processInstallment,
       message: this.messages.transaction.processInstallmentMessage(installment.number),
+      createDeviceConfirmation: this.installmentDeviceConfirmation(InstallmentActionEnum.PROCESS, installment),
       passwordInput: this.transaction.confirmationPasswordInput,
       callback: res => {
         this.scheduledPaymentsService.processScheduledPaymentInstallment({
@@ -377,23 +433,6 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
           confirmationPassword: res.confirmationPassword
         }).subscribe(() => {
           this.notification.snackBar(this.messages.transaction.processInstallmentDone);
-          this.reload();
-        });
-      }
-    });
-  }
-
-  processOcurrence(occurrence: RecurringPaymentOccurrenceView) {
-    this.notification.confirm({
-      title: this.messages.transaction.processFailedOccurrence,
-      message: this.messages.transaction.processFailedOccurrenceMessage(String(occurrence.number)),
-      passwordInput: this.transaction.confirmationPasswordInput,
-      callback: res => {
-        this.recurringPaymentsService.processFailedRecurringPaymentOccurrence({
-          id: occurrence.id,
-          confirmationPassword: res.confirmationPassword
-        }).subscribe(() => {
-          this.notification.snackBar(this.messages.transaction.processFailedOccurrenceDone);
           this.reload();
         });
       }

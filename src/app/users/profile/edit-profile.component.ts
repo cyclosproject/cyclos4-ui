@@ -3,7 +3,7 @@ import { AbstractControl, FormArray, FormControl, FormGroup, Validators } from '
 import {
   AddressManage, AvailabilityEnum, ContactInfoManage, CustomField,
   CustomFieldDetailed, DataForEditFullProfile, FullProfileEdit, Image,
-  PhoneEditWithId, PhoneKind, PhoneManage
+  PhoneEditWithId, PhoneKind, PhoneManage, CreateDeviceConfirmation, DeviceConfirmationTypeEnum
 } from 'app/api/models';
 import { ImagesService, PhonesService, UsersService } from 'app/api/services';
 import { AddressHelperService } from 'app/core/address-helper.service';
@@ -20,6 +20,7 @@ import { cloneDeep } from 'lodash';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BehaviorSubject } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { ConfirmationMode } from 'app/shared/confirmation-mode';
 
 const IMAGE_MANAGED_TIMEOUT = 6_000;
 
@@ -40,6 +41,9 @@ export class EditProfileComponent
   extends BasePageComponent<DataForEditFullProfile>
   implements OnInit, OnDestroy {
 
+  ConfirmationMode = ConfirmationMode;
+  createDeviceConfirmation: () => CreateDeviceConfirmation;
+
   key: string;
 
   ready$ = new BehaviorSubject(false);
@@ -48,6 +52,8 @@ export class EditProfileComponent
   managePrivacyFields: Set<string>;
   userCustomFields: Map<string, CustomFieldDetailed>;
   canConfirm: boolean;
+
+  confirmationMode$ = new BehaviorSubject<ConfirmationMode>(null);
 
   // Forms which will be submitted. Need to keep track in order to match the validation errors
   user: FormGroup;
@@ -103,6 +109,10 @@ export class EditProfileComponent
   ngOnInit() {
     super.ngOnInit();
     this.key = ApiHelper.SELF;
+
+    this.createDeviceConfirmation = () => ({
+      type: DeviceConfirmationTypeEnum.EDIT_PROFILE
+    });
 
     this.headingActions = [
       new HeadingAction('search', this.messages.general.view, () => {
@@ -213,7 +223,7 @@ export class EditProfileComponent
     return max == null || max <= 0 ? 'disabled' : max === 1 ? 'single' : 'multiple';
   }
 
-  save() {
+  save(confirmationPassword?: string) {
     const fullForm = new FormGroup({
       user: this.user,
       createLandLinePhones: new FormArray(this.createLandLinePhones),
@@ -225,16 +235,12 @@ export class EditProfileComponent
       createContactInfos: new FormArray(this.createContactInfos),
       modifyContactInfos: new FormArray(this.modifyContactInfos)
     });
-    if (this.confirmationPassword) {
+    if (!confirmationPassword && this.confirmationPassword) {
       fullForm.setControl('confirmationPassword', this.confirmationPassword);
+      confirmationPassword = this.confirmationPassword.value;
     }
     if (!validateBeforeSubmit(fullForm)) {
       return;
-    }
-
-    let confirmationPassword = '';
-    if (this.confirmationPassword) {
-      confirmationPassword = this.confirmationPassword.value;
     }
 
     this.usersService.saveUserFullProfile({
@@ -844,4 +850,5 @@ export class EditProfileComponent
       this.changeDetector.detectChanges();
     }));
   }
+
 }

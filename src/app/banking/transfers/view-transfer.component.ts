@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { TransferView } from 'app/api/models';
+import { TransferView, CreateDeviceConfirmation, DeviceConfirmationTypeEnum } from 'app/api/models';
 import { TransfersService } from 'app/api/services';
 import { BankingHelperService } from 'app/core/banking-helper.service';
 import { HeadingAction } from 'app/shared/action';
@@ -62,10 +62,19 @@ export class ViewTransferComponent extends BasePageComponent<TransferView> imple
     return actions;
   }
 
+
+  private chargebackDeviceConfirmation(): () => CreateDeviceConfirmation {
+    return () => ({
+      type: DeviceConfirmationTypeEnum.CHARGEBACK,
+      transfer: this.transfer.id
+    });
+  }
+
   private chargeback() {
     this.notification.confirm({
       title: this.messages.transaction.chargebackTransfer,
       message: this.messages.transaction.chargebackTransferMessage,
+      createDeviceConfirmation: this.chargebackDeviceConfirmation(),
       passwordInput: this.transfer.confirmationPasswordInput,
       callback: res => {
         this.transfersService.chargebackTransfer({

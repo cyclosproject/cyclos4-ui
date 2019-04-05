@@ -21,7 +21,7 @@ export class PaymentStepConfirmComponent extends BaseComponent implements OnInit
   @Input() preview: PaymentPreview;
   @Input() confirmationPassword: FormControl;
   @Input() showPaymentType: boolean;
-  @Output() confirmationMode = new EventEmitter<ConfirmationMode>();
+  @Output() confirmationModeChanged = new EventEmitter<ConfirmationMode>();
   @Output() confirmedWithDevice = new EventEmitter<string>();
 
   fees: TransferFeePreview[];

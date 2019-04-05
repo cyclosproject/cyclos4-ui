@@ -10,18 +10,22 @@
 
   <confirmation-password *ngIf="passwordInput"
     formControlName="confirmationPassword" [focused]="!hasFields"
-    [passwordInput]="passwordInput" [ngClass]="{
+    [createDeviceConfirmation]="createDeviceConfirmation"
+    (confirmationModeChanged)="confirmationMode$.next($event)"
+    (confirmedWithDevice)="confirm($event)" [passwordInput]="passwordInput"
+    [ngClass]="{
       'mt-3': hasFields || message == null,
       'mt-4': !hasFields && message != null
     }">
-    {{ messages.auth.password.confirmationMessage(passwordInput?.name) }}
   </confirmation-password>
 
   <actions forceRow>
     <button class="btn btn-primary"
+      *ngIf="(confirmationMode$ | async) !== ConfirmationMode.Device; else blank"
       [disabled]="!canConfirm || (requesting$ | async)" (click)="confirm()">
       {{ confirmLabel }}
     </button>
+    <ng-template #blank>&nbsp;</ng-template>
     <button class="btn btn-outline-primary" (click)="modalRef.hide()">
       {{ cancelLabel }}
     </button>

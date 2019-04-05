@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { DataForUserPasswords, PasswordStatusAndActions, PasswordStatusEnum } from 'app/api/models';
+import { DataForUserPasswords, PasswordStatusAndActions, PasswordStatusEnum, CreateDeviceConfirmation, DeviceConfirmationTypeEnum } from 'app/api/models';
 import { PasswordsService } from 'app/api/services';
 import { Action } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
@@ -137,10 +137,19 @@ export class ManagePasswordsComponent
     });
   }
 
+  private createDeviceConfirmation(password: PasswordStatusAndActions): () => CreateDeviceConfirmation {
+    return () => ({
+      type: DeviceConfirmationTypeEnum.GENERATE_PASSWORD,
+      // TODO: This should really be the id / internal name, not the name
+      name: password.type.name
+    });
+  }
+
   private changeGenerated(password: PasswordStatusAndActions) {
     this.notification.confirm({
       title: this.messages.auth.password.action.change,
       message: this.messages.auth.password.action.changeGeneratedConfirm(password.type.name),
+      createDeviceConfirmation: this.createDeviceConfirmation(password),
       passwordInput: this.data.confirmationPasswordInput,
       callback: res => this.doChangeGenerated(password, res.confirmationPassword)
     });

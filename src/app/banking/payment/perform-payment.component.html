@@ -20,7 +20,7 @@
     <div class="flex-grow-1 d-flex flex-column" [ngSwitch]="step$ | async">
       <payment-step-confirm [preview]="preview"
         [confirmationPassword]="confirmationPassword"
-        (confirmationMode)="confirmationMode$.next($event)"
+        (confirmationModeChanged)="confirmationMode$.next($event)"
         (confirmedWithDevice)="perform($event)"
         [showPaymentType]="(availablePaymentTypes || []).length > 1">
       </payment-step-confirm>

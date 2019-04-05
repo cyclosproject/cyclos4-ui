@@ -111,7 +111,7 @@
     <confirmation-password focused formControlName="confirmationPassword"
       [passwordInput]="preview.confirmationPasswordInput"
       [createDeviceConfirmation]="createDeviceConfirmation"
-      (modeChanged)="confirmationMode.emit($event)"
+      (confirmationModeChanged)="confirmationModeChanged.emit($event)"
       (confirmedWithDevice)="confirmedWithDevice.emit($event)">
     </confirmation-password>
   </form>

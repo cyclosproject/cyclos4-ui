@@ -40,7 +40,7 @@ export class ConfirmationPasswordComponent extends BaseControlComponent<string> 
 
   @Input() passwordInput: PasswordInput;
   @Input() createDeviceConfirmation: () => CreateDeviceConfirmation;
-  @Output() modeChanged = new EventEmitter<ConfirmationMode>();
+  @Output() confirmationModeChanged = new EventEmitter<ConfirmationMode>();
   @Output() confirmedWithDevice = new EventEmitter<string>();
 
   canConfirm: boolean;
@@ -79,7 +79,7 @@ export class ConfirmationPasswordComponent extends BaseControlComponent<string> 
       if (!this.deviceConfirmationId) {
         this.newQR();
       }
-      this.modeChanged.emit(mode);
+      this.confirmationModeChanged.emit(mode);
     }));
 
     this.addSub(this.pushNotifications.deviceConfirmations$.subscribe(c =>

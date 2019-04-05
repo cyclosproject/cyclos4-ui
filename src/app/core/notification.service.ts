@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CustomFieldDetailed, PasswordInput, NotificationsStatus } from 'app/api/models';
+import { CustomFieldDetailed, PasswordInput, NotificationsStatus, CreateDeviceConfirmation } from 'app/api/models';
 import { SnackBarProvider, SnackBarOptions } from 'app/core/snack-bar-provider';
 import { FieldLabelPosition } from 'app/shared/base-form-field.component';
 import { ConfirmationComponent } from 'app/shared/confirmation.component';
@@ -131,6 +131,7 @@ export class NotificationService {
    * - customFields: When set, shows additional fields in the confirmation dialog
    * - labelPosition: When additional fields are shown, represents their label's position
    * - passwordInput: If a confirmation password is required to confirm
+   * - createDeviceConfirmation: Required if passwordInput is not null. Is the callback that will create the DeviceConfirmation.
    * - callback: Function called when confirming. When a confirmation password is used,
    *   the typed password is passed as parameter.
    */
@@ -141,9 +142,13 @@ export class NotificationService {
     confirmLabel?: string,
     labelPosition?: FieldLabelPosition,
     customFields?: CustomFieldDetailed[],
-    callback: (params: ConfirmCallbackParams) => void,
-    passwordInput?: PasswordInput
+    createDeviceConfirmation?: () => CreateDeviceConfirmation,
+    passwordInput?: PasswordInput,
+    callback: (params: ConfirmCallbackParams) => void
   }): void {
+    if (options.passwordInput && !options.createDeviceConfirmation) {
+      throw new Error('When there\'s a passwordInput it is also required to set the createDeviceConfirmation callback');
+    }
     this.modal.show(ConfirmationComponent, {
       class: 'modal-form',
       initialState: options

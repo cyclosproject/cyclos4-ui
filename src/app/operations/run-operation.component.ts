@@ -4,7 +4,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Params } from '@angular/router';
 import {
   CustomFieldDetailed, OperationDataForRun, OperationResultTypeEnum,
-  OperationRowActionEnum, RunOperationResult
+  OperationRowActionEnum, RunOperationResult, CreateDeviceConfirmation, DeviceConfirmationTypeEnum
 } from 'app/api/models';
 import { OperationsService } from 'app/api/services/operations.service';
 import { Configuration } from 'app/configuration';
@@ -154,6 +154,14 @@ export class RunOperationComponent
     }
   }
 
+  private createDeviceConfirmation(): () => CreateDeviceConfirmation {
+    return () => ({
+      type: DeviceConfirmationTypeEnum.RUN_OPERATION,
+      // TODO this should really be setting the operation id / internal name
+      name: this.data.label || this.data.name
+    });
+  }
+
   /** Execute the custom operation */
   run(data?: OperationDataForRun) {
     if (!data) {
@@ -171,6 +179,7 @@ export class RunOperationComponent
       this.notification.confirm({
         title: data.name,
         message: data.confirmationText,
+        createDeviceConfirmation: this.createDeviceConfirmation(),
         passwordInput: data.confirmationPasswordInput,
         callback: conf => this.doRun(data, conf.confirmationPassword)
       });
