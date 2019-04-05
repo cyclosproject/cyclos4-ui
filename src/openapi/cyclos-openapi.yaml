@@ -82,7 +82,10 @@ tags:
       to use the system.
   - name: Devices
     description: >-
-      Operations regarding trusted devices and confirmations using them.
+      Operations regarding trusted devices.
+  - name: DeviceConfirmations
+    description: >-
+      Allow confirmation of operations using trusted devices.
   - name: Accounts
     description: >-
       Provides access to account information, such as the status (balance,
@@ -29961,8 +29964,7 @@ components:
           description: >-
             The entity's name for which this confirmation is created for.
             Required only if type is either `manageAddress`,
-            `managePhone`, `manageContactInfo`,
-            `runOperation` or `generatePassword`.
+            `managePhone` or `manageContactInfo`.
         type:
           $ref: '#/components/schemas/DeviceConfirmationTypeEnum'
         externalPaymentAction:
@@ -30005,6 +30007,16 @@ components:
             The action being applied to the access client. Required only if type is
             `clientAction`.
           $ref: '#/components/schemas/ClientActionEnum'
+        operation:
+          type: string
+          description: >-
+            Either the id or internal name of the custom operation being executed.
+            Required only if type is `runOperation`.
+        passwordType:
+          type: string
+          description: >-
+            Either the id or internal name of the password type being e generatated.
+            Required only if type is `generatePassword`.        
         seller:
           type: string
           description: >-

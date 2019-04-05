@@ -46,6 +46,7 @@ export class RunOperationComponent
   isSearch: boolean;
   isContent: boolean;
   runDirectly: boolean;
+  private createDeviceConfirmation: () => CreateDeviceConfirmation;
 
   get result(): RunOperationResult {
     return this.result$.value;
@@ -76,6 +77,11 @@ export class RunOperationComponent
     const params: any = {
       operation: route.params.operation
     };
+
+    this.createDeviceConfirmation = () => ({
+      type: DeviceConfirmationTypeEnum.RUN_OPERATION,
+      operation: this.data.id
+    });
 
     let request: Observable<OperationDataForRun>;
     switch (this.runScope) {
@@ -154,14 +160,6 @@ export class RunOperationComponent
     }
   }
 
-  private createDeviceConfirmation(): () => CreateDeviceConfirmation {
-    return () => ({
-      type: DeviceConfirmationTypeEnum.RUN_OPERATION,
-      // TODO this should really be setting the operation id / internal name
-      name: this.data.label || this.data.name
-    });
-  }
-
   /** Execute the custom operation */
   run(data?: OperationDataForRun) {
     if (!data) {
@@ -179,7 +177,7 @@ export class RunOperationComponent
       this.notification.confirm({
         title: data.name,
         message: data.confirmationText,
-        createDeviceConfirmation: this.createDeviceConfirmation(),
+        createDeviceConfirmation: this.createDeviceConfirmation,
         passwordInput: data.confirmationPasswordInput,
         callback: conf => this.doRun(data, conf.confirmationPassword)
       });

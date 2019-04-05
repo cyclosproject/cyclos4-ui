@@ -76,6 +76,9 @@ export class ConfirmationComponent implements OnInit {
   confirm(confirmationPassword?: string) {
     let value: ConfirmCallbackParams;
     if (this.hasForm) {
+      if (confirmationPassword) {
+        this.form.patchValue({ confirmationPassword: confirmationPassword });
+      }
       if (!validateBeforeSubmit(this.form)) {
         return;
       }

@@ -140,8 +140,7 @@ export class ManagePasswordsComponent
   private createDeviceConfirmation(password: PasswordStatusAndActions): () => CreateDeviceConfirmation {
     return () => ({
       type: DeviceConfirmationTypeEnum.GENERATE_PASSWORD,
-      // TODO: This should really be the id / internal name, not the name
-      name: password.type.name
+      passwordType: password.type.id
     });
   }
 
