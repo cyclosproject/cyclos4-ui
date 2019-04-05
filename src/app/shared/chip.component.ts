@@ -16,6 +16,6 @@ export class ChipComponent {
 
   @Input() image: Image;
   @Input() icon: string;
-  @Input() closeable = true;
+  @HostBinding('class.closeable') @Input() closeable = true;
   @Output() close = new EventEmitter<void>();
 }

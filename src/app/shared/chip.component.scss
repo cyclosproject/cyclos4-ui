@@ -8,6 +8,7 @@
   border-radius: 1rem;
   background-color: $input-bg;
   padding: 0.3rem;
+  padding-right: 0.6rem;
 }
 a {
   color: $input-color;
@@ -18,4 +19,18 @@ a:hover {
 }
 :host ::ng-deep icon {
   color: $faded-color;
+}
+:host.closeable ::ng-deep .chip {
+  padding-right: 0.1rem;
+}
+
+@media print {
+  .chip {
+    border: none;
+    border-radius: 0;
+    padding: 0.3rem 0 0 0 !important;
+  }
+  .close-link {
+    display: none;
+  }
 }

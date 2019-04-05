@@ -32966,7 +32966,8 @@ components:
                 Only returned if `resultType` is
                 `resultPage` and `rowAction` is
                 `operation`.
-              $ref: '#/components/schemas/Operation'
+              allOf:
+                - $ref: '#/components/schemas/Operation'
             rowUrl:
               description: >-
                 The URL the client should be redirected when clicking a row. Only
@@ -32985,6 +32986,47 @@ components:
                 type: string
             rowAction:
               $ref: '#/components/schemas/OperationRowActionEnum'
+            user:
+              description: >-
+                The user for whom this custom operation will be executed. Returned
+                if `scope` is either `user`,
+                `advertisement`,
+                `contact` (the contact owner),
+                `contactInfo` or
+                `record` (for user records).
+              allOf:
+                - $ref: '#/components/schemas/User'
+            ad:
+              description: >-
+                 The advertisement for which this custom operation will be executed. Only returned if `scope` is  `advertisement`
+              allOf:
+                - $ref: '#/components/schemas/Ad'
+            contact:
+              description: >-
+                The contact for whom this custom operation will be executed. Only returned if `scope` is  `contact`
+              allOf:
+                - $ref: '#/components/schemas/Contact'
+            contactInfo:
+              description: >-
+                The additional contact for which this custom operation will be executed. Only returned if `scope` is  `contactInfo`
+              allOf:
+                - $ref: '#/components/schemas/ContactInfo'
+            record:
+              description: >-
+                The record for which this custom operation will be executed. Only returned if `scope` is  `record`
+              allOf:
+                - $ref: '#/components/schemas/Record'
+            recordType:
+              description: >-
+                The record type of the record for which this custom operation will be executed. Only returned if `scope` is  `record`
+              allOf:
+                - $ref: '#/components/schemas/RecordType'
+            transfer:
+              description: >-
+                The transfer for which this custom operation will be executed. Only returned if `scope` is  `transfer`
+              allOf:
+                - $ref: '#/components/schemas/Transfer'
+              
 
     OperationPermissions:
       description: >-

@@ -59,6 +59,12 @@
   <page-content *ngIf="isContent && (result$ | async)"
     [heading]="result.title || data.name"
     [headingActions]="headingActions$ | async">
+
+    <!-- Show the context of the operation if running directly. Otherwise, this data was already presented. -->
+    <ng-container *ngIf="runDirectly">
+      <ng-container *ngTemplateOutlet="operationContext"></ng-container>
+    </ng-container>
+
     <div *ngIf="result.resultType === 'richText'"
       [innerHTML]="result.content | trust"></div>
     <div *ngIf="result.resultType === 'plainText'" class="break-nl">
@@ -74,14 +80,41 @@
 
 <ng-template #theForm>
   <form [formGroup]="form">
+    <!-- Show the context of the operation -->
+    <ng-container *ngTemplateOutlet="operationContext"></ng-container>
+
+    <!-- For fields -->
     <ng-container *ngFor="let cf of formFields; let first = first">
       <custom-field-input [field]="cf" [formControlName]="cf.internalName"
         [focused]="!isSearch && first"
         [labelPosition]="isSearch ? 'left' : 'auto'">
       </custom-field-input>
     </ng-container>
+
+    <!-- File upload -->
     <file-field *ngIf="data.hasFileUpload"
       [label]="messages.operation.fileUpload" [formControl]="fileControl">
     </file-field>
   </form>
+</ng-template>
+
+<ng-template #operationContext>
+  <label-value *ngIf="data.user && data.user.id !== login.user.id"
+    [label]="messages.general.user" kind="field">
+    <chip [image]="data.user.image" [closeable]="false">
+      {{ data.user.display }}
+    </chip>
+  </label-value>
+  <label-value *ngIf="data.ad" [label]="messages.operation.ad" kind="field">
+    <chip [image]="data.ad.image" [closeable]="true">
+      {{ data.ad.name }}
+    </chip>
+  </label-value>
+  <label-value *ngIf="data.transfer" [label]="messages.operation.transfer"
+    kind="fieldView">
+    <chip>
+      {{ data.transfer.display }}
+    </chip>
+  </label-value>
+  <hr *ngIf="data.user || data.ad || data.transfer">
 </ng-template>

@@ -4,7 +4,8 @@
   <div class="text-truncate mw-100">
     <ng-content></ng-content>
   </div>
-  <a *ngIf="closeable" class="ml-2" href="#" (click)="$event.preventDefault(); close.emit(null)">
+  <a *ngIf="closeable" class="close-link ml-2" href="#"
+    (click)="$event.preventDefault(); close.emit(null)">
     <icon icon="clear"></icon>
   </a>
 </div>

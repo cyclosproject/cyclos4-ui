@@ -631,6 +631,9 @@
     }
   },
   "operation": {
+    "user": "User",
+    "ad": "Advertisement",
+    "transfer": "Transfer",
     "fileUpload": "File upload",
     "redirecting": "You are being redirected..."
   }
