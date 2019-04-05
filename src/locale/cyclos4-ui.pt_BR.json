@@ -631,6 +631,9 @@
     }
   },
   "operation": {
+    "user": "User",
+    "ad": "Advertisement",
+    "transfer": "Transfer",
     "fileUpload": "Envio de arquivo",
     "redirecting": "Você está sendo redirecionado..."
   }
