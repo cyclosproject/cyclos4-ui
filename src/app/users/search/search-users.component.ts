@@ -114,7 +114,7 @@ export class SearchUsersComponent
         useDefaults: false
       }));
       if (this.firstTime) {
-        this.form.patchValue(data.query);
+        this.form.patchValue(data.query || {});
         this.firstTime = false;
       }
       this.ignoreNextUpdate = false;

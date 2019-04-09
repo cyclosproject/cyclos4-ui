@@ -14,6 +14,17 @@
             </custom-field-filter>
           </div>
           <ng-container *ngIf="moreFilters$ | async">
+            <div *ngIf="data.groups?.length > 1" class="col-12 col-md-6">
+              <multi-selection-field labelPosition="side"
+                hierarchyProperty="groupSet" formControlName="groups"
+                [label]="messages.user.groupFilter">
+                <field-option *ngFor="let group of data.groups"
+                  [value]="group.id" [internalName]="group.internalName"
+                  [id]="group.id" [text]="group.name"
+                  [parent]="group.groupSet">
+                </field-option>
+              </multi-selection-field>
+            </div>
             <div class="col-12 col-md-6" *ngFor="let cf of advancedFields">
               <custom-field-filter labelPosition="side" [field]="cf"
                 [formControl]="form.get('customValues').get(cf.internalName)">
@@ -24,29 +35,36 @@
       </form>
       <div class="row no-gutters filters-row">
         <div class="col-12 col-xs-7 col-md-9">
-          <result-type-field [allowedResultTypes]="allowedResultTypes$ | async"
+          <result-type-field
+            [allowedResultTypes]="allowedResultTypes$ | async"
             [formControl]="resultTypeControl">
           </result-type-field>
         </div>
         <div *ngIf="resultType !== 'categories' && (layout.gtxxs$ | async)"
           class="col-12 col-xs-5 col-md-3">
           <single-selection-field [formControl]="form.get('orderBy')"
-            [display]="messages.general.orderBy" [emptyOption]="messages.general.orderByRelevance">
-            <field-option value="date" [text]="messages.ad.orderBy.date"></field-option>
-            <field-option value="priceAsc" [text]="messages.ad.orderBy.priceAsc"></field-option>
-            <field-option value="priceDesc" [text]="messages.ad.orderBy.priceDesc"></field-option>
+            [display]="messages.general.orderBy"
+            [emptyOption]="messages.general.orderByRelevance">
+            <field-option value="date" [text]="messages.ad.orderBy.date">
+            </field-option>
+            <field-option value="priceAsc"
+              [text]="messages.ad.orderBy.priceAsc"></field-option>
+            <field-option value="priceDesc"
+              [text]="messages.ad.orderBy.priceDesc"></field-option>
           </single-selection-field>
         </div>
       </div>
     </page-content>
 
-    <page-content [ngClass]="(categoryTrail$ | async)?.length ? '' : 'd-none'">
+    <page-content
+      [ngClass]="(categoryTrail$ | async)?.length ? '' : 'd-none'">
       <nav *ngIf="(categoryTrail$ | async)?.length > 0" class="breadcrumb">
         <ol class="breadcrumb">
           <li *ngFor="let cat of categoryTrail$ | async; let last = last"
             class="breadcrumb-item" [ngClass]="{active: last}">
             <ng-container *ngIf="last">{{ cat.name }}</ng-container>
-            <a *ngIf="!last" href="#" (click)="$event.preventDefault(); onCategorySelected(cat)">{{
+            <a *ngIf="!last" href="#"
+              (click)="$event.preventDefault(); onCategorySelected(cat)">{{
               cat.name }}</a>
             <!-- Don't leave trailing spaces or they generate an extra space -->
           </li>
@@ -65,8 +83,8 @@
 </ng-template>
 
 <ng-template #resultsTemplate>
-  <ads-results [results]="results$ | async" [rendering$]="rendering$" [data]="data$ | async"
-    [resultType]="resultType$ | async" (update)="update($event)"
-    (categorySelected)="onCategorySelected($event)">
+  <ads-results [results]="results$ | async" [rendering$]="rendering$"
+    [data]="data$ | async" [resultType]="resultType$ | async"
+    (update)="update($event)" (categorySelected)="onCategorySelected($event)">
   </ads-results>
 </ng-template>

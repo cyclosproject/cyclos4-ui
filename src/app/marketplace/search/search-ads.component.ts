@@ -35,7 +35,7 @@ export class SearchAdsComponent
   }
 
   protected getFormControlNames() {
-    return ['keywords', 'category', 'customValues', 'orderBy'];
+    return ['keywords', 'groups', 'category', 'customValues', 'orderBy'];
   }
 
   getInitialResultType() {
@@ -46,7 +46,10 @@ export class SearchAdsComponent
     super.ngOnInit();
     this.allowedResultTypes = [ResultType.CATEGORIES, ResultType.TILES, ResultType.LIST, ResultType.MAP];
     this.stateManager.cache('data', this.marketplaceService.getAdDataForSearch({}))
-      .subscribe(data => this.data = data);
+      .subscribe(data => {
+        this.form.patchValue(data.query || {});
+        this.data = data;
+      });
   }
 
   onDataInitialized(data: AdDataForSearch) {

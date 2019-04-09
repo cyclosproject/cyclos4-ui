@@ -144,12 +144,29 @@ export abstract class BaseFormFieldWithOptionsComponent<T> extends BaseFormField
     return this.selectedValues.map(value => this.findOption(value)).filter(opt => !!opt);
   }
 
+  /**
+   * Returns whether a given option, or its parent, is selected
+   */
   isSelected(value: string | FieldOption): boolean {
-    if (typeof value === 'string') {
-      return this.selectedOptions.find(opt => fieldOptionMatches(opt, value)) != null;
-    } else {
-      return this.selectedValues.find(val => fieldOptionMatches(value, val)) != null;
+    if (value == null) {
+      return false;
     }
+    if (typeof value === 'string') {
+      value = this.findOption(value);
+    }
+    const selected = this.selectedOptions;
+    if (selected.find(opt => fieldOptionMatches(opt, value))) {
+      // The option itself is selected
+      return true;
+    }
+    // If a parent option is selected, consider this one as selected as well
+    if (value.parent) {
+      const parent = this.findOption(value.parent);
+      if (selected.find(opt => fieldOptionMatches(opt, parent))) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private categoryFor(option: FieldOption): CategoryWithOptions {
