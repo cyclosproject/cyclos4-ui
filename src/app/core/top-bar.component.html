@@ -53,13 +53,14 @@
         </div>
       </a>
     </ng-container>
-    <a href="#" id="logout-trigger" (click)="navigate(Menu.LOGOUT, $event)">
-      <icon class="top-icon" icon="logout"></icon>
-      <div *ngIf="(layout.gtsm$ | async) && !hasMenu" class="ml-2">
-        {{ messages.menu.logout }}
-      </div>
-    </a>
   </ng-container>
+  <a href="#" *ngIf="user != null" id="logout-trigger"
+    (click)="navigate(Menu.LOGOUT, $event)">
+    <icon class="top-icon" icon="logout"></icon>
+    <div *ngIf="(layout.gtsm$ | async) && !hasMenu" class="ml-2">
+      {{ messages.menu.logout }}
+    </div>
+  </a>
   <ng-container *ngIf="user == null">
     <a *ngIf="(layout.gtsm$ | async) && menu.menuEntry(Menu.REGISTRATION)"
       routerLink="/register" id="register-link"

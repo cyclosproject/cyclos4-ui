@@ -62,6 +62,7 @@ $top-bar-bg: $primary;
 $top-bar-color: color-yiq($primary);
 $top-bar-height-xxs: 2.6rem;
 $top-bar-height-xs: 3.4rem;
+$top-icon-size-xxs: 1.4rem;
 $top-icon-size-xs: 1.6rem;
 $top-icon-size: 1.4rem;
 // Height when using a dedicated menu bar (setting MENU_BAR = true in configuration.ts)
@@ -69,7 +70,7 @@ $top-bar-height: 3.25rem;
 // Height when the menu is in the tpop bar (setting MENU_BAR = false in configuration.ts)
 $top-bar-with-menu-height: 3.6rem;
 $top-bar-item-border-color: darken($top-bar-bg, 10%);
-$top-bar-item-padding-xxs: 0.2rem;
+$top-bar-item-padding-xxs: 0.3rem;
 $top-bar-item-padding-xs: 0.5rem;
 $top-bar-item-padding: 0.8rem;
 $top-bar-with-menu-item-padding: 1.2rem;
