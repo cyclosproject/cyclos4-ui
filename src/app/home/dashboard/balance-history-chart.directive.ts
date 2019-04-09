@@ -52,7 +52,13 @@ export class BalanceHistoryChartDirective implements OnInit {
         },
         tooltips: {
           callbacks: {
-            label: n => 'aaa' + this.format.formatAsCurrency(currency, amounts[n.index])
+            title: item => {
+              return item.map(i => {
+                const balance = this.history.balances[i.index];
+                return this.format.formatAsDate(balance.date);
+              });
+            },
+            label: n => this.format.formatAsCurrency(currency, amounts[n.index])
           },
           displayColors: false
         },
