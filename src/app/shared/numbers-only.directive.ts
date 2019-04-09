@@ -37,8 +37,21 @@ export class NumbersOnlyDirective {
     if (this.enabled) {
       let allowed = !event.ctrlKey && !event.altKey;
       if (allowed) {
-        allowed = this.allowDecimalSeparator && this.format.decimalSeparator === event.key
-          || ALLOWED.includes(event.key);
+        if (this.allowDecimalSeparator && [',', '.'].includes(event.key)) {
+          // Manually insert the decimal separator
+          const input = event.target as HTMLInputElement;
+          const val = input.value;
+          const sep = this.format.decimalSeparator;
+          const selStart = input.selectionStart;
+          if (!val.includes(sep)) {
+            input.value = val.substring(0, selStart) + sep + val.substring(input.selectionEnd);
+            input.setSelectionRange(selStart + 1, selStart + 1, 'none');
+            input.dispatchEvent(new Event('input'));
+          }
+          allowed = false;
+        } else {
+          allowed = ALLOWED.includes(event.key);
+        }
       }
       if (!allowed) {
         event.preventDefault();
