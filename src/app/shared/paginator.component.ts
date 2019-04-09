@@ -71,7 +71,7 @@ export class PaginatorComponent<T> implements OnDestroy {
   maxSize(breakpoints: Set<Breakpoint>): number {
     if (breakpoints.has('xxs')) {
       return 3;
-    } else if (breakpoints.has('md')) {
+    } else if (breakpoints.has('lt-md')) {
       return 5;
     } else {
       return 7;
