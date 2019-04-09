@@ -510,6 +510,7 @@
       "search": "Business directory"
     },
     "group": "Group",
+    "groupSet": "Group set",
     "name": "Full name",
     "username": "Login name",
     "email": "E-mail",
