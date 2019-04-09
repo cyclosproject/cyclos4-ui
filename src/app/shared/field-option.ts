@@ -39,4 +39,10 @@ export interface FieldOption {
 
   /** The category it belongs */
   category?: string;
+
+  /** The parent field option */
+  parent?: string;
+
+  /** The option level in a hierarchy */
+  level?: number;
 }

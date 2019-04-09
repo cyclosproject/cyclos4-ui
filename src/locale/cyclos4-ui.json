@@ -517,6 +517,7 @@
     },
     "group": "Group",
     "groupSet": "Group set",
+    "group.filter": "Groups",
     "name": "Full name",
     "username": "Login name",
     "email": "E-mail",

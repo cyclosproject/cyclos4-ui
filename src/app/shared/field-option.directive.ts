@@ -17,6 +17,7 @@ export class FieldOptionDirective implements OnInit, OnDestroy, FieldOption {
   @Input() value: string;
   @Input() text: string;
   @Input() category: string;
+  @Input() parent: string;
 
   constructor(
     @Inject(FORM_FIELD_WITH_OPTIONS) private component: BaseFormFieldWithOptionsComponent<any>
@@ -28,6 +29,10 @@ export class FieldOptionDirective implements OnInit, OnDestroy, FieldOption {
 
   ngOnDestroy(): void {
     this.component.removeOption(this);
+  }
+
+  get level(): number {
+    return this.parent ? 1 : 0;
   }
 
 }

@@ -33,9 +33,11 @@ export class SearchUsersComponent
   advancedFields$ = new BehaviorSubject<CustomFieldDetailed[]>([]);
 
   // As the custom fields are dynamically fetched, and form.setControl doesn't have a way to avoid emitting the value.
-  // Hence, we need to control the update externally.
+  // Hence, we need to avoid the extra page update manually.
   // See https://github.com/angular/angular/issues/20439
-  ignoreNextUpdate = false;
+  private ignoreNextUpdate = false;
+
+  private firstTime = true;
 
   constructor(
     injector: Injector,
@@ -76,7 +78,7 @@ export class SearchUsersComponent
   }
 
   protected getFormControlNames() {
-    return ['keywords', 'customValues', 'orderBy'];
+    return ['keywords', 'groups', 'customValues', 'orderBy'];
   }
 
   getInitialResultType() {
@@ -111,6 +113,10 @@ export class SearchUsersComponent
       this.form.setControl('customValues', this.fieldHelper.customValuesFormGroup(fieldsInSearch, {
         useDefaults: false
       }));
+      if (this.firstTime) {
+        this.form.patchValue(data.query);
+        this.firstTime = false;
+      }
       this.ignoreNextUpdate = false;
       this.basicField$.next(fieldsInSearch.length === 0 ? null : fieldsInSearch[0]);
       this.advancedFields$.next(fieldsInSearch.length > 1 ? fieldsInSearch.slice(1) : []);
@@ -132,7 +138,7 @@ export class SearchUsersComponent
     }
   }
 
-  doSearch(query) {
+  doSearch(query: any) {
     const value = cloneDeep(query);
     value.profileFields = this.fieldHelper.toCustomValuesFilter(query.customValues);
     delete value.customValues;

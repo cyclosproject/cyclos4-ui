@@ -8,13 +8,24 @@
             <input-field labelPosition="side" formControlName="keywords"
               [label]="messages.general.keywords"></input-field>
           </div>
+          <div *ngIf="data.groups?.length > 1" class="col-12 col-md-6">
+            <multi-selection-field labelPosition="side"
+              hierarchyProperty="groupSet" formControlName="groups"
+              [label]="messages.user.groupFilter">
+              <field-option *ngFor="let group of data.groups"
+                [value]="group.id" [internalName]="group.internalName"
+                [id]="group.id" [text]="group.name" [parent]="group.groupSet">
+              </field-option>
+            </multi-selection-field>
+          </div>
           <div class="col-12 col-md-6" *ngIf="(basicField$ | async) as cf">
             <custom-field-filter labelPosition="side" [field]="cf"
               [formControl]="form.get('customValues').get(cf.internalName)">
             </custom-field-filter>
           </div>
           <ng-container *ngIf="moreFilters$ | async">
-            <div class="col-12 col-md-6" *ngFor="let cf of advancedFields$ | async">
+            <div class="col-12 col-md-6"
+              *ngFor="let cf of advancedFields$ | async">
               <custom-field-filter labelPosition="side" [field]="cf"
                 [formControl]="form.get('customValues').get(cf.internalName)">
               </custom-field-filter>
@@ -24,22 +35,28 @@
       </form>
       <div class="row filters-row">
         <div class="col-12 col-xs-7 col-md-9">
-          <result-type-field [allowedResultTypes]="allowedResultTypes$ | async"
+          <result-type-field
+            [allowedResultTypes]="allowedResultTypes$ | async"
             [formControl]="resultTypeControl">
           </result-type-field>
         </div>
         <div *ngIf="(layout.gtxxs$ | async)" class="col-12 col-xs-5 col-md-3">
           <single-selection-field [formControl]="form.get('orderBy')"
-            [display]="messages.general.orderBy" [emptyOption]="messages.general.orderByRelevance">
-            <field-option value="alphabeticallyAsc" [text]="messages.user.orderBy.alphabeticallyAsc"></field-option>
-            <field-option value="alphabeticallyDesc" [text]="messages.user.orderBy.alphabeticallyDesc"></field-option>
+            [display]="messages.general.orderBy"
+            [emptyOption]="messages.general.orderByRelevance">
+            <field-option value="alphabeticallyAsc"
+              [text]="messages.user.orderBy.alphabeticallyAsc"></field-option>
+            <field-option value="alphabeticallyDesc"
+              [text]="messages.user.orderBy.alphabeticallyDesc">
+            </field-option>
           </single-selection-field>
         </div>
       </div>
     </page-content>
 
     <users-results [results]="results$ | async" [rendering$]="rendering$"
-      [data]="data$ | async" [resultType]="resultType$ | async" (update)="update($event)">
+      [data]="data$ | async" [resultType]="resultType$ | async"
+      (update)="update($event)">
     </users-results>
   </ng-container>
 </page-layout>

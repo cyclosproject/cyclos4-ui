@@ -87,6 +87,25 @@ export abstract class BaseFormFieldWithOptionsComponent<T> extends BaseFormField
   }
 
   /**
+   * Finds options by a parent value
+   * @param parent The parent value
+   */
+  optionsByParent(parent: string): FieldOption[] {
+    const parentOption = this.findOption(parent);
+
+    const result: FieldOption[] = [];
+    for (const category of this.categories.value) {
+      for (const option of category.options.value) {
+        if ((parentOption && option.parent && fieldOptionMatches(parentOption, option.parent))
+          || !parentOption && !option.parent) {
+          result.push(option);
+        }
+      }
+    }
+    return result;
+  }
+
+  /**
    * Adds an option to this field
    */
   addOption(option: FieldOption) {

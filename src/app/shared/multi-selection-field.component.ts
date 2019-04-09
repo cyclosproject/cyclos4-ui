@@ -12,6 +12,7 @@ import { Messages } from 'app/messages/messages';
 @Component({
   selector: 'multi-selection-field',
   templateUrl: 'multi-selection-field.component.html',
+  styleUrls: ['multi-selection-field.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     { provide: NG_VALUE_ACCESSOR, useExisting: MultiSelectionFieldComponent, multi: true },
@@ -31,6 +32,13 @@ export class MultiSelectionFieldComponent extends BaseSelectionFieldComponent<st
    */
   @Input() emptyLabel: string = null;
 
+  /**
+   * When set, considers the elements hierarchical.
+   * Should be the property name that will point to the option parent's id or internal name.
+   * When hierarchical, assumes the values are correctly sorted.
+   */
+  @Input() hierarchyProperty: string = null;
+
   constructor(
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
     private messages: Messages
@@ -39,18 +47,24 @@ export class MultiSelectionFieldComponent extends BaseSelectionFieldComponent<st
   }
 
   toggle(value: string) {
-    const selected = this.selectedValues;
+    let selected = this.selectedValues;
     const index = selected.indexOf(value);
+    const option = this.findOption(value);
+    const childValues = this.optionsByParent(value).map(o => o.value);
     if (index >= 0) {
-      selected.splice(index, 1);
+      // De-select the value, the parent value and any child values
+      selected = selected.filter((v, i) =>
+        i !== index && (v !== option.parent) && !childValues.includes(v));
     } else {
+      // Select the value and all children
       selected.push(value);
+      Array.prototype.push.apply(selected, childValues);
     }
     this.setValue(this.separator == null ? selected : selected.join(this.separator));
   }
 
   preprocessValue(value: any): string | string[] {
-    return preprocessValueWithSeparator(value, this.separator, val => !!this.findOption(val));
+    return preprocessValueWithSeparator(value, this.separator);
   }
 
   protected getDisplay(): string {
@@ -62,7 +76,10 @@ export class MultiSelectionFieldComponent extends BaseSelectionFieldComponent<st
         return this.messages.general.noOptionsSelected;
       }
     } else {
-      return selected.sort(FIELD_OPTIONS_SORTER).map(opt => opt.category ? `${opt.category} - ${opt.text}` : opt.text).join(', ');
+      // When there's a parent option selected, don't show the children, as they're implicit
+      const selectedValues = selected.map(o => o.value);
+      const toShow = selected.filter(o => !o.parent || !selectedValues.includes(o.parent));
+      return toShow.sort(FIELD_OPTIONS_SORTER).map(opt => opt.category ? `${opt.category} - ${opt.text}` : opt.text).join(', ');
     }
   }
 
