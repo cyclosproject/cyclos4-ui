@@ -23,6 +23,11 @@
   opacity: 0.3;
   border-left: 1px solid white;
   margin: 0.9rem .8rem 0.9rem 1.2rem;
+
+  &:after {
+    content: '.';
+    visibility: hidden;
+  }
 }
 :host.has-menu ::ng-deep nav.with-user .menu-separator {
   margin-right: 0.2rem;
@@ -40,6 +45,9 @@
   }
   .menu-container, menus {
     justify-content: flex-end;
+  }
+  menus {
+    height: 100%;
   }
 }
 
