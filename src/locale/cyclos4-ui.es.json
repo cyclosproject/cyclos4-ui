@@ -308,7 +308,13 @@
     "netInflow": "Entrada neta",
     "noAccounts": "Usted no posee cuentas",
     "printTransactions": "Imprimir transacciones",
-    "system": "Cuenta de sistema"
+    "system": "Cuenta de sistema",
+    "orderBy": {
+      "dateDesc": "Date (newest first)",
+      "dateAsc": "Date (oldest first)",
+      "amountAsc": "Amount (lowest first)",
+      "amountDesc": "Amount (highest first)"
+    }
   },
   "transaction": {
     "number": "Número de transacción",
@@ -510,6 +516,8 @@
       "search": "Directorio de anunciantes"
     },
     "group": "Grupo",
+    "groupSet": "Group set",
+    "group.filter": "Groups",
     "name": "Nombre completo",
     "username": "Usuario",
     "email": "Correo electrónico",
