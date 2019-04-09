@@ -14,7 +14,7 @@
     </actions>
   </page-content>
 
-  <page-content *ngSwitchCase="'confirm'"
+  <page-content *ngSwitchCase="'confirm'" hideBack
     [heading]="messages.transaction.title.paymentConfirmation"
     [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'" last>
     <div class="flex-grow-1 d-flex flex-column" [ngSwitch]="step$ | async">
@@ -39,7 +39,7 @@
     </actions>
   </page-content>
 
-  <page-content *ngSwitchCase="'done'" [heading]="doneTitle"
+  <page-content *ngSwitchCase="'done'" hideBack [heading]="doneTitle"
     [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'" last>
     <div class="flex-grow-1 d-flex flex-column" [ngSwitch]="step$ | async">
       <payment-step-done [performed]="performed"></payment-step-done>
