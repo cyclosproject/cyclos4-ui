@@ -4,7 +4,7 @@
     <div class="row">
       <ng-container *ngFor="let ad of ads$.value">
         <div class="col-12 col-xs-6 col-sm-4">
-          <a class="d-flex flex-column plain" [routerLink]="path(ad)"
+          <a class="d-flex flex-column undecorated" [routerLink]="path(ad)"
             (click)="navigate(ad, $event)">
             <div class="text-center">
               <div class="images">

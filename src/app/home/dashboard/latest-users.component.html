@@ -4,7 +4,7 @@
     <div class="row">
       <ng-container *ngFor="let user of users$.value">
         <div class="col-12 col-xs-6 col-lg-4">
-          <a class="d-flex flex-column plain" [routerLink]="path(user)"
+          <a class="d-flex flex-column undecorated" [routerLink]="path(user)"
             (click)="navigate(user, $event)">
             <div class="text-center">
               <div class="images">
