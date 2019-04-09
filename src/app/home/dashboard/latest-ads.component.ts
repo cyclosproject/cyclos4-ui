@@ -98,7 +98,7 @@ export class LatestAdsComponent extends BaseDashboardComponent implements OnInit
 
   navigateToOwner(ad: AdResult, event: MouseEvent) {
     this.menu.navigate({
-      url: this.path(ad),
+      url: `/users/profile/${ad.owner.id}`,
       menu: new ActiveMenu(Menu.USER_PROFILE),
       clear: false,
       event: event
