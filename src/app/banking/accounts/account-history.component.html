@@ -1,67 +1,101 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="loaded$ | async; else loading">
-    <page-content mode="filters" [heading]="title" [headingActions]="headingActions$ | async">
-      <form *ngIf="moreFilters$ | async" [formGroup]="form" class="filters-form border-bottom">
+    <page-content mode="filters" [heading]="title"
+      [headingActions]="headingActions$ | async">
+      <form *ngIf="moreFilters$ | async" [formGroup]="form"
+        class="filters-form border-bottom">
         <div class="row">
-          <div *ngIf="data.preselectedPeriods?.length > 1" class="col-12 col-md-6">
-            <single-selection-field labelPosition="side" formControlName="preselectedPeriod"
+          <div *ngIf="data.preselectedPeriods?.length > 1"
+            class="col-12 col-md-6">
+            <single-selection-field labelPosition="side"
+              formControlName="preselectedPeriod"
               [label]="messages.general.period">
               <field-option *ngFor="let period of data.preselectedPeriods"
-                [id]="period['id']" [value]="period" [text]="period.name"></field-option>
+                [id]="period['id']" [value]="period" [text]="period.name">
+              </field-option>
             </single-selection-field>
           </div>
-          <div *ngIf="data.transferFilters?.length > 1" class="col-12 col-md-6">
-            <single-selection-field labelPosition="side" formControlName="transferFilter"
-              [label]="messages.account.transferFilter" [emptyOption]="messages.general.notApplied">
-              <field-option *ngFor="let filter of data.transferFilters" [id]="filter.id"
-                [value]="filter" [text]="filter.name"></field-option>
+          <div *ngIf="data.transferFilters?.length > 1"
+            class="col-12 col-md-6">
+            <single-selection-field labelPosition="side"
+              formControlName="transferFilter"
+              [label]="messages.account.transferFilter"
+              [emptyOption]="messages.general.notApplied">
+              <field-option *ngFor="let filter of data.transferFilters"
+                [id]="filter.id" [value]="filter" [text]="filter.name">
+              </field-option>
             </single-selection-field>
           </div>
-          <div *ngIf="(form.value || (form.valueChanges | async))?.preselectedPeriod?.begin == null"
+          <div
+            *ngIf="(form.value || (form.valueChanges | async))?.preselectedPeriod?.begin == null"
             class="col-12 col-md-6">
             <date-field labelPosition="side" formControlName="periodBegin"
-              [label]="messages.general.beginDate" minDate="past5" maxDate="today"
-              fieldSize="full">
+              [label]="messages.general.beginDate" minDate="past5"
+              maxDate="today" fieldSize="full">
             </date-field>
           </div>
-          <div *ngIf="(form.value || (form.valueChanges | async))?.preselectedPeriod?.end == null"
+          <div
+            *ngIf="(form.value || (form.valueChanges | async))?.preselectedPeriod?.end == null"
             class="col-12 col-md-6">
             <date-field labelPosition="side" formControlName="periodEnd"
-              [label]="messages.general.endDate" minDate="past5" maxDate="today"
-              fieldSize="full">
+              [label]="messages.general.endDate" minDate="past5"
+              maxDate="today" fieldSize="full">
             </date-field>
           </div>
           <div class="col-12 col-md-6">
             <decimal-field labelPosition="side" formControlName="minAmount"
-              [label]="messages.account.minAmount" fieldSize="full" [prefix]="currency.prefix"
-              [suffix]="currency.suffix" [scale]="currency.decimalDigits">
+              [label]="messages.account.minAmount" fieldSize="full"
+              [prefix]="currency.prefix" [suffix]="currency.suffix"
+              [scale]="currency.decimalDigits">
             </decimal-field>
           </div>
           <div class="col-12 col-md-6">
             <decimal-field labelPosition="side" formControlName="maxAmount"
-              [label]="messages.account.maxAmount" fieldSize="full" [prefix]="currency.prefix"
-              [suffix]="currency.suffix" [scale]="currency.decimalDigits">
+              [label]="messages.account.maxAmount" fieldSize="full"
+              [prefix]="currency.prefix" [suffix]="currency.suffix"
+              [scale]="currency.decimalDigits">
             </decimal-field>
           </div>
           <div class="col-12 col-md-6">
-            <single-selection-field labelPosition="side" formControlName="direction"
-              [label]="messages.account.direction" [emptyOption]="messages.general.notApplied">
-              <field-option value="credit" [text]="messages.account.incoming"></field-option>
-              <field-option value="debit" [text]="messages.account.outgoing"></field-option>
+            <single-selection-field labelPosition="side"
+              formControlName="direction" [label]="messages.account.direction"
+              [emptyOption]="messages.general.notApplied">
+              <field-option value="credit" [text]="messages.account.incoming">
+              </field-option>
+              <field-option value="debit" [text]="messages.account.outgoing">
+              </field-option>
             </single-selection-field>
           </div>
           <div class="col-12 col-md-6">
-            <user-field labelPosition="side" formControlName="user" [label]="messages.general.user"></user-field>
+            <user-field labelPosition="side" formControlName="user"
+              [label]="messages.general.user"></user-field>
           </div>
           <div *ngIf="data.transactionNumberMask" class="col-12 col-md-6">
-            <input-field labelPosition="side" formControlName="transactionNumber"
-              [mask]="data.transactionNumberMask" [label]="messages.transaction.number"></input-field>
+            <input-field labelPosition="side"
+              formControlName="transactionNumber"
+              [mask]="data.transactionNumberMask"
+              [label]="messages.transaction.number"></input-field>
           </div>
           <div *ngIf="data.operators?.length > 0" class="col-12 col-md-6">
             <single-selection-field labelPosition="side" formControlName="by"
-              [label]="messages.general.operator" [emptyOption]="messages.general.notApplied">
-              <field-option *ngFor="let operator of data.operators" [value]="operator.id"
-                [text]="operator.display"></field-option>
+              [label]="messages.general.operator"
+              [emptyOption]="messages.general.notApplied">
+              <field-option *ngFor="let operator of data.operators"
+                [value]="operator.id" [text]="operator.display">
+              </field-option>
+            </single-selection-field>
+          </div>
+          <div class="col-12 col-md-6">
+            <single-selection-field labelPosition="side"
+              formControlName="orderBy" [label]="messages.general.orderBy">
+              <field-option value="dateDesc"
+                [text]="messages.account.orderBy.dateDesc"></field-option>
+              <field-option value="dateAsc"
+                [text]="messages.account.orderBy.dateAsc"></field-option>
+              <field-option value="amountAsc"
+                [text]="messages.account.orderBy.amountAsc"></field-option>
+              <field-option value="amountDesc"
+                [text]="messages.account.orderBy.amountDesc"></field-option>
             </single-selection-field>
           </div>
         </div>
@@ -72,13 +106,16 @@
           'py-3': layout.gtsm$ | async,
           'pt-ls': (layout.ltmd$ | async) && (moreFilters$ | async)
         }">
-        <account-status-view [account]="account" [mode]="(moreFilters$ | async) ? 'period' : 'current'"></account-status-view>
+        <account-status-view [account]="account"
+          [mode]="(moreFilters$ | async) ? 'period' : 'current'">
+        </account-status-view>
       </div>
       <spinner *ngIf="(status$ | async) == null"></spinner>
 
     </page-content>
 
-    <results-layout resultType="list" [results]="results$ | async" (update)="update($event)">
+    <results-layout resultType="list" [results]="results$ | async"
+      (update)="update($event)">
       <table *resultTable class="table table-hover cursor-pointer">
         <thead *ngIf="layout.gtxs$ | async">
           <th class="avatar"></th>
@@ -95,13 +132,16 @@
                   'pb-0': layout.xxs$ | async,
                   'border-0': layout.xxs$ | async
                 }">
-                <avatar [image]="avatarImage(row)" [icon]="avatarIcon(row)"></avatar>
+                <avatar [image]="avatarImage(row)" [icon]="avatarIcon(row)">
+                </avatar>
               </td>
               <td *ngIf="layout.xs$ | async">
                 <!-- Aggregated cell for xs -->
                 <a [routerLink]="path(row)">
-                  <div class="cell-text cell-main">{{ subjectName(row) }}</div>
-                  <div class="cell-text cell-date">{{ row.date | dateTime }}</div>
+                  <div class="cell-text cell-main">{{ subjectName(row) }}
+                  </div>
+                  <div class="cell-text cell-date">{{ row.date | dateTime }}
+                  </div>
                   <div *ngIf="row.description" class="cell-text cell-small">
                     {{ row.description }}
                   </div>
@@ -135,11 +175,14 @@
                 </a>
               </td>
             </tr>
-            <tr *ngIf="layout.xxs$ | async" (click)="router.navigate(path(row))">
+            <tr *ngIf="layout.xxs$ | async"
+              (click)="router.navigate(path(row))">
               <td class="border-bottom-1 pt-0" colspan="3">
                 <a [routerLink]="path(row)">
-                  <div class="cell-text cell-main">{{ subjectName(row) }}</div>
-                  <div class="cell-text cell-date">{{ row.date | dateTime }}</div>
+                  <div class="cell-text cell-main">{{ subjectName(row) }}
+                  </div>
+                  <div class="cell-text cell-date">{{ row.date | dateTime }}
+                  </div>
                 </a>
               </td>
             </tr>

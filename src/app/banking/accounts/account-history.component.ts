@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
   AccountHistoryResult, AccountWithHistoryStatus, Currency, DataForAccountHistory,
-  EntityReference, Image, PreselectedPeriod, TransferFilter
+  EntityReference, Image, PreselectedPeriod, TransferFilter, AccountHistoryOrderByEnum
 } from 'app/api/models';
 import { AccountsService } from 'app/api/services';
 import { ApiHelper } from 'app/shared/api-helper';
@@ -73,7 +73,7 @@ export class AccountHistoryComponent
       'periodBegin', 'periodEnd',
       'minAmount', 'maxAmount',
       'transactionNumber', 'direction',
-      'user', 'by'
+      'user', 'by', 'orderBy'
     ];
   }
 
@@ -112,6 +112,8 @@ export class AccountHistoryComponent
         this.printAction
       ];
 
+      this.form.patchValue({ 'orderBy': AccountHistoryOrderByEnum.DATE_DESC });
+
       // Only initialize the data once the form is filled-in
       this.data = data;
     });
@@ -129,7 +131,8 @@ export class AccountHistoryComponent
       user: value.user,
       by: value.by,
       transactionNumber: value.transactionNumber,
-      direction: value.direction
+      direction: value.direction,
+      orderBy: value.orderBy
     };
     return this.accountsService.searchAccountHistory$Response(query).pipe(tap(() => {
       query.fields = ['status'];

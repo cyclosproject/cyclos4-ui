@@ -308,7 +308,13 @@
     "netInflow": "Net inflow",
     "noAccounts": "You have no accounts",
     "printTransactions": "Print transactions",
-    "system": "System account"
+    "system": "System account",
+    "orderBy": {
+      "dateDesc": "Date (newest first)",
+      "dateAsc": "Date (oldest first)",
+      "amountAsc": "Amount (lowest first)",
+      "amountDesc": "Amount (highest first)"
+    }
   },
   "transaction": {
     "number": "Transaction number",
