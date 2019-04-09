@@ -116,5 +116,6 @@
       {{ data.transfer.display }}
     </chip>
   </label-value>
-  <hr *ngIf="data.user || data.ad || data.transfer">
+  <hr
+    *ngIf="data.user && data.user.id !== login.user.id || data.ad || data.transfer">
 </ng-template>
