@@ -308,7 +308,13 @@
     "netInflow": "Netto-instroom",
     "noAccounts": "Je hebt geen accounts",
     "printTransactions": "Print transacties",
-    "system": "Systeemrekening"
+    "system": "Systeemrekening",
+    "orderBy": {
+      "dateDesc": "Date (newest first)",
+      "dateAsc": "Date (oldest first)",
+      "amountAsc": "Amount (lowest first)",
+      "amountDesc": "Amount (highest first)"
+    }
   },
   "transaction": {
     "number": "Transactie nummer",
@@ -510,6 +516,8 @@
       "search": "Business directory"
     },
     "group": "Groep",
+    "groupSet": "Group set",
+    "group.filter": "Groups",
     "name": "Volledige naam",
     "username": "Inlognaam",
     "email": "E-mail",
