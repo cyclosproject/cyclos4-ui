@@ -308,7 +308,13 @@
     "netInflow": "Entrada líquida",
     "noAccounts": "Você não tem contas",
     "printTransactions": "Imprimir transações",
-    "system": "Conta de sistema"
+    "system": "Conta de sistema",
+    "orderBy": {
+      "dateDesc": "Date (newest first)",
+      "dateAsc": "Date (oldest first)",
+      "amountAsc": "Amount (lowest first)",
+      "amountDesc": "Amount (highest first)"
+    }
   },
   "transaction": {
     "number": "Número da transação",
@@ -510,6 +516,8 @@
       "search": "Diretório de negócios"
     },
     "group": "Grupo",
+    "groupSet": "Group set",
+    "group.filter": "Groups",
     "name": "Nome completo",
     "username": "Nome de usuário",
     "email": "E-mail",
