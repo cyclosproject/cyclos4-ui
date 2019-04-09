@@ -11,6 +11,7 @@ import { ResultType } from 'app/shared/result-type';
 import { isEqual } from 'lodash';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import { NextRequestState } from 'app/core/next-request-state';
 
 /**
  * Base class implemented by search pages.
@@ -29,6 +30,8 @@ export abstract class BaseSearchPageComponent<D, R> extends BasePageComponent<D>
   rendering$ = new BehaviorSubject(false);
   moreFilters$ = new BehaviorSubject(false);
   previousResultType: ResultType;
+
+  nextRequestState: NextRequestState;
 
   readonly form: FormGroup;
   previousValue: any;
@@ -148,6 +151,7 @@ export abstract class BaseSearchPageComponent<D, R> extends BasePageComponent<D>
 
   constructor(injector: Injector) {
     super(injector);
+    this.nextRequestState = injector.get(NextRequestState);
     const controls: any = {};
     controls.page = 0;
     controls.pageSize = null;
@@ -243,6 +247,7 @@ export abstract class BaseSearchPageComponent<D, R> extends BasePageComponent<D>
     }
     this.rendering = true;
     this.results = null;
+    this.nextRequestState.leaveNotification = true;
     this.addSub(this.doSearch(this.form.value).subscribe(response => {
       if (this.resultType === ResultType.CATEGORIES) {
         // Switch to the first allowed result type that isn't categories

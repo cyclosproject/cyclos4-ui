@@ -4,11 +4,11 @@ import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { MaxDistance } from 'app/shared/max-distance';
 import { SingleSelectionFieldComponent } from 'app/shared/single-selection-field.component';
 import { SearchByDistanceData, DistanceUnitEnum } from 'app/api/models';
-import { BehaviorSubject } from 'rxjs';
 import { Messages } from 'app/messages/messages';
 import { FieldOption } from 'app/shared/field-option';
 import { empty } from 'app/shared/helper';
 import { distinctUntilChanged } from 'rxjs/operators';
+import { NotificationService } from 'app/core/notification.service';
 
 const MaxDistanceOptions = [1, 5, 10, 15, 25, 50, 75, 100];
 
@@ -37,12 +37,12 @@ export class MaxDistanceFieldComponent
 
   form: FormGroup;
   enabledControl: FormControl;
-  geolocationError$ = new BehaviorSubject<string>(null);
   maxDistanceOptions: FieldOption[];
 
   constructor(
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
     public messages: Messages,
+    private notification: NotificationService,
     private formBuilder: FormBuilder
   ) {
     super(controlContainer);
@@ -59,18 +59,16 @@ export class MaxDistanceFieldComponent
       longitude: null,
       address: (firstAddress || {}).id
     });
-    this.addSub(this.enabledControl.valueChanges.pipe(distinctUntilChanged()).subscribe(() => {
+    this.addSub(this.enabledControl.valueChanges.pipe(distinctUntilChanged()).subscribe(enabled => {
       this.updateValue();
+      if (enabled) {
+        this.updateCurrentLocation();
+      }
     }));
     this.addSub(this.form.valueChanges.pipe(distinctUntilChanged()).subscribe(value => {
       this.updateValue(value);
     }));
     this.maxDistanceOptions = MaxDistanceOptions.map(d => ({ value: String(d), text: String(d) }));
-    this.addSub(this.enabledControl.valueChanges.subscribe(enabled => {
-      if (enabled) {
-        this.updateCurrentLocation();
-      }
-    }));
   }
 
   preprocessValue(value: MaxDistance) {
@@ -109,19 +107,19 @@ export class MaxDistanceFieldComponent
       }, error => {
         switch (error.code) {
           case error.PERMISSION_DENIED:
-            this.geolocationError$.next(this.messages.general.geolocation.errorDenied);
+            this.notification.error(this.messages.general.geolocation.errorDenied);
             break;
           case error.POSITION_UNAVAILABLE:
           case error.TIMEOUT:
-            this.geolocationError$.next(this.messages.general.geolocation.errorUnavailable);
+            this.notification.warning(this.messages.general.geolocation.errorUnavailable);
             break;
           default:
-            this.geolocationError$.next(this.messages.general.geolocation.errorGeneral);
+            this.notification.error(this.messages.general.geolocation.errorGeneral);
         }
       });
     } else {
       // Not supported by the browser
-      this.geolocationError$.next(this.messages.general.geolocation.errorUnavailable);
+      this.notification.warning(this.messages.general.geolocation.errorUnavailable);
     }
   }
 
