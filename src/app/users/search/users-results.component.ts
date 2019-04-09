@@ -1,10 +1,14 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Injector, Input, Output, OnInit } from '@angular/core';
-import { Address, ContactListDataForSearch, ContactResult, User, UserDataForMap, UserDataForSearch, UserResult } from 'app/api/models';
+import {
+  Address, ContactListDataForSearch, ContactResult,
+  User, UserDataForMap, UserDataForSearch, UserResult
+} from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
 import { PageData } from 'app/shared/page-data';
 import { PagedResults } from 'app/shared/paged-results';
 import { ResultType } from 'app/shared/result-type';
 import { BehaviorSubject } from 'rxjs';
+import { MaxDistance } from 'app/shared/max-distance';
 
 const MAX_COLUMNS = 7;
 const MAX_TILE_FIELDS = 2;
@@ -23,6 +27,7 @@ export class UsersResultsComponent extends BaseComponent implements OnInit {
 
   @Input() resultType: ResultType;
   @Input() rendering$: BehaviorSubject<boolean>;
+  @Input() referencePoint: MaxDistance;
 
   private _data: UserDataForSearch | UserDataForMap | ContactListDataForSearch;
   @Input() set data(data: UserDataForSearch | UserDataForMap | ContactListDataForSearch) {

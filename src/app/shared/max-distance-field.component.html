@@ -1,0 +1,48 @@
+<label-value *ngIf="label; else widget" [formField]="self">
+  <ng-container *ngTemplateOutlet="widget"></ng-container>
+</label-value>
+
+<ng-template #widget>
+  <div *ngIf="data" class="align-items-center d-flex h-100 pb-1">
+    <div #check
+      class="custom-control custom-checkbox d-flex align-content-center enabled-control">
+      <input type="checkbox" [formControl]="enabledControl"
+        class="custom-control-input" [id]="id + '_enabled'">
+      <label class="custom-control-label" [for]="id + '_enabled'">
+        <ng-container
+          *ngIf="!((enabledControl.valueChanges | async) || enabledControl.value)">
+          {{ messages.general.notApplied }}
+        </ng-container>
+      </label>
+    </div>
+    <div
+      *ngIf="(enabledControl.valueChanges | async) || enabledControl.value; else mockInput"
+      [formGroup]="form" class="row no-gutters w-100">
+      <div class="col-4">
+        <single-selection-field formControlName="maxDistance"
+          [fieldOptions]="maxDistanceOptions">
+        </single-selection-field>
+      </div>
+      <div
+        class="col-4 pl-1 d-flex align-items-center justify-content-center no-wrap">{{
+        data.distanceUnit === DistanceUnitEnum.KILOMETER
+        ? messages.general.geolocation.kilometersFrom
+        : messages.general.geolocation.milesFrom
+      }}</div>
+      <div class="col-4">
+        <single-selection-field formControlName="address"
+          [emptyOption]="messages.general.geolocation.current">
+          <field-option *ngFor="let address of data.addresses || []"
+            [value]="address.id"
+            [text]="data.addresses.length === 1 ? messages.general.geolocation.myAddress : address.name">
+          </field-option>
+        </single-selection-field>
+      </div>
+    </div>
+    <ng-template #mockInput>
+      <input class="form-control"
+        [ngStyle]="{visibility: 'hidden', maxWidth: '1px'}">
+    </ng-template>
+  </div>
+  <field-errors [control]="formControl"></field-errors>
+</ng-template>

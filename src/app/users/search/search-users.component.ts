@@ -9,6 +9,7 @@ import { empty } from 'app/shared/helper';
 import { ResultType } from 'app/shared/result-type';
 import { cloneDeep } from 'lodash';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { MaxDistance } from 'app/shared/max-distance';
 
 
 /**
@@ -78,7 +79,7 @@ export class SearchUsersComponent
   }
 
   protected getFormControlNames() {
-    return ['keywords', 'groups', 'customValues', 'orderBy'];
+    return ['keywords', 'groups', 'customValues', 'distanceFilter', 'orderBy'];
   }
 
   getInitialResultType() {
@@ -114,7 +115,12 @@ export class SearchUsersComponent
         useDefaults: false
       }));
       if (this.firstTime) {
-        this.form.patchValue(data.query || {});
+        const defaultQuery = data.query || {};
+        this.form.patchValue(defaultQuery);
+        if (defaultQuery.maxDistance || defaultQuery.latitude || defaultQuery.longitude) {
+          // Here the distanceFilter is a MaxDistance, but the query has the distance properties directly
+          this.form.get('distanceFilter').patchValue(defaultQuery);
+        }
         this.firstTime = false;
       }
       this.ignoreNextUpdate = false;
@@ -142,6 +148,12 @@ export class SearchUsersComponent
     const value = cloneDeep(query);
     value.profileFields = this.fieldHelper.toCustomValuesFilter(query.customValues);
     delete value.customValues;
+    const distanceFilter: MaxDistance = value.distanceFilter;
+    if (distanceFilter) {
+      value.maxDistance = distanceFilter.maxDistance;
+      value.latitude = distanceFilter.latitude;
+      value.longitude = distanceFilter.longitude;
+    }
     return this.resultType === ResultType.MAP
       ? this.usersService.searchMapDirectory$Response(value)
       : this.usersService.searchUsers$Response(value);

@@ -11,12 +11,14 @@
     "beginDate": "Begin date",
     "endDate": "End date",
     "notApplied": "Not applied",
+    "notAppliedSelect": "Not applied (select to apply)",
     "user": "User",
     "operator": "Operator",
     "name": "Name",
     "description": "Description",
     "image": "Image",
     "keywords": "Keywords",
+    "distanceFilter": "Distance",
     "orderBy": "Order by",
     "orderBy.relevance": "Relevance",
     "print": "Print",
@@ -109,6 +111,15 @@
       "withTotal": "Showing {first} - {last} of {total} results",
       "noTotal": "Showing {first} - {last} results",
       "none": "No results match the search criteria"
+    },
+    "geolocation": {
+      "kilometersFrom": "km from",
+      "milesFrom": "miles from",
+      "current": "Current location",
+      "myAddress": "My address",
+      "error.denied": "No permission to get the current location. Please, grant this permission in your browser.",
+      "error.unavailable": "The current location is unavailable",
+      "error.general": "Error getting the current location"
     }
   },
   "error": {

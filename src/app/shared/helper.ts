@@ -327,7 +327,7 @@ export function blank(input: any): boolean {
  * Returns a LatLngBounds containing all the given addresses or coordinates
  * @param locations The coordinates or addresses
  */
-export function fitBounds(locations: GeographicalCoordinate[] | Address[]): LatLngBounds {
+export function fitBounds(locations: (GeographicalCoordinate | Address)[]): LatLngBounds {
   if (typeof google === 'undefined' || empty(locations)) {
     return null;
   }

@@ -1,6 +1,6 @@
 <results-layout (update)="update.emit($event)" [results]="results"
   [rendering$]="rendering$" [resultType]="resultType" [toAddress]="address"
-  [toMarkerTitle]="displayFunction()">
+  [referencePoint]="referencePoint" [toMarkerTitle]="displayFunction()">
 
   <table *resultTable class="table table-hover cursor-pointer">
     <thead *ngIf="(layout.gtxs$ | async) && showTableHeader">
@@ -8,27 +8,31 @@
       <th *ngFor="let field of fieldsInList">{{ fieldName(field) }}</th>
     </thead>
     <tbody>
-      <tr *ngFor="let row of results.results" (click)="path(row) ? router.navigate(path(row)) : null">
+      <tr *ngFor="let row of results.results"
+        (click)="path(row) ? router.navigate(path(row)) : null">
         <td class="avatar">
           <avatar [image]="user(row).image"></avatar>
         </td>
         <td *ngIf="layout.ltsm$ | async; else tableCells">
           <!-- Aggregated cell for xs -->
           <maybe-link [link]="path(row)">
-            <ng-container *ngFor="let field of fieldsInTile; let first = first">
+            <ng-container
+              *ngFor="let field of fieldsInTile; let first = first">
               <div [ngClass]="{
                   'font-weight-bold': first
                 }">
-                <format-field-value [fields]="data.customFields" [plainText]="true"
-                  [fieldName]="field" [object]="user(row)" [customValues]="customValues(row)"></format-field-value>
+                <format-field-value [fields]="data.customFields"
+                  [plainText]="true" [fieldName]="field" [object]="user(row)"
+                  [customValues]="customValues(row)"></format-field-value>
               </div>
             </ng-container>
           </maybe-link>
         </td>
         <ng-template #tableCells>
           <td *ngFor="let field of fieldsInList">
-            <format-field-value [fields]="data.customFields" [plainText]="true"
-              [fieldName]="field" [object]="user(row)" [customValues]="customValues(row)"></format-field-value>
+            <format-field-value [fields]="data.customFields"
+              [plainText]="true" [fieldName]="field" [object]="user(row)"
+              [customValues]="customValues(row)"></format-field-value>
           </td>
         </ng-template>
       </tr>
@@ -37,12 +41,15 @@
 
   <maybe-link *resultTile="let row" [link]="path(row)">
     <div class="card">
-      <avatar ngClass="card-img-top" [roundBorders]="false" [image]="user(row).image"
-        size="full" imageSize="200" iconSize="8rem"></avatar>
+      <avatar ngClass="card-img-top" [roundBorders]="false"
+        [image]="user(row).image" size="full" imageSize="200" iconSize="8rem">
+      </avatar>
       <div class="card-body">
-        <div *ngFor="let field of fieldsInTile; let first = first" [ngClass]="first ? 'card-title' : 'card-text'">
-          <format-field-value class="d-block text-truncate" [fields]="data.customFields"
-            plainText [fieldName]="field" [object]="user(row)" [customValues]="customValues(row)">
+        <div *ngFor="let field of fieldsInTile; let first = first"
+          [ngClass]="first ? 'card-title' : 'card-text'">
+          <format-field-value class="d-block text-truncate"
+            [fields]="data.customFields" plainText [fieldName]="field"
+            [object]="user(row)" [customValues]="customValues(row)">
             &nbsp;
           </format-field-value>
         </div>
@@ -53,18 +60,21 @@
   <ng-container *resultInfoWindow="let row; let addr = address">
     <maybe-link [link]="path(row)" class="plain d-block pt-1">
       <!-- Use the same image size as the tiled results, so the browser can cache -->
-      <div *ngFor="let field of fieldsInTile; let first = first; let last = last;"
+      <div
+        *ngFor="let field of fieldsInTile; let first = first; let last = last;"
         [ngClass]="{
           'font-weight-bold': first,
           'mb-2': last
         }">
         <format-field-value [fields]="data.customFields" [plainText]="true"
-          [fieldName]="field" [object]="user(row)" [customValues]="customValues(row)">
+          [fieldName]="field" [object]="user(row)"
+          [customValues]="customValues(row)">
         </format-field-value>
       </div>
       <avatar *ngIf="user(row).image" ngClass="mb-2" [roundBorders]="false"
         [image]="user(row).image" size="120" imageSize="200"></avatar>
-      <address-details [address]="addr" elementClass="card-text"></address-details>
+      <address-details [address]="addr" elementClass="card-text">
+      </address-details>
     </maybe-link>
   </ng-container>
 </results-layout>

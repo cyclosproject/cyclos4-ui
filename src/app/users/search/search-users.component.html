@@ -1,5 +1,5 @@
 <page-layout [ready]="data$ | async">
-  <ng-container *ngIf="loaded$ | async; else loading">
+  <ng-container *ngIf="(data$ | async) && (loaded$ | async); else loading">
     <page-content mode="filters" [heading]="messages.user.title.search"
       [headingActions]="headingActions$ | async">
       <form [formGroup]="form" class="filters-form border-bottom">
@@ -17,6 +17,13 @@
                 [id]="group.id" [text]="group.name" [parent]="group.groupSet">
               </field-option>
             </multi-selection-field>
+          </div>
+          <div class="col-12 col-md-6" *ngIf="data.searchByDistanceData">
+            <max-distance-field labelPosition="side"
+              [data]="data.searchByDistanceData"
+              formControlName="distanceFilter"
+              [label]="messages.general.distanceFilter">
+            </max-distance-field>
           </div>
           <div class="col-12 col-md-6" *ngIf="(basicField$ | async) as cf">
             <custom-field-filter labelPosition="side" [field]="cf"
@@ -56,6 +63,7 @@
 
     <users-results [results]="results$ | async" [rendering$]="rendering$"
       [data]="data$ | async" [resultType]="resultType$ | async"
+      [referencePoint]="((form.valueChanges | async) || form.value).distanceFilter"
       (update)="update($event)">
     </users-results>
   </ng-container>

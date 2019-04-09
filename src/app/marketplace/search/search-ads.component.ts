@@ -9,6 +9,7 @@ import { empty } from 'app/shared/helper';
 import { ResultType } from 'app/shared/result-type';
 import { cloneDeep } from 'lodash';
 import { BehaviorSubject } from 'rxjs';
+import { MaxDistance } from 'app/shared/max-distance';
 
 /**
  * Search for advertisements
@@ -35,7 +36,7 @@ export class SearchAdsComponent
   }
 
   protected getFormControlNames() {
-    return ['keywords', 'groups', 'category', 'customValues', 'orderBy'];
+    return ['keywords', 'groups', 'category', 'customValues', 'distanceFilter', 'orderBy'];
   }
 
   getInitialResultType() {
@@ -47,7 +48,12 @@ export class SearchAdsComponent
     this.allowedResultTypes = [ResultType.CATEGORIES, ResultType.TILES, ResultType.LIST, ResultType.MAP];
     this.stateManager.cache('data', this.marketplaceService.getAdDataForSearch({}))
       .subscribe(data => {
-        this.form.patchValue(data.query || {});
+        const defaultQuery = data.query || {};
+        this.form.patchValue(defaultQuery);
+        if (defaultQuery.maxDistance || defaultQuery.latitude || defaultQuery.longitude) {
+          // Here the distanceFilter is a MaxDistance, but the query has the distance properties directly
+          this.form.get('distanceFilter').patchValue(defaultQuery);
+        }
         this.data = data;
       });
   }
@@ -68,6 +74,12 @@ export class SearchAdsComponent
     delete params['customValues'];
     params.customFields = this.fieldHelper.toCustomValuesFilter(value.customValues);
     params.addressResult = this.resultType === ResultType.MAP ? AdAddressResultEnum.ALL : AdAddressResultEnum.NONE;
+    const distanceFilter: MaxDistance = value.distanceFilter;
+    if (distanceFilter) {
+      params.maxDistance = distanceFilter.maxDistance;
+      params.latitude = distanceFilter.latitude;
+      params.longitude = distanceFilter.longitude;
+    }
     return this.marketplaceService.searchAds$Response(params);
   }
 

@@ -25,6 +25,13 @@
                 </field-option>
               </multi-selection-field>
             </div>
+            <div class="col-12 col-md-6" *ngIf="data.searchByDistanceData">
+              <max-distance-field labelPosition="side"
+                [data]="data.searchByDistanceData"
+                formControlName="distanceFilter"
+                [label]="messages.general.distanceFilter">
+              </max-distance-field>
+            </div>
             <div class="col-12 col-md-6" *ngFor="let cf of advancedFields">
               <custom-field-filter labelPosition="side" [field]="cf"
                 [formControl]="form.get('customValues').get(cf.internalName)">
@@ -85,6 +92,7 @@
 <ng-template #resultsTemplate>
   <ads-results [results]="results$ | async" [rendering$]="rendering$"
     [data]="data$ | async" [resultType]="resultType$ | async"
+    [referencePoint]="((form.valueChanges | async) || form.value).distanceFilter"
     (update)="update($event)" (categorySelected)="onCategorySelected($event)">
   </ads-results>
 </ng-template>

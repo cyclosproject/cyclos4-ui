@@ -603,6 +603,7 @@ $spaced-label-values: (
   min-height: 1.5em;
   cursor: default;
   color: color-yiq($white) !important;
+  white-space: nowrap;
 }
 .select-option:hover {
   background-color: $list-group-hover-bg;

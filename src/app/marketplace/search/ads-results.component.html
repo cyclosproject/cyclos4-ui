@@ -1,23 +1,28 @@
 <results-layout (update)="update.emit($event)" [categories]="data.categories"
   [results]="results" [rendering$]="rendering$" [resultType]="resultType"
-  [toAddress]="toAddress" [toMarkerTitle]="toMarkerTitle">
+  [referencePoint]="referencePoint" [toAddress]="toAddress"
+  [toMarkerTitle]="toMarkerTitle">
 
   <div *resultCategory="let cat" class="card">
     <div class="category-title">
-      <a class="category-title-text" href="#" (click)="$event.preventDefault(); selectCategory(cat)">
-        <avatar [image]="categoryImage(cat)" size="small" [icon]="categoryIcon(cat)"
-          [iconColor]="categoryColor(cat)"></avatar>
+      <a class="category-title-text" href="#"
+        (click)="$event.preventDefault(); selectCategory(cat)">
+        <avatar [image]="categoryImage(cat)" size="small"
+          [icon]="categoryIcon(cat)" [iconColor]="categoryColor(cat)">
+        </avatar>
         {{ cat.name }}
       </a>
     </div>
     <div class="card-body">
       <ng-container *ngFor="let child of categoryChildren(cat)">
-        <a class="sub-category-text" href="#" (click)="$event.preventDefault(); selectCategory(child)">
+        <a class="sub-category-text" href="#"
+          (click)="$event.preventDefault(); selectCategory(child)">
           {{ child.name }}
         </a>
       </ng-container>
     </div>
-    <a *ngIf="hasMoreChildren(cat)" class="category-footer" href="#" (click)="$event.preventDefault(); showAllChildren(cat)">
+    <a *ngIf="hasMoreChildren(cat)" class="category-footer" href="#"
+      (click)="$event.preventDefault(); showAllChildren(cat)">
       {{ messages.ad.showAllCategories }}
     </a>
   </div>
@@ -31,7 +36,8 @@
       <th class="text-right">{{ messages.ad.price }}</th>
     </thead>
     <tbody>
-      <tr *ngFor="let ad of results.results" (click)="router.navigate(path(ad))">
+      <tr *ngFor="let ad of results.results"
+        (click)="router.navigate(path(ad))">
         <td class="avatar">
           <avatar [image]="ad.image" icon="shopping_basket"></avatar>
         </td>
@@ -52,8 +58,9 @@
               {{ messages.ad.byOwner(ad.owner.display) }}
             </div>
             <div *ngFor="let field of data.fieldsInList">
-              <format-field-value [fields]="data.customFields" [plainText]="true"
-                [fieldName]="field" [object]="ad"></format-field-value>
+              <format-field-value [fields]="data.customFields"
+                [plainText]="true" [fieldName]="field" [object]="ad">
+              </format-field-value>
             </div>
           </a>
         </td>
@@ -70,8 +77,9 @@
         </ng-container>
         <ng-container *ngIf="layout.gtxs$ | async">
           <td *ngFor="let field of data.fieldsInList">
-            <format-field-value [fields]="data.customFields" [plainText]="true"
-              [fieldName]="field" [object]="ad"></format-field-value>
+            <format-field-value [fields]="data.customFields"
+              [plainText]="true" [fieldName]="field" [object]="ad">
+            </format-field-value>
           </td>
         </ng-container>
         <td *ngIf="layout.gtxs$ | async" class="text-right">
@@ -88,12 +96,15 @@
   <a *resultTile="let ad" [routerLink]="path(ad)">
     <div class="card">
       <avatar ngClass="card-img-top" [roundBorders]="false" [image]="ad.image"
-        size="full" imageSize="200" icon="shopping_basket" iconSize="8rem"></avatar>
+        size="full" imageSize="200" icon="shopping_basket" iconSize="8rem">
+      </avatar>
       <div class="card-body" [ngStyle]="{position: 'relative'}">
         <ng-container *ngIf="!singleUser">
           <div class="tile-floating-avatar">
             <avatar [image]="ad.owner.image" [tooltip]="ad.owner.display"
-              size="medium-large" (click)="$event.preventDefault(); $event.stopPropagation; router.navigate(['users', 'profile', ad.owner.id])"></avatar>
+              size="medium-large"
+              (click)="$event.preventDefault(); $event.stopPropagation; router.navigate(['users', 'profile', ad.owner.id])">
+            </avatar>
           </div>
         </ng-container>
         <div *ngIf="ad.price; else blankPrice" class="card-title">
@@ -119,8 +130,9 @@
     <a class="plain d-block pt-1" [routerLink]="path(ad)">
       <div class="font-weight-bold mb-2">{{ ad.name }}</div>
 
-      <avatar *ngIf="ad.image" ngClass="card-img-top mb-2" [roundBorders]="false"
-        [image]="ad.image" size="full" imageSize="200"></avatar>
+      <avatar *ngIf="ad.image" ngClass="card-img-top mb-2"
+        [roundBorders]="false" [image]="ad.image" size="full" imageSize="200">
+      </avatar>
 
       <div *ngIf="ad.price" class="font-weight-bold">
         <span *ngIf="ad.promotionalPrice" class="promo-price">

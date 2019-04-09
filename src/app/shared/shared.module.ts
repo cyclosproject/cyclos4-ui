@@ -79,6 +79,7 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { SortableModule } from 'ngx-bootstrap/sortable';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
+import { MaxDistanceFieldComponent } from 'app/shared/max-distance-field.component';
 
 
 
@@ -139,6 +140,7 @@ export function initTooltipConfig(): TooltipConfig {
     CustomFieldInputComponent,
     CustomFieldFilterComponent,
     FieldPrivacyComponent,
+    MaxDistanceFieldComponent,
     ImagesFieldComponent,
     ImageUploadComponent,
     ManageImagesComponent,
@@ -240,6 +242,7 @@ export function initTooltipConfig(): TooltipConfig {
     CustomFieldInputComponent,
     CustomFieldFilterComponent,
     FieldPrivacyComponent,
+    MaxDistanceFieldComponent,
     ImagesFieldComponent,
     ImageUploadComponent,
     ManageImagesComponent,

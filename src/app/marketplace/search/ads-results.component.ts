@@ -11,6 +11,7 @@ import { PagedResults } from 'app/shared/paged-results';
 import { ResultType } from 'app/shared/result-type';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BehaviorSubject } from 'rxjs';
+import { MaxDistance } from 'app/shared/max-distance';
 
 const MAX_CHILDREN = 5;
 
@@ -37,11 +38,10 @@ export class AdsResultsComponent extends BaseComponent {
   }
 
   @Input() data: AdDataForSearch;
-
   @Input() results: PagedResults<AdResult>;
+  @Input() referencePoint: MaxDistance;
 
   @Output() update = new EventEmitter<PageData>();
-
   @Output() categorySelected = new EventEmitter<AdCategoryWithChildren>();
 
   constructor(
