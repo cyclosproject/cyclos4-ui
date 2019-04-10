@@ -85,7 +85,14 @@ tags:
       Operations regarding trusted devices.
   - name: DeviceConfirmations
     description: >-
-      Allow confirmation of operations using trusted devices.
+      Allows confirmation of operations using trusted devices.
+  - name: DevicePins
+    description: >-
+      A PIN is an easier way to login to the system instead of using the principal / password. When a PIN is defined, 
+      it will be associated to the current channel and to the user identification method / password type that was used 
+      when authenticating, thus inheriting its security restrictions. E.g. if the user identification method associated 
+      to the PIN is removed from the list of methods defined to access the channel then the PIN will not work either. 
+      Enabling a PIN must be done through the corresponding channel configuration.      
   - name: Accounts
     description: >-
       Provides access to account information, such as the status (balance,
@@ -310,6 +317,14 @@ paths:
             password will be used only for that session.
           schema:
             type: string
+        - name: pinId
+          in: query
+          required: false
+          description: >-
+            Device PIN identification. If given then the information about whether it is active or not will be given in 
+            the returned `dataForLogin`.
+          schema:
+            type: string                    
       responses:
         '200':
           description: >-
@@ -8487,7 +8502,8 @@ A note for dynamic custom fields: If a script is used to generate possible value
         Updates a device.
       description: >-
         Updates a device. The device's owner and administrators / brokers with
-        permissions can update a device.
+        permissions can update a device. In case a PIN was already defined for the device then it's name will be
+        updated too.
       tags:
         - Devices
       security:
@@ -8990,6 +9006,393 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /{user}/device-pins:
+    get:
+      operationId: listDevicePins
+      summary: >-
+        Returns the list of device PIN for a user.
+      description: >-
+        Returns the list of device PIN for a user. Only allowed if the authenticated user
+        is the same as the user parameter or is an administrator / broker with permissions.
+      tags:
+        - DevicePins
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+        - $ref: '#/components/parameters/user'
+      responses:
+        '200':
+          description: >-
+            The list of device PIN the user has.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DevicePin'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /device-pins:
+    post:
+      operationId: setDevicePin
+      summary: >-
+        Creates a new PIN or modify the current existing one.
+      description: >-
+        Creates a new PIN for the authenticated user. If authenticating with a PIN then changes its value and returns nothing.
+      tags:
+        - DevicePins
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters: []
+      responses:
+        '200':
+          description: >-
+            The pin was successfully created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateDevicePinResult'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: >-
+            Input error. Either a validation error or the maximum allowed items was
+            exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      requestBody:
+        description: >-
+          The parameters for creating the PIN.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateDevicePin'
+  
+  /device-pins/{key}/data-for-edit:
+    get:
+      operationId: getDevicePinDataForEdit
+      summary: >-
+        Returns data for edit an existing device PIN.
+      description: >-
+        Returns configuration data for editing a device PIN, plus the current
+        `DevicePinEdit` object that can be altered and sent back.
+      tags:
+        - DevicePins
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+        - name: key
+          description: >-
+            The principal or id of the device PIN.
+          in: query
+          required: true
+          schema:
+            type: string      
+      responses:
+        '200':
+          description: >-
+            The data for editing a device PIN
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DevicePinDataForEdit'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /device-pins/{key}:
+    get:
+      operationId: viewDevicePin
+      summary: >-
+        Returns details of a specific device PIN
+      description: >-
+        Returns information about a device PIN by key
+      tags:
+        - DevicePins
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+        - name: key
+          description: >-
+            The principal or id of the device PIN.
+          in: query
+          required: true
+          schema:
+            type: string      
+      responses:
+        '200':
+          description: >-
+            The device PIN data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DevicePinView'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+    put:
+      operationId: updateDevicePin
+      summary: >-
+        Updates a device PIN.
+      description: >-
+        Updates a device PIN. The device's owner and administrators / brokers with
+        permissions can update a device PIN. In case the device was already activated as trusted then it's name will be
+        updated too.
+      tags:
+        - DevicePins
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - name: key
+          description: >-
+            The principal or id of the device PIN.
+          in: query
+          required: true
+          schema:
+            type: string      
+      responses:
+        '204':
+          description: >-
+            The device PIN was updated.
+        '409':
+          description: >-
+            This operation expected an entity state, but it has resulted in a conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictError'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: >-
+            Input error. Either a validation error or the maximum allowed items was
+            exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      requestBody:
+        description: >-
+          The parameters for saving a device PIN.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DevicePinEdit'
+    delete:
+      operationId: deleteDevicePin
+      summary: >-
+        Removes a device PIN.
+      description: >-
+        Removes a device PIN. The device's owner and administrators / brokers with
+        permissions can remove a device PIN.
+      tags:
+        - DevicePins
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - name: key
+          description: >-
+            The principal or id of the device PIN.
+          in: query
+          required: true
+          schema:
+            type: string      
+      responses:
+        '204':
+          description: >-
+            The device PIN was removed.
+        '409':
+          description: >-
+            This operation expected an entity state, but it has resulted in a conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictError'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+      
   /{owner}/accounts:
     get:
       operationId: listAccountsByOwner
@@ -14035,6 +14438,14 @@ A note for dynamic custom fields: If a script is used to generate possible value
             a pending device confirmation will be created that will be validated
              after the user logs-in. If the validation passes then no confirmation
             password will be used only for that session.
+          schema:
+            type: string
+        - name: pinId
+          in: query
+          required: false
+          description: >-
+            Device PIN identification. If given then the information about whether it is active or not will be given in 
+            the returned `dataForLogin`.
           schema:
             type: string
       responses:
@@ -22742,6 +23153,14 @@ A note for dynamic custom fields: If a script is used to generate possible value
             password will be used only for that session.
           schema:
             type: string
+        - name: pinId
+          in: query
+          required: false
+          description: >-
+            Device PIN identification. If given then the information about whether it is active or not will be given in 
+            the returned `dataForLogin`.
+          schema:
+            type: string          
       responses:
         '200':
           description: >-
@@ -23020,11 +23439,58 @@ A note for dynamic custom fields: If a script is used to generate possible value
 components:
 
   securitySchemes:
+  
     basic:
       type: http
       scheme: basic
       description: >-
-        User and password, which are sent on every request (stateless).
+          User and password, which are sent on every request (stateless).
+          The user identification, commonly referred as principal, can be,
+          according to the settings in Cyclos:
+          
+          
+          - Login name;
+          
+          
+          - E-mail;
+          
+          
+          - Mobile phone;
+          
+          
+          - Account number;
+          
+          
+          - Custom field (fields configured as principal type in Cyclos);
+          
+          
+          - Pin (see below for more details).
+          
+          
+          
+          There is a configuration in Cyclos, under System > Configurations >
+          Channels (tab) > Channel that specifies which identification methods
+          (principal types) are allowed for that channel. There is also a setting
+          for the default. When a specific principal type is not given, if
+          there is a 'Default user identification method', that one is used. If
+          there's no default, all possible principal types are attempted.
+          
+          
+          
+          To specify the principal type, set the HTTP header `Principal-Type`,
+          containing the principal type internal name. If there is a default
+          set in the channel configuration, but still you want all types to be
+          attempted, pass `*` in the `Principal-Type` header.
+          
+          
+          
+          It is also possible to access with a device PIN. To do so, first activate
+          a device PIN, which will result in both a PIN principal value (identifier)
+          and a cryptographic salt. Then, to authenticate as PIN, set the
+          `Principal-Type` header to `#` and send the `Authorization` header with
+          value: `Basic base64(principal:salt+PIN)`.
+          
+        
     session:
       type: apiKey
       name: Session-Token
@@ -23035,6 +23501,7 @@ components:
         request itself must be called using the `basic` authentication to set the
         user and password. The authenticated user can then be seen on Cyclos in
         the connected users functionality.
+  
     accessClient:
       type: apiKey
       name: Access-Client-Token
@@ -24068,22 +24535,6 @@ components:
         - runOperation
         - secondaryLogin
         - shoppingCartCheckout
-
-    DistanceEnum:
-      description: >
-        Unit for measuring distances
-        
-
-        Possible values are:
-
-        
-        - `kilometer`: Unit representing kilometers
-        
-        - `mile`: Unit representing miles 
-      type: string
-      enum:
-        - kilometer
-        - mile
 
     DistanceUnitEnum:
       description: >
@@ -30056,6 +30507,57 @@ components:
           
         
 
+    CreateDevicePin:
+       description: >-
+         Contains data for create a new PIN for the authenticated user.
+       type: object
+       properties:
+         name:
+           description: >-
+             The device pin's name. This name will be shown when listing the pins of a user to identify the device for 
+             which this pin was defined. It's ignored if already authenticated with a PIN or if a valid `deviceId` was given.
+           type: string
+         pin:
+           description: The PIN value
+           type: string
+         pinConfirmation:
+           description: >-
+             The PIN confirmation value. Is ignored unless `checkConfirmation` is set to `true`.
+           type: string
+         checkConfirmation:
+           description: >-
+             Depending on the client, if a confirm pin field is shown to users, it might be useful to check the confirmation 
+             pin value on the server. This way, if there are other validation exceptions, they are all shown together. 
+             In this case, this flag should be set to `true` and the `pinConfirmation` should be passed in with the user input.
+             Otherwise, if a confirm field is not shown then this flag can be left empty (or set to `false`), and the 
+             `pinConfirmation` will be ignored.
+           type: boolean
+         deviceId:
+           description: >-
+             Trusted device identification. If given then the `name` will be ignored and the pin's name will be copied from 
+             the device's name. This is necessary to get in sync when a pin is defined for an already trusted device. 
+           type: string
+            
+
+    CreateDevicePinResult:
+       description: >-
+         Contains data about the created PIN.
+       type: object
+       properties:
+        pin:
+          $ref: '#/components/schemas/DevicePinView'   
+        principal:
+          description: >-
+            The (randomly generated) unique principal that must be stored in the device and must be sent when the user 
+            choose to login with PIN.
+          type: string
+        salt:
+          description: >-
+            The (randomly generated) unique salt that must be stored in the device and must be prepended to the entered PIN
+            value before send when the user choose to login with PIN.
+          type: string
+            
+
     Currency:
       description: >-
         Reference to a currency
@@ -30596,6 +31098,12 @@ components:
             Contains data for the password used on login
           allOf:
             - $ref: '#/components/schemas/PasswordInput'
+        pinActive:
+          description: >-
+            Whether the given pin, when requesting the data, can be used for login or not.
+            Only if a `pinId` was given when requesting the data, and the `loginPasswordInput.pinAvailability` is not 
+            `disabled`.
+          type: boolean  
         deviceConfirmation:
           description: >-
             The pending device confirmation used to confirm a trusted session. Only
@@ -31231,6 +31739,65 @@ components:
           type: string
           description: >-
             The new device name. It must be unique per user.
+
+    DevicePin:
+      description: >-
+        A device PIN reference
+      allOf:
+        - $ref: '#/components/schemas/NamedEntity'
+        - type: object
+          properties:
+            date:
+              description: The last modification date or creation (if it was never modified).
+              type: string
+              format: date-time
+
+    DevicePinDataForEdit:
+      description: >-
+        Contains data for editing an existing device PIN
+      type: object
+      properties:
+        pin:
+          $ref: '#/components/schemas/DevicePinEdit'
+          description: >-
+            The device PIN that is being edited. This value can be modified and sent
+            back on `PUT /device-pins/{key}`.
+        manage:
+          type: boolean
+          description: >-
+            Whether the authenticated user can manage this device PIN or not.
+
+    DevicePinEdit:
+      description: >-
+        Fields for device PIN edition.
+      type: object
+      properties:
+        version:
+          type: integer
+          description: >-
+            The version stamp for the current object, used for optimistic locking. When
+            saving, the same version as previously received needs to be passed back. If
+            no one else has saved the object, the version will match and the object will
+            be updated. However, if someone other has saved the object, the version will
+            no longer match, and an error will be raised. This is used to prevent
+            multiple users (or processes) from updating the same object and unwilingly
+            overridding the property values, leading to data loss.
+        name:
+          type: string
+          description: >-
+            The new device PIN name. It must be unique per user.
+
+    DevicePinView:
+      description: >-
+        Contains details about a device PIN
+      allOf:
+        - $ref: '#/components/schemas/DevicePin'
+        - type: object
+          properties:
+            principalType:
+              $ref: '#/components/schemas/PrincipalType'
+                    
+      
 
     Entity:
       description: >-
@@ -33407,6 +33974,20 @@ components:
                 or required.
               allOf:
                 - $ref: '#/components/schemas/AvailabilityEnum'
+            pinAvailability:
+              description: >-
+                Whether the confirmation with a device PIN is not used, optional
+                or required.
+              allOf:
+                - $ref: '#/components/schemas/AvailabilityEnum'
+            minPinLength:
+              description: >-
+                The device PIN min length. Only if `pinAvailability` is not `disabled`
+              type: integer
+            maxPinLength:
+              description: >-
+                The device PIN max length. Only if `pinAvailability` is not `disabled`          
+              type: integer
             otpSendMediums:
               description: >-
                 Only for `otp`, the available mediums for the
@@ -35442,7 +36023,7 @@ components:
           additionalProperties:
             type: string
         distanceUnit:
-          $ref: '#/components/schemas/DistanceEnum'
+          $ref: '#/components/schemas/DistanceUnitEnum'
 
     SendActivationCodeRequest:
       description: >-
@@ -35457,12 +36038,13 @@ components:
                 The device name. This name must be unique per user, in case it
                 already exist then a suffix will be added in the form `_i` with `i`
                 being a number. E.g if a device with name 'my_device' already exist
-                then the final name will be 'my_device_1'."
+                then the final name will be 'my_device_1'.
+                It's ignored if authenticated with a PIN or if a valid `pinId` was given. 
             pinId:
               type: string
               description: >-
-                Only in case the device for which the activation is requested for
-                already has a defined pin then it must be specified here.
+                Only if the device for which the activation is requested for already has a defined pin, then it must be 
+                specified here. This is necessary to get in sync when a device is activated after a pin was already defined.
 
     SendActivationCodeResult:
       description: >-
