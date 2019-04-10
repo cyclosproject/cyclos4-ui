@@ -208,9 +208,9 @@
       "confirm.device.none": "Para confirmar você deve ter um telefone celular confiável, mas você não tem nenhum",
       "confirm.deviceOrPassword.active": "Para confirmar, leia este código QR com seu telefone celular ou forneça sua {password}",
       "confirm.deviceOrPassword.none": "Para confirmar você deve ter um telefone celular confiável ou fornecer sua {password}, mas você não tem nenhum",
-      "confirm.deviceOrOtp.noMediums": "In order to confirm you need either a trusted mobile phone (and you have none) or a confirmation password, but there are no possible mediums to receive it.<br>Please, contact the administration.",
-      "confirm.deviceOrOtp.active": "In order to confirm, either scan this QR-code with your mobile phone, use the previously sent confirmation password or request a new one",
-      "confirm.deviceOrOtp.request": "In order to confirm, either scan this QR-code with your mobile phone, or request a confirmation password below",
+      "confirm.deviceOrOtp.noMediums": "Para confirmar que você precisa de um celular confiável (e você não tem nenhum) ou uma senha de confirmação, mas não há nenhum meio possível para recebe-la.<br>Por favor, contate a administração.",
+      "confirm.deviceOrOtp.active": "Para confirmar, leia este código QR com seu telefone celular, use a senha de confirmação enviada anteriormente ou solicite uma nova",
+      "confirm.deviceOrOtp.request": "Para confirmar, leia este código QR com seu telefone celular, ou solicite uma senha de confirmação abaixo",
       "confirm.otp.noMediums": "Para confirmar que você precisa de uma confirmação de senha, mas não há meios possíveis para recebe-la.<br>Por Favor, entre em contato com a administração.",
       "confirm.otp.active": "Você pode usar a senha de confirmação enviada anteriormente ou pedir uma nova",
       "confirm.otp.request": "Por favor, solicite uma senha de confirmação para poder confirmar",
@@ -321,10 +321,10 @@
     "printTransactions": "Imprimir transações",
     "system": "Conta de sistema",
     "orderBy": {
-      "dateDesc": "Date (newest first)",
-      "dateAsc": "Date (oldest first)",
-      "amountAsc": "Amount (lowest first)",
-      "amountDesc": "Amount (highest first)"
+      "dateDesc": "Data (mais recente primeiro)",
+      "dateAsc": "Data (mais antigo primeiro)",
+      "amountAsc": "Valor (menor primeiro)",
+      "amountDesc": "Valor (maior primeiro)"
     }
   },
   "transaction": {
@@ -527,8 +527,8 @@
       "search": "Diretório de negócios"
     },
     "group": "Grupo",
-    "groupSet": "Group set",
-    "group.filter": "Groups",
+    "groupSet": "Conjunto de grupos",
+    "group.filter": "Grupos",
     "name": "Nome completo",
     "username": "Nome de usuário",
     "email": "E-mail",
@@ -650,9 +650,9 @@
     }
   },
   "operation": {
-    "user": "User",
-    "ad": "Advertisement",
-    "transfer": "Transfer",
+    "user": "Usuário",
+    "ad": "Anúncio",
+    "transfer": "Transferência",
     "fileUpload": "Envio de arquivo",
     "redirecting": "Você está sendo redirecionado..."
   }
