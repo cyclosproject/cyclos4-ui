@@ -132,8 +132,9 @@ export class DataForUiHolder {
       this._setLocale(locale, this.cachedTranslations.get(fileName));
     } else {
       // Load the translation
+      const hash = Messages.contentHash(locale);
       this.messages.initialized$.next(false);
-      this.http.get(`locale/${fileName}`).subscribe(values => {
+      this.http.get(`locale/${fileName}?h=${hash}`).subscribe(values => {
         this.cachedTranslations.set(fileName, values);
         this._setLocale(locale, values);
       });
