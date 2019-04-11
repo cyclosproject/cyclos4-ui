@@ -2,7 +2,7 @@
 
 <img src="cyclos.png" align="right" width="120" alt="Cyclos"/>
 
-This project aims to create a modern, simple and intuitive user interface for 
+This project aims to create a modern, simple and intuitive user interface for
 [Cyclos](https://www.cyclos.org/) version 4.11 and up. The interface should be easy to customize and add functionality needed by specific projects.
 
 A demo of the front-end can be seen at: https://demo-ui-bar.cyclos.org/
@@ -136,7 +136,16 @@ There are 2 alternatives for the frontend application to access the Cyclos backe
 
 The CORS approach is faster / easier to deploy. In order for it to work, on the Cyclos backend's `cyclos.properties` file, set the `cyclos.cors.origin` to either `*` (any URL, not recommended for production) or to specific URLs (comma-separated list of allowed URLs). However, this approach has a drawback that before each actual request, the browser needs to send a preflight request, to ensure the actual request is allowed, because the Cyclos backend and the frontend run on different domains.
 
-The second approach exposes a directory called `api` in the frontend application. For the browser, that directory is in the same domain as the frontend application itself. On the backend, the HTTP server (for example, Apache) will proxy all requests to `/api` to the Cyclos backend, which probably runs on the same server / datacenter. When proxying, Apache (or other web services) generally add request headers with information about the original request. The de-facto standard header name is `X-Forwarded-For`. Make sure that in `cyclos.properties` the following is set: `cyclos.header.remoteAddress = X-Forwarded-For`. This is critical, because if multiple logins attempt fails, the remote address is blocked, and this will prevent blocking the backend server's IP address. Also this makes Cyclos log correctly the IP addresses.
+The second approach exposes a directory called `api` in the frontend application. For the browser, that directory is in the same domain as the frontend application itself. On the backend, the HTTP server (for example, Apache) will proxy all requests to `/api` to the Cyclos backend, which probably runs on the same server / datacenter. When proxying, Apache (or other web services) generally add request headers with information about the original request. The de-facto standard header name is `X-Forwarded-For`.
+
+Make sure that in `cyclos.properties` the following is set: `cyclos.header.remoteAddress = X-Forwarded-For`. This is critical, because if multiple logins attempt fails, the remote address is blocked, and this will prevent blocking the backend server's IP address. Also this makes Cyclos log correctly the IP addresses. However, it is also advised to protect against malicious attempts to forge a `X-Forwarded-For` header. As the Cyclos server itself is (probably) already proxied by an Apache (to handle SSL, etc), add in that apache the following rule, to only accept the `X-Forwarded-For` header from the host serving the frontend application:
+
+```apache
+RewriteEngine On
+# Use the list of accepted IP addresses
+RewriteCond %{HTTP:X-Forwarded-For} !(1.1.1.1|2.2.2.2)
+RewriteRule .* - [F]
+```
 
 To setup the proxy in Apache, make sure the `mod_proxy` and `mod_proxy_http` modules are enabled. Then apply the following configuration, replacing `http://localhost:8888/api` with the correct backend URL (don't forget to include the `/api` in the end):
 
