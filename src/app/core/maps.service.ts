@@ -5,7 +5,7 @@ import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { MapData, GeographicalCoordinate, AddressManage } from 'app/api/models';
 import { Observable, of, from } from 'rxjs';
 import { MapsAPILoader } from '@agm/core';
-import { empty } from 'app/shared/helper';
+import { empty, RED_MARKER } from 'app/shared/helper';
 import { mergeMap } from 'rxjs/operators';
 import { Address } from 'app/api/models';
 
@@ -74,7 +74,7 @@ export class MapsService {
     const key = this.data.googleMapsApiKey;
     const scale = (window.devicePixelRatio || 0) >= 2 ? 2 : 1;
     return `${STATIC_URL}?size=${width}x${height}&scale=${scale}&zoom=15`
-      + `&markers=${coords.latitude},${coords.longitude}&key=${key}`;
+      + `&markers=icon:${RED_MARKER}|${coords.latitude},${coords.longitude}&key=${key}`;
   }
 
   /**

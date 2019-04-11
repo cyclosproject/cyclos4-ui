@@ -7,7 +7,7 @@ import { Address } from 'app/api/models';
 import { LoginService } from 'app/core/login.service';
 import { MapsService } from 'app/core/maps.service';
 import { I18n } from 'app/i18n/i18n';
-import { empty, fitBounds } from 'app/shared/helper';
+import { empty, fitBounds, RED_MARKER, BLUE_MARKER } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
 import { MaxDistance } from 'app/shared/max-distance';
 import { PageData } from 'app/shared/page-data';
@@ -29,6 +29,9 @@ import { BehaviorSubject } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ResultsLayoutComponent<C, R> {
+
+  redMarker = RED_MARKER;
+  blueMarker = BLUE_MARKER;
 
   private _resultType: ResultType;
   @Input() get resultType(): ResultType {
