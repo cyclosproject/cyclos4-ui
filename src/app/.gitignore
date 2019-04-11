@@ -1,4 +1,4 @@
 api
-messages
+i18n
 mock-*.ts
 test-*.ts
