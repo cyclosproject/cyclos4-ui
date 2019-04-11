@@ -18,12 +18,16 @@
   }
 
   :host.field .label-value-label,
-  :host.field-view .label-value-label,
-  :host.field-view .label-value-value {
+  :host.field-view .label-value-label {
     padding-top: 0 !important;
     padding-bottom: 0 !important;
     display: flex;
     align-items: center;
+  }
+
+  :host.field-view .label-value-value {
+    padding-top: calc(#{$input-padding-y} + #{$input-border-width}) !important;
+    padding-bottom: calc(#{$input-padding-y} + #{$input-border-width}) !important;
   }
 }
 
