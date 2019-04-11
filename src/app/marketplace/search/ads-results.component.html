@@ -23,17 +23,17 @@
     </div>
     <a *ngIf="hasMoreChildren(cat)" class="category-footer" href="#"
       (click)="$event.preventDefault(); showAllChildren(cat)">
-      {{ messages.ad.showAllCategories }}
+      {{ i18n.ad.showAllCategories }}
     </a>
   </div>
 
   <table *resultTable class="table table-hover cursor-pointer">
     <thead *ngIf="(layout.gtxs$ | async)">
       <th class="avatar"></th>
-      <th>{{ messages.ad.name }}</th>
-      <th *ngIf="!singleUser" colspan="2">{{ messages.ad.owner }}</th>
+      <th>{{ i18n.ad.name }}</th>
+      <th *ngIf="!singleUser" colspan="2">{{ i18n.ad.owner }}</th>
       <th *ngFor="let field of data.fieldsInList">{{ fieldName(field) }}</th>
-      <th class="text-right">{{ messages.ad.price }}</th>
+      <th class="text-right">{{ i18n.ad.price }}</th>
     </thead>
     <tbody>
       <tr *ngFor="let ad of results.results"
@@ -55,7 +55,7 @@
               {{ ad.name }}
             </div>
             <div>
-              {{ messages.ad.byOwner(ad.owner.display) }}
+              {{ i18n.ad.byOwner(ad.owner.display) }}
             </div>
             <div *ngFor="let field of data.fieldsInList">
               <format-field-value [fields]="data.customFields"
@@ -141,7 +141,7 @@
         {{ (ad.promotionalPrice || ad.price) | currency:lookupCurrency(ad) }}
       </div>
 
-      <div>{{ messages.ad.byOwner(ad.owner.display) }}</div>
+      <div>{{ i18n.ad.byOwner(ad.owner.display) }}</div>
       <address-details [address]="addr"></address-details>
     </a>
   </ng-container>

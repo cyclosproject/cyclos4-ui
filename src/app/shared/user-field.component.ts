@@ -8,7 +8,7 @@ import { UsersService } from 'app/api/services';
 import { LoginService } from 'app/core/login.service';
 import { NextRequestState } from 'app/core/next-request-state';
 import { UserCacheService } from 'app/core/user-cache.service';
-import { Messages } from 'app/messages/messages';
+import { I18n } from 'app/i18n/i18n';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseAutocompleteFieldComponent } from 'app/shared/base-autocomplete-field.component';
 import { PickContactComponent } from 'app/shared/pick-contact.component';
@@ -54,7 +54,7 @@ export class UserFieldComponent
     private login: LoginService,
     private nextRequestState: NextRequestState,
     private modal: BsModalService,
-    public messages: Messages) {
+    public i18n: I18n) {
     super(controlContainer);
   }
 
@@ -68,9 +68,9 @@ export class UserFieldComponent
         }
       });
     if (this.allowSearch) {
-      this.placeholder = this.messages.field.user.placeholderAllowSearch;
+      this.placeholder = this.i18n.field.user.placeholderAllowSearch;
     } else if (this.allowPrincipal) {
-      this.placeholder = this.messages.field.user.placeholderPrincipal;
+      this.placeholder = this.i18n.field.user.placeholderPrincipal;
     }
 
     const permissions = this.login.auth.permissions || {};

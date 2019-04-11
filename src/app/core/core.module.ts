@@ -27,7 +27,7 @@ import { TopBarComponent } from 'app/core/top-bar.component';
 import { TransactionStatusService } from 'app/core/transaction-status.service';
 import { UserCacheService } from 'app/core/user-cache.service';
 import { CountriesResolve } from 'app/countries.resolve';
-import { Messages } from 'app/messages/messages';
+import { I18n } from 'app/i18n/i18n';
 import { LayoutService } from 'app/shared/layout.service';
 import { SharedModule } from 'app/shared/shared.module';
 import { BsModalService } from 'ngx-bootstrap/modal';
@@ -74,7 +74,7 @@ export const API_INTERCEPTOR_PROVIDER: Provider = {
   providers: [
     NextRequestState,
     ApiInterceptor,
-    Messages,
+    I18n,
     BreakpointObserver,
     DataForUiHolder,
     ErrorHandlerService,

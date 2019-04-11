@@ -7,21 +7,21 @@
     <avatar [size]="image ? 200 : 128" iconSize="128px" useLightbox [image]="image"></avatar>
   </div>
   <div class="flex-grow-1">
-    <label-value [label]="messages.user.group" *ngIf="group" [value]="group.name"></label-value>
-    <label-value [label]="messages.user.name" *ngIf="!empty(name)" [value]="name"></label-value>
-    <label-value [label]="messages.user.username" *ngIf="!empty(username)"
+    <label-value [label]="i18n.user.group" *ngIf="group" [value]="group.name"></label-value>
+    <label-value [label]="i18n.user.name" *ngIf="!empty(name)" [value]="name"></label-value>
+    <label-value [label]="i18n.user.username" *ngIf="!empty(username)"
       [value]="username"></label-value>
-    <label-value [label]="messages.user.email" *ngIf="!empty(email)" [value]="email"></label-value>
+    <label-value [label]="i18n.user.email" *ngIf="!empty(email)" [value]="email"></label-value>
     <label-value *ngFor="let cf of customFields" [label]="cf.name"
       valueFormat="component">
       <format-field-value [fields]="customFields" [fieldName]="cf.internalName"
         [object]="user"></format-field-value>
     </label-value>
-    <label-value [label]="messages.phone.mobile" *ngIf="!empty(mobile)"
+    <label-value [label]="i18n.phone.mobile" *ngIf="!empty(mobile)"
       [value]="mobile"></label-value>
-    <label-value [label]="messages.user.phoneAddLandLine" *ngIf="!empty(landLine)"
+    <label-value [label]="i18n.user.phoneAddLandLine" *ngIf="!empty(landLine)"
       [value]="landLine"></label-value>
-    <label-value [label]="messages.address.address" *ngIf="address"
+    <label-value [label]="i18n.address.address" *ngIf="address"
       valueFormat="component">
       <address-details [address]="address"></address-details>
     </label-value>
@@ -35,36 +35,36 @@
       <div *ngIf="pt.description" class="mb-2">{{ pt.description }}</div>
       <input-field required formControlName="value" type="password" [label]="pt.name"></input-field>
       <input-field required formControlName="confirmationValue" type="password"
-        [label]="messages.user.passwordConfirmation(pt.name)"></input-field>
+        [label]="i18n.user.passwordConfirmation(pt.name)"></input-field>
     </ng-container>
   </ng-container>
 
   <ng-container *ngIf="data.securityQuestions?.length > 0">
-    <h2>{{ messages.auth.securityQuestion.question }}</h2>
+    <h2>{{ i18n.auth.securityQuestion.question }}</h2>
     <div class="mb-2">
-      {{ messages.user.securityQuestionMessage }}
+      {{ i18n.user.securityQuestionMessage }}
     </div>
-    <single-selection-field formControlName="securityQuestion" [label]="messages.auth.securityQuestion.question"
-      [emptyOption]="messages.user.securityQuestionEmpty">
+    <single-selection-field formControlName="securityQuestion" [label]="i18n.auth.securityQuestion.question"
+      [emptyOption]="i18n.user.securityQuestionEmpty">
       <field-option *ngFor="let q of data.securityQuestions" [value]="q.internalName"
         [text]="q.name">
       </field-option>
     </single-selection-field>
     <input-field #securityAnswer *ngIf="!empty(form.get('securityQuestion').valueChanges | async)"
-      formControlName="securityAnswer" required [label]="messages.auth.securityQuestion.answer">
+      formControlName="securityAnswer" required [label]="i18n.auth.securityQuestion.answer">
     </input-field>
   </ng-container>
 
   <h2 *ngIf="data.agreements?.length > 0 || data.captchaType != null">
-    {{ messages.user.title.registrationConfirmation }}
+    {{ i18n.user.title.registrationConfirmation }}
   </h2>
   <boolean-field *ngIf="data.agreements?.length > 0" formControlName="acceptAgreement"
-    [label]="messages.auth.registrationAgreement">
+    [label]="i18n.auth.registrationAgreement">
     <div #agreementsContent class="pl-2"></div>
   </boolean-field>
 
   <ng-container *ngIf="data.captchaType != null">
-    <label-value kind="field" [label]="messages.user.captcha">
+    <label-value kind="field" [label]="i18n.user.captcha">
       <captcha [form]="form.get('captcha')"></captcha>
     </label-value>
   </ng-container>

@@ -5,7 +5,7 @@ import {
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { LayoutService } from 'app/shared/layout.service';
-import { Messages } from 'app/messages/messages';
+import { I18n } from 'app/i18n/i18n';
 
 /**
  * Field used to edit a boolean
@@ -28,7 +28,7 @@ export class BooleanFieldComponent
 
   constructor(
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
-    private messages: Messages,
+    private i18n: I18n,
     public layout: LayoutService) {
     super(controlContainer);
   }
@@ -50,6 +50,6 @@ export class BooleanFieldComponent
 
   protected getDisabledValue(): string {
     const bool = this.value === true || this.value === 'true';
-    return bool ? this.messages.general.yes : this.messages.general.no;
+    return bool ? this.i18n.general.yes : this.i18n.general.no;
   }
 }

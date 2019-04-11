@@ -115,7 +115,7 @@ export class EditProfileComponent
     });
 
     this.headingActions = [
-      new HeadingAction('search', this.messages.general.view, () => {
+      new HeadingAction('search', this.i18n.general.view, () => {
         this.router.navigate(['users', 'my-profile']);
       }, true)
     ];
@@ -248,7 +248,7 @@ export class EditProfileComponent
       confirmationPassword: confirmationPassword,
       body: this.editForSubmit()
     }).subscribe(() => {
-      this.notification.snackBar(this.messages.user.profileSaved);
+      this.notification.snackBar(this.i18n.user.profileSaved);
       this.uploadedImages = null;
       this.reload();
       scrollTop();
@@ -549,9 +549,9 @@ export class EditProfileComponent
 
   phoneNameLabel(phone: PhoneManage): string {
     if (phone['kind'] === PhoneKind.LAND_LINE) {
-      return this.messages.phone.nameLandLine;
+      return this.i18n.phone.nameLandLine;
     } else {
-      return this.messages.phone.nameMobile;
+      return this.i18n.phone.nameMobile;
     }
   }
 
@@ -565,9 +565,9 @@ export class EditProfileComponent
 
   phoneNumberLabel(phone: PhoneManage): string {
     if (phone['kind'] === PhoneKind.LAND_LINE) {
-      return this.messages.phone.numberLandLine;
+      return this.i18n.phone.numberLandLine;
     } else {
-      return this.messages.phone.numberMobile;
+      return this.i18n.phone.numberMobile;
     }
   }
 
@@ -767,7 +767,7 @@ export class EditProfileComponent
   removeSingleImage() {
     this.removeAllTempImages();
     this.removeExistingImages();
-    this.notification.snackBar(this.messages.user.imagesChanged, { timeout: IMAGE_MANAGED_TIMEOUT });
+    this.notification.snackBar(this.i18n.user.imagesChanged, { timeout: IMAGE_MANAGED_TIMEOUT });
   }
 
   private removeAllTempImages() {
@@ -795,7 +795,7 @@ export class EditProfileComponent
       // Multiple images: append them
       this.images = [...this.images, ...images];
     }
-    this.notification.snackBar(this.messages.user.imagesChanged, { timeout: IMAGE_MANAGED_TIMEOUT });
+    this.notification.snackBar(this.i18n.user.imagesChanged, { timeout: IMAGE_MANAGED_TIMEOUT });
     this.uploadedImages = images;
   }
 
@@ -833,7 +833,7 @@ export class EditProfileComponent
         });
       }
       if (hasRemovedImages || hasOrderChanged) {
-        this.notification.snackBar(this.messages.user.imagesChanged, { timeout: IMAGE_MANAGED_TIMEOUT });
+        this.notification.snackBar(this.i18n.user.imagesChanged, { timeout: IMAGE_MANAGED_TIMEOUT });
       }
       ref.hide();
     }));

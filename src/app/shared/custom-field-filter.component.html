@@ -3,7 +3,7 @@
     [name]="name" [labelPosition]="labelPosition" [fieldSize]="fieldSize"
     [required]="required" [formControl]="formControl"
     [separator]="ApiHelper.VALUE_SEPARATOR" [fieldOptions]="fieldOptions"
-    [emptyLabel]="messages.general.notApplied">
+    [emptyLabel]="i18n.general.notApplied">
   </multi-selection-field>
 </ng-container>
 
@@ -19,9 +19,9 @@
   <single-selection-field #singleSelectionField *ngIf="type == 'boolean'"
     [id]="id" [label]="label" [name]="name" [labelPosition]="labelPosition"
     [fieldSize]="fieldSize" [required]="required" [formControl]="formControl"
-    [emptyOption]="messages.general.notApplied">
-    <field-option [value]="true" [text]="messages.general.yes"></field-option>
-    <field-option [value]="false" [text]="messages.general.no"></field-option>
+    [emptyOption]="i18n.general.notApplied">
+    <field-option [value]="true" [text]="i18n.general.yes"></field-option>
+    <field-option [value]="false" [text]="i18n.general.no"></field-option>
   </single-selection-field>
 
   <!-- multi selection -->

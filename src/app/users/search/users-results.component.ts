@@ -126,17 +126,17 @@ export class UsersResultsComponent extends BaseComponent implements OnInit {
   fieldName(field: string): string {
     switch (field) {
       case 'display':
-        return this.messages.general.user;
+        return this.i18n.general.user;
       case 'name':
-        return this.messages.user.name;
+        return this.i18n.user.name;
       case 'username':
-        return this.messages.user.username;
+        return this.i18n.user.username;
       case 'email':
-        return this.messages.user.email;
+        return this.i18n.user.email;
       case 'phone':
-        return this.messages.phone.phoneNumber;
+        return this.i18n.phone.phoneNumber;
       case 'accountNumber':
-        return this.messages.account.number;
+        return this.i18n.account.number;
       default:
         const customField = this.data.customFields.find(cf => cf.internalName === field);
         return (customField || {}).name;

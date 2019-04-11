@@ -11,14 +11,14 @@
   {{ address.neighborhood }}
 </div>
 <div [ngClass]="classNames" *ngIf="address.poBox">
-  {{ messages.general.labelValue({
-  label: messages.address.poBox,
+  {{ i18n.general.labelValue({
+  label: i18n.address.poBox,
   value: address.poBox
   }) }}
 </div>
 <div [ngClass]="classNames" *ngIf="address.zip">
-  {{ messages.general.labelValue({
-  label: messages.address.zip,
+  {{ i18n.general.labelValue({
+  label: i18n.address.zip,
   value: address.zip
   }) }}
 </div>

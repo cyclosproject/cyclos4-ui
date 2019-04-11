@@ -9,7 +9,7 @@ import { LoginService } from 'app/core/login.service';
 import { MenuService } from 'app/core/menu.service';
 import { SidenavComponent } from 'app/core/sidenav.component';
 import { StateManager } from 'app/core/state-manager';
-import { Messages } from 'app/messages/messages';
+import { I18n } from 'app/i18n/i18n';
 import { blank, setRootSpinnerVisible } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
 import { trim } from 'lodash';
@@ -39,7 +39,7 @@ export class AppComponent implements OnInit {
     public menu: MenuService,
     public layout: LayoutService,
     private banner: BannerService,
-    public messages: Messages,
+    public i18n: I18n,
     private stateManager: StateManager,
     private breadcrumb: BreadcrumbService
   ) {

@@ -1,6 +1,6 @@
-<h1>{{ messages.field.image.manage }}</h1>
+<h1>{{ i18n.field.image.manage }}</h1>
 
-<div class="mb-3">{{ messages.field.image.manageMessage }}</div>
+<div class="mb-3">{{ i18n.field.image.manageMessage }}</div>
 
 <ng-template #imageTemplate let-item="item">
   <div class="d-flex justify-items-center mb-2 cursor-move">
@@ -20,14 +20,14 @@
 </bs-sortable>
 
 <div class="mt-4 text-primary">
-  {{ messages.field.image.manageAfterConfirm }}
+  {{ i18n.field.image.manageAfterConfirm }}
 </div>
 
 <actions forceRow>
   <button class="btn btn-primary" (click)="ok()">
-    {{ messages.general.confirm }}
+    {{ i18n.general.confirm }}
   </button>
   <button class="btn btn-outline-primary" (click)="modalRef.hide()">
-    {{ messages.general.cancel }}
+    {{ i18n.general.cancel }}
   </button>
 </actions>

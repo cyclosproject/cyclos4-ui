@@ -1,17 +1,17 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="(data$ | async) && (loaded$ | async); else loading">
-    <page-content mode="filters" [heading]="messages.user.title.search"
+    <page-content mode="filters" [heading]="i18n.user.title.search"
       [headingActions]="headingActions$ | async">
       <form [formGroup]="form" class="filters-form border-bottom">
         <div class="row">
           <div class="col-12 col-md-6">
             <input-field labelPosition="side" formControlName="keywords"
-              [label]="messages.general.keywords"></input-field>
+              [label]="i18n.general.keywords"></input-field>
           </div>
           <div *ngIf="data.groups?.length > 1" class="col-12 col-md-6">
             <multi-selection-field labelPosition="side"
               hierarchyProperty="groupSet" formControlName="groups"
-              [label]="messages.user.groupFilter">
+              [label]="i18n.user.groupFilter">
               <field-option *ngFor="let group of data.groups"
                 [value]="group.id" [internalName]="group.internalName"
                 [id]="group.id" [text]="group.name" [parent]="group.groupSet">
@@ -22,7 +22,7 @@
             <max-distance-field labelPosition="side"
               [data]="data.searchByDistanceData"
               formControlName="distanceFilter"
-              [label]="messages.general.distanceFilter">
+              [label]="i18n.general.distanceFilter">
             </max-distance-field>
           </div>
           <div class="col-12 col-md-6" *ngIf="(basicField$ | async) as cf">
@@ -49,12 +49,12 @@
         </div>
         <div *ngIf="(layout.gtxxs$ | async)" class="col-12 col-xs-5 col-md-3">
           <single-selection-field [formControl]="form.get('orderBy')"
-            [display]="messages.general.orderBy"
-            [emptyOption]="messages.general.orderByRelevance">
+            [display]="i18n.general.orderBy"
+            [emptyOption]="i18n.general.orderByRelevance">
             <field-option value="alphabeticallyAsc"
-              [text]="messages.user.orderBy.alphabeticallyAsc"></field-option>
+              [text]="i18n.user.orderBy.alphabeticallyAsc"></field-option>
             <field-option value="alphabeticallyDesc"
-              [text]="messages.user.orderBy.alphabeticallyDesc">
+              [text]="i18n.user.orderBy.alphabeticallyDesc">
             </field-option>
           </single-selection-field>
         </div>

@@ -2,11 +2,11 @@
 
   <page-content *ngIf="data">
     <notification [allowClose]="false">
-      {{ messages.user.newEmailConfirmed }}
+      {{ i18n.user.newEmailConfirmed }}
     </notification>
     <actions *ngIf="(login.user$ | async) == null" ngClass="mt-3" forceRow>
       <button class="btn btn-primary" (click)="goToLogin()">
-        {{ messages.menu.login }}
+        {{ i18n.menu.login }}
       </button>
     </actions>
   </page-content>

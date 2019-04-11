@@ -50,9 +50,9 @@ export class UserAdsComponent
 
   private updateTitle() {
     if (this.layout.xxs) {
-      this.title$.next(this.messages.ad.title.search);
+      this.title$.next(this.i18n.ad.title.search);
     } else {
-      this.title$.next(this.messages.ad.title.owner(this.shortName));
+      this.title$.next(this.i18n.ad.title.owner(this.shortName));
     }
   }
 

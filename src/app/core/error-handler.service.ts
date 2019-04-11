@@ -6,7 +6,7 @@ import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { FormatService } from 'app/core/format.service';
 import { LoginService } from 'app/core/login.service';
 import { NotificationService } from 'app/core/notification.service';
-import { Messages } from 'app/messages/messages';
+import { I18n } from 'app/i18n/i18n';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { FormControlLocator } from 'app/shared/form-control-locator';
 import { empty, focusFirstInvalid } from 'app/shared/helper';
@@ -30,7 +30,7 @@ export class ErrorHandlerService {
     private nextRequestState: NextRequestState,
     private login: LoginService,
     private dataForUiHolder: DataForUiHolder,
-    private messages: Messages
+    private i18n: I18n
   ) { }
 
   /**
@@ -115,7 +115,7 @@ export class ErrorHandlerService {
   }
 
   public handleInvalidRequest() {
-    this.notification.error(this.messages.error.invalidRequest);
+    this.notification.error(this.i18n.error.invalidRequest);
   }
 
   public handleUnauthorizedError(error: UnauthorizedError) {
@@ -297,18 +297,18 @@ export class ErrorHandlerService {
         });
         return this.validationErrorMessage(errors);
       case InputErrorCode.QUERY_PARSE:
-        return this.messages.error.queryParse;
+        return this.i18n.error.queryParse;
       case InputErrorCode.FILE_UPLOAD_SIZE:
-        return this.messages.error.uploadSizeExceeded(this.format.formatFileSize(error.maxFileSize));
+        return this.i18n.error.uploadSizeExceeded(this.format.formatFileSize(error.maxFileSize));
       case InputErrorCode.MAX_ITEMS:
-        return this.messages.error.maxItems(String(error.maxItems));
+        return this.i18n.error.maxItems(String(error.maxItems));
       default:
         return this.validation;
     }
   }
 
   private get validation(): string {
-    return this.messages.error.validation;
+    return this.i18n.error.validation;
   }
 
   private validationErrorMessage(errors: string[]): string {
@@ -330,16 +330,16 @@ export class ErrorHandlerService {
     error = error || {} as ConflictError;
     switch (error.code) {
       case ConflictErrorCode.STALE_ENTITY:
-        return this.messages.error.staleEntity;
+        return this.i18n.error.staleEntity;
       case ConflictErrorCode.CONSTRAINT_VIOLATED_ON_REMOVE:
-        return this.messages.error.removeDataInUse;
+        return this.i18n.error.removeDataInUse;
       default:
         return this.general;
     }
   }
 
   private get general(): string {
-    return this.messages.error.general;
+    return this.i18n.error.general;
   }
 
   /**
@@ -352,15 +352,15 @@ export class ErrorHandlerService {
     }
     if (error.entityType) {
       if (error.key) {
-        return this.messages.error.notFoundTypeKey({
+        return this.i18n.error.notFoundTypeKey({
           type: error.entityType,
           key: error.key
         });
       } else {
-        return this.messages.error.notFoundType(error.entityType);
+        return this.i18n.error.notFoundType(error.entityType);
       }
     } else {
-      return this.messages.error.notFound;
+      return this.i18n.error.notFound;
     }
   }
 
@@ -374,30 +374,30 @@ export class ErrorHandlerService {
       case UnauthorizedErrorCode.LOGIN:
         switch (error.passwordStatus) {
           case PasswordStatusEnum.DISABLED:
-            return this.messages.error.passwordDisabled;
+            return this.i18n.error.passwordDisabled;
           case PasswordStatusEnum.RESET:
-            return this.messages.error.passwordReset;
+            return this.i18n.error.passwordReset;
           case PasswordStatusEnum.INDEFINITELY_BLOCKED:
-            return this.messages.error.passwordIndefinitelyBlocked;
+            return this.i18n.error.passwordIndefinitelyBlocked;
           case PasswordStatusEnum.TEMPORARILY_BLOCKED:
-            return this.messages.error.passwordTemporarilyBlocked;
+            return this.i18n.error.passwordTemporarilyBlocked;
           case PasswordStatusEnum.EXPIRED:
-            return this.messages.error.passwordExpired;
+            return this.i18n.error.passwordExpired;
           case PasswordStatusEnum.PENDING:
-            return this.messages.error.passwordPending;
+            return this.i18n.error.passwordPending;
           default:
-            return this.messages.error.login;
+            return this.i18n.error.login;
         }
       case UnauthorizedErrorCode.REMOTE_ADDRESS_BLOCKED:
-        return this.messages.error.remoteAddressBlocked;
+        return this.i18n.error.remoteAddressBlocked;
       case UnauthorizedErrorCode.UNAUTHORIZED_ADDRESS:
-        return this.messages.error.unauthorizedAddress;
+        return this.i18n.error.unauthorizedAddress;
       case UnauthorizedErrorCode.UNAUTHORIZED_URL:
-        return this.messages.error.unauthorizedUrl;
+        return this.i18n.error.unauthorizedUrl;
       case UnauthorizedErrorCode.LOGGED_OUT:
-        return this.messages.error.loggedOut;
+        return this.i18n.error.loggedOut;
       default:
-        return this.messages.error.permission;
+        return this.i18n.error.permission;
     }
   }
 
@@ -409,17 +409,17 @@ export class ErrorHandlerService {
     error = error || {} as ForbiddenError;
     switch (error.code) {
       case ForbiddenErrorCode.ILLEGAL_ACTION:
-        return this.messages.error.illegalAction;
+        return this.i18n.error.illegalAction;
       case ForbiddenErrorCode.INVALID_PASSWORD:
-        return this.messages.error.passwordInvalid((error.passwordType || {}).name);
+        return this.i18n.error.passwordInvalid((error.passwordType || {}).name);
       case ForbiddenErrorCode.EXPIRED_PASSWORD:
-        return this.messages.error.passwordExpired;
+        return this.i18n.error.passwordExpired;
       case ForbiddenErrorCode.TEMPORARILY_BLOCKED:
-        return this.messages.error.passwordTemporarilyBlocked;
+        return this.i18n.error.passwordTemporarilyBlocked;
       case ForbiddenErrorCode.INDEFINITELY_BLOCKED:
-        return this.messages.error.passwordIndefinitelyBlocked;
+        return this.i18n.error.passwordIndefinitelyBlocked;
       default:
-        return this.messages.error.permission;
+        return this.i18n.error.permission;
     }
   }
 
@@ -433,23 +433,23 @@ export class ErrorHandlerService {
     const amount = () => this.format.formatAsCurrency(error.currency, error.maxAmount);
     switch (error.code) {
       case PaymentErrorCode.TIME_BETWEEN_PAYMENTS_NOT_MET:
-        return this.messages.transaction.error.minTime;
+        return this.i18n.transaction.error.minTime;
       case PaymentErrorCode.INSUFFICIENT_BALANCE:
-        return this.messages.transaction.error.balance;
+        return this.i18n.transaction.error.balance;
       case PaymentErrorCode.DESTINATION_UPPER_LIMIT_REACHED:
-        return this.messages.transaction.error.upperLimit;
+        return this.i18n.transaction.error.upperLimit;
       case PaymentErrorCode.DAILY_AMOUNT_EXCEEDED:
-        return this.messages.transaction.error.dailyAmount(amount());
+        return this.i18n.transaction.error.dailyAmount(amount());
       case PaymentErrorCode.DAILY_PAYMENTS_EXCEEDED:
-        return this.messages.transaction.error.dailyCount(count());
+        return this.i18n.transaction.error.dailyCount(count());
       case PaymentErrorCode.WEEKLY_AMOUNT_EXCEEDED:
-        return this.messages.transaction.error.weeklyAmount(amount());
+        return this.i18n.transaction.error.weeklyAmount(amount());
       case PaymentErrorCode.WEEKLY_PAYMENTS_EXCEEDED:
-        return this.messages.transaction.error.weeklyCount(count());
+        return this.i18n.transaction.error.weeklyCount(count());
       case PaymentErrorCode.MONTHLY_AMOUNT_EXCEEDED:
-        return this.messages.transaction.error.monthlyAmount(amount());
+        return this.i18n.transaction.error.monthlyAmount(amount());
       case PaymentErrorCode.MONTHLY_PAYMENTS_EXCEEDED:
-        return this.messages.transaction.error.monthlyCount(count());
+        return this.i18n.transaction.error.monthlyCount(count());
       default:
         return this.general;
     }
@@ -460,7 +460,7 @@ export class ErrorHandlerService {
    * @param error The error
    */
   public otpErrorMessage(_error: OtpError): string {
-    return this.messages.error.otp;
+    return this.i18n.error.otp;
   }
 
   /**
@@ -472,9 +472,9 @@ export class ErrorHandlerService {
     switch (error.code) {
       case ForgottenPasswordErrorCode.INVALID_SECURITY_ANSWER:
         if (error.keyInvalidated) {
-          return this.messages.error.securityAnswerDisabled;
+          return this.i18n.error.securityAnswerDisabled;
         } else {
-          return this.messages.error.securityAnswer;
+          return this.i18n.error.securityAnswer;
         }
       default:
         return this.general;

@@ -32,7 +32,7 @@ export class ValidateEmailChangeComponent
       if (this.login.user && this.login.user.id !== result) {
         // Was logged-in as a different user
         this.login.logout();
-        this.notification.info(this.messages.user.newEmailConfirmed);
+        this.notification.info(this.i18n.user.newEmailConfirmed);
       } else {
         // Show the page normally
         this.data = result;

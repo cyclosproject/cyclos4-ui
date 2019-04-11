@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Configuration } from 'app/configuration';
-import { Messages } from 'app/messages/messages';
+import { I18n } from 'app/i18n/i18n';
 import { Breakpoint, LayoutService } from 'app/shared/layout.service';
 import { PageData } from 'app/shared/page-data';
 import { PagedResults } from 'app/shared/paged-results';
@@ -19,7 +19,7 @@ import { Subscription } from 'rxjs';
 export class PaginatorComponent<T> implements OnDestroy {
   constructor(
     public layout: LayoutService,
-    public messages: Messages,
+    public i18n: I18n,
     formBuilder: FormBuilder) {
     this.form = formBuilder.group({
       // PageNumber is always page + 1, as NgxBootstrap is 1-based, and we're 0-based

@@ -1,11 +1,11 @@
 <page-layout>
-  <page-content mode="filters" [heading]="messages.notification.title"
+  <page-content mode="filters" [heading]="i18n.notification.title"
     [headingActions]="headingActions$ | async">
     <form [formGroup]="form" class="filters-form border-bottom">
       <div class="row">
         <div class="col-12 col-md-6">
           <boolean-field labelPosition="side" formControlName="onlyUnread"
-            [label]="messages.notification.onlyUnread"></boolean-field>
+            [label]="i18n.notification.onlyUnread"></boolean-field>
         </div>
       </div>
     </form>
@@ -16,8 +16,8 @@
     <table *resultTable class="table table-hover cursor-pointer">
       <thead *ngIf="layout.gtxs$ | async">
         <th class="avatar"></th>
-        <th>{{ messages.general.date }}</th>
-        <th>{{ messages.notification.message }}</th>
+        <th>{{ i18n.general.date }}</th>
+        <th>{{ i18n.notification.message }}</th>
         <th class="actions"></th>
       </thead>
       <tbody>
@@ -46,7 +46,7 @@
               <td>{{ row.message }}</td>
             </ng-template>
             <td class="actions">
-              <button [tooltip]="messages.notification.actions.remove"
+              <button [tooltip]="i18n.notification.actions.remove"
                 class="btn btn-light btn-icon"
                 (click)="remove(row); $event.stopPropagation()">
                 <icon icon="clear"></icon>

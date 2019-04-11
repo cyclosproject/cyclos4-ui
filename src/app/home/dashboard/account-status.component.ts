@@ -45,7 +45,7 @@ export class AccountStatusComponent extends BaseDashboardComponent implements On
     const singleAccount = accounts.length === 1;
     if (singleAccount) {
       // Single account - use a generig title
-      this.title = this.messages.dashboard.accountStatus;
+      this.title = this.i18n.dashboard.accountStatus;
     } else {
       // Multiple accounts - use the account type name
       this.title = this.account.type.name;
@@ -54,7 +54,7 @@ export class AccountStatusComponent extends BaseDashboardComponent implements On
     // The heading actions
     this.headingActions = [{
       icon: 'search',
-      label: this.messages.general.view,
+      label: this.i18n.general.view,
       maybeRoot: true,
       onClick: event => this.menu.navigate({
         entry: this.menu.accountEntry(this.account.type.id),

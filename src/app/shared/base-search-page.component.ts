@@ -185,14 +185,14 @@ export abstract class BaseSearchPageComponent<D, R> extends BasePageComponent<D>
    * Returns the label for showing more filters action
    */
   protected showMoreFiltersLabel(): string {
-    return this.printable ? this.messages.general.showMoreFilters : this.messages.general.moreFilters;
+    return this.printable ? this.i18n.general.showMoreFilters : this.i18n.general.moreFilters;
   }
 
   /**
    * Returns the label for showing less filters action
    */
   protected showLessFiltersLabel(): string {
-    return this.printable ? this.messages.general.showLessFilters : this.messages.general.lessFilters;
+    return this.printable ? this.i18n.general.showLessFilters : this.i18n.general.lessFilters;
   }
 
   /**

@@ -14,7 +14,7 @@ import { LayoutService } from 'app/shared/layout.service';
 import { Observable, Subscription } from 'rxjs';
 import { BreadcrumbService } from '../core/breadcrumb.service';
 import { StateManager } from '../core/state-manager';
-import { Messages } from 'app/messages/messages';
+import { I18n } from 'app/i18n/i18n';
 
 /**
  * Base class to meant to be inherited by other components.
@@ -26,7 +26,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
   // Export ApiHelper to templates
   ApiHelper = ApiHelper;
 
-  messages: Messages;
+  i18n: I18n;
   dataForUiHolder: DataForUiHolder;
   format: FormatService;
   errorHandler: ErrorHandlerService;
@@ -46,7 +46,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
   private lifecycleSubs: Subscription[] = [];
 
   constructor(injector: Injector) {
-    this.messages = injector.get(Messages);
+    this.i18n = injector.get(I18n);
     this.dataForUiHolder = injector.get(DataForUiHolder);
     this.format = injector.get(FormatService);
     this.errorHandler = injector.get(ErrorHandlerService);

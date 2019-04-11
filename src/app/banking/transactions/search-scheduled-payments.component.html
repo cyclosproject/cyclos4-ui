@@ -1,6 +1,6 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="loaded$ | async; else loading">
-    <transaction-filters [heading]="messages.transaction.title.scheduled"
+    <transaction-filters [heading]="i18n.transaction.title.scheduled"
       [form]="form" [data]="data" [statusOptions]="statusOptions"
       [transferFilters]="transferFilters$ | async"></transaction-filters>
 
@@ -8,10 +8,10 @@
       <table *resultTable class="table table-hover cursor-pointer">
         <thead *ngIf="layout.gtxs$ | async">
           <th class="avatar"></th>
-          <th>{{ messages.general.date }}</th>
-          <th>{{ messages.transaction.fromTo }}</th>
-          <th>{{ messages.transaction.scheduling }}</th>
-          <th class="amount">{{ messages.transaction.amount }}</th>
+          <th>{{ i18n.general.date }}</th>
+          <th>{{ i18n.transaction.fromTo }}</th>
+          <th>{{ i18n.transaction.scheduling }}</th>
+          <th class="amount">{{ i18n.transaction.amount }}</th>
         </thead>
         <tbody>
           <ng-container *ngFor="let row of (results$ | async).results">

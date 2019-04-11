@@ -98,7 +98,7 @@
   <content-monitor *ngIf="results && resultType !== 'categories'"
     (ready)="notifyReady()">
     <page-content last>
-      {{ messages.general.results.none }}
+      {{ i18n.general.results.none }}
       {{ notifyReady() }}
     </page-content>
   </content-monitor>

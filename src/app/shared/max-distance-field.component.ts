@@ -4,7 +4,7 @@ import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { MaxDistance } from 'app/shared/max-distance';
 import { SingleSelectionFieldComponent } from 'app/shared/single-selection-field.component';
 import { SearchByDistanceData, DistanceUnitEnum } from 'app/api/models';
-import { Messages } from 'app/messages/messages';
+import { I18n } from 'app/i18n/i18n';
 import { FieldOption } from 'app/shared/field-option';
 import { empty } from 'app/shared/helper';
 import { distinctUntilChanged } from 'rxjs/operators';
@@ -41,7 +41,7 @@ export class MaxDistanceFieldComponent
 
   constructor(
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
-    public messages: Messages,
+    public i18n: I18n,
     private notification: NotificationService,
     private formBuilder: FormBuilder
   ) {
@@ -87,8 +87,8 @@ export class MaxDistanceFieldComponent
       const address = value.address ? this.data.addresses.find(a => a.id === value.address) : null;
       const maxDistance: MaxDistance = {
         name: address
-          ? this.data.addresses.length > 1 ? address.name : this.messages.general.geolocation.myAddress
-          : this.messages.general.geolocation.current,
+          ? this.data.addresses.length > 1 ? address.name : this.i18n.general.geolocation.myAddress
+          : this.i18n.general.geolocation.current,
         maxDistance: value.maxDistance,
         latitude: address ? address.location.latitude : value.latitude,
         longitude: address ? address.location.longitude : value.longitude
@@ -107,19 +107,19 @@ export class MaxDistanceFieldComponent
       }, error => {
         switch (error.code) {
           case error.PERMISSION_DENIED:
-            this.notification.error(this.messages.general.geolocation.errorDenied);
+            this.notification.error(this.i18n.general.geolocation.errorDenied);
             break;
           case error.POSITION_UNAVAILABLE:
           case error.TIMEOUT:
-            this.notification.warning(this.messages.general.geolocation.errorUnavailable);
+            this.notification.warning(this.i18n.general.geolocation.errorUnavailable);
             break;
           default:
-            this.notification.error(this.messages.general.geolocation.errorGeneral);
+            this.notification.error(this.i18n.general.geolocation.errorGeneral);
         }
       });
     } else {
       // Not supported by the browser
-      this.notification.warning(this.messages.general.geolocation.errorUnavailable);
+      this.notification.warning(this.i18n.general.geolocation.errorUnavailable);
     }
   }
 
@@ -132,10 +132,10 @@ export class MaxDistanceFieldComponent
     const data = this.data || {};
     const unit = data.distanceUnit || DistanceUnitEnum.KILOMETER;
     const from = unit === DistanceUnitEnum.KILOMETER
-      ? this.messages.general.geolocation.kilometersFrom
-      : this.messages.general.geolocation.milesFrom;
+      ? this.i18n.general.geolocation.kilometersFrom
+      : this.i18n.general.geolocation.milesFrom;
     const address = data.addresses.find(a => a.id === value.address);
-    const location = address ? address.name : this.messages.general.geolocation.current;
+    const location = address ? address.name : this.i18n.general.geolocation.current;
     return [value.maxDistance, from, location].join(' ');
   }
 

@@ -1,13 +1,13 @@
 <page-layout [ready]="data$ | async">
   <page-content *ngIf="data != null"
-    [heading]="messages.user.title.editProfile"
+    [heading]="i18n.user.title.editProfile"
     [headingActions]="headingActions$ | async" last>
 
     <!-- Image -->
     <ng-container *ngIf="imagesAvailability !== 'disabled'">
       <ng-container *ngIf="imagesAvailability === 'single'">
         <h2 class="mb-3 border-0 mt-2 mt-md-0">
-          {{ messages.user.title.image }}
+          {{ i18n.user.title.image }}
         </h2>
         <div class="row no-gutters">
           <div class="col-12 col-sm-6">
@@ -17,7 +17,7 @@
                 size="huge" useLightbox>
               </avatar>
               <div class="my-3" *ngIf="images.length === 0">
-                {{ messages.user.noImage }}
+                {{ i18n.user.noImage }}
               </div>
             </div>
             <image-upload #singleUpload containerClass="mt-3"
@@ -29,12 +29,12 @@
             *ngIf="canEdit('image') && !(singleUpload.uploading$ | async)">
             <button class="btn btn-outline-primary"
               (click)="singleUpload.perform()">
-              {{ messages.field.image.upload }}
+              {{ i18n.field.image.upload }}
             </button>
             <button *ngIf="images.length > 0"
               class="ml-3 btn btn-outline-primary"
               (click)="removeSingleImage()">
-              {{ messages.field.image.remove }}
+              {{ i18n.field.image.remove }}
             </button>
           </div>
         </div>
@@ -43,11 +43,11 @@
         <h2
           class="border-0 d-flex mb-3 flex-column flex-xs-row justify-content-between mt-2 mt-md-0">
           <div class="mb-2 mb-xs-0">
-            {{ messages.user.title.images }}
+            {{ i18n.user.title.images }}
           </div>
           <button *ngIf="canUploadImages && !(multiUpload.uploading$ | async)"
             class="btn btn-outline-primary" (click)="multiUpload.perform()">
-            {{ messages.field.image.upload }}
+            {{ i18n.field.image.upload }}
           </button>
         </h2>
         <div class="row no-gutters">
@@ -61,14 +61,14 @@
           </div>
           <ng-container *ngIf="images.length === 0">
             <div class="col-12">
-              {{ messages.user.noImages }}
+              {{ i18n.user.noImages }}
             </div>
           </ng-container>
         </div>
         <div *ngIf="canEdit('image') && images.length > 0"
           class="d-flex justify-content-end">
           <button class="btn btn-outline-primary" (click)="manageImages()">
-            {{ messages.field.image.manage }}
+            {{ i18n.field.image.manage }}
           </button>
         </div>
         <image-upload #multiUpload target="userProfile" [user]="key"
@@ -79,16 +79,16 @@
 
     <!-- Basic profile fields-->
     <h2 class="mt-4 mb-2">
-      {{ messages.user.title.fields }}
+      {{ i18n.user.title.fields }}
     </h2>
     <ng-container [formGroup]="user">
       <input-field *ngIf="hasField('name')" formControlName="name"
-        [label]="messages.user.name" [required]="canEdit('name')">
+        [label]="i18n.user.name" [required]="canEdit('name')">
       </input-field>
       <input-field *ngIf="hasField('username')" formControlName="username"
-        [label]="messages.user.username" [required]="canEdit('username')">
+        [label]="i18n.user.username" [required]="canEdit('username')">
       </input-field>
-      <label-value *ngIf="hasField('email')" [label]="messages.user.email"
+      <label-value *ngIf="hasField('email')" [label]="i18n.user.email"
         [kind]="canEdit('email') ? 'field' : 'fieldView'"
         [ignoreExtraCell]="!canManagePrivacy('email')">
         <input-field formControlName="email" [required]="canEdit('email')">
@@ -98,7 +98,7 @@
       </label-value>
       <label-value
         *ngIf="hasField('email') && data.userConfiguration.emailPendingValidation"
-        [label]="messages.user.emailPending" kind="fieldView">
+        [label]="i18n.user.emailPending" kind="fieldView">
         {{ data.userConfiguration.emailPendingValidation }}
       </label-value>
     </ng-container>
@@ -122,7 +122,7 @@
 
     <!-- Single mobile phone -->
     <ng-container *ngIf="singleMobile" [formGroup]="singleMobile">
-      <label-value [label]="messages.phone.mobile"
+      <label-value [label]="i18n.phone.mobile"
         [required]="data.phoneConfiguration.mobileAvailability === 'required'"
         kind="field" fieldSize="small">
         <input-field formControlName="number"
@@ -132,7 +132,7 @@
       </label-value>
 
       <boolean-field *ngIf="phoneHasSms(singleMobileManage)"
-        [label]="messages.phone.enabledSms"
+        [label]="i18n.phone.enabledSms"
         [formControl]="singleMobile.get('enabledForSms')"
         (click)="maybeVerify($event)">
       </boolean-field>
@@ -140,7 +140,7 @@
 
     <!-- Single land-line phone -->
     <ng-container *ngIf="singleLandLine" [formGroup]="singleLandLine">
-      <label-value [label]="messages.phone.landLine"
+      <label-value [label]="i18n.phone.landLine"
         [required]="data.phoneConfiguration.landLineAvailability === 'required'"
         kind="field" fieldSize="small">
         <input-field formControlName="number"
@@ -151,22 +151,22 @@
       </label-value>
       <input-field *ngIf="data.phoneConfiguration.extensionEnabled"
         formControlName="extension" fieldSize="tiny"
-        [label]="messages.phone.extension"></input-field>
+        [label]="i18n.phone.extension"></input-field>
     </ng-container>
 
     <!-- Single address -->
     <ng-container *ngIf="singleAddress">
-      <h2 class="mb-2">{{ messages.address.address }}</h2>
+      <h2 class="mb-2">{{ i18n.address.address }}</h2>
       <boolean-field
         *ngIf="data.addressConfiguration.availability !== 'required'"
         [formControl]="defineSingleAddress"
-        [label]="messages.user.addressDefine"></boolean-field>
+        [label]="i18n.user.addressDefine"></boolean-field>
       <ng-container *ngIf="defineSingleAddress.value">
         <address-form [addressForm]="singleAddress"
           [configuration]="data.addressConfiguration"
           [managePrivacy]="data.addressConfiguration.managePrivacy">
         </address-form>
-        <label-value [label]="messages.general.map" kind="field"
+        <label-value [label]="i18n.general.map" kind="field"
           *ngIf="maps.enabled">
           <static-map
             *ngIf="singleAddress.get('location').value.latitude != null"
@@ -174,7 +174,7 @@
           <button *ngIf="singleAddress.get('location').value.latitude == null"
             class="btn btn-outline-primary" type="button"
             (click)="locateAddress(singleAddress)">
-            {{ messages.general.mapView }}
+            {{ i18n.general.mapView }}
           </button>
         </label-value>
       </ng-container>
@@ -186,7 +186,7 @@
       <h2
         class="mt-4 mb-2 d-flex flex-column flex-xs-row justify-content-between">
         <div class="mb-2 mb-xs-0">
-          {{ messages.user.title.phones }}
+          {{ i18n.user.title.phones }}
         </div>
 
         <!-- When can create both land-line and mobile, use a dropdown -->
@@ -195,34 +195,34 @@
           <button dropdownToggle type="button" type="button"
             class="btn btn-outline-primary dropdown-toggle"
             aria-controls="newPhoneDropDown">
-            {{ messages.user.phoneAdd }}
+            {{ i18n.user.phoneAdd }}
           </button>
           <div #dropDownMenu class="dropdown-menu dropdown-menu-right"
             *dropdownMenu role="listbox" id="newPhoneDropDown">
             <button class="dropdown-item" (click)="addLandLine()">
-              {{ messages.user.phoneAddLandLine }}
+              {{ i18n.user.phoneAddLandLine }}
             </button>
             <button class="dropdown-item" (click)="addMobile()">
-              {{ messages.user.phoneAddMobile }}
+              {{ i18n.user.phoneAddMobile }}
             </button>
           </div>
 
           <div *ngIf="canCreateLandLine && !canCreateMobile"
             class="section-title-action">
             <button class="btn btn-outline-primary" (click)="addLandLine()">
-              {{ messages.user.phoneAddLandLine }}
+              {{ i18n.user.phoneAddLandLine }}
             </button>
           </div>
           <div *ngIf="!canCreateLandLine && canCreateMobile"
             class="section-title-action">
             <button class="btn btn-outline-primary" (click)="addMobile()">
-              {{ messages.user.phoneAddMobile }}
+              {{ i18n.user.phoneAddMobile }}
             </button>
           </div>
         </div>
       </h2>
       <div *ngIf="phones.length == 0">
-        {{ messages.user.phoneNone }}
+        {{ i18n.user.phoneNone }}
       </div>
       <ng-container *ngFor="let phone of phones; let last = last"
         [formGroup]="phone['form']">
@@ -234,21 +234,21 @@
           [placeholder]="phoneExample(phone)"></input-field>
         <input-field *ngIf="hasExtension(phone)"
           [id]="'phone_extension' + phone['idSuffix']" type="tel"
-          formControlName="extension" [label]="messages.phone.extension">
+          formControlName="extension" [label]="i18n.phone.extension">
         </input-field>
         <boolean-field *ngIf="phoneHasSms(phone)"
-          [label]="messages.phone.enabledSms" formControlName="enabledForSms"
+          [label]="i18n.phone.enabledSms" formControlName="enabledForSms"
           (click)="maybeVerify($event, phone['id'])">
         </boolean-field>
         <label-value *ngIf="data.phoneConfiguration.managePrivacy"
-          [label]="messages.field.privacy.name" kind="field">
+          [label]="i18n.field.privacy.name" kind="field">
           <div class="d-flex justify-content-between">
             <field-privacy [control]="phone['form'].get('hidden')"
               justifyStart></field-privacy>
             <button *ngIf="(layout.gtxxs$ | async)"
               class="btn btn-outline-primary" type="button"
               (click)="removePhone(phone)">
-              {{ messages.user.phoneRemove }}
+              {{ i18n.user.phoneRemove }}
             </button>
           </div>
         </label-value>
@@ -257,7 +257,7 @@
           class="d-flex justify-content-end">
           <button class="btn btn-outline-primary" type="button"
             (click)="removePhone(phone)">
-            {{ messages.user.phoneRemove }}
+            {{ i18n.user.phoneRemove }}
           </button>
         </div>
         <hr *ngIf="!last">
@@ -269,42 +269,42 @@
       <h2
         class="mt-4 mb-2 d-flex flex-column flex-xs-row justify-content-between">
         <div class="mb-2 mb-xs-0">
-          {{ messages.user.title.addresses }}
+          {{ i18n.user.title.addresses }}
         </div>
         <div class="section-title-action">
           <button *ngIf="canCreateAddress" class="btn btn-outline-primary"
             (click)="addAddress()">
-            {{ messages.user.addressAdd }}
+            {{ i18n.user.addressAdd }}
           </button>
         </div>
       </h2>
       <div *ngIf="data.addresses.length == 0">
-        {{ messages.user.addressNone }}
+        {{ i18n.user.addressNone }}
       </div>
       <ng-container *ngFor="let address of addresses; let last = last"
         [formGroup]="address['form']">
         <input-field [id]="'address_name' + address['idSuffix']"
-          formControlName="name" required [label]="messages.general.name">
+          formControlName="name" required [label]="i18n.general.name">
         </input-field>
         <address-form [addressForm]="address['form']"
           [configuration]="data.addressConfiguration" idPrefix="address_"
           [idSuffix]="address['idSuffix']" [managePrivacy]="false">
         </address-form>
         <label-value *ngIf="data.addressConfiguration.managePrivacy"
-          [label]="messages.field.privacy.name" kind="field">
+          [label]="i18n.field.privacy.name" kind="field">
           <div class="d-flex justify-content-between">
             <field-privacy [control]="address['form'].get('hidden')"
               justifyStart></field-privacy>
             <button *ngIf="!maps.enabled && (layout.gtxxs$ | async)"
               class="btn btn-outline-primary" type="button"
               (click)="removeAddress(address)">
-              {{ messages.user.addressRemove }}
+              {{ i18n.user.addressRemove }}
             </button>
           </div>
         </label-value>
         <label-value kind="field"
           *ngIf="maps.enabled && address['form'].get('location').value.latitude != null"
-          [label]="messages.general.map" class="pb-0">
+          [label]="i18n.general.map" class="pb-0">
           <static-map [address]="address['form'].value"></static-map>
         </label-value>
         <div class="row mt-3 no-gutters"
@@ -314,14 +314,14 @@
             <actions class="mt-0" forceRow>
               <button class="btn btn-outline-primary" type="button"
                 (click)="removeAddress(address)">
-                {{ messages.user.addressRemove }}
+                {{ i18n.user.addressRemove }}
               </button>
               <ng-container
                 *ngIf="address['form'].get('location').value.latitude == null">
                 <div class="flex-grow-1"></div>
                 <button class="btn btn-outline-primary" type="button"
                   (click)="locateAddress(address['form'])">
-                  {{ messages.general.mapView }}
+                  {{ i18n.general.mapView }}
                 </button>
               </ng-container>
             </actions>
@@ -340,44 +340,44 @@
       <h2
         class="mt-4 mb-2 d-flex flex-column flex-xs-row justify-content-between">
         <div class="mb-2 mb-xs-0">
-          {{ messages.user.title.contactInfos }}
+          {{ i18n.user.title.contactInfos }}
         </div>
         <div class="section-title-action">
           <button *ngIf="canCreateContactInfo" class="btn btn-outline-primary"
             (click)="addContactInfo()">
-            {{ messages.user.contactInfoAdd }}
+            {{ i18n.user.contactInfoAdd }}
           </button>
         </div>
       </h2>
       <div *ngIf="contactInfos.length == 0">
-        {{ messages.user.contactInfoNone }}
+        {{ i18n.user.contactInfoNone }}
       </div>
       <ng-container *ngFor="let contactInfo of contactInfos; let last = last"
         [formGroup]="contactInfo['form']">
         <images-field formControlName="image" target="contactInfo"
-          [label]="messages.general.image" separator="@" avatarSize="xlarge"
+          [label]="i18n.general.image" separator="@" avatarSize="xlarge"
           [initialImages]="data.contactInfoBinaryValues[contactInfo['id']]?.image">
         </images-field>
         <input-field [id]="'contact-info_name' + contactInfo['idSuffix']"
-          formControlName="name" [label]="messages.general.name">
+          formControlName="name" [label]="i18n.general.name">
         </input-field>
         <input-field [id]="'contact-info_email' + contactInfo['idSuffix']"
-          formControlName="email" [label]="messages.user.email"></input-field>
+          formControlName="email" [label]="i18n.user.email"></input-field>
         <input-field
           [id]="'contact-info_mobilePhone' + contactInfo['idSuffix']"
-          formControlName="mobilePhone" [label]="messages.phone.mobile">
+          formControlName="mobilePhone" [label]="i18n.phone.mobile">
         </input-field>
         <input-field
           [id]="'contact-info_landLinePhone' + contactInfo['idSuffix']"
-          formControlName="landLinePhone" [label]="messages.phone.landLine">
+          formControlName="landLinePhone" [label]="i18n.phone.landLine">
         </input-field>
         <input-field
           [id]="'contact-info_landLineExtension' + contactInfo['idSuffix']"
           formControlName="landLineExtension"
-          [label]="messages.phone.extension"></input-field>
+          [label]="i18n.phone.extension"></input-field>
         <single-selection-field
           [id]="'contact-info_address' + contactInfo['idSuffix']"
-          formControlName="address" [label]="messages.address.address">
+          formControlName="address" [label]="i18n.address.address">
           <ng-container *ngFor="let address of data.addresses">
             <field-option *ngIf="address.id" [value]="address.id"
               [text]="address.name"></field-option>
@@ -391,14 +391,14 @@
           </custom-field-input>
         </ng-container>
         <label-value *ngIf="data.contactInfoConfiguration.managePrivacy"
-          [label]="messages.field.privacy.name" kind="field">
+          [label]="i18n.field.privacy.name" kind="field">
           <div class="d-flex justify-content-between">
             <field-privacy [control]="contactInfo['form'].get('hidden')"
               justifyStart></field-privacy>
             <button *ngIf="(layout.gtxxs$ | async)"
               class="btn btn-outline-primary" type="button"
               (click)="removeContactInfo(contactInfo)">
-              {{ messages.user.contactInfoRemove }}
+              {{ i18n.user.contactInfoRemove }}
             </button>
           </div>
         </label-value>
@@ -407,7 +407,7 @@
           class="d-flex justify-content-end">
           <button class="btn btn-outline-primary" type="button"
             (click)="removeContactInfo(contactInfo)">
-            {{ messages.user.contactInfoRemove }}
+            {{ i18n.user.contactInfoRemove }}
           </button>
         </div>
 
@@ -416,7 +416,7 @@
     </ng-container>
     <ng-container *ngIf="data.confirmationPasswordInput">
       <h2 class="mt-5 mb-2">
-        {{ messages.user.title.confirmation}}
+        {{ i18n.user.title.confirmation}}
       </h2>
       <form [formGroup]="user">
         <confirmation-password
@@ -432,7 +432,7 @@
       *ngIf="canConfirm && (confirmationMode$ | async) !== ConfirmationMode.Device">
       <button class="btn btn-primary btn-main"
         [disabled]="requesting$ | async" (click)="save()">
-        {{ messages.general.save }}
+        {{ i18n.general.save }}
       </button>
     </actions>
   </page-content>

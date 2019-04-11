@@ -1,8 +1,8 @@
-<h1>{{ messages.field.user.contactTitle }}</h1>
+<h1>{{ i18n.field.user.contactTitle }}</h1>
 
 <ng-container *ngIf="(ready$ | async); else spinner">
   <div *ngIf="(contacts$ | async)?.length === 0; else contactLinks">
-    {{ messages.field.user.contactEmpty }}
+    {{ i18n.field.user.contactEmpty }}
   </div>
   <ng-template #contactLinks>
     <a *ngFor="let c of contacts$ | async" class="d-block mb-1 text-body"
@@ -19,6 +19,6 @@
 <actions>
   <span></span>
   <button class="btn btn-outline-primary" (click)="modalRef.hide()">
-    {{ messages.general.cancel }}
+    {{ i18n.general.cancel }}
   </button>
 </actions>

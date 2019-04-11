@@ -91,9 +91,9 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
 
   private updateAccountBalanceLabel() {
     if (this.layout.xxs) {
-      this.accountBalanceLabel$.next(this.messages.transaction.myAccountBalance);
+      this.accountBalanceLabel$.next(this.i18n.transaction.myAccountBalance);
     } else {
-      this.accountBalanceLabel$.next(this.messages.transaction.accountBalance);
+      this.accountBalanceLabel$.next(this.i18n.transaction.accountBalance);
     }
   }
 
@@ -154,14 +154,14 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
 
     const allPaymentTypes = this.fetchedPaymentTypes || [];
     if (empty(allPaymentTypes)) {
-      this.notification.error(this.messages.transaction.noTypes);
+      this.notification.error(this.i18n.transaction.noTypes);
     }
     // Filter the payment types from the selected account type
     const paymentTypes = allPaymentTypes.filter(tt => tt.from.id === value.account);
     let type: string = this.form.value.type;
     let error: any = null;
     if (empty(paymentTypes)) {
-      const msg = this.messages.transaction.noTypesSelection;
+      const msg = this.i18n.transaction.noTypesSelection;
       error = { message: msg };
     } else {
       this.paymentTypes$.next(paymentTypes);

@@ -56,34 +56,34 @@ export class AccountStatusViewComponent extends BaseComponent implements OnInit,
       }
     };
     if (this.mode === 'current') {
-      add(status.balance, this.messages.account.balance);
+      add(status.balance, this.i18n.account.balance);
       if (status.availableBalance !== status.balance) {
-        add(status.availableBalance, this.messages.account.availableBalance);
+        add(status.availableBalance, this.i18n.account.availableBalance);
       }
       if (status.reservedAmount && !this.format.isZero(status.reservedAmount)) {
-        add(status.reservedAmount, this.messages.account.reservedAmount, true);
+        add(status.reservedAmount, this.i18n.account.reservedAmount, true);
       }
       if (status.creditLimit && !this.format.isZero(status.creditLimit)) {
-        add(status.creditLimit, this.messages.account.negativeLimit);
+        add(status.creditLimit, this.i18n.account.negativeLimit);
       }
       if (status.upperCreditLimit && !this.format.isZero(status.upperCreditLimit)) {
-        add(status.upperCreditLimit, this.messages.account.positiveLimit);
+        add(status.upperCreditLimit, this.i18n.account.positiveLimit);
       }
     } else {
       if (status.balanceAtBegin != null) {
-        add(status.balanceAtBegin, this.messages.account.balanceOn(this.format.formatAsDate(status.beginDate)));
+        add(status.balanceAtBegin, this.i18n.account.balanceOn(this.format.formatAsDate(status.beginDate)));
       }
       if (status.balanceAtEnd != null) {
-        add(status.balanceAtEnd, this.messages.account.balanceOn(this.format.formatAsDate(status.endDate)));
+        add(status.balanceAtEnd, this.i18n.account.balanceOn(this.format.formatAsDate(status.endDate)));
       }
       if (status.incoming != null && status.incoming.sum) {
-        add(status.incoming.sum, this.messages.account.totalIncome);
+        add(status.incoming.sum, this.i18n.account.totalIncome);
       }
       if (status.outgoing != null && status.outgoing.sum) {
-        add(status.outgoing.sum, this.messages.account.totalOutflow);
+        add(status.outgoing.sum, this.i18n.account.totalOutflow);
       }
       if (status.netInflow != null) {
-        add(status.netInflow, this.messages.account.netInflow);
+        add(status.netInflow, this.i18n.account.netInflow);
       }
     }
     this.indicators$.next(indicators);

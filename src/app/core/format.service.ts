@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ApiConfiguration } from 'app/api/api-configuration';
 import { Currency, DataForUi } from 'app/api/models';
-import { Messages } from 'app/messages/messages';
+import { I18n } from 'app/i18n/i18n';
 import Big from 'big.js';
 import moment from 'moment-mini-ts';
 import { DataForUiHolder } from './data-for-ui-holder';
@@ -19,7 +19,7 @@ export class FormatService {
   constructor(
     dataForUiHolder: DataForUiHolder,
     private apiConfiguration: ApiConfiguration,
-    private messages: Messages) {
+    private i18n: I18n) {
     dataForUiHolder.subscribe(dataForUi => this.initialize(dataForUi));
     // If already loaded, initialize right away
     if (dataForUiHolder.dataForUi) {
@@ -106,43 +106,43 @@ export class FormatService {
     this.decimalSeparator = dataForUi.decimalSeparator || '.';
 
     this.longMonthNames = [
-      this.messages.general.month.long.jan,
-      this.messages.general.month.long.feb,
-      this.messages.general.month.long.mar,
-      this.messages.general.month.long.apr,
-      this.messages.general.month.long.may,
-      this.messages.general.month.long.jun,
-      this.messages.general.month.long.jul,
-      this.messages.general.month.long.aug,
-      this.messages.general.month.long.sep,
-      this.messages.general.month.long.oct,
-      this.messages.general.month.long.nov,
-      this.messages.general.month.long.dec
+      this.i18n.general.month.long.jan,
+      this.i18n.general.month.long.feb,
+      this.i18n.general.month.long.mar,
+      this.i18n.general.month.long.apr,
+      this.i18n.general.month.long.may,
+      this.i18n.general.month.long.jun,
+      this.i18n.general.month.long.jul,
+      this.i18n.general.month.long.aug,
+      this.i18n.general.month.long.sep,
+      this.i18n.general.month.long.oct,
+      this.i18n.general.month.long.nov,
+      this.i18n.general.month.long.dec
     ];
 
     this.shortMonthNames = [
-      this.messages.general.month.short.jan,
-      this.messages.general.month.short.feb,
-      this.messages.general.month.short.mar,
-      this.messages.general.month.short.apr,
-      this.messages.general.month.short.may,
-      this.messages.general.month.short.jun,
-      this.messages.general.month.short.jul,
-      this.messages.general.month.short.aug,
-      this.messages.general.month.short.sep,
-      this.messages.general.month.short.oct,
-      this.messages.general.month.short.nov,
-      this.messages.general.month.short.dec
+      this.i18n.general.month.short.jan,
+      this.i18n.general.month.short.feb,
+      this.i18n.general.month.short.mar,
+      this.i18n.general.month.short.apr,
+      this.i18n.general.month.short.may,
+      this.i18n.general.month.short.jun,
+      this.i18n.general.month.short.jul,
+      this.i18n.general.month.short.aug,
+      this.i18n.general.month.short.sep,
+      this.i18n.general.month.short.oct,
+      this.i18n.general.month.short.nov,
+      this.i18n.general.month.short.dec
     ];
 
     this.minWeekdayNames = [
-      this.messages.general.weekday.min.sun,
-      this.messages.general.weekday.min.mon,
-      this.messages.general.weekday.min.tue,
-      this.messages.general.weekday.min.wed,
-      this.messages.general.weekday.min.thu,
-      this.messages.general.weekday.min.fri,
-      this.messages.general.weekday.min.sat
+      this.i18n.general.weekday.min.sun,
+      this.i18n.general.weekday.min.mon,
+      this.i18n.general.weekday.min.tue,
+      this.i18n.general.weekday.min.wed,
+      this.i18n.general.weekday.min.thu,
+      this.i18n.general.weekday.min.fri,
+      this.i18n.general.weekday.min.sat
     ];
 
     this._dataForUi = dataForUi;
@@ -371,14 +371,14 @@ export class FormatService {
    */
   formatFileSize(bytes: number): string {
     if (bytes < 1024) {
-      return this.messages.general.fileSize.b(String(bytes));
+      return this.i18n.general.fileSize.b(String(bytes));
     }
     bytes /= 1024;
     if (bytes < 1024) {
-      return this.messages.general.fileSize.k(this.formatAsNumber(bytes, 1));
+      return this.i18n.general.fileSize.k(this.formatAsNumber(bytes, 1));
     }
     bytes /= 1024;
-    return this.messages.general.fileSize.m(this.formatAsNumber(bytes, 1));
+    return this.i18n.general.fileSize.m(this.formatAsNumber(bytes, 1));
   }
 
   /**

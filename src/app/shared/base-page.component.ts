@@ -46,7 +46,7 @@ export abstract class BasePageComponent<D> extends BaseComponent implements OnIn
     if (this._printAction) {
       return this._printAction;
     }
-    this._printAction = new HeadingAction('print', this.messages.general.print, () => {
+    this._printAction = new HeadingAction('print', this.i18n.general.print, () => {
       self.print();
     }, true);
     return this._printAction;

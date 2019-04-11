@@ -123,7 +123,7 @@ export abstract class BaseTransactionsSearch
    */
   subjectName(row: TransactionResult): string {
     if (row.relatedKind === 'system') {
-      return this.messages.account.system;
+      return this.i18n.account.system;
     } else {
       return (row.relatedUser || {}).display;
     }
@@ -145,30 +145,30 @@ export abstract class BaseTransactionsSearch
       case TransactionKind.SCHEDULED_PAYMENT:
         if (row.installmentCount === 1) {
           const installment = row.firstInstallment || {};
-          return this.messages.transaction.schedulingStatus.scheduledToDate(installment.dueDate);
+          return this.i18n.transaction.schedulingStatus.scheduledToDate(installment.dueDate);
         } else {
           const count = row.installmentCount;
           const firstOpen = row.firstOpenInstallment;
           if (firstOpen) {
-            return this.messages.transaction.schedulingStatus.openInstallments({
+            return this.i18n.transaction.schedulingStatus.openInstallments({
               count: String(count),
               dueDate: this.format.formatAsDate(firstOpen.dueDate)
             });
           } else {
-            return this.messages.transaction.schedulingStatus.closedInstallments(String(count));
+            return this.i18n.transaction.schedulingStatus.closedInstallments(String(count));
           }
         }
       case TransactionKind.RECURRING_PAYMENT:
         switch (row.recurringPaymentStatus) {
           case RecurringPaymentStatusEnum.CLOSED:
-            return this.messages.transaction.schedulingStatus.closedRecurring;
+            return this.i18n.transaction.schedulingStatus.closedRecurring;
           case RecurringPaymentStatusEnum.CANCELED:
-            return this.messages.transaction.schedulingStatus.canceledRecurring;
+            return this.i18n.transaction.schedulingStatus.canceledRecurring;
           default:
-            return this.messages.transaction.schedulingStatus.openRecurring(this.format.formatAsDate(row.nextOccurrenceDate));
+            return this.i18n.transaction.schedulingStatus.openRecurring(this.format.formatAsDate(row.nextOccurrenceDate));
         }
       default:
-        return this.messages.transaction.schedulingStatus.direct;
+        return this.i18n.transaction.schedulingStatus.direct;
     }
   }
 }

@@ -5,7 +5,7 @@ import { MenuService } from 'app/core/menu.service';
 import { LayoutService } from 'app/shared/layout.service';
 import { BaseMenuEntry, Menu, MenuEntry, MenuType, RootMenu, RootMenuEntry } from 'app/shared/menu';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Messages } from 'app/messages/messages';
+import { I18n } from 'app/i18n/i18n';
 
 /**
  * The sidenav contains the menu on small devices
@@ -25,7 +25,7 @@ export class SidenavComponent implements OnInit {
     public login: LoginService,
     public format: FormatService,
     public layout: LayoutService,
-    private messages: Messages) {
+    private i18n: I18n) {
   }
 
   roots$: Observable<RootMenuEntry[]>;
@@ -108,7 +108,7 @@ export class SidenavComponent implements OnInit {
   label(entry: BaseMenuEntry) {
     if (entry instanceof MenuEntry && entry.menu === Menu.DASHBOARD && this.layout.ltmd) {
       // For mobile, the dashboard is shown as home
-      return this.messages.menu.home;
+      return this.i18n.menu.home;
     }
     return entry.label;
   }

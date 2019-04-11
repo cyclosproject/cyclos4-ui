@@ -143,17 +143,17 @@ export class PerformPaymentComponent extends BasePageComponent<DataForTransactio
       case Menu.PAYMENT_TO_SYSTEM:
         // Payment to system account
         this.toParam = ApiHelper.SYSTEM;
-        this.title = this.messages.transaction.title.paymentToSystem;
+        this.title = this.i18n.transaction.title.paymentToSystem;
         break;
       case Menu.PAYMENT_TO_SELF:
         // Payment between own accounts
         this.toParam = ApiHelper.SELF;
-        this.title = this.messages.transaction.title.paymentToSelf;
+        this.title = this.i18n.transaction.title.paymentToSelf;
         break;
       default:
         // To user. Maybe null.
         this.toParam = route.params['to'];
-        this.title = this.messages.transaction.title.paymentToUser;
+        this.title = this.i18n.transaction.title.paymentToUser;
         break;
     }
 
@@ -261,7 +261,7 @@ export class PerformPaymentComponent extends BasePageComponent<DataForTransactio
   onDataInitialized(data: DataForTransaction) {
     if (empty(data.accounts)) {
       // No accounts
-      this.notification.error(this.messages.transaction.noAccounts);
+      this.notification.error(this.i18n.transaction.noAccounts);
     } else {
       // Set the initial step
       this.step = 'form';
@@ -376,8 +376,8 @@ export class PerformPaymentComponent extends BasePageComponent<DataForTransactio
   get doneTitle(): string {
     if (this.performed) {
       return this.performed.authorizationStatus === TransactionAuthorizationStatusEnum.PENDING
-        ? this.messages.transaction.title.pendingPayment
-        : this.messages.transaction.title.processedPayment;
+        ? this.i18n.transaction.title.pendingPayment
+        : this.i18n.transaction.title.processedPayment;
     }
   }
 

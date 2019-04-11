@@ -1,9 +1,9 @@
 {
   "$schema": "./node_modules/ng-translation-gen/ng-translation-gen-schema.json",
-  "input": "src/locale",
-  "output": "src/app/messages",
+  "input": "src/i18n",
+  "output": "src/app/i18n",
   "mapping": {
-    "cyclos4-ui": "Messages"
+    "i18n": "I18n"
   },
   "argumentType": "string | number",
   "defaultLocale": "en",

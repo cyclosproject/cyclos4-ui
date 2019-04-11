@@ -1,11 +1,11 @@
 <h1>
-  {{ messages.phone.verify.title(phone.number) }}
+  {{ i18n.phone.verify.title(phone.number) }}
 </h1>
 
 <div class="row">
   <div class="col-3 col-form-label">
     <label for="smsCode">
-      {{ messages.phone.verify.code }}
+      {{ i18n.phone.verify.code }}
     </label>
   </div>
   <div class="col-6">
@@ -14,7 +14,7 @@
   </div>
   <div class="col-3">
     <button class="btn btn-primary d-block w-100" (click)="sendCode()">
-      {{ messages.phone.verify.send }}
+      {{ i18n.phone.verify.send }}
     </button>
   </div>
 </div>
@@ -23,9 +23,9 @@
 
 <actions ngClass="mt-4">
   <button class="btn btn-primary" [disabled]="requesting$ | async" (click)="verify()">
-    {{ messages.general.confirm }}
+    {{ i18n.general.confirm }}
   </button>
   <button class="btn btn-light" (click)="modalRef.hide()">
-    {{ messages.general.cancel }}
+    {{ i18n.general.cancel }}
   </button>
 </actions>

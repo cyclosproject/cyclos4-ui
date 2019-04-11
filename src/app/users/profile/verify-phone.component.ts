@@ -39,13 +39,13 @@ export class VerifyPhoneComponent extends BaseComponent implements OnInit {
 
   ngOnInit() {
     super.ngOnInit();
-    this.message = this.messages.phone.verify.message;
+    this.message = this.i18n.phone.verify.message;
   }
 
   /** Sends the verification code */
   sendCode() {
     this.phonesService.sendPhoneVerificationCode({ id: this.phone.id }).subscribe(number => {
-      this.message = this.messages.phone.verify.done(number);
+      this.message = this.i18n.phone.verify.done(number);
       this.code.setValue(null);
       this.codeField.focus();
     });
@@ -69,13 +69,13 @@ export class VerifyPhoneComponent extends BaseComponent implements OnInit {
       switch (status) {
         case CodeVerificationStatusEnum.CODE_NOT_SENT:
         case CodeVerificationStatusEnum.EXPIRED:
-          this.notification.error(this.messages.phone.verify.errorExpired);
+          this.notification.error(this.i18n.phone.verify.errorExpired);
           break;
         case CodeVerificationStatusEnum.FAILED:
-          this.notification.error(this.messages.phone.verify.errorInvalid);
+          this.notification.error(this.i18n.phone.verify.errorInvalid);
           break;
         case CodeVerificationStatusEnum.MAX_ATTEMPTS_REACHED:
-          this.notification.error(this.messages.phone.verify.errorMaxAttempts);
+          this.notification.error(this.i18n.phone.verify.errorMaxAttempts);
           break;
         case CodeVerificationStatusEnum.SUCCESS:
           this.disabled = true;

@@ -7,7 +7,7 @@ import { ContentService } from 'app/core/content.service';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { LoginService } from 'app/core/login.service';
 import { StateManager } from 'app/core/state-manager';
-import { Messages } from 'app/messages/messages';
+import { I18n } from 'app/i18n/i18n';
 import { ApiHelper } from 'app/shared/api-helper';
 import { toFullUrl } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
@@ -52,7 +52,7 @@ export class MenuService {
   }
 
   constructor(
-    private messages: Messages,
+    private i18n: I18n,
     private injector: Injector,
     private dataForUiHolder: DataForUiHolder,
     private router: Router,
@@ -73,7 +73,7 @@ export class MenuService {
 
     // Whenever the authenticated user changes, reload the menu
     const buildMenu = (dataForUi: DataForUi) => {
-      if (this.messages.initialized$.value) {
+      if (this.i18n.initialized$.value) {
         const auth = (dataForUi || {}).auth;
         this._fullMenu.next(this.buildFullMenu(auth));
         this._activeMenu.next(null);
@@ -438,17 +438,17 @@ export class MenuService {
       return entry;
     };
     // Create the root menu entries
-    const home = addRoot(RootMenu.HOME, 'home', this.messages.menu.home, null);
-    const dashboard = addRoot(RootMenu.DASHBOARD, 'dashboard', this.messages.menu.dashboard, null);
-    const publicDirectory = addRoot(RootMenu.PUBLIC_DIRECTORY, 'group', this.messages.menu.marketplaceDirectory);
-    const publicMarketplace = addRoot(RootMenu.PUBLIC_MARKETPLACE, 'shopping_cart', this.messages.menu.marketplaceAdvertisements);
-    addRoot(RootMenu.BANKING, 'account_balance', this.messages.menu.banking);
-    const marketplaceRoot = addRoot(RootMenu.MARKETPLACE, 'shopping_cart', this.messages.menu.marketplace);
-    const content = addRoot(RootMenu.CONTENT, 'information', this.messages.menu.content);
-    addRoot(RootMenu.PERSONAL, 'account_box', this.messages.menu.personal, null, [MenuType.SIDENAV, MenuType.BAR, MenuType.SIDE]);
-    const register = addRoot(RootMenu.REGISTRATION, 'registration', this.messages.menu.register, null, [MenuType.SIDENAV]);
-    const login = addRoot(RootMenu.LOGIN, 'exit_to_app', this.messages.menu.login, null, [MenuType.SIDENAV]);
-    const logout = addRoot(RootMenu.LOGOUT, 'logout', this.messages.menu.logout, null, []);
+    const home = addRoot(RootMenu.HOME, 'home', this.i18n.menu.home, null);
+    const dashboard = addRoot(RootMenu.DASHBOARD, 'dashboard', this.i18n.menu.dashboard, null);
+    const publicDirectory = addRoot(RootMenu.PUBLIC_DIRECTORY, 'group', this.i18n.menu.marketplaceDirectory);
+    const publicMarketplace = addRoot(RootMenu.PUBLIC_MARKETPLACE, 'shopping_cart', this.i18n.menu.marketplaceAdvertisements);
+    addRoot(RootMenu.BANKING, 'account_balance', this.i18n.menu.banking);
+    const marketplaceRoot = addRoot(RootMenu.MARKETPLACE, 'shopping_cart', this.i18n.menu.marketplace);
+    const content = addRoot(RootMenu.CONTENT, 'information', this.i18n.menu.content);
+    addRoot(RootMenu.PERSONAL, 'account_box', this.i18n.menu.personal, null, [MenuType.SIDENAV, MenuType.BAR, MenuType.SIDE]);
+    const register = addRoot(RootMenu.REGISTRATION, 'registration', this.i18n.menu.register, null, [MenuType.SIDENAV]);
+    const login = addRoot(RootMenu.LOGIN, 'exit_to_app', this.i18n.menu.login, null, [MenuType.SIDENAV]);
+    const logout = addRoot(RootMenu.LOGOUT, 'logout', this.i18n.menu.logout, null, []);
 
     // Lambda that adds a submenu to a root menu
     const add = (menu: Menu | ActiveMenu, url: string, icon: string, label: string, showIn: MenuType[] = null): MenuEntry => {
@@ -548,31 +548,31 @@ export class MenuService {
       }
       const payments = banking.payments || {};
       if (payments.user) {
-        add(Menu.PAYMENT_TO_USER, '/banking/payment', 'payment', this.messages.menu.bankingPayUser);
+        add(Menu.PAYMENT_TO_USER, '/banking/payment', 'payment', this.i18n.menu.bankingPayUser);
       }
       if (payments.self) {
-        add(Menu.PAYMENT_TO_SELF, '/banking/payment/self', 'payment', this.messages.menu.bankingPaySelf);
+        add(Menu.PAYMENT_TO_SELF, '/banking/payment/self', 'payment', this.i18n.menu.bankingPaySelf);
       }
       if (payments.system) {
-        add(Menu.PAYMENT_TO_SYSTEM, '/banking/payment/system', 'payment', this.messages.menu.bankingPaySystem);
+        add(Menu.PAYMENT_TO_SYSTEM, '/banking/payment/system', 'payment', this.i18n.menu.bankingPaySystem);
       }
       const scheduledPayments = (banking.scheduledPayments || {});
       const recurringPayments = (banking.recurringPayments || {});
       if (scheduledPayments.view || recurringPayments.view) {
-        add(Menu.SCHEDULED_PAYMENTS, '/banking/scheduled-payments', 'schedule', this.messages.menu.bankingScheduledPayments);
+        add(Menu.SCHEDULED_PAYMENTS, '/banking/scheduled-payments', 'schedule', this.i18n.menu.bankingScheduledPayments);
       }
       if ((banking.authorizations || {}).view) {
-        add(Menu.AUTHORIZED_PAYMENTS, '/banking/authorized-payments', 'assignment_turned_in', this.messages.menu.bankingAuthorizations);
+        add(Menu.AUTHORIZED_PAYMENTS, '/banking/authorized-payments', 'assignment_turned_in', this.i18n.menu.bankingAuthorizations);
       }
       addOperations(RootMenu.BANKING);
       addContentPages(Menu.CONTENT_PAGE_BANKING);
 
       // Marketplace
       if (users.search || users.map) {
-        add(Menu.SEARCH_USERS, '/users/search', 'group', this.messages.menu.marketplaceBusinessDirectory);
+        add(Menu.SEARCH_USERS, '/users/search', 'group', this.i18n.menu.marketplaceBusinessDirectory);
       }
       if (marketplace.search) {
-        add(Menu.SEARCH_ADS, '/marketplace/search', 'shopping_cart', this.messages.menu.marketplaceAdvertisements);
+        add(Menu.SEARCH_ADS, '/marketplace/search', 'shopping_cart', this.i18n.menu.marketplaceAdvertisements);
       } else {
         // As the search ads won't be visible, show as user directory instead
         marketplaceRoot.icon = publicDirectory.icon;
@@ -584,24 +584,24 @@ export class MenuService {
 
       // Personal
       const myProfile = permissions.myProfile || {};
-      add(Menu.MY_PROFILE, '/users/my-profile', 'account_box', this.messages.menu.personalViewProfile);
+      add(Menu.MY_PROFILE, '/users/my-profile', 'account_box', this.i18n.menu.personalViewProfile);
       if (myProfile.editProfile) {
-        add(Menu.EDIT_MY_PROFILE, '/users/my-profile/edit', 'account_box', this.messages.menu.personalEditProfile);
+        add(Menu.EDIT_MY_PROFILE, '/users/my-profile/edit', 'account_box', this.i18n.menu.personalEditProfile);
       }
       if (contacts.enable) {
-        add(Menu.CONTACTS, '/users/contacts', 'import_contacts', this.messages.menu.personalContacts);
+        add(Menu.CONTACTS, '/users/contacts', 'import_contacts', this.i18n.menu.personalContacts);
       }
       if ((permissions.passwords || {}).manage) {
         let passwordsLabel: string;
         if ((permissions.passwords.passwords || []).length === 1) {
-          passwordsLabel = this.messages.menu.personalPassword;
+          passwordsLabel = this.i18n.menu.personalPassword;
         } else {
-          passwordsLabel = this.messages.menu.personalPasswords;
+          passwordsLabel = this.i18n.menu.personalPasswords;
         }
         add(Menu.PASSWORDS, '/personal/passwords', 'vpn_key', passwordsLabel);
       }
       if ((permissions.notifications || {}).enable) {
-        add(Menu.NOTIFICATIONS, '/personal/notifications', 'notifications', this.messages.menu.personalNotifications);
+        add(Menu.NOTIFICATIONS, '/personal/notifications', 'notifications', this.i18n.menu.personalNotifications);
       }
       addOperations(RootMenu.PERSONAL);
       addContentPages(Menu.CONTENT_PAGE_PERSONAL);

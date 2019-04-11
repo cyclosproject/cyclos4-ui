@@ -49,7 +49,7 @@ export class ViewAdComponent extends BasePageComponent<AdView> implements OnInit
 
   get categoryLabel(): string {
     return (this.ad.categories || []).length === 1 ?
-      this.messages.ad.category : this.messages.ad.categories;
+      this.i18n.ad.category : this.i18n.ad.categories;
   }
 
   categoryLevels(category: AdCategoryWithParent) {

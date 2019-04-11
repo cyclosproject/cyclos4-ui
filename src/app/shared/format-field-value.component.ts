@@ -5,7 +5,7 @@ import {
 } from 'app/api/models';
 import { FilesService, ImagesService } from 'app/api/services';
 import { NextRequestState } from 'app/core/next-request-state';
-import { Messages } from 'app/messages/messages';
+import { I18n } from 'app/i18n/i18n';
 import { ApiHelper } from 'app/shared/api-helper';
 import { truthyAttr } from 'app/shared/helper';
 import download from 'downloadjs';
@@ -31,7 +31,7 @@ const DIRECT_TYPES = [
 })
 export class FormatFieldValueComponent implements OnInit {
   constructor(
-    public messages: Messages,
+    public i18n: I18n,
     private nextRequestState: NextRequestState,
     private filesService: FilesService,
     private imagesService: ImagesService) {
@@ -113,8 +113,8 @@ export class FormatFieldValueComponent implements OnInit {
       case CustomFieldTypeEnum.BOOLEAN:
         if (this.fieldValue.booleanValue != null) {
           return this.fieldValue.booleanValue
-            ? this.messages.general.yes
-            : this.messages.general.no;
+            ? this.i18n.general.yes
+            : this.i18n.general.no;
         }
         break;
       case CustomFieldTypeEnum.DATE:

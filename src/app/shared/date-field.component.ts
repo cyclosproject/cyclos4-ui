@@ -17,7 +17,7 @@ import { range } from 'lodash';
 import moment from 'moment-mini-ts';
 import { BsDropdownDirective } from 'ngx-bootstrap/dropdown';
 import { CalendarComponent } from 'app/shared/calendar.component';
-import { Messages } from 'app/messages/messages';
+import { I18n } from 'app/i18n/i18n';
 
 /**
  * Input used to edit a single date
@@ -59,7 +59,7 @@ export class DateFieldComponent
     private dataForUiHolder: DataForUiHolder,
     public format: FormatService,
     public layout: LayoutService,
-    private messages: Messages) {
+    private i18n: I18n) {
     super(controlContainer);
     this.partControls = formBuilder.array(new Array(format.dateFields.length).fill(''));
     this.addSub(this.partControls.valueChanges.subscribe(parts => this.setFromParts(parts)));
@@ -115,9 +115,9 @@ export class DateFieldComponent
       this.fieldSize = CustomFieldSizeEnum.SMALL;
     }
     this.fieldNames = this.format.applyDateFields([
-      this.messages.general.datePart.long.year,
-      this.messages.general.datePart.long.month,
-      this.messages.general.datePart.long.day,
+      this.i18n.general.datePart.long.year,
+      this.i18n.general.datePart.long.month,
+      this.i18n.general.datePart.long.day,
     ]);
     const now = this.dataForUiHolder.now();
     this.min = dateConstraintAsMoment(this.minDate, now);

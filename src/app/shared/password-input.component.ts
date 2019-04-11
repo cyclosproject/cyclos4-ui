@@ -10,7 +10,7 @@ import { ActionWithIcon } from 'app/shared/action';
 import { BaseControlComponent } from 'app/shared/base-control.component';
 import { truthyAttr } from 'app/shared/helper';
 import { chunk } from 'lodash';
-import { Messages } from 'app/messages/messages';
+import { I18n } from 'app/i18n/i18n';
 
 /**
  * Component used to display a password input
@@ -61,7 +61,7 @@ export class PasswordInputComponent
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
     private authService: AuthService,
     private notificationService: NotificationService,
-    private messages: Messages) {
+    private i18n: I18n) {
     super(controlContainer);
   }
 
@@ -100,18 +100,18 @@ export class PasswordInputComponent
     switch (medium) {
       case SendMediumEnum.EMAIL:
         icon = 'email';
-        label = this.messages.general.sendMedium.email;
+        label = this.i18n.general.sendMedium.email;
         break;
       case SendMediumEnum.SMS:
         icon = 'textsms';
-        label = this.messages.general.sendMedium.sms;
+        label = this.i18n.general.sendMedium.sms;
         break;
       default:
         return null;
     }
     return new ActionWithIcon(icon, label, () => {
       this.addSub(this.authService.newOtp({ medium: medium }).subscribe(res => {
-        this.notificationService.snackBar(this.messages.auth.password.otpSent((res || []).join(', ')));
+        this.notificationService.snackBar(this.i18n.auth.password.otpSent((res || []).join(', ')));
         this.otpSent.emit(null);
       }));
     });

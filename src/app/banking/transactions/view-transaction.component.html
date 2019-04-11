@@ -8,85 +8,85 @@
 
 <ng-template #transactionFields>
   <label-value *ngIf="transaction.transactionNumber"
-    [label]="messages.transaction.number">
+    [label]="i18n.transaction.number">
     {{ transaction.transactionNumber }}
   </label-value>
-  <label-value [label]="messages.transaction.status.name" [value]="status">
+  <label-value [label]="i18n.transaction.status.name" [value]="status">
   </label-value>
-  <label-value [label]="messages.general.date">
+  <label-value [label]="i18n.general.date">
     {{ transaction.date | dateTime }}
   </label-value>
-  <label-value [label]="messages.transaction.amount">
+  <label-value [label]="i18n.transaction.amount">
     {{ transaction.amount | currency:transaction.currency }}
   </label-value>
-  <label-value *ngIf="hasDueAmount" [label]="messages.transaction.dueAmount">
+  <label-value *ngIf="hasDueAmount" [label]="i18n.transaction.dueAmount">
     {{ transaction.dueAmount | currency:transaction.currency }}
   </label-value>
-  <label-value *ngIf="transaction.by" [label]="messages.general.performedBy">
+  <label-value *ngIf="transaction.by" [label]="i18n.general.performedBy">
     {{ transaction.by.display }}
   </label-value>
   <label-value *ngIf="transaction?.receivedBy"
-    [label]="messages.transaction.receivedBy">
+    [label]="i18n.transaction.receivedBy">
     {{ transaction.receivedBy.display }}
   </label-value>
-  <label-value [label]="messages.transaction.from">
+  <label-value [label]="i18n.transaction.from">
     <user-link *ngIf="transaction.fromUser; else fromSystem"
       [user]="transaction.fromUser"></user-link>
     <ng-template #fromSystem>
       {{ transaction.type.from.name }}
     </ng-template>
   </label-value>
-  <label-value [label]="messages.transaction.to">
+  <label-value [label]="i18n.transaction.to">
     <user-link *ngIf="transaction.toUser; else toSystem"
       [user]="transaction.toUser"></user-link>
     <ng-template #toSystem>
       {{ transaction.type.to.name }}
     </ng-template>
   </label-value>
-  <label-value [label]="messages.transaction.type">
+  <label-value [label]="i18n.transaction.type">
     {{ transaction.type.name }}
   </label-value>
   <custom-field-value *ngFor="let value of transaction.customValues"
     [fieldValue]="value">
   </custom-field-value>
   <label-value *ngIf="transaction.channel"
-    [label]="messages.transaction.channel">
+    [label]="i18n.transaction.channel">
     {{ transaction.channel.name }}
   </label-value>
 
   <label-value *ngIf="(transaction.installments || []).length === 1"
-    [label]="messages.transaction.dueDate">
+    [label]="i18n.transaction.dueDate">
     {{ transaction.installments[0].dueDate | date }}
   </label-value>
 
   <label-value *ngIf="transaction.nextOccurrenceDate"
-    [label]="messages.transaction.nextOccurrence">
+    [label]="i18n.transaction.nextOccurrence">
     {{ transaction.nextOccurrenceDate | date }}
   </label-value>
 
   <label-value *ngIf="transaction.occurrencesCount"
-    [label]="messages.transaction.occurrencesCount">
+    [label]="i18n.transaction.occurrencesCount">
     {{ transaction.occurrencesCount }}
   </label-value>
 
   <label-value *ngIf="lastAuthComment"
-    [label]="messages.transaction.authorizationComments"
+    [label]="i18n.transaction.authorizationComments"
     [value]="lastAuthComment" valueFormat="break">
   </label-value>
 
   <label-value *ngIf="transaction.description"
-    [label]="messages.general.description" [value]="transaction.description"
+    [label]="i18n.general.description" [value]="transaction.description"
     valueFormat="break">
   </label-value>
 
   <ng-container *ngIf="(transaction.installments || []).length > 1">
-    <h2 class="border-0 mt-4">{{ messages.transaction.installments }}</h2>
+    <h2 class="border-0 mt-4">{{ i18n.transaction.installments }}</h2>
     <table class="table table-hover">
       <thead *ngIf="layout.gtxs$ | async">
-        <th>{{ messages.transaction.installmentNumber }}</th>
-        <th>{{ messages.transaction.dueDate }}</th>
-        <th>{{ messages.transaction.status.name }}</th>
-        <th class="amount">{{ messages.transaction.amount }}</th>
+        <th>{{ i18n.transaction.installmentNumber }}</th>
+        <th>{{ i18n.transaction.dueDate }}</th>
+        <th>{{ i18n.transaction.status.name }}</th>
+        <th class="amount">{{ i18n.transaction.amount }}</th>
         <th class="actions" *ngIf="hasInstallmentActions"></th>
       </thead>
       <tbody>
@@ -115,13 +115,13 @@
           </td>
           <td *ngIf="hasInstallmentActions" class="actions">
             <button *ngIf="installment.canProcess"
-              [tooltip]="messages.transaction.processInstallment"
+              [tooltip]="i18n.transaction.processInstallment"
               class="btn btn-light btn-icon"
               (click)="processInstallment(installment)">
               <icon icon="play_circle_outline"></icon>
             </button>
             <button *ngIf="installment.canSettle"
-              [tooltip]="messages.transaction.settleInstallment"
+              [tooltip]="i18n.transaction.settleInstallment"
               class="btn btn-light btn-icon"
               (click)="settleInstallment(installment)">
               <icon icon="thumb_up"></icon>
@@ -134,14 +134,14 @@
 
   <ng-container *ngIf="(transaction.occurrences || []).length > 0">
     <h2 class="border-0 mt-4">
-      {{ messages.transaction.occurrences }}
+      {{ i18n.transaction.occurrences }}
     </h2>
     <table class="table table-hover cursor-pointer">
       <thead *ngIf="layout.gtxs$ | async">
-        <th>{{ messages.transaction.installmentNumber }}</th>
-        <th>{{ messages.general.date }}</th>
-        <th>{{ messages.transaction.status.name }}</th>
-        <th class="text-right">{{ messages.transaction.amount }}</th>
+        <th>{{ i18n.transaction.installmentNumber }}</th>
+        <th>{{ i18n.general.date }}</th>
+        <th>{{ i18n.transaction.status.name }}</th>
+        <th class="text-right">{{ i18n.transaction.amount }}</th>
       </thead>
       <tbody>
         <tr *ngFor="let occurrence of transaction.occurrences"

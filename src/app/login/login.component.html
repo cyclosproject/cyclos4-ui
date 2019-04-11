@@ -1,12 +1,12 @@
 <page-layout [ready]="data$ | async" size="small" hideMenu>
   <page-content *ngIf="data" [layout]="(layout.ltmd$ | async) ? 'normal' : 'centered'"
-    mode="tight" [heading]="messages.auth.login.title" [ngClass]="{'with-left-area': layout.leftAreaVisible$ | async}">
+    mode="tight" [heading]="i18n.auth.login.title" [ngClass]="{'with-left-area': layout.leftAreaVisible$ | async}">
     <form [formGroup]="form" (submit)="$event.preventDefault()">
       <div class="pre-login-text" *ngIf="loggedOut || (layout.gtxxs$ | async)">
-        <div *ngIf="loggedOut; else regularMessage" [innerHTML]="messages.auth.login.disconnected | trust">
+        <div *ngIf="loggedOut; else regularMessage" [innerHTML]="i18n.auth.login.disconnected | trust">
         </div>
         <ng-template #regularMessage>
-          {{ messages.auth.login.message }}
+          {{ i18n.auth.login.message }}
         </ng-template>
       </div>
 
@@ -18,27 +18,27 @@
         </div>
         <input type="text" formControlName="principal" autocomplete="username"
           class="form-control" focused (keyup.enter)="password.focus()"
-          [placeholder]="messages.auth.login.principal">
+          [placeholder]="i18n.auth.login.principal">
       </div>
 
       <password-input #password class="d-block login-margin-bottom"
         formControlName="password" autocomplete="password" showIcon
         [passwordInput]="data?.loginPasswordInput" (enter)="doLogin()"
-        [placeholder]="messages.auth.login.password"></password-input>
+        [placeholder]="i18n.auth.login.password"></password-input>
 
       <button type="button" class="btn btn-primary login-margin-top login-margin-bottom px-5"
         [disabled]="requesting$ | async" (click)="doLogin();$event.preventDefault();">
-        {{ messages.general.submit }}
+        {{ i18n.general.submit }}
       </button>
 
       <a *ngIf="forgotPasswordEnabled" class="d-block login-margin-top login-margin-bottom"
         routerLink="/forgot-password">
-        {{ messages.auth.login.forgotPassword }}
+        {{ i18n.auth.login.forgotPassword }}
       </a>
 
       <a *ngIf="registrationEnabled" class="d-block login-margin-top"
         routerLink="/users/registration">
-        {{ messages.auth.login.register }}
+        {{ i18n.auth.login.register }}
       </a>
     </form>
   </page-content>

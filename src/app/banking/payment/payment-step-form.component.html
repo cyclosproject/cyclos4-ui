@@ -1,6 +1,6 @@
 <ng-container [formGroup]="form">
   <ng-container *ngIf="singleAccount; else multipleAccounts">
-    <label-value *ngIf="layout.gtxxs$ | async" [label]="messages.transaction.fromAccount"
+    <label-value *ngIf="layout.gtxxs$ | async" [label]="i18n.transaction.fromAccount"
       kind="fieldView">
       {{ bankingHelper.accountDisplay(singleAccount) }}
     </label-value>
@@ -17,7 +17,7 @@
   </ng-container>
   <ng-template #multipleAccounts>
     <!-- Multiple accounts -->
-    <label-value [label]="messages.transaction.fromAccount" required kind="field">
+    <label-value [label]="i18n.transaction.fromAccount" required kind="field">
       <div class="row no-gutters mb-2" *ngFor="let account of data.accounts">
         <div class="col-7 col-sm-8">
           <div class="custom-control custom-radio">
@@ -47,7 +47,7 @@
     </label-value>
   </ng-template>
 
-  <label-value *ngIf="!fixedDestination" kind="field" required [label]="messages.transaction.toUser">
+  <label-value *ngIf="!fixedDestination" kind="field" required [label]="i18n.transaction.toUser">
     <single-selection-field focused formControlName="subject" *ngIf="fixedUsersList; else toUserField">
       <!-- A fixed user list to pay to. Generally only applicable to restricted operators -->
       <field-option *ngFor="let user of data.allowedUsers" [value]="user.id"
@@ -61,84 +61,84 @@
     </ng-template>
   </label-value>
 
-  <label-value *ngIf="fixedUser" kind="fieldView" [label]="messages.transaction.toUser">
+  <label-value *ngIf="fixedUser" kind="fieldView" [label]="i18n.transaction.toUser">
     <user-link [user]="fixedUser" hideLink></user-link>
   </label-value>
 
   <single-selection-field formControlName="type" *ngIf="(paymentTypes$ | async)?.length > 1"
-    required [label]="messages.transaction.type">
+    required [label]="i18n.transaction.type">
     <field-option *ngFor="let pt of paymentTypes$ | async" [value]="pt.id"
       [text]="pt.name"></field-option>
   </single-selection-field>
 
   <decimal-field #amount [focused]="fixedDestination" formControlName="amount"
-    required [label]="messages.transaction.amount" [scale]="currency?.decimalDigits"
+    required [label]="i18n.transaction.amount" [scale]="currency?.decimalDigits"
     [prefix]="currency?.prefix" [suffix]="currency?.suffix">
   </decimal-field>
 
   <custom-field-input *ngFor="let cf of (paymentTypeData$ | async)?.customFields"
     [field]="cf" [formControl]="customValuesControlGetter(cf)"></custom-field-input>
 
-  <single-selection-field formControlName="scheduling" required [label]="messages.transaction.scheduling"
+  <single-selection-field formControlName="scheduling" required [label]="i18n.transaction.scheduling"
     *ngIf="(paymentTypeData$ | async)?.allowsRecurringPayments || (paymentTypeData$ | async)?.maxInstallments > 0">
-    <field-option value="direct" [text]="messages.transaction.schedulingDirect"></field-option>
+    <field-option value="direct" [text]="i18n.transaction.schedulingDirect"></field-option>
     <field-option *ngIf="paymentTypeData$.value?.maxInstallments > 0" value="futureDate"
-      [text]="messages.transaction.schedulingSingle"></field-option>
+      [text]="i18n.transaction.schedulingSingle"></field-option>
     <field-option *ngIf="paymentTypeData$.value?.maxInstallments > 1" value="scheduled"
-      [text]="messages.transaction.schedulingInstallments"></field-option>
+      [text]="i18n.transaction.schedulingInstallments"></field-option>
     <field-option *ngIf="paymentTypeData$.value?.allowsRecurringPayments"
-      value="recurring" [text]="messages.transaction.schedulingRecurring"></field-option>
+      value="recurring" [text]="i18n.transaction.schedulingRecurring"></field-option>
   </single-selection-field>
 
   <ng-container [ngSwitch]="form.value.scheduling">
 
     <date-field *ngSwitchCase="'futureDate'" formControlName="firstInstallmentDate"
-      required [label]="messages.transaction.dueDate" minDate="tomorrow"
+      required [label]="i18n.transaction.dueDate" minDate="tomorrow"
       maxDate="future5">
     </date-field>
 
     <ng-container *ngSwitchCase="'scheduled'">
       <input-field type="number" fieldSize="small" required numbersOnly
-        formControlName="installmentsCount" required [label]="messages.transaction.installmentsCount">
+        formControlName="installmentsCount" required [label]="i18n.transaction.installmentsCount">
       </input-field>
 
-      <radio-group-field formControlName="firstInstallmentIsNow" [label]="messages.transaction.firstInstallment">
-        <field-option [value]="true" [text]="messages.general.now"></field-option>
-        <field-option [value]="false" [text]="messages.general.futureDate"></field-option>
+      <radio-group-field formControlName="firstInstallmentIsNow" [label]="i18n.transaction.firstInstallment">
+        <field-option [value]="true" [text]="i18n.general.now"></field-option>
+        <field-option [value]="false" [text]="i18n.general.futureDate"></field-option>
       </radio-group-field>
 
       <date-field *ngIf="form.value.firstInstallmentIsNow === false"
-        formControlName="firstInstallmentDate" required [label]="messages.transaction.firstInstallmentDate"
+        formControlName="firstInstallmentDate" required [label]="i18n.transaction.firstInstallmentDate"
         minDate="tomorrow" maxDate="future5">
       </date-field>
     </ng-container>
 
     <ng-container *ngSwitchCase="'recurring'">
-      <radio-group-field formControlName="firstOccurrenceIsNow" [label]="messages.transaction.firstOccurrence">
-        <field-option [value]="true" [text]="messages.general.now"></field-option>
-        <field-option [value]="false" [text]="messages.general.futureDate"></field-option>
+      <radio-group-field formControlName="firstOccurrenceIsNow" [label]="i18n.transaction.firstOccurrence">
+        <field-option [value]="true" [text]="i18n.general.now"></field-option>
+        <field-option [value]="false" [text]="i18n.general.futureDate"></field-option>
       </radio-group-field>
 
       <date-field *ngIf="form.value.firstOccurrenceIsNow === false"
         formControlName="firstOccurrenceDate" minDate="tomorrow" required
-        minDate="tomorrow" maxDate="future5" [label]="messages.transaction.firstOccurrenceDate">
+        minDate="tomorrow" maxDate="future5" [label]="i18n.transaction.firstOccurrenceDate">
       </date-field>
 
-      <radio-group-field formControlName="repeatUntilCanceled" [label]="messages.transaction.repeatUntil">
-        <field-option [value]="true" [text]="messages.transaction.repeatUntilManual"></field-option>
-        <field-option [value]="false" [text]="messages.transaction.repeatUntilFixed"></field-option>
+      <radio-group-field formControlName="repeatUntilCanceled" [label]="i18n.transaction.repeatUntil">
+        <field-option [value]="true" [text]="i18n.transaction.repeatUntilManual"></field-option>
+        <field-option [value]="false" [text]="i18n.transaction.repeatUntilFixed"></field-option>
       </radio-group-field>
 
       <input-field *ngIf="form.value.repeatUntilCanceled === false" type="number"
         fieldSize="small" numbersOnly formControlName="occurrencesCount"
-        required [label]="messages.transaction.occurrencesCount">
+        required [label]="i18n.transaction.occurrencesCount">
       </input-field>
     </ng-container>
   </ng-container>
 
   <ng-container *ngIf="(paymentTypeData$ | async)?.descriptionAvailability || 'disabled' as descriptionAvailability">
     <textarea-field *ngIf="descriptionAvailability !== 'disabled'" [required]="descriptionAvailability === 'required'"
-      formControlName="description" required [label]="messages.general.description"></textarea-field>
+      formControlName="description" required [label]="i18n.general.description"></textarea-field>
   </ng-container>
 
 </ng-container>

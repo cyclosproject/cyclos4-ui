@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { PasswordInput, PasswordModeEnum, AvailabilityEnum } from 'app/api/models';
-import { Messages } from 'app/messages/messages';
+import { I18n } from 'app/i18n/i18n';
 import { empty } from 'app/shared/helper';
 
 /**
@@ -13,7 +13,7 @@ import { empty } from 'app/shared/helper';
 export class AuthHelperService {
 
   constructor(
-    private messages: Messages,
+    private i18n: I18n,
     private formBuilder: FormBuilder) {
   }
 
@@ -98,17 +98,17 @@ export class AuthHelperService {
     if (deviceRequired || deviceOptional && !passwordUsable) {
       if (deviceUsable) {
         // Show a message to scan the QR-code
-        return this.messages.auth.password.confirmDeviceActive;
+        return this.i18n.auth.password.confirmDeviceActive;
       } else {
         if (deviceRequired) {
           // Device is required but has none
-          return this.messages.auth.password.confirmDeviceNone;
+          return this.i18n.auth.password.confirmDeviceNone;
         } else {
           // Device is optional and has no password
           if (otp) {
-            return this.messages.auth.password.confirmDeviceOrOtpNoMediums;
+            return this.i18n.auth.password.confirmDeviceOrOtpNoMediums;
           } else {
-            return this.messages.auth.password.confirmDeviceOrPasswordNone(passwordInput.name);
+            return this.i18n.auth.password.confirmDeviceOrPasswordNone(passwordInput.name);
           }
         }
       }
@@ -119,12 +119,12 @@ export class AuthHelperService {
       // At this point we know the password is usable and the device is active, so the user can choose
       if (otp) {
         if (passwordInput.hasActivePassword) {
-          return this.messages.auth.password.confirmDeviceOrOtpActive;
+          return this.i18n.auth.password.confirmDeviceOrOtpActive;
         } else {
-          return this.messages.auth.password.confirmDeviceOrOtpRequest;
+          return this.i18n.auth.password.confirmDeviceOrOtpRequest;
         }
       } else {
-        return this.messages.auth.password.confirmDeviceOrPasswordActive(passwordInput.name);
+        return this.i18n.auth.password.confirmDeviceOrPasswordActive(passwordInput.name);
       }
     }
 
@@ -132,18 +132,18 @@ export class AuthHelperService {
     if (otp) {
       // The messages for OTP are distinct
       if (!hasOtpSendMediums) {
-        return this.messages.auth.password.confirmOtpNoMediums;
+        return this.i18n.auth.password.confirmOtpNoMediums;
       } else if (passwordInput.hasActiveDevice) {
-        return this.messages.auth.password.confirmOtpActive;
+        return this.i18n.auth.password.confirmOtpActive;
       } else {
-        return this.messages.auth.password.confirmOtpRequest;
+        return this.i18n.auth.password.confirmOtpRequest;
       }
     } else {
       // A regular password
       if (passwordUsable) {
-        return this.messages.auth.password.confirmationMessage(passwordInput.name);
+        return this.i18n.auth.password.confirmationMessage(passwordInput.name);
       } else {
-        return this.messages.auth.password.confirmNoPassword(passwordInput.name);
+        return this.i18n.auth.password.confirmNoPassword(passwordInput.name);
       }
     }
   }

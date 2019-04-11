@@ -58,7 +58,7 @@ export class AcceptPendingAgreementsComponent
   ngAfterViewChecked() {
     if (!this.initialized && this.agreementsContent) {
       const el: HTMLElement = this.agreementsContent.nativeElement;
-      el.innerHTML = this.messages.auth.pendingAgreements.agree(
+      el.innerHTML = this.i18n.auth.pendingAgreements.agree(
         `<a href="#" onclick="event.preventDefault();event.stopPropagation();showAgreements()">
         ${this.agreements.map(a => a.name).join(', ')}
         </a>`

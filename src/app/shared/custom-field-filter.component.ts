@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Host, Input, Optional, SkipSelf, Vi
 import { ControlContainer, NG_VALIDATORS, NG_VALUE_ACCESSOR, Validator } from '@angular/forms';
 import { CustomFieldDetailed, CustomFieldTypeEnum, LinkedEntityTypeEnum } from 'app/api/models';
 import { FieldHelperService } from 'app/core/field-helper.service';
-import { Messages } from 'app/messages/messages';
+import { I18n } from 'app/i18n/i18n';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { FieldOption } from 'app/shared/field-option';
@@ -74,7 +74,7 @@ export class CustomFieldFilterComponent extends BaseFormFieldComponent<string> i
 
   constructor(
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
-    public messages: Messages,
+    public i18n: I18n,
     private fieldHelper: FieldHelperService
   ) {
     super(controlContainer);

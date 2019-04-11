@@ -3,7 +3,7 @@ import {
   EventEmitter, HostBinding, Input, Output
 } from '@angular/core';
 import { Notification } from 'app/api/models';
-import { Messages } from 'app/messages/messages';
+import { I18n } from 'app/i18n/i18n';
 import { ApiHelper } from 'app/shared/api-helper';
 import { NotificationsService } from 'app/api/services';
 import { first } from 'rxjs/operators';
@@ -41,7 +41,7 @@ export class PushNotificationComponent {
   private timeoutHandle: any;
 
   constructor(
-    public messages: Messages,
+    public i18n: I18n,
     private notificationsService: NotificationsService,
     private errorHandler: ErrorHandlerService,
     private changeDetector: ChangeDetectorRef

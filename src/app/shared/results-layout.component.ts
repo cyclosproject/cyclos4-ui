@@ -6,7 +6,7 @@ import {
 import { Address } from 'app/api/models';
 import { LoginService } from 'app/core/login.service';
 import { MapsService } from 'app/core/maps.service';
-import { Messages } from 'app/messages/messages';
+import { I18n } from 'app/i18n/i18n';
 import { empty, fitBounds } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
 import { MaxDistance } from 'app/shared/max-distance';
@@ -67,7 +67,7 @@ export class ResultsLayoutComponent<C, R> {
     public layout: LayoutService,
     public maps: MapsService,
     public login: LoginService,
-    public messages: Messages
+    public i18n: I18n
   ) { }
 
   notifyReady() {

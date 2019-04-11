@@ -1,17 +1,17 @@
 <ng-container *ngIf="performed.authorizationStatus === 'pending'; else processed">
   <div class="payment-message" *ngIf="performed.transactionNumber">
-    {{ messages.transaction.pendingWithNumber(performed.transactionNumber) }}
+    {{ i18n.transaction.pendingWithNumber(performed.transactionNumber) }}
   </div>
   <div class="payment-message" *ngIf="performed.transactionNumber == null">
-    {{ messages.transaction.pending }}
+    {{ i18n.transaction.pending }}
   </div>
 </ng-container>
 <ng-template #processed>
   <div class="payment-message" *ngIf="performed.transactionNumber">
-    {{ messages.transaction.processedWithNumber(performed.transactionNumber)
+    {{ i18n.transaction.processedWithNumber(performed.transactionNumber)
     }}
   </div>
   <div class="payment-message" *ngIf="performed.transactionNumber == null">
-    {{ messages.transaction.processed }}
+    {{ i18n.transaction.processed }}
   </div>
 </ng-template>

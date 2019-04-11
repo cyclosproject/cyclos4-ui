@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AddressConfiguration, AddressFieldEnum, Address } from 'app/api/models';
-import { Messages } from 'app/messages/messages';
+import { I18n } from 'app/i18n/i18n';
 
 /**
  * Helper service for handling address fields
@@ -13,7 +13,7 @@ export class AddressHelperService {
 
   constructor(
     private formBuilder: FormBuilder,
-    private messages: Messages) {
+    private i18n: I18n) {
   }
 
   /**
@@ -45,27 +45,27 @@ export class AddressHelperService {
   addressFieldLabel(field: AddressFieldEnum): string {
     switch (field) {
       case AddressFieldEnum.ADDRESS_LINE_1:
-        return this.messages.address.line1;
+        return this.i18n.address.line1;
       case AddressFieldEnum.ADDRESS_LINE_2:
-        return this.messages.address.line2;
+        return this.i18n.address.line2;
       case AddressFieldEnum.BUILDING_NUMBER:
-        return this.messages.address.buildingNumber;
+        return this.i18n.address.buildingNumber;
       case AddressFieldEnum.CITY:
-        return this.messages.address.city;
+        return this.i18n.address.city;
       case AddressFieldEnum.COMPLEMENT:
-        return this.messages.address.complement;
+        return this.i18n.address.complement;
       case AddressFieldEnum.COUNTRY:
-        return this.messages.address.country;
+        return this.i18n.address.country;
       case AddressFieldEnum.NEIGHBORHOOD:
-        return this.messages.address.neighborhood;
+        return this.i18n.address.neighborhood;
       case AddressFieldEnum.PO_BOX:
-        return this.messages.address.poBox;
+        return this.i18n.address.poBox;
       case AddressFieldEnum.REGION:
-        return this.messages.address.region;
+        return this.i18n.address.region;
       case AddressFieldEnum.STREET:
-        return this.messages.address.street;
+        return this.i18n.address.street;
       case AddressFieldEnum.ZIP:
-        return this.messages.address.zip;
+        return this.i18n.address.zip;
     }
     return null;
   }

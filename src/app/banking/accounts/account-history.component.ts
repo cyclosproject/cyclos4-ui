@@ -84,7 +84,7 @@ export class AccountHistoryComponent
       // No account type given - get the first one
       const firstType = this.firstAccountType;
       if (firstType == null) {
-        this.notification.error(this.messages.account.noAccounts);
+        this.notification.error(this.i18n.account.noAccounts);
       } else {
         this.router.navigateByUrl('/banking/account/' + this.firstAccountType);
       }
@@ -106,7 +106,7 @@ export class AccountHistoryComponent
       // Set the heading action
       this.printable = true;
       const print = this.printAction;
-      print.label = this.messages.account.printTransactions;
+      print.label = this.i18n.account.printTransactions;
       this.headingActions = [
         this.moreFiltersAction,
         this.printAction
@@ -181,11 +181,11 @@ export class AccountHistoryComponent
   }
 
   showMoreFiltersLabel() {
-    return this.messages.general.showFilters;
+    return this.i18n.general.showFilters;
   }
 
   showLessFiltersLabel() {
-    return this.messages.general.hideFilters;
+    return this.i18n.general.hideFilters;
   }
 
 }

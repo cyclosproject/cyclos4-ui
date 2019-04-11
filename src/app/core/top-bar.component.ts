@@ -6,7 +6,7 @@ import { LoginService } from 'app/core/login.service';
 import { MenuService } from 'app/core/menu.service';
 import { LayoutService } from 'app/shared/layout.service';
 import { ActiveMenu, Menu, RootMenuEntry, MenuType, RootMenu } from 'app/shared/menu';
-import { Messages } from 'app/messages/messages';
+import { I18n } from 'app/i18n/i18n';
 import { Observable } from 'rxjs';
 import { words } from 'app/shared/helper';
 import { Configuration } from 'app/configuration';
@@ -43,7 +43,7 @@ export class TopBarComponent implements OnInit {
     public login: LoginService,
     public layout: LayoutService,
     public menu: MenuService,
-    public messages: Messages,
+    public i18n: I18n,
     public notification: NotificationService) {
   }
 

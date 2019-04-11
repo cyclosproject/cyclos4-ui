@@ -15,21 +15,21 @@
         </avatar>
       </div>
       <div class="d-flex flex-grow-1 flex-column">
-        <label-value *ngIf="user.groupSet" [label]="messages.user.groupSet"
+        <label-value *ngIf="user.groupSet" [label]="i18n.user.groupSet"
           [value]="user.groupSet.name"></label-value>
-        <label-value *ngIf="user.group" [label]="messages.user.group"
+        <label-value *ngIf="user.group" [label]="i18n.user.group"
           [value]="user.group.name"></label-value>
-        <label-value *ngIf="user.name" [label]="messages.user.name"
+        <label-value *ngIf="user.name" [label]="i18n.user.name"
           [value]="user.name"></label-value>
-        <label-value *ngIf="user.username" [label]="messages.user.username"
+        <label-value *ngIf="user.username" [label]="i18n.user.username"
           [value]="user.username"></label-value>
-        <label-value *ngIf="user.email" [label]="messages.user.email">
+        <label-value *ngIf="user.email" [label]="i18n.user.email">
           <a [href]="'mailto:' + user.email" class="link-with-icon">
             <icon icon="email"></icon>
             <span>{{ user.email }}</span>
           </a>
         </label-value>
-        <label-value *ngIf="mobilePhone" [label]="messages.phone.mobile">
+        <label-value *ngIf="mobilePhone" [label]="i18n.phone.mobile">
           <a [href]="'tel:' + mobilePhone.normalizedNumber"
             class="link-with-icon">
             <icon icon="smartphone"></icon>
@@ -42,7 +42,7 @@
             <span>{{ phone.number }}</span>
           </a>
         </label-value>
-        <label-value *ngIf="landLinePhone" [label]="messages.phone.landLine">
+        <label-value *ngIf="landLinePhone" [label]="i18n.phone.landLine">
           <a [href]="'tel:' + landLinePhone.normalizedNumber"
             class="link-with-icon">
             <icon icon="phone"></icon>
@@ -65,10 +65,10 @@
       <ng-container *ngIf="user.addresses?.length > 0">
         <h2 class="mt-3">
           <ng-container *ngIf="user.addresses?.length > 1">
-            {{ messages.user.title.addresses }}
+            {{ i18n.user.title.addresses }}
           </ng-container>
           <ng-container *ngIf="user.addresses?.length == 1">
-            {{ messages.address.address }}
+            {{ i18n.address.address }}
           </ng-container>
         </h2>
         <ng-container
@@ -91,7 +91,7 @@
 
       <!-- Contact infos -->
       <ng-container *ngIf="user.contactInfos?.length > 0">
-        <h2 class="mt-3">{{ messages.user.contactInfo }}</h2>
+        <h2 class="mt-3">{{ i18n.user.contactInfo }}</h2>
         <div *ngFor="let contactInfo of user.contactInfos; let first=first">
           <h3>{{ contactInfo.name }}</h3>
           <div class="d-flex" [ngClass]="{'mt-0': first, 'mt-3': !first}">
@@ -102,7 +102,7 @@
                 </avatar>
               </div>
               <label-value *ngIf="contactInfo.email"
-                [label]="messages.user.email">
+                [label]="i18n.user.email">
                 <a [href]="'mailto:' + contactInfo.email"
                   class="link-with-icon">
                   <icon icon="email"></icon>
@@ -110,7 +110,7 @@
                 </a>
               </label-value>
               <label-value *ngIf="contactInfo.mobilePhone"
-                [label]="messages.phone.mobile">
+                [label]="i18n.phone.mobile">
                 <a [href]="'tel:' + contactInfo.normalizedMobilePhone"
                   class="link-with-icon">
                   <icon icon="smartphone"></icon>
@@ -118,7 +118,7 @@
                 </a>
               </label-value>
               <label-value *ngIf="contactInfo.landLinePhone"
-                [label]="messages.phone.landLine">
+                [label]="i18n.phone.landLine">
                 <a [href]="'tel:' + contactInfo.normalizedLandLinePhone"
                   class="link-with-icon">
                   <icon icon="phone"></icon>
@@ -130,7 +130,7 @@
                 [fieldValue]="value">
               </custom-field-value>
               <ng-container *ngIf="contactInfo.address">
-                <label-value [label]="messages.address.address">
+                <label-value [label]="i18n.address.address">
                   <address-details [address]="contactInfo.address">
                   </address-details>
                 </label-value>

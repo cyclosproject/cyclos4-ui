@@ -456,7 +456,7 @@ This application doesn't uses [Angular's built-in I18N](https://angular.io/guide
 Most systems are single language. In that case, it is recommended to set the translations value statically, so a separated request to fetch the translations is not needed. This is configured in `src/app/setup.ts`. Here is an example for the English translation:
 
 ```typescript
-import TranslationValues from 'locale/cyclos4-ui.json';
+import TranslationValues from 'i18n/i18n.json';
 
 export function setup() {
   Configuration.staticLocale = 'en';
@@ -467,7 +467,7 @@ export function setup() {
 And here is an example for the Brazilian Portuguese translation:
 
 ```typescript
-import TranslationValues from 'locale/cyclos4-ui.pt_BR.json';
+import TranslationValues from 'i18n/i18n.pt_BR.json';
 
 export function setup() {
   Configuration.staticLocale = 'pt_BR';
@@ -477,7 +477,7 @@ export function setup() {
 
 For systems that are multi language, where each user can have distinct languages, a static language should not be set. In this case, the language used by user in Cyclos will be the one used to fetch the translations in the front-end.
 
-To add a translation to a new language locally, simply add the locale to the `locales` array in `ng-translation-gen.json`. Then, to create the file with defaults, or import new translation keys, run `npm run merge-translations`. Then, either reference it as a static translation, or, if the locale matches the language set in Cyclos, it will be automatically used.
+To add a new language locally, simply add the locale to the `locales` array in `ng-translation-gen.json`. Then, to create the file with defaults, or update it with new translation keys, run `npm run merge-translations`. Finally, either reference it as a static translation, or, if the locale matches the language set in Cyclos, it will be automatically used.
 
 The official translations are done at https://crowdin.com/project/cyclos4-ui. If you want to help translating the Cyclos frontend, login to Crowdin and request permission for the project. It has an integration with GitHub, so translations done in Crowdin will be automatically submitted to the project on GitHub. Alternatively, you can submit a GitHub pull request with your translation file.
 

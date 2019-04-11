@@ -69,7 +69,7 @@ export class QuickAccessComponent extends BaseDashboardComponent implements OnIn
         const accountDescriptor = this.descriptors.find(d => d.type === QuickAccessType.ACCOUNT && ids.includes(d.accountType))
           || generalAccountDescriptor;
         if (accountDescriptor) {
-          const accountLabel = accounts.length === 1 ? this.messages.dashboard.action.account : accountType.name;
+          const accountLabel = accounts.length === 1 ? this.i18n.dashboard.action.account : accountType.name;
           addAction(accountDescriptor, 'quick_access_account', accountLabel, new ActiveMenu(Menu.ACCOUNT_HISTORY, {
             accountType: accountType
           }));
@@ -77,33 +77,33 @@ export class QuickAccessComponent extends BaseDashboardComponent implements OnIn
       }
       if (permissions.banking.payments.user) {
         addAction(QuickAccessType.PAY_USER, 'quick_access_pay',
-          this.messages.dashboard.action.payUser, new ActiveMenu(Menu.PAYMENT_TO_USER));
+          this.i18n.dashboard.action.payUser, new ActiveMenu(Menu.PAYMENT_TO_USER));
       }
       if (permissions.banking.payments.system) {
         addAction(QuickAccessType.PAY_SYSTEM, 'quick_access_pay',
-          this.messages.dashboard.action.paySystem, new ActiveMenu(Menu.PAYMENT_TO_SYSTEM));
+          this.i18n.dashboard.action.paySystem, new ActiveMenu(Menu.PAYMENT_TO_SYSTEM));
       }
     }
     if (permissions.contacts && (permissions.contacts.enable)) {
       addAction(QuickAccessType.CONTACTS, 'quick_access_contact_list',
-        this.messages.dashboard.action.contacts, new ActiveMenu(Menu.CONTACTS));
+        this.i18n.dashboard.action.contacts, new ActiveMenu(Menu.CONTACTS));
     }
     if (permissions.users && (permissions.users.search || permissions.users.map)) {
       addAction(QuickAccessType.SEARCH_USERS, 'quick_access_search_users',
-        this.messages.dashboard.action.directory, new ActiveMenu(Menu.SEARCH_USERS));
+        this.i18n.dashboard.action.directory, new ActiveMenu(Menu.SEARCH_USERS));
     }
     if (permissions.marketplace && permissions.marketplace.search) {
       addAction(QuickAccessType.SEARCH_ADS, 'quick_access_marketplace',
-        this.messages.dashboard.action.advertisements, new ActiveMenu(Menu.SEARCH_ADS));
+        this.i18n.dashboard.action.advertisements, new ActiveMenu(Menu.SEARCH_ADS));
     }
     if (permissions.myProfile && permissions.myProfile.editProfile) {
       addAction(QuickAccessType.EDIT_PROFILE, 'quick_access_edit_profile',
-        this.messages.dashboard.action.editProfile, new ActiveMenu(Menu.EDIT_MY_PROFILE));
+        this.i18n.dashboard.action.editProfile, new ActiveMenu(Menu.EDIT_MY_PROFILE));
     }
     if (permissions.passwords && !empty(permissions.passwords.passwords)) {
       const passwordsLabel = permissions.passwords.passwords.length === 1 ?
-        this.messages.dashboard.action.password :
-        this.messages.dashboard.action.passwords;
+        this.i18n.dashboard.action.password :
+        this.i18n.dashboard.action.passwords;
       addAction(QuickAccessType.PASSWORDS, 'quick_access_passwords', passwordsLabel, new ActiveMenu(Menu.PASSWORDS));
     }
   }

@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Messages } from 'app/messages/messages';
+import { I18n } from 'app/i18n/i18n';
 
 /**
  * Shows errors in a field
@@ -14,7 +14,7 @@ import { Messages } from 'app/messages/messages';
 export class FieldErrorsComponent {
   @Input() control: FormControl;
 
-  constructor(private messages: Messages) {
+  constructor(private i18n: I18n) {
   }
 
   get message(): string {
@@ -29,21 +29,21 @@ export class FieldErrorsComponent {
       }
       return message;
     } else if (errors.date) {
-      return this.messages.error.field.date;
+      return this.i18n.error.field.date;
     } else if (errors.minDate) {
-      return this.messages.error.field.minDate(errors.minDate.min);
+      return this.i18n.error.field.minDate(errors.minDate.min);
     } else if (errors.maxDate) {
-      return this.messages.error.field.minDate(errors.maxDate.max);
+      return this.i18n.error.field.minDate(errors.maxDate.max);
     } else if (errors.number) {
-      return this.messages.error.field.number;
+      return this.i18n.error.field.number;
     } else if (errors.minlength) {
-      return this.messages.error.field.minLength(errors.minlength.requiredLength);
+      return this.i18n.error.field.minLength(errors.minlength.requiredLength);
     } else if (errors.required) {
-      return this.messages.error.field.required;
+      return this.i18n.error.field.required;
     } else if (errors.passwordsMatch) {
-      return this.messages.error.field.passwordsMatch;
+      return this.i18n.error.field.passwordsMatch;
     } else {
-      return this.messages.error.field.invalid;
+      return this.i18n.error.field.invalid;
     }
   }
 }

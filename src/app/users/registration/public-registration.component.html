@@ -1,18 +1,18 @@
 <page-layout [ready]="data$ | async" [ngSwitch]="step$ | async" size="large"
   hideMenu>
-  <page-content *ngSwitchCase="'group'" [heading]="messages.user.title.registration"
+  <page-content *ngSwitchCase="'group'" [heading]="i18n.user.title.registration"
     [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'" last>
     <div class="flex-grow-1">
       <registration-step-group [groups]="groups" [control]="group"></registration-step-group>
     </div>
     <actions ngClass="mt-3" forceRow>
       <button class="btn btn-primary" (click)="showFields()">
-        {{ messages.general.next }}
+        {{ i18n.general.next }}
       </button>
     </actions>
   </page-content>
 
-  <page-content *ngSwitchCase="'fields'" [heading]="messages.user.title.registration"
+  <page-content *ngSwitchCase="'fields'" [heading]="i18n.user.title.registration"
     [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'" last>
     <div class="flex-grow-1">
       <registration-step-fields [data]="data" [form]="form" [mobileForm]="mobileForm"
@@ -24,16 +24,16 @@
     <actions ngClass="mt-3" forceRow>
       <button class="btn btn-primary" [disabled]="requesting$ | async"
         (click)="showConfirm()">
-        {{ messages.general.next }}
+        {{ i18n.general.next }}
       </button>
       <button *ngIf="groups.length > 1" class="btn btn-outline-primary"
         (click)="backToGroup()">
-        {{ messages.general.previous }}
+        {{ i18n.general.previous }}
       </button>
     </actions>
   </page-content>
 
-  <page-content *ngSwitchCase="'confirm'" [heading]="messages.user.title.registrationConfirmation"
+  <page-content *ngSwitchCase="'confirm'" [heading]="i18n.user.title.registrationConfirmation"
     [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'" last>
     <div class="flex-grow-1">
       <registration-step-confirm [data]="data" [form]="confirmForm" [user]="userNew"
@@ -43,15 +43,15 @@
     <actions ngClass="mt-3" forceRow>
       <button class="btn btn-primary" [disabled]="requesting$ | async"
         (click)="register()">
-        {{ messages.general.submit }}
+        {{ i18n.general.submit }}
       </button>
       <button class="btn btn-outline-primary" (click)="backToFields()">
-        {{ messages.general.previous }}
+        {{ i18n.general.previous }}
       </button>
     </actions>
   </page-content>
 
-  <page-content *ngSwitchCase="'done'" [heading]="messages.user.title.registrationDone"
+  <page-content *ngSwitchCase="'done'" [heading]="i18n.user.title.registrationDone"
     [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'" last>
     <div class="flex-grow-1">
       <registration-step-done [result]="result$ | async">
@@ -59,7 +59,7 @@
     </div>
     <actions ngClass="mt-3" forceRow>
       <button class="btn btn-primary" (click)="goToLogin()">
-        {{ messages.menu.login }}
+        {{ i18n.menu.login }}
       </button>
     </actions>
   </page-content>

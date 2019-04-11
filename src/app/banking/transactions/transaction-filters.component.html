@@ -3,26 +3,26 @@
     <div class="row">
       <div class="col-12 col-md-6">
         <single-selection-field labelPosition="side" formControlName="status"
-          [label]="messages.transaction.status.name" [fieldOptions]="statusOptions">
+          [label]="i18n.transaction.status.name" [fieldOptions]="statusOptions">
         </single-selection-field>
       </div>
       <div class="col-12 col-md-6" *ngIf="data.accountTypes?.length > 1">
         <single-selection-field labelPosition="side" formControlName="accountType"
-          [label]="messages.transaction.account" [emptyOption]="messages.general.notApplied">
+          [label]="i18n.transaction.account" [emptyOption]="i18n.general.notApplied">
           <field-option *ngFor="let at of data.accountTypes" [value]="at.id"
             [text]="at.name"></field-option>
         </single-selection-field>
       </div>
       <div class="col-12 col-md-6">
         <single-selection-field labelPosition="side" formControlName="preselectedPeriod"
-          [label]="messages.general.period">
+          [label]="i18n.general.period">
           <field-option *ngFor="let period of data.preselectedPeriods" [id]="period['id']"
             [value]="period" [text]="period.name"></field-option>
         </single-selection-field>
       </div>
       <div *ngIf="transferFilters?.length > 0" class="col-12 col-md-6">
         <single-selection-field labelPosition="side" formControlName="transferFilter"
-          [label]="messages.account.transferFilter" [emptyOption]="messages.general.notApplied">
+          [label]="i18n.account.transferFilter" [emptyOption]="i18n.general.notApplied">
           <field-option *ngFor="let filter of transferFilters" [value]="filter"
             [id]="filter.id" [text]="filter.name"></field-option>
         </single-selection-field>
@@ -30,13 +30,13 @@
       <div *ngIf="(form.value || (form.valueChanges | async))?.preselectedPeriod?.begin == null"
         class="col-12 col-md-6">
         <date-field labelPosition="side" formControlName="periodBegin"
-          [label]="messages.general.beginDate" minDate="past5" maxDate="today"
+          [label]="i18n.general.beginDate" minDate="past5" maxDate="today"
           fieldSize="full">
         </date-field>
       </div>
       <div *ngIf="(form.value || (form.valueChanges | async))?.preselectedPeriod?.end == null"
         class="col-12 col-md-6">
-        <date-field labelPosition="side" formControlName="periodEnd" [label]="messages.general.endDate"
+        <date-field labelPosition="side" formControlName="periodEnd" [label]="i18n.general.endDate"
           minDate="past5" maxDate="today" fieldSize="full">
         </date-field>
       </div>

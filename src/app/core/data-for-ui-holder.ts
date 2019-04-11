@@ -8,7 +8,7 @@ import { AuthService, UiService } from 'app/api/services';
 import { Configuration } from 'app/configuration';
 import { ErrorStatus } from 'app/core/error-status';
 import { NextRequestState } from 'app/core/next-request-state';
-import { Messages } from 'app/messages/messages';
+import { I18n } from 'app/i18n/i18n';
 import { isSameOrigin, setReloadButton, setRootAlert } from 'app/shared/helper';
 import moment from 'moment-mini-ts';
 import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
@@ -39,7 +39,7 @@ export class DataForUiHolder {
     private apiConfiguration: ApiConfiguration,
     private uiService: UiService,
     private authService: AuthService,
-    private messages: Messages,
+    private i18n: I18n,
     private http: HttpClient,
     private injector: Injector,
     private location: Location) {
@@ -117,7 +117,7 @@ export class DataForUiHolder {
   }
 
   private setTranslation(language: string, country: string) {
-    const locales = Messages.locales();
+    const locales = I18n.locales();
     let locale: string;
     const withCountry = `${language}_${country}`;
     if (locales.includes(withCountry)) {
@@ -127,14 +127,14 @@ export class DataForUiHolder {
     } else {
       locale = 'en';
     }
-    const fileName = Messages.fileName(locale);
+    const fileName = I18n.fileName(locale);
     if (this.cachedTranslations.has(fileName)) {
       this._setLocale(locale, this.cachedTranslations.get(fileName));
     } else {
       // Load the translation
-      const hash = Messages.contentHash(locale);
-      this.messages.initialized$.next(false);
-      this.http.get(`locale/${fileName}?h=${hash}`).subscribe(values => {
+      const hash = I18n.contentHash(locale);
+      this.i18n.initialized$.next(false);
+      this.http.get(`i18n/${fileName}?h=${hash}`).subscribe(values => {
         this.cachedTranslations.set(fileName, values);
         this._setLocale(locale, values);
       });
@@ -146,7 +146,7 @@ export class DataForUiHolder {
    * Shouldn't be called by regular components, only by initializations.
    */
   _setLocale(locale: string, translationValues: any) {
-    this.messages.initialize(translationValues);
+    this.i18n.initialize(translationValues);
     this.locale$.next(locale);
     document.documentElement.lang = locale.toLowerCase();
   }
@@ -205,8 +205,8 @@ export class DataForUiHolder {
       catchError((resp: HttpErrorResponse) => {
         if (resp.status === 0) {
           // The server couldn't be contacted
-          let serverOffline = this.messages.error.serverOffline;
-          let reloadPage = this.messages.general.reloadPage;
+          let serverOffline = this.i18n.error.serverOffline;
+          let reloadPage = this.i18n.general.reloadPage;
           if (serverOffline.startsWith('???')) {
             // We're so early that we couldn't even fetch translations
             serverOffline = 'The server couldn\'t be contacted.<br>Please, try again later.';

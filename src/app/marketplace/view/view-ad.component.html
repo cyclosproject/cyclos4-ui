@@ -13,7 +13,7 @@
           icon="shopping_basket" [image]="ad.image" [additionalImages]="ad.additionalImages"></avatar>
       </div>
       <div class="d-flex flex-grow-1 flex-column">
-        <label-value [label]="messages.ad.name" [value]="ad.name"></label-value>
+        <label-value [label]="i18n.ad.name" [value]="ad.name"></label-value>
         <label-value [label]="categoryLabel">
           <ng-container *ngFor="let category of (ad.categories || [])">
             <div>
@@ -26,10 +26,10 @@
             </div>
           </ng-container>
         </label-value>
-        <label-value [label]="messages.ad.owner">
+        <label-value [label]="i18n.ad.owner">
           <user-link [user]="ad.owner"></user-link>
         </label-value>
-        <label-value *ngIf="ad.price" [label]="messages.ad.price">
+        <label-value *ngIf="ad.price" [label]="i18n.ad.price">
           <ng-container *ngIf="ad.promotionalPrice">
             <span class="promo-price">
               {{ ad.price | number:ad.currency.decimalDigits }}
@@ -45,6 +45,6 @@
       </div>
     </div>
 
-    <h2 class="my-3 pt-3">{{ messages.general.description }}</h2>
+    <h2 class="my-3 pt-3">{{ i18n.general.description }}</h2>
     <div [innerHTML]="ad.description | trust"></div>
   </page-content>

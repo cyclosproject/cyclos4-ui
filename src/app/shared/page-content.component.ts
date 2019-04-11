@@ -4,7 +4,7 @@ import { HeadingAction } from 'app/shared/action';
 import { truthyAttr, blank } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
 import { CardMode } from 'app/content/card-mode';
-import { Messages } from 'app/messages/messages';
+import { I18n } from 'app/i18n/i18n';
 
 /**
  * Represents a box in the layout which contains an optional heading (title) and content.
@@ -42,7 +42,7 @@ export class PageContentComponent implements OnInit, OnChanges {
   constructor(
     public layoutService: LayoutService,
     public breadcrumb: BreadcrumbService,
-    public messages: Messages
+    public i18n: I18n
   ) { }
 
   get groupActions(): boolean {

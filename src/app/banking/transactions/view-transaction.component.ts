@@ -78,57 +78,57 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
     const actions: HeadingAction[] = [this.printAction];
     const auth = transaction.authorizationPermissions || {};
     if (!empty(transaction.authorizations)) {
-      actions.push(new HeadingAction('check_circle_outline', this.messages.transaction.viewAuthorizations, () => {
+      actions.push(new HeadingAction('check_circle_outline', this.i18n.transaction.viewAuthorizations, () => {
         this.router.navigate(['banking', 'transaction', this.key, 'authorization-history']);
       }));
     }
     if (auth.authorize) {
-      actions.push(new HeadingAction('thumb_up', this.messages.transaction.authorizePending, () => {
+      actions.push(new HeadingAction('thumb_up', this.i18n.transaction.authorizePending, () => {
         this.authorize();
       }));
     }
     if (auth.deny) {
-      actions.push(new HeadingAction('thumb_down', this.messages.transaction.denyPending, () => {
+      actions.push(new HeadingAction('thumb_down', this.i18n.transaction.denyPending, () => {
         this.deny();
       }));
     }
     if (auth.cancel) {
-      actions.push(new HeadingAction('cancel', this.messages.transaction.cancelAuthorization, () => {
+      actions.push(new HeadingAction('cancel', this.i18n.transaction.cancelAuthorization, () => {
         this.cancelAuthorization();
       }));
     }
 
     const scheduled = transaction.scheduledPaymentPermissions || {};
     if (scheduled.block) {
-      actions.push(new HeadingAction('block', this.messages.transaction.blockScheduling, () => {
+      actions.push(new HeadingAction('block', this.i18n.transaction.blockScheduling, () => {
         this.blockScheduled();
       }));
     }
     if (scheduled.unblock) {
-      actions.push(new HeadingAction('schedule', this.messages.transaction.unblockScheduling, () => {
+      actions.push(new HeadingAction('schedule', this.i18n.transaction.unblockScheduling, () => {
         this.unblockScheduled();
       }));
     }
     if (scheduled.cancel) {
-      actions.push(new HeadingAction('cancel', this.messages.transaction.cancelScheduled, () => {
+      actions.push(new HeadingAction('cancel', this.i18n.transaction.cancelScheduled, () => {
         this.cancelScheduled();
       }));
     }
     if (scheduled.settle) {
-      actions.push(new HeadingAction('done_all', this.messages.transaction.settleScheduled, () => {
+      actions.push(new HeadingAction('done_all', this.i18n.transaction.settleScheduled, () => {
         this.settleScheduled();
       }));
     }
 
     const recurring = transaction.recurringPaymentPermissions || {};
     if (recurring.cancel) {
-      actions.push(new HeadingAction('cancel', this.messages.transaction.cancelRecurring, () => {
+      actions.push(new HeadingAction('cancel', this.i18n.transaction.cancelRecurring, () => {
         this.cancelRecurring();
       }));
     }
 
     if ((transaction.transfer || {}).canChargeback) {
-      actions.push(new HeadingAction('undo', this.messages.transaction.chargebackTransfer, () => {
+      actions.push(new HeadingAction('undo', this.i18n.transaction.chargebackTransfer, () => {
         this.chargeback();
       }));
     }
@@ -143,7 +143,7 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
   private get authorizationFields(): CustomFieldDetailed[] {
     return [{
       internalName: 'comments',
-      name: this.messages.general.comments,
+      name: this.i18n.general.comments,
       type: CustomFieldTypeEnum.TEXT
     }];
   }
@@ -158,7 +158,7 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
 
   private authorize() {
     this.notification.confirm({
-      title: this.messages.transaction.authorizePending,
+      title: this.i18n.transaction.authorizePending,
       labelPosition: 'above',
       customFields: this.authorizationFields,
       passwordInput: this.transaction.confirmationPasswordInput,
@@ -172,9 +172,9 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
           }
         }).subscribe(nextLevel => {
           if (nextLevel) {
-            this.notification.warning(this.messages.transaction.authorizePendingDoneStillPending);
+            this.notification.warning(this.i18n.transaction.authorizePendingDoneStillPending);
           } else {
-            this.notification.snackBar(this.messages.transaction.authorizePendingDone);
+            this.notification.snackBar(this.i18n.transaction.authorizePendingDone);
           }
           this.reload();
         });
@@ -184,7 +184,7 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
 
   private deny() {
     this.notification.confirm({
-      title: this.messages.transaction.denyPending,
+      title: this.i18n.transaction.denyPending,
       labelPosition: 'above',
       customFields: this.authorizationFields,
       createDeviceConfirmation: this.authDeviceConfirmation(AuthorizationActionEnum.DENY),
@@ -197,7 +197,7 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
             comments: res.customValues.comments
           }
         }).subscribe(() => {
-          this.notification.snackBar(this.messages.transaction.denyPendingDone);
+          this.notification.snackBar(this.i18n.transaction.denyPendingDone);
           this.reload();
         });
       }
@@ -206,7 +206,7 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
 
   private cancelAuthorization() {
     this.notification.confirm({
-      title: this.messages.transaction.cancelAuthorization,
+      title: this.i18n.transaction.cancelAuthorization,
       labelPosition: 'above',
       customFields: this.authorizationFields,
       createDeviceConfirmation: this.authDeviceConfirmation(AuthorizationActionEnum.CANCEL),
@@ -219,7 +219,7 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
             comments: res.customValues.comments
           }
         }).subscribe(() => {
-          this.notification.snackBar(this.messages.transaction.cancelAuthorizationDone);
+          this.notification.snackBar(this.i18n.transaction.cancelAuthorizationDone);
           this.reload();
         });
       }
@@ -236,8 +236,8 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
 
   private blockScheduled() {
     this.notification.confirm({
-      title: this.messages.transaction.blockScheduling,
-      message: this.messages.transaction.blockSchedulingMessage,
+      title: this.i18n.transaction.blockScheduling,
+      message: this.i18n.transaction.blockSchedulingMessage,
       createDeviceConfirmation: this.schedDeviceConfirmation(ScheduledPaymentActionEnum.BLOCK),
       passwordInput: this.transaction.confirmationPasswordInput,
       callback: res => {
@@ -245,7 +245,7 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
           key: this.transaction.id,
           confirmationPassword: res.confirmationPassword
         }).subscribe(() => {
-          this.notification.snackBar(this.messages.transaction.blockSchedulingDone);
+          this.notification.snackBar(this.i18n.transaction.blockSchedulingDone);
           this.reload();
         });
       }
@@ -254,8 +254,8 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
 
   private unblockScheduled() {
     this.notification.confirm({
-      title: this.messages.transaction.unblockScheduling,
-      message: this.messages.transaction.unblockSchedulingMessage,
+      title: this.i18n.transaction.unblockScheduling,
+      message: this.i18n.transaction.unblockSchedulingMessage,
       createDeviceConfirmation: this.schedDeviceConfirmation(ScheduledPaymentActionEnum.UNBLOCK),
       passwordInput: this.transaction.confirmationPasswordInput,
       callback: res => {
@@ -263,7 +263,7 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
           key: this.transaction.id,
           confirmationPassword: res.confirmationPassword
         }).subscribe(() => {
-          this.notification.snackBar(this.messages.transaction.unblockSchedulingDone);
+          this.notification.snackBar(this.i18n.transaction.unblockSchedulingDone);
           this.reload();
         });
       }
@@ -272,8 +272,8 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
 
   private cancelScheduled() {
     this.notification.confirm({
-      title: this.messages.transaction.cancelScheduled,
-      message: this.messages.transaction.cancelScheduledMessage,
+      title: this.i18n.transaction.cancelScheduled,
+      message: this.i18n.transaction.cancelScheduledMessage,
       createDeviceConfirmation: this.schedDeviceConfirmation(ScheduledPaymentActionEnum.CANCEL),
       passwordInput: this.transaction.confirmationPasswordInput,
       callback: res => {
@@ -281,7 +281,7 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
           key: this.transaction.id,
           confirmationPassword: res.confirmationPassword
         }).subscribe(() => {
-          this.notification.snackBar(this.messages.transaction.cancelScheduledDone);
+          this.notification.snackBar(this.i18n.transaction.cancelScheduledDone);
           this.reload();
         });
       }
@@ -290,8 +290,8 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
 
   private settleScheduled() {
     this.notification.confirm({
-      title: this.messages.transaction.settleScheduled,
-      message: this.messages.transaction.settleScheduledMessage,
+      title: this.i18n.transaction.settleScheduled,
+      message: this.i18n.transaction.settleScheduledMessage,
       createDeviceConfirmation: this.schedDeviceConfirmation(ScheduledPaymentActionEnum.SETTLE),
       passwordInput: this.transaction.confirmationPasswordInput,
       callback: res => {
@@ -299,7 +299,7 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
           key: this.transaction.id,
           confirmationPassword: res.confirmationPassword
         }).subscribe(() => {
-          this.notification.snackBar(this.messages.transaction.settleScheduledDone);
+          this.notification.snackBar(this.i18n.transaction.settleScheduledDone);
           this.reload();
         });
       }
@@ -316,8 +316,8 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
 
   private cancelRecurring() {
     this.notification.confirm({
-      title: this.messages.transaction.cancelRecurring,
-      message: this.messages.transaction.cancelRecurringMessage,
+      title: this.i18n.transaction.cancelRecurring,
+      message: this.i18n.transaction.cancelRecurringMessage,
       createDeviceConfirmation: this.recurrDeviceConfirmation(RecurringPaymentActionEnum.CANCEL),
       passwordInput: this.transaction.confirmationPasswordInput,
       callback: res => {
@@ -325,7 +325,7 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
           key: this.transaction.id,
           confirmationPassword: res.confirmationPassword
         }).subscribe(() => {
-          this.notification.snackBar(this.messages.transaction.cancelRecurringDone);
+          this.notification.snackBar(this.i18n.transaction.cancelRecurringDone);
           this.reload();
         });
       }
@@ -341,8 +341,8 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
 
   private chargeback() {
     this.notification.confirm({
-      title: this.messages.transaction.chargebackTransfer,
-      message: this.messages.transaction.chargebackTransferMessage,
+      title: this.i18n.transaction.chargebackTransfer,
+      message: this.i18n.transaction.chargebackTransferMessage,
       createDeviceConfirmation: this.chargebackDeviceConfirmation(),
       passwordInput: this.transaction.confirmationPasswordInput,
       callback: res => {
@@ -350,7 +350,7 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
           key: this.transaction.transfer.id,
           confirmationPassword: res.confirmationPassword
         }).subscribe(() => {
-          this.notification.snackBar(this.messages.transaction.chargebackTransferDone);
+          this.notification.snackBar(this.i18n.transaction.chargebackTransferDone);
           this.reload();
         });
       }
@@ -360,19 +360,19 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
   private initTitle(kind: TransactionKind) {
     switch (kind) {
       case TransactionKind.SCHEDULED_PAYMENT:
-        return this.messages.transaction.title.detailsScheduled;
+        return this.i18n.transaction.title.detailsScheduled;
       case TransactionKind.RECURRING_PAYMENT:
-        return this.messages.transaction.title.detailsRecurring;
+        return this.i18n.transaction.title.detailsRecurring;
       case TransactionKind.PAYMENT_REQUEST:
-        return this.messages.transaction.title.detailsRequest;
+        return this.i18n.transaction.title.detailsRequest;
       case TransactionKind.CHARGEBACK:
-        return this.messages.transaction.title.detailsChargeback;
+        return this.i18n.transaction.title.detailsChargeback;
       case TransactionKind.TICKET:
-        return this.messages.transaction.title.detailsTicket;
+        return this.i18n.transaction.title.detailsTicket;
       case TransactionKind.EXTERNAL_PAYMENT:
-        return this.messages.transaction.title.detailsExternal;
+        return this.i18n.transaction.title.detailsExternal;
       default:
-        return this.messages.transaction.title.detailsPayment;
+        return this.i18n.transaction.title.detailsPayment;
     }
   }
 
@@ -405,8 +405,8 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
 
   settleInstallment(installment: ScheduledPaymentInstallmentView) {
     this.notification.confirm({
-      title: this.messages.transaction.settleInstallment,
-      message: this.messages.transaction.settleInstallmentMessage(String(installment.number)),
+      title: this.i18n.transaction.settleInstallment,
+      message: this.i18n.transaction.settleInstallmentMessage(String(installment.number)),
       createDeviceConfirmation: this.installmentDeviceConfirmation(InstallmentActionEnum.SETTLE, installment),
       passwordInput: this.transaction.confirmationPasswordInput,
       callback: res => {
@@ -414,7 +414,7 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
           id: installment.id,
           confirmationPassword: res.confirmationPassword
         }).subscribe(() => {
-          this.notification.snackBar(this.messages.transaction.settleInstallmentDone);
+          this.notification.snackBar(this.i18n.transaction.settleInstallmentDone);
           this.reload();
         });
       }
@@ -423,8 +423,8 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
 
   processInstallment(installment: ScheduledPaymentInstallmentView) {
     this.notification.confirm({
-      title: this.messages.transaction.processInstallment,
-      message: this.messages.transaction.processInstallmentMessage(installment.number),
+      title: this.i18n.transaction.processInstallment,
+      message: this.i18n.transaction.processInstallmentMessage(installment.number),
       createDeviceConfirmation: this.installmentDeviceConfirmation(InstallmentActionEnum.PROCESS, installment),
       passwordInput: this.transaction.confirmationPasswordInput,
       callback: res => {
@@ -432,7 +432,7 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
           id: installment.id,
           confirmationPassword: res.confirmationPassword
         }).subscribe(() => {
-          this.notification.snackBar(this.messages.transaction.processInstallmentDone);
+          this.notification.snackBar(this.i18n.transaction.processInstallmentDone);
           this.reload();
         });
       }

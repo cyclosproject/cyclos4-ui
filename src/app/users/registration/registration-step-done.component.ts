@@ -32,18 +32,18 @@ export class RegistrationStepDoneComponent
     }
     if (principals.length === 1) {
       const principal = principals[0];
-      return this.messages.user.registration.principalSingle({
+      return this.i18n.user.registration.principalSingle({
         principal: principal.type.name,
         value: principal.value,
         channels: principal.channels.map(c => c.name).join(', ')
       });
     }
     const buf: string[] = [];
-    buf.push(this.messages.user.registration.principalMultiplePreface);
+    buf.push(this.i18n.user.registration.principalMultiplePreface);
     buf.push('<ul>');
     for (const principal of principals) {
       buf.push('<li>');
-      buf.push(this.messages.user.registration.principalMultipleItem({
+      buf.push(this.i18n.user.registration.principalMultipleItem({
         principal: principal.type.name,
         value: principal.value,
         channels: principal.channels.map(c => c.name).join(', ')
@@ -57,12 +57,12 @@ export class RegistrationStepDoneComponent
   get passwordsMessage(): string {
     const passwords = this.result.generatedPasswords;
     if (empty(passwords)) {
-      return this.messages.user.registration.generatedPasswordsNone;
+      return this.i18n.user.registration.generatedPasswordsNone;
     } else if (passwords.length === 1) {
       const password = passwords[0];
-      return this.messages.user.registration.generatedPasswordsSingle(password.name);
+      return this.i18n.user.registration.generatedPasswordsSingle(password.name);
     } else {
-      return this.messages.user.registration.generatedPasswordsMultiple(
+      return this.i18n.user.registration.generatedPasswordsMultiple(
         passwords.map(p => p.name).join(', '));
     }
   }

@@ -1,7 +1,7 @@
 <div *ngIf="results" class="d-flex flex-column flex-sm-row justify-content-between align-items-center"
   [formGroup]="form">
   <div class="mb-3 mb-sm-0" *ngIf="results.hasTotalCount; else noTotalCount">
-    {{ messages.general.results.withTotal({
+    {{ i18n.general.results.withTotal({
     first: results.firstItem,
     last: results.lastItem,
     total: results.totalCount
@@ -9,7 +9,7 @@
   </div>
   <ng-template #noTotalCount>
     <div class="mb-3 mb-sm-0">
-      {{ messages.general.results.noTotal({
+      {{ i18n.general.results.noTotal({
       first: results.firstItem,
       last: results.lastItem
       }) }}

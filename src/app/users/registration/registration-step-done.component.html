@@ -1,17 +1,17 @@
 <div [ngSwitch]="result.status">
 
   <div *ngSwitchCase="'active'">
-    <p [innerHTML]="messages.user.registration.active | trust"></p>
+    <p [innerHTML]="i18n.user.registration.active | trust"></p>
     <p [innerHTML]="principalsHtml | trust"></p>
     <p>{{ passwordsMessage }}</p>
   </div>
 
   <div *ngSwitchCase="'inactive'">
-    <p [innerHTML]="messages.user.registration.inactive | trust"></p>
+    <p [innerHTML]="i18n.user.registration.inactive | trust"></p>
   </div>
 
   <div *ngSwitchCase="'emailValidation'">
-    <p [innerHTML]="messages.user.registration.pending | trust"></p>
+    <p [innerHTML]="i18n.user.registration.pending | trust"></p>
   </div>
 
 </div>

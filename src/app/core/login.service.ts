@@ -12,7 +12,7 @@ import { map, switchMap } from 'rxjs/operators';
 import { Configuration } from 'app/configuration';
 import { PushNotificationsService } from 'app/core/push-notifications.service';
 import { NotificationService } from 'app/core/notification.service';
-import { Messages } from 'app/messages/messages';
+import { I18n } from 'app/i18n/i18n';
 
 /**
  * Service used to manage the login status
@@ -31,7 +31,7 @@ export class LoginService {
     private authService: AuthService,
     private loginState: LoginState,
     private router: Router,
-    private messages: Messages,
+    private i18n: I18n,
     private notification: NotificationService,
     private pushNotifications: PushNotificationsService,
     private apiConfiguration: ApiConfiguration) {
@@ -59,9 +59,9 @@ export class LoginService {
       this.nextRequestState.setSessionToken(null);
       // Also ask the user if he/she wants to login again
       this.notification.confirm({
-        title: this.messages.general.sessionExpired.title,
-        message: this.messages.general.sessionExpired.message,
-        confirmLabel: this.messages.general.sessionExpired.loginAgain,
+        title: this.i18n.general.sessionExpired.title,
+        message: this.i18n.general.sessionExpired.message,
+        confirmLabel: this.i18n.general.sessionExpired.loginAgain,
         callback: () => {
           this.goToLoginPage(this.router.url);
         }

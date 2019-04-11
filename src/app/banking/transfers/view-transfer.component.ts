@@ -47,12 +47,12 @@ export class ViewTransferComponent extends BasePageComponent<TransferView> imple
     const actions: HeadingAction[] = [this.printAction];
     const transaction = transfer.transaction || {};
     if (!empty(transaction.authorizations)) {
-      actions.push(new HeadingAction('check_circle_outline', this.messages.transaction.viewAuthorizations, () => {
+      actions.push(new HeadingAction('check_circle_outline', this.i18n.transaction.viewAuthorizations, () => {
         this.router.navigate(['banking', 'transaction', this.bankingHelper.transactionNumberOrId(transaction), 'authorization-history']);
       }));
     }
     if (transfer.canChargeback) {
-      actions.push(new HeadingAction('undo', this.messages.transaction.chargebackTransfer, () => {
+      actions.push(new HeadingAction('undo', this.i18n.transaction.chargebackTransfer, () => {
         this.chargeback();
       }));
     }
@@ -72,8 +72,8 @@ export class ViewTransferComponent extends BasePageComponent<TransferView> imple
 
   private chargeback() {
     this.notification.confirm({
-      title: this.messages.transaction.chargebackTransfer,
-      message: this.messages.transaction.chargebackTransferMessage,
+      title: this.i18n.transaction.chargebackTransfer,
+      message: this.i18n.transaction.chargebackTransferMessage,
       createDeviceConfirmation: this.chargebackDeviceConfirmation(),
       passwordInput: this.transfer.confirmationPasswordInput,
       callback: res => {
@@ -81,7 +81,7 @@ export class ViewTransferComponent extends BasePageComponent<TransferView> imple
           key: this.transfer.id,
           confirmationPassword: res.confirmationPassword
         }).subscribe(() => {
-          this.notification.snackBar(this.messages.transaction.chargebackTransferDone);
+          this.notification.snackBar(this.i18n.transaction.chargebackTransferDone);
           this.reload();
         });
       }

@@ -1,38 +1,38 @@
-<label-value *ngIf="transfer.transactionNumber" [label]="messages.transaction.number">
+<label-value *ngIf="transfer.transactionNumber" [label]="i18n.transaction.number">
   {{ transfer.transactionNumber }}
 </label-value>
-<label-value [label]="messages.general.date">
+<label-value [label]="i18n.general.date">
   {{ transfer.date | dateTime }}
 </label-value>
-<label-value [label]="messages.transaction.amount">
+<label-value [label]="i18n.transaction.amount">
   {{ transfer.amount | currency:transfer.currency }}
 </label-value>
-<label-value *ngIf="transfer.chargedBackBy" [label]="messages.transaction.chargedBackBy">
+<label-value *ngIf="transfer.chargedBackBy" [label]="i18n.transaction.chargedBackBy">
   <a [routerLink]="path(transfer.chargedBackBy)">
     {{transfer.chargedBackBy.display }}
   </a>
 </label-value>
-<label-value *ngIf="transfer.chargebackOf" [label]="messages.transaction.chargebackOf">
+<label-value *ngIf="transfer.chargebackOf" [label]="i18n.transaction.chargebackOf">
   <a [routerLink]="path(transfer.chargebackOf)">
     {{ transfer.chargebackOf.display }}
   </a>
 </label-value>
-<label-value *ngIf="transfer.transaction?.by" [label]="messages.general.performedBy">
+<label-value *ngIf="transfer.transaction?.by" [label]="i18n.general.performedBy">
   {{ transfer.transaction.by.display }}
 </label-value>
-<label-value *ngIf="transfer.transaction?.receivedBy" [label]="messages.transaction.receivedBy">
+<label-value *ngIf="transfer.transaction?.receivedBy" [label]="i18n.transaction.receivedBy">
   {{ transfer.transaction.receivedBy.display }}
 </label-value>
-<label-value [label]="messages.transaction.from">
+<label-value [label]="i18n.transaction.from">
   <user-link [account]="transfer.from"></user-link>
 </label-value>
-<label-value [label]="messages.transaction.to">
+<label-value [label]="i18n.transaction.to">
   <user-link [account]="transfer.to"></user-link>
 </label-value>
-<label-value [label]="messages.transaction.type">
+<label-value [label]="i18n.transaction.type">
   {{ transfer.type.name }}
 </label-value>
-<label-value *ngIf="transfer.transaction?.channel" [label]="messages.transaction.channel">
+<label-value *ngIf="transfer.transaction?.channel" [label]="i18n.transaction.channel">
   {{ transfer.transaction.channel.name }}
 </label-value>
 <custom-field-value *ngFor="let value of transfer.transaction?.customValues"
@@ -42,48 +42,48 @@
   {{ status.name }}
 </label-value>
 
-<label-value *ngIf="lastAuthComment" [label]="messages.transaction.authorizationComments"
+<label-value *ngIf="lastAuthComment" [label]="i18n.transaction.authorizationComments"
   [value]="lastAuthComment" valueFormat="break">
 </label-value>
 
-<label-value *ngIf="transfer.transaction?.description" [label]="messages.general.description"
+<label-value *ngIf="transfer.transaction?.description" [label]="i18n.general.description"
   valueFormat="break" [value]="transfer.transaction.description"></label-value>
 
 <ng-container *ngIf="transfer.parent">
-  <h2 class="mt-4">{{ messages.transaction.title.parentTransfer }}</h2>
-  <label-value *ngIf="transfer.parent.transactionNumber" [label]="messages.transaction.number">
+  <h2 class="mt-4">{{ i18n.transaction.title.parentTransfer }}</h2>
+  <label-value *ngIf="transfer.parent.transactionNumber" [label]="i18n.transaction.number">
     {{ transfer.parent.transactionNumber }}
   </label-value>
-  <label-value [label]="messages.general.date">
+  <label-value [label]="i18n.general.date">
     {{ transfer.parent.date | dateTime }}
   </label-value>
-  <label-value [label]="messages.transaction.amount">
+  <label-value [label]="i18n.transaction.amount">
     {{ transfer.parent.amount | currency:transfer.parent.currency }}
   </label-value>
-  <label-value [label]="messages.transaction.from">
+  <label-value [label]="i18n.transaction.from">
     <user-link [account]="transfer.parent.from"></user-link>
   </label-value>
-  <label-value [label]="messages.transaction.to">
+  <label-value [label]="i18n.transaction.to">
     <user-link [account]="transfer.parent.to"></user-link>
   </label-value>
-  <label-value [label]="messages.transaction.type">
+  <label-value [label]="i18n.transaction.type">
     {{ transfer.parent.type.name }}
   </label-value>
   <actions>
     <a class="btn btn-outline-primary" [routerLink]="path(transfer.parent)">
-      {{ messages.transaction.viewThisTransfer }}
+      {{ i18n.transaction.viewThisTransfer }}
     </a>
   </actions>
 </ng-container>
 
 <ng-container *ngIf="(transfer.children || []).length > 0">
-  <h2 class="mt-4 border-0">{{ messages.transaction.title.childTransfers }}</h2>
+  <h2 class="mt-4 border-0">{{ i18n.transaction.title.childTransfers }}</h2>
   <table class="table table-hover cursor-pointer">
     <thead *ngIf="layout.gtxs$ | async">
-      <th>{{ messages.general.date }}</th>
-      <th>{{ messages.transaction.from }}</th>
-      <th>{{ messages.transaction.to }}</th>
-      <th class="text-right">{{ messages.transaction.amount }}</th>
+      <th>{{ i18n.general.date }}</th>
+      <th>{{ i18n.transaction.from }}</th>
+      <th>{{ i18n.transaction.to }}</th>
+      <th class="text-right">{{ i18n.transaction.amount }}</th>
     </thead>
     <tbody>
       <tr *ngFor="let row of transfer.children" (click)="router.navigate(path(row))">
@@ -91,11 +91,11 @@
           <!-- Aggregated cell for xs -->
           <a [routerLink]="path(row)">
             <div>
-              {{ messages.transaction.from }}
+              {{ i18n.transaction.from }}
               <user-link [account]="row.from"></user-link>
             </div>
             <div>
-              {{ messages.transaction.to }}
+              {{ i18n.transaction.to }}
               <user-link [account]="row.to"></user-link>
             </div>
             <div class="cell-text cell-date">{{ row.date | dateTime }}</div>

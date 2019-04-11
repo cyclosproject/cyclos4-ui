@@ -1,5 +1,5 @@
 <ng-container
-  *ngIf="(initialized$ | async) && (messages.initialized$ | async); else loading">
+  *ngIf="(initialized$ | async) && (i18n.initialized$ | async); else loading">
   <snack-bar #snackBar></snack-bar>
   <sidenav #sidenav></sidenav>
   <push-notifications #pushNotifications></push-notifications>

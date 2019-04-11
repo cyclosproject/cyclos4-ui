@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { LoginService } from 'app/core/login.service';
-import { Messages } from 'app/messages/messages';
+import { I18n } from 'app/i18n/i18n';
 import { LayoutService } from 'app/shared/layout.service';
 import { MenuType, ActiveMenu } from 'app/shared/menu';
 
@@ -21,7 +21,7 @@ export class MenuBarComponent {
   constructor(
     public layout: LayoutService,
     public login: LoginService,
-    public messages: Messages) {
+    public i18n: I18n) {
   }
 
   @Input() activeMenu: ActiveMenu;

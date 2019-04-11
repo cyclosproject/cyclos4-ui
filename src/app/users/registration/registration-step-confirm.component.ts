@@ -50,7 +50,7 @@ export class RegistrationStepConfirmComponent
   ngAfterViewInit() {
     if (this.agreementsContent && this.agreementsContent.nativeElement) {
       const el: HTMLElement = this.agreementsContent.nativeElement;
-      el.innerHTML = this.messages.auth.pendingAgreements.agree(
+      el.innerHTML = this.i18n.auth.pendingAgreements.agree(
         `<a href="#" onclick="event.preventDefault();event.stopPropagation();showAgreements()">
         ${this.data.agreements.map(a => a.name).join(', ')}
         </a>`
@@ -120,7 +120,7 @@ export class RegistrationStepConfirmComponent
     if (extension === '') {
       return number;
     } else {
-      return this.messages.phone.numberExtensionValue({
+      return this.i18n.phone.numberExtensionValue({
         number: number,
         extension: extension
       });

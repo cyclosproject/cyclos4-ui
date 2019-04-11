@@ -49,7 +49,7 @@
           [counter]="status.newNotifications">
         </icon-with-counter>
         <div *ngIf="(layout.gtsm$ | async) && !hasMenu" class="ml-2">
-          {{ messages.menu.personalNotifications }}
+          {{ i18n.menu.personalNotifications }}
         </div>
       </a>
     </ng-container>
@@ -58,7 +58,7 @@
     (click)="navigate(Menu.LOGOUT, $event)">
     <icon class="top-icon" icon="logout"></icon>
     <div *ngIf="(layout.gtsm$ | async) && !hasMenu" class="ml-2">
-      {{ messages.menu.logout }}
+      {{ i18n.menu.logout }}
     </div>
   </a>
   <ng-container *ngIf="user == null">
@@ -70,7 +70,7 @@
       }">
       <icon class="top-icon" icon="registration"></icon>
       <div *ngIf="layout.gtsm$ | async" class="ml-2">
-        {{ messages.menu.register }}
+        {{ i18n.menu.register }}
       </div>
     </a>
     <a routerLink="/login" id="login-link"
@@ -79,7 +79,7 @@
       }">
       <icon class="top-icon" icon="exit_to_app"></icon>
       <div *ngIf="layout.gtsm$ | async" class="ml-2">
-        {{ messages.menu.login }}
+        {{ i18n.menu.login }}
       </div>
     </a>
   </ng-container>

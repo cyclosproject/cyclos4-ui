@@ -53,10 +53,10 @@ export class SearchNotificationsComponent
       const notifications = ((results ? results.results : null) || []);
       const unread = notifications.filter(n => !n.read);
       if (unread.length > 0) {
-        headingActions.push(new HeadingAction('done_all', this.messages.notification.actions.markAllRead, () => this.markAllRead()));
+        headingActions.push(new HeadingAction('done_all', this.i18n.notification.actions.markAllRead, () => this.markAllRead()));
       }
       if (notifications.length > 0) {
-        headingActions.push(new HeadingAction('clear', this.messages.notification.actions.removeAll, () => this.removeAll()));
+        headingActions.push(new HeadingAction('clear', this.i18n.notification.actions.removeAll, () => this.removeAll()));
       }
       this.headingActions = headingActions;
     }));

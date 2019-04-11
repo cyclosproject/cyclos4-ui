@@ -1,14 +1,14 @@
-<h1>{{ messages.user.title.addContact }}</h1>
+<h1>{{ i18n.user.title.addContact }}</h1>
 
 <user-field #field focused [allowContacts]="false" [allowPrincipal]="false"
-  [formControl]="control" [label]="messages.user.contact">
+  [formControl]="control" [label]="i18n.user.contact">
 </user-field>
 
 <actions forceRow>
   <button class="btn btn-primary" [disabled]="requesting$ | async" (click)="addContact()">
-    {{ messages.general.submit }}
+    {{ i18n.general.submit }}
   </button>
   <button class="btn btn-outline-primary" (click)="modalRef.hide()">
-    {{ messages.general.cancel }}
+    {{ i18n.general.cancel }}
   </button>
 </actions>

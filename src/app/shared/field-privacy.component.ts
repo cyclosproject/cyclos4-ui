@@ -3,7 +3,7 @@ import { FormControl } from '@angular/forms';
 import { truthyAttr } from 'app/shared/helper';
 import { TooltipDirective } from 'ngx-bootstrap/tooltip';
 import { BehaviorSubject } from 'rxjs';
-import { Messages } from 'app/messages/messages';
+import { I18n } from 'app/i18n/i18n';
 
 /**
  * A widget that switches between field visibilities.
@@ -34,7 +34,7 @@ export class FieldPrivacyComponent implements OnInit {
 
   icon$ = new BehaviorSubject<string>(null);
 
-  constructor(private messages: Messages) {
+  constructor(private i18n: I18n) {
   }
 
   ngOnInit() {
@@ -77,9 +77,9 @@ export class FieldPrivacyComponent implements OnInit {
 
   get tooltip(): string {
     if (this.hidden) {
-      return this.messages.field.privacy.privateTooltip;
+      return this.i18n.field.privacy.privateTooltip;
     } else {
-      return this.messages.field.privacy.publicTooltip;
+      return this.i18n.field.privacy.publicTooltip;
     }
   }
 }

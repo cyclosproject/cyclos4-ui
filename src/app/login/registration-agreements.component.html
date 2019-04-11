@@ -1,5 +1,5 @@
 <div #content>
-  <h1 *ngIf="agreements?.length > 1">{{ messages.auth.registrationAgreement
+  <h1 *ngIf="agreements?.length > 1">{{ i18n.auth.registrationAgreement
     }}</h1>
   <h1 *ngIf="agreements?.length === 1">{{ agreements[0].name }}</h1>
   <ng-container *ngFor="let agreement of agreements">
@@ -9,10 +9,10 @@
 </div>
 <actions forceRow>
   <button class="btn btn-primary" (click)="print(content, printOutput)">
-    {{ messages.general.print }}
+    {{ i18n.general.print }}
   </button>
   <button class="btn btn-outline-primary" (click)="modalRef.hide()">
-    {{ messages.general.close }}
+    {{ i18n.general.close }}
   </button>
 </actions>
 <iframe class="d-none" #printOutput></iframe>

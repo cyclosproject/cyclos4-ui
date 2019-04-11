@@ -1,4 +1,4 @@
-<page-content [heading]="messages.dashboard.latestUsers" hideBack
+<page-content [heading]="i18n.dashboard.latestUsers" hideBack
   [ngStyle]="{minHeight: minHeight}">
   <div *ngIf="(users$ | async) != null; else spinner" class="container">
     <div class="row">

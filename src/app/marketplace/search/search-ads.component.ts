@@ -116,7 +116,7 @@ export class SearchAdsComponent
         trail.unshift(parent);
       }
       const root: AdCategoryWithChildren = {
-        name: this.messages.ad.rootCategory
+        name: this.i18n.ad.rootCategory
       };
       trail.unshift(root);
     } else {

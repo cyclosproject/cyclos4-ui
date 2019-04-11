@@ -3,7 +3,7 @@ import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { FIELD_OPTIONS_SORTER, FORM_FIELD_WITH_OPTIONS } from 'app/shared/base-form-field-with-options.component';
 import { BaseSelectionFieldComponent } from 'app/shared/base-selection-field.component';
 import { blank, empty, getValueAsArray, preprocessValueWithSeparator } from 'app/shared/helper';
-import { Messages } from 'app/messages/messages';
+import { I18n } from 'app/i18n/i18n';
 
 /**
  * Component used to display a multi selection field (using a `select` tag).
@@ -41,7 +41,7 @@ export class MultiSelectionFieldComponent extends BaseSelectionFieldComponent<st
 
   constructor(
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
-    private messages: Messages
+    private i18n: I18n
   ) {
     super(controlContainer);
   }
@@ -73,7 +73,7 @@ export class MultiSelectionFieldComponent extends BaseSelectionFieldComponent<st
       if (!blank(this.emptyLabel)) {
         return this.emptyLabel;
       } else {
-        return this.messages.general.noOptionsSelected;
+        return this.i18n.general.noOptionsSelected;
       }
     } else {
       // When there's a parent option selected, don't show the children, as they're implicit

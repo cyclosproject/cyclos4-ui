@@ -4,7 +4,7 @@ import { BreadcrumbService } from 'app/core/breadcrumb.service';
 import { LoginService } from 'app/core/login.service';
 import { MenuService } from 'app/core/menu.service';
 import { NotificationService } from 'app/core/notification.service';
-import { Messages } from 'app/messages/messages';
+import { I18n } from 'app/i18n/i18n';
 import { LayoutService } from 'app/shared/layout.service';
 import { ActiveMenu, BaseMenuEntry, MenuEntry, MenuType, RootMenu, RootMenuEntry } from 'app/shared/menu';
 import { BsDropdownDirective } from 'ngx-bootstrap/dropdown/public_api';
@@ -34,7 +34,7 @@ export class MenusComponent implements OnInit {
     public layout: LayoutService,
     public login: LoginService,
     public breadcrumb: BreadcrumbService,
-    public messages: Messages,
+    public i18n: I18n,
     public notification: NotificationService) {
   }
 

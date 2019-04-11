@@ -1,12 +1,12 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="loaded$ | async; else loading">
-    <page-content mode="filters" [heading]="messages.ad.title.search"
+    <page-content mode="filters" [heading]="i18n.ad.title.search"
       [headingActions]="headingActions$ | async">
       <form [formGroup]="form" class="filters-form border-bottom">
         <div class="row no-gutters">
           <div class="col-12 col-md-6">
             <input-field labelPosition="side" formControlName="keywords"
-              [label]="messages.general.keywords"></input-field>
+              [label]="i18n.general.keywords"></input-field>
           </div>
           <div class="col-12 col-md-6" *ngFor="let cf of basicFields">
             <custom-field-filter labelPosition="side" [field]="cf"
@@ -17,7 +17,7 @@
             <div *ngIf="data.groups?.length > 1" class="col-12 col-md-6">
               <multi-selection-field labelPosition="side"
                 hierarchyProperty="groupSet" formControlName="groups"
-                [label]="messages.user.groupFilter">
+                [label]="i18n.user.groupFilter">
                 <field-option *ngFor="let group of data.groups"
                   [value]="group.id" [internalName]="group.internalName"
                   [id]="group.id" [text]="group.name"
@@ -29,7 +29,7 @@
               <max-distance-field labelPosition="side"
                 [data]="data.searchByDistanceData"
                 formControlName="distanceFilter"
-                [label]="messages.general.distanceFilter">
+                [label]="i18n.general.distanceFilter">
               </max-distance-field>
             </div>
             <div class="col-12 col-md-6" *ngFor="let cf of advancedFields">
@@ -50,14 +50,14 @@
         <div *ngIf="resultType !== 'categories' && (layout.gtxxs$ | async)"
           class="col-12 col-xs-5 col-md-3">
           <single-selection-field [formControl]="form.get('orderBy')"
-            [display]="messages.general.orderBy"
-            [emptyOption]="messages.general.orderByRelevance">
-            <field-option value="date" [text]="messages.ad.orderBy.date">
+            [display]="i18n.general.orderBy"
+            [emptyOption]="i18n.general.orderByRelevance">
+            <field-option value="date" [text]="i18n.ad.orderBy.date">
             </field-option>
             <field-option value="priceAsc"
-              [text]="messages.ad.orderBy.priceAsc"></field-option>
+              [text]="i18n.ad.orderBy.priceAsc"></field-option>
             <field-option value="priceDesc"
-              [text]="messages.ad.orderBy.priceDesc"></field-option>
+              [text]="i18n.ad.orderBy.priceDesc"></field-option>
           </single-selection-field>
         </div>
       </div>

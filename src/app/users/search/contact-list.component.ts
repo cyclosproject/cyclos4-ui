@@ -55,7 +55,7 @@ export class ContactListComponent
         data.fieldsInList = fieldsInList;
       }
       this.headingActions = [
-        new HeadingAction('add', this.messages.general.addNew, () => this.addNew(), true)
+        new HeadingAction('add', this.i18n.general.addNew, () => this.addNew(), true)
       ];
       this.data = data;
     });
@@ -71,7 +71,7 @@ export class ContactListComponent
     });
     const component = ref.content as AddContactDialogComponent;
     this.addSub(component.done.subscribe(user => {
-      this.notification.snackBar(this.messages.user.profile.addContactDone(user.display));
+      this.notification.snackBar(this.i18n.user.profile.addContactDone(user.display));
       this.reload();
     }));
 

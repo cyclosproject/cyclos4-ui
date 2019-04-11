@@ -1,6 +1,6 @@
 import { Component, Host, Input, Optional, SkipSelf, ChangeDetectorRef } from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { Messages } from 'app/messages/messages';
+import { I18n } from 'app/i18n/i18n';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { empty } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
@@ -38,7 +38,7 @@ export class FileFieldComponent extends BaseFormFieldComponent<File | File[]> {
 
   constructor(
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
-    public messages: Messages,
+    public i18n: I18n,
     public layout: LayoutService,
     public format: FormatService,
     private changeDetector: ChangeDetectorRef) {

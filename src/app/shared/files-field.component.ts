@@ -4,7 +4,7 @@ import { CustomField, StoredFile } from 'app/api/models';
 import { FilesService } from 'app/api/services';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
 import { NextRequestState } from 'app/core/next-request-state';
-import { Messages } from 'app/messages/messages';
+import { I18n } from 'app/i18n/i18n';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { empty, getValueAsArray, preprocessValueWithSeparator } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
@@ -59,7 +59,7 @@ export class FilesFieldComponent extends BaseFormFieldComponent<string | string[
 
   constructor(
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
-    public messages: Messages,
+    public i18n: I18n,
     private nextRequestState: NextRequestState,
     public layout: LayoutService,
     private errorHandler: ErrorHandlerService,

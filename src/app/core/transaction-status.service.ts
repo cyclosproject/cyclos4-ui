@@ -7,7 +7,7 @@ import {
   TransactionAuthorizationStatusEnum, TransactionKind, TransactionResult,
   TransactionView
 } from 'app/api/models';
-import { Messages } from 'app/messages/messages';
+import { I18n } from 'app/i18n/i18n';
 
 /**
  * Service used to retrieve translations for transaction statuses, which are used in several places
@@ -17,7 +17,7 @@ import { Messages } from 'app/messages/messages';
 })
 export class TransactionStatusService {
 
-  constructor(private messages: Messages) {
+  constructor(private i18n: I18n) {
   }
 
   /**
@@ -26,15 +26,15 @@ export class TransactionStatusService {
   authorizationStatus(status: TransactionAuthorizationStatusEnum): string {
     switch (status) {
       case TransactionAuthorizationStatusEnum.AUTHORIZED:
-        return this.messages.transaction.status.authorized;
+        return this.i18n.transaction.status.authorized;
       case TransactionAuthorizationStatusEnum.PENDING:
-        return this.messages.transaction.status.pending;
+        return this.i18n.transaction.status.pending;
       case TransactionAuthorizationStatusEnum.DENIED:
-        return this.messages.transaction.status.denied;
+        return this.i18n.transaction.status.denied;
       case TransactionAuthorizationStatusEnum.CANCELED:
-        return this.messages.transaction.status.canceled;
+        return this.i18n.transaction.status.canceled;
       case TransactionAuthorizationStatusEnum.EXPIRED:
-        return this.messages.transaction.status.expired;
+        return this.i18n.transaction.status.expired;
     }
   }
 
@@ -44,13 +44,13 @@ export class TransactionStatusService {
   scheduledPaymentStatus(status: ScheduledPaymentStatusEnum): string {
     switch (status) {
       case ScheduledPaymentStatusEnum.OPEN:
-        return this.messages.transaction.status.open;
+        return this.i18n.transaction.status.open;
       case ScheduledPaymentStatusEnum.BLOCKED:
-        return this.messages.transaction.status.blocked;
+        return this.i18n.transaction.status.blocked;
       case ScheduledPaymentStatusEnum.CANCELED:
-        return this.messages.transaction.status.canceled;
+        return this.i18n.transaction.status.canceled;
       case ScheduledPaymentStatusEnum.CLOSED:
-        return this.messages.transaction.status.closed;
+        return this.i18n.transaction.status.closed;
     }
   }
 
@@ -60,11 +60,11 @@ export class TransactionStatusService {
   recurringPaymentStatus(status: RecurringPaymentStatusEnum): string {
     switch (status) {
       case RecurringPaymentStatusEnum.OPEN:
-        return this.messages.transaction.status.open;
+        return this.i18n.transaction.status.open;
       case RecurringPaymentStatusEnum.CANCELED:
-        return this.messages.transaction.status.canceled;
+        return this.i18n.transaction.status.canceled;
       case RecurringPaymentStatusEnum.CLOSED:
-        return this.messages.transaction.status.closed;
+        return this.i18n.transaction.status.closed;
     }
   }
 
@@ -74,17 +74,17 @@ export class TransactionStatusService {
   paymentRequestStatus(status: PaymentRequestStatusEnum): string {
     switch (status) {
       case PaymentRequestStatusEnum.CANCELED:
-        return this.messages.transaction.status.canceled;
+        return this.i18n.transaction.status.canceled;
       case PaymentRequestStatusEnum.DENIED:
-        return this.messages.transaction.status.denied;
+        return this.i18n.transaction.status.denied;
       case PaymentRequestStatusEnum.EXPIRED:
-        return this.messages.transaction.status.expired;
+        return this.i18n.transaction.status.expired;
       case PaymentRequestStatusEnum.OPEN:
-        return this.messages.transaction.status.open;
+        return this.i18n.transaction.status.open;
       case PaymentRequestStatusEnum.SCHEDULED:
-        return this.messages.transaction.status.scheduled;
+        return this.i18n.transaction.status.scheduled;
       case PaymentRequestStatusEnum.PROCESSED:
-        return this.messages.transaction.status.processed;
+        return this.i18n.transaction.status.processed;
     }
   }
 
@@ -94,15 +94,15 @@ export class TransactionStatusService {
   ticketStatus(status: TicketStatusEnum): string {
     switch (status) {
       case TicketStatusEnum.CANCELED:
-        return this.messages.transaction.status.canceled;
+        return this.i18n.transaction.status.canceled;
       case TicketStatusEnum.EXPIRED:
-        return this.messages.transaction.status.expired;
+        return this.i18n.transaction.status.expired;
       case TicketStatusEnum.OPEN:
-        return this.messages.transaction.status.open;
+        return this.i18n.transaction.status.open;
       case TicketStatusEnum.APPROVED:
-        return this.messages.transaction.status.approved;
+        return this.i18n.transaction.status.approved;
       case TicketStatusEnum.PROCESSED:
-        return this.messages.transaction.status.processed;
+        return this.i18n.transaction.status.processed;
     }
   }
 
@@ -112,15 +112,15 @@ export class TransactionStatusService {
   externalPaymentStatus(status: ExternalPaymentStatusEnum): string {
     switch (status) {
       case ExternalPaymentStatusEnum.CANCELED:
-        return this.messages.transaction.status.canceled;
+        return this.i18n.transaction.status.canceled;
       case ExternalPaymentStatusEnum.PENDING:
-        return this.messages.transaction.status.pending;
+        return this.i18n.transaction.status.pending;
       case ExternalPaymentStatusEnum.EXPIRED:
-        return this.messages.transaction.status.expired;
+        return this.i18n.transaction.status.expired;
       case ExternalPaymentStatusEnum.FAILED:
-        return this.messages.transaction.status.failed;
+        return this.i18n.transaction.status.failed;
       case ExternalPaymentStatusEnum.PROCESSED:
-        return this.messages.transaction.status.processed;
+        return this.i18n.transaction.status.processed;
     }
   }
 
@@ -151,17 +151,17 @@ export class TransactionStatusService {
   installmentStatus(status: ScheduledPaymentInstallmentStatusEnum): string {
     switch (status) {
       case ScheduledPaymentInstallmentStatusEnum.BLOCKED:
-        return this.messages.transaction.status.blocked;
+        return this.i18n.transaction.status.blocked;
       case ScheduledPaymentInstallmentStatusEnum.CANCELED:
-        return this.messages.transaction.status.canceled;
+        return this.i18n.transaction.status.canceled;
       case ScheduledPaymentInstallmentStatusEnum.FAILED:
-        return this.messages.transaction.status.failed;
+        return this.i18n.transaction.status.failed;
       case ScheduledPaymentInstallmentStatusEnum.PROCESSED:
-        return this.messages.transaction.status.processed;
+        return this.i18n.transaction.status.processed;
       case ScheduledPaymentInstallmentStatusEnum.SCHEDULED:
-        return this.messages.transaction.status.scheduled;
+        return this.i18n.transaction.status.scheduled;
       case ScheduledPaymentInstallmentStatusEnum.SETTLED:
-        return this.messages.transaction.status.settled;
+        return this.i18n.transaction.status.settled;
     }
   }
 
@@ -171,9 +171,9 @@ export class TransactionStatusService {
   occurrenceStatus(status: RecurringPaymentOccurrenceStatusEnum): string {
     switch (status) {
       case RecurringPaymentOccurrenceStatusEnum.FAILED:
-        return this.messages.transaction.status.failed;
+        return this.i18n.transaction.status.failed;
       case RecurringPaymentOccurrenceStatusEnum.PROCESSED:
-        return this.messages.transaction.status.processed;
+        return this.i18n.transaction.status.processed;
     }
   }
 
@@ -183,11 +183,11 @@ export class TransactionStatusService {
   authorizationAction(action: string): string {
     switch (action) {
       case TransactionAuthorizationActionEnum.AUTHORIZED:
-        return this.messages.transaction.status.authorized;
+        return this.i18n.transaction.status.authorized;
       case TransactionAuthorizationActionEnum.DENIED:
-        return this.messages.transaction.status.denied;
+        return this.i18n.transaction.status.denied;
       case TransactionAuthorizationActionEnum.CANCELED:
-        return this.messages.transaction.status.canceled;
+        return this.i18n.transaction.status.canceled;
     }
   }
 

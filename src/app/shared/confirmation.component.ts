@@ -5,7 +5,7 @@ import { AuthHelperService } from 'app/core/auth-helper.service';
 import { FieldHelperService } from 'app/core/field-helper.service';
 import { NextRequestState } from 'app/core/next-request-state';
 import { ConfirmCallbackParams } from 'app/core/notification.service';
-import { Messages } from 'app/messages/messages';
+import { I18n } from 'app/i18n/i18n';
 import { FieldLabelPosition } from 'app/shared/base-form-field.component';
 import { ConfirmationMode } from 'app/shared/confirmation-mode';
 import { blank, empty, validateBeforeSubmit } from 'app/shared/helper';
@@ -43,7 +43,7 @@ export class ConfirmationComponent implements OnInit {
   canConfirm: boolean;
 
   constructor(
-    public messages: Messages,
+    public i18n: I18n,
     public modalRef: BsModalRef,
     private formBuilder: FormBuilder,
     private fieldHelper: FieldHelperService,
@@ -66,10 +66,10 @@ export class ConfirmationComponent implements OnInit {
       this.hasForm = true;
     }
     if (blank(this.cancelLabel)) {
-      this.cancelLabel = this.messages.general.cancel;
+      this.cancelLabel = this.i18n.general.cancel;
     }
     if (blank(this.confirmLabel)) {
-      this.confirmLabel = this.messages.general.confirm;
+      this.confirmLabel = this.i18n.general.confirm;
     }
   }
 

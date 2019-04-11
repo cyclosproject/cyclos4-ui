@@ -11,8 +11,8 @@
   <div class="d-flex flex-column flex-xs-row">
     <div class="flex-grow-1 mb-2 mb-xs-0">
       <ng-container *ngIf="files.length === 0">
-        {{ maxFiles > 1 ? messages.field.file.noFiles :
-        messages.field.file.noFile}}
+        {{ maxFiles > 1 ? i18n.field.file.noFiles :
+        i18n.field.file.noFile}}
       </ng-container>
       <div class="text-truncate" *ngFor="let file of files; let last = last;">
         <a [href]="appendAuth(file.url)" [type]="file.contentType"
@@ -27,17 +27,17 @@
     <div class="d-flex ml-xs-2">
       <button *ngIf="maxFiles === 1 || files.length < maxFiles"
         class="btn btn-light btn-icon d-flex align-content-center"
-        [tooltip]="messages.field.file.upload" (click)="fileUpload.perform()">
+        [tooltip]="i18n.field.file.upload" (click)="fileUpload.perform()">
         <icon icon="cloud_upload"></icon>
       </button>
       <button *ngIf="maxFiles > 1"
         class="ml-2 btn btn-light btn-icon d-flex align-content-center"
-        [tooltip]="messages.field.file.manage" (click)="manageFiles()">
+        [tooltip]="i18n.field.file.manage" (click)="manageFiles()">
         <icon icon="edit"></icon>
       </button>
       <button *ngIf="maxFiles === 1 && files.length > 0"
         class="ml-2 btn btn-light btn-icon d-flex align-content-center"
-        [tooltip]="messages.field.file.remove" (click)="removeAllFiles()">
+        [tooltip]="i18n.field.file.remove" (click)="removeAllFiles()">
         <icon icon="delete"></icon>
       </button>
     </div>
