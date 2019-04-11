@@ -15,10 +15,6 @@
         </avatar>
       </div>
       <div class="d-flex flex-grow-1 flex-column">
-        <label-value *ngIf="user.groupSet" [label]="i18n.user.groupSet"
-          [value]="user.groupSet.name"></label-value>
-        <label-value *ngIf="user.group" [label]="i18n.user.group"
-          [value]="user.group.name"></label-value>
         <label-value *ngIf="user.name" [label]="i18n.user.name"
           [value]="user.name"></label-value>
         <label-value *ngIf="user.username" [label]="i18n.user.username"
@@ -29,6 +25,10 @@
             <span>{{ user.email }}</span>
           </a>
         </label-value>
+        <label-value *ngIf="user.groupSet" [label]="i18n.user.groupSet"
+          [value]="user.groupSet.name"></label-value>
+        <label-value *ngIf="user.group" [label]="i18n.user.group"
+          [value]="user.group.name"></label-value>
         <label-value *ngIf="mobilePhone" [label]="i18n.phone.mobile">
           <a [href]="'tel:' + mobilePhone.normalizedNumber"
             class="link-with-icon">
