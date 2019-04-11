@@ -274,7 +274,7 @@ export class FormatService {
     if (typeof (num) === 'number') {
       return num > 0;
     }
-    return !num.startsWith('-');
+    return !num.startsWith('-') && !this.isZero(num);
   }
 
   /**

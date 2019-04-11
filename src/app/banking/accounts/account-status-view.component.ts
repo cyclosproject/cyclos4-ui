@@ -51,7 +51,7 @@ export class AccountStatusViewComponent extends BaseComponent implements OnInit,
         indicators.push({
           amount: amount,
           label: label,
-          alwaysNegative: alwaysNegative
+          alwaysNegative: this.format.isZero(amount) ? false : alwaysNegative
         });
       }
     };
@@ -80,7 +80,11 @@ export class AccountStatusViewComponent extends BaseComponent implements OnInit,
         add(status.incoming.sum, this.i18n.account.totalIncome);
       }
       if (status.outgoing != null && status.outgoing.sum) {
-        add(status.outgoing.sum, this.i18n.account.totalOutflow);
+        let outflow = status.outgoing.sum;
+        if (!this.format.isZero(outflow)) {
+          outflow = '-' + outflow;
+        }
+        add(outflow, this.i18n.account.totalOutflow);
       }
       if (status.netInflow != null) {
         add(status.netInflow, this.i18n.account.netInflow);
