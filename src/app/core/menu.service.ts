@@ -302,12 +302,15 @@ export class MenuService {
    * Returns the available `MenuEntry` for the account type with the given id
    * @param typeId The account type identifier
    */
-  accountEntry(typeId: string): MenuEntry {
+  accountEntry(type: AccountType): MenuEntry {
+    if (type == null) {
+      return null;
+    }
     const roots = this._fullMenu.value || [];
     for (const rootEntry of roots) {
       for (const entry of rootEntry.entries || []) {
         const data = entry.activeMenu.data;
-        if (data && data.accountType === typeId) {
+        if (data && data.accountType && (data.accountType.id === type.id)) {
           return entry;
         }
       }

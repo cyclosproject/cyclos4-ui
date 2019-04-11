@@ -57,7 +57,7 @@ export class AccountStatusComponent extends BaseDashboardComponent implements On
       label: this.i18n.general.view,
       maybeRoot: true,
       onClick: event => this.menu.navigate({
-        entry: this.menu.accountEntry(this.account.type.id),
+        entry: this.menu.accountEntry(this.account.type),
         clear: false,
         event: event
       })
