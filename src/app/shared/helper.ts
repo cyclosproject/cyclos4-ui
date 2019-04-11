@@ -7,6 +7,9 @@ import { Observable } from 'rxjs';
 import { HttpResponse } from '@angular/common/http';
 import download from 'downloadjs';
 
+export const RED_MARKER = 'https://maps.google.com/mapfiles/ms/icons/red-dot.png';
+export const BLUE_MARKER = 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png';
+
 /**
  * Sets whether the root spinner in the page is visible
  */

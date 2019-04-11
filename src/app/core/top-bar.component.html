@@ -25,7 +25,7 @@
 </nav>
 <ng-template #customMenus>
   <ng-container *ngIf="(user != null) && (layout.gtxxs$ | async)">
-    <a routerLink="/users/my-profile" id="profile-link"
+    <a routerLink="/users/profile" id="profile-link"
       (click)="navigate(Menu.MY_PROFILE, $event)" class="nav-item custom-menu"
       [ngClass]="{
         active: hasMenu && [Menu.MY_PROFILE, Menu.EDIT_MY_PROFILE].includes(activeMenu?.menu)

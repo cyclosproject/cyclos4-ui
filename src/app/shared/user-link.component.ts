@@ -45,7 +45,7 @@ export class UserLinkComponent extends BaseComponent implements OnInit {
     if (this.user != null && this.user.id != null && !this.hideLink) {
       const loggedUser = this.login.user;
       if (loggedUser != null && loggedUser.id === this.user.id) {
-        this.path = '/users/my-profile';
+        this.path = '/users/profile';
       } else {
         this.path = '/users/profile/' + this.user.id;
       }

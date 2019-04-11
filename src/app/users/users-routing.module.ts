@@ -31,18 +31,7 @@ const usersRoutes: Routes = [
         }
       },
       {
-        path: 'profile/:key',
-        component: ViewProfileComponent,
-        resolve: {
-          countries: CountriesResolve
-        },
-        data: {
-          menu: Menu.USER_PROFILE
-        }
-      },
-
-      {
-        path: 'my-profile',
+        path: 'profile',
         component: ViewProfileComponent,
         canActivate: [LoggedUserGuard],
         resolve: {
@@ -53,11 +42,31 @@ const usersRoutes: Routes = [
         }
       },
       {
-        path: 'my-profile/edit',
+        path: 'profile/edit',
         component: EditProfileComponent,
         canActivate: [LoggedUserGuard],
         data: {
           menu: Menu.EDIT_MY_PROFILE
+        }
+      },
+      {
+        path: 'profile/:key',
+        component: ViewProfileComponent,
+        resolve: {
+          countries: CountriesResolve
+        },
+        data: {
+          menu: Menu.USER_PROFILE
+        }
+      },
+      {
+        path: 'profile/:key/edit',
+        component: EditProfileComponent,
+        resolve: {
+          countries: CountriesResolve
+        },
+        data: {
+          menu: Menu.EDIT_USER_PROFILE
         }
       },
       {

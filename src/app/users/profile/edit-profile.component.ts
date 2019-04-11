@@ -3,7 +3,7 @@ import { AbstractControl, FormArray, FormControl, FormGroup, Validators } from '
 import {
   AddressManage, AvailabilityEnum, ContactInfoManage, CustomField,
   CustomFieldDetailed, DataForEditFullProfile, FullProfileEdit, Image,
-  PhoneEditWithId, PhoneKind, PhoneManage, CreateDeviceConfirmation, DeviceConfirmationTypeEnum
+  PhoneEditWithId, PhoneKind, PhoneManage, CreateDeviceConfirmation, DeviceConfirmationTypeEnum,
 } from 'app/api/models';
 import { ImagesService, PhonesService, UsersService } from 'app/api/services';
 import { AddressHelperService } from 'app/core/address-helper.service';
@@ -108,7 +108,8 @@ export class EditProfileComponent
 
   ngOnInit() {
     super.ngOnInit();
-    this.key = ApiHelper.SELF;
+    const route = this.route.snapshot;
+    this.key = route.params.key || ApiHelper.SELF;
 
     this.createDeviceConfirmation = () => ({
       type: DeviceConfirmationTypeEnum.EDIT_PROFILE
@@ -116,20 +117,26 @@ export class EditProfileComponent
 
     this.headingActions = [
       new HeadingAction('search', this.i18n.general.view, () => {
-        this.router.navigate(['users', 'my-profile']);
+        const viewPath = ['users', 'profile'];
+        if (this.key !== ApiHelper.SELF) {
+          viewPath.push(this.key);
+        }
+        this.router.navigate(viewPath);
       }, true)
     ];
 
     this.usersService.getDataForEditFullProfile({ user: this.key }).subscribe(data => {
       this.data = data;
 
-      // Update the current user to reflect any changes
-      this.login.user$.next({
-        id: this.login.user.id,
-        display: data.display,
-        shortDisplay: data.shortDisplay,
-        image: empty(data.images) ? null : data.images[0]
-      });
+      if (this.key === ApiHelper.SELF || this.key === this.login.user.id) {
+        // Update the current user to reflect any changes if editing own profile
+        this.login.user$.next({
+          id: this.login.user.id,
+          display: data.display,
+          shortDisplay: data.shortDisplay,
+          image: empty(data.images) ? null : data.images[0]
+        });
+      }
 
       this.initialize(data);
 
@@ -137,7 +144,7 @@ export class EditProfileComponent
       this.canConfirm = this.authHelper.canConfirm(data.confirmationPasswordInput);
       if (!this.canConfirm) {
         this.notification.warning(this.authHelper.getConfirmationMessage(data.confirmationPasswordInput));
-        this.router.navigate(['users', 'my-profile']);
+        this.router.navigate(['users', 'profile']);
       }
 
       this.ready$.next(true);
@@ -244,7 +251,7 @@ export class EditProfileComponent
     }
 
     this.usersService.saveUserFullProfile({
-      user: ApiHelper.SELF,
+      user: this.key,
       confirmationPassword: confirmationPassword,
       body: this.editForSubmit()
     }).subscribe(() => {

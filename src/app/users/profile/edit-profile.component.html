@@ -1,6 +1,5 @@
 <page-layout [ready]="data$ | async">
-  <page-content *ngIf="data != null"
-    [heading]="i18n.user.title.editProfile"
+  <page-content *ngIf="data != null" [heading]="i18n.user.title.editProfile"
     [headingActions]="headingActions$ | async" last>
 
     <!-- Image -->
@@ -159,8 +158,8 @@
       <h2 class="mb-2">{{ i18n.address.address }}</h2>
       <boolean-field
         *ngIf="data.addressConfiguration.availability !== 'required'"
-        [formControl]="defineSingleAddress"
-        [label]="i18n.user.addressDefine"></boolean-field>
+        [formControl]="defineSingleAddress" [label]="i18n.user.addressDefine">
+      </boolean-field>
       <ng-container *ngIf="defineSingleAddress.value">
         <address-form [addressForm]="singleAddress"
           [configuration]="data.addressConfiguration"
@@ -373,8 +372,8 @@
         </input-field>
         <input-field
           [id]="'contact-info_landLineExtension' + contactInfo['idSuffix']"
-          formControlName="landLineExtension"
-          [label]="i18n.phone.extension"></input-field>
+          formControlName="landLineExtension" [label]="i18n.phone.extension">
+        </input-field>
         <single-selection-field
           [id]="'contact-info_address' + contactInfo['idSuffix']"
           formControlName="address" [label]="i18n.address.address">

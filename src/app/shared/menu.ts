@@ -83,6 +83,7 @@ export module Menu {
   // Marketplace
   export const SEARCH_USERS = new Menu(RootMenu.MARKETPLACE, 'SEARCH_USERS');
   export const USER_PROFILE = new Menu(RootMenu.MARKETPLACE, 'USER_PROFILE');
+  export const EDIT_USER_PROFILE = new Menu(RootMenu.MARKETPLACE, 'EDIT_USER_PROFILE');
   export const SEARCH_ADS = new Menu(RootMenu.MARKETPLACE, 'SEARCH_ADS');
   export const VIEW_AD = new Menu(RootMenu.MARKETPLACE, 'VIEW_AD');
 

@@ -85,9 +85,12 @@ export class ViewProfileComponent extends BasePageComponent<UserView> implements
     const contact = permissions.contact || {};
     const payment = permissions.payment || {};
     const marketplace = permissions.marketplace || {};
-    if ((this.login.user || {}).id === user.id && user.permissions.profile.editProfile) {
+    if (user.permissions.profile.editProfile) {
+      const editPath = (this.login.user || {}).id === user.id
+        ? ['users', 'profile', 'edit']
+        : ['users', 'profile', user.id, 'edit'];
       actions.push(new HeadingAction('edit', this.i18n.general.edit, () => {
-        this.router.navigate(['users', 'my-profile', 'edit']);
+        this.router.navigate(editPath);
       }, true));
     }
     if (contact.add) {
