@@ -1,10 +1,13 @@
 import { ControlContainer } from '@angular/forms';
 import { BaseFormFieldWithOptionsComponent } from 'app/shared/base-form-field-with-options.component';
-import { ViewChild, ElementRef, OnDestroy, OnInit, Input } from '@angular/core';
+import { ViewChild, ElementRef, OnDestroy, OnInit, Input, Injector } from '@angular/core';
 import { BsDropdownDirective } from 'ngx-bootstrap/dropdown';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { empty } from 'app/shared/helper';
 import { FieldOption, fieldOptionMatches } from 'app/shared/field-option';
+import { Shortcut } from 'app/shared/shortcut.service';
+
+const PageSize = 7;
 
 /**
  * Base class for single / multi selection fields
@@ -18,9 +21,33 @@ export abstract class BaseSelectionFieldComponent<T> extends BaseFormFieldWithOp
   @ViewChild('dropDownMenu') menuRef: ElementRef;
   display$ = new BehaviorSubject('');
   valueSub: Subscription;
+  openSub: Subscription;
 
-  constructor(protected controlContainer: ControlContainer) {
-    super(controlContainer);
+  _optionIndex = -1;
+
+  get optionIndex() {
+    return this._optionIndex;
+  }
+
+  set optionIndex(index: number) {
+    const options = this.allOptions;
+    if (this.hasEmptyOption) {
+      options.unshift(null);
+    }
+    if (options.length === 0) {
+      this._optionIndex = -1;
+      return;
+    }
+    this._optionIndex = Math.max(0, Math.min(index, options.length - 1));
+    const option = options[this._optionIndex];
+    this.focusOption(option);
+  }
+
+  constructor(
+    injector: Injector,
+    controlContainer: ControlContainer
+  ) {
+    super(injector, controlContainer);
   }
 
   ngOnInit() {
@@ -33,6 +60,7 @@ export abstract class BaseSelectionFieldComponent<T> extends BaseFormFieldWithOp
   }
 
   ngOnDestroy(): void {
+    super.ngOnDestroy();
     this.valueSub.unsubscribe();
   }
 
@@ -61,6 +89,83 @@ export abstract class BaseSelectionFieldComponent<T> extends BaseFormFieldWithOp
     this.dropdown.dropup = rect.bottom > docHeight - 100;
     // Workaround: ngx-bootstrap sets top sometimes when we set dropup, which causes a position error
     setTimeout(() => this.menuRef.nativeElement.style.top = '', 1);
+
+    const shortcuts = [
+      new Shortcut('ArrowUp'),
+      new Shortcut('ArrowDown'),
+      new Shortcut('PageUp'),
+      new Shortcut('PageDown'),
+      new Shortcut('Home'),
+      new Shortcut('End'),
+      new Shortcut('Escape')
+    ];
+    this.addShortcut(shortcuts, event => {
+      if (event.key === 'Escape') {
+        this.close();
+        return;
+      }
+      if (this.optionIndex < 0) {
+        this.optionIndex = 0;
+        return;
+      }
+      switch (event.key) {
+        case 'ArrowUp':
+          this.optionIndex = this.optionIndex - 1;
+          break;
+        case 'ArrowDown':
+          this.optionIndex = this.optionIndex + 1;
+          break;
+        case 'PageUp':
+          this.optionIndex = this.optionIndex - PageSize;
+          break;
+        case 'PageDown':
+          this.optionIndex = this.optionIndex + PageSize;
+          break;
+        case 'Home':
+          this.optionIndex = 0;
+          break;
+        case 'End':
+          this.optionIndex = Number.MAX_SAFE_INTEGER;
+          break;
+      }
+    });
+
+    // Select the correct option
+    setTimeout(() => {
+      const selected = this.selectedOptions;
+      if (empty(selected)) {
+        this.optionIndex = 0;
+      } else {
+        let index = Math.max(0, this.allOptions.indexOf(selected[0]));
+        if (this.hasEmptyOption()) {
+          index++;
+        }
+        this.optionIndex = index;
+      }
+    }, 5);
+  }
+
+  onFocus() {
+    const shortcuts = [
+      new Shortcut('Space'),
+      new Shortcut('Enter'),
+      new Shortcut('ArrowDown'),
+      new Shortcut('ArrowUp')
+    ];
+    this.openSub = this.addShortcut(shortcuts, () => {
+      this.open();
+    });
+  }
+
+  onBlur() {
+    if (this.openSub) {
+      this.openSub.unsubscribe();
+      this.openSub = null;
+    }
+  }
+
+  onHidden() {
+    this.clearShortcuts();
   }
 
   onDisabledChange(isDisabled: boolean): void {
@@ -76,4 +181,24 @@ export abstract class BaseSelectionFieldComponent<T> extends BaseFormFieldWithOp
   open() {
     this.dropdown.show();
   }
+
+  /**
+   * Must be implemented to focus the option widget with the given index
+   * @param option The option to be focused
+   * @param index The option index
+   */
+  // protected abstract focusOption(option: FieldOption, index: number);
+
+  protected focusOption(option: FieldOption) {
+    const id = this.id + '_' + (option ? option.value : '');
+    const element = document.getElementById(id);
+    if (element) {
+      element.focus();
+    }
+  }
+
+  /**
+   * Must be implemented to indicate whether the field has an empty option in the beginning.
+   */
+  protected abstract hasEmptyOption(): boolean;
 }

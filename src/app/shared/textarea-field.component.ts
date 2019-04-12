@@ -1,6 +1,6 @@
 import {
   Component, Input, ChangeDetectionStrategy, SkipSelf, Host, Optional,
-  ViewChild, ElementRef, AfterViewInit
+  ViewChild, ElementRef, AfterViewInit, Injector
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlContainer } from '@angular/forms';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
@@ -27,8 +27,9 @@ export class TextAreaFieldComponent
   @ViewChild('textarea') textareaRef: ElementRef;
 
   constructor(
+    injector: Injector,
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer) {
-    super(controlContainer);
+    super(injector, controlContainer);
   }
 
   onDisabledChange(isDisabled: boolean): void {

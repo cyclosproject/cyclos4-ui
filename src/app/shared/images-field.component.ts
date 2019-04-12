@@ -1,19 +1,15 @@
-import {
-  Component, Input, ViewChild, ElementRef, Optional, Host,
-  SkipSelf, OnInit, ChangeDetectorRef
-} from '@angular/core';
-import { NG_VALUE_ACCESSOR, ControlContainer } from '@angular/forms';
-import { empty, preprocessValueWithSeparator, getValueAsArray } from 'app/shared/helper';
-import { LayoutService } from 'app/shared/layout.service';
-import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
-import { Image, TempImageTargetEnum, CustomField } from 'app/api/models';
-import { BsModalService } from 'ngx-bootstrap/modal';
+import { ChangeDetectorRef, Component, ElementRef, Host, Injector, Input, OnInit, Optional, SkipSelf, ViewChild } from '@angular/core';
+import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { CustomField, Image, TempImageTargetEnum } from 'app/api/models';
 import { ImagesService } from 'app/api/services';
-import { ManageImagesComponent } from 'app/shared/manage-images.component';
-import { take } from 'rxjs/operators';
-import { AvatarSize } from 'app/shared/avatar.component';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
-import { I18n } from 'app/i18n/i18n';
+import { AvatarSize } from 'app/shared/avatar.component';
+import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
+import { empty, getValueAsArray, preprocessValueWithSeparator } from 'app/shared/helper';
+import { LayoutService } from 'app/shared/layout.service';
+import { ManageImagesComponent } from 'app/shared/manage-images.component';
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { take } from 'rxjs/operators';
 
 /**
  * Renders a widget for a field that allows uploading images
@@ -70,14 +66,14 @@ export class ImagesFieldComponent extends BaseFormFieldComponent<string | string
   @ViewChild('focusHolder') focusHolder: ElementRef;
 
   constructor(
+    injector: Injector,
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
-    public i18n: I18n,
     public layout: LayoutService,
     private errorHandler: ErrorHandlerService,
     private imagesService: ImagesService,
     private changeDetector: ChangeDetectorRef,
     private modal: BsModalService) {
-    super(controlContainer);
+    super(injector, controlContainer);
   }
 
   preprocessValue(value: any): string | string[] {

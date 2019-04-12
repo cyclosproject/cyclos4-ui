@@ -15,6 +15,7 @@ import { Observable, Subscription } from 'rxjs';
 import { BreadcrumbService } from '../core/breadcrumb.service';
 import { StateManager } from '../core/state-manager';
 import { I18n } from 'app/i18n/i18n';
+import { ShortcutService } from 'app/shared/shortcut.service';
 
 /**
  * Base class to meant to be inherited by other components.
@@ -33,6 +34,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
   login: LoginService;
   notification: NotificationService;
   layout: LayoutService;
+  shortcut: ShortcutService;
   maps: MapsService;
   menu: MenuService;
   stateManager: StateManager;
@@ -53,6 +55,7 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
     this.login = injector.get(LoginService);
     this.notification = injector.get(NotificationService);
     this.layout = injector.get(LayoutService);
+    this.shortcut = injector.get(ShortcutService);
     this.maps = injector.get(MapsService);
     this.menu = injector.get(MenuService);
     this.stateManager = injector.get(StateManager);

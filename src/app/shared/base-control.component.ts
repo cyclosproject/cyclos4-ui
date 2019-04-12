@@ -1,8 +1,11 @@
-import { EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { EventEmitter, Input, OnDestroy, OnInit, Output, Injector } from '@angular/core';
 import { ControlContainer, ControlValueAccessor, FormControl } from '@angular/forms';
 import { ApiHelper } from 'app/shared/api-helper';
 import { isEqual } from 'lodash';
 import { Observable, Subscription } from 'rxjs';
+import { I18n } from 'app/i18n/i18n';
+import { ShortcutService, Shortcut } from 'app/shared/shortcut.service';
+import { FormatService } from 'app/core/format.service';
 
 /**
  * Base class for custom form controls
@@ -19,16 +22,48 @@ export abstract class BaseControlComponent<T> implements OnInit, OnDestroy, Cont
   private _value: T;
   private subs: Subscription[] = [];
 
+  i18n: I18n;
+  format: FormatService;
+  shortcut: ShortcutService;
+  private shortcutSubs: Subscription[] = [];
+
   protected changeCallback = (_: any) => { };
   protected touchedCallback = () => { };
   protected validatorChange = () => { };
 
-
-  constructor(protected controlContainer: ControlContainer) {
+  constructor(injector: Injector,
+    protected controlContainer: ControlContainer) {
+    this.i18n = injector.get(I18n);
+    this.format = injector.get(FormatService);
+    this.shortcut = injector.get(ShortcutService);
   }
 
   protected addSub(sub: Subscription) {
     this.subs.push(sub);
+  }
+
+  /**
+   * Adds a keyboard shortcut handler
+   * @param shortcut The keyboard shortcut(s)
+   * @param handler The action handler
+   * @param stop By default, the event will be stopped if matched the shortcut. Can be set to false to allow the default action.
+   */
+  protected addShortcut(shortcut: Shortcut | Shortcut[], handler: (event: KeyboardEvent) => any, stop = true): Subscription {
+    const sub = this.shortcut.subscribe(shortcut, e => {
+      handler(e);
+      if (stop) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    });
+    this.shortcutSubs.push(sub);
+    return new Subscription(() => {
+      sub.unsubscribe();
+      const index = this.shortcutSubs.indexOf(sub);
+      if (index >= 0) {
+        this.shortcutSubs.splice(index, 1);
+      }
+    });
   }
 
   ngOnInit() {
@@ -51,6 +86,11 @@ export abstract class BaseControlComponent<T> implements OnInit, OnDestroy, Cont
   ngOnDestroy() {
     this.subs.forEach(sub => sub.unsubscribe());
     this.subs = [];
+  }
+
+  clearShortcuts() {
+    this.shortcutSubs.forEach(sub => sub.unsubscribe());
+    this.shortcutSubs = [];
   }
 
   get value(): T {

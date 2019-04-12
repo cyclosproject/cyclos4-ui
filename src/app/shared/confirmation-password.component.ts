@@ -1,6 +1,6 @@
 import {
   ChangeDetectionStrategy, Component, EventEmitter, Host, Input,
-  OnChanges, OnInit, Optional, Output, SkipSelf, ViewChild, OnDestroy
+  OnChanges, OnInit, Optional, Output, SkipSelf, ViewChild, OnDestroy, Injector
 } from '@angular/core';
 import {
   AbstractControl, ControlContainer, FormControl,
@@ -11,7 +11,6 @@ import {
   ImageSizeEnum, DeviceConfirmationView, DeviceConfirmationStatusEnum
 } from 'app/api/models';
 import { AuthHelperService } from 'app/core/auth-helper.service';
-import { I18n } from 'app/i18n/i18n';
 import { BaseControlComponent } from 'app/shared/base-control.component';
 import { ConfirmationMode } from 'app/shared/confirmation-mode';
 import { empty } from 'app/shared/helper';
@@ -59,13 +58,13 @@ export class ConfirmationPasswordComponent extends BaseControlComponent<string> 
   rejected$ = new BehaviorSubject(false);
 
   constructor(
+    injector: Injector,
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
     private deviceConfirmationsService: DeviceConfirmationsService,
-    public i18n: I18n,
     private pushNotifications: PushNotificationsService,
     private authHelper: AuthHelperService
   ) {
-    super(controlContainer);
+    super(injector, controlContainer);
   }
 
   ngOnInit() {

@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, Component, Host, Input, Optional, SkipSelf } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Host, Injector, Input, Optional, SkipSelf } from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { FIELD_OPTIONS_SORTER, FORM_FIELD_WITH_OPTIONS } from 'app/shared/base-form-field-with-options.component';
 import { BaseSelectionFieldComponent } from 'app/shared/base-selection-field.component';
 import { blank, empty, getValueAsArray, preprocessValueWithSeparator } from 'app/shared/helper';
-import { I18n } from 'app/i18n/i18n';
+import { Shortcut } from 'app/shared/shortcut.service';
 
 /**
  * Component used to display a multi selection field (using a `select` tag).
@@ -40,10 +40,10 @@ export class MultiSelectionFieldComponent extends BaseSelectionFieldComponent<st
   @Input() hierarchyProperty: string = null;
 
   constructor(
-    @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
-    private i18n: I18n
+    injector: Injector,
+    @Optional() @Host() @SkipSelf() controlContainer: ControlContainer
   ) {
-    super(controlContainer);
+    super(injector, controlContainer);
   }
 
   toggle(value: string) {
@@ -85,6 +85,20 @@ export class MultiSelectionFieldComponent extends BaseSelectionFieldComponent<st
 
   protected getSelectedValues(): string[] {
     return getValueAsArray(this.value, this.separator);
+  }
+
+
+  onShown() {
+    super.onShown();
+    // Enter key is already handled to toggle the option. Add the space bar as well.
+    this.addShortcut(new Shortcut(' '), () => {
+      const option = this.allOptions[this.optionIndex];
+      this.toggle(option.value);
+    });
+  }
+
+  hasEmptyOption() {
+    return false;
   }
 
 }

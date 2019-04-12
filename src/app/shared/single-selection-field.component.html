@@ -5,8 +5,9 @@
 <ng-template #widget>
   <!-- Need a relatively-positioned element to position the dropdown corretcly -->
   <div style="position:relative" dropdown #dropdown="bs-dropdown"
-    (onShown)="onShown()">
+    (onShown)="onShown()" (onHidden)="onHidden(); toggleButton.focus()">
     <button #toggleButton dropdownToggle [id]="id" type="button"
+      (focus)="onFocus()" (blur)="onBlur()"
       class="form-control text-left custom-select w-100"
       [title]="display$ | async"
       [attr.aria-controls]="'single-selectdropdown-' + id" [ngClass]="{
@@ -20,7 +21,8 @@
       attr.id="'single-selectdropdown-' + id" attr.aria-labelledby="id"
       (click)="$event.preventDefault(); $event.stopPropagation();">
       <a *ngIf="emptyLabel != null" role="option" class="select-option mt-1"
-        href="#" [ngClass]="{selected: value == null || value === ''}"
+        [id]="id + '_'" tabindex="0" href="#"
+        [ngClass]="{selected: value == null || value === ''}"
         (click)="select(''); $event.preventDefault()">{{
         emptyLabel }}</a>
       <ng-container
@@ -30,7 +32,8 @@
           {{ category.name }}
         </div>
         <a *ngFor="let option of category.options | async; let firstOpt = first"
-          class="select-option" [ngClass]="{
+          tabindex="0" href="#" class="select-option"
+          [id]="id + '_' + option.value" [ngClass]="{
             'mt-1': emptyLabel != null || !(firstCat && firstOpt),
             'pl-3': category.name,
             selected: isSelected(option)

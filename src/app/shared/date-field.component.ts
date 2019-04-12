@@ -1,6 +1,6 @@
 import {
   ChangeDetectionStrategy, Component, ElementRef, Host, Input, OnInit, Optional,
-  QueryList, SkipSelf, ViewChild, ViewChildren
+  QueryList, SkipSelf, ViewChild, ViewChildren, Injector
 } from '@angular/core';
 import {
   AbstractControl, ControlContainer, FormArray, FormBuilder, FormControl,
@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 import { CustomFieldSizeEnum } from 'app/api/models';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
-import { FormatService, ISO_DATE } from 'app/core/format.service';
+import { ISO_DATE } from 'app/core/format.service';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { DateConstraint, dateConstraintAsMoment } from 'app/shared/date-constraint';
 import { empty } from 'app/shared/helper';
@@ -17,7 +17,6 @@ import { range } from 'lodash';
 import moment from 'moment-mini-ts';
 import { BsDropdownDirective } from 'ngx-bootstrap/dropdown';
 import { CalendarComponent } from 'app/shared/calendar.component';
-import { I18n } from 'app/i18n/i18n';
 
 /**
  * Input used to edit a single date
@@ -54,14 +53,13 @@ export class DateFieldComponent
   @ViewChildren(CalendarComponent) calendar: QueryList<CalendarComponent>;
 
   constructor(
+    injector: Injector,
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
     formBuilder: FormBuilder,
     private dataForUiHolder: DataForUiHolder,
-    public format: FormatService,
-    public layout: LayoutService,
-    private i18n: I18n) {
-    super(controlContainer);
-    this.partControls = formBuilder.array(new Array(format.dateFields.length).fill(''));
+    public layout: LayoutService) {
+    super(injector, controlContainer);
+    this.partControls = formBuilder.array(new Array(this.format.dateFields.length).fill(''));
     this.addSub(this.partControls.valueChanges.subscribe(parts => this.setFromParts(parts)));
     this.dateControl = formBuilder.control(null);
     this.addSub(this.dateControl.valueChanges.subscribe(date => this.setFromDate(date)));

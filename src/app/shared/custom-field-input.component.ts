@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Host, Input, OnInit, Optional, SkipSelf, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Host, Input, OnInit, Optional, SkipSelf, ViewChild, Injector } from '@angular/core';
 import { AbstractControl, ControlContainer, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator } from '@angular/forms';
 import {
   CustomFieldBinaryValues, CustomFieldControlEnum, CustomFieldDetailed,
@@ -98,10 +98,11 @@ export class CustomFieldInputComponent extends BaseFormFieldComponent<string> im
   @Input() binaryValues: CustomFieldBinaryValues;
 
   constructor(
+    injector: Injector,
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
     private fieldHelper: FieldHelperService
   ) {
-    super(controlContainer);
+    super(injector, controlContainer);
   }
 
   preprocessValue(value: any): string {

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Host, Input, Optional, SkipSelf } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Host, Input, Optional, SkipSelf, Injector } from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { FORM_FIELD_WITH_OPTIONS } from 'app/shared/base-form-field-with-options.component';
 import { BaseSelectionFieldComponent } from 'app/shared/base-selection-field.component';
@@ -33,8 +33,9 @@ export class SingleSelectionFieldComponent extends BaseSelectionFieldComponent<s
   }
 
   constructor(
+    injector: Injector,
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer) {
-    super(controlContainer);
+    super(injector, controlContainer);
   }
 
   protected getDisplay(): string {
@@ -54,5 +55,9 @@ export class SingleSelectionFieldComponent extends BaseSelectionFieldComponent<s
   select(value: string) {
     this.value = value;
     this.close();
+  }
+
+  hasEmptyOption() {
+    return !(this.emptyOption == null || this.emptyOption === false);
   }
 }

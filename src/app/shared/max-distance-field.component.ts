@@ -1,14 +1,16 @@
-import { ChangeDetectionStrategy, Component, Host, HostBinding, Optional, SkipSelf, ViewChild, Input, OnInit } from '@angular/core';
-import { ControlContainer, NG_VALUE_ACCESSOR, FormControl, FormGroup, FormBuilder } from '@angular/forms';
+import {
+  ChangeDetectionStrategy, Component, Host, HostBinding,
+  Injector, Input, OnInit, Optional, SkipSelf, ViewChild
+} from '@angular/core';
+import { ControlContainer, FormBuilder, FormControl, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { DistanceUnitEnum, SearchByDistanceData } from 'app/api/models';
+import { NotificationService } from 'app/core/notification.service';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
-import { MaxDistance } from 'app/shared/max-distance';
-import { SingleSelectionFieldComponent } from 'app/shared/single-selection-field.component';
-import { SearchByDistanceData, DistanceUnitEnum } from 'app/api/models';
-import { I18n } from 'app/i18n/i18n';
 import { FieldOption } from 'app/shared/field-option';
 import { empty } from 'app/shared/helper';
+import { MaxDistance } from 'app/shared/max-distance';
+import { SingleSelectionFieldComponent } from 'app/shared/single-selection-field.component';
 import { distinctUntilChanged } from 'rxjs/operators';
-import { NotificationService } from 'app/core/notification.service';
 
 const MaxDistanceOptions = [1, 5, 10, 15, 25, 50, 75, 100];
 
@@ -40,12 +42,12 @@ export class MaxDistanceFieldComponent
   maxDistanceOptions: FieldOption[];
 
   constructor(
+    injector: Injector,
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
-    public i18n: I18n,
     private notification: NotificationService,
     private formBuilder: FormBuilder
   ) {
-    super(controlContainer);
+    super(injector, controlContainer);
   }
 
   ngOnInit() {

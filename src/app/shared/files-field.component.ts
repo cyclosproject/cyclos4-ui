@@ -1,10 +1,9 @@
-import { ChangeDetectorRef, Component, ElementRef, Host, Input, OnInit, Optional, SkipSelf, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Host, Injector, Input, OnInit, Optional, SkipSelf, ViewChild } from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CustomField, StoredFile } from 'app/api/models';
 import { FilesService } from 'app/api/services';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
 import { NextRequestState } from 'app/core/next-request-state';
-import { I18n } from 'app/i18n/i18n';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { empty, getValueAsArray, preprocessValueWithSeparator } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
@@ -58,15 +57,15 @@ export class FilesFieldComponent extends BaseFormFieldComponent<string | string[
   @Input() mimeTypes: string[] = ['*/*'];
 
   constructor(
+    injector: Injector,
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
-    public i18n: I18n,
     private nextRequestState: NextRequestState,
     public layout: LayoutService,
     private errorHandler: ErrorHandlerService,
     private filesService: FilesService,
     private changeDetector: ChangeDetectorRef,
     private modal: BsModalService) {
-    super(controlContainer);
+    super(injector, controlContainer);
   }
 
   preprocessValue(value: any): string | string[] {

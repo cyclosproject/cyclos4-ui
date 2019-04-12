@@ -1,11 +1,10 @@
 import {
   ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Host, Input,
-  Optional, Output, SkipSelf, ViewChild
+  Optional, Output, SkipSelf, ViewChild, Injector
 } from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { LayoutService } from 'app/shared/layout.service';
-import { I18n } from 'app/i18n/i18n';
 
 /**
  * Field used to edit a boolean
@@ -27,10 +26,10 @@ export class BooleanFieldComponent
   @ViewChild('checkbox') checkbox: ElementRef;
 
   constructor(
+    injector: Injector,
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
-    private i18n: I18n,
     public layout: LayoutService) {
-    super(controlContainer);
+    super(injector, controlContainer);
   }
 
   preprocessValue(value: any): boolean | string {

@@ -1,11 +1,10 @@
 import {
-  Component, Input, Output, EventEmitter, ChangeDetectionStrategy, SkipSelf, Host, Optional, OnInit
+  Component, Input, Output, EventEmitter, ChangeDetectionStrategy, SkipSelf, Host, Optional, OnInit, Injector
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, FormControl, ControlContainer } from '@angular/forms';
 import { BaseControlComponent } from 'app/shared/base-control.component';
 import { ResultType } from 'app/shared/result-type';
 import { MapsService } from 'app/core/maps.service';
-import { FormatService } from 'app/core/format.service';
 import { LayoutService } from 'app/shared/layout.service';
 
 /**
@@ -33,12 +32,12 @@ export class ResultTypeFieldComponent extends BaseControlComponent<ResultType> i
   @Output() blur: EventEmitter<string> = new EventEmitter();
 
   constructor(
+    injector: Injector,
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
-    public format: FormatService,
     public layout: LayoutService,
     private maps: MapsService
   ) {
-    super(controlContainer);
+    super(injector, controlContainer);
   }
 
   ngOnInit() {

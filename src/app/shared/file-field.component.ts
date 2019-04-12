@@ -1,10 +1,8 @@
-import { Component, Host, Input, Optional, SkipSelf, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectorRef, Component, Host, Injector, Input, Optional, SkipSelf } from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { I18n } from 'app/i18n/i18n';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { empty } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
-import { FormatService } from 'app/core/format.service';
 
 /**
  * Component used to select one or more native browser files
@@ -37,12 +35,11 @@ export class FileFieldComponent extends BaseFormFieldComponent<File | File[]> {
   }
 
   constructor(
+    injector: Injector,
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
-    public i18n: I18n,
     public layout: LayoutService,
-    public format: FormatService,
     private changeDetector: ChangeDetectorRef) {
-    super(controlContainer);
+    super(injector, controlContainer);
   }
 
   get files(): File[] {

@@ -3,7 +3,7 @@ import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { FieldOption, fieldOptionMatches } from 'app/shared/field-option';
 import { BehaviorSubject } from 'rxjs';
 import { empty } from 'app/shared/helper';
-import { InjectionToken, Input } from '@angular/core';
+import { InjectionToken, Input, Injector } from '@angular/core';
 
 export const FIELD_OPTIONS_SORTER = (a: FieldOption, b: FieldOption) => {
   if (a.category == null && b.category != null) {
@@ -64,12 +64,27 @@ export abstract class BaseFormFieldWithOptionsComponent<T> extends BaseFormField
 
   categories = new BehaviorSubject<CategoryWithOptions[]>([]);
 
-  constructor(protected controlContainer: ControlContainer) {
-    super(controlContainer);
+  constructor(
+    injector: Injector,
+    protected controlContainer: ControlContainer) {
+    super(injector, controlContainer);
   }
 
   @Input() set fieldOptions(options: FieldOption[]) {
     (options || []).forEach(option => this.addOption(option));
+  }
+
+  /**
+   * Returns all available option, from all categories
+   */
+  get allOptions(): FieldOption[] {
+    const allOptions: FieldOption[] = [];
+    for (const category of this.categories.value) {
+      if (category.options) {
+        Array.prototype.push.apply(allOptions, category.options.value || []);
+      }
+    }
+    return allOptions;
   }
 
   /**

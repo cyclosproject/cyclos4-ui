@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Host, HostBinding, Optional, SkipSelf } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Host, HostBinding, Optional, SkipSelf, Injector } from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseFormFieldWithOptionsComponent, FORM_FIELD_WITH_OPTIONS } from 'app/shared/base-form-field-with-options.component';
 import { empty } from 'app/shared/helper';
@@ -20,9 +20,10 @@ export class RadioGroupFieldComponent extends BaseFormFieldWithOptionsComponent<
   @HostBinding('class') clazz = 'd-block';
 
   constructor(
+    injector: Injector,
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer
   ) {
-    super(controlContainer);
+    super(injector, controlContainer);
   }
 
   protected getSelectedValues(): string[] {

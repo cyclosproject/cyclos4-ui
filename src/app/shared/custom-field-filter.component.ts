@@ -1,8 +1,7 @@
-import { ChangeDetectionStrategy, Component, Host, Input, Optional, SkipSelf, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Host, Input, Optional, SkipSelf, ViewChild, Injector } from '@angular/core';
 import { ControlContainer, NG_VALIDATORS, NG_VALUE_ACCESSOR, Validator } from '@angular/forms';
 import { CustomFieldDetailed, CustomFieldTypeEnum, LinkedEntityTypeEnum } from 'app/api/models';
 import { FieldHelperService } from 'app/core/field-helper.service';
-import { I18n } from 'app/i18n/i18n';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { FieldOption } from 'app/shared/field-option';
@@ -73,11 +72,11 @@ export class CustomFieldFilterComponent extends BaseFormFieldComponent<string> i
   }
 
   constructor(
+    injector: Injector,
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
-    public i18n: I18n,
     private fieldHelper: FieldHelperService
   ) {
-    super(controlContainer);
+    super(injector, controlContainer);
   }
 
   preprocessValue(value: any): string {

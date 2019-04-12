@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Host, HostBinding, Input, Optional, SkipSelf } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Host, HostBinding, Input, Optional, SkipSelf, Injector } from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseFormFieldWithOptionsComponent, FORM_FIELD_WITH_OPTIONS } from 'app/shared/base-form-field-with-options.component';
 import { getValueAsArray, preprocessValueWithSeparator } from 'app/shared/helper';
@@ -26,9 +26,10 @@ export class CheckboxGroupFieldComponent extends BaseFormFieldWithOptionsCompone
   @Input() separator: string = null;
 
   constructor(
+    injector: Injector,
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer
   ) {
-    super(controlContainer);
+    super(injector, controlContainer);
   }
 
   toggle(value: string) {

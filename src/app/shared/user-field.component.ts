@@ -1,6 +1,6 @@
 import {
   ChangeDetectionStrategy, Component, ElementRef, Host, Input,
-  OnDestroy, OnInit, Optional, SkipSelf, ViewChild
+  OnDestroy, OnInit, Optional, SkipSelf, ViewChild, Injector
 } from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { User } from 'app/api/models';
@@ -8,7 +8,6 @@ import { UsersService } from 'app/api/services';
 import { LoginService } from 'app/core/login.service';
 import { NextRequestState } from 'app/core/next-request-state';
 import { UserCacheService } from 'app/core/user-cache.service';
-import { I18n } from 'app/i18n/i18n';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseAutocompleteFieldComponent } from 'app/shared/base-autocomplete-field.component';
 import { PickContactComponent } from 'app/shared/pick-contact.component';
@@ -48,14 +47,14 @@ export class UserFieldComponent
   placeholder: string;
 
   constructor(
+    injector: Injector,
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
     private userCache: UserCacheService,
     private usersService: UsersService,
     private login: LoginService,
     private nextRequestState: NextRequestState,
-    private modal: BsModalService,
-    public i18n: I18n) {
-    super(controlContainer);
+    private modal: BsModalService) {
+    super(injector, controlContainer);
   }
 
   ngOnInit() {

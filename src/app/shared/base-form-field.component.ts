@@ -1,4 +1,4 @@
-import { Input, HostBinding, InjectionToken } from '@angular/core';
+import { Input, HostBinding, InjectionToken, Injector } from '@angular/core';
 import { ControlContainer } from '@angular/forms';
 import { BaseControlComponent } from 'app/shared/base-control.component';
 import { nextId, blank } from 'app/shared/helper';
@@ -65,8 +65,8 @@ export abstract class BaseFormFieldComponent<T> extends BaseControlComponent<T> 
     this._fieldSize = size;
   }
 
-  constructor(protected controlContainer: ControlContainer) {
-    super(controlContainer);
+  constructor(injector: Injector, protected controlContainer: ControlContainer) {
+    super(injector, controlContainer);
   }
 
   /** Focus the current control */

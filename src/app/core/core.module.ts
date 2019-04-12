@@ -18,7 +18,11 @@ import { LoginService } from 'app/core/login.service';
 import { MapsService } from 'app/core/maps.service';
 import { MenuBarComponent } from 'app/core/menu-bar.component';
 import { MenuService } from 'app/core/menu.service';
+import { MenusComponent } from 'app/core/menus.component';
 import { NotificationService } from 'app/core/notification.service';
+import { OperationHelperService } from 'app/core/operation-helper.service';
+import { PushNotificationComponent } from 'app/core/push-notification.component';
+import { PushNotificationsComponent } from 'app/core/push-notifications.component';
 import { PushNotificationsService } from 'app/core/push-notifications.service';
 import { SidenavComponent } from 'app/core/sidenav.component';
 import { SnackBarComponent } from 'app/core/snack-bar.component';
@@ -30,13 +34,10 @@ import { CountriesResolve } from 'app/countries.resolve';
 import { I18n } from 'app/i18n/i18n';
 import { LayoutService } from 'app/shared/layout.service';
 import { SharedModule } from 'app/shared/shared.module';
+import { ShortcutService } from 'app/shared/shortcut.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { LightboxModule } from 'ngx-lightbox';
 import { NextRequestState } from './next-request-state';
-import { MenusComponent } from 'app/core/menus.component';
-import { PushNotificationsComponent } from 'app/core/push-notifications.component';
-import { PushNotificationComponent } from 'app/core/push-notification.component';
-import { OperationHelperService } from 'app/core/operation-helper.service';
 
 export const API_INTERCEPTOR_PROVIDER: Provider = {
   provide: HTTP_INTERCEPTORS,
@@ -80,6 +81,7 @@ export const API_INTERCEPTOR_PROVIDER: Provider = {
     ErrorHandlerService,
     FormatService,
     LayoutService,
+    ShortcutService,
     MapsService,
     NotificationService,
     BreadcrumbService,

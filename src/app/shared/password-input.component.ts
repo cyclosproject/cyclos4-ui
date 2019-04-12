@@ -1,6 +1,6 @@
 import {
   ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Host, Input,
-  OnInit, Optional, Output, SkipSelf, ViewChild
+  OnInit, Optional, Output, SkipSelf, ViewChild, Injector
 } from '@angular/core';
 import { AbstractControl, ControlContainer, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator } from '@angular/forms';
 import { PasswordInput, PasswordInputMethodEnum, PasswordModeEnum, SendMediumEnum } from 'app/api/models';
@@ -10,7 +10,6 @@ import { ActionWithIcon } from 'app/shared/action';
 import { BaseControlComponent } from 'app/shared/base-control.component';
 import { truthyAttr } from 'app/shared/helper';
 import { chunk } from 'lodash';
-import { I18n } from 'app/i18n/i18n';
 
 /**
  * Component used to display a password input
@@ -58,11 +57,11 @@ export class PasswordInputComponent
   otpActions: ActionWithIcon[];
 
   constructor(
+    injector: Injector,
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
     private authService: AuthService,
-    private notificationService: NotificationService,
-    private i18n: I18n) {
-    super(controlContainer);
+    private notificationService: NotificationService) {
+    super(injector, controlContainer);
   }
 
   ngOnInit(): void {

@@ -1,10 +1,10 @@
 import {
   ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Host,
-  Input, OnInit, Optional, Output, SkipSelf
+  Input, OnInit, Optional, Output, SkipSelf, Injector
 } from '@angular/core';
 import { AbstractControl, ControlContainer, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors } from '@angular/forms';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
-import { FormatService, ISO_DATE } from 'app/core/format.service';
+import { ISO_DATE } from 'app/core/format.service';
 import { BaseControlComponent } from 'app/shared/base-control.component';
 import { DateConstraint, dateConstraintAsMoment } from 'app/shared/date-constraint';
 import { chunk, range } from 'lodash';
@@ -100,13 +100,12 @@ export class CalendarComponent extends BaseControlComponent<string> implements O
     this.years$.next(years);
   }
 
-  constructor(
+  constructor(injector: Injector,
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
-    public format: FormatService,
     private dataForUiHolder: DataForUiHolder,
     private changeDetector: ChangeDetectorRef
   ) {
-    super(controlContainer);
+    super(injector, controlContainer);
   }
 
   ngOnInit() {

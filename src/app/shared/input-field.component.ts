@@ -1,6 +1,6 @@
 import {
   Component, Input, Output, EventEmitter, ChangeDetectionStrategy, SkipSelf, Host,
-  Optional, ViewChild, ElementRef
+  Optional, ViewChild, ElementRef, Injector
 } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlContainer } from '@angular/forms';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
@@ -38,8 +38,9 @@ export class InputFieldComponent
   @ViewChild('input') inputRef: ElementRef;
 
   constructor(
+    injector: Injector,
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer) {
-    super(controlContainer);
+    super(injector, controlContainer);
   }
 
   get input(): HTMLInputElement {

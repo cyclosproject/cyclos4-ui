@@ -1,4 +1,4 @@
-import { AfterViewChecked, AfterViewInit, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, Injector } from '@angular/core';
 import { ControlContainer, FormControl } from '@angular/forms';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
@@ -38,8 +38,9 @@ export abstract class BaseAutocompleteFieldComponent<T, A>
   private bodyListener: any;
 
   constructor(
+    injector: Injector,
     protected controlContainer: ControlContainer) {
-    super(controlContainer);
+    super(injector, controlContainer);
     this.inputFieldControl = new FormControl(null);
   }
 

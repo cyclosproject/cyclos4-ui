@@ -1,10 +1,9 @@
-import { Component, ElementRef, Host, Input, OnInit, Optional, SkipSelf, ViewChild } from '@angular/core';
+import { Component, ElementRef, Host, Input, OnInit, Optional, SkipSelf, ViewChild, Injector } from '@angular/core';
 import {
   AbstractControl, ControlContainer, FormControl, NG_VALIDATORS,
   NG_VALUE_ACCESSOR, ValidationErrors, Validator
 } from '@angular/forms';
 import { CustomFieldSizeEnum } from 'app/api/models';
-import { FormatService } from 'app/core/format.service';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { empty } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
@@ -22,10 +21,10 @@ import { LayoutService } from 'app/shared/layout.service';
 })
 export class DecimalFieldComponent extends BaseFormFieldComponent<string> implements Validator, OnInit {
   constructor(
+    injector: Injector,
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
-    public layout: LayoutService,
-    public format: FormatService) {
-    super(controlContainer);
+    public layout: LayoutService) {
+    super(injector, controlContainer);
   }
 
   /** Text to show as prefix */
