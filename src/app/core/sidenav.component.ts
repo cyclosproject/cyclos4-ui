@@ -84,9 +84,12 @@ export class SidenavComponent implements OnInit {
 
       const shortcuts = ['ArrowDown', 'ArrowUp', 'PageUp', 'PageDown', 'Home', 'End'];
       this.shortcutSub = this.shortcut.subscribe(shortcuts, e => this.handleShortcut(e));
-      if (document.activeElement) {
-        (document.activeElement as HTMLElement).blur();
-      }
+      setTimeout(() => {
+        const active = document.activeElement as HTMLElement;
+        if (active) {
+          active.blur();
+        }
+      }, 5);
     }
   }
 
@@ -95,27 +98,31 @@ export class SidenavComponent implements OnInit {
     const anchors = htmlCollectionToArray(this.element.getElementsByTagName('a'));
     const index = anchors.indexOf(active as HTMLAnchorElement);
     let newIndex: number;
-    switch (event.key) {
-      case 'ArrowUp':
-        newIndex = index - 1;
-        break;
-      case 'ArrowDown':
-        newIndex = index + 1;
-        break;
-      case 'PageUp':
-        newIndex = index - 7;
-        break;
-      case 'PageDown':
-        newIndex = index + 7;
-        break;
-      case 'Home':
-        newIndex = anchors.findIndex(a => a.classList.contains('menu-item'));
-        break;
-      case 'End':
-        newIndex = Number.MAX_SAFE_INTEGER;
-        break;
-      default:
-        return;
+    if (active && active.tagName === 'A') {
+      switch (event.key) {
+        case 'ArrowUp':
+          newIndex = index - 1;
+          break;
+        case 'ArrowDown':
+          newIndex = index + 1;
+          break;
+        case 'PageUp':
+          newIndex = index - 7;
+          break;
+        case 'PageDown':
+          newIndex = index + 7;
+          break;
+        case 'Home':
+          newIndex = anchors.findIndex(a => a.classList.contains('menu-item'));
+          break;
+        case 'End':
+          newIndex = Number.MAX_SAFE_INTEGER;
+          break;
+        default:
+          return;
+      }
+    } else {
+      newIndex = anchors.findIndex(a => a.classList.contains('menu-item'));
     }
     if (newIndex < 0) {
       newIndex = 0;
@@ -125,14 +132,6 @@ export class SidenavComponent implements OnInit {
     setTimeout(() => {
       const toFocus = anchors[newIndex];
       toFocus.focus();
-      // let top: number;
-      // if (toFocus.classList.contains('menu-item')) {
-      //   const bbox = toFocus.getBoundingClientRect();
-      //   top = bbox.top;
-      // } else {
-      //   top = 0;
-      // }
-      // this.sidenavMenu.nativeElement.scrollTo(0, top);
     }, 5);
   }
 
