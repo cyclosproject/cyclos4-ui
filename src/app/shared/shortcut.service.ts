@@ -58,7 +58,8 @@ export class Shortcut {
 class ShortcutDescriptor {
   constructor(
     public shortcuts: Shortcut[],
-    public handler: (event: KeyboardEvent) => void) {
+    public handler: (event: KeyboardEvent) => void,
+    public stop: boolean) {
   }
 
   /**
@@ -67,6 +68,10 @@ class ShortcutDescriptor {
   onEvent(event: KeyboardEvent): boolean {
     if (this.shortcuts.find(s => s.matches(event))) {
       this.handler(event);
+      if (this.stop) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
       return true;
     }
     return false;
@@ -89,14 +94,19 @@ export class ShortcutService {
   }
 
   /**
-   * Subscribes for one or more global shortcuts
+   * Subscribes for one or more global shortcuts.
+   * @param shortcut One or more key or Shortcut
+   * @param handler The event handler in case any of the shortcut matched
+   * @param stop Whether to prevent default. True by default, so, must be set to true if the default action should be allowed
    */
-  subscribe(shortcut: Shortcut | Shortcut[], handler: (event: KeyboardEvent) => any): Subscription {
-    if (shortcut instanceof Shortcut) {
+  subscribe(shortcut: string | Shortcut | (string | Shortcut)[], handler: (event: KeyboardEvent) => any, stop = true): Subscription {
+    if (!(shortcut instanceof Array)) {
       shortcut = [shortcut];
     }
+    const shortcuts: Shortcut[] = shortcut.map(s => typeof s === 'string' ? new Shortcut(s) : s);
+
     // Add a descriptor
-    const descriptor = new ShortcutDescriptor(shortcut, handler);
+    const descriptor = new ShortcutDescriptor(shortcuts, handler, stop);
     this.descriptors.push(descriptor);
 
     // Return a subscription that removes the descriptor

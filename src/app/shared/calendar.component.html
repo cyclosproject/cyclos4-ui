@@ -1,16 +1,17 @@
 <div class="calendar-header">
-  <button class="calendar-nav" (click)="previous()" [disabled]="previousDisabled">
+  <button tabindex="0" class="calendar-nav" (click)="previous()"
+    [disabled]="previousDisabled">
     <icon icon="navigate_before"></icon>
   </button>
   <div class="flex-grow-1"></div>
   <ng-container *ngIf="type === 'month'">
-    <button class="month" (click)="type = 'year'">
+    <button tabindex="0" class="month" (click)="type = 'year'">
       {{ format.longMonthName(month$ | async) }}
     </button>
   </ng-container>
   <ng-container *ngIf="type === 'month' || type === 'year'">
     <div *ngIf="type === 'month'" class="flex-grow-1"></div>
-    <button class="year" (click)="type = 'multiYear'">
+    <button tabindex="0" class="year" (click)="type = 'multiYear'">
       {{ year$ | async }}
     </button>
   </ng-container>
@@ -18,7 +19,8 @@
     {{ minYear$ | async }} - {{ maxYear$ | async }}
   </div>
   <div class="flex-grow-1"></div>
-  <button class="calendar-nav" (click)="next()" [disabled]="nextDisabled">
+  <button tabindex="0" class="calendar-nav" (click)="next()"
+    [disabled]="nextDisabled">
     <icon icon="navigate_next"></icon>
   </button>
 </div>
@@ -38,7 +40,9 @@
     <tbody>
       <tr *ngFor="let week of days$ | async">
         <td *ngFor="let day of week" class="day-cell">
-          <button *ngIf="day" class="select-day" [disabled]="!isSelectable(year, month, day)"
+          <button tabindex="0" *ngIf="day" class="select-day"
+            [id]="id + '_day_' + day"
+            [disabled]="!isSelectable(year, month, day)"
             (click)="selectDate(day)" [ngClass]="{
               today: isToday(day),
               'selected-date': isSelected(day)
@@ -56,7 +60,8 @@
     <tbody>
       <tr *ngFor="let row of months">
         <td *ngFor="let month of row" class="month-cell">
-          <button class="select-month" (click)="selectMonth(month)"
+          <button tabindex="0" class="select-month"
+            [id]="id + '_month_' + month" (click)="selectMonth(month)"
             [disabled]="!isSelectable(year, month)" [ngClass]="{
             'this-month': isThisMonth(month)
           }">
@@ -73,7 +78,8 @@
     <tbody>
       <tr *ngFor="let row of years$ | async">
         <td *ngFor="let year of row" class="year-cell">
-          <button class="select-year" (click)="selectYear(year)" [disabled]="!isSelectable(year)"
+          <button tabindex="0" class="select-year" (click)="selectYear(year)"
+            [id]="id + '_year_' + year" [disabled]="!isSelectable(year)"
             [ngClass]="{
             'this-year': isThisYear(year)
           }">

@@ -23,11 +23,11 @@ button {
   transition:background-color 0.4s;
   cursor: pointer;
 
-  &:hover {
+  &:hover, &:focus {
     background-color: $calendar-hover-bg;
     color: $calendar-hover-color !important;
   }
-  &, &:hover, &:focus, &:active {
+  &, &:hover, &:focus {
     outline: none;
   }
 }

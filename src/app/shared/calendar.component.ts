@@ -8,7 +8,7 @@ import { ISO_DATE } from 'app/core/format.service';
 import { BaseControlComponent } from 'app/shared/base-control.component';
 import { DateConstraint, dateConstraintAsMoment } from 'app/shared/date-constraint';
 import { chunk, range } from 'lodash';
-import moment from 'moment-mini-ts';
+import moment, { Moment } from 'moment-mini-ts';
 import { BehaviorSubject } from 'rxjs';
 
 export type CalendarType = 'month' | 'year' | 'multiYear';
@@ -33,7 +33,7 @@ const MONTHS_PER_ROW = 2;
   ]
 })
 export class CalendarComponent extends BaseControlComponent<string> implements OnInit {
-
+  @Input() id: string;
   @Input() minDate: DateConstraint;
   @Input() maxDate: DateConstraint;
 
@@ -57,11 +57,38 @@ export class CalendarComponent extends BaseControlComponent<string> implements O
   years$ = new BehaviorSubject<number[][]>(null);
   months: number[][];
 
+  focusedYear: number;
+  focusedMonth: number;
+  focusedDate: moment.Moment;
+
   get type(): CalendarType {
     return this.type$.value;
   }
   set type(type: CalendarType) {
+    const now = this.valueAsMoment || this.now;
+    if (!this.focusedYear) {
+      this.focusedYear = now.year();
+    }
+    if (!this.focusedMonth) {
+      this.focusedMonth = now.month();
+    }
+    if (!this.focusedDate) {
+      this.focusedDate = now;
+    }
     this.type$.next(type);
+    setTimeout(() => {
+      switch (type) {
+        case 'multiYear':
+          this.focusYear(this.focusedYear);
+          break;
+        case 'year':
+          this.focusMonth(this.focusedMonth);
+          break;
+        case 'month':
+          this.focusDate(this.focusedDate);
+          break;
+      }
+    }, 5);
   }
   get month(): number {
     return this.month$.value;
@@ -143,6 +170,99 @@ export class CalendarComponent extends BaseControlComponent<string> implements O
     this.min = dateConstraintAsMoment(this.minDate, this.now);
     this.max = dateConstraintAsMoment(this.maxDate, this.now);
     this.changeDetector.detectChanges();
+    this.focusedYear = selected.year();
+    this.focusedMonth = selected.month();
+    this.focusedDate = selected;
+
+    const shortcuts = [
+      'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight',
+      'PageUp', 'PageDown', 'Home', 'End'
+    ];
+    this.addShortcut(shortcuts, event => {
+      this.handleKey(event);
+    });
+
+    setTimeout(() => {
+      this.focusYear(this.focusedYear);
+      this.focusMonth(this.focusedMonth);
+      this.focusDate(this.focusedDate);
+    }, 5);
+  }
+
+  /**
+   * Sets the focus to a specific date. Only works when `type` is `month`.
+   */
+  focusDate(date: Moment) {
+    if (this.type !== 'month') {
+      return;
+    }
+    if (date == null) {
+      date = this.now;
+    }
+    const prevYear = this.year;
+    const prevMonth = this.month;
+    if (prevYear !== date.year() || prevMonth !== date.month()) {
+      this.year = date.year();
+      this.month = date.month();
+      this.updateDays();
+    }
+    this.focusedDate = date;
+    setTimeout(() => {
+      const element = document.getElementById(this.id + '_day_' + date.date());
+      if (element) {
+        element.focus();
+      }
+    }, 5);
+  }
+
+  /**
+   * Sets the focus to a specific month. Only works when `type` is `year`.
+   */
+  focusMonth(month: number) {
+    if (this.type !== 'year') {
+      return;
+    }
+    while (month < 0) {
+      month += 12;
+      this.year = this.focusedYear--;
+    }
+    while (month >= 12) {
+      month -= 12;
+      this.year = this.focusedYear++;
+    }
+    this.focusedMonth = month;
+    setTimeout(() => {
+      const element = document.getElementById(this.id + '_month_' + month);
+      if (element) {
+        element.focus();
+      }
+    }, 5);
+  }
+
+  /**
+   * Sets the focus to a specific month. Only works when `type` is `multi-year`.
+   */
+  focusYear(year: number) {
+    if (this.type !== 'multiYear') {
+      return;
+    }
+    this.focusedYear = year;
+    while (year > this.maxYear) {
+      this.minYear += YEARS_TO_SHOW;
+      this.maxYear += YEARS_TO_SHOW;
+      this.updateYears();
+    }
+    while (year < this.minYear) {
+      this.minYear -= YEARS_TO_SHOW;
+      this.maxYear -= YEARS_TO_SHOW;
+      this.updateYears();
+    }
+    setTimeout(() => {
+      const element = document.getElementById(this.id + '_year_' + year);
+      if (element) {
+        element.focus();
+      }
+    }, 5);
   }
 
   previous() {
@@ -160,10 +280,12 @@ export class CalendarComponent extends BaseControlComponent<string> implements O
   selectMonth(month: number) {
     this.month = month;
     this.type = 'month';
+    this.focusDate(moment({ year: this.year, month: month, date: 1 }));
   }
   selectYear(year: number) {
     this.year = year;
     this.type = 'month';
+    this.focusDate(moment({ year: this.year, month: 0, date: 1 }));
   }
 
   isToday(date: number) {
@@ -317,6 +439,113 @@ export class CalendarComponent extends BaseControlComponent<string> implements O
       }
     }
     return Object.keys(errors).length === 0 ? null : errors;
+  }
+
+  private handleKey(event: KeyboardEvent) {
+    switch (this.type) {
+      case 'multiYear':
+        this.handleKeyMultiYear(event);
+        break;
+      case 'year':
+        this.handleKeyYear(event);
+        break;
+      case 'month':
+        this.handleKeyMonth(event);
+        break;
+    }
+  }
+
+  private handleKeyMultiYear(event: KeyboardEvent) {
+    let year = this.focusedYear;
+    switch (event.key) {
+      case 'ArrowUp':
+        year -= 4;
+        break;
+      case 'ArrowDown':
+        year += 4;
+        break;
+      case 'ArrowLeft':
+        year--;
+        break;
+      case 'ArrowRight':
+        year++;
+        break;
+      case 'PageUp':
+        year -= YEARS_TO_SHOW;
+        break;
+      case 'PageDown':
+        year += YEARS_TO_SHOW;
+        break;
+      case 'Home':
+        year = this.minYear;
+        break;
+      case 'End':
+        year = this.maxYear;
+        break;
+    }
+    this.focusYear(year);
+  }
+
+  private handleKeyYear(event: KeyboardEvent) {
+    let month = this.focusedMonth;
+    switch (event.key) {
+      case 'ArrowUp':
+        month -= 2;
+        break;
+      case 'ArrowDown':
+        month += 2;
+        break;
+      case 'ArrowLeft':
+        month--;
+        break;
+      case 'ArrowRight':
+        month++;
+        break;
+      case 'PageUp':
+        month -= 12;
+        break;
+      case 'PageDown':
+        month += 12;
+        break;
+      case 'Home':
+        month = 0;
+        break;
+      case 'End':
+        month = 11;
+        break;
+    }
+    this.focusMonth(month);
+  }
+
+  private handleKeyMonth(event: KeyboardEvent) {
+    const date = this.focusedDate.clone();
+    switch (event.key) {
+      case 'ArrowUp':
+        date.subtract(1, 'weeks');
+        break;
+      case 'ArrowDown':
+        date.add(1, 'weeks');
+        break;
+      case 'ArrowLeft':
+        date.subtract(1, 'days');
+        break;
+      case 'ArrowRight':
+        date.add(1, 'days');
+        break;
+      case 'PageUp':
+        date.subtract(1, 'months');
+        break;
+      case 'PageDown':
+        date.add(1, 'months');
+        break;
+      case 'Home':
+        date.subtract(1, 'years');
+        break;
+      case 'End':
+        date.add(1, 'years');
+        break;
+    }
+    this.focusDate(date);
   }
 
 }

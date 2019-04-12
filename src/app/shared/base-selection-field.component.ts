@@ -5,7 +5,6 @@ import { BsDropdownDirective } from 'ngx-bootstrap/dropdown';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { empty } from 'app/shared/helper';
 import { FieldOption, fieldOptionMatches } from 'app/shared/field-option';
-import { Shortcut } from 'app/shared/shortcut.service';
 
 const PageSize = 7;
 
@@ -90,15 +89,7 @@ export abstract class BaseSelectionFieldComponent<T> extends BaseFormFieldWithOp
     // Workaround: ngx-bootstrap sets top sometimes when we set dropup, which causes a position error
     setTimeout(() => this.menuRef.nativeElement.style.top = '', 1);
 
-    const shortcuts = [
-      new Shortcut('ArrowUp'),
-      new Shortcut('ArrowDown'),
-      new Shortcut('PageUp'),
-      new Shortcut('PageDown'),
-      new Shortcut('Home'),
-      new Shortcut('End'),
-      new Shortcut('Escape')
-    ];
+    const shortcuts = ['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', 'Escape'];
     this.addShortcut(shortcuts, event => {
       if (event.key === 'Escape') {
         this.close();
@@ -146,12 +137,7 @@ export abstract class BaseSelectionFieldComponent<T> extends BaseFormFieldWithOp
   }
 
   onFocus() {
-    const shortcuts = [
-      new Shortcut('Space'),
-      new Shortcut('Enter'),
-      new Shortcut('ArrowDown'),
-      new Shortcut('ArrowUp')
-    ];
+    const shortcuts = ['Space', 'Enter', 'ArrowDown', 'ArrowUp'];
     this.openSub = this.addShortcut(shortcuts, () => {
       this.open();
     });

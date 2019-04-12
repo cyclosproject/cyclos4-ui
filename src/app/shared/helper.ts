@@ -505,3 +505,15 @@ export function focus(control: any) {
   }
 }
 
+/**
+ * Converts a collection of HTML elements to Array
+ * @param collection The HTML collection
+ */
+export function htmlCollectionToArray<T extends Element>(collection: HTMLCollectionOf<T>): T[] {
+  const array = new Array<T>(collection.length);
+  for (let i = 0; i < collection.length; i++) {
+    array[i] = collection.item(i);
+  }
+  return array;
+}
+

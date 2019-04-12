@@ -3,7 +3,6 @@ import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { FIELD_OPTIONS_SORTER, FORM_FIELD_WITH_OPTIONS } from 'app/shared/base-form-field-with-options.component';
 import { BaseSelectionFieldComponent } from 'app/shared/base-selection-field.component';
 import { blank, empty, getValueAsArray, preprocessValueWithSeparator } from 'app/shared/helper';
-import { Shortcut } from 'app/shared/shortcut.service';
 
 /**
  * Component used to display a multi selection field (using a `select` tag).
@@ -91,7 +90,7 @@ export class MultiSelectionFieldComponent extends BaseSelectionFieldComponent<st
   onShown() {
     super.onShown();
     // Enter key is already handled to toggle the option. Add the space bar as well.
-    this.addShortcut(new Shortcut(' '), () => {
+    this.addShortcut(' ', () => {
       const option = this.allOptions[this.optionIndex];
       this.toggle(option.value);
     });

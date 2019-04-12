@@ -48,14 +48,8 @@ export abstract class BaseControlComponent<T> implements OnInit, OnDestroy, Cont
    * @param handler The action handler
    * @param stop By default, the event will be stopped if matched the shortcut. Can be set to false to allow the default action.
    */
-  protected addShortcut(shortcut: Shortcut | Shortcut[], handler: (event: KeyboardEvent) => any, stop = true): Subscription {
-    const sub = this.shortcut.subscribe(shortcut, e => {
-      handler(e);
-      if (stop) {
-        e.preventDefault();
-        e.stopPropagation();
-      }
-    });
+  addShortcut(shortcut: string | Shortcut | (string | Shortcut)[], handler: (event: KeyboardEvent) => any, stop = true): Subscription {
+    const sub = this.shortcut.subscribe(shortcut, handler, stop);
     this.shortcutSubs.push(sub);
     return new Subscription(() => {
       sub.unsubscribe();

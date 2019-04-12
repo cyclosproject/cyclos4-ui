@@ -1,22 +1,22 @@
 import {
-  ChangeDetectionStrategy, Component, ElementRef, Host, Input, OnInit, Optional,
-  QueryList, SkipSelf, ViewChild, ViewChildren, Injector
+  ChangeDetectionStrategy, Component, ElementRef, Host, Injector, Input,
+  OnInit, Optional, QueryList, SkipSelf, ViewChild, ViewChildren
 } from '@angular/core';
 import {
-  AbstractControl, ControlContainer, FormArray, FormBuilder, FormControl,
-  NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator
+  AbstractControl, ControlContainer, FormArray, FormBuilder,
+  FormControl, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator
 } from '@angular/forms';
 import { CustomFieldSizeEnum } from 'app/api/models';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { ISO_DATE } from 'app/core/format.service';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
+import { CalendarComponent } from 'app/shared/calendar.component';
 import { DateConstraint, dateConstraintAsMoment } from 'app/shared/date-constraint';
 import { empty } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
 import { range } from 'lodash';
 import moment from 'moment-mini-ts';
 import { BsDropdownDirective } from 'ngx-bootstrap/dropdown';
-import { CalendarComponent } from 'app/shared/calendar.component';
 
 /**
  * Input used to edit a single date
@@ -220,6 +220,7 @@ export class DateFieldComponent
   }
 
   onHidden() {
+    this.calendar.forEach(c => c.clearShortcuts());
     this.layout.hideBackdrop();
   }
 }

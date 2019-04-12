@@ -14,6 +14,7 @@ import { blank, setRootSpinnerVisible } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
 import { trim } from 'lodash';
 import { BehaviorSubject } from 'rxjs';
+import { ShortcutService } from 'app/shared/shortcut.service';
 
 @Component({
   selector: 'app-root',
@@ -41,7 +42,8 @@ export class AppComponent implements OnInit {
     private banner: BannerService,
     public i18n: I18n,
     private stateManager: StateManager,
-    private breadcrumb: BreadcrumbService
+    private breadcrumb: BreadcrumbService,
+    private shortcut: ShortcutService
   ) {
   }
 
@@ -84,6 +86,14 @@ export class AppComponent implements OnInit {
 
     // Hide the spinner, showing the application
     setRootSpinnerVisible(false);
+
+    // Show the sidenav on small devices when pressing the context menu
+    this.shortcut.subscribe('ContextMenu', event => {
+      if (this.layout.ltmd) {
+        this.sidenav.toggle();
+        event.preventDefault();
+      }
+    }, false);
   }
 
   private doInitialize(dataForUi: DataForUi) {

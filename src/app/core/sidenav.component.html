@@ -3,19 +3,17 @@
     <span class="navbar-brand flex-grow-1">
       <span class="top-title">{{ format.appTitleMenu }}</span>
     </span>
-    <a href="#" class="icon"
-      [attr.tabindex]="(opened$ | async) ? undefined : '-1'"
+    <a href="#" class="icon" [attr.tabindex]="(opened$ | async) ? '0' : '-1'"
       *ngIf="(login.user$ | async) != null" (click)="logout($event)">
       <icon class="top-icon" icon="logout"></icon>
     </a>
-    <a href="#" class="icon"
-      [attr.tabindex]="(opened$ | async) ? undefined : '-1'"
+    <a href="#" class="icon" [attr.tabindex]="(opened$ | async) ? '0' : '-1'"
       (click)="toggle(); $event.preventDefault()">
       <icon class="top-icon" icon="clear"></icon>
     </a>
   </div>
 </nav>
-<div class="sidenav-menu d-flex flex-column">
+<div #sidenavMenu class="sidenav-menu d-flex flex-column">
   <ng-container *ngFor="let root of roots$ | async; let last = last">
     <ng-container
       *ngIf="!root.dropdown && (login.user$ | async) == null || isHome(root)">
@@ -44,8 +42,7 @@
 </div>
 
 <ng-template #menuEntry let-entry>
-  <a [routerLink]="entry.url"
-    [attr.tabindex]="(opened$ | async) ? undefined : '-1'"
+  <a [routerLink]="entry.url" [attr.tabindex]="(opened$ | async) ? '0' : '-1'"
     (click)="navigate(entry, $event); close()"
     class="menu-item d-flex align-items-center">
     <icon class="mr-3" size="1.4rem" [icon]="icon(entry)"></icon>
