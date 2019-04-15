@@ -3,19 +3,16 @@ import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
-import { FormatService } from 'app/core/format.service';
 import { LoginService } from 'app/core/login.service';
 import { MapsService } from 'app/core/maps.service';
 import { MenuService } from 'app/core/menu.service';
 import { NextRequestState } from 'app/core/next-request-state';
 import { NotificationService } from 'app/core/notification.service';
-import { ApiHelper } from 'app/shared/api-helper';
+import { AbstractComponent } from 'app/shared/abstract.component';
 import { LayoutService } from 'app/shared/layout.service';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import { BreadcrumbService } from '../core/breadcrumb.service';
 import { StateManager } from '../core/state-manager';
-import { I18n } from 'app/i18n/i18n';
-import { ShortcutService } from 'app/shared/shortcut.service';
 
 /**
  * Base class to meant to be inherited by other components.
@@ -23,18 +20,15 @@ import { ShortcutService } from 'app/shared/shortcut.service';
  * MUST call the super implementation too, or the component state
  * may become inconsistent.
  */
-export abstract class BaseComponent implements OnInit, OnDestroy {
-  // Export ApiHelper to templates
-  ApiHelper = ApiHelper;
+export abstract class BaseComponent
+  extends AbstractComponent
+  implements OnInit, OnDestroy {
 
-  i18n: I18n;
   dataForUiHolder: DataForUiHolder;
-  format: FormatService;
   errorHandler: ErrorHandlerService;
   login: LoginService;
   notification: NotificationService;
   layout: LayoutService;
-  shortcut: ShortcutService;
   maps: MapsService;
   menu: MenuService;
   stateManager: StateManager;
@@ -44,18 +38,13 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
   formBuilder: FormBuilder;
   requesting$: Observable<boolean>;
 
-  private operationalSubs: Subscription[] = [];
-  private lifecycleSubs: Subscription[] = [];
-
   constructor(injector: Injector) {
-    this.i18n = injector.get(I18n);
+    super(injector);
     this.dataForUiHolder = injector.get(DataForUiHolder);
-    this.format = injector.get(FormatService);
     this.errorHandler = injector.get(ErrorHandlerService);
     this.login = injector.get(LoginService);
     this.notification = injector.get(NotificationService);
     this.layout = injector.get(LayoutService);
-    this.shortcut = injector.get(ShortcutService);
     this.maps = injector.get(MapsService);
     this.menu = injector.get(MenuService);
     this.stateManager = injector.get(StateManager);
@@ -66,30 +55,4 @@ export abstract class BaseComponent implements OnInit, OnDestroy {
     this.requesting$ = injector.get(NextRequestState).requesting$;
   }
 
-  protected addSub(sub: Subscription, lifeCycle = false) {
-    if (lifeCycle) {
-      this.lifecycleSubs.push(sub);
-    } else {
-      this.operationalSubs.push(sub);
-    }
-  }
-
-  ngOnInit() {
-    // Just have the ngOnInit declared, as we might need it later
-  }
-
-  ngOnDestroy(): void {
-    this.unsubscribe(true);
-    this.unsubscribe(false);
-  }
-
-  protected unsubscribe(lifeCycle = true) {
-    if (lifeCycle) {
-      this.lifecycleSubs.forEach(sub => sub.unsubscribe());
-      this.lifecycleSubs = [];
-    } else {
-      this.operationalSubs.forEach(sub => sub.unsubscribe());
-      this.operationalSubs = [];
-    }
-  }
 }

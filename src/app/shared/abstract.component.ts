@@ -1,0 +1,79 @@
+import { Injector, OnDestroy, OnInit } from '@angular/core';
+import { FormatService } from 'app/core/format.service';
+import { I18n } from 'app/i18n/i18n';
+import { ApiHelper } from 'app/shared/api-helper';
+import { Shortcut, ShortcutService } from 'app/shared/shortcut.service';
+import { Subscription } from 'rxjs';
+
+/**
+ * Base class for any component
+ */
+export abstract class AbstractComponent implements OnInit, OnDestroy {
+
+  // Export ApiHelper to templates
+  ApiHelper = ApiHelper;
+
+  i18n: I18n;
+  format: FormatService;
+  shortcut: ShortcutService;
+  private operationalSubs: Subscription[] = [];
+  private lifecycleSubs: Subscription[] = [];
+  private shortcutSubs: Subscription[] = [];
+
+  constructor(injector: Injector) {
+    this.i18n = injector.get(I18n);
+    this.format = injector.get(FormatService);
+    this.shortcut = injector.get(ShortcutService);
+  }
+
+  protected addSub(sub: Subscription, lifeCycle = false) {
+    if (lifeCycle) {
+      this.lifecycleSubs.push(sub);
+    } else {
+      this.operationalSubs.push(sub);
+    }
+  }
+
+  /**
+   * Adds a keyboard shortcut handler
+   * @param shortcut The keyboard shortcut(s)
+   * @param handler The action handler
+   * @param stop By default, the event will be stopped if matched the shortcut. Can be set to false to allow the default action.
+   */
+  addShortcut(shortcut: string | Shortcut | (string | Shortcut)[], handler: (event: KeyboardEvent) => any, stop = true): Subscription {
+    const sub = this.shortcut.subscribe(shortcut, handler, stop);
+    this.shortcutSubs.push(sub);
+    return new Subscription(() => {
+      sub.unsubscribe();
+      const index = this.shortcutSubs.indexOf(sub);
+      if (index >= 0) {
+        this.shortcutSubs.splice(index, 1);
+      }
+    });
+  }
+
+  ngOnInit() {
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe(false);
+    this.unsubscribe(true);
+    this.clearShortcuts();
+  }
+
+  protected unsubscribe(lifeCycle = true) {
+    if (lifeCycle) {
+      this.lifecycleSubs.forEach(sub => sub.unsubscribe());
+      this.lifecycleSubs = [];
+    } else {
+      this.operationalSubs.forEach(sub => sub.unsubscribe());
+      this.operationalSubs = [];
+    }
+  }
+
+  clearShortcuts() {
+    this.shortcutSubs.forEach(sub => sub.unsubscribe());
+    this.shortcutSubs = [];
+  }
+
+}
