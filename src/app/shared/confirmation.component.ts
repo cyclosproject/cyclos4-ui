@@ -1,16 +1,16 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit, Injector } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CustomFieldDetailed, PasswordInput, CreateDeviceConfirmation } from 'app/api/models';
 import { AuthHelperService } from 'app/core/auth-helper.service';
 import { FieldHelperService } from 'app/core/field-helper.service';
 import { NextRequestState } from 'app/core/next-request-state';
 import { ConfirmCallbackParams } from 'app/core/notification.service';
-import { I18n } from 'app/i18n/i18n';
 import { FieldLabelPosition } from 'app/shared/base-form-field.component';
 import { ConfirmationMode } from 'app/shared/confirmation-mode';
 import { blank, empty, validateBeforeSubmit } from 'app/shared/helper';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { AbstractComponent } from 'app/shared/abstract.component';
 
 /**
  * Component shown in a dialog, to present a confirmation message, optionally with a confirmation password
@@ -21,7 +21,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
   templateUrl: 'confirmation.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ConfirmationComponent implements OnInit {
+export class ConfirmationComponent extends AbstractComponent implements OnInit {
 
   ConfirmationMode = ConfirmationMode;
 
@@ -43,13 +43,14 @@ export class ConfirmationComponent implements OnInit {
   canConfirm: boolean;
 
   constructor(
-    public i18n: I18n,
+    injector: Injector,
     public modalRef: BsModalRef,
     private formBuilder: FormBuilder,
     private fieldHelper: FieldHelperService,
     private authHelper: AuthHelperService,
     nextRequestState: NextRequestState
   ) {
+    super(injector);
     this.requesting$ = nextRequestState.requesting$;
   }
 
@@ -70,6 +71,9 @@ export class ConfirmationComponent implements OnInit {
     }
     if (blank(this.confirmLabel)) {
       this.confirmLabel = this.i18n.general.confirm;
+    }
+    if (!this.hasFields) {
+      this.addShortcut('Enter', () => this.confirm());
     }
   }
 
