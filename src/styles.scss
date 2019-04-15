@@ -483,8 +483,12 @@ input[type=number] {
 }
 
 .custom-control-label {
-  padding-top: 0.05rem !important;
+  padding-top: 0 !important;
   padding-left: 0.2rem;
+  transform: translateY(-1px);
+  &::before, &::after {
+    top: 1px !important;
+  }
 }
 .custom-control-label::before {
   background-color: $input-bg;

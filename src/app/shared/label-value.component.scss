@@ -5,8 +5,14 @@
   padding-bottom: 3px !important;
   line-height: 1rem;
 }
+:host.field .label-value-value,
+:host.field-view .label-value-value {
+  min-height: $input-height;
+}
 .label-value-value {
-  min-height: 22px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 @include media-breakpoint-up(xs) {

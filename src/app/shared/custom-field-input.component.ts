@@ -1,4 +1,7 @@
-import { ChangeDetectionStrategy, Component, Host, Input, OnInit, Optional, SkipSelf, ViewChild, Injector } from '@angular/core';
+import {
+  ChangeDetectionStrategy, Component, Host, Injector, Input, OnInit,
+  Optional, SkipSelf, ViewChild
+} from '@angular/core';
 import { AbstractControl, ControlContainer, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator } from '@angular/forms';
 import {
   CustomFieldBinaryValues, CustomFieldControlEnum, CustomFieldDetailed,
@@ -32,6 +35,7 @@ const ENUMERATED = [CustomFieldTypeEnum.SINGLE_SELECTION, CustomFieldTypeEnum.MU
 @Component({
   selector: 'custom-field-input',
   templateUrl: 'custom-field-input.component.html',
+  styleUrls: ['custom-field-input.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     { provide: NG_VALUE_ACCESSOR, useExisting: CustomFieldInputComponent, multi: true },

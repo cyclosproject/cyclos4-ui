@@ -3,9 +3,10 @@
 </label-value>
 
 <ng-template #widget>
-  <div class="custom-control custom-checkbox d-flex align-content-center mt-xs-1">
-    <input #checkbox type="checkbox" [name]="name" class="custom-control-input"
-      [id]="id" (click)="click.emit($event)" [formControl]="formControl"
+  <div class="custom-control custom-checkbox d-flex align-content-center">
+    <input #checkbox type="checkbox" [name]="name"
+      class="custom-control-input" [id]="id" (click)="click.emit($event)"
+      [formControl]="formControl"
       [checked]="formControl.value || (formControl.valueChanges | async)">
     <label class="custom-control-label" [for]="id">
       <ng-content></ng-content>
