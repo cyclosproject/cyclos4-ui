@@ -5,8 +5,9 @@
     {{ i18n.field.user.contactEmpty }}
   </div>
   <ng-template #contactLinks>
-    <a *ngFor="let c of contacts$ | async" class="d-block mb-1 text-body"
-      href="#" (click)="emit(c.contact, $event)">
+    <a *ngFor="let c of contacts$ | async; let i = index;"
+      class="d-block mb-1 text-body" [ngClass]="'contact-link-' + i" href="#"
+      (click)="emit(c.contact, $event)">
       {{ c.contact.display }}
     </a>
   </ng-template>

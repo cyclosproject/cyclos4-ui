@@ -10,9 +10,9 @@
     </page-content>
     <users-results #usersResults resultKind="contact" [ngClass]="{
           'd-none': (rendering$ | async)
-        }"
-      [results]="results$ | async" [rendering$]="rendering$" [data]="data$ | async"
-      [resultType]="resultType$ | async" (update)="update($event)">
+        }" [results]="results$ | async" [rendering$]="rendering$"
+      [data]="data$ | async" [resultType]="resultType$ | async"
+      (update)="update($event)">
     </users-results>
   </ng-container>
 </page-layout>
