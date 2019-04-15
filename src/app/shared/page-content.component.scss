@@ -207,8 +207,7 @@
 
 .heading-action {
   height: 100%;
-  border-color: $title-button-border-color;
-  border-width: 0 0 0 1px;
+  border: 1px solid $title-button-border-color;
   border-top-right-radius: $card-border-radius;
   background-color: $title-button-bg;
   color: $title-button-color;
@@ -220,7 +219,7 @@
 
   &:focus, &:active {
     outline: 0;
-    border-left: 1px solid $title-button-border-color;
+    border: 1px solid darken($title-button-border-color, 20%);
     box-shadow: none;
   }
 }
@@ -268,7 +267,10 @@
 }
 
 .heading-actions {
-  position: relative;
+  position: absolute;
+  right: -1px;
+  top: -1px;
+  height: calc(100% + 2px);
 }
 
 .heading-action-option {
@@ -285,8 +287,12 @@
     color: $title-button-icon-color;
   }
 }
-.heading-action-option:hover {
-  background-color: darken($title-button-bg, 5%);
+.heading-action-option {
+  &:hover, &:focus {
+    background-color: darken($title-button-bg, 5%);
+    text-decoration: none;
+    outline: none !important;
+  }
 }
 
 .heading-actions-menu {
@@ -315,7 +321,7 @@
       margin: 0.075rem 0.8rem 0 0;
     }
   }
-  
+
   .heading-actions-menu {
     padding: 1rem 0;
   }
