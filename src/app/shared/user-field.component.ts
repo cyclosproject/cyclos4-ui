@@ -85,6 +85,10 @@ export class UserFieldComponent
     if (!contacts.enable) {
       this.allowContacts = false;
     }
+
+    if (!this.allowSearch) {
+      this.allowOptions = false;
+    }
   }
 
   ngOnDestroy() {
@@ -133,4 +137,22 @@ export class UserFieldComponent
     const component = ref.content as PickContactComponent;
     component.select.pipe(first()).subscribe(u => this.select(u));
   }
+
+  onInputFocus() {
+    this.allowOptions = this.allowSearch;
+  }
+
+  onInputBlur() {
+    this.allowOptions = false;
+  }
+
+  onEscapePressed() {
+    // When a principal is allowed, pressing esc will just close the popup, and leave the value there
+    if (this.allowPrincipal) {
+      this.close();
+    } else {
+      this.select(null);
+    }
+  }
+
 }

@@ -605,9 +605,10 @@ $spaced-label-values: (
   color: color-yiq($white) !important;
   white-space: nowrap;
 }
-.select-option:hover {
+.select-option:hover, .select-option:focus {
   background-color: $list-group-hover-bg;
   text-decoration: none;
+  outline: none !important;
 }
 .select-option.selected {
   background-color: $primary !important;

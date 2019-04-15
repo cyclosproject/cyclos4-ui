@@ -1,22 +1,21 @@
-import { AfterViewChecked, AfterViewInit, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, Injector } from '@angular/core';
+import { AfterViewInit, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, Injector } from '@angular/core';
 import { ControlContainer, FormControl } from '@angular/forms';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { blank, empty } from 'app/shared/helper';
-import { InputFieldComponent } from 'app/shared/input-field.component';
 import { BsDropdownDirective } from 'ngx-bootstrap/dropdown';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, switchMap } from 'rxjs/operators';
 
 /**
- * Base class for fields that present a text field and searches for keywords
+ * Base class for fields that present a text field and searches for keywords.
  * @param T The field data type
  * @param A The autocomplete results data type
  */
 export abstract class BaseAutocompleteFieldComponent<T, A>
-  extends BaseFormFieldComponent<T> implements OnInit, OnDestroy, AfterViewInit, AfterViewChecked {
+  extends BaseFormFieldComponent<T> implements OnInit, OnDestroy, AfterViewInit {
   inputFieldControl: FormControl;
-  @ViewChild('inputField') inputField: InputFieldComponent;
+  @ViewChild('inputField') inputField: ElementRef;
   @ViewChild('dropdown') dropdown: BsDropdownDirective;
   @ViewChild('dropDownMenu') menuRef: ElementRef;
 
@@ -32,9 +31,8 @@ export abstract class BaseAutocompleteFieldComponent<T, A>
   }
   options$ = new BehaviorSubject<A[]>(null);
 
-  private inputInitialized = false;
-  private inputHasFocus = false;
-  private focusInput = false;
+  allowOptions = true;
+
   private bodyListener: any;
 
   constructor(
@@ -51,14 +49,14 @@ export abstract class BaseAutocompleteFieldComponent<T, A>
     ).subscribe(() => {
       this.close();
     }));
-    if (this.autoSearch) {
+    if (this.autoSearch && this.allowOptions) {
       this.addSub(this.inputFieldControl.valueChanges.pipe(
         filter(text => !blank(text)),
         debounceTime(ApiHelper.DEBOUNCE_TIME),
         distinctUntilChanged(),
         switchMap(text => this.query(text))
       ).subscribe(rows => {
-        if (blank(this.inputFieldControl.value)) {
+        if (!this.allowOptions || blank(this.inputFieldControl.value)) {
           this.options$.next([]);
         } else {
           this.options$.next(rows);
@@ -80,6 +78,9 @@ export abstract class BaseAutocompleteFieldComponent<T, A>
   }
 
   search(text?: string) {
+    if (!this.allowOptions) {
+      return;
+    }
     if (blank(text)) {
       text = this.inputFieldControl.value;
     }
@@ -88,9 +89,11 @@ export abstract class BaseAutocompleteFieldComponent<T, A>
       this.close();
     } else {
       this.addSub(this.query(text).subscribe(rows => {
-        this.options$.next(rows);
-        if (!empty(rows)) {
-          this.open();
+        if (this.allowOptions) {
+          this.options$.next(rows);
+          if (!empty(rows)) {
+            this.open();
+          }
         }
       }));
     }
@@ -103,23 +106,6 @@ export abstract class BaseAutocompleteFieldComponent<T, A>
     this.dropdown.onHidden.subscribe(() => {
       document.body.removeEventListener('click', this.bodyListener, false);
     });
-  }
-
-  ngAfterViewChecked() {
-    if (this.inputField) {
-      if (!this.inputInitialized) {
-        // When initializing, it is possible that the input field is initially hidden, for there could be a selection
-        this.addSub(this.inputField.onfocus.subscribe(() => this.inputHasFocus = true));
-        this.addSub(this.inputField.onblur.subscribe(() => {
-          this.inputHasFocus = false;
-          setTimeout(() => this.close(), 200);
-        }));
-      }
-      if (this.focusInput) {
-        this.inputField.focus();
-        this.focusInput = false;
-      }
-    }
   }
 
   onValueInitialized() {
@@ -157,16 +143,22 @@ export abstract class BaseAutocompleteFieldComponent<T, A>
   }
 
   onShown() {
-    const input = <HTMLElement>this.inputField.inputRef.nativeElement;
+    const input = this.inputField.nativeElement as HTMLInputElement;
     const rect = input.getBoundingClientRect();
     const docHeight = (window.innerHeight || document.documentElement.clientHeight);
     this.dropdown.dropup = rect.bottom > docHeight - 100;
     // Workaround: ngx-bootstrap sets top sometimes when we set dropup, which causes a position error
     setTimeout(() => this.menuRef.nativeElement.style.top = '', 1);
+    this.addShortcut(['ArrowUp', 'ArrowDown', 'Enter', 'Escape'], event => this.handleShortcut(event));
+  }
+
+  onHidden() {
+    this.clearShortcuts();
   }
 
   onDisabledChange(isDisabled: boolean): void {
-    this.inputField.disabled = isDisabled;
+    const input = this.inputField.nativeElement as HTMLInputElement;
+    input.disabled = isDisabled;
   }
 
   /**
@@ -185,7 +177,6 @@ export abstract class BaseAutocompleteFieldComponent<T, A>
     if (this.inputFieldControl.value !== newValue) {
       this.inputFieldControl.setValue(newValue);
     }
-    this.focusInput = selected == null;
   }
 
   protected getDisabledValue(): string {
@@ -200,9 +191,57 @@ export abstract class BaseAutocompleteFieldComponent<T, A>
   }
 
   open() {
-    if (this.inputHasFocus) {
-      // Only open the dropdown if the input still has focus
-      this.dropdown.show();
+    this.dropdown.show();
+  }
+
+  ngClassFor(option: A, index: number): any {
+    const result = {
+      'mt-1': index > 0,
+      selected: this.value === this.toValue(option)
+    };
+    result[`autocomplete-option-${index}`] = true;
+    return result;
+  }
+
+  protected onEscapePressed() {
+    this.select(null);
+  }
+
+  private handleShortcut(event: KeyboardEvent) {
+    if (event.key === 'Escape') {
+      this.onEscapePressed();
+      return;
+    }
+    const element = this.menuRef.nativeElement as HTMLElement;
+    const active = document.activeElement as HTMLElement;
+    let index = -1;
+    active.classList.forEach(c => {
+      const match = c.match(/autocomplete\-option\-(\d+)/);
+      if (match) {
+        index = Number.parseInt(match[1], 10);
+      }
+    });
+
+    const options = this.options$.value;
+    switch (event.key) {
+      case 'ArrowUp':
+        index--;
+        break;
+      case 'ArrowDown':
+        index++;
+        break;
+      case 'Enter':
+        if (index >= 0) {
+          this.select(options[index]);
+        }
+        return;
+    }
+
+    index = Math.min(Math.max(0, index), options.length - 1);
+    const toFocus = element.getElementsByClassName(`autocomplete-option-${index}`);
+    if (toFocus.length > 0) {
+      const focusEl = toFocus.item(0) as HTMLElement;
+      focusEl.focus();
     }
   }
 }
