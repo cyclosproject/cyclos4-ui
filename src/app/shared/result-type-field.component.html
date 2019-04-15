@@ -1,5 +1,8 @@
 <div class="btn-group" btnRadioGroup [formControl]="formControl">
-  <label class="btn btn-light btn-icon m-0" *ngFor="let resultType of allowedResultTypes"
+  <label #button class="btn btn-light btn-icon m-0"
+    [ngClass]="'resultType-' + resultType"
+    *ngFor="let resultType of allowedResultTypes"
+    (focus)="addShortcuts(resultType)" (blur)="removeShortcuts(resultType)"
     [btnRadio]="resultType" tabindex="0" role="button">
     <icon size="1.4rem" [icon]="icon(resultType)"></icon>
   </label>

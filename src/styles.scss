@@ -814,6 +814,9 @@ h3 {
   padding: 0.4rem 0.4rem 0.4rem 0.6rem;
   width: 2.6rem;
   color: $button-icon-color;
+  &.active:focus, &:focus {
+    border: 1px solid darken($input-border-color, 20%) !important;
+  }
 }
 
 .input-group-icon icon {
