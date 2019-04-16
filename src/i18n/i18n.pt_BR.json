@@ -186,6 +186,7 @@
     "personal.password": "Senha",
     "personal.passwords": "Senhas",
     "personal.notifications": "Notificações",
+    "personal.settings": "Settings",
     "content": "Informação"
   },
   "auth": {
@@ -196,7 +197,8 @@
       "principal": "Usuário",
       "password": "Senha",
       "forgotPassword": "Esqueceu sua senha?",
-      "register": "Não é um usuário ainda? Registre-se aqui."
+      "register": "Não é um usuário ainda? Registre-se aqui.",
+      "switchTheme": "Switch theme"
     },
     "password": {
       "confirmationMessage": "Forneça seu {passwordType} para confirmar esta operação",
@@ -655,5 +657,11 @@
     "transfer": "Transferência",
     "fileUpload": "Envio de arquivo",
     "redirecting": "Você está sendo redirecionado..."
+  },
+  "setting": {
+    "title": "Settings",
+    "theme": "Theme",
+    "theme.light": "Light",
+    "theme.dark": "Dark"
   }
 }
