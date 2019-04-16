@@ -186,6 +186,7 @@
     "personal.password": "Wachtwoord",
     "personal.passwords": "Wachtwoorden",
     "personal.notifications": "Notifications",
+    "personal.settings": "Settings",
     "content": "Informatie"
   },
   "auth": {
@@ -196,7 +197,8 @@
       "principal": "Gebruiker",
       "password": "Wachtwoord",
       "forgotPassword": "Wachtwoord vergeten?",
-      "register": "Geen gebruiker? Registreer u dan hier."
+      "register": "Geen gebruiker? Registreer u dan hier.",
+      "switchTheme": "Switch theme"
     },
     "password": {
       "confirmationMessage": "Levering uw {passwordType} om deze handeling te bevestigen",
@@ -655,5 +657,11 @@
     "transfer": "Transfer",
     "fileUpload": "File upload",
     "redirecting": "You are being redirected..."
+  },
+  "setting": {
+    "title": "Settings",
+    "theme": "Theme",
+    "theme.light": "Light",
+    "theme.dark": "Dark"
   }
 }
