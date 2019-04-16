@@ -15,7 +15,7 @@ $xl-padding: 1.9rem;
 nav {
   background-color: $menu-bar-bg;
   padding: 0 0.7rem;
-  border-bottom: 1px solid $section-border-color;
+  border-bottom: 1px solid $menu-bar-line-color;
   flex-grow: 1;
   display: flex;
   align-items: stretch;
@@ -65,6 +65,7 @@ nav.full-width {
     }
   }
   a:hover {
+    color: $menu-bar-hover-color;
     background-color: $menu-bar-hover-bg;
     text-decoration: none;
   }
@@ -117,5 +118,34 @@ nav.full-width {
 @media print {
   :host {
     display: none;
+  }
+}
+
+// Colors for dark scheme
+body.dark :host ::ng-deep {
+  nav {
+    background-color: $menu-bar-bg-dark;
+    border-color: $menu-bar-line-color-dark;
+  }
+  menus {
+    a {
+      color: $menu-bar-color-dark;
+    }
+    a:hover {
+      color: $menu-bar-hover-color-dark;
+      background-color: $menu-bar-hover-bg-dark;
+    }
+    a.active {
+      color: $menu-bar-active-color-dark;
+      icon {
+        color: $menu-bar-active-icon-color-dark;
+      }
+    }
+    a:not(.active) {
+      color: $menu-bar-inactive-color-dark;
+      icon {
+        color: $menu-bar-inactive-icon-color-dark;
+      }
+    }
   }
 }

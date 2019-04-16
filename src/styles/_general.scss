@@ -1,0 +1,160 @@
+@import 'src/definitions';
+
+:root {
+  --font-import-url: "#{$font-import-url}";
+  --theme-color: #{$theme-color};
+  // Will be updated dynamically
+  --window-width: "1000px";
+}
+
+.max-container-widths {
+  @include make-container-max-widths();
+}
+
+b, strong {
+  font-weight: $font-weight-bold;
+}
+
+.no-wrap {
+  white-space: nowrap;
+}
+
+.window-width {
+  width: var(--window-width);
+}
+
+.no-gutters {
+  margin-right: 0;
+  margin-left: 0;
+
+  > .col,
+  > [class*="col-"] {
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  > .col-form-label {
+    padding-right: 0.5rem;
+  }
+}
+
+.cursor-pointer {
+  cursor: pointer !important;
+}
+
+.cursor-move {
+  cursor: move !important;
+}
+
+.break-nl {
+  white-space: pre-wrap;
+}
+
+
+hr {
+  width: 100%;
+  display: block;
+}
+
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: $backdrop-bg;
+  z-index: $zindex-modal-backdrop;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+/* Margins / paddings according to the layout spacer */
+.my-ls, .mt-ls {
+  margin-top: $layout-spacer-xxs !important;
+}
+.my-ls, .mb-ls {
+  margin-bottom: $layout-spacer-xxs !important;
+}
+.mx-ls, .ml-ls {
+  margin-left: $layout-spacer-xxs !important;
+}
+.mx-ls, .mr-ls {
+  margin-right: $layout-spacer-xxs !important;
+}
+.py-ls, .pt-ls {
+  padding-top: $layout-spacer-xxs !important;
+}
+.py-ls, .pb-ls {
+  padding-bottom: $layout-spacer-xxs !important;
+}
+.px-ls, .pl-ls {
+  padding-left: $layout-spacer-xxs !important;
+}
+.px-ls, .pr-ls {
+  padding-right: $layout-spacer-xxs !important;
+}
+@include media-breakpoint-up(xs) {
+  .my-ls, .mt-ls {
+    margin-top: $layout-spacer-xs !important;
+  }
+  .my-ls, .mb-ls {
+    margin-bottom: $layout-spacer-xs !important;
+  }
+  .mx-ls, .ml-ls {
+    margin-left: $layout-spacer-xs !important;
+  }
+  .mx-ls, .mr-ls {
+    margin-right: $layout-spacer-xs !important;
+  }
+  .py-ls, .pt-ls {
+    padding-top: $layout-spacer-xs !important;
+  }
+  .py-ls, .pb-ls {
+    padding-bottom: $layout-spacer-xs !important;
+  }
+  .px-ls, .pl-ls {
+    padding-left: $layout-spacer-xs !important;
+  }
+  .px-ls, .pr-ls {
+    padding-right: $layout-spacer-xs !important;
+  }
+}
+@include media-breakpoint-up(sm) {
+  .my-ls, .mt-ls {
+    margin-top: $layout-spacer !important;
+  }
+  .my-ls, .mb-ls {
+    margin-bottom: $layout-spacer !important;
+  }
+  .mx-ls, .ml-ls {
+    margin-left: $layout-spacer !important;
+  }
+  .mx-ls, .mr-ls {
+    margin-right: $layout-spacer !important;
+  }
+  .py-ls, .pt-ls {
+    padding-top: $layout-spacer !important;
+  }
+  .py-ls, .pb-ls {
+    padding-bottom: $layout-spacer !important;
+  }
+  .px-ls, .pl-ls {
+    padding-left: $layout-spacer !important;
+  }
+  .px-ls, .pr-ls {
+    padding-right: $layout-spacer !important;
+  }
+}
+
+@media print {
+  body {
+    background-color: transparent !important;
+    padding-top: 1cm;
+  }
+  .avatar-container.round-borders {
+    border-radius: 0 !important;
+  }
+  hr {
+    border-color: black !important;
+  }
+}

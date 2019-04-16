@@ -78,3 +78,34 @@ $spacing: 0.5rem;
 .lg :host ::ng-deep .quick-access-container {
   padding: 1.2rem 0.5rem 1.7rem 0.3rem;
 }
+
+
+body.dark :host ::ng-deep {
+  .quick-access-icon {
+    color: $quick-access-icon-color-dark;
+  }
+
+  .quick-access-text {
+    color: $quick-access-color-dark;
+  }
+
+  .quick-access-item:hover {
+    .quick-access-text {
+      color: $quick-access-hover-color-dark;
+    }
+    .quick-access-icon {
+      color: $quick-access-hover-icon-color-dark;
+    }
+  }
+
+  @include media-breakpoint-up(xs) {
+    .quick-access-icon {
+      background-color: $quick-access-bg-dark;
+    }
+    .quick-access-item:hover {
+      .quick-access-icon {
+        background-color: $quick-access-hover-bg-dark;
+      }
+    }
+  }
+}

@@ -1,0 +1,54 @@
+@import 'src/definitions';
+
+a {
+  color: $link-color;
+  cursor: pointer;
+  a:hover {
+    color: $link-hover-color;
+  }
+}
+a.plain, maybe-link.plain a,
+a.undecorated, maybe-link.undecorated a {
+  color: $body-color;
+  &:hover {
+    text-decoration: none;
+  }
+}
+a.plain, maybe-link.plain a {
+  cursor: default;
+}
+
+.link-with-icon {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  icon {
+    margin-right: 0.5rem;
+  }
+}
+
+body.dark {
+  a {
+    color: $link-color-dark;
+    a:hover {
+      color: $link-hover-color-dark;
+    }
+  }
+  a.plain, maybe-link.plain a,
+  a.undecorated, maybe-link.undecorated a {
+    color: $body-color-dark;
+  }
+}
+
+@media print {
+  a, a:hover, h1, h2, h3, td, th, tr, table, .positive, .negative {
+    color: $body-color !important;
+    border-color: black !important;
+  }
+  a {
+    text-decoration: none !important;
+  }
+  .link-with-icon icon, td.avatar, th.avatar, td.actions, th.actions, pagination {
+    display: none;
+  }
+}

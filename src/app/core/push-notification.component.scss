@@ -8,6 +8,9 @@
 :host ::ng-deep a {
   color: $body-color;
 }
+body.dark :host ::ng-deep a {
+  color: $body-color-dark;
+}
 
 .subject {
   font-weight: $font-weight-bold;

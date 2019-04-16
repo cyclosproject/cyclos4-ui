@@ -1,0 +1,66 @@
+@import 'src/definitions';
+
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  display: table-cell;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: 'liga';
+}
+
+.top-icon {
+  height: $top-icon-size-xxs !important;
+  width: $top-icon-size-xxs !important;
+  font-size: $top-icon-size-xxs !important;
+  line-height: $top-icon-size-xxs !important;
+}
+.top-icon-faded {
+  opacity: 0.7 !important;
+}
+
+@include media-breakpoint-up(sm) {
+  .top-icon {
+    height: $top-icon-size-xs !important;
+    width: $top-icon-size-xs !important;
+    font-size: $top-icon-size-xs !important;
+    line-height: $top-icon-size-xs !important;
+  }
+}
+@include media-breakpoint-up(sm) {
+  .top-icon {
+    height: $top-icon-size !important;
+    width: $top-icon-size !important;
+    font-size: $top-icon-size !important;
+    line-height: $top-icon-size !important;
+    opacity: 0.9;
+  }
+}
+
+.spinner {
+  padding: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+
+  img {
+    width: 64px;
+    height: 64px;
+  }
+}

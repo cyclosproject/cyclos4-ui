@@ -1,0 +1,34 @@
+@import 'src/definitions';
+
+body.lt-md, body.full-width, body.full-width.md {
+  background-color: $card-bg;
+  overflow-x: hidden;
+}
+body.gt-sm {
+  padding-bottom: 1rem;
+}
+body.full-width {
+  padding-bottom: 0;
+}
+body.full-width .main-container {
+  margin: 0;
+}
+body, top-bar nav, menu-bar nav, div, a {
+  transition:
+    background-color ease-in-out 0.4s,
+    color ease-in-out 0.4s,
+    border-color ease-in-out 0.4s;
+}
+body.backdrop-visible {
+  overflow: hidden;
+  position: fixed;
+}
+
+body.dark {
+  background-color: $body-bg-dark;
+  color: $body-color-dark;
+}
+
+body.lt-sm.dark {
+  background-color: $card-bg-dark;
+}

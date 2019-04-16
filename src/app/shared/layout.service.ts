@@ -9,6 +9,8 @@ import { isEqual } from 'lodash';
 import { FormatService } from 'app/core/format.service';
 import { Title } from '@angular/platform-browser';
 
+const DarkTheme = 'darkTheme';
+
 /**
  * The available media query breakpoints.
  * Attention! If modified, adjust the `$grid-breakpoints` variable in `_definieions.scss` as well.
@@ -104,6 +106,10 @@ export class LayoutService {
     private observer: BreakpointObserver,
     private format: FormatService,
     private title: Title) {
+
+    // Initialize the theme
+    this.darkTheme = this.darkTheme;
+
     this.breakpointObservers = new Map();
     // Set the initial state of the active breakpoints, and initialize the observers
     const initialBreakpoints = new Set<Breakpoint>();
@@ -387,6 +393,19 @@ export class LayoutService {
     if (this.escHandler) {
       document.body.removeEventListener('keydown', this.escHandler, false);
       this.escHandler = null;
+    }
+  }
+
+  get darkTheme(): boolean {
+    return String(localStorage.getItem(DarkTheme)) === 'true';
+  }
+
+  set darkTheme(dark: boolean) {
+    localStorage.setItem(DarkTheme, String(dark));
+    if (dark) {
+      document.body.classList.add('dark');
+    } else {
+      document.body.classList.remove('dark');
     }
   }
 

@@ -4,6 +4,7 @@ import { LoggedUserGuard } from 'app/logged-user-guard';
 import { ManagePasswordsComponent } from 'app/personal/passwords/manage-passwords.component';
 import { SearchNotificationsComponent } from 'app/personal/notifications/search-notifications.component';
 import { Menu } from 'app/shared/menu';
+import { ManageSettingsComponent } from 'app/personal/settings/manage-settings.component';
 
 const personalRoutes: Routes = [
   {
@@ -23,6 +24,14 @@ const personalRoutes: Routes = [
         canActivate: [LoggedUserGuard],
         data: {
           menu: Menu.PASSWORDS
+        }
+      },
+      {
+        path: 'settings',
+        component: ManageSettingsComponent,
+        canActivate: [LoggedUserGuard],
+        data: {
+          menu: Menu.SETTINGS
         }
       }
     ]

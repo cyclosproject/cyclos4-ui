@@ -2,7 +2,7 @@
   <ng-container *ngIf="(data$ | async) && (loaded$ | async); else loading">
     <page-content mode="filters" [heading]="i18n.user.title.search"
       [headingActions]="headingActions$ | async">
-      <form [formGroup]="form" class="filters-form border-bottom">
+      <form [formGroup]="form" class="filters-form filters-form-separator">
         <div class="row">
           <div class="col-12 col-md-6">
             <input-field labelPosition="side" formControlName="keywords"

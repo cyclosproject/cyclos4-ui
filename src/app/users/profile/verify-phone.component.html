@@ -22,10 +22,11 @@
 <div class="mt-3 pb-1">{{ message$ | async }}</div>
 
 <actions ngClass="mt-4">
-  <button class="btn btn-primary" [disabled]="requesting$ | async" (click)="verify()">
+  <button class="btn btn-primary" [disabled]="requesting$ | async"
+    (click)="verify()">
     {{ i18n.general.confirm }}
   </button>
-  <button class="btn btn-light" (click)="modalRef.hide()">
+  <button class="btn btn-outline-primary" (click)="modalRef.hide()">
     {{ i18n.general.cancel }}
   </button>
 </actions>

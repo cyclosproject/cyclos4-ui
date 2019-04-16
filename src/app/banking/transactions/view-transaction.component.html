@@ -49,8 +49,7 @@
   <custom-field-value *ngFor="let value of transaction.customValues"
     [fieldValue]="value">
   </custom-field-value>
-  <label-value *ngIf="transaction.channel"
-    [label]="i18n.transaction.channel">
+  <label-value *ngIf="transaction.channel" [label]="i18n.transaction.channel">
     {{ transaction.channel.name }}
   </label-value>
 
@@ -70,8 +69,8 @@
   </label-value>
 
   <label-value *ngIf="lastAuthComment"
-    [label]="i18n.transaction.authorizationComments"
-    [value]="lastAuthComment" valueFormat="break">
+    [label]="i18n.transaction.authorizationComments" [value]="lastAuthComment"
+    valueFormat="break">
   </label-value>
 
   <label-value *ngIf="transaction.description"
@@ -116,14 +115,12 @@
           <td *ngIf="hasInstallmentActions" class="actions">
             <button *ngIf="installment.canProcess"
               [tooltip]="i18n.transaction.processInstallment"
-              class="btn btn-light btn-icon"
-              (click)="processInstallment(installment)">
+              class="btn btn-icon" (click)="processInstallment(installment)">
               <icon icon="play_circle_outline"></icon>
             </button>
             <button *ngIf="installment.canSettle"
               [tooltip]="i18n.transaction.settleInstallment"
-              class="btn btn-light btn-icon"
-              (click)="settleInstallment(installment)">
+              class="btn btn-icon" (click)="settleInstallment(installment)">
               <icon icon="thumb_up"></icon>
             </button>
           </td>

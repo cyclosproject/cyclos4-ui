@@ -245,7 +245,7 @@ The main file to define these is `src/_definitions.scss`. The most visible chang
 
 It is possible to change the font, by replacing the `$font-import-url` variable by an URL (for example, from Google Fonts) and then the `$font-family-sans-serif` to actually set the font. The default font is Roboto, Android's default font. It is widely used, but lacks support to some character sets. If you use Cyclos in a language that has glyphs not covered by Roboto, you can use, for example, [Noto Sans](https://fonts.google.com/specimen/Noto+Sans). Just take care that the default font weight for bolds used in the frontend is 500, which is not available in Noto Sans. If switching, also change the `$font-weight-bold` to `700`.
 
-You can also create custom styles for the application. To do so, just edit the `src/custom.scss` file. This is a SASS file, which is a superset of the standard CSS.
+You can also create custom styles for the application. To do so, just edit the `src/styles/_custom.scss` file. This is a SASS file, which is a superset of the standard CSS. Note that as styles defined in componenets generally have a greater priority, it might be needed to use the `!important` modifier for the custom definitions to be used.
 
 ### Layout configuration
 

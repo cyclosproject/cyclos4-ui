@@ -23,13 +23,12 @@ export class PageContentComponent implements OnInit, OnChanges {
   @Input() heading: string;
   @Input() headingActions: HeadingAction[];
   @Input() layout: 'normal' | 'centered' = 'normal';
-  @HostBinding('attr.mode') @Input()
-  mode: CardMode = 'normal';
+  @HostBinding('attr.mode') @Input() mode: CardMode = 'normal';
 
   shortcutsSub: Subscription;
 
   private _last: boolean | string = false;
-  @Input() get last(): boolean | string {
+  @HostBinding('attr.last') @Input() get last(): boolean | string {
     return this._last;
   }
   set last(last: boolean | string) {

@@ -27,6 +27,9 @@ td {
   margin-bottom: 0.3rem;
   margin-top: 1rem;
 }
+body.dark :host ::ng-deep .last-transfers {
+  color: $body-color-dark;
+}
 
 @include media-breakpoint-up(lg) {
   .last-transfers {

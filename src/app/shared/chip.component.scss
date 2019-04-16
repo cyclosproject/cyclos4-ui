@@ -6,6 +6,7 @@
 .chip {
   border: $input-border-width solid $input-border-color;
   border-radius: 1rem;
+  color: $input-color;
   background-color: $input-bg;
   padding: 0.3rem;
   padding-right: 0.6rem;
@@ -22,6 +23,17 @@ a:hover {
 }
 :host.closeable ::ng-deep .chip {
   padding-right: 0.1rem;
+}
+
+body.dark :host ::ng-deep {
+  .chip {
+    border-color: $input-border-color-dark;
+    color: $input-color-dark;
+    background-color: $input-bg-dark;
+  }
+  a {
+    color: $input-color-dark;
+  }
 }
 
 @media print {

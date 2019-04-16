@@ -23,3 +23,8 @@
     width: auto;
   }
 }
+
+body.dark :host ::ng-deep {
+  background-color: $snack-bar-bg-dark;
+  color: $snack-bar-color-dark;
+}

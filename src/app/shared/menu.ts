@@ -94,6 +94,7 @@ export module Menu {
   export const CONTACT_PROFILE = new Menu(RootMenu.PERSONAL, 'CONTACTS_PROFILE');
   export const PASSWORDS = new Menu(RootMenu.PERSONAL, 'PASSWORDS');
   export const NOTIFICATIONS = new Menu(RootMenu.PERSONAL, 'NOTIFICATIONS');
+  export const SETTINGS = new Menu(RootMenu.PERSONAL, 'SETTINGS');
 
   // Custom operations (one per root menu in owner, also one per operation container)
   export const RUN_OPERATION_BANKING = new Menu(RootMenu.BANKING, 'RUN_OPERATION_BANKING');

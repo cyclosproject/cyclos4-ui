@@ -49,6 +49,7 @@ a.nav-item:not(.active) {
     color: $side-menu-inactive-icon-color;
   }
   &:hover {
+    color: $side-menu-inactive-hover-color;
     background-color: $side-menu-inactive-hover-bg;
   }
 }
@@ -60,5 +61,42 @@ a.nav-item.active {
   }
   icon {
     color: $side-menu-active-icon-color;
+  }
+}
+
+// Colors for dark scheme
+body.dark :host ::ng-deep {
+  .side-menu-title {
+    border-color: $side-menu-border-color-dark;
+    background-color: $side-menu-title-bg-dark;
+    color: $side-menu-title-color-dark;
+  }
+  .card {
+    background-color: $side-menu-bg-dark;
+    border-color: $menu-bar-line-color-dark;
+    border-color: $side-menu-border-color-dark;
+  }
+  a.nav-item {
+    color: $side-menu-inactive-color-dark;
+    border-color: $side-menu-border-color-dark;
+  }
+  a.nav-item:not(.active) {
+    icon {
+      color: $side-menu-inactive-icon-color-dark;
+    }
+    &:hover {
+      color: $side-menu-inactive-hover-color-dark;
+      background-color: $side-menu-inactive-hover-bg-dark;
+    }
+  }
+  a.nav-item.active {
+    color: $side-menu-active-color-dark;
+    background-color: $side-menu-active-bg-dark;
+    &:hover {
+      background-color: $side-menu-active-hover-bg-dark;
+    }
+    icon {
+      color: $side-menu-active-icon-color-dark;
+    }
   }
 }

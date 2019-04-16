@@ -1,0 +1,22 @@
+@import 'src/definitions';
+
+.positive, .negative, .totalAmount {
+  white-space: nowrap;
+}
+.positive {
+  color: $positive-color !important;
+}
+.negative {
+  color: $negative-color !important;
+}
+.totalAmount {
+  color: $total-amount-color !important;
+  font-size: $total-amount-size;
+  font-weight: 400;
+  transform: translateY(-0.5rem);
+}
+.promo-price {
+  color: $faded-color;
+  text-decoration: line-through;
+  margin-right: 0.5rem;
+}

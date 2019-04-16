@@ -14,6 +14,7 @@ import { Subscription } from 'rxjs';
   // tslint:disable-next-line:component-selector
   selector: 'paginator',
   templateUrl: 'paginator.component.html',
+  styleUrls: ['paginator.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PaginatorComponent<T> implements OnDestroy {

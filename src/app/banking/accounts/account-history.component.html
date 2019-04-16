@@ -3,7 +3,7 @@
     <page-content mode="filters" [heading]="title"
       [headingActions]="headingActions$ | async">
       <form *ngIf="moreFilters$ | async" [formGroup]="form"
-        class="filters-form border-bottom">
+        class="filters-form filters-form-separator">
         <div class="row">
           <div *ngIf="data.preselectedPeriods?.length > 1"
             class="col-12 col-md-6">
@@ -30,16 +30,16 @@
             *ngIf="(form.value || (form.valueChanges | async))?.preselectedPeriod?.begin == null"
             class="col-12 col-md-6">
             <date-field labelPosition="side" formControlName="periodBegin"
-              [label]="i18n.general.beginDate" minDate="past5"
-              maxDate="today" fieldSize="full">
+              [label]="i18n.general.beginDate" minDate="past5" maxDate="today"
+              fieldSize="full">
             </date-field>
           </div>
           <div
             *ngIf="(form.value || (form.valueChanges | async))?.preselectedPeriod?.end == null"
             class="col-12 col-md-6">
             <date-field labelPosition="side" formControlName="periodEnd"
-              [label]="i18n.general.endDate" minDate="past5"
-              maxDate="today" fieldSize="full">
+              [label]="i18n.general.endDate" minDate="past5" maxDate="today"
+              fieldSize="full">
             </date-field>
           </div>
           <div class="col-12 col-md-6">
@@ -177,7 +177,7 @@
             </tr>
             <tr *ngIf="layout.xxs$ | async"
               (click)="router.navigate(path(row))">
-              <td class="border-bottom-1 pt-0" colspan="3">
+              <td class="pt-0" colspan="3">
                 <a [routerLink]="path(row)">
                   <div class="cell-text cell-main">{{ subjectName(row) }}
                   </div>

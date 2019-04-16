@@ -6,8 +6,8 @@
   </div>
   <ng-template #contactLinks>
     <a *ngFor="let c of contacts$ | async; let i = index;"
-      class="d-block mb-1 text-body" [ngClass]="'contact-link-' + i" href="#"
-      (click)="emit(c.contact, $event)">
+      class="d-block mb-1 undecorated" [ngClass]="'contact-link-' + i"
+      href="#" (click)="emit(c.contact, $event)">
       {{ c.contact.display }}
     </a>
   </ng-template>

@@ -1,0 +1,75 @@
+@import 'src/definitions';
+
+.dropdown-menu {
+  min-width: 100%;
+  max-height: 16rem;
+  overflow-x: hidden;
+  overflow-y: auto;
+  transform: none !important;
+
+  .custom-checkbox {
+    margin-left: 0.6rem;
+  }
+}
+
+.dropdown-toggle::after {
+  vertical-align: 0.15em;
+}
+
+.modal-dialog.notification {
+  .modal-content {
+    border: none !important;
+  }
+  .alert {
+    border-width: 2px;
+  }
+}
+
+.modal-dialog.modal-form {
+  h1 {
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    padding-bottom: 1rem;
+    margin: 0 -1rem 1rem -1rem;
+  }
+  .modal-content {
+    padding: 1rem;
+  }
+}
+
+// This is actually used to show generated password values
+notification data {
+  font-weight: $font-weight-bold;
+  letter-spacing: 0.2rem;
+}
+
+// Force navigation on lightbox to be always visible
+.lb-prev, .lb-next {
+  opacity: 0.7 !important;
+}
+
+body.dark {
+  .modal-content {
+    color: $modal-content-color-dark;
+    background-color: $modal-content-bg-dark;
+    border: $modal-content-border-color-dark;
+  }
+
+  .dropdown-menu {
+    color: $dropdown-color-dark;
+    background-color: $dropdown-bg-dark;
+    border-color: $dropdown-border-color-dark;
+  }
+
+  .dropdown-item {
+    color: $dropdown-link-color-dark;
+    @include hover-focus {
+      color: $dropdown-link-hover-color-dark;
+      @include gradient-bg($dropdown-link-hover-bg-dark);
+    }
+    &.active, &:active {
+      color: $dropdown-link-active-color-dark;
+      @include gradient-bg($dropdown-link-active-bg-dark);
+    }
+  }
+}

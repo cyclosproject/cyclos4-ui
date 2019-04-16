@@ -105,7 +105,7 @@
 }
 
 .mode-transparent {
-  background: transparent;
+  background: transparent !important;
   border: none;
   box-shadow: none;
   .page-content-body {
@@ -120,9 +120,12 @@
   }
 }
 
-.lt-md :host ::ng-deep .page-content {
-  border: none;
-  box-shadow: none;
+.lt-md :host ::ng-deep {
+  .page-content {
+    border: none;
+    box-shadow: none;
+    background-color: $card-bg;
+  }
 }
 
 .page-content-body {
@@ -219,7 +222,9 @@
 
   &:focus, &:active {
     outline: 0;
-    border: 1px solid darken($title-button-border-color, 20%);
+    border-color: $title-button-active-border-color;
+    color: $title-button-active-color;
+    background-color: $title-button-active-bg;
     box-shadow: none;
   }
 }
@@ -286,8 +291,7 @@
     margin: 0 0.4rem 0 0;
     color: $title-button-icon-color;
   }
-}
-.heading-action-option {
+
   &:hover, &:focus {
     background-color: darken($title-button-bg, 5%);
     text-decoration: none;
@@ -328,9 +332,6 @@
 }
 
 @include media-breakpoint-up(md) {
-  .heading-actions-menu {
-    transform: translate(1px, -2px) !important;
-  }
   .page-content {
     @include make-container-max-widths();
   }
@@ -373,4 +374,51 @@
   left: 0 !important;
   top: calc(#{$top-bar-height-xxs + $title-height-xxs} - 1px) !important;
   width: 100% !important;
+}
+
+// Colors for dark scheme
+body.dark :host ::ng-deep {
+  .content-title {
+    border-color: $section-border-color-dark;
+    background-color: $title-bg-dark;
+    .title-text {
+      color: $title-color-dark;
+    }
+  }
+  .back-button {
+    color: $button-icon-color-dark;
+  }
+
+  .heading-action {
+    border-color: $title-button-border-color-dark;
+    background-color: $title-button-bg-dark;
+    color: $title-button-color-dark;
+    &:focus, &:active {
+      border-color: $title-button-active-border-color-dark;
+      color: $title-button-active-color-dark;
+      background-color: $title-button-active-bg-dark;
+    }
+  }
+
+  .heading-action-option {
+    background-color: $title-button-bg-dark;
+    color: $title-button-color-dark;
+    icon {
+      color: $title-button-icon-color-dark;
+    }
+    &:hover, &:focus {
+      background-color: darken($title-button-bg-dark, 5%);
+    }
+  }
+
+  .heading-actions-menu {
+    background-color: $title-button-bg-dark;
+    border-color: $title-button-border-color-dark;
+  }
+}
+
+body.dark.lt-md :host ::ng-deep {
+  .page-content {
+    background-color: $card-bg-dark;
+  }
 }

@@ -4,6 +4,7 @@ import { ChangePasswordDialogComponent } from 'app/personal/passwords/change-pas
 import { ManagePasswordsComponent } from 'app/personal/passwords/manage-passwords.component';
 import { PersonalRoutingModule } from 'app/personal/personal-routing.module';
 import { SharedModule } from 'app/shared/shared.module';
+import { ManageSettingsComponent } from 'app/personal/settings/manage-settings.component';
 
 
 /**
@@ -13,7 +14,8 @@ import { SharedModule } from 'app/shared/shared.module';
   declarations: [
     SearchNotificationsComponent,
     ManagePasswordsComponent,
-    ChangePasswordDialogComponent
+    ChangePasswordDialogComponent,
+    ManageSettingsComponent
   ],
   imports: [
     PersonalRoutingModule,

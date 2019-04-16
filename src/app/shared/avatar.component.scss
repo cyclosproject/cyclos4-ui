@@ -57,3 +57,16 @@
 .additional .avatar-container {
   border: 2px solid $card-bg;
 }
+
+:host.management icon {
+  color: $management-icon-color;
+}
+
+body.dark {
+  :host.card-img-top {
+    border-color: $card-border-color-dark;
+  }
+  :host.management icon {
+    color: $management-icon-color-dark;
+  }
+}

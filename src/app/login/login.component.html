@@ -1,9 +1,13 @@
 <page-layout [ready]="data$ | async" size="small" hideMenu>
-  <page-content *ngIf="data" [layout]="(layout.ltmd$ | async) ? 'normal' : 'centered'"
-    mode="tight" [heading]="i18n.auth.login.title" [ngClass]="{'with-left-area': layout.leftAreaVisible$ | async}">
+  <page-content *ngIf="data"
+    [layout]="(layout.ltmd$ | async) ? 'normal' : 'centered'" mode="tight"
+    last [heading]="i18n.auth.login.title"
+    [ngClass]="{'with-left-area': layout.leftAreaVisible$ | async}">
     <form [formGroup]="form" (submit)="$event.preventDefault()">
-      <div class="pre-login-text" *ngIf="loggedOut || (layout.gtxxs$ | async)">
-        <div *ngIf="loggedOut; else regularMessage" [innerHTML]="i18n.auth.login.disconnected | trust">
+      <div class="pre-login-text"
+        *ngIf="loggedOut || (layout.gtxxs$ | async)">
+        <div *ngIf="loggedOut; else regularMessage"
+          [innerHTML]="i18n.auth.login.disconnected | trust">
         </div>
         <ng-template #regularMessage>
           {{ i18n.auth.login.message }}
@@ -26,12 +30,15 @@
         [passwordInput]="data?.loginPasswordInput" (enter)="doLogin()"
         [placeholder]="i18n.auth.login.password"></password-input>
 
-      <button type="button" class="btn btn-primary login-margin-top login-margin-bottom px-5"
-        [disabled]="requesting$ | async" (click)="doLogin();$event.preventDefault();">
+      <button type="button"
+        class="btn btn-primary login-margin-top login-margin-bottom px-5"
+        [disabled]="requesting$ | async"
+        (click)="doLogin();$event.preventDefault();">
         {{ i18n.general.submit }}
       </button>
 
-      <a *ngIf="forgotPasswordEnabled" class="d-block login-margin-top login-margin-bottom"
+      <a *ngIf="forgotPasswordEnabled"
+        class="d-block login-margin-top login-margin-bottom"
         routerLink="/forgot-password">
         {{ i18n.auth.login.forgotPassword }}
       </a>
@@ -39,6 +46,11 @@
       <a *ngIf="registrationEnabled" class="d-block login-margin-top"
         routerLink="/users/registration">
         {{ i18n.auth.login.register }}
+      </a>
+
+      <a class="d-block login-margin-top" href="#"
+        (click)="switchTheme(); $event.preventDefault(); $event.stopPropagation();">
+        {{ i18n.auth.login.switchTheme }}
       </a>
     </form>
   </page-content>

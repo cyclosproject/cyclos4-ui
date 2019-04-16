@@ -1,0 +1,101 @@
+@import 'src/definitions';
+
+h1, h2, h3 {
+  font-weight: $font-weight-normal;
+  border-color: $section-border-color;
+  position: relative;
+}
+h1, h2, h3, hr {
+  margin-left: -$layout-spacer-xxs;
+  margin-right: -$layout-spacer-xxs;
+  padding-left: $layout-spacer-xxs;
+  padding-right: $layout-spacer-xxs;
+}
+.section-title-action {
+  position: absolute;
+  right: $layout-spacer-xxs;
+  top: 0.75rem;
+}
+@include media-breakpoint-up(xs) {
+  h1, h2, h3, hr {
+    margin-left: -$layout-spacer-xs;
+    margin-right: -$layout-spacer-xs;
+    padding-left: $layout-spacer-xs;
+    padding-right: $layout-spacer-xs;
+  }
+  .section-title-action {
+    right: $layout-spacer-xs;
+  }
+}
+@include media-breakpoint-up(sm) {
+  h1, h2, h3, hr {
+    margin-left: -$layout-spacer;
+    margin-right: -$layout-spacer;
+    padding-left: $layout-spacer;
+    padding-right: $layout-spacer;
+  }
+  .section-title-action {
+    right: $layout-spacer;
+  }
+}
+h1, h2 {
+  margin-bottom: $layout-spacer-xxs;
+}
+h2 {
+  border-top-width: 1px;
+  border-top-style: solid;
+  padding-top: $layout-spacer-xxs;
+}
+@include media-breakpoint-up(xs) {
+  h1, h2 {
+    margin-bottom: $layout-spacer-xs;
+  }
+  h2 {
+    padding-top: $layout-spacer;
+  }
+}
+@include media-breakpoint-up(sm) {
+  h1, h2 {
+    margin-bottom: $layout-spacer;
+  }
+}
+.modal-content {
+  h2 {
+    border-top: none;
+    padding-top: 0;
+  }
+}
+h2.border-0, h2.border-top-0, .custom-content-container h2 {
+  padding-top: 0;
+  border-top: none;
+}
+h1 {
+  font-size: 1.5em;
+  color: $h1-color;
+}
+h2 {
+  font-size: 1.3em;
+  color: $h2-color;
+}
+h3 {
+  font-size: 1.1em;
+  color: $h3-color;
+  margin-top: 0.5rem;
+  margin-bottom: 0.6rem;
+}
+
+
+body.dark {
+  h1, h2, h3 {
+    border-color: $section-border-color-dark;
+  }
+  h1 {
+    color: $h1-color-dark;
+  }
+  h2 {
+    color: $h2-color-dark;
+  }
+  h3 {
+    color: $h3-color-dark;
+  }
+}

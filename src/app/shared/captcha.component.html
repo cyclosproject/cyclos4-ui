@@ -6,7 +6,7 @@
     <input class="form-control" formControlName="response" [ngClass]="{
       'is-invalid': (form.get('response').statusChanges | async) === 'INVALID' && form.get('response').touched
     }">
-    <button class="btn btn-light btn-icon" (click)="newCaptcha()">
+    <button class="btn btn-icon" (click)="newCaptcha()">
       <icon icon="refresh"></icon>
     </button>
   </div>

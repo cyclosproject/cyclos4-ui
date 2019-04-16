@@ -2,7 +2,7 @@
   <ng-container *ngIf="loaded$ | async; else loading">
     <page-content mode="filters" [heading]="i18n.ad.title.search"
       [headingActions]="headingActions$ | async">
-      <form [formGroup]="form" class="filters-form border-bottom">
+      <form [formGroup]="form" class="filters-form filters-form-separator">
         <div class="row no-gutters">
           <div class="col-12 col-md-6">
             <input-field labelPosition="side" formControlName="keywords"
@@ -54,8 +54,8 @@
             [emptyOption]="i18n.general.orderByRelevance">
             <field-option value="date" [text]="i18n.ad.orderBy.date">
             </field-option>
-            <field-option value="priceAsc"
-              [text]="i18n.ad.orderBy.priceAsc"></field-option>
+            <field-option value="priceAsc" [text]="i18n.ad.orderBy.priceAsc">
+            </field-option>
             <field-option value="priceDesc"
               [text]="i18n.ad.orderBy.priceDesc"></field-option>
           </single-selection-field>

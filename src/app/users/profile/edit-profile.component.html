@@ -24,7 +24,7 @@
               (uploadDone)="onUploadDone($event)"></image-upload>
           </div>
           <div
-            class="col-12 col-sm-6 mt-3 mt-sm-0 d-flex justify-content-between justify-content-sm-end align-items-end"
+            class="col-12 col-sm-6 mt-3 mt-sm-0 d-flex w-100 justify-content-between justify-content-sm-end align-items-end"
             *ngIf="canEdit('image') && !(singleUpload.uploading$ | async)">
             <button class="btn btn-outline-primary"
               (click)="singleUpload.perform()">
@@ -241,7 +241,7 @@
         </boolean-field>
         <label-value *ngIf="data.phoneConfiguration.managePrivacy"
           [label]="i18n.field.privacy.name" kind="field">
-          <div class="d-flex justify-content-between">
+          <div class="d-flex w-100 justify-content-between">
             <field-privacy [control]="phone['form'].get('hidden')"
               justifyStart></field-privacy>
             <button *ngIf="(layout.gtxxs$ | async)"
@@ -291,7 +291,7 @@
         </address-form>
         <label-value *ngIf="data.addressConfiguration.managePrivacy"
           [label]="i18n.field.privacy.name" kind="field">
-          <div class="d-flex justify-content-between">
+          <div class="d-flex w-100 justify-content-between">
             <field-privacy [control]="address['form'].get('hidden')"
               justifyStart></field-privacy>
             <button *ngIf="!maps.enabled && (layout.gtxxs$ | async)"
@@ -391,7 +391,7 @@
         </ng-container>
         <label-value *ngIf="data.contactInfoConfiguration.managePrivacy"
           [label]="i18n.field.privacy.name" kind="field">
-          <div class="d-flex justify-content-between">
+          <div class="d-flex w-100 justify-content-between">
             <field-privacy [control]="contactInfo['form'].get('hidden')"
               justifyStart></field-privacy>
             <button *ngIf="(layout.gtxxs$ | async)"

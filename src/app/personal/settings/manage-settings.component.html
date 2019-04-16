@@ -1,0 +1,11 @@
+<page-layout [ready]="data$ | async">
+  <page-content [heading]="i18n.setting.title" last>
+    <radio-group-field [label]="i18n.setting.theme"
+      [formControl]="darkThemeControl">
+      <field-option [value]="false" [text]="i18n.setting.themeLight">
+      </field-option>
+      <field-option [value]="true" [text]="i18n.setting.themeDark">
+      </field-option>
+    </radio-group-field>
+  </page-content>
+</page-layout>

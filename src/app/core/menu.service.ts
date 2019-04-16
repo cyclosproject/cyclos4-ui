@@ -606,6 +606,7 @@ export class MenuService {
       if ((permissions.notifications || {}).enable) {
         add(Menu.NOTIFICATIONS, '/personal/notifications', 'notifications', this.i18n.menu.personalNotifications);
       }
+      add(Menu.SETTINGS, '/personal/settings', 'settings', this.i18n.menu.personalSettings);
       addOperations(RootMenu.PERSONAL);
       addContentPages(Menu.CONTENT_PAGE_PERSONAL);
 

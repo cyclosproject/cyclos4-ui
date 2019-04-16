@@ -18,8 +18,9 @@ import { AddressHelperService } from 'app/core/address-helper.service';
 })
 export class StaticMapComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  @HostBinding('style.display') classDisplay = 'block';
-  @HostBinding('style.flex-grow') classFlexGrow = '1';
+  @HostBinding('class.d-block') classBlock = true;
+  @HostBinding('class.flex-grow-1') classFlexGrow = true;
+  @HostBinding('class.w-100') classW100 = true;
 
   @Input() address: Address;
   @Input() width: number | 'auto' = 'auto';

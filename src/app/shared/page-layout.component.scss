@@ -15,6 +15,11 @@
 .content-area {
   flex: 1;
 }
+.lt-md :host ::ng-deep {
+  .content-area {
+    background-color: $card-bg;
+  }
+}
 
 // Size the content area to prevent content from breaking
 @include media-breakpoint-up(sm) {
@@ -68,6 +73,12 @@ body.full-width :host ::ng-deep .content-area {
   }
   .content-area-large {
     max-width: 786px !important;
+  }
+}
+
+body.dark.lt-md :host ::ng-deep {
+  .content-area {
+    background-color: $card-bg-dark;
   }
 }
 
