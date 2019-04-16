@@ -99,8 +99,4 @@ export class LoginComponent
   get loggedOut(): boolean {
     return this.loginState.reason === LoginReason.LOGGED_OUT;
   }
-
-  switchTheme() {
-    this.layout.darkTheme = !this.layout.darkTheme;
-  }
 }

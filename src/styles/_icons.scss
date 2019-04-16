@@ -64,3 +64,9 @@
     height: 64px;
   }
 }
+
+body.dark {
+  spinner, .spinner {
+    filter: invert(1);
+  }
+}

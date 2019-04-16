@@ -197,8 +197,7 @@
       "principal": "User",
       "password": "Password",
       "forgotPassword": "Forgot your password?",
-      "register": "Not a user yet? Register here.",
-      "switchTheme": "Switch theme"
+      "register": "Not a user yet? Register here."
     },
     "password": {
       "confirmationMessage": "Supply your {passwordType} to confirm this operation",
