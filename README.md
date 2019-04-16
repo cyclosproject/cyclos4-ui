@@ -185,16 +185,18 @@ These should be enabled on the web server. On Apache, the following configuratio
     AddOutputFilterByType DEFLATE text/html
     AddOutputFilterByType DEFLATE text/css
     AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/json
   </IfModule>
   <IfModule mod_expires.c>
     ExpiresActive On
     ExpiresByType image/* "access plus 1 days"
     ExpiresByType text/css "access plus 1 year"
     ExpiresByType text/javascript "access plus 1 year"
+    ExpiresByType text/json "access plus 1 year"
   </IfModule>
 ```
 
-It is safe to set a very large expiration date for CSS / JavaScript files because we explicitly enable the hashing on generated file names, making the file name change whenever the content changes.
+It is safe to set a very large expiration date for CSS / JavaScript / JSON (translation) files because we explicitly enable the hashing on generated file names, making the file name change whenever the content changes.
 
 ## Generating links on the Cyclos backend that point to the frontend
 
@@ -237,13 +239,15 @@ rootUrl = https://account.example.com
 
 There are basically 2 areas where the layout can be customized: modifying the style (CSS) and modifying the configuration.
 
-### Customizing the style
+### Customizing the theme (style)
 
 The layout is built using [Bootstrap 4](https://getbootstrap.com/). Bootstrap allows customizing several variables in [SASS](https://sass-lang.com/).
 
 The main file to define these is `src/_definitions.scss`. The most visible changes are the `$primary` and `$secondary` variables, which defines the main colors which are shown in the layout.
 
 It is possible to change the font, by replacing the `$font-import-url` variable by an URL (for example, from Google Fonts) and then the `$font-family-sans-serif` to actually set the font. The default font is Roboto, Android's default font. It is widely used, but lacks support to some character sets. If you use Cyclos in a language that has glyphs not covered by Roboto, you can use, for example, [Noto Sans](https://fonts.google.com/specimen/Noto+Sans). Just take care that the default font weight for bolds used in the frontend is 500, which is not available in Noto Sans. If switching, also change the `$font-weight-bold` to `700`.
+
+Users will have the option to use a light or a dark theme. This can be changed in the settings menu.
 
 You can also create custom styles for the application. To do so, just edit the `src/styles/_custom.scss` file. This is a SASS file, which is a superset of the standard CSS. Note that as styles defined in componenets generally have a greater priority, it might be needed to use the `!important` modifier for the custom definitions to be used.
 

@@ -6,10 +6,17 @@
   display: flex;
   flex-direction: column;
   word-wrap: break-word;
+  color: $card-color;
   background-color: $card-bg;
   background-clip: border-box;
   border: $card-border-width solid $card-border-color;
   @include border-radius($card-border-radius);
   box-shadow: $box-shadow-sm;
   padding: $card-spacer-x;
+}
+
+body.dark :host ::ng-deep {
+  color: $card-color-dark;
+  background-color: $card-bg-dark;
+  border-color: $card-border-color-dark;
 }
