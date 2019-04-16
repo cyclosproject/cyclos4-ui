@@ -197,8 +197,7 @@
       "principal": "Gebruiker",
       "password": "Wachtwoord",
       "forgotPassword": "Wachtwoord vergeten?",
-      "register": "Geen gebruiker? Registreer u dan hier.",
-      "switchTheme": "Switch theme"
+      "register": "Geen gebruiker? Registreer u dan hier."
     },
     "password": {
       "confirmationMessage": "Levering uw {passwordType} om deze handeling te bevestigen",
