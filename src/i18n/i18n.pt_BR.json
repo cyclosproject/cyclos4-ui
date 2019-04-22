@@ -186,7 +186,7 @@
     "personal.password": "Senha",
     "personal.passwords": "Senhas",
     "personal.notifications": "Notificações",
-    "personal.settings": "Settings",
+    "personal.settings": "Definições",
     "content": "Informação"
   },
   "auth": {
@@ -658,9 +658,9 @@
     "redirecting": "Você está sendo redirecionado..."
   },
   "setting": {
-    "title": "Settings",
-    "theme": "Theme",
-    "theme.light": "Light",
-    "theme.dark": "Dark"
+    "title": "Definições",
+    "theme": "Tema",
+    "theme.light": "Claro",
+    "theme.dark": "Escuro"
   }
 }
