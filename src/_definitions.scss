@@ -4,6 +4,7 @@ $secondary: #f29220;
 
 // Additional colors
 $faded-color: #757575;
+$faded-color-dark: #757575;
 $theme-color: darken($primary, 10%);
 
 // Make sure the font import URL and the font family (sans serif) are in sync
@@ -40,6 +41,9 @@ $grid-breakpoints: (
 @import "~bootstrap/scss/variables";
 @import "~bootstrap/scss/mixins";
 
+$accent-color: $primary;
+$accent-color-dark: $primary;
+
 // Global layout
 $layout-spacer-xxs: 0.4rem;
 $layout-spacer-xs: 0.7rem;
@@ -51,7 +55,7 @@ $body-color: color-yiq($body-bg);
 $section-bg: white;
 $section-color: $body-color;
 $section-border-color: $gray-300;
-$link-color: $primary;
+$link-color: $accent-color;
 $link-hover-color: darken($link-color, 15%);
 
 // Global layout for dark background
@@ -60,18 +64,18 @@ $body-color-dark: color-yiq($body-bg-dark);
 $section-border-color-dark: #202020;
 $section-bg-dark: #424242;
 $section-color-dark: $body-color-dark;
-$link-color-dark: $primary;
+$link-color-dark: $accent-color-dark;
 $link-hover-color-dark: lighten($link-color-dark, 15%);
 
 // Headers
-$h1-color: $primary;
-$h2-color: $primary;
-$h3-color: $primary;
+$h1-color: $accent-color;
+$h2-color: $accent-color;
+$h3-color: $accent-color;
 
 // Headers on dark background
-$h1-color-dark: $primary;
-$h2-color-dark: $primary;
-$h3-color-dark: $primary;
+$h1-color-dark: $accent-color-dark;
+$h2-color-dark: $accent-color-dark;
+$h3-color-dark: $accent-color-dark;
 
 // Cards
 $card-border-color: $section-border-color;
@@ -84,8 +88,8 @@ $card-color-dark: $body-color-dark;
 $card-bg-dark: #252525;
 
 // Top bar (shows title, hamburger menu on mobile / tablet, profile link, logout)
-$top-bar-bg: $primary;
-$top-bar-color: color-yiq($primary);
+$top-bar-bg: $accent-color;
+$top-bar-color: color-yiq($top-bar-bg);
 $top-bar-height-xxs: 2.6rem;
 $top-bar-height-xs: 3.4rem;
 $top-icon-size-xxs: 1.4rem;
@@ -109,18 +113,18 @@ $menu-bar-hover-color: $menu-bar-color;
 $menu-bar-hover-bg: #f5f5f5;
 $menu-bar-inactive-color: $faded-color;
 $menu-bar-inactive-icon-color: lighten($faded-color, 5%);
-$menu-bar-active-icon-color: $primary;
-$menu-bar-active-color: $primary;
-$menu-bar-active-border-color: $primary;
+$menu-bar-active-icon-color: $accent-color;
+$menu-bar-active-color: $accent-color;
+$menu-bar-active-border-color: $accent-color;
 $menu-bar-line-color: $section-border-color;
 
 // Menu bar with dark background
 $menu-bar-bg-dark: $card-bg-dark;
-$menu-bar-color-dark: $faded-color;
+$menu-bar-color-dark: $faded-color-dark;
 $menu-bar-hover-color-dark: $menu-bar-color-dark;
 $menu-bar-hover-bg-dark: darken($menu-bar-bg-dark, 1%);
-$menu-bar-active-color-dark: lighten($primary, 5%);
-$menu-bar-active-icon-color-dark: $primary;
+$menu-bar-active-color-dark: lighten($accent-color, 5%);
+$menu-bar-active-icon-color-dark: $accent-color;
 $menu-bar-inactive-color-dark: $gray-500;
 $menu-bar-inactive-icon-color-dark: darken($menu-bar-inactive-color-dark, 10%);
 $menu-bar-line-color-dark: $section-border-color-dark;
@@ -131,9 +135,9 @@ $side-menu-title-color: $body-color;
 $side-menu-border-color: $section-border-color;
 $side-menu-bg: $menu-bar-bg;
 $side-menu-active-bg: $menu-bar-bg;
-$side-menu-active-color: $primary;
+$side-menu-active-color: $accent-color-dark;
 $side-menu-active-hover-bg: $menu-bar-hover-bg;
-$side-menu-active-icon-color: $primary;
+$side-menu-active-icon-color: $accent-color-dark;
 $side-menu-inactive-color: $menu-bar-inactive-color;
 $side-menu-inactive-icon-color: $menu-bar-inactive-icon-color;
 $side-menu-inactive-hover-bg: $menu-bar-hover-bg;
@@ -156,18 +160,18 @@ $side-menu-inactive-hover-color-dark: $menu-bar-inactive-color-dark;
 // Quick access (icons in the dashboard)
 $quick-access-bg: $menu-bar-hover-bg;
 $quick-access-color: $body-color;
-$quick-access-icon-color: $primary;
+$quick-access-icon-color: $accent-color;
 $quick-access-hover-bg: darken($menu-bar-hover-bg, 5%);
 $quick-access-hover-color: $body-color;
-$quick-access-hover-icon-color: $primary;
+$quick-access-hover-icon-color: $accent-color;
 
 // Quick access on dark background
 $quick-access-bg-dark: $menu-bar-hover-bg-dark;
 $quick-access-color-dark: $body-color-dark;
-$quick-access-icon-color-dark: $primary;
+$quick-access-icon-color-dark: $accent-color-dark;
 $quick-access-hover-bg-dark: darken($menu-bar-hover-bg-dark, 5%);
 $quick-access-hover-color-dark: $body-color-dark;
-$quick-access-hover-icon-color-dark: $primary;
+$quick-access-hover-icon-color-dark: $accent-color-dark;
 
 // Sidenav (menu revealed on the left for mobiles / tablets)
 $sidenav-bar-bg: $top-bar-bg;
@@ -182,7 +186,7 @@ $sidenav-border-color: $section-border-color;
 $sidenav-bg-dark: $body-bg-dark;
 $sidenav-color-dark: $body-color-dark;
 $sidenav-active-bg-dark: $menu-bar-hover-bg-dark;
-$sidenav-icon-color-dark: $faded-color;
+$sidenav-icon-color-dark: $faded-color-dark;
 $sidenav-border-color-dark: $sidenav-icon-color-dark;
 
 // Forms
@@ -223,7 +227,7 @@ $input-border-color-dark: #181818;
 $input-focus-bg-dark: $input-bg-dark;
 $input-focus-border-color-dark: lighten($component-active-bg, 25%);
 $input-focus-color-dark: $input-color-dark;
-$input-placeholder-color-dark: $faded-color;
+$input-placeholder-color-dark: $faded-color-dark;
 $input-plaintext-color-dark: $body-color-dark;
 $required-marker-color-dark: $red;
 $list-group-hover-color-dark: $input-color-dark;
@@ -274,7 +278,7 @@ $title-color-dark: $body-color-dark;
 $title-button-bg-dark: darken($title-bg-dark, 3%);
 $title-button-color-dark: color-yiq($title-button-bg-dark);
 $title-button-border-color-dark: $section-border-color-dark;
-$title-button-icon-color-dark: $faded-color;
+$title-button-icon-color-dark: $faded-color-dark;
 $title-button-active-border-color-dark: darken($title-button-border-color-dark, 5%);
 $title-button-active-color-dark: $title-button-color-dark;
 $title-button-active-bg-dark: $title-button-bg-dark;
@@ -319,14 +323,26 @@ $tiled-results-hover-color-dark: $menu-bar-hover-color-dark;
 $tiled-results-hover-bg-dark: $menu-bar-hover-bg-dark;
 
 // Date-picker calendar
-$calendar-header-bg: $primary;
+$calendar-header-bg: $accent-color;
 $calendar-header-color: color-yiq($calendar-header-bg);
 $calendar-hover-bg: $gray-200;
-$calendar-hover-color: color-yiq($gray-200);
+$calendar-hover-color: color-yiq($calendar-hover-bg);
 $calendar-today-border-color: $secondary;
-$calendar-selected-bg: $primary;
+$calendar-selected-bg: $accent-color;
 $calendar-selected-color: color-yiq($calendar-selected-bg);
 $calendar-disabled-color: $faded-color;
+$calendar-disabled-bg: transparent;
+
+// Date-picker calendar on dark background
+$calendar-header-bg-dark: $accent-color-dark;
+$calendar-header-color-dark: color-yiq($calendar-header-bg-dark);
+$calendar-hover-bg-dark: $table-hover-bg-dark;
+$calendar-hover-color-dark: color-yiq($calendar-hover-bg-dark);
+$calendar-today-border-color-dark: $secondary;
+$calendar-selected-bg-dark: $accent-color-dark;
+$calendar-selected-color-dark: color-yiq($calendar-selected-bg-dark);
+$calendar-disabled-color-dark: $faded-color-dark;
+$calendar-disabled-bg-dark: transparent;
 
 // Breadcrumb (shown when selecting an advertisement category)
 $breadcrumb-divider: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjkiPjxwYXRoIGQ9Ik0yLjUgMEwxIDEuNSAzLjUgNCAxIDYuNSAyLjUgOGw0LTQtNC00eiIgZmlsbD0iIzc1NzU3NSIvPjwvc3ZnPg==);
@@ -356,7 +372,7 @@ $dropdown-border-color: $input-border-color;
 $dropdown-link-color: $body-color;
 $dropdown-link-hover-color: $body-color;
 $dropdown-link-hover-bg: darken($input-bg, 10%);
-$dropdown-link-active-bg: $primary;
+$dropdown-link-active-bg: $accent-color;
 $dropdown-link-active-color: color-yiq($dropdown-link-active-bg);
 
 // Dropdowns with dark background
@@ -366,7 +382,7 @@ $dropdown-border-color-dark: $input-border-color-dark;
 $dropdown-link-color-dark: $body-color-dark;
 $dropdown-link-hover-color-dark: $body-color-dark;
 $dropdown-link-hover-bg-dark: darken($input-bg-dark, 5%);
-$dropdown-link-active-bg-dark: $primary;
+$dropdown-link-active-bg-dark: $accent-color-dark;
 $dropdown-link-active-color-dark: color-yiq($dropdown-link-active-bg);
 
 // Pagination
@@ -376,7 +392,7 @@ $pagination-border-color: $input-border-color;
 $pagination-hover-color: $menu-bar-hover-color;
 $pagination-hover-bg: $menu-bar-hover-bg;
 $pagination-hover-border-color: $input-border-color;
-$pagination-active-bg: $primary;
+$pagination-active-bg: $accent-color;
 $pagination-active-color: color-yiq($pagination-active-bg);
 $pagination-active-border-color: $pagination-active-bg;
 $pagination-disabled-color: $input-color;
@@ -390,7 +406,7 @@ $pagination-border-color-dark: $input-border-color-dark;
 $pagination-hover-color-dark: $input-color-dark;
 $pagination-hover-bg-dark: $menu-bar-hover-bg-dark;
 $pagination-hover-border-color-dark: $input-border-color-dark;
-$pagination-active-bg-dark: $primary;
+$pagination-active-bg-dark: $accent-color-dark;
 $pagination-active-color-dark: color-yiq($pagination-active-bg-dark);
 $pagination-active-border-color-dark: $pagination-active-bg-dark;
 $pagination-disabled-color-dark: $card-color-dark;

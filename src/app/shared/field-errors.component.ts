@@ -33,7 +33,7 @@ export class FieldErrorsComponent {
     } else if (errors.minDate) {
       return this.i18n.error.field.minDate(errors.minDate.min);
     } else if (errors.maxDate) {
-      return this.i18n.error.field.minDate(errors.maxDate.max);
+      return this.i18n.error.field.maxDate(errors.maxDate.max);
     } else if (errors.number) {
       return this.i18n.error.field.number;
     } else if (errors.minlength) {

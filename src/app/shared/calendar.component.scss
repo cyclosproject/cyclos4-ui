@@ -20,7 +20,7 @@ button {
   align-items: center;
   justify-content: center;
   line-height: 1em;
-  transition:background-color 0.4s;
+  transition: background-color 0.4s;
   cursor: pointer;
 
   &:hover, &:focus {
@@ -104,9 +104,43 @@ button {
     cursor: default;
     background-color: transparent;
     color: $calendar-disabled-color !important;
+    background-color: $calendar-disabled-bg !important;
   }
 }
 .select-day.selected-date, .select-day.selected-date:hover {
   background-color: $calendar-selected-bg !important;
   color: $calendar-selected-color !important;
+}
+
+
+body.dark :host ::ng-deep {
+  button {
+    &:hover, &:focus {
+      background-color: $calendar-hover-bg-dark;
+      color: $calendar-hover-color-dark !important;
+    }
+  }
+  .calendar-header {
+    color: $calendar-header-color-dark;
+    background-color: $calendar-header-bg-dark;
+
+    button, .year-range {
+      color: $calendar-header-color-dark;
+    }
+  }
+  .today, .today:hover,
+  .this-month, .this-month:hover,
+  .this-year, .this-year:hover {
+    border-color: $calendar-today-border-color-dark;
+  }
+  .calendar-days, .calendar-months, .calendar-years {
+    button[disabled] {
+      color: $calendar-disabled-color-dark !important;
+      background-color: $calendar-disabled-bg-dark !important;
+    }
+  }
+  .select-day.selected-date, .select-day.selected-date:hover {
+    background-color: $calendar-selected-bg-dark !important;
+    color: $calendar-selected-color-dark !important;
+  }
 }

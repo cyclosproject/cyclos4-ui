@@ -6,8 +6,10 @@ import moment from 'moment-mini-ts';
 export type DateConstraint =
   /** Any date */
   'any' |
-  /** Current date */
+  /** Current date, begin of day */
   'today' |
+  /** Current date, end of date */
+  'todayEnd' |
   /** Current date + 1 */
   'tomorrow' |
   /** Current date - 1 */
@@ -34,6 +36,8 @@ export function dateConstraintAsMoment(constraint: DateConstraint, now: moment.M
       return null;
     case 'today':
       return now.clone().startOf('day');
+    case 'todayEnd':
+      return now.clone().endOf('day');
     case 'yesterday':
       return now.clone().subtract(1, 'day').startOf('day');
     case 'tomorrow':

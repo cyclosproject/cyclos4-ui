@@ -1,7 +1,8 @@
 @import 'src/definitions';
 
 .custom-select {
-  background: none;
+  flex-grow: 1;
+  background-position: right 0.3rem center !important;
 }
 .field-year {
   width: 4rem;
@@ -11,6 +12,14 @@
 }
 .field-date {
   width: 2.7rem;
+}
+
+.date-field-wrapper {
+  display: inline-block;
+}
+
+.filters-form :host ::ng-deep .date-field-wrapper {
+  width: 100%;
 }
 
 .date-field {
@@ -53,6 +62,7 @@
   }
   .custom-select {
     padding: 0 0.7rem;
+    background-position: right 0.75rem center !important;
   }
   .field-year {
     width: 4.3rem;

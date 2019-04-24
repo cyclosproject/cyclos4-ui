@@ -4,7 +4,7 @@
 
 <ng-template #widget>
   <!-- Need a relatively-positioned element to position the dropdown corretcly -->
-  <div class="d-inline-block" style="position:relative" dropdown
+  <div class="date-field-wrapper" style="position:relative" dropdown
     #dropdown="bs-dropdown" (onShown)="onShown()"
     (onHidden)="onHidden(); toggleButton.focus()">
     <div class="date-field d-flex align-items-center">
