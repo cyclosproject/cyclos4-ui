@@ -30,7 +30,7 @@ function setupConfigurationDefaults() {
     'leisure': { icon: 'mood', color: '#687ebd' },
     'services': { icon: 'room_service', color: '#8ec63f' }
   };
-  Configuration.menuBar = true;
+  Configuration.menuBar = false;
   Configuration.homePage = {
     content: ContentGetter.url('content/home.html')
   };

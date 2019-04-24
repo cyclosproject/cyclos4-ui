@@ -255,14 +255,14 @@ You can also create custom styles for the application. To do so, just edit the `
 
 Currently the Cyclos frontend offers the following options in the configuration for layout: Whether to show the menu on desktop on the top bar on in a separated bar, and advertisement category icon customization.
 
-### Use a separated menu bar or join the menu on the top bar
+### Main menu position
 
-By default, on desktop resolutions, the menu is displayed in a separated bar, below the top bar. An alternative is to have the menu displayed in the top bar itself. To configure this, set in the `src/app/setup.ts` file:
+By default, on desktop resolutions, the menu is displayed in the top bar. An alternative is to have the menu displayed in a separated menu bar below the top. To configure this, set in the `src/app/setup.ts` file:
 
 ```typescript
 export function setup() {
   // true means a separated menu bar, false means joining the menu on the top bar
-  Configuration.menuBar = false;
+  Configuration.menuBar = true;
 }
 ```
 
