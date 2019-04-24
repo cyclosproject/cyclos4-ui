@@ -285,8 +285,8 @@ $table-bg: $card-bg;
 $table-hover-color: $table-color;
 $table-hover-bg: #f9f9f9;
 $table-border-color: $card-border-color;
-$table-head-bg: $gray-200;
-$table-head-color: $gray-700;
+$table-head-bg: $card-bg;
+$table-head-color: $label-color;
 $table-icon-color: #cecece;
 
 // Tables with dark background
@@ -296,7 +296,7 @@ $table-hover-color-dark: $table-color-dark;
 $table-hover-bg-dark: #212121;
 $table-border-color-dark: $card-border-color-dark;
 $table-head-bg-dark: darken($table-bg-dark, 1%);
-$table-head-color-dark: $input-color-dark;
+$table-head-color-dark: $label-color-dark;
 $table-icon-color-dark: #cecece;
 
 // Tiled results

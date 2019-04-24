@@ -1,14 +1,21 @@
 @import 'src/definitions';
 
 table.table {
+  background-color: $table-bg;
 
   &, td, th {
     border-color: $table-border-color;
   }
 
-  &, td, a, a:hover {
+  &, a, a:hover {
     color: $table-color;
-    background-color: $table-bg;
+  }
+
+  tr:hover {
+    background-color: $table-hover-bg;
+    &, a, a:hover {
+      color: $table-hover-color;
+    }
   }
 
   td {
@@ -122,6 +129,8 @@ table.table {
 
 body.dark {
   .table {
+    background-color: $table-bg-dark;
+
     &, td, th {
       border-color: $table-border-color-dark;
     }
@@ -130,9 +139,15 @@ body.dark {
       background-color: $table-head-bg-dark;
     }
 
-    &, td, a, a:hover {
+    &, a, a:hover {
       color: $table-color-dark;
-      background-color: $table-bg-dark;
+    }
+
+    tr:hover {
+      background-color: $table-hover-bg-dark;
+      &, a, a:hover {
+        color: $table-hover-color-dark;
+      }
     }
 
     th, td, thead th {

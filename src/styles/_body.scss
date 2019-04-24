@@ -13,7 +13,7 @@ body.full-width {
 body.full-width .main-container {
   margin: 0;
 }
-body, top-bar nav, menu-bar nav, div, a {
+body, top-bar nav, menu-bar nav, .card, menu-bar a, top-bar a {
   transition:
     background-color ease-in-out 0.4s,
     color ease-in-out 0.4s,
