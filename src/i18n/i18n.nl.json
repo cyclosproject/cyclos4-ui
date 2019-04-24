@@ -186,6 +186,7 @@
     "personal.password": "Wachtwoord",
     "personal.passwords": "Wachtwoorden",
     "personal.notifications": "Notifications",
+    "personal.settings": "Settings",
     "content": "Informatie"
   },
   "auth": {
@@ -655,5 +656,11 @@
     "transfer": "Transfer",
     "fileUpload": "File upload",
     "redirecting": "You are being redirected..."
+  },
+  "setting": {
+    "title": "Settings",
+    "theme": "Theme",
+    "theme.light": "Light",
+    "theme.dark": "Dark"
   }
 }

@@ -186,6 +186,7 @@
     "personal.password": "Contraseñas",
     "personal.passwords": "Contraseñas",
     "personal.notifications": "Notificaciones",
+    "personal.settings": "Settings",
     "content": "Información"
   },
   "auth": {
@@ -655,5 +656,11 @@
     "transfer": "Transfer",
     "fileUpload": "Cargar archivo",
     "redirecting": "Esta siendo redirigido..."
+  },
+  "setting": {
+    "title": "Settings",
+    "theme": "Theme",
+    "theme.light": "Light",
+    "theme.dark": "Dark"
   }
 }

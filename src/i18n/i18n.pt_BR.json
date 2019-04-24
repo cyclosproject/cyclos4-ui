@@ -186,6 +186,7 @@
     "personal.password": "Senha",
     "personal.passwords": "Senhas",
     "personal.notifications": "Notificações",
+    "personal.settings": "Definições",
     "content": "Informação"
   },
   "auth": {
@@ -655,5 +656,11 @@
     "transfer": "Transferência",
     "fileUpload": "Envio de arquivo",
     "redirecting": "Você está sendo redirecionado..."
+  },
+  "setting": {
+    "title": "Definições",
+    "theme": "Tema",
+    "theme.light": "Claro",
+    "theme.dark": "Escuro"
   }
 }
