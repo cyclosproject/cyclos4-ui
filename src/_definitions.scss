@@ -1,6 +1,8 @@
 // Primary and secondary colors
 $primary: #1e88e5;
 $secondary: #f29220;
+$accent: $primary;
+$accent-dark: $primary;
 
 // Additional colors
 $faded-color: #757575;
@@ -41,9 +43,6 @@ $grid-breakpoints: (
 @import "~bootstrap/scss/variables";
 @import "~bootstrap/scss/mixins";
 
-$accent-color: $primary;
-$accent-color-dark: $primary;
-
 // Global layout
 $layout-spacer-xxs: 0.4rem;
 $layout-spacer-xs: 0.7rem;
@@ -55,7 +54,7 @@ $body-color: color-yiq($body-bg);
 $section-bg: white;
 $section-color: $body-color;
 $section-border-color: $gray-300;
-$link-color: $accent-color;
+$link-color: $accent;
 $link-hover-color: darken($link-color, 15%);
 
 // Global layout for dark background
@@ -64,18 +63,18 @@ $body-color-dark: color-yiq($body-bg-dark);
 $section-border-color-dark: #202020;
 $section-bg-dark: #424242;
 $section-color-dark: $body-color-dark;
-$link-color-dark: $accent-color-dark;
+$link-color-dark: $accent-dark;
 $link-hover-color-dark: lighten($link-color-dark, 15%);
 
 // Headers
-$h1-color: $accent-color;
-$h2-color: $accent-color;
-$h3-color: $accent-color;
+$h1-color: $accent;
+$h2-color: $accent;
+$h3-color: $accent;
 
 // Headers on dark background
-$h1-color-dark: $accent-color-dark;
-$h2-color-dark: $accent-color-dark;
-$h3-color-dark: $accent-color-dark;
+$h1-color-dark: $accent-dark;
+$h2-color-dark: $accent-dark;
+$h3-color-dark: $accent-dark;
 
 // Cards
 $card-border-color: $section-border-color;
@@ -88,7 +87,7 @@ $card-color-dark: $body-color-dark;
 $card-bg-dark: #252525;
 
 // Top bar (shows title, hamburger menu on mobile / tablet, profile link, logout)
-$top-bar-bg: $accent-color;
+$top-bar-bg: $primary;
 $top-bar-color: color-yiq($top-bar-bg);
 $top-bar-height-xxs: 2.6rem;
 $top-bar-height-xs: 3.4rem;
@@ -113,9 +112,9 @@ $menu-bar-hover-color: $menu-bar-color;
 $menu-bar-hover-bg: #f5f5f5;
 $menu-bar-inactive-color: $faded-color;
 $menu-bar-inactive-icon-color: lighten($faded-color, 5%);
-$menu-bar-active-icon-color: $accent-color;
-$menu-bar-active-color: $accent-color;
-$menu-bar-active-border-color: $accent-color;
+$menu-bar-active-icon-color: $accent;
+$menu-bar-active-color: $accent;
+$menu-bar-active-border-color: $accent;
 $menu-bar-line-color: $section-border-color;
 
 // Menu bar with dark background
@@ -123,8 +122,8 @@ $menu-bar-bg-dark: $card-bg-dark;
 $menu-bar-color-dark: $faded-color-dark;
 $menu-bar-hover-color-dark: $menu-bar-color-dark;
 $menu-bar-hover-bg-dark: darken($menu-bar-bg-dark, 1%);
-$menu-bar-active-color-dark: lighten($accent-color, 5%);
-$menu-bar-active-icon-color-dark: $accent-color;
+$menu-bar-active-color-dark: lighten($accent, 5%);
+$menu-bar-active-icon-color-dark: $accent;
 $menu-bar-inactive-color-dark: $gray-500;
 $menu-bar-inactive-icon-color-dark: darken($menu-bar-inactive-color-dark, 10%);
 $menu-bar-line-color-dark: $section-border-color-dark;
@@ -135,10 +134,11 @@ $side-menu-title-color: $body-color;
 $side-menu-border-color: $section-border-color;
 $side-menu-bg: $menu-bar-bg;
 $side-menu-active-bg: $menu-bar-bg;
-$side-menu-active-color: $accent-color-dark;
+$side-menu-active-color: $accent;
 $side-menu-active-hover-bg: $menu-bar-hover-bg;
-$side-menu-active-icon-color: $accent-color-dark;
+$side-menu-active-icon-color: $side-menu-active-color;
 $side-menu-inactive-color: $menu-bar-inactive-color;
+$side-menu-inactive-bg: $side-menu-active-bg;
 $side-menu-inactive-icon-color: $menu-bar-inactive-icon-color;
 $side-menu-inactive-hover-bg: $menu-bar-hover-bg;
 $side-menu-inactive-hover-color: $menu-bar-inactive-color;
@@ -149,10 +149,11 @@ $side-menu-title-color-dark: $body-color-dark;
 $side-menu-border-color-dark: $section-border-color-dark;
 $side-menu-bg-dark: $menu-bar-bg-dark;
 $side-menu-active-bg-dark: $menu-bar-bg-dark;
-$side-menu-active-color-dark: $menu-bar-active-color-dark;
+$side-menu-active-color-dark: $accent-dark;
 $side-menu-active-hover-bg-dark: $menu-bar-hover-bg-dark;
-$side-menu-active-icon-color-dark: $menu-bar-active-icon-color-dark;
+$side-menu-active-icon-color-dark: $side-menu-active-color-dark;
 $side-menu-inactive-color-dark: $menu-bar-inactive-color-dark;
+$side-menu-inactive-bg-dark: $side-menu-active-bg-dark;
 $side-menu-inactive-icon-color-dark: $menu-bar-inactive-icon-color-dark;
 $side-menu-inactive-hover-bg-dark: $menu-bar-hover-bg-dark;
 $side-menu-inactive-hover-color-dark: $menu-bar-inactive-color-dark;
@@ -160,18 +161,18 @@ $side-menu-inactive-hover-color-dark: $menu-bar-inactive-color-dark;
 // Quick access (icons in the dashboard)
 $quick-access-bg: $menu-bar-hover-bg;
 $quick-access-color: $body-color;
-$quick-access-icon-color: $accent-color;
+$quick-access-icon-color: $accent;
 $quick-access-hover-bg: darken($menu-bar-hover-bg, 5%);
 $quick-access-hover-color: $body-color;
-$quick-access-hover-icon-color: $accent-color;
+$quick-access-hover-icon-color: $accent;
 
 // Quick access on dark background
 $quick-access-bg-dark: $menu-bar-hover-bg-dark;
 $quick-access-color-dark: $body-color-dark;
-$quick-access-icon-color-dark: $accent-color-dark;
+$quick-access-icon-color-dark: $accent-dark;
 $quick-access-hover-bg-dark: darken($menu-bar-hover-bg-dark, 5%);
 $quick-access-hover-color-dark: $body-color-dark;
-$quick-access-hover-icon-color-dark: $accent-color-dark;
+$quick-access-hover-icon-color-dark: $accent-dark;
 
 // Sidenav (menu revealed on the left for mobiles / tablets)
 $sidenav-bar-bg: $top-bar-bg;
@@ -323,23 +324,23 @@ $tiled-results-hover-color-dark: $menu-bar-hover-color-dark;
 $tiled-results-hover-bg-dark: $menu-bar-hover-bg-dark;
 
 // Date-picker calendar
-$calendar-header-bg: $accent-color;
+$calendar-header-bg: $accent;
 $calendar-header-color: color-yiq($calendar-header-bg);
 $calendar-hover-bg: $gray-200;
 $calendar-hover-color: color-yiq($calendar-hover-bg);
 $calendar-today-border-color: $secondary;
-$calendar-selected-bg: $accent-color;
+$calendar-selected-bg: $accent;
 $calendar-selected-color: color-yiq($calendar-selected-bg);
 $calendar-disabled-color: $faded-color;
 $calendar-disabled-bg: transparent;
 
 // Date-picker calendar on dark background
-$calendar-header-bg-dark: $accent-color-dark;
+$calendar-header-bg-dark: $accent-dark;
 $calendar-header-color-dark: color-yiq($calendar-header-bg-dark);
 $calendar-hover-bg-dark: $table-hover-bg-dark;
 $calendar-hover-color-dark: color-yiq($calendar-hover-bg-dark);
 $calendar-today-border-color-dark: $secondary;
-$calendar-selected-bg-dark: $accent-color-dark;
+$calendar-selected-bg-dark: $accent-dark;
 $calendar-selected-color-dark: color-yiq($calendar-selected-bg-dark);
 $calendar-disabled-color-dark: $faded-color-dark;
 $calendar-disabled-bg-dark: transparent;
@@ -372,7 +373,7 @@ $dropdown-border-color: $input-border-color;
 $dropdown-link-color: $body-color;
 $dropdown-link-hover-color: $body-color;
 $dropdown-link-hover-bg: darken($input-bg, 10%);
-$dropdown-link-active-bg: $accent-color;
+$dropdown-link-active-bg: $accent;
 $dropdown-link-active-color: color-yiq($dropdown-link-active-bg);
 
 // Dropdowns with dark background
@@ -382,7 +383,7 @@ $dropdown-border-color-dark: $input-border-color-dark;
 $dropdown-link-color-dark: $body-color-dark;
 $dropdown-link-hover-color-dark: $body-color-dark;
 $dropdown-link-hover-bg-dark: darken($input-bg-dark, 5%);
-$dropdown-link-active-bg-dark: $accent-color-dark;
+$dropdown-link-active-bg-dark: $accent-dark;
 $dropdown-link-active-color-dark: color-yiq($dropdown-link-active-bg);
 
 // Pagination
@@ -392,7 +393,7 @@ $pagination-border-color: $input-border-color;
 $pagination-hover-color: $menu-bar-hover-color;
 $pagination-hover-bg: $menu-bar-hover-bg;
 $pagination-hover-border-color: $input-border-color;
-$pagination-active-bg: $accent-color;
+$pagination-active-bg: $accent;
 $pagination-active-color: color-yiq($pagination-active-bg);
 $pagination-active-border-color: $pagination-active-bg;
 $pagination-disabled-color: $input-color;
@@ -406,7 +407,7 @@ $pagination-border-color-dark: $input-border-color-dark;
 $pagination-hover-color-dark: $input-color-dark;
 $pagination-hover-bg-dark: $menu-bar-hover-bg-dark;
 $pagination-hover-border-color-dark: $input-border-color-dark;
-$pagination-active-bg-dark: $accent-color-dark;
+$pagination-active-bg-dark: $accent-dark;
 $pagination-active-color-dark: color-yiq($pagination-active-bg-dark);
 $pagination-active-border-color-dark: $pagination-active-bg-dark;
 $pagination-disabled-color-dark: $card-color-dark;

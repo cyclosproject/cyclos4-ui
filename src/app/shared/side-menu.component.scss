@@ -25,6 +25,7 @@
 
 a.nav-item {
   color: $side-menu-inactive-color;
+  background: $side-menu-inactive-bg;
   padding: 1rem;
   border-bottom: 1px solid $side-menu-border-color;
   font-size: 1.1em;
@@ -78,6 +79,7 @@ body.dark :host ::ng-deep {
   }
   a.nav-item {
     color: $side-menu-inactive-color-dark;
+    background: $side-menu-inactive-bg-dark;
     border-color: $side-menu-border-color-dark;
   }
   a.nav-item:not(.active) {
