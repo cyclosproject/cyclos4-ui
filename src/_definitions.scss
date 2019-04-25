@@ -53,14 +53,14 @@ $body-bg: $gray-100;
 $body-color: color-yiq($body-bg);
 $section-bg: white;
 $section-color: $body-color;
-$section-border-color: $gray-300;
+$border-color: $gray-300;
 $link-color: $accent;
 $link-hover-color: darken($link-color, 15%);
 
 // Global layout for dark background
 $body-bg-dark: #2a2a2a;
 $body-color-dark: color-yiq($body-bg-dark);
-$section-border-color-dark: #171717;
+$border-color-dark: #171717;
 $section-bg-dark: #232323;
 $section-color-dark: $body-color-dark;
 $link-color-dark: $accent-dark;
@@ -77,12 +77,12 @@ $h2-color-dark: $accent-dark;
 $h3-color-dark: $accent-dark;
 
 // Cards
-$card-border-color: $section-border-color;
+$card-border-color: $border-color;
 $card-color: $body-color;
 $card-bg: white;
 
 // Cards with dark background
-$card-border-color-dark: $section-border-color-dark;
+$card-border-color-dark: $border-color-dark;
 $card-color-dark: $body-color-dark;
 $card-bg-dark: #252525;
 
@@ -115,7 +115,7 @@ $menu-bar-inactive-icon-color: lighten($faded-color, 5%);
 $menu-bar-active-icon-color: $accent;
 $menu-bar-active-color: $accent;
 $menu-bar-active-border-color: $accent;
-$menu-bar-line-color: $section-border-color;
+$menu-bar-line-color: $border-color;
 
 // Menu bar with dark background
 $menu-bar-bg-dark: $card-bg-dark;
@@ -126,12 +126,12 @@ $menu-bar-active-color-dark: lighten($accent, 5%);
 $menu-bar-active-icon-color-dark: $accent;
 $menu-bar-inactive-color-dark: $gray-500;
 $menu-bar-inactive-icon-color-dark: darken($menu-bar-inactive-color-dark, 10%);
-$menu-bar-line-color-dark: $section-border-color-dark;
+$menu-bar-line-color-dark: $border-color-dark;
 
 // Side menu (second-level menu on desktop)
 $side-menu-title-bg: $menu-bar-bg;
 $side-menu-title-color: $body-color;
-$side-menu-border-color: $section-border-color;
+$side-menu-border-color: $border-color;
 $side-menu-bg: $menu-bar-bg;
 $side-menu-active-bg: $menu-bar-bg;
 $side-menu-active-color: $accent;
@@ -146,7 +146,7 @@ $side-menu-inactive-hover-color: $menu-bar-inactive-color;
 // Side menu with dark background
 $side-menu-title-bg-dark: $menu-bar-bg-dark;
 $side-menu-title-color-dark: $body-color-dark;
-$side-menu-border-color-dark: $section-border-color-dark;
+$side-menu-border-color-dark: $border-color-dark;
 $side-menu-bg-dark: $menu-bar-bg-dark;
 $side-menu-active-bg-dark: $menu-bar-bg-dark;
 $side-menu-active-color-dark: $accent-dark;
@@ -181,7 +181,7 @@ $sidenav-bg: $menu-bar-bg;
 $sidenav-color: $menu-bar-color;
 $sidenav-active-bg: $menu-bar-hover-bg;
 $sidenav-icon-color: $faded-color;
-$sidenav-border-color: $section-border-color;
+$sidenav-border-color: $border-color;
 
 // Sidenav with dark background
 $sidenav-bg-dark: $body-bg-dark;
@@ -267,7 +267,7 @@ $title-height-xs: 3.4rem;
 $title-height: 3.4rem;
 $title-button-bg: $light;
 $title-button-color: color-yiq($light);
-$title-button-border-color: $section-border-color;
+$title-button-border-color: $border-color;
 $title-button-icon-color: $faded-color;
 $title-button-active-border-color: darken($title-button-border-color, 20%);
 $title-button-active-color: $title-button-color;
@@ -278,7 +278,7 @@ $title-bg-dark: $menu-bar-bg-dark;
 $title-color-dark: $body-color-dark;
 $title-button-bg-dark: darken($title-bg-dark, 3%);
 $title-button-color-dark: color-yiq($title-button-bg-dark);
-$title-button-border-color-dark: $section-border-color-dark;
+$title-button-border-color-dark: $border-color-dark;
 $title-button-icon-color-dark: $faded-color-dark;
 $title-button-active-border-color-dark: darken($title-button-border-color-dark, 5%);
 $title-button-active-color-dark: $title-button-color-dark;
@@ -359,12 +359,12 @@ $icon-with-counter-color: color-yiq($icon-with-counter-bg);
 // Modal dialogs
 $modal-content-color: $body-color;
 $modal-content-bg: $body-bg;
-$modal-content-border-color: $section-border-color;
+$modal-content-border-color: $border-color;
 
 // Modal dialogs with dark background
 $modal-content-color-dark: $body-color-dark;
 $modal-content-bg-dark: $body-bg-dark;
-$modal-content-border-color-dark: $section-border-color-dark;
+$modal-content-border-color-dark: $border-color-dark;
 
 // Dropdowns
 $dropdown-color: $input-color;
@@ -415,7 +415,6 @@ $pagination-disabled-bg-dark: $card-bg-dark;
 $pagination-disabled-border-color-dark: $card-border-color-dark;
 
 // General
-$account-indicator-font-size: 16px;
 $positive-color: $green;
 $negative-color: $red;
 $total-amount-color: $green;

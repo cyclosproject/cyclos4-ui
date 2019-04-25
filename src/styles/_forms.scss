@@ -22,7 +22,7 @@ label {
 
 .filters-form {
   display: block;
-  border-color: $section-border-color;
+  border-color: $border-color;
   padding: 0;
   margin: 0;
   margin-left: -$layout-spacer-xxs;
@@ -213,7 +213,7 @@ body.dark {
     color: $label-color-dark;
   }
   .filters-form {
-    border-color: $section-border-color-dark;
+    border-color: $border-color-dark;
   }
   ::placeholder, :-ms-input-placeholder, ::-ms-input-placeholder {
     color: $input-placeholder-color-dark;

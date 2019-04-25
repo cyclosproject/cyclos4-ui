@@ -31,8 +31,8 @@
 .faded-color {
   color: $faded-color;
 }
-.section-border-color {
-  border-color: $section-border-color;
+.border-color {
+  border-color: $border-color;
 }
 
 .card {
@@ -84,8 +84,8 @@ body.dark {
       color: $card-color-dark;
     }
   }
-  .section-border-color {
-    border-color: $section-border-color-dark;
+  .border-color {
+    border-color: $border-color-dark;
   }
   .accent-color {
     color: $accent-dark;
@@ -103,5 +103,8 @@ body.dark {
   .body-bg {
     background-color: $body-bg-dark;
     color: $body-color-dark;
+  }
+  .border, .border-top, .border-right, .border-bottom, .border-left {
+    border-color: $border-color-dark !important;
   }
 }

@@ -17,7 +17,6 @@ import { BankingHelperService } from 'app/core/banking-helper.service';
 @Component({
   selector: 'account-history',
   templateUrl: 'account-history.component.html',
-  styleUrls: ['account-history.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AccountHistoryComponent

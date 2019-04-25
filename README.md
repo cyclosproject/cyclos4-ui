@@ -467,7 +467,7 @@ The `body` tag has the `dark` class added for users that prefer the dark theme. 
 - `body-color`: Sets the `color` property to the body text color, which can be set to a different color on light / dark themes.
 - `body-bg`: Sets the `background-color` property to the body background color, and the `color` property to the body text color, allowing readable text.
 - `faded-color`: Sets the `color` property to the body faded color, which can be set to a different color on light / dark themes.
-- `section-border-color`: Sets the `border-color` property to the general border color, adapting to light / dark theme. However, no border style / width is defined.
+- `border-color`: Sets the `border-color` property to the general border color, adapting to light / dark theme. However, no border style / width is defined. It is also possible to use the standard Bootstrap's `border`, `border-top`, `border-bottom`, `border-left` and `border-right` classes, as they are customized in dark themes to the correct color.
 
 
 ### Creating links to other pages

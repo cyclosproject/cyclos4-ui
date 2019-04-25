@@ -25,7 +25,6 @@ const IGNORED_STATUSES = [ErrorStatus.FORBIDDEN, ErrorStatus.UNAUTHORIZED, Error
 @Component({
   selector: 'payment-step-form',
   templateUrl: 'payment-step-form.component.html',
-  styleUrls: ['payment-step-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PaymentStepFormComponent extends BaseComponent implements OnInit {

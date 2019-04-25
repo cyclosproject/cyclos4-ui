@@ -21,7 +21,7 @@
 }
 
 :host ::ng-deep .main-image .avatar-container {
-  border: 1px solid $section-border-color !important;
+  border: 1px solid $border-color !important;
 }
 
 .owner-image {
@@ -37,4 +37,8 @@ a {
 
 a:hover {
   filter: brightness(80%);
+}
+
+body.dark :host ::ng-deep .main-image .avatar-container {
+  border-color: $border-color-dark !important;
 }

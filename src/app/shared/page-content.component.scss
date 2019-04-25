@@ -10,7 +10,7 @@
 }
 
 .content-title {
-  border-bottom: 1px solid $section-border-color;
+  border-bottom: 1px solid $border-color;
   border-top-left-radius: $card-border-radius;
   border-top-right-radius: $card-border-radius;
   height: $title-height-xxs;
@@ -379,7 +379,7 @@
 // Colors for dark scheme
 body.dark :host ::ng-deep {
   .content-title {
-    border-color: $section-border-color-dark;
+    border-color: $border-color-dark;
     background-color: $title-bg-dark;
     .title-text {
       color: $title-color-dark;
