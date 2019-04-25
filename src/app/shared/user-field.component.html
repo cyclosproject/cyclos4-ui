@@ -24,7 +24,7 @@
           (click)="$event.preventDefault(); $event.stopPropagation();">
           <a *ngFor="let user of options$ | async; let i = index;"
             class="select-option" [ngClass]="ngClassFor(user, i)" href="#"
-            (click)="select(user); $event.stopPropagation(); $event.prevendDefault()">
+            (click)="select(user); $event.stopPropagation(); $event.preventDefault()">
             {{ user.display }}
           </a>
         </div>
