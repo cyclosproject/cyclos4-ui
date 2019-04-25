@@ -1,6 +1,6 @@
 openapi: '3.0.0'
 info:
-  title: 'Cyclos 4.12 API'
+  title: 'Cyclos 4.12-BETA API'
   description: >-
     The Cyclos REST API is described using OpenAPI 3.0. The descriptor for the api
     can be downloaded in both [YAML](http://localhost:8888/api/cyclos-openapi.yaml) or
@@ -22,9 +22,9 @@ info:
   
     For details of the deprecated elements (operations and model) please visit the
     [deprecation notes
-    page](https://documentation.cyclos.org/4.12/api-deprecation.html)
+    page](https://documentation.cyclos.org/4.12-BETA/api-deprecation.html)
     for this version.
-  version: '4.12'
+  version: '4.12-BETA'
 servers:
   - url: 'http://localhost:8888/api'
 
@@ -48,7 +48,18 @@ tags:
   - name: Operators
     description: >-
       Operations over operators, which are users created by other users to
-      manage their data.
+      manage their data. The registration of operators is performed in this
+      tag, but the view and edition of profile fields or full profile is
+      performed in the `Users` tag, within `/users/{user}/...` paths. This
+      is because operators are a special kind of users.
+  - name: OperatorGroups
+    description: >-
+      Operations over operator groups, which users can create to define which
+      permissions their operators will have.
+  - name: UserStatus
+    description: >-
+      Viewing and setting the status of a user / operator. Examples of
+      statuses are active, blocked, disabled, removed and purged.
   - name: Phones
     description: >-
       Management of user phones, which is done separatedly from the raw user
@@ -70,6 +81,9 @@ tags:
     description: >-
       Provides access to raw files, maily used to interact with custom field
       values of type file.
+  - name: GroupMembership
+    description: >-
+      Viewing and setting the group of a user / operator.
   - name: Passwords
     description: >-
       Management of a user's passwords.
@@ -2012,9 +2026,9 @@ A note for dynamic custom fields: If a script is used to generate possible value
     get:
       operationId: viewUser
       summary: >-
-        View a user details
+        View a user / operator details
       description: >-
-        Returns the profile information of a user / operator.
+        Returns the profile information of either a user or operator.
       parameters:
         - $ref: '#/components/parameters/fields'
         - $ref: '#/components/parameters/user'
@@ -2023,7 +2037,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
       responses:
         '200':
           description: >-
-            User details
+            User / operator details
           content:
             application/json:
               schema:
@@ -2060,11 +2074,13 @@ A note for dynamic custom fields: If a script is used to generate possible value
     put:
       operationId: updateUser
       summary: >-
-        Save a user details
+        Save a user / operator profile fields
       description: >-
-        Saves the user profile. Only the basic fields (full name, login name,
-        e-mail) and custom fields can be saved with this operation. Addresses,
-        phones and images must be managed through their own paths.
+        Saves the user / operator profile felds. Only the basic fields (full
+        name, login name, e-mail) and custom fields can be saved with this
+        operation. Addresses, phones and images must be managed either via
+        the full profile (`GET /users/{user}/data-for-edit-profile` /
+        `PUT /users/{user}/profile`) or through their own paths.
       parameters:
         - $ref: '#/components/parameters/user'
         - $ref: '#/components/parameters/confirmationPassword'
@@ -2124,7 +2140,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 $ref: '#/components/schemas/Error'
       requestBody:
         description: >-
-          The user to be saved
+          The user / operator to be saved
         required: true
         content:
           application/json:
@@ -2135,9 +2151,9 @@ A note for dynamic custom fields: If a script is used to generate possible value
     get:
       operationId: getUserDataForEdit
       summary: >-
-        Get configuration data to edit a user profile
+        Get configuration data to edit a user / operator profile
       description: >-
-        Returns data to edit a user profile.
+        Returns data to edit a user / operator profile fields.
       parameters:
         - $ref: '#/components/parameters/fields'
         - $ref: '#/components/parameters/user'
@@ -2150,7 +2166,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
       responses:
         '200':
           description: >-
-            User profile details
+            User / operator profile fields details
           content:
             application/json:
               schema:
@@ -2189,11 +2205,13 @@ A note for dynamic custom fields: If a script is used to generate possible value
     get:
       operationId: getDataForEditFullProfile
       summary: >-
-        Returns data for editing the full profile at once
+        Returns data for editing the full profile of a user / operator
       description: >-
-        The returned data contains all profile-related entities: such as
-        profile fields, phones, addresses, images and additional contact
-        information
+        The returned data contains all profile-related elements of a
+        user or operator - profile fields, phones, addresses, images
+        and additional contact information. Operators cannot have
+        addresses, images or additional contact information, so these
+        will not be sent.
       parameters:
         - $ref: '#/components/parameters/fields'
         - $ref: '#/components/parameters/user'
@@ -2202,7 +2220,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
       responses:
         '200':
           description: >-
-            The data for editing the full profile
+            The data for editing the full profile of the user / operator
           content:
             application/json:
               schema:
@@ -2241,17 +2259,23 @@ A note for dynamic custom fields: If a script is used to generate possible value
     post:
       operationId: saveUserFullProfile
       summary: >-
-        Edits the full profile at once
+        Saves the full profile at once
       description: >-
-        Saves in a single, transactional operation, the full user profile, that
-        is: allows saving the basic fields and creating / modifying / removing
-        phones, addresses, additional contacts and images at once.
+        Saves in a single, transactional operation, the full user / operator
+        profile: edition of the profile fields and creating / modifying /
+        removing phones, addresses, additional contacts and images. Operators
+        can never have addresses, additional contacts or images, so they don't
+        apply to operators.
       parameters:
         - $ref: '#/components/parameters/fields'
         - $ref: '#/components/parameters/user'
         - $ref: '#/components/parameters/confirmationPassword'
       tags:
         - Users
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
       responses:
         '200':
           description: >-
@@ -2631,6 +2655,10 @@ A note for dynamic custom fields: If a script is used to generate possible value
         given user
       tags:
         - Operators
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
       parameters:
         - $ref: '#/components/parameters/fields'
         - $ref: '#/components/parameters/user'
@@ -2673,17 +2701,23 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 $ref: '#/components/schemas/Error'
   
   /{user}/operators:
+    parameters:
+      - $ref: '#/components/parameters/user'
     get:
       operationId: searchUserOperators
       summary: >-
         Search the operators of a given user
       description: >-
-        Returns a page of operators that match a given criteria
+        Returns a page of operators that match a given criteria.
+        To view an operator profile, use `GET /users/{operator}`.
       tags:
         - Operators
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
       parameters:
         - $ref: '#/components/parameters/fields'
-        - $ref: '#/components/parameters/user'
         - name: creationPeriod
           in: query
           required: false
@@ -2801,6 +2835,78 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+    post:
+      operationId: registerOperator
+      summary: >-
+        Registers a new operator
+      description: >-
+        Registers an operator, together with his password and phones.
+      parameters: []
+      tags:
+        - Operators
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      responses:
+        '201':
+          description: >-
+            The result of the registration
+          headers:
+            Location:
+              description: >-
+                URL for viewing the registered operator's profile
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRegistrationResult'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: >-
+            Input error. Either a validation error or the maximum allowed items was
+            exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      requestBody:
+        description: >-
+          The operator to be registered
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OperatorNew'
   
   /operators/data-for-search:
     get:
@@ -2813,6 +2919,10 @@ A note for dynamic custom fields: If a script is used to generate possible value
         administrators or brokers
       tags:
         - Operators
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
       parameters:
         - $ref: '#/components/parameters/fields'
       responses:
@@ -2859,9 +2969,14 @@ A note for dynamic custom fields: If a script is used to generate possible value
       summary: >-
         Search the visible operators (of any managed user)
       description: >-
-        Returns a page of operators that match a given criteria
+        Returns a page of operators that match a given criteria.
+        To view an operator profile, use `GET /users/{operator}`.
       tags:
         - Operators
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
       parameters:
         - $ref: '#/components/parameters/fields'
         - $ref: '#/components/parameters/page'
@@ -2970,6 +3085,591 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
+  /{user}/operators/data-for-new:
+    get:
+      operationId: getOperatorDataForNew
+      summary: >-
+        Get configuration data for registering a new operator
+      description: >-
+        Contains all configuration needed for registering an operator, such
+        as the enabled profile fields and the password(s).
+      parameters:
+        - $ref: '#/components/parameters/fields'
+        - $ref: '#/components/parameters/user'
+        - name: group
+          required: false
+          in: query
+          description: >-
+            The operator group. If no group is set, will be an alias operator,
+            that is, an operator with the same permissions as his owner.
+          schema:
+            type: string
+      tags:
+        - Operators
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      responses:
+        '200':
+          description: >-
+            An object containing the data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperatorDataForNew'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /{user}/operators/groups-for-registration:
+    get:
+      operationId: getGroupsForOperatorRegistration
+      summary: >-
+        Returns the groups the authenticated user can register operators in
+      description: >-
+        Returns the list of groups the authenticated user can use to perform a new
+        operator registration.
+      tags:
+        - Operators
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/user'
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            The list of groups
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EntityReference'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /{user}/operator-groups/list-data:
+    get:
+      operationId: getUserOperatorGroupsListData
+      summary: >-
+        Returns data for operator groups listing of the given user
+      description: >-
+        Returns data containing the operator groups beloging to the given user,
+        plus additional data related to them.
+      tags:
+        - OperatorGroups
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+        - $ref: '#/components/parameters/user'
+      responses:
+        '200':
+          description: >-
+            The data for listing operator groups
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserOperatorGroupsListData'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /{user}/operator-groups:
+    parameters:
+      - $ref: '#/components/parameters/user'
+    get:
+      operationId: listOperatorGroupsByUser
+      summary: >-
+        Lists all operator groups for a given user
+      description: >-
+        Returns a list with the operator groups of the given user.
+      tags:
+        - OperatorGroups
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            The list of visible user addresses
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EntityReference'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      operationId: createOperatorGroup
+      summary: >-
+        Creates a new operator group for the given user
+      description: >-
+        Creates a new operator group for the given user
+      tags:
+        - OperatorGroups
+      responses:
+        '201':
+          description: >-
+            Returns the identifier of the new group
+          headers:
+            Location:
+              description: >-
+                URL for viewing the operator group details
+              schema:
+                type: string
+          content:
+            text/plain:
+              schema:
+                type: string
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: >-
+            Input error. Either a validation error or the maximum allowed items was
+            exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      requestBody:
+        description: >-
+          The operator group to be created
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OperatorGroupNew'
+  
+  /{user}/operator-groups/data-for-new:
+    parameters:
+      - $ref: '#/components/parameters/user'
+    get:
+      operationId: getOperatorGroupDataForNew
+      summary: >-
+        Returns data for creating an operator group
+      description: >-
+        Returns configuration data for creating an operator group,
+        such as which operations are available.
+      tags:
+        - OperatorGroups
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            The configuration data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperatorGroupDataForNew'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /operator-groups/{id}/data-for-edit:
+    parameters:
+      - $ref: '#/components/parameters/id'
+    get:
+      operationId: getOperatorGroupDataForEdit
+      summary: >-
+        Returns data for editing an operator group
+      description: >-
+        Returns configuration data for editing an operator group,
+        such as which operations are available.
+      tags:
+        - OperatorGroups
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            The configuration data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperatorGroupDataForEdit'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /operator-groups/{id}:
+    parameters:
+      - $ref: '#/components/parameters/id'
+    get:
+      operationId: viewOperatorGroup
+      summary: >-
+        Returns details of a specific operator group
+      description: >-
+        Returns information about an operator group, located by id
+      tags:
+        - OperatorGroups
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            The operator group data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OperatorGroupView'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      operationId: updateOperatorGroup
+      summary: >-
+        Updates an existing operator group.
+      description: >-
+        Updates an existing operator group.
+      tags:
+        - OperatorGroups
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      responses:
+        '204':
+          description: >-
+            The operator group was updated
+        '409':
+          description: >-
+            This operation expected an entity state, but it has resulted in a conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictError'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: >-
+            Input error. Either a validation error or the maximum allowed items was
+            exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      requestBody:
+        description: >-
+          The operator group to be edited
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OperatorGroupEdit'
+    delete:
+      operationId: deleteOperatorGroup
+      summary: >-
+        Removes an operator group.
+      description: >-
+        Removes an operator group.
+      tags:
+        - OperatorGroups
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      responses:
+        '204':
+          description: >-
+            The operator group was deleted
+        '409':
+          description: >-
+            This operation expected an entity state, but it has resulted in a conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictError'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /{user}/addresses/list-data:
     get:
       operationId: getUserAddressesListData
@@ -3024,6 +3724,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /{user}/addresses:
     get:
       operationId: listAddressesByUser
@@ -3152,6 +3853,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           application/json:
             schema:
               $ref: '#/components/schemas/AddressNew'
+  
   /{user}/addresses/primary:
     get:
       operationId: getUserPrimaryAddress
@@ -3209,6 +3911,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /{user}/addresses/data-for-new:
     get:
       operationId: getAddressDataForNew
@@ -3262,6 +3965,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /addresses/{id}/data-for-edit:
     get:
       operationId: getAddressDataForEdit
@@ -3316,6 +4020,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /addresses/{id}:
     get:
       operationId: viewAddress
@@ -3495,6 +4200,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /addresses/{id}/password-for-remove:
     get:
       operationId: getPasswordInputForRemoveAddress
@@ -3550,6 +4256,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /addresses/countries:
     get:
       operationId: listCountries
@@ -4911,6 +5618,212 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/PasswordInput'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /{user}/status:
+    parameters:
+      - $ref: '#/components/parameters/userNoSelf'
+    get:
+      operationId: getUserStatus
+      summary: >-
+        Returns the current user status and the status history
+      description: >-
+        Returns data containing information regarding the user status
+      tags:
+        - UserStatus
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            The user status data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserStatusData'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      operationId: changeUserStatus
+      summary: >-
+        Sets the new user status
+      description: >-
+        Sets the new user status. Managers have permissions to which statuses
+        are allowed. Some statuses are transient (
+        `active`, `blocked` and
+        `disabled`) while others are terminal
+        (`removed` and `purged`).
+        The `pending` status can never be managed by this
+        operation, but by validating the user registration.
+      tags:
+        - UserStatus
+      requestBody:
+        description: >-
+          The parameters for changing the status
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangeUserStatusParams'
+      responses:
+        '204':
+          description: >-
+            If the update is finished, nothing is returned
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /{user}/group:
+    parameters:
+      - $ref: '#/components/parameters/userNoSelf'
+    get:
+      operationId: getGroupMembershipData
+      summary: >-
+        Returns the current user / operator group and the change history
+      description: >-
+        Returns data containing information regarding the user / operator
+        group membership
+      tags:
+        - GroupMembership
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            The user / operator group membership data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GroupMembershipData'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      operationId: changeGroupMembership
+      summary: >-
+        Changes the user / operator group
+      description: >-
+        Sets the new user / operator group. Depending on the new group, new
+        permissions are granted / revoked to / from the user / operator.
+      tags:
+        - GroupMembership
+      requestBody:
+        description: >-
+          The parameters for changing the group
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangeGroupMembershipParams'
+      responses:
+        '204':
+          description: >-
+            If the update is finished, nothing is returned
         '401':
           description: >-
             Unauthorized access. Missing or invalid crendentials supplied for such
@@ -9150,7 +10063,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: key
           description: >-
             The principal or id of the device PIN.
-          in: query
+          in: path
           required: true
           schema:
             type: string      
@@ -9210,7 +10123,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: key
           description: >-
             The principal or id of the device PIN.
-          in: query
+          in: path
           required: true
           schema:
             type: string      
@@ -9270,7 +10183,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: key
           description: >-
             The principal or id of the device PIN.
-          in: query
+          in: path
           required: true
           schema:
             type: string      
@@ -9347,7 +10260,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: key
           description: >-
             The principal or id of the device PIN.
-          in: query
+          in: path
           required: true
           schema:
             type: string      
@@ -13198,7 +14111,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
       requestBody:
         description: >-
           A comment for the reject action the payer can set.
-        required: true
         content:
           application/json:
             schema:
@@ -13263,7 +14175,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
       requestBody:
         description: >-
           A comment for the cancel action the payee/manager can set.
-        required: true
         content:
           application/json:
             schema:
@@ -15713,7 +16624,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
       requestBody:
         description: >-
           Additional redeem data
-        required: true
         content:
           application/json:
             schema:
@@ -17740,7 +18650,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
       requestBody:
         description: >-
           The custom operation parameters
-        required: true
         content:
           application/json:
             schema:
@@ -18020,7 +18929,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
       requestBody:
         description: >-
           The custom operation parameters
-        required: true
         content:
           application/json:
             schema:
@@ -18211,7 +19119,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
       requestBody:
         description: >-
           Data of the original callback request sent by the external service
-        required: true
         content:
           application/json:
             schema:
@@ -18435,7 +19342,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
       requestBody:
         description: >-
           The custom operation parameters
-        required: true
         content:
           application/json:
             schema:
@@ -18769,7 +19675,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
       requestBody:
         description: >-
           The custom operation parameters
-        required: true
         content:
           application/json:
             schema:
@@ -19121,7 +20026,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
       requestBody:
         description: >-
           The custom operation parameters
-        required: true
         content:
           application/json:
             schema:
@@ -19461,7 +20365,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
       requestBody:
         description: >-
           The custom operation parameters
-        required: true
         content:
           application/json:
             schema:
@@ -19798,7 +20701,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
       requestBody:
         description: >-
           The custom operation parameters
-        required: true
         content:
           application/json:
             schema:
@@ -20992,6 +21894,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           text/plain:
             schema:
               type: string
+  
   /questions/{id}:
     get:
       operationId: getAdQuestion
@@ -21099,6 +22002,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /shopping-carts:
     get:
       operationId: getShoppingCarts
@@ -21155,6 +22059,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /shopping-carts/{id}:
     get:
       operationId: getShoppingCartDetails
@@ -21269,6 +22174,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /shopping-carts/{id}/adjust:
     post:
       operationId: adjustAndGetShoppingCartDetails
@@ -21325,6 +22231,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /shopping-carts/items/{ad}:
     post:
       operationId: addItemToShoppingCart
@@ -21559,6 +22466,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/ShoppingCartError'
+  
   /shopping-carts/{id}/data-for-checkout:
     get:
       operationId: getShoppingCartDataForCheckout
@@ -21694,6 +22602,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           application/json:
             schema:
               $ref: '#/components/schemas/ShoppingCartCheckout'
+  
   /{user}/orders:
     get:
       operationId: searchUserOrders
@@ -21832,6 +22741,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /orders/{order}:
     get:
       operationId: viewOrder
@@ -21885,6 +22795,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /orders/{order}/seller/data-for-set-delivery:
     get:
       operationId: getDataForSetDeliveryMethod
@@ -21917,6 +22828,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/PaymentError'
+  
   /orders/{order}/seller/set-delivery:
     post:
       operationId: setDeliveryMethod
@@ -21951,11 +22863,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
       requestBody:
         description: >-
           The parameters for setting the delivery method.
-        required: true
+        required: false
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/SetDeliveryMethod'
+  
   /orders/{order}/buyer/data-for-accept:
     get:
       operationId: getOrderDataForAcceptByBuyer
@@ -22009,6 +22922,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  
   /orders/{order}/buyer/accept:
     post:
       operationId: acceptOrderByBuyer
@@ -22056,11 +22970,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
       requestBody:
         description: >-
           The parameters for accepting the order.
-        required: true
+        required: false
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/AcceptOrderByBuyer'
+  
   /orders/{order}/seller/accept:
     post:
       operationId: acceptOrderBySeller
@@ -22097,11 +23012,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
       requestBody:
         description: >-
           The parameters for accepting the order.
-        required: true
+        required: false
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/AcceptOrderBySeller'
+  
   /orders/{order}/reject:
     post:
       operationId: rejectOrder
@@ -22169,7 +23085,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
       requestBody:
         description: >-
           The parameters for rejecting the order.
-        required: true
+        required: false
         content:
           application/json:
             schema:
@@ -25661,6 +26577,31 @@ components:
         - transfer
         - user
 
+    OperatorGroupAccountAccessEnum:
+      description: >
+        How an owner account can be accessed by operators
+        
+
+        Possible values are:
+
+        
+        - `full`: The account is fully visible
+        
+        - `incoming`: All (and only) incoming payments are visible
+        
+        - `none`: The account is not visible
+        
+        - `outgoing`: All (and only) outgoing payments are visible
+        
+        - `own`: Only payments performed / received by the operators are visible
+      type: string
+      enum:
+        - full
+        - incoming
+        - none
+        - outgoing
+        - own
+
     OrderStatusEnum:
       description: >
         The possible statuses for an order
@@ -27623,8 +28564,14 @@ components:
                 $ref: '#/components/schemas/Group'
             defaultGroups:
               description: >-
+                Use the groups returned in the query instead.
+              
+              
+              
                 The internal names (or ids, if missing) of the groups which should
                 be presented by default on user search
+              deprecated: true
+              x-remove-version: 4.14
               type: array
               items:
                 type: string
@@ -28396,6 +29343,12 @@ components:
         - $ref: '#/components/schemas/BaseAuth'
         - type: object
           properties:
+            pinInput:
+              description: >-
+                Returned when a PIN can be defined. Contains the information
+                for defining it.
+              allOf:
+                - $ref: '#/components/schemas/PinInput'          
             configuration:
               description: >-
                 The current configuration version
@@ -28685,17 +29638,15 @@ components:
             so, the user will have to validate it using its secondary access
             password, otherwise, all other actions will be denied.
           type: boolean
+        allowPin:
+          description: >-
+            Returns whether the configuration for the current channel has device PIN enabled. 
+          type: boolean      
         role:
           description: >-
             The main user role. Only returned if there is an authenticated user.
           allOf:
             - $ref: '#/components/schemas/RoleEnum'
-        secondaryDeviceAvailability:
-          description: >-
-            Returns the availability of device confirmations when used to confirm
-            the login.
-          allOf:
-            - $ref: '#/components/schemas/AvailabilityEnum'
 
     BaseCustomFieldValue:
       x-abstract: true
@@ -29312,6 +30263,24 @@ components:
             addressResult:
               $ref: '#/components/schemas/AdAddressResultEnum'
 
+    BasicFullProfileEditResult:
+      description: >-
+        Result of saving the full profile at once
+      type: object
+      properties:
+        createdLandLinePhones:
+          description: >-
+            Identifiers of created land-line phones
+          type: array
+          items:
+            type: string
+        createdMobilePhones:
+          description: >-
+            Identifiers of created mobile phones
+          type: array
+          items:
+            type: string
+
     BasicOperatorQueryFilters:
       description: >-
         Basic definitions for operators search filters
@@ -29357,25 +30326,61 @@ components:
           allOf:
             - $ref: '#/components/schemas/BasicProfileFieldEnum'
 
-    BasicUserDataForEdit:
+    BasicUserDataForNew:
       description: >-
-        Contains basic data used to edit a user profile
+        Contains basic data to register either a user or operator
       allOf:
         - $ref: '#/components/schemas/UserBasicData'
         - type: object
           properties:
-            emailPendingValidation:
+            allowSetSendActivationEmail:
               description: >-
-                The new e-mail address, which is still pending validation. Is only
-                returned when e-mail validation is enabled for edit profile, and the
-                user has changed the e-mail address.
-              type: string
-            binaryValues:
+                Whether the current user is allowed to skip the activateion e-mail
+              type: boolean
+            generatedUsername:
               description: >-
-                Holds the current values for file / image custom fields as lists of
-                `StoredFile`s / `Image`s.
-              allOf:
-                - $ref: '#/components/schemas/CustomFieldBinaryValues'
+                Indicates whether the login name is generated
+              type: boolean
+            phoneConfiguration:
+              $ref: '#/components/schemas/PhoneConfigurationForUserProfile'
+            passwordTypes:
+              description: >-
+                The password types that should be registered together with the user
+              type: array
+              items:
+                $ref: '#/components/schemas/PasswordTypeRegistration'
+
+    BasicUserManage:
+      description: >-
+        Contains the common fields for either creating or modifying a user / operator
+      type: object
+      x-implements: IUser
+      x-abstract: true
+      properties:
+        name:
+          type: string
+          description: >-
+            The user's full name
+        username:
+          type: string
+          description: >-
+            The user's login name
+        email:
+          type: string
+          description: >-
+            The user's e-mail
+        customValues:
+          type: object
+          description: >-
+            Holds the custom field values, keyed by field internal name or id. The
+            format of the value depends on the custom field type. In order to lookup
+            the custom fields, use either the `GET /users/data-for-new` (when
+            creating) or `GET /users/{user}/data-for-edit` (when modifying) a user,
+            and lookup each field by either internal name. Example: `{...,
+            "customValues": {"gender": "male", "birthDate":
+            "1980-10-27"}}`
+          additionalProperties:
+            type: string
 
     BasicUserQueryFilters:
       description: >-
@@ -29609,6 +30614,20 @@ components:
             The new password confirmation value. Is ignored unless
             `checkConfirmation` is set to `true`.
 
+    ChangeGroupMembershipParams:
+      description: >-
+        Parameters for changing a user / operator group
+      type: object
+      properties:
+        group:
+          description: >-
+            The new group id or internal name
+          type: string
+        comment:
+          description: >-
+            Comments for this group change
+          type: string
+
     ChangePassword:
       description: >-
         Contains fields used as parameters when changing a user's password
@@ -29662,6 +30681,18 @@ components:
             The new payment request expiration date.
           type: string
           format: date-time
+
+    ChangeUserStatusParams:
+      description: >-
+        Parameters for changing a user status
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/UserStatusEnum'
+        comment:
+          description: >-
+            Comments for this status change
+          type: string
 
     ClientView:
       description: >-
@@ -30993,21 +32024,33 @@ components:
         Contains data for editing the full profile of a user
       type: object
       properties:
+        userConfiguration:
+          $ref: '#/components/schemas/UserDataForEdit'
+        user:
+          $ref: '#/components/schemas/UserEdit'
+          
         display:
           type: string
           description: >-
+            DEPRECATED. Use `userConfiguration.details.display` instead.
+            
+            
             Contains the formatting of the user according to the configuration. Is
             only returned if no profile fields are marked to return in user list.
+          deprecated: true
+          x-remove-version: 4.14
         shortDisplay:
           type: string
           description: >-
+            DEPRECATED. Use `userConfiguration.details.shortDisplay` instead.
+            
+            
             Contains the short formatting of the user according to the
             configuration. Is only returned if no profile fields are marked to
             return in user list
-        userConfiguration:
-          $ref: '#/components/schemas/BasicUserDataForEdit'
-        user:
-          $ref: '#/components/schemas/UserEdit'
+          deprecated: true
+          x-remove-version: 4.14
+    
         phoneConfiguration:
           $ref: '#/components/schemas/PhoneConfigurationForUserProfile'
         landLinePhones:
@@ -31022,6 +32065,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PhoneEditWithId'
+          
         addressConfiguration:
           $ref: '#/components/schemas/AddressConfigurationForUserProfile'
         addresses:
@@ -31044,6 +32088,7 @@ components:
           type: object
           additionalProperties:
             $ref: '#/components/schemas/ContactInfoBinaryValuesForUserProfile'
+    
         imageConfiguration:
           $ref: '#/components/schemas/ImageConfigurationForUserProfile'
         images:
@@ -31052,6 +32097,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Image'
+    
         confirmationPasswordInput:
           description: >-
             If a confirmation password is used, contains the definitions on how to
@@ -31062,6 +32108,7 @@ components:
             (pinless).
           allOf:
             - $ref: '#/components/schemas/PasswordInput'
+            
 
     DataForLogin:
       description: >-
@@ -32018,38 +33065,28 @@ components:
     FullProfileEditResult:
       description: >-
         Result of saving the full profile at once
-      type: object
-      properties:
-        createdLandLinePhones:
-          description: >-
-            Identifiers of created land-line phones
-          type: array
-          items:
-            type: string
-        createdMobilePhones:
-          description: >-
-            Identifiers of created mobile phones
-          type: array
-          items:
-            type: string
-        createdAddresses:
-          description: >-
-            Identifiers of created addresses
-          type: array
-          items:
-            type: string
-        createdContactInfos:
-          description: >-
-            Identifiers of created additional contacts
-          type: array
-          items:
-            type: string
-        createdImages:
-          description: >-
-            Identifiers of created profile images
-          type: array
-          items:
-            type: string
+      allOf:
+      - $ref: '#/components/schemas/BasicFullProfileEditResult'
+      - type: object
+        properties:
+          createdAddresses:
+            description: >-
+              Identifiers of created addresses
+            type: array
+            items:
+              type: string
+          createdContactInfos:
+            description: >-
+              Identifiers of created additional contacts
+            type: array
+            items:
+              type: string
+          createdImages:
+            description: >-
+              Identifiers of created profile images
+            type: array
+            items:
+              type: string
 
     FullTextQueryFilters:
       description: >-
@@ -32292,6 +33329,60 @@ components:
               description: >-
                 The description set on the group to be displayed to the user
 
+    GroupMembershipData:
+      description: >-
+        Contains the current user / operator group, as well as other information
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+        status:
+          $ref: '#/components/schemas/UserStatusEnum'
+        group:
+          $ref: '#/components/schemas/EntityReference'
+        groupSets:
+          description: >-
+            List of group sets which can be referenced on groups on either
+            `possibleNewGroups` or `history.group`. Not sent for operators. 
+          type: array
+          items:
+            $ref: '#/components/schemas/EntityReference'
+        possibleNewGroups:
+          description: >-
+            If the authenticated user can change the user / operator to a new
+            group, contains the list of groups that can be assigned.
+          type: array
+          items:
+            $ref: '#/components/schemas/Group'
+        history:
+          description: >-
+            Contains the history entries for all group changes
+          type: array
+          items:
+            $ref: '#/components/schemas/GroupMembershipLog'
+          
+
+    GroupMembershipLog:
+      description: >-
+        Information regarding a specific group membership change
+      type: object
+      properties:
+        by:
+          $ref: '#/components/schemas/User'
+        group:
+          $ref: '#/components/schemas/Group'
+        period:
+          description: >-
+            The begin and end date the for this group.
+            The current group has no end date.
+          allOf:
+          - $ref: '#/components/schemas/DatePeriod'
+        comment:
+          description: >-
+            Comments supplied by the manager that performed the group change
+          type: string
+          
+
     HttpRequestData:
       description: >-
         Contains data of an HTTP request
@@ -32373,6 +33464,38 @@ components:
           $ref: '#/components/schemas/GeographicalCoordinate'
           description: >-
             The geolocation of the current address
+
+    IBasicUserNew:
+      description: >-
+        Interface containing the common properties to register a user / operator
+      x-interface: true
+      type: object
+      properties:
+        mobilePhones:
+          type: array
+          items:
+            $ref: '#/components/schemas/PhoneNew'
+          description: >-
+            Mobile phones to be registered together with the user
+        landLinePhones:
+          type: array
+          items:
+            $ref: '#/components/schemas/PhoneNew'
+          description: >-
+            Land-line phones to be registered together with the user
+        passwords:
+          type: array
+          items:
+            $ref: '#/components/schemas/PasswordRegistration'
+          description: >-
+            The initial passwords of the user
+        skipActivationEmail:
+          type: boolean
+          description: >-
+            When set to true, the activation e-mail is not sent to the
+            registered user. Can only be used when an administrator / broker is
+            registering a user, and ignored on public registrations (the e-mail
+            is always sent on public registrations).
 
     IContactInfo:
       description: >-
@@ -33387,32 +34510,36 @@ components:
             informationText:
               description: >-
                 A message to be displayed to the user when displaying the parameters
-                form
+                form. Only returned in contexts where the operation can be executed.
               type: string
             confirmationText:
               description: >-
                 A message to be shown to the user in order to confirm the operation
-                execution
+                execution. Only returned in contexts where the operation can be executed.
               type: string
             requireConfirmationPassword:
               description: >-
-                Indicates whether this operation requires confirmation password
+                Indicates whether this operation requires confirmation password.
+                Only returned in contexts where the operation can be executed.
               type: boolean
             hasFileUpload:
               description: >-
-                Indicates whether this operation accepts a file upload as input
+                Indicates whether this operation accepts a file upload as input.
+                Only returned in contexts where the operation can be executed.
               type: boolean
             allowExport:
               description: >-
                 Does this operation allows exporting the results as CSV? Only
                 returned if `resultType` is
-                `resultPage`
+                `resultPage`.
+                Only returned in contexts where the operation can be executed.
               type: boolean
             allowPrint:
               description: >-
                 Does this operation allows printing the results as PDF? Only
                 returned if `resultType` is
-                `resultPage`
+                `resultPage`.
+                Only returned in contexts where the operation can be executed.
               type: boolean
             missingOptionalParameters:
               description: >-
@@ -33420,6 +34547,7 @@ components:
                 opt-in to rely on the `showFormForMissingOptionalParameters` flag to
                 determine whether to show or not an input form if there's a missing
                 poptional form field.
+                Only returned in contexts where the operation can be executed.
               type: array
               items:
                 type: string
@@ -33428,6 +34556,7 @@ components:
                 The required custom fields without a value. This means the operation
                 will fail with a validation error if the parameters present in this
                 list are not given when run it.
+                Only returned in contexts where the operation can be executed.
               type: array
               items:
                 type: string
@@ -33435,7 +34564,8 @@ components:
               description: >-
                 Indicates whether a form to enter the missing optional parameters
                 must be shown. Only returned if the `missingOptionalParameters` list
-                is not empty and `scope` is  `internal`
+                is not empty and `scope` is  `internal`.
+                Only returned in contexts where the operation can be executed.
               type: boolean
             canRunDirectly:
               deprecated: true
@@ -33466,15 +34596,30 @@ components:
     
                 - All optional parametes were set or, if not, the option to show the
                 form in case of missing parameters is false.
+                
+                
+                Only returned in contexts where the operation can be executed.
               type: boolean
             scope:
               $ref: '#/components/schemas/OperationScopeEnum'
             resultType:
-              $ref: '#/components/schemas/OperationResultTypeEnum'
+              description: >-
+                The type of data returned after the operation is executed.
+                Only returned in contexts where the operation can be executed.
+              allOf:
+                - $ref: '#/components/schemas/OperationResultTypeEnum'
             adminMenu:
-              $ref: '#/components/schemas/AdminMenuEnum'
+              description: >-
+                In which administration menu the operation shows up.
+                Only returned in contexts where the operation can be executed.
+              allOf:
+                - $ref: '#/components/schemas/AdminMenuEnum'
             userMenu:
-              $ref: '#/components/schemas/UserMenuEnum'
+              description: >-
+                In which user menu the operation shows up.
+                Only returned in contexts where the operation can be executed.
+              allOf:
+                - $ref: '#/components/schemas/UserMenuEnum'
               
 
     OperationDataForRun:
@@ -33626,6 +34771,498 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/OperationPermissions'
+
+    OperatorDataForNew:
+      description: >-
+        Contains data used to register an operator
+      allOf:
+        - $ref: '#/components/schemas/BasicUserDataForNew'
+        - type: object
+          properties:
+            user:
+              description: >-
+                Details of user that will be the owner of the new operator
+              allOf:
+                - $ref: '#/components/schemas/User'
+            operator:
+              description: >-
+                The object that can be altered and posted back to register the operator
+              allOf:
+                - $ref: '#/components/schemas/OperatorNew'
+
+    OperatorGroupAccount:
+      description: >-
+        Settings for an account access for an operator group 
+      type: object
+      properties:
+        access:
+          $ref: '#/components/schemas/OperatorGroupAccountAccessEnum'
+        notificationAmount:
+          description: >-
+            The minimum / maximum amount for payment notifications to be sent
+          allOf:
+            - $ref: '#/components/schemas/DecimalRange'
+
+    OperatorGroupAccountView:
+      description: >-
+        Settings for an account access for an operator group
+      allOf:
+      - $ref: '#/components/schemas/OperatorGroupAccount'
+      - type: object
+        properties:
+          accountType:
+            $ref: '#/components/schemas/AccountType'
+
+    OperatorGroupBasicData:
+      description: >-
+        Contains data shared by both OperatorGroupDataForNew
+        and OperatorGroupDataForEdit
+      type: object
+      properties:
+        user:
+          description:
+            Details of the user that is the owner of the operator group
+          allOf:
+          - $ref: '#/components/schemas/User'
+        canChargebackPayments:
+          type: boolean
+          description: >-
+            Can the permission to chargeback payments be granted?
+        canReceivePayments:
+          type: boolean
+          description: >-
+            Can the permission to receive payments be granted?
+        canRequestPayments:
+          type: boolean
+          description: >-
+            Can the permission to request payments be granted?
+        canRedeemVouchers:
+          type: boolean
+          description: >-
+            Can the permission to redeem vouchers be granted?
+        canViewAdvertisements:
+          type: boolean
+          description: >-
+            Can the permission to view advertisements be granted?
+        canManageAdvertisements:
+          type: boolean
+          description: >-
+            Can the permission to manage advertisements be granted?
+        canBlockToken:
+          type: boolean
+          description: >-
+            Can the permission to block tokens (cards) be granted?
+        canCancelToken:
+          type: boolean
+          description: >-
+            Can the permission to cancel tokens (cards) be granted?
+        canEnableToken:
+          type: boolean
+          description: >-
+            Can the permission to enable tokens (cards) be granted?
+        canUnblockToken:
+          type: boolean
+          description: >-
+            Can the permission to unblock tokens (cards) be granted?
+        canRegisterUsersAsBroker:
+          type: boolean
+          description: >-
+            Can the permission to register users as broker be granted?
+        canHaveMessages:
+          type: boolean
+          description: >-
+            Can the permission over messages be granted?
+        canHaveNotifications:
+          type: boolean
+          description: >-
+            Can the permission over notificationsto be granted?
+        operations:
+          type: array
+          items:
+            $ref: '#/components/schemas/Operation'
+          description: >-
+            Custom operations that can be granted
+        recordTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecordType'
+          description: >-
+            Record types that can be granted
+        accountTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountType'
+          description: >-
+            Account types details for the account settings
+        paymentTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/TransferTypeWithCurrency'
+          description: >-
+            Payment types details for the payment settings
+            
+
+    OperatorGroupDataForEdit:
+      description: >-
+        Contains data for editing an existing operator group
+      allOf:
+        - $ref: '#/components/schemas/OperatorGroupBasicData'
+        - type: object
+          properties:
+            restrictPaymentsToUsers:
+              type: array
+              items:
+                $ref: '#/components/schemas/User'
+              description: >-
+                Details of the currently set users in the `restrictPaymentsToUsers`
+                property in `operatorGroup` (which have only the ids). 
+            operatorGroup:
+              $ref: '#/components/schemas/OperatorGroupEdit'
+              description: >-
+                The operator group that is being edited. This value can be modified
+                and sent back on `PUT /operator-groups/{id}`.
+            edit:
+              type: boolean
+              description: >-
+                Can the authenticated user edit this operator group?
+            remove:
+              type: boolean
+              description: >-
+                Can the authenticated user remove this operator group?
+
+    OperatorGroupDataForNew:
+      description: >-
+        Contains data for creating a new operator group
+      allOf:
+        - $ref: '#/components/schemas/OperatorGroupBasicData'
+        - type: object
+          properties:
+            operatorGroup:
+              description: >-
+                The operator group populated with the default fields. This value
+                can be modified and sent back on `POST /{user}/operator-groups`.
+              allOf:
+                - $ref: '#/components/schemas/OperatorGroupNew'
+
+    OperatorGroupEdit:
+      description: >-
+        Fields for editing an operator group.
+      allOf:
+        - $ref: '#/components/schemas/OperatorGroupManage'
+        - type: object
+          properties:
+            version:
+              type: integer
+              description: >-
+                The version stamp for the current object, used for optimistic locking. When
+                saving, the same version as previously received needs to be passed back. If
+                no one else has saved the object, the version will match and the object will
+                be updated. However, if someone other has saved the object, the version will
+                no longer match, and an error will be raised. This is used to prevent
+                multiple users (or processes) from updating the same object and unwilingly
+                overridding the property values, leading to data loss.
+
+    OperatorGroupManage:
+      description: >-
+        Common fields for either creating or editing an operator group
+      type: object
+      x-abstract: true
+      properties:
+        name:
+          type: string
+          description: >-
+            The operator group name
+        description:
+          type: string
+          description: >-
+            Optional description of the group
+    
+        editOwnProfile:
+          type: boolean
+          description: >-
+            Can operators of this group edit their own profile?
+        chargebackPayments:
+          type: boolean
+          description: >-
+            Can operators of this group chargeback payments received by the owner?
+        messages:
+          type: boolean
+          description: >-
+            Can operators of this group access the message box of the owner?
+        notifications:
+          type: boolean
+          description: >-
+            Can operators of this group own notifications?
+        receivePayments:
+          type: boolean
+          description: >-
+            Can operators of this group receive payments?
+        redeemVouchers:
+          type: boolean
+          description: >-
+            Can operators of this group redeem vouchers?
+        registerUsersAsBroker:
+          type: boolean
+          description: >-
+            Can operators of this group register users as broker?
+        requestPayments:
+          type: boolean
+          description: >-
+            Can operators of this group request payments?
+        viewAdvertisements:
+          type: boolean
+          description: >-
+            Can operators of this group view advertisements?
+        manageAdvertisements:
+          type: boolean
+          description: >-
+            Can operators of this group manage advertisements of the owner?
+        enableToken:
+          type: boolean
+          description: >-
+            Can operators of this group have tokens (cards)?
+        cancelToken:
+          type: boolean
+          description: >-
+            Can operators of this group cancel their own tokens (cards)?
+        blockToken:
+          type: boolean
+          description: >-
+            Can operators of this group block their own tokens (cards)?
+        unblockToken:
+          type: boolean
+          description: >-
+            Can operators of this group unblock their own tokens (cards)?
+        restrictPaymentsToUsers:
+          type: array
+          items:
+            type: string
+          description: >-
+            When set, operators of this group will only be able to perform
+            payments to one of this users
+        operations:
+          type: array
+          items:
+            type: string
+          description: >-
+            Ids / internal names of custom operators that operators of this group
+            will only be able to run
+        records:
+          type: array
+          items:
+            type: string
+          description: >-
+            Ids / internal names of record types that operators of this group will
+            only be able to access
+    
+        accounts:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/OperatorGroupAccount'
+          description: >-
+            Defines how operators access the owner accounts, and defines
+            restrictions on payment notifications. The key is the account type
+            id or internal name.
+        
+        payments:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/OperatorGroupPayment'
+          description: >-
+            Defines which payment types can be used by operators to perform
+            payments or authorize payments performed by other operators.
+            Also defines the maximum daily amount that can be paid per operator.
+            
+
+    OperatorGroupNew:
+      description: >-
+        Fields for a new operator group.
+      allOf:
+        - $ref: '#/components/schemas/OperatorGroupManage'
+
+    OperatorGroupPayment:
+      description: >-
+        Settings for payments for an operator group.
+      type: object
+      properties:
+        authorize:
+          type: boolean
+          description: >-
+            Can operators of this group authorize payments of this type which
+            were performed by other operators?
+        perform:
+          type: boolean
+          description: >-
+            Can operators of this group perform payments of this type?
+        requiresAuthorization:
+          type: boolean
+          description: >-
+            Do performed payments of this type by operators require authorization
+            by the owner or other operators?
+        maxAmountPerDay:
+          type: string
+          format: number
+          description: >-
+            Maximum amount of payments that operators of this group can perform
+            per day. 
+
+    OperatorGroupPaymentView:
+      description: >-
+        Settings for payments for an operator group.
+      allOf:
+      - $ref: '#/components/schemas/OperatorGroupPayment'
+      - type: object
+        properties:
+          paymentType:
+            $ref: '#/components/schemas/TransferTypeWithCurrency'
+
+    OperatorGroupView:
+      description: >-
+        Detailed information when viewing an operator group
+      allOf:
+        - $ref: '#/components/schemas/NamedEntity'
+        - type: object
+          properties:
+            user:
+              $ref: '#/components/schemas/User'
+              description: >-
+                The user which owns this operator group
+    
+            description:
+              type: string
+              description: >-
+                Optional description of the group
+        
+            editOwnProfile:
+              type: boolean
+              description: >-
+                Can operators of this group edit their own profile?
+            chargebackPayments:
+              type: boolean
+              description: >-
+                Can operators of this group chargeback payments received by the owner?
+            messages:
+              type: boolean
+              description: >-
+                Can operators of this group access the message box of the owner?
+            notifications:
+              type: boolean
+              description: >-
+                Can operators of this group own notifications?
+            receivePayments:
+              type: boolean
+              description: >-
+                Can operators of this group receive payments?
+            redeemVouchers:
+              type: boolean
+              description: >-
+                Can operators of this group redeem vouchers?
+            registerUsersAsBroker:
+              type: boolean
+              description: >-
+                Can operators of this group register users as broker?
+            requestPayments:
+              type: boolean
+              description: >-
+                Can operators of this group request payments?
+            viewAdvertisements:
+              type: boolean
+              description: >-
+                Can operators of this group view advertisements?
+            manageAdvertisements:
+              type: boolean
+              description: >-
+                Can operators of this group manage advertisements of the owner?
+            enableToken:
+              type: boolean
+              description: >-
+                Can operators of this group have tokens (cards)?
+            cancelToken:
+              type: boolean
+              description: >-
+                Can operators of this group cancel their own tokens (cards)?
+            blockToken:
+              type: boolean
+              description: >-
+                Can operators of this group block their own tokens (cards)?
+            unblockToken:
+              type: boolean
+              description: >-
+                Can operators of this group unblock their own tokens (cards)?
+            restrictPaymentsToUsers:
+              type: array
+              items:
+                $ref: '#/components/schemas/User'
+              description: >-
+                When set, operators of this group will only be able to perform
+                payments to one of this users
+            operations:
+              type: array
+              items:
+                $ref: '#/components/schemas/Operation'
+              description: >-
+                Custom operators that operators of this group will only be able to run
+            records:
+              type: array
+              items:
+                $ref: '#/components/schemas/RecordType'
+              description: >-
+                Record types that operators of this group will only be able to access
+        
+            accounts:
+              type: array
+              items:
+                $ref: '#/components/schemas/OperatorGroupAccountView'
+              description: >-
+                Settings for the access operators will have over owner accounts.
+            
+            payments:
+              type: array
+              items:
+                $ref: '#/components/schemas/OperatorGroupPaymentView'
+              description: >-
+                Settings for payments that can be performed by operators.
+
+    OperatorNew:
+      description: >-
+        Contains data used to register an operator. All basic profile fields (full
+        name, login name, e-mail, phones and addresses) can be enabled or disabled
+        on Cyclos, via products.
+      x-implements: IBasicUserNew
+      allOf:
+        - $ref: '#/components/schemas/BasicUserManage'
+        - type: object
+          properties:
+            group:
+              type: string
+              description: >-
+                The operator group. When not specified the operator will be an
+                'alias', that means, will have all permissions of his owner.
+            mobilePhones:
+              type: array
+              items:
+                $ref: '#/components/schemas/PhoneNew'
+              description: >-
+                Mobile phones to be registered together with the user
+            landLinePhones:
+              type: array
+              items:
+                $ref: '#/components/schemas/PhoneNew'
+              description: >-
+                Land-line phones to be registered together with the user
+            passwords:
+              type: array
+              items:
+                $ref: '#/components/schemas/PasswordRegistration'
+              description: >-
+                The initial passwords of the user
+            skipActivationEmail:
+              type: boolean
+              description: >-
+                When set to true, the activation e-mail is not sent to the
+                registered user. Can only be used when an administrator / broker is
+                registering a user, and ignored on public registrations (the e-mail
+                is always sent on public registrations).
 
     OrderDataForAcceptByBuyer:
       description: >-
@@ -33980,14 +35617,11 @@ components:
                 or required.
               allOf:
                 - $ref: '#/components/schemas/AvailabilityEnum'
-            minPinLength:
+            pinInput:
               description: >-
                 The device PIN min length. Only if `pinAvailability` is not `disabled`
-              type: integer
-            maxPinLength:
-              description: >-
-                The device PIN max length. Only if `pinAvailability` is not `disabled`          
-              type: integer
+              allOf:
+                - $ref: '#/components/schemas/PinInput'
             otpSendMediums:
               description: >-
                 Only for `otp`, the available mediums for the
@@ -34967,6 +36601,20 @@ components:
                 Only applicable if this represents a mobile phone. Whether this mobile is
                 verified. Can only be directly set by administrators. Regular users need to
                 verify it.
+
+    PinInput:
+      description: >-
+        Contains all information for a PIN entry. PINs are always numeric. 
+      type: object
+      properties:
+        minLength:
+          description: >-
+            The minimum allowed PIN length
+          type: integer
+        maxLength:
+          description: >-
+            The maximum allowed PIN length
+          type: integer
 
     PosError:
       description: >-
@@ -38031,7 +39679,7 @@ components:
       description: >-
         Contains data used to edit a user profile
       allOf:
-        - $ref: '#/components/schemas/BasicUserDataForEdit'
+        - $ref: '#/components/schemas/UserBasicData'
         - type: object
           properties:
             details:
@@ -38041,9 +39689,25 @@ components:
                 - $ref: '#/components/schemas/User'
             user:
               description: >-
-                The object that can be altered and posted back to save the user
+                The object that can be altered and posted back to save the
+                user / operator
               allOf:
                 - $ref: '#/components/schemas/UserEdit'
+            role:
+              $ref: '#/components/schemas/RoleEnum'
+    
+            emailPendingValidation:
+              description: >-
+                The new e-mail address, which is still pending validation. Is only
+                returned when e-mail validation is enabled for edit profile, and the
+                user has changed the e-mail address.
+              type: string
+            binaryValues:
+              description: >-
+                Holds the current values for file / image custom fields as lists of
+                `StoredFile`s / `Image`s.
+              allOf:
+                - $ref: '#/components/schemas/CustomFieldBinaryValues'
             confirmationPasswordInput:
               description: >-
                 If a confirmation password is used, contains the definitions on how to
@@ -38086,31 +39750,15 @@ components:
       description: >-
         Contains data used to register a user
       allOf:
-        - $ref: '#/components/schemas/UserBasicData'
+        - $ref: '#/components/schemas/BasicUserDataForNew'
         - type: object
           properties:
-            allowSetSendActivationEmail:
-              description: >-
-                Whether the current user is allowed to skip the activateion e-mail
-              type: boolean
-            generatedUsername:
-              description: >-
-                Indicates whether the login name is generated
-              type: boolean
             addressConfiguration:
               $ref: '#/components/schemas/AddressConfigurationForUserProfile'
-            phoneConfiguration:
-              $ref: '#/components/schemas/PhoneConfigurationForUserProfile'
             contactInfoConfiguration:
               $ref: '#/components/schemas/ContactInfoConfigurationForUserProfile'
             imageConfiguration:
               $ref: '#/components/schemas/ImageConfigurationForUserProfile'
-            passwordTypes:
-              description: >-
-                The password types that should be registered together with the user
-              type: array
-              items:
-                $ref: '#/components/schemas/PasswordTypeRegistration'
             user:
               description: >-
                 The object that can be altered and posted back to register the user
@@ -38184,9 +39832,9 @@ components:
 
     UserEdit:
       description: >-
-        Contains data used to edit a user profile. Only the basic and custom profile
-        fields can be edited in this operation. Addresses, phones and images are
-        managed through separated paths.
+        Contains data used to edit a user / operator profile fields.
+        Operators are always "hidden", so the `hiddenFields` property
+        don't apply to them. 
       allOf:
         - $ref: '#/components/schemas/UserManage'
         - type: object
@@ -38215,46 +39863,23 @@ components:
                 Country code used to specify user's language
 
     UserManage:
+      x-abstract: true
       description: >-
         Contains the fields for either creating or modifying a user
-      type: object
-      x-implements: IUser
-      x-abstract: true
-      properties:
-        name:
-          type: string
-          description: >-
-            The user's full name
-        username:
-          type: string
-          description: >-
-            The user's login name
-        email:
-          type: string
-          description: >-
-            The user's e-mail
-        customValues:
-          type: object
-          description: >-
-            Holds the custom field values, keyed by field internal name or id. The
-            format of the value depends on the custom field type. In order to lookup
-            the custom fields, use either the `GET /users/data-for-new` (when
-            creating) or `GET /users/{user}/data-for-edit` (when modifying) a user,
-            and lookup each field by either internal name. Example: `{...,
-            "customValues": {"gender": "male", "birthDate":
-            "1980-10-27"}}`
-          additionalProperties:
-            type: string
-        hiddenFields:
-          type: array
-          items:
-            type: string
-          description: >-
-            An array with the internal names of either the basic or custom fields
-            that should be hidden from other users. Currently the only basic profile
-            field that can be hidden is email. Any other will be considered a custom
-            field, and should be the same key as used in the 'customValues'
-            property.
+      allOf:
+      - $ref: '#/components/schemas/BasicUserManage'
+      - type: object
+        properties:
+          hiddenFields:
+            type: array
+            items:
+              type: string
+            description: >-
+              An array with the internal names of either the basic or custom fields
+              that should be hidden from other users. Currently the only basic profile
+              field that can be hidden is email. Any other will be considered a custom
+              field, and should be the same key as used in the 'customValues'
+              property.
 
     UserMarketplacePermissions:
       description: >-
@@ -38292,6 +39917,7 @@ components:
         login name, e-mail, phones, addresses and image) can be enabled or disabled
         on Cyclos, via products. Also, the available custom fields and whether they
         can be hidden depend on the products the selected group has.
+      x-implements: IBasicUserNew
       allOf:
         - $ref: '#/components/schemas/UserManage'
         - type: object
@@ -38300,12 +39926,6 @@ components:
               type: string
               description: >-
                 The initial user group
-            addresses:
-              type: array
-              items:
-                $ref: '#/components/schemas/AddressNew'
-              description: >-
-                Addresses to be registered together with the user
             mobilePhones:
               type: array
               items:
@@ -38318,18 +39938,31 @@ components:
                 $ref: '#/components/schemas/PhoneNew'
               description: >-
                 Land-line phones to be registered together with the user
-            contactInfos:
-              type: array
-              items:
-                $ref: '#/components/schemas/ContactInfoNew'
-              description: >-
-                Additional contacts to be registered together with the user
             passwords:
               type: array
               items:
                 $ref: '#/components/schemas/PasswordRegistration'
               description: >-
                 The initial passwords of the user
+            skipActivationEmail:
+              type: boolean
+              description: >-
+                When set to true, the activation e-mail is not sent to the
+                registered user. Can only be used when an administrator / broker is
+                registering a user, and ignored on public registrations (the e-mail
+                is always sent on public registrations).
+            addresses:
+              type: array
+              items:
+                $ref: '#/components/schemas/AddressNew'
+              description: >-
+                Addresses to be registered together with the user
+            contactInfos:
+              type: array
+              items:
+                $ref: '#/components/schemas/ContactInfoNew'
+              description: >-
+                Additional contacts to be registered together with the user
             images:
               type: array
               items:
@@ -38348,13 +39981,6 @@ components:
               description: >-
                 When there are agreements that need to be accepted for registration,
                 this property must be passed with the value true
-            skipActivationEmail:
-              type: boolean
-              description: >-
-                When set to true, the activation e-mail is not sent to the
-                registered user. Can only be used when an administrator / broker is
-                registering a user, and ignored on public registrations (the e-mail
-                is always sent on public registrations).
             asMember:
               type: boolean
               description: >-
@@ -38382,6 +40008,28 @@ components:
                 personalize a tag for the user.
               allOf:
                 - $ref: '#/components/schemas/NfcTokenWithChallengeParameter'
+
+    UserOperatorGroupsListData:
+      description: >-
+        Contains, besides the user's operator groups, additional data for
+        their management
+      type: object
+      properties:
+        canManage:
+          description: >-
+            Indicates whether the operator groups can be managed by the authenticated user
+          type: boolean
+        canCreate:
+          description: >-
+            Indicates whether the authenticated user can create a new operator groups for
+            this user
+          type: boolean
+        operatorGroups:
+          description: >-
+            The operator groups list
+          type: array
+          items:
+            $ref: '#/components/schemas/EntityReference'
 
     UserOperatorsDataForSearch:
       type: object
@@ -38854,6 +40502,51 @@ components:
                 The user group. Only returned when the `includeGroupSet` parameter
                 is set to `true` and the current user can see other users' group
                 set.
+
+    UserStatusData:
+      description: >-
+        Contains the current user status, as well as other information
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+        status:
+          $ref: '#/components/schemas/UserStatusEnum'
+        possibleNewStatuses:
+          description: >-
+            If the authenticated user can manage the given user's status,
+            contains the list of statuses that can be assigned.
+          type: array
+          items:
+            $ref: '#/components/schemas/UserStatusEnum'
+        history:
+          description: >-
+            Contains the history entries for all status changes
+          type: array
+          items:
+            $ref: '#/components/schemas/UserStatusLog'
+          
+
+    UserStatusLog:
+      description: >-
+        Information regarding a specific status change
+      type: object
+      properties:
+        by:
+          $ref: '#/components/schemas/User'
+        status:
+          $ref: '#/components/schemas/UserStatusEnum'
+        period:
+          description: >-
+            The begin and end date the for this status.
+            The current status has no end date.
+          allOf:
+          - $ref: '#/components/schemas/DatePeriod'
+        comment:
+          description: >-
+            Comments supplied by the manager that performed the status change
+          type: string
+          
 
     UserView:
       description: >-
