@@ -90,6 +90,8 @@ export class ApiHelper {
         return `/banking/transaction/${notification.entityId}`;
       case NotificationEntityTypeEnum.TRANSFER:
         return `/banking/transfer/${notification.entityId}`;
+      case NotificationEntityTypeEnum.MARKETPLACE:
+        return `/marketplace/view/${notification.entityId}`;
     }
     return undefined;
   }
