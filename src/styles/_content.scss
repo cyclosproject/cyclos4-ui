@@ -1,5 +1,40 @@
 @import 'src/definitions';
 
+.primary-color {
+  color: $primary;
+}
+.primary-bg {
+  background-color: $primary;
+  color: color-yiq($primary);
+}
+.secondary-color {
+  color: $secondary;
+}
+.secondary-bg {
+  background-color: $secondary;
+  color: color-yiq($secondary);
+}
+.accent-color {
+  color: $accent;
+}
+.accent-bg {
+  background-color: $accent;
+  color: color-yiq($accent);
+}
+.body-color {
+  color: $body-color;
+}
+.body-bg {
+  background-color: $body-bg;
+  color: $body-color;
+}
+.faded-color {
+  color: $faded-color;
+}
+.section-border-color {
+  border-color: $section-border-color;
+}
+
 .card {
   color: $card-color;
   border-color: $card-border-color;
@@ -48,5 +83,25 @@ body.dark {
     .card-body {
       color: $card-color-dark;
     }
+  }
+  .section-border-color {
+    border-color: $section-border-color-dark;
+  }
+  .accent-color {
+    color: $accent-dark;
+  }
+  .accent-bg {
+    background-color: $accent-dark;
+    color: color-yiq($accent-dark);
+  }
+  .faded-color {
+    color: $faded-color-dark;
+  }
+  .body-color {
+    color: $body-color-dark;
+  }
+  .body-bg {
+    background-color: $body-bg-dark;
+    color: $body-color-dark;
   }
 }

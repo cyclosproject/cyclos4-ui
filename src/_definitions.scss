@@ -58,10 +58,10 @@ $link-color: $accent;
 $link-hover-color: darken($link-color, 15%);
 
 // Global layout for dark background
-$body-bg-dark: #303030;
+$body-bg-dark: #2a2a2a;
 $body-color-dark: color-yiq($body-bg-dark);
-$section-border-color-dark: #202020;
-$section-bg-dark: #424242;
+$section-border-color-dark: #171717;
+$section-bg-dark: #232323;
 $section-color-dark: $body-color-dark;
 $link-color-dark: $accent-dark;
 $link-hover-color-dark: lighten($link-color-dark, 15%);

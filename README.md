@@ -452,6 +452,24 @@ export function setup() {
 }
 ```
 
+### Content style that adapts to both light and dark themes
+
+Users can choose whether they want a light or dark theme. When writing custom content, users will get a better experience if the content style automatically adapts to the preference.
+
+The `body` tag has the `dark` class added for users that prefer the dark theme. Also, several class names are provided which adapt to light / dark variants. They are based on variables set on `src/_definitions.scss`, and are:
+
+- `primary-color`: Sets the `color` property to the primary theme color. Is invariant regarding light / dark theme.
+- `primary-bg`: Sets the `background-color` property to the primary theme color, and the `color` property to a contrast color, allowing readable text. Is invariant regarding light / dark theme.
+- `secondary-color`: Sets the `color` property to the secondary theme color. Is invariant regarding light / dark theme.
+- `secondary-bg`: Sets the `background-color` property to the secondary theme color, and the `color` property to a contrast color, allowing readable text. Is invariant regarding light / dark theme.
+- `accent-color`: Sets the `color` property to the accent theme color, which defaults to the primary color, but can be set to a different color on light / dark themes.
+- `accent-bg`: Sets the `background-color` property to the accent theme color, and the `color` property to a contrast color, allowing readable text.
+- `body-color`: Sets the `color` property to the body text color, which can be set to a different color on light / dark themes.
+- `body-bg`: Sets the `background-color` property to the body background color, and the `color` property to the body text color, allowing readable text.
+- `faded-color`: Sets the `color` property to the body faded color, which can be set to a different color on light / dark themes.
+- `section-border-color`: Sets the `border-color` property to the general border color, adapting to light / dark theme. However, no border style / width is defined.
+
+
 ### Creating links to other pages
 
 When linking to other pages from a custom page, special care is needed to not trigger a full page reload, as simply assigning a new URL would make the browser reload the entire application, hurting the user experience.

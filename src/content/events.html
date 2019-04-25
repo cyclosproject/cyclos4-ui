@@ -2,7 +2,8 @@
   .event {
     padding: 0.5rem 0;
     display: flex;
-    border-bottom: 1px solid #dee2e6;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
   }
 
   .event-date,
@@ -11,7 +12,8 @@
   }
 
   .event-date {
-    border-right: 1px solid #dee2e6;
+    border-right-width: 1px;
+    border-right-style: solid;
     text-align: center;
     flex: 0 0 6rem;
   }
@@ -23,7 +25,6 @@
   .day-of-month {
     font-weight: 500;
     font-size: 1.2em;
-    color: #1e88e5;
   }
 
   .event-description {
@@ -39,14 +40,9 @@
     margin-bottom: 0.1rem;
   }
 
-  .event-text {
-    color: #757575;
-  }
-
   .notice {
     font-size: 0.9em;
     font-style: italic;
-    color: #757575;
     text-align: center;
     padding: 1rem;
   }
@@ -60,12 +56,12 @@
 
 </style>
 <div class="events">
-  <div class="event">
-    <div class="event-date">
+  <div class="event section-border-color">
+    <div class="event-date section-border-color">
       <div class="day-of-week">
         Tue
       </div>
-      <div class="day-of-month">
+      <div class="day-of-month accent-color">
         Dec 25
       </div>
       <div class="year">
@@ -74,16 +70,16 @@
     </div>
     <div class="event-description">
       <div class="event-title">Christmas day</div>
-      <div class="event-text">Christmas dinner at eight o'clock</div>
+      <div class="faded-color">Christmas dinner at eight o'clock</div>
     </div>
   </div>
 
-  <div class="event">
-    <div class="event-date">
+  <div class="event section-border-color">
+    <div class="event-date section-border-color">
       <div class="day-of-week">
         Tue
       </div>
-      <div class="day-of-month">
+      <div class="day-of-month accent-color">
         Jan 1
       </div>
       <div class="year">
@@ -92,16 +88,16 @@
     </div>
     <div class="event-description">
       <div class="event-title">New year</div>
-      <div class="event-text">Happy new year to everybody!</div>
+      <div class="faded-color">Happy new year to everybody!</div>
     </div>
   </div>
 
-  <div class="event">
-    <div class="event-date">
+  <div class="event section-border-color">
+    <div class="event-date section-border-color">
       <div class="day-of-week">
         Thu
       </div>
-      <div class="day-of-month">
+      <div class="day-of-month accent-color">
         Jan 17
       </div>
       <div class="year">
@@ -110,16 +106,16 @@
     </div>
     <div class="event-description">
       <div class="event-title">Cyclos meeting</div>
-      <div class="event-text">New exciting plans for the coming year</div>
+      <div class="faded-color">New exciting plans for the coming year</div>
     </div>
   </div>
 
-  <div class="event">
-    <div class="event-date">
+  <div class="event section-border-color">
+    <div class="event-date section-border-color">
       <div class="day-of-week">
         Tue
       </div>
-      <div class="day-of-month">
+      <div class="day-of-month accent-color">
         Mar 5
       </div>
       <div class="year">
@@ -128,12 +124,12 @@
     </div>
     <div class="event-description">
       <div class="event-title">Carnaval</div>
-      <div class="event-text">Let's enjoy the traditional Carnaval at Rio de
+      <div class="faded-color">Let's enjoy the traditional Carnaval at Rio de
         Janeiro</div>
     </div>
   </div>
 
 </div>
-<div class="notice">
+<div class="notice faded-color">
   This is an example of content that could be fetched from an external source
 </div>
