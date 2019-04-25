@@ -222,8 +222,8 @@ $spaced-label-values: (
   outline: none !important;
 }
 .select-option.selected {
-  color: $button-color !important;
-  background-color: color-yiq($button-color) !important;
+  color: color-yiq($button-color) !important;
+  background-color: $button-color !important;
 }
 @include media-breakpoint-up(sm) {
   .select-option {
@@ -318,8 +318,8 @@ body.dark {
     background-color: $input-bg-dark;
   }
   .select-option.selected {
-    color: $button-color-dark !important;
-    background-color: color-yiq($button-color-dark) !important;
+    color: color-yiq($button-color-dark) !important;
+    background-color: $button-color-dark !important;
   }
   .select-option:hover, .select-option:focus {
     color: $list-group-hover-color-dark;
