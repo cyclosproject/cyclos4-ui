@@ -20,38 +20,30 @@ button.btn-transparent {
   }
 }
 
+.btn-primary {
+  @include button-variant($button-color, $button-border-color);
+}
+.btn-outline-primary {
+  @include button-outline-variant($button-color);
+}
+
+
 .btn-icon {
   padding: 0.4rem 0.4rem 0.4rem 0.6rem;
   width: 2.6rem;
+  @include button-variant($button-icon-bg, $button-icon-border-color);
   color: $button-icon-color;
-  background-color: $button-icon-bg;
-  border: 1px solid $button-icon-border-color;
-  &.hover, &:focus {
-    color: $button-icon-hover-color;
-    background-color: $button-icon-hover-bg;
-    border-color: $button-icon-hover-border-color;
-  }
-  &.active {
-    color: $button-icon-active-color;
-    background-color: $button-icon-active-bg;
-    border-color: $button-icon-active-border-color;
-  }
 }
 
 body.dark {
+  .btn-primary {
+    @include button-variant($button-color-dark, $button-border-color-dark);
+  }
+  .btn-outline-primary {
+    @include button-outline-variant($button-color-dark);
+  }
   .btn-icon {
+    @include button-variant($button-icon-bg-dark, $button-icon-border-color-dark);
     color: $button-icon-color-dark;
-    background-color: $button-icon-bg-dark;
-    border-color: $button-icon-border-color-dark;
-    &.hover, &:focus {
-      color: $button-icon-hover-color-dark;
-      background-color: $button-icon-hover-bg-dark;
-      border-color: $button-icon-hover-border-color-dark;
-    }
-    &.active {
-      color: $button-icon-active-color-dark;
-      background-color: $button-icon-active-bg-dark;
-      border-color: $button-icon-active-border-color-dark;
-    }
   }
 }

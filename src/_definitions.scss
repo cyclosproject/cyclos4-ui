@@ -1,10 +1,7 @@
-// Primary and secondary colors
+// Base colors
 $primary: #1e88e5;
-$secondary: #f29220;
 $accent: $primary;
 $accent-dark: $primary;
-
-// Additional colors
 $faded-color: #757575;
 $faded-color-dark: #757575;
 $theme-color: darken($primary, 10%);
@@ -56,6 +53,7 @@ $section-color: $body-color;
 $border-color: $gray-300;
 $link-color: $accent;
 $link-hover-color: darken($link-color, 15%);
+$backdrop-bg: rgba(0, 0, 0, 0.5);
 
 // Global layout for dark background
 $body-bg-dark: #2a2a2a;
@@ -65,6 +63,7 @@ $section-bg-dark: #232323;
 $section-color-dark: $body-color-dark;
 $link-color-dark: $accent-dark;
 $link-hover-color-dark: lighten($link-color-dark, 15%);
+$backdrop-bg-dark: rgba(0, 0, 0, 0.5);
 
 // Headers
 $h1-color: $accent;
@@ -191,27 +190,26 @@ $sidenav-icon-color-dark: $faded-color-dark;
 $sidenav-border-color-dark: $sidenav-icon-color-dark;
 
 // Forms
-$input-bg: white;
-$input-disabled-bg: $gray-200;
-$input-color: $gray-700;
 $input-border-color: $gray-400;
+$input-bg: white;
+$input-color: $gray-700;
+$input-disabled-bg: $gray-200;
+$input-disabled-color: $input-color;
+$input-disabled-border-color: $input-border-color;
 $input-focus-bg: $input-bg;
-$input-focus-border-color: lighten($component-active-bg, 25%);
+$input-focus-border-color: lighten($accent, 10%);
 $input-focus-color: $input-color;
+$input-focus-box-shadow: 0 0 0 0.2rem rgba($accent, .25);
 $input-placeholder-color: $gray-500;
 $input-plaintext-color: $body-color;
 $required-marker-color: $red;
 $list-group-hover-color: $input-color;
 $list-group-hover-bg: $menu-bar-hover-bg;
+$button-color: $accent;
+$button-border-color: darken($button-color, 10%);
 $button-icon-color: $gray-700;
 $button-icon-bg: $gray-100;
 $button-icon-border-color: #d3d9df;
-$button-icon-active-color: $button-icon-color;
-$button-icon-active-bg: #dae0e5;
-$button-icon-active-border-color: $button-icon-border-color;
-$button-icon-hover-color: darken($button-icon-color, 10%);
-$button-icon-hover-bg: darken($button-icon-bg, 10%);
-$button-icon-hover-border-color: $button-icon-border-color;
 $label-color: $gray-700;
 $input-group-addon-color: $input-color;
 $input-group-addon-bg: $gray-100;
@@ -221,28 +219,27 @@ $custom-select-indicator: str-replace(url("data:image/svg+xml,%3csvg xmlns='http
 $custom-select-background: $custom-select-indicator no-repeat right $custom-select-padding-x center / $custom-select-bg-size;
 
 // Forms with dark background
+$input-border-color-dark: $border-color-dark;
 $input-bg-dark: #363636;
-$input-disabled-bg-dark: #262626;
 $input-color-dark: white;
-$input-border-color-dark: #181818;
+$input-disabled-bg-dark: #262626;
+$input-disabled-color-dark: $input-color-dark;
+$input-disabled-border-color-dark: $input-border-color-dark;
 $input-focus-bg-dark: $input-bg-dark;
-$input-focus-border-color-dark: lighten($component-active-bg, 25%);
+$input-focus-border-color-dark: darken($accent-dark, 10%);
 $input-focus-color-dark: $input-color-dark;
+$input-focus-box-shadow-dark: 0 0 0 0.2rem rgba($accent-dark, .25);
 $input-placeholder-color-dark: $faded-color-dark;
 $input-plaintext-color-dark: $body-color-dark;
 $required-marker-color-dark: $red;
 $list-group-hover-color-dark: $input-color-dark;
 $list-group-hover-bg-dark: $menu-bar-hover-bg-dark;
 $input-group-addon-bg-dark: transparent;
-$button-icon-color-dark: white;
+$button-color-dark: $accent-dark;
+$button-border-color-dark: darken($button-color-dark, 10%);
+$button-icon-color-dark: $input-color-dark;
 $button-icon-bg-dark: $input-bg-dark;
 $button-icon-border-color-dark: $input-border-color-dark;
-$button-icon-active-color-dark: $button-icon-color-dark;
-$button-icon-active-bg-dark: darken($button-icon-bg-dark, 10%);
-$button-icon-active-border-color-dark: $button-icon-border-color-dark;
-$button-icon-hover-color-dark: darken($button-icon-color-dark, 5%);
-$button-icon-hover-bg-dark: darken($button-icon-bg-dark, 5%);
-$button-icon-hover-border-color-dark: $button-icon-border-color-dark;
 $label-color-dark: darken($body-color-dark, 10%);
 $input-group-addon-color-dark: $input-color-dark;
 $input-group-addon-bg-dark: darken($input-bg-dark, 5%);
@@ -414,11 +411,11 @@ $pagination-disabled-color-dark: $card-color-dark;
 $pagination-disabled-bg-dark: $card-bg-dark;
 $pagination-disabled-border-color-dark: $card-border-color-dark;
 
-// General
+// Other specific colors
 $positive-color: $green;
 $negative-color: $red;
+$chart-color: #f29220;
 $total-amount-color: $green;
 $total-amount-size: 2rem;
-$backdrop-bg: rgba(0, 0, 0, 0.5);
 $management-icon-color: $gray-500;
 $management-icon-color-dark: $gray-600;

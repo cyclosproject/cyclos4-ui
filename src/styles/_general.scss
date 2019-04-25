@@ -3,6 +3,7 @@
 :root {
   --font-import-url: "#{$font-import-url}";
   --theme-color: #{$theme-color};
+  --chart-color: #{$chart-color};
   // Will be updated dynamically
   --window-width: "1000px";
 }
@@ -67,6 +68,13 @@ hr {
   opacity: 0;
   transition: opacity 0.3s;
 }
+
+body.dark {
+  .backdrop {
+    background-color: $backdrop-bg-dark;
+  }
+}
+
 
 /* Margins / paddings according to the layout spacer */
 .my-ls, .mt-ls {

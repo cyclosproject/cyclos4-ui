@@ -147,7 +147,7 @@ export class AppComponent implements OnInit {
       return;
     }
     this.layout.primaryColor = primaryColor;
-    this.layout.secondaryColor = style.getPropertyValue('--secondary').trim();
+    this.layout.chartColor = style.getPropertyValue('--chart-color').trim();
     const id = 'themeColorMeta';
     let meta: HTMLMetaElement = document.getElementById(id) as HTMLMetaElement;
     if (!meta) {

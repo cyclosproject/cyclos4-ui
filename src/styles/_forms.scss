@@ -67,16 +67,23 @@ label {
   }
 }
 
-.form-control {
+.form-control, .custom-select {
   color: $input-color;
   background-color: $input-bg;
   border: $input-border-width solid $input-border-color;
   &::placeholder {
     color: $input-placeholder-color;
   }
-  &:disabled,
-  &[readonly] {
+  &:focus {
+    background-color: $input-focus-bg;
+    color: $input-focus-color;
+    border-color: $input-focus-border-color;
+    box-shadow: $input-focus-box-shadow;
+  }
+  &:disabled, &[readonly] {
     background-color: $input-disabled-bg;
+    color: $input-disabled-color;
+    border-color: $input-disabled-border-color;
   }
 }
 select.form-control {
@@ -134,9 +141,25 @@ input[type=number] {
   }
 }
 
-.custom-control-input:checked ~ .custom-control-label::before {
-  border: none;
+.custom-control-input{
+  &:focus ~ .custom-control-label::before {
+    box-shadow: $input-focus-box-shadow;
+  }
+  &:not(:disabled):active ~ .custom-control-label::before {
+    color: color-yiq($button-color);
+    background-color: rgba($button-color, .5);
+    border-color: $button-border-color;
+    @include box-shadow($input-focus-box-shadow);
+  }
+  &:checked ~ .custom-control-label::before {
+    background-color: $button-color;
+    border-color: $button-border-color;
+  }
+  &:checked ~ .custom-control-label::after {
+    color: color-yiq($button-color);
+  }
 }
+
 
 .invalid-feedback {
   font-size: 85%;
@@ -199,8 +222,8 @@ $spaced-label-values: (
   outline: none !important;
 }
 .select-option.selected {
-  background-color: $primary !important;
-  color: color-yiq($primary) !important;
+  color: $button-color !important;
+  background-color: color-yiq($button-color) !important;
 }
 @include media-breakpoint-up(sm) {
   .select-option {
@@ -222,6 +245,24 @@ body.dark {
     background-color: $input-bg-dark;
     border-color: $input-border-color-dark;
   }
+  .custom-control-input{
+    &:focus ~ .custom-control-label::before {
+      box-shadow: $input-focus-box-shadow-dark;
+    }
+    &:not(:disabled):active ~ .custom-control-label::before {
+      color: color-yiq($button-color-dark);
+      background-color: rgba($button-color-dark, .5);
+      border-color: $button-border-color-dark;
+      @include box-shadow($input-focus-box-shadow-dark);
+    }
+    &:checked ~ .custom-control-label::before {
+      background-color: $button-color-dark;
+      border-color: $button-border-color-dark;
+    }
+    &:checked ~ .custom-control-label::after {
+      color: color-yiq($button-color-dark);
+    }
+  }
   .required-marker {
     color: $required-marker-color-dark;
   }
@@ -232,16 +273,24 @@ body.dark {
     color: $list-group-hover-color-dark;
     background-color: $list-group-hover-bg-dark;
   }
-  .form-control {
+  .form-control, .custom-select {
     color: $input-color-dark;
     background-color: $input-bg-dark;
     border-color: $input-border-color-dark;
     &::placeholder {
       color: $input-placeholder-color-dark;
     }
+    &:focus {
+      background-color: $input-focus-bg-dark;
+      color: $input-focus-color-dark;
+      border-color: $input-focus-border-color-dark;
+      box-shadow: $input-focus-box-shadow-dark;
+    }
     &:disabled,
     &[readonly] {
       background-color: $input-disabled-bg-dark;
+      color: $input-disabled-color-dark;
+      border-color: $input-disabled-border-color-dark;
     }
   }
   select.form-control {
@@ -267,6 +316,10 @@ body.dark {
   .select-option {
     color: $input-color-dark;
     background-color: $input-bg-dark;
+  }
+  .select-option.selected {
+    color: $button-color-dark !important;
+    background-color: color-yiq($button-color-dark) !important;
   }
   .select-option:hover, .select-option:focus {
     color: $list-group-hover-color-dark;

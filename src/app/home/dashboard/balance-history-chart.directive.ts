@@ -39,7 +39,7 @@ export class BalanceHistoryChartDirective implements OnInit {
           data: amounts,
           borderWidth: 3,
           lineTension: 0,
-          borderColor: this.layout.secondaryColor,
+          borderColor: this.layout.chartColor,
           backgroundColor: 'transparent'
         }]
       },
