@@ -63,18 +63,11 @@ hr {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: $backdrop-bg;
+  background-color: rgba(0, 0, 0, 0.5);
   z-index: $zindex-modal-backdrop;
   opacity: 0;
   transition: opacity 0.3s;
 }
-
-body.dark {
-  .backdrop {
-    background-color: $backdrop-bg-dark;
-  }
-}
-
 
 /* Margins / paddings according to the layout spacer */
 .my-ls, .mt-ls {

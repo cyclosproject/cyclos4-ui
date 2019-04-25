@@ -53,7 +53,6 @@ $section-color: $body-color;
 $border-color: $gray-300;
 $link-color: $accent;
 $link-hover-color: darken($link-color, 15%);
-$backdrop-bg: rgba(0, 0, 0, 0.5);
 
 // Global layout for dark background
 $body-bg-dark: #2a2a2a;
@@ -63,7 +62,6 @@ $section-bg-dark: #232323;
 $section-color-dark: $body-color-dark;
 $link-color-dark: $accent-dark;
 $link-hover-color-dark: lighten($link-color-dark, 15%);
-$backdrop-bg-dark: rgba(0, 0, 0, 0.5);
 
 // Headers
 $h1-color: $accent;
