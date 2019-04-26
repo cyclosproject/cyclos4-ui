@@ -16,25 +16,29 @@
   align-items: flex-start;
 }
 
+.filters-form :host ::ng-deep .label-value-label {
+  padding-top: calc(#{$input-padding-y} + #{$input-border-width}) !important;
+  padding-bottom: calc(#{$input-padding-y} + #{$input-border-width}) !important;
+}
+
+:host.field .label-value-label,
+:host.field-view .label-value-label {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  min-height: $input-height;
+  display: flex;
+  align-items: center;
+}
+
+:host.field-view .label-value-value {
+  padding-top: calc(#{$input-padding-y} + #{$input-border-width}) !important;
+  padding-bottom: calc(#{$input-padding-y} + #{$input-border-width}) !important;
+}
+
 @include media-breakpoint-up(xs) {
   .filters-form :host ::ng-deep .label-value-label {
-    padding-top: calc(#{$input-padding-y} + #{$input-border-width}) !important;
-    padding-bottom: calc(#{$input-padding-y} + #{$input-border-width}) !important;
     padding-left: 0.5rem !important;
     padding-right: 1rem !important;
-  }
-
-  :host.field .label-value-label,
-  :host.field-view .label-value-label {
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
-    display: flex;
-    align-items: center;
-  }
-
-  :host.field-view .label-value-value {
-    padding-top: calc(#{$input-padding-y} + #{$input-border-width}) !important;
-    padding-bottom: calc(#{$input-padding-y} + #{$input-border-width}) !important;
   }
 }
 

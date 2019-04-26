@@ -120,9 +120,8 @@ input[type=number] {
 .custom-control-label {
   padding-top: 0 !important;
   padding-left: 0.2rem;
-  transform: translateY(-1px);
   &::before, &::after {
-    top: 1px !important;
+    top: 0.1rem !important;
   }
 }
 .custom-control-label::before {

@@ -8,7 +8,18 @@ import { ValueFormat } from 'app/shared/value-format';
 /** Injection token for the form field itself */
 export const FORM_FIELD = new InjectionToken<BaseFormFieldComponent<any>>('FormField');
 
-export type FieldLabelPosition = 'side' | 'above' | 'auto';
+export type FieldLabelPosition
+  /** Always on side, even on xxs */
+  = 'sideForced'
+
+  /** Above on xxs, on side otherwise */
+  | 'side'
+
+  /** Always above */
+  | 'above'
+
+  /** Above up to xs, on side otherwise */
+  | 'auto';
 
 /**
  * Base class for custom form controls

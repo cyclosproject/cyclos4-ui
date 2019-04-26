@@ -3,7 +3,7 @@ import {
   HostBinding, Input, OnDestroy, OnInit, TemplateRef
 } from '@angular/core';
 import { CustomFieldSizeEnum } from 'app/api/models';
-import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
+import { BaseFormFieldComponent, FieldLabelPosition } from 'app/shared/base-form-field.component';
 import { ExtraCellDirective } from 'app/shared/extra-cell.directive';
 import { truthyAttr } from 'app/shared/helper';
 import { ValueFormat } from 'app/shared/value-format';
@@ -51,7 +51,7 @@ export class LabelValueComponent implements OnInit, OnDestroy {
   @Input() label: string;
 
   /** Where to place the label */
-  @Input() labelPosition: 'side' | 'above' | 'auto' = 'auto';
+  @Input() labelPosition: FieldLabelPosition = 'auto';
 
   /** Label size */
   @Input() labelSize: 'normal' | 'large' | 'small' = 'normal';
@@ -171,9 +171,12 @@ export class LabelValueComponent implements OnInit, OnDestroy {
    * Returns whether, for the given breakpoint, labels should be rendered on side.
    */
   private isLabelOnSide(breakpoint: Breakpoint): boolean {
+    if (this.labelPosition === 'sideForced') {
+      return true;
+    }
     switch (breakpoint) {
       case 'xxs':
-        // Never allow labels on side on xxs - they don't fit!
+        // Other than sideForced, won't be on side on xxs
         return false;
       case 'xs':
         // For xs, the labelPosition 'auto' will render on side for view or fieldView
@@ -215,8 +218,8 @@ export class LabelValueComponent implements OnInit, OnDestroy {
     if (labelOnSide) {
       switch (breakpoint) {
         case 'xxs':
-          // On xxs it is the same as if labels are forced above
-          return COLS;
+          // On xxs use 6 cols
+          return 6;
         case 'xs':
           // On xs use 5 cols
           return 5;
@@ -234,10 +237,7 @@ export class LabelValueComponent implements OnInit, OnDestroy {
    * Returns the number of columns used by values
    */
   private getValueCols(labelCols: number, breakpoint: Breakpoint): number {
-    if (breakpoint === 'xxs') {
-      // For xxs always use all columns
-      return COLS;
-    } else if (typeof this.fieldSize === 'number') {
+    if (typeof this.fieldSize === 'number') {
       // Specific number of columns
       return this.fieldSize;
     } else if (this.labelPosition === 'above') {

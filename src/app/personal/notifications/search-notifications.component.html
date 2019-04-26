@@ -1,10 +1,12 @@
 <page-layout>
   <page-content mode="filters" [heading]="i18n.notification.title"
     [headingActions]="headingActions$ | async">
-    <form [formGroup]="form" class="filters-form filters-form-separator">
+    <form [formGroup]="form"
+      class="filters-form filters-form-separator border-0">
       <div class="row">
         <div class="col-12 col-md-6">
-          <boolean-field labelPosition="side" formControlName="onlyUnread"
+          <boolean-field labelPosition="sideForced"
+            formControlName="onlyUnread"
             [label]="i18n.notification.onlyUnread"></boolean-field>
         </div>
       </div>
