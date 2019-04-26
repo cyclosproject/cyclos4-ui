@@ -222,7 +222,8 @@
       "title": {
         "change": "Uw wachtwoord wijzigen",
         "manage.single": "Het beheer van uw wachtwoord",
-        "manage.multiple": "Het beheren van uw wachtwoorden"
+        "manage.multiple": "Het beheren van uw wachtwoorden",
+        "securityAnswer": "Set your security answer"
       },
       "forgotten": {
         "title": "Het herstellen van uw wachtwoord",
@@ -278,8 +279,10 @@
       "agree": "Ik ben het eens met de volgende registratie overeenkomsten: {agreements}"
     },
     "securityQuestion": {
+      "message": "The security question is required in case you need to reset your password. Once set, if you need to change it, contact the administration.",
       "question": "Beveiligingsvraag",
-      "answer": "Uw antwoord"
+      "answer": "Uw antwoord",
+      "set": "Your security answer was set"
     }
   },
   "dashboard": {
@@ -299,7 +302,15 @@
     "lastIncomingPayments": "Laatste inkomende betalingen",
     "noIncomingPayments": "Geen inkomende betalingen",
     "latestAds": "Nieuwste advertenties",
-    "latestUsers": "Nieuwe bedrijven"
+    "latestUsers": "Nieuwe bedrijven",
+    "passwords": {
+      "expired": "Your {type} has expired.",
+      "reset": "Your {type} has reset.",
+      "pending": "Your {type} is pending generation.",
+      "neverCreated": "Your {type} needs to be set.",
+      "securityAnswer": "You should set the security question, which will be required in case you need to reset your password.",
+      "proceed": "Click here to proceed"
+    }
   },
   "account": {
     "number": "Rekeningnummer",
