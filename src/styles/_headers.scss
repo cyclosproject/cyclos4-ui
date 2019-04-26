@@ -83,7 +83,12 @@ h3 {
   margin-top: 0.5rem;
   margin-bottom: 0.6rem;
 }
-
+h4, h5, h6 {
+  font-size: 1em;
+  color: $body-color;
+  margin-top: 0.2rem;
+  margin-bottom: 0.2rem;
+}
 
 body.dark {
   h1, h2, h3 {
@@ -97,5 +102,8 @@ body.dark {
   }
   h3 {
     color: $h3-color-dark;
+  }
+  h4, h5, h6 {
+    color: $body-color-dark;
   }
 }

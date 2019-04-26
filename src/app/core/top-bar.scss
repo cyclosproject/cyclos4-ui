@@ -19,7 +19,6 @@ nav {
     padding: 0;
 
     a {
-      color: $top-bar-color;
       display: flex;
       align-items: center;
       height: 2rem;
@@ -28,7 +27,8 @@ nav {
       line-height: 1em;
       position: relative;
     }
-    a:hover {
+    a, a:hover {
+      color: $top-bar-color;
       text-decoration: none;
     }
   }
