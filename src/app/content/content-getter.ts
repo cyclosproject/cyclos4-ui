@@ -64,8 +64,10 @@ namespace ContentGetter {
     const spinnerId = `spinner_${idIx}`;
     return `
         <div id="${wrapperId}" class="iframe-content-wrapper">
-          <div id="${spinnerId}" class="spinner iframe-loading-spinner">
-            <img src="images/spinner.svg">
+          <div id="${spinnerId}" class="iframe-loading-spinner">
+            <div class="spinner">
+              <img src="images/spinner.svg">
+            </div>
           </div>
           <iframe id="${iframeId}"
             src="${iframeUrl}"

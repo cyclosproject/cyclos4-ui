@@ -58,6 +58,10 @@
   top: 0;
   z-index: $zindex-popover;
   background-color: $card-bg;
+  color: $card-color;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .iframe-content {
   border: 0;
@@ -100,5 +104,9 @@ body.dark {
   }
   .border, .border-top, .border-right, .border-bottom, .border-left {
     border-color: $border-color-dark !important;
+  }
+  .iframe-loading-spinner {
+    background-color: $card-bg-dark;
+    color: $card-color-dark;
   }
 }
