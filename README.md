@@ -472,6 +472,7 @@ The `body` tag has the `dark` class added for users that prefer the dark theme. 
 - `faded-color`: Sets the `color` property to the body faded color, which can be set to a different color on light / dark themes.
 - `border-color`: Sets the `border-color` property to the general border color, adapting to light / dark theme. However, no border style / width is defined. It is also possible to use the standard Bootstrap's `border`, `border-top`, `border-bottom`, `border-left` and `border-right` classes, as they are customized in dark themes to the correct color.
 
+For pages that are included within iframes using `ContentGetter.iframe(url)`, a parameter is automatically added: `theme=light` or `theme=dark`, so the generated content can adapt.
 
 ### Creating links to other pages
 

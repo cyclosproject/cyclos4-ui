@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injector } from '@angular/core';
-import { Observable } from 'rxjs';
+import { LayoutService } from 'app/shared/layout.service';
+import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 /**
@@ -49,41 +50,50 @@ namespace ContentGetter {
     * The page hosted inside the iFrame must include the following script for the auto resize to work:
     * https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.6.3/iframeResizer.contentWindow.min.js
     */
-  export function iframe(iframeUrl: string): string {
-    const id = 'iframeResizerScript';
-    let script = document.getElementById(id) as HTMLScriptElement;
-    if (script == null) {
-      script = document.createElement('script');
-      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.6.3/iframeResizer.min.js';
-      script.id = id;
-      document.head.appendChild(script);
-    }
-    const idIx = _nextId++;
-    const wrapperId = `wrapper_${idIx}`;
-    const iframeId = `iframe_${idIx}`;
-    const spinnerId = `spinner_${idIx}`;
-    return `
-        <div id="${wrapperId}" class="iframe-content-wrapper">
-          <div id="${spinnerId}" class="iframe-loading-spinner">
-            <div class="spinner">
-              <img src="images/spinner.svg">
+  export function iframe(iframeUrl: string): ContentGetter {
+    const res: ContentGetter = injector => {
+      const layout = injector.get(LayoutService);
+      const theme = layout.darkTheme ? 'dark' : 'light';
+      const actualUrl = iframeUrl + (iframeUrl.includes('?') ? '&' : '?') + `theme=${theme}`;
+      const id = 'iframeResizerScript';
+      let script = document.getElementById(id) as HTMLScriptElement;
+      if (script == null) {
+        script = document.createElement('script');
+        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.6.3/iframeResizer.min.js';
+        script.id = id;
+        document.head.appendChild(script);
+      }
+      const idIx = _nextId++;
+      const wrapperId = `wrapper_${idIx}`;
+      const iframeId = `iframe_${idIx}`;
+      const spinnerId = `spinner_${idIx}`;
+      return of(`
+          <div id="${wrapperId}" class="iframe-content-wrapper">
+            <div id="${spinnerId}" class="iframe-loading-spinner">
+              <div class="spinner">
+                <img src="images/spinner.svg">
+              </div>
             </div>
+            <iframe id="${iframeId}"
+              src="${actualUrl}"
+              class="iframe-content"
+              style="display:block;width:1px;min-width:100%;"
+              onload="
+                iFrameResize({
+                  heightCalculationMethod: navigator.userAgent.indexOf('MSIE') < 0 ? 'lowestElement' : 'max',
+                  checkOrigin: false,
+                  warningTimeout: 0
+                }, '#${iframeId}');
+                document.getElementById('${wrapperId}').removeChild(document.getElementById('${spinnerId}'));
+              ">
+            </iframe>
           </div>
-          <iframe id="${iframeId}"
-            src="${iframeUrl}"
-            class="iframe-content"
-            style="display:block;width:1px;min-width:100%;"
-            onload="
-              iFrameResize({
-                heightCalculationMethod: navigator.userAgent.indexOf('MSIE') < 0 ? 'lowestElement' : 'max',
-                checkOrigin: false,
-                warningTimeout: 0
-              }, '#${iframeId}');
-              document.getElementById('${wrapperId}').removeChild(document.getElementById('${spinnerId}'));
-            ">
-          </iframe>
-        </div>
-    `;
+      `);
+    };
+    res.toString = () => {
+      return iframeUrl;
+    };
+    return res;
   }
 
   /**
