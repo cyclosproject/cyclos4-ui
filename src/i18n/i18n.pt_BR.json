@@ -222,7 +222,8 @@
       "title": {
         "change": "Alterar sua senha",
         "manage.single": "Gerenciar sua senha",
-        "manage.multiple": "Gerenciar as suas senhas"
+        "manage.multiple": "Gerenciar as suas senhas",
+        "securityAnswer": "Set your security answer"
       },
       "forgotten": {
         "title": "Recuperar sua senha",
@@ -278,8 +279,10 @@
       "agree": "Concordo com os seguintes termos de adesão: {agreements}"
     },
     "securityQuestion": {
+      "message": "The security question is required in case you need to reset your password. Once set, if you need to change it, contact the administration.",
       "question": "Pergunta de segurança",
-      "answer": "Sua resposta"
+      "answer": "Sua resposta",
+      "set": "Your security answer was set"
     }
   },
   "dashboard": {
@@ -299,7 +302,15 @@
     "lastIncomingPayments": "Últimos pagamentos recebidos",
     "noIncomingPayments": "Nenhum pagamento recebido",
     "latestAds": "Anúncios mais recentes",
-    "latestUsers": "Usuários mais recentes"
+    "latestUsers": "Usuários mais recentes",
+    "passwords": {
+      "expired": "Your {type} has expired.",
+      "reset": "Your {type} has reset.",
+      "pending": "Your {type} is pending generation.",
+      "neverCreated": "Your {type} needs to be set.",
+      "securityAnswer": "You should set the security question, which will be required in case you need to reset your password.",
+      "proceed": "Click here to proceed"
+    }
   },
   "account": {
     "number": "Número da conta",
