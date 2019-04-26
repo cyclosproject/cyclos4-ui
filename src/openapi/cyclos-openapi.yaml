@@ -710,7 +710,7 @@ paths:
           The secondary access password
         required: true
         content:
-          application/json:
+          text/plain:
             schema:
               type: string
   
@@ -1025,7 +1025,206 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/ChangeForgottenPassword'
+  /sessions/data-for-search:
+    get:
+      operationId: getSessionDataForSearch
+      summary: >-
+        Get configuration data for searching sessions
+      description: >-
+        Returns data with the current configuration regarding the session search
+      tags:
+        - Sessions
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            The configuration data for session search
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SessionDataForSearch'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
   /sessions:
+    get:
+      operationId: searchSessions
+      summary: >-
+        Search for sessions
+      description: >-
+        Returns a page of sessions that match a given criteria.
+      parameters:
+        - $ref: '#/components/parameters/fields'
+        - name: broker
+          in: query
+          required: false
+          description: "Either id or a principal (login name, e-mail, etc) of a broker. Used to filter the sessions of its brokered users."
+          schema:
+            type: string
+        - name: channels
+          in: query
+          required: false
+          description: "Internal names of the sessions channels that can be retuerned."
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: excludeCurrentSession
+          in: query
+          required: false
+          description: "When set to `true` will not return the running session."
+          schema:
+            type: boolean
+        - name: operatorsOf
+          in: query
+          required: false
+          description: "Either id or a principal (login name, e-mail, etc) of a user. Used to filter the sessions of its operators."
+          schema:
+            type: string
+        - name: page
+          in: query
+          required: false
+          description: "The page number (zero-based) of the search. The default value is zero."
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          required: false
+          description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
+          schema:
+            type: integer
+            format: int32
+        - name: roles
+          in: query
+          required: false
+          description: "The role of the logged users in the sessions."
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              $ref: '#/components/schemas/RoleEnum'
+        - name: user
+          in: query
+          required: false
+          description: "Either id or a principal (login name, e-mail, etc) of the sessions  owner."
+          schema:
+            type: string
+      tags:
+        - Sessions
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      responses:
+        '200':
+          description: >-
+            The sessions matching the criteria
+          headers:
+            X-Total-Count:
+              schema:
+                type: integer
+              description: >-
+                The total number of results. It may be configured in Cyclos to skip the
+                total count, which is useful on large databases, where the count itself
+                may use a lot of resources from the database. If disabled, this header is
+                not returned.
+            X-Page-Size:
+              schema:
+                type: integer
+              description: >-
+                The maximum number of results per page
+            X-Current-Page:
+              schema:
+                type: integer
+              description: >-
+                The current page the results are in
+            X-Has-Next-Page:
+              schema:
+                type: boolean
+              description: >-
+                Returns whether there is a next page. This is normally always returned,
+                whether total count is enabled or not. If the total count is not returned,
+                is the only way for clients to know whether more results are available or
+                not.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SessionResult'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: >-
+            Input error. Either a validation error or the maximum allowed items was
+            exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     post:
       operationId: loginUser
       summary: >-
@@ -1040,6 +1239,10 @@ paths:
         the previous website.
       tags:
         - Sessions
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
       parameters:
         - $ref: '#/components/parameters/fields'
       responses:
@@ -1087,6 +1290,129 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/LoginUser'
+              
+  /{user}/sessions:
+    delete:
+      operationId: disconnectUserSessions
+      summary: >-
+        Disconnects all sessions of a user.
+      description: >-
+        Disconnects all sessions of the given user. 
+      tags:
+        - Sessions
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/user'
+      responses:
+        '200':
+          description: >-
+            The number of disconnected sessions.
+          content:
+            plain/text:
+              schema:
+                type: string
+        '409':
+          description: >-
+            This operation expected an entity state, but it has resulted in a conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictError'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+  /sessions/{sessionToken}:
+    delete:
+      operationId: disconnectSession
+      summary: >-
+        Disconnects a session.
+      description: >-
+        Disconnects a session by its session token
+      tags:
+        - Sessions
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+          - name: sessionToken
+            required: true
+            in: path
+            schema:
+              type: string
+            description: >-
+              The session token
+      responses:
+        '204':
+          description: >-
+            The session was disconnected
+        '409':
+          description: >-
+            This operation expected an entity state, but it has resulted in a conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictError'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+                
   /captcha:
     post:
       operationId: newCaptcha
@@ -1833,10 +2159,16 @@ A note for dynamic custom fields: If a script is used to generate possible value
   
   /users/validate/registration/{key}:
     post:
+      deprecated: true
+      x-remove-version: 4.14
       operationId: validateUserRegistration
       summary: >-
         Validates an user registration via a key sent by e-mail
       description: >-
+        Use `POST /validate/registration/{key}`
+      
+      
+      
         When a user is registered, and the configuration enables the validation,
         an e-mail is sent to user e-mail, with a link to verify it. In this case,
         only after verifying the e-mail the user is activated. This operation
@@ -1894,10 +2226,16 @@ A note for dynamic custom fields: If a script is used to generate possible value
   
   /users/validate/email-change/{key}:
     post:
+      deprecated: true
+      x-remove-version: 4.14
       operationId: validateEmailChange
       summary: >-
         Validates an e-mail via a validation key
       description: >-
+        Use `POST /validate/email-change/{key}`
+      
+      
+      
         When the user e-mail is changed, and the configuration enables the
         validation, an e-mail is sent to the new user e-mail, with a link to
         verify it. In this case, only after verifying the new e-mail it is
@@ -8370,9 +8708,10 @@ A note for dynamic custom fields: If a script is used to generate possible value
         Returns complete data for each passwords the given user have.
       description: >-
         Returns the passwords, with their statuses, for a given user. Also,
-        permissions on which operations are enabled are also returned. It is also
-        returned additional data, such as the confirmation password input in case
-        some action is needed
+        permissions on which operations are enabled are also returned. It is
+        also returned additional data - the confirmation password input, in
+        case some action is needed; and the security question data, in case
+        the security answer is pending.
       tags:
         - Passwords
       security:
@@ -8999,6 +9338,113 @@ A note for dynamic custom fields: If a script is used to generate possible value
         '204':
           description: >-
             The password is unblocked, and nothing is returned
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /security-answer:
+    post:
+      operationId: setSecurityAnswer
+      summary: >-
+        Sets the security answer if the current authenticated user
+      description: >-
+        The security question can be enabled in the configuration, and is used
+        on the forgot password process. This method only works if the security
+        answer is pending and enabled. If the user wants to change the security
+        answer, first an admin must remove the current answer via
+        `DELETE /{user}/security-answer`.
+      tags:
+        - Passwords
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetSecurityAnswer'
+      responses:
+        '204':
+          description: >-
+            The security answer is set and nothing is returned.
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /{user}/security-answer:
+    delete:
+      operationId: resetUserSecurityAnswer
+      summary: >-
+        Resets a user security answer, allowing they to change it
+      description: >-
+        This operation must be performed as a manager of the user. It resets
+        the current security answer, allowing the user to set a new one.
+      tags:
+        - Passwords
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/userNoSelf'
+      responses:
+        '204':
+          description: >-
+            The security answer is reset and nothing is returned.
         '401':
           description: >-
             Unauthorized access. Missing or invalid crendentials supplied for such
@@ -14112,7 +14558,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         description: >-
           A comment for the reject action the payer can set.
         content:
-          application/json:
+          text/plain:
             schema:
               type: string
   
@@ -14176,7 +14622,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         description: >-
           A comment for the cancel action the payee/manager can set.
         content:
-          application/json:
+          text/plain:
             schema:
               type: string
   /pending-payments/{key}/authorize:
@@ -32298,6 +32744,18 @@ components:
               items:
                 $ref: '#/components/schemas/MobileOperationEnum'
 
+    DataForSetSecurityAnswer:
+      description: >-
+        Data for setting the security answer.
+      type: object
+      properties:
+        securityQuestions:
+          description: >-
+            The possible security questions.
+          type: array
+          items:
+            $ref: '#/components/schemas/EntityReference'
+
     DataForTransaction:
       description: >-
         Contains basic configuration data used when performing a transaction. The
@@ -32622,6 +33080,13 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PasswordStatusAndActions'
+        dataForSetSecurityAnswer:
+          description: >-
+            If the security answer is enabled in the configuration and the user
+            has no security answer yet, contains data for setting it. Is not
+            returned if not used or if the user already has an answer.
+          allOf:
+            - $ref: '#/components/schemas/DataForSetSecurityAnswer'
 
     DatePeriod:
       description: >-
@@ -37760,6 +38225,99 @@ components:
                 immediately.
               type: boolean
 
+    SessionDataForSearch:
+      description: >-
+        Contains data with the configuration for searching sessions
+      allOf:
+        - type: object
+          properties:
+            roles:
+              description: >-
+                The possible user roles the authenticated user can use to filter
+                the search.
+              type: array
+              items:
+                $ref: '#/components/schemas/RoleEnum'
+            channels:
+              description: >-
+                Internal names of the channels that can be used to filter the search.
+              type: array
+              items:
+                $ref: '#/components/schemas/EntityReference'
+            query:
+              description: >-
+                Default query filters to search sessions
+              allOf:
+                - $ref: '#/components/schemas/SessionQueryFilters'
+
+    SessionQueryFilters:
+      description: >-
+        Query filters for sessions
+      allOf:
+        - $ref: '#/components/schemas/QueryFilters'
+        - type: object
+          properties:
+            broker:
+              description: >-
+                Either id or a principal (login name, e-mail, etc) of a broker.
+                Used to filter the sessions of its brokered users.
+              type: string
+            channels:
+              description: >-
+                Internal names of the sessions channels that can be retuerned.
+              type: array
+              items:
+                type: string
+            excludeCurrentSession:
+              type: boolean
+              description: >-
+                When set to `true` will not return the running session.
+            operatorsOf:
+              description: >-
+                Either id or a principal (login name, e-mail, etc) of a user.
+                Used to filter the sessions of its operators.
+              type: string
+            roles:
+              description: >-
+                The role of the logged users in the sessions.
+              type: array
+              items:
+                $ref: '#/components/schemas/RoleEnum'
+            user:
+              description: >-
+                Either id or a principal (login name, e-mail, etc) of the sessions 
+                owner.
+              type: string  
+    
+
+    SessionResult:
+      description: >-
+        Contains data returned when searching for sessions
+      allOf:
+        - type: object
+          properties:
+            sessionToken:
+              description: >-
+                The session token
+              type: string
+            creationDate:
+              description: >-
+                The session creation date
+              type: string
+              format: date-time
+            remoteAddress:
+              description: >-
+                The session remote address
+              type: string
+            user:
+              $ref: '#/components/schemas/User'
+            channel:
+              $ref: '#/components/schemas/EntityReference'
+            currentSession:
+              description: >-
+                True if it is the same session where is running
+              type: boolean
+
     SetDeliveryMethod:
       description: >-
         Delivery method information
@@ -37778,6 +38336,24 @@ components:
               format: number
             time:
               $ref: '#/components/schemas/TimeInterval'
+
+    SetSecurityAnswer:
+      description: >-
+        Parameters to define the security answer.
+      type: object
+      properties:
+        securityQuestion:
+          type: string
+          description: >-
+            If the server is configured to use security question, is the
+            `internalName` of the question present in the result of
+            `data-for-new`, in the `securityQuestions` property. Is optional and
+            only used in public registration.
+        securityAnswer:
+          type: string
+          description: >-
+            If a `securityQuestion` is informed, this is the answer. Required in
+            this case. Only used in public registration...
 
     SharedRecordsDataForSearch:
       description: >-

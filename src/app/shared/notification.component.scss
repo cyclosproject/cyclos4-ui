@@ -6,7 +6,7 @@
 :host ::ng-deep {
   .alert {
     margin: 0rem !important;
-    padding: 0.4rem 0;
+    padding: 0.4rem;
   }
   icon {
     margin-bottom: 0.4rem;
@@ -16,8 +16,7 @@
   }
 
   .notification-message {
-    margin-top: 1rem;
-    text-align: start;
+    text-align: center;
   }
 }
 @include media-breakpoint-up(xs) {
@@ -30,5 +29,6 @@
 
   .notification-message {
     margin: 0 1rem;
+    text-align: start;
   }
 }

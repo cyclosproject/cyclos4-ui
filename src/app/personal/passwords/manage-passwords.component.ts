@@ -1,10 +1,15 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { DataForUserPasswords, PasswordStatusAndActions, PasswordStatusEnum, CreateDeviceConfirmation, DeviceConfirmationTypeEnum } from 'app/api/models';
+import { FormGroup, Validators } from '@angular/forms';
+import {
+  CreateDeviceConfirmation, DataForUserPasswords, DeviceConfirmationTypeEnum,
+  PasswordStatusAndActions, PasswordStatusEnum
+} from 'app/api/models';
 import { PasswordsService } from 'app/api/services';
+import { ChangePasswordDialogComponent } from 'app/personal/passwords/change-password-dialog.component';
 import { Action } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BasePageComponent } from 'app/shared/base-page.component';
-import { ChangePasswordDialogComponent } from 'app/personal/passwords/change-password-dialog.component';
+import { validateBeforeSubmit } from 'app/shared/helper';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BehaviorSubject } from 'rxjs';
 
@@ -23,6 +28,8 @@ export class ManagePasswordsComponent
 
   multiple$ = new BehaviorSubject(false);
   title$ = new BehaviorSubject<string>(null);
+
+  securityAnswer: FormGroup;
 
   constructor(
     injector: Injector,
@@ -45,6 +52,13 @@ export class ManagePasswordsComponent
     this.title$.next(multiple ?
       this.i18n.auth.password.title.manageMultiple :
       this.i18n.auth.password.title.manageSingle);
+
+    if (data.dataForSetSecurityAnswer) {
+      this.securityAnswer = this.formBuilder.group({
+        securityQuestion: [null, Validators.required],
+        securityAnswer: [null, Validators.required]
+      });
+    }
   }
 
   actions(password: PasswordStatusAndActions): Action[] {
@@ -81,6 +95,17 @@ export class ManagePasswordsComponent
       }));
     }
     return actions;
+  }
+
+  setSecurityAnswer() {
+    validateBeforeSubmit(this.securityAnswer);
+    if (!this.securityAnswer.valid) {
+      return;
+    }
+    this.addSub(this.passwordsService.setSecurityAnswer({ body: this.securityAnswer.value }).subscribe(() => {
+      this.notification.snackBar(this.i18n.auth.securityQuestion.set);
+      this.reload();
+    }));
   }
 
   status(password: PasswordStatusAndActions) {

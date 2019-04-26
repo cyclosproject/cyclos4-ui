@@ -29,7 +29,7 @@ As of version 1.0, this frontend implements the following functionality:
 - Search users (called business directory, as most systems only allow searching businesses);
 - View user profile, with a few actions (perform payment and add to contact list);
 - Contact list;
-- Manage passwords (change, generate new, unblock, disable / enable);
+- Manage passwords (change, generate new, unblock, disable / enable and set the security answer);
 - Edit own profile (images, basic / custom fields, phones, addresses and additional contact information);
 - Public user registration;
 - Search advertisements, advertisement details (no shopping cart so far);

@@ -1,15 +1,38 @@
 <page-layout hideMenu [ready]="ready$ | async">
-  <show-content [content]="homePage" *ngIf="login.user == null; else dashboard">
+  <show-content [content]="homePage"
+    *ngIf="login.user == null; else dashboard">
   </show-content>
 </page-layout>
 
 <ng-template #dashboard>
-  <div class="dashboard">
+  <div class="dashboard" *ngIf="ready$ | async">
+
+    <notification *ngFor="let password of passwordsNeedingAttention"
+      class="mb-3 mt-3 mt-md-0 mx-3 mx-md-0" type="warning">
+      {{ passwordMessage(password) }}
+      <br>
+      <a [routerLink]="['personal', 'passwords']" class="mt-2"
+        (click)="goToPasswords($event)">
+        {{ i18n.dashboard.passwords.proceed }}
+      </a>
+    </notification>
+
+    <notification *ngIf="pendingSecurityAnswer"
+      class="mb-3 mt-3 mt-md-0 mx-3 mx-md-0" type="warning">
+      {{ i18n.dashboard.passwords.securityAnswer }}
+      <br>
+      <a [routerLink]="['personal', 'passwords']" class="mt-2"
+        (click)="goToPasswords($event)">
+        {{ i18n.dashboard.passwords.proceed }}
+      </a>
+    </notification>
 
     <!-- Mobile / tablet -->
-    <div class="one-column" *ngIf="layout.ltlg$ | async" [ngClass]="{'window-width': layout.ltmd$ | async}">
-      <ng-container *ngFor="let config of configs$ | async">
-        <ng-container *ngIf="layout.visible(config.breakpoints, layout.breakpointChanges$ | async)">
+    <div class="one-column" *ngIf="layout.ltlg$ | async"
+      [ngClass]="{'window-width': layout.ltmd$ | async}">
+      <ng-container *ngFor="let config of configs">
+        <ng-container
+          *ngIf="layout.visible(config.breakpoints, layout.breakpointChanges$ | async)">
           <dashboard-item [config]="config"></dashboard-item>
         </ng-container>
       </ng-container>
@@ -18,23 +41,26 @@
     <!-- Desktop -->
     <div class="two-columns" *ngIf="layout.gtmd$ | async">
       <div class="left-column">
-        <ng-container *ngFor="let config of leftConfigs$ | async">
-          <ng-container *ngIf="layout.visible(config.breakpoints, layout.breakpointChanges$ | async)">
+        <ng-container *ngFor="let config of leftConfigs">
+          <ng-container
+            *ngIf="layout.visible(config.breakpoints, layout.breakpointChanges$ | async)">
             <dashboard-item [config]="config"></dashboard-item>
           </ng-container>
         </ng-container>
       </div>
       <div class="right-column">
-        <ng-container *ngFor="let config of rightConfigs$ | async">
-          <ng-container *ngIf="layout.visible(config.breakpoints, layout.breakpointChanges$ | async)">
+        <ng-container *ngFor="let config of rightConfigs">
+          <ng-container
+            *ngIf="layout.visible(config.breakpoints, layout.breakpointChanges$ | async)">
             <dashboard-item [config]="config"></dashboard-item>
           </ng-container>
         </ng-container>
       </div>
     </div>
     <div class="full-columns">
-      <ng-container *ngFor="let config of fullConfigs$ | async">
-        <ng-container *ngIf="layout.visible(config.breakpoints, layout.breakpointChanges$ | async)">
+      <ng-container *ngFor="let config of fullConfigs">
+        <ng-container
+          *ngIf="layout.visible(config.breakpoints, layout.breakpointChanges$ | async)">
           <dashboard-item [config]="config"></dashboard-item>
         </ng-container>
       </ng-container>

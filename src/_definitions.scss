@@ -5,6 +5,7 @@ $accent-dark: $primary;
 $faded-color: #757575;
 $faded-color-dark: #757575;
 $theme-color: darken($primary, 10%);
+$info: lighten($primary, 30%);
 
 // Make sure the font import URL and the font family (sans serif) are in sync
 $font-import-url: "https://fonts.googleapis.com/css?family=Roboto:400,500";
@@ -53,6 +54,7 @@ $section-color: $body-color;
 $border-color: $gray-300;
 $link-color: $accent;
 $link-hover-color: darken($link-color, 15%);
+$alert-border-level: 1;
 
 // Global layout for dark background
 $body-bg-dark: #2a2a2a;
@@ -360,6 +362,22 @@ $modal-content-border-color: $border-color;
 $modal-content-color-dark: $body-color-dark;
 $modal-content-bg-dark: $body-bg-dark;
 $modal-content-border-color-dark: $border-color-dark;
+
+// Push notifications
+$push-notification-border-color: $border-color;
+$push-notification-body-bg: $body-bg;
+$push-notification-body-color: $body-color;
+$push-notification-title-bg: $push-notification-body-bg;
+$push-notification-title-color: $push-notification-body-color;
+$push-notification-icon-color: $side-menu-inactive-icon-color;
+
+// Push notifications on dark background
+$push-notification-border-color-dark: $border-color-dark;
+$push-notification-body-bg-dark: $body-bg-dark;
+$push-notification-body-color-dark: $body-color-dark;
+$push-notification-title-bg-dark: $push-notification-body-bg-dark;
+$push-notification-title-color-dark: $push-notification-body-color-dark;
+$push-notification-icon-color-dark: $side-menu-inactive-icon-color-dark;
 
 // Dropdowns
 $dropdown-color: $input-color;

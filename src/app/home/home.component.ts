@@ -5,8 +5,17 @@ import { handleFullWidthLayout } from 'app/content/content-with-layout';
 import { DashboardItemConfig } from 'app/content/dashboard-item-config';
 import { BasePageComponent, UpdateTitleFrom } from 'app/shared/base-page.component';
 import { BehaviorSubject } from 'rxjs';
+import { PasswordsService } from 'app/api/services';
+import { ApiHelper } from 'app/shared/api-helper';
+import { DataForUserPasswords, PasswordStatusEnum, PasswordStatusAndActions } from 'app/api/models';
+import { Menu, ActiveMenu } from 'app/shared/menu';
 
 export const SessionToken = 'sessionToken';
+
+export const PasswordStatusNeedingAttention = [
+  PasswordStatusEnum.EXPIRED, PasswordStatusEnum.RESET,
+  PasswordStatusEnum.PENDING, PasswordStatusEnum.NEVER_CREATED
+];
 
 /**
  * Displays the home page
@@ -22,12 +31,19 @@ export class HomeComponent extends BasePageComponent<void> implements OnInit {
 
   ready$ = new BehaviorSubject(false);
   homePage: ContentPage;
-  configs$ = new BehaviorSubject<DashboardItemConfig[]>(null);
-  leftConfigs$ = new BehaviorSubject<DashboardItemConfig[]>(null);
-  rightConfigs$ = new BehaviorSubject<DashboardItemConfig[]>(null);
-  fullConfigs$ = new BehaviorSubject<DashboardItemConfig[]>(null);
 
-  constructor(private injector: Injector) {
+  configs: DashboardItemConfig[];
+  leftConfigs: DashboardItemConfig[];
+  rightConfigs: DashboardItemConfig[];
+  fullConfigs: DashboardItemConfig[];
+
+  passwords: DataForUserPasswords;
+  passwordsNeedingAttention: PasswordStatusAndActions[];
+  pendingSecurityAnswer = false;
+
+  constructor(
+    private injector: Injector,
+    private passwordsService: PasswordsService) {
     super(injector);
   }
 
@@ -39,7 +55,8 @@ export class HomeComponent extends BasePageComponent<void> implements OnInit {
       this.homePage = Configuration.homePage || { content: '' };
       this.ready$.next(true);
     } else {
-      // For logged users, resolve the dashboard items
+      // For logged users, get the passwords statuses and resolve the dashboard items
+      this.fetchPasswords();
       const configs = Configuration.dashboard ? Configuration.dashboard.dashboardItems(this.injector) : null;
       if (configs instanceof Array) {
         this.initializeItems(configs);
@@ -51,13 +68,31 @@ export class HomeComponent extends BasePageComponent<void> implements OnInit {
     }
   }
 
+  private maybeSetReady() {
+    if (this.passwords && this.configs) {
+      this.ready$.next(true);
+    }
+  }
+
+  private fetchPasswords() {
+    this.addSub(this.passwordsService.getUserPasswordsListData({
+      user: ApiHelper.SELF,
+      fields: ['dataForSetSecurityAnswer', 'passwords.status', 'passwords.type.name']
+    }).subscribe(data => {
+      this.passwords = data;
+      this.passwordsNeedingAttention = (data.passwords || []).filter(p => PasswordStatusNeedingAttention.includes(p.status));
+      this.pendingSecurityAnswer = !!data.dataForSetSecurityAnswer;
+      this.maybeSetReady();
+    }));
+  }
+
   private initializeItems(configs: DashboardItemConfig[]) {
     configs = configs.filter(i => !!i);
-    this.configs$.next(configs);
-    this.leftConfigs$.next(configs.filter(c => c.column === 'left'));
-    this.rightConfigs$.next(configs.filter(c => c.column === 'right'));
-    this.fullConfigs$.next(configs.filter(c => c.column == null || c.column === 'full'));
-    this.ready$.next(true);
+    this.configs = configs;
+    this.leftConfigs = configs.filter(c => c.column === 'left');
+    this.rightConfigs = configs.filter(c => c.column === 'right');
+    this.fullConfigs = configs.filter(c => c.column == null || c.column === 'full');
+    this.maybeSetReady();
   }
 
   defaultFullWidthLayout(): boolean {
@@ -70,6 +105,28 @@ export class HomeComponent extends BasePageComponent<void> implements OnInit {
 
   updateTitleFrom(): UpdateTitleFrom {
     return 'menu';
+  }
+
+  passwordMessage(ps: PasswordStatusAndActions) {
+    const type = ps.type.name;
+    switch (ps.status) {
+      case PasswordStatusEnum.EXPIRED:
+        return this.i18n.dashboard.passwords.expired(type);
+      case PasswordStatusEnum.RESET:
+        return this.i18n.dashboard.passwords.reset(type);
+      case PasswordStatusEnum.PENDING:
+        return this.i18n.dashboard.passwords.pending(type);
+      case PasswordStatusEnum.NEVER_CREATED:
+        return this.i18n.dashboard.passwords.neverCreated(type);
+    }
+  }
+
+  goToPasswords(event: MouseEvent) {
+    this.menu.navigate({
+      menu: new ActiveMenu(Menu.PASSWORDS),
+      event: event,
+      clear: false
+    });
   }
 
 }
