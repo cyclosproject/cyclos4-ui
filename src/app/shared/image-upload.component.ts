@@ -125,7 +125,7 @@ export class ImageUploadComponent implements OnDestroy {
     this.files.next([]);
 
     // First resize each image
-    const resizeObservables: Observable<any>[] = [];
+    const resizeObservables: Observable<ResizeResult>[] = [];
     const names: string[] = [];
     const max = Math.min(this.max, fileList.length);
     for (let i = 0; i < max; i++) {
@@ -134,7 +134,7 @@ export class ImageUploadComponent implements OnDestroy {
       names.push(file.name);
     }
     // Once all images are resized, perform the upload
-    this.subscription = forkJoin<ResizeResult>(resizeObservables).subscribe(results => {
+    this.subscription = forkJoin(resizeObservables).subscribe(results => {
       this.subscription.unsubscribe();
 
       this.changeDetector.detectChanges();
