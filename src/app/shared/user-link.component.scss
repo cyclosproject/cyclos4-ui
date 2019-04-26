@@ -5,9 +5,17 @@
   line-height: 1.5rem;
 }
 
-:host ::ng-deep icon {
-  color: $link-color;
-  opacity: 0.8;
+:host ::ng-deep {
+  icon {
+    opacity: 0.5;
+  }
+  .has-link icon {
+    color: $link-color;
+  }
+}
+
+body.dark :host ::ng-deep .has-link icon {
+  color: $link-color-dark;
 }
 
 @media print {

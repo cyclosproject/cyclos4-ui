@@ -3,7 +3,7 @@ import {
   Operation, OperationScopeEnum, UserMenuEnum, AccountWithOwner
 } from 'app/api/models';
 import { empty } from 'app/shared/helper';
-import { Menu, RootMenu } from 'app/shared/menu';
+import { Menu, RootMenu, ActiveMenu } from 'app/shared/menu';
 
 /**
  * Helper methods for working with API model
@@ -82,18 +82,29 @@ export class ApiHelper {
    * Returns the path to where a notification should point to
    * @param notification The Cyclos notification
    */
-  static notificationPath(notification: Notification): string {
+  static notificationData(notification: Notification): { path: string, menu: ActiveMenu } {
     switch (notification.entityType) {
       case NotificationEntityTypeEnum.USER:
-        return `/users/profile/${notification.entityId}`;
+        return {
+          path: `/users/profile/${notification.entityId}`,
+          menu: new ActiveMenu(Menu.SEARCH_USERS)
+        };
       case NotificationEntityTypeEnum.TRANSACTION:
-        return `/banking/transaction/${notification.entityId}`;
+        return {
+          path: `/banking/transaction/${notification.entityId}`,
+          menu: new ActiveMenu(Menu.ACCOUNT_HISTORY)
+        };
       case NotificationEntityTypeEnum.TRANSFER:
-        return `/banking/transfer/${notification.entityId}`;
+        return {
+          path: `/banking/transfer/${notification.entityId}`,
+          menu: new ActiveMenu(Menu.ACCOUNT_HISTORY)
+        };
       case NotificationEntityTypeEnum.MARKETPLACE:
-        return `/marketplace/view/${notification.entityId}`;
+        return {
+          path: `/marketplace/view/${notification.entityId}`,
+          menu: new ActiveMenu(Menu.SEARCH_ADS)
+        };
     }
-    return undefined;
   }
 
 
