@@ -222,7 +222,8 @@
       "title": {
         "change": "Cambiar su contraseña",
         "manage.single": "Administrar su contraseña",
-        "manage.multiple": "Administrar sus contraseñas"
+        "manage.multiple": "Administrar sus contraseñas",
+        "securityAnswer": "Set your security answer"
       },
       "forgotten": {
         "title": "Recuperar su contraseña",
@@ -278,8 +279,10 @@
       "agree": "He aceptado los siguientes términos de acuerdo: {agreements}"
     },
     "securityQuestion": {
+      "message": "The security question is required in case you need to reset your password. Once set, if you need to change it, contact the administration.",
       "question": "Pregunta de seguridad",
-      "answer": "Su respuesta"
+      "answer": "Su respuesta",
+      "set": "Your security answer was set"
     }
   },
   "dashboard": {
@@ -299,7 +302,15 @@
     "lastIncomingPayments": "Ultimos pagos recibidos",
     "noIncomingPayments": "No hay pagos recibidos",
     "latestAds": "Últimos anuncios",
-    "latestUsers": "Ultimos usuarios"
+    "latestUsers": "Ultimos usuarios",
+    "passwords": {
+      "expired": "Your {type} has expired.",
+      "reset": "Your {type} has reset.",
+      "pending": "Your {type} is pending generation.",
+      "neverCreated": "Your {type} needs to be set.",
+      "securityAnswer": "You should set the security question, which will be required in case you need to reset your password.",
+      "proceed": "Click here to proceed"
+    }
   },
   "account": {
     "number": "Número de cuenta",
