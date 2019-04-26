@@ -33,6 +33,11 @@ alert .close {
     color: $push-notification-body-color;
     background-color: $push-notification-body-bg;
   }
+
+  button.close {
+    font-size: 1.4rem;
+    color: $push-notification-title-color;
+  }
 }
 
 .gt-sm {
@@ -120,6 +125,10 @@ body.dark {
     .toast-body {
       color: $push-notification-body-color-dark;
       background-color: $push-notification-body-bg-dark;
+    }
+
+    button.close {
+      color: $push-notification-title-color-dark;
     }
   }
 }

@@ -364,17 +364,17 @@ $modal-content-bg-dark: $body-bg-dark;
 $modal-content-border-color-dark: $border-color-dark;
 
 // Push notifications
-$push-notification-border-color: $border-color;
-$push-notification-body-bg: $body-bg;
-$push-notification-body-color: $body-color;
+$push-notification-border-color: $card-border-color;
+$push-notification-body-bg: $card-bg;
+$push-notification-body-color: $card-color;
 $push-notification-title-bg: $push-notification-body-bg;
 $push-notification-title-color: $push-notification-body-color;
 $push-notification-icon-color: $side-menu-inactive-icon-color;
 
 // Push notifications on dark background
-$push-notification-border-color-dark: $border-color-dark;
-$push-notification-body-bg-dark: $body-bg-dark;
-$push-notification-body-color-dark: $body-color-dark;
+$push-notification-border-color-dark: $card-border-color-dark;
+$push-notification-body-bg-dark: $card-bg-dark;
+$push-notification-body-color-dark: $card-color-dark;
 $push-notification-title-bg-dark: $push-notification-body-bg-dark;
 $push-notification-title-color-dark: $push-notification-body-color-dark;
 $push-notification-icon-color-dark: $side-menu-inactive-icon-color-dark;
