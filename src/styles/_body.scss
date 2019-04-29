@@ -25,7 +25,7 @@ top-bar nav {
   @include theme-transitions()
 }
 body.theme-transition {
-  &, * {
+  &, .main-container * {
     @include theme-transitions()
   }
 }

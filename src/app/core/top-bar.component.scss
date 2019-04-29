@@ -83,7 +83,7 @@
     border-bottom: none;
   }
   .sub-menu-item:hover {
-    background-color: darken($top-bar-bg, 5%);
+    background-color: $top-bar-sub-item-hover;
   }
 
   @include media-breakpoint-up(lg) {
@@ -128,5 +128,19 @@ body.dark :host ::ng-deep {
     color: $top-bar-color-dark;
     background-color: $top-bar-bg-dark;
     border-top-color: $top-bar-item-border-color-dark !important;
+  }
+
+  .navbar {
+    .dropdown-menu {
+      color: $top-bar-color-dark;
+      background-color: $top-bar-bg-dark;
+      border-top-color: $top-bar-item-border-color-dark !important;
+    }
+    .sub-menu-item {
+      border-bottom-color: $top-bar-item-border-color-dark;
+    }
+    .sub-menu-item:hover {
+      background-color: $top-bar-sub-item-hover-dark;
+    }
   }
 }

@@ -1,8 +1,8 @@
 // Base colors
 $primary: #1e88e5;
-$primary-dark: #30506c;
+$primary-dark: #334758;
 $accent: $primary;
-$accent-dark: lighten($primary-dark, 25%);
+$accent-dark: #5498d4;
 $faded-color: #757575;
 $faded-color-dark: #757575;
 $theme-color: darken($primary, 10%);
@@ -45,6 +45,8 @@ $grid-breakpoints: (
 @import "~bootstrap/scss/mixins";
 
 // Global layout
+$yiq-text-dark: $gray-900;
+$yiq-text-light: #f0f0f0;
 $layout-spacer-xxs: 0.4rem;
 $layout-spacer-xs: 0.7rem;
 $layout-spacer: 1.25rem;
@@ -105,11 +107,13 @@ $top-bar-item-padding-xxs: 0.3rem;
 $top-bar-item-padding-xs: 0.5rem;
 $top-bar-item-padding: 0.8rem;
 $top-bar-with-menu-item-padding: 1.2rem;
+$top-bar-sub-item-hover: darken($top-bar-bg, 5%);
 
 // Top bar on dark background
 $top-bar-bg-dark: $primary-dark;
 $top-bar-color-dark: color-yiq($top-bar-bg-dark);
 $top-bar-item-border-color-dark: darken($top-bar-bg-dark, 10%);
+$top-bar-sub-item-hover-dark: darken($top-bar-bg-dark, 5%);
 
 // Menu bar (main menu on desktop, only shown when MENU_BAR = true in configuration.ts)
 $menu-bar-height: 3.2rem;
@@ -131,7 +135,7 @@ $menu-bar-hover-color-dark: $menu-bar-color-dark;
 $menu-bar-hover-bg-dark: darken($menu-bar-bg-dark, 1%);
 $menu-bar-active-color-dark: lighten($accent, 5%);
 $menu-bar-active-icon-color-dark: $accent;
-$menu-bar-inactive-color-dark: $gray-500;
+$menu-bar-inactive-color-dark: $body-color-dark;
 $menu-bar-inactive-icon-color-dark: darken($menu-bar-inactive-color-dark, 10%);
 $menu-bar-line-color-dark: $border-color-dark;
 
