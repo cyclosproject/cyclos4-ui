@@ -34,7 +34,8 @@ As of version 1.0, this frontend implements the following functionality:
 - Public user registration;
 - Search advertisements, advertisement details (no shopping cart so far);
 - Access notifications, and receive push notifications;
-- Run custom operations (self, advertisements and transfers).
+- Run custom operations (self, advertisements and transfers);
+- Settings (currently only for choosing the theme).
 
 More functionality will be added in future versions.
 
