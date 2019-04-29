@@ -498,7 +498,7 @@ Then, the corresponding style:
 @import url('https://fonts.googleapis.com/css?family=Roboto:400,500');
 
 body {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Roboto';
   font-size: 0.875rem;
   color: #333333;
   background-color: white;
