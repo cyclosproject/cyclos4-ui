@@ -246,10 +246,9 @@ Users have the option to use a light or a dark theme. This can be changed in the
 
 The layout is built using [Bootstrap 4](https://getbootstrap.com/). Bootstrap allows customizing several variables in [SASS](https://sass-lang.com/). In addition to the built-in variables, several variables are defined in `src/_definitions.scss`. The most important variables are the following:
 
-- `$primary`: The top bar background color;
-- `$theme-color`: A color used to theme the browser, if supported. For example, Chrome for Android uses this color for the status bar (on the top) and address bar. Defaults to the primary color, darkened a bit;
-- `$accent`: The accent color, which defines the color of most elements, like headers, links and buttons. Defaults to the primary color;
-- `$accent-dark`: The accent color used when the user has chosen the dark theme. Also defaults to the primary color;
+- `$primary` / `$primary-dark`: The top bar background color, with the dark theme variant;
+- `$theme-color` / `$theme-color-dark`: A color used to theme the browser, if supported. For example, Chrome for Android uses this color for the status bar (on the top) and address bar. Defaults to the primary color, darkened a bit;
+- `$accent` / `$accent-dark`: The accent color, which defines the color of most page elements, like headers, links and buttons. Defaults to a variant of the primary color;
 - `$font-import-url`: The URL which will be used to import a font. By default is the Google Fonts URL for Roboto, Android's default font. It is widely used, but lacks support to some character sets. If you use Cyclos in a language that has glyphs not covered by Roboto, you can use, for example, [Noto Sans](https://fonts.google.com/specimen/Noto+Sans). Just take care that the default font weight for bolds used in the frontend is 500, which is not available in Noto Sans. If switching, also change the `$font-weight-bold` to `700`.
 - `$font-family-sans-serif`: Actually sets the font. Must be consistent with the `$font-import-url` variable. The default font is Roboto.
 
@@ -462,11 +461,9 @@ Users can choose whether they want a light or dark theme. When writing custom co
 
 The `body` tag has the `dark` class added for users that prefer the dark theme. Also, several class names are provided which adapt to light / dark variants. They are based on variables set on `src/_definitions.scss`, and are:
 
-- `primary-color`: Sets the `color` property to the primary theme color. Is invariant regarding light / dark theme.
-- `primary-bg`: Sets the `background-color` property to the primary theme color, and the `color` property to a contrast color, allowing readable text. Is invariant regarding light / dark theme.
-- `secondary-color`: Sets the `color` property to the secondary theme color. Is invariant regarding light / dark theme.
-- `secondary-bg`: Sets the `background-color` property to the secondary theme color, and the `color` property to a contrast color, allowing readable text. Is invariant regarding light / dark theme.
-- `accent-color`: Sets the `color` property to the accent theme color, which defaults to the primary color, but can be set to a different color on light / dark themes.
+- `primary-color`: Sets the `color` property to the primary theme color.
+- `primary-bg`: Sets the `background-color` property to the primary theme color, and the `color` property to a contrast color, allowing readable text.
+- `accent-color`: Sets the `color` property to the accent theme color.
 - `accent-bg`: Sets the `background-color` property to the accent theme color, and the `color` property to a contrast color, allowing readable text.
 - `body-color`: Sets the `color` property to the body text color, which can be set to a different color on light / dark themes.
 - `body-bg`: Sets the `background-color` property to the body background color, and the `color` property to the body text color, allowing readable text.

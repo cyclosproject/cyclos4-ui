@@ -10,9 +10,8 @@ import { MenuService } from 'app/core/menu.service';
 import { SidenavComponent } from 'app/core/sidenav.component';
 import { StateManager } from 'app/core/state-manager';
 import { I18n } from 'app/i18n/i18n';
-import { blank, setRootSpinnerVisible } from 'app/shared/helper';
+import { setRootSpinnerVisible } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
-import { trim } from 'lodash';
 import { BehaviorSubject } from 'rxjs';
 import { ShortcutService } from 'app/shared/shortcut.service';
 
@@ -98,7 +97,6 @@ export class AppComponent implements OnInit {
 
   private doInitialize(dataForUi: DataForUi) {
     this.initialized$.next(true);
-    this.prepareContent();
 
     // Handle redirects on urgent situations
     const auth = (dataForUi || {}).auth || {};
@@ -115,47 +113,5 @@ export class AppComponent implements OnInit {
         this.router.navigateByUrl(redirect);
       }, 1);
     }
-  }
-
-  private prepareContent() {
-    const style = getComputedStyle(document.body);
-    this.applyFont(style);
-    this.applyThemeColor(style);
-  }
-
-  private applyFont(style: CSSStyleDeclaration) {
-    const url = trim(style.getPropertyValue('--font-import-url'), '\" ');
-    if (blank(url)) {
-      return;
-    }
-    const id = 'fontStyle';
-    let element: HTMLLinkElement = document.getElementById(id) as HTMLLinkElement;
-    if (!element) {
-      element = document.createElement('link');
-      element.id = id;
-      element.rel = 'stylesheet';
-      document.head.appendChild(element);
-      element.href = url;
-    } else if (element.href !== url) {
-      element.href = url;
-    }
-  }
-
-  private applyThemeColor(style: CSSStyleDeclaration) {
-    const primaryColor = style.getPropertyValue('--primary').trim();
-    if (blank(primaryColor)) {
-      return;
-    }
-    this.layout.primaryColor = primaryColor;
-    this.layout.chartColor = style.getPropertyValue('--chart-color').trim();
-    const id = 'themeColorMeta';
-    let meta: HTMLMetaElement = document.getElementById(id) as HTMLMetaElement;
-    if (!meta) {
-      meta = document.createElement('meta');
-      meta.id = id;
-      meta.name = 'theme-color';
-      document.head.appendChild(meta);
-    }
-    meta.content = style.getPropertyValue('--theme-color').trim();
   }
 }

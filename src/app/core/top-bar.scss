@@ -98,3 +98,13 @@ nav {
     }
   }
 }
+
+body.dark :host  ::ng-deep {
+  .navbar {
+    color: $top-bar-color-dark;
+    background-color: $top-bar-bg-dark;
+    a, a:hover {
+      color: $top-bar-color-dark;
+    }
+  }
+}

@@ -1,13 +1,14 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { Injectable } from '@angular/core';
 import { BasePageComponent } from 'app/shared/base-page.component';
-import { empty } from 'app/shared/helper';
+import { empty, blank } from 'app/shared/helper';
 import { PageLayoutComponent } from 'app/shared/page-layout.component';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 import { isEqual } from 'lodash';
 import { FormatService } from 'app/core/format.service';
 import { Title } from '@angular/platform-browser';
+import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 
 const DarkTheme = 'darkTheme';
 
@@ -49,9 +50,9 @@ export const ALL_BREAKPOINTS = Object.keys(BREAKPOINTS) as Breakpoint[];
   providedIn: 'root'
 })
 export class LayoutService {
-  primaryColor: string;
-  themeColor: string;
-  chartColor: string;
+  _colors = new Map<string, string>();
+  _colorsDark = new Map<string, string>();
+  _fontUrl: string;
 
   currentPage$ = new BehaviorSubject<BasePageComponent<any>>(null);
   get currentPage(): BasePageComponent<any> {
@@ -105,10 +106,14 @@ export class LayoutService {
   constructor(
     private observer: BreakpointObserver,
     private format: FormatService,
-    private title: Title) {
+    private title: Title,
+    dataForUiHolder: DataForUiHolder) {
 
-    // Initialize the theme
+    // Initialize the theme from the local storage
     this.darkTheme = this.darkTheme;
+
+    // Read some elements we'll need
+    this.readStylesAndApplyWhenReady();
 
     this.breakpointObservers = new Map();
     // Set the initial state of the active breakpoints, and initialize the observers
@@ -148,6 +153,10 @@ export class LayoutService {
 
     window.addEventListener('resize', () => this.updateWindowWidth(), false);
     setTimeout(() => this.updateWindowWidth(), 1);
+
+    dataForUiHolder.subscribe(() => {
+      this.applyThemeColor();
+    });
   }
 
   updateWindowWidth() {
@@ -410,6 +419,84 @@ export class LayoutService {
     } else {
       classList.remove('dark');
     }
+    this.applyThemeColor();
   }
 
+  private readStylesAndApplyWhenReady() {
+    const style = getComputedStyle(document.body);
+
+    this._fontUrl = style.getPropertyValue('--font-import-url').trim();
+    if (blank(this._fontUrl)) {
+      // Styles are not available yet
+      setTimeout(() => this.readStylesAndApplyWhenReady(), 100);
+      return;
+    }
+    for (const name of ['primary', 'theme-color', 'chart-color']) {
+      this._colors.set(name, style.getPropertyValue('--' + name).trim());
+      this._colorsDark.set(name, style.getPropertyValue('--' + name + '-dark').trim());
+    }
+    this.applyFontImport();
+    this.applyThemeColor();
+  }
+
+  /**
+   * Returns the primary color
+   */
+  get primaryColor(): string {
+    return this.getColor('primary');
+  }
+
+  /**
+   * Returns the chart color
+   */
+  get chartColor(): string {
+    return this.getColor('chart-color');
+  }
+
+  /**
+   * Returns the theme color (used by some browsers to theme themselves)
+   */
+  get themeColor(): string {
+    return this.getColor('theme-color');
+  }
+
+  private getColor(name: string) {
+    const colors = this.darkTheme ? this._colorsDark : this._colors;
+    return colors.get(name);
+  }
+
+  private applyThemeColor() {
+    const themeColor = this.themeColor;
+    if (empty(themeColor)) {
+      return;
+    }
+    const id = 'themeColorMeta';
+    let meta: HTMLMetaElement = document.getElementById(id) as HTMLMetaElement;
+    if (!meta) {
+      meta = document.createElement('meta');
+      meta.id = id;
+      meta.name = 'theme-color';
+      document.head.appendChild(meta);
+    }
+    meta.content = this.themeColor;
+  }
+
+  private applyFontImport() {
+    const url = this._fontUrl;
+    if (empty(url)) {
+      return;
+    }
+
+    const id = 'fontImportLink';
+    let link: HTMLLinkElement = document.getElementById(id) as HTMLLinkElement;
+    if (!link) {
+      link = document.createElement('link');
+      link.id = id;
+      link.rel = 'stylesheet';
+      document.head.appendChild(link);
+      link.href = url;
+    } else if (link.href !== url) {
+      link.href = url;
+    }
+  }
 }

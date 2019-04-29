@@ -85,6 +85,13 @@ body.dark {
   .border-color {
     border-color: $border-color-dark;
   }
+  .primary-color {
+    color: $primary-dark;
+  }
+  .primary-bg {
+    background-color: $primary-dark;
+    color: color-yiq($primary-dark);
+  }
   .accent-color {
     color: $accent-dark;
   }

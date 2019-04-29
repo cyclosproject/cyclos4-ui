@@ -1,11 +1,14 @@
 // Base colors
 $primary: #1e88e5;
+$primary-dark: #30506c;
 $accent: $primary;
-$accent-dark: $primary;
+$accent-dark: lighten($primary-dark, 25%);
 $faded-color: #757575;
 $faded-color-dark: #757575;
 $theme-color: darken($primary, 10%);
+$theme-color-dark: darken($primary-dark, 10%);
 $info: lighten($primary, 30%);
+$info-dark: lighten($primary-dark, 30%);
 
 // Make sure the font import URL and the font family (sans serif) are in sync
 $font-import-url: "https://fonts.googleapis.com/css?family=Roboto:400,500";
@@ -102,6 +105,11 @@ $top-bar-item-padding-xxs: 0.3rem;
 $top-bar-item-padding-xs: 0.5rem;
 $top-bar-item-padding: 0.8rem;
 $top-bar-with-menu-item-padding: 1.2rem;
+
+// Top bar on dark background
+$top-bar-bg-dark: $primary-dark;
+$top-bar-color-dark: color-yiq($top-bar-bg-dark);
+$top-bar-item-border-color-dark: darken($top-bar-bg-dark, 10%);
 
 // Menu bar (main menu on desktop, only shown when MENU_BAR = true in configuration.ts)
 $menu-bar-height: 3.2rem;
@@ -431,6 +439,7 @@ $pagination-disabled-border-color-dark: $card-border-color-dark;
 $positive-color: $green;
 $negative-color: $red;
 $chart-color: #f29220;
+$chart-color-dark: #b9721a;
 $total-amount-color: $green;
 $total-amount-size: 2rem;
 $management-icon-color: $gray-500;

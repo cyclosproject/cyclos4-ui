@@ -122,3 +122,11 @@
     }
   }
 }
+
+body.dark :host ::ng-deep {
+  .dropdown-menu {
+    color: $top-bar-color-dark;
+    background-color: $top-bar-bg-dark;
+    border-top-color: $top-bar-item-border-color-dark !important;
+  }
+}
