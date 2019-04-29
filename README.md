@@ -470,7 +470,64 @@ The `body` tag has the `dark` class added for users that prefer the dark theme. 
 - `faded-color`: Sets the `color` property to the body faded color, which can be set to a different color on light / dark themes.
 - `border-color`: Sets the `border-color` property to the general border color, adapting to light / dark theme. However, no border style / width is defined. It is also possible to use the standard Bootstrap's `border`, `border-top`, `border-bottom`, `border-left` and `border-right` classes, as they are customized in dark themes to the correct color.
 
-For pages that are included within iframes using `ContentGetter.iframe(url)`, a parameter is automatically added: `theme=light` or `theme=dark`, so the generated content can adapt.
+For pages that are included within iframes using `ContentGetter.iframe(url)`, a parameter is automatically added: `theme=light` or `theme=dark`, so the generated content can adapt. Here is an example WordPress theme for pages which are included in iframes, and which adapt to both light and dark themes (based on (this page)[https://www.wonderplugin.com/wordpress-tutorials/how-to-create-a-wordpress-page-without-header-menu-sidebar-and-footer/]):
+
+```php
+<html <?php language_attributes(); ?> class="no-js">
+<head>
+  <meta charset="<?php bloginfo( 'charset' ); ?>">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="<?php echo get_stylesheet_directory_uri(); ?>/style-cleanpage.css"
+    rel="stylesheet" type="text/css">
+  <?php wp_head(); ?>
+</head>
+<body class="<?php echo($_REQUEST['theme'] == 'dark' ? 'dark' : 'light'); ?>">
+<?php
+    while ( have_posts() ) : the_post();
+        the_content();
+    endwhile;
+?>
+<?php wp_footer(); ?>
+</body>
+</html>
+```
+
+Then, the corresponding style:
+
+```css
+@import url('https://fonts.googleapis.com/css?family=Roboto:400,500');
+
+body {
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.875rem;
+  color: #333333;
+  background-color: white;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+body.dark {
+  color: white;
+  background-color: #252525;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+a:link, a:visited {
+  color: #1e88e5;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+h1, h2, h3, b {
+  font-weight: 500;
+}
+
+```
 
 ### Creating links to other pages
 
