@@ -402,10 +402,13 @@ export class LayoutService {
 
   set darkTheme(dark: boolean) {
     localStorage.setItem(DarkTheme, String(dark));
+    const classList = document.body.classList;
+    classList.add('theme-transition');
+    setTimeout(() => classList.remove('theme-transition'), 400);
     if (dark) {
-      document.body.classList.add('dark');
+      classList.add('dark');
     } else {
-      document.body.classList.remove('dark');
+      classList.remove('dark');
     }
   }
 

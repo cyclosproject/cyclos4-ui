@@ -13,12 +13,23 @@ body.full-width {
 body.full-width .main-container {
   margin: 0;
 }
-body, top-bar nav, menu-bar nav, side-menu a, .card, .side-menu-title, .content-title {
+
+@mixin theme-transitions() {
   transition:
     background-color ease-in-out 0.4s,
     color ease-in-out 0.4s,
     border-color ease-in-out 0.4s;
 }
+
+top-bar nav {
+  @include theme-transitions()
+}
+body.theme-transition {
+  &, * {
+    @include theme-transitions()
+  }
+}
+
 body.backdrop-visible {
   overflow: hidden;
   position: fixed;
