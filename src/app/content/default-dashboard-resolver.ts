@@ -38,19 +38,19 @@ export class DefaultDashboardResolver implements DashboardResolver {
    * - Search users (business directory)
    * - Search ads (marketplace)
    * - Edit profile
-   * - Manage password
+   * - Switch theme
    */
   quickAccess(): DashboardItemConfig {
     // The quick access is always there
     return DashboardItemConfig.quickAccess({
       descriptors: [
-        { type: QuickAccessType.ACCOUNT, breakpoints: ['lt-md'] },
-        { type: QuickAccessType.PAY_USER },
-        { type: QuickAccessType.CONTACTS },
-        { type: QuickAccessType.SEARCH_USERS },
-        { type: QuickAccessType.SEARCH_ADS },
-        { type: QuickAccessType.EDIT_PROFILE },
-        { type: QuickAccessType.PASSWORDS },
+        { type: QuickAccessType.Account, breakpoints: ['lt-md'] },
+        { type: QuickAccessType.PayUser },
+        { type: QuickAccessType.Contacts },
+        { type: QuickAccessType.SearchUsers },
+        { type: QuickAccessType.SearchAds },
+        { type: QuickAccessType.EditProfile },
+        { type: QuickAccessType.SwitchTheme }
       ],
       column: 'left',
       minHeight: this.minHeight

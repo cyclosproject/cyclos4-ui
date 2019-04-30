@@ -12,6 +12,7 @@ export interface QuickAccessAction {
   label: string;
   entry: MenuEntry;
   breakpoints?: Breakpoint[];
+  onClick?: () => void;
 }
 
 /**
@@ -41,7 +42,7 @@ export class QuickAccessComponent extends BaseDashboardComponent implements OnIn
     const auth = dataForUi.auth;
     const permissions = auth.permissions;
     const addAction = (descriptor: QuickAccessDescriptor | QuickAccessType,
-      icon: Icon, label: string, activeMenu: ActiveMenu): void => {
+      icon: Icon, label: string, activeMenu: ActiveMenu, onClick?: () => void): void => {
       let desc: QuickAccessDescriptor;
       if (typeof descriptor === 'string') {
         desc = desc = this.descriptors.find(d => d.type === descriptor);
@@ -55,18 +56,19 @@ export class QuickAccessComponent extends BaseDashboardComponent implements OnIn
             icon: icon,
             label: label,
             entry: entry,
-            breakpoints: desc.breakpoints
+            breakpoints: desc.breakpoints,
+            onClick: onClick
           });
         }
       }
     };
     if (permissions.banking) {
       const accounts = (permissions.banking.accounts || []).filter(p => p.visible).map(p => p.account);
-      const generalAccountDescriptor = this.descriptors.find(d => d.type === QuickAccessType.ACCOUNT && empty(d.accountType));
+      const generalAccountDescriptor = this.descriptors.find(d => d.type === QuickAccessType.Account && empty(d.accountType));
       for (const account of accounts) {
         const accountType = account.type;
         const ids = [accountType.id, accountType.internalName];
-        const accountDescriptor = this.descriptors.find(d => d.type === QuickAccessType.ACCOUNT && ids.includes(d.accountType))
+        const accountDescriptor = this.descriptors.find(d => d.type === QuickAccessType.Account && ids.includes(d.accountType))
           || generalAccountDescriptor;
         if (accountDescriptor) {
           const accountLabel = accounts.length === 1 ? this.i18n.dashboard.action.account : accountType.name;
@@ -76,44 +78,54 @@ export class QuickAccessComponent extends BaseDashboardComponent implements OnIn
         }
       }
       if (permissions.banking.payments.user) {
-        addAction(QuickAccessType.PAY_USER, 'quick_access_pay',
+        addAction(QuickAccessType.PayUser, 'quick_access_pay',
           this.i18n.dashboard.action.payUser, new ActiveMenu(Menu.PAYMENT_TO_USER));
       }
       if (permissions.banking.payments.system) {
-        addAction(QuickAccessType.PAY_SYSTEM, 'quick_access_pay',
+        addAction(QuickAccessType.PaySystem, 'quick_access_pay',
           this.i18n.dashboard.action.paySystem, new ActiveMenu(Menu.PAYMENT_TO_SYSTEM));
       }
     }
     if (permissions.contacts && (permissions.contacts.enable)) {
-      addAction(QuickAccessType.CONTACTS, 'quick_access_contact_list',
+      addAction(QuickAccessType.Contacts, 'quick_access_contact_list',
         this.i18n.dashboard.action.contacts, new ActiveMenu(Menu.CONTACTS));
     }
     if (permissions.users && (permissions.users.search || permissions.users.map)) {
-      addAction(QuickAccessType.SEARCH_USERS, 'quick_access_search_users',
+      addAction(QuickAccessType.SearchUsers, 'quick_access_search_users',
         this.i18n.dashboard.action.directory, new ActiveMenu(Menu.SEARCH_USERS));
     }
     if (permissions.marketplace && permissions.marketplace.search) {
-      addAction(QuickAccessType.SEARCH_ADS, 'quick_access_marketplace',
+      addAction(QuickAccessType.SearchAds, 'quick_access_marketplace',
         this.i18n.dashboard.action.advertisements, new ActiveMenu(Menu.SEARCH_ADS));
     }
     if (permissions.myProfile && permissions.myProfile.editProfile) {
-      addAction(QuickAccessType.EDIT_PROFILE, 'quick_access_edit_profile',
+      addAction(QuickAccessType.EditProfile, 'quick_access_edit_profile',
         this.i18n.dashboard.action.editProfile, new ActiveMenu(Menu.EDIT_MY_PROFILE));
     }
     if (permissions.passwords && !empty(permissions.passwords.passwords)) {
       const passwordsLabel = permissions.passwords.passwords.length === 1 ?
         this.i18n.dashboard.action.password :
         this.i18n.dashboard.action.passwords;
-      addAction(QuickAccessType.PASSWORDS, 'quick_access_passwords', passwordsLabel, new ActiveMenu(Menu.PASSWORDS));
+      addAction(QuickAccessType.Passwords, 'quick_access_passwords', passwordsLabel, new ActiveMenu(Menu.PASSWORDS));
     }
+    addAction(QuickAccessType.SwitchTheme, 'quick_access_theme', this.i18n.dashboard.action.switchTheme, new ActiveMenu(Menu.SETTINGS),
+      () => {
+        this.layout.darkTheme = !this.layout.darkTheme;
+      });
   }
 
   navigate(action: QuickAccessAction, event: MouseEvent) {
-    this.menu.navigate({
-      entry: action.entry,
-      clear: false,
-      event: event
-    });
+    if (action.onClick) {
+      event.stopPropagation();
+      event.preventDefault();
+      action.onClick();
+    } else {
+      this.menu.navigate({
+        entry: action.entry,
+        clear: false,
+        event: event
+      });
+    }
   }
 
 }

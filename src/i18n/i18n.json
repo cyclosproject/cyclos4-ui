@@ -296,7 +296,8 @@
       "advertisements": "Advertisements",
       "editProfile": "Edit profile",
       "password": "Password",
-      "passwords": "Passwords"
+      "passwords": "Passwords",
+      "switchTheme": "Switch theme"
     },
     "accountStatus": "Account status",
     "lastIncomingPayments": "Last incoming payments",
