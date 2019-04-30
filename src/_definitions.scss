@@ -172,7 +172,7 @@ $quick-access-hover-color: $body-color;
 $quick-access-hover-icon-color: $accent;
 
 // Quick access on dark background
-$quick-access-bg-dark: $menu-bar-hover-bg-dark;
+$quick-access-bg-dark: darken($menu-bar-hover-bg-dark, 2%);
 $quick-access-color-dark: $body-color-dark;
 $quick-access-icon-color-dark: $accent-dark;
 $quick-access-hover-bg-dark: darken($menu-bar-hover-bg-dark, 5%);
@@ -442,6 +442,6 @@ $negative-color-dark: $red;
 $total-amount-color-dark: $positive-color-dark;
 $total-amount-size: 2rem;
 $chart-color: #f29220;
-$chart-color-dark: #b9721a;
+$chart-color-dark: #f29220;
 $management-icon-color: $gray-500;
 $management-icon-color-dark: $gray-600;
