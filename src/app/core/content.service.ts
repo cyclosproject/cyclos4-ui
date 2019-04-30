@@ -4,7 +4,6 @@ import { Content, DEFAULT_CACHE_SECONDS } from 'app/content/content';
 import { CacheService } from 'app/core/cache.service';
 import { Observable, of, EMPTY } from 'rxjs';
 import { blank } from 'app/shared/helper';
-import { tap } from 'rxjs/operators';
 import { ContentPage } from 'app/content/content-page';
 import { handleFullWidthLayout } from 'app/content/content-with-layout';
 import { empty as isEmpty } from 'app/shared/helper';
