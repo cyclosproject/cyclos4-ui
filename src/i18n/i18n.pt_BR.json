@@ -222,7 +222,8 @@
       "title": {
         "change": "Alterar sua senha",
         "manage.single": "Gerenciar sua senha",
-        "manage.multiple": "Gerenciar as suas senhas"
+        "manage.multiple": "Gerenciar as suas senhas",
+        "securityAnswer": "Definir sua resposta de segurança"
       },
       "forgotten": {
         "title": "Recuperar sua senha",
@@ -278,8 +279,10 @@
       "agree": "Concordo com os seguintes termos de adesão: {agreements}"
     },
     "securityQuestion": {
+      "message": "A pergunta de segurança é necessária caso você precise redefinir sua senha. Uma vez definida, se você precisa alterá-la, entre em contato com a administração.",
       "question": "Pergunta de segurança",
-      "answer": "Sua resposta"
+      "answer": "Sua resposta",
+      "set": "Sua resposta de segurança foi definida"
     }
   },
   "dashboard": {
@@ -299,7 +302,15 @@
     "lastIncomingPayments": "Últimos pagamentos recebidos",
     "noIncomingPayments": "Nenhum pagamento recebido",
     "latestAds": "Anúncios mais recentes",
-    "latestUsers": "Usuários mais recentes"
+    "latestUsers": "Usuários mais recentes",
+    "passwords": {
+      "expired": "Sua {type} expirou.",
+      "reset": "Sua {type} foi redefinida.",
+      "pending": "Sua {type} está pendente de geração.",
+      "neverCreated": "Sua {type} precisa ser definido.",
+      "securityAnswer": "Você deve definir a pergunta de segurança, que será necessária caso precise redefinir sua senha.",
+      "proceed": "Clique aqui para continuar"
+    }
   },
   "account": {
     "number": "Número da conta",
@@ -315,9 +326,9 @@
     "negativeLimit": "Limite negativo",
     "positiveLimit": "Limite positivo",
     "balanceOn": "Saldo em {date}",
-    "totalIncome": "Total de entradas",
-    "totalOutflow": "Total de saídas",
-    "netInflow": "Entrada líquida",
+    "totalIncome": "Total recebido",
+    "totalOutflow": "Total pago",
+    "netInflow": "Receita líquida",
     "noAccounts": "Você não tem contas",
     "printTransactions": "Imprimir transações",
     "system": "Conta de sistema",
