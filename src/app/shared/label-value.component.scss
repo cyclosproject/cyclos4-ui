@@ -16,23 +16,20 @@
   align-items: flex-start;
 }
 
-.filters-form :host ::ng-deep .label-value-label {
-  padding-top: calc(#{$input-padding-y} + #{$input-border-width}) !important;
-  padding-bottom: calc(#{$input-padding-y} + #{$input-border-width}) !important;
-}
-
-:host.field .label-value-label,
-:host.field-view .label-value-label {
+:host.label-on-side .label-value-label {
   padding-top: 0 !important;
   padding-bottom: 0 !important;
-  min-height: $input-height;
   display: flex;
   align-items: center;
 }
 
-:host.field-view .label-value-value {
+:host:not(.label-on-side) .label-value-label {
   padding-top: calc(#{$input-padding-y} + #{$input-border-width}) !important;
   padding-bottom: calc(#{$input-padding-y} + #{$input-border-width}) !important;
+}
+
+:host.field-view, :host.field {
+  min-height: $input-height;
 }
 
 @include media-breakpoint-up(xs) {

@@ -8,11 +8,12 @@ import { ExtraCellDirective } from 'app/shared/extra-cell.directive';
 import { truthyAttr } from 'app/shared/helper';
 import { ValueFormat } from 'app/shared/value-format';
 import { Subscription } from 'rxjs';
+import { LayoutService, Breakpoint as LayoutBreakpoint } from 'app/shared/layout.service';
 
 export const COLS = 12;
 
 type Breakpoint = 'xxs' | 'xs' | 'sm';
-const BREAKPOINTS: Breakpoint[] = ['xxs', 'xs', 'sm'];
+const Breakpoints: Breakpoint[] = ['xxs', 'xs', 'sm'];
 
 /**
  * Displays a label / value pair
@@ -29,10 +30,14 @@ export class LabelValueComponent implements OnInit, OnDestroy {
   @HostBinding('class.row') classRow = true;
   @HostBinding('class.no-gutters') classNoGutters = true;
   @HostBinding('class.any-label-value') classAnyLabelValue = true;
+  @HostBinding('class.label-on-side') classLabelOnSide = false;
 
-  constructor(private changeDetector: ChangeDetectorRef) { }
+  constructor(
+    private changeDetector: ChangeDetectorRef,
+    private layout: LayoutService
+  ) { }
 
-  private sub: Subscription;
+  private subs: Subscription[] = [];
 
   /** When the content has an extraCell directive, we render it on the same row */
   @ContentChild(ExtraCellDirective, { read: TemplateRef }) _extraCell;
@@ -136,13 +141,27 @@ export class LabelValueComponent implements OnInit, OnDestroy {
       this.required = field.required;
       this.fieldSize = field.fieldSize;
       this.forId = field.id;
-      this.sub = field.disabledChange.subscribe(disabled => this.updateFieldDisabled(disabled));
+      this.subs.push(field.disabledChange.subscribe((disabled: boolean) => this.updateFieldDisabled(disabled)));
       this.valueFormat = field.disabledFormat;
       this.updateFieldDisabled(field.disabled);
     }
     this.initClasses();
     if (field) {
       // As we've modified @Input() properties, manually trigger change detection
+      this.changeDetector.detectChanges();
+    }
+    // Update the indication that the label is on side
+    this.subs.push(this.layout.breakpointChanges$.subscribe(bs => {
+      this.updateLabelOnSideClass(bs);
+    }));
+    this.updateLabelOnSideClass(this.layout.activeBreakpoints);
+  }
+
+  private updateLabelOnSideClass(bs: Set<LayoutBreakpoint>) {
+    const bp: Breakpoint = bs.has('xxs') ? 'xxs' : bs.has('xs') ? 'xs' : 'sm';
+    const labelOnSide = this.isLabelOnSide(bp);
+    if (this.classLabelOnSide !== labelOnSide) {
+      this.classLabelOnSide = labelOnSide;
       this.changeDetector.detectChanges();
     }
   }
@@ -156,7 +175,7 @@ export class LabelValueComponent implements OnInit, OnDestroy {
     this.valueClasses = [];
     this.extraClasses = [];
 
-    for (const breakpoint of BREAKPOINTS) {
+    for (const breakpoint of Breakpoints) {
       const cols = this.getCols(breakpoint);
       const prefix = breakpoint === 'xxs' ? '' : `-${breakpoint}`;
       this.labelClasses.push(`col${prefix}-${cols.label}`);
@@ -289,8 +308,6 @@ export class LabelValueComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-    }
+    this.subs.forEach(s => s.unsubscribe());
   }
 }

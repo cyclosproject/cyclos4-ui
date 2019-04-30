@@ -9,8 +9,10 @@ import { isEqual } from 'lodash';
 import { FormatService } from 'app/core/format.service';
 import { Title } from '@angular/platform-browser';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
+import { trim } from 'lodash';
 
 const DarkTheme = 'darkTheme';
+const ColorVariables = ['primary', 'theme-color', 'chart-color', 'body-color', 'border-color'];
 
 /**
  * The available media query breakpoints.
@@ -425,13 +427,13 @@ export class LayoutService {
   private readStylesAndApplyWhenReady() {
     const style = getComputedStyle(document.body);
 
-    this._fontUrl = style.getPropertyValue('--font-import-url').trim();
+    this._fontUrl = trim(style.getPropertyValue('--font-import-url'), '" ');
     if (blank(this._fontUrl)) {
       // Styles are not available yet
       setTimeout(() => this.readStylesAndApplyWhenReady(), 100);
       return;
     }
-    for (const name of ['primary', 'theme-color', 'chart-color']) {
+    for (const name of ColorVariables) {
       this._colors.set(name, style.getPropertyValue('--' + name).trim());
       this._colorsDark.set(name, style.getPropertyValue('--' + name + '-dark').trim());
     }
@@ -451,6 +453,20 @@ export class LayoutService {
    */
   get chartColor(): string {
     return this.getColor('chart-color');
+  }
+
+  /**
+   * Returns the body color
+   */
+  get bodyColor(): string {
+    return this.getColor('body-color');
+  }
+
+  /**
+   * Returns the border color
+   */
+  get borderColor(): string {
+    return this.getColor('border-color');
   }
 
   /**

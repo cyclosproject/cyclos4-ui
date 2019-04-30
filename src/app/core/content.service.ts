@@ -53,7 +53,7 @@ export class ContentService {
       observable = this.cache.get(key, () => observable, cacheSeconds);
     }
     // When resolving, change the content to a string, so, for this instance it will be obtained immediately
-    return observable.pipe(tap(str => content.content = str));
+    return observable;
   }
 
   /**

@@ -45,7 +45,10 @@ export class BalanceHistoryChartDirective implements OnInit {
       },
       options: {
         legend: {
-          display: false
+          display: false,
+          labels: {
+            fontColor: this.layout.bodyColor
+          }
         },
         animation: {
           duration: 0
@@ -65,14 +68,20 @@ export class BalanceHistoryChartDirective implements OnInit {
         scales: {
           xAxes: [{
             gridLines: {
-              display: false
+              display: false,
+              color: this.layout.borderColor
+            },
+            ticks: {
+              fontColor: this.layout.bodyColor
             }
           }],
           yAxes: [{
             gridLines: {
-              display: false
+              display: false,
+              color: this.layout.borderColor
             },
             ticks: {
+              fontColor: this.layout.bodyColor,
               beginAtZero: !hasNegative,
               maxTicksLimit: 4,
               callback: n => this.format.formatAsCurrency(currency, n)

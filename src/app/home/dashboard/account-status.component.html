@@ -33,11 +33,11 @@
         *ngIf="lastPayments$.value?.length > 0; else noTransfers">
         <tr *ngFor="let transfer of lastPayments$.value; let last = last"
           (click)="viewTransfer(transfer, $event)">
-          <td style="width:20%" class="text-left pl-0 text-muted"
+          <td style="width:20%" class="text-left pl-0"
             [ngClass]="{'border-0': last}">
             {{ transfer.date | date }}
           </td>
-          <td style="width:45%" class="text-center text-muted"
+          <td style="width:45%" class="text-center"
             [ngClass]="{'border-0': last}">
             {{ subjectName(transfer) }}
           </td>
