@@ -6,7 +6,7 @@ import { Configuration } from 'app/configuration';
 export function setup() {
   Configuration.apiRoot = 'api';
   Configuration.appTitle = 'Cyclos';
-  Configuration.appTitleSmall = 'Cyclos frontend';
+  Configuration.appTitleSmall = 'Cyclos';
   Configuration.appTitleMenu = 'Cyclos menu';
 }
 
