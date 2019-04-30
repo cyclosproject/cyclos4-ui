@@ -223,7 +223,7 @@
         "change": "Alterar sua senha",
         "manage.single": "Gerenciar sua senha",
         "manage.multiple": "Gerenciar as suas senhas",
-        "securityAnswer": "Set your security answer"
+        "securityAnswer": "Definir sua resposta de segurança"
       },
       "forgotten": {
         "title": "Recuperar sua senha",
@@ -279,10 +279,10 @@
       "agree": "Concordo com os seguintes termos de adesão: {agreements}"
     },
     "securityQuestion": {
-      "message": "The security question is required in case you need to reset your password. Once set, if you need to change it, contact the administration.",
+      "message": "A pergunta de segurança é necessária caso você precise redefinir sua senha. Uma vez definida, se você precisa alterá-la, entre em contato com a administração.",
       "question": "Pergunta de segurança",
       "answer": "Sua resposta",
-      "set": "Your security answer was set"
+      "set": "Sua resposta de segurança foi definida"
     }
   },
   "dashboard": {
@@ -304,12 +304,12 @@
     "latestAds": "Anúncios mais recentes",
     "latestUsers": "Usuários mais recentes",
     "passwords": {
-      "expired": "Your {type} has expired.",
-      "reset": "Your {type} has reset.",
-      "pending": "Your {type} is pending generation.",
-      "neverCreated": "Your {type} needs to be set.",
-      "securityAnswer": "You should set the security question, which will be required in case you need to reset your password.",
-      "proceed": "Click here to proceed"
+      "expired": "Sua {type} expirou.",
+      "reset": "Sua {type} foi redefinida.",
+      "pending": "Sua {type} está pendente de geração.",
+      "neverCreated": "Sua {type} precisa ser definido.",
+      "securityAnswer": "Você deve definir a pergunta de segurança, que será necessária caso precise redefinir sua senha.",
+      "proceed": "Clique aqui para continuar"
     }
   },
   "account": {
@@ -326,9 +326,9 @@
     "negativeLimit": "Limite negativo",
     "positiveLimit": "Limite positivo",
     "balanceOn": "Saldo em {date}",
-    "totalIncome": "Total received",
-    "totalOutflow": "Total paid",
-    "netInflow": "Net income",
+    "totalIncome": "Total recebido",
+    "totalOutflow": "Total pago",
+    "netInflow": "Receita líquida",
     "noAccounts": "Você não tem contas",
     "printTransactions": "Imprimir transações",
     "system": "Conta de sistema",
