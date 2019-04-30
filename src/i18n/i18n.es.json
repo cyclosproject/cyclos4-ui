@@ -186,7 +186,7 @@
     "personal.password": "Contraseñas",
     "personal.passwords": "Contraseñas",
     "personal.notifications": "Notificaciones",
-    "personal.settings": "Settings",
+    "personal.settings": "Definiciones",
     "content": "Información"
   },
   "auth": {
@@ -297,7 +297,7 @@
       "editProfile": "Editar perfil",
       "password": "Contraseña",
       "passwords": "Contraseñas",
-      "switchTheme": "Switch theme"
+      "switchTheme": "Cambiar tema"
     },
     "accountStatus": "Estado de cuenta",
     "lastIncomingPayments": "Ultimos pagos recibidos",
