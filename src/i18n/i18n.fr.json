@@ -11,12 +11,14 @@
     "beginDate": "Date de début",
     "endDate": "Date de fin",
     "notApplied": "Non appliqué",
+    "notAppliedSelect": "Not applied (select to apply)",
     "user": "Utilisateur",
     "operator": "Opérateur",
     "name": "Nom",
     "description": "Description",
     "image": "Image",
     "keywords": "Mots-clés",
+    "distanceFilter": "Distance",
     "orderBy": "Trier par",
     "orderBy.relevance": "Pertinence",
     "print": "Imprimer",
@@ -109,6 +111,15 @@
       "withTotal": "Affichage de {first} - {last} de {total} résultats",
       "noTotal": "Affichage de {first} - {last} résultats",
       "none": "Aucun résultat ne correspond aux critères de recherche"
+    },
+    "geolocation": {
+      "kilometersFrom": "km from",
+      "milesFrom": "miles from",
+      "current": "Current location",
+      "myAddress": "My address",
+      "error.denied": "No permission to get the current location. Please, grant this permission in your browser.",
+      "error.unavailable": "The current location is unavailable",
+      "error.general": "Error getting the current location"
     }
   },
   "error": {
@@ -174,6 +185,8 @@
     "personal.contacts": "Contacts",
     "personal.password": "Mot de passe",
     "personal.passwords": "Mots de passe",
+    "personal.notifications": "Notifications",
+    "personal.settings": "Settings",
     "content": "Information"
   },
   "auth": {
@@ -189,6 +202,16 @@
     "password": {
       "confirmationMessage": "Fournissez votre {passwordType} pour confirmer cette opération.",
       "confirm.noPassword": "Pour confirmer, vous avez besoin d’un {passwordType}, mais vous n’en avez pas.",
+      "confirm.mode": "Confirm with",
+      "confirm.mode.device": "Mobile phone",
+      "confirm.mode.password": "Password",
+      "confirm.device.active": "In order to confirm, scan this QR-code with your mobile phone",
+      "confirm.device.none": "In order to confirm you must have a trusted mobile phone but you do not have any",
+      "confirm.deviceOrPassword.active": "In order to confirm, either scan this QR-code with your mobile phone or supply your {password}",
+      "confirm.deviceOrPassword.none": "In order to confirm you must have a trusted mobile phone or supply your {password} but you do not have any",
+      "confirm.deviceOrOtp.noMediums": "In order to confirm you need either a trusted mobile phone (and you have none) or a confirmation password, but there are no possible mediums to receive it.<br>Please, contact the administration.",
+      "confirm.deviceOrOtp.active": "In order to confirm, either scan this QR-code with your mobile phone, use the previously sent confirmation password or request a new one",
+      "confirm.deviceOrOtp.request": "In order to confirm, either scan this QR-code with your mobile phone, or request a confirmation password below",
       "confirm.otp.noMediums": "Pour confirmer, vous avez besoin d'un mot de passe de confirmation, mais il n'y a pas de moyen possible pour le recevoir. <br> Contactez l'administration.",
       "confirm.otp.active": "Vous pouvez utiliser le mot de passe de confirmation envoyé précédemment ou en demander un nouveau.",
       "confirm.otp.request": "Veuillez demander un mot de passe de confirmation ci-dessous afin de confirmer",
@@ -199,7 +222,8 @@
       "title": {
         "change": "Modifier votre mot de passe",
         "manage.single": "Gérer votre mot de passe",
-        "manage.multiple": "Gérer vos mots de passe"
+        "manage.multiple": "Gérer vos mots de passe",
+        "securityAnswer": "Set your security answer"
       },
       "forgotten": {
         "title": "Récupérer votre mot de passe",
@@ -255,8 +279,10 @@
       "agree": "Je suis d'accord avec les accords d'enregistrement suivants: {agreements}"
     },
     "securityQuestion": {
+      "message": "The security question is required in case you need to reset your password. Once set, if you need to change it, contact the administration.",
       "question": "Question de sécurité",
-      "answer": "Votre réponse"
+      "answer": "Votre réponse",
+      "set": "Your security answer was set"
     }
   },
   "dashboard": {
@@ -270,13 +296,22 @@
       "advertisements": "Annonces",
       "editProfile": "Editer le profil",
       "password": "Mot de passe",
-      "passwords": "Mots de passe"
+      "passwords": "Mots de passe",
+      "switchTheme": "Switch theme"
     },
     "accountStatus": "Statut du compte",
     "lastIncomingPayments": "Derniers paiements entrants",
     "noIncomingPayments": "Aucun paiement entrant",
     "latestAds": "Dernières annonces",
-    "latestUsers": "Derniers utilisateurs"
+    "latestUsers": "Derniers utilisateurs",
+    "passwords": {
+      "expired": "Your {type} has expired.",
+      "reset": "Your {type} has reset.",
+      "pending": "Your {type} is pending generation.",
+      "neverCreated": "Your {type} needs to be set.",
+      "securityAnswer": "You should set the security question, which will be required in case you need to reset your password.",
+      "proceed": "Click here to proceed"
+    }
   },
   "account": {
     "number": "Numéro de compte",
@@ -297,7 +332,13 @@
     "netInflow": "Flux net",
     "noAccounts": "Vous n'avez pas de compte",
     "printTransactions": "Imprimer les transactions",
-    "system": "Compte système"
+    "system": "Compte système",
+    "orderBy": {
+      "dateDesc": "Date (newest first)",
+      "dateAsc": "Date (oldest first)",
+      "amountAsc": "Amount (lowest first)",
+      "amountDesc": "Amount (highest first)"
+    }
   },
   "transaction": {
     "number": "Numéro de transaction",
@@ -499,6 +540,8 @@
       "search": "Annuaire professionnel"
     },
     "group": "Groupe",
+    "groupSet": "Group set",
+    "group.filter": "Groups",
     "name": "Nom complet",
     "username": "Nom d'utilisateur",
     "email": "E-mail",
@@ -608,5 +651,28 @@
       "search": "Annonces",
       "owner": "Annonces de {name}"
     }
+  },
+  "notification": {
+    "message": "Message",
+    "title": "Notifications",
+    "onlyUnread": "Unread only",
+    "actions": {
+      "remove": "Remove this notification",
+      "removeAll": "Remove all",
+      "markAllRead": "Mark all as read"
+    }
+  },
+  "operation": {
+    "user": "User",
+    "ad": "Advertisement",
+    "transfer": "Transfer",
+    "fileUpload": "File upload",
+    "redirecting": "You are being redirected..."
+  },
+  "setting": {
+    "title": "Settings",
+    "theme": "Theme",
+    "theme.light": "Light",
+    "theme.dark": "Dark"
   }
 }
