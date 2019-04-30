@@ -16,7 +16,22 @@
   transform: translateY(-0.5rem);
 }
 .promo-price {
-  color: $faded-color;
+  color: $text-muted;
   text-decoration: line-through;
   margin-right: 0.5rem;
+}
+
+body.dark {
+  .positive {
+    color: $positive-color-dark !important;
+  }
+  .negative {
+    color: $negative-color-dark !important;
+  }
+  .totalAmount {
+    color: $total-amount-color-dark !important;
+  }
+  .promo-price {
+    color: $text-muted-dark;
+  }
 }

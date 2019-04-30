@@ -72,7 +72,7 @@ export class BalanceHistoryChartDirective implements OnInit {
               color: this.layout.borderColor
             },
             ticks: {
-              fontColor: this.layout.bodyColor
+              fontColor: this.layout.textMutedColor
             }
           }],
           yAxes: [{
@@ -81,7 +81,7 @@ export class BalanceHistoryChartDirective implements OnInit {
               color: this.layout.borderColor
             },
             ticks: {
-              fontColor: this.layout.bodyColor,
+              fontColor: this.layout.textMutedColor,
               beginAtZero: !hasNegative,
               maxTicksLimit: 4,
               callback: n => this.format.formatAsCurrency(currency, n)

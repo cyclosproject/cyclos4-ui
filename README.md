@@ -467,7 +467,7 @@ The `body` tag has the `dark` class added for users that prefer the dark theme. 
 - `accent-bg`: Sets the `background-color` property to the accent theme color, and the `color` property to a contrast color, allowing readable text.
 - `body-color`: Sets the `color` property to the body text color, which can be set to a different color on light / dark themes.
 - `body-bg`: Sets the `background-color` property to the body background color, and the `color` property to the body text color, allowing readable text.
-- `faded-color`: Sets the `color` property to the body faded color, which can be set to a different color on light / dark themes.
+- `text-muted`: Sets the `color` property to the text-muted color, which can be set to a different color on light / dark themes.
 - `border-color`: Sets the `border-color` property to the general border color, adapting to light / dark theme. However, no border style / width is defined. It is also possible to use the standard Bootstrap's `border`, `border-top`, `border-bottom`, `border-left` and `border-right` classes, as they are customized in dark themes to the correct color.
 
 For pages that are included within iframes using `ContentGetter.iframe(url)`, a parameter is automatically added: `theme=light` or `theme=dark`, so the generated content can adapt. Here is an example WordPress theme for pages which are included in iframes, and which adapt to both light and dark themes (based on [this page](https://www.wonderplugin.com/wordpress-tutorials/how-to-create-a-wordpress-page-without-header-menu-sidebar-and-footer/)):

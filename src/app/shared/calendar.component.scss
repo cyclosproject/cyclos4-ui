@@ -76,7 +76,7 @@ button {
 .weekday {
   text-align: center;
   font-weight: $font-weight-bold;
-  color: $faded-color;
+  color: $text-muted;
 }
 
 .select-day, .select-month, .select-year {
@@ -127,6 +127,9 @@ body.dark :host ::ng-deep {
     button, .year-range {
       color: $calendar-header-color-dark;
     }
+  }
+  .weekday {
+    color: $text-muted-dark;
   }
   .today, .today:hover,
   .this-month, .this-month:hover,

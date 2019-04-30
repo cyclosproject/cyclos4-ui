@@ -12,7 +12,10 @@ import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { trim } from 'lodash';
 
 const DarkTheme = 'darkTheme';
-const ColorVariables = ['primary', 'theme-color', 'chart-color', 'body-color', 'border-color'];
+const ColorVariables = [
+  'primary', 'theme-color', 'chart-color',
+  'body-color', 'border-color', 'text-muted'
+];
 
 /**
  * The available media query breakpoints.
@@ -467,6 +470,13 @@ export class LayoutService {
    */
   get borderColor(): string {
     return this.getColor('border-color');
+  }
+
+  /**
+   * Returns the text-muted color
+   */
+  get textMutedColor(): string {
+    return this.getColor('text-muted');
   }
 
   /**

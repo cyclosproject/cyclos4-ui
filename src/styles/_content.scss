@@ -21,9 +21,6 @@
   background-color: $body-bg;
   color: $body-color;
 }
-.faded-color {
-  color: $faded-color;
-}
 .border-color {
   border-color: $border-color;
 }
@@ -98,9 +95,6 @@ body.dark {
   .accent-bg {
     background-color: $accent-dark;
     color: color-yiq($accent-dark);
-  }
-  .faded-color {
-    color: $faded-color-dark;
   }
   .body-color {
     color: $body-color-dark;

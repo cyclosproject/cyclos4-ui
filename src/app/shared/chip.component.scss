@@ -19,7 +19,7 @@ a:hover {
   text-decoration: none;
 }
 :host ::ng-deep icon {
-  color: $faded-color;
+  color: $text-muted;
 }
 :host.closeable ::ng-deep .chip {
   padding-right: 0.1rem;
@@ -33,6 +33,9 @@ body.dark :host ::ng-deep {
   }
   a {
     color: $input-color-dark;
+  }
+  icon {
+    color: $text-muted-dark;
   }
 }
 
