@@ -244,11 +244,14 @@ There are basically 2 areas where the layout can be customized: modifying the st
 
 Users have the option to use a light or a dark theme. This can be changed in the settings menu.
 
-The layout is built using [Bootstrap 4](https://getbootstrap.com/). Bootstrap allows customizing several variables in [SASS](https://sass-lang.com/). In addition to the built-in variables, several variables are defined in `src/_definitions.scss`. The most important variables are the following:
+The layout is built using [Bootstrap 4](https://getbootstrap.com/). Bootstrap allows customizing several variables in [SASS](https://sass-lang.com/). In addition to the built-in variables, several variables are defined in `src/_definitions.scss`. They should, however, be customized in the `src/styles/custom-definitions.scss` file. Just copy the variables to this file. The advantage of customizing in a separated file is that if new definitions appear in newer versions of the frontend, you don't have to merge them in the customized version.
 
-- `$primary` / `$primary-dark`: The top bar background color, with the dark theme variant;
-- `$theme-color` / `$theme-color-dark`: A color used to theme the browser, if supported. For example, Chrome for Android uses this color for the status bar (on the top) and address bar. Defaults to the primary color, darkened a bit;
+The most important variables are the following:
+
+- `$primary` / `$primary-dark`: The primary colors, from which several other colors are derived: the top bar background color, the theme color (used by the browser) and the accent color;
 - `$accent` / `$accent-dark`: The accent color, which defines the color of most page elements, like headers, links and buttons. Defaults to a variant of the primary color;
+- `$top-bar-bg` / `$top-bar-bg-dark`: The top bar background color. Defaults to the primary color;
+- `$theme-color` / `$theme-color-dark`: A color used to theme the browser, if supported. For example, Chrome for Android uses this color for the status bar (on the top) and address bar. Defaults to the primary color, darkened a bit;
 - `$font-import-url`: The URL which will be used to import a font. By default is the Google Fonts URL for Roboto, Android's default font. It is widely used, but lacks support to some character sets. If you use Cyclos in a language that has glyphs not covered by Roboto, you can use, for example, [Noto Sans](https://fonts.google.com/specimen/Noto+Sans). Just take care that the default font weight for bolds used in the frontend is 500, which is not available in Noto Sans. If switching, also change the `$font-weight-bold` to `700`.
 - `$font-family-sans-serif`: Actually sets the font. Must be consistent with the `$font-import-url` variable. The default font is Roboto.
 
