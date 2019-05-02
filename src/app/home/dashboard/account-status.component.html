@@ -12,7 +12,7 @@
     </div>
 
     <canvas balanceHistoryChart [history]="history$.value" width="400"
-      height="100"></canvas>
+      [darkTheme]="layout.darkTheme$ | async" height="100"></canvas>
     <ng-container *ngIf="maxTransfers > 0">
       <ng-container *ngTemplateOutlet="transfersTpl"></ng-container>
     </ng-container>

@@ -103,6 +103,8 @@ export class LayoutService {
   private _activeBreakpoints: BehaviorSubject<Set<Breakpoint>>;
   breakpointChanges$: Observable<Set<Breakpoint>>;
 
+  darkTheme$ = new BehaviorSubject(false);
+
   private leftAreaVisibleSub: Subscription;
 
   private backdrop: HTMLElement;
@@ -115,7 +117,7 @@ export class LayoutService {
     dataForUiHolder: DataForUiHolder) {
 
     // Initialize the theme from the local storage
-    this.darkTheme = this.darkTheme;
+    this.darkTheme = localStorage.getItem(DarkTheme) === 'true';
 
     // Read some elements we'll need
     this.readStylesAndApplyWhenReady();
@@ -411,11 +413,12 @@ export class LayoutService {
   }
 
   get darkTheme(): boolean {
-    return String(localStorage.getItem(DarkTheme)) === 'true';
+    return this.darkTheme$.value;
   }
 
   set darkTheme(dark: boolean) {
     localStorage.setItem(DarkTheme, String(dark));
+    this.darkTheme$.next(dark);
     const classList = document.body.classList;
     classList.add('theme-transition');
     setTimeout(() => classList.remove('theme-transition'), 400);
