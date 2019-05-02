@@ -248,10 +248,8 @@ The layout is built using [Bootstrap 4](https://getbootstrap.com/). Bootstrap al
 
 The most important variables are the following:
 
-- `$primary` / `$primary-dark`: The primary colors, from which several other colors are derived: the top bar background color, the theme color (used by the browser) and the accent color;
-- `$accent` / `$accent-dark`: The accent color, which defines the color of most page elements, like headers, links and buttons. Defaults to a variant of the primary color;
-- `$top-bar-bg` / `$top-bar-bg-dark`: The top bar background color. Defaults to the primary color;
-- `$theme-color` / `$theme-color-dark`: A color used to theme the browser, if supported. For example, Chrome for Android uses this color for the status bar (on the top) and address bar. Defaults to the primary color, darkened a bit;
+- `$primary` / `$primary-dark`: The primary colors, from which other colors are derived: the top bar background color (`$top-bar-bg` / `$top-bar-bg-dark`), the theme color (`$theme-color-bg` / `$theme-color-dark`, used by the browser, for example, Chrome on android, to theme itself);
+- `$accent` / `$accent-dark`: The accent color, which defines the color of most page elements, like headers, links and buttons;
 - `$font-import-url`: The URL which will be used to import a font. By default is the Google Fonts URL for Roboto, Android's default font. It is widely used, but lacks support to some character sets. If you use Cyclos in a language that has glyphs not covered by Roboto, you can use, for example, [Noto Sans](https://fonts.google.com/specimen/Noto+Sans). Just take care that the default font weight for bolds used in the frontend is 500, which is not available in Noto Sans. If switching, also change the `$font-weight-bold` to `700`.
 - `$font-family-sans-serif`: Actually sets the font. Must be consistent with the `$font-import-url` variable. The default font is Roboto.
 

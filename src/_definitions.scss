@@ -2,15 +2,9 @@
 
 // Base colors
 $primary: #1e88e5 !default;
+$accent: #1e88e5 !default;
 $primary-dark: #334758 !default;
-$accent: $primary !default;
-$accent-dark: saturate(lighten($primary-dark, 30%), 30%) !default;
-$text-muted: #757575 !default;
-$text-muted-dark: #a0a0a0 !default;
-$theme-color: darken($primary, 10%) !default;
-$theme-color-dark: darken($primary-dark, 10%) !default;
-$info: lighten($primary, 30%) !default;
-$info-dark: lighten($primary-dark, 30%) !default;
+$accent-dark: #5498d4 !default;
 
 // Make sure the font import URL and the font family (sans serif) are in sync
 $font-import-url: "https://fonts.googleapis.com/css?family=Roboto:400,500" !default;
@@ -58,6 +52,9 @@ $border-color: $gray-300 !default;
 $link-color: $accent !default;
 $link-hover-color: darken($link-color, 15%) !default;
 $alert-border-level: 1 !default;
+$text-muted: #757575 !default;
+$theme-color: darken($primary, 10%) !default;
+$info: lighten($primary, 30%) !default;
 
 // Global layout for dark background
 $body-bg-dark: #2a2a2a !default;
@@ -65,6 +62,9 @@ $body-color-dark: #f0f0f0 !default;
 $border-color-dark: #171717 !default;
 $link-color-dark: $accent-dark !default;
 $link-hover-color-dark: lighten($link-color-dark, 15%) !default;
+$text-muted-dark: #a0a0a0 !default;
+$theme-color-dark: darken($primary-dark, 10%) !default;
+$info-dark: lighten($primary-dark, 30%) !default;
 
 // Headers
 $h1-color: $accent !default;
