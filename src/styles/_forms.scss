@@ -188,10 +188,12 @@ $spaced-label-values: (
   'checkbox-group-field',
   'boolean-field'
 );
-@each $lv1 in $spaced-label-values {
-  @each $lv2 in $spaced-label-values {
-    #{$lv1} + #{$lv2} {
-      margin-top: 0.6rem;
+body.gt-xxs {
+  @each $lv1 in $spaced-label-values {
+    @each $lv2 in $spaced-label-values {
+      #{$lv1} + #{$lv2} {
+        margin-top: 0.6rem;
+      }
     }
   }
 }

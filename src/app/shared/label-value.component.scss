@@ -56,6 +56,10 @@
   }
 }
 
-.lt-sm :host.field, .lt-sm :host.field-view {
+.xs :host.field, .xs :host.field-view {
   padding-bottom: 0.5rem;
 }
+
+// .lt-sm :host.field, .lt-sm :host.field-view {
+//   padding-bottom: 0.5rem;
+// }

@@ -90,7 +90,7 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
 
   private updateAccountBalanceLabel() {
     if (this.layout.xxs) {
-      this.accountBalanceLabel$.next(this.i18n.transaction.myAccountBalance);
+      this.accountBalanceLabel$.next(this.i18n.account.balance);
     } else {
       this.accountBalanceLabel$.next(this.i18n.transaction.accountBalance);
     }

@@ -8,10 +8,10 @@ import { AccountWithCurrency, Permissions } from 'app/api/models';
 
 /**
  * By default, the dashboard is comprised of:
- * - Quick access (see the quickAccess() method);
- * - Account status for each account (for tablet or desktop), with a maximum of 3 last transfers
- * - Last ads (for tablet or desktop)
- * - Content page (for tablet or desktop)
+ * - Quick access: see the quickAccess() method;
+ * - Account status for each account: for tablet or desktop, with a maximum of 3 last transfers
+ * - Last ads: for tablet or desktop
+ * - Content page: except for xxs devices
  */
 export class DefaultDashboardResolver implements DashboardResolver {
 
@@ -132,7 +132,8 @@ export class DefaultDashboardResolver implements DashboardResolver {
       column: 'right',
       tight: true,
       content: ContentGetter.url('content/events.html'),
-      minHeight: this.minHeight
+      minHeight: this.minHeight,
+      breakpoints: ['gt-xxs']
     });
   }
 

@@ -1,0 +1,21 @@
+{
+  "version": "0.1.0",
+  "name": "Cyclos",
+  "description": "Cyclos frontend",
+  "launch_path": "/dev/",
+  "icons": {
+    "16": "/dev/images/logo.png",
+    "48": "/dev/images/logo.png",
+    "60": "/dev/images/logo.png",
+    "128": "/dev/images/logo.png"
+  },
+  "developer": {
+    "name": "STRO - Social Trade Organisation",
+    "url": "https://www.socialtrade.org"
+  },
+  "cursor": true,
+  "installs_allowed_from": [
+    "*"
+  ],
+  "default_locale": "en"
+}

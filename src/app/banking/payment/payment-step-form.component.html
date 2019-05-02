@@ -1,15 +1,12 @@
 <ng-container [formGroup]="form">
   <ng-container *ngIf="singleAccount; else multipleAccounts">
-    <label-value *ngIf="layout.gtxxs$ | async"
-      [label]="i18n.transaction.fromAccount" kind="fieldView">
-      {{ bankingHelper.accountDisplay(singleAccount) }}
-    </label-value>
-    <label-value [label]="accountBalanceLabel$ | async" kind="fieldView"
-      labelPosition="side" noWrapLabel>
+    <label-value [label]="accountBalanceLabel$ | async" kind="view"
+      labelPosition="sideForced" noWrapLabel>
       <!-- Single account -->
-      <div class="text-nowrap font-weight-bold" [ngClass]="{
+      <div class="w-100 text-nowrap font-weight-bold" [ngClass]="{
           positive: format.isPositive(singleAccount.status.balance),
-          negative: format.isNegative(singleAccount.status.balance)
+          negative: format.isNegative(singleAccount.status.balance),
+          'text-right': layout.ltsm$ | async
         }">
         {{ singleAccount.status.balance | currency:singleAccount.currency }}
       </div>

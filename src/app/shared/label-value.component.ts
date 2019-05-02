@@ -262,6 +262,9 @@ export class LabelValueComponent implements OnInit, OnDestroy {
     } else if (this.labelPosition === 'above') {
       // Take all cols for value
       return COLS;
+    } else if (breakpoint === 'xxs') {
+      // On xxs we ignore the fieldSize
+      return labelCols === COLS ? COLS : COLS - labelCols;
     } else {
       // Depends on field size
       switch (this.fieldSize) {

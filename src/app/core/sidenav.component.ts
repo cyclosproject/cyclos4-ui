@@ -48,6 +48,9 @@ export class SidenavComponent implements OnInit {
   ngOnInit() {
     this.roots$ = this.menu.menu(MenuType.SIDENAV);
     this.layout.gtsm$.subscribe(() => this.close());
+    this.shortcut.subscribe('SoftLeft', () => {
+      this.toggle();
+    });
   }
 
   toggle() {
