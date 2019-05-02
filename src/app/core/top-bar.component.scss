@@ -21,7 +21,7 @@
 }
 .menu-separator {
   opacity: 0.3;
-  border-left: 1px solid white;
+  border-left: 1px solid $top-bar-color;
   margin: 0 .8rem 0 1.2rem;
   height: 50%;
 
@@ -142,5 +142,14 @@ body.dark :host ::ng-deep {
     .sub-menu-item:hover {
       background-color: $top-bar-sub-item-hover-dark;
     }
+
+    .menu-separator {
+      border-color: $top-bar-color-dark;
+    }
+
+    a:not(.never-active):not(.sub-menu-item)::before {
+      background-color: $top-bar-color-dark;
+    }
   }
+
 }
