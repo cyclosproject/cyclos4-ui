@@ -34,11 +34,43 @@ $grid-breakpoints: (
   }
 }
 
+$white:    #fff !default;
+$gray-100: #f8f9fa !default;
+$gray-200: #e9ecef !default;
+$gray-300: #dee2e6 !default;
+$gray-400: #ced4da !default;
+$gray-500: #adb5bd !default;
+$gray-600: #6c757d !default;
+$gray-700: #495057 !default;
+$gray-800: #343a40 !default;
+$gray-900: #212529 !default;
+$black:    #000 !default;
+$blue:    #007bff !default;
+$indigo:  #6610f2 !default;
+$purple:  #6f42c1 !default;
+$pink:    #e83e8c !default;
+$red:     #dc3545 !default;
+$orange:  #fd7e14 !default;
+$yellow:  #ffc107 !default;
+$green:   #28a745 !default;
+$teal:    #20c997 !default;
+$cyan:    #17a2b8 !default;
+
+$secondary:     $gray-600 !default;
+$success:       $green !default;
+$info:          $cyan !default;
+$warning:       $yellow !default;
+$danger:        $red !default;
+$light:         $gray-100 !default;
+$dark:          $gray-800 !default;
+
+$yiq-contrasted-threshold:  150 !default;
+$yiq-text-dark:             $gray-900 !default;
+$yiq-text-light:            $white !default;
+
 // Import the basic Bootstrap definitions
 @import 'styles/custom-definitions';
 @import "~bootstrap/scss/functions";
-@import "~bootstrap/scss/variables";
-@import "~bootstrap/scss/mixins";
 
 // Global layout
 $layout-spacer-xxs: 0.4rem !default;
@@ -223,6 +255,8 @@ $label-color: $gray-700 !default;
 $input-group-addon-color: $input-color !default;
 $input-group-addon-bg: $gray-100 !default;
 $input-group-addon-border-color: $input-border-color !default;
+$custom-select-bg-size: 8px 10px !default;
+$custom-select-padding-x: 0.75rem;
 $custom-select-indicator-color: $gray-800 !default;
 $custom-select-indicator: str-replace(url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 5'%3e%3cpath fill='#{$custom-select-indicator-color}' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e"), "#", "%23") !default;
 $custom-select-background: $custom-select-indicator no-repeat right $custom-select-padding-x center / $custom-select-bg-size !default;
@@ -271,8 +305,8 @@ $title-color: $body-color !default;
 $title-height-xxs: 2.6rem !default;
 $title-height-xs: 3.4rem !default;
 $title-height: 3.4rem !default;
-$title-button-bg: $light !default;
-$title-button-color: color-yiq($light) !default;
+$title-button-bg: $gray-100 !default;
+$title-button-color: color-yiq($title-button-bg) !default;
 $title-button-border-color: $border-color !default;
 $title-button-icon-color: $text-muted !default;
 $title-button-active-border-color: darken($title-button-border-color, 20%) !default;
@@ -334,7 +368,7 @@ $calendar-header-bg: $accent !default;
 $calendar-header-color: color-yiq($calendar-header-bg) !default;
 $calendar-hover-bg: $gray-200 !default;
 $calendar-hover-color: color-yiq($calendar-hover-bg) !default;
-$calendar-today-border-color: $secondary !default;
+$calendar-today-border-color: $accent !default;
 $calendar-selected-bg: $accent !default;
 $calendar-selected-color: color-yiq($calendar-selected-bg) !default;
 $calendar-disabled-color: $text-muted !default;
@@ -345,7 +379,7 @@ $calendar-header-bg-dark: $accent-dark !default;
 $calendar-header-color-dark: color-yiq($calendar-header-bg-dark) !default;
 $calendar-hover-bg-dark: $table-hover-bg-dark !default;
 $calendar-hover-color-dark: color-yiq($calendar-hover-bg-dark) !default;
-$calendar-today-border-color-dark: $secondary !default;
+$calendar-today-border-color-dark: $accent-dark !default;
 $calendar-selected-bg-dark: $accent-dark !default;
 $calendar-selected-color-dark: color-yiq($calendar-selected-bg-dark) !default;
 $calendar-disabled-color-dark: $text-muted-dark !default;
@@ -448,3 +482,6 @@ $chart-color: #f29220 !default;
 $chart-color-dark: #f29220 !default;
 $management-icon-color: $gray-500 !default;
 $management-icon-color-dark: $gray-600 !default;
+
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
