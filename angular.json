@@ -45,8 +45,7 @@
               "src/images",
               "src/content",
               "src/i18n",
-              "src/locale",
-              "src/manifest.webapp"
+              "src/locale"
             ],
             "styles": [
               "node_modules/ngx-lightbox/lightbox.css",
