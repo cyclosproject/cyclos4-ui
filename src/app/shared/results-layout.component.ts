@@ -1,15 +1,14 @@
 import { AgmMarker, LatLngBounds } from '@agm/core';
 import {
-  ChangeDetectionStrategy, Component, ContentChild,
-  EventEmitter, Input, Output, QueryList, TemplateRef, ViewChildren
+  ChangeDetectionStrategy, Component, ContentChild, EventEmitter,
+  Injector, Input, Output, QueryList, TemplateRef, ViewChildren
 } from '@angular/core';
 import { Address } from 'app/api/models';
-import { LoginService } from 'app/core/login.service';
 import { MapsService } from 'app/core/maps.service';
-import { I18n } from 'app/i18n/i18n';
-import { empty, fitBounds, RedMarker, BlueMarker } from 'app/shared/helper';
-import { LayoutService } from 'app/shared/layout.service';
+import { BaseComponent } from 'app/shared/base.component';
+import { BlueMarker, empty, fitBounds, RedMarker } from 'app/shared/helper';
 import { MaxDistance } from 'app/shared/max-distance';
+import { MobileResultDirective } from 'app/shared/mobile-result.directive';
 import { PageData } from 'app/shared/page-data';
 import { PagedResults } from 'app/shared/paged-results';
 import { ResultCategoryDirective } from 'app/shared/result-category.directive';
@@ -28,7 +27,7 @@ import { BehaviorSubject } from 'rxjs';
   styleUrls: ['results-layout.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ResultsLayoutComponent<C, R> {
+export class ResultsLayoutComponent<C, R> extends BaseComponent {
 
   redMarker = RedMarker;
   blueMarker = BlueMarker;
@@ -53,25 +52,28 @@ export class ResultsLayoutComponent<C, R> {
   @Input() referencePoint: MaxDistance;
   @Output() update = new EventEmitter<PageData>();
 
-  @ContentChild(ResultCategoryDirective, { read: TemplateRef }) categoryTemplate;
-  @ContentChild(ResultTableDirective, { read: TemplateRef }) tableTemplate;
-  @ContentChild(ResultTileDirective, { read: TemplateRef }) tileTemplate;
-  @ContentChild(ResultInfoWindowDirective, { read: TemplateRef }) infoWindowTemplate;
+  @ContentChild(ResultCategoryDirective, { read: TemplateRef }) categoryTemplate: TemplateRef<any>;
+  @ContentChild(ResultTableDirective, { read: TemplateRef }) tableTemplate: TemplateRef<any>;
+  @ContentChild(MobileResultDirective, { read: TemplateRef }) mobileResultTemplate: TemplateRef<any>;
+  @ContentChild(ResultTileDirective, { read: TemplateRef }) tileTemplate: TemplateRef<any>;
+  @ContentChild(ResultInfoWindowDirective, { read: TemplateRef }) infoWindowTemplate: TemplateRef<any>;
   @ViewChildren(AgmMarker) markers: QueryList<AgmMarker>;
 
   mapBounds$ = new BehaviorSubject<LatLngBounds>(null);
   mapLoaded = false;
   mapReadyNotified = false;
 
+  @Input() onClick: (row: R) => void;
+  @Input() toLink: (row: R) => string | string[];
   @Input() toAddress: (row: R) => Address = (x) => x;
   @Input() toMarkerTitle: (row: R) => string = (x) => x['display'] || x['name'];
 
   constructor(
-    public layout: LayoutService,
-    public maps: MapsService,
-    public login: LoginService,
-    public i18n: I18n
-  ) { }
+    injector: Injector,
+    public maps: MapsService
+  ) {
+    super(injector);
+  }
 
   notifyReady() {
     // Need to use a timeout for change detection to trigger
@@ -120,6 +122,37 @@ export class ResultsLayoutComponent<C, R> {
       return results.pageCount > 1;
     } else {
       return results.page > 0 || results.hasNext;
+    }
+  }
+
+  linkUrl(row: R): string {
+    let link = this.toLink ? this.toLink(row) : null;
+    if (link instanceof Array) {
+      link = link.join('/');
+    } else if (!link) {
+      link = '#';
+    }
+    return link;
+  }
+
+  handleClick(row: R, event: Event) {
+    let stop = false;
+    if (this.onClick) {
+      this.onClick(row);
+      stop = true;
+    } else {
+      const link = this.toLink ? this.toLink(row) : null;
+      if (typeof link === 'string') {
+        this.router.navigateByUrl(link);
+        stop = true;
+      } else if (link instanceof Array) {
+        this.router.navigate(link);
+        stop = true;
+      }
+    }
+    if (stop) {
+      event.stopPropagation();
+      event.preventDefault();
     }
   }
 }

@@ -153,7 +153,7 @@ export class AdsResultsComponent extends BaseComponent {
    */
   categoryChildren(cat: AdCategoryWithChildren): AdCategoryWithChildren[] {
     const children = cat.children || [];
-    return children.length <= MAX_CHILDREN ? children : children.slice(0, MAX_CHILDREN);
+    return this.layout.xxs || children.length <= MAX_CHILDREN ? children : children.slice(0, MAX_CHILDREN);
   }
 
   /**
@@ -183,6 +183,10 @@ export class AdsResultsComponent extends BaseComponent {
     this.addSub(comp.select.subscribe(sub => {
       this.selectCategory(sub);
     }));
+  }
+
+  get toLink() {
+    return (ad: AdResult) => this.path(ad);
   }
 
 }

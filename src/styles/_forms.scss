@@ -30,14 +30,20 @@ label {
   padding-left: $layout-spacer-xxs;
   padding-right: $layout-spacer-xxs;
 }
-.filters-form-separator {
-  border-bottom-width: 1px;
-  border-bottom-style: solid;
-}
 .filters-row {
   margin-top: $layout-spacer-xxs;
 }
+.filters-form-separator {
+  padding-bottom: $layout-spacer-xxs
+}
+
 @include media-breakpoint-up(xs) {
+  .filters-form-separator {
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    padding-bottom: 0.5rem;
+  }
+
   .filters-form {
     padding: 0.4rem;
     margin-left: -$layout-spacer-xs;
@@ -50,6 +56,7 @@ label {
   }
 }
 @include media-breakpoint-up(sm) {
+
   .filters-row {
     margin-top: 1rem;
     margin-bottom: 1rem;
@@ -196,9 +203,9 @@ body.gt-xxs {
       }
     }
   }
-}
-.any-label-value .any-label-value {
-  margin-top: 0 !important;
+  .any-label-value .any-label-value {
+    margin-top: 0 !important;
+  }
 }
 
 .custom-control-label {
@@ -221,6 +228,7 @@ body.gt-xxs {
   background-color: $list-group-hover-bg;
   text-decoration: none;
   outline: none !important;
+  box-shadow: none;
 }
 .select-option.selected {
   color: color-yiq($button-color) !important;

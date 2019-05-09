@@ -162,4 +162,8 @@ export class UsersResultsComponent extends BaseComponent implements OnInit {
     // Go to the user profile
     return ['/users', 'profile', this.user(row).id];
   }
+
+  get toLink() {
+    return (row: any) => this.path(row);
+  }
 }

@@ -8,6 +8,7 @@ import { BehaviorSubject } from 'rxjs';
 export class BaseDashboardComponent extends BaseComponent {
 
   @Input() minHeight: string;
+  @Input() last: boolean;
 
   minHeight$ = new BehaviorSubject<string>(null);
 

@@ -1,16 +1,17 @@
 <div class="page-content card d-flex flex-grow-1" [ngClass]="{
-    'layout-normal': layout === 'normal',
-    'layout-centered': layout === 'centered',
-    'last': last,
-    'mode-normal': mode === 'normal' || mode === 'fullHeight',
-    'mode-table': mode === 'table',
-    'mode-tight': mode === 'tight' || mode === 'fullHeightTight',
-    'mode-view-form': mode === 'viewForm',
-    'mode-filters': mode === 'filters',
-    'mode-transparent': mode === 'transparent',
-    'mode-full-height': mode === 'fullHeight' || mode === 'fullHeightTight'
-  }">
-  <div *ngIf="heading != null" class="content-title d-flex">
+  'layout-normal': layout === 'normal',
+  'layout-centered': layout === 'centered',
+  'last': last,
+  'mode-normal': mode === 'normal' || mode === 'fullHeight',
+  'mode-table': mode === 'table',
+  'mode-tight': mode === 'tight' || mode === 'fullHeightTight',
+  'mode-view-form': mode === 'viewForm',
+  'mode-filters': mode === 'filters',
+  'mode-transparent': mode === 'transparent',
+  'mode-full-height': mode === 'fullHeight' || mode === 'fullHeightTight'
+}">
+  <div *ngIf="heading != null && layoutService.gtxxs$ | async"
+    class="content-title d-flex">
     <button tabindex="0"
       *ngIf="!hideBack && (breadcrumb.breadcrumb$ | async)?.length > 1"
       class="back-button btn btn-transparent" (click)="breadcrumb.back()">
@@ -18,51 +19,11 @@
     </button>
     <div
       class="title-text text-truncate flex-grow-1 d-flex align-items-center">
-      {{ heading }}
+      {{ (layoutService.gtxs$ | async) ? heading || mobileHeading : mobileHeading || heading }}
     </div>
 
     <ng-container *ngIf="headingActions?.length > 0">
-      <!-- We have actions. They may be grouped or not -->
-      <div class="heading-actions" *ngIf="groupActions; else rootActions"
-        dropdown placement="bottom right" #dropdown="bs-dropdown"
-        (onShown)="addActionsShortcuts(dropdown)"
-        (onHidden)="removeActionsShortcuts()">
-        <button dropdownToggle class="heading-action heading-action-dropdown"
-          [ngClass]="{
-            'dropdown-toggle': layoutService.gtxxs$ | async,
-            'px-2': layoutService.xxs$ | async
-          }">
-          <icon *ngIf="(layoutService.xxs$ | async); else actionsLabel"
-            icon="more_vert" class="mx-2"></icon>
-          <ng-template #actionsLabel>
-            <div class="action-label">
-              {{ i18n.general.actions }}
-            </div>
-          </ng-template>
-        </button>
-        <div class="heading-actions-menu dropdown-menu dropdown-menu-right"
-          *dropdownMenu role="listbox" attr.id="'actions-menu'"
-          attr.aria-labelledby="id"
-          (click)="$event.preventDefault(); $event.stopPropagation();">
-          <a #actionLink tabindex="0"
-            *ngFor="let action of headingActions; let first = first; let i = index;"
-            class="heading-action-option" [ngClass]="'heading-action-' + i"
-            (click)="dropdown.hide();action.onClick(actionLink)">
-            <icon size="1.5rem" [icon]="action.icon"></icon>
-            <div class="heading-action-option-text">{{ action.label }}</div>
-          </a>
-        </div>
-      </div>
-      <ng-template #rootActions>
-        <div class="d-flex heading-actions">
-          <button #actionButton *ngFor="let action of headingActions"
-            class="heading-action heading-action-with-icon d-flex"
-            (click)="action.onClick($event, actionButton)">
-            <icon size="1.3rem" [icon]="action.icon"></icon>
-            <div class="action-label">{{ action.label }}</div>
-          </button>
-        </div>
-      </ng-template>
+      <heading-actions [headingActions]="headingActions"></heading-actions>
     </ng-container>
   </div>
   <div class="page-content-body card-body d-flex flex-column">

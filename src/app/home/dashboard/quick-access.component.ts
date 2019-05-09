@@ -2,10 +2,11 @@ import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@an
 import { QuickAccessDescriptor } from 'app/content/quick-access-descriptor';
 import { QuickAccessType } from 'app/content/quick-access-type';
 import { BaseDashboardComponent } from 'app/home/dashboard/base-dashboard.component';
-import { empty } from 'app/shared/helper';
+import { empty, handleKeyboardFocus } from 'app/shared/helper';
 import { Icon } from 'app/shared/icon';
 import { Breakpoint } from 'app/shared/layout.service';
 import { ActiveMenu, Menu, MenuEntry } from 'app/shared/menu';
+import { Arrows } from 'app/shared/shortcut.service';
 
 export interface QuickAccessAction {
   icon: string;
@@ -112,12 +113,33 @@ export class QuickAccessComponent extends BaseDashboardComponent implements OnIn
       () => {
         this.layout.darkTheme = !this.layout.darkTheme;
       });
+
+    // Handle keyboard shortcuts: arrows to navigate correctly on the grid
+    this.addShortcut(Arrows, event => {
+      handleKeyboardFocus(this.layout, this.element, event, {
+        horizontalOffset: 1, verticalOffset: 2
+      });
+    });
+
+    // Also add a shortcut on each action by number
+    for (let i = 0; i < 9 && i < this.actions.length; i++) {
+      const action = this.actions[i];
+      this.addShortcut(String(i + 1), e => {
+        if (this.layout.gtxs) {
+          // Ignore if not on mobile
+          return false;
+        }
+        this.navigate(action, e);
+      });
+    }
   }
 
-  navigate(action: QuickAccessAction, event: MouseEvent) {
+  navigate(action: QuickAccessAction, event?: Event) {
     if (action.onClick) {
-      event.stopPropagation();
-      event.preventDefault();
+      if (event) {
+        event.stopPropagation();
+        event.preventDefault();
+      }
       action.onClick();
     } else {
       this.menu.navigate({

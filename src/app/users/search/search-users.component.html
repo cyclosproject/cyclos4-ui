@@ -1,6 +1,7 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="(data$ | async) && (loaded$ | async); else loading">
     <page-content mode="filters" [heading]="i18n.user.title.search"
+      [mobileHeading]="i18n.user.mobileTitle.search"
       [headingActions]="headingActions$ | async">
       <form [formGroup]="form" class="filters-form filters-form-separator">
         <div class="row">
@@ -8,35 +9,38 @@
             <input-field labelPosition="side" formControlName="keywords"
               [label]="i18n.general.keywords"></input-field>
           </div>
-          <div *ngIf="data.groups?.length > 1" class="col-12 col-md-6">
-            <multi-selection-field labelPosition="side"
-              hierarchyProperty="groupSet" formControlName="groups"
-              [label]="i18n.user.groupFilter">
-              <field-option *ngFor="let group of data.groups"
-                [value]="group.id" [internalName]="group.internalName"
-                [id]="group.id" [text]="group.name" [parent]="group.groupSet">
-              </field-option>
-            </multi-selection-field>
-          </div>
-          <div class="col-12 col-md-6" *ngIf="data.searchByDistanceData">
-            <max-distance-field labelPosition="side"
-              [data]="data.searchByDistanceData"
-              formControlName="distanceFilter"
-              [label]="i18n.general.distanceFilter">
-            </max-distance-field>
-          </div>
-          <div class="col-12 col-md-6" *ngIf="(basicField$ | async) as cf">
-            <custom-field-filter labelPosition="side" [field]="cf"
-              [formControl]="form.get('customValues').get(cf.internalName)">
-            </custom-field-filter>
-          </div>
-          <ng-container *ngIf="moreFilters$ | async">
-            <div class="col-12 col-md-6"
-              *ngFor="let cf of advancedFields$ | async">
+          <ng-container *ngIf="layout.gtxxs$ | async">
+            <div *ngIf="data.groups?.length > 1" class="col-12 col-md-6">
+              <multi-selection-field labelPosition="side"
+                hierarchyProperty="groupSet" formControlName="groups"
+                [label]="i18n.user.groupFilter">
+                <field-option *ngFor="let group of data.groups"
+                  [value]="group.id" [internalName]="group.internalName"
+                  [id]="group.id" [text]="group.name"
+                  [parent]="group.groupSet">
+                </field-option>
+              </multi-selection-field>
+            </div>
+            <div class="col-12 col-md-6" *ngIf="data.searchByDistanceData">
+              <max-distance-field labelPosition="side"
+                [data]="data.searchByDistanceData"
+                formControlName="distanceFilter"
+                [label]="i18n.general.distanceFilter">
+              </max-distance-field>
+            </div>
+            <div class="col-12 col-md-6" *ngIf="(basicField$ | async) as cf">
               <custom-field-filter labelPosition="side" [field]="cf"
                 [formControl]="form.get('customValues').get(cf.internalName)">
               </custom-field-filter>
             </div>
+            <ng-container *ngIf="moreFilters$ | async">
+              <div class="col-12 col-md-6"
+                *ngFor="let cf of advancedFields$ | async">
+                <custom-field-filter labelPosition="side" [field]="cf"
+                  [formControl]="form.get('customValues').get(cf.internalName)">
+                </custom-field-filter>
+              </div>
+            </ng-container>
           </ng-container>
         </div>
       </form>

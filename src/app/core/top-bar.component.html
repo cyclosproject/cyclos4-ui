@@ -3,23 +3,42 @@
   'with-user': (login.user$ | async)
 }">
   <div class="navbar-container">
+    <!-- The sidenav toggle on mobile / tablet -->
     <a class="never-active" *ngIf="layout.ltlg$ | async" id="sidenav-trigger"
       href="#" (click)="toggleSidenav.emit(); $event.preventDefault();">
       <icon class="top-icon" icon="menu"></icon>
     </a>
     <span class="navbar-brand">
+      <!-- The title bar -->
       <img *ngIf="layout.gtxs$ | async" class="logo" src="images/logo.png">
       <span class="top-title">
-        {{ (layout.ltsm$ | async) ? format.appTitleSmall : format.appTitle }}
+        <ng-container *ngIf="layout.xxs$ | async">
+          <!-- On xxs we don't show the title, and join the title here -->
+          {{ (layout.title$ | async) || format.appTitleSmall }}
+        </ng-container>
+        <ng-container *ngIf="layout.xs$ | async">
+          {{ format.appTitleSmall }}
+        </ng-container>
+        <ng-container *ngIf="layout.gtxs$ | async">
+          {{ format.appTitle }}
+        </ng-container>
       </span>
     </span>
     <div class="menu-container">
-      <ng-container *ngIf="hasMenu && (layout.gtmd$ | async)">
-        <menus [menuType]="MenuType.TOP" [activeMenu]="activeMenu"
-          [userName]="userName"></menus>
-        <div class="menu-separator"></div>
+      <ng-container *ngIf="layout.xxs$ | async; else mobileOrGreater">
+        <!-- When on xxs, show an icon that integrates navigation and page actions -->
+        <ng-container *ngTemplateOutlet="xxsMenu"></ng-container>
       </ng-container>
-      <ng-container *ngTemplateOutlet="customMenus"></ng-container>
+      <ng-template #mobileOrGreater>
+        <ng-container *ngIf="hasMenu && (layout.gtmd$ | async)">
+          <!-- The menu is integrated in the top bar -->
+          <menus [menuType]="MenuType.TOP" [activeMenu]="activeMenu"
+            [userName]="userName"></menus>
+          <div class="menu-separator"></div>
+        </ng-container>
+        <!-- We also have custom menus (profile, notifications, logout, etc) -->
+        <ng-container *ngTemplateOutlet="customMenus"></ng-container>
+      </ng-template>
     </div>
   </div>
 </nav>
@@ -54,6 +73,7 @@
       </a>
     </ng-container>
   </ng-container>
+
   <a href="#" *ngIf="user != null" id="logout-trigger"
     (click)="navigate(Menu.LOGOUT, $event)">
     <icon class="top-icon" icon="logout"></icon>
@@ -66,8 +86,8 @@
       routerLink="/register" id="register-link"
       (click)="navigate(Menu.REGISTRATION, $event)" class="nav-item"
       [ngClass]="{
-        active: hasMenu && activeMenu?.menu == Menu.REGISTRATION
-      }">
+          active: hasMenu && activeMenu?.menu == Menu.REGISTRATION
+        }">
       <icon class="top-icon" icon="registration"></icon>
       <div *ngIf="layout.gtsm$ | async" class="ml-2">
         {{ i18n.menu.register }}
@@ -75,12 +95,20 @@
     </a>
     <a routerLink="/login" id="login-link"
       (click)="navigate(Menu.LOGIN, $event)" class="nav-item" [ngClass]="{
-        active: hasMenu && activeMenu?.menu == Menu.LOGIN
-      }">
+          active: hasMenu && activeMenu?.menu == Menu.LOGIN
+        }">
       <icon class="top-icon" icon="exit_to_app"></icon>
       <div *ngIf="layout.gtsm$ | async" class="ml-2">
         {{ i18n.menu.login }}
       </div>
     </a>
   </ng-container>
+</ng-template>
+
+<ng-template #xxsMenu>
+  <heading-actions [headingActions]="xxsActions(
+      layout.headingActions$ | async,
+      router.events | async,
+      login.user$ | async)">
+  </heading-actions>
 </ng-template>

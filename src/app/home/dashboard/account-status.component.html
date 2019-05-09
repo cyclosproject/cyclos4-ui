@@ -1,4 +1,5 @@
-<page-content [heading]="title" [headingActions]="headingActions" hideBack
+<page-content [heading]="title" [mobileHeading]="i18n.account.mobileTitle"
+  [headingActions]="headingActions" hideBack [last]="last"
   [ngStyle]="{minHeight: minHeight}">
   <ng-container *ngIf="history$ | async; else spinner">
     <div class="balance">

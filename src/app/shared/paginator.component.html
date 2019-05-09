@@ -1,6 +1,8 @@
-<div *ngIf="results" class="d-flex flex-column flex-sm-row justify-content-between align-items-center"
+<div *ngIf="results"
+  class="d-flex flex-column flex-sm-row justify-content-between align-items-center"
   [formGroup]="form">
-  <div class="mb-3 mb-sm-0" *ngIf="results.hasTotalCount; else noTotalCount">
+  <div class="mb-3 mb-sm-0 w-100 text-center"
+    *ngIf="results.hasTotalCount; else noTotalCount">
     {{ i18n.general.results.withTotal({
     first: results.firstItem,
     last: results.lastItem,
@@ -8,17 +10,30 @@
     }) }}
   </div>
   <ng-template #noTotalCount>
-    <div class="mb-3 mb-sm-0">
+    <div class="mb-3 mb-sm-0 w-100 text-center">
       {{ i18n.general.results.noTotal({
       first: results.firstItem,
       last: results.lastItem
       }) }}
     </div>
   </ng-template>
-  <div *ngIf="results.hasNext || results.page > 0" class="mt-2 mt-xs-0">
-    <pagination [totalItems]="totalCount" [itemsPerPage]="results.pageSize"
-      [maxSize]="maxSize(layout.breakpointChanges$ | async)" formControlName="pageNumber"
-      [rotate]="true" [boundaryLinks]="results.hasTotalCount && (layout.gtxs$ | async)"
+  <div *ngIf="layout.xxs$ | async" class="row no-gutters w-100">
+    <div class="col-6 px-2">
+      <button *ngIf="results.page > 0" class="btn btn-outline-primary"
+        (click)="nextOrPrevious(false)">{{ i18n.general.previous }}</button>
+    </div>
+    <div class="col-6 px-2">
+      <button *ngIf="results.hasNext" class="btn btn-primary"
+        (click)="nextOrPrevious(true)">{{ i18n.general.next }}</button>
+    </div>
+  </div>
+
+  <div *ngIf="layout.gtxxs$ | async" class="mt-2 mt-xs-0">
+    <pagination *ngIf="layout.gtxxs$ | async" [totalItems]="totalCount"
+      [itemsPerPage]="results.pageSize"
+      [maxSize]="maxSize(layout.breakpointChanges$ | async)"
+      formControlName="pageNumber" [rotate]="true"
+      [boundaryLinks]="results.hasTotalCount && (layout.gtxs$ | async)"
       previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;"
       lastText="&raquo;"></pagination>
   </div>

@@ -1,5 +1,6 @@
 <page-layout>
   <page-content mode="filters" [heading]="i18n.notification.title"
+    [mobileHeading]="i18n.notification.mobileTitle"
     [headingActions]="headingActions$ | async">
     <form [formGroup]="form"
       class="filters-form filters-form-separator border-0">
@@ -14,9 +15,20 @@
 
   </page-content>
   <results-layout resultType="list" [results]="results$ | async"
-    (update)="update($event)">
+    (update)="update($event)" [onClick]="onClick">
+
+    <mobile-result *mobileResult="let row"
+      [avatarImage]="row.relatedUser?.image" avatarIcon="notifications_none">
+
+      <div class="cell-main" [tooltip]="row.message">{{ row.subject }}</div>
+      <div class="cell-cell-date" [tooltip]="row.message">
+        {{ row.date | dateTime }}
+      </div>
+
+    </mobile-result>
+
     <table *resultTable class="table table-hover cursor-pointer">
-      <thead *ngIf="layout.gtxs$ | async">
+      <thead>
         <th class="avatar"></th>
         <th>{{ i18n.general.date }}</th>
         <th>{{ i18n.notification.message }}</th>
@@ -24,7 +36,7 @@
       </thead>
       <tbody>
         <ng-container *ngFor="let row of (results$ | async).results">
-          <tr (click)="onClick(row)"
+          <tr (click)="rowClick(row)"
             [ngClass]="{'font-weight-bold': !row.read}">
             <td class="avatar" [ngClass]="{
               'pb-0': layout.xxs$ | async,
@@ -34,19 +46,8 @@
                 [tooltip]="row.relatedUser?.display"
                 icon="notifications_none"></avatar>
             </td>
-            <td *ngIf="layout.ltsm$ | async; else cells">
-              <!-- Aggregated cell for xs -->
-              <maybe-link [link]="path(row)">
-                <div class="cell-text">{{ row.subject }}</div>
-                <div class="cell-text cell-date" [tooltip]="row.message">
-                  {{ row.date | dateTime }}
-                </div>
-              </maybe-link>
-            </td>
-            <ng-template #cells>
-              <td>{{ row.date | dateTime }}</td>
-              <td>{{ row.message }}</td>
-            </ng-template>
+            <td>{{ row.date | dateTime }}</td>
+            <td>{{ row.message }}</td>
             <td class="actions">
               <button [tooltip]="i18n.notification.actions.remove"
                 class="btn btn-icon"

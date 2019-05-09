@@ -27,6 +27,7 @@ import { empty } from 'app/shared/helper';
 export class ViewTransactionComponent extends BasePageComponent<TransactionView> implements OnInit {
 
   title: string;
+  mobileTitle: string;
   lastAuthComment: string;
   hasDueAmount = false;
   hasInstallmentActions = false;
@@ -60,7 +61,7 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
     super.ngOnInit();
     this.transactionsService.viewTransaction({ key: this.key })
       .subscribe(transaction => {
-        this.title = this.initTitle(transaction.kind);
+        [this.title, this.mobileTitle] = this.titles(transaction.kind);
         this.headingActions = this.initActions(transaction);
         this.hasDueAmount = transaction.dueAmount && !this.format.isZero(transaction.dueAmount);
         this.hasInstallmentActions = !!(transaction.installments || []).find(i => i.canProcess || i.canSettle);
@@ -357,22 +358,43 @@ export class ViewTransactionComponent extends BasePageComponent<TransactionView>
     });
   }
 
-  private initTitle(kind: TransactionKind) {
+  private titles(kind: TransactionKind): [string, string] {
     switch (kind) {
       case TransactionKind.SCHEDULED_PAYMENT:
-        return this.i18n.transaction.title.detailsScheduled;
+        return [
+          this.i18n.transaction.title.detailsScheduled,
+          this.i18n.transaction.mobileTitle.detailsScheduled
+        ];
       case TransactionKind.RECURRING_PAYMENT:
-        return this.i18n.transaction.title.detailsRecurring;
+        return [
+          this.i18n.transaction.title.detailsRecurring,
+          this.i18n.transaction.mobileTitle.detailsRecurring
+        ];
       case TransactionKind.PAYMENT_REQUEST:
-        return this.i18n.transaction.title.detailsRequest;
+        return [
+          this.i18n.transaction.title.detailsRequest,
+          this.i18n.transaction.mobileTitle.detailsRequest
+        ];
       case TransactionKind.CHARGEBACK:
-        return this.i18n.transaction.title.detailsChargeback;
+        return [
+          this.i18n.transaction.title.detailsChargeback,
+          this.i18n.transaction.mobileTitle.detailsChargeback
+        ];
       case TransactionKind.TICKET:
-        return this.i18n.transaction.title.detailsTicket;
+        return [
+          this.i18n.transaction.title.detailsTicket,
+          this.i18n.transaction.mobileTitle.detailsTicket
+        ];
       case TransactionKind.EXTERNAL_PAYMENT:
-        return this.i18n.transaction.title.detailsExternal;
+        return [
+          this.i18n.transaction.title.detailsExternal,
+          this.i18n.transaction.mobileTitle.detailsExternal
+        ];
       default:
-        return this.i18n.transaction.title.detailsPayment;
+        return [
+          this.i18n.transaction.title.detailsPayment,
+          this.i18n.transaction.mobileTitle.detailsPayment
+        ];
     }
   }
 

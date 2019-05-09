@@ -1,12 +1,11 @@
-import {
-  ChangeDetectionStrategy, Component, ElementRef, EventEmitter,
-  Host, Injector, Input, OnInit, Optional, Output, SkipSelf
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Host, Injector, Input, OnInit, Optional, Output, SkipSelf } from '@angular/core';
 import { ControlContainer, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MapsService } from 'app/core/maps.service';
 import { BaseControlComponent } from 'app/shared/base-control.component';
+import { focus } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
 import { ResultType } from 'app/shared/result-type';
+import { ArrowLeft, ArrowsHorizontal } from 'app/shared/shortcut.service';
 import { Subscription } from 'rxjs';
 
 /**
@@ -31,7 +30,7 @@ export class ResultTypeFieldComponent
   @Input() focused: boolean;
   @Input() privacyControl: FormControl;
 
-  @Input() allowedResultTypes = [ResultType.TILES, ResultType.LIST];
+  @Input() allowedResultTypes: ResultType[];
 
   @Output() change: EventEmitter<string> = new EventEmitter();
   @Output() blur: EventEmitter<string> = new EventEmitter();
@@ -42,8 +41,7 @@ export class ResultTypeFieldComponent
     injector: Injector,
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
     public layout: LayoutService,
-    private maps: MapsService,
-    private elementRef: ElementRef
+    private maps: MapsService
   ) {
     super(injector, controlContainer);
   }
@@ -72,36 +70,19 @@ export class ResultTypeFieldComponent
   }
 
   addShortcuts(resultType: ResultType) {
-    const element = this.elementRef.nativeElement as HTMLElement;
+    const element = this.element;
     const currentEl = element.getElementsByClassName(`resultType-${resultType}`).item(0);
     if (document.activeElement !== currentEl) {
       return;
     }
-    const keys = ['ArrowLeft', 'ArrowRight', ' ', 'Enter'];
-    const sub = this.shortcut.subscribe(keys, event => {
-      let index = this.allowedResultTypes.indexOf(resultType);
-      let alsoClick = false;
-      switch (event.key) {
-        case 'ArrowLeft':
-          index--;
-          break;
-        case 'ArrowRight':
-          index++;
-          break;
-        case ' ':
-        case 'Enter':
-          alsoClick = true;
-          break;
-      }
+    const sub = this.shortcut.subscribe(ArrowsHorizontal, event => {
+      let index = this.allowedResultTypes.indexOf(resultType)
+        + (event.key === ArrowLeft ? -1 : 1);
       index = Math.min(Math.max(0, index), this.allowedResultTypes.length - 1);
       const newResultType = this.allowedResultTypes[index];
       const toFocus = element.getElementsByClassName(`resultType-${newResultType}`);
       if (toFocus.length > 0) {
-        const focusEl = toFocus.item(0) as HTMLElement;
-        focusEl.focus();
-        if (alsoClick) {
-          focusEl.click();
-        }
+        focus(toFocus.item(0), true);
       }
     });
     this.resultTypeSubs.set(resultType, sub);

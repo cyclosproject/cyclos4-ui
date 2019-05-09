@@ -3,8 +3,8 @@
 </label-value>
 
 <ng-template #widget>
-  <textarea #textarea [id]="id" rows="3" [formControl]="formControl" [name]="name"
-    [placeholder]="placeholder" class="form-control" [ngClass]="{
+  <textarea #textarea [id]="id" rows="3" [formControl]="formControl"
+    [name]="name" [placeholder]="placeholder" class="form-control" [ngClass]="{
       'is-invalid': (formControl.statusChanges | async) === 'INVALID' && formControl.touched
     }">{{ value }}</textarea>
   <field-errors [control]="formControl"></field-errors>

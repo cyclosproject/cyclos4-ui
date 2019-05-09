@@ -1,15 +1,17 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { Injectable } from '@angular/core';
+import { Title } from '@angular/platform-browser';
+import { Configuration } from 'app/configuration';
+import { DataForUiHolder } from 'app/core/data-for-ui-holder';
+import { FormatService } from 'app/core/format.service';
+import { HeadingAction } from 'app/shared/action';
 import { BasePageComponent } from 'app/shared/base-page.component';
-import { empty, blank } from 'app/shared/helper';
+import { blank, ElementReference, empty, htmlCollectionToArray } from 'app/shared/helper';
 import { PageLayoutComponent } from 'app/shared/page-layout.component';
+import { isEqual, trim } from 'lodash';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
-import { isEqual } from 'lodash';
-import { FormatService } from 'app/core/format.service';
-import { Title } from '@angular/platform-browser';
-import { DataForUiHolder } from 'app/core/data-for-ui-holder';
-import { trim } from 'lodash';
+import { ShortcutService, Escape } from 'app/shared/shortcut.service';
 
 const DarkTheme = 'darkTheme';
 const ColorVariables = [
@@ -17,29 +19,37 @@ const ColorVariables = [
   'body-color', 'border-color', 'text-muted'
 ];
 
-/**
- * The available media query breakpoints.
+/*
  * Attention! If modified, adjust the `$grid-breakpoints` variable in `_definieions.scss` as well.
  */
+const xs = 346;
+const sm = 576;
+const md = 768;
+const lg = 992;
+const xl = 1200;
+
+/**
+ * The available media query breakpoints.
+ */
 const BREAKPOINTS = {
-  xxs: '(max-width: 315px)',
-  xs: '(min-width: 316px) and (max-width: 575px)',
-  sm: '(min-width: 576px) and (max-width: 767px)',
-  md: '(min-width: 768px) and (max-width: 991px)',
-  lg: '(min-width: 992px) and (max-width: 1199px)',
-  xl: '(min-width: 1200px)',
+  xxs: `(max-width: ${xs - 1}px)`,
+  xs: `(min-width: ${xs}px) and (max-width: ${sm - 1}px)`,
+  sm: `(min-width: ${sm}px) and (max-width: ${md - 1}px)`,
+  md: `(min-width: ${md}px) and (max-width: ${lg - 1}px)`,
+  lg: `(min-width: ${lg}px) and (max-width: ${xl - 1}px)`,
+  xl: `(min-width: ${xl}px)`,
 
-  'lt-xs': '(max-width: 315px)',
-  'lt-sm': '(max-width: 575px)',
-  'lt-md': '(max-width: 767px)',
-  'lt-lg': '(max-width: 991px)',
-  'lt-xl': '(max-width: 1199px)',
+  'lt-xs': `(max-width: ${xs - 1}px)`,
+  'lt-sm': `(max-width: ${sm - 1}px)`,
+  'lt-md': `(max-width: ${md - 1}px)`,
+  'lt-lg': `(max-width: ${lg - 1}px)`,
+  'lt-xl': `(max-width: ${xl - 1}px)`,
 
-  'gt-xxs': '(min-width: 316px)',
-  'gt-xs': '(min-width: 576px)',
-  'gt-sm': '(min-width: 768px)',
-  'gt-md': '(min-width: 992px)',
-  'gt-lg': '(min-width: 1200px)'
+  'gt-xxs': `(min-width: ${xs}px)`,
+  'gt-xs': `(min-width: ${sm}px)`,
+  'gt-sm': `(min-width: ${md}px)`,
+  'gt-md': `(min-width: ${lg}px)`,
+  'gt-lg': `(min-width: ${xl}px)`
 };
 
 /**
@@ -58,6 +68,7 @@ export class LayoutService {
   _colors = new Map<string, string>();
   _colorsDark = new Map<string, string>();
   _fontUrl: string;
+  _focusTrap: ElementReference;
 
   currentPage$ = new BehaviorSubject<BasePageComponent<any>>(null);
   get currentPage(): BasePageComponent<any> {
@@ -98,22 +109,30 @@ export class LayoutService {
     }
   }
 
+  get focusTrap(): ElementReference {
+    return this._focusTrap || this.modal;
+  }
+
   private breakpointObservers = new Map<Breakpoint, Observable<boolean>>();
 
   private _activeBreakpoints: BehaviorSubject<Set<Breakpoint>>;
   breakpointChanges$: Observable<Set<Breakpoint>>;
 
   darkTheme$ = new BehaviorSubject(false);
+  title$ = new BehaviorSubject<string>(null);
+  headingActions$ = new BehaviorSubject<HeadingAction[]>([]);
 
   private leftAreaVisibleSub: Subscription;
 
+  private backdropSub: Subscription;
   private backdrop: HTMLElement;
-  private escHandler: any;
+  private backdropCloseHandler: () => void;
 
   constructor(
     private observer: BreakpointObserver,
     private format: FormatService,
-    private title: Title,
+    private titleRef: Title,
+    private shortcut: ShortcutService,
     dataForUiHolder: DataForUiHolder) {
 
     // Initialize the theme from the local storage
@@ -164,6 +183,10 @@ export class LayoutService {
     dataForUiHolder.subscribe(() => {
       this.applyThemeColor();
     });
+  }
+
+  setFocusTrap(el: ElementReference) {
+    this._focusTrap = el;
   }
 
   updateWindowWidth() {
@@ -354,15 +377,41 @@ export class LayoutService {
     return allowedBreakpoints.find(b => activeBreakpoints.has(b)) != null;
   }
 
+  /**
+   * Returns whether a modal dialog is currently being shown
+   */
+  get hasModal(): boolean {
+    return !!this.modal;
+  }
 
   /**
-   * Sets the window title, followed by the application title from configuration
+   * Returns a reference to the first modal element, if any
    */
-  setTitle(title?: string) {
+  get modal(): HTMLElement {
+    const modal = htmlCollectionToArray(document.getElementsByClassName('modal'));
+    return modal.length === 0 ? null : modal[0];
+  }
+
+  get title(): string {
+    return this.title$.value;
+  }
+
+  set title(title: string) {
+    this.title$.next(title);
     if (title) {
-      this.title.setTitle(`${title} - ${this.format.appTitle}`);
+      this.titleRef.setTitle(`${title} - ${this.format.appTitle}`);
     } else {
-      this.title.setTitle(this.format.appTitle);
+      this.titleRef.setTitle(this.format.appTitle);
+    }
+  }
+
+  get headingActions(): HeadingAction[] {
+    return this.headingActions$.value;
+  }
+
+  set headingActions(actions: HeadingAction[]) {
+    if (!isEqual(actions, this.headingActions)) {
+      this.headingActions$.next(actions);
     }
   }
 
@@ -370,45 +419,70 @@ export class LayoutService {
    * Shows the backdrop, which is an absolutely positioned DIV that occupies the full screen.
    * @param closeHandler Function to be called when the backdrop is clicked or when the escape key is pressed
    */
-  showBackdrop(closeHandler: () => void) {
-    // First, remove and re-apply the ESC key handler
-    this.removeBackdropEscHandler();
-    this.escHandler = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        closeHandler();
-      }
-    };
-    document.body.addEventListener('keydown', this.escHandler, false);
+  showBackdrop(closeHandler?: () => void) {
+    // Make sure to remove any previous backdrop data
+    this.hideBackdrop(false);
 
+    // Store this backdrop close handler
+    this.backdropCloseHandler = closeHandler;
+
+    // Subscribe for Esc key to close the backdrop
+    this.backdropSub = this.shortcut.subscribe(Escape, () => {
+      this.hideBackdrop();
+    });
+
+    // Create the backdrop element
     if (this.backdrop == null) {
       this.backdrop = document.createElement('div');
       this.backdrop.className = 'backdrop';
-      this.backdrop.addEventListener('click', closeHandler, true);
+      this.backdrop.addEventListener('click', () => this.hideBackdrop(), true);
       document.body.appendChild(this.backdrop);
       document.body.classList.add('backdrop-visible');
     }
+    // Show the backdrop
     setTimeout(() => this.backdrop.style.opacity = '1', 1);
   }
 
   /**
    * Hides the backdrop, if any
    */
-  hideBackdrop() {
-    this.removeBackdropEscHandler();
+  hideBackdrop(awaitAnimation = true) {
+    if (this.backdropSub) {
+      this.backdropSub.unsubscribe();
+      this.backdropSub = null;
+    }
     if (this.backdrop != null) {
       this.backdrop.style.opacity = '';
       document.body.classList.remove('backdrop-visible');
-      setTimeout(() => {
+
+      const doRemove = () => {
         this.backdrop.parentElement.removeChild(this.backdrop);
         this.backdrop = null;
-      }, 300);
+      };
+      if (awaitAnimation) {
+        setTimeout(doRemove, 300);
+      } else {
+        doRemove();
+      }
+    }
+    if (this.backdropCloseHandler) {
+      const h = this.backdropCloseHandler;
+      this.backdropCloseHandler = null;
+      h();
     }
   }
 
-  private removeBackdropEscHandler() {
-    if (this.escHandler) {
-      document.body.removeEventListener('keydown', this.escHandler, false);
-      this.escHandler = null;
+  /**
+   * Returns a page size according to the current layout size.
+   * Either `Configuration.searchPageSizeXxs`, `Configuration.searchPageSizeXs` or `Configuration.searchPageSize`.
+   */
+  get searchPageSize(): number {
+    if (this.xxs) {
+      return Configuration.searchPageSizeXxs;
+    } else if (this.xs) {
+      return Configuration.searchPageSizeXs;
+    } else {
+      return Configuration.searchPageSize;
     }
   }
 

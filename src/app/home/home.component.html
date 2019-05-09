@@ -30,11 +30,9 @@
     <!-- Mobile / tablet -->
     <div class="one-column" *ngIf="layout.ltlg$ | async"
       [ngClass]="{'window-width': layout.ltmd$ | async}">
-      <ng-container *ngFor="let config of configs">
-        <ng-container
-          *ngIf="layout.visible(config.breakpoints, layout.breakpointChanges$ | async)">
-          <dashboard-item [config]="config"></dashboard-item>
-        </ng-container>
+      <ng-container
+        *ngFor="let config of visibleConfigs(layout.breakpointChanges$ | async); let last = last">
+        <dashboard-item [config]="config" [last]="last"></dashboard-item>
       </ng-container>
     </div>
 

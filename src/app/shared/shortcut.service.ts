@@ -1,6 +1,13 @@
 import { Injectable } from '@angular/core';
 import { fromEvent, Observable, Subscription } from 'rxjs';
 
+/** Control key modifier */
+export const Ctrl = 'ctrl';
+/** Alt key modifier */
+export const Alt = 'alt';
+/** Shift key modifier */
+export const Shift = 'shift';
+
 /**
  * Defines a key, combined with modifiers
  */
@@ -55,10 +62,49 @@ export class Shortcut {
   }
 }
 
+/** Arrow up */
+export const ArrowUp = 'ArrowUp';
+/** Arrow down */
+export const ArrowDown = 'ArrowDown';
+/** Arrow left */
+export const ArrowLeft = 'ArrowLeft';
+/** Arrow right */
+export const ArrowRight = 'ArrowRight';
+/** Arrows up / down */
+export const ArrowsVertical = [ArrowUp, ArrowDown];
+/** Arrows left / right */
+export const ArrowsHorizontal = [ArrowLeft, ArrowRight];
+/** Arrows up / down / left / right */
+export const Arrows = [...ArrowsVertical, ...ArrowsHorizontal];
+/** Space key */
+export const Space = ' ';
+/** Escape key */
+export const Escape = 'Escape';
+/** Enter key */
+export const Enter = 'Enter';
+/** Context menu key */
+export const ContextMenu = 'ContextMenu';
+/** KaiOS left action button */
+export const SoftLeft = 'SoftLeft';
+/** KaiOS right action button */
+export const SoftRight = 'SoftRight';
+/** Shortcuts for the left action */
+export const ActionsLeft = [SoftLeft, ContextMenu];
+/** Shortcuts for the right action */
+export const ActionsRight = [SoftRight, new Shortcut(ContextMenu, Ctrl)];
+/** PageUp key */
+export const PageUp = 'PageUp';
+/** PageDown key */
+export const PageDown = 'PageDown';
+/** Home key */
+export const Home = 'Home';
+/** End key */
+export const End = 'End';
+
 class ShortcutDescriptor {
   constructor(
     public shortcuts: Shortcut[],
-    public handler: (event: KeyboardEvent) => void,
+    public handler: (event: KeyboardEvent) => boolean,
     public stop: boolean) {
   }
 
@@ -67,12 +113,14 @@ class ShortcutDescriptor {
    */
   onEvent(event: KeyboardEvent): boolean {
     if (this.shortcuts.find(s => s.matches(event))) {
-      this.handler(event);
-      if (this.stop) {
-        event.preventDefault();
-        event.stopPropagation();
+      if (this.handler(event) !== false) {
+        // Returning false means the handler is ignored
+        if (this.stop) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        return true;
       }
-      return true;
     }
     return false;
   }
@@ -119,8 +167,18 @@ export class ShortcutService {
     return subscription;
   }
 
-  private onEvent(event: KeyboardEvent) {
-    this.descriptors.forEach(d => d.onEvent(event));
+  private onEvent(event: KeyboardEvent): boolean {
+    // Traverse the descriptors in reverse order, so the last one that was registered wins
+    for (let i = this.descriptors.length - 1; i >= 0; i--) {
+      if (event.defaultPrevented) {
+        break;
+      }
+      const desc = this.descriptors[i];
+      if (desc.onEvent(event)) {
+        return true;
+      }
+    }
+    return false;
   }
 
 }

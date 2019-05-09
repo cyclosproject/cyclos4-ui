@@ -1,12 +1,15 @@
 <page-layout [ready]="data$ | async">
-  <page-content *ngIf="data$ | async" [heading]="i18n.transaction.title.authorizationHistory">
+  <page-content *ngIf="data$ | async"
+    [heading]="i18n.transaction.title.authorizationHistory"
+    [mobileHeading]="i18n.transaction.mobileTitle.authorizationHistory">
     <ng-container *ngIf="transaction.transactionNumber">
       <label-value [label]="i18n.transaction.number">
         {{ transaction.transactionNumber }}
       </label-value>
       <hr>
     </ng-container>
-    <ng-container *ngFor="let auth of transaction.authorizations; let first = first">
+    <ng-container
+      *ngFor="let auth of transaction.authorizations; let first = first">
       <hr *ngIf="!first">
       <label-value [label]="i18n.general.action">
         {{ actionLabel(auth) }}

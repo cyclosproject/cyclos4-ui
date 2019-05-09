@@ -1,8 +1,8 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="isSearch; else regular">
     <!-- When a result page, render a filters section -->
-    <page-content [heading]="data.name" mode="filters"
-      [headingActions]="headingActions$ | async">
+    <page-content mode="filters" [heading]="data.name"
+      [mobileHeading]="data.label" [headingActions]="headingActions$ | async">
       <ng-container *ngTemplateOutlet="theForm"></ng-container>
       <actions *ngIf="!runDirectly" class="mb-3 mt-0">
         <button class="btn btn-primary" [disabled]="(requesting$ | async)"
@@ -11,9 +11,19 @@
         </button>
       </actions>
     </page-content>
+
     <!-- And, if already executed, show results table -->
     <results-layout *ngIf="pageResults$ | async" resultType="list"
-      [results]="pageResults" (update)="updatePage($event)">
+      [results]="pageResults" (update)="updatePage($event)"
+      [onClick]="onClick">
+
+      <mobile-result *mobileResult="let row">
+        <label-value *ngFor="let col of (result$ | async).columns"
+          labelPosition="sideForced" valueFormat="html" [label]="col.header"
+          [value]="row[col.property]">
+        </label-value>
+      </mobile-result>
+
       <table *resultTable class="table table-hover"
         [ngClass]="{'cursor-pointer': data.rowAction}">
         <thead>
@@ -40,7 +50,7 @@
 
 <ng-template #regular>
   <page-content *ngIf="data && !runDirectly && !(result$ | async)"
-    [heading]="data.name">
+    [heading]="data.name" [mobileHeading]="data.label">
     <alert type="info" *ngIf="data.informationText">
       <div [innerHTML]="data.informationText | trust"></div>
     </alert>
@@ -58,6 +68,7 @@
 
   <page-content *ngIf="isContent && (result$ | async)"
     [heading]="result.title || data.name"
+    [mobileHeading]="i18n.operation.mobileTitle.result"
     [headingActions]="headingActions$ | async">
 
     <!-- Show the context of the operation if running directly. Otherwise, this data was already presented. -->
@@ -92,8 +103,8 @@
     </ng-container>
 
     <!-- File upload -->
-    <file-field *ngIf="data.hasFileUpload"
-      [label]="i18n.operation.fileUpload" [formControl]="fileControl">
+    <file-field *ngIf="data.hasFileUpload" [label]="i18n.operation.fileUpload"
+      [formControl]="fileControl">
     </file-field>
   </form>
 </ng-template>

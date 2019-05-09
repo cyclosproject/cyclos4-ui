@@ -33,6 +33,7 @@ import { FileFieldComponent } from 'app/shared/file-field.component';
 import { FilesFieldComponent } from 'app/shared/files-field.component';
 import { FocusedDirective } from 'app/shared/focused.directive';
 import { FormatFieldValueComponent } from 'app/shared/format-field-value.component';
+import { HeadingActionsComponent } from 'app/shared/heading-actions.component';
 import { IconWithCounterComponent } from 'app/shared/icon-with-counter.component';
 import { IconComponent } from 'app/shared/icon.component';
 import { ImageUploadComponent } from 'app/shared/image-upload.component';
@@ -41,8 +42,12 @@ import { InputFieldComponent } from 'app/shared/input-field.component';
 import { LabelValueComponent } from 'app/shared/label-value.component';
 import { ManageFilesComponent } from 'app/shared/manage-files.component';
 import { ManageImagesComponent } from 'app/shared/manage-images.component';
+import { MapResultComponent } from 'app/shared/map-result.component';
 import { MaskDirective } from 'app/shared/mask.directive';
+import { MaxDistanceFieldComponent } from 'app/shared/max-distance-field.component';
 import { MaybeLinkComponent } from 'app/shared/maybe-link.component';
+import { MobileResultComponent } from 'app/shared/mobile-result.component';
+import { MobileResultDirective } from 'app/shared/mobile-result.directive';
 import { MultiSelectionFieldComponent } from 'app/shared/multi-selection-field.component';
 import { NotFoundComponent } from 'app/shared/not-found.component';
 import { NotificationComponent } from 'app/shared/notification.component';
@@ -67,6 +72,7 @@ import { SpinnerComponent } from 'app/shared/spinner.component';
 import { StaticMapComponent } from 'app/shared/static-map.component';
 import { TempFileUploadComponent } from 'app/shared/temp-file-upload.component';
 import { TextAreaFieldComponent } from 'app/shared/textarea-field.component';
+import { TiledResultComponent } from 'app/shared/tiled-result.component';
 import { TimePipe } from 'app/shared/time.pipe';
 import { TrustPipe } from 'app/shared/trust.pipe';
 import { UserFieldComponent } from 'app/shared/user-field.component';
@@ -79,7 +85,6 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { SortableModule } from 'ngx-bootstrap/sortable';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
-import { MaxDistanceFieldComponent } from 'app/shared/max-distance-field.component';
 
 
 
@@ -109,12 +114,17 @@ export function initTooltipConfig(): TooltipConfig {
     SpinnerComponent,
     PageLayoutComponent,
     PageContentComponent,
+    HeadingActionsComponent,
     BannerCardComponent,
     ShowContentComponent,
     ResultsLayoutComponent,
+    TiledResultComponent,
+    MapResultComponent,
+    MobileResultComponent,
     StaticMapComponent,
     ResultCategoryDirective,
     ResultTableDirective,
+    MobileResultDirective,
     ResultTileDirective,
     ResultInfoWindowDirective,
     ActionsComponent,
@@ -211,12 +221,17 @@ export function initTooltipConfig(): TooltipConfig {
     SpinnerComponent,
     PageLayoutComponent,
     PageContentComponent,
+    HeadingActionsComponent,
     BannerCardComponent,
     ShowContentComponent,
     ResultsLayoutComponent,
+    TiledResultComponent,
+    MapResultComponent,
+    MobileResultComponent,
     StaticMapComponent,
     ResultCategoryDirective,
     ResultTableDirective,
+    MobileResultDirective,
     ResultTileDirective,
     ResultInfoWindowDirective,
     ActionsComponent,

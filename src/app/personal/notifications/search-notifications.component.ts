@@ -62,7 +62,7 @@ export class SearchNotificationsComponent
     }));
   }
 
-  onClick(notification: Notification) {
+  rowClick(notification: Notification) {
     // Mark as read
     this.addSub(this.notificationsService.markNotificationsAsRead({ ids: [notification.id] }).subscribe());
 
@@ -110,6 +110,10 @@ export class SearchNotificationsComponent
 
   protected doSearch(value: any): Observable<HttpResponse<Notification[]>> {
     return this.notificationsService.searchNotifications$Response(value);
+  }
+
+  get onClick() {
+    return (row: Notification) => this.rowClick(row);
   }
 
 }

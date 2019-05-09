@@ -17,8 +17,9 @@ function setupConfigurationDefaults() {
   Configuration.appTitle = 'Cyclos';
   Configuration.appTitleSmall = 'Cyclos';
   Configuration.appTitleMenu = 'Cyclos menu';
-  Configuration.searchPageSizes = [40, 100, 200];
-  Configuration.defaultPageSize = Configuration.searchPageSizes[0];
+  Configuration.searchPageSizeXxs = 10;
+  Configuration.searchPageSizeXs = 20;
+  Configuration.searchPageSize = 40;
   Configuration.quickSearchPageSize = 10;
   Configuration.adCategories = {
     'community': { icon: 'people', color: '#2196f3' },

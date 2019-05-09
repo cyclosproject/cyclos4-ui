@@ -5,13 +5,12 @@
 <ng-template #widget>
   <!-- Need a relatively-positioned element to position the dropdown corretcly -->
   <div class="w-100" style="position:relative" dropdown
-    #dropdown="bs-dropdown" (onShown)="onShown()"
-    (onHidden)="onHidden(); toggleButton.focus()">
+    #dropdown="bs-dropdown" (onShown)="onShown();"
+    (onHidden)="onHidden(); toggleButton.focus();">
     <button #toggleButton dropdownToggle [id]="id" type="button"
-      (focus)="onFocus()" (blur)="onBlur()"
       class="form-control text-left custom-select w-100"
-      [title]="display$ | async"
-      [attr.aria-controls]="'single-selectdropdown-' + id" [ngClass]="{
+      [title]="display$ | async" [attr.aria-controls]="dropdownMenuId"
+      [ngClass]="{
         'is-invalid': (formControl.statusChanges | async) === 'INVALID' && formControl.touched
       }">
       <div class="w-100 mw-100 text-truncate pr-3"
@@ -19,7 +18,7 @@
     </button>
 
     <div #dropDownMenu class="dropdown-menu" *dropdownMenu role="listbox"
-      attr.id="'single-selectdropdown-' + id" attr.aria-labelledby="id"
+      [attr.id]="dropdownMenuId" attr.aria-labelledby="id"
       (click)="$event.preventDefault(); $event.stopPropagation();">
       <a *ngIf="emptyLabel != null" role="option" class="select-option mt-1"
         [id]="id + '_'" tabindex="0" href="#"

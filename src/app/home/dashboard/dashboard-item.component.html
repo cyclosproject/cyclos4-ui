@@ -1,18 +1,23 @@
 <ng-container [ngSwitch]="config.type">
-  <quick-access *ngSwitchCase="DashboardItemType.QUICK_ACCESS" [minHeight]="minHeight$ | async"
-    [descriptors]="data.descriptors">
+  <quick-access *ngSwitchCase="DashboardItemType.QUICK_ACCESS" [last]="last"
+    [minHeight]="minHeight$ | async" [descriptors]="data.descriptors">
   </quick-access>
 
   <account-status *ngSwitchCase="DashboardItemType.ACCOUNT_STATUS"
-    [minHeight]="minHeight$ | async" [account]="data.account" [maxTransfers]="data.maxTransfers"></account-status>
+    [last]="last" [minHeight]="minHeight$ | async" [account]="data.account"
+    [maxTransfers]="data.maxTransfers"></account-status>
 
-  <latest-ads *ngSwitchCase="DashboardItemType.LATEST_ADS" [minHeight]="minHeight$ | async"
-    [groups]="data.groups" [max]="data.max"></latest-ads>
+  <latest-ads *ngSwitchCase="DashboardItemType.LATEST_ADS" [last]="last"
+    [minHeight]="minHeight$ | async" [groups]="data.groups" [max]="data.max">
+  </latest-ads>
 
-  <latest-users *ngSwitchCase="DashboardItemType.LATEST_USERS" [minHeight]="minHeight$ | async"
-    [groups]="data.groups" [max]="data.max"></latest-users>
+  <latest-users *ngSwitchCase="DashboardItemType.LATEST_USERS" [last]="last"
+    [minHeight]="minHeight$ | async" [groups]="data.groups" [max]="data.max">
+  </latest-users>
 
-  <dashboard-content *ngSwitchCase="DashboardItemType.CONTENT" [minHeight]="minHeight$ | async"
-    [content]="data.content" [title]="data.title" [tight]="data.tight"></dashboard-content>
+  <dashboard-content *ngSwitchCase="DashboardItemType.CONTENT" [last]="last"
+    [minHeight]="minHeight$ | async" [content]="data.content"
+    [title]="data.title" [mobileTitle]="data.mobileTitle"
+    [tight]="data.tight"></dashboard-content>
 
 </ng-container>

@@ -25,7 +25,6 @@
 
 :host:not(.label-on-side) .label-value-label {
   padding-top: calc(#{$input-padding-y} + #{$input-border-width}) !important;
-  padding-bottom: calc(#{$input-padding-y} + #{$input-border-width}) !important;
 }
 
 :host.field-view, :host.field {
@@ -33,6 +32,10 @@
 }
 
 @include media-breakpoint-up(xs) {
+  :host:not(.label-on-side) .label-value-label {
+    padding-bottom: calc(#{$input-padding-y} + #{$input-border-width}) !important;
+  }
+
   .filters-form :host ::ng-deep .label-value-label {
     padding-left: 0.5rem !important;
     padding-right: 1rem !important;

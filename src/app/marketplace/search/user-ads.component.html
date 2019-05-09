@@ -1,6 +1,8 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="loaded$ | async; else loading">
-    <page-content mode="filters" [heading]="title$ | async">
+    <page-content mode="filters"
+      [heading]="this.i18n.ad.title.owner(shortName)"
+      [mobileHeading]="this.i18n.ad.mobileTitle.owner">
       <div class="filters-row">
         <result-type-field [formControl]="resultTypeControl"
           [allowedResultTypes]="allowedResultTypes$ | async">

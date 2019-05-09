@@ -21,7 +21,7 @@ $enable-shadows: true !default;
 // Attention! If modified, adjust the `BREAKPOINTS` in `layout.service.ts` as well.
 $grid-breakpoints: (
   xxs: 0,
-  xs: 316px,
+  xs: 346px,
   sm: 576px,
   md: 768px,
   lg: 992px,
@@ -135,13 +135,17 @@ $top-bar-item-padding-xxs: 0.3rem !default;
 $top-bar-item-padding-xs: 0.5rem !default;
 $top-bar-item-padding: 0.8rem !default;
 $top-bar-with-menu-item-padding: 1.2rem !default;
-$top-bar-sub-item-hover: darken($top-bar-bg, 5%) !default;
+$top-bar-sub-item-hover-bg: darken($top-bar-bg, 5%) !default;
+$top-bar-sub-item-hover-color: $top-bar-color !default;
+$top-bar-sub-item-hover-icon-color: $top-bar-sub-item-hover-color !default;
 
 // Top bar on dark background
 $top-bar-bg-dark: $primary-dark !default;
 $top-bar-color-dark: rgba(color-yiq($top-bar-bg-dark), 0.95) !default;
 $top-bar-item-border-color-dark: darken($top-bar-bg-dark, 10%) !default;
-$top-bar-sub-item-hover-dark: darken($top-bar-bg-dark, 5%) !default;
+$top-bar-sub-item-hover-bg-dark: darken($top-bar-bg-dark, 5%) !default;
+$top-bar-sub-item-hover-color-dark: $top-bar-color-dark !default;
+$top-bar-sub-item-hover-icon-color-dark: $top-bar-sub-item-hover-color-dark !default;
 
 // Menu bar (main menu on desktop, only shown when MENU_BAR = true in configuration.ts)
 $menu-bar-height: 3.2rem !default;
@@ -312,6 +316,9 @@ $title-button-icon-color: $text-muted !default;
 $title-button-active-border-color: darken($title-button-border-color, 20%) !default;
 $title-button-active-color: $title-button-color !default;
 $title-button-active-bg: $title-button-bg !default;
+$title-button-option-hover-bg: darken($title-button-bg, 5%) !default;
+$title-button-option-hover-color: color-yiq($title-button-option-hover-bg) !default;
+$title-button-option-hover-icon-color: $title-button-icon-color !default;
 
 // Page title with dark background
 $title-bg-dark: $menu-bar-bg-dark !default;
@@ -323,6 +330,9 @@ $title-button-icon-color-dark: $text-muted-dark !default;
 $title-button-active-border-color-dark: darken($title-button-border-color-dark, 5%) !default;
 $title-button-active-color-dark: $title-button-color-dark !default;
 $title-button-active-bg-dark: $title-button-bg-dark !default;
+$title-button-option-hover-bg-dark: darken($title-button-bg-dark, 5%) !default;
+$title-button-option-hover-color-dark: color-yiq($title-button-option-hover-bg-dark) !default;
+$title-button-option-hover-icon-color-dark: $title-button-icon-color-dark !default;
 
 // Tables
 $table-color: $card-color !default;
@@ -362,6 +372,24 @@ $tiled-results-border-color-dark: $card-border-color-dark !default;
 $tiled-results-icon-color-dark: darken($card-color-dark, 50%) !default;
 $tiled-results-hover-color-dark: $menu-bar-hover-color-dark !default;
 $tiled-results-hover-bg-dark: $menu-bar-hover-bg-dark !default;
+
+// Mobile results
+$mobile-results-color: $table-color !default;
+$mobile-results-bg: $table-bg !default;
+$mobile-results-border-color: $table-border-color !default;
+$mobile-results-icon-color: $table-icon-color !default;
+$mobile-results-focus-bg: rgba($accent, 0.4) !default;
+$mobile-results-focus-color: color-yiq($mobile-results-focus-bg) !default;
+$mobile-results-focus-icon-color: $mobile-results-focus-color !default;
+
+// Mobile results on dark background
+$mobile-results-color-dark: $table-color-dark !default;
+$mobile-results-bg-dark: $table-bg-dark !default;
+$mobile-results-border-color-dark: $table-border-color-dark !default;
+$mobile-results-icon-color-dark: $table-icon-color-dark !default;
+$mobile-results-focus-bg-dark: rgba($accent-dark, 0.4) !default;
+$mobile-results-focus-color-dark: color-yiq($mobile-results-focus-bg-dark) !default;
+$mobile-results-focus-icon-color-dark: $mobile-results-focus-color-dark !default;
 
 // Date-picker calendar
 $calendar-header-bg: $accent !default;

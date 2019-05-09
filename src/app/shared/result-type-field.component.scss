@@ -12,3 +12,6 @@
   width: 2.8rem;
   padding: 0;
 }
+.btn:focus {
+  filter: brightness(80%);
+}

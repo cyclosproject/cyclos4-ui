@@ -21,6 +21,10 @@
   margin-right: 0.5rem;
 }
 
+.amount, .cell-amount {
+  text-align: right;
+}
+
 body.dark {
   .positive {
     color: $positive-color-dark !important;

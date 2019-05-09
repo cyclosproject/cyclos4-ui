@@ -4,7 +4,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BasePageComponent } from 'app/shared/base-page.component';
-import { scrollTop } from 'app/shared/helper';
+import { ensureInScroll } from 'app/shared/helper';
 import { PageData } from 'app/shared/page-data';
 import { PagedResults } from 'app/shared/paged-results';
 import { ResultType } from 'app/shared/result-type';
@@ -154,7 +154,6 @@ export abstract class BaseSearchPageComponent<D, R> extends BasePageComponent<D>
     this.nextRequestState = injector.get(NextRequestState);
     const controls: any = {};
     controls.page = 0;
-    controls.pageSize = null;
     controls.resultType = this.getInitialResultType();
     for (const name of this.getFormControlNames() || []) {
       controls[name] = null;
@@ -177,6 +176,7 @@ export abstract class BaseSearchPageComponent<D, R> extends BasePageComponent<D>
       this._moreFiltersAction.icon = this.moreFilters ? this.showLessFiltersIcon() : this.showMoreFiltersIcon();
       this._moreFiltersAction.label = this.moreFilters ? this.showLessFiltersLabel() : this.showMoreFiltersLabel();
     }, true);
+    this._moreFiltersAction.breakpoint = 'gt-xxs';
 
     return this._moreFiltersAction;
   }
@@ -242,13 +242,15 @@ export abstract class BaseSearchPageComponent<D, R> extends BasePageComponent<D>
       // Scroll to the beginning of the results before updating
       const results = document.getElementsByTagName('results-layout');
       const element = results.length === 0 ? null : results.item(0) as HTMLElement;
-      scrollTop(element);
+      ensureInScroll(element);
       this.form.patchValue(pageData, { emitEvent: false });
     }
     this.rendering = true;
     this.results = null;
     this.nextRequestState.leaveNotification = true;
-    this.addSub(this.doSearch(this.form.value).subscribe(response => {
+    const value = this.form.value;
+    value.pageSize = this.layout.searchPageSize;
+    this.addSub(this.doSearch(value).subscribe(response => {
       if (this.resultType === ResultType.CATEGORIES) {
         // Switch to the first allowed result type that isn't categories
         this.resultType = this.allowedResultTypes.find(rt => rt !== ResultType.CATEGORIES);
@@ -261,7 +263,7 @@ export abstract class BaseSearchPageComponent<D, R> extends BasePageComponent<D>
    * Resets the current page and page size of the current form, optionally emitting the change event (which will trigger a new search)
    */
   resetPage(emitEvent = false) {
-    this.form.patchValue({ page: 0, pageSize: null }, { emitEvent: emitEvent });
+    this.form.patchValue({ page: 0 }, { emitEvent: emitEvent });
   }
 
 }

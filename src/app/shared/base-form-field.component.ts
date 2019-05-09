@@ -1,7 +1,7 @@
 import { Input, HostBinding, InjectionToken, Injector } from '@angular/core';
 import { ControlContainer } from '@angular/forms';
 import { BaseControlComponent } from 'app/shared/base-control.component';
-import { nextId, blank } from 'app/shared/helper';
+import { nextId, blank, focus } from 'app/shared/helper';
 import { CustomFieldSizeEnum } from 'app/api/models';
 import { ValueFormat } from 'app/shared/value-format';
 
@@ -82,15 +82,7 @@ export abstract class BaseFormFieldComponent<T> extends BaseControlComponent<T> 
 
   /** Focus the current control */
   focus() {
-    if (document && document.body.classList.contains('lt-sm')) {
-      // Never focus elements on mobile
-      return;
-    }
-    try {
-      this.getFocusableControl().focus();
-    } catch (e) {
-      // Ignore
-    }
+    focus(this.getFocusableControl(), true);
   }
 
   /**

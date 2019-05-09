@@ -1,14 +1,24 @@
 <div class="row no-gutters">
-  <ng-container *ngFor="let indicator of indicators$ | async; let last = last">
-    <div class="status-label col-12 col-xs-6 col-md-3" [ngClass]="last ? 'status-label-last' : ''">
+  <div *ngIf="showAccount" class="status-label col-12">
+    {{ account.type.name }}
+  </div>
+  <ng-container
+    *ngFor="let indicator of indicators$ | async; let last = last">
+    <div class="status-label col-6 col-md-3"
+      [ngClass]="last ? 'status-label-last' : ''">
       {{ indicator.label }}
     </div>
-    <div class="status-value col-12 col-xs-6 col-md-3" [ngClass]="{
-        negative:(indicator.alwaysNegative || format.isNegative(indicator.amount)),
-        positive:(!indicator.alwaysNegative && format.isPositive(indicator.amount)),
+    <div class="status-value col-6 col-md-3" [ngClass]="{
+        negative: (indicator.alwaysNegative || format.isNegative(indicator.amount)),
+        positive: (!indicator.alwaysNegative && format.isPositive(indicator.amount)),
         'status-value-last': last
       }">
-      {{ indicator.amount | currency:currency }}
+      <ng-container *ngIf="indicator.amount">
+        {{ indicator.amount | currency:currency }}
+      </ng-container>
+      <ng-container *ngIf="indicator.value">
+        {{ indicator.value }}
+      </ng-container>
     </div>
   </ng-container>
 </div>

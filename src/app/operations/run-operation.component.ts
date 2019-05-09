@@ -7,7 +7,6 @@ import {
   OperationRowActionEnum, RunOperationResult, CreateDeviceConfirmation, DeviceConfirmationTypeEnum
 } from 'app/api/models';
 import { OperationsService } from 'app/api/services/operations.service';
-import { Configuration } from 'app/configuration';
 import { FieldHelperService } from 'app/core/field-helper.service';
 import { NextRequestState } from 'app/core/next-request-state';
 import { OperationHelperService } from 'app/core/operation-helper.service';
@@ -41,7 +40,7 @@ export class RunOperationComponent
   result$ = new BehaviorSubject<RunOperationResult>(null);
   pageResults$ = new BehaviorSubject<PagedResults<any>>(null);
   redirecting$ = new BehaviorSubject(false);
-  pageData: PageData = { page: 0, pageSize: Configuration.defaultPageSize };
+  pageData: PageData;
   formFields: CustomFieldDetailed[];
   isSearch: boolean;
   isContent: boolean;
@@ -144,6 +143,10 @@ export class RunOperationComponent
     if (this.isSearch) {
       // When a search, manage the form state, so on back, the same filters are kept
       this.stateManager.manage(this.form);
+      this.pageData = {
+        page: 0,
+        pageSize: this.layout.searchPageSize
+      };
     }
 
     // Register the row action, if any
@@ -285,5 +288,9 @@ export class RunOperationComponent
         }
         break;
     }
+  }
+
+  get onClick() {
+    return (row: any) => this.rowClick(row);
   }
 }

@@ -83,7 +83,8 @@
     border-bottom: none;
   }
   .sub-menu-item:hover {
-    background-color: $top-bar-sub-item-hover;
+    background-color: $top-bar-sub-item-hover-bg;
+    color: $top-bar-sub-item-hover-color;
   }
 
   @include media-breakpoint-up(lg) {
@@ -123,6 +124,52 @@
   }
 }
 
+:host ::ng-deep {
+  heading-actions, .heading-actions {
+    height: 100%;
+  }
+
+  .heading-action {
+    height: 100%;
+    border: none;
+    background-color: transparent;
+    color: $top-bar-color;
+
+    &:focus, &:active {
+      outline: 0;
+      box-shadow: none;
+      outline: none;
+    }
+  }
+
+  .heading-actions-menu {
+    color: $top-bar-color;
+    background-color: $top-bar-bg;
+    transform: translateY(-2px) !important;
+    border: none !important;
+    border-top: 1px solid $top-bar-item-border-color !important;
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+    padding: 0 !important;
+  }
+  .heading-action-option {
+    background-color: $top-bar-bg;
+    color: $top-bar-color;
+    white-space: nowrap;
+    align-items: center;
+    icon {
+      color: $top-bar-color;
+    }
+    &:hover, &:focus {
+      background-color: $top-bar-sub-item-hover-bg;
+      color: $top-bar-sub-item-hover-color;
+      icon {
+        color: $top-bar-sub-item-hover-icon-color;
+      }
+    }
+  }
+}
+
 body.dark :host ::ng-deep {
   .dropdown-menu {
     color: $top-bar-color-dark;
@@ -140,7 +187,8 @@ body.dark :host ::ng-deep {
       border-bottom-color: $top-bar-item-border-color-dark;
     }
     .sub-menu-item:hover {
-      background-color: $top-bar-sub-item-hover-dark;
+      background-color: $top-bar-sub-item-hover-bg-dark;
+      color: $top-bar-sub-item-hover-color-dark;
     }
 
     .menu-separator {

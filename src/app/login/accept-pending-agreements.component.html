@@ -1,5 +1,7 @@
 <page-layout [ready]="data$ | async" size="small" hideMenu>
-  <page-content *ngIf="data" layout="centered" [heading]="i18n.auth.pendingAgreements.title">
+  <page-content *ngIf="data" layout="centered"
+    [heading]="i18n.auth.pendingAgreements.title"
+    [mobileHeading]="i18n.auth.pendingAgreements.mobileTitle">
     <notification type="warning">
       <div [innerHTML]="i18n.auth.pendingAgreements.message | trust"></div>
     </notification>

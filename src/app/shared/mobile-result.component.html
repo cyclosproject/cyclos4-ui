@@ -1,0 +1,17 @@
+<div class="mobile-result-container">
+  <div *ngIf="hasAvatar" class="avatar">
+    <avatar [image]="avatarImage" [icon]="avatarIcon"></avatar>
+  </div>
+  <div class="flex-grow-1">
+    <div class="cell-date-amount" *ngIf="amount || date">
+      <div *ngIf="amount" class="cell-amount" [ngClass]="amountClass">
+        {{ amount | currency:currency:forceSign }}
+      </div>
+      <div *ngIf="date" class="cell-date">
+        {{ date | date }}
+      </div>
+    </div>
+    <div class="clearfix"></div>
+    <ng-content></ng-content>
+  </div>
+</div>

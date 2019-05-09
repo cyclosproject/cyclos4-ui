@@ -144,10 +144,10 @@ export class MenuService {
       params.menu = params.entry.activeMenu;
     }
 
-    if (event) {
-      event.stopPropagation();
-      event.preventDefault();
-      const target = event.target as HTMLElement;
+    if (params.event) {
+      params.event.stopPropagation();
+      params.event.preventDefault();
+      const target = params.event.target as HTMLElement;
       target.blur();
     }
 

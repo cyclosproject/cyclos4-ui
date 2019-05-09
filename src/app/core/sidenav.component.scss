@@ -46,7 +46,7 @@ nav {
 .sidenav-menu {
   a {
     display: block;
-    padding: 0.2rem 0;
+    padding: 0.2rem;
     color: $sidenav-color;
   }
   a, a:hover {
@@ -60,13 +60,13 @@ nav {
 @include media-breakpoint-up(xs) {
   .sidenav-menu {
     a {
-      padding: 0.4rem 1rem;
+      padding: 0.4rem 0.5rem;
     }
   }
 }
 
 .menu-standalone {
-  padding: 0.3rem 0.5rem;
+  padding: 0.3rem;
   border-bottom: 1px solid $sidenav-border-color;
   font-size: 1.1em;
   font-weight: $font-weight-bold;
@@ -76,7 +76,8 @@ nav {
   border-bottom: 1px solid $sidenav-border-color;
 
   .group-title {
-    padding: 0.6rem 0.4rem 0.1rem 0.4rem;
+    padding: 0.6rem;
+    padding-bottom: 0.4rem;
     font-weight: $font-weight-bold;
     font-size: 1.1em;
   }
@@ -96,6 +97,15 @@ nav {
     .group-title {
       padding: 0.7rem 1.5rem 0.2rem 1.5rem;
     }
+  }
+}
+
+@include media-breakpoint-up(sm) {
+  .menu-group .group-title {
+    padding: 0.7rem 1rem 0.2rem 1rem;
+  }
+  .navbar {
+    padding: 0 0.2rem;
   }
 }
 

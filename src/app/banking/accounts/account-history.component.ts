@@ -10,7 +10,6 @@ import { BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { BankingHelperService } from 'app/core/banking-helper.service';
 
-
 /**
  * Displays the account history of a given account
  */
@@ -24,6 +23,7 @@ export class AccountHistoryComponent
   implements OnInit {
 
   status$ = new BehaviorSubject<AccountWithHistoryStatus>(null);
+  multipleAccounts: boolean;
 
   constructor(
     injector: Injector,
@@ -92,6 +92,9 @@ export class AccountHistoryComponent
       super.ngOnInit();
     }
 
+    // Determine whether there are multiple account types
+    this.multipleAccounts = this.accountTypes.length > 1;
+
     // Get the account history data
     this.stateManager.cache('data',
       this.accountsService.getAccountHistoryDataByOwnerAndType({
@@ -143,12 +146,13 @@ export class AccountHistoryComponent
   }
 
   private get firstAccountType(): string {
+    const types = this.accountTypes;
+    return ApiHelper.internalNameOrId(types[0]);
+  }
+
+  private get accountTypes(): EntityReference[] {
     const accounts = ((this.login.auth || {}).permissions || {}).banking.accounts.filter(a => a.visible !== false);
-    if (accounts && accounts.length > 0) {
-      return ApiHelper.internalNameOrId(accounts[0].account.type);
-    } else {
-      return null;
-    }
+    return (accounts || []).map(a => a.account.type);
   }
 
   subjectName(row: AccountHistoryResult): string {
@@ -185,6 +189,10 @@ export class AccountHistoryComponent
 
   showLessFiltersLabel() {
     return this.i18n.general.hideFilters;
+  }
+
+  get toLink() {
+    return (row: AccountHistoryResult) => this.path(row);
   }
 
 }

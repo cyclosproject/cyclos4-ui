@@ -16,6 +16,7 @@ export class DashboardContentComponent extends BaseDashboardComponent implements
 
   @Input() content: Content;
   @Input() title: string;
+  @Input() mobileTitle: string;
   @Input() tight: boolean;
 
   content$ = new BehaviorSubject<string>(null);

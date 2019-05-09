@@ -102,7 +102,7 @@ export class PageLayoutComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.layout.currentPageLayout = null;
-
+    this.layout.headingActions = [];
     this.subs.forEach(s => s.unsubscribe());
   }
 
@@ -113,4 +113,5 @@ export class PageLayoutComponent implements OnInit, OnDestroy {
     const contentArea = this.contentArea.first;
     return contentArea == null ? 0 : contentArea.nativeElement.offsetWidth;
   }
+
 }

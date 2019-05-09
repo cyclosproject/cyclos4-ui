@@ -20,7 +20,7 @@
           (blur)="onInputBlur()">
 
         <div #dropDownMenu class="dropdown-menu" *dropdownMenu role="listbox"
-          attr.id="'user-dropdown-' + id" attr.aria-labelledby="id"
+          [attr.id]="dropdownMenuId" attr.aria-labelledby="id"
           (click)="$event.preventDefault(); $event.stopPropagation();">
           <a *ngFor="let user of options$ | async; let i = index;"
             class="select-option" [ngClass]="ngClassFor(user, i)" href="#"

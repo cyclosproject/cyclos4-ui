@@ -1,9 +1,12 @@
 <page-layout [ready]="data$ | async" [ngSwitch]="step$ | async" size="large"
   hideMenu>
-  <page-content *ngSwitchCase="'group'" [heading]="i18n.user.title.registration"
+  <page-content *ngSwitchCase="'group'"
+    [heading]="i18n.user.title.registration"
+    [mobileHeading]="i18n.user.mobileTitle.registration"
     [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'" last>
     <div class="flex-grow-1">
-      <registration-step-group [groups]="groups" [control]="group"></registration-step-group>
+      <registration-step-group [groups]="groups" [control]="group">
+      </registration-step-group>
     </div>
     <actions ngClass="mt-3" forceRow>
       <button class="btn btn-primary" (click)="showFields()">
@@ -12,12 +15,15 @@
     </actions>
   </page-content>
 
-  <page-content *ngSwitchCase="'fields'" [heading]="i18n.user.title.registration"
+  <page-content *ngSwitchCase="'fields'"
+    [heading]="i18n.user.title.registration"
+    [mobileHeading]="i18n.user.mobileTitle.registration"
     [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'" last>
     <div class="flex-grow-1">
-      <registration-step-fields [data]="data" [form]="form" [mobileForm]="mobileForm"
-        [landLineForm]="landLineForm" [defineAddress]="defineAddress"
-        [addressForm]="addressForm" (imageUploaded)="this.image = $event"
+      <registration-step-fields [data]="data" [form]="form"
+        [mobileForm]="mobileForm" [landLineForm]="landLineForm"
+        [defineAddress]="defineAddress" [addressForm]="addressForm"
+        (imageUploaded)="this.image = $event"
         (imageRemoved)="this.image = null">
       </registration-step-fields>
     </div>
@@ -33,11 +39,13 @@
     </actions>
   </page-content>
 
-  <page-content *ngSwitchCase="'confirm'" [heading]="i18n.user.title.registrationConfirmation"
+  <page-content *ngSwitchCase="'confirm'"
+    [heading]="i18n.user.title.registrationConfirmation"
+    [mobileHeading]="i18n.user.mobileTitle.registrationConfirmation"
     [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'" last>
     <div class="flex-grow-1">
-      <registration-step-confirm [data]="data" [form]="confirmForm" [user]="userNew"
-        [image]="image">
+      <registration-step-confirm [data]="data" [form]="confirmForm"
+        [user]="userNew" [image]="image">
       </registration-step-confirm>
     </div>
     <actions ngClass="mt-3" forceRow>
@@ -51,7 +59,9 @@
     </actions>
   </page-content>
 
-  <page-content *ngSwitchCase="'done'" [heading]="i18n.user.title.registrationDone"
+  <page-content *ngSwitchCase="'done'"
+    [heading]="i18n.user.title.registrationDone"
+    [mobileHeading]="i18n.user.mobileTitle.registrationDone"
     [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'" last>
     <div class="flex-grow-1">
       <registration-step-done [result]="result$ | async">

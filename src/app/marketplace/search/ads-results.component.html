@@ -1,7 +1,7 @@
 <results-layout (update)="update.emit($event)" [categories]="data.categories"
   [results]="results" [rendering$]="rendering$" [resultType]="resultType"
   [referencePoint]="referencePoint" [toAddress]="toAddress"
-  [toMarkerTitle]="toMarkerTitle">
+  [toMarkerTitle]="toMarkerTitle" [toLink]="toLink">
 
   <div *resultCategory="let cat" class="card">
     <div class="category-title">
@@ -21,14 +21,36 @@
         </a>
       </ng-container>
     </div>
-    <a *ngIf="hasMoreChildren(cat)" class="category-footer" href="#"
+    <a *ngIf="(layout.gtxxs$ | async) && hasMoreChildren(cat)"
+      class="category-footer" href="#"
       (click)="$event.preventDefault(); showAllChildren(cat)">
       {{ i18n.ad.showAllCategories }}
     </a>
   </div>
 
+  <mobile-result *mobileResult="let ad" [avatarImage]="ad.image"
+    avatarIcon="shopping_basket">
+    <div *ngIf="ad.price" class="cell-main">
+      <span *ngIf="ad.promotionalPrice" class="promo-price">
+        {{ ad.price | number:decimals(ad) }}
+      </span>
+      {{ (ad.promotionalPrice || ad.price) | currency:lookupCurrency(ad) }}
+    </div>
+    <div class="cell-text">
+      {{ ad.name }}
+    </div>
+    <div class="cell-text">
+      {{ i18n.ad.byOwner(ad.owner.display) }}
+    </div>
+    <div *ngFor="let field of data.fieldsInList" class="cell-small">
+      <format-field-value [fields]="data.customFields" [plainText]="true"
+        [fieldName]="field" [object]="ad">
+      </format-field-value>
+    </div>
+  </mobile-result>
+
   <table *resultTable class="table table-hover cursor-pointer">
-    <thead *ngIf="(layout.gtxs$ | async)">
+    <thead>
       <th class="avatar"></th>
       <th>{{ i18n.ad.name }}</th>
       <th *ngIf="!singleUser" colspan="2">{{ i18n.ad.owner }}</th>
@@ -41,37 +63,14 @@
         <td class="avatar">
           <avatar [image]="ad.image" icon="shopping_basket"></avatar>
         </td>
-        <td *ngIf="layout.ltsm$ | async">
-          <!-- Aggregated cell for xs -->
-          <a [routerLink]="path(ad)">
-            <div *ngIf="ad.price" class="font-weight-bold">
-              <span *ngIf="ad.promotionalPrice" class="promo-price">
-                {{ ad.price | number:decimals(ad) }}
-              </span>
-              {{ (ad.promotionalPrice || ad.price) |
-              currency:lookupCurrency(ad) }}
-            </div>
-            <div class="font-weight-bold">
-              {{ ad.name }}
-            </div>
-            <div>
-              {{ i18n.ad.byOwner(ad.owner.display) }}
-            </div>
-            <div *ngFor="let field of data.fieldsInList">
-              <format-field-value [fields]="data.customFields"
-                [plainText]="true" [fieldName]="field" [object]="ad">
-              </format-field-value>
-            </div>
-          </a>
-        </td>
-        <td *ngIf="layout.gtxs$ | async">
+        <td>
           {{ ad.name }}
         </td>
         <ng-container *ngIf="!singleUser">
-          <td class="avatar" *ngIf="layout.gtxs$ | async">
+          <td class="avatar">
             <avatar [image]="ad.owner.image"></avatar>
           </td>
-          <td *ngIf="layout.gtxs$ | async">
+          <td>
             {{ ad.owner.display }}
           </td>
         </ng-container>
@@ -82,7 +81,7 @@
             </format-field-value>
           </td>
         </ng-container>
-        <td *ngIf="layout.gtxs$ | async" class="text-right">
+        <td>
           <span *ngIf="ad.promotionalPrice" class="promo-price">
             {{ ad.price | number:decimals(ad) }}
           </span>
@@ -93,56 +92,46 @@
     </tbody>
   </table>
 
-  <a *resultTile="let ad" [routerLink]="path(ad)">
-    <div class="card">
-      <avatar ngClass="card-img-top" [roundBorders]="false" [image]="ad.image"
-        size="full" imageSize="200" icon="shopping_basket" iconSize="8rem">
-      </avatar>
-      <div class="card-body" [ngStyle]="{position: 'relative'}">
-        <ng-container *ngIf="!singleUser">
-          <div class="tile-floating-avatar">
-            <avatar [image]="ad.owner.image" [tooltip]="ad.owner.display"
-              size="medium-large"
-              (click)="$event.preventDefault(); $event.stopPropagation; router.navigate(['users', 'profile', ad.owner.id])">
-            </avatar>
-          </div>
-        </ng-container>
-        <div *ngIf="ad.price; else blankPrice" class="card-title">
-          <span *ngIf="ad.promotionalPrice" class="promo-price">
-            {{ ad.price | number:decimals(ad) }}
-          </span>
-          {{ (ad.promotionalPrice || ad.price) |
-          currency:lookupCurrency(ad) }}
-        </div>
-        <ng-template #blankPrice>
-          <div class="card-title">
-            <br>
-          </div>
-        </ng-template>
-        <div class="card-text">
-          {{ ad.name }}
-        </div>
+  <tiled-result *resultTile="let ad" [image]="ad.image"
+    icon="shopping_basket">
+    <ng-container *ngIf="!singleUser">
+      <div class="tile-floating-avatar">
+        <avatar [image]="ad.owner.image" [tooltip]="ad.owner.display"
+          size="medium-large"
+          (click)="$event.preventDefault(); $event.stopPropagation; router.navigate(['users', 'profile', ad.owner.id])">
+        </avatar>
       </div>
+    </ng-container>
+    <div *ngIf="ad.price; else blankPrice" class="card-title">
+      <span *ngIf="ad.promotionalPrice" class="promo-price">
+        {{ ad.price | number:decimals(ad) }}
+      </span>
+      {{ (ad.promotionalPrice || ad.price) |
+            currency:lookupCurrency(ad) }}
     </div>
-  </a>
-
-  <ng-container *resultInfoWindow="let ad; let addr = address">
-    <a class="plain d-block pt-1" [routerLink]="path(ad)">
-      <div class="font-weight-bold mb-2">{{ ad.name }}</div>
-
-      <avatar *ngIf="ad.image" ngClass="card-img-top mb-2"
-        [roundBorders]="false" [image]="ad.image" size="full" imageSize="200">
-      </avatar>
-
-      <div *ngIf="ad.price" class="font-weight-bold">
-        <span *ngIf="ad.promotionalPrice" class="promo-price">
-          {{ ad.price | number:decimals(ad) }}
-        </span>
-        {{ (ad.promotionalPrice || ad.price) | currency:lookupCurrency(ad) }}
+    <ng-template #blankPrice>
+      <div class="card-title">
+        <br>
       </div>
+    </ng-template>
+    <div class="card-text">
+      {{ ad.name }}
+    </div>
+  </tiled-result>
 
-      <div>{{ i18n.ad.byOwner(ad.owner.display) }}</div>
-      <address-details [address]="addr"></address-details>
-    </a>
-  </ng-container>
+  <map-result *resultInfoWindow="let ad; let addr = address"
+    [image]="ad.image" [address]="addr">
+
+    <div class="font-weight-bold mb-2">{{ ad.name }}</div>
+
+    <div *ngIf="ad.price" class="font-weight-bold">
+      <span *ngIf="ad.promotionalPrice" class="promo-price">
+        {{ ad.price | number:decimals(ad) }}
+      </span>
+      {{ (ad.promotionalPrice || ad.price) | currency:lookupCurrency(ad) }}
+    </div>
+
+    <div>{{ i18n.ad.byOwner(ad.owner.display) }}</div>
+  </map-result>
+
 </results-layout>

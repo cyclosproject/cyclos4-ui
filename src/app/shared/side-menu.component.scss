@@ -33,6 +33,10 @@ a.nav-item {
   flex-direction: row;
   align-items: center;
 
+  &:focus {
+    box-shadow: none;
+  }
+
   .nav-item-text {
     margin-left: 0.8rem;
     flex-grow: 1;

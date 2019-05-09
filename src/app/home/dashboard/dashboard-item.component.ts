@@ -17,6 +17,7 @@ import { blank } from 'app/shared/helper';
 export class DashboardItemComponent extends BaseComponent implements OnInit {
   DashboardItemType = DashboardItemType;
 
+  @Input() last: boolean;
   @Input() config: DashboardItemConfig;
   @Output() ready = new EventEmitter<boolean>(true);
 

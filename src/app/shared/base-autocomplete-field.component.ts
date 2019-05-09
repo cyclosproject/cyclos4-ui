@@ -1,8 +1,9 @@
-import { AfterViewInit, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, Injector } from '@angular/core';
+import { AfterViewInit, ElementRef, EventEmitter, Injector, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { ControlContainer, FormControl } from '@angular/forms';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { blank, empty } from 'app/shared/helper';
+import { LayoutService } from 'app/shared/layout.service';
 import { BsDropdownDirective } from 'ngx-bootstrap/dropdown';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, switchMap } from 'rxjs/operators';
@@ -35,11 +36,14 @@ export abstract class BaseAutocompleteFieldComponent<T, A>
 
   private bodyListener: any;
 
+  layout: LayoutService;
+
   constructor(
     injector: Injector,
     protected controlContainer: ControlContainer) {
     super(injector, controlContainer);
     this.inputFieldControl = new FormControl(null);
+    this.layout = injector.get(LayoutService);
   }
 
   ngOnInit() {
@@ -149,11 +153,11 @@ export abstract class BaseAutocompleteFieldComponent<T, A>
     this.dropdown.dropup = rect.bottom > docHeight - 100;
     // Workaround: ngx-bootstrap sets top sometimes when we set dropup, which causes a position error
     setTimeout(() => this.menuRef.nativeElement.style.top = '', 1);
-    this.addShortcut(['ArrowUp', 'ArrowDown', 'Enter', 'Escape'], event => this.handleShortcut(event));
+    this.layout.setFocusTrap(this.dropdownMenuId);
   }
 
   onHidden() {
-    this.clearShortcuts();
+    this.layout.setFocusTrap(null);
   }
 
   onDisabledChange(isDisabled: boolean): void {
@@ -207,41 +211,7 @@ export abstract class BaseAutocompleteFieldComponent<T, A>
     this.select(null);
   }
 
-  private handleShortcut(event: KeyboardEvent) {
-    if (event.key === 'Escape') {
-      this.onEscapePressed();
-      return;
-    }
-    const element = this.menuRef.nativeElement as HTMLElement;
-    const active = document.activeElement as HTMLElement;
-    let index = -1;
-    active.classList.forEach(c => {
-      const match = c.match(/autocomplete\-option\-(\d+)/);
-      if (match) {
-        index = Number.parseInt(match[1], 10);
-      }
-    });
-
-    const options = this.options$.value;
-    switch (event.key) {
-      case 'ArrowUp':
-        index--;
-        break;
-      case 'ArrowDown':
-        index++;
-        break;
-      case 'Enter':
-        if (index >= 0) {
-          this.select(options[index]);
-        }
-        return;
-    }
-
-    index = Math.min(Math.max(0, index), options.length - 1);
-    const toFocus = element.getElementsByClassName(`autocomplete-option-${index}`);
-    if (toFocus.length > 0) {
-      const focusEl = toFocus.item(0) as HTMLElement;
-      focusEl.focus();
-    }
+  get dropdownMenuId() {
+    return `dropdown-menu-${this.id}`;
   }
 }

@@ -1,6 +1,6 @@
 <page-layout [ready]="data$ | async">
   <page-content *ngIf="data$ | async" last mode="viewForm" [heading]="title"
-    [headingActions]="headingActions$ | async">
+    [mobileHeading]="mobileTitle" [headingActions]="headingActions$ | async">
     <transfer-details *ngIf="transaction.transfer; else transactionFields"
       [transfer]="transaction.transfer"></transfer-details>
   </page-content>

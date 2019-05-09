@@ -1,10 +1,12 @@
+import { Breakpoint } from 'app/shared/layout.service';
+
 /**
  * A custom action descriptor
  */
 export class Action {
   constructor(
     public label: string,
-    public onClick: (any) => void
+    public onClick: (param?: any) => void
   ) {
   }
 }
@@ -16,7 +18,7 @@ export class ActionWithIcon extends Action {
   constructor(
     public icon: string,
     label: string,
-    onClick: (any) => void
+    onClick: (param?: any) => void
   ) {
     super(label, onClick);
   }
@@ -31,10 +33,12 @@ export class ActionWithIcon extends Action {
  * or directly in the heading bar.
  */
 export class HeadingAction extends ActionWithIcon {
+  topBarOnly = false;
+  breakpoint: Breakpoint;
   constructor(
     icon: string,
     label: string,
-    onClick: (any) => void,
+    onClick: (param?: any) => void,
     public maybeRoot = false
   ) {
     super(icon, label, onClick);

@@ -18,9 +18,9 @@
       <div class="row no-gutters mb-2" *ngFor="let account of data.accounts">
         <div class="col-7 col-sm-8">
           <div class="custom-control custom-radio">
-            <input type="radio" formControlName="account"
+            <input #radio type="radio" formControlName="account"
               class="custom-control-input" [id]="'from_' + account.id"
-              [value]="account.type.id">
+              (keyup.enter)="radio.click()" [value]="account.type.id">
             <label class="custom-control-label" [for]="'from_' + account.id">
               <div class="ml-1">
                 {{ account.type.name }}
@@ -65,7 +65,7 @@
     <user-link [user]="fixedUser" hideLink></user-link>
   </label-value>
 
-  <single-selection-field formControlName="type"
+  <single-selection-field #type formControlName="type"
     *ngIf="(paymentTypes$ | async)?.length > 1" required
     [label]="i18n.transaction.type">
     <field-option *ngFor="let pt of paymentTypes$ | async" [value]="pt.id"

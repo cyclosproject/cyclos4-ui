@@ -5,8 +5,8 @@ import { BsDropdownDirective } from 'ngx-bootstrap/dropdown';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { empty } from 'app/shared/helper';
 import { FieldOption, fieldOptionMatches } from 'app/shared/field-option';
-
-const PageSize = 7;
+import { LayoutService } from 'app/shared/layout.service';
+import { Escape } from 'app/shared/shortcut.service';
 
 /**
  * Base class for single / multi selection fields
@@ -21,6 +21,8 @@ export abstract class BaseSelectionFieldComponent<T> extends BaseFormFieldWithOp
   display$ = new BehaviorSubject('');
   valueSub: Subscription;
   openSub: Subscription;
+
+  layout: LayoutService;
 
   _optionIndex = -1;
 
@@ -47,6 +49,7 @@ export abstract class BaseSelectionFieldComponent<T> extends BaseFormFieldWithOp
     controlContainer: ControlContainer
   ) {
     super(injector, controlContainer);
+    this.layout = injector.get(LayoutService);
   }
 
   ngOnInit() {
@@ -82,75 +85,19 @@ export abstract class BaseSelectionFieldComponent<T> extends BaseFormFieldWithOp
   }
 
   onShown() {
+    this.layout.setFocusTrap(this.dropdownMenuId);
+    this.addShortcut(Escape, () => this.close());
+
     const toggle = <HTMLElement>this.toggleRef.nativeElement;
     const rect = toggle.getBoundingClientRect();
     const docHeight = (window.innerHeight || document.documentElement.clientHeight);
     this.dropdown.dropup = rect.bottom > docHeight - 100;
     // Workaround: ngx-bootstrap sets top sometimes when we set dropup, which causes a position error
     setTimeout(() => this.menuRef.nativeElement.style.top = '', 1);
-
-    const shortcuts = ['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', 'Escape'];
-    this.addShortcut(shortcuts, event => {
-      if (event.key === 'Escape') {
-        this.close();
-        return;
-      }
-      if (this.optionIndex < 0) {
-        this.optionIndex = 0;
-        return;
-      }
-      switch (event.key) {
-        case 'ArrowUp':
-          this.optionIndex = this.optionIndex - 1;
-          break;
-        case 'ArrowDown':
-          this.optionIndex = this.optionIndex + 1;
-          break;
-        case 'PageUp':
-          this.optionIndex = this.optionIndex - PageSize;
-          break;
-        case 'PageDown':
-          this.optionIndex = this.optionIndex + PageSize;
-          break;
-        case 'Home':
-          this.optionIndex = 0;
-          break;
-        case 'End':
-          this.optionIndex = Number.MAX_SAFE_INTEGER;
-          break;
-      }
-    });
-
-    // Select the correct option
-    setTimeout(() => {
-      const selected = this.selectedOptions;
-      if (empty(selected)) {
-        this.optionIndex = 0;
-      } else {
-        let index = Math.max(0, this.allOptions.indexOf(selected[0]));
-        if (this.hasEmptyOption()) {
-          index++;
-        }
-        this.optionIndex = index;
-      }
-    }, 5);
-  }
-
-  onFocus() {
-    const shortcuts = ['Space', 'Enter', 'ArrowDown', 'ArrowUp'];
-    this.openSub = this.addShortcut(shortcuts, () => {
-      this.open();
-    });
-  }
-
-  onBlur() {
-    if (this.openSub) {
-      this.openSub.unsubscribe();
-      this.openSub = null;
-    }
   }
 
   onHidden() {
+    this.layout.setFocusTrap(null);
     this.clearShortcuts();
   }
 
@@ -166,6 +113,10 @@ export abstract class BaseSelectionFieldComponent<T> extends BaseFormFieldWithOp
 
   open() {
     this.dropdown.show();
+  }
+
+  get dropdownMenuId() {
+    return `dropdown-menu-${this.id}`;
   }
 
   /**

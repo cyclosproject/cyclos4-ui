@@ -22,7 +22,7 @@ export class PaymentStepConfirmComponent extends BaseComponent implements OnInit
   @Input() confirmationPassword: FormControl;
   @Input() showPaymentType: boolean;
   @Output() confirmationModeChanged = new EventEmitter<ConfirmationMode>();
-  @Output() confirmedWithDevice = new EventEmitter<string>();
+  @Output() confirmed = new EventEmitter<string>();
 
   fees: TransferFeePreview[];
 

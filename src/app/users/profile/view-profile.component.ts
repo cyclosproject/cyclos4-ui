@@ -4,11 +4,11 @@ import { PhoneKind, PhoneView, UserView } from 'app/api/models';
 import { ContactsService, UsersService } from 'app/api/services';
 import { ErrorStatus } from 'app/core/error-status';
 import { MapsService } from 'app/core/maps.service';
+import { OperationHelperService } from 'app/core/operation-helper.service';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { words } from 'app/shared/helper';
-import { OperationHelperService } from 'app/core/operation-helper.service';
 
 export const MAX_SIZE_SHORT_NAME = 25;
 
@@ -62,6 +62,8 @@ export class ViewProfileComponent extends BasePageComponent<UserView> implements
           }
         });
     });
+
+    this.emulateKeyboardScroll();
   }
 
   onDataInitialized(user: UserView) {
@@ -145,6 +147,10 @@ export class ViewProfileComponent extends BasePageComponent<UserView> implements
 
   get title(): string {
     return this.myProfile ? this.i18n.user.title.myProfile : this.shortName;
+  }
+
+  get mobileTitle(): string {
+    return this.myProfile ? this.i18n.user.mobileTitle.myProfile : this.i18n.user.mobileTitle.userProfile;
   }
 
 }

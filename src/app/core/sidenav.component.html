@@ -1,19 +1,20 @@
 <nav class="navbar navbar-expand-md">
-  <div class="navbar-container">
-    <span class="navbar-brand flex-grow-1">
-      <span class="top-title">{{ format.appTitleMenu }}</span>
-    </span>
-    <a href="#" class="icon" [attr.tabindex]="(opened$ | async) ? '0' : '-1'"
-      *ngIf="(login.user$ | async) != null" (click)="logout($event)">
-      <icon class="top-icon" icon="logout"></icon>
-    </a>
+  <div class="navbar-container p-0">
     <a href="#" class="icon" [attr.tabindex]="(opened$ | async) ? '0' : '-1'"
       (click)="toggle(); $event.preventDefault()">
       <icon class="top-icon" icon="clear"></icon>
     </a>
+    <span class="navbar-brand flex-grow-1">
+      <span class="top-title">{{ format.appTitleMenu }}</span>
+    </span>
+    <a href="#" class="icon" [attr.tabindex]="(opened$ | async) ? '0' : '-1'"
+      (click)="loginOrLogout($event)">
+      <icon class="top-icon"
+        [icon]="(login.user$ | async) ? 'logout' : 'exit_to_app'"></icon>
+    </a>
   </div>
 </nav>
-<div #sidenavMenu class="sidenav-menu d-flex flex-column">
+<div id="sidenav-menu" #sidenavMenu class="sidenav-menu d-flex flex-column">
   <ng-container *ngFor="let root of roots$ | async; let last = last">
     <ng-container
       *ngIf="!root.dropdown && (login.user$ | async) == null || isHome(root)">

@@ -27,11 +27,14 @@ export interface ConfigurationDefinitions {
   /** Whether to use a separated menu bar (true) or merge the menu and top bar (false) */
   menuBar: boolean;
 
-  /** Available page sizes for search results */
-  searchPageSizes: number[];
+  /** Default page size for search results on extra small devixes */
+  searchPageSizeXxs: number;
+
+  /** Default page size for search results on mobile */
+  searchPageSizeXs: number;
 
   /** Default page size for search results */
-  defaultPageSize: number;
+  searchPageSize: number;
 
   /** Page size on quick search / autocomplete */
   quickSearchPageSize: number;

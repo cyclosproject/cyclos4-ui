@@ -193,6 +193,12 @@ namespace DashboardItemConfig {
     title?: string;
 
     /**
+     * The optional dashboard item title when viewed on a mobile phone.
+     * When not specified, defaults to the regular title, if any.
+     */
+    mobileTitle?: string;
+
+    /**
      * Whether the dashboard item will have no padding.
      * By default the item will have the regular padding.
      */

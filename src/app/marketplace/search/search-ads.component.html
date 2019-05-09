@@ -1,6 +1,7 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="loaded$ | async; else loading">
     <page-content mode="filters" [heading]="i18n.ad.title.search"
+      [mobileHeading]="i18n.ad.mobileTitle.search"
       [headingActions]="headingActions$ | async">
       <form [formGroup]="form" class="filters-form filters-form-separator">
         <div class="row no-gutters">
@@ -8,11 +9,13 @@
             <input-field labelPosition="side" formControlName="keywords"
               [label]="i18n.general.keywords"></input-field>
           </div>
-          <div class="col-12 col-md-6" *ngFor="let cf of basicFields">
-            <custom-field-filter labelPosition="side" [field]="cf"
-              [formControl]="form.get('customValues').get(cf.internalName)">
-            </custom-field-filter>
-          </div>
+          <ng-container *ngIf="layout.gtxxs$ | async">
+            <div class="col-12 col-md-6" *ngFor="let cf of basicFields">
+              <custom-field-filter labelPosition="side" [field]="cf"
+                [formControl]="form.get('customValues').get(cf.internalName)">
+              </custom-field-filter>
+            </div>
+          </ng-container>
           <ng-container *ngIf="moreFilters$ | async">
             <div *ngIf="data.groups?.length > 1" class="col-12 col-md-6">
               <multi-selection-field labelPosition="side"
@@ -40,14 +43,14 @@
           </ng-container>
         </div>
       </form>
-      <div class="row no-gutters filters-row">
+      <div *ngIf="layout.gtxxs$ | async" class="row no-gutters filters-row">
         <div class="col-12 col-xs-7 col-md-9">
           <result-type-field
             [allowedResultTypes]="allowedResultTypes$ | async"
             [formControl]="resultTypeControl">
           </result-type-field>
         </div>
-        <div *ngIf="resultType !== 'categories' && (layout.gtxxs$ | async)"
+        <div *ngIf="['tiles', 'list'].includes(resultType)"
           class="col-12 col-xs-5 col-md-3">
           <single-selection-field [formControl]="form.get('orderBy')"
             [display]="i18n.general.orderBy"
@@ -70,10 +73,10 @@
           <li *ngFor="let cat of categoryTrail$ | async; let last = last"
             class="breadcrumb-item" [ngClass]="{active: last}">
             <ng-container *ngIf="last">{{ cat.name }}</ng-container>
+            <!-- Don't leave trailing spaces or they generate an extra space -->
             <a *ngIf="!last" href="#"
               (click)="$event.preventDefault(); onCategorySelected(cat)">{{
               cat.name }}</a>
-            <!-- Don't leave trailing spaces or they generate an extra space -->
           </li>
         </ol>
       </nav>

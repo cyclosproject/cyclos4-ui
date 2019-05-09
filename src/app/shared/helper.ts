@@ -1,11 +1,14 @@
 /// <reference types="@types/googlemaps" />
-import { AbstractControl, FormGroup, FormArray, FormControl } from '@angular/forms';
-import { GeographicalCoordinate, Address } from 'app/api/models';
 import { LatLngBounds } from '@agm/core';
-import { FormControlLocator } from 'app/shared/form-control-locator';
-import { Observable } from 'rxjs';
 import { HttpResponse } from '@angular/common/http';
+import { ElementRef } from '@angular/core';
+import { AbstractControl, FormArray, FormControl, FormGroup } from '@angular/forms';
+import { Address, GeographicalCoordinate } from 'app/api/models';
+import { FormControlLocator } from 'app/shared/form-control-locator';
+import { LayoutService } from 'app/shared/layout.service';
+import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp, End, Home, PageUp, PageDown } from 'app/shared/shortcut.service';
 import download from 'downloadjs';
+import { Observable } from 'rxjs';
 
 /** URL for the Google maps red marker */
 export const RedMarker = 'https://maps.google.com/mapfiles/ms/icons/red-dot.png';
@@ -447,17 +450,90 @@ export function getValueAsArray(value: any, separator: string): string[] {
 
 /**
  * Scrolls vertically to the given position, either in pixels or an element (using the element top position)
- * @param base Either a value in pixes, an element (to its top position) or nothing for the page top
+ * @param px The value, in pixels, or 0 if not specified
  */
-export function scrollTop(base?: number | HTMLElement) {
-  if (base == null) {
-    base = 0;
+export function scrollTop(px?: number) {
+  if (px == null) {
+    px = 0;
   }
-  if (typeof base !== 'number') {
-    base = base.getBoundingClientRect().top;
+  document.body.scrollTop = px;
+  document.documentElement.scrollTop = px;
+}
+
+/**
+ * Scrolls vertically to the end of the page
+ */
+export function scrollBottom() {
+  scrollTop(document.body.scrollHeight);
+}
+
+/** An element reference: either the element itself, an `ElementRef` or the DOM id */
+export type ElementReference = HTMLElement | ElementRef | string;
+
+/** Resolves the element from the given reference */
+export function resolveElement(el: ElementReference): HTMLElement {
+  if (el instanceof HTMLElement) {
+    return el;
+  } else if (el instanceof ElementRef) {
+    return el.nativeElement;
+  } else if (typeof el === 'string') {
+    return document.getElementById(el);
   }
-  document.body.scrollTop = base;
-  document.documentElement.scrollTop = base;
+}
+
+/**
+ * Returns the element position within the document
+ * @param el The element reference
+ */
+export function elementPosition(el: ElementReference): {
+  top: number, left: number, bottom: number, right: number,
+  client: ClientRect | DOMRect
+} {
+  el = resolveElement(el);
+  if (!el) {
+    return;
+  }
+  const bbox = el.getBoundingClientRect();
+  const top = bbox.top + (window.pageYOffset || document.documentElement.scrollTop);
+  const left = bbox.left + (window.pageXOffset || document.documentElement.scrollLeft);
+  return {
+    top: top,
+    bottom: top + bbox.height,
+    left: left,
+    right: left + bbox.width,
+    client: bbox
+  };
+}
+
+/**
+ * Makes sure the given element is within the visible scroll
+ */
+export function ensureInScroll(el: ElementReference) {
+  el = resolveElement(el);
+  if (!el) {
+    return;
+  }
+
+  // Scroll the element into view
+  el.scrollIntoView(false);
+
+  const pos = elementPosition(el);
+  const delta = 50;
+
+  // Maybe adjust the position
+  if (pos.top < delta) {
+    // The element is almost on top. Scroll to top.
+    scrollTop();
+  } else {
+    const body = document.body.getBoundingClientRect();
+    if (body.height - pos.bottom < delta) {
+      // The element is almost on bottom. Scroll to bottom.
+      scrollBottom();
+    } else if (window.innerHeight - pos.bottom < delta) {
+      // The element bottom is almost on the page bottom. Scroll a bit more to the bottom
+      window.scrollBy({ top: delta });
+    }
+  }
 }
 
 /**
@@ -497,11 +573,32 @@ export function downloadResponse(response: HttpResponse<Blob>) {
 }
 
 /**
- * Sets the focus on the given control, but only on the desktop
+ * Sets the focus on the given control, but only on the desktop, unless the force flag is true
  */
-export function focus(control: any) {
-  if (control && control.focus && document.body.classList.contains('gt-sm')) {
-    setTimeout(() => control.focus(), 100);
+export function focus(control: any, force = false) {
+  if (!control) {
+    return;
+  }
+  if (!force && !document.body.classList.contains('gt-sm')) {
+    return;
+  }
+  if (control.nativeElement) {
+    // Handle element ref
+    control = control.nativeElement;
+  }
+  if (control instanceof HTMLCollection) {
+    // An HTML collection
+    control = htmlCollectionToArray(control);
+  }
+  if (control instanceof Array) {
+    // An array
+    control = control.find(c => c.focus);
+  }
+  if (control.focus) {
+    setTimeout(() => {
+      control.focus();
+      ensureInScroll(control);
+    }, 1);
   }
 }
 
@@ -509,11 +606,141 @@ export function focus(control: any) {
  * Converts a collection of HTML elements to Array
  * @param collection The HTML collection
  */
-export function htmlCollectionToArray<T extends Element>(collection: HTMLCollectionOf<T>): T[] {
-  const array = new Array<T>(collection.length);
+export function htmlCollectionToArray(collection: HTMLCollectionOf<any> | NodeListOf<any>): HTMLElement[] {
+  const array = new Array<HTMLElement>(collection.length);
   for (let i = 0; i < collection.length; i++) {
     array[i] = collection.item(i);
   }
   return array;
 }
 
+/**
+ * Returns whether the given element is a children of the other element
+ */
+export function isChildElement(el: Element, parent: Element) {
+  while (el != null) {
+    if (el.parentElement === parent) {
+      return true;
+    }
+    el = el.parentElement;
+  }
+  return false;
+}
+
+/**
+ * Set the focus to another focusable element on page, according to a captured keyboard event
+ */
+export function handleKeyboardFocus(layout: LayoutService, element: ElementReference, event: KeyboardEvent, options?: {
+  horizontalOffset?: number;
+  verticalOffset?: number
+}) {
+
+  if (layout.gtxs) {
+    // Ignore when not on mobile
+    return false;
+  }
+  element = resolveElement(element);
+  if (!element) {
+    return false;
+  }
+
+  const focusTrap = resolveElement(layout.focusTrap);
+
+  // Figure out all focusable elements, and sort them in the natural order
+  const focusable = htmlCollectionToArray(
+    (focusTrap || element).querySelectorAll('input,textarea,select,button,a,.focusable'))
+    .filter(e => e.offsetParent != null);
+  if (empty(focusable)) {
+    // No focusable elements
+    return false;
+  }
+  const bboxes = new Map<HTMLElement, ClientRect | DOMRect>();
+  for (const el of focusable) {
+    bboxes.set(el, el.getBoundingClientRect());
+  }
+  focusable.sort((a, b) => {
+    const ba = bboxes.get(a);
+    const bb = bboxes.get(b);
+    if (ba.top < bb.top) {
+      return -1;
+    } else if (ba.top > bb.top) {
+      return 1;
+    }
+    if (ba.left < bb.left) {
+      return -1;
+    } else if (ba.left > bb.left) {
+      return 1;
+    }
+    return 0;
+  });
+
+  // Now check if any of them is focused
+  const index = focusable.indexOf(document.activeElement as HTMLElement);
+  if (index < 0) {
+    focus(focusable[0], true);
+  } else {
+    // Calculate the new index
+    let offset = 0;
+    options = options || {};
+    const verticalOffset = options.verticalOffset || 1;
+    const horizontalOffset = options.horizontalOffset || 2;
+    switch (event.key) {
+      case ArrowUp:
+        offset = -verticalOffset;
+        break;
+      case ArrowDown:
+        offset = verticalOffset;
+        break;
+      case ArrowLeft:
+        offset = -horizontalOffset;
+        break;
+      case ArrowRight:
+        offset = horizontalOffset;
+        break;
+    }
+    let newIndex = index + offset;
+    if (newIndex < 0) {
+      // When already on the first and going up, scroll to the top of the page
+      if (!focusTrap) {
+        focusable[0].blur();
+        scrollTop();
+      }
+    } else {
+      if (newIndex > focusable.length - 1) {
+        newIndex = focusable.length - 1;
+      }
+      focus(focusable[newIndex], true);
+    }
+  }
+
+  event.preventDefault();
+  event.stopPropagation();
+}
+
+const ArrowOffset = 80;
+const PageOffset = 300;
+const Offsets = new Map<string, number>();
+Offsets.set(ArrowUp, -ArrowOffset);
+Offsets.set(ArrowDown, ArrowOffset);
+Offsets.set(PageUp, -PageOffset);
+Offsets.set(PageDown, PageOffset);
+Offsets.set(Home, Number.MIN_SAFE_INTEGER);
+Offsets.set(End, Number.MAX_SAFE_INTEGER);
+
+/**
+ * Adds keyboard shortcuts to scroll the window
+ */
+export function handleKeyboardScroll(layout: LayoutService, event: KeyboardEvent) {
+  if (layout.gtxs || layout.focusTrap) {
+    // Ignore when not on mobile or there's an element trapping focus
+    return false;
+  }
+
+  const offset = Offsets.get(event.key);
+  if (offset) {
+    window.scrollBy({ top: offset });
+  }
+
+  event.preventDefault();
+  event.stopPropagation();
+}

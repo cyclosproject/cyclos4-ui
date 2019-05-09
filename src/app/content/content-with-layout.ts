@@ -26,6 +26,12 @@ export interface ContentWithLayout extends Content {
   title?: string;
 
   /**
+   * The title shown when `layout` is `card` on mobile devices.
+   * When not specified, defaults to the regular title, if any.
+   */
+  mobileTitle?: string;
+
+  /**
    * The card mode when `layout` is `card`.
    * By default is `normal`.
    */

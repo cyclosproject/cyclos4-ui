@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, Injector, Input, OnChanges, OnInit,
 import { AccountHistoryStatus, AccountWithHistoryStatus, Currency } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
 import { BehaviorSubject } from 'rxjs';
+import { truthyAttr } from 'app/shared/helper';
 
 
 /** Information for an account status element shown on top */
@@ -24,6 +25,14 @@ export class AccountStatusViewComponent extends BaseComponent implements OnInit,
 
   @Input() account: AccountWithHistoryStatus;
   @Input() mode: 'current' | 'period' = 'current';
+
+  private _showAccount: boolean | string = false;
+  @Input() get showAccount(): boolean | string {
+    return this._showAccount;
+  }
+  set showAccount(show: boolean | string) {
+    this._showAccount = truthyAttr(show);
+  }
 
   indicators$ = new BehaviorSubject<StatusIndicator[]>(null);
 
@@ -49,8 +58,8 @@ export class AccountStatusViewComponent extends BaseComponent implements OnInit,
     const add = (amount: string, label: string, alwaysNegative: boolean = false) => {
       if (amount) {
         indicators.push({
-          amount: amount,
           label: label,
+          amount: amount,
           alwaysNegative: this.format.isZero(amount) ? false : alwaysNegative
         });
       }
@@ -70,10 +79,10 @@ export class AccountStatusViewComponent extends BaseComponent implements OnInit,
         add(status.upperCreditLimit, this.i18n.account.positiveLimit);
       }
     } else {
-      if (status.balanceAtBegin != null) {
+      if (this.layout.gtxxs && status.balanceAtBegin != null) {
         add(status.balanceAtBegin, this.i18n.account.balanceOn(this.format.formatAsDate(status.beginDate)));
       }
-      if (status.balanceAtEnd != null) {
+      if (this.layout.gtxxs && status.balanceAtEnd != null) {
         add(status.balanceAtEnd, this.i18n.account.balanceOn(this.format.formatAsDate(status.endDate)));
       }
       if (status.incoming != null && status.incoming.sum) {
@@ -94,7 +103,7 @@ export class AccountStatusViewComponent extends BaseComponent implements OnInit,
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.mode || changes.account) {
+    if (changes.mode || changes.account || changes.showAccount) {
       this.updateIndicators();
     }
   }

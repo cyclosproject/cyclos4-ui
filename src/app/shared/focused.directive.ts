@@ -1,6 +1,7 @@
 import { AfterViewInit, ChangeDetectorRef, Directive, ElementRef, Inject, Input, Optional } from '@angular/core';
-import { DefaultValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { truthyAttr } from 'app/shared/helper';
+import { NG_VALUE_ACCESSOR } from '@angular/forms';
+import { BaseFieldDirective } from 'app/shared/base-field.directive';
+import { truthyAttr, focus } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
 
 /**
@@ -9,13 +10,15 @@ import { LayoutService } from 'app/shared/layout.service';
 @Directive({
   selector: '[focused]'
 })
-export class FocusedDirective implements AfterViewInit {
+export class FocusedDirective extends BaseFieldDirective implements AfterViewInit {
   constructor(
     private layout: LayoutService,
-    @Optional() private el: ElementRef,
-    @Optional() @Inject(NG_VALUE_ACCESSOR) private valueAccessor,
+    @Optional() el: ElementRef,
+    @Optional() @Inject(NG_VALUE_ACCESSOR) valueAccessor: any,
     private changeDetector: ChangeDetectorRef
-  ) { }
+  ) {
+    super(el, valueAccessor);
+  }
 
   _focused: boolean | string = false;
   @Input() get focused(): boolean | string {
@@ -26,32 +29,12 @@ export class FocusedDirective implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.setFocus();
-  }
-
-  private setFocus() {
     if (this._focused && this.layout.gtxs) {
-      let toFocus = null;
-      if (this.valueAccessor instanceof Array) {
-        toFocus = this.valueAccessor[0];
-      } else if (this.valueAccessor) {
-        toFocus = this.valueAccessor;
-      } else if (this.el) {
-        toFocus = this.el;
-      }
-      if (toFocus instanceof DefaultValueAccessor) {
-        toFocus = (<any>toFocus)._elementRef;
-      }
-      if (toFocus instanceof ElementRef) {
-        toFocus = toFocus.nativeElement;
-      }
-      if (toFocus) {
+      const field = this.field;
+      if (field) {
         setTimeout(() => {
-          try {
-            toFocus.focus();
-            this.changeDetector.detectChanges();
-          } catch (ex) {
-          }
+          focus(field);
+          this.changeDetector.detectChanges();
         }, 100);
       }
     }

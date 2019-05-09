@@ -101,6 +101,10 @@ export abstract class BaseTransactionsSearch
     return ['/banking', 'transaction', this.bankingHelper.transactionNumberOrId(row)];
   }
 
+  get toLink() {
+    return (row: TransactionResult) => this.path(row);
+  }
+
   /**
    * Returns the icon used on the given row's avatar
    * @param row The row

@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, ElementRef, Injector, OnInit, Input, HostBinding } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, Injector, Input, OnInit } from '@angular/core';
+import { ContentWithLayout } from 'app/content/content-with-layout';
 import { ContentService } from 'app/core/content.service';
 import { BaseComponent } from 'app/shared/base.component';
-import { ContentWithLayout } from 'app/content/content-with-layout';
 import { BehaviorSubject } from 'rxjs';
 
 /**
@@ -24,8 +24,7 @@ export class ShowContentComponent extends BaseComponent implements OnInit {
 
   constructor(
     injector: Injector,
-    public contentService: ContentService,
-    private element: ElementRef) {
+    public contentService: ContentService) {
     super(injector);
   }
 
@@ -39,8 +38,7 @@ export class ShowContentComponent extends BaseComponent implements OnInit {
         this.content$.next(content);
       } else {
         // When not card, replace this element's inner HTML
-        const element: HTMLElement = this.element.nativeElement;
-        element.innerHTML = content;
+        this.element.innerHTML = content;
       }
     }));
   }

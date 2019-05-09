@@ -40,7 +40,7 @@ export class ConfirmationPasswordComponent extends BaseControlComponent<string> 
   @Input() passwordInput: PasswordInput;
   @Input() createDeviceConfirmation: () => CreateDeviceConfirmation;
   @Output() confirmationModeChanged = new EventEmitter<ConfirmationMode>();
-  @Output() confirmedWithDevice = new EventEmitter<string>();
+  @Output() confirmed = new EventEmitter<string>();
 
   canConfirm: boolean;
   allowDevice: boolean;
@@ -136,6 +136,13 @@ export class ConfirmationPasswordComponent extends BaseControlComponent<string> 
     this.passwordComponent.focus();
   }
 
+  confirmWithKeyboard() {
+    const value = this.value;
+    if (!empty(value)) {
+      this.confirmed.emit(value);
+    }
+  }
+
   newQR() {
     this.rejected$.next(false);
     this.deviceConfirmationsService.createDeviceConfirmation({
@@ -166,7 +173,7 @@ export class ConfirmationPasswordComponent extends BaseControlComponent<string> 
     switch (confirmation.status) {
       case DeviceConfirmationStatusEnum.APPROVED:
         // Notify that the confirmation is approved
-        this.confirmedWithDevice.emit(`confirmation:${confirmation.id}`);
+        this.confirmed.emit(`confirmation:${confirmation.id}`);
         break;
       case DeviceConfirmationStatusEnum.REJECTED:
         // Invalidate the current confirmation

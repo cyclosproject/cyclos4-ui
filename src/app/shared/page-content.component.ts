@@ -1,13 +1,11 @@
-import { ChangeDetectionStrategy, Component, HostBinding, Input, OnInit, OnChanges, SimpleChanges, ElementRef } from '@angular/core';
-import { BreadcrumbService } from 'app/core/breadcrumb.service';
-import { HeadingAction } from 'app/shared/action';
-import { truthyAttr, blank } from 'app/shared/helper';
-import { LayoutService } from 'app/shared/layout.service';
+import { ChangeDetectionStrategy, Component, HostBinding, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { CardMode } from 'app/content/card-mode';
+import { BreadcrumbService } from 'app/core/breadcrumb.service';
 import { I18n } from 'app/i18n/i18n';
+import { HeadingAction } from 'app/shared/action';
+import { blank, truthyAttr, empty } from 'app/shared/helper';
+import { LayoutService } from 'app/shared/layout.service';
 import { Subscription } from 'rxjs';
-import { ShortcutService } from 'app/shared/shortcut.service';
-import { BsDropdownDirective } from 'ngx-bootstrap/dropdown/public_api';
 
 /**
  * Represents a box in the layout which contains an optional heading (title) and content.
@@ -21,6 +19,7 @@ import { BsDropdownDirective } from 'ngx-bootstrap/dropdown/public_api';
 export class PageContentComponent implements OnInit, OnChanges {
 
   @Input() heading: string;
+  @Input() mobileHeading: string;
   @Input() headingActions: HeadingAction[];
   @Input() layout: 'normal' | 'centered' = 'normal';
   @HostBinding('attr.mode') @Input() mode: CardMode = 'normal';
@@ -46,9 +45,7 @@ export class PageContentComponent implements OnInit, OnChanges {
   constructor(
     public layoutService: LayoutService,
     public breadcrumb: BreadcrumbService,
-    public i18n: I18n,
-    private shortcut: ShortcutService,
-    private element: ElementRef
+    public i18n: I18n
   ) { }
 
   get groupActions(): boolean {
@@ -64,63 +61,21 @@ export class PageContentComponent implements OnInit, OnChanges {
     if (changes['heading']) {
       this.maybeUpdateTitle();
     }
-  }
-
-  addActionsShortcuts(dropdown: BsDropdownDirective) {
-    const keys = ['ArrowUp', 'ArrowDown', ' ', 'Enter', 'Escape'];
-    const element = this.element.nativeElement as HTMLElement;
-    this.shortcutsSub = this.shortcut.subscribe(keys, event => {
-      const active = document.activeElement as HTMLElement;
-      let index = -1;
-      let alsoClick = false;
-      active.classList.forEach(c => {
-        const match = c.match(/heading\-action\-(\d+)/);
-        if (match) {
-          index = Number.parseInt(match[1], 10);
-        }
-      });
-      switch (event.key) {
-        case 'Escape':
-          dropdown.hide();
-          return;
-        case 'ArrowUp':
-          index--;
-          break;
-        case 'ArrowDown':
-          index++;
-          break;
-        case ' ':
-        case 'Enter':
-          if (index < 0) {
-            dropdown.toggle();
-            return;
-          }
-          alsoClick = true;
-          break;
+    if (changes['headingActions']) {
+      if (!empty(this.headingActions)) {
+        this.layoutService.headingActions = this.headingActions.filter(a => !a.topBarOnly);
       }
-      index = Math.min(Math.max(0, index), this.headingActions.length - 1);
-      const toFocus = element.getElementsByClassName(`heading-action-${index}`);
-      if (toFocus.length > 0) {
-        const focusEl = toFocus.item(0) as HTMLElement;
-        focusEl.focus();
-        if (alsoClick) {
-          focusEl.click();
-        }
-      }
-    });
-  }
-
-  removeActionsShortcuts() {
-    if (this.shortcutsSub) {
-      this.shortcutsSub.unsubscribe();
-      this.shortcutsSub = null;
     }
   }
 
   private maybeUpdateTitle() {
     const page = this.layoutService.currentPage;
-    if (!blank(this.heading) && page && page.updateTitleFrom() === 'content') {
-      this.layoutService.setTitle(this.heading);
+    if (!page || page.updateTitleFrom() !== 'content') {
+      return;
+    }
+    const heading = this.layoutService.gtxs ? this.heading : this.mobileHeading || this.heading;
+    if (!blank(heading)) {
+      this.layoutService.title = heading;
     }
   }
 

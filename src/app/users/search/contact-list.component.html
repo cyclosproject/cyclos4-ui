@@ -1,6 +1,8 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="loaded$ | async; else loading">
-    <page-content mode="filters" [heading]="i18n.user.title.contactList"
+    <page-content [ngClass]="{'d-none': layout.xxs$ | async}" mode="filters"
+      [heading]="i18n.user.title.contactList"
+      [mobileHeading]="i18n.user.mobileTitle.contactList"
       [headingActions]="headingActions$ | async">
       <div class="filters-row">
         <result-type-field [formControl]="resultTypeControl"

@@ -1,21 +1,19 @@
 <page-content [heading]="i18n.dashboard.quickAccess" mode="tight" hideBack
-  [ngStyle]="{minHeight: minHeight}">
+  [ngStyle]="{minHeight: minHeight}" [last]="last">
   <div class="row no-gutters flex-grow-1 quick-access-container">
     <ng-container *ngFor="let action of actions">
       <div
         *ngIf="action.entry && layout.visible(action.breakpoints, layout.breakpointChanges$ | async)"
-        class="d-flex col-6 col-sm-4 justify-content-center align-items-center">
-        <div class="text-center">
-          <a [href]="action.entry.url" class="quick-access-item"
-            (click)="navigate(action, $event)">
-            <div class="quick-access-icon">
-              <icon [icon]="action.icon" size="2.2rem"></icon>
-            </div>
-            <div class="quick-access-text">
-              {{ action.label }}
-            </div>
-          </a>
-        </div>
+        class="d-flex col-6 col-sm-4 justify-content-center align-items-center p-1">
+        <a [href]="action.entry.url" class="quick-access-item"
+          (click)="navigate(action, $event)">
+          <div class="quick-access-icon">
+            <icon [icon]="action.icon" size="2.2rem"></icon>
+          </div>
+          <div class="quick-access-text">
+            {{ action.label }}
+          </div>
+        </a>
       </div>
     </ng-container>
   </div>

@@ -1,5 +1,7 @@
 <page-layout [ready]="data$ | async">
-  <page-content *ngIf="transfer" last mode="viewForm" [heading]="i18n.transaction.title.detailsTransfer"
+  <page-content *ngIf="transfer" last mode="viewForm"
+    [heading]="i18n.transaction.title.detailsTransfer"
+    [mobileHeading]="i18n.transaction.mobileTitle.detailsTransfer"
     [headingActions]="headingActions$ | async">
     <transfer-details [transfer]="transfer"></transfer-details>
   </page-content>

@@ -4,6 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { map } from 'rxjs/operators';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
+import { empty } from 'app/shared/helper';
 
 const IGNORE_BREADCRUMB = ['', '/home', '/login', '/forgot-password'];
 
@@ -34,6 +35,13 @@ export class BreadcrumbService {
       .subscribe(event => {
         this.onRouterEvent(event);
       });
+  }
+
+  /**
+   * Returns whether the breadcrumb is empty
+   */
+  get empty(): boolean {
+    return empty(this.breadcrumb$.value);
   }
 
   /**
@@ -75,10 +83,12 @@ export class BreadcrumbService {
   /**
    * Goes back one level
    */
-  back() {
+  back(): boolean {
     const breadcrumb = this.breadcrumb$.value;
     if (breadcrumb.length > 1) {
       this.router.navigateByUrl(breadcrumb[breadcrumb.length - 2]);
+      return true;
     }
+    return false;
   }
 }

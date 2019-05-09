@@ -26,8 +26,7 @@
   [label]="i18n.transaction.amount">
   {{ preview.mainAmount | currency:preview.currency }}
 </label-value>
-<label-value *ngIf="fees?.length > 0"
-  [label]="i18n.transaction.appliedFees">
+<label-value *ngIf="fees?.length > 0" [label]="i18n.transaction.appliedFees">
   <div *ngFor="let feePreview of fees">
     {{ feePreview.fee.name }}:
     {{ feePreview.amount | currency:preview.currency }}
@@ -94,7 +93,7 @@
   *ngIf="preview.payment.description" [value]="preview.payment.description"
   valueFormat="break"></label-value>
 <hr>
-<div class="pt-3">
+<div class="focusable pt-3" tabindex="0">
   <label-value [label]="i18n.transaction.totalAmount">
     <div class="totalAmount">
       {{ preview.totalAmount | currency:preview.currency }}
@@ -112,7 +111,7 @@
       [passwordInput]="preview.confirmationPasswordInput"
       [createDeviceConfirmation]="createDeviceConfirmation"
       (confirmationModeChanged)="confirmationModeChanged.emit($event)"
-      (confirmedWithDevice)="confirmedWithDevice.emit($event)">
+      (confirmed)="confirmed.emit($event)">
     </confirmation-password>
   </form>
 </ng-container>

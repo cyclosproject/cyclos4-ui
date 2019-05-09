@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Injector, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injector, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { DataForLogin, DataForUi } from 'app/api/models';
 import { Configuration } from 'app/configuration';
@@ -25,6 +25,7 @@ export class LoginComponent
 
   form: FormGroup;
 
+  @ViewChild('principal') principalRef: ElementRef;
   @ViewChild('password') passwordInput: PasswordInputComponent;
 
   get forgotPasswordEnabled(): boolean {

@@ -12,8 +12,7 @@
     formControlName="confirmationPassword" [focused]="!hasFields"
     [createDeviceConfirmation]="createDeviceConfirmation"
     (confirmationModeChanged)="confirmationMode$.next($event)"
-    (confirmedWithDevice)="confirm($event)" [passwordInput]="passwordInput"
-    [ngClass]="{
+    (confirmed)="confirm($event)" [passwordInput]="passwordInput" [ngClass]="{
       'mt-3': hasFields || message == null,
       'mt-4': !hasFields && message != null
     }">

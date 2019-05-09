@@ -1,5 +1,6 @@
 <page-layout [ready]="data$ | async">
-  <page-content [heading]="i18n.setting.title" last>
+  <page-content [heading]="i18n.setting.title"
+    [mobileHeading]="i18n.setting.mobileTitle" last>
     <radio-group-field [label]="i18n.setting.theme"
       [formControl]="darkThemeControl">
       <field-option [value]="false" [text]="i18n.setting.themeLight">

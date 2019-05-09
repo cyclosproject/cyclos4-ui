@@ -15,10 +15,10 @@
         'mt-1': !(firstCat && firstOpt)
       }"
         (click)="value = option.value; $event.preventDefault(); $event.stopPropagation()"
-        (keydown.space)="$event.preventDefault(); $event.stopPropagation()"
-        (keyup.enter)="value = option.value; $event.preventDefault(); $event.stopPropagation()">
+        (keydown.space)="$event.preventDefault(); $event.stopPropagation()">
         <input type="radio" [name]="name" class="custom-control-input"
           [id]="id + '_' + option.value" [value]="option.value"
+          (keyup.enter)="value = option.value; $event.preventDefault(); $event.stopPropagation()"
           [checked]="isSelected(option)">
         <label class="custom-control-label" [for]="id + '_' + option.value">
           {{ option.text }}

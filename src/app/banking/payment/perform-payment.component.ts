@@ -91,6 +91,7 @@ export class PerformPaymentComponent extends BasePageComponent<DataForTransactio
   currency$ = new BehaviorSubject<Currency>(null);
   toParam: string;
   title: string;
+  mobileTitle: string;
   actualData: DataForTransaction;
   preview: PaymentPreview;
   canConfirm: boolean;
@@ -144,16 +145,19 @@ export class PerformPaymentComponent extends BasePageComponent<DataForTransactio
         // Payment to system account
         this.toParam = ApiHelper.SYSTEM;
         this.title = this.i18n.transaction.title.paymentToSystem;
+        this.mobileTitle = this.i18n.transaction.mobileTitle.paymentToSystem;
         break;
       case Menu.PAYMENT_TO_SELF:
         // Payment between own accounts
         this.toParam = ApiHelper.SELF;
         this.title = this.i18n.transaction.title.paymentToSelf;
+        this.mobileTitle = this.i18n.transaction.mobileTitle.paymentToSelf;
         break;
       default:
         // To user. Maybe null.
         this.toParam = route.params['to'];
         this.title = this.i18n.transaction.title.paymentToUser;
+        this.mobileTitle = this.i18n.transaction.mobileTitle.paymentToUser;
         break;
     }
 
@@ -378,6 +382,14 @@ export class PerformPaymentComponent extends BasePageComponent<DataForTransactio
       return this.performed.authorizationStatus === TransactionAuthorizationStatusEnum.PENDING
         ? this.i18n.transaction.title.pendingPayment
         : this.i18n.transaction.title.processedPayment;
+    }
+  }
+
+  get doneMobileTitle(): string {
+    if (this.performed) {
+      return this.performed.authorizationStatus === TransactionAuthorizationStatusEnum.PENDING
+        ? this.i18n.transaction.mobileTitle.pendingPayment
+        : this.i18n.transaction.mobileTitle.processedPayment;
     }
   }
 

@@ -14,6 +14,14 @@ body.full-width .main-container {
   margin: 0;
 }
 
+body.lt-sm {
+  overflow: auto;
+  scrollbar-width: thin;
+}
+body.gt-md {
+  overflow-y: scroll;
+}
+
 @mixin theme-transitions() {
   transition:
     background-color ease-in-out 0.4s,

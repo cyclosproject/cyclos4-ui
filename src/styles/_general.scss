@@ -156,6 +156,13 @@ hr {
   }
 }
 
+.focusable {
+  // This is only to mark anchors in the page that can receive focus, but shouldn't get any hightlight
+  &:focus {
+    outline: none;
+  }
+}
+
 @media print {
   body {
     background-color: transparent !important;

@@ -3,8 +3,10 @@ import { AbstractControl } from '@angular/forms';
 import { HeadingAction } from 'app/shared/action';
 import { BaseComponent } from 'app/shared/base.component';
 import { FormControlLocator } from 'app/shared/form-control-locator';
-import { BehaviorSubject } from 'rxjs';
-import { Menu, ConditionalMenu } from 'app/shared/menu';
+import { handleKeyboardScroll, scrollTop } from 'app/shared/helper';
+import { ConditionalMenu, Menu } from 'app/shared/menu';
+import { ArrowsVertical, End, Home, PageDown, PageUp } from 'app/shared/shortcut.service';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 
 export type UpdateTitleFrom = 'menu' | 'content';
@@ -49,6 +51,7 @@ export abstract class BasePageComponent<D> extends BaseComponent implements OnIn
     this._printAction = new HeadingAction('print', this.i18n.general.print, () => {
       self.print();
     }, true);
+    this._printAction.breakpoint = 'gt-xs';
     return this._printAction;
   }
 
@@ -82,13 +85,27 @@ export abstract class BasePageComponent<D> extends BaseComponent implements OnIn
 
     // Set the title menu according to the menu item
     if (this.updateTitleFrom() === 'menu') {
-      this.menu.resolveMenu(this.menuItem).pipe(first()).subscribe(menu => {
-        const entry = this.menu.menuEntry(menu);
-        if (entry) {
-          this.layout.setTitle(entry.label);
-        }
-      });
+      this.layout.title = null;
+      if (this.layout.gtxxs) {
+        this.menu.resolveMenu(this.menuItem).pipe(first()).subscribe(menu => {
+          const entry = this.menu.menuEntry(menu);
+          if (entry) {
+            this.layout.title = entry.label;
+          }
+        });
+      }
     }
+
+    // Initially scroll the window to the top
+    scrollTop();
+  }
+
+  /**
+   * Adds shortcut listeners to emulate the keyboard navigation on mobile / KaiOS
+   */
+  emulateKeyboardScroll(): Subscription {
+    return this.addShortcut([...ArrowsVertical, PageUp, PageDown, Home, End],
+      e => handleKeyboardScroll(this.layout, e));
   }
 
   ngOnDestroy(): void {

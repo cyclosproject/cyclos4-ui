@@ -65,7 +65,7 @@ export class SearchAdsComponent
     this.form.setControl('customValues', this.fieldHelper.customValuesFormGroup(data.customFields, {
       useDefaults: false
     }));
-    this.headingActions = empty(this.advancedFields) ? [] : [this.moreFiltersAction];
+    this.headingActions = empty(this.advancedFields) || this.layout.xxs ? [] : [this.moreFiltersAction];
     super.onDataInitialized(data);
   }
 

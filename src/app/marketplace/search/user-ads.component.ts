@@ -6,7 +6,6 @@ import { words } from 'app/shared/helper';
 import { ResultType } from 'app/shared/result-type';
 import { MAX_SIZE_SHORT_NAME } from 'app/users/profile/view-profile.component';
 import { cloneDeep } from 'lodash';
-import { BehaviorSubject } from 'rxjs';
 
 /**
  * Lists the advertisements of a given user
@@ -22,7 +21,6 @@ export class UserAdsComponent
 
   private user: string;
   shortName: string;
-  title$ = new BehaviorSubject<string>(null);
 
   constructor(
     injector: Injector,
@@ -44,22 +42,11 @@ export class UserAdsComponent
     this.user = this.route.snapshot.paramMap.get('user');
     this.allowedResultTypes = [ResultType.TILES, ResultType.LIST];
     this.marketplaceService.getUserAdsDataForSearch({ user: this.user }).subscribe(data => this.data = data);
-    this.addSub(this.layout.xxs$.subscribe(() => this.updateTitle()));
-    this.updateTitle();
-  }
-
-  private updateTitle() {
-    if (this.layout.xxs) {
-      this.title$.next(this.i18n.ad.title.search);
-    } else {
-      this.title$.next(this.i18n.ad.title.owner(this.shortName));
-    }
   }
 
   onDataInitialized(data: UserAdsDataForSearch) {
     super.onDataInitialized(data);
     this.shortName = words(data.user.display, MAX_SIZE_SHORT_NAME);
-    this.updateTitle();
   }
 
   doSearch(value: any) {

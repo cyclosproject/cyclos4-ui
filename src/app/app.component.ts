@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, NgZone, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, NgZone, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { DataForUi } from 'app/api/models';
 import { Configuration } from 'app/configuration';
@@ -10,10 +10,10 @@ import { MenuService } from 'app/core/menu.service';
 import { SidenavComponent } from 'app/core/sidenav.component';
 import { StateManager } from 'app/core/state-manager';
 import { I18n } from 'app/i18n/i18n';
-import { setRootSpinnerVisible } from 'app/shared/helper';
+import { setRootSpinnerVisible, handleKeyboardFocus } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
 import { BehaviorSubject } from 'rxjs';
-import { ShortcutService } from 'app/shared/shortcut.service';
+import { ShortcutService, ArrowsVertical } from 'app/shared/shortcut.service';
 
 @Component({
   selector: 'app-root',
@@ -24,6 +24,7 @@ import { ShortcutService } from 'app/shared/shortcut.service';
 export class AppComponent implements OnInit {
 
   @ViewChild(SidenavComponent) sidenav: SidenavComponent;
+  @ViewChild('mainContainer') mainContainer: ElementRef;
 
   initialized$ = new BehaviorSubject(false);
   loggingOut$ = new BehaviorSubject(false);
@@ -58,7 +59,6 @@ export class AppComponent implements OnInit {
     this.menuBar = Configuration.menuBar;
     this.banner.initialize();
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-    this.layout.setTitle();
     this.dataForUiHolder.subscribe(dataForUi => {
       if (dataForUi != null) {
         this.doInitialize(dataForUi);
@@ -86,13 +86,9 @@ export class AppComponent implements OnInit {
     // Hide the spinner, showing the application
     setRootSpinnerVisible(false);
 
-    // Show the sidenav on small devices when pressing the context menu
-    this.shortcut.subscribe('ContextMenu', event => {
-      if (this.layout.ltmd) {
-        this.sidenav.toggle();
-        event.preventDefault();
-      }
-    }, false);
+    // Listen for vertical arrows events on mobile to change focus
+    this.shortcut.subscribe(ArrowsVertical, e =>
+      handleKeyboardFocus(this.layout, this.mainContainer.nativeElement, e));
   }
 
   private doInitialize(dataForUi: DataForUi) {

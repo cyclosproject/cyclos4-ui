@@ -11,7 +11,6 @@ import { ApiHelper } from 'app/shared/api-helper';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { validateBeforeSubmit } from 'app/shared/helper';
 import { BsModalService } from 'ngx-bootstrap/modal';
-import { BehaviorSubject } from 'rxjs';
 
 /**
  * Manages the user passwords
@@ -26,8 +25,9 @@ export class ManagePasswordsComponent
   extends BasePageComponent<DataForUserPasswords>
   implements OnInit {
 
-  multiple$ = new BehaviorSubject(false);
-  title$ = new BehaviorSubject<string>(null);
+  multiple: boolean;
+  title: string;
+  mobileTitle: string;
 
   securityAnswer: FormGroup;
 
@@ -47,11 +47,13 @@ export class ManagePasswordsComponent
   }
 
   onDataInitialized(data: DataForUserPasswords) {
-    const multiple = data.passwords.length > 1;
-    this.multiple$.next(multiple);
-    this.title$.next(multiple ?
-      this.i18n.auth.password.title.manageMultiple :
-      this.i18n.auth.password.title.manageSingle);
+    this.multiple = data.passwords.length > 1;
+    this.title = this.multiple
+      ? this.i18n.auth.password.title.manageMultiple
+      : this.i18n.auth.password.title.manageSingle;
+    this.mobileTitle = this.multiple
+      ? this.i18n.auth.password.mobileTitle.manageMultiple
+      : this.i18n.auth.password.mobileTitle.manageSingle;
 
     if (data.dataForSetSecurityAnswer) {
       this.securityAnswer = this.formBuilder.group({

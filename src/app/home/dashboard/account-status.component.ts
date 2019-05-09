@@ -52,16 +52,15 @@ export class AccountStatusComponent extends BaseDashboardComponent implements On
     }
 
     // The heading actions
-    this.headingActions = [{
-      icon: 'search',
-      label: this.i18n.general.view,
-      maybeRoot: true,
-      onClick: event => this.menu.navigate({
-        entry: this.menu.accountEntry(this.account.type),
-        clear: false,
-        event: event
-      })
-    }];
+    this.headingActions = [
+      new HeadingAction('search', this.i18n.general.view,
+        event => this.menu.navigate({
+          entry: this.menu.accountEntry(this.account.type),
+          clear: false,
+          event: event
+        }),
+        true)
+    ];
 
     // Fetch the balance history
     this.addSub(this.accountsService.getAccountBalanceHistory({

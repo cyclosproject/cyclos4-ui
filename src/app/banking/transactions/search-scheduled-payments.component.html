@@ -1,12 +1,23 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="loaded$ | async; else loading">
     <transaction-filters [heading]="i18n.transaction.title.scheduled"
-      [form]="form" [data]="data" [statusOptions]="statusOptions"
+      [mobileHeading]="i18n.transaction.mobileTitle.scheduled" [form]="form"
+      [data]="data" [statusOptions]="statusOptions"
       [transferFilters]="transferFilters$ | async"></transaction-filters>
 
-    <results-layout resultType="list" [results]="results$ | async" (update)="update($event)">
+    <results-layout resultType="list" [results]="results$ | async"
+      (update)="update($event)" [toLink]="toLink">
+
+      <mobile-result *mobileResult="let row" [avatarImage]="avatarImage(row)"
+        [avatarIcon]="avatarIcon(row)" [date]="row.date" [amount]="row.amount"
+        [currency]="currencies.get(row.currency)" forceSign>
+        <div class="cell-text cell-main">
+          {{ subjectName(row) }}
+        </div>
+      </mobile-result>
+
       <table *resultTable class="table table-hover cursor-pointer">
-        <thead *ngIf="layout.gtxs$ | async">
+        <thead>
           <th class="avatar"></th>
           <th>{{ i18n.general.date }}</th>
           <th>{{ i18n.transaction.fromTo }}</th>
@@ -17,21 +28,15 @@
           <ng-container *ngFor="let row of (results$ | async).results">
             <tr (click)="router.navigate(path(row))">
               <td class="avatar" [ngClass]="{'pb-0': layout.xxs$ | async}">
-                <avatar [image]="avatarImage(row)" [icon]="avatarIcon(row)"></avatar>
+                <avatar [image]="avatarImage(row)" [icon]="avatarIcon(row)">
+                </avatar>
               </td>
-              <td *ngIf="layout.xs$ | async">
-                <!-- Aggregated cell for xs -->
-                <a [routerLink]="path(row)">
-                  <div class="cell-text cell-main">{{ subjectName(row) }}</div>
-                  <div class="cell-text cell-date">{{ row.date | date }}</div>
-                </a>
-              </td>
-              <td *ngIf="layout.gtxs$ | async">
+              <td>
                 <a [routerLink]="path(row)">
                   {{ row.date | date }}
                 </a>
               </td>
-              <td *ngIf="layout.gtxs$ | async">
+              <td>
                 <a [routerLink]="path(row)">
                   {{ subjectName(row) }}
                 </a>
@@ -41,21 +46,12 @@
                   {{ scheduling(row) }}
                 </a>
               </td>
-              <td class="amount" [ngClass]="{'pb-0': layout.xxs$ | async}">
+              <td class="amount">
                 <a [routerLink]="path(row)" [ngClass]="{
                         positive: format.isPositive(row.amount),
                         negative: format.isNegative(row.amount)
                       }">
-                  {{ row.amount | currency:currencies.get(row.currency):true
-                  }}
-                </a>
-              </td>
-            </tr>
-            <tr *ngIf="layout.xxs$ | async" (click)="router.navigate(path(row))">
-              <td class="border-0" colspan="3">
-                <a [routerLink]="path(row)">
-                  <div class="cell-text cell-main">{{ subjectName(row) }}</div>
-                  <div class="cell-text cell-date">{{ row.date | dateTime }}</div>
+                  {{ row.amount | currency:currencies.get(row.currency):true }}
                 </a>
               </td>
             </tr>

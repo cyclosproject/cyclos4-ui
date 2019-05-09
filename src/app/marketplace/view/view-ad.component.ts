@@ -4,6 +4,7 @@ import { MarketplaceService } from 'app/api/services';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { HeadingAction } from 'app/shared/action';
 import { OperationHelperService } from 'app/core/operation-helper.service';
+import { words } from 'app/shared/helper';
 
 
 /**
@@ -16,6 +17,8 @@ import { OperationHelperService } from 'app/core/operation-helper.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ViewAdComponent extends BasePageComponent<AdView> implements OnInit {
+
+  title: string;
 
   constructor(
     injector: Injector,
@@ -45,6 +48,7 @@ export class ViewAdComponent extends BasePageComponent<AdView> implements OnInit
       headingActions.push(this.operationHelper.headingAction(operation, ad.id));
     }
     this.headingActions = headingActions;
+    this.title = words(ad.name, 60);
   }
 
   get categoryLabel(): string {

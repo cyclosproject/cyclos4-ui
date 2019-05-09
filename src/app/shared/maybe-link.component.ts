@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, Output, EventEmitter } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, HostBinding } from '@angular/core';
 import { empty } from 'app/shared/helper';
 
 /**
@@ -10,6 +10,8 @@ import { empty } from 'app/shared/helper';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MaybeLinkComponent {
+  @HostBinding('tabindex') @Input() tabindex = -1;
+
   @Input() link: string | string[];
   @Output() click = new EventEmitter<MouseEvent>();
 

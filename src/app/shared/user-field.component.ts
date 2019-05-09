@@ -1,20 +1,21 @@
 import {
-  ChangeDetectionStrategy, Component, ElementRef, Host, Input,
-  OnDestroy, OnInit, Optional, SkipSelf, ViewChild, Injector
+  ChangeDetectionStrategy, Component, ElementRef, Host, Injector,
+  Input, OnDestroy, OnInit, Optional, SkipSelf, ViewChild
 } from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { User } from 'app/api/models';
 import { UsersService } from 'app/api/services';
+import { Configuration } from 'app/configuration';
 import { LoginService } from 'app/core/login.service';
 import { NextRequestState } from 'app/core/next-request-state';
 import { UserCacheService } from 'app/core/user-cache.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseAutocompleteFieldComponent } from 'app/shared/base-autocomplete-field.component';
+import { focus } from 'app/shared/helper';
 import { PickContactComponent } from 'app/shared/pick-contact.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { Observable, of, Subscription } from 'rxjs';
 import { distinctUntilChanged, first } from 'rxjs/operators';
-import { Configuration } from 'app/configuration';
 
 /**
  * Field used to select a user
@@ -136,6 +137,7 @@ export class UserFieldComponent
     });
     const component = ref.content as PickContactComponent;
     component.select.pipe(first()).subscribe(u => this.select(u));
+    this.modal.onHide.pipe(first()).subscribe(() => focus(this.inputField, true));
   }
 
   onInputFocus() {

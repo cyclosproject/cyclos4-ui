@@ -9,7 +9,8 @@
     </div>
     <!-- Using type="tel" instead of "number" because maxLength doesn't work with type="number" -->
     <input #inputField [id]="id" type="tel" numbersOnly allowDecimalSeparator
-      [formControl]="internalControl" class="form-control text-right"
+      autocomplete="off" [formControl]="internalControl"
+      class="form-control text-right"
       [placeholder]="format.formatAsNumber('0', this.scale)" (blur)="onBlur()"
       [ngClass]="{
         'is-invalid': (formControl.statusChanges | async) === 'INVALID' && formControl.touched

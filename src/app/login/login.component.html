@@ -2,8 +2,10 @@
   <page-content *ngIf="data"
     [layout]="(layout.ltmd$ | async) ? 'normal' : 'centered'" mode="tight"
     last [heading]="i18n.auth.login.title"
+    [mobileHeading]="i18n.auth.login.mobileTitle"
     [ngClass]="{'with-left-area': layout.leftAreaVisible$ | async}">
-    <form [formGroup]="form" (submit)="$event.preventDefault()">
+    <form [formGroup]="form" (submit)="$event.preventDefault()"
+      class="mt-3 mt-xs-0">
       <div class="pre-login-text"
         *ngIf="loggedOut || (layout.gtxxs$ | async)">
         <div *ngIf="loggedOut; else regularMessage"
@@ -20,31 +22,31 @@
             <icon size="1.3rem" icon="user"></icon>
           </span>
         </div>
-        <input type="text" formControlName="principal" autocomplete="username"
-          class="form-control" focused (keyup.enter)="password.focus()"
+        <input #principal type="text" formControlName="principal"
+          autocomplete="username" class="form-control" focused
           [placeholder]="i18n.auth.login.principal">
       </div>
 
       <password-input #password class="d-block login-margin-bottom"
         formControlName="password" autocomplete="password" showIcon
-        [passwordInput]="data?.loginPasswordInput" (enter)="doLogin()"
+        [passwordInput]="data?.loginPasswordInput" (keyup.enter)="doLogin()"
         [placeholder]="i18n.auth.login.password"></password-input>
 
-      <button type="button"
-        class="btn btn-primary login-margin-top login-margin-bottom px-5"
+      <button #submit type="button"
+        class="btn btn-primary login-margin-top login-margin-bottom px-5 mt-3 mt-xs-0"
         [disabled]="requesting$ | async"
         (click)="doLogin();$event.preventDefault();">
         {{ i18n.general.submit }}
       </button>
 
-      <a *ngIf="forgotPasswordEnabled"
+      <a id="forgotPasswordLink" *ngIf="forgotPasswordEnabled"
         class="d-block login-margin-top login-margin-bottom"
         routerLink="/forgot-password">
         {{ i18n.auth.login.forgotPassword }}
       </a>
 
-      <a *ngIf="registrationEnabled" class="d-block login-margin-top"
-        routerLink="/users/registration">
+      <a id="registerLink" *ngIf="registrationEnabled"
+        class="d-block login-margin-top" routerLink="/users/registration">
         {{ i18n.auth.login.register }}
       </a>
     </form>

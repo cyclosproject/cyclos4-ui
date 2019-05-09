@@ -9,6 +9,9 @@ import { PasswordsService } from 'app/api/services';
 import { ApiHelper } from 'app/shared/api-helper';
 import { DataForUserPasswords, PasswordStatusEnum, PasswordStatusAndActions } from 'app/api/models';
 import { Menu, ActiveMenu } from 'app/shared/menu';
+import { Breakpoint } from 'app/shared/layout.service';
+import { ArrowsHorizontal } from 'app/shared/shortcut.service';
+import { handleKeyboardFocus } from 'app/shared/helper';
 
 export const SessionToken = 'sessionToken';
 
@@ -54,6 +57,11 @@ export class HomeComponent extends BasePageComponent<void> implements OnInit {
       // For guests, just fetch the content
       this.homePage = Configuration.homePage || { content: '' };
       this.ready$.next(true);
+      // Emulate scrolling on d-pad (useful for KaiOS)
+      this.emulateKeyboardScroll();
+      // And also switch between links using the horizontal arrows
+      this.addShortcut(ArrowsHorizontal, e =>
+        handleKeyboardFocus(this.layout, this.element, e, { horizontalOffset: 1, verticalOffset: 0 }));
     } else {
       // For logged users, get the passwords statuses and resolve the dashboard items
       this.fetchPasswords();
@@ -66,6 +74,7 @@ export class HomeComponent extends BasePageComponent<void> implements OnInit {
         }));
       }
     }
+
   }
 
   private maybeSetReady() {
@@ -127,6 +136,10 @@ export class HomeComponent extends BasePageComponent<void> implements OnInit {
       event: event,
       clear: false
     });
+  }
+
+  visibleConfigs(breakpoints: Set<Breakpoint>): DashboardItemConfig[] {
+    return this.configs.filter(c => this.layout.visible(c.breakpoints, breakpoints));
   }
 
 }
