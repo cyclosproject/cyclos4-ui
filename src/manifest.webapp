@@ -4,10 +4,8 @@
   "description": "Cyclos frontend",
   "launch_path": "/",
   "icons": {
-    "16": "/images/logo.png",
-    "48": "/images/logo.png",
-    "60": "/images/logo.png",
-    "128": "/images/logo.png"
+    "56": "/images/logo_56.png",
+    "112": "/images/logo_112.png"
   },
   "developer": {
     "name": "STRO - Social Trade Organisation",
@@ -16,5 +14,7 @@
   "installs_allowed_from": [
     "*"
   ],
-  "default_locale": "en"
+  "orientation": [
+    "landscape-primary"
+  ]
 }
