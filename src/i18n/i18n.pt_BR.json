@@ -28,6 +28,7 @@
     "showMoreFilters": "Mostrar mais filtros",
     "lessFilters": "Menos filtros",
     "showLessFilters": "Mostrar menos filtros",
+    "back": "Back",
     "previous": "Anterior",
     "next": "Próximo",
     "view": "Ver",
@@ -192,6 +193,7 @@
   "auth": {
     "login": {
       "title": "Acessar",
+      "mobileTitle": "Login",
       "message": "Você pode acessar com seu nome de usuário e senha",
       "disconnected": "Você foi desconectado.<br>Por Favor, faça o login novamente, para exibir a página solicitada.",
       "principal": "Usuário",
@@ -221,12 +223,19 @@
       "passwordConfirmation": "Confirmação da senha",
       "title": {
         "change": "Alterar sua senha",
+        "forgotten": "Recover your password",
         "manage.single": "Gerenciar sua senha",
         "manage.multiple": "Gerenciar as suas senhas",
         "securityAnswer": "Definir sua resposta de segurança"
       },
+      "mobileTitle": {
+        "change": "Password change",
+        "forgotten": "Password recovery",
+        "manage.single": "Password",
+        "manage.multiple": "Passwords",
+        "securityAnswer": "Security answer"
+      },
       "forgotten": {
-        "title": "Recuperar sua senha",
         "preface": "Aqui você pode recuperar sua senha. Preencha a sua identificação de usuário abaixo. Você pode usar um dos seguintes:",
         "principal": "Usuário",
         "captcha": "Digite os caracteres abaixo",
@@ -275,6 +284,7 @@
     "registrationAgreement": "Termo de adesão",
     "pendingAgreements": {
       "title": "Termo de adesão atualizado",
+      "mobileTitle": "Updated agreement",
       "message": "O termo de adesão foi atualizado.<br><br>Para continuar você deve concordar com os novos termos.",
       "agree": "Concordo com os seguintes termos de adesão: {agreements}"
     },
@@ -314,6 +324,7 @@
     }
   },
   "account": {
+    "account": "Account",
     "number": "Número da conta",
     "transferFilter": "Filtro",
     "minAmount": "A partir do valor",
@@ -333,6 +344,7 @@
     "noAccounts": "Você não tem contas",
     "printTransactions": "Imprimir transações",
     "system": "Conta de sistema",
+    "mobileTitle": "Account",
     "orderBy": {
       "dateDesc": "Data (mais recente primeiro)",
       "dateAsc": "Data (mais antigo primeiro)",
@@ -440,6 +452,27 @@
       "parentTransfer": "Transferência que gerou esta",
       "childTransfers": "Transferências geradas por esta"
     },
+    "mobileTitle": {
+      "paymentToSystem": "Pay system",
+      "paymentToSelf": "Pay self",
+      "paymentToUser": "Pay user",
+      "paymentConfirmation": "Confirmation",
+      "pendingPayment": "Pending authorization",
+      "processedPayment": "Payment done",
+      "authorizations": "Authorizations",
+      "authorizationHistory": "History",
+      "scheduled": "Scheduled payments",
+      "details.payment": "Payment",
+      "details.scheduled": "Scheduled payment",
+      "details.recurring": "Recurring payment",
+      "details.request": "Payment request",
+      "details.chargeback": "Chargeback",
+      "details.ticket": "Ticket",
+      "details.external": "External payment",
+      "details.transfer": "Transfer",
+      "parentTransfer": "Originating transfer",
+      "childTransfers": "Originated transfers"
+    },
     "viewAuthorizations": "Ver autorizações",
     "viewThisTransfer": "Ver esta transferência",
     "authorizePending": "Autorizar pagamento pendente",
@@ -538,6 +571,25 @@
       "addContact": "Adicionar um novo contato",
       "search": "Diretório de negócios"
     },
+    "mobileTitle": {
+      "myProfile": "My profile",
+      "userProfile": "User profile",
+      "editProfile": "Edit profile",
+      "image": "Profile image",
+      "images": "Profile images",
+      "fields": "Profile fields",
+      "group": "Group",
+      "phones": "Phones",
+      "addresses": "Addresses",
+      "contactInfos": "Additional contacts",
+      "confirmation": "Confirmation",
+      "registration": "Registration",
+      "registration.confirmation": "Confirmation",
+      "registration.done": "Success",
+      "contactList": "Contacts",
+      "addContact": "New contact",
+      "search": "Directory"
+    },
     "group": "Grupo",
     "groupSet": "Conjunto de grupos",
     "group.filter": "Grupos",
@@ -609,6 +661,7 @@
     "enabledSms": "Habilitado para SMS",
     "verify": {
       "title": "Verificar {number} por SMS",
+      "mobileTitle": "Verification",
       "code": "Código",
       "send": "Enviar",
       "message": "Clique no botão acima para enviar o código de verificação para o seu telefone",
@@ -647,13 +700,19 @@
       "priceDesc": "Maior preço"
     },
     "title": {
-      "search": "Anúncios",
+      "search": "Search advertisements",
       "owner": "Anúncios de {name}"
+    },
+    "mobileTitle": {
+      "search": "Advertisements",
+      "owner": "Advertisements",
+      "details": "Advertisement"
     }
   },
   "notification": {
     "message": "Mensagem",
     "title": "Notificações",
+    "mobileTitle": "Notifications",
     "onlyUnread": "Somente Não Lido",
     "actions": {
       "remove": "Remover esta notificação",
@@ -666,10 +725,14 @@
     "ad": "Anúncio",
     "transfer": "Transferência",
     "fileUpload": "Envio de arquivo",
-    "redirecting": "Você está sendo redirecionado..."
+    "redirecting": "Você está sendo redirecionado...",
+    "mobileTitle": {
+      "result": "Result"
+    }
   },
   "setting": {
     "title": "Definições",
+    "mobileTitle": "Settings",
     "theme": "Tema",
     "theme.light": "Claro",
     "theme.dark": "Escuro"
