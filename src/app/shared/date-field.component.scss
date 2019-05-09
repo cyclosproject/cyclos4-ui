@@ -15,15 +15,22 @@
 }
 
 .date-field-wrapper {
-  display: inline-block;
+  display: block;
 }
 
 .filters-form :host ::ng-deep .date-field-wrapper {
   width: 100%;
 }
 
+.field-year, .field-month, .field-date {
+  width: 100%;
+}
+
 .date-field {
+  flex-grow: 1;
   position: relative;
+  display: flex;
+  flex-direction: column;
 }
 .date-input {
   opacity: 0;
@@ -41,10 +48,20 @@
 }
 
 .calendar-toggle {
-  margin-left: 0.25rem;
+  display: none;
 }
 
 @include media-breakpoint-up(xs) {
+  .calendar-toggle {
+    margin-left: 0.25rem;
+    display: block;
+  }
+  .date-field-wrapper {
+    display: inline-block;
+  }
+  .date-field {
+    flex-direction: row;
+  }
   .field-year {
     width: 3.8rem;
   }

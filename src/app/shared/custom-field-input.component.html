@@ -1,5 +1,6 @@
 <!-- A read-only label-value rendered when the control is disabled -->
-<label-value *ngIf="disabled || (disabledChange | async); else controlTemplate"
+<label-value
+  *ngIf="disabled || (disabledChange | async); else controlTemplate"
   [label]="field.name">
   <format-field-value [fields]="[field]" [object]="disabledValueObject"
     [fieldName]="field.internalName"></format-field-value>
@@ -8,10 +9,11 @@
 <!-- Template rendered when the field is editable, that is, there's a control -->
 <ng-template #controlTemplate>
   <ng-container *ngIf="hasValuesList; else specificTemplate">
-    <radio-group-field #radioGroupField *ngIf="control == 'radio'; else singleSelectionTemplate"
-      [id]="id" [label]="label" [name]="name" [labelPosition]="labelPosition"
-      [fieldSize]="fieldSize" [required]="required" [formControl]="formControl"
-      [fieldOptions]="fieldOptions">
+    <radio-group-field #radioGroupField
+      *ngIf="control == 'radio'; else singleSelectionTemplate" [id]="id"
+      [label]="label" [name]="name" [labelPosition]="labelPosition"
+      [fieldSize]="fieldSize" [required]="required"
+      [formControl]="formControl" [fieldOptions]="fieldOptions">
     </radio-group-field>
   </ng-container>
 </ng-template>
@@ -26,26 +28,30 @@
 
 <ng-template #specificTemplate>
   <!-- string, integer, URL or entity -->
-  <input-field #inputField *ngIf="input" [id]="id" [label]="label" [name]="name"
-    [labelPosition]="labelPosition" [fieldSize]="fieldSize" [required]="required"
-    [formControl]="formControl" [type]="type == 'integer' ? 'number' : type == 'url' ? 'url' : 'text'"
+  <input-field #inputField *ngIf="input" [id]="id" [label]="label"
+    [name]="name" [labelPosition]="labelPosition" [fieldSize]="fieldSize"
+    [required]="required" [formControl]="formControl"
+    [type]="type == 'integer' ? 'number' : type == 'url' ? 'url' : 'text'"
     [mask]="field.pattern"></input-field>
 
   <!-- text or rich text (no WYSIWYG editor yet!) -->
   <textarea-field #textareaField *ngIf="textarea" #textComponent [id]="id"
-    [label]="label" [name]="name" [labelPosition]="labelPosition" [fieldSize]="fieldSize"
-    [required]="required" [formControl]="formControl"></textarea-field>
+    [label]="label" [name]="name" [labelPosition]="labelPosition"
+    [fieldSize]="fieldSize" [required]="required" [formControl]="formControl">
+  </textarea-field>
 
   <!-- boolean -->
-  <boolean-field #booleanField *ngIf="type == 'boolean'" [id]="id" [label]="label"
-    [name]="name" [labelPosition]="labelPosition" [fieldSize]="fieldSize"
-    [required]="required" [formControl]="formControl" type="string">
+  <boolean-field #booleanField *ngIf="type == 'boolean'" [id]="id"
+    [label]="label" [name]="name" labelPosition="sideForced"
+    [fieldSize]="fieldSize" [required]="required" [formControl]="formControl"
+    type="string">
   </boolean-field>
 
   <!-- decimal -->
-  <decimal-field #decimalField *ngIf="type == 'decimal'" [id]="id" [label]="label"
-    [name]="name" [labelPosition]="labelPosition" [fieldSize]="fieldSize"
-    [required]="required" [formControl]="formControl" [scale]="field.decimalDigits">
+  <decimal-field #decimalField *ngIf="type == 'decimal'" [id]="id"
+    [label]="label" [name]="name" [labelPosition]="labelPosition"
+    [fieldSize]="fieldSize" [required]="required" [formControl]="formControl"
+    [scale]="field.decimalDigits">
   </decimal-field>
 
   <!-- date -->
@@ -56,25 +62,29 @@
   </date-field>
 
   <!-- single selection -->
-  <single-selection-field #singleSelectionField *ngIf="type == 'singleSelection' && control == 'singleSelection'"
+  <single-selection-field #singleSelectionField
+    *ngIf="type == 'singleSelection' && control == 'singleSelection'"
     [id]="id" [label]="label" [name]="name" [labelPosition]="labelPosition"
     [fieldSize]="fieldSize" [required]="required" [formControl]="formControl"
     emptyOption [fieldOptions]="fieldOptions">
   </single-selection-field>
-  <radio-group-field #radioGroupField *ngIf="type == 'singleSelection' && control == 'radio'"
-    [id]="id" [label]="label" [name]="name" [labelPosition]="labelPosition"
+  <radio-group-field #radioGroupField
+    *ngIf="type == 'singleSelection' && control == 'radio'" [id]="id"
+    [label]="label" [name]="name" [labelPosition]="labelPosition"
     [fieldSize]="fieldSize" [required]="required" [formControl]="formControl"
     [fieldOptions]="fieldOptions">
   </radio-group-field>
 
   <!-- multi selection -->
-  <multi-selection-field #multiSelectionField *ngIf="type == 'multiSelection' && control == 'multiSelection'"
-    [id]="id" [label]="label" [name]="name" [labelPosition]="labelPosition"
+  <multi-selection-field #multiSelectionField
+    *ngIf="type == 'multiSelection' && control == 'multiSelection'" [id]="id"
+    [label]="label" [name]="name" [labelPosition]="labelPosition"
     [fieldSize]="fieldSize" [required]="required" [formControl]="formControl"
     [separator]="ApiHelper.VALUE_SEPARATOR" [fieldOptions]="fieldOptions">
   </multi-selection-field>
-  <checkbox-group-field #cheboxGroupField *ngIf="type == 'multiSelection' && control == 'checkbox'"
-    [id]="id" [label]="label" [name]="name" [labelPosition]="labelPosition"
+  <checkbox-group-field #cheboxGroupField
+    *ngIf="type == 'multiSelection' && control == 'checkbox'" [id]="id"
+    [label]="label" [name]="name" [labelPosition]="labelPosition"
     [fieldSize]="fieldSize" [required]="required" [formControl]="formControl"
     [separator]="ApiHelper.VALUE_SEPARATOR" [fieldOptions]="fieldOptions">
   </checkbox-group-field>
@@ -82,23 +92,25 @@
   <!-- images -->
   <images-field #imagesField *ngIf="type == 'image'" [id]="id" [label]="label"
     [name]="name" [labelPosition]="labelPosition" [fieldSize]="fieldSize"
-    [required]="required" [formControl]="formControl" [initialImages]="binaryValues?.imageValues[field.internalName]"
-    target="customValue" [customField]="field" [separator]="ApiHelper.VALUE_SEPARATOR"
-    [maxFiles]="field.maxFiles">
+    [required]="required" [formControl]="formControl"
+    [initialImages]="binaryValues?.imageValues[field.internalName]"
+    target="customValue" [customField]="field"
+    [separator]="ApiHelper.VALUE_SEPARATOR" [maxFiles]="field.maxFiles">
   </images-field>
 
   <!-- files -->
   <files-field #filesField *ngIf="type == 'file'" [id]="id" [label]="label"
     [name]="name" [labelPosition]="labelPosition" [fieldSize]="fieldSize"
-    [required]="required" [formControl]="formControl" [initialFiles]="binaryValues?.fileValues[field.internalName]"
-    [customField]="field" [separator]="ApiHelper.VALUE_SEPARATOR" [maxFiles]="field.maxFiles"
-    [mimeTypes]="field.mimeTypes">
+    [required]="required" [formControl]="formControl"
+    [initialFiles]="binaryValues?.fileValues[field.internalName]"
+    [customField]="field" [separator]="ApiHelper.VALUE_SEPARATOR"
+    [maxFiles]="field.maxFiles" [mimeTypes]="field.mimeTypes">
   </files-field>
 
   <!-- Linked user -->
   <user-field #userField *ngIf="linkedEntityType === 'user'" [id]="id"
-    [label]="label" [name]="name" [labelPosition]="labelPosition" [fieldSize]="fieldSize"
-    [required]="required" [formControl]="formControl">
+    [label]="label" [name]="name" [labelPosition]="labelPosition"
+    [fieldSize]="fieldSize" [required]="required" [formControl]="formControl">
   </user-field>
 
 </ng-template>

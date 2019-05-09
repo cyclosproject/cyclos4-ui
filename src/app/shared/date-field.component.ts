@@ -1,10 +1,10 @@
 import {
-  ChangeDetectionStrategy, Component, ElementRef, Host, Injector, Input,
-  OnInit, Optional, QueryList, SkipSelf, ViewChild, ViewChildren
+  ChangeDetectionStrategy, Component, ElementRef, Host, Injector,
+  Input, OnInit, Optional, QueryList, SkipSelf, ViewChild, ViewChildren
 } from '@angular/core';
 import {
-  AbstractControl, ControlContainer, FormArray, FormBuilder,
-  FormControl, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator
+  AbstractControl, ControlContainer, FormArray, FormBuilder, FormControl,
+  NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator
 } from '@angular/forms';
 import { CustomFieldSizeEnum } from 'app/api/models';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';

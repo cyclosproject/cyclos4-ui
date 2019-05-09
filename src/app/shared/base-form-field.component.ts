@@ -28,8 +28,7 @@ export abstract class BaseFormFieldComponent<T> extends BaseControlComponent<T> 
 
   protected copiedFrom: BaseFormFieldComponent<any>;
 
-  @HostBinding('class.w-100') classW100 = true;
-  @HostBinding('class.d-block') classDBlock = true;
+  @HostBinding('class.form-field') classFormField = true;
   @HostBinding('class.any-label-value') get classAnyLabelValue() {
     return !blank(this.label);
   }

@@ -37,6 +37,15 @@ label {
   padding-bottom: $layout-spacer-xxs
 }
 
+.form-field {
+  width: 100%;
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
 @include media-breakpoint-up(xs) {
   .filters-form-separator {
     border-bottom-width: 1px;

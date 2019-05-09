@@ -1,5 +1,9 @@
 @import 'src/definitions';
 
+:host {
+  width: 100%;
+}
+
 .label-value-label {
   padding-top: 0 !important;
   padding-bottom: 3px !important;
