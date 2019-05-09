@@ -1,6 +1,8 @@
-import { Component, ChangeDetectionStrategy, Input, OnInit, Optional } from '@angular/core';
-import { BsModalRef } from 'ngx-bootstrap/modal';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, Optional } from '@angular/core';
 import { NotificationType } from 'app/shared/notification-type';
+import { Enter, Escape, ShortcutService } from 'app/shared/shortcut.service';
+import { BsModalRef } from 'ngx-bootstrap/modal';
+import { Subscription } from 'rxjs';
 
 /**
  * Shows a notification message. May be in a popup or directly
@@ -12,7 +14,7 @@ import { NotificationType } from 'app/shared/notification-type';
   styleUrls: ['notification.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NotificationComponent implements OnInit {
+export class NotificationComponent implements OnInit, OnDestroy {
 
   @Input() type: NotificationType = 'info';
   @Input() message: string;
@@ -20,8 +22,11 @@ export class NotificationComponent implements OnInit {
 
   alertType: string;
   icon: string;
+  private shortcutSub: Subscription;
 
-  constructor(@Optional() public modalRef: BsModalRef) {
+  constructor(
+    @Optional() public modalRef: BsModalRef,
+    private shortcut: ShortcutService) {
   }
 
   ngOnInit() {
@@ -41,6 +46,15 @@ export class NotificationComponent implements OnInit {
     }
     // The material icon ligatures matches the notification types we use
     this.icon = this.type;
+    if (this.allowClose) {
+      this.shortcutSub = this.shortcut.subscribe([Enter, Escape], () => this.modalRef.hide());
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.shortcutSub) {
+      this.shortcutSub.unsubscribe();
+    }
   }
 
 }
