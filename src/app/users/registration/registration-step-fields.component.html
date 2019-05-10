@@ -4,8 +4,8 @@
   <div class="row">
     <div class="col-12 col-sm-6">
       <div class="d-flex justify-content-center justify-content-sm-start">
-        <avatar *ngIf="image$ | async; else noImage" [image]="image" size="huge"
-          useLightbox>
+        <avatar *ngIf="image$ | async; else noImage" [image]="image"
+          size="huge" useLightbox>
         </avatar>
         <ng-template #noImage>
           {{ i18n.user.noImage }}
@@ -14,12 +14,14 @@
       <image-upload #upload containerClass="mt-3" target="userRegistration"
         keepUrls (uploadDone)="onUploadDone($event[0])"></image-upload>
     </div>
-    <div class="col-12 col-sm-6 mt-3 mt-sm-0 d-flex justify-content-between justify-content-sm-end align-items-end"
+    <div
+      class="col-12 col-sm-6 mt-3 mt-sm-0 d-flex justify-content-between justify-content-sm-end align-items-end"
       *ngIf="!(upload.uploading$ | async)">
       <button class="btn btn-outline-primary" (click)="upload.perform()">
         {{ i18n.field.image.upload }}
       </button>
-      <button *ngIf="image" class="ml-3 btn btn-outline-primary" (click)="removeImage()">
+      <button *ngIf="image" class="ml-3 btn btn-outline-primary"
+        (click)="removeImage()">
         {{ i18n.field.image.remove }}
       </button>
     </div>
@@ -29,54 +31,71 @@
 <!-- Basic profile fields-->
 <h2 class="mt-4">{{ i18n.user.title.fields }}</h2>
 <ng-container [formGroup]="form">
-  <input-field *ngIf="canEdit('name')" formControlName="name" [label]="i18n.user.name"
-    required></input-field>
-  <input-field *ngIf="canEdit('username')" formControlName="username" [label]="i18n.user.username"
-    required></input-field>
+  <input-field *ngIf="canEdit('name')" formControlName="name"
+    [label]="i18n.user.name" required></input-field>
+  <input-field *ngIf="canEdit('username')" formControlName="username"
+    [label]="i18n.user.username" required></input-field>
   <label-value *ngIf="canEdit('email')" [label]="i18n.user.email" kind="field"
-    [ignoreExtraCell]="!canManagePrivacy('email')" [required]="data.emailRequired">
-    <input-field formControlName="email" [required]="data.emailRequired"></input-field>
-    <field-privacy *extraCell field="email" [control]="form.get('hiddenFields')"></field-privacy>
+    [ignoreExtraCell]="!canManagePrivacy('email')"
+    [required]="data.emailRequired">
+    <input-field formControlName="email" [required]="data.emailRequired">
+    </input-field>
+    <field-privacy *extraCell field="email"
+      [control]="form.get('hiddenFields')"></field-privacy>
   </label-value>
 </ng-container>
 
 <!-- Custom profile fields -->
-<ng-container *ngFor="let cf of data.customFields" [formGroup]="form.get('customValues')">
+<ng-container *ngFor="let cf of data.customFields"
+  [formGroup]="form.get('customValues')">
   <label-value *ngIf="canEdit(cf)" [label]="cf.name" kind="field"
     [ignoreExtraCell]="!canManagePrivacy(cf)" [fieldSize]="cf.size"
     [required]="cf.required">
-    <custom-field-input [field]="cf" hideLabel [formControlName]="cf.internalName"></custom-field-input>
-    <field-privacy *extraCell [field]="cf.internalName" [control]="form.get('hiddenFields')"></field-privacy>
+    <custom-field-input [field]="cf" hideLabel
+      [formControlName]="cf.internalName"></custom-field-input>
+    <field-privacy *extraCell [field]="cf.internalName"
+      [control]="form.get('hiddenFields')"></field-privacy>
   </label-value>
 </ng-container>
 
 <!-- Mobile phone -->
-<label-value *ngIf="mobileAvailability !== 'disabled'" [label]="i18n.phone.mobile"
-  [required]="mobileAvailability === 'required'" kind="field" [formGroup]="mobileForm">
-  <input-field formControlName="number" [placeholder]="data.phoneConfiguration.mobileExample"></input-field>
-  <field-privacy *extraCell [control]="mobileForm.get('hidden')"></field-privacy>
+<label-value *ngIf="mobileAvailability !== 'disabled'"
+  [label]="i18n.phone.mobile" [required]="mobileAvailability === 'required'"
+  kind="field" [formGroup]="mobileForm">
+  <input-field formControlName="number"
+    [placeholder]="data.phoneConfiguration.mobileExample"></input-field>
+  <field-privacy *extraCell [control]="mobileForm.get('hidden')">
+  </field-privacy>
 </label-value>
 
 <!-- Land-line phone -->
-<ng-container *ngIf="landLineAvailability !== 'disabled'" [formGroup]="landLineForm">
-  <label-value [label]="i18n.phone.landLine" [required]="data.phoneConfiguration.landLineAvailability === 'required'"
+<ng-container *ngIf="landLineAvailability !== 'disabled'"
+  [formGroup]="landLineForm">
+  <label-value [label]="i18n.phone.landLine"
+    [required]="data.phoneConfiguration.landLineAvailability === 'required'"
     kind="field">
-    <input-field formControlName="number" [placeholder]="data.phoneConfiguration.landLineExample"></input-field>
-    <field-privacy *extraCell [control]="landLineForm.get('hidden')"></field-privacy>
+    <input-field formControlName="number"
+      [placeholder]="data.phoneConfiguration.landLineExample"></input-field>
+    <field-privacy *extraCell [control]="landLineForm.get('hidden')">
+    </field-privacy>
   </label-value>
   <input-field *ngIf="data.phoneConfiguration.extensionEnabled"
-    formControlName="extension" fieldSize="tiny" [label]="i18n.phone.extension"></input-field>
+    formControlName="extension" fieldSize="tiny"
+    [label]="i18n.phone.extension"></input-field>
 </ng-container>
 
 <!-- Address -->
 <ng-container *ngIf="addressAvailability !== 'disabled'">
   <h2 class="mt-4">{{ i18n.address.address }}</h2>
   <boolean-field *ngIf="data.addressConfiguration.availability !== 'required'"
-    [formControl]="defineAddress" [label]="i18n.user.addressDefine"></boolean-field>
+    [formControl]="defineAddress" [label]="i18n.user.addressDefine">
+  </boolean-field>
   <address-form *ngIf="defineAddress.value" [addressForm]="addressForm"
-    [configuration]="data.addressConfiguration" [managePrivacy]="data.addressConfiguration.managePrivacy">
+    [configuration]="data.addressConfiguration"
+    [managePrivacy]="data.addressConfiguration.managePrivacy">
   </address-form>
-  <agm-map *ngIf="(location$ | async) as loc" class="my-3" [latitude]="loc.latitude"
+  <agm-map *ngIf="(location$ | async) as loc"
+    [styles]="layout.googleMapStyles" class="my-3" [latitude]="loc.latitude"
     [longitude]="loc.longitude" [zoom]="16" [maxZoom]="18">
     <agm-marker [latitude]="loc.latitude" [longitude]="loc.longitude">
     </agm-marker>

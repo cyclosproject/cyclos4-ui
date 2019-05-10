@@ -18,6 +18,8 @@ import { ResultTileDirective } from 'app/shared/result-tile.directive';
 import { ResultType } from 'app/shared/result-type';
 import { BehaviorSubject } from 'rxjs';
 
+
+
 /**
  * Template for rendering results of distinct `ResultType`s
  */

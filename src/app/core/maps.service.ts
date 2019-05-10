@@ -4,10 +4,11 @@ import { Injectable } from '@angular/core';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { MapData, GeographicalCoordinate, AddressManage } from 'app/api/models';
 import { Observable, of, from } from 'rxjs';
-import { MapsAPILoader } from '@agm/core';
-import { empty, RedMarker } from 'app/shared/helper';
+import { MapsAPILoader, MapTypeStyle } from '@agm/core';
+import { empty, RedMarker, blank } from 'app/shared/helper';
 import { mergeMap } from 'rxjs/operators';
 import { Address } from 'app/api/models';
+import { LayoutService } from 'app/shared/layout.service';
 
 const STATIC_URL = 'https://maps.googleapis.com/maps/api/staticmap';
 const EXTERNAL_URL = 'https://www.google.com/maps/search/?api=1';
@@ -25,7 +26,8 @@ export class MapsService {
 
   constructor(
     private dataForUiHolder: DataForUiHolder,
-    private mapsAPILoader: MapsAPILoader) {
+    private mapsAPILoader: MapsAPILoader,
+    private layout: LayoutService) {
   }
 
   /**
@@ -74,7 +76,39 @@ export class MapsService {
     const key = this.data.googleMapsApiKey;
     const scale = (window.devicePixelRatio || 0) >= 2 ? 2 : 1;
     return `${STATIC_URL}?size=${width}x${height}&scale=${scale}&zoom=15`
-      + `&markers=icon:${RedMarker}|${coords.latitude},${coords.longitude}&key=${key}`;
+      + `&markers=icon:${RedMarker}|${coords.latitude},${coords.longitude}&key=${key}`
+      + this.styles();
+  }
+
+  private styles(): string {
+    const mapStyles = this.layout.googleMapStyles;
+    if (empty(mapStyles)) {
+      return '';
+    }
+    const toStyle = (s: MapTypeStyle) => {
+      const parts: string[] = [];
+      if (s.featureType) {
+        parts.push(`feature:${s.featureType}`);
+      }
+      if (s.elementType) {
+        parts.push(`element:${s.elementType}`);
+      }
+      (s.stylers || []).forEach(st => {
+        for (const key of Object.keys(st)) {
+          let value = String(st[key]);
+          if (blank(value)) {
+            continue;
+          }
+          if (value.startsWith('#')) {
+            // Colors must be encoded as hex
+            value = value.replace('#', '0x');
+          }
+          parts.push(`${key}:${value}`);
+        }
+      });
+      return `&style=` + parts.join('|');
+    };
+    return mapStyles.map(toStyle).join('');
   }
 
   /**

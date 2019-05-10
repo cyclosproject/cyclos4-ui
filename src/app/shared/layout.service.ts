@@ -12,6 +12,8 @@ import { isEqual, trim } from 'lodash';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 import { ShortcutService, Escape } from 'app/shared/shortcut.service';
+import { MapTypeStyle } from '@agm/core';
+import { LightMapStyles, DarkMapStyles } from 'app/shared/google-map-styles';
 
 const DarkTheme = 'darkTheme';
 const ColorVariables = [
@@ -561,6 +563,10 @@ export class LayoutService {
    */
   get themeColor(): string {
     return this.getColor('theme-color');
+  }
+
+  get googleMapStyles(): MapTypeStyle[] {
+    return this.darkTheme ? DarkMapStyles : LightMapStyles;
   }
 
   private getColor(name: string) {

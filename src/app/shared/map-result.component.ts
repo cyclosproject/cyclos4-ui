@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, ElementRef, AfterViewInit } from '@angular/core';
 import { Image, Address } from 'app/api/models';
 
 /**
@@ -9,11 +9,16 @@ import { Image, Address } from 'app/api/models';
   templateUrl: 'map-result.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MapResultComponent {
+export class MapResultComponent implements AfterViewInit {
 
   @Input() image: Image;
   @Input() address: Address;
 
-  constructor() {
+  constructor(private element: ElementRef) {
+  }
+
+  ngAfterViewInit() {
+    const element = this.element.nativeElement as HTMLElement;
+    element.parentElement.classList.add('map-info-window');
   }
 }

@@ -71,6 +71,7 @@
 .map-info-window {
   display: block;
   color: $card-color;
+  background-color: $card-bg;
 
   &:hover, &:focus {
     text-decoration: none;
@@ -329,4 +330,13 @@ body.dark {
       }
     }
   }
+
+  .map-info-window {
+    color: $card-color-dark;
+    background-color: $card-bg-dark;
+    &:hover, &:focus {
+      color: $card-color-dark;
+    }
+  }
+
 }

@@ -76,7 +76,8 @@
     (ready)="mapLoaded ? notifyReady() : null" class="d-flex flex-grow-1"
     [ngClass]="{'d-none': rendering$ | async}">
     <page-content mode="fullHeightTight" last>
-      <agm-map [fitBounds]="mapBounds$ | async"
+      <agm-map [styles]="layout.googleMapStyles"
+        [fitBounds]="mapBounds$ | async"
         [latitude]="maps.data?.defaultLocation?.latitude"
         [longitude]="maps.data?.defaultLocation?.longitude"
         [fullscreenControl]="true" [streetViewControl]="false" maxZoom="17"
