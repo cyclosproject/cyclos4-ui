@@ -297,13 +297,14 @@
   },
   "dashboard": {
     "quickAccess": "Snelle toegang",
+    "quickAccess.shortcutTemplate": "{shortcut}: {label}",
     "action": {
       "account": "Rekening",
       "payUser": "Betaal",
       "paySystem": "Euro's kopen",
       "contacts": "Contacten",
       "directory": "Bedrijven",
-      "advertisements": "Advertenties",
+      "advertisements": "Marketplace",
       "editProfile": "Profiel bewerken",
       "password": "Wachtwoord",
       "passwords": "Wachtwoorden",
