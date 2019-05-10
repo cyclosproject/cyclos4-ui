@@ -111,7 +111,9 @@
     "results": {
       "withTotal": "Affichage de {first} - {last} de {total} résultats",
       "noTotal": "Affichage de {first} - {last} résultats",
-      "none": "Aucun résultat ne correspond aux critères de recherche"
+      "none": "Aucun résultat ne correspond aux critères de recherche",
+      "nextXxs": "Next",
+      "previousXxs": "Previous"
     },
     "geolocation": {
       "kilometersFrom": "km from",
