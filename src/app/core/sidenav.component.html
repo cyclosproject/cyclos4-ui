@@ -1,8 +1,8 @@
 <nav class="navbar navbar-expand-md">
-  <div class="navbar-container p-0">
+  <div class="navbar-container">
     <a href="#" class="icon" [attr.tabindex]="(opened$ | async) ? '0' : '-1'"
       (click)="toggle(); $event.preventDefault()">
-      <icon class="top-icon" icon="clear"></icon>
+      <icon class="top-icon" icon="close"></icon>
     </a>
     <span class="navbar-brand flex-grow-1">
       <span class="top-title">{{ format.appTitleMenu }}</span>
