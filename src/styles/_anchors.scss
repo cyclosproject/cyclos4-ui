@@ -6,7 +6,7 @@ a {
   &:hover {
     color: $link-hover-color;
   }
-  &:focus {
+  &:focus:not(:active) {
     outline: none;
     box-shadow: $btn-focus-box-shadow;
   }
