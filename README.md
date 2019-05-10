@@ -629,3 +629,11 @@ If you're serving the application in a subpath, adjust the URLs accordingly:
 You will also have to resize your logo to these pixel sizes, and copy them to the `dist/images` folder.
 
 Either a physical phone running KaiOS, or the [KaiOS simulator](https://developer.kaiostech.com/simulator) to test the application. Be aware that the simulator has several known issues (such as only accepting text using the physical PC keyboard) - see the release notes for more details.
+
+The KaiOS application doesn't run in a "browser". Hence, the navigation keys need to be implemented in order for them to work. In this Cyclos frontent, the following keys are mapped:
+
+- Left action: Toggles the sidenav menu, or closes an error ;
+- Soft right: Runs the action which is represented by an icon in the top right. When not logged-in yet, will go to the login page. When already logged in, will logout if on the dashboard page, or go back to the previous page. There could also have multiple actions. In this case, the icon is &vellip; and activating it will show a menu;
+- Vertical arrows: Focus the next / previous field or anchor. On guest home and content pages scroll the page;
+- Horizontal arrows: On the quick access navigates through the icons. On search results skips to the next / previous page. On guest home / content pages focus the next / previous anchor;
+- Ok: Activates the focused element.
