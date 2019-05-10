@@ -7,7 +7,7 @@ import { BasePageComponent, UpdateTitleFrom } from 'app/shared/base-page.compone
 import { BehaviorSubject } from 'rxjs';
 import { PasswordsService } from 'app/api/services';
 import { ApiHelper } from 'app/shared/api-helper';
-import { DataForUserPasswords, PasswordStatusEnum, PasswordStatusAndActions } from 'app/api/models';
+import { DataForUserPasswords, PasswordStatusEnum, PasswordStatusAndActions, PasswordModeEnum } from 'app/api/models';
 import { Menu, ActiveMenu } from 'app/shared/menu';
 import { Breakpoint } from 'app/shared/layout.service';
 import { ArrowsHorizontal } from 'app/shared/shortcut.service';
@@ -86,13 +86,17 @@ export class HomeComponent extends BasePageComponent<void> implements OnInit {
   private fetchPasswords() {
     this.addSub(this.passwordsService.getUserPasswordsListData({
       user: ApiHelper.SELF,
-      fields: ['dataForSetSecurityAnswer', 'passwords.status', 'passwords.type.name']
+      fields: ['dataForSetSecurityAnswer', 'passwords.status', 'passwords.type.name', 'passwords.type.mode']
     }).subscribe(data => {
       this.passwords = data;
-      this.passwordsNeedingAttention = (data.passwords || []).filter(p => PasswordStatusNeedingAttention.includes(p.status));
+      this.passwordsNeedingAttention = (data.passwords || []).filter(p => this.needsAttention(p));
       this.pendingSecurityAnswer = !!data.dataForSetSecurityAnswer;
       this.maybeSetReady();
     }));
+  }
+
+  private needsAttention(password: PasswordStatusAndActions): boolean {
+    return password.type.mode !== PasswordModeEnum.OTP && PasswordStatusNeedingAttention.includes(password.status);
   }
 
   private initializeItems(configs: DashboardItemConfig[]) {
