@@ -28,6 +28,7 @@
     "showMoreFilters": "Mostrar mais filtros",
     "lessFilters": "Menos filtros",
     "showLessFilters": "Mostrar menos filtros",
+    "back": "Voltar",
     "previous": "Anterior",
     "next": "Próximo",
     "view": "Ver",
@@ -110,7 +111,9 @@
     "results": {
       "withTotal": "Mostrando {first} - {last} de {total} resultados",
       "noTotal": "Mostrando {first} - {last} resultados",
-      "none": "Nenhum resultado corresponde aos critérios de pesquisa"
+      "none": "Nenhum resultado corresponde aos critérios de pesquisa",
+      "nextXxs": "Ant.",
+      "previousXxs": "Anterior"
     },
     "geolocation": {
       "kilometersFrom": "km de",
@@ -192,6 +195,7 @@
   "auth": {
     "login": {
       "title": "Acessar",
+      "mobileTitle": "Login",
       "message": "Você pode acessar com seu nome de usuário e senha",
       "disconnected": "Você foi desconectado.<br>Por Favor, faça o login novamente, para exibir a página solicitada.",
       "principal": "Usuário",
@@ -216,17 +220,25 @@
       "confirm.otp.active": "Você pode usar a senha de confirmação enviada anteriormente ou pedir uma nova",
       "confirm.otp.request": "Por favor, solicite uma senha de confirmação para poder confirmar",
       "otp.sent": "A senha foi enviada para {dest}",
+      "otp.receiveBy": "Obter via {medium}",
       "oldPassword": "Senha antiga",
       "newPassword": "Nova senha",
       "passwordConfirmation": "Confirmação da senha",
       "title": {
         "change": "Alterar sua senha",
+        "forgotten": "Recuperar sua senha",
         "manage.single": "Gerenciar sua senha",
         "manage.multiple": "Gerenciar as suas senhas",
         "securityAnswer": "Definir sua resposta de segurança"
       },
+      "mobileTitle": {
+        "change": "Alteração de senha",
+        "forgotten": "Recuperação de senha",
+        "manage.single": "Senha",
+        "manage.multiple": "Senhas",
+        "securityAnswer": "Resposta de segurança"
+      },
       "forgotten": {
-        "title": "Recuperar sua senha",
         "preface": "Aqui você pode recuperar sua senha. Preencha a sua identificação de usuário abaixo. Você pode usar um dos seguintes:",
         "principal": "Usuário",
         "captcha": "Digite os caracteres abaixo",
@@ -275,6 +287,7 @@
     "registrationAgreement": "Termo de adesão",
     "pendingAgreements": {
       "title": "Termo de adesão atualizado",
+      "mobileTitle": "Termo de adesão atualizado",
       "message": "O termo de adesão foi atualizado.<br><br>Para continuar você deve concordar com os novos termos.",
       "agree": "Concordo com os seguintes termos de adesão: {agreements}"
     },
@@ -287,6 +300,7 @@
   },
   "dashboard": {
     "quickAccess": "Acesso rápido",
+    "quickAccess.shortcutTemplate": "{shortcut}: {label}",
     "action": {
       "account": "Conta",
       "payUser": "Pagar usuário",
@@ -314,6 +328,7 @@
     }
   },
   "account": {
+    "account": "Conta",
     "number": "Número da conta",
     "transferFilter": "Filtro",
     "minAmount": "A partir do valor",
@@ -333,6 +348,7 @@
     "noAccounts": "Você não tem contas",
     "printTransactions": "Imprimir transações",
     "system": "Conta de sistema",
+    "mobileTitle": "Conta",
     "orderBy": {
       "dateDesc": "Data (mais recente primeiro)",
       "dateAsc": "Data (mais antigo primeiro)",
@@ -363,7 +379,6 @@
     "chargedBackBy": "Estornado por",
     "authorizationComments": "Comentários da autorização",
     "accountBalance": "Saldo de conta",
-    "myAccountBalance": "O saldo da minha conta",
     "installments": "Parcelas",
     "installmentNumber": "Número",
     "occurrences": "Ocorrências",
@@ -440,6 +455,27 @@
       "details.transfer": "Detalhes da transferência",
       "parentTransfer": "Transferência que gerou esta",
       "childTransfers": "Transferências geradas por esta"
+    },
+    "mobileTitle": {
+      "paymentToSystem": "Pagar para sistema",
+      "paymentToSelf": "Pagamento interno",
+      "paymentToUser": "Pagar usuário",
+      "paymentConfirmation": "Confirmação",
+      "pendingPayment": "Pendente de autorização",
+      "processedPayment": "Pagamento efetuado",
+      "authorizations": "Autorizações",
+      "authorizationHistory": "Histórico",
+      "scheduled": "Pagamentos agendados",
+      "details.payment": "Pagamento",
+      "details.scheduled": "Pagamento agendado",
+      "details.recurring": "Pagamento recorrente",
+      "details.request": "Solicitação de pagamento",
+      "details.chargeback": "Estorno",
+      "details.ticket": "Ticket",
+      "details.external": "Pagamento externo",
+      "details.transfer": "Transação",
+      "parentTransfer": "Transação de origem",
+      "childTransfers": "Transações geradas"
     },
     "viewAuthorizations": "Ver autorizações",
     "viewThisTransfer": "Ver esta transferência",
@@ -539,6 +575,25 @@
       "addContact": "Adicionar um novo contato",
       "search": "Diretório de negócios"
     },
+    "mobileTitle": {
+      "myProfile": "Meu perfil",
+      "userProfile": "Perfil do usuário",
+      "editProfile": "Editar perfil",
+      "image": "Imagem do perfil",
+      "images": "Imagens do perfil",
+      "fields": "Campos do perfil",
+      "group": "Grupo",
+      "phones": "Telefones",
+      "addresses": "Endereços",
+      "contactInfos": "Contatos adicionais",
+      "confirmation": "Confirmação",
+      "registration": "Registro",
+      "registration.confirmation": "Confirmação",
+      "registration.done": "Sucesso",
+      "contactList": "Contatos",
+      "addContact": "Novo contato",
+      "search": "Diretório"
+    },
     "group": "Grupo",
     "groupSet": "Conjunto de grupos",
     "group.filter": "Grupos",
@@ -610,6 +665,7 @@
     "enabledSms": "Habilitado para SMS",
     "verify": {
       "title": "Verificar {number} por SMS",
+      "mobileTitle": "Verificação",
       "code": "Código",
       "send": "Enviar",
       "message": "Clique no botão acima para enviar o código de verificação para o seu telefone",
@@ -648,13 +704,19 @@
       "priceDesc": "Maior preço"
     },
     "title": {
-      "search": "Anúncios",
+      "search": "Buscar anúncios",
       "owner": "Anúncios de {name}"
+    },
+    "mobileTitle": {
+      "search": "Anúncios",
+      "owner": "Anúncios",
+      "details": "Anúncio"
     }
   },
   "notification": {
     "message": "Mensagem",
     "title": "Notificações",
+    "mobileTitle": "Notificações",
     "onlyUnread": "Somente Não Lido",
     "actions": {
       "remove": "Remover esta notificação",
@@ -667,10 +729,14 @@
     "ad": "Anúncio",
     "transfer": "Transferência",
     "fileUpload": "Envio de arquivo",
-    "redirecting": "Você está sendo redirecionado..."
+    "redirecting": "Você está sendo redirecionado...",
+    "mobileTitle": {
+      "result": "Resultado"
+    }
   },
   "setting": {
     "title": "Definições",
+    "mobileTitle": "Configurações",
     "theme": "Tema",
     "theme.light": "Claro",
     "theme.dark": "Escuro"

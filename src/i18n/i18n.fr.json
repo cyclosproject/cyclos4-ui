@@ -28,6 +28,7 @@
     "showMoreFilters": "Afficher plus de filtres",
     "lessFilters": "Moins de filtres",
     "showLessFilters": "Afficher moins de filtres",
+    "back": "Back",
     "previous": "Précédent",
     "next": "Suivant",
     "view": "Voir",
@@ -110,7 +111,9 @@
     "results": {
       "withTotal": "Affichage de {first} - {last} de {total} résultats",
       "noTotal": "Affichage de {first} - {last} résultats",
-      "none": "Aucun résultat ne correspond aux critères de recherche"
+      "none": "Aucun résultat ne correspond aux critères de recherche",
+      "nextXxs": "Next",
+      "previousXxs": "Previous"
     },
     "geolocation": {
       "kilometersFrom": "km from",
@@ -192,6 +195,7 @@
   "auth": {
     "login": {
       "title": "Connexion",
+      "mobileTitle": "Login",
       "message": "Vous pouvez vous connecter avec votre identifiant et votre mot de passe.",
       "disconnected": "Vous avez été déconnecté.<br>Veuillez vous identifier à nouveau pour afficher la page demandée.",
       "principal": "Utilisateur",
@@ -216,17 +220,25 @@
       "confirm.otp.active": "Vous pouvez utiliser le mot de passe de confirmation envoyé précédemment ou en demander un nouveau.",
       "confirm.otp.request": "Veuillez demander un mot de passe de confirmation ci-dessous afin de confirmer",
       "otp.sent": "Le mot de passe a été envoyé à {dest}",
+      "otp.receiveBy": "Get by {medium}",
       "oldPassword": "Ancien mot de passe",
       "newPassword": "Nouveau mot de passe",
       "passwordConfirmation": "Confirmer le mot de passe",
       "title": {
         "change": "Modifier votre mot de passe",
+        "forgotten": "Recover your password",
         "manage.single": "Gérer votre mot de passe",
         "manage.multiple": "Gérer vos mots de passe",
         "securityAnswer": "Set your security answer"
       },
+      "mobileTitle": {
+        "change": "Password change",
+        "forgotten": "Password recovery",
+        "manage.single": "Password",
+        "manage.multiple": "Passwords",
+        "securityAnswer": "Security answer"
+      },
       "forgotten": {
-        "title": "Récupérer votre mot de passe",
         "preface": "Ici, vous pouvez récupérer votre mot de passe. Remplissez votre identification d'utilisateur ci-dessous. Vous pouvez utiliser l'un des éléments suivants :",
         "principal": "Utilisateur",
         "captcha": "Tapez les caractères ci-dessous",
@@ -275,6 +287,7 @@
     "registrationAgreement": "Contrat d'inscription",
     "pendingAgreements": {
       "title": "Accord mis à jour",
+      "mobileTitle": "Updated agreement",
       "message": "Le contrat d’enregistrement a été mis à jour. Pour continuer, vous devez accepter les nouveaux termes.",
       "agree": "Je suis d'accord avec les accords d'enregistrement suivants: {agreements}"
     },
@@ -287,13 +300,14 @@
   },
   "dashboard": {
     "quickAccess": "Accès rapide",
+    "quickAccess.shortcutTemplate": "{shortcut}: {label}",
     "action": {
       "account": "Compte",
       "payUser": "Payer l'utilisateur",
       "paySystem": "Payer le système",
       "contacts": "Contacts",
       "directory": "Annuaire",
-      "advertisements": "Annonces",
+      "advertisements": "Marketplace",
       "editProfile": "Editer le profil",
       "password": "Mot de passe",
       "passwords": "Mots de passe",
@@ -314,6 +328,7 @@
     }
   },
   "account": {
+    "account": "Account",
     "number": "Numéro de compte",
     "transferFilter": "Filtre",
     "minAmount": "From amount",
@@ -333,6 +348,7 @@
     "noAccounts": "Vous n'avez pas de compte",
     "printTransactions": "Imprimer les transactions",
     "system": "Compte système",
+    "mobileTitle": "Account",
     "orderBy": {
       "dateDesc": "Date (newest first)",
       "dateAsc": "Date (oldest first)",
@@ -363,7 +379,6 @@
     "chargedBackBy": "Rechargé par",
     "authorizationComments": "Commentaires d'autorisation",
     "accountBalance": "Solde du compte",
-    "myAccountBalance": "Mon Solde",
     "installments": "Versements",
     "installmentNumber": "Numéro",
     "occurrences": "Occurrences",
@@ -440,6 +455,27 @@
       "details.transfer": "Détails du transfert",
       "parentTransfer": "Transfert qui a généré celui-ci",
       "childTransfers": "Transferts générés par celui-ci"
+    },
+    "mobileTitle": {
+      "paymentToSystem": "Pay system",
+      "paymentToSelf": "Pay self",
+      "paymentToUser": "Pay user",
+      "paymentConfirmation": "Confirmation",
+      "pendingPayment": "Pending authorization",
+      "processedPayment": "Payment done",
+      "authorizations": "Authorizations",
+      "authorizationHistory": "History",
+      "scheduled": "Scheduled payments",
+      "details.payment": "Payment",
+      "details.scheduled": "Scheduled payment",
+      "details.recurring": "Recurring payment",
+      "details.request": "Payment request",
+      "details.chargeback": "Chargeback",
+      "details.ticket": "Ticket",
+      "details.external": "External payment",
+      "details.transfer": "Transfer",
+      "parentTransfer": "Originating transfer",
+      "childTransfers": "Originated transfers"
     },
     "viewAuthorizations": "Voir les autorisations",
     "viewThisTransfer": "Voir ce transfert",
@@ -539,6 +575,25 @@
       "addContact": "Ajouter un nouveau contact",
       "search": "Annuaire professionnel"
     },
+    "mobileTitle": {
+      "myProfile": "My profile",
+      "userProfile": "User profile",
+      "editProfile": "Edit profile",
+      "image": "Profile image",
+      "images": "Profile images",
+      "fields": "Profile fields",
+      "group": "Group",
+      "phones": "Phones",
+      "addresses": "Addresses",
+      "contactInfos": "Additional contacts",
+      "confirmation": "Confirmation",
+      "registration": "Registration",
+      "registration.confirmation": "Confirmation",
+      "registration.done": "Success",
+      "contactList": "Contacts",
+      "addContact": "New contact",
+      "search": "Directory"
+    },
     "group": "Groupe",
     "groupSet": "Group set",
     "group.filter": "Groups",
@@ -610,6 +665,7 @@
     "enabledSms": "Activé pour SMS",
     "verify": {
       "title": "Vérifier {number} pour SMS",
+      "mobileTitle": "Verification",
       "code": "Code",
       "send": "Envoyer",
       "message": "Cliquez sur le bouton ci-dessus pour envoyer le code de vérification sur votre téléphone.",
@@ -648,13 +704,19 @@
       "priceDesc": "Les plus chers"
     },
     "title": {
-      "search": "Annonces",
+      "search": "Search advertisements",
       "owner": "Annonces de {name}"
+    },
+    "mobileTitle": {
+      "search": "Advertisements",
+      "owner": "Advertisements",
+      "details": "Advertisement"
     }
   },
   "notification": {
     "message": "Message",
     "title": "Notifications",
+    "mobileTitle": "Notifications",
     "onlyUnread": "Unread only",
     "actions": {
       "remove": "Remove this notification",
@@ -667,10 +729,14 @@
     "ad": "Advertisement",
     "transfer": "Transfer",
     "fileUpload": "File upload",
-    "redirecting": "You are being redirected..."
+    "redirecting": "You are being redirected...",
+    "mobileTitle": {
+      "result": "Result"
+    }
   },
   "setting": {
     "title": "Settings",
+    "mobileTitle": "Settings",
     "theme": "Theme",
     "theme.light": "Light",
     "theme.dark": "Dark"

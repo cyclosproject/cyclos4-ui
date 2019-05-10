@@ -28,6 +28,7 @@
     "showMoreFilters": "Toon meer filters",
     "lessFilters": "Minder filters",
     "showLessFilters": "Minder filters",
+    "back": "Back",
     "previous": "Vorige",
     "next": "Volgende",
     "view": "Bekijk",
@@ -110,7 +111,9 @@
     "results": {
       "withTotal": "Zoekresultaten {first} - {last} van {total}",
       "noTotal": "Het tonen van {first} - {last} resultaten",
-      "none": "Geen resultaten overeenkomen met de zoekcriteria"
+      "none": "Geen resultaten overeenkomen met de zoekcriteria",
+      "nextXxs": "Next",
+      "previousXxs": "Previous"
     },
     "geolocation": {
       "kilometersFrom": "km from",
@@ -192,6 +195,7 @@
   "auth": {
     "login": {
       "title": "Login",
+      "mobileTitle": "Login",
       "message": "U kunt inloggen met uw gebruikersnaam en wachtwoord",
       "disconnected": "U is verbroken.<br>Gelieve in te loggen om te geven de gevraagde pagina.",
       "principal": "Gebruiker",
@@ -216,17 +220,25 @@
       "confirm.otp.active": "U kunt gebruik maken van de eerder verzonden bevestiging wachtwoord of een nieuwe aanvragen",
       "confirm.otp.request": "Gelieve te vragen om een bevestiging wachtwoord hieronder in om te bevestigen",
       "otp.sent": "Het wachtwoord is verstuurd naar {dest}",
+      "otp.receiveBy": "Get by {medium}",
       "oldPassword": "Oud wachtwoord",
       "newPassword": "Nieuw wachtwoord",
       "passwordConfirmation": "Bevestiging van het wachtwoord",
       "title": {
         "change": "Uw wachtwoord wijzigen",
+        "forgotten": "Recover your password",
         "manage.single": "Het beheer van uw wachtwoord",
         "manage.multiple": "Het beheren van uw wachtwoorden",
         "securityAnswer": "Set your security answer"
       },
+      "mobileTitle": {
+        "change": "Password change",
+        "forgotten": "Password recovery",
+        "manage.single": "Password",
+        "manage.multiple": "Passwords",
+        "securityAnswer": "Security answer"
+      },
       "forgotten": {
-        "title": "Het herstellen van uw wachtwoord",
         "preface": "Hier kunt u uw wachtwoord herstellen. Vul uw gebruikersnaam hieronder in. U kunt een van de volgende handelingen uit:",
         "principal": "Gebruiker",
         "captcha": "Type de karakters hieronder",
@@ -275,6 +287,7 @@
     "registrationAgreement": "Registratie akkoord",
     "pendingAgreements": {
       "title": "Bijgewerkt overeenkomst",
+      "mobileTitle": "Updated agreement",
       "message": "De registratie overeenkomst is bijgewerkt.<br><br>om verder te kunnen gaan, moet je akkoord gaan met de nieuwe voorwaarden.",
       "agree": "Ik ben het eens met de volgende registratie overeenkomsten: {agreements}"
     },
@@ -287,13 +300,14 @@
   },
   "dashboard": {
     "quickAccess": "Snelle toegang",
+    "quickAccess.shortcutTemplate": "{shortcut}: {label}",
     "action": {
       "account": "Rekening",
       "payUser": "Betaal",
       "paySystem": "Euro's kopen",
       "contacts": "Contacten",
       "directory": "Bedrijven",
-      "advertisements": "Advertenties",
+      "advertisements": "Marketplace",
       "editProfile": "Profiel bewerken",
       "password": "Wachtwoord",
       "passwords": "Wachtwoorden",
@@ -314,6 +328,7 @@
     }
   },
   "account": {
+    "account": "Account",
     "number": "Rekeningnummer",
     "transferFilter": "Filter",
     "minAmount": "Van het bedrag",
@@ -333,6 +348,7 @@
     "noAccounts": "Je hebt geen accounts",
     "printTransactions": "Print transacties",
     "system": "Systeemrekening",
+    "mobileTitle": "Account",
     "orderBy": {
       "dateDesc": "Date (newest first)",
       "dateAsc": "Date (oldest first)",
@@ -363,7 +379,6 @@
     "chargedBackBy": "Terug in rekening gebracht door",
     "authorizationComments": "Toestemming reacties",
     "accountBalance": "Rekening saldo",
-    "myAccountBalance": "Mijn account saldo",
     "installments": "Termijnbetalingen",
     "installmentNumber": "Nummer",
     "occurrences": "Ocurrences",
@@ -440,6 +455,27 @@
       "details.transfer": "Betalingsoverzicht",
       "parentTransfer": "Transfer die deze",
       "childTransfers": "Transfers gegenereerd door deze"
+    },
+    "mobileTitle": {
+      "paymentToSystem": "Pay system",
+      "paymentToSelf": "Pay self",
+      "paymentToUser": "Pay user",
+      "paymentConfirmation": "Confirmation",
+      "pendingPayment": "Pending authorization",
+      "processedPayment": "Payment done",
+      "authorizations": "Authorizations",
+      "authorizationHistory": "History",
+      "scheduled": "Scheduled payments",
+      "details.payment": "Payment",
+      "details.scheduled": "Scheduled payment",
+      "details.recurring": "Recurring payment",
+      "details.request": "Payment request",
+      "details.chargeback": "Chargeback",
+      "details.ticket": "Ticket",
+      "details.external": "External payment",
+      "details.transfer": "Transfer",
+      "parentTransfer": "Originating transfer",
+      "childTransfers": "Originated transfers"
     },
     "viewAuthorizations": "Bekijk autorisaties",
     "viewThisTransfer": "Bekijk deze overdracht",
@@ -539,6 +575,25 @@
       "addContact": "Een nieuw contact toevoegen",
       "search": "Business directory"
     },
+    "mobileTitle": {
+      "myProfile": "My profile",
+      "userProfile": "User profile",
+      "editProfile": "Edit profile",
+      "image": "Profile image",
+      "images": "Profile images",
+      "fields": "Profile fields",
+      "group": "Group",
+      "phones": "Phones",
+      "addresses": "Addresses",
+      "contactInfos": "Additional contacts",
+      "confirmation": "Confirmation",
+      "registration": "Registration",
+      "registration.confirmation": "Confirmation",
+      "registration.done": "Success",
+      "contactList": "Contacts",
+      "addContact": "New contact",
+      "search": "Directory"
+    },
     "group": "Groep",
     "groupSet": "Group set",
     "group.filter": "Groups",
@@ -610,6 +665,7 @@
     "enabledSms": "SMS geactiveerd",
     "verify": {
       "title": "Controleer {number} voor SMS",
+      "mobileTitle": "Verification",
       "code": "Code",
       "send": "Sturen",
       "message": "Klik op de knop hierboven om het verzenden van verificatie-code naar uw telefoon",
@@ -648,13 +704,19 @@
       "priceDesc": "Hoogste prijs"
     },
     "title": {
-      "search": "Advertenties",
+      "search": "Search advertisements",
       "owner": "Advertenties van {name}"
+    },
+    "mobileTitle": {
+      "search": "Advertisements",
+      "owner": "Advertisements",
+      "details": "Advertisement"
     }
   },
   "notification": {
     "message": "Message",
     "title": "Notifications",
+    "mobileTitle": "Notifications",
     "onlyUnread": "Unread only",
     "actions": {
       "remove": "Remove this notification",
@@ -667,10 +729,14 @@
     "ad": "Advertisement",
     "transfer": "Transfer",
     "fileUpload": "File upload",
-    "redirecting": "You are being redirected..."
+    "redirecting": "You are being redirected...",
+    "mobileTitle": {
+      "result": "Result"
+    }
   },
   "setting": {
     "title": "Settings",
+    "mobileTitle": "Settings",
     "theme": "Theme",
     "theme.light": "Light",
     "theme.dark": "Dark"

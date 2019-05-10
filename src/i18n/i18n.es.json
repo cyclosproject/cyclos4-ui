@@ -28,6 +28,7 @@
     "showMoreFilters": "Mostrar más filtros",
     "lessFilters": "Menos filtros",
     "showLessFilters": "Mostrar menos filtros",
+    "back": "Back",
     "previous": "Anterior",
     "next": "Siguiente",
     "view": "Ver",
@@ -110,7 +111,9 @@
     "results": {
       "withTotal": "Mostrando {first} - {last} de {total} resultados",
       "noTotal": "Mostrando {first} - {last} resultados",
-      "none": "No existen resultados para el criterio de búsqueda"
+      "none": "No existen resultados para el criterio de búsqueda",
+      "nextXxs": "Next",
+      "previousXxs": "Previous"
     },
     "geolocation": {
       "kilometersFrom": "km desde",
@@ -192,6 +195,7 @@
   "auth": {
     "login": {
       "title": "Acceso",
+      "mobileTitle": "Login",
       "message": "Para acceder al sistema, utilice su nombre de usuario y contraseña",
       "disconnected": "Usted ha sido desconectado. \nPor favor, acceda nuevamente para ver la página solicitada.",
       "principal": "Usuario",
@@ -216,17 +220,25 @@
       "confirm.otp.active": "Puede utilizar la contraseña de confirmación que le fue enviada previamente o solicitar una nueva",
       "confirm.otp.request": "Por favor, solicite una contraseña de confirmación a continuación, para confirmar",
       "otp.sent": "La contraseña fue enviada a su {dest}",
+      "otp.receiveBy": "Get by {medium}",
       "oldPassword": "Contraseña actual",
       "newPassword": "Nueva contraseña",
       "passwordConfirmation": "Confirmación de contraseña",
       "title": {
         "change": "Cambiar su contraseña",
+        "forgotten": "Recover your password",
         "manage.single": "Administrar su contraseña",
         "manage.multiple": "Administrar sus contraseñas",
         "securityAnswer": "Set your security answer"
       },
+      "mobileTitle": {
+        "change": "Password change",
+        "forgotten": "Password recovery",
+        "manage.single": "Password",
+        "manage.multiple": "Passwords",
+        "securityAnswer": "Security answer"
+      },
       "forgotten": {
-        "title": "Recuperar su contraseña",
         "preface": "Aquí puede recuperar su contraseña.\nComplete su identificación de usuario a continuación, puede utilizar uno de los siguientes valores:",
         "principal": "Usuario",
         "captcha": "Escriba los caracteres a continuación",
@@ -275,6 +287,7 @@
     "registrationAgreement": "Términos de acuerdo",
     "pendingAgreements": {
       "title": "Terminos de acuerdo actualizados",
+      "mobileTitle": "Updated agreement",
       "message": "Los términos de acuerdo ha sido actualizado.\n\nUsted debe aceptar los nuevos términos de acuerdo para poder continuar.",
       "agree": "He aceptado los siguientes términos de acuerdo: {agreements}"
     },
@@ -287,13 +300,14 @@
   },
   "dashboard": {
     "quickAccess": "Acceso rápido",
+    "quickAccess.shortcutTemplate": "{shortcut}: {label}",
     "action": {
       "account": "Cuentas",
       "payUser": "Pago a usuario",
       "paySystem": "Pago a sistema",
       "contacts": "Contactos",
       "directory": "Anunciantes",
-      "advertisements": "Anuncios",
+      "advertisements": "Marketplace",
       "editProfile": "Editar perfil",
       "password": "Contraseña",
       "passwords": "Contraseñas",
@@ -314,6 +328,7 @@
     }
   },
   "account": {
+    "account": "Account",
     "number": "Número de cuenta",
     "transferFilter": "Filtro",
     "minAmount": "Desde monto",
@@ -333,6 +348,7 @@
     "noAccounts": "Usted no posee cuentas",
     "printTransactions": "Imprimir transacciones",
     "system": "Cuenta de sistema",
+    "mobileTitle": "Account",
     "orderBy": {
       "dateDesc": "Date (newest first)",
       "dateAsc": "Date (oldest first)",
@@ -363,7 +379,6 @@
     "chargedBackBy": "Devuelto por",
     "authorizationComments": "Comentarios",
     "accountBalance": "Saldo",
-    "myAccountBalance": "Mi saldo",
     "installments": "Cuotas",
     "installmentNumber": "Número",
     "occurrences": "Ocurrencias",
@@ -440,6 +455,27 @@
       "details.transfer": "Detalle de la transferencia",
       "parentTransfer": "Transferencia principal",
       "childTransfers": "Transferencias generadas"
+    },
+    "mobileTitle": {
+      "paymentToSystem": "Pay system",
+      "paymentToSelf": "Pay self",
+      "paymentToUser": "Pay user",
+      "paymentConfirmation": "Confirmation",
+      "pendingPayment": "Pending authorization",
+      "processedPayment": "Payment done",
+      "authorizations": "Authorizations",
+      "authorizationHistory": "History",
+      "scheduled": "Scheduled payments",
+      "details.payment": "Payment",
+      "details.scheduled": "Scheduled payment",
+      "details.recurring": "Recurring payment",
+      "details.request": "Payment request",
+      "details.chargeback": "Chargeback",
+      "details.ticket": "Ticket",
+      "details.external": "External payment",
+      "details.transfer": "Transfer",
+      "parentTransfer": "Originating transfer",
+      "childTransfers": "Originated transfers"
     },
     "viewAuthorizations": "Ver autorizaciones",
     "viewThisTransfer": "Ver transferencia",
@@ -539,6 +575,25 @@
       "addContact": "Agregar un contacto",
       "search": "Directorio de anunciantes"
     },
+    "mobileTitle": {
+      "myProfile": "My profile",
+      "userProfile": "User profile",
+      "editProfile": "Edit profile",
+      "image": "Profile image",
+      "images": "Profile images",
+      "fields": "Profile fields",
+      "group": "Group",
+      "phones": "Phones",
+      "addresses": "Addresses",
+      "contactInfos": "Additional contacts",
+      "confirmation": "Confirmation",
+      "registration": "Registration",
+      "registration.confirmation": "Confirmation",
+      "registration.done": "Success",
+      "contactList": "Contacts",
+      "addContact": "New contact",
+      "search": "Directory"
+    },
     "group": "Grupo",
     "groupSet": "Group set",
     "group.filter": "Groups",
@@ -610,6 +665,7 @@
     "enabledSms": "Habilitado para SMS",
     "verify": {
       "title": "Verificar {number} para SMS",
+      "mobileTitle": "Verification",
       "code": "Código de verificación",
       "send": "Enviar",
       "message": "Haga click en el botón de arriba para enviar el código de verificación a tu teléfono",
@@ -648,13 +704,19 @@
       "priceDesc": "Precio superior"
     },
     "title": {
-      "search": "Anuncios",
+      "search": "Search advertisements",
       "owner": "Anuncios de {name}"
+    },
+    "mobileTitle": {
+      "search": "Advertisements",
+      "owner": "Advertisements",
+      "details": "Advertisement"
     }
   },
   "notification": {
     "message": "Mensaje",
     "title": "Notificaciones",
+    "mobileTitle": "Notifications",
     "onlyUnread": "Solo los pendientes",
     "actions": {
       "remove": "Eliminar esta notificación",
@@ -667,10 +729,14 @@
     "ad": "Advertisement",
     "transfer": "Transfer",
     "fileUpload": "Cargar archivo",
-    "redirecting": "Esta siendo redirigido..."
+    "redirecting": "Esta siendo redirigido...",
+    "mobileTitle": {
+      "result": "Result"
+    }
   },
   "setting": {
     "title": "Settings",
+    "mobileTitle": "Settings",
     "theme": "Theme",
     "theme.light": "Light",
     "theme.dark": "Dark"
