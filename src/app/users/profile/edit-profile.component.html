@@ -407,23 +407,10 @@
         <hr *ngIf="!last">
       </ng-container>
     </ng-container>
-    <ng-container *ngIf="data.confirmationPasswordInput">
-      <h2 class="mt-5 mb-2">
-        {{ i18n.user.title.confirmation}}
-      </h2>
-      <form [formGroup]="user">
-        <confirmation-password
-          [passwordInput]="data.confirmationPasswordInput"
-          [createDeviceConfirmation]="createDeviceConfirmation"
-          (confirmationModeChanged)="confirmationMode$.next($event)"
-          (confirmed)="save($event)" [formControl]="confirmationPassword">
-        </confirmation-password>
-      </form>
-    </ng-container>
-    <actions
-      *ngIf="canConfirm && (confirmationMode$ | async) !== ConfirmationMode.Device">
+
+    <actions>
       <button class="btn btn-primary btn-main"
-        [disabled]="requesting$ | async" (click)="save()">
+        [disabled]="requesting$ | async" (click)="saveOrConfirm()">
         {{ i18n.general.save }}
       </button>
     </actions>

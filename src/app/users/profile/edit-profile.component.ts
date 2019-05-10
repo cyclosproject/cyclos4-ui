@@ -230,6 +230,23 @@ export class EditProfileComponent
     return max == null || max <= 0 ? 'disabled' : max === 1 ? 'single' : 'multiple';
   }
 
+  saveOrConfirm() {
+    if (this.data.confirmationPasswordInput) {
+      // A confirmation is required
+      this.notification.confirm({
+        title: this.i18n.user.title.confirmation,
+        passwordInput: this.data.confirmationPasswordInput,
+        createDeviceConfirmation: this.createDeviceConfirmation,
+        callback: params => {
+          this.save(params.confirmationPassword);
+        }
+      });
+    } else {
+      // Save directly
+      this.save();
+    }
+  }
+
   save(confirmationPassword?: string) {
     const fullForm = new FormGroup({
       user: this.user,

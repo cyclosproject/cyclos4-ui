@@ -24,6 +24,10 @@ alert .close {
   }
 }
 
+.modal-form {
+  max-width: 460px;
+}
+
 .toast {
   border-color: $push-notification-border-color;
 
@@ -53,11 +57,6 @@ alert .close {
     min-width: 20rem;
   }
 }
-$toast-color:                       null !default;
-$toast-background-color:            rgba($white, .85) !default;
-$toast-border-width:                1px !default;
-$toast-border-color:                rgba(0, 0, 0, .1) !default;
-
 
 .dropdown-toggle::after {
   vertical-align: 0.15em;
