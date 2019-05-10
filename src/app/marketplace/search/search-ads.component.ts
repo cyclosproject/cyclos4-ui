@@ -98,7 +98,7 @@ export class SearchAdsComponent
         if (isMap !== wasMap) {
           // Should update again, as the `addressResult` will change
           this.results = null;
-          this.resetPage();
+          this.update({ page: 0 });
         }
       }
     }
