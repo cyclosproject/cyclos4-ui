@@ -25,7 +25,7 @@ export class AddressDetailsComponent extends BaseComponent {
   @Input() elementClass: string;
 
   get classNames() {
-    return this.elementClass ? [this.elementClass, 'mb-1'] : 'mb-1';
+    return this.elementClass ? [this.elementClass] : 'mb-1';
   }
 
   get country(): string {
