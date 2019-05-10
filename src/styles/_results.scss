@@ -69,13 +69,14 @@
 }
 
 .map-info-window {
+  // Map info window always use the light style
   display: block;
-  color: $card-color;
-  background-color: $card-bg;
+  color: $card-color !important;
+  background-color: $card-bg !important;
 
-  &:hover, &:focus {
+  &:hover, &:focus, &:visited {
     text-decoration: none;
-    color: $card-color;
+    color: $card-color !important;
     outline: none;
     box-shadow: none;
   }
@@ -331,14 +332,6 @@ body.dark {
           color: $mobile-results-focus-icon-color-dark;
         }
       }
-    }
-  }
-
-  .map-info-window {
-    color: $card-color-dark;
-    background-color: $card-bg-dark;
-    &:hover, &:focus {
-      color: $card-color-dark;
     }
   }
 
