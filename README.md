@@ -636,4 +636,5 @@ The KaiOS application doesn't run in a "browser". Hence, the navigation keys nee
 - Soft right: Runs the action which is represented by an icon in the top right. When not logged-in yet, will go to the login page. When already logged in, will logout if on the dashboard page, or go back to the previous page. There could also have multiple actions. In this case, the icon is &vellip; and activating it will show a menu;
 - Vertical arrows: Focus the next / previous field or anchor. On guest home and content pages scroll the page;
 - Horizontal arrows: On the quick access navigates through the icons. On search results skips to the next / previous page. On guest home / content pages focus the next / previous anchor;
-- Ok: Activates the focused element.
+- Ok: Activates the focused element;
+- Numeric keys: On the dashboard will activate the corresponding quick action item.
