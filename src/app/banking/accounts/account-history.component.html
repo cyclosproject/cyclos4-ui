@@ -111,8 +111,9 @@
       </form>
 
       <!-- Account status -->
-      <account-status-view [account]="account"
-        *ngIf="status$ | async as account"
+      <account-status-view
+        *ngIf="(status$ | async) && ((layout.gtxxs$ | async) || (results.page === 0))"
+        [account]="status$.value"
         [mode]="(moreFilters$ | async) ? 'period' : 'current'"
         [showAccount]="(layout.ltsm$ | async) && multipleAccounts">
       </account-status-view>
