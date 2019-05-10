@@ -458,8 +458,10 @@ export class LayoutService {
       document.body.classList.remove('backdrop-visible');
 
       const doRemove = () => {
-        this.backdrop.parentElement.removeChild(this.backdrop);
-        this.backdrop = null;
+        if (this.backdrop != null) {
+          this.backdrop.parentElement.removeChild(this.backdrop);
+          this.backdrop = null;
+        }
       };
       if (awaitAnimation) {
         setTimeout(doRemove, 300);

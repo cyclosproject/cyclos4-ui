@@ -8,7 +8,7 @@ import { LoginState } from 'app/core/login-state';
 import { NextRequestState } from 'app/core/next-request-state';
 import { empty, isSameOrigin } from 'app/shared/helper';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap, first } from 'rxjs/operators';
 import { Configuration } from 'app/configuration';
 import { PushNotificationsService } from 'app/core/push-notifications.service';
 import { NotificationService } from 'app/core/notification.service';
@@ -57,15 +57,26 @@ export class LoginService {
       }
       this.clear();
       this.nextRequestState.setSessionToken(null);
-      // Also ask the user if he/she wants to login again
-      this.notification.confirm({
-        title: this.i18n.general.sessionExpired.title,
-        message: this.i18n.general.sessionExpired.message,
-        confirmLabel: this.i18n.general.sessionExpired.loginAgain,
-        callback: () => {
-          this.goToLoginPage(this.router.url);
-        }
-      });
+
+      // Also ask the user if they want to login again
+      if (this.i18n.initialized$.value) {
+        // The translations are initialized, confirm whether to login again
+        this.loggedOutConfirmation();
+      } else {
+        // As soon as translations are initialized, confirm whether to login again
+        this.i18n.initialized$.pipe(first()).subscribe(() => this.loggedOutConfirmation);
+      }
+    });
+  }
+
+  private loggedOutConfirmation() {
+    this.notification.confirm({
+      title: this.i18n.general.sessionExpired.title,
+      message: this.i18n.general.sessionExpired.message,
+      confirmLabel: this.i18n.general.sessionExpired.loginAgain,
+      callback: () => {
+        this.goToLoginPage(this.router.url);
+      }
     });
   }
 
