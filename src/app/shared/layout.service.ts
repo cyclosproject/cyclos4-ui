@@ -22,9 +22,9 @@ const ColorVariables = [
 ];
 
 /*
- * Attention! If modified, adjust the `$grid-breakpoints` variable in `_definieions.scss` as well.
+ * Attention! If modified, adjust the `$grid-breakpoints` variable in `_definitions.scss` as well.
  */
-const xs = 346;
+const xs = 316;
 const sm = 576;
 const md = 768;
 const lg = 992;

@@ -18,10 +18,10 @@ $font-weight-bold: 500 !default;
 $enable-shadows: true !default;
 
 // Bootstrap grid system breakpoints. Basically we add xxs.
-// Attention! If modified, adjust the `BREAKPOINTS` in `layout.service.ts` as well.
+// Attention! If modified, adjust the corresponding consts in `layout.service.ts` as well.
 $grid-breakpoints: (
   xxs: 0,
-  xs: 346px,
+  xs: 316px,
   sm: 576px,
   md: 768px,
   lg: 992px,
