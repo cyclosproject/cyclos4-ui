@@ -45,6 +45,8 @@ a.nav-item {
 }
 a.nav-item:last-child {
   border-bottom: none;
+  border-bottom-left-radius: $card-border-radius;
+  border-bottom-right-radius: $card-border-radius;
 }
 a.nav-item:hover {
   text-decoration: none;
