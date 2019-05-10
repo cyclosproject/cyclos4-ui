@@ -220,6 +220,7 @@
       "confirm.otp.active": "Puede utilizar la contraseña de confirmación que le fue enviada previamente o solicitar una nueva",
       "confirm.otp.request": "Por favor, solicite una contraseña de confirmación a continuación, para confirmar",
       "otp.sent": "La contraseña fue enviada a su {dest}",
+      "otp.receiveBy": "Get by {medium}",
       "oldPassword": "Contraseña actual",
       "newPassword": "Nueva contraseña",
       "passwordConfirmation": "Confirmación de contraseña",
