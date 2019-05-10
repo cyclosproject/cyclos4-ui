@@ -27,9 +27,13 @@ nav {
       line-height: 1em;
       position: relative;
     }
-    a, a:hover {
+    a, a:hover, a:focus, a:active {
       color: $top-bar-color;
       text-decoration: none;
+      box-shadow: none;
+    }
+    a:focus:not(:active) {
+      opacity: 0.7;
     }
   }
   .navbar-container {

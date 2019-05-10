@@ -64,10 +64,11 @@ nav.full-width {
       color: $menu-bar-inactive-icon-color;
     }
   }
-  a:hover {
+  a:hover, a:focus {
     color: $menu-bar-hover-color;
     background-color: $menu-bar-hover-bg;
     text-decoration: none;
+    box-shadow: none;
   }
   a.active {
     color: $menu-bar-active-color;

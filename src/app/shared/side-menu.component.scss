@@ -55,7 +55,7 @@ a.nav-item:not(.active) {
   icon {
     color: $side-menu-inactive-icon-color;
   }
-  &:hover {
+  &:hover, &:focus {
     color: $side-menu-inactive-hover-color;
     background-color: $side-menu-inactive-hover-bg;
   }
@@ -63,7 +63,7 @@ a.nav-item:not(.active) {
 a.nav-item.active {
   color: $side-menu-active-color;
   background-color: $side-menu-active-bg;
-  &:hover {
+  &:hover, &:focus {
     background-color: $side-menu-active-hover-bg;
   }
   icon {
@@ -92,7 +92,7 @@ body.dark :host ::ng-deep {
     icon {
       color: $side-menu-inactive-icon-color-dark;
     }
-    &:hover {
+    &:hover, &:focus {
       color: $side-menu-inactive-hover-color-dark;
       background-color: $side-menu-inactive-hover-bg-dark;
     }
@@ -100,7 +100,7 @@ body.dark :host ::ng-deep {
   a.nav-item.active {
     color: $side-menu-active-color-dark;
     background-color: $side-menu-active-bg-dark;
-    &:hover {
+    &:hover, &:focus {
       background-color: $side-menu-active-hover-bg-dark;
     }
     icon {
