@@ -50,7 +50,7 @@
 
 <ng-template #regular>
   <page-content *ngIf="data && !runDirectly && !(result$ | async)"
-    [heading]="data.name" [mobileHeading]="data.label">
+    [heading]="data.name" [mobileHeading]="data.label" last>
     <alert type="info" *ngIf="data.informationText">
       <div [innerHTML]="data.informationText | trust"></div>
     </alert>
@@ -69,7 +69,7 @@
   <page-content *ngIf="isContent && (result$ | async)"
     [heading]="result.title || data.name"
     [mobileHeading]="i18n.operation.mobileTitle.result"
-    [headingActions]="headingActions$ | async">
+    [headingActions]="headingActions$ | async" last>
 
     <!-- Show the context of the operation if running directly. Otherwise, this data was already presented. -->
     <ng-container *ngIf="runDirectly">

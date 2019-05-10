@@ -3,6 +3,7 @@ import { NotificationType } from 'app/shared/notification-type';
 import { Enter, Escape, ShortcutService } from 'app/shared/shortcut.service';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
+import { LayoutService } from 'app/shared/layout.service';
 
 /**
  * Shows a notification message. May be in a popup or directly
@@ -26,6 +27,7 @@ export class NotificationComponent implements OnInit, OnDestroy {
 
   constructor(
     @Optional() public modalRef: BsModalRef,
+    public layout: LayoutService,
     private shortcut: ShortcutService) {
   }
 

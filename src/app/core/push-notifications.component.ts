@@ -7,6 +7,7 @@ import { NotificationService } from 'app/core/notification.service';
 import { PushNotificationProvider } from 'app/core/push-notification-provider';
 import { PushNotificationComponent } from 'app/core/push-notification.component';
 import { first } from 'rxjs/operators';
+import { LayoutService } from 'app/shared/layout.service';
 
 /**
  * Shows dismissable push notifications
@@ -21,9 +22,12 @@ export class PushNotificationsComponent implements OnInit, PushNotificationProvi
 
   @ViewChild('template', { read: ViewContainerRef }) template: ViewContainerRef;
 
+  last: PushNotificationComponent;
+
   constructor(
     private notification: NotificationService,
-    private componentFactoryResolver: ComponentFactoryResolver
+    private componentFactoryResolver: ComponentFactoryResolver,
+    private layout: LayoutService
   ) {
   }
 
@@ -32,11 +36,20 @@ export class PushNotificationsComponent implements OnInit, PushNotificationProvi
   }
 
   show(notification: Notification) {
+    if (this.layout.xxs && this.last) {
+      this.last.close();
+    }
     const factory = this.componentFactoryResolver.resolveComponentFactory(PushNotificationComponent);
     const componentRef = this.template.createComponent(factory) as ComponentRef<PushNotificationComponent>;
     const pushNotification = componentRef.instance;
     pushNotification.notification = notification;
-    pushNotification.closed.pipe(first()).subscribe(() => componentRef.destroy());
+    pushNotification.closed.pipe(first()).subscribe(() => {
+      componentRef.destroy();
+      if (this.last === pushNotification) {
+        this.last = null;
+      }
+    });
+    this.last = pushNotification;
   }
 
 }

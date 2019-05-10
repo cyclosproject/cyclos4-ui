@@ -1,4 +1,6 @@
-<alert [type]="alertType" [dismissible]="allowClose" (onClose)="modalRef.hide()">
+<alert [type]="alertType"
+  [dismissible]="allowClose && (layout.gtxxs$ | async)"
+  (onClose)="modalRef.hide()">
   <div class="d-flex flex-column flex-xs-row align-items-center">
     <icon size="2rem" [icon]="icon"></icon>
     <div class="notification-message" *ngIf="message; else renderContent"

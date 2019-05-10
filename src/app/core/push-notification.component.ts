@@ -7,6 +7,7 @@ import { I18n } from 'app/i18n/i18n';
 import { ApiHelper } from 'app/shared/api-helper';
 import { ActiveMenu } from 'app/shared/menu';
 import { first } from 'rxjs/operators';
+import { LayoutService } from 'app/shared/layout.service';
 
 const TimeoutMillis = 6000;
 
@@ -45,6 +46,7 @@ export class PushNotificationComponent {
 
   constructor(
     public i18n: I18n,
+    public layout: LayoutService,
     private notificationsService: NotificationsService,
     private menuService: MenuService,
     private errorHandler: ErrorHandlerService,
@@ -69,6 +71,10 @@ export class PushNotificationComponent {
     }
 
     this.markAsReadAndClose();
+  }
+
+  close() {
+    this.closed.emit();
   }
 
   private markAsReadAndClose() {

@@ -8,7 +8,8 @@
         {{ notification.subject }}
       </maybe-link>
     </div>
-    <button type="button" class="ml-2 mb-1 close" (click)="closed.emit()"
+    <button *ngIf="layout.gtxxs$ | async" type="button"
+      class="ml-2 mb-1 close" (click)="closed.emit()"
       [attr.aria-label]="i18n.general.close">
       <span aria-hidden="true">&times;</span>
     </button>

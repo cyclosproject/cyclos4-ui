@@ -10,6 +10,7 @@ import { ActionWithIcon } from 'app/shared/action';
 import { BaseControlComponent } from 'app/shared/base-control.component';
 import { truthyAttr } from 'app/shared/helper';
 import { chunk } from 'lodash';
+import { LayoutService } from 'app/shared/layout.service';
 
 /**
  * Component used to display a password input
@@ -60,7 +61,8 @@ export class PasswordInputComponent
     injector: Injector,
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
     private authService: AuthService,
-    private notificationService: NotificationService) {
+    private notificationService: NotificationService,
+    public layout: LayoutService) {
     super(injector, controlContainer);
   }
 
