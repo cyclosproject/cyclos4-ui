@@ -1,17 +1,26 @@
-<page-content [heading]="i18n.dashboard.quickAccess" mode="tight" hideBack
-  [ngStyle]="{minHeight: minHeight}" [last]="last">
+<page-content [heading]="i18n.dashboard.quickAccess" hideBack [last]="last"
+  [mode]="(layout.xxs$ | async) ? 'fullHeightTight' : 'tight'"
+  [ngStyle]="{minHeight: minHeight}">
   <div class="row no-gutters flex-grow-1 quick-access-container">
     <ng-container *ngFor="let action of actions">
       <div
         *ngIf="action.entry && layout.visible(action.breakpoints, layout.breakpointChanges$ | async)"
-        class="d-flex col-6 col-sm-4 justify-content-center align-items-center p-1">
+        class="col-6 col-sm-4 justify-content-center align-items-center p-1">
         <a [href]="action.entry.url" class="quick-access-item"
           (click)="navigate(action, $event)">
           <div class="quick-access-icon">
             <icon [icon]="action.icon" size="2.2rem"></icon>
           </div>
           <div class="quick-access-text">
-            {{ action.label }}
+            <ng-container *ngIf="shortcutKey(action); else plainLabel">
+              {{ i18n.dashboard.quickAccessShortcutTemplate({
+                shortcut: shortcutKey(action),
+                label: action.label
+              }) }}
+            </ng-container>
+            <ng-template #plainLabel>
+              {{ action.label }}
+            </ng-template>
           </div>
         </a>
       </div>

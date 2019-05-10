@@ -45,7 +45,9 @@ export class SearchAdsComponent
 
   ngOnInit() {
     super.ngOnInit();
-    this.allowedResultTypes = [ResultType.CATEGORIES, ResultType.TILES, ResultType.LIST, ResultType.MAP];
+    this.allowedResultTypes = this.layout.xxs
+      ? [ResultType.CATEGORIES, ResultType.LIST]
+      : [ResultType.CATEGORIES, ResultType.TILES, ResultType.LIST, ResultType.MAP];
     this.stateManager.cache('data', this.marketplaceService.getAdDataForSearch({}))
       .subscribe(data => {
         const defaultQuery = data.query || {};

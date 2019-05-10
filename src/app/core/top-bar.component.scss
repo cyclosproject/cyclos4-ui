@@ -200,4 +200,26 @@ body.dark :host ::ng-deep {
     }
   }
 
+  .heading-action {
+    color: $top-bar-color-dark;
+  }
+  .heading-actions-menu {
+    color: $top-bar-color-dark;
+    background-color: $top-bar-bg-dark;
+    border-color: $top-bar-item-border-color-dark !important;
+  }
+  .heading-action-option {
+    background-color: $top-bar-bg-dark;
+    color: $top-bar-color-dark;
+    icon {
+      color: $top-bar-color-dark;
+    }
+    &:hover, &:focus {
+      background-color: $top-bar-sub-item-hover-bg-dark;
+      color: $top-bar-sub-item-hover-color-dark;
+      icon {
+        color: $top-bar-sub-item-hover-icon-color-dark;
+      }
+    }
+  }
 }

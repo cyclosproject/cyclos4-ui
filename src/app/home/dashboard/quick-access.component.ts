@@ -150,4 +150,13 @@ export class QuickAccessComponent extends BaseDashboardComponent implements OnIn
     }
   }
 
+  shortcutKey(action: QuickAccessAction): string {
+    if (this.layout.xxs) {
+      const index = this.actions.indexOf(action);
+      if (index >= 0 && index < 9) {
+        return String(index + 1);
+      }
+    }
+  }
+
 }

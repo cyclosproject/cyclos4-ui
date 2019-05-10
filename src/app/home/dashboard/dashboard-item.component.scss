@@ -3,7 +3,6 @@
 :host {
   display: block;
   width: 100%;
-  margin-bottom: $layout-spacer;
   break-inside: avoid;
   margin-left: auto;
   margin-right: auto;
@@ -16,6 +15,7 @@
 
 @include media-breakpoint-up(md) {
   :host {
+    margin-bottom: $layout-spacer;
     @include make-container-max-widths();
   }
 }

@@ -97,7 +97,7 @@
   }
 }
 
-.page-content.mode-table ::ng-deep table.table {
+:host ::ng-deep .page-content.mode-table table.table {
   margin-bottom: 0;
 }
 
@@ -171,9 +171,8 @@
 @include media-breakpoint-up(sm) {
   .page-content:not(.last) {
     padding-bottom: 0;
-    border-bottom: none;
   }
-  
+
   .page-content-body {
     padding: $card-spacer-x;
   }
@@ -328,15 +327,28 @@
   }
 }
 
-.xxs :host ::ng-deep .heading-actions.show .heading-actions-menu {
-  position: fixed !important;
-  left: 0 !important;
-  top: calc(#{$top-bar-height-xxs + $title-height-xxs} - 1px) !important;
-  width: 100% !important;
+.xxs :host ::ng-deep {
+ .heading-actions.show .heading-actions-menu {
+    position: fixed !important;
+    left: 0 !important;
+    top: calc(#{$top-bar-height-xxs + $title-height-xxs} - 1px) !important;
+    width: 100% !important;
+  }
+  .page-content.mode-table .page-content-body {
+    margin-top: 0;
+  }
+}
+
+.lt-sm :host .page-content {
+  border-radius: 0;
 }
 
 // Colors for dark scheme
 body.dark :host ::ng-deep {
+  .page-content {
+    border-color: $border-color-dark;
+  }
+
   .content-title {
     border-color: $border-color-dark;
     background-color: $title-bg-dark;
