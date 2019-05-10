@@ -240,6 +240,10 @@ rootUrl = https://account.example.com
 
 There are basically 2 areas where the layout can be customized: modifying the style (CSS) and modifying the configuration.
 
+### Change the application logo
+
+The application logo is served from `src/images/logo.png`. Feel free to replace this file with the one that fits your project.
+
 ### Customizing the theme (style)
 
 Users have the option to use a light or a dark theme. This can be changed in the settings menu.
@@ -579,3 +583,49 @@ export function setup() {
 ```
 
 In the example, when the user session expires, for example, when they are in the `/banking/payment` page, the Cyclos frontend will redirect the user to `https://www.mysystem.com/login?page=%2Fbanking%2Fpayment` (which is the URI-encoded value). As such, the external page should present the login form and, after logged-in, the user should be sent back to the frontend on that page, for example, `https://account.mysystem.com/banking/payment?sessionToken=ABCDEFGH123456`. Also, because `redirectGuests` is set, the frontend will not even allow users browsing without being logged-in.
+
+## Deploying to KaiOS
+
+[KaiOS](https://www.kaiostech.com/) is an emerging mobile operating system for "smart feature phones". These devices have 3G/4G, Wi-Fi, camera, but no touch screen. They also have a small screen, usually 240x320px.
+
+A KaiOS application is just a web page that also has a manifest, that is, a descriptor for that application. The manifest is a file named `manifest.webapp` that needs to be served from the same host where the front-end application is. You can create one based on the following template:
+
+```json
+{
+  "version": "1.0.0",
+  "name": "Cyclos",
+  "description": "Cyclos banking software",
+  "launch_path": "/",
+  "icons": {
+    "56": "/images/logo_56.png",
+    "112": "/images/logo_112.png",
+    "128": "/images/logo_128.png"
+  },
+  "developer": {
+    "name": "STRO - Social Trade Organisation",
+    "url": "https://www.socialtrade.org"
+  },
+  "installs_allowed_from": [
+    "*"
+  ],
+  "orientation": [
+    "landscape-primary"
+  ]
+}
+```
+
+If you're serving the application in a subpath, adjust the URLs accordingly:
+```json
+{
+  "launch_path": "/ui/",
+  "icons": {
+    "56": "/ui/images/logo_56.png",
+    "112": "/ui/images/logo_112.png",
+    "128": "/ui/images/logo_128.png"
+  }
+}
+```
+
+You will also have to resize your logo to these pixel sizes, and copy them to the `dist/images` folder.
+
+Either a physical phone running KaiOS, or the [KaiOS simulator](https://developer.kaiostech.com/simulator) to test the application. Be aware that the simulator has several known issues (such as only accepting text using the physical PC keyboard) - see the release notes for more details.
