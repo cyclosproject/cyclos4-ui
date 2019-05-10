@@ -297,13 +297,14 @@
   },
   "dashboard": {
     "quickAccess": "Acesso rápido",
+    "quickAccess.shortcutTemplate": "{shortcut}: {label}",
     "action": {
       "account": "Conta",
       "payUser": "Pagar usuário",
       "paySystem": "Pagar sistema",
       "contacts": "Contatos",
       "directory": "Diretório",
-      "advertisements": "Anúncios",
+      "advertisements": "Marketplace",
       "editProfile": "Editar perfil",
       "password": "Senha",
       "passwords": "Senhas",
