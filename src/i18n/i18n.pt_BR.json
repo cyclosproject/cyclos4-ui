@@ -112,8 +112,8 @@
       "withTotal": "Mostrando {first} - {last} de {total} resultados",
       "noTotal": "Mostrando {first} - {last} resultados",
       "none": "Nenhum resultado corresponde aos critérios de pesquisa",
-      "nextXxs": "Next",
-      "previousXxs": "Previous"
+      "nextXxs": "Ant.",
+      "previousXxs": "Anterior"
     },
     "geolocation": {
       "kilometersFrom": "km de",
@@ -306,7 +306,7 @@
       "paySystem": "Pagar sistema",
       "contacts": "Contatos",
       "directory": "Diretório",
-      "advertisements": "Marketplace",
+      "advertisements": "Anúncios",
       "editProfile": "Editar perfil",
       "password": "Senha",
       "passwords": "Senhas",
