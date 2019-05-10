@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { AdCategoryWithParent, AdView } from 'app/api/models';
+import { AdCategoryWithParent, AdView, Address } from 'app/api/models';
 import { MarketplaceService } from 'app/api/services';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { HeadingAction } from 'app/shared/action';
@@ -19,6 +19,7 @@ import { words } from 'app/shared/helper';
 export class ViewAdComponent extends BasePageComponent<AdView> implements OnInit {
 
   title: string;
+  addresses: Address[];
 
   constructor(
     injector: Injector,
@@ -49,6 +50,7 @@ export class ViewAdComponent extends BasePageComponent<AdView> implements OnInit
     }
     this.headingActions = headingActions;
     this.title = words(ad.name, 60);
+    this.addresses = [...ad.adAddresses, ...ad.userAddresses];
   }
 
   get categoryLabel(): string {
