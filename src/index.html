@@ -31,6 +31,10 @@
       height: 64px;
     }
 
+    body.dark #rootSpinner img {
+      filter: invert(1);
+    }
+
     noscript {
       display: flex;
       justify-content: center;
@@ -56,9 +60,14 @@
 
 <body
   onload="self.cyclosLoaded === true ? null : document.getElementById('rootSpinner').style.display = ''">
-  <div id="rootSpinner" style="display: none">
+  <div id="rootSpinner">
     <img src="images/spinner.svg" alt="loading">
   </div>
+  <script>
+    if (localStorage && localStorage.getItem('darkTheme') === 'true') {
+      document.body.classList.add('dark');
+    }
+  </script>
   <div id="rootAlertContainer" style="display: none">
     <div class="d-flex flex-column alert alert-danger p-4 text-center"
       role="alert">
