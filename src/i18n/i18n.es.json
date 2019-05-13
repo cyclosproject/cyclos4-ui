@@ -464,7 +464,7 @@
       "pendingPayment": "Autorización pendiente",
       "processedPayment": "Pago realizado",
       "authorizations": "Autorizaciones",
-      "authorizationHistory": "Historial",
+      "authorizationHistory": "Historial de autorizaciones",
       "scheduled": "Pagos agendados",
       "details.payment": "Pago",
       "details.scheduled": "Pago agendado",
