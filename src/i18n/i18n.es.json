@@ -189,7 +189,7 @@
     "personal.password": "Contraseñas",
     "personal.passwords": "Contraseñas",
     "personal.notifications": "Notificaciones",
-    "personal.settings": "Definiciones",
+    "personal.settings": "Configuración",
     "content": "Información"
   },
   "auth": {
@@ -735,8 +735,8 @@
     }
   },
   "setting": {
-    "title": "Definiciones",
-    "mobileTitle": "Definiciones",
+    "title": "Configuración",
+    "mobileTitle": "Configuración",
     "theme": "Tema",
     "theme.light": "Claro",
     "theme.dark": "Oscuro"
