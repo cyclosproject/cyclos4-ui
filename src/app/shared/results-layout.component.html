@@ -21,13 +21,13 @@
   </page-content>
 </content-monitor>
 
-<ng-container *ngIf="results?.hasResults; else noResults">
+<ng-container *ngIf="rows?.length > 0; else noResults">
   <content-monitor *ngIf="tableTemplate && resultType === 'list'"
     (ready)="notifyReady()" [ngClass]="{'d-none': rendering$ | async}">
     <page-content mode="table" last>
       <ng-container *ngIf="layout.ltsm$ | async; else largeTable">
         <div class="mobile-results">
-          <a *ngFor="let row of results.results" class="mobile-result"
+          <a *ngFor="let row of rows" class="mobile-result"
             [href]="linkUrl(row)" (click)="handleClick(row, $event)"
             (keydown.enter)="handleClick(row, $event)">
             <ng-container
@@ -39,7 +39,7 @@
       <ng-template #largeTable>
         <ng-container *ngTemplateOutlet="tableTemplate"></ng-container>
       </ng-template>
-      <div class="paginator-container" *ngIf="showPaginator(results)">
+      <div class="paginator-container" *ngIf="showPaginator()">
         <paginator [results]="results" (update)="update.emit($event)">
         </paginator>
       </div>
@@ -48,10 +48,10 @@
 
   <content-monitor *ngIf="tileTemplate && resultType === 'tiles'"
     (ready)="notifyReady()" [ngClass]="{'d-none': rendering$ | async}">
-    <page-content mode="transparent" [last]="!showPaginator(results)">
+    <page-content mode="transparent" [last]="!showPaginator()">
       <div class="row tiled-results">
-        <div class="col-12 col-xs-6 col-sm-4"
-          *ngFor="let row of results.results" [ngClass]="{
+        <div class="col-12 col-xs-6 col-sm-4" *ngFor="let row of rows"
+          [ngClass]="{
           'col-md-3': !(layout.leftAreaVisible$ | async),
           'col-xl-3': layout.leftAreaVisible$ | async,
           'col-xl-2': !(layout.leftAreaVisible$ | async)
@@ -66,7 +66,7 @@
         </div>
       </div>
     </page-content>
-    <page-content last *ngIf="showPaginator(results)">
+    <page-content last *ngIf="showPaginator()">
       <paginator [results]="results" (update)="update.emit($event)">
       </paginator>
     </page-content>
@@ -83,7 +83,7 @@
         [fullscreenControl]="true" [streetViewControl]="false" maxZoom="17"
         minZoom="2" (mapClick)="closeAllInfoWindows()"
         (mapReady)="adjustMap();">
-        <ng-container *ngFor="let row of results.results">
+        <ng-container *ngFor="let row of rows">
           <ng-container *ngIf="toAddress(row) as addr">
             <agm-marker [title]="toMarkerTitle(row)" [iconUrl]="redMarker"
               [latitude]="addr.location.latitude"

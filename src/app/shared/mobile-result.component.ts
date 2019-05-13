@@ -18,6 +18,7 @@ export class MobileResultComponent implements OnInit {
   @Input() avatarIcon: string;
   @Input() date: string;
   @Input() amount: string;
+  @Input() amountColor = true;
   @Input() currency: Currency;
 
   _forceSign: boolean | string = false;
@@ -51,8 +52,8 @@ export class MobileResultComponent implements OnInit {
       this.amountClass = {
         amount: true,
         'p-0': true,
-        positive: this.format.isPositive(this.amount),
-        negative: this.format.isNegative(this.amount)
+        positive: this.amountColor && this.format.isPositive(this.amount),
+        negative: this.amountColor && this.format.isNegative(this.amount)
       };
     }
   }

@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { TransferView, CreateDeviceConfirmation, DeviceConfirmationTypeEnum } from 'app/api/models';
+import { CreateDeviceConfirmation, DeviceConfirmationTypeEnum, TransferView } from 'app/api/models';
 import { TransfersService } from 'app/api/services';
 import { BankingHelperService } from 'app/core/banking-helper.service';
-import { HeadingAction } from 'app/shared/action';
-import { BasePageComponent } from 'app/shared/base-page.component';
-import { empty } from 'app/shared/helper';
 import { OperationHelperService } from 'app/core/operation-helper.service';
+import { HeadingAction } from 'app/shared/action';
+import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
+import { empty } from 'app/shared/helper';
 
 
 /**
@@ -16,9 +16,7 @@ import { OperationHelperService } from 'app/core/operation-helper.service';
   templateUrl: 'view-transfer.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ViewTransferComponent extends BasePageComponent<TransferView> implements OnInit {
-
-  actions: HeadingAction[];
+export class ViewTransferComponent extends BaseViewPageComponent<TransferView> implements OnInit {
 
   constructor(
     injector: Injector,

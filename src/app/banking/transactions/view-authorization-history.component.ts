@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/c
 import { TransactionAuthorization, TransactionView } from 'app/api/models';
 import { TransactionsService } from 'app/api/services';
 import { TransactionStatusService } from 'app/core/transaction-status.service';
-import { BasePageComponent } from 'app/shared/base-page.component';
+import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
 
 /**
  * Displays the authorization history of a transaction
@@ -12,7 +12,7 @@ import { BasePageComponent } from 'app/shared/base-page.component';
   templateUrl: 'view-authorization-history.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ViewAuthorizationHistoryComponent extends BasePageComponent<TransactionView> implements OnInit {
+export class ViewAuthorizationHistoryComponent extends BaseViewPageComponent<TransactionView> implements OnInit {
 
   constructor(
     injector: Injector,

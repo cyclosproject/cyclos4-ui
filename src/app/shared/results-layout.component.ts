@@ -34,7 +34,7 @@ export class ResultsLayoutComponent<C, R> extends BaseComponent {
   redMarker = RedMarker;
   blueMarker = BlueMarker;
 
-  private _resultType: ResultType;
+  private _resultType: ResultType = ResultType.LIST;
   @Input() get resultType(): ResultType {
     return this._resultType;
   }
@@ -49,7 +49,7 @@ export class ResultsLayoutComponent<C, R> extends BaseComponent {
   }
 
   @Input() categories: C[];
-  @Input() results: PagedResults<R>;
+  @Input() results: PagedResults<R> | R[];
   @Input() rendering$ = new BehaviorSubject(false);
   @Input() referencePoint: MaxDistance;
   @Output() update = new EventEmitter<PageData>();
@@ -93,7 +93,7 @@ export class ResultsLayoutComponent<C, R> extends BaseComponent {
     this.mapLoaded = true;
 
     const mapData = this.maps.data;
-    const rows = (this.results || <any>{}).results;
+    const rows = this.rows;
     if (!empty(rows)) {
       if (mapData.defaultLocation == null) {
         // Only fit the map to locations if there's no default location
@@ -110,20 +110,30 @@ export class ResultsLayoutComponent<C, R> extends BaseComponent {
     }
   }
 
+  get rows(): R[] {
+    if (this.results instanceof Array) {
+      return this.results;
+    } else if (this.results) {
+      return this.results.results;
+    } else {
+      return [];
+    }
+  }
+
   closeAllInfoWindows() {
     if (this.markers) {
       this.markers.forEach(m => m.infoWindow.forEach(iw => iw.close()));
     }
   }
 
-  showPaginator(results: PagedResults<any>): boolean {
-    if (results == null) {
+  showPaginator(): boolean {
+    if (this.results == null || this.results instanceof Array) {
       return false;
     }
-    if (results.hasTotalCount) {
-      return results.pageCount > 1;
+    if (this.results.hasTotalCount) {
+      return this.results.pageCount > 1;
     } else {
-      return results.page > 0 || results.hasNext;
+      return this.results.page > 0 || this.results.hasNext;
     }
   }
 

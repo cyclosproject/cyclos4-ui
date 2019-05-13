@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { AdCategoryWithParent, AdView, Address } from 'app/api/models';
+import { AdCategoryWithParent, Address, AdView } from 'app/api/models';
 import { MarketplaceService } from 'app/api/services';
-import { BasePageComponent } from 'app/shared/base-page.component';
-import { HeadingAction } from 'app/shared/action';
 import { OperationHelperService } from 'app/core/operation-helper.service';
+import { HeadingAction } from 'app/shared/action';
+import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
 import { words } from 'app/shared/helper';
 
 
@@ -16,7 +16,7 @@ import { words } from 'app/shared/helper';
   styleUrls: ['../../users/profile/view-profile.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ViewAdComponent extends BasePageComponent<AdView> implements OnInit {
+export class ViewAdComponent extends BaseViewPageComponent<AdView> implements OnInit {
 
   title: string;
   addresses: Address[];

@@ -6,6 +6,7 @@ import { empty } from 'app/shared/helper';
 import { BankingHelperService } from 'app/core/banking-helper.service';
 import { ConfirmationMode } from 'app/shared/confirmation-mode';
 import { ApiHelper } from 'app/shared/api-helper';
+import { Enter } from 'app/shared/shortcut.service';
 
 
 /**
@@ -53,6 +54,10 @@ export class PaymentStepConfirmComponent extends BaseComponent implements OnInit
         amount: this.preview.payment.amount
       };
     };
+    // When there's no confirmation password, the Enter key will confirm
+    if (!this.preview.confirmationPasswordInput) {
+      this.addShortcut(Enter, () => this.confirmed.emit());
+    }
   }
 
 }

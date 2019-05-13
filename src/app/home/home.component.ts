@@ -1,17 +1,15 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
+import { DataForUserPasswords, PasswordModeEnum, PasswordStatusAndActions, PasswordStatusEnum } from 'app/api/models';
+import { PasswordsService } from 'app/api/services';
 import { Configuration } from 'app/configuration';
 import { ContentPage } from 'app/content/content-page';
 import { handleFullWidthLayout } from 'app/content/content-with-layout';
 import { DashboardItemConfig } from 'app/content/dashboard-item-config';
-import { BasePageComponent, UpdateTitleFrom } from 'app/shared/base-page.component';
-import { BehaviorSubject } from 'rxjs';
-import { PasswordsService } from 'app/api/services';
 import { ApiHelper } from 'app/shared/api-helper';
-import { DataForUserPasswords, PasswordStatusEnum, PasswordStatusAndActions, PasswordModeEnum } from 'app/api/models';
-import { Menu, ActiveMenu } from 'app/shared/menu';
+import { BasePageComponent, UpdateTitleFrom } from 'app/shared/base-page.component';
 import { Breakpoint } from 'app/shared/layout.service';
-import { ArrowsHorizontal } from 'app/shared/shortcut.service';
-import { handleKeyboardFocus } from 'app/shared/helper';
+import { ActiveMenu, Menu } from 'app/shared/menu';
+import { BehaviorSubject } from 'rxjs';
 
 export const SessionToken = 'sessionToken';
 
@@ -59,9 +57,6 @@ export class HomeComponent extends BasePageComponent<void> implements OnInit {
       this.ready$.next(true);
       // Emulate scrolling on d-pad (useful for KaiOS)
       this.emulateKeyboardScroll();
-      // And also switch between links using the horizontal arrows
-      this.addShortcut(ArrowsHorizontal, e =>
-        handleKeyboardFocus(this.layout, this.element, e, { horizontalOffset: 1, verticalOffset: 0 }));
     } else {
       // For logged users, get the passwords statuses and resolve the dashboard items
       this.fetchPasswords();

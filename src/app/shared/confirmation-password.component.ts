@@ -133,7 +133,9 @@ export class ConfirmationPasswordComponent extends BaseControlComponent<string> 
   }
 
   focus() {
-    this.passwordComponent.focus();
+    if (this.passwordComponent) {
+      this.passwordComponent.focus();
+    }
   }
 
   confirmWithKeyboard() {

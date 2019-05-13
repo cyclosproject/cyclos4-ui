@@ -3,9 +3,9 @@ import { AbstractControl } from '@angular/forms';
 import { HeadingAction } from 'app/shared/action';
 import { BaseComponent } from 'app/shared/base.component';
 import { FormControlLocator } from 'app/shared/form-control-locator';
-import { handleKeyboardScroll, scrollTop } from 'app/shared/helper';
+import { handleKeyboardScroll, scrollTop, handleKeyboardFocus } from 'app/shared/helper';
 import { ConditionalMenu, Menu } from 'app/shared/menu';
-import { ArrowsVertical, End, Home, PageDown, PageUp } from 'app/shared/shortcut.service';
+import { ArrowsVertical, End, Home, PageDown, PageUp, ArrowsHorizontal } from 'app/shared/shortcut.service';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 
@@ -101,11 +101,24 @@ export abstract class BasePageComponent<D> extends BaseComponent implements OnIn
   }
 
   /**
-   * Adds shortcut listeners to emulate the keyboard navigation on mobile / KaiOS
+   * Adds shortcut listeners to emulate the keyboard navigation on mobile / KaiOS.
+   * Handles 2 hinds of keys:
+   *
+   * - ArrowUp / ArrowDown to handle vertical scroll
+   * - ArrowLeft / ArrowRight to focus the previous / next field
    */
   emulateKeyboardScroll(): Subscription {
-    return this.addShortcut([...ArrowsVertical, PageUp, PageDown, Home, End],
+    const sub1 = this.addShortcut([...ArrowsVertical, PageUp, PageDown, Home, End],
       e => handleKeyboardScroll(this.layout, e));
+
+    // And also switch between links using the horizontal arrows
+    const sub2 = this.addShortcut(ArrowsHorizontal, e =>
+      handleKeyboardFocus(this.layout, this.element, e, { horizontalOffset: 1, verticalOffset: 0 }));
+
+    return new Subscription(() => {
+      sub1.unsubscribe();
+      sub2.unsubscribe();
+    });
   }
 
   ngOnDestroy(): void {

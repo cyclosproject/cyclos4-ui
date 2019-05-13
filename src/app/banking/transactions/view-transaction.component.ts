@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
   AuthorizationActionEnum, CreateDeviceConfirmation, CustomFieldDetailed,
-  CustomFieldTypeEnum, DeviceConfirmationTypeEnum, RecurringPaymentActionEnum,
-  RecurringPaymentOccurrenceStatusEnum, RecurringPaymentOccurrenceView,
-  ScheduledPaymentActionEnum, ScheduledPaymentInstallmentStatusEnum,
-  ScheduledPaymentInstallmentView, TransactionKind, TransactionView, InstallmentActionEnum
+  CustomFieldTypeEnum, DeviceConfirmationTypeEnum, InstallmentActionEnum,
+  RecurringPaymentActionEnum, RecurringPaymentOccurrenceStatusEnum,
+  RecurringPaymentOccurrenceView, ScheduledPaymentActionEnum, ScheduledPaymentInstallmentStatusEnum,
+  ScheduledPaymentInstallmentView, TransactionKind, TransactionView
 } from 'app/api/models';
 import { TransactionsService, TransfersService } from 'app/api/services';
 import { PendingPaymentsService } from 'app/api/services/pending-payments.service';
@@ -13,7 +13,7 @@ import { ScheduledPaymentsService } from 'app/api/services/scheduled-payments.se
 import { OperationHelperService } from 'app/core/operation-helper.service';
 import { TransactionStatusService } from 'app/core/transaction-status.service';
 import { HeadingAction } from 'app/shared/action';
-import { BasePageComponent } from 'app/shared/base-page.component';
+import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
 import { empty } from 'app/shared/helper';
 
 /**
@@ -24,7 +24,7 @@ import { empty } from 'app/shared/helper';
   templateUrl: 'view-transaction.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ViewTransactionComponent extends BasePageComponent<TransactionView> implements OnInit {
+export class ViewTransactionComponent extends BaseViewPageComponent<TransactionView> implements OnInit {
 
   title: string;
   mobileTitle: string;

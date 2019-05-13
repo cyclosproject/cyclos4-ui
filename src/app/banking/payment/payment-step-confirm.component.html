@@ -92,8 +92,8 @@
 <label-value [label]="i18n.general.description"
   *ngIf="preview.payment.description" [value]="preview.payment.description"
   valueFormat="break"></label-value>
-<hr>
-<div class="focusable pt-3" tabindex="0">
+<hr *ngIf="layout.gtxxs$ | async">
+<div class="pt-3">
   <label-value [label]="i18n.transaction.totalAmount">
     <div class="totalAmount">
       {{ preview.totalAmount | currency:preview.currency }}
@@ -101,11 +101,11 @@
   </label-value>
 </div>
 <ng-container *ngIf="(preview.confirmationMessage || '').length > 0">
-  <hr>
+  <hr *ngIf="layout.gtxxs$ | async">
   <div class="break-nl">{{preview.confirmationMessage}}</div>
 </ng-container>
 <ng-container *ngIf="preview.confirmationPasswordInput">
-  <hr>
+  <hr *ngIf="layout.gtxxs$ | async">
   <form [formGroup]="form">
     <confirmation-password focused formControlName="confirmationPassword"
       [passwordInput]="preview.confirmationPasswordInput"

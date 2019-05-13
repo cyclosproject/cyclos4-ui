@@ -35,4 +35,8 @@ export class TransferDetailsComponent extends BaseComponent implements OnInit {
   path(transfer: Transfer): string[] {
     return ['/banking', 'transfer', this.bankingHelper.transactionNumberOrId(transfer)];
   }
+
+  get toLink() {
+    return (transfer: Transfer) => this.path(transfer);
+  }
 }

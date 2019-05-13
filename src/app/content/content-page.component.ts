@@ -1,9 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { ContentPage } from 'app/content/content-page';
 import { ContentService } from 'app/core/content.service';
-import { BasePageComponent } from 'app/shared/base-page.component';
-import { handleKeyboardFocus } from 'app/shared/helper';
-import { ArrowsHorizontal } from 'app/shared/shortcut.service';
+import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
 
 /**
  * Displays a content page with layout
@@ -13,7 +11,7 @@ import { ArrowsHorizontal } from 'app/shared/shortcut.service';
   templateUrl: 'content-page.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ContentPageComponent extends BasePageComponent<ContentPage> implements OnInit {
+export class ContentPageComponent extends BaseViewPageComponent<ContentPage> implements OnInit {
 
   get page(): ContentPage {
     return this.data;
@@ -38,12 +36,6 @@ export class ContentPageComponent extends BasePageComponent<ContentPage> impleme
     } else {
       this.errorHandler.handleNotFoundError({});
     }
-
-    // Emulate scrolling on d-pad (useful for KaiOS)
-    this.emulateKeyboardScroll();
-    // And also switch between links using the horizontal arrows
-    this.addShortcut(ArrowsHorizontal, e =>
-      handleKeyboardFocus(this.layout, this.element, e, { horizontalOffset: 1, verticalOffset: 0 }));
   }
 
 }

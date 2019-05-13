@@ -7,7 +7,7 @@ import { MapsService } from 'app/core/maps.service';
 import { OperationHelperService } from 'app/core/operation-helper.service';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
-import { BasePageComponent } from 'app/shared/base-page.component';
+import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
 import { words } from 'app/shared/helper';
 
 export const MAX_SIZE_SHORT_NAME = 25;
@@ -21,7 +21,7 @@ export const MAX_SIZE_SHORT_NAME = 25;
   styleUrls: ['view-profile.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ViewProfileComponent extends BasePageComponent<UserView> implements OnInit {
+export class ViewProfileComponent extends BaseViewPageComponent<UserView> implements OnInit {
   constructor(
     injector: Injector,
     private usersService: UsersService,
@@ -62,8 +62,6 @@ export class ViewProfileComponent extends BasePageComponent<UserView> implements
           }
         });
     });
-
-    this.emulateKeyboardScroll();
   }
 
   onDataInitialized(user: UserView) {
