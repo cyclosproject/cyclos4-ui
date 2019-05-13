@@ -210,7 +210,7 @@
       "confirm.mode.device": "Teléfono móvil",
       "confirm.mode.password": "Contraseña",
       "confirm.device.active": "Para confirmar, escanee este código QR con su dispositivo móvil",
-      "confirm.device.none": "Para confirmar es necesario un dispositivo móvil confiado, pero no posee ninguno",
+      "confirm.device.none": "Para confirmar es necesario un dispositivo móvil de confianza, pero no posee ninguno",
       "confirm.deviceOrPassword.active": "In order to confirm, either scan this QR-code with your mobile phone or supply your {password}",
       "confirm.deviceOrPassword.none": "In order to confirm you must have a trusted mobile phone or supply your {password} but you do not have any",
       "confirm.deviceOrOtp.noMediums": "In order to confirm you need either a trusted mobile phone (and you have none) or a confirmation password, but there are no possible mediums to receive it.<br>Please, contact the administration.",
@@ -323,7 +323,7 @@
       "reset": "Su {type} se ha restablecido.",
       "pending": "Your {type} is pending generation.",
       "neverCreated": "Your {type} needs to be set.",
-      "securityAnswer": "You should set the security question, which will be required in case you need to reset your password.",
+      "securityAnswer": "Debe definir su pregunta de seguridad, esta le será requerida en caso de que necesite restablecer su contraseña.",
       "proceed": "Click here to proceed"
     }
   },
@@ -590,9 +590,9 @@
       "registration": "Registration",
       "registration.confirmation": "Confirmation",
       "registration.done": "Success",
-      "contactList": "Contacts",
-      "addContact": "New contact",
-      "search": "Directory"
+      "contactList": "Contactos",
+      "addContact": "Nuevo contacto",
+      "search": "Directorio"
     },
     "group": "Grupo",
     "groupSet": "Conjunto de grupos",
@@ -665,7 +665,7 @@
     "enabledSms": "Habilitado para SMS",
     "verify": {
       "title": "Verificar {number} para SMS",
-      "mobileTitle": "Verification",
+      "mobileTitle": "Verificación",
       "code": "Código de verificación",
       "send": "Enviar",
       "message": "Haga click en el botón de arriba para enviar el código de verificación a tu teléfono",
@@ -704,19 +704,19 @@
       "priceDesc": "Precio superior"
     },
     "title": {
-      "search": "Search advertisements",
+      "search": "Búsqueda de anuncios",
       "owner": "Anuncios de {name}"
     },
     "mobileTitle": {
-      "search": "Advertisements",
-      "owner": "Advertisements",
+      "search": "Anuncios",
+      "owner": "Anuncios",
       "details": "Anuncio"
     }
   },
   "notification": {
     "message": "Mensaje",
     "title": "Notificaciones",
-    "mobileTitle": "Notifications",
+    "mobileTitle": "Notificaciones",
     "onlyUnread": "Solo los pendientes",
     "actions": {
       "remove": "Eliminar esta notificación",
@@ -725,7 +725,7 @@
     }
   },
   "operation": {
-    "user": "User",
+    "user": "Usuario",
     "ad": "Anuncio",
     "transfer": "Transferencia",
     "fileUpload": "Cargar archivo",
