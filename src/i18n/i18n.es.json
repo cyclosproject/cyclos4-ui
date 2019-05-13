@@ -28,7 +28,7 @@
     "showMoreFilters": "Mostrar más filtros",
     "lessFilters": "Menos filtros",
     "showLessFilters": "Mostrar menos filtros",
-    "back": "Back",
+    "back": "Regresar",
     "previous": "Anterior",
     "next": "Siguiente",
     "view": "Ver",
@@ -113,7 +113,7 @@
       "noTotal": "Mostrando {first} - {last} resultados",
       "none": "No existen resultados para el criterio de búsqueda",
       "nextXxs": "Siguiente",
-      "previousXxs": "Previous"
+      "previousXxs": "Anterior"
     },
     "geolocation": {
       "kilometersFrom": "km desde",
@@ -195,7 +195,7 @@
   "auth": {
     "login": {
       "title": "Acceso",
-      "mobileTitle": "Login",
+      "mobileTitle": "Acceso",
       "message": "Para acceder al sistema, utilice su nombre de usuario y contraseña",
       "disconnected": "Usted ha sido desconectado. \nPor favor, acceda nuevamente para ver la página solicitada.",
       "principal": "Usuario",
@@ -220,7 +220,7 @@
       "confirm.otp.active": "Puede utilizar la contraseña de confirmación que le fue enviada previamente o solicitar una nueva",
       "confirm.otp.request": "Por favor, solicite una contraseña de confirmación a continuación, para confirmar",
       "otp.sent": "La contraseña fue enviada a su {dest}",
-      "otp.receiveBy": "Get by {medium}",
+      "otp.receiveBy": "Obtener mediante {medium}",
       "oldPassword": "Contraseña actual",
       "newPassword": "Nueva contraseña",
       "passwordConfirmation": "Confirmación de contraseña",
@@ -232,10 +232,10 @@
         "securityAnswer": "Defina su respuesta de seguridad"
       },
       "mobileTitle": {
-        "change": "Password change",
-        "forgotten": "Password recovery",
-        "manage.single": "Password",
-        "manage.multiple": "Passwords",
+        "change": "Cambio de contraseña",
+        "forgotten": "Recuperar contraseña",
+        "manage.single": "Contraseña",
+        "manage.multiple": "Contraseñas",
         "securityAnswer": "Respuesta de seguridad"
       },
       "forgotten": {
@@ -286,16 +286,16 @@
     },
     "registrationAgreement": "Términos de acuerdo",
     "pendingAgreements": {
-      "title": "Terminos de acuerdo actualizados",
-      "mobileTitle": "Updated agreement",
-      "message": "Los términos de acuerdo ha sido actualizado.\n\nUsted debe aceptar los nuevos términos de acuerdo para poder continuar.",
+      "title": "Términos de acuerdo actualizados",
+      "mobileTitle": "Terminos de acuerdo actualizados",
+      "message": "Los términos de acuerdo ha sido actualizados.\n\nUsted debe aceptar los nuevos términos de acuerdo para poder continuar.",
       "agree": "He aceptado los siguientes términos de acuerdo: {agreements}"
     },
     "securityQuestion": {
       "message": "La pregunta de seguridad es necesaria en caso de que usted necesite restablecer su contraseña. Si desea cambiarla, una vez definida, por favor contacte a la administración.",
       "question": "Pregunta de seguridad",
       "answer": "Su respuesta",
-      "set": "Your security answer was set"
+      "set": "Su respuesta de seguridad ha sido definida"
     }
   },
   "dashboard": {
@@ -319,10 +319,10 @@
     "latestAds": "Últimos anuncios",
     "latestUsers": "Ultimos usuarios",
     "passwords": {
-      "expired": "Your {type} has expired.",
+      "expired": "Su {type} ha expirado.",
       "reset": "Su {type} se ha restablecido.",
-      "pending": "Your {type} is pending generation.",
-      "neverCreated": "Your {type} needs to be set.",
+      "pending": "Su {type} se encuentra pendiente de ser generado.",
+      "neverCreated": "Su {type} necesita ser definido.",
       "securityAnswer": "Debe definir su pregunta de seguridad, esta le será requerida en caso de que necesite restablecer su contraseña.",
       "proceed": "Click here to proceed"
     }
@@ -461,18 +461,18 @@
       "paymentToSelf": "Pay self",
       "paymentToUser": "Pay user",
       "paymentConfirmation": "Confirmation",
-      "pendingPayment": "Pending authorization",
+      "pendingPayment": "Autorización pendiente",
       "processedPayment": "Payment done",
       "authorizations": "Authorizations",
-      "authorizationHistory": "History",
-      "scheduled": "Scheduled payments",
-      "details.payment": "Payment",
-      "details.scheduled": "Scheduled payment",
-      "details.recurring": "Recurring payment",
-      "details.request": "Payment request",
+      "authorizationHistory": "Historial",
+      "scheduled": "Pagos agendados",
+      "details.payment": "Pago",
+      "details.scheduled": "Pago agendado",
+      "details.recurring": "Pago recurrente",
+      "details.request": "Solicitud de pago",
       "details.chargeback": "Devolución",
       "details.ticket": "Ticket",
-      "details.external": "External payment",
+      "details.external": "Pago externo",
       "details.transfer": "Transferencia",
       "parentTransfer": "Transferencia original",
       "childTransfers": "Transferencias generadas"
@@ -586,10 +586,10 @@
       "phones": "Teléfonos",
       "addresses": "Direcciones",
       "contactInfos": "Contactos adicionales",
-      "confirmation": "Confirmation",
-      "registration": "Registration",
-      "registration.confirmation": "Confirmation",
-      "registration.done": "Success",
+      "confirmation": "Confirmación",
+      "registration": "Registro",
+      "registration.confirmation": "Confirmación",
+      "registration.done": "Exitoso",
       "contactList": "Contactos",
       "addContact": "Nuevo contacto",
       "search": "Directorio"
