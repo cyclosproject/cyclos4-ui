@@ -112,7 +112,7 @@
       "withTotal": "Mostrando {first} - {last} de {total} resultados",
       "noTotal": "Mostrando {first} - {last} resultados",
       "none": "No existen resultados para el criterio de búsqueda",
-      "nextXxs": "Next",
+      "nextXxs": "Siguiente",
       "previousXxs": "Previous"
     },
     "geolocation": {
@@ -229,14 +229,14 @@
         "forgotten": "Recover your password",
         "manage.single": "Administrar su contraseña",
         "manage.multiple": "Administrar sus contraseñas",
-        "securityAnswer": "Set your security answer"
+        "securityAnswer": "Defina su respuesta de seguridad"
       },
       "mobileTitle": {
         "change": "Password change",
         "forgotten": "Password recovery",
         "manage.single": "Password",
         "manage.multiple": "Passwords",
-        "securityAnswer": "Security answer"
+        "securityAnswer": "Respuesta de seguridad"
       },
       "forgotten": {
         "preface": "Aquí puede recuperar su contraseña.\nComplete su identificación de usuario a continuación, puede utilizar uno de los siguientes valores:",
@@ -292,7 +292,7 @@
       "agree": "He aceptado los siguientes términos de acuerdo: {agreements}"
     },
     "securityQuestion": {
-      "message": "The security question is required in case you need to reset your password. Once set, if you need to change it, contact the administration.",
+      "message": "La pregunta de seguridad es necesaria en caso de que usted necesite restablecer su contraseña. Si desea cambiarla, una vez definida, por favor contacte a la administración.",
       "question": "Pregunta de seguridad",
       "answer": "Su respuesta",
       "set": "Your security answer was set"
@@ -307,7 +307,7 @@
       "paySystem": "Pago a sistema",
       "contacts": "Contactos",
       "directory": "Anunciantes",
-      "advertisements": "Marketplace",
+      "advertisements": "Comercio electrónico",
       "editProfile": "Editar perfil",
       "password": "Contraseña",
       "passwords": "Contraseñas",
@@ -320,7 +320,7 @@
     "latestUsers": "Ultimos usuarios",
     "passwords": {
       "expired": "Your {type} has expired.",
-      "reset": "Your {type} has reset.",
+      "reset": "Su {type} se ha restablecido.",
       "pending": "Your {type} is pending generation.",
       "neverCreated": "Your {type} needs to be set.",
       "securityAnswer": "You should set the security question, which will be required in case you need to reset your password.",
@@ -470,12 +470,12 @@
       "details.scheduled": "Scheduled payment",
       "details.recurring": "Recurring payment",
       "details.request": "Payment request",
-      "details.chargeback": "Chargeback",
+      "details.chargeback": "Devolución",
       "details.ticket": "Ticket",
       "details.external": "External payment",
       "details.transfer": "Transferencia",
-      "parentTransfer": "Originating transfer",
-      "childTransfers": "Originated transfers"
+      "parentTransfer": "Transferencia original",
+      "childTransfers": "Transferencias generadas"
     },
     "viewAuthorizations": "Ver autorizaciones",
     "viewThisTransfer": "Ver transferencia",
@@ -595,8 +595,8 @@
       "search": "Directory"
     },
     "group": "Grupo",
-    "groupSet": "Group set",
-    "group.filter": "Groups",
+    "groupSet": "Conjunto de grupos",
+    "group.filter": "Grupos",
     "name": "Nombre completo",
     "username": "Usuario",
     "email": "Correo electrónico",
@@ -710,7 +710,7 @@
     "mobileTitle": {
       "search": "Advertisements",
       "owner": "Advertisements",
-      "details": "Advertisement"
+      "details": "Anuncio"
     }
   },
   "notification": {
@@ -726,19 +726,19 @@
   },
   "operation": {
     "user": "User",
-    "ad": "Advertisement",
-    "transfer": "Transfer",
+    "ad": "Anuncio",
+    "transfer": "Transferencia",
     "fileUpload": "Cargar archivo",
     "redirecting": "Esta siendo redirigido...",
     "mobileTitle": {
-      "result": "Result"
+      "result": "Resultado"
     }
   },
   "setting": {
-    "title": "Settings",
-    "mobileTitle": "Settings",
-    "theme": "Theme",
-    "theme.light": "Light",
-    "theme.dark": "Dark"
+    "title": "Definiciones",
+    "mobileTitle": "Definiciones",
+    "theme": "Tema",
+    "theme.light": "Claro",
+    "theme.dark": "Oscuro"
   }
 }
