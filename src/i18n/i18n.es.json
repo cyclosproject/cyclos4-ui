@@ -226,7 +226,7 @@
       "passwordConfirmation": "Confirmación de contraseña",
       "title": {
         "change": "Cambiar su contraseña",
-        "forgotten": "Recover your password",
+        "forgotten": "Recuperar su contraseña",
         "manage.single": "Administrar su contraseña",
         "manage.multiple": "Administrar sus contraseñas",
         "securityAnswer": "Defina su respuesta de seguridad"
@@ -324,11 +324,11 @@
       "pending": "Su {type} se encuentra pendiente de ser generado.",
       "neverCreated": "Su {type} necesita ser definido.",
       "securityAnswer": "Debe definir su pregunta de seguridad, esta le será requerida en caso de que necesite restablecer su contraseña.",
-      "proceed": "Click here to proceed"
+      "proceed": "Clic aquí para continuar"
     }
   },
   "account": {
-    "account": "Account",
+    "account": "Cuenta",
     "number": "Número de cuenta",
     "transferFilter": "Filtro",
     "minAmount": "Desde monto",
@@ -342,18 +342,18 @@
     "negativeLimit": "Límite negativo",
     "positiveLimit": "Límite positivo",
     "balanceOn": "Balance al {date}",
-    "totalIncome": "Total received",
-    "totalOutflow": "Total paid",
-    "netInflow": "Net income",
+    "totalIncome": "Total recibido",
+    "totalOutflow": "Total pagado",
+    "netInflow": "Ingresos Netos",
     "noAccounts": "Usted no posee cuentas",
     "printTransactions": "Imprimir transacciones",
     "system": "Cuenta de sistema",
-    "mobileTitle": "Account",
+    "mobileTitle": "Cuenta",
     "orderBy": {
-      "dateDesc": "Date (newest first)",
-      "dateAsc": "Date (oldest first)",
-      "amountAsc": "Amount (lowest first)",
-      "amountDesc": "Amount (highest first)"
+      "dateDesc": "Fecha (más nuevo primero)",
+      "dateAsc": "Fecha (más antiguo primero)",
+      "amountAsc": "Monto (de menor a mayor)",
+      "amountDesc": "Monto (de mayor a menor)"
     }
   },
   "transaction": {
@@ -457,13 +457,13 @@
       "childTransfers": "Transferencias generadas"
     },
     "mobileTitle": {
-      "paymentToSystem": "Pay system",
-      "paymentToSelf": "Pay self",
-      "paymentToUser": "Pay user",
-      "paymentConfirmation": "Confirmation",
+      "paymentToSystem": "Pago a sistema",
+      "paymentToSelf": "Auto pago",
+      "paymentToUser": "Pago a usuario",
+      "paymentConfirmation": "Confirmación",
       "pendingPayment": "Autorización pendiente",
-      "processedPayment": "Payment done",
-      "authorizations": "Authorizations",
+      "processedPayment": "Pago realizado",
+      "authorizations": "Autorizaciones",
       "authorizationHistory": "Historial",
       "scheduled": "Pagos agendados",
       "details.payment": "Pago",
@@ -581,7 +581,7 @@
       "editProfile": "Editar perfil",
       "image": "Imagen de perfil",
       "images": "Imágenes de perfil",
-      "fields": "Profile fields",
+      "fields": "Campos de perfil",
       "group": "Grupo",
       "phones": "Teléfonos",
       "addresses": "Direcciones",
