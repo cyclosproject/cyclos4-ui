@@ -2,11 +2,12 @@ import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import {
   Account, AccountHistoryResult, AccountKind, BaseTransferDataForSearch,
-  PreselectedPeriod, Transaction, TransactionDataForSearch, Transfer
+  PreselectedPeriod, Transaction, TransactionDataForSearch, Transfer, AccountType
 } from 'app/api/models';
 import { FormatService } from 'app/core/format.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { blank, empty } from 'app/shared/helper';
+import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 
 /**
  * Helper service for banking functions
@@ -17,9 +18,30 @@ import { blank, empty } from 'app/shared/helper';
 export class BankingHelperService {
 
   constructor(
+    private dataForUiHolder: DataForUiHolder,
     private format: FormatService) {
   }
 
+  /**
+   * Returns the account types from the logged user permissions, optionally filtering by visibility
+   * @param visible When true (default) returns only visible account. When false, returns all accounts.
+   */
+  ownerAccountTypes(visible = true): AccountType[] {
+    const dataForUi = this.dataForUiHolder.dataForUi;
+    const auth = dataForUi.auth || {};
+    const permissions = auth.permissions || {};
+    const banking = permissions.banking || {};
+    const accounts = banking.accounts || [];
+    return accounts.filter(a => visible ? a.visible : true).map(a => a.account.type);
+  }
+
+  /**
+   * Returns an account type from the logged user permissions by internal name or id
+   * @param key The internal name or id
+   */
+  ownerAccountType(key: string): AccountType {
+    return this.ownerAccountTypes().find(t => t.id === key || t.internalName === key);
+  }
 
   /**
    * Returns a display label for the given account

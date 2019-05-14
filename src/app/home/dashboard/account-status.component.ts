@@ -39,12 +39,10 @@ export class AccountStatusComponent extends BaseDashboardComponent implements On
   ngOnInit() {
     super.ngOnInit();
 
-    const permissions = this.login.auth.permissions || {};
-    const banking = permissions.banking || {};
-    const accounts = (banking.accounts || []).filter(a => a.visible);
-    const singleAccount = accounts.length === 1;
+    // TODO once we implement management over user accounts, this won't work
+    const singleAccount = this.bankingHelper.ownerAccountTypes().length === 1;
     if (singleAccount) {
-      // Single account - use a generig title
+      // Single account - use a generic title
       this.title = this.i18n.dashboard.accountStatus;
     } else {
       // Multiple accounts - use the account type name

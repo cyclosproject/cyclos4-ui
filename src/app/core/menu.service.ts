@@ -205,7 +205,7 @@ export class MenuService {
     // Whenever the last selected menu changes, update the classes in the body element
     const observable = this.resolveMenu(menu);
     if (observable) {
-      observable.pipe(first()).subscribe(m => this.updateActiveMenu(new ActiveMenu(m)));
+      observable.pipe(first()).subscribe(m => this.updateActiveMenu(m));
     }
   }
 
@@ -636,16 +636,21 @@ export class MenuService {
    * Resolves the given menu or conditional menu to an actual `Menu`.
    * @param value Either a `Menu` or `ConditionalMenu`
    */
-  resolveMenu(value: Menu | ConditionalMenu): Observable<Menu> {
+  resolveMenu(value: Menu | ConditionalMenu | ((i: Injector) => any)): Observable<ActiveMenu> {
     if (value instanceof Function) {
       const result = value(this.injector);
       if (result instanceof Menu) {
-        value = result;
-      } else {
-        return result;
+        return of(new ActiveMenu(result));
+      } else if (result instanceof ActiveMenu) {
+        return of(result);
+      } else if (result instanceof Observable) {
+        return result.pipe(map(m => m instanceof ActiveMenu ? m : new ActiveMenu(m)));
       }
+    } else if (value instanceof Menu) {
+      return of(new ActiveMenu(value));
+    } else {
+      return of(value);
     }
-    return of(value);
   }
 
 }

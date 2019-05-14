@@ -4,7 +4,7 @@ import { OperationHelperService } from 'app/core/operation-helper.service';
 import { LoggedUserGuard } from 'app/logged-user-guard';
 import { RunOperationComponent } from 'app/operations/run-operation.component';
 import { ApiHelper } from 'app/shared/api-helper';
-import { ConditionalMenu, Menu } from 'app/shared/menu';
+import { ConditionalMenu, Menu, ActiveMenu } from 'app/shared/menu';
 import { trim } from 'lodash';
 import { OperationRunScope } from 'app/operations/operation-run-scope';
 import { OperationCallbackComponent } from 'app/operations/operation-callback.component';
@@ -29,7 +29,8 @@ const OperationMenu: ConditionalMenu = injector => {
     case 'self':
       // This is an owner operation
       const operation = injector.get(OperationHelperService).get(key);
-      return operation ? ApiHelper.menuForOwnerOperation(operation) : null;
+      const menu = operation ? ApiHelper.menuForOwnerOperation(operation) : null;
+      return menu ? new ActiveMenu(menu, { operation: operation }) : null;
     case 'action':
       // An action
       return Menu.RUN_ACTION_OPERATION;

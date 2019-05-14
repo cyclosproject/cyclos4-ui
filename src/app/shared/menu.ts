@@ -183,7 +183,7 @@ export class SideMenuEntries {
 /**
  * A dynamic menu condition
  */
-export type ConditionalMenu = (injector: Injector) => Menu | Observable<Menu>;
+export type ConditionalMenu = (injector: Injector) => Menu | ActiveMenu | Observable<Menu | ActiveMenu>;
 
 /**
  * Additional identifier for a dynamic active menu
