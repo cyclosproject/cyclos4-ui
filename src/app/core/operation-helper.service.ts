@@ -213,7 +213,7 @@ export class OperationHelperService {
   icon(operation: Operation): string {
     const config = (Configuration.operations || {})[operation.internalName || '#'];
     const customIcon = (config || {}).icon;
-    return customIcon || 'chevron_right';
+    return customIcon || 'play_circle_outline';
   }
 
   /**

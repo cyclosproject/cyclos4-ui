@@ -16,6 +16,7 @@
 
 .date-field-wrapper {
   display: block;
+  width: 100%;
 }
 
 .filters-form :host ::ng-deep .date-field-wrapper {
@@ -55,9 +56,6 @@
   .calendar-toggle {
     margin-left: 0.25rem;
     display: block;
-  }
-  .date-field-wrapper {
-    display: inline-block;
   }
   .date-field {
     flex-direction: row;

@@ -46,7 +46,6 @@ nav.full-width {
     transform: translateY(-2px) !important;
   }
   a {
-    color: $menu-bar-color;
     padding: 0.9rem $lg-padding;
     position: relative;
   }
@@ -60,20 +59,27 @@ nav.full-width {
   }
   a:not(.active) {
     color: $menu-bar-inactive-color;
+    background-color: $menu-bar-inactive-bg;
     icon {
       color: $menu-bar-inactive-icon-color;
     }
-  }
-  a:hover, a:focus {
-    color: $menu-bar-hover-color;
-    background-color: $menu-bar-hover-bg;
-    text-decoration: none;
-    box-shadow: none;
+    &:hover, &:focus {
+      color: $menu-bar-inactive-hover-color;
+      background-color: $menu-bar-inactive-hover-bg;
+      text-decoration: none;
+      box-shadow: none;
+    }
   }
   a.active {
     color: $menu-bar-active-color;
     icon {
       color: $menu-bar-active-icon-color;
+    }
+    &:hover, &:focus {
+      color: $menu-bar-active-hover-color;
+      background-color: $menu-bar-active-hover-bg;
+      text-decoration: none;
+      box-shadow: none;
     }
   }
   a.active:not(.sub-menu-item)::before {
@@ -129,23 +135,27 @@ body.dark :host ::ng-deep {
     border-color: $menu-bar-line-color-dark;
   }
   menus {
-    a {
-      color: $menu-bar-color-dark;
-    }
-    a:hover, a:focus {
-      color: $menu-bar-hover-color-dark;
-      background-color: $menu-bar-hover-bg-dark;
-    }
     a.active {
       color: $menu-bar-active-color-dark;
       icon {
         color: $menu-bar-active-icon-color-dark;
       }
+      &:hover, &:focus {
+        color: $menu-bar-active-hover-color-dark;
+        background-color: $menu-bar-active-hover-bg-dark;
+      }
     }
     a:not(.active) {
       color: $menu-bar-inactive-color-dark;
+      background-color: $menu-bar-inactive-bg-dark;
       icon {
         color: $menu-bar-inactive-icon-color-dark;
+      }
+      &:hover, &:focus {
+        color: $menu-bar-inactive-hover-color-dark;
+        background-color: $menu-bar-inactive-hover-bg-dark;
+        text-decoration: none;
+        box-shadow: none;
       }
     }
   }

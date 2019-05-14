@@ -64,6 +64,7 @@ a.nav-item.active {
   color: $side-menu-active-color;
   background-color: $side-menu-active-bg;
   &:hover, &:focus {
+    color: $side-menu-active-hover-color;
     background-color: $side-menu-active-hover-bg;
   }
   icon {
@@ -101,6 +102,7 @@ body.dark :host ::ng-deep {
     color: $side-menu-active-color-dark;
     background-color: $side-menu-active-bg-dark;
     &:hover, &:focus {
+      color: $side-menu-active-hover-color-dark;
       background-color: $side-menu-active-hover-bg-dark;
     }
     icon {

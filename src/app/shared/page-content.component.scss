@@ -97,8 +97,15 @@
   }
 }
 
-:host ::ng-deep .page-content.mode-table table.table {
-  margin-bottom: 0;
+:host ::ng-deep .page-content.mode-table {
+  table.table {
+    margin-bottom: 0;
+    @include border-radius($card-border-radius);
+
+    tr:last-of-type td {
+      border-bottom: none;
+    }
+  }
 }
 
 .page-content.mode-table {

@@ -239,7 +239,7 @@ export class RunOperationComponent
       const op = action.action;
       if (op) {
         this.operationHelper.register(op);
-        headingActions.push(new HeadingAction('chevron_right', op.label, () => {
+        headingActions.push(new HeadingAction(this.operationHelper.icon(op), op.label, () => {
           this.operationHelper.run(op, null, action.parameters);
         }));
       }
