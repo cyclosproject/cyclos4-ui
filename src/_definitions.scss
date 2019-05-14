@@ -150,7 +150,7 @@ $top-bar-sub-item-hover-icon-color-dark: $top-bar-sub-item-hover-color-dark !def
 // Menu bar (main menu on desktop, only shown when MENU_BAR = true in configuration.ts)
 $menu-bar-height: 3.2rem !default;
 $menu-bar-bg: $card-bg !default;
-$menu-bar-inactive-color: #555555 !default;
+$menu-bar-inactive-color: #565656 !default;
 $menu-bar-inactive-icon-color: lighten($text-muted, 5%) !default;
 $menu-bar-inactive-bg: $menu-bar-bg !default;
 $menu-bar-inactive-hover-color: $menu-bar-inactive-color !default;
