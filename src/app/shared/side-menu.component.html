@@ -4,10 +4,10 @@
   </div>
 
   <nav class="navbar d-flex flex-column align-items-stretch">
-    <a *ngFor="let entry of (entries$ | async)?.entries" class="nav-item"
-      [routerLink]="entry.url"
+    <a *ngFor="let entry of (entries$ | async)?.entries" #anchor
+      class="nav-item" [routerLink]="entry.url"
       [ngClass]="{active: (menu.activeMenu$ | async)?.matches(entry)}"
-      (click)="navigate(entry, $event)">
+      (click)="navigate(entry, $event); blurIfClick(anchor, $event);">
       <icon size="1.4rem" [icon]="entry.icon"></icon>
       <div class="nav-item-text">{{ entry.label }}</div>
     </a>

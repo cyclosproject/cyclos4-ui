@@ -132,7 +132,7 @@ body.dark :host ::ng-deep {
     a {
       color: $menu-bar-color-dark;
     }
-    a:hover {
+    a:hover, a:focus {
       color: $menu-bar-hover-color-dark;
       background-color: $menu-bar-hover-bg-dark;
     }

@@ -4,6 +4,7 @@ import { ApiHelper } from 'app/shared/api-helper';
 import { LayoutService } from 'app/shared/layout.service';
 import { ActiveMenu, RootMenu, SideMenuEntries, MenuEntry } from 'app/shared/menu';
 import { BehaviorSubject, Subscription } from 'rxjs';
+import { blurIfClick } from 'app/shared/helper';
 
 /**
  * A context-specific menu shown on the side of the layout for medium+ screens
@@ -22,6 +23,7 @@ export class SideMenuComponent implements OnInit {
 
   // Namespace for template
   ApiHelper = ApiHelper;
+  blurIfClick = blurIfClick;
 
   get banking(): boolean {
     const activeMenu = this.menu.activeMenu;

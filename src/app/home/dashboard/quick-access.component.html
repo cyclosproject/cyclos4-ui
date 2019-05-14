@@ -7,7 +7,7 @@
         *ngIf="action.entry && layout.visible(action.breakpoints, layout.breakpointChanges$ | async)"
         class="col-6 col-sm-4 justify-content-center align-items-center p-1">
         <a #anchor [href]="action.entry.url" class="quick-access-item"
-          (click)="navigate(action, $event); $event.detail === 0 ? '' : anchor.blur();">
+          (click)="navigate(action, $event); blurIfClick(anchor, $event);">
           <div class="quick-access-icon">
             <icon [icon]="action.icon" size="2.2rem"></icon>
           </div>

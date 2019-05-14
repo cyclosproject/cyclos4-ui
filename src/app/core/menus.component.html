@@ -26,8 +26,9 @@
     </div>
   </a>
 
-  <a *ngIf="!root.dropdown && root.entries[0]"
-    [routerLink]="root.entries[0].url" (click)="onClick($event, root)"
+  <a *ngIf="!root.dropdown && root.entries[0]" #anchor
+    [routerLink]="root.entries[0].url"
+    (click)="onClick($event, root); blurIfClick(anchor, $event);"
     class="nav-item" [ngClass]="{
           active: activeRoot === root.rootMenu
         }">

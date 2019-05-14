@@ -744,3 +744,18 @@ export function handleKeyboardScroll(layout: LayoutService, event: KeyboardEvent
   event.preventDefault();
   event.stopPropagation();
 }
+
+/**
+ * If the given mouse event is a mouse click, blurs the element.
+ * Used to avoid leaving the focus indicator in the clicked element.
+ * @param el The element
+ * @param event The click event
+ */
+export function blurIfClick(el: ElementReference, event: MouseEvent) {
+  if (event.detail !== 0) {
+    const element = resolveElement(el);
+    if (element) {
+      element.blur();
+    }
+  }
+}

@@ -8,7 +8,7 @@ import { LayoutService } from 'app/shared/layout.service';
 import { ActiveMenu, Menu, RootMenuEntry, MenuType, RootMenu } from 'app/shared/menu';
 import { I18n } from 'app/i18n/i18n';
 import { Observable } from 'rxjs';
-import { words, empty } from 'app/shared/helper';
+import { words, empty, blurIfClick } from 'app/shared/helper';
 import { Configuration } from 'app/configuration';
 import { NotificationService } from 'app/core/notification.service';
 import { HeadingAction } from 'app/shared/action';
@@ -31,6 +31,7 @@ export class TopBarComponent implements OnInit {
   RootMenu = RootMenu;
   Menu = Menu;
   MenuType = MenuType;
+  blurIfClick = blurIfClick;
 
   userName: string;
 

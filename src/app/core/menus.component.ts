@@ -9,6 +9,7 @@ import { LayoutService } from 'app/shared/layout.service';
 import { ActiveMenu, BaseMenuEntry, MenuEntry, MenuType, RootMenu, RootMenuEntry } from 'app/shared/menu';
 import { BsDropdownDirective } from 'ngx-bootstrap/dropdown/public_api';
 import { Observable } from 'rxjs';
+import { blurIfClick } from 'app/shared/helper';
 
 /**
  * Renders menus in a bar, either the top bar or a dedicated menu bar
@@ -21,6 +22,9 @@ import { Observable } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MenusComponent implements OnInit {
+
+  /** Export to template */
+  blurIfClick = blurIfClick;
 
   @Input() userName: string;
   @Input() activeMenu: ActiveMenu;

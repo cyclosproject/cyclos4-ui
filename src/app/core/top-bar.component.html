@@ -5,7 +5,8 @@
   <div class="navbar-container">
     <!-- The sidenav toggle on mobile / tablet -->
     <a class="never-active" *ngIf="layout.ltlg$ | async" id="sidenav-trigger"
-      href="#" (click)="toggleSidenav.emit(); $event.preventDefault();">
+      href="#"
+      (click)="toggleSidenav.emit(); $event.preventDefault(); blurIfClick('sidenav-trigger', $event);">
       <icon class="top-icon" icon="menu"></icon>
     </a>
     <span class="navbar-brand">
@@ -45,8 +46,8 @@
 <ng-template #customMenus>
   <ng-container *ngIf="(user != null) && (layout.gtxxs$ | async)">
     <a routerLink="/users/profile" id="profile-link"
-      (click)="navigate(Menu.MY_PROFILE, $event)" class="nav-item custom-menu"
-      [ngClass]="{
+      (click)="navigate(Menu.MY_PROFILE, $event); blurIfClick('profile-link', $event);"
+      class="nav-item custom-menu" [ngClass]="{
         active: hasMenu && [Menu.MY_PROFILE, Menu.EDIT_MY_PROFILE].includes(activeMenu?.menu)
       }">
       <avatar *ngIf="user.image" size="small-medium" [image]="user.image">
@@ -60,7 +61,7 @@
     <ng-container *ngIf="notification.notificationsStatus$ | async as status">
       <a *ngIf="status && (layout.gtxxs$ | async)"
         routerLink="/personal/notifications" id="notifications-link"
-        (click)="navigate(Menu.NOTIFICATIONS, $event)"
+        (click)="navigate(Menu.NOTIFICATIONS, $event); blurIfClick('notifications-link', $event);"
         class="nav-item custom-menu" [ngClass]="{
             active: hasMenu && activeMenu?.menu == Menu.NOTIFICATIONS
           }">
@@ -75,7 +76,7 @@
   </ng-container>
 
   <a href="#" *ngIf="user != null" id="logout-trigger"
-    (click)="navigate(Menu.LOGOUT, $event)">
+    (click)="navigate(Menu.LOGOUT, $event); blurIfClick('logout-trigger', $event);">
     <icon class="top-icon" icon="logout"></icon>
     <div *ngIf="(layout.gtsm$ | async) && !hasMenu" class="ml-2">
       {{ i18n.menu.logout }}
@@ -84,8 +85,8 @@
   <ng-container *ngIf="user == null">
     <a *ngIf="(layout.gtsm$ | async) && menu.menuEntry(Menu.REGISTRATION)"
       routerLink="/register" id="register-link"
-      (click)="navigate(Menu.REGISTRATION, $event)" class="nav-item"
-      [ngClass]="{
+      (click)="navigate(Menu.REGISTRATION, $event); blurIfClick('register-link', $event);"
+      class="nav-item" [ngClass]="{
           active: hasMenu && activeMenu?.menu == Menu.REGISTRATION
         }">
       <icon class="top-icon" icon="registration"></icon>
@@ -94,7 +95,8 @@
       </div>
     </a>
     <a routerLink="/login" id="login-link"
-      (click)="navigate(Menu.LOGIN, $event)" class="nav-item" [ngClass]="{
+      (click)="navigate(Menu.LOGIN, $event); blurIfClick('login-link', $event);"
+      class="nav-item" [ngClass]="{
           active: hasMenu && activeMenu?.menu == Menu.LOGIN
         }">
       <icon class="top-icon" icon="exit_to_app"></icon>
