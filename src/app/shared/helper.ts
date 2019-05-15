@@ -635,16 +635,16 @@ export function handleKeyboardFocus(layout: LayoutService, element: ElementRefer
   verticalOffset?: number
 }) {
 
-  if (layout.gtxs) {
-    // Ignore when not on mobile
-    return false;
-  }
   element = resolveElement(element);
   if (!element) {
     return false;
   }
 
   const focusTrap = resolveElement(layout.focusTrap);
+  if (layout.gtxs && !focusTrap) {
+    // Ignore when not on mobile and there's no focus-trapping element
+    return false;
+  }
 
   // Figure out all focusable elements, and sort them in the natural order
   const focusable = htmlCollectionToArray(

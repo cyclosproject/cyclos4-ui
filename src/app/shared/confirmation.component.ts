@@ -1,16 +1,17 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit, Injector } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CustomFieldDetailed, PasswordInput, CreateDeviceConfirmation } from 'app/api/models';
+import { CreateDeviceConfirmation, CustomFieldDetailed, PasswordInput } from 'app/api/models';
 import { AuthHelperService } from 'app/core/auth-helper.service';
 import { FieldHelperService } from 'app/core/field-helper.service';
 import { NextRequestState } from 'app/core/next-request-state';
 import { ConfirmCallbackParams } from 'app/core/notification.service';
+import { I18n } from 'app/i18n/i18n';
 import { FieldLabelPosition } from 'app/shared/base-form-field.component';
 import { ConfirmationMode } from 'app/shared/confirmation-mode';
 import { blank, empty, validateBeforeSubmit } from 'app/shared/helper';
+import { ShortcutService } from 'app/shared/shortcut.service';
 import { BsModalRef } from 'ngx-bootstrap/modal';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { AbstractComponent } from 'app/shared/abstract.component';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 
 /**
  * Component shown in a dialog, to present a confirmation message, optionally with a confirmation password
@@ -21,7 +22,7 @@ import { AbstractComponent } from 'app/shared/abstract.component';
   templateUrl: 'confirmation.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ConfirmationComponent extends AbstractComponent implements OnInit {
+export class ConfirmationComponent implements OnInit, OnDestroy {
 
   ConfirmationMode = ConfirmationMode;
 
@@ -41,16 +42,17 @@ export class ConfirmationComponent extends AbstractComponent implements OnInit {
   requesting$: Observable<boolean>;
   confirmationMode$ = new BehaviorSubject<ConfirmationMode>(null);
   canConfirm: boolean;
+  sub: Subscription;
 
   constructor(
-    injector: Injector,
-    public modalRef: BsModalRef,
     private formBuilder: FormBuilder,
+    public i18n: I18n,
+    public modalRef: BsModalRef,
     private fieldHelper: FieldHelperService,
     private authHelper: AuthHelperService,
+    private shortcut: ShortcutService,
     nextRequestState: NextRequestState
   ) {
-    super(injector);
     this.requesting$ = nextRequestState.requesting$;
   }
 
@@ -73,7 +75,13 @@ export class ConfirmationComponent extends AbstractComponent implements OnInit {
       this.confirmLabel = this.i18n.general.confirm;
     }
     if (!this.hasFields) {
-      this.addShortcut('Enter', () => this.confirm());
+      this.sub = this.shortcut.subscribe('Enter', () => this.confirm());
+    }
+  }
+
+  ngOnDestroy() {
+    if (this.sub) {
+      this.sub.unsubscribe();
     }
   }
 

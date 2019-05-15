@@ -231,17 +231,17 @@ body.gt-xxs {
   color: $input-color;
   background-color: $input-bg;
   white-space: nowrap;
-}
-.select-option:hover, .select-option:focus {
-  color: $list-group-hover-color;
-  background-color: $list-group-hover-bg;
-  text-decoration: none;
-  outline: none !important;
-  box-shadow: none;
-}
-.select-option.selected {
-  color: color-yiq($button-color) !important;
-  background-color: $button-color !important;
+  &:hover, &:focus {
+    color: $list-group-hover-color;
+    background-color: $list-group-hover-bg;
+    text-decoration: none;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+  &.selected {
+    color: color-yiq($button-color) !important;
+    background-color: $button-color !important;
+  }
 }
 @include media-breakpoint-up(sm) {
   .select-option {
