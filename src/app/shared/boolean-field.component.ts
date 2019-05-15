@@ -22,7 +22,7 @@ export class BooleanFieldComponent
 
   /** Whether the value type is boolean or string */
   @Input() type: 'boolean' | 'string' = 'boolean';
-  @Output() click = new EventEmitter<MouseEvent>();
+  @Output() click = new EventEmitter<Event>();
   @ViewChild('checkbox') checkbox: ElementRef;
 
   constructor(
@@ -41,6 +41,12 @@ export class BooleanFieldComponent
     if (this.checkbox && this.checkbox.nativeElement) {
       this.checkbox.nativeElement.disabled = isDisabled;
     }
+  }
+
+  toggle() {
+    const value = this.value;
+    const bool = value === true || value === 'true';
+    this.value = this.type === 'boolean' ? !bool : String(!bool);
   }
 
   protected getFocusableControl() {
