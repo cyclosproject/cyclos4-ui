@@ -28,7 +28,7 @@
     "showMoreFilters": "Mostrar más filtros",
     "lessFilters": "Menos filtros",
     "showLessFilters": "Mostrar menos filtros",
-    "back": "Back",
+    "back": "Regresar",
     "previous": "Anterior",
     "next": "Siguiente",
     "view": "Ver",
@@ -112,8 +112,8 @@
       "withTotal": "Mostrando {first} - {last} de {total} resultados",
       "noTotal": "Mostrando {first} - {last} resultados",
       "none": "No existen resultados para el criterio de búsqueda",
-      "nextXxs": "Next",
-      "previousXxs": "Previous"
+      "nextXxs": "Siguiente",
+      "previousXxs": "Anterior"
     },
     "geolocation": {
       "kilometersFrom": "km desde",
@@ -189,13 +189,13 @@
     "personal.password": "Contraseñas",
     "personal.passwords": "Contraseñas",
     "personal.notifications": "Notificaciones",
-    "personal.settings": "Definiciones",
+    "personal.settings": "Configuración",
     "content": "Información"
   },
   "auth": {
     "login": {
       "title": "Acceso",
-      "mobileTitle": "Login",
+      "mobileTitle": "Acceso",
       "message": "Para acceder al sistema, utilice su nombre de usuario y contraseña",
       "disconnected": "Usted ha sido desconectado. \nPor favor, acceda nuevamente para ver la página solicitada.",
       "principal": "Usuario",
@@ -210,33 +210,33 @@
       "confirm.mode.device": "Teléfono móvil",
       "confirm.mode.password": "Contraseña",
       "confirm.device.active": "Para confirmar, escanee este código QR con su dispositivo móvil",
-      "confirm.device.none": "Para confirmar es necesario un dispositivo móvil confiado, pero no posee ninguno",
-      "confirm.deviceOrPassword.active": "In order to confirm, either scan this QR-code with your mobile phone or supply your {password}",
-      "confirm.deviceOrPassword.none": "In order to confirm you must have a trusted mobile phone or supply your {password} but you do not have any",
-      "confirm.deviceOrOtp.noMediums": "In order to confirm you need either a trusted mobile phone (and you have none) or a confirmation password, but there are no possible mediums to receive it.<br>Please, contact the administration.",
-      "confirm.deviceOrOtp.active": "In order to confirm, either scan this QR-code with your mobile phone, use the previously sent confirmation password or request a new one",
-      "confirm.deviceOrOtp.request": "In order to confirm, either scan this QR-code with your mobile phone, or request a confirmation password below",
+      "confirm.device.none": "Para confirmar es necesario un dispositivo móvil de confianza, pero no posee ninguno",
+      "confirm.deviceOrPassword.active": "Para confirmar, escanee este código QR con su dispositivo móvil, o solicite un nuevo {password}",
+      "confirm.deviceOrPassword.none": "Para confirmar es necesario un dispositivo móvil de confianza, o ingresar su {password}, pero no posee ninguno de ellos definido",
+      "confirm.deviceOrOtp.noMediums": "Para confirmar es necesario un dispositivo móvil de confianza (no posee ninguno) o una contraseña de confirmación, pero no dispone de ningún medio para recibirla. \n<br>Por favor, contacte a la administración.",
+      "confirm.deviceOrOtp.active": "Para confirmar, escanee este código QR con su dispositivo móvil, utilice la contraseña de confirmación enviada previamente, o solicite una nueva",
+      "confirm.deviceOrOtp.request": "Para confirmar, escanee este código QR con su dispositivo móvil, o solicite una contraseña de confirmación",
       "confirm.otp.noMediums": "Para confirmar usted necesita una contraseña de confirmación, pero no posee ningún medio para recibirla. \nPor favor contacte a la administración.",
       "confirm.otp.active": "Puede utilizar la contraseña de confirmación que le fue enviada previamente o solicitar una nueva",
       "confirm.otp.request": "Por favor, solicite una contraseña de confirmación a continuación, para confirmar",
       "otp.sent": "La contraseña fue enviada a su {dest}",
-      "otp.receiveBy": "Get by {medium}",
+      "otp.receiveBy": "Obtener mediante {medium}",
       "oldPassword": "Contraseña actual",
       "newPassword": "Nueva contraseña",
       "passwordConfirmation": "Confirmación de contraseña",
       "title": {
         "change": "Cambiar su contraseña",
-        "forgotten": "Recover your password",
+        "forgotten": "Recuperar su contraseña",
         "manage.single": "Administrar su contraseña",
         "manage.multiple": "Administrar sus contraseñas",
-        "securityAnswer": "Set your security answer"
+        "securityAnswer": "Defina su respuesta de seguridad"
       },
       "mobileTitle": {
-        "change": "Password change",
-        "forgotten": "Password recovery",
-        "manage.single": "Password",
-        "manage.multiple": "Passwords",
-        "securityAnswer": "Security answer"
+        "change": "Cambio de contraseña",
+        "forgotten": "Recuperar contraseña",
+        "manage.single": "Contraseña",
+        "manage.multiple": "Contraseñas",
+        "securityAnswer": "Respuesta de seguridad"
       },
       "forgotten": {
         "preface": "Aquí puede recuperar su contraseña.\nComplete su identificación de usuario a continuación, puede utilizar uno de los siguientes valores:",
@@ -286,16 +286,16 @@
     },
     "registrationAgreement": "Términos de acuerdo",
     "pendingAgreements": {
-      "title": "Terminos de acuerdo actualizados",
-      "mobileTitle": "Updated agreement",
-      "message": "Los términos de acuerdo ha sido actualizado.\n\nUsted debe aceptar los nuevos términos de acuerdo para poder continuar.",
+      "title": "Términos de acuerdo actualizados",
+      "mobileTitle": "Terminos de acuerdo actualizados",
+      "message": "Los términos de acuerdo ha sido actualizados.\n\nUsted debe aceptar los nuevos términos de acuerdo para poder continuar.",
       "agree": "He aceptado los siguientes términos de acuerdo: {agreements}"
     },
     "securityQuestion": {
-      "message": "The security question is required in case you need to reset your password. Once set, if you need to change it, contact the administration.",
+      "message": "La pregunta de seguridad es necesaria en caso de que usted necesite restablecer su contraseña. Si desea cambiarla, una vez definida, por favor contacte a la administración.",
       "question": "Pregunta de seguridad",
       "answer": "Su respuesta",
-      "set": "Your security answer was set"
+      "set": "Su respuesta de seguridad ha sido definida"
     }
   },
   "dashboard": {
@@ -307,7 +307,7 @@
       "paySystem": "Pago a sistema",
       "contacts": "Contactos",
       "directory": "Anunciantes",
-      "advertisements": "Marketplace",
+      "advertisements": "Comercio electrónico",
       "editProfile": "Editar perfil",
       "password": "Contraseña",
       "passwords": "Contraseñas",
@@ -319,16 +319,16 @@
     "latestAds": "Últimos anuncios",
     "latestUsers": "Ultimos usuarios",
     "passwords": {
-      "expired": "Your {type} has expired.",
-      "reset": "Your {type} has reset.",
-      "pending": "Your {type} is pending generation.",
-      "neverCreated": "Your {type} needs to be set.",
-      "securityAnswer": "You should set the security question, which will be required in case you need to reset your password.",
-      "proceed": "Click here to proceed"
+      "expired": "Su {type} ha expirado.",
+      "reset": "Su {type} se ha restablecido.",
+      "pending": "Su {type} se encuentra pendiente de ser generado.",
+      "neverCreated": "Su {type} necesita ser definido.",
+      "securityAnswer": "Debe definir su pregunta de seguridad, esta le será requerida en caso de que necesite restablecer su contraseña.",
+      "proceed": "Clic aquí para continuar"
     }
   },
   "account": {
-    "account": "Account",
+    "account": "Cuenta",
     "number": "Número de cuenta",
     "transferFilter": "Filtro",
     "minAmount": "Desde monto",
@@ -342,18 +342,18 @@
     "negativeLimit": "Límite negativo",
     "positiveLimit": "Límite positivo",
     "balanceOn": "Balance al {date}",
-    "totalIncome": "Total received",
-    "totalOutflow": "Total paid",
-    "netInflow": "Net income",
+    "totalIncome": "Total recibido",
+    "totalOutflow": "Total pagado",
+    "netInflow": "Ingresos Netos",
     "noAccounts": "Usted no posee cuentas",
     "printTransactions": "Imprimir transacciones",
     "system": "Cuenta de sistema",
-    "mobileTitle": "Account",
+    "mobileTitle": "Cuenta",
     "orderBy": {
-      "dateDesc": "Date (newest first)",
-      "dateAsc": "Date (oldest first)",
-      "amountAsc": "Amount (lowest first)",
-      "amountDesc": "Amount (highest first)"
+      "dateDesc": "Fecha (más nuevo primero)",
+      "dateAsc": "Fecha (más antiguo primero)",
+      "amountAsc": "Monto (de menor a mayor)",
+      "amountDesc": "Monto (de mayor a menor)"
     }
   },
   "transaction": {
@@ -457,25 +457,25 @@
       "childTransfers": "Transferencias generadas"
     },
     "mobileTitle": {
-      "paymentToSystem": "Pay system",
-      "paymentToSelf": "Pay self",
-      "paymentToUser": "Pay user",
-      "paymentConfirmation": "Confirmation",
-      "pendingPayment": "Pending authorization",
-      "processedPayment": "Payment done",
-      "authorizations": "Authorizations",
-      "authorizationHistory": "History",
-      "scheduled": "Scheduled payments",
-      "details.payment": "Payment",
-      "details.scheduled": "Scheduled payment",
-      "details.recurring": "Recurring payment",
-      "details.request": "Payment request",
-      "details.chargeback": "Chargeback",
+      "paymentToSystem": "Pago a sistema",
+      "paymentToSelf": "Auto pago",
+      "paymentToUser": "Pago a usuario",
+      "paymentConfirmation": "Confirmación",
+      "pendingPayment": "Autorización pendiente",
+      "processedPayment": "Pago realizado",
+      "authorizations": "Autorizaciones",
+      "authorizationHistory": "Historial de autorizaciones",
+      "scheduled": "Pagos agendados",
+      "details.payment": "Pago",
+      "details.scheduled": "Pago agendado",
+      "details.recurring": "Pago recurrente",
+      "details.request": "Solicitud de pago",
+      "details.chargeback": "Devolución",
       "details.ticket": "Ticket",
-      "details.external": "External payment",
-      "details.transfer": "Transfer",
-      "parentTransfer": "Originating transfer",
-      "childTransfers": "Originated transfers"
+      "details.external": "Pago externo",
+      "details.transfer": "Transferencia",
+      "parentTransfer": "Transferencia original",
+      "childTransfers": "Transferencias generadas"
     },
     "viewAuthorizations": "Ver autorizaciones",
     "viewThisTransfer": "Ver transferencia",
@@ -576,27 +576,27 @@
       "search": "Directorio de anunciantes"
     },
     "mobileTitle": {
-      "myProfile": "My profile",
-      "userProfile": "User profile",
-      "editProfile": "Edit profile",
-      "image": "Profile image",
-      "images": "Profile images",
-      "fields": "Profile fields",
-      "group": "Group",
-      "phones": "Phones",
-      "addresses": "Addresses",
-      "contactInfos": "Additional contacts",
-      "confirmation": "Confirmation",
-      "registration": "Registration",
-      "registration.confirmation": "Confirmation",
-      "registration.done": "Success",
-      "contactList": "Contacts",
-      "addContact": "New contact",
-      "search": "Directory"
+      "myProfile": "Mi Perfil",
+      "userProfile": "Perfil de usuario",
+      "editProfile": "Editar perfil",
+      "image": "Imagen de perfil",
+      "images": "Imágenes de perfil",
+      "fields": "Campos de perfil",
+      "group": "Grupo",
+      "phones": "Teléfonos",
+      "addresses": "Direcciones",
+      "contactInfos": "Contactos adicionales",
+      "confirmation": "Confirmación",
+      "registration": "Registro",
+      "registration.confirmation": "Confirmación",
+      "registration.done": "Exitoso",
+      "contactList": "Contactos",
+      "addContact": "Nuevo contacto",
+      "search": "Directorio"
     },
     "group": "Grupo",
-    "groupSet": "Group set",
-    "group.filter": "Groups",
+    "groupSet": "Conjunto de grupos",
+    "group.filter": "Grupos",
     "name": "Nombre completo",
     "username": "Usuario",
     "email": "Correo electrónico",
@@ -665,7 +665,7 @@
     "enabledSms": "Habilitado para SMS",
     "verify": {
       "title": "Verificar {number} para SMS",
-      "mobileTitle": "Verification",
+      "mobileTitle": "Verificación",
       "code": "Código de verificación",
       "send": "Enviar",
       "message": "Haga click en el botón de arriba para enviar el código de verificación a tu teléfono",
@@ -704,19 +704,19 @@
       "priceDesc": "Precio superior"
     },
     "title": {
-      "search": "Search advertisements",
+      "search": "Búsqueda de anuncios",
       "owner": "Anuncios de {name}"
     },
     "mobileTitle": {
-      "search": "Advertisements",
-      "owner": "Advertisements",
-      "details": "Advertisement"
+      "search": "Anuncios",
+      "owner": "Anuncios",
+      "details": "Anuncio"
     }
   },
   "notification": {
     "message": "Mensaje",
     "title": "Notificaciones",
-    "mobileTitle": "Notifications",
+    "mobileTitle": "Notificaciones",
     "onlyUnread": "Solo los pendientes",
     "actions": {
       "remove": "Eliminar esta notificación",
@@ -725,20 +725,20 @@
     }
   },
   "operation": {
-    "user": "User",
-    "ad": "Advertisement",
-    "transfer": "Transfer",
+    "user": "Usuario",
+    "ad": "Anuncio",
+    "transfer": "Transferencia",
     "fileUpload": "Cargar archivo",
     "redirecting": "Esta siendo redirigido...",
     "mobileTitle": {
-      "result": "Result"
+      "result": "Resultado"
     }
   },
   "setting": {
-    "title": "Settings",
-    "mobileTitle": "Settings",
-    "theme": "Theme",
-    "theme.light": "Light",
-    "theme.dark": "Dark"
+    "title": "Configuración",
+    "mobileTitle": "Configuración",
+    "theme": "Tema",
+    "theme.light": "Claro",
+    "theme.dark": "Oscuro"
   }
 }
