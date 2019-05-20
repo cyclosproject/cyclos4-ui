@@ -2,9 +2,5 @@
   "/api": {
     "target": "http://localhost:8888/",
     "secure": false
-  },
-  "/web-rpc": {
-    "target": "http://localhost:8888/",
-    "secure": false
   }
 }

@@ -70,9 +70,13 @@ export function setup() {
 }
 ```
 
+The `Configuration.apiRoot` seting points to the Cyclos backend. The default `api` value is used when the server where the frontend is deployed is proxying the requests to the Cyclos backend. An alternative is to set the full URL of a running Cyclos. In this case, make sure that CORS is allowed in `cyclos.properties` in the server. See [Access to the API backend](#access-to-the-api-backend) for more details.
+
 There are plenty of configurations that can be set. Most of them are covered through the various sections of this document. Customizing these settings require a bit of programming in TypeScript. So, using an editor with strong support for the TypeScript language (such as [Visual Studio Code](https://code.visualstudio.com/)) is recommended, specially when requiring a more advanced setup.
 
 ## Debugging
+
+Before running the development server, edit the `proxy.json` file. The `/api` entry should point to your Cyclos backend server. It is not required to setup CORS in this case, as the development server will proxy requests.
 
 To start the development server, with hot reload, which should be accessible at http://localhost:4200/, run the following command:
 ```bash
