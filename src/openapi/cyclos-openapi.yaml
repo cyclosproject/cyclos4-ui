@@ -81,6 +81,9 @@ tags:
     description: >-
       Provides access to raw files, maily used to interact with custom field
       values of type file.
+  - name: Documents
+    description: >-
+      Provides access to documents, which can be shared or individual.
   - name: GroupMembership
     description: >-
       Viewing and setting the group of a user / operator.
@@ -102,16 +105,23 @@ tags:
       Allows confirmation of operations using trusted devices.
   - name: DevicePins
     description: >-
-      A PIN is an easier way to login to the system instead of using the principal / password. When a PIN is defined, 
-      it will be associated to the current channel and to the user identification method / password type that was used 
-      when authenticating, thus inheriting its security restrictions. E.g. if the user identification method associated 
-      to the PIN is removed from the list of methods defined to access the channel then the PIN will not work either. 
-      Enabling a PIN must be done through the corresponding channel configuration.      
+      A PIN is an easier way to login to the system instead of using the
+      principal / password. When a PIN is defined, it will be associated to
+      the current channel and to the user identification method / password
+      type that was used when authenticating, thus inheriting its security
+      restrictions. E.g. if the user identification method associated to the
+      PIN is removed from the list of methods defined to access the channel,
+      then the PIN will not work either. Enabling a PIN must be done through
+      the corresponding channel configuration.      
   - name: Accounts
     description: >-
       Provides access to account information, such as the status (balance,
       credit limit and so on) and account history (list of balance transfers
       between accounts).
+  - name: BalanceLimits
+    description: >-
+      Provides access to the balance limits of user accounts, as well as
+      setting them.
   - name: Transfers
     description: >-
       Provides access to balance transfers (also called transfers). A transfer
@@ -120,18 +130,18 @@ tags:
   - name: Transactions
     description: >-
       Provides access to transactions. A transaction is an intent to transfer
-      balance between accounts. A transaction will generate zero or more balance
-      transfers between accounts. For example, a direct payment beween 2 users
-      can initially be pending administration authorization. Until it is
-      authorized, no transfer will be generated. Once authorized, a transfer
+      balance between accounts. A transaction will generate zero or more
+      balance transfers between accounts. For example, a direct payment beween
+      2 users can initially be pending administration authorization. Until it
+      is authorized, no transfer will be generated. Once authorized, a transfer
       will be created. Another kind of transaction, a scheduled payment, will
       generate one transfer per processed installment. The kinds of transactions
       are:
 
 
       - __Direct payment__: A simple payment from / to a user or system
-        account. Depending on the configuration, can require authorization to be
-        processed.
+        account. Depending on the configuration, can require authorization
+        to be processed.
 
       - __Scheduled payment__: A payment processed either on a single future
         date or in several installments. Depending on the configuration, can
@@ -236,8 +246,8 @@ tags:
 
       Currently both `simple` and `webshop` have
       support for searching, but only simple advertisements can be managed via
-      this API. Also only order creation through the shopping cart check-out but
-      not as sales (i.e orders created by seller).
+      this API. Also only order creation through the shopping cart check-out
+      but not as sales (i.e orders created by seller).
   - name: NFC
     description: >-
       Contains operations regarding NFC tags
@@ -1029,9 +1039,9 @@ paths:
     get:
       operationId: getSessionDataForSearch
       summary: >-
-        Get configuration data for searching sessions
+        Returns data for searching user sessions
       description: >-
-        Returns data with the current configuration regarding the session search
+        Returns data for searching connected users
       tags:
         - Sessions
       security:
@@ -1043,7 +1053,7 @@ paths:
       responses:
         '200':
           description: >-
-            The configuration data for session search
+            The data for searching sessions
           content:
             application/json:
               schema:
@@ -1084,19 +1094,19 @@ paths:
       summary: >-
         Search for sessions
       description: >-
-        Returns a page of sessions that match a given criteria.
+        Returns the sessions matching a given criteria.
       parameters:
         - $ref: '#/components/parameters/fields'
         - name: broker
           in: query
           required: false
-          description: "Either id or a principal (login name, e-mail, etc) of a broker. Used to filter the sessions of its brokered users."
+          description: "Either id or a principal (login name, e-mail, etc) of a broker. Used to filter the sessions of users brokered by the given broker."
           schema:
             type: string
         - name: channels
           in: query
           required: false
-          description: "Internal names of the sessions channels that can be retuerned."
+          description: "Internal names of the sessions channels that can be returned."
           style: simple
           schema:
             type: array
@@ -1106,13 +1116,13 @@ paths:
         - name: excludeCurrentSession
           in: query
           required: false
-          description: "When set to `true` will not return the running session."
+          description: "Whether to exclude or not the current session."
           schema:
             type: boolean
         - name: operatorsOf
           in: query
           required: false
-          description: "Either id or a principal (login name, e-mail, etc) of a user. Used to filter the sessions of its operators."
+          description: "Either id or a principal (login name, e-mail, etc) of a user. The owner member of the operators sessions Used to filter the operator sessions of the given user."
           schema:
             type: string
         - name: page
@@ -1132,7 +1142,7 @@ paths:
         - name: roles
           in: query
           required: false
-          description: "The role of the logged users in the sessions."
+          description: "The role of the logged user in the sessions."
           style: simple
           schema:
             type: array
@@ -1154,7 +1164,7 @@ paths:
       responses:
         '200':
           description: >-
-            The sessions matching the criteria
+            The filtered sessions
           headers:
             X-Total-Count:
               schema:
@@ -5256,7 +5266,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           description: >-
             The verification status
           content:
-            plain/text:
+            text/plain:
               schema:
                 $ref: '#/components/schemas/CodeVerificationStatusEnum'
         '401':
@@ -7808,6 +7818,979 @@ A note for dynamic custom fields: If a script is used to generate possible value
                   format: binary
                   description: >-
                     The file being uploaded
+  /documents/data-for-search:
+    get:
+      operationId: getDocumentsDataForSearch
+      summary: >-
+        Returns configuration data for searching documents.
+      description: >-
+        Returns configuration data for searching documents.
+      tags:
+        - Documents
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            The configuration data for documents search.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentDataForSearch'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /documents:
+    get:
+      operationId: searchDocuments
+      summary: >-
+        General documents search
+      description: >-
+        Searches for documents, which might be both shared and individual documents 
+      tags:
+        - Documents
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+        - name: brokers
+          in: query
+          required: false
+          description: "Either the ids or identification methods of individual document owners' brokers"
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: categories
+          in: query
+          required: false
+          description: "The shared document categories"
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: enabled
+          in: query
+          required: false
+          description: "Only used if the logged user can manage documents. When set, filters documents by their `enabled` status, either `true` or `false`."
+          schema:
+            type: boolean
+        - name: groups
+          in: query
+          required: false
+          description: "Either the ids or internal names of individual document owners' group"
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: page
+          in: query
+          required: false
+          description: "The page number (zero-based) of the search. The default value is zero."
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          required: false
+          description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
+          schema:
+            type: integer
+            format: int32
+        - name: range
+          in: query
+          required: false
+          description: ''
+          schema:
+            $ref: '#/components/schemas/DocumentRangeEnum'
+        - name: user
+          in: query
+          required: false
+          description: "Either the id or identifier of the document owner"
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >-
+            The list of devices the user has.
+          headers:
+            X-Total-Count:
+              schema:
+                type: integer
+              description: >-
+                The total number of results. It may be configured in Cyclos to skip the
+                total count, which is useful on large databases, where the count itself
+                may use a lot of resources from the database. If disabled, this header is
+                not returned.
+            X-Page-Size:
+              schema:
+                type: integer
+              description: >-
+                The maximum number of results per page
+            X-Current-Page:
+              schema:
+                type: integer
+              description: >-
+                The current page the results are in
+            X-Has-Next-Page:
+              schema:
+                type: boolean
+              description: >-
+                Returns whether there is a next page. This is normally always returned,
+                whether total count is enabled or not. If the total count is not returned,
+                is the only way for clients to know whether more results are available or
+                not.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DocumentResult'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      operationId: createSharedDocument
+      summary: >-
+        Creates a new static shared document.
+      description: >-
+        Creates a new static shared document. 
+      tags:
+        - Documents
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      responses:
+        '201':
+          description: >-
+            Returns the identifier of the new document
+          headers:
+            Location:
+              description: >-
+                URL for viewing the document details
+              schema:
+                type: string
+          content:
+            text/plain:
+              schema:
+                type: string
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: >-
+            Input error. Either a validation error or the maximum allowed items was
+            exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      requestBody:
+        description: >-
+          The document to be created
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DocumentNew'
+  
+  /documents/data-for-new:
+    get:
+      operationId: getSharedDocumentDataForNew
+      summary: >-
+        Returns data to create a new shared static document
+      description: >-
+        Returns configuration data for creating a new document
+        of kind `static`.
+      tags:
+        - Documents
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            The data for creating a document
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentDataForNew'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /documents/{id}:
+    parameters:
+      - $ref: '#/components/parameters/id'
+    get:
+      operationId: viewDocument
+      summary: >-
+        Returns details of a specific document.
+      description: >-
+        Returns details of a specific document. 
+      tags:
+        - Documents
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            The document details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentView'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      operationId: updateDocument
+      summary: >-
+        Updates the details of a document.
+      description: >-
+        Updates the details of a document. 
+      tags:
+        - Documents
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      responses:
+        '204':
+          description: >-
+            The document was updated
+        '409':
+          description: >-
+            This operation expected an entity state, but it has resulted in a conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictError'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: >-
+            Input error. Either a validation error or the maximum allowed items was
+            exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      requestBody:
+        description: >-
+          The document to be edited
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DocumentEdit'
+    delete:
+      operationId: deleteDocument
+      summary: >-
+        Removes a document.
+      description: >-
+        Removes a document.
+      tags:
+        - Documents
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      responses:
+        '204':
+          description: >-
+            The document was deleted
+        '409':
+          description: >-
+            This operation expected an entity state, but it has resulted in a conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictError'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /documents/{id}/data-for-edit:
+    parameters:
+      - $ref: '#/components/parameters/id'
+    get:
+      operationId: getDocumentDataForEdit
+      summary: >-
+        Returns data to edit an existing document
+      description: >-
+        Returns configuration data for editing a document, plus the current
+        `DocumentEdit` object that can be altered and sent back
+      tags:
+        - Documents
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            The data for editing a document
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentDataForEdit'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /documents/{id}/file:
+    parameters:
+      - $ref: '#/components/parameters/id'
+    get:
+      operationId: downloadDocumentFile
+      summary: >-
+        Returns the content of the document file.
+      description: >-
+        The document `kind` must be either `static` or
+        `user`. Otherwise a 404 status is returned. 
+      tags:
+        - Documents
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      responses:
+        '200':
+          description: >-
+            The document file
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: binary
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      operationId: uploadDocumentFile
+      summary: >-
+        Saves the content of the document file.
+      description: >-
+        The document `kind` must be either `static` or
+        `user`. Otherwise a 404 status is returned. 
+      tags:
+        - Documents
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - name: name
+          description: >-
+            The name for the new file. If not informed will fall back to the
+            original file name in the form data
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '204':
+          description: >-
+            The file is saved, and nothing is returned.
+            The URL to get the content is returned in the `Location` header.
+          headers:
+            Location:
+              description: >-
+                URL for obtaining the file content
+              schema:
+                type: string
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: >-
+                    The file being uploaded
+  
+  /documents/{id}/dynamic/{user}:
+    parameters:
+      - $ref: '#/components/parameters/id'
+      - $ref: '#/components/parameters/user'
+    get:
+      operationId: getDataForDynamicDocument
+      summary: >-
+        Returns data to process a dynamic document
+      description: >-
+        Returns the fields that can be used to process a dynamic document
+        for the given user.
+      tags:
+        - Documents
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            The data for processing a dynamic a document
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataForDynamicDocument'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      operationId: processDynamicDocument
+      summary: >-
+        Processes a dynamic document
+      description: >-
+        Generates the HTML content which is the result of processing 
+        a dynamic document
+      tags:
+        - Documents
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      responses:
+        '200':
+          description: >-
+            The dynamic document content 
+          content:
+            text/html:
+              schema:
+                type: string
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      requestBody:
+        description: The form fields
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProcessDynamicDocument'
+        
+  /{user}/documents:
+    parameters:
+      - $ref: '#/components/parameters/user'
+    get:
+      operationId: listUserDocuments
+      summary: >-
+        Lists the enabled documents for the given user
+      description: >-
+        Lists the enabled documents for the given user 
+      tags:
+        - Documents
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            The list of documents for the user.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Document'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      operationId: createUserDocument
+      summary: >-
+        Creates a new individual document for the given user.
+      description: >-
+        Creates a new individual document for the given user. 
+      tags:
+        - Documents
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      responses:
+        '201':
+          description: >-
+            Returns the identifier of the new document
+          headers:
+            Location:
+              description: >-
+                URL for viewing the document details
+              schema:
+                type: string
+          content:
+            text/plain:
+              schema:
+                type: string
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: >-
+            Input error. Either a validation error or the maximum allowed items was
+            exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      requestBody:
+        description: >-
+          The document to be created
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DocumentNew'
+  
+  /{user}/documents/data-for-new:
+    parameters:
+      - $ref: '#/components/parameters/user'
+    get:
+      operationId: getUserDocumentDataForNew
+      summary: >-
+        Returns data to create a new shared individual document
+      description: >-
+        Returns configuration data for creating a new document
+        of kind `user` for the given user.
+      tags:
+        - Documents
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            The data for creating a document
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentDataForNew'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /{user}/contacts:
     get:
       operationId: searchContacts
@@ -10813,6 +11796,9 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 $ref: '#/components/schemas/Error'
   
   /{owner}/accounts/{accountType}:
+    parameters:
+      - $ref: '#/components/parameters/owner'
+      - $ref: '#/components/parameters/accountType'  
     get:
       operationId: getAccountStatusByOwnerAndType
       summary: >-
@@ -10832,14 +11818,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - session: []
         - accessClient: []
       parameters:
-        - $ref: '#/components/parameters/owner'
-        - name: accountType
-          description: >-
-            The account type
-          in: path
-          required: true
-          schema:
-            type: string
         - $ref: '#/components/parameters/fields'
         - name: accessClients
           in: query
@@ -11055,6 +12033,9 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 $ref: '#/components/schemas/Error'
   
   /{owner}/accounts/{accountType}/data-for-history:
+    parameters:
+      - $ref: '#/components/parameters/owner'
+      - $ref: '#/components/parameters/accountType'
     get:
       operationId: getAccountHistoryDataByOwnerAndType
       summary: >-
@@ -11070,14 +12051,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - accessClient: []
       parameters:
         - $ref: '#/components/parameters/fields'
-        - $ref: '#/components/parameters/owner'
-        - name: accountType
-          description: >-
-            The internal name or id of the account type
-          in: path
-          required: true
-          schema:
-            type: string
       responses:
         '200':
           description: >-
@@ -11117,6 +12090,9 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 $ref: '#/components/schemas/Error'
   
   /{owner}/accounts/{accountType}/history:
+    parameters:
+      - $ref: '#/components/parameters/owner'
+      - $ref: '#/components/parameters/accountType'  
     get:
       operationId: searchAccountHistory
       summary: >-
@@ -11131,14 +12107,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - session: []
         - accessClient: []
       parameters:
-        - $ref: '#/components/parameters/owner'
-        - name: accountType
-          description: >-
-            The account type
-          in: path
-          required: true
-          schema:
-            type: string
         - $ref: '#/components/parameters/fields'
         - name: accessClients
           in: query
@@ -11389,6 +12357,9 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 $ref: '#/components/schemas/Error'
   
   /{owner}/accounts/{accountType}/balances-history:
+    parameters:
+      - $ref: '#/components/parameters/owner'
+      - $ref: '#/components/parameters/accountType'
     get:
       operationId: getAccountBalanceHistory
       summary: >-
@@ -11408,14 +12379,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - session: []
         - accessClient: []
       parameters:
-        - $ref: '#/components/parameters/owner'
-        - name: accountType
-          description: >-
-            The account type
-          in: path
-          required: true
-          schema:
-            type: string
         - $ref: '#/components/parameters/fields'
         - name: datePeriod
           in: query
@@ -12161,6 +13124,409 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /{user}/accounts/data-for-limits:
+    parameters:
+      - $ref: '#/components/parameters/user'    
+    get:
+      operationId: getDataForUserBalanceLimits
+      summary: >-
+        Returns data regarding the limits of all accounts of a given user.
+      description: >-
+        Returns data regarding the limits of all accounts of a given user.
+      tags:
+        - BalanceLimits
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            The user account limits data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserAccountBalanceLimitsListData'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /{user}/accounts/{accountType}/limits:
+    parameters:
+      - $ref: '#/components/parameters/user'
+      - $ref: '#/components/parameters/accountType'
+    get:
+      operationId: getAccountBalanceLimits
+      summary: >-
+        Returns data for the limits of a given account
+      description: >-
+        Returns the data needed to edit the limits of the given account,
+        plus the history of limit changes.
+      tags:
+        - BalanceLimits
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            The account limit data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountBalanceLimitsData'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      operationId: setAccountBalanceLimits
+      summary: >-
+        Sets the limits for a given user account.
+      description: >-
+        Saves the account limits. The lower limit may be customized or default,
+        while the upper limit may also be set to unlimited.
+      tags:
+        - BalanceLimits
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/confirmationPassword'
+      responses:
+        '204':
+          description: >-
+            The limits were changed and nothing is returned.
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: >-
+            Input error. Either a validation error or the maximum allowed items was
+            exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      requestBody:
+        description: The new account balance limits
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetAccountBalanceLimits' 
+  
+  /accounts/data-for-limits:
+    get:
+      operationId: getAccountBalanceLimitsData
+      summary: >-
+        Returns data for a general search of account balance limits.
+      description: >-
+        Returns data for a general search of account balance limits.
+      tags:
+        - BalanceLimits
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            The data for searching account balances limits
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataForBalanceLimitsSearch'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /accounts/limits:
+    get:
+      operationId: searchAccountBalanceLimits
+      summary: >-
+        Searches for account balance limits.
+      description: >-
+        Searches for account balance limits, according to the given filters.
+      tags:
+        - BalanceLimits
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+        - name: accountType
+          in: query
+          required: false
+          description: "Either id or internal name of the account type"
+          schema:
+            type: string
+        - name: broker
+          in: query
+          required: false
+          description: "Either the ids or identification methods of users' broker"
+          schema:
+            type: string
+        - name: by
+          in: query
+          required: false
+          description: "Either the id or identifier of the user that performed the change"
+          schema:
+            type: string
+        - name: currency
+          in: query
+          required: false
+          description: "Either id or internal name of the currency"
+          schema:
+            type: string
+        - name: customLimit
+          in: query
+          required: false
+          description: "When set, returns only accounts that have a custom (if true) or have default (false) lower limit."
+          schema:
+            type: boolean
+        - name: customLimitRange
+          in: query
+          required: false
+          description: "The minimum / maximum customized limit. Is only used when `customLimit` is set to true. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+              format: number
+        - name: customUpperLimit
+          in: query
+          required: false
+          description: "When set, returns only accounts that have a custom (if true) or have default (false) upper limit."
+          schema:
+            type: boolean
+        - name: customUpperLimitRange
+          in: query
+          required: false
+          description: "The minimum / maximum customized upper limit. Is only used when `customUpperLimit` is set to true. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+              format: number
+        - name: groups
+          in: query
+          required: false
+          description: "Either the ids or internal names of user group"
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: kind
+          in: query
+          required: false
+          description: ''
+          schema:
+            $ref: '#/components/schemas/BalanceLimitKind'
+        - name: page
+          in: query
+          required: false
+          description: "The page number (zero-based) of the search. The default value is zero."
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          required: false
+          description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
+          schema:
+            type: integer
+            format: int32
+        - name: user
+          in: query
+          required: false
+          description: "Either the id or identifier of the account owner"
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >-
+            The data for searching account balances limits
+          headers:
+            X-Total-Count:
+              schema:
+                type: integer
+              description: >-
+                The total number of results. It may be configured in Cyclos to skip the
+                total count, which is useful on large databases, where the count itself
+                may use a lot of resources from the database. If disabled, this header is
+                not returned.
+            X-Page-Size:
+              schema:
+                type: integer
+              description: >-
+                The maximum number of results per page
+            X-Current-Page:
+              schema:
+                type: integer
+              description: >-
+                The current page the results are in
+            X-Has-Next-Page:
+              schema:
+                type: boolean
+              description: >-
+                Returns whether there is a next page. This is normally always returned,
+                whether total count is enabled or not. If the total count is not returned,
+                is the only way for clients to know whether more results are available or
+                not.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GeneralAccountBalanceLimitsResult'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
   /transfers/{key}:
     get:
       operationId: viewTransfer
@@ -15955,7 +17321,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
           description: >-
             The page content
           content:
-            text/plain:
+            text/html:
               schema:
                 type: string
         '401':
@@ -25032,6 +26398,14 @@ components:
       description: >-
         The password used to confirm this action, if needed. The actual password
         type, if any, depends on the Cyclos configuration for the current channel.
+    accountType:
+      name: accountType
+      description: >-
+        The account type internal name or id
+      in: path
+      required: true
+      schema:
+        type: string
     cyclosVersion:
       name: cyclosVersion
       in: query
@@ -25423,6 +26797,22 @@ components:
         - high
         - low
         - medium
+
+    BalanceLimitKind:
+      description: >
+        The kind of account balance limit
+        
+
+        Possible values are:
+
+        
+        - `lower`: The lower (negative) balance limit
+        
+        - `upper`: The upper (positive) balance limit
+      type: string
+      enum:
+        - lower
+        - upper
 
     BasicProfileFieldEnum:
       description: >
@@ -25914,6 +27304,41 @@ components:
         - kilometer
         - mile
 
+    DocumentKind:
+      description: >
+        The kind of a document
+        
+
+        Possible values are:
+
+        
+        - `dynamic`: A shared dynamic document - the content is a HTML text obtained from a template and variables
+        
+        - `static`: A shared static document - the content is a downloaded file
+        
+        - `user`: An individual static document belonging to a specific user
+      type: string
+      enum:
+        - dynamic
+        - static
+        - user
+
+    DocumentRangeEnum:
+      description: >
+        The document range, either shared or individual
+        
+
+        Possible values are:
+
+        
+        - `individual`: A document belonging to a specific user
+        
+        - `shared`: Shared documents. They have a category, and are the same documents for all users
+      type: string
+      enum:
+        - individual
+        - shared
+
     ErrorKind:
       description: >
         Error types associated to the HTTP Status 500
@@ -26074,6 +27499,8 @@ components:
         Possible values are:
 
         
+        - `devicePinRemoved`: The device pin was removed by exceeding the allowed attempts
+        
         - `expiredPassword`: The password being used has expired
         
         - `illegalAction`: Attempt to perform an action that is not allowed on this context
@@ -26101,6 +27528,7 @@ components:
         - `temporarilyBlocked`: The password was temporarily blocked by exceeding the allowed attempts
       type: string
       enum:
+        - devicePinRemoved
         - expiredPassword
         - illegalAction
         - inaccessibleChannel
@@ -28555,6 +29983,143 @@ components:
               items:
                 $ref: '#/components/schemas/AccountBalanceEntry'
 
+    AccountBalanceLimitsData:
+      description: >-
+        Data regarding the lower and upper limits of a user account.
+      allOf:
+      - $ref: '#/components/schemas/BaseAccountBalanceLimits'
+      - type: object
+        properties:
+          account:
+            $ref: '#/components/schemas/AccountWithCurrency'
+          user:
+            $ref: '#/components/schemas/User'
+          editable:
+            description: >-
+              Can the authenticated user manage the limits of this account?
+            type: boolean
+          defaultCreditLimit:
+            description: The default credit limit from the user products.
+            type: string
+            format: number
+          defaultUpperCreditLimit:
+            description: The default upper credit limit from the user products.
+            type: string
+            format: number
+          history:
+            description: The history of balance limit changes.
+            type: array
+            items:
+              $ref: '#/components/schemas/AccountBalanceLimitsLog'
+          confirmationPasswordInput:
+            description: >-
+              If a confirmation password is used, contains the definitions on how to
+              request that password from the user. This confirmation password is required
+              when performing sensible actions. Sometimes this is dynamic, for example,
+              the confirmation might be configured to be used only once per session, or
+              operations like payments may have a limit per day to be without confirmation
+              (pinless).
+            allOf:
+              - $ref: '#/components/schemas/PasswordInput'
+            
+
+    AccountBalanceLimitsLog:
+      description: >-
+        Log of a balance limits change
+      allOf:
+      - $ref: '#/components/schemas/BaseAccountBalanceLimits'
+      - type: object
+        properties:
+          by:
+            $ref: '#/components/schemas/User'
+          date:
+            description: >-
+              The date the limit change was performed
+            type: string
+            format: date-time
+          comment:
+            description: >-
+              Comments supplied by the manager that performed the limit change.
+            type: string
+
+    AccountBalanceLimitsQueryFilters:
+      description: Parameters for searching account balance limits
+      allOf:
+        - $ref: '#/components/schemas/QueryFilters'
+        - type: object
+          properties:
+            kind:
+              $ref: '#/components/schemas/BalanceLimitKind'
+            currency:
+              description: >-
+                Either id or internal name of the currency
+              type: string
+            accountType:
+              description: >-
+                Either id or internal name of the account type
+              type: string
+            groups:
+              description: >-
+                Either the ids or internal names of user group
+              type: array
+              items:
+                type: string
+            broker:
+              description: >-
+                Either the ids or identification methods of users' broker
+              type: string
+            user:
+              description: Either the id or identifier of the account owner
+              type: string
+            by:
+              description: >-
+                Either the id or identifier of the user that performed the change
+              type: string
+            customLimit:
+              description: >-
+                When set, returns only accounts that have a custom (if true) or
+                have default (false) lower limit. 
+              type: boolean
+            customLimitRange:
+              description: >-
+                The minimum / maximum customized limit. Is only used when
+                `customLimit` is set to true.
+                Is expressed an array, with the lower bound as first element, and
+                the upper bound as second element. When only one element, will have
+                just the lower bound. To specify only the upper bound, prefix the value
+                with a comma.
+              type: array
+              items:
+                type: string
+                format: number
+            customUpperLimit:
+              description: >-
+                When set, returns only accounts that have a custom (if true) or
+                have default (false) upper limit. 
+              type: boolean
+            customUpperLimitRange:
+              description: >-
+                The minimum / maximum customized upper limit. Is only used when
+                `customUpperLimit` is set to true.
+                Is expressed an array, with the lower bound as first element, and
+                the upper bound as second element. When only one element, will have
+                just the lower bound. To specify only the upper bound, prefix the value
+                with a comma.
+              type: array
+              items:
+                type: string
+                format: number
+
+    AccountBalanceLimitsResult:
+      description: >-
+        Result for the list of user account balance limits
+      allOf:
+      - $ref: '#/components/schemas/BaseAccountBalanceLimits'
+      - type: object
+        properties:
+          account:
+            $ref: '#/components/schemas/AccountWithCurrency'
+
     AccountHistoryQueryFilters:
       description: >-
         Parameters for searching an account's history
@@ -29867,6 +31432,33 @@ components:
             Tickets permissions
           allOf:
             - $ref: '#/components/schemas/TicketsPermissions'
+
+    BaseAccountBalanceLimits:
+      x-abstract: true
+      description: >-
+        Basic data regarding the lower and upper limits of a user account.
+      type: object
+      properties:
+        creditLimit:
+          description: The lower (negative) credit limit.
+          type: string
+          format: number
+        customCreditLimit:
+          description: >-
+            Indicates whether the credit limit is customized for this account or
+            if it is the default value.
+          type: boolean
+        upperCreditLimit:
+          description: >-
+            The upper (positive) credit limit. When this value is `null` the
+            account has no upper limit (is unlimited).
+          type: string
+          format: number
+        customUpperCreditLimit:
+          description: >-
+            Indicates whether the upper credit limit is customized for this account
+            or if it is the default value.
+          type: boolean
 
     BaseActivationCodeRequest:
       x-abstract: true
@@ -32401,6 +33993,25 @@ components:
               allOf:
                 - $ref: '#/components/schemas/AccountHistoryQueryFilters'
 
+    DataForBalanceLimitsSearch:
+      description: >-
+        Configuration data for searching a account balance limits.
+      type: object
+      properties:
+        groups:
+          description: >-
+            The groups the authenticated user can use to filter.
+          type: array
+          items:
+            $ref: '#/components/schemas/Group'
+        accountTypes:
+          description: >-
+            The account types that can be used to filter.
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountType'
+            
+
     DataForChangeForgottenPassword:
       description: >-
         Definitions for a user to confirm a forgotten password request
@@ -32417,6 +34028,26 @@ components:
             question that needs to be answered in order to complete the forgotten
             password reset request.
           type: string
+
+    DataForDynamicDocument:
+      description: >-
+        Contains the data for processing a dynamic document for a given user
+      type: object
+      properties:
+        document:
+          description: The document which is being processed
+          allOf: 
+          - $ref: '#/components/schemas/Document'
+        user:
+          description: The user for which the document is being processed
+          allOf: 
+          - $ref: '#/components/schemas/User'
+        formFields:
+          description: The document form fields to be filled in
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomFieldDetailed'
+          
 
     DataForEasyInvoice:
       description: >-
@@ -33311,6 +34942,264 @@ components:
                     
       
 
+    Document:
+      description: Reference to a document
+      allOf:
+        - $ref: '#/components/schemas/NamedEntity'
+        - type: object
+          properties:
+            kind:
+              description: The document kind
+              allOf:
+                - $ref: '#/components/schemas/DocumentKind'
+            description:
+              description: The document description. 
+              type: string
+            category:
+              description: >-
+                The document category.
+                Only if `kind` is either `static`
+                or `dynamic`. 
+              allOf:
+                - $ref: '#/components/schemas/EntityReference'
+            file:
+              description: >-
+                The document file description. Only if `kind` is either
+                `static` or `user`.
+              allOf:
+              - $ref: '#/components/schemas/StoredFile'
+                
+
+    DocumentBasicData:
+      description: >-
+        Contains data shared by both DocumentDataForNew and DocumentDataForEdit
+      type: object
+      x-abstract: true
+      properties:
+        kind:
+          $ref: '#/components/schemas/DocumentKind'
+        categories:
+          description: >-
+            The possible document categories. Only returned if `kind` is
+            `static`.
+          type: array
+          items:
+            $ref: '#/components/schemas/EntityReference'
+        user:
+          description: >-
+            The document owner user. Only returned if `kind` is
+            `user`.
+          allOf:
+          - $ref: '#/components/schemas/User'
+
+    DocumentDataForEdit:
+      description: >-
+        Fields for editing a document
+      allOf:
+      - $ref: '#/components/schemas/DocumentBasicData'
+      - type: object
+        properties:
+          file:
+            description: The current document file
+            allOf:
+            - $ref: '#/components/schemas/StoredFile' 
+          document:
+            $ref: '#/components/schemas/DocumentEdit'
+            description: >-
+              The document that is being edited. This value can be modified and sent
+              back to `PUT /documents/{id}`.
+          
+
+    DocumentDataForNew:
+      description: >-
+        Fields for creating a new document
+      allOf:
+      - $ref: '#/components/schemas/DocumentBasicData'
+      - type: object
+        properties:
+          document:
+            $ref: '#/components/schemas/DocumentNew'
+            description: >-
+              The document that is being created. This value can be modified and sent
+              back to either `POST /documents` (shared) or `POST /{user}/documents`.
+          
+
+    DocumentDataForSearch:
+      description: Configuration data for searching documents
+      type: object
+      properties:
+        categories:
+          description: Visible document categories
+          type: array
+          items:
+            $ref: '#/components/schemas/EntityReference'
+        manageCategories:
+          description: >-
+            Either internal names of ids of categories the logged user can manage
+          type: array
+          items:
+            type: string
+        canManageIndividual:
+          description: >-
+            Indicates whether the logged user can manage individual documents
+            of managed users
+          type: boolean
+
+    DocumentEdit:
+      description: >-
+        Fields for editing a document
+      allOf:
+      - $ref: '#/components/schemas/DocumentManage'
+      - type: object
+        properties:
+          version:
+            type: integer
+            description: >-
+              The version stamp for the current object, used for optimistic locking. When
+              saving, the same version as previously received needs to be passed back. If
+              no one else has saved the object, the version will match and the object will
+              be updated. However, if someone other has saved the object, the version will
+              no longer match, and an error will be raised. This is used to prevent
+              multiple users (or processes) from updating the same object and unwilingly
+              overridding the property values, leading to data loss.
+
+    DocumentManage:
+      description: >-
+        Common fields for either creating or editing a document
+      type: object
+      x-abstract: true
+      properties:
+        name:
+          description: The document name
+          type: string
+        description:
+          description: The document description
+          type: string
+        enabled:
+          description: Whether the document is enabled
+          type: boolean
+    
+        category:
+          description: >-
+            The shared document category internal name or id.
+            Only used if the document `kind` is either
+            `static` or `dynamic`. 
+          type: string
+    
+        userVisible:
+          description: >-
+            Is this document visible by the owner user?
+            Only used if the document `kind` is `user`.
+          type: boolean
+        brokerVisible:
+          description: >-
+            Is this document visible by the user's broker(s)?
+            Only used if the document `kind` is `user`.
+          type: boolean
+        brokerManageable:
+          description: >-
+            Can this document be managed by the user's broker(s)?
+            Only used if the document `kind` is `user`.
+          type: boolean
+
+    DocumentNew:
+      description: >-
+        Fields for creating a new individual document
+      allOf:
+      - $ref: '#/components/schemas/DocumentManage'
+      - type: object
+
+    DocumentQueryFilters:
+      description: Filters used when searching documents
+      allOf:
+        - $ref: '#/components/schemas/QueryFilters'
+        - type: object
+          properties:
+            range:
+              description: >-
+                The range for returned documents. When not specified, defaults
+                to `shared`.
+              $ref: '#/components/schemas/DocumentRangeEnum'
+            categories:
+              description: The shared document categories
+              type: array
+              items:
+                type: string
+            enabled:
+              description: >-
+                Only used if the logged user can manage documents. When set,
+                filters documents by their `enabled` status, either `true` or
+                `false`.
+              type: boolean 
+            groups:
+              description: >-
+                Either the ids or internal names of individual document
+                owners' group
+              type: array
+              items:
+                type: string
+            brokers:
+              description: >-
+                Either the ids or identification methods of individual document
+                owners' brokers
+              type: array
+              items:
+                type: string
+            user:
+              description: Either the id or identifier of the document owner
+              type: string
+
+    DocumentResult:
+      description: Result from a document search
+      allOf:
+        - $ref: '#/components/schemas/Document'
+        - type: object
+          properties:
+            user:
+              description: >-
+                The document owner. Only if `kind` is `user`. 
+              allOf:
+                - $ref: '#/components/schemas/User'
+                
+
+    DocumentView:
+      description: Details of a document
+      allOf:
+        - $ref: '#/components/schemas/Document'
+        - type: object
+          properties:
+            description:
+              description: The document description. 
+              type: string
+            enabled:
+              description: Whether the document is enabled or not. 
+              type: boolean
+    
+            category:
+              description: The document category, if a shared document
+              allOf:
+                - $ref: '#/components/schemas/EntityReference'
+            user:
+              description: >-
+                The document owner. Only if `kind` is `user`. 
+              allOf:
+                - $ref: '#/components/schemas/User'
+            userVisible:
+              description: >-
+                Is this document visible by the owner user?
+                Only used if the document `kind` is `user`.
+              type: boolean
+            brokerVisible:
+              description: >-
+                Is this document visible by the user's broker(s)?
+                Only used if the document `kind` is `user`.
+              type: boolean
+            brokerManageable:
+              description: >-
+                Can this document be managed by the user's broker(s)?
+                Only used if the document `kind` is `user`.
+              type: boolean
+
     Entity:
       description: >-
         Basic definition of a persistent entity
@@ -33680,6 +35569,16 @@ components:
                 position.
               type: number
               format: double
+
+    GeneralAccountBalanceLimitsResult:
+      description: >-
+        Result for the list of a general search of account balance limits
+      allOf:
+      - $ref: '#/components/schemas/AccountBalanceLimitsResult'
+      - type: object
+        properties:
+          user:
+            $ref: '#/components/schemas/User'
 
     GeneralOperatorsDataForSearch:
       type: object
@@ -37174,6 +39073,19 @@ components:
               allOf:
                 - $ref: '#/components/schemas/TokenTypeEnum'
 
+    ProcessDynamicDocument:
+      description: >-
+        Defines parameters used to process a dynamic document
+      type: object
+      properties:
+        formFields:
+          description: >-
+            Holds the form field values, keyed by field internal name or id. The
+            format of the value depends on the custom field type.
+          type: object
+          additionalProperties:
+            type: string
+
     ProfileFieldActions:
       description: >-
         Determines the allowed actions over a given profile field
@@ -37247,6 +39159,7 @@ components:
       description: >-
         Contains data shared by both RecordDataForNew and RecordDataForEdit
       type: object
+      x-abstract: true
       properties:
         type:
           $ref: '#/components/schemas/RecordTypeDetailed'
@@ -38227,32 +40140,31 @@ components:
 
     SessionDataForSearch:
       description: >-
-        Contains data with the configuration for searching sessions
+        Data for searching user sessions
       allOf:
         - type: object
           properties:
             roles:
               description: >-
-                The possible user roles the authenticated user can use to filter
-                the search.
+                The roles the authenticated user can use to filter sessions.
               type: array
               items:
                 $ref: '#/components/schemas/RoleEnum'
             channels:
               description: >-
-                Internal names of the channels that can be used to filter the search.
+                The channel internal names the authenticated user can use to filter sessions.
               type: array
               items:
                 $ref: '#/components/schemas/EntityReference'
             query:
               description: >-
-                Default query filters to search sessions
+                Default query filters for searching sessions
               allOf:
                 - $ref: '#/components/schemas/SessionQueryFilters'
 
     SessionQueryFilters:
       description: >-
-        Query filters for sessions
+        Search filters for sessions
       allOf:
         - $ref: '#/components/schemas/QueryFilters'
         - type: object
@@ -38260,26 +40172,27 @@ components:
             broker:
               description: >-
                 Either id or a principal (login name, e-mail, etc) of a broker.
-                Used to filter the sessions of its brokered users.
+                Used to filter the sessions of users brokered by the given broker.
               type: string
             channels:
               description: >-
-                Internal names of the sessions channels that can be retuerned.
+                Internal names of the sessions channels that can be returned.
               type: array
               items:
                 type: string
             excludeCurrentSession:
               type: boolean
               description: >-
-                When set to `true` will not return the running session.
+                Whether to exclude or not the current session.
             operatorsOf:
               description: >-
                 Either id or a principal (login name, e-mail, etc) of a user.
-                Used to filter the sessions of its operators.
+                The owner member of the operators sessions
+                Used to filter the operator sessions of the given user.
               type: string
             roles:
               description: >-
-                The role of the logged users in the sessions.
+                The role of the logged user in the sessions.
               type: array
               items:
                 $ref: '#/components/schemas/RoleEnum'
@@ -38315,8 +40228,20 @@ components:
               $ref: '#/components/schemas/EntityReference'
             currentSession:
               description: >-
-                True if it is the same session where is running
+                Whether the session is the current one
               type: boolean
+
+    SetAccountBalanceLimits:
+      description: Parameters for setting the new account limits.
+      allOf:
+      - $ref: '#/components/schemas/BaseAccountBalanceLimits'
+      - type: object
+        properties:
+          comment:
+            description: >-
+              Comments supplied by the manager regarding  the limit change.
+            type: string
+            
 
     SetDeliveryMethod:
       description: >-
@@ -40052,6 +41977,19 @@ components:
                 specific user, this field may not be returned.
               allOf:
                 - $ref: '#/components/schemas/User'
+
+    UserAccountBalanceLimitsListData:
+      description: >-
+        Data regarding the lower and upper limits of a user's accounts.
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+        accountLimits:
+          description: The balance limits for each account
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountBalanceLimitsResult'
 
     UserAddressesListData:
       description: >-
