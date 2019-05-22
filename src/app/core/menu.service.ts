@@ -1,11 +1,13 @@
 import { Injectable, Injector } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { AccountType, Auth, DataForUi, Operation } from 'app/api/models';
+import { AccountType, Auth, DataForUi, Operation, RoleEnum } from 'app/api/models';
 import { Configuration } from 'app/configuration';
+import { BankingHelperService } from 'app/core/banking-helper.service';
 import { BreadcrumbService } from 'app/core/breadcrumb.service';
 import { ContentService } from 'app/core/content.service';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { LoginService } from 'app/core/login.service';
+import { OperationHelperService } from 'app/core/operation-helper.service';
 import { StateManager } from 'app/core/state-manager';
 import { I18n } from 'app/i18n/i18n';
 import { ApiHelper } from 'app/shared/api-helper';
@@ -14,7 +16,6 @@ import { LayoutService } from 'app/shared/layout.service';
 import { ActiveMenu, ConditionalMenu, Menu, MenuEntry, MenuType, RootMenu, RootMenuEntry, SideMenuEntries } from 'app/shared/menu';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { filter, first, map } from 'rxjs/operators';
-import { OperationHelperService } from 'app/core/operation-helper.service';
 
 /**
  * Parameters accepted by the `navigate` method
@@ -59,6 +60,7 @@ export class MenuService {
     private login: LoginService,
     private breadcrumb: BreadcrumbService,
     private stateManager: StateManager,
+    private bankingHelper: BankingHelperService,
     private content: ContentService,
     private operationHelper: OperationHelperService,
     layout: LayoutService
@@ -536,17 +538,14 @@ export class MenuService {
 
       const banking = permissions.banking || {};
       const contacts = permissions.contacts || {};
-      const accounts = banking.accounts || [];
 
       // Banking
-      if (accounts.length > 0) {
-        for (const account of accounts) {
-          if (account.visible === false) {
-            continue;
-          }
-          const type = account.account.type;
+      const accountTypes = this.bankingHelper.ownerAccountTypes();
+      if (accountTypes.length > 0) {
+        for (const type of accountTypes) {
           const activeMenu = new ActiveMenu(Menu.ACCOUNT_HISTORY, { accountType: type });
-          add(activeMenu, `/banking/account/${ApiHelper.internalNameOrId(type)}`, 'account_balance', type.name);
+          const label = auth.role !== RoleEnum.ADMINISTRATOR && accountTypes.length === 1 ? this.i18n.menu.bankingAccount : type.name;
+          add(activeMenu, `/banking/account/${ApiHelper.internalNameOrId(type)}`, 'account_balance', label);
         }
       }
       const payments = banking.payments || {};

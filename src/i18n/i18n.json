@@ -173,6 +173,7 @@
     "home": "Home",
     "dashboard": "Dashboard",
     "banking": "Banking",
+    "banking.account": "Account",
     "banking.payUser": "Payment to user",
     "banking.paySystem": "Payment to system",
     "banking.paySelf": "Payment to self",
