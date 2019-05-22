@@ -1,4 +1,4 @@
-import { Injector, OnDestroy, OnInit, ElementRef } from '@angular/core';
+import { Injector, OnDestroy, OnInit, ElementRef, Type } from '@angular/core';
 import { FormatService } from 'app/core/format.service';
 import { I18n } from 'app/i18n/i18n';
 import { ApiHelper } from 'app/shared/api-helper';
@@ -25,7 +25,7 @@ export abstract class AbstractComponent implements OnInit, OnDestroy {
     this.i18n = injector.get(I18n);
     this.format = injector.get(FormatService);
     this.shortcut = injector.get(ShortcutService);
-    this.elementRef = injector.get(ElementRef);
+    this.elementRef = injector.get(ElementRef as Type<ElementRef>);
   }
 
   get element(): HTMLElement {

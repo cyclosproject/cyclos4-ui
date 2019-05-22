@@ -1,7 +1,12 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { ConflictError, ConflictErrorCode, ErrorKind, ForbiddenError, ForbiddenErrorCode, ForgottenPasswordError, ForgottenPasswordErrorCode, InputError, InputErrorCode, NestedError, NotFoundError, OtpError, PasswordStatusEnum, PaymentError, PaymentErrorCode, UnauthorizedError, UnauthorizedErrorCode } from 'app/api/models';
+import {
+  ConflictError, ConflictErrorCode, ErrorKind, ForbiddenError,
+  ForbiddenErrorCode, ForgottenPasswordError, ForgottenPasswordErrorCode,
+  InputError, InputErrorCode, NestedError, NotFoundError, OtpError,
+  PasswordStatusEnum, PaymentError, PaymentErrorCode, UnauthorizedError, UnauthorizedErrorCode
+} from 'app/api/models';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { FormatService } from 'app/core/format.service';
 import { LoginService } from 'app/core/login.service';

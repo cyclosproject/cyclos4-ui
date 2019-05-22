@@ -119,6 +119,47 @@ export module Menu {
   }
 }
 
+/**
+ * The entries to show in the side menu
+ */
+export class SideMenuEntries {
+  constructor(
+    public title: string,
+    public entries: MenuEntry[]
+  ) {
+  }
+}
+
+/**
+ * A dynamic menu condition
+ */
+export type ConditionalMenu = (injector: Injector) => Menu | ActiveMenu | Observable<Menu | ActiveMenu>;
+
+/**
+ * Additional identifier for a dynamic active menu
+ */
+export interface ActiveMenuData {
+  accountType?: AccountType;
+  contentPage?: string;
+  operation?: Operation;
+}
+
+/**
+ * Contains information about the active menu
+ */
+export class ActiveMenu {
+  constructor(
+    public menu: Menu,
+    public data?: ActiveMenuData
+  ) {
+  }
+
+  matches(entry: MenuEntry): boolean {
+    return isEqual(this, entry.activeMenu);
+  }
+}
+
+
 
 /** Base class for a resolved menu entry */
 export abstract class BaseMenuEntry {
@@ -169,42 +210,3 @@ export class MenuEntry extends BaseMenuEntry {
   }
 }
 
-/**
- * The entries to show in the side menu
- */
-export class SideMenuEntries {
-  constructor(
-    public title: string,
-    public entries: MenuEntry[]
-  ) {
-  }
-}
-
-/**
- * A dynamic menu condition
- */
-export type ConditionalMenu = (injector: Injector) => Menu | ActiveMenu | Observable<Menu | ActiveMenu>;
-
-/**
- * Additional identifier for a dynamic active menu
- */
-export interface ActiveMenuData {
-  accountType?: AccountType;
-  contentPage?: string;
-  operation?: Operation;
-}
-
-/**
- * Contains information about the active menu
- */
-export class ActiveMenu {
-  constructor(
-    public menu: Menu,
-    public data?: ActiveMenuData
-  ) {
-  }
-
-  matches(entry: MenuEntry): boolean {
-    return isEqual(this, entry.activeMenu);
-  }
-}

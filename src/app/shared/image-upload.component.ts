@@ -139,7 +139,7 @@ export class ImageUploadComponent implements OnDestroy {
 
       this.changeDetector.detectChanges();
 
-      const observables = [];
+      const observables: Observable<Image>[] = [];
       const files = [];
       for (let i = 0; i < results.length; i++) {
         const name = names[i];
@@ -151,7 +151,7 @@ export class ImageUploadComponent implements OnDestroy {
       this.files.next(files);
 
       // Join all requests in a single subscription
-      this.subscription = forkJoin<Image>(observables).subscribe(images => {
+      this.subscription = forkJoin(observables).subscribe(images => {
         this.subscription.unsubscribe();
         this.files.next([]);
         this.uploading$.next(false);

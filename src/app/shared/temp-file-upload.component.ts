@@ -112,7 +112,7 @@ export class TempFileUploadComponent {
 
     // Upload each file
     this.uploading$.next(true);
-    const observables = [];
+    const observables: Observable<StoredFile>[] = [];
     this.files = [];
     const max = Math.min(this.max, fileList.length);
     const tooLarge = [];
@@ -138,7 +138,7 @@ export class TempFileUploadComponent {
     }
 
     // Join all requests in a single subscription
-    this.subscription = forkJoin<StoredFile>(observables).subscribe(storedFiles => {
+    this.subscription = forkJoin(observables).subscribe(storedFiles => {
       this.subscription.unsubscribe();
       this.files = [];
       this.uploading$.next(false);
