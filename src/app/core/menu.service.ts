@@ -16,6 +16,7 @@ import { LayoutService } from 'app/shared/layout.service';
 import { ActiveMenu, ConditionalMenu, Menu, MenuEntry, MenuType, RootMenu, RootMenuEntry, SideMenuEntries } from 'app/shared/menu';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { filter, first, map } from 'rxjs/operators';
+import { I18nLoadingService } from 'app/core/i18n-loading.service';
 
 /**
  * Parameters accepted by the `navigate` method
@@ -56,6 +57,7 @@ export class MenuService {
     private i18n: I18n,
     private injector: Injector,
     private dataForUiHolder: DataForUiHolder,
+    i18nLoading: I18nLoadingService,
     private router: Router,
     private login: LoginService,
     private breadcrumb: BreadcrumbService,
@@ -69,7 +71,7 @@ export class MenuService {
     const initialAuth = (initialDataForUi || {}).auth;
 
     // If initially with a DataForUi instance and using static locale
-    if (initialDataForUi != null && this.dataForUiHolder.staticLocale) {
+    if (initialDataForUi != null && i18nLoading.isStatic) {
       this._fullMenu.next(this.buildFullMenu(initialAuth));
     }
 
@@ -82,7 +84,7 @@ export class MenuService {
       }
     };
     dataForUiHolder.subscribe(buildMenu);
-    dataForUiHolder.subscribeForLocale(() => buildMenu(dataForUiHolder.dataForUi));
+    i18nLoading.subscribeForLocale(() => buildMenu(dataForUiHolder.dataForUi));
 
     // Whenever we navigate back to home, update the active menu to match
     router.events.pipe(

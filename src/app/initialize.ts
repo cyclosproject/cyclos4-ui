@@ -1,12 +1,11 @@
-import { HttpClient } from '@angular/common/http';
-import { APP_INITIALIZER, Injector, Provider, isDevMode } from '@angular/core';
+import { APP_INITIALIZER, Injector, Provider } from '@angular/core';
 import { ApiConfiguration } from 'app/api/api-configuration';
 import { Configuration } from 'app/configuration';
 import { ContentGetter } from 'app/content/content-getter';
 import { DefaultDashboardResolver } from 'app/content/default-dashboard-resolver';
 import { ContentService } from 'app/core/content.service';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
-import { I18n } from 'app/i18n/i18n';
+import { I18nLoadingService } from 'app/core/i18n-loading.service';
 import { setup } from 'app/setup';
 import { LightboxConfig } from 'ngx-lightbox';
 import { forkJoin, of } from 'rxjs';
@@ -46,6 +45,7 @@ export function initialize(
   injector: Injector,
   apiConfig: ApiConfiguration,
   lightboxConfig: LightboxConfig,
+  i18nLoading: I18nLoadingService,
   dataForUiHolder: DataForUiHolder,
   content: ContentService
 ): Function {
@@ -68,10 +68,8 @@ export function initialize(
     lightboxConfig.disableScrolling = true;
     lightboxConfig.wrapAround = true;
 
-    // If the translations are statically set, initialize the translation values
-    if (Configuration.staticLocale && Configuration.staticTranslations) {
-      dataForUiHolder._setLocale(Configuration.staticLocale, Configuration.staticTranslations);
-    }
+    // Initialize the translations loading
+    i18nLoading.initialize();
 
     let contentPages = Configuration.contentPages ? Configuration.contentPages.contentPages(injector) : null;
     if (!contentPages) {
@@ -82,14 +80,6 @@ export function initialize(
       contentPages = of(contentPages);
     }
 
-    // If running in development mode, run the default translations first
-    if (isDevMode()) {
-      const http = injector.get(HttpClient);
-      const i18n = injector.get(I18n);
-      const hash = I18n.contentHash('en');
-      i18n.defaultValues = await http.get(`i18n/i18n.json?h=${hash}`).toPromise();
-    }
-
     // Load both content pages and data for UI
     const result = await forkJoin([contentPages, dataForUiHolder.initialize()]).toPromise();
     content.contentPages = (result[0] || []).filter((p: any) => !!p);
@@ -98,6 +88,6 @@ export function initialize(
 export const INITIALIZE: Provider = {
   provide: APP_INITIALIZER,
   useFactory: initialize,
-  deps: [Injector, ApiConfiguration, LightboxConfig, DataForUiHolder, ContentService],
+  deps: [Injector, ApiConfiguration, LightboxConfig, I18nLoadingService, DataForUiHolder, ContentService],
   multi: true
 };

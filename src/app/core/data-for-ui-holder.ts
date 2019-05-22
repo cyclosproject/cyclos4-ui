@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiConfiguration } from 'app/api/api-configuration';
@@ -12,7 +12,8 @@ import { I18n } from 'app/i18n/i18n';
 import { isSameOrigin, setReloadButton, setRootAlert } from 'app/shared/helper';
 import moment from 'moment-mini-ts';
 import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
-import { catchError, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, map, switchMap, tap, first } from 'rxjs/operators';
+import { I18nLoadingService } from 'app/core/i18n-loading.service';
 
 /**
  * Injectable used to hold the `DataForUi` instance used by the application
@@ -21,26 +22,16 @@ import { catchError, map, switchMap, tap } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class DataForUiHolder {
-  _staticLocale: string;
-  get staticLocale(): string {
-    return this._staticLocale;
-  }
-  set staticLocale(locale: string) {
-    this._staticLocale = locale;
-    this.locale$.next(locale);
-  }
 
   private dataForUi$ = new BehaviorSubject<DataForUi>(null);
-  private locale$ = new BehaviorSubject<string>(null);
   private timeDiff: number;
-  private cachedTranslations = new Map<string, any>();
 
   constructor(
     private apiConfiguration: ApiConfiguration,
+    private i18nLoading: I18nLoadingService,
     private uiService: UiService,
     private authService: AuthService,
     private i18n: I18n,
-    private http: HttpClient,
     private injector: Injector,
     private location: Location) {
   }
@@ -95,9 +86,9 @@ export class DataForUiHolder {
       // Store the time diff
       this.timeDiff = new Date().getTime() - moment(dataForUi.currentClientTime).toDate().getTime();
       // Fetch the translations, if not statically set
-      if (this._staticLocale == null) {
-        this.setTranslation((dataForUi.language || { code: 'en' }).code, dataForUi.country);
-      }
+      const language = (dataForUi.language || { code: 'en' }).code;
+      const country = dataForUi.country;
+      this.i18nLoading.load(language, country).pipe(first()).subscribe();
     }
   }
 
@@ -107,50 +98,6 @@ export class DataForUiHolder {
   subscribe(next?: (dataForUi: DataForUi) => void, error?: (error: any) => void, complete?: () => void): Subscription {
     return this.dataForUi$.subscribe(next, error, complete);
   }
-
-  /**
-   * Adds a new observer subscription for locale change events.
-   * The event is only triggered when the translations are fetched
-   */
-  subscribeForLocale(next?: (locale: string) => void, error?: (error: any) => void, complete?: () => void): Subscription {
-    return this.locale$.subscribe(next, error, complete);
-  }
-
-  private setTranslation(language: string, country: string) {
-    const locales = I18n.locales();
-    let locale: string;
-    const withCountry = `${language}_${country}`;
-    if (locales.includes(withCountry)) {
-      locale = withCountry;
-    } else if (locales.includes(language)) {
-      locale = language;
-    } else {
-      locale = 'en';
-    }
-    const fileName = I18n.fileName(locale);
-    if (this.cachedTranslations.has(fileName)) {
-      this._setLocale(locale, this.cachedTranslations.get(fileName));
-    } else {
-      // Load the translation
-      const hash = I18n.contentHash(locale);
-      this.i18n.initialized$.next(false);
-      this.http.get(`i18n/${fileName}?h=${hash}`).subscribe(values => {
-        this.cachedTranslations.set(fileName, values);
-        this._setLocale(locale, values);
-      });
-    }
-  }
-
-  /**
-   * Sets the locale and translation values.
-   * Shouldn't be called by regular components, only by initializations.
-   */
-  _setLocale(locale: string, translationValues: any) {
-    this.i18n.initialize(translationValues);
-    this.locale$.next(locale);
-    document.documentElement.lang = locale.toLowerCase();
-  }
-
 
   /**
    * Replaces the given session token with a new one.

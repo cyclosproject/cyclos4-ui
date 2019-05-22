@@ -6,6 +6,7 @@ import Big from 'big.js';
 import moment from 'moment-mini-ts';
 import { DataForUiHolder } from './data-for-ui-holder';
 import { Configuration } from 'app/configuration';
+import { I18nLoadingService } from 'app/core/i18n-loading.service';
 
 export const ISO_DATE = 'YYYY-MM-DD';
 
@@ -18,6 +19,7 @@ export const ISO_DATE = 'YYYY-MM-DD';
 export class FormatService {
   constructor(
     dataForUiHolder: DataForUiHolder,
+    i18nLoading: I18nLoadingService,
     private apiConfiguration: ApiConfiguration,
     private i18n: I18n) {
     dataForUiHolder.subscribe(dataForUi => this.initialize(dataForUi));
@@ -25,7 +27,7 @@ export class FormatService {
     if (dataForUiHolder.dataForUi) {
       this.initialize(dataForUiHolder.dataForUi);
     }
-    dataForUiHolder.subscribeForLocale(() => {
+    i18nLoading.subscribeForLocale(() => {
       this.initialize(dataForUiHolder.dataForUi);
     });
   }
