@@ -29,7 +29,7 @@
 
       <password-input #password class="d-block login-margin-bottom"
         formControlName="password" autocomplete="password" showIcon
-        [passwordInput]="data?.loginPasswordInput" (keyup.enter)="doLogin()"
+        [passwordInput]="data.loginPasswordInput" (keyup.enter)="doLogin()"
         [placeholder]="i18n.auth.login.password"></password-input>
 
       <button #submit type="button"

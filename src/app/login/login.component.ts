@@ -43,14 +43,14 @@ export class LoginComponent
     private nextRequestState: NextRequestState
   ) {
     super(injector);
-    this.form = this.formBuilder.group({
-      principal: '',
-      password: ''
-    });
   }
 
   ngOnInit() {
     super.ngOnInit();
+    this.form = this.formBuilder.group({
+      principal: '',
+      password: ''
+    });
     if (this.nextRequestState.hasSession) {
       // Already logged in
       this.addSub(this.dataForUiHolder.reload().subscribe(() =>

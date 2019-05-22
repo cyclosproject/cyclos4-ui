@@ -61,7 +61,7 @@ export class ContactListComponent
     });
   }
 
-  doSearch(value) {
+  doSearch(value: any) {
     return this.contactsService.searchContactList$Response(value);
   }
 
