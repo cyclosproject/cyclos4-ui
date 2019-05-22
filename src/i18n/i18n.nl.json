@@ -173,6 +173,7 @@
     "home": "Start",
     "dashboard": "Dashboard",
     "banking": "Geldzaken",
+    "banking.account": "Account",
     "banking.payUser": "Betaling aan gebruiker",
     "banking.paySystem": "Betaling aan systeem",
     "banking.paySelf": "De betaling zelf",

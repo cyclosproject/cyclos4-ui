@@ -173,6 +173,7 @@
     "home": "Inicio",
     "dashboard": "Panel de acciones",
     "banking": "Banca",
+    "banking.account": "Account",
     "banking.payUser": "Pago a usuario",
     "banking.paySystem": "Pago al sistema",
     "banking.paySelf": "Auto pago",
