@@ -173,7 +173,7 @@
     "home": "Inicio",
     "dashboard": "Panel de acciones",
     "banking": "Banca",
-    "banking.account": "Account",
+    "banking.account": "Cuenta",
     "banking.payUser": "Pago a usuario",
     "banking.paySystem": "Pago al sistema",
     "banking.paySelf": "Auto pago",
@@ -303,7 +303,7 @@
     "quickAccess": "Acceso rápido",
     "quickAccess.shortcutTemplate": "{shortcut}: {label}",
     "action": {
-      "account": "Cuentas",
+      "account": "Cuenta",
       "payUser": "Pago a usuario",
       "paySystem": "Pago a sistema",
       "contacts": "Contactos",
