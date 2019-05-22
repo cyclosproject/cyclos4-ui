@@ -67,7 +67,7 @@
     "@types/node": "^10.14.7",
     "codelyzer": "~4.5.0",
     "ng-openapi-gen": "^0.3.1",
-    "ng-translation-gen": "^0.4.1",
+    "ng-translation-gen": "^0.5.0",
     "svgo": "^1.2.2",
     "ts-node": "~7.0.1",
     "tslint": "~5.11.0",

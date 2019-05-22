@@ -1,13 +1,15 @@
-import { APP_INITIALIZER, Injector, Provider } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { APP_INITIALIZER, Injector, Provider, isDevMode } from '@angular/core';
 import { ApiConfiguration } from 'app/api/api-configuration';
 import { Configuration } from 'app/configuration';
+import { ContentGetter } from 'app/content/content-getter';
+import { DefaultDashboardResolver } from 'app/content/default-dashboard-resolver';
 import { ContentService } from 'app/core/content.service';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
+import { I18n } from 'app/i18n/i18n';
 import { setup } from 'app/setup';
 import { LightboxConfig } from 'ngx-lightbox';
 import { forkJoin, of } from 'rxjs';
-import { DefaultDashboardResolver } from 'app/content/default-dashboard-resolver';
-import { ContentGetter } from 'app/content/content-getter';
 
 /**
  * Sets the default values on the global configuration
@@ -80,9 +82,17 @@ export function initialize(
       contentPages = of(contentPages);
     }
 
+    // If running in development mode, run the default translations first
+    if (isDevMode()) {
+      const http = injector.get(HttpClient);
+      const i18n = injector.get(I18n);
+      const hash = I18n.contentHash('en');
+      i18n.defaultValues = await http.get(`i18n/i18n.json?h=${hash}`).toPromise();
+    }
+
     // Load both content pages and data for UI
-    const result = await forkJoin(contentPages, dataForUiHolder.initialize()).toPromise();
-    content.contentPages = (result[0] || []).filter(p => !!p);
+    const result = await forkJoin([contentPages, dataForUiHolder.initialize()]).toPromise();
+    content.contentPages = (result[0] || []).filter((p: any) => !!p);
   };
 }
 export const INITIALIZE: Provider = {
