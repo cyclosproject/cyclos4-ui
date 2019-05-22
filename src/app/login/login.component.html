@@ -33,7 +33,7 @@
         [placeholder]="i18n.auth.login.password"></password-input>
 
       <button #submit type="button"
-        class="btn btn-primary login-margin-top login-margin-bottom px-5 mt-3 mt-xs-0"
+        class="btn btn-primary login-margin-top login-margin-bottom px-5 mt-3 mt-sm-4"
         [disabled]="requesting$ | async"
         (click)="doLogin();$event.preventDefault();">
         {{ i18n.general.submit }}
