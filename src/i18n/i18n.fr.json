@@ -173,6 +173,7 @@
     "home": "Accueil",
     "dashboard": "Tableau de bord",
     "banking": "Banking",
+    "banking.account": "Account",
     "banking.payUser": "Paiement à l'utilisateur",
     "banking.paySystem": "Paiement au système",
     "banking.paySelf": "Paiement à soi-même",
