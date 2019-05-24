@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, isDevMode } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiConfiguration } from 'app/api/api-configuration';
 import { Auth, Permissions, User } from 'app/api/models';
@@ -161,7 +161,7 @@ export class LoginService {
   login(principal: string, password: string): Observable<Auth> {
     // Setup the basic authentication for the login request
     this.nextRequestState.nextAsBasic(principal, password);
-    const useCookie = isSameOrigin(this.apiConfiguration.rootUrl);
+    const useCookie = isSameOrigin(this.apiConfiguration.rootUrl) && !isDevMode();
 
     return this.authService.login({
       cookie: useCookie,
