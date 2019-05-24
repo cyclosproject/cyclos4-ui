@@ -79,15 +79,21 @@ export class HomeComponent extends BasePageComponent<void> implements OnInit {
   }
 
   private fetchPasswords() {
-    this.addSub(this.passwordsService.getUserPasswordsListData({
-      user: ApiHelper.SELF,
-      fields: ['dataForSetSecurityAnswer', 'passwords.status', 'passwords.type.name', 'passwords.type.mode']
-    }).subscribe(data => {
+    const initPasswords = (data: DataForUserPasswords) => {
       this.passwords = data;
       this.passwordsNeedingAttention = (data.passwords || []).filter(p => this.needsAttention(p));
       this.pendingSecurityAnswer = !!data.dataForSetSecurityAnswer;
       this.maybeSetReady();
-    }));
+    };
+
+    this.addSub(this.errorHandler.requestWithCustomErrorHandler(() =>
+      this.passwordsService.getUserPasswordsListData({
+        user: ApiHelper.SELF,
+        fields: ['dataForSetSecurityAnswer', 'passwords.status', 'passwords.type.name', 'passwords.type.mode']
+      })
+    ).subscribe(initPasswords,
+      // On error, initialize with no passwords needing attention
+      () => initPasswords({})));
   }
 
   private needsAttention(password: PasswordStatusAndActions): boolean {
