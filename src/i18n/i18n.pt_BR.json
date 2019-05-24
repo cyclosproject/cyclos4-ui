@@ -11,7 +11,7 @@
     "beginDate": "Data inicial",
     "endDate": "Data final",
     "notApplied": "Não aplicado",
-    "notAppliedSelect": "Não aplicado (selecione para aplicar)",
+    "notAppliedSelect": "Not applied (please select to apply)",
     "user": "Usuário",
     "operator": "Operador",
     "name": "Nome",
