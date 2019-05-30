@@ -52,7 +52,8 @@
     <h2 class="d-none d-sm-block my-3 pt-3">{{ i18n.general.description }}
     </h2>
     <hr class="d-block d-sm-none">
-    <div [innerHTML]="ad.description | trust"></div>
+    <rich-text-container autoHeight [value]="ad.description">
+    </rich-text-container>
 
     <div *ngIf="addresses?.length > 0" class="d-flex flex-grow-1 flex-column">
       <ng-container>
