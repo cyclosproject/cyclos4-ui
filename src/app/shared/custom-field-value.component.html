@@ -1,3 +1,6 @@
-<label-value [hidden]="!formatFieldValue.hasValue" [label]="fieldValue?.field?.name">
-  <format-field-value #formatFieldValue [fieldValue]="fieldValue"></format-field-value>
+<label-value [hidden]="!formatFieldValue.hasValue"
+  [label]="fieldValue?.field?.name"
+  [labelPosition]="labelOnTop((layout.ltsm$ | async)) ? 'top' : 'auto'">
+  <format-field-value #formatFieldValue [fieldValue]="fieldValue">
+  </format-field-value>
 </label-value>

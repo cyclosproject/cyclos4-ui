@@ -65,6 +65,7 @@ import { ResultTableDirective } from 'app/shared/result-table.directive';
 import { ResultTileDirective } from 'app/shared/result-tile.directive';
 import { ResultTypeFieldComponent } from 'app/shared/result-type-field.component';
 import { ResultsLayoutComponent } from 'app/shared/results-layout.component';
+import { RichTextContainerComponent } from 'app/shared/rich-text-container.component';
 import { ShowContentComponent } from 'app/shared/show-content.component';
 import { SideMenuComponent } from 'app/shared/side-menu.component';
 import { SingleSelectionFieldComponent } from 'app/shared/single-selection-field.component';
@@ -133,6 +134,7 @@ export function initTooltipConfig(): TooltipConfig {
     PaginatorComponent,
     LabelValueComponent,
     ExtraCellDirective,
+    RichTextContainerComponent,
     FormatFieldValueComponent,
     CustomFieldValueComponent,
     BooleanFieldComponent,
@@ -240,6 +242,7 @@ export function initTooltipConfig(): TooltipConfig {
     PaginatorComponent,
     LabelValueComponent,
     ExtraCellDirective,
+    RichTextContainerComponent,
     FormatFieldValueComponent,
     CustomFieldValueComponent,
     BooleanFieldComponent,

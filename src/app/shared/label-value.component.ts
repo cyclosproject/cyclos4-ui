@@ -1,6 +1,6 @@
 import {
   ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChild,
-  HostBinding, Input, OnDestroy, OnInit, TemplateRef
+  HostBinding, Input, OnDestroy, OnInit, TemplateRef, OnChanges, SimpleChanges
 } from '@angular/core';
 import { CustomFieldSizeEnum } from 'app/api/models';
 import { BaseFormFieldComponent, FieldLabelPosition } from 'app/shared/base-form-field.component';
@@ -24,7 +24,7 @@ const Breakpoints: Breakpoint[] = ['xxs', 'xs', 'sm'];
   styleUrls: ['label-value.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LabelValueComponent implements OnInit, OnDestroy {
+export class LabelValueComponent implements OnInit, OnDestroy, OnChanges {
 
   @HostBinding('class.label-value') classLabelValue = true;
   @HostBinding('class.row') classRow = true;
@@ -155,6 +155,12 @@ export class LabelValueComponent implements OnInit, OnDestroy {
       this.updateLabelOnSideClass(bs);
     }));
     this.updateLabelOnSideClass(this.layout.activeBreakpoints);
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.labelPosition || changes.fieldSize || changes.labelSize) {
+      this.initClasses();
+    }
   }
 
   private updateLabelOnSideClass(bs: Set<LayoutBreakpoint>) {

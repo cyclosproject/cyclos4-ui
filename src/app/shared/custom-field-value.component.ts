@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, ViewChild } from '@angular/core';
-import { CustomFieldValue } from 'app/api/models';
+import { CustomField, CustomFieldTypeEnum, CustomFieldValue } from 'app/api/models';
+import { LayoutService } from 'app/shared/layout.service';
 import { FormatFieldValueComponent } from './format-field-value.component';
 
 /**
@@ -16,5 +17,21 @@ export class CustomFieldValueComponent {
   @Input() fieldValue: CustomFieldValue;
 
   @ViewChild('formatFieldValue') formatFieldValue: FormatFieldValueComponent;
+
+  constructor(public layout: LayoutService) {
+  }
+
+  get field(): CustomField {
+    return this.fieldValue ? this.fieldValue.field : null;
+  }
+
+  labelOnTop(ltsm: boolean): boolean {
+    if (!ltsm) {
+      return false;
+    }
+    const field = this.field;
+    const type = field ? field.type : null;
+    return [CustomFieldTypeEnum.RICH_TEXT, CustomFieldTypeEnum.TEXT].includes(type);
+  }
 
 }
