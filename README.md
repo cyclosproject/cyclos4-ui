@@ -5,7 +5,7 @@
 This project aims to create a modern, simple and intuitive user interface for
 [Cyclos](https://www.cyclos.org/) version 4.11 and up. The interface should be easy to customize and add functionality needed by specific projects.
 
-A demo of the front-end can be seen at: https://demo-ui.cyclos.org/
+A demo of the frontend can be seen at: https://demo-ui.cyclos.org/
 
 The initial planned scope is to have only end-user functionality in this application. Administration functionality will still be available in Cyclos' default web interface.
 
@@ -14,8 +14,8 @@ The initial planned scope is to have only end-user functionality in this applica
 - This application is built using [Angular](https://angular.io/) and [Bootstrap](https://getbootstrap.com), using the [ngx-bootstrap](https://valor-software.com/ngx-bootstrap/) integration library;
 - It uses Cyclos' REST API for integration. The [ng-openapi-gen](https://github.com/cyclosproject/ng-openapi-gen) project is used to generate the client services and web service models. Starting with Cyclos 4.12, the API will be described using OpenAPI 3 instead of Swagger 2. But a copy of the Cyclos 12 OpenAPI 3 descriptor (which is backwards compatible with 4.11) is already committed in this repository, and is used to generate the services;
 - Translations are done separatedly from the Cyclos installation. This way they cannot be customized in Cyclos, but allows the user interface to grow independently from the deployed Cyclos version;
-- Requests to the Cyclos server are performed directly from the browser. That means that either this front-end should be deployed in the same domain as Cyclos, or CORS should be enabled in Cyclos by setting `cyclos.cors.origin = <cyclos4-ui-domain>` in the `cyclos.properties` file;
-- If you intent to customize or extend the functionality of this frontend, please, refer to the [project Wiki](https://github.com/cyclosproject/cyclos4-ui/wiki). There you will find some useful documentatiton.
+- Requests to the Cyclos server are performed directly from the browser. That means that either this frontend should be deployed in the same domain as Cyclos, or CORS should be enabled in Cyclos by setting `cyclos.cors.origin = <cyclos4-ui-domain>` in the `cyclos.properties` file;
+- If you intent to customize or extend the functionality of this frontend, please, refer to the [project Wiki](https://github.com/cyclosproject/cyclos4-ui/wiki). There you will find some useful documentation.
 
 ## Implemented functionality
 
@@ -172,7 +172,7 @@ Alternatively, if the frontend is deployed in a sub path, the path must be speci
 </IfModule>
 ```
 
-Note that it is important to set `keepalive=On` for [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events) to work. It is also recommented to have a timeout larger than 40 seconds, which is the time Cyclos keeps open event stream connections. Also note the `ProxyPassReverseCookiePath` directive. If you happen to have problems logging in while using a proxy is because the cookie path, sent by the backend Tomcat does not match the front-end path visible to users.
+Note that it is important to set `keepalive=On` for [server-sent events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events) to work. It is also recommented to have a timeout larger than 40 seconds, which is the time Cyclos keeps open event stream connections. Also note the `ProxyPassReverseCookiePath` directive. If you happen to have problems logging in while using a proxy is because the cookie path, sent by the backend Tomcat does not match the frontend path visible to users.
 
 For other HTTP servers, please, consult their documentation on how to achieve the same result.
 
@@ -205,7 +205,7 @@ It is safe to set a very large expiration date for CSS / JavaScript / JSON (tran
 
 ## Generating links on the Cyclos backend that point to the frontend
 
-Cyclos generates some links which are sent by e-mail to users. Examples include the e-mail to validate a registration, or some notification. It is desired that when the user clicks on such links, he is forwarded to the deployed front-end application, not to the Cyclos default web interface.
+Cyclos generates some links which are sent by e-mail to users. Examples include the e-mail to validate a registration, or some notification. It is desired that when the user clicks on such links, he is forwarded to the deployed frontend application, not to the Cyclos default web interface.
 
 To achieve this, Cyclos allows using a script to generate links. As a global administrator (which may be switched to the network), in 'System > Tools > Script', create a script of type 'Link generation', with the following content:
 
@@ -265,7 +265,7 @@ You can also create custom styles for the application. To do so, just edit the `
 
 ### Layout configuration
 
-Currently the Cyclos frontend offers the following options in the configuration for layout: Whether to show the menu on desktop on the top bar on in a separated bar, and advertisement category icon customization.
+Currently the Cyclos frontend offers the following options in the configuration for layout: Whether to show the menu on desktop on the top bar or in a separated bar, and advertisement category icon customization.
 
 ### Main menu position
 
@@ -280,7 +280,7 @@ export function setup() {
 
 ### Customize the advertisement categories
 
-It is possible to customize the advertisements category icons and colors, which are shown when selecting the marketplace menu item. It is recommended that all the oot advertisement categories in Cyclos have an internal name. The default settings in the frontend matches the categories created by default when creating a network in Cyclos via the wizard. Here is an example of the `src/app/setup.ts` file with the default settings:
+It is possible to customize the advertisements category icons and colors, which are shown when selecting the marketplace menu item. It is recommended that all the root advertisement categories in Cyclos have an internal name. The default settings in the frontend matches the categories created by default when creating a network in Cyclos via the wizard. Here is an example of the `src/app/setup.ts` file with the default settings:
 
 ```typescript
 export function setup() {
@@ -317,7 +317,7 @@ export function setup() {
 The Cyclos frontend supports several kinds of content that can be customized:
 
 - The home page, shown for guests;
-- What is displayed  inthe dashboard, which is the initial page for logged users;
+- What is displayed  in the dashboard, which is the initial page for logged users;
 - Content pages, which are custom pages that show up in the menu;
 - Banners, shown on desktop layout.
 
@@ -328,7 +328,7 @@ Every content implement the `Content` interface (defined in `src/app/content/con
 - `ContentGetter.url(url)`: Performs an HTTP GET request and resolves the content body;
 - `ContentGetter.image(url)`: Shows an external image;
 - `ContentGetter.iframe(url)`: Includes a given page in an IFrame. To make the `iframe` adjust to the content of the contained page, uses the [iframe-resizer](https://github.com/davidjbradshaw/iframe-resizer) library, which works even across domains. The requirement is that the loaded page includes the following JavaScript: https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.6.3/iframeResizer.min.js;
-- `ContentGetter.cyclosPage(url)`: Fetches the content of a Cyclos floating page, created in 'Content' > 'Content management' > 'Menu and pages'. From there, select a configuration (if multiple), create a new Floating page and, after saving it, copy the URL. That URL is the parameter to be passed as parameter. This implemnentation uses Cyclos' `WEB-RPC` mechanism to fetch the content (as retrieving content pages is not in the Cyclos REST API so far), using the following URL: `<root>/web-rpc/menuEntry/menuItemDetails/<id>`. As such, either Cyclos must be setup to allow CORS requests from the frontend URL, or a proxy should be setup to the `/web-rpc/menuEntry/menuItemDetails/` path, similar to the proxy to `/api` (as described above), and using a relative URL. Example: `/menuItemDetails/*` is proxied to `<root>/web-rpc/menuEntry/menuItemDetails/*`. In such case, the URL parameter would be `menuItemDetails/<id>`.
+- `ContentGetter.cyclosPage(url)`: Fetches the content of a Cyclos floating page, created in 'Content' > 'Content management' > 'Menu and pages'. From there, select a configuration (if multiple), create a new Floating page and, after saving it, copy the URL. That URL need to be passed as the parameter. This implementation uses Cyclos' `WEB-RPC` mechanism to fetch the content (as retrieving content pages is not in the Cyclos REST API so far), using the following URL: `<root>/web-rpc/menuEntry/menuItemDetails/<id>`. As such, either Cyclos must be setup to allow CORS requests from the frontend URL, or a proxy should be setup to the `/web-rpc/menuEntry/menuItemDetails/` path, similar to the proxy to `/api` (as described above), and using a relative URL. Example: `/menuItemDetails/*` is proxied to `<root>/web-rpc/menuEntry/menuItemDetails/*`. In such case, the URL parameter would be `menuItemDetails/<id>`.
 
 When content has a `cacheKey`, it is cached locally in the browser, by default, for 1 hour. It is possible to change the `cacheSeconds` property to the desired number. If set to a negative number, the cache will never expire. The cache uses the browser local storage, so clearing the browser cache won't invalidade cached content. Instead, to locally remove cached content, browsers offer ways to remove website data.
 
@@ -354,7 +354,7 @@ So, fetching content for the home page is straightforward. Content pages and ban
 
 Custom content pages can be very useful for projects that want to add a manual, some additional information pages, simple contact forms and so on. They are available both for guests and logged users, and in case of logged users, can be placed in a dedicated root menu item (internally called `content`) or in some other root menu (banking, marketplace or personal). **Important:** For logged users, if there is at least one visible content page with full layout, the root menu will be a dropdown, as the left menu will not be shown on full layout. However, if all pages for logged users use the `card` layout, then a side menu will be shown. For guests we never show a left menu, so the content menu is always a dropdown.
 
-To enable content pages you must create an implementation of the `ContentPagesResolver` interface, defined in `src/app/content/content-pages-resolver.ts`. It has a single method called `contentPages`, receiving the The Angular injector reference (used to obtain shared services) and must return either a `ContentPage[]` or an observable of it. Then, in the `app/setup.ts` file, instantiate that class, like this:
+To enable content pages you must create an implementation of the `ContentPagesResolver` interface, defined in `src/app/content/content-pages-resolver.ts`. It has a single method called `contentPages`, receiving the Angular injector reference (used to obtain shared services) and must return either a `ContentPage[]` or an observable of it. Then, in the `app/setup.ts` file, instantiate that class, like this:
 
 ```typescript
 import { ExampleContentPagesResolver } from 'app/content/example-content-pages-resolver';
@@ -373,13 +373,13 @@ Each content page, defined in `src/app/content/content-page.ts` extend `ContentW
 - `guests`: Indicates whether this page is shown to guests, yes by default;
 - `rootMenu`: Indicates that this page is shown in another root menu instead of the default (Information). Can be either `content` (default), `banking`, `marketplace` or `personal`.
 
-Here are are some examples: [one that uses some static pages](https://github.com/cyclosproject/cyclos4-ui/blob/master/src/environments/example-content-pages-resolver.ts) and [one that fetches pages from a Wordpress instance](https://github.com/cyclosproject/cyclos4-ui/blob/master/src/app/content/wordpress-content-pages-resolver.ts) (needs the full URL to the WordPress REST API as constructor argument).
+Here are are some examples: [one that uses some static pages](https://github.com/cyclosproject/cyclos4-ui/blob/master/src/app/content/example-content-pages-resolver.ts) and [one that fetches pages from a Wordpress instance](https://github.com/cyclosproject/cyclos4-ui/blob/master/src/app/content/wordpress-content-pages-resolver.ts) (needs the full URL to the WordPress REST API as constructor argument).
 
 ### Banners
 
 Banners are shown in cards (boxes) below the left menu in the large layout. No banners are ever shown in mobile or in the dashboard page. Each card has one or more banners. When there are multiple banners, they will rotate after a given number of seconds.
 
-To use banners you must create an implementation of the `BannerCardsResolver` interface, defined in `src/app/content/banner-cards-resolver.ts`. It has a single method called `bannerCards`, receiving the The Angular injector reference (used to obtain shared services) and must return either a `BannerCard[]` or an observable of it. Then, in the `app/setup.ts` file, create an instance of that class, like this:
+To use banners you must create an implementation of the `BannerCardsResolver` interface, defined in `src/app/content/banner-cards-resolver.ts`. It has a single method called `bannerCards`, receiving the Angular injector reference (used to obtain shared services) and must return either a `BannerCard[]` or an observable of it. Then, in the `app/setup.ts` file, create an instance of that class, like this:
 
 ```typescript
 import { ExampleBannerCardsResolver } from 'app/content/example-banner-cards-resolver';
@@ -404,7 +404,7 @@ The `Banner` interface (defined in `src/app/content/banner.ts`) extends `Content
 - `link`: Can be set to an URL to which the user navigates when clicking the banner. Can both be an internal URL, starting with `/`, or external URL, starting with the scheme (https / http). By default, the banner has no link;
 - `linkTarget`: When set, is the `target` attribute of the `<a>` tag used to create the banner link. If set to `_blank` will open the link in a new tab / window.
 
-There is [an example BannerCardsResolver here](https://github.com/cyclosproject/cyclos4-ui/blob/master/src/environments/example-banner-cards-resolver.ts).
+There is [an example BannerCardsResolver here](https://github.com/cyclosproject/cyclos4-ui/blob/master/src/app/content/example-banner-cards-resolver.ts).
 
 ### Customizing the dashboard
 
@@ -425,7 +425,7 @@ The following dashboard items are available:
 
 - **Quick access**: Presents a list with links to common actions. Each link has an icon and a label. Allows specifying which links are shown and on which resolution breakpoints they are shown;
 - **Account status**: Shows relevant data for an account, namely the current balance, a chart with the account balance over the last few months and a list with the last incoming transfers. Also has a button to view the account history;
-- **Latest advertisements**: Shows some of the lastest advertisements;
+- **Latest advertisements**: Shows some of the latest advertisements;
 - **Latest users**: Shows some of the users that have been activated last;
 - **Content**: Shows a custom content.
 
@@ -438,7 +438,7 @@ The default dashboard is comprised of:
 
 Generally projects need to customize a few aspects of the default dashboard, such as removing the latest ads or replacing it by latest users, and to show another content item. The easiest way to accomplish this is to extend the `DefaultDashboardResolver` class, which is defined in `src/environments/default-dashboard-resolver.ts` file. Then override the `dashboardItems` method to add only the desired items. If the only customization is to replace the content item for another page, just override the `contentPage` method to return the alternative page, don't override the `dashboardItems` method.
 
-It is also possible to do a completely different dashboard, skipping the `DefaultDashboardResolver` class entirely. Finally, set your custom `DashboardResolver` instance like this in :
+It is also possible to do a completely different dashboard, skipping the `DefaultDashboardResolver` class entirely. Finally, set your custom `DashboardResolver` instance like this:
 
 ```typescript
 import { CustomDashboardResolver } from 'app/custom-dashboard-resolver';
@@ -560,7 +560,7 @@ export function setup() {
 }
 ```
 
-For systems that are multi language, where each user can have distinct languages, a static language should not be set. In this case, the language used by user in Cyclos will be the one used to fetch the translations in the front-end.
+For systems that are multi language, where each user can have distinct languages, a static language should not be set. In this case, the language used by the user in Cyclos will be the one used to fetch the translations in the frontend.
 
 To add a new language locally, simply add the locale to the `locales` array in `ng-translation-gen.json`. Then, to create the file with defaults, or update it with new translation keys, run `npm run merge-translations`. Finally, either reference it as a static translation, or, if the locale matches the language set in Cyclos, it will be automatically used.
 
@@ -568,7 +568,7 @@ The official translations are done at https://crowdin.com/project/cyclos4-ui. If
 
 ## Using the login form in a separated application
 
-Some projects have a website for guests which have a login form for Cyclos, for example, using the [Cyclos login plugin for wordpress](https://br.wordpress.org/plugins/cyclos/). Some projects even handle the public user registration form in these systems.
+Some projects have a website for guests which have a login form for Cyclos, for example, using the [Cyclos login plugin for wordpress](https://wordpress.org/plugins/cyclos/). Some projects even handle the public user registration form in these systems.
 
 In these cases, the external system should login the user using an administrator access via the Cyclos API. As result, they get back the user session token. Finally, they should redirect the browser client to the URL to which the Cyclos frontend is deployed, passing the `sessionToken` query parameter, like this: `https://account.mysystem.com/?sessionToken=ABCDEFGH123456`. The frontend will then validate this session token and automatically login the user.
 
@@ -592,7 +592,7 @@ In the example, when the user session expires, for example, when they are in the
 
 [KaiOS](https://www.kaiostech.com/) is an emerging mobile operating system for "smart feature phones". These devices have 3G/4G, Wi-Fi, camera, but no touch screen. They also have a small screen, usually 240x320px.
 
-A KaiOS application is just a web page that also has a manifest, that is, a descriptor for that application. The manifest is a file named `manifest.webapp` that needs to be served from the same host where the front-end application is. You can create one based on the following template:
+A KaiOS application is just a web page that also has a manifest, that is, a descriptor for that application. The manifest is a file named `manifest.webapp` that needs to be served from the same host where the frontend application is. You can create one based on the following template:
 
 ```json
 {
@@ -632,7 +632,7 @@ If you're serving the application in a subpath, adjust the URLs accordingly:
 
 You will also have to resize your logo to these pixel sizes, and copy them to the `dist/images` folder.
 
-Either a physical phone running KaiOS, or the [KaiOS simulator](https://developer.kaiostech.com/simulator) to test the application. Be aware that the simulator has several known issues (such as only accepting text using the physical PC keyboard) - see the release notes for more details.
+Either a physical phone running KaiOS, or the [KaiOS simulator](https://developer.kaiostech.com/simulator) can be used to test the application. Be aware that the simulator has several known issues (such as only accepting text using the physical PC keyboard) - see the release notes for more details.
 
 The KaiOS application doesn't run in a "browser". Hence, the navigation keys need to be implemented in order for them to work. In this Cyclos frontent, the following keys are mapped:
 
