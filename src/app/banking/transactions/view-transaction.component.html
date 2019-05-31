@@ -11,7 +11,7 @@
     [label]="i18n.transaction.number">
     {{ transaction.transactionNumber }}
   </label-value>
-  <label-value [label]="i18n.transaction.status.name" [value]="status">
+  <label-value [label]="i18n.general.status" [value]="status">
   </label-value>
   <label-value [label]="i18n.general.date">
     {{ transaction.date | dateTime }}
@@ -84,7 +84,7 @@
       <thead *ngIf="layout.gtxs$ | async">
         <th>{{ i18n.transaction.installmentNumber }}</th>
         <th>{{ i18n.transaction.dueDate }}</th>
-        <th>{{ i18n.transaction.status.name }}</th>
+        <th>{{ i18n.general.status }}</th>
         <th class="amount">{{ i18n.transaction.amount }}</th>
         <th class="actions" *ngIf="hasInstallmentActions"></th>
       </thead>
@@ -137,7 +137,7 @@
       <thead *ngIf="layout.gtxs$ | async">
         <th>{{ i18n.transaction.installmentNumber }}</th>
         <th>{{ i18n.general.date }}</th>
-        <th>{{ i18n.transaction.status.name }}</th>
+        <th>{{ i18n.general.status }}</th>
         <th class="text-right">{{ i18n.transaction.amount }}</th>
       </thead>
       <tbody>

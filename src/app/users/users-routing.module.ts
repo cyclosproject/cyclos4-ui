@@ -11,6 +11,7 @@ import { ContactListComponent } from 'app/users/search/contact-list.component';
 import { PublicRegistrationComponent } from 'app/users/registration/public-registration.component';
 import { ValidateRegistrationComponent } from 'app/users/registration/validate-registration.component';
 import { ValidateEmailChangeComponent } from 'app/users/profile/validate-email-change.component';
+import { ViewUserStatusComponent } from 'app/users/status/view-user-status.component';
 
 const usersRoutes: Routes = [
   {
@@ -67,6 +68,13 @@ const usersRoutes: Routes = [
         },
         data: {
           menu: Menu.EDIT_USER_PROFILE
+        }
+      },
+      {
+        path: 'status/:key',
+        component: ViewUserStatusComponent,
+        data: {
+          menu: Menu.VIEW_USER_STATUS
         }
       },
       {

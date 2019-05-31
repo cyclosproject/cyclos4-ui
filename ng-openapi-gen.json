@@ -13,6 +13,7 @@
     "Addresses",
     "Contacts",
     "ContactInfos",
+    "UserStatus",
     "Transactions",
     "ScheduledPayments",
     "RecurringPayments",

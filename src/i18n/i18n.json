@@ -6,6 +6,7 @@
     "actions": "Actions",
     "date": "Date",
     "performedBy": "Performed by",
+    "status": "Status",
     "comments": "Comments",
     "futureDate": "Future date",
     "beginDate": "Begin date",
@@ -421,7 +422,6 @@
     "done.view": "View payment",
     "done.new": "New payment",
     "status": {
-      "name": "Status",
       "open": "Open",
       "closed": "Closed",
       "canceled": "Canceled",
@@ -633,7 +633,8 @@
       "removeContact": "Remove from my contacts",
       "removeContact.done": "{user} was removed from your contact list",
       "pay": "Make payment",
-      "viewAds": "View advertisements"
+      "viewAds": "View advertisements",
+      "status": "User status"
     },
     "registration": {
       "active": "You have been successfully registered, and your account is now active.",
@@ -650,6 +651,41 @@
       "alphabeticallyAsc": "Name (A-Z)",
       "alphabeticallyDesc": "Name (Z-A)"
     }
+  },
+  "userStatus": {
+    "current": "Current status",
+    "new": "New status",
+    "comment": "Comment",
+    "confirm": {
+      "active": "Are you sure to activate {user}?",
+      "blocked": "Are you sure to block access to {user}?",
+      "disabled": "Are you sure to disable {user}?",
+      "purged": "Are you sure to permanently remove {user} and remove all private data?\nThis action is irreversible!",
+      "removed": "Are you sure to permanently remove {user}?\nThis action is irreversible!"
+    },
+    "done": {
+      "active": "The user was activated",
+      "blocked": "The user was blocked",
+      "disabled": "The user was disabled",
+      "purged": "The user was permanently removed, together with all personal data",
+      "removed": "The user was permanently removed"
+    },
+    "title": {
+      "status": "User status",
+      "change": "Change status",
+      "history": "History"
+    },
+    "mobileTitle": {
+      "status": "User status",
+      "change": "Change status",
+      "history": "History"
+    },
+    "active": "Active",
+    "blocked": "Access blocked",
+    "disabled": "Disabled",
+    "pending": "Pending activation",
+    "purged": "Purged (all private data is erased)",
+    "removed": "Removed (no private data is erased)"
   },
   "phone": {
     "mobile": "Mobile phone",
