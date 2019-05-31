@@ -104,7 +104,12 @@ Angular assumes the application is deployed in the root path of your domain. For
 npm run build -- --base-href /path/
 ```
 
-## Deploying to the server
+## Deploying to a server
+
+**Attention**: It is always advised to only use [tagged releases](https://github.com/cyclosproject/cyclos4-ui/releases) in production.
+Don't deploy code directly from the master branch to production, unless you know you're doing. Code living on branches such as `1.0.x`, `1.1.x`, etc, tend to be more stable than master, but it is still advised to use only actual releases.
+
+---
 
 Angular, by default, uses `HTML5`'s [history.pushState](https://developer.mozilla.org/en-US/docs/Web/API/History_API#The_pushState()_method) method, which produces URLs with paths which are undistinguishable from regular nested paths, but without producing a new request. Besides producing natural URLs, this method allows future expansions, such as using [server-side rendering](https://angular.io/guide/universal).
 
