@@ -6,6 +6,7 @@
     "actions": "Ações",
     "date": "Data",
     "performedBy": "Executado por",
+    "status": "Estado",
     "comments": "Comentários",
     "futureDate": "Data futura",
     "beginDate": "Data inicial",
@@ -32,6 +33,7 @@
     "previous": "Anterior",
     "next": "Próximo",
     "view": "Ver",
+    "viewHistory": "View history",
     "edit": "Editar",
     "confirm": "Confirmar",
     "cancel": "Cancelar",
@@ -421,7 +423,6 @@
     "done.view": "Ver pagamento",
     "done.new": "Novo pagamento",
     "status": {
-      "name": "Estado",
       "open": "Aberto",
       "closed": "Fechado",
       "canceled": "Cancelado",
@@ -633,7 +634,8 @@
       "removeContact": "Remover dos meus contatos",
       "removeContact.done": "{user} foi removido da sua lista de contatos",
       "pay": "Fazer pagamento",
-      "viewAds": "Ver anúncios"
+      "viewAds": "Ver anúncios",
+      "status": "User status"
     },
     "registration": {
       "active": "Você foi registrado com êxito, e a sua conta está ativa agora.",
@@ -650,6 +652,41 @@
       "alphabeticallyAsc": "Nome (A-Z)",
       "alphabeticallyDesc": "Nome (Z-A)"
     }
+  },
+  "userStatus": {
+    "current": "Current status",
+    "new": "New status",
+    "comment": "Comment",
+    "confirm": {
+      "active": "Are you sure to activate {user}?",
+      "blocked": "Are you sure to block access to {user}?",
+      "disabled": "Are you sure to disable {user}?",
+      "purged": "Are you sure to permanently remove {user} and remove all private data?\nThis action is irreversible!",
+      "removed": "Are you sure to permanently remove {user}?\nThis action is irreversible!"
+    },
+    "done": {
+      "active": "The user was activated",
+      "blocked": "The user was blocked",
+      "disabled": "The user was disabled",
+      "purged": "The user was permanently removed, together with all personal data",
+      "removed": "The user was permanently removed"
+    },
+    "title": {
+      "status": "User status",
+      "change": "Change status",
+      "history": "User status history"
+    },
+    "mobileTitle": {
+      "status": "User status",
+      "change": "Change status",
+      "history": "Status history"
+    },
+    "active": "Active",
+    "blocked": "Access blocked",
+    "disabled": "Disabled",
+    "pending": "Pending activation",
+    "purged": "Purged (all private data is erased)",
+    "removed": "Removed (no private data is erased)"
   },
   "phone": {
     "mobile": "Telefone celular",
