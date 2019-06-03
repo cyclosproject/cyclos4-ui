@@ -64,6 +64,7 @@ b, strong {
 hr {
   width: 100%;
   display: block;
+  border-color: $border-color;
 }
 
 .backdrop {
@@ -76,6 +77,12 @@ hr {
   z-index: $zindex-modal-backdrop;
   opacity: 0;
   transition: opacity 0.3s;
+}
+
+body.dark {
+  hr {
+    border-color: $border-color-dark;
+  }
 }
 
 /* Margins / paddings according to the layout spacer */
