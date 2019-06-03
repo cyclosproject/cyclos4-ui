@@ -85,6 +85,7 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     const contact = permissions.contact || {};
     const payment = permissions.payment || {};
     const marketplace = permissions.marketplace || {};
+    const status = permissions.status || {};
     if (user.permissions.profile.editProfile) {
       const editPath = (this.login.user || {}).id === user.id
         ? ['users', 'profile', 'edit']
@@ -92,6 +93,11 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
       actions.push(new HeadingAction('edit', this.i18n.general.edit, () => {
         this.router.navigate(editPath);
       }, true));
+    }
+    if (status.view) {
+      actions.push(new HeadingAction('how_to_reg', this.i18n.user.profile.status, () => {
+        this.router.navigate(['/users', 'status', this.key]);
+      }));
     }
     if (contact.add) {
       actions.push(new HeadingAction('add_circle_outline', this.i18n.user.profile.addContact, () => {

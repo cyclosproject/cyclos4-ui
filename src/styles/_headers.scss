@@ -11,6 +11,10 @@ h1, h2, h3, hr {
   padding-left: $layout-spacer-xxs;
   padding-right: $layout-spacer-xxs;
 }
+hr {
+  margin-top: $layout-spacer-xxs;
+  margin-bottom: $layout-spacer-xxs;
+}
 .section-title-action {
   position: absolute;
   right: $layout-spacer-xxs;
@@ -26,6 +30,10 @@ h1, h2, h3, hr {
   .section-title-action {
     right: $layout-spacer-xs;
   }
+  hr {
+    margin-top: $layout-spacer-xs;
+    margin-bottom: $layout-spacer-xs;
+  }
 }
 @include media-breakpoint-up(sm) {
   h1, h2, h3, hr {
@@ -36,6 +44,10 @@ h1, h2, h3, hr {
   }
   .section-title-action {
     right: $layout-spacer;
+  }
+  hr {
+    margin-top: $layout-spacer;
+    margin-bottom: $layout-spacer;
   }
 }
 h1, h2 {

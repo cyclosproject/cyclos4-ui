@@ -1,0 +1,38 @@
+<page-layout [ready]="data$ | async">
+  <page-content *ngIf="data" [heading]="i18n.userStatus.title.status"
+    [mobileHeading]="i18n.userStatus.mobileTitle.status"
+    [headingActions]="headingActions$ | async">
+
+    <label-value *ngIf="!operator" [label]="i18n.general.user"
+      kind="fieldView">
+      <user-link [user]="user"></user-link>
+    </label-value>
+
+    <label-value *ngIf="operator" [label]="i18n.general.operator"
+      kind="fieldView">
+      <user-link [user]="operator"></user-link>
+    </label-value>
+
+    <label-value [label]="i18n.userStatus.current">
+      {{ usersHelper.userStatus(data.status) }}
+    </label-value>
+
+    <ng-container *ngIf="editable">
+      <hr>
+      <form [formGroup]="form">
+        <single-selection-field formControlName="status"
+          [label]="i18n.userStatus.new" required>
+          <field-option *ngFor="let status of data.possibleNewStatuses"
+            [value]="status" [text]="usersHelper.userStatus(status)">
+          </field-option>
+        </single-selection-field>
+        <textarea-field formControlName="comment"
+          [label]="i18n.general.comments"></textarea-field>
+      </form>
+      <actions>
+        <button class="btn btn-primary"
+          (click)="save()">{{ i18n.general.submit }}</button>
+      </actions>
+    </ng-container>
+  </page-content>
+</page-layout>

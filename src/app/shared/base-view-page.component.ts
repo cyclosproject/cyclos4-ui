@@ -11,7 +11,7 @@ export abstract class BaseViewPageComponent<D> extends BasePageComponent<D> impl
   }
 
   ngOnInit() {
-    super.ngOnDestroy();
+    super.ngOnInit();
     this.emulateKeyboardScroll();
   }
 }

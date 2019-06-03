@@ -1,16 +1,18 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { Menu } from 'app/shared/menu';
+import { RouterModule, Routes } from '@angular/router';
 import { CountriesResolve } from 'app/countries.resolve';
 import { LoggedUserGuard } from 'app/logged-user-guard';
-
-import { ViewProfileComponent } from 'app/users/profile/view-profile.component';
+import { Menu } from 'app/shared/menu';
 import { EditProfileComponent } from 'app/users/profile/edit-profile.component';
-import { SearchUsersComponent } from 'app/users/search/search-users.component';
-import { ContactListComponent } from 'app/users/search/contact-list.component';
+import { ValidateEmailChangeComponent } from 'app/users/profile/validate-email-change.component';
+import { ViewProfileComponent } from 'app/users/profile/view-profile.component';
 import { PublicRegistrationComponent } from 'app/users/registration/public-registration.component';
 import { ValidateRegistrationComponent } from 'app/users/registration/validate-registration.component';
-import { ValidateEmailChangeComponent } from 'app/users/profile/validate-email-change.component';
+import { ContactListComponent } from 'app/users/search/contact-list.component';
+import { SearchUsersComponent } from 'app/users/search/search-users.component';
+import { ViewUserStatusHistoryComponent } from 'app/users/status/view-user-status-history.component';
+import { ViewUserStatusComponent } from 'app/users/status/view-user-status.component';
+
 
 const usersRoutes: Routes = [
   {
@@ -67,6 +69,20 @@ const usersRoutes: Routes = [
         },
         data: {
           menu: Menu.EDIT_USER_PROFILE
+        }
+      },
+      {
+        path: 'status/:key',
+        component: ViewUserStatusComponent,
+        data: {
+          menu: Menu.SEARCH_USERS
+        }
+      },
+      {
+        path: 'status/:key/history',
+        component: ViewUserStatusHistoryComponent,
+        data: {
+          menu: Menu.SEARCH_USERS
         }
       },
       {
