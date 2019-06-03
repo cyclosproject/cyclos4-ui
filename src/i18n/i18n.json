@@ -33,6 +33,7 @@
     "previous": "Previous",
     "next": "Next",
     "view": "View",
+    "viewHistory": "View history",
     "edit": "Edit",
     "confirm": "Confirm",
     "cancel": "Cancel",
@@ -673,12 +674,12 @@
     "title": {
       "status": "User status",
       "change": "Change status",
-      "history": "History"
+      "history": "User status history"
     },
     "mobileTitle": {
       "status": "User status",
       "change": "Change status",
-      "history": "History"
+      "history": "Status history"
     },
     "active": "Active",
     "blocked": "Access blocked",

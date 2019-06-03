@@ -1,6 +1,7 @@
 <page-layout [ready]="data$ | async">
   <page-content *ngIf="data" [heading]="i18n.userStatus.title.status"
-    [mobileHeading]="i18n.userStatus.mobileTitle.status">
+    [mobileHeading]="i18n.userStatus.mobileTitle.status"
+    [headingActions]="headingActions$ | async">
 
     <label-value *ngIf="!operator" [label]="i18n.general.user"
       kind="fieldView">

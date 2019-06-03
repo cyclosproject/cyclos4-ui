@@ -5,9 +5,10 @@ import { UserHelperService } from 'app/core/user-helper.service.ts';
 import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
 import { empty, validateBeforeSubmit } from 'app/shared/helper';
 import { FormGroup, Validators } from '@angular/forms';
+import { HeadingAction } from 'app/shared/action';
 
 /**
- * Displays the user status, history and allows changing the status
+ * Displays the user status and allows changing the status
  */
 @Component({
   selector: 'view-user-status',
@@ -42,13 +43,17 @@ export class ViewUserStatusComponent extends BaseViewPageComponent<UserStatusDat
   ngOnInit() {
     super.ngOnInit();
     this.key = this.route.snapshot.paramMap.get('key');
-    this.userStatusService.getUserStatus({ user: this.key }).subscribe(status => {
+    this.userStatusService.getUserStatus({ user: this.key, fields: ['!history'] }).subscribe(status => {
       this.data = status;
     });
     this.form = this.formBuilder.group({
       status: [null, Validators.required],
       comment: null
     });
+    this.headingActions = [
+      new HeadingAction('history', this.i18n.general.viewHistory, () =>
+        this.router.navigate(['users', 'status', this.key, 'history']), true)
+    ];
   }
 
   save() {
