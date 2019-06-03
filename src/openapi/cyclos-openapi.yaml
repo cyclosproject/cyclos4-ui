@@ -43089,6 +43089,16 @@ components:
               type: string
               description: >-
                 The user's e-mail
+            enabledProfileFields:
+              description: >-
+                The internal names of profile fields enabled for this user.
+                For example, the user might have no phones, but it might be
+                because he is not allowed to have phones or because there
+                are currently no phones. Same for addresses, images and optional
+                profile fields.
+              type: array
+              items:
+                type: string
             customValues:
               description: >-
                 The list of custom field values this user has

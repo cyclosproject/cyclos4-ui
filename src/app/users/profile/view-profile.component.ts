@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { PhoneKind, PhoneView, UserView } from 'app/api/models';
+import { PhoneKind, PhoneView, UserView, BasicProfileFieldEnum } from 'app/api/models';
 import { ContactsService, UsersService } from 'app/api/services';
 import { ErrorStatus } from 'app/core/error-status';
 import { MapsService } from 'app/core/maps.service';
@@ -37,6 +37,7 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
   landLinePhone: PhoneView;
   mobilePhones: PhoneView[];
   landLinePhones: PhoneView[];
+  imageEnabled: boolean;
 
   get user(): UserView {
     return this.data;
@@ -66,6 +67,8 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
 
   onDataInitialized(user: UserView) {
     this.shortName = words(user.name || user.display, MAX_SIZE_SHORT_NAME);
+    const enabledFields = user.enabledProfileFields;
+    this.imageEnabled = enabledFields == null || enabledFields.includes(BasicProfileFieldEnum.IMAGE);
 
     // We'll show the phones either as single or multiple
     this.mobilePhones = user.phones.filter(p => p.type === PhoneKind.MOBILE);

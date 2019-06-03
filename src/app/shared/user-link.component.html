@@ -5,7 +5,7 @@
 
 <ng-template #displayTpl>
   <div class="d-flex flex-row" [ngClass]="{'has-link': !!path}">
-    <avatar ngClass="mr-2" [image]="user?.image"
+    <avatar *ngIf="!operator" ngClass="mr-2" [image]="user?.image"
       [icon]="user ? 'user' : 'account_balance_circle'" size="small"
       iconSize="28px"></avatar>
     <div class="display-text">

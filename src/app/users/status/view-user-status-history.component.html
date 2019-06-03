@@ -2,14 +2,16 @@
   <page-content *ngIf="data" [heading]="i18n.userStatus.title.history"
     [mobileHeading]="i18n.userStatus.mobileTitle.history">
 
-    <label-value *ngIf="!operator" [label]="i18n.general.user"
-      kind="fieldView">
+    <ng-container *ngIf="operator">
+      <label-value [label]="i18n.user.operatorOwner">
+        <user-link [user]="user"></user-link>
+      </label-value>
+      <label-value [label]="i18n.general.operator">
+        <user-link [user]="operator"></user-link>
+      </label-value>
+    </ng-container>
+    <label-value *ngIf="operator == null" [label]="i18n.general.user">
       <user-link [user]="user"></user-link>
-    </label-value>
-
-    <label-value *ngIf="operator" [label]="i18n.general.operator"
-      kind="fieldView">
-      <user-link [user]="operator"></user-link>
     </label-value>
   </page-content>
   <results-layout [results]="data.history">

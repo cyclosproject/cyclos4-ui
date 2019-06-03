@@ -2,14 +2,14 @@
   <page-content *ngIf="user != null" last mode="viewForm" [heading]="title"
     [mobileHeading]="mobileTitle" [headingActions]="headingActions$ | async">
 
-    <div *ngIf="user.image && (layout.ltsm$ | async)"
+    <div *ngIf="imageEnabled && user.image && (layout.ltsm$ | async)"
       class="image d-flex justify-content-center mt-2 mb-4">
       <avatar size="160" imageSize="200" useLightbox [image]="user.image"
         [additionalImages]="user.additionalImages"></avatar>
     </div>
 
     <div class="d-flex flex-row-reverse">
-      <div *ngIf="(layout.gtxs$ | async)" class="image ml-4">
+      <div *ngIf="imageEnabled && (layout.gtxs$ | async)" class="image ml-4">
         <avatar [size]="user.image ? 200 : 128" iconSize="128px" useLightbox
           [image]="user.image" [additionalImages]="user.additionalImages">
         </avatar>

@@ -70,10 +70,15 @@
     </ng-container>
 
     <!-- Basic profile fields-->
-    <h2 class="mt-4 mb-2">
+    <h2 class="mt-4 mb-2"
+      [ngClass]="imagesAvailability === 'disabled' ? 'border-0 mt-2 mt-md-0' : null">
       {{ i18n.user.title.fields }}
     </h2>
     <ng-container [formGroup]="user">
+      <label-value *ngIf="data.userConfiguration.role === 'operator'"
+        kind="fieldView" [label]="i18n.user.operatorOwner">
+        <user-link [user]="data.userConfiguration.details.user"></user-link>
+      </label-value>
       <input-field *ngIf="hasField('name')" formControlName="name"
         [label]="i18n.user.name" [required]="canEdit('name')">
       </input-field>
