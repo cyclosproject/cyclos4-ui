@@ -33,7 +33,7 @@
     "previous": "Anterior",
     "next": "Próximo",
     "view": "Ver",
-    "viewHistory": "View history",
+    "viewHistory": "Visualizar Histórico",
     "edit": "Editar",
     "confirm": "Confirmar",
     "cancel": "Cancelar",
@@ -603,7 +603,7 @@
     "username": "Nome de usuário",
     "email": "E-mail",
     "email.pending": "E-mail pendente de validação",
-    "operatorOwner": "Operator owner",
+    "operatorOwner": "Dono do operador",
     "noImage": "Nenhuma imagem de perfil",
     "noImages": "Nenhuma imagem de perfil",
     "address.define": "Definir endereço",
@@ -636,7 +636,7 @@
       "removeContact.done": "{user} foi removido da sua lista de contatos",
       "pay": "Fazer pagamento",
       "viewAds": "Ver anúncios",
-      "status": "User status"
+      "status": "Estado do usuário"
     },
     "registration": {
       "active": "Você foi registrado com êxito, e a sua conta está ativa agora.",
@@ -655,39 +655,39 @@
     }
   },
   "userStatus": {
-    "current": "Current status",
-    "new": "New status",
-    "comment": "Comment",
+    "current": "Estado atual",
+    "new": "Novo estado",
+    "comment": "Comentário",
     "confirm": {
-      "active": "Are you sure to activate {user}?",
-      "blocked": "Are you sure to block access to {user}?",
-      "disabled": "Are you sure to disable {user}?",
-      "purged": "Are you sure to permanently remove {user} and remove all private data?\nThis action is irreversible!",
-      "removed": "Are you sure to permanently remove {user}?\nThis action is irreversible!"
+      "active": "Tem certeza que deseja ativar {user}?",
+      "blocked": "Tem certeza que deseja bloquear o acesso de {user}?",
+      "disabled": "Tem certeza que deseja desativar {user}?",
+      "purged": "Tem certeza que deseja remover permanentemente {user} e remover todos os dados privados?\nEsta ação é irreversível!",
+      "removed": "Tem certeza que deseja remover permanentemente {user}?\nEsta ação é irreversível!"
     },
     "done": {
-      "active": "The user was activated",
-      "blocked": "The user was blocked",
-      "disabled": "The user was disabled",
-      "purged": "The user was permanently removed, together with all personal data",
-      "removed": "The user was permanently removed"
+      "active": "O usuário foi ativado",
+      "blocked": "O usuário foi bloqueado",
+      "disabled": "O usuário foi desativado",
+      "purged": "O usuário foi removido permanentemente, juntamente com todos os dados pessoais",
+      "removed": "O usuário foi removido permanentemente"
     },
     "title": {
-      "status": "User status",
-      "change": "Change status",
-      "history": "User status history"
+      "status": "Estado do usuário",
+      "change": "Alterar estado",
+      "history": "Histórico de estado do usuário"
     },
     "mobileTitle": {
-      "status": "User status",
-      "change": "Change status",
-      "history": "Status history"
+      "status": "Estado do usuário",
+      "change": "Alterar estado",
+      "history": "Histórico de estado"
     },
-    "active": "Active",
-    "blocked": "Access blocked",
-    "disabled": "Disabled",
-    "pending": "Pending activation",
-    "purged": "Purged (all private data is erased)",
-    "removed": "Removed (no private data is erased)"
+    "active": "Ativo",
+    "blocked": "Acesso bloqueado",
+    "disabled": "Desabilitado",
+    "pending": "Pendente de ativação",
+    "purged": "Removido (todos os dados privados são apagados)",
+    "removed": "Removido (nenhum dado privado é apagado)"
   },
   "phone": {
     "mobile": "Telefone celular",
