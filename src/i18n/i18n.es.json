@@ -603,6 +603,7 @@
     "username": "Usuario",
     "email": "Correo electrónico",
     "email.pending": "Correo electrónico pendiente de validación",
+    "operatorOwner": "Operator owner",
     "noImage": "No ha cargado imagen de perfil",
     "noImages": "No se han cargado imágenes de perfil",
     "address.define": "Definir dirección",
