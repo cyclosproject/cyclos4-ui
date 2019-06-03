@@ -603,6 +603,7 @@
     "username": "Inlognaam",
     "email": "E-mail",
     "email.pending": "In afwachting van validatie van uw e-mailadres",
+    "operatorOwner": "Operator owner",
     "noImage": "Nog geen profiel afbeelding",
     "noImages": "Geen profiel foto ' s",
     "address.define": "Definiëren adres",
