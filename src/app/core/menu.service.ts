@@ -205,11 +205,15 @@ export class MenuService {
   /**
    * Sets the active menu
    */
-  setActiveMenu(menu: Menu | ConditionalMenu): void {
+  setActiveMenu(menu: ActiveMenu | Menu | ConditionalMenu): void {
     // Whenever the last selected menu changes, update the classes in the body element
-    const observable = this.resolveMenu(menu);
-    if (observable) {
-      observable.pipe(first()).subscribe(m => this.updateActiveMenu(m));
+    if (menu instanceof ActiveMenu) {
+      this.updateActiveMenu(menu);
+    } else {
+      const observable = this.resolveMenu(menu);
+      if (observable) {
+        observable.pipe(first()).subscribe(m => this.updateActiveMenu(m));
+      }
     }
   }
 
