@@ -4,6 +4,7 @@ import { Menu } from 'app/shared/menu';
 import { SearchAdsComponent } from 'app/marketplace/search/search-ads.component';
 import { ViewAdComponent } from 'app/marketplace/view/view-ad.component';
 import { UserAdsComponent } from 'app/marketplace/search/user-ads.component';
+import { BuyVoucherComponent } from 'app/banking/vouchers/buy-voucher.component';
 
 const marketplaceRoutes: Routes = [
   {
@@ -38,10 +39,10 @@ const marketplaceRoutes: Routes = [
         }
       },
       {
-        path: 'buy-vouchers',
+        path: 'buy-voucher',
         component: BuyVoucherComponent,
         data: {
-          menu: Menu.VIEW_AD
+          menu: Menu.BUY_VOUCHER
         }
       }
     ]
