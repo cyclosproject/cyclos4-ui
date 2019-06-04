@@ -12,6 +12,7 @@ import { ContactListComponent } from 'app/users/search/contact-list.component';
 import { SearchUsersComponent } from 'app/users/search/search-users.component';
 import { ViewUserStatusHistoryComponent } from 'app/users/status/view-user-status-history.component';
 import { ViewUserStatusComponent } from 'app/users/status/view-user-status.component';
+import { SearchUserOperatorsComponent } from 'app/users/operators/search-user-operators.component';
 
 
 const usersRoutes: Routes = [
@@ -52,7 +53,7 @@ const usersRoutes: Routes = [
         }
       },
       {
-        path: 'profile/:key',
+        path: ':key/profile',
         component: ViewProfileComponent,
         resolve: {
           countries: CountriesResolve
@@ -62,7 +63,7 @@ const usersRoutes: Routes = [
         }
       },
       {
-        path: 'profile/:key/edit',
+        path: ':key/profile/edit',
         component: EditProfileComponent,
         resolve: {
           countries: CountriesResolve
@@ -72,14 +73,37 @@ const usersRoutes: Routes = [
         }
       },
       {
-        path: 'status/:key',
+        path: 'operators',
+        component: SearchUserOperatorsComponent,
+        data: {
+          menu: Menu.MY_OPERATORS
+        }
+      },
+      {
+        path: ':key/operator-profile',
+        component: ViewProfileComponent,
+        canActivate: [LoggedUserGuard],
+        data: {
+          menu: Menu.MY_OPERATORS
+        }
+      },
+      {
+        path: ':key/operator-profile/edit',
+        component: EditProfileComponent,
+        canActivate: [LoggedUserGuard],
+        data: {
+          menu: Menu.MY_OPERATORS
+        }
+      },
+      {
+        path: ':key/status',
         component: ViewUserStatusComponent,
         data: {
           menu: Menu.SEARCH_USERS
         }
       },
       {
-        path: 'status/:key/history',
+        path: ':key/status/history',
         component: ViewUserStatusHistoryComponent,
         data: {
           menu: Menu.SEARCH_USERS
@@ -101,7 +125,7 @@ const usersRoutes: Routes = [
         }
       },
       {
-        path: 'contact-profile/:key',
+        path: ':key/contact-profile',
         component: ViewProfileComponent,
         canActivate: [LoggedUserGuard],
         resolve: {

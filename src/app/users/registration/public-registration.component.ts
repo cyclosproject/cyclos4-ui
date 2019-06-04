@@ -10,8 +10,6 @@ import { BasePageComponent } from 'app/shared/base-page.component';
 import { blank, copyProperties, empty, focusFirstField, scrollTop, validateBeforeSubmit } from 'app/shared/helper';
 import { BehaviorSubject, Observable, of, Subscription, timer } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import { FieldHelperService } from 'app/core/field-helper.service';
-import { AuthHelperService } from 'app/core/auth-helper.service';
 
 export type RegistrationStep = 'group' | 'fields' | 'confirm' | 'done';
 
@@ -87,8 +85,6 @@ export class PublicRegistrationComponent
 
   constructor(
     injector: Injector,
-    private fieldHelper: FieldHelperService,
-    private authHelper: AuthHelperService,
     private usersService: UsersService,
     private imagesService: ImagesService) {
     super(injector);

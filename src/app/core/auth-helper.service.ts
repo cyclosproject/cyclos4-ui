@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { PasswordInput, PasswordModeEnum, AvailabilityEnum } from 'app/api/models';
+import { AvailabilityEnum, PasswordInput, PasswordModeEnum, User } from 'app/api/models';
+import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { I18n } from 'app/i18n/i18n';
+import { ApiHelper } from 'app/shared/api-helper';
 import { empty } from 'app/shared/helper';
 
 /**
@@ -14,7 +16,25 @@ export class AuthHelperService {
 
   constructor(
     private i18n: I18n,
+    private dataForUi: DataForUiHolder,
     private formBuilder: FormBuilder) {
+  }
+
+  /**
+   * Returns whether the given URL key represents the logged user
+   * @param key The key
+   */
+  isSelf(key: string | User): boolean {
+    if (empty(key) || key === ApiHelper.SELF) {
+      return true;
+    }
+    const dataForUi = this.dataForUi.dataForUi;
+    const auth = dataForUi.auth || {};
+    const user = auth.user || {};
+    if (user) {
+      return user.id === key || (typeof key === 'object' && key.id === user.id);
+    }
+    return false;
   }
 
   /**

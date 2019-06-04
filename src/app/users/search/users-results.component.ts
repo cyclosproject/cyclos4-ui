@@ -10,8 +10,8 @@ import { ResultType } from 'app/shared/result-type';
 import { BehaviorSubject } from 'rxjs';
 import { MaxDistance } from 'app/shared/max-distance';
 
-const MAX_COLUMNS = 7;
-const MAX_TILE_FIELDS = 2;
+export const MAX_COLUMNS = 7;
+export const MAX_TILE_FIELDS = 2;
 
 /**
  * Displays the results of a user search
@@ -43,7 +43,7 @@ export class UsersResultsComponent extends BaseComponent implements OnInit {
 
   @Input() results: PagedResults<UserResult | ContactResult>;
 
-  @Input() resultKind: 'user' | 'contact' = 'user';
+  @Input() resultKind: 'user' | 'my-operator' | 'contact' = 'user';
 
   @Output() update = new EventEmitter<PageData>();
 
@@ -124,23 +124,7 @@ export class UsersResultsComponent extends BaseComponent implements OnInit {
    * @param field The field identifier
    */
   fieldName(field: string): string {
-    switch (field) {
-      case 'display':
-        return this.i18n.general.user;
-      case 'name':
-        return this.i18n.user.name;
-      case 'username':
-        return this.i18n.user.username;
-      case 'email':
-        return this.i18n.user.email;
-      case 'phone':
-        return this.i18n.phone.phoneNumber;
-      case 'accountNumber':
-        return this.i18n.account.number;
-      default:
-        const customField = this.data.customFields.find(cf => cf.internalName === field);
-        return (customField || {}).name;
-    }
+    return this.fieldHelper.fieldName(field, this.data.customFields);
   }
 
   /**
@@ -148,6 +132,10 @@ export class UsersResultsComponent extends BaseComponent implements OnInit {
    * @param row The user or contact
    */
   path(row: any): string[] {
+    if (this.resultKind === 'my-operator') {
+      // Go to the operator profile
+      return ['/users', this.user(row).id, 'operator-profile'];
+    }
     if (!this.canViewProfile) {
       return null;
     }
@@ -157,10 +145,10 @@ export class UsersResultsComponent extends BaseComponent implements OnInit {
       // to navigate to the contact edit page
 
       // Go to the contact profile
-      return ['/users', 'contact-profile', this.user(row).id];
+      return ['/users', this.user(row).id, 'contact-profile'];
     }
     // Go to the user profile
-    return ['/users', 'profile', this.user(row).id];
+    return ['/users', this.user(row).id, 'profile'];
   }
 
   get toLink() {

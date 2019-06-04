@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { AsyncValidatorFn, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CustomFieldDetailed, CustomFieldTypeEnum, LinkedEntityTypeEnum, CustomFieldSizeEnum } from 'app/api/models';
+import { CustomFieldDetailed, CustomFieldTypeEnum, LinkedEntityTypeEnum, CustomFieldSizeEnum, CustomField } from 'app/api/models';
 import { FormatService } from 'app/core/format.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { FieldOption } from 'app/shared/field-option';
 import { empty } from 'app/shared/helper';
+import { I18n } from 'app/i18n/i18n';
 
 /**
  * Helper service for custom fields
@@ -16,7 +17,8 @@ export class FieldHelperService {
 
   constructor(
     private formBuilder: FormBuilder,
-    private format: FormatService) {
+    private format: FormatService,
+    private i18n: I18n) {
   }
 
   /**
@@ -33,6 +35,31 @@ export class FieldHelperService {
       return CustomFieldSizeEnum.SMALL;
     } else {
       return field.size;
+    }
+  }
+
+  /**
+   * Returns the display name of the given field
+   * @param field The field identifier
+   * @param customFields The known custom fields
+   */
+  fieldName(field: string, customFields: CustomField[]): string {
+    switch (field) {
+      case 'display':
+        return this.i18n.general.user;
+      case 'name':
+        return this.i18n.user.name;
+      case 'username':
+        return this.i18n.user.username;
+      case 'email':
+        return this.i18n.user.email;
+      case 'phone':
+        return this.i18n.phone.phoneNumber;
+      case 'accountNumber':
+        return this.i18n.account.number;
+      default:
+        const customField = customFields.find(cf => cf.internalName === field);
+        return (customField || {}).name;
     }
   }
 

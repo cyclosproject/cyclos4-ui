@@ -37525,6 +37525,24 @@ components:
                 registering a user, and ignored on public registrations (the e-mail
                 is always sent on public registrations).
 
+    OperatorsPermissions:
+      description: >-
+        Permissions over own operators
+      type: object
+      properties:
+        enable:
+          description: >-
+            Whether operators are enabled
+          type: boolean
+        manageOperators:
+          description: >-
+            Whether I can manage my own operators
+          type: boolean
+        manageGroups:
+          description: >-
+            Whether I can manage my own operator groups
+          type: boolean
+
     OrderDataForAcceptByBuyer:
       description: >-
         Data used to accept an order by the buyer.
@@ -38500,6 +38518,11 @@ components:
             Permissions over contacts
           allOf:
             - $ref: '#/components/schemas/ContactsPermissions'
+        operators:
+          description: >-
+            Permissions over own operators
+          allOf:
+            - $ref: '#/components/schemas/OperatorsPermissions'
         notifications:
           description: >-
             Permissions over notifications

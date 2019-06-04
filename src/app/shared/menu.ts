@@ -21,12 +21,13 @@ export enum MenuType {
 
 /** Contains the top-level (root) menus */
 export type RootMenu =
-  'dashboard' | 'banking' | 'marketplace' | 'home' |
+  'dashboard' | 'banking' | 'operators' | 'marketplace' | 'home' |
   'publicDirectory' | 'publicMarketplace' | 'content' |
   'personal' | 'registration' | 'login' | 'logout';
 export module RootMenu {
   export const DASHBOARD: RootMenu = 'dashboard';
   export const BANKING: RootMenu = 'banking';
+  export const OPERATORS: RootMenu = 'operators';
   export const MARKETPLACE: RootMenu = 'marketplace';
   export const HOME: RootMenu = 'home';
   export const PUBLIC_DIRECTORY: RootMenu = 'publicDirectory';
@@ -38,7 +39,7 @@ export module RootMenu {
   export const LOGOUT: RootMenu = 'logout';
   export function values(): RootMenu[] {
     return [
-      DASHBOARD, BANKING, MARKETPLACE,
+      DASHBOARD, BANKING, OPERATORS, MARKETPLACE,
       HOME, PUBLIC_DIRECTORY, PUBLIC_MARKETPLACE,
       CONTENT, PERSONAL, REGISTRATION, LOGIN, LOGOUT
     ];
@@ -86,6 +87,9 @@ export module Menu {
   export const EDIT_USER_PROFILE = new Menu(RootMenu.MARKETPLACE, 'EDIT_USER_PROFILE');
   export const SEARCH_ADS = new Menu(RootMenu.MARKETPLACE, 'SEARCH_ADS');
   export const VIEW_AD = new Menu(RootMenu.MARKETPLACE, 'VIEW_AD');
+
+  // Operators
+  export const MY_OPERATORS = new Menu(RootMenu.OPERATORS, 'MY_OPERATORS');
 
   // Personal
   export const MY_PROFILE = new Menu(RootMenu.PERSONAL, 'MY_PROFILE');

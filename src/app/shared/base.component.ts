@@ -13,6 +13,8 @@ import { LayoutService } from 'app/shared/layout.service';
 import { Observable } from 'rxjs';
 import { BreadcrumbService } from '../core/breadcrumb.service';
 import { StateManager } from '../core/state-manager';
+import { AuthHelperService } from 'app/core/auth-helper.service';
+import { FieldHelperService } from 'app/core/field-helper.service';
 
 /**
  * Base class to meant to be inherited by other components.
@@ -33,6 +35,8 @@ export abstract class BaseComponent
   menu: MenuService;
   stateManager: StateManager;
   breadcrumb: BreadcrumbService;
+  authHelper: AuthHelperService;
+  fieldHelper: FieldHelperService;
   router: Router;
   route: ActivatedRoute;
   formBuilder: FormBuilder;
@@ -49,6 +53,8 @@ export abstract class BaseComponent
     this.menu = injector.get(MenuService);
     this.stateManager = injector.get(StateManager);
     this.breadcrumb = injector.get(BreadcrumbService);
+    this.authHelper = injector.get(AuthHelperService);
+    this.fieldHelper = injector.get(FieldHelperService);
     this.router = injector.get(Router);
     this.route = injector.get(ActivatedRoute);
     this.formBuilder = new FormBuilder();

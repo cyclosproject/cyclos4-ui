@@ -86,7 +86,7 @@ export class ApiHelper {
     switch (notification.entityType) {
       case NotificationEntityTypeEnum.USER:
         return {
-          path: `/users/profile/${notification.entityId}`,
+          path: `/users/${notification.entityId}/profile`,
           menu: new ActiveMenu(Menu.SEARCH_USERS)
         };
       case NotificationEntityTypeEnum.TRANSACTION:
@@ -182,7 +182,7 @@ export class ApiHelper {
         return `/banking/transfer/${id}`;
       case 'user':
       case 'userProfile':
-        return `/users/profile/${id}`;
+        return `/users/${id}/profile`;
       case 'advertisement':
         return `/marketplace/view/${id}`;
       case 'password':
