@@ -86,6 +86,7 @@ export module Menu {
   export const EDIT_USER_PROFILE = new Menu(RootMenu.MARKETPLACE, 'EDIT_USER_PROFILE');
   export const SEARCH_ADS = new Menu(RootMenu.MARKETPLACE, 'SEARCH_ADS');
   export const VIEW_AD = new Menu(RootMenu.MARKETPLACE, 'VIEW_AD');
+  export const BUY_VOUCHER = new Menu(RootMenu.MARKETPLACE, 'BUY_VOUCHER');
 
   // Personal
   export const MY_PROFILE = new Menu(RootMenu.PERSONAL, 'MY_PROFILE');

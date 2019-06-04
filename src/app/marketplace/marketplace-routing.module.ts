@@ -36,6 +36,13 @@ const marketplaceRoutes: Routes = [
         data: {
           menu: Menu.VIEW_AD
         }
+      },
+      {
+        path: 'buy-vouchers',
+        component: BuyVoucherComponent,
+        data: {
+          menu: Menu.VIEW_AD
+        }
       }
     ]
   }
