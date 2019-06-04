@@ -181,6 +181,8 @@
     "banking.paySelf": "Paiement à soi-même",
     "banking.scheduledPayments": "Paiements planifiés",
     "banking.authorizations": "Autorisations de paiement",
+    "operators": "Operators",
+    "operators.operators": "Operators",
     "marketplace": "Place de marché",
     "marketplace.directory": "Annuaire",
     "marketplace.businessDirectory": "Annuaire professionnel",
@@ -575,7 +577,9 @@
       "registration.done": "Inscription réussie",
       "contactList": "Liste de contacts",
       "addContact": "Ajouter un nouveau contact",
-      "search": "Annuaire professionnel"
+      "search": "Annuaire professionnel",
+      "myOperators": "Operators",
+      "userOperators": "User operators"
     },
     "mobileTitle": {
       "myProfile": "My profile",
@@ -594,7 +598,9 @@
       "registration.done": "Success",
       "contactList": "Contacts",
       "addContact": "New contact",
-      "search": "Directory"
+      "search": "Directory",
+      "myOperators": "Operators",
+      "userOperators": "Operators"
     },
     "group": "Groupe",
     "groupSet": "Group set",
