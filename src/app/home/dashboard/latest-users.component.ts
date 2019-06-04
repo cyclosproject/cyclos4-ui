@@ -49,7 +49,7 @@ export class LatestUsersComponent extends BaseDashboardComponent implements OnIn
   navigate(user: UserResult, event: MouseEvent) {
     this.menu.navigate({
       url: this.path(user),
-      menu: new ActiveMenu(Menu.USER_PROFILE),
+      menu: new ActiveMenu(Menu.SEARCH_USERS),
       clear: false,
       event: event
     });

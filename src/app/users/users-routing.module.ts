@@ -59,7 +59,7 @@ const usersRoutes: Routes = [
           countries: CountriesResolve
         },
         data: {
-          menu: Menu.USER_PROFILE
+          menu: Menu.SEARCH_USERS
         }
       },
       {
@@ -69,7 +69,7 @@ const usersRoutes: Routes = [
           countries: CountriesResolve
         },
         data: {
-          menu: Menu.EDIT_USER_PROFILE
+          menu: Menu.SEARCH_USERS
         }
       },
       {
@@ -132,7 +132,7 @@ const usersRoutes: Routes = [
           countries: CountriesResolve
         },
         data: {
-          menu: Menu.CONTACT_PROFILE
+          menu: Menu.CONTACTS
         }
       },
       {
