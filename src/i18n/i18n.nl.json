@@ -181,6 +181,8 @@
     "banking.paySelf": "De betaling zelf",
     "banking.scheduledPayments": "Geautoriseerde betalingen",
     "banking.authorizations": "Betalingsautorisaties",
+    "operators": "Operators",
+    "operators.operators": "Operators",
     "marketplace": "Marktplaats",
     "marketplace.directory": "Bedrijven",
     "marketplace.businessDirectory": "Gebruikers",
@@ -575,7 +577,9 @@
       "registration.done": "Inschrijving succesvol",
       "contactList": "Contact lijst",
       "addContact": "Een nieuw contact toevoegen",
-      "search": "Business directory"
+      "search": "Business directory",
+      "myOperators": "Operators",
+      "userOperators": "User operators"
     },
     "mobileTitle": {
       "myProfile": "My profile",
@@ -594,7 +598,9 @@
       "registration.done": "Success",
       "contactList": "Contacts",
       "addContact": "New contact",
-      "search": "Directory"
+      "search": "Directory",
+      "myOperators": "Operators",
+      "userOperators": "Operators"
     },
     "group": "Groep",
     "groupSet": "Group set",
