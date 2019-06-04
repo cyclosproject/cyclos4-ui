@@ -92,14 +92,14 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     if (user.permissions.profile.editProfile) {
       const editPath = (this.login.user || {}).id === user.id
         ? ['users', 'profile', 'edit']
-        : ['users', 'profile', user.id, 'edit'];
+        : ['users', user.id, 'profile', 'edit'];
       actions.push(new HeadingAction('edit', this.i18n.general.edit, () => {
         this.router.navigate(editPath);
       }, true));
     }
     if (status.view) {
       actions.push(new HeadingAction('how_to_reg', this.i18n.user.profile.status, () => {
-        this.router.navigate(['/users', 'status', this.key]);
+        this.router.navigate(['/users', this.key, 'status']);
       }));
     }
     if (contact.add) {

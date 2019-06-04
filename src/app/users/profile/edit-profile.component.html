@@ -75,8 +75,8 @@
       {{ i18n.user.title.fields }}
     </h2>
     <ng-container [formGroup]="user">
-      <label-value *ngIf="data.userConfiguration.role === 'operator'"
-        kind="fieldView" [label]="i18n.user.operatorOwner">
+      <label-value *ngIf="operatorOfManagedUser" kind="fieldView"
+        [label]="i18n.user.operatorOwner">
         <user-link [user]="data.userConfiguration.details.user"></user-link>
       </label-value>
       <input-field *ngIf="hasField('name')" formControlName="name"
@@ -252,7 +252,9 @@
         </label-value>
         <div
           *ngIf="(layout.xxs$ | async) || !data.phoneConfiguration.managePrivacy"
-          class="d-flex justify-content-end">
+          class="d-flex justify-content-end" [ngClass]="{
+            'mt-3': !data.phoneConfiguration.managePrivacy
+          }">
           <button class="btn btn-outline-primary" type="button"
             (click)="removePhone(phone)">
             {{ i18n.user.phoneRemove }}

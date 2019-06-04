@@ -21,12 +21,13 @@ export enum MenuType {
 
 /** Contains the top-level (root) menus */
 export type RootMenu =
-  'dashboard' | 'banking' | 'marketplace' | 'home' |
+  'dashboard' | 'banking' | 'operators' | 'marketplace' | 'home' |
   'publicDirectory' | 'publicMarketplace' | 'content' |
   'personal' | 'registration' | 'login' | 'logout';
 export module RootMenu {
   export const DASHBOARD: RootMenu = 'dashboard';
   export const BANKING: RootMenu = 'banking';
+  export const OPERATORS: RootMenu = 'operators';
   export const MARKETPLACE: RootMenu = 'marketplace';
   export const HOME: RootMenu = 'home';
   export const PUBLIC_DIRECTORY: RootMenu = 'publicDirectory';
@@ -38,7 +39,7 @@ export module RootMenu {
   export const LOGOUT: RootMenu = 'logout';
   export function values(): RootMenu[] {
     return [
-      DASHBOARD, BANKING, MARKETPLACE,
+      DASHBOARD, BANKING, OPERATORS, MARKETPLACE,
       HOME, PUBLIC_DIRECTORY, PUBLIC_MARKETPLACE,
       CONTENT, PERSONAL, REGISTRATION, LOGIN, LOGOUT
     ];
@@ -72,8 +73,6 @@ export module Menu {
 
   // Banking
   export const ACCOUNT_HISTORY = new Menu(RootMenu.BANKING, 'ACCOUNT_HISTORY');
-  export const VIEW_TRANSFER = new Menu(RootMenu.BANKING, 'VIEW_TRANSFER');
-  export const VIEW_TRANSACTION = new Menu(RootMenu.BANKING, 'VIEW_TRANSACTION');
   export const PAYMENT_TO_USER = new Menu(RootMenu.BANKING, 'PAYMENT_TO_USER');
   export const PAYMENT_TO_SELF = new Menu(RootMenu.BANKING, 'PAYMENT_TO_SELF');
   export const PAYMENT_TO_SYSTEM = new Menu(RootMenu.BANKING, 'PAYMENT_TO_SYSTEM');
@@ -82,17 +81,18 @@ export module Menu {
 
   // Marketplace
   export const SEARCH_USERS = new Menu(RootMenu.MARKETPLACE, 'SEARCH_USERS');
-  export const USER_PROFILE = new Menu(RootMenu.MARKETPLACE, 'USER_PROFILE');
-  export const EDIT_USER_PROFILE = new Menu(RootMenu.MARKETPLACE, 'EDIT_USER_PROFILE');
   export const SEARCH_ADS = new Menu(RootMenu.MARKETPLACE, 'SEARCH_ADS');
+
   export const VIEW_AD = new Menu(RootMenu.MARKETPLACE, 'VIEW_AD');
   export const BUY_VOUCHER = new Menu(RootMenu.MARKETPLACE, 'BUY_VOUCHER');
+
+  // Operators
+  export const MY_OPERATORS = new Menu(RootMenu.OPERATORS, 'MY_OPERATORS');
 
   // Personal
   export const MY_PROFILE = new Menu(RootMenu.PERSONAL, 'MY_PROFILE');
   export const EDIT_MY_PROFILE = new Menu(RootMenu.PERSONAL, 'EDIT_MY_PROFILE');
   export const CONTACTS = new Menu(RootMenu.PERSONAL, 'CONTACTS');
-  export const CONTACT_PROFILE = new Menu(RootMenu.PERSONAL, 'CONTACTS_PROFILE');
   export const PASSWORDS = new Menu(RootMenu.PERSONAL, 'PASSWORDS');
   export const NOTIFICATIONS = new Menu(RootMenu.PERSONAL, 'NOTIFICATIONS');
   export const SETTINGS = new Menu(RootMenu.PERSONAL, 'SETTINGS');

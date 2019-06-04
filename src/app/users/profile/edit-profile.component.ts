@@ -1,17 +1,16 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import {
-  AddressManage, AvailabilityEnum, ContactInfoManage, CustomField,
-  CustomFieldDetailed, DataForEditFullProfile, FullProfileEdit, Image,
-  PhoneEditWithId, PhoneKind, PhoneManage, CreateDeviceConfirmation, DeviceConfirmationTypeEnum,
+  AddressManage, AvailabilityEnum, ContactInfoManage, CreateDeviceConfirmation,
+  CustomField, CustomFieldDetailed, DataForEditFullProfile, DeviceConfirmationTypeEnum,
+  FullProfileEdit, Image, PhoneEditWithId, PhoneKind, PhoneManage
 } from 'app/api/models';
 import { ImagesService, PhonesService, UsersService } from 'app/api/services';
 import { AddressHelperService } from 'app/core/address-helper.service';
-import { AuthHelperService } from 'app/core/auth-helper.service';
-import { FieldHelperService } from 'app/core/field-helper.service';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BasePageComponent } from 'app/shared/base-page.component';
+import { ConfirmationMode } from 'app/shared/confirmation-mode';
 import { FormControlLocator } from 'app/shared/form-control-locator';
 import { empty, isTouched, locateControl, scrollTop, validateBeforeSubmit } from 'app/shared/helper';
 import { ManageImagesComponent } from 'app/shared/manage-images.component';
@@ -20,7 +19,6 @@ import { cloneDeep } from 'lodash';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BehaviorSubject } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { ConfirmationMode } from 'app/shared/confirmation-mode';
 
 const IMAGE_MANAGED_TIMEOUT = 6_000;
 
@@ -47,6 +45,7 @@ export class EditProfileComponent
   key: string;
 
   ready$ = new BehaviorSubject(false);
+  operatorOfManagedUser: boolean;
   enabledFields: Set<string>;
   editableFields: Set<string>;
   managePrivacyFields: Set<string>;
@@ -95,8 +94,6 @@ export class EditProfileComponent
 
   constructor(
     injector: Injector,
-    private authHelper: AuthHelperService,
-    private fieldHelper: FieldHelperService,
     private usersService: UsersService,
     private imagesService: ImagesService,
     private phonesService: PhonesService,
@@ -110,6 +107,7 @@ export class EditProfileComponent
     super.ngOnInit();
     const route = this.route.snapshot;
     this.key = route.params.key || ApiHelper.SELF;
+    const self = this.authHelper.isSelf(this.key);
 
     this.createDeviceConfirmation = () => ({
       type: DeviceConfirmationTypeEnum.EDIT_PROFILE
@@ -117,18 +115,18 @@ export class EditProfileComponent
 
     this.headingActions = [
       new HeadingAction('search', this.i18n.general.view, () => {
-        const viewPath = ['users', 'profile'];
-        if (this.key !== ApiHelper.SELF) {
-          viewPath.push(this.key);
+        if (self) {
+          this.router.navigate(['users', 'profile']);
+        } else {
+          this.router.navigate(['users', this.key, 'profile']);
         }
-        this.router.navigate(viewPath);
       }, true)
     ];
 
     this.usersService.getDataForEditFullProfile({ user: this.key }).subscribe(data => {
       this.data = data;
 
-      if (this.key === ApiHelper.SELF || this.key === this.login.user.id) {
+      if (self) {
         // Update the current user to reflect any changes if editing own profile
         this.login.user$.next({
           id: this.login.user.id,
@@ -137,6 +135,9 @@ export class EditProfileComponent
           image: empty(data.images) ? null : data.images[0]
         });
       }
+
+      const user = data.userConfiguration;
+      this.operatorOfManagedUser = user.role === 'operator' && !this.authHelper.isSelf(user.details.user.user);
 
       this.initialize(data);
 

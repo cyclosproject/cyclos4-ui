@@ -2,14 +2,13 @@ import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/c
 import { Country, CustomFieldDetailed, UserDataForMap, UserDataForSearch } from 'app/api/models';
 import { UserResult } from 'app/api/models/user-result';
 import { UsersService } from 'app/api/services';
-import { FieldHelperService } from 'app/core/field-helper.service';
 import { CountriesResolve } from 'app/countries.resolve';
 import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { empty } from 'app/shared/helper';
+import { MaxDistance } from 'app/shared/max-distance';
 import { ResultType } from 'app/shared/result-type';
 import { cloneDeep } from 'lodash';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { MaxDistance } from 'app/shared/max-distance';
 
 
 /**
@@ -42,7 +41,6 @@ export class SearchUsersComponent
 
   constructor(
     injector: Injector,
-    private fieldHelper: FieldHelperService,
     private usersService: UsersService,
     countriesResolve: CountriesResolve
   ) {

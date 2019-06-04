@@ -1,0 +1,45 @@
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data; else loading">
+    <page-content mode="filters"
+      [heading]="self ? i18n.user.title.myOperators : i18n.user.title.userOperators"
+      [mobileHeading]="self ? i18n.user.mobileTitle.myOperators : i18n.user.mobileTitle.userOperators"
+      [headingActions]="headingActions$ | async">
+      <form [formGroup]="form"
+        class="filters-form filters-form-separator border-bottom-0">
+        <div class="row">
+          <div *ngIf="data.groups?.length > 1" class="col-12 col-md-6">
+            <multi-selection-field labelPosition="side"
+              formControlName="operatorGroups"
+              [label]="i18n.user.groupFilter">
+              <field-option *ngFor="let group of data.groups"
+                [value]="group.id" [internalName]="group.internalName"
+                [id]="group.id" [text]="group.name">
+              </field-option>
+            </multi-selection-field>
+          </div>
+          <ng-container *ngIf="layout.gtxxs$ | async">
+            <ng-container *ngIf="moreFilters$ | async">
+              <div class="col-12 col-md-6"
+                *ngFor="let cf of advancedFields$ | async">
+                <custom-field-filter labelPosition="side" [field]="cf"
+                  [formControl]="form.get('customValues').get(cf.internalName)">
+                </custom-field-filter>
+              </div>
+            </ng-container>
+          </ng-container>
+        </div>
+      </form>
+    </page-content>
+
+    <users-results [results]="results$ | async" [rendering$]="rendering$"
+      [data]="data$ | async" resultType="list" resultKind="my-operator"
+      (update)="update($event)">
+    </users-results>
+  </ng-container>
+</page-layout>
+
+<ng-template #loading>
+  <page-content>
+    <spinner></spinner>
+  </page-content>
+</ng-template>

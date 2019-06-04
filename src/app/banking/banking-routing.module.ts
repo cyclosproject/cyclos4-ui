@@ -52,21 +52,21 @@ const bankingRoutes: Routes = [
         path: 'transfer/:key',
         component: ViewTransferComponent,
         data: {
-          menu: Menu.VIEW_TRANSFER
+          menu: Menu.ACCOUNT_HISTORY
         }
       },
       {
         path: 'transaction/:key',
         component: ViewTransactionComponent,
         data: {
-          menu: Menu.VIEW_TRANSACTION
+          menu: Menu.ACCOUNT_HISTORY
         }
       },
       {
         path: 'transaction/:key/authorization-history',
         component: ViewAuthorizationHistoryComponent,
         data: {
-          menu: Menu.VIEW_TRANSACTION
+          menu: Menu.ACCOUNT_HISTORY
         }
       },
       {

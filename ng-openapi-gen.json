@@ -13,6 +13,7 @@
     "Addresses",
     "Contacts",
     "ContactInfos",
+    "Operators",
     "UserStatus",
     "Transactions",
     "ScheduledPayments",
@@ -26,7 +27,10 @@
     "Captcha",
     "Files",
     "Images",
-    "Operations"
+    "Operations",
+    "Sessions",
+    "Vouchers",
+    "Alerts"
   ],
   "enumStyle": "upper"
 }
