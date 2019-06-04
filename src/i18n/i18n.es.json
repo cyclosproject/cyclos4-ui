@@ -6,6 +6,7 @@
     "actions": "Acciones",
     "date": "Fecha",
     "performedBy": "Realizado por",
+    "status": "Estado",
     "comments": "Comentarios",
     "futureDate": "Fecha futura",
     "beginDate": "Fecha inicial",
@@ -32,6 +33,7 @@
     "previous": "Anterior",
     "next": "Siguiente",
     "view": "Ver",
+    "viewHistory": "View history",
     "edit": "Editar",
     "confirm": "Confirmar",
     "cancel": "Cancelar",
@@ -421,7 +423,6 @@
     "done.view": "Ver pago",
     "done.new": "Nuevo pago",
     "status": {
-      "name": "Estado",
       "open": "Abierto",
       "closed": "Cerrado",
       "canceled": "Cancelado",
@@ -602,6 +603,7 @@
     "username": "Usuario",
     "email": "Correo electrónico",
     "email.pending": "Correo electrónico pendiente de validación",
+    "operatorOwner": "Operator owner",
     "noImage": "No ha cargado imagen de perfil",
     "noImages": "No se han cargado imágenes de perfil",
     "address.define": "Definir dirección",
@@ -633,7 +635,8 @@
       "removeContact": "Eliminar de mis contactos",
       "removeContact.done": "{user} ha sido eliminado de su lista de contactos",
       "pay": "Realizar pago",
-      "viewAds": "Ver anuncios"
+      "viewAds": "Ver anuncios",
+      "status": "User status"
     },
     "registration": {
       "active": "Ha sido registrado exitosamente y su cuenta ya se encuentra activa.",
@@ -650,6 +653,41 @@
       "alphabeticallyAsc": "Nombre (A - Z)",
       "alphabeticallyDesc": "Nombre (Z - A)"
     }
+  },
+  "userStatus": {
+    "current": "Current status",
+    "new": "New status",
+    "comment": "Comment",
+    "confirm": {
+      "active": "Are you sure to activate {user}?",
+      "blocked": "Are you sure to block access to {user}?",
+      "disabled": "Are you sure to disable {user}?",
+      "purged": "Are you sure to permanently remove {user} and remove all private data?\nThis action is irreversible!",
+      "removed": "Are you sure to permanently remove {user}?\nThis action is irreversible!"
+    },
+    "done": {
+      "active": "The user was activated",
+      "blocked": "The user was blocked",
+      "disabled": "The user was disabled",
+      "purged": "The user was permanently removed, together with all personal data",
+      "removed": "The user was permanently removed"
+    },
+    "title": {
+      "status": "User status",
+      "change": "Change status",
+      "history": "User status history"
+    },
+    "mobileTitle": {
+      "status": "User status",
+      "change": "Change status",
+      "history": "Status history"
+    },
+    "active": "Active",
+    "blocked": "Access blocked",
+    "disabled": "Disabled",
+    "pending": "Pending activation",
+    "purged": "Purged (all private data is erased)",
+    "removed": "Removed (no private data is erased)"
   },
   "phone": {
     "mobile": "Teléfono móvil",
