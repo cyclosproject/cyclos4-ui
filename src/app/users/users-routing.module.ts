@@ -80,7 +80,7 @@ const usersRoutes: Routes = [
         }
       },
       {
-        path: ':key/operator-profile',
+        path: 'operators/:key',
         component: ViewProfileComponent,
         canActivate: [LoggedUserGuard],
         data: {
@@ -88,11 +88,19 @@ const usersRoutes: Routes = [
         }
       },
       {
-        path: ':key/operator-profile/edit',
+        path: 'operators/:key/edit',
         component: EditProfileComponent,
         canActivate: [LoggedUserGuard],
         data: {
           menu: Menu.MY_OPERATORS
+        }
+      },
+      {
+        path: 'brokering/users',
+        component: EditProfileComponent,
+        canActivate: [LoggedUserGuard],
+        data: {
+          menu: Menu.MY_BROKERED_USERS
         }
       },
       {
@@ -125,7 +133,7 @@ const usersRoutes: Routes = [
         }
       },
       {
-        path: ':key/contact-profile',
+        path: 'contacts/:key',
         component: ViewProfileComponent,
         canActivate: [LoggedUserGuard],
         resolve: {

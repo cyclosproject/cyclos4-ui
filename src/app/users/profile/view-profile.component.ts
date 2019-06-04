@@ -90,11 +90,8 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     const marketplace = permissions.marketplace || {};
     const status = permissions.status || {};
     if (user.permissions.profile.editProfile) {
-      const editPath = (this.login.user || {}).id === user.id
-        ? ['users', 'profile', 'edit']
-        : ['users', user.id, 'profile', 'edit'];
       actions.push(new HeadingAction('edit', this.i18n.general.edit, () => {
-        this.router.navigate(editPath);
+        this.router.navigateByUrl(this.router.url + '/edit');
       }, true));
     }
     if (status.view) {
