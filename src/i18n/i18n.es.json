@@ -668,7 +668,7 @@
       "active": "¿Está seguro de activar a {user}?",
       "blocked": "Está usted seguro de bloquear el acceso de {user}?",
       "disabled": "¿Está seguro que desea deshabilitar a {user}?",
-      "purged": "Are you sure to permanently remove {user} and remove all private data?\nThis action is irreversible!",
+      "purged": "Está seguro que desea eliminar de forma permanente a {user}, y eliminar todos sus datos privados?\nEsta acción es irreversible!",
       "removed": "Está seguro de que desea eliminar de forma permanente a {user}?\nEsta acción es irreversible!"
     },
     "done": {
