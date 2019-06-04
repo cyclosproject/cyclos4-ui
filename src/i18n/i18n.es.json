@@ -183,8 +183,12 @@
     "banking.authorizations": "Pagos con autorización",
     "operators": "Operadores",
     "operators.operators": "Operadores",
+    "brokering": "Brokering",
+    "brokering.users": "Users",
     "marketplace": "Comercio electrónico",
+    "marketplace.users": "Users",
     "marketplace.directory": "Directorio",
+    "marketplace.userSearch": "Users",
     "marketplace.businessDirectory": "Directorio de anunciantes",
     "marketplace.advertisements": "Anuncios",
     "personal": "Personal",
@@ -577,9 +581,12 @@
       "registration.done": "Registro exitoso",
       "contactList": "Lista de contactos",
       "addContact": "Agregar un contacto",
-      "search": "Directorio de anunciantes",
+      "search": "Users search",
+      "directory": "Business directory",
       "myOperators": "Operadores",
-      "userOperators": "Operadores de usuario"
+      "userOperators": "Operadores de usuario",
+      "myBrokerings": "Assigned members",
+      "userBrokerings": "Broker assigned members"
     },
     "mobileTitle": {
       "myProfile": "Mi Perfil",
@@ -598,9 +605,12 @@
       "registration.done": "Exitoso",
       "contactList": "Contactos",
       "addContact": "Nuevo contacto",
-      "search": "Directorio",
+      "search": "Users",
+      "directory": "Directory",
       "myOperators": "Operadores",
-      "userOperators": "Operadores"
+      "userOperators": "Operadores",
+      "myBrokerings": "Assigned members",
+      "userBrokerings": "Broker members"
     },
     "group": "Grupo",
     "groupSet": "Conjunto de grupos",
@@ -642,6 +652,8 @@
       "removeContact.done": "{user} ha sido eliminado de su lista de contactos",
       "pay": "Realizar pago",
       "viewAds": "Ver anuncios",
+      "viewBrokerings": "View assigned members",
+      "viewOperators": "View operators",
       "status": "Estado del usuario"
     },
     "registration": {
