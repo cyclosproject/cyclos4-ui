@@ -454,6 +454,7 @@ export class MenuService {
     const publicDirectory = addRoot(RootMenu.PUBLIC_DIRECTORY, 'group', this.i18n.menu.marketplaceDirectory);
     const publicMarketplace = addRoot(RootMenu.PUBLIC_MARKETPLACE, 'shopping_cart', this.i18n.menu.marketplaceAdvertisements);
     addRoot(RootMenu.BANKING, 'account_balance', this.i18n.menu.banking);
+    addRoot(RootMenu.OPERATORS, 'supervised_user_circle', this.i18n.menu.operators);
     const marketplaceRoot = addRoot(RootMenu.MARKETPLACE, 'shopping_cart', this.i18n.menu.marketplace);
     const content = addRoot(RootMenu.CONTENT, 'information', this.i18n.menu.content);
     addRoot(RootMenu.PERSONAL, 'account_box', this.i18n.menu.personal, null, [MenuType.SIDENAV, MenuType.BAR, MenuType.SIDE]);
@@ -544,6 +545,7 @@ export class MenuService {
 
       const banking = permissions.banking || {};
       const contacts = permissions.contacts || {};
+      const operators = permissions.operators || {};
 
       // Banking
       const accountTypes = this.bankingHelper.ownerAccountTypes();
@@ -574,6 +576,11 @@ export class MenuService {
       }
       addOperations(RootMenu.BANKING);
       addContentPages(Menu.CONTENT_PAGE_BANKING);
+
+      // Operators
+      if (operators.enable) {
+        add(Menu.MY_OPERATORS, '/users/operators', 'supervisor_account', this.i18n.menu.operatorsOperators);
+      }
 
       // Marketplace
       if (users.search || users.map) {

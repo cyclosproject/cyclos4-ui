@@ -34,7 +34,7 @@ const marketplaceRoutes: Routes = [
         path: 'view/:id',
         component: ViewAdComponent,
         data: {
-          menu: Menu.VIEW_AD
+          menu: Menu.SEARCH_ADS
         }
       }
     ]

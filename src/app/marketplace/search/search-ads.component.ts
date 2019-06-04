@@ -2,14 +2,13 @@ import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/c
 import { AdAddressResultEnum, AdCategoryWithChildren, AdResult, CustomFieldDetailed } from 'app/api/models';
 import { AdDataForSearch } from 'app/api/models/ad-data-for-search';
 import { MarketplaceService } from 'app/api/services';
-import { FieldHelperService } from 'app/core/field-helper.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { empty } from 'app/shared/helper';
+import { MaxDistance } from 'app/shared/max-distance';
 import { ResultType } from 'app/shared/result-type';
 import { cloneDeep } from 'lodash';
 import { BehaviorSubject } from 'rxjs';
-import { MaxDistance } from 'app/shared/max-distance';
 
 /**
  * Search for advertisements
@@ -29,7 +28,6 @@ export class SearchAdsComponent
 
   constructor(
     injector: Injector,
-    private fieldHelper: FieldHelperService,
     private marketplaceService: MarketplaceService
   ) {
     super(injector);

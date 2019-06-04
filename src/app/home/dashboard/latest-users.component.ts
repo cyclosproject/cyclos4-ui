@@ -43,13 +43,13 @@ export class LatestUsersComponent extends BaseDashboardComponent implements OnIn
   }
 
   path(user: UserResult): string {
-    return `/users/profile/${user.id}`;
+    return `/users/${user.id}/profile`;
   }
 
   navigate(user: UserResult, event: MouseEvent) {
     this.menu.navigate({
       url: this.path(user),
-      menu: new ActiveMenu(Menu.USER_PROFILE),
+      menu: new ActiveMenu(Menu.SEARCH_USERS),
       clear: false,
       event: event
     });

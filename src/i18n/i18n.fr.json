@@ -6,6 +6,7 @@
     "actions": "Actions",
     "date": "Date",
     "performedBy": "Réalisé par",
+    "status": "Statut",
     "comments": "Commentaires",
     "futureDate": "Date d'échéance",
     "beginDate": "Date de début",
@@ -32,6 +33,7 @@
     "previous": "Précédent",
     "next": "Suivant",
     "view": "Voir",
+    "viewHistory": "View history",
     "edit": "Editer",
     "confirm": "Confirmer",
     "cancel": "Annuler",
@@ -179,6 +181,8 @@
     "banking.paySelf": "Paiement à soi-même",
     "banking.scheduledPayments": "Paiements planifiés",
     "banking.authorizations": "Autorisations de paiement",
+    "operators": "Operators",
+    "operators.operators": "Operators",
     "marketplace": "Place de marché",
     "marketplace.directory": "Annuaire",
     "marketplace.businessDirectory": "Annuaire professionnel",
@@ -421,7 +425,6 @@
     "done.view": "Voir le paiement",
     "done.new": "Nouveau paiement",
     "status": {
-      "name": "Statut",
       "open": "Ouvert",
       "closed": "Fermé",
       "canceled": "Annulé",
@@ -574,7 +577,9 @@
       "registration.done": "Inscription réussie",
       "contactList": "Liste de contacts",
       "addContact": "Ajouter un nouveau contact",
-      "search": "Annuaire professionnel"
+      "search": "Annuaire professionnel",
+      "myOperators": "Operators",
+      "userOperators": "User operators"
     },
     "mobileTitle": {
       "myProfile": "My profile",
@@ -593,7 +598,9 @@
       "registration.done": "Success",
       "contactList": "Contacts",
       "addContact": "New contact",
-      "search": "Directory"
+      "search": "Directory",
+      "myOperators": "Operators",
+      "userOperators": "Operators"
     },
     "group": "Groupe",
     "groupSet": "Group set",
@@ -602,6 +609,7 @@
     "username": "Nom d'utilisateur",
     "email": "E-mail",
     "email.pending": "Courriel en attente de validation",
+    "operatorOwner": "Operator owner",
     "noImage": "Pas d'image de profil",
     "noImages": "Aucune image de profil",
     "address.define": "Définir l'adresse",
@@ -633,7 +641,8 @@
       "removeContact": "Supprimer de mes contacts",
       "removeContact.done": "{user} a été supprimé de votre liste de contacts",
       "pay": "Effectuer le paiement",
-      "viewAds": "Voir les annonces"
+      "viewAds": "Voir les annonces",
+      "status": "User status"
     },
     "registration": {
       "active": "Vous avez été enregistré avec succès et votre compte est maintenant actif.",
@@ -650,6 +659,41 @@
       "alphabeticallyAsc": "Nom (A-Z)",
       "alphabeticallyDesc": "Nom (Z-A)"
     }
+  },
+  "userStatus": {
+    "current": "Current status",
+    "new": "New status",
+    "comment": "Comment",
+    "confirm": {
+      "active": "Are you sure to activate {user}?",
+      "blocked": "Are you sure to block access to {user}?",
+      "disabled": "Are you sure to disable {user}?",
+      "purged": "Are you sure to permanently remove {user} and remove all private data?\nThis action is irreversible!",
+      "removed": "Are you sure to permanently remove {user}?\nThis action is irreversible!"
+    },
+    "done": {
+      "active": "The user was activated",
+      "blocked": "The user was blocked",
+      "disabled": "The user was disabled",
+      "purged": "The user was permanently removed, together with all personal data",
+      "removed": "The user was permanently removed"
+    },
+    "title": {
+      "status": "User status",
+      "change": "Change status",
+      "history": "User status history"
+    },
+    "mobileTitle": {
+      "status": "User status",
+      "change": "Change status",
+      "history": "Status history"
+    },
+    "active": "Active",
+    "blocked": "Access blocked",
+    "disabled": "Disabled",
+    "pending": "Pending activation",
+    "purged": "Purged (all private data is erased)",
+    "removed": "Removed (no private data is erased)"
   },
   "phone": {
     "mobile": "Téléphone mobile",

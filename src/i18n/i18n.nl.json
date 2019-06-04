@@ -6,6 +6,7 @@
     "actions": "Operaties",
     "date": "Datum",
     "performedBy": "Uitgevoerd door",
+    "status": "Status",
     "comments": "Commentaren",
     "futureDate": "Datum in de toekomst",
     "beginDate": "Begindatum",
@@ -32,6 +33,7 @@
     "previous": "Vorige",
     "next": "Volgende",
     "view": "Bekijk",
+    "viewHistory": "View history",
     "edit": "Bewerken",
     "confirm": "Bevestigen",
     "cancel": "Annuleer",
@@ -179,6 +181,8 @@
     "banking.paySelf": "De betaling zelf",
     "banking.scheduledPayments": "Geautoriseerde betalingen",
     "banking.authorizations": "Betalingsautorisaties",
+    "operators": "Operators",
+    "operators.operators": "Operators",
     "marketplace": "Marktplaats",
     "marketplace.directory": "Bedrijven",
     "marketplace.businessDirectory": "Gebruikers",
@@ -421,7 +425,6 @@
     "done.view": "Bekijk betaling",
     "done.new": "Nieuwe betaling",
     "status": {
-      "name": "Status",
       "open": "Geldig",
       "closed": "Gesloten",
       "canceled": "Geannuleerd",
@@ -574,7 +577,9 @@
       "registration.done": "Inschrijving succesvol",
       "contactList": "Contact lijst",
       "addContact": "Een nieuw contact toevoegen",
-      "search": "Business directory"
+      "search": "Business directory",
+      "myOperators": "Operators",
+      "userOperators": "User operators"
     },
     "mobileTitle": {
       "myProfile": "My profile",
@@ -593,7 +598,9 @@
       "registration.done": "Success",
       "contactList": "Contacts",
       "addContact": "New contact",
-      "search": "Directory"
+      "search": "Directory",
+      "myOperators": "Operators",
+      "userOperators": "Operators"
     },
     "group": "Groep",
     "groupSet": "Group set",
@@ -602,6 +609,7 @@
     "username": "Inlognaam",
     "email": "E-mail",
     "email.pending": "In afwachting van validatie van uw e-mailadres",
+    "operatorOwner": "Operator owner",
     "noImage": "Nog geen profiel afbeelding",
     "noImages": "Geen profiel foto ' s",
     "address.define": "Definiëren adres",
@@ -633,7 +641,8 @@
       "removeContact": "Verwijder uit mijn contacten",
       "removeContact.done": "{user} is verwijderd uit uw lijst met contactpersonen",
       "pay": "Volgende",
-      "viewAds": "Bekijk advertenties"
+      "viewAds": "Bekijk advertenties",
+      "status": "User status"
     },
     "registration": {
       "active": "U bent met succes ingeschreven, en je account is nu actief.",
@@ -650,6 +659,41 @@
       "alphabeticallyAsc": "Naam (A-Z)",
       "alphabeticallyDesc": "Naam (Z-A)"
     }
+  },
+  "userStatus": {
+    "current": "Current status",
+    "new": "New status",
+    "comment": "Comment",
+    "confirm": {
+      "active": "Are you sure to activate {user}?",
+      "blocked": "Are you sure to block access to {user}?",
+      "disabled": "Are you sure to disable {user}?",
+      "purged": "Are you sure to permanently remove {user} and remove all private data?\nThis action is irreversible!",
+      "removed": "Are you sure to permanently remove {user}?\nThis action is irreversible!"
+    },
+    "done": {
+      "active": "The user was activated",
+      "blocked": "The user was blocked",
+      "disabled": "The user was disabled",
+      "purged": "The user was permanently removed, together with all personal data",
+      "removed": "The user was permanently removed"
+    },
+    "title": {
+      "status": "User status",
+      "change": "Change status",
+      "history": "User status history"
+    },
+    "mobileTitle": {
+      "status": "User status",
+      "change": "Change status",
+      "history": "Status history"
+    },
+    "active": "Active",
+    "blocked": "Access blocked",
+    "disabled": "Disabled",
+    "pending": "Pending activation",
+    "purged": "Purged (all private data is erased)",
+    "removed": "Removed (no private data is erased)"
   },
   "phone": {
     "mobile": "Mobiele telefoon",

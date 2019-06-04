@@ -6,16 +6,15 @@ import {
   Transaction, TransactionAuthorizationStatusEnum, TransactionTypeData, TransferType
 } from 'app/api/models';
 import { PaymentsService } from 'app/api/services';
-import { AuthHelperService } from 'app/core/auth-helper.service';
 import { BankingHelperService } from 'app/core/banking-helper.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BasePageComponent } from 'app/shared/base-page.component';
+import { ConfirmationMode } from 'app/shared/confirmation-mode';
 import { FormControlLocator } from 'app/shared/form-control-locator';
 import { clearValidatorsAndErrors, empty, locateControl, scrollTop, validateBeforeSubmit } from 'app/shared/helper';
 import { Menu } from 'app/shared/menu';
 import { cloneDeep, isEqual } from 'lodash';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { ConfirmationMode } from 'app/shared/confirmation-mode';
 
 export type PaymentStep = 'form' | 'confirm' | 'done';
 
@@ -127,7 +126,6 @@ export class PerformPaymentComponent extends BasePageComponent<DataForTransactio
 
   constructor(
     injector: Injector,
-    private authHelper: AuthHelperService,
     private bankingHelper: BankingHelperService,
     private paymentsService: PaymentsService,
     private changeDetector: ChangeDetectorRef) {

@@ -1,11 +1,10 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
-import { DataForLogin, PrincipalTypeInput, ForgottenPasswordRequest } from 'app/api/models';
+import { DataForLogin, ForgottenPasswordRequest, PrincipalTypeInput } from 'app/api/models';
 import { AuthService } from 'app/api/services';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { cloneDeep } from 'lodash';
-import { AuthHelperService } from 'app/core/auth-helper.service';
 
 /**
  * Component used to show the forgot password page.
@@ -21,7 +20,6 @@ export class ForgotPasswordComponent extends BasePageComponent<DataForLogin> imp
 
   constructor(
     injector: Injector,
-    private authHelper: AuthHelperService,
     private authService: AuthService
   ) {
     super(injector);
