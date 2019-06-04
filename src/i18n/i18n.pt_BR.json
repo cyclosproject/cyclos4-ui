@@ -181,6 +181,8 @@
     "banking.paySelf": "Pagamento entre contas",
     "banking.scheduledPayments": "Pagamentos agendados",
     "banking.authorizations": "Autorizações de pagamento",
+    "operators": "Operators",
+    "operators.operators": "Operators",
     "marketplace": "Produtos & Serviços",
     "marketplace.directory": "Diretório",
     "marketplace.businessDirectory": "Diretório de negócios",
@@ -575,7 +577,9 @@
       "registration.done": "Cadastrado com sucesso",
       "contactList": "Lista de contatos",
       "addContact": "Adicionar um novo contato",
-      "search": "Diretório de negócios"
+      "search": "Diretório de negócios",
+      "myOperators": "Operators",
+      "userOperators": "User operators"
     },
     "mobileTitle": {
       "myProfile": "Meu perfil",
@@ -594,7 +598,9 @@
       "registration.done": "Sucesso",
       "contactList": "Contatos",
       "addContact": "Novo contato",
-      "search": "Diretório"
+      "search": "Diretório",
+      "myOperators": "Operators",
+      "userOperators": "Operators"
     },
     "group": "Grupo",
     "groupSet": "Conjunto de grupos",
