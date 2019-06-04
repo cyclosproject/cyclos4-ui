@@ -26,7 +26,10 @@
     "Captcha",
     "Files",
     "Images",
-    "Operations"
+    "Operations",
+    "Sessions",
+    "Vouchers",
+    "Alerts"
   ],
   "enumStyle": "upper"
 }
