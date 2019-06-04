@@ -432,6 +432,7 @@ export class MenuService {
     const contentPages = this.content.contentPages;
 
     const auth = maybeNullAuth || {};
+    const role = auth == null ? null : auth.role;
     const permissions = auth.permissions || {};
     const user = auth.user;
     const restrictedAccess = auth.expiredPassword || auth.pendingAgreements;
@@ -455,7 +456,14 @@ export class MenuService {
     const publicMarketplace = addRoot(RootMenu.PUBLIC_MARKETPLACE, 'shopping_cart', this.i18n.menu.marketplaceAdvertisements);
     addRoot(RootMenu.BANKING, 'account_balance', this.i18n.menu.banking);
     addRoot(RootMenu.OPERATORS, 'supervised_user_circle', this.i18n.menu.operators);
+    addRoot(RootMenu.BROKERING, 'assignment_ind', this.i18n.menu.brokering);
     const marketplaceRoot = addRoot(RootMenu.MARKETPLACE, 'shopping_cart', this.i18n.menu.marketplace);
+    if (role === RoleEnum.ADMINISTRATOR) {
+      // For admins, show the marketplace menu as users
+      marketplaceRoot.icon = 'supervised_user_circle';
+      marketplaceRoot.label = this.i18n.menu.marketplaceUsers;
+      marketplaceRoot.title = this.i18n.menu.marketplaceUsers;
+    }
     const content = addRoot(RootMenu.CONTENT, 'information', this.i18n.menu.content);
     addRoot(RootMenu.PERSONAL, 'account_box', this.i18n.menu.personal, null, [MenuType.SIDENAV, MenuType.BAR, MenuType.SIDE]);
     const register = addRoot(RootMenu.REGISTRATION, 'registration', this.i18n.menu.register, null, [MenuType.SIDENAV]);
@@ -582,13 +590,19 @@ export class MenuService {
         add(Menu.MY_OPERATORS, '/users/operators', 'supervisor_account', this.i18n.menu.operatorsOperators);
       }
 
+      // Brokering
+      if (auth.role === RoleEnum.BROKER) {
+        add(Menu.MY_BROKERED_USERS, '/users/brokerings', 'supervisor_account', this.i18n.menu.brokeringUsers);
+      }
+
       // Marketplace
       if (users.search || users.map) {
-        add(Menu.SEARCH_USERS, '/users/search', 'group', this.i18n.menu.marketplaceBusinessDirectory);
+        add(Menu.SEARCH_USERS, '/users/search', 'group', role === RoleEnum.ADMINISTRATOR
+          ? this.i18n.menu.marketplaceUserSearch : this.i18n.menu.marketplaceBusinessDirectory);
       }
       if (marketplace.search) {
         add(Menu.SEARCH_ADS, '/marketplace/search', 'shopping_cart', this.i18n.menu.marketplaceAdvertisements);
-      } else {
+      } else if (role !== RoleEnum.ADMINISTRATOR) {
         // As the search ads won't be visible, show as user directory instead
         marketplaceRoot.icon = publicDirectory.icon;
         marketplaceRoot.label = publicDirectory.label;

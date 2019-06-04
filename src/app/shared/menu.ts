@@ -21,13 +21,14 @@ export enum MenuType {
 
 /** Contains the top-level (root) menus */
 export type RootMenu =
-  'dashboard' | 'banking' | 'operators' | 'marketplace' | 'home' |
-  'publicDirectory' | 'publicMarketplace' | 'content' |
+  'dashboard' | 'banking' | 'operators' | 'brokering' | 'marketplace' |
+  'home' | 'publicDirectory' | 'publicMarketplace' | 'content' |
   'personal' | 'registration' | 'login' | 'logout';
 export module RootMenu {
   export const DASHBOARD: RootMenu = 'dashboard';
   export const BANKING: RootMenu = 'banking';
   export const OPERATORS: RootMenu = 'operators';
+  export const BROKERING: RootMenu = 'brokering';
   export const MARKETPLACE: RootMenu = 'marketplace';
   export const HOME: RootMenu = 'home';
   export const PUBLIC_DIRECTORY: RootMenu = 'publicDirectory';
@@ -39,7 +40,7 @@ export module RootMenu {
   export const LOGOUT: RootMenu = 'logout';
   export function values(): RootMenu[] {
     return [
-      DASHBOARD, BANKING, OPERATORS, MARKETPLACE,
+      DASHBOARD, BANKING, OPERATORS, BROKERING, MARKETPLACE,
       HOME, PUBLIC_DIRECTORY, PUBLIC_MARKETPLACE,
       CONTENT, PERSONAL, REGISTRATION, LOGIN, LOGOUT
     ];
@@ -62,6 +63,7 @@ export class Menu {
   }
 }
 export module Menu {
+
   // Standalone
   export const HOME = new Menu(RootMenu.HOME, 'HOME');
   export const DASHBOARD = new Menu(RootMenu.DASHBOARD, 'DASHBOARD');
@@ -85,6 +87,9 @@ export module Menu {
 
   // Operators
   export const MY_OPERATORS = new Menu(RootMenu.OPERATORS, 'MY_OPERATORS');
+
+  // Brokering
+  export const MY_BROKERED_USERS = new Menu(RootMenu.BROKERING, 'MY_BROKERED_USERS');
 
   // Personal
   export const MY_PROFILE = new Menu(RootMenu.PERSONAL, 'MY_PROFILE');

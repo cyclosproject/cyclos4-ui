@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { Country, CustomFieldDetailed, UserDataForMap, UserDataForSearch } from 'app/api/models';
+import { Country, CustomFieldDetailed, RoleEnum, UserAddressResultEnum, UserDataForMap, UserDataForSearch, User } from 'app/api/models';
 import { UserResult } from 'app/api/models/user-result';
 import { UsersService } from 'app/api/services';
 import { CountriesResolve } from 'app/countries.resolve';
+import { ApiHelper } from 'app/shared/api-helper';
 import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { empty } from 'app/shared/helper';
 import { MaxDistance } from 'app/shared/max-distance';
@@ -10,6 +11,12 @@ import { ResultType } from 'app/shared/result-type';
 import { cloneDeep } from 'lodash';
 import { BehaviorSubject, Observable } from 'rxjs';
 
+export enum UserSearchKind {
+  Public,
+  Member,
+  Admin,
+  Broker
+}
 
 /**
  * Search for users
@@ -24,7 +31,16 @@ export class SearchUsersComponent
 
   // Export enum to the template
   ResultType = ResultType;
+  UserSearchKind = UserSearchKind;
   empty = empty;
+
+  kind: UserSearchKind;
+  manager: boolean;
+  key: string;
+  self: boolean;
+  broker: User;
+  heading: string;
+  mobileHeading: string;
 
   canSearch: boolean;
   canViewMap: boolean;
@@ -42,30 +58,9 @@ export class SearchUsersComponent
   constructor(
     injector: Injector,
     private usersService: UsersService,
-    countriesResolve: CountriesResolve
+    private countriesResolve: CountriesResolve
   ) {
     super(injector);
-
-    // Get the permissions to search users and view map directory
-    const permissions = this.login.permissions || {};
-    const users = permissions.users || {};
-    this.canSearch = !!users.search;
-    this.canViewMap = !!users.map;
-    if (!this.canSearch && !this.canViewMap) {
-      this.errorHandler.handleForbiddenError({});
-      return;
-    }
-    const allowedResultTypes = [];
-    if (this.canSearch) {
-      allowedResultTypes.push(ResultType.TILES);
-      allowedResultTypes.push(ResultType.LIST);
-    }
-    if (this.canViewMap) {
-      allowedResultTypes.push(ResultType.MAP);
-    }
-    this.allowedResultTypes = allowedResultTypes;
-
-    this.countries$ = countriesResolve.data;
   }
 
   shouldUpdateOnChange(value: any): boolean {
@@ -86,6 +81,68 @@ export class SearchUsersComponent
 
   ngOnInit() {
     super.ngOnInit();
+
+    const route = this.route.snapshot;
+    this.key = route.params.key || ApiHelper.SELF;
+    this.self = this.authHelper.isSelf(this.key);
+
+    const auth = this.login.auth;
+    const role = auth == null ? null : auth.role;
+
+    // Determine the search kind
+    const url = this.router.url;
+    if (url.includes('search')) {
+      if (role == null) {
+        this.kind = UserSearchKind.Public;
+      } else if (role === RoleEnum.ADMINISTRATOR) {
+        this.kind = UserSearchKind.Admin;
+      } else {
+        this.kind = UserSearchKind.Member;
+      }
+    } else if (url.includes('brokerings')) {
+      this.kind = UserSearchKind.Broker;
+    }
+    this.manager = [UserSearchKind.Admin, UserSearchKind.Broker].includes(this.kind);
+    const publicOrMember = [UserSearchKind.Public, UserSearchKind.Member].includes(this.kind);
+
+    // Set the correct title
+    if (publicOrMember) {
+      this.heading = this.i18n.user.title.directory;
+      this.mobileHeading = this.i18n.user.mobileTitle.directory;
+    } else if (this.kind === UserSearchKind.Broker) {
+      if (this.self) {
+        this.heading = this.i18n.user.title.myBrokerings;
+        this.mobileHeading = this.i18n.user.mobileTitle.myBrokerings;
+      } else {
+        this.heading = this.i18n.user.title.userBrokerings;
+        this.mobileHeading = this.i18n.user.mobileTitle.userBrokerings;
+      }
+    } else if (this.kind === UserSearchKind.Admin) {
+      this.heading = this.i18n.user.title.search;
+      this.mobileHeading = this.i18n.user.mobileTitle.search;
+    }
+
+    // Get the permissions to search users and view map directory
+    const permissions = (auth || {}).permissions || {};
+    const users = permissions.users || {};
+    this.canSearch = this.kind === UserSearchKind.Broker || !!users.search;
+    this.canViewMap = publicOrMember && users.map;
+    if (!this.canSearch && !this.canViewMap) {
+      this.errorHandler.handleForbiddenError({});
+      return;
+    }
+    const allowedResultTypes = [];
+    if (this.canSearch) {
+      allowedResultTypes.push(ResultType.TILES);
+      allowedResultTypes.push(ResultType.LIST);
+    }
+    if (this.canViewMap || this.manager) {
+      allowedResultTypes.push(ResultType.MAP);
+    }
+    this.allowedResultTypes = allowedResultTypes;
+
+    this.countries$ = this.countriesResolve.data;
+
     this.onResultTypeChanged(this.resultType, null);
   }
 
@@ -124,26 +181,34 @@ export class SearchUsersComponent
       this.ignoreNextUpdate = false;
       this.basicField$.next(fieldsInSearch.length === 0 ? null : fieldsInSearch[0]);
       this.advancedFields$.next(fieldsInSearch.length > 1 ? fieldsInSearch.slice(1) : []);
+      if (!this.broker && data.broker) {
+        this.broker = data.broker;
+      }
       this.data = data;
       this.headingActions = empty(this.advancedFields$.value) ? [] : [this.moreFiltersAction];
     };
 
     if (this.data == null) {
       this.rendering = true;
-      if (isMap) {
+      // When searching as manager (admin / broker) the map is a simple map view, not the "map directory"
+      if (isMap && !this.manager) {
         // Get data for showing the map
         this.stateManager.cache('dataForMap', this.usersService.getDataForMapDirectory())
           .subscribe(setData);
       } else {
         // Get the data for regular user search
-        this.stateManager.cache('dataForSearch', this.usersService.getUserDataForSearch())
-          .subscribe(setData);
+        this.stateManager.cache('dataForSearch', this.usersService.getUserDataForSearch({
+          broker: this.kind === UserSearchKind.Broker ? this.key : null
+        })).subscribe(setData);
       }
     }
   }
 
   doSearch(query: any) {
     const value = cloneDeep(query);
+    if (this.kind === UserSearchKind.Broker) {
+      value.brokers = [this.key];
+    }
     value.profileFields = this.fieldHelper.toCustomValuesFilter(query.customValues);
     delete value.customValues;
     const distanceFilter: MaxDistance = value.distanceFilter;
@@ -152,7 +217,12 @@ export class SearchUsersComponent
       value.latitude = distanceFilter.latitude;
       value.longitude = distanceFilter.longitude;
     }
-    return this.resultType === ResultType.MAP
+    // When searching as manager (admin / broker) the map is a simple map view, not the "map directory"
+    const isMap = this.resultType === ResultType.MAP;
+    if (isMap) {
+      value.addressResult = UserAddressResultEnum.ALL;
+    }
+    return isMap && !this.manager
       ? this.usersService.searchMapDirectory$Response(value)
       : this.usersService.searchUsers$Response(value);
   }

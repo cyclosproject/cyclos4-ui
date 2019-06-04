@@ -1,10 +1,18 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="(data$ | async) && (loaded$ | async); else loading">
-    <page-content mode="filters" [heading]="i18n.user.title.search"
-      [mobileHeading]="i18n.user.mobileTitle.search"
+    <page-content mode="filters" [heading]="heading"
+      [mobileHeading]="mobileHeading"
       [headingActions]="headingActions$ | async">
       <form [formGroup]="form" class="filters-form filters-form-separator">
         <div class="row">
+          <div class="col-12 col-md-6" *ngIf="!self && broker">
+            <label-value [label]="i18n.general.user" labelPosition="side">
+              <user-link [user]="broker"></user-link>
+            </label-value>
+          </div>
+          <div class="col-md-6"
+            *ngIf="(layout.gtsm$ | async) && !self && broker">
+          </div>
           <div class="col-12 col-md-6">
             <input-field labelPosition="side" formControlName="keywords"
               [label]="i18n.general.keywords"></input-field>
@@ -51,7 +59,8 @@
             [formControl]="resultTypeControl">
           </result-type-field>
         </div>
-        <div *ngIf="(layout.gtxxs$ | async)" class="col-12 col-xs-5 col-md-3">
+        <div class="col-12 col-xs-5 col-md-3"
+          *ngIf="(layout.gtxxs$ | async) && (resultType$ | async) !== 'map'">
           <single-selection-field [formControl]="form.get('orderBy')"
             [display]="i18n.general.orderBy"
             [emptyOption]="i18n.general.orderByRelevance">

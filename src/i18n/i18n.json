@@ -183,8 +183,12 @@
     "banking.authorizations": "Payment authorizations",
     "operators": "Operators",
     "operators.operators": "Operators",
+    "brokering": "Brokering",
+    "brokering.users": "Users",
     "marketplace": "Marketplace",
+    "marketplace.users": "Users",
     "marketplace.directory": "Directory",
+    "marketplace.userSearch": "Users",
     "marketplace.businessDirectory": "Business directory",
     "marketplace.advertisements": "Advertisements",
     "personal": "Personal",
@@ -577,9 +581,12 @@
       "registration.done": "Registration successful",
       "contactList": "Contact list",
       "addContact": "Add a new contact",
-      "search": "Business directory",
+      "search": "Users search",
+      "directory": "Business directory",
       "myOperators": "Operators",
-      "userOperators": "User operators"
+      "userOperators": "User operators",
+      "myBrokerings": "Assigned members",
+      "userBrokerings": "Broker assigned members"
     },
     "mobileTitle": {
       "myProfile": "My profile",
@@ -598,9 +605,12 @@
       "registration.done": "Success",
       "contactList": "Contacts",
       "addContact": "New contact",
-      "search": "Directory",
+      "search": "Users",
+      "directory": "Directory",
       "myOperators": "Operators",
-      "userOperators": "Operators"
+      "userOperators": "Operators",
+      "myBrokerings": "Assigned members",
+      "userBrokerings": "Broker members"
     },
     "group": "Group",
     "groupSet": "Group set",
@@ -642,6 +652,8 @@
       "removeContact.done": "{user} was removed from your contact list",
       "pay": "Make payment",
       "viewAds": "View advertisements",
+      "viewBrokerings": "View assigned members",
+      "viewOperators": "View operators",
       "status": "User status"
     },
     "registration": {
