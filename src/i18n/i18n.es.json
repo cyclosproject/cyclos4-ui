@@ -33,7 +33,7 @@
     "previous": "Anterior",
     "next": "Siguiente",
     "view": "Ver",
-    "viewHistory": "View history",
+    "viewHistory": "Ver historial",
     "edit": "Editar",
     "confirm": "Confirmar",
     "cancel": "Cancelar",
@@ -599,8 +599,8 @@
       "contactList": "Contactos",
       "addContact": "Nuevo contacto",
       "search": "Directorio",
-      "myOperators": "Operators",
-      "userOperators": "Operators"
+      "myOperators": "Operadores",
+      "userOperators": "Operadores"
     },
     "group": "Grupo",
     "groupSet": "Conjunto de grupos",
@@ -642,7 +642,7 @@
       "removeContact.done": "{user} ha sido eliminado de su lista de contactos",
       "pay": "Realizar pago",
       "viewAds": "Ver anuncios",
-      "status": "User status"
+      "status": "Estado del usuario"
     },
     "registration": {
       "active": "Ha sido registrado exitosamente y su cuenta ya se encuentra activa.",
@@ -661,12 +661,12 @@
     }
   },
   "userStatus": {
-    "current": "Current status",
-    "new": "New status",
-    "comment": "Comment",
+    "current": "Estado actual",
+    "new": "Nuevo estado",
+    "comment": "Comentario",
     "confirm": {
-      "active": "Are you sure to activate {user}?",
-      "blocked": "Are you sure to block access to {user}?",
+      "active": "¿Está seguro de activar a {user}?",
+      "blocked": "Está usted seguro de bloquear el acceso de {user}?",
       "disabled": "Are you sure to disable {user}?",
       "purged": "Are you sure to permanently remove {user} and remove all private data?\nThis action is irreversible!",
       "removed": "Are you sure to permanently remove {user}?\nThis action is irreversible!"
@@ -689,7 +689,7 @@
       "history": "Status history"
     },
     "active": "Active",
-    "blocked": "Access blocked",
+    "blocked": "Acceso bloqueado",
     "disabled": "Disabled",
     "pending": "Pending activation",
     "purged": "Purged (all private data is erased)",
