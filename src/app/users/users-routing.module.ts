@@ -16,9 +16,18 @@ import { ViewUserStatusComponent } from 'app/users/status/view-user-status.compo
 import { LoginService } from 'app/core/login.service';
 import { RoleEnum } from 'app/api/models';
 
+const SearchMenu: ConditionalMenu = injector => {
+  const login = injector.get(LoginService);
+  if (login.user) {
+    return Menu.SEARCH_USERS;
+  } else {
+    return Menu.PUBLIC_DIRECTORY;
+  }
+};
+
 const RegistrationMenu: ConditionalMenu = injector => {
-  const loginService = injector.get(LoginService);
-  const auth = loginService.auth || {};
+  const login = injector.get(LoginService);
+  const auth = login.auth || {};
   const role = auth.role;
   if (role === RoleEnum.ADMINISTRATOR) {
     return Menu.ADMIN_REGISTRATION;
@@ -37,14 +46,7 @@ const usersRoutes: Routes = [
         path: 'search',
         component: SearchUsersComponent,
         data: {
-          menu: Menu.SEARCH_USERS
-        }
-      },
-      {
-        path: 'public-search',
-        component: SearchUsersComponent,
-        data: {
-          menu: Menu.PUBLIC_DIRECTORY
+          menu: SearchMenu
         }
       },
       {

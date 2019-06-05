@@ -539,10 +539,10 @@ export class MenuService {
       // Guest
       add(Menu.HOME, '/', home.icon, home.label);
       if (users.search || users.map) {
-        add(Menu.PUBLIC_DIRECTORY, '/users/public-search', publicDirectory.icon, publicDirectory.label);
+        add(Menu.PUBLIC_DIRECTORY, '/users/search', publicDirectory.icon, publicDirectory.label);
       }
       if (marketplace.search) {
-        add(Menu.PUBLIC_MARKETPLACE, '/marketplace/public-search', publicMarketplace.icon, publicMarketplace.label);
+        add(Menu.PUBLIC_MARKETPLACE, '/marketplace/search', publicMarketplace.icon, publicMarketplace.label);
       }
       const registrationGroups = (this.dataForUiHolder.dataForUi || {}).publicRegistrationGroups || [];
       if (registrationGroups.length > 0) {
