@@ -294,11 +294,13 @@ export class MenuService {
       if (activeMenu instanceof Menu) {
         activeMenu = new ActiveMenu(activeMenu);
       }
-      const roots = this._fullMenu.value || [];
-      for (const rootEntry of roots) {
-        for (const entry of rootEntry.entries || []) {
-          if (activeMenu.matches(entry)) {
-            return entry;
+      if (activeMenu) {
+        const roots = this._fullMenu.value || [];
+        for (const rootEntry of roots) {
+          for (const entry of rootEntry.entries || []) {
+            if (activeMenu.matches(entry)) {
+              return entry;
+            }
           }
         }
       }
@@ -544,7 +546,7 @@ export class MenuService {
       }
       const registrationGroups = (this.dataForUiHolder.dataForUi || {}).publicRegistrationGroups || [];
       if (registrationGroups.length > 0) {
-        add(Menu.REGISTRATION, '/users/registration', register.icon, register.label);
+        add(Menu.PUBLIC_REGISTRATION, '/users/registration', register.icon, register.label);
       }
       add(Menu.LOGIN, Configuration.externalLoginUrl || '/login', login.icon, login.label);
     } else {
@@ -593,12 +595,18 @@ export class MenuService {
       // Brokering
       if (auth.role === RoleEnum.BROKER) {
         add(Menu.MY_BROKERED_USERS, '/users/brokerings', 'supervisor_account', this.i18n.menu.brokeringUsers);
+        if (users.registerAsBroker) {
+          add(Menu.BROKER_REGISTRATION, '/users/registration', 'registration', this.i18n.menu.brokeringRegister);
+        }
       }
 
       // Marketplace
       if (users.search || users.map) {
         add(Menu.SEARCH_USERS, '/users/search', 'group', role === RoleEnum.ADMINISTRATOR
           ? this.i18n.menu.marketplaceUserSearch : this.i18n.menu.marketplaceBusinessDirectory);
+      }
+      if (users.registerAsAdmin) {
+        add(Menu.ADMIN_REGISTRATION, '/users/registration', 'registration', this.i18n.menu.marketplaceRegister);
       }
       if (marketplace.search) {
         add(Menu.SEARCH_ADS, '/marketplace/search', 'shopping_cart', this.i18n.menu.marketplaceAdvertisements);

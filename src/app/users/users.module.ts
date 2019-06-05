@@ -6,7 +6,7 @@ import { EditProfileComponent } from 'app/users/profile/edit-profile.component';
 import { ValidateEmailChangeComponent } from 'app/users/profile/validate-email-change.component';
 import { VerifyPhoneComponent } from 'app/users/profile/verify-phone.component';
 import { ViewProfileComponent } from 'app/users/profile/view-profile.component';
-import { PublicRegistrationComponent } from 'app/users/registration/public-registration.component';
+import { UserRegistrationComponent } from 'app/users/registration/user-registration.component';
 import { RegistrationStepConfirmComponent } from 'app/users/registration/registration-step-confirm.component';
 import { RegistrationStepDoneComponent } from 'app/users/registration/registration-step-done.component';
 import { RegistrationStepFieldsComponent } from 'app/users/registration/registration-step-fields.component';
@@ -43,7 +43,7 @@ import { UsersRoutingModule } from 'app/users/users-routing.module';
     VerifyPhoneComponent,
     ValidateEmailChangeComponent,
 
-    PublicRegistrationComponent,
+    UserRegistrationComponent,
     RegistrationStepGroupComponent,
     RegistrationStepFieldsComponent,
     RegistrationStepConfirmComponent,
