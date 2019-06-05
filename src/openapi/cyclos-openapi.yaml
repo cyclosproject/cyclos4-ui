@@ -1589,6 +1589,14 @@ paths:
         - Users
       parameters:
         - $ref: '#/components/parameters/fields'
+        - name: broker
+          in: query
+          required: false
+          description: >-
+            When set, will be data for searching assigned members of the given
+            broker (id, identification method or `self`)
+          schema:
+            type: string
       responses:
         '200':
           description: >-
@@ -44424,6 +44432,12 @@ components:
         - $ref: '#/components/schemas/BaseUserDataForSearch'
         - type: object
           properties:
+            broker:
+              description: >-
+                When a `broker` parameter was set when getting the data, contains
+                the details of the broker
+              allOf:
+                - $ref: '#/components/schemas/User'
             fieldsInList:
               description: >-
                 The internal names of either basic or custom profile fields that are
@@ -44684,6 +44698,8 @@ components:
     UserOperatorsDataForSearch:
       type: object
       properties:
+        user:
+          $ref: '#/components/schemas/User'
         canCreateNew:
           description: >-
             Indicates whether the authenticated user can create more operators for
@@ -45535,6 +45551,18 @@ components:
         map:
           description: >-
             Permission to view the user map directory
+          type: boolean
+        registerAsAdmin:
+          description: >-
+            Is the authenticated user an administrator that can register users?
+          type: boolean
+        registerAsBroker:
+          description: >-
+            Is the authenticated user a broker that can register users?
+          type: boolean
+        registerAsMember:
+          description: >-
+            Is the authenticated user a user that can register other users?
           type: boolean
 
     UsersWithBalanceQueryFilters:

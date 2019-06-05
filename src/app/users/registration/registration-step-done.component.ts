@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
-import { UserRegistrationResult } from 'app/api/models';
+import { ChangeDetectionStrategy, Component, Injector, Input } from '@angular/core';
+import { UserRegistrationResult, UserRegistrationStatusEnum } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
 import { empty } from 'app/shared/helper';
 
@@ -12,14 +12,26 @@ import { empty } from 'app/shared/helper';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RegistrationStepDoneComponent
-  extends BaseComponent
-  implements OnInit {
+  extends BaseComponent {
 
   @Input() result: UserRegistrationResult;
 
   constructor(
     injector: Injector) {
     super(injector);
+  }
+
+  get messageHtml(): string {
+    const manager = !!this.login.user;
+    const user = this.result.user.display;
+    switch (this.result.status) {
+      case UserRegistrationStatusEnum.ACTIVE:
+        return manager ? this.i18n.user.registration.activeManager(user) : this.i18n.user.registration.activePublic;
+      case UserRegistrationStatusEnum.INACTIVE:
+        return manager ? this.i18n.user.registration.inactiveManager(user) : this.i18n.user.registration.inactivePublic;
+      case UserRegistrationStatusEnum.EMAIL_VALIDATION:
+        return manager ? this.i18n.user.registration.pendingManager(user) : this.i18n.user.registration.pendingPublic;
+    }
   }
 
   /**

@@ -33,7 +33,7 @@
     "previous": "Anterior",
     "next": "Siguiente",
     "view": "Ver",
-    "viewHistory": "View history",
+    "viewHistory": "Ver historial",
     "edit": "Editar",
     "confirm": "Confirmar",
     "cancel": "Cancelar",
@@ -181,10 +181,14 @@
     "banking.paySelf": "Auto pago",
     "banking.scheduledPayments": "Pagos agendados",
     "banking.authorizations": "Pagos con autorización",
-    "operators": "Operators",
-    "operators.operators": "Operators",
+    "operators": "Operadores",
+    "operators.operators": "Operadores",
+    "brokering": "Brokering",
+    "brokering.users": "Usuarios",
     "marketplace": "Comercio electrónico",
+    "marketplace.users": "Usuarios",
     "marketplace.directory": "Directorio",
+    "marketplace.userSearch": "Usuarios",
     "marketplace.businessDirectory": "Directorio de anunciantes",
     "marketplace.advertisements": "Anuncios",
     "personal": "Personal",
@@ -577,9 +581,12 @@
       "registration.done": "Registro exitoso",
       "contactList": "Lista de contactos",
       "addContact": "Agregar un contacto",
-      "search": "Directorio de anunciantes",
-      "myOperators": "Operators",
-      "userOperators": "User operators"
+      "search": "Búsqueda de usuarios",
+      "directory": "Directorio de anunciantes",
+      "myOperators": "Operadores",
+      "userOperators": "Operadores de usuario",
+      "myBrokerings": "Miembros asignados",
+      "userBrokerings": "Miembros asignados de broker"
     },
     "mobileTitle": {
       "myProfile": "Mi Perfil",
@@ -598,9 +605,12 @@
       "registration.done": "Exitoso",
       "contactList": "Contactos",
       "addContact": "Nuevo contacto",
-      "search": "Directorio",
-      "myOperators": "Operators",
-      "userOperators": "Operators"
+      "search": "Usuarios",
+      "directory": "Directorio",
+      "myOperators": "Operadores",
+      "userOperators": "Operadores",
+      "myBrokerings": "Miembros asignados",
+      "userBrokerings": "Brokers"
     },
     "group": "Grupo",
     "groupSet": "Conjunto de grupos",
@@ -609,7 +619,7 @@
     "username": "Usuario",
     "email": "Correo electrónico",
     "email.pending": "Correo electrónico pendiente de validación",
-    "operatorOwner": "Operator owner",
+    "operatorOwner": "Propietario del operador",
     "noImage": "No ha cargado imagen de perfil",
     "noImages": "No se han cargado imágenes de perfil",
     "address.define": "Definir dirección",
@@ -642,7 +652,9 @@
       "removeContact.done": "{user} ha sido eliminado de su lista de contactos",
       "pay": "Realizar pago",
       "viewAds": "Ver anuncios",
-      "status": "User status"
+      "viewBrokerings": "Ver miembros asignados",
+      "viewOperators": "Ver operadores",
+      "status": "Estado del usuario"
     },
     "registration": {
       "active": "Ha sido registrado exitosamente y su cuenta ya se encuentra activa.",
@@ -661,39 +673,39 @@
     }
   },
   "userStatus": {
-    "current": "Current status",
-    "new": "New status",
-    "comment": "Comment",
+    "current": "Estado actual",
+    "new": "Nuevo estado",
+    "comment": "Comentario",
     "confirm": {
-      "active": "Are you sure to activate {user}?",
-      "blocked": "Are you sure to block access to {user}?",
-      "disabled": "Are you sure to disable {user}?",
-      "purged": "Are you sure to permanently remove {user} and remove all private data?\nThis action is irreversible!",
-      "removed": "Are you sure to permanently remove {user}?\nThis action is irreversible!"
+      "active": "¿Está seguro de activar a {user}?",
+      "blocked": "Está usted seguro de bloquear el acceso de {user}?",
+      "disabled": "¿Está seguro que desea deshabilitar a {user}?",
+      "purged": "Está seguro que desea eliminar de forma permanente a {user}, y eliminar todos sus datos privados?\nEsta acción es irreversible!",
+      "removed": "Está seguro de que desea eliminar de forma permanente a {user}?\nEsta acción es irreversible!"
     },
     "done": {
-      "active": "The user was activated",
-      "blocked": "The user was blocked",
-      "disabled": "The user was disabled",
-      "purged": "The user was permanently removed, together with all personal data",
-      "removed": "The user was permanently removed"
+      "active": "El usuario ha sido activado",
+      "blocked": "El usuario ha sido bloqueado",
+      "disabled": "El usuario fue desactivado",
+      "purged": "El usuario fue eliminado permanentemente, junto con todos sus datos personales",
+      "removed": "El usuario fue eliminado permanentemente"
     },
     "title": {
-      "status": "User status",
-      "change": "Change status",
-      "history": "User status history"
+      "status": "Estado del usuario",
+      "change": "Cambiar estado",
+      "history": "Historial del estado de usuario"
     },
     "mobileTitle": {
-      "status": "User status",
-      "change": "Change status",
-      "history": "Status history"
+      "status": "Estado del usuario",
+      "change": "Cambiar estado",
+      "history": "Historial de estados"
     },
-    "active": "Active",
-    "blocked": "Access blocked",
-    "disabled": "Disabled",
-    "pending": "Pending activation",
-    "purged": "Purged (all private data is erased)",
-    "removed": "Removed (no private data is erased)"
+    "active": "Activo",
+    "blocked": "Acceso bloqueado",
+    "disabled": "Deshabilitado",
+    "pending": "Activación pendiente",
+    "purged": "Purgado (todos los datos privados fueron borrados)",
+    "removed": "Eliminado (los datos privados no fueron borrados)"
   },
   "phone": {
     "mobile": "Teléfono móvil",

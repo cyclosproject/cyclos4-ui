@@ -26,23 +26,28 @@
       </button>
     </div>
   </div>
+  <h2 class="mt-4">{{ i18n.user.title.fields }}</h2>
 </ng-container>
 
 <!-- Basic profile fields-->
-<h2 class="mt-4">{{ i18n.user.title.fields }}</h2>
 <ng-container [formGroup]="form">
   <input-field *ngIf="canEdit('name')" formControlName="name"
     [label]="i18n.user.name" required></input-field>
   <input-field *ngIf="canEdit('username')" formControlName="username"
     [label]="i18n.user.username" required></input-field>
-  <label-value *ngIf="canEdit('email')" [label]="i18n.user.email" kind="field"
-    [ignoreExtraCell]="!canManagePrivacy('email')"
-    [required]="data.emailRequired">
-    <input-field formControlName="email" [required]="data.emailRequired">
-    </input-field>
-    <field-privacy *extraCell field="email"
-      [control]="form.get('hiddenFields')"></field-privacy>
-  </label-value>
+  <ng-container *ngIf="canEdit('email')">
+    <label-value [label]="i18n.user.email" kind="field"
+      [ignoreExtraCell]="!canManagePrivacy('email')"
+      [required]="data.emailRequired">
+      <input-field formControlName="email" [required]="data.emailRequired">
+      </input-field>
+      <field-privacy *extraCell field="email"
+        [control]="form.get('hiddenFields')"></field-privacy>
+    </label-value>
+    <boolean-field *ngIf="data.allowSetSendActivationEmail"
+      [label]="i18n.user.registration.skipActivationEmail"
+      formControlName="skipActivationEmail"></boolean-field>
+  </ng-container>
 </ng-container>
 
 <!-- Custom profile fields -->
