@@ -30,7 +30,7 @@ import { StateManager } from 'app/core/state-manager';
 import { TopBarComponent } from 'app/core/top-bar.component';
 import { TransactionStatusService } from 'app/core/transaction-status.service';
 import { UserCacheService } from 'app/core/user-cache.service';
-import { UserHelperService } from 'app/core/user-helper.service.ts';
+import { UserHelperService } from 'app/core/user-helper.service';
 import { CountriesResolve } from 'app/countries.resolve';
 import { I18n } from 'app/i18n/i18n';
 import { LayoutService } from 'app/shared/layout.service';

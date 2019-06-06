@@ -15,6 +15,7 @@ import { ViewUserStatusHistoryComponent } from 'app/users/status/view-user-statu
 import { ViewUserStatusComponent } from 'app/users/status/view-user-status.component';
 import { LoginService } from 'app/core/login.service';
 import { RoleEnum } from 'app/api/models';
+import { OperatorRegistrationComponent } from 'app/users/operators/operator-registration.component';
 
 const SearchMenu: ConditionalMenu = injector => {
   const login = injector.get(LoginService);
@@ -35,6 +36,19 @@ const RegistrationMenu: ConditionalMenu = injector => {
     return Menu.BROKER_REGISTRATION;
   } else {
     return Menu.PUBLIC_REGISTRATION;
+  }
+};
+
+const OperatorRegistrationMenu: ConditionalMenu = injector => {
+  const login = injector.get(LoginService);
+  const auth = login.auth || {};
+  const role = auth.role;
+  if (role === RoleEnum.ADMINISTRATOR) {
+    return Menu.SEARCH_USERS;
+  } else if (role === RoleEnum.BROKER) {
+    return Menu.MY_BROKERED_USERS;
+  } else {
+    return Menu.REGISTER_OPERATOR;
   }
 };
 
@@ -116,6 +130,20 @@ const usersRoutes: Routes = [
         component: SearchUserOperatorsComponent,
         data: {
           menu: Menu.SEARCH_USERS
+        }
+      },
+      {
+        path: 'operators/registration',
+        component: OperatorRegistrationComponent,
+        data: {
+          menu: Menu.REGISTER_OPERATOR
+        }
+      },
+      {
+        path: ':key/operators/registration',
+        component: OperatorRegistrationComponent,
+        data: {
+          menu: OperatorRegistrationMenu
         }
       },
       {

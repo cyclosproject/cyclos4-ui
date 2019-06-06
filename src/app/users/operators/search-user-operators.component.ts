@@ -8,6 +8,7 @@ import { empty } from 'app/shared/helper';
 import { ResultType } from 'app/shared/result-type';
 import { cloneDeep } from 'lodash';
 import { BehaviorSubject } from 'rxjs';
+import { HeadingAction } from 'app/shared/action';
 
 
 /**
@@ -48,6 +49,19 @@ export class SearchUserOperatorsComponent
 
     this.addSub(this.operatorsService.getUserOperatorsDataForSearch({ user: this.key }).subscribe(data => {
       this.form.patchValue(data.query, { emitEvent: false });
+      if (data.canCreateNew) {
+        this.headingActions = [
+          new HeadingAction('registration', this.i18n.general.addNew, () => {
+            const path = ['users'];
+            if (!this.self) {
+              path.push(this.key);
+            }
+            path.push('operators');
+            path.push('registration');
+            this.router.navigate(path);
+          }, true)
+        ];
+      }
       this.data = data;
     }));
   }

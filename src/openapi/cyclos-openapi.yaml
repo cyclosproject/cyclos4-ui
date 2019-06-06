@@ -1,6 +1,6 @@
 openapi: '3.0.0'
 info:
-  title: 'Cyclos 4.12-BETA API'
+  title: 'Cyclos 4.12 API'
   description: >-
     The Cyclos REST API is described using OpenAPI 3.0. The descriptor for the api
     can be downloaded in both [YAML](http://localhost:8888/api/cyclos-openapi.yaml) or
@@ -22,9 +22,9 @@ info:
 
     For details of the deprecated elements (operations and model) please visit the
     [deprecation notes
-    page](https://documentation.cyclos.org/4.12-BETA/api-deprecation.html)
+    page](https://documentation.cyclos.org/4.12/api-deprecation.html)
     for this version.
-  version: '4.12-BETA'
+  version: '4.12'
 servers:
   - url: 'http://localhost:8888/api'
 
@@ -3447,8 +3447,9 @@ A note for dynamic custom fields: If a script is used to generate possible value
           required: false
           in: query
           description: >-
-            The operator group. If no group is set, will be an alias operator,
-            that is, an operator with the same permissions as his owner.
+            The operator group. If no group is set, will return the list of
+            operator groups for this owner. If a group is pre-set, will
+            return only that group.
           schema:
             type: string
       tags:
@@ -3495,62 +3496,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
               schema:
                 $ref: '#/components/schemas/Error'
 
-  /{user}/operators/groups-for-registration:
-    get:
-      operationId: getGroupsForOperatorRegistration
-      summary: >-
-        Returns the groups the authenticated user can register operators in
-      description: >-
-        Returns the list of groups the authenticated user can use to perform a new
-        operator registration.
-      tags:
-        - Operators
-      security:
-        - basic: []
-        - session: []
-        - accessClient: []
-      parameters:
-        - $ref: '#/components/parameters/user'
-        - $ref: '#/components/parameters/fields'
-      responses:
-        '200':
-          description: >-
-            The list of groups
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/EntityReference'
-        '401':
-          description: >-
-            Unauthorized access. Missing or invalid crendentials supplied for such
-            operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UnauthorizedError'
-        '403':
-          description: >-
-            Permission denied for such operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ForbiddenError'
-        '404':
-          description: >-
-            An expected data was not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/NotFoundError'
-        '500':
-          description: >-
-            Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
   /{user}/operator-groups/list-data:
     get:
       operationId: getUserOperatorGroupsListData
@@ -28562,6 +28507,8 @@ components:
         - `weeklyAmountExceeded`: The maximum amount allowed per week was exceeded.
 
         - `weeklyPaymentsExceeded`: The maximum count of payments allowed per week was exceeded.
+
+        - `yearlyAmountExceeded`: The maximum amount allowed per year was exceeded.
       type: string
       enum:
         - dailyAmountExceeded
@@ -28576,6 +28523,7 @@ components:
         - unexpected
         - weeklyAmountExceeded
         - weeklyPaymentsExceeded
+        - yearlyAmountExceeded
 
     PaymentRequestActionEnum:
       description: >
@@ -30097,8 +30045,14 @@ components:
           description: >-
             Whether the account also is visible for the logged user or, if false
             means it is only accessible. A non visible account still is operative,
-            i.e the user could make/receive payments from/to it (i.e\ is accessible)
-            but can not make a transfers history search for it.
+            i.e the user could make/receive payments from/to it (i.e is
+            accessible) but can not make a transfers history search for it.
+          type: boolean
+        viewStatus:
+          description: >-
+            Indicates whether the logged user can see the account status for this
+            account. Some restricted operators can view the account history, but
+            not the account status (balance and so on).
           type: boolean
         systemPayments:
           description: >-
@@ -37051,6 +37005,14 @@ components:
                 Details of user that will be the owner of the new operator
               allOf:
                 - $ref: '#/components/schemas/User'
+            groups:
+              description: >-
+                The available operator groups for the given owner.
+                When a group was passed on the request, will contain only that
+                group. If no group was passed, will return all available groups.
+              type: array
+              items:
+                $ref: '#/components/schemas/EntityReference'
             operator:
               description: >-
                 The object that can be altered and posted back to register the operator
