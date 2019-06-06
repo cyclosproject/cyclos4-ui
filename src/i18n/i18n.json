@@ -181,6 +181,8 @@
     "banking.paySelf": "Payment to self",
     "banking.scheduledPayments": "Scheduled payments",
     "banking.authorizations": "Payment authorizations",
+    "banking.buyVouchers": "Buy vouchers",
+    "banking.searchBoughtVouchers": "Search bought vouchers",
     "operators": "Operators",
     "operators.operators": "Operators",
     "operators.register": "Register operator",

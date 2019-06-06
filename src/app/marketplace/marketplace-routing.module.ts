@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginService } from 'app/core/login.service';
 import { SearchAdsComponent } from 'app/marketplace/search/search-ads.component';
 import { UserAdsComponent } from 'app/marketplace/search/user-ads.component';
-import { BuyVoucherComponent } from 'app/banking/vouchers/buy-voucher.component';
 import { ViewAdComponent } from 'app/marketplace/view/view-ad.component';
 import { ConditionalMenu, Menu } from 'app/shared/menu';
 
@@ -39,13 +38,6 @@ const marketplaceRoutes: Routes = [
         component: ViewAdComponent,
         data: {
           menu: Menu.SEARCH_ADS
-        }
-      },
-      {
-        path: 'buy-voucher',
-        component: BuyVoucherComponent,
-        data: {
-          menu: Menu.BUY_VOUCHER
         }
       }
     ]
