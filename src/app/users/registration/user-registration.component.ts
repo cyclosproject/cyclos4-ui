@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import {
-  AddressNew, AvailabilityEnum, GroupForRegistration, Image, PhoneNew,
-  UserDataForNew, UserNew, UserRegistrationResult
+  AddressNew, AvailabilityEnum, Group, GroupForRegistration, Image,
+  PhoneNew, UserDataForNew, UserNew, UserRegistrationResult, GroupKind, RoleEnum
 } from 'app/api/models';
 import { ImagesService, UsersService } from 'app/api/services';
 import { ApiHelper } from 'app/shared/api-helper';
@@ -13,11 +13,23 @@ import { map, switchMap } from 'rxjs/operators';
 
 export type RegistrationStep = 'group' | 'fields' | 'confirm' | 'done';
 
+/** Validator function that validates as required if the password is set as defined */
+const PASSWORD_REQUIRED_VAL: ValidatorFn = control => {
+  if (control.touched && empty(control.value)) {
+    const parent = control.parent;
+    if (parent.get('defined').value) {
+      return {
+        required: true
+      };
+    }
+  }
+  return null;
+};
 
 /** Validator function that ensures password and confirmation match */
 const PASSWORDS_MATCH_VAL: ValidatorFn = control => {
   const currVal = control.value;
-  if (control.touched && currVal != null && currVal !== '') {
+  if (control.touched && !empty(currVal)) {
     const parent = control.parent;
     const origVal = parent.get('value') == null ? '' : parent.get('value').value;
     if (origVal !== currVal) {
@@ -45,17 +57,19 @@ const SEGURITY_ANSWER_VAL: ValidatorFn = control => {
 };
 
 /**
- * User registration from guest
+ * User registration. Works for guest, by admin and by broker
  */
 @Component({
-  selector: 'public-registration',
-  templateUrl: 'public-registration.component.html',
+  selector: 'user-registration',
+  templateUrl: 'user-registration.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PublicRegistrationComponent
+export class UserRegistrationComponent
   extends BasePageComponent<UserDataForNew>
   implements OnInit, OnDestroy {
 
+  groupSets: Group[];
+  groups: GroupForRegistration[];
   steps: RegistrationStep[] = ['group', 'fields', 'confirm', 'done'];
   group: FormControl;
   form: FormGroup;
@@ -90,30 +104,51 @@ export class PublicRegistrationComponent
     super(injector);
   }
 
-  get groups(): GroupForRegistration[] {
-    return this.dataForUiHolder.dataForUi.publicRegistrationGroups;
-  }
-
   ngOnInit() {
     super.ngOnInit();
 
-    const groups = this.groups;
+    const auth = this.login.auth || {};
+    const role = auth.role;
 
-    if (this.login.user || empty(groups)) {
-      // This component is only for guests. Also, there must be registration groups
-      this.router.navigateByUrl('/');
+    if (role == null) {
+      // When guest, the possible groups are obtained from DataForUi
+      this.initializeGroups(this.dataForUiHolder.dataForUi.publicRegistrationGroups);
+    } else {
+      // When admin / broker, fetch the possible registration groups from data, as they are more complete
+      this.addSub(this.usersService.getUserDataForSearch({
+        broker: role === RoleEnum.BROKER ? ApiHelper.SELF : null,
+        fields: ['groups', 'groupsForRegistration']
+      }).subscribe(data => {
+        this.groupSets = data.groups.filter(g => g.kind === GroupKind.GROUP_SET);
+        const hasRootGroups = data.groups.find(g => g.kind !== GroupKind.GROUP_SET && g.groupSet == null);
+        if (hasRootGroups) {
+          this.groupSets.unshift(null);
+        }
+        this.initializeGroups(data.groupsForRegistration.filter(g => g.kind !== GroupKind.GROUP_SET));
+      }));
+    }
+  }
+
+  private initializeGroups(groups: (GroupForRegistration | Group)[]) {
+    if (this.groups != null) {
+      // Already initialized
       return;
     }
-
-    // Initialize the group value
-    this.group = new FormControl(groups[0].id, Validators.required);
-    if (groups.length === 1) {
-      // When there's a single group, fetch the data already
-      this.steps = this.steps.filter(s => s !== 'group');
-      this.showFields();
+    this.groups = groups;
+    if (empty(this.groups)) {
+      // No possible registration groups - navigate to home
+      this.router.navigateByUrl('/');
     } else {
-      // Initialize on the groups step
-      this.step = 'group';
+      // Initialize the group value
+      this.group = new FormControl(groups[0].id, Validators.required);
+      if (groups.length === 1) {
+        // When there's a single group, fetch the data already
+        this.steps = this.steps.filter(s => s !== 'group');
+        this.showFields();
+      } else {
+        // Initialize on the groups step
+        this.step = 'group';
+      }
     }
   }
 
@@ -183,6 +218,9 @@ export class PublicRegistrationComponent
       this.form.setControl('email',
         this.formBuilder.control(user.email, val, this.serverSideValidator('email'))
       );
+      if (data.allowSetSendActivationEmail) {
+        this.form.setControl('skipActivationEmail', this.formBuilder.control(user.skipActivationEmail));
+      }
     }
 
     // Custom fields
@@ -251,6 +289,10 @@ export class PublicRegistrationComponent
   }
 
   private serverSideValidator(field: string): AsyncValidatorFn {
+    if (this.login.user) {
+      // These async providers only work for guests
+      return null;
+    }
     return (c: AbstractControl): Observable<ValidationErrors | null> => {
       let val = c.value;
       if (empty(val) || !c.dirty) {
@@ -323,8 +365,10 @@ export class PublicRegistrationComponent
       passwordControls.push(this.formBuilder.group({
         type: ApiHelper.internalNameOrId(pt),
         checkConfirmation: true,
-        value: ['', Validators.required],
-        confirmationValue: ['', [Validators.required, PASSWORDS_MATCH_VAL]]
+        defined: this.login.user == null,
+        forceChange: false,
+        value: ['', PASSWORD_REQUIRED_VAL],
+        confirmationValue: ['', [PASSWORD_REQUIRED_VAL, PASSWORDS_MATCH_VAL]]
       }));
     }
     this.confirmForm.setControl('passwords', this.formBuilder.array(passwordControls));
@@ -388,5 +432,12 @@ export class PublicRegistrationComponent
 
   goToLogin() {
     this.login.goToLoginPage('');
+  }
+
+  viewProfile() {
+    const result = this.result;
+    if (result) {
+      this.router.navigate(['users', result.user.id, 'profile']);
+    }
   }
 }

@@ -1,10 +1,20 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { Menu } from 'app/shared/menu';
+import { RouterModule, Routes } from '@angular/router';
+import { LoginService } from 'app/core/login.service';
 import { SearchAdsComponent } from 'app/marketplace/search/search-ads.component';
-import { ViewAdComponent } from 'app/marketplace/view/view-ad.component';
 import { UserAdsComponent } from 'app/marketplace/search/user-ads.component';
 import { BuyVoucherComponent } from 'app/banking/vouchers/buy-voucher.component';
+import { ViewAdComponent } from 'app/marketplace/view/view-ad.component';
+import { ConditionalMenu, Menu } from 'app/shared/menu';
+
+const SearchMenu: ConditionalMenu = injector => {
+  const login = injector.get(LoginService);
+  if (login.user) {
+    return Menu.SEARCH_USERS;
+  } else {
+    return Menu.PUBLIC_DIRECTORY;
+  }
+};
 
 const marketplaceRoutes: Routes = [
   {
@@ -14,14 +24,7 @@ const marketplaceRoutes: Routes = [
         path: 'search',
         component: SearchAdsComponent,
         data: {
-          menu: Menu.SEARCH_ADS
-        }
-      },
-      {
-        path: 'public-search',
-        component: SearchAdsComponent,
-        data: {
-          menu: Menu.PUBLIC_MARKETPLACE
+          menu: SearchMenu
         }
       },
       {
