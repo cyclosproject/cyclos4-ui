@@ -49,8 +49,8 @@ More functionality will be added in future versions.
 
 The required Cyclos version depends on the frontend version:
 
-- Frontend 1.1 required Cyclos 4.12.0 or up
-- Frontend 1.0 required Cyclos 4.11.2 or up
+- Frontend 1.1 requires Cyclos 4.12.0 or up
+- Frontend 1.0 requires Cyclos 4.11.2 or up
 
 ## Getting and preparing the code
 
