@@ -83,11 +83,11 @@
     </div>
   </a>
   <ng-container *ngIf="user == null">
-    <a *ngIf="(layout.gtsm$ | async) && menu.menuEntry(Menu.REGISTRATION)"
+    <a *ngIf="(layout.gtsm$ | async) && menu.menuEntry(Menu.PUBLIC_REGISTRATION)"
       routerLink="/register" id="register-link"
-      (click)="navigate(Menu.REGISTRATION, $event); blurIfClick('register-link', $event);"
+      (click)="navigate(Menu.PUBLIC_REGISTRATION, $event); blurIfClick('register-link', $event);"
       class="nav-item" [ngClass]="{
-          active: hasMenu && activeMenu?.menu == Menu.REGISTRATION
+          active: hasMenu && activeMenu?.menu == Menu.PUBLIC_REGISTRATION
         }">
       <icon class="top-icon" icon="registration"></icon>
       <div *ngIf="layout.gtsm$ | async" class="ml-2">
