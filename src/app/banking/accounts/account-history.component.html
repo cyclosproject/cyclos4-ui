@@ -5,7 +5,8 @@
       [headingActions]="headingActions$ | async">
       <form
         *ngIf="((layout.xxs$ | async) && data.preselectedPeriods?.length > 1) || (moreFilters$ | async)"
-        [formGroup]="form" class="filters-form filters-form-separator">
+        [formGroup]="form" class="filters-form filters-form-separator"
+        [ngClass]="{ 'border-0': noStatus$ | async }">
         <div class="row">
           <div *ngIf="data.preselectedPeriods?.length > 1"
             class="col-12 col-md-6">
@@ -111,14 +112,15 @@
       </form>
 
       <!-- Account status -->
-      <account-status-view
-        *ngIf="(status$ | async) && ((layout.gtxxs$ | async) || (results?.page === 0))"
-        [account]="status$.value"
-        [mode]="(moreFilters$ | async) ? 'period' : 'current'"
-        [showAccount]="(layout.ltsm$ | async) && multipleAccounts">
-      </account-status-view>
-      <spinner *ngIf="(status$ | async) == null"></spinner>
-
+      <ng-container *ngIf="!(noStatus$ | async)">
+        <account-status-view
+          *ngIf="(status$ | async) && ((layout.gtxxs$ | async) || (results?.page === 0))"
+          [account]="status$.value"
+          [mode]="(moreFilters$ | async) ? 'period' : 'current'"
+          [showAccount]="(layout.ltsm$ | async) && multipleAccounts">
+        </account-status-view>
+        <spinner *ngIf="(status$ | async) == null"></spinner>
+      </ng-container>
     </page-content>
 
     <results-layout resultType="list" [results]="results$ | async"
