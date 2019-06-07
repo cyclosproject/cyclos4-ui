@@ -1,5 +1,5 @@
 <page-layout *ngIf="content.layout === 'card'">
-  <page-content [heading]="content.title"
+  <page-content *ngIf="content.layout === 'card'" [heading]="content.title"
     [mobileHeading]="content.mobileTitle"
     [mode]="content.cardMode || 'normal'" last>
     <div class="custom-content-container"

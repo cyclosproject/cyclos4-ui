@@ -1,4 +1,8 @@
 <page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data then content"></ng-container>
+</page-layout>
+
+<ng-template #content>
   <transaction-filters [heading]="i18n.transaction.title.authorizations"
     [mobileHeading]="i18n.transaction.mobileTitle.authorizations"
     [form]="form" [data]="data" [statusOptions]="statusOptions"
@@ -58,8 +62,4 @@
       </tbody>
     </table>
   </results-layout>
-</page-layout>
-
-<ng-template #loadingIndicators>
-  <spinner class="p-3"></spinner>
 </ng-template>

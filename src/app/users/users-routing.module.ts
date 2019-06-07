@@ -1,8 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { RoleEnum } from 'app/api/models';
+import { LoginService } from 'app/core/login.service';
 import { CountriesResolve } from 'app/countries.resolve';
 import { LoggedUserGuard } from 'app/logged-user-guard';
-import { Menu, ConditionalMenu } from 'app/shared/menu';
+import { ConditionalMenu, Menu } from 'app/shared/menu';
+import { OperatorRegistrationComponent } from 'app/users/operators/operator-registration.component';
 import { SearchUserOperatorsComponent } from 'app/users/operators/search-user-operators.component';
 import { EditProfileComponent } from 'app/users/profile/edit-profile.component';
 import { ValidateEmailChangeComponent } from 'app/users/profile/validate-email-change.component';
@@ -13,9 +16,7 @@ import { ContactListComponent } from 'app/users/search/contact-list.component';
 import { SearchUsersComponent } from 'app/users/search/search-users.component';
 import { ViewUserStatusHistoryComponent } from 'app/users/status/view-user-status-history.component';
 import { ViewUserStatusComponent } from 'app/users/status/view-user-status.component';
-import { LoginService } from 'app/core/login.service';
-import { RoleEnum } from 'app/api/models';
-import { OperatorRegistrationComponent } from 'app/users/operators/operator-registration.component';
+import { AuthHelperService } from 'app/core/auth-helper.service';
 
 const SearchMenu: ConditionalMenu = injector => {
   const login = injector.get(LoginService);
@@ -36,19 +37,6 @@ const RegistrationMenu: ConditionalMenu = injector => {
     return Menu.BROKER_REGISTRATION;
   } else {
     return Menu.PUBLIC_REGISTRATION;
-  }
-};
-
-const OperatorRegistrationMenu: ConditionalMenu = injector => {
-  const login = injector.get(LoginService);
-  const auth = login.auth || {};
-  const role = auth.role;
-  if (role === RoleEnum.ADMINISTRATOR) {
-    return Menu.SEARCH_USERS;
-  } else if (role === RoleEnum.BROKER) {
-    return Menu.MY_BROKERED_USERS;
-  } else {
-    return Menu.REGISTER_OPERATOR;
   }
 };
 
@@ -133,17 +121,10 @@ const usersRoutes: Routes = [
         }
       },
       {
-        path: 'operators/registration',
+        path: ':user/operators/registration',
         component: OperatorRegistrationComponent,
         data: {
-          menu: Menu.REGISTER_OPERATOR
-        }
-      },
-      {
-        path: ':key/operators/registration',
-        component: OperatorRegistrationComponent,
-        data: {
-          menu: OperatorRegistrationMenu
+          menu: AuthHelperService.menuByRole(Menu.REGISTER_OPERATOR)
         }
       },
       {

@@ -1,4 +1,8 @@
 <page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data then content"></ng-container>
+</page-layout>
+
+<ng-template #content>
   <page-content mode="filters" [heading]="i18n.ad.title.search"
     [mobileHeading]="i18n.ad.mobileTitle.search"
     [headingActions]="headingActions$ | async">
@@ -83,5 +87,4 @@
     [referencePoint]="((form.valueChanges | async) || form.value).distanceFilter"
     (update)="update($event)" (categorySelected)="onCategorySelected($event)">
   </ads-results>
-
-</page-layout>
+</ng-template>

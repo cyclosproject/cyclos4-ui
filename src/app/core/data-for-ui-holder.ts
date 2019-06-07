@@ -3,7 +3,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiConfiguration } from 'app/api/api-configuration';
-import { DataForUi, UiKind } from 'app/api/models';
+import { DataForUi, UiKind, Auth, User, RoleEnum } from 'app/api/models';
 import { AuthService, UiService } from 'app/api/services';
 import { Configuration } from 'app/configuration';
 import { ErrorStatus } from 'app/core/error-status';
@@ -69,6 +69,18 @@ export class DataForUiHolder {
 
   get dataForUi(): DataForUi {
     return this.dataForUi$.value;
+  }
+
+  get auth(): Auth {
+    return (this.dataForUi || {}).auth;
+  }
+
+  get user(): User {
+    return (this.auth || {}).user;
+  }
+
+  get role(): RoleEnum {
+    return (this.auth || {}).role;
   }
 
   /**

@@ -1,5 +1,6 @@
 <page-layout [ready]="data$ | async">
-  <page-content [heading]="i18n.transaction.title.authorizationHistory"
+  <page-content *ngIf="data"
+    [heading]="i18n.transaction.title.authorizationHistory"
     [mobileHeading]="i18n.transaction.mobileTitle.authorizationHistory">
     <ng-container *ngIf="transaction.transactionNumber">
       <label-value [label]="i18n.transaction.number">
@@ -24,4 +25,5 @@
       </label-value>
     </ng-container>
   </page-content>
+
 </page-layout>

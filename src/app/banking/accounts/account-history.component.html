@@ -1,4 +1,8 @@
 <page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data then content"></ng-container>
+</page-layout>
+
+<ng-template #content>
   <page-content mode="filters" [heading]="title"
     [mobileHeading]="i18n.account.mobileTitle"
     [headingActions]="headingActions$ | async">
@@ -177,7 +181,7 @@
       </tbody>
     </table>
   </results-layout>
-</page-layout>
+</ng-template>
 
 <ng-template #loadingIndicators>
   <spinner class="p-3"></spinner>

@@ -590,7 +590,7 @@ export class MenuService {
       // Operators
       if (operators.enable) {
         add(Menu.MY_OPERATORS, '/users/operators', 'supervisor_account', this.i18n.menu.operatorsOperators);
-        add(Menu.REGISTER_OPERATOR, '/users/operators/registration', 'registration', this.i18n.menu.operatorsRegister);
+        add(Menu.REGISTER_OPERATOR, '/users/self/operators/registration', 'registration', this.i18n.menu.operatorsRegister);
       }
 
       // Brokering
