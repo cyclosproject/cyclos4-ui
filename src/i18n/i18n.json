@@ -39,6 +39,9 @@
     "cancel": "Cancel",
     "close": "Close",
     "submit": "Submit",
+    "remove.confirm": "Are you sure to remove the item {item}?",
+    "remove.done": "The item {item} was removed",
+    "remove.tooltip": "Remove {item}",
     "save": "Save",
     "addNew": "Add new",
     "yes": "Yes",
@@ -136,7 +139,7 @@
     "maxItems": "Cannot add more than {max} elements",
     "validation": "The action couldn't be processed, as there were validation errors",
     "staleEntity": "This data cannot be saved because it has been modified by someone else.<br>Please, load the page again and restart the operation.",
-    "removeDataInUse": "This data cannot be removed because it is currently in use.",
+    "removeDataInUse": "This item cannot be removed because it is currently in use.",
     "notFound": "The location you typed or tried to access was not found",
     "notFound.type": "The requested data could not be found: {type}",
     "notFound.typeKey": "The requested data could not be found: {type} with key {key}",
@@ -184,6 +187,7 @@
     "operators": "Operators",
     "operators.operators": "Operators",
     "operators.register": "Register operator",
+    "operators.groups": "Operator groups",
     "brokering": "Brokering",
     "brokering.users": "Users",
     "brokering.register": "Register user",
@@ -688,6 +692,14 @@
     "orderBy": {
       "alphabeticallyAsc": "Name (A-Z)",
       "alphabeticallyDesc": "Name (Z-A)"
+    }
+  },
+  "operatorGroup": {
+    "title": {
+      "list": "Operator groups"
+    },
+    "mobileTitle": {
+      "list": "Operator groups"
     }
   },
   "userStatus": {

@@ -16,7 +16,8 @@ import { ContactListComponent } from 'app/users/search/contact-list.component';
 import { SearchUsersComponent } from 'app/users/search/search-users.component';
 import { ViewUserStatusHistoryComponent } from 'app/users/status/view-user-status-history.component';
 import { ViewUserStatusComponent } from 'app/users/status/view-user-status.component';
-import { AuthHelperService } from 'app/core/auth-helper.service';
+import { ListOperatorGroupsComponent } from 'app/users/operator-groups/list-operator-groups.component';
+import { ViewOperatorGroupComponent } from 'app/users/operator-groups/view-operator-group.component';
 
 const SearchMenu: ConditionalMenu = injector => {
   const login = injector.get(LoginService);
@@ -37,6 +38,32 @@ const RegistrationMenu: ConditionalMenu = injector => {
     return Menu.BROKER_REGISTRATION;
   } else {
     return Menu.PUBLIC_REGISTRATION;
+  }
+};
+
+const OperatorRegistrationMenu: ConditionalMenu = injector => {
+  const login = injector.get(LoginService);
+  const auth = login.auth || {};
+  const role = auth.role;
+  if (role === RoleEnum.ADMINISTRATOR) {
+    return Menu.SEARCH_USERS;
+  } else if (role === RoleEnum.BROKER) {
+    return Menu.MY_BROKERED_USERS;
+  } else {
+    return Menu.REGISTER_OPERATOR;
+  }
+};
+
+const OperatorGroupsMenu: ConditionalMenu = injector => {
+  const login = injector.get(LoginService);
+  const auth = login.auth || {};
+  const role = auth.role;
+  if (role === RoleEnum.ADMINISTRATOR) {
+    return Menu.SEARCH_USERS;
+  } else if (role === RoleEnum.BROKER) {
+    return Menu.MY_BROKERED_USERS;
+  } else {
+    return Menu.OPERATOR_GROUPS;
   }
 };
 
@@ -99,6 +126,7 @@ const usersRoutes: Routes = [
       {
         path: ':key/profile/edit',
         component: EditProfileComponent,
+        canActivate: [LoggedUserGuard],
         resolve: {
           countries: CountriesResolve
         },
@@ -109,6 +137,7 @@ const usersRoutes: Routes = [
       {
         path: 'operators',
         component: SearchUserOperatorsComponent,
+        canActivate: [LoggedUserGuard],
         data: {
           menu: Menu.MY_OPERATORS
         }
@@ -116,13 +145,23 @@ const usersRoutes: Routes = [
       {
         path: ':key/operators',
         component: SearchUserOperatorsComponent,
+        canActivate: [LoggedUserGuard],
         data: {
           menu: Menu.SEARCH_USERS
         }
       },
       {
-        path: ':user/operators/registration',
+        path: 'operators/registration',
         component: OperatorRegistrationComponent,
+        canActivate: [LoggedUserGuard],
+        data: {
+          menu: Menu.REGISTER_OPERATOR
+        }
+      },
+      {
+        path: ':key/operators/registration',
+        component: OperatorRegistrationComponent,
+        canActivate: [LoggedUserGuard],
         data: {
           menu: AuthHelperService.menuByRole(Menu.REGISTER_OPERATOR)
         }
@@ -146,6 +185,7 @@ const usersRoutes: Routes = [
       {
         path: ':key/status',
         component: ViewUserStatusComponent,
+        canActivate: [LoggedUserGuard],
         data: {
           menu: Menu.SEARCH_USERS
         }
@@ -153,10 +193,43 @@ const usersRoutes: Routes = [
       {
         path: ':key/status/history',
         component: ViewUserStatusHistoryComponent,
+        canActivate: [LoggedUserGuard],
         data: {
           menu: Menu.SEARCH_USERS
         }
       },
+      {
+        path: 'operator-groups',
+        component: ListOperatorGroupsComponent,
+        canActivate: [LoggedUserGuard],
+        data: {
+          menu: Menu.OPERATOR_GROUPS
+        }
+      },
+      {
+        path: ':key/operator-groups',
+        component: ListOperatorGroupsComponent,
+        canActivate: [LoggedUserGuard],
+        data: {
+          menu: OperatorGroupsMenu
+        }
+      },
+      {
+        path: 'operator-groups/:key',
+        component: ViewOperatorGroupComponent,
+        canActivate: [LoggedUserGuard],
+        data: {
+          menu: OperatorGroupsMenu
+        }
+      },
+      // {
+      //   path: 'operator-groups/:key/edit',
+      //   component: ViewOperatorGroupComponent,
+      //   canActivate: [LoggedUserGuard],
+      //   data: {
+      //     menu: OperatorGroupsMenu
+      //   }
+      // },
       {
         path: 'validate-email-change/:key',
         component: ValidateEmailChangeComponent,
