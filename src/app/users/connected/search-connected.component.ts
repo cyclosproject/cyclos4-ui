@@ -28,16 +28,20 @@ export class SearchConnectedComponent
     super.ngOnInit();
 
     // Get search data
-    this.sessionsService.getSessionDataForSearch().subscribe(data => {
-      this.data = data;
+    this.addSub(this.sessionsService.getSessionDataForSearch().subscribe(data => {
+      // Patch value to avoid the form reload twice
       this.form.patchValue(data.query, { emitEvent: false });
-    });
-
+      this.data = data;
+    }));
   }
 
   disconnect(session: SessionResult) {
     this.addSub(this.sessionsService.disconnectSession({ sessionToken: session.sessionToken })
       .subscribe(() => this.update()));
+  }
+
+  isCurrentSession(session: SessionResult) {
+    return this.login.auth.sessionToken === session.sessionToken;
   }
 
   protected getFormControlNames(): string[] {

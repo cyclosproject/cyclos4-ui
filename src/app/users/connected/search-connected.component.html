@@ -82,7 +82,8 @@
               <td>{{ row.creationDate | dateTime }}</td>
               <td>{{ row.remoteAddress }}</td>
               <td class="actions">
-                <button [tooltip]="i18n.connectedUser.actions.disconnect"
+                <button *ngIf="!isCurrentSession(row)"
+                  [tooltip]="i18n.connectedUser.actions.disconnect"
                   class="btn btn-icon"
                   (click)="disconnect(row); $event.stopPropagation()">
                   <icon icon="clear"></icon>
