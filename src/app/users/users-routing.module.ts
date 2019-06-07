@@ -2,18 +2,42 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CountriesResolve } from 'app/countries.resolve';
 import { LoggedUserGuard } from 'app/logged-user-guard';
-import { Menu } from 'app/shared/menu';
+import { Menu, ConditionalMenu } from 'app/shared/menu';
+import { SearchUserOperatorsComponent } from 'app/users/operators/search-user-operators.component';
 import { EditProfileComponent } from 'app/users/profile/edit-profile.component';
 import { ValidateEmailChangeComponent } from 'app/users/profile/validate-email-change.component';
 import { ViewProfileComponent } from 'app/users/profile/view-profile.component';
-import { PublicRegistrationComponent } from 'app/users/registration/public-registration.component';
+import { UserRegistrationComponent } from 'app/users/registration/user-registration.component';
 import { ValidateRegistrationComponent } from 'app/users/registration/validate-registration.component';
 import { ContactListComponent } from 'app/users/search/contact-list.component';
 import { SearchUsersComponent } from 'app/users/search/search-users.component';
 import { ViewUserStatusHistoryComponent } from 'app/users/status/view-user-status-history.component';
 import { ViewUserStatusComponent } from 'app/users/status/view-user-status.component';
-import { SearchUserOperatorsComponent } from 'app/users/operators/search-user-operators.component';
 import { SearchConnectedComponent } from 'app/users/connected/search-connected.component';
+import { LoginService } from 'app/core/login.service';
+import { RoleEnum } from 'app/api/models';
+
+const SearchMenu: ConditionalMenu = injector => {
+  const login = injector.get(LoginService);
+  if (login.user) {
+    return Menu.SEARCH_USERS;
+  } else {
+    return Menu.PUBLIC_DIRECTORY;
+  }
+};
+
+const RegistrationMenu: ConditionalMenu = injector => {
+  const login = injector.get(LoginService);
+  const auth = login.auth || {};
+  const role = auth.role;
+  if (role === RoleEnum.ADMINISTRATOR) {
+    return Menu.ADMIN_REGISTRATION;
+  } else if (role === RoleEnum.BROKER) {
+    return Menu.BROKER_REGISTRATION;
+  } else {
+    return Menu.PUBLIC_REGISTRATION;
+  }
+};
 
 const usersRoutes: Routes = [
   {
@@ -23,14 +47,23 @@ const usersRoutes: Routes = [
         path: 'search',
         component: SearchUsersComponent,
         data: {
-          menu: Menu.SEARCH_USERS
+          menu: SearchMenu
         }
       },
       {
-        path: 'public-search',
+        path: 'brokerings',
         component: SearchUsersComponent,
+        canActivate: [LoggedUserGuard],
         data: {
-          menu: Menu.PUBLIC_DIRECTORY
+          menu: Menu.MY_BROKERED_USERS
+        }
+      },
+      {
+        path: ':key/brokerings',
+        component: SearchUsersComponent,
+        canActivate: [LoggedUserGuard],
+        data: {
+          menu: Menu.SEARCH_USERS
         }
       },
       {
@@ -80,7 +113,14 @@ const usersRoutes: Routes = [
         }
       },
       {
-        path: ':key/operator-profile',
+        path: ':key/operators',
+        component: SearchUserOperatorsComponent,
+        data: {
+          menu: Menu.SEARCH_USERS
+        }
+      },
+      {
+        path: 'operators/:key',
         component: ViewProfileComponent,
         canActivate: [LoggedUserGuard],
         data: {
@@ -88,7 +128,7 @@ const usersRoutes: Routes = [
         }
       },
       {
-        path: ':key/operator-profile/edit',
+        path: 'operators/:key/edit',
         component: EditProfileComponent,
         canActivate: [LoggedUserGuard],
         data: {
@@ -113,7 +153,7 @@ const usersRoutes: Routes = [
         path: 'validate-email-change/:key',
         component: ValidateEmailChangeComponent,
         data: {
-          menu: Menu.REGISTRATION
+          menu: Menu.PUBLIC_REGISTRATION
         }
       },
       {
@@ -125,7 +165,7 @@ const usersRoutes: Routes = [
         }
       },
       {
-        path: ':key/contact-profile',
+        path: 'contacts/:key',
         component: ViewProfileComponent,
         canActivate: [LoggedUserGuard],
         resolve: {
@@ -137,19 +177,19 @@ const usersRoutes: Routes = [
       },
       {
         path: 'registration',
-        component: PublicRegistrationComponent,
+        component: UserRegistrationComponent,
         resolve: {
           countries: CountriesResolve
         },
         data: {
-          menu: Menu.REGISTRATION
+          menu: RegistrationMenu
         }
       },
       {
         path: 'validate-registration/:key',
         component: ValidateRegistrationComponent,
         data: {
-          menu: Menu.REGISTRATION
+          menu: Menu.PUBLIC_REGISTRATION
         }
       },
       {

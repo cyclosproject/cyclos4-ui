@@ -1,17 +1,7 @@
-<div [ngSwitch]="result.status">
+<p [innerHTML]="messageHtml | trust"></p>
 
-  <div *ngSwitchCase="'active'">
-    <p [innerHTML]="i18n.user.registration.active | trust"></p>
-    <p [innerHTML]="principalsHtml | trust"></p>
-    <p>{{ passwordsMessage }}</p>
-  </div>
-
-  <div *ngSwitchCase="'inactive'">
-    <p [innerHTML]="i18n.user.registration.inactive | trust"></p>
-  </div>
-
-  <div *ngSwitchCase="'emailValidation'">
-    <p [innerHTML]="i18n.user.registration.pending | trust"></p>
-  </div>
-
-</div>
+<!-- For public registration with active users, show the principals information -->
+<ng-container *ngIf="login.user == null && result.status == 'active'">
+  <p [innerHTML]="principalsHtml | trust"></p>
+  <p>{{ passwordsMessage }}</p>
+</ng-container>
