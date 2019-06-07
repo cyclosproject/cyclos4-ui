@@ -42496,6 +42496,8 @@ components:
         their management
       type: object
       properties:
+        user:
+          $ref: '#/components/schemas/User'
         canManage:
           description: >-
             Indicates whether the operator groups can be managed by the authenticated user

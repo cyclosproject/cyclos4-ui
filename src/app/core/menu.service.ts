@@ -591,6 +591,7 @@ export class MenuService {
       if (operators.enable) {
         add(Menu.MY_OPERATORS, '/users/operators', 'supervisor_account', this.i18n.menu.operatorsOperators);
         add(Menu.REGISTER_OPERATOR, '/users/operators/registration', 'registration', this.i18n.menu.operatorsRegister);
+        add(Menu.OPERATOR_GROUPS, '/users/operator-groups', 'supervised_user_circle', this.i18n.menu.operatorsGroups);
       }
 
       // Brokering

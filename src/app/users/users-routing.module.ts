@@ -16,6 +16,7 @@ import { ViewUserStatusComponent } from 'app/users/status/view-user-status.compo
 import { LoginService } from 'app/core/login.service';
 import { RoleEnum } from 'app/api/models';
 import { OperatorRegistrationComponent } from 'app/users/operators/operator-registration.component';
+import { ListOperatorGroupsComponent } from 'app/users/operator-groups/list-operator-groups.component';
 
 const SearchMenu: ConditionalMenu = injector => {
   const login = injector.get(LoginService);
@@ -49,6 +50,19 @@ const OperatorRegistrationMenu: ConditionalMenu = injector => {
     return Menu.MY_BROKERED_USERS;
   } else {
     return Menu.REGISTER_OPERATOR;
+  }
+};
+
+const OperatorGroupsMenu: ConditionalMenu = injector => {
+  const login = injector.get(LoginService);
+  const auth = login.auth || {};
+  const role = auth.role;
+  if (role === RoleEnum.ADMINISTRATOR) {
+    return Menu.SEARCH_USERS;
+  } else if (role === RoleEnum.BROKER) {
+    return Menu.MY_BROKERED_USERS;
+  } else {
+    return Menu.OPERATOR_GROUPS;
   }
 };
 
@@ -111,6 +125,7 @@ const usersRoutes: Routes = [
       {
         path: ':key/profile/edit',
         component: EditProfileComponent,
+        canActivate: [LoggedUserGuard],
         resolve: {
           countries: CountriesResolve
         },
@@ -121,6 +136,7 @@ const usersRoutes: Routes = [
       {
         path: 'operators',
         component: SearchUserOperatorsComponent,
+        canActivate: [LoggedUserGuard],
         data: {
           menu: Menu.MY_OPERATORS
         }
@@ -128,6 +144,7 @@ const usersRoutes: Routes = [
       {
         path: ':key/operators',
         component: SearchUserOperatorsComponent,
+        canActivate: [LoggedUserGuard],
         data: {
           menu: Menu.SEARCH_USERS
         }
@@ -135,6 +152,7 @@ const usersRoutes: Routes = [
       {
         path: 'operators/registration',
         component: OperatorRegistrationComponent,
+        canActivate: [LoggedUserGuard],
         data: {
           menu: Menu.REGISTER_OPERATOR
         }
@@ -142,6 +160,7 @@ const usersRoutes: Routes = [
       {
         path: ':key/operators/registration',
         component: OperatorRegistrationComponent,
+        canActivate: [LoggedUserGuard],
         data: {
           menu: OperatorRegistrationMenu
         }
@@ -165,6 +184,7 @@ const usersRoutes: Routes = [
       {
         path: ':key/status',
         component: ViewUserStatusComponent,
+        canActivate: [LoggedUserGuard],
         data: {
           menu: Menu.SEARCH_USERS
         }
@@ -172,10 +192,43 @@ const usersRoutes: Routes = [
       {
         path: ':key/status/history',
         component: ViewUserStatusHistoryComponent,
+        canActivate: [LoggedUserGuard],
         data: {
           menu: Menu.SEARCH_USERS
         }
       },
+      {
+        path: 'operator-groups',
+        component: ListOperatorGroupsComponent,
+        canActivate: [LoggedUserGuard],
+        data: {
+          menu: Menu.OPERATOR_GROUPS
+        }
+      },
+      {
+        path: ':key/operator-groups',
+        component: ListOperatorGroupsComponent,
+        canActivate: [LoggedUserGuard],
+        data: {
+          menu: OperatorGroupsMenu
+        }
+      },
+      // {
+      //   path: 'operator-groups/:key',
+      //   component: ViewOperatorGroupComponent,
+      //   canActivate: [LoggedUserGuard],
+      //   data: {
+      //     menu: OperatorGroupsMenu
+      //   }
+      // },
+      // {
+      //   path: 'operator-groups/:key/edit',
+      //   component: ViewOperatorGroupComponent,
+      //   canActivate: [LoggedUserGuard],
+      //   data: {
+      //     menu: OperatorGroupsMenu
+      //   }
+      // },
       {
         path: 'validate-email-change/:key',
         component: ValidateEmailChangeComponent,

@@ -1,4 +1,4 @@
-<page-layout [ready]="data$ | async" size="large">
+<page-layout [ready]="data$ | async">
   <page-content *ngIf="form; else loading"
     [heading]="i18n.user.title.operatorRegistration"
     [mobileHeading]="i18n.user.mobileTitle.operatorRegistration" last>
