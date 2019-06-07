@@ -1,15 +1,18 @@
-import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { I18n } from 'app/i18n/i18n';
 
 /**
- * Shows errors in a field
+ * Shows errors in a field.
+ * Cannot use OnPush change detection because Angular forms lack an Observable
+ * for touched events. Without it, the `touched` flag in the template is not
+ * updated, and the error is not shown.
+ * See https://github.com/angular/angular/issues/10887
  */
 @Component({
   selector: 'field-errors',
   templateUrl: 'field-errors.component.html',
-  styleUrls: ['field-errors.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['field-errors.component.scss']
 })
 export class FieldErrorsComponent {
   @Input() control: FormControl;
