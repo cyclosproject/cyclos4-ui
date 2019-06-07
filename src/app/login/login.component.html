@@ -16,15 +16,20 @@
         </ng-template>
       </div>
 
-      <div class="input-group login-margin-bottom">
-        <div class="input-group-prepend">
-          <span class="input-group-text input-group-icon">
-            <icon size="1.3rem" icon="user"></icon>
-          </span>
+      <div class="principal">
+        <div class="input-group login-margin-bottom">
+          <div class="input-group-prepend">
+            <span class="input-group-text input-group-icon">
+              <icon size="1.3rem" icon="user"></icon>
+            </span>
+          </div>
+          <input #principal type="text" formControlName="principal"
+            autocomplete="username" class="form-control" focused
+            [placeholder]="i18n.auth.login.principal" [ngClass]="{
+            'is-invalid': (form.get('principal').statusChanges | async) === 'INVALID' && form.get('principal').touched
+          }">
         </div>
-        <input #principal type="text" formControlName="principal"
-          autocomplete="username" class="form-control" focused
-          [placeholder]="i18n.auth.login.principal">
+        <field-errors [control]="form.get('principal')"></field-errors>
       </div>
 
       <password-input #password class="d-block login-margin-bottom"

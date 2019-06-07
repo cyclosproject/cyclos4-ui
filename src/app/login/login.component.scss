@@ -30,6 +30,10 @@ form {
   .login-margin-bottom {
     margin-bottom: 1rem;
   }
+  :host ::ng-deep .principal .invalid-feedback {
+    margin-top: -0.75rem;
+    margin-bottom: 0.5rem;
+  }
   .pre-login-text {
     text-align: center;
     padding-bottom: 2rem;
