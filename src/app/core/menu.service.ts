@@ -594,6 +594,9 @@ export class MenuService {
         marketplaceRoot.label = publicDirectory.label;
         marketplaceRoot.title = publicDirectory.label;
       }
+      if (auth.systemAdministrator) {
+        add(Menu.CONNECTED_USERS, '/users/connected', 'record_voice_over', this.i18n.menu.marketplaceConnectedUsers);
+      }
       addOperations(RootMenu.MARKETPLACE);
       addContentPages(Menu.CONTENT_PAGE_MARKETPLACE);
 
