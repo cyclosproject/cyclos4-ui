@@ -32,6 +32,7 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
   }
 
   key: string;
+  self: boolean;
   shortName: string;
   mobilePhone: PhoneView;
   landLinePhone: PhoneView;
@@ -45,14 +46,12 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
 
   ngOnInit() {
     super.ngOnInit();
-    this.key = this.route.snapshot.paramMap.get('key');
-    if (this.key == null && this.login.user != null) {
-      this.key = ApiHelper.SELF;
-    }
+    this.key = this.route.snapshot.paramMap.get('key') || ApiHelper.SELF;
     this.errorHandler.requestWithCustomErrorHandler(defaultHandling => {
       this.usersService.viewUser({ user: this.key })
         .subscribe(user => {
           this.data = user;
+          this.self = this.authHelper.isSelf(user) || user.user != null && this.authHelper.isSelf(user.user);
         }, (resp: HttpErrorResponse) => {
           if ([ErrorStatus.FORBIDDEN, ErrorStatus.UNAUTHORIZED].includes(resp.status)) {
             this.notification.error(this.i18n.user.profile.noPermission);
@@ -89,13 +88,22 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     const payment = permissions.payment || {};
     const marketplace = permissions.marketplace || {};
     const status = permissions.status || {};
+    const operators = permissions.operators || {};
+    const brokering = permissions.brokering || {};
     if (user.permissions.profile.editProfile) {
-      const editPath = (this.login.user || {}).id === user.id
-        ? ['users', 'profile', 'edit']
-        : ['users', user.id, 'profile', 'edit'];
       actions.push(new HeadingAction('edit', this.i18n.general.edit, () => {
-        this.router.navigate(editPath);
+        this.router.navigateByUrl(this.router.url + '/edit');
       }, true));
+    }
+    if (brokering.viewMembers) {
+      actions.push(new HeadingAction('assignment_ind', this.i18n.user.profile.viewBrokerings, () => {
+        this.router.navigate(['/users', this.key, 'brokerings']);
+      }));
+    }
+    if (operators.viewOperators) {
+      actions.push(new HeadingAction('supervisor_account', this.i18n.user.profile.viewOperators, () => {
+        this.router.navigate(['/users', this.key, 'operators']);
+      }));
     }
     if (status.view) {
       actions.push(new HeadingAction('how_to_reg', this.i18n.user.profile.status, () => {

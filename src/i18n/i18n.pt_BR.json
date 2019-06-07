@@ -181,10 +181,14 @@
     "banking.paySelf": "Pagamento entre contas",
     "banking.scheduledPayments": "Pagamentos agendados",
     "banking.authorizations": "Autorizações de pagamento",
-    "operators": "Operators",
-    "operators.operators": "Operators",
+    "operators": "Operadores",
+    "operators.operators": "Operadores",
+    "brokering": "Brokering",
+    "brokering.users": "Users",
     "marketplace": "Produtos & Serviços",
+    "marketplace.users": "Users",
     "marketplace.directory": "Diretório",
+    "marketplace.userSearch": "Users",
     "marketplace.businessDirectory": "Diretório de negócios",
     "marketplace.advertisements": "Anúncios",
     "personal": "Pessoal",
@@ -577,9 +581,12 @@
       "registration.done": "Cadastrado com sucesso",
       "contactList": "Lista de contatos",
       "addContact": "Adicionar um novo contato",
-      "search": "Diretório de negócios",
-      "myOperators": "Operators",
-      "userOperators": "User operators"
+      "search": "Users search",
+      "directory": "Business directory",
+      "myOperators": "Operadores",
+      "userOperators": "Operadores do usuário",
+      "myBrokerings": "Assigned members",
+      "userBrokerings": "Broker assigned members"
     },
     "mobileTitle": {
       "myProfile": "Meu perfil",
@@ -598,9 +605,12 @@
       "registration.done": "Sucesso",
       "contactList": "Contatos",
       "addContact": "Novo contato",
-      "search": "Diretório",
-      "myOperators": "Operators",
-      "userOperators": "Operators"
+      "search": "Users",
+      "directory": "Directory",
+      "myOperators": "Operadores",
+      "userOperators": "Operadores",
+      "myBrokerings": "Assigned members",
+      "userBrokerings": "Broker members"
     },
     "group": "Grupo",
     "groupSet": "Conjunto de grupos",
@@ -642,6 +652,8 @@
       "removeContact.done": "{user} foi removido da sua lista de contatos",
       "pay": "Fazer pagamento",
       "viewAds": "Ver anúncios",
+      "viewBrokerings": "View assigned members",
+      "viewOperators": "View operators",
       "status": "Estado do usuário"
     },
     "registration": {

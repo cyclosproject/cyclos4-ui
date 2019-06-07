@@ -183,8 +183,12 @@
     "banking.authorizations": "Betalingsautorisaties",
     "operators": "Operators",
     "operators.operators": "Operators",
+    "brokering": "Brokering",
+    "brokering.users": "Users",
     "marketplace": "Marktplaats",
+    "marketplace.users": "Users",
     "marketplace.directory": "Bedrijven",
+    "marketplace.userSearch": "Users",
     "marketplace.businessDirectory": "Gebruikers",
     "marketplace.advertisements": "Advertenties",
     "personal": "Persoonlijk",
@@ -577,9 +581,12 @@
       "registration.done": "Inschrijving succesvol",
       "contactList": "Contact lijst",
       "addContact": "Een nieuw contact toevoegen",
-      "search": "Business directory",
+      "search": "Users search",
+      "directory": "Business directory",
       "myOperators": "Operators",
-      "userOperators": "User operators"
+      "userOperators": "User operators",
+      "myBrokerings": "Assigned members",
+      "userBrokerings": "Broker assigned members"
     },
     "mobileTitle": {
       "myProfile": "My profile",
@@ -598,9 +605,12 @@
       "registration.done": "Success",
       "contactList": "Contacts",
       "addContact": "New contact",
-      "search": "Directory",
+      "search": "Users",
+      "directory": "Directory",
       "myOperators": "Operators",
-      "userOperators": "Operators"
+      "userOperators": "Operators",
+      "myBrokerings": "Assigned members",
+      "userBrokerings": "Broker members"
     },
     "group": "Groep",
     "groupSet": "Group set",
@@ -642,6 +652,8 @@
       "removeContact.done": "{user} is verwijderd uit uw lijst met contactpersonen",
       "pay": "Volgende",
       "viewAds": "Bekijk advertenties",
+      "viewBrokerings": "View assigned members",
+      "viewOperators": "View operators",
       "status": "User status"
     },
     "registration": {

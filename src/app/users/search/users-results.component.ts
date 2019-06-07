@@ -132,9 +132,14 @@ export class UsersResultsComponent extends BaseComponent implements OnInit {
    * @param row The user or contact
    */
   path(row: any): string[] {
+    const user = this.user(row);
+    if (this.authHelper.isSelf(user)) {
+      // Go to my profile
+      return ['/users', 'profile'];
+    }
     if (this.resultKind === 'my-operator') {
       // Go to the operator profile
-      return ['/users', this.user(row).id, 'operator-profile'];
+      return ['/users', 'operators', user.id];
     }
     if (!this.canViewProfile) {
       return null;
@@ -145,10 +150,10 @@ export class UsersResultsComponent extends BaseComponent implements OnInit {
       // to navigate to the contact edit page
 
       // Go to the contact profile
-      return ['/users', this.user(row).id, 'contact-profile'];
+      return ['/users', 'contacts', user.id];
     }
     // Go to the user profile
-    return ['/users', this.user(row).id, 'profile'];
+    return ['/users', user.id, 'profile'];
   }
 
   get toLink() {
