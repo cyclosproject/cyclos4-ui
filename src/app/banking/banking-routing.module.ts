@@ -11,6 +11,8 @@ import { SearchAuthorizedPaymentsComponent } from 'app/banking/transactions/sear
 import { ViewAuthorizationHistoryComponent } from 'app/banking/transactions/view-authorization-history.component';
 import { trim } from 'lodash';
 import { BankingHelperService } from 'app/core/banking-helper.service';
+import { RedeemVoucherComponent } from 'app/banking/vouchers/redeem-voucher.component';
+import { ViewVoucherComponent } from 'app/banking/vouchers/view-voucher.component';
 
 /**
  * A conditional menu resolver for content, which finds the content page by slug to resolve the correct menu
@@ -102,6 +104,20 @@ const bankingRoutes: Routes = [
         component: SearchAuthorizedPaymentsComponent,
         data: {
           menu: Menu.AUTHORIZED_PAYMENTS
+        }
+      },
+      {
+        path: 'vouchers/redeem',
+        component: RedeemVoucherComponent,
+        data: {
+          menu: Menu.REDEEM_VOUCHER
+        }
+      },
+      {
+        path: 'vouchers/:key',
+        component: ViewVoucherComponent,
+        data: {
+          menu: Menu.VIEW_VOUCHER
         }
       }
     ]

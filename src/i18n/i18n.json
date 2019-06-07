@@ -181,6 +181,7 @@
     "banking.paySelf": "Payment to self",
     "banking.scheduledPayments": "Scheduled payments",
     "banking.authorizations": "Payment authorizations",
+    "banking.vouchers.redeem": "Redeem voucher",
     "operators": "Operators",
     "operators.operators": "Operators",
     "marketplace": "Marketplace",
@@ -528,6 +529,15 @@
       "monthly.amount": "The maximum monthly amount of {amount} was exceeded",
       "monthly.count": "The maximum allowed number of payments per month is {count}"
     }
+  },
+  "voucher": {
+    "redeem": {
+      "title": "Redeem voucher",
+      "mobileTitle": "Redeem voucher",
+      "confirm": "The voucher details are given below. Please, review it below and confirm this action."
+    },
+    "token": "Voucher code",
+    "buyer": "Buyer"
   },
   "field": {
     "privacy": {
