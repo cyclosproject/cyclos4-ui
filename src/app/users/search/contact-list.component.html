@@ -1,26 +1,18 @@
 <page-layout [ready]="data$ | async">
-  <ng-container *ngIf="loaded$ | async; else loading">
-    <page-content [ngClass]="{'d-none': layout.xxs$ | async}" mode="filters"
-      [heading]="i18n.user.title.contactList"
-      [mobileHeading]="i18n.user.mobileTitle.contactList"
-      [headingActions]="headingActions$ | async">
-      <div class="filters-row">
-        <result-type-field [formControl]="resultTypeControl"
-          [allowedResultTypes]="allowedResultTypes$ | async">
-        </result-type-field>
-      </div>
-    </page-content>
-    <users-results #usersResults resultKind="contact" [ngClass]="{
+  <page-content [ngClass]="{'d-none': layout.xxs$ | async}" mode="filters"
+    [heading]="i18n.user.title.contactList"
+    [mobileHeading]="i18n.user.mobileTitle.contactList"
+    [headingActions]="headingActions$ | async">
+    <div class="filters-row">
+      <result-type-field [formControl]="resultTypeControl"
+        [allowedResultTypes]="allowedResultTypes$ | async">
+      </result-type-field>
+    </div>
+  </page-content>
+  <users-results #usersResults resultKind="contact" [ngClass]="{
           'd-none': (rendering$ | async)
         }" [results]="results$ | async" [rendering$]="rendering$"
-      [data]="data$ | async" [resultType]="resultType$ | async"
-      (update)="update($event)">
-    </users-results>
-  </ng-container>
+    [data]="data$ | async" [resultType]="resultType$ | async"
+    (update)="update($event)">
+  </users-results>
 </page-layout>
-
-<ng-template #loading>
-  <page-content>
-    <spinner></spinner>
-  </page-content>
-</ng-template>

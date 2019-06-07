@@ -21,7 +21,7 @@ import { first } from 'rxjs/operators';
 })
 export class PageLayoutComponent implements OnInit, OnDestroy {
   @Input() heading: string;
-  @Input() ready: boolean;
+  @Input() ready = true;
   @Input() size: 'small' | 'medium' | 'large' | 'full' = 'full';
 
   @ViewChildren('contentArea') contentArea: QueryList<ElementRef>;

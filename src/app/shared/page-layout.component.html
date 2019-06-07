@@ -1,37 +1,29 @@
-<ng-container *ngIf="ready == null || !!ready; else loading">
-  <div class="page-layout" [ngClass]="{
+<div class="page-layout" [ngClass]="{
       'has-left-area': leftAreaVisible$ | async,
       'justify-content-center': !(leftAreaVisible$ | async)
     }">
-    <div *ngIf="leftAreaVisible$ | async" class="side-area">
-      <ng-container *ngIf="!(loggingOut$ | async)">
-        <side-menu *ngIf="(login.user$ | async) && (menu.activeMenu$ | async)"></side-menu>
-        <banner-card *ngFor="let card of bannerCards$ | async; let first = first"
-          [card]="card" [firstInLayout]="first && !(leftMenuVisible$ | async)"
-          [ngClass]="card.ngClass" [ngStyle]="card.ngStyle"></banner-card>
-      </ng-container>
-    </div>
+  <div *ngIf="leftAreaVisible$ | async" class="side-area">
+    <ng-container *ngIf="!(loggingOut$ | async)">
+      <side-menu *ngIf="(login.user$ | async) && (menu.activeMenu$ | async)">
+      </side-menu>
+      <banner-card
+        *ngFor="let card of bannerCards$ | async; let first = first"
+        [card]="card" [firstInLayout]="first && !(leftMenuVisible$ | async)"
+        [ngClass]="card.ngClass" [ngStyle]="card.ngStyle"></banner-card>
+    </ng-container>
+  </div>
 
-    <div #contentArea class="content-area d-flex flex-column" [ngClass]="{
+  <div #contentArea class="content-area d-flex flex-column" [ngClass]="{
       'content-area-small': size === 'small',
       'content-area-medium': (leftAreaVisible$ | async) ? false : size === 'medium',
       'content-area-large': (leftAreaVisible$ | async) ? false : size === 'large'
     }">
-      <ng-content></ng-content>
-    </div>
+    <ng-content *ngIf="ready; else loading"></ng-content>
   </div>
-</ng-container>
+</div>
 
 <ng-template #loading>
-  <div class="page-layout justify-content-center">
-    <div class="content-area d-flex flex-column" [ngClass]="{
-      'content-area-small': size === 'small',
-      'content-area-medium': size === 'medium',
-      'content-area-large': size === 'large'
-    }">
-      <page-content [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'">
-        <spinner></spinner>
-      </page-content>
-    </div>
-  </div>
+  <page-content [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'">
+    <spinner></spinner>
+  </page-content>
 </ng-template>

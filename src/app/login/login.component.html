@@ -1,7 +1,6 @@
 <page-layout [ready]="data$ | async" size="small" hideMenu>
-  <page-content *ngIf="data"
-    [layout]="(layout.ltmd$ | async) ? 'normal' : 'centered'" mode="tight"
-    last [heading]="i18n.auth.login.title"
+  <page-content [layout]="(layout.ltmd$ | async) ? 'normal' : 'centered'"
+    mode="tight" last [heading]="i18n.auth.login.title"
     [mobileHeading]="i18n.auth.login.mobileTitle"
     [ngClass]="{'with-left-area': layout.leftAreaVisible$ | async}">
     <form [formGroup]="form" (submit)="$event.preventDefault()"

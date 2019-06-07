@@ -1,5 +1,5 @@
 <page-layout [ready]="data$ | async">
-  <ng-container *ngIf="data; else loading">
+  <ng-container>
     <page-content mode="filters"
       [heading]="self ? i18n.user.title.myOperators : i18n.user.title.userOperators"
       [mobileHeading]="self ? i18n.user.mobileTitle.myOperators : i18n.user.mobileTitle.userOperators"
@@ -43,9 +43,3 @@
     </users-results>
   </ng-container>
 </page-layout>
-
-<ng-template #loading>
-  <page-content>
-    <spinner></spinner>
-  </page-content>
-</ng-template>
