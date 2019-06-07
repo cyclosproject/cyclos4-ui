@@ -1,5 +1,5 @@
 <page-layout [ready]="data$ | async">
-  <page-content *ngIf="data != null" [heading]="i18n.user.title.editProfile"
+  <page-content [heading]="i18n.user.title.editProfile"
     [mobileHeading]="i18n.user.mobileTitle.editProfile"
     [headingActions]="headingActions$ | async" last>
 

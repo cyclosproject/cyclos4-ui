@@ -124,7 +124,7 @@ export class UsersResultsComponent extends BaseComponent implements OnInit {
    * @param field The field identifier
    */
   fieldName(field: string): string {
-    return this.fieldHelper.fieldName(field, this.data.customFields);
+    return this.fieldHelper.fieldDisplay(field, this.data.customFields);
   }
 
   /**

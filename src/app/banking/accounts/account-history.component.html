@@ -1,116 +1,116 @@
 <page-layout [ready]="data$ | async">
-  <ng-container *ngIf="loaded$ | async; else loading">
-    <page-content mode="filters" [heading]="title"
-      [mobileHeading]="i18n.account.mobileTitle"
-      [headingActions]="headingActions$ | async">
-      <form
-        *ngIf="((layout.xxs$ | async) && data.preselectedPeriods?.length > 1) || (moreFilters$ | async)"
-        [formGroup]="form" class="filters-form filters-form-separator">
-        <div class="row">
-          <div *ngIf="data.preselectedPeriods?.length > 1"
+  <page-content mode="filters" [heading]="title"
+    [mobileHeading]="i18n.account.mobileTitle"
+    [headingActions]="headingActions$ | async">
+    <form
+      *ngIf="((layout.xxs$ | async) && data.preselectedPeriods?.length > 1) || (moreFilters$ | async)"
+      [formGroup]="form" class="filters-form filters-form-separator"
+      [ngClass]="{ 'border-0': noStatus$ | async }">
+      <div class="row">
+        <div *ngIf="data.preselectedPeriods?.length > 1"
+          class="col-12 col-md-6">
+          <single-selection-field labelPosition="side"
+            formControlName="preselectedPeriod" [label]="i18n.general.period">
+            <field-option *ngFor="let period of data.preselectedPeriods"
+              [id]="period['id']" [value]="period" [text]="period.name">
+            </field-option>
+          </single-selection-field>
+        </div>
+        <ng-container *ngIf="(layout.gtxxs$ | async)">
+          <div
+            *ngIf="data.transferFilters?.length > 1; else noTransferFilters"
             class="col-12 col-md-6">
             <single-selection-field labelPosition="side"
-              formControlName="preselectedPeriod"
-              [label]="i18n.general.period">
-              <field-option *ngFor="let period of data.preselectedPeriods"
-                [id]="period['id']" [value]="period" [text]="period.name">
+              formControlName="transferFilter"
+              [label]="i18n.account.transferFilter"
+              [emptyOption]="i18n.general.notApplied">
+              <field-option *ngFor="let filter of data.transferFilters"
+                [id]="filter.id" [value]="filter" [text]="filter.name">
               </field-option>
             </single-selection-field>
           </div>
-          <ng-container *ngIf="(layout.gtxxs$ | async)">
-            <div
-              *ngIf="data.transferFilters?.length > 1; else noTransferFilters"
-              class="col-12 col-md-6">
-              <single-selection-field labelPosition="side"
-                formControlName="transferFilter"
-                [label]="i18n.account.transferFilter"
-                [emptyOption]="i18n.general.notApplied">
-                <field-option *ngFor="let filter of data.transferFilters"
-                  [id]="filter.id" [value]="filter" [text]="filter.name">
-                </field-option>
-              </single-selection-field>
+          <ng-template #noTransferFilters>
+            <div *ngIf="layout.gtsm$" class="col-12 col-md-6">
             </div>
-            <ng-template #noTransferFilters>
-              <div *ngIf="layout.gtsm$" class="col-12 col-md-6">
-              </div>
-            </ng-template>
-            <div
-              *ngIf="(form.value || (form.valueChanges | async))?.preselectedPeriod?.begin == null"
-              class="col-12 col-md-6">
-              <date-field labelPosition="side" formControlName="periodBegin"
-                [label]="i18n.general.beginDate" minDate="past5"
-                maxDate="todayEnd" fieldSize="full" class>
-              </date-field>
-            </div>
-            <div
-              *ngIf="(form.value || (form.valueChanges | async))?.preselectedPeriod?.end == null"
-              class="col-12 col-md-6">
-              <date-field labelPosition="side" formControlName="periodEnd"
-                [label]="i18n.general.endDate" minDate="past5"
-                maxDate="todayEnd" fieldSize="full">
-              </date-field>
-            </div>
-            <div class="col-12 col-md-6">
-              <decimal-field labelPosition="side" formControlName="minAmount"
-                [label]="i18n.account.minAmount" fieldSize="full"
-                [prefix]="currency.prefix" [suffix]="currency.suffix"
-                [scale]="currency.decimalDigits">
-              </decimal-field>
-            </div>
-            <div class="col-12 col-md-6">
-              <decimal-field labelPosition="side" formControlName="maxAmount"
-                [label]="i18n.account.maxAmount" fieldSize="full"
-                [prefix]="currency.prefix" [suffix]="currency.suffix"
-                [scale]="currency.decimalDigits">
-              </decimal-field>
-            </div>
-            <div class="col-12 col-md-6">
-              <single-selection-field labelPosition="side"
-                formControlName="direction" [label]="i18n.account.direction"
-                [emptyOption]="i18n.general.notApplied">
-                <field-option value="credit" [text]="i18n.account.incoming">
-                </field-option>
-                <field-option value="debit" [text]="i18n.account.outgoing">
-                </field-option>
-              </single-selection-field>
-            </div>
-            <div class="col-12 col-md-6">
-              <user-field labelPosition="side" formControlName="user"
-                [label]="i18n.general.user"></user-field>
-            </div>
-            <div *ngIf="data.transactionNumberMask" class="col-12 col-md-6">
-              <input-field labelPosition="side"
-                formControlName="transactionNumber"
-                [mask]="data.transactionNumberMask"
-                [label]="i18n.transaction.number"></input-field>
-            </div>
-            <div *ngIf="data.operators?.length > 0" class="col-12 col-md-6">
-              <single-selection-field labelPosition="side"
-                formControlName="by" [label]="i18n.general.operator"
-                [emptyOption]="i18n.general.notApplied">
-                <field-option *ngFor="let operator of data.operators"
-                  [value]="operator.id" [text]="operator.display">
-                </field-option>
-              </single-selection-field>
-            </div>
-            <div class="col-12 col-md-6">
-              <single-selection-field labelPosition="side"
-                formControlName="orderBy" [label]="i18n.general.orderBy">
-                <field-option value="dateDesc"
-                  [text]="i18n.account.orderBy.dateDesc"></field-option>
-                <field-option value="dateAsc"
-                  [text]="i18n.account.orderBy.dateAsc"></field-option>
-                <field-option value="amountAsc"
-                  [text]="i18n.account.orderBy.amountAsc"></field-option>
-                <field-option value="amountDesc"
-                  [text]="i18n.account.orderBy.amountDesc"></field-option>
-              </single-selection-field>
-            </div>
-          </ng-container>
-        </div>
-      </form>
+          </ng-template>
+          <div
+            *ngIf="(form.value || (form.valueChanges | async))?.preselectedPeriod?.begin == null"
+            class="col-12 col-md-6">
+            <date-field labelPosition="side" formControlName="periodBegin"
+              [label]="i18n.general.beginDate" minDate="past5"
+              maxDate="todayEnd" fieldSize="full" class>
+            </date-field>
+          </div>
+          <div
+            *ngIf="(form.value || (form.valueChanges | async))?.preselectedPeriod?.end == null"
+            class="col-12 col-md-6">
+            <date-field labelPosition="side" formControlName="periodEnd"
+              [label]="i18n.general.endDate" minDate="past5"
+              maxDate="todayEnd" fieldSize="full">
+            </date-field>
+          </div>
+          <div class="col-12 col-md-6">
+            <decimal-field labelPosition="side" formControlName="minAmount"
+              [label]="i18n.account.minAmount" fieldSize="full"
+              [prefix]="currency.prefix" [suffix]="currency.suffix"
+              [scale]="currency.decimalDigits">
+            </decimal-field>
+          </div>
+          <div class="col-12 col-md-6">
+            <decimal-field labelPosition="side" formControlName="maxAmount"
+              [label]="i18n.account.maxAmount" fieldSize="full"
+              [prefix]="currency.prefix" [suffix]="currency.suffix"
+              [scale]="currency.decimalDigits">
+            </decimal-field>
+          </div>
+          <div class="col-12 col-md-6">
+            <single-selection-field labelPosition="side"
+              formControlName="direction" [label]="i18n.account.direction"
+              [emptyOption]="i18n.general.notApplied">
+              <field-option value="credit" [text]="i18n.account.incoming">
+              </field-option>
+              <field-option value="debit" [text]="i18n.account.outgoing">
+              </field-option>
+            </single-selection-field>
+          </div>
+          <div class="col-12 col-md-6">
+            <user-field labelPosition="side" formControlName="user"
+              [label]="i18n.general.user"></user-field>
+          </div>
+          <div *ngIf="data.transactionNumberMask" class="col-12 col-md-6">
+            <input-field labelPosition="side"
+              formControlName="transactionNumber"
+              [mask]="data.transactionNumberMask"
+              [label]="i18n.transaction.number"></input-field>
+          </div>
+          <div *ngIf="data.operators?.length > 0" class="col-12 col-md-6">
+            <single-selection-field labelPosition="side" formControlName="by"
+              [label]="i18n.general.operator"
+              [emptyOption]="i18n.general.notApplied">
+              <field-option *ngFor="let operator of data.operators"
+                [value]="operator.id" [text]="operator.display">
+              </field-option>
+            </single-selection-field>
+          </div>
+          <div class="col-12 col-md-6">
+            <single-selection-field labelPosition="side"
+              formControlName="orderBy" [label]="i18n.general.orderBy">
+              <field-option value="dateDesc"
+                [text]="i18n.account.orderBy.dateDesc"></field-option>
+              <field-option value="dateAsc"
+                [text]="i18n.account.orderBy.dateAsc"></field-option>
+              <field-option value="amountAsc"
+                [text]="i18n.account.orderBy.amountAsc"></field-option>
+              <field-option value="amountDesc"
+                [text]="i18n.account.orderBy.amountDesc"></field-option>
+            </single-selection-field>
+          </div>
+        </ng-container>
+      </div>
+    </form>
 
-      <!-- Account status -->
+    <!-- Account status -->
+    <ng-container *ngIf="!(noStatus$ | async)">
       <account-status-view
         *ngIf="(status$ | async) && ((layout.gtxxs$ | async) || (results?.page === 0))"
         [account]="status$.value"
@@ -118,73 +118,66 @@
         [showAccount]="(layout.ltsm$ | async) && multipleAccounts">
       </account-status-view>
       <spinner *ngIf="(status$ | async) == null"></spinner>
+    </ng-container>
+  </page-content>
 
-    </page-content>
+  <results-layout resultType="list" [results]="results$ | async"
+    [toLink]="toLink" (update)="update($event)">
 
-    <results-layout resultType="list" [results]="results$ | async"
-      [toLink]="toLink" (update)="update($event)">
+    <mobile-result *mobileResult="let row" [avatarImage]="avatarImage(row)"
+      [avatarIcon]="avatarIcon(row)" [date]="row.date" [amount]="row.amount"
+      [currency]="currency" forceSign>
+      <div class="cell-text cell-main">
+        {{ subjectName(row) }}
+      </div>
+    </mobile-result>
 
-      <mobile-result *mobileResult="let row" [avatarImage]="avatarImage(row)"
-        [avatarIcon]="avatarIcon(row)" [date]="row.date" [amount]="row.amount"
-        [currency]="currency" forceSign>
-        <div class="cell-text cell-main">
-          {{ subjectName(row) }}
-        </div>
-      </mobile-result>
-
-      <table *resultTable class="table table-hover cursor-pointer">
-        <thead>
-          <th class="avatar"></th>
-          <th>{{ i18n.general.date }}</th>
-          <th>{{ i18n.transaction.fromTo }}</th>
-          <th *ngIf="layout.gtsm$ | async" width="30%">{{
+    <table *resultTable class="table table-hover cursor-pointer">
+      <thead>
+        <th class="avatar"></th>
+        <th>{{ i18n.general.date }}</th>
+        <th>{{ i18n.transaction.fromTo }}</th>
+        <th *ngIf="layout.gtsm$ | async" width="30%">{{
             i18n.general.description }}</th>
-          <th class="amount">{{ i18n.transaction.amount }}</th>
-        </thead>
-        <tbody>
-          <ng-container *ngFor="let row of (results$ | async).results">
-            <tr (click)="router.navigate(path(row))">
-              <td class="avatar">
-                <avatar [image]="avatarImage(row)" [icon]="avatarIcon(row)">
-                </avatar>
-              </td>
-              <td>
-                <a [routerLink]="path(row)">
-                  {{ row.date | date }}
-                </a>
-              </td>
-              <td>
-                <a [routerLink]="path(row)">
-                  {{ subjectName(row) }}
-                </a>
-              </td>
-              <td>
-                <a *ngIf="row.description" class="d-inline-block"
-                  [routerLink]="path(row)">
-                  {{ row.description }}
-                </a>
-              </td>
-              <td class="amount">
-                <a [routerLink]="path(row)" [ngClass]="{
+        <th class="amount">{{ i18n.transaction.amount }}</th>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let row of (results$ | async).results">
+          <tr (click)="router.navigate(path(row))">
+            <td class="avatar">
+              <avatar [image]="avatarImage(row)" [icon]="avatarIcon(row)">
+              </avatar>
+            </td>
+            <td>
+              <a [routerLink]="path(row)">
+                {{ row.date | date }}
+              </a>
+            </td>
+            <td>
+              <a [routerLink]="path(row)">
+                {{ subjectName(row) }}
+              </a>
+            </td>
+            <td>
+              <a *ngIf="row.description" class="d-inline-block"
+                [routerLink]="path(row)">
+                {{ row.description }}
+              </a>
+            </td>
+            <td class="amount">
+              <a [routerLink]="path(row)" [ngClass]="{
                   positive: format.isPositive(row.amount),
                   negative: format.isNegative(row.amount)
                 }">
-                  {{ row.amount | currency:currency:true }}
-                </a>
-              </td>
-            </tr>
-          </ng-container>
-        </tbody>
-      </table>
-    </results-layout>
-  </ng-container>
+                {{ row.amount | currency:currency:true }}
+              </a>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </results-layout>
 </page-layout>
-
-<ng-template #loading>
-  <page-content>
-    <spinner></spinner>
-  </page-content>
-</ng-template>
 
 <ng-template #loadingIndicators>
   <spinner class="p-3"></spinner>

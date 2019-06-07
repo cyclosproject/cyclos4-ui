@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import {
-  AddressNew, AvailabilityEnum, Group, GroupForRegistration, Image,
-  PhoneNew, UserDataForNew, UserNew, UserRegistrationResult, GroupKind, RoleEnum
+  AddressNew, AvailabilityEnum, Group, GroupForRegistration, GroupKind,
+  Image, PhoneNew, RoleEnum, UserDataForNew, UserNew, UserRegistrationResult
 } from 'app/api/models';
 import { ImagesService, UsersService } from 'app/api/services';
+import { UserHelperService } from 'app/core/user-helper.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { blank, copyProperties, empty, focusFirstField, scrollTop, validateBeforeSubmit } from 'app/shared/helper';
@@ -12,34 +13,6 @@ import { BehaviorSubject, Observable, of, Subscription, timer } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
 export type RegistrationStep = 'group' | 'fields' | 'confirm' | 'done';
-
-/** Validator function that validates as required if the password is set as defined */
-const PASSWORD_REQUIRED_VAL: ValidatorFn = control => {
-  if (control.touched && empty(control.value)) {
-    const parent = control.parent;
-    if (parent.get('defined').value) {
-      return {
-        required: true
-      };
-    }
-  }
-  return null;
-};
-
-/** Validator function that ensures password and confirmation match */
-const PASSWORDS_MATCH_VAL: ValidatorFn = control => {
-  const currVal = control.value;
-  if (control.touched && !empty(currVal)) {
-    const parent = control.parent;
-    const origVal = parent.get('value') == null ? '' : parent.get('value').value;
-    if (origVal !== currVal) {
-      return {
-        passwordsMatch: true
-      };
-    }
-  }
-  return null;
-};
 
 /** Validator function that ensures password and confirmation match */
 const SEGURITY_ANSWER_VAL: ValidatorFn = control => {
@@ -100,6 +73,7 @@ export class UserRegistrationComponent
   constructor(
     injector: Injector,
     private usersService: UsersService,
+    private userHelper: UserHelperService,
     private imagesService: ImagesService) {
     super(injector);
   }
@@ -193,75 +167,9 @@ export class UserRegistrationComponent
       hiddenFields: [user.hiddenFields || []]
     });
 
-    // Full name
-    const nameActions = data.profileFieldActions.name;
-    if (nameActions && nameActions.edit) {
-      this.form.setControl('name',
-        this.formBuilder.control(user.name, Validators.required, this.serverSideValidator('name'))
-      );
-    }
-    // Login name
-    const usernameActions = data.profileFieldActions.username;
-    if (usernameActions && usernameActions.edit && !data.generatedUsername) {
-      this.form.setControl('username',
-        this.formBuilder.control(user.username, Validators.required, this.serverSideValidator('username'))
-      );
-    }
-    // E-mail
-    const emailActions = data.profileFieldActions.username;
-    if (emailActions && emailActions.edit) {
-      const val = [];
-      if (data.emailRequired) {
-        val.push(Validators.required);
-      }
-      val.push(Validators.email);
-      this.form.setControl('email',
-        this.formBuilder.control(user.email, val, this.serverSideValidator('email'))
-      );
-      if (data.allowSetSendActivationEmail) {
-        this.form.setControl('skipActivationEmail', this.formBuilder.control(user.skipActivationEmail));
-      }
-    }
-
-    // Custom fields
-    this.form.setControl('customValues',
-      this.fieldHelper.customValuesFormGroup(data.customFields, {
-        asyncValProvider: cf => this.serverSideValidator(cf.internalName)
-      }));
-
-    // Phones
-    const phoneConfiguration = data.phoneConfiguration;
-
-    // Mobile
-    const mobileAvailability = phoneConfiguration.mobileAvailability;
-    if (mobileAvailability !== AvailabilityEnum.DISABLED) {
-      const val = mobileAvailability === AvailabilityEnum.REQUIRED ? Validators.required : null;
-      const phone = phoneConfiguration.mobilePhone;
-      this.mobileForm = this.formBuilder.group({
-        name: phone.name,
-        number: [phone.number, val, this.serverSideValidator('mobilePhone')],
-        hidden: phone.hidden
-      });
-    } else {
-      this.mobileForm = null;
-    }
-
-    // Land-line
-    const landLineAvailability = phoneConfiguration.landLineAvailability;
-    if (landLineAvailability !== AvailabilityEnum.DISABLED) {
-      const val = landLineAvailability === AvailabilityEnum.REQUIRED ? Validators.required : null;
-      const phone = phoneConfiguration.landLinePhone;
-      this.landLineForm = this.formBuilder.group({
-        name: phone.name,
-        number: [phone.number, val, this.serverSideValidator('landLinePhone')],
-        hidden: phone.hidden
-      });
-      if (phoneConfiguration.extensionEnabled) {
-        this.landLineForm.setControl('extension', this.formBuilder.control(phone.extension));
-      }
-    } else {
-      this.landLineForm = null;
-    }
+    // The profile fields and phones are handled by the helper
+    [this.mobileForm, this.landLineForm] = this.userHelper.setupRegistrationForm(
+      this.form, data, (name) => this.serverSideValidator(name));
 
     // Address
     const addressConfiguration = data.addressConfiguration;
@@ -326,7 +234,7 @@ export class UserRegistrationComponent
     if (this.mobileForm) {
       fullForm.setControl('mobile', this.mobileForm);
     }
-    if (this.landLineForm && !validateBeforeSubmit(this.landLineForm)) {
+    if (this.landLineForm) {
       fullForm.setControl('landLine', this.landLineForm);
     }
     if (this.addressForm && this.defineAddress.value) {
@@ -360,17 +268,7 @@ export class UserRegistrationComponent
     });
 
     // Passwords
-    const passwordControls: FormGroup[] = [];
-    for (const pt of data.passwordTypes) {
-      passwordControls.push(this.formBuilder.group({
-        type: ApiHelper.internalNameOrId(pt),
-        checkConfirmation: true,
-        defined: this.login.user == null,
-        forceChange: false,
-        value: ['', PASSWORD_REQUIRED_VAL],
-        confirmationValue: ['', [PASSWORD_REQUIRED_VAL, PASSWORDS_MATCH_VAL]]
-      }));
-    }
+    const passwordControls = this.userHelper.passwordRegistrationForms(data);
     this.confirmForm.setControl('passwords', this.formBuilder.array(passwordControls));
 
     // Security question

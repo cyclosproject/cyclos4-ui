@@ -23,6 +23,7 @@ export class AccountHistoryComponent
   implements OnInit {
 
   status$ = new BehaviorSubject<AccountWithHistoryStatus>(null);
+  noStatus$ = new BehaviorSubject(false);
   multipleAccounts: boolean;
 
   constructor(
@@ -110,7 +111,6 @@ export class AccountHistoryComponent
       const print = this.printAction;
       print.label = this.i18n.account.printTransactions;
       this.headingActions = [
-        this.moreFiltersAction,
         this.printAction
       ];
 
@@ -139,7 +139,20 @@ export class AccountHistoryComponent
     return this.accountsService.searchAccountHistory$Response(query).pipe(tap(() => {
       query.fields = ['status'];
       this.addSub(this.accountsService.getAccountStatusByOwnerAndType(query).subscribe(status => {
-        const accountWithStatus = { ...this.data.account, status: status.status };
+        const accountWithStatus = { ...this.data.account, status: (status || {}).status };
+        if (accountWithStatus.status == null) {
+          // When there's no status (is not visible), show the filters directly
+          this.noStatus$.next(true);
+          this.moreFilters = true;
+          this.headingActions = [
+            this.printAction
+          ];
+        } else {
+          this.headingActions = [
+            this.moreFiltersAction,
+            this.printAction
+          ];
+        }
         this.status$.next(accountWithStatus);
       }));
     }));
