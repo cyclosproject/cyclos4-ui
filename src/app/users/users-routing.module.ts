@@ -5,6 +5,7 @@ import { LoginService } from 'app/core/login.service';
 import { CountriesResolve } from 'app/countries.resolve';
 import { LoggedUserGuard } from 'app/logged-user-guard';
 import { ConditionalMenu, Menu } from 'app/shared/menu';
+import { ListOperatorGroupsComponent } from 'app/users/operator-groups/list-operator-groups.component';
 import { OperatorRegistrationComponent } from 'app/users/operators/operator-registration.component';
 import { SearchUserOperatorsComponent } from 'app/users/operators/search-user-operators.component';
 import { EditProfileComponent } from 'app/users/profile/edit-profile.component';
@@ -16,8 +17,7 @@ import { ContactListComponent } from 'app/users/search/contact-list.component';
 import { SearchUsersComponent } from 'app/users/search/search-users.component';
 import { ViewUserStatusHistoryComponent } from 'app/users/status/view-user-status-history.component';
 import { ViewUserStatusComponent } from 'app/users/status/view-user-status.component';
-import { ListOperatorGroupsComponent } from 'app/users/operator-groups/list-operator-groups.component';
-import { ViewOperatorGroupComponent } from 'app/users/operator-groups/view-operator-group.component';
+import { AuthHelperService } from 'app/core/auth-helper.service';
 
 const SearchMenu: ConditionalMenu = injector => {
   const login = injector.get(LoginService);
@@ -151,14 +151,6 @@ const usersRoutes: Routes = [
         }
       },
       {
-        path: 'operators/registration',
-        component: OperatorRegistrationComponent,
-        canActivate: [LoggedUserGuard],
-        data: {
-          menu: Menu.REGISTER_OPERATOR
-        }
-      },
-      {
         path: ':key/operators/registration',
         component: OperatorRegistrationComponent,
         canActivate: [LoggedUserGuard],
@@ -215,7 +207,7 @@ const usersRoutes: Routes = [
         }
       },
       {
-        path: 'operator-groups/:key',
+        path: 'operator-groups/:id',
         component: ViewOperatorGroupComponent,
         canActivate: [LoggedUserGuard],
         data: {
