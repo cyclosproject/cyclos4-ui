@@ -731,6 +731,7 @@
     "editOwnProfile": "Edit own profile",
     "notifications": "Notifications",
     "viewAdvertisements": "View advertisements",
+    "registerUsersAsBroker": "Register users (as broker)",
     "runOperations": "Run operations"
   },
   "userStatus": {

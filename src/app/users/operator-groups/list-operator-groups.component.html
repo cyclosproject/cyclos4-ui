@@ -1,6 +1,7 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="data">
-    <page-content mode="filters" [heading]="i18n.operatorGroup.title.list"
+    <page-content [mode]="self ? 'empty' : 'filters'"
+      [heading]="i18n.operatorGroup.title.list"
       [mobileHeading]="i18n.operatorGroup.mobileTitle.list"
       [headingActions]="headingActions$ | async">
       <div class="col-12 col-md-6" *ngIf="!self">
