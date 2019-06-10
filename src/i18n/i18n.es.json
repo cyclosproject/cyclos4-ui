@@ -667,7 +667,7 @@
     "registration": {
       "group.public": "Elija el grupo en el que desea registrarse",
       "group.manager": "Seleccione el grupo para el nuevo usuario",
-      "skipActivationEmail": "Skip activation e-mail",
+      "skipActivationEmail": "Omitir correo electrónico de activación",
       "password.assign": "Asignar contraseña",
       "password.forceChange": "Forzar el cambio por el usuario",
       "active.public": "Ha sido registrado exitosamente y su cuenta ya se encuentra activa.",
