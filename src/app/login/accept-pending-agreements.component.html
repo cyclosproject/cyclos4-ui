@@ -1,5 +1,5 @@
 <page-layout [ready]="data$ | async" size="small" hideMenu>
-  <page-content *ngIf="data" layout="centered"
+  <page-content layout="centered"
     [heading]="i18n.auth.pendingAgreements.title"
     [mobileHeading]="i18n.auth.pendingAgreements.mobileTitle">
     <notification type="warning">

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { User, UserStatusData } from 'app/api/models';
 import { UserStatusService } from 'app/api/services/user-status.service';
-import { UserHelperService } from 'app/core/user-helper.service.ts';
+import { UserHelperService } from 'app/core/user-helper.service';
 import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
 
 /**

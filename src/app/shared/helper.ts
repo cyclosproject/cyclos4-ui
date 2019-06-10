@@ -297,6 +297,27 @@ export function validateBeforeSubmit(control: AbstractControl): boolean {
 }
 
 /**
+ * Clones a form group, array or control
+ * @param control The control to clone
+ */
+export function cloneControl<C extends AbstractControl>(control: C): C {
+  let clone: any = null;
+  if (control instanceof FormGroup) {
+    clone = new FormGroup({}, control.validator, control.asyncValidator);
+    const controls = control.controls;
+    for (const key of Object.keys(controls)) {
+      clone.addControl(key, cloneControl(controls[key]));
+    }
+  } else if (control instanceof FormArray) {
+    const clones = control.controls.map(cloneControl);
+    clone = new FormArray(clones, control.validator, control.asyncValidator);
+  } else if (control instanceof FormControl) {
+    clone = new FormControl(control.value, control.validator, control.asyncValidator);
+  }
+  return clone;
+}
+
+/**
  * Both clears the validators and sets the errors to null
  * @param control The form control
  */
