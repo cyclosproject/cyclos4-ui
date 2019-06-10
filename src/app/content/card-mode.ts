@@ -10,6 +10,7 @@
  * - `transparent` The card has no borders, but still has padding.
  * - `fullHeight`: The card pads the content and the minimum height is the available height until the bottom of the browser window.
  * - `fullHeightTight`: Like `fullHeight`, but without padding.
+ * - `empty`: Just title, no content
  */
 export type CardMode =
   'normal'
@@ -19,4 +20,5 @@ export type CardMode =
   | 'table'
   | 'transparent'
   | 'fullHeight'
-  | 'fullHeightTight';
+  | 'fullHeightTight'
+  | 'empty';
