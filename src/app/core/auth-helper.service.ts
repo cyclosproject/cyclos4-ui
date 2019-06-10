@@ -35,7 +35,7 @@ export class AuthHelperService {
 
   /**
    * Returns whether the given URL key represents the logged user
-   * @param key The key
+   * @param key The key / user
    */
   isSelf(key: string | User): boolean {
     if (empty(key) || key === ApiHelper.SELF) {
@@ -48,6 +48,20 @@ export class AuthHelperService {
       return user.id === key || (typeof key === 'object' && key.id === user.id);
     }
     return false;
+  }
+
+  /**
+   * Returns the string `self` when the given id / user is the same as the logged user
+   * @param key The key / user
+   */
+  orSelf(key: string | User): string {
+    if (this.isSelf(key)) {
+      return ApiHelper.SELF;
+    } else if (typeof key === 'object') {
+      return key.id;
+    } else {
+      return key;
+    }
   }
 
   /**
