@@ -1,5 +1,5 @@
 import { HttpClient, HttpEventType } from '@angular/common/http';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, Output, ViewChild, Injector } from '@angular/core';
 import { ApiConfiguration } from 'app/api/api-configuration';
 import { CustomFieldDetailed, InputErrorCode, StoredFile } from 'app/api/models';
 import { FilesService } from 'app/api/services';
@@ -8,6 +8,7 @@ import { ErrorHandlerService } from 'app/core/error-handler.service';
 import { LoginService } from 'app/core/login.service';
 import { BehaviorSubject, forkJoin, Observable, Subscription } from 'rxjs';
 import { empty } from 'app/shared/helper';
+import { AbstractComponent } from 'app/shared/abstract.component';
 
 /**
  * Represents a file being uploaded
@@ -54,7 +55,7 @@ export class FileToUpload {
   templateUrl: 'temp-file-upload.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TempFileUploadComponent {
+export class TempFileUploadComponent extends AbstractComponent {
 
   uploading$ = new BehaviorSubject(false);
 
@@ -76,6 +77,7 @@ export class TempFileUploadComponent {
   }
 
   constructor(
+    injector: Injector,
     private http: HttpClient,
     private filesService: FilesService,
     private apiConfiguration: ApiConfiguration,
@@ -83,6 +85,7 @@ export class TempFileUploadComponent {
     private login: LoginService,
     private dataForUi: DataForUiHolder,
     private changeDetector: ChangeDetectorRef) {
+    super(injector);
   }
 
   files: FileToUpload[];
@@ -169,13 +172,13 @@ export class TempFileUploadComponent {
           // Once the upload is complete, we have to fetch the stored file model
           file.subscription.unsubscribe();
           file.uploadDone = true;
-          file.subscription = this.filesService.viewRawFile({ id: event.body }).subscribe(storedFile => {
+          this.addSub(this.filesService.viewRawFile({ id: event.body }).subscribe(storedFile => {
             file.storedFile = storedFile;
             // Complete the observer
             observer.next(storedFile);
             observer.complete();
             this.changeDetector.detectChanges();
-          });
+          }));
         }
       }, err => {
         this.files.forEach(f => {

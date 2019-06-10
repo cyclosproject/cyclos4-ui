@@ -62,7 +62,7 @@ export class ChangeExpiredPasswordComponent
     }
     this.typeId = auth.passwordType.id;
 
-    this.passwordsService.getUserPasswordsData({
+    this.addSub(this.passwordsService.getUserPasswordsData({
       user: ApiHelper.SELF,
       type: this.typeId,
       fields: ['status', 'permissions']
@@ -76,7 +76,7 @@ export class ChangeExpiredPasswordComponent
         this.form.setControl('newPasswordConfirmation', this.formBuilder.control('',
           Validators.compose([Validators.required, PASSWORDS_MATCH_VAL])));
       }
-    });
+    }));
   }
 
   submit() {
@@ -85,24 +85,24 @@ export class ChangeExpiredPasswordComponent
     }
     const type = this.data.type;
     if (this.generated) {
-      this.passwordsService.generatePassword({ type: this.typeId }).subscribe(newValue => {
+      this.addSub(this.passwordsService.generatePassword({ type: this.typeId }).subscribe(newValue => {
         this.generatedValue$.next(newValue);
-      });
+      }));
     } else {
-      this.passwordsService.changePassword({
+      this.addSub(this.passwordsService.changePassword({
         user: ApiHelper.SELF,
         type: this.typeId,
         body: this.form.value
       }).subscribe(() => {
         this.notification.snackBar(this.i18n.auth.password.expired.changed(type.name));
         this.reload();
-      });
+      }));
     }
   }
 
   reload() {
-    this.dataForUiHolder.reload().subscribe(() =>
-      this.router.navigateByUrl(this.loginState.redirectUrl || ''));
+    this.addSub(this.dataForUiHolder.reload().subscribe(() =>
+      this.router.navigateByUrl(this.loginState.redirectUrl || '')));
   }
 
   cancel() {

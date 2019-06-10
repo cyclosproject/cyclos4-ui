@@ -46,13 +46,13 @@ export class AcceptPendingAgreementsComponent
       return;
     }
 
-    this.agreementsService.listPendingAgreements().subscribe(data => {
+    this.addSub(this.agreementsService.listPendingAgreements().subscribe(data => {
       if (empty(data)) {
         this.router.navigateByUrl(this.loginState.redirectUrl || '');
         return;
       }
       this.data = data;
-    });
+    }));
   }
 
   ngAfterViewChecked() {
@@ -80,12 +80,12 @@ export class AcceptPendingAgreementsComponent
       return;
     }
     const ids = this.agreements.map(a => a.id);
-    this.agreementsService.acceptPendingAgreement({ agreements: ids }).subscribe(() => this.reload());
+    this.addSub(this.agreementsService.acceptPendingAgreement({ agreements: ids }).subscribe(() => this.reload()));
   }
 
   reload() {
-    this.dataForUiHolder.reload().subscribe(() =>
-      this.router.navigateByUrl(this.loginState.redirectUrl || ''));
+    this.addSub(this.dataForUiHolder.reload().subscribe(() =>
+      this.router.navigateByUrl(this.loginState.redirectUrl || '')));
   }
 
   cancel() {

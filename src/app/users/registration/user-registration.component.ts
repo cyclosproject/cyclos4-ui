@@ -134,18 +134,18 @@ export class UserRegistrationComponent
 
       // ... and remove it server-side
       this.errorHandler.requestWithCustomErrorHandler(() => {
-        this.imagesService.deleteImage({ idOrKey: this.image.id }).subscribe();
+        this.addSub(this.imagesService.deleteImage({ idOrKey: this.image.id }).subscribe());
       });
     }
   }
 
   showFields() {
-    this.usersService.getUserDataForNew({ group: this.group.value })
+    this.addSub(this.usersService.getUserDataForNew({ group: this.group.value })
       .subscribe(data => {
         this.data = data;
         this.prepareForms(data);
         focusFirstField();
-      });
+      }));
   }
 
   backToGroup() {
@@ -296,12 +296,12 @@ export class UserRegistrationComponent
     if (!validateBeforeSubmit(this.confirmForm)) {
       return;
     }
-    this.usersService.createUser({ body: this.userNew })
+    this.addSub(this.usersService.createUser({ body: this.userNew })
       .subscribe(result => {
         this.result = result;
         this.image = null;
         this.step = 'done';
-      });
+      }));
   }
 
   get userNew(): UserNew {

@@ -147,16 +147,16 @@ export class ConfirmationPasswordComponent extends BaseControlComponent<string> 
 
   newQR() {
     this.rejected$.next(false);
-    this.deviceConfirmationsService.createDeviceConfirmation({
+    this.addSub(this.deviceConfirmationsService.createDeviceConfirmation({
       body: this.createDeviceConfirmation()
     }).pipe(first())
       .subscribe(id => {
         this.deviceConfirmationId = id;
-        this.deviceConfirmationsService.getDeviceConfirmationQrCode({ id: id, size: ImageSizeEnum.MEDIUM }).subscribe(blob => {
+        this.addSub(this.deviceConfirmationsService.getDeviceConfirmationQrCode({ id: id, size: ImageSizeEnum.MEDIUM }).subscribe(blob => {
           this.revokeCurrent();
           this.currentUrl$.next(URL.createObjectURL(blob));
-        });
-      });
+        }));
+      }));
   }
 
   private revokeCurrent() {

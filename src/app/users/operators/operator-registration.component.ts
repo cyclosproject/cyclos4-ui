@@ -80,9 +80,9 @@ export class OperatorRegistrationComponent
       return;
     }
     // Register the operator
-    this.operatorsService.registerOperator({
+    this.addSub(this.operatorsService.registerOperator({
       user: this.user, body: fullForm.value
-    }).subscribe(result => this.result$.next(result));
+    }).subscribe(result => this.result$.next(result)));
   }
 
   get doneMessageHtml(): string {
