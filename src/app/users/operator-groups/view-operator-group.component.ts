@@ -1,6 +1,10 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { EntityReference, OperatorGroupView, UserOperatorGroupsListData } from 'app/api/models';
+import {
+  OperatorGroupAccountAccessEnum, OperatorGroupAccountView, OperatorGroupView,
+  OperatorGroupPaymentView, TransferTypeWithCurrency
+} from 'app/api/models';
 import { OperatorGroupsService } from 'app/api/services';
+import { UserHelperService } from 'app/core/user-helper.service';
 import { HeadingAction } from 'app/shared/action';
 import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
 
@@ -18,10 +22,14 @@ export class ViewOperatorGroupComponent
 
   id: string;
   self: boolean;
-  groups: EntityReference[];
+  singleAccount: boolean;
+  visibleAccounts: OperatorGroupAccountView[];
+  paymentsByAccount: { [key: string]: OperatorGroupPaymentView[] };
+  authorizeByAccount: { [key: string]: TransferTypeWithCurrency[] };
 
   constructor(
     injector: Injector,
+    public userHelper: UserHelperService,
     private operatorGroupsService: OperatorGroupsService) {
     super(injector);
   }
@@ -29,7 +37,6 @@ export class ViewOperatorGroupComponent
   ngOnInit() {
     super.ngOnInit();
     this.id = this.route.snapshot.paramMap.get('id');
-
     this.addSub(this.operatorGroupsService.viewOperatorGroup({ id: this.id }).subscribe(data => {
       this.data = data;
     }));
@@ -40,6 +47,20 @@ export class ViewOperatorGroupComponent
   }
 
   onDataInitialized(group: OperatorGroupView) {
+    this.self = this.authHelper.isSelf(group.user);
+    const accounts = (group.accounts || []);
+    this.visibleAccounts = accounts.filter(a => a.access !== OperatorGroupAccountAccessEnum.NONE);
+    this.singleAccount = accounts.length === 1;
+    this.paymentsByAccount = {};
+    this.authorizeByAccount = {};
+    const payments = group.payments || [];
+    for (const a of this.visibleAccounts) {
+      this.paymentsByAccount[a.accountType.id] = payments
+        .filter(p => p.perform && p.paymentType.from.id === a.accountType.id);
+      this.authorizeByAccount[a.accountType.id] = payments
+        .filter(p => p.authorize && p.paymentType.from.id === a.accountType.id)
+        .map(p => p.paymentType);
+    }
     if (group.editable) {
       this.headingActions = [
         new HeadingAction('clear', this.i18n.general.remove, () => this.remove())

@@ -109,6 +109,11 @@
         "sat": "S"
       }
     },
+    "range": {
+      "fromTo": "From {min} to {max}",
+      "from": "From {min}",
+      "to": "Up to {max}"
+    },
     "fileSize": {
       "b": "{n} bytes",
       "k": "{n}KB",
@@ -698,12 +703,35 @@
   "operatorGroup": {
     "title": {
       "list": "Operator groups",
-      "view": "Operator group"
+      "view": "Operator group",
+      "permissions": "Permissions",
+      "accountAccess": "Account access",
+      "generalAccount": "General account operations"
     },
     "mobileTitle": {
       "list": "Operator groups",
-      "view": "Operator group"
-    }
+      "view": "Operator group",
+      "permissions": "Permissions",
+      "accountAccess": "Account access",
+      "generalAccount": "General operations"
+    },
+    "accountAccess": "Account visibility",
+    "accountAccess.full": "Full",
+    "accountAccess.incoming": "Only incoming payments",
+    "accountAccess.outgoing": "Only outgoing payments",
+    "accountAccess.own": "Received or paid by operator",
+    "accountAccess.none": "Not visible",
+    "performPayment": "Perform payments",
+    "performPayment.requiresAuthorization": ", requires authorization",
+    "performPayment.maxAmountPerDay": ", max. {max} per day",
+    "paymentNotifications": "Payment notifications",
+    "authorizePayment": "Authorize payments",
+    "chargebackPayments": "Chargeback payments",
+    "restrictPaymentsToUsers": "Restrict payments to",
+    "editOwnProfile": "Edit own profile",
+    "notifications": "Notifications",
+    "viewAdvertisements": "View advertisements",
+    "runOperations": "Run operations"
   },
   "userStatus": {
     "current": "Current status",

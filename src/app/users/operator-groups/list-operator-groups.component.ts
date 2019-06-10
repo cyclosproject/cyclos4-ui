@@ -54,7 +54,7 @@ export class ListOperatorGroupsComponent
   }
 
   path(group: EntityReference) {
-    return ['users', 'operator-groups', group.id];
+    return ['/users', 'operator-groups', group.id];
   }
 
   get toLink() {

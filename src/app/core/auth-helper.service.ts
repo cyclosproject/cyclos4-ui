@@ -41,9 +41,7 @@ export class AuthHelperService {
     if (empty(key) || key === ApiHelper.SELF) {
       return true;
     }
-    const dataForUi = this.dataForUi.dataForUi;
-    const auth = dataForUi.auth || {};
-    const user = auth.user || {};
+    const user = this.dataForUi.user;
     if (user) {
       return user.id === key || (typeof key === 'object' && key.id === user.id);
     }

@@ -42,19 +42,6 @@ const RegistrationMenu: ConditionalMenu = injector => {
   }
 };
 
-const OperatorRegistrationMenu: ConditionalMenu = injector => {
-  const login = injector.get(LoginService);
-  const auth = login.auth || {};
-  const role = auth.role;
-  if (role === RoleEnum.ADMINISTRATOR) {
-    return Menu.SEARCH_USERS;
-  } else if (role === RoleEnum.BROKER) {
-    return Menu.MY_BROKERED_USERS;
-  } else {
-    return Menu.REGISTER_OPERATOR;
-  }
-};
-
 const OperatorGroupsMenu: ConditionalMenu = injector => {
   const login = injector.get(LoginService);
   const auth = login.auth || {};
