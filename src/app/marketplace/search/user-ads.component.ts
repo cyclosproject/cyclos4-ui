@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { AdResult, UserAdsDataForSearch } from 'app/api/models';
+import { AdResult, UserAdsDataForSearch, UserAdsQueryFilters } from 'app/api/models';
 import { MarketplaceService } from 'app/api/services';
 import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { words } from 'app/shared/helper';
@@ -18,7 +18,7 @@ import { Observable } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class UserAdsComponent
-  extends BaseSearchPageComponent<UserAdsDataForSearch, AdResult>
+  extends BaseSearchPageComponent<UserAdsDataForSearch, UserAdsQueryFilters, AdResult>
   implements OnInit {
 
   private user: string;
@@ -51,9 +51,12 @@ export class UserAdsComponent
     this.shortName = words(data.user.display, MAX_SIZE_SHORT_NAME);
   }
 
-  doSearch(value: any): Observable<HttpResponse<AdResult[]>> {
-    const params = cloneDeep(value);
-    params.user = this.user;
-    return this.marketplaceService.searchUserAds$Response(params);
+  protected toQueryFilters(value: UserAdsQueryFilters): UserAdsQueryFilters {
+    return cloneDeep(value);
+  }
+
+  doSearch(filters: UserAdsQueryFilters & { user: string }): Observable<HttpResponse<AdResult[]>> {
+    filters.user = this.user;
+    return this.marketplaceService.searchUserAds$Response(filters);
   }
 }

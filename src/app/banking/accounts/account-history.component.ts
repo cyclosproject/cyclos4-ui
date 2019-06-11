@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
   AccountHistoryResult, AccountWithHistoryStatus, Currency, DataForAccountHistory,
-  EntityReference, Image, PreselectedPeriod, TransferFilter, AccountHistoryOrderByEnum
+  EntityReference, Image, PreselectedPeriod, TransferFilter, AccountHistoryOrderByEnum, AccountHistoryQueryFilters
 } from 'app/api/models';
 import { AccountsService } from 'app/api/services';
 import { ApiHelper } from 'app/shared/api-helper';
@@ -9,6 +9,14 @@ import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { BankingHelperService } from 'app/core/banking-helper.service';
+
+import { cloneDeep } from 'lodash';
+
+interface ExtraType {
+  owner: string;
+  accountType: string;
+  fields?: Array<string>;
+}
 
 /**
  * Displays the account history of a given account
@@ -19,7 +27,7 @@ import { BankingHelperService } from 'app/core/banking-helper.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AccountHistoryComponent
-  extends BaseSearchPageComponent<DataForAccountHistory, AccountHistoryResult>
+  extends BaseSearchPageComponent<DataForAccountHistory, AccountHistoryQueryFilters, AccountHistoryResult>
   implements OnInit {
 
   status$ = new BehaviorSubject<AccountWithHistoryStatus>(null);
@@ -121,21 +129,20 @@ export class AccountHistoryComponent
     });
   }
 
-  doSearch(value: any) {
-    const filter = value.transferFilter as TransferFilter;
-    const query = {
-      fields: [],
-      owner: ApiHelper.SELF, accountType: this.typeId,
-      page: value.page, pageSize: value.pageSize,
-      transferFilters: filter == null ? [] : [filter.id],
-      datePeriod: this.bankingHelper.resolveDatePeriod(value),
-      amountRange: ApiHelper.rangeFilter(value.minAmount, value.maxAmount),
-      user: value.user,
-      by: value.by,
-      transactionNumber: value.transactionNumber,
-      direction: value.direction,
-      orderBy: value.orderBy
-    };
+  toQueryFilters(value: any): AccountHistoryQueryFilters {
+    const query: AccountHistoryQueryFilters = cloneDeep(value);
+    query.transferFilters = value.transferFilter == null ? [] : [value.transferFilter.id];
+    query.datePeriod = this.bankingHelper.resolveDatePeriod(value);
+    query.amountRange = ApiHelper.rangeFilter(value.minAmount, value.maxAmount);
+    return query;
+  }
+
+  //Intersection Types
+  doSearch(query: AccountHistoryQueryFilters & ExtraType) {
+    query.fields = [];
+    query.owner = ApiHelper.SELF;
+    query.accountType = this.typeId;
+
     return this.accountsService.searchAccountHistory$Response(query).pipe(tap(() => {
       query.fields = ['status'];
       this.addSub(this.accountsService.getAccountStatusByOwnerAndType(query).subscribe(status => {
