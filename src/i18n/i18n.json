@@ -785,5 +785,13 @@
     "theme": "Theme",
     "theme.light": "Light",
     "theme.dark": "Dark"
+  },
+  "userAlerts": {
+    "title": {
+      "search": "Search user alerts"
+    },
+    "mobileTitle": {
+      "search": "User alerts"
+    }
   }
 }

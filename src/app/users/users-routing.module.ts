@@ -13,6 +13,7 @@ import { SearchUsersComponent } from 'app/users/search/search-users.component';
 import { ViewUserStatusHistoryComponent } from 'app/users/status/view-user-status-history.component';
 import { ViewUserStatusComponent } from 'app/users/status/view-user-status.component';
 import { SearchUserOperatorsComponent } from 'app/users/operators/search-user-operators.component';
+import { SearchUserAlertsComponent } from 'app/user-alerts/search/search-user-alerts.component'
 
 
 const usersRoutes: Routes = [
@@ -150,6 +151,13 @@ const usersRoutes: Routes = [
         component: ValidateRegistrationComponent,
         data: {
           menu: Menu.REGISTRATION
+        }
+      },
+      {
+        path: 'alerts',
+        component: SearchUserAlertsComponent,
+        data: {
+          menu: Menu.USER_ALERTS
         }
       }
     ]

@@ -94,6 +94,9 @@ export module Menu {
   export const NOTIFICATIONS = new Menu(RootMenu.PERSONAL, 'NOTIFICATIONS');
   export const SETTINGS = new Menu(RootMenu.PERSONAL, 'SETTINGS');
 
+  // Users
+  export const USER_ALERTS = new Menu(RootMenu.MARKETPLACE, 'USER_ALERTS');
+
   // Custom operations (one per root menu in owner, also one per operation container)
   export const RUN_OPERATION_BANKING = new Menu(RootMenu.BANKING, 'RUN_OPERATION_BANKING');
   export const RUN_OPERATION_MARKETPLACE = new Menu(RootMenu.MARKETPLACE, 'RUN_OPERATION_MARKETPLACE');
