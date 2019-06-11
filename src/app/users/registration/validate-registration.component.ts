@@ -29,9 +29,9 @@ export class ValidateRegistrationComponent
 
   ngOnInit() {
     const key = this.route.snapshot.params.key;
-    this.usersService.validateUserRegistration({ key: key }).subscribe(result => {
+    this.addSub(this.usersService.validateUserRegistration({ key: key }).subscribe(result => {
       this.data = result;
-    });
+    }));
   }
 
   goToLogin() {

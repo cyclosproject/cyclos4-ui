@@ -55,7 +55,7 @@ export class ChangeForgottenPasswordComponent
     }
     const key = this.route.snapshot.params.key;
     this.form.patchValue({ key: key });
-    this.authService.getDataForChangeForgottenPassword({ key: key }).subscribe(data => {
+    this.addSub(this.authService.getDataForChangeForgottenPassword({ key: key }).subscribe(data => {
       this.data = data;
       if (data.securityQuestion) {
         this.form.setControl('securityAnswer', this.formBuilder.control('', Validators.required));
@@ -66,14 +66,14 @@ export class ChangeForgottenPasswordComponent
         this.form.setControl('newPasswordConfirmation', this.formBuilder.control('',
           Validators.compose([Validators.required, PASSWORDS_MATCH_VAL])));
       }
-    });
+    }));
   }
 
   submit() {
     if (!validateBeforeSubmit(this.form)) {
       return;
     }
-    this.authService.changeForgottenPassword(this.form.value)
+    this.addSub(this.authService.changeForgottenPassword(this.form.value)
       .subscribe(() => {
         const generated = this.data.generated;
         let message: string;
@@ -86,7 +86,7 @@ export class ChangeForgottenPasswordComponent
         // Mark the login page as affected by the forgotten password change and go to login
         this.loginState.forgottenPasswordChanged(generated);
         this.login.goToLoginPage('');
-      });
+      }));
   }
 
   cancel() {

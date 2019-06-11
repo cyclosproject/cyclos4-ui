@@ -1,4 +1,8 @@
 <page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data then content"></ng-container>
+</page-layout>
+
+<ng-template #content>
   <transaction-filters [heading]="i18n.transaction.title.scheduled"
     [mobileHeading]="i18n.transaction.mobileTitle.scheduled" [form]="form"
     [data]="data" [statusOptions]="statusOptions"
@@ -47,9 +51,9 @@
             </td>
             <td class="amount">
               <a [routerLink]="path(row)" [ngClass]="{
-                        positive: format.isPositive(row.amount),
-                        negative: format.isNegative(row.amount)
-                      }">
+                    positive: format.isPositive(row.amount),
+                    negative: format.isNegative(row.amount)
+                  }">
                 {{ row.amount | currency:currencies.get(row.currency):true }}
               </a>
             </td>
@@ -58,8 +62,4 @@
       </tbody>
     </table>
   </results-layout>
-</page-layout>
-
-<ng-template #loadingIndicators>
-  <spinner class="p-3"></spinner>
 </ng-template>

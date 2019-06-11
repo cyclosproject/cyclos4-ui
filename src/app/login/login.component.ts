@@ -72,7 +72,7 @@ export class LoginComponent
     const dataForUi = this.dataForUiHolder.dataForUi;
     if (dataForUi == null || dataForUi.dataForLogin == null) {
       // Either the dataForUi is not loaded (?) or still points to a user. Reload first
-      this.dataForUiHolder.reload().subscribe(d4ui => this.initialize(d4ui));
+      this.addSub(this.dataForUiHolder.reload().subscribe(d4ui => this.initialize(d4ui)));
     } else {
       // Can initialize directly
       this.initialize(dataForUi);

@@ -29,13 +29,13 @@ export class ViewAuthorizationHistoryComponent extends BaseViewPageComponent<Tra
   ngOnInit() {
     super.ngOnInit();
     const key = this.route.snapshot.paramMap.get('key');
-    this.transactionsService.viewTransaction({
+    this.addSub(this.transactionsService.viewTransaction({
       key: key,
       fields: ['transactionNumber', 'date', 'amount', 'authorizations']
     })
       .subscribe(transaction => {
         this.data = transaction;
-      });
+      }));
   }
 
   actionLabel(auth: TransactionAuthorization): string {

@@ -1,5 +1,5 @@
 <page-layout [ready]="data$ | async" size="medium" hideMenu>
-  <page-content>
+  <page-content *ngIf="data">
     <notification [allowClose]="false">
       {{ i18n.user.newEmailConfirmed }}
     </notification>

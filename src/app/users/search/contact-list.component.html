@@ -1,4 +1,8 @@
 <page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data then content"></ng-container>
+</page-layout>
+
+<ng-template #content>
   <page-content [ngClass]="{'d-none': layout.xxs$ | async}" mode="filters"
     [heading]="i18n.user.title.contactList"
     [mobileHeading]="i18n.user.mobileTitle.contactList"
@@ -15,4 +19,4 @@
     [data]="data$ | async" [resultType]="resultType$ | async"
     (update)="update($event)">
   </users-results>
-</page-layout>
+</ng-template>

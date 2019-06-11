@@ -92,10 +92,10 @@ export class RegistrationStepFieldsComponent
 
   onUploadDone(image: Image) {
     // First remove any previous image, then emit that a new image is uploaded
-    this.removeImage().pipe(first()).subscribe(() => {
+    this.addSub(this.removeImage().pipe(first()).subscribe(() => {
       this.image = image;
       this.imageUploaded.emit(this.image);
-    });
+    }));
   }
 
   removeImage(): Observable<Image> {

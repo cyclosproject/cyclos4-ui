@@ -110,9 +110,9 @@ export class RunOperationComponent
 
     // Perform the request to get the run data
     this.nextRequestState.queryParams = route.queryParams;
-    request.subscribe(data => {
+    this.addSub(request.subscribe(data => {
       this.data = data;
-    });
+    }));
   }
 
   onDataInitialized(data: OperationDataForRun) {
@@ -209,8 +209,8 @@ export class RunOperationComponent
     this.nextRequestState.queryParams = route.queryParams;
 
     // Perform the request. If there's any error, clear the redirecting flag
-    request.pipe(first(), tap(r => r, () => this.redirecting$.next(false)))
-      .subscribe(response => this.afterRun(response));
+    this.addSub(request.pipe(first(), tap(r => r, () => this.redirecting$.next(false)))
+      .subscribe(response => this.afterRun(response)));
 
     // When an external redirect, set the redirecting flag, so a message is show to the user
     this.redirecting$.next(data.resultType === OperationResultTypeEnum.EXTERNAL_REDIRECT);

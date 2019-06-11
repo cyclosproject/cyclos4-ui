@@ -123,7 +123,7 @@ export class EditProfileComponent
       }, true)
     ];
 
-    this.usersService.getDataForEditFullProfile({ user: this.key }).subscribe(data => {
+    this.addSub(this.usersService.getDataForEditFullProfile({ user: this.key }).subscribe(data => {
       this.data = data;
 
       if (self) {
@@ -149,7 +149,7 @@ export class EditProfileComponent
       }
 
       this.ready$.next(true);
-    });
+    }));
   }
 
   ngOnDestroy() {
@@ -268,7 +268,7 @@ export class EditProfileComponent
       return;
     }
 
-    this.usersService.saveUserFullProfile({
+    this.addSub(this.usersService.saveUserFullProfile({
       user: this.key,
       confirmationPassword: confirmationPassword,
       body: this.editForSubmit()
@@ -277,7 +277,7 @@ export class EditProfileComponent
       this.uploadedImages = null;
       this.reload();
       scrollTop();
-    });
+    }));
   }
 
   private editForSubmit(): FullProfileEdit {
@@ -797,7 +797,7 @@ export class EditProfileComponent
 
   private removeAllTempImages() {
     (this.uploadedImages || []).forEach(img => {
-      this.imagesService.deleteImage({ idOrKey: img.id }).subscribe();
+      this.addSub(this.imagesService.deleteImage({ idOrKey: img.id }).subscribe());
     });
     this.uploadedImages = [];
   }

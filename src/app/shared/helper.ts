@@ -6,7 +6,7 @@ import { AbstractControl, FormArray, FormControl, FormGroup } from '@angular/for
 import { Address, GeographicalCoordinate } from 'app/api/models';
 import { FormControlLocator } from 'app/shared/form-control-locator';
 import { LayoutService } from 'app/shared/layout.service';
-import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp, End, Home, PageUp, PageDown } from 'app/shared/shortcut.service';
+import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp, End, Home, PageDown, PageUp } from 'app/shared/shortcut.service';
 import download from 'downloadjs';
 import { Observable } from 'rxjs';
 

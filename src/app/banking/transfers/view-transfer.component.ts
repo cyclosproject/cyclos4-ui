@@ -33,11 +33,11 @@ export class ViewTransferComponent extends BaseViewPageComponent<TransferView> i
   ngOnInit() {
     super.ngOnInit();
     const key = this.route.snapshot.paramMap.get('key');
-    this.transfersService.viewTransfer({ key: key })
+    this.addSub(this.transfersService.viewTransfer({ key: key })
       .subscribe(transfer => {
         this.headingActions = this.initActions(transfer);
         this.data = transfer;
-      });
+      }));
   }
 
 
@@ -75,13 +75,13 @@ export class ViewTransferComponent extends BaseViewPageComponent<TransferView> i
       createDeviceConfirmation: this.chargebackDeviceConfirmation(),
       passwordInput: this.transfer.confirmationPasswordInput,
       callback: res => {
-        this.transfersService.chargebackTransfer({
+        this.addSub(this.transfersService.chargebackTransfer({
           key: this.transfer.id,
           confirmationPassword: res.confirmationPassword
         }).subscribe(() => {
           this.notification.snackBar(this.i18n.transaction.chargebackTransferDone);
           this.reload();
-        });
+        }));
       }
     });
   }

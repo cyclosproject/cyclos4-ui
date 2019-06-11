@@ -35,8 +35,8 @@ export class ViewUserStatusHistoryComponent extends BaseViewPageComponent<UserSt
   ngOnInit() {
     super.ngOnInit();
     this.key = this.route.snapshot.paramMap.get('key');
-    this.userStatusService.getUserStatus({ user: this.key, fields: ['user', 'history'] }).subscribe(status => {
+    this.addSub(this.userStatusService.getUserStatus({ user: this.key, fields: ['user', 'history'] }).subscribe(status => {
       this.data = status;
-    });
+    }));
   }
 }
