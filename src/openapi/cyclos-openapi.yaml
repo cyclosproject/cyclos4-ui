@@ -87,6 +87,12 @@ tags:
   - name: GroupMembership
     description: >-
       Viewing and setting the group of a user / operator.
+  - name: ProductAssignment
+    description: >-
+      Viewing and managing the assigned products to a user.
+  - name: Brokering
+    description: >-
+      Viewing and manage the brokers of a user.
   - name: Passwords
     description: >-
       Management of a user's passwords.
@@ -232,6 +238,11 @@ tags:
   - name: Notifications
     description: >-
       Provides access to the notifications the authenticated user has received.
+  - name: NotificationSettings
+    description: >-
+      Provides access to the notifications settings, where users can choose
+      which kinds of notifications they want to receive, and via which mediums
+      (internal / e-mail / sms).
   - name: Records
     description: >-
       Provides access to custom records
@@ -263,6 +274,11 @@ tags:
   - name: Localization
     description: >-
       Provides access to different languages and localization settings.
+  - name: Alerts
+    description: >-
+      Provides access to alerts generated in the system. Currently only
+      user alerts are supported (system alerts are not).
+
 
 security:
   - basic: []
@@ -2374,6 +2390,8 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 $ref: '#/components/schemas/Error'
 
   /users/{user}:
+    parameters:
+      - $ref: '#/components/parameters/user'
     get:
       operationId: viewUser
       summary: >-
@@ -2382,7 +2400,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
         Returns the profile information of either a user or operator.
       parameters:
         - $ref: '#/components/parameters/fields'
-        - $ref: '#/components/parameters/user'
       tags:
         - Users
       responses:
@@ -2433,7 +2450,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
         the full profile (`GET /users/{user}/data-for-edit-profile` /
         `PUT /users/{user}/profile`) or through their own paths.
       parameters:
-        - $ref: '#/components/parameters/user'
         - $ref: '#/components/parameters/confirmationPassword'
       tags:
         - Users
@@ -2497,6 +2513,60 @@ A note for dynamic custom fields: If a script is used to generate possible value
           application/json:
             schema:
               $ref: '#/components/schemas/UserEdit'
+    delete:
+      operationId: deletePendingUser
+      summary: >-
+        Permanently removes a pending user
+      description: >-
+        This operation physically removes user pending registration validation,
+        that is, the user `status` is `pending`.
+        If the user registration was ever validated, this operation will fail.
+      tags:
+        - Users
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      responses:
+        '204':
+          description: >-
+            The pending user was deleted
+        '409':
+          description: >-
+            This operation expected an entity state, but it has resulted in a conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictError'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /users/{user}/data-for-edit:
     get:
@@ -6144,6 +6214,470 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /{user}/products:
+    parameters:
+      - $ref: '#/components/parameters/userNoSelf'
+    get:
+      operationId: getUserProductsData
+      summary: >-
+        Returns the user individual products and the change history
+      description: >-
+        Returns data containing information regarding the products assigned
+        to the given user
+      tags:
+        - ProductAssignment
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            The user individual products data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProductAssignmentData'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /{user}/products/{product}:
+    parameters:
+      - $ref: '#/components/parameters/userNoSelf'
+      - name: product
+        in: path
+        required: true
+        schema:
+          type: string
+        description: Product internal name or identifier
+    post:
+      operationId: assignIndividualProduct
+      summary: >-
+        Assigns a product to an individual user.
+      description: >-
+        Assigns a product to an individual user.
+      tags:
+        - ProductAssignment
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      responses:
+        '204':
+          description: >-
+            The product is assigned and nothing is returned
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      operationId: unassignIndividualProduct
+      summary: >-
+        Unassigns a product to an individual user.
+      description: >-
+        Unassigns a product to an individual user.
+      tags:
+        - ProductAssignment
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      responses:
+        '204':
+          description: >-
+            The product is unassigned and nothing is returned
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /{user}/brokers:
+    parameters:
+      - $ref: '#/components/parameters/userNoSelf'
+    get:
+      operationId: getUserBrokersData
+      summary: >-
+        Returns the current broker(s), together with additional information
+      description: >-
+        Returns data containing information regarding the user broker(s)
+      tags:
+        - Brokering
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            The user brokers list data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserBrokersData'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /{user}/brokers/data-for-add:
+    parameters:
+      - $ref: '#/components/parameters/userNoSelf'
+    get:
+      operationId: getBrokerDataForAdd
+      summary: >-
+        Returns configuration data to add another broker to a user.
+      description: >-
+        Returns configuration data to add another broker to a user.
+      tags:
+        - Brokering
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            The user brokers list data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BrokerDataForAdd'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /{user}/brokers/{broker}:
+    parameters:
+      - $ref: '#/components/parameters/userNoSelf'
+      - name: broker
+        in: path
+        required: true
+        description: The id or identifier of the broker
+        schema:
+          type: string
+    get:
+      operationId: viewBrokering
+      summary: >-
+        Returns details of the brokering relation for the given user and broker.
+      description: >-
+        Returns details of the brokering relation for the given user and broker.
+      tags:
+        - Brokering
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            The brokering details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BrokeringView'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      operationId: addBroker
+      summary: >-
+        Adds a brokering relation between the given user and broker.
+      description: >-
+        Adds a brokering relation between the given user and broker.
+      tags:
+        - Brokering
+      parameters:
+        - name: main
+          in: query
+          required: false
+          description: >-
+            Indicates whether this is the main broker. If this is the first
+            broker of the user, it will be the main broker, regardless of this
+            parameter.
+          schema:
+            type: boolean
+      responses:
+        '204':
+          description: >-
+            The brokering relationship is added and nothing is returned.
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      operationId: removeBroker
+      summary: >-
+        Removes a brokering relation between the given user and broker.
+      description: >-
+        Removes a brokering relation between the given user and broker.
+      tags:
+        - Brokering
+      responses:
+        '204':
+          description: >-
+            The brokering relationship is removed and nothing is returned.
+        '409':
+          description: >-
+            This operation expected an entity state, but it has resulted in a conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictError'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /{user}/brokers/{broker}/set-main:
+    parameters:
+      - $ref: '#/components/parameters/userNoSelf'
+      - name: broker
+        in: path
+        required: true
+        description: The id or identifier of the broker
+        schema:
+          type: string
+    post:
+      operationId: setMainBroker
+      summary: >-
+        Sets a broker as the main broker of the user.
+      description: >-
+        Sets a broker as the main broker of the user.
+      tags:
+        - Brokering
+      responses:
+        '204':
+          description: >-
+            The broker is set as main and nothing is returned.
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /images/{idOrKey}:
     get:
       operationId: viewImage
@@ -7770,6 +8304,10 @@ A note for dynamic custom fields: If a script is used to generate possible value
         Returns configuration data for searching documents.
       tags:
         - Documents
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
       parameters:
         - $ref: '#/components/parameters/fields'
       responses:
@@ -10369,6 +10907,13 @@ A note for dynamic custom fields: If a script is used to generate possible value
         '204':
           description: >-
             The security answer is reset and nothing is returned.
+        '409':
+          description: >-
+            This operation expected an entity state, but it has resulted in a conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictError'
         '401':
           description: >-
             Unauthorized access. Missing or invalid crendentials supplied for such
@@ -17612,6 +18157,171 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/ConflictError'
+  /{user}/notification-settings:
+    parameters:
+      - $ref: '#/components/parameters/user'
+    get:
+      operationId: viewNotificationSettings
+      summary: >-
+        Returns the notification settings for a given user.
+      description: >-
+        Returns the notification settings for a given operator / user /
+        administrator.
+      tags:
+        - NotificationSettings
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            The notification settings
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationSettingsView'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      operationId: saveNotificationSettings
+      summary: >-
+        Saves the notification settings for a given user.
+      description: >-
+        Saves the notification settings for a given operator / user /
+        administrator.
+      tags:
+        - NotificationSettings
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      requestBody:
+        description: The parameters to save
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationSettingsEdit'
+      responses:
+        '204':
+          description: >-
+            The notification settings are saved and nothing is returned
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: >-
+            Input error. Either a validation error or the maximum allowed items was
+            exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
+
+  /{user}/notification-settings/data-for-edit:
+    parameters:
+      - $ref: '#/components/parameters/user'
+    get:
+      operationId: getNotificationSettingsDataForEdit
+      summary: >-
+        Returns configuration data to edit the notification settings of a user.
+      description: >-
+        Returns data to edit the nofitication settings od a given operator /
+        user / administrator.
+      tags:
+        - NotificationSettings
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            The notification settings
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationSettingsDataForEdit'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /{user}/vouchers/data-for-search:
     get:
       operationId: getUserVouchersDataForSearch
@@ -25904,23 +26614,28 @@ A note for dynamic custom fields: If a script is used to generate possible value
               schema:
                 $ref: '#/components/schemas/Error'
   /validate/email-change/{key}:
+    parameters:
+      - name: key
+        required: true
+        in: path
+        description: >-
+          The e-mail change validation key the user has received.
+        schema:
+          type: string
     post:
       operationId: validateEmailChange
       summary: >-
         Validate a pending e-mail change.
       description: >-
-        Validate an e-mail change for the given validation key. After validating
-        the change, the email is effectively changed.
+        When e-mail validation on change is enabled on the configuration, when a
+        user changes their e-mail the new e-mail will not be immediately used.
+        In this case, an e-mail is sent to the new e-mail address, with a link
+        to validate it.
+        That link should include the validation key, which should be sent to
+        the Cyclos backend to actually validate the new e-mail. Only after this
+        the new e-mail address will be effectively used in Cyclos.
       tags:
         - Validation
-      parameters:
-        - name: key
-          required: true
-          in: path
-          description: >-
-            The e-mail change validation key the user has received.
-          schema:
-            type: string
       responses:
         '200':
           description: >-
@@ -25964,6 +26679,14 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 $ref: '#/components/schemas/Error'
 
   /validate/registration/{key}:
+    parameters:
+      - name: key
+        required: true
+        in: path
+        description: >-
+          The registration validation key the user has received.
+        schema:
+          type: string
     post:
       operationId: validateUserRegistration
       summary: >-
@@ -25974,14 +26697,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
         defines if the user is initially active or not.
       tags:
         - Validation
-      parameters:
-        - name: key
-          required: true
-          in: path
-          description: >-
-            The registration validation key the user has received.
-          schema:
-            type: string
       responses:
         '200':
           description: >-
@@ -26022,6 +26737,216 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/InputError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /{user}/registration/validate:
+    parameters:
+      - $ref: '#/components/parameters/userNoSelf'
+    post:
+      operationId: manuallyValidateUserRegistration
+      summary: >-
+        Manually validates a pending user / operator registration.
+      description: >-
+        Marks the user registration as validated. Can only be performed by a
+        manager (admin / broker) of the pending user. The actual resulting
+        user status depends on the group configuration.
+        The user status must be `pending`.
+      tags:
+        - Validation
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      responses:
+        '200':
+          description: >-
+            The result of the e-mail validation. The resulting status only can
+            be `active` or
+            `inactive`.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRegistrationResult'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /{user}/registration/resend:
+    parameters:
+      - $ref: '#/components/parameters/userNoSelf'
+    post:
+      operationId: resendUserRegistrationEmail
+      summary: >-
+        Re-sends the e-mail to validate a pending user / operator registration.
+      description: >-
+        Sends the validation e-mail again.
+        This operation has to be executed by the user manager (admin or broker).
+        The user status must be `pending`.
+      tags:
+        - Validation
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      responses:
+        '204':
+          description: >-
+            The e-mail is sent and nothing is returned
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /{user}/email-change/validate:
+    parameters:
+      - $ref: '#/components/parameters/userNoSelf'
+    post:
+      operationId: manuallyValidateEmailChange
+      summary: >-
+        Manually validates a pending e-mail change.
+      description: >-
+        If the user has a new e-mail address pending validation, this operation,
+        which has to be executed by the user manager (admin or broker) marks the
+        new e-mail address as validating, effectively changing the user's e-mail.
+      tags:
+        - Validation
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      responses:
+        '204':
+          description: >-
+            The new e-mail address is effectly used and nothing is returned
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /{user}/email-change/resend:
+    parameters:
+      - $ref: '#/components/parameters/userNoSelf'
+    post:
+      operationId: resendEmailChangeEmail
+      summary: >-
+        Re-sends the e-mail to validate a pending e-mail change.
+      description: >-
+        Sends again the e-mail to the new user e-mail address.
+        This operation has to be executed by the user manager (admin or broker).
+      tags:
+        - Validation
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      responses:
+        '204':
+          description: >-
+            The new e-mail address is effectly used and nothing is returned
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
         '500':
           description: >-
             Unexpected error
@@ -26139,6 +27064,200 @@ A note for dynamic custom fields: If a script is used to generate possible value
           application/json:
             schema:
               $ref: '#/components/schemas/LocalizationSettings'
+  /alerts/user:
+    get:
+      operationId: searchUserAlerts
+      summary: >-
+        Searches for user alerts.
+      description: >-
+        Searches for user alerts according to a give set of filters.
+      tags:
+        - Alerts
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+        - name: brokers
+          in: query
+          required: false
+          description: "Either the ids or identification methods the alert user's brokers"
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: datePeriod
+          in: query
+          required: false
+          description: "The minimum / maximum alert date. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+              format: date-time
+        - name: groups
+          in: query
+          required: false
+          description: "Either the ids or internal names of the alert user"
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: page
+          in: query
+          required: false
+          description: "The page number (zero-based) of the search. The default value is zero."
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          required: false
+          description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
+          schema:
+            type: integer
+            format: int32
+        - name: types
+          in: query
+          required: false
+          description: "The types of user alerts to search"
+          style: simple
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/UserAlertTypeEnum'
+        - name: user
+          in: query
+          required: false
+          description: "Either the id or identifier of the alert user"
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >-
+            The accounts with their statuses.
+          headers:
+            X-Total-Count:
+              schema:
+                type: integer
+              description: >-
+                The total number of results. It may be configured in Cyclos to skip the
+                total count, which is useful on large databases, where the count itself
+                may use a lot of resources from the database. If disabled, this header is
+                not returned.
+            X-Page-Size:
+              schema:
+                type: integer
+              description: >-
+                The maximum number of results per page
+            X-Current-Page:
+              schema:
+                type: integer
+              description: >-
+                The current page the results are in
+            X-Has-Next-Page:
+              schema:
+                type: boolean
+              description: >-
+                Returns whether there is a next page. This is normally always returned,
+                whether total count is enabled or not. If the total count is not returned,
+                is the only way for clients to know whether more results are available or
+                not.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserAlert'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /alerts/user/data-for-search:
+    get:
+      operationId: getUserAlertDataForSearch
+      summary: >-
+        Returns configuration data for searching user alerts.
+      description: >-
+        Returns configuration data for searching user alerts.
+      tags:
+        - Alerts
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            The data for searching user alerts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserAlertDataForSearch'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
 
 components:
@@ -26787,6 +27906,23 @@ components:
         - name
         - phone
         - username
+
+    BrokeringActionEnum:
+      description: >
+        An action over a user's brokers
+
+        Possible values are:
+
+        - `add`: The broker was added
+
+        - `remove`: The broker was removed
+
+        - `setMain`: The broker was set as main
+      type: string
+      enum:
+        - add
+        - remove
+        - setMain
 
     BuyVoucherErrorCode:
       description: >
@@ -27857,6 +28993,320 @@ components:
         - voucher
         - voucherType
 
+    NotificationKind:
+      description: >
+        Indicates a kind of notification
+
+        Possible values are:
+
+        - `accountAllNonSmsPerformedPayments`: A payment was performed
+
+        - `accountAuthorizedPaymentCanceled`: The authorization process of a payment was canceled
+
+        - `accountAuthorizedPaymentDenied`: A payment pending authorization was denied
+
+        - `accountAuthorizedPaymentExpired`: The authorization process of a payment has expired
+
+        - `accountAuthorizedPaymentSucceeded`: A payment pending authorization was processed
+
+        - `accountBoughtVouchersAboutToExpire`: One or more bought vouchers are about to expire
+
+        - `accountBoughtVouchersExpirationDateChanged`: The expiration date of a bought voucher was changed
+
+        - `accountBoughtVouchersExpired`: One or more bought vouchers have expired
+
+        - `accountExternalPaymentExpired`: A performed external payment has expired
+
+        - `accountExternalPaymentPerformedFailed`: A performed external payment has failed
+
+        - `accountExternalPaymentReceivedFailed`: A received external payment has failed
+
+        - `accountIncomingRecurringPaymentCanceled`: An incoming recurring payment was canceled
+
+        - `accountIncomingRecurringPaymentFailed`: An incoming recurring payment processing has failed
+
+        - `accountIncomingRecurringPaymentReceived`: A recurring payment was received
+
+        - `accountIncomingScheduledPaymentCanceled`: An incoming scheduled payment processing has canceled
+
+        - `accountIncomingScheduledPaymentFailed`: An incoming scheduled payment processing has failed
+
+        - `accountIncomingScheduledPaymentReceived`: A scheduled payment was received
+
+        - `accountLimitChange`: The account balance limit was changed by the administration
+
+        - `accountOperatorAuthorizedPaymentApprovedStillPending`: A payment performed by an operator was approved, but still needs administration authorization
+
+        - `accountOperatorAuthorizedPaymentCanceled`: A payment performed by an operator had the authorization process canceled
+
+        - `accountOperatorAuthorizedPaymentDenied`: A payment performed by an operator was denied
+
+        - `accountOperatorAuthorizedPaymentExpired`: A payment performed by an operator had the authorization process expired
+
+        - `accountOperatorAuthorizedPaymentSucceeded`: A payment performed by an operator was processed
+
+        - `accountOperatorPaymentAwaitingAuthorization`: A payment performed by an operator needs my authorization
+
+        - `accountPaymentAwaitingAuthorization`: A payment is awaiting my authorization
+
+        - `accountPaymentReceived`: A payment was received
+
+        - `accountPaymentRequestCanceled`: A sent payment request was canceled
+
+        - `accountPaymentRequestDenied`: A sent payment request was denied
+
+        - `accountPaymentRequestExpirationDateChanged`: An incoming payment request had its expiration date changed
+
+        - `accountPaymentRequestExpired`: A sent payment request has expired
+
+        - `accountPaymentRequestProcessed`: A sent payment request was processed
+
+        - `accountPaymentRequestReceived`: A payment was requested
+
+        - `accountRecurringPaymentFailed`: The processing of a recurring payment has failed
+
+        - `accountRecurringPaymentOccurrenceProcessed`: A recurring payment processing was processed
+
+        - `accountScheduledPaymentFailed`: The processing of a scheduled payment has failed
+
+        - `accountScheduledPaymentInstallmentProcessed`: A scheduled payment was processed
+
+        - `accountScheduledPaymentRequestFailed`: A scheduled payment request has failed and was reopened
+
+        - `accountSentPaymentRequestExpirationDateChanged`: A sent payment request had its expiration date changed
+
+        - `accountSmsPerformedPayment`: A payment was performed by SMS
+
+        - `accountTicketWebhookFailed`: The webhook processing for a ticket has failed
+
+        - `adminAdPendingAuthorization`: A new advertisement was created, and it is pending administrator authorization
+
+        - `adminApplicationError`: A new application error was generated
+
+        - `adminExternalPaymentExpired`: An external payment has expired without the destination user being registered
+
+        - `adminExternalPaymentPerformedFailed`: An external payment has failed processing
+
+        - `adminGeneratedVouchersAboutToExpire`: One or more generated vouchers are about to expire
+
+        - `adminGeneratedVouchersExpired`: One or more generated vouchers have expired
+
+        - `adminNetworkCreated`: A new network has been created
+
+        - `adminPaymentAwaitingAuthorization`: A payment is awaiting the administrator authorization
+
+        - `adminPaymentPerformed`: A payment was performed
+
+        - `adminSystemAlert`: A new system alert was generated
+
+        - `adminUserAlert`: A new user alert was generated
+
+        - `adminUserImportRegistration`: An import of users has finished processing
+
+        - `adminUserRegistration`: A new user has been registered
+
+        - `adminVoucherBuyingAboutToExpire`: Buying in a voucher type is about to expire
+
+        - `brokeringAdPendingAuthorization`: A new advertisement from an assigned member needs authorization
+
+        - `brokeringMemberAssigned`: A new member was unassigned from me as broker
+
+        - `brokeringMemberUnassigned`: A new member was assigned to me as broker
+
+        - `buyerAdInterestNotification`: A new advertisement was published, matching one of my advertisement interests
+
+        - `buyerAdQuestionAnswered`: An advertisement question I've asked was answered
+
+        - `buyerOrderCanceled`: A web-shop order was canceled
+
+        - `buyerOrderPaymentCanceled`: The payment for a web-shop purchase had the authorization process canceled
+
+        - `buyerOrderPaymentDenied`: The payment for a web-shop purchase was denied authorization
+
+        - `buyerOrderPaymentExpired`: The payment for a web-shop purchase was expired without being authorized
+
+        - `buyerOrderPending`: A web-shop order is pending my approval
+
+        - `buyerOrderPendingAuthorization`: A web-shop order is pending authorization
+
+        - `buyerOrderPendingDeliveryData`: A web-shop order needs me to fill its delivery information
+
+        - `buyerOrderProcessedBySeller`: A web-shop order was processed by the seller
+
+        - `buyerOrderRejectedBySeller`: A web-shop order was rejected by the seller
+
+        - `buyerSalePending`: A web-shop order is pending seller's approval
+
+        - `buyerSaleRejectedBySeller`: A web-shop sale order was rejected by the seller
+
+        - `feedbackChanged`: A feedback for a sale was changed
+
+        - `feedbackCreated`: A feedback for a sale was created
+
+        - `feedbackExpirationReminder`: Reminder to supply feedback for a purchase
+
+        - `feedbackOptional`: I can optionally supply feedback for a purchase
+
+        - `feedbackReplyCreated`: A feedback for a purchase was replied
+
+        - `feedbackRequired`: I have to supply feedback for a purchase
+
+        - `personalBrokerAssigned`: A broker was assigned to the user
+
+        - `personalBrokerUnassigned`: A broker was unassigned from the user
+
+        - `personalMaxSmsPerMonthReached`: The user has reached the maximum number of monthly SMS messages
+
+        - `personalNewToken`: A new token (card) was assigned
+
+        - `personalNewTokenPendingActivation`: a new token (card) is pending activation
+
+        - `personalPasswordStatusChanged`: The status of a password has changed
+
+        - `personalTokenStatusChanged`: The status of a token has changed
+
+        - `personalUserStatusChanged`: The user status has changed
+
+        - `referenceChanged`: A personal reference was changed
+
+        - `referenceCreated`: A new personal reference was created
+
+        - `sellerAdAuthorized`: An advertisement was authorized by the administration
+
+        - `sellerAdExpired`: An advertisement publication period has expired
+
+        - `sellerAdLowStock`: A web-shop advertisement's stock quantity is low
+
+        - `sellerAdOutOfStock`: A given web-shop advertisement is out of stock
+
+        - `sellerAdQuestionCreated`: A question to an advertisement was created
+
+        - `sellerAdRejected`: An advertisement was rejected by the administration
+
+        - `sellerOrderCanceled`: A web-shop order was canceled
+
+        - `sellerOrderCreated`: A web-shop order was created
+
+        - `sellerOrderPaymentCanceled`: The payment for a web-shop order had the authorization process canceled
+
+        - `sellerOrderPaymentDenied`: The payment for a web-shop order was denied authorization
+
+        - `sellerOrderPaymentExpired`: The payment for a web-shop order was expired without being authorized
+
+        - `sellerOrderPendingAuthorization`: A web-shop order is pending authorization
+
+        - `sellerOrderPendingDeliveryData`: A web-shop order is pending delivery information
+
+        - `sellerOrderProcessedByBuyer`: A web-shop order was fulfilled by the buyer
+
+        - `sellerOrderRejectedByBuyer`: A web-shop order was rejected by the buyer
+
+        - `sellerSaleProcessedByBuyer`: A web-shop sale order was fulfilled by the buyer
+      type: string
+      enum:
+        - accountAllNonSmsPerformedPayments
+        - accountAuthorizedPaymentCanceled
+        - accountAuthorizedPaymentDenied
+        - accountAuthorizedPaymentExpired
+        - accountAuthorizedPaymentSucceeded
+        - accountBoughtVouchersAboutToExpire
+        - accountBoughtVouchersExpirationDateChanged
+        - accountBoughtVouchersExpired
+        - accountExternalPaymentExpired
+        - accountExternalPaymentPerformedFailed
+        - accountExternalPaymentReceivedFailed
+        - accountIncomingRecurringPaymentCanceled
+        - accountIncomingRecurringPaymentFailed
+        - accountIncomingRecurringPaymentReceived
+        - accountIncomingScheduledPaymentCanceled
+        - accountIncomingScheduledPaymentFailed
+        - accountIncomingScheduledPaymentReceived
+        - accountLimitChange
+        - accountOperatorAuthorizedPaymentApprovedStillPending
+        - accountOperatorAuthorizedPaymentCanceled
+        - accountOperatorAuthorizedPaymentDenied
+        - accountOperatorAuthorizedPaymentExpired
+        - accountOperatorAuthorizedPaymentSucceeded
+        - accountOperatorPaymentAwaitingAuthorization
+        - accountPaymentAwaitingAuthorization
+        - accountPaymentReceived
+        - accountPaymentRequestCanceled
+        - accountPaymentRequestDenied
+        - accountPaymentRequestExpirationDateChanged
+        - accountPaymentRequestExpired
+        - accountPaymentRequestProcessed
+        - accountPaymentRequestReceived
+        - accountRecurringPaymentFailed
+        - accountRecurringPaymentOccurrenceProcessed
+        - accountScheduledPaymentFailed
+        - accountScheduledPaymentInstallmentProcessed
+        - accountScheduledPaymentRequestFailed
+        - accountSentPaymentRequestExpirationDateChanged
+        - accountSmsPerformedPayment
+        - accountTicketWebhookFailed
+        - adminAdPendingAuthorization
+        - adminApplicationError
+        - adminExternalPaymentExpired
+        - adminExternalPaymentPerformedFailed
+        - adminGeneratedVouchersAboutToExpire
+        - adminGeneratedVouchersExpired
+        - adminNetworkCreated
+        - adminPaymentAwaitingAuthorization
+        - adminPaymentPerformed
+        - adminSystemAlert
+        - adminUserAlert
+        - adminUserImportRegistration
+        - adminUserRegistration
+        - adminVoucherBuyingAboutToExpire
+        - brokeringAdPendingAuthorization
+        - brokeringMemberAssigned
+        - brokeringMemberUnassigned
+        - buyerAdInterestNotification
+        - buyerAdQuestionAnswered
+        - buyerOrderCanceled
+        - buyerOrderPaymentCanceled
+        - buyerOrderPaymentDenied
+        - buyerOrderPaymentExpired
+        - buyerOrderPending
+        - buyerOrderPendingAuthorization
+        - buyerOrderPendingDeliveryData
+        - buyerOrderProcessedBySeller
+        - buyerOrderRejectedBySeller
+        - buyerSalePending
+        - buyerSaleRejectedBySeller
+        - feedbackChanged
+        - feedbackCreated
+        - feedbackExpirationReminder
+        - feedbackOptional
+        - feedbackReplyCreated
+        - feedbackRequired
+        - personalBrokerAssigned
+        - personalBrokerUnassigned
+        - personalMaxSmsPerMonthReached
+        - personalNewToken
+        - personalNewTokenPendingActivation
+        - personalPasswordStatusChanged
+        - personalTokenStatusChanged
+        - personalUserStatusChanged
+        - referenceChanged
+        - referenceCreated
+        - sellerAdAuthorized
+        - sellerAdExpired
+        - sellerAdLowStock
+        - sellerAdOutOfStock
+        - sellerAdQuestionCreated
+        - sellerAdRejected
+        - sellerOrderCanceled
+        - sellerOrderCreated
+        - sellerOrderPaymentCanceled
+        - sellerOrderPaymentDenied
+        - sellerOrderPaymentExpired
+        - sellerOrderPendingAuthorization
+        - sellerOrderPendingDeliveryData
+        - sellerOrderProcessedByBuyer
+        - sellerOrderRejectedByBuyer
+        - sellerSaleProcessedByBuyer
+
     NotificationLevelEnum:
       description: >
         Defines the severity level of a notification shown to users
@@ -28711,6 +30161,37 @@ components:
         - token
         - username
 
+    ProductAssignmentActionEnum:
+      description: >
+        A possible action regarding product assignment / unassignment
+
+        Possible values are:
+
+        - `assing`: The product was assigned
+
+        - `unassing`: The product was unassigned
+      type: string
+      enum:
+        - assing
+        - unassing
+
+    ProductKind:
+      description: >
+        Kind of product
+
+        Possible values are:
+
+        - `administrator`: An administrator product
+
+        - `broker`: A broker
+
+        - `member`: A member product
+      type: string
+      enum:
+        - administrator
+        - broker
+        - member
+
     PushNotificationEventKind:
       description: >
         Kind of events that can be triggered on push notifications
@@ -29006,6 +30487,32 @@ components:
         - max
         - min
         - stock
+
+    SystemAlertTypeEnum:
+      description: >
+        The type of system alert
+
+        Possible values are:
+
+        - `accountFeeChargedNoFailures`: An account fee charge has finished without any failures
+
+        - `accountFeeChargedWithFailures`: An account fee charge has finished with at least one failure
+
+        - `applicationRestarted`: The application has been restarted, or started for the first time
+
+        - `custom`: Custom alerts thrown by scripts
+
+        - `maxGlobalSmsReached`: The groups under a certain configuration have run out of SMS messages
+
+        - `maxIncorrectLoginAttempts`: Someone tried for a given number of tries to login with an invalid username
+      type: string
+      enum:
+        - accountFeeChargedNoFailures
+        - accountFeeChargedWithFailures
+        - applicationRestarted
+        - custom
+        - maxGlobalSmsReached
+        - maxIncorrectLoginAttempts
 
     TempImageTargetEnum:
       description: >
@@ -29389,6 +30896,53 @@ components:
         - nearest
         - none
         - primary
+
+    UserAlertTypeEnum:
+      description: >
+        The type of user alert
+
+        Possible values are:
+
+        - `custom`: Custom alerts thrown by scripts
+
+        - `givenVeryBadRefs`: A user has exceeded the maximum number of given very bad references
+
+        - `insufficientBalanceForInitialCredit`: A user account's initial credit couldn't be granted because the source account lacked funds
+
+        - `maxDeviceActivationAttemptsReached`: A user has reached the maximum number of attempts to activate a device by code
+
+        - `maxDeviceConfirmationCheckAttemptsReached`: A user has reached the maximum number of attempts to check for a processed device confirmation
+
+        - `maxTokenActivationAttemptsReached`: A user has reached the maximum number of attempts to activate a token
+
+        - `maxUserLocalizationAttemptsReached`: A user has reached the maximum number of attempts to find other users
+
+        - `maxVoucherRedeemAttemptsReached`: A user has reached the maximum number of attempts to redeem a voucher
+
+        - `moveUserAutomaticallyFailed`: A user couldn't be moved automatically to another group
+
+        - `passwordDisabledByTries`: A user password has been disabled by exceeding the wrong attempts
+
+        - `passwordTemporarilyBlocked`: A user password has been temporarily blocked by exceeding the wrong attempts
+
+        - `receivedVeryBadRefs`: A user has exceeded the maximum number of received very bad references
+
+        - `scheduledPaymentFailed`: An scheduled payment has failed
+      type: string
+      enum:
+        - custom
+        - givenVeryBadRefs
+        - insufficientBalanceForInitialCredit
+        - maxDeviceActivationAttemptsReached
+        - maxDeviceConfirmationCheckAttemptsReached
+        - maxTokenActivationAttemptsReached
+        - maxUserLocalizationAttemptsReached
+        - maxVoucherRedeemAttemptsReached
+        - moveUserAutomaticallyFailed
+        - passwordDisabledByTries
+        - passwordTemporarilyBlocked
+        - receivedVeryBadRefs
+        - scheduledPaymentFailed
 
     UserImageKind:
       description: >
@@ -30033,6 +31587,28 @@ components:
                 informed period
               type: string
               format: number
+
+    AccountNotificationSettings:
+      description: >-
+        Settings regarding notifications for a given account
+      type: object
+      properties:
+        paymentAmount:
+          description: >-
+            The minimum / maximum amount for payment notifications to be sent
+          allOf:
+            - $ref: '#/components/schemas/DecimalRange'
+
+
+    AccountNotificationSettingsView:
+      description: >-
+        Settings regarding notifications for a given account
+      allOf:
+        - $ref: '#/components/schemas/AccountNotificationSettings'
+        - type: object
+          properties:
+            accountType:
+              $ref: '#/components/schemas/AccountType'
 
     AccountPermissions:
       description: >-
@@ -31113,6 +32689,22 @@ components:
                 The agreement content, formatted as HTML text
               type: string
 
+    Alert:
+      description: >-
+        Common alert data
+      allOf:
+        - $ref: '#/components/schemas/Entity'
+        - type: object
+          properties:
+            date:
+              description: The alert date
+              type: string
+              format: date-time
+            text:
+              description: The alert text
+              type: string
+
+
     AmountSummary:
       description: >-
         Contains summarized statistics over amounts
@@ -31673,6 +33265,51 @@ components:
           properties:
             token:
               $ref: '#/components/schemas/TokenDetailed'
+
+    BaseNotificationSettings:
+      description: >-
+        Contains common data among `NotificationSettingsView` and
+        `NotificationSettingsDataForEdit`.
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+        role:
+          $ref: '#/components/schemas/RoleEnum'
+        editable:
+          description: >-
+            Indicates whether the logged user can manage the notitification
+            settings of this user.
+          type: boolean
+        emailAllowed:
+          description: >-
+            Indicates whether e-mail notifications are allowed
+          type: boolean
+        smsAllowed:
+          description: >-
+            Indicates whether SMS notifications are allowed
+          type: boolean
+        maxSmsPerMonth:
+          description: >-
+            The maximum number of allowed SMS messages per month
+          type: integer
+        smsCountThisMonth:
+          description: >-
+            The number of SMS messages already sent this month
+          type: integer
+
+        forwardMessagesAllowed:
+          description: >-
+            Indicates whether it can be configured to forward received internal
+            messages to the user's e-mail.
+            Only applicable for users (members / brokers), not administrators.
+          type: boolean
+        forwardMessages:
+          description: >-
+            Indicates whether to forward received internal messages to the
+            user's e-mail.
+            Only applicable for users (members / brokers), not administrators.
+          type: boolean
 
     BaseOrder:
       description: >-
@@ -32329,6 +33966,27 @@ components:
             addressResult:
               $ref: '#/components/schemas/UserAddressResultEnum'
 
+    BrokerDataForAdd:
+      description: >-
+        Data for adding a new broker to a user.
+      type: object
+      properties:
+        user:
+          description: The user
+          allOf:
+            - $ref: '#/components/schemas/User'
+        brokers:
+          description: The current user's brokers
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+        brokerGroups:
+          description: >-
+            The broker groups that can be used when searching for the new broker
+          type: array
+          items:
+            $ref: '#/components/schemas/Group'
+
     BrokerView:
       description: >-
         Contains data about a brokerage relationship
@@ -32348,6 +34006,53 @@ components:
             The broker user.
           allOf:
             - $ref: '#/components/schemas/User'
+
+    Brokering:
+      description: >-
+        A brokering relationship with a specific broker
+      type: object
+      properties:
+        broker:
+          description: The broker user
+          allOf:
+            - $ref: '#/components/schemas/User'
+        main:
+          description: Indicates if this is the user's main broker
+          type: boolean
+        since:
+          description: The date the brokering relation started
+          type: string
+          format: date-time
+
+    BrokeringLog:
+      type: object
+      properties:
+        broker:
+          description: The broker
+          allOf:
+            - $ref: '#/components/schemas/User'
+        by:
+          description: The user that performed the action
+          allOf:
+            - $ref: '#/components/schemas/User'
+        action:
+          $ref: '#/components/schemas/BrokeringActionEnum'
+        date:
+          description: The action date
+          type: string
+          format: date-time
+
+    BrokeringView:
+      description: >-
+        Details of a brokering relationship
+      allOf:
+        - $ref: '#/components/schemas/Brokering'
+        - type: object
+          properties:
+            user:
+              description: The user
+              allOf:
+                - $ref: '#/components/schemas/User'
 
     BuyVoucher:
       description: >-
@@ -35567,7 +37272,7 @@ components:
         status:
           $ref: '#/components/schemas/UserStatusEnum'
         group:
-          $ref: '#/components/schemas/EntityReference'
+          $ref: '#/components/schemas/Group'
         groupSets:
           description: >-
             List of group sets which can be referenced on groups on either
@@ -36673,6 +38378,31 @@ components:
             entityType:
               $ref: '#/components/schemas/NotificationEntityTypeEnum'
 
+    NotificationKindMediums:
+      description: >-
+        Indicates the mediums a notification kind is sent
+      type: object
+      properties:
+        kind:
+          $ref: '#/components/schemas/NotificationKind'
+        internal:
+          description: >-
+            Indicates whether a given kind of notification is enabled.
+            Internal notifications act as a 'master control' for the
+            notification kind. If disabled, no other mediums will be
+            enabled either.
+          type: boolean
+        email:
+          description: >-
+            Indicates whether notifications of this type will be sent
+            to the user's e-mail.
+          type: boolean
+        sms:
+          description: >-
+            Indicates whether notifications of this type will be sent
+            as SMS to the user's mobile phone.
+          type: boolean
+
     NotificationQueryFilters:
       description: >-
         Definitions for a notifications search.
@@ -36690,6 +38420,293 @@ components:
                 received after the last view date tracked using `POST
                 /notifications/viewed`
               type: boolean
+
+    NotificationSettingsDataForEdit:
+      description: >-
+        Contains configuration data to edit the notification settings a given user.
+        The regular user (member / broker / operator) and administrator
+        notification settings use different notification kinds.
+      allOf:
+        - $ref: '#/components/schemas/BaseNotificationSettings'
+        - type: object
+          properties:
+            settings:
+              description: >-
+                The object that can be modified and `POST`ed back to
+                `/{user}/notification-settings` to save the notifications.
+              allOf:
+                - $ref: '#/components/schemas/NotificationSettingsEdit'
+
+            payments:
+              description: >-
+                The visible regular payment types.
+                Only applicable for administrators, not users (members / brokers).
+              type: array
+              items:
+                $ref: '#/components/schemas/TransferType'
+            authorizablePayments:
+              description: >-
+                The visible regular payment types that require authorization.
+                Only applicable for administrators, not users (members / brokers).
+              type: array
+              items:
+                $ref: '#/components/schemas/TransferType'
+            externalPayments:
+              description: >-
+                The visible payment types that allow external payments.
+                Only applicable for administrators, not users (members / brokers).
+              type: array
+              items:
+                $ref: '#/components/schemas/TransferType'
+            voucherConfigurations:
+              description: >-
+                The visible voucher configurations.
+                Only applicable for administrators, not users (members / brokers).
+              type: array
+              items:
+                $ref: '#/components/schemas/EntityReference'
+            userGroups:
+              description: >-
+                The visible user groups.
+                Only applicable for administrators, not users (members / brokers).
+              type: array
+              items:
+                $ref: '#/components/schemas/Group'
+            messageCategories:
+              description: >-
+                The visible message categories.
+                Only applicable for administrators, not users (members / brokers).
+              type: array
+              items:
+                $ref: '#/components/schemas/EntityReference'
+
+    NotificationSettingsEdit:
+      description: >-
+        The parameters used to save the notification settings
+      type: object
+      properties:
+        notifications:
+          description: >-
+            Per notification kind, indicates the mediums it is sent.
+            It is guaranteed that all and only the allowed kinds are sent.
+          type: array
+          items:
+            $ref: '#/components/schemas/NotificationKindMediums'
+
+        forwardMessages:
+          description: >-
+            Indicates whether to forward received internal messages to the
+            user's e-mail.
+            Only applicable for users, not administrators.
+          type: boolean
+        userAccounts:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/AccountNotificationSettings'
+          description: >-
+            Contains the settings for each user account.
+            Only applicable for users, not administrators.
+            The key is the account type id or internal name.
+
+        payments:
+          description: >-
+            The qualified internal names (accountType.paymentType) or ids of
+            payment types to be notified for notifications of kind
+            `adminPaymentPerformed`.
+            Only applicable for administrators, not users.
+          type: array
+          items:
+            type: string
+        authorizablePayments:
+          description: >-
+            The qualified internal names (accountType.paymentType) or ids of
+            payment types to be notified for notifications of kind
+            `adminPaymentAwaitingAuthorization`.
+            Only applicable for administrators, not users.
+          type: array
+          items:
+            type: string
+        externalPaymentsFailed:
+          description: >-
+            The qualified internal names (accountType.paymentType) or ids of
+            payment types to be notified for notifications of kind
+            `adminExternalPaymentPerformedFailed`.
+            Only applicable for administrators, not users.
+          type: array
+          items:
+            type: string
+        externalPaymentsExpired:
+          description: >-
+            The qualified internal names (accountType.paymentType) or ids of
+            payment types to be notified for notifications of kind
+            `adminExternalPaymentExpired`.
+            Only applicable for administrators, not users.
+          type: array
+          items:
+            type: string
+        voucherConfigurations:
+          description: >-
+            The internal names or ids of voucher configurations to be
+            notified for notifications of kinds
+            `adminGeneratedVouchersAboutToExpire` and
+            `adminGeneratedVouchersExpired`.
+            Only applicable for administrators, not users.
+          type: array
+          items:
+            type: string
+        voucherConfigurationsBuying:
+          description: >-
+            The internal names or ids of voucher configurations to be
+            notified for notifications of kind
+            `adminVoucherBuyingAboutToExpire`.
+            Only applicable for administrators, not users.
+          type: array
+          items:
+            type: string
+        userGroups:
+          description: >-
+            The internal names or ids of groups to be notified for
+            notifications of kind
+            `adminUserRegistration`.
+            Only applicable for administrators, not users.
+          type: array
+          items:
+            type: string
+        systemAlerts:
+          description: >-
+            The kinds of system alerts to be notified for notifications of kind
+            `adminSystemAlert`.
+            Only applicable for administrators, not users.
+          type: array
+          items:
+            $ref: '#/components/schemas/SystemAlertTypeEnum'
+        userAlerts:
+          description: >-
+            The kinds of user alerts to be notified for notifications of kind
+            `adminUserAlert`.
+            Only applicable for administrators, not users.
+          type: array
+          items:
+            $ref: '#/components/schemas/UserAlertTypeEnum'
+        forwardMessageCategories:
+          description: >-
+            The internal names or ids of message categories to which new messages
+            to system will be forwarded to the administrator e-mail.
+            Not tied to any notification kind.
+            Only applicable for administrators, not users.
+          type: array
+          items:
+            type: string
+
+
+    NotificationSettingsView:
+      description: >-
+        Contains the current notification settings for a given user.
+        The regular user (member / broker) and administrator notification
+        settings use different notification kinds.
+      allOf:
+        - $ref: '#/components/schemas/BaseNotificationSettings'
+        - type: object
+          properties:
+            notifications:
+              description: >-
+                Per notification kind, indicates the mediums it is sent.
+                It is guaranteed that all and only the allowed kinds are sent.
+              type: array
+              items:
+                $ref: '#/components/schemas/NotificationKindMediums'
+
+            userAccounts:
+              description: >-
+                Contains the settings for each user account.
+                Only applicable for users (members / brokers), not administrators.
+              type: array
+              items:
+                $ref: '#/components/schemas/AccountNotificationSettingsView'
+
+            payments:
+              description: >-
+                The payment types to be notified for notifications of kind
+                `adminPaymentPerformed`.
+                Only applicable for administrators, not users (members / brokers).
+              type: array
+              items:
+                $ref: '#/components/schemas/TransferType'
+            authorizablePayments:
+              description: >-
+                The payment types to be notified for notifications of kind
+                `adminPaymentAwaitingAuthorization`.
+                Only applicable for administrators, not users (members / brokers).
+              type: array
+              items:
+                $ref: '#/components/schemas/TransferType'
+            externalPaymentsFailed:
+              description: >-
+                The payment types to be notified for notifications of kind
+                `adminExternalPaymentPerformedFailed`.
+                Only applicable for administrators, not users (members / brokers).
+              type: array
+              items:
+                $ref: '#/components/schemas/TransferType'
+            externalPaymentsExpired:
+              description: >-
+                The payment types to be notified for notifications of kind
+                `adminExternalPaymentExpired`.
+                Only applicable for administrators, not users (members / brokers).
+              type: array
+              items:
+                $ref: '#/components/schemas/TransferType'
+            voucherConfigurations:
+              description: >-
+                The voucher configurations to be notified for notifications of
+                kinds `adminGeneratedVouchersAboutToExpire`
+                and `adminGeneratedVouchersExpired`.
+                Only applicable for administrators, not users (members / brokers).
+              type: array
+              items:
+                $ref: '#/components/schemas/EntityReference'
+            voucherConfigurationsBuying:
+              description: >-
+                The voucher configurations to be notified for notifications of kind
+                `adminVoucherBuyingAboutToExpire`.
+                Only applicable for administrators, not users (members / brokers).
+              type: array
+              items:
+                $ref: '#/components/schemas/EntityReference'
+            userGroups:
+              description: >-
+                The groups to be notified for notifications of kind
+                `adminUserRegistration`.
+                Only applicable for administrators, not users (members / brokers).
+              type: array
+              items:
+                $ref: '#/components/schemas/Group'
+            systemAlerts:
+              description: >-
+                The kinds of system alerts to be notified for notifications of kind
+                `adminSystemAlert`.
+                Only applicable for administrators, not users (members / brokers).
+              type: array
+              items:
+                $ref: '#/components/schemas/SystemAlertTypeEnum'
+            userAlerts:
+              description: >-
+                The kinds of user alerts to be notified for notifications of kind
+                `adminUserAlert`.
+                Only applicable for administrators, not users (members / brokers).
+              type: array
+              items:
+                $ref: '#/components/schemas/UserAlertTypeEnum'
+            forwardMessageCategories:
+              description: >-
+                The message categories to which new messages to system will be
+                forwarded to the administrator e-mail.
+                Not tied to any notification kind.
+                Only applicable for administrators, not users (members / brokers).
+              type: array
+              items:
+                $ref: '#/components/schemas/EntityReference'
+
 
     NotificationsPermissions:
       description: >-
@@ -38998,6 +41015,44 @@ components:
           type: object
           additionalProperties:
             type: string
+
+    Product:
+      description: >-
+        Reference to a product
+      allOf:
+        - $ref: '#/components/schemas/InternalNamedEntity'
+        - type: object
+          properties:
+            kind:
+              $ref: '#/components/schemas/ProductKind'
+
+    ProductAssignmentLog:
+      description: >-
+        Information regarding a specific product assignment change
+      type: object
+      properties:
+        by:
+          $ref: '#/components/schemas/User'
+        product:
+          $ref: '#/components/schemas/Product'
+        date:
+          description: >-
+            When the action was performed
+          type: string
+          format: date-time
+        action:
+          $ref: '#/components/schemas/ProductAssignmentActionEnum'
+
+
+    ProductWithUserAccount:
+      description: >-
+        Reference to a product, together with the related user account
+      allOf:
+        - $ref: '#/components/schemas/Product'
+        - type: object
+          properties:
+            userAccount:
+              $ref: '#/components/schemas/AccountType'
 
     ProfileFieldActions:
       description: >-
@@ -41983,6 +44038,71 @@ components:
         - $ref: '#/components/schemas/BasicAdQueryFilters'
         - type: object
 
+    UserAlert:
+      description: >-
+        An alert for a specific user
+      allOf:
+        - $ref: '#/components/schemas/Alert'
+        - type: object
+          properties:
+            type:
+              $ref: '#/components/schemas/UserAlertTypeEnum'
+            user:
+              $ref: '#/components/schemas/User'
+
+
+    UserAlertDataForSearch:
+      description: >-
+        Contains data for searching user alerts
+      type: object
+      properties:
+        groups:
+          description: >-
+            The groups the authenticated user can use to filter users.
+          type: array
+          items:
+            $ref: '#/components/schemas/Group'
+
+    UserAlertQueryFilters:
+      description: >-
+        Query filters for searching user alerts
+      allOf:
+        - $ref: '#/components/schemas/QueryFilters'
+        - type: object
+          properties:
+            datePeriod:
+              description: >-
+                The minimum / maximum alert date.
+                Is expressed an array, with the lower bound as first element, and
+                the upper bound as second element. When only one element, will have
+                just the lower bound. To specify only the upper bound, prefix the value
+                with a comma.
+              type: array
+              items:
+                type: string
+                format: date-time
+            types:
+              description: >-
+                The types of user alerts to search
+              type: array
+              items:
+                $ref: '#/components/schemas/UserAlertTypeEnum'
+            groups:
+              description: >-
+                Either the ids or internal names of the alert user
+              type: array
+              items:
+                type: string
+            brokers:
+              description: >-
+                Either the ids or identification methods the alert user's brokers
+              type: array
+              items:
+                type: string
+            user:
+              description: Either the id or identifier of the alert user
+              type: string
+
     UserAuth:
       description: >-
         Contains information returned after logging in an user.
@@ -42045,6 +44165,31 @@ components:
           description: >-
             Can the authenticated user view the assigned members of this broker?
           type: boolean
+
+    UserBrokersData:
+      description: >-
+        Contains the current user brokers, as well as other information
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+        brokers:
+          description: >-
+            Brokers currently assigned, together with additional information
+          type: array
+          items:
+            $ref: '#/components/schemas/Brokering'
+        editable:
+          description: >-
+            Can the authenticated user manage brokers of this user?
+          type: boolean
+        history:
+          description: >-
+            Contains the history entries for all brokering changes
+          type: array
+          items:
+            $ref: '#/components/schemas/BrokeringLog'
+
 
     UserClientTypePermissions:
       description: >-
@@ -42763,6 +44908,56 @@ components:
           $ref: '#/components/schemas/AvailabilityEnum'
         mobileAvailability:
           $ref: '#/components/schemas/AvailabilityEnum'
+
+    UserProductAssignmentData:
+      description: >-
+        Contains the current user individually assigned products,
+        as well as other information
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+        group:
+          $ref: '#/components/schemas/Group'
+        userProducts:
+          description: >-
+            Products currently assigned to this individual user
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductWithUserAccount'
+        groupProducts:
+          description: >-
+            Products currently assigned to the user's group
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductWithUserAccount'
+        groupSetProducts:
+          description: >-
+            Products currently assigned to the user's group set
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductWithUserAccount'
+        assignable:
+          description: >-
+            If the authenticated user can assign more products to the user, this
+            is the list of possible products to assign to the user.
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductWithUserAccount'
+        unassignable:
+          description: >-
+            Either internal names or ids of currently assigned products that
+            the logged user can unassign from the user.
+          type: array
+          items:
+            type: string
+        history:
+          description: >-
+            Contains the history entries for all product assignment changes
+          type: array
+          items:
+            $ref: '#/components/schemas/ProductAssignmentLog'
+
 
     UserProfilePermissions:
       description: >-
