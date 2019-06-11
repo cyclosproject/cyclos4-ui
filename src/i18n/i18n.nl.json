@@ -39,6 +39,10 @@
     "cancel": "Annuleer",
     "close": "Sluiten",
     "submit": "Verzenden",
+    "remove": "Remove",
+    "remove.confirm": "Are you sure to remove the item {item}?",
+    "remove.done": "The item {item} was removed",
+    "remove.tooltip": "Remove {item}",
     "save": "Opslaan",
     "addNew": "Nieuw",
     "yes": "Ja",
@@ -105,6 +109,11 @@
         "sat": "Z"
       }
     },
+    "range": {
+      "fromTo": "From {min} to {max}",
+      "from": "From {min}",
+      "to": "Up to {max}"
+    },
     "fileSize": {
       "b": "{n} bytes",
       "k": "{n}KB",
@@ -136,7 +145,7 @@
     "maxItems": "Kan niet meer dan {max} elementen toevoegen",
     "validation": "De actie kan niet worden verwerkt, omdat er validatiefouten zijn",
     "staleEntity": "Deze gegevens kunnen niet worden opgeslagen omdat het is gewijzigd door iemand anders.<br>Laad de pagina opnieuw en herstart de bewerking.",
-    "removeDataInUse": "Deze gegevens kunnen niet worden verwijderd, omdat het momenteel in gebruik is.",
+    "removeDataInUse": "This item cannot be removed because it is currently in use.",
     "notFound": "De locatie die u hebt getypt of geprobeerd te openen is niet gevonden",
     "notFound.type": "De gevraagde gegevens kunnen niet worden gevonden: {type}",
     "notFound.typeKey": "De gevraagde gegevens kunnen niet worden gevonden: {type} met de sleutel {key}",
@@ -184,6 +193,7 @@
     "operators": "Operators",
     "operators.operators": "Operators",
     "operators.register": "Register operator",
+    "operators.groups": "Operator groups",
     "brokering": "Brokering",
     "brokering.users": "Users",
     "brokering.register": "Register user",
@@ -689,6 +699,50 @@
       "alphabeticallyAsc": "Naam (A-Z)",
       "alphabeticallyDesc": "Naam (Z-A)"
     }
+  },
+  "operatorGroup": {
+    "title": {
+      "list": "Operator groups",
+      "view": "Operator group",
+      "new": "New operator group",
+      "edit": "Edit operator group",
+      "permissions": "Permissions",
+      "accountAccess": "Account access",
+      "generalAccount": "General account operations"
+    },
+    "mobileTitle": {
+      "list": "Operator groups",
+      "view": "Operator group",
+      "new": "New group",
+      "edit": "Edit group",
+      "permissions": "Permissions",
+      "accountAccess": "Account access",
+      "generalAccount": "General operations"
+    },
+    "accountAccess": "Account visibility",
+    "accountAccess.full": "Full",
+    "accountAccess.incoming": "Only incoming payments",
+    "accountAccess.outgoing": "Only outgoing payments",
+    "accountAccess.own": "Received or paid by operator",
+    "accountAccess.none": "Not visible",
+    "performPayments": "Perform payments",
+    "performPayments.requiresAuthorization.view": ", requires authorization",
+    "performPayments.maxAmountPerDay.view": ", max. {max} per day",
+    "performPayments.requiresAuthorization": "Requires authorization",
+    "performPayments.maxAmountPerDay": "Daily limit",
+    "authorizePayments": "Authorize payments",
+    "paymentNotifications": "Payment notifications",
+    "paymentNotifications.above": "Only notify payments above",
+    "paymentNotifications.below": "Only notify payments below",
+    "chargebackPayments": "Chargeback payments",
+    "restrictPaymentsToUsers": "Restrict payments to",
+    "editOwnProfile": "Edit own profile",
+    "notifications": "Notifications",
+    "viewAdvertisements": "View advertisements",
+    "registerUsersAsBroker": "Register users (as broker)",
+    "runOperations": "Run operations",
+    "created": "The operator group was created",
+    "saved": "The operator group was saved"
   },
   "userStatus": {
     "current": "Current status",
