@@ -36,10 +36,10 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
     super.ngOnInit();
     this.headingActions = [this.printAction];
     const id = this.route.snapshot.paramMap.get('id');
-    this.marketplaceService.viewAd({ ad: id })
+    this.addSub(this.marketplaceService.viewAd({ ad: id })
       .subscribe(ad => {
         this.data = ad;
-      });
+      }));
   }
 
   onDataInitialized(ad: AdView) {

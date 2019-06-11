@@ -21,13 +21,14 @@ export enum MenuType {
 
 /** Contains the top-level (root) menus */
 export type RootMenu =
-  'dashboard' | 'banking' | 'operators' | 'marketplace' | 'home' |
-  'publicDirectory' | 'publicMarketplace' | 'content' |
+  'dashboard' | 'banking' | 'operators' | 'brokering' | 'marketplace' |
+  'home' | 'publicDirectory' | 'publicMarketplace' | 'content' |
   'personal' | 'registration' | 'login' | 'logout';
 export module RootMenu {
   export const DASHBOARD: RootMenu = 'dashboard';
   export const BANKING: RootMenu = 'banking';
   export const OPERATORS: RootMenu = 'operators';
+  export const BROKERING: RootMenu = 'brokering';
   export const MARKETPLACE: RootMenu = 'marketplace';
   export const HOME: RootMenu = 'home';
   export const PUBLIC_DIRECTORY: RootMenu = 'publicDirectory';
@@ -39,7 +40,7 @@ export module RootMenu {
   export const LOGOUT: RootMenu = 'logout';
   export function values(): RootMenu[] {
     return [
-      DASHBOARD, BANKING, OPERATORS, MARKETPLACE,
+      DASHBOARD, BANKING, OPERATORS, BROKERING, MARKETPLACE,
       HOME, PUBLIC_DIRECTORY, PUBLIC_MARKETPLACE,
       CONTENT, PERSONAL, REGISTRATION, LOGIN, LOGOUT
     ];
@@ -62,12 +63,13 @@ export class Menu {
   }
 }
 export module Menu {
+
   // Standalone
   export const HOME = new Menu(RootMenu.HOME, 'HOME');
   export const DASHBOARD = new Menu(RootMenu.DASHBOARD, 'DASHBOARD');
   export const PUBLIC_DIRECTORY = new Menu(RootMenu.PUBLIC_DIRECTORY, 'PUBLIC_DIRECTORY');
   export const PUBLIC_MARKETPLACE = new Menu(RootMenu.PUBLIC_MARKETPLACE, 'PUBLIC_MARKETPLACE');
-  export const REGISTRATION = new Menu(RootMenu.REGISTRATION, 'REGISTRATION');
+  export const PUBLIC_REGISTRATION = new Menu(RootMenu.REGISTRATION, 'PUBLIC_REGISTRATION');
   export const LOGIN = new Menu(RootMenu.LOGIN, 'LOGIN');
   export const LOGOUT = new Menu(RootMenu.LOGOUT, 'LOGOUT');
 
@@ -79,12 +81,18 @@ export module Menu {
   export const SCHEDULED_PAYMENTS = new Menu(RootMenu.BANKING, 'SCHEDULED_PAYMENTS');
   export const AUTHORIZED_PAYMENTS = new Menu(RootMenu.BANKING, 'AUTHORIZED_PAYMENTS');
 
-  // Marketplace
+  // Users / Marketplace
   export const SEARCH_USERS = new Menu(RootMenu.MARKETPLACE, 'SEARCH_USERS');
   export const SEARCH_ADS = new Menu(RootMenu.MARKETPLACE, 'SEARCH_ADS');
+  export const ADMIN_REGISTRATION = new Menu(RootMenu.MARKETPLACE, 'ADMIN_REGISTRATION');
 
   // Operators
   export const MY_OPERATORS = new Menu(RootMenu.OPERATORS, 'MY_OPERATORS');
+  export const REGISTER_OPERATOR = new Menu(RootMenu.OPERATORS, 'REGISTER_OPERATOR');
+
+  // Brokering
+  export const MY_BROKERED_USERS = new Menu(RootMenu.BROKERING, 'MY_BROKERED_USERS');
+  export const BROKER_REGISTRATION = new Menu(RootMenu.BROKERING, 'BROKER_REGISTRATION');
 
   // Personal
   export const MY_PROFILE = new Menu(RootMenu.PERSONAL, 'MY_PROFILE');

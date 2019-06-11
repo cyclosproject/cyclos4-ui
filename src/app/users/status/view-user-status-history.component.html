@@ -1,5 +1,9 @@
 <page-layout [ready]="data$ | async">
-  <page-content *ngIf="data" [heading]="i18n.userStatus.title.history"
+  <ng-container *ngIf="data then content"></ng-container>
+</page-layout>
+
+<ng-template #content>
+  <page-content [heading]="i18n.userStatus.title.history"
     [mobileHeading]="i18n.userStatus.mobileTitle.history">
 
     <ng-container *ngIf="operator">
@@ -38,4 +42,4 @@
       </tbody>
     </table>
   </results-layout>
-</page-layout>
+</ng-template>

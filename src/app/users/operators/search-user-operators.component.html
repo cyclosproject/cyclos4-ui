@@ -1,45 +1,46 @@
 <page-layout [ready]="data$ | async">
-  <ng-container *ngIf="data; else loading">
-    <page-content mode="filters"
-      [heading]="self ? i18n.user.title.myOperators : i18n.user.title.userOperators"
-      [mobileHeading]="self ? i18n.user.mobileTitle.myOperators : i18n.user.mobileTitle.userOperators"
-      [headingActions]="headingActions$ | async">
-      <form [formGroup]="form"
-        class="filters-form filters-form-separator border-bottom-0">
-        <div class="row">
-          <div *ngIf="data.groups?.length > 1" class="col-12 col-md-6">
-            <multi-selection-field labelPosition="side"
-              formControlName="operatorGroups"
-              [label]="i18n.user.groupFilter">
-              <field-option *ngFor="let group of data.groups"
-                [value]="group.id" [internalName]="group.internalName"
-                [id]="group.id" [text]="group.name">
-              </field-option>
-            </multi-selection-field>
-          </div>
-          <ng-container *ngIf="layout.gtxxs$ | async">
-            <ng-container *ngIf="moreFilters$ | async">
-              <div class="col-12 col-md-6"
-                *ngFor="let cf of advancedFields$ | async">
-                <custom-field-filter labelPosition="side" [field]="cf"
-                  [formControl]="form.get('customValues').get(cf.internalName)">
-                </custom-field-filter>
-              </div>
-            </ng-container>
-          </ng-container>
-        </div>
-      </form>
-    </page-content>
-
-    <users-results [results]="results$ | async" [rendering$]="rendering$"
-      [data]="data$ | async" resultType="list" resultKind="my-operator"
-      (update)="update($event)">
-    </users-results>
-  </ng-container>
+  <ng-container *ngIf="data then content"></ng-container>
 </page-layout>
 
-<ng-template #loading>
-  <page-content>
-    <spinner></spinner>
+<ng-template #content>
+  <page-content mode="filters"
+    [heading]="self ? i18n.user.title.myOperators : i18n.user.title.userOperators"
+    [mobileHeading]="self ? i18n.user.mobileTitle.myOperators : i18n.user.mobileTitle.userOperators"
+    [headingActions]="headingActions$ | async">
+    <form [formGroup]="form"
+      class="filters-form filters-form-separator border-bottom-0">
+      <div class="row">
+        <div class="col-12 col-md-6" *ngIf="!self">
+          <label-value [label]="i18n.general.user" kind="fieldView"
+            labelPosition="side">
+            <user-link [user]="data.user"></user-link>
+          </label-value>
+        </div>
+        <div class="col-12 col-md-6" *ngIf="data.groups?.length > 1">
+          <multi-selection-field labelPosition="side"
+            formControlName="operatorGroups" [label]="i18n.user.groupFilter">
+            <field-option *ngFor="let group of data.groups" [value]="group.id"
+              [internalName]="group.internalName" [id]="group.id"
+              [text]="group.name">
+            </field-option>
+          </multi-selection-field>
+        </div>
+        <ng-container *ngIf="layout.gtxxs$ | async">
+          <ng-container *ngIf="moreFilters$ | async">
+            <div class="col-12 col-md-6"
+              *ngFor="let cf of advancedFields$ | async">
+              <custom-field-filter labelPosition="side" [field]="cf"
+                [formControl]="form.get('customValues').get(cf.internalName)">
+              </custom-field-filter>
+            </div>
+          </ng-container>
+        </ng-container>
+      </div>
+    </form>
   </page-content>
+
+  <users-results [results]="results$ | async" [rendering$]="rendering$"
+    [data]="data$ | async" resultType="list"
+    [resultKind]="self ? 'my-operator' : 'user'" (update)="update($event)">
+  </users-results>
 </ng-template>

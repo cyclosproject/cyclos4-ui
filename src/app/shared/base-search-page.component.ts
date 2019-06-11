@@ -1,6 +1,7 @@
 import { HttpResponse } from '@angular/common/http';
 import { Injector, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { NextRequestState } from 'app/core/next-request-state';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BasePageComponent } from 'app/shared/base-page.component';
@@ -11,7 +12,6 @@ import { ResultType } from 'app/shared/result-type';
 import { isEqual } from 'lodash';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { NextRequestState } from 'app/core/next-request-state';
 
 /**
  * Base class implemented by search pages.
@@ -26,7 +26,6 @@ export abstract class BaseSearchPageComponent<D, R> extends BasePageComponent<D>
   resultTypeControl = new FormControl(null);
   results$ = new BehaviorSubject<PagedResults<R>>(null);
   allowedResultTypes$ = new BehaviorSubject([ResultType.LIST]);
-  loaded$ = new BehaviorSubject(false);
   rendering$ = new BehaviorSubject(false);
   moreFilters$ = new BehaviorSubject(false);
   previousResultType: ResultType;
@@ -65,7 +64,6 @@ export abstract class BaseSearchPageComponent<D, R> extends BasePageComponent<D>
       }
       this.previousValue = value;
     }), true);
-    this.loaded = true;
 
     // When starting with categories, don't initially search
     if (this.previousResultType !== ResultType.CATEGORIES) {
@@ -104,13 +102,6 @@ export abstract class BaseSearchPageComponent<D, R> extends BasePageComponent<D>
   }
   set rendering(rendering: boolean) {
     this.rendering$.next(rendering);
-  }
-
-  get loaded(): boolean {
-    return this.loaded$.value;
-  }
-  set loaded(loaded: boolean) {
-    this.loaded$.next(loaded);
   }
 
   get allowedResultTypes(): ResultType[] {

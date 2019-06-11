@@ -1,16 +1,17 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from 'app/shared/shared.module';
+import { OperatorRegistrationComponent } from 'app/users/operators/operator-registration.component';
 import { SearchUserOperatorsComponent } from 'app/users/operators/search-user-operators.component';
 import { AddressFormComponent } from 'app/users/profile/address-form.component';
 import { EditProfileComponent } from 'app/users/profile/edit-profile.component';
 import { ValidateEmailChangeComponent } from 'app/users/profile/validate-email-change.component';
 import { VerifyPhoneComponent } from 'app/users/profile/verify-phone.component';
 import { ViewProfileComponent } from 'app/users/profile/view-profile.component';
-import { PublicRegistrationComponent } from 'app/users/registration/public-registration.component';
 import { RegistrationStepConfirmComponent } from 'app/users/registration/registration-step-confirm.component';
 import { RegistrationStepDoneComponent } from 'app/users/registration/registration-step-done.component';
 import { RegistrationStepFieldsComponent } from 'app/users/registration/registration-step-fields.component';
 import { RegistrationStepGroupComponent } from 'app/users/registration/registration-step-group.component';
+import { UserRegistrationComponent } from 'app/users/registration/user-registration.component';
 import { ValidateRegistrationComponent } from 'app/users/registration/validate-registration.component';
 import { AddContactDialogComponent } from 'app/users/search/add-contact-dialog.component';
 import { ContactListComponent } from 'app/users/search/contact-list.component';
@@ -35,7 +36,6 @@ import { SearchUserAlertsComponent } from 'app/user-alerts/search/search-user-al
     UsersResultsComponent,
     ContactListComponent,
     AddContactDialogComponent,
-    SearchUserOperatorsComponent,
 
     ViewProfileComponent,
     EditProfileComponent,
@@ -43,12 +43,15 @@ import { SearchUserAlertsComponent } from 'app/user-alerts/search/search-user-al
     VerifyPhoneComponent,
     ValidateEmailChangeComponent,
 
-    PublicRegistrationComponent,
+    UserRegistrationComponent,
     RegistrationStepGroupComponent,
     RegistrationStepFieldsComponent,
     RegistrationStepConfirmComponent,
     RegistrationStepDoneComponent,
     ValidateRegistrationComponent,
+
+    SearchUserOperatorsComponent,
+    OperatorRegistrationComponent,
 
     ViewUserStatusComponent,
     ViewUserStatusHistoryComponent,

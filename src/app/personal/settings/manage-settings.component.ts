@@ -11,7 +11,7 @@ import { BasePageComponent } from 'app/shared/base-page.component';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ManageSettingsComponent
-  extends BasePageComponent<any>
+  extends BasePageComponent<void>
   implements OnInit {
 
   darkThemeControl: FormControl;
@@ -27,6 +27,5 @@ export class ManageSettingsComponent
     this.addSub(this.darkThemeControl.valueChanges.subscribe(value => {
       this.layout.darkTheme = value;
     }));
-    this.data = true;
   }
 }

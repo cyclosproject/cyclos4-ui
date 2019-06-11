@@ -44,11 +44,11 @@ export class VerifyPhoneComponent extends BaseComponent implements OnInit {
 
   /** Sends the verification code */
   sendCode() {
-    this.phonesService.sendPhoneVerificationCode({ id: this.phone.id }).subscribe(number => {
+    this.addSub(this.phonesService.sendPhoneVerificationCode({ id: this.phone.id }).subscribe(number => {
       this.message = this.i18n.phone.verify.done(number);
       this.code.setValue(null);
       this.codeField.focus();
-    });
+    }));
   }
 
   private set message(message: string) {
@@ -62,7 +62,7 @@ export class VerifyPhoneComponent extends BaseComponent implements OnInit {
     if (!validateBeforeSubmit(this.code)) {
       return;
     }
-    this.phonesService.verifyPhone({
+    this.addSub(this.phonesService.verifyPhone({
       id: this.phone.id,
       code: this.code.value
     }).subscribe(status => {
@@ -82,6 +82,6 @@ export class VerifyPhoneComponent extends BaseComponent implements OnInit {
           this.verified.emit(true);
           break;
       }
-    });
+    }));
   }
 }

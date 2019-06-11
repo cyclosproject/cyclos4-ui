@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { User, UserStatusData } from 'app/api/models';
 import { UserStatusService } from 'app/api/services/user-status.service';
-import { UserHelperService } from 'app/core/user-helper.service.ts';
+import { UserHelperService } from 'app/core/user-helper.service';
 import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
 
 /**
@@ -35,8 +35,8 @@ export class ViewUserStatusHistoryComponent extends BaseViewPageComponent<UserSt
   ngOnInit() {
     super.ngOnInit();
     this.key = this.route.snapshot.paramMap.get('key');
-    this.userStatusService.getUserStatus({ user: this.key, fields: ['user', 'history'] }).subscribe(status => {
+    this.addSub(this.userStatusService.getUserStatus({ user: this.key, fields: ['user', 'history'] }).subscribe(status => {
       this.data = status;
-    });
+    }));
   }
 }

@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, Injector, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import {
-  AddressNew, AvailabilityEnum, GroupForRegistration, Image, PhoneNew,
-  UserDataForNew, UserNew, UserRegistrationResult
+  AddressNew, AvailabilityEnum, Group, GroupForRegistration, GroupKind,
+  Image, PhoneNew, RoleEnum, UserDataForNew, UserNew, UserRegistrationResult
 } from 'app/api/models';
 import { ImagesService, UsersService } from 'app/api/services';
+import { UserHelperService } from 'app/core/user-helper.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { blank, copyProperties, empty, focusFirstField, scrollTop, validateBeforeSubmit } from 'app/shared/helper';
@@ -12,22 +13,6 @@ import { BehaviorSubject, Observable, of, Subscription, timer } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
 export type RegistrationStep = 'group' | 'fields' | 'confirm' | 'done';
-
-
-/** Validator function that ensures password and confirmation match */
-const PASSWORDS_MATCH_VAL: ValidatorFn = control => {
-  const currVal = control.value;
-  if (control.touched && currVal != null && currVal !== '') {
-    const parent = control.parent;
-    const origVal = parent.get('value') == null ? '' : parent.get('value').value;
-    if (origVal !== currVal) {
-      return {
-        passwordsMatch: true
-      };
-    }
-  }
-  return null;
-};
 
 /** Validator function that ensures password and confirmation match */
 const SEGURITY_ANSWER_VAL: ValidatorFn = control => {
@@ -45,17 +30,19 @@ const SEGURITY_ANSWER_VAL: ValidatorFn = control => {
 };
 
 /**
- * User registration from guest
+ * User registration. Works for guest, by admin and by broker
  */
 @Component({
-  selector: 'public-registration',
-  templateUrl: 'public-registration.component.html',
+  selector: 'user-registration',
+  templateUrl: 'user-registration.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PublicRegistrationComponent
+export class UserRegistrationComponent
   extends BasePageComponent<UserDataForNew>
   implements OnInit, OnDestroy {
 
+  groupSets: Group[];
+  groups: GroupForRegistration[];
   steps: RegistrationStep[] = ['group', 'fields', 'confirm', 'done'];
   group: FormControl;
   form: FormGroup;
@@ -86,34 +73,56 @@ export class PublicRegistrationComponent
   constructor(
     injector: Injector,
     private usersService: UsersService,
+    private userHelper: UserHelperService,
     private imagesService: ImagesService) {
     super(injector);
-  }
-
-  get groups(): GroupForRegistration[] {
-    return this.dataForUiHolder.dataForUi.publicRegistrationGroups;
   }
 
   ngOnInit() {
     super.ngOnInit();
 
-    const groups = this.groups;
+    const auth = this.login.auth || {};
+    const role = auth.role;
 
-    if (this.login.user || empty(groups)) {
-      // This component is only for guests. Also, there must be registration groups
-      this.router.navigateByUrl('/');
+    if (role == null) {
+      // When guest, the possible groups are obtained from DataForUi
+      this.initializeGroups(this.dataForUiHolder.dataForUi.publicRegistrationGroups);
+    } else {
+      // When admin / broker, fetch the possible registration groups from data, as they are more complete
+      this.addSub(this.usersService.getUserDataForSearch({
+        broker: role === RoleEnum.BROKER ? ApiHelper.SELF : null,
+        fields: ['groups', 'groupsForRegistration']
+      }).subscribe(data => {
+        this.groupSets = data.groups.filter(g => g.kind === GroupKind.GROUP_SET);
+        const hasRootGroups = data.groups.find(g => g.kind !== GroupKind.GROUP_SET && g.groupSet == null);
+        if (hasRootGroups) {
+          this.groupSets.unshift(null);
+        }
+        this.initializeGroups(data.groupsForRegistration.filter(g => g.kind !== GroupKind.GROUP_SET));
+      }));
+    }
+  }
+
+  private initializeGroups(groups: (GroupForRegistration | Group)[]) {
+    if (this.groups != null) {
+      // Already initialized
       return;
     }
-
-    // Initialize the group value
-    this.group = new FormControl(groups[0].id, Validators.required);
-    if (groups.length === 1) {
-      // When there's a single group, fetch the data already
-      this.steps = this.steps.filter(s => s !== 'group');
-      this.showFields();
+    this.groups = groups;
+    if (empty(this.groups)) {
+      // No possible registration groups - navigate to home
+      this.router.navigateByUrl('/');
     } else {
-      // Initialize on the groups step
-      this.step = 'group';
+      // Initialize the group value
+      this.group = new FormControl(groups[0].id, Validators.required);
+      if (groups.length === 1) {
+        // When there's a single group, fetch the data already
+        this.steps = this.steps.filter(s => s !== 'group');
+        this.showFields();
+      } else {
+        // Initialize on the groups step
+        this.step = 'group';
+      }
     }
   }
 
@@ -125,18 +134,18 @@ export class PublicRegistrationComponent
 
       // ... and remove it server-side
       this.errorHandler.requestWithCustomErrorHandler(() => {
-        this.imagesService.deleteImage({ idOrKey: this.image.id }).subscribe();
+        this.addSub(this.imagesService.deleteImage({ idOrKey: this.image.id }).subscribe());
       });
     }
   }
 
   showFields() {
-    this.usersService.getUserDataForNew({ group: this.group.value })
+    this.addSub(this.usersService.getUserDataForNew({ group: this.group.value })
       .subscribe(data => {
         this.data = data;
         this.prepareForms(data);
         focusFirstField();
-      });
+      }));
   }
 
   backToGroup() {
@@ -158,72 +167,9 @@ export class PublicRegistrationComponent
       hiddenFields: [user.hiddenFields || []]
     });
 
-    // Full name
-    const nameActions = data.profileFieldActions.name;
-    if (nameActions && nameActions.edit) {
-      this.form.setControl('name',
-        this.formBuilder.control(user.name, Validators.required, this.serverSideValidator('name'))
-      );
-    }
-    // Login name
-    const usernameActions = data.profileFieldActions.username;
-    if (usernameActions && usernameActions.edit && !data.generatedUsername) {
-      this.form.setControl('username',
-        this.formBuilder.control(user.username, Validators.required, this.serverSideValidator('username'))
-      );
-    }
-    // E-mail
-    const emailActions = data.profileFieldActions.username;
-    if (emailActions && emailActions.edit) {
-      const val = [];
-      if (data.emailRequired) {
-        val.push(Validators.required);
-      }
-      val.push(Validators.email);
-      this.form.setControl('email',
-        this.formBuilder.control(user.email, val, this.serverSideValidator('email'))
-      );
-    }
-
-    // Custom fields
-    this.form.setControl('customValues',
-      this.fieldHelper.customValuesFormGroup(data.customFields, {
-        asyncValProvider: cf => this.serverSideValidator(cf.internalName)
-      }));
-
-    // Phones
-    const phoneConfiguration = data.phoneConfiguration;
-
-    // Mobile
-    const mobileAvailability = phoneConfiguration.mobileAvailability;
-    if (mobileAvailability !== AvailabilityEnum.DISABLED) {
-      const val = mobileAvailability === AvailabilityEnum.REQUIRED ? Validators.required : null;
-      const phone = phoneConfiguration.mobilePhone;
-      this.mobileForm = this.formBuilder.group({
-        name: phone.name,
-        number: [phone.number, val, this.serverSideValidator('mobilePhone')],
-        hidden: phone.hidden
-      });
-    } else {
-      this.mobileForm = null;
-    }
-
-    // Land-line
-    const landLineAvailability = phoneConfiguration.landLineAvailability;
-    if (landLineAvailability !== AvailabilityEnum.DISABLED) {
-      const val = landLineAvailability === AvailabilityEnum.REQUIRED ? Validators.required : null;
-      const phone = phoneConfiguration.landLinePhone;
-      this.landLineForm = this.formBuilder.group({
-        name: phone.name,
-        number: [phone.number, val, this.serverSideValidator('landLinePhone')],
-        hidden: phone.hidden
-      });
-      if (phoneConfiguration.extensionEnabled) {
-        this.landLineForm.setControl('extension', this.formBuilder.control(phone.extension));
-      }
-    } else {
-      this.landLineForm = null;
-    }
+    // The profile fields and phones are handled by the helper
+    [this.mobileForm, this.landLineForm] = this.userHelper.setupRegistrationForm(
+      this.form, data, (name) => this.serverSideValidator(name));
 
     // Address
     const addressConfiguration = data.addressConfiguration;
@@ -251,6 +197,10 @@ export class PublicRegistrationComponent
   }
 
   private serverSideValidator(field: string): AsyncValidatorFn {
+    if (this.login.user) {
+      // These async providers only work for guests
+      return null;
+    }
     return (c: AbstractControl): Observable<ValidationErrors | null> => {
       let val = c.value;
       if (empty(val) || !c.dirty) {
@@ -284,7 +234,7 @@ export class PublicRegistrationComponent
     if (this.mobileForm) {
       fullForm.setControl('mobile', this.mobileForm);
     }
-    if (this.landLineForm && !validateBeforeSubmit(this.landLineForm)) {
+    if (this.landLineForm) {
       fullForm.setControl('landLine', this.landLineForm);
     }
     if (this.addressForm && this.defineAddress.value) {
@@ -318,15 +268,7 @@ export class PublicRegistrationComponent
     });
 
     // Passwords
-    const passwordControls: FormGroup[] = [];
-    for (const pt of data.passwordTypes) {
-      passwordControls.push(this.formBuilder.group({
-        type: ApiHelper.internalNameOrId(pt),
-        checkConfirmation: true,
-        value: ['', Validators.required],
-        confirmationValue: ['', [Validators.required, PASSWORDS_MATCH_VAL]]
-      }));
-    }
+    const passwordControls = this.userHelper.passwordRegistrationForms(data);
     this.confirmForm.setControl('passwords', this.formBuilder.array(passwordControls));
 
     // Security question
@@ -354,12 +296,12 @@ export class PublicRegistrationComponent
     if (!validateBeforeSubmit(this.confirmForm)) {
       return;
     }
-    this.usersService.createUser({ body: this.userNew })
+    this.addSub(this.usersService.createUser({ body: this.userNew })
       .subscribe(result => {
         this.result = result;
         this.image = null;
         this.step = 'done';
-      });
+      }));
   }
 
   get userNew(): UserNew {
@@ -388,5 +330,12 @@ export class PublicRegistrationComponent
 
   goToLogin() {
     this.login.goToLoginPage('');
+  }
+
+  viewProfile() {
+    const result = this.result;
+    if (result) {
+      this.router.navigate(['users', result.user.id, 'profile']);
+    }
   }
 }

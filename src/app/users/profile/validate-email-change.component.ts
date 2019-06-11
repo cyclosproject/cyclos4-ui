@@ -28,7 +28,7 @@ export class ValidateEmailChangeComponent
 
   ngOnInit() {
     const key = this.route.snapshot.params.key;
-    this.usersService.validateEmailChange(key).subscribe(result => {
+    this.addSub(this.usersService.validateEmailChange(key).subscribe(result => {
       if (this.login.user && this.login.user.id !== result) {
         // Was logged-in as a different user
         this.login.logout();
@@ -37,7 +37,7 @@ export class ValidateEmailChangeComponent
         // Show the page normally
         this.data = result;
       }
-    });
+    }));
   }
 
   goToLogin() {

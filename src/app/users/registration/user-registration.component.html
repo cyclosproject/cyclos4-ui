@@ -1,11 +1,11 @@
-<page-layout [ready]="data$ | async" [ngSwitch]="step$ | async" size="large"
-  hideMenu>
+<page-layout [ready]="data$ | async" [ngSwitch]="step$ | async" size="large">
   <page-content *ngSwitchCase="'group'"
     [heading]="i18n.user.title.registration"
     [mobileHeading]="i18n.user.mobileTitle.registration"
     [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'" last>
     <div class="flex-grow-1">
-      <registration-step-group [groups]="groups" [control]="group">
+      <registration-step-group [groupSets]="groupSets" [groups]="groups"
+        [control]="group">
       </registration-step-group>
     </div>
     <actions ngClass="mt-3" forceRow>
@@ -68,7 +68,16 @@
       </registration-step-done>
     </div>
     <actions ngClass="mt-3" forceRow>
-      <button class="btn btn-primary" (click)="goToLogin()">
+      <button *ngIf="login.user" class="btn btn-primary" (click)="reload()">
+        {{ i18n.user.registration.registerAnotherUser }}
+      </button>
+      <button *ngIf="login.user" class="btn btn-primary"
+        (click)="viewProfile()">
+        {{ i18n.user.registration.viewProfile }}
+      </button>
+
+      <button *ngIf="!login.user" class="btn btn-primary"
+        (click)="goToLogin()">
         {{ i18n.menu.login }}
       </button>
     </actions>

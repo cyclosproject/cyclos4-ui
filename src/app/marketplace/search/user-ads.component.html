@@ -1,23 +1,18 @@
 <page-layout [ready]="data$ | async">
-  <ng-container *ngIf="loaded$ | async; else loading">
-    <page-content mode="filters"
-      [heading]="this.i18n.ad.title.owner(shortName)"
-      [mobileHeading]="this.i18n.ad.mobileTitle.owner">
-      <div class="filters-row">
-        <result-type-field [formControl]="resultTypeControl"
-          [allowedResultTypes]="allowedResultTypes$ | async">
-        </result-type-field>
-      </div>
-    </page-content>
-    <ads-results [results]="results$ | async" [rendering$]="rendering$"
-      singleUser [data]="data$ | async" [resultType]="resultType$ | async"
-      (update)="update($event)">
-    </ads-results>
-  </ng-container>
+  <ng-container *ngIf="data then content"></ng-container>
 </page-layout>
 
-<ng-template #loading>
-  <page-content>
-    <spinner></spinner>
+<ng-template #content>
+  <page-content mode="filters" [heading]="this.i18n.ad.title.owner(shortName)"
+    [mobileHeading]="this.i18n.ad.mobileTitle.owner">
+    <div class="filters-row">
+      <result-type-field [formControl]="resultTypeControl"
+        [allowedResultTypes]="allowedResultTypes$ | async">
+      </result-type-field>
+    </div>
   </page-content>
+  <ads-results [results]="results$ | async" [rendering$]="rendering$"
+    singleUser [data]="data$ | async" [resultType]="resultType$ | async"
+    (update)="update($event)">
+  </ads-results>
 </ng-template>
