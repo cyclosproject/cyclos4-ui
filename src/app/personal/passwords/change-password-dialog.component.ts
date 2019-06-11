@@ -66,13 +66,13 @@ export class ChangePasswordDialogComponent extends BaseComponent implements OnIn
     }
     const params: ChangePassword = cloneDeep(this.form.value);
     params.checkConfirmation = true;
-    this.passwordsService.changePassword({
+    this.addSub(this.passwordsService.changePassword({
       user: ApiHelper.SELF,
       type: this.type.id,
       body: params
     }).subscribe(() => {
       this.done.emit();
       this.modalRef.hide();
-    });
+    }));
   }
 }

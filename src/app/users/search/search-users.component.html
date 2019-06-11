@@ -1,4 +1,8 @@
 <page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data then content"></ng-container>
+</page-layout>
+
+<ng-template #content>
   <page-content mode="filters" [heading]="heading"
     [mobileHeading]="mobileHeading"
     [headingActions]="headingActions$ | async">
@@ -76,4 +80,4 @@
     [referencePoint]="((form.valueChanges | async) || form.value).distanceFilter"
     (update)="update($event)">
   </users-results>
-</page-layout>
+</ng-template>

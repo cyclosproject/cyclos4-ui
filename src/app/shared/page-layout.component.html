@@ -18,7 +18,7 @@
       'content-area-medium': (leftAreaVisible$ | async) ? false : size === 'medium',
       'content-area-large': (leftAreaVisible$ | async) ? false : size === 'large'
     }">
-    <ng-content *ngIf="ready; else loading"></ng-content>
+    <ng-content *ngIf="ready else loading"></ng-content>
   </div>
 </div>
 

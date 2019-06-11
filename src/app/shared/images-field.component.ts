@@ -137,7 +137,7 @@ export class ImagesFieldComponent extends BaseFormFieldComponent<string | string
         // Remove each temp image in the list
         this.uploadedImages
           .filter(i => result.removedImages.includes(i.id))
-          .forEach(i => this.imagesService.deleteImage({ idOrKey: i.id }).subscribe());
+          .forEach(i => this.addSub(this.imagesService.deleteImage({ idOrKey: i.id }).subscribe()));
 
         // Update the arrays
         this.images = this.images.filter(i => !result.removedImages.includes(i.id));
@@ -157,7 +157,7 @@ export class ImagesFieldComponent extends BaseFormFieldComponent<string | string
     // Remove all uploaded temporary files
     this.uploadedImages.forEach(i => {
       this.errorHandler.requestWithCustomErrorHandler(() => {
-        this.imagesService.deleteImage({ idOrKey: i.id }).subscribe();
+        this.addSub(this.imagesService.deleteImage({ idOrKey: i.id }).subscribe());
       });
     });
     this.images = [];

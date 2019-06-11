@@ -129,7 +129,7 @@ export class FilesFieldComponent extends BaseFormFieldComponent<string | string[
         // Remove each temp file in the list
         this.uploadedFiles
           .filter(i => result.removedFiles.includes(i.id))
-          .forEach(i => this.filesService.deleteRawFile({ id: i.id }).subscribe());
+          .forEach(i => this.addSub(this.filesService.deleteRawFile({ id: i.id }).subscribe()));
 
         // Update the arrays
         this.files = this.files.filter(i => !result.removedFiles.includes(i.id));
@@ -149,7 +149,7 @@ export class FilesFieldComponent extends BaseFormFieldComponent<string | string[
     // Remove all uploaded temporary files
     this.uploadedFiles.forEach(f => {
       this.errorHandler.requestWithCustomErrorHandler(() => {
-        this.filesService.deleteRawFile({ id: f.id }).subscribe();
+        this.addSub(this.filesService.deleteRawFile({ id: f.id }).subscribe());
       });
     });
 
@@ -173,9 +173,9 @@ export class FilesFieldComponent extends BaseFormFieldComponent<string | string[
   }
 
   downloadFile(event: MouseEvent, file: StoredFile) {
-    this.filesService.getRawFileContent({ id: file.id }).subscribe(blob => {
+    this.addSub(this.filesService.getRawFileContent({ id: file.id }).subscribe(blob => {
       download(blob, file.name, file.contentType);
-    });
+    }));
     event.stopPropagation();
     event.preventDefault();
   }

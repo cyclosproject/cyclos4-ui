@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { AvailabilityEnum, PasswordInput, PasswordModeEnum, User } from 'app/api/models';
+import { Router } from '@angular/router';
+import { AvailabilityEnum, PasswordInput, PasswordModeEnum, RoleEnum, User } from 'app/api/models';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { I18n } from 'app/i18n/i18n';
 import { ApiHelper } from 'app/shared/api-helper';
 import { empty } from 'app/shared/helper';
+import { ConditionalMenu, Menu } from 'app/shared/menu';
 
 /**
  * Helper service for authentication / password common functions
@@ -14,10 +16,21 @@ import { empty } from 'app/shared/helper';
 })
 export class AuthHelperService {
 
+  /**
+   * Returns a ConditionalMenu that calls `AuthHelperService.menuByRole`
+   */
+  static menuByRole(myMenu: Menu, managerOnly = true): ConditionalMenu {
+    return injector => {
+      const authHelper = injector.get(AuthHelperService);
+      return authHelper._menuByRole(myMenu, managerOnly);
+    };
+  }
+
   constructor(
     private i18n: I18n,
     private dataForUi: DataForUiHolder,
-    private formBuilder: FormBuilder) {
+    private formBuilder: FormBuilder,
+    private router: Router) {
   }
 
   /**
@@ -192,5 +205,19 @@ export class AuthHelperService {
       challenge: ['', Validators.required],
       response: ['', Validators.required]
     });
+  }
+
+  private _menuByRole(myMenu: Menu, managerOnly = true): Menu {
+    const match = /\/users\/(\-?\w+)\/.*/.exec(this.router.url);
+    const user = match ? match[1] : null;
+    if (this.isSelf(user)) {
+      return myMenu;
+    }
+    if (this.dataForUi.role === RoleEnum.BROKER && managerOnly) {
+      // A role over other users may be doing manager-only stuff. In this case, use the MY_BROKERED_USERS meny
+      return Menu.MY_BROKERED_USERS;
+    }
+    // All other user-operation start with finding the user first
+    return Menu.SEARCH_USERS;
   }
 }

@@ -43,9 +43,9 @@ export class ViewUserStatusComponent extends BaseViewPageComponent<UserStatusDat
   ngOnInit() {
     super.ngOnInit();
     this.key = this.route.snapshot.paramMap.get('key');
-    this.userStatusService.getUserStatus({ user: this.key, fields: ['!history'] }).subscribe(status => {
+    this.addSub(this.userStatusService.getUserStatus({ user: this.key, fields: ['!history'] }).subscribe(status => {
       this.data = status;
-    });
+    }));
     this.form = this.formBuilder.group({
       status: [null, Validators.required],
       comment: null

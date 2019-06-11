@@ -48,7 +48,7 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     super.ngOnInit();
     this.key = this.route.snapshot.paramMap.get('key') || ApiHelper.SELF;
     this.errorHandler.requestWithCustomErrorHandler(defaultHandling => {
-      this.usersService.viewUser({ user: this.key })
+      this.addSub(this.usersService.viewUser({ user: this.key })
         .subscribe(user => {
           this.data = user;
           this.self = this.authHelper.isSelf(user) || user.user != null && this.authHelper.isSelf(user.user);
@@ -60,7 +60,7 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
           } else {
             defaultHandling(resp);
           }
-        });
+        }));
     });
   }
 
@@ -138,7 +138,7 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
   }
 
   private addContact(): any {
-    this.contactsService.createContact({
+    this.addSub(this.contactsService.createContact({
       user: ApiHelper.SELF,
       body: {
         contact: this.user.id
@@ -146,14 +146,14 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     }).subscribe(() => {
       this.notification.snackBar(this.i18n.user.profile.addContactDone(this.shortName));
       this.reload();
-    });
+    }));
   }
 
   private removeContact(): any {
-    this.contactsService.deleteContact({ id: this.user.contact.id }).subscribe(() => {
+    this.addSub(this.contactsService.deleteContact({ id: this.user.contact.id }).subscribe(() => {
       this.notification.snackBar(this.i18n.user.profile.removeContactDone(this.shortName));
       this.reload();
-    });
+    }));
   }
 
   get myProfile(): boolean {

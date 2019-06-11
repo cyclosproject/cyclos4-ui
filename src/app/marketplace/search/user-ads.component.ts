@@ -6,6 +6,8 @@ import { words } from 'app/shared/helper';
 import { ResultType } from 'app/shared/result-type';
 import { MAX_SIZE_SHORT_NAME } from 'app/users/profile/view-profile.component';
 import { cloneDeep } from 'lodash';
+import { HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 /**
  * Lists the advertisements of a given user
@@ -41,7 +43,7 @@ export class UserAdsComponent
     super.ngOnInit();
     this.user = this.route.snapshot.paramMap.get('user');
     this.allowedResultTypes = [ResultType.TILES, ResultType.LIST];
-    this.marketplaceService.getUserAdsDataForSearch({ user: this.user }).subscribe(data => this.data = data);
+    this.addSub(this.marketplaceService.getUserAdsDataForSearch({ user: this.user }).subscribe(data => this.data = data));
   }
 
   onDataInitialized(data: UserAdsDataForSearch) {
@@ -49,7 +51,7 @@ export class UserAdsComponent
     this.shortName = words(data.user.display, MAX_SIZE_SHORT_NAME);
   }
 
-  doSearch(value: any) {
+  doSearch(value: any): Observable<HttpResponse<AdResult[]>> {
     const params = cloneDeep(value);
     params.user = this.user;
     return this.marketplaceService.searchUserAds$Response(params);

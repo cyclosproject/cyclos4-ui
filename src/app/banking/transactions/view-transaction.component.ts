@@ -59,7 +59,7 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
 
   ngOnInit() {
     super.ngOnInit();
-    this.transactionsService.viewTransaction({ key: this.key })
+    this.addSub(this.transactionsService.viewTransaction({ key: this.key })
       .subscribe(transaction => {
         [this.title, this.mobileTitle] = this.titles(transaction.kind);
         this.headingActions = this.initActions(transaction);
@@ -72,7 +72,7 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
         if (!empty(transaction.authorizations)) {
           this.lastAuthComment = transaction.authorizations[0].comments;
         }
-      });
+      }));
   }
 
   private initActions(transaction: TransactionView): HeadingAction[] {
@@ -165,7 +165,7 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
       passwordInput: this.transaction.confirmationPasswordInput,
       createDeviceConfirmation: this.authDeviceConfirmation(AuthorizationActionEnum.AUTHORIZE),
       callback: res => {
-        this.pendingPaymentsService.authorizePendingPayment({
+        this.addSub(this.pendingPaymentsService.authorizePendingPayment({
           key: this.transaction.id,
           confirmationPassword: res.confirmationPassword,
           body: {
@@ -178,7 +178,7 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
             this.notification.snackBar(this.i18n.transaction.authorizePendingDone);
           }
           this.reload();
-        });
+        }));
       }
     });
   }
@@ -191,7 +191,7 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
       createDeviceConfirmation: this.authDeviceConfirmation(AuthorizationActionEnum.DENY),
       passwordInput: this.transaction.confirmationPasswordInput,
       callback: res => {
-        this.pendingPaymentsService.denyPendingPayment({
+        this.addSub(this.pendingPaymentsService.denyPendingPayment({
           key: this.transaction.id,
           confirmationPassword: res.confirmationPassword,
           body: {
@@ -200,7 +200,7 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
         }).subscribe(() => {
           this.notification.snackBar(this.i18n.transaction.denyPendingDone);
           this.reload();
-        });
+        }));
       }
     });
   }
@@ -213,7 +213,7 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
       createDeviceConfirmation: this.authDeviceConfirmation(AuthorizationActionEnum.CANCEL),
       passwordInput: this.transaction.confirmationPasswordInput,
       callback: res => {
-        this.pendingPaymentsService.cancelPendingPayment({
+        this.addSub(this.pendingPaymentsService.cancelPendingPayment({
           key: this.transaction.id,
           confirmationPassword: res.confirmationPassword,
           body: {
@@ -222,7 +222,7 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
         }).subscribe(() => {
           this.notification.snackBar(this.i18n.transaction.cancelAuthorizationDone);
           this.reload();
-        });
+        }));
       }
     });
   }
@@ -242,13 +242,13 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
       createDeviceConfirmation: this.schedDeviceConfirmation(ScheduledPaymentActionEnum.BLOCK),
       passwordInput: this.transaction.confirmationPasswordInput,
       callback: res => {
-        this.scheduledPaymentsService.blockScheduledPayment({
+        this.addSub(this.scheduledPaymentsService.blockScheduledPayment({
           key: this.transaction.id,
           confirmationPassword: res.confirmationPassword
         }).subscribe(() => {
           this.notification.snackBar(this.i18n.transaction.blockSchedulingDone);
           this.reload();
-        });
+        }));
       }
     });
   }
@@ -260,13 +260,13 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
       createDeviceConfirmation: this.schedDeviceConfirmation(ScheduledPaymentActionEnum.UNBLOCK),
       passwordInput: this.transaction.confirmationPasswordInput,
       callback: res => {
-        this.scheduledPaymentsService.unblockScheduledPayment({
+        this.addSub(this.scheduledPaymentsService.unblockScheduledPayment({
           key: this.transaction.id,
           confirmationPassword: res.confirmationPassword
         }).subscribe(() => {
           this.notification.snackBar(this.i18n.transaction.unblockSchedulingDone);
           this.reload();
-        });
+        }));
       }
     });
   }
@@ -278,13 +278,13 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
       createDeviceConfirmation: this.schedDeviceConfirmation(ScheduledPaymentActionEnum.CANCEL),
       passwordInput: this.transaction.confirmationPasswordInput,
       callback: res => {
-        this.scheduledPaymentsService.cancelScheduledPayment({
+        this.addSub(this.scheduledPaymentsService.cancelScheduledPayment({
           key: this.transaction.id,
           confirmationPassword: res.confirmationPassword
         }).subscribe(() => {
           this.notification.snackBar(this.i18n.transaction.cancelScheduledDone);
           this.reload();
-        });
+        }));
       }
     });
   }
@@ -296,13 +296,13 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
       createDeviceConfirmation: this.schedDeviceConfirmation(ScheduledPaymentActionEnum.SETTLE),
       passwordInput: this.transaction.confirmationPasswordInput,
       callback: res => {
-        this.scheduledPaymentsService.settleScheduledPayment({
+        this.addSub(this.scheduledPaymentsService.settleScheduledPayment({
           key: this.transaction.id,
           confirmationPassword: res.confirmationPassword
         }).subscribe(() => {
           this.notification.snackBar(this.i18n.transaction.settleScheduledDone);
           this.reload();
-        });
+        }));
       }
     });
   }
@@ -322,13 +322,13 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
       createDeviceConfirmation: this.recurrDeviceConfirmation(RecurringPaymentActionEnum.CANCEL),
       passwordInput: this.transaction.confirmationPasswordInput,
       callback: res => {
-        this.recurringPaymentsService.cancelRecurringPayment({
+        this.addSub(this.recurringPaymentsService.cancelRecurringPayment({
           key: this.transaction.id,
           confirmationPassword: res.confirmationPassword
         }).subscribe(() => {
           this.notification.snackBar(this.i18n.transaction.cancelRecurringDone);
           this.reload();
-        });
+        }));
       }
     });
   }
@@ -347,13 +347,13 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
       createDeviceConfirmation: this.chargebackDeviceConfirmation(),
       passwordInput: this.transaction.confirmationPasswordInput,
       callback: res => {
-        this.transfersService.chargebackTransfer({
+        this.addSub(this.transfersService.chargebackTransfer({
           key: this.transaction.transfer.id,
           confirmationPassword: res.confirmationPassword
         }).subscribe(() => {
           this.notification.snackBar(this.i18n.transaction.chargebackTransferDone);
           this.reload();
-        });
+        }));
       }
     });
   }
@@ -432,13 +432,13 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
       createDeviceConfirmation: this.installmentDeviceConfirmation(InstallmentActionEnum.SETTLE, installment),
       passwordInput: this.transaction.confirmationPasswordInput,
       callback: res => {
-        this.scheduledPaymentsService.settleScheduledPaymentInstallment({
+        this.addSub(this.scheduledPaymentsService.settleScheduledPaymentInstallment({
           id: installment.id,
           confirmationPassword: res.confirmationPassword
         }).subscribe(() => {
           this.notification.snackBar(this.i18n.transaction.settleInstallmentDone);
           this.reload();
-        });
+        }));
       }
     });
   }
@@ -450,13 +450,13 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
       createDeviceConfirmation: this.installmentDeviceConfirmation(InstallmentActionEnum.PROCESS, installment),
       passwordInput: this.transaction.confirmationPasswordInput,
       callback: res => {
-        this.scheduledPaymentsService.processScheduledPaymentInstallment({
+        this.addSub(this.scheduledPaymentsService.processScheduledPaymentInstallment({
           id: installment.id,
           confirmationPassword: res.confirmationPassword
         }).subscribe(() => {
           this.notification.snackBar(this.i18n.transaction.processInstallmentDone);
           this.reload();
-        });
+        }));
       }
     });
   }

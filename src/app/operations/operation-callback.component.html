@@ -1,5 +1,5 @@
 <page-layout [ready]="data$ | async">
-  <page-content [heading]="data.title"
+  <page-content *ngIf="data" [heading]="data.title"
     [mobileHeading]="i18n.operation.mobileTitle.result" last>
     <alert [type]="alertType">
       <div class="break-nl">{{ data.notification }}</div>

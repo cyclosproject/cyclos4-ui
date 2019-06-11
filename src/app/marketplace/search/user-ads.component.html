@@ -1,4 +1,8 @@
 <page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data then content"></ng-container>
+</page-layout>
+
+<ng-template #content>
   <page-content mode="filters" [heading]="this.i18n.ad.title.owner(shortName)"
     [mobileHeading]="this.i18n.ad.mobileTitle.owner">
     <div class="filters-row">
@@ -11,4 +15,4 @@
     singleUser [data]="data$ | async" [resultType]="resultType$ | async"
     (update)="update($event)">
   </ads-results>
-</page-layout>
+</ng-template>

@@ -19,7 +19,7 @@ export class OperatorRegistrationComponent
   extends BasePageComponent<OperatorDataForNew>
   implements OnInit {
 
-  key: string;
+  user: string;
   self: boolean;
   form: FormGroup;
   mobileForm: FormGroup;
@@ -37,10 +37,10 @@ export class OperatorRegistrationComponent
 
   ngOnInit() {
     super.ngOnInit();
-    this.key = this.route.snapshot.paramMap.get('key') || this.ApiHelper.SELF;
-    this.self = this.authHelper.isSelf(this.key);
+    this.user = this.route.snapshot.paramMap.get('user') || this.ApiHelper.SELF;
+    this.self = this.authHelper.isSelf(this.user);
 
-    this.addSub(this.operatorsService.getOperatorDataForNew({ user: this.key }).subscribe(data =>
+    this.addSub(this.operatorsService.getOperatorDataForNew({ user: this.user }).subscribe(data =>
       this.data = data));
   }
 
@@ -80,9 +80,9 @@ export class OperatorRegistrationComponent
       return;
     }
     // Register the operator
-    this.operatorsService.registerOperator({
-      user: this.key, body: fullForm.value
-    }).subscribe(result => this.result$.next(result));
+    this.addSub(this.operatorsService.registerOperator({
+      user: this.user, body: fullForm.value
+    }).subscribe(result => this.result$.next(result)));
   }
 
   get doneMessageHtml(): string {
