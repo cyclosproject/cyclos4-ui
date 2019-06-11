@@ -7,7 +7,7 @@ import { VouchersService } from 'app/api/services';
 import { ApiHelper } from 'app/shared/api-helper';
 
 
-export class VoucherTypeForBuyListComponent extends BaseSearchPageComponent<any, VoucherTypeDetailed> implements OnInit {
+export class VoucherTypeForBuyListComponent extends BaseSearchPageComponent<void, VoucherTypeDetailed> implements OnInit {
 
   constructor(
     injector: Injector,
@@ -19,7 +19,7 @@ export class VoucherTypeForBuyListComponent extends BaseSearchPageComponent<any,
   protected getFormControlNames(): string[] {
     return [];
   }
-  protected doSearch(value: any): Observable<HttpResponse<VoucherTypeDetailed[]>> {
+  protected doSearch(): Observable<HttpResponse<VoucherTypeDetailed[]>> {
     return this.voucherService.listVoucherTypesForBuy$Response({ user: ApiHelper.SELF });
   }
 
