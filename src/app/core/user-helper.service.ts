@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AsyncValidatorFn, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
-import { AvailabilityEnum, OperatorDataForNew, UserDataForNew, UserStatusEnum, UserBasicData, ProfileFieldActions } from 'app/api/models';
+import {
+  AvailabilityEnum, OperatorDataForNew, UserDataForNew, UserStatusEnum,
+  UserBasicData, ProfileFieldActions, OperatorGroupAccountAccessEnum
+} from 'app/api/models';
 import { FieldHelperService } from 'app/core/field-helper.service';
 import { I18n } from 'app/i18n/i18n';
 import { ApiHelper } from 'app/shared/api-helper';
@@ -181,6 +184,24 @@ export class UserHelperService {
         return this.i18n.userStatus.purged;
       case UserStatusEnum.REMOVED:
         return this.i18n.userStatus.removed;
+    }
+  }
+
+  /**
+   * Returns the operator group access display
+   */
+  operatorGroupAccountAccess(access: OperatorGroupAccountAccessEnum): string {
+    switch (access) {
+      case OperatorGroupAccountAccessEnum.FULL:
+        return this.i18n.operatorGroup.accountAccessFull;
+      case OperatorGroupAccountAccessEnum.INCOMING:
+        return this.i18n.operatorGroup.accountAccessIncoming;
+      case OperatorGroupAccountAccessEnum.OUTGOING:
+        return this.i18n.operatorGroup.accountAccessOutgoing;
+      case OperatorGroupAccountAccessEnum.OWN:
+        return this.i18n.operatorGroup.accountAccessOwn;
+      case OperatorGroupAccountAccessEnum.NONE:
+        return this.i18n.operatorGroup.accountAccessNone;
     }
   }
 

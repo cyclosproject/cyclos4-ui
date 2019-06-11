@@ -58,16 +58,23 @@ export class LabelValueComponent implements OnInit, OnDestroy, OnChanges {
   /** Where to place the label */
   @Input() labelPosition: FieldLabelPosition = 'auto';
 
-  /** Label size */
-  @Input() labelSize: 'normal' | 'large' | 'small' = 'normal';
-
   /** Whether the extra cell, even if present, should be ignored */
   private _ignoreExtraCell = false;
-  @Input() get ignoreExtraCell(): boolean | string {
+  @HostBinding('class.maximize-label') @Input()
+  get ignoreExtraCell(): boolean | string {
     return this._ignoreExtraCell;
   }
   set ignoreExtraCell(ignoreExtraCell: boolean | string) {
     this._ignoreExtraCell = truthyAttr(ignoreExtraCell);
+  }
+
+  /** Whether to use as many columns as possible for the label */
+  private _maximizeLabel = false;
+  @Input() get maximizeLabel(): boolean | string {
+    return this._maximizeLabel;
+  }
+  set maximizeLabel(maximizeLabel: boolean | string) {
+    this._maximizeLabel = truthyAttr(maximizeLabel);
   }
 
   /** Whether to visually present a required marker next to the label */
@@ -158,7 +165,7 @@ export class LabelValueComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.labelPosition || changes.fieldSize || changes.labelSize) {
+    if (changes.labelPosition || changes.fieldSize) {
       this.initClasses();
     }
   }
@@ -189,6 +196,10 @@ export class LabelValueComponent implements OnInit, OnDestroy, OnChanges {
       if (this.extraCell) {
         this.extraClasses.push(`col${prefix}-${cols.extra}`);
       }
+    }
+    if (this.maximizeLabel) {
+      this.valueClasses.push('align-items-end');
+      this.valueClasses.push('align-items-sm-start');
     }
   }
 
@@ -244,10 +255,14 @@ export class LabelValueComponent implements OnInit, OnDestroy, OnChanges {
       switch (breakpoint) {
         case 'xxs':
           // On xxs use 6 cols
-          return 6;
+          return this.maximizeLabel
+            ? this.extraCell ? 9 : 10
+            : 6;
         case 'xs':
           // On xs use 5 cols
-          return 5;
+          return this.maximizeLabel
+            ? this.extraCell ? 10 : 11
+            : 5;
         default:
           // On larger resolutions, always use 4 cols for labels
           return 4;
