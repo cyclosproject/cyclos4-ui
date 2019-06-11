@@ -39,6 +39,10 @@
     "cancel": "Cancelar",
     "close": "Cerrar",
     "submit": "Aceptar",
+    "remove": "Remove",
+    "remove.confirm": "Are you sure to remove the item {item}?",
+    "remove.done": "The item {item} was removed",
+    "remove.tooltip": "Remove {item}",
     "save": "Guardar",
     "addNew": "Agregar",
     "yes": "Si",
@@ -105,6 +109,11 @@
         "sat": "S"
       }
     },
+    "range": {
+      "fromTo": "From {min} to {max}",
+      "from": "From {min}",
+      "to": "Up to {max}"
+    },
     "fileSize": {
       "b": "{n} bytes",
       "k": "{n}KB",
@@ -136,7 +145,7 @@
     "maxItems": "No puede agregar más de {max} elementos",
     "validation": "La acción no puede ser procesada, debido a que existen errores de validación",
     "staleEntity": "Los datos que usted está guardando, han sido modificados por otro usuario o proceso.\nPor favor, recargue la página e inténtelo nuevamente.",
-    "removeDataInUse": "El dato no puede ser eliminado ya que se encuentra actualmente en uso.",
+    "removeDataInUse": "This item cannot be removed because it is currently in use.",
     "notFound": "La ubicación que ha ingresado o intenta acceder no fue encontrada",
     "notFound.type": "El siguiente dato no pudo ser encontrado: {type}",
     "notFound.typeKey": "El siguiente dato no pudo ser encontrado: {type} con clave {key}",
@@ -184,6 +193,7 @@
     "operators": "Operadores",
     "operators.operators": "Operadores",
     "operators.register": "Registrar operador",
+    "operators.groups": "Operator groups",
     "brokering": "Brokering",
     "brokering.users": "Usuarios",
     "brokering.register": "Registrar usuario",
@@ -689,6 +699,50 @@
       "alphabeticallyAsc": "Nombre (A - Z)",
       "alphabeticallyDesc": "Nombre (Z - A)"
     }
+  },
+  "operatorGroup": {
+    "title": {
+      "list": "Operator groups",
+      "view": "Operator group",
+      "new": "New operator group",
+      "edit": "Edit operator group",
+      "permissions": "Permissions",
+      "accountAccess": "Account access",
+      "generalAccount": "General account operations"
+    },
+    "mobileTitle": {
+      "list": "Operator groups",
+      "view": "Operator group",
+      "new": "New group",
+      "edit": "Edit group",
+      "permissions": "Permissions",
+      "accountAccess": "Account access",
+      "generalAccount": "General operations"
+    },
+    "accountAccess": "Account visibility",
+    "accountAccess.full": "Full",
+    "accountAccess.incoming": "Only incoming payments",
+    "accountAccess.outgoing": "Only outgoing payments",
+    "accountAccess.own": "Received or paid by operator",
+    "accountAccess.none": "Not visible",
+    "performPayments": "Perform payments",
+    "performPayments.requiresAuthorization.view": ", requires authorization",
+    "performPayments.maxAmountPerDay.view": ", max. {max} per day",
+    "performPayments.requiresAuthorization": "Requires authorization",
+    "performPayments.maxAmountPerDay": "Daily limit",
+    "authorizePayments": "Authorize payments",
+    "paymentNotifications": "Payment notifications",
+    "paymentNotifications.above": "Only notify payments above",
+    "paymentNotifications.below": "Only notify payments below",
+    "chargebackPayments": "Chargeback payments",
+    "restrictPaymentsToUsers": "Restrict payments to",
+    "editOwnProfile": "Edit own profile",
+    "notifications": "Notifications",
+    "viewAdvertisements": "View advertisements",
+    "registerUsersAsBroker": "Register users (as broker)",
+    "runOperations": "Run operations",
+    "created": "The operator group was created",
+    "saved": "The operator group was saved"
   },
   "userStatus": {
     "current": "Estado actual",
