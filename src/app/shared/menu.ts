@@ -85,6 +85,7 @@ export module Menu {
   export const SEARCH_USERS = new Menu(RootMenu.MARKETPLACE, 'SEARCH_USERS');
   export const SEARCH_ADS = new Menu(RootMenu.MARKETPLACE, 'SEARCH_ADS');
   export const ADMIN_REGISTRATION = new Menu(RootMenu.MARKETPLACE, 'ADMIN_REGISTRATION');
+  export const USER_ALERTS = new Menu(RootMenu.MARKETPLACE, 'USER_ALERTS');
 
   // Operators
   export const MY_OPERATORS = new Menu(RootMenu.OPERATORS, 'MY_OPERATORS');
@@ -101,9 +102,6 @@ export module Menu {
   export const PASSWORDS = new Menu(RootMenu.PERSONAL, 'PASSWORDS');
   export const NOTIFICATIONS = new Menu(RootMenu.PERSONAL, 'NOTIFICATIONS');
   export const SETTINGS = new Menu(RootMenu.PERSONAL, 'SETTINGS');
-
-  // Users
-  export const USER_ALERTS = new Menu(RootMenu.MARKETPLACE, 'USER_ALERTS');
 
   // Custom operations (one per root menu in owner, also one per operation container)
   export const RUN_OPERATION_BANKING = new Menu(RootMenu.BANKING, 'RUN_OPERATION_BANKING');

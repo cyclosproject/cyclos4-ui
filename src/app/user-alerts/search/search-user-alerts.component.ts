@@ -3,7 +3,6 @@ import { UserAlert } from 'app/api/models/user-alert'
 import { AlertsService } from 'app/api/services/alerts.service'
 import { UserAlertDataForSearch } from 'app/api/models/user-alert-data-for-search';
 import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
-import { ResultType } from 'app/shared/result-type';
 
 @Component({
   selector: 'search-user-alerts',
@@ -14,6 +13,8 @@ export class SearchUserAlertsComponent
   extends BaseSearchPageComponent<UserAlertDataForSearch, UserAlert>
   implements OnInit {
 
+  query: any;
+
   constructor(
     injector: Injector,
     private alertsService: AlertsService
@@ -23,22 +24,17 @@ export class SearchUserAlertsComponent
 
   ngOnInit() {
     super.ngOnInit();
-    this.allowedResultTypes = [ResultType.TILES, ResultType.LIST];
-    this.addSub(
-      this.alertsService.getUserAlertDataForSearch().subscribe(dataforSearch => {
-        this.data = dataforSearch;
-
-      })
-    );
+    const query = {};
+    this.form.patchValue(query, { emitEvent: false });
+    this.data = {};
   }
 
   protected getFormControlNames() {
-    return ['period', 'type', 'user'];
+    return ['type', 'user', 'period'];
   }
 
   doSearch(value: any) {
-    console.log('doSearch executing .............. ');
-    // !!!! Ver con Andres si lleva addSub
+
     return this.alertsService.searchUserAlerts$Response(value);
   }
 }

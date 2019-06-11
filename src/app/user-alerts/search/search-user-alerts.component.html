@@ -1,21 +1,26 @@
 <page-layout [ready]="data$ | async">
-  <ng-container *ngIf="loaded$ | async; else loading">
-
-    <page-content [ngClass]="{'d-none': layout.xxs$ | async}" mode="filters"
-      [heading]="i18n.userAlerts.title.search"
-      [mobileHeading]="i18n.userAlerts.mobileTitle.search">
-      <div class="filters-row">
-        <result-type-field [formControl]="resultTypeControl"
-          [allowedResultTypes]="allowedResultTypes$ | async">
-        </result-type-field>
+  <page-content mode="filters" [heading]="i18n.userAlerts.title"
+    [mobileHeading]="i18n.userAlerts.mobileTitle">
+    <form [formGroup]="form"
+      class="filters-form filters-form-separator border-0">
+      <div class="row">
+        <div
+          *ngIf="(form.value || (form.valueChanges | async))?.preselectedPeriod?.begin == null"
+          class="col-12 col-md-6">
+          <date-field labelPosition="side" formControlName="periodBegin"
+            [label]="i18n.general.beginDate" minDate="past5" maxDate="today"
+            fieldSize="full">
+          </date-field>
+        </div>
+        <div
+          *ngIf="(form.value || (form.valueChanges | async))?.preselectedPeriod?.end == null"
+          class="col-12 col-md-6">
+          <date-field labelPosition="side" formControlName="periodEnd"
+            [label]="i18n.general.endDate" minDate="past5" maxDate="today"
+            fieldSize="full">
+          </date-field>
+        </div>
       </div>
-    </page-content>
-
-  </ng-container>
-</page-layout>
-
-<ng-template #loading>
-  <page-content>
-    <spinner></spinner>
+    </form>
   </page-content>
-</ng-template>
+</page-layout>

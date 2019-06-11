@@ -609,6 +609,12 @@ export class MenuService {
       if (users.registerAsAdmin) {
         add(Menu.ADMIN_REGISTRATION, '/users/registration', 'registration', this.i18n.menu.marketplaceRegister);
       }
+
+      // Todo: Check the user alert permission for admins
+      if (auth.systemAdministrator) {
+        add(Menu.USER_ALERTS, '/users/alerts', 'notification_important', this.i18n.menu.marketplaceUserAlerts);
+      }
+
       if (marketplace.search) {
         add(Menu.SEARCH_ADS, '/marketplace/search', 'shopping_cart', this.i18n.menu.marketplaceAdvertisements);
       } else if (role !== RoleEnum.ADMINISTRATOR) {
