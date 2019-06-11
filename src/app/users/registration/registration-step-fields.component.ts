@@ -98,7 +98,7 @@ export class RegistrationStepFieldsComponent
     }));
   }
 
-  private removeImage(): Observable<Image> {
+  removeImage(): Observable<Image> {
     if (this.image) {
       const result = this.image;
       return this.errorHandler.requestWithCustomErrorHandler(() => {
