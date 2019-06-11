@@ -28,15 +28,15 @@
           </label-value>
           <label-value
             *ngIf="paymentsByAccount[account.accountType.id]?.length > 0"
-            [label]="i18n.operatorGroup.performPayment">
+            [label]="i18n.operatorGroup.performPayments">
             <ng-container
               *ngFor="let pmt of paymentsByAccount[account.accountType.id]; let last = last">
               {{ pmt.paymentType.name }}<ng-container
                 *ngIf="pmt.requiresAuthorization">{{
-                i18n.operatorGroup.performPaymentRequiresAuthorization
+                i18n.operatorGroup.performPaymentsRequiresAuthorizationView
               }}</ng-container>
               <ng-container *ngIf="pmt.maxAmountPerDay">{{
-                i18n.operatorGroup.performPaymentMaxAmountPerDay(
+                i18n.operatorGroup.performPaymentsMaxAmountPerDayView(
                   pmt.maxAmountPerDay | currency:pmt.paymentType.currency
                 )
               }}</ng-container><br *ngIf="!last">
@@ -44,7 +44,7 @@
           </label-value>
           <label-value
             *ngIf="authorizeByAccount[account.accountType.id]?.length > 0"
-            [label]="i18n.operatorGroup.authorizePayment">
+            [label]="i18n.operatorGroup.authorizePayments">
             <ng-container
               *ngFor="let pmt of authorizeByAccount[account.accountType.id]; let last = last">
               {{ pmt.name }}<ng-container *ngIf="!last">, </ng-container>

@@ -19,6 +19,7 @@ import { ContactListComponent } from 'app/users/search/contact-list.component';
 import { SearchUsersComponent } from 'app/users/search/search-users.component';
 import { ViewUserStatusHistoryComponent } from 'app/users/status/view-user-status-history.component';
 import { ViewUserStatusComponent } from 'app/users/status/view-user-status.component';
+import { OperatorGroupFormComponent } from 'app/users/operator-groups/operator-group-form.component';
 
 const SearchMenu: ConditionalMenu = injector => {
   const login = injector.get(LoginService);
@@ -75,7 +76,7 @@ const usersRoutes: Routes = [
         }
       },
       {
-        path: ':key/brokerings',
+        path: ':user/brokerings',
         component: SearchUsersComponent,
         canActivate: [LoggedUserGuard],
         data: {
@@ -102,7 +103,7 @@ const usersRoutes: Routes = [
         }
       },
       {
-        path: ':key/profile',
+        path: ':user/profile',
         component: ViewProfileComponent,
         resolve: {
           countries: CountriesResolve
@@ -112,7 +113,7 @@ const usersRoutes: Routes = [
         }
       },
       {
-        path: ':key/profile/edit',
+        path: ':user/profile/edit',
         component: EditProfileComponent,
         canActivate: [LoggedUserGuard],
         resolve: {
@@ -131,7 +132,7 @@ const usersRoutes: Routes = [
         }
       },
       {
-        path: ':key/operators',
+        path: ':user/operators',
         component: SearchUserOperatorsComponent,
         canActivate: [LoggedUserGuard],
         data: {
@@ -139,7 +140,7 @@ const usersRoutes: Routes = [
         }
       },
       {
-        path: ':key/operators/registration',
+        path: ':user/operators/registration',
         component: OperatorRegistrationComponent,
         canActivate: [LoggedUserGuard],
         data: {
@@ -147,7 +148,7 @@ const usersRoutes: Routes = [
         }
       },
       {
-        path: 'operators/:key',
+        path: 'operators/:user',
         component: ViewProfileComponent,
         canActivate: [LoggedUserGuard],
         data: {
@@ -155,7 +156,7 @@ const usersRoutes: Routes = [
         }
       },
       {
-        path: 'operators/:key/edit',
+        path: 'operators/:user/edit',
         component: EditProfileComponent,
         canActivate: [LoggedUserGuard],
         data: {
@@ -163,7 +164,7 @@ const usersRoutes: Routes = [
         }
       },
       {
-        path: ':key/status',
+        path: ':user/status',
         component: ViewUserStatusComponent,
         canActivate: [LoggedUserGuard],
         data: {
@@ -171,7 +172,7 @@ const usersRoutes: Routes = [
         }
       },
       {
-        path: ':key/status/history',
+        path: ':user/status/history',
         component: ViewUserStatusHistoryComponent,
         canActivate: [LoggedUserGuard],
         data: {
@@ -187,8 +188,16 @@ const usersRoutes: Routes = [
         }
       },
       {
-        path: ':key/operator-groups',
+        path: ':user/operator-groups',
         component: ListOperatorGroupsComponent,
+        canActivate: [LoggedUserGuard],
+        data: {
+          menu: OperatorGroupsMenu
+        }
+      },
+      {
+        path: ':user/operator-groups/new',
+        component: OperatorGroupFormComponent,
         canActivate: [LoggedUserGuard],
         data: {
           menu: OperatorGroupsMenu
@@ -202,14 +211,14 @@ const usersRoutes: Routes = [
           menu: OperatorGroupsMenu
         }
       },
-      // {
-      //   path: 'operator-groups/:key/edit',
-      //   component: ViewOperatorGroupComponent,
-      //   canActivate: [LoggedUserGuard],
-      //   data: {
-      //     menu: OperatorGroupsMenu
-      //   }
-      // },
+      {
+        path: 'operator-groups/:id/edit',
+        component: OperatorGroupFormComponent,
+        canActivate: [LoggedUserGuard],
+        data: {
+          menu: OperatorGroupsMenu
+        }
+      },
       {
         path: 'validate-email-change/:key',
         component: ValidateEmailChangeComponent,
@@ -226,7 +235,7 @@ const usersRoutes: Routes = [
         }
       },
       {
-        path: 'contacts/:key',
+        path: 'contacts/:user',
         component: ViewProfileComponent,
         canActivate: [LoggedUserGuard],
         resolve: {

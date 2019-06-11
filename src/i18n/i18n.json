@@ -704,6 +704,8 @@
     "title": {
       "list": "Operator groups",
       "view": "Operator group",
+      "new": "New operator group",
+      "edit": "Edit operator group",
       "permissions": "Permissions",
       "accountAccess": "Account access",
       "generalAccount": "General account operations"
@@ -711,6 +713,8 @@
     "mobileTitle": {
       "list": "Operator groups",
       "view": "Operator group",
+      "new": "New group",
+      "edit": "Edit group",
       "permissions": "Permissions",
       "accountAccess": "Account access",
       "generalAccount": "General operations"
@@ -721,18 +725,24 @@
     "accountAccess.outgoing": "Only outgoing payments",
     "accountAccess.own": "Received or paid by operator",
     "accountAccess.none": "Not visible",
-    "performPayment": "Perform payments",
-    "performPayment.requiresAuthorization": ", requires authorization",
-    "performPayment.maxAmountPerDay": ", max. {max} per day",
+    "performPayments": "Perform payments",
+    "performPayments.requiresAuthorization.view": ", requires authorization",
+    "performPayments.maxAmountPerDay.view": ", max. {max} per day",
+    "performPayments.requiresAuthorization": "Requires authorization",
+    "performPayments.maxAmountPerDay": "Daily limit",
+    "authorizePayments": "Authorize payments",
     "paymentNotifications": "Payment notifications",
-    "authorizePayment": "Authorize payments",
+    "paymentNotifications.above": "Only notify payments above",
+    "paymentNotifications.below": "Only notify payments below",
     "chargebackPayments": "Chargeback payments",
     "restrictPaymentsToUsers": "Restrict payments to",
     "editOwnProfile": "Edit own profile",
     "notifications": "Notifications",
     "viewAdvertisements": "View advertisements",
     "registerUsersAsBroker": "Register users (as broker)",
-    "runOperations": "Run operations"
+    "runOperations": "Run operations",
+    "created": "The operator group was created",
+    "saved": "The operator group was saved"
   },
   "userStatus": {
     "current": "Current status",

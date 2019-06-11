@@ -20,7 +20,7 @@ export class ViewUserStatusHistoryComponent extends BaseViewPageComponent<UserSt
     super(injector);
   }
 
-  key: string;
+  param: string;
 
   get user(): User {
     const user = this.data.user;
@@ -34,8 +34,8 @@ export class ViewUserStatusHistoryComponent extends BaseViewPageComponent<UserSt
 
   ngOnInit() {
     super.ngOnInit();
-    this.key = this.route.snapshot.paramMap.get('key');
-    this.userStatusService.getUserStatus({ user: this.key, fields: ['user', 'history'] }).subscribe(status => {
+    this.param = this.route.snapshot.params.user;
+    this.userStatusService.getUserStatus({ user: this.param, fields: ['user', 'history'] }).subscribe(status => {
       this.data = status;
     });
   }

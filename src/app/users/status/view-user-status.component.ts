@@ -23,7 +23,7 @@ export class ViewUserStatusComponent extends BaseViewPageComponent<UserStatusDat
     super(injector);
   }
 
-  key: string;
+  param: string;
   form: FormGroup;
 
   get user(): User {
@@ -42,8 +42,8 @@ export class ViewUserStatusComponent extends BaseViewPageComponent<UserStatusDat
 
   ngOnInit() {
     super.ngOnInit();
-    this.key = this.route.snapshot.paramMap.get('key');
-    this.userStatusService.getUserStatus({ user: this.key, fields: ['!history'] }).subscribe(status => {
+    this.param = this.route.snapshot.params.user;
+    this.userStatusService.getUserStatus({ user: this.param, fields: ['!history'] }).subscribe(status => {
       this.data = status;
     });
     this.form = this.formBuilder.group({
@@ -52,7 +52,7 @@ export class ViewUserStatusComponent extends BaseViewPageComponent<UserStatusDat
     });
     this.headingActions = [
       new HeadingAction('history', this.i18n.general.viewHistory, () =>
-        this.router.navigate(['users', 'status', this.key, 'history']), true)
+        this.router.navigate(['users', 'status', this.param, 'history']), true)
     ];
   }
 
@@ -91,7 +91,7 @@ export class ViewUserStatusComponent extends BaseViewPageComponent<UserStatusDat
 
   private submit(status: UserStatusEnum) {
     this.addSub(this.userStatusService.changeUserStatus({
-      user: this.key,
+      user: this.param,
       body: this.form.value
     }).subscribe(() => {
       let message: string;

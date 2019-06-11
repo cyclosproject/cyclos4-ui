@@ -22,6 +22,7 @@ import { UsersResultsComponent } from 'app/users/search/users-results.component'
 import { ViewUserStatusHistoryComponent } from 'app/users/status/view-user-status-history.component';
 import { ViewUserStatusComponent } from 'app/users/status/view-user-status.component';
 import { UsersRoutingModule } from 'app/users/users-routing.module';
+import { OperatorGroupFormComponent } from 'app/users/operator-groups/operator-group-form.component';
 
 
 /**
@@ -56,6 +57,7 @@ import { UsersRoutingModule } from 'app/users/users-routing.module';
     OperatorRegistrationComponent,
     ListOperatorGroupsComponent,
     ViewOperatorGroupComponent,
+    OperatorGroupFormComponent,
 
     ViewUserStatusComponent,
     ViewUserStatusHistoryComponent

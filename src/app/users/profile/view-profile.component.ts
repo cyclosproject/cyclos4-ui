@@ -31,7 +31,7 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     super(injector);
   }
 
-  key: string;
+  param: string;
   self: boolean;
   shortName: string;
   mobilePhone: PhoneView;
@@ -46,9 +46,9 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
 
   ngOnInit() {
     super.ngOnInit();
-    this.key = this.route.snapshot.paramMap.get('key') || ApiHelper.SELF;
+    this.param = this.route.snapshot.params.user || ApiHelper.SELF;
     this.errorHandler.requestWithCustomErrorHandler(defaultHandling => {
-      this.usersService.viewUser({ user: this.key })
+      this.usersService.viewUser({ user: this.param })
         .subscribe(user => {
           this.data = user;
           this.self = this.authHelper.isSelf(user) || user.user != null && this.authHelper.isSelf(user.user);
@@ -97,17 +97,17 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     }
     if (brokering.viewMembers) {
       actions.push(new HeadingAction('assignment_ind', this.i18n.user.profile.viewBrokerings, () => {
-        this.router.navigate(['/users', this.key, 'brokerings']);
+        this.router.navigate(['/users', this.param, 'brokerings']);
       }));
     }
     if (operators.viewOperators) {
       actions.push(new HeadingAction('supervisor_account', this.i18n.user.profile.viewOperators, () => {
-        this.router.navigate(['/users', this.key, 'operators']);
+        this.router.navigate(['/users', this.param, 'operators']);
       }));
     }
     if (status.view) {
       actions.push(new HeadingAction('how_to_reg', this.i18n.user.profile.status, () => {
-        this.router.navigate(['/users', this.key, 'status']);
+        this.router.navigate(['/users', this.param, 'status']);
       }));
     }
     if (contact.add) {
@@ -122,12 +122,12 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     }
     if (payment.userToUser) {
       actions.push(new HeadingAction('payment', this.i18n.user.profile.pay, () => {
-        this.router.navigate(['/banking', 'payment', this.key]);
+        this.router.navigate(['/banking', 'payment', this.param]);
       }));
     }
     if (marketplace.viewAdvertisements || marketplace.viewWebshop) {
       actions.push(new HeadingAction('shopping_basket', this.i18n.user.profile.viewAds, () => {
-        this.router.navigate(['/marketplace', 'user', this.key]);
+        this.router.navigate(['/marketplace', 'user', this.param]);
       }));
     }
     // Custom operations

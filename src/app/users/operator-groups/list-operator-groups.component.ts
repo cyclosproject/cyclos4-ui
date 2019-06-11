@@ -16,7 +16,7 @@ export class ListOperatorGroupsComponent
   extends BasePageComponent<UserOperatorGroupsListData>
   implements OnInit {
 
-  key: string;
+  param: string;
   self: boolean;
   groups: EntityReference[];
 
@@ -28,10 +28,10 @@ export class ListOperatorGroupsComponent
 
   ngOnInit() {
     super.ngOnInit();
-    this.key = this.route.snapshot.paramMap.get('key') || this.ApiHelper.SELF;
-    this.self = this.authHelper.isSelf(this.key);
+    this.param = this.route.snapshot.params.user || this.ApiHelper.SELF;
+    this.self = this.authHelper.isSelf(this.param);
 
-    this.addSub(this.operatorGroupsService.getUserOperatorGroupsListData({ user: this.key }).subscribe(data => {
+    this.addSub(this.operatorGroupsService.getUserOperatorGroupsListData({ user: this.param }).subscribe(data => {
       this.data = data;
     }));
   }
@@ -41,13 +41,7 @@ export class ListOperatorGroupsComponent
     if (data.canCreate) {
       this.headingActions = [
         new HeadingAction('add', this.i18n.general.addNew, () => {
-          const path = ['users'];
-          if (!this.self) {
-            path.push(this.key);
-          }
-          path.push('operator-groups');
-          path.push('create');
-          this.router.navigate(path);
+          this.router.navigate(['/users', this.param, 'operator-groups', 'new']);
         }, true)
       ];
     }

@@ -36,7 +36,7 @@ export class ViewOperatorGroupComponent
 
   ngOnInit() {
     super.ngOnInit();
-    this.id = this.route.snapshot.paramMap.get('id');
+    this.id = this.route.snapshot.params.id;
     this.addSub(this.operatorGroupsService.viewOperatorGroup({ id: this.id }).subscribe(data => {
       this.data = data;
     }));
@@ -62,9 +62,17 @@ export class ViewOperatorGroupComponent
         .map(p => p.paymentType);
     }
     if (group.editable) {
-      this.headingActions = [
-        new HeadingAction('clear', this.i18n.general.remove, () => this.remove())
+      const headingActions: HeadingAction[] = [
+        new HeadingAction('edit', this.i18n.general.edit, () => {
+          this.router.navigateByUrl(this.router.url + '/edit');
+        }, true)
       ];
+      if (this.layout.ltsm) {
+        headingActions.push(
+          new HeadingAction('clear', this.i18n.general.remove, () => this.remove())
+        );
+      }
+      this.headingActions = headingActions;
     }
   }
 
