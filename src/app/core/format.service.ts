@@ -372,6 +372,9 @@ export class FormatService {
    * @param bytes The number of bytes
    */
   formatFileSize(bytes: number): string {
+    if (bytes == null) {
+      return '';
+    }
     if (bytes < 1024) {
       return this.i18n.general.fileSize.b(String(bytes));
     }
@@ -381,6 +384,36 @@ export class FormatService {
     }
     bytes /= 1024;
     return this.i18n.general.fileSize.m(this.formatAsNumber(bytes, 1));
+  }
+
+  /**
+   * Formats a range of values
+   * @param range The range, with min and max values
+   */
+  formatRange(range: { min?: any, max?: any }): string {
+    if (range == null || range.min == null && range.max == null) {
+      return '';
+    }
+    if (range.min != null && range.max != null) {
+      return this.i18n.general.range.fromTo({
+        min: range.min, max: range.max
+      });
+    } else if (range.min != null) {
+      return this.i18n.general.range.from(range.min);
+    } else if (range.max != null) {
+      return this.i18n.general.range.to(range.max);
+    }
+  }
+
+  /**
+   * Formats a boolean value, returning a key for yes / no
+   * @param value The boolean value
+   */
+  formatBoolean(value: boolean): string {
+    if (value == null) {
+      return '';
+    }
+    return value ? this.i18n.general.yes : this.i18n.general.no;
   }
 
   /**

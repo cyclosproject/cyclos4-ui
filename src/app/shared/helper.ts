@@ -780,3 +780,13 @@ export function blurIfClick(el: ElementReference, event: MouseEvent) {
     }
   }
 }
+
+/**
+ * Returns the enum values as array, given an enum type.
+ * Works for string enums.
+ * @param type The enum type
+ */
+export function enumValues<T>(type: any): T[] {
+  const keys = Object.keys(type);
+  return keys.map(k => type[k]) as T[];
+}

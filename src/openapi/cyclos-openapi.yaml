@@ -32656,6 +32656,10 @@ components:
                 The user which owns this address
               allOf:
                 - $ref: '#/components/schemas/User'
+            editable:
+              description: >-
+                Can the authenticated user edit / remove this address?
+              type: boolean
 
     Agreement:
       description: >-
@@ -34699,6 +34703,11 @@ components:
                 The user which owns this additional contact information
               allOf:
                 - $ref: '#/components/schemas/User'
+            editable:
+              type: boolean
+              description: >-
+                Indicates whether the logged user can remove / edit this
+                additional contact information
             hidden:
               type: boolean
               description: >-
@@ -39375,7 +39384,10 @@ components:
                 The user which owns this operator group
               allOf:
                 - $ref: '#/components/schemas/User'
-
+            editable:
+              description: >-
+                Can the authenticated user edit / remove this operator group?
+              type: boolean
             description:
               type: string
               description: >-
@@ -40848,6 +40860,10 @@ components:
                 The user which owns this phone
               allOf:
                 - $ref: '#/components/schemas/User'
+            editable:
+              description: >-
+                Can the authenticated user edit / remove this phone?
+              type: boolean
             name:
               type: string
               description: >-
@@ -40878,6 +40894,7 @@ components:
                 Only applicable if this represents a mobile phone. Whether this mobile is
                 verified. Can only be directly set by administrators. Regular users need to
                 verify it.
+
 
     PinInput:
       description: >-
@@ -44641,6 +44658,8 @@ components:
         their management
       type: object
       properties:
+        user:
+          $ref: '#/components/schemas/User'
         canManage:
           description: >-
             Indicates whether the operator groups can be managed by the authenticated user

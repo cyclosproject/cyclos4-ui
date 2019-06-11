@@ -26,7 +26,7 @@ export class SearchUserOperatorsComponent
   ResultType = ResultType;
   empty = empty;
 
-  key: string;
+  param: string;
   self: boolean;
   advancedFields$ = new BehaviorSubject<CustomFieldDetailed[]>([]);
 
@@ -43,18 +43,17 @@ export class SearchUserOperatorsComponent
 
   ngOnInit() {
     super.ngOnInit();
-    const route = this.route.snapshot;
-    this.key = route.params.key || ApiHelper.SELF;
-    this.self = this.authHelper.isSelf(this.key);
+    this.param = this.route.snapshot.params.user || ApiHelper.SELF;
+    this.self = this.authHelper.isSelf(this.param);
 
-    this.addSub(this.operatorsService.getUserOperatorsDataForSearch({ user: this.key }).subscribe(data => {
+    this.addSub(this.operatorsService.getUserOperatorsDataForSearch({ user: this.param }).subscribe(data => {
       this.form.patchValue(data.query, { emitEvent: false });
       if (data.canCreateNew) {
         this.headingActions = [
           new HeadingAction('registration', this.i18n.general.addNew, () => {
             const path = ['users'];
             if (!this.self) {
-              path.push(this.key);
+              path.push(this.param);
             }
             path.push('operators');
             path.push('registration');
@@ -68,7 +67,7 @@ export class SearchUserOperatorsComponent
 
   doSearch(query: any) {
     const value = cloneDeep(query);
-    value.user = this.key;
+    value.user = this.param;
     value.profileFields = this.fieldHelper.toCustomValuesFilter(query.customValues);
     delete value.customValues;
     return this.operatorsService.searchUserOperators$Response(value);
