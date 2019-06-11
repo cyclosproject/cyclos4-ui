@@ -2,14 +2,14 @@ import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/c
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import {
   AccountType, OperatorGroupAccountAccessEnum, OperatorGroupDataForEdit,
-  OperatorGroupDataForNew, TransferTypeWithCurrency
+  OperatorGroupDataForNew, TransferTypeWithCurrency, User
 } from 'app/api/models';
 import { OperatorGroupsService } from 'app/api/services';
 import { UserHelperService } from 'app/core/user-helper.service';
 import { BasePageComponent } from 'app/shared/base-page.component';
+import { FieldOption } from 'app/shared/field-option';
 import { empty, enumValues, validateBeforeSubmit } from 'app/shared/helper';
 import { Observable } from 'rxjs';
-import { FieldOption } from 'app/shared/field-option';
 
 /**
  * Operator group form - either to create or edit
@@ -93,6 +93,7 @@ export class OperatorGroupFormComponent
       this.form.setControl('payments', paymentControls);
     }
     this.form.addControl('editOwnProfile', new FormControl(group.editOwnProfile));
+    this.form.addControl('restrictPaymentsToUsers', new FormControl(group.restrictPaymentsToUsers));
     if (data.canHaveNotifications) {
       this.form.addControl('notifications', new FormControl(group.notifications));
     }
@@ -132,5 +133,9 @@ export class OperatorGroupFormComponent
         : this.i18n.operatorGroup.saved);
       this.router.navigate(['/users', 'operator-groups', id || this.id]);
     }));
+  }
+
+  get restrictPaymentsToUsers(): User[] {
+    return (this.data as OperatorGroupDataForEdit).restrictPaymentsToUsers;
   }
 }
