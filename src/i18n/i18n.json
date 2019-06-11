@@ -818,11 +818,12 @@
     "theme.dark": "Dark"
   },
   "userAlerts": {
-    "title": {
-      "search": "Search user alerts"
-    },
-    "mobileTitle": {
-      "search": "User alerts"
+    "title": "Search user alerts",
+    "text": "Text",
+    "mobileTitle": "User alerts",
+    "type": {
+      "title": "Type",
+      "custom": "Custom"
     }
   }
 }

@@ -20,7 +20,59 @@
             fieldSize="full">
           </date-field>
         </div>
+        <div class="col-12 col-md-6">
+          <single-selection-field labelPosition="side" formControlName="type"
+            [label]="i18n.userAlerts.type.title"
+            [emptyOption]="i18n.general.notApplied">
+            <field-option value="custom" [text]="i18n.userAlerts.type.custom">
+            </field-option>
+            <field-option value="debit" [text]="i18n.account.outgoing">
+            </field-option>
+          </single-selection-field>
+        </div>
+        <div class="col-12 col-md-6">
+          <user-field labelPosition="side" formControlName="user"
+            [label]="i18n.general.user"></user-field>
+        </div>
       </div>
     </form>
   </page-content>
+  <results-layout resultType="list" [results]="results$ | async"
+    (update)="update($event)" [onClick]="onClick">
+
+    <mobile-result *mobileResult="let row" [avatarImage]="row.user?.image"
+      avatarIcon="user">
+      <div class="cell-main" [tooltip]="row.user.display">
+        {{ row.user.shortDisplay }}</div>
+      <div class="cell-cell-date">
+        {{ row.date | dateTime }}
+      </div>
+      <div class="cell-text">{{ row.text }}</div>
+    </mobile-result>
+
+    <table *resultTable class="table table-hover cursor-pointer">
+      <thead>
+        <th class="avatar"></th>
+        <th>{{ i18n.general.user }}</th>
+        <th>{{ i18n.userAlerts.text }}</th>
+        <th>{{ i18n.general.date }}</th>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let row of (results$ | async).results">
+          <tr>
+            <td class="avatar" [ngClass]="{
+              'pb-0': layout.xxs$ | async,
+              'border-0': layout.xxs$ | async
+            }">
+              <avatar [image]="row.user?.image" [tooltip]="row.user?.display"
+                icon="user"></avatar>
+            </td>
+            <td>{{ row.user.shortDisplay }}</td>
+            <td>{{ row.text }}</td>
+            <td>{{ row.date | dateTime }}</td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </results-layout>
 </page-layout>

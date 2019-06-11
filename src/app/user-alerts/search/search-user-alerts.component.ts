@@ -3,6 +3,8 @@ import { UserAlert } from 'app/api/models/user-alert'
 import { AlertsService } from 'app/api/services/alerts.service'
 import { UserAlertDataForSearch } from 'app/api/models/user-alert-data-for-search';
 import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
+import { BankingHelperService } from 'app/core/banking-helper.service';
+
 
 @Component({
   selector: 'search-user-alerts',
@@ -17,24 +19,34 @@ export class SearchUserAlertsComponent
 
   constructor(
     injector: Injector,
-    private alertsService: AlertsService
+    private alertsService: AlertsService,
+    private bankingHelper: BankingHelperService
   ) {
     super(injector);
   }
 
   ngOnInit() {
     super.ngOnInit();
-    const query = {};
-    this.form.patchValue(query, { emitEvent: false });
+    // this.query = {};
+    // this.form.patchValue(this.query, { emitEvent: false });
     this.data = {};
   }
 
   protected getFormControlNames() {
-    return ['type', 'user', 'period'];
+    return ['type', 'user', 'periodBegin', 'periodEnd'];
   }
 
   doSearch(value: any) {
+    const query = {
+      fields: null,
+      broker: null,
+      datePeriod: this.bankingHelper.resolveDatePeriod(value),
+      page: value.page,
+      pageSize: value.pageSize,
+      types: value.type,
+      user: value.user
+    };
 
-    return this.alertsService.searchUserAlerts$Response(value);
+    return this.alertsService.searchUserAlerts$Response(query);
   }
 }
