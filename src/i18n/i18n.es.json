@@ -39,10 +39,10 @@
     "cancel": "Cancelar",
     "close": "Cerrar",
     "submit": "Aceptar",
-    "remove": "Remove",
-    "remove.confirm": "Are you sure to remove the item {item}?",
-    "remove.done": "The item {item} was removed",
-    "remove.tooltip": "Remove {item}",
+    "remove": "Eliminar",
+    "remove.confirm": "¿Está seguro de eliminar el elemento {item}?",
+    "remove.done": "El elemento {item} fue eliminado",
+    "remove.tooltip": "Eliminar {item}",
     "save": "Guardar",
     "addNew": "Agregar",
     "yes": "Si",
@@ -110,8 +110,8 @@
       }
     },
     "range": {
-      "fromTo": "From {min} to {max}",
-      "from": "From {min}",
+      "fromTo": "De {min} a {max}",
+      "from": "Desde {min}",
       "to": "Hasta {max}"
     },
     "fileSize": {
@@ -145,7 +145,7 @@
     "maxItems": "No puede agregar más de {max} elementos",
     "validation": "La acción no puede ser procesada, debido a que existen errores de validación",
     "staleEntity": "Los datos que usted está guardando, han sido modificados por otro usuario o proceso.\nPor favor, recargue la página e inténtelo nuevamente.",
-    "removeDataInUse": "This item cannot be removed because it is currently in use.",
+    "removeDataInUse": "Este elemento no puede ser eliminado porque se encuentra en uso.",
     "notFound": "La ubicación que ha ingresado o intenta acceder no fue encontrada",
     "notFound.type": "El siguiente dato no pudo ser encontrado: {type}",
     "notFound.typeKey": "El siguiente dato no pudo ser encontrado: {type} con clave {key}",
