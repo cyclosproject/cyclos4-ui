@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Injector, OnDestroy, OnInit } from 
 import { AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import {
   AddressNew, AvailabilityEnum, Group, GroupForRegistration, GroupKind,
-  Image, PhoneNew, RoleEnum, UserDataForNew, UserNew, UserRegistrationResult
+  Image, PhoneNew, RoleEnum, UserDataForNew, UserNew, UserRegistrationResult, StoredFile
 } from 'app/api/models';
 import { ImagesService, UsersService } from 'app/api/services';
 import { UserHelperService } from 'app/core/user-helper.service';
@@ -53,6 +53,8 @@ export class UserRegistrationComponent
   confirmForm: FormGroup;
   image: Image;
   validationSub: Subscription;
+  customImages: Image[] = [];
+  customFiles: StoredFile[] = [];
 
   step$ = new BehaviorSubject<RegistrationStep>(null);
   get step(): RegistrationStep {
@@ -338,4 +340,13 @@ export class UserRegistrationComponent
       this.router.navigate(['users', result.user.id, 'profile']);
     }
   }
+
+  addCustomImages(images: Image[]) {
+    this.customImages = [...this.customImages, ...images];
+  }
+
+  addCustomFiles(files: StoredFile[]) {
+    this.customFiles = [...this.customFiles, ...files];
+  }
+
 }

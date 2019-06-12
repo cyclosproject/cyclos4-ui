@@ -30,7 +30,7 @@
         [tooltip]="i18n.field.file.upload" (click)="fileUpload.perform()">
         <icon icon="cloud_upload"></icon>
       </button>
-      <button *ngIf="maxFiles > 1"
+      <button *ngIf="maxFiles > 1 && files.length > 0"
         class="ml-2 btn btn-icon d-flex align-content-center"
         [tooltip]="i18n.field.file.manage" (click)="manageFiles()">
         <icon icon="edit"></icon>

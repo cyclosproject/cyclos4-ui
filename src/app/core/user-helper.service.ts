@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AsyncValidatorFn, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import {
   AvailabilityEnum, OperatorDataForNew, UserDataForNew, UserStatusEnum,
-  UserBasicData, ProfileFieldActions, OperatorGroupAccountAccessEnum
+  UserBasicData, ProfileFieldActions, OperatorGroupAccountAccessEnum, User
 } from 'app/api/models';
 import { FieldHelperService } from 'app/core/field-helper.service';
 import { I18n } from 'app/i18n/i18n';
@@ -38,6 +38,14 @@ export class UserHelperService {
     private i18n: I18n,
     private formBuilder: FormBuilder,
     private login: LoginService) {
+  }
+
+  /**
+   * Indicates whether the given user reference is an operator
+   * @param user The user to test
+   */
+  isOperator(user: User): boolean {
+    return user && !!user.user;
   }
 
   /**

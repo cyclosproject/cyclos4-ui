@@ -87,6 +87,8 @@ import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { SortableModule } from 'ngx-bootstrap/sortable';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { BooleanPipe } from 'app/shared/boolean.pipe';
+import { MultipleUsersFieldComponent } from 'app/shared/multiple-users-field.component';
+import { UserInfoComponent } from 'app/shared/user-info.component';
 
 
 
@@ -164,7 +166,9 @@ export function initTooltipConfig(): TooltipConfig {
     ResultTypeFieldComponent,
     AddressDetailsComponent,
     UserLinkComponent,
+    UserInfoComponent,
     UserFieldComponent,
+    MultipleUsersFieldComponent,
     PickContactComponent,
     ContentMonitorComponent,
     ChipComponent,
@@ -273,7 +277,9 @@ export function initTooltipConfig(): TooltipConfig {
     ResultTypeFieldComponent,
     AddressDetailsComponent,
     UserLinkComponent,
+    UserInfoComponent,
     UserFieldComponent,
+    MultipleUsersFieldComponent,
     PickContactComponent,
     ContentMonitorComponent,
     ChipComponent,

@@ -113,7 +113,9 @@ export abstract class BaseAutocompleteFieldComponent<T, A>
   }
 
   onValueInitialized() {
-    if (!empty(this.value)) {
+    if (empty(this.value)) {
+      this.select(null);
+    } else {
       this.fetch(this.value).subscribe(res => {
         this.select(res, this.value);
       });
@@ -170,15 +172,20 @@ export abstract class BaseAutocompleteFieldComponent<T, A>
    * @param selected The selected value
    * @param value The internal value to be set
    */
-  select(selected: A, value?: T) {
+  select(selected: A, value?: T, options?: { emitEvent?: boolean }) {
+    options = options || {};
     const newValue = value || (selected == null ? null : this.toValue(selected));
     if (this.value !== newValue) {
       this.value = newValue;
     }
     this.selection = selected;
-    this.selected.emit(selected);
+    if (options.emitEvent !== false) {
+      this.selected.emit(selected);
+    }
     this.close();
-    if (this.inputFieldControl.value !== newValue) {
+    if (selected == null) {
+      this.inputFieldControl.setValue(null);
+    } else if (this.inputFieldControl.value !== newValue) {
       this.inputFieldControl.setValue(newValue);
     }
   }

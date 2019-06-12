@@ -3,7 +3,7 @@ import {
   Input, OnInit, Optional, QueryList, SkipSelf, ViewChild, ViewChildren
 } from '@angular/core';
 import {
-  AbstractControl, ControlContainer, FormArray, FormBuilder, FormControl,
+  AbstractControl, ControlContainer, FormArray, FormBuilder,
   NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator
 } from '@angular/forms';
 import { CustomFieldSizeEnum } from 'app/api/models';
@@ -15,7 +15,7 @@ import { DateConstraint, dateConstraintAsMoment } from 'app/shared/date-constrai
 import { empty } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
 import { range } from 'lodash';
-import moment from 'moment-mini-ts';
+import moment, { Moment } from 'moment-mini-ts';
 import { BsDropdownDirective } from 'ngx-bootstrap/dropdown';
 
 /**
@@ -41,7 +41,6 @@ export class DateFieldComponent
   max: moment.Moment;
 
   partControls: FormArray;
-  dateControl: FormControl;
   options: string[][];
   optionLabels: string[][];
   fieldNames: string[];
@@ -61,8 +60,6 @@ export class DateFieldComponent
     super(injector, controlContainer);
     this.partControls = formBuilder.array(new Array(this.format.dateFields.length).fill(''));
     this.addSub(this.partControls.valueChanges.subscribe(parts => this.setFromParts(parts)));
-    this.dateControl = formBuilder.control(null);
-    this.addSub(this.dateControl.valueChanges.subscribe(date => this.setFromDate(date)));
   }
 
   /**
@@ -98,12 +95,20 @@ export class DateFieldComponent
     this.value = this.format.parseAsDate(date);
   }
 
-  get valueAsDate(): Date {
+  get valueAsMoment(): Moment {
     const value = this.value;
     if (empty(value)) {
       return null;
     } else {
-      return moment(value).toDate();
+      return moment(value);
+    }
+  }
+
+  set valueAsMoment(value: Moment) {
+    if (value == null) {
+      this.setValue(null);
+    } else {
+      this.setValue(value.format(ISO_DATE));
     }
   }
 
@@ -142,18 +147,15 @@ export class DateFieldComponent
 
   onValueInitialized(raw: string): void {
     let partValue = ['', '', ''];
-    let dateValue: Date = null;
     if (!empty(raw)) {
       const mmt = moment(raw);
       if (mmt.isValid()) {
         partValue = this.format.applyDateFields(
           [String(mmt.year()), String(mmt.month() + 1), String(mmt.date())]
         );
-        dateValue = mmt.toDate();
       }
     }
     this.partControls.setValue(partValue, { emitEvent: false });
-    this.dateControl.setValue(dateValue, { emitEvent: false });
   }
 
   protected getFocusableControl() {
@@ -194,7 +196,7 @@ export class DateFieldComponent
   }
 
   onPartChanged(event: Event) {
-    const select = event.srcElement as HTMLSelectElement;
+    const select = event.target as HTMLSelectElement;
     if (select.value === '') {
       this.setValue(null, true);
     }
@@ -222,5 +224,10 @@ export class DateFieldComponent
   onHidden() {
     this.calendar.forEach(c => c.clearShortcuts());
     this.layout.hideBackdrop();
+  }
+
+  selectFromCalendar(date: Moment) {
+    this.dropdown.hide();
+    this.valueAsMoment = date;
   }
 }

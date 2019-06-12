@@ -1,10 +1,10 @@
 openapi: '3.0.0'
 info:
-  title: 'Cyclos 4.12 API'
+  title: 'Cyclos @cyclosVersion API'
   description: >-
     The Cyclos REST API is described using OpenAPI 3.0. The descriptor for the api
-    can be downloaded in both [YAML](http://localhost:8888/api/cyclos-openapi.yaml) or
-    [JSON](http://localhost:8888/api/cyclos-openapi.json) formats. These files can be used in tools
+    can be downloaded in both [YAML](@url/cyclos-openapi.yaml) or
+    [JSON](@url/cyclos-openapi.json) formats. These files can be used in tools
     that support the OpenAPI specification, such as the [Swagger
     Generator](https://generator.swagger.io/).
 
@@ -22,11 +22,11 @@ info:
 
     For details of the deprecated elements (operations and model) please visit the
     [deprecation notes
-    page](https://documentation.cyclos.org/4.12/api-deprecation.html)
+    page](https://documentation.cyclos.org/@cyclosVersion/api-deprecation.html)
     for this version.
-  version: '4.12'
+  version: '@cyclosVersion'
 servers:
-  - url: 'http://localhost:8888/api'
+  - url: '@url'
 
 tags:
   - name: Auth
@@ -8399,6 +8399,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
             items:
               description: ''
               type: string
+        - name: keywords
+          in: query
+          required: false
+          description: "Used to filter documents containing that keywords in the the name or description (case insensitive)"
+          schema:
+            type: string
         - name: page
           in: query
           required: false
@@ -27563,13 +27569,13 @@ components:
         Contains the possible 'order by' values when searching for transfers
 
         Possible values are:
-
+        
         - `amountAsc`: The result is ordered by amount descendant
-
+        
         - `amountDesc`: The result is ordered by amount descendant
-
+        
         - `dateAsc`: The result is ordered by date ascendant
-
+        
         - `dateDesc`: The result is ordered by date descendant
       type: string
       enum:
@@ -27583,9 +27589,9 @@ components:
         Indicates whether an account belongs to system or user
 
         Possible values are:
-
+        
         - `system`: System account, there is only one account per type in the system. Managed only by administrators
-
+        
         - `user`: User account, there is one account of this type per user.
       type: string
       enum:
@@ -27597,11 +27603,11 @@ components:
         Determines which address is returned on the search, if any. By default no addresses are returned. This option is useful for displaying results as locations on a map. In all cases only located addresses (those that have the geographical coordinates set) are returned. When returning all addresses, data related with multiple addresses is returned multiple times.
 
         Possible values are:
-
+        
         - `all`: All addresses are returned.
-
+        
         - `nearest`: The nearest address from the reference location is returned. Only usable if a reference coordinate (`latitude` and `longitude`)
-
+        
         - `none`: Addresses are not returned.
       type: string
       enum:
@@ -27614,9 +27620,9 @@ components:
         The possible views for simple or webshop advertisements categories
 
         Possible values are:
-
+        
         - `images`: A list including the categories with its corresponding image.
-
+        
         - `simple`: A simplified list of categories.
       type: string
       enum:
@@ -27628,9 +27634,9 @@ components:
         The possible charge types for a delivery method of a webshop ad.
 
         Possible values are:
-
+        
         - `fixed`: The delivery method charge is fixed set by the seller.
-
+        
         - `negotiated`: The delivery method charge can be be negotiated between the seller and the buyer.
       type: string
       enum:
@@ -27642,9 +27648,9 @@ components:
         The possible kinds of an advertisement
 
         Possible values are:
-
+        
         - `simple`: A simple advertisement that can be viewed, but not directly bought
-
+        
         - `webshop`: An advertisement that is part of an webshop. Can be bought, there is stock management, etc.
       type: string
       enum:
@@ -27656,17 +27662,17 @@ components:
         Indicates how advertisements results are ordered.
 
         Possible values are:
-
+        
         - `date`: Newest advertisements are returned first.
-
+        
         - `distance`: Only useful when providing a location, will return nearer advertisements first.
-
+        
         - `priceAsc`: Smaller prices are returned first. Advertisements without price are returned last.
-
+        
         - `priceDesc`: Higher prices are returned first. Advertisements without price are returned last.
-
+        
         - `random`: Without definite order
-
+        
         - `relevance`: This is the default if keywords are used. Best matching advertisements come first.
       type: string
       enum:
@@ -27682,19 +27688,19 @@ components:
         The possible status for an advertisement
 
         Possible values are:
-
+        
         - `active`: The advertisement is published and can be seen by other users.
-
+        
         - `disabled`: The advertisement is disabled because the owner no longer has access to the currency of the advertisement. It cannot be seen by other users.
-
+        
         - `draft`: In draft status, only the owner can see and edit the advertisement. This status is only possible if the system is configured to require authorizations.
-
+        
         - `expired`: The advertisement publication period has already expired, and cannot be seen by other users.
-
+        
         - `hidden`: The advertisement is manually hidden from other users
-
+        
         - `pending`: The advertisement is pending for an authorization and cannot be seen by other users. This status is only possible if the system is configured to require authorizations.
-
+        
         - `scheduled`: The advertisement has a future publication period, and cannot be seen by other users.
       type: string
       enum:
@@ -27711,27 +27717,27 @@ components:
         The address fields that can be configured to be enabled or required
 
         Possible values are:
-
+        
         - `addressLine1`: The first line of the descriptive address
-
+        
         - `addressLine2`: The second line of the descriptive address
-
+        
         - `buildingNumber`: The numeric identifier for a land parcel, house, building or other
-
+        
         - `city`: The city name
-
+        
         - `complement`: The complement (like apartment number)
-
+        
         - `country`: The country, represented as 2-letter, uppercase, ISO 3166-1 code
-
+        
         - `neighborhood`: The neighborhood name
-
+        
         - `poBox`: The post-office box, is an uniquely addressable box
-
+        
         - `region`: The region or state
-
+        
         - `street`: The street name
-
+        
         - `zip`: A zip code that identifies a specific geographic (postal) delivery area
       type: string
       enum:
@@ -27752,19 +27758,19 @@ components:
         Fields which can be used when filtering by user address, by using the `address.<addressField>` name
 
         Possible values are:
-
+        
         - `address`: Filters by any field in the street address: `addressLine1`, `addressLine2`, `street`, `buildingNumber` or `complement`
-
+        
         - `city`: Filters by city name
-
+        
         - `country`: Filters by country, represented as 2-letter, uppercase, ISO 3166-1 code (exact match)
-
+        
         - `neighborhood`: Filters by neighborhood name
-
+        
         - `poBox`: Filters by post-office box (exact match)
-
+        
         - `region`: Filters by region or state
-
+        
         - `zip`: Filters by zip (postal) code (exact match)
       type: string
       enum:
@@ -27781,15 +27787,15 @@ components:
         Which administration menu should a data be displayed
 
         Possible values are:
-
+        
         - `contentManagement`: Content management
-
+        
         - `reports`: Reports
-
+        
         - `systemBanking`: System accounts
-
+        
         - `systemManagement`: System management
-
+        
         - `userManagement`: User management
       type: string
       enum:
@@ -27804,11 +27810,11 @@ components:
         Possible actions that could be confirmed with a device for a payment authorization
 
         Possible values are:
-
+        
         - `authorize`: Authorize the payment authorization
-
+        
         - `cancel`: Cancel the payment authorization
-
+        
         - `deny`: Deny the payment authorization
       type: string
       enum:
@@ -27821,11 +27827,11 @@ components:
         Determines the availability of a data
 
         Possible values are:
-
+        
         - `disabled`: The data is disabled
-
+        
         - `optional`: The data is enabled and optional
-
+        
         - `required`: The data is enabled and required
       type: string
       enum:
@@ -27838,9 +27844,9 @@ components:
         Error codes for 400 Bad request HTTP status
 
         Possible values are:
-
+        
         - `general`: Bad request format
-
+        
         - `json`: Error in the JSON format
       type: string
       enum:
@@ -27852,11 +27858,11 @@ components:
         Contains the possible balance levels on the users with balances search
 
         Possible values are:
-
+        
         - `high`: High balance, above the medium balance range upper bound
-
+        
         - `low`: Low balance, below the medium balance range lower bound
-
+        
         - `medium`: Medium balance, between the lower and upper bounds of the medium balance range
       type: string
       enum:
@@ -27869,9 +27875,9 @@ components:
         The kind of account balance limit
 
         Possible values are:
-
+        
         - `lower`: The lower (negative) balance limit
-
+        
         - `upper`: The upper (positive) balance limit
       type: string
       enum:
@@ -27883,19 +27889,19 @@ components:
         The existing user basic profile fields
 
         Possible values are:
-
+        
         - `accountNumber`: Account number
-
+        
         - `address`: Address
-
+        
         - `email`: E-mail
-
+        
         - `image`: Image
-
+        
         - `name`: Full name
-
+        
         - `phone`: Phone (either mobile or land-line)
-
+        
         - `username`: Login name
       type: string
       enum:
@@ -27912,11 +27918,11 @@ components:
         An action over a user's brokers
 
         Possible values are:
-
+        
         - `add`: The broker was added
-
+        
         - `remove`: The broker was removed
-
+        
         - `setMain`: The broker was set as main
       type: string
       enum:
@@ -27929,17 +27935,17 @@ components:
         Possible errors when buying a voucher
 
         Possible values are:
-
+        
         - `maxAmountForPeriod`: The maximum allowed buy amount for a period (example, a month) has been exceeded
-
+        
         - `maxOpenAmount`: The maximum open amount for this voucher type for the buyer user has been exceeded
-
+        
         - `maxTotalOpenAmount`: The maximum total open amount for this voucher type, for all users, has been exceeded
-
+        
         - `notAllowedForUser`: The user attempting to buy vouchers is not allowed to buy vouchers of this type
-
+        
         - `payment`: There was an error when performing the payment
-
+        
         - `unexpected`: An unexpected error has occurred. See the `exceptionType` and `exceptionMessage` fields for the internal information.
       type: string
       enum:
@@ -27955,7 +27961,7 @@ components:
         Possibles captcha provider
 
         Possible values are:
-
+        
         - `internal`: Default provider using images
       type: string
       enum:
@@ -27966,13 +27972,13 @@ components:
         Possible actions that could be confirmed with a device for an access client
 
         Possible values are:
-
+        
         - `block`: Block the access client
-
+        
         - `getActivationCode`: Get the activation code
-
+        
         - `unassign`: Unassign the access client
-
+        
         - `unblock`: Unblock the access client
       type: string
       enum:
@@ -27986,13 +27992,13 @@ components:
         The status of an access client
 
         Possible values are:
-
+        
         - `active`: The access client is active, and can operate normally
-
+        
         - `blocked`: The access client is blocked and cannot be used until it is unblocked
-
+        
         - `removed`: The access client was removed, but had transactions, so couldn't be physically removed
-
+        
         - `unassigned`: The access client is unassigned (disconnected) from an (remote) application
       type: string
       enum:
@@ -28006,15 +28012,15 @@ components:
         The status of a mobile phone verification challenge
 
         Possible values are:
-
+        
         - `codeNotSent`: There isn't a current code to be verified (for example the was never sent or the code was reset by max attempts reached)
-
+        
         - `expired`: The code has expired and can't be used anymore.
-
+        
         - `failed`: The code was wrong (it doesn't match the expected value)
-
+        
         - `maxAttemptsReached`: The max attempts with an invalid code was reached.
-
+        
         - `success`: The code was correct and accepted.
       type: string
       enum:
@@ -28029,9 +28035,9 @@ components:
         Error codes for 409 Conflict entity HTTP status
 
         Possible values are:
-
+        
         - `constraintViolatedOnRemove`: An attempt to remove some entity has failed, probably because that entity is in use, that is, is being referenced by some other entity.
-
+        
         - `staleEntity`: Failure in the optimistic lock. It means some entity was fetched for editing by 2 clients. Then they both saved it. The first one is successful, but the second one will fail. If you get this error, make sure the `version` field is being sent with the correct value, as fetched from the server.
       type: string
       enum:
@@ -28043,11 +28049,11 @@ components:
         Possible options for ordering the results of a contact list.
 
         Possible values are:
-
+        
         - `alphabeticallyAsc`: Users are ordered by name (or whatever field is set to format users) in ascending order.
-
+        
         - `alphabeticallyDesc`: Users are ordered by name (or whatever field is set to format users) in descending order.
-
+        
         - `relevance`: This is the default if keywords are used. Best matching users come first.
       type: string
       enum:
@@ -28060,23 +28066,23 @@ components:
         The UI control (widget) type that should be used to render this field for edit. Most notably, the types that can have distinct controls are singleSelection, that could be rendered as a single selection widget or radio button group, and multi selection, which could be rendered as a multi selection widget or a checkbox group.
 
         Possible values are:
-
+        
         - `checkbox`: A checkbox group
-
+        
         - `entitySelection`: A widget to select a linked entity (for example, an auto-complete for users)
-
+        
         - `multiSelection`: A multi-selection field
-
+        
         - `radio`: A radio button group
-
+        
         - `richEditor`: An HTML editor
-
+        
         - `singleSelection`: A single-selection field
-
+        
         - `text`: A single line text
-
+        
         - `textarea`: A multi line text
-
+        
         - `upload`: A widget to upload a file
       type: string
       enum:
@@ -28095,21 +28101,21 @@ components:
         Determines the kind if a custom field
 
         Possible values are:
-
+        
         - `contact`: Contact fields.
-
+        
         - `contactInfo`: Additional contact information fields.
-
+        
         - `custom_operation`: Custom operation fields.
-
+        
         - `document`: Document fields.
-
+        
         - `marketplace`: Advertisements field.
-
+        
         - `record`: Record fields.
-
+        
         - `transaction`: Transaction fields.
-
+        
         - `user`: User profile fields.
       type: string
       enum:
@@ -28127,15 +28133,15 @@ components:
         The size of the widget that should be rendered
 
         Possible values are:
-
+        
         - `full`: The widget should occupy 100% of the available area
-
+        
         - `large`: A large widget
-
+        
         - `medium`: A medium widget
-
+        
         - `small`: A small widget
-
+        
         - `tiny`: A very small widget
       type: string
       enum:
@@ -28150,33 +28156,33 @@ components:
         The data type for the custom field
 
         Possible values are:
-
+        
         - `boolean`: A boolean value
-
+        
         - `date`: A date value
-
+        
         - `decimal`: A decimal value
-
+        
         - `dynamicSelection`: Single selection based on options generated by a custom script
-
+        
         - `file`: Multiple binary files
-
+        
         - `image`: Multiple images
-
+        
         - `integer`: An integer value
-
+        
         - `linkedEntity`: Another entity. Uses the `linkedEntityType` to define which kind of entity is it
-
+        
         - `multiSelection`: Multiple enumerated values
-
+        
         - `richText`: A multi line string formatted as HTML
-
+        
         - `singleSelection`: A single enumerated value
-
+        
         - `string`: A single line string
-
+        
         - `text`: A multi line string
-
+        
         - `url`: An URL
       type: string
       enum:
@@ -28200,23 +28206,23 @@ components:
         The format for dates
 
         Possible values are:
-
+        
         - `dmyDash`: DD-MM-YYYY
-
+        
         - `dmyPeriod`: DD.MM.YYYY
-
+        
         - `dmySlash`: DD/MM/YYYY
-
+        
         - `mdyDash`: MM-DD-YYYY
-
+        
         - `mdyPeriod`: MM.DD.YYYY
-
+        
         - `mdySlash`: MM/DD/YYYY
-
+        
         - `ymdDash`: YYYY-MM-DD
-
+        
         - `ymdPeriod`: YYYY.MM.DD
-
+        
         - `ymdSlash`: YYYY/MM/DD
       type: string
       enum:
@@ -28235,11 +28241,11 @@ components:
         The possible status for a device confirmation
 
         Possible values are:
-
+        
         - `approved`: The confirmation was approved through a trusted device
-
+        
         - `pending`: The confirmation is pending for approval through a trusted device
-
+        
         - `rejected`: The confirmation was rejected through a trusted device
       type: string
       enum:
@@ -28252,61 +28258,61 @@ components:
         Contains all possible device confirmation types
 
         Possible values are:
-
+        
         - `acceptOrder`: A confirmation for accepting a pending order as buyer
-
+        
         - `approveTicket`: A confirmation for approving a pending ticket as payer
-
+        
         - `buyVouchers`: A confirmation for buying vouchers
-
+        
         - `changeAccountLimits`: A confirmation for change the account limits of a user account
-
+        
         - `chargeback`: A confirmation for transfer chargeback
-
+        
         - `clientAction`: A confirmation for an action over an access client
-
+        
         - `editProfile`: A confirmation for editing the profile of his own
-
+        
         - `generatePassword`: A confirmation for generating a new password
-
+        
         - `generateVouchers`: A confirmation for generating vouchers
-
+        
         - `importPayments`: A confirmation for importin payments as admin
-
+        
         - `importUserPayments`: A confirmation for batch payments as user
-
+        
         - `manageAddress`: A confirmation for managing an user address of his own
-
+        
         - `manageAuthorization`: A confirmation for managing a pending payment authorization
-
+        
         - `manageContactInfo`: A confirmation for managing an additional contact information of his own
-
+        
         - `manageExternalPayment`: A confirmation for managing an external payment
-
+        
         - `manageFailedOccurrence`: A confirmation for managing a recurring payment failed occurrence
-
+        
         - `manageInstallment`: A confirmation for managing a scheduled payment installment
-
+        
         - `managePaymentRequest`: A confirmation for managing a payment request
-
+        
         - `managePhone`: A confirmation for managing a phone of his own
-
+        
         - `manageRecurringPayment`: A confirmation for managing a recurring payment
-
+        
         - `manageScheduledPayment`: A confirmation for managing a scheduled payment
-
+        
         - `manageVoucher`: A confirmation for managing a voucher
-
+        
         - `performExternalPayment`: A confirmation for performing an external payment
-
+        
         - `performPayment`: A confirmation for performing a payment
-
+        
         - `personalizeNfc`: A confirmation for personalizing a NFC tag
-
+        
         - `runOperation`: A confirmation for running a custom operation
-
+        
         - `secondaryLogin`: A confirmation for the secondary login
-
+        
         - `shoppingCartCheckout`: A confirmation for the cart checkout
       type: string
       enum:
@@ -28344,9 +28350,9 @@ components:
         Determines the unit used to measure distances
 
         Possible values are:
-
+        
         - `kilometer`: Kilometer(s)
-
+        
         - `mile`: Mile(s)
       type: string
       enum:
@@ -28358,11 +28364,11 @@ components:
         The kind of a document
 
         Possible values are:
-
+        
         - `dynamic`: A shared dynamic document - the content is a HTML text obtained from a template and variables
-
+        
         - `static`: A shared static document - the content is a downloaded file
-
+        
         - `user`: An individual static document belonging to a specific user
       type: string
       enum:
@@ -28375,9 +28381,9 @@ components:
         The document range, either shared or individual
 
         Possible values are:
-
+        
         - `individual`: A document belonging to a specific user
-
+        
         - `shared`: Shared documents. They have a category, and are the same documents for all users
       type: string
       enum:
@@ -28389,31 +28395,31 @@ components:
         Error types associated to the HTTP Status 500
 
         Possible values are:
-
+        
         - `buyVoucher`: An error has occurred when buying a voucher
-
+        
         - `forgottenPassword`: An error has occurred when changing a forgotten password.
-
+        
         - `general`: An unexpected error has occurred
-
+        
         - `initializeNfc`: An error has occurred when initializing a NFC token
-
+        
         - `nested`: An error which has another internal error at a given property / index
-
+        
         - `nfcAuth`: An error has occurred when making an external NFC authentication
-
+        
         - `otp`: An error has occurred requesting an OTP
-
+        
         - `payment`: An error has occurred when making a payment
-
+        
         - `personalizeNfc`: An error has occurred when personalizing a NFC token
-
+        
         - `pos`: An error has occurred when receiving a payment on a POS operation
-
+        
         - `redeemVoucher`: An error has occurred when redeeming a voucher
-
+        
         - `shoppingCart`: An error has occurred when interacting with a shopping cart.
-
+        
         - `shoppingCartCheckout`: An error has occurred when checking out a shopping cart.
       type: string
       enum:
@@ -28436,7 +28442,7 @@ components:
         Possible actions that could be confirmed with a device for an external payment
 
         Possible values are:
-
+        
         - `cancel`: Cancel the external payment
       type: string
       enum:
@@ -28447,15 +28453,15 @@ components:
         The status of an external payment
 
         Possible values are:
-
+        
         - `canceled`: The external payment was canceled
-
+        
         - `expired`: The external payment has expired without the destination user activation
-
+        
         - `failed`: The external payment has failed processing
-
+        
         - `pending`: The external payment is pending, awaiting the destination user to be activated in Cyclos
-
+        
         - `processed`: The external payment was processed, and the destination payment was created
       type: string
       enum:
@@ -28470,7 +28476,7 @@ components:
         Possible actions that could be confirmed with a device for a recurring payment failed occurrence
 
         Possible values are:
-
+        
         - `process`: Process the recurring payment failed occurrence
       type: string
       enum:
@@ -28481,33 +28487,33 @@ components:
         Possible mime types for uploading files
 
         Possible values are:
-
+        
         - `audio`: Audio
-
+        
         - `html`: HTML document
-
+        
         - `image`: Image
-
+        
         - `ms_excel`: Microsoft Excel spreadsheet
-
+        
         - `ms_powerpoint`: Microsoft PowerPoint presentation
-
+        
         - `ms_word`: Microsoft Word document
-
+        
         - `od_presentation`: OpenDocument presentation
-
+        
         - `od_spreadsheet`: OpenDocument spreadsheet
-
+        
         - `od_text`: OpenDocument text
-
+        
         - `others`: Other types not included above
-
+        
         - `pdf`: PDF document
-
+        
         - `rtf`: RTF document
-
+        
         - `text`: Plain text
-
+        
         - `video`: Video
       type: string
       enum:
@@ -28531,33 +28537,33 @@ components:
         Error codes for 403 Forbidden HTTP status.
 
         Possible values are:
-
+        
         - `devicePinRemoved`: The device pin was removed by exceeding the allowed attempts
-
+        
         - `expiredPassword`: The password being used has expired
-
+        
         - `illegalAction`: Attempt to perform an action that is not allowed on this context
-
+        
         - `inaccessibleChannel`: This channel cannot be accessed by the user
-
+        
         - `inaccessiblePrincipal`: The used identification method (principal type) cannot be used in this channel
-
+        
         - `indefinitelyBlocked`: The password was indefinitely blocked by exceeding the allowed attempts
-
+        
         - `invalidDeviceActivationCode`: The device activation code was no valid
-
+        
         - `invalidDeviceConfirmation`: The device confirmation being used is invalid (normally as a confirmation password)
-
+        
         - `invalidPassword`: The password being used is invalid (normally the confirmation password)
-
+        
         - `operatorWithPendingAgreements`: The operator cannot access because his owner member has pending agreements
-
+        
         - `pendingAgreements`: There is at least one agreement which needs to be accepted in order to access the system
-
+        
         - `permissionDenied`: The operation was denied because a required permission was not granted
-
+        
         - `resetPassword`: The password being used was manually reset
-
+        
         - `temporarilyBlocked`: The password was temporarily blocked by exceeding the allowed attempts
       type: string
       enum:
@@ -28581,9 +28587,9 @@ components:
         Application-specific error codes for a ForgottenPassword error.
 
         Possible values are:
-
+        
         - `invalidSecurityAnswer`: if the answer for the security question was incorrect.
-
+        
         - `unexpected`: An unexpected error has occurred.
       type: string
       enum:
@@ -28595,13 +28601,13 @@ components:
         The possible kinds of group or group set
 
         Possible values are:
-
+        
         - `adminGroup`: An administrator group
-
+        
         - `brokerGroup`: A broker group
-
+        
         - `groupSet`: A group set
-
+        
         - `memberGroup`: A member (regular user) group
       type: string
       enum:
@@ -28615,11 +28621,11 @@ components:
         The way an user is identified to either perform or receive a payment
 
         Possible values are:
-
+        
         - `autocomplete`: The client application should search for an user and pass in the id
-
+        
         - `contacts`: The client application should access the contact list of the authenticated user and pass the id
-
+        
         - `principalType`: The client application should pass in an identification (principal) of the user, such as login name, e-mail and so on
       type: string
       enum:
@@ -28632,23 +28638,23 @@ components:
         Determines the kind of an image
 
         Possible values are:
-
+        
         - `contactInfo`: An image of an additional contact information
-
+        
         - `customFieldValue`: An image used as custom field value
-
+        
         - `marketplace`: Advertisement images are associated with an advertisement, be it simple or for web shop.
-
+        
         - `marketplaceCategory`: An image of an advertisement (simple or webshop)
-
+        
         - `profile`: User profile images are those associated with the user profile. The first profile image is used to depict the user on search results.
-
+        
         - `systemCustom`: System custom images are additional images an administrator that can be used on rich text contents.
-
+        
         - `temp`: A temporary image which can upload for later associating with an entity being registered (for example, user or advertisement).
-
+        
         - `userCustom`: User custom images are additional images that can be used on rich text contents.
-
+        
         - `voucherType`: An image of a voucher type
       type: string
       enum:
@@ -28667,11 +28673,11 @@ components:
         The possible sizes of images. The actual pixel size depends on the configuration in Cyclos
 
         Possible values are:
-
+        
         - `large`: Full image size
-
+        
         - `medium`: Medium thumbnail
-
+        
         - `small`: Small thumbnail
       type: string
       enum:
@@ -28684,9 +28690,9 @@ components:
         Application-specific error codes for an initialize NFC error
 
         Possible values are:
-
+        
         - `tokenInUse`: The token specified for initialization is already in use (exists and it is active)
-
+        
         - `unexpected`: An unexpected error has occurred. See the `exceptionType` and `exceptionMessage` fields for the internal information.
       type: string
       enum:
@@ -28698,19 +28704,19 @@ components:
         Error codes for 422 Unprocessable entity HTTP status. It means there was an error with the input sent to the operation.
 
         Possible values are:
-
+        
         - `aggregated`: Represents an aggregation of other input errors
-
+        
         - `dataConversion`: Some data conversion has failed. For example, when sending a date with an invalid format
-
+        
         - `fileUploadSize`: An uploaded file size exceeds the maximum allowed
-
+        
         - `maxItems`: There was an attempt to create an item, but the maximum number of allowed items was exceeded
-
+        
         - `missingParameter`: Missing a required request parameter
-
+        
         - `queryParse`: A full-text query keywords contained an invalid text
-
+        
         - `validation`: One or more of the fields sent contains invalid values
       type: string
       enum:
@@ -28727,9 +28733,9 @@ components:
         Possible actions that could be confirmed with a device for a scheduled payment installment
 
         Possible values are:
-
+        
         - `process`: Process the scheduled payment installment
-
+        
         - `settle`: Settle the scheduled payment installment
       type: string
       enum:
@@ -28741,11 +28747,11 @@ components:
         The possible results for an invalid device confirmation
 
         Possible values are:
-
+        
         - `invalidConfirmation`: The confirmation being processed / checked was not found or not belongs to the authenticated user
-
+        
         - `invalidDevice`: The trusted device used to approve / reject the confirmation was not found or is not associated to the authenticated user
-
+        
         - `maxCheckAtemptsReached`: The maximum number of attempts to check for a processed (approved / rejected) device confirmation was reached. The logged user was blocked
       type: string
       enum:
@@ -28758,15 +28764,15 @@ components:
         When the type is linkedEntity, indicates the entity type
 
         Possible values are:
-
+        
         - `advertisement`: An advertisement
-
+        
         - `record`: A record (user or system)
-
+        
         - `transaction`: A transaction (payment, scheduled payment, payment request, etc)
-
+        
         - `transfer`: A transfer
-
+        
         - `user`: An user
       type: string
       enum:
@@ -28781,11 +28787,11 @@ components:
         Indicates how a this payment type restricts payments based on the balance maturity
 
         Possible values are:
-
+        
         - `always`: The payment can always be performed, regardless its maturity
-
+        
         - `history`: It the balance maturity ever reached zero in the past, that balance can be used on payment. If later on the maturity went above zero, that new balance cannot be used. Is normally used in conjunction with the maturity table, so the user can pick the balance from past maturity
-
+        
         - `zero`: The payment can only be performed if the current maturity is zero
       type: string
       enum:
@@ -28798,69 +28804,69 @@ components:
         The possible operations the mobile application can perform
 
         Possible values are:
-
+        
         - `acceptTicket`: Accepts a generated QR code for performing a payment
-
+        
         - `activateNfcDevice`: Activate the phone as NFC device
-
+        
         - `assignPos`: Assign an access client for POS mode
-
+        
         - `boughtVouchers`: View bought vouchers
-
+        
         - `buyVoucher`: Buy a voucher
-
+        
         - `createTicket`: Generate a QR Code for receive payment
-
+        
         - `deactivateNfcDevice`: Deactivate the phone as NFC device
-
+        
         - `formatNfc`: Format NFC tags
-
+        
         - `initializeNfc`: Initialize NFC tags
-
+        
         - `makeSystemPayment`: Perform payments to system
-
+        
         - `makeUserPayment`: Perform payments to other users
-
+        
         - `manageContacts`: Manage own contacts
-
+        
         - `manageOperators`: Manage own/user operators
-
+        
         - `managePasswords`: Manage passwords
-
+        
         - `mapDirectory`: View the user directory (map)
-
+        
         - `paymentRequests`: Search and view payment requests
-
+        
         - `personalizeNfc`: Personalize NFC tags
-
+        
         - `personalizeNfcSelf`: Personalize NFC tags for the logged user or its operators
-
+        
         - `purchases`: Search and view purchased webshops
-
+        
         - `readNfc`: Read NFC tags
-
+        
         - `receivePayment`: Receive payments from other users
-
+        
         - `redeemVoucher`: Redeem vouchers
-
+        
         - `registerUsersAsManager`: Register other users as user manager
-
+        
         - `registerUsersAsMember`: Register other users as member or operator
-
+        
         - `sendPaymentRequestToSystem`: Send payment requests to system
-
+        
         - `sendPaymentRequestToUser`: Send payment requests to users
-
+        
         - `unassignPos`: Unassign the current access client from POS mode
-
+        
         - `usersSearch`: Search other users
-
+        
         - `viewAccountInformation`: View own accounts
-
+        
         - `viewAdvertisements`: Search and view advertisements and webshop
-
+        
         - `viewRedeemed`: View redeemed vouchers
-
+        
         - `viewUserProfile`: View the profile of other users
       type: string
       enum:
@@ -28902,9 +28908,9 @@ components:
         Application-specific error codes for an NFC authentication error
 
         Possible values are:
-
+        
         - `pos`: A POS exception has happened when trying to make an external authenticate. See the `posError` field for more details.
-
+        
         - `unexpected`: An unexpected error has occurred. See the `exceptionType` and `exceptionMessage` fields for the internal information.
       type: string
       enum:
@@ -28916,11 +28922,11 @@ components:
         Represent the different keys stored on NFC tags
 
         Possible values are:
-
+        
         - `appMaster`: The application master key. Not used for now (it could be used for application management).
-
+        
         - `operational`: A key stored within the application that is used to guarantee the presence of the card in sensitive operations, such as receive payment (POS) or personalize the tag
-
+        
         - `piccMaster`: The PICC master key, used to format the tag
       type: string
       enum:
@@ -28933,43 +28939,43 @@ components:
         The type of the entity referenced by the notification, if any.
 
         Possible values are:
-
+        
         - `adQuestion`: The entity is an advertisement question
-
+        
         - `errorLog`: The entity is an error log
-
+        
         - `feedback`: The entity is a transaction feedback
-
+        
         - `installment`: The entity is a scheduled payment installment
-
+        
         - `marketplace`: The entity is a `simple` or `webshop` advertisement
-
+        
         - `network`: The entity is a network
-
+        
         - `occurrence`: The entity is a failed occurrence of a recurring payment
-
+        
         - `order`: The entity is an order
-
+        
         - `passwordType`: The entity is a password type
-
+        
         - `reference`: The entity is an user reference
-
+        
         - `systemAlert`: The entity is a system alert
-
+        
         - `token`: The entity is a token (user identification)
-
+        
         - `transaction`: The entity is a transaction
-
+        
         - `transfer`: The entity is a transfer
-
+        
         - `user`: The entity is an user
-
+        
         - `userAlert`: The entity is an user alert
-
+        
         - `userImportedFile`: The entity is an user imported file
-
+        
         - `voucher`: The entity is a voucher
-
+        
         - `voucherType`: The entity is a voucher type
       type: string
       enum:
@@ -28998,209 +29004,209 @@ components:
         Indicates a kind of notification
 
         Possible values are:
-
+        
         - `accountAllNonSmsPerformedPayments`: A payment was performed
-
+        
         - `accountAuthorizedPaymentCanceled`: The authorization process of a payment was canceled
-
+        
         - `accountAuthorizedPaymentDenied`: A payment pending authorization was denied
-
+        
         - `accountAuthorizedPaymentExpired`: The authorization process of a payment has expired
-
+        
         - `accountAuthorizedPaymentSucceeded`: A payment pending authorization was processed
-
+        
         - `accountBoughtVouchersAboutToExpire`: One or more bought vouchers are about to expire
-
+        
         - `accountBoughtVouchersExpirationDateChanged`: The expiration date of a bought voucher was changed
-
+        
         - `accountBoughtVouchersExpired`: One or more bought vouchers have expired
-
+        
         - `accountExternalPaymentExpired`: A performed external payment has expired
-
+        
         - `accountExternalPaymentPerformedFailed`: A performed external payment has failed
-
+        
         - `accountExternalPaymentReceivedFailed`: A received external payment has failed
-
+        
         - `accountIncomingRecurringPaymentCanceled`: An incoming recurring payment was canceled
-
+        
         - `accountIncomingRecurringPaymentFailed`: An incoming recurring payment processing has failed
-
+        
         - `accountIncomingRecurringPaymentReceived`: A recurring payment was received
-
+        
         - `accountIncomingScheduledPaymentCanceled`: An incoming scheduled payment processing has canceled
-
+        
         - `accountIncomingScheduledPaymentFailed`: An incoming scheduled payment processing has failed
-
+        
         - `accountIncomingScheduledPaymentReceived`: A scheduled payment was received
-
+        
         - `accountLimitChange`: The account balance limit was changed by the administration
-
+        
         - `accountOperatorAuthorizedPaymentApprovedStillPending`: A payment performed by an operator was approved, but still needs administration authorization
-
+        
         - `accountOperatorAuthorizedPaymentCanceled`: A payment performed by an operator had the authorization process canceled
-
+        
         - `accountOperatorAuthorizedPaymentDenied`: A payment performed by an operator was denied
-
+        
         - `accountOperatorAuthorizedPaymentExpired`: A payment performed by an operator had the authorization process expired
-
+        
         - `accountOperatorAuthorizedPaymentSucceeded`: A payment performed by an operator was processed
-
+        
         - `accountOperatorPaymentAwaitingAuthorization`: A payment performed by an operator needs my authorization
-
+        
         - `accountPaymentAwaitingAuthorization`: A payment is awaiting my authorization
-
+        
         - `accountPaymentReceived`: A payment was received
-
+        
         - `accountPaymentRequestCanceled`: A sent payment request was canceled
-
+        
         - `accountPaymentRequestDenied`: A sent payment request was denied
-
+        
         - `accountPaymentRequestExpirationDateChanged`: An incoming payment request had its expiration date changed
-
+        
         - `accountPaymentRequestExpired`: A sent payment request has expired
-
+        
         - `accountPaymentRequestProcessed`: A sent payment request was processed
-
+        
         - `accountPaymentRequestReceived`: A payment was requested
-
+        
         - `accountRecurringPaymentFailed`: The processing of a recurring payment has failed
-
+        
         - `accountRecurringPaymentOccurrenceProcessed`: A recurring payment processing was processed
-
+        
         - `accountScheduledPaymentFailed`: The processing of a scheduled payment has failed
-
+        
         - `accountScheduledPaymentInstallmentProcessed`: A scheduled payment was processed
-
+        
         - `accountScheduledPaymentRequestFailed`: A scheduled payment request has failed and was reopened
-
+        
         - `accountSentPaymentRequestExpirationDateChanged`: A sent payment request had its expiration date changed
-
+        
         - `accountSmsPerformedPayment`: A payment was performed by SMS
-
+        
         - `accountTicketWebhookFailed`: The webhook processing for a ticket has failed
-
+        
         - `adminAdPendingAuthorization`: A new advertisement was created, and it is pending administrator authorization
-
+        
         - `adminApplicationError`: A new application error was generated
-
+        
         - `adminExternalPaymentExpired`: An external payment has expired without the destination user being registered
-
+        
         - `adminExternalPaymentPerformedFailed`: An external payment has failed processing
-
+        
         - `adminGeneratedVouchersAboutToExpire`: One or more generated vouchers are about to expire
-
+        
         - `adminGeneratedVouchersExpired`: One or more generated vouchers have expired
-
+        
         - `adminNetworkCreated`: A new network has been created
-
+        
         - `adminPaymentAwaitingAuthorization`: A payment is awaiting the administrator authorization
-
+        
         - `adminPaymentPerformed`: A payment was performed
-
+        
         - `adminSystemAlert`: A new system alert was generated
-
+        
         - `adminUserAlert`: A new user alert was generated
-
+        
         - `adminUserImportRegistration`: An import of users has finished processing
-
+        
         - `adminUserRegistration`: A new user has been registered
-
+        
         - `adminVoucherBuyingAboutToExpire`: Buying in a voucher type is about to expire
-
+        
         - `brokeringAdPendingAuthorization`: A new advertisement from an assigned member needs authorization
-
+        
         - `brokeringMemberAssigned`: A new member was unassigned from me as broker
-
+        
         - `brokeringMemberUnassigned`: A new member was assigned to me as broker
-
+        
         - `buyerAdInterestNotification`: A new advertisement was published, matching one of my advertisement interests
-
+        
         - `buyerAdQuestionAnswered`: An advertisement question I've asked was answered
-
+        
         - `buyerOrderCanceled`: A web-shop order was canceled
-
+        
         - `buyerOrderPaymentCanceled`: The payment for a web-shop purchase had the authorization process canceled
-
+        
         - `buyerOrderPaymentDenied`: The payment for a web-shop purchase was denied authorization
-
+        
         - `buyerOrderPaymentExpired`: The payment for a web-shop purchase was expired without being authorized
-
+        
         - `buyerOrderPending`: A web-shop order is pending my approval
-
+        
         - `buyerOrderPendingAuthorization`: A web-shop order is pending authorization
-
+        
         - `buyerOrderPendingDeliveryData`: A web-shop order needs me to fill its delivery information
-
+        
         - `buyerOrderProcessedBySeller`: A web-shop order was processed by the seller
-
+        
         - `buyerOrderRejectedBySeller`: A web-shop order was rejected by the seller
-
+        
         - `buyerSalePending`: A web-shop order is pending seller's approval
-
+        
         - `buyerSaleRejectedBySeller`: A web-shop sale order was rejected by the seller
-
+        
         - `feedbackChanged`: A feedback for a sale was changed
-
+        
         - `feedbackCreated`: A feedback for a sale was created
-
+        
         - `feedbackExpirationReminder`: Reminder to supply feedback for a purchase
-
+        
         - `feedbackOptional`: I can optionally supply feedback for a purchase
-
+        
         - `feedbackReplyCreated`: A feedback for a purchase was replied
-
+        
         - `feedbackRequired`: I have to supply feedback for a purchase
-
+        
         - `personalBrokerAssigned`: A broker was assigned to the user
-
+        
         - `personalBrokerUnassigned`: A broker was unassigned from the user
-
+        
         - `personalMaxSmsPerMonthReached`: The user has reached the maximum number of monthly SMS messages
-
+        
         - `personalNewToken`: A new token (card) was assigned
-
+        
         - `personalNewTokenPendingActivation`: a new token (card) is pending activation
-
+        
         - `personalPasswordStatusChanged`: The status of a password has changed
-
+        
         - `personalTokenStatusChanged`: The status of a token has changed
-
+        
         - `personalUserStatusChanged`: The user status has changed
-
+        
         - `referenceChanged`: A personal reference was changed
-
+        
         - `referenceCreated`: A new personal reference was created
-
+        
         - `sellerAdAuthorized`: An advertisement was authorized by the administration
-
+        
         - `sellerAdExpired`: An advertisement publication period has expired
-
+        
         - `sellerAdLowStock`: A web-shop advertisement's stock quantity is low
-
+        
         - `sellerAdOutOfStock`: A given web-shop advertisement is out of stock
-
+        
         - `sellerAdQuestionCreated`: A question to an advertisement was created
-
+        
         - `sellerAdRejected`: An advertisement was rejected by the administration
-
+        
         - `sellerOrderCanceled`: A web-shop order was canceled
-
+        
         - `sellerOrderCreated`: A web-shop order was created
-
+        
         - `sellerOrderPaymentCanceled`: The payment for a web-shop order had the authorization process canceled
-
+        
         - `sellerOrderPaymentDenied`: The payment for a web-shop order was denied authorization
-
+        
         - `sellerOrderPaymentExpired`: The payment for a web-shop order was expired without being authorized
-
+        
         - `sellerOrderPendingAuthorization`: A web-shop order is pending authorization
-
+        
         - `sellerOrderPendingDeliveryData`: A web-shop order is pending delivery information
-
+        
         - `sellerOrderProcessedByBuyer`: A web-shop order was fulfilled by the buyer
-
+        
         - `sellerOrderRejectedByBuyer`: A web-shop order was rejected by the buyer
-
+        
         - `sellerSaleProcessedByBuyer`: A web-shop sale order was fulfilled by the buyer
       type: string
       enum:
@@ -29312,11 +29318,11 @@ components:
         Defines the severity level of a notification shown to users
 
         Possible values are:
-
+        
         - `error`: An error message, when some operation went wrong
-
+        
         - `information`: A general informative message
-
+        
         - `warning`: A warning message, when special caution is required
       type: string
       enum:
@@ -29329,209 +29335,209 @@ components:
         The different notification types generated for for users / administrators.
 
         Possible values are:
-
+        
         - `adAuthorized`: A notification generated if a notification created when an advertisement is authorized.
-
+        
         - `adExpired`: A notification generated if a notification created when an advertisement expires.
-
+        
         - `adInterestNotification`: A notification generated if a notification created by a new advertisement (Simple or Webshop).
-
+        
         - `adPendingAuthorization`: A notification generated if an ad is pending by broker authorization.
-
+        
         - `adPendingByAdminAuthorization`: An admin notification generated if an advertisement is pending for authorization.
-
+        
         - `adQuestionAnswered`: A notification generated if a question answered to some AD (Simple or Webshop).
-
+        
         - `adQuestionCreated`: A notification generated if a question created to some AD (Simple or Webshop).
-
+        
         - `adRejected`: A notification generated if a notification created when an advertisement authorization is rejected.
-
+        
         - `allNonSmsPerformedPayments`: A notification generated if a user performed a new payment through a channel that is not the SMS channel.
-
+        
         - `applicationError`: An admin notification generated if an application error has occurred.
-
+        
         - `articleOutOfStock`: A notification generated if a webshop product is out of stock.
-
+        
         - `authorizedPaymentCanceled`: A notification generated if the authorization of a payment was canceled. This notification is to be sent to the payer.
-
+        
         - `authorizedPaymentDenied`: A notification generated if the authorization of a payment was denied. This notification is to be sent to the payer.
-
+        
         - `authorizedPaymentExpired`: A notification generated if the authorization of a payment has expired. This notification is to be sent to the payer.
-
+        
         - `authorizedPaymentSucceeded`: A notification generated if the authorization of a payment succeeded (the payment went successfully through its final authorization and is now processed). This notification is to be sent to the payer.
-
+        
         - `boughtVouchersAboutToExpire`: A notification generated if a one or more bought vouchers are about to expire.
-
+        
         - `boughtVouchersExpirationDateChanged`: A notification generated if a bought voucher has new expiration date.
-
+        
         - `boughtVouchersExpired`: A notification generated if one or more bought vouchers have expired.
-
+        
         - `brokerAssigned`: A notification generated if a broker has been assigned to a user.
-
+        
         - `brokerUnassigned`: A notification generated if a broker has been unassigned from a user.
-
+        
         - `externalPaymentExpired`: A notification generated if the external payment has reached the expiration date.
-
+        
         - `externalPaymentPerformedFailed`: A notification generated if the performed external payment has failed processing.
-
+        
         - `externalPaymentReceivedFailed`: A notification generated if the received external payment has failed processing.
-
+        
         - `externalUserPaymentExpired`: An admin notification generated if an external payment has expired.
-
+        
         - `externalUserPaymentPerformedFailed`: An admin notification generated if an external payment failed processing.
-
+        
         - `feedbackChanged`: A notification generated if a transaction feedback was modified.
-
+        
         - `feedbackCreated`: A notification generated if a transaction feedback was created.
-
+        
         - `feedbackExpirationReminder`: A notification generated if a transaction feedback is about to expire.
-
+        
         - `feedbackOptional`: A notification generated if a performed payment can have an optional feedback.
-
+        
         - `feedbackReplyCreated`: A notification generated if a transaction feedback was replied.
-
+        
         - `feedbackRequired`: A notification generated if a performed payment needs to be given a feedback.
-
+        
         - `generatedVouchersAboutToExpire`: An admin notification generated if a voucher will expire in a few days.
-
+        
         - `generatedVouchersExpired`: An admin notification generated if a voucher has expired.
-
+        
         - `incomingRecurringPaymentCanceled`: A notification generated if a recurring payment to a user has been canceled (only if the recurring payment is shown to receiver).
-
+        
         - `incomingRecurringPaymentFailed`: A notification generated if a recurring payment to a user has failed (only if the recurring payment is shown to receiver).
-
+        
         - `incomingRecurringPaymentReceived`: A notification generated if a recurring payment to a user was received (only if the recurring payment is shown to receiver).
-
+        
         - `incomingScheduledPaymentCanceled`: A notification generated if a scheduled payment to a user has been canceled (only if the scheduled payment is shown to receiver).
-
+        
         - `incomingScheduledPaymentFailed`: A notification generated if a scheduled payment to a user has failed (only if the scheduled payment is shown to receiver).
-
+        
         - `incomingScheduledPaymentReceived`: A notification generated if a scheduled payment to a user was received (only if the scheduled payment is shown to receiver).
-
+        
         - `limitChange`: A notification generated if a limit (lower/upper) has changed on an account.
-
+        
         - `lowStockQuantity`: A notification generated if a product with stock quantity under limit.
-
+        
         - `maxSmsPerMonthReached`: A notification generated if the maximum number of SMS messages per month has been reached.
-
+        
         - `memberAssigned`: A notification generated if an user has been assigned to a broker.
-
+        
         - `memberUnassigned`: A notification generated if an user has been unassigned from a broker.
-
+        
         - `networkCreated`: An admin notification generated if a network is created.
-
+        
         - `newToken`: A notification generated if a token / card has been created.
-
+        
         - `newTokenPendingActivation`: A notification generated if a token / card has been created, but needs to be activated before being used.
-
+        
         - `operatorAuthorizedPaymentApprovedStillPending`: A notification generated if a payment performed by an operator with authorization type `operator` was approved, but there is at least one authorization level.
-
+        
         - `operatorAuthorizedPaymentCanceled`: A notification generated if a payment performed by an operator with authorization type `operator` was canceled.
-
+        
         - `operatorAuthorizedPaymentDenied`: A notification generated if a payment performed by an operator with authorization type `operator` was denied.
-
+        
         - `operatorAuthorizedPaymentExpired`: A notification generated if a payment performed by an operator with authorization type `operator` has expired.
-
+        
         - `operatorAuthorizedPaymentSucceeded`: A notification generated if a payment performed by an operator with authorization type `operator` was approved and there was no further authorization.
-
+        
         - `operatorPaymentAwaitingAuthorization`: A notification generated if a payment performed by an operator with authorization type `operator` is pending by authorization.
-
+        
         - `orderCanceledBuyer`: A notification generated if a pending order has been canceled.
-
+        
         - `orderCanceledSeller`: A notification generated if a pending order has been canceled.
-
+        
         - `orderCreated`: A notification generated if a new web shop order created from a shopping cart checkout.
-
+        
         - `orderPaymentCanceledBuyer`: A notification generated if an order payment was canceled by authorizer.
-
+        
         - `orderPaymentCanceledSeller`: A notification generated if an order payment was canceled by authorizer.
-
+        
         - `orderPaymentDeniedBuyer`: A notification generated if an order payment was denied by authorizer.
-
+        
         - `orderPaymentDeniedSeller`: A notification generated if an order payment was denied by authorizer.
-
+        
         - `orderPaymentExpiredBuyer`: A notification generated if an order payment has automatically expired.
-
+        
         - `orderPaymentExpiredSeller`: A notification generated if an order payment has automatically expired.
-
+        
         - `orderPendingAuthorizationBuyer`: A notification generated if an order accepted by buyer/seller but the payment is pending for authorization.
-
+        
         - `orderPendingAuthorizationSeller`: A notification generated if an order accepted by buyer/seller but the payment is pending for authorization.
-
+        
         - `orderPendingBuyer`: A notification generated if an order pending buyer approval.
-
+        
         - `orderPendingDeliveryDataBuyer`: A notification generated if an order buyer needs to fill in the delivery data.
-
+        
         - `orderPendingDeliveryDataSeller`: A notification generated if an order seller needs to fill in the delivery data.
-
+        
         - `orderRealizedBuyer`: A notification generated if an order accepted by buyer (sent to seller).
-
+        
         - `orderRealizedSeller`: A notification generated if an order accepted by seller (sent to buyer).
-
+        
         - `orderRejectedByBuyer`: A notification generated if an order rejected by buyer.
-
+        
         - `orderRejectedBySeller`: A notification generated if an order rejected by seller.
-
+        
         - `passwordStatusChanged`: A notification generated if a password status has changed.
-
+        
         - `paymentAwaitingAdminAuthorization`: An admin notification generated if a payment is awaiting for authorization.
-
+        
         - `paymentAwaitingAuthorization`: A notification generated if a user must authorize a pending payment.
-
+        
         - `paymentPerformed`: An admin notification generated if a payment is performed.
-
+        
         - `paymentReceived`: A notification generated if a user received a new payment.
-
+        
         - `paymentRequestCanceled`: A notification generated if a payment request was canceled.
-
+        
         - `paymentRequestDenied`: A notification generated if a payment request was denied.
-
+        
         - `paymentRequestExpirationDateChanged`: A notification generated if the payment request's expiration date has changed.
-
+        
         - `paymentRequestExpired`: A notification generated if a payment request has expired.
-
+        
         - `paymentRequestProcessed`: A notification generated if a payment request was processed.
-
+        
         - `paymentRequestReceived`: A notification generated if a payment request was received.
-
+        
         - `recurringPaymentFailed`: A notification generated if a recurring payment from a user has failed (probably because of lack of funds).
-
+        
         - `recurringPaymentOccurrenceProcessed`: A notification generated if an occurrence of an outgoing recurring payment was processed.
-
+        
         - `referenceChanged`: A notification generated if a reference was modified.
-
+        
         - `referenceCreated`: A notification generated if a reference has been set.
-
+        
         - `salePendingBuyer`: A notification generated if a sale pending buyer approval.
-
+        
         - `saleRealizedBuyer`: A notification generated if a sale accepted by buyer (sent to seller).
-
+        
         - `saleRejectedSeller`: A notification generated if a sale rejected by seller.
-
+        
         - `scheduledPaymentFailed`: A notification generated if a scheduled payment from a user has failed (probably because of lack of funds).
-
+        
         - `scheduledPaymentInstallmentProcessed`: A notification generated if a scheduled payment to a user has been processed.
-
+        
         - `scheduledPaymentRequestFailed`: A notification generated if a payment request which was scheduled has failed processing (probably because of lack of funds), and is being reopened.
-
+        
         - `sentPaymentRequestExpirationDateChanged`: A notification generated if the payment request's expiration date has changed. This notification is to be sent to the sender.
-
+        
         - `smsPerformedPayment`: A notification generated if a user performed a new payment through SMS.
-
+        
         - `systemAlert`: An admin notification generated if a system alert as occurred.
-
+        
         - `ticketWebhookFailed`: A notification generated if the invocation of a webhook after (a successful) ticket approval has failed.
-
+        
         - `tokenStatusChanged`: A notification generated if a token / card status has changed.
-
+        
         - `userAlert`: An admin notification generated if a member alert as occurred.
-
+        
         - `userImport`: An admin notification generated if a user import has been done.
-
+        
         - `userRegistration`: An admin notification generated if a new user has been registered.
-
+        
         - `userStatusChanged`: A notification generated if a user status has changed.
-
+        
         - `voucherBuyingAboutToExpire`: An admin notification generated if a voucher type allowing buy is about to expire.
       type: string
       enum:
@@ -29643,9 +29649,9 @@ components:
         The format for numbers
 
         Possible values are:
-
+        
         - `commaAsDecimal`: 9.999,99
-
+        
         - `periodAsDecimal`: 9,999.99
       type: string
       enum:
@@ -29657,11 +29663,11 @@ components:
         The context an operation with `resultType` is `resultPage` runs
 
         Possible values are:
-
+        
         - `csv`: Export results as Comma-Separated-Values (CSV)
-
+        
         - `page`: Normal search, returning the data as rows in the result
-
+        
         - `pdf`: Export results as printable PDF
       type: string
       enum:
@@ -29674,20 +29680,20 @@ components:
         The kind of data a custom operation execution is expected to return
 
         Possible values are:
-
+        
         - `externalRedirect`: The main execution returns an URL for another service.
         Then a second execution is expected when this other service redirects the client back to Cyclos
-
+        
         - `fileDownload`: Returns a file, which can be downloaded
-
+        
         - `notification`: Returns a text to be displayed as a simple notification
-
+        
         - `plainText`: Returns a plain text to be displayed in a page, and optionally printed
-
+        
         - `resultPage`: Returns a page or list of results, which should be displayed in a table like any other search / list
-
+        
         - `richText`: Returns an HTML formatted text to be displayed in a page, and optionally printed
-
+        
         - `url`: The result should be an URL to which the client should be redirected to
       type: string
       enum:
@@ -29704,11 +29710,11 @@ components:
         The action that should be performed when the user clicks a row in the results table
 
         Possible values are:
-
+        
         - `location`: Navigate to a standard Cyclos location
-
+        
         - `operation`: Run an internal custom operation, which is set on the custom operation itself
-
+        
         - `url`: Navigate to an arbitrary URL, which is set in the custom operation itself
       type: string
       enum:
@@ -29721,25 +29727,25 @@ components:
         The scope determines where does a custom operation can be executed
 
         Possible values are:
-
+        
         - `advertisement`: A custom operation which is executed over an advertisement
-
+        
         - `bulkAction`: A custom operation executed over a set of users (one at a time)
-
+        
         - `contact`: A custom operation which is executed over a contact in a user's contact list
-
+        
         - `contactInfo`: A custom operation which is executed over an additional contact information, which is part of the user profile
-
+        
         - `internal`: A custom operation which is executed by another custom operation
-
+        
         - `menu`: A custom operation which is visible in a custom menu item
-
+        
         - `record`: A custom operation which is executed over a record
-
+        
         - `system`: A general, system custom operation
-
+        
         - `transfer`: A custom operation which is executed over a transfer
-
+        
         - `user`: A custom operation over a single user
       type: string
       enum:
@@ -29759,15 +29765,15 @@ components:
         How an owner account can be accessed by operators
 
         Possible values are:
-
+        
         - `full`: The account is fully visible
-
+        
         - `incoming`: All (and only) incoming payments are visible
-
+        
         - `none`: The account is not visible
-
+        
         - `outgoing`: All (and only) outgoing payments are visible
-
+        
         - `own`: Only payments performed / received by the operators are visible
       type: string
       enum:
@@ -29782,27 +29788,27 @@ components:
         The possible statuses for an order
 
         Possible values are:
-
+        
         - `completed`: The order was accepted by the seller and/or buyer and the related payment was done.
-
+        
         - `disposed`: The order was marked as disposed because the seller and/or buyer were removed or they do not have any account in the order's currency.
-
+        
         - `draft`: The order has been created by the seller, but has not yet been sent to the buyer for approval
-
+        
         - `paymentCanceled`: The related payment was not done because was canceled after finish the authorization process.
-
+        
         - `paymentDenied`: The related payment was not done because was denied.
-
+        
         - `paymentExpired`: The related payment was not done because the pending authorization has expired.
-
+        
         - `paymentPending`: The order was accepted by the seller and/or buyer and the related payment is waiting for authorization.
-
+        
         - `pendingBuyer`: The order is pending by the buyer's action.
-
+        
         - `pendingSeller`: The order is pending by the seller's action.
-
+        
         - `rejectedByBuyer`: The order was rejected by the buyer.
-
+        
         - `rejectedBySeller`: The order was rejected by the seller.
       type: string
       enum:
@@ -29823,9 +29829,9 @@ components:
         Application-specific error codes for an OTP error.
 
         Possible values are:
-
+        
         - `errorSendingSms`: An error has occurred trying to send the OTP through SMS.
-
+        
         - `unexpected`: An unexpected error has occurred.
       type: string
       enum:
@@ -29837,19 +29843,19 @@ components:
         Statuses for an outbound SMS message sent to an user.
 
         Possible values are:
-
+        
         - `gatewayUreachable`: Network problem, or gateway server down
-
+        
         - `invalid`: The parameters for sending an SMS message were invalid
-
+        
         - `maxMessagesReached`: The maximum SMS messages for the user (or guest) have been reached
-
+        
         - `rejected`: The gateway has rejected the SMS message
-
+        
         - `success`: The SMS message was successfully sent
-
+        
         - `timeout`: Timeout while connecting or waiting for a gateway server reply
-
+        
         - `unexpected`: An unexpected error has occurred
       type: string
       enum:
@@ -29866,9 +29872,9 @@ components:
         Determines how passwords should be visually entered by users
 
         Possible values are:
-
+        
         - `textBox`: A simple string should be requested
-
+        
         - `virtualKeyboard`: A series of buttons should be presented to allow enter the password.
       type: string
       enum:
@@ -29880,14 +29886,14 @@ components:
         Indicates how a password is handled
 
         Possible values are:
-
+        
         - `generated`: Passwords are always generated
-
+        
         - `manual`: Passwords are manually typed by users
-
+        
         - `otp`: One Time Passwords. are always generated and can be used only once
-
-        - `script`: Passwords are not stored in Cyclos, but handed-over for a script to verify them.
+        
+        - `script`: Passwords are not stored in Cyclos, but handed-over for a script to verify them. 
         Is normally used to implement single-sign-on with other apps.
       type: string
       enum:
@@ -29901,21 +29907,21 @@ components:
         The password status
 
         Possible values are:
-
+        
         - `active`: The password is active and valid
-
+        
         - `disabled`: The password has been manually disabled
-
+        
         - `expired`: The password is expired
-
+        
         - `indefinitelyBlocked`: The password is blocked by exceeding the maximum attempts until it is manually unblocked
-
+        
         - `neverCreated`: The password has never been created for the user
-
+        
         - `pending`: The password was manually allowed (by admins) for the user to generate it, but it was not yet generated (never used for manual passwords)
-
+        
         - `reset`: The password has been reset (can be used for login but must then be changed)
-
+        
         - `temporarilyBlocked`: The password is temporarily blocked by exceeding the maximum attempts
       type: string
       enum:
@@ -29933,31 +29939,31 @@ components:
         Application-specific error codes for a payment error
 
         Possible values are:
-
+        
         - `dailyAmountExceeded`: The maximum amount allowed per day was exceeded.
-
+        
         - `dailyPaymentsExceeded`: The maximum count of payments allowed per day was exceeded.
-
+        
         - `destinationUpperLimitReached`: The upper balance limit of the destination account was exceeded.
-
+        
         - `insufficientBalance`: The account selected for the payment does not have enough balance
-
+        
         - `monthlyAmountExceeded`: The maximum amount allowed per month was exceeded.
-
+        
         - `monthlyPaymentsExceeded`: The maximum count of payments allowed per month was exceeded.
-
+        
         - `paymentAmountExceeded`: The maximum amount allowed in the payment type was exceeded.
-
+        
         - `pos`: A POS exception has happened when performing this payment. See the `posError` field for more details.
-
+        
         - `timeBetweenPaymentsNotMet`: The minimum time between payments was not met.
-
+        
         - `unexpected`: An unexpected error has occurred. See the `exceptionType` and `exceptionMessage` fields for the internal information.
-
+        
         - `weeklyAmountExceeded`: The maximum amount allowed per week was exceeded.
-
+        
         - `weeklyPaymentsExceeded`: The maximum count of payments allowed per week was exceeded.
-
+        
         - `yearlyAmountExceeded`: The maximum amount allowed per year was exceeded.
       type: string
       enum:
@@ -29980,15 +29986,15 @@ components:
         Possible actions that could be confirmed with a device for a payment request
 
         Possible values are:
-
+        
         - `accept`: Accept the payment request as the payer
-
+        
         - `cancel`: Cancel the payment request as the payer
-
+        
         - `changeExpiration`: Change the expiration date of the payment request as the payer
-
+        
         - `deny`: Deny the payment request as the payer
-
+        
         - `reschedule`: Reschedule the payment request as the payer
       type: string
       enum:
@@ -30003,11 +30009,11 @@ components:
         Determines how the generated payment of a payment request is scheduled. When not specified, the generated payment is processed directly.
 
         Possible values are:
-
+        
         - `direct`: The generated payment won't be scheduled, but paid directly
-
+        
         - `recurring`: The generated payment will be recurring
-
+        
         - `scheduled`: The generated payment will be scheduled, once accepting, triggering a given number of installments
       type: string
       enum:
@@ -30020,17 +30026,17 @@ components:
         The status of a payment request
 
         Possible values are:
-
+        
         - `canceled`: The payment request was canceled
-
+        
         - `denied`: The payment request was denied by the receiver
-
+        
         - `expired`: The payment request has expired - the received did not respond until the expiration date
-
+        
         - `open`: The payment request is open and can be accepted
-
+        
         - `processed`: The payment request was processed, and either a direct or scheduled payment was created from it
-
+        
         - `scheduled`: The payment request has been accepted, and scheduled for processing on a future date
       type: string
       enum:
@@ -30046,11 +30052,11 @@ components:
         Determines how a payment is scheduled. When not specified, direct payments are performed.
 
         Possible values are:
-
+        
         - `direct`: The payment won't be scheduled, but paid directly
-
+        
         - `recurring`: The payment will be recurring, repeated either by a limited number of occurrences or until cancel
-
+        
         - `scheduled`: The payment will be scheduled, either to a single future date or multiple installments
       type: string
       enum:
@@ -30063,9 +30069,9 @@ components:
         Application-specific error codes for a personalize NFC error
 
         Possible values are:
-
+        
         - `tokenInUse`: The token specified for personalization is already in use (exists and it is active)
-
+        
         - `unexpected`: An unexpected error has occurred. See the `exceptionType` and `exceptionMessage` fields for the internal information.
       type: string
       enum:
@@ -30077,9 +30083,9 @@ components:
         Type of phone
 
         Possible values are:
-
+        
         - `landLine`: A landline phone
-
+        
         - `mobile`: A mobile phone
       type: string
       enum:
@@ -30091,17 +30097,17 @@ components:
         The possible physical type for tokens. Determines how applications interact with hardware in order to read the token value.
 
         Possible values are:
-
+        
         - `barcode`: A 1d barcode printed on a card
-
+        
         - `nfcDevice`: A phone (or other device) with NFC support
-
+        
         - `nfcTag`: A NFC tag, normally a DESFire NFC card
-
+        
         - `other`: Other
-
+        
         - `qrCode`: A QR-code
-
+        
         - `swipe`: A swipe card
       type: string
       enum:
@@ -30117,13 +30123,13 @@ components:
         Application-specific error codes for a POS operation error
 
         Possible values are:
-
+        
         - `payerInaccessiblePrincipal`: The specified payer cannot use the given identification method (principal type) in the POS channel.
-
+        
         - `payerNotInChannel`: The specified payer user does not participate on the POS channel.
-
+        
         - `payerNotOperative`: The specified payer has some restriction that renders he/she inoperative for POS operations. An example of such case is when the user has pending agreements.
-
+        
         - `unexpected`: An unexpected error has occurred. See the `exceptionType` and `exceptionMessage` fields for the internal information.
       type: string
       enum:
@@ -30137,19 +30143,19 @@ components:
         The kind of a principal type (user identification method)
 
         Possible values are:
-
+        
         - `accessClient`: An access client token (remote application) identifies the user
-
+        
         - `accountNumber`: An account number identifies the user
-
+        
         - `customField`: A unique custom field identifies the user
-
+        
         - `email`: The email identifies the user
-
+        
         - `mobilePhone`: A mobile phone number identifies the user
-
+        
         - `token`: A token identifies the user
-
+        
         - `username`: The username identifies the user
       type: string
       enum:
@@ -30166,9 +30172,9 @@ components:
         A possible action regarding product assignment / unassignment
 
         Possible values are:
-
+        
         - `assing`: The product was assigned
-
+        
         - `unassing`: The product was unassigned
       type: string
       enum:
@@ -30180,11 +30186,11 @@ components:
         Kind of product
 
         Possible values are:
-
+        
         - `administrator`: An administrator product
-
+        
         - `broker`: A broker
-
+        
         - `member`: A member product
       type: string
       enum:
@@ -30197,17 +30203,17 @@ components:
         Kind of events that can be triggered on push notifications
 
         Possible values are:
-
+        
         - `accountStatus`: The account status (balance, reserved amount, etc) has changed
-
+        
         - `deviceConfirmation`: A device confirmation was approved / rejected
-
+        
         - `loggedOut`: The current session has been invalidated
-
+        
         - `newMessage`: New message on the user's inbox
-
+        
         - `newNotification`: New received notification
-
+        
         - `ticket`: A ticket status has changed
       type: string
       enum:
@@ -30223,9 +30229,9 @@ components:
         The possible kinds of a record, which can either belong to system or to an user
 
         Possible values are:
-
+        
         - `system`: The record belongs to the system, and is unrelated to an user
-
+        
         - `user`: The record belongs to a specific user
       type: string
       enum:
@@ -30237,11 +30243,11 @@ components:
         The layout this record should be presented
 
         Possible values are:
-
+        
         - `list`: Should show a regular search filters / list
-
+        
         - `single`: There should be a single record, with the form directly
-
+        
         - `tiled`: Should show the record list with a form to quickly add a new
       type: string
       enum:
@@ -30254,7 +30260,7 @@ components:
         Possible actions that could be confirmed with a device for a recurring payment
 
         Possible values are:
-
+        
         - `cancel`: Cancel the recurring payment
       type: string
       enum:
@@ -30265,9 +30271,9 @@ components:
         The status of a recurring payment occurrence
 
         Possible values are:
-
+        
         - `failed`: The occurrence has failed processing (probably because there was not enough funds in the payer account)
-
+        
         - `processed`: The occurrence was correctly processed, generating a transfer
       type: string
       enum:
@@ -30279,11 +30285,11 @@ components:
         The status of a recurring payment
 
         Possible values are:
-
+        
         - `canceled`: The recurring payment was manually canceled
-
+        
         - `closed`: The recurring payment is closed, as the last scheduled occurrence was processed
-
+        
         - `open`: The recurring payment is open, as there are more future occurrences
       type: string
       enum:
@@ -30296,19 +30302,19 @@ components:
         Possible errors when redeeming a voucher
 
         Possible values are:
-
+        
         - `notAllowedForUser`: This user cannot redeem this voucher
-
+        
         - `notAllowedForVoucher`: This voucher cannot be redeemed
-
+        
         - `notAllowedToday`: This voucher cannot be redeemed today
-
+        
         - `notAllowedYet`: The redeem period for this voucher has not arrived yet
-
+        
         - `payment`: There was an error when performing the payment
-
+        
         - `unexpected`: An unexpected error has occurred. See the `exceptionType` and `exceptionMessage` fields for the internal information.
-
+        
         - `userBlocked`: The user has been blocked by exceeding redeem tries
       type: string
       enum:
@@ -30325,13 +30331,13 @@ components:
         The main role the user has.
 
         Possible values are:
-
+        
         - `administrator`: A user who can manage the system and other users.
-
+        
         - `broker`: A user who can manage other users.
-
+        
         - `member`: A regular user who can manage operators.
-
+        
         - `operator`: A "sub-user" created by a member to manage his data.
       type: string
       enum:
@@ -30345,13 +30351,13 @@ components:
         Possible actions that could be confirmed with a device for a scheduled payment
 
         Possible values are:
-
+        
         - `block`: Block the scheduled payment
-
+        
         - `cancel`: Cancel the scheduled payment
-
+        
         - `settle`: Settle the scheduled payment
-
+        
         - `unblock`: Unblock the scheduled payment
       type: string
       enum:
@@ -30365,17 +30371,17 @@ components:
         The status of a scheduled payment installment
 
         Possible values are:
-
+        
         - `blocked`: The installment is blocked, and won't be automatically processed on its due date
-
+        
         - `canceled`: The installment was canceled
-
+        
         - `failed`: The installment processing failed, for example, because there was no funds in the source account
-
+        
         - `processed`: The installment was processed, generating a transfer
-
+        
         - `scheduled`: The installment is scheduled for a future date
-
+        
         - `settled`: The installment was marked as settled by the receiver
       type: string
       enum:
@@ -30391,13 +30397,13 @@ components:
         The status of a scheduled payment
 
         Possible values are:
-
+        
         - `blocked`: The scheduled payment is blocked - won't have any installment processed until being unblocked again
-
+        
         - `canceled`: The scheduled payment, as well as all open installments were canceled
-
+        
         - `closed`: The scheduled payment is closed
-
+        
         - `open`: The scheduled payment has open installments
       type: string
       enum:
@@ -30411,9 +30417,9 @@ components:
         Mediums used to send information to the user (e.g: a confirmation code)
 
         Possible values are:
-
+        
         - `email`: The user will receive an email with the information
-
+        
         - `sms`: The user will receive a sms with the information (only if there is at least one phone enabled for sms)
       type: string
       enum:
@@ -30425,11 +30431,11 @@ components:
         Possible errors when checking out a shopping cart.
 
         Possible values are:
-
+        
         - `insufficientBalance`: The origin account of the selected payment type used to make the amount reservation does not have enough balance.
-
+        
         - `products`: There was an error related to the products contained in he shopping cart.
-
+        
         - `unexpected`: An unexpected error has occurred. See the `exceptionType` and `exceptionMessage` fields for the internal information.
       type: string
       enum:
@@ -30442,11 +30448,11 @@ components:
         Possible errors when interacting with a shopping cart.
 
         Possible values are:
-
+        
         - `canNotBuyFromSeller`: The authenticated user is not visible by the webshop's seller
-
+        
         - `notEnoughStock`: There is not enough stock of the webshop ad to fulfill the requested quantity
-
+        
         - `unexpected`: An unexpected error has occurred. See the `exceptionType` and `exceptionMessage` fields for the internal information.
       type: string
       enum:
@@ -30459,11 +30465,11 @@ components:
         The possible status of a webshop advertisement in relation to its availability
 
         Possible values are:
-
+        
         - `available`: The webshop advertisement is available and can be purchased
-
+        
         - `outOfStock`: The webshop advertisement is now out of stock
-
+        
         - `unavailable`: The webshop advertisement has been made unavailable and cannot be purchased anymore
       type: string
       enum:
@@ -30476,11 +30482,11 @@ components:
         The possible adjustments to a quantity-limited product added to shopping cart
 
         Possible values are:
-
+        
         - `max`: The quantity was reduced to honor the maximum allowed quantity
-
+        
         - `min`: The quantity was raised to honor the minimum allowed quantity
-
+        
         - `stock`: The quantity was reduced to the maximum available stock quantity
       type: string
       enum:
@@ -30493,17 +30499,17 @@ components:
         The type of system alert
 
         Possible values are:
-
+        
         - `accountFeeChargedNoFailures`: An account fee charge has finished without any failures
-
+        
         - `accountFeeChargedWithFailures`: An account fee charge has finished with at least one failure
-
+        
         - `applicationRestarted`: The application has been restarted, or started for the first time
-
+        
         - `custom`: Custom alerts thrown by scripts
-
+        
         - `maxGlobalSmsReached`: The groups under a certain configuration have run out of SMS messages
-
+        
         - `maxIncorrectLoginAttempts`: Someone tried for a given number of tries to login with an invalid username
       type: string
       enum:
@@ -30519,15 +30525,15 @@ components:
         The possible targets for a temporary image
 
         Possible values are:
-
+        
         - `advertisement`: The image will be used for an advertisement of a specific user
-
+        
         - `contactInfo`: The image will be used for an additional contact information of a specific user
-
+        
         - `customValue`: The image will be used for a value of a specific custom field
-
+        
         - `userProfile`: The image will be used as a profile image for an existing user
-
+        
         - `userRegistration`: The image will be used as a profile image for a newly registered user
       type: string
       enum:
@@ -30542,15 +30548,15 @@ components:
         The status of a ticket
 
         Possible values are:
-
+        
         - `approved`: The ticket was approved by the payer and is waiting to be processed by the receiver to generate the payment
-
+        
         - `canceled`: The ticket was canceled by the receiver before being approved
-
+        
         - `expired`: The ticket has expired without being approved by a payer or canceled by the receiver until the expiration date
-
+        
         - `open`: The ticket was created, but not approved yet
-
+        
         - `processed`: The ticket was approved and processed and the payment was generated
       type: string
       enum:
@@ -30565,21 +30571,21 @@ components:
         Determines a time field, such as seconds, hours or months
 
         Possible values are:
-
+        
         - `days`: Day(s)
-
+        
         - `hours`: Hour(s)
-
+        
         - `millis`: Millisecond(s)
-
+        
         - `minutes`: Minute(s)
-
+        
         - `months`: Month(s)
-
+        
         - `seconds`: Second(s)
-
+        
         - `weeks`: Week(s)
-
+        
         - `years`: Year(s)
       type: string
       enum:
@@ -30597,9 +30603,9 @@ components:
         The format for times
 
         Possible values are:
-
+        
         - `h12`: 12-hour with AM/PM indicator
-
+        
         - `h24`: 24-hour
       type: string
       enum:
@@ -30611,19 +30617,19 @@ components:
         The possible statuses for a token
 
         Possible values are:
-
+        
         - `activationExpired`: The token has exceeded the activation deadline.
-
+        
         - `active`: The token is active and can be used.
-
+        
         - `blocked`: The token is blocked from being used.
-
+        
         - `canceled`: The token is canceled and cannot be used.
-
+        
         - `expired`: The token has exceeded the expiration date.
-
+        
         - `pending`: The token has been assigned to an user, but it's still pending for activation.
-
+        
         - `unassigned`: The token is not assigned to an user.
       type: string
       enum:
@@ -30640,17 +30646,17 @@ components:
         The kind of a token principal type.
 
         Possible values are:
-
+        
         - `barcode`: A barcode with the token
-
+        
         - `nfcDevice`: A device (e.g. cell phone) with support for NFC
-
+        
         - `nfcTag`: A NFC tag/card
-
+        
         - `other`: Any other type containing a token
-
+        
         - `qrcode`: A QR code containing a token
-
+        
         - `swipe`: A swipe/magnetic card containing the token
       type: string
       enum:
@@ -30666,13 +30672,13 @@ components:
         An action performed when a transaction was pending authorization
 
         Possible values are:
-
+        
         - `authorized`: The transaction was authorized
-
+        
         - `canceled`: The authorization process was canceled by the payer/admin
-
+        
         - `denied`: The transaction was denied (rejected)
-
+        
         - `expired`: The authorization process has expired by system
       type: string
       enum:
@@ -30686,15 +30692,15 @@ components:
         The status regarding authorization a transaction is in. If configured, transactions can require one or more levels of authorization in order to be processed. If a transaction has the this status null, it means it never went through the authorization process.
 
         Possible values are:
-
+        
         - `authorized`: The transaction was fully authorized and is processed
-
+        
         - `canceled`: The authorization submission was canceled by the submitter
-
+        
         - `denied`: The authorization was denied
-
+        
         - `expired`: The pending authorization has expired
-
+        
         - `pending`: The transaction is pending authorization
       type: string
       enum:
@@ -30709,9 +30715,9 @@ components:
         Defines which kind of authorization a transaction is through. Only returned if the `kind` is either `payment`, `scheduledPayment` or `recurringPayment` and the transaction is pending for authorization.
 
         Possible values are:
-
+        
         - `level`: A transaction is going through some authorization level
-
+        
         - `operator`: An operator performed a payment that needs to be authorized by his member or other operators
       type: string
       enum:
@@ -30723,23 +30729,23 @@ components:
         The kind of a transaction
 
         Possible values are:
-
+        
         - `chargeback`: Chargeback of a given transfer
-
+        
         - `externalPayment`: A payment to an external user
-
+        
         - `import`: An imported transaction
-
+        
         - `order`: Transaction generated by confirming an order
-
+        
         - `payment`: A direct payment
-
+        
         - `paymentRequest`: A request for another user to accept a payment
-
+        
         - `recurringPayment`: A payment which is processed again periodically
-
+        
         - `scheduledPayment`: A scheduled payment which is either a payment scheduled for a future date or has multiple installments
-
+        
         - `ticket`: A payment whose the payer is unknown
       type: string
       enum:
@@ -30758,13 +30764,13 @@ components:
         Reference to none, one of (from or to) or both subjects of a transaction (or transfer)
 
         Possible values are:
-
+        
         - `both`: Reference to both from and to subjects of the transaction
-
+        
         - `from`: Reference to the transaction from
-
+        
         - `none`: Reference to none of the transaction subjects
-
+        
         - `to`: Reference to the transaction to
       type: string
       enum:
@@ -30778,9 +30784,9 @@ components:
         Indicates whether from an account POV a transfer is a credit or debit
 
         Possible values are:
-
+        
         - `credit`: The transfer impacts the balance positively
-
+        
         - `debit`: The transfer impacts the balance negatively
       type: string
       enum:
@@ -30792,21 +30798,21 @@ components:
         Indicates the reason the transfer was created
 
         Possible values are:
-
+        
         - `accountFee`: A transfer generated by an account fee charge
-
+        
         - `chargeback`: A transfer which is a chargeback of another transfer
-
+        
         - `import`: An imported transfer
-
+        
         - `initialCredit`: A transfer which is the initial credit for a newly created account
-
+        
         - `payment`: A transfer generated by a direct payment or accepting a webshop order
-
+        
         - `recurringPayment`: A transfer generated when processing a recurring payment
-
+        
         - `scheduledPaymentInstallment`: A transfer generated when processing a scheduled payment installment
-
+        
         - `transferFee`: A transfer generated by a transfer fee charge
       type: string
       enum:
@@ -30824,13 +30830,13 @@ components:
         Indicates the type of user interface
 
         Possible values are:
-
+        
         - `custom`: A custom front-end application. Has no headers, footers or theme
-
+        
         - `main`: The main web user interface
-
+        
         - `mobile`: The mobile application user interface
-
+        
         - `pay`: The Ticket / Easy invoice confirmation application user interface
       type: string
       enum:
@@ -30844,25 +30850,25 @@ components:
         Error codes for 401 Unauthorized HTTP status.
 
         Possible values are:
-
+        
         - `blockedAccessClient`: The access client used for access is blocked
-
+        
         - `invalidAccessClient`: The access client used for access is invalid
-
+        
         - `invalidChannelUsage`: Attempt to login on a stateless-only channel, or use stateless in a stateful-only channel, or invoke as guest in a channel configuration which is only for users
-
+        
         - `invalidNetwork`: Attempt to access a network that has been disabled
-
+        
         - `loggedOut`: The session token used for access is invalid
-
+        
         - `login`: Either user identification (principal) or password are invalid. May have additional information, such as the user / password status
-
+        
         - `missingAuthorization`: Attempt to access an operation as guest, but the operation requires authentication
-
+        
         - `remoteAddressBlocked`: The IP address being used for access has been blocked by exceeding tries with invalid users
-
+        
         - `unauthorizedAddress`: The user cannot access the system using an IP address that is not white-listed
-
+        
         - `unauthorizedUrl`: The user's configuration demands access using a specific URL, and this access is being done using another one
       type: string
       enum:
@@ -30882,13 +30888,13 @@ components:
         Determines which address is returned on the search, if any. By default no addresses are returned. This option is useful for displaying results as locations on a map. In all cases only located addresses (those that have the geographical coordinates set) are returned. When returning all addresses, data related with multiple addresses is returned multiple times.
 
         Possible values are:
-
+        
         - `all`: All addresses are returned.
-
+        
         - `nearest`: The nearest address from the reference location is returned. Only usable if a reference coordinate (`latitude` and `longitude`)
-
+        
         - `none`: Addresses are not returned.
-
+        
         - `primary`: The primary (default) user address is returned
       type: string
       enum:
@@ -30902,31 +30908,31 @@ components:
         The type of user alert
 
         Possible values are:
-
+        
         - `custom`: Custom alerts thrown by scripts
-
+        
         - `givenVeryBadRefs`: A user has exceeded the maximum number of given very bad references
-
+        
         - `insufficientBalanceForInitialCredit`: A user account's initial credit couldn't be granted because the source account lacked funds
-
+        
         - `maxDeviceActivationAttemptsReached`: A user has reached the maximum number of attempts to activate a device by code
-
+        
         - `maxDeviceConfirmationCheckAttemptsReached`: A user has reached the maximum number of attempts to check for a processed device confirmation
-
+        
         - `maxTokenActivationAttemptsReached`: A user has reached the maximum number of attempts to activate a token
-
+        
         - `maxUserLocalizationAttemptsReached`: A user has reached the maximum number of attempts to find other users
-
+        
         - `maxVoucherRedeemAttemptsReached`: A user has reached the maximum number of attempts to redeem a voucher
-
+        
         - `moveUserAutomaticallyFailed`: A user couldn't be moved automatically to another group
-
+        
         - `passwordDisabledByTries`: A user password has been disabled by exceeding the wrong attempts
-
+        
         - `passwordTemporarilyBlocked`: A user password has been temporarily blocked by exceeding the wrong attempts
-
+        
         - `receivedVeryBadRefs`: A user has exceeded the maximum number of received very bad references
-
+        
         - `scheduledPaymentFailed`: An scheduled payment has failed
       type: string
       enum:
@@ -30949,9 +30955,9 @@ components:
         Determines the kind of an user image
 
         Possible values are:
-
+        
         - `custom`: User custom images are additional images that can be used on rich text contents.
-
+        
         - `profile`: User profile images are those associated with the user profile. The first profile image is used to depict the user on search results.
       type: string
       enum:
@@ -30963,13 +30969,13 @@ components:
         Which user menu should a data be displayed
 
         Possible values are:
-
+        
         - `banking`: Banking / accounts
-
+        
         - `community`: Interaction with other users
-
+        
         - `marketplace`: Marketplace / advertisements
-
+        
         - `personal`: Personal data
       type: string
       enum:
@@ -30983,17 +30989,17 @@ components:
         Possible options for ordering the results of an user search.
 
         Possible values are:
-
+        
         - `alphabeticallyAsc`: Users are ordered by name (or whatever field is set to format users) in ascending order.
-
+        
         - `alphabeticallyDesc`: Users are ordered by name (or whatever field is set to format users) in descending order.
-
+        
         - `creationDate`: Newly registered users are returned first.
-
+        
         - `distance`: Only useful when providing a location, will return nearer advertisements first.
-
+        
         - `random`: Users will be randomly returned
-
+        
         - `relevance`: This is the default if keywords are used. Best matching users come first.
       type: string
       enum:
@@ -31009,11 +31015,11 @@ components:
         The status of the user after the registration
 
         Possible values are:
-
+        
         - `active`: The user is initially active
-
+        
         - `emailValidation`: The user has received an e-mail, with a link to verify the e-mail address. Once verified, the registration will be complete
-
+        
         - `inactive`: The user is initially inactive, and an administrator needs to manually activate the user
       type: string
       enum:
@@ -31026,19 +31032,19 @@ components:
         How the authenticated user is related to a given user
 
         Possible values are:
-
+        
         - `administrator`: The authenticated user is an administrator that manages the given user
-
+        
         - `broker`: The authenticated user is a broker of the given user
-
+        
         - `brokered`: The authenticated user is a member managed by the given broker
-
+        
         - `none`: There is no special relation between the authenticated user and the given user
-
+        
         - `owner`: The given user is an operator of the authenticated user
-
+        
         - `sameOwner`: Both the given user and the authenticated user are operators of the same owner
-
+        
         - `self`: The given user is the authenticated user
       type: string
       enum:
@@ -31055,17 +31061,17 @@ components:
         The possible statuses for an user
 
         Possible values are:
-
+        
         - `active`: The user is active and can use the system normally.
-
+        
         - `blocked`: The user has been blocked from accessing the system. Other users still see him/her.
-
+        
         - `disabled`: The user has been disabled - he/she cannot access the system and is invisible by other users.
-
+        
         - `pending`: The user registration is pending a confirmation. Probably the user has received an e-mail with a link that must be followed to complete the activation. The user is invisible by other users.
-
+        
         - `purged`: The user was permanently removed and had all his private data removed. Only transactions are kept for historical reasons.
-
+        
         - `removed`: The user was permanently removed. It's profile is kept for historical purposes.
       type: string
       enum:
@@ -31081,13 +31087,13 @@ components:
         Contains the possible 'order by' values when searching for users with balances
 
         Possible values are:
-
+        
         - `alphabeticallyAsc`: Users are ordered by name (or whatever field is set to format users) in ascending order.
-
+        
         - `alphabeticallyDesc`: Users are ordered by name (or whatever field is set to format users) in descending order.
-
+        
         - `balanceAsc`: User are ordered by balance, lower balances first.
-
+        
         - `balanceDesc`: User are ordered by balance, higher balances first.
       type: string
       enum:
@@ -31101,9 +31107,9 @@ components:
         Possible actions that could be confirmed with a device for a voucher
 
         Possible values are:
-
+        
         - `cancel`: Cancel the voucher
-
+        
         - `changeExpiration`: Change the expiration date of a voucher
       type: string
       enum:
@@ -31115,13 +31121,13 @@ components:
         Indicates what happens if a voucher is canceled, if it can be canceled
 
         Possible values are:
-
+        
         - `cancelAndRefund`: A single bought voucher is canceled and the amount is refunded
-
+        
         - `cancelGenerated`: Cancels a single generated voucher
-
+        
         - `cancelPendingPack`: Cancels more than one bought vouchers whose buy payment is pending authorization
-
+        
         - `cancelPendingSingle`: Cancels a single bought vouchers whose buy payment is pending authorization
       type: string
       enum:
@@ -31135,9 +31141,9 @@ components:
         Indicates how a voucher was created
 
         Possible values are:
-
+        
         - `bought`: The voucher was bought by an user
-
+        
         - `generated`: The voucher was generated by an administrator
       type: string
       enum:
@@ -31149,9 +31155,9 @@ components:
         The ways a voucher is related to an user
 
         Possible values are:
-
+        
         - `bought`: A voucher the user has bought
-
+        
         - `redeemed`: A voucher the user has redeemed
       type: string
       enum:
@@ -31163,15 +31169,15 @@ components:
         The voucher statuses
 
         Possible values are:
-
+        
         - `canceled`: The voucher was canceled, and cannot be further used
-
+        
         - `expired`: The voucher has expired without being redeemed
-
+        
         - `open`: The voucher has been generated / bought, and is open
-
+        
         - `pending`: The voucher has been bought, and the corresponding payment is pending for authorization
-
+        
         - `redeemed`: The voucher has been redeemed, and the corresponding payment was done
       type: string
       enum:
@@ -31186,19 +31192,19 @@ components:
         The days of the week
 
         Possible values are:
-
+        
         - `fri`: Friday
-
+        
         - `mon`: Monday
-
+        
         - `sat`: Saturday
-
+        
         - `sun`: Sunday
-
+        
         - `thu`: Thursday
-
+        
         - `tue`: Tuesday
-
+        
         - `wed`: Wednesday
       type: string
       enum:
@@ -36609,6 +36615,8 @@ components:
             Indicates whether the logged user can manage individual documents
             of managed users
           type: boolean
+        query:
+          $ref: '#/components/schemas/DocumentQueryFilters'
 
     DocumentEdit:
       description: >-
@@ -36713,6 +36721,10 @@ components:
                 type: string
             user:
               description: Either the id or identifier of the document owner
+              type: string
+            keywords:
+              description: >-
+                Used to filter documents containing that keywords in the the name or description (case insensitive)
               type: string
 
     DocumentResult:
@@ -44062,6 +44074,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Group'
+        query:
+          $ref: '#/components/schemas/UserAlertQueryFilters'
 
     UserAlertQueryFilters:
       description: >-

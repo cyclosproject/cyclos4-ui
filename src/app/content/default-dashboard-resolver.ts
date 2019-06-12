@@ -1,10 +1,10 @@
 import { Injector } from '@angular/core';
+import { AccountWithCurrency, Permissions, RoleEnum } from 'app/api/models';
 import { ContentGetter } from 'app/content/content-getter';
-import { DashboardItemConfig, DashboardColumn } from 'app/content/dashboard-item-config';
+import { DashboardColumn, DashboardItemConfig } from 'app/content/dashboard-item-config';
 import { DashboardResolver } from 'app/content/dashboard-resolver';
 import { QuickAccessType } from 'app/content/quick-access-type';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
-import { AccountWithCurrency, Permissions } from 'app/api/models';
 
 /**
  * By default, the dashboard is comprised of:
@@ -61,8 +61,14 @@ export class DefaultDashboardResolver implements DashboardResolver {
    * Returns an account status item for each accounts the user can view status
    */
   accountStatuses(injector: Injector): DashboardItemConfig[] {
+    const role = injector.get(DataForUiHolder).role;
     const banking = this.permissions(injector).banking || {};
-    const accounts = (banking.accounts || []).filter(a => a.viewStatus).map(p => p.account);
+    const allAccounts = (banking.accounts || []);
+    // TODO Cyclos 4.12 doesn't send the viewStatus flag for system accounts.
+    // This is fixed in 4.12.1. So, version 2.0, which will depend on 4.12.1, we can rely on the viewStatus flag.
+    const visibleAccounts = role === RoleEnum.ADMINISTRATOR
+      ? allAccounts : allAccounts.filter(a => a.viewStatus);
+    const accounts = visibleAccounts.map(p => p.account);
     return accounts.map((a, i) => {
       const column: DashboardColumn = (i > 1) && (i % 2 === 0) ? 'left' : 'right';
       return this.accountStatus(injector, a, column);
@@ -141,9 +147,7 @@ export class DefaultDashboardResolver implements DashboardResolver {
    * Returns the current user's permissions
    */
   protected permissions(injector: Injector): Permissions {
-    const dataForUi = injector.get(DataForUiHolder).dataForUi || {};
-    const auth = dataForUi.auth || {};
-    return auth.permissions || {};
+    return (injector.get(DataForUiHolder).auth || {}).permissions || {};
   }
 
 }

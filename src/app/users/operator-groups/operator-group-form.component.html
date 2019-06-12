@@ -117,7 +117,8 @@
     <boolean-field *ngIf="data.canChargebackPayments"
       [label]="i18n.operatorGroup.chargebackPayments"
       formControlName="chargebackPayments"></boolean-field>
-
-    TODO: restrict payments to users
+    <multiple-users-field [label]="i18n.operatorGroup.restrictPaymentsToUsers"
+      formControlName="restrictPaymentsToUsers"
+      [preselectedUsers]="restrictPaymentsToUsers"></multiple-users-field>
   </ng-container>
 </ng-template>
