@@ -4,6 +4,7 @@ import { AlertsService } from 'app/api/services/alerts.service';
 import { UserAlertDataForSearch } from 'app/api/models/user-alert-data-for-search';
 import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { BankingHelperService } from 'app/core/banking-helper.service';
+import { UserAlertQueryFilters } from 'app/api/models';
 
 
 @Component({
@@ -12,7 +13,7 @@ import { BankingHelperService } from 'app/core/banking-helper.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchUserAlertsComponent
-  extends BaseSearchPageComponent<UserAlertDataForSearch, UserAlert>
+  extends BaseSearchPageComponent<UserAlertDataForSearch, UserAlertQueryFilters, UserAlert>
   implements OnInit {
 
   constructor(
@@ -29,20 +30,20 @@ export class SearchUserAlertsComponent
   }
 
   protected getFormControlNames() {
-    return ['type', 'user', 'periodBegin', 'periodEnd'];
+    return ['types', 'user', 'periodBegin', 'periodEnd'];
   }
 
-  doSearch(value: any) {
-    const query = {
-      fields: null,
-      broker: null,
+  protected toSearchParams(value: any): UserAlertQueryFilters {
+    return {
       datePeriod: this.bankingHelper.resolveDatePeriod(value),
       page: value.page,
       pageSize: value.pageSize,
-      types: value.type,
+      types: value.types,
       user: value.user
     };
+  }
 
-    return this.alertsService.searchUserAlerts$Response(query);
+  doSearch(value: UserAlertQueryFilters) {
+    return this.alertsService.searchUserAlerts$Response(value);
   }
 }
