@@ -16,7 +16,7 @@ import { ContactListComponent } from 'app/users/search/contact-list.component';
 import { SearchUsersComponent } from 'app/users/search/search-users.component';
 import { ViewUserStatusHistoryComponent } from 'app/users/status/view-user-status-history.component';
 import { ViewUserStatusComponent } from 'app/users/status/view-user-status.component';
-import { SearchUserAlertsComponent } from 'app/user-alerts/search/search-user-alerts.component'
+import { SearchUserAlertsComponent } from 'app/users/alerts/search-user-alerts.component'
 import { AuthHelperService } from 'app/core/auth-helper.service';
 
 const SearchMenu: ConditionalMenu = injector => {

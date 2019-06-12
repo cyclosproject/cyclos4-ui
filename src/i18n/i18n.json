@@ -823,7 +823,19 @@
     "mobileTitle": "User alerts",
     "type": {
       "title": "Type",
-      "custom": "Custom"
+      "custom": "Custom",
+      "givenVeryBadRefs": "User gave too many 'very bad' references",
+      "insufficientBalanceForInitialCredit": "Insufficient balance for an account's initial credit",
+      "maxDeviceActivationAttemptsReached": "Max device activation attempts reached",
+      "maxDeviceConfirmationCheckAttemptsReached": "Max device confirmation check attempts reached",
+      "maxTokenActivationAttemptsReached": "Max token activation attempts reached",
+      "maxUserLocalizationAttemptsReached": "Max user localization attempts reached",
+      "maxVoucherRedeemAttemptsReached": "Max voucher redeem attempts reached",
+      "moveUserAutomaticallyFailed": "Move user automatically to group failed",
+      "passwordDisabledByTries": "Password is indefinitely blocked by exceeding attempts",
+      "passwordTemporarilyBlocked": "Password temporarily blocked by exceeding attempts",
+      "receivedVeryBadRefs": "User received too many 'very bad' references",
+      "scheduledPaymentFailed": "Scheduled payment failed"
     }
   }
 }
