@@ -1,22 +1,12 @@
 <page-layout [ready]="data$ | async">
-  <page-content *ngIf="data" [heading]="i18n.userStatus.title.status"
-    [mobileHeading]="i18n.userStatus.mobileTitle.status"
+  <page-content *ngIf="data"
+    [heading]="operator ? i18n.userStatus.title.statusOperator : i18n.userStatus.title.statusUser"
+    [mobileHeading]="operator ? i18n.userStatus.mobileTitle.statusOperator : i18n.userStatus.mobileTitle.statusUser"
     [headingActions]="headingActions$ | async">
-
-    <ng-container *ngIf="operator">
-      <label-value [label]="i18n.user.operatorOwner">
-        <user-link [user]="user"></user-link>
-      </label-value>
-      <label-value [label]="i18n.general.operator">
-        <user-link [user]="operator"></user-link>
-      </label-value>
-    </ng-container>
-    <label-value *ngIf="operator == null" [label]="i18n.general.user">
-      <user-link [user]="user"></user-link>
-    </label-value>
+    <user-info [user]="data.user"></user-info>
 
     <label-value [label]="i18n.userStatus.current">
-      {{ usersHelper.userStatus(data.status) }}
+      {{ userHelper.userStatus(data.status) }}
     </label-value>
 
     <ng-container *ngIf="editable">
@@ -25,7 +15,7 @@
         <single-selection-field formControlName="status"
           [label]="i18n.userStatus.new" required>
           <field-option *ngFor="let status of data.possibleNewStatuses"
-            [value]="status" [text]="usersHelper.userStatus(status)">
+            [value]="status" [text]="userHelper.userStatus(status)">
           </field-option>
         </single-selection-field>
         <textarea-field formControlName="comment"
