@@ -52,7 +52,7 @@ export class ViewUserStatusComponent extends BaseViewPageComponent<UserStatusDat
     });
     this.headingActions = [
       new HeadingAction('history', this.i18n.general.viewHistory, () =>
-        this.router.navigate(['users', 'status', this.param, 'history']), true)
+        this.router.navigate(['users', this.param, 'status', 'history']), true)
     ];
   }
 
