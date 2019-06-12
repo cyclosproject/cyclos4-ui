@@ -1,6 +1,6 @@
 import { HttpResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { SessionResult, SessionDataForSearch, RoleEnum } from 'app/api/models';
+import { SessionResult, SessionDataForSearch, SessionQueryFilters, RoleEnum } from 'app/api/models';
 import { SessionsService } from 'app/api/services';
 import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { Observable } from 'rxjs';
@@ -14,7 +14,7 @@ import { Observable } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchConnectedComponent
-  extends BaseSearchPageComponent<SessionDataForSearch, SessionResult>
+  extends BaseSearchPageComponent<SessionDataForSearch, SessionQueryFilters, SessionResult>
   implements OnInit {
 
   constructor(
@@ -33,6 +33,10 @@ export class SearchConnectedComponent
       this.form.patchValue(data.query, { emitEvent: false });
       this.data = data;
     }));
+  }
+
+  protected toSearchParams(value: any): SessionQueryFilters {
+    return value;
   }
 
   protected disconnect(session: SessionResult) {
