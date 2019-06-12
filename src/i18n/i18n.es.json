@@ -672,7 +672,10 @@
       "viewAds": "Ver anuncios",
       "viewBrokerings": "Ver miembros asignados",
       "viewOperators": "Ver operadores",
-      "status": "Estado del usuario"
+      "status.user": "User status",
+      "status.operator": "Operator status",
+      "group.user": "User group",
+      "group.operator": "Operator group"
     },
     "registration": {
       "group.public": "Elija el grupo en el que desea registrarse",
@@ -747,7 +750,6 @@
   "userStatus": {
     "current": "Estado actual",
     "new": "Nuevo estado",
-    "comment": "Comentario",
     "confirm": {
       "active": "¿Está seguro de activar a {user}?",
       "blocked": "Está usted seguro de bloquear el acceso de {user}?",
@@ -756,21 +758,27 @@
       "removed": "Está seguro de que desea eliminar de forma permanente a {user}?\nEsta acción es irreversible!"
     },
     "done": {
-      "active": "El usuario ha sido activado",
-      "blocked": "El usuario ha sido bloqueado",
-      "disabled": "El usuario fue desactivado",
-      "purged": "El usuario fue eliminado permanentemente, junto con todos sus datos personales",
-      "removed": "El usuario fue eliminado permanentemente"
+      "active": "{user} was activated",
+      "blocked": "{user} was blocked",
+      "disabled": "{user} was disabled",
+      "purged": "{user} was permanently removed, together with all personal data",
+      "removed": "{user} was permanently removed"
     },
     "title": {
-      "status": "Estado del usuario",
-      "change": "Cambiar estado",
-      "history": "Historial del estado de usuario"
+      "status.user": "User status",
+      "status.operator": "Operator status",
+      "change.user": "Change user status",
+      "change.operator": "Change operator status",
+      "history.user": "User status history",
+      "history.operator": "Operator status history"
     },
     "mobileTitle": {
-      "status": "Estado del usuario",
-      "change": "Cambiar estado",
-      "history": "Historial de estados"
+      "status.user": "User status",
+      "status.operator": "Operator status",
+      "change.user": "Change status",
+      "change.operator": "Change status",
+      "history.user": "Status history",
+      "history.operator": "Status history"
     },
     "active": "Activo",
     "blocked": "Acceso bloqueado",
@@ -778,6 +786,30 @@
     "pending": "Activación pendiente",
     "purged": "Purgado (todos los datos privados fueron borrados)",
     "removed": "Eliminado (los datos privados no fueron borrados)"
+  },
+  "groupMembership": {
+    "current": "Current group",
+    "new": "New group",
+    "confirm": "Are you sure to change {user} to group {group}?",
+    "confirm.aliasOperator": "Are you sure to grant {user} the same permissions as the owner?",
+    "done.user": "The user group was changed",
+    "done.operator": "The operator group was changed",
+    "title": {
+      "group.user": "User group",
+      "group.operator": "Operator group",
+      "change.user": "Change user group",
+      "change.operator": "Change group",
+      "history.user": "User group history",
+      "history.operator": "Operator group history"
+    },
+    "mobileTitle": {
+      "group.user": "User group",
+      "group.operator": "Operator group",
+      "change.user": "Change group",
+      "change.operator": "Change group",
+      "history.user": "Group history",
+      "history.operator": "Group history"
+    }
   },
   "phone": {
     "mobile": "Teléfono móvil",
