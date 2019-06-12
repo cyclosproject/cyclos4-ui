@@ -90,6 +90,7 @@ export module Menu {
 
   export const BUY_VOUCHER = new Menu(RootMenu.MARKETPLACE, 'BUY_VOUCHER');
   export const SEARCH_BOUGHT_VOUCHERS = new Menu(RootMenu.MARKETPLACE, 'SEARCH_BOUGHT_VOUCHERS');
+  export const LIST_VOUCHER_TYPES_FOR_BUY = new Menu(RootMenu.MARKETPLACE, 'LIST_VOUCHER_TYPES_FOR_BUY');
 
   // Operators
   export const MY_OPERATORS = new Menu(RootMenu.OPERATORS, 'MY_OPERATORS');

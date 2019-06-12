@@ -16,7 +16,7 @@ import { ViewTransferComponent } from 'app/banking/transfers/view-transfer.compo
 import { SharedModule } from 'app/shared/shared.module';
 import { BuyVoucherComponent } from 'app/banking/vouchers/buy-voucher.component';
 import { SearchBoughtVouchersComponent } from 'app/banking/vouchers/search-bought-vouchers.component';
-import { VoucherTypeForBuyListComponent } from 'app/banking/vouchers/voucher-type-for-buy-list.component';
+import { VoucherTypesForBuyComponent } from 'app/banking/vouchers/voucher-types-for-buy.component';
 
 /**
  * Banking module
@@ -46,7 +46,7 @@ import { VoucherTypeForBuyListComponent } from 'app/banking/vouchers/voucher-typ
 
     BuyVoucherComponent,
     SearchBoughtVouchersComponent,
-    VoucherTypeForBuyListComponent
+    VoucherTypesForBuyComponent
   ]
 })
 export class BankingModule {
