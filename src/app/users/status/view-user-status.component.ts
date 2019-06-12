@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { User, UserStatusData, UserStatusEnum } from 'app/api/models';
+import { FormGroup, Validators } from '@angular/forms';
+import { UserStatusData, UserStatusEnum } from 'app/api/models';
 import { UserStatusService } from 'app/api/services/user-status.service';
 import { UserHelperService } from 'app/core/user-helper.service';
+import { HeadingAction } from 'app/shared/action';
 import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
 import { empty, validateBeforeSubmit } from 'app/shared/helper';
-import { FormGroup, Validators } from '@angular/forms';
-import { HeadingAction } from 'app/shared/action';
 
 /**
  * Displays the user status and allows changing the status
@@ -19,22 +19,12 @@ export class ViewUserStatusComponent extends BaseViewPageComponent<UserStatusDat
   constructor(
     injector: Injector,
     private userStatusService: UserStatusService,
-    public usersHelper: UserHelperService) {
+    public userHelper: UserHelperService) {
     super(injector);
   }
 
-  key: string;
+  param: string;
   form: FormGroup;
-
-  get user(): User {
-    const user = this.data.user;
-    return user.user || user;
-  }
-
-  get operator(): User {
-    const user = this.data.user;
-    return user.user ? user : null;
-  }
 
   get editable(): boolean {
     return !empty(this.data.possibleNewStatuses);
@@ -42,8 +32,8 @@ export class ViewUserStatusComponent extends BaseViewPageComponent<UserStatusDat
 
   ngOnInit() {
     super.ngOnInit();
-    this.key = this.route.snapshot.paramMap.get('key');
-    this.addSub(this.userStatusService.getUserStatus({ user: this.key, fields: ['!history'] }).subscribe(status => {
+    this.param = this.route.snapshot.params.user;
+    this.addSub(this.userStatusService.getUserStatus({ user: this.param, fields: ['-history'] }).subscribe(status => {
       this.data = status;
     }));
     this.form = this.formBuilder.group({
@@ -52,7 +42,7 @@ export class ViewUserStatusComponent extends BaseViewPageComponent<UserStatusDat
     });
     this.headingActions = [
       new HeadingAction('history', this.i18n.general.viewHistory, () =>
-        this.router.navigate(['users', 'status', this.key, 'history']), true)
+        this.router.navigate(['users', this.param, 'status', 'history']), true)
     ];
   }
 
@@ -65,6 +55,7 @@ export class ViewUserStatusComponent extends BaseViewPageComponent<UserStatusDat
     const status = value.status as UserStatusEnum;
     let message: string;
     const user = this.data.user;
+    const operator = this.userHelper.isOperator(user);
     switch (status) {
       case UserStatusEnum.ACTIVE:
         message = this.i18n.userStatus.confirm.active(user.display);
@@ -82,34 +73,45 @@ export class ViewUserStatusComponent extends BaseViewPageComponent<UserStatusDat
         message = this.i18n.userStatus.confirm.purged(user.display);
         break;
     }
+    let title: string;
+    if (operator) {
+      title = this.layout.ltsm
+        ? this.i18n.userStatus.mobileTitle.changeOperator
+        : this.i18n.userStatus.title.changeOperator;
+    } else {
+      title = this.layout.ltsm
+        ? this.i18n.userStatus.mobileTitle.changeUser
+        : this.i18n.userStatus.title.changeUser;
+    }
     this.notification.confirm({
-      title: this.layout.ltsm ? this.i18n.userStatus.mobileTitle.change : this.i18n.userStatus.title.change,
+      title: title,
       message: message,
       callback: () => this.submit(status)
     });
   }
 
   private submit(status: UserStatusEnum) {
+    const user = this.data.user.display;
     this.addSub(this.userStatusService.changeUserStatus({
-      user: this.key,
+      user: this.param,
       body: this.form.value
     }).subscribe(() => {
       let message: string;
       switch (status) {
         case UserStatusEnum.ACTIVE:
-          message = this.i18n.userStatus.done.active;
+          message = this.i18n.userStatus.done.active(user);
           break;
         case UserStatusEnum.BLOCKED:
-          message = this.i18n.userStatus.done.blocked;
+          message = this.i18n.userStatus.done.blocked(user);
           break;
         case UserStatusEnum.DISABLED:
-          message = this.i18n.userStatus.done.disabled;
+          message = this.i18n.userStatus.done.disabled(user);
           break;
         case UserStatusEnum.REMOVED:
-          message = this.i18n.userStatus.done.removed;
+          message = this.i18n.userStatus.done.removed(user);
           break;
         case UserStatusEnum.PURGED:
-          message = this.i18n.userStatus.done.purged;
+          message = this.i18n.userStatus.done.purged(user);
           break;
       }
       this.notification.snackBar(message);
@@ -117,4 +119,7 @@ export class ViewUserStatusComponent extends BaseViewPageComponent<UserStatusDat
     }));
   }
 
+  get operator() {
+    return this.userHelper.isOperator(this.data.user);
+  }
 }

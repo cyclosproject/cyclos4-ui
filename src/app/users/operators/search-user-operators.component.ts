@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { CustomFieldDetailed, UserOperatorsDataForSearch } from 'app/api/models';
+import { CustomFieldDetailed, UserOperatorsDataForSearch, UserOperatorsQueryFilters } from 'app/api/models';
 import { UserResult } from 'app/api/models/user-result';
 import { OperatorsService } from 'app/api/services/operators.service';
 import { ApiHelper } from 'app/shared/api-helper';
@@ -11,6 +11,7 @@ import { BehaviorSubject } from 'rxjs';
 import { HeadingAction } from 'app/shared/action';
 
 
+type UserOperatorsSearchParams = UserOperatorsQueryFilters & { user: string };
 /**
  * Searches for operators of a given user
  */
@@ -20,13 +21,13 @@ import { HeadingAction } from 'app/shared/action';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchUserOperatorsComponent
-  extends BaseSearchPageComponent<UserOperatorsDataForSearch, UserResult> implements OnInit {
+  extends BaseSearchPageComponent<UserOperatorsDataForSearch, UserOperatorsSearchParams, UserResult> implements OnInit {
 
   // Export enum to the template
   ResultType = ResultType;
   empty = empty;
 
-  key: string;
+  param: string;
   self: boolean;
   advancedFields$ = new BehaviorSubject<CustomFieldDetailed[]>([]);
 
@@ -43,18 +44,17 @@ export class SearchUserOperatorsComponent
 
   ngOnInit() {
     super.ngOnInit();
-    const route = this.route.snapshot;
-    this.key = route.params.key || ApiHelper.SELF;
-    this.self = this.authHelper.isSelf(this.key);
+    this.param = this.route.snapshot.params.user || ApiHelper.SELF;
+    this.self = this.authHelper.isSelf(this.param);
 
-    this.addSub(this.operatorsService.getUserOperatorsDataForSearch({ user: this.key }).subscribe(data => {
+    this.addSub(this.operatorsService.getUserOperatorsDataForSearch({ user: this.param }).subscribe(data => {
       this.form.patchValue(data.query, { emitEvent: false });
       if (data.canCreateNew) {
         this.headingActions = [
           new HeadingAction('registration', this.i18n.general.addNew, () => {
             const path = ['users'];
             if (!this.self) {
-              path.push(this.key);
+              path.push(this.param);
             }
             path.push('operators');
             path.push('registration');
@@ -66,11 +66,15 @@ export class SearchUserOperatorsComponent
     }));
   }
 
-  doSearch(query: any) {
-    const value = cloneDeep(query);
-    value.user = this.key;
-    value.profileFields = this.fieldHelper.toCustomValuesFilter(query.customValues);
+  protected toSearchParams(value: any): UserOperatorsSearchParams {
+    const query = cloneDeep(value);
+    query.user = this.param;
+    query.profileFields = this.fieldHelper.toCustomValuesFilter(query.customValues);
     delete value.customValues;
-    return this.operatorsService.searchUserOperators$Response(value);
+    return query;
+  }
+
+  protected doSearch(query: UserOperatorsSearchParams) {
+    return this.operatorsService.searchUserOperators$Response(query);
   }
 }

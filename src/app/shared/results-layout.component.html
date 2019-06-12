@@ -24,7 +24,7 @@
 <ng-container *ngIf="rows?.length > 0; else noResults">
   <content-monitor *ngIf="tableTemplate && resultType === 'list'"
     (ready)="notifyReady()" [ngClass]="{'d-none': rendering$ | async}">
-    <page-content mode="table" last>
+    <page-content [mode]="(layout.ltsm$ | async) ? 'tight' : 'table'" last>
       <ng-container *ngIf="layout.ltsm$ | async; else largeTable">
         <div class="mobile-results">
           <a *ngFor="let row of rows" class="mobile-result"

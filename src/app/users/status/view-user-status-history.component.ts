@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { User, UserStatusData } from 'app/api/models';
+import { UserStatusData } from 'app/api/models';
 import { UserStatusService } from 'app/api/services/user-status.service';
 import { UserHelperService } from 'app/core/user-helper.service';
 import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
@@ -16,27 +16,21 @@ export class ViewUserStatusHistoryComponent extends BaseViewPageComponent<UserSt
   constructor(
     injector: Injector,
     private userStatusService: UserStatusService,
-    public usersHelper: UserHelperService) {
+    public userHelper: UserHelperService) {
     super(injector);
   }
 
-  key: string;
-
-  get user(): User {
-    const user = this.data.user;
-    return user.user || user;
-  }
-
-  get operator(): User {
-    const user = this.data.user;
-    return user.user ? user : null;
-  }
+  param: string;
 
   ngOnInit() {
     super.ngOnInit();
-    this.key = this.route.snapshot.paramMap.get('key');
-    this.addSub(this.userStatusService.getUserStatus({ user: this.key, fields: ['user', 'history'] }).subscribe(status => {
+    this.param = this.route.snapshot.params.user;
+    this.addSub(this.userStatusService.getUserStatus({ user: this.param, fields: ['user', 'history'] }).subscribe(status => {
       this.data = status;
     }));
+  }
+
+  get operator() {
+    return this.userHelper.isOperator(this.data.user);
   }
 }

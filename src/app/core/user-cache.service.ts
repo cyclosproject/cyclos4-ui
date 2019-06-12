@@ -30,6 +30,21 @@ export class UserCacheService {
   }
 
   /**
+   * Registers the given user(s) by id
+   */
+  register(users: User | User[]) {
+    if (users == null) {
+      users = [];
+    }
+    if (!(users instanceof Array)) {
+      users = [users];
+    }
+    for (const user of users) {
+      this.cache.set(user.id, user);
+    }
+  }
+
+  /**
    * Returns an observable that fetches the user from the server, resolving to null if no user is found
    * @param key Either the user id or principal
    */

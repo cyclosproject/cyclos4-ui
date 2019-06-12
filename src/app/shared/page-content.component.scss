@@ -28,6 +28,11 @@
   }
 }
 
+:host[mode=empty] .content-title {
+  border-bottom-left-radius: $card-border-radius;
+  border-bottom-right-radius: $card-border-radius;
+}
+
 @include media-breakpoint-up(xs) {
   .content-title {
     height: $title-height-xs;

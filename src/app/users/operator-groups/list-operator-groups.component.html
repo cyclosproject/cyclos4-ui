@@ -1,0 +1,41 @@
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data">
+    <page-content [mode]="self ? 'empty' : 'filters'"
+      [heading]="i18n.operatorGroup.title.list"
+      [mobileHeading]="i18n.operatorGroup.mobileTitle.list"
+      [headingActions]="headingActions$ | async">
+      <div class="col-12 col-md-6" *ngIf="!self">
+        <label-value [label]="i18n.general.user" kind="fieldView"
+          labelPosition="side">
+          <user-link [user]="data.user"></user-link>
+        </label-value>
+      </div>
+    </page-content>
+
+    <results-layout [results]="data.operatorGroups" [toLink]="toLink">
+      <mobile-result *mobileResult="let row">
+        <div class="cell-main">{{ row.name }}</div>
+      </mobile-result>
+      <table *resultTable class="table table-hover cursor-pointer">
+        <tbody>
+          <ng-container *ngFor="let row of data.operatorGroups">
+            <tr (click)="router.navigate(path(row))">
+              <td>
+                <a [routerLink]="path(row)">
+                  {{ row.name }}
+                </a>
+              </td>
+              <td class="actions">
+                <button [tooltip]="i18n.general.removeTooltip(row.name)"
+                  class="btn btn-icon"
+                  (click)="remove(row); $event.stopPropagation()">
+                  <icon icon="clear"></icon>
+                </button>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </results-layout>
+  </ng-container>
+</page-layout>

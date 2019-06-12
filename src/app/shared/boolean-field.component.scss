@@ -1,0 +1,6 @@
+.custom-control-label {
+  padding-left: 1.5rem;
+  &::before, &::after {
+    left: 0;
+  }
+}

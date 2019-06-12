@@ -1,10 +1,10 @@
 <label-value *ngIf="label; else widget" [formField]="self"
-  labelPosition="sideForced">
+  labelPosition="sideForced" maximizeLabel>
   <ng-container *ngTemplateOutlet="widget"></ng-container>
 </label-value>
 
 <ng-template #widget>
-  <div class="custom-control custom-checkbox d-flex align-content-center">
+  <div class="custom-control custom-checkbox d-flex align-content-center p-0">
     <input #checkbox type="checkbox" [name]="name"
       class="custom-control-input" [id]="id" (click)="click.emit($event)"
       (keyup.enter)="toggle(); click.emit($event)" [formControl]="formControl"

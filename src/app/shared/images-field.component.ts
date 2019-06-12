@@ -1,4 +1,7 @@
-import { ChangeDetectorRef, Component, ElementRef, Host, Injector, Input, OnInit, Optional, SkipSelf, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef, Component, ElementRef, EventEmitter, Host, Injector,
+  Input, OnInit, Optional, Output, SkipSelf, ViewChild
+} from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CustomField, Image, TempImageTargetEnum } from 'app/api/models';
 import { ImagesService } from 'app/api/services';
@@ -63,6 +66,8 @@ export class ImagesFieldComponent extends BaseFormFieldComponent<string | string
   images: Image[];
   private uploadedImages: Image[];
 
+  @Output() upload = new EventEmitter<Image[]>();
+
   @ViewChild('focusHolder') focusHolder: ElementRef;
 
   constructor(
@@ -106,17 +111,18 @@ export class ImagesFieldComponent extends BaseFormFieldComponent<string | string
     }).filter(n => n != null).join(', ');
   }
 
-  onImagesUploaded(files: Image[]) {
+  onImagesUploaded(images: Image[]) {
     if (this.maxFiles === 1) {
       this.removeAllImages();
     }
     const ids = this.imageIds;
-    files.forEach(i => ids.push(i.id));
+    images.forEach(i => ids.push(i.id));
     this.value = ids;
-    this.uploadedImages = [...files, ...this.uploadedImages];
-    this.images = [...this.images, ...files];
+    this.uploadedImages = [...images, ...this.uploadedImages];
+    this.images = [...this.images, ...images];
     // Manually mark the control as touched, as there's no native inputs
     this.formControl.markAsTouched();
+    this.upload.emit(images);
   }
 
   manageImages() {
