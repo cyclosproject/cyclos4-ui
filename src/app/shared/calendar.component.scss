@@ -6,7 +6,7 @@ $month-width: 7rem;
 $year-width: 4rem;
 
 :host {
-  width: 16.15rem;
+  min-width: 16.15rem;
   display: flex;
   flex-direction: column;
 }
