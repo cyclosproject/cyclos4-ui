@@ -36,7 +36,7 @@ export class SearchUsersComponent
 
   kind: UserSearchKind;
   manager: boolean;
-  key: string;
+  param: string;
   self: boolean;
   broker: User;
   heading: string;
@@ -82,9 +82,8 @@ export class SearchUsersComponent
   ngOnInit() {
     super.ngOnInit();
 
-    const route = this.route.snapshot;
-    this.key = route.params.key || ApiHelper.SELF;
-    this.self = this.authHelper.isSelf(this.key);
+    this.param = this.route.snapshot.params.user || ApiHelper.SELF;
+    this.self = this.authHelper.isSelf(this.param);
 
     const auth = this.login.auth;
     const role = auth == null ? null : auth.role;
@@ -198,7 +197,7 @@ export class SearchUsersComponent
       } else {
         // Get the data for regular user search
         this.stateManager.cache('dataForSearch', this.usersService.getUserDataForSearch({
-          broker: this.kind === UserSearchKind.Broker ? this.key : null
+          broker: this.kind === UserSearchKind.Broker ? this.param : null
         })).subscribe(setData);
       }
     }
@@ -207,7 +206,7 @@ export class SearchUsersComponent
   doSearch(query: any) {
     const value = cloneDeep(query);
     if (this.kind === UserSearchKind.Broker) {
-      value.brokers = [this.key];
+      value.brokers = [this.param];
     }
     value.profileFields = this.fieldHelper.toCustomValuesFilter(query.customValues);
     delete value.customValues;

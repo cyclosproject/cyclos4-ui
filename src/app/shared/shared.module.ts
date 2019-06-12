@@ -86,6 +86,7 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { SortableModule } from 'ngx-bootstrap/sortable';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
+import { BooleanPipe } from 'app/shared/boolean.pipe';
 
 
 
@@ -176,6 +177,7 @@ export function initTooltipConfig(): TooltipConfig {
     TimePipe,
     NumberPipe,
     CurrencyPipe,
+    BooleanPipe,
     AccountPipe
   ],
   imports: [
@@ -288,6 +290,7 @@ export function initTooltipConfig(): TooltipConfig {
     TimePipe,
     NumberPipe,
     CurrencyPipe,
+    BooleanPipe,
     AccountPipe
   ],
   providers: [

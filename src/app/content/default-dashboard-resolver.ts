@@ -58,11 +58,11 @@ export class DefaultDashboardResolver implements DashboardResolver {
   }
 
   /**
-   * Returns an account status item for each visible accounts
+   * Returns an account status item for each accounts the user can view status
    */
   accountStatuses(injector: Injector): DashboardItemConfig[] {
     const banking = this.permissions(injector).banking || {};
-    const accounts = (banking.accounts || []).filter(a => a.visible).map(p => p.account);
+    const accounts = (banking.accounts || []).filter(a => a.viewStatus).map(p => p.account);
     return accounts.map((a, i) => {
       const column: DashboardColumn = (i > 1) && (i % 2 === 0) ? 'left' : 'right';
       return this.accountStatus(injector, a, column);

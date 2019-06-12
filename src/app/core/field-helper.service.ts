@@ -43,7 +43,7 @@ export class FieldHelperService {
    * @param field The field identifier
    * @param customFields The known custom fields
    */
-  fieldName(field: string, customFields: CustomField[]): string {
+  fieldDisplay(field: string, customFields: CustomField[]): string {
     switch (field) {
       case 'display':
         return this.i18n.general.user;
@@ -60,6 +60,18 @@ export class FieldHelperService {
       default:
         const customField = customFields.find(cf => cf.internalName === field);
         return (customField || {}).name;
+    }
+  }
+
+  /**
+   * Utility to return the field name. As-is if the parameter is a string, or the internal name if a custom field
+   * @param field Either the custom field or basic field name
+   */
+  fieldName(field: string | CustomField): string {
+    if (typeof field === 'object') {
+      return (field || {}).internalName;
+    } else {
+      return field;
     }
   }
 
@@ -110,7 +122,8 @@ export class FieldHelperService {
    * @param format The shared format service
    */
   fieldOptions(field: CustomFieldDetailed): FieldOption[] {
-    if (!field.hasValuesList) {
+    const isEnum = [CustomFieldTypeEnum.SINGLE_SELECTION, CustomFieldTypeEnum.MULTI_SELECTION].includes(field.type);
+    if (!field.hasValuesList && !isEnum) {
       return null;
     }
     switch (field.type) {

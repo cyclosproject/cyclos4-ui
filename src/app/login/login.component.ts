@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, ValidationErrors } from '@angular/forms';
 import { DataForLogin, DataForUi } from 'app/api/models';
 import { Configuration } from 'app/configuration';
 import { LoginReason, LoginState } from 'app/core/login-state';
@@ -72,7 +72,7 @@ export class LoginComponent
     const dataForUi = this.dataForUiHolder.dataForUi;
     if (dataForUi == null || dataForUi.dataForLogin == null) {
       // Either the dataForUi is not loaded (?) or still points to a user. Reload first
-      this.dataForUiHolder.reload().subscribe(d4ui => this.initialize(d4ui));
+      this.addSub(this.dataForUiHolder.reload().subscribe(d4ui => this.initialize(d4ui)));
     } else {
       // Can initialize directly
       this.initialize(dataForUi);
@@ -87,10 +87,15 @@ export class LoginComponent
    * Performs the login
    */
   doLogin(): void {
+    const value = this.form.value;
+    const required: ValidationErrors = { required: true };
+    this.form.controls.principal.setErrors(empty(value.principal) ? required : null);
+    this.form.controls.principal.markAsTouched();
+    this.form.controls.password.setErrors(empty(value.password) ? required : null);
+    this.form.controls.password.markAsTouched();
     if (!this.form.valid) {
       return;
     }
-    const value = this.form.value;
     this.login.login(value.principal, value.password).subscribe(() => {
       // Redirect to the correct URL
       this.router.navigateByUrl(this.loginState.redirectUrl || '');

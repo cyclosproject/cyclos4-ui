@@ -1,3 +1,6 @@
+:host {
+  display: block;
+}
 :host ::ng-deep .invalid-feedback {
   display: block;
 }

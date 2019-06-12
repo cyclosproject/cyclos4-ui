@@ -42,7 +42,7 @@ export class EditProfileComponent
   ConfirmationMode = ConfirmationMode;
   createDeviceConfirmation: () => CreateDeviceConfirmation;
 
-  key: string;
+  param: string;
 
   ready$ = new BehaviorSubject(false);
   operatorOfManagedUser: boolean;
@@ -105,9 +105,8 @@ export class EditProfileComponent
 
   ngOnInit() {
     super.ngOnInit();
-    const route = this.route.snapshot;
-    this.key = route.params.key || ApiHelper.SELF;
-    const self = this.authHelper.isSelf(this.key);
+    this.param = this.route.snapshot.params.user || ApiHelper.SELF;
+    const self = this.authHelper.isSelf(this.param);
 
     this.createDeviceConfirmation = () => ({
       type: DeviceConfirmationTypeEnum.EDIT_PROFILE
@@ -118,12 +117,12 @@ export class EditProfileComponent
         if (self) {
           this.router.navigate(['users', 'profile']);
         } else {
-          this.router.navigate(['users', this.key, 'profile']);
+          this.router.navigate(['users', this.param, 'profile']);
         }
       }, true)
     ];
 
-    this.usersService.getDataForEditFullProfile({ user: this.key }).subscribe(data => {
+    this.addSub(this.usersService.getDataForEditFullProfile({ user: this.param }).subscribe(data => {
       this.data = data;
 
       if (self) {
@@ -149,7 +148,7 @@ export class EditProfileComponent
       }
 
       this.ready$.next(true);
-    });
+    }));
   }
 
   ngOnDestroy() {
@@ -268,8 +267,8 @@ export class EditProfileComponent
       return;
     }
 
-    this.usersService.saveUserFullProfile({
-      user: this.key,
+    this.addSub(this.usersService.saveUserFullProfile({
+      user: this.param,
       confirmationPassword: confirmationPassword,
       body: this.editForSubmit()
     }).subscribe(() => {
@@ -277,7 +276,7 @@ export class EditProfileComponent
       this.uploadedImages = null;
       this.reload();
       scrollTop();
-    });
+    }));
   }
 
   private editForSubmit(): FullProfileEdit {
@@ -797,7 +796,7 @@ export class EditProfileComponent
 
   private removeAllTempImages() {
     (this.uploadedImages || []).forEach(img => {
-      this.imagesService.deleteImage({ idOrKey: img.id }).subscribe();
+      this.addSub(this.imagesService.deleteImage({ idOrKey: img.id }).subscribe());
     });
     this.uploadedImages = [];
   }

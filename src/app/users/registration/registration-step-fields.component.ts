@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { AvailabilityEnum, CustomField, CustomFieldDetailed, GeographicalCoordinate, Image, UserDataForNew } from 'app/api/models';
+import { AvailabilityEnum, CustomField, GeographicalCoordinate, Image, UserDataForNew } from 'app/api/models';
 import { ImagesService } from 'app/api/services';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseComponent } from 'app/shared/base.component';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { debounceTime, first } from 'rxjs/operators';
+import { UserHelperService } from 'app/core/user-helper.service';
 
 /**
  * Public registration step: fill in the profile fields
@@ -30,7 +31,6 @@ export class RegistrationStepFieldsComponent
 
   editableFields: Set<string>;
   managePrivacyFields: Set<string>;
-  userCustomFields: Map<string, CustomFieldDetailed>;
 
   image$ = new BehaviorSubject<Image>(null);
   get image(): Image {
@@ -50,6 +50,7 @@ export class RegistrationStepFieldsComponent
 
   constructor(
     injector: Injector,
+    private userHelper: UserHelperService,
     private imagesService: ImagesService) {
     super(injector);
   }
@@ -59,26 +60,10 @@ export class RegistrationStepFieldsComponent
 
     this.editableFields = new Set();
     this.managePrivacyFields = new Set();
-    this.userCustomFields = new Map();
 
     // Cache the field actions to avoid having to calculate every time
-    const fieldActions = this.data.profileFieldActions;
-    for (const name in fieldActions) {
-      if (!fieldActions.hasOwnProperty(name)) {
-        continue;
-      }
-      const actions = fieldActions[name];
-      if (actions.edit) {
-        this.editableFields.add(name);
-      }
-      if (actions.managePrivacy) {
-        this.managePrivacyFields.add(name);
-      }
-      const customField = this.data.customFields.find(cf => cf.internalName === name);
-      if (customField) {
-        this.userCustomFields.set(name, customField);
-      }
-    }
+    this.editableFields = this.userHelper.fieldNamesByAction(this.data, 'edit');
+    this.managePrivacyFields = this.userHelper.fieldNamesByAction(this.data, 'managePrivacy');
 
     // Whenever the form changes, geocode the location
     this.addSub(this.addressForm.valueChanges.pipe(debounceTime(ApiHelper.DEBOUNCE_TIME)).subscribe(value => {
@@ -107,10 +92,10 @@ export class RegistrationStepFieldsComponent
 
   onUploadDone(image: Image) {
     // First remove any previous image, then emit that a new image is uploaded
-    this.removeImage().pipe(first()).subscribe(() => {
+    this.addSub(this.removeImage().pipe(first()).subscribe(() => {
       this.image = image;
       this.imageUploaded.emit(this.image);
-    });
+    }));
   }
 
   removeImage(): Observable<Image> {
@@ -131,18 +116,10 @@ export class RegistrationStepFieldsComponent
   }
 
   canEdit(field: string | CustomField): boolean {
-    return this.editableFields.has(this.fieldName(field));
+    return this.editableFields.has(this.fieldHelper.fieldName(field));
   }
 
   canManagePrivacy(field: string | CustomField): boolean {
-    return this.managePrivacyFields.has(this.fieldName(field));
-  }
-
-  private fieldName(field: string | CustomField): string {
-    if (typeof field === 'string') {
-      return field;
-    } else {
-      return field.internalName;
-    }
+    return this.managePrivacyFields.has(this.fieldHelper.fieldName(field));
   }
 }

@@ -14,6 +14,7 @@
     "Contacts",
     "ContactInfos",
     "Operators",
+    "OperatorGroups",
     "UserStatus",
     "Transactions",
     "ScheduledPayments",

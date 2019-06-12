@@ -1,6 +1,8 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input, OnDestroy, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Input, OnDestroy, ViewChild, Injector } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { CaptchaService } from 'app/api/services';
+import { AbstractComponent } from 'app/shared/abstract.component';
+import { switchMap, tap } from 'rxjs/operators';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -9,7 +11,7 @@ import { CaptchaService } from 'app/api/services';
   styleUrls: ['captcha.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CaptchaComponent implements AfterViewInit, OnDestroy {
+export class CaptchaComponent extends AbstractComponent implements AfterViewInit, OnDestroy {
 
   @Input() group: string;
 
@@ -24,15 +26,18 @@ export class CaptchaComponent implements AfterViewInit, OnDestroy {
   currentUrl: string;
 
   constructor(
-    private captchaService: CaptchaService,
-    private element: ElementRef
-  ) { }
+    injector: Injector,
+    private captchaService: CaptchaService
+  ) {
+    super(injector);
+  }
 
   ngAfterViewInit() {
     this.newCaptcha();
   }
 
   ngOnDestroy() {
+    super.ngOnDestroy();
     this.revokeCurrent();
   }
 
@@ -48,23 +53,22 @@ export class CaptchaComponent implements AfterViewInit, OnDestroy {
   }
 
   newCaptcha() {
-    this.captchaService.newCaptcha({ group: this.group })
-      .subscribe(id => {
+    this.captchaService.newCaptcha({ group: this.group }).pipe(
+      switchMap(id => {
         this.form.patchValue({
           challenge: id,
           response: ''
         });
-        this.captchaService.getCaptchaContent({ id: id, group: this.group }).subscribe(blob => {
+        return this.captchaService.getCaptchaContent({ id: id, group: this.group }).pipe(tap(blob => {
           this.revokeCurrent();
           this.currentUrl = URL.createObjectURL(blob);
           this.img.src = this.currentUrl;
           this.updateWidth();
-        });
-      });
+        }));
+      }));
   }
 
   updateWidth() {
-    const el = this.element.nativeElement as HTMLElement;
-    el.style.width = `${this.img.getBoundingClientRect().width}px`;
+    this.element.style.width = `${this.img.getBoundingClientRect().width}px`;
   }
 }

@@ -1,7 +1,7 @@
 import { HttpClient, HttpEventType } from '@angular/common/http';
 import {
   ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef,
-  EventEmitter, Input, OnDestroy, Output, ViewChild
+  EventEmitter, Input, OnDestroy, Output, ViewChild, Injector
 } from '@angular/core';
 import { ApiConfiguration } from 'app/api/api-configuration';
 import { CustomField, Image, TempImageTargetEnum } from 'app/api/models';
@@ -11,6 +11,7 @@ import { resizeImage, ResizeResult, truthyAttr } from 'app/shared/helper';
 import { BehaviorSubject, forkJoin, Observable, Subscription } from 'rxjs';
 import { ImagesService } from 'app/api/services';
 import { first } from 'rxjs/operators';
+import { AbstractComponent } from 'app/shared/abstract.component';
 
 /**
  * Represents an image file being uploaded
@@ -49,7 +50,7 @@ export class ImageToUpload {
   templateUrl: 'image-upload.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ImageUploadComponent implements OnDestroy {
+export class ImageUploadComponent extends AbstractComponent implements OnDestroy {
 
   uploading$ = new BehaviorSubject(false);
 
@@ -74,15 +75,18 @@ export class ImageUploadComponent implements OnDestroy {
   private subscription: Subscription;
 
   constructor(
+    injector: Injector,
     private http: HttpClient,
     private apiConfiguration: ApiConfiguration,
     private login: LoginService,
     private dataForUiHolder: DataForUiHolder,
     private imagesService: ImagesService,
     private changeDetector: ChangeDetectorRef) {
+    super(injector);
   }
 
   ngOnDestroy() {
+    super.ngOnDestroy();
     if (!this.keepUrls) {
       for (const url of this.urlsToRevoke) {
         URL.revokeObjectURL(url);
@@ -161,7 +165,7 @@ export class ImageUploadComponent implements OnDestroy {
     });
   }
 
-  doUpload(file: ImageToUpload): Observable<Image> {
+  private doUpload(file: ImageToUpload): Observable<Image> {
     return new Observable(observer => {
       const url = `${this.apiConfiguration.rootUrl}/images/temp`;
       const data = new FormData();
@@ -185,12 +189,12 @@ export class ImageUploadComponent implements OnDestroy {
           // Once the upload is complete, we have to fetch the image model
           file.subscription.unsubscribe();
           file.uploadDone = true;
-          this.imagesService.viewImage({ idOrKey: event.body }).pipe(first()).subscribe(image => {
+          this.addSub(this.imagesService.viewImage({ idOrKey: event.body }).pipe(first()).subscribe(image => {
             file.image = image;
             observer.next(file.image);
             observer.complete();
             this.changeDetector.detectChanges();
-          });
+          }));
         }
       }, err => {
         (this.files.value || []).forEach(f => {

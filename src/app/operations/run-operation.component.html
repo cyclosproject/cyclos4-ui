@@ -1,4 +1,8 @@
 <page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data then content"></ng-container>
+</page-layout>
+
+<ng-template #content>
   <ng-container *ngIf="isSearch; else regular">
     <!-- When a result page, render a filters section -->
     <page-content mode="filters" [heading]="data.name"
@@ -28,9 +32,9 @@
         [ngClass]="{'cursor-pointer': data.rowAction}">
         <thead>
           <th *ngFor="let col of (result$ | async).columns" [ngStyle]="{
-              textAlign: col.align,
-              width: col.width
-            }">
+                  textAlign: col.align,
+                  width: col.width
+                }">
             {{ col.header }}
           </th>
         </thead>
@@ -38,15 +42,15 @@
           <tr *ngFor="let row of (result$ | async).rows"
             (click)="rowClick(row)">
             <td *ngFor="let col of (result$ | async).columns" [ngStyle]="{
-                textAlign: col.align
-              }" [innerHTML]="row[col.property] | trust">
+                    textAlign: col.align
+                  }" [innerHTML]="row[col.property] | trust">
             </td>
           </tr>
         </tbody>
       </table>
     </results-layout>
   </ng-container>
-</page-layout>
+</ng-template>
 
 <ng-template #regular>
   <page-content *ngIf="data && !runDirectly && !(result$ | async)"

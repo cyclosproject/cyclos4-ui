@@ -39,6 +39,10 @@
     "cancel": "Cancel",
     "close": "Close",
     "submit": "Submit",
+    "remove": "Remove",
+    "remove.confirm": "Are you sure to remove the item {item}?",
+    "remove.done": "The item {item} was removed",
+    "remove.tooltip": "Remove {item}",
     "save": "Save",
     "addNew": "Add new",
     "yes": "Yes",
@@ -105,6 +109,11 @@
         "sat": "S"
       }
     },
+    "range": {
+      "fromTo": "From {min} to {max}",
+      "from": "From {min}",
+      "to": "Up to {max}"
+    },
     "fileSize": {
       "b": "{n} bytes",
       "k": "{n}KB",
@@ -136,7 +145,7 @@
     "maxItems": "Cannot add more than {max} elements",
     "validation": "The action couldn't be processed, as there were validation errors",
     "staleEntity": "This data cannot be saved because it has been modified by someone else.<br>Please, load the page again and restart the operation.",
-    "removeDataInUse": "This data cannot be removed because it is currently in use.",
+    "removeDataInUse": "This item cannot be removed because it is currently in use.",
     "notFound": "The location you typed or tried to access was not found",
     "notFound.type": "The requested data could not be found: {type}",
     "notFound.typeKey": "The requested data could not be found: {type} with key {key}",
@@ -184,6 +193,7 @@
     "operators": "Operators",
     "operators.operators": "Operators",
     "operators.register": "Register operator",
+    "operators.groups": "Operator groups",
     "brokering": "Brokering",
     "brokering.users": "Users",
     "brokering.register": "Register user",
@@ -589,6 +599,7 @@
       "directory": "Business directory",
       "myOperators": "Operators",
       "userOperators": "User operators",
+      "operatorRegistration": "Operator registration",
       "myBrokerings": "Assigned members",
       "userBrokerings": "Broker assigned members"
     },
@@ -612,6 +623,7 @@
       "directory": "Directory",
       "myOperators": "Operators",
       "userOperators": "Operators",
+      "operatorRegistration": "New operator",
       "myBrokerings": "Assigned members",
       "userBrokerings": "Broker members"
     },
@@ -622,7 +634,12 @@
     "username": "Login name",
     "email": "E-mail",
     "email.pending": "E-mail pending validation",
-    "operatorOwner": "Operator owner",
+    "operator.owner": "Operator owner",
+    "operator.noGroup": "No group - same owner permissions as the owner",
+    "operator.registration.active": "The operator {operator} has been activated.",
+    "operator.registration.inactive": "The operator {operator} has been registered, however, still needs activatation by the administration.",
+    "operator.registration.pending": "The operator {operator} has been registered, however, still needs to validate their registration by confirming the e-mail.",
+    "operator.registration.addAnother": "Register another operator",
     "noImage": "No profile image",
     "noImages": "No profile images",
     "address.define": "Define address",
@@ -684,6 +701,50 @@
       "alphabeticallyAsc": "Name (A-Z)",
       "alphabeticallyDesc": "Name (Z-A)"
     }
+  },
+  "operatorGroup": {
+    "title": {
+      "list": "Operator groups",
+      "view": "Operator group",
+      "new": "New operator group",
+      "edit": "Edit operator group",
+      "permissions": "Permissions",
+      "accountAccess": "Account access",
+      "generalAccount": "General account operations"
+    },
+    "mobileTitle": {
+      "list": "Operator groups",
+      "view": "Operator group",
+      "new": "New group",
+      "edit": "Edit group",
+      "permissions": "Permissions",
+      "accountAccess": "Account access",
+      "generalAccount": "General operations"
+    },
+    "accountAccess": "Account visibility",
+    "accountAccess.full": "Full",
+    "accountAccess.incoming": "Only incoming payments",
+    "accountAccess.outgoing": "Only outgoing payments",
+    "accountAccess.own": "Received or paid by operator",
+    "accountAccess.none": "Not visible",
+    "performPayments": "Perform payments",
+    "performPayments.requiresAuthorization.view": ", requires authorization",
+    "performPayments.maxAmountPerDay.view": ", max. {max} per day",
+    "performPayments.requiresAuthorization": "Requires authorization",
+    "performPayments.maxAmountPerDay": "Daily limit",
+    "authorizePayments": "Authorize payments",
+    "paymentNotifications": "Payment notifications",
+    "paymentNotifications.above": "Only notify payments above",
+    "paymentNotifications.below": "Only notify payments below",
+    "chargebackPayments": "Chargeback payments",
+    "restrictPaymentsToUsers": "Restrict payments to",
+    "editOwnProfile": "Edit own profile",
+    "notifications": "Notifications",
+    "viewAdvertisements": "View advertisements",
+    "registerUsersAsBroker": "Register users (as broker)",
+    "runOperations": "Run operations",
+    "created": "The operator group was created",
+    "saved": "The operator group was saved"
   },
   "userStatus": {
     "current": "Current status",

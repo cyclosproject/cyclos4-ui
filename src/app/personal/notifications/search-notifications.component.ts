@@ -38,14 +38,14 @@ export class SearchNotificationsComponent
     this.data = {};
 
     // Send a background request indicating the last time notifications were viewed
-    this.notificationsService.markAsViewed().pipe(first()).subscribe(() => {
+    this.addSub(this.notificationsService.markAsViewed().pipe(first()).subscribe(() => {
       // And then immediately update the current notifications status
       const status$ = this.notification.notificationsStatus$;
       const status = { ...status$.value };
       status.lastViewDate = this.dataForUiHolder.now().toISOString();
       status.newNotifications = 0;
       status$.next(status);
-    });
+    }));
 
     // Update the heading actions with the mark all as read if there's any unread notifications
     this.addSub(this.results$.subscribe(results => {
@@ -93,7 +93,7 @@ export class SearchNotificationsComponent
     for (const id of this.ids) {
       observables.push(this.notificationsService.deleteNotification({ id: id }));
     }
-    forkJoin(observables).pipe(first()).subscribe(() => this.update());
+    this.addSub(forkJoin(observables).pipe(first()).subscribe(() => this.update()));
   }
 
   get ids(): string[] {

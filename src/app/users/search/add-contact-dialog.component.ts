@@ -37,7 +37,7 @@ export class AddContactDialogComponent extends BaseComponent {
       return;
     }
     const user = this.field.selection;
-    this.contactsService.createContact({
+    this.addSub(this.contactsService.createContact({
       user: ApiHelper.SELF,
       body: {
         contact: this.control.value
@@ -45,7 +45,7 @@ export class AddContactDialogComponent extends BaseComponent {
     }).subscribe(() => {
       this.done.emit(user);
       this.modalRef.hide();
-    });
+    }));
   }
 
 }

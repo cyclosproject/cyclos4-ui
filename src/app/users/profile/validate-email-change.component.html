@@ -1,5 +1,4 @@
 <page-layout [ready]="data$ | async" size="medium" hideMenu>
-
   <page-content *ngIf="data">
     <notification [allowClose]="false">
       {{ i18n.user.newEmailConfirmed }}
@@ -10,5 +9,4 @@
       </button>
     </actions>
   </page-content>
-
 </page-layout>
