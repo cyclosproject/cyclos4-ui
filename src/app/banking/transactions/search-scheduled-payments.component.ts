@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { RecurringPaymentStatusEnum, ScheduledPaymentStatusEnum, TransactionKind } from 'app/api/models';
-import { BaseTransactionsSearch } from 'app/banking/transactions/base-transactions-search.component';
+import { BaseTransactionsSearch, TransactionSearchParams } from 'app/banking/transactions/base-transactions-search.component';
 
 /**
  * Search for scheduled payments
@@ -39,8 +39,8 @@ export class SearchScheduledPaymentsComponent
     }));
   }
 
-  protected buildQuery(value: any): any {
-    const query = super.buildQuery(value);
+  protected toSearchParams(value: any): TransactionSearchParams {
+    const query = super.toSearchParams(value);
     const status = value.status as ScheduledPaymentStatusEnum;
     query.scheduledPaymentStatuses = [status];
     const recurringStatuses = Object.values(RecurringPaymentStatusEnum);

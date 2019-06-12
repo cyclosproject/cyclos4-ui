@@ -1,5 +1,8 @@
 import { HttpClient, HttpEventType } from '@angular/common/http';
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, EventEmitter, Input, Output, ViewChild, Injector } from '@angular/core';
+import {
+  ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef,
+  EventEmitter, Input, Output, ViewChild, Injector
+} from '@angular/core';
 import { ApiConfiguration } from 'app/api/api-configuration';
 import { CustomFieldDetailed, InputErrorCode, StoredFile } from 'app/api/models';
 import { FilesService } from 'app/api/services';

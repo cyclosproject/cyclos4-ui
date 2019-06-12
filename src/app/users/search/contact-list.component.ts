@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit, ViewChild } from '@angular/core';
-import { ContactListDataForSearch, ContactResult } from 'app/api/models';
+import { ContactListDataForSearch, ContactResult, ContactListQueryFilters } from 'app/api/models';
 import { ContactsService } from 'app/api/services';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
@@ -8,6 +8,8 @@ import { ResultType } from 'app/shared/result-type';
 import { UsersResultsComponent } from 'app/users/search/users-results.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { AddContactDialogComponent } from 'app/users/search/add-contact-dialog.component';
+
+type ContactListSearchParams = ContactListQueryFilters & { user: string };
 
 /**
  * Search the user's contact list
@@ -18,7 +20,7 @@ import { AddContactDialogComponent } from 'app/users/search/add-contact-dialog.c
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ContactListComponent
-  extends BaseSearchPageComponent<ContactListDataForSearch, ContactResult>
+  extends BaseSearchPageComponent<ContactListDataForSearch, ContactListSearchParams, ContactResult>
   implements OnInit {
 
   // Export enum to the template
@@ -61,7 +63,11 @@ export class ContactListComponent
     });
   }
 
-  doSearch(value: any) {
+  protected toSearchParams(value: any): ContactListSearchParams {
+    return value;
+  }
+
+  protected doSearch(value: ContactListSearchParams) {
     return this.contactsService.searchContactList$Response(value);
   }
 
