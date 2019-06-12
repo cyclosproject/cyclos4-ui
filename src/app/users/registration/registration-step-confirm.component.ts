@@ -3,7 +3,7 @@ import {
   Input, OnDestroy, OnInit, ViewChild, AfterViewChecked, ViewChildren, QueryList
 } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
-import { Address, CustomFieldDetailed, GroupForRegistration, Image, UserDataForNew, UserNew } from 'app/api/models';
+import { Address, CustomFieldDetailed, GroupForRegistration, Image, UserDataForNew, UserNew, StoredFile } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
 import { blank, empty, focus } from 'app/shared/helper';
 import { BsModalService } from 'ngx-bootstrap/modal';
@@ -30,6 +30,8 @@ export class RegistrationStepConfirmComponent
   @Input() form: FormGroup;
   @Input() user: UserNew;
   @Input() image: Image;
+  @Input() customImages: Image[];
+  @Input() customFiles: StoredFile[];
 
   @ViewChildren('securityAnswer') securityAnswer: QueryList<InputFieldComponent>;
   @ViewChild('agreementsContent') agreementsContent: ElementRef;

@@ -24,7 +24,9 @@
         [mobileForm]="mobileForm" [landLineForm]="landLineForm"
         [defineAddress]="defineAddress" [addressForm]="addressForm"
         (imageUploaded)="this.image = $event"
-        (imageRemoved)="this.image = null">
+        (imageRemoved)="this.image = null"
+        (customImagesUploaded)="addCustomImages($event)"
+        (customFilesUploaded)="addCustomFiles($event)">
       </registration-step-fields>
     </div>
     <actions ngClass="mt-3" forceRow>
@@ -45,7 +47,8 @@
     [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'" last>
     <div class="flex-grow-1">
       <registration-step-confirm [data]="data" [form]="confirmForm"
-        [user]="userNew" [image]="image">
+        [user]="userNew" [image]="image" [customImages]="customImages"
+        [customFiles]="customFiles">
       </registration-step-confirm>
     </div>
     <actions ngClass="mt-3" forceRow>
