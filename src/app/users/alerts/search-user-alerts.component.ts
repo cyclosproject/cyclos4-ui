@@ -15,8 +15,6 @@ export class SearchUserAlertsComponent
   extends BaseSearchPageComponent<UserAlertDataForSearch, UserAlert>
   implements OnInit {
 
-  query: any;
-
   constructor(
     injector: Injector,
     private alertsService: AlertsService,
