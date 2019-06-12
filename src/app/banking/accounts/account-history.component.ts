@@ -1,22 +1,23 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
-  AccountHistoryResult, AccountWithHistoryStatus, Currency, DataForAccountHistory,
-  EntityReference, Image, PreselectedPeriod, TransferFilter, AccountHistoryOrderByEnum, AccountHistoryQueryFilters
+  AccountHistoryOrderByEnum, AccountHistoryQueryFilters, AccountHistoryResult,
+  AccountWithHistoryStatus, Currency, DataForAccountHistory, EntityReference, Image,
+  PreselectedPeriod, TransferFilter
 } from 'app/api/models';
 import { AccountsService } from 'app/api/services';
+import { BankingHelperService } from 'app/core/banking-helper.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { BankingHelperService } from 'app/core/banking-helper.service';
 
 import { cloneDeep } from 'lodash';
 
-interface ExtraType {
+type AccountHistorySearchParams = AccountHistoryQueryFilters & {
   owner: string;
   accountType: string;
   fields?: Array<string>;
-}
+};
 
 /**
  * Displays the account history of a given account
@@ -27,7 +28,7 @@ interface ExtraType {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AccountHistoryComponent
-  extends BaseSearchPageComponent<DataForAccountHistory, AccountHistoryQueryFilters, AccountHistoryResult>
+  extends BaseSearchPageComponent<DataForAccountHistory, AccountHistorySearchParams, AccountHistoryResult>
   implements OnInit {
 
   status$ = new BehaviorSubject<AccountWithHistoryStatus>(null);
@@ -129,19 +130,20 @@ export class AccountHistoryComponent
     });
   }
 
-  toQueryFilters(value: any): AccountHistoryQueryFilters {
-    const query: AccountHistoryQueryFilters = cloneDeep(value);
+  toSearchParams(value: any): AccountHistorySearchParams {
+    const query: AccountHistorySearchParams = cloneDeep(value);
     query.transferFilters = value.transferFilter == null ? [] : [value.transferFilter.id];
     query.datePeriod = this.bankingHelper.resolveDatePeriod(value);
     query.amountRange = ApiHelper.rangeFilter(value.minAmount, value.maxAmount);
-    return query;
-  }
 
-  //Intersection Types
-  doSearch(query: AccountHistoryQueryFilters & ExtraType) {
     query.fields = [];
     query.owner = ApiHelper.SELF;
     query.accountType = this.typeId;
+
+    return query;
+  }
+
+  doSearch(query: AccountHistorySearchParams) {
 
     return this.accountsService.searchAccountHistory$Response(query).pipe(tap(() => {
       query.fields = ['status'];

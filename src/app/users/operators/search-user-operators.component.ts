@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { CustomFieldDetailed, UserOperatorsDataForSearch } from 'app/api/models';
+import { CustomFieldDetailed, UserOperatorsDataForSearch, UserOperatorsQueryFilters } from 'app/api/models';
 import { UserResult } from 'app/api/models/user-result';
 import { OperatorsService } from 'app/api/services/operators.service';
 import { ApiHelper } from 'app/shared/api-helper';
@@ -11,6 +11,7 @@ import { BehaviorSubject } from 'rxjs';
 import { HeadingAction } from 'app/shared/action';
 
 
+type UserOperatorsSearchParams = UserOperatorsQueryFilters & { user: string };
 /**
  * Searches for operators of a given user
  */
@@ -20,7 +21,7 @@ import { HeadingAction } from 'app/shared/action';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchUserOperatorsComponent
-  extends BaseSearchPageComponent<UserOperatorsDataForSearch, UserResult> implements OnInit {
+  extends BaseSearchPageComponent<UserOperatorsDataForSearch, UserOperatorsSearchParams, UserResult> implements OnInit {
 
   // Export enum to the template
   ResultType = ResultType;
@@ -65,11 +66,15 @@ export class SearchUserOperatorsComponent
     }));
   }
 
-  doSearch(query: any) {
-    const value = cloneDeep(query);
-    value.user = this.param;
-    value.profileFields = this.fieldHelper.toCustomValuesFilter(query.customValues);
+  protected toSearchParams(value: any): UserOperatorsSearchParams {
+    const query = cloneDeep(value);
+    query.user = this.param;
+    query.profileFields = this.fieldHelper.toCustomValuesFilter(query.customValues);
     delete value.customValues;
-    return this.operatorsService.searchUserOperators$Response(value);
+    return query;
+  }
+
+  protected doSearch(query: UserOperatorsSearchParams) {
+    return this.operatorsService.searchUserOperators$Response(query);
   }
 }

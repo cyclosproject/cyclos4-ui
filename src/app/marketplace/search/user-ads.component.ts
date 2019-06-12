@@ -9,6 +9,8 @@ import { cloneDeep } from 'lodash';
 import { HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+type UserAdsSearchParams = UserAdsQueryFilters & { user: string };
+
 /**
  * Lists the advertisements of a given user
  */
@@ -51,12 +53,13 @@ export class UserAdsComponent
     this.shortName = words(data.user.display, MAX_SIZE_SHORT_NAME);
   }
 
-  protected toQueryFilters(value: UserAdsQueryFilters): UserAdsQueryFilters {
-    return cloneDeep(value);
+  protected toSearchParams(value: any): UserAdsSearchParams {
+    const params: UserAdsSearchParams = cloneDeep(value);
+    params.user = this.user;
+    return params;
   }
 
-  doSearch(filters: UserAdsQueryFilters & { user: string }): Observable<HttpResponse<AdResult[]>> {
-    filters.user = this.user;
+  doSearch(filters: UserAdsSearchParams): Observable<HttpResponse<AdResult[]>> {
     return this.marketplaceService.searchUserAds$Response(filters);
   }
 }

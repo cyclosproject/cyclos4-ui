@@ -1,5 +1,8 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { Country, CustomFieldDetailed, RoleEnum, UserAddressResultEnum, UserDataForMap, UserDataForSearch, User } from 'app/api/models';
+import {
+  Country, CustomFieldDetailed, RoleEnum, UserAddressResultEnum, UserDataForMap,
+  UserDataForSearch, User, UserQueryFilters
+} from 'app/api/models';
 import { UserResult } from 'app/api/models/user-result';
 import { UsersService } from 'app/api/services';
 import { CountriesResolve } from 'app/countries.resolve';
@@ -27,7 +30,7 @@ export enum UserSearchKind {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchUsersComponent
-  extends BaseSearchPageComponent<UserDataForSearch | UserDataForMap, UserResult> implements OnInit {
+  extends BaseSearchPageComponent<UserDataForSearch | UserDataForMap, UserQueryFilters, UserResult> implements OnInit {
 
   // Export enum to the template
   ResultType = ResultType;
@@ -203,14 +206,13 @@ export class SearchUsersComponent
     }
   }
 
-  doSearch(query: any) {
-    const value = cloneDeep(query);
+  protected toSearchParams(query: any): UserQueryFilters {
+    const value: UserQueryFilters = cloneDeep(query);
     if (this.kind === UserSearchKind.Broker) {
       value.brokers = [this.param];
     }
     value.profileFields = this.fieldHelper.toCustomValuesFilter(query.customValues);
-    delete value.customValues;
-    const distanceFilter: MaxDistance = value.distanceFilter;
+    const distanceFilter: MaxDistance = query.distanceFilter;
     if (distanceFilter) {
       value.maxDistance = distanceFilter.maxDistance;
       value.latitude = distanceFilter.latitude;
@@ -221,8 +223,14 @@ export class SearchUsersComponent
     if (isMap) {
       value.addressResult = UserAddressResultEnum.ALL;
     }
+    return value;
+  }
+
+  doSearch(query: UserQueryFilters) {
+    // When searching as manager (admin / broker) the map is a simple map view, not the "map directory"
+    const isMap = this.resultType === ResultType.MAP;
     return isMap && !this.manager
-      ? this.usersService.searchMapDirectory$Response(value)
-      : this.usersService.searchUsers$Response(value);
+      ? this.usersService.searchMapDirectory$Response(query)
+      : this.usersService.searchUsers$Response(query);
   }
 }

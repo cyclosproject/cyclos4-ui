@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { AdAddressResultEnum, AdCategoryWithChildren, AdResult, CustomFieldDetailed } from 'app/api/models';
+import { AdAddressResultEnum, AdCategoryWithChildren, AdResult, CustomFieldDetailed, AdQueryFilters } from 'app/api/models';
 import { AdDataForSearch } from 'app/api/models/ad-data-for-search';
 import { MarketplaceService } from 'app/api/services';
 import { ApiHelper } from 'app/shared/api-helper';
@@ -19,7 +19,7 @@ import { BehaviorSubject } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchAdsComponent
-  extends BaseSearchPageComponent<AdDataForSearch, AdResult>
+  extends BaseSearchPageComponent<AdDataForSearch, AdQueryFilters, AdResult>
   implements OnInit {
 
   categoryTrail$ = new BehaviorSubject<AdCategoryWithChildren[]>(null);
@@ -69,7 +69,11 @@ export class SearchAdsComponent
     super.onDataInitialized(data);
   }
 
-  doSearch(value: any) {
+  doSearch(value: AdQueryFilters) {
+    return this.marketplaceService.searchAds$Response(value);
+  }
+
+  protected toSearchParams(value: any): AdQueryFilters {
     const params = cloneDeep(value);
     delete params['customValues'];
     params.customFields = this.fieldHelper.toCustomValuesFilter(value.customValues);
@@ -80,7 +84,7 @@ export class SearchAdsComponent
       params.latitude = distanceFilter.latitude;
       params.longitude = distanceFilter.longitude;
     }
-    return this.marketplaceService.searchAds$Response(params);
+    return params;
   }
 
   onResultTypeChanged(resultType: ResultType, previousResultType: ResultType) {

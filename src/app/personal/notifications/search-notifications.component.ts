@@ -1,6 +1,6 @@
 import { HttpResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { Notification } from 'app/api/models';
+import { Notification, QueryFilters } from 'app/api/models';
 import { NotificationsService } from 'app/api/services';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
@@ -8,6 +8,7 @@ import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { Observable, forkJoin } from 'rxjs';
 import { first } from 'rxjs/operators';
 
+type NotificationSearchParams = QueryFilters & { onlyUnread: boolean };
 
 /**
  * Displays a search for notifications
@@ -18,7 +19,7 @@ import { first } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchNotificationsComponent
-  extends BaseSearchPageComponent<any, Notification>
+  extends BaseSearchPageComponent<any, NotificationSearchParams, Notification>
   implements OnInit {
 
   constructor(
@@ -108,7 +109,10 @@ export class SearchNotificationsComponent
     return ['onlyUnread'];
   }
 
-  protected doSearch(value: any): Observable<HttpResponse<Notification[]>> {
+  protected toSearchParams(value: any): NotificationSearchParams {
+    return value;
+  }
+  protected doSearch(value: NotificationSearchParams): Observable<HttpResponse<Notification[]>> {
     return this.notificationsService.searchNotifications$Response(value);
   }
 
