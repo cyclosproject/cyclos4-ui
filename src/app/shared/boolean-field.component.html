@@ -9,7 +9,7 @@
       class="custom-control-input" [id]="id" (click)="click.emit($event)"
       (keyup.enter)="toggle(); click.emit($event)" [formControl]="formControl"
       [checked]="formControl.value || (formControl.valueChanges | async)">
-    <label class="custom-control-label p-0" [for]="id">
+    <label class="custom-control-label" [for]="id">
       <ng-content></ng-content>
     </label>
   </div>
