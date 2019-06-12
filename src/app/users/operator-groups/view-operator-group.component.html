@@ -1,0 +1,122 @@
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data">
+    <page-content mode="viewForm" [heading]="i18n.operatorGroup.title.view"
+      [mobileHeading]="i18n.operatorGroup.mobileTitle.view"
+      [headingActions]="headingActions$ | async">
+      <label-value *ngIf="!self" [label]="i18n.general.user"
+        labelPosition="side">
+        <user-link [user]="group.user"></user-link>
+      </label-value>
+      <label-value [label]="i18n.general.name" [value]="group.name">
+      </label-value>
+      <label-value *ngIf="group.description"
+        [label]="i18n.general.description" [value]="group.description"
+        valueFormat="break">
+      </label-value>
+
+      <ng-container *ngIf="visibleAccounts?.length > 0">
+        <h2 class="mt-3 mb-0">{{ (layout.ltsm$ | async)
+          ? i18n.operatorGroup.mobileTitle.accountAccess
+          : i18n.operatorGroup.title.accountAccess }}
+        </h2>
+        <ng-container *ngFor="let account of visibleAccounts">
+          <h3 class="mt-3 mb-0" *ngIf="!singleAccount">
+            {{ account.accountType.name }}
+          </h3>
+          <label-value [label]="i18n.operatorGroup.accountAccess"
+            [value]="userHelper.operatorGroupAccountAccess(account.access)">
+          </label-value>
+          <label-value
+            *ngIf="paymentsByAccount[account.accountType.id]?.length > 0"
+            [label]="i18n.operatorGroup.performPayments">
+            <ng-container
+              *ngFor="let pmt of paymentsByAccount[account.accountType.id]; let last = last">
+              {{ pmt.paymentType.name }}<ng-container
+                *ngIf="pmt.requiresAuthorization">{{
+                i18n.operatorGroup.performPaymentsRequiresAuthorizationView
+              }}</ng-container>
+              <ng-container *ngIf="pmt.maxAmountPerDay">{{
+                i18n.operatorGroup.performPaymentsMaxAmountPerDayView(
+                  pmt.maxAmountPerDay | currency:pmt.paymentType.currency
+                )
+              }}</ng-container><br *ngIf="!last">
+            </ng-container>
+          </label-value>
+          <label-value
+            *ngIf="authorizeByAccount[account.accountType.id]?.length > 0"
+            [label]="i18n.operatorGroup.authorizePayments">
+            <ng-container
+              *ngFor="let pmt of authorizeByAccount[account.accountType.id]; let last = last">
+              {{ pmt.name }}<ng-container *ngIf="!last">, </ng-container>
+            </ng-container>
+          </label-value>
+          <label-value
+            *ngIf="account.notificationAmount?.min || account.notificationAmount?.max"
+            [label]="i18n.operatorGroup.paymentNotifications" [value]="format.formatRange({
+              min: account.notificationAmount.min | currency:account.accountType.currency,
+              max: account.notificationAmount.max | currency:account.accountType.currency
+            })">
+          </label-value>
+
+        </ng-container>
+        <!--
+          TODO: In the future, add more conditions as more operations are supported in this frontend
+        <ng-container *ngIf="group.restrictPaymentsToUsers?.length > 0
+          || group.requestPayments
+          || group.redeemVouchers">
+        -->
+        <ng-container *ngIf="group.restrictPaymentsToUsers?.length > 0
+          || group.chargebackPayments">
+          <h3 class="mt-3 mb-0" *ngIf="!singleAccount">
+            {{ (layout.ltsm$ | async)
+                  ? i18n.operatorGroup.mobileTitle.generalAccount
+                  : i18n.operatorGroup.title.generalAccount }}
+          </h3>
+          <label-value *ngIf="group.chargebackPayments"
+            [label]="i18n.operatorGroup.chargebackPayments"
+            [value]="i18n.general.yes">
+          </label-value>
+
+          <label-value *ngIf="group.restrictPaymentsToUsers?.length > 0"
+            [label]="i18n.operatorGroup.restrictPaymentsToUsers">
+            <ng-container
+              *ngFor="let user of group.restrictPaymentsToUsers; let last = last">
+              {{ user.display }}<ng-container *ngIf="!last">, </ng-container>
+            </ng-container>
+          </label-value>
+        </ng-container>
+      </ng-container>
+
+      <h2 class="mt-3 mb-0" *ngIf="group.editOwnProfile
+        || group.notifications
+        || group.viewAdvertisements
+        || group.registerUsersAsBroker
+        || group.operations?.length > 0">{{
+        (layout.ltsm$ | async)
+          ? i18n.operatorGroup.mobileTitle.permissions
+          : i18n.operatorGroup.title.permissions }}
+      </h2>
+      <label-value *ngIf="group.editOwnProfile"
+        [label]="i18n.operatorGroup.editOwnProfile"
+        [value]="i18n.general.yes">
+      </label-value>
+      <label-value *ngIf="group.notifications"
+        [label]="i18n.operatorGroup.notifications" [value]="i18n.general.yes">
+      </label-value>
+      <label-value *ngIf="group.viewAdvertisements"
+        [label]="i18n.operatorGroup.viewAdvertisements"
+        [value]="i18n.general.yes">
+      </label-value>
+      <label-value *ngIf="group.registerUsersAsBroker"
+        [label]="i18n.operatorGroup.registerUsersAsBroker"
+        [value]="i18n.general.yes">
+      </label-value>
+      <label-value *ngIf="group.operations?.length > 0"
+        [label]="i18n.operatorGroup.runOperations">
+        <ng-container *ngFor="let op of group.operations; let last = last">{{
+          op.name }}<ng-container *ngIf="!last">, </ng-container>
+        </ng-container>
+      </label-value>
+    </page-content>
+  </ng-container>
+</page-layout>

@@ -1,0 +1,37 @@
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data then content"></ng-container>
+</page-layout>
+
+<ng-template #content>
+  <page-content
+    [heading]="operator ? i18n.groupMembership.title.historyOperator : i18n.groupMembership.title.historyUser"
+    [mobileHeading]="operator ? i18n.groupMembership.mobileTitle.historyOperator : i18n.groupMembership.mobileTitle.historyUser">
+    <user-info [user]="data.user"></user-info>
+  </page-content>
+  <results-layout [results]="data.history">
+    <mobile-result *mobileResult="let row" [date]="row.period?.date">
+      <div class="cell-main">
+        {{ i18n.user.group }}:
+        {{ row.group ? row.group.name : i18n.user.operatorNoGroup }}
+      </div>
+      <div class="cell-text" *ngIf="row.by">
+        {{ i18n.general.performedBy }}: {{ row.by.display }}
+      </div>
+    </mobile-result>
+    <table *resultTable class="table table-hover">
+      <thead>
+        <th>{{ i18n.general.date }}</th>
+        <th>{{ i18n.general.status }}</th>
+        <th>{{ i18n.general.performedBy }}</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of data.history">
+          <td>{{ row.period?.begin | date }}</td>
+          <td>{{ row.group ? row.group.name : i18n.user.operatorNoGroup }}
+          </td>
+          <td>{{ row.by?.display }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </results-layout>
+</ng-template>

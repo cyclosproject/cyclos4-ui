@@ -37,7 +37,7 @@ export class OperatorRegistrationComponent
 
   ngOnInit() {
     super.ngOnInit();
-    this.user = this.route.snapshot.paramMap.get('user') || this.ApiHelper.SELF;
+    this.user = this.route.snapshot.params.user || this.ApiHelper.SELF;
     this.self = this.authHelper.isSelf(this.user);
 
     this.addSub(this.operatorsService.getOperatorDataForNew({ user: this.user }).subscribe(data =>

@@ -26,8 +26,6 @@ export type FieldLabelPosition
  */
 export abstract class BaseFormFieldComponent<T> extends BaseControlComponent<T> {
 
-  protected copiedFrom: BaseFormFieldComponent<any>;
-
   @HostBinding('class.form-field') classFormField = true;
   @HostBinding('class.any-label-value') get classAnyLabelValue() {
     return !blank(this.label);

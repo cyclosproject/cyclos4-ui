@@ -199,6 +199,7 @@ $spaced-label-values: (
   'h2',
   'h3',
   'address-form',
+  'user-info',
   'custom-field-value',
   'radio-group-field',
   'checkbox-group-field',
@@ -217,9 +218,9 @@ $spaced-label-values: (
       }
     }
   }
-  .any-label-value .any-label-value {
-    margin-top: 0 !important;
-  }
+}
+.any-label-value .any-label-value {
+  margin-top: 0 !important;
 }
 
 .custom-control-label {

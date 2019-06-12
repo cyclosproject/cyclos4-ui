@@ -1,6 +1,6 @@
 openapi: '3.0.0'
 info:
-  title: 'Cyclos 4.12 API'
+  title: 'Cyclos @cyclosVersion API'
   description: >-
     The Cyclos REST API is described using OpenAPI 3.0. The descriptor for the api
     can be downloaded in both [YAML](@url/cyclos-openapi.yaml) or
@@ -22,9 +22,9 @@ info:
 
     For details of the deprecated elements (operations and model) please visit the
     [deprecation notes
-    page](https://documentation.cyclos.org/4.12/api-deprecation.html)
+    page](https://documentation.cyclos.org/@cyclosVersion/api-deprecation.html)
     for this version.
-  version: '4.12'
+  version: '@cyclosVersion'
 servers:
   - url: '@url'
 
@@ -8399,6 +8399,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
             items:
               description: ''
               type: string
+        - name: keywords
+          in: query
+          required: false
+          description: "Used to filter documents containing that keywords in the the name or description (case insensitive)"
+          schema:
+            type: string
         - name: page
           in: query
           required: false
@@ -29957,7 +29963,7 @@ components:
         - `weeklyAmountExceeded`: The maximum amount allowed per week was exceeded.
         
         - `weeklyPaymentsExceeded`: The maximum count of payments allowed per week was exceeded.
-
+        
         - `yearlyAmountExceeded`: The maximum amount allowed per year was exceeded.
       type: string
       enum:
@@ -32656,6 +32662,10 @@ components:
                 The user which owns this address
               allOf:
                 - $ref: '#/components/schemas/User'
+            editable:
+              description: >-
+                Can the authenticated user edit / remove this address?
+              type: boolean
 
     Agreement:
       description: >-
@@ -34699,6 +34709,11 @@ components:
                 The user which owns this additional contact information
               allOf:
                 - $ref: '#/components/schemas/User'
+            editable:
+              type: boolean
+              description: >-
+                Indicates whether the logged user can remove / edit this
+                additional contact information
             hidden:
               type: boolean
               description: >-
@@ -36600,6 +36615,8 @@ components:
             Indicates whether the logged user can manage individual documents
             of managed users
           type: boolean
+        query:
+          $ref: '#/components/schemas/DocumentQueryFilters'
 
     DocumentEdit:
       description: >-
@@ -36704,6 +36721,10 @@ components:
                 type: string
             user:
               description: Either the id or identifier of the document owner
+              type: string
+            keywords:
+              description: >-
+                Used to filter documents containing that keywords in the the name or description (case insensitive)
               type: string
 
     DocumentResult:
@@ -39375,7 +39396,10 @@ components:
                 The user which owns this operator group
               allOf:
                 - $ref: '#/components/schemas/User'
-
+            editable:
+              description: >-
+                Can the authenticated user edit / remove this operator group?
+              type: boolean
             description:
               type: string
               description: >-
@@ -40848,6 +40872,10 @@ components:
                 The user which owns this phone
               allOf:
                 - $ref: '#/components/schemas/User'
+            editable:
+              description: >-
+                Can the authenticated user edit / remove this phone?
+              type: boolean
             name:
               type: string
               description: >-
@@ -40878,6 +40906,7 @@ components:
                 Only applicable if this represents a mobile phone. Whether this mobile is
                 verified. Can only be directly set by administrators. Regular users need to
                 verify it.
+
 
     PinInput:
       description: >-
@@ -44045,6 +44074,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Group'
+        query:
+          $ref: '#/components/schemas/UserAlertQueryFilters'
 
     UserAlertQueryFilters:
       description: >-
@@ -44641,6 +44672,8 @@ components:
         their management
       type: object
       properties:
+        user:
+          $ref: '#/components/schemas/User'
         canManage:
           description: >-
             Indicates whether the operator groups can be managed by the authenticated user

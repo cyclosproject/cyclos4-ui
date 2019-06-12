@@ -1,4 +1,7 @@
-import { ChangeDetectorRef, Component, ElementRef, Host, Injector, Input, OnInit, Optional, SkipSelf, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef, Component, ElementRef, EventEmitter, Host,
+  Injector, Input, OnInit, Optional, Output, SkipSelf, ViewChild
+} from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CustomField, StoredFile } from 'app/api/models';
 import { FilesService } from 'app/api/services';
@@ -56,6 +59,8 @@ export class FilesFieldComponent extends BaseFormFieldComponent<string | string[
    */
   @Input() mimeTypes: string[] = ['*/*'];
 
+  @Output() upload = new EventEmitter<StoredFile[]>();
+
   constructor(
     injector: Injector,
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
@@ -109,6 +114,7 @@ export class FilesFieldComponent extends BaseFormFieldComponent<string | string[
     this.files = [...this.files, ...files];
     // Manually mark the control as touched, as there's no native inputs
     this.formControl.markAsTouched();
+    this.upload.emit(files);
   }
 
   manageFiles() {
