@@ -53,7 +53,7 @@ export class CaptchaComponent extends AbstractComponent implements AfterViewInit
   }
 
   newCaptcha() {
-    this.captchaService.newCaptcha({ group: this.group }).pipe(
+    this.addSub(this.captchaService.newCaptcha({ group: this.group }).pipe(
       switchMap(id => {
         this.form.patchValue({
           challenge: id,
@@ -65,7 +65,7 @@ export class CaptchaComponent extends AbstractComponent implements AfterViewInit
           this.img.src = this.currentUrl;
           this.updateWidth();
         }));
-      }));
+      })).subscribe());
   }
 
   updateWidth() {

@@ -57,7 +57,10 @@
     [ignoreExtraCell]="!canManagePrivacy(cf)" [fieldSize]="cf.size"
     [required]="cf.required">
     <custom-field-input [field]="cf" hideLabel
-      [formControlName]="cf.internalName"></custom-field-input>
+      [formControlName]="cf.internalName"
+      (imagesUploaded)="customImagesUploaded.emit($event)"
+      (filesUploaded)="customFilesUploaded.emit($event)">
+    </custom-field-input>
     <field-privacy *extraCell [field]="cf.internalName"
       [control]="form.get('hiddenFields')"></field-privacy>
   </label-value>

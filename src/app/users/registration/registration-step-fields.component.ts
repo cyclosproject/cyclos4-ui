@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { AvailabilityEnum, CustomField, GeographicalCoordinate, Image, UserDataForNew } from 'app/api/models';
+import { AvailabilityEnum, CustomField, GeographicalCoordinate, Image, UserDataForNew, StoredFile } from 'app/api/models';
 import { ImagesService } from 'app/api/services';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseComponent } from 'app/shared/base.component';
@@ -28,6 +28,8 @@ export class RegistrationStepFieldsComponent
   @Input() defineAddress: FormControl;
   @Output() imageUploaded = new EventEmitter<Image>();
   @Output() imageRemoved = new EventEmitter<Image>();
+  @Output() customImagesUploaded = new EventEmitter<Image[]>();
+  @Output() customFilesUploaded = new EventEmitter<StoredFile[]>();
 
   editableFields: Set<string>;
   managePrivacyFields: Set<string>;

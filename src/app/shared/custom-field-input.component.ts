@@ -1,11 +1,11 @@
 import {
   ChangeDetectionStrategy, Component, Host, Injector, Input, OnInit,
-  Optional, SkipSelf, ViewChild
+  Optional, SkipSelf, ViewChild, Output, EventEmitter
 } from '@angular/core';
 import { AbstractControl, ControlContainer, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator } from '@angular/forms';
 import {
   CustomFieldBinaryValues, CustomFieldControlEnum, CustomFieldDetailed,
-  CustomFieldTypeEnum, LinkedEntityTypeEnum
+  CustomFieldTypeEnum, LinkedEntityTypeEnum, Image, StoredFile
 } from 'app/api/models';
 import { FieldHelperService } from 'app/core/field-helper.service';
 import { ApiHelper } from 'app/shared/api-helper';
@@ -67,6 +67,9 @@ export class CustomFieldInputComponent extends BaseFormFieldComponent<string> im
     }
   }
   @Input() focused: boolean | string;
+
+  @Output() imagesUploaded = new EventEmitter<Image[]>();
+  @Output() filesUploaded = new EventEmitter<StoredFile[]>();
 
   type: CustomFieldTypeEnum;
   linkedEntityType: LinkedEntityTypeEnum;

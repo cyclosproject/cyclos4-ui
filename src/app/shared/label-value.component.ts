@@ -16,6 +16,14 @@ type Breakpoint = 'xxs' | 'xs' | 'sm';
 const Breakpoints: Breakpoint[] = ['xxs', 'xs', 'sm'];
 
 /**
+ * How the label-value is used:
+ * - view: The value is a simple text or simple view-only widget
+ * - field: A form field
+ * - fieldView: Like view, but presenting in the same way as form fields
+ */
+export type LabelValueKind = 'view' | 'field' | 'fieldView';
+
+/**
  * Displays a label / value pair
  */
 @Component({
@@ -114,13 +122,7 @@ export class LabelValueComponent implements OnInit, OnDestroy, OnChanges {
     this._value = value;
   }
 
-  /**
-   * How the label-value is used:
-   * - view: The value is a simple text or simple view-only widget
-   * - field: A form field
-   * - fieldView: Like view, but presenting in the same way as form fields
-   */
-  @Input() kind: 'view' | 'field' | 'fieldView' = 'view';
+  @Input() kind: LabelValueKind = 'view';
 
   @HostBinding('class.view') get view() {
     return this.kind === 'view';

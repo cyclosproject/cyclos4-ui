@@ -1,0 +1,32 @@
+<page-layout [ready]="data$ | async">
+  <page-content *ngIf="data"
+    [heading]="operator ? i18n.groupMembership.title.groupOperator : i18n.groupMembership.title.groupUser"
+    [mobileHeading]="operator ? i18n.groupMembership.mobileTitle.groupOperator : i18n.groupMembership.mobileTitle.groupUser"
+    [headingActions]="headingActions$ | async">
+    <user-info [user]="data.user"></user-info>
+
+    <label-value [label]="i18n.groupMembership.current">
+      {{ data.group ? data.group.name : this.i18n.user.operatorNoGroup }}
+    </label-value>
+
+    <ng-container *ngIf="editable">
+      <hr>
+      <form [formGroup]="form">
+        <single-selection-field formControlName="group"
+          [label]="i18n.groupMembership.new" [required]="!allowEmptyGroup"
+          [emptyOption]="allowEmptyGroup ? this.i18n.user.operatorNoGroup : null">
+          <field-option *ngFor="let group of data.possibleNewGroups"
+            [value]="group.id" [id]="group.id"
+            [internalName]="group.internalName" [text]="group.name">
+          </field-option>
+        </single-selection-field>
+        <textarea-field formControlName="comment"
+          [label]="i18n.general.comments"></textarea-field>
+      </form>
+      <actions>
+        <button class="btn btn-primary"
+          (click)="save()">{{ i18n.general.submit }}</button>
+      </actions>
+    </ng-container>
+  </page-content>
+</page-layout>
