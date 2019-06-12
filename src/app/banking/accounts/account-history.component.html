@@ -6,7 +6,6 @@
   <page-content mode="filters" [heading]="title"
     [mobileHeading]="i18n.account.mobileTitle"
     [headingActions]="headingActions$ | async">
-    {{form.value ===form.value}}
     <form
       *ngIf="((layout.xxs$ | async) && data.preselectedPeriods?.length > 1) || (moreFilters$ | async)"
       [formGroup]="form" class="filters-form filters-form-separator"
