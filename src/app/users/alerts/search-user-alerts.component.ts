@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit, Injector } from '@angular/core';
-import { UserAlert } from 'app/api/models/user-alert'
-import { AlertsService } from 'app/api/services/alerts.service'
+import { UserAlert } from 'app/api/models/user-alert';
+import { AlertsService } from 'app/api/services/alerts.service';
 import { UserAlertDataForSearch } from 'app/api/models/user-alert-data-for-search';
 import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { BankingHelperService } from 'app/core/banking-helper.service';
@@ -27,8 +27,6 @@ export class SearchUserAlertsComponent
 
   ngOnInit() {
     super.ngOnInit();
-    // this.query = {};
-    // this.form.patchValue(this.query, { emitEvent: false });
     this.data = {};
   }
 
