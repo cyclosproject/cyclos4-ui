@@ -462,7 +462,7 @@ export class MenuService {
     const marketplaceRoot = addRoot(RootMenu.MARKETPLACE, 'shopping_cart', this.i18n.menu.marketplace);
     if (role === RoleEnum.ADMINISTRATOR) {
       // For admins, show the marketplace menu as users
-      marketplaceRoot.icon = 'supervised_user_circle';
+      marketplaceRoot.icon = 'supervisor_account';
       marketplaceRoot.label = this.i18n.menu.marketplaceUsers;
       marketplaceRoot.title = this.i18n.menu.marketplaceUsers;
     }

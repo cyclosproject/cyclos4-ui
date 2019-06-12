@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { SharedModule } from 'app/shared/shared.module';
+import { ViewUserGroupHistoryComponent } from 'app/users/group-membership/view-user-group-history.component';
+import { ViewUserGroupComponent } from 'app/users/group-membership/view-user-group.component';
 import { ListOperatorGroupsComponent } from 'app/users/operator-groups/list-operator-groups.component';
 import { ViewOperatorGroupComponent } from 'app/users/operator-groups/view-operator-group.component';
 import { OperatorRegistrationComponent } from 'app/users/operators/operator-registration.component';
@@ -24,7 +26,6 @@ import { ViewUserStatusComponent } from 'app/users/status/view-user-status.compo
 import { UsersRoutingModule } from 'app/users/users-routing.module';
 import { SearchConnectedComponent } from 'app/users/connected/search-connected.component';
 import { OperatorGroupFormComponent } from 'app/users/operator-groups/operator-group-form.component';
-
 
 /**
  * Users module
@@ -62,7 +63,9 @@ import { OperatorGroupFormComponent } from 'app/users/operator-groups/operator-g
     OperatorGroupFormComponent,
 
     ViewUserStatusComponent,
-    ViewUserStatusHistoryComponent
+    ViewUserStatusHistoryComponent,
+    ViewUserGroupComponent,
+    ViewUserGroupHistoryComponent
   ],
   entryComponents: [
     VerifyPhoneComponent,

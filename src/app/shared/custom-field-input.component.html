@@ -95,7 +95,8 @@
     [required]="required" [formControl]="formControl"
     [initialImages]="binaryValues?.imageValues[field.internalName]"
     target="customValue" [customField]="field"
-    [separator]="ApiHelper.VALUE_SEPARATOR" [maxFiles]="field.maxFiles">
+    [separator]="ApiHelper.VALUE_SEPARATOR" [maxFiles]="field.maxFiles"
+    (upload)="imagesUploaded.emit($event)">
   </images-field>
 
   <!-- files -->
@@ -104,7 +105,8 @@
     [required]="required" [formControl]="formControl"
     [initialFiles]="binaryValues?.fileValues[field.internalName]"
     [customField]="field" [separator]="ApiHelper.VALUE_SEPARATOR"
-    [maxFiles]="field.maxFiles" [mimeTypes]="field.mimeTypes">
+    [maxFiles]="field.maxFiles" [mimeTypes]="field.mimeTypes"
+    (upload)="filesUploaded.emit($event)">
   </files-field>
 
   <!-- Linked user -->

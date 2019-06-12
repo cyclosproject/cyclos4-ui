@@ -22,6 +22,8 @@ import { ViewUserStatusComponent } from 'app/users/status/view-user-status.compo
 import { SearchConnectedComponent } from 'app/users/connected/search-connected.component';
 
 import { OperatorGroupFormComponent } from 'app/users/operator-groups/operator-group-form.component';
+import { ViewUserGroupComponent } from 'app/users/group-membership/view-user-group.component';
+import { ViewUserGroupHistoryComponent } from 'app/users/group-membership/view-user-group-history.component';
 
 const SearchMenu: ConditionalMenu = injector => {
   const login = injector.get(LoginService);
@@ -170,7 +172,7 @@ const usersRoutes: Routes = [
         component: ViewUserStatusComponent,
         canActivate: [LoggedUserGuard],
         data: {
-          menu: Menu.SEARCH_USERS
+          menu: AuthHelperService.menuByRole(null)
         }
       },
       {
@@ -178,7 +180,23 @@ const usersRoutes: Routes = [
         component: ViewUserStatusHistoryComponent,
         canActivate: [LoggedUserGuard],
         data: {
-          menu: Menu.SEARCH_USERS
+          menu: AuthHelperService.menuByRole(null)
+        }
+      },
+      {
+        path: ':user/group',
+        component: ViewUserGroupComponent,
+        canActivate: [LoggedUserGuard],
+        data: {
+          menu: AuthHelperService.menuByRole(null)
+        }
+      },
+      {
+        path: ':user/group/history',
+        component: ViewUserGroupHistoryComponent,
+        canActivate: [LoggedUserGuard],
+        data: {
+          menu: AuthHelperService.menuByRole(null)
         }
       },
       {

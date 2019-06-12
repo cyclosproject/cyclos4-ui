@@ -69,6 +69,16 @@ export class FormatFieldValueComponent extends AbstractComponent implements OnIn
   @Input() customValues: any;
 
   /**
+   * Known images, so they can be looked up by id
+   */
+  @Input() images: Image[];
+
+  /**
+   * Known files, so they can be looked up by id
+   */
+  @Input() files: StoredFile[];
+
+  /**
    * Indicates that multi-line / rich text should be rendered as plain text with no line breaks
    */
   private _plainText: boolean | string = false;
@@ -274,8 +284,10 @@ export class FormatFieldValueComponent extends AbstractComponent implements OnIn
         }
         break;
       case CustomFieldTypeEnum.FILE:
+        fieldValue.fileValues = parts.map(id => (this.files || []).find(f => f.id === id)).filter(f => f != null);
+        break;
       case CustomFieldTypeEnum.IMAGE:
-        // FILE and IMAGE are not supported on search results
+        fieldValue.imageValues = parts.map(id => (this.images || []).find(i => i.id === id)).filter(i => i != null);
         break;
       default:
         fieldValue.stringValue = value;

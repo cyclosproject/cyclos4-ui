@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { PhoneKind, PhoneView, UserView, BasicProfileFieldEnum } from 'app/api/models';
+import { PhoneKind, PhoneView, UserView, BasicProfileFieldEnum, RoleEnum } from 'app/api/models';
 import { ContactsService, UsersService } from 'app/api/services';
 import { ErrorStatus } from 'app/core/error-status';
 import { MapsService } from 'app/core/maps.service';
@@ -81,6 +81,8 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
       this.landLinePhones = [];
     }
 
+    const operator = user.role === RoleEnum.OPERATOR;
+
     // Get the actions
     const actions: HeadingAction[] = [];
     const permissions = user.permissions || {};
@@ -88,6 +90,7 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     const payment = permissions.payment || {};
     const marketplace = permissions.marketplace || {};
     const status = permissions.status || {};
+    const group = permissions.group || {};
     const operators = permissions.operators || {};
     const brokering = permissions.brokering || {};
     if (user.permissions.profile.editProfile) {
@@ -106,9 +109,18 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
       }));
     }
     if (status.view) {
-      actions.push(new HeadingAction('how_to_reg', this.i18n.user.profile.status, () => {
-        this.router.navigate(['/users', this.param, 'status']);
-      }));
+      actions.push(new HeadingAction('how_to_reg',
+        operator ? this.i18n.user.profile.statusOperator : this.i18n.user.profile.statusUser,
+        () => {
+          this.router.navigate(['/users', this.param, 'status']);
+        }));
+    }
+    if (group.view) {
+      actions.push(new HeadingAction('supervised_user_circle',
+        operator ? this.i18n.user.profile.groupOperator : this.i18n.user.profile.groupUser,
+        () => {
+          this.router.navigate(['/users', this.param, 'group']);
+        }));
     }
     if (contact.add) {
       actions.push(new HeadingAction('add_circle_outline', this.i18n.user.profile.addContact, () => {
