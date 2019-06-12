@@ -52,7 +52,7 @@ export class SearchConnectedComponent
     return ['channels', 'roles', 'user'];
   }
 
-  protected doSearch(value: any): Observable<HttpResponse<SessionResult[]>> {
+  protected doSearch(value: SessionQueryFilters): Observable<HttpResponse<SessionResult[]>> {
     return this.sessionsService.searchSessions$Response(value);
   }
 
