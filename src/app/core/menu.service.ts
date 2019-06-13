@@ -611,8 +611,8 @@ export class MenuService {
       if (users.registerAsAdmin) {
         add(Menu.ADMIN_REGISTRATION, '/users/registration', 'registration', this.i18n.menu.marketplaceRegister);
       }
-      // Todo: Check the user alert permission for admins
-      if (auth.systemAdministrator) {
+      const alerts = permissions.alerts || {};
+      if (alerts.view) {
         add(Menu.USER_ALERTS, '/users/alerts', 'notification_important', this.i18n.menu.marketplaceUserAlerts);
       }
 
