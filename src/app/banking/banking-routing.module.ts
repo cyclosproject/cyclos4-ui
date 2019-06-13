@@ -35,14 +35,7 @@ const bankingRoutes: Routes = [
     canActivateChild: [LoggedUserGuard],
     children: [
       {
-        path: 'account',
-        component: AccountHistoryComponent,
-        data: {
-          menu: Menu.ACCOUNT_HISTORY
-        }
-      },
-      {
-        path: 'account/:type',
+        path: ':owner/account/:type',
         component: AccountHistoryComponent,
         data: {
           menu: AccountMenu
