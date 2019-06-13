@@ -12,42 +12,51 @@
   <page-content *ngSwitchCase="'confirm'"
     [heading]="i18n.voucher.redeem.title"
     [mobileHeading]="i18n.voucher.redeem.mobileTitle">
+    <ng-container *ngIf="(dataForRedeem$ | async); else loading">
 
-    <notification ngClass="mb-3" type="warning">
-      {{ i18n.voucher.redeem.confirm }}
-    </notification>
+      <notification ngClass="mb-3" type="warning">
+        {{ i18n.voucher.redeem.confirm }}
+      </notification>
 
-    <div *ngIf="layout.gtxxs$ | async" class="row no-gutters ">
-      <div *ngIf="dataForRedeem.type.voucherDescription"
-        class="col-12 col-xs-7 col-md-9">
-        <label-value type=text>{{ dataForRedeem.type.voucherDescription }}
+      <div class="d-flex flex-grow-1 flex-column">
+
+        <div class="d-flex flex-row-reverse">
+          <div *ngIf="dataForRedeem.type.image"
+            class="image d-flex justify-content-center mt-2 mb-4"
+            [class]="(layout.ltsm$ | async) ? 'flex-grow-1' : ''">
+            <avatar size="160" imageSize="200" useLightbox
+              [image]="dataForRedeem.type.image"></avatar>
+          </div>
+
+          <div *ngIf="dataForRedeem.type.voucherDescription">
+            <label-value type=text>{{ dataForRedeem.type.voucherDescription }}
+            </label-value>
+          </div>
+        </div>
+        <label-value [label]="i18n.voucher.token"> {{ dataForRedeem.token}}
         </label-value>
+        <label-value [label]="i18n.voucher.buyer">
+          <user-link [user]="dataForRedeem.buyer"></user-link>
+        </label-value>
+        <label-value [label]="i18n.transaction.amount">
+          {{ dataForRedeem.amount | currency:dataForRedeem.type.configuration.currency }}
+        </label-value>
+
+        <custom-field-input *ngFor="let cf of dataForRedeem.customFields"
+          [field]="cf" [formControl]="form.get(cf.internalName)">
+        </custom-field-input>
       </div>
-      <div *ngIf="dataForRedeem.type.image" class="col-12 col-xs-5 col-md-3">
-        <avatar iconSize="128px" [image]="dataForRedeem.type.image">
-        </avatar>
-      </div>
-    </div>
 
-    <div ngClass="mt-3">
-
-      <label-value [label]="i18n.voucher.token"> {{ dataForRedeem.token}}
-      </label-value>
-      <label-value [label]="i18n.voucher.buyer">
-        <user-link [user]="dataForRedeem.buyer"></user-link>
-      </label-value>
-      <label-value [label]="i18n.transaction.amount">
-        {{ dataForRedeem.amount | currency:dataForRedeem.type.configuration.currency }}
-      </label-value>
-
-      <custom-field-value *ngFor="let fv of dataForRedeem.customFields"
-        [fieldValue]="fv">
-      </custom-field-value>
-
-    </div>
-    <actions>
-      <button class="btn btn-primary" [disabled]="requesting$ | async"
-        (click)="submit()">{{ i18n.general.submit }}</button>
-    </actions>
+      <actions>
+        <button class="btn btn-primary" [disabled]="requesting$ | async"
+          (click)="submit()">{{ i18n.general.submit }}</button>
+      </actions>
+    </ng-container>
   </page-content>
 </page-layout>
+
+<ng-template #loading>
+  <page-content>
+    <spinner></spinner>
+  </page-content>
+</ng-template>

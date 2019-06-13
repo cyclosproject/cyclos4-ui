@@ -584,8 +584,9 @@ export class MenuService {
       if ((banking.authorizations || {}).view) {
         add(Menu.AUTHORIZED_PAYMENTS, '/banking/authorized-payments', 'assignment_turned_in', this.i18n.menu.bankingAuthorizations);
       }
-      if (/* PERMISSION VALIDATION */ true) { // FIX ICON
+      if (/* PERMISSION VALIDATION */ this.login.auth.role === RoleEnum.MEMBER) { // FIX ICON
         add(Menu.REDEEM_VOUCHER, '/banking/vouchers/redeem', 'payment', this.i18n.menu.bankingVouchersRedeem);
+        add(Menu.SEARCH_REDEEMED, '/banking/vouchers/search-redeemed', 'search', this.i18n.menu.bankingVouchersSearchRedeemed);
       }
       addOperations(RootMenu.BANKING);
       addContentPages(Menu.CONTENT_PAGE_BANKING);

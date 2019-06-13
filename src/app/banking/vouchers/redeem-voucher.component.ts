@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy, Injector } from '@angular/core';
 import { VoucherInitialDataForRedeem, VoucherDataForRedeem } from 'app/api/models';
 import { BasePageComponent } from 'app/shared/base-page.component';
-import { Validators, FormControl } from '@angular/forms';
+import { Validators, FormControl, FormGroup } from '@angular/forms';
 import { VouchersService } from 'app/api/services';
 import { validateBeforeSubmit } from 'app/shared/helper';
 import { ApiHelper } from 'app/shared/api-helper';
@@ -19,7 +19,16 @@ export class RedeemVoucherComponent extends BasePageComponent<VoucherInitialData
   step$ = new BehaviorSubject<RedeemStep>(null);
   token = new FormControl('', Validators.required);
   mask = '';
-  dataForRedeem: VoucherDataForRedeem;
+  dataForRedeem$ = new BehaviorSubject<VoucherDataForRedeem>(null);
+  form: FormGroup;
+
+  get dataForRedeem(): VoucherDataForRedeem {
+    return this.dataForRedeem$.value;
+  }
+
+  set dataForRedeem(dataForRedeem: VoucherDataForRedeem) {
+    this.dataForRedeem$.next(dataForRedeem);
+  }
 
   constructor(
     injector: Injector,
@@ -42,6 +51,8 @@ export class RedeemVoucherComponent extends BasePageComponent<VoucherInitialData
       }
       this.voucherService.getVoucherDataForRedeem({ user: ApiHelper.SELF, token: this.token.value }).subscribe(data => {
         this.dataForRedeem = data;
+        // Custom fields
+        this.form = this.fieldHelper.customValuesFormGroup(this.dataForRedeem.customFields);
         this.step = 'confirm';
       });
     } else {

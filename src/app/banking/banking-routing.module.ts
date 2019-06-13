@@ -13,6 +13,7 @@ import { trim } from 'lodash';
 import { BankingHelperService } from 'app/core/banking-helper.service';
 import { RedeemVoucherComponent } from 'app/banking/vouchers/redeem-voucher.component';
 import { ViewVoucherComponent } from 'app/banking/vouchers/view-voucher.component';
+import { SearchRedeemedVouchersComponent } from 'app/banking/vouchers/search-redeemed-vouchers.component';
 
 /**
  * A conditional menu resolver for content, which finds the content page by slug to resolve the correct menu
@@ -114,10 +115,17 @@ const bankingRoutes: Routes = [
         }
       },
       {
+        path: 'vouchers/search-redeemed',
+        component: SearchRedeemedVouchersComponent,
+        data: {
+          menu: Menu.SEARCH_REDEEMED
+        }
+      },
+      {
         path: 'vouchers/:key',
         component: ViewVoucherComponent,
         data: {
-          menu: Menu.VIEW_VOUCHER
+          menu: Menu.ACCOUNT_HISTORY
         }
       }
     ]
