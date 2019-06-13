@@ -88,11 +88,6 @@ table.table {
 @include media-breakpoint-up(md) {
   table.table {
     th {
-      padding: 0.75rem;
-    }
-    td {
-      padding: 0.75rem;
-      height: 3.25rem;
       vertical-align: middle;
     }
     td.amount, th.amount {
@@ -109,6 +104,8 @@ table.table {
   table:not(.table-auto-height) {
     td, th {
       padding: 0.75rem;
+    }
+    td {
       height: 3.3rem;
     }
   }
