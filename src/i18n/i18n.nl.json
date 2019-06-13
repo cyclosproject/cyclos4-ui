@@ -387,6 +387,7 @@
     "to": "Tot",
     "account": "Rekening",
     "fromAccount": "Van rekening",
+    "fromUser": "From user",
     "toAccount": "Naar rekening",
     "toUser": "Naar gebruiker",
     "requiresAuthorization": "De betaling zal vereisen een goedkeuring",
@@ -457,6 +458,8 @@
       "settled": "Afgehandeld"
     },
     "title": {
+      "paymentSystemToSystem": "Payment between system accounts",
+      "paymentSystemToUser": "Payment from system to user",
       "paymentToSystem": "Betaling aan systeem",
       "paymentToSelf": "Betaling tussen eigen rekeningen",
       "paymentToUser": "Betaling aan gebruiker",
@@ -478,6 +481,8 @@
       "childTransfers": "Transfers gegenereerd door deze"
     },
     "mobileTitle": {
+      "paymentSystemToSystem": "Pay system",
+      "paymentSystemToUser": "Pay user",
       "paymentToSystem": "Pay system",
       "paymentToSelf": "Pay self",
       "paymentToUser": "Pay user",
@@ -669,6 +674,11 @@
       "removeContact": "Verwijder uit mijn contacten",
       "removeContact.done": "{user} is verwijderd uit uw lijst met contactpersonen",
       "pay": "Volgende",
+      "paySystemToUser": "Payment system to user",
+      "payAsUserToSystem": "Payment user to system",
+      "payAsUserToUser": "Payment user to user",
+      "payAsUserToSelf": "Payment user to self",
+      "viewAccount": "View {account}",
       "viewAds": "Bekijk advertenties",
       "viewBrokerings": "View assigned members",
       "viewOperators": "View operators",
