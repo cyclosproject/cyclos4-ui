@@ -56,11 +56,6 @@ export class SearchConnectedComponent
     return this.sessionsService.searchSessions$Response(value);
   }
 
-  protected get onClick() {
-    // No op condition to disable built-in click
-    return (row: any) => row != null;
-  }
-
   protected showConnectedLabel(role: RoleEnum) {
     switch (role) {
       case RoleEnum.ADMINISTRATOR:

@@ -32,7 +32,7 @@
     </page-content>
 
     <results-layout resultType="list" [results]="results$ | async"
-      (update)="update($event)" [onClick]="onClick">
+      (update)="update($event)">
 
       <mobile-result *mobileResult="let row" [avatarImage]="row.user?.image"
         avatarIcon="user">
@@ -69,7 +69,7 @@
         </thead>
         <tbody>
           <ng-container *ngFor="let row of (results$ | async).results">
-            <tr (click)="onClick">
+            <tr>
               <td class="avatar" [ngClass]="{
               'pb-0': layout.xxs$ | async,
               'border-0': layout.xxs$ | async
