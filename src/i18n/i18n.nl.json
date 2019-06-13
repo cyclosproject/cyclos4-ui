@@ -39,6 +39,10 @@
     "cancel": "Annuleer",
     "close": "Sluiten",
     "submit": "Verzenden",
+    "remove": "Remove",
+    "remove.confirm": "Are you sure to remove the item {item}?",
+    "remove.done": "The item {item} was removed",
+    "remove.tooltip": "Remove {item}",
     "save": "Opslaan",
     "addNew": "Nieuw",
     "yes": "Ja",
@@ -105,6 +109,11 @@
         "sat": "Z"
       }
     },
+    "range": {
+      "fromTo": "From {min} to {max}",
+      "from": "From {min}",
+      "to": "Up to {max}"
+    },
     "fileSize": {
       "b": "{n} bytes",
       "k": "{n}KB",
@@ -136,7 +145,7 @@
     "maxItems": "Kan niet meer dan {max} elementen toevoegen",
     "validation": "De actie kan niet worden verwerkt, omdat er validatiefouten zijn",
     "staleEntity": "Deze gegevens kunnen niet worden opgeslagen omdat het is gewijzigd door iemand anders.<br>Laad de pagina opnieuw en herstart de bewerking.",
-    "removeDataInUse": "Deze gegevens kunnen niet worden verwijderd, omdat het momenteel in gebruik is.",
+    "removeDataInUse": "This item cannot be removed because it is currently in use.",
     "notFound": "De locatie die u hebt getypt of geprobeerd te openen is niet gevonden",
     "notFound.type": "De gevraagde gegevens kunnen niet worden gevonden: {type}",
     "notFound.typeKey": "De gevraagde gegevens kunnen niet worden gevonden: {type} met de sleutel {key}",
@@ -183,10 +192,14 @@
     "banking.authorizations": "Betalingsautorisaties",
     "operators": "Operators",
     "operators.operators": "Operators",
+    "operators.register": "Register operator",
+    "operators.groups": "Operator groups",
     "brokering": "Brokering",
     "brokering.users": "Users",
+    "brokering.register": "Register user",
     "marketplace": "Marktplaats",
     "marketplace.users": "Users",
+    "marketplace.register": "Register user",
     "marketplace.directory": "Bedrijven",
     "marketplace.userSearch": "Users",
     "marketplace.businessDirectory": "Gebruikers",
@@ -374,6 +387,7 @@
     "to": "Tot",
     "account": "Rekening",
     "fromAccount": "Van rekening",
+    "fromUser": "From user",
     "toAccount": "Naar rekening",
     "toUser": "Naar gebruiker",
     "requiresAuthorization": "De betaling zal vereisen een goedkeuring",
@@ -444,6 +458,8 @@
       "settled": "Afgehandeld"
     },
     "title": {
+      "paymentSystemToSystem": "Payment between system accounts",
+      "paymentSystemToUser": "Payment from system to user",
       "paymentToSystem": "Betaling aan systeem",
       "paymentToSelf": "Betaling tussen eigen rekeningen",
       "paymentToUser": "Betaling aan gebruiker",
@@ -465,6 +481,8 @@
       "childTransfers": "Transfers gegenereerd door deze"
     },
     "mobileTitle": {
+      "paymentSystemToSystem": "Pay system",
+      "paymentSystemToUser": "Pay user",
       "paymentToSystem": "Pay system",
       "paymentToSelf": "Pay self",
       "paymentToUser": "Pay user",
@@ -571,7 +589,6 @@
       "image": "Profiel afbeelding",
       "images": "Afbeeldingsprofiel",
       "fields": "Aangepaste profiel velden",
-      "group": "Kies de groep die u wilt om deel te nemen",
       "phones": "Telefoons",
       "addresses": "Adressen",
       "contactInfos": "Aanvullende contactpersonen",
@@ -586,6 +603,7 @@
       "directory": "Business directory",
       "myOperators": "Operators",
       "userOperators": "User operators",
+      "operatorRegistration": "Operator registration",
       "myBrokerings": "Assigned members",
       "userBrokerings": "Broker assigned members"
 =======
@@ -599,7 +617,6 @@
       "image": "Profile image",
       "images": "Profile images",
       "fields": "Profile fields",
-      "group": "Group",
       "phones": "Phones",
       "addresses": "Addresses",
       "contactInfos": "Additional contacts",
@@ -614,6 +631,7 @@
       "directory": "Directory",
       "myOperators": "Operators",
       "userOperators": "Operators",
+      "operatorRegistration": "New operator",
       "myBrokerings": "Assigned members",
       "userBrokerings": "Broker members"
 =======
@@ -627,7 +645,12 @@
     "username": "Inlognaam",
     "email": "E-mail",
     "email.pending": "In afwachting van validatie van uw e-mailadres",
-    "operatorOwner": "Operator owner",
+    "operator.owner": "Operator owner",
+    "operator.noGroup": "No group - same owner permissions as the owner",
+    "operator.registration.active": "The operator {operator} has been activated.",
+    "operator.registration.inactive": "The operator {operator} has been registered, however, still needs activatation by the administration.",
+    "operator.registration.pending": "The operator {operator} has been registered, however, still needs to validate their registration by confirming the e-mail.",
+    "operator.registration.addAnother": "Register another operator",
     "noImage": "Nog geen profiel afbeelding",
     "noImages": "Geen profiel foto ' s",
     "address.define": "Definiëren adres",
@@ -659,31 +682,92 @@
       "removeContact": "Verwijder uit mijn contacten",
       "removeContact.done": "{user} is verwijderd uit uw lijst met contactpersonen",
       "pay": "Volgende",
+      "paySystemToUser": "Payment system to user",
+      "payAsUserToSystem": "Payment user to system",
+      "payAsUserToUser": "Payment user to user",
+      "payAsUserToSelf": "Payment user to self",
+      "viewAccount": "View {account}",
       "viewAds": "Bekijk advertenties",
       "viewBrokerings": "View assigned members",
       "viewOperators": "View operators",
-      "status": "User status"
+      "status.user": "User status",
+      "status.operator": "Operator status",
+      "group.user": "User group",
+      "group.operator": "Operator group"
     },
     "registration": {
-      "active": "U bent met succes ingeschreven, en je account is nu actief.",
-      "inactive": "Uw account is succesvol aangemaakt.<br>u zult Echter geactiveerd moeten worden door de overheid.<br>U ontvangt een bericht wanneer uw account actief is.",
-      "pending": "Uw registratie is ingediend, en dient te worden geverifieerd.<br>ontvang Je een e-mail kort met instructies om uw account te activeren.<br>Als u geen mail ontvangt, controleer dan uw spam / junk map.",
+      "group.public": "Kies de groep die u wilt om deel te nemen",
+      "group.manager": "Choose the group for the new user",
+      "skipActivationEmail": "Skip activation e-mail",
+      "password.assign": "Assign password",
+      "password.forceChange": "Force user to change",
+      "active.public": "U bent met succes ingeschreven, en je account is nu actief.",
+      "inactive.public": "Uw account is succesvol aangemaakt.<br>u zult Echter geactiveerd moeten worden door de overheid.<br>U ontvangt een bericht wanneer uw account actief is.",
+      "pending.public": "Uw registratie is ingediend, en dient te worden geverifieerd.<br>ontvang Je een e-mail kort met instructies om uw account te activeren.<br>Als u geen mail ontvangt, controleer dan uw spam / junk map.",
+      "active.manager": "The user's account for {user} has been activated.",
+      "inactive.manager": "The user {user} has been registered, however, still needs activatation by the administration.",
+      "pending.manager": "The user {user} has been registered, however, still needs to validate their registration by confirming the e-mail.",
       "principal.single": "U kunt gebruik maken van uw {principal} ({value}) op {channels}",
       "principal.multiple.preface": "U kunt inloggen met de volgende gegevens:",
       "principal.multiple.item": "<b>{principal}</b> ({value}): kan gebruikt worden op {channels}",
       "generatedPasswords.none": "U kunt nu inloggen met het wachtwoord dat u op de hoogte hebben gesteld.",
       "generatedPasswords.single": "U ontvangt een e-mail kort met uw gegenereerd {type}.",
-      "generatedPasswords.multiple": "U ontvangt een e-mail op korte termijn met de volgende gegenereerde wachtwoorden: {types}."
+      "generatedPasswords.multiple": "U ontvangt een e-mail op korte termijn met de volgende gegenereerde wachtwoorden: {types}.",
+      "viewProfile": "View profile",
+      "registerAnotherUser": "Register another user"
     },
     "orderBy": {
       "alphabeticallyAsc": "Naam (A-Z)",
       "alphabeticallyDesc": "Naam (Z-A)"
     }
   },
+  "operatorGroup": {
+    "title": {
+      "list": "Operator groups",
+      "view": "Operator group",
+      "new": "New operator group",
+      "edit": "Edit operator group",
+      "permissions": "Permissions",
+      "accountAccess": "Account access",
+      "generalAccount": "General account operations"
+    },
+    "mobileTitle": {
+      "list": "Operator groups",
+      "view": "Operator group",
+      "new": "New group",
+      "edit": "Edit group",
+      "permissions": "Permissions",
+      "accountAccess": "Account access",
+      "generalAccount": "General operations"
+    },
+    "accountAccess": "Account visibility",
+    "accountAccess.full": "Full",
+    "accountAccess.incoming": "Only incoming payments",
+    "accountAccess.outgoing": "Only outgoing payments",
+    "accountAccess.own": "Received or paid by operator",
+    "accountAccess.none": "Not visible",
+    "performPayments": "Perform payments",
+    "performPayments.requiresAuthorization.view": ", requires authorization",
+    "performPayments.maxAmountPerDay.view": ", max. {max} per day",
+    "performPayments.requiresAuthorization": "Requires authorization",
+    "performPayments.maxAmountPerDay": "Daily limit",
+    "authorizePayments": "Authorize payments",
+    "paymentNotifications": "Payment notifications",
+    "paymentNotifications.above": "Only notify payments above",
+    "paymentNotifications.below": "Only notify payments below",
+    "chargebackPayments": "Chargeback payments",
+    "restrictPaymentsToUsers": "Restrict payments to",
+    "editOwnProfile": "Edit own profile",
+    "notifications": "Notifications",
+    "viewAdvertisements": "View advertisements",
+    "registerUsersAsBroker": "Register users (as broker)",
+    "runOperations": "Run operations",
+    "created": "The operator group was created",
+    "saved": "The operator group was saved"
+  },
   "userStatus": {
     "current": "Current status",
     "new": "New status",
-    "comment": "Comment",
     "confirm": {
       "active": "Are you sure to activate {user}?",
       "blocked": "Are you sure to block access to {user}?",
@@ -692,21 +776,27 @@
       "removed": "Are you sure to permanently remove {user}?\nThis action is irreversible!"
     },
     "done": {
-      "active": "The user was activated",
-      "blocked": "The user was blocked",
-      "disabled": "The user was disabled",
-      "purged": "The user was permanently removed, together with all personal data",
-      "removed": "The user was permanently removed"
+      "active": "{user} was activated",
+      "blocked": "{user} was blocked",
+      "disabled": "{user} was disabled",
+      "purged": "{user} was permanently removed, together with all personal data",
+      "removed": "{user} was permanently removed"
     },
     "title": {
-      "status": "User status",
-      "change": "Change status",
-      "history": "User status history"
+      "status.user": "User status",
+      "status.operator": "Operator status",
+      "change.user": "Change user status",
+      "change.operator": "Change operator status",
+      "history.user": "User status history",
+      "history.operator": "Operator status history"
     },
     "mobileTitle": {
-      "status": "User status",
-      "change": "Change status",
-      "history": "Status history"
+      "status.user": "User status",
+      "status.operator": "Operator status",
+      "change.user": "Change status",
+      "change.operator": "Change status",
+      "history.user": "Status history",
+      "history.operator": "Status history"
     },
     "active": "Active",
     "blocked": "Access blocked",
@@ -714,6 +804,30 @@
     "pending": "Pending activation",
     "purged": "Purged (all private data is erased)",
     "removed": "Removed (no private data is erased)"
+  },
+  "groupMembership": {
+    "current": "Current group",
+    "new": "New group",
+    "confirm": "Are you sure to change {user} to group {group}?",
+    "confirm.aliasOperator": "Are you sure to grant {user} the same permissions as the owner?",
+    "done.user": "The user group was changed",
+    "done.operator": "The operator group was changed",
+    "title": {
+      "group.user": "User group",
+      "group.operator": "Operator group",
+      "change.user": "Change user group",
+      "change.operator": "Change group",
+      "history.user": "User group history",
+      "history.operator": "Operator group history"
+    },
+    "mobileTitle": {
+      "group.user": "User group",
+      "group.operator": "Operator group",
+      "change.user": "Change group",
+      "change.operator": "Change group",
+      "history.user": "Group history",
+      "history.operator": "Group history"
+    }
   },
   "phone": {
     "mobile": "Mobiele telefoon",

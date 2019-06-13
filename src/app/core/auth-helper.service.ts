@@ -7,6 +7,7 @@ import { I18n } from 'app/i18n/i18n';
 import { ApiHelper } from 'app/shared/api-helper';
 import { empty } from 'app/shared/helper';
 import { ConditionalMenu, Menu } from 'app/shared/menu';
+import { trim } from 'lodash';
 
 /**
  * Helper service for authentication / password common functions
@@ -15,7 +16,6 @@ import { ConditionalMenu, Menu } from 'app/shared/menu';
   providedIn: 'root'
 })
 export class AuthHelperService {
-
   /**
    * Returns a ConditionalMenu that calls `AuthHelperService.menuByRole`
    */
@@ -41,12 +41,29 @@ export class AuthHelperService {
     if (empty(key) || key === ApiHelper.SELF) {
       return true;
     }
+    if (key === ApiHelper.SYSTEM) {
+      // System is self only for admins
+      return this.dataForUi.role === RoleEnum.ADMINISTRATOR;
+    }
     const user = this.dataForUi.user;
     if (user) {
       return user.id === key || (typeof key === 'object' && key.id === user.id);
     }
     return false;
   }
+
+  /**
+   * Returns whether the given key represents 'the system'.
+   * Either the string `system` or `self` when logged in as administrator.
+   * @param key The key
+   */
+  isSystem(key: string): boolean {
+    if (key === ApiHelper.SYSTEM) {
+      return true;
+    }
+    return this.isSelf(key) && this.dataForUi.role === RoleEnum.ADMINISTRATOR;
+  }
+
 
   /**
    * Returns the string `self` when the given id / user is the same as the logged user
@@ -220,8 +237,10 @@ export class AuthHelperService {
   }
 
   private _menuByRole(myMenu: Menu, managerOnly = true): Menu {
-    const match = /\/users\/(\-?\w+)\/.*/.exec(this.router.url);
-    const user = match ? match[1] : null;
+    const url = trim(this.router.url, '/');
+    const parts = url.split('/');
+    // The first part is the module (users / banking). Assume the user is the second part
+    const user = parts[1];
     if (this.isSelf(user)) {
       return myMenu;
     }
