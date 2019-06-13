@@ -387,6 +387,7 @@
     "to": "Para",
     "account": "Cuenta",
     "fromAccount": "Cuenta origen",
+    "fromUser": "From user",
     "toAccount": "Cuenta de destino",
     "toUser": "Usuario",
     "requiresAuthorization": "Este pago requiere, y quedará pendiente de autorización",
@@ -457,6 +458,8 @@
       "settled": "Saldado"
     },
     "title": {
+      "paymentSystemToSystem": "Payment between system accounts",
+      "paymentSystemToUser": "Payment from system to user",
       "paymentToSystem": "Pago al sistema",
       "paymentToSelf": "Pago entre cuentas propias",
       "paymentToUser": "Pago a usuario",
@@ -478,6 +481,8 @@
       "childTransfers": "Transferencias generadas"
     },
     "mobileTitle": {
+      "paymentSystemToSystem": "Pay system",
+      "paymentSystemToUser": "Pay user",
       "paymentToSystem": "Pago a sistema",
       "paymentToSelf": "Auto pago",
       "paymentToUser": "Pago a usuario",
@@ -669,6 +674,11 @@
       "removeContact": "Eliminar de mis contactos",
       "removeContact.done": "{user} ha sido eliminado de su lista de contactos",
       "pay": "Realizar pago",
+      "paySystemToUser": "Payment system to user",
+      "payAsUserToSystem": "Payment user to system",
+      "payAsUserToUser": "Payment user to user",
+      "payAsUserToSelf": "Payment user to self",
+      "viewAccount": "View {account}",
       "viewAds": "Ver anuncios",
       "viewBrokerings": "Ver miembros asignados",
       "viewOperators": "Ver operadores",
