@@ -30,7 +30,7 @@
       i18n.dashboard.lastIncomingPayments }}</h3>
     <ng-container
       *ngIf="(lastPayments$ | async) != null; else loadingTransfers">
-      <table class="table table-hover mb-0 cursor-pointer"
+      <table class="table table-hover table-auto-height mb-0 cursor-pointer"
         *ngIf="lastPayments$.value?.length > 0; else noTransfers">
         <tr *ngFor="let transfer of lastPayments$.value; let last = last"
           (click)="viewTransfer(transfer, $event)">
