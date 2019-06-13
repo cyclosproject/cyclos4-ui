@@ -32721,6 +32721,17 @@ components:
               type: string
 
 
+    AlertsPermissions:
+      description: >-
+        Permissions related to user alerts
+      type: object
+      properties:
+        view:
+          description: >-
+            Whether the logged user can view user alerts or not
+          type: boolean
+
+
     AmountSummary:
       description: >-
         Contains summarized statistics over amounts
@@ -40559,7 +40570,11 @@ components:
             Permissions over user sessions
           allOf:
             - $ref: '#/components/schemas/SessionsPermissions'
-
+        alerts:
+          description: >-
+            Permissions related to user alers
+          allOf:
+            - $ref: '#/components/schemas/AlertsPermissions'
 
     PersonalizeNfcError:
       description: >-
