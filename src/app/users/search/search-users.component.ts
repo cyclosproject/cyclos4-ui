@@ -1,5 +1,8 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { Country, CustomFieldDetailed, RoleEnum, UserAddressResultEnum, UserDataForMap, UserDataForSearch, User } from 'app/api/models';
+import {
+  Country, CustomFieldDetailed, RoleEnum, UserAddressResultEnum, UserDataForMap,
+  UserDataForSearch, User, UserQueryFilters
+} from 'app/api/models';
 import { UserResult } from 'app/api/models/user-result';
 import { UsersService } from 'app/api/services';
 import { CountriesResolve } from 'app/countries.resolve';
@@ -27,7 +30,7 @@ export enum UserSearchKind {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchUsersComponent
-  extends BaseSearchPageComponent<UserDataForSearch | UserDataForMap, UserResult> implements OnInit {
+  extends BaseSearchPageComponent<UserDataForSearch | UserDataForMap, UserQueryFilters, UserResult> implements OnInit {
 
   // Export enum to the template
   ResultType = ResultType;
@@ -36,7 +39,7 @@ export class SearchUsersComponent
 
   kind: UserSearchKind;
   manager: boolean;
-  key: string;
+  param: string;
   self: boolean;
   broker: User;
   heading: string;
@@ -82,9 +85,8 @@ export class SearchUsersComponent
   ngOnInit() {
     super.ngOnInit();
 
-    const route = this.route.snapshot;
-    this.key = route.params.key || ApiHelper.SELF;
-    this.self = this.authHelper.isSelf(this.key);
+    this.param = this.route.snapshot.params.user || ApiHelper.SELF;
+    this.self = this.authHelper.isSelf(this.param);
 
     const auth = this.login.auth;
     const role = auth == null ? null : auth.role;
@@ -198,20 +200,19 @@ export class SearchUsersComponent
       } else {
         // Get the data for regular user search
         this.stateManager.cache('dataForSearch', this.usersService.getUserDataForSearch({
-          broker: this.kind === UserSearchKind.Broker ? this.key : null
+          broker: this.kind === UserSearchKind.Broker ? this.param : null
         })).subscribe(setData);
       }
     }
   }
 
-  doSearch(query: any) {
-    const value = cloneDeep(query);
+  protected toSearchParams(query: any): UserQueryFilters {
+    const value: UserQueryFilters = cloneDeep(query);
     if (this.kind === UserSearchKind.Broker) {
-      value.brokers = [this.key];
+      value.brokers = [this.param];
     }
     value.profileFields = this.fieldHelper.toCustomValuesFilter(query.customValues);
-    delete value.customValues;
-    const distanceFilter: MaxDistance = value.distanceFilter;
+    const distanceFilter: MaxDistance = query.distanceFilter;
     if (distanceFilter) {
       value.maxDistance = distanceFilter.maxDistance;
       value.latitude = distanceFilter.latitude;
@@ -222,8 +223,14 @@ export class SearchUsersComponent
     if (isMap) {
       value.addressResult = UserAddressResultEnum.ALL;
     }
+    return value;
+  }
+
+  doSearch(query: UserQueryFilters) {
+    // When searching as manager (admin / broker) the map is a simple map view, not the "map directory"
+    const isMap = this.resultType === ResultType.MAP;
     return isMap && !this.manager
-      ? this.usersService.searchMapDirectory$Response(value)
-      : this.usersService.searchUsers$Response(value);
+      ? this.usersService.searchMapDirectory$Response(query)
+      : this.usersService.searchUsers$Response(query);
   }
 }

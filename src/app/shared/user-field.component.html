@@ -17,7 +17,9 @@
         <input #inputField *ngIf="(selection$ | async) == null"
           class="form-control" autocomplete="off" [placeholder]="placeholder"
           [formControl]="inputFieldControl" (focus)="onInputFocus()"
-          (blur)="onInputBlur()">
+          (blur)="onInputBlur()" [ngClass]="{
+            'is-invalid': (formControl.statusChanges | async) === 'INVALID' && formControl.touched
+          }">
 
         <div #dropDownMenu class="dropdown-menu" *dropdownMenu role="listbox"
           [attr.id]="dropdownMenuId" attr.aria-labelledby="id"
@@ -38,6 +40,7 @@
       </button>
     </div>
   </div>
+  <field-errors [control]="formControl"></field-errors>
 </ng-template>
 
 <ng-template #autocomplete>

@@ -40,10 +40,10 @@ export class ManagePasswordsComponent
 
   ngOnInit() {
     super.ngOnInit();
-    this.passwordsService.getUserPasswordsListData({ user: ApiHelper.SELF })
+    this.addSub(this.passwordsService.getUserPasswordsListData({ user: ApiHelper.SELF })
       .subscribe(data => {
         this.data = data;
-      });
+      }));
   }
 
   onDataInitialized(data: DataForUserPasswords) {
@@ -155,13 +155,13 @@ export class ManagePasswordsComponent
   }
 
   private doGenerate(password: PasswordStatusAndActions) {
-    this.passwordsService.generatePassword({ type: password.type.id }).subscribe(newValue => {
+    this.addSub(this.passwordsService.generatePassword({ type: password.type.id }).subscribe(newValue => {
       this.notification.info(this.i18n.auth.password.action.changeGeneratedDone({
         type: password.type.name,
         value: newValue
       }));
       this.reload();
-    });
+    }));
   }
 
   private createDeviceConfirmation(password: PasswordStatusAndActions): () => CreateDeviceConfirmation {
@@ -182,7 +182,7 @@ export class ManagePasswordsComponent
   }
 
   private doChangeGenerated(password: PasswordStatusAndActions, confirmationPassword: string) {
-    this.passwordsService.changeGenerated({
+    this.addSub(this.passwordsService.changeGenerated({
       type: password.type.id,
       confirmationPassword: confirmationPassword
     }).subscribe(newValue => {
@@ -192,7 +192,7 @@ export class ManagePasswordsComponent
           value: newValue
         }));
       this.reload();
-    });
+    }));
   }
 
   private unblock(password: PasswordStatusAndActions) {
@@ -204,13 +204,13 @@ export class ManagePasswordsComponent
   }
 
   private doUnblock(password: PasswordStatusAndActions) {
-    this.passwordsService.unblockPassword({
+    this.addSub(this.passwordsService.unblockPassword({
       user: ApiHelper.SELF,
       type: password.type.id
     }).subscribe(() => {
       this.notification.snackBar(this.i18n.auth.password.action.unblockDone(password.type.name));
       this.reload();
-    });
+    }));
   }
 
   private enable(password: PasswordStatusAndActions) {
@@ -222,13 +222,13 @@ export class ManagePasswordsComponent
   }
 
   private doEnable(password: PasswordStatusAndActions) {
-    this.passwordsService.enablePassword({
+    this.addSub(this.passwordsService.enablePassword({
       user: ApiHelper.SELF,
       type: password.type.id
     }).subscribe(() => {
       this.notification.snackBar(this.i18n.auth.password.action.enableDone(password.type.name));
       this.reload();
-    });
+    }));
   }
 
   private disable(password: PasswordStatusAndActions) {
@@ -240,12 +240,12 @@ export class ManagePasswordsComponent
   }
 
   private doDisable(password: PasswordStatusAndActions) {
-    this.passwordsService.disablePassword({
+    this.addSub(this.passwordsService.disablePassword({
       user: ApiHelper.SELF,
       type: password.type.id
     }).subscribe(() => {
       this.notification.snackBar(this.i18n.auth.password.action.disableDone(password.type.name));
       this.reload();
-    });
+    }));
   }
 }

@@ -1,6 +1,5 @@
 <page-layout [ready]="data$ | async" size="medium" hideMenu>
-
-  <page-content *ngIf="result">
+  <page-content *ngIf="data">
     <registration-step-done [result]="result"></registration-step-done>
     <actions ngClass="mt-3" forceRow>
       <button class="btn btn-primary" (click)="goToLogin()">
@@ -8,5 +7,4 @@
       </button>
     </actions>
   </page-content>
-
 </page-layout>

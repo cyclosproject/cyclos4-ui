@@ -1,4 +1,7 @@
-import { ChangeDetectorRef, Component, ElementRef, Host, Injector, Input, OnInit, Optional, SkipSelf, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef, Component, ElementRef, EventEmitter, Host,
+  Injector, Input, OnInit, Optional, Output, SkipSelf, ViewChild
+} from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { CustomField, StoredFile } from 'app/api/models';
 import { FilesService } from 'app/api/services';
@@ -56,6 +59,8 @@ export class FilesFieldComponent extends BaseFormFieldComponent<string | string[
    */
   @Input() mimeTypes: string[] = ['*/*'];
 
+  @Output() upload = new EventEmitter<StoredFile[]>();
+
   constructor(
     injector: Injector,
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
@@ -109,6 +114,7 @@ export class FilesFieldComponent extends BaseFormFieldComponent<string | string[
     this.files = [...this.files, ...files];
     // Manually mark the control as touched, as there's no native inputs
     this.formControl.markAsTouched();
+    this.upload.emit(files);
   }
 
   manageFiles() {
@@ -129,7 +135,7 @@ export class FilesFieldComponent extends BaseFormFieldComponent<string | string[
         // Remove each temp file in the list
         this.uploadedFiles
           .filter(i => result.removedFiles.includes(i.id))
-          .forEach(i => this.filesService.deleteRawFile({ id: i.id }).subscribe());
+          .forEach(i => this.addSub(this.filesService.deleteRawFile({ id: i.id }).subscribe()));
 
         // Update the arrays
         this.files = this.files.filter(i => !result.removedFiles.includes(i.id));
@@ -149,7 +155,7 @@ export class FilesFieldComponent extends BaseFormFieldComponent<string | string[
     // Remove all uploaded temporary files
     this.uploadedFiles.forEach(f => {
       this.errorHandler.requestWithCustomErrorHandler(() => {
-        this.filesService.deleteRawFile({ id: f.id }).subscribe();
+        this.addSub(this.filesService.deleteRawFile({ id: f.id }).subscribe());
       });
     });
 
@@ -173,9 +179,9 @@ export class FilesFieldComponent extends BaseFormFieldComponent<string | string[
   }
 
   downloadFile(event: MouseEvent, file: StoredFile) {
-    this.filesService.getRawFileContent({ id: file.id }).subscribe(blob => {
+    this.addSub(this.filesService.getRawFileContent({ id: file.id }).subscribe(blob => {
       download(blob, file.name, file.contentType);
-    });
+    }));
     event.stopPropagation();
     event.preventDefault();
   }

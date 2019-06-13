@@ -12,6 +12,7 @@ import { LayoutService } from 'app/shared/layout.service';
 @Component({
   selector: 'boolean-field',
   templateUrl: 'boolean-field.component.html',
+  styleUrls: ['boolean-field.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     { provide: NG_VALUE_ACCESSOR, useExisting: BooleanFieldComponent, multi: true }
@@ -30,6 +31,7 @@ export class BooleanFieldComponent
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
     public layout: LayoutService) {
     super(injector, controlContainer);
+    this.labelPosition = 'sideForced';
   }
 
   preprocessValue(value: any): boolean | string {

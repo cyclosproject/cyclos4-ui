@@ -457,12 +457,12 @@ export class MenuService {
     const publicDirectory = addRoot(RootMenu.PUBLIC_DIRECTORY, 'group', this.i18n.menu.marketplaceDirectory);
     const publicMarketplace = addRoot(RootMenu.PUBLIC_MARKETPLACE, 'shopping_cart', this.i18n.menu.marketplaceAdvertisements);
     addRoot(RootMenu.BANKING, 'account_balance', this.i18n.menu.banking);
-    addRoot(RootMenu.OPERATORS, 'supervised_user_circle', this.i18n.menu.operators);
+    addRoot(RootMenu.OPERATORS, 'supervisor_account', this.i18n.menu.operators);
     addRoot(RootMenu.BROKERING, 'assignment_ind', this.i18n.menu.brokering);
     const marketplaceRoot = addRoot(RootMenu.MARKETPLACE, 'shopping_cart', this.i18n.menu.marketplace);
     if (role === RoleEnum.ADMINISTRATOR) {
       // For admins, show the marketplace menu as users
-      marketplaceRoot.icon = 'supervised_user_circle';
+      marketplaceRoot.icon = 'supervisor_account';
       marketplaceRoot.label = this.i18n.menu.marketplaceUsers;
       marketplaceRoot.title = this.i18n.menu.marketplaceUsers;
     }
@@ -593,7 +593,9 @@ export class MenuService {
 
       // Operators
       if (operators.enable) {
-        add(Menu.MY_OPERATORS, '/users/operators', 'supervisor_account', this.i18n.menu.operatorsOperators);
+        add(Menu.MY_OPERATORS, '/users/self/operators', 'supervisor_account', this.i18n.menu.operatorsOperators);
+        add(Menu.REGISTER_OPERATOR, '/users/self/operators/registration', 'registration', this.i18n.menu.operatorsRegister);
+        add(Menu.OPERATOR_GROUPS, '/users/self/operator-groups', 'supervised_user_circle', this.i18n.menu.operatorsGroups);
       }
 
       // Brokering

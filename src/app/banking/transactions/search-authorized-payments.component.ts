@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { TransactionAuthorizationStatusEnum, TransactionKind } from 'app/api/models';
-import { BaseTransactionsSearch } from 'app/banking/transactions/base-transactions-search.component';
+import { BaseTransactionsSearch, TransactionSearchParams } from 'app/banking/transactions/base-transactions-search.component';
 import { FieldOption } from 'app/shared/field-option';
 
 /**
@@ -43,8 +43,8 @@ export class SearchAuthorizedPaymentsComponent
     }));
   }
 
-  protected buildQuery(value: any): any {
-    const query = super.buildQuery(value);
+  protected toSearchParams(value: any): TransactionSearchParams {
+    const query = super.toSearchParams(value);
     query.authorizationStatuses = [value.status];
     return query;
   }

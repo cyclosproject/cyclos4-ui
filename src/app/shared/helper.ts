@@ -6,7 +6,7 @@ import { AbstractControl, FormArray, FormControl, FormGroup } from '@angular/for
 import { Address, GeographicalCoordinate } from 'app/api/models';
 import { FormControlLocator } from 'app/shared/form-control-locator';
 import { LayoutService } from 'app/shared/layout.service';
-import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp, End, Home, PageUp, PageDown } from 'app/shared/shortcut.service';
+import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp, End, Home, PageDown, PageUp } from 'app/shared/shortcut.service';
 import download from 'downloadjs';
 import { Observable } from 'rxjs';
 
@@ -294,6 +294,27 @@ export function validateBeforeSubmit(control: AbstractControl): boolean {
     focusFirstInvalid();
   }
   return result;
+}
+
+/**
+ * Clones a form group, array or control
+ * @param control The control to clone
+ */
+export function cloneControl<C extends AbstractControl>(control: C): C {
+  let clone: any = null;
+  if (control instanceof FormGroup) {
+    clone = new FormGroup({}, control.validator, control.asyncValidator);
+    const controls = control.controls;
+    for (const key of Object.keys(controls)) {
+      clone.addControl(key, cloneControl(controls[key]));
+    }
+  } else if (control instanceof FormArray) {
+    const clones = control.controls.map(cloneControl);
+    clone = new FormArray(clones, control.validator, control.asyncValidator);
+  } else if (control instanceof FormControl) {
+    clone = new FormControl(control.value, control.validator, control.asyncValidator);
+  }
+  return clone;
 }
 
 /**
@@ -758,4 +779,14 @@ export function blurIfClick(el: ElementReference, event: MouseEvent) {
       element.blur();
     }
   }
+}
+
+/**
+ * Returns the enum values as array, given an enum type.
+ * Works for string enums.
+ * @param type The enum type
+ */
+export function enumValues<T>(type: any): T[] {
+  const keys = Object.keys(type);
+  return keys.map(k => type[k]) as T[];
 }

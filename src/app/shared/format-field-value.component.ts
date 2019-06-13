@@ -1,11 +1,12 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
 import {
-  CustomField, CustomFieldDetailed, CustomFieldTypeEnum,
-  CustomFieldValue, Image, LinkedEntityTypeEnum, StoredFile
+  CustomField, CustomFieldDetailed, CustomFieldTypeEnum, CustomFieldValue,
+  Image, LinkedEntityTypeEnum, StoredFile
 } from 'app/api/models';
 import { FilesService, ImagesService } from 'app/api/services';
 import { NextRequestState } from 'app/core/next-request-state';
 import { I18n } from 'app/i18n/i18n';
+import { AbstractComponent } from 'app/shared/abstract.component';
 import { ApiHelper } from 'app/shared/api-helper';
 import { truthyAttr } from 'app/shared/helper';
 import download from 'downloadjs';
@@ -30,12 +31,14 @@ const DIRECT_TYPES = [
   styleUrls: ['format-field-value.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FormatFieldValueComponent implements OnInit {
+export class FormatFieldValueComponent extends AbstractComponent implements OnInit {
   constructor(
+    injector: Injector,
     public i18n: I18n,
     private nextRequestState: NextRequestState,
     private filesService: FilesService,
     private imagesService: ImagesService) {
+    super(injector);
   }
 
   /**
@@ -64,6 +67,16 @@ export class FormatFieldValueComponent implements OnInit {
    * May be specified as a separated holder for custom values
    */
   @Input() customValues: any;
+
+  /**
+   * Known images, so they can be looked up by id
+   */
+  @Input() images: Image[];
+
+  /**
+   * Known files, so they can be looked up by id
+   */
+  @Input() files: StoredFile[];
 
   /**
    * Indicates that multi-line / rich text should be rendered as plain text with no line breaks
@@ -271,8 +284,10 @@ export class FormatFieldValueComponent implements OnInit {
         }
         break;
       case CustomFieldTypeEnum.FILE:
+        fieldValue.fileValues = parts.map(id => (this.files || []).find(f => f.id === id)).filter(f => f != null);
+        break;
       case CustomFieldTypeEnum.IMAGE:
-        // FILE and IMAGE are not supported on search results
+        fieldValue.imageValues = parts.map(id => (this.images || []).find(i => i.id === id)).filter(i => i != null);
         break;
       default:
         fieldValue.stringValue = value;
@@ -286,17 +301,17 @@ export class FormatFieldValueComponent implements OnInit {
   }
 
   downloadFile(event: MouseEvent, file: StoredFile) {
-    this.filesService.getRawFileContent({ id: file.id }).subscribe(blob => {
+    this.addSub(this.filesService.getRawFileContent({ id: file.id }).subscribe(blob => {
       download(blob, file.name, file.contentType);
-    });
+    }));
     event.stopPropagation();
     event.preventDefault();
   }
 
   downloadImage(event: MouseEvent, image: Image) {
-    this.imagesService.getImageContentById({ id: image.id }).subscribe(blob => {
+    this.addSub(this.imagesService.getImageContentById({ id: image.id }).subscribe(blob => {
       download(blob, image.name, image.contentType);
-    });
+    }));
     event.stopPropagation();
     event.preventDefault();
   }

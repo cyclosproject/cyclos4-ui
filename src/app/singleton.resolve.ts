@@ -1,5 +1,6 @@
 import { Resolve } from '@angular/router';
 import { BehaviorSubject, Observable, of as observableOf, Subscription } from 'rxjs';
+import { first } from 'rxjs/operators';
 
 /**
  * Base class to be extended by resolvers that fetch data once and the data is
@@ -13,7 +14,7 @@ export abstract class SingletonResolve<T> implements Resolve<T> {
   get data(): BehaviorSubject<T> {
     if (!this._requested) {
       this._requested = true;
-      this.fetch()
+      this.fetch().pipe(first())
         .subscribe(data => {
           // On success, store the data and mark as done
           this._done = true;

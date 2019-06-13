@@ -1,23 +1,17 @@
 <page-layout [ready]="data$ | async">
-  <page-content *ngIf="data" [heading]="i18n.userStatus.title.history"
-    [mobileHeading]="i18n.userStatus.mobileTitle.history">
+  <ng-container *ngIf="data then content"></ng-container>
+</page-layout>
 
-    <ng-container *ngIf="operator">
-      <label-value [label]="i18n.user.operatorOwner">
-        <user-link [user]="user"></user-link>
-      </label-value>
-      <label-value [label]="i18n.general.operator">
-        <user-link [user]="operator"></user-link>
-      </label-value>
-    </ng-container>
-    <label-value *ngIf="operator == null" [label]="i18n.general.user">
-      <user-link [user]="user"></user-link>
-    </label-value>
+<ng-template #content>
+  <page-content
+    [heading]="operator ? i18n.userStatus.title.historyOperator : i18n.userStatus.title.historyUser"
+    [mobileHeading]="operator ? i18n.userStatus.mobileTitle.historyOperator : i18n.userStatus.mobileTitle.historyUser">
+    <user-info [user]="data.user"></user-info>
   </page-content>
   <results-layout [results]="data.history">
     <mobile-result *mobileResult="let row" [date]="row.period?.date">
       <div class="cell-main">
-        {{ i18n.general.status }}: {{ usersHelper.userStatus(row.status) }}
+        {{ i18n.general.status }}: {{ userHelper.userStatus(row.status) }}
       </div>
       <div class="cell-text" *ngIf="row.by">
         {{ i18n.general.performedBy }}: {{ row.by.display }}
@@ -32,10 +26,10 @@
       <tbody>
         <tr *ngFor="let row of data.history">
           <td>{{ row.period?.begin | date }}</td>
-          <td>{{ usersHelper.userStatus(row.status) }}</td>
+          <td>{{ userHelper.userStatus(row.status) }}</td>
           <td>{{ row.by?.display }}</td>
         </tr>
       </tbody>
     </table>
   </results-layout>
-</page-layout>
+</ng-template>

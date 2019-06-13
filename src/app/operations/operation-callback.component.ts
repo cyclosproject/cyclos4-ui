@@ -28,7 +28,7 @@ export class OperationCallbackComponent
   ngOnInit() {
     const route = this.route.snapshot;
     super.ngOnInit();
-    this.operationsService.runCustomOperationCallback({
+    this.addSub(this.operationsService.runCustomOperationCallback({
       id: route.params.id,
       token: route.params.token,
       body: {
@@ -42,7 +42,7 @@ export class OperationCallbackComponent
         this.alertType = 'danger';
       }
       this.data = result;
-    });
+    }));
   }
 }
 

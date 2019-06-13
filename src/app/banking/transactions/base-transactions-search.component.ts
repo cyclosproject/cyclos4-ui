@@ -1,7 +1,7 @@
 import { Injector, OnInit } from '@angular/core';
 import {
   Currency, Image, RecurringPaymentStatusEnum, TransactionDataForSearch,
-  TransactionKind, TransactionResult, TransferFilter
+  TransactionKind, TransactionResult, TransferFilter, TransactionQueryFilters
 } from 'app/api/models';
 import { TransactionsService } from 'app/api/services';
 import { TransactionStatusService } from 'app/core/transaction-status.service';
@@ -11,11 +11,17 @@ import { empty } from 'app/shared/helper';
 import { BehaviorSubject } from 'rxjs';
 import { BankingHelperService } from 'app/core/banking-helper.service';
 
+import { cloneDeep } from 'lodash';
+
+export type TransactionSearchParams = TransactionQueryFilters & {
+  owner: string;
+};
+
 /**
  * Base implementation for pages that search for transaction
  */
 export abstract class BaseTransactionsSearch
-  extends BaseSearchPageComponent<TransactionDataForSearch, TransactionResult>
+  extends BaseSearchPageComponent<TransactionDataForSearch, TransactionSearchParams, TransactionResult>
   implements OnInit {
 
   transferFilters$ = new BehaviorSubject<TransferFilter[]>([]);
@@ -77,20 +83,19 @@ export abstract class BaseTransactionsSearch
    */
   protected abstract getKinds(): TransactionKind[];
 
-  doSearch(value: any) {
-    const query = this.buildQuery(value);
-    return this.transactionsService.searchTransactions$Response(query);
+  doSearch(value: TransactionSearchParams) {
+    return this.transactionsService.searchTransactions$Response(value);
   }
 
-  protected buildQuery(value: any): any {
-    return {
-      page: value.page, pageSize: value.pageSize,
-      owner: ApiHelper.SELF,
-      accountTypes: value.accountType ? [value.accountType] : null,
-      transferFilters: value.transferFilter ? [value.transferFilter] : null,
-      datePeriod: this.bankingHelper.resolveDatePeriod(value),
-      kinds: this.getKinds()
-    };
+  protected toSearchParams(value: any): TransactionSearchParams {
+    const params: TransactionSearchParams = cloneDeep(value);
+    params.owner = ApiHelper.SELF;
+
+    params.accountTypes = value.accountType ? [value.accountType] : null;
+    params.transferFilters = value.transferFilter ? [value.transferFilter] : null;
+    params.datePeriod = this.bankingHelper.resolveDatePeriod(value);
+    params.kinds = this.getKinds();
+    return params;
   }
 
   /**

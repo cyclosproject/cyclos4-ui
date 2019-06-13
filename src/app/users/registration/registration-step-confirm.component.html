@@ -20,7 +20,8 @@
     <label-value *ngFor="let cf of customFields" [label]="cf.name"
       valueFormat="component">
       <format-field-value [fields]="customFields"
-        [fieldName]="cf.internalName" [object]="user"></format-field-value>
+        [fieldName]="cf.internalName" [object]="user" [images]="customImages"
+        [files]="customFiles"></format-field-value>
     </label-value>
     <label-value [label]="i18n.phone.mobile" *ngIf="!empty(mobile)"
       [value]="mobile"></label-value>
