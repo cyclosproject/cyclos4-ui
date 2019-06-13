@@ -893,10 +893,7 @@
     "loggedInAt": "Logged in at",
     "channel": "Channel",
     "ipAddress": "IP Address",
-    "actions": {
-      "disconnect": "Disconnect user",
-      "disconnectAll": "Disconnect users listed"
-    },
+    "disconnect": "Disconnect user",
     "viewConnected": {
       "operator": "View connected operators",
       "broker": "View connected brokers",

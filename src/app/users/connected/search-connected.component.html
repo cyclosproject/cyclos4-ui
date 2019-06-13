@@ -49,7 +49,7 @@
             </div>
           </div>
           <div class="ml-auto">
-            <button *ngIf="!isCurrentSession(row)" class="btn btn-icon"
+            <button *ngIf="canDisconnect(row)" class="btn btn-icon"
               (click)="disconnect(row); $event.stopPropagation(); $event.preventDefault()">
               <icon icon="clear"></icon>
             </button>
@@ -81,8 +81,8 @@
               <td>{{ row.creationDate | dateTime }}</td>
               <td>{{ row.remoteAddress }}</td>
               <td class="actions">
-                <button *ngIf="!isCurrentSession(row)"
-                  [tooltip]="i18n.connectedUser.actions.disconnect"
+                <button *ngIf="canDisconnect(row)"
+                  [tooltip]="i18n.connectedUser.disconnect"
                   class="btn btn-icon"
                   (click)="disconnect(row); $event.stopPropagation()">
                   <icon icon="clear"></icon>

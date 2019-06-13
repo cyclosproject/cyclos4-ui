@@ -44,8 +44,8 @@ export class SearchConnectedComponent
       .subscribe(() => this.update()));
   }
 
-  protected isCurrentSession(session: SessionResult) {
-    return this.login.auth.sessionToken === session.sessionToken;
+  protected canDisconnect(session: SessionResult) {
+    return this.login.auth.permissions.sessions.disconnect && this.login.auth.sessionToken !== session.sessionToken;
   }
 
   protected get onClick() {

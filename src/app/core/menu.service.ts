@@ -610,7 +610,8 @@ export class MenuService {
       if (users.registerAsAdmin) {
         add(Menu.ADMIN_REGISTRATION, '/users/registration', 'registration', this.i18n.menu.marketplaceRegister);
       }
-      if (auth.systemAdministrator) {
+      const sessions = permissions.sessions || {};
+      if (sessions.view) {
         add(Menu.CONNECTED_USERS, '/users/connected', 'record_voice_over', this.i18n.menu.marketplaceConnectedUsers);
       }
 
@@ -686,9 +687,9 @@ export class MenuService {
       } else if (result instanceof ActiveMenu) {
         return of(result);
       } else if (result instanceof Observable) {
-        return result.pipe(map(m => m instanceof ActiveMenu ? m : new ActiveMenu(m)));
+            return result.pipe(map(m => m instanceof ActiveMenu ? m : new ActiveMenu(m)));
       }
-    } else if (value instanceof Menu) {
+        } else if (value instanceof Menu) {
       return of(new ActiveMenu(value));
     } else {
       return of(value);
