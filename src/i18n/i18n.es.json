@@ -682,10 +682,10 @@
       "viewAds": "Ver anuncios",
       "viewBrokerings": "Ver miembros asignados",
       "viewOperators": "Ver operadores",
-      "status.user": "User status",
-      "status.operator": "Operator status",
-      "group.user": "User group",
-      "group.operator": "Operator group"
+      "status.user": "Estado del usuario",
+      "status.operator": "Estado del operador",
+      "group.user": "Grupo de usuario",
+      "group.operator": "Grupo de operador"
     },
     "registration": {
       "group.public": "Elija el grupo en el que desea registrarse",
@@ -768,27 +768,27 @@
       "removed": "Está seguro de que desea eliminar de forma permanente a {user}?\nEsta acción es irreversible!"
     },
     "done": {
-      "active": "{user} was activated",
-      "blocked": "{user} was blocked",
-      "disabled": "{user} was disabled",
-      "purged": "{user} was permanently removed, together with all personal data",
-      "removed": "{user} was permanently removed"
+      "active": "{user} fue activado",
+      "blocked": "{user} fue bloqueado",
+      "disabled": "{user} fue deshabilitado",
+      "purged": "{user} fue eliminado permanentemente, junto con todos sus datos personales",
+      "removed": "{user} fue eliminado permanentemente"
     },
     "title": {
-      "status.user": "User status",
-      "status.operator": "Operator status",
-      "change.user": "Change user status",
-      "change.operator": "Change operator status",
-      "history.user": "User status history",
-      "history.operator": "Operator status history"
+      "status.user": "Estado del usuario",
+      "status.operator": "Estado del operador",
+      "change.user": "Cambiar estado del usuario",
+      "change.operator": "Cambiar estado del operador",
+      "history.user": "Historial de estados del usuario",
+      "history.operator": "Historial de estados del operador"
     },
     "mobileTitle": {
-      "status.user": "User status",
-      "status.operator": "Operator status",
-      "change.user": "Change status",
-      "change.operator": "Change status",
-      "history.user": "Status history",
-      "history.operator": "Status history"
+      "status.user": "Estado del usuario",
+      "status.operator": "Estado del operador",
+      "change.user": "Cambiar estado",
+      "change.operator": "Cambiar estado",
+      "history.user": "Historial de estados",
+      "history.operator": "Historial de estados"
     },
     "active": "Activo",
     "blocked": "Acceso bloqueado",
