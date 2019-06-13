@@ -7,7 +7,7 @@ import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { Observable } from 'rxjs';
 
 /**
- * List the types the logged user can buy vouchers for
+ * List the types the logged user can buy vouchers for.
  */
 @Component({
   selector: 'voucher-types-for-buy',
