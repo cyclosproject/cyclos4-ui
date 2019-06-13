@@ -32,7 +32,7 @@
     </page-content>
 
     <results-layout resultType="list" [results]="results$ | async"
-      (update)="update($event)">
+      (update)="update($event)" [onClick]="onClick">
 
       <mobile-result *mobileResult="let row" [avatarImage]="row.user?.image"
         avatarIcon="user">
@@ -49,9 +49,8 @@
             </div>
           </div>
           <div class="ml-auto">
-            <button [tooltip]="i18n.connectedUser.actions.disconnect"
-              class="btn btn-icon"
-              (click)="disconnect(row); $event.stopPropagation()">
+            <button *ngIf="!isCurrentSession(row)" class="btn btn-icon"
+              (click)="disconnect(row); $event.stopPropagation(); $event.preventDefault()">
               <icon icon="clear"></icon>
             </button>
           </div>

@@ -48,6 +48,11 @@ export class SearchConnectedComponent
     return this.login.auth.sessionToken === session.sessionToken;
   }
 
+  protected get onClick() {
+    // No op condition to disable built-in click (mobile layout)
+    return (row: any) => row != null;
+  }
+
   protected getFormControlNames(): string[] {
     return ['channels', 'roles', 'user'];
   }
