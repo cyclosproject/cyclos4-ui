@@ -3,6 +3,7 @@
 .display-text {
   flex-grow: 1;
   line-height: 1.5rem;
+  font-weight: $font-weight-normal;
 }
 
 :host ::ng-deep {

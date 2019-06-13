@@ -605,12 +605,16 @@
       "registration.done": "Success",
       "contactList": "Contacts",
       "addContact": "New contact",
+<<<<<<< HEAD
       "search": "Users",
       "directory": "Directory",
       "myOperators": "Operators",
       "userOperators": "Operators",
       "myBrokerings": "Assigned members",
       "userBrokerings": "Broker members"
+=======
+      "search": "Annuaire"
+>>>>>>> 1.0.x
     },
     "group": "Groupe",
     "groupSet": "Group set",
