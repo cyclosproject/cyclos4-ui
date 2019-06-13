@@ -672,10 +672,10 @@
       "viewAds": "Ver anúncios",
       "viewBrokerings": "Ver membros atribuídos",
       "viewOperators": "Ver operadores",
-      "status.user": "User status",
-      "status.operator": "Operator status",
-      "group.user": "User group",
-      "group.operator": "Operator group"
+      "status.user": "Estado do usuário",
+      "status.operator": "Estado do operador",
+      "group.user": "Grupo do usuário",
+      "group.operator": "Grupo do operador"
     },
     "registration": {
       "group.public": "Escolha o grupo que deseja participar",
@@ -758,17 +758,17 @@
       "removed": "Tem certeza que deseja remover permanentemente {user}?\nEsta ação é irreversível!"
     },
     "done": {
-      "active": "{user} was activated",
-      "blocked": "{user} was blocked",
-      "disabled": "{user} was disabled",
-      "purged": "{user} was permanently removed, together with all personal data",
-      "removed": "{user} was permanently removed"
+      "active": "{user} foi ativado",
+      "blocked": "{user} foi bloqueado",
+      "disabled": "{user} foi desativado",
+      "purged": "{user} foi removido permanentemente, juntamente com todos os dados pessoais",
+      "removed": "{user} foi removido permanentemente"
     },
     "title": {
-      "status.user": "User status",
-      "status.operator": "Operator status",
-      "change.user": "Change user status",
-      "change.operator": "Change operator status",
+      "status.user": "Estado do usuário",
+      "status.operator": "Estado do operador",
+      "change.user": "Alterar o estado do usuário",
+      "change.operator": "Alterar o estado do operador",
       "history.user": "User status history",
       "history.operator": "Operator status history"
     },
