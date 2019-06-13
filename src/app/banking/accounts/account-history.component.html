@@ -6,11 +6,20 @@
   <page-content mode="filters" [heading]="title"
     [mobileHeading]="i18n.account.mobileTitle"
     [headingActions]="headingActions$ | async">
-    <form
-      *ngIf="((layout.xxs$ | async) && data.preselectedPeriods?.length > 1) || (moreFilters$ | async)"
-      [formGroup]="form" class="filters-form filters-form-separator"
+    <form *ngIf="showForm$ | async" [formGroup]="form"
+      class="filters-form filters-form-separator"
       [ngClass]="{ 'border-0': noStatus$ | async }">
       <div class="row">
+        <ng-container *ngIf="data.account.user && !self">
+          <div class="col-12 col-md-6">
+            <label-value [label]="i18n.general.user" labelPosition="side"
+              kind="fieldView">
+              <user-link [user]="data.account.user"></user-link>
+            </label-value>
+          </div>
+          <div *ngIf="layout.gtsm$" class="col-12 col-md-6">
+          </div>
+        </ng-container>
         <div *ngIf="data.preselectedPeriods?.length > 1"
           class="col-12 col-md-6">
           <single-selection-field labelPosition="side"
@@ -119,7 +128,8 @@
         *ngIf="(status$ | async) && ((layout.gtxxs$ | async) || (results?.page === 0))"
         [account]="status$.value"
         [mode]="(moreFilters$ | async) ? 'period' : 'current'"
-        [showAccount]="(layout.ltsm$ | async) && multipleAccounts">
+        [showAccount]="(layout.ltsm$ | async) && multipleAccounts"
+        [showUser]="!self && !(showForm$ | async)">
       </account-status-view>
       <spinner *ngIf="(status$ | async) == null"></spinner>
     </ng-container>

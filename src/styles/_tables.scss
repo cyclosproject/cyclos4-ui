@@ -93,6 +93,7 @@ table.table {
     td {
       padding: 0.75rem;
       height: 3.25rem;
+      vertical-align: middle;
     }
     td.amount, th.amount {
       padding-right: 1rem;
@@ -103,6 +104,12 @@ table.table {
     td.actions {
       padding-top: 0;
       padding-bottom: 0;
+    }
+  }
+  table:not(.table-auto-height) {
+    td, th {
+      padding: 0.75rem;
+      height: 3.3rem;
     }
   }
 }

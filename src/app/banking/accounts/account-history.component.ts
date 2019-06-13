@@ -8,10 +8,11 @@ import { AccountsService } from 'app/api/services';
 import { BankingHelperService } from 'app/core/banking-helper.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
+import { cloneDeep } from 'lodash';
 import { BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { empty } from 'app/shared/helper';
 
-import { cloneDeep } from 'lodash';
 
 type AccountHistorySearchParams = AccountHistoryQueryFilters & {
   owner: string;
@@ -31,9 +32,13 @@ export class AccountHistoryComponent
   extends BaseSearchPageComponent<DataForAccountHistory, AccountHistorySearchParams, AccountHistoryResult>
   implements OnInit {
 
+  ownerParam: string;
+  typeParam: string;
+  self: boolean;
   status$ = new BehaviorSubject<AccountWithHistoryStatus>(null);
   noStatus$ = new BehaviorSubject(false);
   multipleAccounts: boolean;
+  showForm$ = new BehaviorSubject(false);
 
   constructor(
     injector: Injector,
@@ -72,10 +77,6 @@ export class AccountHistoryComponent
     return number == null ? type.name : type.name + ' - ' + number;
   }
 
-  get typeId(): string {
-    return this.route.snapshot.params.type;
-  }
-
   getFormControlNames() {
     return [
       'transferFilter', 'preselectedPeriod',
@@ -87,20 +88,13 @@ export class AccountHistoryComponent
   }
 
   ngOnInit() {
-    // Resolve the account type
-    const type = this.typeId;
-    if (type == null) {
-      // No account type given - get the first one
-      const firstType = this.firstAccountType;
-      if (firstType == null) {
-        this.notification.error(this.i18n.account.noAccounts);
-      } else {
-        this.router.navigateByUrl('/banking/account/' + this.firstAccountType);
-      }
-      return;
-    } else {
-      super.ngOnInit();
-    }
+    super.ngOnInit();
+
+    // Get the parameters
+    const params = this.route.snapshot.params;
+    this.ownerParam = params.owner;
+    this.typeParam = params.type;
+    this.self = this.authHelper.isSelf(this.ownerParam);
 
     // Determine whether there are multiple account types
     this.multipleAccounts = this.accountTypes.length > 1;
@@ -108,26 +102,38 @@ export class AccountHistoryComponent
     // Get the account history data
     this.stateManager.cache('data',
       this.accountsService.getAccountHistoryDataByOwnerAndType({
-        owner: ApiHelper.SELF, accountType: type
+        owner: this.ownerParam, accountType: this.typeParam
       })
     ).subscribe(data => {
-      this.menu.setActiveAccountType(data.account.type);
-
-      this.bankingHelper.preProcessPreselectedPeriods(data, this.form);
-
-      // Set the heading action
-      this.printable = true;
-      const print = this.printAction;
-      print.label = this.i18n.account.printTransactions;
-      this.headingActions = [
-        this.printAction
-      ];
-
-      this.form.patchValue({ 'orderBy': AccountHistoryOrderByEnum.DATE_DESC });
-
-      // Only initialize the data once the form is filled-in
       this.data = data;
     });
+  }
+
+  onDataInitialized(data: DataForAccountHistory) {
+    super.onDataInitialized(data);
+    this.menu.setActiveAccountType(data.account.type);
+
+    this.bankingHelper.preProcessPreselectedPeriods(data, this.form);
+
+    // Set the heading action
+    this.printable = true;
+    const print = this.printAction;
+    print.label = this.i18n.account.printTransactions;
+    this.headingActions = [
+      this.printAction
+    ];
+
+    this.form.patchValue({ 'orderBy': AccountHistoryOrderByEnum.DATE_DESC });
+
+    this.addSub(this.layout.xxs$.subscribe(() => this.updateShowForm()));
+    this.addSub(this.moreFilters$.subscribe(() => this.updateShowForm()));
+    this.updateShowForm();
+  }
+
+  private updateShowForm() {
+    this.showForm$.next(
+      this.layout.xxs && !empty(this.data.preselectedPeriods) || this.moreFilters
+    );
   }
 
   toSearchParams(value: any): AccountHistorySearchParams {
@@ -137,14 +143,13 @@ export class AccountHistoryComponent
     query.amountRange = ApiHelper.rangeFilter(value.minAmount, value.maxAmount);
 
     query.fields = [];
-    query.owner = ApiHelper.SELF;
-    query.accountType = this.typeId;
+    query.owner = this.ownerParam;
+    query.accountType = this.typeParam;
 
     return query;
   }
 
   doSearch(query: AccountHistorySearchParams) {
-
     return this.accountsService.searchAccountHistory$Response(query).pipe(tap(() => {
       query.fields = ['status'];
       this.addSub(this.accountsService.getAccountStatusByOwnerAndType(query).subscribe(status => {
@@ -165,11 +170,6 @@ export class AccountHistoryComponent
         this.status$.next(accountWithStatus);
       }));
     }));
-  }
-
-  private get firstAccountType(): string {
-    const types = this.accountTypes;
-    return ApiHelper.internalNameOrId(types[0]);
   }
 
   private get accountTypes(): EntityReference[] {

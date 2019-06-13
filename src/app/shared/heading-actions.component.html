@@ -3,10 +3,10 @@
   <div class="heading-actions" *ngIf="groupActions$ | async; else rootActions"
     dropdown placement="bottom right" #dropdown="bs-dropdown"
     (onShown)="onShown(dropdown)" (onHidden)="onHidden()">
-    <button dropdownToggle class="heading-action heading-action-dropdown"
-      [ngClass]="{
+    <button dropdownToggle id="heading-action-toggle"
+      class="heading-action heading-action-dropdown" [ngClass]="{
           'dropdown-toggle': layoutService.gtxxs$ | async
-        }">
+        }" (click)="blurIfClick('heading-action-toggle', $event)">
       <icon *ngIf="(layoutService.xxs$ | async); else actionsLabel"
         icon="more_vert" class="mx-2"></icon>
       <ng-template #actionsLabel>

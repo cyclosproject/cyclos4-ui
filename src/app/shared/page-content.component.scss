@@ -294,11 +294,13 @@
 
     &:focus, &:active {
       outline: 0;
+      box-shadow: none;
+      outline: none;
+    }
+    &:focus:not(:active) {
       border-color: $title-button-active-border-color;
       color: $title-button-active-color;
       background-color: $title-button-active-bg;
-      box-shadow: none;
-      outline: none;
     }
 
     @include media-breakpoint-up(xs) {
@@ -316,7 +318,7 @@
   }
 
   .heading-actions-menu {
-    transform: translateY(-2px) !important;
+    transform: translateY(-3px) !important;
     background-color: $title-button-bg;
     border: 1px solid $title-button-border-color;
   }
@@ -376,7 +378,7 @@ body.dark :host ::ng-deep {
     border-color: $title-button-border-color-dark;
     background-color: $title-button-bg-dark;
     color: $title-button-color-dark;
-    &:focus, &:active {
+    &:focus:not(:active) {
       border-color: $title-button-active-border-color-dark;
       color: $title-button-active-color-dark;
       background-color: $title-button-active-bg-dark;

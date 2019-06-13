@@ -31743,7 +31743,7 @@ components:
       description: >-
         Account data plus account history status information
       allOf:
-        - $ref: '#/components/schemas/AccountWithCurrency'
+        - $ref: '#/components/schemas/AccountWithOwnerAndCurrency'
         - type: object
           properties:
             status:
@@ -31763,6 +31763,16 @@ components:
                 - $ref: '#/components/schemas/User'
             kind:
               $ref: '#/components/schemas/AccountKind'
+
+    AccountWithOwnerAndCurrency:
+      description: >-
+        Contains account data, plus owner and currency reference
+      allOf:
+        - $ref: '#/components/schemas/AccountWithOwner'
+        - type: object
+          properties:
+            currency:
+              $ref: '#/components/schemas/Currency'
 
     AccountWithStatus:
       description: >-
@@ -35508,7 +35518,7 @@ components:
         - type: object
           properties:
             account:
-              $ref: '#/components/schemas/AccountWithCurrency'
+              $ref: '#/components/schemas/AccountWithOwnerAndCurrency'
             transactionNumberMask:
               description: >-
                 If a transaction number is used for this account, is a pattern that
@@ -40544,6 +40554,12 @@ components:
             Permissions over tokens
           allOf:
             - $ref: '#/components/schemas/TokensPermissions'
+        sessions:
+          description: >-
+            Permissions over user sessions
+          allOf:
+            - $ref: '#/components/schemas/SessionsPermissions'
+
 
     PersonalizeNfcError:
       description: >-
@@ -42219,6 +42235,25 @@ components:
               description: >-
                 Whether the session is the current one
               type: boolean
+
+    SessionsPermissions:
+      description: >-
+        Permissions over user sessions
+      type: object
+      properties:
+        view:
+          description: >-
+            Whether the logged user can view connected users or not
+          type: boolean
+        disconnect:
+          description: >-
+            Whether the logged user can disconnect users or not
+          type: boolean
+        login:
+          description: >-
+            Whether the logged user can login (i.e create a session) users or not
+          type: boolean
+
 
     SetAccountBalanceLimits:
       description: Parameters for setting the new account limits.

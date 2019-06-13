@@ -86,6 +86,7 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     // Get the actions
     const actions: HeadingAction[] = [];
     const permissions = user.permissions || {};
+    const accountTypes = (permissions.accounts || []).map(a => a.type);
     const contact = permissions.contact || {};
     const payment = permissions.payment || {};
     const marketplace = permissions.marketplace || {};
@@ -97,6 +98,11 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
       actions.push(new HeadingAction('edit', this.i18n.general.edit, () => {
         this.router.navigateByUrl(this.router.url + '/edit');
       }, true));
+    }
+    for (const accountType of accountTypes) {
+      actions.push(new HeadingAction('account_balance', accountType.name, () => {
+        this.router.navigate(['/banking', this.param, 'account', ApiHelper.internalNameOrId(accountType)]);
+      }));
     }
     if (brokering.viewMembers) {
       actions.push(new HeadingAction('assignment_ind', this.i18n.user.profile.viewBrokerings, () => {

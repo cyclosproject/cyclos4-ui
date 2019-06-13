@@ -563,7 +563,7 @@ export class MenuService {
         for (const type of accountTypes) {
           const activeMenu = new ActiveMenu(Menu.ACCOUNT_HISTORY, { accountType: type });
           const label = auth.role !== RoleEnum.ADMINISTRATOR && accountTypes.length === 1 ? this.i18n.menu.bankingAccount : type.name;
-          add(activeMenu, `/banking/account/${ApiHelper.internalNameOrId(type)}`, 'account_balance', label);
+          add(activeMenu, `/banking/${ApiHelper.SELF}/account/${ApiHelper.internalNameOrId(type)}`, 'account_balance', label);
         }
       }
       const payments = banking.payments || {};
