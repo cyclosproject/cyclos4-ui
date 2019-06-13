@@ -387,7 +387,7 @@
     "to": "Para",
     "account": "Cuenta",
     "fromAccount": "Cuenta origen",
-    "fromUser": "From user",
+    "fromUser": "De Usuario",
     "toAccount": "Cuenta de destino",
     "toUser": "Usuario",
     "requiresAuthorization": "Este pago requiere, y quedará pendiente de autorización",
@@ -458,8 +458,8 @@
       "settled": "Saldado"
     },
     "title": {
-      "paymentSystemToSystem": "Payment between system accounts",
-      "paymentSystemToUser": "Payment from system to user",
+      "paymentSystemToSystem": "Pago entre cuentas de sistema",
+      "paymentSystemToUser": "Pago de sistema a usuario",
       "paymentToSystem": "Pago al sistema",
       "paymentToSelf": "Pago entre cuentas propias",
       "paymentToUser": "Pago a usuario",
@@ -481,8 +481,8 @@
       "childTransfers": "Transferencias generadas"
     },
     "mobileTitle": {
-      "paymentSystemToSystem": "Pay system",
-      "paymentSystemToUser": "Pay user",
+      "paymentSystemToSystem": "Pago a sistema",
+      "paymentSystemToUser": "Pago a usuario",
       "paymentToSystem": "Pago a sistema",
       "paymentToSelf": "Auto pago",
       "paymentToUser": "Pago a usuario",
@@ -674,9 +674,9 @@
       "removeContact": "Eliminar de mis contactos",
       "removeContact.done": "{user} ha sido eliminado de su lista de contactos",
       "pay": "Realizar pago",
-      "paySystemToUser": "Payment system to user",
-      "payAsUserToSystem": "Payment user to system",
-      "payAsUserToUser": "Payment user to user",
+      "paySystemToUser": "Pagos de sistema a usuario",
+      "payAsUserToSystem": "Pagos de usuario a sistema",
+      "payAsUserToUser": "Pagos de usuario a usuario",
       "payAsUserToSelf": "Pago a sí mismo",
       "viewAccount": "Ver {account}",
       "viewAds": "Ver anuncios",
@@ -813,12 +813,12 @@
       "history.operator": "Operator group history"
     },
     "mobileTitle": {
-      "group.user": "User group",
-      "group.operator": "Operator group",
-      "change.user": "Change group",
-      "change.operator": "Change group",
-      "history.user": "Group history",
-      "history.operator": "Group history"
+      "group.user": "Grupo de usuario",
+      "group.operator": "Grupo de operador",
+      "change.user": "Cambio de grupo",
+      "change.operator": "Cambio de grupo",
+      "history.user": "Cambios de grupo",
+      "history.operator": "Cambios de grupo"
     }
   },
   "phone": {
