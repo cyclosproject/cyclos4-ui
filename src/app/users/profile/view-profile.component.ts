@@ -140,7 +140,27 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     }
     if (payment.userToUser) {
       actions.push(new HeadingAction('payment', this.i18n.user.profile.pay, () => {
-        this.router.navigate(['/banking', 'payment', this.param]);
+        this.router.navigate(['/banking', ApiHelper.SELF, 'payment', this.param]);
+      }));
+    }
+    if (payment.systemToUser) {
+      actions.push(new HeadingAction('payment', this.i18n.user.profile.paySystemToUser, () => {
+        this.router.navigate(['/banking', ApiHelper.SYSTEM, 'payment', this.param]);
+      }));
+    }
+    if (payment.asUserToUser) {
+      actions.push(new HeadingAction('payment', this.i18n.user.profile.payAsUserToUser, () => {
+        this.router.navigate(['/banking', this.param, 'payment']);
+      }));
+    }
+    if (payment.asUserToSelf) {
+      actions.push(new HeadingAction('payment', this.i18n.user.profile.payAsUserToSelf, () => {
+        this.router.navigate(['/banking', this.param, 'payment', ApiHelper.SELF]);
+      }));
+    }
+    if (payment.asUserToSystem) {
+      actions.push(new HeadingAction('payment', this.i18n.user.profile.payAsUserToSystem, () => {
+        this.router.navigate(['/banking', this.param, 'payment', ApiHelper.SYSTEM]);
       }));
     }
     if (marketplace.viewAdvertisements || marketplace.viewWebshop) {

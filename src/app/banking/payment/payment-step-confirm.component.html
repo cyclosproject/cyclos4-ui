@@ -3,21 +3,19 @@
   {{ i18n.transaction.requiresAuthorization }}
 </notification>
 
-<label-value *ngIf="layout.gtxxs$ | async"
-  [label]="i18n.transaction.fromAccount">
-  {{ bankingHelper.accountDisplay(preview.fromAccount) }}
+<label-value *ngIf="!fromSelf && fromUser"
+  [label]="i18n.transaction.fromUser">
+  <user-link [user]="fromUser"></user-link>
 </label-value>
-<label-value *ngIf="preview.toAccount.kind === 'system'; else toUser"
-  [label]="i18n.transaction.toAccount">>
-  {{ bankingHelper.accountDisplay(preview.toAccount) }}
+<label-value *ngIf="fromSystem" [label]="i18n.transaction.fromAccount">
+  {{ preview.fromAccount.type.name }}
 </label-value>
-<ng-template #toUser>
-  <label-value [label]="i18n.transaction.toUser">
-    {{ preview.toAccount.user.display }}
-    <span *ngIf="preview.toAccount.number"> -
-      {{ preview.toAccount.number }}</span>
-  </label-value>
-</ng-template>
+<label-value *ngIf="toUser" [label]="i18n.transaction.toUser">
+  <user-link [user]="toUser"></user-link>
+</label-value>
+<label-value *ngIf="toSystem" [label]="i18n.transaction.toAccount">
+  {{ preview.toAccount.type.name }}
+</label-value>
 <label-value *ngIf="showPaymentType" [label]="i18n.transaction.type">
   {{ preview.paymentType.name }}
 </label-value>

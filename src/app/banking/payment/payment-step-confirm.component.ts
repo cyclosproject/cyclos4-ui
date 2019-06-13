@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { PaymentPreview, TransferFeePreview, CreateDeviceConfirmation, DeviceConfirmationTypeEnum } from 'app/api/models';
+import { PaymentPreview, TransferFeePreview, CreateDeviceConfirmation, DeviceConfirmationTypeEnum, User, AccountKind } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
 import { empty } from 'app/shared/helper';
 import { BankingHelperService } from 'app/core/banking-helper.service';
@@ -19,6 +19,12 @@ import { Enter } from 'app/shared/shortcut.service';
 })
 export class PaymentStepConfirmComponent extends BaseComponent implements OnInit {
 
+  fromUser: User;
+  fromSelf: boolean;
+  fromSystem: boolean;
+  toUser: User;
+  toSelf: boolean;
+  toSystem: boolean;
   @Input() preview: PaymentPreview;
   @Input() confirmationPassword: FormControl;
   @Input() showPaymentType: boolean;
@@ -38,6 +44,15 @@ export class PaymentStepConfirmComponent extends BaseComponent implements OnInit
 
   ngOnInit() {
     super.ngOnInit();
+
+    this.fromUser = this.preview.fromAccount.user;
+    this.fromSelf = this.fromUser && this.authHelper.isSelf(this.fromUser);
+    this.fromSystem = this.preview.fromAccount.kind === AccountKind.SYSTEM;
+
+    this.toUser = this.preview.toAccount.user;
+    this.toSelf = this.toUser && this.authHelper.isSelf(this.toUser);
+    this.toSystem = this.preview.toAccount.kind === AccountKind.SYSTEM;
+
     this.form = this.formBuilder.group({});
     this.form.setControl('confirmationPassword', this.confirmationPassword);
     this.fees = this.preview.fees;
