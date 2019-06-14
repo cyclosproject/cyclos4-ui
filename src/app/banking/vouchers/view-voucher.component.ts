@@ -1,10 +1,11 @@
 import { Component, OnInit, Injector, ChangeDetectionStrategy } from '@angular/core';
-import { VoucherView, VoucherCreationTypeEnum } from 'app/api/models';
+import { VoucherView, VoucherCreationTypeEnum, ImageSizeEnum } from 'app/api/models';
 import { VouchersService } from 'app/api/services';
 import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
 import { HeadingAction } from 'app/shared/action';
 import { capitalize } from 'lodash';
-import { ApiConfiguration } from 'app/api/api-configuration';
+import { BehaviorSubject } from 'rxjs';
+
 
 @Component({
   selector: 'app-view-voucher',
@@ -14,12 +15,11 @@ import { ApiConfiguration } from 'app/api/api-configuration';
 export class ViewVoucherComponent extends BaseViewPageComponent<VoucherView> implements OnInit {
 
 
-  qrCodeUrl: string;
+  qrCodeUrl$ = new BehaviorSubject<string>(null);
 
   constructor(
     injector: Injector,
     private voucherService: VouchersService,
-    private apiConfiguration: ApiConfiguration
   ) {
     super(injector);
   }
@@ -29,15 +29,17 @@ export class ViewVoucherComponent extends BaseViewPageComponent<VoucherView> imp
     const key = this.route.snapshot.paramMap.get('key');
     this.addSub(this.voucherService.viewVoucher({ key: key }).subscribe(voucher => {
       this.data = voucher;
-      this.qrCodeUrl = this.apiConfiguration.rootUrl.concat('/vouchers/' + this.data.id + '/qr-code');
-      this.headingActions = this.initActions(voucher);
+      this.addSub(this.voucherService.getVoucherQrCode({ key: voucher.id, size: ImageSizeEnum.MEDIUM })
+        .subscribe(image => this.qrCodeUrl$.next(URL.createObjectURL(image))));
+      this.headingActions = this.initActions();
     }));
   }
 
-  initActions(voucher: VoucherView): HeadingAction[] {
+  initActions(): HeadingAction[] {
     const actions: HeadingAction[] = [this.printAction];
-    if (voucher.canCancel) {
-      const label = voucher.creationType === VoucherCreationTypeEnum.BOUGHT ? this.i18n.voucher.cancelAndRefund : this.i18n.general.cancel;
+    if (this.data.canCancel) {
+      const label = this.data.creationType === VoucherCreationTypeEnum.BOUGHT ?
+        this.i18n.voucher.cancelAndRefund : this.i18n.general.cancel;
       actions.push(new HeadingAction('cancel', label, () => {
         // TODO: CANCEL THE VOUCHER (we don't have api right now)
         this.notification.info('the voucher was canceled', true);
