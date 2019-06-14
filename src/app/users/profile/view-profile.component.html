@@ -2,6 +2,30 @@
   <page-content *ngIf="data" last mode="viewForm" [heading]="title"
     [mobileHeading]="mobileTitle" [headingActions]="headingActions$ | async">
 
+    <ng-container *ngIf="showActions$ | async">
+      <div class="container">
+        <div class="row">
+          <div *ngIf="bankingActions.length > 0" class="col-12 col-sm-6">
+            <h2 class="border-0">{{ i18n.user.profile.banking }}</h2>
+            <ng-container *ngFor="let action of bankingActions">
+              <ng-container
+                *ngTemplateOutlet="actionTpl; context: {$implicit: action}">
+              </ng-container>
+            </ng-container>
+          </div>
+          <div *ngIf="managementActions.length > 0" class="col-12 col-sm-6">
+            <h2 class="border-0">{{ i18n.user.profile.management }}</h2>
+            <ng-container *ngFor="let action of managementActions">
+              <ng-container
+                *ngTemplateOutlet="actionTpl; context: {$implicit: action}">
+              </ng-container>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+      <hr>
+    </ng-container>
+
     <div *ngIf="imageEnabled && user.image && (layout.ltsm$ | async)"
       class="image d-flex justify-content-center mt-2 mb-4">
       <avatar size="160" imageSize="200" useLightbox [image]="user.image"
@@ -154,3 +178,11 @@
     </div>
   </page-content>
 </page-layout>
+
+<ng-template #actionTpl let-action>
+  <a href="#" class="link-with-icon body-color mb-2"
+    (click)="action.onClick(); $event.preventDefault()">
+    <icon [icon]="action.icon"></icon>
+    <span>{{ action.label }}</span>
+  </a>
+</ng-template>

@@ -88,14 +88,14 @@ const bankingRoutes: Routes = [
         }
       },
       {
-        path: ':user/payment',
+        path: ':from/payment',
         component: PerformPaymentComponent,
         data: {
           menu: PaymentMenu
         }
       },
       {
-        path: ':user/payment/:to',
+        path: ':from/payment/:to',
         component: PerformPaymentComponent,
         data: {
           menu: PaymentMenu

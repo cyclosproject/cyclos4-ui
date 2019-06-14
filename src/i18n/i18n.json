@@ -697,6 +697,11 @@
     "contact": "Contact",
     "profile": {
       "noPermission": "You don't have permission to view the profile of this user",
+      "showActions": "Show actions",
+      "hideActions": "Hide actions",
+      "banking": "Banking",
+      "management": "Management",
+      "edit": "Edit profile",
       "addContact": "Add to my contacts",
       "addContact.done": "{user} was added to your contact list",
       "removeContact": "Remove from my contacts",
