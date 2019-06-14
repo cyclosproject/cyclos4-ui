@@ -669,6 +669,11 @@
     "contact": "Contacto",
     "profile": {
       "noPermission": "No posee permisos suficientes para ver el perfil de este usuario",
+      "showActions": "Show actions",
+      "hideActions": "Hide actions",
+      "banking": "Banking",
+      "management": "Management",
+      "edit": "Edit profile",
       "addContact": "Agregar a contactos",
       "addContact.done": "{user} ha sido agregado a su lista de contactos",
       "removeContact": "Eliminar de mis contactos",
