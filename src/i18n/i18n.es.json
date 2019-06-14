@@ -235,7 +235,7 @@
       "mobileTitle": {
         "change": "Cambio de contraseña",
         "forgotten": "Recuperar contraseña",
-        "manage.single": "Contraseña",
+        "manage.single": "Contraseñas",
         "manage.multiple": "Contraseñas",
         "securityAnswer": "Respuesta de seguridad"
       },
