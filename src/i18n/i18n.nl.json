@@ -235,8 +235,8 @@
       "mobileTitle": {
         "change": "Password change",
         "forgotten": "Password recovery",
-        "manage.single": "Password",
-        "manage.multiple": "Passwords",
+        "manage.single": "Wachtwoord",
+        "manage.multiple": "Wachtwoorden",
         "securityAnswer": "Security answer"
       },
       "forgotten": {
