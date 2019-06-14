@@ -684,6 +684,8 @@
       "payAsUserToUser": "Pagos de usuario a usuario",
       "payAsUserToSelf": "Pago a sí mismo",
       "viewAccount": "Ver {account}",
+      "viewScheduledPayments": "View scheduled payments",
+      "viewAuthorizedPayments": "View payment authorizations",
       "viewAds": "Ver anuncios",
       "viewBrokerings": "Ver miembros asignados",
       "viewOperators": "Ver operadores",
