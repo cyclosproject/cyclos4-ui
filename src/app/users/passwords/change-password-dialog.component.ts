@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
 import { FormGroup, ValidatorFn, Validators } from '@angular/forms';
-import { ChangePassword, PasswordType } from 'app/api/models';
+import { ChangePassword, PasswordType, User } from 'app/api/models';
 import { PasswordsService } from 'app/api/services';
-import { ApiHelper } from 'app/shared/api-helper';
 import { BaseComponent } from 'app/shared/base.component';
 import { validateBeforeSubmit } from 'app/shared/helper';
 import { cloneDeep } from 'lodash';
@@ -34,10 +33,13 @@ const PASSWORDS_MATCH_VAL: ValidatorFn = control => {
 })
 export class ChangePasswordDialogComponent extends BaseComponent implements OnInit {
 
+  @Input() param: string;
+  @Input() user: User;
   @Input() type: PasswordType;
   @Input() requireOld: boolean;
   @Output() done = new EventEmitter<void>();
 
+  self: boolean;
   form: FormGroup;
 
   constructor(
@@ -49,6 +51,8 @@ export class ChangePasswordDialogComponent extends BaseComponent implements OnIn
 
   ngOnInit() {
     super.ngOnInit();
+
+    this.self = this.authHelper.isSelf(this.user);
 
     this.form = this.formBuilder.group({
       newPassword: [null, Validators.required],
@@ -67,7 +71,7 @@ export class ChangePasswordDialogComponent extends BaseComponent implements OnIn
     const params: ChangePassword = cloneDeep(this.form.value);
     params.checkConfirmation = true;
     this.addSub(this.passwordsService.changePassword({
-      user: ApiHelper.SELF,
+      user: this.param,
       type: this.type.id,
       body: params
     }).subscribe(() => {

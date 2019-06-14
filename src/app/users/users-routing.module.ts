@@ -6,10 +6,14 @@ import { LoginService } from 'app/core/login.service';
 import { CountriesResolve } from 'app/countries.resolve';
 import { LoggedUserGuard } from 'app/logged-user-guard';
 import { ConditionalMenu, Menu } from 'app/shared/menu';
+import { ViewUserGroupHistoryComponent } from 'app/users/group-membership/view-user-group-history.component';
+import { ViewUserGroupComponent } from 'app/users/group-membership/view-user-group.component';
 import { ListOperatorGroupsComponent } from 'app/users/operator-groups/list-operator-groups.component';
+import { OperatorGroupFormComponent } from 'app/users/operator-groups/operator-group-form.component';
 import { ViewOperatorGroupComponent } from 'app/users/operator-groups/view-operator-group.component';
 import { OperatorRegistrationComponent } from 'app/users/operators/operator-registration.component';
 import { SearchUserOperatorsComponent } from 'app/users/operators/search-user-operators.component';
+import { ManagePasswordsComponent } from 'app/users/passwords/manage-passwords.component';
 import { EditProfileComponent } from 'app/users/profile/edit-profile.component';
 import { ValidateEmailChangeComponent } from 'app/users/profile/validate-email-change.component';
 import { ViewProfileComponent } from 'app/users/profile/view-profile.component';
@@ -19,9 +23,6 @@ import { ContactListComponent } from 'app/users/search/contact-list.component';
 import { SearchUsersComponent } from 'app/users/search/search-users.component';
 import { ViewUserStatusHistoryComponent } from 'app/users/status/view-user-status-history.component';
 import { ViewUserStatusComponent } from 'app/users/status/view-user-status.component';
-import { OperatorGroupFormComponent } from 'app/users/operator-groups/operator-group-form.component';
-import { ViewUserGroupComponent } from 'app/users/group-membership/view-user-group.component';
-import { ViewUserGroupHistoryComponent } from 'app/users/group-membership/view-user-group-history.component';
 
 const SearchMenu: ConditionalMenu = injector => {
   const login = injector.get(LoginService);
@@ -238,13 +239,6 @@ const usersRoutes: Routes = [
         }
       },
       {
-        path: 'validate-email-change/:key',
-        component: ValidateEmailChangeComponent,
-        data: {
-          menu: Menu.PUBLIC_REGISTRATION
-        }
-      },
-      {
         path: 'contacts',
         component: ContactListComponent,
         canActivate: [LoggedUserGuard],
@@ -264,6 +258,14 @@ const usersRoutes: Routes = [
         }
       },
       {
+        path: ':user/passwords',
+        component: ManagePasswordsComponent,
+        canActivate: [LoggedUserGuard],
+        data: {
+          menu: AuthHelperService.menuByRole(Menu.PASSWORDS)
+        }
+      },
+      {
         path: 'registration',
         component: UserRegistrationComponent,
         resolve: {
@@ -279,7 +281,14 @@ const usersRoutes: Routes = [
         data: {
           menu: Menu.PUBLIC_REGISTRATION
         }
-      }
+      },
+      {
+        path: 'validate-email-change/:key',
+        component: ValidateEmailChangeComponent,
+        data: {
+          menu: Menu.PUBLIC_REGISTRATION
+        }
+      },
     ]
   }
 ];

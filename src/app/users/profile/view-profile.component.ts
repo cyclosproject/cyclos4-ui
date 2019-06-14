@@ -91,6 +91,7 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     // Get the actions
     const permissions = user.permissions || {};
     const profile = permissions.profile || {};
+    const passwords = permissions.passwords || {};
     const accountTypes = (permissions.accounts || []).map(a => a.type);
     const contact = permissions.contact || {};
     const payment = permissions.payment || {};
@@ -157,6 +158,11 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
       if (profile.editProfile) {
         this.managementActions.push(new HeadingAction('edit', this.i18n.user.profile.edit, () => {
           this.router.navigateByUrl(this.router.url + '/edit');
+        }));
+      }
+      if (passwords.manage) {
+        this.managementActions.push(new HeadingAction('vpn_key', this.i18n.user.profile.managePasswords, () => {
+          this.router.navigate(['/users', this.param, 'passwords']);
         }));
       }
       if (status.view) {

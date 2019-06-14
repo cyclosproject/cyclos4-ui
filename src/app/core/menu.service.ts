@@ -640,7 +640,7 @@ export class MenuService {
         } else {
           passwordsLabel = this.i18n.menu.personalPasswords;
         }
-        add(Menu.PASSWORDS, '/personal/passwords', 'vpn_key', passwordsLabel);
+        add(Menu.PASSWORDS, '/users/self/passwords', 'vpn_key', passwordsLabel);
       }
       if ((permissions.notifications || {}).enable) {
         add(Menu.NOTIFICATIONS, '/personal/notifications', 'notifications', this.i18n.menu.personalNotifications);
