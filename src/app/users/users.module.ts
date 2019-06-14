@@ -22,6 +22,7 @@ import { AddContactDialogComponent } from 'app/users/search/add-contact-dialog.c
 import { ContactListComponent } from 'app/users/search/contact-list.component';
 import { SearchUsersComponent } from 'app/users/search/search-users.component';
 import { UsersResultsComponent } from 'app/users/search/users-results.component';
+import { ListUserBrokersComponent } from 'app/users/brokering/list-user-brokers.component';
 import { ViewUserStatusHistoryComponent } from 'app/users/status/view-user-status-history.component';
 import { ViewUserStatusComponent } from 'app/users/status/view-user-status.component';
 import { UsersRoutingModule } from 'app/users/users-routing.module';
@@ -64,7 +65,9 @@ import { UsersRoutingModule } from 'app/users/users-routing.module';
     ViewUserStatusComponent,
     ViewUserStatusHistoryComponent,
     ViewUserGroupComponent,
-    ViewUserGroupHistoryComponent
+    ViewUserGroupHistoryComponent,
+
+    ListUserBrokersComponent
   ],
   entryComponents: [
     VerifyPhoneComponent,

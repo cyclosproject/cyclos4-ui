@@ -686,6 +686,7 @@
       "viewAccount": "View {account}",
       "viewAds": "View advertisements",
       "viewBrokerings": "View assigned members",
+      "viewBrokers": "View brokers",
       "viewOperators": "View operators",
       "status.user": "User status",
       "status.operator": "Operator status",
@@ -824,6 +825,16 @@
       "change.operator": "Change group",
       "history.user": "Group history",
       "history.operator": "Group history"
+    }
+  },
+  "brokers": {
+    "title": {
+      "list": "Brokers",
+      "new": "Add broker"
+    },
+    "mobileTitle": {
+      "list": "Brokers",
+      "new": "Add broker"
     }
   },
   "phone": {

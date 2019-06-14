@@ -1,0 +1,35 @@
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data">
+    <page-content [mode]="self ? 'empty' : 'filters'"
+      [heading]="i18n.brokers.title.list"
+      [mobileHeading]="i18n.brokers.mobileTitle.list"
+      [headingActions]="headingActions$ | async">
+    </page-content>
+    <results-layout [results]="data.brokers" [toLink]="toLink">
+      <mobile-result *mobileResult="let row">
+        <div class="cell-main">{{ row.shortDisplay }}</div>
+      </mobile-result>
+      <table *resultTable class="table table-hover cursor-pointer">
+        <tbody>
+          <ng-container *ngFor="let row of data.brokers">
+            <tr (click)="router.navigate(path(row))">
+              <td>
+                <a [routerLink]="path(row)">
+                  {{ row.broker.shortDisplay }}
+                </a>
+              </td>
+              <td class="actions">
+                <button
+                  [tooltip]="i18n.general.removeTooltip(row.broker.shortDisplay)"
+                  class="btn btn-icon"
+                  (click)="remove(row); $event.stopPropagation()">
+                  <icon icon="clear"></icon>
+                </button>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </results-layout>
+  </ng-container>
+</page-layout>
