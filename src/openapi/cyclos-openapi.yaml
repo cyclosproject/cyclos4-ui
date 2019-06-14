@@ -32721,6 +32721,17 @@ components:
               type: string
 
 
+    AlertsPermissions:
+      description: >-
+        Permissions related to user alerts
+      type: object
+      properties:
+        view:
+          description: >-
+            Whether the logged user can view user alerts or not
+          type: boolean
+
+
     AmountSummary:
       description: >-
         Contains summarized statistics over amounts
@@ -36272,16 +36283,8 @@ components:
         Contains the data used to manage passwords of a user
       type: object
       properties:
-        confirmationPasswordInput:
-          description: >-
-            If a confirmation password is used, contains the definitions on how to
-            request that password from the user. This confirmation password is required
-            when performing sensible actions. Sometimes this is dynamic, for example,
-            the confirmation might be configured to be used only once per session, or
-            operations like payments may have a limit per day to be without confirmation
-            (pinless).
-          allOf:
-            - $ref: '#/components/schemas/PasswordInput'
+        user:
+          $ref: '#/components/schemas/User'
         passwords:
           description: >-
             The status and possible actions for each password
@@ -36295,6 +36298,16 @@ components:
             returned if not used or if the user already has an answer.
           allOf:
             - $ref: '#/components/schemas/DataForSetSecurityAnswer'
+        confirmationPasswordInput:
+          description: >-
+            If a confirmation password is used, contains the definitions on how to
+            request that password from the user. This confirmation password is required
+            when performing sensible actions. Sometimes this is dynamic, for example,
+            the confirmation might be configured to be used only once per session, or
+            operations like payments may have a limit per day to be without confirmation
+            (pinless).
+          allOf:
+            - $ref: '#/components/schemas/PasswordInput'
 
     DatePeriod:
       description: >-
@@ -40554,6 +40567,25 @@ components:
             Permissions over tokens
           allOf:
             - $ref: '#/components/schemas/TokensPermissions'
+        sessions:
+          description: >-
+            Permissions over user sessions
+          allOf:
+            - $ref: '#/components/schemas/SessionsPermissions'
+        alerts:
+          description: >-
+            Permissions related to user alers
+          allOf:
+            - $ref: '#/components/schemas/AlertsPermissions'
+        vouchers:
+          description: >-
+            Permissions over vouchers
+          allOf:
+            -  $ref: '#/components/schemas/VouchersPermissions'
+
+
+
+
 
     PersonalizeNfcError:
       description: >-
@@ -42230,6 +42262,25 @@ components:
                 Whether the session is the current one
               type: boolean
 
+    SessionsPermissions:
+      description: >-
+        Permissions over user sessions
+      type: object
+      properties:
+        view:
+          description: >-
+            Whether the logged user can view connected users or not
+          type: boolean
+        disconnect:
+          description: >-
+            Whether the logged user can disconnect users or not
+          type: boolean
+        login:
+          description: >-
+            Whether the logged user can login (i.e create a session) users or not
+          type: boolean
+
+
     SetAccountBalanceLimits:
       description: Parameters for setting the new account limits.
       allOf:
@@ -42932,6 +42983,11 @@ components:
         - $ref: '#/components/schemas/BaseTransDataForSearch'
         - type: object
           properties:
+            user:
+              description: >-
+                When the given owner is a user, is the reference to it
+              allOf:
+                - $ref: '#/components/schemas/User'
             accountTypes:
               description: >-
                 Visible account types from the given owner
@@ -44142,6 +44198,17 @@ components:
             group:
               $ref: '#/components/schemas/Group'
 
+    UserAuthorizedPaymentsPermissions:
+      description: >-
+        Permissions for authorized payments over a user
+      type: object
+      properties:
+        view:
+          description: >-
+            Can the authenticated administrator or broker view authorized
+            payments of the given user?
+          type: boolean
+
     UserBalanceLimitsPermissions:
       description: >-
         Permissions regarding the account balance limits of a given user
@@ -44506,6 +44573,17 @@ components:
                 multiple users (or processes) from updating the same object and unwilingly
                 overridding the property values, leading to data loss.
 
+    UserExternalPaymentsPermissions:
+      description: >-
+        Permissions for external payments over a user
+      type: object
+      properties:
+        view:
+          description: >-
+            Can the authenticated administrator or broker view external
+            payments of the given user?
+          type: boolean
+
     UserGroupPermissions:
       description: >-
         Permissions regarding the group membership of a given user
@@ -44793,6 +44871,22 @@ components:
               allOf:
                 - $ref: '#/components/schemas/User'
 
+    UserPasswordsPermissions:
+      description: >-
+        Permissions over passwords of a given user
+      type: object
+      properties:
+        manage:
+          description: >-
+            Can the authenticated administrator or broker manage the password(s)
+            of the given user?
+          type: boolean
+        resetSecurityQuestion:
+          description: >-
+            Can the authenticated administrator or broker reset the user's
+            security question, so that the user can set it again?
+          type: boolean
+
     UserPaymentPermissions:
       description: >-
         Permissions for payments regarding a user
@@ -44824,6 +44918,36 @@ components:
             user?
           type: boolean
 
+    UserPaymentRequestsPermissions:
+      description: >-
+        Permissions for payment requests over a user
+      type: object
+      properties:
+        view:
+          description: >-
+            Can the authenticated administrator or broker view payment
+            requests of the given user?
+          type: boolean
+        sendFromSystem:
+          description: >-
+            Can the authenticated administrator send a payment request from
+            system to the given user?
+          type: boolean
+        sendFromUser:
+          description: >-
+            Can the authenticated user send a payment request to the given user?
+          type: boolean
+        sendAsUserToUser:
+          description: >-
+            Can the authenticated administrator or broker send payment requests
+            in behalf of the given user to other users?
+          type: boolean
+        sendAsUserToSystem:
+          description: >-
+            Can the authenticated administrator or broker send payment requests
+            in behalf of the given user to system?
+          type: boolean
+
     UserPermissions:
       description: >-
         Determines permission the authenticated have over a specific user
@@ -44831,6 +44955,10 @@ components:
       properties:
         profile:
           $ref: '#/components/schemas/UserProfilePermissions'
+        passwords:
+          $ref: '#/components/schemas/UserPasswordsPermissions'
+        validation:
+          $ref: '#/components/schemas/UserValidationPermissions'
         contact:
           $ref: '#/components/schemas/UserContactPermissions'
         brokering:
@@ -44853,6 +44981,18 @@ components:
           $ref: '#/components/schemas/UserBalanceLimitsPermissions'
         payment:
           $ref: '#/components/schemas/UserPaymentPermissions'
+        scheduledPayments:
+          $ref: '#/components/schemas/UserScheduledPaymentsPermissions'
+        recurringPayments:
+          $ref: '#/components/schemas/UserRecurringPaymentsPermissions'
+        paymentRequests:
+          $ref: '#/components/schemas/UserPaymentRequestsPermissions'
+        authorizedPayments:
+          $ref: '#/components/schemas/UserAuthorizedPaymentsPermissions'
+        tickets:
+          $ref: '#/components/schemas/UserTicketsPermissions'
+        externalPayments:
+          $ref: '#/components/schemas/UserExternalPaymentsPermissions'
         records:
           description: >-
             Records types the authenticated user can view over the given user
@@ -45128,6 +45268,17 @@ components:
             orderBy:
               $ref: '#/components/schemas/UserOrderByEnum'
 
+    UserRecurringPaymentsPermissions:
+      description: >-
+        Permissions for recurring payments over a user
+      type: object
+      properties:
+        view:
+          description: >-
+            Can the authenticated administrator or broker view recurring
+            payments of the given user?
+          type: boolean
+
     UserRegistrationPrincipal:
       description: >-
         Contains information about a principal (user identification) and the
@@ -45243,6 +45394,17 @@ components:
               allOf:
                 - $ref: '#/components/schemas/EntityReference'
 
+    UserScheduledPaymentsPermissions:
+      description: >-
+        Permissions for scheduled payments over a user
+      type: object
+      properties:
+        view:
+          description: >-
+            Can the authenticated administrator or broker view scheduled payments
+            of the given user?
+          type: boolean
+
     UserSessionPermissions:
       description: >-
         Permissions regarding the login session of a given user
@@ -45308,6 +45470,45 @@ components:
             Can the authenticated user view the status and history of a given user?
           type: boolean
 
+    UserTicketsPermissions:
+      description: >-
+        Permissions for tickets over a user
+      type: object
+      properties:
+        view:
+          description: >-
+            Can the authenticated administrator or broker view tickets
+            of the given user?
+          type: boolean
+
+    UserValidationPermissions:
+      description: >-
+        Permissions over the registration / email change validations of a
+        given user
+      type: object
+      properties:
+        validateRegistration:
+          description: >-
+            Can the authenticated administrator or broker manually mark a
+            pending user as validated?
+          type: boolean
+        resendRegistrationValidation:
+          description: >-
+            Can the authenticated administrator or broker re-send the e-mail
+            to confirm the registration of the given user?
+          type: boolean
+        validateEmailChange:
+          description: >-
+            Can the authenticated administrator or broker manually mark a
+            pending e-mail change as validated for the given user?
+          type: boolean
+        resendEmailChange:
+          description: >-
+            Can the authenticated administrator or broker re-send the e-mail
+            to confirm the e-mail change of the given user?
+          type: boolean
+
+
     UserView:
       description: >-
         Represents a user with all data for viewing the profile
@@ -45328,6 +45529,12 @@ components:
               type: string
               description: >-
                 The user's e-mail
+            emailPendingValidation:
+              description: >-
+                Returned for managers / own user when the user has changed his
+                e-mail but hasn't yet validated the new e-mail. The e-mail change
+                validation is a configuration in Cyclos.
+              type: string
             enabledProfileFields:
               description: >-
                 The internal names of profile fields enabled for this user.
@@ -45849,6 +46056,62 @@ components:
             The voucher token mask
           type: string
 
+    VoucherPermissions:
+      description: >-
+        Permissions over vouchers
+      type: object
+      properties:
+        configuration:
+          $ref: '#/components/schemas/VoucherConfiguration'
+        buy:
+          description: >-
+            Whether the logged user can buy vouchers of types belonging to this configuration
+          type: boolean
+        redeem:
+          description: >-
+            Whether the logged user can redeem vouchers of types belonging to this configuration
+          type: boolean
+        cancel:
+          description: >-
+            Whether the logged user can cancel vouchers of types belonging to this configuration.
+            Only for logged admins.
+          type: boolean
+        changeExpirationDate:
+          description: >-
+            Whether the logged user can change the expiration date of vouchers of types belonging to this configuration.
+            Only for logged admins.
+          type: boolean
+        refund:
+          description: >-
+            Whether the logged user can refund vouchers of types belonging to this configuration.
+            Only for logged admins.
+          type: boolean
+        generate:
+          description: >-
+            Whether the logged user can generate vouchers of types belonging to this configuration.
+            Only for logged admins.
+          type: boolean
+        view:
+          description: >-
+            Whether the logged user can view vouchers of types belonging to this configuration.
+            Only for logged admins.
+          type: boolean
+        viewBought:
+          description: >-
+            Whether the logged user can view vouchers bought of types belonging to this configuration.
+            Only for logged member and brokers.
+          type: boolean
+        viewRedeemed:
+          description: >-
+            Whether the logged user can view vouchers redeemed of types belonging to this configuration.
+            Only for logged member and brokers.
+          type: boolean
+        enabled:
+          description: >-
+            Whether the logged user has enabled the types belonging to this configuration.
+            Only for logged member.
+          type: boolean
+
     VoucherRedeemResult:
       description: >-
         Result when redeeming a voucher
@@ -45999,6 +46262,18 @@ components:
               $ref: '#/components/schemas/VoucherCreationTypeEnum'
             cancelAction:
               $ref: '#/components/schemas/VoucherCancelActionEnum'
+
+    VouchersPermissions:
+      description: >-
+        Permissions over voucher configurations
+      type: object
+      properties:
+        vouchers:
+          description: >-
+            Permissions over each voucher configuration
+          type: array
+          items:
+            $ref: '#/components/schemas/VoucherPermissions'
 
     WebshopAd:
       description: >-

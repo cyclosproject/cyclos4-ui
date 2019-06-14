@@ -99,17 +99,17 @@ const bankingRoutes: Routes = [
         }
       },
       {
-        path: 'scheduled-payments',
+        path: ':owner/scheduled-payments',
         component: SearchScheduledPaymentsComponent,
         data: {
-          menu: Menu.SCHEDULED_PAYMENTS
+          menu: AuthHelperService.menuByRole(Menu.SCHEDULED_PAYMENTS)
         }
       },
       {
-        path: 'authorized-payments',
+        path: ':owner/authorized-payments',
         component: SearchAuthorizedPaymentsComponent,
         data: {
-          menu: Menu.AUTHORIZED_PAYMENTS
+          menu: AuthHelperService.menuByRole(Menu.AUTHORIZED_PAYMENTS)
         }
       }
     ]

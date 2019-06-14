@@ -94,6 +94,9 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     const accountTypes = (permissions.accounts || []).map(a => a.type);
     const contact = permissions.contact || {};
     const payment = permissions.payment || {};
+    const scheduledPayments = permissions.scheduledPayments || {};
+    const recurringPayments = permissions.recurringPayments || {};
+    const authorizedPayments = permissions.authorizedPayments || {};
     const marketplace = permissions.marketplace || {};
     const status = permissions.status || {};
     const group = permissions.group || {};
@@ -139,6 +142,16 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
       if (payment.asUserToSystem) {
         this.bankingActions.push(new HeadingAction('payment', this.i18n.user.profile.payAsUserToSystem, () => {
           this.router.navigate(['/banking', this.param, 'payment', ApiHelper.SYSTEM]);
+        }));
+      }
+      if (scheduledPayments.view || recurringPayments.view) {
+        this.bankingActions.push(new HeadingAction('schedule', this.i18n.user.profile.viewScheduledPayments, () => {
+          this.router.navigate(['/banking', this.param, 'scheduled-payments']);
+        }));
+      }
+      if (authorizedPayments.view) {
+        this.bankingActions.push(new HeadingAction('assignment_turned_in', this.i18n.user.profile.viewAuthorizedPayments, () => {
+          this.router.navigate(['/banking', this.param, 'authorized-payments']);
         }));
       }
       if (profile.editProfile) {

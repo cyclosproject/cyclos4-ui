@@ -580,10 +580,12 @@ export class MenuService {
       const scheduledPayments = (banking.scheduledPayments || {});
       const recurringPayments = (banking.recurringPayments || {});
       if (scheduledPayments.view || recurringPayments.view) {
-        add(Menu.SCHEDULED_PAYMENTS, '/banking/scheduled-payments', 'schedule', this.i18n.menu.bankingScheduledPayments);
+        add(Menu.SCHEDULED_PAYMENTS, `/banking/${owner}/scheduled-payments`,
+          'schedule', this.i18n.menu.bankingScheduledPayments);
       }
       if ((banking.authorizations || {}).view) {
-        add(Menu.AUTHORIZED_PAYMENTS, '/banking/authorized-payments', 'assignment_turned_in', this.i18n.menu.bankingAuthorizations);
+        add(Menu.AUTHORIZED_PAYMENTS, `/banking/${owner}/authorized-payments`,
+          'assignment_turned_in', this.i18n.menu.bankingAuthorizations);
       }
       addOperations(RootMenu.BANKING);
       addContentPages(Menu.CONTENT_PAGE_BANKING);
