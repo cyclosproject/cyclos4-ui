@@ -247,17 +247,23 @@
       "newPassword": "Nueva contraseña",
       "passwordConfirmation": "Confirmación de contraseña",
       "title": {
-        "change": "Cambiar su contraseña",
+        "change.self": "Cambiar su contraseña",
+        "change.user": "Change user password",
         "forgotten": "Recuperar su contraseña",
-        "manage.single": "Administrar su contraseña",
-        "manage.multiple": "Administrar sus contraseñas",
+        "manage.single.self": "Administrar su contraseña",
+        "manage.multiple.self": "Administrar sus contraseñas",
+        "manage.single.user": "Manage user password",
+        "manage.multiple.user": "Manage user passwords",
         "securityAnswer": "Defina su respuesta de seguridad"
       },
       "mobileTitle": {
-        "change": "Cambio de contraseña",
+        "change.self": "Cambio de contraseña",
+        "change.user": "Cambio de contraseña",
         "forgotten": "Recuperar contraseña",
-        "manage.single": "Contraseña",
-        "manage.multiple": "Contraseñas",
+        "manage.single.self": "Password",
+        "manage.multiple.self": "Passwords",
+        "manage.single.user": "User password",
+        "manage.multiple.user": "User passwords",
         "securityAnswer": "Respuesta de seguridad"
       },
       "forgotten": {
@@ -674,6 +680,7 @@
       "banking": "Banking",
       "management": "Management",
       "edit": "Edit profile",
+      "managePasswords": "Manage passwords",
       "addContact": "Agregar a contactos",
       "addContact.done": "{user} ha sido agregado a su lista de contactos",
       "removeContact": "Eliminar de mis contactos",
