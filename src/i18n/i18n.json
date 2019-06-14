@@ -570,8 +570,8 @@
       "buyer": "Buyer",
       "payment": "Buy payment"
     },
+    "creationType": "CreationType",
     "cancelAndRefund": "Cancel & refund",
-    "status": "Status",
     "token": "Voucher code"
   },
   "field": {

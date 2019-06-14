@@ -1,94 +1,73 @@
 <page-layout [ready]="data$ | async">
-  <ng-container *ngIf="loaded$ | async; else loading">
-    <page-content mode="filters" [heading]="i18n.voucher.redeem.searchTitle"
-      [mobileHeading]="i18n.voucher.redeem.searchMobileTitle">
-      <form [formGroup]="form" class="filters-form filters-form-separator">
-        <div class="row no-gutters">
-          <div *ngIf="data.types?.length > 1" class="col-12 col-md-6">
-            <multi-selection-field labelPosition="side"
-              formControlName="types" [label]="i18n.general.type">
-              <field-option *ngFor="let type of data.types" [value]="type.id"
-                [internalName]="type.internalName" [id]="type.id"
-                [text]="type.name">
-              </field-option>
-            </multi-selection-field>
-            <div class="col-12 col-md-6">
-              <date-field labelPosition="side" formControlName="periodBegin"
-                [label]="i18n.general.beginDate" minDate="past100"
-                maxDate="todayEnd" fieldSize="full" class>
-              </date-field>
-            </div>
-            <div class="col-12 col-md-6">
-              <date-field labelPosition="side" formControlName="periodEnd"
-                [label]="i18n.general.endDate" minDate="past100"
-                maxDate="todayEnd" fieldSize="full">
-              </date-field>
-            </div>
-          </div>
-        </div>
-      </form>
-    </page-content>
-    <results-layout resultType="list" [results]="results$ | async"
-      [toLink]="toLink" (update)="update($event)">
-
-      <!-- <mobile-result *mobileResult="let row"
-         [date]="row.date" [amount]="row.amount"
-        [currency]="currency" forceSign>
-        <div class="cell-text cell-main">
-          {{ subjectName(row) }}
-        </div>
-      </mobile-result> -->
-
-      <table *resultTable class="table table-hover cursor-pointer">
-        <thead>
-          <!-- <th class="avatar"></th> -->
-          <th>{{ i18n.voucher.redeem.date }}</th>
-          <th>{{ i18n.general.operator }}</th>
-          <!-- <th *ngIf="layout.gtsm$ | async" width="30%">{{
-            i18n.general.description }}</th>
-          <th class="amount">{{ i18n.transaction.amount }}</th> -->
-        </thead>
-        <tbody>
-          <ng-container *ngFor="let row of (results$ | async).results">
-            <tr (click)="router.navigate(path(row))">
-              <!-- <td class="avatar">
-                <avatar [image]="avatarImage(row)" [icon]="avatarIcon(row)">
-                </avatar>
-              </td> -->
-              <td>
-                <a [routerLink]="path(row)">
-                  {{ row.date | date }}
-                </a>
-              </td>
-              <!-- <td>
-                <a [routerLink]="path(row)">
-                  {{ row. }}
-                </a>
-              </td>
-              <td>
-                <a *ngIf="row.description" class="d-inline-block"
-                  [routerLink]="path(row)">
-                  {{ row.description }}
-                </a>
-              </td>
-              <td class="amount">
-                <a [routerLink]="path(row)" [ngClass]="{
-                  positive: format.isPositive(row.amount),
-                  negative: format.isNegative(row.amount)
-                }">
-                  {{ row.amount | currency:currency:true }}
-                </a>
-              </td> -->
-            </tr>
-          </ng-container>
-        </tbody>
-      </table>
-    </results-layout>
-  </ng-container>
+  <ng-container *ngIf="data then content"></ng-container>
 </page-layout>
 
-<ng-template #loading>
-  <page-content>
-    <spinner></spinner>
+<ng-template #content>
+  <page-content mode="filters" [heading]="i18n.voucher.redeem.searchTitle"
+    [mobileHeading]="i18n.voucher.redeem.searchMobileTitle">
+    <form [formGroup]="form" class="filters-form filters-form-separator">
+      <div class="row no-gutters">
+        <div *ngIf="data.types?.length > 1" class="col-12 col-md-6">
+          <multi-selection-field labelPosition="side" formControlName="types"
+            [label]="i18n.general.type">
+            <field-option *ngFor="let type of data.types" [value]="type.id"
+              [internalName]="type.internalName" [id]="type.id"
+              [text]="type.name">
+            </field-option>
+          </multi-selection-field>
+        </div>
+        <div class="row no-gutters col-12">
+          <div class="col-12 col-md-6">
+            <date-field labelPosition="side" formControlName="periodBegin"
+              [label]="i18n.general.beginDate" minDate="past100"
+              maxDate="todayEnd" fieldSize="full" class>
+            </date-field>
+          </div>
+          <div class="col-12 col-md-6">
+            <date-field labelPosition="side" formControlName="periodEnd"
+              [label]="i18n.general.endDate" minDate="past100"
+              maxDate="todayEnd" fieldSize="full">
+            </date-field>
+          </div>
+        </div>
+      </div>
+    </form>
   </page-content>
+  <results-layout resultType="list" [results]="results$ | async"
+    [toLink]="toLink" (update)="update($event)">
+
+    <mobile-result *mobileResult="let row" [date]="row.redeemDate"
+      [amount]="row.amount" [currency]="row.type.configuration.currency"
+      forceSign>
+      <div class="cell-text cell-main">
+        {{ row.type.name}}
+      </div>
+    </mobile-result>
+
+    <table *resultTable class="table table-hover cursor-pointer">
+      <thead>
+        <th>{{ i18n.voucher.redeem.date }}</th>
+        <th>{{ i18n.general.operator }}</th>
+        <th>{{ i18n.general.type }}</th>
+        <th class="amount">{{ i18n.transaction.amount }}</th>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let row of (results$ | async).results">
+          <tr (click)="router.navigate(path(row))">
+            <td> <a [routerLink]="path(row)"> {{ row.redeemDate | date }} </a>
+            </td>
+            <td>
+              <ng-container *ngIf="row.user">
+                {{ row.user ? '' : row.user.display }}
+              </ng-container>
+            </td>
+            <td> {{ row.type.name}} </td>
+            <td class="amount">
+              {{ row.amount | currency:row.type.configuration.currency }}
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </results-layout>
 </ng-template>

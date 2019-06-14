@@ -105,7 +105,7 @@ export class BankingHelperService {
       beginDate = filters.periodBegin;
       endDate = filters.periodEnd;
     }
-    return ApiHelper.rangeFilter(beginDate, endDate);
+    return ApiHelper.dateRangeFilter(beginDate, endDate);
   }
 
 

@@ -3,6 +3,9 @@ import { VoucherView, VoucherCreationTypeEnum } from 'app/api/models';
 import { VouchersService } from 'app/api/services';
 import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
 import { HeadingAction } from 'app/shared/action';
+import { capitalize } from 'lodash';
+import { Configuration } from 'app/configuration';
+import { ApiConfiguration } from 'app/api/api-configuration';
 
 @Component({
   selector: 'app-view-voucher',
@@ -12,9 +15,13 @@ import { HeadingAction } from 'app/shared/action';
 export class ViewVoucherComponent extends BaseViewPageComponent<VoucherView> implements OnInit {
 
 
+  qrCodeUrl: string;
+
   constructor(
     injector: Injector,
-    private voucherService: VouchersService) {
+    private voucherService: VouchersService,
+    private apiConfiguration: ApiConfiguration
+  ) {
     super(injector);
   }
 
@@ -23,6 +30,7 @@ export class ViewVoucherComponent extends BaseViewPageComponent<VoucherView> imp
     const key = this.route.snapshot.paramMap.get('key');
     this.addSub(this.voucherService.viewVoucher({ key: key }).subscribe(voucher => {
       this.data = voucher;
+      this.qrCodeUrl = this.apiConfiguration.rootUrl.concat('/vouchers/' + this.data.id + '/qr-code');
       this.headingActions = this.initActions(voucher);
     }));
   }
@@ -39,4 +47,7 @@ export class ViewVoucherComponent extends BaseViewPageComponent<VoucherView> imp
     return actions;
   }
 
+  capitalizeFirst(value: string): string {
+    return capitalize.apply(value);
+  }
 }

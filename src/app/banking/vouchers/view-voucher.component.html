@@ -20,43 +20,49 @@
           <label-value [label]="i18n.transaction.amount">
             {{ data.amount | currency:data.type.configuration.currency }}
           </label-value>
+          <label-value *ngIf="data.creationType"
+            [label]="i18n.voucher.creationType">
+            {{ capitalizeFirst(data.creationType) }}
+          </label-value>
           <label-value [label]="i18n.general.creationDate">
             {{ data.creationDate | dateTime}}
           </label-value>
-          <label-value [label]="i18n.voucher.buy.buyer">
+          <label-value *ngIf="data.buyer" [label]="i18n.voucher.buy.buyer">
             <user-link [user]="data.buyer"></user-link>
           </label-value>
-          <ng-container *ngIf="data.buy">
-            <label-value [label]="i18n.voucher.buy.payment">
-              <a
-                [routerLink]="['/banking/transfer/' + data.buy.transactionNumber]">
-                {{ data.buy.transactionNumber }}
-              </a>
-            </label-value>
-          </ng-container>
-          <label-value [label]="i18n.general.status"> {{ data.status}}
+          <label-value *ngIf="data.buy" [label]="i18n.voucher.buy.payment">
+            <a
+              [routerLink]="['/banking/transfer/' + data.buy.transactionNumber]">
+              {{ data.buy.transactionNumber }}
+            </a>
           </label-value>
-          <ng-container *ngIf="data.redeem">
-            <label-value [label]="i18n.voucher.redeem.date">
-              {{ data.redeemDate | dateTime}}
-            </label-value>
-            <label-value [label]="i18n.voucher.redeem.redeemer">
-              <user-link [user]="data.redeemer"></user-link>
-            </label-value>
-          </ng-container>
-          <label-value [label]="i18n.voucher.redeem.payment">
+          <label-value [label]="i18n.general.status">
+            {{ capitalizeFirst(data.status) }}
+          </label-value>
+          <label-value *ngIf="data.redeemer"
+            [label]="i18n.voucher.redeem.redeemer">
+            <user-link [user]="data.redeemer"></user-link>
+          </label-value>
+          <label-value *ngIf="data.redeemDate"
+            [label]="i18n.voucher.redeem.date">
+            {{ data.redeemDate | dateTime}}
+          </label-value>
+          <label-value *ngIf="data.redeem"
+            [label]="i18n.voucher.redeem.payment">
             <a
               [routerLink]="['/banking/transfer/' + data.redeem.transactionNumber]">
               {{ data.redeem.transactionNumber }}
             </a>
           </label-value>
-          <ng-container *ngIf="data.redeemAfterDateReached">
-            <label-value [label]="i18n.general.status">
-              {{ data.redeemAfterDate}}
-            </label-value>
-          </ng-container>
+          <label-value *ngIf="!data.redeemAfterDateReached"
+            [label]="i18n.general.status">
+            {{ data.redeemAfterDate}}
+          </label-value>
+          <label-value *ngIf="data.expirationDate"
+            [label]="i18n.general.expirationDate">
+            {{ data.expirationDate | dateTime}}
+          </label-value>
         </div>
-
       </div>
       <!-- Description -->
       <ng-container *ngIf="data.description"
@@ -69,8 +75,7 @@
       <!-- QrCode -->
       <ng-container class="image d-flex justify-content-center mt-2 mb-4">
         <h2 class="mt-3"></h2>
-        <p>Here goes the QRCode image</p>
-        <!-- <img size="160" imageSize="200" src="qrCodeUrl" /> -->
+        <img size="160" imageSize="200" src="qrCodeUrl" />
       </ng-container>
     </div>
   </page-content>

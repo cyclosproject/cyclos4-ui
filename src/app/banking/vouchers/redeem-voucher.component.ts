@@ -49,16 +49,17 @@ export class RedeemVoucherComponent extends BasePageComponent<VoucherInitialData
       if (!validateBeforeSubmit(this.token)) {
         return;
       }
-      this.voucherService.getVoucherDataForRedeem({ user: ApiHelper.SELF, token: this.token.value }).subscribe(data => {
+      this.addSub(this.voucherService.getVoucherDataForRedeem({ user: ApiHelper.SELF, token: this.token.value }).subscribe(data => {
         this.dataForRedeem = data;
         // Custom fields
         this.form = this.fieldHelper.customValuesFormGroup(this.dataForRedeem.customFields);
         this.step = 'confirm';
-      });
+      }));
     } else {
-      this.voucherService.redeemVoucher({ user: ApiHelper.SELF, token: this.token.value }).subscribe(data => {
-        this.router.navigate(['banking', 'vouchers', data.voucherId]);
-      });
+      const params = { user: ApiHelper.SELF, token: this.token.value, body: { customValues: this.form.value } };
+      this.addSub(
+        this.voucherService.redeemVoucher(params)
+          .subscribe(data => this.router.navigate(['banking', 'vouchers', data.voucherId])));
     }
   }
 
