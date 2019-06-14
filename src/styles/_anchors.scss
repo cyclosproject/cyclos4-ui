@@ -11,6 +11,9 @@ a {
     box-shadow: $btn-focus-box-shadow;
   }
 }
+a.body-color:hover {
+  color: $body-color;
+}
 a.plain, maybe-link.plain a,
 a.undecorated, maybe-link.undecorated a {
   color: $body-color;
@@ -34,6 +37,9 @@ a.plain, maybe-link.plain a {
     margin-right: 0.5rem;
   }
 }
+.link-with-icon.body-color icon {
+  opacity: 0.7;
+}
 
 body.dark {
   a {
@@ -41,6 +47,9 @@ body.dark {
     &:hover {
       color: $link-hover-color-dark;
     }
+  }
+  a.body-color:hover {
+    color: $body-color-dark;
   }
   a.plain, maybe-link.plain a,
   a.undecorated, maybe-link.undecorated a {

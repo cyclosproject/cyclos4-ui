@@ -141,7 +141,7 @@ export class PerformPaymentComponent extends BasePageComponent<DataForTransactio
 
     // Resolve the from and to parameters
     const route = this.route.snapshot;
-    this.fromParam = route.params.user;
+    this.fromParam = route.params.from;
     this.fromSelf = this.authHelper.isSelf(this.fromParam);
     this.fromSystem = this.authHelper.isSystem(this.fromParam);
     this.toParam = route.params.to;
