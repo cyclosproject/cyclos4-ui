@@ -39,16 +39,16 @@ export class SearchConnectedComponent
     return value;
   }
 
-  protected disconnect(session: SessionResult) {
+  public disconnect(session: SessionResult) {
     this.addSub(this.sessionsService.disconnectSession({ sessionToken: session.sessionToken })
       .subscribe(() => this.update()));
   }
 
-  protected canDisconnect(session: SessionResult) {
+  public canDisconnect(session: SessionResult) {
     return this.login.auth.permissions.sessions.disconnect && this.login.auth.sessionToken !== session.sessionToken;
   }
 
-  protected get onClick() {
+  public get onClick() {
     // No op condition to disable built-in click (mobile layout)
     return (row: any) => row != null;
   }
@@ -61,7 +61,7 @@ export class SearchConnectedComponent
     return this.sessionsService.searchSessions$Response(value);
   }
 
-  protected showConnectedLabel(role: RoleEnum) {
+  public showConnectedLabel(role: RoleEnum) {
     switch (role) {
       case RoleEnum.ADMINISTRATOR:
         return this.i18n.connectedUser.viewConnected.admin;
