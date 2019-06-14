@@ -622,7 +622,6 @@
       "registration.done": "Success",
       "contactList": "Contacts",
       "addContact": "New contact",
-<<<<<<< HEAD
       "search": "Users",
       "directory": "Directory",
       "myOperators": "Operators",
@@ -630,9 +629,6 @@
       "operatorRegistration": "New operator",
       "myBrokerings": "Assigned members",
       "userBrokerings": "Broker members"
-=======
-      "search": "Annuaire"
->>>>>>> 1.0.x
     },
     "group": "Groupe",
     "groupSet": "Group set",
@@ -673,6 +669,11 @@
     "contact": "Contact",
     "profile": {
       "noPermission": "Vous n'avez pas la permission de voir le profil de cet utilisateur",
+      "showActions": "Show actions",
+      "hideActions": "Hide actions",
+      "banking": "Banking",
+      "management": "Management",
+      "edit": "Edit profile",
       "addContact": "Ajouter à mes contacts",
       "addContact.done": "{user} a été ajouté à votre liste de contacts",
       "removeContact": "Supprimer de mes contacts",
