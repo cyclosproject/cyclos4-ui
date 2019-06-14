@@ -247,17 +247,23 @@
       "newPassword": "Nouveau mot de passe",
       "passwordConfirmation": "Confirmer le mot de passe",
       "title": {
-        "change": "Modifier votre mot de passe",
+        "change.self": "Modifier votre mot de passe",
+        "change.user": "Change user password",
         "forgotten": "Recover your password",
-        "manage.single": "Gérer votre mot de passe",
-        "manage.multiple": "Gérer vos mots de passe",
+        "manage.single.self": "Gérer votre mot de passe",
+        "manage.multiple.self": "Gérer vos mots de passe",
+        "manage.single.user": "Manage user password",
+        "manage.multiple.user": "Manage user passwords",
         "securityAnswer": "Set your security answer"
       },
       "mobileTitle": {
-        "change": "Password change",
+        "change.self": "Password change",
+        "change.user": "Password change",
         "forgotten": "Password recovery",
-        "manage.single": "Password",
-        "manage.multiple": "Passwords",
+        "manage.single.self": "Password",
+        "manage.multiple.self": "Passwords",
+        "manage.single.user": "User password",
+        "manage.multiple.user": "User passwords",
         "securityAnswer": "Security answer"
       },
       "forgotten": {
@@ -674,6 +680,7 @@
       "banking": "Banking",
       "management": "Management",
       "edit": "Edit profile",
+      "managePasswords": "Manage passwords",
       "addContact": "Ajouter à mes contacts",
       "addContact.done": "{user} a été ajouté à votre liste de contacts",
       "removeContact": "Supprimer de mes contacts",
