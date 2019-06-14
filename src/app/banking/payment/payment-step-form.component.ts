@@ -64,7 +64,7 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
     super.ngOnInit();
 
     const route = this.route.snapshot;
-    this.fromParam = route.params.user;
+    this.fromParam = route.params.from;
     this.dataCache = this.stateManager.get('dataCache', () => new Map());
 
     this.fixedDestination = this.data.toKind != null;
