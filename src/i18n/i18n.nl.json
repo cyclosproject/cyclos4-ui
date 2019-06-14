@@ -598,7 +598,6 @@
       "registration.done": "Inschrijving succesvol",
       "contactList": "Contact lijst",
       "addContact": "Een nieuw contact toevoegen",
-<<<<<<< HEAD
       "search": "Users search",
       "directory": "Business directory",
       "myOperators": "Operators",
@@ -606,9 +605,6 @@
       "operatorRegistration": "Operator registration",
       "myBrokerings": "Assigned members",
       "userBrokerings": "Broker assigned members"
-=======
-      "search": "Gebruikers"
->>>>>>> 1.0.x
     },
     "mobileTitle": {
       "myProfile": "My profile",
@@ -626,7 +622,6 @@
       "registration.done": "Success",
       "contactList": "Contacts",
       "addContact": "New contact",
-<<<<<<< HEAD
       "search": "Users",
       "directory": "Directory",
       "myOperators": "Operators",
@@ -634,9 +629,6 @@
       "operatorRegistration": "New operator",
       "myBrokerings": "Assigned members",
       "userBrokerings": "Broker members"
-=======
-      "search": "Bedrijven"
->>>>>>> 1.0.x
     },
     "group": "Groep",
     "groupSet": "Group set",
@@ -677,6 +669,11 @@
     "contact": "Contact",
     "profile": {
       "noPermission": "U heeft geen toestemming om het profiel van deze gebruiker te bekijken",
+      "showActions": "Show actions",
+      "hideActions": "Hide actions",
+      "banking": "Banking",
+      "management": "Management",
+      "edit": "Edit profile",
       "addContact": "Toevoegen aan mijn contacten",
       "addContact.done": "{user} werd toegevoegd aan uw lijst met contactpersonen",
       "removeContact": "Verwijder uit mijn contacten",
