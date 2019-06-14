@@ -86,6 +86,7 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     // Get the actions
     const actions: HeadingAction[] = [];
     const permissions = user.permissions || {};
+    const accountTypes = (permissions.accounts || []).map(a => a.type);
     const contact = permissions.contact || {};
     const payment = permissions.payment || {};
     const marketplace = permissions.marketplace || {};
@@ -97,6 +98,11 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
       actions.push(new HeadingAction('edit', this.i18n.general.edit, () => {
         this.router.navigateByUrl(this.router.url + '/edit');
       }, true));
+    }
+    for (const accountType of accountTypes) {
+      actions.push(new HeadingAction('account_balance', accountType.name, () => {
+        this.router.navigate(['/banking', this.param, 'account', ApiHelper.internalNameOrId(accountType)]);
+      }));
     }
     if (brokering.viewMembers) {
       actions.push(new HeadingAction('assignment_ind', this.i18n.user.profile.viewBrokerings, () => {
@@ -134,7 +140,27 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     }
     if (payment.userToUser) {
       actions.push(new HeadingAction('payment', this.i18n.user.profile.pay, () => {
-        this.router.navigate(['/banking', 'payment', this.param]);
+        this.router.navigate(['/banking', ApiHelper.SELF, 'payment', this.param]);
+      }));
+    }
+    if (payment.systemToUser) {
+      actions.push(new HeadingAction('payment', this.i18n.user.profile.paySystemToUser, () => {
+        this.router.navigate(['/banking', ApiHelper.SYSTEM, 'payment', this.param]);
+      }));
+    }
+    if (payment.asUserToUser) {
+      actions.push(new HeadingAction('payment', this.i18n.user.profile.payAsUserToUser, () => {
+        this.router.navigate(['/banking', this.param, 'payment']);
+      }));
+    }
+    if (payment.asUserToSelf) {
+      actions.push(new HeadingAction('payment', this.i18n.user.profile.payAsUserToSelf, () => {
+        this.router.navigate(['/banking', this.param, 'payment', ApiHelper.SELF]);
+      }));
+    }
+    if (payment.asUserToSystem) {
+      actions.push(new HeadingAction('payment', this.i18n.user.profile.payAsUserToSystem, () => {
+        this.router.navigate(['/banking', this.param, 'payment', ApiHelper.SYSTEM]);
       }));
     }
     if (marketplace.viewAdvertisements || marketplace.viewWebshop) {

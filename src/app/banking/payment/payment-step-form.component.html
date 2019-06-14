@@ -1,4 +1,9 @@
 <ng-container [formGroup]="form">
+  <label-value *ngIf="fromUser && !fromSelf" kind="field"
+    [label]="i18n.transaction.fromUser">
+    <user-link [user]="fromUser"></user-link>
+  </label-value>
+
   <ng-container *ngIf="singleAccount; else multipleAccounts">
     <label-value [label]="accountBalanceLabel$ | async" kind="view"
       labelPosition="sideForced" noWrapLabel>
@@ -15,8 +20,9 @@
   <ng-template #multipleAccounts>
     <!-- Multiple accounts -->
     <label-value [label]="i18n.transaction.fromAccount" required kind="field">
-      <div class="row no-gutters mb-2" *ngFor="let account of data.accounts">
-        <div class="col-7 col-sm-8">
+      <div class="w-100 row no-gutters mb-2"
+        *ngFor="let account of data.accounts">
+        <div class="col-7 col-sm-8 col-md-5">
           <div class="custom-control custom-radio">
             <input #radio type="radio" formControlName="account"
               class="custom-control-input" [id]="'from_' + account.id"
@@ -33,7 +39,8 @@
             </label>
           </div>
         </div>
-        <div class="col-5 col-sm-4 text-right font-weight-bold" [ngClass]="{
+        <div class="col-5 col-sm-4 col-md-7 pl-2 text-left font-weight-bold"
+          [ngClass]="{
             positive: format.isPositive(account.status.balance),
             negative: format.isNegative(account.status.balance)
           }">
@@ -54,15 +61,16 @@
     </single-selection-field>
     <ng-template #toUserField>
       <user-field #toUser focused [autoSearch]="!allowPrincipal"
-        formControlName="subject" [allowContacts]="allowContacts"
-        [allowSearch]="allowSearch" [allowPrincipal]="allowPrincipal"
+        [exclude]="fromParam" formControlName="subject"
+        [allowContacts]="allowContacts" [allowSearch]="allowSearch"
+        [allowPrincipal]="allowPrincipal"
         (selected)="$event ? amount.focus() : null"></user-field>
     </ng-template>
   </label-value>
 
-  <label-value *ngIf="fixedUser" kind="fieldView"
+  <label-value *ngIf="fixedDestination && toUser" kind="fieldView"
     [label]="i18n.transaction.toUser">
-    <user-link [user]="fixedUser" hideLink></user-link>
+    <user-link [user]="toUser"></user-link>
   </label-value>
 
   <single-selection-field #type formControlName="type"

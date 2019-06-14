@@ -39,6 +39,10 @@
     "cancel": "Cancelar",
     "close": "Fechar",
     "submit": "Enviar",
+    "remove": "Remover",
+    "remove.confirm": "Tem certeza que deseja remover o item {item}?",
+    "remove.done": "O item {item} foi removido",
+    "remove.tooltip": "Remover {item}",
     "save": "Salvar",
     "addNew": "Adicionar novo",
     "yes": "Sim",
@@ -105,6 +109,11 @@
         "sat": "S"
       }
     },
+    "range": {
+      "fromTo": "De {min} até {max}",
+      "from": "De {min}",
+      "to": "Até {max}"
+    },
     "fileSize": {
       "b": "{n} bytes",
       "k": "{n}KB",
@@ -136,7 +145,7 @@
     "maxItems": "Não é possível adicionar mais do que {max} elementos",
     "validation": "A ação não pode ser processada, pois existem erros de validação",
     "staleEntity": "Esses dados não podem ser salvos pois foram modificados por alguém.<br>Por Favor, carregue a página novamente e reinicie a operação.",
-    "removeDataInUse": "Este dado não pode ser removido porque ele está em uso.",
+    "removeDataInUse": "Este item não pode ser removido porque está em uso.",
     "notFound": "O local que você digitou ou tentou acessar não foi encontrado",
     "notFound.type": "O dado solicitado não pôde ser encontrado: {type}",
     "notFound.typeKey": "O dado solicitado não pôde ser encontrado: {type} com chave {key}",
@@ -183,12 +192,16 @@
     "banking.authorizations": "Autorizações de pagamento",
     "operators": "Operadores",
     "operators.operators": "Operadores",
-    "brokering": "Brokering",
-    "brokering.users": "Users",
+    "operators.register": "Registrar operador",
+    "operators.groups": "Grupos de operadores",
+    "brokering": "Corretagem",
+    "brokering.users": "Usuários",
+    "brokering.register": "Registrar usuários",
     "marketplace": "Produtos & Serviços",
-    "marketplace.users": "Users",
+    "marketplace.users": "Usuários",
+    "marketplace.register": "Registrar usuários",
     "marketplace.directory": "Diretório",
-    "marketplace.userSearch": "Users",
+    "marketplace.userSearch": "Usuários",
     "marketplace.businessDirectory": "Diretório de negócios",
     "marketplace.advertisements": "Anúncios",
     "personal": "Pessoal",
@@ -374,6 +387,7 @@
     "to": "Para",
     "account": "Conta",
     "fromAccount": "Conta de origem",
+    "fromUser": "From user",
     "toAccount": "Conta de destino",
     "toUser": "Para Usuário",
     "requiresAuthorization": "O pagamento necessitará de autorização",
@@ -444,6 +458,8 @@
       "settled": "Liquidado"
     },
     "title": {
+      "paymentSystemToSystem": "Payment between system accounts",
+      "paymentSystemToUser": "Payment from system to user",
       "paymentToSystem": "Pagamento para sistema",
       "paymentToSelf": "Pagamento entre contas",
       "paymentToUser": "Pagamento para usuário",
@@ -465,6 +481,8 @@
       "childTransfers": "Transferências geradas por esta"
     },
     "mobileTitle": {
+      "paymentSystemToSystem": "Pay system",
+      "paymentSystemToUser": "Pay user",
       "paymentToSystem": "Pagar para sistema",
       "paymentToSelf": "Pagamento interno",
       "paymentToUser": "Pagar usuário",
@@ -571,7 +589,6 @@
       "image": "Imagem do perfil",
       "images": "Imagens do perfil",
       "fields": "Campos do perfil",
-      "group": "Escolha o grupo que deseja participar",
       "phones": "Telefones",
       "addresses": "Endereços",
       "contactInfos": "Contatos adicionais",
@@ -581,12 +598,13 @@
       "registration.done": "Cadastrado com sucesso",
       "contactList": "Lista de contatos",
       "addContact": "Adicionar um novo contato",
-      "search": "Users search",
-      "directory": "Business directory",
+      "search": "Pesquisar usuários",
+      "directory": "Diretório de negócios",
       "myOperators": "Operadores",
       "userOperators": "Operadores do usuário",
-      "myBrokerings": "Assigned members",
-      "userBrokerings": "Broker assigned members"
+      "operatorRegistration": "Cadastro de operador",
+      "myBrokerings": "Membros atribuídos",
+      "userBrokerings": "Membros atribuídos ao corretor"
     },
     "mobileTitle": {
       "myProfile": "Meu perfil",
@@ -595,7 +613,6 @@
       "image": "Imagem do perfil",
       "images": "Imagens do perfil",
       "fields": "Campos do perfil",
-      "group": "Grupo",
       "phones": "Telefones",
       "addresses": "Endereços",
       "contactInfos": "Contatos adicionais",
@@ -605,12 +622,13 @@
       "registration.done": "Sucesso",
       "contactList": "Contatos",
       "addContact": "Novo contato",
-      "search": "Users",
-      "directory": "Directory",
+      "search": "Usuários",
+      "directory": "Diretório",
       "myOperators": "Operadores",
       "userOperators": "Operadores",
-      "myBrokerings": "Assigned members",
-      "userBrokerings": "Broker members"
+      "operatorRegistration": "Novo operador",
+      "myBrokerings": "Membros atribuídos",
+      "userBrokerings": "Membros do corretor"
     },
     "group": "Grupo",
     "groupSet": "Conjunto de grupos",
@@ -619,7 +637,12 @@
     "username": "Nome de usuário",
     "email": "E-mail",
     "email.pending": "E-mail pendente de validação",
-    "operatorOwner": "Dono do operador",
+    "operator.owner": "Dono do operador",
+    "operator.noGroup": "Nenhum grupo - as mesmas permissões do proprietário do proprietário",
+    "operator.registration.active": "O operador {operator} foi ativado.",
+    "operator.registration.inactive": "O operador {operator} foi registrado, no entanto, ainda precisa ser ativado pela administração.",
+    "operator.registration.pending": "O operador {operator} foi registrado, no entanto, ainda precisa validar seu registro confirmando o e-mail.",
+    "operator.registration.addAnother": "Registrar outro operador",
     "noImage": "Nenhuma imagem de perfil",
     "noImages": "Nenhuma imagem de perfil",
     "address.define": "Definir endereço",
@@ -651,31 +674,92 @@
       "removeContact": "Remover dos meus contatos",
       "removeContact.done": "{user} foi removido da sua lista de contatos",
       "pay": "Fazer pagamento",
+      "paySystemToUser": "Payment system to user",
+      "payAsUserToSystem": "Payment user to system",
+      "payAsUserToUser": "Payment user to user",
+      "payAsUserToSelf": "Payment user to self",
+      "viewAccount": "View {account}",
       "viewAds": "Ver anúncios",
-      "viewBrokerings": "View assigned members",
-      "viewOperators": "View operators",
-      "status": "Estado do usuário"
+      "viewBrokerings": "Ver membros atribuídos",
+      "viewOperators": "Ver operadores",
+      "status.user": "Estado do usuário",
+      "status.operator": "Estado do operador",
+      "group.user": "Grupo do usuário",
+      "group.operator": "Grupo do operador"
     },
     "registration": {
-      "active": "Você foi registrado com êxito, e a sua conta está ativa agora.",
-      "inactive": "Sua conta foi criada com êxito.<br>No entanto, precisa ser ativada pela administração.<br>Você será notificado quando sua conta estiver ativa.",
-      "pending": "A sua inscrição foi enviada, e precisa ser verificada.<br>Você deve receber um e-mail em breve com instruções sobre como ativar a sua conta.<br>Se você não receber o e-mail, verifique sua pasta de spam.",
+      "group.public": "Escolha o grupo que deseja participar",
+      "group.manager": "Escolha o grupo para o novo usuário",
+      "skipActivationEmail": "Ignorar e-mail de ativação",
+      "password.assign": "Atribuir a senha",
+      "password.forceChange": "Forçar o usuário a alterar",
+      "active.public": "Você foi registrado com êxito, e a sua conta está ativa agora.",
+      "inactive.public": "Sua conta foi criada com êxito.<br>No entanto, precisa ser ativada pela administração.<br>Você será notificado quando sua conta estiver ativa.",
+      "pending.public": "A sua inscrição foi enviada, e precisa ser verificada.<br>Você deve receber um e-mail em breve com instruções sobre como ativar a sua conta.<br>Se você não receber o e-mail, verifique sua pasta de spam.",
+      "active.manager": "A conta do usuário para {user} foi ativada.",
+      "inactive.manager": "O usuário {user} foi registrado, no entanto, ainda precisa de ativação pela administração.",
+      "pending.manager": "O usuário {user} foi registrado, no entanto, ainda precisa validar seu registro confirmando o e-mail.",
       "principal.single": "Você pode usar o seu {principal} ({value}) em {channels}",
       "principal.multiple.preface": "Você pode fazer o login com os seguintes dados:",
       "principal.multiple.item": "<b>{principal}</b> ({value}): pode ser usado em {channels}",
       "generatedPasswords.none": "Agora você pode fazer login com a senha que você informou.",
       "generatedPasswords.single": "Você receberá um e-mail em breve com a sua {type} gerada.",
-      "generatedPasswords.multiple": "Você receberá um e-mail em breve com as seguintes senhas geradas: {types}."
+      "generatedPasswords.multiple": "Você receberá um e-mail em breve com as seguintes senhas geradas: {types}.",
+      "viewProfile": "Ver perfil",
+      "registerAnotherUser": "Registrar outro usuário"
     },
     "orderBy": {
       "alphabeticallyAsc": "Nome (A-Z)",
       "alphabeticallyDesc": "Nome (Z-A)"
     }
   },
+  "operatorGroup": {
+    "title": {
+      "list": "Grupos de operadores",
+      "view": "Grupo do operador",
+      "new": "Novo grupo de operador",
+      "edit": "Editar grupo de operador",
+      "permissions": "Permissões",
+      "accountAccess": "Acesso à conta",
+      "generalAccount": "Operações gerais de conta"
+    },
+    "mobileTitle": {
+      "list": "Grupos de operadores",
+      "view": "Grupo do operador",
+      "new": "Novo grupo",
+      "edit": "Editar grupo",
+      "permissions": "Permissões",
+      "accountAccess": "Acesso à conta",
+      "generalAccount": "Operações gerais"
+    },
+    "accountAccess": "Visibilidade de contas",
+    "accountAccess.full": "Completo",
+    "accountAccess.incoming": "Apenas pagamentos de entrada",
+    "accountAccess.outgoing": "Apenas pagamentos de saída",
+    "accountAccess.own": "Recebido ou pago por operador",
+    "accountAccess.none": "Não visível",
+    "performPayments": "Realizar pagamentos",
+    "performPayments.requiresAuthorization.view": ", requer autorização",
+    "performPayments.maxAmountPerDay.view": ", máx. {max} por dia",
+    "performPayments.requiresAuthorization": "Requer autorização",
+    "performPayments.maxAmountPerDay": "Limite Diário",
+    "authorizePayments": "Autorizar pagamentos",
+    "paymentNotifications": "Notificações de pagamento",
+    "paymentNotifications.above": "Notificar somente pagamentos acima de",
+    "paymentNotifications.below": "Notificar somente pagamentos abaixo de",
+    "chargebackPayments": "Estornar pagamentos",
+    "restrictPaymentsToUsers": "Restringir pagamentos para",
+    "editOwnProfile": "Editar o próprio perfil",
+    "notifications": "Notificações",
+    "viewAdvertisements": "Ver anúncios",
+    "registerUsersAsBroker": "Registrar usuários (como corretor)",
+    "runOperations": "Executar operações",
+    "created": "O grupo de operadores foi criado",
+    "saved": "O grupo de operadores foi salvo"
+  },
   "userStatus": {
     "current": "Estado atual",
     "new": "Novo estado",
-    "comment": "Comentário",
     "confirm": {
       "active": "Tem certeza que deseja ativar {user}?",
       "blocked": "Tem certeza que deseja bloquear o acesso de {user}?",
@@ -684,21 +768,27 @@
       "removed": "Tem certeza que deseja remover permanentemente {user}?\nEsta ação é irreversível!"
     },
     "done": {
-      "active": "O usuário foi ativado",
-      "blocked": "O usuário foi bloqueado",
-      "disabled": "O usuário foi desativado",
-      "purged": "O usuário foi removido permanentemente, juntamente com todos os dados pessoais",
-      "removed": "O usuário foi removido permanentemente"
+      "active": "{user} foi ativado",
+      "blocked": "{user} foi bloqueado",
+      "disabled": "{user} foi desativado",
+      "purged": "{user} foi removido permanentemente, juntamente com todos os dados pessoais",
+      "removed": "{user} foi removido permanentemente"
     },
     "title": {
-      "status": "Estado do usuário",
-      "change": "Alterar estado",
-      "history": "Histórico de estado do usuário"
+      "status.user": "Estado do usuário",
+      "status.operator": "Estado do operador",
+      "change.user": "Alterar o estado do usuário",
+      "change.operator": "Alterar o estado do operador",
+      "history.user": "Histórico de estado do usuário",
+      "history.operator": "Histórico de estado do operador"
     },
     "mobileTitle": {
-      "status": "Estado do usuário",
-      "change": "Alterar estado",
-      "history": "Histórico de estado"
+      "status.user": "Estado do usuário",
+      "status.operator": "Estado do operador",
+      "change.user": "Alterar estado",
+      "change.operator": "Alterar estado",
+      "history.user": "Histórico de estado",
+      "history.operator": "Histórico de estado"
     },
     "active": "Ativo",
     "blocked": "Acesso bloqueado",
@@ -706,6 +796,30 @@
     "pending": "Pendente de ativação",
     "purged": "Removido (todos os dados privados são apagados)",
     "removed": "Removido (nenhum dado privado é apagado)"
+  },
+  "groupMembership": {
+    "current": "Grupo atual",
+    "new": "Novo grupo",
+    "confirm": "Tem certeza que deseja alterar {user} para o grupo {group}?",
+    "confirm.aliasOperator": "Tem certeza que deseja conceder ao {user} as mesmas permissões que o proprietário?",
+    "done.user": "O grupo do usuário foi alterado",
+    "done.operator": "O grupo do operador foi alterado",
+    "title": {
+      "group.user": "Grupo do usuário",
+      "group.operator": "Grupo do operador",
+      "change.user": "Alterar grupo do usuário",
+      "change.operator": "Alterar grupo",
+      "history.user": "Histórico do grupo de usuário",
+      "history.operator": "Histórico do grupo de operador"
+    },
+    "mobileTitle": {
+      "group.user": "Grupo do usuário",
+      "group.operator": "Grupo do operador",
+      "change.user": "Alterar grupo",
+      "change.operator": "Alterar grupo",
+      "history.user": "Histórico do grupo",
+      "history.operator": "Histórico do grupo"
+    }
   },
   "phone": {
     "mobile": "Telefone celular",

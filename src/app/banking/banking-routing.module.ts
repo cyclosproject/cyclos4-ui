@@ -11,6 +11,7 @@ import { SearchAuthorizedPaymentsComponent } from 'app/banking/transactions/sear
 import { ViewAuthorizationHistoryComponent } from 'app/banking/transactions/view-authorization-history.component';
 import { trim } from 'lodash';
 import { BankingHelperService } from 'app/core/banking-helper.service';
+import { AuthHelperService } from 'app/core/auth-helper.service';
 import { RedeemVoucherComponent } from 'app/banking/vouchers/redeem-voucher.component';
 import { ViewVoucherComponent } from 'app/banking/vouchers/view-voucher.component';
 import { SearchRedeemedVouchersComponent } from 'app/banking/vouchers/search-redeemed-vouchers.component';
@@ -32,20 +33,34 @@ const AccountMenu: ConditionalMenu = injector => {
   return new ActiveMenu(Menu.ACCOUNT_HISTORY, { accountType: accountType });
 };
 
+const PaymentMenu: ConditionalMenu = injector => {
+  // The scope depends on the URL
+  const url = injector.get(Router).url;
+  const parts = trim(url, '/').split('/');
+  // /banking/:user/payment[/:to]
+  const from = parts[1];
+  const to = parts[3];
+  const authHelper = injector.get(AuthHelperService);
+  let ownMenu: Menu = null;
+  if (authHelper.isSelf(from)) {
+    if (authHelper.isSelf(to)) {
+      ownMenu = Menu.PAYMENT_TO_SELF;
+    } else if (authHelper.isSystem(to)) {
+      ownMenu = Menu.PAYMENT_TO_SYSTEM;
+    } else {
+      ownMenu = Menu.PAYMENT_TO_USER;
+    }
+  }
+  return AuthHelperService.menuByRole(ownMenu)(injector);
+};
+
 const bankingRoutes: Routes = [
   {
     path: '',
     canActivateChild: [LoggedUserGuard],
     children: [
       {
-        path: 'account',
-        component: AccountHistoryComponent,
-        data: {
-          menu: Menu.ACCOUNT_HISTORY
-        }
-      },
-      {
-        path: 'account/:type',
+        path: ':owner/account/:type',
         component: AccountHistoryComponent,
         data: {
           menu: AccountMenu
@@ -73,24 +88,17 @@ const bankingRoutes: Routes = [
         }
       },
       {
-        path: 'payment',
+        path: ':user/payment',
         component: PerformPaymentComponent,
         data: {
-          menu: Menu.PAYMENT_TO_USER
+          menu: PaymentMenu
         }
       },
       {
-        path: 'payment/system',
+        path: ':user/payment/:to',
         component: PerformPaymentComponent,
         data: {
-          menu: Menu.PAYMENT_TO_SYSTEM
-        }
-      },
-      {
-        path: 'payment/:to',
-        component: PerformPaymentComponent,
-        data: {
-          menu: Menu.PAYMENT_TO_USER
+          menu: PaymentMenu
         }
       },
       {

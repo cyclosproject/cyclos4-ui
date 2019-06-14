@@ -2,6 +2,15 @@
   <div *ngIf="showAccount" class="status-label col-12">
     {{ account.type.name }}
   </div>
+  <ng-container *ngIf="account.user && showUser">
+    <div class="status-label col-6 col-md-3">
+      {{ i18n.general.user }}
+    </div>
+    <div class="status-label col-6 col-md-9">
+      <user-link [user]="account.user"></user-link>
+    </div>
+  </ng-container>
+  <hr *ngIf="showAccount || (account.user && showUser)">
   <ng-container
     *ngFor="let indicator of indicators$ | async; let last = last">
     <div class="status-label col-6 col-md-3"

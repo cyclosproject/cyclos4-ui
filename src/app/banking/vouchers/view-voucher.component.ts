@@ -4,7 +4,6 @@ import { VouchersService } from 'app/api/services';
 import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
 import { HeadingAction } from 'app/shared/action';
 import { capitalize } from 'lodash';
-import { Configuration } from 'app/configuration';
 import { ApiConfiguration } from 'app/api/api-configuration';
 
 @Component({

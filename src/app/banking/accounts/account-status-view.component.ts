@@ -34,6 +34,14 @@ export class AccountStatusViewComponent extends BaseComponent implements OnInit,
     this._showAccount = truthyAttr(show);
   }
 
+  private _showUser: boolean | string = false;
+  @Input() get showUser(): boolean | string {
+    return this._showUser;
+  }
+  set showUser(show: boolean | string) {
+    this._showUser = truthyAttr(show);
+  }
+
   indicators$ = new BehaviorSubject<StatusIndicator[]>(null);
 
   constructor(injector: Injector) {

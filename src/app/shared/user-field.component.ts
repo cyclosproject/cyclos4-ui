@@ -38,6 +38,8 @@ export class UserFieldComponent
   set user(user: User) {
     this.selection = user;
   }
+
+  @Input() exclude: string;
   @Input() allowPrincipal = false;
   @Input() allowSearch = true;
   @Input() allowContacts = true;
@@ -114,6 +116,9 @@ export class UserFieldComponent
     }
     const loggedUser = this.login.user;
     const toExclude = loggedUser ? [loggedUser.id] : [];
+    if (this.exclude) {
+      toExclude.push(this.exclude);
+    }
     this.nextRequestState.leaveNotification = true;
     return this.usersService.searchUsers({
       keywords: text,
@@ -133,7 +138,10 @@ export class UserFieldComponent
 
   showContactList() {
     const ref = this.modal.show(PickContactComponent, {
-      class: 'modal-form'
+      class: 'modal-form',
+      initialState: {
+        exclude: this.exclude
+      }
     });
     const component = ref.content as PickContactComponent;
     component.select.pipe(first()).subscribe(u => this.select(u));
