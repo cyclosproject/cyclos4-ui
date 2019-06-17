@@ -32,7 +32,8 @@
     "Operations",
     "Sessions",
     "Vouchers",
-    "Alerts"
+    "Alerts",
+    "Brokering"
   ],
   "enumStyle": "upper"
 }
