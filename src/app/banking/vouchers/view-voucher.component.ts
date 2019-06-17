@@ -3,9 +3,7 @@ import { VoucherView, VoucherCreationTypeEnum, ImageSizeEnum } from 'app/api/mod
 import { VouchersService } from 'app/api/services';
 import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
 import { HeadingAction } from 'app/shared/action';
-import { capitalize } from 'lodash';
 import { BehaviorSubject } from 'rxjs';
-
 
 @Component({
   selector: 'app-view-voucher',
@@ -13,7 +11,6 @@ import { BehaviorSubject } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ViewVoucherComponent extends BaseViewPageComponent<VoucherView> implements OnInit {
-
 
   qrCodeUrl$ = new BehaviorSubject<string>(null);
 
@@ -42,13 +39,9 @@ export class ViewVoucherComponent extends BaseViewPageComponent<VoucherView> imp
         this.i18n.voucher.cancelAndRefund : this.i18n.general.cancel;
       actions.push(new HeadingAction('cancel', label, () => {
         // TODO: CANCEL THE VOUCHER (we don't have api right now)
-        this.notification.info('the voucher was canceled', true);
+        this.notification.warning('It is not implemented yet.', true);
       }));
     }
     return actions;
-  }
-
-  capitalizeFirst(value: string): string {
-    return capitalize.apply(value);
   }
 }

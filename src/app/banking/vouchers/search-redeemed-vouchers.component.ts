@@ -8,7 +8,6 @@ type UserVoucherSearchParams = UserVouchersQueryFilters & {
   user: string;
   fields?: Array<string>;
 };
-
 @Component({
   selector: 'app-search-redeemed-vouchers',
   templateUrl: './search-redeemed-vouchers.component.html',
@@ -56,12 +55,8 @@ export class SearchRedeemedVouchersComponent
   get toLink() {
     return (row: VoucherResult) => this.path(row);
   }
-  /**
-   * Returns the route components for the given row
-   * @param row The row
-   */
+
   path(row: VoucherResult): string[] {
     return ['/banking/vouchers/', row.id];
   }
-
 }

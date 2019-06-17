@@ -1,7 +1,6 @@
 <page-layout [ready]="data$ | async">
-  <page-content *ngIf="data$ | async; else loading"
-    [heading]="i18n.voucher.redeem.title"
-    [mobileHeading]="i18n.voucher.redeem.mobileTitle"
+  <page-content *ngIf="data$ | async; else loading" [heading]="data.type.name"
+    [mobileHeading]="data.type.name"
     [headingActions]="headingActions$ | async">
 
     <div class="d-flex flex-grow-1 flex-column">
@@ -22,7 +21,7 @@
           </label-value>
           <label-value *ngIf="data.creationType"
             [label]="i18n.voucher.creationType">
-            {{ capitalizeFirst(data.creationType) }}
+            {{ data.creationType | capitalizeFirst }}
           </label-value>
           <label-value [label]="i18n.general.creationDate">
             {{ data.creationDate | dateTime}}
@@ -37,7 +36,7 @@
             </a>
           </label-value>
           <label-value [label]="i18n.general.status">
-            {{ capitalizeFirst(data.status) }}
+            {{ data.status | capitalizeFirst }}
           </label-value>
           <label-value *ngIf="data.redeemer"
             [label]="i18n.voucher.redeem.redeemer">

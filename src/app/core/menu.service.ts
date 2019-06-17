@@ -595,11 +595,11 @@ export class MenuService {
         add(Menu.AUTHORIZED_PAYMENTS, '/banking/authorized-payments', 'assignment_turned_in', this.i18n.menu.bankingAuthorizations);
       }
 
-      if (vouchers.redeem) { // FIX ICON
-        add(Menu.REDEEM_VOUCHER, '/banking/vouchers/redeem', 'payment', this.i18n.menu.bankingVouchersRedeem);
-      }
-      if (vouchers.viewRedeemed) { // FIX ICON
+      if (vouchers.viewRedeemed) { // FIX ICON ?
         add(Menu.SEARCH_REDEEMED, '/banking/vouchers/search-redeemed', 'search', this.i18n.menu.bankingVouchersSearchRedeemed);
+      }
+      if (vouchers.redeem) { // FIX ICON ?
+        add(Menu.REDEEM_VOUCHER, '/banking/vouchers/redeem', 'payment', this.i18n.menu.bankingVouchersRedeem);
       }
       addOperations(RootMenu.BANKING);
       addContentPages(Menu.CONTENT_PAGE_BANKING);
