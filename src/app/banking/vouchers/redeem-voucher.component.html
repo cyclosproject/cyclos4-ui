@@ -20,10 +20,10 @@
 
       <div class="d-flex flex-grow-1 flex-column">
 
-        <div
-          [ngClass]="(layout.ltsm$ | async)? '' : 'd-flex flex-row-reverse justify-content-between'">
+        <div class="d-sm-flex flex-row-sm-reverse justify-content-sm-between">
           <div *ngIf="dataForRedeem.type.image"
-            [ngClass]="dataForRedeem.type.voucherDescription ? 'image d-flex justify-content-center mt-2 mb-4' :  'image d-flex flex-grow-1 justify-content-center mt-2 mb-4'">
+            class="image d-flex justify-content-center mt-2 mb-4"
+            [ngClass]="{'flex-grow-1':  dataForRedeem.type.voucherDescription}">
             <avatar size="160" imageSize="200" useLightbox
               [image]="dataForRedeem.type.image">
             </avatar>

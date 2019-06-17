@@ -89,7 +89,6 @@ import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { BooleanPipe } from 'app/shared/boolean.pipe';
 import { MultipleUsersFieldComponent } from 'app/shared/multiple-users-field.component';
 import { UserInfoComponent } from 'app/shared/user-info.component';
-import { CapitalizeFirst } from 'app/shared/capitalize-first.pipe';
 
 
 
@@ -183,8 +182,7 @@ export function initTooltipConfig(): TooltipConfig {
     NumberPipe,
     CurrencyPipe,
     BooleanPipe,
-    AccountPipe,
-    CapitalizeFirst
+    AccountPipe
   ],
   imports: [
     CommonModule,
@@ -299,8 +297,7 @@ export function initTooltipConfig(): TooltipConfig {
     NumberPipe,
     CurrencyPipe,
     BooleanPipe,
-    AccountPipe,
-    CapitalizeFirst
+    AccountPipe
   ],
   providers: [
     { provide: TooltipConfig, useFactory: initTooltipConfig },

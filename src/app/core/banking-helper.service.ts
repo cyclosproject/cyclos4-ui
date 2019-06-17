@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import {
   Account, AccountHistoryResult, AccountKind, BaseTransferDataForSearch,
-  PreselectedPeriod, Transaction, TransactionDataForSearch, Transfer, AccountType
+  PreselectedPeriod, Transaction, TransactionDataForSearch, Transfer, AccountType, VoucherStatusEnum, VoucherCreationTypeEnum
 } from 'app/api/models';
 import { FormatService } from 'app/core/format.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { blank, empty } from 'app/shared/helper';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
+import { I18n } from 'app/i18n/i18n';
 
 /**
  * Helper service for banking functions
@@ -19,8 +20,9 @@ export class BankingHelperService {
 
   constructor(
     private dataForUiHolder: DataForUiHolder,
-    private format: FormatService) {
-  }
+    private format: FormatService,
+    private i18n: I18n,
+  ) { }
 
   /**
    * Returns the account types from the logged user permissions, optionally filtering by visibility
@@ -125,5 +127,33 @@ export class BankingHelperService {
     }
   }
 
+  /**
+   * Returns the voucher status display
+   */
+  voucherStatus(status: VoucherStatusEnum): string {
+    switch (status) {
+      case VoucherStatusEnum.REDEEMED:
+        return this.i18n.voucher.status.redeemed;
+      case VoucherStatusEnum.PENDING:
+        return this.i18n.voucher.status.pending;
+      case VoucherStatusEnum.OPEN:
+        return this.i18n.voucher.status.open;
+      case VoucherStatusEnum.EXPIRED:
+        return this.i18n.voucher.status.expired;
+      case VoucherStatusEnum.CANCELED:
+        return this.i18n.voucher.status.canceled;
+    }
+  }
 
+  /**
+   * Returns the voucher creation type display
+   */
+  voucherCreationType(status: VoucherCreationTypeEnum): string {
+    switch (status) {
+      case VoucherCreationTypeEnum.BOUGHT:
+        return this.i18n.voucher.boughtType;
+      case VoucherCreationTypeEnum.GENERATED:
+        return this.i18n.voucher.generatedType;
+    }
+  }
 }

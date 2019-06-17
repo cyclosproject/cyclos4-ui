@@ -568,9 +568,18 @@
       "searchTitle": "Redeemed vouchers",
       "searchMobileTitle": "Redeemed vouchers"
     },
+    "status": {
+      "redeemed": "Redeemed",
+      "pending": "Pending",
+      "open": "Open",
+      "expired": "Expired",
+      "canceled": "Canceled"
+    },
     "type": {
       "title": "Voucher type"
     },
+    "boughtType": "Bought",
+    "generatedType": "Generated",
     "buy": {
       "buyer": "Buyer",
       "payment": "Buy payment"

@@ -5,7 +5,7 @@
 
     <div class="d-flex flex-grow-1 flex-column">
       <div
-        [class]="(layout.gtsm$ | async) ? 'd-flex flex-row-reverse justify-content-between' : 'd-flex flex-column' ">
+        class="d-flex flex-column flex-sm-row-reverse justify-content-sm-between">
         <div *ngIf="data.type.image"
           class="image d-flex justify-content-center mt-2 mb-4 align-self-center">
           <avatar size="160" imageSize="200" useLightbox
@@ -21,7 +21,7 @@
           </label-value>
           <label-value *ngIf="data.creationType"
             [label]="i18n.voucher.creationType">
-            {{ data.creationType | capitalizeFirst }}
+            {{ bankingHelper.voucherCreationType(data.creationType) }}
           </label-value>
           <label-value [label]="i18n.general.creationDate">
             {{ data.creationDate | dateTime}}
@@ -30,13 +30,12 @@
             <user-link [user]="data.buyer"></user-link>
           </label-value>
           <label-value *ngIf="data.buy" [label]="i18n.voucher.buy.payment">
-            <a
-              [routerLink]="['/banking/transfer/' + data.buy.transactionNumber]">
-              {{ data.buy.transactionNumber }}
+            <a [routerLink]="transferPath(data.buy)">
+              {{ bankingHelper.transactionNumberOrId(data.buy) }}
             </a>
           </label-value>
           <label-value [label]="i18n.general.status">
-            {{ data.status | capitalizeFirst }}
+            {{ bankingHelper.voucherStatus(data.status) }}
           </label-value>
           <label-value *ngIf="data.redeemer"
             [label]="i18n.voucher.redeem.redeemer">
@@ -48,9 +47,8 @@
           </label-value>
           <label-value *ngIf="data.redeem"
             [label]="i18n.voucher.redeem.payment">
-            <a
-              [routerLink]="['/banking/transfer/' + data.redeem.transactionNumber]">
-              {{ data.redeem.transactionNumber }}
+            <a [routerLink]="transferPath(data.redeem)">
+              {{ bankingHelper.transactionNumberOrId(data.redeem) }}
             </a>
           </label-value>
           <label-value *ngIf="!data.redeemAfterDateReached"
@@ -67,9 +65,9 @@
       <ng-container *ngIf="data.description"
         class="d-flex justify-content-start">
         <h2 class="mt-3"> {{ i18n.general.description }} </h2>
-        <p>
+        <div class="break-nl">
           {{ data.description }}
-        </p>
+        </div>
       </ng-container>
       <!-- QrCode -->
       <h2 class="mt-3"></h2>

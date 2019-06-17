@@ -707,11 +707,11 @@ export class MenuService {
   }
 
   private resolveVoucherPermissions(voucherPermissions: VoucherPermissions[]): ResolvedVouchersPermissions {
-    const buy = voucherPermissions.find(config => config.buy) ? true : false;
-    const redeem = voucherPermissions.find(config => config.redeem) ? true : false;
-    const generate = voucherPermissions.find(config => config.generate) ? true : false;
-    const viewBought = voucherPermissions.find(config => config.viewBought) ? true : false;
-    const viewRedeemed = voucherPermissions.find(config => config.viewRedeemed) ? true : false;
+    const buy = !!voucherPermissions.find(config => config.buy);
+    const redeem = !!voucherPermissions.find(config => config.redeem);
+    const generate = !!voucherPermissions.find(config => config.generate);
+    const viewBought = !!voucherPermissions.find(config => config.viewBought);
+    const viewRedeemed = !!voucherPermissions.find(config => config.viewRedeemed);
     return { buy, redeem, generate, viewBought, viewRedeemed };
   }
 

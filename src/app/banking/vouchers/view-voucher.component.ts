@@ -1,9 +1,10 @@
 import { Component, OnInit, Injector, ChangeDetectionStrategy } from '@angular/core';
-import { VoucherView, VoucherCreationTypeEnum, ImageSizeEnum } from 'app/api/models';
+import { VoucherView, VoucherCreationTypeEnum, ImageSizeEnum, Transaction } from 'app/api/models';
 import { VouchersService } from 'app/api/services';
 import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
 import { HeadingAction } from 'app/shared/action';
 import { BehaviorSubject } from 'rxjs';
+import { BankingHelperService } from 'app/core/banking-helper.service';
 
 @Component({
   selector: 'app-view-voucher',
@@ -17,6 +18,7 @@ export class ViewVoucherComponent extends BaseViewPageComponent<VoucherView> imp
   constructor(
     injector: Injector,
     private voucherService: VouchersService,
+    public bankingHelper: BankingHelperService
   ) {
     super(injector);
   }
@@ -43,5 +45,13 @@ export class ViewVoucherComponent extends BaseViewPageComponent<VoucherView> imp
       }));
     }
     return actions;
+  }
+
+  /**
+   * Returns the path to the given transaction
+   * @param row The row
+   */
+  transferPath(transfer: Transaction): string[] {
+    return ['/banking', 'transfer', this.bankingHelper.transactionNumberOrId(transfer)];
   }
 }
