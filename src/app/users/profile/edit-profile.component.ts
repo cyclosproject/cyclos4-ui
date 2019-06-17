@@ -190,7 +190,7 @@ export class EditProfileComponent
   isEmpty(field: string | CustomField): boolean {
     const name = this.fieldName(field);
     const user = this.user.value;
-    return empty(user[name]) && empty(user.customValues[name]);
+    return empty(user[name]) && empty((user.customValues || {})[name]);
   }
 
   canEdit(field: string | CustomField): boolean {
