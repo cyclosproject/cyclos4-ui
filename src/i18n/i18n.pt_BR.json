@@ -248,22 +248,22 @@
       "passwordConfirmation": "Confirmação da senha",
       "title": {
         "change.self": "Alterar sua senha",
-        "change.user": "Change user password",
+        "change.user": "Alterar senha do usuário",
         "forgotten": "Recuperar sua senha",
         "manage.single.self": "Gerenciar sua senha",
         "manage.multiple.self": "Gerenciar as suas senhas",
-        "manage.single.user": "Manage user password",
-        "manage.multiple.user": "Manage user passwords",
+        "manage.single.user": "Gerenciar senhas do usuário",
+        "manage.multiple.user": "Gerenciar senhas do usuário",
         "securityAnswer": "Definir sua resposta de segurança"
       },
       "mobileTitle": {
         "change.self": "Alteração de senha",
         "change.user": "Alteração de senha",
         "forgotten": "Recuperação de senha",
-        "manage.single.self": "Password",
-        "manage.multiple.self": "Passwords",
-        "manage.single.user": "User password",
-        "manage.multiple.user": "User passwords",
+        "manage.single.self": "Senha",
+        "manage.multiple.self": "Senhas",
+        "manage.single.user": "Senha do usuário",
+        "manage.multiple.user": "Senhas do usuário",
         "securityAnswer": "Resposta de segurança"
       },
       "forgotten": {
@@ -393,7 +393,7 @@
     "to": "Para",
     "account": "Conta",
     "fromAccount": "Conta de origem",
-    "fromUser": "From user",
+    "fromUser": "Do usuário",
     "toAccount": "Conta de destino",
     "toUser": "Para Usuário",
     "requiresAuthorization": "O pagamento necessitará de autorização",
@@ -464,8 +464,8 @@
       "settled": "Liquidado"
     },
     "title": {
-      "paymentSystemToSystem": "Payment between system accounts",
-      "paymentSystemToUser": "Payment from system to user",
+      "paymentSystemToSystem": "Pagamento entre contas de sistema",
+      "paymentSystemToUser": "Pagamento de sistema para usuário",
       "paymentToSystem": "Pagamento para sistema",
       "paymentToSelf": "Pagamento entre contas",
       "paymentToUser": "Pagamento para usuário",
@@ -487,8 +487,8 @@
       "childTransfers": "Transferências geradas por esta"
     },
     "mobileTitle": {
-      "paymentSystemToSystem": "Pay system",
-      "paymentSystemToUser": "Pay user",
+      "paymentSystemToSystem": "Pagar sistema",
+      "paymentSystemToUser": "Pagar usuário",
       "paymentToSystem": "Pagar para sistema",
       "paymentToSelf": "Pagamento interno",
       "paymentToUser": "Pagar usuário",
@@ -675,11 +675,11 @@
     "contact": "Contato",
     "profile": {
       "noPermission": "Você não tem permissão para ver o perfil deste usuário",
-      "showActions": "Show actions",
-      "hideActions": "Hide actions",
-      "banking": "Banking",
-      "management": "Management",
-      "edit": "Edit profile",
+      "showActions": "Mostrar ações",
+      "hideActions": "Ocultar ações",
+      "banking": "Finanças",
+      "management": "Gestão",
+      "edit": "Editar perfil",
       "managePasswords": "Manage passwords",
       "addContact": "Adicionar aos meus contatos",
       "addContact.done": "{user} foi adicionado à sua lista de contactos",
