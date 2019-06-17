@@ -190,6 +190,7 @@
     "banking.paySelf": "Pagamento entre contas",
     "banking.scheduledPayments": "Pagamentos agendados",
     "banking.authorizations": "Autorizações de pagamento",
+    "banking.transfersOverview": "Transfers overview",
     "operators": "Operadores",
     "operators.operators": "Operadores",
     "operators.register": "Registrar operador",
@@ -389,6 +390,7 @@
     "amount": "Valor",
     "type": "Tipo de pagamento",
     "fromTo": "De / para",
+    "fromTo.text": "{from} to {to}",
     "from": "De",
     "to": "Para",
     "account": "Conta",
@@ -484,7 +486,8 @@
       "details.external": "Detalhes do pagamento externo",
       "details.transfer": "Detalhes da transferência",
       "parentTransfer": "Transferência que gerou esta",
-      "childTransfers": "Transferências geradas por esta"
+      "childTransfers": "Transferências geradas por esta",
+      "transfersOverview": "Transfers overview"
     },
     "mobileTitle": {
       "paymentSystemToSystem": "Pagar sistema",
@@ -507,7 +510,8 @@
       "details.external": "Pagamento externo",
       "details.transfer": "Transação",
       "parentTransfer": "Transação de origem",
-      "childTransfers": "Transações geradas"
+      "childTransfers": "Transações geradas",
+      "transfersOverview": "Transfers overview"
     },
     "viewAuthorizations": "Ver autorizações",
     "viewThisTransfer": "Ver esta transferência",
