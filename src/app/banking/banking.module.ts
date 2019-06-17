@@ -14,6 +14,7 @@ import { ViewTransactionComponent } from 'app/banking/transactions/view-transact
 import { TransferDetailsComponent } from 'app/banking/transfers/transfer-details.component';
 import { ViewTransferComponent } from 'app/banking/transfers/view-transfer.component';
 import { SharedModule } from 'app/shared/shared.module';
+import { SearchTransfersOverviewComponent } from 'app/banking/transfers/search-transfers-overview.component';
 
 /**
  * Banking module
@@ -30,6 +31,7 @@ import { SharedModule } from 'app/shared/shared.module';
     ViewTransferComponent,
     TransferDetailsComponent,
     ViewAuthorizationHistoryComponent,
+    SearchTransfersOverviewComponent,
 
     SearchScheduledPaymentsComponent,
     SearchAuthorizedPaymentsComponent,

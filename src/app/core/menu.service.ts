@@ -587,6 +587,10 @@ export class MenuService {
         add(Menu.AUTHORIZED_PAYMENTS, `/banking/${owner}/authorized-payments`,
           'assignment_turned_in', this.i18n.menu.bankingAuthorizations);
       }
+      if (banking.searchGeneralTransfers) {
+        add(Menu.ADMIN_TRANSFERS_OVERVIEW, `/banking/transfers-overview`,
+          'compare_arrows', this.i18n.menu.bankingTransfersOverview);
+      }
       addOperations(RootMenu.BANKING);
       addContentPages(Menu.CONTENT_PAGE_BANKING);
 
@@ -602,6 +606,10 @@ export class MenuService {
         add(Menu.MY_BROKERED_USERS, '/users/brokerings', 'supervisor_account', this.i18n.menu.brokeringUsers);
         if (users.registerAsBroker) {
           add(Menu.BROKER_REGISTRATION, '/users/registration', 'registration', this.i18n.menu.brokeringRegister);
+        }
+        if (banking.searchGeneralTransfers) {
+          add(Menu.BROKER_TRANSFERS_OVERVIEW, `/banking/transfers-overview`,
+            'compare_arrows', this.i18n.menu.bankingTransfersOverview);
         }
       }
 

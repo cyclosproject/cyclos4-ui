@@ -12,6 +12,9 @@ import { ViewAuthorizationHistoryComponent } from 'app/banking/transactions/view
 import { trim } from 'lodash';
 import { BankingHelperService } from 'app/core/banking-helper.service';
 import { AuthHelperService } from 'app/core/auth-helper.service';
+import { SearchTransfersOverviewComponent } from 'app/banking/transfers/search-transfers-overview.component';
+import { DataForUiHolder } from 'app/core/data-for-ui-holder';
+import { RoleEnum } from 'app/api/models';
 
 /**
  * A conditional menu resolver for content, which finds the content page by slug to resolve the correct menu
@@ -51,6 +54,16 @@ const PaymentMenu: ConditionalMenu = injector => {
   return AuthHelperService.menuByRole(ownMenu)(injector);
 };
 
+const TransfersOverviewMenu: ConditionalMenu = injector => {
+  const role = injector.get(DataForUiHolder).role;
+  switch (role) {
+    case RoleEnum.ADMINISTRATOR:
+      return Menu.ADMIN_TRANSFERS_OVERVIEW;
+    case RoleEnum.BROKER:
+      return Menu.BROKER_TRANSFERS_OVERVIEW;
+  }
+};
+
 const bankingRoutes: Routes = [
   {
     path: '',
@@ -75,6 +88,13 @@ const bankingRoutes: Routes = [
         component: ViewTransactionComponent,
         data: {
           menu: Menu.ACCOUNT_HISTORY
+        }
+      },
+      {
+        path: 'transfers-overview',
+        component: SearchTransfersOverviewComponent,
+        data: {
+          menu: TransfersOverviewMenu
         }
       },
       {
