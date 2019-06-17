@@ -20,20 +20,24 @@
 
       <div class="d-flex flex-grow-1 flex-column">
 
-        <div class="d-flex flex-row-reverse">
+        <div
+          [ngClass]="(layout.ltsm$ | async)? '' : 'd-flex flex-row-reverse justify-content-between'">
           <div *ngIf="dataForRedeem.type.image"
-            class="image d-flex justify-content-center mt-2 mb-4"
-            [class]="(layout.ltsm$ | async) ? 'flex-grow-1' : ''">
+            [ngClass]="dataForRedeem.type.voucherDescription ? 'image d-flex justify-content-center mt-2 mb-4' :  'image d-flex flex-grow-1 justify-content-center mt-2 mb-4'">
             <avatar size="160" imageSize="200" useLightbox
-              [image]="dataForRedeem.type.image"></avatar>
+              [image]="dataForRedeem.type.image">
+            </avatar>
           </div>
 
-          <div *ngIf="dataForRedeem.type.voucherDescription">
-            <label-value type=text>{{ dataForRedeem.type.voucherDescription }}
-            </label-value>
-          </div>
+          <ng-container *ngIf="dataForRedeem.type.voucherDescription">
+            {{ dataForRedeem.type.voucherDescription }}
+          </ng-container>
         </div>
-        <label-value [label]="i18n.voucher.token"> {{ dataForRedeem.token}}
+        <h2 class="mt-3"></h2>
+        <label-value [label]="i18n.general.type">
+          {{ dataForRedeem.type.name }}
+        </label-value>
+        <label-value [label]="i18n.voucher.token"> {{ dataForRedeem.token }}
         </label-value>
         <label-value [label]="i18n.voucher.buy.buyer">
           <user-link [user]="dataForRedeem.buyer"></user-link>
