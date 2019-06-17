@@ -913,7 +913,7 @@
     "theme.light": "Light",
     "theme.dark": "Dark"
   },
-  "userAlerts": {
+  "userAlert": {
     "title": "Search user alerts",
     "text": "Text",
     "mobileTitle": "User alerts",
