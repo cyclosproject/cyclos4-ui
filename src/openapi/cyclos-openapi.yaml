@@ -40575,6 +40575,15 @@ components:
             Permissions related to user alers
           allOf:
             - $ref: '#/components/schemas/AlertsPermissions'
+        vouchers:
+          description: >-
+            Permissions over vouchers
+          allOf:
+            -  $ref: '#/components/schemas/VouchersPermissions'
+
+
+
+
 
     PersonalizeNfcError:
       description: >-
@@ -45889,6 +45898,62 @@ components:
             The voucher token mask
           type: string
 
+    VoucherPermissions:
+      description: >-
+        Permissions over vouchers
+      type: object
+      properties:
+        configuration:
+          $ref: '#/components/schemas/VoucherConfiguration'
+        buy:
+          description: >-
+            Whether the logged user can buy vouchers of types belonging to this configuration
+          type: boolean
+        redeem:
+          description: >-
+            Whether the logged user can redeem vouchers of types belonging to this configuration
+          type: boolean
+        cancel:
+          description: >-
+            Whether the logged user can cancel vouchers of types belonging to this configuration.
+            Only for logged admins.
+          type: boolean
+        changeExpirationDate:
+          description: >-
+            Whether the logged user can change the expiration date of vouchers of types belonging to this configuration.
+            Only for logged admins.
+          type: boolean
+        refund:
+          description: >-
+            Whether the logged user can refund vouchers of types belonging to this configuration.
+            Only for logged admins.
+          type: boolean
+        generate:
+          description: >-
+            Whether the logged user can generate vouchers of types belonging to this configuration.
+            Only for logged admins.
+          type: boolean
+        view:
+          description: >-
+            Whether the logged user can view vouchers of types belonging to this configuration.
+            Only for logged admins.
+          type: boolean
+        viewBought:
+          description: >-
+            Whether the logged user can view vouchers bought of types belonging to this configuration.
+            Only for logged member and brokers.
+          type: boolean
+        viewRedeemed:
+          description: >-
+            Whether the logged user can view vouchers redeemed of types belonging to this configuration.
+            Only for logged member and brokers.
+          type: boolean
+        enabled:
+          description: >-
+            Whether the logged user has enabled the types belonging to this configuration.
+            Only for logged member.
+          type: boolean
+
     VoucherRedeemResult:
       description: >-
         Result when redeeming a voucher
@@ -46039,6 +46104,18 @@ components:
               $ref: '#/components/schemas/VoucherCreationTypeEnum'
             cancelAction:
               $ref: '#/components/schemas/VoucherCancelActionEnum'
+
+    VouchersPermissions:
+      description: >-
+        Permissions over voucher configurations
+      type: object
+      properties:
+        vouchers:
+          description: >-
+            Permissions over each voucher configuration
+          type: array
+          items:
+            $ref: '#/components/schemas/VoucherPermissions'
 
     WebshopAd:
       description: >-
