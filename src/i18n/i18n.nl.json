@@ -190,6 +190,7 @@
     "banking.paySelf": "De betaling zelf",
     "banking.scheduledPayments": "Geautoriseerde betalingen",
     "banking.authorizations": "Betalingsautorisaties",
+    "banking.transfersOverview": "Transfers overview",
     "operators": "Operators",
     "operators.operators": "Operators",
     "operators.register": "Register operator",
@@ -389,6 +390,7 @@
     "amount": "Bedrag",
     "type": "Type betaling",
     "fromTo": "Van / tot",
+    "fromTo.text": "{from} to {to}",
     "from": "Van",
     "to": "Tot",
     "account": "Rekening",
@@ -484,7 +486,8 @@
       "details.external": "Externe betalingsdetails",
       "details.transfer": "Betalingsoverzicht",
       "parentTransfer": "Transfer die deze",
-      "childTransfers": "Transfers gegenereerd door deze"
+      "childTransfers": "Transfers gegenereerd door deze",
+      "transfersOverview": "Transfers overview"
     },
     "mobileTitle": {
       "paymentSystemToSystem": "Pay system",
@@ -507,7 +510,8 @@
       "details.external": "External payment",
       "details.transfer": "Transfer",
       "parentTransfer": "Originating transfer",
-      "childTransfers": "Originated transfers"
+      "childTransfers": "Originated transfers",
+      "transfersOverview": "Transfers overview"
     },
     "viewAuthorizations": "Bekijk autorisaties",
     "viewThisTransfer": "Bekijk deze overdracht",
