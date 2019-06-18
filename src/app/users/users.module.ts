@@ -26,6 +26,7 @@ import { ViewUserStatusComponent } from 'app/users/status/view-user-status.compo
 import { UsersRoutingModule } from 'app/users/users-routing.module';
 import { SearchConnectedComponent } from 'app/users/connected/search-connected.component';
 import { OperatorGroupFormComponent } from 'app/users/operator-groups/operator-group-form.component';
+import { SearchUserAlertsComponent } from 'app/users/alerts/search-user-alerts.component';
 
 /**
  * Users module
@@ -64,6 +65,8 @@ import { OperatorGroupFormComponent } from 'app/users/operator-groups/operator-g
 
     ViewUserStatusComponent,
     ViewUserStatusHistoryComponent,
+
+    SearchUserAlertsComponent,
     ViewUserGroupComponent,
     ViewUserGroupHistoryComponent
   ],

@@ -1,6 +1,6 @@
 import { Injectable, Injector } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { AccountType, Auth, DataForUi, Operation, RoleEnum } from 'app/api/models';
+import { AccountType, Auth, DataForUi, Operation, RoleEnum, VoucherPermissions } from 'app/api/models';
 import { Configuration } from 'app/configuration';
 import { BankingHelperService } from 'app/core/banking-helper.service';
 import { BreadcrumbService } from 'app/core/breadcrumb.service';
@@ -36,6 +36,14 @@ export interface NavigateParams {
 
   /** An UI event to cancel */
   event?: Event;
+}
+
+interface ResolvedVouchersPermissions {
+  buy: boolean;
+  redeem: boolean;
+  generate: boolean;
+  viewBought: boolean;
+  viewRedeemed: boolean;
 }
 
 /**
@@ -441,6 +449,7 @@ export class MenuService {
     const users = permissions.users || {};
     const marketplace = permissions.marketplace || {};
     const operations = permissions.operations || {};
+    const vouchers = this.resolveVoucherPermissions(permissions.vouchers.vouchers || []);
     const userOperations = (operations.user || []).filter(o => o.run).map(o => o.operation);
     const systemOperations = (operations.system || []).filter(o => o.run).map(o => o.operation);
 
@@ -585,6 +594,13 @@ export class MenuService {
       if ((banking.authorizations || {}).view) {
         add(Menu.AUTHORIZED_PAYMENTS, '/banking/authorized-payments', 'assignment_turned_in', this.i18n.menu.bankingAuthorizations);
       }
+
+      if (vouchers.viewRedeemed) { // FIX ICON ?
+        add(Menu.SEARCH_REDEEMED, '/banking/vouchers/search-redeemed', 'search', this.i18n.menu.bankingVouchersSearchRedeemed);
+      }
+      if (vouchers.redeem) { // FIX ICON ?
+        add(Menu.REDEEM_VOUCHER, '/banking/vouchers/redeem', 'payment', this.i18n.menu.bankingVouchersRedeem);
+      }
       addOperations(RootMenu.BANKING);
       addContentPages(Menu.CONTENT_PAGE_BANKING);
 
@@ -617,6 +633,11 @@ export class MenuService {
       }
 
       // Marketplace
+      const alerts = permissions.alerts || {};
+      if (alerts.view) {
+        add(Menu.USER_ALERTS, '/users/alerts', 'notification_important', this.i18n.menu.marketplaceUserAlerts);
+      }
+
       if (marketplace.search) {
         add(Menu.SEARCH_ADS, '/marketplace/search', 'shopping_cart', this.i18n.menu.marketplaceAdvertisements);
       } else if (role !== RoleEnum.ADMINISTRATOR) {
@@ -695,6 +716,15 @@ export class MenuService {
     } else {
       return of(value);
     }
+  }
+
+  private resolveVoucherPermissions(voucherPermissions: VoucherPermissions[]): ResolvedVouchersPermissions {
+    const buy = !!voucherPermissions.find(config => config.buy);
+    const redeem = !!voucherPermissions.find(config => config.redeem);
+    const generate = !!voucherPermissions.find(config => config.generate);
+    const viewBought = !!voucherPermissions.find(config => config.viewBought);
+    const viewRedeemed = !!voucherPermissions.find(config => config.viewRedeemed);
+    return { buy, redeem, generate, viewBought, viewRedeemed };
   }
 
 }
