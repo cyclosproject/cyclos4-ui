@@ -28,6 +28,9 @@ a.plain, maybe-link.plain a {
     box-shadow: none;
   }
 }
+a.decorated {
+  color: $link-color !important;
+}
 
 .link-with-icon {
   display: flex;

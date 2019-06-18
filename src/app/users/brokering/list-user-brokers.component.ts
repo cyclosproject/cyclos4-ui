@@ -35,7 +35,7 @@ export class ListUserBrokersComponent
   }
 
   path(brokering: Brokering) {
-    return ['/users', 'brokers', brokering.broker.id];
+    return ['/users', brokering.broker.id, 'profile'];
   }
 
   onDataInitialized(data: UserBrokersData) {
@@ -51,6 +51,15 @@ export class ListUserBrokersComponent
 
   get toLink() {
     return (brokering: Brokering) => this.path(brokering);
+  }
+
+  setMain(brokering: Brokering) {
+    this.addSub(this.brokeringService.setMainBroker({
+      broker: brokering.broker.id,
+      user: this.param
+    }).subscribe(() => {
+      this.reload();
+    }));
   }
 
   remove(brokering: Brokering) {

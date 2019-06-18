@@ -1,0 +1,23 @@
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data">
+    <page-content [heading]="i18n.brokers.title.new"
+      [mobileHeading]="i18n.brokers.mobileTitle.new">
+      <form [formGroup]="form">
+        <user-field [allowContacts]="false" formControlName="broker"
+          [label]="i18n.brokers.broker">
+        </user-field>
+        <boolean-field *ngIf="data.brokers" [label]="i18n.brokers.mainBroker"
+          formControlName="mainBroker"></boolean-field>
+      </form>
+      <actions>
+        <button class="btn btn-primary" [disabled]="requesting$ | async"
+          (click)="submit()">
+          {{ i18n.general.submit }}
+        </button>
+        <button class="btn btn-outline-primary" (click)="cancel()">
+          {{ i18n.general.cancel }}
+        </button>
+      </actions>
+    </page-content>
+  </ng-container>
+</page-layout>

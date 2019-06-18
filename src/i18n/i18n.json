@@ -835,7 +835,10 @@
     "mobileTitle": {
       "list": "Brokers",
       "new": "Add broker"
-    }
+    },
+    "mainBroker": "Main broker",
+    "setMain": "Set main",
+    "broker": "Broker"
   },
   "phone": {
     "mobile": "Mobile phone",
