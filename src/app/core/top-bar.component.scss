@@ -11,7 +11,7 @@
 .logo {
   max-width: 64px;
   max-height: 30px;
-  margin-right: 1.2rem;
+  margin-right: $top-bar-with-menu-item-padding;
 }
 .menu-container {
   display: flex;
@@ -22,22 +22,27 @@
 .menu-separator {
   opacity: 0.3;
   border-left: 1px solid $top-bar-color;
-  margin: 0 .8rem 0 1.2rem;
+  margin: 0 #{$top-bar-with-menu-item-padding * 0.9} 0 $top-bar-with-menu-item-padding;
   height: 50%;
+  width: 0;
 
   &:after {
     content: '.';
     visibility: hidden;
   }
 }
-:host.has-menu ::ng-deep nav.with-user .menu-separator {
-  margin-right: 0.2rem;
-}
 
 @include media-breakpoint-up(lg) {
   :host:not(.has-menu) {
     position: relative;
   }
+}
+.personal-label {
+  margin-left: 0.5rem;
+}
+:host.has-menu .personal-label {
+  @include text-truncate();
+  max-width: 7rem;
 }
 
 :host ::ng-deep {
@@ -98,7 +103,7 @@
       padding: 0 $top-bar-with-menu-item-padding !important;
     }
     a.custom-menu {
-      padding-right: 0 !important;
+      padding: 0 $top-bar-with-menu-item-padding / 2 !important;
     }
     a:not(.never-active):not(.sub-menu-item)::before {
       content: " ";
@@ -113,8 +118,10 @@
       opacity: 0;
     }
     a.custom-menu:not(.never-active):not(.sub-menu-item)::before {
-      width: calc(100% - #{0.65 * $top-bar-with-menu-item-padding});
+      width: calc(100% - #{0.5 * $top-bar-with-menu-item-padding});
+      left: 0.25 * $top-bar-with-menu-item-padding;
     }
+
     a:not(.never-active):hover::before {
       opacity: 0.7;
     }
@@ -166,6 +173,119 @@
       icon {
         color: $top-bar-sub-item-hover-icon-color;
       }
+    }
+  }
+
+  .nav-item .menu-text {
+    transition: width ease-in-out 0.4s;
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+}
+
+body.lg :host ::ng-deep {
+  nav {
+    .menu-separator {
+      margin: 0 #{$top-bar-with-menu-item-padding-medium * 0.9} 0 $top-bar-with-menu-item-padding-medium;
+    }
+    a {
+      padding: 0 $top-bar-with-menu-item-padding-medium !important;
+    }
+    a:not(.never-active):not(.sub-menu-item)::before {
+      left: 0.8 * $top-bar-with-menu-item-padding-medium;
+      width: calc(100% - #{1.6 * $top-bar-with-menu-item-padding-medium});
+    }
+    a.custom-menu:not(.never-active):not(.sub-menu-item)::before {
+      width: calc(100% - #{0.5 * $top-bar-with-menu-item-padding-medium});
+      left: 0.25 * $top-bar-with-menu-item-padding-medium;
+    }
+  }
+
+  nav:not(.with-menu-spacious) {
+    .menu-separator {
+      margin: 0 #{$top-bar-with-menu-item-padding-medium * 0.9} 0 $top-bar-with-menu-item-padding-medium;
+    }
+    a {
+      padding: 0 $top-bar-with-menu-item-padding-medium !important;
+    }
+    a:not(.never-active):not(.sub-menu-item)::before {
+      left: 0.8 * $top-bar-with-menu-item-padding-medium;
+      width: calc(100% - #{1.6 * $top-bar-with-menu-item-padding-medium});
+    }
+    a.custom-menu:not(.never-active):not(.sub-menu-item)::before {
+      width: calc(100% - #{0.5 * $top-bar-with-menu-item-padding-medium});
+      left: 0.25 * $top-bar-with-menu-item-padding-medium;
+    }
+  }
+
+  nav.with-menu-dense menus .nav-item:not(.active) {
+    // On large displays, hide non-active labels when dense
+    icon {
+      margin-right: 0;
+    }
+    .menu-text {
+      width: 0;
+    }
+  }
+
+  nav:not(.with-menu-dense) menus .nav-item {
+    // Similarly, never hide them when not dense
+    icon {
+      margin-right: 0.5rem !important;
+    }
+    .menu-text {
+      width: auto !important;
+    }
+  }
+}
+
+body.xl :host ::ng-deep {
+  // On extra large displays never hide labels
+  menus .nav-item {
+    icon {
+      margin-right: 0.5rem !important;
+    }
+    .menu-text {
+      width: auto !important;
+    }
+  }
+  .navbar.with-menu-medium {
+    .menu-separator {
+      margin: 0 #{$top-bar-with-menu-item-padding-medium * 0.9} 0 $top-bar-with-menu-item-padding-medium;
+    }
+    a {
+      padding: 0 $top-bar-with-menu-item-padding-medium !important;
+    }
+    a:not(.never-active):not(.sub-menu-item)::before {
+      left: 0.8 * $top-bar-with-menu-item-padding-medium;
+      width: calc(100% - #{1.6 * $top-bar-with-menu-item-padding-medium});
+    }
+    a.custom-menu:not(.never-active):not(.sub-menu-item)::before {
+      width: calc(100% - #{0.5 * $top-bar-with-menu-item-padding-medium});
+      left: 0.25 * $top-bar-with-menu-item-padding-medium;
+    }
+  }
+
+  .navbar.with-menu-dense {
+    .top-title {
+      // Hide the application title on dense displays
+      display: none;
+    }
+    .menu-separator {
+      margin: 0 #{$top-bar-with-menu-item-padding-dense * 0.9} 0 $top-bar-with-menu-item-padding-dense;
+    }
+    a {
+      padding: 0 $top-bar-with-menu-item-padding-dense !important;
+    }
+    a:not(.never-active):not(.sub-menu-item)::before {
+      left: 0.8 * $top-bar-with-menu-item-padding-dense;
+      width: calc(100% - #{1.6 * $top-bar-with-menu-item-padding-dense});
+    }
+    a.custom-menu:not(.never-active):not(.sub-menu-item)::before {
+      width: calc(100% - #{0.5 * $top-bar-with-menu-item-padding-dense});
+      left: 0.25 * $top-bar-with-menu-item-padding-dense;
     }
   }
 }

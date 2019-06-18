@@ -13,5 +13,6 @@
   padding: 0;
 }
 .btn:focus {
+  -webkit-filter: brightness(80%);
   filter: brightness(80%);
 }
