@@ -19,6 +19,7 @@ import { ContactListComponent } from 'app/users/search/contact-list.component';
 import { SearchUsersComponent } from 'app/users/search/search-users.component';
 import { ViewUserStatusHistoryComponent } from 'app/users/status/view-user-status-history.component';
 import { ViewUserStatusComponent } from 'app/users/status/view-user-status.component';
+import { SearchConnectedComponent } from 'app/users/connected/search-connected.component';
 import { SearchUserAlertsComponent } from 'app/users/alerts/search-user-alerts.component';
 import { OperatorGroupFormComponent } from 'app/users/operator-groups/operator-group-form.component';
 import { ViewUserGroupComponent } from 'app/users/group-membership/view-user-group.component';
@@ -279,6 +280,13 @@ const usersRoutes: Routes = [
         component: ValidateRegistrationComponent,
         data: {
           menu: Menu.PUBLIC_REGISTRATION
+        }
+      },
+      {
+        path: 'connected',
+        component: SearchConnectedComponent,
+        data: {
+          menu: Menu.CONNECTED_USERS
         }
       },
       {

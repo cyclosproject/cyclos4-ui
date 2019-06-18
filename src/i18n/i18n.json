@@ -210,6 +210,7 @@
     "marketplace.userSearch": "Users",
     "marketplace.businessDirectory": "Business directory",
     "marketplace.advertisements": "Advertisements",
+    "marketplace.connectedUsers": "Connected users",
     "marketplace.userAlerts": "User alerts",
     "personal": "Personal",
     "personal.viewProfile": "My profile",
@@ -340,7 +341,8 @@
       "editProfile": "Edit profile",
       "password": "Password",
       "passwords": "Passwords",
-      "switchTheme": "Switch theme"
+      "switchTheme": "Switch theme",
+      "connectedUsers": "Connected users"
     },
     "accountStatus": "Account status",
     "lastIncomingPayments": "Last incoming payments",
@@ -937,6 +939,21 @@
       "removeAll": "Remove all",
       "markAllRead": "Mark all as read"
     }
+  },
+  "connectedUser": {
+    "title": "Connected users",
+    "mobileTitle": "Connected users",
+    "loggedInAt": "Logged in at",
+    "channel": "Channel",
+    "ipAddress": "IP Address",
+    "disconnect": "Disconnect user",
+    "viewConnected": {
+      "operator": "View connected operators",
+      "broker": "View connected brokers",
+      "admin": "View connected admins",
+      "member": "View connected members"
+    },
+    "showConnected": "Show connected"
   },
   "operation": {
     "user": "User",

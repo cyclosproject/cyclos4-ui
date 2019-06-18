@@ -619,7 +619,7 @@ export class MenuService {
         }
       }
 
-      // Marketplace
+      // Users
       if (users.search || users.map) {
         add(Menu.SEARCH_USERS, '/users/search', 'group', role === RoleEnum.ADMINISTRATOR
           ? this.i18n.menu.marketplaceUserSearch : this.i18n.menu.marketplaceBusinessDirectory);
@@ -627,6 +627,12 @@ export class MenuService {
       if (users.registerAsAdmin) {
         add(Menu.ADMIN_REGISTRATION, '/users/registration', 'registration', this.i18n.menu.marketplaceRegister);
       }
+      const sessions = permissions.sessions || {};
+      if (sessions.view) {
+        add(Menu.CONNECTED_USERS, '/users/connected', 'record_voice_over', this.i18n.menu.marketplaceConnectedUsers);
+      }
+
+      // Marketplace
       const alerts = permissions.alerts || {};
       if (alerts.view) {
         add(Menu.USER_ALERTS, '/users/alerts', 'notification_important', this.i18n.menu.marketplaceUserAlerts);
@@ -640,6 +646,7 @@ export class MenuService {
         marketplaceRoot.label = publicDirectory.label;
         marketplaceRoot.title = publicDirectory.label;
       }
+
       addOperations(RootMenu.MARKETPLACE);
       addContentPages(Menu.CONTENT_PAGE_MARKETPLACE);
 
