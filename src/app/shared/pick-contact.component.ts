@@ -17,7 +17,7 @@ import { map } from 'rxjs/operators';
 })
 export class PickContactComponent extends BaseComponent implements OnInit {
 
-  @Input() exclude: string;
+  @Input() exclude: string[];
 
   @Output() select = new EventEmitter<User>();
 
@@ -39,7 +39,7 @@ export class PickContactComponent extends BaseComponent implements OnInit {
       user: ApiHelper.SELF,
       fields: ['contact']
     }).subscribe(result => {
-      const contacts = (result || []).filter(c => this.exclude ? c.contact.id !== this.exclude : true);
+      const contacts = (result || []).filter(c => !(this.exclude || []).includes(c.id));
       this.contacts$.next(contacts);
     }));
   }
