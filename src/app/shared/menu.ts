@@ -85,6 +85,7 @@ export module Menu {
   export const SEARCH_USERS = new Menu(RootMenu.MARKETPLACE, 'SEARCH_USERS');
   export const SEARCH_ADS = new Menu(RootMenu.MARKETPLACE, 'SEARCH_ADS');
   export const ADMIN_REGISTRATION = new Menu(RootMenu.MARKETPLACE, 'ADMIN_REGISTRATION');
+  export const USER_ALERTS = new Menu(RootMenu.MARKETPLACE, 'USER_ALERTS');
 
   // Operators
   export const MY_OPERATORS = new Menu(RootMenu.OPERATORS, 'MY_OPERATORS');
