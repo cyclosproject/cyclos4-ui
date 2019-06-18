@@ -1,11 +1,13 @@
 <h1>{{ i18n.user.title.addContact }}</h1>
 
-<user-field #field focused [allowContacts]="false" [allowPrincipal]="false"
-  [formControl]="control" [label]="i18n.user.contact">
+<user-field #field focused excludeContacts [allowContacts]="false"
+  [allowPrincipal]="false" [formControl]="control"
+  [label]="i18n.user.contact">
 </user-field>
 
 <actions forceRow>
-  <button class="btn btn-primary" [disabled]="requesting$ | async" (click)="addContact()">
+  <button class="btn btn-primary" [disabled]="requesting$ | async"
+    (click)="addContact()">
     {{ i18n.general.submit }}
   </button>
   <button class="btn btn-outline-primary" (click)="modalRef.hide()">

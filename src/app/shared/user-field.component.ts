@@ -11,7 +11,7 @@ import { NextRequestState } from 'app/core/next-request-state';
 import { UserCacheService } from 'app/core/user-cache.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseAutocompleteFieldComponent } from 'app/shared/base-autocomplete-field.component';
-import { focus } from 'app/shared/helper';
+import { focus, truthyAttr } from 'app/shared/helper';
 import { PickContactComponent } from 'app/shared/pick-contact.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { Observable, of, Subscription } from 'rxjs';
@@ -43,6 +43,14 @@ export class UserFieldComponent
   @Input() allowPrincipal = false;
   @Input() allowSearch = true;
   @Input() allowContacts = true;
+
+  private _excludeContacts: boolean | string = false;
+  @Input() get excludeContacts(): boolean | string {
+    return this._excludeContacts;
+  }
+  set excludeContacts(exclude: boolean | string) {
+    this._excludeContacts = truthyAttr(exclude);
+  }
 
   @ViewChild('contactListButton') contactListButton: ElementRef;
   private fieldSub: Subscription;
@@ -123,6 +131,7 @@ export class UserFieldComponent
     return this.usersService.searchUsers({
       keywords: text,
       ignoreProfileFieldsInList: true,
+      excludeContacts: truthyAttr(this.excludeContacts),
       usersToExclude: toExclude,
       pageSize: Configuration.quickSearchPageSize
     });
