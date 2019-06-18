@@ -7,12 +7,10 @@ import {
 } from 'app/api/models';
 import { PaymentsService } from 'app/api/services';
 import { BankingHelperService } from 'app/core/banking-helper.service';
-import { ApiHelper } from 'app/shared/api-helper';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { ConfirmationMode } from 'app/shared/confirmation-mode';
 import { FormControlLocator } from 'app/shared/form-control-locator';
 import { clearValidatorsAndErrors, empty, locateControl, scrollTop, validateBeforeSubmit } from 'app/shared/helper';
-import { Menu } from 'app/shared/menu';
 import { cloneDeep, isEqual } from 'lodash';
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -83,12 +81,18 @@ export class PerformPaymentComponent extends BasePageComponent<DataForTransactio
 
   ConfirmationMode = ConfirmationMode;
 
+  fromParam: string;
+  toParam: string;
+  fromSelf: boolean;
+  fromSystem: boolean;
+  toSelf: boolean;
+  toSystem: boolean;
+
   steps: PaymentStep[] = ['form', 'confirm', 'done'];
   step$ = new BehaviorSubject<PaymentStep>(null);
   form: FormGroup;
   confirmationPassword: FormControl;
   currency$ = new BehaviorSubject<Currency>(null);
-  toParam: string;
   title: string;
   mobileTitle: string;
   actualData: DataForTransaction;
@@ -135,28 +139,35 @@ export class PerformPaymentComponent extends BasePageComponent<DataForTransactio
   ngOnInit() {
     super.ngOnInit();
 
-    // Resolve the to parameter
+    // Resolve the from and to parameters
     const route = this.route.snapshot;
-    const menu = route.data.menu as Menu;
-    switch (menu) {
-      case Menu.PAYMENT_TO_SYSTEM:
-        // Payment to system account
-        this.toParam = ApiHelper.SYSTEM;
-        this.title = this.i18n.transaction.title.paymentToSystem;
-        this.mobileTitle = this.i18n.transaction.mobileTitle.paymentToSystem;
-        break;
-      case Menu.PAYMENT_TO_SELF:
-        // Payment between own accounts
-        this.toParam = ApiHelper.SELF;
+    this.fromParam = route.params.from;
+    this.fromSelf = this.authHelper.isSelf(this.fromParam);
+    this.fromSystem = this.authHelper.isSystem(this.fromParam);
+    this.toParam = route.params.to;
+    this.toSelf = this.toParam != null && this.authHelper.isSelf(this.fromParam);
+    this.toSystem = this.toParam != null && this.authHelper.isSystem(this.toParam);
+
+    // Resolve the correct title according to the from and to parameters
+    if (this.fromSystem) {
+      if (this.toSystem) {
+        this.title = this.i18n.transaction.title.paymentSystemToSystem;
+        this.mobileTitle = this.i18n.transaction.mobileTitle.paymentSystemToSystem;
+      } else {
+        this.title = this.i18n.transaction.title.paymentSystemToUser;
+        this.mobileTitle = this.i18n.transaction.mobileTitle.paymentSystemToUser;
+      }
+    } else {
+      if (this.toSelf) {
         this.title = this.i18n.transaction.title.paymentToSelf;
         this.mobileTitle = this.i18n.transaction.mobileTitle.paymentToSelf;
-        break;
-      default:
-        // To user. Maybe null.
-        this.toParam = route.params['to'];
+      } else if (this.toSystem) {
+        this.title = this.i18n.transaction.title.paymentToSystem;
+        this.mobileTitle = this.i18n.transaction.mobileTitle.paymentToSystem;
+      } else {
         this.title = this.i18n.transaction.title.paymentToUser;
         this.mobileTitle = this.i18n.transaction.mobileTitle.paymentToUser;
-        break;
+      }
     }
 
     // Build the form
@@ -167,7 +178,7 @@ export class PerformPaymentComponent extends BasePageComponent<DataForTransactio
 
     // Get data for perform payment
     this.addSub(this.paymentsService.dataForPerformPayment({
-      owner: ApiHelper.SELF,
+      owner: this.fromParam,
       to: this.toParam
     }).subscribe(data => this.data = data));
 
@@ -362,14 +373,14 @@ export class PerformPaymentComponent extends BasePageComponent<DataForTransactio
     delete payment['firstOccurrenceIsNow'];
     // Preview
     return this.paymentsService.previewPayment({
-      owner: ApiHelper.SELF,
+      owner: this.fromParam,
       body: payment
     });
   }
 
   private performPaymentRequest(): Observable<Transaction> {
     return this.paymentsService.performPayment({
-      owner: ApiHelper.SELF,
+      owner: this.fromParam,
       body: this.preview.payment,
       confirmationPassword: this.confirmationPassword.value
     });

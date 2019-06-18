@@ -558,23 +558,24 @@ export class MenuService {
       const operators = permissions.operators || {};
 
       // Banking
+      const owner = role === RoleEnum.ADMINISTRATOR ? ApiHelper.SYSTEM : ApiHelper.SELF;
       const accountTypes = this.bankingHelper.ownerAccountTypes();
       if (accountTypes.length > 0) {
         for (const type of accountTypes) {
           const activeMenu = new ActiveMenu(Menu.ACCOUNT_HISTORY, { accountType: type });
           const label = auth.role !== RoleEnum.ADMINISTRATOR && accountTypes.length === 1 ? this.i18n.menu.bankingAccount : type.name;
-          add(activeMenu, `/banking/${ApiHelper.SELF}/account/${ApiHelper.internalNameOrId(type)}`, 'account_balance', label);
+          add(activeMenu, `/banking/${owner}/account/${ApiHelper.internalNameOrId(type)}`, 'account_balance', label);
         }
       }
       const payments = banking.payments || {};
       if (payments.user) {
-        add(Menu.PAYMENT_TO_USER, '/banking/payment', 'payment', this.i18n.menu.bankingPayUser);
+        add(Menu.PAYMENT_TO_USER, `/banking/${owner}/payment`, 'payment', this.i18n.menu.bankingPayUser);
       }
       if (payments.self) {
-        add(Menu.PAYMENT_TO_SELF, '/banking/payment/self', 'payment', this.i18n.menu.bankingPaySelf);
+        add(Menu.PAYMENT_TO_SELF, `/banking/${owner}/payment/self`, 'payment', this.i18n.menu.bankingPaySelf);
       }
       if (payments.system) {
-        add(Menu.PAYMENT_TO_SYSTEM, '/banking/payment/system', 'payment', this.i18n.menu.bankingPaySystem);
+        add(Menu.PAYMENT_TO_SYSTEM, `/banking/${owner}/payment/system`, 'payment', this.i18n.menu.bankingPaySystem);
       }
       const scheduledPayments = (banking.scheduledPayments || {});
       const recurringPayments = (banking.recurringPayments || {});

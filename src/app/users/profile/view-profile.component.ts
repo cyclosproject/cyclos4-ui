@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { PhoneKind, PhoneView, UserView, BasicProfileFieldEnum, RoleEnum } from 'app/api/models';
+import { PhoneKind, PhoneView, UserView, BasicProfileFieldEnum, RoleEnum, UserRelationshipEnum } from 'app/api/models';
 import { ContactsService, UsersService } from 'app/api/services';
 import { ErrorStatus } from 'app/core/error-status';
 import { MapsService } from 'app/core/maps.service';
@@ -8,7 +8,8 @@ import { OperationHelperService } from 'app/core/operation-helper.service';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
-import { words } from 'app/shared/helper';
+import { words, empty } from 'app/shared/helper';
+import { BehaviorSubject } from 'rxjs';
 
 export const MAX_SIZE_SHORT_NAME = 25;
 
@@ -39,6 +40,10 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
   mobilePhones: PhoneView[];
   landLinePhones: PhoneView[];
   imageEnabled: boolean;
+
+  showActions$ = new BehaviorSubject(false);
+  bankingActions: HeadingAction[] = [];
+  managementActions: HeadingAction[] = [];
 
   get user(): UserView {
     return this.data;
@@ -84,8 +89,8 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     const operator = user.role === RoleEnum.OPERATOR;
 
     // Get the actions
-    const actions: HeadingAction[] = [];
     const permissions = user.permissions || {};
+    const profile = permissions.profile || {};
     const accountTypes = (permissions.accounts || []).map(a => a.type);
     const contact = permissions.contact || {};
     const payment = permissions.payment || {};
@@ -94,65 +99,120 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     const group = permissions.group || {};
     const operators = permissions.operators || {};
     const brokering = permissions.brokering || {};
-    if (user.permissions.profile.editProfile) {
-      actions.push(new HeadingAction('edit', this.i18n.general.edit, () => {
-        this.router.navigateByUrl(this.router.url + '/edit');
-      }, true));
-    }
-    for (const accountType of accountTypes) {
-      actions.push(new HeadingAction('account_balance', accountType.name, () => {
-        this.router.navigate(['/banking', this.param, 'account', ApiHelper.internalNameOrId(accountType)]);
-      }));
-    }
-    if (brokering.viewMembers) {
-      actions.push(new HeadingAction('assignment_ind', this.i18n.user.profile.viewBrokerings, () => {
-        this.router.navigate(['/users', this.param, 'brokerings']);
-      }));
-    }
-    if (operators.viewOperators) {
-      actions.push(new HeadingAction('supervisor_account', this.i18n.user.profile.viewOperators, () => {
-        this.router.navigate(['/users', this.param, 'operators']);
-      }));
-    }
-    if (status.view) {
-      actions.push(new HeadingAction('how_to_reg',
-        operator ? this.i18n.user.profile.statusOperator : this.i18n.user.profile.statusUser,
-        () => {
-          this.router.navigate(['/users', this.param, 'status']);
+
+    if (this.self) {
+      // For the own user, we just show the edit as a top-level action
+      if (profile.editProfile) {
+        this.headingActions = [
+          new HeadingAction('edit', this.i18n.general.edit, () => {
+            this.router.navigateByUrl(this.router.url + '/edit');
+          }, true)
+        ];
+      }
+    } else {
+      // For others, will have actions in sections
+      const manager = [
+        UserRelationshipEnum.ADMINISTRATOR,
+        UserRelationshipEnum.BROKER,
+        UserRelationshipEnum.OWNER
+      ].includes(user.relationship);
+      for (const accountType of accountTypes) {
+        this.bankingActions.push(new HeadingAction('account_balance', this.i18n.user.profile.viewAccount(accountType.name), () => {
+          this.router.navigate(['/banking', this.param, 'account', ApiHelper.internalNameOrId(accountType)]);
         }));
-    }
-    if (group.view) {
-      actions.push(new HeadingAction('supervised_user_circle',
-        operator ? this.i18n.user.profile.groupOperator : this.i18n.user.profile.groupUser,
-        () => {
-          this.router.navigate(['/users', this.param, 'group']);
+      }
+      if (payment.systemToUser) {
+        this.bankingActions.push(new HeadingAction('payment', this.i18n.user.profile.paySystemToUser, () => {
+          this.router.navigate(['/banking', ApiHelper.SYSTEM, 'payment', this.param]);
         }));
+      }
+      if (payment.asUserToUser) {
+        this.bankingActions.push(new HeadingAction('payment', this.i18n.user.profile.payAsUserToUser, () => {
+          this.router.navigate(['/banking', this.param, 'payment']);
+        }));
+      }
+      if (payment.asUserToSelf) {
+        this.bankingActions.push(new HeadingAction('payment', this.i18n.user.profile.payAsUserToSelf, () => {
+          this.router.navigate(['/banking', this.param, 'payment', ApiHelper.SELF]);
+        }));
+      }
+      if (payment.asUserToSystem) {
+        this.bankingActions.push(new HeadingAction('payment', this.i18n.user.profile.payAsUserToSystem, () => {
+          this.router.navigate(['/banking', this.param, 'payment', ApiHelper.SYSTEM]);
+        }));
+      }
+      if (profile.editProfile) {
+        this.managementActions.push(new HeadingAction('edit', this.i18n.user.profile.edit, () => {
+          this.router.navigateByUrl(this.router.url + '/edit');
+        }));
+      }
+      if (status.view) {
+        this.managementActions.push(new HeadingAction('how_to_reg',
+          operator ? this.i18n.user.profile.statusOperator : this.i18n.user.profile.statusUser,
+          () => {
+            this.router.navigate(['/users', this.param, 'status']);
+          }));
+      }
+      if (group.view) {
+        this.managementActions.push(new HeadingAction('supervised_user_circle',
+          operator ? this.i18n.user.profile.groupOperator : this.i18n.user.profile.groupUser,
+          () => {
+            this.router.navigate(['/users', this.param, 'group']);
+          }));
+      }
+      if (brokering.viewMembers) {
+        this.managementActions.push(new HeadingAction('assignment_ind', this.i18n.user.profile.viewBrokerings, () => {
+          this.router.navigate(['/users', this.param, 'brokerings']);
+        }));
+      }
+      if (operators.viewOperators) {
+        this.managementActions.push(new HeadingAction('supervisor_account', this.i18n.user.profile.viewOperators, () => {
+          this.router.navigate(['/users', this.param, 'operators']);
+        }));
+      }
+      const actions = manager ? this.managementActions : [];
+      if (contact.add) {
+        actions.push(new HeadingAction('add_circle_outline', this.i18n.user.profile.addContact, () => {
+          this.addContact();
+        }));
+      }
+      if (contact.remove) {
+        actions.push(new HeadingAction('remove_circle_outline', this.i18n.user.profile.removeContact, () => {
+          this.removeContact();
+        }));
+      }
+      if (payment.userToUser) {
+        actions.push(new HeadingAction('payment', this.i18n.user.profile.pay, () => {
+          this.router.navigate(['/banking', ApiHelper.SELF, 'payment', this.param]);
+        }));
+      }
+      if (marketplace.viewAdvertisements || marketplace.viewWebshop) {
+        actions.push(new HeadingAction('shopping_basket', this.i18n.user.profile.viewAds, () => {
+          this.router.navigate(['/marketplace', 'user', this.param]);
+        }));
+      }
+      // Custom operations
+      for (const operation of permissions.operations || []) {
+        actions.push(this.operationsHelper.headingAction(operation, user.id));
+      }
+      if (!manager) {
+        this.headingActions = actions;
+      } else if (!empty(this.bankingActions) || !empty(this.managementActions)) {
+        this.updateHeadingActions();
+      }
     }
-    if (contact.add) {
-      actions.push(new HeadingAction('add_circle_outline', this.i18n.user.profile.addContact, () => {
-        this.addContact();
-      }));
-    }
-    if (contact.remove) {
-      actions.push(new HeadingAction('remove_circle_outline', this.i18n.user.profile.removeContact, () => {
-        this.removeContact();
-      }));
-    }
-    if (payment.userToUser) {
-      actions.push(new HeadingAction('payment', this.i18n.user.profile.pay, () => {
-        this.router.navigate(['/banking', 'payment', this.param]);
-      }));
-    }
-    if (marketplace.viewAdvertisements || marketplace.viewWebshop) {
-      actions.push(new HeadingAction('shopping_basket', this.i18n.user.profile.viewAds, () => {
-        this.router.navigate(['/marketplace', 'user', this.param]);
-      }));
-    }
-    // Custom operations
-    for (const operation of permissions.operations || []) {
-      actions.push(this.operationsHelper.headingAction(operation, user.id));
-    }
-    this.headingActions = actions;
+  }
+
+  private updateHeadingActions() {
+    const show = !this.showActions$.value;
+    const icon = show ? 'play_circle_outline' : 'clear';
+    const label = show ? this.i18n.user.profile.showActions : this.i18n.user.profile.hideActions;
+    this.headingActions = [
+      new HeadingAction(icon, label, () => {
+        this.showActions$.next(show);
+        this.updateHeadingActions();
+      }, true)
+    ];
   }
 
   private addContact(): any {

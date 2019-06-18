@@ -46,9 +46,10 @@ export class BankingHelperService {
   /**
    * Returns a display label for the given account
    * @param account The account
+   * @param number Return the account number if available
    */
-  accountDisplay(account: Account) {
-    if (account.number) {
+  accountDisplay(account: Account, number = true) {
+    if (account.number && number) {
       return `${account.type.name} - ${account.number}`;
     } else {
       return account.type.name;

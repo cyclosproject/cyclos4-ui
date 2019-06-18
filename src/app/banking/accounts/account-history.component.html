@@ -172,7 +172,7 @@
                 {{ subjectName(row) }}
               </a>
             </td>
-            <td>
+            <td *ngIf="layout.gtsm$ | async">
               <a *ngIf="row.description" class="d-inline-block"
                 [routerLink]="path(row)">
                 {{ row.description }}
