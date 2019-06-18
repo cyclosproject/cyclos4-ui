@@ -679,9 +679,9 @@
     "contact": "Contacto",
     "profile": {
       "noPermission": "No posee permisos suficientes para ver el perfil de este usuario",
-      "showActions": "Show actions",
+      "showActions": "Mostrar acciones",
       "hideActions": "Ocultar acciones",
-      "banking": "Banking",
+      "banking": "Banca",
       "management": "Administración",
       "edit": "Editar perfil",
       "managePasswords": "Administrar contraseñas",
