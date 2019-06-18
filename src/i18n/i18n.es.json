@@ -190,7 +190,7 @@
     "banking.paySelf": "Auto pago",
     "banking.scheduledPayments": "Pagos agendados",
     "banking.authorizations": "Pagos con autorización",
-    "banking.transfersOverview": "Transfers overview",
+    "banking.transfersOverview": "Visión general de Transferencias",
     "operators": "Operadores",
     "operators.operators": "Operadores",
     "operators.register": "Registrar operador",
@@ -249,7 +249,7 @@
       "passwordConfirmation": "Confirmación de contraseña",
       "title": {
         "change.self": "Cambiar su contraseña",
-        "change.user": "Change user password",
+        "change.user": "Cambiar contraseña de usuario",
         "forgotten": "Recuperar su contraseña",
         "manage.single.self": "Administrar su contraseña",
         "manage.multiple.self": "Administrar sus contraseñas",
@@ -390,7 +390,7 @@
     "amount": "Monto",
     "type": "Tipo de transacción",
     "fromTo": "De / para",
-    "fromTo.text": "{from} to {to}",
+    "fromTo.text": "{from} a {to}",
     "from": "De",
     "to": "Para",
     "account": "Cuenta",
@@ -487,7 +487,7 @@
       "details.transfer": "Detalle de la transferencia",
       "parentTransfer": "Transferencia principal",
       "childTransfers": "Transferencias generadas",
-      "transfersOverview": "Transfers overview"
+      "transfersOverview": "Visión general de Transferencias"
     },
     "mobileTitle": {
       "paymentSystemToSystem": "Pago a sistema",
@@ -511,7 +511,7 @@
       "details.transfer": "Transferencia",
       "parentTransfer": "Transferencia original",
       "childTransfers": "Transferencias generadas",
-      "transfersOverview": "Transfers overview"
+      "transfersOverview": "Visión general de Transferencias"
     },
     "viewAuthorizations": "Ver autorizaciones",
     "viewThisTransfer": "Ver transferencia",
@@ -680,10 +680,10 @@
     "profile": {
       "noPermission": "No posee permisos suficientes para ver el perfil de este usuario",
       "showActions": "Show actions",
-      "hideActions": "Hide actions",
+      "hideActions": "Ocultar acciones",
       "banking": "Banking",
       "management": "Administración",
-      "edit": "Edit profile",
+      "edit": "Editar perfil",
       "managePasswords": "Administrar contraseñas",
       "addContact": "Agregar a contactos",
       "addContact.done": "{user} ha sido agregado a su lista de contactos",
@@ -695,8 +695,8 @@
       "payAsUserToUser": "Pagos de usuario a usuario",
       "payAsUserToSelf": "Pago a sí mismo",
       "viewAccount": "Ver {account}",
-      "viewScheduledPayments": "View scheduled payments",
-      "viewAuthorizedPayments": "View payment authorizations",
+      "viewScheduledPayments": "Ver pagos agendados",
+      "viewAuthorizedPayments": "Ver autorizaciones de pago",
       "viewAds": "Ver anuncios",
       "viewBrokerings": "Ver miembros asignados",
       "viewOperators": "Ver operadores",
