@@ -60,6 +60,28 @@ export class ApiHelper {
       return value;
     }
   }
+  /**
+   * Shift the passed date to the end of the day if it is not empty, otherwise return the same date.
+   * e.g 13/01/2019 -> 13/01/2019T23:59:59.999
+   * e.g 13/01/2019T00:00:00.000 -> 13/01/2019T23:59:59.999
+   * @param date a date formatted like dd/mm/yyyy or yyyy-MM-dd'T'HH:mm:ssZ
+   */
+  static shiftToDayEnd(date: string): string {
+    if (date) {
+      const newDate = date.substr(0, 10);
+      return newDate.concat('T23:59:59.999');
+    } else {
+      return date;
+    }
+  }
+
+  /**
+   * Shift the max date to the end of the day and returns it with the min as a range,
+   * suitable for query filters on the API.
+   */
+  static dateRangeFilter(min: string, max: string): string[] {
+    return this.rangeFilter(min, this.shiftToDayEnd(max));
+  }
 
   /**
    * Returns the given min / max value as a range, suitable for query filters on the API

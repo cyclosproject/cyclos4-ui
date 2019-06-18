@@ -1,5 +1,7 @@
 {
   "general": {
+    "type": "Type",
+    "code": "Code",
     "period": "Period",
     "now": "Now",
     "action": "Action",
@@ -11,6 +13,8 @@
     "futureDate": "Future date",
     "beginDate": "Begin date",
     "endDate": "End date",
+    "creationDate": "Creation date",
+    "expirationDate": "Expiration date",
     "notApplied": "Not applied",
     "notAppliedSelect": "Not applied (select to apply)",
     "user": "User",
@@ -190,6 +194,8 @@
     "banking.paySelf": "Payment to self",
     "banking.scheduledPayments": "Scheduled payments",
     "banking.authorizations": "Payment authorizations",
+    "banking.vouchers.redeem": "Redeem voucher",
+    "banking.vouchers.searchRedeemed": "View redeemed",
     "operators": "Operators",
     "operators.operators": "Operators",
     "operators.register": "Register operator",
@@ -551,6 +557,37 @@
       "monthly.amount": "The maximum monthly amount of {amount} was exceeded",
       "monthly.count": "The maximum allowed number of payments per month is {count}"
     }
+  },
+  "voucher": {
+    "redeem": {
+      "title": "Redeem voucher",
+      "mobileTitle": "Redeem voucher",
+      "confirm": "The voucher details are given below. Please, review it below and confirm this action.",
+      "date": "Redeeming date",
+      "redeemer": "Redeemer",
+      "payment": "Redeem payment",
+      "searchTitle": "Redeemed vouchers",
+      "searchMobileTitle": "Redeemed vouchers"
+    },
+    "status": {
+      "redeemed": "Redeemed",
+      "pending": "Pending",
+      "open": "Open",
+      "expired": "Expired",
+      "canceled": "Canceled"
+    },
+    "type": {
+      "title": "Voucher type"
+    },
+    "boughtType": "Bought",
+    "generatedType": "Generated",
+    "buy": {
+      "buyer": "Buyer",
+      "payment": "Buy payment"
+    },
+    "creationType": "CreationType",
+    "cancelAndRefund": "Cancel & refund",
+    "token": "Voucher code"
   },
   "field": {
     "privacy": {

@@ -1,0 +1,66 @@
+<page-layout [ready]="data$ | async" [ngSwitch]="step$ | async">
+  <page-content *ngSwitchCase="'form'" [heading]="i18n.voucher.redeem.title"
+    [mobileHeading]="i18n.voucher.redeem.mobileTitle">
+
+    <input-field type="text" [label]="i18n.voucher.token" [mask]="mask"
+      [formControl]="token" [placeholder]="mask"></input-field>
+    <actions>
+      <button class="btn btn-primary" [disabled]="requesting$ | async"
+        (click)="submit()">{{ i18n.general.submit }}</button>
+    </actions>
+  </page-content>
+  <page-content *ngSwitchCase="'confirm'"
+    [heading]="i18n.voucher.redeem.title"
+    [mobileHeading]="i18n.voucher.redeem.mobileTitle">
+    <ng-container *ngIf="(dataForRedeem$ | async); else loading">
+
+      <notification ngClass="mb-3" type="warning">
+        {{ i18n.voucher.redeem.confirm }}
+      </notification>
+
+      <div class="d-flex flex-grow-1 flex-column">
+
+        <div class="d-sm-flex flex-row-sm-reverse justify-content-sm-between">
+          <div *ngIf="dataForRedeem.type.image"
+            class="image d-flex justify-content-center mt-2 mb-4"
+            [ngClass]="{'flex-grow-1':  dataForRedeem.type.voucherDescription}">
+            <avatar size="160" imageSize="200" useLightbox
+              [image]="dataForRedeem.type.image">
+            </avatar>
+          </div>
+
+          <ng-container *ngIf="dataForRedeem.type.voucherDescription">
+            {{ dataForRedeem.type.voucherDescription }}
+          </ng-container>
+        </div>
+        <h2 class="mt-3"></h2>
+        <label-value [label]="i18n.general.type">
+          {{ dataForRedeem.type.name }}
+        </label-value>
+        <label-value [label]="i18n.voucher.token"> {{ dataForRedeem.token }}
+        </label-value>
+        <label-value [label]="i18n.voucher.buy.buyer">
+          <user-link [user]="dataForRedeem.buyer"></user-link>
+        </label-value>
+        <label-value [label]="i18n.transaction.amount">
+          {{ dataForRedeem.amount | currency:dataForRedeem.type.configuration.currency }}
+        </label-value>
+
+        <custom-field-input *ngFor="let cf of dataForRedeem.customFields"
+          [field]="cf" [formControl]="form.get(cf.internalName)">
+        </custom-field-input>
+      </div>
+
+      <actions>
+        <button class="btn btn-primary" [disabled]="requesting$ | async"
+          (click)="submit()">{{ i18n.general.submit }}</button>
+      </actions>
+    </ng-container>
+  </page-content>
+</page-layout>
+
+<ng-template #loading>
+  <page-content>
+    <spinner></spinner>
+  </page-content>
+</ng-template>
