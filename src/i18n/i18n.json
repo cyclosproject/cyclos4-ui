@@ -1,5 +1,7 @@
 {
   "general": {
+    "type": "Type",
+    "code": "Code",
     "period": "Period",
     "now": "Now",
     "action": "Action",
@@ -11,6 +13,8 @@
     "futureDate": "Future date",
     "beginDate": "Begin date",
     "endDate": "End date",
+    "creationDate": "Creation date",
+    "expirationDate": "Expiration date",
     "notApplied": "Not applied",
     "notAppliedSelect": "Not applied (select to apply)",
     "user": "User",
@@ -190,6 +194,8 @@
     "banking.paySelf": "Payment to self",
     "banking.scheduledPayments": "Scheduled payments",
     "banking.authorizations": "Payment authorizations",
+    "banking.vouchers.redeem": "Redeem voucher",
+    "banking.vouchers.searchRedeemed": "View redeemed",
     "operators": "Operators",
     "operators.operators": "Operators",
     "operators.register": "Register operator",
@@ -204,6 +210,8 @@
     "marketplace.userSearch": "Users",
     "marketplace.businessDirectory": "Business directory",
     "marketplace.advertisements": "Advertisements",
+    "marketplace.connectedUsers": "Connected users",
+    "marketplace.userAlerts": "User alerts",
     "personal": "Personal",
     "personal.viewProfile": "My profile",
     "personal.editProfile": "Edit profile",
@@ -333,7 +341,8 @@
       "editProfile": "Edit profile",
       "password": "Password",
       "passwords": "Passwords",
-      "switchTheme": "Switch theme"
+      "switchTheme": "Switch theme",
+      "connectedUsers": "Connected users"
     },
     "accountStatus": "Account status",
     "lastIncomingPayments": "Last incoming payments",
@@ -550,6 +559,37 @@
       "monthly.amount": "The maximum monthly amount of {amount} was exceeded",
       "monthly.count": "The maximum allowed number of payments per month is {count}"
     }
+  },
+  "voucher": {
+    "redeem": {
+      "title": "Redeem voucher",
+      "mobileTitle": "Redeem voucher",
+      "confirm": "The voucher details are given below. Please, review it below and confirm this action.",
+      "date": "Redeeming date",
+      "redeemer": "Redeemer",
+      "payment": "Redeem payment",
+      "searchTitle": "Redeemed vouchers",
+      "searchMobileTitle": "Redeemed vouchers"
+    },
+    "status": {
+      "redeemed": "Redeemed",
+      "pending": "Pending",
+      "open": "Open",
+      "expired": "Expired",
+      "canceled": "Canceled"
+    },
+    "type": {
+      "title": "Voucher type"
+    },
+    "boughtType": "Bought",
+    "generatedType": "Generated",
+    "buy": {
+      "buyer": "Buyer",
+      "payment": "Buy payment"
+    },
+    "creationType": "CreationType",
+    "cancelAndRefund": "Cancel & refund",
+    "token": "Voucher code"
   },
   "field": {
     "privacy": {
@@ -914,6 +954,21 @@
       "markAllRead": "Mark all as read"
     }
   },
+  "connectedUser": {
+    "title": "Connected users",
+    "mobileTitle": "Connected users",
+    "loggedInAt": "Logged in at",
+    "channel": "Channel",
+    "ipAddress": "IP Address",
+    "disconnect": "Disconnect user",
+    "viewConnected": {
+      "operator": "View connected operators",
+      "broker": "View connected brokers",
+      "admin": "View connected admins",
+      "member": "View connected members"
+    },
+    "showConnected": "Show connected"
+  },
   "operation": {
     "user": "User",
     "ad": "Advertisement",
@@ -930,5 +985,26 @@
     "theme": "Theme",
     "theme.light": "Light",
     "theme.dark": "Dark"
+  },
+  "userAlert": {
+    "title": "Search user alerts",
+    "text": "Text",
+    "mobileTitle": "User alerts",
+    "type": {
+      "title": "Type",
+      "custom": "Custom",
+      "givenVeryBadRefs": "User gave too many 'very bad' references",
+      "insufficientBalanceForInitialCredit": "Insufficient balance for an account's initial credit",
+      "maxDeviceActivationAttemptsReached": "Max device activation attempts reached",
+      "maxDeviceConfirmationCheckAttemptsReached": "Max device confirmation check attempts reached",
+      "maxTokenActivationAttemptsReached": "Max token activation attempts reached",
+      "maxUserLocalizationAttemptsReached": "Max user localization attempts reached",
+      "maxVoucherRedeemAttemptsReached": "Max voucher redeem attempts reached",
+      "moveUserAutomaticallyFailed": "Move user automatically to group failed",
+      "passwordDisabledByTries": "Password is indefinitely blocked by exceeding attempts",
+      "passwordTemporarilyBlocked": "Password temporarily blocked by exceeding attempts",
+      "receivedVeryBadRefs": "User received too many 'very bad' references",
+      "scheduledPaymentFailed": "Scheduled payment failed"
+    }
   }
 }

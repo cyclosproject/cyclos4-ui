@@ -1,0 +1,103 @@
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data; else loading">
+    <page-content mode="filters" [heading]="i18n.connectedUser.title"
+      [mobileHeading]="i18n.connectedUser.mobileTitle">
+      <form [formGroup]="form"
+        class="filters-form filters-form-separator border-0">
+        <div class="row">
+          <div *ngIf="data.channels?.length > 1" class="col-12 col-md-6">
+            <multi-selection-field labelPosition="side"
+              formControlName="channels" [label]="i18n.connectedUser.channel">
+              <field-option *ngFor="let channel of data.channels"
+                [value]="channel.id" [internalName]="channel.internalName"
+                [id]="channel.id" [text]="channel.name">
+              </field-option>
+            </multi-selection-field>
+          </div>
+          <div *ngIf="data.roles?.length > 1" class="col-12 col-md-6">
+            <multi-selection-field labelPosition="side"
+              formControlName="roles"
+              [label]="i18n.connectedUser.showConnected">
+              <field-option *ngFor="let role of data.roles" [value]="role"
+                [text]="showConnectedLabel(role)">
+              </field-option>
+            </multi-selection-field>
+          </div>
+          <div class="col-12 col-md-6">
+            <user-field labelPosition="side" formControlName="user"
+              [label]="i18n.general.user"></user-field>
+          </div>
+        </div>
+      </form>
+    </page-content>
+
+    <results-layout resultType="list" [results]="results$ | async"
+      (update)="update($event)" [onClick]="onClick">
+
+      <mobile-result *mobileResult="let row" [avatarImage]="row.user?.image"
+        avatarIcon="user">
+        <div class="d-flex">
+          <div>
+            <div class="cell-main">
+              {{ row.user.shortDisplay }}
+            </div>
+            <div class="cell-cell-date">
+              {{ row.creationDate | dateTime }}
+            </div>
+            <div class="cell-text">
+              {{ row.channel.name }}
+            </div>
+          </div>
+          <div class="ml-auto">
+            <button *ngIf="canDisconnect(row)" class="btn btn-icon"
+              (click)="disconnect(row); $event.stopPropagation(); $event.preventDefault()">
+              <icon icon="clear"></icon>
+            </button>
+          </div>
+        </div>
+      </mobile-result>
+
+      <table *resultTable class="table table-hover cursor-pointer">
+        <thead>
+          <th class="avatar"></th>
+          <th>{{ i18n.general.user }}</th>
+          <th>{{ i18n.connectedUser.channel }}</th>
+          <th>{{ i18n.connectedUser.loggedInAt }}</th>
+          <th>{{ i18n.connectedUser.ipAddress }}</th>
+          <th class="actions"></th>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let row of (results$ | async).results">
+            <tr>
+              <td class="avatar" [ngClass]="{
+              'pb-0': layout.xxs$ | async,
+              'border-0': layout.xxs$ | async
+            }">
+                <avatar [image]="row.user?.image"
+                  [tooltip]="row.user?.display" icon="user"></avatar>
+              </td>
+              <td>{{ row.user.shortDisplay }}</td>
+              <td>{{ row.channel.name }}</td>
+              <td>{{ row.creationDate | dateTime }}</td>
+              <td>{{ row.remoteAddress }}</td>
+              <td class="actions">
+                <button *ngIf="canDisconnect(row)"
+                  [tooltip]="i18n.connectedUser.disconnect"
+                  class="btn btn-icon"
+                  (click)="disconnect(row); $event.stopPropagation()">
+                  <icon icon="clear"></icon>
+                </button>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </results-layout>
+  </ng-container>
+</page-layout>
+
+<ng-template #loading>
+  <page-content>
+    <spinner></spinner>
+  </page-content>
+</ng-template>
