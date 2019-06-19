@@ -16,7 +16,7 @@
         <div class="col-md-6"
           *ngIf="(layout.gtsm$ | async) && !self && broker">
         </div>
-        <div class="col-12 col-md-6">
+        <div *ngIf="data.allowKeywords" class="col-12 col-md-6">
           <input-field labelPosition="side" formControlName="keywords"
             [label]="i18n.general.keywords"></input-field>
         </div>

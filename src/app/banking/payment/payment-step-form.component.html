@@ -8,7 +8,9 @@
     <label-value [label]="accountBalanceLabel$ | async" kind="view"
       labelPosition="sideForced" noWrapLabel>
       <!-- Single account -->
-      <div class="w-100 text-nowrap font-weight-bold" [ngClass]="{
+      <div *ngIf="singleAccount.status"
+        class="w-100 text-nowrap text-right text-xs-left font-weight-bold"
+        [ngClass]="{
           positive: format.isPositive(singleAccount.status.balance),
           negative: format.isNegative(singleAccount.status.balance),
           'text-right': layout.ltsm$ | async
@@ -39,7 +41,8 @@
             </label>
           </div>
         </div>
-        <div class="col-5 col-sm-4 col-md-7 pl-2 text-left font-weight-bold"
+        <div *ngIf="account.status"
+          class="col-5 col-sm-4 col-md-7 pl-2 text-right text-xs-left font-weight-bold"
           [ngClass]="{
             positive: format.isPositive(account.status.balance),
             negative: format.isNegative(account.status.balance)
