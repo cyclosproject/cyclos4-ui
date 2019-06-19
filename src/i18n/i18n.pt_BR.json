@@ -222,7 +222,6 @@
       "message": "Você pode acessar com seu nome de usuário e senha",
       "disconnected": "Você foi desconectado.<br>Por Favor, faça o login novamente, para exibir a página solicitada.",
       "principal": "Usuário",
-      "password": "Senha",
       "forgotPassword": "Esqueceu sua senha?",
       "register": "Não é um usuário ainda? Registre-se aqui."
     },
