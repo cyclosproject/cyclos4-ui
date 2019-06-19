@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import {
   Account, AccountHistoryResult, AccountKind, BaseTransferDataForSearch,
-  PreselectedPeriod, Transaction, TransactionDataForSearch, Transfer, AccountType, VoucherStatusEnum, VoucherCreationTypeEnum
+  PreselectedPeriod, Transaction, TransactionDataForSearch, Transfer, AccountType,
+  VoucherStatusEnum, VoucherCreationTypeEnum, AccountWithOwner
 } from 'app/api/models';
 import { FormatService } from 'app/core/format.service';
 import { ApiHelper } from 'app/shared/api-helper';
@@ -55,6 +56,17 @@ export class BankingHelperService {
       return `${account.type.name} - ${account.number}`;
     } else {
       return account.type.name;
+    }
+  }
+  /**
+   * Returns a display label for the given account owner
+   * @param account The account
+   */
+  accountOwnerDisplay(account: AccountWithOwner) {
+    if (account.kind === AccountKind.SYSTEM) {
+      return (account.type || {}).name;
+    } else {
+      return (account.user || {}).display;
     }
   }
 

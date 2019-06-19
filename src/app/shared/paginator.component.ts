@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { BaseComponent } from 'app/shared/base.component';
+import { ElementReference, scrollTop } from 'app/shared/helper';
 import { Breakpoint } from 'app/shared/layout.service';
 import { PageData } from 'app/shared/page-data';
 import { PagedResults } from 'app/shared/paged-results';
@@ -17,16 +18,13 @@ import { ArrowsHorizontal } from 'app/shared/shortcut.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PaginatorComponent<T> extends BaseComponent implements OnInit {
-  constructor(
-    injector: Injector) {
-    super(injector);
-  }
+
+  @Input() scrollAnchor: ElementReference;
 
   _results: PagedResults<T>;
   @Input() get results(): PagedResults<T> {
     return this._results;
   }
-
   set results(results: PagedResults<T>) {
     this._results = results;
     if (results) {
@@ -47,6 +45,11 @@ export class PaginatorComponent<T> extends BaseComponent implements OnInit {
   form: FormGroup;
 
   private lastPage: PageData;
+
+  constructor(
+    injector: Injector) {
+    super(injector);
+  }
 
   ngOnInit() {
     const results = this.results || { page: null, pageSize: null };
@@ -89,6 +92,9 @@ export class PaginatorComponent<T> extends BaseComponent implements OnInit {
     if (changed) {
       this.lastPage = data;
       this.update.emit(data);
+
+      // Scroll back to anchor element or top
+      scrollTop(this.scrollAnchor);
     }
   }
 

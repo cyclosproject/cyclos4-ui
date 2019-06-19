@@ -1,18 +1,17 @@
 import { HttpResponse } from '@angular/common/http';
 import { Injector, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { QueryFilters } from 'app/api/models';
 import { NextRequestState } from 'app/core/next-request-state';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BasePageComponent } from 'app/shared/base-page.component';
-import { ensureInScroll } from 'app/shared/helper';
 import { PageData } from 'app/shared/page-data';
 import { PagedResults } from 'app/shared/paged-results';
 import { ResultType } from 'app/shared/result-type';
 import { isEqual } from 'lodash';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { QueryFilters } from 'app/api/models';
 
 /**
  * Base class implemented by search pages.
@@ -237,10 +236,6 @@ export abstract class BaseSearchPageComponent<D, P extends QueryFilters, R> exte
    */
   update(pageData?: PageData) {
     if (pageData) {
-      // Scroll to the beginning of the results before updating
-      const results = document.getElementsByTagName('results-layout');
-      const element = results.length === 0 ? null : results.item(0) as HTMLElement;
-      ensureInScroll(element);
       this.form.patchValue(pageData, { emitEvent: false });
     }
     this.rendering = true;

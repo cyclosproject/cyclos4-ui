@@ -7,6 +7,7 @@ import { NextRequestState } from 'app/core/next-request-state';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { empty } from 'app/shared/helper';
 import { PasswordInputComponent } from 'app/shared/password-input.component';
+import { ApiHelper } from 'app/shared/api-helper';
 
 /**
  * Component used to show a login form.
@@ -96,9 +97,11 @@ export class LoginComponent
     if (!this.form.valid) {
       return;
     }
-    this.login.login(value.principal, value.password).subscribe(() => {
+    this.login.login(value.principal, value.password).subscribe(auth => {
       // Redirect to the correct URL
-      this.router.navigateByUrl(this.loginState.redirectUrl || '');
+      if (!ApiHelper.isRestrictedAccess(auth)) {
+        this.router.navigateByUrl(this.loginState.redirectUrl || '');
+      }
     });
   }
 

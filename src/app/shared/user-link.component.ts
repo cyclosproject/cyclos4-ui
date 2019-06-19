@@ -44,7 +44,7 @@ export class UserLinkComponent extends BaseComponent implements OnInit {
     if (this.account != null && this.user == null) {
       this.user = this.account.user;
     }
-    this.operator = !!this.user.user;
+    this.operator = this.user ? !!this.user.user : false;
     if (this.user != null && this.user.id != null && !this.hideLink) {
       const loggedUser = this.login.user;
       if (loggedUser != null && loggedUser.id === this.user.id) {

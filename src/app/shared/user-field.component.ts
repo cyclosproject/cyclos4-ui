@@ -3,7 +3,7 @@ import {
   Input, OnDestroy, OnInit, Optional, SkipSelf, ViewChild
 } from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { User } from 'app/api/models';
+import { User, UserQueryFilters } from 'app/api/models';
 import { UsersService } from 'app/api/services';
 import { Configuration } from 'app/configuration';
 import { LoginService } from 'app/core/login.service';
@@ -39,10 +39,10 @@ export class UserFieldComponent
     this.selection = user;
   }
 
-  @Input() exclude: string;
   @Input() allowPrincipal = false;
   @Input() allowSearch = true;
   @Input() allowContacts = true;
+  @Input() filters: UserQueryFilters;
 
   @ViewChild('contactListButton') contactListButton: ElementRef;
   private fieldSub: Subscription;
@@ -115,17 +115,15 @@ export class UserFieldComponent
       return of([]);
     }
     const loggedUser = this.login.user;
-    const toExclude = loggedUser ? [loggedUser.id] : [];
-    if (this.exclude) {
-      toExclude.push(this.exclude);
+    const filters: UserQueryFilters = this.filters ? { ...this.filters } : {};
+    filters.ignoreProfileFieldsInList = true,
+      filters.pageSize = Configuration.quickSearchPageSize;
+    filters.keywords = text;
+    if (loggedUser) {
+      filters.usersToExclude = [...(filters.usersToExclude || []), ApiHelper.SELF];
     }
     this.nextRequestState.leaveNotification = true;
-    return this.usersService.searchUsers({
-      keywords: text,
-      ignoreProfileFieldsInList: true,
-      usersToExclude: toExclude,
-      pageSize: Configuration.quickSearchPageSize
-    });
+    return this.usersService.searchUsers(filters);
   }
 
   toDisplay(user: User): string {
@@ -140,7 +138,7 @@ export class UserFieldComponent
     const ref = this.modal.show(PickContactComponent, {
       class: 'modal-form',
       initialState: {
-        exclude: this.exclude
+        exclude: (this.filters || {}).usersToExclude || []
       }
     });
     const component = ref.content as PickContactComponent;

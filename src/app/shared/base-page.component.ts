@@ -8,6 +8,7 @@ import { ConditionalMenu, Menu } from 'app/shared/menu';
 import { ArrowsVertical, End, Home, PageDown, PageUp, ArrowsHorizontal } from 'app/shared/shortcut.service';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
+import { NextRequestState } from 'app/core/next-request-state';
 
 export type UpdateTitleFrom = 'menu' | 'content';
 
@@ -82,6 +83,10 @@ export abstract class BasePageComponent<D> extends BaseComponent implements OnIn
     }
     this.layout.currentPage = this;
     this.layout.fullWidth = this.defaultFullWidthLayout();
+
+    // Workaround for https://github.com/angular/angular/issues/22324
+    // Assume that when changing page, no requests are pending
+    this.injector.get(NextRequestState).clearRequests();
 
     // Set the title menu according to the menu item
     if (this.updateTitleFrom() === 'menu') {

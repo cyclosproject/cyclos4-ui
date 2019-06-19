@@ -1,38 +1,42 @@
-<ng-container *ngFor="let root of roots | async">
-
-  <a *ngIf="root.dropdown" class="nav-item dropdown-toggle" href="#"
+<ng-container *ngFor="let root of roots">
+  <a #dropdownAnchor [id]="menuAnchorId(root)" *ngIf="root.dropdown"
+    class="nav-item dropdown-toggle" href="#"
+    (onShown)="dropdownShown.emit(root)"
+    (onHidden)="dropdownHidden.emit(root)"
     [attr.aria-controls]="'menu-dropdown-' + root.rootMenu"
+    [tooltip]="!onTop || activeRoot === root.rootMenu || (layout.gtlg$ | async) ? undefined : root.label"
     (mouseenter)="dropdown.show()" (mouseleave)="dropdown.hide()"
-    (click)="dropdown.isOpen ? '' : dropdown.show(); $event.preventDefault(); $event.stopPropagation()"
-    dropdown #dropdown="bs-dropdown" [ngClass]="{
+    (click)="onClick($event, dropdownAnchor, root)" dropdown
+    #dropdown="bs-dropdown" [ngClass]="{
             active: activeRoot === root.rootMenu
           }">
-    <icon class="mr-2" [ngClass]="onTop ? 'top-icon' : null" size="1.4rem"
+    <icon [ngClass]="onTop ? 'top-icon' : null" size="1.4rem"
       [icon]="root.icon"></icon>
     <div class="menu-text">{{ root.label }}</div>
     <div *dropdownMenu class="dropdown-menu" role="listbox"
       [attr.id]="'menu-dropdown-' + root.rootMenu" attr.aria-labelledby="id"
       (click)="$event.preventDefault(); $event.stopPropagation();">
       <ng-container *ngFor="let entry of root.entries">
-        <a *ngIf="entry.url" [routerLink]="entry.url"
-          (click)="onClick($event, entry)" class="sub-menu-item" [ngClass]="{
+        <a #subAnchor [id]="menuAnchorId(entry)" *ngIf="entry.url"
+          [routerLink]="entry.url" (click)="onClick($event, subAnchor, entry)"
+          class="sub-menu-item" [ngClass]="{
                 active: (breadcrumb.url$ | async) === entry.url
               }">
-          <icon class="mr-2" [ngClass]="onTop ? 'top-icon' : null"
-            size="1.4rem" [icon]="entry.icon"></icon>
+          <icon [ngClass]="onTop ? 'top-icon' : null" size="1.4rem"
+            [icon]="entry.icon"></icon>
           <div class="sub-menu-text">{{ entry.label }}</div>
         </a>
       </ng-container>
     </div>
   </a>
 
-  <a *ngIf="!root.dropdown && root.entries[0]" #anchor
-    [routerLink]="root.entries[0].url"
-    (click)="onClick($event, root); blurIfClick(anchor, $event);"
-    class="nav-item" [ngClass]="{
+  <a [id]="menuAnchorId(root)" *ngIf="!root.dropdown && root.entries[0]"
+    #anchor [routerLink]="root.entries[0].url"
+    [tooltip]="!onTop || activeRoot === root.rootMenu || (layout.gtlg$ | async) ? undefined : root.label"
+    (click)="onClick($event, anchor, root)" class="nav-item" [ngClass]="{
           active: activeRoot === root.rootMenu
         }">
-    <icon class="mr-2" [ngClass]="onTop ? 'top-icon' : null" size="1.4rem"
+    <icon [ngClass]="onTop ? 'top-icon' : null" size="1.4rem"
       [icon]="root.icon"></icon>
     <div class="menu-text">{{ root.label }}</div>
   </a>

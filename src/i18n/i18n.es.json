@@ -190,6 +190,7 @@
     "banking.paySelf": "Auto pago",
     "banking.scheduledPayments": "Pagos agendados",
     "banking.authorizations": "Pagos con autorización",
+    "banking.transfersOverview": "Transfers overview",
     "operators": "Operadores",
     "operators.operators": "Operadores",
     "operators.register": "Registrar operador",
@@ -247,17 +248,23 @@
       "newPassword": "Nueva contraseña",
       "passwordConfirmation": "Confirmación de contraseña",
       "title": {
-        "change": "Cambiar su contraseña",
+        "change.self": "Cambiar su contraseña",
+        "change.user": "Change user password",
         "forgotten": "Recuperar su contraseña",
-        "manage.single": "Administrar su contraseña",
-        "manage.multiple": "Administrar sus contraseñas",
+        "manage.single.self": "Administrar su contraseña",
+        "manage.multiple.self": "Administrar sus contraseñas",
+        "manage.single.user": "Administrar contraseña de usuario",
+        "manage.multiple.user": "Administrar contraseñas de usuario",
         "securityAnswer": "Defina su respuesta de seguridad"
       },
       "mobileTitle": {
-        "change": "Cambio de contraseña",
+        "change.self": "Cambio de contraseña",
+        "change.user": "Cambio de contraseña",
         "forgotten": "Recuperar contraseña",
-        "manage.single": "Contraseña",
-        "manage.multiple": "Contraseñas",
+        "manage.single.self": "Contraseña",
+        "manage.multiple.self": "Contraseñas",
+        "manage.single.user": "Contraseña de usuario",
+        "manage.multiple.user": "Contraseñas de usuario",
         "securityAnswer": "Respuesta de seguridad"
       },
       "forgotten": {
@@ -383,11 +390,12 @@
     "amount": "Monto",
     "type": "Tipo de transacción",
     "fromTo": "De / para",
+    "fromTo.text": "{from} to {to}",
     "from": "De",
     "to": "Para",
     "account": "Cuenta",
     "fromAccount": "Cuenta origen",
-    "fromUser": "From user",
+    "fromUser": "De Usuario",
     "toAccount": "Cuenta de destino",
     "toUser": "Usuario",
     "requiresAuthorization": "Este pago requiere, y quedará pendiente de autorización",
@@ -458,8 +466,8 @@
       "settled": "Saldado"
     },
     "title": {
-      "paymentSystemToSystem": "Payment between system accounts",
-      "paymentSystemToUser": "Payment from system to user",
+      "paymentSystemToSystem": "Pago entre cuentas de sistema",
+      "paymentSystemToUser": "Pago de sistema a usuario",
       "paymentToSystem": "Pago al sistema",
       "paymentToSelf": "Pago entre cuentas propias",
       "paymentToUser": "Pago a usuario",
@@ -478,11 +486,12 @@
       "details.external": "Detalles de pago externo",
       "details.transfer": "Detalle de la transferencia",
       "parentTransfer": "Transferencia principal",
-      "childTransfers": "Transferencias generadas"
+      "childTransfers": "Transferencias generadas",
+      "transfersOverview": "Transfers overview"
     },
     "mobileTitle": {
-      "paymentSystemToSystem": "Pay system",
-      "paymentSystemToUser": "Pay user",
+      "paymentSystemToSystem": "Pago a sistema",
+      "paymentSystemToUser": "Pago a usuario",
       "paymentToSystem": "Pago a sistema",
       "paymentToSelf": "Auto pago",
       "paymentToUser": "Pago a usuario",
@@ -501,7 +510,8 @@
       "details.external": "Pago externo",
       "details.transfer": "Transferencia",
       "parentTransfer": "Transferencia original",
-      "childTransfers": "Transferencias generadas"
+      "childTransfers": "Transferencias generadas",
+      "transfersOverview": "Transfers overview"
     },
     "viewAuthorizations": "Ver autorizaciones",
     "viewThisTransfer": "Ver transferencia",
@@ -669,23 +679,31 @@
     "contact": "Contacto",
     "profile": {
       "noPermission": "No posee permisos suficientes para ver el perfil de este usuario",
+      "showActions": "Show actions",
+      "hideActions": "Hide actions",
+      "banking": "Banking",
+      "management": "Administración",
+      "edit": "Edit profile",
+      "managePasswords": "Administrar contraseñas",
       "addContact": "Agregar a contactos",
       "addContact.done": "{user} ha sido agregado a su lista de contactos",
       "removeContact": "Eliminar de mis contactos",
       "removeContact.done": "{user} ha sido eliminado de su lista de contactos",
       "pay": "Realizar pago",
-      "paySystemToUser": "Payment system to user",
-      "payAsUserToSystem": "Payment user to system",
-      "payAsUserToUser": "Payment user to user",
+      "paySystemToUser": "Pagos de sistema a usuario",
+      "payAsUserToSystem": "Pagos de usuario a sistema",
+      "payAsUserToUser": "Pagos de usuario a usuario",
       "payAsUserToSelf": "Pago a sí mismo",
       "viewAccount": "Ver {account}",
+      "viewScheduledPayments": "View scheduled payments",
+      "viewAuthorizedPayments": "View payment authorizations",
       "viewAds": "Ver anuncios",
       "viewBrokerings": "Ver miembros asignados",
       "viewOperators": "Ver operadores",
-      "status.user": "User status",
-      "status.operator": "Operator status",
-      "group.user": "User group",
-      "group.operator": "Operator group"
+      "status.user": "Estado del usuario",
+      "status.operator": "Estado del operador",
+      "group.user": "Grupo de usuario",
+      "group.operator": "Grupo de operador"
     },
     "registration": {
       "group.public": "Elija el grupo en el que desea registrarse",
@@ -768,27 +786,27 @@
       "removed": "Está seguro de que desea eliminar de forma permanente a {user}?\nEsta acción es irreversible!"
     },
     "done": {
-      "active": "{user} was activated",
-      "blocked": "{user} was blocked",
-      "disabled": "{user} was disabled",
-      "purged": "{user} was permanently removed, together with all personal data",
-      "removed": "{user} was permanently removed"
+      "active": "{user} fue activado",
+      "blocked": "{user} fue bloqueado",
+      "disabled": "{user} fue deshabilitado",
+      "purged": "{user} fue eliminado permanentemente, junto con todos sus datos personales",
+      "removed": "{user} fue eliminado permanentemente"
     },
     "title": {
-      "status.user": "User status",
-      "status.operator": "Operator status",
-      "change.user": "Change user status",
-      "change.operator": "Change operator status",
-      "history.user": "User status history",
-      "history.operator": "Operator status history"
+      "status.user": "Estado del usuario",
+      "status.operator": "Estado del operador",
+      "change.user": "Cambiar estado del usuario",
+      "change.operator": "Cambiar estado del operador",
+      "history.user": "Historial de estados del usuario",
+      "history.operator": "Historial de estados del operador"
     },
     "mobileTitle": {
-      "status.user": "User status",
-      "status.operator": "Operator status",
-      "change.user": "Change status",
-      "change.operator": "Change status",
-      "history.user": "Status history",
-      "history.operator": "Status history"
+      "status.user": "Estado del usuario",
+      "status.operator": "Estado del operador",
+      "change.user": "Cambiar estado",
+      "change.operator": "Cambiar estado",
+      "history.user": "Historial de estados",
+      "history.operator": "Historial de estados"
     },
     "active": "Activo",
     "blocked": "Acceso bloqueado",
@@ -798,25 +816,25 @@
     "removed": "Eliminado (los datos privados no fueron borrados)"
   },
   "groupMembership": {
-    "current": "Current group",
-    "new": "New group",
-    "confirm": "Are you sure to change {user} to group {group}?",
-    "confirm.aliasOperator": "Are you sure to grant {user} the same permissions as the owner?",
-    "done.user": "The user group was changed",
-    "done.operator": "The operator group was changed",
+    "current": "Grupo actual",
+    "new": "Nuevo grupo",
+    "confirm": "¿Está seguro de cambiar a {user} al grupo {group}?",
+    "confirm.aliasOperator": "Esta seguro de conceder a {user} los mismos permisos que su propietario?",
+    "done.user": "El grupo de usuario fue cambiado",
+    "done.operator": "El grupo de operador fue cambiado",
     "title": {
-      "group.user": "User group",
-      "group.operator": "Operator group",
-      "change.user": "Change user group",
-      "change.operator": "Change group",
-      "history.user": "User group history",
-      "history.operator": "Operator group history"
+      "group.user": "Grupo de usuario",
+      "group.operator": "Grupo de operador",
+      "change.user": "Cambiar grupo de usuario",
+      "change.operator": "Cambiar grupo",
+      "history.user": "Historial de grupos de usuario",
+      "history.operator": "Historial de grupos de operador"
     },
     "mobileTitle": {
-      "group.user": "User group",
-      "group.operator": "Operator group",
-      "change.user": "Change group",
-      "change.operator": "Change group",
+      "group.user": "Grupo de usuario",
+      "group.operator": "Grupo de operador",
+      "change.user": "Cambio de grupo",
+      "change.operator": "Cambio de grupo",
       "history.user": "Group history",
       "history.operator": "Group history"
     }

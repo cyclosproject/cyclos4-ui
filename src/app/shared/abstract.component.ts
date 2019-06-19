@@ -13,6 +13,7 @@ export abstract class AbstractComponent implements OnInit, OnDestroy {
   // Export ApiHelper to templates
   ApiHelper = ApiHelper;
 
+  injector: Injector;
   i18n: I18n;
   format: FormatService;
   shortcut: ShortcutService;
@@ -22,6 +23,7 @@ export abstract class AbstractComponent implements OnInit, OnDestroy {
   private shortcutSubs: Subscription[] = [];
 
   constructor(injector: Injector) {
+    this.injector = injector;
     this.i18n = injector.get(I18n);
     this.format = injector.get(FormatService);
     this.shortcut = injector.get(ShortcutService);

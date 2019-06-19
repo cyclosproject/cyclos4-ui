@@ -1,15 +1,24 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Configuration } from 'app/configuration';
 import { BreadcrumbService } from 'app/core/breadcrumb.service';
-import { LoginService } from 'app/core/login.service';
 import { MenuService } from 'app/core/menu.service';
-import { NotificationService } from 'app/core/notification.service';
-import { I18n } from 'app/i18n/i18n';
+import { AbstractComponent } from 'app/shared/abstract.component';
+import { blurIfClick } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
 import { ActiveMenu, BaseMenuEntry, MenuEntry, MenuType, RootMenu, RootMenuEntry } from 'app/shared/menu';
-import { BsDropdownDirective } from 'ngx-bootstrap/dropdown/public_api';
-import { Observable } from 'rxjs';
-import { blurIfClick } from 'app/shared/helper';
+import { BsDropdownDirective } from 'ngx-bootstrap/dropdown';
+
+/**
+ * Returns the anchor id for the given menu entry
+ * @param entry The menu entry
+ */
+export function menuAnchorId(entry: BaseMenuEntry) {
+  if (entry instanceof RootMenuEntry) {
+    return `menu_${entry.rootMenu}`;
+  } else if (entry instanceof MenuEntry) {
+    return `menu_${entry.menu.root}_${entry.menu.name}`;
+  }
+}
 
 /**
  * Renders menus in a bar, either the top bar or a dedicated menu bar
@@ -21,40 +30,56 @@ import { blurIfClick } from 'app/shared/helper';
   styleUrls: ['menus.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MenusComponent implements OnInit {
+export class MenusComponent extends AbstractComponent implements OnInit {
 
   /** Export to template */
-  blurIfClick = blurIfClick;
+  menuAnchorId = menuAnchorId;
 
+  @Input() roots: RootMenuEntry[];
   @Input() userName: string;
   @Input() activeMenu: ActiveMenu;
   @Input() menuType: MenuType;
+  @Output() dropdownShown = new EventEmitter<RootMenuEntry>();
+  @Output() dropdownHidden = new EventEmitter<RootMenuEntry>();
 
-  roots: Observable<RootMenuEntry[]>;
   onTop: boolean;
 
   constructor(
+    injector: Injector,
     private menu: MenuService,
     public layout: LayoutService,
-    public login: LoginService,
-    public breadcrumb: BreadcrumbService,
-    public i18n: I18n,
-    public notification: NotificationService) {
+    public breadcrumb: BreadcrumbService) {
+    super(injector);
   }
 
   get activeRoot(): RootMenu {
     return this.activeMenu == null ? null : this.activeMenu.menu.root;
   }
 
-  @ViewChildren('dropdown') dropdowns: QueryList<BsDropdownDirective>;
+  @ViewChild('dropdown') dropdown: BsDropdownDirective;
 
-  ngOnInit(): void {
+  ngOnInit() {
+    super.ngOnInit();
     this.onTop = !Configuration.menuBar;
-    this.roots = this.menu.menu(this.menuType);
   }
 
-  onClick(event: MouseEvent, base: BaseMenuEntry) {
-    this.dropdowns.forEach(d => d.hide());
+  onClick(event: MouseEvent, element: HTMLElement, base: BaseMenuEntry) {
+    event.stopPropagation();
+    event.preventDefault();
+
+    blurIfClick(element, event);
+
+    if (base instanceof RootMenuEntry) {
+      if (base.dropdown) {
+        this.dropdown.show();
+        return;
+      }
+    }
+
+    // Hide the dropdown, if any
+    if (this.dropdown) {
+      this.dropdown.hide();
+    }
 
     let entry: MenuEntry = null;
     if (base instanceof MenuEntry) {
