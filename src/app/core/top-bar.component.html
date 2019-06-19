@@ -1,5 +1,9 @@
-<nav class="navbar navbar-expand-md" [ngClass]="{
+<nav *ngIf="roots$ | async as roots" class="navbar navbar-expand-md"
+  [ngClass]="{
   'with-menu': hasMenu && !(layout.fullWidth$ | async),
+  'with-menu-spacious': hasMenu && isSpacious(roots, layout.breakpointChanges$ | async),
+  'with-menu-medium': hasMenu && isMedium(roots, layout.breakpointChanges$ | async),
+  'with-menu-dense': hasMenu && isDense(roots, layout.breakpointChanges$ | async),
   'with-user': (login.user$ | async)
 }">
   <div class="navbar-container">
@@ -33,8 +37,10 @@
       <ng-template #mobileOrGreater>
         <ng-container *ngIf="hasMenu && (layout.gtmd$ | async)">
           <!-- The menu is integrated in the top bar -->
-          <menus [menuType]="MenuType.TOP" [activeMenu]="activeMenu"
-            [userName]="userName"></menus>
+          <menus [roots]="roots" [menuType]="MenuType.TOP"
+            [activeMenu]="activeMenu" [userName]="userName"
+            (dropdownShown)="dropdownShown($event)"
+            (dropdownHidden)="dropdownHidden($event)"></menus>
           <div class="menu-separator"></div>
         </ng-container>
         <!-- We also have custom menus (profile, notifications, logout, etc) -->
@@ -54,7 +60,7 @@
       </avatar>
       <icon *ngIf="!user.image" class="top-icon top-icon-faded" icon="user">
       </icon>
-      <div *ngIf="(layout.gtsm$ | async)" class="ml-2">
+      <div *ngIf="(layout.gtsm$ | async)" class="personal-label">
         {{ userName }}
       </div>
     </a>

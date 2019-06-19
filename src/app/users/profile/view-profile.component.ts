@@ -91,9 +91,13 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     // Get the actions
     const permissions = user.permissions || {};
     const profile = permissions.profile || {};
+    const passwords = permissions.passwords || {};
     const accountTypes = (permissions.accounts || []).map(a => a.type);
     const contact = permissions.contact || {};
     const payment = permissions.payment || {};
+    const scheduledPayments = permissions.scheduledPayments || {};
+    const recurringPayments = permissions.recurringPayments || {};
+    const authorizedPayments = permissions.authorizedPayments || {};
     const marketplace = permissions.marketplace || {};
     const status = permissions.status || {};
     const group = permissions.group || {};
@@ -141,9 +145,24 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
           this.router.navigate(['/banking', this.param, 'payment', ApiHelper.SYSTEM]);
         }));
       }
+      if (scheduledPayments.view || recurringPayments.view) {
+        this.bankingActions.push(new HeadingAction('schedule', this.i18n.user.profile.viewScheduledPayments, () => {
+          this.router.navigate(['/banking', this.param, 'scheduled-payments']);
+        }));
+      }
+      if (authorizedPayments.view) {
+        this.bankingActions.push(new HeadingAction('assignment_turned_in', this.i18n.user.profile.viewAuthorizedPayments, () => {
+          this.router.navigate(['/banking', this.param, 'authorized-payments']);
+        }));
+      }
       if (profile.editProfile) {
         this.managementActions.push(new HeadingAction('edit', this.i18n.user.profile.edit, () => {
           this.router.navigateByUrl(this.router.url + '/edit');
+        }));
+      }
+      if (passwords.manage) {
+        this.managementActions.push(new HeadingAction('vpn_key', this.i18n.user.profile.managePasswords, () => {
+          this.router.navigate(['/users', this.param, 'passwords']);
         }));
       }
       if (status.view) {

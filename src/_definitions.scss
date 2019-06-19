@@ -28,6 +28,14 @@ $grid-breakpoints: (
   xl: 1200px
 ) !default;
 
+// We just increase a bit the max width for xl
+$container-max-widths: (
+  sm: 540px,
+  md: 720px,
+  lg: 960px,
+  xl: 1160px
+) !default;
+
 @if $enable-shadows == false {
   .shadow, .shadow-sm, .shadow-lg {
     box-shadow: none !important;
@@ -134,7 +142,11 @@ $top-bar-item-border-color: darken($top-bar-bg, 10%) !default;
 $top-bar-item-padding-xxs: 0.3rem !default;
 $top-bar-item-padding-xs: 0.5rem !default;
 $top-bar-item-padding: 0.8rem !default;
+$top-bar-item-focus-bg: darken($top-bar-bg, 5%) !default;
+$top-bar-item-focus-color: color-yiq($top-bar-item-focus-bg) !default;;
 $top-bar-with-menu-item-padding: 1.2rem !default;
+$top-bar-with-menu-item-padding-medium: 1rem !default;
+$top-bar-with-menu-item-padding-dense: 0.6rem !default;
 $top-bar-sub-item-hover-bg: darken($top-bar-bg, 5%) !default;
 $top-bar-sub-item-hover-color: $top-bar-color !default;
 $top-bar-sub-item-hover-icon-color: $top-bar-sub-item-hover-color !default;
@@ -143,6 +155,8 @@ $top-bar-sub-item-hover-icon-color: $top-bar-sub-item-hover-color !default;
 $top-bar-bg-dark: $primary-dark !default;
 $top-bar-color-dark: rgba(color-yiq($top-bar-bg-dark), 0.95) !default;
 $top-bar-item-border-color-dark: darken($top-bar-bg-dark, 10%) !default;
+$top-bar-item-focus-bg-dark: darken($top-bar-bg-dark, 5%) !default;
+$top-bar-item-focus-color-dark: color-yiq($top-bar-item-focus-bg-dark) !default;;
 $top-bar-sub-item-hover-bg-dark: darken($top-bar-bg-dark, 5%) !default;
 $top-bar-sub-item-hover-color-dark: $top-bar-color-dark !default;
 $top-bar-sub-item-hover-icon-color-dark: $top-bar-sub-item-hover-color-dark !default;
@@ -169,7 +183,7 @@ $menu-bar-inactive-color-dark: rgba($body-color-dark, 0.95) !default;
 $menu-bar-inactive-icon-color-dark: darken($menu-bar-inactive-color-dark, 10%) !default;
 $menu-bar-inactive-bg-dark: $menu-bar-bg-dark !default;
 $menu-bar-inactive-hover-color-dark: $menu-bar-inactive-color-dark !default;
-$menu-bar-inactive-hover-bg-dark: darken($menu-bar-inactive-bg-dark, 1%) !default;
+$menu-bar-inactive-hover-bg-dark: darken($menu-bar-inactive-bg-dark, 2%) !default;
 $menu-bar-active-icon-color-dark: $accent !default;
 $menu-bar-active-color-dark: lighten($accent, 5%) !default;
 $menu-bar-active-bg-dark: $menu-bar-bg-dark !default;

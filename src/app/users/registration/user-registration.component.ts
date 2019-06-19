@@ -93,10 +93,10 @@ export class UserRegistrationComponent
       // When admin / broker, fetch the possible registration groups from data, as they are more complete
       this.addSub(this.usersService.getUserDataForSearch({
         broker: role === RoleEnum.BROKER ? ApiHelper.SELF : null,
-        fields: ['groups', 'groupsForRegistration']
+        fields: ['groupsForRegistration']
       }).subscribe(data => {
-        this.groupSets = data.groups.filter(g => g.kind === GroupKind.GROUP_SET);
-        const hasRootGroups = data.groups.find(g => g.kind !== GroupKind.GROUP_SET && g.groupSet == null);
+        this.groupSets = data.groupsForRegistration.filter(g => g.kind === GroupKind.GROUP_SET);
+        const hasRootGroups = data.groupsForRegistration.find(g => g.kind !== GroupKind.GROUP_SET && g.groupSet == null);
         if (hasRootGroups) {
           this.groupSets.unshift(null);
         }

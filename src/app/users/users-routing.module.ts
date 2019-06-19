@@ -10,6 +10,7 @@ import { ListOperatorGroupsComponent } from 'app/users/operator-groups/list-oper
 import { ViewOperatorGroupComponent } from 'app/users/operator-groups/view-operator-group.component';
 import { OperatorRegistrationComponent } from 'app/users/operators/operator-registration.component';
 import { SearchUserOperatorsComponent } from 'app/users/operators/search-user-operators.component';
+import { ManagePasswordsComponent } from 'app/users/passwords/manage-passwords.component';
 import { EditProfileComponent } from 'app/users/profile/edit-profile.component';
 import { ValidateEmailChangeComponent } from 'app/users/profile/validate-email-change.component';
 import { ViewProfileComponent } from 'app/users/profile/view-profile.component';
@@ -258,13 +259,6 @@ const usersRoutes: Routes = [
         }
       },
       {
-        path: 'validate-email-change/:key',
-        component: ValidateEmailChangeComponent,
-        data: {
-          menu: Menu.PUBLIC_REGISTRATION
-        }
-      },
-      {
         path: 'contacts',
         component: ContactListComponent,
         canActivate: [LoggedUserGuard],
@@ -281,6 +275,14 @@ const usersRoutes: Routes = [
         },
         data: {
           menu: Menu.CONTACTS
+        }
+      },
+      {
+        path: ':user/passwords',
+        component: ManagePasswordsComponent,
+        canActivate: [LoggedUserGuard],
+        data: {
+          menu: AuthHelperService.menuByRole(Menu.PASSWORDS)
         }
       },
       {
@@ -313,7 +315,14 @@ const usersRoutes: Routes = [
         data: {
           menu: Menu.USER_ALERTS
         }
-      }
+      },
+      {
+        path: 'validate-email-change/:key',
+        component: ValidateEmailChangeComponent,
+        data: {
+          menu: Menu.PUBLIC_REGISTRATION
+        }
+      },
     ]
   }
 ];

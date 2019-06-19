@@ -18,6 +18,11 @@ import { BehaviorSubject, Observable, of } from 'rxjs';
 import { filter, first, map } from 'rxjs/operators';
 import { I18nLoadingService } from 'app/core/i18n-loading.service';
 
+enum NavigateAction {
+  Url,
+  Logout
+}
+
 /**
  * Parameters accepted by the `navigate` method
  */
@@ -129,8 +134,13 @@ export class MenuService {
    * Navigates to a menu entry
    */
   navigate(params: NavigateParams) {
+    let action = NavigateAction.Url;
     let url: string;
-    if (params.url) {
+
+    if ((params.menu && params.menu.menu === Menu.LOGOUT)
+      || params.entry && params.entry.menu === Menu.LOGOUT) {
+      action = NavigateAction.Logout;
+    } else if (params.url) {
       // An URL was given. Attempt to find a matching entry
       url = toFullUrl(params.url);
       if (!params.entry) {
@@ -169,8 +179,8 @@ export class MenuService {
       this.stateManager.clear();
     }
 
-    // Either perform the logout or navigate
-    if (params.entry && params.entry.menu === Menu.LOGOUT) {
+    // Perform the action
+    if (action === NavigateAction.Logout) {
       this.login.logout();
     } else if (url && url.startsWith('http')) {
       // An absolute URL
@@ -589,10 +599,16 @@ export class MenuService {
       const scheduledPayments = (banking.scheduledPayments || {});
       const recurringPayments = (banking.recurringPayments || {});
       if (scheduledPayments.view || recurringPayments.view) {
-        add(Menu.SCHEDULED_PAYMENTS, '/banking/scheduled-payments', 'schedule', this.i18n.menu.bankingScheduledPayments);
+        add(Menu.SCHEDULED_PAYMENTS, `/banking/${owner}/scheduled-payments`,
+          'schedule', this.i18n.menu.bankingScheduledPayments);
       }
       if ((banking.authorizations || {}).view) {
-        add(Menu.AUTHORIZED_PAYMENTS, '/banking/authorized-payments', 'assignment_turned_in', this.i18n.menu.bankingAuthorizations);
+        add(Menu.AUTHORIZED_PAYMENTS, `/banking/${owner}/authorized-payments`,
+          'assignment_turned_in', this.i18n.menu.bankingAuthorizations);
+      }
+      if (banking.searchGeneralTransfers) {
+        add(Menu.ADMIN_TRANSFERS_OVERVIEW, `/banking/transfers-overview`,
+          'compare_arrows', this.i18n.menu.bankingTransfersOverview);
       }
 
       if (vouchers.viewRedeemed) { // FIX ICON ?
@@ -616,6 +632,10 @@ export class MenuService {
         add(Menu.MY_BROKERED_USERS, '/users/brokerings', 'supervisor_account', this.i18n.menu.brokeringUsers);
         if (users.registerAsBroker) {
           add(Menu.BROKER_REGISTRATION, '/users/registration', 'registration', this.i18n.menu.brokeringRegister);
+        }
+        if (banking.searchGeneralTransfers) {
+          add(Menu.BROKER_TRANSFERS_OVERVIEW, `/banking/transfers-overview`,
+            'compare_arrows', this.i18n.menu.bankingTransfersOverview);
         }
       }
 
@@ -666,7 +686,7 @@ export class MenuService {
         } else {
           passwordsLabel = this.i18n.menu.personalPasswords;
         }
-        add(Menu.PASSWORDS, '/personal/passwords', 'vpn_key', passwordsLabel);
+        add(Menu.PASSWORDS, '/users/self/passwords', 'vpn_key', passwordsLabel);
       }
       if ((permissions.notifications || {}).enable) {
         add(Menu.NOTIFICATIONS, '/personal/notifications', 'notifications', this.i18n.menu.personalNotifications);

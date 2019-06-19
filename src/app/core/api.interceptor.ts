@@ -1,4 +1,4 @@
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse } from '@angular/common/http';
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponseBase } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
 import { NextRequestState } from 'app/core/next-request-state';
@@ -42,17 +42,21 @@ export class ApiInterceptor implements HttpInterceptor {
 
     // Also handle errors globally
     return next.handle(req).pipe(
-      tap(x => {
-        if (x instanceof HttpResponse) {
+      tap(
+        x => {
+          if (x instanceof HttpResponseBase) {
+            this.nextRequestState.finish(req);
+          }
+          return x;
+        },
+        err => {
           this.nextRequestState.finish(req);
-        }
-        return x;
-      }, err => {
-        this.nextRequestState.finish(req);
-        if (!ignoreError) {
-          this.errorHandler.handleHttpError(err);
-        }
-      })
+          if (!ignoreError) {
+            this.errorHandler.handleHttpError(err);
+          }
+        },
+        () => this.nextRequestState.finish(req)
+      )
     );
   }
 }

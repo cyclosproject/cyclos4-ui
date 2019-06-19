@@ -75,6 +75,7 @@ export module Menu {
 
   // Banking
   export const ACCOUNT_HISTORY = new Menu(RootMenu.BANKING, 'ACCOUNT_HISTORY');
+  export const ADMIN_TRANSFERS_OVERVIEW = new Menu(RootMenu.BANKING, 'ADMIN_TRANSFERS_OVERVIEW');
   export const PAYMENT_TO_USER = new Menu(RootMenu.BANKING, 'PAYMENT_TO_USER');
   export const PAYMENT_TO_SELF = new Menu(RootMenu.BANKING, 'PAYMENT_TO_SELF');
   export const PAYMENT_TO_SYSTEM = new Menu(RootMenu.BANKING, 'PAYMENT_TO_SYSTEM');
@@ -98,6 +99,7 @@ export module Menu {
   // Brokering
   export const MY_BROKERED_USERS = new Menu(RootMenu.BROKERING, 'MY_BROKERED_USERS');
   export const BROKER_REGISTRATION = new Menu(RootMenu.BROKERING, 'BROKER_REGISTRATION');
+  export const BROKER_TRANSFERS_OVERVIEW = new Menu(RootMenu.BROKERING, 'BROKER_TRANSFERS_OVERVIEW');
 
   // Personal
   export const MY_PROFILE = new Menu(RootMenu.PERSONAL, 'MY_PROFILE');

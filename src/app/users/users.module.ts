@@ -6,6 +6,8 @@ import { ListOperatorGroupsComponent } from 'app/users/operator-groups/list-oper
 import { ViewOperatorGroupComponent } from 'app/users/operator-groups/view-operator-group.component';
 import { OperatorRegistrationComponent } from 'app/users/operators/operator-registration.component';
 import { SearchUserOperatorsComponent } from 'app/users/operators/search-user-operators.component';
+import { ChangePasswordDialogComponent } from 'app/users/passwords/change-password-dialog.component';
+import { ManagePasswordsComponent } from 'app/users/passwords/manage-passwords.component';
 import { AddressFormComponent } from 'app/users/profile/address-form.component';
 import { EditProfileComponent } from 'app/users/profile/edit-profile.component';
 import { ValidateEmailChangeComponent } from 'app/users/profile/validate-email-change.component';
@@ -73,11 +75,15 @@ import { SearchUserAlertsComponent } from 'app/users/alerts/search-user-alerts.c
     ViewUserGroupHistoryComponent,
 
     ListUserBrokersComponent,
-    BrokerFormComponent
+    BrokerFormComponent,
+
+    ManagePasswordsComponent,
+    ChangePasswordDialogComponent,
   ],
   entryComponents: [
     VerifyPhoneComponent,
-    AddContactDialogComponent
+    AddContactDialogComponent,
+    ChangePasswordDialogComponent
   ]
 })
 export class UsersModule {

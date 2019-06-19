@@ -1,5 +1,9 @@
-<nav class="navbar shadow-sm" [ngClass]="(layout.fullWidth$ | async) ? 'full-width' : ''">
+<nav *ngIf="roots$ | async as roots" class="navbar shadow-sm" [ngClass]="{
+    'full-width': layout.fullWidth$ | async,
+    'dense': isDense(roots, layout.breakpointChanges$ | async)
+  }">
   <div class="navbar-container justify-content-start">
-    <menus test="c" [menuType]="MenuType.BAR" [activeMenu]="activeMenu"></menus>
+    <menus [roots]="roots" [menuType]="MenuType.BAR"
+      [activeMenu]="activeMenu"></menus>
   </div>
 </nav>
