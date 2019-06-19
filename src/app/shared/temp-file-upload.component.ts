@@ -145,6 +145,8 @@ export class TempFileUploadComponent extends AbstractComponent {
 
     // Join all requests in a single subscription
     this.subscription = forkJoin(observables).subscribe(storedFiles => {
+      const input = this.inputField.nativeElement as HTMLInputElement;
+      input.value = null;
       this.subscription.unsubscribe();
       this.files = [];
       this.uploading$.next(false);

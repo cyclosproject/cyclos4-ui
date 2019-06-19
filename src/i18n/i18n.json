@@ -230,7 +230,6 @@
       "message": "You can login with your username and password",
       "disconnected": "You have been disconnected.<br>Please, login again in order to view the requested page.",
       "principal": "User",
-      "password": "Password",
       "forgotPassword": "Forgot your password?",
       "register": "Not a user yet? Register here."
     },

@@ -156,6 +156,8 @@ export class ImageUploadComponent extends AbstractComponent implements OnDestroy
 
       // Join all requests in a single subscription
       this.subscription = forkJoin(observables).subscribe(images => {
+        const input = this.inputField.nativeElement as HTMLInputElement;
+        input.value = null;
         this.subscription.unsubscribe();
         this.files.next([]);
         this.uploading$.next(false);
