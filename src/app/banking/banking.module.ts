@@ -17,6 +17,7 @@ import { SharedModule } from 'app/shared/shared.module';
 import { RedeemVoucherComponent } from './vouchers/redeem-voucher.component';
 import { ViewVoucherComponent } from './vouchers/view-voucher.component';
 import { SearchRedeemedVouchersComponent } from './vouchers/search-redeemed-vouchers.component';
+import { SearchTransfersOverviewComponent } from 'app/banking/transfers/search-transfers-overview.component';
 
 /**
  * Banking module
@@ -33,6 +34,7 @@ import { SearchRedeemedVouchersComponent } from './vouchers/search-redeemed-vouc
     ViewTransferComponent,
     TransferDetailsComponent,
     ViewAuthorizationHistoryComponent,
+    SearchTransfersOverviewComponent,
 
     SearchScheduledPaymentsComponent,
     SearchAuthorizedPaymentsComponent,

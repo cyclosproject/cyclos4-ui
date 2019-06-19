@@ -49,7 +49,7 @@ export class SearchUserOperatorsComponent
 
     this.addSub(this.operatorsService.getUserOperatorsDataForSearch({ user: this.param }).subscribe(data => {
       this.form.patchValue(data.query, { emitEvent: false });
-      if (data.canCreateNew) {
+      if (!this.self && data.canCreateNew) {
         this.headingActions = [
           new HeadingAction('registration', this.i18n.general.addNew, () => {
             this.router.navigate(['/users', this.param, 'operators', 'registration']);

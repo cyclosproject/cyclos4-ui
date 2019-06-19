@@ -10,6 +10,7 @@ import { ListOperatorGroupsComponent } from 'app/users/operator-groups/list-oper
 import { ViewOperatorGroupComponent } from 'app/users/operator-groups/view-operator-group.component';
 import { OperatorRegistrationComponent } from 'app/users/operators/operator-registration.component';
 import { SearchUserOperatorsComponent } from 'app/users/operators/search-user-operators.component';
+import { ManagePasswordsComponent } from 'app/users/passwords/manage-passwords.component';
 import { EditProfileComponent } from 'app/users/profile/edit-profile.component';
 import { ValidateEmailChangeComponent } from 'app/users/profile/validate-email-change.component';
 import { ViewProfileComponent } from 'app/users/profile/view-profile.component';
@@ -19,6 +20,7 @@ import { ContactListComponent } from 'app/users/search/contact-list.component';
 import { SearchUsersComponent } from 'app/users/search/search-users.component';
 import { ViewUserStatusHistoryComponent } from 'app/users/status/view-user-status-history.component';
 import { ViewUserStatusComponent } from 'app/users/status/view-user-status.component';
+import { SearchConnectedComponent } from 'app/users/connected/search-connected.component';
 import { SearchUserAlertsComponent } from 'app/users/alerts/search-user-alerts.component';
 import { OperatorGroupFormComponent } from 'app/users/operator-groups/operator-group-form.component';
 import { ViewUserGroupComponent } from 'app/users/group-membership/view-user-group.component';
@@ -239,13 +241,6 @@ const usersRoutes: Routes = [
         }
       },
       {
-        path: 'validate-email-change/:key',
-        component: ValidateEmailChangeComponent,
-        data: {
-          menu: Menu.PUBLIC_REGISTRATION
-        }
-      },
-      {
         path: 'contacts',
         component: ContactListComponent,
         canActivate: [LoggedUserGuard],
@@ -262,6 +257,14 @@ const usersRoutes: Routes = [
         },
         data: {
           menu: Menu.CONTACTS
+        }
+      },
+      {
+        path: ':user/passwords',
+        component: ManagePasswordsComponent,
+        canActivate: [LoggedUserGuard],
+        data: {
+          menu: AuthHelperService.menuByRole(Menu.PASSWORDS)
         }
       },
       {
@@ -282,12 +285,26 @@ const usersRoutes: Routes = [
         }
       },
       {
+        path: 'connected',
+        component: SearchConnectedComponent,
+        data: {
+          menu: Menu.CONNECTED_USERS
+        }
+      },
+      {
         path: 'alerts',
         component: SearchUserAlertsComponent,
         data: {
           menu: Menu.USER_ALERTS
         }
-      }
+      },
+      {
+        path: 'validate-email-change/:key',
+        component: ValidateEmailChangeComponent,
+        data: {
+          menu: Menu.PUBLIC_REGISTRATION
+        }
+      },
     ]
   }
 ];

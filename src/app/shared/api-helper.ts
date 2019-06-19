@@ -1,9 +1,6 @@
-import {
-  AdminMenuEnum, Entity, Notification, NotificationEntityTypeEnum,
-  Operation, OperationScopeEnum, UserMenuEnum, AccountWithOwner
-} from 'app/api/models';
+import { AccountWithOwner, AdminMenuEnum, Auth, Entity, Notification, NotificationEntityTypeEnum, Operation, OperationScopeEnum, UserMenuEnum } from 'app/api/models';
 import { empty } from 'app/shared/helper';
-import { Menu, RootMenu, ActiveMenu } from 'app/shared/menu';
+import { ActiveMenu, Menu, RootMenu } from 'app/shared/menu';
 
 /**
  * Helper methods for working with API model
@@ -214,5 +211,22 @@ export class ApiHelper {
       case 'notifications':
         return `/personal/notifications`;
     }
+  }
+
+  /**
+   * Indicates whether the current access is restricted. The cases are:
+   * - Expired access password
+   * - Pending agreements
+   *
+   * Secondary access password (login confirmation) is not yet implemented in this
+   * front-end, hence, not returned as restricted access
+   * - Pending secondary password
+   * - Expired secondary password
+   */
+  static isRestrictedAccess(auth: Auth): boolean {
+    if (auth) {
+      return auth.expiredPassword || auth.pendingAgreements;
+    }
+    return false;
   }
 }

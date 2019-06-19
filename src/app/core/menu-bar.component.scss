@@ -1,7 +1,9 @@
 @import 'src/definitions';
 
-$lg-padding: 1.4rem;
-$xl-padding: 1.9rem;
+$lg-padding: 1.2rem;
+$xl-padding: 1.6rem;
+$lg-padding-dense: 0.7rem;
+$xl-padding-dense: 1rem;
 
 :host {
   display: flex;
@@ -46,11 +48,13 @@ nav.full-width {
     transform: translateY(-2px) !important;
   }
   a {
-    padding: 0.9rem $lg-padding;
+    padding-left: $lg-padding;
+    padding-right: $lg-padding;
     position: relative;
   }
   a.sub-menu-item {
-    padding: 0.7rem calc(#{$lg-padding} + 0.2rem) 0.7rem $lg-padding;
+    padding-left: $lg-padding;
+    padding-right: calc(#{$lg-padding} + 0.2rem);
   }
   .menu-text, .sub-menu-text {
     font-size: 1.2em;
@@ -109,7 +113,8 @@ nav.full-width {
 
   @include media-breakpoint-up(xl) {
     a {
-      padding: 0 $xl-padding;
+      padding-left: $xl-padding;
+      padding-right: $xl-padding;
     }
     a.sub-menu-item {
       padding-left: $xl-padding;
@@ -119,6 +124,30 @@ nav.full-width {
 
   .logout a {
     padding: 0 0.5rem;
+  }
+}
+
+:host ::ng-deep nav.dense menus {
+  .menu-text, .sub-menu-text {
+    font-size: 1.1em;
+  }
+  a {
+    padding-left: $lg-padding-dense;
+    padding-right: $lg-padding-dense;
+  }
+  a.sub-menu-item {
+    padding-left: $lg-padding-dense;
+    padding-right: calc(#{$lg-padding-dense} + 0.2rem);
+  }
+  @include media-breakpoint-up(xl) {
+    a {
+      padding-left: $xl-padding-dense;
+      padding-right: $xl-padding-dense;
+    }
+    a.sub-menu-item {
+      padding-left: $xl-padding-dense;
+      padding-right: calc(#{$xl-padding-dense} + 0.2rem);
+    }
   }
 }
 

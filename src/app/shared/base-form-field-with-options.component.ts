@@ -140,6 +140,11 @@ export abstract class BaseFormFieldWithOptionsComponent<T> extends BaseFormField
     const category = this.categoryFor(option);
     if (category) {
       category.remove(option);
+      if (empty(category.options.value)) {
+        // When the last option in a category is removed, remove the category as well
+        const currentCategories = this.categories.value;
+        this.categories.next(currentCategories.filter(c => c !== category));
+      }
     }
   }
 

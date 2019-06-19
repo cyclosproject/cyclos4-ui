@@ -190,6 +190,7 @@
     "banking.paySelf": "De betaling zelf",
     "banking.scheduledPayments": "Geautoriseerde betalingen",
     "banking.authorizations": "Betalingsautorisaties",
+    "banking.transfersOverview": "Transfers overview",
     "operators": "Operators",
     "operators.operators": "Operators",
     "operators.register": "Register operator",
@@ -247,17 +248,23 @@
       "newPassword": "Nieuw wachtwoord",
       "passwordConfirmation": "Bevestiging van het wachtwoord",
       "title": {
-        "change": "Uw wachtwoord wijzigen",
+        "change.self": "Uw wachtwoord wijzigen",
+        "change.user": "Change user password",
         "forgotten": "Recover your password",
-        "manage.single": "Het beheer van uw wachtwoord",
-        "manage.multiple": "Het beheren van uw wachtwoorden",
+        "manage.single.self": "Het beheer van uw wachtwoord",
+        "manage.multiple.self": "Het beheren van uw wachtwoorden",
+        "manage.single.user": "Manage user password",
+        "manage.multiple.user": "Manage user passwords",
         "securityAnswer": "Set your security answer"
       },
       "mobileTitle": {
-        "change": "Password change",
+        "change.self": "Password change",
+        "change.user": "Password change",
         "forgotten": "Password recovery",
-        "manage.single": "Password",
-        "manage.multiple": "Passwords",
+        "manage.single.self": "Password",
+        "manage.multiple.self": "Passwords",
+        "manage.single.user": "User password",
+        "manage.multiple.user": "User passwords",
         "securityAnswer": "Security answer"
       },
       "forgotten": {
@@ -383,6 +390,7 @@
     "amount": "Bedrag",
     "type": "Type betaling",
     "fromTo": "Van / tot",
+    "fromTo.text": "{from} to {to}",
     "from": "Van",
     "to": "Tot",
     "account": "Rekening",
@@ -478,7 +486,8 @@
       "details.external": "Externe betalingsdetails",
       "details.transfer": "Betalingsoverzicht",
       "parentTransfer": "Transfer die deze",
-      "childTransfers": "Transfers gegenereerd door deze"
+      "childTransfers": "Transfers gegenereerd door deze",
+      "transfersOverview": "Transfers overview"
     },
     "mobileTitle": {
       "paymentSystemToSystem": "Pay system",
@@ -501,7 +510,8 @@
       "details.external": "External payment",
       "details.transfer": "Transfer",
       "parentTransfer": "Originating transfer",
-      "childTransfers": "Originated transfers"
+      "childTransfers": "Originated transfers",
+      "transfersOverview": "Transfers overview"
     },
     "viewAuthorizations": "Bekijk autorisaties",
     "viewThisTransfer": "Bekijk deze overdracht",
@@ -598,7 +608,6 @@
       "registration.done": "Inschrijving succesvol",
       "contactList": "Contact lijst",
       "addContact": "Een nieuw contact toevoegen",
-<<<<<<< HEAD
       "search": "Users search",
       "directory": "Business directory",
       "myOperators": "Operators",
@@ -606,9 +615,6 @@
       "operatorRegistration": "Operator registration",
       "myBrokerings": "Assigned members",
       "userBrokerings": "Broker assigned members"
-=======
-      "search": "Gebruikers"
->>>>>>> 1.0.x
     },
     "mobileTitle": {
       "myProfile": "My profile",
@@ -626,7 +632,6 @@
       "registration.done": "Success",
       "contactList": "Contacts",
       "addContact": "New contact",
-<<<<<<< HEAD
       "search": "Users",
       "directory": "Directory",
       "myOperators": "Operators",
@@ -634,9 +639,6 @@
       "operatorRegistration": "New operator",
       "myBrokerings": "Assigned members",
       "userBrokerings": "Broker members"
-=======
-      "search": "Bedrijven"
->>>>>>> 1.0.x
     },
     "group": "Groep",
     "groupSet": "Group set",
@@ -677,6 +679,12 @@
     "contact": "Contact",
     "profile": {
       "noPermission": "U heeft geen toestemming om het profiel van deze gebruiker te bekijken",
+      "showActions": "Show actions",
+      "hideActions": "Hide actions",
+      "banking": "Banking",
+      "management": "Management",
+      "edit": "Edit profile",
+      "managePasswords": "Manage passwords",
       "addContact": "Toevoegen aan mijn contacten",
       "addContact.done": "{user} werd toegevoegd aan uw lijst met contactpersonen",
       "removeContact": "Verwijder uit mijn contacten",
@@ -687,6 +695,8 @@
       "payAsUserToUser": "Payment user to user",
       "payAsUserToSelf": "Payment user to self",
       "viewAccount": "View {account}",
+      "viewScheduledPayments": "View scheduled payments",
+      "viewAuthorizedPayments": "View payment authorizations",
       "viewAds": "Bekijk advertenties",
       "viewBrokerings": "View assigned members",
       "viewOperators": "View operators",

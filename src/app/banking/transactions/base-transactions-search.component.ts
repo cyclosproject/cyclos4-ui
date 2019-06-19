@@ -5,7 +5,6 @@ import {
 } from 'app/api/models';
 import { TransactionsService } from 'app/api/services';
 import { TransactionStatusService } from 'app/core/transaction-status.service';
-import { ApiHelper } from 'app/shared/api-helper';
 import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { empty } from 'app/shared/helper';
 import { BehaviorSubject } from 'rxjs';
@@ -24,6 +23,8 @@ export abstract class BaseTransactionsSearch
   extends BaseSearchPageComponent<TransactionDataForSearch, TransactionSearchParams, TransactionResult>
   implements OnInit {
 
+  param: string;
+  self: boolean;
   transferFilters$ = new BehaviorSubject<TransferFilter[]>([]);
   currencies = new Map<string, Currency>();
 
@@ -44,12 +45,15 @@ export abstract class BaseTransactionsSearch
 
   ngOnInit() {
     super.ngOnInit();
+    const route = this.route.snapshot;
+    this.param = route.params.owner;
+    this.self = this.authHelper.isSelf(this.param);
 
     // Get the account history data
     this.stateManager.cache('data',
       this.transactionsService.getTransactionsDataForSearch({
-        owner: ApiHelper.SELF,
-        fields: ['accountTypes', 'transferFilters', 'preselectedPeriods', 'query']
+        owner: this.param,
+        fields: ['user', 'accountTypes', 'transferFilters', 'preselectedPeriods', 'query']
       })
     ).subscribe(data => {
       this.bankingHelper.preProcessPreselectedPeriods(data, this.form);
@@ -89,8 +93,7 @@ export abstract class BaseTransactionsSearch
 
   protected toSearchParams(value: any): TransactionSearchParams {
     const params: TransactionSearchParams = cloneDeep(value);
-    params.owner = ApiHelper.SELF;
-
+    params.owner = this.param;
     params.accountTypes = value.accountType ? [value.accountType] : null;
     params.transferFilters = value.transferFilter ? [value.transferFilter] : null;
     params.datePeriod = this.bankingHelper.resolveDatePeriod(value);

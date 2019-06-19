@@ -15,6 +15,9 @@ import { AuthHelperService } from 'app/core/auth-helper.service';
 import { RedeemVoucherComponent } from 'app/banking/vouchers/redeem-voucher.component';
 import { ViewVoucherComponent } from 'app/banking/vouchers/view-voucher.component';
 import { SearchRedeemedVouchersComponent } from 'app/banking/vouchers/search-redeemed-vouchers.component';
+import { SearchTransfersOverviewComponent } from 'app/banking/transfers/search-transfers-overview.component';
+import { DataForUiHolder } from 'app/core/data-for-ui-holder';
+import { RoleEnum } from 'app/api/models';
 
 /**
  * A conditional menu resolver for content, which finds the content page by slug to resolve the correct menu
@@ -54,6 +57,16 @@ const PaymentMenu: ConditionalMenu = injector => {
   return AuthHelperService.menuByRole(ownMenu)(injector);
 };
 
+const TransfersOverviewMenu: ConditionalMenu = injector => {
+  const role = injector.get(DataForUiHolder).role;
+  switch (role) {
+    case RoleEnum.ADMINISTRATOR:
+      return Menu.ADMIN_TRANSFERS_OVERVIEW;
+    case RoleEnum.BROKER:
+      return Menu.BROKER_TRANSFERS_OVERVIEW;
+  }
+};
+
 const bankingRoutes: Routes = [
   {
     path: '',
@@ -81,6 +94,13 @@ const bankingRoutes: Routes = [
         }
       },
       {
+        path: 'transfers-overview',
+        component: SearchTransfersOverviewComponent,
+        data: {
+          menu: TransfersOverviewMenu
+        }
+      },
+      {
         path: 'transaction/:key/authorization-history',
         component: ViewAuthorizationHistoryComponent,
         data: {
@@ -102,17 +122,17 @@ const bankingRoutes: Routes = [
         }
       },
       {
-        path: 'scheduled-payments',
+        path: ':owner/scheduled-payments',
         component: SearchScheduledPaymentsComponent,
         data: {
-          menu: Menu.SCHEDULED_PAYMENTS
+          menu: AuthHelperService.menuByRole(Menu.SCHEDULED_PAYMENTS)
         }
       },
       {
-        path: 'authorized-payments',
+        path: ':owner/authorized-payments',
         component: SearchAuthorizedPaymentsComponent,
         data: {
-          menu: Menu.AUTHORIZED_PAYMENTS
+          menu: AuthHelperService.menuByRole(Menu.AUTHORIZED_PAYMENTS)
         }
       },
       {

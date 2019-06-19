@@ -3,17 +3,17 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiConfiguration } from 'app/api/api-configuration';
-import { DataForUi, UiKind, Auth, User, RoleEnum } from 'app/api/models';
+import { Auth, DataForUi, RoleEnum, UiKind, User } from 'app/api/models';
 import { AuthService, UiService } from 'app/api/services';
 import { Configuration } from 'app/configuration';
 import { ErrorStatus } from 'app/core/error-status';
+import { I18nLoadingService } from 'app/core/i18n-loading.service';
 import { NextRequestState } from 'app/core/next-request-state';
 import { I18n } from 'app/i18n/i18n';
 import { isSameOrigin, setReloadButton, setRootAlert } from 'app/shared/helper';
 import moment from 'moment-mini-ts';
 import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
-import { catchError, map, switchMap, tap, first } from 'rxjs/operators';
-import { I18nLoadingService } from 'app/core/i18n-loading.service';
+import { catchError, first, map, switchMap, tap } from 'rxjs/operators';
 
 /**
  * Injectable used to hold the `DataForUi` instance used by the application

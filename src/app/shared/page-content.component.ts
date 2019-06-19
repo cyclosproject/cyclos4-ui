@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, Component, HostBinding, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, HostBinding, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { CardMode } from 'app/content/card-mode';
 import { BreadcrumbService } from 'app/core/breadcrumb.service';
 import { I18n } from 'app/i18n/i18n';
 import { HeadingAction } from 'app/shared/action';
-import { blank, truthyAttr, empty } from 'app/shared/helper';
+import { blank, empty, truthyAttr } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
 import { Subscription } from 'rxjs';
 
@@ -45,7 +45,8 @@ export class PageContentComponent implements OnInit, OnChanges {
   constructor(
     public layoutService: LayoutService,
     public breadcrumb: BreadcrumbService,
-    public i18n: I18n
+    public i18n: I18n,
+    public element: ElementRef
   ) { }
 
   get groupActions(): boolean {
