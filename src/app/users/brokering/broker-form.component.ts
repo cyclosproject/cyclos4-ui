@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { BrokerDataForAdd } from 'app/api/models';
+import { BrokerDataForAdd, RoleEnum } from 'app/api/models';
 import { BrokeringService } from 'app/api/services';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { FormGroup, Validators } from '@angular/forms';
@@ -19,6 +19,9 @@ export class BrokerFormComponent
   id: string;
   user: string;
   form: FormGroup;
+  roles: Array<RoleEnum>;
+  usersToExclude: Array<String>;
+  groups: Array<String>;
 
   constructor(
     injector: Injector,
@@ -36,6 +39,9 @@ export class BrokerFormComponent
   }
 
   onDataInitialized(data: BrokerDataForAdd) {
+    this.roles = [RoleEnum.BROKER];
+    this.groups = data.brokerGroups.map(g => g.id);
+    this.usersToExclude = data.brokers.map(b => b.id);
     if (data.brokers) {
       this.form.setControl('mainBroker', this.formBuilder.control(false));
     }

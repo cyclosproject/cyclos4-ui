@@ -3,8 +3,12 @@
     <page-content [heading]="i18n.brokers.title.new"
       [mobileHeading]="i18n.brokers.mobileTitle.new">
       <form [formGroup]="form">
-        <user-field [allowContacts]="false" formControlName="broker"
-          [label]="i18n.brokers.broker">
+        <user-field [filters]="{
+          excludeContacts: true,
+          roles: this.roles,
+          usersToExclude: this.usersToExclude,
+          groups: this.groups}" [allowContacts]="false"
+          formControlName="broker" [label]="i18n.brokers.broker">
         </user-field>
         <boolean-field *ngIf="data.brokers" [label]="i18n.brokers.mainBroker"
           formControlName="mainBroker"></boolean-field>
