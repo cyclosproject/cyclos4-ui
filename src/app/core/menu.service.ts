@@ -1,6 +1,6 @@
 import { Injectable, Injector } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { AccountType, Auth, DataForUi, Operation, RoleEnum, VoucherPermissions } from 'app/api/models';
+import { AccountType, Auth, DataForUi, Operation, RoleEnum, VouchersPermissions } from 'app/api/models';
 import { Configuration } from 'app/configuration';
 import { BankingHelperService } from 'app/core/banking-helper.service';
 import { BreadcrumbService } from 'app/core/breadcrumb.service';
@@ -459,7 +459,7 @@ export class MenuService {
     const users = permissions.users || {};
     const marketplace = permissions.marketplace || {};
     const operations = permissions.operations || {};
-    const vouchers = this.resolveVoucherPermissions(permissions.vouchers.vouchers || []);
+    const vouchers = this.resolveVoucherPermissions(permissions.vouchers || {});
     const userOperations = (operations.user || []).filter(o => o.run).map(o => o.operation);
     const systemOperations = (operations.system || []).filter(o => o.run).map(o => o.operation);
 
@@ -738,7 +738,8 @@ export class MenuService {
     }
   }
 
-  private resolveVoucherPermissions(voucherPermissions: VoucherPermissions[]): ResolvedVouchersPermissions {
+  private resolveVoucherPermissions(vouchersPermissions: VouchersPermissions): ResolvedVouchersPermissions {
+    const voucherPermissions = vouchersPermissions.vouchers || [];
     const buy = !!voucherPermissions.find(config => config.buy);
     const redeem = !!voucherPermissions.find(config => config.redeem);
     const generate = !!voucherPermissions.find(config => config.generate);
