@@ -222,7 +222,6 @@
       "message": "U kunt inloggen met uw gebruikersnaam en wachtwoord",
       "disconnected": "U is verbroken.<br>Gelieve in te loggen om te geven de gevraagde pagina.",
       "principal": "Gebruiker",
-      "password": "Wachtwoord",
       "forgotPassword": "Wachtwoord vergeten?",
       "register": "Geen gebruiker? Registreer u dan hier."
     },
