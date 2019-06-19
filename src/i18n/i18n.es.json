@@ -200,7 +200,7 @@
       "message": "Para acceder al sistema, utilice su nombre de usuario y contraseña",
       "disconnected": "Usted ha sido desconectado. \nPor favor, acceda nuevamente para ver la página solicitada.",
       "principal": "Usuario",
-      "password": "Contraseña",
+      "password": "Contraseñas",
       "forgotPassword": "Olvidó su contraseña?",
       "register": "Aun no posee un usuario? Regístrese aquí."
     },
