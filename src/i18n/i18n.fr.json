@@ -222,7 +222,6 @@
       "message": "Vous pouvez vous connecter avec votre identifiant et votre mot de passe.",
       "disconnected": "Vous avez été déconnecté.<br>Veuillez vous identifier à nouveau pour afficher la page demandée.",
       "principal": "Utilisateur",
-      "password": "Mot de passe",
       "forgotPassword": "Mot de passe oublié ?",
       "register": "Pas encore de compte ? Créez-en un maintenant."
     },
