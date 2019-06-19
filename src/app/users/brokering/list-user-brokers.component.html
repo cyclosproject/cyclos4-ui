@@ -10,10 +10,14 @@
         <div class="d-flex">
           <div>
             <div class="cell-main">
-              {{ row.shortDisplay }}
+              {{ row.broker.shortDisplay }}
             </div>
             <div class="cell-text">
-              {{ row.main ? this.i18n.brokers.main : '' }}
+              <icon class="d-inline-block" *ngIf="row.main"
+                icon="done_outline"></icon>
+              <a class="decorated" *ngIf="!row.main"
+                (click)="setMain(row); $event.stopPropagation(); $event.preventDefault()">{{ this.i18n.brokers.setMain }}
+              </a>
             </div>
           </div>
           <div class="ml-auto">

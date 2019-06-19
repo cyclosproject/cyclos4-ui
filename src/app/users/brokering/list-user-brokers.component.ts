@@ -41,11 +41,12 @@ export class ListUserBrokersComponent
   onDataInitialized(data: UserBrokersData) {
     this.brokers = data.brokers;
     if (data.editable) {
-      this.headingActions = [
-        new HeadingAction('registration', this.i18n.general.addNew, () => {
-          this.router.navigate(['/users', this.param, 'brokers', 'new']);
-        }, true)
-      ];
+      this.headingActions.push(new HeadingAction('registration', this.i18n.general.addNew, () =>
+        this.router.navigate(['/users', this.param, 'brokers', 'new']), true));
+    }
+    if (data.history) {
+      this.headingActions.push(new HeadingAction('history', this.i18n.general.viewHistory, () =>
+        this.router.navigate(['/users', this.param, 'brokers', 'history']), true));
     }
   }
 
