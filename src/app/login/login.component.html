@@ -25,7 +25,8 @@
           </div>
           <input #principal type="text" formControlName="principal"
             autocomplete="username" class="form-control" focused
-            [placeholder]="i18n.auth.login.principal" [ngClass]="{
+            [placeholder]="i18n.auth.login.principal"
+            (keyup.enter)="password.focus()" [ngClass]="{
             'is-invalid': (form.get('principal').statusChanges | async) === 'INVALID' && form.get('principal').touched
           }">
         </div>
