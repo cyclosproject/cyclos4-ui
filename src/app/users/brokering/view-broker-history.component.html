@@ -1,0 +1,39 @@
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data then content"></ng-container>
+</page-layout>
+
+<ng-template #content>
+  <page-content [heading]="i18n.brokers.title.history"
+    [mobileHeading]="i18n.brokers.mobileTitle.history">
+    <user-info [user]="data.user"></user-info>
+  </page-content>
+  <results-layout [results]="data.history">
+    <mobile-result *mobileResult="let row" [date]="row.date">
+      <div class="cell-main">
+        {{ row.broker.shortDisplay }}
+      </div>
+      <div class="cell-text" *ngIf="row.by">
+        {{ i18n.general.performedBy }}:
+        {{ row.by ? row.by.shortDisplay : this.i18n.brokers.administration}}
+      </div>
+    </mobile-result>
+    <table *resultTable class="table table-hover">
+      <thead>
+        <th>{{ i18n.general.date }}</th>
+        <th>{{ i18n.brokers.broker }}</th>
+        <th>{{ i18n.general.action }}</th>
+        <th>{{ i18n.general.performedBy }}</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of data.history">
+          <td>{{ row.date | date }}</td>
+          <td>{{ row.broker.shortDisplay }}</td>
+          <td>{{ showActionLabel(row) }}</td>
+          <td>
+            {{ row.by ? row.by.shortDisplay : this.i18n.brokers.administration}}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </results-layout>
+</ng-template>

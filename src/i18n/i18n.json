@@ -883,16 +883,24 @@
   "brokers": {
     "title": {
       "list": "Brokers",
-      "new": "Add broker"
+      "new": "Add broker",
+      "history": "Brokers history"
     },
     "mobileTitle": {
       "list": "Brokers",
-      "new": "Add broker"
+      "new": "Add broker",
+      "history": "Brokers history"
     },
     "mainBroker": "Main broker",
     "setMain": "Set main",
     "broker": "Broker",
-    "brokerAdded": "The broker has been added successfully"
+    "brokerAdded": "The broker has been added successfully",
+    "administration": "The administration",
+    "action": {
+      "add": "Added as broker",
+      "remove": "Removed a broker",
+      "setMain": "Set as main"
+    }
   },
   "phone": {
     "mobile": "Mobile phone",

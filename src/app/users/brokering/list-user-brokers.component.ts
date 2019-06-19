@@ -40,6 +40,7 @@ export class ListUserBrokersComponent
 
   onDataInitialized(data: UserBrokersData) {
     this.brokers = data.brokers;
+    this.headingActions = [];
     if (data.editable) {
       this.headingActions.push(new HeadingAction('registration', this.i18n.general.addNew, () =>
         this.router.navigate(['/users', this.param, 'brokers', 'new']), true));
