@@ -171,6 +171,11 @@ export class LoginService {
         // Store the session token
         this.nextRequestState.setSessionToken(auth.sessionToken, useCookie);
 
+        if (auth.pendingSecondaryPassword) {
+          this.notification.error(`This session is pending secondary password,
+            but this front-end doesn't support it yet.`);
+        }
+
         // Then reload the DataForUi instance (as user)
         return this.dataForUiHolder.reload().pipe(
           map(dataForUi => dataForUi.auth)

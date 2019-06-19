@@ -1,7 +1,7 @@
 <h1>{{ i18n.user.title.addContact }}</h1>
 
-<user-field #field focused excludeContacts [allowContacts]="false"
-  [allowPrincipal]="false" [formControl]="control"
+<user-field #field focused [filters]="{ excludeContacts: true }"
+  [allowContacts]="false" [allowPrincipal]="false" [formControl]="control"
   [label]="i18n.user.contact">
 </user-field>
 

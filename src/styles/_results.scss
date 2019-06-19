@@ -124,10 +124,19 @@
     flex-grow: 0;
     padding-top: 0.1rem;
     padding-right: $layout-spacer-xxs;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
   .mobile-result-container {
     padding: $layout-spacer-xxs;
     display: flex;
+  }
+  .mobile-result-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
   a.mobile-result {
     border-bottom: 1px solid $mobile-results-border-color;

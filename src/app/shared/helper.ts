@@ -471,14 +471,24 @@ export function getValueAsArray(value: any, separator: string): string[] {
 
 /**
  * Scrolls vertically to the given position, either in pixels or an element (using the element top position)
- * @param px The value, in pixels, or 0 if not specified
+ * @param to Either an element, in which the element top will be considered, or a value in pixels. 0 if not specified.
  */
-export function scrollTop(px?: number) {
-  if (px == null) {
-    px = 0;
+export function scrollTop(to?: number | ElementReference) {
+  if (to == null) {
+    to = 0;
+  } else if (typeof to !== 'number') {
+    const el = resolveElement(to);
+    if (el) {
+      window.scrollBy({
+        top: el.getBoundingClientRect().top - 54
+      });
+      return;
+    } else {
+      to = 0;
+    }
   }
-  document.body.scrollTop = px;
-  document.documentElement.scrollTop = px;
+  document.body.scrollTop = to;
+  document.documentElement.scrollTop = to;
 }
 
 /**

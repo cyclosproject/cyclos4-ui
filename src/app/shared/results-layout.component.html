@@ -24,7 +24,8 @@
 <ng-container *ngIf="rows?.length > 0; else noResults">
   <content-monitor *ngIf="tableTemplate && resultType === 'list'"
     (ready)="notifyReady()" [ngClass]="{'d-none': rendering$ | async}">
-    <page-content [mode]="(layout.ltsm$ | async) ? 'tight' : 'table'" last>
+    <page-content #listContent
+      [mode]="(layout.ltsm$ | async) ? 'tight' : 'table'" last>
       <ng-container *ngIf="layout.ltsm$ | async; else largeTable">
         <div class="mobile-results">
           <a *ngFor="let row of rows" class="mobile-result"
@@ -40,7 +41,8 @@
         <ng-container *ngTemplateOutlet="tableTemplate"></ng-container>
       </ng-template>
       <div class="paginator-container" *ngIf="showPaginator()">
-        <paginator [results]="results" (update)="update.emit($event)">
+        <paginator [scrollAnchor]="listContent.element" [results]="results"
+          (update)="update.emit($event)">
         </paginator>
       </div>
     </page-content>
@@ -48,7 +50,7 @@
 
   <content-monitor *ngIf="tileTemplate && resultType === 'tiles'"
     (ready)="notifyReady()" [ngClass]="{'d-none': rendering$ | async}">
-    <page-content mode="transparent" [last]="!showPaginator()">
+    <page-content #tilesContent mode="transparent" [last]="!showPaginator()">
       <div class="row tiled-results">
         <div class="col-12 col-xs-6 col-sm-4" *ngFor="let row of rows"
           [ngClass]="{
@@ -67,7 +69,8 @@
       </div>
     </page-content>
     <page-content last *ngIf="showPaginator()">
-      <paginator [results]="results" (update)="update.emit($event)">
+      <paginator [scrollAnchor]="tilesContent.element" [results]="results"
+        (update)="update.emit($event)">
       </paginator>
     </page-content>
   </content-monitor>
