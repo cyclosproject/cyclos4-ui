@@ -5,9 +5,8 @@ import {
   PasswordStatusAndActions, PasswordStatusEnum
 } from 'app/api/models';
 import { PasswordsService } from 'app/api/services';
-import { ChangePasswordDialogComponent } from 'app/personal/passwords/change-password-dialog.component';
+import { ChangePasswordDialogComponent } from 'app/users/passwords/change-password-dialog.component';
 import { Action } from 'app/shared/action';
-import { ApiHelper } from 'app/shared/api-helper';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { validateBeforeSubmit } from 'app/shared/helper';
 import { BsModalService } from 'ngx-bootstrap/modal';
@@ -25,6 +24,9 @@ export class ManagePasswordsComponent
   extends BasePageComponent<DataForUserPasswords>
   implements OnInit {
 
+  param: string;
+  self: boolean;
+
   multiple: boolean;
   title: string;
   mobileTitle: string;
@@ -40,20 +42,31 @@ export class ManagePasswordsComponent
 
   ngOnInit() {
     super.ngOnInit();
-    this.addSub(this.passwordsService.getUserPasswordsListData({ user: ApiHelper.SELF })
+    this.param = this.route.snapshot.params.user;
+    this.addSub(this.passwordsService.getUserPasswordsListData({ user: this.param })
       .subscribe(data => {
         this.data = data;
       }));
   }
 
   onDataInitialized(data: DataForUserPasswords) {
+    this.self = this.authHelper.isSelf(data.user);
     this.multiple = data.passwords.length > 1;
-    this.title = this.multiple
-      ? this.i18n.auth.password.title.manageMultiple
-      : this.i18n.auth.password.title.manageSingle;
-    this.mobileTitle = this.multiple
-      ? this.i18n.auth.password.mobileTitle.manageMultiple
-      : this.i18n.auth.password.mobileTitle.manageSingle;
+    if (this.self) {
+      this.title = this.multiple
+        ? this.i18n.auth.password.title.manageMultipleSelf
+        : this.i18n.auth.password.title.manageSingleSelf;
+      this.mobileTitle = this.multiple
+        ? this.i18n.auth.password.mobileTitle.manageMultipleSelf
+        : this.i18n.auth.password.mobileTitle.manageSingleSelf;
+    } else {
+      this.title = this.multiple
+        ? this.i18n.auth.password.title.manageMultipleUser
+        : this.i18n.auth.password.title.manageSingleUser;
+      this.mobileTitle = this.multiple
+        ? this.i18n.auth.password.mobileTitle.manageMultipleUser
+        : this.i18n.auth.password.mobileTitle.manageSingleUser;
+    }
 
     if (data.dataForSetSecurityAnswer) {
       this.securityAnswer = this.formBuilder.group({
@@ -135,7 +148,9 @@ export class ManagePasswordsComponent
     const ref = this.modal.show(ChangePasswordDialogComponent, {
       class: 'modal-form',
       initialState: {
+        param: this.param,
         type: password.type,
+        user: this.data.user,
         requireOld: password.requireOldPasswordForChange
       }
     });
@@ -205,7 +220,7 @@ export class ManagePasswordsComponent
 
   private doUnblock(password: PasswordStatusAndActions) {
     this.addSub(this.passwordsService.unblockPassword({
-      user: ApiHelper.SELF,
+      user: this.param,
       type: password.type.id
     }).subscribe(() => {
       this.notification.snackBar(this.i18n.auth.password.action.unblockDone(password.type.name));
@@ -223,7 +238,7 @@ export class ManagePasswordsComponent
 
   private doEnable(password: PasswordStatusAndActions) {
     this.addSub(this.passwordsService.enablePassword({
-      user: ApiHelper.SELF,
+      user: this.param,
       type: password.type.id
     }).subscribe(() => {
       this.notification.snackBar(this.i18n.auth.password.action.enableDone(password.type.name));
@@ -241,7 +256,7 @@ export class ManagePasswordsComponent
 
   private doDisable(password: PasswordStatusAndActions) {
     this.addSub(this.passwordsService.disablePassword({
-      user: ApiHelper.SELF,
+      user: this.param,
       type: password.type.id
     }).subscribe(() => {
       this.notification.snackBar(this.i18n.auth.password.action.disableDone(password.type.name));

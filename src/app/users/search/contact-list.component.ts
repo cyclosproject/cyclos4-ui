@@ -56,9 +56,15 @@ export class ContactListComponent
         fieldsInList.unshift('display');
         data.fieldsInList = fieldsInList;
       }
-      this.headingActions = [
-        new HeadingAction('add', this.i18n.general.addNew, () => this.addNew(), true)
-      ];
+      const auth = this.login.auth || {};
+      const permissions = auth.permissions || {};
+      const users = permissions.users || {};
+      // If can search other users, allow the add contacts dialog
+      if (users.search) {
+        this.headingActions = [
+          new HeadingAction('add', this.i18n.general.addNew, () => this.addNew(), true)
+        ];
+      }
       this.data = data;
     });
   }

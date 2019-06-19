@@ -1,9 +1,6 @@
-import {
-  AdminMenuEnum, Entity, Notification, NotificationEntityTypeEnum,
-  Operation, OperationScopeEnum, UserMenuEnum, AccountWithOwner
-} from 'app/api/models';
+import { AccountWithOwner, AdminMenuEnum, Auth, Entity, Notification, NotificationEntityTypeEnum, Operation, OperationScopeEnum, UserMenuEnum } from 'app/api/models';
 import { empty } from 'app/shared/helper';
-import { Menu, RootMenu, ActiveMenu } from 'app/shared/menu';
+import { ActiveMenu, Menu, RootMenu } from 'app/shared/menu';
 
 /**
  * Helper methods for working with API model
@@ -59,6 +56,28 @@ export class ApiHelper {
     } else {
       return value;
     }
+  }
+  /**
+   * Shift the passed date to the end of the day if it is not empty, otherwise return the same date.
+   * e.g 13/01/2019 -> 13/01/2019T23:59:59.999
+   * e.g 13/01/2019T00:00:00.000 -> 13/01/2019T23:59:59.999
+   * @param date a date formatted like dd/mm/yyyy or yyyy-MM-dd'T'HH:mm:ssZ
+   */
+  static shiftToDayEnd(date: string): string {
+    if (date) {
+      const newDate = date.substr(0, 10);
+      return newDate.concat('T23:59:59.999');
+    } else {
+      return date;
+    }
+  }
+
+  /**
+   * Shift the max date to the end of the day and returns it with the min as a range,
+   * suitable for query filters on the API.
+   */
+  static dateRangeFilter(min: string, max: string): string[] {
+    return this.rangeFilter(min, this.shiftToDayEnd(max));
   }
 
   /**
@@ -192,5 +211,22 @@ export class ApiHelper {
       case 'notifications':
         return `/personal/notifications`;
     }
+  }
+
+  /**
+   * Indicates whether the current access is restricted. The cases are:
+   * - Expired access password
+   * - Pending agreements
+   *
+   * Secondary access password (login confirmation) is not yet implemented in this
+   * front-end, hence, not returned as restricted access
+   * - Pending secondary password
+   * - Expired secondary password
+   */
+  static isRestrictedAccess(auth: Auth): boolean {
+    if (auth) {
+      return auth.expiredPassword || auth.pendingAgreements;
+    }
+    return false;
   }
 }

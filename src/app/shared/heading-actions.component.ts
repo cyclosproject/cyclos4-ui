@@ -6,6 +6,7 @@ import { LayoutService } from 'app/shared/layout.service';
 import { ActionsRight, Escape, ShortcutService } from 'app/shared/shortcut.service';
 import { BsDropdownDirective } from 'ngx-bootstrap/dropdown';
 import { BehaviorSubject, Subscription } from 'rxjs';
+import { blurIfClick } from 'app/shared/helper';
 
 const HeadingActionsMenu = 'heading-actions-menu';
 
@@ -19,6 +20,7 @@ const HeadingActionsMenu = 'heading-actions-menu';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeadingActionsComponent implements OnInit, OnDestroy {
+  blurIfClick = blurIfClick;
 
   @ViewChild('dropdown') dropdown: BsDropdownDirective;
 

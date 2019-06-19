@@ -41,7 +41,11 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
 
   accountBalanceLabel$ = new BehaviorSubject<string>(null);
   fixedDestination = false;
-  fixedUser: User;
+  fromParam: string;
+  fromUser: User;
+  fromSelf: boolean;
+  toParam: string;
+  toUser: User;
 
   fetchedPaymentTypes: TransferType[];
   paymentTypes$ = new BehaviorSubject<TransferType[]>(null);
@@ -59,10 +63,14 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
   ngOnInit() {
     super.ngOnInit();
 
+    const route = this.route.snapshot;
+    this.fromParam = route.params.from;
     this.dataCache = this.stateManager.get('dataCache', () => new Map());
 
     this.fixedDestination = this.data.toKind != null;
-    this.fixedUser = this.data.toUser;
+    this.fromUser = this.data.fromUser;
+    this.fromSelf = this.authHelper.isSelf(this.fromUser);
+    this.toUser = this.data.toUser;
 
     if (this.fixedDestination) {
       // When there's a fixed destination, the payment types are already present in the initial data
@@ -114,7 +122,7 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
     // Fetch the payment types to that user
     this.errorHandler.requestWithCustomErrorHandler(defaultHandling => {
       this.addSub(this.paymentsService.dataForPerformPayment({
-        owner: ApiHelper.SELF,
+        owner: this.fromParam,
         to: subject,
         fields: ['toUser', 'paymentTypes', 'paymentTypeData']
       }).subscribe(data => {
@@ -211,7 +219,7 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
     // Finally, fetch the data
     this.errorHandler.requestWithCustomErrorHandler(defaultHandling => {
       this.addSub(this.paymentsService.dataForPerformPayment({
-        owner: ApiHelper.SELF,
+        owner: this.fromParam,
         to: value.subject,
         type: type,
         fields: ['paymentTypeData']

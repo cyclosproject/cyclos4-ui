@@ -1,6 +1,6 @@
 import { Injectable, Injector } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { AccountType, Auth, DataForUi, Operation, RoleEnum } from 'app/api/models';
+import { AccountType, Auth, DataForUi, Operation, RoleEnum, VouchersPermissions } from 'app/api/models';
 import { Configuration } from 'app/configuration';
 import { BankingHelperService } from 'app/core/banking-helper.service';
 import { BreadcrumbService } from 'app/core/breadcrumb.service';
@@ -17,6 +17,11 @@ import { ActiveMenu, ConditionalMenu, Menu, MenuEntry, MenuType, RootMenu, RootM
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { filter, first, map } from 'rxjs/operators';
 import { I18nLoadingService } from 'app/core/i18n-loading.service';
+
+enum NavigateAction {
+  Url,
+  Logout
+}
 
 /**
  * Parameters accepted by the `navigate` method
@@ -36,6 +41,14 @@ export interface NavigateParams {
 
   /** An UI event to cancel */
   event?: Event;
+}
+
+interface ResolvedVouchersPermissions {
+  buy: boolean;
+  redeem: boolean;
+  generate: boolean;
+  viewBought: boolean;
+  viewRedeemed: boolean;
 }
 
 /**
@@ -121,8 +134,13 @@ export class MenuService {
    * Navigates to a menu entry
    */
   navigate(params: NavigateParams) {
+    let action = NavigateAction.Url;
     let url: string;
-    if (params.url) {
+
+    if ((params.menu && params.menu.menu === Menu.LOGOUT)
+      || params.entry && params.entry.menu === Menu.LOGOUT) {
+      action = NavigateAction.Logout;
+    } else if (params.url) {
       // An URL was given. Attempt to find a matching entry
       url = toFullUrl(params.url);
       if (!params.entry) {
@@ -161,8 +179,8 @@ export class MenuService {
       this.stateManager.clear();
     }
 
-    // Either perform the logout or navigate
-    if (params.entry && params.entry.menu === Menu.LOGOUT) {
+    // Perform the action
+    if (action === NavigateAction.Logout) {
       this.login.logout();
     } else if (url && url.startsWith('http')) {
       // An absolute URL
@@ -441,6 +459,7 @@ export class MenuService {
     const users = permissions.users || {};
     const marketplace = permissions.marketplace || {};
     const operations = permissions.operations || {};
+    const vouchers = this.resolveVoucherPermissions(permissions.vouchers || {});
     const userOperations = (operations.user || []).filter(o => o.run).map(o => o.operation);
     const systemOperations = (operations.system || []).filter(o => o.run).map(o => o.operation);
 
@@ -558,31 +577,45 @@ export class MenuService {
       const operators = permissions.operators || {};
 
       // Banking
+      const owner = role === RoleEnum.ADMINISTRATOR ? ApiHelper.SYSTEM : ApiHelper.SELF;
       const accountTypes = this.bankingHelper.ownerAccountTypes();
       if (accountTypes.length > 0) {
         for (const type of accountTypes) {
           const activeMenu = new ActiveMenu(Menu.ACCOUNT_HISTORY, { accountType: type });
           const label = auth.role !== RoleEnum.ADMINISTRATOR && accountTypes.length === 1 ? this.i18n.menu.bankingAccount : type.name;
-          add(activeMenu, `/banking/account/${ApiHelper.internalNameOrId(type)}`, 'account_balance', label);
+          add(activeMenu, `/banking/${owner}/account/${ApiHelper.internalNameOrId(type)}`, 'account_balance', label);
         }
       }
       const payments = banking.payments || {};
       if (payments.user) {
-        add(Menu.PAYMENT_TO_USER, '/banking/payment', 'payment', this.i18n.menu.bankingPayUser);
+        add(Menu.PAYMENT_TO_USER, `/banking/${owner}/payment`, 'payment', this.i18n.menu.bankingPayUser);
       }
       if (payments.self) {
-        add(Menu.PAYMENT_TO_SELF, '/banking/payment/self', 'payment', this.i18n.menu.bankingPaySelf);
+        add(Menu.PAYMENT_TO_SELF, `/banking/${owner}/payment/self`, 'payment', this.i18n.menu.bankingPaySelf);
       }
       if (payments.system) {
-        add(Menu.PAYMENT_TO_SYSTEM, '/banking/payment/system', 'payment', this.i18n.menu.bankingPaySystem);
+        add(Menu.PAYMENT_TO_SYSTEM, `/banking/${owner}/payment/system`, 'payment', this.i18n.menu.bankingPaySystem);
       }
       const scheduledPayments = (banking.scheduledPayments || {});
       const recurringPayments = (banking.recurringPayments || {});
       if (scheduledPayments.view || recurringPayments.view) {
-        add(Menu.SCHEDULED_PAYMENTS, '/banking/scheduled-payments', 'schedule', this.i18n.menu.bankingScheduledPayments);
+        add(Menu.SCHEDULED_PAYMENTS, `/banking/${owner}/scheduled-payments`,
+          'schedule', this.i18n.menu.bankingScheduledPayments);
       }
       if ((banking.authorizations || {}).view) {
-        add(Menu.AUTHORIZED_PAYMENTS, '/banking/authorized-payments', 'assignment_turned_in', this.i18n.menu.bankingAuthorizations);
+        add(Menu.AUTHORIZED_PAYMENTS, `/banking/${owner}/authorized-payments`,
+          'assignment_turned_in', this.i18n.menu.bankingAuthorizations);
+      }
+      if (banking.searchGeneralTransfers) {
+        add(Menu.ADMIN_TRANSFERS_OVERVIEW, `/banking/transfers-overview`,
+          'compare_arrows', this.i18n.menu.bankingTransfersOverview);
+      }
+
+      if (vouchers.viewRedeemed) { // FIX ICON ?
+        add(Menu.SEARCH_REDEEMED, '/banking/vouchers/search-redeemed', 'search', this.i18n.menu.bankingVouchersSearchRedeemed);
+      }
+      if (vouchers.redeem) { // FIX ICON ?
+        add(Menu.REDEEM_VOUCHER, '/banking/vouchers/redeem', 'payment', this.i18n.menu.bankingVouchersRedeem);
       }
       addOperations(RootMenu.BANKING);
       addContentPages(Menu.CONTENT_PAGE_BANKING);
@@ -600,9 +633,13 @@ export class MenuService {
         if (users.registerAsBroker) {
           add(Menu.BROKER_REGISTRATION, '/users/registration', 'registration', this.i18n.menu.brokeringRegister);
         }
+        if (banking.searchGeneralTransfers) {
+          add(Menu.BROKER_TRANSFERS_OVERVIEW, `/banking/transfers-overview`,
+            'compare_arrows', this.i18n.menu.bankingTransfersOverview);
+        }
       }
 
-      // Marketplace
+      // Users
       if (users.search || users.map) {
         add(Menu.SEARCH_USERS, '/users/search', 'group', role === RoleEnum.ADMINISTRATOR
           ? this.i18n.menu.marketplaceUserSearch : this.i18n.menu.marketplaceBusinessDirectory);
@@ -610,6 +647,17 @@ export class MenuService {
       if (users.registerAsAdmin) {
         add(Menu.ADMIN_REGISTRATION, '/users/registration', 'registration', this.i18n.menu.marketplaceRegister);
       }
+      const sessions = permissions.sessions || {};
+      if (sessions.view) {
+        add(Menu.CONNECTED_USERS, '/users/connected', 'record_voice_over', this.i18n.menu.marketplaceConnectedUsers);
+      }
+
+      // Marketplace
+      const alerts = permissions.alerts || {};
+      if (alerts.view) {
+        add(Menu.USER_ALERTS, '/users/alerts', 'notification_important', this.i18n.menu.marketplaceUserAlerts);
+      }
+
       if (marketplace.search) {
         add(Menu.SEARCH_ADS, '/marketplace/search', 'shopping_cart', this.i18n.menu.marketplaceAdvertisements);
       } else if (role !== RoleEnum.ADMINISTRATOR) {
@@ -639,7 +687,7 @@ export class MenuService {
         } else {
           passwordsLabel = this.i18n.menu.personalPasswords;
         }
-        add(Menu.PASSWORDS, '/personal/passwords', 'vpn_key', passwordsLabel);
+        add(Menu.PASSWORDS, '/users/self/passwords', 'vpn_key', passwordsLabel);
       }
       if ((permissions.notifications || {}).enable) {
         add(Menu.NOTIFICATIONS, '/personal/notifications', 'notifications', this.i18n.menu.personalNotifications);
@@ -689,6 +737,16 @@ export class MenuService {
     } else {
       return of(value);
     }
+  }
+
+  private resolveVoucherPermissions(vouchersPermissions: VouchersPermissions): ResolvedVouchersPermissions {
+    const voucherPermissions = vouchersPermissions.vouchers || [];
+    const buy = !!voucherPermissions.find(config => config.buy);
+    const redeem = !!voucherPermissions.find(config => config.redeem);
+    const generate = !!voucherPermissions.find(config => config.generate);
+    const viewBought = !!voucherPermissions.find(config => config.viewBought);
+    const viewRedeemed = !!voucherPermissions.find(config => config.viewRedeemed);
+    return { buy, redeem, generate, viewBought, viewRedeemed };
   }
 
 }

@@ -39,6 +39,7 @@ table.table {
       color: $table-icon-color;
     }
   }
+  th,
   td {
     padding: 0.8rem 0.4rem;
   }
@@ -86,9 +87,13 @@ table.table {
 
 @include media-breakpoint-up(md) {
   table.table {
+    th {
+      padding: 0.75rem;
+    }
     td {
       padding: 0.75rem;
       height: 3.25rem;
+      vertical-align: middle;
     }
     td.amount, th.amount {
       padding-right: 1rem;
@@ -99,6 +104,12 @@ table.table {
     td.actions {
       padding-top: 0;
       padding-bottom: 0;
+    }
+  }
+  table:not(.table-auto-height) {
+    td, th {
+      padding: 0.75rem;
+      height: 3.3rem;
     }
   }
 }

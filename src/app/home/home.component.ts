@@ -43,7 +43,7 @@ export class HomeComponent extends BasePageComponent<void> implements OnInit {
   pendingSecurityAnswer = false;
 
   constructor(
-    private injector: Injector,
+    injector: Injector,
     private passwordsService: PasswordsService) {
     super(injector);
   }

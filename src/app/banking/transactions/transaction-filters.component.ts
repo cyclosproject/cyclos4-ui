@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, Component, Injector, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { TransactionDataForSearch, TransferFilter } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
 import { FieldOption } from 'app/shared/field-option';
-import { TransactionDataForSearch, TransferFilter } from 'app/api/models';
 
 /**
  * Filters used to search transactions (scheduled / recurring / authorized payments)
@@ -13,7 +13,7 @@ import { TransactionDataForSearch, TransferFilter } from 'app/api/models';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TransactionFitersComponentComponent
-  extends BaseComponent {
+  extends BaseComponent implements OnInit {
 
   @Input() data: TransactionDataForSearch;
   @Input() heading: string;
@@ -21,8 +21,14 @@ export class TransactionFitersComponentComponent
   @Input() form: FormGroup;
   @Input() statusOptions: FieldOption[];
   @Input() transferFilters: TransferFilter[];
+  self: boolean;
 
   constructor(injector: Injector) {
     super(injector);
+  }
+
+  ngOnInit() {
+    super.ngOnInit();
+    this.self = this.authHelper.isSelf(this.data.user);
   }
 }

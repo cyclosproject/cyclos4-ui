@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Injector, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
 import { User } from 'app/api/models';
 import { ContactsService } from 'app/api/services';
 import { ApiHelper } from 'app/shared/api-helper';
@@ -16,6 +16,8 @@ import { map } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PickContactComponent extends BaseComponent implements OnInit {
+
+  @Input() exclude: string[];
 
   @Output() select = new EventEmitter<User>();
 
@@ -36,8 +38,9 @@ export class PickContactComponent extends BaseComponent implements OnInit {
     this.addSub(this.contactsService.searchContactList({
       user: ApiHelper.SELF,
       fields: ['contact']
-    }).subscribe(c => {
-      this.contacts$.next(c || []);
+    }).subscribe(result => {
+      const contacts = (result || []).filter(c => !(this.exclude || []).includes(c.id));
+      this.contacts$.next(contacts);
     }));
   }
 
