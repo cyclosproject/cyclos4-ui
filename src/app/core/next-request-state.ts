@@ -185,5 +185,11 @@ export class NextRequestState {
     return result;
   }
 
+  /**
+   * Clears the pending request queue
+   */
+  clearRequests() {
+    this.pending$.next([]);
+  }
 
 }
