@@ -18,6 +18,11 @@ import { BehaviorSubject, Observable, of } from 'rxjs';
 import { filter, first, map } from 'rxjs/operators';
 import { I18nLoadingService } from 'app/core/i18n-loading.service';
 
+enum NavigateAction {
+  Url,
+  Logout
+}
+
 /**
  * Parameters accepted by the `navigate` method
  */
@@ -121,8 +126,13 @@ export class MenuService {
    * Navigates to a menu entry
    */
   navigate(params: NavigateParams) {
+    let action = NavigateAction.Url;
     let url: string;
-    if (params.url) {
+
+    if ((params.menu && params.menu.menu === Menu.LOGOUT)
+      || params.entry && params.entry.menu === Menu.LOGOUT) {
+      action = NavigateAction.Logout;
+    } else if (params.url) {
       // An URL was given. Attempt to find a matching entry
       url = toFullUrl(params.url);
       if (!params.entry) {
@@ -161,8 +171,8 @@ export class MenuService {
       this.stateManager.clear();
     }
 
-    // Either perform the logout or navigate
-    if (params.entry && params.entry.menu === Menu.LOGOUT) {
+    // Perform the action
+    if (action === NavigateAction.Logout) {
       this.login.logout();
     } else if (url && url.startsWith('http')) {
       // An absolute URL
