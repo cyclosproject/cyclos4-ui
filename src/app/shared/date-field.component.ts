@@ -215,7 +215,7 @@ export class DateFieldComponent
     // Workaround: ngx-bootstrap sets top sometimes when we set dropup, which causes a position error
     // setTimeout(() => menu.style.top = '', 1);
 
-    if (this.layout.ltmd) {
+    if (this.layout.ltsm) {
       // For small screens, the datepicker is shown centered with a backdrop
       this.layout.showBackdrop(() => this.dropdown.hide());
     }
