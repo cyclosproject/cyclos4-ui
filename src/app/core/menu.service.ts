@@ -666,8 +666,12 @@ export class MenuService {
         marketplaceRoot.label = publicDirectory.label;
         marketplaceRoot.title = publicDirectory.label;
       }
-      add(Menu.BUY_VOUCHER, '/banking/vouchers/buy', 'shopping_cart', this.i18n.menu.bankingBuyVouchers);
-      add(Menu.SEARCH_BOUGHT_VOUCHERS, '/banking/vouchers/search-bought', 'shopping_cart', this.i18n.menu.bankingSearchBoughtVouchers);
+      if (vouchers.buy) {
+        add(Menu.BUY_VOUCHER, '/banking/vouchers/buy', 'shopping_cart', this.i18n.menu.bankingBuyVouchers);
+      }
+      if (vouchers.viewBought) {
+        add(Menu.SEARCH_BOUGHT_VOUCHERS, '/banking/vouchers/search-bought', 'shopping_cart', this.i18n.menu.bankingSearchBoughtVouchers);
+      }
       addOperations(RootMenu.MARKETPLACE);
       addContentPages(Menu.CONTENT_PAGE_MARKETPLACE);
 
