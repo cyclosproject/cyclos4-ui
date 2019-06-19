@@ -160,9 +160,7 @@
 .page-content.mode-view-form .page-content-body {
   padding: $layout-spacer-xxs;
 }
-.mode-table .page-content-body, .mode-full-height .page-content-body {
-  margin-top: $layout-spacer-xxs;
-}
+
 @include media-breakpoint-up(xs) {
   .page-content:not(.last) {
     padding-bottom: $layout-spacer-xs;
@@ -175,9 +173,6 @@
     padding: $layout-spacer-xs;
     padding-top: 1rem;
     padding-bottom: 0;
-  }
-  .mode-table .page-content-body, .mode-full-height .page-content-body {
-    margin-top: $layout-spacer-xs;
   }
 }
 @include media-breakpoint-up(sm) {
@@ -197,10 +192,6 @@
     padding: #{$layout-spacer * 1.2} $layout-spacer;
   }
 
-  .mode-table .page-content-body, .mode-full-height .page-content-body {
-    margin-top: 0;
-  }
-
   :host ::ng-deep .mode-filters .page-content-body form {
     padding-top: 0;
     padding-bottom: 1rem;
@@ -212,10 +203,10 @@
 }
 
 .xxs :host ::ng-deep .page-content.last:not(.mode-tight) {
-  margin-bottom: $layout-spacer-xxs;
+  padding-bottom: $layout-spacer-xxs;
 }
 .xs :host ::ng-deep .page-content.last:not(.mode-tight) {
-  margin-bottom: $layout-spacer-xs;
+  padding-bottom: $layout-spacer-xs;
 }
 
 .back-button {

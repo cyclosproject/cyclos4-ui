@@ -5,7 +5,7 @@ import { ImagesService } from 'app/api/services';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseComponent } from 'app/shared/base.component';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { debounceTime, first } from 'rxjs/operators';
+import { debounceTime } from 'rxjs/operators';
 import { UserHelperService } from 'app/core/user-helper.service';
 
 /**
@@ -94,13 +94,17 @@ export class RegistrationStepFieldsComponent
 
   onUploadDone(image: Image) {
     // First remove any previous image, then emit that a new image is uploaded
-    this.addSub(this.removeImage().pipe(first()).subscribe(() => {
+    this.addSub(this.doRemoveImage().subscribe(() => {
       this.image = image;
       this.imageUploaded.emit(this.image);
     }));
   }
 
-  removeImage(): Observable<Image> {
+  removeImage() {
+    this.addSub(this.doRemoveImage().subscribe());
+  }
+
+  private doRemoveImage(): Observable<Image> {
     if (this.image) {
       const result = this.image;
       return this.errorHandler.requestWithCustomErrorHandler(() => {
