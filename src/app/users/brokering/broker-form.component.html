@@ -15,11 +15,8 @@
       </form>
       <actions>
         <button class="btn btn-primary" [disabled]="requesting$ | async"
-          (click)="submit()">
-          {{ i18n.general.submit }}
-        </button>
-        <button class="btn btn-outline-primary" (click)="cancel()">
-          {{ i18n.general.cancel }}
+          (click)="save()">
+          {{ i18n.general.save }}
         </button>
       </actions>
     </page-content>

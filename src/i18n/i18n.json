@@ -891,7 +891,8 @@
     },
     "mainBroker": "Main broker",
     "setMain": "Set main",
-    "broker": "Broker"
+    "broker": "Broker",
+    "brokerAdded": "The broker has been added successfully"
   },
   "phone": {
     "mobile": "Mobile phone",

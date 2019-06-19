@@ -3,6 +3,7 @@ import { BrokerDataForAdd, RoleEnum } from 'app/api/models';
 import { BrokeringService } from 'app/api/services';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { FormGroup, Validators } from '@angular/forms';
+import { validateBeforeSubmit } from 'app/shared/helper';
 
 /**
  * Operator group form - either to create or edit
@@ -48,11 +49,19 @@ export class BrokerFormComponent
     this.form.setControl('broker', this.formBuilder.control(null, Validators.required));
   }
 
-  submit() {
-
-  }
-
-  cancel() {
-
+  save() {
+    validateBeforeSubmit(this.form);
+    if (!this.form.valid) {
+      return;
+    }
+    const value = this.form.value;
+    this.addSub(this.brokeringService.addBroker({
+      broker: value.broker,
+      user: this.user,
+      main: value.mainBroker
+    }).subscribe(() => {
+      this.notification.snackBar(this.i18n.brokers.brokerAdded);
+      this.router.navigate(['/users', this.user, 'brokers']);
+    }));
   }
 }
