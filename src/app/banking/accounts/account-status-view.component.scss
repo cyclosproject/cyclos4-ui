@@ -13,11 +13,8 @@
   color: $label-color;
 }
 .status-value {
-  text-align: right;
-}
-
-.status-value:not(.status-value-last) {
-  margin-bottom: 0.4rem;
+  align-items: center;
+  justify-content: flex-end;
 }
 
 :host {
@@ -33,6 +30,9 @@ hr {
   .status-label {
     padding-left: 0.4rem;
   }
+  .status-value:not(.status-value-last) {
+    margin-bottom: 0.4rem;
+  }
 }
 
 @include media-breakpoint-up(md) {
@@ -43,7 +43,7 @@ hr {
     padding: 0;
   }
   .status-value {
-    text-align: left;
+    justify-content: flex-start;
   }
 }
 

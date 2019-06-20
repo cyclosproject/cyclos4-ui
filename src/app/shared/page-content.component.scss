@@ -146,13 +146,6 @@
   border-bottom: 1px solid $border-color;
 }
 
-.xxs :host ::ng-deep {
-  .page-content.mode-filters {
-    padding-bottom: 0;
-    border-bottom: none;
-  }
-}
-
 .page-content-body {
   padding: $layout-spacer-xxs;
   padding-bottom: 0;
