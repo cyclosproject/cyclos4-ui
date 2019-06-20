@@ -31,7 +31,6 @@
   flex-grow: 1;
   position: relative;
   display: flex;
-  flex-direction: column;
 }
 .date-input {
   opacity: 0;
@@ -56,9 +55,6 @@
   .calendar-toggle {
     margin-left: 0.25rem;
     display: block;
-  }
-  .date-field {
-    flex-direction: row;
   }
   .field-year {
     width: 3.8rem;

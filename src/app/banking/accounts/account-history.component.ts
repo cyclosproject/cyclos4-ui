@@ -125,14 +125,14 @@ export class AccountHistoryComponent
 
     this.form.patchValue({ 'orderBy': AccountHistoryOrderByEnum.DATE_DESC });
 
-    this.addSub(this.layout.xxs$.subscribe(() => this.updateShowForm()));
-    this.addSub(this.moreFilters$.subscribe(() => this.updateShowForm()));
-    this.updateShowForm();
+    this.addSub(this.layout.xxs$.subscribe(() => this.updateShowForm(data)));
+    this.addSub(this.moreFilters$.subscribe(() => this.updateShowForm(data)));
+    this.updateShowForm(data);
   }
 
-  private updateShowForm() {
+  private updateShowForm(data: DataForAccountHistory) {
     this.showForm$.next(
-      this.layout.xxs && !empty(this.data.preselectedPeriods) || this.moreFilters
+      this.layout.xxs && !empty(data.preselectedPeriods) || this.moreFilters
     );
   }
 
