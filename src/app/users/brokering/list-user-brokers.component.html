@@ -1,7 +1,6 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="data">
-    <page-content [mode]="self ? 'empty' : 'filters'"
-      [heading]="i18n.brokers.title.list"
+    <page-content [mode]="'empty'" [heading]="i18n.brokers.title.list"
       [mobileHeading]="i18n.brokers.mobileTitle.list"
       [headingActions]="headingActions$ | async">
     </page-content>
@@ -31,7 +30,7 @@
       <table *resultTable class="table table-hover cursor-pointer">
         <thead>
           <th>{{ i18n.general.user }}</th>
-          <th width="15%" class="text-center">{{ i18n.brokers.mainBroker }}
+          <th width="20%" class="text-center">{{ i18n.brokers.mainBroker }}
           </th>
           <th class="actions"></th>
         </thead>
