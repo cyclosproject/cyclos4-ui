@@ -51,3 +51,9 @@ body.dark {
 body.lt-sm.dark {
   background-color: $card-bg-dark;
 }
+
+.lt-md {
+  .alert {
+    margin: 1rem;
+  }
+}
