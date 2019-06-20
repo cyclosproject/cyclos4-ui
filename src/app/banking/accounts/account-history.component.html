@@ -29,39 +29,39 @@
             </field-option>
           </single-selection-field>
         </div>
+        <div
+          *ngIf="(layout.gtxxs$ | async) && data.transferFilters?.length > 1; else noTransferFilters"
+          class="col-12 col-md-6">
+          <single-selection-field labelPosition="side"
+            formControlName="transferFilter"
+            [label]="i18n.account.transferFilter"
+            [emptyOption]="i18n.general.notApplied">
+            <field-option *ngFor="let filter of data.transferFilters"
+              [id]="filter.id" [value]="filter" [text]="filter.name">
+            </field-option>
+          </single-selection-field>
+        </div>
+        <ng-template #noTransferFilters>
+          <div *ngIf="layout.gtsm$" class="col-12 col-md-6">
+          </div>
+        </ng-template>
+        <div
+          *ngIf="(form.value || (form.valueChanges | async))?.preselectedPeriod?.begin == null"
+          class="col-12 col-md-6">
+          <date-field labelPosition="side" formControlName="periodBegin"
+            [label]="i18n.general.beginDate" minDate="past5"
+            maxDate="todayEnd" fieldSize="full" class>
+          </date-field>
+        </div>
+        <div
+          *ngIf="(form.value || (form.valueChanges | async))?.preselectedPeriod?.end == null"
+          class="col-12 col-md-6">
+          <date-field labelPosition="side" formControlName="periodEnd"
+            [label]="i18n.general.endDate" minDate="past5" maxDate="todayEnd"
+            fieldSize="full">
+          </date-field>
+        </div>
         <ng-container *ngIf="(layout.gtxxs$ | async)">
-          <div
-            *ngIf="data.transferFilters?.length > 1; else noTransferFilters"
-            class="col-12 col-md-6">
-            <single-selection-field labelPosition="side"
-              formControlName="transferFilter"
-              [label]="i18n.account.transferFilter"
-              [emptyOption]="i18n.general.notApplied">
-              <field-option *ngFor="let filter of data.transferFilters"
-                [id]="filter.id" [value]="filter" [text]="filter.name">
-              </field-option>
-            </single-selection-field>
-          </div>
-          <ng-template #noTransferFilters>
-            <div *ngIf="layout.gtsm$" class="col-12 col-md-6">
-            </div>
-          </ng-template>
-          <div
-            *ngIf="(form.value || (form.valueChanges | async))?.preselectedPeriod?.begin == null"
-            class="col-12 col-md-6">
-            <date-field labelPosition="side" formControlName="periodBegin"
-              [label]="i18n.general.beginDate" minDate="past5"
-              maxDate="todayEnd" fieldSize="full" class>
-            </date-field>
-          </div>
-          <div
-            *ngIf="(form.value || (form.valueChanges | async))?.preselectedPeriod?.end == null"
-            class="col-12 col-md-6">
-            <date-field labelPosition="side" formControlName="periodEnd"
-              [label]="i18n.general.endDate" minDate="past5"
-              maxDate="todayEnd" fieldSize="full">
-            </date-field>
-          </div>
           <div class="col-12 col-md-6">
             <decimal-field labelPosition="side" formControlName="minAmount"
               [label]="i18n.account.minAmount" fieldSize="full"
