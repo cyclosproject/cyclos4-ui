@@ -33,13 +33,15 @@ export class SearchRedeemedVouchersComponent
   }
 
   protected getFormControlNames(): string[] {
-    return ['types', 'periodBegin', 'periodEnd'];
+    return ['types', 'periodBegin', 'periodEnd', 'operator'];
   }
 
   protected toSearchParams(value: any): UserVoucherSearchParams {
     const params = cloneDeep(value);
     params['user'] = this.ApiHelper.SELF;
     params['relation'] = VoucherRelationEnum.REDEEMED;
+    delete params['operator'];
+    params['redeemBy'] = value.operator;
     delete params['periodBegin'];
     delete params['periodEnd'];
     if (value.periodBegin || value.periodEnd) {

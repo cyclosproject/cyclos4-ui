@@ -16,6 +16,16 @@
             </field-option>
           </multi-selection-field>
         </div>
+        <div *ngIf="data.operators?.length > 0" class="col-12 col-md-6">
+          <single-selection-field labelPosition="side"
+            [emptyOption]="i18n.general.notApplied" formControlName="operator"
+            [label]="i18n.general.operator">
+            <field-option *ngFor="let operator of data.operators"
+              [value]="operator.id" [id]="operator.id"
+              [text]="operator.display">
+            </field-option>
+          </single-selection-field>
+        </div>
         <div class="row no-gutters col-12">
           <div class="col-12 col-md-6">
             <date-field labelPosition="side" formControlName="periodBegin"
@@ -47,7 +57,7 @@
     <table *resultTable class="table table-hover cursor-pointer">
       <thead>
         <th>{{ i18n.voucher.redeem.date }}</th>
-        <th>{{ i18n.general.operator }}</th>
+        <th *ngIf="data.operators.length > 0">{{ i18n.general.operator }}</th>
         <th>{{ i18n.general.type }}</th>
         <th class="amount">{{ i18n.transaction.amount }}</th>
       </thead>
@@ -56,9 +66,9 @@
           <tr (click)="router.navigate(path(row))">
             <td> <a [routerLink]="path(row)"> {{ row.redeemDate | date }} </a>
             </td>
-            <td>
-              <ng-container *ngIf="row.user">
-                {{ row.user ? '' : row.user.display }}
+            <td *ngIf="data.operators.length > 0">
+              <ng-container *ngIf="row.redeemBy">
+                {{ row.redeemBy?.user ? row.redeemBy.display : '' }}
               </ng-container>
             </td>
             <td> {{ row.type.name}} </td>
