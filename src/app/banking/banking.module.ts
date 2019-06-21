@@ -16,7 +16,7 @@ import { TransferDetailsComponent } from 'app/banking/transfers/transfer-details
 import { ViewTransferComponent } from 'app/banking/transfers/view-transfer.component';
 import { BuyVoucherComponent } from 'app/banking/vouchers/buy-voucher.component';
 import { SearchBoughtVouchersComponent } from 'app/banking/vouchers/search-bought-vouchers.component';
-import { VoucherTypesForBuyComponent } from 'app/banking/vouchers/voucher-types-for-buy.component';
+import { ListVoucherTypesForBuyComponent } from 'app/banking/vouchers/list-voucher-types-for-buy.component';
 import { SharedModule } from 'app/shared/shared.module';
 import { RedeemVoucherComponent } from 'app/banking/vouchers/redeem-voucher.component';
 import { ViewVoucherComponent } from 'app/banking/vouchers/view-voucher.component';
@@ -51,7 +51,7 @@ import { SearchRedeemedVouchersComponent } from 'app/banking/vouchers/search-red
 
     BuyVoucherComponent,
     SearchBoughtVouchersComponent,
-    VoucherTypesForBuyComponent,
+    ListVoucherTypesForBuyComponent,
     RedeemVoucherComponent,
     ViewVoucherComponent,
     SearchRedeemedVouchersComponent

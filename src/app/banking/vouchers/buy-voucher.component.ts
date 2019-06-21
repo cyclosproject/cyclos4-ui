@@ -1,7 +1,10 @@
-import { BasePageComponent } from 'app/shared/base-page.component';
+import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { VoucherDataForBuy } from 'app/api/models/voucher-data-for-buy';
-import { Component, ChangeDetectionStrategy, Injector, OnInit } from '@angular/core';
 import { VouchersService } from 'app/api/services';
+import { BasePageComponent } from 'app/shared/base-page.component';
+import { BehaviorSubject } from 'rxjs';
+
+export type BuyVoucherStep = 'form' | 'confirm' | 'done';
 
 @Component({
   selector: 'buy-voucher',
@@ -9,16 +12,35 @@ import { VouchersService } from 'app/api/services';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BuyVoucherComponent extends BasePageComponent<VoucherDataForBuy> implements OnInit {
-  constructor(
-    injector: Injector,
-    private voucherService: VouchersService
-  ) {
+  step$ = new BehaviorSubject<BuyVoucherStep>(null);
+  /**
+   * The voucher type
+   */
+  typeParam: string;
+  userParam: string;
+
+  constructor(injector: Injector, private voucherService: VouchersService) {
     super(injector);
+  }
+
+  get step(): BuyVoucherStep {
+    return this.step$.value;
+  }
+  set step(step: BuyVoucherStep) {
+    this.step$.next(step);
   }
 
   ngOnInit() {
     super.ngOnInit();
-    this.voucherService.getVoucherDataForBuy({ user: this.ApiHelper.SELF, type: '' })
+    const params = this.route.snapshot.params;
+    this.typeParam = params.type;
+    this.userParam = this.authHelper.isSelf(params.user) ? this.ApiHelper.SELF : params.user;
+
+    this.voucherService.getVoucherDataForBuy({ user: this.userParam, type: this.typeParam })
       .subscribe(data => this.data = data);
+  }
+
+  onDataInitialized() {
+    this.step = 'form';
   }
 }

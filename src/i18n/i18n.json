@@ -589,8 +589,13 @@
       "expired": "Expired",
       "canceled": "Canceled"
     },
-    "type": {
-      "title": "Voucher type"
+    "mobileTitle": {
+      "buy": "Buy vouchers",
+      "searchBought": "View bought"
+    },
+    "title": {
+      "buy": "Buy vouchers",
+      "searchBought": "Search bought vouchers"
     },
     "boughtType": "Bought",
     "generatedType": "Generated",

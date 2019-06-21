@@ -6,6 +6,7 @@ import { BankingHelperService } from 'app/core/banking-helper.service';
 import { BreadcrumbService } from 'app/core/breadcrumb.service';
 import { ContentService } from 'app/core/content.service';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
+import { I18nLoadingService } from 'app/core/i18n-loading.service';
 import { LoginService } from 'app/core/login.service';
 import { OperationHelperService } from 'app/core/operation-helper.service';
 import { StateManager } from 'app/core/state-manager';
@@ -16,7 +17,6 @@ import { LayoutService } from 'app/shared/layout.service';
 import { ActiveMenu, ConditionalMenu, Menu, MenuEntry, MenuType, RootMenu, RootMenuEntry, SideMenuEntries } from 'app/shared/menu';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { filter, first, map } from 'rxjs/operators';
-import { I18nLoadingService } from 'app/core/i18n-loading.service';
 
 enum NavigateAction {
   Url,
@@ -667,10 +667,11 @@ export class MenuService {
         marketplaceRoot.title = publicDirectory.label;
       }
       if (vouchers.buy) {
-        add(Menu.BUY_VOUCHER, '/banking/vouchers/buy', 'shopping_cart', this.i18n.menu.bankingBuyVouchers);
+        add(Menu.BUY_VOUCHER, '/banking/vouchers/self/for-buy', 'shopping_cart', this.i18n.menu.bankingBuyVouchers);
       }
       if (vouchers.viewBought) {
-        add(Menu.SEARCH_BOUGHT_VOUCHERS, '/banking/vouchers/search-bought', 'shopping_cart', this.i18n.menu.bankingSearchBoughtVouchers);
+        add(Menu.SEARCH_BOUGHT_VOUCHERS, '/banking/vouchers/self/search-bought', 'shopping_cart',
+          this.i18n.menu.bankingSearchBoughtVouchers);
       }
       addOperations(RootMenu.MARKETPLACE);
       addContentPages(Menu.CONTENT_PAGE_MARKETPLACE);

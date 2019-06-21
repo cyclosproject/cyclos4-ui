@@ -1,0 +1,34 @@
+<page-layout [ready]="data$ | async">
+  <ng-container>
+    <page-content mode="empty" [heading]="i18n.voucher.title.buy"
+      [mobileHeading]="i18n.voucher.mobileTitle.buy">
+    </page-content>
+
+    <results-layout resultType="list" [results]="results$ | async"
+      [toLink]="toLink">
+      <mobile-result *mobileResult="let row" [avatarImage]="row.image"
+        avatarIcon="user">
+        <div class="cell-text cell-main">
+          {{ row.voucherTitle }}
+        </div>
+      </mobile-result>
+
+      <table *resultTable class="table table-hover cursor-pointer">
+        <tbody>
+          <ng-container *ngFor="let row of (results$ | async).results">
+            <tr (click)="router.navigate(path(row))">
+              <td class="avatar">
+                <avatar [image]="row.image" icon="user"></avatar>
+              </td>
+              <td>
+                <a [routerLink]="path(row)">
+                  {{ row.voucherTitle }}
+                </a>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </results-layout>
+  </ng-container>
+</page-layout>
