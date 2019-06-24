@@ -54,11 +54,11 @@ export class ResultsLayoutComponent<C, R> extends BaseComponent {
   @Input() referencePoint: MaxDistance;
   @Output() update = new EventEmitter<PageData>();
 
-  @ContentChild(ResultCategoryDirective, { read: TemplateRef }) categoryTemplate: TemplateRef<any>;
-  @ContentChild(ResultTableDirective, { read: TemplateRef }) tableTemplate: TemplateRef<any>;
-  @ContentChild(MobileResultDirective, { read: TemplateRef }) mobileResultTemplate: TemplateRef<any>;
-  @ContentChild(ResultTileDirective, { read: TemplateRef }) tileTemplate: TemplateRef<any>;
-  @ContentChild(ResultInfoWindowDirective, { read: TemplateRef }) infoWindowTemplate: TemplateRef<any>;
+  @ContentChild(ResultCategoryDirective, { static: false, read: TemplateRef }) categoryTemplate: TemplateRef<any>;
+  @ContentChild(ResultTableDirective, { static: false, read: TemplateRef }) tableTemplate: TemplateRef<any>;
+  @ContentChild(MobileResultDirective, { static: false, read: TemplateRef }) mobileResultTemplate: TemplateRef<any>;
+  @ContentChild(ResultTileDirective, { static: false, read: TemplateRef }) tileTemplate: TemplateRef<any>;
+  @ContentChild(ResultInfoWindowDirective, { static: false, read: TemplateRef }) infoWindowTemplate: TemplateRef<any>;
   @ViewChildren(AgmMarker) markers: QueryList<AgmMarker>;
 
   mapBounds$ = new BehaviorSubject<LatLngBounds>(null);

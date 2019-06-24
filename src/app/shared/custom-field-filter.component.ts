@@ -55,10 +55,10 @@ export class CustomFieldFilterComponent extends BaseFormFieldComponent<string> i
   linkedEntityType: LinkedEntityTypeEnum;
   fieldOptions: FieldOption[];
 
-  @ViewChild('inputField') inputField: InputFieldComponent;
-  @ViewChild('multiSelectionField') multiSelectionField: MultiSelectionFieldComponent;
-  @ViewChild('singleSelectionField') singleSelectionField: SingleSelectionFieldComponent;
-  @ViewChild('userField') userField: UserFieldComponent;
+  @ViewChild('inputField', { static: false }) inputField: InputFieldComponent;
+  @ViewChild('multiSelectionField', { static: false }) multiSelectionField: MultiSelectionFieldComponent;
+  @ViewChild('singleSelectionField', { static: false }) singleSelectionField: SingleSelectionFieldComponent;
+  @ViewChild('userField', { static: false }) userField: UserFieldComponent;
 
   _hideLabel: boolean | string = false;
   @Input() get hideLabel(): boolean | string {

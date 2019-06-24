@@ -22,7 +22,7 @@ const HeadingActionsMenu = 'heading-actions-menu';
 export class HeadingActionsComponent implements OnInit, OnDestroy {
   blurIfClick = blurIfClick;
 
-  @ViewChild('dropdown') dropdown: BsDropdownDirective;
+  @ViewChild('dropdown', { static: false }) dropdown: BsDropdownDirective;
 
   private _actions: HeadingAction[] = [];
   @Input() get headingActions(): HeadingAction[] {

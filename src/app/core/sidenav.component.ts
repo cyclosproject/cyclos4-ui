@@ -21,7 +21,7 @@ import { handleKeyboardFocus } from 'app/shared/helper';
 })
 export class SidenavComponent implements OnInit {
 
-  @ViewChild('sidenavMenu') sidenavMenu: ElementRef;
+  @ViewChild('sidenavMenu', { static: true }) sidenavMenu: ElementRef;
 
   constructor(
     private _element: ElementRef,

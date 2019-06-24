@@ -34,7 +34,7 @@ export class RegistrationStepConfirmComponent
   @Input() customFiles: StoredFile[];
 
   @ViewChildren('securityAnswer') securityAnswer: QueryList<InputFieldComponent>;
-  @ViewChild('agreementsContent') agreementsContent: ElementRef;
+  @ViewChild('agreementsContent', { static: false }) agreementsContent: ElementRef;
 
   constructor(
     injector: Injector,
