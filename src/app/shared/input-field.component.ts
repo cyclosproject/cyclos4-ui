@@ -35,7 +35,7 @@ export class InputFieldComponent
   @Output() onblur = new EventEmitter<FocusEvent>();
   @Output() onfocus = new EventEmitter<FocusEvent>();
 
-  @ViewChild('input') inputRef: ElementRef;
+  @ViewChild('input', { static: false }) inputRef: ElementRef;
 
   constructor(
     injector: Injector,

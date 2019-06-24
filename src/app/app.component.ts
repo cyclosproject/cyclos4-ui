@@ -23,8 +23,8 @@ import { ShortcutService, ArrowsVertical } from 'app/shared/shortcut.service';
 })
 export class AppComponent implements OnInit {
 
-  @ViewChild(SidenavComponent) sidenav: SidenavComponent;
-  @ViewChild('mainContainer') mainContainer: ElementRef;
+  @ViewChild(SidenavComponent, { static: false }) sidenav: SidenavComponent;
+  @ViewChild('mainContainer', { static: false }) mainContainer: ElementRef;
 
   initialized$ = new BehaviorSubject(false);
   loggingOut$ = new BehaviorSubject(false);
