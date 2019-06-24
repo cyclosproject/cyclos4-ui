@@ -55,7 +55,7 @@
       (click)="navigate(Menu.MY_PROFILE, $event); blurIfClick('profile-link', $event);"
       class="nav-item custom-menu" [ngClass]="{
         active: hasMenu && [Menu.MY_PROFILE, Menu.EDIT_MY_PROFILE].includes(activeMenu?.menu)
-      }">
+      }" [tooltip]="i18n.menu.personal">
       <avatar *ngIf="user.image" size="small-medium" [image]="user.image">
       </avatar>
       <icon *ngIf="!user.image" class="top-icon top-icon-faded" icon="user">
@@ -70,7 +70,7 @@
         (click)="navigate(Menu.NOTIFICATIONS, $event); blurIfClick('notifications-link', $event);"
         class="nav-item custom-menu" [ngClass]="{
             active: hasMenu && activeMenu?.menu == Menu.NOTIFICATIONS
-          }">
+          }" [tooltip]="i18n.menu.personalNotifications">
         <icon-with-counter icon="notifications"
           [counter]="status.newNotifications">
         </icon-with-counter>
@@ -81,7 +81,8 @@
     </ng-container>
   </ng-container>
 
-  <a href="#" *ngIf="user != null" id="logout-trigger"
+  <a href="#" *ngIf="user != null" class="nav-item custom-menu"
+    id="logout-trigger" [tooltip]="i18n.menu.logout"
     (click)="navigate(Menu.LOGOUT, $event); blurIfClick('logout-trigger', $event);">
     <icon class="top-icon" icon="logout"></icon>
     <div *ngIf="(layout.gtsm$ | async) && !hasMenu" class="ml-2">
@@ -92,7 +93,7 @@
     <a *ngIf="(layout.gtsm$ | async) && menu.menuEntry(Menu.PUBLIC_REGISTRATION)"
       routerLink="/register" id="register-link"
       (click)="navigate(Menu.PUBLIC_REGISTRATION, $event); blurIfClick('register-link', $event);"
-      class="nav-item" [ngClass]="{
+      class="nav-item custom-menu" [ngClass]="{
           active: hasMenu && activeMenu?.menu == Menu.PUBLIC_REGISTRATION
         }">
       <icon class="top-icon" icon="registration"></icon>
@@ -102,7 +103,7 @@
     </a>
     <a routerLink="/login" id="login-link"
       (click)="navigate(Menu.LOGIN, $event); blurIfClick('login-link', $event);"
-      class="nav-item" [ngClass]="{
+      class="nav-item custom-menu" [ngClass]="{
           active: hasMenu && activeMenu?.menu == Menu.LOGIN
         }">
       <icon class="top-icon" icon="exit_to_app"></icon>
