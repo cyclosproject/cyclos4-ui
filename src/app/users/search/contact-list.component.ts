@@ -26,7 +26,7 @@ export class ContactListComponent
   // Export enum to the template
   ResultType = ResultType;
 
-  @ViewChild('usersResults') usersResults: UsersResultsComponent;
+  @ViewChild('usersResults', { static: false }) usersResults: UsersResultsComponent;
 
   constructor(
     injector: Injector,

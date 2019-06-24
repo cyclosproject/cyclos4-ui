@@ -56,7 +56,7 @@ export class MenusComponent extends AbstractComponent implements OnInit {
     return this.activeMenu == null ? null : this.activeMenu.menu.root;
   }
 
-  @ViewChild('dropdown') dropdown: BsDropdownDirective;
+  @ViewChild('dropdown', { static: false }) dropdown: BsDropdownDirective;
 
   ngOnInit() {
     super.ngOnInit();

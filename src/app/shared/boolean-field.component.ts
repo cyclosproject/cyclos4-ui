@@ -24,7 +24,7 @@ export class BooleanFieldComponent
   /** Whether the value type is boolean or string */
   @Input() type: 'boolean' | 'string' = 'boolean';
   @Output() click = new EventEmitter<Event>();
-  @ViewChild('checkbox') checkbox: ElementRef;
+  @ViewChild('checkbox', { static: false }) checkbox: ElementRef;
 
   constructor(
     injector: Injector,

@@ -20,7 +20,7 @@ import { LayoutService } from 'app/shared/layout.service';
 })
 export class PushNotificationsComponent implements OnInit, PushNotificationProvider {
 
-  @ViewChild('template', { read: ViewContainerRef }) template: ViewContainerRef;
+  @ViewChild('template', { read: ViewContainerRef, static: true }) template: ViewContainerRef;
 
   last: PushNotificationComponent;
 
