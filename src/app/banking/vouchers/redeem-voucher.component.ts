@@ -4,7 +4,6 @@ import { BasePageComponent } from 'app/shared/base-page.component';
 import { Validators, FormControl, FormGroup } from '@angular/forms';
 import { VouchersService } from 'app/api/services';
 import { validateBeforeSubmit } from 'app/shared/helper';
-import { ApiHelper } from 'app/shared/api-helper';
 import { BehaviorSubject } from 'rxjs';
 
 export type RedeemStep = 'form' | 'confirm';
@@ -21,6 +20,8 @@ export class RedeemVoucherComponent extends BasePageComponent<VoucherInitialData
   mask = '';
   dataForRedeem$ = new BehaviorSubject<VoucherDataForRedeem>(null);
   form: FormGroup;
+  userId: string;
+  self: boolean;
 
   get dataForRedeem(): VoucherDataForRedeem {
     return this.dataForRedeem$.value;
@@ -49,7 +50,8 @@ export class RedeemVoucherComponent extends BasePageComponent<VoucherInitialData
       if (!validateBeforeSubmit(this.token)) {
         return;
       }
-      this.addSub(this.voucherService.getVoucherDataForRedeem({ user: ApiHelper.SELF, token: this.token.value })
+
+      this.addSub(this.voucherService.getVoucherDataForRedeem({ user: this.userId, token: this.token.value })
         .subscribe(data => {
           this.dataForRedeem = data;
           // Custom fields
@@ -57,7 +59,7 @@ export class RedeemVoucherComponent extends BasePageComponent<VoucherInitialData
           this.step = 'confirm';
         }));
     } else {
-      const params = { user: ApiHelper.SELF, token: this.token.value, body: { customValues: this.form.value } };
+      const params = { user: this.userId, token: this.token.value, body: { customValues: this.form.value } };
       this.addSub(this.voucherService.redeemVoucher(params)
         .subscribe(data => this.router.navigate(['banking', 'vouchers', data.voucherId])));
     }
@@ -65,10 +67,12 @@ export class RedeemVoucherComponent extends BasePageComponent<VoucherInitialData
 
   ngOnInit() {
     super.ngOnInit();
-    this.voucherService.getVoucherInitialDataForRedeem({ user: ApiHelper.SELF }).subscribe(data => {
+    this.userId = this.route.snapshot.paramMap.get('user');
+    this.addSub(this.voucherService.getVoucherInitialDataForRedeem({ user: this.userId }).subscribe(data => {
       this.data = data;
       this.mask = this.data ? this.data.mask : '';
-    });
+      this.self = this.authHelper.isSelf(data.user);
+    }));
     this.step = 'form';
   }
 

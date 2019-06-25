@@ -742,7 +742,11 @@
       "status.user": "User status",
       "status.operator": "Operator status",
       "group.user": "User group",
-      "group.operator": "Operator group"
+      "group.operator": "Operator group",
+      "viewRedeemedVouchers": "View redeemed vouchers",
+      "redeemVoucher": "Redeem voucher",
+      "viewBoughtVouchers": "View bought vouchers",
+      "buyVouchers": "Buy vouchers"
     },
     "registration": {
       "group.public": "Choose the group you want to participate",
