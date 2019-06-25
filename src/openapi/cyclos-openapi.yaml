@@ -45064,6 +45064,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/TokenType'
+        vouchers:
+          $ref: '#/components/schemas/UserVouchersPermissions'
 
     UserPhonesListData:
       description: >-
@@ -45696,6 +45698,8 @@ components:
         Contains configuration data for searching vouchers of a user
       type: object
       properties:
+        user:
+          $ref: '#/components/schemas/User'
         mask:
           description: >-
             The input mask for voucher tokens. Optional.
@@ -45714,6 +45718,28 @@ components:
             $ref: '#/components/schemas/User'
         query:
           $ref: '#/components/schemas/UserVouchersQueryFilters'
+
+    UserVouchersPermissions:
+      description: >-
+        Permissions over a user vouchers
+      type: object
+      properties:
+        viewRedeemed:
+          description: >-
+            Can view redeemed vouchers?
+          type: boolean
+        redeem:
+          description: >-
+            Can redeem vouchers?
+          type: boolean
+        viewBought:
+          description: >-
+            Can view bought vouchers?
+          type: boolean
+        buy:
+          description: >-
+            Can buy vouchers?
+          type: boolean
 
     UserVouchersQueryFilters:
       description: >-
@@ -46009,6 +46035,8 @@ components:
         Contains common data for either buying or redeeming a voucher
       type: object
       properties:
+        user:
+          $ref: '#/components/schemas/User'
         type:
           $ref: '#/components/schemas/VoucherTypeDetailed'
         customFields:
@@ -46117,6 +46145,8 @@ components:
         Initial data used to redeem vouchers
       type: object
       properties:
+        user:
+          $ref: '#/components/schemas/User'
         mask:
           description: >-
             The voucher token mask
@@ -46217,7 +46247,7 @@ components:
               format: date-time
             redeemBy:
               description: >-
-                The user who perform the redeem action, could be an admin or an
+                The user who perform the redeem action, could be an admin, broker or
                 operator of the redeemer. Is not returned when the voucher was
                 not yet redeemed or if it is the same as the redeemer.
               allOf:
