@@ -612,7 +612,7 @@ export class MenuService {
       }
 
       if (vouchers.viewRedeemed) {
-        add(Menu.SEARCH_REDEEMED, '/banking/' + ApiHelper.SELF + '/vouchers/search-redeemed', 'search',
+        add(Menu.SEARCH_REDEEMED, '/banking/' + ApiHelper.SELF + '/vouchers/redeemed', 'search',
           this.i18n.menu.bankingVouchersSearchRedeemed);
       }
       if (vouchers.redeem) {

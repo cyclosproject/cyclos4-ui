@@ -158,7 +158,7 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
       }
       if (vouchers.viewRedeemed) {
         this.bankingActions.push(new HeadingAction('search', this.i18n.user.profile.viewRedeemedVouchers, () => {
-          this.router.navigate(['/banking', this.param, 'vouchers', 'search-redeemed']);
+          this.router.navigate(['/banking', this.param, 'vouchers', 'redeemed']);
         }));
       }
       if (vouchers.redeem) {

@@ -143,7 +143,7 @@ const bankingRoutes: Routes = [
         }
       },
       {
-        path: ':user/vouchers/search-redeemed',
+        path: ':user/vouchers/redeemed',
         component: SearchRedeemedVouchersComponent,
         data: {
           menu: Menu.SEARCH_REDEEMED
