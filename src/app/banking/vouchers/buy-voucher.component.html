@@ -1,22 +1,24 @@
 <page-layout [ready]="data$ | async" [ngSwitch]="step$ | async">
   <page-content *ngSwitchCase="'form'" [heading]="data.type.voucherTitle"
     [mobileHeading]="data.type.voucherTitle">
-    <ng-con <!-- description + image -->
-      <label-value [label]="i18n.voucher.buy.originAccount">
+    <ng-container [formGroup]="form">
+      <!-- description + image -->
+      <label-value [label]="i18n.voucher.buy.originAccount" kind="fieldView">
         {{ data.account.type.name }}
       </label-value>
-      <label-value [label]="i18n.account.availableBalance">
+      <label-value [label]="i18n.account.availableBalance" kind="fieldView">
         {{ data.account.status.availableBalance | currency:currency }}
       </label-value>
-      <label-value *ngIf="data.minimumTimeToRedeem"
+      <label-value *ngIf="data.minimumTimeToRedeem" kind="fieldView"
         [label]="i18n.voucher.buy.minTimeToRedeem">
         {{ data.minimumTimeToRedeem }}
       </label-value>
-      <input-field formControlName="count" required
-        [label]="i18n.voucher.buy.numberOfVouchers">
+      <input-field type="number" formControlName="count" required
+        fieldSize="small" [label]="i18n.voucher.buy.numberOfVouchers">
       </input-field>
       <decimal-field formControlName="amount" required
-        [label]="i18n.voucher.buy.amountPerVoucher">
+        [label]="i18n.voucher.buy.amountPerVoucher" [prefix]="currency.prefix"
+        [suffix]="currency.suffix" [scale]="currency.decimalDigits">
       </decimal-field>
       <label-value *ngIf="data.amountRange?.min"
         [label]="i18n.voucher.buy.amountRange.min">
@@ -24,13 +26,14 @@
       </label-value>
       <label-value *ngIf="data.amountRange?.max"
         [label]="i18n.voucher.buy.amountRange.max">
-        {{ data.amountRange?.min | currency:currency }}
+        {{ data.amountRange?.max | currency:currency }}
       </label-value>
       <!-- custom fields -->
-      <actions ngClass="mt-3" forceRow>
-        <button class="btn btn-primary" [disabled]="requesting$ | async"
-          (click)="toConfirm()">{{ i18n.general.next }}</button>
-      </actions>
+    </ng-container>
+    <actions ngClass="mt-3" forceRow>
+      <button class="btn btn-primary" [disabled]="requesting$ | async"
+        (click)="toConfirm()">{{ i18n.general.next }}</button>
+    </actions>
   </page-content>
   <page-content *ngSwitchCase="'confirm'" [heading]="data.type.voucherTitle"
     [mobileHeading]="data.type.voucherTitle">
