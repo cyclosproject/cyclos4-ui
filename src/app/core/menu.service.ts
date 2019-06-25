@@ -479,12 +479,6 @@ export class MenuService {
     addRoot(RootMenu.OPERATORS, 'supervisor_account', this.i18n.menu.operators);
     addRoot(RootMenu.BROKERING, 'assignment_ind', this.i18n.menu.brokering);
     const marketplaceRoot = addRoot(RootMenu.MARKETPLACE, 'shopping_cart', this.i18n.menu.marketplace);
-    if (role === RoleEnum.ADMINISTRATOR) {
-      // For admins, show the marketplace menu as users
-      marketplaceRoot.icon = 'supervisor_account';
-      marketplaceRoot.label = this.i18n.menu.marketplaceUsers;
-      marketplaceRoot.title = this.i18n.menu.marketplaceUsers;
-    }
     const content = addRoot(RootMenu.CONTENT, 'information', this.i18n.menu.content);
     addRoot(RootMenu.PERSONAL, 'account_box', this.i18n.menu.personal, null, [MenuType.SIDENAV, MenuType.BAR, MenuType.SIDE]);
     const register = addRoot(RootMenu.REGISTRATION, 'registration', this.i18n.menu.register, null, [MenuType.SIDENAV]);
@@ -660,12 +654,8 @@ export class MenuService {
 
       if (marketplace.search) {
         add(Menu.SEARCH_ADS, '/marketplace/search', 'shopping_cart', this.i18n.menu.marketplaceAdvertisements);
-      } else if (role !== RoleEnum.ADMINISTRATOR) {
-        // As the search ads won't be visible, show as user directory instead
-        marketplaceRoot.icon = publicDirectory.icon;
-        marketplaceRoot.label = publicDirectory.label;
-        marketplaceRoot.title = publicDirectory.label;
       }
+
       if (vouchers.buy) {
         add(Menu.BUY_VOUCHER, '/banking/vouchers/self/for-buy', 'shopping_cart', this.i18n.menu.bankingBuyVouchers);
       }
@@ -675,6 +665,18 @@ export class MenuService {
       }
       addOperations(RootMenu.MARKETPLACE);
       addContentPages(Menu.CONTENT_PAGE_MARKETPLACE);
+
+      if (role === RoleEnum.ADMINISTRATOR) {
+        // For admins, show the marketplace menu as users
+        marketplaceRoot.icon = 'supervisor_account';
+        marketplaceRoot.label = this.i18n.menu.marketplaceUsers;
+        marketplaceRoot.title = this.i18n.menu.marketplaceUsers;
+      } else if (marketplaceRoot.entries.length === 1 && marketplaceRoot.entries[0].menu === Menu.SEARCH_USERS) {
+        // As the search ads won't be visible, show as user directory instead
+        marketplaceRoot.icon = publicDirectory.icon;
+        marketplaceRoot.label = publicDirectory.label;
+        marketplaceRoot.title = publicDirectory.label;
+      }
 
       // Personal
       const myProfile = permissions.myProfile || {};
