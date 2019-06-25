@@ -14,7 +14,6 @@ export class ListUserBrokersComponent
   implements OnInit {
 
   param: string;
-  self: boolean;
   brokers: Brokering[];
 
   constructor(
@@ -26,8 +25,7 @@ export class ListUserBrokersComponent
   ngOnInit() {
     super.ngOnInit();
 
-    this.param = this.route.snapshot.params.user || this.ApiHelper.SELF;
-    this.self = this.authHelper.isSelf(this.param);
+    this.param = this.route.snapshot.params.user;
 
     this.addSub(this.brokeringService.getUserBrokersData({ user: this.param }).subscribe(data => {
       this.data = data;

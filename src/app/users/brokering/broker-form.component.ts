@@ -20,9 +20,7 @@ export class BrokerFormComponent
   id: string;
   user: string;
   form: FormGroup;
-  roles: Array<RoleEnum>;
-  usersToExclude: Array<String>;
-  groups: Array<String>;
+  userQuery: any;
 
   constructor(
     injector: Injector,
@@ -40,9 +38,12 @@ export class BrokerFormComponent
   }
 
   onDataInitialized(data: BrokerDataForAdd) {
-    this.roles = [RoleEnum.BROKER];
-    this.groups = data.brokerGroups.map(g => g.id);
-    this.usersToExclude = data.brokers.map(b => b.id);
+    this.userQuery = {
+      excludeContacts: true,
+      roles: [RoleEnum.BROKER],
+      usersToExclude: data.brokers.map(b => b.id),
+      groups: data.brokerGroups.map(g => g.id)
+    };
     if (data.brokers) {
       this.form.setControl('mainBroker', this.formBuilder.control(false));
     }

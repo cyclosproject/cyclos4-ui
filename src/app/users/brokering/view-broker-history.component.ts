@@ -39,4 +39,8 @@ export class ViewBrokerHistoryComponent extends BaseViewPageComponent<UserBroker
     }
   }
 
+  get onClick() {
+    // No op condition to disable built-in click (mobile layout)
+    return (row: any) => row != null;
+  }
 }

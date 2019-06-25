@@ -5,11 +5,12 @@
       [headingActions]="headingActions$ | async">
     </page-content>
     <results-layout [results]="data.brokers" [toLink]="toLink">
-      <mobile-result *mobileResult="let row">
+      <mobile-result *mobileResult="let row" [avatarImage]="row.broker?.image"
+        avatarIcon="user">
         <div class="d-flex">
           <div>
             <div class="cell-main">
-              {{ row.broker.shortDisplay }}
+              {{ row.broker.display }}
             </div>
             <div class="cell-text">
               <icon class="d-inline-block" *ngIf="row.main"
@@ -29,6 +30,7 @@
       </mobile-result>
       <table *resultTable class="table table-hover cursor-pointer">
         <thead>
+          <th class="avatar"></th>
           <th>{{ i18n.general.user }}</th>
           <th width="20%" class="text-center">{{ i18n.brokers.mainBroker }}
           </th>
@@ -37,6 +39,13 @@
         <tbody>
           <ng-container *ngFor="let row of data.brokers">
             <tr (click)="router.navigate(path(row))">
+              <td class="avatar" [ngClass]="{
+                  'pb-0': layout.xxs$ | async,
+                  'border-0': layout.xxs$ | async
+                }">
+                <avatar [image]="row.broker?.image"
+                  [tooltip]="row.broker?.display" icon="user"></avatar>
+              </td>
               <td>
                 <a [routerLink]="path(row)">
                   {{ row.broker.shortDisplay }}
