@@ -65,6 +65,10 @@ export class RedeemVoucherComponent extends BasePageComponent<VoucherInitialData
     }
   }
 
+  backToForm() {
+    this.step = 'form';
+  }
+
   ngOnInit() {
     super.ngOnInit();
     this.userId = this.route.snapshot.paramMap.get('user');
