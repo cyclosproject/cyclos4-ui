@@ -43,7 +43,7 @@ export class ManageImagesComponent extends BaseComponent implements OnInit {
   }
 
   remove(image: Image) {
-    this.removedIds = [image.id, ...this.removedIds];
+    this.removedIds = [image.id, ...(this.removedIds || [])];
     this.originalOrder = this.originalOrder.filter(i => i !== image.id);
     this.order.setValue((this.order.value || []).filter(i => i.id !== image.id));
   }

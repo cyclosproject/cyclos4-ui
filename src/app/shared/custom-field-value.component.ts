@@ -16,7 +16,7 @@ export class CustomFieldValueComponent {
 
   @Input() fieldValue: CustomFieldValue;
 
-  @ViewChild('formatFieldValue') formatFieldValue: FormatFieldValueComponent;
+  @ViewChild('formatFieldValue', { static: true }) formatFieldValue: FormatFieldValueComponent;
 
   constructor(public layout: LayoutService) {
   }

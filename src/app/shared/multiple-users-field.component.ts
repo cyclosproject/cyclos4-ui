@@ -34,7 +34,7 @@ export class MultipleUsersFieldComponent
   @Input() allowSearch = true;
   @Input() allowContacts = true;
 
-  @ViewChild('userField') userField: UserFieldComponent;
+  @ViewChild('userField', { static: false }) userField: UserFieldComponent;
 
   userFieldControl = new FormControl(null);
 

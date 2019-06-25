@@ -26,7 +26,7 @@ export class VerifyPhoneComponent extends BaseComponent implements OnInit {
   message$ = new BehaviorSubject('');
   disabled = false;
 
-  @ViewChild('codeField') codeField: InputFieldComponent;
+  @ViewChild('codeField', { static: true }) codeField: InputFieldComponent;
 
   constructor(
     injector: Injector,

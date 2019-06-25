@@ -35,7 +35,7 @@ export class MaxDistanceFieldComponent
 
   @Input() data: SearchByDistanceData;
 
-  @ViewChild('address') address: SingleSelectionFieldComponent;
+  @ViewChild('address', { static: false }) address: SingleSelectionFieldComponent;
 
   form: FormGroup;
   enabledControl: FormControl;

@@ -1677,6 +1677,12 @@ paths:
             items:
               description: ''
               type: string
+        - name: contactsOwner
+          in: query
+          required: false
+          description: "Indicates the (managed) user to exclude contacts when `excludecontacts` is set. Defaults to the logged user."
+          schema:
+            type: string
         - name: creationPeriod
           in: query
           required: false
@@ -1691,7 +1697,7 @@ paths:
         - name: excludeContacts
           in: query
           required: false
-          description: "When set to `true` will not return any user that is already a contact of the currently authenticated user."
+          description: "When set to `true` will not return any user that is already a contact of the user indicated on `contactsOwner` (the logged user if not set)."
           schema:
             type: boolean
         - name: groups
@@ -2808,6 +2814,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
             items:
               description: ''
               type: string
+        - name: contactsOwner
+          in: query
+          required: false
+          description: "Indicates the (managed) user to exclude contacts when `excludecontacts` is set. Defaults to the logged user."
+          schema:
+            type: string
         - name: creationPeriod
           in: query
           required: false
@@ -2822,7 +2834,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: excludeContacts
           in: query
           required: false
-          description: "When set to `true` will not return any user that is already a contact of the currently authenticated user."
+          description: "When set to `true` will not return any user that is already a contact of the user indicated on `contactsOwner` (the logged user if not set)."
           schema:
             type: boolean
         - name: groups
@@ -18453,6 +18465,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: integer
             format: int32
+        - name: redeemBy
+          in: query
+          required: false
+          description: "The user who perform the redeem action. A user identification value, such as id, username, e-mail, phone, etc. Id is always allowed, others depend on Cyclos configuration. Note that a valid numeric value is always considered as id. For example, when using another identification method that can be numeric only, prefix the value with a single quote (like in Excel spreadsheets), for example, `'1234567890`;"
+          schema:
+            type: string
         - name: redeemPeriod
           in: query
           required: false
@@ -45046,6 +45064,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/TokenType'
+        vouchers:
+          $ref: '#/components/schemas/UserVouchersPermissions'
 
     UserPhonesListData:
       description: >-
@@ -45277,11 +45297,17 @@ components:
                 When set to `true`, instead of returning users with corresponding
                 profile fields set on list, will return them with `display` and
                 `shortDisplay`.
+            contactsOwner:
+              type: string
+              description: >-
+                Indicates the (managed) user to exclude contacts when
+                `excludecontacts` is set. Defaults to the logged user.
             excludeContacts:
               type: boolean
               description: >-
                 When set to `true` will not return any user that is already a
-                contact of the currently authenticated user.
+                contact of the user indicated on `contactsOwner` (the logged user
+                if not set).
             statuses:
               type: array
               items:
@@ -45672,6 +45698,8 @@ components:
         Contains configuration data for searching vouchers of a user
       type: object
       properties:
+        user:
+          $ref: '#/components/schemas/User'
         mask:
           description: >-
             The input mask for voucher tokens. Optional.
@@ -45682,8 +45710,36 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/EntityReference'
+        operators:
+          description: >-
+            When searching for redeemed vouchers, the operators of the redeemer.
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
         query:
           $ref: '#/components/schemas/UserVouchersQueryFilters'
+
+    UserVouchersPermissions:
+      description: >-
+        Permissions over a user vouchers
+      type: object
+      properties:
+        viewRedeemed:
+          description: >-
+            Can view redeemed vouchers?
+          type: boolean
+        redeem:
+          description: >-
+            Can redeem vouchers?
+          type: boolean
+        viewBought:
+          description: >-
+            Can view bought vouchers?
+          type: boolean
+        buy:
+          description: >-
+            Can buy vouchers?
+          type: boolean
 
     UserVouchersQueryFilters:
       description: >-
@@ -45732,6 +45788,17 @@ components:
               items:
                 type: string
                 format: date-time
+            redeemBy:
+              description: >-
+                The user who perform the redeem action.
+                A user identification value, such as id, username, e-mail, phone, etc. Id
+                is always allowed, others depend on Cyclos configuration. Note that a
+                valid numeric value is always considered as id. For example, when using
+                another identification method that can be numeric only, prefix the value
+                with a single quote (like in Excel spreadsheets), for example,
+                `'1234567890`;
+              type:
+                string
             token:
               description: >-
                 The voucher token (with or without mask)
@@ -45968,6 +46035,8 @@ components:
         Contains common data for either buying or redeeming a voucher
       type: object
       properties:
+        user:
+          $ref: '#/components/schemas/User'
         type:
           $ref: '#/components/schemas/VoucherTypeDetailed'
         customFields:
@@ -46076,6 +46145,8 @@ components:
         Initial data used to redeem vouchers
       type: object
       properties:
+        user:
+          $ref: '#/components/schemas/User'
         mask:
           description: >-
             The voucher token mask
@@ -46174,6 +46245,13 @@ components:
                 The date a voucher expires
               type: string
               format: date-time
+            redeemBy:
+              description: >-
+                The user who perform the redeem action, could be an admin, broker or
+                operator of the redeemer. Is not returned when the voucher was
+                not yet redeemed or if it is the same as the redeemer.
+              allOf:
+                - $ref: '#/components/schemas/User'
             redeemer:
               description: >-
                 The voucher redeemer. Is not returned when the voucher was not yet
