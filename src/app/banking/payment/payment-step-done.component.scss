@@ -1,7 +1,0 @@
-@import 'src/definitions';
-
-@include media-breakpoint-up(xs) {
-  .payment-message {
-    padding: 1.5rem 0;
-  }
-}

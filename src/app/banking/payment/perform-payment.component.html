@@ -47,7 +47,7 @@
     <div class="flex-grow-1 d-flex flex-column" [ngSwitch]="step$ | async">
       <payment-step-done [performed]="performed"></payment-step-done>
     </div>
-    <actions ngClass="mt-3" forceRow>
+    <actions forceRow>
       <button class="btn btn-primary" (click)="viewPerformed()">
         {{ i18n.transaction.doneView }}
       </button>
