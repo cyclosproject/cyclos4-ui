@@ -78,18 +78,18 @@ export class CustomFieldInputComponent extends BaseFormFieldComponent<string> im
 
   disabledValueObject: any;
 
-  @ViewChild('inputField') inputField: InputFieldComponent;
-  @ViewChild('textareaField') textareaField: TextAreaFieldComponent;
-  @ViewChild('dateField') dateField: DateFieldComponent;
-  @ViewChild('decimalField') decimalField: DecimalFieldComponent;
-  @ViewChild('booleanField') booleanField: BooleanFieldComponent;
-  @ViewChild('singleSelectionField') singleSelectionField: SingleSelectionFieldComponent;
-  @ViewChild('multiSelectionField') multiSelectionField: MultiSelectionFieldComponent;
-  @ViewChild('checkboxGroupField') checkboxGroupField: CheckboxGroupFieldComponent;
-  @ViewChild('radioGroupField') radioGroupField: RadioGroupFieldComponent;
-  @ViewChild('imagesField') imagesField: ImagesFieldComponent;
-  @ViewChild('filesField') filesField: FilesFieldComponent;
-  @ViewChild('userField') userField: UserFieldComponent;
+  @ViewChild('inputField', { static: false }) inputField: InputFieldComponent;
+  @ViewChild('textareaField', { static: false }) textareaField: TextAreaFieldComponent;
+  @ViewChild('dateField', { static: false }) dateField: DateFieldComponent;
+  @ViewChild('decimalField', { static: false }) decimalField: DecimalFieldComponent;
+  @ViewChild('booleanField', { static: false }) booleanField: BooleanFieldComponent;
+  @ViewChild('singleSelectionField', { static: false }) singleSelectionField: SingleSelectionFieldComponent;
+  @ViewChild('multiSelectionField', { static: false }) multiSelectionField: MultiSelectionFieldComponent;
+  @ViewChild('checkboxGroupField', { static: false }) checkboxGroupField: CheckboxGroupFieldComponent;
+  @ViewChild('radioGroupField', { static: false }) radioGroupField: RadioGroupFieldComponent;
+  @ViewChild('imagesField', { static: false }) imagesField: ImagesFieldComponent;
+  @ViewChild('filesField', { static: false }) filesField: FilesFieldComponent;
+  @ViewChild('userField', { static: false }) userField: UserFieldComponent;
 
   _hideLabel: boolean | string = false;
   @Input() get hideLabel(): boolean | string {

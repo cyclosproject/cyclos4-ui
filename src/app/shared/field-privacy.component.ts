@@ -28,7 +28,7 @@ export class FieldPrivacyComponent implements OnInit {
   }
   @Input() field: string;
   @Input() control: FormControl;
-  @ViewChild('ttip') ttip: TooltipDirective;
+  @ViewChild('ttip', { static: true }) ttip: TooltipDirective;
 
   @HostBinding('class') clazz;
 

@@ -26,8 +26,8 @@ export class LoginComponent
 
   form: FormGroup;
 
-  @ViewChild('principal') principalRef: ElementRef;
-  @ViewChild('password') passwordInput: PasswordInputComponent;
+  @ViewChild('principal', { static: false }) principalRef: ElementRef;
+  @ViewChild('password', { static: false }) passwordInput: PasswordInputComponent;
 
   get forgotPasswordEnabled(): boolean {
     return !empty(this.data.forgotPasswordMediums);

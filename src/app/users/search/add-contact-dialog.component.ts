@@ -19,7 +19,7 @@ import { UserFieldComponent } from 'app/shared/user-field.component';
 export class AddContactDialogComponent extends BaseComponent {
 
   @Output() done = new EventEmitter<User>();
-  @ViewChild('field') field: UserFieldComponent;
+  @ViewChild('field', { static: true }) field: UserFieldComponent;
 
   control = new FormControl(null, Validators.required);
 

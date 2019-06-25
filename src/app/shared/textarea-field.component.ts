@@ -24,7 +24,7 @@ export class TextAreaFieldComponent
   /** A placeholder to be shown inside the component */
   @Input() placeholder = '';
 
-  @ViewChild('textarea') textareaRef: ElementRef;
+  @ViewChild('textarea', { static: false }) textareaRef: ElementRef;
 
   constructor(
     injector: Injector,

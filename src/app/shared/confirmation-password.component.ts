@@ -50,7 +50,7 @@ export class ConfirmationPasswordComponent extends BaseControlComponent<string> 
   confirmationModeControl: FormControl;
   deviceConfirmationId: string;
 
-  @ViewChild('passwordComponent') private passwordComponent: PasswordInputComponent;
+  @ViewChild('passwordComponent', { static: false }) private passwordComponent: PasswordInputComponent;
 
   private otpSubscription: Subscription;
 
