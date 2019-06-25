@@ -56,7 +56,6 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
       this.addSub(this.usersService.viewUser({ user: this.param })
         .subscribe(user => {
           this.data = user;
-          this.self = this.authHelper.isSelf(user) || user.user != null && this.authHelper.isSelf(user.user);
         }, (resp: HttpErrorResponse) => {
           if ([ErrorStatus.FORBIDDEN, ErrorStatus.UNAUTHORIZED].includes(resp.status)) {
             this.notification.error(this.i18n.user.profile.noPermission);
@@ -70,6 +69,7 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
   }
 
   onDataInitialized(user: UserView) {
+    this.self = this.authHelper.isSelf(user) || user.user != null && this.authHelper.isSelf(user.user);
     this.shortName = words(user.name || user.display, MAX_SIZE_SHORT_NAME);
     const enabledFields = user.enabledProfileFields;
     this.imageEnabled = enabledFields == null || enabledFields.includes(BasicProfileFieldEnum.IMAGE);

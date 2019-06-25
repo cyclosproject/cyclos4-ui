@@ -673,9 +673,9 @@ export class MenuService {
 
       // Personal
       const myProfile = permissions.myProfile || {};
-      add(Menu.MY_PROFILE, '/users/profile', 'account_box', this.i18n.menu.personalViewProfile);
+      add(Menu.MY_PROFILE, '/users/self/profile', 'account_box', this.i18n.menu.personalViewProfile);
       if (myProfile.editProfile) {
-        add(Menu.EDIT_MY_PROFILE, '/users/profile/edit', 'account_box', this.i18n.menu.personalEditProfile, [MenuType.SIDENAV]);
+        add(Menu.EDIT_MY_PROFILE, '/users/self/profile/edit', 'account_box', this.i18n.menu.personalEditProfile, [MenuType.SIDENAV]);
       }
       if (contacts.enable) {
         add(Menu.CONTACTS, '/users/contacts', 'import_contacts', this.i18n.menu.personalContacts);

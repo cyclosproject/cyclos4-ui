@@ -32,6 +32,36 @@
   }
 }
 
+a.custom-menu {
+  padding: 0.5rem !important;
+}
+
+:host ::ng-deep nav.with-menu {
+  a:not(.never-active):not(.sub-menu-item)::before {
+    content: " ";
+    display: block;
+    position: absolute;
+    left: 0.8 * $top-bar-with-menu-item-padding;
+    bottom: 10px;
+    height: 1px;
+    width: calc(100% - #{1.6 * $top-bar-with-menu-item-padding});
+    background-color: $top-bar-color;
+    transition: opacity ease-in-out 0.4s;
+    opacity: 0;
+  }
+
+  a:not(.never-active):hover::before {
+    opacity: 0.7;
+  }
+  a.active:not(.never-active)::before {
+    opacity: 1;
+  }
+  a.custom-menu:not(.never-active):not(.sub-menu-item)::before {
+    width: calc(100% - 0.25rem) !important;
+    left: 0.25rem !important;
+  }
+}
+
 @include media-breakpoint-up(lg) {
   :host:not(.has-menu) {
     position: relative;
@@ -99,34 +129,10 @@
       max-height: 32px;
     }
 
-    a {
-      padding: 0 $top-bar-with-menu-item-padding !important;
-    }
-    a.custom-menu {
-      padding: 0 $top-bar-with-menu-item-padding / 2 !important;
-    }
-    a:not(.never-active):not(.sub-menu-item)::before {
-      content: " ";
-      display: block;
-      position: absolute;
-      left: 0.8 * $top-bar-with-menu-item-padding;
-      bottom: 10px;
-      height: 1px;
-      width: calc(100% - #{1.6 * $top-bar-with-menu-item-padding});
-      background-color: $top-bar-color;
-      transition: opacity ease-in-out 0.4s;
-      opacity: 0;
-    }
-    a.custom-menu:not(.never-active):not(.sub-menu-item)::before {
-      width: calc(100% - #{0.5 * $top-bar-with-menu-item-padding});
-      left: 0.25 * $top-bar-with-menu-item-padding;
-    }
-
-    a:not(.never-active):hover::before {
-      opacity: 0.7;
-    }
-    a.active:not(.never-active)::before {
-      opacity: 1;
+    menus {
+      a {
+        padding: 0 $top-bar-with-menu-item-padding !important;
+      }
     }
   }
 }
@@ -197,26 +203,20 @@ body.lg :host ::ng-deep {
       left: 0.8 * $top-bar-with-menu-item-padding-medium;
       width: calc(100% - #{1.6 * $top-bar-with-menu-item-padding-medium});
     }
-    a.custom-menu:not(.never-active):not(.sub-menu-item)::before {
-      width: calc(100% - #{0.5 * $top-bar-with-menu-item-padding-medium});
-      left: 0.25 * $top-bar-with-menu-item-padding-medium;
-    }
   }
 
   nav:not(.with-menu-spacious) {
     .menu-separator {
       margin: 0 #{$top-bar-with-menu-item-padding-medium * 0.9} 0 $top-bar-with-menu-item-padding-medium;
     }
-    a {
-      padding: 0 $top-bar-with-menu-item-padding-medium !important;
-    }
-    a:not(.never-active):not(.sub-menu-item)::before {
-      left: 0.8 * $top-bar-with-menu-item-padding-medium;
-      width: calc(100% - #{1.6 * $top-bar-with-menu-item-padding-medium});
-    }
-    a.custom-menu:not(.never-active):not(.sub-menu-item)::before {
-      width: calc(100% - #{0.5 * $top-bar-with-menu-item-padding-medium});
-      left: 0.25 * $top-bar-with-menu-item-padding-medium;
+    menus {
+      a {
+        padding: 0 $top-bar-with-menu-item-padding-medium !important;
+      }
+      a:not(.never-active):not(.sub-menu-item)::before {
+        left: 0.8 * $top-bar-with-menu-item-padding-medium;
+        width: calc(100% - #{1.6 * $top-bar-with-menu-item-padding-medium});
+      }
     }
   }
 
@@ -244,6 +244,8 @@ body.lg :host ::ng-deep {
 body.xl :host ::ng-deep {
   // On extra large displays never hide labels
   menus .nav-item {
+    margin-right: -$top-bar-with-menu-item-padding / 2;
+
     icon {
       margin-right: 0.5rem !important;
     }
@@ -252,23 +254,25 @@ body.xl :host ::ng-deep {
     }
   }
   .navbar.with-menu-medium {
+    margin-right: -$top-bar-with-menu-item-padding-medium / 2;
+
     .menu-separator {
       margin: 0 #{$top-bar-with-menu-item-padding-medium * 0.9} 0 $top-bar-with-menu-item-padding-medium;
     }
-    a {
-      padding: 0 $top-bar-with-menu-item-padding-medium !important;
-    }
-    a:not(.never-active):not(.sub-menu-item)::before {
-      left: 0.8 * $top-bar-with-menu-item-padding-medium;
-      width: calc(100% - #{1.6 * $top-bar-with-menu-item-padding-medium});
-    }
-    a.custom-menu:not(.never-active):not(.sub-menu-item)::before {
-      width: calc(100% - #{0.5 * $top-bar-with-menu-item-padding-medium});
-      left: 0.25 * $top-bar-with-menu-item-padding-medium;
+    menus {
+      a {
+        padding: 0 $top-bar-with-menu-item-padding-medium !important;
+      }
+      a:not(.never-active):not(.sub-menu-item)::before {
+        left: 0.8 * $top-bar-with-menu-item-padding-medium;
+        width: calc(100% - #{1.6 * $top-bar-with-menu-item-padding-medium});
+      }
     }
   }
 
   .navbar.with-menu-dense {
+    margin-right: -$top-bar-with-menu-item-padding-dense / 2;
+
     .top-title {
       // Hide the application title on dense displays
       display: none;
@@ -276,16 +280,14 @@ body.xl :host ::ng-deep {
     .menu-separator {
       margin: 0 #{$top-bar-with-menu-item-padding-dense * 0.9} 0 $top-bar-with-menu-item-padding-dense;
     }
-    a {
-      padding: 0 $top-bar-with-menu-item-padding-dense !important;
-    }
-    a:not(.never-active):not(.sub-menu-item)::before {
-      left: 0.8 * $top-bar-with-menu-item-padding-dense;
-      width: calc(100% - #{1.6 * $top-bar-with-menu-item-padding-dense});
-    }
-    a.custom-menu:not(.never-active):not(.sub-menu-item)::before {
-      width: calc(100% - #{0.5 * $top-bar-with-menu-item-padding-dense});
-      left: 0.25 * $top-bar-with-menu-item-padding-dense;
+    menus {
+      a {
+        padding: 0 $top-bar-with-menu-item-padding-dense !important;
+      }
+      a:not(.never-active):not(.sub-menu-item)::before {
+        left: 0.8 * $top-bar-with-menu-item-padding-dense;
+        width: calc(100% - #{1.6 * $top-bar-with-menu-item-padding-dense});
+      }
     }
   }
 }

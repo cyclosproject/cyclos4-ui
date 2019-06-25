@@ -46,12 +46,8 @@ export class UserLinkComponent extends BaseComponent implements OnInit {
     }
     this.operator = this.user ? !!this.user.user : false;
     if (this.user != null && this.user.id != null && !this.hideLink) {
-      const loggedUser = this.login.user;
-      if (loggedUser != null && loggedUser.id === this.user.id) {
-        this.path = '/users/profile';
-      } else {
-        this.path = `/users/${this.user.id}/profile`;
-      }
+      const param = this.authHelper.isSelf(this.user) ? this.ApiHelper.SELF : this.user.id;
+      this.path = `/users/${param}/profile`;
     }
     if (this.user != null) {
       this.display = this.user.display;
