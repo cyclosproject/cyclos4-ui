@@ -25,6 +25,9 @@ import { SearchUserAlertsComponent } from 'app/users/alerts/search-user-alerts.c
 import { OperatorGroupFormComponent } from 'app/users/operator-groups/operator-group-form.component';
 import { ViewUserGroupComponent } from 'app/users/group-membership/view-user-group.component';
 import { ViewUserGroupHistoryComponent } from 'app/users/group-membership/view-user-group-history.component';
+import { ListUserBrokersComponent } from 'app/users/brokering/list-user-brokers.component';
+import { BrokerFormComponent } from 'app/users/brokering/broker-form.component';
+import { ViewBrokerHistoryComponent } from 'app/users/brokering/view-broker-history.component';
 
 const SearchMenu: ConditionalMenu = injector => {
   const login = injector.get(LoginService);
@@ -83,6 +86,30 @@ const usersRoutes: Routes = [
       {
         path: ':user/brokerings',
         component: SearchUsersComponent,
+        canActivate: [LoggedUserGuard],
+        data: {
+          menu: Menu.SEARCH_USERS
+        }
+      },
+      {
+        path: ':user/brokers',
+        component: ListUserBrokersComponent,
+        canActivate: [LoggedUserGuard],
+        data: {
+          menu: Menu.SEARCH_USERS
+        }
+      },
+      {
+        path: ':user/brokers/history',
+        component: ViewBrokerHistoryComponent,
+        canActivate: [LoggedUserGuard],
+        data: {
+          menu: Menu.SEARCH_USERS
+        }
+      },
+      {
+        path: ':user/brokers/new',
+        component: BrokerFormComponent,
         canActivate: [LoggedUserGuard],
         data: {
           menu: Menu.SEARCH_USERS

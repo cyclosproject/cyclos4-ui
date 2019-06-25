@@ -738,6 +738,7 @@
       "viewAuthorizedPayments": "View payment authorizations",
       "viewAds": "View advertisements",
       "viewBrokerings": "View assigned members",
+      "viewBrokers": "View brokers",
       "viewOperators": "View operators",
       "status.user": "User status",
       "status.operator": "Operator status",
@@ -876,6 +877,28 @@
       "change.operator": "Change group",
       "history.user": "Group history",
       "history.operator": "Group history"
+    }
+  },
+  "brokers": {
+    "title": {
+      "list": "Brokers",
+      "new": "Add broker",
+      "history": "Brokers history"
+    },
+    "mobileTitle": {
+      "list": "Brokers",
+      "new": "Add broker",
+      "history": "Brokers history"
+    },
+    "mainBroker": "Main broker",
+    "setMain": "Set main",
+    "broker": "Broker",
+    "brokerAdded": "The broker has been added successfully",
+    "administration": "The administration",
+    "action": {
+      "add": "Added as broker",
+      "remove": "Removed a broker",
+      "setMain": "Set as main"
     }
   },
   "phone": {

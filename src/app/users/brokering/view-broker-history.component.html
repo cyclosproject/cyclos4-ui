@@ -1,0 +1,54 @@
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data then content"></ng-container>
+</page-layout>
+
+<ng-template #content>
+  <page-content [heading]="i18n.brokers.title.history"
+    [mobileHeading]="i18n.brokers.mobileTitle.history">
+    <user-info [user]="data.user"></user-info>
+  </page-content>
+  <results-layout [results]="data.history" [onClick]="onClick">
+    <mobile-result *mobileResult="let row" [avatarImage]="row.broker?.image"
+      avatarIcon="user">
+      <div class="cell-main">
+        {{ row.broker.display }}
+      </div>
+      <div class="cell-date">
+        {{ row.date | date }}
+      </div>
+      <div class="cell-text">
+        {{ i18n.general.action }}:
+        {{ showActionLabel(row) }}
+      </div>
+      <div class="cell-text">
+        {{ i18n.general.performedBy }}:
+        {{ row.by ? row.by.shortDisplay : this.i18n.brokers.administration}}
+      </div>
+    </mobile-result>
+    <table *resultTable class="table table-hover">
+      <thead>
+        <th class="avatar"></th>
+        <th>{{ i18n.brokers.broker }}</th>
+        <th>{{ i18n.general.date }}</th>
+        <th>{{ i18n.general.action }}</th>
+        <th>{{ i18n.general.performedBy }}</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of data.history">
+          <td class="avatar" [ngClass]="{
+              'pb-0': layout.xxs$ | async,
+              'border-0': layout.xxs$ | async
+            }">
+            <avatar [image]="row.broker?.image"
+              [tooltip]="row.broker?.display" icon="user"></avatar>
+          <td>{{ row.broker.shortDisplay }}</td>
+          <td>{{ row.date | date }}</td>
+          <td>{{ showActionLabel(row) }}</td>
+          <td>
+            {{ row.by ? row.by.shortDisplay : this.i18n.brokers.administration}}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </results-layout>
+</ng-template>

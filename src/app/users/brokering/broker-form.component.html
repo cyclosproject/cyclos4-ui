@@ -1,0 +1,20 @@
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data">
+    <page-content [heading]="i18n.brokers.title.new"
+      [mobileHeading]="i18n.brokers.mobileTitle.new">
+      <form [formGroup]="form">
+        <user-field [filters]="this.userQuery" [allowContacts]="false"
+          formControlName="broker" [label]="i18n.brokers.broker">
+        </user-field>
+        <boolean-field *ngIf="data.brokers" [label]="i18n.brokers.mainBroker"
+          formControlName="mainBroker"></boolean-field>
+      </form>
+      <actions>
+        <button class="btn btn-primary" [disabled]="requesting$ | async"
+          (click)="save()">
+          {{ i18n.general.save }}
+        </button>
+      </actions>
+    </page-content>
+  </ng-container>
+</page-layout>
