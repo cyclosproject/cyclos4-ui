@@ -11,7 +11,7 @@ import { BasePageComponent } from 'app/shared/base-page.component';
 import { ConfirmationMode } from 'app/shared/confirmation-mode';
 import { FormControlLocator } from 'app/shared/form-control-locator';
 import { clearValidatorsAndErrors, empty, locateControl, scrollTop, validateBeforeSubmit } from 'app/shared/helper';
-import { cloneDeep, isEqual } from 'lodash';
+import { isEqual } from 'lodash';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 export type PaymentStep = 'form' | 'confirm' | 'done';
@@ -238,7 +238,7 @@ export class PerformPaymentComponent extends BasePageComponent<DataForTransactio
     if (this.lastValue && isEqual(this.lastValue, value)) {
       return;
     }
-    this.lastValue = cloneDeep(value);
+    this.lastValue = value;
     const firstInstallmentDate = this.form.get('firstInstallmentDate');
     if (value.scheduling === 'futureDate' || value.scheduling === PaymentSchedulingEnum.SCHEDULED && !value.firstInstallmentIsNow) {
       firstInstallmentDate.setValidators(Validators.required);
@@ -343,7 +343,7 @@ export class PerformPaymentComponent extends BasePageComponent<DataForTransactio
 
   private confirmDataRequest(): Observable<PaymentPreview> {
     const value = this.form.value;
-    const payment: PerformPayment = cloneDeep(value);
+    const payment: PerformPayment = value;
     switch (value.scheduling) {
       case 'futureDate':
         // The futureDate value is not on the enum, just used internally. Send the proper value.
@@ -368,9 +368,9 @@ export class PerformPaymentComponent extends BasePageComponent<DataForTransactio
         break;
     }
     // These properties are not to be submitted, only for internal control
-    delete payment['firstInstallmentIsNow'];
-    delete payment['repeatUntilCanceled'];
-    delete payment['firstOccurrenceIsNow'];
+    delete value.firstInstallmentIsNow;
+    delete value.repeatUntilCanceled;
+    delete value.firstOccurrenceIsNow;
     // Preview
     return this.paymentsService.previewPayment({
       owner: this.fromParam,
