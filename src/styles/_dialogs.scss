@@ -58,6 +58,12 @@ alert .close {
   }
 }
 
+.lt-md {
+  .alert {
+    margin: 1rem;
+  }
+}
+
 .dropdown-toggle::after {
   vertical-align: 0.15em;
 }

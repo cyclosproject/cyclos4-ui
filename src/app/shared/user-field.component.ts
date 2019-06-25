@@ -44,7 +44,7 @@ export class UserFieldComponent
   @Input() allowContacts = true;
   @Input() filters: UserQueryFilters;
 
-  @ViewChild('contactListButton') contactListButton: ElementRef;
+  @ViewChild('contactListButton', { static: false }) contactListButton: ElementRef;
   private fieldSub: Subscription;
 
   placeholder: string;

@@ -21,7 +21,7 @@ export class CaptchaComponent extends AbstractComponent implements AfterViewInit
    */
   @Input() form: FormGroup;
 
-  @ViewChild('image') image: ElementRef;
+  @ViewChild('image', { static: true }) image: ElementRef;
 
   currentUrl: string;
 

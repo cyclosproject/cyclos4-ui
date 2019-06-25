@@ -36,8 +36,8 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
 
   @Output() availablePaymentTypes = new EventEmitter<TransferType[]>();
 
-  @ViewChild('toUser') userField: UserFieldComponent;
-  @ViewChild('amount') amountField: DecimalFieldComponent;
+  @ViewChild('toUser', { static: false }) userField: UserFieldComponent;
+  @ViewChild('amount', { static: true }) amountField: DecimalFieldComponent;
 
   accountBalanceLabel$ = new BehaviorSubject<string>(null);
   fixedDestination = false;

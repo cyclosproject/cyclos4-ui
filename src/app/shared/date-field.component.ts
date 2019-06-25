@@ -47,8 +47,8 @@ export class DateFieldComponent
   fieldInitials: string[];
 
   @ViewChildren('part') parts: QueryList<ElementRef>;
-  @ViewChild('toggleButton') toggleRef: ElementRef;
-  @ViewChild('dropdown') dropdown: BsDropdownDirective;
+  @ViewChild('toggleButton', { static: false }) toggleRef: ElementRef;
+  @ViewChild('dropdown', { static: false }) dropdown: BsDropdownDirective;
   @ViewChildren(CalendarComponent) calendar: QueryList<CalendarComponent>;
 
   constructor(

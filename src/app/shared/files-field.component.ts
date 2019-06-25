@@ -47,7 +47,7 @@ export class FilesFieldComponent extends BaseFormFieldComponent<string | string[
   files: StoredFile[];
   private uploadedFiles: StoredFile[];
 
-  @ViewChild('focusHolder') focusHolder: ElementRef;
+  @ViewChild('focusHolder', { static: false }) focusHolder: ElementRef;
 
   /**
    * The custom field for uploaded temporary files

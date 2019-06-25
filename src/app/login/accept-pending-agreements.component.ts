@@ -22,7 +22,7 @@ export class AcceptPendingAgreementsComponent
 
   accept = new FormControl(false, Validators.requiredTrue);
   initialized = false;
-  @ViewChild('agreementsContent') agreementsContent: ElementRef;
+  @ViewChild('agreementsContent', { static: false }) agreementsContent: ElementRef;
 
   constructor(
     injector: Injector,

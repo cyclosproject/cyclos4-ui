@@ -33,7 +33,7 @@ export class DecimalFieldComponent extends BaseFormFieldComponent<string> implem
   /** Text to show as suffix */
   @Input() suffix: string;
 
-  @ViewChild('inputField') private inputRef: ElementRef;
+  @ViewChild('inputField', { static: false }) private inputRef: ElementRef;
 
   internalControl: FormControl;
 

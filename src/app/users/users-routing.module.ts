@@ -116,32 +116,13 @@ const usersRoutes: Routes = [
         }
       },
       {
-        path: 'profile',
-        component: ViewProfileComponent,
-        canActivate: [LoggedUserGuard],
-        resolve: {
-          countries: CountriesResolve
-        },
-        data: {
-          menu: Menu.MY_PROFILE
-        }
-      },
-      {
-        path: 'profile/edit',
-        component: EditProfileComponent,
-        canActivate: [LoggedUserGuard],
-        data: {
-          menu: Menu.EDIT_MY_PROFILE
-        }
-      },
-      {
         path: ':user/profile',
         component: ViewProfileComponent,
         resolve: {
           countries: CountriesResolve
         },
         data: {
-          menu: Menu.SEARCH_USERS
+          menu: AuthHelperService.menuByRole(Menu.MY_PROFILE, false)
         }
       },
       {
@@ -152,7 +133,7 @@ const usersRoutes: Routes = [
           countries: CountriesResolve
         },
         data: {
-          menu: Menu.SEARCH_USERS
+          menu: AuthHelperService.menuByRole(Menu.MY_PROFILE)
         }
       },
       {

@@ -112,23 +112,23 @@ const rootRoutes: Routes = [
   },
   {
     path: 'banking',
-    loadChildren: 'app/banking/banking.module#BankingModule'
+    loadChildren: () => import('app/banking/banking.module').then(m => m.BankingModule)
   },
   {
     path: 'users',
-    loadChildren: 'app/users/users.module#UsersModule'
+    loadChildren: () => import('app/users/users.module').then(m => m.UsersModule)
   },
   {
     path: 'marketplace',
-    loadChildren: 'app/marketplace/marketplace.module#MarketplaceModule'
+    loadChildren: () => import('app/marketplace/marketplace.module').then(m => m.MarketplaceModule)
   },
   {
     path: 'personal',
-    loadChildren: 'app/personal/personal.module#PersonalModule'
+    loadChildren: () => import('app/personal/personal.module').then(m => m.PersonalModule)
   },
   {
     path: 'operations',
-    loadChildren: 'app/operations/operations.module#OperationsModule'
+    loadChildren: () => import('app/operations/operations.module').then(m => m.OperationsModule)
   },
   {
     path: '**',
