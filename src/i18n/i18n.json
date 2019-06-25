@@ -600,7 +600,15 @@
     "boughtType": "Bought",
     "generatedType": "Generated",
     "buy": {
+      "amountRange": {
+        "min": "Minimum amount for buying",
+        "max": "Maximum amount for buying"
+      },
       "buyer": "Buyer",
+      "minTimeToRedeem": "Can be redeemed",
+      "numberOfVouchers": "Number of vouchers",
+      "amountPerVoucher": "Amount per voucher",
+      "originAccount": "Origin account",
       "payment": "Buy payment"
     },
     "creationType": "CreationType",

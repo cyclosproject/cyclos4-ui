@@ -3,6 +3,7 @@ import { VoucherDataForBuy } from 'app/api/models/voucher-data-for-buy';
 import { VouchersService } from 'app/api/services';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { BehaviorSubject } from 'rxjs';
+import { Currency } from 'app/api/models';
 
 export type BuyVoucherStep = 'form' | 'confirm' | 'done';
 
@@ -42,5 +43,12 @@ export class BuyVoucherComponent extends BasePageComponent<VoucherDataForBuy> im
 
   onDataInitialized() {
     this.step = 'form';
+  }
+
+  get currency(): Currency {
+    return this.data.account.currency;
+  }
+  toConfirm() {
+    this.step = 'confirm';
   }
 }

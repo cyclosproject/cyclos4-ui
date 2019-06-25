@@ -5,7 +5,7 @@
     </page-content>
 
     <results-layout resultType="list" [results]="results$ | async"
-      [toLink]="toLink">
+      [toLink]="toLink" [rendering$]="rendering$">
       <mobile-result *mobileResult="let row" [avatarImage]="row.image"
         avatarIcon="user">
         <div class="cell-text cell-main">
@@ -18,12 +18,19 @@
           <ng-container *ngFor="let row of (results$ | async).results">
             <tr (click)="router.navigate(path(row))">
               <td class="avatar">
-                <avatar [image]="row.image" icon="user"></avatar>
+                <avatar [image]="row.image" icon="shopping_cart" size="xlarge"
+                  roundBorders="false">
+                </avatar>
               </td>
               <td>
-                <a [routerLink]="path(row)">
-                  {{ row.voucherTitle }}
-                </a>
+                <div>
+                  <a [routerLink]="path(row)" ngClass="font-weight-bold">
+                    {{ row.voucherTitle }}
+                  </a>
+                  <div>
+                    {{ row.voucherDescription }}
+                  </div>
+                </div>
               </td>
             </tr>
           </ng-container>
