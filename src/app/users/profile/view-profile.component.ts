@@ -207,7 +207,7 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
       }
       if (marketplace.viewAdvertisements || marketplace.viewWebshop) {
         actions.push(new HeadingAction('shopping_basket', this.i18n.user.profile.viewAds, () => {
-          this.router.navigate(['/marketplace', 'user', this.param]);
+          this.router.navigate(['/marketplace', this.param, 'list']);
         }));
       }
       // Custom operations
