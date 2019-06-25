@@ -657,10 +657,10 @@ export class MenuService {
       }
 
       if (vouchers.buy) {
-        add(Menu.BUY_VOUCHER, '/banking/vouchers/self/for-buy', 'shopping_cart', this.i18n.menu.bankingBuyVouchers);
+        add(Menu.BUY_VOUCHER, '/banking/self/vouchers/buy', 'shopping_cart', this.i18n.menu.bankingBuyVouchers);
       }
       if (vouchers.viewBought) {
-        add(Menu.SEARCH_BOUGHT_VOUCHERS, '/banking/vouchers/self/search-bought', 'shopping_cart',
+        add(Menu.SEARCH_BOUGHT_VOUCHERS, '/banking/self/vouchers/bought', 'shopping_cart',
           this.i18n.menu.bankingSearchBoughtVouchers);
       }
       addOperations(RootMenu.MARKETPLACE);

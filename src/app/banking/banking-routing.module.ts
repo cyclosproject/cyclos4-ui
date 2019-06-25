@@ -14,7 +14,6 @@ import { RedeemVoucherComponent } from 'app/banking/vouchers/redeem-voucher.comp
 import { SearchBoughtVouchersComponent } from 'app/banking/vouchers/search-bought-vouchers.component';
 import { SearchRedeemedVouchersComponent } from 'app/banking/vouchers/search-redeemed-vouchers.component';
 import { ViewVoucherComponent } from 'app/banking/vouchers/view-voucher.component';
-import { ListVoucherTypesForBuyComponent } from 'app/banking/vouchers/list-voucher-types-for-buy.component';
 import { AuthHelperService } from 'app/core/auth-helper.service';
 import { BankingHelperService } from 'app/core/banking-helper.service';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
@@ -153,21 +152,14 @@ const bankingRoutes: Routes = [
         }
       },
       {
-        path: 'vouchers/:user/for-buy',
-        component: ListVoucherTypesForBuyComponent,
-        data: {
-          menu: Menu.BUY_VOUCHER
-        }
-      },
-      {
-        path: 'vouchers/:user/:type/buy',
+        path: ':user/vouchers/buy',
         component: BuyVoucherComponent,
         data: {
           menu: Menu.BUY_VOUCHER
         }
       },
       {
-        path: 'vouchers/:user/search-bought',
+        path: ':user/vouchers/bought',
         component: SearchBoughtVouchersComponent,
         data: {
           menu: Menu.SEARCH_BOUGHT_VOUCHERS
