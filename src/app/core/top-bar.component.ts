@@ -17,11 +17,13 @@ import { blurIfClick, empty, words } from 'app/shared/helper';
 import { Breakpoint, LayoutService } from 'app/shared/layout.service';
 import { ActiveMenu, Menu, MenuType, RootMenu, RootMenuEntry } from 'app/shared/menu';
 import { BehaviorSubject } from 'rxjs';
+import { MenuDensity } from 'app/core/menu-density';
 
 const MaxUserDisplaySize = 30;
 const MaxUserDisplaySizeMenu = 15;
 const MenuThesholdLarge = 4;
 const MenuThesholdExtraLarge = 5;
+const ProfileMenus = [Menu.MY_PROFILE, Menu.EDIT_MY_PROFILE];
 
 /**
  * The top bar, which is always visible
@@ -43,6 +45,10 @@ export class TopBarComponent extends AbstractComponent implements OnInit, OnChan
   roots$ = new BehaviorSubject<RootMenuEntry[]>([]);
   forcedActive: RootMenuEntry;
 
+  get roots(): RootMenuEntry[] {
+    return this.roots$.value;
+  }
+
   @HostBinding('class.has-menu') hasMenu = false;
   @Input() activeMenu: ActiveMenu;
 
@@ -59,8 +65,7 @@ export class TopBarComponent extends AbstractComponent implements OnInit, OnChan
   }
 
   @Input() user: User;
-  @Input() principal: string;
-
+  @Input() breakpoints: Set<Breakpoint>;
   @Output() toggleSidenav = new EventEmitter<void>();
 
   ngOnInit(): void {
@@ -137,34 +142,15 @@ export class TopBarComponent extends AbstractComponent implements OnInit, OnChan
     return actions;
   }
 
-  isSpacious(roots: RootMenuEntry[], breakpoints: Set<Breakpoint>) {
-    if (breakpoints.has('xl')) {
-      // Extra large
-      return roots.length < MenuThesholdExtraLarge;
-    } else {
-      // Large
-      return roots.length < MenuThesholdLarge;
+  get density(): MenuDensity {
+    if (!this.hasMenu) {
+      return null;
     }
-  }
-
-  isMedium(roots: RootMenuEntry[], breakpoints: Set<Breakpoint>) {
-    if (breakpoints.has('xl')) {
-      // Extra large
-      return roots.length === MenuThesholdExtraLarge;
-    } else {
-      // Large
-      return roots.length === MenuThesholdLarge;
-    }
-  }
-
-  isDense(roots: RootMenuEntry[], breakpoints: Set<Breakpoint>) {
-    if (breakpoints.has('xl')) {
-      // Extra large
-      return roots.length > MenuThesholdExtraLarge;
-    } else {
-      // Large
-      return roots.length > MenuThesholdLarge;
-    }
+    const threshold = this.breakpoints.has('xl') ? MenuThesholdExtraLarge : MenuThesholdLarge;
+    const roots = this.roots;
+    return roots.length < threshold ? MenuDensity.Spacious
+      : roots.length === threshold ? MenuDensity.Medium
+        : MenuDensity.Dense;
   }
 
   dropdownShown(root: RootMenuEntry) {
@@ -179,7 +165,7 @@ export class TopBarComponent extends AbstractComponent implements OnInit, OnChan
 
   private updateMenuTextWidts() {
     const activeRoot = this.forcedActive || this.activeRoot;
-    for (const root of this.roots$.value) {
+    for (const root of this.roots) {
       const anchor = document.getElementById(menuAnchorId(root));
       if (!anchor) {
         continue;
@@ -200,5 +186,38 @@ export class TopBarComponent extends AbstractComponent implements OnInit, OnChan
       }
       menuText.style.width = `${width}px`;
     }
+  }
+
+  customNgClass(menu: Menu) {
+    const classes = ['nav-item'];
+    // Only use special classes for custom menus if the menu is integrated in the top bar
+    if (this.hasMenu) {
+      classes.push(`menu-item`);
+      const density = this.user == null
+        ? this.density
+        : MenuDensity.Custom; // When there's a logged user with menu, use the custom density
+      classes.push(`density-${density}`);
+      if (this.isActive(menu)) {
+        classes.push('active');
+      }
+    } else {
+      classes.push(`density-${MenuDensity.Custom}`);
+    }
+    return classes;
+  }
+
+  private isActive(menu: Menu): boolean {
+    if (!this.activeMenu) {
+      return false;
+    }
+    const active = this.activeMenu.menu;
+    if (ProfileMenus.includes(menu)) {
+      return ProfileMenus.includes(active);
+    }
+    return menu === active;
+  }
+
+  get separatorNgClass() {
+    return ['menu-separator', `density-${this.density}`];
   }
 }

@@ -6,6 +6,7 @@ import { AbstractComponent } from 'app/shared/abstract.component';
 import { LayoutService, Breakpoint } from 'app/shared/layout.service';
 import { ActiveMenu, MenuType, RootMenuEntry } from 'app/shared/menu';
 import { Observable } from 'rxjs';
+import { MenuDensity } from 'app/core/menu-density';
 
 const MenuThesholdLarge = 5;
 const MenuThesholdExtraLarge = 6;
@@ -42,14 +43,9 @@ export class MenuBarComponent extends AbstractComponent implements OnInit {
     this.roots$ = this.menu.menu(MenuType.BAR);
   }
 
-  isDense(roots: RootMenuEntry[], breakpoints: Set<Breakpoint>) {
-    if (breakpoints.has('xl')) {
-      // Extra large
-      return roots.length > MenuThesholdExtraLarge;
-    } else {
-      // Large
-      return roots.length > MenuThesholdLarge;
-    }
+  density(roots: RootMenuEntry[], breakpoints: Set<Breakpoint>): MenuDensity {
+    const threshold = breakpoints.has('xl') ? MenuThesholdExtraLarge : MenuThesholdLarge;
+    return roots.length > threshold ? MenuDensity.Dense : MenuDensity.Medium;
   }
 
 }

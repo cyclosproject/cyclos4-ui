@@ -5,7 +5,7 @@
   <push-notifications #pushNotifications></push-notifications>
   <div class="root-container">
     <top-bar [user]="login.user$ | async"
-      [principal]="(login.auth$ | async)?.principal"
+      [breakpoints]="layout.breakpointChanges$ | async"
       [activeMenu]="menu.activeMenu$ | async"
       (toggleSidenav)="sidenav.toggle()"></top-bar>
     <menu-bar *ngIf="menuBar" [ngClass]="{'d-none': layout.ltlg$ | async}"

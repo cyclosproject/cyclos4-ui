@@ -1,15 +1,12 @@
 <ng-container *ngFor="let root of roots">
   <a #dropdownAnchor [id]="menuAnchorId(root)" *ngIf="root.dropdown"
-    class="nav-item dropdown-toggle" href="#"
-    (onShown)="dropdownShown.emit(root)"
+    class="dropdown-toggle" href="#" (onShown)="dropdownShown.emit(root)"
     (onHidden)="dropdownHidden.emit(root)"
     [attr.aria-controls]="'menu-dropdown-' + root.rootMenu"
-    [tooltip]="!onTop || activeRoot === root.rootMenu || (layout.gtlg$ | async) ? undefined : root.label"
+    [tooltip]="tooltipForNonActive && activeRoot !== root.rootMenu ? root.label : undefined"
     (mouseenter)="dropdown.show()" (mouseleave)="dropdown.hide()"
     (click)="onClick($event, dropdownAnchor, root)" dropdown
-    #dropdown="bs-dropdown" [ngClass]="{
-            active: activeRoot === root.rootMenu
-          }">
+    #dropdown="bs-dropdown" [ngClass]="ngClass(root)">
     <icon [ngClass]="onTop ? 'top-icon' : null" size="1.4rem"
       [icon]="root.icon"></icon>
     <div class="menu-text">{{ root.label }}</div>
@@ -32,10 +29,8 @@
 
   <a [id]="menuAnchorId(root)" *ngIf="!root.dropdown && root.entries[0]"
     #anchor [routerLink]="root.entries[0].url"
-    [tooltip]="!onTop || activeRoot === root.rootMenu || (layout.gtlg$ | async) ? undefined : root.label"
-    (click)="onClick($event, anchor, root)" class="nav-item" [ngClass]="{
-          active: activeRoot === root.rootMenu
-        }">
+    [tooltip]="tooltipForNonActive && activeRoot !== root.rootMenu ? root.label : undefined"
+    (click)="onClick($event, anchor, root)" [ngClass]="ngClass(root)">
     <icon [ngClass]="onTop ? 'top-icon' : null" size="1.4rem"
       [icon]="root.icon"></icon>
     <div class="menu-text">{{ root.label }}</div>
