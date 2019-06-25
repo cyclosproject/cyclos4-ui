@@ -1,6 +1,6 @@
 <page-layout [ready]="data$ | async" [ngSwitch]="step$ | async">
-  <page-content *ngSwitchCase="'form'" [heading]="i18n.voucher.redeem.title"
-    [mobileHeading]="i18n.voucher.redeem.mobileTitle">
+  <page-content *ngSwitchCase="'form'" [heading]="i18n.voucher.title.redeem"
+    [mobileHeading]="i18n.voucher.mobileTitle.redeem">
     <ng-container *ngIf="(data$ | async); else loading">
       <ng-container [ngTemplateOutlet]="active_user"></ng-container>
 
@@ -13,8 +13,8 @@
     </ng-container>
   </page-content>
   <page-content *ngSwitchCase="'confirm'"
-    [heading]="i18n.voucher.redeem.title"
-    [mobileHeading]="i18n.voucher.redeem.mobileTitle">
+    [heading]="i18n.voucher.title.redeem"
+    [mobileHeading]="i18n.voucher.mobileTitle.redeem">
     <ng-container *ngIf="(dataForRedeem$ | async); else loading">
 
       <ng-container [ngTemplateOutlet]="active_user"></ng-container>

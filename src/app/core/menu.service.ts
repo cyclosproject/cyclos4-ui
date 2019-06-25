@@ -613,10 +613,10 @@ export class MenuService {
 
       if (vouchers.viewRedeemed) {
         add(Menu.SEARCH_REDEEMED, '/banking/' + ApiHelper.SELF + '/vouchers/redeemed', 'search',
-          this.i18n.menu.bankingVouchersSearchRedeemed);
+          this.i18n.menu.bankingRedeemedVouchers);
       }
       if (vouchers.redeem) {
-        add(Menu.REDEEM_VOUCHER, '/banking/' + ApiHelper.SELF + '/vouchers/redeem', 'payment', this.i18n.menu.bankingVouchersRedeem);
+        add(Menu.REDEEM_VOUCHER, '/banking/' + ApiHelper.SELF + '/vouchers/redeem', 'payment', this.i18n.menu.bankingRedeemVoucher);
       }
       addOperations(RootMenu.BANKING);
       addContentPages(Menu.CONTENT_PAGE_BANKING);
