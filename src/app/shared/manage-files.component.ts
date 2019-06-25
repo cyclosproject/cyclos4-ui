@@ -45,7 +45,7 @@ export class ManageFilesComponent extends BaseComponent implements OnInit {
   }
 
   remove(file: StoredFile) {
-    this.removedIds = [file.id, ...this.removedIds];
+    this.removedIds = [file.id, ...(this.removedIds || [])];
     this.originalOrder = this.originalOrder.filter(i => i !== file.id);
     this.order.setValue((this.order.value || []).filter(i => i.id !== file.id));
   }

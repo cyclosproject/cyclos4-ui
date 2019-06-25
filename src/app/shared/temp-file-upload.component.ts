@@ -66,7 +66,7 @@ export class TempFileUploadComponent extends AbstractComponent {
   @Input() max = 1;
   @Input() customField: CustomFieldDetailed;
   @Output() uploadDone = new EventEmitter<StoredFile[]>();
-  @ViewChild('inputField') inputField: ElementRef;
+  @ViewChild('inputField', { static: true }) inputField: ElementRef;
 
   /**
    * The allowed mime types to be uploaded

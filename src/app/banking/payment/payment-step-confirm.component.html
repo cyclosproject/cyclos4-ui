@@ -91,13 +91,11 @@
   *ngIf="preview.payment.description" [value]="preview.payment.description"
   valueFormat="break"></label-value>
 <hr *ngIf="layout.gtxxs$ | async">
-<div class="pt-3">
-  <label-value [label]="i18n.transaction.totalAmount">
-    <div class="totalAmount">
-      {{ preview.totalAmount | currency:preview.currency }}
-    </div>
-  </label-value>
-</div>
+<label-value [label]="i18n.transaction.totalAmount">
+  <div class="totalAmount">
+    {{ preview.totalAmount | currency:preview.currency }}
+  </div>
+</label-value>
 <ng-container *ngIf="(preview.confirmationMessage || '').length > 0">
   <hr *ngIf="layout.gtxxs$ | async">
   <div class="break-nl">{{preview.confirmationMessage}}</div>

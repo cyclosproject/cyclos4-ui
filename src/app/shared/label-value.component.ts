@@ -48,7 +48,7 @@ export class LabelValueComponent implements OnInit, OnDestroy, OnChanges {
   private subs: Subscription[] = [];
 
   /** When the content has an extraCell directive, we render it on the same row */
-  @ContentChild(ExtraCellDirective, { read: TemplateRef }) _extraCell;
+  @ContentChild(ExtraCellDirective, { static: true, read: TemplateRef }) _extraCell: TemplateRef<any>;
 
   get extraCell(): ExtraCellDirective {
     if (this._ignoreExtraCell) {

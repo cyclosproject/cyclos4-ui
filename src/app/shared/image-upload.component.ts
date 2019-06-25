@@ -60,7 +60,7 @@ export class ImageUploadComponent extends AbstractComponent implements OnDestroy
   @Input() user = '';
   @Input() customField: CustomField;
   @Output() uploadDone = new EventEmitter<Image[]>();
-  @ViewChild('inputField') inputField: ElementRef;
+  @ViewChild('inputField', { static: true }) inputField: ElementRef;
 
   private _keepUrls: boolean | string = false;
   @Input() get keepUrls(): boolean | string {

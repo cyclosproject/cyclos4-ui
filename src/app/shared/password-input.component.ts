@@ -47,8 +47,8 @@ export class PasswordInputComponent
 
   @Output() otpSent = new EventEmitter<void>();
 
-  @ViewChild('passwordField') passwordField: ElementRef;
-  @ViewChild('vkDisplay') vkDisplay: ElementRef;
+  @ViewChild('passwordField', { static: false }) passwordField: ElementRef;
+  @ViewChild('vkDisplay', { static: false }) vkDisplay: ElementRef;
 
   virtualKeyboard: boolean;
   currentVKCombinations: string[][];

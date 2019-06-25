@@ -34,7 +34,7 @@ export class RegistrationStepConfirmComponent
   @Input() customFiles: StoredFile[];
 
   @ViewChildren('securityAnswer') securityAnswer: QueryList<InputFieldComponent>;
-  @ViewChild('agreementsContent') agreementsContent: ElementRef;
+  @ViewChild('agreementsContent', { static: false }) agreementsContent: ElementRef;
 
   constructor(
     injector: Injector,
@@ -44,9 +44,11 @@ export class RegistrationStepConfirmComponent
 
   ngOnInit() {
     super.ngOnInit();
-    this.addSub(this.form.get('securityQuestion').valueChanges.subscribe(question => {
-      this.focusSecurityAnswer = !blank(question);
-    }));
+    if (!empty(this.data.securityQuestions)) {
+      this.addSub(this.form.get('securityQuestion').valueChanges.subscribe(question => {
+        this.focusSecurityAnswer = !blank(question);
+      }));
+    }
   }
 
   ngAfterViewInit() {

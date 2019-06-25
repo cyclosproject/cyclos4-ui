@@ -15,9 +15,9 @@ export abstract class BaseSelectionFieldComponent<T> extends BaseFormFieldWithOp
   /** When set, the displayed text */
   @Input() display: string;
 
-  @ViewChild('toggleButton') toggleRef: ElementRef;
-  @ViewChild('dropdown') dropdown: BsDropdownDirective;
-  @ViewChild('dropDownMenu') menuRef: ElementRef;
+  @ViewChild('toggleButton', { static: false }) toggleRef: ElementRef;
+  @ViewChild('dropdown', { static: false }) dropdown: BsDropdownDirective;
+  @ViewChild('dropDownMenu', { static: false }) menuRef: ElementRef;
   display$ = new BehaviorSubject('');
   valueSub: Subscription;
   openSub: Subscription;

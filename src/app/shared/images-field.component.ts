@@ -68,7 +68,7 @@ export class ImagesFieldComponent extends BaseFormFieldComponent<string | string
 
   @Output() upload = new EventEmitter<Image[]>();
 
-  @ViewChild('focusHolder') focusHolder: ElementRef;
+  @ViewChild('focusHolder', { static: false }) focusHolder: ElementRef;
 
   constructor(
     injector: Injector,
