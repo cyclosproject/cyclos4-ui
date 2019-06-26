@@ -58,12 +58,12 @@
   <page-content *ngSwitchCase="'confirm'"
     [heading]="dataTypeForBuy.type.voucherTitle"
     [mobileHeading]="dataTypeForBuy.type.voucherTitle">
-    <payment-step-confirm [buyVoucher]="buyVoucher"
+    <!-- <payment-step-confirm [buyVoucher]="buyVoucher"
       [confirmationPassword]="confirmationPassword"
       (confirmationModeChanged)="confirmationMode$.next($event)"
       (confirmed)="perform($event)"
       [showPaymentType]="(availablePaymentTypes || []).length > 1">
-    </payment-step-confirm>
+    </payment-step-confirm> -->
 
   </page-content>
 
