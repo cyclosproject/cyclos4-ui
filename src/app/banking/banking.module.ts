@@ -14,13 +14,14 @@ import { ViewTransactionComponent } from 'app/banking/transactions/view-transact
 import { SearchTransfersOverviewComponent } from 'app/banking/transfers/search-transfers-overview.component';
 import { TransferDetailsComponent } from 'app/banking/transfers/transfer-details.component';
 import { ViewTransferComponent } from 'app/banking/transfers/view-transfer.component';
-import { BuyVoucherComponent } from 'app/banking/vouchers/buy-voucher.component';
+import { BuyVouchersComponent } from 'app/banking/vouchers/buy-vouchers.component';
 import { SearchBoughtVouchersComponent } from 'app/banking/vouchers/search-bought-vouchers.component';
-import { ListVoucherTypesForBuyComponent } from 'app/banking/vouchers/list-voucher-types-for-buy.component';
+import { BuyVouchersStepListTypesComponent } from 'app/banking/vouchers/buy-vouchers-step-list-types.component';
 import { SharedModule } from 'app/shared/shared.module';
 import { RedeemVoucherComponent } from 'app/banking/vouchers/redeem-voucher.component';
 import { ViewVoucherComponent } from 'app/banking/vouchers/view-voucher.component';
 import { SearchRedeemedVouchersComponent } from 'app/banking/vouchers/search-redeemed-vouchers.component';
+import { BuyVouchersStepConfirmComponent } from 'app/banking/vouchers/buy-vouchers-step-confirm.component';
 
 /**
  * Banking module
@@ -49,9 +50,10 @@ import { SearchRedeemedVouchersComponent } from 'app/banking/vouchers/search-red
     PaymentStepConfirmComponent,
     PaymentStepDoneComponent,
 
-    BuyVoucherComponent,
+    BuyVouchersComponent,
     SearchBoughtVouchersComponent,
-    ListVoucherTypesForBuyComponent,
+    BuyVouchersStepListTypesComponent,
+    BuyVouchersStepConfirmComponent,
     RedeemVoucherComponent,
     ViewVoucherComponent,
     SearchRedeemedVouchersComponent

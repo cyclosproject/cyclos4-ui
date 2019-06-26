@@ -6,11 +6,11 @@ import { BaseComponent } from 'app/shared/base.component';
  * List the voucher types the logged user can buy for himself or (if manager) for other user.
  */
 @Component({
-  selector: 'list-voucher-types-for-buy',
-  templateUrl: 'list-voucher-types-for-buy.component.html',
+  selector: 'buy-vouchers-step-list-types',
+  templateUrl: 'buy-vouchers-step-list-types.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ListVoucherTypesForBuyComponent extends BaseComponent {
+export class BuyVouchersStepListTypesComponent extends BaseComponent {
 
   @Input() types: VoucherTypeDetailed[];
 
@@ -20,7 +20,7 @@ export class ListVoucherTypesForBuyComponent extends BaseComponent {
     super(injector);
   }
 
-  selectType(type: VoucherTypeDetailed): void {
-    this.typeSelected.next(type);
+  get selectType() {
+    return (type: VoucherTypeDetailed) => this.typeSelected.emit(type);
   }
 }

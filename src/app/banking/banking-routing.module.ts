@@ -9,7 +9,7 @@ import { ViewAuthorizationHistoryComponent } from 'app/banking/transactions/view
 import { ViewTransactionComponent } from 'app/banking/transactions/view-transaction.component';
 import { SearchTransfersOverviewComponent } from 'app/banking/transfers/search-transfers-overview.component';
 import { ViewTransferComponent } from 'app/banking/transfers/view-transfer.component';
-import { BuyVoucherComponent } from 'app/banking/vouchers/buy-voucher.component';
+import { BuyVouchersComponent } from 'app/banking/vouchers/buy-vouchers.component';
 import { RedeemVoucherComponent } from 'app/banking/vouchers/redeem-voucher.component';
 import { SearchBoughtVouchersComponent } from 'app/banking/vouchers/search-bought-vouchers.component';
 import { SearchRedeemedVouchersComponent } from 'app/banking/vouchers/search-redeemed-vouchers.component';
@@ -153,7 +153,7 @@ const bankingRoutes: Routes = [
       },
       {
         path: ':user/vouchers/buy',
-        component: BuyVoucherComponent,
+        component: BuyVouchersComponent,
         data: {
           menu: Menu.BUY_VOUCHER
         }

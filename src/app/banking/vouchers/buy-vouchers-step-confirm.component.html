@@ -1,0 +1,15 @@
+<label-value>
+
+</label-value>
+
+<ng-container *ngIf="confirmationPasswordInput">
+  <hr *ngIf="layout.gtxxs$ | async">
+  <form [formGroup]="form">
+    <confirmation-password focused formControlName="confirmationPassword"
+      [passwordInput]="confirmationPasswordInput"
+      [createDeviceConfirmation]="createDeviceConfirmation"
+      (confirmationModeChanged)="confirmationModeChanged.emit($event)"
+      (confirmed)="confirmed.emit($event)">
+    </confirmation-password>
+  </form>
+</ng-container>
