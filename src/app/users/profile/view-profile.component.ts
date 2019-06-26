@@ -184,6 +184,11 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
           this.router.navigate(['/users', this.param, 'brokerings']);
         }));
       }
+      if (brokering.viewBrokers) {
+        this.managementActions.push(new HeadingAction('assignment_ind', this.i18n.user.profile.viewBrokers, () => {
+          this.router.navigate(['/users', this.param, 'brokers']);
+        }));
+      }
       if (operators.viewOperators) {
         this.managementActions.push(new HeadingAction('supervisor_account', this.i18n.user.profile.viewOperators, () => {
           this.router.navigate(['/users', this.param, 'operators']);
