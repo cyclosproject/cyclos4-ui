@@ -34,7 +34,7 @@ export class SearchUserAlertsComponent
 
   protected toSearchParams(value: any): UserAlertQueryFilters {
     return {
-      datePeriod: ApiHelper.rangeFilter(value.beginDate, value.endDate),
+      datePeriod: ApiHelper.dateRangeFilter(value.beginDate, value.endDate),
       page: value.page,
       pageSize: value.pageSize,
       types: value.types,

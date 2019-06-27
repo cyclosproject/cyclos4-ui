@@ -574,6 +574,7 @@
       "title": "Redeem voucher",
       "mobileTitle": "Redeem voucher",
       "confirm": "The voucher details are given below. Please, review it below and confirm this action.",
+      "done": "The voucher was redeemed successfully.",
       "date": "Redeeming date",
       "redeemer": "Redeemer",
       "payment": "Redeem payment",
