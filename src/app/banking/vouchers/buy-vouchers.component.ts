@@ -13,7 +13,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ConfirmationMode } from 'app/shared/confirmation-mode';
 import { validateBeforeSubmit } from 'app/shared/helper';
 
-export type BuyVouchersStep = 'select-type' | 'form' | 'confirm' | 'done';
+export type BuyVouchersStep = 'select-type' | 'form' | 'confirm';
 
 /**
  * Component used to buy vouchers.
@@ -84,21 +84,31 @@ export class BuyVouchersComponent extends BasePageComponent<VoucherDataForBuy>
    * Final action: buy the vouchers
    */
   buy(confirmationPassword?: string) {
-    if (this.confirmationPasswordInput) {
+    if (confirmationPassword) {
       this.confirmationPassword.setValue(confirmationPassword);
-      if (!validateBeforeSubmit(this.confirmationPassword)) {
-        return;
-      }
     }
+
+    if (this.confirmationPasswordInput && !validateBeforeSubmit(this.confirmationPassword)) {
+      return;
+    }
+
     const body = this.form.value;
     body.type = this.dataTypeForBuy.type.id;
     const params = {
       user: this.user,
-      confirmationPassword: confirmationPassword,
+      confirmationPassword: this.confirmationPasswordInput ? this.confirmationPassword.value : null,
       body: body
     };
     this.addSub(
-      this.voucherService.buyVouchers(params).subscribe(() => this.step = 'done')
+      this.voucherService.buyVouchers(params)
+        .subscribe((ids: string[]) => {
+          if (ids.length === 1) {
+            this.router.navigate(['banking', 'vouchers', ids[0]]);
+          } else {
+            this.router.navigate(['banking', this.user, 'vouchers', 'bought']);
+          }
+          this.notification.info(this.i18n.voucher.buy.done);
+        })
     );
   }
 
@@ -134,16 +144,17 @@ export class BuyVouchersComponent extends BasePageComponent<VoucherDataForBuy>
     this.canConfirm = this.authHelper.canConfirm(this.confirmationPasswordInput);
     if (!this.canConfirm) {
       this.notification.warning(this.authHelper.getConfirmationMessage(this.confirmationPasswordInput));
-    } else if (!this.confirmationPasswordInput) {
-      this.buy();
-    } else {
+      return;
+    } else if (this.confirmationPasswordInput) { // can confirm and confirmation is required
       if (!this.confirmationPassword) {
         // The confirmation password is hold in a separated control
         this.confirmationPassword = this.formBuilder.control(null);
         this.confirmationPassword.setValidators(Validators.required);
+      } else {
+        this.confirmationPassword.reset();
       }
-      this.step = 'confirm';
     }
+    this.step = 'confirm';
   }
 
   private get confirmationPasswordInput() {

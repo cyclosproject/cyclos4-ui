@@ -1,13 +1,5 @@
 <page-layout [ready]="data$ | async" [ngSwitch]="step$ | async">
 
-  <!-- <page-content *ngSwitchCase="'select-type'"
-    [heading]="i18n.voucher.title.buy"
-    [mobileHeading]="i18n.voucher.mobileTitle.buy">
-    <list-voucher-types-for-buy [types]="data.types"
-    (typeSelected)="toForm($event)">
-  </list-voucher-types-for-buy>
-</page-content> -->
-
   <!-- Step 1: Select voucher type -->
   <ng-container *ngSwitchCase="'select-type'">
     <buy-vouchers-step-list-types [types]="data.types"
@@ -39,6 +31,7 @@
     [heading]="dataTypeForBuy.type.voucherTitle"
     [mobileHeading]="dataTypeForBuy.type.voucherTitle">
     <buy-vouchers-step-confirm [buyVoucher]="form.value"
+      [data]="dataTypeForBuy"
       [confirmationPasswordInput]="dataTypeForBuy.confirmationPasswordInput"
       [confirmationPassword]="confirmationPassword"
       (confirmationModeChanged)="confirmationMode$.next($event)"
@@ -57,13 +50,6 @@
         {{ i18n.general.previous }}
       </button>
     </actions>
-  </page-content>
-
-  <!-- Step 4: Submit buy -->
-  <page-content *ngSwitchCase="'done'"
-    [heading]="dataTypeForBuy.type.voucherTitle"
-    [mobileHeading]="dataTypeForBuy.type.voucherTitle">
-    DONE
   </page-content>
 
   <page-content *ngSwitchDefault>

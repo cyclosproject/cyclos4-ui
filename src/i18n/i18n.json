@@ -606,6 +606,8 @@
         "max": "Maximum amount for buying"
       },
       "buyer": "Buyer",
+      "confirmationMessage": "Are you sure to buy {count} voucher(s) of {amount} with type {type}?",
+      "done": "The voucher(s) has been bought.",
       "minTimeToRedeem": "Can be redeemed",
       "numberOfVouchers": "Number of vouchers",
       "amountPerVoucher": "Amount per voucher",
