@@ -3,7 +3,7 @@
     [mobileHeading]="i18n.voucher.redeem.mobileTitle">
 
     <input-field type="text" [label]="i18n.voucher.token" [mask]="mask"
-      [formControl]="token" [placeholder]="mask"></input-field>
+      [formControl]="token" [placeholder]="mask" required></input-field>
     <actions>
       <button class="btn btn-primary" [disabled]="requesting$ | async"
         (click)="submit()">{{ i18n.general.submit }}</button>
