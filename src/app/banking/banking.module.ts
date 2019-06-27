@@ -22,6 +22,7 @@ import { RedeemVoucherComponent } from 'app/banking/vouchers/redeem-voucher.comp
 import { ViewVoucherComponent } from 'app/banking/vouchers/view-voucher.component';
 import { SearchRedeemedVouchersComponent } from 'app/banking/vouchers/search-redeemed-vouchers.component';
 import { BuyVouchersStepConfirmComponent } from 'app/banking/vouchers/buy-vouchers-step-confirm.component';
+import { BuyVouchersStepFormComponent } from 'app/banking/vouchers/buy-vouchers-step-form.component';
 
 /**
  * Banking module
@@ -53,6 +54,7 @@ import { BuyVouchersStepConfirmComponent } from 'app/banking/vouchers/buy-vouche
     BuyVouchersComponent,
     SearchBoughtVouchersComponent,
     BuyVouchersStepListTypesComponent,
+    BuyVouchersStepFormComponent,
     BuyVouchersStepConfirmComponent,
     RedeemVoucherComponent,
     ViewVoucherComponent,

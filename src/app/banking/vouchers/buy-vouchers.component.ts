@@ -8,7 +8,7 @@ import { VoucherDataForBuy } from 'app/api/models/voucher-data-for-buy';
 import { VouchersService } from 'app/api/services';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { BehaviorSubject } from 'rxjs';
-import { Currency, VoucherTypeDetailed, BuyVoucher } from 'app/api/models';
+import { Currency, VoucherTypeDetailed } from 'app/api/models';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ConfirmationMode } from 'app/shared/confirmation-mode';
 import { validateBeforeSubmit } from 'app/shared/helper';
@@ -76,6 +76,32 @@ export class BuyVouchersComponent extends BasePageComponent<VoucherDataForBuy>
     }
   }
 
+  get currency(): Currency {
+    return this.dataTypeForBuy.account.currency;
+  }
+
+  /**
+   * Final action: buy the vouchers
+   */
+  buy(confirmationPassword?: string) {
+    if (this.confirmationPasswordInput) {
+      this.confirmationPassword.setValue(confirmationPassword);
+      if (!validateBeforeSubmit(this.confirmationPassword)) {
+        return;
+      }
+    }
+    const body = this.form.value;
+    body.type = this.dataTypeForBuy.type.id;
+    const params = {
+      user: this.user,
+      confirmationPassword: confirmationPassword,
+      body: body
+    };
+    this.addSub(
+      this.voucherService.buyVouchers(params).subscribe(() => this.step = 'done')
+    );
+  }
+
   backToSelectType() {
     this.step = 'select-type';
   }
@@ -84,22 +110,9 @@ export class BuyVouchersComponent extends BasePageComponent<VoucherDataForBuy>
     this.step = 'form';
   }
 
-  buy(confirmationPassword?: string) {
-    if (this.confirmationPasswordInput) {
-      this.confirmationPassword.setValue(confirmationPassword);
-      if (!validateBeforeSubmit(this.confirmationPassword)) {
-        return;
-      }
-    }
-    const buyVoucher: BuyVoucher = this.form.value;
-    buyVoucher.type = this.dataTypeForBuy.type.id;
-    const params = this.form.value;
-    params.confirmationPassword = this.confirmationPassword.value;
-    this.addSub(
-      this.voucherService.buyVouchers(params).subscribe(() => this.step = 'done')
-    );
-  }
-
+  /**
+   * Go to second step
+   */
   toForm(type: VoucherTypeDetailed): void {
     this.addSub(this.voucherService.getVoucherDataForBuy({ user: this.user, type: type.id })
       .subscribe(data => {
@@ -110,6 +123,9 @@ export class BuyVouchersComponent extends BasePageComponent<VoucherDataForBuy>
     );
   }
 
+  /**
+   * Go to third step
+   */
   toConfirm(): void {
     if (!validateBeforeSubmit(this.form)) {
       return;
@@ -134,18 +150,16 @@ export class BuyVouchersComponent extends BasePageComponent<VoucherDataForBuy>
     return this.dataTypeForBuy.confirmationPasswordInput;
   }
 
-  get currency(): Currency {
-    return this.dataTypeForBuy.account.currency;
-  }
-
   private buildForm(): void {
     if (this.form) {
-      return; // form already created
+      this.form.reset(); // clear previous values (if any)
+    } else {
+      this.form = this.formBuilder.group({
+        count: new FormControl(''),
+        amount: new FormControl('')
+      });
     }
 
-    this.form = this.formBuilder.group({
-      count: new FormControl(''),
-      amount: new FormControl('')
-    });
+    this.form.get('count').setValue(1);
   }
 }

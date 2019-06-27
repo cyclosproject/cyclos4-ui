@@ -1,5 +1,5 @@
 import { BaseComponent } from 'app/shared/base.component';
-import { Component, ChangeDetectionStrategy, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, OnInit, Output, EventEmitter, Injector } from '@angular/core';
 import { PasswordInput, CreateDeviceConfirmation, DeviceConfirmationTypeEnum, BuyVoucher } from 'app/api/models';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ConfirmationMode } from 'app/shared/confirmation-mode';
@@ -22,6 +22,10 @@ export class BuyVouchersStepConfirmComponent extends BaseComponent implements On
   form: FormGroup;
   createDeviceConfirmation: () => CreateDeviceConfirmation;
 
+  constructor(injector: Injector) {
+    super(injector);
+  }
+
   ngOnInit() {
     super.ngOnInit();
 
@@ -36,5 +40,9 @@ export class BuyVouchersStepConfirmComponent extends BaseComponent implements On
         numberOfVouchers: this.buyVoucher.count
       };
     };
+  }
+
+  get confirmationMessage() {
+    return "Here the buy vouchers confirmaton message";
   }
 }
