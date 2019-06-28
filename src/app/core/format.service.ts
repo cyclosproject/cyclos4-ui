@@ -443,19 +443,19 @@ export class FormatService {
   weekDay(day: WeekDayEnum): string {
     switch (day) {
       case WeekDayEnum.FRI:
-        return this.i18n.general.weekday.fri;
+        return this.i18n.general.weekday.long.fri;
       case WeekDayEnum.MON:
-        return this.i18n.general.weekday.mon;
+        return this.i18n.general.weekday.long.mon;
       case WeekDayEnum.SAT:
-        return this.i18n.general.weekday.sat;
+        return this.i18n.general.weekday.long.sat;
       case WeekDayEnum.SUN:
-        return this.i18n.general.weekday.sun;
+        return this.i18n.general.weekday.long.sun;
       case WeekDayEnum.THU:
-        return this.i18n.general.weekday.thu;
+        return this.i18n.general.weekday.long.thu;
       case WeekDayEnum.TUE:
-        return this.i18n.general.weekday.tue;
+        return this.i18n.general.weekday.long.tue;
       case WeekDayEnum.WED:
-        return this.i18n.general.weekday.wed;
+        return this.i18n.general.weekday.long.wed;
     }
   }
 }
