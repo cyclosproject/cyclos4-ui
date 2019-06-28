@@ -134,6 +134,15 @@
         "thu": "T",
         "fri": "F",
         "sat": "S"
+      },
+      "long": {
+        "sun": "Sunday",
+        "mon": "Monday",
+        "tue": "Tuesday",
+        "wed": "Wednesday",
+        "thu": "Thursday",
+        "fri": "Friday",
+        "sat": "Saturday"
       }
     },
     "range": {
@@ -596,6 +605,13 @@
   },
   "voucher": {
     "redeem": {
+      "error": {
+        "status": "This voucher cannot be redeemed. Its current status is: {status}.",
+        "user": "The current user cannot redeem vouchers from this type.",
+        "notAllowedYet": "This voucher cannot be redeemed before {beginDate}.",
+        "notAllowedToday": "This voucher cannot be redeemed today. The days allowed for redeeming are: {allowedDays}.",
+        "userBlocked": "You have been blocked by exceeding the number of allowed attempts."
+      },
       "title": "Redeem voucher",
       "mobileTitle": "Redeem voucher",
       "confirm": "The voucher details are given below. Please, review it below and confirm this action.",
