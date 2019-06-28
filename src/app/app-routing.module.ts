@@ -119,6 +119,10 @@ const rootRoutes: Routes = [
     loadChildren: () => import('app/users/users.module').then(m => m.UsersModule)
   },
   {
+    path: 'records',
+    loadChildren: () => import('app/records/records.module').then(m => m.RecordsModule)
+  },
+  {
     path: 'marketplace',
     loadChildren: () => import('app/marketplace/marketplace.module').then(m => m.MarketplaceModule)
   },

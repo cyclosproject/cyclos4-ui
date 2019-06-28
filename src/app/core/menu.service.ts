@@ -17,6 +17,7 @@ import { ActiveMenu, ConditionalMenu, Menu, MenuEntry, MenuType, RootMenu, RootM
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { filter, first, map } from 'rxjs/operators';
 import { I18nLoadingService } from 'app/core/i18n-loading.service';
+import { RecordHelperService } from 'app/core/records-helper.service';
 
 enum NavigateAction {
   Url,
@@ -78,6 +79,7 @@ export class MenuService {
     private bankingHelper: BankingHelperService,
     private content: ContentService,
     private operationHelper: OperationHelperService,
+    private recordHelper: RecordHelperService,
     layout: LayoutService
   ) {
     const initialDataForUi = this.dataForUiHolder.dataForUi;
@@ -688,6 +690,16 @@ export class MenuService {
         }
         add(Menu.PASSWORDS, '/users/self/passwords', 'vpn_key', passwordsLabel);
       }
+
+      // Records
+      const recordTypes = this.recordHelper.ownerRecordTypes();
+      if (recordTypes.length > 0) {
+        for (const type of recordTypes) {
+          const activeMenu = new ActiveMenu(Menu.SEARCH_RECORDS, { recordType: type });
+          add(activeMenu, `/records/${owner}/${ApiHelper.internalNameOrId(type)}`, 'library_books', type.pluralName);
+        }
+      }
+
       if ((permissions.notifications || {}).enable) {
         add(Menu.NOTIFICATIONS, '/personal/notifications', 'notifications', this.i18n.menu.personalNotifications);
       }

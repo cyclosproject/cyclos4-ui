@@ -1,7 +1,7 @@
 import { Injector } from '@angular/core';
 import { Observable } from 'rxjs';
 import { isEqual } from 'lodash';
-import { AccountType, Operation } from 'app/api/models';
+import { AccountType, Operation, RecordType } from 'app/api/models';
 
 /** The types of menus in the application */
 export enum MenuType {
@@ -118,6 +118,9 @@ export module Menu {
   export const RUN_TRANSFER_OPERATION = new Menu(RootMenu.BANKING, 'RUN_TRANSFER_OPERATION');
   export const RUN_ACTION_OPERATION = new Menu(RootMenu.BANKING, 'RUN_ACTION_OPERATION');
 
+  // Records
+  export const SEARCH_RECORDS = new Menu(RootMenu.PERSONAL, 'SEARCH_RECORDS');
+
   // Content (one per root menu)
   export const CONTENT_PAGE_BANKING = new Menu(RootMenu.BANKING, 'CONTENT_PAGE_BANKING');
   export const CONTENT_PAGE_MARKETPLACE = new Menu(RootMenu.MARKETPLACE, 'CONTENT_PAGE_MARKETPLACE');
@@ -155,6 +158,7 @@ export interface ActiveMenuData {
   accountType?: AccountType;
   contentPage?: string;
   operation?: Operation;
+  recordType?: RecordType;
 }
 
 /**

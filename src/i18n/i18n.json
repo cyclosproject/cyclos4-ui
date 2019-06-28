@@ -1007,6 +1007,7 @@
     "theme.light": "Light",
     "theme.dark": "Dark"
   },
+  "record": {},
   "userAlert": {
     "title": "Search user alerts",
     "text": "Text",
