@@ -474,7 +474,7 @@ export class FormatService {
    * @param weekday The weekday number, from 0 to 6
    */
   minWeekdayName(weekday: number): string {
-    return this.minWeekdayName[weekday];
+    return this.minWeekdayNames[weekday];
   }
 
   weekDay(day: WeekDayEnum): string {
