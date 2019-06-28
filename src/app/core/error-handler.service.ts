@@ -4,7 +4,8 @@ import { Router } from '@angular/router';
 import {
   ConflictError, ConflictErrorCode, ErrorKind, ForbiddenError,
   ForbiddenErrorCode, ForgottenPasswordError, ForgottenPasswordErrorCode, InputError, InputErrorCode, NestedError,
-  NotFoundError, OtpError, PasswordStatusEnum, PaymentError, PaymentErrorCode, UnauthorizedError, UnauthorizedErrorCode
+  NotFoundError, OtpError, PasswordStatusEnum, PaymentError, PaymentErrorCode, UnauthorizedError, UnauthorizedErrorCode,
+  RedeemVoucherError, RedeemVoucherErrorCode
 } from 'app/api/models';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { FormatService } from 'app/core/format.service';
@@ -17,6 +18,7 @@ import { empty, focusFirstInvalid } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
 import { ErrorStatus } from './error-status';
 import { NextRequestState } from './next-request-state';
+import { BankingHelperService } from 'app/core/banking-helper.service';
 
 /**
  * Service used to handle application errors
@@ -34,7 +36,8 @@ export class ErrorHandlerService {
     private nextRequestState: NextRequestState,
     private login: LoginService,
     private dataForUiHolder: DataForUiHolder,
-    private i18n: I18n
+    private i18n: I18n,
+    private bankingHelper: BankingHelperService
   ) { }
 
   /**
@@ -103,6 +106,9 @@ export class ErrorHandlerService {
               case ErrorKind.FORGOTTEN_PASSWORD:
                 // An error while changing a forgotten password
                 this.handleForgottenPasswordError(error as ForgottenPasswordError);
+                return;
+              case ErrorKind.REDEEM_VOUCHER:
+                this.handleRedeemVoucherError(error as RedeemVoucherError);
                 return;
               case ErrorKind.NESTED:
                 // An error in a nested property
@@ -243,6 +249,27 @@ export class ErrorHandlerService {
     } else {
       return [this.inputErrorMessage(error)];
     }
+  }
+
+  public handleRedeemVoucherError(error: RedeemVoucherError) {
+    this.notification.error(this.redeemVoucherErrorMessage(error));
+  }
+
+  private redeemVoucherErrorMessage(error: RedeemVoucherError): string {
+    switch (error.code) {
+      case RedeemVoucherErrorCode.NOT_ALLOWED_FOR_USER:
+        return this.i18n.voucher.redeem.error.user;
+      case RedeemVoucherErrorCode.NOT_ALLOWED_FOR_VOUCHER:
+        return this.i18n.voucher.redeem.error.status(this.bankingHelper.voucherStatus(error.voucherStatus));
+      case RedeemVoucherErrorCode.NOT_ALLOWED_TODAY:
+        const allowedDays = error.allowedDays.map(day => this.format.weekDay(day)).join(', ');
+        return this.i18n.voucher.redeem.error.notAllowedToday(allowedDays);
+      case RedeemVoucherErrorCode.NOT_ALLOWED_YET:
+        return this.i18n.voucher.redeem.error.notAllowedYet(error.redeemAfterDate);
+      case RedeemVoucherErrorCode.USER_BLOCKED:
+        return this.i18n.voucher.redeem.error.userBlocked;
+    }
+    return this.general;
   }
 
   public handleConflictError(error: ConflictError) {
