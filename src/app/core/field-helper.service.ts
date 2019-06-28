@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AsyncValidatorFn, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AsyncValidatorFn, FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { CustomFieldDetailed, CustomFieldTypeEnum, LinkedEntityTypeEnum, CustomFieldSizeEnum, CustomField } from 'app/api/models';
 import { FormatService } from 'app/core/format.service';
 import { ApiHelper } from 'app/shared/api-helper';
@@ -93,27 +93,54 @@ export class FieldHelperService {
       disabledProvider?: (CustomFieldDetailed) => boolean,
       asyncValProvider?: (CustomFieldDetailed) => AsyncValidatorFn
     }): FormGroup {
+    const controls = this.customValuesFormControlMap(customFields, options);
+    const group = this.formBuilder.group(null);
+    for (const [name, control] of controls) {
+      group.addControl(name, control);
+    }
+    return group;
+  }
+
+  /**
+ * Returns a Map from custom field internal name to a form control for each of the given custom fields
+ * @param customFields The custom fields
+ * @param options A bag of options with the following:
+ *
+ * - `currentValues`: If provided will contain the field values by internal name. If not, use the default value
+ * - `useDefaults`: When set to false will not use the default values for fields. Defaults to true.
+ * - `disabledProvider`: If provided will be called for each custom field to determine whether the field should be disabled
+ * - `asyncValProvider`: If provided will be called for each custom field to provide an additional, asynchronous validation
+ * @returns The Map
+ */
+  customValuesFormControlMap(customFields: CustomFieldDetailed[],
+    options?: {
+      currentValues?: any,
+      useDefaults?: boolean,
+      disabledProvider?: (CustomFieldDetailed) => boolean,
+      asyncValProvider?: (CustomFieldDetailed) => AsyncValidatorFn
+    }): Map<string, FormControl> {
     options = options || {};
     const currentValues = options.currentValues || {};
     const useDefaults = options.useDefaults !== false;
     const disabledProvider = options.disabledProvider || (() => false);
     const asyncValProvider = options.asyncValProvider;
-    const customValues = {};
+    const customValuesControlsMap = new Map();
     for (const cf of customFields) {
       let value: string = currentValues[cf.internalName];
       if (value == null && useDefaults) {
         value = cf.defaultValue;
       }
-      customValues[cf.internalName] = [
+      customValuesControlsMap.set(cf.internalName, this.formBuilder.control(
         {
           value: value,
           disabled: disabledProvider(cf)
         },
         cf.required ? Validators.required : null,
         asyncValProvider ? asyncValProvider(cf) : null
-      ];
+      ));
     }
-    return this.formBuilder.group(customValues);
+
+    return customValuesControlsMap;
   }
 
   /**
