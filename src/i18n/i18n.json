@@ -102,6 +102,29 @@
         "dec": "Dec"
       }
     },
+    "timeField": {
+      "pattern": "{amount} {field}",
+      "plural": {
+        "days": "Days",
+        "hours": "Hours",
+        "millis": "Milliseconds",
+        "minutes": "Minutes",
+        "months": "Months",
+        "seconds": "Seconds",
+        "weeks": "Weeks",
+        "years": "Years"
+      },
+      "singular": {
+        "day": "Day",
+        "hour": "Hour",
+        "milli": "Millisecond",
+        "minute": "Minute",
+        "month": "Month",
+        "second": "Second",
+        "week": "Week",
+        "year": "Year"
+      }
+    },
     "weekday": {
       "min": {
         "sun": "S",
@@ -609,6 +632,7 @@
       "confirmationMessage": "Are you sure to buy {count} voucher(s) of {amount} with type {type}?",
       "done": "The voucher(s) has been bought.",
       "minTimeToRedeem": "Can be redeemed",
+      "minTimeToRedeem.afterBuy": "{interval} after buying",
       "numberOfVouchers": "Number of vouchers",
       "amountPerVoucher": "Amount per voucher",
       "originAccount": "Origin account",

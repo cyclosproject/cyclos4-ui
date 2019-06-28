@@ -8,7 +8,7 @@
   </label-value>
   <label-value *ngIf="data.minimumTimeToRedeem" kind="fieldView"
     [label]="i18n.voucher.buy.minTimeToRedeem">
-    {{ data.minimumTimeToRedeem }}
+    {{ i18n.voucher.buy.minTimeToRedeemAfterBuy(format.formatTimeInterval(data.minimumTimeToRedeem)) }}
   </label-value>
   <input-field type="number" formControlName="count" required
     fieldSize="small" [label]="i18n.voucher.buy.numberOfVouchers">
@@ -18,11 +18,11 @@
     [suffix]="currency.suffix" [scale]="currency.decimalDigits">
   </decimal-field>
   <label-value *ngIf="data.amountRange?.min"
-    [label]="i18n.voucher.buy.amountRange.min">
+    [label]="i18n.voucher.buy.amountRange.min" kind="fieldView">
     {{ data.amountRange?.min | currency:currency }}
   </label-value>
   <label-value *ngIf="data.amountRange?.max"
-    [label]="i18n.voucher.buy.amountRange.max">
+    [label]="i18n.voucher.buy.amountRange.max" kind="fieldView">
     {{ data.amountRange?.max | currency:currency }}
   </label-value>
   <!-- custom fields -->

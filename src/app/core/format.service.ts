@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiConfiguration } from 'app/api/api-configuration';
-import { Currency, DataForUi } from 'app/api/models';
+import { Currency, DataForUi, TimeInterval, TimeFieldEnum } from 'app/api/models';
 import { I18n } from 'app/i18n/i18n';
 import Big from 'big.js';
 import moment from 'moment-mini-ts';
@@ -61,6 +61,12 @@ export class FormatService {
 
   /** Weekday names - minimal */
   minWeekdayNames: string[];
+
+  /** Time field in singular form, Eg. day */
+  singularTimeFieldNames: Map<TimeFieldEnum, string>;
+
+  /** Time field in plural form. Eg. days */
+  pluralTimeFieldNames: Map<TimeFieldEnum, string>;
 
   private _dataForUi: DataForUi;
 
@@ -146,6 +152,27 @@ export class FormatService {
       this.i18n.general.weekday.min.fri,
       this.i18n.general.weekday.min.sat
     ];
+
+    this.singularTimeFieldNames = new Map();
+    this.singularTimeFieldNames.set(TimeFieldEnum.DAYS, this.i18n.general.timeField.singular.hour);
+    this.singularTimeFieldNames.set(TimeFieldEnum.HOURS, this.i18n.general.timeField.singular.minute);
+    this.singularTimeFieldNames.set(TimeFieldEnum.MINUTES, this.i18n.general.timeField.singular.day);
+    this.singularTimeFieldNames.set(TimeFieldEnum.SECONDS, this.i18n.general.timeField.singular.second);
+    this.singularTimeFieldNames.set(TimeFieldEnum.MILLIS, this.i18n.general.timeField.singular.milli);
+    this.singularTimeFieldNames.set(TimeFieldEnum.MONTHS, this.i18n.general.timeField.singular.month);
+    this.singularTimeFieldNames.set(TimeFieldEnum.WEEKS, this.i18n.general.timeField.singular.week);
+    this.singularTimeFieldNames.set(TimeFieldEnum.YEARS, this.i18n.general.timeField.singular.year);
+
+
+    this.pluralTimeFieldNames = new Map();
+    this.pluralTimeFieldNames.set(TimeFieldEnum.DAYS, this.i18n.general.timeField.plural.days);
+    this.pluralTimeFieldNames.set(TimeFieldEnum.HOURS, this.i18n.general.timeField.plural.hours);
+    this.pluralTimeFieldNames.set(TimeFieldEnum.MINUTES, this.i18n.general.timeField.plural.minutes);
+    this.pluralTimeFieldNames.set(TimeFieldEnum.SECONDS, this.i18n.general.timeField.plural.seconds);
+    this.pluralTimeFieldNames.set(TimeFieldEnum.MILLIS, this.i18n.general.timeField.plural.millis);
+    this.pluralTimeFieldNames.set(TimeFieldEnum.MONTHS, this.i18n.general.timeField.plural.months);
+    this.pluralTimeFieldNames.set(TimeFieldEnum.WEEKS, this.i18n.general.timeField.plural.weeks);
+    this.pluralTimeFieldNames.set(TimeFieldEnum.YEARS, this.i18n.general.timeField.plural.years);
 
     this._dataForUi = dataForUi;
   }
@@ -405,6 +432,16 @@ export class FormatService {
     }
   }
 
+  formatTimeInterval(timeInterval: TimeInterval) {
+    const amount = timeInterval == null ? null : timeInterval.amount;
+    const fieldValue = timeInterval == null ? null : timeInterval.field;
+    if (amount == null || fieldValue == null) {
+      return '';
+    }
+    const names = amount === 1 ? this.singularTimeFieldNames : this.pluralTimeFieldNames;
+    const field = names.get(fieldValue).toLowerCase()
+    return this.i18n.general.timeField.pattern({ amount, field });
+  }
   /**
    * Formats a boolean value, returning a key for yes / no
    * @param value The boolean value
