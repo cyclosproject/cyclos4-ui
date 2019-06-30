@@ -38,6 +38,8 @@ export class BuyVouchersComponent extends BasePageComponent<VoucherDataForBuy>
   confirmationPassword: FormControl;
   confirmationMode$ = new BehaviorSubject<ConfirmationMode>(null);
 
+  customFieldControlsMap: Map<string, FormControl>;
+
   // The data for a specific voucher type
   dataTypeForBuy: VoucherDataForBuy;
   canConfirm: boolean;
@@ -165,6 +167,7 @@ export class BuyVouchersComponent extends BasePageComponent<VoucherDataForBuy>
     if (this.form) {
       this.form.reset(); // clear previous values (if any)
     } else {
+      this.customFieldControlsMap = this.fieldHelper.customValuesFormControlMap(this.dataTypeForBuy.customFields);
       this.form = this.formBuilder.group({
         count: new FormControl(''),
         amount: new FormControl('')

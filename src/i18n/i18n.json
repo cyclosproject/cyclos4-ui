@@ -647,6 +647,7 @@
       "buyer": "Buyer",
       "confirmationMessage": "Are you sure to buy {count} voucher(s) of {amount} with type {type}?",
       "done": "The voucher(s) has been bought.",
+      "error": {},
       "minTimeToRedeem": "Can be redeemed",
       "minTimeToRedeem.afterBuy": "{interval} after buying",
       "numberOfVouchers": "Number of vouchers",

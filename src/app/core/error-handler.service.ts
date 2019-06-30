@@ -5,7 +5,7 @@ import {
   ConflictError, ConflictErrorCode, ErrorKind, ForbiddenError,
   ForbiddenErrorCode, ForgottenPasswordError, ForgottenPasswordErrorCode, InputError, InputErrorCode, NestedError,
   NotFoundError, OtpError, PasswordStatusEnum, PaymentError, PaymentErrorCode, UnauthorizedError, UnauthorizedErrorCode,
-  RedeemVoucherError, RedeemVoucherErrorCode
+  RedeemVoucherError, RedeemVoucherErrorCode, BuyVoucherError, BuyVoucherErrorCode
 } from 'app/api/models';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { FormatService } from 'app/core/format.service';
@@ -253,6 +253,23 @@ export class ErrorHandlerService {
 
   public handleRedeemVoucherError(error: RedeemVoucherError) {
     this.notification.error(this.redeemVoucherErrorMessage(error));
+  }
+
+  public handleBuyVoucherError(error: BuyVoucherError) {
+    this.notification.error(this.buyVoucherErrorMessage(error));
+  }
+
+  private buyVoucherErrorMessage(error: BuyVoucherError): string {
+    switch (error.code) {
+      case BuyVoucherErrorCode.MAX_AMOUNT_FOR_PERIOD:
+        return this.i18n.voucher.buy.error
+      case BuyVoucherErrorCode.MAX_OPEN_AMOUNT:
+      case BuyVoucherErrorCode.MAX_TOTAL_OPEN_AMOUNT:
+      case BuyVoucherErrorCode.NOT_ALLOWED_FOR_USER:
+      case BuyVoucherErrorCode.PAYMENT:
+      case BuyVoucherErrorCode.UNEXPECTED:
+    }
+    return this.general;
   }
 
   private redeemVoucherErrorMessage(error: RedeemVoucherError): string {

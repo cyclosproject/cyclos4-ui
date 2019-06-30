@@ -25,5 +25,7 @@
     [label]="i18n.voucher.buy.amountRange.max" kind="fieldView">
     {{ data.amountRange?.max | currency:currency }}
   </label-value>
-  <!-- custom fields -->
+  <custom-field-input *ngFor="let cf of data.customFields" [field]="cf"
+    [formControl]="customFieldControlsMap.get(cf.internalName)">
+  </custom-field-input>
 </ng-container>

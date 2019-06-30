@@ -10,12 +10,13 @@
   <!-- Step 2: Buy form -->
   <page-content *ngSwitchCase="'form'"
     [heading]="dataTypeForBuy.type.voucherTitle"
-    [mobileHeading]="dataTypeForBuy.type.voucherTitle">
-
-    <buy-vouchers-step-form [data]="dataTypeForBuy" [form]="form">
+    [mobileHeading]="dataTypeForBuy.type.voucherTitle"
+    [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'" last>
+    <buy-vouchers-step-form class="flex-grow-1" [data]="dataTypeForBuy"
+      [form]="form" [customFieldControlsMap]="customFieldControlsMap">
     </buy-vouchers-step-form>
 
-    <actions ngClass="mt-3" forceRow>
+    <actions forceRow>
       <button class="btn btn-primary" [disabled]="requesting$ | async"
         (click)="toConfirm()">{{ i18n.general.next }}</button>
 
@@ -29,8 +30,9 @@
   <!-- Step 3: Buy confirmation -->
   <page-content *ngSwitchCase="'confirm'"
     [heading]="dataTypeForBuy.type.voucherTitle"
-    [mobileHeading]="dataTypeForBuy.type.voucherTitle">
-    <buy-vouchers-step-confirm [buyVoucher]="form.value"
+    [mobileHeading]="dataTypeForBuy.type.voucherTitle"
+    [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'" last>
+    <buy-vouchers-step-confirm class="flex-grow-1" [buyVoucher]="form.value"
       [data]="dataTypeForBuy"
       [confirmationPasswordInput]="dataTypeForBuy.confirmationPasswordInput"
       [confirmationPassword]="confirmationPassword"
@@ -38,7 +40,7 @@
       (confirmed)="buy($event)">
     </buy-vouchers-step-confirm>
 
-    <actions ngClass="mt-3" forceRow>
+    <actions forceRow>
       <button
         *ngIf="(confirmationMode$ | async) != ConfirmationMode.Device; else spacer"
         class="btn btn-primary"

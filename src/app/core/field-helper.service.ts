@@ -90,11 +90,11 @@ export class FieldHelperService {
     options?: {
       currentValues?: any,
       useDefaults?: boolean,
-      disabledProvider?: (CustomFieldDetailed) => boolean,
-      asyncValProvider?: (CustomFieldDetailed) => AsyncValidatorFn
+      disabledProvider?: (field: CustomFieldDetailed) => boolean,
+      asyncValProvider?: (field: CustomFieldDetailed) => AsyncValidatorFn
     }): FormGroup {
     const controls = this.customValuesFormControlMap(customFields, options);
-    const group = this.formBuilder.group(null);
+    const group = this.formBuilder.group({});
     for (const [name, control] of controls) {
       group.addControl(name, control);
     }
@@ -116,8 +116,8 @@ export class FieldHelperService {
     options?: {
       currentValues?: any,
       useDefaults?: boolean,
-      disabledProvider?: (CustomFieldDetailed) => boolean,
-      asyncValProvider?: (CustomFieldDetailed) => AsyncValidatorFn
+      disabledProvider?: (field: CustomFieldDetailed) => boolean,
+      asyncValProvider?: (field: CustomFieldDetailed) => AsyncValidatorFn
     }): Map<string, FormControl> {
     options = options || {};
     const currentValues = options.currentValues || {};
