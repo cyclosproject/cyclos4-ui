@@ -1,3 +1,4 @@
+import { HttpResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { AdResult, UserAdsDataForSearch, UserAdsQueryFilters } from 'app/api/models';
 import { MarketplaceService } from 'app/api/services';
@@ -5,8 +6,6 @@ import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { words } from 'app/shared/helper';
 import { ResultType } from 'app/shared/result-type';
 import { MAX_SIZE_SHORT_NAME } from 'app/users/profile/view-profile.component';
-import { cloneDeep } from 'lodash';
-import { HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 type UserAdsSearchParams = UserAdsQueryFilters & { user: string };
@@ -54,7 +53,7 @@ export class UserAdsComponent
   }
 
   protected toSearchParams(value: any): UserAdsSearchParams {
-    const params: UserAdsSearchParams = cloneDeep(value);
+    const params: UserAdsSearchParams = value;
     params.user = this.user;
     return params;
   }

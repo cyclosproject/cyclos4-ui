@@ -1,5 +1,6 @@
-<page-layout [ready]="data$ | async">
-  <ng-container *ngIf="data then content"></ng-container>
+<page-layout [ready]="(noStatus$ | async) || (status$ | async)">
+  <ng-container *ngIf="data then content">
+  </ng-container>
 </page-layout>
 
 <ng-template #content>
@@ -131,7 +132,7 @@
         [showAccount]="(layout.ltsm$ | async) && multipleAccounts"
         [showUser]="!self && !(showForm$ | async)">
       </account-status-view>
-      <spinner *ngIf="(status$ | async) == null"></spinner>
+      <spinner *ngIf="!(status$ | async)"></spinner>
     </ng-container>
   </page-content>
 

@@ -57,12 +57,12 @@
   <ng-container *ngIf="!login.user">
     <!-- The following are only for public registration -->
     <ng-container *ngIf="data.securityQuestions?.length > 0">
-      <h2>{{ i18n.auth.securityQuestion.question }}</h2>
+      <h2>{{ i18n.securityQuestion.question }}</h2>
       <div class="mb-2">
         {{ i18n.user.securityQuestionMessage }}
       </div>
       <single-selection-field formControlName="securityQuestion"
-        [label]="i18n.auth.securityQuestion.question"
+        [label]="i18n.securityQuestion.question"
         [emptyOption]="i18n.user.securityQuestionEmpty">
         <field-option *ngFor="let q of data.securityQuestions"
           [value]="q.internalName" [text]="q.name">
@@ -71,7 +71,7 @@
       <input-field #securityAnswer
         *ngIf="!empty(form.get('securityQuestion').valueChanges | async)"
         formControlName="securityAnswer" required
-        [label]="i18n.auth.securityQuestion.answer">
+        [label]="i18n.securityQuestion.answer">
       </input-field>
     </ng-container>
 
@@ -79,8 +79,7 @@
       {{ i18n.user.title.registrationConfirmation }}
     </h2>
     <boolean-field *ngIf="data.agreements?.length > 0"
-      formControlName="acceptAgreement"
-      [label]="i18n.auth.registrationAgreement">
+      formControlName="acceptAgreement" [label]="i18n.registrationAgreement">
       <div #agreementsContent class="pl-2"></div>
     </boolean-field>
 

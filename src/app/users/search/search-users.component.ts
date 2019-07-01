@@ -11,7 +11,6 @@ import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { empty } from 'app/shared/helper';
 import { MaxDistance } from 'app/shared/max-distance';
 import { ResultType } from 'app/shared/result-type';
-import { cloneDeep } from 'lodash';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 export enum UserSearchKind {
@@ -206,24 +205,24 @@ export class SearchUsersComponent
     }
   }
 
-  protected toSearchParams(query: any): UserQueryFilters {
-    const value: UserQueryFilters = cloneDeep(query);
+  protected toSearchParams(value: any): UserQueryFilters {
+    const filters: UserQueryFilters = value;
     if (this.kind === UserSearchKind.Broker) {
-      value.brokers = [this.param];
+      filters.brokers = [this.param];
     }
-    value.profileFields = this.fieldHelper.toCustomValuesFilter(query.customValues);
-    const distanceFilter: MaxDistance = query.distanceFilter;
+    filters.profileFields = this.fieldHelper.toCustomValuesFilter(value.customValues);
+    const distanceFilter: MaxDistance = value.distanceFilter;
     if (distanceFilter) {
-      value.maxDistance = distanceFilter.maxDistance;
-      value.latitude = distanceFilter.latitude;
-      value.longitude = distanceFilter.longitude;
+      filters.maxDistance = distanceFilter.maxDistance;
+      filters.latitude = distanceFilter.latitude;
+      filters.longitude = distanceFilter.longitude;
     }
     // When searching as manager (admin / broker) the map is a simple map view, not the "map directory"
     const isMap = this.resultType === ResultType.MAP;
     if (isMap) {
-      value.addressResult = UserAddressResultEnum.ALL;
+      filters.addressResult = UserAddressResultEnum.ALL;
     }
-    return value;
+    return filters;
   }
 
   doSearch(query: UserQueryFilters) {

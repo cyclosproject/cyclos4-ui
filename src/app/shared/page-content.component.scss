@@ -28,9 +28,10 @@
   }
 }
 
-:host[mode=empty] .content-title {
+.page-content.mode-empty .content-title {
   border-bottom-left-radius: $card-border-radius;
   border-bottom-right-radius: $card-border-radius;
+  border-bottom: none;
 }
 
 @include media-breakpoint-up(xs) {

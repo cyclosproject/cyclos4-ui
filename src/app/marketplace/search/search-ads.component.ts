@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { AdAddressResultEnum, AdCategoryWithChildren, AdResult, CustomFieldDetailed, AdQueryFilters } from 'app/api/models';
+import { AdAddressResultEnum, AdCategoryWithChildren, AdQueryFilters, AdResult, CustomFieldDetailed } from 'app/api/models';
 import { AdDataForSearch } from 'app/api/models/ad-data-for-search';
 import { MarketplaceService } from 'app/api/services';
 import { ApiHelper } from 'app/shared/api-helper';
@@ -7,7 +7,6 @@ import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { empty } from 'app/shared/helper';
 import { MaxDistance } from 'app/shared/max-distance';
 import { ResultType } from 'app/shared/result-type';
-import { cloneDeep } from 'lodash';
 import { BehaviorSubject } from 'rxjs';
 
 /**
@@ -74,8 +73,7 @@ export class SearchAdsComponent
   }
 
   protected toSearchParams(value: any): AdQueryFilters {
-    const params = cloneDeep(value);
-    delete params['customValues'];
+    const params: AdQueryFilters = value;
     params.customFields = this.fieldHelper.toCustomValuesFilter(value.customValues);
     params.addressResult = this.resultType === ResultType.MAP ? AdAddressResultEnum.ALL : AdAddressResultEnum.NONE;
     const distanceFilter: MaxDistance = value.distanceFilter;

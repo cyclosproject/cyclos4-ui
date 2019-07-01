@@ -4,7 +4,6 @@ import { DataForLogin, ForgottenPasswordRequest, PrincipalTypeInput } from 'app/
 import { AuthService } from 'app/api/services';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BasePageComponent } from 'app/shared/base-page.component';
-import { cloneDeep } from 'lodash';
 
 /**
  * Component used to show the forgot password page.
@@ -51,11 +50,11 @@ export class ForgotPasswordComponent extends BasePageComponent<DataForLogin> imp
     if (!this.form.valid) {
       return;
     }
-    const params: ForgottenPasswordRequest = cloneDeep(this.form.value);
+    const params: ForgottenPasswordRequest = this.form.value;
     params.user = ApiHelper.escapeNumeric(params.user);
     this.addSub(this.authService.forgottenPasswordRequest({ body: params })
       .subscribe(() => {
-        this.notification.info(this.i18n.auth.password.forgotten.email);
+        this.notification.info(this.i18n.password.forgotten.email);
         this.cancel();
       }));
   }
