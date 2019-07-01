@@ -114,13 +114,9 @@ export class AccountHistoryComponent
 
     this.bankingHelper.preProcessPreselectedPeriods(data, this.form);
 
-    // Set the heading action
+    // Adjust the print action, which will be used later
     this.printable = true;
-    const print = this.printAction;
-    print.label = this.i18n.account.printTransactions;
-    this.headingActions = [
-      this.printAction
-    ];
+    this.printAction.label = this.i18n.account.printTransactions;
 
     this.form.patchValue({ 'orderBy': AccountHistoryOrderByEnum.DATE_DESC });
 

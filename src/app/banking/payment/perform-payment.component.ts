@@ -145,7 +145,7 @@ export class PerformPaymentComponent extends BasePageComponent<DataForTransactio
     this.fromSelf = this.authHelper.isSelf(this.fromParam);
     this.fromSystem = this.authHelper.isSystem(this.fromParam);
     this.toParam = route.params.to;
-    this.toSelf = this.toParam != null && this.authHelper.isSelf(this.fromParam);
+    this.toSelf = this.toParam != null && this.authHelper.isSelf(this.toParam);
     this.toSystem = this.toParam != null && this.authHelper.isSystem(this.toParam);
 
     // Resolve the correct title according to the from and to parameters

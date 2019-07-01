@@ -59,12 +59,16 @@ export abstract class BaseSearchPageComponent<D, P extends QueryFilters, R> exte
         this.onResultTypeChanged(rt, previous);
       }
     }));
-    this.addSub(this.form.valueChanges.pipe(debounceTime(ApiHelper.DEBOUNCE_TIME)).subscribe(value => {
-      if (this.shouldUpdateOnChange(value)) {
-        this.update();
-      }
-      this.previousValue = value;
-    }), true);
+
+    // Only after finishing initialization add a listener to form values to update the results. This avoids duplicated searches.
+    setTimeout(() =>
+      this.addSub(this.form.valueChanges.pipe(debounceTime(ApiHelper.DEBOUNCE_TIME)).subscribe(value => {
+        if (this.shouldUpdateOnChange(value)) {
+          this.update();
+        }
+        this.previousValue = value;
+      }), true),
+      1);
 
     // When starting with categories, don't initially search
     if (this.previousResultType !== ResultType.CATEGORIES) {
