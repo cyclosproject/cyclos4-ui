@@ -9,7 +9,7 @@
         [customValuesControlGetter]="customValuesControlGetter">
       </payment-step-form>
     </div>
-    <actions ngClass="mt-3" forceRow>
+    <actions forceRow>
       <button class="btn btn-primary" [disabled]="requesting$ | async"
         (click)="toConfirm()">{{ i18n.general.next }}</button>
     </actions>
@@ -27,7 +27,7 @@
         [showPaymentType]="(availablePaymentTypes || []).length > 1">
       </payment-step-confirm>
     </div>
-    <actions ngClass="mt-3" forceRow>
+    <actions forceRow>
       <button
         *ngIf="(confirmationMode$ | async) != ConfirmationMode.Device; else spacer"
         class="btn btn-primary"

@@ -8,7 +8,7 @@
         [control]="group">
       </registration-step-group>
     </div>
-    <actions ngClass="mt-3" forceRow>
+    <actions forceRow>
       <button class="btn btn-primary" (click)="showFields()">
         {{ i18n.general.next }}
       </button>
@@ -29,7 +29,7 @@
         (customFilesUploaded)="addCustomFiles($event)">
       </registration-step-fields>
     </div>
-    <actions ngClass="mt-3" forceRow>
+    <actions forceRow>
       <button class="btn btn-primary" [disabled]="requesting$ | async"
         (click)="showConfirm()">
         {{ i18n.general.next }}
@@ -51,7 +51,7 @@
         [customFiles]="customFiles">
       </registration-step-confirm>
     </div>
-    <actions ngClass="mt-3" forceRow>
+    <actions forceRow>
       <button class="btn btn-primary" [disabled]="requesting$ | async"
         (click)="register()">
         {{ i18n.general.submit }}
@@ -70,7 +70,7 @@
       <registration-step-done [result]="result$ | async">
       </registration-step-done>
     </div>
-    <actions ngClass="mt-3" forceRow>
+    <actions forceRow>
       <button *ngIf="login.user" class="btn btn-primary" (click)="reload()">
         {{ i18n.user.registration.registerAnotherUser }}
       </button>
