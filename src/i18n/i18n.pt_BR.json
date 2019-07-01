@@ -196,7 +196,7 @@
   "auth": {
     "login": {
       "title": "Acessar",
-      "mobileTitle": "Login",
+      "mobileTitle": "Acessar",
       "message": "Você pode acessar com seu nome de usuário e senha",
       "disconnected": "Você foi desconectado.<br>Por Favor, faça o login novamente, para exibir a página solicitada.",
       "principal": "Usuário",
@@ -260,8 +260,8 @@
       "status": {
         "active": "Ativa",
         "disabled": "Desabilitada",
-        "expired": "Vencida",
-        "indefinitelyBlocked": "Bloqueada",
+        "expired": "Vencido",
+        "indefinitelyBlocked": "Bloqueado",
         "neverCreated": "Nunca criada",
         "pending": "Pendente",
         "reset": "Redefinida",
