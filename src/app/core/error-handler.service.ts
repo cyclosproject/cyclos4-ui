@@ -275,16 +275,16 @@ export class ErrorHandlerService {
   private redeemVoucherErrorMessage(error: RedeemVoucherError): string {
     switch (error.code) {
       case RedeemVoucherErrorCode.NOT_ALLOWED_FOR_USER:
-        return this.i18n.voucher.redeem.error.user;
+        return this.i18n.voucher.error.redeem.user;
       case RedeemVoucherErrorCode.NOT_ALLOWED_FOR_VOUCHER:
-        return this.i18n.voucher.redeem.error.status(this.bankingHelper.voucherStatus(error.voucherStatus));
+        return this.i18n.voucher.error.redeem.status(this.bankingHelper.voucherStatus(error.voucherStatus));
       case RedeemVoucherErrorCode.NOT_ALLOWED_TODAY:
         const allowedDays = error.allowedDays.map(day => this.format.weekDay(day)).join(', ');
-        return this.i18n.voucher.redeem.error.notAllowedToday(allowedDays);
+        return this.i18n.voucher.error.redeem.notAllowedToday(allowedDays);
       case RedeemVoucherErrorCode.NOT_ALLOWED_YET:
-        return this.i18n.voucher.redeem.error.notAllowedYet(error.redeemAfterDate);
+        return this.i18n.voucher.error.redeem.notAllowedYet(error.redeemAfterDate);
       case RedeemVoucherErrorCode.USER_BLOCKED:
-        return this.i18n.voucher.redeem.error.userBlocked;
+        return this.i18n.voucher.error.redeem.userBlocked;
     }
     return this.general;
   }
