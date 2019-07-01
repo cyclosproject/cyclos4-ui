@@ -18,6 +18,7 @@ import { SearchRedeemedVouchersComponent } from 'app/banking/vouchers/search-red
 import { SearchTransfersOverviewComponent } from 'app/banking/transfers/search-transfers-overview.component';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { RoleEnum } from 'app/api/models';
+import { SearchVouchersComponent } from 'app/banking/vouchers/search-vouchers.component';
 
 /**
  * A conditional menu resolver for content, which finds the content page by slug to resolve the correct menu
@@ -154,6 +155,13 @@ const bankingRoutes: Routes = [
         component: ViewVoucherComponent,
         data: {
           menu: Menu.ACCOUNT_HISTORY
+        }
+      },
+      {
+        path: 'vouchers',
+        component: SearchVouchersComponent,
+        data: {
+          menu: Menu.SEARCH_VOUCHERS
         }
       }
     ]

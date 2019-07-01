@@ -49,6 +49,7 @@ interface ResolvedVouchersPermissions {
   generate: boolean;
   viewBought: boolean;
   viewRedeemed: boolean;
+  view: boolean;
 }
 
 /**
@@ -617,6 +618,9 @@ export class MenuService {
       if (vouchers.redeem) { // FIX ICON ?
         add(Menu.REDEEM_VOUCHER, '/banking/vouchers/redeem', 'payment', this.i18n.menu.bankingVouchersRedeem);
       }
+      if (vouchers.view) {
+        add(Menu.SEARCH_VOUCHERS, '/banking/vouchers', 'search', this.i18n.menu.bankingVouchersSearch);
+      }
       addOperations(RootMenu.BANKING);
       addContentPages(Menu.CONTENT_PAGE_BANKING);
 
@@ -745,7 +749,8 @@ export class MenuService {
     const generate = !!voucherPermissions.find(config => config.generate);
     const viewBought = !!voucherPermissions.find(config => config.viewBought);
     const viewRedeemed = !!voucherPermissions.find(config => config.viewRedeemed);
-    return { buy, redeem, generate, viewBought, viewRedeemed };
+    const view = !!voucherPermissions.find(config => config.view);
+    return { buy, redeem, generate, viewBought, viewRedeemed, view };
   }
 
 }

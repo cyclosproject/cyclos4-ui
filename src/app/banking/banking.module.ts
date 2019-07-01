@@ -18,6 +18,8 @@ import { RedeemVoucherComponent } from './vouchers/redeem-voucher.component';
 import { ViewVoucherComponent } from './vouchers/view-voucher.component';
 import { SearchRedeemedVouchersComponent } from './vouchers/search-redeemed-vouchers.component';
 import { SearchTransfersOverviewComponent } from 'app/banking/transfers/search-transfers-overview.component';
+import { SearchVouchersComponent } from 'app/banking/vouchers/search-vouchers.component';
+import { VoucherFiltersComponent } from 'app/banking/vouchers/voucher-filters.component';
 
 /**
  * Banking module
@@ -48,7 +50,9 @@ import { SearchTransfersOverviewComponent } from 'app/banking/transfers/search-t
 
     RedeemVoucherComponent,
     ViewVoucherComponent,
-    SearchRedeemedVouchersComponent
+    SearchRedeemedVouchersComponent,
+    SearchVouchersComponent,
+    VoucherFiltersComponent
   ]
 })
 export class BankingModule {
