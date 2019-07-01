@@ -1,11 +1,4 @@
-<nav *ngIf="roots$ | async as roots" class="navbar navbar-expand-md"
-  [ngClass]="{
-  'with-menu': hasMenu && !(layout.fullWidth$ | async),
-  'with-menu-spacious': hasMenu && isSpacious(roots, layout.breakpointChanges$ | async),
-  'with-menu-medium': hasMenu && isMedium(roots, layout.breakpointChanges$ | async),
-  'with-menu-dense': hasMenu && isDense(roots, layout.breakpointChanges$ | async),
-  'with-user': (login.user$ | async)
-}">
+<nav *ngIf="roots$ | async as roots" class="navbar navbar-expand-md">
   <div class="navbar-container">
     <!-- The sidenav toggle on mobile / tablet -->
     <a class="never-active" *ngIf="layout.ltlg$ | async" id="sidenav-trigger"
@@ -16,7 +9,9 @@
     <span class="navbar-brand">
       <!-- The title bar -->
       <img *ngIf="layout.gtxs$ | async" class="logo" src="images/logo.png">
-      <span class="top-title">
+      <!-- Hide the title when dense on xl layout -->
+      <span *ngIf="!((layout.xl$ | async) && density === 'dense')"
+        class="top-title">
         <ng-container *ngIf="layout.xxs$ | async">
           <!-- On xxs we don't show the title, and join the title here -->
           {{ (layout.title$ | async) || format.appTitleSmall }}
@@ -37,11 +32,12 @@
       <ng-template #mobileOrGreater>
         <ng-container *ngIf="hasMenu && (layout.gtmd$ | async)">
           <!-- The menu is integrated in the top bar -->
-          <menus [roots]="roots" [menuType]="MenuType.TOP"
-            [activeMenu]="activeMenu" [userName]="userName"
-            (dropdownShown)="dropdownShown($event)"
+          <menus class="expanded" [roots]="roots" [density]="density"
+            [tooltipForNonActive]="density === 'dense' && (layout.lg$ | async)"
+            [menuType]="MenuType.TOP" [activeMenu]="activeMenu"
+            [userName]="userName" (dropdownShown)="dropdownShown($event)"
             (dropdownHidden)="dropdownHidden()"></menus>
-          <div class="menu-separator"></div>
+          <div [ngClass]="separatorNgClass"></div>
         </ng-container>
         <!-- We also have custom menus (profile, notifications, logout, etc) -->
         <ng-container *ngTemplateOutlet="customMenus"></ng-container>
@@ -50,68 +46,66 @@
   </div>
 </nav>
 <ng-template #customMenus>
-  <ng-container *ngIf="(user != null) && (layout.gtxxs$ | async)">
-    <a routerLink="/users/self/profile" id="profile-link"
-      (click)="navigate(Menu.MY_PROFILE, $event); blurIfClick('profile-link', $event);"
-      class="nav-item custom-menu" [ngClass]="{
-        active: hasMenu && [Menu.MY_PROFILE, Menu.EDIT_MY_PROFILE].includes(activeMenu?.menu)
-      }" [tooltip]="i18n.menu.personal">
-      <avatar *ngIf="user.image" size="small-medium" [image]="user.image">
-      </avatar>
-      <icon *ngIf="!user.image" class="top-icon top-icon-faded" icon="user">
-      </icon>
-      <div *ngIf="(layout.gtsm$ | async)" class="personal-label">
-        {{ userName }}
+  <div class="custom-menus">
+    <ng-container *ngIf="(user != null) && (layout.gtxxs$ | async)">
+      <a routerLink="/users/self/profile" id="profile-link"
+        (click)="navigate(Menu.MY_PROFILE, $event); blurIfClick('profile-link', $event);"
+        [ngClass]="customNgClass(Menu.MY_PROFILE)"
+        [tooltip]="hasMenu ? i18n.menu.personal : null">
+        <avatar *ngIf="user.image" size="small-medium" [image]="user.image">
+        </avatar>
+        <icon *ngIf="!user.image" class="top-icon top-icon-faded" icon="user">
+        </icon>
+        <div *ngIf="(layout.gtsm$ | async)" class="personal-label">
+          {{ userName }}
+        </div>
+      </a>
+      <ng-container
+        *ngIf="notification.notificationsStatus$ | async as status">
+        <a *ngIf="status && (layout.gtxxs$ | async)"
+          routerLink="/personal/notifications" id="notifications-link"
+          (click)="navigate(Menu.NOTIFICATIONS, $event); blurIfClick('notifications-link', $event);"
+          [ngClass]="customNgClass(Menu.NOTIFICATIONS)"
+          [tooltip]="hasMenu ? i18n.menu.personalNotifications : null">
+          <icon-with-counter icon="notifications"
+            [counter]="status.newNotifications">
+          </icon-with-counter>
+          <div *ngIf="(layout.gtmd$ | async) && !hasMenu" class="ml-2">
+            {{ i18n.menu.personalNotifications }}
+          </div>
+        </a>
+      </ng-container>
+    </ng-container>
+
+    <a href="#" *ngIf="user != null" id="logout-trigger" class="nav-item"
+      [ngClass]="customNgClass(Menu.LOGOUT)"
+      [tooltip]="hasMenu ? i18n.menu.logout : null"
+      (click)="navigate(Menu.LOGOUT, $event); blurIfClick('logout-trigger', $event);">
+      <icon class="top-icon" icon="logout"></icon>
+      <div *ngIf="(layout.gtmd$ | async) && !hasMenu" class="ml-2">
+        {{ i18n.menu.logout }}
       </div>
     </a>
-    <ng-container *ngIf="notification.notificationsStatus$ | async as status">
-      <a *ngIf="status && (layout.gtxxs$ | async)"
-        routerLink="/personal/notifications" id="notifications-link"
-        (click)="navigate(Menu.NOTIFICATIONS, $event); blurIfClick('notifications-link', $event);"
-        class="nav-item custom-menu" [ngClass]="{
-            active: hasMenu && activeMenu?.menu == Menu.NOTIFICATIONS
-          }" [tooltip]="i18n.menu.personalNotifications">
-        <icon-with-counter icon="notifications"
-          [counter]="status.newNotifications">
-        </icon-with-counter>
-        <div *ngIf="(layout.gtsm$ | async) && !hasMenu" class="ml-2">
-          {{ i18n.menu.personalNotifications }}
+    <ng-container *ngIf="user == null">
+      <a *ngIf="(layout.gtsm$ | async) && menu.menuEntry(Menu.PUBLIC_REGISTRATION)"
+        routerLink="/register" id="register-link"
+        (click)="navigate(Menu.PUBLIC_REGISTRATION, $event); blurIfClick('register-link', $event);"
+        [ngClass]="customNgClass(Menu.PUBLIC_REGISTRATION)">
+        <icon class="top-icon" icon="registration"></icon>
+        <div *ngIf="layout.gtsm$ | async" class="ml-2">
+          {{ i18n.menu.register }}
+        </div>
+      </a>
+      <a routerLink="/login" id="login-link"
+        (click)="navigate(Menu.LOGIN, $event); blurIfClick('login-link', $event);"
+        [ngClass]="customNgClass(Menu.LOGIN)">
+        <icon class="top-icon" icon="exit_to_app"></icon>
+        <div *ngIf="layout.gtsm$ | async" class="ml-2">
+          {{ i18n.menu.login }}
         </div>
       </a>
     </ng-container>
-  </ng-container>
-
-  <a href="#" *ngIf="user != null" class="nav-item custom-menu"
-    id="logout-trigger" [tooltip]="i18n.menu.logout"
-    (click)="navigate(Menu.LOGOUT, $event); blurIfClick('logout-trigger', $event);">
-    <icon class="top-icon" icon="logout"></icon>
-    <div *ngIf="(layout.gtsm$ | async) && !hasMenu" class="ml-2">
-      {{ i18n.menu.logout }}
-    </div>
-  </a>
-  <ng-container *ngIf="user == null">
-    <a *ngIf="(layout.gtsm$ | async) && menu.menuEntry(Menu.PUBLIC_REGISTRATION)"
-      routerLink="/register" id="register-link"
-      (click)="navigate(Menu.PUBLIC_REGISTRATION, $event); blurIfClick('register-link', $event);"
-      class="nav-item custom-menu" [ngClass]="{
-          active: hasMenu && activeMenu?.menu == Menu.PUBLIC_REGISTRATION
-        }">
-      <icon class="top-icon" icon="registration"></icon>
-      <div *ngIf="layout.gtsm$ | async" class="ml-2">
-        {{ i18n.menu.register }}
-      </div>
-    </a>
-    <a routerLink="/login" id="login-link"
-      (click)="navigate(Menu.LOGIN, $event); blurIfClick('login-link', $event);"
-      class="nav-item custom-menu" [ngClass]="{
-          active: hasMenu && activeMenu?.menu == Menu.LOGIN
-        }">
-      <icon class="top-icon" icon="exit_to_app"></icon>
-      <div *ngIf="layout.gtsm$ | async" class="ml-2">
-        {{ i18n.menu.login }}
-      </div>
-    </a>
-  </ng-container>
+  </div>
 </ng-template>
 
 <ng-template #xxsMenu>

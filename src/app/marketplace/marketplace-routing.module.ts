@@ -5,6 +5,7 @@ import { SearchAdsComponent } from 'app/marketplace/search/search-ads.component'
 import { UserAdsComponent } from 'app/marketplace/search/user-ads.component';
 import { ViewAdComponent } from 'app/marketplace/view/view-ad.component';
 import { ConditionalMenu, Menu } from 'app/shared/menu';
+import { AuthHelperService } from 'app/core/auth-helper.service';
 
 const SearchMenu: ConditionalMenu = injector => {
   const login = injector.get(LoginService);
@@ -27,17 +28,17 @@ const marketplaceRoutes: Routes = [
         }
       },
       {
-        path: 'user/:user',
+        path: ':user/list',
         component: UserAdsComponent,
         data: {
-          menu: Menu.SEARCH_USERS
+          menu: AuthHelperService.menuByRole(Menu.SEARCH_USERS, false)
         }
       },
       {
         path: 'view/:id',
         component: ViewAdComponent,
         data: {
-          menu: Menu.SEARCH_ADS
+          menu: SearchMenu
         }
       }
     ]

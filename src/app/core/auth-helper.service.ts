@@ -160,17 +160,17 @@ export class AuthHelperService {
     if (deviceRequired || deviceOptional && !passwordUsable) {
       if (deviceUsable) {
         // Show a message to scan the QR-code
-        return this.i18n.auth.password.confirmDeviceActive;
+        return this.i18n.password.confirmDeviceActive;
       } else {
         if (deviceRequired) {
           // Device is required but has none
-          return this.i18n.auth.password.confirmDeviceNone;
+          return this.i18n.password.confirmDeviceNone;
         } else {
           // Device is optional and has no password
           if (otp) {
-            return this.i18n.auth.password.confirmDeviceOrOtpNoMediums;
+            return this.i18n.password.confirmDeviceOrOtpNoMediums;
           } else {
-            return this.i18n.auth.password.confirmDeviceOrPasswordNone(passwordInput.name);
+            return this.i18n.password.confirmDeviceOrPasswordNone(passwordInput.name);
           }
         }
       }
@@ -181,12 +181,12 @@ export class AuthHelperService {
       // At this point we know the password is usable and the device is active, so the user can choose
       if (otp) {
         if (passwordInput.hasActivePassword) {
-          return this.i18n.auth.password.confirmDeviceOrOtpActive;
+          return this.i18n.password.confirmDeviceOrOtpActive;
         } else {
-          return this.i18n.auth.password.confirmDeviceOrOtpRequest;
+          return this.i18n.password.confirmDeviceOrOtpRequest;
         }
       } else {
-        return this.i18n.auth.password.confirmDeviceOrPasswordActive(passwordInput.name);
+        return this.i18n.password.confirmDeviceOrPasswordActive(passwordInput.name);
       }
     }
 
@@ -194,18 +194,18 @@ export class AuthHelperService {
     if (otp) {
       // The messages for OTP are distinct
       if (!hasOtpSendMediums) {
-        return this.i18n.auth.password.confirmOtpNoMediums;
+        return this.i18n.password.confirmOtpNoMediums;
       } else if (passwordInput.hasActiveDevice) {
-        return this.i18n.auth.password.confirmOtpActive;
+        return this.i18n.password.confirmOtpActive;
       } else {
-        return this.i18n.auth.password.confirmOtpRequest;
+        return this.i18n.password.confirmOtpRequest;
       }
     } else {
       // A regular password
       if (passwordUsable) {
-        return this.i18n.auth.password.confirmationMessage(passwordInput.name);
+        return this.i18n.password.confirmationMessage(passwordInput.name);
       } else {
-        return this.i18n.auth.password.confirmNoPassword(passwordInput.name);
+        return this.i18n.password.confirmNoPassword(passwordInput.name);
       }
     }
   }

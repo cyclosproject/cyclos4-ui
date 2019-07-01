@@ -54,7 +54,7 @@ export class RegistrationStepConfirmComponent
   ngAfterViewInit() {
     if (this.agreementsContent && this.agreementsContent.nativeElement) {
       const el: HTMLElement = this.agreementsContent.nativeElement;
-      el.innerHTML = this.i18n.auth.pendingAgreements.agree(
+      el.innerHTML = this.i18n.pendingAgreements.agree(
         `<a href="#" onclick="event.preventDefault();event.stopPropagation();showAgreements()">
         ${this.data.agreements.map(a => a.name).join(', ')}
         </a>`

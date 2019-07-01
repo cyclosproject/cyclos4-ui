@@ -1,17 +1,16 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
   AccountHistoryOrderByEnum, AccountHistoryQueryFilters, AccountHistoryResult,
-  AccountWithHistoryStatus, Currency, DataForAccountHistory, EntityReference, Image,
-  PreselectedPeriod, TransferFilter
+  AccountWithHistoryStatus, Currency, DataForAccountHistory, EntityReference,
+  Image, PreselectedPeriod, TransferFilter
 } from 'app/api/models';
 import { AccountsService } from 'app/api/services';
 import { BankingHelperService } from 'app/core/banking-helper.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
-import { cloneDeep } from 'lodash';
+import { empty } from 'app/shared/helper';
 import { BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { empty } from 'app/shared/helper';
 
 
 type AccountHistorySearchParams = AccountHistoryQueryFilters & {
@@ -115,13 +114,9 @@ export class AccountHistoryComponent
 
     this.bankingHelper.preProcessPreselectedPeriods(data, this.form);
 
-    // Set the heading action
+    // Adjust the print action, which will be used later
     this.printable = true;
-    const print = this.printAction;
-    print.label = this.i18n.account.printTransactions;
-    this.headingActions = [
-      this.printAction
-    ];
+    this.printAction.label = this.i18n.account.printTransactions;
 
     this.form.patchValue({ 'orderBy': AccountHistoryOrderByEnum.DATE_DESC });
 
@@ -137,7 +132,7 @@ export class AccountHistoryComponent
   }
 
   toSearchParams(value: any): AccountHistorySearchParams {
-    const query: AccountHistorySearchParams = cloneDeep(value);
+    const query: AccountHistorySearchParams = value;
     query.transferFilters = value.transferFilter == null ? [] : [value.transferFilter.id];
     query.datePeriod = this.bankingHelper.resolveDatePeriod(value);
     query.amountRange = ApiHelper.rangeFilter(value.minAmount, value.maxAmount);
