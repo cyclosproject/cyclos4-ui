@@ -257,7 +257,7 @@
     },
     "title": {
       "change.self": "Cambiar su contraseña",
-      "change.user": "Change user password",
+      "change.user": "Cambiar contraseña de usuario",
       "forgotten": "Recuperar su contraseña",
       "manage.single.self": "Administrar su contraseña",
       "manage.multiple.self": "Administrar sus contraseñas",
