@@ -130,10 +130,7 @@
       "kilometersFrom": "km from",
       "milesFrom": "miles from",
       "current": "Current location",
-      "myAddress": "My address",
-      "error.denied": "No permission to get the current location. Please, grant this permission in your browser.",
-      "error.unavailable": "The current location is unavailable",
-      "error.general": "Error getting the current location"
+      "myAddress": "My address"
     }
   },
   "error": {
@@ -146,25 +143,24 @@
     "validation": "L'action n'a pas pu être traitée car il y a eu des erreurs de validation",
     "staleEntity": "Ces données ne peuvent pas être sauvegardées car elles ont été modifiées par quelqu'un d'autre. <br> Veuillez recharger la page, puis relancer l'opération.",
     "removeDataInUse": "This item cannot be removed because it is currently in use.",
-    "notFound": "L'emplacement auquel vous avez tapé ou tenté d'accéder n'a pas été trouvé",
-    "notFound.type": "Les données demandées sont introuvables : {type}",
-    "notFound.typeKey": "Les données demandées sont introuvables : {type} avec la clé {key}",
+    "notFound": {
+      "location": "L'emplacement auquel vous avez tapé ou tenté d'accéder n'a pas été trouvé",
+      "type": "Les données demandées sont introuvables : {type}",
+      "typeKey": "Les données demandées sont introuvables : {type} avec la clé {key}"
+    },
     "login": "Le nom / mot de passe donné est incorrect. Veuillez réessayer.",
-    "password.disabled": "Votre mot de passe a été désactivé. S'il vous plaît, contactez l'administration.",
-    "password.reset": "Votre mot de passe a été réinitialisé.",
-    "password.indefinitelyBlocked": "Votre mot de passe a été désactivé en dépassant le nombre maximal d'essais. S'il vous plaît, contactez l'administration.",
-    "password.temporarilyBlocked": "Votre mot de passe est temporairement bloqué en dépassant le nombre maximal d'essais.",
-    "password.expired": "Votre mot de passe a expiré. S'il vous plaît, contactez l'administration.",
-    "password.pending": "Votre mot de passe est en attente d'activation. S'il vous plaît, contactez l'administration.",
-    "password.invalid": "The given {type} is invalid",
     "remoteAddressBlocked": "Votre adresse IP est bloquée si le nombre de tentatives de connexion est supérieur",
     "permission": "Vous ne disposez pas des autorisations suffisantes pour effectuer l'action demandée",
-    "unauthorized.address": "Votre adresse IP n'est pas autorisée à vous connecter",
-    "unauthorized.url": "L'accès n'est pas autorisé depuis cette URL",
+    "unauthorized": {
+      "address": "Votre adresse IP n'est pas autorisée à vous connecter",
+      "url": "L'accès n'est pas autorisé depuis cette URL"
+    },
     "loggedOut": "Vous avez été déconnecté. Veuillez vous reconnecter et répéter l'opération.",
     "otp": "Une erreur s'est produite lors de l'envoi du mot de passe. Veuillez réessayer plus tard.",
-    "securityAnswer": "La réponse de sécurité donnée est invalide",
-    "securityAnswer.disabled": "En dépassant le nombre de tentatives de questions de sécurité, cette demande a été abandonnée. S'il vous plaît, contactez l'administration",
+    "securityAnswer": {
+      "invalid": "La réponse de sécurité donnée est invalide",
+      "disabled": "En dépassant le nombre de tentatives de questions de sécurité, cette demande a été abandonnée. S'il vous plaît, contactez l'administration"
+    },
     "illegalAction": "L'action que vous avez tenté d'effectuer n'est pas valide.",
     "field": {
       "invalid": "Ce champ est invalide",
@@ -175,6 +171,11 @@
       "date": "DSate invalide",
       "minDate": "Devrait être {min} ou plus",
       "maxDate": "Devrait être {max} ou moins"
+    },
+    "geolocation": {
+      "denied": "No permission to get the current location. Please, grant this permission in your browser.",
+      "unavailable": "The current location is unavailable",
+      "general": "Error getting the current location"
     }
   },
   "menu": {
@@ -215,116 +216,123 @@
     "personal.settings": "Settings",
     "content": "Information"
   },
-  "auth": {
-    "login": {
-      "title": "Connexion",
-      "mobileTitle": "Login",
-      "message": "Vous pouvez vous connecter avec votre identifiant et votre mot de passe.",
-      "disconnected": "Vous avez été déconnecté.<br>Veuillez vous identifier à nouveau pour afficher la page demandée.",
-      "principal": "Utilisateur",
-      "forgotPassword": "Mot de passe oublié ?",
-      "register": "Pas encore de compte ? Créez-en un maintenant."
+  "login": {
+    "title": "Login",
+    "mobileTitle": "Login",
+    "message": "Vous pouvez vous connecter avec votre identifiant et votre mot de passe.",
+    "disconnected": "Vous avez été déconnecté.<br>Veuillez vous identifier à nouveau pour afficher la page demandée.",
+    "principal": "User",
+    "forgotPassword": "Mot de passe oublié ?",
+    "register": "Pas encore de compte ? Créez-en un maintenant."
+  },
+  "password": {
+    "confirmationMessage": "Fournissez votre {passwordType} pour confirmer cette opération.",
+    "confirm.noPassword": "Pour confirmer, vous avez besoin d’un {passwordType}, mais vous n’en avez pas.",
+    "confirm.mode": "Confirm with",
+    "confirm.mode.device": "Mobile phone",
+    "confirm.mode.password": "Password",
+    "confirm.device.active": "In order to confirm, scan this QR-code with your mobile phone",
+    "confirm.device.none": "In order to confirm you must have a trusted mobile phone but you do not have any",
+    "confirm.deviceOrPassword.active": "In order to confirm, either scan this QR-code with your mobile phone or supply your {password}",
+    "confirm.deviceOrPassword.none": "In order to confirm you must have a trusted mobile phone or supply your {password} but you do not have any",
+    "confirm.deviceOrOtp.noMediums": "In order to confirm you need either a trusted mobile phone (and you have none) or a confirmation password, but there are no possible mediums to receive it.<br>Please, contact the administration.",
+    "confirm.deviceOrOtp.active": "In order to confirm, either scan this QR-code with your mobile phone, use the previously sent confirmation password or request a new one",
+    "confirm.deviceOrOtp.request": "In order to confirm, either scan this QR-code with your mobile phone, or request a confirmation password below",
+    "confirm.otp.noMediums": "Pour confirmer, vous avez besoin d'un mot de passe de confirmation, mais il n'y a pas de moyen possible pour le recevoir. <br> Contactez l'administration.",
+    "confirm.otp.active": "Vous pouvez utiliser le mot de passe de confirmation envoyé précédemment ou en demander un nouveau.",
+    "confirm.otp.request": "Veuillez demander un mot de passe de confirmation ci-dessous afin de confirmer",
+    "otp.sent": "Le mot de passe a été envoyé à {dest}",
+    "otp.receiveBy": "Get by {medium}",
+    "oldPassword": "Ancien mot de passe",
+    "newPassword": "Nouveau mot de passe",
+    "passwordConfirmation": "Confirmer le mot de passe",
+    "error": {
+      "disabled": "Votre mot de passe a été désactivé. S'il vous plaît, contactez l'administration.",
+      "reset": "Votre mot de passe a été réinitialisé.",
+      "indefinitelyBlocked": "Votre mot de passe a été désactivé en dépassant le nombre maximal d'essais. S'il vous plaît, contactez l'administration.",
+      "temporarilyBlocked": "Votre mot de passe est temporairement bloqué en dépassant le nombre maximal d'essais.",
+      "expired": "Votre mot de passe a expiré. S'il vous plaît, contactez l'administration.",
+      "pending": "Votre mot de passe est en attente d'activation. S'il vous plaît, contactez l'administration.",
+      "invalid": "The given {type} is invalid"
     },
-    "password": {
-      "confirmationMessage": "Fournissez votre {passwordType} pour confirmer cette opération.",
-      "confirm.noPassword": "Pour confirmer, vous avez besoin d’un {passwordType}, mais vous n’en avez pas.",
-      "confirm.mode": "Confirm with",
-      "confirm.mode.device": "Mobile phone",
-      "confirm.mode.password": "Password",
-      "confirm.device.active": "In order to confirm, scan this QR-code with your mobile phone",
-      "confirm.device.none": "In order to confirm you must have a trusted mobile phone but you do not have any",
-      "confirm.deviceOrPassword.active": "In order to confirm, either scan this QR-code with your mobile phone or supply your {password}",
-      "confirm.deviceOrPassword.none": "In order to confirm you must have a trusted mobile phone or supply your {password} but you do not have any",
-      "confirm.deviceOrOtp.noMediums": "In order to confirm you need either a trusted mobile phone (and you have none) or a confirmation password, but there are no possible mediums to receive it.<br>Please, contact the administration.",
-      "confirm.deviceOrOtp.active": "In order to confirm, either scan this QR-code with your mobile phone, use the previously sent confirmation password or request a new one",
-      "confirm.deviceOrOtp.request": "In order to confirm, either scan this QR-code with your mobile phone, or request a confirmation password below",
-      "confirm.otp.noMediums": "Pour confirmer, vous avez besoin d'un mot de passe de confirmation, mais il n'y a pas de moyen possible pour le recevoir. <br> Contactez l'administration.",
-      "confirm.otp.active": "Vous pouvez utiliser le mot de passe de confirmation envoyé précédemment ou en demander un nouveau.",
-      "confirm.otp.request": "Veuillez demander un mot de passe de confirmation ci-dessous afin de confirmer",
-      "otp.sent": "Le mot de passe a été envoyé à {dest}",
-      "otp.receiveBy": "Get by {medium}",
-      "oldPassword": "Ancien mot de passe",
-      "newPassword": "Nouveau mot de passe",
-      "passwordConfirmation": "Confirmer le mot de passe",
-      "title": {
-        "change.self": "Modifier votre mot de passe",
-        "change.user": "Change user password",
-        "forgotten": "Recover your password",
-        "manage.single.self": "Gérer votre mot de passe",
-        "manage.multiple.self": "Gérer vos mots de passe",
-        "manage.single.user": "Manage user password",
-        "manage.multiple.user": "Manage user passwords",
-        "securityAnswer": "Set your security answer"
-      },
-      "mobileTitle": {
-        "change.self": "Password change",
-        "change.user": "Password change",
-        "forgotten": "Password recovery",
-        "manage.single.self": "Password",
-        "manage.multiple.self": "Passwords",
-        "manage.single.user": "User password",
-        "manage.multiple.user": "User passwords",
-        "securityAnswer": "Security answer"
-      },
-      "forgotten": {
-        "preface": "Ici, vous pouvez récupérer votre mot de passe. Remplissez votre identification d'utilisateur ci-dessous. Vous pouvez utiliser l'un des éléments suivants :",
-        "principal": "Utilisateur",
-        "captcha": "Tapez les caractères ci-dessous",
-        "email": "Vous recevrez prochainement un courrier électronique avec votre identifiant d'utilisateur et des instructions pour réinitialiser votre mot de passe.",
-        "generated.message": "Une fois que vous avez soumis, un nouveau mot de passe sera généré et envoyé à votre adresse e-mail.",
-        "generated.done": "Vous devriez recevoir sous peu un e-mail avec votre nouveau mot de passe.",
-        "manual.done": "Votre mot de passe a été changé avec succès. Vous pouvez maintenant l'utiliser pour vous connecter."
-      },
-      "expired": {
-        "preface": "Votre {type} a expiré.",
-        "message.manual": "Pour pouvoir continuer, vous devez le changer.",
-        "message.generated": "Pour continuer, une nouvelle valeur doit être générée. <br> Cette valeur ne sera affichée qu'une fois. Assurez-vous donc de la mémoriser ou de l'écrire..",
-        "generatedValue": "La valeur de {type} est <data> {value} </ data>. <br> Cette valeur ne s'affichera plus. Assurez-vous donc de la mémoriser ou de l'écrire.",
-        "generateNew": "Générer un nouveau",
-        "changed": "Votre {type} a changé"
-      },
-      "statusSince": "Jusqu'au {date}",
-      "status": {
-        "active": "Activé",
-        "disabled": "Désactivé",
-        "expired": "Expiré",
-        "indefinitelyBlocked": "Bloqué",
-        "neverCreated": "Jamais créé",
-        "pending": "En attente",
-        "reset": "Réinitialiser",
-        "temporarilyBlocked": "Temporairement bloqué"
-      },
-      "action": {
-        "change": "Change",
-        "change.done": "Votre {type} a été changé",
-        "change.generated.confirm": "Cela générera un nouveau {type}, et la valeur ne sera affichée qu'une fois. Êtes-vous sûr ?",
-        "change.generated.done": "La valeur de {type} est <data> {value} </ data>. <br> Veillez à le mémoriser car il ne sera plus affiché.",
-        "unblock": "Débloquer",
-        "unblock.confirm": "Êtes-vous sûr de débloquer votre {type} ?",
-        "unblock.done": "Votre {type} a été débloqué ",
-        "activate": "Activer",
-        "activate.confirm": "Cela activera votre {type}, et la valeur générée ne sera affichée qu'une fois. Êtes-vous sûr ?",
-        "enable": "Activer",
-        "enable.confirm": "Etes-vous sûr d'activer votre {type} ?",
-        "enable.done": "Votre {type} a été activé",
-        "disable": "Désactiver",
-        "disable.confirm": "Êtes-vous sûr de désactiver votre {type} ?",
-        "disable.done": "Votre {type} a été désactivé"
-      }
+    "title": {
+      "change.self": "Modifier votre mot de passe",
+      "change.user": "Change user password",
+      "forgotten": "Recover your password",
+      "manage.single.self": "Gérer votre mot de passe",
+      "manage.multiple.self": "Gérer vos mots de passe",
+      "manage.single.user": "Manage user password",
+      "manage.multiple.user": "Manage user passwords",
+      "securityAnswer": "Set your security answer"
     },
-    "registrationAgreement": "Contrat d'inscription",
-    "pendingAgreements": {
-      "title": "Accord mis à jour",
-      "mobileTitle": "Updated agreement",
-      "message": "Le contrat d’enregistrement a été mis à jour. Pour continuer, vous devez accepter les nouveaux termes.",
-      "agree": "Je suis d'accord avec les accords d'enregistrement suivants: {agreements}"
+    "mobileTitle": {
+      "change.self": "Password change",
+      "change.user": "Password change",
+      "forgotten": "Password recovery",
+      "manage.single.self": "Password",
+      "manage.multiple.self": "Passwords",
+      "manage.single.user": "User password",
+      "manage.multiple.user": "User passwords",
+      "securityAnswer": "Security answer"
     },
-    "securityQuestion": {
-      "message": "The security question is required in case you need to reset your password. Once set, if you need to change it, contact the administration.",
-      "question": "Question de sécurité",
-      "answer": "Votre réponse",
-      "set": "Your security answer was set"
+    "forgotten": {
+      "preface": "Ici, vous pouvez récupérer votre mot de passe. Remplissez votre identification d'utilisateur ci-dessous. Vous pouvez utiliser l'un des éléments suivants :",
+      "principal": "User",
+      "captcha": "Tapez les caractères ci-dessous",
+      "email": "Vous recevrez prochainement un courrier électronique avec votre identifiant d'utilisateur et des instructions pour réinitialiser votre mot de passe.",
+      "generated.message": "Une fois que vous avez soumis, un nouveau mot de passe sera généré et envoyé à votre adresse e-mail.",
+      "generated.done": "Vous devriez recevoir sous peu un e-mail avec votre nouveau mot de passe.",
+      "manual.done": "Votre mot de passe a été changé avec succès. Vous pouvez maintenant l'utiliser pour vous connecter."
+    },
+    "expired": {
+      "preface": "Your {type} has expired.",
+      "message.manual": "Pour pouvoir continuer, vous devez le changer.",
+      "message.generated": "Pour continuer, une nouvelle valeur doit être générée. <br> Cette valeur ne sera affichée qu'une fois. Assurez-vous donc de la mémoriser ou de l'écrire..",
+      "generatedValue": "La valeur de {type} est <data> {value} </ data>. <br> Cette valeur ne s'affichera plus. Assurez-vous donc de la mémoriser ou de l'écrire.",
+      "generateNew": "Générer un nouveau",
+      "changed": "Votre {type} a changé"
+    },
+    "statusSince": "Jusqu'au {date}",
+    "status": {
+      "active": "Activé",
+      "disabled": "Désactivé",
+      "expired": "Expired",
+      "indefinitelyBlocked": "Blocked",
+      "neverCreated": "Jamais créé",
+      "pending": "En attente",
+      "reset": "Réinitialiser",
+      "temporarilyBlocked": "Temporairement bloqué"
+    },
+    "action": {
+      "change": "Change",
+      "change.done": "Votre {type} a changé",
+      "change.generated.confirm": "Cela générera un nouveau {type}, et la valeur ne sera affichée qu'une fois. Êtes-vous sûr ?",
+      "change.generated.done": "La valeur de {type} est <data> {value} </ data>. <br> Veillez à le mémoriser car il ne sera plus affiché.",
+      "unblock": "Débloquer",
+      "unblock.confirm": "Êtes-vous sûr de débloquer votre {type} ?",
+      "unblock.done": "Votre {type} a été débloqué ",
+      "activate": "Activer",
+      "activate.confirm": "Cela activera votre {type}, et la valeur générée ne sera affichée qu'une fois. Êtes-vous sûr ?",
+      "enable": "Activer",
+      "enable.confirm": "Etes-vous sûr d'activer votre {type} ?",
+      "enable.done": "Votre {type} a été activé",
+      "disable": "Désactiver",
+      "disable.confirm": "Êtes-vous sûr de désactiver votre {type} ?",
+      "disable.done": "Votre {type} a été désactivé"
     }
+  },
+  "registrationAgreement": "Contrat d'inscription",
+  "pendingAgreements": {
+    "title": "Accord mis à jour",
+    "mobileTitle": "Accord mis à jour",
+    "message": "Le contrat d’enregistrement a été mis à jour. Pour continuer, vous devez accepter les nouveaux termes.",
+    "agree": "Je suis d'accord avec les accords d'enregistrement suivants: {agreements}"
+  },
+  "securityQuestion": {
+    "message": "The security question is required in case you need to reset your password. Once set, if you need to change it, contact the administration.",
+    "question": "Question de sécurité",
+    "answer": "Votre réponse",
+    "set": "Your security answer was set"
   },
   "dashboard": {
     "quickAccess": "Accès rapide",
@@ -807,9 +815,9 @@
       "history.user": "Status history",
       "history.operator": "Status history"
     },
-    "active": "Active",
+    "active": "Activé",
     "blocked": "Access blocked",
-    "disabled": "Disabled",
+    "disabled": "Désactivé",
     "pending": "Pending activation",
     "purged": "Purged (all private data is erased)",
     "removed": "Removed (no private data is erased)"
@@ -851,16 +859,20 @@
     "extensionValue": "ext. {value}",
     "numberExtensionValue": "{number} ext. {extension}",
     "enabledSms": "Activé pour SMS",
+    "error": {
+      "verify": {
+        "expired": "Le code de vérification n'a pas été envoyé ou a expiré. <br> Veuillez renvoyer le code sur votre téléphone et relancer le processus.",
+        "invalid": "Code de vérification invalidee",
+        "maxAttempts": "Vous avez dépassé le nombre de tentatives autorisées. <br> Veuillez renvoyer le code sur votre téléphone et relancer le processus."
+      }
+    },
     "verify": {
       "title": "Vérifier {number} pour SMS",
       "mobileTitle": "Verification",
       "code": "Code",
       "send": "Envoyer",
       "message": "Cliquez sur le bouton ci-dessus pour envoyer le code de vérification sur votre téléphone.",
-      "done": "Le code de vérification a été envoyé à {number}",
-      "error.expired": "Le code de vérification n'a pas été envoyé ou a expiré. <br> Veuillez renvoyer le code sur votre téléphone et relancer le processus.",
-      "error.invalid": "Code de vérification invalidee",
-      "error.maxAttempts": "Vous avez dépassé le nombre de tentatives autorisées. <br> Veuillez renvoyer le code sur votre téléphone et relancer le processus."
+      "done": "Le code de vérification a été envoyé à {number}"
     }
   },
   "address": {
