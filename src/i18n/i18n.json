@@ -613,7 +613,12 @@
   },
   "voucher": {
     "error": {
-      "buy": {},
+      "totalOpenAmount": "The total amount of all open vouchers would exceed {maxAmount}, as defined in this voucher type. The current total open amount is {currentAmount}.",
+      "buy": {
+        "amountForPeriod": "Buying on this voucher type is limited by period. Until {date} only {amount} is available for buying.",
+        "openAmount": "The current user exceeds the maximum allowed open amount of {maxAmount} for vouchers of this type. The current open amount is {currentAmount}.",
+        "notAllowedForUser": "The current user is not allowed to buy vouchers from this type."
+      },
       "redeem": {
         "status": "This voucher cannot be redeemed. Its current status is: {status}.",
         "user": "The current user cannot redeem vouchers from this type.",
@@ -642,10 +647,12 @@
     },
     "mobileTitle": {
       "buy": "Buy vouchers",
+      "buyConfirmation": "Buy confirmation",
       "searchBought": "View bought"
     },
     "title": {
       "buy": "Buy vouchers",
+      "buyConfirmation": "Buy confirmation",
       "searchBought": "Search bought vouchers"
     },
     "boughtType": "Bought",
@@ -656,9 +663,7 @@
         "max": "Maximum amount for buying"
       },
       "buyer": "Buyer",
-      "confirmationMessage": "Are you sure to buy {count} voucher(s) of {amount} with type {type}?",
       "done": "The voucher(s) has been bought.",
-      "error": {},
       "minTimeToRedeem": "Can be redeemed",
       "minTimeToRedeem.afterBuy": "{interval} after buying",
       "numberOfVouchers": "Number of vouchers",

@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { BuyVoucher, CreateDeviceConfirmation, DeviceConfirmationTypeEnum, PasswordInput, VoucherDataForBuy } from 'app/api/models';
+import { BuyVoucher, CreateDeviceConfirmation, DeviceConfirmationTypeEnum, PasswordInput, VoucherDataForBuy, CustomFieldTypeEnum, CustomField } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
 import { ConfirmationMode } from 'app/shared/confirmation-mode';
 import { Enter } from 'app/shared/shortcut.service';
@@ -47,11 +47,11 @@ export class BuyVouchersStepConfirmComponent extends BaseComponent implements On
     }
   }
 
-  get confirmationMessage() {
-    return this.i18n.voucher.buy.confirmationMessage({
-      count: this.buyVoucher.count,
-      amount: this.format.formatAsCurrency(this.data.account.currency, this.buyVoucher.amount),
-      type: this.data.type.voucherTitle
-    });
+  labelOnTop(ltsm: boolean, field: CustomField): boolean {
+    if (!ltsm) {
+      return false;
+    }
+    const type = field ? field.type : null;
+    return [CustomFieldTypeEnum.RICH_TEXT, CustomFieldTypeEnum.TEXT].includes(type);
   }
 }

@@ -170,8 +170,15 @@ export class BuyVouchersComponent extends BasePageComponent<VoucherDataForBuy>
       this.customFieldControlsMap = this.fieldHelper.customValuesFormControlMap(this.dataTypeForBuy.customFields);
       this.form = this.formBuilder.group({
         count: new FormControl(''),
-        amount: new FormControl('')
+        amount: new FormControl(''),
       });
+      if (this.customFieldControlsMap.size > 0) {
+        const fieldValues = new FormGroup({});
+        for (const c of this.customFieldControlsMap) {
+          fieldValues.addControl(c[0], c[1]);
+        }
+        this.form.setControl('customValues', fieldValues);
+      }
     }
 
     this.form.get('count').setValue(1);

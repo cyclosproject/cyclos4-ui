@@ -2,11 +2,11 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import {
-  ConflictError, ConflictErrorCode, ErrorKind, ForbiddenError,
-  ForbiddenErrorCode, ForgottenPasswordError, ForgottenPasswordErrorCode, InputError, InputErrorCode, NestedError,
-  NotFoundError, OtpError, PasswordStatusEnum, PaymentError, PaymentErrorCode, UnauthorizedError, UnauthorizedErrorCode,
-  RedeemVoucherError, RedeemVoucherErrorCode, BuyVoucherError, BuyVoucherErrorCode
+  ConflictError, ConflictErrorCode, ErrorKind, ForbiddenError, ForbiddenErrorCode, ForgottenPasswordError, ForgottenPasswordErrorCode,
+  InputError, InputErrorCode, NestedError, NotFoundError, OtpError, PasswordStatusEnum, PaymentError, PaymentErrorCode, RedeemVoucherError,
+  RedeemVoucherErrorCode, UnauthorizedError, UnauthorizedErrorCode, BuyVoucherError, BuyVoucherErrorCode
 } from 'app/api/models';
+import { BankingHelperService } from 'app/core/banking-helper.service';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { FormatService } from 'app/core/format.service';
 import { LoginService } from 'app/core/login.service';
@@ -18,7 +18,6 @@ import { empty, focusFirstInvalid } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
 import { ErrorStatus } from './error-status';
 import { NextRequestState } from './next-request-state';
-import { BankingHelperService } from 'app/core/banking-helper.service';
 
 /**
  * Service used to handle application errors
@@ -109,6 +108,9 @@ export class ErrorHandlerService {
                 return;
               case ErrorKind.REDEEM_VOUCHER:
                 this.handleRedeemVoucherError(error as RedeemVoucherError);
+                return;
+              case ErrorKind.BUY_VOUCHER:
+                this.handleBuyVoucherError(error as BuyVoucherError);
                 return;
               case ErrorKind.NESTED:
                 // An error in a nested property
@@ -256,18 +258,23 @@ export class ErrorHandlerService {
   }
 
   public handleBuyVoucherError(error: BuyVoucherError) {
-    this.notification.error(this.buyVoucherErrorMessage(error));
+    if (error.code === BuyVoucherErrorCode.PAYMENT) {
+      this.handlePaymentError(error.paymentError);
+    } else {
+      this.notification.error(this.buyVoucherErrorMessage(error));
+    }
   }
 
   private buyVoucherErrorMessage(error: BuyVoucherError): string {
     switch (error.code) {
       case BuyVoucherErrorCode.MAX_AMOUNT_FOR_PERIOD:
-        return this.i18n.voucher.buy.error
+        return this.i18n.voucher.error.buy.amountForPeriod({ date: error.dateAllowedAgain, amount: error.amountLeftForBuying });
       case BuyVoucherErrorCode.MAX_OPEN_AMOUNT:
+        return this.i18n.voucher.error.buy.openAmount({ maxAmount: error.maxOpenAmount, currentAmount: error.currentOpenAmount });
       case BuyVoucherErrorCode.MAX_TOTAL_OPEN_AMOUNT:
+        return this.i18n.voucher.error.totalOpenAmount({ maxAmount: error.maxOpenAmount, currentAmount: error.currentOpenAmount });
       case BuyVoucherErrorCode.NOT_ALLOWED_FOR_USER:
-      case BuyVoucherErrorCode.PAYMENT:
-      case BuyVoucherErrorCode.UNEXPECTED:
+        return this.i18n.voucher.error.buy.notAllowedForUser;
     }
     return this.general;
   }

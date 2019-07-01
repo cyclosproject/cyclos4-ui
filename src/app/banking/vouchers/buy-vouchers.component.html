@@ -29,8 +29,8 @@
 
   <!-- Step 3: Buy confirmation -->
   <page-content *ngSwitchCase="'confirm'"
-    [heading]="dataTypeForBuy.type.voucherTitle"
-    [mobileHeading]="dataTypeForBuy.type.voucherTitle"
+    [heading]="i18n.voucher.title.buyConfirmation"
+    [mobileHeading]="i18n.voucher.mobileTitle.buyConfirmation"
     [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'" last>
     <buy-vouchers-step-confirm class="flex-grow-1" [buyVoucher]="form.value"
       [data]="dataTypeForBuy"
