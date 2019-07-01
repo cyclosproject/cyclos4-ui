@@ -130,10 +130,7 @@
       "kilometersFrom": "km de",
       "milesFrom": "milhas de",
       "current": "Localização atual",
-      "myAddress": "Meu endereço",
-      "error.denied": "Sem permissão para obter a localização atual. Por favor, conceda essa permissão no seu navegador.",
-      "error.unavailable": "A localização atual está indisponível",
-      "error.general": "Erro ao obter a localização atual"
+      "myAddress": "Meu endereço"
     }
   },
   "error": {
@@ -146,25 +143,24 @@
     "validation": "A ação não pode ser processada, pois existem erros de validação",
     "staleEntity": "Esses dados não podem ser salvos pois foram modificados por alguém.<br>Por Favor, carregue a página novamente e reinicie a operação.",
     "removeDataInUse": "Este item não pode ser removido porque está em uso.",
-    "notFound": "O local que você digitou ou tentou acessar não foi encontrado",
-    "notFound.type": "O dado solicitado não pôde ser encontrado: {type}",
-    "notFound.typeKey": "O dado solicitado não pôde ser encontrado: {type} com chave {key}",
+    "notFound": {
+      "location": "O local que você digitou ou tentou acessar não foi encontrado",
+      "type": "O dado solicitado não pôde ser encontrado: {type}",
+      "typeKey": "O dado solicitado não pôde ser encontrado: {type} com chave {key}"
+    },
     "login": "O utilizador / senha informado está incorreto. Por favor, tente novamente.",
-    "password.disabled": "Sua senha foi desativada. Por favor, entre em contato com a administração.",
-    "password.reset": "Sua senha foi redefinida.",
-    "password.indefinitelyBlocked": "Sua senha foi desabilitada por exceder o número máximo de tentativas. Por favor, entre em contato com a administração.",
-    "password.temporarilyBlocked": "Sua senha foi bloqueada temporariamente por exceder o número máximo de tentativas.",
-    "password.expired": "Sua senha expirou. Por favor, entre em contato com a administração.",
-    "password.pending": "Sua senha esta pendente de ativação. Por favor, entre em contato com a administração.",
-    "password.invalid": "O {type} informado é inválido",
     "remoteAddressBlocked": "O seu endereço de IP está bloqueado por excesso de tentativas de início de sessão",
     "permission": "Você não tem a permissão necessária para realizar a ação solicitada",
-    "unauthorized.address": "O seu endereço de IP não esta autorizado a efetuar login",
-    "unauthorized.url": "Não é permitido o acesso a partir desta URL",
+    "unauthorized": {
+      "address": "O seu endereço de IP não esta autorizado a efetuar login",
+      "url": "Não é permitido o acesso a partir desta URL"
+    },
     "loggedOut": "Você foi desconectado. Por favor, faça o login novamente e repita a operação.",
     "otp": "Houve um erro ao enviar a senha. Por favor, tente novamente mais tarde.",
-    "securityAnswer": "A resposta à pergunta de segurança informada é inválida",
-    "securityAnswer.disabled": "Por exceder o número de tentativas de resposta à pergunta de segurança, este pedido foi abortado.\nPor favor, entre em contato com a administração",
+    "securityAnswer": {
+      "invalid": "A resposta à pergunta de segurança informada é inválida",
+      "disabled": "Por exceder o número de tentativas de resposta à pergunta de segurança, este pedido foi abortado.\nPor favor, entre em contato com a administração"
+    },
     "illegalAction": "A ação que você tentou efetuar não é válida",
     "field": {
       "invalid": "Este campo é inválido",
@@ -175,6 +171,11 @@
       "date": "Data inválida",
       "minDate": "Deve ser {min} ou após",
       "maxDate": "Deve ser {max} ou antes"
+    },
+    "geolocation": {
+      "denied": "Sem permissão para obter a localização atual. Por favor, conceda essa permissão no seu navegador.",
+      "unavailable": "A localização atual está indisponível",
+      "general": "Erro ao obter a localização atual"
     }
   },
   "menu": {
@@ -215,117 +216,123 @@
     "personal.settings": "Definições",
     "content": "Informação"
   },
-  "auth": {
-    "login": {
-      "title": "Acessar",
-      "mobileTitle": "Login",
-      "message": "Você pode acessar com seu nome de usuário e senha",
-      "disconnected": "Você foi desconectado.<br>Por Favor, faça o login novamente, para exibir a página solicitada.",
+  "login": {
+    "title": "Acessar",
+    "mobileTitle": "Login",
+    "message": "Você pode acessar com seu nome de usuário e senha",
+    "disconnected": "Você foi desconectado.<br>Por Favor, faça o login novamente, para exibir a página solicitada.",
+    "principal": "Usuário",
+    "forgotPassword": "Esqueceu sua senha?",
+    "register": "Não é um usuário ainda? Registre-se aqui."
+  },
+  "password": {
+    "confirmationMessage": "Forneça seu {passwordType} para confirmar esta operação",
+    "confirm.noPassword": "Para confirmar você precisa informar sua {passwordType}, mas você nao possui nenhuma",
+    "confirm.mode": "Confirme com",
+    "confirm.mode.device": "Telefone celular",
+    "confirm.mode.password": "Senha",
+    "confirm.device.active": "Para confirmar, leia este código QR com seu telefone celular",
+    "confirm.device.none": "Para confirmar você deve ter um telefone celular confiável, mas você não tem nenhum",
+    "confirm.deviceOrPassword.active": "Para confirmar, leia este código QR com seu telefone celular ou forneça sua {password}",
+    "confirm.deviceOrPassword.none": "Para confirmar você deve ter um telefone celular confiável ou fornecer sua {password}, mas você não tem nenhum",
+    "confirm.deviceOrOtp.noMediums": "Para confirmar que você precisa de um celular confiável (e você não tem nenhum) ou uma senha de confirmação, mas não há nenhum meio possível para recebe-la.<br>Por favor, contate a administração.",
+    "confirm.deviceOrOtp.active": "Para confirmar, leia este código QR com seu telefone celular, use a senha de confirmação enviada anteriormente ou solicite uma nova",
+    "confirm.deviceOrOtp.request": "Para confirmar, leia este código QR com seu telefone celular, ou solicite uma senha de confirmação abaixo",
+    "confirm.otp.noMediums": "Para confirmar que você precisa de uma confirmação de senha, mas não há meios possíveis para recebe-la.<br>Por Favor, entre em contato com a administração.",
+    "confirm.otp.active": "Você pode usar a senha de confirmação enviada anteriormente ou pedir uma nova",
+    "confirm.otp.request": "Por favor, solicite uma senha de confirmação para poder confirmar",
+    "otp.sent": "A senha foi enviada para {dest}",
+    "otp.receiveBy": "Obter via {medium}",
+    "oldPassword": "Senha antiga",
+    "newPassword": "Nova senha",
+    "passwordConfirmation": "Confirmação da senha",
+    "error": {
+      "disabled": "Sua senha foi desativada. Por favor, entre em contato com a administração.",
+      "reset": "Sua senha foi redefinida.",
+      "indefinitelyBlocked": "Sua senha foi desabilitada por exceder o número máximo de tentativas. Por favor, entre em contato com a administração.",
+      "temporarilyBlocked": "Sua senha foi bloqueada temporariamente por exceder o número máximo de tentativas.",
+      "expired": "Sua senha expirou. Por favor, entre em contato com a administração.",
+      "pending": "Sua senha esta pendente de ativação. Por favor, entre em contato com a administração.",
+      "invalid": "O {type} informado é inválido"
+    },
+    "title": {
+      "change.self": "Alterar sua senha",
+      "change.user": "Alterar senha do usuário",
+      "forgotten": "Recuperar sua senha",
+      "manage.single.self": "Gerenciar sua senha",
+      "manage.multiple.self": "Gerenciar as suas senhas",
+      "manage.single.user": "Gerenciar senhas do usuário",
+      "manage.multiple.user": "Gerenciar senhas do usuário",
+      "securityAnswer": "Definir sua resposta de segurança"
+    },
+    "mobileTitle": {
+      "change.self": "Alteração de senha",
+      "change.user": "Alteração de senha",
+      "forgotten": "Recuperação de senha",
+      "manage.single.self": "Senha",
+      "manage.multiple.self": "Senhas",
+      "manage.single.user": "Senha do usuário",
+      "manage.multiple.user": "Senhas do usuário",
+      "securityAnswer": "Resposta de segurança"
+    },
+    "forgotten": {
+      "preface": "Aqui você pode recuperar sua senha. Preencha a sua identificação de usuário abaixo. Você pode usar um dos seguintes:",
       "principal": "Usuário",
-      "password": "Senha",
-      "forgotPassword": "Esqueceu sua senha?",
-      "register": "Não é um usuário ainda? Registre-se aqui."
+      "captcha": "Digite os caracteres abaixo",
+      "email": "Você irá receber em breve um e-mail com seu nome de usuário e instruções para redefinir sua senha",
+      "generated.message": "Uma vez que você enviar, uma nova senha será gerada e enviada para seu endereço de e-mail",
+      "generated.done": "Você deve receber em breve um e-mail com sua nova senha.",
+      "manual.done": "Sua senha foi alterada com sucesso. Agora você pode usá-la para acessar."
     },
-    "password": {
-      "confirmationMessage": "Forneça seu {passwordType} para confirmar esta operação",
-      "confirm.noPassword": "Para confirmar você precisa informar sua {passwordType}, mas você nao possui nenhuma",
-      "confirm.mode": "Confirme com",
-      "confirm.mode.device": "Telefone celular",
-      "confirm.mode.password": "Senha",
-      "confirm.device.active": "Para confirmar, leia este código QR com seu telefone celular",
-      "confirm.device.none": "Para confirmar você deve ter um telefone celular confiável, mas você não tem nenhum",
-      "confirm.deviceOrPassword.active": "Para confirmar, leia este código QR com seu telefone celular ou forneça sua {password}",
-      "confirm.deviceOrPassword.none": "Para confirmar você deve ter um telefone celular confiável ou fornecer sua {password}, mas você não tem nenhum",
-      "confirm.deviceOrOtp.noMediums": "Para confirmar que você precisa de um celular confiável (e você não tem nenhum) ou uma senha de confirmação, mas não há nenhum meio possível para recebe-la.<br>Por favor, contate a administração.",
-      "confirm.deviceOrOtp.active": "Para confirmar, leia este código QR com seu telefone celular, use a senha de confirmação enviada anteriormente ou solicite uma nova",
-      "confirm.deviceOrOtp.request": "Para confirmar, leia este código QR com seu telefone celular, ou solicite uma senha de confirmação abaixo",
-      "confirm.otp.noMediums": "Para confirmar que você precisa de uma confirmação de senha, mas não há meios possíveis para recebe-la.<br>Por Favor, entre em contato com a administração.",
-      "confirm.otp.active": "Você pode usar a senha de confirmação enviada anteriormente ou pedir uma nova",
-      "confirm.otp.request": "Por favor, solicite uma senha de confirmação para poder confirmar",
-      "otp.sent": "A senha foi enviada para {dest}",
-      "otp.receiveBy": "Obter via {medium}",
-      "oldPassword": "Senha antiga",
-      "newPassword": "Nova senha",
-      "passwordConfirmation": "Confirmação da senha",
-      "title": {
-        "change.self": "Alterar sua senha",
-        "change.user": "Alterar senha do usuário",
-        "forgotten": "Recuperar sua senha",
-        "manage.single.self": "Gerenciar sua senha",
-        "manage.multiple.self": "Gerenciar as suas senhas",
-        "manage.single.user": "Gerenciar senhas do usuário",
-        "manage.multiple.user": "Gerenciar senhas do usuário",
-        "securityAnswer": "Definir sua resposta de segurança"
-      },
-      "mobileTitle": {
-        "change.self": "Alteração de senha",
-        "change.user": "Alteração de senha",
-        "forgotten": "Recuperação de senha",
-        "manage.single.self": "Senha",
-        "manage.multiple.self": "Senhas",
-        "manage.single.user": "Senha do usuário",
-        "manage.multiple.user": "Senhas do usuário",
-        "securityAnswer": "Resposta de segurança"
-      },
-      "forgotten": {
-        "preface": "Aqui você pode recuperar sua senha. Preencha a sua identificação de usuário abaixo. Você pode usar um dos seguintes:",
-        "principal": "Usuário",
-        "captcha": "Digite os caracteres abaixo",
-        "email": "Você irá receber em breve um e-mail com seu nome de usuário e instruções para redefinir sua senha",
-        "generated.message": "Uma vez que você enviar, uma nova senha será gerada e enviada para seu endereço de e-mail",
-        "generated.done": "Você deve receber em breve um e-mail com sua nova senha.",
-        "manual.done": "Sua senha foi alterada com sucesso. Agora você pode usá-la para acessar."
-      },
-      "expired": {
-        "preface": "Sua {type} expirou.",
-        "message.manual": "Para prosseguir, você deve alterá-la.",
-        "message.generated": "Para prosseguir, um novo valor deve ser gerado.<br>Este valor sera exibido somente uma vez, por isso, certifique-se de decorá-lo ou escrevê-lo.",
-        "generatedValue": "O valor para {type} é <data>{value}</data>.<br>Este valor não será exibido novamente, por isso, certifique-se de decorá-lo ou escrevê-lo.",
-        "generateNew": "Gerar nova",
-        "changed": "Sua {type} foi alterada"
-      },
-      "statusSince": "Desde {date}",
-      "status": {
-        "active": "Ativa",
-        "disabled": "Desabilitada",
-        "expired": "Vencida",
-        "indefinitelyBlocked": "Bloqueada",
-        "neverCreated": "Nunca criada",
-        "pending": "Pendente",
-        "reset": "Redefinida",
-        "temporarilyBlocked": "Bloqueada temporariamente"
-      },
-      "action": {
-        "change": "Alterar",
-        "change.done": "Sua {type} foi alterada",
-        "change.generated.confirm": "Isso irá gerar uma nova {type}, e o valor será apresentado apenas uma vez. Tem certeza?",
-        "change.generated.done": "O valor para {type} é <data>{value}</data>.<br>certifique-se de decorá-lo, pois ele não vai ser exibido novamente.",
-        "unblock": "Desbloquear",
-        "unblock.confirm": "Tem certeza de desbloquear sua {type}?",
-        "unblock.done": "Sua {type} foi desbloqueada",
-        "activate": "Ativar",
-        "activate.confirm": "Isso irá ativar a sua {type}, e o valor gerado será exibido apenas uma vez. Tem certeza?",
-        "enable": "Habilitar",
-        "enable.confirm": "Tem certeza de que deseja habilitar sua {type}?",
-        "enable.done": "Sua {type} foi habilitada",
-        "disable": "Desabilitar",
-        "disable.confirm": "Tem certeza de que deseja desabilitar sua {type}?",
-        "disable.done": "Seu {type} foi desativado"
-      }
+    "expired": {
+      "preface": "Sua {type} expirou.",
+      "message.manual": "Para prosseguir, você deve alterá-la.",
+      "message.generated": "Para prosseguir, um novo valor deve ser gerado.<br>Este valor sera exibido somente uma vez, por isso, certifique-se de decorá-lo ou escrevê-lo.",
+      "generatedValue": "O valor para {type} é <data>{value}</data>.<br>Este valor não será exibido novamente, por isso, certifique-se de decorá-lo ou escrevê-lo.",
+      "generateNew": "Gerar nova",
+      "changed": "Sua {type} foi alterada"
     },
-    "registrationAgreement": "Termo de adesão",
-    "pendingAgreements": {
-      "title": "Termo de adesão atualizado",
-      "mobileTitle": "Termo de adesão atualizado",
-      "message": "O termo de adesão foi atualizado.<br><br>Para continuar você deve concordar com os novos termos.",
-      "agree": "Concordo com os seguintes termos de adesão: {agreements}"
+    "statusSince": "Desde {date}",
+    "status": {
+      "active": "Ativa",
+      "disabled": "Desabilitada",
+      "expired": "Vencida",
+      "indefinitelyBlocked": "Bloqueada",
+      "neverCreated": "Nunca criada",
+      "pending": "Pendente",
+      "reset": "Redefinida",
+      "temporarilyBlocked": "Bloqueada temporariamente"
     },
-    "securityQuestion": {
-      "message": "A pergunta de segurança é necessária caso você precise redefinir sua senha. Uma vez definida, se você precisa alterá-la, entre em contato com a administração.",
-      "question": "Pergunta de segurança",
-      "answer": "Sua resposta",
-      "set": "Sua resposta de segurança foi definida"
+    "action": {
+      "change": "Alterar",
+      "change.done": "Sua {type} foi alterada",
+      "change.generated.confirm": "Isso irá gerar uma nova {type}, e o valor será apresentado apenas uma vez. Tem certeza?",
+      "change.generated.done": "O valor para {type} é <data>{value}</data>.<br>certifique-se de decorá-lo, pois ele não vai ser exibido novamente.",
+      "unblock": "Desbloquear",
+      "unblock.confirm": "Tem certeza de desbloquear sua {type}?",
+      "unblock.done": "Sua {type} foi desbloqueada",
+      "activate": "Ativar",
+      "activate.confirm": "Isso irá ativar a sua {type}, e o valor gerado será exibido apenas uma vez. Tem certeza?",
+      "enable": "Habilitar",
+      "enable.confirm": "Tem certeza de que deseja habilitar sua {type}?",
+      "enable.done": "Sua {type} foi habilitada",
+      "disable": "Desabilitar",
+      "disable.confirm": "Tem certeza de que deseja desabilitar sua {type}?",
+      "disable.done": "Seu {type} foi desativado"
     }
+  },
+  "registrationAgreement": "Termo de adesão",
+  "pendingAgreements": {
+    "title": "Termo de adesão atualizado",
+    "mobileTitle": "Termo de adesão atualizado",
+    "message": "O termo de adesão foi atualizado.<br><br>Para continuar você deve concordar com os novos termos.",
+    "agree": "Concordo com os seguintes termos de adesão: {agreements}"
+  },
+  "securityQuestion": {
+    "message": "A pergunta de segurança é necessária caso você precise redefinir sua senha. Uma vez definida, se você precisa alterá-la, entre em contato com a administração.",
+    "question": "Pergunta de segurança",
+    "answer": "Sua resposta",
+    "set": "Sua resposta de segurança foi definida"
   },
   "dashboard": {
     "quickAccess": "Acesso rápido",
@@ -852,16 +859,20 @@
     "extensionValue": "ramal {value}",
     "numberExtensionValue": "{number} ramal {extension}",
     "enabledSms": "Habilitado para SMS",
+    "error": {
+      "verify": {
+        "expired": "O código de verificação não foi enviado ou expirou.<br> Por favor, envie novamente o código para o seu telefone e reinicie o processo.",
+        "invalid": "Código de verificação inválido",
+        "maxAttempts": "Você excedeu o número permitido de tentativas.<br>Por favor, envie novamente o código para o seu telefone e reinicie o processo."
+      }
+    },
     "verify": {
       "title": "Verificar {number} por SMS",
       "mobileTitle": "Verificação",
       "code": "Código",
       "send": "Enviar",
       "message": "Clique no botão acima para enviar o código de verificação para o seu telefone",
-      "done": "O código de verificação foi enviado para {number}",
-      "error.expired": "O código de verificação não foi enviado ou expirou.<br> Por favor, envie novamente o código para o seu telefone e reinicie o processo.",
-      "error.invalid": "Código de verificação inválido",
-      "error.maxAttempts": "Você excedeu o número permitido de tentativas.<br>Por favor, envie novamente o código para o seu telefone e reinicie o processo."
+      "done": "O código de verificação foi enviado para {number}"
     }
   },
   "address": {

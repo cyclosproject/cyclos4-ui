@@ -356,15 +356,15 @@ export class ErrorHandlerService {
     }
     if (error.entityType) {
       if (error.key) {
-        return this.i18n.error.notFoundTypeKey({
+        return this.i18n.error.notFound.typeKey({
           type: error.entityType,
           key: error.key
         });
       } else {
-        return this.i18n.error.notFoundType(error.entityType);
+        return this.i18n.error.notFound.type(error.entityType);
       }
     } else {
-      return this.i18n.error.notFound;
+      return this.i18n.error.notFound.location;
     }
   }
 
@@ -378,26 +378,26 @@ export class ErrorHandlerService {
       case UnauthorizedErrorCode.LOGIN:
         switch (error.passwordStatus) {
           case PasswordStatusEnum.DISABLED:
-            return this.i18n.error.passwordDisabled;
+            return this.i18n.password.error.disabled;
           case PasswordStatusEnum.RESET:
-            return this.i18n.error.passwordReset;
+            return this.i18n.password.error.reset;
           case PasswordStatusEnum.INDEFINITELY_BLOCKED:
-            return this.i18n.error.passwordIndefinitelyBlocked;
+            return this.i18n.password.error.indefinitelyBlocked;
           case PasswordStatusEnum.TEMPORARILY_BLOCKED:
-            return this.i18n.error.passwordTemporarilyBlocked;
+            return this.i18n.password.error.temporarilyBlocked;
           case PasswordStatusEnum.EXPIRED:
-            return this.i18n.error.passwordExpired;
+            return this.i18n.password.error.expired;
           case PasswordStatusEnum.PENDING:
-            return this.i18n.error.passwordPending;
+            return this.i18n.password.error.pending;
           default:
             return this.i18n.error.login;
         }
       case UnauthorizedErrorCode.REMOTE_ADDRESS_BLOCKED:
         return this.i18n.error.remoteAddressBlocked;
       case UnauthorizedErrorCode.UNAUTHORIZED_ADDRESS:
-        return this.i18n.error.unauthorizedAddress;
+        return this.i18n.error.unauthorized.address;
       case UnauthorizedErrorCode.UNAUTHORIZED_URL:
-        return this.i18n.error.unauthorizedUrl;
+        return this.i18n.error.unauthorized.url;
       case UnauthorizedErrorCode.LOGGED_OUT:
         return this.i18n.error.loggedOut;
       default:
@@ -415,13 +415,13 @@ export class ErrorHandlerService {
       case ForbiddenErrorCode.ILLEGAL_ACTION:
         return this.i18n.error.illegalAction;
       case ForbiddenErrorCode.INVALID_PASSWORD:
-        return this.i18n.error.passwordInvalid((error.passwordType || {}).name);
+        return this.i18n.password.error.invalid((error.passwordType || {}).name);
       case ForbiddenErrorCode.EXPIRED_PASSWORD:
-        return this.i18n.error.passwordExpired;
+        return this.i18n.password.error.expired;
       case ForbiddenErrorCode.TEMPORARILY_BLOCKED:
-        return this.i18n.error.passwordTemporarilyBlocked;
+        return this.i18n.password.error.temporarilyBlocked;
       case ForbiddenErrorCode.INDEFINITELY_BLOCKED:
-        return this.i18n.error.passwordIndefinitelyBlocked;
+        return this.i18n.password.error.indefinitelyBlocked;
       default:
         return this.i18n.error.permission;
     }
@@ -476,9 +476,9 @@ export class ErrorHandlerService {
     switch (error.code) {
       case ForgottenPasswordErrorCode.INVALID_SECURITY_ANSWER:
         if (error.keyInvalidated) {
-          return this.i18n.error.securityAnswerDisabled;
+          return this.i18n.error.securityAnswer.disabled;
         } else {
-          return this.i18n.error.securityAnswer;
+          return this.i18n.error.securityAnswer.invalid;
         }
       default:
         return this.general;

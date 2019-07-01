@@ -54,7 +54,7 @@ export class ForgotPasswordComponent extends BasePageComponent<DataForLogin> imp
     params.user = ApiHelper.escapeNumeric(params.user);
     this.addSub(this.authService.forgottenPasswordRequest({ body: params })
       .subscribe(() => {
-        this.notification.info(this.i18n.auth.password.forgotten.email);
+        this.notification.info(this.i18n.password.forgotten.email);
         this.cancel();
       }));
   }
