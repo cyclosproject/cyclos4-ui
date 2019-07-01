@@ -191,7 +191,7 @@
     "banking.paySelf": "Auto pago",
     "banking.scheduledPayments": "Pagos agendados",
     "banking.authorizations": "Pagos con autorización",
-    "banking.transfersOverview": "Transfers overview",
+    "banking.transfersOverview": "Visión general de Transferencias",
     "operators": "Operadores",
     "operators.operators": "Operadores",
     "operators.register": "Registrar operador",
@@ -305,7 +305,7 @@
     },
     "action": {
       "change": "Modificar",
-      "change.done": "Su {type} fue modificada",
+      "change.done": "Su {type} fue modificado",
       "change.generated.confirm": "Se generará un nuevo {type}, y el valor generado será mostrado por única vez. Está seguro de continuar?",
       "change.generated.done": "El valor para {type} es <data>{value}</data>. \n Por favor, asegúrese de memorizarlo o documentarlo adecuadamente ya que no le será mostrado nuevamente.",
       "unblock": "Desbloquear",
@@ -324,7 +324,7 @@
   "registrationAgreement": "Términos de acuerdo",
   "pendingAgreements": {
     "title": "Términos de acuerdo actualizados",
-    "mobileTitle": "Terminos de acuerdo actualizados",
+    "mobileTitle": "Términos de acuerdo actualizados",
     "message": "Los términos de acuerdo ha sido actualizados.\n\nUsted debe aceptar los nuevos términos de acuerdo para poder continuar.",
     "agree": "He aceptado los siguientes términos de acuerdo: {agreements}"
   },
@@ -397,7 +397,7 @@
     "amount": "Monto",
     "type": "Tipo de transacción",
     "fromTo": "De / para",
-    "fromTo.text": "{from} to {to}",
+    "fromTo.text": "{from} a {to}",
     "from": "De",
     "to": "Para",
     "account": "Cuenta",
@@ -494,7 +494,7 @@
       "details.transfer": "Detalle de la transferencia",
       "parentTransfer": "Transferencia principal",
       "childTransfers": "Transferencias generadas",
-      "transfersOverview": "Transfers overview"
+      "transfersOverview": "Visión general de Transferencias"
     },
     "mobileTitle": {
       "paymentSystemToSystem": "Pago a sistema",
@@ -518,7 +518,7 @@
       "details.transfer": "Transferencia",
       "parentTransfer": "Transferencia original",
       "childTransfers": "Transferencias generadas",
-      "transfersOverview": "Transfers overview"
+      "transfersOverview": "Visión general de Transferencias"
     },
     "viewAuthorizations": "Ver autorizaciones",
     "viewThisTransfer": "Ver transferencia",
@@ -686,11 +686,11 @@
     "contact": "Contacto",
     "profile": {
       "noPermission": "No posee permisos suficientes para ver el perfil de este usuario",
-      "showActions": "Show actions",
-      "hideActions": "Hide actions",
-      "banking": "Banking",
+      "showActions": "Mostrar acciones",
+      "hideActions": "Ocultar acciones",
+      "banking": "Banca",
       "management": "Administración",
-      "edit": "Edit profile",
+      "edit": "Editar perfil",
       "managePasswords": "Administrar contraseñas",
       "addContact": "Agregar a contactos",
       "addContact.done": "{user} ha sido agregado a su lista de contactos",
@@ -702,8 +702,8 @@
       "payAsUserToUser": "Pagos de usuario a usuario",
       "payAsUserToSelf": "Pago a sí mismo",
       "viewAccount": "Ver {account}",
-      "viewScheduledPayments": "View scheduled payments",
-      "viewAuthorizedPayments": "View payment authorizations",
+      "viewScheduledPayments": "Ver pagos agendados",
+      "viewAuthorizedPayments": "Ver autorizaciones de pago",
       "viewAds": "Ver anuncios",
       "viewBrokerings": "Ver miembros asignados",
       "viewOperators": "Ver operadores",
@@ -842,8 +842,8 @@
       "group.operator": "Grupo de operador",
       "change.user": "Cambio de grupo",
       "change.operator": "Cambio de grupo",
-      "history.user": "Group history",
-      "history.operator": "Group history"
+      "history.user": "Histórial de Grupos",
+      "history.operator": "Histórial de Grupos"
     }
   },
   "phone": {
@@ -861,9 +861,9 @@
     "enabledSms": "Habilitado para SMS",
     "error": {
       "verify": {
-        "expired": "The verification code was not sent or has expired.<br> Please, send the code again to your phone and restart the process.",
-        "invalid": "Invalid verification code",
-        "maxAttempts": "You have exceeded the number of allowed attempts.<br>Please, send the code again to your phone and restart the process."
+        "expired": "El código de verificación no fue enviado o ha caducado.\nPor Favor, envíe el código de verificación nuevamente a su teléfono y reinicie el proceso.",
+        "invalid": "Código de verificación inválido",
+        "maxAttempts": "Ha excedido el número de intentos permitidos.\nPor favor, envíe un nuevo el código de verificación a su teléfono nuevamente y reinicie el proceso."
       }
     },
     "verify": {
