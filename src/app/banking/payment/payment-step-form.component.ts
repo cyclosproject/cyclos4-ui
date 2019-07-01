@@ -75,17 +75,18 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
     if (this.fixedDestination) {
       // When there's a fixed destination, the payment types are already present in the initial data
       this.setFetchedPaymentTypes(this.data);
+    } else {
+      // Whenever the subject changes, fetch the payment types, if needed
+      this.addSub(this.form.get('subject').valueChanges
+        .pipe(distinctUntilChanged(), debounceTime(ApiHelper.DEBOUNCE_TIME))
+        .subscribe(() => this.fetchPaymentTypes())
+      );
     }
 
     // Whenever the account changes, filter out the available types
     this.addSub(this.form.get('account').valueChanges
       .pipe(distinctUntilChanged(), debounceTime(ApiHelper.DEBOUNCE_TIME))
       .subscribe(() => this.adjustPaymentTypes())
-    );
-    // Whenever the subject, fetch the payment data for that new subject
-    this.addSub(this.form.get('subject').valueChanges
-      .pipe(distinctUntilChanged(), debounceTime(ApiHelper.DEBOUNCE_TIME))
-      .subscribe(() => this.fetchPaymentTypes())
     );
     // Whenever the payment type changes, fetch the payment type data for it
     this.addSub(this.form.get('type').valueChanges
@@ -108,9 +109,6 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
     // Clear the cached data when the destination user changes
     this.dataCache.clear();
     this.fetchedPaymentTypes = null;
-
-    // Also update the form, rendering it invalid until the new data is fetched
-    this.form.patchValue({ type: null });
 
     // Get the payment subject
     const value = this.form.value;

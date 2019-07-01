@@ -2,13 +2,12 @@ import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/c
 import { CustomFieldDetailed, UserOperatorsDataForSearch, UserOperatorsQueryFilters } from 'app/api/models';
 import { UserResult } from 'app/api/models/user-result';
 import { OperatorsService } from 'app/api/services/operators.service';
+import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { empty } from 'app/shared/helper';
 import { ResultType } from 'app/shared/result-type';
-import { cloneDeep } from 'lodash';
 import { BehaviorSubject } from 'rxjs';
-import { HeadingAction } from 'app/shared/action';
 
 
 type UserOperatorsSearchParams = UserOperatorsQueryFilters & { user: string };
@@ -61,7 +60,7 @@ export class SearchUserOperatorsComponent
   }
 
   protected toSearchParams(value: any): UserOperatorsSearchParams {
-    const query = cloneDeep(value);
+    const query = value;
     query.user = this.param;
     query.profileFields = this.fieldHelper.toCustomValuesFilter(query.customValues);
     delete value.customValues;

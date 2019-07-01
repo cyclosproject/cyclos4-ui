@@ -54,18 +54,18 @@ export class ManagePasswordsComponent
     this.multiple = data.passwords.length > 1;
     if (this.self) {
       this.title = this.multiple
-        ? this.i18n.auth.password.title.manageMultipleSelf
-        : this.i18n.auth.password.title.manageSingleSelf;
+        ? this.i18n.password.title.manageMultipleSelf
+        : this.i18n.password.title.manageSingleSelf;
       this.mobileTitle = this.multiple
-        ? this.i18n.auth.password.mobileTitle.manageMultipleSelf
-        : this.i18n.auth.password.mobileTitle.manageSingleSelf;
+        ? this.i18n.password.mobileTitle.manageMultipleSelf
+        : this.i18n.password.mobileTitle.manageSingleSelf;
     } else {
       this.title = this.multiple
-        ? this.i18n.auth.password.title.manageMultipleUser
-        : this.i18n.auth.password.title.manageSingleUser;
+        ? this.i18n.password.title.manageMultipleUser
+        : this.i18n.password.title.manageSingleUser;
       this.mobileTitle = this.multiple
-        ? this.i18n.auth.password.mobileTitle.manageMultipleUser
-        : this.i18n.auth.password.mobileTitle.manageSingleUser;
+        ? this.i18n.password.mobileTitle.manageMultipleUser
+        : this.i18n.password.mobileTitle.manageSingleUser;
     }
 
     if (data.dataForSetSecurityAnswer) {
@@ -80,32 +80,32 @@ export class ManagePasswordsComponent
     const actions: Action[] = [];
     const permissions = password.permissions || {};
     if (permissions.change) {
-      actions.push(new Action(this.i18n.auth.password.action.change, () => {
+      actions.push(new Action(this.i18n.password.action.change, () => {
         this.change(password);
       }));
     }
     if (permissions.changeGenerated) {
-      actions.push(new Action(this.i18n.auth.password.action.change, () => {
+      actions.push(new Action(this.i18n.password.action.change, () => {
         this.changeGenerated(password);
       }));
     }
     if (permissions.unblock) {
-      actions.push(new Action(this.i18n.auth.password.action.unblock, () => {
+      actions.push(new Action(this.i18n.password.action.unblock, () => {
         this.unblock(password);
       }));
     }
     if (permissions.generate) {
-      actions.push(new Action(this.i18n.auth.password.action.activate, () => {
+      actions.push(new Action(this.i18n.password.action.activate, () => {
         this.generate(password);
       }));
     }
     if (permissions.enable) {
-      actions.push(new Action(this.i18n.auth.password.action.enable, () => {
+      actions.push(new Action(this.i18n.password.action.enable, () => {
         this.enable(password);
       }));
     }
     if (permissions.disable) {
-      actions.push(new Action(this.i18n.auth.password.action.disable, () => {
+      actions.push(new Action(this.i18n.password.action.disable, () => {
         this.disable(password);
       }));
     }
@@ -118,7 +118,7 @@ export class ManagePasswordsComponent
       return;
     }
     this.addSub(this.passwordsService.setSecurityAnswer({ body: this.securityAnswer.value }).subscribe(() => {
-      this.notification.snackBar(this.i18n.auth.securityQuestion.set);
+      this.notification.snackBar(this.i18n.securityQuestion.set);
       this.reload();
     }));
   }
@@ -126,21 +126,21 @@ export class ManagePasswordsComponent
   status(password: PasswordStatusAndActions) {
     switch (password.status) {
       case PasswordStatusEnum.ACTIVE:
-        return this.i18n.auth.password.status.active;
+        return this.i18n.password.status.active;
       case PasswordStatusEnum.DISABLED:
-        return this.i18n.auth.password.status.disabled;
+        return this.i18n.password.status.disabled;
       case PasswordStatusEnum.EXPIRED:
-        return this.i18n.auth.password.status.expired;
+        return this.i18n.password.status.expired;
       case PasswordStatusEnum.INDEFINITELY_BLOCKED:
-        return this.i18n.auth.password.status.indefinitelyBlocked;
+        return this.i18n.password.status.indefinitelyBlocked;
       case PasswordStatusEnum.NEVER_CREATED:
-        return this.i18n.auth.password.status.neverCreated;
+        return this.i18n.password.status.neverCreated;
       case PasswordStatusEnum.PENDING:
-        return this.i18n.auth.password.status.pending;
+        return this.i18n.password.status.pending;
       case PasswordStatusEnum.RESET:
-        return this.i18n.auth.password.status.reset;
+        return this.i18n.password.status.reset;
       case PasswordStatusEnum.TEMPORARILY_BLOCKED:
-        return this.i18n.auth.password.status.temporarilyBlocked;
+        return this.i18n.password.status.temporarilyBlocked;
     }
   }
 
@@ -156,22 +156,22 @@ export class ManagePasswordsComponent
     });
     const component = ref.content as ChangePasswordDialogComponent;
     this.addSub(component.done.subscribe(() => {
-      this.notification.snackBar(this.i18n.auth.password.action.changeDone(password.type.name));
+      this.notification.snackBar(this.i18n.password.action.changeDone(password.type.name));
       this.reload();
     }));
   }
 
   private generate(password: PasswordStatusAndActions) {
     this.notification.confirm({
-      title: this.i18n.auth.password.action.activate,
-      message: this.i18n.auth.password.action.activateConfirm(password.type.name),
+      title: this.i18n.password.action.activate,
+      message: this.i18n.password.action.activateConfirm(password.type.name),
       callback: () => this.doGenerate(password)
     });
   }
 
   private doGenerate(password: PasswordStatusAndActions) {
     this.addSub(this.passwordsService.generatePassword({ type: password.type.id }).subscribe(newValue => {
-      this.notification.info(this.i18n.auth.password.action.changeGeneratedDone({
+      this.notification.info(this.i18n.password.action.changeGeneratedDone({
         type: password.type.name,
         value: newValue
       }));
@@ -188,8 +188,8 @@ export class ManagePasswordsComponent
 
   private changeGenerated(password: PasswordStatusAndActions) {
     this.notification.confirm({
-      title: this.i18n.auth.password.action.change,
-      message: this.i18n.auth.password.action.changeGeneratedConfirm(password.type.name),
+      title: this.i18n.password.action.change,
+      message: this.i18n.password.action.changeGeneratedConfirm(password.type.name),
       createDeviceConfirmation: this.createDeviceConfirmation(password),
       passwordInput: this.data.confirmationPasswordInput,
       callback: res => this.doChangeGenerated(password, res.confirmationPassword)
@@ -202,7 +202,7 @@ export class ManagePasswordsComponent
       confirmationPassword: confirmationPassword
     }).subscribe(newValue => {
       this.notification.info(
-        this.i18n.auth.password.action.changeGeneratedDone({
+        this.i18n.password.action.changeGeneratedDone({
           type: password.type.name,
           value: newValue
         }));
@@ -212,8 +212,8 @@ export class ManagePasswordsComponent
 
   private unblock(password: PasswordStatusAndActions) {
     this.notification.confirm({
-      title: this.i18n.auth.password.action.unblock,
-      message: this.i18n.auth.password.action.unblockConfirm(password.type.name),
+      title: this.i18n.password.action.unblock,
+      message: this.i18n.password.action.unblockConfirm(password.type.name),
       callback: () => this.doUnblock(password)
     });
   }
@@ -223,15 +223,15 @@ export class ManagePasswordsComponent
       user: this.param,
       type: password.type.id
     }).subscribe(() => {
-      this.notification.snackBar(this.i18n.auth.password.action.unblockDone(password.type.name));
+      this.notification.snackBar(this.i18n.password.action.unblockDone(password.type.name));
       this.reload();
     }));
   }
 
   private enable(password: PasswordStatusAndActions) {
     this.notification.confirm({
-      title: this.i18n.auth.password.action.enable,
-      message: this.i18n.auth.password.action.enableConfirm(password.type.name),
+      title: this.i18n.password.action.enable,
+      message: this.i18n.password.action.enableConfirm(password.type.name),
       callback: () => this.doEnable(password)
     });
   }
@@ -241,15 +241,15 @@ export class ManagePasswordsComponent
       user: this.param,
       type: password.type.id
     }).subscribe(() => {
-      this.notification.snackBar(this.i18n.auth.password.action.enableDone(password.type.name));
+      this.notification.snackBar(this.i18n.password.action.enableDone(password.type.name));
       this.reload();
     }));
   }
 
   private disable(password: PasswordStatusAndActions) {
     this.notification.confirm({
-      title: this.i18n.auth.password.action.disable,
-      message: this.i18n.auth.password.action.disableConfirm(password.type.name),
+      title: this.i18n.password.action.disable,
+      message: this.i18n.password.action.disableConfirm(password.type.name),
       callback: () => this.doDisable(password)
     });
   }
@@ -259,7 +259,7 @@ export class ManagePasswordsComponent
       user: this.param,
       type: password.type.id
     }).subscribe(() => {
-      this.notification.snackBar(this.i18n.auth.password.action.disableDone(password.type.name));
+      this.notification.snackBar(this.i18n.password.action.disableDone(password.type.name));
       this.reload();
     }));
   }

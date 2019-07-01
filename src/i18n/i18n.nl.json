@@ -130,10 +130,7 @@
       "kilometersFrom": "km from",
       "milesFrom": "miles from",
       "current": "Current location",
-      "myAddress": "My address",
-      "error.denied": "No permission to get the current location. Please, grant this permission in your browser.",
-      "error.unavailable": "The current location is unavailable",
-      "error.general": "Error getting the current location"
+      "myAddress": "My address"
     }
   },
   "error": {
@@ -146,25 +143,24 @@
     "validation": "De actie kan niet worden verwerkt, omdat er validatiefouten zijn",
     "staleEntity": "Deze gegevens kunnen niet worden opgeslagen omdat het is gewijzigd door iemand anders.<br>Laad de pagina opnieuw en herstart de bewerking.",
     "removeDataInUse": "This item cannot be removed because it is currently in use.",
-    "notFound": "De locatie die u hebt getypt of geprobeerd te openen is niet gevonden",
-    "notFound.type": "De gevraagde gegevens kunnen niet worden gevonden: {type}",
-    "notFound.typeKey": "De gevraagde gegevens kunnen niet worden gevonden: {type} met de sleutel {key}",
+    "notFound": {
+      "location": "De locatie die u hebt getypt of geprobeerd te openen is niet gevonden",
+      "type": "De gevraagde gegevens kunnen niet worden gevonden: {type}",
+      "typeKey": "De gevraagde gegevens kunnen niet worden gevonden: {type} met de sleutel {key}"
+    },
     "login": "De opgegeven inlognaam of wachtwoord is onjuist. Alstublieft, probeer het opnieuw.",
-    "password.disabled": "Uw wachtwoord is uitgeschakeld. Neem dan contact op met de administratie.",
-    "password.reset": "Uw wachtwoord is hersteld.",
-    "password.indefinitelyBlocked": "Uw wachtwoord is uitgeschakeld door de overschrijding van het maximale aantal pogingen Gelieve contact op te nemen met de administratie.",
-    "password.temporarilyBlocked": "Uw wachtwoord wordt tijdelijk geblokkeerd door overschrijding van het maximaal aantal pogingen. Probeer het later opnieuw.",
-    "password.expired": "Uw wachtwoord is verlopen. Neem dan contact op met de administratie.",
-    "password.pending": "Uw wachtwoord is in afwachting van de activering. Neem contact op met de administratie.",
-    "password.invalid": "Wachtwoord type: {type} is ongeldig",
     "remoteAddressBlocked": "Uw IP-adres is geblokkeerd voor het overschrijden van inlog pogingen",
     "permission": "Je hebt niet de voldoende rechten om de gevraagde actie uit te voeren",
-    "unauthorized.address": "Het is vanaf uw locatie niet toegestaan om in te loggen",
-    "unauthorized.url": "Toegang is niet toegestaan voor deze URL",
+    "unauthorized": {
+      "address": "Het is vanaf uw locatie niet toegestaan om in te loggen",
+      "url": "Toegang is niet toegestaan voor deze URL"
+    },
     "loggedOut": "De verbinding is verbroken. Gelieve in te loggen opnieuw in te loggen.",
     "otp": "Er is een fout opgetreden bij het versturen van het wachtwoord. Gelieve later opnieuw te proberen.",
-    "securityAnswer": "Het veiligheid antwoord is ongeldig",
-    "securityAnswer.disabled": "Bij overschrijding van het aantal antwoordpogingen, dit verzoek is afgebroken. Neem dan contact op met de administratie",
+    "securityAnswer": {
+      "invalid": "Het veiligheid antwoord is ongeldig",
+      "disabled": "Bij overschrijding van het aantal antwoordpogingen, dit verzoek is afgebroken. Neem dan contact op met de administratie"
+    },
     "illegalAction": "De actie die u probeert uit te voeren, is ongeldig",
     "field": {
       "invalid": "Dit veld is ongeldig",
@@ -175,6 +171,11 @@
       "date": "Ongeldige datum",
       "minDate": "Moet {min} of na",
       "maxDate": "Moet {max} of voor"
+    },
+    "geolocation": {
+      "denied": "No permission to get the current location. Please, grant this permission in your browser.",
+      "unavailable": "The current location is unavailable",
+      "general": "Error getting the current location"
     }
   },
   "menu": {
@@ -215,117 +216,123 @@
     "personal.settings": "Settings",
     "content": "Informatie"
   },
-  "auth": {
-    "login": {
-      "title": "Login",
-      "mobileTitle": "Login",
-      "message": "U kunt inloggen met uw gebruikersnaam en wachtwoord",
-      "disconnected": "U is verbroken.<br>Gelieve in te loggen om te geven de gevraagde pagina.",
+  "login": {
+    "title": "Login",
+    "mobileTitle": "Login",
+    "message": "U kunt inloggen met uw gebruikersnaam en wachtwoord",
+    "disconnected": "U is verbroken.<br>Gelieve in te loggen om te geven de gevraagde pagina.",
+    "principal": "Gebruiker",
+    "forgotPassword": "Wachtwoord vergeten?",
+    "register": "Geen gebruiker? Registreer u dan hier."
+  },
+  "password": {
+    "confirmationMessage": "Levering uw {passwordType} om deze handeling te bevestigen",
+    "confirm.noPassword": "Om te bevestigen dat u nodig {passwordType}, maar je hebt geen",
+    "confirm.mode": "Confirm with",
+    "confirm.mode.device": "Mobile phone",
+    "confirm.mode.password": "Password",
+    "confirm.device.active": "In order to confirm, scan this QR-code with your mobile phone",
+    "confirm.device.none": "In order to confirm you must have a trusted mobile phone but you do not have any",
+    "confirm.deviceOrPassword.active": "In order to confirm, either scan this QR-code with your mobile phone or supply your {password}",
+    "confirm.deviceOrPassword.none": "In order to confirm you must have a trusted mobile phone or supply your {password} but you do not have any",
+    "confirm.deviceOrOtp.noMediums": "In order to confirm you need either a trusted mobile phone (and you have none) or a confirmation password, but there are no possible mediums to receive it.<br>Please, contact the administration.",
+    "confirm.deviceOrOtp.active": "In order to confirm, either scan this QR-code with your mobile phone, use the previously sent confirmation password or request a new one",
+    "confirm.deviceOrOtp.request": "In order to confirm, either scan this QR-code with your mobile phone, or request a confirmation password below",
+    "confirm.otp.noMediums": "Om er zeker van u een bevestiging wachtwoord, maar er zijn geen mogelijke media om het te ontvangen.<br>Neem dan contact op met de administratie.",
+    "confirm.otp.active": "U kunt gebruik maken van de eerder verzonden bevestiging wachtwoord of een nieuwe aanvragen",
+    "confirm.otp.request": "Gelieve te vragen om een bevestiging wachtwoord hieronder in om te bevestigen",
+    "otp.sent": "Het wachtwoord is verstuurd naar {dest}",
+    "otp.receiveBy": "Get by {medium}",
+    "oldPassword": "Oud wachtwoord",
+    "newPassword": "Nieuw wachtwoord",
+    "passwordConfirmation": "Bevestiging van het wachtwoord",
+    "error": {
+      "disabled": "Uw wachtwoord is uitgeschakeld. Neem dan contact op met de administratie.",
+      "reset": "Uw wachtwoord is hersteld.",
+      "indefinitelyBlocked": "Uw wachtwoord is uitgeschakeld door de overschrijding van het maximale aantal pogingen Gelieve contact op te nemen met de administratie.",
+      "temporarilyBlocked": "Uw wachtwoord wordt tijdelijk geblokkeerd door overschrijding van het maximaal aantal pogingen. Probeer het later opnieuw.",
+      "expired": "Uw wachtwoord is verlopen. Neem dan contact op met de administratie.",
+      "pending": "Uw wachtwoord is in afwachting van de activering. Neem contact op met de administratie.",
+      "invalid": "Wachtwoord type: {type} is ongeldig"
+    },
+    "title": {
+      "change.self": "Uw wachtwoord wijzigen",
+      "change.user": "Change user password",
+      "forgotten": "Recover your password",
+      "manage.single.self": "Het beheer van uw wachtwoord",
+      "manage.multiple.self": "Het beheren van uw wachtwoorden",
+      "manage.single.user": "Manage user password",
+      "manage.multiple.user": "Manage user passwords",
+      "securityAnswer": "Set your security answer"
+    },
+    "mobileTitle": {
+      "change.self": "Password change",
+      "change.user": "Password change",
+      "forgotten": "Password recovery",
+      "manage.single.self": "Password",
+      "manage.multiple.self": "Passwords",
+      "manage.single.user": "User password",
+      "manage.multiple.user": "User passwords",
+      "securityAnswer": "Security answer"
+    },
+    "forgotten": {
+      "preface": "Hier kunt u uw wachtwoord herstellen. Vul uw gebruikersnaam hieronder in. U kunt een van de volgende handelingen uit:",
       "principal": "Gebruiker",
-      "password": "Wachtwoord",
-      "forgotPassword": "Wachtwoord vergeten?",
-      "register": "Geen gebruiker? Registreer u dan hier."
+      "captcha": "Type de karakters hieronder",
+      "email": "U ontvangt binnenkort een e-mailbericht met uw gebruikersnaam en instructies hoe u uw wachtwoord kan resetten",
+      "generated.message": "Zodra u dit hebt ingediend, wordt een nieuw wachtwoord gegenereerd en verzonden naar uw e-mail adres",
+      "generated.done": "U ontvangt binnenkort een e-mail met uw nieuwe wachtwoord.",
+      "manual.done": "Uw wachtwoord is met succes gewijzigd. U kunt het nu gebruiken om in te loggen."
     },
-    "password": {
-      "confirmationMessage": "Levering uw {passwordType} om deze handeling te bevestigen",
-      "confirm.noPassword": "Om te bevestigen dat u nodig {passwordType}, maar je hebt geen",
-      "confirm.mode": "Confirm with",
-      "confirm.mode.device": "Mobile phone",
-      "confirm.mode.password": "Password",
-      "confirm.device.active": "In order to confirm, scan this QR-code with your mobile phone",
-      "confirm.device.none": "In order to confirm you must have a trusted mobile phone but you do not have any",
-      "confirm.deviceOrPassword.active": "In order to confirm, either scan this QR-code with your mobile phone or supply your {password}",
-      "confirm.deviceOrPassword.none": "In order to confirm you must have a trusted mobile phone or supply your {password} but you do not have any",
-      "confirm.deviceOrOtp.noMediums": "In order to confirm you need either a trusted mobile phone (and you have none) or a confirmation password, but there are no possible mediums to receive it.<br>Please, contact the administration.",
-      "confirm.deviceOrOtp.active": "In order to confirm, either scan this QR-code with your mobile phone, use the previously sent confirmation password or request a new one",
-      "confirm.deviceOrOtp.request": "In order to confirm, either scan this QR-code with your mobile phone, or request a confirmation password below",
-      "confirm.otp.noMediums": "Om er zeker van u een bevestiging wachtwoord, maar er zijn geen mogelijke media om het te ontvangen.<br>Neem dan contact op met de administratie.",
-      "confirm.otp.active": "U kunt gebruik maken van de eerder verzonden bevestiging wachtwoord of een nieuwe aanvragen",
-      "confirm.otp.request": "Gelieve te vragen om een bevestiging wachtwoord hieronder in om te bevestigen",
-      "otp.sent": "Het wachtwoord is verstuurd naar {dest}",
-      "otp.receiveBy": "Get by {medium}",
-      "oldPassword": "Oud wachtwoord",
-      "newPassword": "Nieuw wachtwoord",
-      "passwordConfirmation": "Bevestiging van het wachtwoord",
-      "title": {
-        "change.self": "Uw wachtwoord wijzigen",
-        "change.user": "Change user password",
-        "forgotten": "Recover your password",
-        "manage.single.self": "Het beheer van uw wachtwoord",
-        "manage.multiple.self": "Het beheren van uw wachtwoorden",
-        "manage.single.user": "Manage user password",
-        "manage.multiple.user": "Manage user passwords",
-        "securityAnswer": "Set your security answer"
-      },
-      "mobileTitle": {
-        "change.self": "Password change",
-        "change.user": "Password change",
-        "forgotten": "Password recovery",
-        "manage.single.self": "Password",
-        "manage.multiple.self": "Passwords",
-        "manage.single.user": "User password",
-        "manage.multiple.user": "User passwords",
-        "securityAnswer": "Security answer"
-      },
-      "forgotten": {
-        "preface": "Hier kunt u uw wachtwoord herstellen. Vul uw gebruikersnaam hieronder in. U kunt een van de volgende handelingen uit:",
-        "principal": "Gebruiker",
-        "captcha": "Type de karakters hieronder",
-        "email": "U ontvangt binnenkort een e-mailbericht met uw gebruikersnaam en instructies hoe u uw wachtwoord kan resetten",
-        "generated.message": "Zodra u dit hebt ingediend, wordt een nieuw wachtwoord gegenereerd en verzonden naar uw e-mail adres",
-        "generated.done": "U ontvangt binnenkort een e-mail met uw nieuwe wachtwoord.",
-        "manual.done": "Uw wachtwoord is met succes gewijzigd. U kunt het nu gebruiken om in te loggen."
-      },
-      "expired": {
-        "preface": "Uw {type} is verlopen.",
-        "message.manual": "Om door te kunnen gaan, moet u deze wijzigen.",
-        "message.generated": "Om verder te gaan, een nieuwe waarde moet worden gegenereerd.<br>Deze waarde wordt slechts eenmaal weergegeven, dus zorg ervoor dat u ofwel te onthouden of op te schrijven.",
-        "generatedValue": "De waarde voor {type} is <data>{value}</data>.<br>Deze waarde zal niet opnieuw worden weergegeven, dus zorg ervoor dat u ofwel te onthouden of op te schrijven.",
-        "generateNew": "Het genereren van nieuwe",
-        "changed": "Uw {type} is gewijzigd"
-      },
-      "statusSince": "Sinds {date}",
-      "status": {
-        "active": "Actief",
-        "disabled": "Geblokkeerd",
-        "expired": "Verlopen",
-        "indefinitelyBlocked": "Geblokkeerd",
-        "neverCreated": "Nooit gecreëerd",
-        "pending": "In behandeling",
-        "reset": "Reset",
-        "temporarilyBlocked": "Tijdelijk geblokkeerd"
-      },
-      "action": {
-        "change": "Aanpassen",
-        "change.done": "Uw {type} is gewijzigd",
-        "change.generated.confirm": "Dit zal het genereren van een nieuwe {type}, en de waarde zal weergegeven worden slechts eenmaal. Bent u zeker?",
-        "change.generated.done": "De waarde voor {type} is <data>{value}</data>.<br>Zorg ervoor om het te onthouden, want het zal niet opnieuw worden weergegeven.",
-        "unblock": "Deblokkeren",
-        "unblock.confirm": "Weet u zeker dat de blokkering van uw {type}?",
-        "unblock.done": "Uw {type} werd gedeblokkeerd",
-        "activate": "Activeren",
-        "activate.confirm": "Dit zal activeren {type}, en de gegenereerde waarde zal weergegeven worden slechts eenmaal. Bent u zeker?",
-        "enable": "Inschakelen",
-        "enable.confirm": "Bent u ervoor om uw {type}?",
-        "enable.done": "Uw {type} werd ingeschakeld",
-        "disable": "Blokkeer",
-        "disable.confirm": "Bent u zeker dat u voor het uitschakelen van uw {type}?",
-        "disable.done": "Uw {type} was uitgeschakeld"
-      }
+    "expired": {
+      "preface": "Uw {type} is verlopen.",
+      "message.manual": "Om door te kunnen gaan, moet u deze wijzigen.",
+      "message.generated": "Om verder te gaan, een nieuwe waarde moet worden gegenereerd.<br>Deze waarde wordt slechts eenmaal weergegeven, dus zorg ervoor dat u ofwel te onthouden of op te schrijven.",
+      "generatedValue": "De waarde voor {type} is <data>{value}</data>.<br>Deze waarde zal niet opnieuw worden weergegeven, dus zorg ervoor dat u ofwel te onthouden of op te schrijven.",
+      "generateNew": "Het genereren van nieuwe",
+      "changed": "Uw {type} is gewijzigd"
     },
-    "registrationAgreement": "Registratie akkoord",
-    "pendingAgreements": {
-      "title": "Bijgewerkt overeenkomst",
-      "mobileTitle": "Updated agreement",
-      "message": "De registratie overeenkomst is bijgewerkt.<br><br>om verder te kunnen gaan, moet je akkoord gaan met de nieuwe voorwaarden.",
-      "agree": "Ik ben het eens met de volgende registratie overeenkomsten: {agreements}"
+    "statusSince": "Sinds {date}",
+    "status": {
+      "active": "Actief",
+      "disabled": "Geblokkeerd",
+      "expired": "Verlopen",
+      "indefinitelyBlocked": "Geblokkeerd",
+      "neverCreated": "Nooit gecreëerd",
+      "pending": "In behandeling",
+      "reset": "Reset",
+      "temporarilyBlocked": "Tijdelijk geblokkeerd"
     },
-    "securityQuestion": {
-      "message": "The security question is required in case you need to reset your password. Once set, if you need to change it, contact the administration.",
-      "question": "Beveiligingsvraag",
-      "answer": "Uw antwoord",
-      "set": "Your security answer was set"
+    "action": {
+      "change": "Aanpassen",
+      "change.done": "Uw {type} is gewijzigd",
+      "change.generated.confirm": "Dit zal het genereren van een nieuwe {type}, en de waarde zal weergegeven worden slechts eenmaal. Bent u zeker?",
+      "change.generated.done": "De waarde voor {type} is <data>{value}</data>.<br>Zorg ervoor om het te onthouden, want het zal niet opnieuw worden weergegeven.",
+      "unblock": "Deblokkeren",
+      "unblock.confirm": "Weet u zeker dat de blokkering van uw {type}?",
+      "unblock.done": "Uw {type} werd gedeblokkeerd",
+      "activate": "Activeren",
+      "activate.confirm": "Dit zal activeren {type}, en de gegenereerde waarde zal weergegeven worden slechts eenmaal. Bent u zeker?",
+      "enable": "Inschakelen",
+      "enable.confirm": "Bent u ervoor om uw {type}?",
+      "enable.done": "Uw {type} werd ingeschakeld",
+      "disable": "Blokkeer",
+      "disable.confirm": "Bent u zeker dat u voor het uitschakelen van uw {type}?",
+      "disable.done": "Uw {type} was uitgeschakeld"
     }
+  },
+  "registrationAgreement": "Registratie akkoord",
+  "pendingAgreements": {
+    "title": "Bijgewerkt overeenkomst",
+    "mobileTitle": "Bijgewerkt overeenkomst",
+    "message": "De registratie overeenkomst is bijgewerkt.<br><br>om verder te kunnen gaan, moet je akkoord gaan met de nieuwe voorwaarden.",
+    "agree": "Ik ben het eens met de volgende registratie overeenkomsten: {agreements}"
+  },
+  "securityQuestion": {
+    "message": "The security question is required in case you need to reset your password. Once set, if you need to change it, contact the administration.",
+    "question": "Beveiligingsvraag",
+    "answer": "Uw antwoord",
+    "set": "Your security answer was set"
   },
   "dashboard": {
     "quickAccess": "Snelle toegang",
@@ -808,9 +815,9 @@
       "history.user": "Status history",
       "history.operator": "Status history"
     },
-    "active": "Active",
+    "active": "Actief",
     "blocked": "Access blocked",
-    "disabled": "Disabled",
+    "disabled": "Geblokkeerd",
     "pending": "Pending activation",
     "purged": "Purged (all private data is erased)",
     "removed": "Removed (no private data is erased)"
@@ -852,16 +859,20 @@
     "extensionValue": "ext. {value}",
     "numberExtensionValue": "{number} ext. {extension}",
     "enabledSms": "SMS geactiveerd",
+    "error": {
+      "verify": {
+        "expired": "De verificatie code is niet verzonden of is verlopen.<br> stuur de code opnieuw in om uw telefoon en het proces opnieuw.",
+        "invalid": "Ongeldige verificatie code",
+        "maxAttempts": "Overschrijding van het aantal toegestane pogingen.<br>stuur de code opnieuw in om uw telefoon en het proces opnieuw."
+      }
+    },
     "verify": {
       "title": "Controleer {number} voor SMS",
       "mobileTitle": "Verification",
       "code": "Code",
       "send": "Sturen",
       "message": "Klik op de knop hierboven om het verzenden van verificatie-code naar uw telefoon",
-      "done": "De verificatie code is verzonden naar {number}",
-      "error.expired": "De verificatie code is niet verzonden of is verlopen.<br> stuur de code opnieuw in om uw telefoon en het proces opnieuw.",
-      "error.invalid": "Ongeldige verificatie code",
-      "error.maxAttempts": "Overschrijding van het aantal toegestane pogingen.<br>stuur de code opnieuw in om uw telefoon en het proces opnieuw."
+      "done": "De verificatie code is verzonden naar {number}"
     }
   },
   "address": {

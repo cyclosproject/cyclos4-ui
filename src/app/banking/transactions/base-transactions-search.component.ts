@@ -1,16 +1,14 @@
 import { Injector, OnInit } from '@angular/core';
 import {
   Currency, Image, RecurringPaymentStatusEnum, TransactionDataForSearch,
-  TransactionKind, TransactionResult, TransferFilter, TransactionQueryFilters
+  TransactionKind, TransactionQueryFilters, TransactionResult, TransferFilter
 } from 'app/api/models';
 import { TransactionsService } from 'app/api/services';
+import { BankingHelperService } from 'app/core/banking-helper.service';
 import { TransactionStatusService } from 'app/core/transaction-status.service';
 import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { empty } from 'app/shared/helper';
 import { BehaviorSubject } from 'rxjs';
-import { BankingHelperService } from 'app/core/banking-helper.service';
-
-import { cloneDeep } from 'lodash';
 
 export type TransactionSearchParams = TransactionQueryFilters & {
   owner: string;
@@ -92,7 +90,7 @@ export abstract class BaseTransactionsSearch
   }
 
   protected toSearchParams(value: any): TransactionSearchParams {
-    const params: TransactionSearchParams = cloneDeep(value);
+    const params: TransactionSearchParams = value;
     params.owner = this.param;
     params.accountTypes = value.accountType ? [value.accountType] : null;
     params.transferFilters = value.transferFilter ? [value.transferFilter] : null;
