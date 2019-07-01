@@ -305,7 +305,7 @@
     },
     "action": {
       "change": "Change",
-      "change.done": "Votre {type} a été changé",
+      "change.done": "Votre {type} a changé",
       "change.generated.confirm": "Cela générera un nouveau {type}, et la valeur ne sera affichée qu'une fois. Êtes-vous sûr ?",
       "change.generated.done": "La valeur de {type} est <data> {value} </ data>. <br> Veillez à le mémoriser car il ne sera plus affiché.",
       "unblock": "Débloquer",
@@ -324,7 +324,7 @@
   "registrationAgreement": "Contrat d'inscription",
   "pendingAgreements": {
     "title": "Accord mis à jour",
-    "mobileTitle": "Updated agreement",
+    "mobileTitle": "Accord mis à jour",
     "message": "Le contrat d’enregistrement a été mis à jour. Pour continuer, vous devez accepter les nouveaux termes.",
     "agree": "Je suis d'accord avec les accords d'enregistrement suivants: {agreements}"
   },
@@ -815,9 +815,9 @@
       "history.user": "Status history",
       "history.operator": "Status history"
     },
-    "active": "Active",
+    "active": "Activé",
     "blocked": "Access blocked",
-    "disabled": "Disabled",
+    "disabled": "Désactivé",
     "pending": "Pending activation",
     "purged": "Purged (all private data is erased)",
     "removed": "Removed (no private data is erased)"
