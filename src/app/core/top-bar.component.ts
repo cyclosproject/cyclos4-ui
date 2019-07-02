@@ -64,7 +64,7 @@ export class TopBarComponent extends AbstractComponent implements OnInit, OnChan
     super(injector);
   }
 
-  @Input() user: User;
+  @HostBinding('class.has-user') @Input() user: User;
   @Input() breakpoints: Set<Breakpoint>;
   @Output() toggleSidenav = new EventEmitter<void>();
 
