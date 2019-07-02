@@ -57,6 +57,9 @@
     visibility: hidden;
   }
 }
+:host.has-user .menu-separator {
+  margin-right: $top-bar-item-spacing-medium;
+}
 
 :host ::ng-deep .nav-item .menu-text {
   transition: width ease-in-out 0.4s;
@@ -92,18 +95,6 @@
   icon {
     // The icon is smaller than images. So, to make them have the same visual margin, add this.
     margin-left: -4px;
-  }
-}
-// The marigin before the profile link should depend solely on the menu separator density
-:host ::ng-deep .menu-separator {
-  &.density-spacious + .custom-menus #profile-link {
-    margin-left: $top-bar-item-spacing-spacious - $top-bar-item-spacing-custom * 1.75;
-  }
-  &.density-medium + .custom-menus #profile-link {
-    margin-left: $top-bar-item-spacing-medium - $top-bar-item-spacing-custom * 1.75;
-  }
-  &.density-dense + .custom-menus #profile-link {
-    margin-left: $top-bar-item-spacing-dense - $top-bar-item-spacing-custom * 1.5;
   }
 }
 
