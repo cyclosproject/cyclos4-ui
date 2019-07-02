@@ -17,11 +17,10 @@ export class SearchVouchersComponent
   extends BaseSearchPageComponent<VouchersDataForSearch, VoucherSearchParams, VoucherResult>
   implements OnInit {
 
-  mask: string;
   constructor(
     injector: Injector,
     private voucherService: VouchersService,
-    private bankingHelper: BankingHelperService
+    public bankingHelper: BankingHelperService
   ) {
     super(injector);
   }
@@ -29,10 +28,11 @@ export class SearchVouchersComponent
   ngOnInit() {
     super.ngOnInit();
     this.addSub(this.voucherService.getVouchersDataForSearch({})
-      .subscribe(dataForSearch => {
-        this.data = dataForSearch;
-        this.mask = this.data.mask ? this.data.mask : '';
-      }));
+      .subscribe(dataForSearch => this.data = dataForSearch));
+  }
+  protected onDataInitialized(_data) {
+    super.onDataInitialized(_data);
+    this.headingActions = [this.moreFiltersAction];
   }
 
   protected getFormControlNames(): string[] {
@@ -54,9 +54,12 @@ export class SearchVouchersComponent
     if (value.amountMin || value.amountMax) {
       value['amountRange'] = this.ApiHelper.rangeFilter(value.amountMin, value.amountMax);
     }
-    //if (!value.printed) {
-    //  delete value['printed'];
-    //}
+    if (value.printed === 'all') {
+      delete value['printed'];
+    }
+    if (value.creationType === 'all') {
+      delete value['creationType'];
+    }
 
     delete value['redeemBegin'];
     delete value['redeemEnd'];
@@ -88,5 +91,13 @@ export class SearchVouchersComponent
 
   path(row: VoucherResult): string[] {
     return ['/banking/vouchers/', row.id];
+  }
+
+  showMoreFiltersLabel() {
+    return this.i18n.general.showFilters;
+  }
+
+  showLessFiltersLabel() {
+    return this.i18n.general.hideFilters;
   }
 }

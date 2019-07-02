@@ -632,8 +632,13 @@
       "buyer": "Buyer",
       "payment": "Buy payment"
     },
+    "buyerGroups": "Buyer groups",
+    "redeemerGroups": "Redeemer groups",
     "creationType": "CreationType",
     "cancelAndRefund": "Cancel & refund",
+    "cancelDone": "This voucher has been canceled.",
+    "cancelConfirmation": "Are you sure to cancel this voucher?",
+    "cancelPackConfirmation": "There are other vouchers belonging to the same pack that will be also canceled. Are you sure to continue?",
     "token": "Voucher code"
   },
   "field": {

@@ -6,6 +6,7 @@ import { FieldOption } from 'app/shared/field-option';
 import { BankingHelperService } from 'app/core/banking-helper.service';
 import { BaseComponent } from 'app/shared/base.component';
 import { FormGroup } from '@angular/forms';
+import { HeadingAction } from 'app/shared/action';
 
 @Component({
   selector: 'voucher-filters',
@@ -19,6 +20,8 @@ export class VoucherFiltersComponent extends BaseComponent implements OnInit {
   @Input() heading: string;
   @Input() mobileHeading: string;
   @Input() form: FormGroup;
+  @Input() moreFilters: boolean;
+  @Input() headingActions: HeadingAction[];
 
   mask: string;
   isVoucherSearch: boolean;
@@ -34,6 +37,11 @@ export class VoucherFiltersComponent extends BaseComponent implements OnInit {
     super.ngOnInit();
     this.isUserVoucherSearch = !!this.userData;
     this.isVoucherSearch = !!this.adminData;
+    this.mask = this.data.mask ? this.data.mask : '';
+    this.form.patchValue({
+      creationType: 'all',
+      printed: 'all'
+    });
   }
 
   get data(): (VouchersDataForSearch | UserVouchersDataForSearch) {
@@ -46,8 +54,8 @@ export class VoucherFiltersComponent extends BaseComponent implements OnInit {
 
   get creationTypeOptions(): FieldOption[] {
     const statuses = Object.values(VoucherCreationTypeEnum) as VoucherCreationTypeEnum[];
-    return statuses.map(st => ({ value: st, text: this.bankingHelper.voucherCreationType(st) }))
-      .concat({ value: null, text: this.i18n.general.all });
+    const result = [{ value: 'all', text: this.i18n.general.all }];
+    return result.concat(statuses.map(st => ({ value: st, text: this.bankingHelper.voucherCreationType(st) })));
   }
 
   get userGroups(): Group[] {
@@ -59,5 +67,4 @@ export class VoucherFiltersComponent extends BaseComponent implements OnInit {
       .map(t => t.configuration.currency.decimalDigits)
       .reduce((previous, current, _index, _array) => previous > current ? previous : current);
   }
-
 }

@@ -40,8 +40,9 @@ export class ViewVoucherComponent extends BaseViewPageComponent<VoucherView> imp
       const label = this.data.creationType === VoucherCreationTypeEnum.BOUGHT ?
         this.i18n.voucher.cancelAndRefund : this.i18n.general.cancel;
       actions.push(new HeadingAction('cancel', label, () => {
-        // TODO: CANCEL THE VOUCHER (we don't have api right now)
-        this.notification.warning('It is not implemented yet.', true);
+        this.addSub(this.voucherService.cancelVoucher({ key: this.data.id, confirmationPassword: null }).subscribe(_res =>
+          this.notification.info(this.i18n.voucher.cancelDone, true)
+        ));
       }));
     }
     return actions;
