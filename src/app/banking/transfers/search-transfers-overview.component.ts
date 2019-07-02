@@ -8,7 +8,6 @@ import { BankingHelperService } from 'app/core/banking-helper.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { empty } from 'app/shared/helper';
-import { cloneDeep } from 'lodash';
 import { BehaviorSubject } from 'rxjs';
 
 type TransferSearchParams = TransferQueryFilters & {
@@ -103,7 +102,7 @@ export class SearchTransfersOverviewComponent
   }
 
   toSearchParams(value: any): TransferSearchParams {
-    const query: TransferSearchParams = cloneDeep(value);
+    const query: TransferSearchParams = value;
     query.transferFilters = value.transferFilter == null ? [] : [value.transferFilter.id];
     query.datePeriod = this.bankingHelper.resolveDatePeriod(value);
     query.amountRange = ApiHelper.rangeFilter(value.minAmount, value.maxAmount);
