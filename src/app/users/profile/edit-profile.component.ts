@@ -816,7 +816,8 @@ export class EditProfileComponent
       this.images = [...this.images, ...images];
     }
     this.notification.snackBar(this.i18n.user.imagesChanged, { timeout: IMAGE_MANAGED_TIMEOUT });
-    this.uploadedImages = images;
+    this.uploadedImages = [...(this.uploadedImages || []), ...images];
+    this.changeDetector.detectChanges();
   }
 
   manageImages() {
