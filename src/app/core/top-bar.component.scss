@@ -32,26 +32,33 @@
 .menu-separator {
   opacity: 0.3;
   border-left: 1px solid $top-bar-color;
-  margin: 0 #{$top-bar-item-spacing-spacious * 0.75} 0 $top-bar-item-spacing-spacious;
+  margin: 0 $top-bar-item-spacing-spacious;
   height: 50%;
   width: 0;
 
   &.density-medium {
-    margin: 0 #{$top-bar-item-spacing-medium * 0.75} 0 $top-bar-item-spacing-medium;
+    margin:
+      0 #{$top-bar-item-spacing-medium + $top-bar-item-spacing-custom / 2}
+      0 $top-bar-item-spacing-medium;
   }
 
   &.density-dense {
-    margin: 0 #{$top-bar-item-spacing-dense * 0.75} 0 $top-bar-item-spacing-dense;
+    margin:
+      0 #{$top-bar-item-spacing-dense + $top-bar-item-spacing-custom / 2}
+      0 $top-bar-item-spacing-dense;
   }
 
   &.density-custom {
-    margin: 0 #{$top-bar-item-spacing-custom * 0.75} 0 $top-bar-item-spacing-custom;
+    margin: 0 $top-bar-item-spacing-custom;
   }
 
   &:after {
     content: '.';
     visibility: hidden;
   }
+}
+:host.has-user .menu-separator {
+  margin-right: $top-bar-item-spacing-medium;
 }
 
 :host ::ng-deep .nav-item .menu-text {
@@ -81,6 +88,13 @@
   &.density-custom {
     padding-left: $top-bar-item-spacing-custom;
     padding-right: $top-bar-item-spacing-custom;
+  }
+}
+
+#profile-link {
+  icon {
+    // The icon is smaller than images. So, to make them have the same visual margin, add this.
+    margin-left: -4px;
   }
 }
 
