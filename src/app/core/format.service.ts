@@ -361,7 +361,7 @@ export class FormatService {
       return '';
     }
     currency = (currency || {});
-    const decimals = currency.decimalDigits || 2;
+    const decimals = currency.decimalDigits === 0 ? 0 : currency.decimalDigits || 2;
     const prefix = currency.prefix || '';
     const suffix = currency.suffix || '';
     return prefix + this.formatAsNumber(num, decimals, forceSign) + suffix;
