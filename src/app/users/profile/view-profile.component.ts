@@ -103,6 +103,7 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     const group = permissions.group || {};
     const operators = permissions.operators || {};
     const brokering = permissions.brokering || {};
+    const vouchers = permissions.vouchers || {};
 
     if (this.self) {
       // For the own user, we just show the edit as a top-level action
@@ -153,6 +154,16 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
       if (authorizedPayments.view) {
         this.bankingActions.push(new HeadingAction('assignment_turned_in', this.i18n.user.profile.viewAuthorizedPayments, () => {
           this.router.navigate(['/banking', this.param, 'authorized-payments']);
+        }));
+      }
+      if (vouchers.viewBought) {
+        this.bankingActions.push(new HeadingAction('shopping_cart', this.i18n.user.profile.viewBoughtVouchers, () => {
+          this.router.navigate(['/banking', this.param, 'vouchers', 'bought']);
+        }));
+      }
+      if (vouchers.buy) {
+        this.bankingActions.push(new HeadingAction('shopping_cart', this.i18n.user.profile.buyVouchers, () => {
+          this.router.navigate(['/banking', this.param, 'vouchers', 'buy']);
         }));
       }
       if (profile.editProfile) {
