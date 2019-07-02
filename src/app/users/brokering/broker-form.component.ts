@@ -39,7 +39,6 @@ export class BrokerFormComponent
 
   onDataInitialized(data: BrokerDataForAdd) {
     this.userQuery = {
-      excludeContacts: true,
       roles: [RoleEnum.BROKER],
       usersToExclude: data.brokers.map(b => b.id),
       groups: data.brokerGroups.map(g => g.id)
