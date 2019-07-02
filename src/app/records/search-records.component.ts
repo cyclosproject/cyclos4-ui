@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { HttpResponse } from '@angular/common/http';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
+import { cloneDeep } from 'lodash';
 
 type RecordSearchParams = RecordQueryFilters & { owner: string, type: string, keywords: string };
 
@@ -77,12 +78,13 @@ export class SearchRecordsComponent
   }
 
   protected toSearchParams(value: any): RecordSearchParams {
-    delete value['customValues'];
-    value.customFields = this.fieldHelper.toCustomValuesFilter(value.customValues);
-    value.creationPeriod = ApiHelper.rangeFilter(value.beginDate, value.endDate);
-    value.owner = this.param;
-    value.type = this.type;
-    return value;
+    const params = cloneDeep(value);
+    delete params['customValues'];
+    params.customFields = this.fieldHelper.toCustomValuesFilter(value.customValues);
+    params.creationPeriod = ApiHelper.rangeFilter(value.beginDate, value.endDate);
+    params.owner = this.param;
+    params.type = this.type;
+    return params;
   }
 
   protected getFormControlNames(): string[] {
