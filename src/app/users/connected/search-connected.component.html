@@ -1,5 +1,5 @@
 <page-layout [ready]="data$ | async">
-  <ng-container *ngIf="data; else loading">
+  <ng-container *ngIf="data">
     <page-content mode="filters" [heading]="i18n.connectedUser.title"
       [mobileHeading]="i18n.connectedUser.mobileTitle">
       <form [formGroup]="form"
@@ -32,7 +32,7 @@
     </page-content>
 
     <results-layout resultType="list" [results]="results$ | async"
-      (update)="update($event)" [onClick]="onClick">
+      (update)="update($event)" [onClick]="onClick" [rendering$]="rendering$">
 
       <mobile-result *mobileResult="let row" [avatarImage]="row.user?.image"
         avatarIcon="user">
@@ -95,9 +95,3 @@
     </results-layout>
   </ng-container>
 </page-layout>
-
-<ng-template #loading>
-  <page-content>
-    <spinner></spinner>
-  </page-content>
-</ng-template>

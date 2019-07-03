@@ -1,5 +1,5 @@
 <page-layout [ready]="data$ | async">
-  <ng-container *ngIf="data; else loading">
+  <ng-container *ngIf="data;">
     <page-content mode="filters" [heading]="this.data.type.pluralName"
       [mobileHeading]="this.data.type.pluralName"
       [headingActions]="headingActions$ | async">
@@ -8,22 +8,22 @@
         <div class="row">
           <div class="col-12 col-md-6">
             <input-field labelPosition="side" formControlName="keywords"
-              [label]="i18n.general.keywords"></input-field>
+              [label]="i18n.general.keywords" fieldSize="full"></input-field>
           </div>
           <div class="col-12 col-md-6">
             <user-field labelPosition="side" formControlName="user"
-              [label]="i18n.general.user"></user-field>
+              [label]="i18n.record.createdBy"></user-field>
           </div>
           <div class="col-12 col-md-6">
             <date-field labelPosition="side" formControlName="beginDate"
-              [label]="i18n.general.beginDate" minDate="past5" maxDate="today"
-              fieldSize="full">
+              [label]="i18n.general.beginDate" minDate="past5"
+              maxDate="todayEnd" fieldSize="full">
             </date-field>
           </div>
           <div class="col-12 col-md-6">
             <date-field labelPosition="side" formControlName="endDate"
-              [label]="i18n.general.endDate" minDate="past5" maxDate="today"
-              fieldSize="full">
+              [label]="i18n.general.endDate" minDate="past5"
+              maxDate="todayEnd" fieldSize="full">
             </date-field>
           </div>
           <div class="col-12 col-md-6" *ngFor="let cf of this.fieldsInSearch">
@@ -35,7 +35,32 @@
       </form>
     </page-content>
     <results-layout resultType="list" [results]="results$ | async"
-      (update)="update($event)">
+      (update)="update($event)" [rendering$]="rendering$">
+
+      <mobile-result *mobileResult="let row">
+        <div class="d-flex">
+          <div>
+            <div class="cell-cell-date">
+              {{ row.creationDate | dateTime }}
+            </div>
+            <div class="cell-text">
+              <format-field-value *ngFor=" let field of this.fieldsInList"
+                [fields]="data.customFields" [plainText]="true"
+                [fieldName]="field.internalName" [object]="row"
+                [customValues]="row.customValues">
+              </format-field-value>
+            </div>
+          </div>
+          <div class="ml-auto">
+            <button *ngIf="this.data.remove" [tooltip]="i18n.general.remove"
+              class="btn btn-icon"
+              (click)="remove(row); $event.stopPropagation(); $event.preventDefault()">
+              <icon icon="clear"></icon>
+            </button>
+          </div>
+        </div>
+      </mobile-result>
+
       <table *resultTable class="table table-hover cursor-pointer">
         <thead>
           <th>{{ i18n.general.creationDate }}</th>
@@ -67,9 +92,3 @@
     </results-layout>
   </ng-container>
 </page-layout>
-
-<ng-template #loading>
-  <page-content>
-    <spinner></spinner>
-  </page-content>
-</ng-template>

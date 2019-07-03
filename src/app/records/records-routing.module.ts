@@ -5,6 +5,7 @@ import { LoggedUserGuard } from 'app/logged-user-guard';
 import { trim } from 'lodash';
 import { SearchRecordsComponent } from 'app/records/search-records.component';
 import { RecordHelperService } from 'app/core/records-helper.service';
+import { TiledRecordsComponent } from 'app/records/tiled-records.component';
 
 const RecordMenu: ConditionalMenu = injector => {
   // The scope depends on the URL
@@ -22,13 +23,21 @@ const RecordMenu: ConditionalMenu = injector => {
 
 const recordRoutes: Routes = [
   {
-    path: ':owner/:type',
+    path: ':owner/:type/list',
     component: SearchRecordsComponent,
     canActivate: [LoggedUserGuard],
     data: {
       menu: RecordMenu
     }
   },
+  {
+    path: ':owner/:type/tiled',
+    component: TiledRecordsComponent,
+    canActivate: [LoggedUserGuard],
+    data: {
+      menu: RecordMenu
+    }
+  }
 ];
 
 @NgModule({

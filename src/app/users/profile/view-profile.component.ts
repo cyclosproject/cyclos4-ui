@@ -215,6 +215,13 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
           this.router.navigate(['/marketplace', this.param, 'list']);
         }));
       }
+      // Records
+      for (const record of permissions.records || []) {
+        actions.push(new HeadingAction('library_books', this.i18n.record.action(
+          { type: record.type.pluralName, count: record.count }), () => {
+            this.router.navigate(['/records/', this.param, ApiHelper.internalNameOrId(record.type), record.type.layout]);
+          }));
+      }
       // Custom operations
       for (const operation of permissions.operations || []) {
         actions.push(this.operationsHelper.headingAction(operation, user.id));

@@ -1,0 +1,39 @@
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data">
+    <page-content mode="filters" [heading]="this.data.type.pluralName"
+      [mobileHeading]="this.data.type.pluralName"
+      [headingActions]="headingActions$ | async">
+    </page-content>
+    <results-layout [results]="results$">
+      <!-- <mobile-result *mobileResult="let row" [avatarImage]="row.broker?.image"
+        avatarIcon="user">
+        <div class="d-flex">
+          <div>
+            <div class="cell-main">
+              {{ row.broker.display }}
+            </div>
+            <div class="cell-text">
+              <icon class="d-inline-block" *ngIf="row.main"
+                icon="done_outline"></icon>
+              <a class="decorated" *ngIf="!row.main"
+                (click)="setMain(row); $event.stopPropagation(); $event.preventDefault()">{{ this.i18n.brokers.setMain }}
+              </a>
+            </div>
+          </div>
+          <div class="ml-auto">
+            <button class="btn btn-icon"
+              (click)="remove(row); $event.stopPropagation(); $event.preventDefault()">
+              <icon icon="clear"></icon>
+            </button>
+          </div>
+        </div>
+      </mobile-result> -->
+      <table *resultTable class="table table-hover cursor-pointer">
+        <thead>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </results-layout>
+  </ng-container>
+</page-layout>

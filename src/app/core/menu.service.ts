@@ -696,7 +696,11 @@ export class MenuService {
       if (recordTypes.length > 0) {
         for (const type of recordTypes) {
           const activeMenu = new ActiveMenu(Menu.SEARCH_RECORDS, { recordType: type });
-          add(activeMenu, `/records/${owner}/${ApiHelper.internalNameOrId(type)}`, 'library_books', type.pluralName);
+          add(
+            activeMenu,
+            `/records/${ApiHelper.SELF}/${ApiHelper.internalNameOrId(type)}/${type.layout}`,
+            'library_books',
+            type.pluralName);
         }
       }
 

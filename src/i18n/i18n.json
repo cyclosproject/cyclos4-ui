@@ -1039,7 +1039,11 @@
     "theme.light": "Light",
     "theme.dark": "Dark"
   },
-  "record": {},
+  "record": {
+    "createdBy": "Created by",
+    "removeConfirm": "Are you sure to remove this item?",
+    "action": "{type} ({count})"
+  },
   "userAlert": {
     "title": "Search user alerts",
     "text": "Text",
