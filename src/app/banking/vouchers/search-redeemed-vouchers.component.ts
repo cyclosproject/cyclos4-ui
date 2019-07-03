@@ -42,11 +42,11 @@ export class SearchRedeemedVouchersComponent
 
   protected toSearchParams(value: any): UserVoucherSearchParams {
     const params: UserVoucherSearchParams = value;
-    params['user'] = this.route.snapshot.paramMap.get('user');
-    params['relation'] = VoucherRelationEnum.REDEEMED;
-    params['redeemBy'] = value.operator;
+    params.user = this.route.snapshot.paramMap.get('user');
+    params.relation = VoucherRelationEnum.REDEEMED;
+    params.redeemBy = value.operator;
     if (value.periodBegin || value.periodEnd) {
-      params['redeemPeriod'] = this.ApiHelper.dateRangeFilter(value.periodBegin, value.periodEnd);
+      params.redeemPeriod = this.ApiHelper.dateRangeFilter(value.periodBegin, value.periodEnd);
     }
     return params;
   }
