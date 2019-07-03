@@ -41,13 +41,14 @@ export class SearchRedeemedVouchersComponent
   }
 
   protected toSearchParams(value: any): UserVoucherSearchParams {
-    value['user'] = this.route.snapshot.paramMap.get('user');
-    value['relation'] = VoucherRelationEnum.REDEEMED;
-    value['redeemBy'] = value.operator;
+    const params: UserVoucherSearchParams = value;
+    params['user'] = this.route.snapshot.paramMap.get('user');
+    params['relation'] = VoucherRelationEnum.REDEEMED;
+    params['redeemBy'] = value.operator;
     if (value.periodBegin || value.periodEnd) {
-      value['redeemPeriod'] = this.ApiHelper.dateRangeFilter(value.periodBegin, value.periodEnd);
+      params['redeemPeriod'] = this.ApiHelper.dateRangeFilter(value.periodBegin, value.periodEnd);
     }
-    return value;
+    return params;
   }
 
   protected doSearch(value: UserVoucherSearchParams) {
