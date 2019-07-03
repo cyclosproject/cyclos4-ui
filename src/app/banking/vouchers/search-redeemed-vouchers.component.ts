@@ -17,6 +17,8 @@ export class SearchRedeemedVouchersComponent
   extends BaseSearchPageComponent<UserVouchersDataForSearch, UserVoucherSearchParams, VoucherResult>
   implements OnInit {
 
+  self: boolean;
+
   constructor(
     injector: Injector,
     private voucherService: VouchersService
@@ -26,10 +28,13 @@ export class SearchRedeemedVouchersComponent
 
   ngOnInit() {
     super.ngOnInit();
-
+    const user = this.route.snapshot.paramMap.get('user');
     this.addSub(this.voucherService.getUserVouchersDataForSearch({
-      user: this.ApiHelper.SELF, relation: VoucherRelationEnum.REDEEMED
-    }).subscribe(dataForSearch => this.data = dataForSearch));
+      user: user, relation: VoucherRelationEnum.REDEEMED
+    }).subscribe(dataForSearch => {
+      this.data = dataForSearch;
+      this.self = this.authHelper.isSelf(dataForSearch.user);
+    }));
   }
 
   protected getFormControlNames(): string[] {
@@ -38,7 +43,7 @@ export class SearchRedeemedVouchersComponent
 
   protected toSearchParams(value: any): UserVoucherSearchParams {
     const params = cloneDeep(value);
-    params['user'] = this.ApiHelper.SELF;
+    params['user'] = this.route.snapshot.paramMap.get('user');
     params['relation'] = VoucherRelationEnum.REDEEMED;
     delete params['periodBegin'];
     delete params['periodEnd'];
