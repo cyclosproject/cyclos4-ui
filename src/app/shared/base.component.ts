@@ -23,8 +23,7 @@ import { FieldHelperService } from 'app/core/field-helper.service';
  * may become inconsistent.
  */
 export abstract class BaseComponent
-  extends AbstractComponent
-  implements OnInit, OnDestroy {
+  extends AbstractComponent {
 
   dataForUiHolder: DataForUiHolder;
   errorHandler: ErrorHandlerService;
