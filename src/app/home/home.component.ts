@@ -86,14 +86,20 @@ export class HomeComponent extends BasePageComponent<void> implements OnInit {
       this.maybeSetReady();
     };
 
-    this.addSub(this.errorHandler.requestWithCustomErrorHandler(() =>
-      this.passwordsService.getUserPasswordsListData({
-        user: ApiHelper.SELF,
-        fields: ['dataForSetSecurityAnswer', 'passwords.status', 'passwords.type.name', 'passwords.type.mode']
-      })
-    ).subscribe(initPasswords,
-      // On error, initialize with no passwords needing attention
-      () => initPasswords({})));
+    const auth = this.login.auth;
+    if (auth.global) {
+      // When logged-in as a global admin, don't request passwords, as it would be a permission denied on the server
+      initPasswords({});
+    } else {
+      this.addSub(this.errorHandler.requestWithCustomErrorHandler(() =>
+        this.passwordsService.getUserPasswordsListData({
+          user: ApiHelper.SELF,
+          fields: ['dataForSetSecurityAnswer', 'passwords.status', 'passwords.type.name', 'passwords.type.mode']
+        })
+      ).subscribe(initPasswords,
+        // On error, initialize with no passwords needing attention
+        () => initPasswords({})));
+    }
   }
 
   private needsAttention(password: PasswordStatusAndActions): boolean {

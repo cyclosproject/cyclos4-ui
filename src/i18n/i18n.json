@@ -204,8 +204,8 @@
     "banking.paySelf": "Payment to self",
     "banking.scheduledPayments": "Scheduled payments",
     "banking.authorizations": "Payment authorizations",
-    "banking.vouchers.redeem": "Redeem voucher",
-    "banking.vouchers.searchRedeemed": "View redeemed",
+    "banking.redeemVoucher": "Redeem voucher",
+    "banking.redeemedVouchers": "View redeemed",
     "banking.transfersOverview": "Transfers overview",
     "operators": "Operators",
     "operators.operators": "Operators",
@@ -587,6 +587,14 @@
     }
   },
   "voucher": {
+    "title": {
+      "redeem": "Redeem voucher",
+      "search": "Redeemed vouchers"
+    },
+    "mobileTitle": {
+      "redeem": "Redeem voucher",
+      "search": "Redeemed vouchers"
+    },
     "error": {
       "buy": {},
       "redeem": {
@@ -598,15 +606,11 @@
       }
     },
     "redeem": {
-      "title": "Redeem voucher",
-      "mobileTitle": "Redeem voucher",
       "confirm": "The voucher details are given below. Please, review it below and confirm this action.",
       "done": "The voucher was redeemed successfully.",
       "date": "Redeeming date",
       "redeemer": "Redeemer",
-      "payment": "Redeem payment",
-      "searchTitle": "Redeemed vouchers",
-      "searchMobileTitle": "Redeemed vouchers"
+      "payment": "Redeem payment"
     },
     "status": {
       "redeemed": "Redeemed",
@@ -614,9 +618,6 @@
       "open": "Open",
       "expired": "Expired",
       "canceled": "Canceled"
-    },
-    "type": {
-      "title": "Voucher type"
     },
     "boughtType": "Bought",
     "generatedType": "Generated",
@@ -771,7 +772,11 @@
       "status.user": "User status",
       "status.operator": "Operator status",
       "group.user": "User group",
-      "group.operator": "Operator group"
+      "group.operator": "Operator group",
+      "viewRedeemedVouchers": "View redeemed vouchers",
+      "redeemVoucher": "Redeem voucher",
+      "viewBoughtVouchers": "View bought vouchers",
+      "buyVouchers": "Buy vouchers"
     },
     "registration": {
       "group.public": "Choose the group you want to participate",
