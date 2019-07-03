@@ -94,7 +94,7 @@ export class ChangeExpiredPasswordComponent
         type: this.typeId,
         body: this.form.value
       }).subscribe(() => {
-        this.notification.snackBar(this.i18n.auth.password.expired.changed(type.name));
+        this.notification.snackBar(this.i18n.password.expired.changed(type.name));
         this.reload();
       }));
     }

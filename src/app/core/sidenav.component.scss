@@ -26,6 +26,7 @@ nav {
 
 .sidenav-menu icon {
   color: $sidenav-icon-color;
+  margin-right: $top-bar-item-spacing-xxs * 2;
 }
 @include media-breakpoint-up(sm) {
   :host {
@@ -46,7 +47,7 @@ nav {
 .sidenav-menu {
   a {
     display: block;
-    padding: 0.2rem;
+    padding: $top-bar-item-spacing-xxs / 2 $top-bar-item-spacing-xxs;
     color: $sidenav-color;
   }
   a, a:hover {
@@ -57,17 +58,9 @@ nav {
   }
 }
 
-@include media-breakpoint-up(xs) {
-  .sidenav-menu {
-    a {
-      padding: 0.4rem 0.5rem;
-    }
-  }
-}
-
 .menu-standalone {
   color: $sidenav-color;
-  padding: 0.3rem;
+  padding: $top-bar-item-spacing-xxs;
   border-bottom: 1px solid $sidenav-border-color;
   font-size: 1.1em;
   font-weight: $font-weight-bold;
@@ -80,8 +73,8 @@ nav {
 
 .group-title {
   color: $sidenav-color;
-  padding: 0.6rem;
-  padding-bottom: 0.4rem;
+  padding: $top-bar-item-spacing-xxs;
+  padding-left: $top-bar-item-spacing-xxs * 2;
   font-weight: $font-weight-bold;
   font-size: 1.1em;
 }
@@ -92,26 +85,27 @@ nav {
 
 @include media-breakpoint-up(xs) {
   .menu-standalone {
-    padding: 0.5rem;
+    padding: $top-bar-item-spacing-custom;
+  }
+  .sidenav-menu {
+    a {
+      padding: $top-bar-item-spacing-custom / 2 $top-bar-item-spacing-custom;
+    }
+    icon {
+      margin-right: $top-bar-item-spacing-custom * 2;
+    }
   }
   .menu-group {
     margin-bottom: 0.3rem;
 
     .group-title {
-      padding: 0.7rem 1rem 0.2rem 1rem;
+      padding: $top-bar-item-spacing-custom * 1.5
+        $top-bar-item-spacing-custom * 2
+        $top-bar-item-spacing-custom / 2
+        $top-bar-item-spacing-custom * 2;
     }
   }
 }
-
-@include media-breakpoint-up(sm) {
-  .navbar {
-    padding: 0 0.2rem;
-  }
-  .navbar-container {
-    padding: 0;
-  }
-}
-
 @media print {
   :host {
     display: none;

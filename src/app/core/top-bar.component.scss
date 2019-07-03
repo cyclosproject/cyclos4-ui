@@ -3,15 +3,25 @@
 
 :host {
   display: block;
+  /* Is normally sticky... */
   position: -webkit-sticky; /* Safari */
   position: sticky;
   z-index: $zindex-sticky;
   top: 0;
 }
+@include media-breakpoint-up(lg) {
+  /*
+   * ... except on large displays when not having integrated menu.
+   * In that case, the menu bar is sticky.
+   */
+  :host:not(.has-menu) {
+    position: relative;
+  }
+}
 .logo {
   max-width: 64px;
   max-height: 30px;
-  margin-right: $top-bar-with-menu-item-padding;
+  margin-right: $top-bar-item-spacing-spacious;
 }
 .menu-container {
   display: flex;
@@ -22,51 +32,110 @@
 .menu-separator {
   opacity: 0.3;
   border-left: 1px solid $top-bar-color;
-  margin: 0 #{$top-bar-with-menu-item-padding * 0.9} 0 $top-bar-with-menu-item-padding;
+  margin: 0 $top-bar-item-spacing-spacious;
   height: 50%;
   width: 0;
+
+  &.density-medium {
+    margin:
+      0 #{$top-bar-item-spacing-medium + $top-bar-item-spacing-custom / 2}
+      0 $top-bar-item-spacing-medium;
+  }
+
+  &.density-dense {
+    margin:
+      0 #{$top-bar-item-spacing-dense + $top-bar-item-spacing-custom / 2}
+      0 $top-bar-item-spacing-dense;
+  }
+
+  &.density-custom {
+    margin: 0 $top-bar-item-spacing-custom;
+  }
 
   &:after {
     content: '.';
     visibility: hidden;
   }
 }
-
-a.custom-menu {
-  padding: 0.5rem !important;
+:host.has-user .menu-separator {
+  margin-right: $top-bar-item-spacing-medium;
 }
 
-:host ::ng-deep nav.with-menu {
-  a:not(.never-active):not(.sub-menu-item)::before {
+:host ::ng-deep .nav-item .menu-text {
+  transition: width ease-in-out 0.4s;
+  overflow: hidden;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+:host ::ng-deep a.nav-item {
+  & {
+    padding-left: $top-bar-item-spacing-spacious;
+    padding-right: $top-bar-item-spacing-spacious;
+  }
+
+  &.density-medium {
+    padding-left: $top-bar-item-spacing-medium;
+    padding-right: $top-bar-item-spacing-medium;
+  }
+
+  &.density-dense {
+    padding-left: $top-bar-item-spacing-dense;
+    padding-right: $top-bar-item-spacing-dense;
+  }
+
+  &.density-custom {
+    padding-left: $top-bar-item-spacing-custom;
+    padding-right: $top-bar-item-spacing-custom;
+  }
+}
+
+#profile-link {
+  icon {
+    // The icon is smaller than images. So, to make them have the same visual margin, add this.
+    margin-left: -4px;
+  }
+}
+
+:host ::ng-deep a.menu-item:not(.never-active) {
+  &::before {
     content: " ";
     display: block;
     position: absolute;
-    left: 0.8 * $top-bar-with-menu-item-padding;
     bottom: 10px;
     height: 1px;
-    width: calc(100% - #{1.6 * $top-bar-with-menu-item-padding});
     background-color: $top-bar-color;
     transition: opacity ease-in-out 0.4s;
     opacity: 0;
+    left: calc(#{$top-bar-item-spacing-spacious} - 0.1rem);
+    width: calc(100% - #{2 * $top-bar-item-spacing-spacious} + 0.2rem);
   }
 
-  a:not(.never-active):hover::before {
-    opacity: 0.7;
+  &.density-medium::before {
+    left: calc(#{$top-bar-item-spacing-medium} - 0.1rem);
+    width: calc(100% - #{2 * $top-bar-item-spacing-medium} + 0.2rem);
   }
-  a.active:not(.never-active)::before {
-    opacity: 1;
+
+  &.density-dense::before {
+    left: calc(#{$top-bar-item-spacing-dense} - 0.1rem);
+    width: calc(100% - #{2 * $top-bar-item-spacing-dense} + 0.2rem);
   }
-  a.custom-menu:not(.never-active):not(.sub-menu-item)::before {
-    width: calc(100% - 0.25rem) !important;
-    left: 0.25rem !important;
+
+  &.density-custom::before {
+    left: calc(#{$top-bar-item-spacing-custom} - 0.1rem);
+    width: calc(100% - #{2 * $top-bar-item-spacing-custom} + 0.2rem);
+  }
+
+  &:hover::before {
+    opacity: 0.7 !important;
+  }
+
+  &.active::before {
+    opacity: 1 !important;
   }
 }
 
-@include media-breakpoint-up(lg) {
-  :host:not(.has-menu) {
-    position: relative;
-  }
-}
 .personal-label {
   margin-left: 0.5rem;
 }
@@ -75,14 +144,19 @@ a.custom-menu {
   max-width: 7rem;
 }
 
+.custom-menus {
+  display: flex;
+  align-items: center;
+}
+
 :host ::ng-deep {
   .dropdown-toggle::after {
     margin-left: 0.5rem;
   }
-  .menu-container, menus {
+  .menu-container, menus, .custom-menus {
     justify-content: flex-end;
   }
-  menus {
+  menus, .custom-menus {
     height: 100%;
   }
 }
@@ -91,7 +165,7 @@ a.custom-menu {
   flex-grow: 1;
 }
 
-:host.has-menu ::ng-deep .navbar {
+:host.has-menu ::ng-deep nav {
   .navbar-brand {
     flex-grow: 0;
   }
@@ -101,7 +175,7 @@ a.custom-menu {
     background-color: $top-bar-bg;
     transform: translateY(-2px) !important;
     border: none !important;
-    border-top: 1px solid $top-bar-item-border-color !important;
+    border-top: 1px solid $top-bar-popup-separator-color !important;
     border-top-left-radius: 0 !important;
     border-top-right-radius: 0 !important;
     padding: 0 !important;
@@ -112,7 +186,7 @@ a.custom-menu {
     padding-bottom: 0.7rem !important;
   }
   .sub-menu-item {
-    border-bottom: 1px solid $top-bar-item-border-color;
+    border-bottom: 1px solid $top-bar-popup-separator-color;
   }
   .sub-menu-item:last-of-type {
     border-bottom: none;
@@ -128,14 +202,43 @@ a.custom-menu {
     .logo {
       max-height: 32px;
     }
+  }
+}
 
-    menus {
-      a {
-        padding: 0 $top-bar-with-menu-item-padding !important;
-      }
+body.lg :host ::ng-deep menus {
+  .menu-item.density-dense:not(.active) {
+    // On large displays, hide non-active labels when dense
+    icon {
+      margin-right: 0 !important;
+    }
+    .menu-text {
+      width: 0 !important;
+    }
+  }
+
+  .menu-item:not(.density-dense) {
+    // Similarly, never hide them when not dense
+    icon {
+      margin-right: 0.5rem !important;
+    }
+    .menu-text {
+      width: auto !important;
     }
   }
 }
+
+body.xl :host ::ng-deep menus {
+  // Never hide labels on xl
+  icon {
+    margin-right: 0.5rem !important;
+  }
+  .menu-text {
+    width: auto !important;
+  }
+}
+
+
+/* Heading actions */
 
 :host ::ng-deep {
   heading-actions, .heading-actions {
@@ -160,7 +263,7 @@ a.custom-menu {
     background-color: $top-bar-bg;
     transform: translateY(-2px) !important;
     border: none !important;
-    border-top: 1px solid $top-bar-item-border-color !important;
+    border-top: 1px solid $top-bar-popup-separator-color !important;
     border-top-left-radius: 0 !important;
     border-top-right-radius: 0 !important;
     padding: 0 !important;
@@ -181,132 +284,25 @@ a.custom-menu {
       }
     }
   }
-
-  .nav-item .menu-text {
-    transition: width ease-in-out 0.4s;
-    overflow: hidden;
-    height: 100%;
-    display: flex;
-    align-items: center;
-  }
 }
 
-body.lg :host ::ng-deep {
-  nav {
-    .menu-separator {
-      margin: 0 #{$top-bar-with-menu-item-padding-medium * 0.9} 0 $top-bar-with-menu-item-padding-medium;
-    }
-    a {
-      padding: 0 $top-bar-with-menu-item-padding-medium !important;
-    }
-    a:not(.never-active):not(.sub-menu-item)::before {
-      left: 0.8 * $top-bar-with-menu-item-padding-medium;
-      width: calc(100% - #{1.6 * $top-bar-with-menu-item-padding-medium});
-    }
-  }
-
-  nav:not(.with-menu-spacious) {
-    .menu-separator {
-      margin: 0 #{$top-bar-with-menu-item-padding-medium * 0.9} 0 $top-bar-with-menu-item-padding-medium;
-    }
-    menus {
-      a {
-        padding: 0 $top-bar-with-menu-item-padding-medium !important;
-      }
-      a:not(.never-active):not(.sub-menu-item)::before {
-        left: 0.8 * $top-bar-with-menu-item-padding-medium;
-        width: calc(100% - #{1.6 * $top-bar-with-menu-item-padding-medium});
-      }
-    }
-  }
-
-  nav.with-menu-dense menus .nav-item:not(.active) {
-    // On large displays, hide non-active labels when dense
-    icon {
-      margin-right: 0;
-    }
-    .menu-text {
-      width: 0;
-    }
-  }
-
-  nav:not(.with-menu-dense) menus .nav-item {
-    // Similarly, never hide them when not dense
-    icon {
-      margin-right: 0.5rem !important;
-    }
-    .menu-text {
-      width: auto !important;
-    }
-  }
-}
-
-body.xl :host ::ng-deep {
-  // On extra large displays never hide labels
-  menus .nav-item {
-    margin-right: -$top-bar-with-menu-item-padding / 2;
-
-    icon {
-      margin-right: 0.5rem !important;
-    }
-    .menu-text {
-      width: auto !important;
-    }
-  }
-  .navbar.with-menu-medium {
-    margin-right: -$top-bar-with-menu-item-padding-medium / 2;
-
-    .menu-separator {
-      margin: 0 #{$top-bar-with-menu-item-padding-medium * 0.9} 0 $top-bar-with-menu-item-padding-medium;
-    }
-    menus {
-      a {
-        padding: 0 $top-bar-with-menu-item-padding-medium !important;
-      }
-      a:not(.never-active):not(.sub-menu-item)::before {
-        left: 0.8 * $top-bar-with-menu-item-padding-medium;
-        width: calc(100% - #{1.6 * $top-bar-with-menu-item-padding-medium});
-      }
-    }
-  }
-
-  .navbar.with-menu-dense {
-    margin-right: -$top-bar-with-menu-item-padding-dense / 2;
-
-    .top-title {
-      // Hide the application title on dense displays
-      display: none;
-    }
-    .menu-separator {
-      margin: 0 #{$top-bar-with-menu-item-padding-dense * 0.9} 0 $top-bar-with-menu-item-padding-dense;
-    }
-    menus {
-      a {
-        padding: 0 $top-bar-with-menu-item-padding-dense !important;
-      }
-      a:not(.never-active):not(.sub-menu-item)::before {
-        left: 0.8 * $top-bar-with-menu-item-padding-dense;
-        width: calc(100% - #{1.6 * $top-bar-with-menu-item-padding-dense});
-      }
-    }
-  }
-}
+/* Dark theme */
 
 body.dark :host ::ng-deep {
   .dropdown-menu {
     color: $top-bar-color-dark;
     background-color: $top-bar-bg-dark;
-    border-top-color: $top-bar-item-border-color-dark !important;
+    border-top-color: $top-bar-popup-separator-color-dark !important;
   }
 
   .navbar {
     .dropdown-menu {
       color: $top-bar-color-dark;
       background-color: $top-bar-bg-dark;
-      border-top-color: $top-bar-item-border-color-dark !important;
+      border-top-color: $top-bar-popup-separator-color-dark !important;
     }
     .sub-menu-item {
-      border-bottom-color: $top-bar-item-border-color-dark;
+      border-bottom-color: $top-bar-popup-separator-color-dark;
     }
     .sub-menu-item:hover {
       background-color: $top-bar-sub-item-hover-bg-dark;
@@ -328,7 +324,7 @@ body.dark :host ::ng-deep {
   .heading-actions-menu {
     color: $top-bar-color-dark;
     background-color: $top-bar-bg-dark;
-    border-color: $top-bar-item-border-color-dark !important;
+    border-color: $top-bar-popup-separator-color-dark !important;
   }
   .heading-action-option {
     background-color: $top-bar-bg-dark;

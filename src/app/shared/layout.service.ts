@@ -206,8 +206,13 @@ export class LayoutService {
       return;
     }
     const classes = document.body.classList;
+    if (breakpoints.has('lt-lg')) {
+      classes.add('window-width');
+    } else {
+      classes.remove('window-width');
+    }
     for (const breakpoint of ALL_BREAKPOINTS) {
-      if (breakpoints.has(breakpoint as Breakpoint)) {
+      if (breakpoints.has(breakpoint)) {
         classes.add(breakpoint);
       } else {
         classes.remove(breakpoint);

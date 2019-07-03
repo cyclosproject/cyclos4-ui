@@ -4,7 +4,8 @@ import { Router } from '@angular/router';
 import {
   ConflictError, ConflictErrorCode, ErrorKind, ForbiddenError,
   ForbiddenErrorCode, ForgottenPasswordError, ForgottenPasswordErrorCode, InputError, InputErrorCode, NestedError,
-  NotFoundError, OtpError, PasswordStatusEnum, PaymentError, PaymentErrorCode, UnauthorizedError, UnauthorizedErrorCode
+  NotFoundError, OtpError, PasswordStatusEnum, PaymentError, PaymentErrorCode, UnauthorizedError, UnauthorizedErrorCode,
+  RedeemVoucherError, RedeemVoucherErrorCode
 } from 'app/api/models';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { FormatService } from 'app/core/format.service';
@@ -17,6 +18,7 @@ import { empty, focusFirstInvalid } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
 import { ErrorStatus } from './error-status';
 import { NextRequestState } from './next-request-state';
+import { BankingHelperService } from 'app/core/banking-helper.service';
 
 /**
  * Service used to handle application errors
@@ -34,7 +36,8 @@ export class ErrorHandlerService {
     private nextRequestState: NextRequestState,
     private login: LoginService,
     private dataForUiHolder: DataForUiHolder,
-    private i18n: I18n
+    private i18n: I18n,
+    private bankingHelper: BankingHelperService
   ) { }
 
   /**
@@ -103,6 +106,9 @@ export class ErrorHandlerService {
               case ErrorKind.FORGOTTEN_PASSWORD:
                 // An error while changing a forgotten password
                 this.handleForgottenPasswordError(error as ForgottenPasswordError);
+                return;
+              case ErrorKind.REDEEM_VOUCHER:
+                this.handleRedeemVoucherError(error as RedeemVoucherError);
                 return;
               case ErrorKind.NESTED:
                 // An error in a nested property
@@ -245,6 +251,27 @@ export class ErrorHandlerService {
     }
   }
 
+  public handleRedeemVoucherError(error: RedeemVoucherError) {
+    this.notification.error(this.redeemVoucherErrorMessage(error));
+  }
+
+  private redeemVoucherErrorMessage(error: RedeemVoucherError): string {
+    switch (error.code) {
+      case RedeemVoucherErrorCode.NOT_ALLOWED_FOR_USER:
+        return this.i18n.voucher.error.redeem.user;
+      case RedeemVoucherErrorCode.NOT_ALLOWED_FOR_VOUCHER:
+        return this.i18n.voucher.error.redeem.status(this.bankingHelper.voucherStatus(error.voucherStatus));
+      case RedeemVoucherErrorCode.NOT_ALLOWED_TODAY:
+        const allowedDays = error.allowedDays.map(day => this.format.weekDay(day)).join(', ');
+        return this.i18n.voucher.error.redeem.notAllowedToday(allowedDays);
+      case RedeemVoucherErrorCode.NOT_ALLOWED_YET:
+        return this.i18n.voucher.error.redeem.notAllowedYet(error.redeemAfterDate);
+      case RedeemVoucherErrorCode.USER_BLOCKED:
+        return this.i18n.voucher.error.redeem.userBlocked;
+    }
+    return this.general;
+  }
+
   public handleConflictError(error: ConflictError) {
     this.notification.error(this.conflictErrorMessage(error));
   }
@@ -356,15 +383,15 @@ export class ErrorHandlerService {
     }
     if (error.entityType) {
       if (error.key) {
-        return this.i18n.error.notFoundTypeKey({
+        return this.i18n.error.notFound.typeKey({
           type: error.entityType,
           key: error.key
         });
       } else {
-        return this.i18n.error.notFoundType(error.entityType);
+        return this.i18n.error.notFound.type(error.entityType);
       }
     } else {
-      return this.i18n.error.notFound;
+      return this.i18n.error.notFound.location;
     }
   }
 
@@ -378,26 +405,26 @@ export class ErrorHandlerService {
       case UnauthorizedErrorCode.LOGIN:
         switch (error.passwordStatus) {
           case PasswordStatusEnum.DISABLED:
-            return this.i18n.error.passwordDisabled;
+            return this.i18n.password.error.disabled;
           case PasswordStatusEnum.RESET:
-            return this.i18n.error.passwordReset;
+            return this.i18n.password.error.reset;
           case PasswordStatusEnum.INDEFINITELY_BLOCKED:
-            return this.i18n.error.passwordIndefinitelyBlocked;
+            return this.i18n.password.error.indefinitelyBlocked;
           case PasswordStatusEnum.TEMPORARILY_BLOCKED:
-            return this.i18n.error.passwordTemporarilyBlocked;
+            return this.i18n.password.error.temporarilyBlocked;
           case PasswordStatusEnum.EXPIRED:
-            return this.i18n.error.passwordExpired;
+            return this.i18n.password.error.expired;
           case PasswordStatusEnum.PENDING:
-            return this.i18n.error.passwordPending;
+            return this.i18n.password.error.pending;
           default:
             return this.i18n.error.login;
         }
       case UnauthorizedErrorCode.REMOTE_ADDRESS_BLOCKED:
         return this.i18n.error.remoteAddressBlocked;
       case UnauthorizedErrorCode.UNAUTHORIZED_ADDRESS:
-        return this.i18n.error.unauthorizedAddress;
+        return this.i18n.error.unauthorized.address;
       case UnauthorizedErrorCode.UNAUTHORIZED_URL:
-        return this.i18n.error.unauthorizedUrl;
+        return this.i18n.error.unauthorized.url;
       case UnauthorizedErrorCode.LOGGED_OUT:
         return this.i18n.error.loggedOut;
       default:
@@ -415,13 +442,13 @@ export class ErrorHandlerService {
       case ForbiddenErrorCode.ILLEGAL_ACTION:
         return this.i18n.error.illegalAction;
       case ForbiddenErrorCode.INVALID_PASSWORD:
-        return this.i18n.error.passwordInvalid((error.passwordType || {}).name);
+        return this.i18n.password.error.invalid((error.passwordType || {}).name);
       case ForbiddenErrorCode.EXPIRED_PASSWORD:
-        return this.i18n.error.passwordExpired;
+        return this.i18n.password.error.expired;
       case ForbiddenErrorCode.TEMPORARILY_BLOCKED:
-        return this.i18n.error.passwordTemporarilyBlocked;
+        return this.i18n.password.error.temporarilyBlocked;
       case ForbiddenErrorCode.INDEFINITELY_BLOCKED:
-        return this.i18n.error.passwordIndefinitelyBlocked;
+        return this.i18n.password.error.indefinitelyBlocked;
       default:
         return this.i18n.error.permission;
     }
@@ -476,9 +503,9 @@ export class ErrorHandlerService {
     switch (error.code) {
       case ForgottenPasswordErrorCode.INVALID_SECURITY_ANSWER:
         if (error.keyInvalidated) {
-          return this.i18n.error.securityAnswerDisabled;
+          return this.i18n.error.securityAnswer.disabled;
         } else {
-          return this.i18n.error.securityAnswer;
+          return this.i18n.error.securityAnswer.invalid;
         }
       default:
         return this.general;

@@ -69,13 +69,13 @@ export class VerifyPhoneComponent extends BaseComponent implements OnInit {
       switch (status) {
         case CodeVerificationStatusEnum.CODE_NOT_SENT:
         case CodeVerificationStatusEnum.EXPIRED:
-          this.notification.error(this.i18n.phone.verify.errorExpired);
+          this.notification.error(this.i18n.phone.error.verify.expired);
           break;
         case CodeVerificationStatusEnum.FAILED:
-          this.notification.error(this.i18n.phone.verify.errorInvalid);
+          this.notification.error(this.i18n.phone.error.verify.invalid);
           break;
         case CodeVerificationStatusEnum.MAX_ATTEMPTS_REACHED:
-          this.notification.error(this.i18n.phone.verify.errorMaxAttempts);
+          this.notification.error(this.i18n.phone.error.verify.maxAttempts);
           break;
         case CodeVerificationStatusEnum.SUCCESS:
           this.disabled = true;

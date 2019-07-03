@@ -1,7 +1,7 @@
 <page-layout [ready]="data$ | async" size="medium" hideMenu>
   <page-content *ngIf="data">
     <registration-step-done [result]="result"></registration-step-done>
-    <actions ngClass="mt-3" forceRow>
+    <actions>
       <button class="btn btn-primary" (click)="goToLogin()">
         {{ i18n.menu.login }}
       </button>

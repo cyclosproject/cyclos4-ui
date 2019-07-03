@@ -28,14 +28,6 @@ $grid-breakpoints: (
   xl: 1200px
 ) !default;
 
-// We just increase a bit the max width for xl
-$container-max-widths: (
-  sm: 540px,
-  md: 720px,
-  lg: 960px,
-  xl: 1160px
-) !default;
-
 @if $enable-shadows == false {
   .shadow, .shadow-sm, .shadow-lg {
     box-shadow: none !important;
@@ -134,19 +126,18 @@ $top-bar-height-xs: 3.4rem !default;
 $top-icon-size-xxs: 1.4rem !default;
 $top-icon-size-xs: 1.6rem !default;
 $top-icon-size: 1.4rem !default;
-// Height when using a dedicated menu bar (setting MENU_BAR = true in configuration.ts)
+// Height when using a dedicated menu bar (Configuration.menuBar = true in setup.ts)
 $top-bar-height: 3.25rem !default;
-// Height when the menu is in the tpop bar (setting MENU_BAR = false in configuration.ts)
+// Height when the menu is in the pop bar (Configuration.menuBar = false in setup.ts)
 $top-bar-with-menu-height: 3.6rem !default;
-$top-bar-item-border-color: darken($top-bar-bg, 10%) !default;
-$top-bar-item-padding-xxs: 0.3rem !default;
-$top-bar-item-padding-xs: 0.5rem !default;
-$top-bar-item-padding: 0.8rem !default;
+$top-bar-popup-separator-color: darken($top-bar-bg, 10%) !default;
 $top-bar-item-focus-bg: darken($top-bar-bg, 5%) !default;
 $top-bar-item-focus-color: color-yiq($top-bar-item-focus-bg) !default;;
-$top-bar-with-menu-item-padding: 1.2rem !default;
-$top-bar-with-menu-item-padding-medium: 1rem !default;
-$top-bar-with-menu-item-padding-dense: 0.8rem !default;
+$top-bar-item-spacing-spacious: 1.2rem !default;
+$top-bar-item-spacing-medium: 0.9rem !default;
+$top-bar-item-spacing-dense: 0.7rem !default;
+$top-bar-item-spacing-custom: 0.5rem !default;
+$top-bar-item-spacing-xxs: 0.4rem;
 $top-bar-sub-item-hover-bg: darken($top-bar-bg, 5%) !default;
 $top-bar-sub-item-hover-color: $top-bar-color !default;
 $top-bar-sub-item-hover-icon-color: $top-bar-sub-item-hover-color !default;
@@ -154,14 +145,14 @@ $top-bar-sub-item-hover-icon-color: $top-bar-sub-item-hover-color !default;
 // Top bar on dark background
 $top-bar-bg-dark: $primary-dark !default;
 $top-bar-color-dark: rgba(color-yiq($top-bar-bg-dark), 0.95) !default;
-$top-bar-item-border-color-dark: darken($top-bar-bg-dark, 10%) !default;
+$top-bar-popup-separator-color-dark: darken($top-bar-bg-dark, 10%) !default;
 $top-bar-item-focus-bg-dark: darken($top-bar-bg-dark, 5%) !default;
 $top-bar-item-focus-color-dark: color-yiq($top-bar-item-focus-bg-dark) !default;;
 $top-bar-sub-item-hover-bg-dark: darken($top-bar-bg-dark, 5%) !default;
 $top-bar-sub-item-hover-color-dark: $top-bar-color-dark !default;
 $top-bar-sub-item-hover-icon-color-dark: $top-bar-sub-item-hover-color-dark !default;
 
-// Menu bar (main menu on desktop, only shown when MENU_BAR = true in configuration.ts)
+// Menu bar (Configuration.menuBar = true in setup.ts)
 $menu-bar-height: 3.2rem !default;
 $menu-bar-bg: $card-bg !default;
 $menu-bar-inactive-color: #565656 !default;
