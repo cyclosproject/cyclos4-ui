@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiConfiguration } from 'app/api/api-configuration';
-import { Currency, DataForUi } from 'app/api/models';
+import { Currency, DataForUi, WeekDayEnum } from 'app/api/models';
 import { I18n } from 'app/i18n/i18n';
 import Big from 'big.js';
 import moment from 'moment-mini-ts';
@@ -361,7 +361,7 @@ export class FormatService {
       return '';
     }
     currency = (currency || {});
-    const decimals = currency.decimalDigits || 2;
+    const decimals = currency.decimalDigits === 0 ? 0 : currency.decimalDigits || 2;
     const prefix = currency.prefix || '';
     const suffix = currency.suffix || '';
     return prefix + this.formatAsNumber(num, decimals, forceSign) + suffix;
@@ -440,4 +440,22 @@ export class FormatService {
     return this.minWeekdayName[weekday];
   }
 
+  weekDay(day: WeekDayEnum): string {
+    switch (day) {
+      case WeekDayEnum.FRI:
+        return this.i18n.general.weekday.long.fri;
+      case WeekDayEnum.MON:
+        return this.i18n.general.weekday.long.mon;
+      case WeekDayEnum.SAT:
+        return this.i18n.general.weekday.long.sat;
+      case WeekDayEnum.SUN:
+        return this.i18n.general.weekday.long.sun;
+      case WeekDayEnum.THU:
+        return this.i18n.general.weekday.long.thu;
+      case WeekDayEnum.TUE:
+        return this.i18n.general.weekday.long.tue;
+      case WeekDayEnum.WED:
+        return this.i18n.general.weekday.long.wed;
+    }
+  }
 }

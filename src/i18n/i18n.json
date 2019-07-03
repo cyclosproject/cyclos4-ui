@@ -111,6 +111,15 @@
         "thu": "T",
         "fri": "F",
         "sat": "S"
+      },
+      "long": {
+        "sun": "Sunday",
+        "mon": "Monday",
+        "tue": "Tuesday",
+        "wed": "Wednesday",
+        "thu": "Thursday",
+        "fri": "Friday",
+        "sat": "Saturday"
       }
     },
     "range": {
@@ -134,10 +143,7 @@
       "kilometersFrom": "km from",
       "milesFrom": "miles from",
       "current": "Current location",
-      "myAddress": "My address",
-      "error.denied": "No permission to get the current location. Please, grant this permission in your browser.",
-      "error.unavailable": "The current location is unavailable",
-      "error.general": "Error getting the current location"
+      "myAddress": "My address"
     }
   },
   "error": {
@@ -150,25 +156,24 @@
     "validation": "The action couldn't be processed, as there were validation errors",
     "staleEntity": "This data cannot be saved because it has been modified by someone else.<br>Please, load the page again and restart the operation.",
     "removeDataInUse": "This item cannot be removed because it is currently in use.",
-    "notFound": "The location you typed or tried to access was not found",
-    "notFound.type": "The requested data could not be found: {type}",
-    "notFound.typeKey": "The requested data could not be found: {type} with key {key}",
+    "notFound": {
+      "location": "The location you typed or tried to access was not found",
+      "type": "The requested data could not be found: {type}",
+      "typeKey": "The requested data could not be found: {type} with key {key}"
+    },
     "login": "The given name / password are incorrect. Please, try again.",
-    "password.disabled": "Your password has been disabled. Please, contact the administration.",
-    "password.reset": "Your password has been reset.",
-    "password.indefinitelyBlocked": "Your password has been disabled by exceeding the maximum tries. Please, contact the administration.",
-    "password.temporarilyBlocked": "Your password is temporarily blocked by exceeding the maximum tries.",
-    "password.expired": "Your password has expired. Please, contact the administration.",
-    "password.pending": "Your password is pending activation. Please, contact the administration.",
-    "password.invalid": "The given {type} is invalid",
     "remoteAddressBlocked": "Your IP address is blocked for exceeding login attempts",
     "permission": "You don't have sufficient permissions to perform the requested action",
-    "unauthorized.address": "Your IP address is not allowed to login",
-    "unauthorized.url": "Access is not allowed from this URL",
+    "unauthorized": {
+      "address": "Your IP address is not allowed to login",
+      "url": "Access is not allowed from this URL"
+    },
     "loggedOut": "You have been disconnected. Please, login again and repeat the operation.",
     "otp": "There was an error when sending the password. Please, try again later.",
-    "securityAnswer": "The given security answer is invalid",
-    "securityAnswer.disabled": "By exceeding the number of security question attempts, this request has been aborted. Please, contact the administration",
+    "securityAnswer": {
+      "invalid": "The given security answer is invalid",
+      "disabled": "By exceeding the number of security question attempts, this request has been aborted. Please, contact the administration"
+    },
     "illegalAction": "The action you attempted to perform is invalid",
     "field": {
       "invalid": "This field is invalid",
@@ -179,6 +184,11 @@
       "date": "Invalid date",
       "minDate": "Should be {min} or after",
       "maxDate": "Should be {max} or before"
+    },
+    "geolocation": {
+      "denied": "No permission to get the current location. Please, grant this permission in your browser.",
+      "unavailable": "The current location is unavailable",
+      "general": "Error getting the current location"
     }
   },
   "menu": {
@@ -194,8 +204,8 @@
     "banking.paySelf": "Payment to self",
     "banking.scheduledPayments": "Scheduled payments",
     "banking.authorizations": "Payment authorizations",
-    "banking.vouchers.redeem": "Redeem voucher",
-    "banking.vouchers.searchRedeemed": "View redeemed",
+    "banking.redeemVoucher": "Redeem voucher",
+    "banking.redeemedVouchers": "View redeemed",
     "banking.transfersOverview": "Transfers overview",
     "operators": "Operators",
     "operators.operators": "Operators",
@@ -223,116 +233,123 @@
     "personal.settings": "Settings",
     "content": "Information"
   },
-  "auth": {
-    "login": {
-      "title": "Login",
-      "mobileTitle": "Login",
-      "message": "You can login with your username and password",
-      "disconnected": "You have been disconnected.<br>Please, login again in order to view the requested page.",
+  "login": {
+    "title": "Login",
+    "mobileTitle": "Login",
+    "message": "You can login with your username and password",
+    "disconnected": "You have been disconnected.<br>Please, login again in order to view the requested page.",
+    "principal": "User",
+    "forgotPassword": "Forgot your password?",
+    "register": "Not a user yet? Register here."
+  },
+  "password": {
+    "confirmationMessage": "Supply your {passwordType} to confirm this operation",
+    "confirm.noPassword": "In order to confirm you need a {passwordType}, but you do not have any",
+    "confirm.mode": "Confirm with",
+    "confirm.mode.device": "Mobile phone",
+    "confirm.mode.password": "Password",
+    "confirm.device.active": "In order to confirm, scan this QR-code with your mobile phone",
+    "confirm.device.none": "In order to confirm you must have a trusted mobile phone but you do not have any",
+    "confirm.deviceOrPassword.active": "In order to confirm, either scan this QR-code with your mobile phone or supply your {password}",
+    "confirm.deviceOrPassword.none": "In order to confirm you must have a trusted mobile phone or supply your {password} but you do not have any",
+    "confirm.deviceOrOtp.noMediums": "In order to confirm you need either a trusted mobile phone (and you have none) or a confirmation password, but there are no possible mediums to receive it.<br>Please, contact the administration.",
+    "confirm.deviceOrOtp.active": "In order to confirm, either scan this QR-code with your mobile phone, use the previously sent confirmation password or request a new one",
+    "confirm.deviceOrOtp.request": "In order to confirm, either scan this QR-code with your mobile phone, or request a confirmation password below",
+    "confirm.otp.noMediums": "In order to confirm you need a confirmation password, but there are no possible mediums to receive it.<br>Please, contact the administration.",
+    "confirm.otp.active": "You can use the previously sent confirmation password or request a new one",
+    "confirm.otp.request": "Please, request a confirmation password below in order to confirm",
+    "otp.sent": "The password was sent to {dest}",
+    "otp.receiveBy": "Get by {medium}",
+    "oldPassword": "Old password",
+    "newPassword": "New password",
+    "passwordConfirmation": "Password confirmation",
+    "error": {
+      "disabled": "Your password has been disabled. Please, contact the administration.",
+      "reset": "Your password has been reset.",
+      "indefinitelyBlocked": "Your password has been disabled by exceeding the maximum tries. Please, contact the administration.",
+      "temporarilyBlocked": "Your password is temporarily blocked by exceeding the maximum tries.",
+      "expired": "Your password has expired. Please, contact the administration.",
+      "pending": "Your password is pending activation. Please, contact the administration.",
+      "invalid": "The given {type} is invalid"
+    },
+    "title": {
+      "change.self": "Change your password",
+      "change.user": "Change user password",
+      "forgotten": "Recover your password",
+      "manage.single.self": "Manage your password",
+      "manage.multiple.self": "Manage your passwords",
+      "manage.single.user": "Manage user password",
+      "manage.multiple.user": "Manage user passwords",
+      "securityAnswer": "Set your security answer"
+    },
+    "mobileTitle": {
+      "change.self": "Password change",
+      "change.user": "Password change",
+      "forgotten": "Password recovery",
+      "manage.single.self": "Password",
+      "manage.multiple.self": "Passwords",
+      "manage.single.user": "User password",
+      "manage.multiple.user": "User passwords",
+      "securityAnswer": "Security answer"
+    },
+    "forgotten": {
+      "preface": "Here you can recover your password. Fill in your user identification below. You can use one of the following:",
       "principal": "User",
-      "forgotPassword": "Forgot your password?",
-      "register": "Not a user yet? Register here."
+      "captcha": "Type in the characters below",
+      "email": "You will receive shortly an e-mail with your user identification and instructions on how to reset your password",
+      "generated.message": "Once you submit, a new password will be generated and sent to your e-mail address",
+      "generated.done": "You should receive shortly an e-mail with your new password.",
+      "manual.done": "Your password has been successfully changed. You can now use it to login."
     },
-    "password": {
-      "confirmationMessage": "Supply your {passwordType} to confirm this operation",
-      "confirm.noPassword": "In order to confirm you need a {passwordType}, but you do not have any",
-      "confirm.mode": "Confirm with",
-      "confirm.mode.device": "Mobile phone",
-      "confirm.mode.password": "Password",
-      "confirm.device.active": "In order to confirm, scan this QR-code with your mobile phone",
-      "confirm.device.none": "In order to confirm you must have a trusted mobile phone but you do not have any",
-      "confirm.deviceOrPassword.active": "In order to confirm, either scan this QR-code with your mobile phone or supply your {password}",
-      "confirm.deviceOrPassword.none": "In order to confirm you must have a trusted mobile phone or supply your {password} but you do not have any",
-      "confirm.deviceOrOtp.noMediums": "In order to confirm you need either a trusted mobile phone (and you have none) or a confirmation password, but there are no possible mediums to receive it.<br>Please, contact the administration.",
-      "confirm.deviceOrOtp.active": "In order to confirm, either scan this QR-code with your mobile phone, use the previously sent confirmation password or request a new one",
-      "confirm.deviceOrOtp.request": "In order to confirm, either scan this QR-code with your mobile phone, or request a confirmation password below",
-      "confirm.otp.noMediums": "In order to confirm you need a confirmation password, but there are no possible mediums to receive it.<br>Please, contact the administration.",
-      "confirm.otp.active": "You can use the previously sent confirmation password or request a new one",
-      "confirm.otp.request": "Please, request a confirmation password below in order to confirm",
-      "otp.sent": "The password was sent to {dest}",
-      "otp.receiveBy": "Get by {medium}",
-      "oldPassword": "Old password",
-      "newPassword": "New password",
-      "passwordConfirmation": "Password confirmation",
-      "title": {
-        "change.self": "Change your password",
-        "change.user": "Change user password",
-        "forgotten": "Recover your password",
-        "manage.single.self": "Manage your password",
-        "manage.multiple.self": "Manage your passwords",
-        "manage.single.user": "Manage user password",
-        "manage.multiple.user": "Manage user passwords",
-        "securityAnswer": "Set your security answer"
-      },
-      "mobileTitle": {
-        "change.self": "Password change",
-        "change.user": "Password change",
-        "forgotten": "Password recovery",
-        "manage.single.self": "Password",
-        "manage.multiple.self": "Passwords",
-        "manage.single.user": "User password",
-        "manage.multiple.user": "User passwords",
-        "securityAnswer": "Security answer"
-      },
-      "forgotten": {
-        "preface": "Here you can recover your password. Fill in your user identification below. You can use one of the following:",
-        "principal": "User",
-        "captcha": "Type in the characters below",
-        "email": "You will receive shortly an e-mail with your user identification and instructions on how to reset your password",
-        "generated.message": "Once you submit, a new password will be generated and sent to your e-mail address",
-        "generated.done": "You should receive shortly an e-mail with your new password.",
-        "manual.done": "Your password has been successfully changed. You can now use it to login."
-      },
-      "expired": {
-        "preface": "Your {type} has expired.",
-        "message.manual": "In order to proceed, you must change it.",
-        "message.generated": "In order to proceed, a new value must be generated.<br>This value will only be displayed once, so, make sure you either memorize it or write it down.",
-        "generatedValue": "The value for {type} is <data>{value}</data>.<br>This value won't be displayed again, so, make sure you either memorize it or write it down.",
-        "generateNew": "Generate new",
-        "changed": "Your {type} was changed"
-      },
-      "statusSince": "Since {date}",
-      "status": {
-        "active": "Active",
-        "disabled": "Disabled",
-        "expired": "Expired",
-        "indefinitelyBlocked": "Blocked",
-        "neverCreated": "Never created",
-        "pending": "Pending",
-        "reset": "Reset",
-        "temporarilyBlocked": "Temporarily blocked"
-      },
-      "action": {
-        "change": "Change",
-        "change.done": "Your {type} was changed",
-        "change.generated.confirm": "This will generate a new {type}, and the value will be displayed only once. Are you sure?",
-        "change.generated.done": "The value for {type} is <data>{value}</data>.<br>Make sure to memorize it, as it won't be displayed again.",
-        "unblock": "Unblock",
-        "unblock.confirm": "Are you sure to unblock your {type}?",
-        "unblock.done": "Your {type} was unblocked",
-        "activate": "Activate",
-        "activate.confirm": "This will activate your {type}, and the generated value will be displayed only once. Are you sure?",
-        "enable": "Enable",
-        "enable.confirm": "Are you sure to enable your {type}?",
-        "enable.done": "Your {type} was enabled",
-        "disable": "Disable",
-        "disable.confirm": "Are you sure to disable your {type}?",
-        "disable.done": "Your {type} was disabled"
-      }
+    "expired": {
+      "preface": "Your {type} has expired.",
+      "message.manual": "In order to proceed, you must change it.",
+      "message.generated": "In order to proceed, a new value must be generated.<br>This value will only be displayed once, so, make sure you either memorize it or write it down.",
+      "generatedValue": "The value for {type} is <data>{value}</data>.<br>This value won't be displayed again, so, make sure you either memorize it or write it down.",
+      "generateNew": "Generate new",
+      "changed": "Your {type} was changed"
     },
-    "registrationAgreement": "Registration agreement",
-    "pendingAgreements": {
-      "title": "Updated agreement",
-      "mobileTitle": "Updated agreement",
-      "message": "The registration agreement has been updated.<br><br>In order to continue, you must agree with the new terms.",
-      "agree": "I agree with the following registration agreements: {agreements}"
+    "statusSince": "Since {date}",
+    "status": {
+      "active": "Active",
+      "disabled": "Disabled",
+      "expired": "Expired",
+      "indefinitelyBlocked": "Blocked",
+      "neverCreated": "Never created",
+      "pending": "Pending",
+      "reset": "Reset",
+      "temporarilyBlocked": "Temporarily blocked"
     },
-    "securityQuestion": {
-      "message": "The security question is required in case you need to reset your password. Once set, if you need to change it, contact the administration.",
-      "question": "Security question",
-      "answer": "Your answer",
-      "set": "Your security answer was set"
+    "action": {
+      "change": "Change",
+      "change.done": "Your {type} was changed",
+      "change.generated.confirm": "This will generate a new {type}, and the value will be displayed only once. Are you sure?",
+      "change.generated.done": "The value for {type} is <data>{value}</data>.<br>Make sure to memorize it, as it won't be displayed again.",
+      "unblock": "Unblock",
+      "unblock.confirm": "Are you sure to unblock your {type}?",
+      "unblock.done": "Your {type} was unblocked",
+      "activate": "Activate",
+      "activate.confirm": "This will activate your {type}, and the generated value will be displayed only once. Are you sure?",
+      "enable": "Enable",
+      "enable.confirm": "Are you sure to enable your {type}?",
+      "enable.done": "Your {type} was enabled",
+      "disable": "Disable",
+      "disable.confirm": "Are you sure to disable your {type}?",
+      "disable.done": "Your {type} was disabled"
     }
+  },
+  "registrationAgreement": "Registration agreement",
+  "pendingAgreements": {
+    "title": "Updated agreement",
+    "mobileTitle": "Updated agreement",
+    "message": "The registration agreement has been updated.<br><br>In order to continue, you must agree with the new terms.",
+    "agree": "I agree with the following registration agreements: {agreements}"
+  },
+  "securityQuestion": {
+    "message": "The security question is required in case you need to reset your password. Once set, if you need to change it, contact the administration.",
+    "question": "Security question",
+    "answer": "Your answer",
+    "set": "Your security answer was set"
   },
   "dashboard": {
     "quickAccess": "Quick access",
@@ -570,15 +587,30 @@
     }
   },
   "voucher": {
+    "title": {
+      "redeem": "Redeem voucher",
+      "search": "Redeemed vouchers"
+    },
+    "mobileTitle": {
+      "redeem": "Redeem voucher",
+      "search": "Redeemed vouchers"
+    },
+    "error": {
+      "buy": {},
+      "redeem": {
+        "status": "This voucher cannot be redeemed. Its current status is: {status}.",
+        "user": "The current user cannot redeem vouchers from this type.",
+        "notAllowedYet": "This voucher cannot be redeemed before {beginDate}.",
+        "notAllowedToday": "This voucher cannot be redeemed today. The days allowed for redeeming are: {allowedDays}.",
+        "userBlocked": "You have been blocked by exceeding the number of allowed attempts."
+      }
+    },
     "redeem": {
-      "title": "Redeem voucher",
-      "mobileTitle": "Redeem voucher",
       "confirm": "The voucher details are given below. Please, review it below and confirm this action.",
+      "done": "The voucher was redeemed successfully.",
       "date": "Redeeming date",
       "redeemer": "Redeemer",
-      "payment": "Redeem payment",
-      "searchTitle": "Redeemed vouchers",
-      "searchMobileTitle": "Redeemed vouchers"
+      "payment": "Redeem payment"
     },
     "status": {
       "redeemed": "Redeemed",
@@ -586,9 +618,6 @@
       "open": "Open",
       "expired": "Expired",
       "canceled": "Canceled"
-    },
-    "type": {
-      "title": "Voucher type"
     },
     "boughtType": "Bought",
     "generatedType": "Generated",
@@ -738,11 +767,16 @@
       "viewAuthorizedPayments": "View payment authorizations",
       "viewAds": "View advertisements",
       "viewBrokerings": "View assigned members",
+      "viewBrokers": "View brokers",
       "viewOperators": "View operators",
       "status.user": "User status",
       "status.operator": "Operator status",
       "group.user": "User group",
-      "group.operator": "Operator group"
+      "group.operator": "Operator group",
+      "viewRedeemedVouchers": "View redeemed vouchers",
+      "redeemVoucher": "Redeem voucher",
+      "viewBoughtVouchers": "View bought vouchers",
+      "buyVouchers": "Buy vouchers"
     },
     "registration": {
       "group.public": "Choose the group you want to participate",
@@ -878,6 +912,28 @@
       "history.operator": "Group history"
     }
   },
+  "brokers": {
+    "title": {
+      "list": "Brokers",
+      "new": "Add broker",
+      "history": "Brokers history"
+    },
+    "mobileTitle": {
+      "list": "Brokers",
+      "new": "Add broker",
+      "history": "Brokers history"
+    },
+    "mainBroker": "Main broker",
+    "setMain": "Set main",
+    "broker": "Broker",
+    "brokerAdded": "The broker has been added successfully",
+    "administration": "The administration",
+    "action": {
+      "add": "Added as broker",
+      "remove": "Removed a broker",
+      "setMain": "Set as main"
+    }
+  },
   "phone": {
     "mobile": "Mobile phone",
     "landLine": "Land-line phone",
@@ -891,16 +947,20 @@
     "extensionValue": "ext. {value}",
     "numberExtensionValue": "{number} ext. {extension}",
     "enabledSms": "Enabled for SMS",
+    "error": {
+      "verify": {
+        "expired": "The verification code was not sent or has expired.<br> Please, send the code again to your phone and restart the process.",
+        "invalid": "Invalid verification code",
+        "maxAttempts": "You have exceeded the number of allowed attempts.<br>Please, send the code again to your phone and restart the process."
+      }
+    },
     "verify": {
       "title": "Verify {number} for SMS",
       "mobileTitle": "Verification",
       "code": "Code",
       "send": "Send",
       "message": "Click the button above to send the verification code to your phone",
-      "done": "The verification code was sent to {number}",
-      "error.expired": "The verification code was not sent or has expired.<br> Please, send the code again to your phone and restart the process.",
-      "error.invalid": "Invalid verification code",
-      "error.maxAttempts": "You have exceeded the number of allowed attempts.<br>Please, send the code again to your phone and restart the process."
+      "done": "The verification code was sent to {number}"
     }
   },
   "address": {

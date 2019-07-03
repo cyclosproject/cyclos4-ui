@@ -109,19 +109,19 @@ export class MaxDistanceFieldComponent
       }, error => {
         switch (error.code) {
           case error.PERMISSION_DENIED:
-            this.notification.error(this.i18n.general.geolocation.errorDenied);
+            this.notification.error(this.i18n.error.geolocation.denied);
             break;
           case error.POSITION_UNAVAILABLE:
           case error.TIMEOUT:
-            this.notification.warning(this.i18n.general.geolocation.errorUnavailable);
+            this.notification.warning(this.i18n.error.geolocation.unavailable);
             break;
           default:
-            this.notification.error(this.i18n.general.geolocation.errorGeneral);
+            this.notification.error(this.i18n.error.geolocation.general);
         }
       });
     } else {
       // Not supported by the browser
-      this.notification.warning(this.i18n.general.geolocation.errorUnavailable);
+      this.notification.warning(this.i18n.error.geolocation.unavailable);
     }
   }
 

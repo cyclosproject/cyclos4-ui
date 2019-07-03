@@ -78,9 +78,9 @@ export class ChangeForgottenPasswordComponent
         const generated = this.data.generated;
         let message: string;
         if (generated) {
-          message = this.i18n.auth.password.forgotten.generatedDone;
+          message = this.i18n.password.forgotten.generatedDone;
         } else {
-          message = this.i18n.auth.password.forgotten.manualDone;
+          message = this.i18n.password.forgotten.manualDone;
         }
         this.notification.info(message);
         // Mark the login page as affected by the forgotten password change and go to login

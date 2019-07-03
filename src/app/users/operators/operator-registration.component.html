@@ -79,7 +79,7 @@
           </ng-container>
         </ng-container>
       </ng-container>
-      <actions ngClass="mt-3" forceRow>
+      <actions>
         <button class="btn btn-primary" (click)="register()">
           {{ i18n.general.submit }}
         </button>
@@ -89,7 +89,7 @@
 
   <ng-template #done>
     <p [innerHTML]="doneMessageHtml | trust"></p>
-    <actions ngClass="mt-3" forceRow>
+    <actions forceRow>
       <button class="btn btn-primary" (click)="reload()">
         {{ i18n.user.operatorRegistrationAddAnother }}
       </button>

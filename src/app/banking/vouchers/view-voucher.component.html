@@ -1,7 +1,6 @@
 <page-layout [ready]="data$ | async">
-  <page-content *ngIf="data$ | async; else loading" [heading]="data.type.name"
-    [mobileHeading]="data.type.name"
-    [headingActions]="headingActions$ | async">
+  <page-content *ngIf="data$ | async; else loading" [heading]="data.title"
+    [mobileHeading]="data.title" [headingActions]="headingActions$ | async">
 
     <div class="d-flex flex-grow-1 flex-column">
       <div

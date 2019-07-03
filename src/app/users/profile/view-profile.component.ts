@@ -103,6 +103,7 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     const group = permissions.group || {};
     const operators = permissions.operators || {};
     const brokering = permissions.brokering || {};
+    const vouchers = permissions.vouchers || {};
 
     if (this.self) {
       // For the own user, we just show the edit as a top-level action
@@ -155,6 +156,16 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
           this.router.navigate(['/banking', this.param, 'authorized-payments']);
         }));
       }
+      if (vouchers.viewRedeemed) {
+        this.bankingActions.push(new HeadingAction('search', this.i18n.user.profile.viewRedeemedVouchers, () => {
+          this.router.navigate(['/banking', this.param, 'vouchers', 'redeemed']);
+        }));
+      }
+      if (vouchers.redeem) {
+        this.bankingActions.push(new HeadingAction('payment', this.i18n.user.profile.redeemVoucher, () => {
+          this.router.navigate(['/banking', this.param, 'vouchers', 'redeem']);
+        }));
+      }
       if (profile.editProfile) {
         this.managementActions.push(new HeadingAction('edit', this.i18n.user.profile.edit, () => {
           this.router.navigateByUrl(this.router.url + '/edit');
@@ -184,6 +195,11 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
           this.router.navigate(['/users', this.param, 'brokerings']);
         }));
       }
+      if (brokering.viewBrokers) {
+        this.managementActions.push(new HeadingAction('assignment_ind', this.i18n.user.profile.viewBrokers, () => {
+          this.router.navigate(['/users', this.param, 'brokers']);
+        }));
+      }
       if (operators.viewOperators) {
         this.managementActions.push(new HeadingAction('supervisor_account', this.i18n.user.profile.viewOperators, () => {
           this.router.navigate(['/users', this.param, 'operators']);
@@ -207,7 +223,7 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
       }
       if (marketplace.viewAdvertisements || marketplace.viewWebshop) {
         actions.push(new HeadingAction('shopping_basket', this.i18n.user.profile.viewAds, () => {
-          this.router.navigate(['/marketplace', 'user', this.param]);
+          this.router.navigate(['/marketplace', this.param, 'list']);
         }));
       }
       // Custom operations

@@ -1,18 +1,22 @@
 <page-layout [ready]="data$ | async" [ngSwitch]="step$ | async">
-  <page-content *ngSwitchCase="'form'" [heading]="i18n.voucher.redeem.title"
-    [mobileHeading]="i18n.voucher.redeem.mobileTitle">
-
-    <input-field type="text" [label]="i18n.voucher.token" [mask]="mask"
-      [formControl]="token" [placeholder]="mask"></input-field>
-    <actions>
-      <button class="btn btn-primary" [disabled]="requesting$ | async"
-        (click)="submit()">{{ i18n.general.submit }}</button>
-    </actions>
+  <page-content *ngSwitchCase="'form'" [heading]="i18n.voucher.title.redeem"
+    [mobileHeading]="i18n.voucher.mobileTitle.redeem">
+    <ng-container *ngIf="(data$ | async); else loading">
+      <ng-container [ngTemplateOutlet]="active_user"></ng-container>
+      <input-field type="text" [label]="i18n.voucher.token" [mask]="mask"
+        [formControl]="token" [placeholder]="mask" required></input-field>
+      <actions>
+        <button class="btn btn-primary" [disabled]="requesting$ | async"
+          (click)="submit()">{{ i18n.general.submit }}</button>
+      </actions>
+    </ng-container>
   </page-content>
   <page-content *ngSwitchCase="'confirm'"
-    [heading]="i18n.voucher.redeem.title"
-    [mobileHeading]="i18n.voucher.redeem.mobileTitle">
+    [heading]="i18n.voucher.title.redeem"
+    [mobileHeading]="i18n.voucher.mobileTitle.redeem">
     <ng-container *ngIf="(dataForRedeem$ | async); else loading">
+
+      <ng-container [ngTemplateOutlet]="active_user"></ng-container>
 
       <notification ngClass="mb-3" type="warning">
         {{ i18n.voucher.redeem.confirm }}
@@ -55,10 +59,20 @@
       <actions>
         <button class="btn btn-primary" [disabled]="requesting$ | async"
           (click)="submit()">{{ i18n.general.submit }}</button>
+        <button class="btn btn-outline-primary" (click)="backToForm()">
+          {{ i18n.general.previous }}
+        </button>
       </actions>
     </ng-container>
   </page-content>
 </page-layout>
+
+<ng-template #active_user>
+  <ng-container *ngIf="!self">
+    <user-info [user]="data.user"></user-info>
+    <hr>
+  </ng-container>
+</ng-template>
 
 <ng-template #loading>
   <page-content>

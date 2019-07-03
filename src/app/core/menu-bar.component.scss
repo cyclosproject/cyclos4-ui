@@ -53,8 +53,7 @@ nav.full-width {
     position: relative;
   }
   a.sub-menu-item {
-    padding-left: $lg-padding;
-    padding-right: calc(#{$lg-padding} + 0.2rem);
+    padding: 0.7rem calc(#{$lg-padding} + 0.2rem) 0.7rem $lg-padding;
   }
   .menu-text, .sub-menu-text {
     font-size: 1.2em;

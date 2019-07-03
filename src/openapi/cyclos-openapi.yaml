@@ -18715,10 +18715,15 @@ A note for dynamic custom fields: If a script is used to generate possible value
   /{user}/vouchers/types-for-buy:
     get:
       operationId: listVoucherTypesForBuy
+      deprecated: true
+      x-remove-version: 4.15
       summary: >-
         Returns the voucher types the authenticated user can buy vouchers to the
         given user
       description: >-
+        Instead use "/{user}/vouchers/data-for-buy" without passing a type.
+
+
         List the voucher types the user can buy to another user (or himself)
       tags:
         - Vouchers
@@ -18773,9 +18778,10 @@ A note for dynamic custom fields: If a script is used to generate possible value
     get:
       operationId: getVoucherDataForBuy
       summary: >-
-        Returns data for buying a voucher of a specified type
+        Returns data for buying a voucher of a specified type or the list of types to buy.
       description: >-
-        Data for buying a voucher
+        If a type is passed it returns the data for buying vouchers, otherwise it
+        returns the list of types the atuhenticated user can buy to the given user (or himself).
       tags:
         - Vouchers
       security:
@@ -18787,9 +18793,9 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - $ref: '#/components/parameters/user'
         - name: type
           description: >-
-            Either the `id` or `internalName` of the voucher type
+            Either the `id` or `internalName` of the voucher type. Left empty to get
+            the list of available types for buy.
           in: query
-          required: true
           schema:
             type: string
       responses:
@@ -46085,7 +46091,9 @@ components:
 
     VoucherDataForBuy:
       description: >-
-        Data used to buy a voucher
+        If a type is not specified when requesting this data only the given
+        user data and the list of types the authenticated user can buy for
+        it (could be himself) is returned.
       allOf:
         - $ref: '#/components/schemas/VoucherBasicData'
         - type: object
@@ -46117,6 +46125,13 @@ components:
                 vouchers can be redeemed
               allOf:
                 - $ref: '#/components/schemas/TimeInterval'
+            types:
+              description: >-
+                The list of voucher types the authenticated user can buy to another
+                user (or himself). Only if no type parameter is given.
+              type: array
+              items:
+                $ref: '#/components/schemas/VoucherTypeDetailed'
 
     VoucherDataForRedeem:
       description: >-
