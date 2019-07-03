@@ -2,7 +2,6 @@ import { Component, OnInit, ChangeDetectionStrategy, Injector } from '@angular/c
 import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { UserVouchersDataForSearch, VoucherResult, VoucherRelationEnum, UserVouchersQueryFilters } from 'app/api/models';
 import { VouchersService } from 'app/api/services';
-import { cloneDeep } from 'lodash';
 
 type UserVoucherSearchParams = UserVouchersQueryFilters & {
   user: string;
@@ -42,17 +41,13 @@ export class SearchRedeemedVouchersComponent
   }
 
   protected toSearchParams(value: any): UserVoucherSearchParams {
-    const params = cloneDeep(value);
-    params['user'] = this.route.snapshot.paramMap.get('user');
-    params['relation'] = VoucherRelationEnum.REDEEMED;
-    delete params['operator'];
-    params['redeemBy'] = value.operator;
-    delete params['periodBegin'];
-    delete params['periodEnd'];
+    value['user'] = this.route.snapshot.paramMap.get('user');
+    value['relation'] = VoucherRelationEnum.REDEEMED;
+    value['redeemBy'] = value.operator;
     if (value.periodBegin || value.periodEnd) {
-      params['redeemPeriod'] = this.ApiHelper.dateRangeFilter(value.periodBegin, value.periodEnd);
+      value['redeemPeriod'] = this.ApiHelper.dateRangeFilter(value.periodBegin, value.periodEnd);
     }
-    return params;
+    return value;
   }
 
   protected doSearch(value: UserVoucherSearchParams) {
