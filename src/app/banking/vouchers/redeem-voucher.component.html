@@ -24,17 +24,18 @@
 
       <div class="d-flex flex-grow-1 flex-column">
 
-        <div class="d-sm-flex flex-row-sm-reverse justify-content-sm-between">
+        <div
+          [ngClass]="{'d-flex flex-row-reverse justify-content-between': layout.gtsm$ | async}">
           <div *ngIf="dataForRedeem.type.image"
             class="image d-flex justify-content-center mt-2 mb-4"
-            [ngClass]="{'flex-grow-1':  dataForRedeem.type.voucherDescription}">
+            [ngClass]="{'flex-grow-1':  !dataForRedeem.type.voucherDescription}">
             <avatar size="160" imageSize="200" useLightbox
               [image]="dataForRedeem.type.image">
             </avatar>
           </div>
 
           <ng-container *ngIf="dataForRedeem.type.voucherDescription">
-            {{ dataForRedeem.type.voucherDescription }}
+            <p> {{ dataForRedeem.type.voucherDescription }}</p>
           </ng-container>
         </div>
         <h2 class="mt-3"></h2>
