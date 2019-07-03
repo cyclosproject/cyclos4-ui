@@ -4,7 +4,6 @@ import { ChangePassword, PasswordType, User } from 'app/api/models';
 import { PasswordsService } from 'app/api/services';
 import { BaseComponent } from 'app/shared/base.component';
 import { validateBeforeSubmit } from 'app/shared/helper';
-import { cloneDeep } from 'lodash';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 
 
@@ -68,7 +67,7 @@ export class ChangePasswordDialogComponent extends BaseComponent implements OnIn
     if (!validateBeforeSubmit(this.form)) {
       return;
     }
-    const params: ChangePassword = cloneDeep(this.form.value);
+    const params: ChangePassword = this.form.value;
     params.checkConfirmation = true;
     this.addSub(this.passwordsService.changePassword({
       user: this.param,

@@ -7,6 +7,7 @@ import { blurIfClick } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
 import { ActiveMenu, BaseMenuEntry, MenuEntry, MenuType, RootMenu, RootMenuEntry } from 'app/shared/menu';
 import { BsDropdownDirective } from 'ngx-bootstrap/dropdown';
+import { MenuDensity } from 'app/core/menu-density';
 
 /**
  * Returns the anchor id for the given menu entry
@@ -39,6 +40,8 @@ export class MenusComponent extends AbstractComponent implements OnInit {
   @Input() userName: string;
   @Input() activeMenu: ActiveMenu;
   @Input() menuType: MenuType;
+  @Input() density: MenuDensity;
+  @Input() tooltipForNonActive: boolean;
   @Output() dropdownShown = new EventEmitter<RootMenuEntry>();
   @Output() dropdownHidden = new EventEmitter<RootMenuEntry>();
 
@@ -61,6 +64,17 @@ export class MenusComponent extends AbstractComponent implements OnInit {
   ngOnInit() {
     super.ngOnInit();
     this.onTop = !Configuration.menuBar;
+  }
+
+  ngClass(root: RootMenuEntry): string[] {
+    const res: string[] = ['nav-item', 'menu-item'];
+    if (this.density) {
+      res.push(`density-${this.density}`);
+    }
+    if (this.activeRoot === root.rootMenu) {
+      res.push('active');
+    }
+    return res;
   }
 
   onClick(event: MouseEvent, element: HTMLElement, base: BaseMenuEntry) {

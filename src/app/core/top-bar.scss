@@ -4,7 +4,7 @@ nav {
   transition: background-color ease-in-out 0.3s, color ease-in-out 0.4s;
 }
 .navbar-brand {
-  padding: 0px;
+  padding: 0;
 }
 .menu-container {
   height: 100%;
@@ -23,18 +23,18 @@ nav {
       align-items: center;
       height: 2rem;
       margin: 0;
-      padding: 0 $top-bar-item-padding-xxs;
+      padding: 0 $top-bar-item-spacing-xxs;
       line-height: 1em;
       position: relative;
-    }
-    a, a:hover, a:focus, a:active {
-      color: $top-bar-color;
-      text-decoration: none;
-      box-shadow: none;
-    }
-    a:focus:not(:active) {
-      color: $top-bar-item-focus-color;
-      background-color: $top-bar-item-focus-bg;
+      &, &:hover, &:focus, &:active {
+        color: $top-bar-color;
+        text-decoration: none;
+        box-shadow: none;
+      }
+      &:focus:not(:active) {
+        color: $top-bar-item-focus-color;
+        background-color: $top-bar-item-focus-bg;
+      }
     }
   }
   .navbar-container {
@@ -42,14 +42,14 @@ nav {
     display: flex;
     align-items: center;
     margin: 0 auto;
-    padding: 0 $top-bar-item-padding-xxs;
+    padding: 0 $top-bar-item-spacing-xxs;
     height: 100%;
   }
   .navbar-brand {
     margin: 0;
     display: flex;
     align-items: center;
-    margin-left: $top-bar-item-padding-xxs;
+    margin-left: $top-bar-item-spacing-xxs;
   }
   .top-title {
     font-size: 1rem;
@@ -63,12 +63,12 @@ nav {
     .navbar {
       height: $top-bar-height-xs;
       a {
-        height: 2.6rem;
-        padding: 0 $top-bar-item-padding-xs;
+        height: 100%;
+        padding: 0 $top-bar-item-spacing-custom;
       }
     }
     .navbar-container {
-      padding: 0 $top-bar-item-padding-xs;
+      padding: 0 $top-bar-item-spacing-custom;
     }
     .navbar-brand {
       font-size: 1.3rem;
@@ -77,13 +77,6 @@ nav {
   @include media-breakpoint-up(md) {
     .navbar {
       height: $top-bar-height;
-      a {
-        height: 100%;
-        padding: 0 $top-bar-item-padding;
-      }
-    }
-    .navbar-container {
-      padding: 0 $top-bar-item-padding;
     }
   }
   @include media-breakpoint-up(lg) {

@@ -1,5 +1,5 @@
 <div #content>
-  <h1 *ngIf="agreements?.length > 1">{{ i18n.auth.registrationAgreement
+  <h1 *ngIf="agreements?.length > 1">{{ i18n.registrationAgreement
     }}</h1>
   <h1 *ngIf="agreements?.length === 1">{{ agreements[0].name }}</h1>
   <ng-container *ngFor="let agreement of agreements">

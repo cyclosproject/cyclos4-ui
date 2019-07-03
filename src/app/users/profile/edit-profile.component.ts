@@ -113,13 +113,9 @@ export class EditProfileComponent
     });
 
     this.headingActions = [
-      new HeadingAction('search', this.i18n.general.view, () => {
-        if (self) {
-          this.router.navigate(['users', 'profile']);
-        } else {
-          this.router.navigate(['users', this.param, 'profile']);
-        }
-      }, true)
+      new HeadingAction('search', this.i18n.general.view, () =>
+        this.router.navigate(['users', this.param, 'profile']),
+        true)
     ];
 
     this.addSub(this.usersService.getDataForEditFullProfile({ user: this.param }).subscribe(data => {
@@ -820,7 +816,8 @@ export class EditProfileComponent
       this.images = [...this.images, ...images];
     }
     this.notification.snackBar(this.i18n.user.imagesChanged, { timeout: IMAGE_MANAGED_TIMEOUT });
-    this.uploadedImages = images;
+    this.uploadedImages = [...(this.uploadedImages || []), ...images];
+    this.changeDetector.detectChanges();
   }
 
   manageImages() {
