@@ -36,13 +36,17 @@
           <label-value [label]="i18n.general.status">
             {{ bankingHelper.voucherStatus(data.status) }}
           </label-value>
+          <label-value *ngIf="data.redeemDate"
+            [label]="i18n.voucher.redeem.date">
+            {{ data.redeemDate | dateTime}}
+          </label-value>
           <label-value *ngIf="data.redeemer"
             [label]="i18n.voucher.redeem.redeemer">
             <user-link [user]="data.redeemer"></user-link>
           </label-value>
-          <label-value *ngIf="data.redeemDate"
-            [label]="i18n.voucher.redeem.date">
-            {{ data.redeemDate | dateTime}}
+          <label-value *ngIf="data.redeemBy?.user"
+            [label]="i18n.general.operator">
+            <user-link [user]="data.redeemBy"></user-link>
           </label-value>
           <label-value *ngIf="data.redeem"
             [label]="i18n.voucher.redeem.payment">
