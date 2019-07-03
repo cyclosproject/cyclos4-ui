@@ -8,20 +8,23 @@
 
     <form [formGroup]="form"
       class="filters-form filters-form-separator border-0">
-      <div class="col-12 col-md-6">
-        <multi-selection-field labelPosition="side" formControlName="types"
-          [emptyLabel]="i18n.general.notApplied" [label]="i18n.general.type">
-          <field-option *ngFor="let type of data.types" [value]="type.id"
-            [internalName]="type.internalName" [id]="type.id"
-            [text]="type.name">
-          </field-option>
-        </multi-selection-field>
-      </div>
-      <div class="col-12 col-md-6">
-        <multi-selection-field labelPosition="side" formControlName="statuses"
-          [emptyLabel]="i18n.general.notApplied" [label]="i18n.general.status"
-          [fieldOptions]="statusOptions">
-        </multi-selection-field>
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <multi-selection-field labelPosition="side" formControlName="types"
+            [emptyLabel]="i18n.general.notApplied"
+            [label]="i18n.general.type">
+            <field-option *ngFor="let type of data.types" [value]="type.id"
+              [internalName]="type.internalName" [id]="type.id"
+              [text]="type.name">
+            </field-option>
+          </multi-selection-field>
+        </div>
+        <div class="col-12 col-md-6">
+          <multi-selection-field labelPosition="side"
+            formControlName="statuses" [emptyLabel]="i18n.general.notApplied"
+            [label]="i18n.general.status" [fieldOptions]="statusOptions">
+          </multi-selection-field>
+        </div>
       </div>
     </form>
   </page-content>
