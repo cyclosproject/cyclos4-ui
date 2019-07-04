@@ -633,6 +633,12 @@
       "payment": "Buy payment"
     },
     "creationType": "CreationType",
+    "cancel": {
+      "done": "This voucher has been canceled.",
+      "packConfirmation": "There are other vouchers belonging to the same pack that will be also canceled. Are you sure to continue?",
+      "refundConfirmation": "Are you sure to cancel and refund this voucher?",
+      "confirmation": "Are you sure to cancel this voucher?"
+    },
     "cancelAndRefund": "Cancel & refund",
     "token": "Voucher code"
   },
