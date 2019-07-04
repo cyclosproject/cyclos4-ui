@@ -1,5 +1,5 @@
 import { Component, OnInit, Injector, ChangeDetectionStrategy } from '@angular/core';
-import { RecordDataForSearch, RecordResult, RecordQueryFilters, CustomFieldDetailed } from 'app/api/models';
+import { RecordDataForSearch, RecordResult, RecordQueryFilters, CustomFieldDetailed, RecordLayoutEnum } from 'app/api/models';
 import { RecordsService } from 'app/api/services';
 import { HttpResponse } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
@@ -37,6 +37,11 @@ export class TiledRecordsComponent
     this.type = this.route.snapshot.params.type;
 
     this.addSub(this.recordsService.getRecordDataForOwnerSearch({ owner: this.param, type: this.type }).subscribe(data => {
+      if (data.type.layout !== RecordLayoutEnum.TILED) {
+        throw new Error(`Invalid record layout: ${data.type.layout}`);
+      }
+
+      // TODO handle profileFields
       this.fieldsInList = data.customFields.filter(cf => data.fieldsInList.includes(cf.internalName));
       this.data = data;
     }));
@@ -49,15 +54,37 @@ export class TiledRecordsComponent
       this.headingActions.push(new HeadingAction('add_circle_outline', this.i18n.general.addNew, () =>
         this.router.navigate(['/records', this.param, this.type, 'new']), true));
     }
-    super.onDataInitialized(data);
     this.addSub(this.doSearch(this.toSearchParams()).subscribe(result => {
       this.results$.next(result.body);
     }));
   }
 
+  editPath(record: RecordResult) {
+    return ['/records', 'edit', record.id];
+  }
+
+  viewPath(record: RecordResult) {
+    return ['/records', 'view', record.id];
+  }
+
+  remove(record: RecordResult) {
+    this.notification.confirm({
+      message: this.i18n.record.removeConfirm,
+      callback: () => this.doRemove(record)
+    });
+  }
+
+  private doRemove(record: RecordResult) {
+    this.addSub(this.recordsService.deleteRecord({ id: record.id })
+      .subscribe(() => {
+        this.notification.snackBar(this.i18n.record.removeDone);
+        this.reload();
+      }));
+  }
   protected toSearchParams(): RecordSearchParams {
     return {
-      pageSize: Number.MAX_SAFE_INTEGER,
+      // Java Max Integer Value, otherwise a DataConversionException is thrown by Cyclos
+      pageSize: 2147483647,
       owner: this.param,
       type: this.type
     };

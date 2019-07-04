@@ -41,7 +41,10 @@ export class SearchConnectedComponent
 
   public disconnect(session: SessionResult) {
     this.addSub(this.sessionsService.disconnectSession({ sessionToken: session.sessionToken })
-      .subscribe(() => this.update()));
+      .subscribe(() => {
+        this.notification.snackBar(this.i18n.connectedUser.disconnected(session.user.display));
+        this.update();
+      }));
   }
 
   public canDisconnect(session: SessionResult) {

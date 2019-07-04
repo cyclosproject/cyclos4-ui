@@ -35,25 +35,31 @@
       </form>
     </page-content>
     <results-layout resultType="list" [results]="results$ | async"
-      (update)="update($event)" [rendering$]="rendering$">
+      (update)="update($event)" [rendering$]="rendering$" [toLink]="toLink">
 
       <mobile-result *mobileResult="let row">
         <div class="d-flex">
           <div>
-            <div class="cell-cell-date">
+            <label-value [label]="i18n.general.creationDate"
+              labelPosition="above">
               {{ row.creationDate | dateTime }}
-            </div>
-            <div class="cell-text">
-              <format-field-value *ngFor=" let field of this.fieldsInList"
-                [fields]="data.customFields" [plainText]="true"
-                [fieldName]="field.internalName" [object]="row"
-                [customValues]="row.customValues">
+            </label-value>
+            <label-value *ngFor="let field of this.fieldsInList"
+              [label]="field.name" labelPosition="above">
+              <format-field-value [fields]="data.customFields"
+                [plainText]="true" [fieldName]="field.internalName"
+                [object]="row" [customValues]="row.customValues">
               </format-field-value>
-            </div>
+            </label-value>
           </div>
-          <div class="ml-auto">
-            <button *ngIf="this.data.remove" [tooltip]="i18n.general.remove"
+          <div class="ml-auto text-right">
+            <button *ngIf="this.hasEditAction" [tooltip]="i18n.general.edit"
               class="btn btn-icon"
+              (click)="router.navigate(editPath(row)); $event.stopPropagation(); $event.preventDefault()">
+              <icon icon="edit"></icon>
+            </button>
+            <button *ngIf="this.data.remove" [tooltip]="i18n.general.remove"
+              class="btn btn-icon" [ngClass]="{'ml-3': this.hasEditAction}"
               (click)="remove(row); $event.stopPropagation(); $event.preventDefault()">
               <icon icon="clear"></icon>
             </button>
@@ -71,7 +77,7 @@
         </thead>
         <tbody>
           <tr *ngFor="let row of results.results"
-            (click)="router.navigate(path(row))">
+            (click)="router.navigate(toLink)">
             <td>{{ row.creationDate | dateTime }}</td>
             <td *ngFor=" let field of this.fieldsInList">
               <format-field-value [fields]="data.customFields"
@@ -79,9 +85,15 @@
                 [object]="row" [customValues]="row.customValues">
               </format-field-value>
             </td>
-            <td class="actions">
+            <td class="actions actions-multiple">
+              <button *ngIf="this.hasEditAction" [tooltip]="i18n.general.edit"
+                class="btn btn-icon"
+                (click)="router.navigate(editPath(row)); $event.stopPropagation()">
+                <icon icon="edit"></icon>
+              </button>
               <button *ngIf="this.data.remove" [tooltip]="i18n.general.remove"
                 class="btn btn-icon"
+                [ngClass]="this.hasEditAction ? 'ml-3' : ''"
                 (click)="remove(row); $event.stopPropagation()">
                 <icon icon="clear"></icon>
               </button>
