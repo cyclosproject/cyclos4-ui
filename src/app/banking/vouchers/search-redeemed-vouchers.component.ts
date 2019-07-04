@@ -2,7 +2,6 @@ import { Component, OnInit, ChangeDetectionStrategy, Injector } from '@angular/c
 import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { UserVouchersDataForSearch, VoucherResult, VoucherRelationEnum, UserVouchersQueryFilters } from 'app/api/models';
 import { VouchersService } from 'app/api/services';
-import { cloneDeep } from 'lodash';
 
 type UserVoucherSearchParams = UserVouchersQueryFilters & {
   user: string;
@@ -17,6 +16,8 @@ export class SearchRedeemedVouchersComponent
   extends BaseSearchPageComponent<UserVouchersDataForSearch, UserVoucherSearchParams, VoucherResult>
   implements OnInit {
 
+  self: boolean;
+
   constructor(
     injector: Injector,
     private voucherService: VouchersService
@@ -26,24 +27,26 @@ export class SearchRedeemedVouchersComponent
 
   ngOnInit() {
     super.ngOnInit();
-
+    const user = this.route.snapshot.paramMap.get('user');
     this.addSub(this.voucherService.getUserVouchersDataForSearch({
-      user: this.ApiHelper.SELF, relation: VoucherRelationEnum.REDEEMED
-    }).subscribe(dataForSearch => this.data = dataForSearch));
+      user: user, relation: VoucherRelationEnum.REDEEMED
+    }).subscribe(dataForSearch => {
+      this.data = dataForSearch;
+      this.self = this.authHelper.isSelf(dataForSearch.user);
+    }));
   }
 
   protected getFormControlNames(): string[] {
-    return ['types', 'periodBegin', 'periodEnd'];
+    return ['types', 'periodBegin', 'periodEnd', 'operator'];
   }
 
   protected toSearchParams(value: any): UserVoucherSearchParams {
-    const params = cloneDeep(value);
-    params['user'] = this.ApiHelper.SELF;
-    params['relation'] = VoucherRelationEnum.REDEEMED;
-    delete params['periodBegin'];
-    delete params['periodEnd'];
+    const params: UserVoucherSearchParams = value;
+    params.user = this.route.snapshot.paramMap.get('user');
+    params.relation = VoucherRelationEnum.REDEEMED;
+    params.redeemBy = value.operator;
     if (value.periodBegin || value.periodEnd) {
-      params['redeemPeriod'] = this.ApiHelper.dateRangeFilter(value.periodBegin, value.periodEnd);
+      params.redeemPeriod = this.ApiHelper.dateRangeFilter(value.periodBegin, value.periodEnd);
     }
     return params;
   }

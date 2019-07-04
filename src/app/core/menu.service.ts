@@ -612,14 +612,15 @@ export class MenuService {
           'compare_arrows', this.i18n.menu.bankingTransfersOverview);
       }
 
-      if (vouchers.viewRedeemed) { // FIX ICON ?
-        add(Menu.SEARCH_REDEEMED, '/banking/vouchers/search-redeemed', 'search', this.i18n.menu.bankingVouchersSearchRedeemed);
+      if (vouchers.viewRedeemed) {
+        add(Menu.SEARCH_REDEEMED, '/banking/' + ApiHelper.SELF + '/vouchers/redeemed', 'search',
+          this.i18n.menu.bankingRedeemedVouchers);
       }
-      if (vouchers.redeem) { // FIX ICON ?
-        add(Menu.REDEEM_VOUCHER, '/banking/vouchers/redeem', 'payment', this.i18n.menu.bankingVouchersRedeem);
+      if (vouchers.redeem) {
+        add(Menu.REDEEM_VOUCHER, '/banking/' + ApiHelper.SELF + '/vouchers/redeem', 'payment', this.i18n.menu.bankingRedeemVoucher);
       }
       if (vouchers.view) {
-        add(Menu.SEARCH_VOUCHERS, '/banking/vouchers', 'search', this.i18n.menu.bankingVouchersSearch);
+        add(Menu.SEARCH_VOUCHERS, '/banking/vouchers', 'search', this.i18n.menu.bankingSearchVouchers);
       }
       addOperations(RootMenu.BANKING);
       addContentPages(Menu.CONTENT_PAGE_BANKING);
