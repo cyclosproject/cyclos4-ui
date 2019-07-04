@@ -4,8 +4,8 @@
 
 <ng-template #content>
   <voucher-filters [adminData]="data" [form]="form"
-    [heading]="i18n.voucher.redeem.searchTitle"
-    [mobileHeading]="i18n.voucher.redeem.searchMobileTitle"
+    [heading]="i18n.voucher.title.search"
+    [mobileHeading]="i18n.voucher.mobileTitle.search"
     [moreFilters]="(moreFilters$ | async)"
     [headingActions]="(headingActions$ | async)"></voucher-filters>
   <results-layout resultType="list" [results]="results$ | async"

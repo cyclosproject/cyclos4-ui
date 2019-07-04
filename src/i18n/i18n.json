@@ -593,11 +593,13 @@
   "voucher": {
     "title": {
       "redeem": "Redeem voucher",
-      "search": "Redeemed vouchers"
+      "redeemed": "Redeemed vouchers",
+      "search": "Search vouchers"
     },
     "mobileTitle": {
       "redeem": "Redeem voucher",
-      "search": "Redeemed vouchers"
+      "redeemed": "Redeemed vouchers",
+      "search": "Search vouchers"
     },
     "error": {
       "buy": {},
@@ -610,15 +612,18 @@
       }
     },
     "redeem": {
+      "error": {
+        "status": "This voucher cannot be redeemed. Its current status is: {status}.",
+        "user": "The current user cannot redeem vouchers from this type.",
+        "notAllowedYet": "This voucher cannot be redeemed before {beginDate}.",
+        "notAllowedToday": "This voucher cannot be redeemed today. The days allowed for redeeming are: {allowedDays}.",
+        "userBlocked": "You have been blocked by exceeding the number of allowed attempts."
+      },
       "confirm": "The voucher details are given below. Please, review it below and confirm this action.",
       "done": "The voucher was redeemed successfully.",
       "date": "Redeeming date",
       "redeemer": "Redeemer",
       "payment": "Redeem payment"
-    },
-    "title": {
-      "search": "Search vouchers",
-      "searchMobile": "Search vouchers"
     },
     "status": {
       "redeemed": "Redeemed",
@@ -636,6 +641,12 @@
     "buyerGroups": "Buyer groups",
     "redeemerGroups": "Redeemer groups",
     "creationType": "CreationType",
+    "cancel": {
+      "done": "This voucher has been canceled.",
+      "packConfirmation": "There are other vouchers belonging to the same pack that will be also canceled. Are you sure to continue?",
+      "refundConfirmation": "Are you sure to cancel and refund this voucher?",
+      "confirmation": "Are you sure to cancel this voucher?"
+    },
     "cancelAndRefund": "Cancel & refund",
     "cancelDone": "This voucher has been canceled.",
     "cancelConfirmation": "Are you sure to cancel this voucher?",
