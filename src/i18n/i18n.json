@@ -228,9 +228,9 @@
     "banking.scheduledPayments": "Scheduled payments",
     "banking.authorizations": "Payment authorizations",
     "banking.buyVouchers": "Buy vouchers",
-    "banking.searchBoughtVouchers": "Search bought vouchers",
-    "banking.vouchers.redeem": "Redeem voucher",
-    "banking.vouchers.searchRedeemed": "View redeemed",
+    "banking.boughtVouchers": "View buys",
+    "banking.redeemVoucher": "Redeem voucher",
+    "banking.redeemedVouchers": "View redeemed",
     "banking.transfersOverview": "Transfers overview",
     "operators": "Operators",
     "operators.operators": "Operators",
@@ -628,15 +628,11 @@
       }
     },
     "redeem": {
-      "title": "Redeem voucher",
-      "mobileTitle": "Redeem voucher",
       "confirm": "The voucher details are given below. Please, review it below and confirm this action.",
       "done": "The voucher was redeemed successfully.",
       "date": "Redeeming date",
       "redeemer": "Redeemer",
-      "payment": "Redeem payment",
-      "searchTitle": "Redeemed vouchers",
-      "searchMobileTitle": "Redeemed vouchers"
+      "payment": "Redeem payment"
     },
     "status": {
       "redeemed": "Redeemed",
@@ -648,12 +644,16 @@
     "mobileTitle": {
       "buy": "Buy vouchers",
       "buyConfirmation": "Buy confirmation",
-      "searchBought": "Bought vouchers"
+      "bought": "Bought vouchers",
+      "redeem": "Redeem voucher",
+      "search": "Redeemed vouchers"
     },
     "title": {
       "buy": "Buy vouchers",
       "buyConfirmation": "Buy confirmation",
-      "searchBought": "Search bought vouchers"
+      "searchBought": "Search bought vouchers",
+      "redeem": "Redeem voucher",
+      "search": "Redeemed vouchers"
     },
     "boughtType": "Bought",
     "generatedType": "Generated",
@@ -817,7 +817,11 @@
       "status.user": "User status",
       "status.operator": "Operator status",
       "group.user": "User group",
-      "group.operator": "Operator group"
+      "group.operator": "Operator group",
+      "viewRedeemedVouchers": "View redeemed vouchers",
+      "redeemVoucher": "Redeem voucher",
+      "viewBoughtVouchers": "View bought vouchers",
+      "buyVouchers": "Buy vouchers"
     },
     "registration": {
       "group.public": "Choose the group you want to participate",

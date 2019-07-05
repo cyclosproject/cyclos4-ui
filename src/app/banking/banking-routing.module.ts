@@ -138,14 +138,14 @@ const bankingRoutes: Routes = [
         }
       },
       {
-        path: 'vouchers/redeem',
+        path: ':user/vouchers/redeem',
         component: RedeemVoucherComponent,
         data: {
           menu: Menu.REDEEM_VOUCHER
         }
       },
       {
-        path: 'vouchers/search-redeemed',
+        path: ':user/vouchers/redeemed',
         component: SearchRedeemedVouchersComponent,
         data: {
           menu: Menu.SEARCH_REDEEMED
