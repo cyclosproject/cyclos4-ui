@@ -1,8 +1,7 @@
-import { ChangeDetectionStrategy, Component, Input, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CustomField, CustomFieldTypeEnum, CustomFieldValue } from 'app/api/models';
-import { LayoutService } from 'app/shared/layout.service';
-import { FormatFieldValueComponent } from './format-field-value.component';
 import { FieldLabelPosition } from 'app/shared/base-form-field.component';
+import { LayoutService } from 'app/shared/layout.service';
 
 /**
  * Component used to display a custom field value as a `<label-value>`
@@ -17,8 +16,6 @@ export class CustomFieldValueComponent {
 
   @Input() labelPosition: FieldLabelPosition;
   @Input() fieldValue: CustomFieldValue;
-
-  @ViewChild('formatFieldValue', { static: true }) formatFieldValue: FormatFieldValueComponent;
 
   constructor(public layout: LayoutService) {
   }
