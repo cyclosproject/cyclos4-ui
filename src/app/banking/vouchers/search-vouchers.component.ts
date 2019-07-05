@@ -30,9 +30,11 @@ export class SearchVouchersComponent
     this.addSub(this.voucherService.getVouchersDataForSearch({})
       .subscribe(dataForSearch => this.data = dataForSearch));
   }
+
   protected onDataInitialized(_data) {
     super.onDataInitialized(_data);
     this.headingActions = [this.moreFiltersAction];
+    this.form.patchValue(_data.query);
   }
 
   protected getFormControlNames(): string[] {
