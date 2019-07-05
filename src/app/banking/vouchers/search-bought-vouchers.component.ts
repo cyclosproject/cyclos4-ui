@@ -31,7 +31,7 @@ export class SearchBoughtVouchersComponent
     this.addSub(
       this.vouchersService.getUserVouchersDataForSearch({ user: this.user, relation: VoucherRelationEnum.BOUGHT })
         .subscribe(data => {
-          this.form.patchValue(data.query, { emitEvent: false });
+          this.form.patchValue(data.query);
           this.data = data;
         })
     );

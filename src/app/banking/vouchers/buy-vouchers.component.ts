@@ -109,7 +109,7 @@ export class BuyVouchersComponent extends BasePageComponent<VoucherDataForBuy>
           } else {
             this.router.navigate(['banking', this.user, 'vouchers', 'bought']);
           }
-          this.notification.info(this.i18n.voucher.buy.done);
+          this.notification.snackBar(this.i18n.voucher.buy.done);
         })
     );
   }

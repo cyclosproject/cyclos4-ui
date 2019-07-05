@@ -17,14 +17,6 @@
     [label]="i18n.voucher.buy.amountPerVoucher" [prefix]="currency.prefix"
     [suffix]="currency.suffix" [scale]="currency.decimalDigits">
   </decimal-field>
-  <!-- <label-value *ngIf="data.amountRange?.min"
-    [label]="i18n.voucher.buy.amountRange.min" kind="fieldView">
-    {{ data.amountRange?.min | currency:currency }}
-  </label-value>
-  <label-value *ngIf="data.amountRange?.max"
-    [label]="i18n.voucher.buy.amountRange.max" kind="fieldView">
-    {{ data.amountRange?.max | currency:currency }}
-  </label-value> -->
   <label-value kind="fieldView"
     *ngIf="data.amountRange?.min || data.amountRange?.max"
     [label]="i18n.voucher.buy.amountRange" [value]="format.formatRange({
