@@ -63,7 +63,7 @@
     "@angular-devkit/build-angular": "^0.801.0",
     "@angular/cli": "^8.1.0",
     "@angular/compiler-cli": "^8.1.0",
-    "@angular/language-service": "^8.1.0",
+    "@angular/language-service": "^8.0.3",
     "@types/node": "^10.14.12",
     "codelyzer": "^5.0.1",
     "ng-openapi-gen": "^0.4.0",
