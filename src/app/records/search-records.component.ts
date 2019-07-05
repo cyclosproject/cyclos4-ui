@@ -103,8 +103,12 @@ export class SearchRecordsComponent
       } else if (this.data.edit) {
         return this.editPath(record);
       }
-      return '#';
+      return ['#'];
     };
+  }
+
+  navigate(record: RecordResult) {
+    this.router.navigate(this.toLink(record));
   }
 
   protected toSearchParams(params: any): RecordSearchParams {

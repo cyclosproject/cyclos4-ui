@@ -1051,7 +1051,14 @@
     "lastModificationDate": "Last modified at",
     "removeConfirm": "Are you sure to remove this item?",
     "removeDone": "The item has been removed",
-    "action": "{type} ({count})"
+    "action": "{type} ({count})",
+    "fields": "Fields",
+    "title": {
+      "details": "{name} details"
+    },
+    "mobileTitle": {
+      "details": "{name} details"
+    }
   },
   "userAlert": {
     "title": "Search user alerts",

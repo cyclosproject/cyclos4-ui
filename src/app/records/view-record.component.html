@@ -1,0 +1,55 @@
+<page-layout [ready]="data$ | async">
+  <page-content *ngIf="data" last mode="viewForm"
+    [heading]="i18n.record.title.details(title)"
+    [mobileHeading]="i18n.record.mobileTitle.details(title)"
+    [headingActions]="headingActions$ | async">
+    <div [ngClass]="{
+      'd-flex flex-row-reverse' : !columnsLayout,
+      'mt-n3' : hasPreviousFields && columnsLayout}">
+      <div [ngClass]="!columnsLayout ? 'd-flex flex-grow-1 flex-column' : ''">
+        <label-value [labelPosition]="labelPosition" [ngClass]="columnClass"
+          *ngIf="data.creationDate" [label]="i18n.general.creationDate">
+          {{ data.creationDate | dateTime }}
+        </label-value>
+        <label-value [labelPosition]="labelPosition" [ngClass]="columnClass"
+          *ngIf="data.createdBy" [label]="i18n.record.createdBy">
+          {{ data.createdBy.display }}
+        </label-value>
+        <label-value [labelPosition]="labelPosition" [ngClass]="columnClass"
+          *ngIf="data.lastModificationDate"
+          [label]="i18n.record.lastModificationDate">
+          {{ data.lastModificationDate | dateTime }}
+        </label-value>
+        <label-value [labelPosition]="labelPosition" [ngClass]="columnClass"
+          *ngIf="data.lastModifiedBy" [label]="i18n.record.lastModifiedBy">
+          {{ data.lastModifiedBy.display }}
+        </label-value>
+        <ng-container *ngIf="data.type.informationText">
+          <hr *ngIf="hasPreviousFields">
+          <rich-text-container [value]="data.type.informationText">
+          </rich-text-container>
+          <hr *ngIf="data.customValues">
+        </ng-container>
+        <h2 *ngIf="hasPreviousFields && data.customValues" class="mb-2"
+          [ngClass]="{
+            'mt-4': hasPreviousFields && !data.type.informationText,
+            'mb.2 mt-0 pt-0 border-0': data.type.informationText}">
+          {{ i18n.record.fields }}
+        </h2>
+        <!-- ADD LABELPOSITION ABOVE WHEN THERE IS SUPPORT -->
+        <custom-field-value [ngClass]="columnClass"
+          *ngFor="let value of valuesWithoutSection" [fieldValue]="value">
+        </custom-field-value>
+        <ng-container *ngFor="let key of this.valuesWithSection.keys()">
+          <h2 class="mb-2">
+            {{ key.name }}
+          </h2>
+          <custom-field-value [ngClass]="columnClass"
+            *ngFor="let value of this.valuesWithSection.get(key)"
+            [fieldValue]="value">
+          </custom-field-value>
+        </ng-container>
+      </div>
+    </div>
+  </page-content>
+</page-layout>

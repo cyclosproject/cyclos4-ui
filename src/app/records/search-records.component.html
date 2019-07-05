@@ -76,8 +76,7 @@
           <th class="actions"></th>
         </thead>
         <tbody>
-          <tr *ngFor="let row of results.results"
-            (click)="router.navigate(toLink)">
+          <tr *ngFor="let row of results.results" (click)="navigate(row)">
             <td>{{ row.creationDate | dateTime }}</td>
             <td *ngFor=" let field of this.fieldsInList">
               <format-field-value [fields]="data.customFields"

@@ -6,6 +6,7 @@ import { trim } from 'lodash';
 import { SearchRecordsComponent } from 'app/records/search-records.component';
 import { RecordHelperService } from 'app/core/records-helper.service';
 import { TiledRecordsComponent } from 'app/records/tiled-records.component';
+import { ViewRecordComponent } from 'app/records/view-record.component';
 
 const RecordMenu: ConditionalMenu = injector => {
   // The scope depends on the URL
@@ -33,6 +34,14 @@ const recordRoutes: Routes = [
   {
     path: ':owner/:type/tiled',
     component: TiledRecordsComponent,
+    canActivate: [LoggedUserGuard],
+    data: {
+      menu: RecordMenu
+    }
+  },
+  {
+    path: 'view/:id',
+    component: ViewRecordComponent,
     canActivate: [LoggedUserGuard],
     data: {
       menu: RecordMenu

@@ -255,6 +255,23 @@ $spaced-label-values: (
   }
 }
 
+.columns-2,
+.columns-3 {
+  display: inline-block !important;
+  vertical-align: top;
+  margin-top: 0.6rem;
+}
+.columns-2 > .label-value,
+.columns-3 > .label-value {
+  display: inline-block !important;
+}
+.columns-2 {
+  width: 50% !important;
+}
+.columns-3 {
+  width: 33.33% !important;
+}
+
 body.dark {
   label {
     color: $label-color-dark;
