@@ -1,12 +1,12 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { AvailabilityEnum, CustomField, GeographicalCoordinate, Image, UserDataForNew, StoredFile } from 'app/api/models';
+import { AvailabilityEnum, CustomField, GeographicalCoordinate, Image, StoredFile, UserDataForNew } from 'app/api/models';
 import { ImagesService } from 'app/api/services';
+import { UserHelperService } from 'app/core/user-helper.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseComponent } from 'app/shared/base.component';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { UserHelperService } from 'app/core/user-helper.service';
 
 /**
  * Public registration step: fill in the profile fields
@@ -53,7 +53,8 @@ export class RegistrationStepFieldsComponent
   constructor(
     injector: Injector,
     private userHelper: UserHelperService,
-    private imagesService: ImagesService) {
+    private imagesService: ImagesService,
+    private changeDetector: ChangeDetectorRef) {
     super(injector);
   }
 
@@ -97,6 +98,7 @@ export class RegistrationStepFieldsComponent
     this.addSub(this.doRemoveImage().subscribe(() => {
       this.image = image;
       this.imageUploaded.emit(this.image);
+      this.changeDetector.detectChanges();
     }));
   }
 
@@ -112,6 +114,7 @@ export class RegistrationStepFieldsComponent
           this.imagesService.deleteImage({ idOrKey: this.image.id }).subscribe(() => {
             this.imageRemoved.emit(this.image);
             this.image = null;
+            this.changeDetector.detectChanges();
             obs.next(result);
           });
         });

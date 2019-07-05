@@ -99,6 +99,8 @@ export class FormatFieldValueComponent extends AbstractComponent implements OnIn
   }
 
   ngOnInit() {
+    super.ngOnInit();
+
     if (this.fieldValue == null &&
       (this.fields == null || this.object == null)) {
       throw new Error('Either fieldValue or all fields, field and object must be set');
