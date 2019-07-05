@@ -616,7 +616,7 @@ export class MenuService {
         add(Menu.SEARCH_REDEEMED, '/banking/' + ApiHelper.SELF + '/vouchers/redeemed', 'search',
           this.i18n.menu.bankingRedeemedVouchers);
       }
-      if (vouchers.redeem) {
+      if (vouchers.redeem && role !== RoleEnum.ADMINISTRATOR) {
         add(Menu.REDEEM_VOUCHER, '/banking/' + ApiHelper.SELF + '/vouchers/redeem', 'payment', this.i18n.menu.bankingRedeemVoucher);
       }
       if (vouchers.view) {

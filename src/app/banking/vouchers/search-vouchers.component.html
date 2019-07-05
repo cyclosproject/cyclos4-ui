@@ -11,11 +11,19 @@
   <results-layout resultType="list" [results]="results$ | async"
     [toLink]="toLink" (update)="update($event)">
 
-    <mobile-result *mobileResult="let row" [date]="row.redeemDate"
-      [amount]="row.amount" [currency]="row.type.configuration.currency"
-      forceSign>
-      <div class="cell-text cell-main">
-        {{ row.type.name}}
+    <mobile-result *mobileResult="let row">
+      <div>
+        <div class="cell-main float-left">
+          <div class="cell-text">
+            {{ row.type.name}}
+          </div>
+          <div class="cell-text">
+            {{ bankingHelper.voucherStatus(row.status)}}
+          </div>
+        </div>
+        <div class="float-right">
+          {{ row.amount | currency:row.type.configuration.currency }}
+        </div>
       </div>
     </mobile-result>
 

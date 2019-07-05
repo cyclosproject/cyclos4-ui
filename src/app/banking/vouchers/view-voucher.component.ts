@@ -1,8 +1,7 @@
 import { Component, OnInit, Injector, ChangeDetectionStrategy } from '@angular/core';
 import {
-  VoucherView, VoucherCreationTypeEnum, ImageSizeEnum, Transaction, CreateDeviceConfirmation,
-  DeviceConfirmationTypeEnum,
-  VoucherCancelActionEnum
+  VoucherView, ImageSizeEnum, Transaction, CreateDeviceConfirmation,
+  DeviceConfirmationTypeEnum, VoucherCancelActionEnum, CustomFieldTypeEnum, CustomFieldDetailed, VoucherActionEnum
 } from 'app/api/models';
 import { VouchersService } from 'app/api/services';
 import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
@@ -20,7 +19,8 @@ import { validateBeforeSubmit } from 'app/shared/helper';
 export class ViewVoucherComponent extends BaseViewPageComponent<VoucherView> implements OnInit {
 
   qrCodeUrl$ = new BehaviorSubject<string>(null);
-  createDeviceConfirmation: () => CreateDeviceConfirmation;
+  createCancelDeviceConfirmation: () => CreateDeviceConfirmation;
+  createChangeExpirationDeviceConfirmation: () => CreateDeviceConfirmation;
   canConfirm: boolean;
   confirmationPassword: FormControl;
 
@@ -39,9 +39,15 @@ export class ViewVoucherComponent extends BaseViewPageComponent<VoucherView> imp
   onDataInitialized(_data) {
     this.addSub(this.voucherService.getVoucherQrCode({ key: _data.id, size: ImageSizeEnum.MEDIUM })
       .subscribe(image => this.qrCodeUrl$.next(URL.createObjectURL(image))));
-    this.createDeviceConfirmation = () => ({
+    this.createCancelDeviceConfirmation = () => ({
       type: DeviceConfirmationTypeEnum.MANAGE_VOUCHER,
-      token: _data.id
+      voucher: _data.id,
+      voucherAction: VoucherActionEnum.CANCEL
+    });
+    this.createChangeExpirationDeviceConfirmation = () => ({
+      type: DeviceConfirmationTypeEnum.MANAGE_VOUCHER,
+      voucher: _data.id,
+      voucherAction: VoucherActionEnum.CHANGE_EXPIRATION
     });
     this.canConfirm = this.authHelper.canConfirm(_data.confirmationPasswordInput);
     if (_data.confirmationPasswordInput) {
@@ -53,25 +59,52 @@ export class ViewVoucherComponent extends BaseViewPageComponent<VoucherView> imp
   initActions(data: VoucherView): HeadingAction[] {
     const actions: HeadingAction[] = [this.printAction];
     if (data.cancelAction) {
-      const label = this.data.creationType === VoucherCreationTypeEnum.BOUGHT ?
+      const label = data.cancelAction === VoucherCancelActionEnum.CANCEL_AND_REFUND ?
         this.i18n.voucher.cancelAndRefund : this.i18n.general.cancel;
       actions.push(new HeadingAction('cancel', label, () => {
         // Handle the case that the confirmation password cannot be used
         if (!this.canConfirm) {
           this.notification.warning(this.authHelper.getConfirmationMessage(data.confirmationPasswordInput));
         }
-        if (this.data.confirmationPasswordInput) {
+        if (data.confirmationPasswordInput) {
           // A confirmation is required
           this.notification.confirm({
             title: this.cancelConfirmationTitle(data.cancelAction),
             passwordInput: data.confirmationPasswordInput,
-            createDeviceConfirmation: this.createDeviceConfirmation,
+            createDeviceConfirmation: this.createCancelDeviceConfirmation,
             callback: params => this.cancel(params.confirmationPassword)
           });
         } else {
           // Save directly
           this.cancel();
         }
+      }));
+    }
+    if (data.canChangeExpirationDate) {
+      actions.push(new HeadingAction('update', this.i18n.voucher.changeExpirationDate, () => {
+        // Handle the case that the confirmation password cannot be used
+        if (!this.canConfirm) {
+          this.notification.warning(this.authHelper.getConfirmationMessage(data.confirmationPasswordInput));
+        }
+        // A confirmation is required
+        this.notification.confirm({
+          passwordInput: data.confirmationPasswordInput,
+          createDeviceConfirmation: this.createChangeExpirationDeviceConfirmation,
+          customFields: this.changeExpirationFields,
+          callback: res => {
+            this.addSub(this.voucherService.changeVoucherExpirationDate({
+              key: data.id,
+              confirmationPassword: res.confirmationPassword,
+              body: {
+                comments: res.customValues.comments,
+                newExpirationDate: res.customValues.newExpirationDate
+              }
+            }).subscribe(() => {
+              this.notification.snackBar(this.i18n.voucher.expirationDateChanged);
+              this.reload();
+            }));
+          }
+        });
       }));
     }
     return actions;
@@ -102,8 +135,20 @@ export class ViewVoucherComponent extends BaseViewPageComponent<VoucherView> imp
       case VoucherCancelActionEnum.CANCEL_PENDING_SINGLE:
         return this.i18n.voucher.cancel.confirmation;
     }
+  }
 
-    return '';
+  private get changeExpirationFields(): CustomFieldDetailed[] {
+    return [{
+      internalName: 'newExpirationDate',
+      name: this.i18n.general.newExpirationDate,
+      type: CustomFieldTypeEnum.DATE,
+      required: true
+    },
+    {
+      internalName: 'comments',
+      name: this.i18n.general.comments,
+      type: CustomFieldTypeEnum.TEXT
+    }];
   }
 
   /**
