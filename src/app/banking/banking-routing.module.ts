@@ -1,23 +1,25 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule, Router } from '@angular/router';
-import { LoggedUserGuard } from 'app/logged-user-guard';
-import { Menu, ConditionalMenu, ActiveMenu } from 'app/shared/menu';
-import { AccountHistoryComponent } from 'app/banking/accounts/account-history.component';
-import { ViewTransferComponent } from 'app/banking/transfers/view-transfer.component';
-import { PerformPaymentComponent } from 'app/banking/payment/perform-payment.component';
-import { ViewTransactionComponent } from 'app/banking/transactions/view-transaction.component';
-import { SearchScheduledPaymentsComponent } from 'app/banking/transactions/search-scheduled-payments.component';
-import { SearchAuthorizedPaymentsComponent } from 'app/banking/transactions/search-authorized-payments.component';
-import { ViewAuthorizationHistoryComponent } from 'app/banking/transactions/view-authorization-history.component';
-import { trim } from 'lodash';
-import { BankingHelperService } from 'app/core/banking-helper.service';
-import { AuthHelperService } from 'app/core/auth-helper.service';
-import { RedeemVoucherComponent } from 'app/banking/vouchers/redeem-voucher.component';
-import { ViewVoucherComponent } from 'app/banking/vouchers/view-voucher.component';
-import { SearchRedeemedVouchersComponent } from 'app/banking/vouchers/search-redeemed-vouchers.component';
-import { SearchTransfersOverviewComponent } from 'app/banking/transfers/search-transfers-overview.component';
-import { DataForUiHolder } from 'app/core/data-for-ui-holder';
+import { Router, RouterModule, Routes } from '@angular/router';
 import { RoleEnum } from 'app/api/models';
+import { AccountHistoryComponent } from 'app/banking/accounts/account-history.component';
+import { PerformPaymentComponent } from 'app/banking/payment/perform-payment.component';
+import { SearchAuthorizedPaymentsComponent } from 'app/banking/transactions/search-authorized-payments.component';
+import { SearchScheduledPaymentsComponent } from 'app/banking/transactions/search-scheduled-payments.component';
+import { ViewAuthorizationHistoryComponent } from 'app/banking/transactions/view-authorization-history.component';
+import { ViewTransactionComponent } from 'app/banking/transactions/view-transaction.component';
+import { SearchTransfersOverviewComponent } from 'app/banking/transfers/search-transfers-overview.component';
+import { ViewTransferComponent } from 'app/banking/transfers/view-transfer.component';
+import { BuyVouchersComponent } from 'app/banking/vouchers/buy-vouchers.component';
+import { RedeemVoucherComponent } from 'app/banking/vouchers/redeem-voucher.component';
+import { SearchBoughtVouchersComponent } from 'app/banking/vouchers/search-bought-vouchers.component';
+import { SearchRedeemedVouchersComponent } from 'app/banking/vouchers/search-redeemed-vouchers.component';
+import { ViewVoucherComponent } from 'app/banking/vouchers/view-voucher.component';
+import { AuthHelperService } from 'app/core/auth-helper.service';
+import { BankingHelperService } from 'app/core/banking-helper.service';
+import { DataForUiHolder } from 'app/core/data-for-ui-holder';
+import { LoggedUserGuard } from 'app/logged-user-guard';
+import { ActiveMenu, ConditionalMenu, Menu } from 'app/shared/menu';
+import { trim } from 'lodash';
 
 /**
  * A conditional menu resolver for content, which finds the content page by slug to resolve the correct menu
@@ -147,6 +149,20 @@ const bankingRoutes: Routes = [
         component: SearchRedeemedVouchersComponent,
         data: {
           menu: Menu.SEARCH_REDEEMED
+        }
+      },
+      {
+        path: ':user/vouchers/buy',
+        component: BuyVouchersComponent,
+        data: {
+          menu: Menu.BUY_VOUCHER
+        }
+      },
+      {
+        path: ':user/vouchers/bought',
+        component: SearchBoughtVouchersComponent,
+        data: {
+          menu: Menu.SEARCH_BOUGHT_VOUCHERS
         }
       },
       {

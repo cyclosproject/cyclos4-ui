@@ -1,0 +1,61 @@
+<page-layout [ready]="data$ | async" [ngSwitch]="step$ | async">
+
+  <!-- Step 1: Select voucher type -->
+  <ng-container *ngSwitchCase="'select-type'">
+    <buy-vouchers-step-list-types [types]="data.types"
+      (typeSelected)="toForm($event)">
+    </buy-vouchers-step-list-types>
+  </ng-container>
+
+  <!-- Step 2: Buy form -->
+  <page-content *ngSwitchCase="'form'"
+    [heading]="dataTypeForBuy.type.voucherTitle"
+    [mobileHeading]="dataTypeForBuy.type.voucherTitle"
+    [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'" last>
+    <buy-vouchers-step-form class="flex-grow-1" [data]="dataTypeForBuy"
+      [form]="form" [customFieldControlsMap]="customFieldControlsMap">
+    </buy-vouchers-step-form>
+
+    <actions forceRow>
+      <button class="btn btn-primary" [disabled]="requesting$ | async"
+        (click)="toConfirm()">{{ i18n.general.next }}</button>
+
+      <button *ngIf="!singleType" class="btn btn-outline-primary"
+        (click)="backToSelectType()">
+        {{ i18n.general.previous }}
+      </button>
+    </actions>
+  </page-content>
+
+  <!-- Step 3: Buy confirmation -->
+  <page-content *ngSwitchCase="'confirm'"
+    [heading]="i18n.voucher.title.buyConfirmation"
+    [mobileHeading]="i18n.voucher.mobileTitle.buyConfirmation"
+    [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'" last>
+    <buy-vouchers-step-confirm class="flex-grow-1" [buyVoucher]="form.value"
+      [data]="dataTypeForBuy"
+      [confirmationPasswordInput]="dataTypeForBuy.confirmationPasswordInput"
+      [confirmationPassword]="confirmationPassword"
+      (confirmationModeChanged)="confirmationMode$.next($event)"
+      (confirmed)="buy($event)">
+    </buy-vouchers-step-confirm>
+
+    <actions forceRow>
+      <button
+        *ngIf="(confirmationMode$ | async) != ConfirmationMode.Device; else spacer"
+        class="btn btn-primary"
+        [disabled]="!canConfirm || (requesting$ | async)" (click)="buy()">
+        {{ i18n.general.confirm }}
+      </button>
+      <ng-template #spacer>&nbsp;</ng-template>
+      <button class="btn btn-outline-primary" (click)="backToForm()">
+        {{ i18n.general.previous }}
+      </button>
+    </actions>
+  </page-content>
+
+  <page-content *ngSwitchDefault>
+    <spinner></spinner>
+  </page-content>
+
+</page-layout>
