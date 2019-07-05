@@ -91,6 +91,11 @@ export module Menu {
   export const ADMIN_REGISTRATION = new Menu(RootMenu.MARKETPLACE, 'ADMIN_REGISTRATION');
   export const USER_ALERTS = new Menu(RootMenu.MARKETPLACE, 'USER_ALERTS');
 
+  export const VIEW_AD = new Menu(RootMenu.MARKETPLACE, 'VIEW_AD');
+
+  export const BUY_VOUCHER = new Menu(RootMenu.MARKETPLACE, 'BUY_VOUCHER');
+  export const SEARCH_BOUGHT_VOUCHERS = new Menu(RootMenu.MARKETPLACE, 'SEARCH_BOUGHT_VOUCHERS');
+
   // Operators
   export const MY_OPERATORS = new Menu(RootMenu.OPERATORS, 'MY_OPERATORS');
   export const REGISTER_OPERATOR = new Menu(RootMenu.OPERATORS, 'REGISTER_OPERATOR');

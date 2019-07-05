@@ -102,6 +102,29 @@
         "dec": "Dec"
       }
     },
+    "timeField": {
+      "pattern": "{amount} {field}",
+      "plural": {
+        "days": "Days",
+        "hours": "Hours",
+        "millis": "Milliseconds",
+        "minutes": "Minutes",
+        "months": "Months",
+        "seconds": "Seconds",
+        "weeks": "Weeks",
+        "years": "Years"
+      },
+      "singular": {
+        "day": "Day",
+        "hour": "Hour",
+        "milli": "Millisecond",
+        "minute": "Minute",
+        "month": "Month",
+        "second": "Second",
+        "week": "Week",
+        "year": "Year"
+      }
+    },
     "weekday": {
       "min": {
         "sun": "S",
@@ -204,6 +227,8 @@
     "banking.paySelf": "Payment to self",
     "banking.scheduledPayments": "Scheduled payments",
     "banking.authorizations": "Payment authorizations",
+    "banking.buyVouchers": "Buy vouchers",
+    "banking.boughtVouchers": "View buys",
     "banking.redeemVoucher": "Redeem voucher",
     "banking.redeemedVouchers": "View redeemed",
     "banking.transfersOverview": "Transfers overview",
@@ -587,16 +612,13 @@
     }
   },
   "voucher": {
-    "title": {
-      "redeem": "Redeem voucher",
-      "search": "Redeemed vouchers"
-    },
-    "mobileTitle": {
-      "redeem": "Redeem voucher",
-      "search": "Redeemed vouchers"
-    },
     "error": {
-      "buy": {},
+      "totalOpenAmount": "The total amount of all open vouchers would exceed {maxAmount}, as defined in this voucher type. The current total open amount is {currentAmount}.",
+      "buy": {
+        "amountForPeriod": "Buying on this voucher type is limited by period. Until {date} only {amount} is available for buying.",
+        "openAmount": "The current user exceeds the maximum allowed open amount of {maxAmount} for vouchers of this type. The current open amount is {currentAmount}.",
+        "notAllowedForUser": "The current user is not allowed to buy vouchers from this type."
+      },
       "redeem": {
         "status": "This voucher cannot be redeemed. Its current status is: {status}.",
         "user": "The current user cannot redeem vouchers from this type.",
@@ -619,10 +641,31 @@
       "expired": "Expired",
       "canceled": "Canceled"
     },
+    "mobileTitle": {
+      "buy": "Buy vouchers",
+      "buyConfirmation": "Buy confirmation",
+      "bought": "Bought vouchers",
+      "redeem": "Redeem voucher",
+      "search": "Redeemed vouchers"
+    },
+    "title": {
+      "buy": "Buy vouchers",
+      "buyConfirmation": "Buy confirmation",
+      "searchBought": "Search bought vouchers",
+      "redeem": "Redeem voucher",
+      "search": "Redeemed vouchers"
+    },
     "boughtType": "Bought",
     "generatedType": "Generated",
     "buy": {
+      "amountRange": "Amount range",
       "buyer": "Buyer",
+      "done": "The voucher(s) has been bought.",
+      "minTimeToRedeem": "Can be redeemed",
+      "minTimeToRedeem.afterBuy": "{interval} after buying",
+      "numberOfVouchers": "Number of vouchers",
+      "amountPerVoucher": "Amount per voucher",
+      "originAccount": "Origin account",
       "payment": "Buy payment"
     },
     "creationType": "CreationType",
@@ -765,6 +808,8 @@
       "viewAccount": "View {account}",
       "viewScheduledPayments": "View scheduled payments",
       "viewAuthorizedPayments": "View payment authorizations",
+      "viewBoughtVouchers": "View bought vouchers",
+      "buyVouchers": "Buy vouchers",
       "viewAds": "View advertisements",
       "viewBrokerings": "View assigned members",
       "viewBrokers": "View brokers",

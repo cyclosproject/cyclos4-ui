@@ -156,6 +156,17 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
           this.router.navigate(['/banking', this.param, 'authorized-payments']);
         }));
       }
+      if (vouchers.viewBought) {
+        this.bankingActions.push(new HeadingAction('shopping_cart', this.i18n.user.profile.viewBoughtVouchers, () => {
+          this.router.navigate(['/banking', this.param, 'vouchers', 'bought']);
+        }));
+      }
+      if (vouchers.buy) {
+        this.bankingActions.push(new HeadingAction('shopping_cart', this.i18n.user.profile.buyVouchers, () => {
+          this.router.navigate(['/banking', this.param, 'vouchers', 'buy']);
+        }));
+      }
+
       if (vouchers.viewRedeemed) {
         this.bankingActions.push(new HeadingAction('search', this.i18n.user.profile.viewRedeemedVouchers, () => {
           this.router.navigate(['/banking', this.param, 'vouchers', 'redeemed']);

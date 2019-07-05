@@ -1,0 +1,30 @@
+<!-- description + image -->
+<label-value [label]="i18n.general.type">
+  {{ data.type.voucherTitle }}
+</label-value>
+<label-value [label]="i18n.voucher.buy.numberOfVouchers">
+  {{ buyVoucher.count }}
+</label-value>
+<label-value [label]="i18n.voucher.buy.amountPerVoucher">
+  {{ buyVoucher.amount | currency:data.account.currency }}
+</label-value>
+<ng-container *ngFor="let cf of data.customFields">
+  <label-value [hidden]="!formatFieldValue.hasValue" [label]="cf.name"
+    [labelPosition]="labelOnTop((layout.ltsm$ | async), cf) ? 'top' : 'auto'">
+    <format-field-value #formatFieldValue [object]="buyVoucher"
+      [fields]="data.customFields" [fieldName]="cf.internalName">
+    </format-field-value>
+  </label-value>
+</ng-container>
+
+<ng-container *ngIf="confirmationPasswordInput">
+  <hr *ngIf="layout.gtxxs$ | async">
+  <form [formGroup]="form">
+    <confirmation-password focused formControlName="confirmationPassword"
+      [passwordInput]="confirmationPasswordInput"
+      [createDeviceConfirmation]="createDeviceConfirmation"
+      (confirmationModeChanged)="confirmationModeChanged.emit($event)"
+      (confirmed)="confirmed.emit($event)">
+    </confirmation-password>
+  </form>
+</ng-container>

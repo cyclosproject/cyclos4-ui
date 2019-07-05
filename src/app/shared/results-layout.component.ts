@@ -150,8 +150,11 @@ export class ResultsLayoutComponent<C, R> extends BaseComponent {
   handleClick(row: R, event: Event) {
     let stop = false;
     if (this.onClick) {
-      this.onClick(row);
-      stop = true;
+      try {
+        this.onClick(row);
+      } finally {
+        stop = true;
+      }
     } else {
       const link = this.toLink ? this.toLink(row) : null;
       if (typeof link === 'string') {

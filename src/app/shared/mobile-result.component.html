@@ -1,6 +1,8 @@
 <div class="mobile-result-container">
   <div *ngIf="hasAvatar" class="avatar">
-    <avatar [image]="avatarImage" [icon]="avatarIcon"></avatar>
+    <avatar [image]="avatarImage" [icon]="avatarIcon"
+      [roundBorders]="avatarRoundBorders">
+    </avatar>
   </div>
   <div class="mobile-result-content">
     <ng-container *ngIf="amount || date">
