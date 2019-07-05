@@ -1,0 +1,30 @@
+<ng-container [formGroup]="form">
+  <!-- description + image -->
+  <label-value [label]="i18n.voucher.buy.originAccount" kind="fieldView">
+    {{ data.account.type.name }}
+  </label-value>
+  <label-value [label]="i18n.account.availableBalance" kind="fieldView">
+    {{ data.account.status.availableBalance | currency:currency }}
+  </label-value>
+  <label-value *ngIf="data.minimumTimeToRedeem" kind="fieldView"
+    [label]="i18n.voucher.buy.minTimeToRedeem">
+    {{ i18n.voucher.buy.minTimeToRedeemAfterBuy(format.formatTimeInterval(data.minimumTimeToRedeem)) }}
+  </label-value>
+  <input-field type="number" formControlName="count" required
+    fieldSize="small" [label]="i18n.voucher.buy.numberOfVouchers">
+  </input-field>
+  <decimal-field formControlName="amount" required
+    [label]="i18n.voucher.buy.amountPerVoucher" [prefix]="currency.prefix"
+    [suffix]="currency.suffix" [scale]="currency.decimalDigits">
+  </decimal-field>
+  <label-value kind="fieldView"
+    *ngIf="data.amountRange?.min || data.amountRange?.max"
+    [label]="i18n.voucher.buy.amountRange" [value]="format.formatRange({
+    min: data.amountRange.min | currency:currency,
+    max: data.amountRange.max | currency:currency
+  })">
+  </label-value>
+  <custom-field-input *ngFor="let cf of data.customFields" [field]="cf"
+    [formControl]="customFieldControlsMap.get(cf.internalName)">
+  </custom-field-input>
+</ng-container>
