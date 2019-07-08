@@ -52,6 +52,7 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
 
   ngOnInit() {
     super.ngOnInit();
+    this.stateManager.manageValue(this.showActions$, 'showActions');
     this.param = this.route.snapshot.params.user || ApiHelper.SELF;
     this.errorHandler.requestWithCustomErrorHandler(defaultHandling => {
       this.addSub(this.usersService.viewUser({ user: this.param })
