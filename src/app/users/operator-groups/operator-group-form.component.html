@@ -95,9 +95,10 @@
   </ng-container>
   <ng-container *ngFor="let pt of paymentTypes(at)"
     [formGroup]="form.get('payments').get(pt.id)">
-    <h4 class="mt-3 mb-2" *ngIf="paymentTypes(at)?.length > 1">{{
-    pt.name
-  }}</h4>
+    <ng-container *ngIf="paymentTypes(at)?.length > 1">
+      <hr class="px-0 my-2 mx-0">
+      <h4 class="mt-3 mb-2">{{ pt.name }}</h4>
+    </ng-container>
     <boolean-field [label]="i18n.operatorGroup.performPayments"
       formControlName="perform"></boolean-field>
     <boolean-field
