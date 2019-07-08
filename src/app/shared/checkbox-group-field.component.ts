@@ -17,7 +17,8 @@ import { getValueAsArray, preprocessValueWithSeparator } from 'app/shared/helper
 })
 export class CheckboxGroupFieldComponent extends BaseFormFieldWithOptionsComponent<string | string[]> {
 
-  @HostBinding('class') clazz = 'd-block';
+  @HostBinding('class.d-block') classBlock = true;
+  @HostBinding('class.w-100') classW100 = true;
 
   /**
    * When a separator is set, the value will be a single string, using the given separator.

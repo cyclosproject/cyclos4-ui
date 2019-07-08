@@ -17,7 +17,8 @@ import { empty } from 'app/shared/helper';
 })
 export class RadioGroupFieldComponent extends BaseFormFieldWithOptionsComponent<string> {
 
-  @HostBinding('class') clazz = 'd-block';
+  @HostBinding('class.d-block') classBlock = true;
+  @HostBinding('class.w-100') classW100 = true;
 
   constructor(
     injector: Injector,
