@@ -10,6 +10,7 @@ import { ApiHelper } from 'app/shared/api-helper';
 import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
 import { words, empty } from 'app/shared/helper';
 import { BehaviorSubject } from 'rxjs';
+import { Menu } from 'app/shared/menu';
 
 export const MAX_SIZE_SHORT_NAME = 25;
 
@@ -263,6 +264,10 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
 
   get mobileTitle(): string {
     return this.myProfile ? this.i18n.user.mobileTitle.myProfile : this.i18n.user.mobileTitle.userProfile;
+  }
+
+  resolveMenu(user: UserView) {
+    return this.authHelper.userMenu(user, Menu.MY_PROFILE);
   }
 
 }

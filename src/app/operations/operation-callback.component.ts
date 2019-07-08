@@ -3,6 +3,7 @@ import { RunOperationResult, NotificationLevelEnum } from 'app/api/models';
 import { OperationsService } from 'app/api/services';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { first } from 'rxjs/operators';
+import { Menu } from 'app/shared/menu';
 
 /**
  * Callback invoked after running an external redirect custom operation
@@ -43,6 +44,10 @@ export class OperationCallbackComponent
       }
       this.data = result;
     }));
+  }
+
+  resolveMenu() {
+    return this.login.user ? Menu.DASHBOARD : Menu.HOME;
   }
 }
 

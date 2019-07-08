@@ -5,6 +5,7 @@ import { AuthService } from 'app/api/services';
 import { LoginState } from 'app/core/login-state';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { validateBeforeSubmit } from 'app/shared/helper';
+import { Menu } from 'app/shared/menu';
 
 /** Validator function that ensures password and confirmation match */
 const PASSWORDS_MATCH_VAL: ValidatorFn = control => {
@@ -92,5 +93,9 @@ export class ChangeForgottenPasswordComponent
   cancel() {
     // Go back to the login page
     this.login.goToLoginPage('');
+  }
+
+  resolveMenu() {
+    return Menu.DASHBOARD;
   }
 }

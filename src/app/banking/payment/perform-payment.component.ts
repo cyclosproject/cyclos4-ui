@@ -11,6 +11,7 @@ import { BasePageComponent } from 'app/shared/base-page.component';
 import { ConfirmationMode } from 'app/shared/confirmation-mode';
 import { FormControlLocator } from 'app/shared/form-control-locator';
 import { clearValidatorsAndErrors, empty, locateControl, scrollTop, validateBeforeSubmit } from 'app/shared/helper';
+import { Menu } from 'app/shared/menu';
 import { isEqual } from 'lodash';
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -428,4 +429,17 @@ export class PerformPaymentComponent extends BasePageComponent<DataForTransactio
       return control;
     };
   }
+
+  resolveMenu(data: DataForTransaction) {
+    if (this.fromSystem) {
+      // Payment from system
+      return this.toSystem ? Menu.PAYMENT_TO_SYSTEM : Menu.PAYMENT_TO_USER;
+    } else {
+      // Payment from user
+      const ownMenu = this.toSystem ? Menu.PAYMENT_TO_SYSTEM
+        : this.toSelf ? Menu.PAYMENT_TO_SELF : Menu.PAYMENT_TO_USER;
+      return this.authHelper.userMenu(data.fromUser, ownMenu);
+    }
+  }
+
 }

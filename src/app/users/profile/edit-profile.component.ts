@@ -19,6 +19,7 @@ import { cloneDeep } from 'lodash';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BehaviorSubject } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { Menu } from 'app/shared/menu';
 
 const IMAGE_MANAGED_TIMEOUT = 6_000;
 
@@ -870,6 +871,11 @@ export class EditProfileComponent
       addressForm.patchValue({ location: coords });
       this.changeDetector.detectChanges();
     }));
+  }
+
+  resolveMenu(data: DataForEditFullProfile) {
+    const user = data.userConfiguration.details;
+    return this.authHelper.userMenu(user, Menu.EDIT_MY_PROFILE);
   }
 
 }

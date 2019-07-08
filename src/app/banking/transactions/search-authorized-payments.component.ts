@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { TransactionAuthorizationStatusEnum, TransactionKind } from 'app/api/models';
+import { TransactionAuthorizationStatusEnum, TransactionDataForSearch, TransactionKind } from 'app/api/models';
 import { BaseTransactionsSearch, TransactionSearchParams } from 'app/banking/transactions/base-transactions-search.component';
 import { FieldOption } from 'app/shared/field-option';
+import { Menu } from 'app/shared/menu';
 
 /**
  * Search for authorized payments
@@ -47,6 +48,10 @@ export class SearchAuthorizedPaymentsComponent
     const query = super.toSearchParams(value);
     query.authorizationStatuses = [value.status];
     return query;
+  }
+
+  resolveMenu(data: TransactionDataForSearch) {
+    return this.authHelper.userMenu(data.user, Menu.AUTHORIZED_PAYMENTS);
   }
 
 }

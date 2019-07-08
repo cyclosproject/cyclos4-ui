@@ -4,6 +4,7 @@ import { I18n } from 'app/i18n/i18n';
 import { ApiHelper } from 'app/shared/api-helper';
 import { Shortcut, ShortcutService } from 'app/shared/shortcut.service';
 import { Subscription } from 'rxjs';
+import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 
 /**
  * Base class for any component
@@ -15,6 +16,7 @@ export abstract class AbstractComponent implements OnInit, OnDestroy {
 
   injector: Injector;
   i18n: I18n;
+  dataForUiHolder: DataForUiHolder;
   format: FormatService;
   shortcut: ShortcutService;
   private elementRef: ElementRef;
@@ -25,6 +27,7 @@ export abstract class AbstractComponent implements OnInit, OnDestroy {
   constructor(injector: Injector) {
     this.injector = injector;
     this.i18n = injector.get(I18n);
+    this.dataForUiHolder = injector.get(DataForUiHolder);
     this.format = injector.get(FormatService);
     this.shortcut = injector.get(ShortcutService);
     this.elementRef = injector.get(ElementRef as Type<ElementRef>);

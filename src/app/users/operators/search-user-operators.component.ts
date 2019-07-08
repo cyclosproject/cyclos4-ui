@@ -8,6 +8,7 @@ import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { empty } from 'app/shared/helper';
 import { ResultType } from 'app/shared/result-type';
 import { BehaviorSubject } from 'rxjs';
+import { Menu } from 'app/shared/menu';
 
 
 type UserOperatorsSearchParams = UserOperatorsQueryFilters & { user: string };
@@ -69,5 +70,9 @@ export class SearchUserOperatorsComponent
 
   protected doSearch(query: UserOperatorsSearchParams) {
     return this.operatorsService.searchUserOperators$Response(query);
+  }
+
+  resolveMenu(data: UserOperatorsDataForSearch) {
+    return this.authHelper.userMenu(data.user, Menu.MY_OPERATORS);
   }
 }
