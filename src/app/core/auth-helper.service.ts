@@ -68,6 +68,27 @@ export class AuthHelperService {
     }
   }
 
+
+  /**
+   * Returns whether the given URL user is the same logged user or the same operator owner
+   * @param user The user
+   */
+  isSelfOrOwner(user: User): boolean {
+    if (!user) {
+      return true;
+    }
+    const loggedUser = this.dataForUiHolder.user;
+    const possibleIds = [];
+    if (user.id) {
+      possibleIds.push(user.id);
+    }
+    if (user.user && user.user.id) {
+      possibleIds.push(user.user.id);
+    }
+    return loggedUser.user && possibleIds.includes(loggedUser.user.id)
+      || possibleIds.includes(loggedUser.id);
+  }
+
   /**
    * Returns whether the given key represents 'the system'.
    * Either the string `system` or `self` when logged in as administrator.
@@ -260,15 +281,15 @@ export class AuthHelperService {
   }
 
   /**
-   * Returns a menu according to the relation between the logged user and the given user (using `isSelf`).
+   * Returns a menu according to the relation between the logged user and the given user (using `isSelfOrOwner`).
    * If self, returns the `selfMenu`. Otherwise, returns the menu to search users.
    * @param user The user being tested
    * @param selfMenu The menu when the user is self
-   * @see #isSelf
+   * @see #isSelfOrOwner
    * @see #searchUsersMenu
    */
   userMenu(user: User, selfMenu: Menu | ActiveMenu): Menu | ActiveMenu | Observable<Menu | ActiveMenu> {
-    return this.isSelf(user) ? selfMenu : this.searchUsersMenu(user);
+    return this.isSelfOrOwner(user) ? selfMenu : this.searchUsersMenu(user);
   }
 
   /**

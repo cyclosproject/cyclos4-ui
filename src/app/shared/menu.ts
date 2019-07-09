@@ -137,46 +137,6 @@ export class SideMenuEntries {
   }
 }
 
-/**
- * Additional identifier for a dynamic active menu
- */
-export interface ActiveMenuData {
-  accountType?: AccountType;
-  contentPage?: string;
-  operation?: Operation;
-}
-
-/**
- * Contains information about the active menu
- */
-export class ActiveMenu {
-  constructor(
-    public menu: Menu,
-    public data?: ActiveMenuData
-  ) {
-    if (!menu) {
-      throw new Error('null menu');
-    }
-  }
-
-  matches(entry: MenuEntry): boolean {
-    const other = entry == null ? null : entry.activeMenu;
-    if (other == null || this.menu !== other.menu) {
-      return false;
-    }
-
-    // At this point the menu matches. See if the data matches
-    const data1 = this.data || {};
-    const data2 = other.data || {};
-    return empty(Object.keys(data1)) && empty(Object.keys(data2))
-      || (data1.accountType && data2.accountType && data1.accountType.id === data2.accountType.id)
-      || (data1.operation && data2.operation && data1.operation.id === data2.operation.id)
-      || (data1.contentPage && data1.contentPage === data2.contentPage);
-  }
-}
-
-
-
 /** Base class for a resolved menu entry */
 export abstract class BaseMenuEntry {
   constructor(
@@ -226,3 +186,53 @@ export class MenuEntry extends BaseMenuEntry {
   }
 }
 
+
+/**
+ * Additional identifier for a dynamic active menu
+ */
+export interface ActiveMenuData {
+  accountType?: AccountType;
+  contentPage?: string;
+  operation?: Operation;
+}
+
+/**
+ * Contains information about the active menu
+ */
+export class ActiveMenu {
+  constructor(
+    public menu: Menu,
+    public data?: ActiveMenuData
+  ) {
+    if (!menu) {
+      throw new Error('null menu');
+    }
+  }
+
+  matches(menu: MenuEntry | ActiveMenu | Menu): boolean {
+    let other: ActiveMenu;
+    if (menu instanceof MenuEntry) {
+      other = menu.activeMenu;
+    } else if (menu instanceof Menu) {
+      other = new ActiveMenu(menu);
+    } else if (menu) {
+      other = menu;
+    } else {
+      // Null
+      return false;
+    }
+
+    // First check the menu reference
+    if (other == null || this.menu !== other.menu) {
+      return false;
+    }
+
+    // At this point the menu matches. See if the data matches
+    const data1 = this.data || {};
+    const data2 = other.data || {};
+    return empty(Object.keys(data1)) && empty(Object.keys(data2))
+      || (data1.accountType && data2.accountType && data1.accountType.id === data2.accountType.id)
+      || (data1.operation && data2.operation && data1.operation.id === data2.operation.id)
+      || (data1.contentPage && data1.contentPage === data2.contentPage);
+  }
+}

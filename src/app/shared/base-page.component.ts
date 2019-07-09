@@ -79,7 +79,10 @@ export abstract class BasePageComponent<D> extends BaseComponent implements OnIn
         }
       }
     }
-    this.menu.setActiveMenu(menu);
+    // Only update the active menu if no menu is set - after a page refresh
+    if (!this.menu.activeMenu) {
+      this.menu.setActiveMenu(menu);
+    }
   }
 
   /**
