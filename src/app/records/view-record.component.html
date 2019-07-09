@@ -44,7 +44,7 @@
           <h2 class="mb-2">
             {{ key.name }}
           </h2>
-          <custom-field-value [ngClass]="columnClass"
+          <custom-field-value labelPosition="above" [ngClass]="columnClass"
             *ngFor="let value of this.valuesWithSection.get(key)"
             [fieldValue]="value">
           </custom-field-value>
