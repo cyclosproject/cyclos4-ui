@@ -697,7 +697,9 @@
     "cancelPackConfirmation": "There are other vouchers belonging to the same pack that will be also canceled. Are you sure to continue?",
     "token": "Voucher code",
     "changeExpirationDate": "Change expiration date",
-    "expirationDateChanged": "Expiration date changed"
+    "expirationDateChanged": "Expiration date changed",
+    "refundPayment": "Refund payment",
+    "refundDate": "Refund date"
   },
   "field": {
     "privacy": {
