@@ -68,7 +68,9 @@ export class TopBarComponent extends AbstractComponent implements OnInit, OnChan
   @Input() breakpoints: Set<Breakpoint>;
   @Output() toggleSidenav = new EventEmitter<void>();
 
-  ngOnInit(): void {
+  ngOnInit() {
+    super.ngOnInit();
+
     if (!Configuration.menuBar) {
       this.hasMenu = true;
       this.addSub(this.menu.menu(MenuType.BAR).subscribe(roots => {

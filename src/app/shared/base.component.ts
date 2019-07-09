@@ -1,8 +1,10 @@
-import { Injector, OnDestroy, OnInit } from '@angular/core';
+import { Injector } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthHelperService } from 'app/core/auth-helper.service';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { ErrorHandlerService } from 'app/core/error-handler.service';
+import { FieldHelperService } from 'app/core/field-helper.service';
 import { LoginService } from 'app/core/login.service';
 import { MapsService } from 'app/core/maps.service';
 import { MenuService } from 'app/core/menu.service';
@@ -13,8 +15,6 @@ import { LayoutService } from 'app/shared/layout.service';
 import { Observable } from 'rxjs';
 import { BreadcrumbService } from '../core/breadcrumb.service';
 import { StateManager } from '../core/state-manager';
-import { AuthHelperService } from 'app/core/auth-helper.service';
-import { FieldHelperService } from 'app/core/field-helper.service';
 
 /**
  * Base class to meant to be inherited by other components.
@@ -23,8 +23,7 @@ import { FieldHelperService } from 'app/core/field-helper.service';
  * may become inconsistent.
  */
 export abstract class BaseComponent
-  extends AbstractComponent
-  implements OnInit, OnDestroy {
+  extends AbstractComponent {
 
   dataForUiHolder: DataForUiHolder;
   errorHandler: ErrorHandlerService;

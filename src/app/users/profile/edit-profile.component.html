@@ -204,19 +204,19 @@
               {{ i18n.user.phoneAddMobile }}
             </button>
           </div>
-
-          <div *ngIf="canCreateLandLine && !canCreateMobile"
-            class="section-title-action">
-            <button class="btn btn-outline-primary" (click)="addLandLine()">
-              {{ i18n.user.phoneAddLandLine }}
-            </button>
-          </div>
-          <div *ngIf="!canCreateLandLine && canCreateMobile"
-            class="section-title-action">
-            <button class="btn btn-outline-primary" (click)="addMobile()">
-              {{ i18n.user.phoneAddMobile }}
-            </button>
-          </div>
+        </div>
+        <!-- When can create just one of them, use individual buttons -->
+        <div *ngIf="canCreateLandLine && !canCreateMobile"
+          class="section-title-action">
+          <button class="btn btn-outline-primary" (click)="addLandLine()">
+            {{ i18n.user.phoneAddLandLine }}
+          </button>
+        </div>
+        <div *ngIf="!canCreateLandLine && canCreateMobile"
+          class="section-title-action">
+          <button class="btn btn-outline-primary" (click)="addMobile()">
+            {{ i18n.user.phoneAddMobile }}
+          </button>
         </div>
       </h2>
       <div *ngIf="phones.length == 0">

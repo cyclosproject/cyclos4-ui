@@ -43,9 +43,11 @@
         [label]="i18n.user.registration.passwordAssign"></boolean-field>
       <ng-container *ngIf="passwordForm(i).get('defined').value">
         <input-field required formControlName="value" type="password"
-          [label]="pt.name"></input-field>
+          [autocomplete]="autocompletePasswords" [label]="pt.name">
+        </input-field>
         <input-field required formControlName="confirmationValue"
-          type="password" [label]="i18n.user.passwordConfirmation(pt.name)">
+          type="password" [autocomplete]="autocompletePasswords"
+          [label]="i18n.user.passwordConfirmation(pt.name)">
         </input-field>
         <boolean-field *ngIf="pt.canForceChange" formControlName="forceChange"
           [label]="i18n.user.registration.passwordForceChange">

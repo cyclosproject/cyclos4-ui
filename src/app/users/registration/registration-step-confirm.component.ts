@@ -142,4 +142,11 @@ export class RegistrationStepConfirmComponent
   get customFields(): CustomFieldDetailed[] {
     return this.data.customFields.filter(cf => !blank(this.user.customValues[cf.internalName]));
   }
+
+  get autocompletePasswords(): string {
+    const auth = this.login.auth || {};
+    const role = auth.role;
+    // Will autocomplete passwords only in public registration
+    return role ? 'off' : 'on';
+  }
 }
