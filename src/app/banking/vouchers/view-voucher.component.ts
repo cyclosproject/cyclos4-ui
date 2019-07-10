@@ -1,7 +1,7 @@
 import { Component, OnInit, Injector, ChangeDetectionStrategy } from '@angular/core';
 import {
   VoucherView, ImageSizeEnum, Transaction, CreateDeviceConfirmation,
-  DeviceConfirmationTypeEnum, VoucherCancelActionEnum, CustomFieldTypeEnum, CustomFieldDetailed, VoucherActionEnum
+  DeviceConfirmationTypeEnum, VoucherCancelActionEnum, CustomFieldTypeEnum, CustomFieldDetailed, VoucherActionEnum, VoucherStatusEnum
 } from 'app/api/models';
 import { VouchersService } from 'app/api/services';
 import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
@@ -23,6 +23,7 @@ export class ViewVoucherComponent extends BaseViewPageComponent<VoucherView> imp
   createChangeExpirationDeviceConfirmation: () => CreateDeviceConfirmation;
   canConfirm: boolean;
   confirmationPassword: FormControl;
+  viewExpirationDate: boolean;
 
   constructor(
     injector: Injector,
@@ -54,6 +55,8 @@ export class ViewVoucherComponent extends BaseViewPageComponent<VoucherView> imp
       this.confirmationPassword = this.formBuilder.control('confirmationPassword', Validators.required);
     }
     this.headingActions = this.initActions(_data);
+    this.viewExpirationDate = _data.expirationDate && _data.status !== VoucherStatusEnum.CANCELED
+      && _data.status !== VoucherStatusEnum.REDEEMED;
   }
 
   initActions(data: VoucherView): HeadingAction[] {

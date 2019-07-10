@@ -58,19 +58,18 @@
             [label]="i18n.general.status">
             {{ data.redeemAfterDate}}
           </label-value>
-          <label-value *ngIf="data.expirationDate"
+          <label-value *ngIf="viewExpirationDate"
             [label]="i18n.general.expirationDate">
             {{ data.expirationDate | dateTime}}
           </label-value>
+          <label-value *ngIf="data.refund" [label]="i18n.voucher.refundDate">
+            {{ data.refund.date | dateTime}}
+          </label-value>
           <label-value *ngIf="data.refund"
-            [label]="i18n.voucher.refund.payment">
+            [label]="i18n.voucher.refundPayment">
             <a [routerLink]="transferPath(data.refund)">
               {{ bankingHelper.transactionNumberOrId(data.refund) }}
             </a>
-          </label-value>
-          <label-value *ngIf="data.refund"
-            [label]="i18n.voucher.refund.refundDate">
-            {{ data.refund.date | dateTime}}
           </label-value>
         </div>
       </div>
