@@ -3,7 +3,7 @@
 </page-layout>
 
 <ng-template #content>
-  <page-content [mode]="self ? 'empty' : 'filters'"
+  <page-content mode="filters"
     [heading]="self ? i18n.user.title.myOperators : i18n.user.title.userOperators"
     [mobileHeading]="self ? i18n.user.mobileTitle.myOperators : i18n.user.mobileTitle.userOperators"
     [headingActions]="headingActions$ | async">
@@ -26,14 +26,22 @@
           </multi-selection-field>
         </div>
         <ng-container *ngIf="layout.gtxxs$ | async">
-          <ng-container *ngIf="moreFilters$ | async">
-            <div class="col-12 col-md-6"
-              *ngFor="let cf of advancedFields$ | async">
-              <custom-field-filter labelPosition="side" [field]="cf"
-                [formControl]="form.get('customValues').get(cf.internalName)">
-              </custom-field-filter>
-            </div>
-          </ng-container>
+          <div class="col-12 col-md-6">
+            <multi-selection-field labelPosition="side"
+              formControlName="statuses" [label]="i18n.general.status"
+              [fieldOptions]="statusOptions">
+            </multi-selection-field>
+          </div>
+          <div class="col-12 col-md-6">
+            <date-field labelPosition="side" formControlName="creationBegin"
+              [label]="i18n.user.creationBegin" fieldSize="full">
+            </date-field>
+          </div>
+          <div class="col-12 col-md-6">
+            <date-field labelPosition="side" formControlName="creationEnd"
+              [label]="i18n.user.creationEnd" fieldSize="full">
+            </date-field>
+          </div>
         </ng-container>
       </div>
     </form>

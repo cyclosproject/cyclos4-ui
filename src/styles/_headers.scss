@@ -66,6 +66,10 @@ h2 {
     padding-top: $layout-spacer;
   }
 }
+hr.inner-separator {
+  margin: 0.5rem 0;
+  padding: 0;
+}
 @include media-breakpoint-up(sm) {
   h1, h2 {
     margin-bottom: $layout-spacer;

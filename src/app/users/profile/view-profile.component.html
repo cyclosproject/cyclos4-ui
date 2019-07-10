@@ -39,24 +39,32 @@
         </avatar>
       </div>
       <div class="d-flex flex-grow-1 flex-column">
-        <label-value *ngIf="user.role === 'operator' && !self"
+        <label-value *ngIf="showOperatorOwner"
           [label]="i18n.user.operatorOwner">
           <user-link [user]="user.user"></user-link>
         </label-value>
+        <label-value *ngIf="user.groupSet" [label]="i18n.user.groupSet"
+          [value]="user.groupSet.name"></label-value>
+        <label-value *ngIf="user.group" [label]="i18n.user.group"
+          [value]="user.group.name"></label-value>
+        <label-value *ngIf="user.status" [label]="i18n.general.status"
+          [value]="userHelper.userStatus(user.status)"></label-value>
         <label-value *ngIf="user.name" [label]="i18n.user.name"
           [value]="user.name"></label-value>
         <label-value *ngIf="user.username" [label]="i18n.user.username"
           [value]="user.username"></label-value>
+        <label-value *ngIf="user.registrationDate"
+          [label]="i18n.user.registrationDate"
+          [value]="user.registrationDate | date"></label-value>
+        <label-value *ngIf="showActivationDate"
+          [label]="i18n.user.activationDate"
+          [value]="user.activationDate | date"></label-value>
         <label-value *ngIf="user.email" [label]="i18n.user.email">
           <a [href]="'mailto:' + user.email" class="link-with-icon">
             <icon icon="email"></icon>
             <span>{{ user.email }}</span>
           </a>
         </label-value>
-        <label-value *ngIf="user.groupSet" [label]="i18n.user.groupSet"
-          [value]="user.groupSet.name"></label-value>
-        <label-value *ngIf="user.group" [label]="i18n.user.group"
-          [value]="user.group.name"></label-value>
         <label-value *ngIf="mobilePhone" [label]="i18n.phone.mobile">
           <a [href]="'tel:' + mobilePhone.normalizedNumber"
             class="link-with-icon">

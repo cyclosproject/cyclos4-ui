@@ -26,7 +26,7 @@ export class InputFieldComponent
   @Input() placeholder = '';
 
   /** Name of the autocomplete value for the HTML input */
-  @Input() autocomplete = '';
+  @Input() autocomplete = 'off';
 
   /** A mask (pattern) to be applied to the field */
   @Input() mask: string;

@@ -31,6 +31,7 @@
   <input-field #inputField *ngIf="input" [id]="id" [label]="label"
     [name]="name" [labelPosition]="labelPosition" [fieldSize]="fieldSize"
     [required]="required" [formControl]="formControl"
+    [autocomplete]="autocomplete"
     [type]="type == 'integer' ? 'number' : type == 'url' ? 'url' : 'text'"
     [mask]="field.pattern"></input-field>
 

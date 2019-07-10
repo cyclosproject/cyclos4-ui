@@ -11,6 +11,7 @@ import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
 import { words, empty } from 'app/shared/helper';
 import { BehaviorSubject } from 'rxjs';
 import { Menu } from 'app/shared/menu';
+import { UserHelperService } from 'app/core/user-helper.service';
 
 export const MAX_SIZE_SHORT_NAME = 25;
 
@@ -29,12 +30,12 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     private usersService: UsersService,
     private contactsService: ContactsService,
     private operationsHelper: OperationHelperService,
-    public maps: MapsService) {
+    public maps: MapsService,
+    public userHelper: UserHelperService) {
     super(injector);
   }
 
   param: string;
-  self: boolean;
   shortName: string;
   mobilePhone: PhoneView;
   landLinePhone: PhoneView;
@@ -71,7 +72,6 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
   }
 
   onDataInitialized(user: UserView) {
-    this.self = this.authHelper.isSelf(user) || user.user != null && this.authHelper.isSelf(user.user);
     this.shortName = words(user.name || user.display, MAX_SIZE_SHORT_NAME);
     const enabledFields = user.enabledProfileFields;
     this.imageEnabled = enabledFields == null || enabledFields.includes(BasicProfileFieldEnum.IMAGE);
@@ -106,7 +106,7 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     const operators = permissions.operators || {};
     const brokering = permissions.brokering || {};
 
-    if (this.self) {
+    if (user.relationship === UserRelationshipEnum.SELF) {
       // For the own user, we just show the edit as a top-level action
       if (profile.editProfile) {
         this.headingActions = [
@@ -120,7 +120,8 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
       const manager = [
         UserRelationshipEnum.ADMINISTRATOR,
         UserRelationshipEnum.BROKER,
-        UserRelationshipEnum.OWNER
+        UserRelationshipEnum.OWNER,
+        UserRelationshipEnum.SAME_OWNER
       ].includes(user.relationship);
       for (const accountType of accountTypes) {
         this.bankingActions.push(new HeadingAction('account_balance', this.i18n.user.profile.viewAccount(accountType.name), () => {
@@ -216,7 +217,7 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
       for (const operation of permissions.operations || []) {
         actions.push(this.operationsHelper.headingAction(operation, user.id));
       }
-      if (!manager) {
+      if (!empty(actions) && actions.length < 6) {
         this.headingActions = actions;
       } else if (!empty(this.bankingActions) || !empty(this.managementActions)) {
         this.updateHeadingActions();
@@ -267,8 +268,29 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     return this.myProfile ? this.i18n.user.mobileTitle.myProfile : this.i18n.user.mobileTitle.userProfile;
   }
 
+  /**
+   * Will show the activation date when it is different than the registration date
+   */
+  get showActivationDate(): boolean {
+    return this.user.activationDate
+      && this.format.formatAsDate(this.user.activationDate) !== this.format.formatAsDate(this.user.registrationDate);
+  }
+
+  get showOperatorOwner(): boolean {
+    return this.user.role === RoleEnum.OPERATOR &&
+      ![UserRelationshipEnum.OWNER, UserRelationshipEnum.SAME_OWNER].includes(this.user.relationship);
+  }
+
   resolveMenu(user: UserView) {
-    return this.authHelper.userMenu(user, Menu.MY_PROFILE);
+    switch (user.relationship) {
+      case UserRelationshipEnum.OWNER:
+      case UserRelationshipEnum.SAME_OWNER:
+        return Menu.MY_OPERATORS;
+      case UserRelationshipEnum.BROKER:
+        return Menu.MY_BROKERED_USERS;
+      default:
+        return this.login.user ? Menu.SEARCH_USERS : Menu.PUBLIC_DIRECTORY;
+    }
   }
 
 }

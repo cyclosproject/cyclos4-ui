@@ -3219,7 +3219,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
       responses:
         '200':
           description: >-
-            The users matching the criteria
+            The operators matching the criteria
           headers:
             X-Total-Count:
               schema:
@@ -3252,7 +3252,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/UserResult'
+                  $ref: '#/components/schemas/OperatorResult'
         '401':
           description: >-
             Unauthorized access. Missing or invalid crendentials supplied for such
@@ -3502,7 +3502,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/UserResult'
+                  $ref: '#/components/schemas/OperatorResult'
         '401':
           description: >-
             Unauthorized access. Missing or invalid crendentials supplied for such
@@ -41341,6 +41341,16 @@ components:
                 registering a user, and ignored on public registrations (the e-mail
                 is always sent on public registrations).
 
+    OperatorResult:
+      description: >-
+        Result of a operator search.
+      allOf:
+        - $ref: '#/components/schemas/UserResult'
+        - type: object
+          properties:
+            group:
+              $ref: '#/components/schemas/EntityReference'
+
     OperatorsPermissions:
       description: >-
         Permissions over own operators
@@ -47791,16 +47801,22 @@ components:
             group:
               description: >-
                 Reference to the user group. Is only returned if the authenticated
-                user has permission to see groups
+                user has permission to see groups.
               allOf:
                 - $ref: '#/components/schemas/EntityReference'
             groupSet:
               description: >-
                 Reference to the user group set. Is only returned if the
                 authenticated user has permission to see group sets and the user
-                group is in a group set
+                group is in a group set.
               allOf:
                 - $ref: '#/components/schemas/EntityReference'
+            status:
+              description: >-
+                The user status. Only returned if the authenticated user has
+                permission to view the user status.
+              allOf:
+                - $ref: '#/components/schemas/UserStatusEnum'
             additionalImages:
               type: array
               items:
