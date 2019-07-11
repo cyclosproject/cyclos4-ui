@@ -686,8 +686,8 @@
     "securityQuestion.empty": "Dejar en blanco",
     "captcha": "Validación visual",
     "contact": "Contacto",
-    "creationBegin": "Registered after",
-    "creationEnd": "Registered before",
+    "creationBegin": "Registrado después de",
+    "creationEnd": "Registrado antes de",
     "profile": {
       "noPermission": "No posee permisos suficientes para ver el perfil de este usuario",
       "showActions": "Mostrar acciones",
