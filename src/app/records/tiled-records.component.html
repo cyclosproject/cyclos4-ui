@@ -30,8 +30,7 @@
           <button *ngIf="data.edit" class="btn btn-primary"
             [disabled]="requesting$ | async"
             (click)="router.navigate(editPath(row))">{{ i18n.general.edit }}</button>
-          <button *ngIf="data.type.useViewPage" class="btn btn-primary"
-            [disabled]="requesting$ | async"
+          <button class="btn btn-primary" [disabled]="requesting$ | async"
             (click)="router.navigate(viewPath(row))">{{ i18n.general.view }}</button>
           <button *ngIf="data.remove" class="btn btn-outline-primary"
             [disabled]="requesting$ | async"

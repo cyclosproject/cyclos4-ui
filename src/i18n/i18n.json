@@ -1099,10 +1099,14 @@
     "action": "{type} ({count})",
     "fields": "Fields",
     "title": {
-      "details": "{name} details"
+      "details": "{name} details",
+      "new": "Create new {name}",
+      "edit": "Edit {name}"
     },
     "mobileTitle": {
-      "details": "{name} details"
+      "details": "{name} details",
+      "new": "Create new {name}",
+      "edit": "Edit {name}"
     }
   },
   "userAlert": {

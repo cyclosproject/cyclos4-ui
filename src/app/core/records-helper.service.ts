@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
-import { RecordType } from 'app/api/models';
+import { RecordType, RecordTypeDetailed, RecordCustomField } from 'app/api/models';
+import { LayoutService } from 'app/shared/layout.service';
 
 
 /**
@@ -12,7 +13,8 @@ import { RecordType } from 'app/api/models';
 export class RecordHelperService {
 
   constructor(
-    private dataForUiHolder: DataForUiHolder
+    private dataForUiHolder: DataForUiHolder,
+    private layout: LayoutService
   ) { }
 
   /**
@@ -33,4 +35,14 @@ export class RecordHelperService {
   ownerRecordType(key: string): RecordType {
     return this.ownerRecordTypes().find(t => t.id === key || t.internalName === key);
   }
+
+  isColumnLayout(type: RecordTypeDetailed): boolean {
+    return type.fieldColumns > 1 && this.layout.gtxs;
+  }
+
+  resolveColumnClass(field: RecordCustomField, type: RecordTypeDetailed): String {
+    const colspan = field != null && field.colspan != null ? ' colspan-' + field.colspan : '';
+    return this.isColumnLayout(type) ? 'pr-3 columns-' + type.fieldColumns + colspan : '';
+  }
+
 }

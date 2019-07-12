@@ -53,13 +53,13 @@
             </label-value>
           </div>
           <div class="ml-auto text-right">
-            <button *ngIf="this.hasEditAction" [tooltip]="i18n.general.edit"
+            <button *ngIf="data.edit" [tooltip]="i18n.general.edit"
               class="btn btn-icon"
               (click)="router.navigate(editPath(row)); $event.stopPropagation(); $event.preventDefault()">
               <icon icon="edit"></icon>
             </button>
             <button *ngIf="this.data.remove" [tooltip]="i18n.general.remove"
-              class="btn btn-icon" [ngClass]="{'ml-3': this.hasEditAction}"
+              class="btn btn-icon" [ngClass]="{'ml-3': data.edit}"
               (click)="remove(row); $event.stopPropagation(); $event.preventDefault()">
               <icon icon="clear"></icon>
             </button>
@@ -76,7 +76,8 @@
           <th class="actions"></th>
         </thead>
         <tbody>
-          <tr *ngFor="let row of results.results" (click)="navigate(row)">
+          <tr *ngFor="let row of results.results"
+            (click)="router.navigate(viewPath(row))">
             <td>{{ row.creationDate | dateTime }}</td>
             <td *ngFor=" let field of this.fieldsInList">
               <format-field-value [fields]="data.customFields"
@@ -85,14 +86,13 @@
               </format-field-value>
             </td>
             <td class="actions actions-multiple">
-              <button *ngIf="this.hasEditAction" [tooltip]="i18n.general.edit"
+              <button *ngIf="data.edit" [tooltip]="i18n.general.edit"
                 class="btn btn-icon"
                 (click)="router.navigate(editPath(row)); $event.stopPropagation()">
                 <icon icon="edit"></icon>
               </button>
               <button *ngIf="this.data.remove" [tooltip]="i18n.general.remove"
-                class="btn btn-icon"
-                [ngClass]="this.hasEditAction ? 'ml-3' : ''"
+                class="btn btn-icon" [ngClass]="data.edit ? 'ml-3' : ''"
                 (click)="remove(row); $event.stopPropagation()">
                 <icon icon="clear"></icon>
               </button>

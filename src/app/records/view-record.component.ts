@@ -1,9 +1,11 @@
 import { Component, OnInit, Injector, ChangeDetectionStrategy } from '@angular/core';
-import { RecordView, CustomFieldValue, RecordSection } from 'app/api/models';
+import { RecordView, RecordSection, RecordCustomFieldValue } from 'app/api/models';
 import { RecordsService } from 'app/api/services';
 import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
 import { HeadingAction } from 'app/shared/action';
 import { empty as isEmpty } from 'app/shared/helper';
+import { RecordHelperService } from 'app/core/records-helper.service';
+import { OperationHelperService } from 'app/core/operation-helper.service';
 
 @Component({
   selector: 'view-record',
@@ -13,13 +15,15 @@ import { empty as isEmpty } from 'app/shared/helper';
 export class ViewRecordComponent extends BaseViewPageComponent<RecordView> implements OnInit {
 
   title: String;
-  columnsLayout: boolean;
-  valuesWithoutSection: Array<CustomFieldValue>;
-  valuesWithSection = new Map<RecordSection, CustomFieldValue[]>();
+  columnLayout: boolean;
+  valuesWithoutSection: Array<RecordCustomFieldValue>;
+  valuesWithSection = new Map<RecordSection, RecordCustomFieldValue[]>();
 
   constructor(
     injector: Injector,
-    private recordService: RecordsService
+    private recordService: RecordsService,
+    private recordHelper: RecordHelperService,
+    private operationHelper: OperationHelperService
   ) {
     super(injector);
   }
@@ -35,12 +39,12 @@ export class ViewRecordComponent extends BaseViewPageComponent<RecordView> imple
   onDataInitialized(record: RecordView) {
     this.headingActions = [];
     this.title = isEmpty(record.display) ? record.type.name : record.display;
-    this.columnsLayout = record.type.fieldColumns > 1 && this.layout.gtxs;
+    this.columnLayout = this.recordHelper.isColumnLayout(record.type);
     this.valuesWithoutSection = record.customValues.filter(value => value.field.section == null) || [];
     (record.type.sections || []).forEach(s => {
-      const values = record.customValues.filter(value => value.field.section != null && value.field.section.id === s.id);
-      if (values) {
-        this.valuesWithSection.set(s, values);
+      const filter = record.customValues.filter(value => value.field.section != null && value.field.section.id === s.id);
+      if (filter) {
+        this.valuesWithSection.set(s, filter);
       }
     });
     if (record.edit) {
@@ -50,14 +54,17 @@ export class ViewRecordComponent extends BaseViewPageComponent<RecordView> imple
         }, true)
       );
     }
+    for (const operation of record.operations || []) {
+      this.headingActions.push(this.operationHelper.headingAction(operation, record.id));
+    }
   }
 
-  get columnClass() {
-    return this.columnsLayout ? 'columns-' + this.data.type.fieldColumns : '';
+  resolveColumnClass(value: RecordCustomFieldValue): String {
+    return this.recordHelper.resolveColumnClass(value == null ? null : value.field, this.data.type);
   }
 
   get labelPosition() {
-    return this.columnsLayout ? 'above' : '';
+    return this.columnLayout ? 'above' : '';
   }
 
   get hasPreviousFields() {

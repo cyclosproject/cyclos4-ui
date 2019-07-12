@@ -7,6 +7,7 @@ import { SearchRecordsComponent } from 'app/records/search-records.component';
 import { RecordHelperService } from 'app/core/records-helper.service';
 import { TiledRecordsComponent } from 'app/records/tiled-records.component';
 import { ViewRecordComponent } from 'app/records/view-record.component';
+import { RecordFormComponent } from 'app/records/record-form.component';
 
 const RecordMenu: ConditionalMenu = injector => {
   // The scope depends on the URL
@@ -42,6 +43,22 @@ const recordRoutes: Routes = [
   {
     path: 'view/:id',
     component: ViewRecordComponent,
+    canActivate: [LoggedUserGuard],
+    data: {
+      menu: RecordMenu
+    }
+  },
+  {
+    path: ':owner/:type/new',
+    component: RecordFormComponent,
+    canActivate: [LoggedUserGuard],
+    data: {
+      menu: RecordMenu
+    }
+  },
+  {
+    path: 'edit/:id',
+    component: RecordFormComponent,
     canActivate: [LoggedUserGuard],
     data: {
       menu: RecordMenu

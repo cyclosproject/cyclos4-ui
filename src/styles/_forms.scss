@@ -265,11 +265,24 @@ $spaced-label-values: (
 .columns-3 > .label-value {
   display: inline-block !important;
 }
+.columns-2 .label-value-label,
+.columns-3 .label-value-label {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
 .columns-2 {
   width: 50% !important;
 }
 .columns-3 {
   width: 33.33% !important;
+}
+.columns-2.colspan-2,
+.columns-3.colspan-3 {
+  width: 100% !important;
+}
+.columns-3.colspan-2 {
+  width: 66.66% !important;
 }
 
 body.dark {

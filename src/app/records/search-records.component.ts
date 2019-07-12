@@ -18,7 +18,6 @@ export class SearchRecordsComponent
   extends BaseSearchPageComponent<RecordDataForSearch, RecordSearchParams, RecordResult>
   implements OnInit {
 
-  hasEditAction: boolean;
   type: string;
   param: string;
   fieldsInSearch: Array<CustomFieldDetailed>;
@@ -56,7 +55,6 @@ export class SearchRecordsComponent
   }
 
   onDataInitialized(data: RecordDataForSearch) {
-    this.hasEditAction = data.edit && data.type.useViewPage;
     this.headingActions = [];
     if (data.create) {
       this.headingActions.push(new HeadingAction('add_circle_outline', this.i18n.general.addNew, () =>
@@ -97,18 +95,7 @@ export class SearchRecordsComponent
   }
 
   get toLink() {
-    return (record: RecordResult) => {
-      if (this.data.type.useViewPage || !this.data.edit) {
-        return this.viewPath(record);
-      } else if (this.data.edit) {
-        return this.editPath(record);
-      }
-      return ['#'];
-    };
-  }
-
-  navigate(record: RecordResult) {
-    this.router.navigate(this.toLink(record));
+    return (record: RecordResult) => this.viewPath(record);
   }
 
   protected toSearchParams(params: any): RecordSearchParams {
