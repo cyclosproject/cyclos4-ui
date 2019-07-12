@@ -1107,7 +1107,9 @@
       "details": "{name} details",
       "new": "Create new {name}",
       "edit": "Edit {name}"
-    }
+    },
+    "created": "The {name} was created",
+    "saved": "The {name} was saved"
   },
   "userAlert": {
     "title": "Search user alerts",

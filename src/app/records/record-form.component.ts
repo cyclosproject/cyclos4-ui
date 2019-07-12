@@ -3,8 +3,9 @@ import { BasePageComponent } from 'app/shared/base-page.component';
 import { RecordDataForEdit, RecordDataForNew, RecordCustomField, RecordCustomFieldDetailed, RecordSection } from 'app/api/models';
 import { RecordsService } from 'app/api/services';
 import { Observable } from 'rxjs';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { RecordHelperService } from 'app/core/records-helper.service';
+import { validateBeforeSubmit } from 'app/shared/helper';
 
 @Component({
   selector: 'record-form',
@@ -15,10 +16,10 @@ export class RecordFormComponent extends BasePageComponent<RecordDataForEdit | R
 
   type: string;
   param: string;
+  id: string;
   create: boolean;
   columnLayout: boolean;
   form: FormGroup;
-  customFieldControlsMap: Map<string, FormControl>;
   fieldsWithoutSection: Array<RecordCustomFieldDetailed>;
   fieldsWithSection = new Map<RecordSection, RecordCustomFieldDetailed[]>();
 
@@ -35,11 +36,11 @@ export class RecordFormComponent extends BasePageComponent<RecordDataForEdit | R
     this.param = this.route.snapshot.params.owner;
     this.type = this.route.snapshot.params.type;
     this.create = this.param != null;
-    const id = this.route.snapshot.paramMap.get('id');
+    this.id = this.route.snapshot.paramMap.get('id');
 
     const request: Observable<RecordDataForEdit | RecordDataForNew> = this.create
       ? this.recordService.getRecordDataForNew({ owner: this.param, type: this.type })
-      : this.recordService.getRecordDataForEdit({ id: id });
+      : this.recordService.getRecordDataForEdit({ id: this.id });
     this.addSub(request.subscribe(data => {
       this.data = data;
     }));
@@ -55,19 +56,22 @@ export class RecordFormComponent extends BasePageComponent<RecordDataForEdit | R
         this.fieldsWithSection.set(s, filter);
       }
     });
-    this.customFieldControlsMap = this.fieldHelper.customValuesFormControlMap(data.fields);
     this.form = this.formBuilder.group({});
-    if (this.customFieldControlsMap.size > 0) {
-      const fieldValues = new FormGroup({});
-      for (const c of this.customFieldControlsMap) {
-        fieldValues.addControl(c[0], c[1]);
-      }
-      this.form.setControl('customValues', fieldValues);
-    }
+    // Set the custom fields control
+    this.form.setControl('customValues', this.fieldHelper.customValuesFormGroup(data.fields, {
+      currentValues: data.record.customValues,
+      disabledProvider: cf => !this.create && ((data as RecordDataForEdit).editableFields || []).indexOf(cf.internalName) === -1
+    }));
   }
 
   resolveColumnClass(field: RecordCustomField): String {
     return this.recordHelper.resolveColumnClass(field, this.data.type);
+  }
+
+
+
+  get binaryValues() {
+    return (this.data as RecordDataForEdit).binaryValues;
   }
 
   get labelPosition() {
@@ -75,6 +79,19 @@ export class RecordFormComponent extends BasePageComponent<RecordDataForEdit | R
   }
 
   save() {
-
+    validateBeforeSubmit(this.form);
+    if (!this.form.valid) {
+      return;
+    }
+    const value = this.form.value;
+    const request: Observable<string | void> = this.create
+      ? this.recordService.createRecord({ owner: this.param, type: this.type, body: value })
+      : this.recordService.updateRecord({ id: this.id, body: value });
+    this.addSub(request.subscribe(id => {
+      this.notification.snackBar(this.create
+        ? this.i18n.record.created(this.data.type.name)
+        : this.i18n.record.saved(this.data.type.name));
+      this.router.navigate(['/records', 'view', id || this.id]);
+    }));
   }
 }

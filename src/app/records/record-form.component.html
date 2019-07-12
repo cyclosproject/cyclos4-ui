@@ -18,8 +18,8 @@
       </h2>
       <custom-field-input *ngFor="let cf of fieldsWithoutSection"
         [labelPosition]="labelPosition" [field]="cf"
-        [formControl]="customFieldControlsMap.get(cf.internalName)"
-        [class]="resolveColumnClass(cf)">
+        [formControl]="form.get('customValues').get(cf.internalName)"
+        [class]="resolveColumnClass(cf)" [binaryValues]="binaryValues">
       </custom-field-input>
       <ng-container
         *ngFor="let key of fieldsWithSection.keys(); let first = first">
@@ -32,8 +32,8 @@
         </h2>
         <custom-field-input *ngFor="let cf of fieldsWithSection.get(key)"
           [labelPosition]="labelPosition" [field]="cf"
-          [formControl]="customFieldControlsMap.get(cf.internalName)"
-          [class]="resolveColumnClass(cf)">
+          [formControl]="form.get('customValues').get(cf.internalName)"
+          [class]="resolveColumnClass(cf)" [binaryValues]="binaryValues">
         </custom-field-input>
       </ng-container>
     </form>

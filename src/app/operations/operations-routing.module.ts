@@ -40,6 +40,9 @@ const OperationMenu: ConditionalMenu = injector => {
     case 'marketplace':
       // An operation over an advertisement
       return Menu.RUN_MARKETPLACE_OPERATION;
+    case 'record':
+      // An operation over a record
+      return Menu.RUN_RECORD_OPERATION;
     case 'transfer':
       // An operation over a transfer
       return Menu.RUN_TRANSFER_OPERATION;
@@ -95,6 +98,15 @@ const operationRoutes: Routes = [
         data: {
           menu: Menu.RUN_MARKETPLACE_OPERATION,
           runScope: OperationRunScope.Ad
+        }
+      },
+      {
+        path: 'record/:record/:operation',
+        component: RunOperationComponent,
+        canActivate: [LoggedUserGuard],
+        data: {
+          menu: Menu.RUN_RECORD_OPERATION,
+          runScope: OperationRunScope.Record
         }
       },
       {

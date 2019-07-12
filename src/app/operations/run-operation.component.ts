@@ -96,6 +96,12 @@ export class RunOperationComponent
         request = this.operationsService.getAdOperationDataForRun(params);
         break;
 
+      case OperationRunScope.Record:
+        // A record
+        this.scopeId = params.id = route.params.record;
+        request = this.operationsService.getRecordOperationDataForRun(params);
+        break;
+
       case OperationRunScope.Transfer:
         // A transfer
         this.scopeId = params.key = route.params.transfer;
