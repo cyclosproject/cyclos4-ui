@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { FormGroup } from '@angular/forms';
 import { RecordHelperService } from 'app/core/records-helper.service';
 import { validateBeforeSubmit } from 'app/shared/helper';
+import { cloneDeep } from 'lodash';
 
 @Component({
   selector: 'record-form',
@@ -68,8 +69,6 @@ export class RecordFormComponent extends BasePageComponent<RecordDataForEdit | R
     return this.recordHelper.resolveColumnClass(field, this.data.type);
   }
 
-
-
   get binaryValues() {
     return (this.data as RecordDataForEdit).binaryValues;
   }
@@ -83,10 +82,13 @@ export class RecordFormComponent extends BasePageComponent<RecordDataForEdit | R
     if (!this.form.valid) {
       return;
     }
-    const value = this.form.value;
+
+    const record = cloneDeep(this.data.record);
+    record.customValues = this.form.value.customValues;
+
     const request: Observable<string | void> = this.create
-      ? this.recordService.createRecord({ owner: this.param, type: this.type, body: value })
-      : this.recordService.updateRecord({ id: this.id, body: value });
+      ? this.recordService.createRecord({ owner: this.param, type: this.type, body: record })
+      : this.recordService.updateRecord({ id: this.id, body: record });
     this.addSub(request.subscribe(id => {
       this.notification.snackBar(this.create
         ? this.i18n.record.created(this.data.type.name)
