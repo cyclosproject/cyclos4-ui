@@ -235,8 +235,8 @@
       "mobileTitle": {
         "change": "Password change",
         "forgotten": "Password recovery",
-        "manage.single": "Password",
-        "manage.multiple": "Passwords",
+        "manage.single": "Mot de passe",
+        "manage.multiple": "Mots de passe",
         "securityAnswer": "Security answer"
       },
       "forgotten": {
@@ -583,7 +583,7 @@
       "image": "Profile image",
       "images": "Profile images",
       "fields": "Profile fields",
-      "group": "Group",
+      "group": "Groupe",
       "phones": "Phones",
       "addresses": "Addresses",
       "contactInfos": "Additional contacts",
