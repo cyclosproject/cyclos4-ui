@@ -117,7 +117,7 @@ export class DecimalFieldComponent extends BaseFormFieldComponent<string> implem
   }
 
   protected getFocusableControl() {
-    return this.inputRef.nativeElement;
+    return this.inputRef ? this.inputRef.nativeElement : null;
   }
 
   protected getDisabledValue(): string {
