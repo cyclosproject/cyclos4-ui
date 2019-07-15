@@ -64,4 +64,8 @@ export class BrokerFormComponent
       this.router.navigate(['/users', this.user, 'brokers']);
     }));
   }
+
+  resolveMenu() {
+    return this.authHelper.searchUsersMenu();
+  }
 }

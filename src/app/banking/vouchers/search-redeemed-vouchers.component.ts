@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectionStrategy, Injector } from '@angular/c
 import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { UserVouchersDataForSearch, VoucherResult, VoucherRelationEnum, UserVouchersQueryFilters } from 'app/api/models';
 import { VouchersService } from 'app/api/services';
+import { Menu } from 'app/shared/menu';
 
 type UserVoucherSearchParams = UserVouchersQueryFilters & {
   user: string;
@@ -62,4 +63,9 @@ export class SearchRedeemedVouchersComponent
   path(row: VoucherResult): string[] {
     return ['/banking/vouchers/', row.id];
   }
+
+  resolveMenu(data: UserVouchersDataForSearch) {
+    return this.authHelper.userMenu(data.user, Menu.SEARCH_REDEEMED);
+  }
+
 }

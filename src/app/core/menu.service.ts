@@ -14,7 +14,7 @@ import { I18n } from 'app/i18n/i18n';
 import { ApiHelper } from 'app/shared/api-helper';
 import { toFullUrl } from 'app/shared/helper';
 import { ActiveMenu, Menu, MenuEntry, MenuType, RootMenu, RootMenuEntry, SideMenuEntries } from 'app/shared/menu';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
 enum NavigateAction {
@@ -678,27 +678,6 @@ export class MenuService {
       }
     }
     return rootMenus;
-  }
-
-  /**
-   * Resolves the given menu or conditional menu to an actual `Menu`.
-   * @param value Either a `Menu` or `ConditionalMenu`
-   */
-  resolveMenu(value: Menu | ConditionalMenu | ((i: Injector) => any)): Observable<ActiveMenu> {
-    if (value instanceof Function) {
-      const result = value(this.injector);
-      if (result instanceof Menu) {
-        return of(new ActiveMenu(result));
-      } else if (result instanceof ActiveMenu) {
-        return of(result);
-      } else if (result instanceof Observable) {
-        return result.pipe(map(m => m instanceof ActiveMenu ? m : new ActiveMenu(m)));
-      }
-    } else if (value instanceof Menu) {
-      return of(new ActiveMenu(value));
-    } else {
-      return of(value);
-    }
   }
 
   private resolveVoucherPermissions(vouchersPermissions: VouchersPermissions): ResolvedVouchersPermissions {

@@ -1,17 +1,13 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Injector,
-  OnInit
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Currency, VoucherTypeDetailed } from 'app/api/models';
 import { VoucherDataForBuy } from 'app/api/models/voucher-data-for-buy';
 import { VouchersService } from 'app/api/services';
 import { BasePageComponent } from 'app/shared/base-page.component';
-import { BehaviorSubject } from 'rxjs';
-import { Currency, VoucherTypeDetailed } from 'app/api/models';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ConfirmationMode } from 'app/shared/confirmation-mode';
 import { validateBeforeSubmit } from 'app/shared/helper';
+import { Menu } from 'app/shared/menu';
+import { BehaviorSubject } from 'rxjs';
 
 export type BuyVouchersStep = 'select-type' | 'form' | 'confirm';
 
@@ -183,4 +179,9 @@ export class BuyVouchersComponent extends BasePageComponent<VoucherDataForBuy>
 
     this.form.get('count').setValue(1);
   }
+
+  resolveMenu(data: VoucherDataForBuy) {
+    return this.authHelper.userMenu(data.user, Menu.BUY_VOUCHER);
+  }
+
 }

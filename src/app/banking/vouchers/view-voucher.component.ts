@@ -5,6 +5,7 @@ import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
 import { HeadingAction } from 'app/shared/action';
 import { BehaviorSubject } from 'rxjs';
 import { BankingHelperService } from 'app/core/banking-helper.service';
+import { Menu } from 'app/shared/menu';
 
 @Component({
   selector: 'app-view-voucher',
@@ -53,5 +54,15 @@ export class ViewVoucherComponent extends BaseViewPageComponent<VoucherView> imp
    */
   transferPath(transfer: Transaction): string[] {
     return ['/banking', 'transfer', this.bankingHelper.transactionNumberOrId(transfer)];
+  }
+
+  resolveMenu(voucher: VoucherView) {
+    if (voucher.redeemer && this.authHelper.isSelfOrOwner(voucher.redeemer)) {
+      return Menu.SEARCH_REDEEMED;
+    } else if (voucher.buyer && this.authHelper.isSelfOrOwner(voucher.buyer)) {
+      return Menu.SEARCH_BOUGHT_VOUCHERS;
+    } else {
+      return this.authHelper.searchUsersMenu();
+    }
   }
 }
