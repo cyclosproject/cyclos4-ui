@@ -1,4 +1,7 @@
-import { Component, ElementRef, Host, Input, OnInit, Optional, SkipSelf, ViewChild, Injector } from '@angular/core';
+import {
+  ChangeDetectorRef, Component, ElementRef, Host, Injector, Input, OnChanges,
+  OnInit, Optional, SimpleChanges, SkipSelf, ViewChild
+} from '@angular/core';
 import {
   AbstractControl, ControlContainer, FormControl, NG_VALIDATORS,
   NG_VALUE_ACCESSOR, ValidationErrors, Validator
@@ -19,11 +22,14 @@ import { LayoutService } from 'app/shared/layout.service';
     { provide: NG_VALIDATORS, useExisting: DecimalFieldComponent, multi: true }
   ]
 })
-export class DecimalFieldComponent extends BaseFormFieldComponent<string> implements Validator, OnInit {
+export class DecimalFieldComponent extends BaseFormFieldComponent<string>
+  implements Validator, OnInit, OnChanges {
+
   constructor(
     injector: Injector,
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
-    public layout: LayoutService) {
+    public layout: LayoutService,
+    private changeDetector: ChangeDetectorRef) {
     super(injector, controlContainer);
   }
 
@@ -38,6 +44,7 @@ export class DecimalFieldComponent extends BaseFormFieldComponent<string> implem
   internalControl: FormControl;
 
   private _scale = 0;
+  private autoSize = false;
 
   @Input() get scale(): number {
     return this._scale;
@@ -76,7 +83,8 @@ export class DecimalFieldComponent extends BaseFormFieldComponent<string> implem
   ngOnInit() {
     super.ngOnInit();
     if (this.fieldSize == null) {
-      this.fieldSize = CustomFieldSizeEnum.SMALL;
+      this.autoSize = true;
+      this.fieldSize = this.prefix && this.suffix ? CustomFieldSizeEnum.MEDIUM : CustomFieldSizeEnum.SMALL;
     }
     this.internalControl = new FormControl();
     this.addSub(this.internalControl.valueChanges.subscribe((input: string) => {
@@ -90,6 +98,13 @@ export class DecimalFieldComponent extends BaseFormFieldComponent<string> implem
       }
       this.formControl.markAsTouched();
     }));
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (this.autoSize && (changes.prefix || changes.suffix)) {
+      this.fieldSize = this.prefix && this.suffix ? CustomFieldSizeEnum.MEDIUM : CustomFieldSizeEnum.SMALL;
+      this.changeDetector.detectChanges();
+    }
   }
 
   onBlur() {

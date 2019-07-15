@@ -12,8 +12,8 @@ import { LayoutService, Breakpoint as LayoutBreakpoint } from 'app/shared/layout
 
 export const COLS = 12;
 
-type Breakpoint = 'xxs' | 'xs' | 'sm';
-const Breakpoints: Breakpoint[] = ['xxs', 'xs', 'sm'];
+type Breakpoint = 'xxs' | 'xs' | 'sm' | 'md';
+const Breakpoints: Breakpoint[] = ['xxs', 'xs', 'sm', 'md'];
 
 /**
  * How the label-value is used:
@@ -173,7 +173,10 @@ export class LabelValueComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private updateLabelOnSideClass(bs: Set<LayoutBreakpoint>) {
-    const bp: Breakpoint = bs.has('xxs') ? 'xxs' : bs.has('xs') ? 'xs' : 'sm';
+    const bp: Breakpoint = bs.has('xxs')
+      ? 'xxs' : bs.has('xs')
+        ? 'xs' : bs.has('sm')
+          ? 'sm' : 'md';
     const labelOnSide = this.isLabelOnSide(bp);
     if (this.classLabelOnSide !== labelOnSide) {
       this.classLabelOnSide = labelOnSide;
@@ -292,11 +295,32 @@ export class LabelValueComponent implements OnInit, OnDestroy, OnChanges {
       // Depends on field size
       switch (this.fieldSize) {
         case CustomFieldSizeEnum.TINY:
-          return breakpoint === 'xs' ? 4 : 2;
+          switch (breakpoint) {
+            case 'xs':
+              return 6;
+            case 'sm':
+              return 3;
+            default:
+              return 2;
+          }
         case CustomFieldSizeEnum.SMALL:
-          return breakpoint === 'xs' ? 6 : 3;
+          switch (breakpoint) {
+            case 'xs':
+              return 7;
+            case 'sm':
+              return 4;
+            default:
+              return 3;
+          }
         case CustomFieldSizeEnum.MEDIUM:
-          return breakpoint === 'xs' ? 8 : 5;
+          switch (breakpoint) {
+            case 'xs':
+              return 9;
+            case 'sm':
+              return 5;
+            default:
+              return 4;
+          }
         default:
           return labelCols === COLS ? COLS : COLS - labelCols;
       }
