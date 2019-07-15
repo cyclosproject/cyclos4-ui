@@ -2,13 +2,12 @@
   <page-content *ngSwitchCase="'form'" [heading]="title"
     [mobileHeading]="mobileTitle"
     [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'" last>
-    <div class="flex-grow-1">
-      <payment-step-form [data]="data" [form]="form"
-        [currency]="currency$ | async" [paymentTypeData$]="paymentTypeData$"
-        (availablePaymentTypes)="availablePaymentTypes = $event"
-        [customValuesControlGetter]="customValuesControlGetter">
-      </payment-step-form>
-    </div>
+    <payment-step-form class="flex-grow-1 d-flex flex-column" [data]="data"
+      [form]="form" [currency]="currency$ | async"
+      [paymentTypeData$]="paymentTypeData$"
+      (availablePaymentTypes)="availablePaymentTypes = $event"
+      [customValuesControlGetter]="customValuesControlGetter">
+    </payment-step-form>
     <actions forceRow>
       <button class="btn btn-primary" [disabled]="requesting$ | async"
         (click)="toConfirm()">{{ i18n.general.next }}</button>
@@ -19,14 +18,12 @@
     [heading]="i18n.transaction.title.paymentConfirmation"
     [mobileHeading]="i18n.transaction.mobileTitle.paymentConfirmation"
     [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'" last>
-    <div class="flex-grow-1 d-flex flex-column">
-      <payment-step-confirm [preview]="preview"
-        [confirmationPassword]="confirmationPassword"
-        (confirmationModeChanged)="confirmationMode$.next($event)"
-        (confirmed)="perform($event)"
-        [showPaymentType]="(availablePaymentTypes || []).length > 1">
-      </payment-step-confirm>
-    </div>
+    <payment-step-confirm class="flex-grow-1 d-flex flex-column"
+      [preview]="preview" [confirmationPassword]="confirmationPassword"
+      (confirmationModeChanged)="confirmationMode$.next($event)"
+      (confirmed)="perform($event)"
+      [showPaymentType]="(availablePaymentTypes || []).length > 1">
+    </payment-step-confirm>
     <actions forceRow>
       <button
         *ngIf="(confirmationMode$ | async) != ConfirmationMode.Device; else spacer"
@@ -44,9 +41,8 @@
   <page-content *ngSwitchCase="'done'" hideBack [heading]="doneTitle"
     [mobileHeading]="doneMobileTitle"
     [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'" last>
-    <div class="flex-grow-1 d-flex flex-column">
-      <payment-step-done [performed]="performed"></payment-step-done>
-    </div>
+    <payment-step-done class="flex-grow-1 d-flex flex-column"
+      [performed]="performed"></payment-step-done>
     <actions forceRow>
       <button class="btn btn-primary" (click)="viewPerformed()">
         {{ i18n.transaction.doneView }}

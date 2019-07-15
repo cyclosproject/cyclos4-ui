@@ -40,7 +40,6 @@ label {
 .form-field {
   width: 100%;
   display: flex;
-  flex-grow: 1;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
@@ -65,7 +64,9 @@ label {
   }
 }
 @include media-breakpoint-up(sm) {
-
+  .form-field {
+    flex-grow: 1;
+  }
   .filters-row {
     margin-top: 1rem;
     margin-bottom: 1rem;
