@@ -8,6 +8,7 @@ import { BasePageComponent } from 'app/shared/base-page.component';
 import { empty } from 'app/shared/helper';
 import { PasswordInputComponent } from 'app/shared/password-input.component';
 import { ApiHelper } from 'app/shared/api-helper';
+import { Menu } from 'app/shared/menu';
 
 /**
  * Component used to show a login form.
@@ -107,5 +108,9 @@ export class LoginComponent
 
   get loggedOut(): boolean {
     return this.loginState.reason === LoginReason.LOGGED_OUT;
+  }
+
+  resolveMenu() {
+    return Menu.LOGIN;
   }
 }

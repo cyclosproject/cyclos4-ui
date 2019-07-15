@@ -12,6 +12,7 @@ import { empty } from 'app/shared/helper';
 import { MaxDistance } from 'app/shared/max-distance';
 import { ResultType } from 'app/shared/result-type';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { Menu } from 'app/shared/menu';
 
 export enum UserSearchKind {
   Public,
@@ -231,5 +232,16 @@ export class SearchUsersComponent
     return isMap && !this.manager
       ? this.usersService.searchMapDirectory$Response(query)
       : this.usersService.searchUsers$Response(query);
+  }
+
+  resolveMenu() {
+    switch (this.kind) {
+      case UserSearchKind.Broker:
+        return Menu.MY_BROKERED_USERS;
+      case UserSearchKind.Public:
+        return Menu.PUBLIC_DIRECTORY;
+      default:
+        return Menu.SEARCH_USERS;
+    }
   }
 }

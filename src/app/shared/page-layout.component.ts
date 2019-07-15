@@ -64,7 +64,7 @@ export class PageLayoutComponent implements OnInit, OnDestroy {
       const fullWidth = this.layout.fullWidth;
       const loggedIn = this.login.user != null;
       const activeMenu = this.menu.activeMenu;
-      let hasMenu = gtmd && !fullWidth && loggedIn && !this.hideMenu && activeMenu != null;
+      let hasMenu = gtmd && !fullWidth && loggedIn && !this.hideMenu && !!activeMenu;
       const root = this.menu.rootEntry();
       if (hasMenu && (root == null || (root.entries || []).length <= 1)) {
         hasMenu = false;

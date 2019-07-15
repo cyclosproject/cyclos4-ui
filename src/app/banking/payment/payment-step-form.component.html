@@ -64,7 +64,7 @@
     </single-selection-field>
     <ng-template #toUserField>
       <user-field #toUser focused [autoSearch]="!allowPrincipal"
-        [filters]="{usersToExclude: fromParam ? [fromParam] : null}"
+        [filters]="{usersToExclude: fromUser && !fromSelf ? [fromParam] : null}"
         formControlName="subject" [allowContacts]="allowContacts"
         [allowSearch]="allowSearch" [allowPrincipal]="allowPrincipal"
         (selected)="$event ? amount.focus() : null"></user-field>

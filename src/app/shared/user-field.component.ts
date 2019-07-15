@@ -3,7 +3,7 @@ import {
   Input, OnDestroy, OnInit, Optional, SkipSelf, ViewChild
 } from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { User, UserQueryFilters } from 'app/api/models';
+import { User, UserQueryFilters, RoleEnum } from 'app/api/models';
 import { UsersService } from 'app/api/services';
 import { Configuration } from 'app/configuration';
 import { LoginService } from 'app/core/login.service';
@@ -114,12 +114,12 @@ export class UserFieldComponent
     if (!this.allowSearch) {
       return of([]);
     }
-    const loggedUser = this.login.user;
+    const role = this.dataForUiHolder.role;
     const filters: UserQueryFilters = this.filters ? { ...this.filters } : {};
     filters.ignoreProfileFieldsInList = true,
       filters.pageSize = Configuration.quickSearchPageSize;
     filters.keywords = text;
-    if (loggedUser) {
+    if ([RoleEnum.MEMBER, RoleEnum.BROKER].includes(role)) {
       filters.usersToExclude = [...(filters.usersToExclude || []), ApiHelper.SELF];
     }
     this.nextRequestState.leaveNotification = true;

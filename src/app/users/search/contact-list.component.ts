@@ -8,6 +8,7 @@ import { ResultType } from 'app/shared/result-type';
 import { UsersResultsComponent } from 'app/users/search/users-results.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { AddContactDialogComponent } from 'app/users/search/add-contact-dialog.component';
+import { Menu } from 'app/shared/menu';
 
 type ContactListSearchParams = ContactListQueryFilters & { user: string };
 
@@ -86,6 +87,9 @@ export class ContactListComponent
       this.notification.snackBar(this.i18n.user.profile.addContactDone(user.display));
       this.reload();
     }));
+  }
 
+  resolveMenu(data: ContactListDataForSearch) {
+    return this.authHelper.userMenu(data.user, Menu.CONTACTS);
   }
 }

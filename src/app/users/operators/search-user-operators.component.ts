@@ -1,13 +1,15 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { CustomFieldDetailed, UserOperatorsDataForSearch, UserOperatorsQueryFilters } from 'app/api/models';
+import { UserOperatorsDataForSearch, UserOperatorsQueryFilters } from 'app/api/models';
 import { UserResult } from 'app/api/models/user-result';
 import { OperatorsService } from 'app/api/services/operators.service';
+import { UserHelperService } from 'app/core/user-helper.service';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
+import { FieldOption } from 'app/shared/field-option';
 import { empty } from 'app/shared/helper';
+import { Menu } from 'app/shared/menu';
 import { ResultType } from 'app/shared/result-type';
-import { BehaviorSubject } from 'rxjs';
 
 
 type UserOperatorsSearchParams = UserOperatorsQueryFilters & { user: string };
@@ -28,17 +30,19 @@ export class SearchUserOperatorsComponent
 
   param: string;
   self: boolean;
-  advancedFields$ = new BehaviorSubject<CustomFieldDetailed[]>([]);
+
+  statusOptions: FieldOption[];
 
   constructor(
     injector: Injector,
-    private operatorsService: OperatorsService
+    private operatorsService: OperatorsService,
+    private userHelper: UserHelperService
   ) {
     super(injector);
   }
 
   protected getFormControlNames() {
-    return ['operatorGroups', 'customValues'];
+    return ['operatorGroups', 'statuses', 'creationBegin', 'creationEnd'];
   }
 
   ngOnInit() {
@@ -47,7 +51,8 @@ export class SearchUserOperatorsComponent
     this.self = this.authHelper.isSelf(this.param);
 
     this.addSub(this.operatorsService.getUserOperatorsDataForSearch({ user: this.param }).subscribe(data => {
-      this.form.patchValue(data.query, { emitEvent: false });
+      this.statusOptions = this.userHelper.statusOptions();
+      this.form.patchValue(data.query);
       if (!this.self && data.canCreateNew) {
         this.headingActions = [
           new HeadingAction('registration', this.i18n.general.addNew, () => {
@@ -60,14 +65,18 @@ export class SearchUserOperatorsComponent
   }
 
   protected toSearchParams(value: any): UserOperatorsSearchParams {
-    const query = value;
+    const query: UserOperatorsSearchParams = value;
     query.user = this.param;
-    query.profileFields = this.fieldHelper.toCustomValuesFilter(query.customValues);
+    query.creationPeriod = ApiHelper.rangeFilter(value.creationBegin, value.creationEnd);
     delete value.customValues;
     return query;
   }
 
   protected doSearch(query: UserOperatorsSearchParams) {
     return this.operatorsService.searchUserOperators$Response(query);
+  }
+
+  resolveMenu(data: UserOperatorsDataForSearch) {
+    return this.authHelper.userMenu(data.user, Menu.MY_OPERATORS);
   }
 }

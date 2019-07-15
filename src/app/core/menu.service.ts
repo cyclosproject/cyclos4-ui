@@ -13,10 +13,9 @@ import { StateManager } from 'app/core/state-manager';
 import { I18n } from 'app/i18n/i18n';
 import { ApiHelper } from 'app/shared/api-helper';
 import { toFullUrl } from 'app/shared/helper';
-import { LayoutService } from 'app/shared/layout.service';
-import { ActiveMenu, ConditionalMenu, Menu, MenuEntry, MenuType, RootMenu, RootMenuEntry, SideMenuEntries } from 'app/shared/menu';
+import { ActiveMenu, Menu, MenuEntry, MenuType, RootMenu, RootMenuEntry, SideMenuEntries } from 'app/shared/menu';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { filter, first, map } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 
 enum NavigateAction {
   Url,
@@ -77,8 +76,7 @@ export class MenuService {
     private stateManager: StateManager,
     private bankingHelper: BankingHelperService,
     private content: ContentService,
-    private operationHelper: OperationHelperService,
-    layout: LayoutService
+    private operationHelper: OperationHelperService
   ) {
     const initialDataForUi = this.dataForUiHolder.dataForUi;
     const initialAuth = (initialDataForUi || {}).auth;
@@ -107,7 +105,7 @@ export class MenuService {
     ).subscribe(e => {
       const entry = this.menuEntry(e.url);
       if (entry) {
-        this.updateActiveMenu(entry.activeMenu);
+        this.setActiveMenu(entry.activeMenu);
       }
     });
 
@@ -116,11 +114,6 @@ export class MenuService {
       this.updateBodyClasses(active ? active.menu : null);
     });
     this.activeMenu$ = this._activeMenu.asObservable();
-    layout.currentPage$.subscribe(p => {
-      if (p && this.activeMenu == null) {
-        this.setActiveMenu(p.menuItem);
-      }
-    });
   }
 
   /**
@@ -199,7 +192,7 @@ export class MenuService {
 
     // Update the active state
     if (params.menu) {
-      this.updateActiveMenu(params.menu);
+      this.setActiveMenu(params.menu);
     }
   }
 
@@ -223,57 +216,18 @@ export class MenuService {
   /**
    * Sets the active menu
    */
-  setActiveMenu(menu: ActiveMenu | Menu | ConditionalMenu): void {
-    // Whenever the last selected menu changes, update the classes in the body element
-    if (menu instanceof ActiveMenu) {
-      this.updateActiveMenu(menu);
-    } else {
-      const observable = this.resolveMenu(menu);
-      if (observable) {
-        observable.pipe(first()).subscribe(m => this.updateActiveMenu(m));
-      }
+  setActiveMenu(menu: ActiveMenu | Menu): void {
+    if (menu == null) {
+      this._activeMenu.next(null);
+      return;
     }
-  }
-
-  /**
-   * Sets the menu to the account history of the given account type
-   */
-  setActiveAccountType(accountType: AccountType): void {
-    this.updateActiveMenu(new ActiveMenu(Menu.ACCOUNT_HISTORY, { accountType: accountType }));
-  }
-
-  /**
-   * Sets the menu to run the given custom operation as owner, ie, not inside an advertisement or user
-   */
-  setActiveOwnerOperation(operation: Operation): void {
-    const menu = ApiHelper.menuForOwnerOperation(operation);
-    if (menu != null) {
-      this.updateActiveMenu(new ActiveMenu(menu, { operation: operation }));
+    if (menu instanceof Menu) {
+      menu = new ActiveMenu(menu);
     }
-  }
-
-  /**
-   * Sets the menu to run the given custom operation as an action, that is, standalone
-   */
-  setActiveActionOperation(operation: Operation): void {
-    this.updateActiveMenu(new ActiveMenu(Menu.RUN_ACTION_OPERATION, { operation: operation }));
-  }
-
-  /**
-   * Sets the menu to the content page with the given slug
-   */
-  setActiveContentPageSlug(slug: string): void {
-    const entry = this.contentPageEntry(slug);
-    if (entry) {
-      this.updateActiveMenu(entry.activeMenu);
+    if (menu.menu === Menu.LOGOUT) {
+      menu = new ActiveMenu(Menu.HOME);
     }
-  }
-
-  private updateActiveMenu(activeMenu: ActiveMenu) {
-    if (activeMenu.menu === Menu.LOGOUT) {
-      activeMenu = new ActiveMenu(Menu.HOME);
-    }
-    this._activeMenu.next(activeMenu);
+    this._activeMenu.next(menu);
   }
 
   private updateBodyClasses(menu: Menu) {

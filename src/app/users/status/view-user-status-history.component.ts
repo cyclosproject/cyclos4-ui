@@ -33,4 +33,8 @@ export class ViewUserStatusHistoryComponent extends BaseViewPageComponent<UserSt
   get operator() {
     return this.userHelper.isOperator(this.data.user);
   }
+
+  resolveMenu(data: UserStatusData) {
+    return this.authHelper.searchUsersMenu(data.user);
+  }
 }

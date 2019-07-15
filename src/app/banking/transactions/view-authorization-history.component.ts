@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { TransactionAuthorization, TransactionView } from 'app/api/models';
 import { TransactionsService } from 'app/api/services';
+import { BankingHelperService } from 'app/core/banking-helper.service';
 import { TransactionStatusService } from 'app/core/transaction-status.service';
 import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
 
@@ -17,7 +18,8 @@ export class ViewAuthorizationHistoryComponent extends BaseViewPageComponent<Tra
   constructor(
     injector: Injector,
     private transactionsService: TransactionsService,
-    private transactionStatusService: TransactionStatusService
+    private transactionStatusService: TransactionStatusService,
+    private bankingHelper: BankingHelperService
   ) {
     super(injector);
   }
@@ -41,4 +43,11 @@ export class ViewAuthorizationHistoryComponent extends BaseViewPageComponent<Tra
   actionLabel(auth: TransactionAuthorization): string {
     return this.transactionStatusService.authorizationAction(auth.action);
   }
+
+  resolveMenu(view: TransactionView) {
+    return this.authHelper.accountMenu(
+      this.bankingHelper.asAccount(view, true),
+      this.bankingHelper.asAccount(view, false));
+  }
+
 }

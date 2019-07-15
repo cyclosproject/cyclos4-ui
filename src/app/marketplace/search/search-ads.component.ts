@@ -8,6 +8,7 @@ import { empty } from 'app/shared/helper';
 import { MaxDistance } from 'app/shared/max-distance';
 import { ResultType } from 'app/shared/result-type';
 import { BehaviorSubject } from 'rxjs';
+import { Menu } from 'app/shared/menu';
 
 /**
  * Search for advertisements
@@ -136,5 +137,9 @@ export class SearchAdsComponent
       }
     }
     return null;
+  }
+
+  resolveMenu() {
+    return this.login.user ? Menu.SEARCH_ADS : Menu.PUBLIC_MARKETPLACE;
   }
 }

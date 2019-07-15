@@ -1,14 +1,12 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Injector, Input, Output, OnInit } from '@angular/core';
-import {
-  Address, ContactListDataForSearch, ContactResult,
-  User, UserDataForMap, UserDataForSearch, UserResult
-} from 'app/api/models';
+import { ChangeDetectionStrategy, Component, EventEmitter, HostBinding, Injector, Input, OnInit, Output } from '@angular/core';
+import { Address, ContactListDataForSearch, ContactResult, User, UserDataForMap, UserDataForSearch, UserResult } from 'app/api/models';
+import { OperatorResult } from 'app/api/models/operator-result';
 import { BaseComponent } from 'app/shared/base.component';
+import { MaxDistance } from 'app/shared/max-distance';
 import { PageData } from 'app/shared/page-data';
 import { PagedResults } from 'app/shared/paged-results';
 import { ResultType } from 'app/shared/result-type';
 import { BehaviorSubject } from 'rxjs';
-import { MaxDistance } from 'app/shared/max-distance';
 
 export const MAX_COLUMNS = 7;
 export const MAX_TILE_FIELDS = 2;
@@ -75,6 +73,21 @@ export class UsersResultsComponent extends BaseComponent implements OnInit {
     return row as User;
   }
 
+  /**
+   * Returns the operator group
+   * @param row The operator group
+   */
+  operatorGroup(row: any): string {
+    if (this.resultKind === 'my-operator') {
+      const group = (row as OperatorResult).group;
+      if (group) {
+        return group.name;
+      } else {
+        return this.i18n.user.operatorNoGroup;
+      }
+    }
+    return null;
+  }
   /**
    * Returns a function that formats the user
    */

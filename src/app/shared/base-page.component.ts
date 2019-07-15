@@ -1,14 +1,15 @@
 import { HostBinding, Injector, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
+import { CacheService } from 'app/core/cache.service';
+import { MenuService } from 'app/core/menu.service';
+import { NextRequestState } from 'app/core/next-request-state';
 import { HeadingAction } from 'app/shared/action';
 import { BaseComponent } from 'app/shared/base.component';
 import { FormControlLocator } from 'app/shared/form-control-locator';
-import { handleKeyboardScroll, scrollTop, handleKeyboardFocus } from 'app/shared/helper';
-import { ConditionalMenu, Menu } from 'app/shared/menu';
-import { ArrowsVertical, End, Home, PageDown, PageUp, ArrowsHorizontal } from 'app/shared/shortcut.service';
-import { BehaviorSubject, Subscription } from 'rxjs';
-import { first } from 'rxjs/operators';
-import { NextRequestState } from 'app/core/next-request-state';
+import { handleKeyboardFocus, handleKeyboardScroll, scrollTop } from 'app/shared/helper';
+import { ActiveMenu, Menu } from 'app/shared/menu';
+import { ArrowsHorizontal, ArrowsVertical, End, Home, PageDown, PageUp } from 'app/shared/shortcut.service';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 
 export type UpdateTitleFrom = 'menu' | 'content';
 
@@ -19,11 +20,12 @@ export type UpdateTitleFrom = 'menu' | 'content';
  */
 export abstract class BasePageComponent<D> extends BaseComponent implements OnInit, OnDestroy {
 
+  cache: CacheService;
+  menu: MenuService;
+
   @HostBinding('style.display') styleDisplay = 'flex';
   @HostBinding('style.flex-direction') styleFlexDirection = 'column';
   @HostBinding('style.flex-grow') styleFlexGrow = '1';
-
-  menuItem: Menu | ConditionalMenu;
 
   data$ = new BehaviorSubject<D>(null);
   get data(): D {
@@ -32,6 +34,12 @@ export abstract class BasePageComponent<D> extends BaseComponent implements OnIn
   set data(data: D) {
     if (this.data == null && data != null) {
       this.onDataInitialized(data);
+      const menu = this.resolveMenu(data);
+      if (menu instanceof Observable) {
+        this.addSub(menu.subscribe(m => this.initializeMenu(m)));
+      } else {
+        this.initializeMenu(menu);
+      }
     }
     this.data$.next(data);
   }
@@ -56,6 +64,27 @@ export abstract class BasePageComponent<D> extends BaseComponent implements OnIn
     return this._printAction;
   }
 
+  private initializeMenu(menu: Menu | ActiveMenu) {
+    if (menu == null) {
+      // Leave the current menu if nothing is set
+      return;
+    }
+    // Maybe set the layout title from the menu
+    if (this.updateTitleFrom() === 'menu') {
+      this.layout.title = null;
+      if (this.layout.gtxxs) {
+        const entry = this.menu.menuEntry(menu);
+        if (entry) {
+          this.layout.title = entry.label;
+        }
+      }
+    }
+    // Only update the active menu if no menu is set - after a page refresh
+    if (!this.menu.activeMenu) {
+      this.menu.setActiveMenu(menu);
+    }
+  }
+
   /**
    * Reloads the current page
    */
@@ -70,36 +99,27 @@ export abstract class BasePageComponent<D> extends BaseComponent implements OnIn
   protected onDataInitialized(_data: D) {
   }
 
+  /**
+   * Must be implemented to resolve the active menu item for the current page
+   */
+  abstract resolveMenu(data: D): Menu | ActiveMenu | Observable<ActiveMenu | Menu>;
+
   constructor(injector: Injector) {
     super(injector);
+    this.cache = injector.get(CacheService);
+    this.menu = injector.get(MenuService);
   }
 
   ngOnInit() {
     super.ngOnInit();
-    const snapshot = this.route.snapshot;
-    this.menuItem = snapshot.data.menu;
-    if (this.menuItem == null) {
-      throw new Error(`No menu item defined for route ${snapshot.url}`);
-    }
+    // Clear the previous title
+    this.layout.title = null;
     this.layout.currentPage = this;
     this.layout.fullWidth = this.defaultFullWidthLayout();
 
     // Workaround for https://github.com/angular/angular/issues/22324
     // Assume that when changing page, no requests are pending
     this.injector.get(NextRequestState).clearRequests();
-
-    // Set the title menu according to the menu item
-    if (this.updateTitleFrom() === 'menu') {
-      this.layout.title = null;
-      if (this.layout.gtxxs) {
-        this.menu.resolveMenu(this.menuItem).pipe(first()).subscribe(menu => {
-          const entry = this.menu.menuEntry(menu);
-          if (entry) {
-            this.layout.title = entry.label;
-          }
-        });
-      }
-    }
 
     // Initially scroll the window to the top
     scrollTop();

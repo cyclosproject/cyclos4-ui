@@ -5,7 +5,8 @@ import { NotificationsService } from 'app/api/services';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
-import { Observable, forkJoin } from 'rxjs';
+import { Menu } from 'app/shared/menu';
+import { forkJoin, Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
 
 type NotificationSearchParams = QueryFilters & { onlyUnread: boolean };
@@ -118,6 +119,10 @@ export class SearchNotificationsComponent
 
   get onClick() {
     return (row: Notification) => this.rowClick(row);
+  }
+
+  resolveMenu() {
+    return Menu.NOTIFICATIONS;
   }
 
 }

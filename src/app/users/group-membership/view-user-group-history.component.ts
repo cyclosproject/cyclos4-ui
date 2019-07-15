@@ -33,4 +33,8 @@ export class ViewUserGroupHistoryComponent extends BaseViewPageComponent<GroupMe
   get operator() {
     return this.userHelper.isOperator(this.data.user);
   }
+
+  resolveMenu(data: GroupMembershipData) {
+    return this.authHelper.searchUsersMenu(data.user);
+  }
 }

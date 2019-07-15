@@ -43,4 +43,8 @@ export class ValidateEmailChangeComponent
   goToLogin() {
     this.login.goToLoginPage('');
   }
+
+  resolveMenu() {
+    return this.authHelper.homeMenu();
+  }
 }

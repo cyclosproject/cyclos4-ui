@@ -15,6 +15,7 @@ import { TransactionStatusService } from 'app/core/transaction-status.service';
 import { HeadingAction } from 'app/shared/action';
 import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
 import { empty } from 'app/shared/helper';
+import { BankingHelperService } from 'app/core/banking-helper.service';
 
 /**
  * Displays a transaction details
@@ -40,7 +41,8 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
     private scheduledPaymentsService: ScheduledPaymentsService,
     private recurringPaymentsService: RecurringPaymentsService,
     private transfersService: TransfersService,
-    private operationHelper: OperationHelperService
+    private operationHelper: OperationHelperService,
+    private bankingHelper: BankingHelperService
   ) {
     super(injector);
   }
@@ -460,4 +462,11 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
       }
     });
   }
+
+  resolveMenu(view: TransactionView) {
+    return this.authHelper.accountMenu(
+      this.bankingHelper.asAccount(view, true),
+      this.bankingHelper.asAccount(view, false));
+  }
+
 }

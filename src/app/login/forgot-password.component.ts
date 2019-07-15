@@ -4,6 +4,7 @@ import { DataForLogin, ForgottenPasswordRequest, PrincipalTypeInput } from 'app/
 import { AuthService } from 'app/api/services';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BasePageComponent } from 'app/shared/base-page.component';
+import { Menu } from 'app/shared/menu';
 
 /**
  * Component used to show the forgot password page.
@@ -61,5 +62,9 @@ export class ForgotPasswordComponent extends BasePageComponent<DataForLogin> imp
 
   cancel() {
     this.login.goToLoginPage('');
+  }
+
+  resolveMenu() {
+    return Menu.LOGIN;
   }
 }

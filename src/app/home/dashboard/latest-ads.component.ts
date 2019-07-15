@@ -74,11 +74,13 @@ export class LatestAdsComponent extends BaseDashboardComponent implements OnInit
     const result: AdResult[] = [];
     // First pass: collect a single ad from each owner
     for (const ad of ads) {
-      if (owners.has(ad.owner.id)) {
-        continue;
+      if (ad.owner && ad.owner.id) {
+        if (owners.has(ad.owner.id)) {
+          continue;
+        }
+        owners.add(ad.owner.id);
+        result.push(ad);
       }
-      owners.add(ad.owner.id);
-      result.push(ad);
     }
     return result;
   }

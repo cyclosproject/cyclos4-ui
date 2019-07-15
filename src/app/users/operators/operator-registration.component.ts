@@ -6,6 +6,7 @@ import { UserHelperService } from 'app/core/user-helper.service';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { cloneControl, validateBeforeSubmit } from 'app/shared/helper';
 import { BehaviorSubject } from 'rxjs';
+import { Menu } from 'app/shared/menu';
 
 /**
  * Operator registration. Works by owner, admin and broker
@@ -107,4 +108,9 @@ export class OperatorRegistrationComponent
       this.router.navigate(['users', result.user.id, 'profile']);
     }
   }
+
+  resolveMenu(data: OperatorDataForNew) {
+    return this.authHelper.userMenu(data.user, Menu.MY_OPERATORS);
+  }
+
 }

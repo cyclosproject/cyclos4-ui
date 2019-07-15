@@ -1,4 +1,7 @@
-import { AccountWithOwner, AdminMenuEnum, Auth, Entity, Notification, NotificationEntityTypeEnum, Operation, OperationScopeEnum, UserMenuEnum } from 'app/api/models';
+import {
+  AccountWithOwner, AdminMenuEnum, Auth, Entity, Notification,
+  NotificationEntityTypeEnum, Operation, OperationScopeEnum, UserMenuEnum
+} from 'app/api/models';
 import { empty } from 'app/shared/helper';
 import { ActiveMenu, Menu, RootMenu } from 'app/shared/menu';
 
@@ -164,7 +167,7 @@ export class ApiHelper {
     const possibleMenus = [
       Menu.RUN_OPERATION_BANKING, Menu.RUN_OPERATION_MARKETPLACE, Menu.RUN_OPERATION_PERSONAL
     ];
-    let menu: Menu;
+    let menu: Menu = Menu.RUN_OPERATION_BANKING; // Default to the most probable menu
     if (operation.scope === OperationScopeEnum.SYSTEM) {
       for (const current of possibleMenus) {
         if (ApiHelper.adminMenuMatches(current.root, operation.adminMenu)) {
