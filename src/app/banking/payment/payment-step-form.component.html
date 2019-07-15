@@ -5,7 +5,8 @@
   </label-value>
 
   <ng-container *ngIf="singleAccount; else multipleAccounts">
-    <label-value [label]="accountBalanceLabel$ | async" kind="view"
+    <label-value *ngIf="singleAccount.status"
+      [label]="accountBalanceLabel$ | async" kind="fieldView"
       labelPosition="sideForced" noWrapLabel>
       <!-- Single account -->
       <div *ngIf="singleAccount.status"
