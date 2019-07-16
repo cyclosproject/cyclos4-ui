@@ -17,25 +17,31 @@ A demo of the frontend can be seen at: https://demo-ui.cyclos.org/
 
 ## Implemented functionality
 
-The 1.0 version of this frontend has only end-user functionality. Future versions will include broker and basic administration functionality. System administration functionality will always be performed in Cyclos' default web interface.
+The 1.1 version of this frontend implements end-user functionality, as well as basic user administration / brokering and operator functionality. System administration functionality will always be performed in Cyclos' default web interface.
 
-As of version 1.0, this frontend implements the following functionality:
+As of version 1.1, this frontend implements the following functionality:
 
 - User access: login, logout, forgot password, login with expired password, login with pending agreements (no support for secondary access password);
 - Integration with a login form in an external system: receives a pre-created session token and is able to use external URLs for login page and after logout redirect;
-- Account history, transfer details;
-- Perform payment both to user and system, supports direct, scheduled and recurring payments, indicates if a payment needs authorization;
-- Search scheduled / recurring / authorized payments;
+- Account history, transfer details by own user, admin and broker;
+- Perform payment both to user and system, supports direct, scheduled and recurring payments, by own user, admin and broker;
+- Search scheduled / recurring / authorized payments, by own user, admin and broker;
 - Search users (called business directory, as most systems only allow searching businesses);
-- View user profile, with a few actions (perform payment and add to contact list);
+- View user profile, with actions;
 - Contact list;
-- Manage passwords (change, generate new, unblock, disable / enable and set the security answer);
-- Edit own profile (images, basic / custom fields, phones, addresses and additional contact information);
-- Public user registration;
-- Search advertisements, advertisement details (no shopping cart so far);
+- Manage passwords (change, generate new, unblock, disable / enable and set the security answer) by own user, admin and broker;
+- Edit user / operator profile (images, basic / custom fields, phones, addresses and additional contact information) by own user, admin and broker;
+- User registration - public, by admin and by broker;
+- Search advertisements, advertisement details (no shopping cart or publish advertisements so far);
 - Access notifications, and receive push notifications;
 - Run custom operations (self, advertisements and transfers);
-- Settings (currently only for choosing the theme).
+- Settings (currently only for choosing the theme);
+- Access the broker's list of registered users by own broker and admin;
+- Search and register operators by own user, admin and broker;
+- Operators groups (list, create, edit and remove) by own user, admin and broker;
+- Change user / operator group by admin and broker;
+- Change user / operator status by admin and broker;
+- Overview of transfers, either by admin and broker.
 
 More functionality will be added in future versions.
 
@@ -49,7 +55,7 @@ More functionality will be added in future versions.
 
 The required Cyclos version depends on the frontend version:
 
-- Frontend 1.1 requires Cyclos 4.12.0 or up
+- Frontend 1.1 requires Cyclos 4.12.1 or up (mostly works with 4.12.0);
 - Frontend 1.0 requires Cyclos 4.11.2 or up
 
 ## Getting and preparing the code
