@@ -299,16 +299,16 @@ export class LabelValueComponent implements OnInit, OnDestroy, OnChanges {
             case 'xs':
               return 6;
             case 'sm':
-              return 3;
+              return 4;
             default:
-              return 2;
+              return 3;
           }
         case CustomFieldSizeEnum.SMALL:
           switch (breakpoint) {
             case 'xs':
               return 7;
             case 'sm':
-              return 4;
+              return 5;
             default:
               return 3;
           }
@@ -317,9 +317,9 @@ export class LabelValueComponent implements OnInit, OnDestroy, OnChanges {
             case 'xs':
               return 9;
             case 'sm':
-              return 5;
+              return 6;
             default:
-              return 4;
+              return 5;
           }
         default:
           return labelCols === COLS ? COLS : COLS - labelCols;

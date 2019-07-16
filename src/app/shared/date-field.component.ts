@@ -113,7 +113,7 @@ export class DateFieldComponent
   ngOnInit() {
     super.ngOnInit();
     if (this.fieldSize == null) {
-      this.fieldSize = CustomFieldSizeEnum.SMALL;
+      this.fieldSize = CustomFieldSizeEnum.MEDIUM;
     }
     this.fieldNames = this.format.applyDateFields([
       this.i18n.general.datePart.long.year,
