@@ -136,7 +136,7 @@ export class MaskDirective {
    */
   @HostListener('blur', ['$event']) onBlur(event: FocusEvent) {
     const el = this.el.nativeElement as HTMLInputElement;
-    if (el.value == null) {
+    if (el.value == null || !this._mask) {
       return;
     }
     if (!this._mask.isValid(el.value)) {
