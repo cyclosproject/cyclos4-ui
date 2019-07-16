@@ -518,10 +518,10 @@
       "details.transfer": "Trasferimento",
       "parentTransfer": "Trasferimento originale",
       "childTransfers": "Trasferimenti originali",
-      "transfersOverview": "Transfers overview"
+      "transfersOverview": "Panoramica operazioni"
     },
-    "viewAuthorizations": "View authorizations",
-    "viewThisTransfer": "View this transfer",
+    "viewAuthorizations": "Mostra autorizzazioni",
+    "viewThisTransfer": "Mostra operazione",
     "authorizePending": "Authorize pending payment",
     "authorizePending.done.stillPending": "The payment still needs another authorization in order to be processed",
     "authorizePending.done": "The payment was authorized",
