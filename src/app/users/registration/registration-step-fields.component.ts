@@ -69,12 +69,14 @@ export class RegistrationStepFieldsComponent
     this.managePrivacyFields = this.userHelper.fieldNamesByAction(this.data, 'managePrivacy');
 
     // Whenever the form changes, geocode the location
-    this.addSub(this.addressForm.valueChanges.pipe(debounceTime(ApiHelper.DEBOUNCE_TIME)).subscribe(value => {
-      this.addSub(this.maps.geocode(value).subscribe(location => {
-        this.addressForm.patchValue({ location: location }, { emitEvent: false });
-        this.location = location;
+    if (this.addressForm) {
+      this.addSub(this.addressForm.valueChanges.pipe(debounceTime(ApiHelper.DEBOUNCE_TIME)).subscribe(value => {
+        this.addSub(this.maps.geocode(value).subscribe(location => {
+          this.addressForm.patchValue({ location: location }, { emitEvent: false });
+          this.location = location;
+        }));
       }));
-    }));
+    }
   }
 
   get mobileAvailability(): AvailabilityEnum {
