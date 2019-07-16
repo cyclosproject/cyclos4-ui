@@ -1,54 +1,13 @@
 import { Directive, ElementRef, HostListener, Input } from '@angular/core';
 import { NgControl } from '@angular/forms';
+import { empty } from 'app/shared/helper';
+import { Mask, MaskField } from 'app/shared/mask';
 
 const ALLOWED = [
   'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown',
   'End', 'Home', 'Delete', 'Backspace', 'Tab',
   'Shift', 'Control', 'Alt', 'Super', 'Meta'
 ];
-
-let DIGITS = '';
-for (let i = 0; i <= 9; i++) {
-  DIGITS += i.toString();
-}
-let LOWER = '';
-for (let i = 'a'; i <= 'z'; i = String.fromCodePoint(i.codePointAt(0) + 1)) {
-  LOWER += i;
-}
-const UPPER = LOWER.toUpperCase();
-const LETTERS = LOWER + UPPER;
-const ALPHA = DIGITS + LETTERS;
-
-class MaskField {
-  constructor(
-    public allowed: string,
-    public literal: boolean = false,
-    private tx: (c: string) => string = null) { }
-
-  transform(c: string): string {
-    if (this.literal) {
-      return this.allowed;
-    } else if (this.tx) {
-      return this.tx(c);
-    } else {
-      return c;
-    }
-  }
-
-  accepted(c: string): boolean {
-    if (this.allowed == null || this.literal) {
-      return true;
-    } else {
-      return this.allowed.indexOf(c) >= 0;
-    }
-  }
-}
-const MASK_DIGIT = '#' + DIGITS;
-const MASK_LETTER = 'aA';
-const MASK_LOWER = 'lL';
-const MASK_UPPER = 'uU';
-const MASK_CAPITAL = 'cC';
-const MASK_ANY = '?_';
 
 /**
  * A directive to apply a mask to inputs
@@ -62,68 +21,35 @@ export class MaskDirective {
     private control: NgControl
   ) { }
 
+  private _mask: Mask;
   private fields: MaskField[];
 
   @Input()
   set mask(mask: string) {
-    if (!mask) {
+    if (empty(mask)) {
+      this._mask = null;
       this.fields = null;
-      return;
-    }
-
-    this.fields = [];
-    let wasEscape = false;
-    let wasCapital = false;
-    for (let i = 0; i < mask.length; i++) {
-      const c = mask.charAt(i);
-      let field: MaskField = null;
-      let isEscape = false;
-      let isCapital = false;
-      if (wasEscape) {
-        field = new MaskField(c, true);
-      } else if (c === '\\') {
-        isEscape = true;
-      } else if (MASK_ANY.indexOf(c) >= 0) {
-        field = new MaskField(ALPHA);
-      } else if (MASK_DIGIT.indexOf(c) >= 0) {
-        field = new MaskField(DIGITS);
-      } else if (MASK_LETTER.indexOf(c) >= 0) {
-        field = new MaskField(LETTERS);
-      } else if (MASK_LOWER.indexOf(c) >= 0) {
-        field = new MaskField(LETTERS, false, _c => _c.toLocaleLowerCase());
-      } else if (MASK_UPPER.indexOf(c) >= 0) {
-        field = new MaskField(LETTERS, false, _c => _c.toUpperCase());
-      } else if (MASK_CAPITAL.indexOf(c) >= 0) {
-        const capital = wasCapital;
-        field = new MaskField(LETTERS, false, _c => {
-          if (capital) {
-            return _c.toLowerCase();
-          } else {
-            return _c.toUpperCase();
-          }
-        });
-        isCapital = true;
-      } else {
-        // Any other is literal
-        field = new MaskField(c, true);
-      }
-      if (field) {
-        this.fields.push(field);
-      }
-      wasEscape = isEscape;
-      wasCapital = isCapital;
+    } else {
+      this._mask = new Mask(mask);
+      this.fields = this._mask.fields;
     }
   }
 
+  /**
+   * On keydown, apply the mask
+   */
   @HostListener('keydown', ['$event']) onKeyDown(event: KeyboardEvent) {
-    if (!this.fields || ALLOWED.indexOf(event.key) >= 0) {
+    if (!this._mask || ALLOWED.indexOf(event.key) >= 0 || event.ctrlKey || event.altKey) {
       // Always allowed
       return;
     }
 
     // Get the caret position
-    const el = this.el.nativeElement;
+    const el = this.el.nativeElement as HTMLInputElement;
     let value = el.value;
+    if (value == null) {
+      return;
+    }
     let caret = el.selectionStart;
     let selectionEnd = el.selectionEnd;
     if (caret >= this.fields.length) {
@@ -140,13 +66,13 @@ export class MaskDirective {
 
     // While the field is literal, just fill the value
     let field = this.fields[caret];
-    while (field.literal) {
+    while (field && field.literal) {
       value = value.substring(0, caret) + field.allowed + value.substr(caret + 1);
       field = this.fields[++caret];
     }
 
     // Apply the typed character
-    if (field.accepted(event.key)) {
+    if (field && field.accepted(event.key)) {
       const key = field.transform(event.key);
       value = value.substring(0, caret)
         + key + value.substr(caret + 1);
@@ -167,6 +93,7 @@ export class MaskDirective {
       }
     }
     event.preventDefault();
+    event.stopPropagation();
 
     // Force a change event to be triggered, as we always preventDefault()
     this.control.control.setValue(value);
@@ -176,4 +103,47 @@ export class MaskDirective {
     el.selectionStart = caret;
     el.selectionEnd = caret;
   }
+
+  /**
+   * On paste, apply the mask to the pasted value
+   */
+  @HostListener('paste', ['$event']) onPaste(event: ClipboardEvent) {
+    const el = this.el.nativeElement as HTMLInputElement;
+    if (el.value == null) {
+      return;
+    }
+    const caret = el.selectionStart || 0;
+    const selectionEnd = el.selectionEnd || el.value.length;
+
+    const value = el.value;
+    const text = value.substr(0, caret) + event.clipboardData.getData('text/plain') + value.substr(selectionEnd);
+    const masked = this._mask.apply(text);
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    // Force a change event to be triggered, as we always preventDefault()
+    this.control.control.setValue(masked);
+    this.control.control.updateValueAndValidity();
+
+    // Update the caret
+    el.selectionStart = masked.length;
+    el.selectionEnd = masked.length;
+  }
+
+  /**
+   * On blur, if the value is not correct, clear it
+   */
+  @HostListener('blur', ['$event']) onBlur(event: FocusEvent) {
+    const el = this.el.nativeElement as HTMLInputElement;
+    if (el.value == null) {
+      return;
+    }
+    if (!this._mask.isValid(el.value)) {
+      this.control.control.setValue('');
+      this.control.control.updateValueAndValidity();
+    }
+    event.stopPropagation();
+  }
+
 }
