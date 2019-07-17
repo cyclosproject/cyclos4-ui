@@ -28,8 +28,7 @@
     </ng-container>
   </div>
   <div *ngIf="mode !== 'empty'"
-    class="page-content-body card-body d-flex flex-column"
-    [ngStyle]="{ height: mode === 'fullHeight' || mode === 'fullHeightTight' ? 0 : null }">
+    class="page-content-body card-body d-flex flex-column">
     <ng-content></ng-content>
   </div>
 </div>

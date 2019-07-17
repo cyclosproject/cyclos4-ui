@@ -11,9 +11,10 @@
       <single-selection-field *ngIf="data.groups.length > 0"
         [label]="i18n.user.group" formControlName="group"
         [emptyOption]="i18n.user.operatorNoGroup">
-        <field-option *ngFor="let group of data.groups" [value]="group.id"
-          [id]="group.id" [internalName]="group.internalName"
-          [text]="group.name"></field-option>
+        <field-option *ngFor="let group of data.groups"
+          [value]="ApiHelper.internalNameOrId(group)" [id]="group.id"
+          [internalName]="group.internalName" [text]="group.name">
+        </field-option>
       </single-selection-field>
 
       <!-- Basic profile fields-->

@@ -68,7 +68,6 @@ export class AuthHelperService {
     }
   }
 
-
   /**
    * Returns whether the given URL user is the same logged user or the same operator owner
    * @param user The user
@@ -131,6 +130,9 @@ export class AuthHelperService {
     if (device === AvailabilityEnum.REQUIRED) {
       // Must confirm with a device. Can confirm if there's at least one active device.
       return passwordInput.hasActiveDevice;
+    } else if (device === AvailabilityEnum.OPTIONAL && passwordInput.hasActiveDevice) {
+      // On optional device, if there's an active device, the user can confirm, regardless of the password
+      return true;
     }
     // At this point device is either optional or disabled. Must have an active password...
     if (passwordInput.hasActivePassword) {

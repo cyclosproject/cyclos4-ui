@@ -63,8 +63,9 @@
         <multi-selection-field *ngIf="data.operations?.length > 0"
           [label]="i18n.operatorGroup.runOperations"
           formControlName="operations">
-          <field-option *ngFor="let op of data.operations" [value]="op.id"
-            [id]="op.id" [internalName]="op.internalName" [text]="op.name">
+          <field-option *ngFor="let op of data.operations"
+            [value]="ApiHelper.internalNameOrId(op)" [id]="op.id"
+            [internalName]="op.internalName" [text]="op.name">
           </field-option>
         </multi-selection-field>
       </form>

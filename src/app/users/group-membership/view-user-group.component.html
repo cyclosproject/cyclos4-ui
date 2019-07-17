@@ -16,7 +16,7 @@
           [label]="i18n.groupMembership.new" [required]="!allowEmptyGroup"
           [emptyOption]="allowEmptyGroup ? this.i18n.user.operatorNoGroup : null">
           <field-option *ngFor="let group of data.possibleNewGroups"
-            [value]="group.id" [id]="group.id"
+            [value]="ApiHelper.internalNameOrId(group)" [id]="group.id"
             [internalName]="group.internalName" [text]="group.name">
           </field-option>
         </single-selection-field>

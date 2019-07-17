@@ -64,6 +64,14 @@ export class SearchUserOperatorsComponent
     }));
   }
 
+  onDataInitialized(data: UserOperatorsDataForSearch) {
+    super.onDataInitialized(data);
+    if (empty(data.fieldsInList)) {
+      // When there are no fields in list, set the display
+      data.fieldsInList = ['display'];
+    }
+  }
+
   protected toSearchParams(value: any): UserOperatorsSearchParams {
     const query: UserOperatorsSearchParams = value;
     query.user = this.param;

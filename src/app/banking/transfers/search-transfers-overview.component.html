@@ -24,7 +24,8 @@
             hierarchyProperty="groupSet" formControlName="groups"
             [emptyLabel]="i18n.general.notApplied"
             [label]="i18n.user.groupFilter">
-            <field-option *ngFor="let group of data.groups" [value]="group.id"
+            <field-option *ngFor="let group of data.groups"
+              [value]="ApiHelper.internalNameOrId(group)"
               [internalName]="group.internalName" [id]="group.id"
               [text]="group.name" [parent]="group.groupSet">
             </field-option>
@@ -38,8 +39,9 @@
               formControlName="fromAccountType"
               [emptyOption]="i18n.general.notApplied"
               [label]="i18n.transaction.fromAccount">
-              <field-option *ngFor="let at of data.accountTypes" [id]="at.id"
-                [internalName]="at.internalName" [value]="at.id"
+              <field-option *ngFor="let at of data.accountTypes"
+                [value]="ApiHelper.internalNameOrId(at)"
+                [internalName]="at.internalName" [id]="at.id"
                 [text]="at.name">
               </field-option>
             </single-selection-field>
@@ -49,8 +51,9 @@
               formControlName="toAccountType"
               [emptyOption]="i18n.general.notApplied"
               [label]="i18n.transaction.toAccount">
-              <field-option *ngFor="let at of data.accountTypes" [id]="at.id"
-                [internalName]="at.internalName" [value]="at.id"
+              <field-option *ngFor="let at of data.accountTypes"
+                [value]="ApiHelper.internalNameOrId(at)"
+                [internalName]="at.internalName" [id]="at.id"
                 [text]="at.name">
               </field-option>
             </single-selection-field>
@@ -62,8 +65,9 @@
             [emptyLabel]="i18n.general.notApplied"
             [label]="i18n.account.transferFilter">
             <field-option *ngFor="let filter of filters$.value"
-              [id]="filter.id" [internalName]="filter.internalName"
-              [value]="filter" [text]="filter.name"
+              [value]="ApiHelper.internalNameOrId(filter)"
+              [internalName]="filter.internalName" [id]="filter.id"
+              [text]="filter.name"
               [category]="singleAccount ? null : filter.accountType?.name">
             </field-option>
           </multi-selection-field>
