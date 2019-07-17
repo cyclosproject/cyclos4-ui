@@ -109,7 +109,7 @@ export class MaskDirective {
    */
   @HostListener('paste', ['$event']) onPaste(event: ClipboardEvent) {
     const el = this.el.nativeElement as HTMLInputElement;
-    if (el.value == null) {
+    if (el.value == null || !this._mask) {
       return;
     }
     const caret = el.selectionStart || 0;
