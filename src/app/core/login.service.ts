@@ -3,16 +3,16 @@ import { Router } from '@angular/router';
 import { ApiConfiguration } from 'app/api/api-configuration';
 import { Auth, Permissions, User } from 'app/api/models';
 import { AuthService } from 'app/api/services/auth.service';
+import { Configuration } from 'app/configuration';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { LoginState } from 'app/core/login-state';
 import { NextRequestState } from 'app/core/next-request-state';
+import { NotificationService } from 'app/core/notification.service';
+import { PushNotificationsService } from 'app/core/push-notifications.service';
+import { I18n } from 'app/i18n/i18n';
 import { empty, isSameOrigin } from 'app/shared/helper';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
-import { map, switchMap, first } from 'rxjs/operators';
-import { Configuration } from 'app/configuration';
-import { PushNotificationsService } from 'app/core/push-notifications.service';
-import { NotificationService } from 'app/core/notification.service';
-import { I18n } from 'app/i18n/i18n';
+import { first, map, switchMap } from 'rxjs/operators';
 
 /**
  * Service used to manage the login status
@@ -201,9 +201,8 @@ export class LoginService {
       return;
     }
     this._loggingOut.next(true);
-    this.authService.logout({
-      cookie: isSameOrigin(this.apiConfiguration.rootUrl)
-    }).subscribe(() => {
+    this.nextRequestState.ignoreNextError = true;
+    const handler = () => {
       if (Configuration.afterLogoutUrl) {
         location.assign(Configuration.afterLogoutUrl);
       } else {
@@ -215,6 +214,9 @@ export class LoginService {
           this.router.navigateByUrl(redirectUrl || '/');
         });
       }
-    });
+    };
+    this.authService.logout({
+      cookie: isSameOrigin(this.apiConfiguration.rootUrl)
+    }).subscribe(handler, handler);
   }
 }
