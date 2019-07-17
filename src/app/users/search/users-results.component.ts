@@ -41,7 +41,7 @@ export class UsersResultsComponent extends BaseComponent implements OnInit {
 
   @Input() results: PagedResults<UserResult | ContactResult>;
 
-  @Input() resultKind: 'user' | 'my-operator' | 'contact' = 'user';
+  @Input() resultKind: 'user' | 'operator' | 'contact' = 'user';
 
   @Output() update = new EventEmitter<PageData>();
 
@@ -78,7 +78,7 @@ export class UsersResultsComponent extends BaseComponent implements OnInit {
    * @param row The operator group
    */
   operatorGroup(row: any): string {
-    if (this.resultKind === 'my-operator') {
+    if (this.resultKind === 'operator') {
       const group = (row as OperatorResult).group;
       if (group) {
         return group.name;
@@ -137,6 +137,9 @@ export class UsersResultsComponent extends BaseComponent implements OnInit {
    * @param field The field identifier
    */
   fieldName(field: string): string {
+    if (this.resultKind === 'operator' && field === 'display') {
+      return this.i18n.general.operator;
+    }
     return this.fieldHelper.fieldDisplay(field, this.data.customFields);
   }
 
@@ -150,7 +153,7 @@ export class UsersResultsComponent extends BaseComponent implements OnInit {
       // Go to my profile
       return ['/users', 'profile'];
     }
-    if (this.resultKind === 'my-operator') {
+    if (this.resultKind === 'operator') {
       // Go to the operator profile
       return ['/users', 'operators', user.id];
     }

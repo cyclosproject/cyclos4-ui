@@ -49,7 +49,7 @@
   </page-content>
 
   <users-results [results]="results$ | async" [rendering$]="rendering$"
-    [data]="data$ | async" resultType="list"
-    [resultKind]="self ? 'my-operator' : 'user'" (update)="update($event)">
+    [data]="data$ | async" resultType="list" [resultKind]="'operator'"
+    (update)="update($event)">
   </users-results>
 </ng-template>

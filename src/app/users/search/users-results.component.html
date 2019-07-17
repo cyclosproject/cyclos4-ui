@@ -21,7 +21,7 @@
     <thead>
       <th class="avatar"></th>
       <th *ngFor="let field of fieldsInList">{{ fieldName(field) }}</th>
-      <th *ngIf="resultKind === 'my-operator'">{{ i18n.user.group }}</th>
+      <th *ngIf="resultKind === 'operator'">{{ i18n.user.group }}</th>
     </thead>
     <tbody>
       <tr *ngFor="let row of results.results"
@@ -34,7 +34,7 @@
             [fieldName]="field" [object]="user(row)"
             [customValues]="customValues(row)"></format-field-value>
         </td>
-        <td *ngIf="resultKind === 'my-operator'">{{ operatorGroup(row) }}</td>
+        <td *ngIf="resultKind === 'operator'">{{ operatorGroup(row) }}</td>
       </tr>
     </tbody>
   </table>
