@@ -68,7 +68,7 @@
           [ngClass]="customNgClass(Menu.NOTIFICATIONS)"
           [tooltip]="hasMenu ? i18n.menu.personalNotifications : null">
           <icon-with-counter icon="notifications"
-            [counter]="status.newNotifications">
+            [count]="status.newNotifications">
           </icon-with-counter>
           <div *ngIf="(layout.gtmd$ | async) && !hasMenu" class="ml-2">
             {{ i18n.menu.personalNotifications }}
