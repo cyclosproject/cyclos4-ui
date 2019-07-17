@@ -19,7 +19,8 @@
         <div class="col-12 col-md-6" *ngIf="data.groups?.length > 1">
           <multi-selection-field labelPosition="side"
             formControlName="operatorGroups" [label]="i18n.user.groupFilter">
-            <field-option *ngFor="let group of data.groups" [value]="group.id"
+            <field-option *ngFor="let group of data.groups"
+              [value]="ApiHelper.internalNameOrId(group)"
               [internalName]="group.internalName" [id]="group.id"
               [text]="group.name">
             </field-option>

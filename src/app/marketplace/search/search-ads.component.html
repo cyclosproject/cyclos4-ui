@@ -25,8 +25,9 @@
               hierarchyProperty="groupSet" formControlName="groups"
               [label]="i18n.user.groupFilter">
               <field-option *ngFor="let group of data.groups"
-                [value]="group.id" [internalName]="group.internalName"
-                [id]="group.id" [text]="group.name" [parent]="group.groupSet">
+                [value]="ApiHelper.internalNameOrId(group)"
+                [internalName]="group.internalName" [id]="group.id"
+                [text]="group.name" [parent]="group.groupSet">
               </field-option>
             </multi-selection-field>
           </div>
