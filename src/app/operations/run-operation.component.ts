@@ -4,7 +4,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Params } from '@angular/router';
 import {
   CustomFieldDetailed, OperationDataForRun, OperationResultTypeEnum,
-  OperationRowActionEnum, RunOperationResult, CreateDeviceConfirmation, DeviceConfirmationTypeEnum
+  OperationRowActionEnum, RunOperationResult, CreateDeviceConfirmation, DeviceConfirmationTypeEnum, OperationScopeEnum
 } from 'app/api/models';
 import { OperationsService } from 'app/api/services/operations.service';
 import { FieldHelperService } from 'app/core/field-helper.service';
@@ -19,6 +19,7 @@ import { PageData } from 'app/shared/page-data';
 import { PagedResults } from 'app/shared/paged-results';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { first, tap } from 'rxjs/operators';
+import { ActiveMenu, Menu } from 'app/shared/menu';
 
 /**
  * Runs a custom operation
@@ -34,6 +35,8 @@ export class RunOperationComponent
 
   /** The scope is only set when not running over own user */
   runScope: OperationRunScope;
+  userParam: string;
+  self: boolean;
   scopeId: string;
   form: FormGroup;
   fileControl: FormControl;
@@ -67,8 +70,9 @@ export class RunOperationComponent
   ngOnInit() {
     super.ngOnInit();
     const route = this.route.snapshot;
-    const routeData = route.data;
-    this.runScope = routeData.runScope;
+    this.runScope = route.data.runScope;
+    this.userParam = route.params.user;
+
     if (!this.runScope) {
       throw new Error(`No runScope on ${route.url}`);
     }
@@ -116,6 +120,9 @@ export class RunOperationComponent
   }
 
   onDataInitialized(data: OperationDataForRun) {
+    if (this.runScope === OperationRunScope.User) {
+      this.self = this.authHelper.isSelf(data.user);
+    }
     this.isSearch = data.resultType === OperationResultTypeEnum.RESULT_PAGE;
     this.isContent = [OperationResultTypeEnum.PLAIN_TEXT, OperationResultTypeEnum.RICH_TEXT].includes(data.resultType);
     const formFields = data.formParameters || [];
@@ -264,7 +271,6 @@ export class RunOperationComponent
     switch (action) {
       case OperationRowActionEnum.OPERATION:
         const operation = data.rowOperation;
-        this.menu.setActiveActionOperation(operation);
         this.router.navigate(['operations', 'action', ApiHelper.internalNameOrId(operation)], {
           queryParams: params
         });
@@ -292,5 +298,26 @@ export class RunOperationComponent
 
   get onClick() {
     return (row: any) => this.rowClick(row);
+  }
+
+  resolveMenu(data: OperationDataForRun) {
+    if (data.scope === OperationScopeEnum.SYSTEM
+      || (data.scope === OperationScopeEnum.USER) && this.self) {
+      // This is an owner operation
+      return new ActiveMenu(ApiHelper.menuForOwnerOperation(data), { operation: data });
+    } else {
+      // The menu depends on the operation scope
+      switch (this.runScope) {
+        case OperationRunScope.User:
+          return this.authHelper.userMenu(data.user, Menu.MY_PROFILE);
+        case OperationRunScope.Ad:
+          return this.authHelper.userMenu(data.user, Menu.SEARCH_ADS);
+        case OperationRunScope.Transfer:
+          return this.authHelper.transferMenu(data.transfer);
+        case OperationRunScope.Standalone:
+          // There's no info
+          return null;
+      }
+    }
   }
 }

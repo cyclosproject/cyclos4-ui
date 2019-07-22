@@ -93,10 +93,9 @@ export class AccountStatusComponent extends BaseDashboardComponent implements On
   }
 
   viewTransfer(row: AccountHistoryResult, event: MouseEvent) {
-    this.menu.setActiveAccountType(this.account.type);
     const tx = this.bankingHelper.transactionNumberOrId(row);
     this.menu.navigate({
-      url: `/banking/transfer/${tx}`,
+      url: `/banking/transfer/${this.account.id}/${tx}`,
       clear: false,
       event: event
     });

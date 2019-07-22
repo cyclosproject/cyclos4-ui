@@ -24,6 +24,9 @@ export class TextAreaFieldComponent
   /** A placeholder to be shown inside the component */
   @Input() placeholder = '';
 
+  /** HTML autocomplete attribute */
+  @Input() autocomplete = 'off';
+
   @ViewChild('textarea', { static: false }) textareaRef: ElementRef;
 
   constructor(

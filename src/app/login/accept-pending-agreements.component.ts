@@ -7,6 +7,7 @@ import { RegistrationAgreementsComponent } from 'app/login/registration-agreemen
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { empty, validateBeforeSubmit } from 'app/shared/helper';
 import { BsModalService } from 'ngx-bootstrap/modal';
+import { Menu } from 'app/shared/menu';
 
 /**
  * Component shown after the user logs-in with pending agreements
@@ -91,5 +92,9 @@ export class AcceptPendingAgreementsComponent
   cancel() {
     // Logout and return to the login page
     this.login.logout();
+  }
+
+  resolveMenu() {
+    return Menu.DASHBOARD;
   }
 }

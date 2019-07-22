@@ -5,7 +5,8 @@
   </label-value>
 
   <ng-container *ngIf="singleAccount; else multipleAccounts">
-    <label-value [label]="accountBalanceLabel$ | async" kind="view"
+    <label-value *ngIf="singleAccount.status"
+      [label]="accountBalanceLabel$ | async" kind="fieldView"
       labelPosition="sideForced" noWrapLabel>
       <!-- Single account -->
       <div *ngIf="singleAccount.status"
@@ -64,7 +65,7 @@
     </single-selection-field>
     <ng-template #toUserField>
       <user-field #toUser focused [autoSearch]="!allowPrincipal"
-        [filters]="{usersToExclude: fromParam ? [fromParam] : null}"
+        [filters]="{usersToExclude: fromUser && !fromSelf ? [fromParam] : null}"
         formControlName="subject" [allowContacts]="allowContacts"
         [allowSearch]="allowSearch" [allowPrincipal]="allowPrincipal"
         (selected)="$event ? amount.focus() : null"></user-field>

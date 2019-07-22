@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/c
 import {
   AccountHistoryOrderByEnum, AccountHistoryQueryFilters, AccountHistoryResult,
   AccountWithHistoryStatus, Currency, DataForAccountHistory, EntityReference,
-  Image, PreselectedPeriod, TransferFilter
+  Image, PreselectedPeriod, TransferFilter, AccountKind
 } from 'app/api/models';
 import { AccountsService } from 'app/api/services';
 import { BankingHelperService } from 'app/core/banking-helper.service';
@@ -11,6 +11,7 @@ import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { empty } from 'app/shared/helper';
 import { BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { ActiveMenu, Menu } from 'app/shared/menu';
 
 
 type AccountHistorySearchParams = AccountHistoryQueryFilters & {
@@ -110,7 +111,6 @@ export class AccountHistoryComponent
 
   onDataInitialized(data: DataForAccountHistory) {
     super.onDataInitialized(data);
-    this.menu.setActiveAccountType(data.account.type);
 
     this.bankingHelper.preProcessPreselectedPeriods(data, this.form);
 
@@ -181,7 +181,7 @@ export class AccountHistoryComponent
    * @param row The row
    */
   path(row: AccountHistoryResult): string[] {
-    return ['/banking', 'transfer', this.bankingHelper.transactionNumberOrId(row)];
+    return ['/banking', 'transfer', this.data.account.id, this.bankingHelper.transactionNumberOrId(row)];
   }
 
   /**
@@ -212,4 +212,12 @@ export class AccountHistoryComponent
     return (row: AccountHistoryResult) => this.path(row);
   }
 
+  resolveMenu(data: DataForAccountHistory) {
+    const menu = new ActiveMenu(Menu.ACCOUNT_HISTORY, { accountType: data.account.type });
+    if (data.account.kind === AccountKind.SYSTEM) {
+      // System accounts are only visible by admins
+      return menu;
+    }
+    return this.authHelper.userMenu(data.account.user, menu);
+  }
 }

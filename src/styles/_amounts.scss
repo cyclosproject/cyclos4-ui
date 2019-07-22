@@ -11,8 +11,15 @@
 }
 .totalAmount {
   color: $total-amount-color !important;
-  font-size: $total-amount-size;
+  font-size: 1.2rem;
   font-weight: 400;
+}
+@include media-breakpoint-up(md) {
+  .totalAmount {
+    color: $total-amount-color !important;
+    font-size: $total-amount-size;
+    font-weight: 400;
+  }
 }
 .promo-price {
   color: $text-muted;

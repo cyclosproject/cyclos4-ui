@@ -7,7 +7,6 @@ import {
   NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator
 } from '@angular/forms';
 import { CustomFieldSizeEnum } from 'app/api/models';
-import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { ISO_DATE } from 'app/core/format.service';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { CalendarComponent } from 'app/shared/calendar.component';
@@ -55,7 +54,6 @@ export class DateFieldComponent
     injector: Injector,
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
     formBuilder: FormBuilder,
-    private dataForUiHolder: DataForUiHolder,
     public layout: LayoutService) {
     super(injector, controlContainer);
     this.partControls = formBuilder.array(new Array(this.format.dateFields.length).fill(''));
@@ -115,7 +113,7 @@ export class DateFieldComponent
   ngOnInit() {
     super.ngOnInit();
     if (this.fieldSize == null) {
-      this.fieldSize = CustomFieldSizeEnum.SMALL;
+      this.fieldSize = CustomFieldSizeEnum.MEDIUM;
     }
     this.fieldNames = this.format.applyDateFields([
       this.i18n.general.datePart.long.year,

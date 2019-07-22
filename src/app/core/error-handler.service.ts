@@ -115,15 +115,13 @@ export class ErrorHandlerService {
               case ErrorKind.NESTED:
                 // An error in a nested property
                 this.handleNestedError(error as NestedError);
+                return;
             }
           }
       }
       // No known specific error was handled
       this.handleGeneralError();
     }
-
-    // The error was not handled yet. Handle as general
-    this.handleGeneralError();
   }
 
   public handleInvalidRequest() {

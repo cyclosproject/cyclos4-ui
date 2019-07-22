@@ -37,4 +37,8 @@ export class ValidateRegistrationComponent
   goToLogin() {
     this.login.goToLoginPage('');
   }
+
+  resolveMenu() {
+    return this.authHelper.homeMenu();
+  }
 }

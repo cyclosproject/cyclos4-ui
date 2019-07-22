@@ -10,6 +10,7 @@ import { BasePageComponent } from 'app/shared/base-page.component';
 import { FieldOption } from 'app/shared/field-option';
 import { empty, enumValues, validateBeforeSubmit } from 'app/shared/helper';
 import { Observable } from 'rxjs';
+import { Menu } from 'app/shared/menu';
 
 /**
  * Operator group form - either to create or edit
@@ -137,5 +138,9 @@ export class OperatorGroupFormComponent
 
   get restrictPaymentsToUsers(): User[] {
     return (this.data as OperatorGroupDataForEdit).restrictPaymentsToUsers;
+  }
+
+  resolveMenu(data: OperatorGroupDataForEdit | OperatorGroupDataForNew) {
+    return this.authHelper.userMenu(data.user, Menu.OPERATOR_GROUPS);
   }
 }

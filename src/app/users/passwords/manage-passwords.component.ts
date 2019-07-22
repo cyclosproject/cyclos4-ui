@@ -10,6 +10,7 @@ import { Action } from 'app/shared/action';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { validateBeforeSubmit } from 'app/shared/helper';
 import { BsModalService } from 'ngx-bootstrap/modal';
+import { Menu } from 'app/shared/menu';
 
 /**
  * Manages the user passwords
@@ -262,5 +263,9 @@ export class ManagePasswordsComponent
       this.notification.snackBar(this.i18n.password.action.disableDone(password.type.name));
       this.reload();
     }));
+  }
+
+  resolveMenu(data: DataForUserPasswords) {
+    return this.authHelper.userMenu(data.user, Menu.PASSWORDS);
   }
 }

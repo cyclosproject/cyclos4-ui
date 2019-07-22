@@ -5,6 +5,7 @@ import { OperationHelperService } from 'app/core/operation-helper.service';
 import { HeadingAction } from 'app/shared/action';
 import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
 import { words } from 'app/shared/helper';
+import { Menu } from 'app/shared/menu';
 
 
 /**
@@ -67,4 +68,7 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
     return categories;
   }
 
+  resolveMenu() {
+    return Menu.SEARCH_ADS;
+  }
 }

@@ -1,6 +1,7 @@
 <label class="label-value-label col-form-label" [ngClass]="labelClasses"
   [for]="forId">
-  {{ label }}<span class="required-marker" *ngIf="required">&nbsp;*</span>
+  <span>{{ label }}<span class="required-marker"
+      *ngIf="required">&nbsp;*</span></span>
 </label>
 <div class="label-value-value" [ngClass]="valueClasses">
   <ng-container *ngIf="value != null && valueFormat == 'plain'">{{

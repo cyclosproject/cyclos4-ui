@@ -5,6 +5,7 @@ import { UserAlertDataForSearch } from 'app/api/models/user-alert-data-for-searc
 import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { UserAlertQueryFilters } from 'app/api/models';
 import { ApiHelper } from 'app/shared/api-helper';
+import { Menu } from 'app/shared/menu';
 
 
 @Component({
@@ -44,5 +45,9 @@ export class SearchUserAlertsComponent
 
   doSearch(value: UserAlertQueryFilters) {
     return this.alertsService.searchUserAlerts$Response(value);
+  }
+
+  resolveMenu() {
+    return Menu.USER_ALERTS;
   }
 }

@@ -1,15 +1,17 @@
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import {
-  Account, AccountHistoryResult, AccountKind, BaseTransferDataForSearch,
-  PreselectedPeriod, Transaction, TransactionDataForSearch, Transfer, AccountType,
-  VoucherStatusEnum, VoucherCreationTypeEnum, AccountWithOwner
+  Account, AccountHistoryResult, AccountKind, AccountType, AccountWithOwner,
+  BaseTransferDataForSearch, PreselectedPeriod, Transaction, TransactionDataForSearch,
+  TransactionKind, Transfer, VoucherCreationTypeEnum, VoucherStatusEnum
 } from 'app/api/models';
+import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { FormatService } from 'app/core/format.service';
+import { I18n } from 'app/i18n/i18n';
 import { ApiHelper } from 'app/shared/api-helper';
 import { blank, empty } from 'app/shared/helper';
-import { DataForUiHolder } from 'app/core/data-for-ui-holder';
-import { I18n } from 'app/i18n/i18n';
+
+const InverseKinds = [TransactionKind.CHARGEBACK, TransactionKind.PAYMENT_REQUEST, TransactionKind.TICKET];
 
 /**
  * Helper service for banking functions
@@ -167,5 +169,19 @@ export class BankingHelperService {
       case VoucherCreationTypeEnum.GENERATED:
         return this.i18n.voucher.generatedType;
     }
+  }
+
+  /**
+   * Returns an AccountWithOwner view with kind, user and type filled in, representing either the from or to of the given transaction
+   */
+  asAccount(transaction: Transaction, from: boolean): AccountWithOwner {
+    const inverse = InverseKinds.includes(transaction.kind);
+    const fromType = transaction.type.from;
+    const toType = transaction.type.to;
+    return {
+      kind: from ? transaction.fromKind : transaction.toKind,
+      user: from ? transaction.fromUser : transaction.toUser,
+      type: from ? (inverse ? toType : fromType) : (inverse ? fromType : toType)
+    };
   }
 }

@@ -7,6 +7,7 @@ import { OperatorGroupsService } from 'app/api/services';
 import { UserHelperService } from 'app/core/user-helper.service';
 import { HeadingAction } from 'app/shared/action';
 import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
+import { Menu } from 'app/shared/menu';
 
 /**
  * Operator group view
@@ -88,5 +89,9 @@ export class ViewOperatorGroupComponent
       this.notification.snackBar(this.i18n.general.removeDone(this.group.name));
       this.router.navigate(['users', this.authHelper.orSelf(this.group.user), 'operator-groups']);
     }));
+  }
+
+  resolveMenu(group: OperatorGroupView) {
+    return this.authHelper.userMenu(group.user, Menu.OPERATOR_GROUPS);
   }
 }

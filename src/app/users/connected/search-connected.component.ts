@@ -74,4 +74,7 @@ export class SearchConnectedComponent
     }
   }
 
+  resolveMenu() {
+    return this.authHelper.searchUsersMenu();
+  }
 }
