@@ -104,46 +104,53 @@
           </div>
         </div>
         <!-- Buyer groups -->
-        <div *ngIf="userGroups.length > 1" class="col-12 col-md-6">
+        <div *ngIf="data.userGroups?.length > 1" class="col-12 col-md-6">
           <multi-selection-field labelPosition="side"
             hierarchyProperty="groupSet" formControlName="buyerGroups"
             [label]="i18n.voucher.buyerGroups">
-            <field-option *ngFor="let group of userGroups" [value]="group.id"
-              [internalName]="group.internalName" [id]="group.id"
-              [text]="group.name" [parent]="group.groupSet">
+            <field-option *ngFor="let group of data.userGroups"
+              [value]="group.id" [internalName]="group.internalName"
+              [id]="group.id" [text]="group.name" [parent]="group.groupSet">
             </field-option>
           </multi-selection-field>
         </div>
         <!-- Buyer -->
         <div class="col-12 col-md-6">
-          <label-value *ngIf="!fixedDestination" kind="field"
-            [label]="i18n.voucher.buy.buyer">
+          <label-value kind="field" [label]="i18n.voucher.buy.buyer">
             <user-field [autoSearch]="true" formControlName="buyer"
               [allowContacts]="true" [allowSearch]="true"
               [allowPrincipal]="false"></user-field>
           </label-value>
         </div>
         <!-- Redeemer groups  -->
-        <div *ngIf="userGroups?.length > 1" class="col-12 col-md-6">
+        <div *ngIf="data.userGroups?.length > 1" class="col-12 col-md-6">
           <multi-selection-field labelPosition="side"
             hierarchyProperty="groupSet" formControlName="redeemerGroups"
             [label]="i18n.voucher.redeemerGroups">
-            <field-option *ngFor="let group of userGroups" [value]="group.id"
-              [internalName]="group.internalName" [id]="group.id"
-              [text]="group.name" [parent]="group.groupSet">
+            <field-option *ngFor="let group of data.userGroups"
+              [value]="group.id" [internalName]="group.internalName"
+              [id]="group.id" [text]="group.name" [parent]="group.groupSet">
             </field-option>
           </multi-selection-field>
         </div>
         <!-- Redeemer -->
         <div class="col-12 col-md-6">
-          <label-value *ngIf="!fixedDestination" kind="field"
-            [label]="i18n.voucher.redeem.redeemer">
+          <label-value kind="field" [label]="i18n.voucher.redeem.redeemer">
             <user-field [autoSearch]="true" formControlName="redeemer"
               [allowContacts]="true" [allowSearch]="true"
               [allowPrincipal]="false"></user-field>
           </label-value>
         </div>
       </ng-container>
+      <!-- Order by -->
+      <div class="col-12 col-md-6">
+        <single-selection-field labelPosition="side" formControlName="orderBy"
+          [label]="i18n.general.orderBy">
+          <field-option *ngFor="let order of orderByOptions()" [value]="order"
+            [text]="orderBy(order)">
+          </field-option>
+        </single-selection-field>
+      </div>
     </div>
   </form>
 </page-content>

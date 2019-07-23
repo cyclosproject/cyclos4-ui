@@ -4,6 +4,7 @@ import { VoucherResult, VouchersDataForSearch, VouchersQueryFilters, VoucherStat
 import { VouchersService } from 'app/api/services';
 import { FieldOption } from 'app/shared/field-option';
 import { BankingHelperService } from 'app/core/banking-helper.service';
+import { Menu } from 'app/shared/menu';
 
 type VoucherSearchParams = VouchersQueryFilters & {
   fields?: Array<string>;
@@ -40,7 +41,7 @@ export class SearchVouchersComponent
   protected getFormControlNames(): string[] {
     return ['types', 'creationBegin', 'creationEnd', 'statuses', 'token', 'creationType', 'printed',
       'amountMin', 'amountMax', 'expirationBegin', 'expirationEnd', 'redeemBegin', 'redeemEnd', 'buyer',
-      'redeemer', 'buyerGroups', 'redeemerGroups'];
+      'redeemer', 'buyerGroups', 'redeemerGroups', 'orderBy'];
   }
 
   protected toSearchParams(value: any): VoucherSearchParams {
@@ -101,5 +102,9 @@ export class SearchVouchersComponent
 
   showLessFiltersLabel() {
     return this.i18n.general.hideFilters;
+  }
+
+  resolveMenu(_data: VouchersDataForSearch) {
+    return Menu.SEARCH_VOUCHERS;
   }
 }

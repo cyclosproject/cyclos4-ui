@@ -691,6 +691,14 @@
       "refundConfirmation": "Are you sure to cancel and refund this voucher?",
       "confirmation": "Are you sure to cancel this voucher?"
     },
+    "sort": {
+      "creationDateDesc": "Creation date descending",
+      "creationDateAsc": "Creation date ascending",
+      "expirationDateDesc": "Expiration date descending",
+      "expirationDateAsc": "Expiration date ascending",
+      "redeemDateDesc": "Redeem date descending",
+      "redeemDateAsc": "Redeem date ascending"
+    },
     "cancelAndRefund": "Cancel & refund",
     "cancelDone": "This voucher has been canceled.",
     "cancelConfirmation": "Are you sure to cancel this voucher?",

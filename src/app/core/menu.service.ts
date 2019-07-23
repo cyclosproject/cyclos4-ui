@@ -615,7 +615,7 @@ export class MenuService {
         add(Menu.SEARCH_ADS, '/marketplace/search', 'shopping_cart', this.i18n.menu.marketplaceAdvertisements);
       }
 
-      if (vouchers.buy) {
+      if (vouchers.buy && role !== RoleEnum.ADMINISTRATOR) {
         add(Menu.BUY_VOUCHER, '/banking/self/vouchers/buy', 'shopping_cart', this.i18n.menu.bankingBuyVouchers);
       }
       if (vouchers.viewBought) {

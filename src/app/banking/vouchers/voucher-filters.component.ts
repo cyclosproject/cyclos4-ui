@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy, Injector, Input } from '@angular/core';
 import {
-  VouchersDataForSearch, VoucherStatusEnum, VoucherCreationTypeEnum, UserVouchersDataForSearch, Group
+  VouchersDataForSearch, VoucherStatusEnum, VoucherCreationTypeEnum, VoucherOrderByEnum
 } from 'app/api/models';
 import { FieldOption } from 'app/shared/field-option';
 import { BankingHelperService } from 'app/core/banking-helper.service';
@@ -15,8 +15,7 @@ import { HeadingAction } from 'app/shared/action';
 })
 export class VoucherFiltersComponent extends BaseComponent implements OnInit {
 
-  @Input() adminData: VouchersDataForSearch;
-  @Input() userData: UserVouchersDataForSearch;
+  @Input() data: VouchersDataForSearch;
   @Input() heading: string;
   @Input() mobileHeading: string;
   @Input() form: FormGroup;
@@ -24,8 +23,6 @@ export class VoucherFiltersComponent extends BaseComponent implements OnInit {
   @Input() headingActions: HeadingAction[];
 
   mask: string;
-  isVoucherSearch: boolean;
-  isUserVoucherSearch: boolean;
   constructor(
     injector: Injector,
     private bankingHelper: BankingHelperService
@@ -35,8 +32,6 @@ export class VoucherFiltersComponent extends BaseComponent implements OnInit {
 
   ngOnInit() {
     super.ngOnInit();
-    this.isUserVoucherSearch = !!this.userData;
-    this.isVoucherSearch = !!this.adminData;
     this.mask = this.data.mask ? this.data.mask : '';
     this.form.patchValue({
       creationType: 'all',
@@ -44,9 +39,6 @@ export class VoucherFiltersComponent extends BaseComponent implements OnInit {
     });
   }
 
-  get data(): (VouchersDataForSearch | UserVouchersDataForSearch) {
-    return this.adminData ? this.adminData : this.userData;
-  }
   get statusOptions(): FieldOption[] {
     const statuses = Object.values(VoucherStatusEnum) as VoucherStatusEnum[];
     return statuses.map(st => ({ value: st, text: this.bankingHelper.voucherStatus(st) }));
@@ -58,13 +50,30 @@ export class VoucherFiltersComponent extends BaseComponent implements OnInit {
     return result.concat(statuses.map(st => ({ value: st, text: this.bankingHelper.voucherCreationType(st) })));
   }
 
-  get userGroups(): Group[] {
-    return this.isVoucherSearch ? this.adminData.userGroups : [];
-  }
-
   get maxScale(): number {
-    return this.adminData.types
+    return this.data.types
       .map(t => t.configuration.currency.decimalDigits)
       .reduce((previous, current, _index, _array) => previous > current ? previous : current);
+  }
+
+  orderByOptions(): VoucherOrderByEnum[] {
+    return Object.values(VoucherOrderByEnum) as VoucherOrderByEnum[];
+  }
+
+  orderBy(order: VoucherOrderByEnum): string {
+    switch (order) {
+      case VoucherOrderByEnum.CREATION_DATE_ASC:
+        return this.i18n.voucher.sort.creationDateAsc;
+      case VoucherOrderByEnum.CREATION_DATE_DESC:
+        return this.i18n.voucher.sort.creationDateDesc;
+      case VoucherOrderByEnum.EXPIRATION_DATE_ASC:
+        return this.i18n.voucher.sort.expirationDateAsc;
+      case VoucherOrderByEnum.EXPIRATION_DATE_DESC:
+        return this.i18n.voucher.sort.expirationDateDesc;
+      case VoucherOrderByEnum.REDEEM_DATE_ASC:
+        return this.i18n.voucher.sort.redeemDateAsc;
+      case VoucherOrderByEnum.REDEEM_DATE_DESC:
+        return this.i18n.voucher.sort.redeemDateDesc;
+    }
   }
 }
