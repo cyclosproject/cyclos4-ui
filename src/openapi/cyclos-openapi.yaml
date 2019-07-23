@@ -24923,7 +24923,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: priceRange
           in: query
           required: false
-          description: "The minumum / maximum price. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
+          description: "The minumum / maximum price. Used only if a currency is specified. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
           style: simple
           schema:
             type: array
@@ -25294,7 +25294,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: priceRange
           in: query
           required: false
-          description: "The minumum / maximum price. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
+          description: "The minumum / maximum price. Used only if a currency is specified. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
           style: simple
           schema:
             type: array
@@ -34054,6 +34054,14 @@ components:
               type: array
               items:
                 type: string
+            hidePrice:
+              description: >-
+                Indicates whether show or not the advertisements price to guests
+              type: boolean
+            hideOwner:
+              description: >-
+                Indicates whether show or not the advertisements owner to guests
+              type: boolean
             query:
               description: >-
                 Default query filters to search advertisements
@@ -34473,6 +34481,14 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/Operation'
+            hidePrice:
+              description: >-
+                Indicates whether show or not this advertisement price to guests
+              type: boolean
+            hideOwner:
+              description: >-
+                Indicates whether show or not this advertisement owner to guests
+              type: boolean
 
     Address:
       description: >-
@@ -35898,7 +35914,7 @@ components:
                 Either id or internal name of a currency for the price
             priceRange:
               description: >-
-                The minumum / maximum price.
+                The minumum / maximum price. Used only if a currency is specified.
                 Is expressed an array, with the lower bound as first element, and
                 the upper bound as second element. When only one element, will have
                 just the lower bound. To specify only the upper bound, prefix the value
@@ -43487,6 +43503,11 @@ components:
         - $ref: '#/components/schemas/BaseRecordDataForSearch'
         - type: object
           properties:
+            user:
+              description: >-
+                The user searching a record type, empty if there is self otherwise the managed user
+              allOf:
+                - $ref: '#/components/schemas/User'
             query:
               description: >-
                 Default query filters for searching records
