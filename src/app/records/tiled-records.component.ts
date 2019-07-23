@@ -5,6 +5,7 @@ import { HttpResponse } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { HeadingAction } from 'app/shared/action';
+import { RecordHelperService } from 'app/core/records-helper.service';
 
 type RecordSearchParams = RecordQueryFilters & { owner: string, type: string };
 
@@ -25,7 +26,8 @@ export class TiledRecordsComponent
 
   constructor(
     injector: Injector,
-    private recordsService: RecordsService
+    private recordsService: RecordsService,
+    private recordsHelper: RecordHelperService
   ) {
     super(injector);
   }
@@ -83,7 +85,7 @@ export class TiledRecordsComponent
   }
   protected toSearchParams(): RecordSearchParams {
     return {
-      // Java Max Integer Value, otherwise a DataConversionException is thrown by Cyclos
+      // "Unlimited page size" using Java Max Integer Value, otherwise a DataConversionException is thrown by Cyclos
       pageSize: 2147483647,
       owner: this.param,
       type: this.type
@@ -96,6 +98,10 @@ export class TiledRecordsComponent
 
   protected getFormControlNames(): string[] {
     return [];
+  }
+
+  resolveMenu(data: RecordDataForSearch) {
+    return this.recordsHelper.menuForRecordType(data.user, data.type);
   }
 
 }

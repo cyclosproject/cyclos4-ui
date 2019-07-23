@@ -24,6 +24,12 @@
 .border-color {
   border-color: $border-color;
 }
+.input-height {
+  height: $input-height;
+}
+.input-min-height {
+  min-height: $input-height;
+}
 
 .card {
   color: $card-color;

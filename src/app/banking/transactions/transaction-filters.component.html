@@ -24,7 +24,8 @@
             [text]="at.name"></field-option>
         </single-selection-field>
       </div>
-      <div class="col-12 col-md-6">
+      <div class="col-12 col-md-6"
+        *ngIf="data.preselectedPeriods?.length > 0">
         <single-selection-field labelPosition="side"
           formControlName="preselectedPeriod" [label]="i18n.general.period">
           <field-option *ngFor="let period of data.preselectedPeriods"
@@ -57,6 +58,11 @@
           [label]="i18n.general.endDate" minDate="past5" maxDate="today"
           fieldSize="full">
         </date-field>
+      </div>
+      <div class="col-12 col-md-6">
+        <user-field labelPosition="side" formControlName="user"
+          [label]="i18n.general.user">
+        </user-field>
       </div>
     </div>
   </form>

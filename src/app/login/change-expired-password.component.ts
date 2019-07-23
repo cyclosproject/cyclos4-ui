@@ -7,6 +7,7 @@ import { ApiHelper } from 'app/shared/api-helper';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { validateBeforeSubmit } from 'app/shared/helper';
 import { BehaviorSubject } from 'rxjs';
+import { Menu } from 'app/shared/menu';
 
 /** Validator function that ensures password and confirmation match */
 const PASSWORDS_MATCH_VAL: ValidatorFn = control => {
@@ -108,5 +109,9 @@ export class ChangeExpiredPasswordComponent
   cancel() {
     // Logout and return to the login page
     this.login.logout();
+  }
+
+  resolveMenu() {
+    return Menu.DASHBOARD;
   }
 }

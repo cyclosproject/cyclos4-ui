@@ -3,7 +3,6 @@ import {
   Input, OnInit, Optional, Output, SkipSelf, Injector
 } from '@angular/core';
 import { AbstractControl, ControlContainer, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors } from '@angular/forms';
-import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { ISO_DATE } from 'app/core/format.service';
 import { BaseControlComponent } from 'app/shared/base-control.component';
 import { DateConstraint, dateConstraintAsMoment } from 'app/shared/date-constraint';
@@ -129,7 +128,6 @@ export class CalendarComponent extends BaseControlComponent<string> implements O
 
   constructor(injector: Injector,
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
-    private dataForUiHolder: DataForUiHolder,
     private changeDetector: ChangeDetectorRef
   ) {
     super(injector, controlContainer);

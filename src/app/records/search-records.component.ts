@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { HttpResponse } from '@angular/common/http';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
+import { RecordHelperService } from 'app/core/records-helper.service';
 
 type RecordSearchParams = RecordQueryFilters & { owner: string, type: string, keywords: string };
 
@@ -25,7 +26,8 @@ export class SearchRecordsComponent
 
   constructor(
     injector: Injector,
-    private recordsService: RecordsService
+    private recordsService: RecordsService,
+    private recordsHelper: RecordHelperService
   ) {
     super(injector);
   }
@@ -109,5 +111,9 @@ export class SearchRecordsComponent
 
   protected getFormControlNames(): string[] {
     return ['keywords', 'customValues', 'user', 'beginDate', 'endDate'];
+  }
+
+  resolveMenu(data: RecordDataForSearch) {
+    return this.recordsHelper.menuForRecordType(data.user, data.type);
   }
 }

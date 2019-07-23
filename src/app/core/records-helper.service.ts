@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
-import { RecordType, RecordTypeDetailed, RecordCustomField } from 'app/api/models';
+import { RecordType, RecordTypeDetailed, RecordCustomField, User } from 'app/api/models';
 import { LayoutService } from 'app/shared/layout.service';
+import { Menu, ActiveMenu } from 'app/shared/menu';
+import { AuthHelperService } from 'app/core/auth-helper.service';
+import { Observable } from 'rxjs';
 
 
 /**
@@ -14,7 +17,8 @@ export class RecordHelperService {
 
   constructor(
     private dataForUiHolder: DataForUiHolder,
-    private layout: LayoutService
+    private layout: LayoutService,
+    private authHelper: AuthHelperService
   ) { }
 
   /**
@@ -43,6 +47,14 @@ export class RecordHelperService {
   resolveColumnClass(field: RecordCustomField, type: RecordTypeDetailed): String {
     const colspan = field != null && field.colspan != null ? ' colspan-' + field.colspan : '';
     return this.isColumnLayout(type) ? 'pr-3 columns-' + type.fieldColumns + colspan : '';
+  }
+
+  menuForRecordType(user: User, type: RecordType): Menu | ActiveMenu | Observable<Menu> {
+    if (this.authHelper.isSelf(user)) {
+      return new ActiveMenu(Menu.SEARCH_RECORDS, { recordType: type });
+    } else {
+      return this.authHelper.searchUsersMenu(user);
+    }
   }
 
 }

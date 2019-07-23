@@ -3,6 +3,7 @@ import { UserOperatorGroupsListData, EntityReference } from 'app/api/models';
 import { OperatorGroupsService } from 'app/api/services';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { HeadingAction } from 'app/shared/action';
+import { Menu } from 'app/shared/menu';
 
 /**
  * Operator groups list
@@ -67,5 +68,9 @@ export class ListOperatorGroupsComponent
       this.notification.snackBar(this.i18n.general.removeDone(group.name));
       this.reload();
     }));
+  }
+
+  resolveMenu(data: UserOperatorGroupsListData) {
+    return this.authHelper.userMenu(data.user, Menu.OPERATOR_GROUPS);
   }
 }

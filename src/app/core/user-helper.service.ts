@@ -9,6 +9,7 @@ import { I18n } from 'app/i18n/i18n';
 import { ApiHelper } from 'app/shared/api-helper';
 import { empty } from 'app/shared/helper';
 import { LoginService } from 'app/core/login.service';
+import { FieldOption } from 'app/shared/field-option';
 
 /** Validator function that ensures password and confirmation match */
 const PASSWORDS_MATCH_VAL: ValidatorFn = control => {
@@ -173,6 +174,14 @@ export class UserHelperService {
       }
     }
     return fields;
+  }
+
+  /**
+   * Returns the options with all user statuses
+   */
+  statusOptions(): FieldOption[] {
+    const statuses = Object.values(UserStatusEnum) as UserStatusEnum[];
+    return statuses.map(s => ({ value: s, text: this.userStatus(s) } as FieldOption));
   }
 
   /**

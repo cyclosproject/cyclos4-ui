@@ -21,8 +21,8 @@ export class ViewRecordComponent extends BaseViewPageComponent<RecordView> imple
 
   constructor(
     injector: Injector,
-    private recordService: RecordsService,
-    private recordHelper: RecordHelperService,
+    private recordsService: RecordsService,
+    private recordsHelper: RecordHelperService,
     private operationHelper: OperationHelperService
   ) {
     super(injector);
@@ -31,7 +31,7 @@ export class ViewRecordComponent extends BaseViewPageComponent<RecordView> imple
   ngOnInit() {
     super.ngOnInit();
     const id = this.route.snapshot.paramMap.get('id');
-    this.addSub(this.recordService.viewRecord({ id: id }).subscribe(data => {
+    this.addSub(this.recordsService.viewRecord({ id: id }).subscribe(data => {
       this.data = data;
     }));
   }
@@ -39,7 +39,7 @@ export class ViewRecordComponent extends BaseViewPageComponent<RecordView> imple
   onDataInitialized(record: RecordView) {
     this.headingActions = [];
     this.title = isEmpty(record.display) ? record.type.name : record.display;
-    this.columnLayout = this.recordHelper.isColumnLayout(record.type);
+    this.columnLayout = this.recordsHelper.isColumnLayout(record.type);
     this.valuesWithoutSection = record.customValues.filter(value => value.field.section == null) || [];
     (record.type.sections || []).forEach(s => {
       const filter = record.customValues.filter(value => value.field.section != null && value.field.section.id === s.id);
@@ -60,7 +60,7 @@ export class ViewRecordComponent extends BaseViewPageComponent<RecordView> imple
   }
 
   resolveColumnClass(value: RecordCustomFieldValue): String {
-    return this.recordHelper.resolveColumnClass(value == null ? null : value.field, this.data.type);
+    return this.recordsHelper.resolveColumnClass(value == null ? null : value.field, this.data.type);
   }
 
   get labelPosition() {
@@ -71,4 +71,9 @@ export class ViewRecordComponent extends BaseViewPageComponent<RecordView> imple
     return this.data.createdBy ||
       this.data.lastModifiedBy;
   }
+
+  resolveMenu(data: RecordView) {
+    return this.recordsHelper.menuForRecordType(data.user, data.type);
+  }
+
 }

@@ -18,6 +18,8 @@ import { empty } from 'app/shared/helper';
 })
 export class ViewTransferComponent extends BaseViewPageComponent<TransferView> implements OnInit {
 
+  private accountId: string;
+
   constructor(
     injector: Injector,
     private bankingHelper: BankingHelperService,
@@ -32,8 +34,9 @@ export class ViewTransferComponent extends BaseViewPageComponent<TransferView> i
 
   ngOnInit() {
     super.ngOnInit();
-    const key = this.route.snapshot.paramMap.get('key');
-    this.addSub(this.transfersService.viewTransfer({ key: key })
+    const route = this.route.snapshot;
+    this.accountId = route.params.account;
+    this.addSub(this.transfersService.viewTransfer({ key: route.params.key })
       .subscribe(transfer => {
         this.headingActions = this.initActions(transfer);
         this.data = transfer;
@@ -84,5 +87,9 @@ export class ViewTransferComponent extends BaseViewPageComponent<TransferView> i
         }));
       }
     });
+  }
+
+  resolveMenu(transfer: TransferView) {
+    return this.authHelper.transferMenu(transfer, this.accountId);
   }
 }

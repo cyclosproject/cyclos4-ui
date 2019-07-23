@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { RecurringPaymentStatusEnum, ScheduledPaymentStatusEnum, TransactionKind } from 'app/api/models';
+import { RecurringPaymentStatusEnum, ScheduledPaymentStatusEnum, TransactionDataForSearch, TransactionKind } from 'app/api/models';
 import { BaseTransactionsSearch, TransactionSearchParams } from 'app/banking/transactions/base-transactions-search.component';
+import { Menu } from 'app/shared/menu';
 
 /**
  * Search for scheduled payments
@@ -53,6 +54,10 @@ export class SearchScheduledPaymentsComponent
       query.kinds = [TransactionKind.SCHEDULED_PAYMENT];
     }
     return query;
+  }
+
+  resolveMenu(data: TransactionDataForSearch) {
+    return this.authHelper.userMenu(data.user, Menu.SCHEDULED_PAYMENTS);
   }
 
 }

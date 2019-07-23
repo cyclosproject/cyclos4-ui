@@ -3,10 +3,10 @@
     {{ account.type.name }}
   </div>
   <ng-container *ngIf="account.user && showUser">
-    <div class="status-label col-6 col-md-3">
+    <div class="status-label col-6 col-md-3 mb-0">
       {{ i18n.general.user }}
     </div>
-    <div class="status-label col-6 col-md-9">
+    <div class="status-label col-6 col-md-9 mb-0">
       <user-link [user]="account.user"></user-link>
     </div>
   </ng-container>

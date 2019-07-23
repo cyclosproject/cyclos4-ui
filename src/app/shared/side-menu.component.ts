@@ -27,7 +27,7 @@ export class SideMenuComponent implements OnInit {
 
   get banking(): boolean {
     const activeMenu = this.menu.activeMenu;
-    return activeMenu != null && activeMenu.menu.root === RootMenu.BANKING;
+    return activeMenu && activeMenu.menu.root === RootMenu.BANKING;
   }
 
   entries$ = new BehaviorSubject<SideMenuEntries>(null);

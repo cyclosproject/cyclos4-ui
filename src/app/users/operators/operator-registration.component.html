@@ -1,7 +1,8 @@
 <page-layout [ready]="data$ | async">
   <page-content *ngIf="data" [heading]="i18n.user.title.operatorRegistration"
     [mobileHeading]="i18n.user.mobileTitle.operatorRegistration" last>
-    <form *ngIf="(result$ | async) == null; else done" [formGroup]="form">
+    <form *ngIf="(result$ | async) == null; else done" [formGroup]="form"
+      autocomplete="off">
       <label-value *ngIf="!self" [label]="i18n.user.operatorOwner">
         <user-link [user]="data.user"></user-link>
       </label-value>
@@ -10,16 +11,18 @@
       <single-selection-field *ngIf="data.groups.length > 0"
         [label]="i18n.user.group" formControlName="group"
         [emptyOption]="i18n.user.operatorNoGroup">
-        <field-option *ngFor="let group of data.groups" [value]="group.id"
-          [id]="group.id" [internalName]="group.internalName"
-          [text]="group.name"></field-option>
+        <field-option *ngFor="let group of data.groups"
+          [value]="ApiHelper.internalNameOrId(group)" [id]="group.id"
+          [internalName]="group.internalName" [text]="group.name">
+        </field-option>
       </single-selection-field>
 
       <!-- Basic profile fields-->
       <input-field *ngIf="canEdit('name')" formControlName="name"
         [label]="i18n.user.name" required></input-field>
       <input-field *ngIf="canEdit('username')" formControlName="username"
-        [label]="i18n.user.username" required></input-field>
+        [label]="i18n.user.username" required>
+      </input-field>
       <ng-container *ngIf="canEdit('email')">
         <input-field *ngIf="canEdit('email')" formControlName="email"
           [label]="i18n.user.email" [required]="data.emailRequired">
@@ -33,7 +36,8 @@
       <ng-container *ngFor="let cf of data.customFields"
         [formGroup]="form.get('customValues')">
         <custom-field-input *ngIf="canEdit(cf)" [field]="cf"
-          [formControlName]="cf.internalName"></custom-field-input>
+          [formControlName]="cf.internalName">
+        </custom-field-input>
       </ng-container>
 
       <!-- Mobile phone -->
@@ -67,9 +71,9 @@
             [label]="i18n.user.registration.passwordAssign"></boolean-field>
           <ng-container *ngIf="passwordForms[i].get('defined').value">
             <input-field required formControlName="value" type="password"
-              [label]="pt.name"></input-field>
+              [label]="pt.name" autocomplete="new-password"></input-field>
             <input-field required formControlName="confirmationValue"
-              type="password"
+              type="password" autocomplete="new-password"
               [label]="i18n.user.passwordConfirmation(pt.name)">
             </input-field>
             <boolean-field *ngIf="pt.canForceChange"

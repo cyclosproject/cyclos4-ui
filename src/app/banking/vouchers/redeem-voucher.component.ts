@@ -5,6 +5,7 @@ import { Validators, FormControl, FormGroup } from '@angular/forms';
 import { VouchersService } from 'app/api/services';
 import { validateBeforeSubmit } from 'app/shared/helper';
 import { BehaviorSubject } from 'rxjs';
+import { Menu } from 'app/shared/menu';
 
 export type RedeemStep = 'form' | 'confirm';
 
@@ -86,5 +87,9 @@ export class RedeemVoucherComponent extends BasePageComponent<VoucherInitialData
   reload() {
     this.step = 'form';
     super.reload();
+  }
+
+  resolveMenu(data: VoucherInitialDataForRedeem) {
+    return this.authHelper.userMenu(data.user, Menu.REDEEM_VOUCHER);
   }
 }

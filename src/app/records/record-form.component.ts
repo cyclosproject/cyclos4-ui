@@ -27,8 +27,8 @@ export class RecordFormComponent extends BasePageComponent<RecordDataForEdit | R
 
   constructor(
     injector: Injector,
-    public recordService: RecordsService,
-    public recordHelper: RecordHelperService) {
+    public recordsService: RecordsService,
+    public recordsHelper: RecordHelperService) {
     super(injector);
   }
 
@@ -40,8 +40,8 @@ export class RecordFormComponent extends BasePageComponent<RecordDataForEdit | R
     this.id = this.route.snapshot.paramMap.get('id');
 
     const request: Observable<RecordDataForEdit | RecordDataForNew> = this.create
-      ? this.recordService.getRecordDataForNew({ owner: this.param, type: this.type })
-      : this.recordService.getRecordDataForEdit({ id: this.id });
+      ? this.recordsService.getRecordDataForNew({ owner: this.param, type: this.type })
+      : this.recordsService.getRecordDataForEdit({ id: this.id });
     this.addSub(request.subscribe(data => {
       this.data = data;
     }));
@@ -49,7 +49,7 @@ export class RecordFormComponent extends BasePageComponent<RecordDataForEdit | R
   }
 
   onDataInitialized(data: RecordDataForEdit | RecordDataForNew) {
-    this.columnLayout = this.recordHelper.isColumnLayout(data.type);
+    this.columnLayout = this.recordsHelper.isColumnLayout(data.type);
     this.fieldsWithoutSection = data.fields.filter(field => field.section == null) || [];
     (data.type.sections || []).forEach(s => {
       const filter = data.fields.filter(field => field.section != null && field.section.id === s.id);
@@ -66,7 +66,7 @@ export class RecordFormComponent extends BasePageComponent<RecordDataForEdit | R
   }
 
   resolveColumnClass(field: RecordCustomField): String {
-    return this.recordHelper.resolveColumnClass(field, this.data.type);
+    return this.recordsHelper.resolveColumnClass(field, this.data.type);
   }
 
   get binaryValues() {
@@ -75,6 +75,10 @@ export class RecordFormComponent extends BasePageComponent<RecordDataForEdit | R
 
   get labelPosition() {
     return this.columnLayout ? 'above' : '';
+  }
+
+  resolveMenu(data: RecordDataForNew | RecordDataForEdit) {
+    return this.recordsHelper.menuForRecordType(data.user, data.type);
   }
 
   save() {
@@ -87,8 +91,8 @@ export class RecordFormComponent extends BasePageComponent<RecordDataForEdit | R
     record.customValues = this.form.value.customValues;
 
     const request: Observable<string | void> = this.create
-      ? this.recordService.createRecord({ owner: this.param, type: this.type, body: record })
-      : this.recordService.updateRecord({ id: this.id, body: record });
+      ? this.recordsService.createRecord({ owner: this.param, type: this.type, body: record })
+      : this.recordsService.updateRecord({ id: this.id, body: record });
     this.addSub(request.subscribe(id => {
       this.notification.snackBar(this.create
         ? this.i18n.record.created(this.data.type.name)

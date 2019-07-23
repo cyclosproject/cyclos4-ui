@@ -153,4 +153,7 @@ export class HomeComponent extends BasePageComponent<void> implements OnInit {
     return this.configs.filter(c => this.layout.visible(c.breakpoints, breakpoints));
   }
 
+  resolveMenu() {
+    return this.login.user == null ? Menu.HOME : Menu.DASHBOARD;
+  }
 }

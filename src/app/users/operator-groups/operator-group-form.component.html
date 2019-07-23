@@ -63,8 +63,9 @@
         <multi-selection-field *ngIf="data.operations?.length > 0"
           [label]="i18n.operatorGroup.runOperations"
           formControlName="operations">
-          <field-option *ngFor="let op of data.operations" [value]="op.id"
-            [id]="op.id" [internalName]="op.internalName" [text]="op.name">
+          <field-option *ngFor="let op of data.operations"
+            [value]="ApiHelper.internalNameOrId(op)" [id]="op.id"
+            [internalName]="op.internalName" [text]="op.name">
           </field-option>
         </multi-selection-field>
       </form>
@@ -95,9 +96,10 @@
   </ng-container>
   <ng-container *ngFor="let pt of paymentTypes(at)"
     [formGroup]="form.get('payments').get(pt.id)">
-    <h4 class="mt-3 mb-2" *ngIf="paymentTypes(at)?.length > 1">{{
-    pt.name
-  }}</h4>
+    <ng-container *ngIf="paymentTypes(at)?.length > 1">
+      <hr class="inner-separator">
+      <h4 class="mt-3 mb-2">{{ pt.name }}</h4>
+    </ng-container>
     <boolean-field [label]="i18n.operatorGroup.performPayments"
       formControlName="perform"></boolean-field>
     <boolean-field

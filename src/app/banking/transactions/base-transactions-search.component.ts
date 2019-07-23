@@ -38,7 +38,7 @@ export abstract class BaseTransactionsSearch
   }
 
   getFormControlNames() {
-    return ['status', 'accountType', 'transferFilter', 'preselectedPeriod', 'periodBegin', 'periodEnd'];
+    return ['status', 'accountType', 'transferFilter', 'user', 'preselectedPeriod', 'periodBegin', 'periodEnd'];
   }
 
   ngOnInit() {

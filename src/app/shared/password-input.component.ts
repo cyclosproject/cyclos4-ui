@@ -33,7 +33,7 @@ export class PasswordInputComponent
 
   @Input() placeholder: string;
 
-  @Input() autocomplete: string;
+  @Input() autocomplete = 'off';
 
   private _showIcon: boolean | string = false;
   @Input() get showIcon(): boolean | string {

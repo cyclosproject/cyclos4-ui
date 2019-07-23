@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { BasePageComponent } from 'app/shared/base-page.component';
+import { Menu } from 'app/shared/menu';
 
 /**
  * Manages the user settings
@@ -27,5 +28,9 @@ export class ManageSettingsComponent
     this.addSub(this.darkThemeControl.valueChanges.subscribe(value => {
       this.layout.darkTheme = value;
     }));
+  }
+
+  resolveMenu() {
+    return Menu.SETTINGS;
   }
 }

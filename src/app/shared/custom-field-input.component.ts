@@ -67,6 +67,7 @@ export class CustomFieldInputComponent extends BaseFormFieldComponent<string> im
     }
   }
   @Input() focused: boolean | string;
+  @Input() autocomplete = 'off';
 
   @Output() imagesUploaded = new EventEmitter<Image[]>();
   @Output() filesUploaded = new EventEmitter<StoredFile[]>();

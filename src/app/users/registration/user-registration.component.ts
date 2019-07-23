@@ -11,6 +11,7 @@ import { BasePageComponent } from 'app/shared/base-page.component';
 import { blank, copyProperties, empty, focusFirstField, scrollTop, validateBeforeSubmit } from 'app/shared/helper';
 import { BehaviorSubject, Observable, of, Subscription, timer } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
+import { Menu } from 'app/shared/menu';
 
 export type RegistrationStep = 'group' | 'fields' | 'confirm' | 'done';
 
@@ -347,6 +348,17 @@ export class UserRegistrationComponent
 
   addCustomFiles(files: StoredFile[]) {
     this.customFiles = [...this.customFiles, ...files];
+  }
+
+  resolveMenu() {
+    switch (this.dataForUiHolder.role) {
+      case RoleEnum.ADMINISTRATOR:
+        return Menu.ADMIN_REGISTRATION;
+      case RoleEnum.BROKER:
+        return Menu.BROKER_REGISTRATION;
+      default:
+        return Menu.PUBLIC_REGISTRATION;
+    }
   }
 
 }

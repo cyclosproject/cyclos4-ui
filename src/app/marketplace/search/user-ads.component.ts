@@ -7,6 +7,7 @@ import { words } from 'app/shared/helper';
 import { ResultType } from 'app/shared/result-type';
 import { MAX_SIZE_SHORT_NAME } from 'app/users/profile/view-profile.component';
 import { Observable } from 'rxjs';
+import { Menu } from 'app/shared/menu';
 
 type UserAdsSearchParams = UserAdsQueryFilters & { user: string };
 
@@ -22,7 +23,7 @@ export class UserAdsComponent
   extends BaseSearchPageComponent<UserAdsDataForSearch, UserAdsQueryFilters, AdResult>
   implements OnInit {
 
-  private user: string;
+  private param: string;
   shortName: string;
 
   constructor(
@@ -42,9 +43,9 @@ export class UserAdsComponent
 
   ngOnInit() {
     super.ngOnInit();
-    this.user = this.route.snapshot.paramMap.get('user');
+    this.param = this.route.snapshot.paramMap.get('user');
     this.allowedResultTypes = [ResultType.TILES, ResultType.LIST];
-    this.addSub(this.marketplaceService.getUserAdsDataForSearch({ user: this.user }).subscribe(data => this.data = data));
+    this.addSub(this.marketplaceService.getUserAdsDataForSearch({ user: this.param }).subscribe(data => this.data = data));
   }
 
   onDataInitialized(data: UserAdsDataForSearch) {
@@ -54,11 +55,15 @@ export class UserAdsComponent
 
   protected toSearchParams(value: any): UserAdsSearchParams {
     const params: UserAdsSearchParams = value;
-    params.user = this.user;
+    params.user = this.param;
     return params;
   }
 
   doSearch(filters: UserAdsSearchParams): Observable<HttpResponse<AdResult[]>> {
     return this.marketplaceService.searchUserAds$Response(filters);
+  }
+
+  resolveMenu() {
+    return Menu.SEARCH_ADS;
   }
 }

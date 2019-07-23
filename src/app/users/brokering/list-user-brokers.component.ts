@@ -78,4 +78,9 @@ export class ListUserBrokersComponent
       this.reload();
     }));
   }
+
+  resolveMenu() {
+    return this.authHelper.searchUsersMenu();
+  }
+
 }

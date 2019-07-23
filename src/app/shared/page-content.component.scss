@@ -129,8 +129,8 @@
 
 .mode-full-height {
   .page-content-body {
-    height: 100%;
     display: flex;
+    flex-grow: 1;
   }
 }
 

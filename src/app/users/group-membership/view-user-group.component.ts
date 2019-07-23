@@ -103,4 +103,8 @@ export class ViewUserGroupComponent extends BaseViewPageComponent<GroupMembershi
     }));
   }
 
+  resolveMenu(data: GroupMembershipData) {
+    return this.authHelper.searchUsersMenu(data.user);
+  }
+
 }

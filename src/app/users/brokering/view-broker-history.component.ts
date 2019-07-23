@@ -43,4 +43,8 @@ export class ViewBrokerHistoryComponent extends BaseViewPageComponent<UserBroker
     // No op condition to disable built-in click (mobile layout)
     return (row: any) => row != null;
   }
+
+  resolveMenu() {
+    return this.authHelper.searchUsersMenu();
+  }
 }

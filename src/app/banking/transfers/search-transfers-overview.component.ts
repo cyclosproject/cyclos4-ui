@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
   AccountHistoryOrderByEnum, AccountType, Currency, PreselectedPeriod,
-  TransferDataForSearch, TransferFilter, TransferQueryFilters, TransferResult
+  TransferDataForSearch, TransferFilter, TransferQueryFilters, TransferResult, RoleEnum
 } from 'app/api/models';
 import { TransfersService } from 'app/api/services';
 import { BankingHelperService } from 'app/core/banking-helper.service';
@@ -9,6 +9,7 @@ import { ApiHelper } from 'app/shared/api-helper';
 import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { empty } from 'app/shared/helper';
 import { BehaviorSubject } from 'rxjs';
+import { Menu } from 'app/shared/menu';
 
 type TransferSearchParams = TransferQueryFilters & {
   fields?: Array<string>;
@@ -132,6 +133,11 @@ export class SearchTransfersOverviewComponent
       filters = filters.filter(f => f.accountType.id === fromAccountType);
     }
     this.filters$.next(filters);
+  }
+
+  resolveMenu() {
+    return this.dataForUiHolder.role === RoleEnum.ADMINISTRATOR
+      ? Menu.ADMIN_TRANSFERS_OVERVIEW : Menu.BROKER_TRANSFERS_OVERVIEW;
   }
 
 }

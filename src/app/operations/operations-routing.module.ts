@@ -1,55 +1,9 @@
 import { NgModule } from '@angular/core';
-import { Router, RouterModule, Routes } from '@angular/router';
-import { OperationHelperService } from 'app/core/operation-helper.service';
+import { RouterModule, Routes } from '@angular/router';
 import { LoggedUserGuard } from 'app/logged-user-guard';
-import { RunOperationComponent } from 'app/operations/run-operation.component';
-import { ApiHelper } from 'app/shared/api-helper';
-import { ConditionalMenu, Menu, ActiveMenu } from 'app/shared/menu';
-import { trim } from 'lodash';
-import { OperationRunScope } from 'app/operations/operation-run-scope';
 import { OperationCallbackComponent } from 'app/operations/operation-callback.component';
-
-/**
- * A conditional menu resolver for content, which finds the content page by slug to resolve the correct menu
- */
-const OperationMenu: ConditionalMenu = injector => {
-  // The scope depends on the URL
-  const url = injector.get(Router).url;
-  // The first part is always the kind, and the last path part is always the operation key
-  const parts = trim(url, '/').split('/');
-  if (parts.length === 1) {
-    // Invalid URL
-    return null;
-  }
-  const kind = parts[1];
-  const key = parts[parts.length - 1];
-
-  switch (kind) {
-    case 'system':
-    case 'self':
-      // This is an owner operation
-      const operation = injector.get(OperationHelperService).get(key);
-      const menu = operation ? ApiHelper.menuForOwnerOperation(operation) : null;
-      return menu ? new ActiveMenu(menu, { operation: operation }) : null;
-    case 'action':
-      // An action
-      return Menu.RUN_ACTION_OPERATION;
-    case 'user':
-      // An operation over a user
-      return Menu.RUN_USER_OPERATION;
-    case 'marketplace':
-      // An operation over an advertisement
-      return Menu.RUN_MARKETPLACE_OPERATION;
-    case 'record':
-      // An operation over a record
-      return Menu.RUN_RECORD_OPERATION;
-    case 'transfer':
-      // An operation over a transfer
-      return Menu.RUN_TRANSFER_OPERATION;
-  }
-  // Invalid URL
-  return null;
-};
+import { OperationRunScope } from 'app/operations/operation-run-scope';
+import { RunOperationComponent } from 'app/operations/run-operation.component';
 
 const operationRoutes: Routes = [
   {
@@ -60,7 +14,6 @@ const operationRoutes: Routes = [
         component: RunOperationComponent,
         canActivate: [LoggedUserGuard],
         data: {
-          menu: OperationMenu,
           runScope: OperationRunScope.Standalone
         }
       },
@@ -69,7 +22,6 @@ const operationRoutes: Routes = [
         component: RunOperationComponent,
         canActivate: [LoggedUserGuard],
         data: {
-          menu: OperationMenu,
           runScope: OperationRunScope.User
         }
       },
@@ -78,7 +30,6 @@ const operationRoutes: Routes = [
         component: RunOperationComponent,
         canActivate: [LoggedUserGuard],
         data: {
-          menu: Menu.MY_PROFILE,
           runScope: OperationRunScope.Standalone
         }
       },
@@ -87,7 +38,6 @@ const operationRoutes: Routes = [
         component: RunOperationComponent,
         canActivate: [LoggedUserGuard],
         data: {
-          menu: Menu.RUN_USER_OPERATION,
           runScope: OperationRunScope.User
         }
       },
@@ -96,7 +46,6 @@ const operationRoutes: Routes = [
         component: RunOperationComponent,
         canActivate: [LoggedUserGuard],
         data: {
-          menu: Menu.RUN_MARKETPLACE_OPERATION,
           runScope: OperationRunScope.Ad
         }
       },
@@ -105,7 +54,6 @@ const operationRoutes: Routes = [
         component: RunOperationComponent,
         canActivate: [LoggedUserGuard],
         data: {
-          menu: Menu.RUN_RECORD_OPERATION,
           runScope: OperationRunScope.Record
         }
       },
@@ -114,16 +62,12 @@ const operationRoutes: Routes = [
         component: RunOperationComponent,
         canActivate: [LoggedUserGuard],
         data: {
-          menu: Menu.RUN_TRANSFER_OPERATION,
           runScope: OperationRunScope.Transfer
         }
       },
       {
         path: 'callback/:id/:token',
-        component: OperationCallbackComponent,
-        data: {
-          menu: Menu.RUN_OPERATION_BANKING
-        }
+        component: OperationCallbackComponent
       }
     ]
   }

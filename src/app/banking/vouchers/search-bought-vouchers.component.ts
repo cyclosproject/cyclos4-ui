@@ -1,12 +1,13 @@
-import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
-import { Component, ChangeDetectionStrategy, Injector, OnInit } from '@angular/core';
-import { UserVouchersDataForSearch, VoucherResult, VoucherRelationEnum, VoucherStatusEnum } from 'app/api/models';
 import { HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { VouchersService } from 'app/api/services';
+import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
+import { UserVouchersDataForSearch, VoucherRelationEnum, VoucherResult, VoucherStatusEnum } from 'app/api/models';
 import { UserVouchersQueryFilters } from 'app/api/models/user-vouchers-query-filters';
-import { cloneDeep } from 'lodash';
+import { VouchersService } from 'app/api/services';
+import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { FieldOption } from 'app/shared/field-option';
+import { Menu } from 'app/shared/menu';
+import { cloneDeep } from 'lodash';
+import { Observable } from 'rxjs';
 
 type UserVouchersSearchParams = UserVouchersQueryFilters & { user: string };
 
@@ -80,5 +81,9 @@ export class SearchBoughtVouchersComponent
       case VoucherStatusEnum.REDEEMED:
         return this.i18n.voucher.status.redeemed;
     }
+  }
+
+  resolveMenu(data: UserVouchersDataForSearch) {
+    return this.authHelper.userMenu(data.user, Menu.SEARCH_BOUGHT_VOUCHERS);
   }
 }

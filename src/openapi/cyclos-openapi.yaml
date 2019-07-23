@@ -2,15 +2,15 @@ openapi: '3.0.0'
 info:
   title: 'Cyclos @cyclosVersion API'
   description: >-
-    The Cyclos REST API is described using OpenAPI 3.0. The descriptor for the api
-    can be downloaded in both [YAML](@url/cyclos-openapi.yaml) or
+    The Cyclos REST API is described using OpenAPI 3.0. The descriptor for the
+    api can be downloaded in both [YAML](@url/cyclos-openapi.yaml) or
     [JSON](@url/cyclos-openapi.json) formats. These files can be used in tools
     that support the OpenAPI specification, such as the [Swagger
     Generator](https://generator.swagger.io/).
 
 
-    In the API, whenever some data is referenced, for example, a group, or payment
-    type, either id or internal name can be used. When an user is to be
+    In the API, whenever some data is referenced, for example, a group, or
+    payment type, either id or internal name can be used. When an user is to be
     referenced, the special word 'self' (sans quotes) always refers to the
     currently authenticated user, and any identification method (login name,
     e-mail, mobile phone, account number or custom field) that can be used on
@@ -18,6 +18,17 @@ info:
     users. Some specific data types have other identification fields, like
     accounts can have a number and payments can have a transaction number. This
     all depends on the current configuration.
+
+
+    Most of the operations that return data allow selecting which fields to
+    include in the response. This is useful for reducing the data to be download
+    over the network. If nothing is set, all object fields are returned.
+    Unprefixed field names will be handled like a whitelist (only listed fields
+    will be included), while names starting with a minus (-) or exclamation mark
+    (!) will be handled as blacklist (listed fields will not be included). This
+    works for nesting as well. For example: `a,b.b1,c.-c1,c.-c2` will return the
+    fields `a`, `b` (containing only the `b1` field) and `c` (containing all its
+    fields except for `c1` or `c2`).
 
 
     For details of the deprecated elements (operations and model) please visit the
@@ -246,6 +257,11 @@ tags:
   - name: Records
     description: >-
       Provides access to custom records
+  - name: Tokens
+    description: >-
+      Provides access to tokens, which are commonly used as cards, but are
+      more generic. Tokens are user identifications whose status can be
+      managed.
   - name: Operations
     description: >-
       Provides access to custom operations
@@ -278,7 +294,10 @@ tags:
     description: >-
       Provides access to alerts generated in the system. Currently only
       user alerts are supported (system alerts are not).
-
+  - name: References
+    description: >-
+      Provides access to (general) references, which are given from a user
+      to another to show the satisfaction level.
 
 security:
   - basic: []
@@ -3200,7 +3219,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
       responses:
         '200':
           description: >-
-            The users matching the criteria
+            The operators matching the criteria
           headers:
             X-Total-Count:
               schema:
@@ -3233,7 +3252,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/UserResult'
+                  $ref: '#/components/schemas/OperatorResult'
         '401':
           description: >-
             Unauthorized access. Missing or invalid crendentials supplied for such
@@ -3483,7 +3502,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/UserResult'
+                  $ref: '#/components/schemas/OperatorResult'
         '401':
           description: >-
             Unauthorized access. Missing or invalid crendentials supplied for such
@@ -18340,6 +18359,357 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /vouchers/data-for-search:
+    get:
+      operationId: getVouchersDataForSearch
+      summary: >-
+        Returns data for searching vouchers as admin
+      description: >-
+        Returns configuration data used to search vouchers as admin
+      tags:
+        - Vouchers
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            The configuration data for searching a vouchers as admin
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VouchersDataForSearch'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /vouchers:
+    get:
+      operationId: searchVouchers
+      summary: >-
+        Searches for vouchers as admin
+      description: >-
+        Returns the list of matching vouchers the authenticated admin can view
+      tags:
+        - Vouchers
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+        - name: amountRange
+          in: query
+          required: false
+          description: "The minimum / maximum voucher amount"
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+              format: number
+        - name: buyer
+          in: query
+          required: false
+          description: "The buyer of the voucher. A user identification value, such as id, username, e-mail, phone, etc. Id is always allowed, others depend on Cyclos configuration. Note that a valid numeric value is always considered as id. For example, when using another identification method that can be numeric only, prefix the value with a single quote (like in Excel spreadsheets), for example, `'1234567890`;"
+          schema:
+            type: string
+        - name: buyerGroups
+          in: query
+          required: false
+          description: "The ids or internal names of buyers groups"
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: creationPeriod
+          in: query
+          required: false
+          description: "The minimum / maximum voucher creation date. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+              format: date-time
+        - name: creationType
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/VoucherCreationTypeEnum'
+        - name: expirationPeriod
+          in: query
+          required: false
+          description: "The minimum / maximum voucher expiration date. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+              format: date-time
+        - name: orderBy
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/VoucherOrderByEnum'
+        - name: page
+          in: query
+          required: false
+          description: "The page number (zero-based) of the search. The default value is zero."
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          required: false
+          description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
+          schema:
+            type: integer
+            format: int32
+        - name: printed
+          in: query
+          required: false
+          description: "If it is passed, filter if the voucher was printed or not."
+          schema:
+            type: boolean
+        - name: redeemPeriod
+          in: query
+          required: false
+          description: "The minimum / maximum voucher redeem date. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+              format: date-time
+        - name: redeemer
+          in: query
+          required: false
+          description: "The redeemer of the voucher. A user identification value, such as id, username, e-mail, phone, etc. Id is always allowed, others depend on Cyclos configuration. Note that a valid numeric value is always considered as id. For example, when using another identification method that can be numeric only, prefix the value with a single quote (like in Excel spreadsheets), for example, `'1234567890`;"
+          schema:
+            type: string
+        - name: redeemerGroups
+          in: query
+          required: false
+          description: "The ids or internal names of redeemers groups"
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: statuses
+          in: query
+          required: false
+          description: ''
+          style: simple
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/VoucherStatusEnum'
+        - name: token
+          in: query
+          required: false
+          description: "The voucher token (with or without mask)"
+          schema:
+            type: string
+        - name: types
+          in: query
+          required: false
+          description: "The ids or internal names of voucher types"
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+      responses:
+        '200':
+          description: >-
+            The list of matching vouchers.
+          headers:
+            X-Total-Count:
+              schema:
+                type: integer
+              description: >-
+                The total number of results. It may be configured in Cyclos to skip the
+                total count, which is useful on large databases, where the count itself
+                may use a lot of resources from the database. If disabled, this header is
+                not returned.
+            X-Page-Size:
+              schema:
+                type: integer
+              description: >-
+                The maximum number of results per page
+            X-Current-Page:
+              schema:
+                type: integer
+              description: >-
+                The current page the results are in
+            X-Has-Next-Page:
+              schema:
+                type: boolean
+              description: >-
+                Returns whether there is a next page. This is normally always returned,
+                whether total count is enabled or not. If the total count is not returned,
+                is the only way for clients to know whether more results are available or
+                not.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VoucherResult'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /vouchers/{key}/change-expiration:
+    post:
+      operationId: changeVoucherExpirationDate
+      summary: >-
+        Changes the voucher expiration.
+      description: >-
+        Change the expiration date of a voucher in
+        status  `open` or
+        `expired`. This can be done only by
+        admin with permission to change the expiration.
+      tags:
+        - Vouchers
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/confirmationPassword'
+        - name: key
+          in: path
+          required: true
+          description: >-
+            Either the id or token.
+          schema:
+            type: string
+      responses:
+        '204':
+          description: >-
+            The voucher expiration date was changed. Nothing is returned.
+        '500':
+          description: >-
+            If a payment error has occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentError'
+      requestBody:
+        description: >-
+          The parameters to change the voucher's expiration date
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangeVoucherExpirationDate'
+
+  /vouchers/{key}/cancel:
+    post:
+      operationId: cancelVoucher
+      summary: >-
+        Cancels the voucher
+      description: >-
+        Cancels a voucher in status `open`,
+        `expired` or `pending`.
+        If its creation type is `bought`
+        also refund the buyer.
+        This can be done by users with permission to refund over its
+        open or expired vouchers, or by admins with permission to cancel/refund
+        for generated/bought vouchers respectively.
+      tags:
+        - Vouchers
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/confirmationPassword'
+        - name: key
+          in: path
+          required: true
+          description: >-
+            Either the id or token.
+          schema:
+            type: string
+      responses:
+        '204':
+          description: >-
+            The voucher was canceled. Nothing is returned.
+        '500':
+          description: >-
+            If a payment error has occurred
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentError'
+
   /{user}/vouchers/data-for-search:
     get:
       operationId: getUserVouchersDataForSearch
@@ -19949,7 +20319,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
       responses:
         '200':
           description: >-
-            The configuration data for searching records
+            The records matching the search filters.
           headers:
             X-Total-Count:
               schema:
@@ -20928,6 +21298,1002 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 type: array
                 items:
                   $ref: '#/components/schemas/RecordWithOwnerResult'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /{user}/token-types:
+    parameters:
+      - $ref: '#/components/parameters/user'
+    get:
+      operationId: listUserTokenTypes
+      summary: >-
+        Returns the permissions over token types of the given user.
+      description: >-
+        Returns the permissions the authenticated user can perform over the
+        tokens of the given user.
+      tags:
+        - Tokens
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            The tokens
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TokenPermissions'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /{user}/tokens/{type}:
+    parameters:
+      - $ref: '#/components/parameters/user'
+      - name: type
+        description: >-
+          Either the identifier or internal name of the token type
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      operationId: getUserTokens
+      summary: >-
+        Returns the tokens of a type and user
+      description: >-
+        Returns data containing the tokens of a given type and user, along with
+        the tokens themselves. If the authenticated user is the requested user,
+        will only return tokens whose `status` are either
+        `active` or `blocked`.
+      tags:
+        - Tokens
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            The tokens matching the search filters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserTokensListData'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      operationId: activateToken
+      summary: >-
+        Activates a pending / unassigned token.
+      description: >-
+        If the token status is `unassigned`, the token
+        will be assigned to the given user, and activated.
+        Otherwise, if the token status is `pending`,
+        just activates the token, checking that the user matches.
+        In both cases the token status is set to `active`.
+      tags:
+        - Tokens
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      responses:
+        '200':
+          description: >-
+            Returns the id of the assigned token
+          content:
+            text/plain:
+              schema:
+                type: string
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: >-
+            Input error. Either a validation error or the maximum allowed items was
+            exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      requestBody:
+        description: The token value to activate
+        content:
+          text/plain:
+            schema:
+              type: string
+
+  /tokens/{id}:
+    parameters:
+      - $ref: '#/components/parameters/id'
+    get:
+      operationId: viewToken
+      summary: >-
+        Returns details of a specific token
+      description: >-
+        Returns information about a token, located by either id or number
+      tags:
+        - Tokens
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            The token data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenView'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /tokens/{id}/activate:
+    parameters:
+      - $ref: '#/components/parameters/id'
+    post:
+      operationId: activatePendingToken
+      summary: >-
+        Activates a token.
+      description: >-
+        Activates a token, which must be assigned to a user managed by the
+        authenticated user. The token status must be `pending`.
+      tags:
+        - Tokens
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      responses:
+        '204':
+          description: >-
+            The token is activated and nothing is returned
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /tokens/{id}/block:
+    parameters:
+      - $ref: '#/components/parameters/id'
+    post:
+      operationId: blockToken
+      summary: >-
+        Blocks a token.
+      description: >-
+        Blocks a token, which remains blocked until being unblocked again.
+        The token status must be `active`.
+      tags:
+        - Tokens
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      responses:
+        '204':
+          description: >-
+            The token is blocked and nothing is returned
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /tokens/{id}/unblock:
+    parameters:
+      - $ref: '#/components/parameters/id'
+    post:
+      operationId: unblockToken
+      summary: >-
+        Unlocks a token.
+      description: >-
+        Unlocks a token, returning its status to `active`.
+        The token status must be `blocked`.
+      tags:
+        - Tokens
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      responses:
+        '204':
+          description: >-
+            The token is unblocked and nothing is returned
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /tokens/{id}/cancel:
+    parameters:
+      - $ref: '#/components/parameters/id'
+    post:
+      operationId: cancelToken
+      summary: >-
+        Permanently cancels a token.
+      description: >-
+        Permanently cancels a token.
+        The token status must be any but `canceled`.
+      tags:
+        - Tokens
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      responses:
+        '204':
+          description: >-
+            The token is canceled and nothing is returned
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /tokens/{id}/assign/{user}:
+    parameters:
+      - $ref: '#/components/parameters/id'
+      - $ref: '#/components/parameters/user'
+    post:
+      operationId: assignToken
+      summary: >-
+        Assigns a token to a given user.
+      description: >-
+        Assigns a token to a given user. The token status must be
+        `unassigned`. After assigning, the token status
+        will be `pending`.
+      tags:
+        - Tokens
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      responses:
+        '204':
+          description: >-
+            The token is assigned to the user and nothing is returned
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /tokens/{id}/set-expiry-date:
+    parameters:
+      - $ref: '#/components/parameters/id'
+    post:
+      operationId: setTokenExpiryDate
+      summary: >-
+        Sets the expiry date of a specific token.
+      description: >-
+        Updates the token expiry date. The token status must be either
+        `active`, `blocked` or
+        `expired`.
+      tags:
+        - Tokens
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - name: date
+          in: query
+          required: false
+          description: >-
+            The new expiry date. If not specified, the token will never expire.
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '204':
+          description: >-
+            The token expiry date is changed and nothing is returned
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /tokens/{id}/set-activation-deadline:
+    parameters:
+      - $ref: '#/components/parameters/id'
+    post:
+      operationId: setTokenActivationDeadline
+      summary: >-
+        Sets the activation deadline date of a specific token.
+      description: >-
+        Updates the token activation deadline date. The token status must be
+        `pending` or `activationExpired`.
+      tags:
+        - Tokens
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - name: date
+          in: query
+          required: false
+          description: >-
+            The new activation deadline date. If not specified, there will be no deadline.
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '204':
+          description: >-
+            The token activation deadline date is changed and nothing is returned
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /tokens/{type}/data-for-new:
+    parameters:
+      - name: type
+        description: >-
+          Either the identifier or internal name of the token type
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      operationId: getTokenDataForNew
+      summary: >-
+        Returns data to create a new token for the given type.
+      description: >-
+        Returns data to create a new token for the given type.
+      tags:
+        - Tokens
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+        - name: user
+          in: query
+          required: false
+          schema:
+            type: string
+          description: >-
+            Either id or identification of the user to have the token
+            initially assigned
+      responses:
+        '200':
+          description: >-
+            The data for creating a new token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenDataForNew'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /tokens/{type}/new:
+    parameters:
+      - name: type
+        description: >-
+          Either the identifier or internal name of the token type
+        in: path
+        required: true
+        schema:
+          type: string
+    post:
+      operationId: createToken
+      summary: >-
+        Creates a new token of the given type.
+      description: >-
+        Creates a new token of the given type. If a user is specified, the
+        token will be initially assigned to that user, and the initial status
+        will be `pending`.
+      tags:
+        - Tokens
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      responses:
+        '201':
+          description: >-
+            Returns the identifier of the new record
+          headers:
+            Location:
+              description: >-
+                URL for viewing the record details
+              schema:
+                type: string
+          content:
+            text/plain:
+              schema:
+                type: string
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: >-
+            Input error. Either a validation error or the maximum allowed items was
+            exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      requestBody:
+        description: >-
+          Details of the token to be created
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenNew'
+
+  /general-tokens/{type}/data-for-search:
+    parameters:
+      - name: type
+        description: >-
+          Either the identifier or internal name of the token type
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      operationId: getGeneralTokensDataForSearch
+      summary: >-
+        Returns data for searching tokens of a specific type.
+      description: >-
+        Returns data for searching tokens of a specific type,
+        regardless of the user.
+      tags:
+        - Tokens
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            The configuration data for searching tokens
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenDataForSearch'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /general-tokens/{type}:
+    parameters:
+      - name: type
+        description: >-
+          Either the identifier or internal name of the token type
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      operationId: searchGeneralTokens
+      summary: >-
+        Searches for tokens of a specific type, regardless of the user.
+      description: >-
+        Returns tokens matching the search criteria, for a specific type.
+      tags:
+        - Tokens
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+        - name: activationPeriod
+          in: query
+          required: false
+          description: "The minimum / maximum token activation date."
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+              format: date-time
+        - name: brokers
+          in: query
+          required: false
+          description: "Either id or a principal (login name, e-mail, etc) for brokers"
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: expiryPeriod
+          in: query
+          required: false
+          description: "The minimum / maximum token expiry date."
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+              format: date-time
+        - name: groups
+          in: query
+          required: false
+          description: "Either id or internal names of groups / group sets"
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: page
+          in: query
+          required: false
+          description: "The page number (zero-based) of the search. The default value is zero."
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          required: false
+          description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
+          schema:
+            type: integer
+            format: int32
+        - name: statuses
+          in: query
+          required: false
+          description: "The desired token statuses"
+          style: simple
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/TokenStatusEnum'
+        - name: user
+          in: query
+          required: false
+          description: "Either id or a principal (login name, e-mail, etc) for the token owner user"
+          schema:
+            type: string
+        - name: value
+          in: query
+          required: false
+          description: "The token value"
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >-
+            The tokens matching the search filters
+          headers:
+            X-Total-Count:
+              schema:
+                type: integer
+              description: >-
+                The total number of results. It may be configured in Cyclos to skip the
+                total count, which is useful on large databases, where the count itself
+                may use a lot of resources from the database. If disabled, this header is
+                not returned.
+            X-Page-Size:
+              schema:
+                type: integer
+              description: >-
+                The maximum number of results per page
+            X-Current-Page:
+              schema:
+                type: integer
+              description: >-
+                The current page the results are in
+            X-Has-Next-Page:
+              schema:
+                type: boolean
+              description: >-
+                Returns whether there is a next page. This is normally always returned,
+                whether total count is enabled or not. If the total count is not returned,
+                is the only way for clients to know whether more results are available or
+                not.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TokenResult'
         '401':
           description: >-
             Unauthorized access. Missing or invalid crendentials supplied for such
@@ -23557,7 +24923,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: priceRange
           in: query
           required: false
-          description: "The minumum / maximum price. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
+          description: "The minumum / maximum price. Used only if a currency is specified. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
           style: simple
           schema:
             type: array
@@ -23928,7 +25294,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: priceRange
           in: query
           required: false
-          description: "The minumum / maximum price. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
+          description: "The minumum / maximum price. Used only if a currency is specified. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
           style: simple
           schema:
             type: array
@@ -27293,6 +28659,662 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /{user}/references/data-for-search:
+    parameters:
+      - $ref: '#/components/parameters/user'
+    get:
+      operationId: getUserReferencesDataForSearch
+      summary: >-
+        Returns data for searching references of a specific user.
+      description: >-
+        Returns data for searching references of a specific user.
+      tags:
+        - References
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            The configuration data for searching references
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserReferenceDataForSearch'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /{user}/references:
+    parameters:
+      - $ref: '#/components/parameters/user'
+    get:
+      operationId: searchUserReferences
+      summary: >-
+        Searches for references of a specific user
+      description: >-
+        Returns references matching the search criteria, for a specific user.
+      tags:
+        - References
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+        - name: direction
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/ReferenceDirectionEnum'
+        - name: levels
+          in: query
+          required: false
+          description: "The levels to filter"
+          style: simple
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/ReferenceLevelEnum'
+        - name: page
+          in: query
+          required: false
+          description: "The page number (zero-based) of the search. The default value is zero."
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          required: false
+          description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
+          schema:
+            type: integer
+            format: int32
+        - name: period
+          in: query
+          required: false
+          description: "The minimum / maximum reference date"
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+              format: date-time
+        - name: relatedUser
+          in: query
+          required: false
+          description: "The user that either gave or received the reference to the user specified in the path. Should be either the id or some other allowed identification (login name, email, etc)."
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >-
+            The references matching the search filters.
+          headers:
+            X-Total-Count:
+              schema:
+                type: integer
+              description: >-
+                The total number of results. It may be configured in Cyclos to skip the
+                total count, which is useful on large databases, where the count itself
+                may use a lot of resources from the database. If disabled, this header is
+                not returned.
+            X-Page-Size:
+              schema:
+                type: integer
+              description: >-
+                The maximum number of results per page
+            X-Current-Page:
+              schema:
+                type: integer
+              description: >-
+                The current page the results are in
+            X-Has-Next-Page:
+              schema:
+                type: boolean
+              description: >-
+                Returns whether there is a next page. This is normally always returned,
+                whether total count is enabled or not. If the total count is not returned,
+                is the only way for clients to know whether more results are available or
+                not.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserReferenceResult'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /{user}/references/statistics:
+    parameters:
+      - $ref: '#/components/parameters/user'
+    get:
+      operationId: getUserReferenceStatistics
+      summary: >-
+        Returns statistics for a given user references.
+      description: >-
+        Returns statistics for a given user references.
+      tags:
+        - References
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+        - name: direction
+          in: query
+          required: false
+          description: >-
+            Whether to return statistics on received or given references.
+            When not specified, defaults to received.
+          schema:
+            $ref: '#/components/schemas/ReferenceDirectionEnum'
+        - name: periods
+          description: >-
+            The requested periods for statistics. The result will have the
+            `periods` field corresponding to the input periods. When not
+            specified, the default is to return 2 periods: all time and
+            last 30 days. The maximum allowed number of periods is 5.
+            Each period can either be:
+
+
+            - Single date: in ISO 8601 format, from that date and up.
+              Example: `2019-10-30`;
+
+            - 2 dates, split by pipe: Both in ISO 8601 format, specifying
+              a period range. Example: `2019-10-01|2019-12-31T23:59:59.999`.
+          in: query
+          required: false
+          schema:
+            type: array
+            items:
+              type: string
+
+      responses:
+        '200':
+          description: >-
+            The reference statistics for the requested periods.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReferenceStatistics'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /{from}/reference/{to}/data-for-set:
+    parameters:
+      - name: from
+        required: true
+        in: path
+        x-dotInPath: true
+        schema:
+          type: string
+        description: >-
+          The user that will give the reference. Can be `self` for the currently
+          authenticated user, or the id or some other allowed identifier (login
+          name, e-mail, etc).
+      - name: to
+        required: true
+        in: path
+        x-dotInPath: true
+        schema:
+          type: string
+        description: >-
+          The user that will receive the reference. Can be the id or some other
+          allowed identifier (login name, e-mail, etc).
+    get:
+      operationId: getReferenceDataForSet
+      summary: >-
+        Returns details for setting a reference.
+      description: >-
+        Returns details for setting a reference.
+      tags:
+        - References
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            Contains data for setting the reference, as well as the current
+            value, if any.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReferenceDataForSet'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /{from}/reference/{to}:
+    parameters:
+      - name: from
+        required: true
+        in: path
+        x-dotInPath: true
+        schema:
+          type: string
+        description: >-
+          The user that will give the reference. Can be `self` for the currently
+          authenticated user, or the id or some other allowed identifier (login
+          name, e-mail, etc).
+      - name: to
+        required: true
+        in: path
+        x-dotInPath: true
+        schema:
+          type: string
+        description: >-
+          The user that will receive the reference. Can be the id or some other
+          allowed identifier (login name, e-mail, etc).
+    post:
+      operationId: setReference
+      summary: >-
+        Creates or changes the reference between the given users.
+      description: >-
+        Creates or changes the reference between the given users.
+      tags:
+        - References
+      responses:
+        '201':
+          description: >-
+            Returns the identifier of the created / modified reference
+          headers:
+            Location:
+              description: >-
+                URL for viewing the reference details
+              schema:
+                type: string
+          content:
+            text/plain:
+              schema:
+                type: string
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: >-
+            Input error. Either a validation error or the maximum allowed items was
+            exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      requestBody:
+        description: >-
+          The reference details
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReferenceSet'
+
+  /references/{id}:
+    parameters:
+      - $ref: '#/components/parameters/id'
+    get:
+      operationId: viewReference
+      summary: >-
+        Returns details of a specific reference.
+      description: >-
+        Returns details of a specific reference.
+      tags:
+        - References
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            The reference details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReferenceView'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      operationId: updateReference
+      summary: >-
+        Updates an existing reference.
+      description: >-
+        Updates an existing reference.
+      tags:
+        - References
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      responses:
+        '204':
+          description: >-
+            The reference is updated and nothing is returned.
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: >-
+            Input error. Either a validation error or the maximum allowed items was
+            exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      requestBody:
+        description: >-
+          The reference details
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReferenceSet'
+    delete:
+      operationId: deleteReference
+      summary: >-
+        Removes a reference
+      description: >-
+        Removes a reference
+      tags:
+        - References
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '204':
+          description: >-
+            The reference was deleted
+        '409':
+          description: >-
+            This operation expected an entity state, but it has resulted in a conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictError'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /references/{id}/data-for-edit:
+    parameters:
+      - $ref: '#/components/parameters/id'
+    get:
+      operationId: getReferenceDataForEdit
+      summary: >-
+        Returns data to edit an existing reference.
+      description: >-
+        Returns configuration data for editing a reference, plus the current
+        `ReferenceSet` object that can be altered and sent back.
+      tags:
+        - References
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            The data for editing a reference
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReferenceDataForSet'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
 
 components:
@@ -27406,14 +29428,8 @@ components:
         items:
           type: string
       description: >-
-        Select which fields to include on returned data. If nothing is set, all
-        object fields are returned. Unprefixed field names will be handled like a
-        whitelist (only listed fields will be included), while names starting with
-        a minus (-) or exclamation mark (!) will be handled as blacklist (listed
-        fields will not be included). This works for nesting as well. For
-        example: `a,b.b1,c.-c1,c.-c2` will return the fields `a`, `b`
-        (containing only the `b1` field) and `c` (containing all its fields except
-        for `c1` or `c2`).
+        Select which fields to include on returned data. On the beginning of this
+        page is an explanation on how this parameter works.
     customFields:
       name: customFields
       required: false
@@ -29797,11 +31813,11 @@ components:
         
         - `full`: The account is fully visible
         
-        - `incoming`: All (and only) incoming payments are visible
+        - `incoming`: All incoming and own payments are visible
         
         - `none`: The account is not visible
         
-        - `outgoing`: All (and only) outgoing payments are visible
+        - `outgoing`: All outgoing and own payments are visible
         
         - `own`: Only payments performed / received by the operators are visible
       type: string
@@ -30129,8 +32145,6 @@ components:
         
         - `barcode`: A 1d barcode printed on a card
         
-        - `nfcDevice`: A phone (or other device) with NFC support
-        
         - `nfcTag`: A NFC tag, normally a DESFire NFC card
         
         - `other`: Other
@@ -30141,7 +32155,6 @@ components:
       type: string
       enum:
         - barcode
-        - nfcDevice
         - nfcTag
         - other
         - qrCode
@@ -30354,6 +32367,43 @@ components:
         - payment
         - unexpected
         - userBlocked
+
+    ReferenceDirectionEnum:
+      description: >
+        The reference direction in relation to a given user
+
+        Possible values are:
+        
+        - `given`: The reference was given from the given user to another user
+        
+        - `received`: The reference was received by the given user from another user
+      type: string
+      enum:
+        - given
+        - received
+
+    ReferenceLevelEnum:
+      description: >
+        The reference level represents the satisfaction level
+
+        Possible values are:
+        
+        - `bad`: Unsatisfied
+        
+        - `good`: Satisfied
+        
+        - `neutral`: Neutral
+        
+        - `veryBad`: Very unsatisfied
+        
+        - `veryGood`: Very satisfied
+      type: string
+      enum:
+        - bad
+        - good
+        - neutral
+        - veryBad
+        - veryGood
 
     RoleEnum:
       description: >
@@ -31179,6 +33229,32 @@ components:
         - bought
         - generated
 
+    VoucherOrderByEnum:
+      description: >
+        The voucher search result order
+
+        Possible values are:
+        
+        - `creationDateAsc`: Order by creation date, ascending
+        
+        - `creationDateDesc`: Order by creation date, descending (default)
+        
+        - `expirationDateAsc`: Order by expiration date, ascending
+        
+        - `expirationDateDesc`: Order by expiration date, descending
+        
+        - `redeemDateAsc`: Order by redeem date, ascending, then expiration date, ascending
+        
+        - `redeemDateDesc`: Order by redeem date, descending, then expiration date, descending
+      type: string
+      enum:
+        - creationDateAsc
+        - creationDateDesc
+        - expirationDateAsc
+        - expirationDateDesc
+        - redeemDateAsc
+        - redeemDateDesc
+
     VoucherRelationEnum:
       description: >
         The ways a voucher is related to an user
@@ -31978,6 +34054,14 @@ components:
               type: array
               items:
                 type: string
+            hidePrice:
+              description: >-
+                Indicates whether show or not the advertisements price to guests
+              type: boolean
+            hideOwner:
+              description: >-
+                Indicates whether show or not the advertisements owner to guests
+              type: boolean
             query:
               description: >-
                 Default query filters to search advertisements
@@ -32397,6 +34481,14 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/Operation'
+            hidePrice:
+              description: >-
+                Indicates whether show or not this advertisement price to guests
+              type: boolean
+            hideOwner:
+              description: >-
+                Indicates whether show or not this advertisement owner to guests
+              type: boolean
 
     Address:
       description: >-
@@ -33470,6 +35562,38 @@ components:
               items:
                 $ref: '#/components/schemas/AddressQueryFieldEnum'
 
+    BaseReferenceDataForSearch:
+      description: >-
+        Configuration data for searching references
+      type: object
+      x-abstract: true
+      properties:
+        manage:
+          description: >-
+            Can the authenticated user manage returned references?
+          type: boolean
+
+    BaseReferenceQueryFilters:
+      description: >-
+        common query filters for references
+      allOf:
+        - $ref: '#/components/schemas/QueryFilters'
+        - type: object
+          properties:
+            period:
+              description: >-
+                The minimum / maximum reference date
+              type: array
+              items:
+                type: string
+                format: date-time
+            levels:
+              description: >-
+                The levels to filter
+              type: array
+              items:
+                $ref: '#/components/schemas/ReferenceLevelEnum'
+
     BaseShoppingCart:
       description: >-
         Contains basic data shared by other shopping cart related models.
@@ -33790,7 +35914,7 @@ components:
                 Either id or internal name of a currency for the price
             priceRange:
               description: >-
-                The minumum / maximum price.
+                The minumum / maximum price. Used only if a currency is specified.
                 Is expressed an array, with the lower bound as first element, and
                 the upper bound as second element. When only one element, will have
                 just the lower bound. To specify only the upper bound, prefix the value
@@ -34337,6 +36461,21 @@ components:
             Comments for this status change
           type: string
 
+    ChangeVoucherExpirationDate:
+      description: >-
+        Parameters for changing the voucher expiration date.
+      type: object
+      properties:
+        comments:
+          description: >-
+            A comment that can be set.
+          type: string
+        newExpirationDate:
+          description: >-
+            The new voucher expiration date.
+          type: string
+          format: date-time
+
     ClientView:
       description: >-
         Details on an access client
@@ -34795,6 +36934,8 @@ components:
         Data for searching an user's contact list
       type: object
       properties:
+        user:
+          $ref: '#/components/schemas/User'
         customFields:
           description: >-
             The list of contact custom fields that are either to be used as search
@@ -39608,6 +41749,16 @@ components:
                 registering a user, and ignored on public registrations (the e-mail
                 is always sent on public registrations).
 
+    OperatorResult:
+      description: >-
+        Result of a operator search.
+      allOf:
+        - $ref: '#/components/schemas/UserResult'
+        - type: object
+          properties:
+            group:
+              $ref: '#/components/schemas/EntityReference'
+
     OperatorsPermissions:
       description: >-
         Permissions over own operators
@@ -41352,6 +43503,11 @@ components:
         - $ref: '#/components/schemas/BaseRecordDataForSearch'
         - type: object
           properties:
+            user:
+              description: >-
+                The user searching a record type, empty if there is self otherwise the managed user
+              allOf:
+                - $ref: '#/components/schemas/User'
             query:
               description: >-
                 Default query filters for searching records
@@ -41774,6 +43930,150 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/WeekDayEnum'
+
+    Reference:
+      description: >-
+        A general reference between 2 users
+      allOf:
+        - $ref: '#/components/schemas/Entity'
+        - type: object
+          properties:
+            date:
+              description: The date the reference was set
+              type: string
+              format: date-time
+            level:
+              $ref: '#/components/schemas/ReferenceLevelEnum'
+            comments:
+              description: The reference comments
+              type: string
+
+    ReferenceDataForSet:
+      description: >-
+        Configuration data for setting a reference
+      type: object
+      properties:
+        from:
+          description: The user that gave the reference
+          allOf:
+            - $ref: '#/components/schemas/User'
+        to:
+          description: The user that received the reference
+          allOf:
+            - $ref: '#/components/schemas/User'
+        reference:
+          description: The object that should be edited and posted back
+          allOf:
+            - $ref: '#/components/schemas/ReferenceSet'
+
+
+    ReferencePeriodStatistics:
+      description: >-
+        Statistics for received or given references in a given period
+      type: object
+      properties:
+        period:
+          description: >-
+            The date period ranges. Null when the results are for all time.
+          allOf:
+            - $ref: '#/components/schemas/DatePeriod'
+        total:
+          type: integer
+          description: The total number of accounted references.
+        totalNegative:
+          description: >-
+            The total number of accounted `good`
+            or `veryGood` references.
+          type: integer
+        totalPositive:
+          description: >-
+            The total number of accounted `bad`
+            or `veryBad` references.
+          type: integer
+        counts:
+          description: References count per level.
+          type: object
+          additionalProperties:
+             type: integer
+        score:
+          type: number
+          format: float
+          description: >-
+            The score is a value from 1 to 5 which contains the average score
+            when counting all levels. Each reference level has a score:
+
+
+            - `veryBad`: 1;
+
+            - `bad`: 2;
+
+            - `neutral`: 3;
+
+            - `good`: 4;
+
+            - `veryGood`: 5.
+
+
+            The score will be 0 when there are no references.
+
+    ReferenceSet:
+      description: >-
+        Parameters for setting a reference value. When modifying an existing
+        reference, the `version` field must be passed in with the correct
+        value, as returned in `GET /{from}/reference/{to}/data-for-set`.
+      type: object
+      properties:
+        level:
+          $ref: '#/components/schemas/ReferenceLevelEnum'
+        comments:
+          description: >-
+            Comments for this reference
+          type: string
+        version:
+          type: integer
+          description: >-
+            The version stamp for the current object, used for optimistic locking. When
+            saving, the same version as previously received needs to be passed back. If
+            no one else has saved the object, the version will match and the object will
+            be updated. However, if someone other has saved the object, the version will
+            no longer match, and an error will be raised. This is used to prevent
+            multiple users (or processes) from updating the same object and unwilingly
+            overridding the property values, leading to data loss.
+
+    ReferenceStatistics:
+      description: >-
+        Statistics for received or given references
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+        periods:
+          description: >-
+            For each requested period, contains corresponding statistics
+          type: array
+          items:
+            $ref: '#/components/schemas/ReferencePeriodStatistics'
+
+    ReferenceView:
+      description: >-
+        Details of a reference
+      allOf:
+        - $ref: '#/components/schemas/Reference'
+        - type: object
+          properties:
+            from:
+              description: The user that gave the reference
+              allOf:
+                - $ref: '#/components/schemas/User'
+            to:
+              description: The user that received the reference
+              allOf:
+                - $ref: '#/components/schemas/User'
+            manage:
+              description: Can the authenticated user manage this reference?
+              type: boolean
+
+
 
     RejectOrder:
       description: >-
@@ -42794,31 +45094,16 @@ components:
 
     Token:
       description: >-
-        Contains reference to a token. Tokens are used to identify users.
+        Contains reference to a token. Tokens are used to identify users,
+        and are normally used as cards.
       allOf:
-        - $ref: '#/components/schemas/NamedEntity'
+        - $ref: '#/components/schemas/Entity'
         - type: object
           properties:
-            type:
-              $ref: '#/components/schemas/TokenType'
             value:
               description: >-
-                The token value only if not NFC. Othwise the token's label.
+                The token value only if not NFC. Otherwise is the token label.
               type: string
-
-    TokenDetailed:
-      description: >-
-        Contain all the information of a token.
-      allOf:
-        - $ref: '#/components/schemas/Token'
-        - type: object
-          properties:
-            user:
-              description: >-
-                The assigned user. Only if status is not
-                `unassigned`.
-              allOf:
-                - $ref: '#/components/schemas/User'
             activationDate:
               description: >-
                 When the owner user activated the token.
@@ -42838,6 +45123,167 @@ components:
             status:
               $ref: '#/components/schemas/TokenStatusEnum'
 
+
+    TokenDataForNew:
+      description: >-
+        Configuration data to create a new token
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/TokenType'
+        user:
+          description: >-
+            The user details, in case a user was requested.
+          allOf:
+            - $ref: '#/components/schemas/User'
+        token:
+          description: >-
+            The object that should be modified and posted back.
+          allOf:
+            - $ref: '#/components/schemas/TokenNew'
+
+    TokenDataForSearch:
+      description: >-
+        Configuration data for a general tokens search of a given type
+      allOf:
+        - $ref: '#/components/schemas/TokenPermissions'
+        - type: object
+          properties:
+            groups:
+              description: >-
+                The groups the authenticated user can use to filter tokens. Admins can
+                always filter by groups, while brokers depend on a permission, which can
+                be to only view group sets, only groups or none.
+              type: array
+              items:
+                $ref: '#/components/schemas/Group'
+            query:
+              description: >-
+                Default query filters to search tokens
+              allOf:
+                - $ref: '#/components/schemas/TokenQueryFilters'
+
+
+
+    TokenDetailed:
+      description: >-
+        Contains detailed information of a token.
+      allOf:
+        - $ref: '#/components/schemas/TokenResult'
+        - type: object
+          properties:
+            type:
+              $ref: '#/components/schemas/TokenType'
+
+
+    TokenNew:
+      description: >-
+        Data to create a new token
+      type: object
+      properties:
+        user:
+          description: >-
+            Either id or identification of the user to initially assign the token
+            to. If set the token initial status will be either
+            `pending` or `active`
+            (if `activateNow` is true). If the user is not set, the initial status
+            will always be `unassigned`.
+          type: string
+        value:
+          description: >-
+            The token value to create. The token value is commonly used as the
+            card number.
+          type: string
+        activateNow:
+          description: >-
+            When set to true, the token will be initially active when `user` is
+            also set. Has no effect if `user` is null.
+          type: boolean
+
+    TokenPermissions:
+      description: >-
+        Permissions over tokens of a specific type
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/TokenType'
+        create:
+          description: >-
+            Can create tokens of this type?
+            For NFC tags, this permission is mapped to the 'Initialize' action.
+          type: boolean
+        activate:
+          description: >-
+            Can activate tokens of this type?
+            For NFC tags, this permission is mapped to the 'Personalize' action.
+          type: boolean
+
+
+
+    TokenQueryFilters:
+      description: >-
+        Query filters for tokens
+      allOf:
+        - $ref: '#/components/schemas/QueryFilters'
+        - type: object
+          properties:
+            activationPeriod:
+              description: >-
+                The minimum / maximum token activation date.
+              type: array
+              items:
+                type: string
+                format: date-time
+            expiryPeriod:
+              description: >-
+                The minimum / maximum token expiry date.
+              type: array
+              items:
+                type: string
+                format: date-time
+            groups:
+              type: array
+              items:
+                type: string
+              description: >-
+                Either id or internal names of groups / group sets
+            brokers:
+              type: array
+              items:
+                type: string
+              description: >-
+                Either id or a principal (login name, e-mail, etc) for brokers
+            user:
+              type: string
+              description: >-
+                Either id or a principal (login name, e-mail, etc) for the token
+                owner user
+            value:
+              type: string
+              description: >-
+                The token value
+            statuses:
+              type: array
+              items:
+                $ref: '#/components/schemas/TokenStatusEnum'
+              description: >-
+                The desired token statuses
+
+    TokenResult:
+      description: >-
+        Result of a general token search
+      allOf:
+        - $ref: '#/components/schemas/Token'
+        - type: object
+          properties:
+            user:
+              description: >-
+                The assigned user. Only if status is not
+                `unassigned`.
+              allOf:
+                - $ref: '#/components/schemas/User'
+
+
     TokenType:
       description: >-
         A reference to a token type
@@ -42845,6 +45291,10 @@ components:
         - $ref: '#/components/schemas/InternalNamedEntity'
         - type: object
           properties:
+            pluralName:
+              description: >-
+                The name for the plural form
+              type: string
             mask:
               description: >-
                 In case the token value is entered by users or formatted, this is
@@ -42853,13 +45303,82 @@ components:
             physicalType:
               $ref: '#/components/schemas/PhysicalTokenTypeEnum'
 
+    TokenView:
+      description: >-
+        Contains all data regarding a token
+      allOf:
+        - $ref: '#/components/schemas/TokenDetailed'
+        - type: object
+          properties:
+            activationDeadline:
+              description: >-
+                Limit date a pending token can be activated. Not returned when
+                status is not `pending`.
+              type: string
+              format: date-time
+            activate:
+              description: >-
+                Can this token be directly activated?
+              type: boolean
+            assign:
+              description: >-
+                Can this token be assigned to a user?
+              type: boolean
+            block:
+              description: >-
+                Can this token be blocked?
+              type: boolean
+            unblock:
+              description: >-
+                Can this token be unblocked?
+              type: boolean
+            cancel:
+              description: >-
+                Can this token be canceled?
+              type: boolean
+            setActivationDeadline:
+              description: >-
+                Can the activation deadline date of this token be changed?
+              type: boolean
+            setExpiryDate:
+              description: >-
+                Can the expiry date of this token be changed?
+              type: boolean
+
     TokensPermissions:
       description: >-
         Permissions over tokens
       type: object
       properties:
-        nfc:
+        my:
           description: >-
+            Permissions over my own tokens type
+          type: array
+          items:
+            $ref: '#/components/schemas/TokenPermissions'
+        user:
+          description: >-
+            Permissions over tokens types of other users
+          type: array
+          items:
+            $ref: '#/components/schemas/TokenPermissions'
+        personalizeNfcTokensAsMember:
+          description: >-
+            NFC token types the authenticated member can personalize to other
+            members (example, a business personalizing cards for clients).
+          type: array
+          items:
+            $ref: '#/components/schemas/TokenType'
+
+
+        nfc:
+          deprecated: true
+          x-remove-version: 4.15
+          description: >-
+            DEPRECATED: Use either `my`, `user` or `personalizeNfcTokensAsMember`,
+            filtering by `physicalType` to be `nfcTag`.
+
+
             Permissions over each visible nfc token type
           type: array
           items:
@@ -45060,12 +47579,17 @@ components:
             $ref: '#/components/schemas/Operation'
         tokens:
           description: >-
-            Tokens the authenticated user can view over the given user
+            Permissions over tokens of each visible type.
           type: array
           items:
-            $ref: '#/components/schemas/TokenType'
+            $ref: '#/components/schemas/TokenPermissions'
         personalizeNfcTokens:
+          deprecated: true
           description: >-
+            DEPRECATED: Filter the `tokens` list with
+            `type.physicalType = 'nfcTag'` and `activate = true`.
+
+
             NFC tokens the authenticated user can personalize for the given user
           type: array
           items:
@@ -45336,6 +47860,69 @@ components:
             payments of the given user?
           type: boolean
 
+    UserReferenceDataForSearch:
+      description: >-
+        Data for searching references of a given user
+      allOf:
+        - $ref: '#/components/schemas/BaseReferenceDataForSearch'
+        - type: object
+          properties:
+            user:
+              $ref: '#/components/schemas/User'
+            query:
+              description: >-
+                Default query filters
+              allOf:
+                - $ref: '#/components/schemas/UserReferenceQueryFilters'
+            set:
+              description: >-
+                Can the authenticated user set a reference to the given user?
+              type: boolean
+            current:
+              description: >-
+                The current reference, if any, from the authenticated user
+                to the given user
+              allOf:
+                - $ref: '#/components/schemas/Reference'
+
+
+    UserReferenceQueryFilters:
+      description: >-
+        Query filters for a user's references
+      allOf:
+        - $ref: '#/components/schemas/BaseReferenceQueryFilters'
+        - type: object
+          properties:
+            direction:
+              $ref: '#/components/schemas/ReferenceDirectionEnum'
+            relatedUser:
+              description: >-
+                The user that either gave or received the reference to the user
+                specified in the path. Should be either the id or some other
+                allowed identification (login name, email, etc).
+              type: string
+
+
+    UserReferenceResult:
+      description: >-
+        Result of searching references of a given user
+      allOf:
+        - $ref: '#/components/schemas/Reference'
+        - type: object
+          properties:
+            relatedUser:
+              description: >-
+                The user that either gave to or received from the user specified
+                in the path variable.
+              allOf:
+                - $ref: '#/components/schemas/User'
+            direction:
+              description: >-
+                Whether this reference was given to or received from the user specified
+                in the path variable.
+              allOf:
+                - $ref: '#/components/schemas/ReferenceDirectionEnum'
+
     UserRegistrationPrincipal:
       description: >-
         Contains information about a principal (user identification) and the
@@ -45538,6 +48125,22 @@ components:
             of the given user?
           type: boolean
 
+    UserTokensListData:
+      description: >-
+        Data for tokens of a specific type and user
+      allOf:
+        - $ref: '#/components/schemas/TokenPermissions'
+        - type: object
+          properties:
+            user:
+              $ref: '#/components/schemas/User'
+            tokens:
+              description: >-
+                The tokens for this type and user.
+              type: array
+              items:
+                $ref: '#/components/schemas/Token'
+
     UserValidationPermissions:
       description: >-
         Permissions over the registration / email change validations of a
@@ -45611,16 +48214,22 @@ components:
             group:
               description: >-
                 Reference to the user group. Is only returned if the authenticated
-                user has permission to see groups
+                user has permission to see groups.
               allOf:
                 - $ref: '#/components/schemas/EntityReference'
             groupSet:
               description: >-
                 Reference to the user group set. Is only returned if the
                 authenticated user has permission to see group sets and the user
-                group is in a group set
+                group is in a group set.
               allOf:
                 - $ref: '#/components/schemas/EntityReference'
+            status:
+              description: >-
+                The user status. Only returned if the authenticated user has
+                permission to view the user status.
+              allOf:
+                - $ref: '#/components/schemas/UserStatusEnum'
             additionalImages:
               type: array
               items:
@@ -46195,7 +48804,6 @@ components:
         refund:
           description: >-
             Whether the logged user can refund vouchers of types belonging to this configuration.
-            Only if the authenticated user is an admin. Otherwise `false`.
           type: boolean
         generate:
           description: >-
@@ -46363,6 +48971,10 @@ components:
               type: boolean
               deprecated: true
               x-remove-version: 4.13
+            canChangeExpirationDate:
+              description:
+                Can the authenticated user change this voucher's expiration date?
+              type: boolean
             showConfiguration:
               description: >-
                 Should the voucher configuration be shown to users? This flag is
@@ -46380,6 +48992,46 @@ components:
               $ref: '#/components/schemas/VoucherCreationTypeEnum'
             cancelAction:
               $ref: '#/components/schemas/VoucherCancelActionEnum'
+            refund:
+              description: >-
+                The transaction which refunds this voucher, if any and visible.
+              allOf:
+                - $ref: '#/components/schemas/Transaction'
+            confirmationPasswordInput:
+              description: >-
+                If a confirmation password is used, contains the definitions on how to
+                request that password from the user. This confirmation password is required
+                when performing sensible actions. Sometimes this is dynamic, for example,
+                the confirmation might be configured to be used only once per session, or
+                operations like payments may have a limit per day to be without confirmation
+                (pinless).
+              allOf:
+                - $ref: '#/components/schemas/PasswordInput'
+
+
+    VouchersDataForSearch:
+      description: >-
+        Contains configuration data for searching vouchers as admin
+      type: object
+      properties:
+        mask:
+          description: >-
+            The input mask for voucher tokens. Optional.
+          type: string
+        types:
+          description: >-
+            The voucher types that can be used for searching
+          type: array
+          items:
+            $ref: '#/components/schemas/VoucherType'
+        userGroups:
+          description: >-
+            Visible user groups for the authenticated user
+          type: array
+          items:
+            $ref: '#/components/schemas/Group'
+        query:
+          $ref: '#/components/schemas/VouchersQueryFilters'
 
     VouchersPermissions:
       description: >-
@@ -46392,6 +49044,110 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/VoucherPermissions'
+
+    VouchersQueryFilters:
+      description: >-
+        Definitions for searching vouchers as admin
+      allOf:
+        - $ref: '#/components/schemas/QueryFilters'
+        - type: object
+          properties:
+            amountRange:
+              description: >-
+                The minimum / maximum voucher amount
+              type: array
+              items:
+                type: string
+                format: number
+            creationPeriod:
+              description: >-
+                The minimum / maximum voucher creation date.
+                Is expressed an array, with the lower bound as first element, and
+                the upper bound as second element. When only one element, will have
+                just the lower bound. To specify only the upper bound, prefix the value
+                with a comma.
+              type: array
+              items:
+                type: string
+                format: date-time
+            expirationPeriod:
+              description: >-
+                The minimum / maximum voucher expiration date.
+                Is expressed an array, with the lower bound as first element, and
+                the upper bound as second element. When only one element, will have
+                just the lower bound. To specify only the upper bound, prefix the value
+                with a comma.
+              type: array
+              items:
+                type: string
+                format: date-time
+            redeemPeriod:
+              description: >-
+                The minimum / maximum voucher redeem date.
+                Is expressed an array, with the lower bound as first element, and
+                the upper bound as second element. When only one element, will have
+                just the lower bound. To specify only the upper bound, prefix the value
+                with a comma.
+              type: array
+              items:
+                type: string
+                format: date-time
+            token:
+              description: >-
+                The voucher token (with or without mask)
+              type: string
+            types:
+              description: >-
+                The ids or internal names of voucher types
+              type: array
+              items:
+                type: string
+            statuses:
+              type: array
+              items:
+                $ref: '#/components/schemas/VoucherStatusEnum'
+            creationType:
+              $ref: '#/components/schemas/VoucherCreationTypeEnum'
+            printed:
+              description: >-
+                If it is passed, filter if the voucher was printed or not.
+              type: boolean
+            buyer:
+              description: >-
+                The buyer of the voucher.
+                A user identification value, such as id, username, e-mail, phone, etc. Id
+                is always allowed, others depend on Cyclos configuration. Note that a
+                valid numeric value is always considered as id. For example, when using
+                another identification method that can be numeric only, prefix the value
+                with a single quote (like in Excel spreadsheets), for example,
+                `'1234567890`;
+              type:
+                string
+            redeemer:
+              description: >-
+                The redeemer of the voucher.
+                A user identification value, such as id, username, e-mail, phone, etc. Id
+                is always allowed, others depend on Cyclos configuration. Note that a
+                valid numeric value is always considered as id. For example, when using
+                another identification method that can be numeric only, prefix the value
+                with a single quote (like in Excel spreadsheets), for example,
+                `'1234567890`;
+              type:
+                string
+            buyerGroups:
+              description: >-
+                The ids or internal names of buyers groups
+              type: array
+              items:
+                type: string
+            redeemerGroups:
+              description: >-
+                The ids or internal names of redeemers groups
+              type: array
+              items:
+                type: string
+            orderBy:
+              $ref: '#/components/schemas/VoucherOrderByEnum'
 
     WebshopAd:
       description: >-
