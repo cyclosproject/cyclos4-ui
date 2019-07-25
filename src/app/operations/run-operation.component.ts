@@ -20,6 +20,7 @@ import { PagedResults } from 'app/shared/paged-results';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { first, tap } from 'rxjs/operators';
 import { ActiveMenu, Menu } from 'app/shared/menu';
+import { RecordHelperService } from 'app/core/records-helper.service';
 
 /**
  * Runs a custom operation
@@ -62,6 +63,7 @@ export class RunOperationComponent
     injector: Injector,
     private fieldsHelper: FieldHelperService,
     private operationHelper: OperationHelperService,
+    private recordHelper: RecordHelperService,
     private nextRequestState: NextRequestState,
     private operationsService: OperationsService) {
     super(injector);
@@ -318,6 +320,9 @@ export class RunOperationComponent
           return this.authHelper.userMenu(data.user, Menu.MY_PROFILE);
         case OperationRunScope.Ad:
           return this.authHelper.userMenu(data.user, Menu.SEARCH_ADS);
+        case OperationRunScope.Record:
+          return this.authHelper.isSelf(data.user) ? this.recordHelper.menuForRecordType(data.user, data.recordType) :
+            this.authHelper.userMenu(data.user, Menu.SEARCH_USERS);
         case OperationRunScope.Transfer:
           return this.authHelper.transferMenu(data.transfer);
         case OperationRunScope.Standalone:

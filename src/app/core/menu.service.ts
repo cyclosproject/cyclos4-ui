@@ -1,6 +1,6 @@
 import { Injectable, Injector } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { AccountType, Auth, DataForUi, Operation, RoleEnum, VouchersPermissions } from 'app/api/models';
+import { AccountType, Auth, DataForUi, Operation, RoleEnum, VouchersPermissions, RecordLayoutEnum } from 'app/api/models';
 import { Configuration } from 'app/configuration';
 import { BankingHelperService } from 'app/core/banking-helper.service';
 import { BreadcrumbService } from 'app/core/breadcrumb.service';
@@ -442,8 +442,9 @@ export class MenuService {
     const logout = addRoot(RootMenu.LOGOUT, 'logout', this.i18n.menu.logout, null, []);
 
     // Lambda that adds a submenu to a root menu
-    const add = (menu: Menu | ActiveMenu, url: string, icon: string, label: string, showIn: MenuType[] = null): MenuEntry => {
-      const entry = new MenuEntry(menu, url, icon, label, showIn);
+    const add = (menu: Menu | ActiveMenu, url: string, icon: string, label: string, showIn: MenuType[] = null,
+      urlHandler: () => string = null): MenuEntry => {
+      const entry = new MenuEntry(menu, url, icon, label, showIn, urlHandler);
       const root = roots.get(entry.menu.root);
       root.entries.push(entry);
       return entry;
@@ -655,15 +656,27 @@ export class MenuService {
       }
 
       // Records
-      const recordTypes = this.recordHelper.ownerRecordTypes();
-      if (recordTypes.length > 0) {
-        for (const type of recordTypes) {
-          const activeMenu = new ActiveMenu(Menu.SEARCH_RECORDS, { recordType: type });
-          add(
-            activeMenu,
-            `/records/${ApiHelper.SELF}/${ApiHelper.internalNameOrId(type)}/${type.layout}`,
-            'library_books',
-            type.pluralName);
+      const recordPermissions = this.recordHelper.ownerRecordPermissions();
+      if (!auth.global && recordPermissions.length > 0) {
+        for (const permission of recordPermissions) {
+          const activeMenu = new ActiveMenu(Menu.SEARCH_RECORDS, { recordType: permission.type });
+          const newSingleRecord = permission.type.layout === RecordLayoutEnum.SINGLE && !permission.singleId;
+          const pathFunction = () => this.recordHelper.resolvePath(
+            permission.type,
+            permission.singleId,
+            ApiHelper.SELF,
+            permission.create);
+          const path = pathFunction();
+          if (path != null) {
+            add(
+              activeMenu,
+              path,
+              'library_books',
+              permission.type.pluralName,
+              null,
+              // Calculate the path dinamically after save a single form first time
+              newSingleRecord ? pathFunction : null);
+          }
         }
       }
 

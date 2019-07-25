@@ -1,6 +1,9 @@
 import { Component, OnInit, ChangeDetectionStrategy, Injector } from '@angular/core';
 import { BasePageComponent } from 'app/shared/base-page.component';
-import { RecordDataForEdit, RecordDataForNew, RecordCustomField, RecordCustomFieldDetailed, RecordSection } from 'app/api/models';
+import {
+  RecordDataForEdit, RecordDataForNew, RecordCustomField, RecordCustomFieldDetailed,
+  RecordSection, RecordLayoutEnum
+} from 'app/api/models';
 import { RecordsService } from 'app/api/services';
 import { Observable } from 'rxjs';
 import { FormGroup } from '@angular/forms';
@@ -98,6 +101,15 @@ export class RecordFormComponent extends BasePageComponent<RecordDataForEdit | R
         ? this.i18n.record.created(this.data.type.name)
         : this.i18n.record.saved(this.data.type.name));
       this.router.navigate(['/records', 'view', id || this.id]);
+      // Update single form id when saving it for first time
+      if (this.data.type.layout === RecordLayoutEnum.SINGLE && !this.id) {
+        for (const permission of this.recordsHelper.ownerRecordPermissions()) {
+          if (permission.type.id === this.data.type.id) {
+            permission.singleId = id as string;
+          }
+        }
+      }
+      // TODO replace URL instead of navigate to avoid entering a new form when going back
     }));
   }
 }

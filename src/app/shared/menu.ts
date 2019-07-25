@@ -187,15 +187,20 @@ export class MenuEntry extends BaseMenuEntry {
 
   constructor(
     menu: Menu | ActiveMenu,
-    public url: string,
+    private _url: string,
     icon: string,
     label: string,
     showIn: MenuType[] = null,
+    private urlHandler: () => string,
     public menuData?: ActiveMenuData
   ) {
     super(icon, label, showIn);
     this.menu = menu instanceof ActiveMenu ? menu.menu : menu;
     this.activeMenu = menu instanceof ActiveMenu ? menu : new ActiveMenu(menu);
+  }
+
+  get url() {
+    return this.urlHandler == null ? this._url : this.urlHandler();
   }
 }
 

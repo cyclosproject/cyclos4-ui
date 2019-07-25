@@ -12,6 +12,7 @@ import { words, empty } from 'app/shared/helper';
 import { BehaviorSubject } from 'rxjs';
 import { Menu } from 'app/shared/menu';
 import { UserHelperService } from 'app/core/user-helper.service';
+import { RecordHelperService } from 'app/core/records-helper.service';
 
 export const MAX_SIZE_SHORT_NAME = 25;
 
@@ -30,6 +31,7 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     private usersService: UsersService,
     private contactsService: ContactsService,
     private operationsHelper: OperationHelperService,
+    private recordsHelper: RecordHelperService,
     public maps: MapsService,
     public userHelper: UserHelperService) {
     super(injector);
@@ -244,7 +246,11 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
       for (const record of permissions.records || []) {
         actions.push(new HeadingAction('library_books', this.i18n.record.action(
           { type: record.type.pluralName, count: record.count }), () => {
-            this.router.navigate(['/records/', this.param, ApiHelper.internalNameOrId(record.type), record.type.layout]);
+            this.router.navigateByUrl(this.recordsHelper.resolvePath(
+              record.type,
+              record.singleRecordId,
+              this.param,
+              record.create));
           }));
       }
       // Custom operations
