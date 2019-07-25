@@ -23,22 +23,24 @@ export class RecordHelperService {
   ) { }
 
   /**
-  * Returns the record types within the according permissions for the logged user  */
-  ownerRecordPermissions(): RecordPermissions[] {
+  * Returns the record types within the according permissions for the logged user or system based on the given flag */
+  recordPermissions(system?: boolean): RecordPermissions[] {
     const dataForUi = this.dataForUiHolder.dataForUi;
     const auth = dataForUi.auth || {};
     const permissions = auth.permissions || {};
     const records = permissions.records || {};
-    return records.user;
+    const recordPermissions = system ? records.system || [] : records.user || [];
+    return recordPermissions;
   }
 
-  resolvePath(type: RecordType, singleRecordId: string = null, owner: string, canCreate: boolean): string {
+  resolvePath(permission: RecordPermissions, owner: string, system: boolean = false): string {
+    const type = permission.type;
     const pathFunction = (id: string) => {
       let path = null;
       if (type.layout === RecordLayoutEnum.SINGLE) {
-        if (singleRecordId) {
+        if (permission.singleRecordId) {
           path = `view/${id}`;
-        } else if (canCreate) {
+        } else if (permission.create) {
           path = `${owner}/${ApiHelper.internalNameOrId(type)}/new`;
         }
       } else {
@@ -46,15 +48,15 @@ export class RecordHelperService {
       }
       return `/records/${path}`;
     };
-    if (type.layout === RecordLayoutEnum.SINGLE && singleRecordId == null) {
+    if (type.layout === RecordLayoutEnum.SINGLE && permission.singleRecordId == null) {
       // Search single record dinamically
-      for (const record of this.ownerRecordPermissions()) {
+      for (const record of this.recordPermissions(system)) {
         if (type.id === record.type.id) {
-          return pathFunction(record.singleId);
+          return pathFunction(record.singleRecordId);
         }
       }
     } else {
-      return pathFunction(singleRecordId);
+      return pathFunction(permission.singleRecordId);
     }
   }
 

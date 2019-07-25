@@ -40,9 +40,10 @@ export class ViewRecordComponent extends BaseViewPageComponent<RecordView> imple
     this.headingActions = [];
     this.title = isEmpty(record.display) ? record.type.name : record.display;
     this.columnLayout = this.recordsHelper.isColumnLayout(record.type);
-    this.valuesWithoutSection = record.customValues.filter(value => value.field.section == null) || [];
+    const customValues = record.customValues || [];
+    this.valuesWithoutSection = customValues.filter(value => value.field.section == null) || [];
     (record.type.sections || []).forEach(s => {
-      const filter = record.customValues.filter(value => value.field.section != null && value.field.section.id === s.id);
+      const filter = customValues.filter(value => value.field.section != null && value.field.section.id === s.id);
       if (filter) {
         this.valuesWithSection.set(s, filter);
       }

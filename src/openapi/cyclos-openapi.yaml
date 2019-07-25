@@ -41976,18 +41976,13 @@ components:
       description: >-
         Permissions over a user record for a given owner
       allOf:
-        - $ref: '#/components/schemas/RecordBasePermissions'
+        - $ref: '#/components/schemas/RecordPermissions'
         - type: object
           properties:
             count:
               description: >-
                 The current number of records of this type for this owner
               type: integer
-            singleRecordId:
-              description: >-
-                If this record type layout is single, and the record exists,
-                contains its identifier
-              type: string
 
     PasswordActions:
       description: >-
@@ -43558,28 +43553,37 @@ components:
     RecordPermissions:
       description: >-
         Permissions over own records of a given type
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/RecordType'
-        create:
-          description: >-
-            Can create records of this type?
-          type: boolean
-        update:
-          description: >-
-            Can update records of this type?
-          type: boolean
-        remove:
-          description: >-
-            Can remove records of this type?
-          type: boolean
-        singleId:
-          description: >-
-            If the record type `layout` is  `single` this
-            property contains the identifier of the existing record (if any) of this
-            type.
-          type: string
+      allOf:
+        - $ref: '#/components/schemas/RecordBasePermissions'
+        - type: object
+          properties:
+            singleRecordId:
+              description: >-
+                If this record type layout is single, and the record exists, contains its identifier
+              type: string
+            update:
+              deprecated: true
+              x-remove-version: 4.15
+              description: >-
+                Use `edit` property
+
+
+
+                Can update records of this type?
+              type: boolean
+            singleId:
+              deprecated: true
+              x-remove-version: 4.15
+              description: >-
+                Use `singleRecordId` property
+
+
+
+                If the record type `layout` is  `single` this
+                property contains the identifier of the existing record (if any) of this
+                type.
+              type: string
+
 
     RecordQueryFilters:
       description: >-

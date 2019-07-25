@@ -1,6 +1,6 @@
 import { Injectable, Injector } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { AccountType, Auth, DataForUi, Operation, RoleEnum, VouchersPermissions, RecordLayoutEnum } from 'app/api/models';
+import { AccountType, Auth, DataForUi, Operation, RoleEnum, VouchersPermissions, RecordLayoutEnum, RecordPermissions } from 'app/api/models';
 import { Configuration } from 'app/configuration';
 import { BankingHelperService } from 'app/core/banking-helper.service';
 import { BreadcrumbService } from 'app/core/breadcrumb.service';
@@ -502,6 +502,28 @@ export class MenuService {
       doAddOperations('self', userOperations.filter(o => ApiHelper.userMenuMatches(root, o.userMenu)));
     };
 
+    // Lambda that adds records in the given root menu entry
+    const addRecords = (menu: Menu, recordPermissions: RecordPermissions[], owner: string) => {
+      if (!auth.global && recordPermissions.length > 0) {
+        for (const permission of recordPermissions) {
+          const activeMenu = new ActiveMenu(menu, { recordType: permission.type });
+          const pathFunction = () => this.recordHelper.resolvePath(
+            permission, owner, owner === ApiHelper.SYSTEM);
+          const path = pathFunction();
+          if (path != null) {
+            add(
+              activeMenu,
+              path,
+              'library_books',
+              permission.type.pluralName,
+              null,
+              // Calculate the path dinamically while the single form has not been saved for first time
+              permission.type.layout === RecordLayoutEnum.SINGLE && !permission.singleRecordId ? pathFunction : null);
+          }
+        }
+      }
+    };
+
     // Add the submenus
     if (restrictedAccess) {
       // No menus in restricted access
@@ -656,29 +678,8 @@ export class MenuService {
       }
 
       // Records
-      const recordPermissions = this.recordHelper.ownerRecordPermissions();
-      if (!auth.global && recordPermissions.length > 0) {
-        for (const permission of recordPermissions) {
-          const activeMenu = new ActiveMenu(Menu.SEARCH_RECORDS, { recordType: permission.type });
-          const newSingleRecord = permission.type.layout === RecordLayoutEnum.SINGLE && !permission.singleId;
-          const pathFunction = () => this.recordHelper.resolvePath(
-            permission.type,
-            permission.singleId,
-            ApiHelper.SELF,
-            permission.create);
-          const path = pathFunction();
-          if (path != null) {
-            add(
-              activeMenu,
-              path,
-              'library_books',
-              permission.type.pluralName,
-              null,
-              // Calculate the path dinamically after save a single form first time
-              newSingleRecord ? pathFunction : null);
-          }
-        }
-      }
+      addRecords(Menu.SEARCH_RECORDS, this.recordHelper.recordPermissions(), ApiHelper.SELF);
+      addRecords(Menu.SEARCH_RECORDS, this.recordHelper.recordPermissions(true), ApiHelper.SYSTEM);
 
       if ((permissions.notifications || {}).enable) {
         add(Menu.NOTIFICATIONS, '/personal/notifications', 'notifications', this.i18n.menu.personalNotifications);

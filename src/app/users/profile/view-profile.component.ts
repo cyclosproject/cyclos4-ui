@@ -246,11 +246,7 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
       for (const record of permissions.records || []) {
         actions.push(new HeadingAction('library_books', this.i18n.record.action(
           { type: record.type.pluralName, count: record.count }), () => {
-            this.router.navigateByUrl(this.recordsHelper.resolvePath(
-              record.type,
-              record.singleRecordId,
-              this.param,
-              record.create));
+            this.router.navigateByUrl(this.recordsHelper.resolvePath(record, this.param));
           }));
       }
       // Custom operations
