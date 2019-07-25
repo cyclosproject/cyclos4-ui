@@ -71,7 +71,7 @@ export class RecordHelperService {
 
   menuForRecordType(user: User, type: RecordType): Menu | ActiveMenu | Observable<Menu> {
     if (this.authHelper.isSelf(user)) {
-      return new ActiveMenu(Menu.SEARCH_RECORDS, { recordType: type });
+      return new ActiveMenu(user == null ? Menu.SEARCH_SYSTEM_RECORDS : Menu.SEARCH_USER_RECORDS, { recordType: type });
     } else {
       return this.authHelper.searchUsersMenu(user);
     }

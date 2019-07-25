@@ -680,8 +680,8 @@ export class MenuService {
       }
 
       // Records
-      addRecords(Menu.SEARCH_RECORDS, this.recordHelper.recordPermissions(), ApiHelper.SELF);
-      addRecords(Menu.SEARCH_RECORDS, this.recordHelper.recordPermissions(true), ApiHelper.SYSTEM);
+      addRecords(Menu.SEARCH_USER_RECORDS, this.recordHelper.recordPermissions(), ApiHelper.SELF);
+      addRecords(Menu.SEARCH_SYSTEM_RECORDS, this.recordHelper.recordPermissions(true), ApiHelper.SYSTEM);
 
       if ((permissions.notifications || {}).enable) {
         add(Menu.NOTIFICATIONS, '/personal/notifications', 'notifications', this.i18n.menu.personalNotifications);

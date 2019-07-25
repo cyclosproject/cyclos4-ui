@@ -123,7 +123,8 @@ export module Menu {
   export const RUN_ACTION_OPERATION = new Menu(RootMenu.BANKING, 'RUN_ACTION_OPERATION');
 
   // Records
-  export const SEARCH_RECORDS = new Menu(RootMenu.PERSONAL, 'SEARCH_RECORDS');
+  export const SEARCH_USER_RECORDS = new Menu(RootMenu.PERSONAL, 'SEARCH_USER_RECORDS');
+  export const SEARCH_SYSTEM_RECORDS = new Menu(RootMenu.CONTENT, 'SEARCH_SYSTEM_RECORDS');
 
   // Content (one per root menu)
   export const CONTENT_PAGE_BANKING = new Menu(RootMenu.BANKING, 'CONTENT_PAGE_BANKING');
