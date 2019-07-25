@@ -1,6 +1,8 @@
 import { Injectable, Injector } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { AccountType, Auth, DataForUi, Operation, RoleEnum, VouchersPermissions, RecordLayoutEnum, RecordPermissions } from 'app/api/models';
+import {
+  AccountType, Auth, DataForUi, Operation, RoleEnum, VouchersPermissions, RecordLayoutEnum, RecordPermissions
+} from 'app/api/models';
 import { Configuration } from 'app/configuration';
 import { BankingHelperService } from 'app/core/banking-helper.service';
 import { BreadcrumbService } from 'app/core/breadcrumb.service';
