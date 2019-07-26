@@ -103,7 +103,9 @@ export class RecordFormComponent extends BasePageComponent<RecordDataForEdit | R
       // Replace URL instead of navigate to avoid entering a new form when going back
       const firstTime = this.id == null;
       // TODO check the replaceUrl argument because it does not work
-      this.router.navigate(['/records', 'view', id || this.id], { replaceUrl: firstTime });
+      setTimeout(() => {
+        this.router.navigate(['/records', 'view', id || this.id], { replaceUrl: firstTime });
+      });
       // Update single form id when saving it for first time
       if (firstTime && this.data.type.layout === RecordLayoutEnum.SINGLE) {
         for (const permission of this.recordsHelper.recordPermissions(this.data.user == null)) {

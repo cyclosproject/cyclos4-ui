@@ -110,7 +110,7 @@ export class SearchRecordsComponent
   }
 
   protected getFormControlNames(): string[] {
-    return ['keywords', 'customValues', 'user', 'beginDate', 'endDate'];
+    return ['keywords', 'customValues', 'createdBy', 'beginDate', 'endDate'];
   }
 
   resolveMenu(data: RecordDataForSearch) {

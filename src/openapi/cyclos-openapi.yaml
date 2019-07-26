@@ -20232,6 +20232,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           required: true
           schema:
             type: string
+        - name: createdBy
+          in: query
+          required: false
+          description: "Either the id or identifier of the user that created the record"
+          schema:
+            type: string
         - name: creationPeriod
           in: query
           required: false
@@ -20912,6 +20918,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
             items:
               description: ''
               type: string
+        - name: createdBy
+          in: query
+          required: false
+          description: "Either the id or identifier of the user that created the record"
+          schema:
+            type: string
         - name: creationPeriod
           in: query
           required: false
@@ -21157,6 +21169,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
             items:
               description: ''
               type: string
+        - name: createdBy
+          in: query
+          required: false
+          description: "Either the id or identifier of the user that created the record"
+          schema:
+            type: string
         - name: creationPeriod
           in: query
           required: false
@@ -43630,6 +43648,10 @@ components:
               items:
                 type: string
                 format: date-time
+            createdBy:
+              description: >-
+                Either the id or identifier of the user that created the record
+              type: string
 
     RecordResult:
       description: >-
