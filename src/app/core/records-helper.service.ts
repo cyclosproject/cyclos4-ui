@@ -23,7 +23,8 @@ export class RecordHelperService {
   ) { }
 
   /**
-  * Returns the record types within the according permissions for the logged user or system based on the given flag */
+  * Returns the record types within the according permissions for the logged user or system based on the given flag 
+  */
   recordPermissions(system?: boolean): RecordPermissions[] {
     const dataForUi = this.dataForUiHolder.dataForUi;
     const auth = dataForUi.auth || {};
@@ -32,7 +33,9 @@ export class RecordHelperService {
     const recordPermissions = system ? records.system || [] : records.user || [];
     return recordPermissions;
   }
-
+  /**
+   * Resolves the path to the according record page either view, edit, or new
+   */
   resolvePath(permission: RecordPermissions, owner: string, system: boolean = false): string {
     const type = permission.type;
     const pathFunction = (id: string) => {
@@ -60,15 +63,24 @@ export class RecordHelperService {
     }
   }
 
+  /**
+   * Returns if the current record type should be displayed using more than a column
+   */
   isColumnLayout(type: RecordTypeDetailed): boolean {
     return type.fieldColumns > 1 && this.layout.gtxs;
   }
 
+  /**
+   * Resolves the column style for the given field based on the colspan defined
+   */
   resolveColumnClass(field: RecordCustomField, type: RecordTypeDetailed): String {
     const colspan = field != null && field.colspan != null ? ' colspan-' + field.colspan : '';
     return this.isColumnLayout(type) ? 'pr-3 columns-' + type.fieldColumns + colspan : '';
   }
 
+  /**
+   * Returns the active menu for the given record type
+   */
   menuForRecordType(user: User, type: RecordType): Menu | ActiveMenu | Observable<Menu> {
     if (this.authHelper.isSelf(user)) {
       return new ActiveMenu(user == null ? Menu.SEARCH_SYSTEM_RECORDS : Menu.SEARCH_USER_RECORDS, { recordType: type });
