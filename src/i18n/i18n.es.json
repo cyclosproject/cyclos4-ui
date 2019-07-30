@@ -863,7 +863,7 @@
     "extensionValue": "ext. {value}",
     "numberExtensionValue": "{number} ext. {extension}",
     "enabledSms": "Habilitado para SMS",
-    "verified": "Verified",
+    "verified": "Verificado",
     "error": {
       "verify": {
         "expired": "El código de verificación no fue enviado o ha caducado.\nPor Favor, envíe el código de verificación nuevamente a su teléfono y reinicie el proceso.",
