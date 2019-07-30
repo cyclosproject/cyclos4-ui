@@ -43,7 +43,6 @@ export class TiledRecordsComponent
         throw new Error(`Invalid record layout: ${data.type.layout}`);
       }
 
-      // TODO handle profileFields
       this.fieldsInList = data.customFields.filter(cf => data.fieldsInList.includes(cf.internalName));
       this.data = data;
     }));
@@ -51,11 +50,12 @@ export class TiledRecordsComponent
   }
 
   onDataInitialized(data: RecordDataForSearch) {
-    this.headingActions = [];
+    const headingActions: HeadingAction[] = [];
     if (data.create) {
-      this.headingActions.push(new HeadingAction('add_circle_outline', this.i18n.general.addNew, () =>
+      headingActions.push(new HeadingAction('add_circle_outline', this.i18n.general.addNew, () =>
         this.router.navigate(['/records', this.param, this.type, 'new']), true));
     }
+    this.headingActions = headingActions;
     this.addSub(this.doSearch(this.toSearchParams()).subscribe(result => {
       this.results$.next(result.body);
     }));

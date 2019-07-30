@@ -44,24 +44,23 @@ export class SearchRecordsComponent
         throw new Error(`Invalid record layout: ${data.type.layout}`);
       }
 
-      // TODO handle profileFields
       this.fieldsInSearch = data.customFields.filter(cf => data.fieldsInSearch.includes(cf.internalName));
       this.fieldsInList = data.customFields.filter(cf => data.fieldsInList.includes(cf.internalName));
       this.form.setControl('customValues', this.fieldHelper.customValuesFormGroup(this.fieldsInSearch, {
         useDefaults: false
       }));
-      // Patch value to avoid the form reload twice
-      this.form.patchValue(data.query, { emitEvent: false });
+      this.form.patchValue(data.query);
       this.data = data;
     }));
   }
 
   onDataInitialized(data: RecordDataForSearch) {
-    this.headingActions = [];
+    const headingActions: HeadingAction[] = [];
     if (data.create) {
-      this.headingActions.push(new HeadingAction('add_circle_outline', this.i18n.general.addNew, () =>
+      headingActions.push(new HeadingAction('add_circle_outline', this.i18n.general.addNew, () =>
         this.router.navigate(['/records', this.param, this.type, 'new']), true));
     }
+    this.headingActions = headingActions;
     super.onDataInitialized(data);
   }
 

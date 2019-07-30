@@ -14,7 +14,7 @@ import { OperationHelperService } from 'app/core/operation-helper.service';
 })
 export class ViewRecordComponent extends BaseViewPageComponent<RecordView> implements OnInit {
 
-  title: String;
+  title: string;
   columnLayout: boolean;
   valuesWithoutSection: Array<RecordCustomFieldValue>;
   valuesWithSection = new Map<RecordSection, RecordCustomFieldValue[]>();
@@ -60,12 +60,12 @@ export class ViewRecordComponent extends BaseViewPageComponent<RecordView> imple
     }
   }
 
-  resolveColumnClass(value: RecordCustomFieldValue): String {
+  resolveColumnClass(value: RecordCustomFieldValue = null): string {
     return this.recordsHelper.resolveColumnClass(value == null ? null : value.field, this.data.type);
   }
 
   get labelPosition() {
-    return this.columnLayout ? 'above' : '';
+    return this.columnLayout ? 'above' : 'auto';
   }
 
   get hasPreviousFields() {

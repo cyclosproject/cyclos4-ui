@@ -77,7 +77,7 @@ export class RecordFormComponent extends BasePageComponent<RecordDataForEdit | R
   }
 
   get labelPosition() {
-    return this.columnLayout ? 'above' : '';
+    return this.columnLayout ? 'above' : 'auto';
   }
 
   resolveMenu(data: RecordDataForNew | RecordDataForEdit) {
@@ -102,10 +102,6 @@ export class RecordFormComponent extends BasePageComponent<RecordDataForEdit | R
         : this.i18n.record.saved(this.data.type.name));
       // Replace URL instead of navigate to avoid entering a new form when going back
       const firstTime = this.id == null;
-      // TODO check the replaceUrl argument because it does not work
-      setTimeout(() => {
-        this.router.navigate(['/records', 'view', id || this.id], { replaceUrl: firstTime });
-      });
       // Update single form id when saving it for first time
       if (firstTime && this.data.type.layout === RecordLayoutEnum.SINGLE) {
         for (const permission of this.recordsHelper.recordPermissions(this.data.user == null)) {
@@ -114,6 +110,7 @@ export class RecordFormComponent extends BasePageComponent<RecordDataForEdit | R
           }
         }
       }
+      this.router.navigate(['/records', 'view', id || this.id], { replaceUrl: firstTime });
     }));
   }
 }

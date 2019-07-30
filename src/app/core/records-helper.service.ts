@@ -73,7 +73,7 @@ export class RecordHelperService {
   /**
    * Resolves the column style for the given field based on the colspan defined
    */
-  resolveColumnClass(field: RecordCustomField, type: RecordTypeDetailed): String {
+  resolveColumnClass(field: RecordCustomField, type: RecordTypeDetailed): string {
     const colspan = field != null && field.colspan != null ? ' colspan-' + field.colspan : '';
     return this.isColumnLayout(type) ? 'pr-3 columns-' + type.fieldColumns + colspan : '';
   }
