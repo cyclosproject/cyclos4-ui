@@ -863,7 +863,7 @@
     "extensionValue": "ramal {value}",
     "numberExtensionValue": "{number} ramal {extension}",
     "enabledSms": "Habilitado para SMS",
-    "verified": "Verified",
+    "verified": "Verificado",
     "error": {
       "verify": {
         "expired": "O código de verificação não foi enviado ou expirou.<br> Por favor, envie novamente o código para o seu telefone e reinicie o processo.",
