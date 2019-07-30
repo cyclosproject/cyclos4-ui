@@ -27,7 +27,7 @@ export class BreadcrumbService {
     private router: Router,
     dataForUiHolder: DataForUiHolder) {
     dataForUiHolder.subscribe(() => this.clear());
-    router.events
+    this.router.events
       .pipe(
         filter(e => e instanceof NavigationStart),
         map(e => e as NavigationStart)
@@ -86,7 +86,7 @@ export class BreadcrumbService {
   back(): boolean {
     const breadcrumb = this.breadcrumb$.value;
     if (breadcrumb.length > 1) {
-      this.router.navigateByUrl(breadcrumb[breadcrumb.length - 2]);
+      history.back();
       return true;
     }
     return false;

@@ -58,7 +58,7 @@
                   (click)="setMain(row); $event.stopPropagation(); $event.preventDefault()">{{ this.i18n.brokers.setMain }}
                 </a>
               </td>
-              <td class="actions">
+              <td class="actions actions-multiple">
                 <button [tooltip]="i18n.general.remove" class="btn btn-icon"
                   (click)="remove(row); $event.stopPropagation()">
                   <icon icon="clear"></icon>

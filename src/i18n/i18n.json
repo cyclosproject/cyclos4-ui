@@ -1075,7 +1075,8 @@
       "admin": "View connected admins",
       "member": "View connected members"
     },
-    "showConnected": "Show connected"
+    "showConnected": "Show connected",
+    "disconnected": "{user} has been disconnected"
   },
   "operation": {
     "user": "User",
@@ -1093,6 +1094,27 @@
     "theme": "Theme",
     "theme.light": "Light",
     "theme.dark": "Dark"
+  },
+  "record": {
+    "createdBy": "Created by",
+    "lastModifiedBy": "Last modified by",
+    "lastModificationDate": "Last modified at",
+    "removeConfirm": "Are you sure to remove this item?",
+    "removeDone": "The item has been removed",
+    "action": "{type} ({count})",
+    "fields": "Fields",
+    "title": {
+      "details": "{name} details",
+      "new": "Create new {name}",
+      "edit": "Edit {name}"
+    },
+    "mobileTitle": {
+      "details": "{name} details",
+      "new": "Create new {name}",
+      "edit": "Edit {name}"
+    },
+    "created": "The {name} was created",
+    "saved": "The {name} was saved"
   },
   "userAlert": {
     "title": "Search user alerts",

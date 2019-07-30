@@ -104,6 +104,9 @@ export class OperationHelperService {
         case OperationScopeEnum.ADVERTISEMENT:
           parts.push('marketplace', scopeId);
           break;
+        case OperationScopeEnum.RECORD:
+          parts.push('record', scopeId);
+          break;
         case OperationScopeEnum.INTERNAL:
         case OperationScopeEnum.MENU:
           parts.push('action');
@@ -164,6 +167,14 @@ export class OperationHelperService {
         return asDownload
           ? this.operationsService.runAdOperationWithUpload$Any$Response(params)
           : this.operationsService.runAdOperationWithUpload$Json$Response(params);
+        break;
+
+      case OperationScopeEnum.RECORD:
+        // Over a record
+        params.id = scopeId;
+        return asDownload
+          ? this.operationsService.runRecordOperationWithUpload$Any$Response(params)
+          : this.operationsService.runRecordOperationWithUpload$Json$Response(params);
         break;
 
       case OperationScopeEnum.TRANSFER:

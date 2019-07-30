@@ -50,6 +50,14 @@ const operationRoutes: Routes = [
         }
       },
       {
+        path: 'record/:record/:operation',
+        component: RunOperationComponent,
+        canActivate: [LoggedUserGuard],
+        data: {
+          runScope: OperationRunScope.Record
+        }
+      },
+      {
         path: 'transfer/:transfer/:operation',
         component: RunOperationComponent,
         canActivate: [LoggedUserGuard],
