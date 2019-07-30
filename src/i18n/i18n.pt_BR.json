@@ -228,7 +228,7 @@
   "password": {
     "confirmationMessage": "Forneça seu {passwordType} para confirmar esta operação",
     "confirm.noPassword": "Para confirmar você precisa informar sua {passwordType}, mas você nao possui nenhuma",
-    "confirm.mode": "Confirme com",
+    "confirm.mode": "Confirmar com",
     "confirm.mode.device": "Telefone celular",
     "confirm.mode.password": "Senha",
     "confirm.device.active": "Para confirmar, leia este código QR com seu telefone celular",
@@ -863,6 +863,7 @@
     "extensionValue": "ramal {value}",
     "numberExtensionValue": "{number} ramal {extension}",
     "enabledSms": "Habilitado para SMS",
+    "verified": "Verified",
     "error": {
       "verify": {
         "expired": "O código de verificação não foi enviado ou expirou.<br> Por favor, envie novamente o código para o seu telefone e reinicie o processo.",
