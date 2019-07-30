@@ -43,6 +43,7 @@ export class EditProfileComponent
   ConfirmationMode = ConfirmationMode;
   createDeviceConfirmation: () => CreateDeviceConfirmation;
 
+  byManager: boolean;
   param: string;
 
   ready$ = new BehaviorSubject(false);
@@ -107,7 +108,6 @@ export class EditProfileComponent
   ngOnInit() {
     super.ngOnInit();
     this.param = this.route.snapshot.params.user || ApiHelper.SELF;
-    const self = this.authHelper.isSelf(this.param);
 
     this.createDeviceConfirmation = () => ({
       type: DeviceConfirmationTypeEnum.EDIT_PROFILE
@@ -122,6 +122,13 @@ export class EditProfileComponent
     this.addSub(this.usersService.getDataForEditFullProfile({ user: this.param }).subscribe(data => {
       this.data = data;
 
+      const role = data.userConfiguration.role;
+      const user = data.userConfiguration.details;
+
+      const self = this.authHelper.isSelf(user);
+      this.byManager = !this.authHelper.isSelfOrOwner(user);
+      this.operatorOfManagedUser = role === 'operator' && !this.authHelper.isSelf(user.user);
+
       if (self) {
         // Update the current user to reflect any changes if editing own profile
         this.login.user$.next({
@@ -131,9 +138,6 @@ export class EditProfileComponent
           image: empty(data.images) ? null : data.images[0]
         });
       }
-
-      const user = data.userConfiguration;
-      this.operatorOfManagedUser = user.role === 'operator' && !this.authHelper.isSelf(user.details.user.user);
 
       this.initialize(data);
 
@@ -718,7 +722,19 @@ export class EditProfileComponent
     setTimeout(() => document.getElementById(id).focus(), 10);
   }
 
+  public showEnableForSms(phoneForm: FormGroup) {
+    if (this.byManager) {
+      return phoneForm.value.verified;
+    } else {
+      return true;
+    }
+  }
+
   public maybeVerify(event: MouseEvent, id?: string) {
+    // The verification popup is only for self
+    if (this.byManager) {
+      return;
+    }
     let phone: PhoneManage;
     if (this.singleMobile) {
       phone = this.singleMobileManage;
