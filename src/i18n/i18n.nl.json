@@ -863,6 +863,7 @@
     "extensionValue": "ext. {value}",
     "numberExtensionValue": "{number} ext. {extension}",
     "enabledSms": "SMS geactiveerd",
+    "verified": "Verified",
     "error": {
       "verify": {
         "expired": "De verificatie code is niet verzonden of is verlopen.<br> stuur de code opnieuw in om uw telefoon en het proces opnieuw.",
