@@ -33,7 +33,9 @@ export class ViewAuthorizationHistoryComponent extends BaseViewPageComponent<Tra
     const key = this.route.snapshot.paramMap.get('key');
     this.addSub(this.transactionsService.viewTransaction({
       key: key,
-      fields: ['transactionNumber', 'date', 'amount', 'authorizations']
+      fields: [
+        'transactionNumber', 'date', 'amount', 'kind', 'type',
+        'fromKind', 'fromUser', 'toKind', 'toUser', 'authorizations']
     })
       .subscribe(transaction => {
         this.data = transaction;

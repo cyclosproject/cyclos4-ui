@@ -1,5 +1,10 @@
 @import 'src/definitions';
 
+body {
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+  padding-top: 0 !important;
+}
 body.lt-md, body.full-width, body.full-width.md {
   background-color: $card-bg;
   overflow-x: hidden;

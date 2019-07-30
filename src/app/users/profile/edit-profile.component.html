@@ -129,7 +129,13 @@
         </field-privacy>
       </label-value>
 
-      <boolean-field *ngIf="phoneHasSms(singleMobileManage)"
+      <ng-container *ngIf="phoneHasSms(singleMobileManage)">
+        <boolean-field [label]="i18n.phone.verified"
+          [formControl]="singleMobile.get('verified')">
+        </boolean-field>
+      </ng-container>
+
+      <boolean-field *ngIf="showEnableForSms(singleMobile)"
         [label]="i18n.phone.enabledSms"
         [formControl]="singleMobile.get('enabledForSms')"
         (click)="maybeVerify($event)">
@@ -234,10 +240,15 @@
           [id]="'phone_extension' + phone['idSuffix']" type="tel"
           formControlName="extension" [label]="i18n.phone.extension">
         </input-field>
-        <boolean-field *ngIf="phoneHasSms(phone)"
-          [label]="i18n.phone.enabledSms" formControlName="enabledForSms"
-          (click)="maybeVerify($event, phone['id'])">
-        </boolean-field>
+        <ng-container *ngIf="phoneHasSms(phone)">
+          <boolean-field [label]="i18n.phone.verified"
+            formControlName="verified">
+          </boolean-field>
+          <boolean-field *ngIf="showEnableForSms(phone['form'])"
+            [label]="i18n.phone.enabledSms" formControlName="enabledForSms"
+            (click)="maybeVerify($event, phone['id'])">
+          </boolean-field>
+        </ng-container>
         <label-value *ngIf="data.phoneConfiguration.managePrivacy"
           [label]="i18n.field.privacy.name" kind="field">
           <div class="d-flex w-100 justify-content-between">
