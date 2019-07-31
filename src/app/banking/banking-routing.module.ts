@@ -8,8 +8,12 @@ import { ViewAuthorizationHistoryComponent } from 'app/banking/transactions/view
 import { ViewTransactionComponent } from 'app/banking/transactions/view-transaction.component';
 import { SearchTransfersOverviewComponent } from 'app/banking/transfers/search-transfers-overview.component';
 import { ViewTransferComponent } from 'app/banking/transfers/view-transfer.component';
+import { BuyVouchersComponent } from 'app/banking/vouchers/buy-vouchers.component';
+import { RedeemVoucherComponent } from 'app/banking/vouchers/redeem-voucher.component';
+import { SearchBoughtVouchersComponent } from 'app/banking/vouchers/search-bought-vouchers.component';
+import { SearchRedeemedVouchersComponent } from 'app/banking/vouchers/search-redeemed-vouchers.component';
+import { ViewVoucherComponent } from 'app/banking/vouchers/view-voucher.component';
 import { LoggedUserGuard } from 'app/logged-user-guard';
-
 
 const bankingRoutes: Routes = [
   {
@@ -55,6 +59,26 @@ const bankingRoutes: Routes = [
       {
         path: ':owner/authorized-payments',
         component: SearchAuthorizedPaymentsComponent
+      },
+      {
+        path: ':user/vouchers/redeem',
+        component: RedeemVoucherComponent
+      },
+      {
+        path: ':user/vouchers/redeemed',
+        component: SearchRedeemedVouchersComponent
+      },
+      {
+        path: ':user/vouchers/buy',
+        component: BuyVouchersComponent
+      },
+      {
+        path: ':user/vouchers/bought',
+        component: SearchBoughtVouchersComponent
+      },
+      {
+        path: 'vouchers/:key',
+        component: ViewVoucherComponent
       }
     ]
   }

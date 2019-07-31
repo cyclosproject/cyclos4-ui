@@ -1,0 +1,42 @@
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data">
+    <page-content [heading]="this.data.type.pluralName"
+      [mobileHeading]="this.data.type.pluralName"
+      [headingActions]="headingActions$ | async">
+      <ng-container *ngFor="let row of (results$ | async); let first = first">
+        <h2 class="mb-0" [ngClass]="first ? 'border-0' : ''"></h2>
+        <label-value [label]="i18n.general.creationDate">
+          {{ row.creationDate | dateTime }}
+        </label-value>
+        <label-value [label]="i18n.record.createdBy">
+          {{ row.createdBy.display }}
+        </label-value>
+        <label-value *ngIf="row.lastModifiedBy"
+          [label]="i18n.record.lastModificationDate">
+          {{ row.lastModificationDate | dateTime }}
+        </label-value>
+        <label-value *ngIf="row.lastModifiedBy"
+          [label]="i18n.record.lastModifiedBy">
+          {{ row.lastModifiedBy.display }}
+        </label-value>
+        <label-value *ngFor="let field of this.fieldsInList"
+          [label]="field.name">
+          <format-field-value [fields]="data.customFields" [plainText]="true"
+            [fieldName]="field.internalName" [object]="row"
+            [customValues]="row.customValues">
+          </format-field-value>
+        </label-value>
+        <actions class="mb-3">
+          <button *ngIf="data.edit" class="btn btn-primary"
+            [disabled]="requesting$ | async"
+            (click)="router.navigate(editPath(row))">{{ i18n.general.edit }}</button>
+          <button class="btn btn-primary" [disabled]="requesting$ | async"
+            (click)="router.navigate(viewPath(row))">{{ i18n.general.view }}</button>
+          <button *ngIf="data.remove" class="btn btn-outline-primary"
+            [disabled]="requesting$ | async"
+            (click)="remove(row)">{{ i18n.general.remove }}</button>
+        </actions>
+      </ng-container>
+    </page-content>
+  </ng-container>
+</page-layout>

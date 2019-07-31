@@ -1,12 +1,13 @@
 import { Injectable, Injector } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { AccountType, Auth, DataForUi, Operation, RoleEnum } from 'app/api/models';
+import {
+  AccountType, Auth, DataForUi, Operation, RoleEnum, VouchersPermissions, RecordLayoutEnum, RecordPermissions
+} from 'app/api/models';
 import { Configuration } from 'app/configuration';
 import { BankingHelperService } from 'app/core/banking-helper.service';
 import { BreadcrumbService } from 'app/core/breadcrumb.service';
 import { ContentService } from 'app/core/content.service';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
-import { I18nLoadingService } from 'app/core/i18n-loading.service';
 import { LoginService } from 'app/core/login.service';
 import { OperationHelperService } from 'app/core/operation-helper.service';
 import { StateManager } from 'app/core/state-manager';
@@ -16,6 +17,8 @@ import { toFullUrl } from 'app/shared/helper';
 import { ActiveMenu, Menu, MenuEntry, MenuType, RootMenu, RootMenuEntry, SideMenuEntries } from 'app/shared/menu';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
+import { RecordHelperService } from 'app/core/records-helper.service';
+import { I18nLoadingService } from 'app/core/i18n-loading.service';
 
 enum NavigateAction {
   Url,
@@ -40,6 +43,14 @@ export interface NavigateParams {
 
   /** An UI event to cancel */
   event?: Event;
+}
+
+interface ResolvedVouchersPermissions {
+  buy: boolean;
+  redeem: boolean;
+  generate: boolean;
+  viewBought: boolean;
+  viewRedeemed: boolean;
 }
 
 /**
@@ -68,7 +79,8 @@ export class MenuService {
     private stateManager: StateManager,
     private bankingHelper: BankingHelperService,
     private content: ContentService,
-    private operationHelper: OperationHelperService
+    private operationHelper: OperationHelperService,
+    private recordHelper: RecordHelperService
   ) {
     const initialDataForUi = this.dataForUiHolder.dataForUi;
     const initialAuth = (initialDataForUi || {}).auth;
@@ -405,6 +417,7 @@ export class MenuService {
     const users = permissions.users || {};
     const marketplace = permissions.marketplace || {};
     const operations = permissions.operations || {};
+    const vouchers = this.resolveVoucherPermissions(permissions.vouchers || {});
     const userOperations = (operations.user || []).filter(o => o.run).map(o => o.operation);
     const systemOperations = (operations.system || []).filter(o => o.run).map(o => o.operation);
 
@@ -424,12 +437,6 @@ export class MenuService {
     addRoot(RootMenu.OPERATORS, 'supervisor_account', this.i18n.menu.operators);
     addRoot(RootMenu.BROKERING, 'assignment_ind', this.i18n.menu.brokering);
     const marketplaceRoot = addRoot(RootMenu.MARKETPLACE, 'shopping_cart', this.i18n.menu.marketplace);
-    if (role === RoleEnum.ADMINISTRATOR) {
-      // For admins, show the marketplace menu as users
-      marketplaceRoot.icon = 'supervisor_account';
-      marketplaceRoot.label = this.i18n.menu.marketplaceUsers;
-      marketplaceRoot.title = this.i18n.menu.marketplaceUsers;
-    }
     const content = addRoot(RootMenu.CONTENT, 'information', this.i18n.menu.content);
     addRoot(RootMenu.PERSONAL, 'account_box', this.i18n.menu.personal, null, [MenuType.SIDENAV, MenuType.BAR, MenuType.SIDE]);
     const register = addRoot(RootMenu.REGISTRATION, 'registration', this.i18n.menu.register, null, [MenuType.SIDENAV]);
@@ -437,8 +444,9 @@ export class MenuService {
     const logout = addRoot(RootMenu.LOGOUT, 'logout', this.i18n.menu.logout, null, []);
 
     // Lambda that adds a submenu to a root menu
-    const add = (menu: Menu | ActiveMenu, url: string, icon: string, label: string, showIn: MenuType[] = null): MenuEntry => {
-      const entry = new MenuEntry(menu, url, icon, label, showIn);
+    const add = (menu: Menu | ActiveMenu, url: string, icon: string, label: string, showIn: MenuType[] = null,
+      urlHandler: () => string = null): MenuEntry => {
+      const entry = new MenuEntry(menu, url, icon, label, showIn, urlHandler);
       const root = roots.get(entry.menu.root);
       root.entries.push(entry);
       return entry;
@@ -494,6 +502,28 @@ export class MenuService {
       // Add both system and self operations
       doAddOperations('system', systemOperations.filter(o => ApiHelper.adminMenuMatches(root, o.adminMenu)));
       doAddOperations('self', userOperations.filter(o => ApiHelper.userMenuMatches(root, o.userMenu)));
+    };
+
+    // Lambda that adds records in the given root menu entry
+    const addRecords = (menu: Menu, recordPermissions: RecordPermissions[], owner: string) => {
+      if (!auth.global && recordPermissions.length > 0) {
+        for (const permission of recordPermissions) {
+          const activeMenu = new ActiveMenu(menu, { recordType: permission.type });
+          const pathFunction = () => this.recordHelper.resolvePath(
+            permission, owner, owner === ApiHelper.SYSTEM);
+          const path = pathFunction();
+          if (path != null) {
+            add(
+              activeMenu,
+              path,
+              'library_books',
+              permission.type.pluralName,
+              null,
+              // Calculate the path dinamically while the single form has not been saved for first time
+              permission.type.layout === RecordLayoutEnum.SINGLE && !permission.singleRecordId ? pathFunction : null);
+          }
+        }
+      }
     };
 
     // Add the submenus
@@ -555,6 +585,14 @@ export class MenuService {
         add(Menu.ADMIN_TRANSFERS_OVERVIEW, `/banking/transfers-overview`,
           'compare_arrows', this.i18n.menu.bankingTransfersOverview);
       }
+
+      if (vouchers.viewRedeemed) {
+        add(Menu.SEARCH_REDEEMED, '/banking/' + ApiHelper.SELF + '/vouchers/redeemed', 'search',
+          this.i18n.menu.bankingRedeemedVouchers);
+      }
+      if (vouchers.redeem) {
+        add(Menu.REDEEM_VOUCHER, '/banking/' + ApiHelper.SELF + '/vouchers/redeem', 'payment', this.i18n.menu.bankingRedeemVoucher);
+      }
       addOperations(RootMenu.BANKING);
       addContentPages(Menu.CONTENT_PAGE_BANKING);
 
@@ -577,7 +615,7 @@ export class MenuService {
         }
       }
 
-      // Marketplace
+      // Users
       if (users.search || users.map) {
         add(Menu.SEARCH_USERS, '/users/search', 'group', role === RoleEnum.ADMINISTRATOR
           ? this.i18n.menu.marketplaceUserSearch : this.i18n.menu.marketplaceBusinessDirectory);
@@ -585,16 +623,42 @@ export class MenuService {
       if (users.registerAsAdmin) {
         add(Menu.ADMIN_REGISTRATION, '/users/registration', 'registration', this.i18n.menu.marketplaceRegister);
       }
+      const sessions = permissions.sessions || {};
+      if (sessions.view) {
+        add(Menu.CONNECTED_USERS, '/users/connected', 'record_voice_over', this.i18n.menu.marketplaceConnectedUsers);
+      }
+
+      // Marketplace
+      const alerts = permissions.alerts || {};
+      if (alerts.view) {
+        add(Menu.USER_ALERTS, '/users/alerts', 'notification_important', this.i18n.menu.marketplaceUserAlerts);
+      }
+
       if (marketplace.search) {
         add(Menu.SEARCH_ADS, '/marketplace/search', 'shopping_cart', this.i18n.menu.marketplaceAdvertisements);
-      } else if (role !== RoleEnum.ADMINISTRATOR) {
+      }
+
+      if (vouchers.buy) {
+        add(Menu.BUY_VOUCHER, '/banking/self/vouchers/buy', 'shopping_cart', this.i18n.menu.bankingBuyVouchers);
+      }
+      if (vouchers.viewBought) {
+        add(Menu.SEARCH_BOUGHT_VOUCHERS, '/banking/self/vouchers/bought', 'shopping_cart',
+          this.i18n.menu.bankingBoughtVouchers);
+      }
+      addOperations(RootMenu.MARKETPLACE);
+      addContentPages(Menu.CONTENT_PAGE_MARKETPLACE);
+
+      if (role === RoleEnum.ADMINISTRATOR) {
+        // For admins, show the marketplace menu as users
+        marketplaceRoot.icon = 'supervisor_account';
+        marketplaceRoot.label = this.i18n.menu.marketplaceUsers;
+        marketplaceRoot.title = this.i18n.menu.marketplaceUsers;
+      } else if (marketplaceRoot.entries.length === 1 && marketplaceRoot.entries[0].menu === Menu.SEARCH_USERS) {
         // As the search ads won't be visible, show as user directory instead
         marketplaceRoot.icon = publicDirectory.icon;
         marketplaceRoot.label = publicDirectory.label;
         marketplaceRoot.title = publicDirectory.label;
       }
-      addOperations(RootMenu.MARKETPLACE);
-      addContentPages(Menu.CONTENT_PAGE_MARKETPLACE);
 
       // Personal
       const myProfile = permissions.myProfile || {};
@@ -614,6 +678,11 @@ export class MenuService {
         }
         add(Menu.PASSWORDS, '/users/self/passwords', 'vpn_key', passwordsLabel);
       }
+
+      // Records
+      addRecords(Menu.SEARCH_USER_RECORDS, this.recordHelper.recordPermissions(), ApiHelper.SELF);
+      addRecords(Menu.SEARCH_SYSTEM_RECORDS, this.recordHelper.recordPermissions(true), ApiHelper.SYSTEM);
+
       if ((permissions.notifications || {}).enable) {
         add(Menu.NOTIFICATIONS, '/personal/notifications', 'notifications', this.i18n.menu.personalNotifications);
       }
@@ -641,6 +710,16 @@ export class MenuService {
       }
     }
     return rootMenus;
+  }
+
+  private resolveVoucherPermissions(vouchersPermissions: VouchersPermissions): ResolvedVouchersPermissions {
+    const voucherPermissions = vouchersPermissions.vouchers || [];
+    const buy = !!voucherPermissions.find(config => config.buy);
+    const redeem = !!voucherPermissions.find(config => config.redeem);
+    const generate = !!voucherPermissions.find(config => config.generate);
+    const viewBought = !!voucherPermissions.find(config => config.viewBought);
+    const viewRedeemed = !!voucherPermissions.find(config => config.viewRedeemed);
+    return { buy, redeem, generate, viewBought, viewRedeemed };
   }
 
 }

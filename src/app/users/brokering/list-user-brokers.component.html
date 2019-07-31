@@ -1,0 +1,73 @@
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data">
+    <page-content [mode]="'empty'" [heading]="i18n.brokers.title.list"
+      [mobileHeading]="i18n.brokers.mobileTitle.list"
+      [headingActions]="headingActions$ | async">
+    </page-content>
+    <results-layout [results]="data.brokers" [toLink]="toLink">
+      <mobile-result *mobileResult="let row" [avatarImage]="row.broker?.image"
+        avatarIcon="user">
+        <div class="d-flex">
+          <div>
+            <div class="cell-main">
+              {{ row.broker.display }}
+            </div>
+            <div class="cell-text">
+              <icon class="d-inline-block" *ngIf="row.main"
+                icon="done_outline"></icon>
+              <a class="decorated" *ngIf="!row.main"
+                (click)="setMain(row); $event.stopPropagation(); $event.preventDefault()">{{ this.i18n.brokers.setMain }}
+              </a>
+            </div>
+          </div>
+          <div class="ml-auto">
+            <button class="btn btn-icon"
+              (click)="remove(row); $event.stopPropagation(); $event.preventDefault()">
+              <icon icon="clear"></icon>
+            </button>
+          </div>
+        </div>
+      </mobile-result>
+      <table *resultTable class="table table-hover cursor-pointer">
+        <thead>
+          <th class="avatar"></th>
+          <th>{{ i18n.general.user }}</th>
+          <th width="20%" class="text-center">{{ i18n.brokers.mainBroker }}
+          </th>
+          <th class="actions"></th>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let row of data.brokers">
+            <tr (click)="router.navigate(path(row))">
+              <td class="avatar" [ngClass]="{
+                  'pb-0': layout.xxs$ | async,
+                  'border-0': layout.xxs$ | async
+                }">
+                <avatar [image]="row.broker?.image"
+                  [tooltip]="row.broker?.display" icon="user"></avatar>
+              </td>
+              <td>
+                <a [routerLink]="path(row)">
+                  {{ row.broker.shortDisplay }}
+                </a>
+              </td>
+              <td class="text-center">
+                <icon class="d-inline-block" *ngIf="row.main"
+                  icon="done_outline"></icon>
+                <a class="decorated" *ngIf="!row.main"
+                  (click)="setMain(row); $event.stopPropagation(); $event.preventDefault()">{{ this.i18n.brokers.setMain }}
+                </a>
+              </td>
+              <td class="actions actions-multiple">
+                <button [tooltip]="i18n.general.remove" class="btn btn-icon"
+                  (click)="remove(row); $event.stopPropagation()">
+                  <icon icon="clear"></icon>
+                </button>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </results-layout>
+  </ng-container>
+</page-layout>

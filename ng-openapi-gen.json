@@ -29,7 +29,12 @@
     "Captcha",
     "Files",
     "Images",
-    "Operations"
+    "Operations",
+    "Sessions",
+    "Vouchers",
+    "Alerts",
+    "Brokering",
+    "Records"
   ],
   "enumStyle": "upper"
 }

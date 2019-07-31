@@ -1,0 +1,90 @@
+<page-layout [ready]="data$ | async">
+  <page-content *ngIf="data$ | async; else loading" [heading]="data.title"
+    [mobileHeading]="data.title" [headingActions]="headingActions$ | async">
+
+    <div class="d-flex flex-grow-1 flex-column">
+      <div
+        class="d-flex flex-column flex-sm-row-reverse justify-content-sm-between">
+        <div *ngIf="data.type.image"
+          class="image d-flex justify-content-center mt-2 mb-4 align-self-center">
+          <avatar size="160" imageSize="200" useLightbox
+            [image]="data.type.image"></avatar>
+        </div>
+        <div class="d-flex flex-column flex-grow-1">
+          <label-value [label]="i18n.general.type"> {{ data.type.name}}
+          </label-value>
+          <label-value [label]="i18n.voucher.token"> {{ data.token}}
+          </label-value>
+          <label-value [label]="i18n.transaction.amount">
+            {{ data.amount | currency:data.type.configuration.currency }}
+          </label-value>
+          <label-value *ngIf="data.creationType"
+            [label]="i18n.voucher.creationType">
+            {{ bankingHelper.voucherCreationType(data.creationType) }}
+          </label-value>
+          <label-value [label]="i18n.general.creationDate">
+            {{ data.creationDate | dateTime}}
+          </label-value>
+          <label-value *ngIf="data.buyer" [label]="i18n.voucher.buy.buyer">
+            <user-link [user]="data.buyer"></user-link>
+          </label-value>
+          <label-value *ngIf="data.buy" [label]="i18n.voucher.buy.payment">
+            <a [routerLink]="transferPath(data.buy)">
+              {{ bankingHelper.transactionNumberOrId(data.buy) }}
+            </a>
+          </label-value>
+          <label-value [label]="i18n.general.status">
+            {{ bankingHelper.voucherStatus(data.status) }}
+          </label-value>
+          <label-value *ngIf="data.redeemDate"
+            [label]="i18n.voucher.redeem.date">
+            {{ data.redeemDate | dateTime}}
+          </label-value>
+          <label-value *ngIf="data.redeemer"
+            [label]="i18n.voucher.redeem.redeemer">
+            <user-link [user]="data.redeemer"></user-link>
+          </label-value>
+          <label-value *ngIf="data.redeemBy?.user"
+            [label]="i18n.general.operator">
+            <user-link [user]="data.redeemBy"></user-link>
+          </label-value>
+          <label-value *ngIf="data.redeem"
+            [label]="i18n.voucher.redeem.payment">
+            <a [routerLink]="transferPath(data.redeem)">
+              {{ bankingHelper.transactionNumberOrId(data.redeem) }}
+            </a>
+          </label-value>
+          <label-value *ngIf="!data.redeemAfterDateReached"
+            [label]="i18n.general.status">
+            {{ data.redeemAfterDate}}
+          </label-value>
+          <label-value *ngIf="data.expirationDate"
+            [label]="i18n.general.expirationDate">
+            {{ data.expirationDate | dateTime}}
+          </label-value>
+        </div>
+      </div>
+      <!-- Description -->
+      <ng-container *ngIf="data.description"
+        class="d-flex justify-content-start">
+        <h2 class="mt-3"> {{ i18n.general.description }} </h2>
+        <div class="break-nl">
+          {{ data.description }}
+        </div>
+      </ng-container>
+      <!-- QrCode -->
+      <h2 class="mt-3"></h2>
+      <div
+        class="qr-container image d-flex justify-content-center mb-4 align-self-center">
+        <img *ngIf="qrCodeUrl$ | async as url" [src]="url | trust:'url'"
+          alt="QR-code" class="mw-100">
+      </div>
+    </div>
+  </page-content>
+</page-layout>
+
+<ng-template #loading>
+  <page-content>
+    <spinner></spinner>
+  </page-content>
+</ng-template>

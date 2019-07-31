@@ -1,0 +1,68 @@
+<page-layout [ready]="data$ | async">
+  <page-content *ngIf="data" last mode="viewForm"
+    [heading]="i18n.record.title.details(title)"
+    [mobileHeading]="i18n.record.mobileTitle.details(title)"
+    [headingActions]="headingActions$ | async">
+    <div [ngClass]="{
+      'd-flex flex-row-reverse' : !columnLayout,
+      'mt-n3' : hasPreviousFields && columnLayout}">
+      <div [ngClass]="{
+        'd-flex flex-grow-1 flex-column': !columnLayout,
+        'mr-n3': columnLayout}">
+        <label-value [labelPosition]="labelPosition"
+          [class]="resolveColumnClass()" *ngIf="data.creationDate"
+          [label]="i18n.general.creationDate">
+          {{ data.creationDate | dateTime }}
+        </label-value>
+        <label-value [labelPosition]="labelPosition"
+          [class]="resolveColumnClass()" *ngIf="data.createdBy"
+          [label]="i18n.record.createdBy">
+          {{ data.createdBy.display }}
+        </label-value>
+        <label-value [labelPosition]="labelPosition"
+          [class]="resolveColumnClass()" *ngIf="data.lastModificationDate"
+          [label]="i18n.record.lastModificationDate">
+          {{ data.lastModificationDate | dateTime }}
+        </label-value>
+        <label-value [labelPosition]="labelPosition"
+          [class]="resolveColumnClass()" *ngIf="data.lastModifiedBy"
+          [label]="i18n.record.lastModifiedBy">
+          {{ data.lastModifiedBy.display }}
+        </label-value>
+        <ng-container *ngIf="data.type.informationText">
+          <hr *ngIf="hasPreviousFields">
+          <rich-text-container [value]="data.type.informationText">
+          </rich-text-container>
+          <hr *ngIf="data.customValues">
+        </ng-container>
+        <h2 *ngIf="hasPreviousFields && valuesWithoutSection.length > 0"
+          [class]="{
+            'mt-2 pt-0 border-0': data.type.informationText,
+            'mb-0': labelPosition == 'above',
+            'mb-2': labelPosition != 'above'}">
+          {{ i18n.record.fields }}
+        </h2>
+        <custom-field-value [labelPosition]="labelPosition"
+          *ngFor="let value of valuesWithoutSection" [fieldValue]="value"
+          [class]="resolveColumnClass(value)"
+          [ngClass]="{'mt-0': !(hasPreviousFields && valuesWithoutSection.length > 0)}">
+        </custom-field-value>
+        <ng-container
+          *ngFor="let key of valuesWithSection.keys(); let first = first">
+          <h2
+            [ngClass]="{
+            'mt-4': valuesWithoutSection.length > 0,
+            'mb-0': labelPosition == 'above',
+            'mb-2': labelPosition !== 'above',
+            'border-top-0': first && valuesWithoutSection.length == 0 && (!hasPreviousFields || data.type.informationText)}">
+            {{ key.name }}
+          </h2>
+          <custom-field-value [labelPosition]="labelPosition"
+            *ngFor="let value of this.valuesWithSection.get(key)"
+            [fieldValue]="value" [class]="resolveColumnClass(value)">
+          </custom-field-value>
+        </ng-container>
+      </div>
+    </div>
+  </page-content>
+</page-layout>

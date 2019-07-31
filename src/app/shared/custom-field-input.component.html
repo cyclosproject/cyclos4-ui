@@ -1,7 +1,7 @@
 <!-- A read-only label-value rendered when the control is disabled -->
 <label-value
   *ngIf="disabled || (disabledChange | async); else controlTemplate"
-  [label]="field.name">
+  [label]="field.name" kind="fieldView" [labelPosition]="labelPosition">
   <format-field-value [fields]="[field]" [object]="disabledValueObject"
     [fieldName]="field.internalName"></format-field-value>
 </label-value>

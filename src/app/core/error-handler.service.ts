@@ -2,10 +2,11 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import {
-  ConflictError, ConflictErrorCode, ErrorKind, ForbiddenError,
-  ForbiddenErrorCode, ForgottenPasswordError, ForgottenPasswordErrorCode, InputError, InputErrorCode, NestedError,
-  NotFoundError, OtpError, PasswordStatusEnum, PaymentError, PaymentErrorCode, UnauthorizedError, UnauthorizedErrorCode
+  ConflictError, ConflictErrorCode, ErrorKind, ForbiddenError, ForbiddenErrorCode, ForgottenPasswordError, ForgottenPasswordErrorCode,
+  InputError, InputErrorCode, NestedError, NotFoundError, OtpError, PasswordStatusEnum, PaymentError, PaymentErrorCode, RedeemVoucherError,
+  RedeemVoucherErrorCode, UnauthorizedError, UnauthorizedErrorCode, BuyVoucherError, BuyVoucherErrorCode
 } from 'app/api/models';
+import { BankingHelperService } from 'app/core/banking-helper.service';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { FormatService } from 'app/core/format.service';
 import { LoginService } from 'app/core/login.service';
@@ -34,7 +35,8 @@ export class ErrorHandlerService {
     private nextRequestState: NextRequestState,
     private login: LoginService,
     private dataForUiHolder: DataForUiHolder,
-    private i18n: I18n
+    private i18n: I18n,
+    private bankingHelper: BankingHelperService
   ) { }
 
   /**
@@ -103,6 +105,12 @@ export class ErrorHandlerService {
               case ErrorKind.FORGOTTEN_PASSWORD:
                 // An error while changing a forgotten password
                 this.handleForgottenPasswordError(error as ForgottenPasswordError);
+                return;
+              case ErrorKind.REDEEM_VOUCHER:
+                this.handleRedeemVoucherError(error as RedeemVoucherError);
+                return;
+              case ErrorKind.BUY_VOUCHER:
+                this.handleBuyVoucherError(error as BuyVoucherError);
                 return;
               case ErrorKind.NESTED:
                 // An error in a nested property
@@ -241,6 +249,49 @@ export class ErrorHandlerService {
     } else {
       return [this.inputErrorMessage(error)];
     }
+  }
+
+  public handleRedeemVoucherError(error: RedeemVoucherError) {
+    this.notification.error(this.redeemVoucherErrorMessage(error));
+  }
+
+  public handleBuyVoucherError(error: BuyVoucherError) {
+    if (error.code === BuyVoucherErrorCode.PAYMENT) {
+      this.handlePaymentError(error.paymentError);
+    } else {
+      this.notification.error(this.buyVoucherErrorMessage(error));
+    }
+  }
+
+  private buyVoucherErrorMessage(error: BuyVoucherError): string {
+    switch (error.code) {
+      case BuyVoucherErrorCode.MAX_AMOUNT_FOR_PERIOD:
+        return this.i18n.voucher.error.buy.amountForPeriod({ date: error.dateAllowedAgain, amount: error.amountLeftForBuying });
+      case BuyVoucherErrorCode.MAX_OPEN_AMOUNT:
+        return this.i18n.voucher.error.buy.openAmount({ maxAmount: error.maxOpenAmount, currentAmount: error.currentOpenAmount });
+      case BuyVoucherErrorCode.MAX_TOTAL_OPEN_AMOUNT:
+        return this.i18n.voucher.error.totalOpenAmount({ maxAmount: error.maxOpenAmount, currentAmount: error.currentOpenAmount });
+      case BuyVoucherErrorCode.NOT_ALLOWED_FOR_USER:
+        return this.i18n.voucher.error.buy.notAllowedForUser;
+    }
+    return this.general;
+  }
+
+  private redeemVoucherErrorMessage(error: RedeemVoucherError): string {
+    switch (error.code) {
+      case RedeemVoucherErrorCode.NOT_ALLOWED_FOR_USER:
+        return this.i18n.voucher.error.redeem.user;
+      case RedeemVoucherErrorCode.NOT_ALLOWED_FOR_VOUCHER:
+        return this.i18n.voucher.error.redeem.status(this.bankingHelper.voucherStatus(error.voucherStatus));
+      case RedeemVoucherErrorCode.NOT_ALLOWED_TODAY:
+        const allowedDays = error.allowedDays.map(day => this.format.weekDay(day)).join(', ');
+        return this.i18n.voucher.error.redeem.notAllowedToday(allowedDays);
+      case RedeemVoucherErrorCode.NOT_ALLOWED_YET:
+        return this.i18n.voucher.error.redeem.notAllowedYet(error.redeemAfterDate);
+      case RedeemVoucherErrorCode.USER_BLOCKED:
+        return this.i18n.voucher.error.redeem.userBlocked;
+    }
+    return this.general;
   }
 
   public handleConflictError(error: ConflictError) {

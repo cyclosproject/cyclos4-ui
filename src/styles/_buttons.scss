@@ -45,6 +45,10 @@ table.table {
   }
 }
 
+.actions-multiple .btn-icon {
+  display: inline-block !important;
+}
+
 body.dark {
   .btn-primary {
     @include button-variant($button-color-dark, $button-border-color-dark);

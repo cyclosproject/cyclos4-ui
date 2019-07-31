@@ -1,0 +1,108 @@
+<page-layout [ready]="data$ | async">
+  <page-content mode="filters" [heading]="i18n.userAlert.title"
+    [mobileHeading]="i18n.userAlert.mobileTitle">
+    <form [formGroup]="form"
+      class="filters-form filters-form-separator border-0">
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <date-field labelPosition="side" formControlName="beginDate"
+            [label]="i18n.general.beginDate" minDate="past5" maxDate="today"
+            fieldSize="full">
+          </date-field>
+        </div>
+        <div class="col-12 col-md-6">
+          <date-field labelPosition="side" formControlName="endDate"
+            [label]="i18n.general.endDate" minDate="past5" maxDate="today"
+            fieldSize="full">
+          </date-field>
+        </div>
+        <div class="col-12 col-md-6">
+          <single-selection-field labelPosition="side" formControlName="types"
+            [label]="i18n.userAlert.type.title"
+            [emptyOption]="i18n.general.notApplied">
+            <field-option value="custom" [text]="i18n.userAlert.type.custom">
+            </field-option>
+            <field-option value="givenVeryBadRefs"
+              [text]="i18n.userAlert.type.givenVeryBadRefs">
+            </field-option>
+            <field-option value="insufficientBalanceForInitialCredit"
+              [text]="i18n.userAlert.type.insufficientBalanceForInitialCredit">
+            </field-option>
+            <field-option value="maxDeviceActivationAttemptsReached"
+              [text]="i18n.userAlert.type.maxDeviceActivationAttemptsReached">
+            </field-option>
+            <field-option value="maxDeviceConfirmationCheckAttemptsReached"
+              [text]="i18n.userAlert.type.maxDeviceConfirmationCheckAttemptsReached">
+            </field-option>
+            <field-option value="maxTokenActivationAttemptsReached"
+              [text]="i18n.userAlert.type.maxTokenActivationAttemptsReached">
+            </field-option>
+            <field-option value="maxUserLocalizationAttemptsReached"
+              [text]="i18n.userAlert.type.maxUserLocalizationAttemptsReached">
+            </field-option>
+            <field-option value="maxVoucherRedeemAttemptsReached"
+              [text]="i18n.userAlert.type.maxVoucherRedeemAttemptsReached">
+            </field-option>
+            <field-option value="moveUserAutomaticallyFailed"
+              [text]="i18n.userAlert.type.moveUserAutomaticallyFailed">
+            </field-option>
+            <field-option value="passwordDisabledByTries"
+              [text]="i18n.userAlert.type.passwordDisabledByTries">
+            </field-option>
+            <field-option value="passwordTemporarilyBlocked"
+              [text]="i18n.userAlert.type.passwordTemporarilyBlocked">
+            </field-option>
+            <field-option value="receivedVeryBadRefs"
+              [text]="i18n.userAlert.type.receivedVeryBadRefs">
+            </field-option>
+            <field-option value="scheduledPaymentFailed"
+              [text]="i18n.userAlert.type.receivedVeryBadRefs">
+            </field-option>
+          </single-selection-field>
+        </div>
+        <div class="col-12 col-md-6">
+          <user-field labelPosition="side" formControlName="user"
+            [label]="i18n.general.user"></user-field>
+        </div>
+      </div>
+    </form>
+  </page-content>
+  <results-layout resultType="list" [results]="results$ | async"
+    (update)="update($event)">
+
+    <mobile-result *mobileResult="let row" [avatarImage]="row.user?.image"
+      avatarIcon="user">
+      <div class="cell-main" [tooltip]="row.user.display">
+        {{ row.user.display }}</div>
+      <div class="cell-cell-date">
+        {{ row.date | dateTime }}
+      </div>
+      <div class="cell-text">{{ row.text }}</div>
+    </mobile-result>
+
+    <table *resultTable class="table table-hover cursor-pointer">
+      <thead>
+        <th class="avatar"></th>
+        <th>{{ i18n.general.user }}</th>
+        <th>{{ i18n.userAlert.text }}</th>
+        <th>{{ i18n.general.date }}</th>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let row of (results$ | async).results">
+          <tr>
+            <td class="avatar" [ngClass]="{
+              'pb-0': layout.xxs$ | async,
+              'border-0': layout.xxs$ | async
+            }">
+              <avatar [image]="row.user?.image" [tooltip]="row.user?.display"
+                icon="user"></avatar>
+            </td>
+            <td>{{ row.user.display }}</td>
+            <td>{{ row.text }}</td>
+            <td>{{ row.date | dateTime }}</td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </results-layout>
+</page-layout>

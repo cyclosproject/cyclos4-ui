@@ -1,0 +1,47 @@
+<page-layout [ready]="data$ | async">
+  <page-content *ngIf="data" [heading]="create ? 
+    i18n.record.title.new(data.type.name) :
+    i18n.record.title.edit(data.type.name)" [mobileHeading]="create ? 
+    i18n.record.mobileTitle.new(data.type.name) :
+    i18n.record.mobileTitle.edit(data.type.name)">
+    <form [formGroup]="form" [ngClass]="{'mr-n3': columnLayout}">
+      <ng-container *ngIf="data.type.informationText">
+        <rich-text-container [value]="data.type.informationText">
+        </rich-text-container>
+        <hr *ngIf="data.fields">
+      </ng-container>
+      <h2 *ngIf="fieldsWithoutSection.length > 0" [ngClass]="{
+                'mb-0': labelPosition == 'above',
+                'mb-2': labelPosition != 'above',
+                'border-top-0': !data.type.informationText}">
+        {{ i18n.record.fields }}
+      </h2>
+      <custom-field-input *ngFor="let cf of fieldsWithoutSection"
+        [labelPosition]="labelPosition" [field]="cf"
+        [formControl]="form.get('customValues').get(cf.internalName)"
+        [class]="resolveColumnClass(cf)" [binaryValues]="binaryValues">
+      </custom-field-input>
+      <ng-container
+        *ngFor="let key of fieldsWithSection.keys(); let first = first">
+        <h2 [ngClass]="{
+                'mb-0': labelPosition == 'above',
+                'mb-2': labelPosition !== 'above',
+                'mt-4': fieldsWithoutSection.length > 0,
+                'border-top-0': first && fieldsWithoutSection.length == 0}">
+          {{ key.name }}
+        </h2>
+        <custom-field-input *ngFor="let cf of fieldsWithSection.get(key)"
+          [labelPosition]="labelPosition" [field]="cf"
+          [formControl]="form.get('customValues').get(cf.internalName)"
+          [class]="resolveColumnClass(cf)" [binaryValues]="binaryValues">
+        </custom-field-input>
+      </ng-container>
+    </form>
+    <actions>
+      <button class="btn btn-primary" [disabled]="requesting$ | async"
+        (click)="save()">
+        {{ i18n.general.save }}
+      </button>
+    </actions>
+  </page-content>
+</page-layout>

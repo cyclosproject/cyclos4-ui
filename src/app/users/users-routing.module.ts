@@ -2,6 +2,11 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CountriesResolve } from 'app/countries.resolve';
 import { LoggedUserGuard } from 'app/logged-user-guard';
+import { SearchUserAlertsComponent } from 'app/users/alerts/search-user-alerts.component';
+import { BrokerFormComponent } from 'app/users/brokering/broker-form.component';
+import { ListUserBrokersComponent } from 'app/users/brokering/list-user-brokers.component';
+import { ViewBrokerHistoryComponent } from 'app/users/brokering/view-broker-history.component';
+import { SearchConnectedComponent } from 'app/users/connected/search-connected.component';
 import { ViewUserGroupHistoryComponent } from 'app/users/group-membership/view-user-group-history.component';
 import { ViewUserGroupComponent } from 'app/users/group-membership/view-user-group.component';
 import { ListOperatorGroupsComponent } from 'app/users/operator-groups/list-operator-groups.component';
@@ -36,6 +41,21 @@ const usersRoutes: Routes = [
       {
         path: ':user/brokerings',
         component: SearchUsersComponent,
+        canActivate: [LoggedUserGuard]
+      },
+      {
+        path: ':user/brokers',
+        component: ListUserBrokersComponent,
+        canActivate: [LoggedUserGuard]
+      },
+      {
+        path: ':user/brokers/history',
+        component: ViewBrokerHistoryComponent,
+        canActivate: [LoggedUserGuard]
+      },
+      {
+        path: ':user/brokers/new',
+        component: BrokerFormComponent,
         canActivate: [LoggedUserGuard]
       },
       {
@@ -151,6 +171,14 @@ const usersRoutes: Routes = [
       {
         path: 'validate-registration/:key',
         component: ValidateRegistrationComponent
+      },
+      {
+        path: 'connected',
+        component: SearchConnectedComponent
+      },
+      {
+        path: 'alerts',
+        component: SearchUserAlertsComponent
       },
       {
         path: 'validate-email-change/:key',

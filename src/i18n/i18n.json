@@ -1,5 +1,7 @@
 {
   "general": {
+    "type": "Type",
+    "code": "Code",
     "period": "Period",
     "now": "Now",
     "action": "Action",
@@ -11,6 +13,8 @@
     "futureDate": "Future date",
     "beginDate": "Begin date",
     "endDate": "End date",
+    "creationDate": "Creation date",
+    "expirationDate": "Expiration date",
     "notApplied": "Not applied",
     "notAppliedSelect": "Not applied (select to apply)",
     "user": "User",
@@ -98,6 +102,29 @@
         "dec": "Dec"
       }
     },
+    "timeField": {
+      "pattern": "{amount} {field}",
+      "plural": {
+        "days": "Days",
+        "hours": "Hours",
+        "millis": "Milliseconds",
+        "minutes": "Minutes",
+        "months": "Months",
+        "seconds": "Seconds",
+        "weeks": "Weeks",
+        "years": "Years"
+      },
+      "singular": {
+        "day": "Day",
+        "hour": "Hour",
+        "milli": "Millisecond",
+        "minute": "Minute",
+        "month": "Month",
+        "second": "Second",
+        "week": "Week",
+        "year": "Year"
+      }
+    },
     "weekday": {
       "min": {
         "sun": "S",
@@ -107,6 +134,15 @@
         "thu": "T",
         "fri": "F",
         "sat": "S"
+      },
+      "long": {
+        "sun": "Sunday",
+        "mon": "Monday",
+        "tue": "Tuesday",
+        "wed": "Wednesday",
+        "thu": "Thursday",
+        "fri": "Friday",
+        "sat": "Saturday"
       }
     },
     "range": {
@@ -191,6 +227,10 @@
     "banking.paySelf": "Payment to self",
     "banking.scheduledPayments": "Scheduled payments",
     "banking.authorizations": "Payment authorizations",
+    "banking.buyVouchers": "Buy vouchers",
+    "banking.boughtVouchers": "View buys",
+    "banking.redeemVoucher": "Redeem voucher",
+    "banking.redeemedVouchers": "View redeemed",
     "banking.transfersOverview": "Transfers overview",
     "operators": "Operators",
     "operators.operators": "Operators",
@@ -206,6 +246,8 @@
     "marketplace.userSearch": "Users",
     "marketplace.businessDirectory": "Business directory",
     "marketplace.advertisements": "Advertisements",
+    "marketplace.connectedUsers": "Connected users",
+    "marketplace.userAlerts": "User alerts",
     "personal": "Personal",
     "personal.viewProfile": "My profile",
     "personal.editProfile": "Edit profile",
@@ -347,7 +389,8 @@
       "editProfile": "Edit profile",
       "password": "Password",
       "passwords": "Passwords",
-      "switchTheme": "Switch theme"
+      "switchTheme": "Switch theme",
+      "connectedUsers": "Connected users"
     },
     "accountStatus": "Account status",
     "lastIncomingPayments": "Last incoming payments",
@@ -568,6 +611,67 @@
       "monthly.count": "The maximum allowed number of payments per month is {count}"
     }
   },
+  "voucher": {
+    "error": {
+      "totalOpenAmount": "The total amount of all open vouchers would exceed {maxAmount}, as defined in this voucher type. The current total open amount is {currentAmount}.",
+      "buy": {
+        "amountForPeriod": "Buying on this voucher type is limited by period. Until {date} only {amount} is available for buying.",
+        "openAmount": "The current user exceeds the maximum allowed open amount of {maxAmount} for vouchers of this type. The current open amount is {currentAmount}.",
+        "notAllowedForUser": "The current user is not allowed to buy vouchers from this type."
+      },
+      "redeem": {
+        "status": "This voucher cannot be redeemed. Its current status is: {status}.",
+        "user": "The current user cannot redeem vouchers from this type.",
+        "notAllowedYet": "This voucher cannot be redeemed before {beginDate}.",
+        "notAllowedToday": "This voucher cannot be redeemed today. The days allowed for redeeming are: {allowedDays}.",
+        "userBlocked": "You have been blocked by exceeding the number of allowed attempts."
+      }
+    },
+    "redeem": {
+      "confirm": "The voucher details are given below. Please, review it below and confirm this action.",
+      "done": "The voucher was redeemed successfully.",
+      "date": "Redeeming date",
+      "redeemer": "Redeemer",
+      "payment": "Redeem payment"
+    },
+    "status": {
+      "redeemed": "Redeemed",
+      "pending": "Pending",
+      "open": "Open",
+      "expired": "Expired",
+      "canceled": "Canceled"
+    },
+    "mobileTitle": {
+      "buy": "Buy vouchers",
+      "buyConfirmation": "Buy confirmation",
+      "bought": "Bought vouchers",
+      "redeem": "Redeem voucher",
+      "search": "Redeemed vouchers"
+    },
+    "title": {
+      "buy": "Buy vouchers",
+      "buyConfirmation": "Buy confirmation",
+      "searchBought": "Search bought vouchers",
+      "redeem": "Redeem voucher",
+      "search": "Redeemed vouchers"
+    },
+    "boughtType": "Bought",
+    "generatedType": "Generated",
+    "buy": {
+      "amountRange": "Amount range",
+      "buyer": "Buyer",
+      "done": "The voucher(s) has been bought.",
+      "minTimeToRedeem": "Can be redeemed",
+      "minTimeToRedeem.afterBuy": "{interval} after buying",
+      "numberOfVouchers": "Number of vouchers",
+      "amountPerVoucher": "Amount per voucher",
+      "originAccount": "Origin account",
+      "payment": "Buy payment"
+    },
+    "creationType": "CreationType",
+    "cancelAndRefund": "Cancel & refund",
+    "token": "Voucher code"
+  },
   "field": {
     "privacy": {
       "name": "Privacy",
@@ -708,13 +812,20 @@
       "viewAccount": "View {account}",
       "viewScheduledPayments": "View scheduled payments",
       "viewAuthorizedPayments": "View payment authorizations",
+      "viewBoughtVouchers": "View bought vouchers",
+      "buyVouchers": "Buy vouchers",
       "viewAds": "View advertisements",
       "viewBrokerings": "View assigned members",
+      "viewBrokers": "View brokers",
       "viewOperators": "View operators",
       "status.user": "User status",
       "status.operator": "Operator status",
       "group.user": "User group",
-      "group.operator": "Operator group"
+      "group.operator": "Operator group",
+      "viewRedeemedVouchers": "View redeemed vouchers",
+      "redeemVoucher": "Redeem voucher",
+      "viewBoughtVouchers": "View bought vouchers",
+      "buyVouchers": "Buy vouchers"
     },
     "registration": {
       "group.public": "Choose the group you want to participate",
@@ -850,6 +961,28 @@
       "history.operator": "Group history"
     }
   },
+  "brokers": {
+    "title": {
+      "list": "Brokers",
+      "new": "Add broker",
+      "history": "Brokers history"
+    },
+    "mobileTitle": {
+      "list": "Brokers",
+      "new": "Add broker",
+      "history": "Brokers history"
+    },
+    "mainBroker": "Main broker",
+    "setMain": "Set main",
+    "broker": "Broker",
+    "brokerAdded": "The broker has been added successfully",
+    "administration": "The administration",
+    "action": {
+      "add": "Added as broker",
+      "remove": "Removed a broker",
+      "setMain": "Set as main"
+    }
+  },
   "phone": {
     "mobile": "Mobile phone",
     "landLine": "Land-line phone",
@@ -929,6 +1062,22 @@
       "markAllRead": "Mark all as read"
     }
   },
+  "connectedUser": {
+    "title": "Connected users",
+    "mobileTitle": "Connected users",
+    "loggedInAt": "Logged in at",
+    "channel": "Channel",
+    "ipAddress": "IP Address",
+    "disconnect": "Disconnect user",
+    "viewConnected": {
+      "operator": "View connected operators",
+      "broker": "View connected brokers",
+      "admin": "View connected admins",
+      "member": "View connected members"
+    },
+    "showConnected": "Show connected",
+    "disconnected": "{user} has been disconnected"
+  },
   "operation": {
     "user": "User",
     "ad": "Advertisement",
@@ -945,5 +1094,47 @@
     "theme": "Theme",
     "theme.light": "Light",
     "theme.dark": "Dark"
+  },
+  "record": {
+    "createdBy": "Created by",
+    "lastModifiedBy": "Last modified by",
+    "lastModificationDate": "Last modified at",
+    "removeConfirm": "Are you sure to remove this item?",
+    "removeDone": "The item has been removed",
+    "action": "{type} ({count})",
+    "fields": "Fields",
+    "title": {
+      "details": "{name} details",
+      "new": "Create new {name}",
+      "edit": "Edit {name}"
+    },
+    "mobileTitle": {
+      "details": "{name} details",
+      "new": "Create new {name}",
+      "edit": "Edit {name}"
+    },
+    "created": "The {name} was created",
+    "saved": "The {name} was saved"
+  },
+  "userAlert": {
+    "title": "Search user alerts",
+    "text": "Text",
+    "mobileTitle": "User alerts",
+    "type": {
+      "title": "Type",
+      "custom": "Custom",
+      "givenVeryBadRefs": "User gave too many 'very bad' references",
+      "insufficientBalanceForInitialCredit": "Insufficient balance for an account's initial credit",
+      "maxDeviceActivationAttemptsReached": "Max device activation attempts reached",
+      "maxDeviceConfirmationCheckAttemptsReached": "Max device confirmation check attempts reached",
+      "maxTokenActivationAttemptsReached": "Max token activation attempts reached",
+      "maxUserLocalizationAttemptsReached": "Max user localization attempts reached",
+      "maxVoucherRedeemAttemptsReached": "Max voucher redeem attempts reached",
+      "moveUserAutomaticallyFailed": "Move user automatically to group failed",
+      "passwordDisabledByTries": "Password is indefinitely blocked by exceeding attempts",
+      "passwordTemporarilyBlocked": "Password temporarily blocked by exceeding attempts",
+      "receivedVeryBadRefs": "User received too many 'very bad' references",
+      "scheduledPaymentFailed": "Scheduled payment failed"
+    }
   }
 }

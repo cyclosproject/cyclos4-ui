@@ -4,6 +4,7 @@
 export enum OperationRunScope {
   User = 'user',
   Ad = 'ad',
+  Record = 'record',
   Transfer = 'transfer',
   Standalone = 'standalone'
 }
