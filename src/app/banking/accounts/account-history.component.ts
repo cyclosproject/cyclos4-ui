@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
-  AccountHistoryOrderByEnum, AccountHistoryQueryFilters, AccountHistoryResult,
+  TransOrderByEnum, AccountHistoryQueryFilters, AccountHistoryResult,
   AccountWithHistoryStatus, Currency, DataForAccountHistory, EntityReference,
   Image, PreselectedPeriod, TransferFilter, AccountKind
 } from 'app/api/models';
@@ -118,7 +118,7 @@ export class AccountHistoryComponent
     this.printable = true;
     this.printAction.label = this.i18n.account.printTransactions;
 
-    this.form.patchValue({ 'orderBy': AccountHistoryOrderByEnum.DATE_DESC });
+    this.form.patchValue({ 'orderBy': TransOrderByEnum.DATE_DESC });
 
     this.addSub(this.layout.xxs$.subscribe(() => this.updateShowForm(data)));
     this.addSub(this.moreFilters$.subscribe(() => this.updateShowForm(data)));
