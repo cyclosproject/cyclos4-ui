@@ -208,8 +208,8 @@
       "confirmationMessage": "Levering uw {passwordType} om deze handeling te bevestigen",
       "confirm.noPassword": "Om te bevestigen dat u nodig {passwordType}, maar je hebt geen",
       "confirm.mode": "Confirm with",
-      "confirm.mode.device": "Mobile phone",
-      "confirm.mode.password": "Password",
+      "confirm.mode.device": "Mobiele telefoon",
+      "confirm.mode.password": "Wachtwoord",
       "confirm.device.active": "In order to confirm, scan this QR-code with your mobile phone",
       "confirm.device.none": "In order to confirm you must have a trusted mobile phone but you do not have any",
       "confirm.deviceOrPassword.active": "In order to confirm, either scan this QR-code with your mobile phone or supply your {password}",
@@ -249,7 +249,7 @@
         "manual.done": "Uw wachtwoord is met succes gewijzigd. U kunt het nu gebruiken om in te loggen."
       },
       "expired": {
-        "preface": "Uw {type} is verlopen.",
+        "preface": "Your {type} has expired.",
         "message.manual": "Om door te kunnen gaan, moet u deze wijzigen.",
         "message.generated": "Om verder te gaan, een nieuwe waarde moet worden gegenereerd.<br>Deze waarde wordt slechts eenmaal weergegeven, dus zorg ervoor dat u ofwel te onthouden of op te schrijven.",
         "generatedValue": "De waarde voor {type} is <data>{value}</data>.<br>Deze waarde zal niet opnieuw worden weergegeven, dus zorg ervoor dat u ofwel te onthouden of op te schrijven.",

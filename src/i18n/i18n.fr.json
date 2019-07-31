@@ -196,7 +196,7 @@
   "auth": {
     "login": {
       "title": "Connexion",
-      "mobileTitle": "Login",
+      "mobileTitle": "Connexion",
       "message": "Vous pouvez vous connecter avec votre identifiant et votre mot de passe.",
       "disconnected": "Vous avez été déconnecté.<br>Veuillez vous identifier à nouveau pour afficher la page demandée.",
       "principal": "Utilisateur",
@@ -208,8 +208,8 @@
       "confirmationMessage": "Fournissez votre {passwordType} pour confirmer cette opération.",
       "confirm.noPassword": "Pour confirmer, vous avez besoin d’un {passwordType}, mais vous n’en avez pas.",
       "confirm.mode": "Confirm with",
-      "confirm.mode.device": "Mobile phone",
-      "confirm.mode.password": "Password",
+      "confirm.mode.device": "Téléphone mobile",
+      "confirm.mode.password": "Mot de passe",
       "confirm.device.active": "In order to confirm, scan this QR-code with your mobile phone",
       "confirm.device.none": "In order to confirm you must have a trusted mobile phone but you do not have any",
       "confirm.deviceOrPassword.active": "In order to confirm, either scan this QR-code with your mobile phone or supply your {password}",
@@ -249,7 +249,7 @@
         "manual.done": "Votre mot de passe a été changé avec succès. Vous pouvez maintenant l'utiliser pour vous connecter."
       },
       "expired": {
-        "preface": "Votre {type} a expiré.",
+        "preface": "Your {type} has expired.",
         "message.manual": "Pour pouvoir continuer, vous devez le changer.",
         "message.generated": "Pour continuer, une nouvelle valeur doit être générée. <br> Cette valeur ne sera affichée qu'une fois. Assurez-vous donc de la mémoriser ou de l'écrire..",
         "generatedValue": "La valeur de {type} est <data> {value} </ data>. <br> Cette valeur ne s'affichera plus. Assurez-vous donc de la mémoriser ou de l'écrire.",
