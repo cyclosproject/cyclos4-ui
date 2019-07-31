@@ -47,6 +47,7 @@ export class SearchAuthorizedPaymentsComponent
   protected toSearchParams(value: any): TransactionSearchParams {
     const query = super.toSearchParams(value);
     query.authorizationStatuses = [value.status];
+    query.authorized = true;
     return query;
   }
 
