@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
-  AccountHistoryOrderByEnum, AccountType, Currency, PreselectedPeriod,
+  TransOrderByEnum, AccountType, Currency, PreselectedPeriod,
   TransferDataForSearch, TransferFilter, TransferQueryFilters, TransferResult, RoleEnum
 } from 'app/api/models';
 import { TransfersService } from 'app/api/services';
@@ -71,7 +71,7 @@ export class SearchTransfersOverviewComponent
       this.transfersService.getTransferDataForSearch()
     ).subscribe(data => {
       const defaultQuery = data.query || {};
-      defaultQuery.orderBy = defaultQuery.orderBy || AccountHistoryOrderByEnum.DATE_DESC;
+      defaultQuery.orderBy = defaultQuery.orderBy || TransOrderByEnum.DATE_DESC;
       this.form.patchValue(defaultQuery);
       this.data = data;
     });
