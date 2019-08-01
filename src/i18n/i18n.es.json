@@ -613,23 +613,23 @@
   },
   "voucher": {
     "error": {
-      "totalOpenAmount": "The total amount of all open vouchers would exceed {maxAmount}, as defined in this voucher type. The current total open amount is {currentAmount}.",
+      "totalOpenAmount": "La monto total de todos los cupones abiertos superaría a {maxAmount}, como se define en para este tipo de cupón. Actualmente el monto abierto total es de {currentAmount}.",
       "buy": {
-        "amountForPeriod": "Buying on this voucher type is limited by period. Until {date} only {amount} is available for buying.",
-        "openAmount": "The current user exceeds the maximum allowed open amount of {maxAmount} for vouchers of this type. The current open amount is {currentAmount}.",
-        "notAllowedForUser": "The current user is not allowed to buy vouchers from this type."
+        "amountForPeriod": "La compra de este tipo de cupón está limitada por período. Hasta el {date} solamente es posible comprar {amount}.",
+        "openAmount": "El usuario actual excede el monto máximo de {maxAmount} permitido para este tipo de cupón abierto. El monto actual abierto en cupones es de {currentAmount}.",
+        "notAllowedForUser": "El usuario actual no puede comprar cupones de este tipo."
       },
       "redeem": {
-        "status": "This voucher cannot be redeemed. Its current status is: {status}.",
-        "user": "The current user cannot redeem vouchers from this type.",
-        "notAllowedYet": "This voucher cannot be redeemed before {beginDate}.",
-        "notAllowedToday": "This voucher cannot be redeemed today. The days allowed for redeeming are: {allowedDays}.",
-        "userBlocked": "You have been blocked by exceeding the number of allowed attempts."
+        "status": "El cupón no puede ser canjeado. Su estado actual es: {status}.",
+        "user": "El usuario actual no puede canjear cupones de este tipo.",
+        "notAllowedYet": "Este cupón no puede ser canjeado antes del {beginDate}.",
+        "notAllowedToday": "Este cupón no puede ser canjeado hoy. Los días permitidos para su canje son: {allowedDays}.",
+        "userBlocked": "Usted ha sido bloqueado por exceder el número de intentos permitidos."
       }
     },
     "redeem": {
       "confirm": "The voucher details are given below. Please, review it below and confirm this action.",
-      "done": "The voucher was redeemed successfully.",
+      "done": "El cupón fue canjeado exitosamente.",
       "date": "Fecha de canje",
       "redeemer": "Redeemer",
       "payment": "Pago de canje"
@@ -973,7 +973,7 @@
     "mainBroker": "Broker principal",
     "setMain": "Definir principal",
     "broker": "Broker",
-    "brokerAdded": "The broker has been added successfully",
+    "brokerAdded": "El broker ha sido agregado exitosamente",
     "administration": "La administración",
     "action": {
       "add": "Agregado como broker",
@@ -1128,7 +1128,7 @@
       "maxTokenActivationAttemptsReached": "Max token activation attempts reached",
       "maxUserLocalizationAttemptsReached": "Max user localization attempts reached",
       "maxVoucherRedeemAttemptsReached": "Max voucher redeem attempts reached",
-      "moveUserAutomaticallyFailed": "Move user automatically to group failed",
+      "moveUserAutomaticallyFailed": "Error al cambiar el usuario de grupo automáticamente",
       "passwordDisabledByTries": "Password is indefinitely blocked by exceeding attempts",
       "passwordTemporarilyBlocked": "Password temporarily blocked by exceeding attempts",
       "receivedVeryBadRefs": "User received too many 'very bad' references",
