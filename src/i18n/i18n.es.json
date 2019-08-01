@@ -644,33 +644,33 @@
     "mobileTitle": {
       "buy": "Comprar cupones",
       "buyConfirmation": "Confirmación de compra",
-      "bought": "Bought vouchers",
-      "redeem": "Redeem voucher",
-      "search": "Redeemed vouchers"
+      "bought": "Cupones comprados",
+      "redeem": "Canjear cupón",
+      "search": "Cupones canjeados"
     },
     "title": {
-      "buy": "Buy vouchers",
-      "buyConfirmation": "Buy confirmation",
-      "searchBought": "Search bought vouchers",
-      "redeem": "Redeem voucher",
-      "search": "Redeemed vouchers"
+      "buy": "Comprar cupones",
+      "buyConfirmation": "Confirmación de compra",
+      "searchBought": "Buscar cupones comprados",
+      "redeem": "Canjear cupón",
+      "search": "Cupones canjeados"
     },
-    "boughtType": "Bought",
-    "generatedType": "Generated",
+    "boughtType": "Comprado",
+    "generatedType": "Generado",
     "buy": {
-      "amountRange": "Amount range",
-      "buyer": "Buyer",
-      "done": "The voucher(s) has been bought.",
-      "minTimeToRedeem": "Can be redeemed",
-      "minTimeToRedeem.afterBuy": "{interval} after buying",
-      "numberOfVouchers": "Number of vouchers",
-      "amountPerVoucher": "Amount per voucher",
-      "originAccount": "Origin account",
+      "amountRange": "Rango de monto",
+      "buyer": "Comprador",
+      "done": "El cupón ha sido comprado.",
+      "minTimeToRedeem": "Puede ser canjeado",
+      "minTimeToRedeem.afterBuy": "{interval} después de la compra",
+      "numberOfVouchers": "Cantidad de cupones",
+      "amountPerVoucher": "Monto por cupón",
+      "originAccount": "Cuenta de origen",
       "payment": "Buy payment"
     },
-    "creationType": "CreationType",
-    "cancelAndRefund": "Cancel & refund",
-    "token": "Voucher code"
+    "creationType": "TipoCreación",
+    "cancelAndRefund": "Cancelar y reembolsar",
+    "token": "Código de cupón"
   },
   "field": {
     "privacy": {
@@ -812,11 +812,11 @@
       "viewAccount": "Ver {account}",
       "viewScheduledPayments": "Ver pagos agendados",
       "viewAuthorizedPayments": "Ver autorizaciones de pago",
-      "viewBoughtVouchers": "View bought vouchers",
-      "buyVouchers": "Buy vouchers",
+      "viewBoughtVouchers": "Ver cupones comprados",
+      "buyVouchers": "Comprar cupones",
       "viewAds": "Ver anuncios",
       "viewBrokerings": "Ver miembros asignados",
-      "viewBrokers": "View brokers",
+      "viewBrokers": "Ver brokers",
       "viewOperators": "Ver operadores",
       "status.user": "Estado del usuario",
       "status.operator": "Estado del operador",
@@ -962,23 +962,23 @@
   "brokers": {
     "title": {
       "list": "Brokers",
-      "new": "Add broker",
-      "history": "Brokers history"
+      "new": "Agregar broker",
+      "history": "Historial de brokers"
     },
     "mobileTitle": {
       "list": "Brokers",
-      "new": "Add broker",
-      "history": "Brokers history"
+      "new": "Agregar broker",
+      "history": "Historial de brokers"
     },
-    "mainBroker": "Main broker",
-    "setMain": "Set main",
+    "mainBroker": "Broker principal",
+    "setMain": "Definir principal",
     "broker": "Broker",
     "brokerAdded": "The broker has been added successfully",
     "administration": "The administration",
     "action": {
       "add": "Added as broker",
       "remove": "Removed a broker",
-      "setMain": "Set as main"
+      "setMain": "Definir como principal"
     }
   },
   "phone": {
@@ -1062,19 +1062,19 @@
   },
   "connectedUser": {
     "title": "Connected users",
-    "mobileTitle": "Connected users",
-    "loggedInAt": "Logged in at",
-    "channel": "Channel",
-    "ipAddress": "IP Address",
-    "disconnect": "Disconnect user",
+    "mobileTitle": "Usuarios conectados",
+    "loggedInAt": "Acceso desde",
+    "channel": "Canal",
+    "ipAddress": "Dirección IP",
+    "disconnect": "Desconectar usuario",
     "viewConnected": {
-      "operator": "View connected operators",
-      "broker": "View connected brokers",
-      "admin": "View connected admins",
-      "member": "View connected members"
+      "operator": "Ver operadores conectados",
+      "broker": "Ver brokers conectados",
+      "admin": "Ver administradores conectados",
+      "member": "Ver miembros conectados"
     },
-    "showConnected": "Show connected",
-    "disconnected": "{user} has been disconnected"
+    "showConnected": "Mostrar conectado",
+    "disconnected": "{user} ha sido desconectado"
   },
   "operation": {
     "user": "Usuario",
@@ -1094,9 +1094,9 @@
     "theme.dark": "Oscuro"
   },
   "record": {
-    "createdBy": "Created by",
-    "lastModifiedBy": "Last modified by",
-    "lastModificationDate": "Last modified at",
+    "createdBy": "Creado por",
+    "lastModifiedBy": "Última modificación de",
+    "lastModificationDate": "Última modificación",
     "removeConfirm": "Are you sure to remove this item?",
     "removeDone": "The item has been removed",
     "action": "{type} ({count})",
