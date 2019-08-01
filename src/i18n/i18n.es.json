@@ -631,7 +631,7 @@
       "confirm": "Los detalles del cupón se muestran a continuación. Por favor, revise la información y confirme esta acción.",
       "done": "El cupón fue canjeado exitosamente.",
       "date": "Fecha de canje",
-      "redeemer": "Redeemer",
+      "redeemer": "Canjeado por",
       "payment": "Pago de canje"
     },
     "status": {
@@ -666,7 +666,7 @@
       "numberOfVouchers": "Cantidad de cupones",
       "amountPerVoucher": "Monto por cupón",
       "originAccount": "Cuenta de origen",
-      "payment": "Buy payment"
+      "payment": "Transacción de compra"
     },
     "creationType": "TipoCreación",
     "cancelAndRefund": "Cancelar y reembolsar",
@@ -1127,10 +1127,10 @@
       "maxDeviceConfirmationCheckAttemptsReached": "Se ha alcanzado la máxima cantidad de intentos de confirmación del dispositivo",
       "maxTokenActivationAttemptsReached": "Se ha alcanzado la máxima cantidad de intentos de activación del token",
       "maxUserLocalizationAttemptsReached": "Se ha alcanzado la máxima cantidad de intentos de localizar el usuario",
-      "maxVoucherRedeemAttemptsReached": "Max voucher redeem attempts reached",
+      "maxVoucherRedeemAttemptsReached": "Se ha alcanzado la máxima cantidad de intentos de canjear un cupón",
       "moveUserAutomaticallyFailed": "Error al cambiar el usuario de grupo automáticamente",
-      "passwordDisabledByTries": "Password is indefinitely blocked by exceeding attempts",
-      "passwordTemporarilyBlocked": "Password temporarily blocked by exceeding attempts",
+      "passwordDisabledByTries": "La contraseña ha sido bloqueada indefinidamente por exceder la máxima cantidad de intentos",
+      "passwordTemporarilyBlocked": "La contraseña ha sido bloqueada temporalmente por exceder la máxima cantidad de intentos",
       "receivedVeryBadRefs": "El usuario recibido demasiadas referencias de \"Muy malo\"",
       "scheduledPaymentFailed": "Error de pago agendado"
     }
