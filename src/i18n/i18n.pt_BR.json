@@ -816,14 +816,14 @@
       "buyVouchers": "Comprar cupons",
       "viewAds": "Ver anúncios",
       "viewBrokerings": "Ver membros atribuídos",
-      "viewBrokers": "View brokers",
+      "viewBrokers": "Ver corretores",
       "viewOperators": "Ver operadores",
       "status.user": "Estado do usuário",
       "status.operator": "Estado do operador",
       "group.user": "Grupo do usuário",
       "group.operator": "Grupo do operador",
-      "viewRedeemedVouchers": "View redeemed vouchers",
-      "redeemVoucher": "Redeem voucher"
+      "viewRedeemedVouchers": "Ver cupons resgatados",
+      "redeemVoucher": "Resgatar cupons"
     },
     "registration": {
       "group.public": "Escolha o grupo que deseja participar",
@@ -961,24 +961,24 @@
   },
   "brokers": {
     "title": {
-      "list": "Brokers",
-      "new": "Add broker",
-      "history": "Brokers history"
+      "list": "Corretores",
+      "new": "Adicionar corretor",
+      "history": "Histórico de corretores"
     },
     "mobileTitle": {
-      "list": "Brokers",
-      "new": "Add broker",
-      "history": "Brokers history"
+      "list": "Corretores",
+      "new": "Adicionar corretor",
+      "history": "Histórico de corretores"
     },
-    "mainBroker": "Main broker",
-    "setMain": "Set main",
-    "broker": "Broker",
-    "brokerAdded": "The broker has been added successfully",
-    "administration": "The administration",
+    "mainBroker": "Corretor principal",
+    "setMain": "Definir principal",
+    "broker": "Corretor",
+    "brokerAdded": "O corretor foi adicionado com sucesso",
+    "administration": "A administração",
     "action": {
-      "add": "Added as broker",
-      "remove": "Removed a broker",
-      "setMain": "Set as main"
+      "add": "Adicionado como corretor",
+      "remove": "Remover um corretor",
+      "setMain": "Definir como principal"
     }
   },
   "phone": {
@@ -1061,10 +1061,10 @@
     }
   },
   "connectedUser": {
-    "title": "Connected users",
-    "mobileTitle": "Connected users",
-    "loggedInAt": "Logged in at",
-    "channel": "Channel",
+    "title": "Usuários conectados",
+    "mobileTitle": "Usuários conectados",
+    "loggedInAt": "Conectado em",
+    "channel": "Canal",
     "ipAddress": "Endereço IP",
     "disconnect": "Desconectar usuário",
     "viewConnected": {
