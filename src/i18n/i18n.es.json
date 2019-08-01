@@ -628,7 +628,7 @@
       }
     },
     "redeem": {
-      "confirm": "The voucher details are given below. Please, review it below and confirm this action.",
+      "confirm": "Los detalles del cupón se muestran a continuación. Por favor, revise la información y confirme esta acción.",
       "done": "El cupón fue canjeado exitosamente.",
       "date": "Fecha de canje",
       "redeemer": "Redeemer",
@@ -976,9 +976,9 @@
     "brokerAdded": "El broker ha sido agregado exitosamente",
     "administration": "La administración",
     "action": {
-      "add": "Agregado como broker",
-      "remove": "Removed a broker",
-      "setMain": "Definir como principal"
+      "add": "Agregar broker",
+      "remove": "Eliminar broker",
+      "setMain": "Definir broker principal"
     }
   },
   "phone": {
@@ -1121,17 +1121,17 @@
     "type": {
       "title": "Tipo",
       "custom": "Personalizado",
-      "givenVeryBadRefs": "User gave too many 'very bad' references",
-      "insufficientBalanceForInitialCredit": "Insufficient balance for an account's initial credit",
-      "maxDeviceActivationAttemptsReached": "Max device activation attempts reached",
-      "maxDeviceConfirmationCheckAttemptsReached": "Max device confirmation check attempts reached",
-      "maxTokenActivationAttemptsReached": "Max token activation attempts reached",
-      "maxUserLocalizationAttemptsReached": "Max user localization attempts reached",
+      "givenVeryBadRefs": "El usuario ha dado demasiadas referencias de 'Muy malo'",
+      "insufficientBalanceForInitialCredit": "Saldo insuficiente para dar el crédito inicial de una cuenta",
+      "maxDeviceActivationAttemptsReached": "Se ha alcanzado la máxima cantidad de intentos de activación del dispositivo",
+      "maxDeviceConfirmationCheckAttemptsReached": "Se ha alcanzado la máxima cantidad de intentos de confirmación del dispositivo",
+      "maxTokenActivationAttemptsReached": "Se ha alcanzado la máxima cantidad de intentos de activación del token",
+      "maxUserLocalizationAttemptsReached": "Se ha alcanzado la máxima cantidad de intentos de localizar el usuario",
       "maxVoucherRedeemAttemptsReached": "Max voucher redeem attempts reached",
       "moveUserAutomaticallyFailed": "Error al cambiar el usuario de grupo automáticamente",
       "passwordDisabledByTries": "Password is indefinitely blocked by exceeding attempts",
       "passwordTemporarilyBlocked": "Password temporarily blocked by exceeding attempts",
-      "receivedVeryBadRefs": "User received too many 'very bad' references",
+      "receivedVeryBadRefs": "El usuario recibido demasiadas referencias de \"Muy malo\"",
       "scheduledPaymentFailed": "Error de pago agendado"
     }
   }
