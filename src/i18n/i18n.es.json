@@ -822,8 +822,8 @@
       "status.operator": "Estado del operador",
       "group.user": "Grupo de usuario",
       "group.operator": "Grupo de operador",
-      "viewRedeemedVouchers": "View redeemed vouchers",
-      "redeemVoucher": "Redeem voucher"
+      "viewRedeemedVouchers": "Ver cupones canjeados",
+      "redeemVoucher": "Canjear cupón"
     },
     "registration": {
       "group.public": "Elija el grupo en el que desea registrarse",
@@ -974,9 +974,9 @@
     "setMain": "Definir principal",
     "broker": "Broker",
     "brokerAdded": "The broker has been added successfully",
-    "administration": "The administration",
+    "administration": "La administración",
     "action": {
-      "add": "Added as broker",
+      "add": "Agregado como broker",
       "remove": "Removed a broker",
       "setMain": "Definir como principal"
     }
@@ -1061,7 +1061,7 @@
     }
   },
   "connectedUser": {
-    "title": "Connected users",
+    "title": "Usuarios conectados",
     "mobileTitle": "Usuarios conectados",
     "loggedInAt": "Acceso desde",
     "channel": "Canal",
@@ -1095,32 +1095,32 @@
   },
   "record": {
     "createdBy": "Creado por",
-    "lastModifiedBy": "Última modificación de",
+    "lastModifiedBy": "Última modificación por",
     "lastModificationDate": "Última modificación",
-    "removeConfirm": "Are you sure to remove this item?",
-    "removeDone": "The item has been removed",
+    "removeConfirm": "¿Está seguro de eliminar este elemento?",
+    "removeDone": "El elemento ha sido eliminado",
     "action": "{type} ({count})",
-    "fields": "Fields",
+    "fields": "Campos",
     "title": {
-      "details": "{name} details",
-      "new": "Create new {name}",
-      "edit": "Edit {name}"
+      "details": "Detalle de {name}",
+      "new": "Crear nuevo/a {name}",
+      "edit": "Editar {name}"
     },
     "mobileTitle": {
-      "details": "{name} details",
-      "new": "Create new {name}",
-      "edit": "Edit {name}"
+      "details": "Detalle de {name}",
+      "new": "Crear nuevo {name}",
+      "edit": "Editar {name}"
     },
-    "created": "The {name} was created",
-    "saved": "The {name} was saved"
+    "created": "{name} ha sido creado",
+    "saved": "{name} ha sido guardado"
   },
   "userAlert": {
-    "title": "Search user alerts",
-    "text": "Text",
-    "mobileTitle": "User alerts",
+    "title": "Buscar alertas de usuario",
+    "text": "Texto",
+    "mobileTitle": "Alertas de usuario",
     "type": {
-      "title": "Type",
-      "custom": "Custom",
+      "title": "Tipo",
+      "custom": "Personalizado",
       "givenVeryBadRefs": "User gave too many 'very bad' references",
       "insufficientBalanceForInitialCredit": "Insufficient balance for an account's initial credit",
       "maxDeviceActivationAttemptsReached": "Max device activation attempts reached",
@@ -1132,7 +1132,7 @@
       "passwordDisabledByTries": "Password is indefinitely blocked by exceeding attempts",
       "passwordTemporarilyBlocked": "Password temporarily blocked by exceeding attempts",
       "receivedVeryBadRefs": "User received too many 'very bad' references",
-      "scheduledPaymentFailed": "Scheduled payment failed"
+      "scheduledPaymentFailed": "Error de pago agendado"
     }
   }
 }
