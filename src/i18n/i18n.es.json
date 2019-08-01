@@ -1,7 +1,7 @@
 {
   "general": {
-    "type": "Type",
-    "code": "Code",
+    "type": "Tipo",
+    "code": "Código",
     "period": "Período",
     "now": "Ahora",
     "action": "Acción",
@@ -13,8 +13,8 @@
     "futureDate": "Fecha futura",
     "beginDate": "Fecha inicial",
     "endDate": "Fecha final",
-    "creationDate": "Creation date",
-    "expirationDate": "Expiration date",
+    "creationDate": "Fecha de creación",
+    "expirationDate": "Fecha de expiración",
     "notApplied": "No se aplica",
     "notAppliedSelect": "No aplicado (seleccionar para aplicar)",
     "user": "Usuario",
@@ -105,24 +105,24 @@
     "timeField": {
       "pattern": "{amount} {field}",
       "plural": {
-        "days": "Days",
-        "hours": "Hours",
-        "millis": "Milliseconds",
-        "minutes": "Minutes",
-        "months": "Months",
-        "seconds": "Seconds",
-        "weeks": "Weeks",
-        "years": "Years"
+        "days": "Días",
+        "hours": "Horas",
+        "millis": "Milisegundos",
+        "minutes": "Minutos",
+        "months": "Meses",
+        "seconds": "Segundos",
+        "weeks": "Semanas",
+        "years": "Años"
       },
       "singular": {
-        "day": "Day",
-        "hour": "Hour",
-        "milli": "Millisecond",
-        "minute": "Minute",
-        "month": "Month",
-        "second": "Second",
-        "week": "Week",
-        "year": "Year"
+        "day": "Día",
+        "hour": "Hora",
+        "milli": "Milisegundo",
+        "minute": "Minuto",
+        "month": "Mes",
+        "second": "Segundo",
+        "week": "Semana",
+        "year": "Año"
       }
     },
     "weekday": {
@@ -136,13 +136,13 @@
         "sat": "S"
       },
       "long": {
-        "sun": "Sunday",
-        "mon": "Monday",
-        "tue": "Tuesday",
-        "wed": "Wednesday",
-        "thu": "Thursday",
-        "fri": "Friday",
-        "sat": "Saturday"
+        "sun": "Domingo",
+        "mon": "Lunes",
+        "tue": "Martes",
+        "wed": "Miércoles",
+        "thu": "Jueves",
+        "fri": "Viernes",
+        "sat": "Sábado"
       }
     },
     "range": {
@@ -227,10 +227,10 @@
     "banking.paySelf": "Auto pago",
     "banking.scheduledPayments": "Pagos agendados",
     "banking.authorizations": "Pagos con autorización",
-    "banking.buyVouchers": "Buy vouchers",
-    "banking.boughtVouchers": "View buys",
-    "banking.redeemVoucher": "Redeem voucher",
-    "banking.redeemedVouchers": "View redeemed",
+    "banking.buyVouchers": "Comprar cupones",
+    "banking.boughtVouchers": "Ver comprados",
+    "banking.redeemVoucher": "Canjear cupón",
+    "banking.redeemedVouchers": "Cupones canjeados",
     "banking.transfersOverview": "Visión general de Transferencias",
     "operators": "Operadores",
     "operators.operators": "Operadores",
@@ -246,8 +246,8 @@
     "marketplace.userSearch": "Usuarios",
     "marketplace.businessDirectory": "Directorio de anunciantes",
     "marketplace.advertisements": "Anuncios",
-    "marketplace.connectedUsers": "Connected users",
-    "marketplace.userAlerts": "User alerts",
+    "marketplace.connectedUsers": "Usuarios conectados",
+    "marketplace.userAlerts": "Alertas de usuario",
     "personal": "Personal",
     "personal.viewProfile": "Mi perfil",
     "personal.editProfile": "Editar perfil",
@@ -390,7 +390,7 @@
       "password": "Contraseña",
       "passwords": "Contraseñas",
       "switchTheme": "Cambiar tema",
-      "connectedUsers": "Connected users"
+      "connectedUsers": "Usuarios conectados"
     },
     "accountStatus": "Estado de cuenta",
     "lastIncomingPayments": "Ultimos pagos recibidos",
@@ -630,20 +630,20 @@
     "redeem": {
       "confirm": "The voucher details are given below. Please, review it below and confirm this action.",
       "done": "The voucher was redeemed successfully.",
-      "date": "Redeeming date",
+      "date": "Fecha de canje",
       "redeemer": "Redeemer",
-      "payment": "Redeem payment"
+      "payment": "Pago de canje"
     },
     "status": {
-      "redeemed": "Redeemed",
+      "redeemed": "Canjeado",
       "pending": "Pendiente",
-      "open": "Open",
-      "expired": "Expired",
-      "canceled": "Canceled"
+      "open": "Abierto",
+      "expired": "Expirado",
+      "canceled": "Cancelado"
     },
     "mobileTitle": {
-      "buy": "Buy vouchers",
-      "buyConfirmation": "Buy confirmation",
+      "buy": "Comprar cupones",
+      "buyConfirmation": "Confirmación de compra",
       "bought": "Bought vouchers",
       "redeem": "Redeem voucher",
       "search": "Redeemed vouchers"
