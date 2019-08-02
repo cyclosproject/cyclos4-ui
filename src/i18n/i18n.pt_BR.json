@@ -228,7 +228,7 @@
   "password": {
     "confirmationMessage": "Forneça seu {passwordType} para confirmar esta operação",
     "confirm.noPassword": "Para confirmar você precisa informar sua {passwordType}, mas você nao possui nenhuma",
-    "confirm.mode": "Confirmar com",
+    "confirm.mode": "Confirme com",
     "confirm.mode.device": "Telefone celular",
     "confirm.mode.password": "Senha",
     "confirm.device.active": "Para confirmar, leia este código QR com seu telefone celular",
@@ -819,9 +819,9 @@
       "history.user": "Histórico de estado",
       "history.operator": "Histórico de estado"
     },
-    "active": "Ativo",
+    "active": "Ativa",
     "blocked": "Acesso bloqueado",
-    "disabled": "Desabilitado",
+    "disabled": "Desabilitada",
     "pending": "Pendente de ativação",
     "purged": "Removido (todos os dados privados são apagados)",
     "removed": "Removido (nenhum dado privado é apagado)"

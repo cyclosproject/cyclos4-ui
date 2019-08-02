@@ -819,9 +819,9 @@
       "history.user": "Historial de estados",
       "history.operator": "Historial de estados"
     },
-    "active": "Activo",
+    "active": "Activa",
     "blocked": "Acceso bloqueado",
-    "disabled": "Deshabilitado",
+    "disabled": "Deshabilitada",
     "pending": "Activación pendiente",
     "purged": "Purgado (todos los datos privados fueron borrados)",
     "removed": "Eliminado (los datos privados no fueron borrados)"
