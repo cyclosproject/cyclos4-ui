@@ -1,12 +1,13 @@
 import { Injectable, Injector } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { AccountType, Auth, DataForUi, Operation, RoleEnum, VouchersPermissions } from 'app/api/models';
+import {
+  AccountType, Auth, DataForUi, Operation, RoleEnum, VouchersPermissions, RecordLayoutEnum, RecordPermissions
+} from 'app/api/models';
 import { Configuration } from 'app/configuration';
 import { BankingHelperService } from 'app/core/banking-helper.service';
 import { BreadcrumbService } from 'app/core/breadcrumb.service';
 import { ContentService } from 'app/core/content.service';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
-import { I18nLoadingService } from 'app/core/i18n-loading.service';
 import { LoginService } from 'app/core/login.service';
 import { OperationHelperService } from 'app/core/operation-helper.service';
 import { StateManager } from 'app/core/state-manager';
@@ -16,6 +17,8 @@ import { toFullUrl } from 'app/shared/helper';
 import { ActiveMenu, Menu, MenuEntry, MenuType, RootMenu, RootMenuEntry, SideMenuEntries } from 'app/shared/menu';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
+import { RecordHelperService } from 'app/core/records-helper.service';
+import { I18nLoadingService } from 'app/core/i18n-loading.service';
 
 enum NavigateAction {
   Url,
@@ -77,7 +80,8 @@ export class MenuService {
     private stateManager: StateManager,
     private bankingHelper: BankingHelperService,
     private content: ContentService,
-    private operationHelper: OperationHelperService
+    private operationHelper: OperationHelperService,
+    private recordHelper: RecordHelperService
   ) {
     const initialDataForUi = this.dataForUiHolder.dataForUi;
     const initialAuth = (initialDataForUi || {}).auth;
@@ -441,8 +445,9 @@ export class MenuService {
     const logout = addRoot(RootMenu.LOGOUT, 'logout', this.i18n.menu.logout, null, []);
 
     // Lambda that adds a submenu to a root menu
-    const add = (menu: Menu | ActiveMenu, url: string, icon: string, label: string, showIn: MenuType[] = null): MenuEntry => {
-      const entry = new MenuEntry(menu, url, icon, label, showIn);
+    const add = (menu: Menu | ActiveMenu, url: string, icon: string, label: string, showIn: MenuType[] = null,
+      urlHandler: () => string = null): MenuEntry => {
+      const entry = new MenuEntry(menu, url, icon, label, showIn, urlHandler);
       const root = roots.get(entry.menu.root);
       root.entries.push(entry);
       return entry;
@@ -498,6 +503,28 @@ export class MenuService {
       // Add both system and self operations
       doAddOperations('system', systemOperations.filter(o => ApiHelper.adminMenuMatches(root, o.adminMenu)));
       doAddOperations('self', userOperations.filter(o => ApiHelper.userMenuMatches(root, o.userMenu)));
+    };
+
+    // Lambda that adds records in the given root menu entry
+    const addRecords = (menu: Menu, recordPermissions: RecordPermissions[], owner: string) => {
+      if (!auth.global && recordPermissions.length > 0) {
+        for (const permission of recordPermissions) {
+          const activeMenu = new ActiveMenu(menu, { recordType: permission.type });
+          const pathFunction = () => this.recordHelper.resolvePath(
+            permission, owner, owner === ApiHelper.SYSTEM);
+          const path = pathFunction();
+          if (path != null) {
+            add(
+              activeMenu,
+              path,
+              'library_books',
+              permission.type.pluralName,
+              null,
+              // Calculate the path dinamically while the single form has not been saved for first time
+              permission.type.layout === RecordLayoutEnum.SINGLE && !permission.singleRecordId ? pathFunction : null);
+          }
+        }
+      }
     };
 
     // Add the submenus
@@ -655,6 +682,11 @@ export class MenuService {
         }
         add(Menu.PASSWORDS, '/users/self/passwords', 'vpn_key', passwordsLabel);
       }
+
+      // Records
+      addRecords(Menu.SEARCH_USER_RECORDS, this.recordHelper.recordPermissions(), ApiHelper.SELF);
+      addRecords(Menu.SEARCH_SYSTEM_RECORDS, this.recordHelper.recordPermissions(true), ApiHelper.SYSTEM);
+
       if ((permissions.notifications || {}).enable) {
         add(Menu.NOTIFICATIONS, '/personal/notifications', 'notifications', this.i18n.menu.personalNotifications);
       }

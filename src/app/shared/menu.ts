@@ -1,4 +1,4 @@
-import { AccountType, Operation } from 'app/api/models';
+import { AccountType, Operation, RecordType } from 'app/api/models';
 import { empty } from 'app/shared/helper';
 
 /** The types of menus in the application */
@@ -119,8 +119,13 @@ export module Menu {
   export const RUN_OPERATION_PERSONAL = new Menu(RootMenu.PERSONAL, 'RUN_OPERATION_PERSONAL');
   export const RUN_USER_OPERATION = new Menu(RootMenu.MARKETPLACE, 'RUN_USER_OPERATION');
   export const RUN_MARKETPLACE_OPERATION = new Menu(RootMenu.MARKETPLACE, 'RUN_MARKETPLACE_OPERATION');
+  export const RUN_RECORD_OPERATION = new Menu(RootMenu.PERSONAL, 'RUN_RECORD_OPERATION');
   export const RUN_TRANSFER_OPERATION = new Menu(RootMenu.BANKING, 'RUN_TRANSFER_OPERATION');
   export const RUN_ACTION_OPERATION = new Menu(RootMenu.BANKING, 'RUN_ACTION_OPERATION');
+
+  // Records
+  export const SEARCH_USER_RECORDS = new Menu(RootMenu.PERSONAL, 'SEARCH_USER_RECORDS');
+  export const SEARCH_SYSTEM_RECORDS = new Menu(RootMenu.CONTENT, 'SEARCH_SYSTEM_RECORDS');
 
   // Content (one per root menu)
   export const CONTENT_PAGE_BANKING = new Menu(RootMenu.BANKING, 'CONTENT_PAGE_BANKING');
@@ -184,15 +189,20 @@ export class MenuEntry extends BaseMenuEntry {
 
   constructor(
     menu: Menu | ActiveMenu,
-    public url: string,
+    private _url: string,
     icon: string,
     label: string,
     showIn: MenuType[] = null,
+    private urlHandler: () => string,
     public menuData?: ActiveMenuData
   ) {
     super(icon, label, showIn);
     this.menu = menu instanceof ActiveMenu ? menu.menu : menu;
     this.activeMenu = menu instanceof ActiveMenu ? menu : new ActiveMenu(menu);
+  }
+
+  get url() {
+    return this.urlHandler == null ? this._url : this.urlHandler();
   }
 }
 
@@ -204,6 +214,7 @@ export interface ActiveMenuData {
   accountType?: AccountType;
   contentPage?: string;
   operation?: Operation;
+  recordType?: RecordType;
 }
 
 /**
@@ -243,6 +254,7 @@ export class ActiveMenu {
     return empty(Object.keys(data1)) && empty(Object.keys(data2))
       || (data1.accountType && data2.accountType && data1.accountType.id === data2.accountType.id)
       || (data1.operation && data2.operation && data1.operation.id === data2.operation.id)
-      || (data1.contentPage && data1.contentPage === data2.contentPage);
+      || (data1.contentPage && data1.contentPage === data2.contentPage)
+      || (data1.recordType && data2.recordType && data1.recordType.id === data2.recordType.id);
   }
 }
