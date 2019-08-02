@@ -70,18 +70,13 @@ export class ViewVoucherComponent extends BaseViewPageComponent<VoucherView> imp
         if (!this.canConfirm) {
           this.notification.warning(this.authHelper.getConfirmationMessage(data.confirmationPasswordInput));
         }
-        if (data.confirmationPasswordInput) {
-          // A confirmation is required
-          this.notification.confirm({
-            title: this.cancelConfirmationTitle(data.cancelAction),
-            passwordInput: data.confirmationPasswordInput,
-            createDeviceConfirmation: this.createCancelDeviceConfirmation,
-            callback: params => this.cancel(params.confirmationPassword)
-          });
-        } else {
-          // Save directly
-          this.cancel();
-        }
+        // A confirmation is required
+        this.notification.confirm({
+          title: this.cancelConfirmationTitle(data.cancelAction),
+          passwordInput: data.confirmationPasswordInput,
+          createDeviceConfirmation: this.createCancelDeviceConfirmation,
+          callback: params => this.cancel(params.confirmationPassword)
+        });
       }));
     }
     if (data.canChangeExpirationDate) {
