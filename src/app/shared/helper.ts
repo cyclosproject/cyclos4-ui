@@ -289,7 +289,7 @@ export function validateBeforeSubmit(control: AbstractControl, returnNonValid = 
       Array.prototype.push.apply(result, validateBeforeSubmit(current, true) as FormControl[]);
     });
   }
-  const valid = empty(result.length);
+  const valid = empty(result);
   if (!valid) {
     // Focus the first invalid field
     focusFirstInvalid();
