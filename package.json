@@ -3,7 +3,7 @@
   "displayName": "Cyclos 4 UI",
   "description": "A modern and open web interface to Cyclos, which can be easily customized and self-hosted",
   "icon": "cyclos.png",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "license": "MIT",
   "author": {
     "name": "Cyclos development team",
