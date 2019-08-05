@@ -58,7 +58,7 @@
             [label]="i18n.general.status">
             {{ data.redeemAfterDate}}
           </label-value>
-          <label-value *ngIf="viewExpirationDate"
+          <label-value *ngIf="data.expirationDate"
             [label]="i18n.general.expirationDate">
             {{ data.expirationDate | dateTime}}
           </label-value>

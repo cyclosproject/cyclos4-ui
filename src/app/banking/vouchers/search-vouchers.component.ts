@@ -10,7 +10,7 @@ type VoucherSearchParams = VouchersQueryFilters & {
   fields?: Array<string>;
 };
 @Component({
-  selector: 'app-search-vouchers',
+  selector: 'search-vouchers',
   templateUrl: './search-vouchers.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -45,32 +45,26 @@ export class SearchVouchersComponent
   }
 
   protected toSearchParams(value: any): VoucherSearchParams {
+    const result: VoucherSearchParams = value;
     if (value.redeemBegin || value.redeemEnd) {
-      value['redeemPeriod'] = this.ApiHelper.dateRangeFilter(value.redeemBegin, value.redeemEnd);
+      result.redeemPeriod = this.ApiHelper.dateRangeFilter(value.redeemBegin, value.redeemEnd);
     }
     if (value.creationBegin || value.creationEnd) {
-      value['creationPeriod'] = this.ApiHelper.dateRangeFilter(value.creationBegin, value.creationEnd);
+      result.creationPeriod = this.ApiHelper.dateRangeFilter(value.creationBegin, value.creationEnd);
     }
     if (value.expirationBegin || value.expirationEnd) {
-      value['expirationPeriod'] = this.ApiHelper.dateRangeFilter(value.expirationBegin, value.expirationEnd);
+      result.expirationPeriod = this.ApiHelper.dateRangeFilter(value.expirationBegin, value.expirationEnd);
     }
     if (value.amountMin || value.amountMax) {
-      value['amountRange'] = this.ApiHelper.rangeFilter(value.amountMin, value.amountMax);
+      result.amountRange = this.ApiHelper.rangeFilter(value.amountMin, value.amountMax);
     }
     if (value.printed === 'all') {
-      delete value['printed'];
+      result.printed = null;
     }
     if (value.creationType === 'all') {
-      delete value['creationType'];
+      result.creationType = null;
     }
-
-    delete value['redeemBegin'];
-    delete value['redeemEnd'];
-    delete value['creationBegin'];
-    delete value['creationEnd'];
-    delete value['expirationBegin'];
-    delete value['expirationEnd'];
-    return value;
+    return result;
   }
 
   protected doSearch(value: VoucherSearchParams) {
