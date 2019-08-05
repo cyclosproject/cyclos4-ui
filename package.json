@@ -15,7 +15,6 @@
     "ng-openapi-gen": "ng-openapi-gen",
     "ng-translation-gen": "ng-translation-gen",
     "merge-translations": "npm run ng-translation-gen -- --merge",
-    "ngx-extractor": "ngx-extractor",
     "svgo": "svgo",
     "generate-icons": "node tools/generate-icons.js",
     "generate": "npm run ng-openapi-gen && npm run ng-translation-gen && npm run generate-icons",
