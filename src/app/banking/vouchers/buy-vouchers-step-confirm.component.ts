@@ -1,6 +1,9 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { BuyVoucher, CreateDeviceConfirmation, DeviceConfirmationTypeEnum, PasswordInput, VoucherDataForBuy, CustomFieldTypeEnum, CustomField } from 'app/api/models';
+import {
+  BuyVoucher, CreateDeviceConfirmation, DeviceConfirmationTypeEnum, PasswordInput, VoucherDataForBuy,
+  CustomFieldTypeEnum, CustomField
+} from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
 import { ConfirmationMode } from 'app/shared/confirmation-mode';
 import { Enter } from 'app/shared/shortcut.service';

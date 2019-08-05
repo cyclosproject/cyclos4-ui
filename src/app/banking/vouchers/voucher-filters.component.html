@@ -1,0 +1,156 @@
+<page-content mode="filters" [heading]="heading"
+  [mobileHeading]="mobileHeading" [headingActions]="headingActions">
+  <form [formGroup]="form" class="filters-form filters-form-separator">
+    <div class="row no-gutters">
+      <!-- Types -->
+      <div *ngIf="data.types?.length > 1" class="col-12 col-md-6">
+        <multi-selection-field labelPosition="side" formControlName="types"
+          [label]="i18n.general.type">
+          <field-option *ngFor="let type of data.types" [value]="type.id"
+            [internalName]="type.internalName" [id]="type.id"
+            [text]="type.name">
+          </field-option>
+        </multi-selection-field>
+      </div>
+      <!-- Statuses -->
+      <div class="col-12 col-md-6">
+        <multi-selection-field labelPosition="side" formControlName="statuses"
+          [label]="i18n.general.status" [fieldOptions]="statusOptions"
+          [emptyLabel]="i18n.general.notApplied">
+        </multi-selection-field>
+      </div>
+      <!-- Token -->
+      <div class="col-12 col-md-6">
+        <input-field type="text" [label]="i18n.voucher.token" [mask]="mask"
+          formControlName="token" [placeholder]="mask">
+        </input-field>
+      </div>
+      <!-- Creation type -->
+      <div class="col-12 col-md-6">
+        <radio-group-field labelPosition="side" formControlName="creationType"
+          [label]="i18n.voucher.creationType"
+          [fieldOptions]=creationTypeOptions>
+        </radio-group-field>
+      </div>
+      <!-- Printed -->
+      <div class="col-12 col-md-6">
+        <radio-group-field labelPosition="side" formControlName="printed"
+          [label]="i18n.general.printed">
+          <field-option [value]="'all'" [text]="i18n.general.all">
+          </field-option>
+          <field-option [value]="'true'" [text]="i18n.general.yes">
+          </field-option>
+          <field-option [value]="'false'" [text]="i18n.general.no">
+          </field-option>
+        </radio-group-field>
+      </div>
+      <ng-container *ngIf="moreFilters">
+
+        <!-- Creation date -->
+        <div class="row no-gutters col-12">
+          <div class="col-12 col-md-6">
+            <date-field labelPosition="side" formControlName="creationBegin"
+              [label]="i18n.general.creationDate" minDate="past100"
+              maxDate="todayEnd" fieldSize="full" class>
+            </date-field>
+          </div>
+          <div class="col-12 col-md-6">
+            <date-field labelPosition="side" formControlName="creationEnd"
+              [label]="i18n.general.to" minDate="past100" maxDate="todayEnd"
+              fieldSize="full">
+            </date-field>
+          </div>
+        </div>
+        <!-- Expiration date -->
+        <div class="row no-gutters col-12">
+          <div class="col-12 col-md-6">
+            <date-field labelPosition="side" formControlName="expirationBegin"
+              [label]="i18n.general.expirationDate" minDate="past100"
+              maxDate="todayEnd" fieldSize="full" class>
+            </date-field>
+          </div>
+          <div class="col-12 col-md-6">
+            <date-field labelPosition="side" formControlName="expirationEnd"
+              [label]="i18n.general.to" minDate="past100" maxDate="todayEnd"
+              fieldSize="full">
+            </date-field>
+          </div>
+        </div>
+        <!-- Redeeming date -->
+        <div class="row no-gutters col-12">
+          <div class="col-12 col-md-6">
+            <date-field labelPosition="side" formControlName="redeemBegin"
+              [label]="i18n.voucher.redeem.date" minDate="past100"
+              maxDate="todayEnd" fieldSize="full" class>
+            </date-field>
+          </div>
+          <div class="col-12 col-md-6">
+            <date-field labelPosition="side" formControlName="redeemEnd"
+              [label]="i18n.general.to" minDate="past100" maxDate="todayEnd"
+              fieldSize="full">
+            </date-field>
+          </div>
+        </div>
+        <!-- Amount -->
+        <div class="row no-gutters col-12">
+          <div class="col-12 col-md-6">
+            <decimal-field #amount formControlName="amountMin"
+              [label]="i18n.transaction.amount" [scale]=maxScale>
+            </decimal-field>
+          </div>
+          <div class="col-12 col-md-6">
+            <decimal-field #amount formControlName="amountMax"
+              [label]="i18n.general.to" [scale]=maxScale></decimal-field>
+          </div>
+        </div>
+        <!-- Buyer groups -->
+        <div *ngIf="data.userGroups?.length > 1" class="col-12 col-md-6">
+          <multi-selection-field labelPosition="side"
+            hierarchyProperty="groupSet" formControlName="buyerGroups"
+            [label]="i18n.voucher.buyerGroups">
+            <field-option *ngFor="let group of data.userGroups"
+              [value]="group.id" [internalName]="group.internalName"
+              [id]="group.id" [text]="group.name" [parent]="group.groupSet">
+            </field-option>
+          </multi-selection-field>
+        </div>
+        <!-- Buyer -->
+        <div class="col-12 col-md-6">
+          <label-value kind="field" [label]="i18n.voucher.buy.buyer">
+            <user-field [autoSearch]="true" formControlName="buyer"
+              [allowContacts]="true" [allowSearch]="true"
+              [allowPrincipal]="false"></user-field>
+          </label-value>
+        </div>
+        <!-- Redeemer groups  -->
+        <div *ngIf="data.userGroups?.length > 1" class="col-12 col-md-6">
+          <multi-selection-field labelPosition="side"
+            hierarchyProperty="groupSet" formControlName="redeemerGroups"
+            [label]="i18n.voucher.redeemerGroups">
+            <field-option *ngFor="let group of data.userGroups"
+              [value]="group.id" [internalName]="group.internalName"
+              [id]="group.id" [text]="group.name" [parent]="group.groupSet">
+            </field-option>
+          </multi-selection-field>
+        </div>
+        <!-- Redeemer -->
+        <div class="col-12 col-md-6">
+          <label-value kind="field" [label]="i18n.voucher.redeem.redeemer">
+            <user-field [autoSearch]="true" formControlName="redeemer"
+              [allowContacts]="true" [allowSearch]="true"
+              [allowPrincipal]="false"></user-field>
+          </label-value>
+        </div>
+      </ng-container>
+      <!-- Order by -->
+      <div class="col-12 col-md-6">
+        <single-selection-field labelPosition="side" formControlName="orderBy"
+          [label]="i18n.general.orderBy">
+          <field-option *ngFor="let order of orderByOptions()" [value]="order"
+            [text]="orderBy(order)">
+          </field-option>
+        </single-selection-field>
+      </div>
+    </div>
+  </form>
+</page-content>

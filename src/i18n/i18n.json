@@ -15,11 +15,13 @@
     "endDate": "End date",
     "creationDate": "Creation date",
     "expirationDate": "Expiration date",
+    "newExpirationDate": "New expiration date",
     "notApplied": "Not applied",
     "notAppliedSelect": "Not applied (select to apply)",
     "user": "User",
     "operator": "Operator",
     "name": "Name",
+    "to": "to",
     "description": "Description",
     "image": "Image",
     "keywords": "Keywords",
@@ -27,6 +29,8 @@
     "orderBy": "Order by",
     "orderBy.relevance": "Relevance",
     "print": "Print",
+    "printed": "Printed",
+    "all": "All",
     "showFilters": "Show filters",
     "hideFilters": "Hide filters",
     "moreFilters": "More filters",
@@ -227,6 +231,7 @@
     "banking.paySelf": "Payment to self",
     "banking.scheduledPayments": "Scheduled payments",
     "banking.authorizations": "Payment authorizations",
+    "banking.searchVouchers": "Search vouchers",
     "banking.buyVouchers": "Buy vouchers",
     "banking.boughtVouchers": "View buys",
     "banking.redeemVoucher": "Redeem voucher",
@@ -628,6 +633,13 @@
       }
     },
     "redeem": {
+      "error": {
+        "status": "This voucher cannot be redeemed. Its current status is: {status}.",
+        "user": "The current user cannot redeem vouchers from this type.",
+        "notAllowedYet": "This voucher cannot be redeemed before {beginDate}.",
+        "notAllowedToday": "This voucher cannot be redeemed today. The days allowed for redeeming are: {allowedDays}.",
+        "userBlocked": "You have been blocked by exceeding the number of allowed attempts."
+      },
       "confirm": "The voucher details are given below. Please, review it below and confirm this action.",
       "done": "The voucher was redeemed successfully.",
       "date": "Redeeming date",
@@ -646,14 +658,16 @@
       "buyConfirmation": "Buy confirmation",
       "bought": "Bought vouchers",
       "redeem": "Redeem voucher",
-      "search": "Redeemed vouchers"
+      "redeemed": "Redeemed vouchers",
+      "search": "Search vouchers"
     },
     "title": {
       "buy": "Buy vouchers",
       "buyConfirmation": "Buy confirmation",
       "searchBought": "Search bought vouchers",
       "redeem": "Redeem voucher",
-      "search": "Redeemed vouchers"
+      "redeemed": "Redeemed vouchers",
+      "search": "Search vouchers"
     },
     "boughtType": "Bought",
     "generatedType": "Generated",
@@ -668,9 +682,32 @@
       "originAccount": "Origin account",
       "payment": "Buy payment"
     },
+    "buyerGroups": "Buyer groups",
+    "redeemerGroups": "Redeemer groups",
     "creationType": "CreationType",
+    "cancel": {
+      "done": "This voucher has been canceled.",
+      "packConfirmation": "There are other vouchers belonging to the same pack that will be also canceled. Are you sure to continue?",
+      "refundConfirmation": "Are you sure to cancel and refund this voucher?",
+      "confirmation": "Are you sure to cancel this voucher?"
+    },
+    "sort": {
+      "creationDateDesc": "Creation date descending",
+      "creationDateAsc": "Creation date ascending",
+      "expirationDateDesc": "Expiration date descending",
+      "expirationDateAsc": "Expiration date ascending",
+      "redeemDateDesc": "Redeem date descending",
+      "redeemDateAsc": "Redeem date ascending"
+    },
     "cancelAndRefund": "Cancel & refund",
-    "token": "Voucher code"
+    "cancelDone": "This voucher has been canceled.",
+    "cancelConfirmation": "Are you sure to cancel this voucher?",
+    "cancelPackConfirmation": "There are other vouchers belonging to the same pack that will be also canceled. Are you sure to continue?",
+    "token": "Voucher code",
+    "changeExpirationDate": "Change expiration date",
+    "expirationDateChanged": "Expiration date changed",
+    "refundPayment": "Refund payment",
+    "refundDate": "Refund date"
   },
   "field": {
     "privacy": {
@@ -812,8 +849,6 @@
       "viewAccount": "View {account}",
       "viewScheduledPayments": "View scheduled payments",
       "viewAuthorizedPayments": "View payment authorizations",
-      "viewBoughtVouchers": "View bought vouchers",
-      "buyVouchers": "Buy vouchers",
       "viewAds": "View advertisements",
       "viewBrokerings": "View assigned members",
       "viewBrokers": "View brokers",

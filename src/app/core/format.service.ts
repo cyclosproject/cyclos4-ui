@@ -439,7 +439,7 @@ export class FormatService {
       return '';
     }
     const names = amount === 1 ? this.singularTimeFieldNames : this.pluralTimeFieldNames;
-    const field = names.get(fieldValue).toLowerCase()
+    const field = names.get(fieldValue).toLowerCase();
     return this.i18n.general.timeField.pattern({ amount, field });
   }
   /**

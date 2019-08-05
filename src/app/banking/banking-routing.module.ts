@@ -13,6 +13,7 @@ import { RedeemVoucherComponent } from 'app/banking/vouchers/redeem-voucher.comp
 import { SearchBoughtVouchersComponent } from 'app/banking/vouchers/search-bought-vouchers.component';
 import { SearchRedeemedVouchersComponent } from 'app/banking/vouchers/search-redeemed-vouchers.component';
 import { ViewVoucherComponent } from 'app/banking/vouchers/view-voucher.component';
+import { SearchVouchersComponent } from 'app/banking/vouchers/search-vouchers.component';
 import { LoggedUserGuard } from 'app/logged-user-guard';
 
 const bankingRoutes: Routes = [
@@ -79,6 +80,10 @@ const bankingRoutes: Routes = [
       {
         path: 'vouchers/:key',
         component: ViewVoucherComponent
+      },
+      {
+        path: 'vouchers',
+        component: SearchVouchersComponent
       }
     ]
   }
