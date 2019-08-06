@@ -39,7 +39,13 @@ export abstract class BaseSearchPageComponent<D, P extends QueryFilters, R> exte
   protected printable = false;
   private _moreFiltersAction: HeadingAction;
 
-  protected onDataInitialized(_data: D) {
+  protected getInitialFormValue(data: D): { [key: string]: any } {
+    return data['query'] || {};
+  }
+
+  protected onDataInitialized(data: D) {
+    // Patch the form value before passing it to stateManager.manager
+    this.form.patchValue(this.getInitialFormValue(data));
     this.stateManager.manage(this.form);
     this.stateManager.manage(this.resultTypeControl, 'resultType');
     this.stateManager.manageValue(this.moreFilters$, 'moreFilters');
@@ -239,7 +245,10 @@ export abstract class BaseSearchPageComponent<D, P extends QueryFilters, R> exte
    */
   update(pageData?: PageData) {
     if (pageData) {
+      // We can't emit the event, as StateManager listents to it, and it would generate a loop.
+      // However, we can't loose the page we're using, so, we have to manually update the state manager
       this.form.patchValue(pageData, { emitEvent: false });
+      this.stateManager.set('form', this.form.value);
     }
     this.rendering = true;
     this.results = null;
