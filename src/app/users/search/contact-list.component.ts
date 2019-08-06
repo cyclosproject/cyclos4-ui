@@ -45,10 +45,11 @@ export class ContactListComponent
     return this.layout.xxs ? ResultType.LIST : ResultType.TILES;
   }
 
+
+
   ngOnInit() {
     super.ngOnInit();
     this.allowedResultTypes = [ResultType.TILES, ResultType.LIST];
-    this.form.patchValue({ 'user': ApiHelper.SELF }, { emitEvent: false });
     this.stateManager.cache('data', this.contactsService.getContactListDataForSearch({
       user: ApiHelper.SELF
     })).subscribe(data => {
