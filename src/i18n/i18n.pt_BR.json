@@ -15,13 +15,13 @@
     "endDate": "Data final",
     "creationDate": "Data de criação",
     "expirationDate": "Vencimento",
-    "newExpirationDate": "New expiration date",
+    "newExpirationDate": "Nova data de vencimento",
     "notApplied": "Não aplicado",
     "notAppliedSelect": "Não aplicado (selecione para aplicar)",
     "user": "Usuário",
     "operator": "Operador",
     "name": "Nome",
-    "to": "to",
+    "to": "para",
     "description": "Descrição",
     "image": "Imagem",
     "keywords": "Palavras-chaves",
@@ -29,8 +29,8 @@
     "orderBy": "Ordenar por",
     "orderBy.relevance": "Relevância",
     "print": "Imprimir",
-    "printed": "Printed",
-    "all": "All",
+    "printed": "Impresso",
+    "all": "Tudo",
     "showFilters": "Mostrar filtros",
     "hideFilters": "Ocultar filtros",
     "moreFilters": "Mais filtros",
@@ -231,7 +231,7 @@
     "banking.paySelf": "Pagamento entre contas",
     "banking.scheduledPayments": "Pagamentos agendados",
     "banking.authorizations": "Autorizações de pagamento",
-    "banking.searchVouchers": "Search vouchers",
+    "banking.searchVouchers": "Busca de cupons",
     "banking.buyVouchers": "Comprar cupons",
     "banking.boughtVouchers": "Ver comprados",
     "banking.redeemVoucher": "Resgatar cupons",
@@ -634,11 +634,11 @@
     },
     "redeem": {
       "error": {
-        "status": "This voucher cannot be redeemed. Its current status is: {status}.",
-        "user": "The current user cannot redeem vouchers from this type.",
-        "notAllowedYet": "This voucher cannot be redeemed before {beginDate}.",
-        "notAllowedToday": "This voucher cannot be redeemed today. The days allowed for redeeming are: {allowedDays}.",
-        "userBlocked": "You have been blocked by exceeding the number of allowed attempts."
+        "status": "Este cupom não pode ser resgatado. Seu estado atual é: {status}.",
+        "user": "O usuário atual não pode resgatar cupons deste tipo.",
+        "notAllowedYet": "Este cupom não pode ser resgatado antes de {beginDate}.",
+        "notAllowedToday": "Este cupom não pode ser resgatado hoje. Os dias permitidos para resgate são: {allowedDays}.",
+        "userBlocked": "Você foi bloqueado por exceder o número de tentativas permitidas."
       },
       "confirm": "Os detalhes do cupom são fornecidos abaixo. Por favor, revise-o abaixo e confirme esta ação.",
       "done": "O cupom foi resgatado com sucesso.",
@@ -658,16 +658,16 @@
       "buyConfirmation": "Confirmação de compra",
       "bought": "Cupons comprados",
       "redeem": "Resgatar cupom",
-      "redeemed": "Redeemed vouchers",
-      "search": "Search vouchers"
+      "redeemed": "Cupons resgatados",
+      "search": "Busca de cupons"
     },
     "title": {
       "buy": "Comprar cupons",
       "buyConfirmation": "Confirmação de compra",
       "searchBought": "Pesquisar cupons comprados",
       "redeem": "Resgatar cupom",
-      "redeemed": "Redeemed vouchers",
-      "search": "Search vouchers"
+      "redeemed": "Cupons resgatados",
+      "search": "Busca de cupons"
     },
     "boughtType": "Comprado",
     "generatedType": "Gerado",
@@ -682,32 +682,32 @@
       "originAccount": "Conta de origem",
       "payment": "Transação de compra"
     },
-    "buyerGroups": "Buyer groups",
-    "redeemerGroups": "Redeemer groups",
+    "buyerGroups": "Grupos do comprador",
+    "redeemerGroups": "Grupos do resgatante",
     "creationType": "Tipo de Criação",
     "cancel": {
-      "done": "This voucher has been canceled.",
-      "packConfirmation": "There are other vouchers belonging to the same pack that will be also canceled. Are you sure to continue?",
-      "refundConfirmation": "Are you sure to cancel and refund this voucher?",
-      "confirmation": "Are you sure to cancel this voucher?"
+      "done": "Este cupom foi cancelado.",
+      "packConfirmation": "Existem outros cupons pertencentes ao mesmo pacote que também serão cancelados. Deseja continuar?",
+      "refundConfirmation": "Tem certeza de que deseja cancelar e reembolsar esse cupom?",
+      "confirmation": "Você tem certeza que quer cancelar este cupom?"
     },
     "sort": {
-      "creationDateDesc": "Creation date descending",
-      "creationDateAsc": "Creation date ascending",
-      "expirationDateDesc": "Expiration date descending",
-      "expirationDateAsc": "Expiration date ascending",
-      "redeemDateDesc": "Redeem date descending",
-      "redeemDateAsc": "Redeem date ascending"
+      "creationDateDesc": "Data de criação descendente",
+      "creationDateAsc": "Data de criação ascendente",
+      "expirationDateDesc": "Data de expiração descendente",
+      "expirationDateAsc": "Data de expiração ascendente",
+      "redeemDateDesc": "Data do resgate descendente",
+      "redeemDateAsc": "Data do resgate ascendente"
     },
     "cancelAndRefund": "Cancelar e reembolsar",
-    "cancelDone": "This voucher has been canceled.",
-    "cancelConfirmation": "Are you sure to cancel this voucher?",
-    "cancelPackConfirmation": "There are other vouchers belonging to the same pack that will be also canceled. Are you sure to continue?",
+    "cancelDone": "Este cupom foi cancelado.",
+    "cancelConfirmation": "Você tem certeza que quer cancelar este cupom?",
+    "cancelPackConfirmation": "Existem outros cupons pertencentes ao mesmo pacote que também será cancelado. Deseja continuar?",
     "token": "Código do cupom",
-    "changeExpirationDate": "Change expiration date",
-    "expirationDateChanged": "Expiration date changed",
-    "refundPayment": "Refund payment",
-    "refundDate": "Refund date"
+    "changeExpirationDate": "Alterar data de vencimento",
+    "expirationDateChanged": "Data de vencimento alterada",
+    "refundPayment": "Pagamento de reembolso",
+    "refundDate": "Data de reembolso"
   },
   "field": {
     "privacy": {
