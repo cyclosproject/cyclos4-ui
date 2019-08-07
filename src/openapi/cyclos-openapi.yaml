@@ -1,6 +1,6 @@
 openapi: '3.0.0'
 info:
-  title: 'Cyclos 4.12.1 API'
+  title: 'Cyclos @cyclosVersion API'
   description: >-
     The Cyclos REST API is described using OpenAPI 3.0. The descriptor for the
     api can be downloaded in both [YAML](@url/cyclos-openapi.yaml) or
@@ -33,9 +33,9 @@ info:
 
     For details of the deprecated elements (operations and model) please visit the
     [deprecation notes
-    page](https://documentation.cyclos.org/4.12.1/api-deprecation.html)
+    page](https://documentation.cyclos.org/@cyclosVersion/api-deprecation.html)
     for this version.
-  version: '4.12.1'
+  version: '@cyclosVersion'
 servers:
   - url: '@url'
 
@@ -14703,21 +14703,12 @@ Either ids or internal names of the destination account type"
     get:
       operationId: searchTransactions
       summary: >-
-<<<<<<< HEAD
         Searches transactions of an account owner
       description: >-
         Returns the transactions of a given account owner that match the specified
         criteria. Each result will will be relative to this owner. The amount may
         be positive or negative, depending on whether this owner has performed or
         received the transaction.
-=======
-        Searches for transfers over multiple accounts.
-      description: >-
-        Searches for transfers over multiple accounts. Only transfers which can
-        really be seen are returned. So, admins can search over any visible
-        member / system accounts. Brokers can search over their managed members
-        or themselves, and regular members can only search own transfers.
->>>>>>> dev
       tags:
         - Transactions
       security:
@@ -14761,29 +14752,10 @@ Either ids or internal names of the destination account type"
         - name: authorizationPerformedBy
           in: query
           required: false
-<<<<<<< HEAD
           description: "Id or other identifier (login name, email, etc) of the user that performed an authorization action (authorize, deny or cancel)."
           schema:
             type: string
         - name: authorizationStatuses
-=======
-          description: "DEPRECATED: Use `brokers` instead.
-
-Reference to the broker of users involved in transfers. Is only taken into account if authenticated as administrator."
-          schema:
-            type: string
-        - name: brokers
-          in: query
-          required: false
-          description: "Reference to the broker of users involved in transfers. Is only taken into account if authenticated as administrator."
-          style: simple
-          schema:
-            type: array
-            items:
-              description: ''
-              type: string
-        - name: by
->>>>>>> dev
           in: query
           required: false
           description: "Authorization statuses used as search criteria"
@@ -14821,32 +14793,12 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           required: false
           description: "Reference to the user that was authenticated when the transfer was performed. Is only taken into account if authenticated as administrator."
           schema:
-<<<<<<< HEAD
             type: string
         - name: channels
           in: query
           required: false
           description: "Reference to the channel used to perform / receive the transfer. Only taken into account if authenticated as administrator."
           style: simple
-=======
-            type: boolean
-        - name: currencies
-          in: query
-          required: false
-          description: "Either ids or internal names of the currency"
-          style: simple
-          schema:
-            type: array
-            items:
-              description: ''
-              type: string
-        - name: currency
-          in: query
-          required: false
-          description: "DEPRECATED: Use `currencies` instead.
-
-Either id or internal name of the currency"
->>>>>>> dev
           schema:
             type: array
             items:
@@ -14881,30 +14833,12 @@ Either id or internal name of the currency"
         - name: externalPaymentStatuses
           in: query
           required: false
-<<<<<<< HEAD
           description: "Statuses used as search criteria applied only to transactions of kind `externalPayment`."
           style: simple
           schema:
             type: array
             items:
               $ref: '#/components/schemas/ExternalPaymentStatusEnum'
-=======
-          description: "DEPRECATED: Use `fromAccountTypes` instead.
-
-Either ids or internal names of the origin account type"
-          schema:
-            type: string
-        - name: fromAccountTypes
-          in: query
-          required: false
-          description: "Either ids or internal names of the origin account type"
-          style: simple
-          schema:
-            type: array
-            items:
-              description: ''
-              type: string
->>>>>>> dev
         - name: fromCurrentAccessClient
           in: query
           required: false
@@ -14930,20 +14864,12 @@ Either ids or internal names of the origin account type"
         - name: kinds
           in: query
           required: false
-<<<<<<< HEAD
           description: ''
-=======
-          description: "The kind of transfers to return"
->>>>>>> dev
           style: simple
           schema:
             type: array
             items:
-<<<<<<< HEAD
               $ref: '#/components/schemas/TransactionKind'
-=======
-              $ref: '#/components/schemas/TransferKind'
->>>>>>> dev
         - name: orderBy
           in: query
           required: false
@@ -14986,7 +14912,6 @@ Either ids or internal names of the origin account type"
         - name: recurringPaymentStatuses
           in: query
           required: false
-<<<<<<< HEAD
           description: "Statuses used as search criteria applied only to transactions of kind `recurringPayment`."
           style: simple
           schema:
@@ -15006,27 +14931,11 @@ Either ids or internal names of the origin account type"
           in: query
           required: false
           description: "Statuses used as search criteria applied only to transactions of kind `ticket`."
-=======
-          description: "DEPRECATED: Use `toAccountTypes` instead.
-
-Either ids or internal names of the destination account type"
-          schema:
-            type: string
-        - name: toAccountTypes
-          in: query
-          required: false
-          description: "Either ids or internal names of the destination account type"
->>>>>>> dev
           style: simple
           schema:
             type: array
             items:
-<<<<<<< HEAD
               $ref: '#/components/schemas/TicketStatusEnum'
-=======
-              description: ''
-              type: string
->>>>>>> dev
         - name: transactionNumber
           in: query
           required: false
@@ -15043,18 +14952,6 @@ Either ids or internal names of the destination account type"
             items:
               description: ''
               type: string
-<<<<<<< HEAD
-=======
-        - name: transferKinds
-          in: query
-          required: false
-          description: "DEPRECATED: Use `kinds` instead"
-          style: simple
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/TransferKind'
->>>>>>> dev
         - name: transferTypes
           in: query
           required: false
@@ -15108,421 +15005,6 @@ Either ids or internal names of the destination account type"
                 type: array
                 items:
                   $ref: '#/components/schemas/TransactionResult'
-        '401':
-          description: >-
-            Unauthorized access. Missing or invalid crendentials supplied for such
-            operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UnauthorizedError'
-        '403':
-          description: >-
-            Permission denied for such operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ForbiddenError'
-        '404':
-          description: >-
-            An expected data was not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/NotFoundError'
-        '500':
-          description: >-
-            Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
-  /transactions/data-for-search:
-    get:
-      operationId: getTransactionsOverviewDataForSearch
-      summary: >-
-        Returns data for searching transactions regardless of a owner
-      description: >-
-        Returns data which can be used to filter a transaction search
-      tags:
-        - Transactions
-      security:
-        - basic: []
-        - session: []
-        - accessClient: []
-      parameters:
-        - $ref: '#/components/parameters/fields'
-        - name: pendingMyAuthorization
-          in: query
-          required: false
-          schema:
-            type: boolean
-          description: >-
-            When set to true will search for transactions which are currently
-            pending authorization, and the authenticated user can authorize.
-      responses:
-        '200':
-          description: >-
-            Data for searching transactions of an account owner
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TransactionOverviewDataForSearch'
-        '401':
-          description: >-
-            Unauthorized access. Missing or invalid crendentials supplied for such
-            operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UnauthorizedError'
-        '403':
-          description: >-
-            Permission denied for such operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ForbiddenError'
-        '404':
-          description: >-
-            An expected data was not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/NotFoundError'
-        '500':
-          description: >-
-            Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-
-  /transactions:
-    get:
-      operationId: searchTransactionsOverview
-      summary: >-
-        Searches transactions regardless of a owner
-      description: >-
-        Searches transactions regardless of a owner that match the specified
-        criteria.
-      tags:
-        - Transactions
-      security:
-        - basic: []
-        - session: []
-        - accessClient: []
-      parameters:
-        - $ref: '#/components/parameters/fields'
-        - name: accessClients
-          in: query
-          required: false
-          description: "References to access clients (id or token) used to perform / receive the transfer."
-          style: simple
-          schema:
-            type: array
-            items:
-              description: ''
-              type: string
-        - name: amountRange
-          in: query
-          required: false
-          description: "The minimum / maximum amount. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
-          schema:
-            type: array
-            items:
-              description: ''
-              type: string
-              format: number
-        - name: authorizationPerformedBy
-          in: query
-          required: false
-          description: "Id or other identifier (login name, email, etc) of the user that performed an authorization action (authorize, deny or cancel)."
-          schema:
-            type: string
-        - name: authorizationStatuses
-          in: query
-          required: false
-          description: "Authorization statuses used as search criteria"
-          style: simple
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/TransactionAuthorizationStatusEnum'
-        - name: authorized
-          in: query
-          required: false
-          description: "When set, will only return transactions that went through authorization process (if true) or that never went through it (when false)"
-          schema:
-            type: boolean
-        - name: broker
-          in: query
-          required: false
-          description: "DEPRECATED: Use `brokers` instead.
-
-Reference to the broker of users involved in transfers. Is only taken into account if authenticated as administrator."
-          schema:
-            type: string
-        - name: brokers
-          in: query
-          required: false
-          description: "Reference to the broker of users involved in transfers. Is only taken into account if authenticated as administrator."
-          style: simple
-          schema:
-            type: array
-            items:
-              description: ''
-              type: string
-        - name: by
-          in: query
-          required: false
-          description: "Reference to the user that was authenticated when the transfer was performed. Is only taken into account if authenticated as administrator."
-          schema:
-            type: string
-        - name: channels
-          in: query
-          required: false
-          description: "Reference to the channel used to perform / receive the transfer. Only taken into account if authenticated as administrator."
-          style: simple
-          schema:
-            type: array
-            items:
-              description: ''
-              type: string
-        - name: currencies
-          in: query
-          required: false
-          description: "The currencies internal names or ids."
-          style: simple
-          schema:
-            type: array
-            items:
-              description: ''
-              type: string
-        - name: datePeriod
-          in: query
-          required: false
-          description: "The minimum / maximum transfer date. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
-          schema:
-            type: array
-            items:
-              description: ''
-              type: string
-              format: date-time
-        - name: excludedIds
-          in: query
-          required: false
-          description: "List of transfers ids to be excluded from the result."
-          style: simple
-          schema:
-            type: array
-            items:
-              description: ''
-              type: string
-        - name: externalPaymentStatuses
-          in: query
-          required: false
-          description: "Statuses used as search criteria applied only to transactions of kind `externalPayment`."
-          style: simple
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/ExternalPaymentStatusEnum'
-        - name: fromAccountTypes
-          in: query
-          required: false
-          description: "The source account types internal names or ids."
-          style: simple
-          schema:
-            type: array
-            items:
-              description: ''
-              type: string
-        - name: fromCurrentAccessClient
-          in: query
-          required: false
-          description: "Flag indicating whether to include only transfers by the current access client."
-          schema:
-            type: boolean
-        - name: groups
-          in: query
-          required: false
-          description: "Reference to the user group used to perform / receive the transfer. Only taken into account if authenticated as administrator."
-          style: simple
-          schema:
-            type: array
-            items:
-              description: ''
-              type: string
-        - name: includeGeneratedByAccessClient
-          in: query
-          required: false
-          description: "Flag indicating whether to include or not the generated transfer. Only valid if there is at least one access client specified. For example if a `ticket` or `paymentRequest` was processed then a new transfer will be generated."
-          schema:
-            type: boolean
-        - name: kinds
-          in: query
-          required: false
-          description: ''
-          style: simple
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/TransactionKind'
-        - name: orderBy
-          in: query
-          required: false
-          schema:
-            $ref: '#/components/schemas/TransOrderByEnum'
-        - name: page
-          in: query
-          required: false
-          description: "The page number (zero-based) of the search. The default value is zero."
-          schema:
-            type: integer
-            format: int32
-        - name: pageSize
-          in: query
-          required: false
-          description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
-          schema:
-            type: integer
-            format: int32
-        - name: paymentRequestExpiration
-          in: query
-          required: false
-          description: "The minimum / maximum date for payment request expiration. Only affects payment requests. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
-          schema:
-            type: array
-            items:
-              description: ''
-              type: string
-              format: date-time
-        - name: paymentRequestStatuses
-          in: query
-          required: false
-          description: "Statuses used as search criteria applied only to transactions of kind `paymentRequest`."
-          style: simple
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/PaymentRequestStatusEnum'
-        - name: pendingMyAuthorization
-          in: query
-          required: false
-          description: "When set to true will only return transactions in pending authorization state that the logged user can authorize"
-          schema:
-            type: boolean
-        - name: recurringPaymentStatuses
-          in: query
-          required: false
-          description: "Statuses used as search criteria applied only to transactions of kind `recurringPayment`."
-          style: simple
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/RecurringPaymentStatusEnum'
-        - name: scheduledPaymentStatuses
-          in: query
-          required: false
-          description: "Statuses used as search criteria applied only to transactions of kind `scheduledPayment`."
-          style: simple
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/ScheduledPaymentStatusEnum'
-        - name: ticketStatuses
-          in: query
-          required: false
-          description: "Statuses used as search criteria applied only to transactions of kind `ticket`."
-          style: simple
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/TicketStatusEnum'
-        - name: toAccountTypes
-          in: query
-          required: false
-          description: "The source account types internal names or ids."
-          style: simple
-          schema:
-            type: array
-            items:
-              description: ''
-              type: string
-        - name: transactionNumber
-          in: query
-          required: false
-          description: "The transaction number of the matching transfer"
-          schema:
-            type: string
-        - name: transferFilters
-          in: query
-          required: false
-          description: "Reference to the transfer filters, which filters transfers by type. May be either the internal id or qualified transfer filter internal name, in the format `accountType.transferFilter`."
-          style: simple
-          schema:
-            type: array
-            items:
-              description: ''
-              type: string
-        - name: transferTypes
-          in: query
-          required: false
-          description: "Reference to the transfer types for filter. May be either the internal id or qualified transfer type internal name, in the format `accountType.transferType`."
-          style: simple
-          schema:
-            type: array
-            items:
-              description: ''
-              type: string
-        - name: user
-          in: query
-          required: false
-          description: "Reference a user that should have either received / performed the transfer."
-          schema:
-            type: string
-      responses:
-        '200':
-          description: >-
-            The transaction entries matching the criteria
-          headers:
-            X-Total-Count:
-              schema:
-                type: integer
-              description: >-
-                The total number of results. It may be configured in Cyclos to skip the
-                total count, which is useful on large databases, where the count itself
-                may use a lot of resources from the database. If disabled, this header is
-                not returned.
-            X-Page-Size:
-              schema:
-                type: integer
-              description: >-
-                The maximum number of results per page
-            X-Current-Page:
-              schema:
-                type: integer
-              description: >-
-                The current page the results are in
-            X-Has-Next-Page:
-              schema:
-                type: boolean
-              description: >-
-                Returns whether there is a next page. This is normally always returned,
-                whether total count is enabled or not. If the total count is not returned,
-                is the only way for clients to know whether more results are available or
-                not.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/TransactionOverviewResult'
         '401':
           description: >-
             Unauthorized access. Missing or invalid crendentials supplied for such
@@ -32893,13 +32375,13 @@ components:
         Possible values are:
         
         - `full`: The account is fully visible
-
+        
         - `incoming`: All incoming and own payments are visible
-
+        
         - `none`: The account is not visible
-
+        
         - `outgoing`: All outgoing and own payments are visible
-
+        
         - `own`: Only payments performed / received by the operators are visible
       type: string
       enum:
@@ -33832,7 +33314,6 @@ components:
         Contains the possible 'order by' values when searching for transfers / transactions
 
         Possible values are:
-<<<<<<< HEAD
         
         - `amountAsc`: The result is ordered by amount descendant
         
@@ -33840,15 +33321,6 @@ components:
         
         - `dateAsc`: The result is ordered by date ascendant
         
-=======
-
-        - `amountAsc`: The result is ordered by amount descendant
-
-        - `amountDesc`: The result is ordered by amount descendant
-
-        - `dateAsc`: The result is ordered by date ascendant
-
->>>>>>> dev
         - `dateDesc`: The result is ordered by date descendant
       type: string
       enum:
@@ -34345,17 +33817,17 @@ components:
         The voucher search result order
 
         Possible values are:
-
+        
         - `creationDateAsc`: Order by creation date, ascending
-
+        
         - `creationDateDesc`: Order by creation date, descending (default)
-
+        
         - `expirationDateAsc`: Order by expiration date, ascending
-
+        
         - `expirationDateDesc`: Order by expiration date, descending
-
+        
         - `redeemDateAsc`: Order by redeem date, ascending, then expiration date, ascending
-
+        
         - `redeemDateDesc`: Order by redeem date, descending, then expiration date, descending
       type: string
       enum:
