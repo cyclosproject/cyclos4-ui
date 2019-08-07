@@ -42,9 +42,10 @@
 }
 
 .dropdown-menu {
-  max-height: 18.4rem;
-  height: 18.4rem;
+  height: calc(#{7 * $calendar-cell-height} + 1rem + #{$calendar-header-height} + 2px);
+  max-height: unset;
   padding: 0;
+  overflow: hidden;
 }
 
 .calendar-toggle {
