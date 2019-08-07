@@ -10,7 +10,7 @@
             <input-field labelPosition="side" formControlName="keywords"
               [label]="i18n.general.keywords" fieldSize="full"></input-field>
           </div>
-          <!-- <div *ngIf="groups.length > 1" class="col-12 col-md-6">
+          <div *ngIf="groups.length > 1" class="col-12 col-md-6">
             <multi-selection-field labelPosition="side"
               formControlName="groups" [label]="i18n.general.groups">
               <field-option *ngFor="let group of groups" [value]="group.id"
@@ -18,7 +18,7 @@
                 [text]="group.name">
               </field-option>
             </multi-selection-field>
-          </div> -->
+          </div>
           <div class="col-12 col-md-6">
             <user-field labelPosition="side" formControlName="brokers"
               [label]="i18n.general.brokers"></user-field>

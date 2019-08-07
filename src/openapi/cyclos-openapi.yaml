@@ -40280,6 +40280,12 @@ components:
         - $ref: '#/components/schemas/BaseRecordDataForSearch'
         - type: object
           properties:
+            groups:
+              description: >-
+                The groups the authenticated user can use to filter user records
+              type: array
+              items:
+                $ref: '#/components/schemas/Group'
             query:
               description: >-
                 Default query filters for searching records

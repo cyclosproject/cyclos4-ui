@@ -81,6 +81,7 @@ export class SearchRecordsComponent
         this.router.navigate(['/records', this.param, this.type, 'new']), true));
     }
     this.headingActions = headingActions;
+    this.groups = (data as GeneralRecordsDataForSearch).groups || [];
     super.onDataInitialized(data);
   }
 
