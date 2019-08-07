@@ -17,7 +17,7 @@ export abstract class BaseSelectionFieldComponent<T> extends BaseFormFieldWithOp
 
   @ViewChild('toggleButton', { static: false }) toggleRef: ElementRef;
   @ViewChild('dropdown', { static: false }) dropdown: BsDropdownDirective;
-  @ViewChild('dropDownMenu', { static: false }) menuRef: ElementRef;
+
   display$ = new BehaviorSubject('');
   valueSub: Subscription;
   openSub: Subscription;
@@ -92,8 +92,19 @@ export abstract class BaseSelectionFieldComponent<T> extends BaseFormFieldWithOp
     const rect = toggle.getBoundingClientRect();
     const docHeight = (window.innerHeight || document.documentElement.clientHeight);
     this.dropdown.dropup = rect.bottom > docHeight - 100;
-    // Workaround: ngx-bootstrap sets top sometimes when we set dropup, which causes a position error
-    setTimeout(() => this.menuRef.nativeElement.style.top = '', 1);
+
+    // To manipulate the menu, we need to give time to ngx-bootstrap to append it to the body
+    setTimeout(() => {
+      const menu = document.getElementById(this.dropdownMenuId);
+
+      // Workaround: ngx-bootstrap sets top sometimes when we set dropup, which causes a position error
+      menu.style.top = '';
+
+      // Make sure the menu is at least the same width as the container
+      const container = this.toggleRef.nativeElement as HTMLElement;
+      menu.style.minWidth = `${container.getBoundingClientRect().width}px`;
+      menu.style.visibility = 'visible';
+    });
   }
 
   onHidden() {
