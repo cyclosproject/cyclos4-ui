@@ -51,6 +51,7 @@ interface ResolvedVouchersPermissions {
   generate: boolean;
   viewBought: boolean;
   viewRedeemed: boolean;
+  view: boolean;
 }
 
 /**
@@ -590,8 +591,11 @@ export class MenuService {
         add(Menu.SEARCH_REDEEMED, '/banking/' + ApiHelper.SELF + '/vouchers/redeemed', 'search',
           this.i18n.menu.bankingRedeemedVouchers);
       }
-      if (vouchers.redeem) {
+      if (vouchers.redeem && role !== RoleEnum.ADMINISTRATOR) {
         add(Menu.REDEEM_VOUCHER, '/banking/' + ApiHelper.SELF + '/vouchers/redeem', 'payment', this.i18n.menu.bankingRedeemVoucher);
+      }
+      if (vouchers.view) {
+        add(Menu.SEARCH_VOUCHERS, '/banking/vouchers', 'search', this.i18n.menu.bankingSearchVouchers);
       }
       addOperations(RootMenu.BANKING);
       addContentPages(Menu.CONTENT_PAGE_BANKING);
@@ -638,7 +642,7 @@ export class MenuService {
         add(Menu.SEARCH_ADS, '/marketplace/search', 'shopping_cart', this.i18n.menu.marketplaceAdvertisements);
       }
 
-      if (vouchers.buy) {
+      if (vouchers.buy && role !== RoleEnum.ADMINISTRATOR) {
         add(Menu.BUY_VOUCHER, '/banking/self/vouchers/buy', 'shopping_cart', this.i18n.menu.bankingBuyVouchers);
       }
       if (vouchers.viewBought) {
@@ -730,7 +734,8 @@ export class MenuService {
     const generate = !!voucherPermissions.find(config => config.generate);
     const viewBought = !!voucherPermissions.find(config => config.viewBought);
     const viewRedeemed = !!voucherPermissions.find(config => config.viewRedeemed);
-    return { buy, redeem, generate, viewBought, viewRedeemed };
+    const view = !!voucherPermissions.find(config => config.view);
+    return { buy, redeem, generate, viewBought, viewRedeemed, view };
   }
 
 }

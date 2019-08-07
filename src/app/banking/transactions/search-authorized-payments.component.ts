@@ -26,14 +26,10 @@ export class SearchAuthorizedPaymentsComponent
     ];
   }
 
-  ngOnInit() {
-    super.ngOnInit();
-    if (!this.form.value.status) {
-      this.form.patchValue(
-        { status: TransactionAuthorizationStatusEnum.PENDING },
-        { emitEvent: false }
-      );
-    }
+  getInitialFormValue(data: TransactionDataForSearch) {
+    const value = super.getInitialFormValue(data);
+    value.status = TransactionAuthorizationStatusEnum.PENDING;
+    return value;
   }
 
   get statusOptions(): FieldOption[] {
@@ -47,6 +43,7 @@ export class SearchAuthorizedPaymentsComponent
   protected toSearchParams(value: any): TransactionSearchParams {
     const query = super.toSearchParams(value);
     query.authorizationStatuses = [value.status];
+    query.authorized = true;
     return query;
   }
 

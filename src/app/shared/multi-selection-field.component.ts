@@ -1,4 +1,6 @@
-import { ChangeDetectionStrategy, Component, Host, Injector, Input, Optional, SkipSelf } from '@angular/core';
+import {
+  ChangeDetectionStrategy, Component, Host, Injector, Input, Optional, SkipSelf, ViewChild, ElementRef
+} from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { FIELD_OPTIONS_SORTER, FORM_FIELD_WITH_OPTIONS } from 'app/shared/base-form-field-with-options.component';
 import { BaseSelectionFieldComponent } from 'app/shared/base-selection-field.component';
@@ -37,6 +39,8 @@ export class MultiSelectionFieldComponent extends BaseSelectionFieldComponent<st
    * When hierarchical, assumes the values are correctly sorted.
    */
   @Input() hierarchyProperty: string = null;
+
+  @ViewChild('container', { static: false }) container: ElementRef;
 
   constructor(
     injector: Injector,
@@ -89,6 +93,7 @@ export class MultiSelectionFieldComponent extends BaseSelectionFieldComponent<st
 
   onShown() {
     super.onShown();
+
     // Enter key is already handled to toggle the option. Add the space bar as well.
     this.addShortcut(' ', () => {
       const option = this.allOptions[this.optionIndex];

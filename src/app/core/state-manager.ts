@@ -87,7 +87,11 @@ export class StateManager {
       control = control();
     }
     if (value) {
+      // When there was a previously stored value, modify the control
       control.patchValue(value);
+    } else {
+      // Otherwise, store the initial value
+      this.set(key, control.value);
     }
     this.subscriptions.push(control.valueChanges.subscribe(val => this.set(key, val)));
     return control;

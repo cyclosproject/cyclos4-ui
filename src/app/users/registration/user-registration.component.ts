@@ -2,16 +2,19 @@ import { ChangeDetectionStrategy, Component, Injector, OnDestroy, OnInit } from 
 import { AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import {
   AddressNew, AvailabilityEnum, Group, GroupForRegistration, GroupKind,
-  Image, PhoneNew, RoleEnum, UserDataForNew, UserNew, UserRegistrationResult, StoredFile
+  Image, PhoneNew, RoleEnum, StoredFile, UserDataForNew, UserNew, UserRegistrationResult
 } from 'app/api/models';
 import { ImagesService, UsersService } from 'app/api/services';
 import { UserHelperService } from 'app/core/user-helper.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BasePageComponent } from 'app/shared/base-page.component';
-import { blank, copyProperties, empty, focusFirstField, scrollTop, validateBeforeSubmit } from 'app/shared/helper';
+import {
+  blank, copyProperties, empty, focusFirstField, focusFirstInvalid,
+  mergeValidity, scrollTop, validateBeforeSubmit
+} from 'app/shared/helper';
+import { Menu } from 'app/shared/menu';
 import { BehaviorSubject, Observable, of, Subscription, timer } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import { Menu } from 'app/shared/menu';
 
 export type RegistrationStep = 'group' | 'fields' | 'confirm' | 'done';
 
@@ -243,24 +246,14 @@ export class UserRegistrationComponent
     if (this.addressForm && this.defineAddress.value) {
       fullForm.setControl('address', this.addressForm);
     }
-    if (validateBeforeSubmit(fullForm)) {
-      // The form is already valid
-      this.doShowConfirm();
-    } else {
-      // It might be either invalid or pending (this form has server-side validations)
-      if (fullForm.status === 'PENDING') {
-        this.validationSub = fullForm.statusChanges.subscribe(status => {
-          if (status === 'PENDING') {
-            // Still pending...
-            return;
-          }
-          this.validationSub.unsubscribe();
-          if (status === 'VALID') {
-            this.doShowConfirm();
-          }
-        });
+    const nonValid = validateBeforeSubmit(fullForm, true) as FormControl[];
+    this.addSub(mergeValidity(nonValid).subscribe(isValid => {
+      if (isValid) {
+        this.doShowConfirm();
+      } else {
+        focusFirstInvalid();
       }
-    }
+    }));
   }
 
   private doShowConfirm() {
@@ -296,15 +289,20 @@ export class UserRegistrationComponent
   }
 
   register() {
-    if (!validateBeforeSubmit(this.confirmForm)) {
-      return;
-    }
-    this.addSub(this.usersService.createUser({ body: this.userNew })
-      .subscribe(result => {
-        this.result = result;
-        this.image = null;
-        this.step = 'done';
-      }));
+    const nonValid = validateBeforeSubmit(this.confirmForm, true) as FormControl[];
+    this.addSub(mergeValidity(nonValid).subscribe(isValid => {
+      if (isValid) {
+        // Perform the registration
+        this.addSub(this.usersService.createUser({ body: this.userNew })
+          .subscribe(result => {
+            this.result = result;
+            this.image = null;
+            this.step = 'done';
+          }));
+      } else {
+        focusFirstInvalid();
+      }
+    }));
   }
 
   get userNew(): UserNew {

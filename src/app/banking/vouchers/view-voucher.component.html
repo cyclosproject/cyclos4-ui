@@ -62,6 +62,15 @@
             [label]="i18n.general.expirationDate">
             {{ data.expirationDate | dateTime}}
           </label-value>
+          <label-value *ngIf="data.refund" [label]="i18n.voucher.refundDate">
+            {{ data.refund.date | dateTime}}
+          </label-value>
+          <label-value *ngIf="data.refund"
+            [label]="i18n.voucher.refundPayment">
+            <a [routerLink]="transferPath(data.refund)">
+              {{ bankingHelper.transactionNumberOrId(data.refund) }}
+            </a>
+          </label-value>
         </div>
       </div>
       <!-- Description -->

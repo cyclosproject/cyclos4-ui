@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
-  AccountHistoryOrderByEnum, AccountType, Currency, PreselectedPeriod,
+  TransOrderByEnum, AccountType, Currency, PreselectedPeriod,
   TransferDataForSearch, TransferFilter, TransferQueryFilters, TransferResult, RoleEnum
 } from 'app/api/models';
 import { TransfersService } from 'app/api/services';
@@ -63,6 +63,13 @@ export class SearchTransfersOverviewComponent
     ];
   }
 
+  getInitialFormValue(data: TransferDataForSearch) {
+    const value = super.getInitialFormValue(data);
+    // Only Cyclos 4.12.2 onwards sends a default order by
+    value.orderBy = value.orderBy || TransOrderByEnum.DATE_DESC;
+    return value;
+  }
+
   ngOnInit() {
     super.ngOnInit();
 
@@ -70,9 +77,6 @@ export class SearchTransfersOverviewComponent
     this.stateManager.cache('data',
       this.transfersService.getTransferDataForSearch()
     ).subscribe(data => {
-      const defaultQuery = data.query || {};
-      defaultQuery.orderBy = defaultQuery.orderBy || AccountHistoryOrderByEnum.DATE_DESC;
-      this.form.patchValue(defaultQuery);
       this.data = data;
     });
   }

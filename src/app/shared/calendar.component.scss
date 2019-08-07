@@ -1,10 +1,5 @@
 @import 'src/definitions';
 
-$header-height: 2.5rem;
-$cell-height: 2rem;
-$month-width: 7rem;
-$year-width: 4rem;
-
 :host {
   min-width: 16.15rem;
   display: flex;
@@ -14,7 +9,7 @@ $year-width: 4rem;
 button {
   border: 1px solid transparent;
   background: transparent;
-  border-radius: $header-height;
+  border-radius: $calendar-header-height;
   padding: 0;
   display: flex;
   align-items: center;
@@ -34,13 +29,14 @@ button {
 
 .calendar-header {
   display: flex;
-  margin-bottom: 0.5rem;
+  align-items: center;
   color: $calendar-header-color;
   background-color: $calendar-header-bg;
   padding: 0.4rem;
+  height: $calendar-header-height;
 
   button, .year-range {
-    height: $header-height;
+    height: $calendar-header-height;
     color: $calendar-header-color;
   }
   button[disabled], button[disabled]:hover {
@@ -49,28 +45,39 @@ button {
     color: transparent !important;
   }
   .month {
-    width: $month-width;
+    width: $calendar-month-width;
   }
   .year {
-    width: $year-width;
+    width: $calendar-year-width;
+  }
+  .month, .year {
+    height: $calendar-header-nav-size;
+    margin: 0 0.5rem;
   }
   .calendar-nav {
-    width: $header-height;
+    width: $calendar-header-nav-size;
+    height: $calendar-header-nav-size;
   }
   .year-range {
     display: flex;
     align-items: center;
     justify-content: center;
     line-height: 1em;
+    height: $calendar-header-nav-size;
   }
 }
 
 .calendar-body {
-  height: calc(#{7 * $cell-height} + 2px);
+  padding: 0.5rem 0;
+  height: calc(#{7 * $calendar-cell-height} + 2px + 1rem);
 }
 .calendar-days, .calendar-months, .calendar-years {
   width: 100%;
-  padding: 0.4rem;
+}
+
+td, th {
+  padding: 0.2rem !important;
+  height: $calendar-cell-height !important;
 }
 
 .weekday {
@@ -80,19 +87,19 @@ button {
 }
 
 .select-day, .select-month, .select-year {
-  height: $cell-height;
+  height: $calendar-cell-height;
   text-align: center;
   display: block;
   margin: 0 auto;
 }
 .select-day {
-  width: $cell-height;
+  width: $calendar-cell-height;
 }
 .select-month {
-  width: $month-width;
+  width: $calendar-month-width;
 }
 .select-year {
-  width: $year-width;
+  width: $calendar-year-width;
 }
 .today, .today:hover,
 .this-month, .this-month:hover,

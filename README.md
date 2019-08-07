@@ -10,18 +10,18 @@ A demo of the frontend can be seen at: https://demo-ui.cyclos.org/
 ## Technical details
 
 - This application is built using [Angular](https://angular.io/) and [Bootstrap](https://getbootstrap.com), using the [ngx-bootstrap](https://valor-software.com/ngx-bootstrap/) integration library;
-- It uses Cyclos' REST API for integration. The [ng-openapi-gen](https://github.com/cyclosproject/ng-openapi-gen) project is used to generate the client services and web service models. Starting with Cyclos 4.12, the API will be described using OpenAPI 3 instead of Swagger 2. But a copy of the Cyclos 12 OpenAPI 3 descriptor (which is backwards compatible with 4.11) is already committed in this repository, and is used to generate the services;
+- It uses Cyclos' REST API for integration. The [ng-openapi-gen](https://github.com/cyclosproject/ng-openapi-gen) project is used to generate the client services and web service models. Starting with Cyclos 4.12, the API is described using OpenAPI 3 instead of Swagger 2;
 - Translations are done separatedly from the Cyclos installation. This way they cannot be customized in Cyclos, but allows the user interface to grow independently from the deployed Cyclos version;
-- Requests to the Cyclos server are performed directly from the browser. That means that either this frontend should be deployed in the same domain as Cyclos, or CORS should be enabled in Cyclos by setting `cyclos.cors.origin = <cyclos4-ui-domain>` in the `cyclos.properties` file;
+- Requests to the Cyclos server are performed directly from the browser. That means that either the web server serving this frontend should proxy the `api` path to the Cyclos backend or CORS should be enabled in Cyclos by setting `cyclos.cors.origin = <cyclos4-ui-domain>` in the `cyclos.properties` file;
 - If you intent to customize or extend the functionality of this frontend, please, refer to the [project Wiki](https://github.com/cyclosproject/cyclos4-ui/wiki). There you will find some useful documentation.
 
 ## Implemented functionality
 
-The 1.1 version of this frontend implements end-user functionality, as well as basic user administration / brokering and operator functionality. System administration functionality will always be performed in Cyclos' default web interface.
+This frontend implements end-user functionality, as well as basic user administration / brokering and operator functionality. System administration functionality will always be performed in Cyclos' default web interface.
 
 As of version 1.1, this frontend implements the following functionality:
 
-- User access: login, logout, forgot password, login with expired password, login with pending agreements (no support for secondary access password);
+- User access: login, logout, forgot password, login with expired password, login with pending agreements (no support for secondary access password / login confirmation);
 - Integration with a login form in an external system: receives a pre-created session token and is able to use external URLs for login page and after logout redirect;
 - Account history, transfer details by own user, admin and broker;
 - Perform payment both to user and system, supports direct, scheduled and recurring payments, by own user, admin and broker;
@@ -55,7 +55,7 @@ More functionality will be added in future versions.
 
 The required Cyclos version depends on the frontend version:
 
-- Frontend 1.1 requires Cyclos 4.12.1 or up (mostly works with 4.12.0);
+- Frontend 1.1 requires Cyclos 4.12.1 or up;
 - Frontend 1.0 requires Cyclos 4.11.2 or up
 
 ## Getting and preparing the code
@@ -81,7 +81,6 @@ In either case, the project will not compile yet because it depends on classes w
 ```bash
 npm run generate
 ```
-
 
 ## Basic setup
 
@@ -245,8 +244,8 @@ To achieve this, Cyclos allows using a script to generate links. As a global adm
 import org.cyclos.impl.utils.LinkType
 import org.cyclos.entities.system.ExternalRedirectExecution
 
-if (user != null && user.admin) {
-    // Don't generate custom links for admins
+if (user != null && user.admin && admin.group.adminType != null) {
+    // Don't generate custom links for system administrators
     return null
 }
 

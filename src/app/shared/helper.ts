@@ -8,7 +8,8 @@ import { FormControlLocator } from 'app/shared/form-control-locator';
 import { LayoutService } from 'app/shared/layout.service';
 import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp, End, Home, PageDown, PageUp } from 'app/shared/shortcut.service';
 import download from 'downloadjs';
-import { Observable } from 'rxjs';
+import { combineLatest, Observable, of, Subject } from 'rxjs';
+import { first, tap } from 'rxjs/operators';
 
 /** URL for the Google maps red marker */
 export const RedMarker = 'https://maps.google.com/mapfiles/ms/icons/red-dot.png';
@@ -267,33 +268,63 @@ export function getAllErrors(control: AbstractControl): { [key: string]: any; } 
 
 /**
  * Validates the given form control. Should be called before submitting forms.
- * Returns whether the form is valid
+ * Depending on the returnNonValid, returns the valid flag (when false) or an array with non-valid controls (when true).
  */
-export function validateBeforeSubmit(control: AbstractControl): boolean {
-  let result = true;
+export function validateBeforeSubmit(control: AbstractControl, returnNonValid = false): boolean | FormControl[] {
+  const result: FormControl[] = [];
   if (control instanceof FormControl) {
     control.markAsTouched({ onlySelf: true });
     control.markAsPending({ onlySelf: true, emitEvent: false });
     control.updateValueAndValidity({ onlySelf: true });
-    result = control.valid;
+    if (!control.valid) {
+      result.push(control);
+    }
   } else if (control instanceof FormArray) {
     control.controls.forEach(current => {
-      if (!validateBeforeSubmit(current)) {
-        result = false;
-      }
+      Array.prototype.push.apply(result, validateBeforeSubmit(current, true) as FormControl[]);
     });
   } else if (control instanceof FormGroup) {
-    Object.keys(control.controls).forEach(current => {
-      if (!validateBeforeSubmit(control.controls[current])) {
-        result = false;
-      }
+    Object.keys(control.controls).forEach(key => {
+      const current = control.controls[key];
+      Array.prototype.push.apply(result, validateBeforeSubmit(current, true) as FormControl[]);
     });
   }
-  if (!result) {
+  const valid = empty(result);
+  if (!valid) {
     // Focus the first invalid field
     focusFirstInvalid();
   }
-  return result;
+  return returnNonValid ? result : valid;
+}
+
+/**
+ * Returns an observable that merges the validity of all the given controls.
+ * When all are valid or empty input, resolves to `true`.
+ * When at least one is invalid, resolves to `false`.
+ * When at least one is pending, awaits its resolution and resolves accordingly.
+ */
+export function mergeValidity(controls: AbstractControl[]): Observable<boolean> {
+  if (empty(controls)) {
+    return of(true);
+  }
+  if (controls.find(c => c.status === 'INVALID')) {
+    return of(false);
+  }
+  const pending = controls.filter(c => c.status === 'PENDING');
+  if (empty(pending)) {
+    return of(true);
+  } else {
+    const subject = new Subject<boolean>();
+    const sub = combineLatest(pending.map(c => c.statusChanges)).subscribe(statuses => {
+      if (statuses.includes('INVALID')) {
+        subject.next(false);
+      } else if (!statuses.includes('PENDING')) {
+        // No invalid and no pending
+        subject.next(true);
+      }
+    });
+    return subject.pipe(first(), tap(() => sub.unsubscribe()));
+  }
 }
 
 /**
