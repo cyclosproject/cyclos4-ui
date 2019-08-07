@@ -19,6 +19,8 @@
     "notAppliedSelect": "Not applied (select to apply)",
     "user": "User",
     "operator": "Operator",
+    "brokers": "Brokers",
+    "groups": "Groups",
     "name": "Name",
     "description": "Description",
     "image": "Image",

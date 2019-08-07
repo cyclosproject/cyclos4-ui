@@ -1,5 +1,8 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { RecordDataForSearch, RecordQueryFilters, RecordResult, CustomFieldDetailed, RecordLayoutEnum } from 'app/api/models';
+import {
+  RecordQueryFilters, RecordResult, CustomFieldDetailed, RecordLayoutEnum,
+  BaseRecordDataForSearch, RecordDataForSearch, GeneralRecordsDataForSearch, Group
+} from 'app/api/models';
 import { RecordsService } from 'app/api/services';
 import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { Observable } from 'rxjs';
@@ -8,7 +11,12 @@ import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
 import { RecordHelperService } from 'app/core/records-helper.service';
 
-type RecordSearchParams = RecordQueryFilters & { owner: string, type: string, keywords: string };
+type RecordSearchParams = RecordQueryFilters & {
+  owner: string,
+  type: string,
+  keywords: string,
+  brokers: string[]
+};
 
 @Component({
   selector: 'search-records',
@@ -16,13 +24,14 @@ type RecordSearchParams = RecordQueryFilters & { owner: string, type: string, ke
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchRecordsComponent
-  extends BaseSearchPageComponent<RecordDataForSearch, RecordSearchParams, RecordResult>
+  extends BaseSearchPageComponent<BaseRecordDataForSearch, RecordSearchParams, RecordResult>
   implements OnInit {
 
   type: string;
   param: string;
   fieldsInSearch: Array<CustomFieldDetailed>;
   fieldsInList: Array<CustomFieldDetailed>;
+  groups: Array<Group>;
 
   constructor(
     injector: Injector,
@@ -39,22 +48,33 @@ export class SearchRecordsComponent
     this.type = this.route.snapshot.params.type;
 
     // Get search data
-    this.addSub(this.recordsService.getRecordDataForOwnerSearch({ owner: this.param, type: this.type }).subscribe(data => {
-      if (data.type.layout !== RecordLayoutEnum.LIST) {
-        throw new Error(`Invalid record layout: ${data.type.layout}`);
-      }
-
-      this.fieldsInSearch = data.customFields.filter(cf => data.fieldsInSearch.includes(cf.internalName));
-      this.fieldsInList = data.customFields.filter(cf => data.fieldsInList.includes(cf.internalName));
-      this.form.setControl('customValues', this.fieldHelper.customValuesFormGroup(this.fieldsInSearch, {
-        useDefaults: false
-      }));
-      this.form.patchValue(data.query);
-      this.data = data;
-    }));
+    if (this.generalSearch) {
+      this.addSub(this.recordsService.getRecordDataForGeneralSearch({ type: this.type })
+        .subscribe(data => this.onInitialize(data)));
+    } else {
+      this.addSub(
+        this.recordsService.getRecordDataForOwnerSearch({ owner: this.param, type: this.type })
+          .subscribe(data => this.onInitialize(data)));
+    }
   }
 
-  onDataInitialized(data: RecordDataForSearch) {
+  protected onInitialize(data: BaseRecordDataForSearch) {
+    if (!this.generalSearch && data.type.layout !== RecordLayoutEnum.LIST) {
+      throw new Error(`Invalid record layout: ${data.type.layout}`);
+    }
+
+    this.fieldsInSearch = data.customFields.filter(cf => data.fieldsInSearch.includes(cf.internalName));
+    this.fieldsInList = data.customFields.filter(cf => data.fieldsInList.includes(cf.internalName));
+    this.form.setControl('customValues', this.fieldHelper.customValuesFormGroup(this.fieldsInSearch, {
+      useDefaults: false
+    }));
+    this.form.patchValue(this.generalSearch ?
+      (data as GeneralRecordsDataForSearch).query :
+      (data as RecordDataForSearch).query);
+    this.data = data;
+  }
+
+  onDataInitialized(data: BaseRecordDataForSearch) {
     const headingActions: HeadingAction[] = [];
     if (data.create) {
       headingActions.push(new HeadingAction('add_circle_outline', this.i18n.general.addNew, () =>
@@ -65,7 +85,9 @@ export class SearchRecordsComponent
   }
 
   protected doSearch(value: RecordSearchParams): Observable<HttpResponse<RecordResult[]>> {
-    return this.recordsService.searchOwnerRecords$Response(value);
+    return this.generalSearch ?
+      this.recordsService.searchGeneralRecords$Response(value) :
+      this.recordsService.searchOwnerRecords$Response(value);
   }
 
   remove(record: RecordResult) {
@@ -109,10 +131,15 @@ export class SearchRecordsComponent
   }
 
   protected getFormControlNames(): string[] {
-    return ['keywords', 'customValues', 'createdBy', 'beginDate', 'endDate'];
+    return ['keywords', 'customValues', 'createdBy', 'beginDate', 'endDate', 'brokers'];
   }
 
-  resolveMenu(data: RecordDataForSearch) {
-    return this.recordsHelper.menuForRecordType(data.user, data.type);
+  resolveMenu(data: BaseRecordDataForSearch) {
+    const user = this.generalSearch ? null : (data as RecordDataForSearch).user;
+    return this.recordsHelper.menuForRecordType(user, data.type, this.generalSearch);
+  }
+
+  get generalSearch() {
+    return this.param !== null;
   }
 }

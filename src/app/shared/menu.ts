@@ -125,6 +125,8 @@ export module Menu {
   // Records
   export const SEARCH_USER_RECORDS = new Menu(RootMenu.PERSONAL, 'SEARCH_USER_RECORDS');
   export const SEARCH_SYSTEM_RECORDS = new Menu(RootMenu.CONTENT, 'SEARCH_SYSTEM_RECORDS');
+  export const SEARCH_ADMIN_RECORDS = new Menu(RootMenu.MARKETPLACE, 'SEARCH_ADMIN_RECORDS');
+  export const SEARCH_BROKER_RECORDS = new Menu(RootMenu.BROKERING, 'SEARCH_BROKER_RECORDS');
 
   // Content (one per root menu)
   export const CONTENT_PAGE_BANKING = new Menu(RootMenu.BANKING, 'CONTENT_PAGE_BANKING');
