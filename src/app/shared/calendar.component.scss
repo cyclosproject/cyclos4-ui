@@ -26,6 +26,9 @@ button {
     outline: none;
   }
 }
+button[disabled] {
+  text-decoration: line-through;
+}
 
 .calendar-header {
   display: flex;
@@ -134,6 +137,9 @@ body.dark :host ::ng-deep {
     button, .year-range {
       color: $calendar-header-color-dark;
     }
+  }
+  .calendar-body button {
+    color: $body-color-dark;
   }
   .weekday {
     color: $text-muted-dark;
