@@ -7,8 +7,7 @@
   <page-content mode="filters" [heading]="title"
     [mobileHeading]="i18n.account.mobileTitle"
     [headingActions]="headingActions$ | async">
-    <form *ngIf="showForm$ | async" [formGroup]="form"
-      class="filters-form filters-form-separator"
+    <form *ngIf="showForm$ | async" [formGroup]="form" class="filters-form"
       [ngClass]="{ 'border-0': noStatus$ | async }">
       <div class="row">
         <ng-container *ngIf="data.account.user && !self">
@@ -129,6 +128,7 @@
         *ngIf="(status$ | async) && ((layout.gtxxs$ | async) || (results?.page === 0))"
         [account]="status$.value"
         [mode]="(moreFilters$ | async) ? 'period' : 'current'"
+        [showSeparator]="showForm$ | async"
         [showAccount]="(layout.ltsm$ | async) && multipleAccounts"
         [showUser]="!self && !(showForm$ | async)">
       </account-status-view>
