@@ -22,7 +22,7 @@
   justify-content: flex-end;
 }
 
-:host {
+.container {
   width: 100%;
 }
 
@@ -42,7 +42,7 @@ hr {
 }
 
 @include media-breakpoint-up(md) {
-  :host {
+  .container {
     padding: 1em 0;
   }
   .status-label, .status-label-last:not(.status-label-last),
