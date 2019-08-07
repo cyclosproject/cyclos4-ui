@@ -1,7 +1,7 @@
 import { Component, OnInit, Injector, ChangeDetectionStrategy } from '@angular/core';
 import {
-  VoucherView, ImageSizeEnum, Transaction, CreateDeviceConfirmation, DeviceConfirmationTypeEnum,
-  VoucherCancelActionEnum, CustomFieldTypeEnum, CustomFieldDetailed, VoucherActionEnum
+  VoucherView, ImageSizeEnum, Transaction, CreateDeviceConfirmation, DeviceConfirmationTypeEnum, VoucherCancelActionEnum,
+  CustomFieldTypeEnum, CustomFieldDetailed, VoucherActionEnum, TransactionAuthorizationStatusEnum
 } from 'app/api/models';
 import { VouchersService } from 'app/api/services';
 import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
@@ -152,7 +152,12 @@ export class ViewVoucherComponent extends BaseViewPageComponent<VoucherView> imp
    * @param row The row
    */
   transferPath(transfer: Transaction): string[] {
-    return ['/banking', 'transfer', this.bankingHelper.transactionNumberOrId(transfer)];
+    if (transfer.authorizationStatus === null ||
+      transfer.authorizationStatus === TransactionAuthorizationStatusEnum.AUTHORIZED) {
+      return ['/banking', 'transfer', this.bankingHelper.transactionNumberOrId(transfer)];
+    } else {
+      return ['/banking', 'transaction', this.bankingHelper.transactionNumberOrId(transfer)];
+    }
   }
 
   resolveMenu(voucher: VoucherView) {
