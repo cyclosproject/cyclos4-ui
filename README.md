@@ -673,3 +673,7 @@ The KaiOS application doesn't run in a "browser". Hence, the navigation keys nee
 - Horizontal arrows: On the quick access navigates through the icons. On search results skips to the next / previous page. On guest home / content pages focus the next / previous anchor;
 - Ok: Activates the focused element;
 - Numeric keys: On the dashboard will activate the corresponding quick action item.
+
+## Contributing and developing
+
+Please, read the [Wiki pages](https://github.com/cyclosproject/cyclos4-ui/wiki), as they contain important information for development.
