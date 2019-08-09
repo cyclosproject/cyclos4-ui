@@ -16,6 +16,10 @@ import { ApiHelper } from 'app/shared/api-helper';
 })
 export class RecordHelperService {
 
+
+  /** Represents the path to general record search */
+  static GENERAL_SEARCH = 'general';
+
   constructor(
     private dataForUiHolder: DataForUiHolder,
     private layout: LayoutService,
@@ -43,6 +47,10 @@ export class RecordHelperService {
    */
   resolvePath(permission: RecordPermissions, owner: string, system: boolean = false): string {
     const type = permission.type;
+    if (owner === RecordHelperService.GENERAL_SEARCH) {
+      // Force list when doing a general search
+      type.layout = RecordLayoutEnum.LIST;
+    }
     const pathFunction = (id: string) => {
       let path = null;
       if (type.layout === RecordLayoutEnum.SINGLE) {

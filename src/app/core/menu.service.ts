@@ -692,7 +692,7 @@ export class MenuService {
       addRecords( // User management (general search)
         role === RoleEnum.ADMINISTRATOR ? Menu.SEARCH_ADMIN_RECORDS : Menu.SEARCH_BROKER_RECORDS,
         this.recordHelper.recordPermissions(false, true),
-        ApiHelper.SELF);
+        RecordHelperService.GENERAL_SEARCH);
       addRecords( // System
         Menu.SEARCH_SYSTEM_RECORDS,
         this.recordHelper.recordPermissions(true),

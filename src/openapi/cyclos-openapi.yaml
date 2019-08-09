@@ -21583,6 +21583,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
             items:
               description: ''
               type: string
+        - name: user
+          in: query
+          required: false
+          description: "Either the id or identifier of the record owner"
+          schema:
+            type: string
       responses:
         '200':
           description: >-
@@ -21844,6 +21850,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
             items:
               description: ''
               type: string
+        - name: user
+          in: query
+          required: false
+          description: "Either the id or identifier of the record owner"
+          schema:
+            type: string
       responses:
         '200':
           description: >-
@@ -40311,6 +40323,9 @@ components:
               type: array
               items:
                 type: string
+            user:
+              description: Either the id or identifier of the record owner
+              type: string
 
     GeographicalCoordinate:
       description: >-

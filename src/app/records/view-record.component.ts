@@ -73,6 +73,10 @@ export class ViewRecordComponent extends BaseViewPageComponent<RecordView> imple
       this.data.lastModifiedBy;
   }
 
+  isOwner(): boolean {
+    return this.authHelper.isSelf(this.data.user);
+  }
+
   resolveMenu(data: RecordView) {
     return this.recordsHelper.menuForRecordType(data.user, data.type);
   }
