@@ -507,7 +507,7 @@ export class MenuService {
 
     // Lambda that adds records in the given root menu entry
     const addRecords = (menu: Menu, recordPermissions: RecordPermissions[], owner: string, my?: boolean) => {
-      if ((!my || my && !auth.global) && recordPermissions.length > 0) {
+      if ((!my || !auth.global) && recordPermissions.length > 0) {
         for (const permission of recordPermissions) {
           // If it's a general search exclude records not listed in menu
           if (owner === RecordHelperService.GENERAL_SEARCH && !permission.type.showInMenu) {
