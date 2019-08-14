@@ -8,7 +8,7 @@
       <ng-container *ngIf="data.type.informationText">
         <rich-text-container [value]="data.type.informationText">
         </rich-text-container>
-        <hr *ngIf="data.fields">
+        <hr *ngIf="data.fields" class="border-0">
       </ng-container>
       <h2 *ngIf="fieldsWithoutSection.length > 0" [ngClass]="{
                 'mb-0': labelPosition == 'above',

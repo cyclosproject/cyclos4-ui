@@ -38,13 +38,13 @@
           <hr *ngIf="hasPreviousFields">
           <rich-text-container [value]="data.type.informationText">
           </rich-text-container>
-          <hr *ngIf="data.customValues" class="border-0 mb-0">
+          <hr *ngIf="data.customValues">
         </ng-container>
         <h2 *ngIf="hasPreviousFields && valuesWithoutSection.length > 0"
-          [class]="{
+          [ngClass]="{
             'mt-2 pt-0 border-0': data.type.informationText,
             'mb-0': labelPosition == 'above',
-            'mb-2': labelPosition != 'above'}">
+            'mb-2': labelPosition !== 'above'}">
           {{ i18n.record.fields }}
         </h2>
         <custom-field-value [labelPosition]="labelPosition"
