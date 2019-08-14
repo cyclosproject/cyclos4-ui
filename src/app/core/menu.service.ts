@@ -509,6 +509,10 @@ export class MenuService {
     const addRecords = (menu: Menu, recordPermissions: RecordPermissions[], owner: string, my?: boolean) => {
       if ((!my || my && !auth.global) && recordPermissions.length > 0) {
         for (const permission of recordPermissions) {
+          // If it's a general search exclude records not listed in menu
+          if (owner === RecordHelperService.GENERAL_SEARCH && !permission.type.showInMenu) {
+            continue;
+          }
           const activeMenu = new ActiveMenu(menu, { recordType: permission.type });
           const pathFunction = () => this.recordHelper.resolvePath(
             permission, owner, owner === ApiHelper.SYSTEM);

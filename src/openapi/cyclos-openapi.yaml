@@ -44246,7 +44246,7 @@ components:
       type: object
       properties:
         type:
-          $ref: '#/components/schemas/RecordType'
+          $ref: '#/components/schemas/RecordTypeWithMenu'
         create:
           description: >-
             Can the authenticated user create new records of this type?
