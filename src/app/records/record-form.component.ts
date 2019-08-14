@@ -37,6 +37,7 @@ export class RecordFormComponent extends BasePageComponent<RecordDataForEdit | R
 
   ngOnInit() {
     super.ngOnInit();
+
     this.param = this.route.snapshot.params.owner;
     this.type = this.route.snapshot.params.type;
     this.create = this.param != null;
