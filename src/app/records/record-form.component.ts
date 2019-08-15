@@ -8,7 +8,7 @@ import { RecordsService } from 'app/api/services';
 import { Observable } from 'rxjs';
 import { FormGroup } from '@angular/forms';
 import { RecordHelperService } from 'app/core/records-helper.service';
-import { validateBeforeSubmit } from 'app/shared/helper';
+import { validateBeforeSubmit, empty } from 'app/shared/helper';
 import { cloneDeep } from 'lodash';
 
 @Component({
@@ -37,6 +37,7 @@ export class RecordFormComponent extends BasePageComponent<RecordDataForEdit | R
 
   ngOnInit() {
     super.ngOnInit();
+
     this.param = this.route.snapshot.params.owner;
     this.type = this.route.snapshot.params.type;
     this.create = this.param != null;
@@ -56,7 +57,7 @@ export class RecordFormComponent extends BasePageComponent<RecordDataForEdit | R
     this.fieldsWithoutSection = data.fields.filter(field => field.section == null) || [];
     (data.type.sections || []).forEach(s => {
       const filter = data.fields.filter(field => field.section != null && field.section.id === s.id);
-      if (filter) {
+      if (!empty(filter)) {
         this.fieldsWithSection.set(s, filter);
       }
     });

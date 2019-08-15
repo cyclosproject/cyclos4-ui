@@ -10,6 +10,11 @@
         'd-flex flex-grow-1 flex-column': !columnLayout,
         'mr-n3': columnLayout}">
         <label-value [labelPosition]="labelPosition"
+          [class]="resolveColumnClass()" *ngIf="!isOwner()"
+          [label]="i18n.general.user">
+          {{ data.user.display }}
+        </label-value>
+        <label-value [labelPosition]="labelPosition"
           [class]="resolveColumnClass()" *ngIf="data.creationDate"
           [label]="i18n.general.creationDate">
           {{ data.creationDate | dateTime }}
@@ -36,10 +41,10 @@
           <hr *ngIf="data.customValues">
         </ng-container>
         <h2 *ngIf="hasPreviousFields && valuesWithoutSection.length > 0"
-          [class]="{
+          [ngClass]="{
             'mt-2 pt-0 border-0': data.type.informationText,
-            'mb-0': labelPosition == 'above',
-            'mb-2': labelPosition != 'above'}">
+            'mb-0': labelPosition === 'above',
+            'mb-2': labelPosition !== 'above'}">
           {{ i18n.record.fields }}
         </h2>
         <custom-field-value [labelPosition]="labelPosition"
@@ -52,7 +57,7 @@
           <h2
             [ngClass]="{
             'mt-4': valuesWithoutSection.length > 0,
-            'mb-0': labelPosition == 'above',
+            'mb-0': labelPosition === 'above',
             'mb-2': labelPosition !== 'above',
             'border-top-0': first && valuesWithoutSection.length == 0 && (!hasPreviousFields || data.type.informationText)}">
             {{ key.name }}

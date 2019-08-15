@@ -21583,6 +21583,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
             items:
               description: ''
               type: string
+        - name: user
+          in: query
+          required: false
+          description: "Either the id or identifier of the record owner"
+          schema:
+            type: string
       responses:
         '200':
           description: >-
@@ -21844,6 +21850,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
             items:
               description: ''
               type: string
+        - name: user
+          in: query
+          required: false
+          description: "Either the id or identifier of the record owner"
+          schema:
+            type: string
       responses:
         '200':
           description: >-
@@ -32375,13 +32387,13 @@ components:
         Possible values are:
         
         - `full`: The account is fully visible
-
+        
         - `incoming`: All incoming and own payments are visible
-
+        
         - `none`: The account is not visible
-
+        
         - `outgoing`: All outgoing and own payments are visible
-
+        
         - `own`: Only payments performed / received by the operators are visible
       type: string
       enum:
@@ -33314,13 +33326,13 @@ components:
         Contains the possible 'order by' values when searching for transfers / transactions
 
         Possible values are:
-
+        
         - `amountAsc`: The result is ordered by amount descendant
-
+        
         - `amountDesc`: The result is ordered by amount descendant
-
+        
         - `dateAsc`: The result is ordered by date ascendant
-
+        
         - `dateDesc`: The result is ordered by date descendant
       type: string
       enum:
@@ -33817,17 +33829,17 @@ components:
         The voucher search result order
 
         Possible values are:
-
+        
         - `creationDateAsc`: Order by creation date, ascending
-
+        
         - `creationDateDesc`: Order by creation date, descending (default)
-
+        
         - `expirationDateAsc`: Order by expiration date, ascending
-
+        
         - `expirationDateDesc`: Order by expiration date, descending
-
+        
         - `redeemDateAsc`: Order by redeem date, ascending, then expiration date, ascending
-
+        
         - `redeemDateDesc`: Order by redeem date, descending, then expiration date, descending
       type: string
       enum:
@@ -40280,6 +40292,12 @@ components:
         - $ref: '#/components/schemas/BaseRecordDataForSearch'
         - type: object
           properties:
+            groups:
+              description: >-
+                The groups the authenticated user can use to filter user records
+              type: array
+              items:
+                $ref: '#/components/schemas/Group'
             query:
               description: >-
                 Default query filters for searching records
@@ -40305,6 +40323,9 @@ components:
               type: array
               items:
                 type: string
+            user:
+              description: Either the id or identifier of the record owner
+              type: string
 
     GeographicalCoordinate:
       description: >-
@@ -44225,7 +44246,7 @@ components:
       type: object
       properties:
         type:
-          $ref: '#/components/schemas/RecordType'
+          $ref: '#/components/schemas/RecordTypeWithMenu'
         create:
           description: >-
             Can the authenticated user create new records of this type?
@@ -44677,18 +44698,28 @@ components:
         Permissions over own or system records
       type: object
       properties:
+        # User should actually be called 'my', but was already used like this,
+        # so we had to leave it like this.
         user:
           description: >-
-            Permissions over each visible user record type
+            Permissions over each visible own user record type.
+          type: array
+          items:
+            $ref: '#/components/schemas/RecordPermissions'
+        # Same as above: should've been called 'user'.
+        userManagement:
+          description: >-
+            Permissions over each visible user record type of managed users.
           type: array
           items:
             $ref: '#/components/schemas/RecordPermissions'
         system:
           description: >-
-            Permissions over each visible system record type
+            Permissions over each visible system record type.
           type: array
           items:
             $ref: '#/components/schemas/RecordPermissions'
+
 
     RecurringPaymentOccurrenceView:
       description: >-

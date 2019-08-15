@@ -1,5 +1,8 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { RecordDataForSearch, RecordQueryFilters, RecordResult, CustomFieldDetailed, RecordLayoutEnum } from 'app/api/models';
+import {
+  RecordQueryFilters, RecordResult, CustomFieldDetailed, RecordLayoutEnum,
+  BaseRecordDataForSearch, RecordDataForSearch, GeneralRecordsDataForSearch, Group, RecordWithOwnerResult
+} from 'app/api/models';
 import { RecordsService } from 'app/api/services';
 import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { Observable } from 'rxjs';
@@ -8,7 +11,10 @@ import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
 import { RecordHelperService } from 'app/core/records-helper.service';
 
-type RecordSearchParams = RecordQueryFilters & { owner: string, type: string, keywords: string };
+type RecordSearchParams = RecordQueryFilters & {
+  owner: string,
+  type: string
+};
 
 @Component({
   selector: 'search-records',
@@ -16,13 +22,15 @@ type RecordSearchParams = RecordQueryFilters & { owner: string, type: string, ke
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchRecordsComponent
-  extends BaseSearchPageComponent<RecordDataForSearch, RecordSearchParams, RecordResult>
+  extends BaseSearchPageComponent<GeneralRecordsDataForSearch | RecordDataForSearch, RecordSearchParams, RecordResult>
   implements OnInit {
 
   type: string;
   param: string;
   fieldsInSearch: Array<CustomFieldDetailed>;
   fieldsInList: Array<CustomFieldDetailed>;
+  profileFields: Array<CustomFieldDetailed>;
+  groups: Array<Group>;
 
   constructor(
     injector: Injector,
@@ -39,33 +47,46 @@ export class SearchRecordsComponent
     this.type = this.route.snapshot.params.type;
 
     // Get search data
-    this.addSub(this.recordsService.getRecordDataForOwnerSearch({ owner: this.param, type: this.type }).subscribe(data => {
-      if (data.type.layout !== RecordLayoutEnum.LIST) {
-        throw new Error(`Invalid record layout: ${data.type.layout}`);
-      }
-
-      this.fieldsInSearch = data.customFields.filter(cf => data.fieldsInSearch.includes(cf.internalName));
-      this.fieldsInList = data.customFields.filter(cf => data.fieldsInList.includes(cf.internalName));
-      this.form.setControl('customValues', this.fieldHelper.customValuesFormGroup(this.fieldsInSearch, {
-        useDefaults: false
-      }));
-      this.form.patchValue(data.query);
-      this.data = data;
-    }));
+    if (this.generalSearch) {
+      this.addSub(this.recordsService.getRecordDataForGeneralSearch({ type: this.type })
+        .subscribe(data => this.data = data));
+    } else {
+      this.addSub(
+        this.recordsService.getRecordDataForOwnerSearch({ owner: this.param, type: this.type })
+          .subscribe(data => this.data = data));
+    }
   }
 
-  onDataInitialized(data: RecordDataForSearch) {
+  onDataInitialized(data: GeneralRecordsDataForSearch | RecordDataForSearch) {
+
+    if (!this.generalSearch && data.type.layout !== RecordLayoutEnum.LIST) {
+      throw new Error(`Invalid record layout: ${data.type.layout}`);
+    }
+    this.profileFields = data.customProfileFields || [];
+    this.fieldsInSearch = data.customFields.filter(cf => data.fieldsInSearch.includes(cf.internalName));
+    this.fieldsInList = data.customFields.filter(cf => data.fieldsInList.includes(cf.internalName));
+    this.form.setControl('customValues', this.fieldHelper.customValuesFormGroup(this.fieldsInSearch, {
+      useDefaults: false
+    }));
+    this.form.setControl('profileFields', this.fieldHelper.customValuesFormGroup(this.profileFields, {
+      useDefaults: false
+    }));
+    this.form.patchValue(data.query);
+
     const headingActions: HeadingAction[] = [];
-    if (data.create) {
+    if (!this.generalSearch && data.create) {
       headingActions.push(new HeadingAction('add_circle_outline', this.i18n.general.addNew, () =>
         this.router.navigate(['/records', this.param, this.type, 'new']), true));
     }
     this.headingActions = headingActions;
+    this.groups = (data as GeneralRecordsDataForSearch).groups || [];
     super.onDataInitialized(data);
   }
 
   protected doSearch(value: RecordSearchParams): Observable<HttpResponse<RecordResult[]>> {
-    return this.recordsService.searchOwnerRecords$Response(value);
+    return this.generalSearch ?
+      this.recordsService.searchGeneralRecords$Response(value) :
+      this.recordsService.searchOwnerRecords$Response(value);
   }
 
   remove(record: RecordResult) {
@@ -81,6 +102,13 @@ export class SearchRecordsComponent
         this.notification.snackBar(this.i18n.record.removeDone);
         this.update();
       }));
+  }
+
+  /**
+   * Returns the record owner (display) for the given record result. Useful in general search
+   */
+  recordOwner(row: RecordResult) {
+    return this.generalSearch ? (row as RecordWithOwnerResult).user.display : '';
   }
 
   fieldName(field: string): string {
@@ -101,18 +129,26 @@ export class SearchRecordsComponent
 
   protected toSearchParams(params: any): RecordSearchParams {
     params.customFields = this.fieldHelper.toCustomValuesFilter(params.customValues);
+    params.profileFields = this.fieldHelper.toCustomValuesFilter(params.profileFields);
     params.creationPeriod = ApiHelper.rangeFilter(params.beginDate, params.endDate);
-    params.owner = this.param;
+    if (!this.generalSearch) {
+      params.owner = this.param;
+    }
     params.type = this.type;
     delete params['customValues'];
     return params;
   }
 
   protected getFormControlNames(): string[] {
-    return ['keywords', 'customValues', 'createdBy', 'beginDate', 'endDate'];
+    return ['keywords', 'customValues', 'createdBy', 'beginDate', 'endDate', 'brokers', 'groups', 'user', 'profileFields'];
   }
 
-  resolveMenu(data: RecordDataForSearch) {
-    return this.recordsHelper.menuForRecordType(data.user, data.type);
+  resolveMenu(data: BaseRecordDataForSearch) {
+    const user = this.generalSearch ? null : (data as RecordDataForSearch).user;
+    return this.recordsHelper.menuForRecordType(user, data.type, this.generalSearch);
+  }
+
+  get generalSearch() {
+    return this.param === RecordHelperService.GENERAL_SEARCH;
   }
 }

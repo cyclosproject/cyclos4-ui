@@ -10,6 +10,23 @@
             <input-field labelPosition="side" formControlName="keywords"
               [label]="i18n.general.keywords" fieldSize="full"></input-field>
           </div>
+          <div *ngIf="groups.length > 1" class="col-12 col-md-6">
+            <multi-selection-field labelPosition="side"
+              formControlName="groups" [label]="i18n.general.groups">
+              <field-option *ngFor="let group of groups" [value]="group.id"
+                [internalName]="group.internalName" [id]="group.id"
+                [text]="group.name">
+              </field-option>
+            </multi-selection-field>
+          </div>
+          <div class="col-12 col-md-6">
+            <multiple-users-field [label]="i18n.general.brokers"
+              formControlName="brokers"></multiple-users-field>
+          </div>
+          <div class="col-12 col-md-6">
+            <user-field labelPosition="side" formControlName="user"
+              [label]="i18n.general.user"></user-field>
+          </div>
           <div class="col-12 col-md-6">
             <user-field labelPosition="side" formControlName="createdBy"
               [label]="i18n.record.createdBy"></user-field>
@@ -31,6 +48,11 @@
               [formControl]="form.get('customValues').get(cf.internalName)">
             </custom-field-filter>
           </div>
+          <div class="col-12 col-md-6" *ngFor="let cf of this.profileFields">
+            <custom-field-filter labelPosition="side" [field]="cf"
+              [formControl]="form.get('profileFields').get(cf.internalName)">
+            </custom-field-filter>
+          </div>
         </div>
       </form>
     </page-content>
@@ -43,6 +65,10 @@
             <label-value [label]="i18n.general.creationDate"
               labelPosition="above">
               {{ row.creationDate | dateTime }}
+            </label-value>
+            <label-value *ngIf="this.generalSearch"
+              [label]="i18n.general.user" labelPosition="above">
+              {{ recordOwner(row) }}
             </label-value>
             <label-value *ngFor="let field of this.fieldsInList"
               [label]="field.name" labelPosition="above">
@@ -70,6 +96,7 @@
       <table *resultTable class="table table-hover cursor-pointer">
         <thead>
           <th>{{ i18n.general.creationDate }}</th>
+          <th *ngIf="this.generalSearch">{{ i18n.general.user }}</th>
           <th *ngFor="let field of this.fieldsInList">
             {{ fieldName(field.internalName) }}
           </th>
@@ -79,6 +106,7 @@
           <tr *ngFor="let row of results.results"
             (click)="router.navigate(viewPath(row))">
             <td>{{ row.creationDate | dateTime }}</td>
+            <td *ngIf="this.generalSearch">{{ recordOwner(row) }}</td>
             <td *ngFor=" let field of this.fieldsInList">
               <format-field-value [fields]="data.customFields"
                 [plainText]="true" [fieldName]="field.internalName"

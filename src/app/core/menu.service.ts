@@ -506,9 +506,13 @@ export class MenuService {
     };
 
     // Lambda that adds records in the given root menu entry
-    const addRecords = (menu: Menu, recordPermissions: RecordPermissions[], owner: string) => {
-      if (!auth.global && recordPermissions.length > 0) {
+    const addRecords = (menu: Menu, recordPermissions: RecordPermissions[], owner: string, my?: boolean) => {
+      if ((!my || !auth.global) && recordPermissions.length > 0) {
         for (const permission of recordPermissions) {
+          // If it's a general search exclude records not listed in menu
+          if (owner === RecordHelperService.GENERAL_SEARCH && !permission.type.showInMenu) {
+            continue;
+          }
           const activeMenu = new ActiveMenu(menu, { recordType: permission.type });
           const pathFunction = () => this.recordHelper.resolvePath(
             permission, owner, owner === ApiHelper.SYSTEM);
@@ -684,8 +688,19 @@ export class MenuService {
       }
 
       // Records
-      addRecords(Menu.SEARCH_USER_RECORDS, this.recordHelper.recordPermissions(), ApiHelper.SELF);
-      addRecords(Menu.SEARCH_SYSTEM_RECORDS, this.recordHelper.recordPermissions(true), ApiHelper.SYSTEM);
+      addRecords( // My
+        Menu.SEARCH_USER_RECORDS,
+        this.recordHelper.recordPermissions(),
+        ApiHelper.SELF,
+        true);
+      addRecords( // User management (general search)
+        role === RoleEnum.ADMINISTRATOR ? Menu.SEARCH_ADMIN_RECORDS : Menu.SEARCH_BROKER_RECORDS,
+        this.recordHelper.recordPermissions(false, true),
+        RecordHelperService.GENERAL_SEARCH);
+      addRecords( // System
+        Menu.SEARCH_SYSTEM_RECORDS,
+        this.recordHelper.recordPermissions(true),
+        ApiHelper.SYSTEM);
 
       if ((permissions.notifications || {}).enable) {
         add(Menu.NOTIFICATIONS, '/personal/notifications', 'notifications', this.i18n.menu.personalNotifications);
