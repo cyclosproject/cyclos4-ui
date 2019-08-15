@@ -72,6 +72,7 @@ export class ContactListComponent
   }
 
   protected toSearchParams(value: any): ContactListSearchParams {
+    value.user = this.data.user.id;
     return value;
   }
 
