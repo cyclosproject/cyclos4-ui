@@ -22,7 +22,7 @@ type RecordSearchParams = RecordQueryFilters & {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchRecordsComponent
-  extends BaseSearchPageComponent<BaseRecordDataForSearch, RecordSearchParams, RecordResult>
+  extends BaseSearchPageComponent<GeneralRecordsDataForSearch | RecordDataForSearch, RecordSearchParams, RecordResult>
   implements OnInit {
 
   type: string;
@@ -49,15 +49,16 @@ export class SearchRecordsComponent
     // Get search data
     if (this.generalSearch) {
       this.addSub(this.recordsService.getRecordDataForGeneralSearch({ type: this.type })
-        .subscribe(data => this.onInitialize(data)));
+        .subscribe(data => this.data = data));
     } else {
       this.addSub(
         this.recordsService.getRecordDataForOwnerSearch({ owner: this.param, type: this.type })
-          .subscribe(data => this.onInitialize(data)));
+          .subscribe(data => this.data = data));
     }
   }
 
-  protected onInitialize(data: BaseRecordDataForSearch) {
+  onDataInitialized(data: GeneralRecordsDataForSearch | RecordDataForSearch) {
+
     if (!this.generalSearch && data.type.layout !== RecordLayoutEnum.LIST) {
       throw new Error(`Invalid record layout: ${data.type.layout}`);
     }
@@ -70,13 +71,8 @@ export class SearchRecordsComponent
     this.form.setControl('profileFields', this.fieldHelper.customValuesFormGroup(this.profileFields, {
       useDefaults: false
     }));
-    this.form.patchValue(this.generalSearch ?
-      (data as GeneralRecordsDataForSearch).query :
-      (data as RecordDataForSearch).query);
-    this.data = data;
-  }
+    this.form.patchValue(data.query);
 
-  onDataInitialized(data: BaseRecordDataForSearch) {
     const headingActions: HeadingAction[] = [];
     if (!this.generalSearch && data.create) {
       headingActions.push(new HeadingAction('add_circle_outline', this.i18n.general.addNew, () =>
