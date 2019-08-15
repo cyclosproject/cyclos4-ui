@@ -20,6 +20,8 @@
     "notAppliedSelect": "Not applied (select to apply)",
     "user": "Gebruiker",
     "operator": "Operator",
+    "brokers": "Brokers",
+    "groups": "Groups",
     "name": "Volledige naam",
     "to": "to",
     "description": "Omschrijving",
