@@ -3,6 +3,7 @@ import { SearchNotificationsComponent } from 'app/personal/notifications/search-
 import { PersonalRoutingModule } from 'app/personal/personal-routing.module';
 import { ManageSettingsComponent } from 'app/personal/settings/manage-settings.component';
 import { SharedModule } from 'app/shared/shared.module';
+import { NotificationSettingsFormComponent } from 'app/personal/notifications/notification-settings-form.component';
 
 
 /**
@@ -11,7 +12,8 @@ import { SharedModule } from 'app/shared/shared.module';
 @NgModule({
   declarations: [
     SearchNotificationsComponent,
-    ManageSettingsComponent
+    ManageSettingsComponent,
+    NotificationSettingsFormComponent
   ],
   imports: [
     PersonalRoutingModule,

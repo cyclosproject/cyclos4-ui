@@ -4,6 +4,7 @@ import { LoggedUserGuard } from 'app/logged-user-guard';
 import { SearchNotificationsComponent } from 'app/personal/notifications/search-notifications.component';
 import { ManageSettingsComponent } from 'app/personal/settings/manage-settings.component';
 import { Menu } from 'app/shared/menu';
+import { NotificationSettingsFormComponent } from 'app/personal/notifications/notification-settings-form.component';
 
 const personalRoutes: Routes = [
   {
@@ -15,6 +16,14 @@ const personalRoutes: Routes = [
         canActivate: [LoggedUserGuard],
         data: {
           menu: Menu.NOTIFICATIONS
+        }
+      },
+      {
+        path: ':user/notification-settings',
+        component: NotificationSettingsFormComponent,
+        canActivate: [LoggedUserGuard],
+        data: {
+          menu: Menu.NOTIFICATIONS_SETTINGS
         }
       },
       {

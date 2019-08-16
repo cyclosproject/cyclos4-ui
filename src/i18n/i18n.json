@@ -262,6 +262,7 @@
     "personal.password": "Password",
     "personal.passwords": "Passwords",
     "personal.notifications": "Notifications",
+    "personal.notificationSettings": "Notification settings",
     "personal.settings": "Settings",
     "content": "Information"
   },
@@ -862,7 +863,8 @@
       "viewRedeemedVouchers": "View redeemed vouchers",
       "redeemVoucher": "Redeem voucher",
       "viewBoughtVouchers": "View bought vouchers",
-      "buyVouchers": "Buy vouchers"
+      "buyVouchers": "Buy vouchers",
+      "notificationSettings": "Notification settings"
     },
     "registration": {
       "group.public": "Choose the group you want to participate",
@@ -1098,6 +1100,11 @@
       "removeAll": "Remove all",
       "markAllRead": "Mark all as read"
     }
+  },
+  "notificationSettings": {
+    "title": "Notification settings",
+    "mobileTitle": "Notification settings",
+    "notAvailableSettings": "You are not allowed to change any settings."
   },
   "connectedUser": {
     "title": "Connected users",

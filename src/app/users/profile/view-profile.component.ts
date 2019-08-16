@@ -242,6 +242,12 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
           this.router.navigate(['/marketplace', this.param, 'list']);
         }));
       }
+      // TODO missing permissions in REST API
+      //if (notifications.userSettings?) {
+      this.managementActions.push(new HeadingAction('notifications_off', this.i18n.user.profile.notificationSettings, () => {
+        this.router.navigate(['/personal', this.param, 'notification-settings']);
+      }));
+      //}
       // Records
       for (const record of permissions.records || []) {
         actions.push(new HeadingAction('library_books', this.i18n.record.action(

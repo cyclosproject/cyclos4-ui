@@ -1,0 +1,13 @@
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data">
+    <page-content [heading]="i18n.notificationSettings.title"
+      [mobileHeading]="i18n.notificationSettings.mobileTitle">
+      <actions>
+        <button class="btn btn-primary" [disabled]="requesting$ | async"
+          (click)="save()">
+          {{ i18n.general.save }}
+        </button>
+      </actions>
+    </page-content>
+  </ng-container>
+</page-layout>
