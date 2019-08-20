@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
 import { Account, AccountBalanceHistoryResult, AccountHistoryResult, Currency, TimeFieldEnum, TransferDirectionEnum } from 'app/api/models';
 import { AccountsService } from 'app/api/services';
+import { BankingHelperService } from 'app/core/banking-helper.service';
 import { ISO_DATE } from 'app/core/format.service';
 import { BaseDashboardComponent } from 'app/home/dashboard/base-dashboard.component';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
-import { BehaviorSubject } from 'rxjs';
-import { BankingHelperService } from 'app/core/banking-helper.service';
+import { BehaviorSubject, forkJoin, Observable } from 'rxjs';
 
 /**
  * Displays the status of an account.
@@ -39,7 +39,6 @@ export class AccountStatusComponent extends BaseDashboardComponent implements On
   ngOnInit() {
     super.ngOnInit();
 
-    // TODO once we implement management over user accounts, this won't work
     const singleAccount = this.bankingHelper.ownerAccountTypes().length === 1;
     if (singleAccount) {
       // Single account - use a generic title
@@ -60,32 +59,41 @@ export class AccountStatusComponent extends BaseDashboardComponent implements On
         true)
     ];
 
-    // Fetch the balance history
-    this.addSub(this.accountsService.getAccountBalanceHistory({
-      fields: ['account.id', 'account.status.balance', 'account.currency', 'account.type', 'balances'],
-      owner: ApiHelper.SELF,
-      accountType: this.account.type.id,
-      datePeriod: [this.dataForUiHolder.now().subtract(6, 'months').startOf('month').format(ISO_DATE)],
-      intervalUnit: TimeFieldEnum.MONTHS
-    }).subscribe(history => {
-      this.history$.next(history);
-      this.currency = history.account.currency;
-      this.account = history.account;
-      this.balance = history.account.status.balance;
-    }));
+    // The balance history is always fetched
+    const observables: Observable<any>[] = [
+      this.accountsService.getAccountBalanceHistory({
+        fields: ['account.id', 'account.status.balance', 'account.currency', 'account.type', 'balances'],
+        owner: ApiHelper.SELF,
+        accountType: this.account.type.id,
+        datePeriod: [this.dataForUiHolder.now().subtract(6, 'months').startOf('month').format(ISO_DATE)],
+        intervalUnit: TimeFieldEnum.MONTHS
+      })
+    ];
 
-    // If we need to show the max transfers, fetch them
     if (this.maxTransfers > 0) {
-      this.addSub(this.accountsService.searchAccountHistory({
+      // Also fetch some transfers
+      observables.push(this.accountsService.searchAccountHistory({
         fields: [],
         owner: 'self',
         accountType: this.account.type.id,
         direction: TransferDirectionEnum.CREDIT,
-        pageSize: 3
-      }).subscribe(transfers => {
-        this.lastPayments$.next(transfers);
+        pageSize: this.maxTransfers
       }));
     }
+
+    this.addSub(forkJoin(observables).subscribe(result => {
+      // The first array element is always available
+      const history = result[0] as AccountBalanceHistoryResult;
+      this.history$.next(history);
+      this.currency = history.account.currency;
+      this.account = history.account;
+      this.balance = history.account.status.balance;
+
+      if (result.length > 1) {
+        const lastPayments = result[1] as AccountHistoryResult[];
+        this.lastPayments$.next(lastPayments);
+      }
+    }));
   }
 
   subjectName(row: AccountHistoryResult): string {
