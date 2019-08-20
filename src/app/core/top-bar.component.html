@@ -6,7 +6,7 @@
       (click)="toggleSidenav.emit(); $event.preventDefault(); blurIfClick('sidenav-trigger', $event);">
       <icon class="top-icon" icon="menu"></icon>
     </a>
-    <span class="navbar-brand">
+    <a class="navbar-brand" routerLink="/">
       <!-- The title bar -->
       <img *ngIf="layout.gtxs$ | async" class="logo" src="images/logo.png">
       <!-- Hide the title when dense on xl layout -->
@@ -23,7 +23,7 @@
           {{ format.appTitle }}
         </ng-container>
       </span>
-    </span>
+    </a>
     <div class="menu-container">
       <ng-container *ngIf="layout.xxs$ | async; else mobileOrGreater">
         <!-- When on xxs, show an icon that integrates navigation and page actions -->

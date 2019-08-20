@@ -18,7 +18,6 @@ export abstract class BaseAutocompleteFieldComponent<T, A>
   inputFieldControl: FormControl;
   @ViewChild('inputField', { static: false }) inputField: ElementRef;
   @ViewChild('dropdown', { static: false }) dropdown: BsDropdownDirective;
-  @ViewChild('dropDownMenu', { static: false }) menuRef: ElementRef;
 
   @Input() autoSearch = true;
 
@@ -153,9 +152,19 @@ export abstract class BaseAutocompleteFieldComponent<T, A>
     const rect = input.getBoundingClientRect();
     const docHeight = (window.innerHeight || document.documentElement.clientHeight);
     this.dropdown.dropup = rect.bottom > docHeight - 100;
-    // Workaround: ngx-bootstrap sets top sometimes when we set dropup, which causes a position error
-    setTimeout(() => this.menuRef.nativeElement.style.top = '', 1);
     this.layout.setFocusTrap(this.dropdownMenuId);
+
+    // To manipulate the menu, we need to give time to ngx-bootstrap to append it to the body
+    setTimeout(() => {
+      const menu = document.getElementById(this.dropdownMenuId);
+
+      // Workaround: ngx-bootstrap sets top sometimes when we set dropup, which causes a position error
+      menu.style.top = '';
+
+      // Make sure the menu is at least the same width as the input
+      menu.style.minWidth = `${input.getBoundingClientRect().width}px`;
+      menu.style.visibility = 'visible';
+    });
   }
 
   onHidden() {
