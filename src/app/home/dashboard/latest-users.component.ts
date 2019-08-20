@@ -36,6 +36,7 @@ export class LatestUsersComponent extends BaseDashboardComponent implements OnIn
       orderBy: UserOrderByEnum.CREATION_DATE,
       profileFields: ['image:true'],
       fields: ['id', 'display', 'image'],
+      skipTotalCount: true,
       pageSize: this.max
     }).subscribe(ads => {
       this.users$.next(ads);
