@@ -2,6 +2,18 @@
   <ng-container *ngIf="data">
     <page-content [heading]="i18n.notificationSettings.title"
       [mobileHeading]="i18n.notificationSettings.mobileTitle">
+      <form [formGroup]="userForm">
+      </form>
+      <form [formGroup]="adminForm">
+        <multi-selection-field *ngIf="data.messageCategories"
+          [label]="i18n.notificationSettings.forwardMessages"
+          formControlName="forwardMessages">
+          <field-option *ngFor="let cat of data.messageCategories"
+            [value]="ApiHelper.internalNameOrId(cat)" [id]="cat.id"
+            [internalName]="cat.internalName" [text]="cat.name">
+          </field-option>
+        </multi-selection-field>
+      </form>
       <actions>
         <button class="btn btn-primary" [disabled]="requesting$ | async"
           (click)="save()">

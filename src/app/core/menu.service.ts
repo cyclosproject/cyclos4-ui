@@ -705,10 +705,10 @@ export class MenuService {
       if ((permissions.notifications || {}).enable) {
         add(Menu.NOTIFICATIONS, '/personal/notifications', 'notifications', this.i18n.menu.personalNotifications);
       }
-      // TODO missing permission in REST API
-      add(Menu.NOTIFICATIONS_SETTINGS, `/personal/${ApiHelper.SELF}/notification-settings`,
-        'notifications_off', this.i18n.menu.personalNotificationSettings);
-
+      if ((permissions.notificationSettings || {}).enable) {
+        add(Menu.NOTIFICATIONS_SETTINGS, `/personal/${ApiHelper.SELF}/notification-settings`,
+          'notifications_off', this.i18n.menu.personalNotificationSettings);
+      }
       add(Menu.SETTINGS, '/personal/settings', 'settings', this.i18n.menu.personalSettings);
       addOperations(RootMenu.PERSONAL);
       addContentPages(Menu.CONTENT_PAGE_PERSONAL);

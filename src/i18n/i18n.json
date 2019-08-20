@@ -1104,7 +1104,8 @@
   "notificationSettings": {
     "title": "Notification settings",
     "mobileTitle": "Notification settings",
-    "notAvailableSettings": "You are not allowed to change any settings."
+    "notAvailableSettings": "You are not allowed to change any settings.",
+    "forwardMessages": "Forward internal messages to your email address"
   },
   "connectedUser": {
     "title": "Connected users",

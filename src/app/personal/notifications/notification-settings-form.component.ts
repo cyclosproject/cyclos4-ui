@@ -4,6 +4,7 @@ import { NotificationSettingsDataForEdit, RoleEnum } from 'app/api/models';
 import { empty } from 'app/shared/helper';
 import { NotificationSettingsService } from 'app/api/services';
 import { Menu } from 'app/shared/menu';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'notification-settings-form',
@@ -16,6 +17,8 @@ export class NotificationSettingsFormComponent
 
   user: string;
   adminSettings: boolean;
+  adminForm: FormGroup;
+  userForm: FormGroup;
 
   constructor(
     injector: Injector,

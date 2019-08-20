@@ -103,6 +103,7 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     const recurringPayments = permissions.recurringPayments || {};
     const authorizedPayments = permissions.authorizedPayments || {};
     const marketplace = permissions.marketplace || {};
+    const notificationSettings = permissions.notificationSettings || {};
     const status = permissions.status || {};
     const group = permissions.group || {};
     const operators = permissions.operators || {};
@@ -242,12 +243,11 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
           this.router.navigate(['/marketplace', this.param, 'list']);
         }));
       }
-      // TODO missing permissions in REST API
-      //if (notifications.userSettings?) {
-      this.managementActions.push(new HeadingAction('notifications_off', this.i18n.user.profile.notificationSettings, () => {
-        this.router.navigate(['/personal', this.param, 'notification-settings']);
-      }));
-      //}
+      if (notificationSettings.view) {
+        this.managementActions.push(new HeadingAction('notifications_off', this.i18n.user.profile.notificationSettings, () => {
+          this.router.navigate(['/personal', this.param, 'notification-settings']);
+        }));
+      }
       // Records
       for (const record of permissions.records || []) {
         actions.push(new HeadingAction('library_books', this.i18n.record.action(
