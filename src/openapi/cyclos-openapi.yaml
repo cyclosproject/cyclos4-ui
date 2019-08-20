@@ -1183,6 +1183,12 @@ paths:
             type: array
             items:
               $ref: '#/components/schemas/RoleEnum'
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
         - name: user
           in: query
           required: false
@@ -1861,6 +1867,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
             type: array
             items:
               $ref: '#/components/schemas/RoleEnum'
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
         - name: statuses
           in: query
           required: false
@@ -2998,6 +3010,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
             type: array
             items:
               $ref: '#/components/schemas/RoleEnum'
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
         - name: statuses
           in: query
           required: false
@@ -3207,6 +3225,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: integer
             format: int32
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
         - name: statuses
           in: query
           required: false
@@ -8455,6 +8479,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           required: false
           schema:
             $ref: '#/components/schemas/DocumentRangeEnum'
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
         - name: user
           in: query
           required: false
@@ -9409,6 +9439,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
             items:
               description: ''
               type: string
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
       tags:
         - Contacts
       security:
@@ -9532,6 +9568,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: integer
             format: int32
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
       tags:
         - Contacts
       security:
@@ -12534,6 +12576,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: integer
             format: int32
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
         - name: statuses
           in: query
           required: false
@@ -12847,6 +12895,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: integer
             format: int32
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
         - name: statuses
           in: query
           required: false
@@ -13346,6 +13400,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
             items:
               description: ''
               type: string
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
         - name: usersToExclude
           in: query
           required: false
@@ -13644,6 +13704,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
             items:
               description: ''
               type: string
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
         - name: usersToExclude
           in: query
           required: false
@@ -14069,6 +14135,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: integer
             format: int32
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
         - name: user
           in: query
           required: false
@@ -14510,6 +14582,12 @@ Either ids or internal names of the origin account type"
           schema:
             type: integer
             format: int32
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
         - name: statuses
           in: query
           required: false
@@ -14758,7 +14836,7 @@ Either ids or internal names of the destination account type"
         - name: authorizationStatuses
           in: query
           required: false
-          description: "Authorization statuses used as search criteria"
+          description: "Authorization statuses used as search criteria. When set, only kinds that can go through authorization are returned (`payment`, `order`, `recurringPayment` or `scheduledPayment`)."
           style: simple
           schema:
             type: array
@@ -14767,7 +14845,7 @@ Either ids or internal names of the destination account type"
         - name: authorized
           in: query
           required: false
-          description: "When set, will only return transactions that went through authorization process (if true) or that never went through it (when false)"
+          description: "When set, will only return transactions that went through the authorization process (if true) or that never went through it (when false). In either case, only kinds that can go through authorization are returned (`payment`, `order`, `recurringPayment` or `scheduledPayment`)."
           schema:
             type: boolean
         - name: broker
@@ -14912,7 +14990,7 @@ Reference to the broker of users involved in transfers. Is only taken into accou
         - name: recurringPaymentStatuses
           in: query
           required: false
-          description: "Statuses used as search criteria applied only to transactions of kind `recurringPayment`."
+          description: "Statuses used as search criteria applied only to transactions of kind `recurringPayment`. If this filter is not empty then pending recurring payments will be excluded from the result. Pending recurring payments does not have a status."
           style: simple
           schema:
             type: array
@@ -14921,12 +14999,18 @@ Reference to the broker of users involved in transfers. Is only taken into accou
         - name: scheduledPaymentStatuses
           in: query
           required: false
-          description: "Statuses used as search criteria applied only to transactions of kind `scheduledPayment`."
+          description: "Statuses used as search criteria applied only to transactions of kind `scheduledPayment`. If this filter is not empty then pending scheduled payments will be excluded from the result. Pending scheduled payments does not have a status."
           style: simple
           schema:
             type: array
             items:
               $ref: '#/components/schemas/ScheduledPaymentStatusEnum'
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
         - name: ticketStatuses
           in: query
           required: false
@@ -15142,7 +15226,7 @@ Reference to the broker of users involved in transfers. Is only taken into accou
         - name: authorizationStatuses
           in: query
           required: false
-          description: "Authorization statuses used as search criteria"
+          description: "Authorization statuses used as search criteria. When set, only kinds that can go through authorization are returned (`payment`, `order`, `recurringPayment` or `scheduledPayment`)."
           style: simple
           schema:
             type: array
@@ -15151,7 +15235,7 @@ Reference to the broker of users involved in transfers. Is only taken into accou
         - name: authorized
           in: query
           required: false
-          description: "When set, will only return transactions that went through authorization process (if true) or that never went through it (when false)"
+          description: "When set, will only return transactions that went through the authorization process (if true) or that never went through it (when false). In either case, only kinds that can go through authorization are returned (`payment`, `order`, `recurringPayment` or `scheduledPayment`)."
           schema:
             type: boolean
         - name: broker
@@ -15311,13 +15395,13 @@ Reference to the broker of users involved in transfers. Is only taken into accou
         - name: pendingMyAuthorization
           in: query
           required: false
-          description: "When set to true will only return transactions in pending authorization state that the logged user can authorize"
+          description: "When set to true will only return transactions (`payment`, `recurringPayment` or `scheduledPayment`) in pending authorization state that the logged user can authorize"
           schema:
             type: boolean
         - name: recurringPaymentStatuses
           in: query
           required: false
-          description: "Statuses used as search criteria applied only to transactions of kind `recurringPayment`."
+          description: "Statuses used as search criteria applied only to transactions of kind `recurringPayment`. If this filter is not empty then pending recurring payments will be excluded from the result. Pending recurring payments does not have a status."
           style: simple
           schema:
             type: array
@@ -15326,12 +15410,18 @@ Reference to the broker of users involved in transfers. Is only taken into accou
         - name: scheduledPaymentStatuses
           in: query
           required: false
-          description: "Statuses used as search criteria applied only to transactions of kind `scheduledPayment`."
+          description: "Statuses used as search criteria applied only to transactions of kind `scheduledPayment`. If this filter is not empty then pending scheduled payments will be excluded from the result. Pending scheduled payments does not have a status."
           style: simple
           schema:
             type: array
             items:
               $ref: '#/components/schemas/ScheduledPaymentStatusEnum'
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
         - name: ticketStatuses
           in: query
           required: false
@@ -18513,6 +18603,12 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           schema:
             type: integer
             format: int32
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
       responses:
         '200':
           description: >-
@@ -19098,6 +19194,12 @@ Reference to the broker of users involved in transfers. Is only taken into accou
             items:
               description: ''
               type: string
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
         - name: statuses
           in: query
           required: false
@@ -19422,6 +19524,12 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           required: false
           schema:
             $ref: '#/components/schemas/VoucherRelationEnum'
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
         - name: statuses
           in: query
           required: false
@@ -20887,6 +20995,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
             items:
               description: ''
               type: string
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
       responses:
         '200':
           description: >-
@@ -21583,6 +21697,18 @@ A note for dynamic custom fields: If a script is used to generate possible value
             items:
               description: ''
               type: string
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
+        - name: user
+          in: query
+          required: false
+          description: "Either the id or identifier of the record owner"
+          schema:
+            type: string
       responses:
         '200':
           description: >-
@@ -21834,6 +21960,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
             items:
               description: ''
               type: string
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
         - name: types
           in: query
           required: false
@@ -21844,6 +21976,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
             items:
               description: ''
               type: string
+        - name: user
+          in: query
+          required: false
+          description: "Either the id or identifier of the record owner"
+          schema:
+            type: string
       responses:
         '200':
           description: >-
@@ -22819,6 +22957,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: integer
             format: int32
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
         - name: statuses
           in: query
           required: false
@@ -25573,6 +25717,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           description: "Whether to return the editable property. Passing `true` will impact the performance a bit, as for each returned advertisement some statuses and permissions need to be checked."
           schema:
             type: boolean
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
         - name: statuses
           in: query
           required: false
@@ -25938,6 +26088,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
               description: ''
               type: string
               format: date-time
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
         - name: statuses
           in: query
           required: false
@@ -27147,6 +27303,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Are we searching for sales or purchases? If not specified it's assumed purchases (i.e `false`)"
+          schema:
+            type: boolean
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
           schema:
             type: boolean
         - name: statuses
@@ -29108,6 +29270,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: integer
             format: int32
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
         - name: types
           in: query
           required: false
@@ -29359,6 +29527,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           description: "The user that either gave or received the reference to the user specified in the path. Should be either the id or some other allowed identification (login name, email, etc)."
           schema:
             type: string
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
       responses:
         '200':
           description: >-
@@ -36410,13 +36584,23 @@ components:
 
             authorized:
               description: >-
-                When set, will only return transactions that went through
-                authorization process (if true) or that never went through
-                it (when false)
+                When set, will only return transactions that went through the
+                authorization process (if true) or that never went through it
+                (when false).
+                In either case, only kinds that can go through authorization are
+                returned (`payment`,
+                `order`,
+                `recurringPayment` or
+                `scheduledPayment`).
               type: boolean
             authorizationStatuses:
               description: >-
-                Authorization statuses used as search criteria
+                Authorization statuses used as search criteria.
+                When set, only kinds that can go through authorization are
+                returned (`payment`,
+                `order`,
+                `recurringPayment` or
+                `scheduledPayment`).
               type: array
               items:
                 $ref: '#/components/schemas/TransactionAuthorizationStatusEnum'
@@ -36438,6 +36622,8 @@ components:
               description: >-
                 Statuses used as search criteria applied only to transactions of
                 kind `recurringPayment`.
+                If this filter is not empty then pending recurring payments will be excluded from the result. Pending
+                recurring payments does not have a status.
               type: array
               items:
                 $ref: '#/components/schemas/RecurringPaymentStatusEnum'
@@ -36446,6 +36632,8 @@ components:
               description: >-
                 Statuses used as search criteria applied only to transactions of
                 kind `scheduledPayment`.
+                If this filter is not empty then pending scheduled payments will be excluded from the result. Pending
+                scheduled payments does not have a status.
               type: array
               items:
                 $ref: '#/components/schemas/ScheduledPaymentStatusEnum'
@@ -40280,6 +40468,12 @@ components:
         - $ref: '#/components/schemas/BaseRecordDataForSearch'
         - type: object
           properties:
+            groups:
+              description: >-
+                The groups the authenticated user can use to filter user records
+              type: array
+              items:
+                $ref: '#/components/schemas/Group'
             query:
               description: >-
                 Default query filters for searching records
@@ -40305,6 +40499,9 @@ components:
               type: array
               items:
                 type: string
+            user:
+              description: Either the id or identifier of the record owner
+              type: string
 
     GeographicalCoordinate:
       description: >-
@@ -41690,6 +41887,16 @@ components:
           items:
             type: string
 
+
+    NotificationSettingsPermissions:
+      description: >-
+        Permissions over notification settings
+      type: object
+      properties:
+        enable:
+          description: >-
+            Whether the own notification settings are enabled or not.
+          type: boolean
 
     NotificationSettingsView:
       description: >-
@@ -43624,6 +43831,11 @@ components:
             Permissions over notifications
           allOf:
             - $ref: '#/components/schemas/NotificationsPermissions'
+        notificationSettings:
+          description: >-
+            Permissions over notifications settings
+          allOf:
+            - $ref: '#/components/schemas/NotificationSettingsPermissions'
         tokens:
           description: >-
             Permissions over tokens
@@ -44201,6 +44413,15 @@ components:
             default value is 40. The maximum number of returned results is
             configured in Cyclos, and even if more than that is requested, it will
             be limited by that setting.
+        skipTotalCount:
+          type: boolean
+          description: >-
+            When set to true the result will not include the total record count,
+            only the information on whether there are more records. Depending on
+            the server-side configuration, this can be always true. Otherwise,
+            if the server allows total count, and the client doesn't need it,
+            setting this to true can increase performance a bit.
+
 
     Record:
       description: >-
@@ -44225,7 +44446,7 @@ components:
       type: object
       properties:
         type:
-          $ref: '#/components/schemas/RecordType'
+          $ref: '#/components/schemas/RecordTypeWithMenu'
         create:
           description: >-
             Can the authenticated user create new records of this type?
@@ -44677,18 +44898,28 @@ components:
         Permissions over own or system records
       type: object
       properties:
+        # User should actually be called 'my', but was already used like this,
+        # so we had to leave it like this.
         user:
           description: >-
-            Permissions over each visible user record type
+            Permissions over each visible own user record type.
+          type: array
+          items:
+            $ref: '#/components/schemas/RecordPermissions'
+        # Same as above: should've been called 'user'.
+        userManagement:
+          description: >-
+            Permissions over each visible user record type of managed users.
           type: array
           items:
             $ref: '#/components/schemas/RecordPermissions'
         system:
           description: >-
-            Permissions over each visible system record type
+            Permissions over each visible system record type.
           type: array
           items:
             $ref: '#/components/schemas/RecordPermissions'
+
 
     RecurringPaymentOccurrenceView:
       description: >-
@@ -46500,8 +46731,8 @@ components:
                 type: string
             pendingMyAuthorization:
               description: >-
-                When set to true will only return transactions in pending
-                authorization state that the logged user can authorize
+                When set to true will only return transactions (`payment`, `recurringPayment` or `scheduledPayment`) in
+                pending authorization state that the logged user can authorize
               type: boolean
 
     TransactionOverviewResult:
@@ -48152,6 +48383,16 @@ components:
               allOf:
                 - $ref: '#/components/schemas/NfcTokenWithChallengeParameter'
 
+    UserNotificationSettingsPermissions:
+      description: >-
+        Permissions regarding the notification settings of a given user
+      type: object
+      properties:
+        view:
+          description: >-
+            Can the authenticated user view the notification settings of a given user?
+          type: boolean
+
     UserOperatorGroupsListData:
       description: >-
         Contains, besides the user's operator groups, additional data for
@@ -48426,6 +48667,8 @@ components:
             $ref: '#/components/schemas/TokenType'
         vouchers:
           $ref: '#/components/schemas/UserVouchersPermissions'
+        notificationSettings:
+          $ref: '#/components/schemas/UserNotificationSettingsPermissions'
 
     UserPhonesListData:
       description: >-
