@@ -7,6 +7,7 @@ import { BaseDashboardComponent } from 'app/home/dashboard/base-dashboard.compon
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BehaviorSubject, forkJoin, Observable } from 'rxjs';
+import { ActiveMenu, Menu } from 'app/shared/menu';
 
 /**
  * Displays the status of an account.
@@ -105,6 +106,7 @@ export class AccountStatusComponent extends BaseDashboardComponent implements On
     const tx = this.bankingHelper.transactionNumberOrId(row);
     this.menu.navigate({
       url: `/banking/transfer/${this.account.id}/${tx}`,
+      menu: new ActiveMenu(Menu.ACCOUNT_HISTORY, { accountType: this.account.type }),
       clear: false,
       event: event
     });
