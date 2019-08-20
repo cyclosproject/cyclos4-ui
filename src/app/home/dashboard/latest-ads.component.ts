@@ -39,7 +39,8 @@ export class LatestAdsComponent extends BaseDashboardComponent implements OnInit
       profileFields: ['image:true'],
       orderBy: AdOrderByEnum.DATE,
       fields: ['id', 'owner', 'image', 'name'],
-      pageSize: this.max * 3
+      pageSize: this.max * 3,
+      skipTotalCount: true
     }).subscribe(ads => {
       this.ads$.next(this.preprocess(ads));
     }));
