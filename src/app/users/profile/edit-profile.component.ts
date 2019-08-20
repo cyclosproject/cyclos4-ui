@@ -723,6 +723,9 @@ export class EditProfileComponent
   }
 
   public showEnableForSms(phoneForm: FormGroup) {
+    if (!this.data.phoneConfiguration.smsEnabled) {
+      return false;
+    }
     if (this.byManager) {
       return phoneForm.value.verified;
     } else {
