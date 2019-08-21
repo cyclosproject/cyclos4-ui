@@ -151,7 +151,7 @@ export class UsersResultsComponent extends BaseComponent implements OnInit {
     const user = this.user(row);
     if (this.authHelper.isSelf(user)) {
       // Go to my profile
-      return ['/users', 'profile'];
+      return ['/users', this.ApiHelper.SELF, 'profile'];
     }
     if (this.resultKind === 'operator') {
       // Go to the operator profile
