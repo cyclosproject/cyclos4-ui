@@ -2375,6 +2375,14 @@ A note for dynamic custom fields: If a script is used to generate possible value
             The intial group for the new user
           schema:
             type: string
+        - name: broker
+          required: false
+          in: query
+          description: >-
+            The broker for the new user. Only used if the authenticated user is
+            an administrator.
+          schema:
+            type: string
         - name: asMember
           required: false
           in: query
@@ -42418,6 +42426,11 @@ components:
           type: boolean
           description: >-
             Can the permission to unblock tokens (cards) be granted?
+        broker:
+          type: boolean
+          description: >-
+            Indicates whether the owner user is a broker. If so, can
+            delegate brokering operations to operators.
         canRegisterUsersAsBroker:
           type: boolean
           description: >-
@@ -42556,10 +42569,6 @@ components:
           type: boolean
           description: >-
             Can operators of this group redeem vouchers?
-        registerUsersAsBroker:
-          type: boolean
-          description: >-
-            Can operators of this group register users as broker?
         requestPayments:
           type: boolean
           description: >-
@@ -42588,6 +42597,18 @@ components:
           type: boolean
           description: >-
             Can operators of this group unblock their own tokens (cards)?
+
+        brokering:
+          type: boolean
+          description: >-
+            Can operators of this group perform brokering operations?
+            This includes management of other users.
+        registerUsersAsBroker:
+          type: boolean
+          description: >-
+            Can operators of this group register users as broker?
+            Only taken into account if `brokering` is true.
+
         restrictPaymentsToUsers:
           type: array
           items:
@@ -42716,10 +42737,6 @@ components:
               type: boolean
               description: >-
                 Can operators of this group redeem vouchers?
-            registerUsersAsBroker:
-              type: boolean
-              description: >-
-                Can operators of this group register users as broker?
             requestPayments:
               type: boolean
               description: >-
@@ -42748,6 +42765,16 @@ components:
               type: boolean
               description: >-
                 Can operators of this group unblock their own tokens (cards)?
+
+            brokering:
+              type: boolean
+              description: >-
+                Can operators of this group perform brokering operations?
+            registerUsersAsBroker:
+              type: boolean
+              description: >-
+                Can operators of this group register users as broker?
+
             restrictPaymentsToUsers:
               type: array
               items:
@@ -48085,6 +48112,17 @@ components:
         - $ref: '#/components/schemas/BasicUserDataForNew'
         - type: object
           properties:
+            group:
+              description: >-
+                Details of the registration group.
+              allOf:
+                - $ref: '#/components/schemas/GroupForRegistration'
+            broker:
+              description: >-
+                When the user registration is requested with a broker, contains the
+                broker details.
+              allOf:
+                - $ref: '#/components/schemas/User'
             addressConfiguration:
               $ref: '#/components/schemas/AddressConfigurationForUserProfile'
             contactInfoConfiguration:
@@ -48299,6 +48337,12 @@ components:
               type: string
               description: >-
                 The initial user group
+            broker:
+              type: string
+              description: >-
+                Either the identifier or other identification value (login name,
+                e-mail, etc) of the broker for the new user.
+                Only allowed if logged-in as administrator with permission.
             mobilePhones:
               type: array
               items:

@@ -929,6 +929,7 @@
     "editOwnProfile": "Edit own profile",
     "notifications": "Notifications",
     "viewAdvertisements": "View advertisements",
+    "brokering": "Perform brokering operations",
     "registerUsersAsBroker": "Register users (as broker)",
     "runOperations": "Run operations",
     "created": "The operator group was created",
