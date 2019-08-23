@@ -57,7 +57,12 @@
         <boolean-field *ngIf="data.canViewAdvertisements"
           [label]="i18n.operatorGroup.viewAdvertisements"
           formControlName="viewAdvertisements"></boolean-field>
-        <boolean-field *ngIf="data.canRegisterUsersAsBroker"
+        <boolean-field *ngIf="data.broker"
+          [label]="i18n.operatorGroup.brokering" formControlName="brokering">
+        </boolean-field>
+        <boolean-field
+          *ngIf="data.canRegisterUsersAsBroker 
+            && (form.controls['brokering'].value || (form.controls['brokering'].valueChanges | async))"
           [label]="i18n.operatorGroup.registerUsersAsBroker"
           formControlName="registerUsersAsBroker"></boolean-field>
         <multi-selection-field *ngIf="data.operations?.length > 0"

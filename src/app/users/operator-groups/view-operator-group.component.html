@@ -90,7 +90,7 @@
       <h2 class="mt-3 mb-0" *ngIf="group.editOwnProfile
         || group.notifications
         || group.viewAdvertisements
-        || group.registerUsersAsBroker
+        || group.brokering
         || group.operations?.length > 0">{{
         (layout.ltsm$ | async)
           ? i18n.operatorGroup.mobileTitle.permissions
@@ -106,6 +106,9 @@
       <label-value *ngIf="group.viewAdvertisements"
         [label]="i18n.operatorGroup.viewAdvertisements"
         [value]="i18n.general.yes">
+      </label-value>
+      <label-value *ngIf="group.brokering"
+        [label]="i18n.operatorGroup.brokering" [value]="i18n.general.yes">
       </label-value>
       <label-value *ngIf="group.registerUsersAsBroker"
         [label]="i18n.operatorGroup.registerUsersAsBroker"

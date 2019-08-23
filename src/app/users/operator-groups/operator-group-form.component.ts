@@ -104,8 +104,11 @@ export class OperatorGroupFormComponent
     if (data.canViewAdvertisements) {
       this.form.addControl('viewAdvertisements', new FormControl(group.viewAdvertisements));
     }
-    if (data.canRegisterUsersAsBroker) {
-      this.form.addControl('registerUsersAsBroker', new FormControl(group.registerUsersAsBroker));
+    if (data.broker) {
+      this.form.addControl('brokering', new FormControl(group.brokering));
+      if (data.canRegisterUsersAsBroker) {
+        this.form.addControl('registerUsersAsBroker', new FormControl(group.registerUsersAsBroker));
+      }
     }
     if (!empty(data.operations)) {
       this.form.addControl('operations', new FormControl(group.operations));
