@@ -245,7 +245,7 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
       }
       if (notificationSettings.view) {
         this.managementActions.push(new HeadingAction('notifications_off', this.i18n.user.profile.notificationSettings, () => {
-          this.router.navigate(['/personal', this.param, 'notification-settings']);
+          this.router.navigate(['/users', this.param, 'notification-settings']);
         }));
       }
       // Records

@@ -1,0 +1,43 @@
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data">
+    <page-content [heading]="i18n.notificationSettings.title"
+      [mobileHeading]="i18n.notificationSettings.mobileTitle">
+      <form [formGroup]="form">
+        <multi-selection-field *ngIf="data.messageCategories.length > 0"
+          [label]="i18n.notificationSettings.forwardMessages"
+          formControlName="forwardMessageCategories">
+          <field-option *ngFor="let cat of data.messageCategories"
+            [value]="ApiHelper.internalNameOrId(cat)" [id]="cat.id"
+            [internalName]="cat.internalName" [text]="cat.name">
+          </field-option>
+        </multi-selection-field>
+        <ng-container
+          *ngFor="let section of notificationSections.keys(); let first = first">
+          <h2 *ngIf="section !== ''" [ngClass]="{'border-top-0': first}">
+            {{section}}</h2>
+          <ng-container
+            *ngFor="let notification of notificationSections.get(section); let i = index">
+            <label-value [label]="resolveNotificationLabel(notification)"
+              kind="field">
+              <notification-type-setting [setting]="notification"
+                [options]="this.kindFieldOptionsMap.get(notification.kind)"
+                [form]="resolveControl(i)"
+                [multiSelectionControl]="this.kindControlsMap.get(notification.kind)">
+              </notification-type-setting>
+            </label-value>
+          </ng-container>
+        </ng-container>
+        <ng-container *ngIf="data.smsAllowed || adminSettings">
+          <h2>{{i18n.general.sendMedium.sms}}</h2>
+          <label>{{i18n.notificationSettings.smsCount({ count: this.data.smsCountThisMonth, total: this.data.maxSmsPerMonth })}}</label>
+        </ng-container>
+      </form>
+      <actions>
+        <button class="btn btn-primary" [disabled]="requesting$ | async"
+          (click)="save()">
+          {{ i18n.general.save }}
+        </button>
+      </actions>
+    </page-content>
+  </ng-container>
+</page-layout>

@@ -39,6 +39,8 @@
     "showMoreFilters": "Show more filters",
     "lessFilters": "Less filters",
     "showLessFilters": "Show less filters",
+    "enabled": "Enabled",
+    "disabled": "Disabled",
     "back": "Back",
     "previous": "Previous",
     "next": "Next",
@@ -1099,13 +1101,142 @@
       "remove": "Remove this notification",
       "removeAll": "Remove all",
       "markAllRead": "Mark all as read"
+    },
+    "admin": {
+      "adPendingAuthorization": "Ad pending for authorization",
+      "applicationErrors": "Application errors",
+      "externalPaymentExpired": "External payment expired",
+      "externalPaymentPerformedFailed": "External payment could not be delivered",
+      "generatedVouchersAboutToExpire": "Generated vouchers about to expire",
+      "generatedVouchersExpired": "Generated vouchers expiration",
+      "networkCreated": "Network created",
+      "paymentAwaitingAuthorization": "Payments pending by authorization",
+      "paymentPerformed": "Payments",
+      "systemAlert": "System alerts",
+      "userAlert": "User alerts",
+      "userRegistration": "New registered users",
+      "voucherBuyingAboutToExpire": "Voucher buying about to expire"
+    },
+    "user": {
+      "account": {
+        "allNonSmsPerformedPayments": "Payment performed",
+        "authorizedPaymentCanceled": "Authorized payment canceled",
+        "authorizedPaymentDenied": "Authorized payment denied",
+        "authorizedPaymentExpired": "Authorized payment expired",
+        "authorizedPaymentSucceeded": "Authorized payment successful",
+        "boughtVouchersAboutToExpire": "Bought vouchers will expire in a few days",
+        "boughtVouchersExpirationDateChanged": "Bought voucher expiration date was changed",
+        "boughtVouchersExpired": "Bought voucher have expired",
+        "externalPaymentExpired": "External payment expired",
+        "externalPaymentPerformedFailed": "External payment could not be delivered",
+        "externalPaymentReceivedFailed": "External payment could not be received",
+        "incomingRecurringPaymentCanceled": "Incoming recurring payment was canceled",
+        "incomingRecurringPaymentFailed": "Incoming recurring payment has failed",
+        "incomingRecurringPaymentReceived": "Incoming recurring payment was received",
+        "incomingScheduledPaymentCanceled": "Incoming scheduled payment canceled",
+        "incomingScheduledPaymentFailed": "Incoming scheduled payment failed",
+        "incomingScheduledPaymentReceived": "Scheduled payment received",
+        "limitChange": "Account limit changed",
+        "paymentAwaitingAuthorization": "Payment awaiting authorization",
+        "paymentReceived": "Payment received",
+        "paymentRequestCanceled": "Payment request canceled",
+        "paymentRequestDenied": "Payment request denied",
+        "paymentRequestExpirationDateChanged": "Payment request expiration date changed",
+        "paymentRequestExpired": "Payment request expired",
+        "paymentRequestProcessed": "Payment request processed",
+        "paymentRequestReceived": "Payment request received",
+        "recurringPaymentFailed": "Recurring payment occurrence has failed",
+        "recurringPaymentOcurrenceProcessed": "Recurring payment was processed",
+        "scheduledPaymentFailed": "Scheduled payment failed",
+        "scheduledPaymentInstallmentProcessed": "Scheduled payment installment was processed",
+        "scheduledPaymentRequestFailed": "Scheduled payment request failed",
+        "sentPaymentRequestExpirationDateChanged": "Sent payment request expiration date changed",
+        "smsPerformedPayment": "SMS performed payment",
+        "ticketWebhookFailed": "Ticket approval could not be notified through webhook",
+        "operator": {
+          "authorizedPaymentApprovedStillPending": "Pending payment by operator approved but still pending further authorization",
+          "authorizedPaymentCanceled": "Pending payment by operator was canceled",
+          "authorizedPaymentDenied": "Pending payment by operator was denied",
+          "authorizedPaymentExpired": "Authorized payment by operator has expired",
+          "authorizedPaymentSucceeded": "Pending payment by operator successful",
+          "paymentAwaitingAuthorization": "Operator payment awaiting authorization"
+        }
+      },
+      "brokering": {
+        "adPendingAuthorization": "Ad is pending for authorization",
+        "memberAssigned": "Member assigned",
+        "memberUnassigned": "Member unassigned"
+      },
+      "buyer": {
+        "adInterestNotification": "New ad matching interest",
+        "adQuestionAnswered": "Ad question answered",
+        "orderCanceled": "Purchase order canceled",
+        "orderPaymentCanceled": "Purchase order payment canceled",
+        "orderPaymentDenied": "Purchase order payment denied",
+        "orderPaymentExpired": "Purchase order payment expired",
+        "orderPending": "Pending order",
+        "orderPendingAuthorization": "Purchase order awaiting payment authorization",
+        "orderPendingDeliveryData": "Order awaiting delivery information",
+        "orderProcessedBySeller": "Order accepted by seller",
+        "orderRejectedBySeller": "Order rejected by seller",
+        "buyerSalePending": "Order created",
+        "buyerSaleRejectedBySeller": "Sale order canceled"
+      },
+      "feedback": {
+        "changed": "Feedback changed",
+        "created": "Feedback received",
+        "expirationReminder": "Feedback reminder",
+        "optional": "Feedback optional",
+        "replyCreated": "Feedback reply received",
+        "required": "Feedback required"
+      },
+      "personal": {
+        "brokerAssigned": "Broker assigned",
+        "brokerUnassigned": "Broker unassigned",
+        "maxSmsPerMonthReached": "Maximum SMS per month reached",
+        "newToken": "New token / card",
+        "newTokenPendingActivation": "New token / card pending activation",
+        "passwordStatusChanged": "Password status changed",
+        "tokenStatusChanged": "Token / card status changed",
+        "userStatusChanged": "User status changed"
+      },
+      "reference": {
+        "changed": "Reference changed",
+        "created": "Reference received"
+      },
+      "seller": {
+        "adAuthorized": "Advertisement authorized",
+        "adExpired": "Advertisement expired",
+        "adLowStock": "Low quantity of article",
+        "adOutOfStock": "Article out of stock",
+        "adQuestionCreated": "New ad question",
+        "adRejected": "Advertisement rejected",
+        "orderCanceled": "Sale order canceled",
+        "orderCreated": "New web shop order",
+        "orderPaymentCanceled": "Sale order payment canceled",
+        "orderPaymentDenied": "Sale order payment denied",
+        "orderPaymentExpired": "Sale order payment expired",
+        "orderPendingAuthorization": "Sale order awaiting payment authorization",
+        "orderPendingDeliveryData": "Delivery information requested",
+        "orderProcessedByBuyer": "Order accepted by buyer",
+        "orderRejectedByBuyer": "Order rejected",
+        "saleProcessedByBuyer": "Sale realized"
+      }
     }
   },
   "notificationSettings": {
     "title": "Notification settings",
     "mobileTitle": "Notification settings",
     "notAvailableSettings": "You are not allowed to change any settings.",
-    "forwardMessages": "Forward internal messages to your email address"
+    "forwardMessages": "Forward internal messages to your email address",
+    "notifications": "Notifications",
+    "internalNotification": "Internal notification",
+    "accounts": "Accounts",
+    "personal": "Personal",
+    "marketplaceAsBuyer": "Marketplace as buyer",
+    "marketplaceAsSeller": "Marketplace as seller",
+    "feedbackAndReferences": "Feedback and references",
+    "smsCount": "You have used {count} of {total} free SMS messages this month."
   },
   "connectedUser": {
     "title": "Connected users",
@@ -1180,6 +1311,16 @@
       "passwordTemporarilyBlocked": "Password temporarily blocked by exceeding attempts",
       "receivedVeryBadRefs": "User received too many 'very bad' references",
       "scheduledPaymentFailed": "Scheduled payment failed"
+    }
+  },
+  "systemAlert": {
+    "type": {
+      "accountFeeChargedNoFailures": "Account fee has finished without any failures",
+      "accountFeeChargedWithFailures": "Account fee has finished with at least one failure",
+      "applicationRestarted": "Application restarted",
+      "custom": "Custom",
+      "maxGlobalSmsReached": "The global maximum of SMS messages per month has been reached",
+      "maxIncorrectLoginAttempts": "Max incorrect login attempts for invalid user"
     }
   }
 }
