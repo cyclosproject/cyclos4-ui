@@ -107,18 +107,14 @@
         [label]="i18n.operatorGroup.viewAdvertisements"
         [value]="i18n.general.yes">
       </label-value>
-      <label-value *ngIf="group.brokering"
-        [label]="i18n.operatorGroup.brokering" [value]="i18n.general.yes">
-      </label-value>
-      <label-value *ngIf="group.registerUsersAsBroker"
-        [label]="i18n.operatorGroup.registerUsersAsBroker"
-        [value]="i18n.general.yes">
-      </label-value>
       <label-value *ngIf="group.operations?.length > 0"
         [label]="i18n.operatorGroup.runOperations">
         <ng-container *ngFor="let op of group.operations; let last = last">{{
           op.name }}<ng-container *ngIf="!last">, </ng-container>
         </ng-container>
+      </label-value>
+      <label-value *ngIf="group.brokering"
+        [label]="i18n.operatorGroup.brokering" [value]="i18n.general.yes">
       </label-value>
     </page-content>
   </ng-container>
