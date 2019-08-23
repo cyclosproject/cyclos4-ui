@@ -929,6 +929,7 @@
     "editOwnProfile": "Editar o próprio perfil",
     "notifications": "Notificações",
     "viewAdvertisements": "Ver anúncios",
+    "brokering": "Perform brokering operations",
     "registerUsersAsBroker": "Registrar usuários (como corretor)",
     "runOperations": "Executar operações",
     "created": "O grupo de operadores foi criado",
