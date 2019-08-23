@@ -42431,10 +42431,6 @@ components:
           description: >-
             Indicates whether the owner user is a broker. If so, can
             delegate brokering operations to operators.
-        canRegisterUsersAsBroker:
-          type: boolean
-          description: >-
-            Can the permission to register users as broker be granted?
         canHaveMessages:
           type: boolean
           description: >-
@@ -42602,12 +42598,8 @@ components:
           type: boolean
           description: >-
             Can operators of this group perform brokering operations?
-            This includes management of other users.
-        registerUsersAsBroker:
-          type: boolean
-          description: >-
-            Can operators of this group register users as broker?
-            Only taken into account if `brokering` is true.
+            This includes full brokering operatations the user is allowed,
+            including user registration, accounts access, payments as user, etc.
 
         restrictPaymentsToUsers:
           type: array
@@ -42770,10 +42762,6 @@ components:
               type: boolean
               description: >-
                 Can operators of this group perform brokering operations?
-            registerUsersAsBroker:
-              type: boolean
-              description: >-
-                Can operators of this group register users as broker?
 
             restrictPaymentsToUsers:
               type: array

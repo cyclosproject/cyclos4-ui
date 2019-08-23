@@ -106,9 +106,6 @@ export class OperatorGroupFormComponent
     }
     if (data.broker) {
       this.form.addControl('brokering', new FormControl(group.brokering));
-      if (data.canRegisterUsersAsBroker) {
-        this.form.addControl('registerUsersAsBroker', new FormControl(group.registerUsersAsBroker));
-      }
     }
     if (!empty(data.operations)) {
       this.form.addControl('operations', new FormControl(group.operations));
