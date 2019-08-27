@@ -1233,10 +1233,14 @@
     "internalNotification": "Internal notification",
     "accounts": "Accounts",
     "personal": "Personal",
+    "payments": "Payments",
     "marketplaceAsBuyer": "Marketplace as buyer",
     "marketplaceAsSeller": "Marketplace as seller",
     "feedbackAndReferences": "Feedback and references",
-    "smsCount": "You have used {count} of {total} free SMS messages this month."
+    "smsCount": "You have used {count} of {total} free SMS messages this month.",
+    "paymentNotifications.above": "Only notify payments above",
+    "paymentNotifications.below": "Only notify payments below",
+    "saved": "The notification settings were saved"
   },
   "connectedUser": {
     "title": "Connected users",

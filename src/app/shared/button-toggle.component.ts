@@ -46,7 +46,7 @@ export class ButtonToggleComponent extends BaseControlComponent<boolean> {
     const t = this.ttip;
     setTimeout(function () {
       t.show();
-    }, 200);
+    }, 150);
   }
 
   onValueInitialized(value: boolean) {

@@ -9,6 +9,7 @@ import { NotificationSettingsService } from 'app/api/services';
 import { Menu } from 'app/shared/menu';
 import { FormGroup, FormControl, FormArray } from '@angular/forms';
 import { FieldOption } from 'app/shared/field-option';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'notification-settings-form',
@@ -21,6 +22,7 @@ export class NotificationSettingsFormComponent
 
   user: string;
   adminSettings: boolean;
+  singleAccount: boolean;
   form: FormGroup;
   notificationSections = new Map<string, NotificationKindMediums[]>();
   kindControlsMap = new Map<NotificationKind, FormControl>();
@@ -43,7 +45,9 @@ export class NotificationSettingsFormComponent
 
   onDataInitialized(data: NotificationSettingsDataForEdit) {
     this.adminSettings = data.role === RoleEnum.ADMINISTRATOR;
-    this.form = this.formBuilder.group({});
+    this.form = this.formBuilder.group({
+      version: data.settings.version
+    });
 
     if (this.adminSettings) {
       if (!this.hasSettings(data)) {
@@ -53,9 +57,17 @@ export class NotificationSettingsFormComponent
       }
       // Add all notifications without section
       this.notificationSections.set('', data.settings.notifications);
+
+      // Message categories
       this.form.addControl('forwardMessageCategories', new FormControl(data.settings.forwardMessageCategories));
     }
 
+    // Forward to email
+    if (data.forwardMessagesAllowed) {
+      this.form.setControl('forwardMessages', this.formBuilder.control(false));
+    }
+
+    // Notifications
     const kinds = [];
     const notificationValues = this.formBuilder.array([]);
     for (const value of data.settings.notifications) {
@@ -84,9 +96,6 @@ export class NotificationSettingsFormComponent
         }
       }
     }
-
-    this.form.setControl('notifications', notificationValues);
-
     if (kinds.length > 0) {
       for (const kind of kinds) {
         let options: FieldOption[];
@@ -98,6 +107,24 @@ export class NotificationSettingsFormComponent
         this.form.setControl(property, control);
         this.kindFieldOptionsMap.set(kind, options);
       }
+    }
+    this.form.setControl('notifications', notificationValues);
+
+    // Payment
+    if (!empty(data.userAccounts)) {
+      this.singleAccount = data.userAccounts.length === 1;
+      const accountControls: FormGroup = this.formBuilder.group({});
+      for (const at of data.userAccounts) {
+        const accountValue = (data.settings.userAccounts[this.ApiHelper.internalNameOrId(at)] || {});
+        const notificationAmount = accountValue.paymentAmount || {};
+        accountControls.setControl(at.id, this.formBuilder.group({
+          paymentAmount: this.formBuilder.group({
+            min: notificationAmount.min,
+            max: notificationAmount.max
+          })
+        }));
+      }
+      this.form.setControl('accounts', accountControls);
     }
   }
 
@@ -123,6 +150,12 @@ export class NotificationSettingsFormComponent
   }
 
   save() {
+    const value = this.form.value;
+    const request: Observable<string | void> = this.notificationSettingsService.saveNotificationSettings({ user: this.user, body: value });
+    this.addSub(request.subscribe(() => {
+      this.reload();
+      this.notification.snackBar(this.i18n.notificationSettings.saved);
+    }));
   }
 
   /**
