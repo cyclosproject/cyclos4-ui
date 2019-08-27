@@ -62,7 +62,7 @@ export class NotificationSettingsFormComponent
       const typeForm = this.formBuilder.group({
         internal: value.internal,
         kind: value.kind,
-        // Handle null,undefined to indicate that this fields wont be added in the HTML component
+        // Handle null (or undefined) to indicate which fields wont be added in the HTML component
         sms: value.sms || value.sms == null ? null : false,
         email: value.email || value.email == null ? null : false
       });
@@ -449,10 +449,6 @@ export class NotificationSettingsFormComponent
       }));
     }
     return [options, values, property];
-  }
-
-  resolveSms() {
-    return this.i18n.notificationSettings.smsCount({ smsCount: this.data.smsCountThisMonth, smsTotal: this.data.maxSmsPerMonth });
   }
 
   /**

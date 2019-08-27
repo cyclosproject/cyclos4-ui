@@ -3,6 +3,9 @@
     <page-content [heading]="i18n.notificationSettings.title"
       [mobileHeading]="i18n.notificationSettings.mobileTitle">
       <form [formGroup]="form">
+        <ng-container *ngFor="">
+
+        </ng-container>
         <multi-selection-field *ngIf="data.messageCategories.length > 0"
           [label]="i18n.notificationSettings.forwardMessages"
           formControlName="forwardMessageCategories">
@@ -27,7 +30,7 @@
             </label-value>
           </ng-container>
         </ng-container>
-        <ng-container *ngIf="data.smsAllowed || adminSettings">
+        <ng-container *ngIf="data.smsAllowed">
           <h2>{{i18n.general.sendMedium.sms}}</h2>
           <label>{{i18n.notificationSettings.smsCount({ count: this.data.smsCountThisMonth, total: this.data.maxSmsPerMonth })}}</label>
         </ng-container>

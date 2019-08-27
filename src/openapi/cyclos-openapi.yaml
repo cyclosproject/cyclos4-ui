@@ -1183,6 +1183,12 @@ paths:
             type: array
             items:
               $ref: '#/components/schemas/RoleEnum'
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
         - name: user
           in: query
           required: false
@@ -1861,6 +1867,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
             type: array
             items:
               $ref: '#/components/schemas/RoleEnum'
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
         - name: statuses
           in: query
           required: false
@@ -2361,6 +2373,14 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           description: >-
             The intial group for the new user
+          schema:
+            type: string
+        - name: broker
+          required: false
+          in: query
+          description: >-
+            The broker for the new user. Only used if the authenticated user is
+            an administrator.
           schema:
             type: string
         - name: asMember
@@ -2998,6 +3018,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
             type: array
             items:
               $ref: '#/components/schemas/RoleEnum'
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
         - name: statuses
           in: query
           required: false
@@ -3207,6 +3233,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: integer
             format: int32
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
         - name: statuses
           in: query
           required: false
@@ -8455,6 +8487,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           required: false
           schema:
             $ref: '#/components/schemas/DocumentRangeEnum'
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
         - name: user
           in: query
           required: false
@@ -9409,6 +9447,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
             items:
               description: ''
               type: string
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
       tags:
         - Contacts
       security:
@@ -9532,6 +9576,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: integer
             format: int32
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
       tags:
         - Contacts
       security:
@@ -12534,6 +12584,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: integer
             format: int32
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
         - name: statuses
           in: query
           required: false
@@ -12847,6 +12903,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: integer
             format: int32
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
         - name: statuses
           in: query
           required: false
@@ -13346,6 +13408,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
             items:
               description: ''
               type: string
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
         - name: usersToExclude
           in: query
           required: false
@@ -13644,6 +13712,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
             items:
               description: ''
               type: string
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
         - name: usersToExclude
           in: query
           required: false
@@ -14069,6 +14143,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: integer
             format: int32
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
         - name: user
           in: query
           required: false
@@ -14510,6 +14590,12 @@ Either ids or internal names of the origin account type"
           schema:
             type: integer
             format: int32
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
         - name: statuses
           in: query
           required: false
@@ -14927,6 +15013,12 @@ Reference to the broker of users involved in transfers. Is only taken into accou
             type: array
             items:
               $ref: '#/components/schemas/ScheduledPaymentStatusEnum'
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
         - name: ticketStatuses
           in: query
           required: false
@@ -15332,6 +15424,12 @@ Reference to the broker of users involved in transfers. Is only taken into accou
             type: array
             items:
               $ref: '#/components/schemas/ScheduledPaymentStatusEnum'
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
         - name: ticketStatuses
           in: query
           required: false
@@ -18513,6 +18611,12 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           schema:
             type: integer
             format: int32
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
       responses:
         '200':
           description: >-
@@ -19098,6 +19202,12 @@ Reference to the broker of users involved in transfers. Is only taken into accou
             items:
               description: ''
               type: string
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
         - name: statuses
           in: query
           required: false
@@ -19422,6 +19532,12 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           required: false
           schema:
             $ref: '#/components/schemas/VoucherRelationEnum'
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
         - name: statuses
           in: query
           required: false
@@ -20887,6 +21003,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
             items:
               description: ''
               type: string
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
       responses:
         '200':
           description: >-
@@ -21583,6 +21705,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
             items:
               description: ''
               type: string
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
         - name: user
           in: query
           required: false
@@ -21840,6 +21968,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
             items:
               description: ''
               type: string
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
         - name: types
           in: query
           required: false
@@ -22831,6 +22965,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: integer
             format: int32
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
         - name: statuses
           in: query
           required: false
@@ -25585,6 +25725,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           description: "Whether to return the editable property. Passing `true` will impact the performance a bit, as for each returned advertisement some statuses and permissions need to be checked."
           schema:
             type: boolean
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
         - name: statuses
           in: query
           required: false
@@ -25950,6 +26096,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
               description: ''
               type: string
               format: date-time
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
         - name: statuses
           in: query
           required: false
@@ -27159,6 +27311,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Are we searching for sales or purchases? If not specified it's assumed purchases (i.e `false`)"
+          schema:
+            type: boolean
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
           schema:
             type: boolean
         - name: statuses
@@ -29120,6 +29278,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           schema:
             type: integer
             format: int32
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
         - name: types
           in: query
           required: false
@@ -29371,6 +29535,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           description: "The user that either gave or received the reference to the user specified in the path. Should be either the id or some other allowed identification (login name, email, etc)."
           schema:
             type: string
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
       responses:
         '200':
           description: >-
@@ -41592,6 +41762,12 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/EntityReference'
+            accounts:
+              description: >-
+                The available accounts for payment daily limits
+              type: array
+              items:
+                $ref: '#/components/schemas/EntityReference'
             userGroups:
               description: >-
                 The visible user groups.
@@ -42256,10 +42432,11 @@ components:
           type: boolean
           description: >-
             Can the permission to unblock tokens (cards) be granted?
-        canRegisterUsersAsBroker:
+        broker:
           type: boolean
           description: >-
-            Can the permission to register users as broker be granted?
+            Indicates whether the owner user is a broker. If so, can
+            delegate brokering operations to operators.
         canHaveMessages:
           type: boolean
           description: >-
@@ -42394,10 +42571,6 @@ components:
           type: boolean
           description: >-
             Can operators of this group redeem vouchers?
-        registerUsersAsBroker:
-          type: boolean
-          description: >-
-            Can operators of this group register users as broker?
         requestPayments:
           type: boolean
           description: >-
@@ -42426,6 +42599,14 @@ components:
           type: boolean
           description: >-
             Can operators of this group unblock their own tokens (cards)?
+
+        brokering:
+          type: boolean
+          description: >-
+            Can operators of this group perform brokering operations?
+            This includes full brokering operatations the user is allowed,
+            including user registration, accounts access, payments as user, etc.
+
         restrictPaymentsToUsers:
           type: array
           items:
@@ -42554,10 +42735,6 @@ components:
               type: boolean
               description: >-
                 Can operators of this group redeem vouchers?
-            registerUsersAsBroker:
-              type: boolean
-              description: >-
-                Can operators of this group register users as broker?
             requestPayments:
               type: boolean
               description: >-
@@ -42586,6 +42763,12 @@ components:
               type: boolean
               description: >-
                 Can operators of this group unblock their own tokens (cards)?
+
+            brokering:
+              type: boolean
+              description: >-
+                Can operators of this group perform brokering operations?
+
             restrictPaymentsToUsers:
               type: array
               items:
@@ -44251,6 +44434,15 @@ components:
             default value is 40. The maximum number of returned results is
             configured in Cyclos, and even if more than that is requested, it will
             be limited by that setting.
+        skipTotalCount:
+          type: boolean
+          description: >-
+            When set to true the result will not include the total record count,
+            only the information on whether there are more records. Depending on
+            the server-side configuration, this can be always true. Otherwise,
+            if the server allows total count, and the client doesn't need it,
+            setting this to true can increase performance a bit.
+
 
     Record:
       description: >-
@@ -47914,6 +48106,17 @@ components:
         - $ref: '#/components/schemas/BasicUserDataForNew'
         - type: object
           properties:
+            group:
+              description: >-
+                Details of the registration group.
+              allOf:
+                - $ref: '#/components/schemas/GroupForRegistration'
+            broker:
+              description: >-
+                When the user registration is requested with a broker, contains the
+                broker details.
+              allOf:
+                - $ref: '#/components/schemas/User'
             addressConfiguration:
               $ref: '#/components/schemas/AddressConfigurationForUserProfile'
             contactInfoConfiguration:
@@ -48128,6 +48331,12 @@ components:
               type: string
               description: >-
                 The initial user group
+            broker:
+              type: string
+              description: >-
+                Either the identifier or other identification value (login name,
+                e-mail, etc) of the broker for the new user.
+                Only allowed if logged-in as administrator with permission.
             mobilePhones:
               type: array
               items:
