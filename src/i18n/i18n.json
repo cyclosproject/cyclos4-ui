@@ -933,7 +933,7 @@
     "editOwnProfile": "Edit own profile",
     "notifications": "Notifications",
     "viewAdvertisements": "View advertisements",
-    "registerUsersAsBroker": "Register users (as broker)",
+    "brokering": "Perform brokering operations",
     "runOperations": "Run operations",
     "created": "The operator group was created",
     "saved": "The operator group was saved"

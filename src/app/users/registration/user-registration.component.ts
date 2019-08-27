@@ -15,6 +15,7 @@ import {
 import { Menu } from 'app/shared/menu';
 import { BehaviorSubject, Observable, of, Subscription, timer } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
+import { AddressHelperService } from 'app/core/address-helper.service';
 
 export type RegistrationStep = 'group' | 'fields' | 'confirm' | 'done';
 
@@ -80,7 +81,8 @@ export class UserRegistrationComponent
     injector: Injector,
     private usersService: UsersService,
     private userHelper: UserHelperService,
-    private imagesService: ImagesService) {
+    private imagesService: ImagesService,
+    private addressHelper: AddressHelperService) {
     super(injector);
   }
 
@@ -182,14 +184,18 @@ export class UserRegistrationComponent
     const addressAvailability = addressConfiguration.availability;
     if (addressAvailability !== AvailabilityEnum.DISABLED) {
       this.defineAddress = this.formBuilder.control(addressAvailability === AvailabilityEnum.REQUIRED);
-      const address = addressConfiguration.address;
-      this.addressForm = this.formBuilder.group({
-        name: address.name,
-        hidden: address.hidden
-      });
+      this.addressForm = this.addressHelper.addressFormGroup(addressConfiguration);
+      const address = data.addressConfiguration.address;
+      this.addressForm.patchValue(address);
+      // When any of the fields change, clear the location
       for (const field of addressConfiguration.enabledFields) {
-        const val = addressConfiguration.requiredFields.includes(field) ? Validators.required : null;
-        this.addressForm.setControl(field, this.formBuilder.control(address[field], val));
+        let previous = address[field] || null;
+        this.addSub(this.addressForm.get(field).valueChanges.subscribe(newVal => {
+          if (previous !== newVal) {
+            this.addressForm.get('location').patchValue({ latitude: null, longitude: null });
+          }
+          previous = newVal;
+        }));
       }
     } else {
       this.addressForm = null;
