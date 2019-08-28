@@ -25,7 +25,7 @@
       <div class="d-flex flex-grow-1 flex-column">
 
         <div
-          [ngClass]="{'d-flex flex-row-reverse justify-content-between': layout.gtsm$ | async}">
+          [ngClass]="{'d-flex flex-row-reverse justify-content-between': (layout.gtsm$ | async) && dataForRedeem.type.image}">
           <div *ngIf="dataForRedeem.type.image"
             class="image d-flex justify-content-center mt-2 mb-4"
             [ngClass]="{'flex-grow-1':  !dataForRedeem.type.voucherDescription}">
@@ -35,7 +35,8 @@
           </div>
 
           <ng-container *ngIf="dataForRedeem.type.voucherDescription">
-            <p> {{ dataForRedeem.type.voucherDescription }}</p>
+            <div class="break-nl">{{ dataForRedeem.type.voucherDescription }}
+            </div>
           </ng-container>
         </div>
         <h2 class="mt-3"></h2>
@@ -44,7 +45,8 @@
         </label-value>
         <label-value [label]="i18n.voucher.token"> {{ dataForRedeem.token }}
         </label-value>
-        <label-value [label]="i18n.voucher.buy.buyer">
+        <label-value *ngIf="dataForRedeem.buyer"
+          [label]="i18n.voucher.buy.buyer">
           <user-link [user]="dataForRedeem.buyer"></user-link>
         </label-value>
         <label-value [label]="i18n.transaction.amount">
