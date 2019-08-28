@@ -52,7 +52,7 @@
 
     <mobile-result *mobileResult="let row" [date]="row.redeemDate"
       [amount]="row.amount" [currency]="row.type.configuration.currency"
-      forceSign>
+      [amountColor]=false>
       <div class="cell-text cell-main">
         {{ row.type.name}}
       </div>
