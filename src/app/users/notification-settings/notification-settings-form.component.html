@@ -8,7 +8,7 @@
           formControlName="forwardMessages"></boolean-field>
         <ng-container *ngFor="let at of data.userAccounts; let first = first">
           <ng-container
-            *ngIf="form.get('accounts').get(at.id) as accountForm">
+            *ngIf="form.get('userAccounts').get(at.id) as accountForm">
             <h2 *ngIf="first"
               [ngClass]="{'border-top-0': !data.forwardMessagesAllowed}">
               {{i18n.notificationSettings.payments}}</h2>
@@ -39,16 +39,28 @@
             !data.forwardMessagesAllowed}">
             {{section}}</h2>
           <ng-container
-            *ngFor="let notification of notificationSections.get(section); let i = index">
+            *ngFor="let notification of notificationSections.get(section)">
             <label-value [label]="resolveNotificationLabel(notification)"
               kind="field">
               <notification-type-setting [setting]="notification"
                 [options]="this.kindFieldOptionsMap.get(notification.kind)"
-                [form]="resolveControl(i)"
+                [form]="resolveControl(notification.kind)"
                 [multiSelectionControl]="this.kindControlsMap.get(notification.kind)">
               </notification-type-setting>
             </label-value>
           </ng-container>
+          <actions
+            *ngIf="!adminSettings && notificationSections.get(section).length > 3"
+            class="mt-3 mb-3">
+            <button class="btn btn-outline-primary"
+              (click)="enableNotifications(section, true)">
+              {{ i18n.notificationSettings.enableAll }}
+            </button>
+            <button class="btn btn-outline-primary"
+              (click)="enableNotifications(section, false)">
+              {{ i18n.notificationSettings.disableAll }}
+            </button>
+          </actions>
         </ng-container>
         <ng-container *ngIf="data.smsAllowed">
           <h2>{{i18n.general.sendMedium.sms}}</h2>
@@ -67,7 +79,7 @@
 
 <ng-template #accountDetails let-at>
   <ng-container
-    [formGroup]="form.get('accounts').get(at.id).get('paymentAmount')">
+    [formGroup]="form.get('userAccounts').get(at.id).get('paymentAmount')">
     <decimal-field
       [label]="i18n.notificationSettings.paymentNotificationsAbove"
       formControlName="min" [scale]="at.currency.decimalDigits"

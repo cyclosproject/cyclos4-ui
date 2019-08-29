@@ -1240,7 +1240,10 @@
     "smsCount": "You have used {count} of {total} free SMS messages this month.",
     "paymentNotifications.above": "Only notify payments above",
     "paymentNotifications.below": "Only notify payments below",
-    "saved": "The notification settings were saved"
+    "saved": "The notification settings were saved",
+    "enableOrDisable": "Enable or disable {section}",
+    "enableAll": "Enable all",
+    "disableAll": "Disable all"
   },
   "connectedUser": {
     "title": "Connected users",

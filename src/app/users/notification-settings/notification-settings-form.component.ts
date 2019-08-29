@@ -59,12 +59,12 @@ export class NotificationSettingsFormComponent
       this.notificationSections.set('', data.settings.notifications);
 
       // Message categories
-      this.form.addControl('forwardMessageCategories', new FormControl(data.settings.forwardMessageCategories));
+      this.form.addControl('forwardMessageCategories', this.formBuilder.control(data.settings.forwardMessageCategories));
     }
 
     // Forward to email
     if (data.forwardMessagesAllowed) {
-      this.form.setControl('forwardMessages', this.formBuilder.control(false));
+      this.form.setControl('forwardMessages', this.formBuilder.control(data.settings.forwardMessages));
     }
 
     // Notifications
@@ -102,7 +102,7 @@ export class NotificationSettingsFormComponent
         let values: string[];
         let property: string;
         [options, values, property] = this.resolveOptions(kind, data);
-        const control = new FormControl(values);
+        const control = this.formBuilder.control(values);
         this.kindControlsMap.set(kind, control);
         this.form.setControl(property, control);
         this.kindFieldOptionsMap.set(kind, options);
@@ -124,7 +124,7 @@ export class NotificationSettingsFormComponent
           })
         }));
       }
-      this.form.setControl('accounts', accountControls);
+      this.form.setControl('userAccounts', accountControls);
     }
   }
 
@@ -190,10 +190,27 @@ export class NotificationSettingsFormComponent
   }
 
   /**
-   * Resolves the according control in the form for the given index
+   * Resolves the according control in the form for the given kind
    */
-  resolveControl(index: number): FormGroup {
-    return (this.form.controls.notifications as FormArray).controls[index] as FormGroup;
+  resolveControl(kind: NotificationKind): FormGroup {
+    const controls = (this.form.controls.notifications as FormArray).controls;
+    for (const control of controls) {
+      const typeForm = control as FormGroup;
+      if (typeForm.controls.kind.value === kind) {
+        return typeForm;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Enables or disables all the notifications fields in the given section group
+   */
+  enableNotifications(section: string, enable: boolean) {
+    for (const medium of this.notificationSections.get(section)) {
+      const typeForm = this.resolveControl(medium.kind);
+      typeForm.controls.internal.setValue(enable);
+    }
   }
 
   /**

@@ -11,7 +11,7 @@ button-toggle {
   margin-right: 0.5rem;
 }
 
-@include media-breakpoint-up(xs) {
+@include media-breakpoint-up(sm) {
   button-toggle {
     margin-top: 0;
     margin-right: 0;

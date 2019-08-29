@@ -40,13 +40,7 @@ export class ButtonToggleComponent extends BaseControlComponent<boolean> {
   toggle() {
     this.state = !this.state;
     this.setValue(this.state);
-    this.ttip.tooltip = this.tooltip;
     this.ttip.hide();
-    // Show deffered to refresh the tooltip message
-    const t = this.ttip;
-    setTimeout(function () {
-      t.show();
-    }, 150);
   }
 
   onValueInitialized(value: boolean) {
