@@ -31,6 +31,8 @@
             <user-field labelPosition="side" formControlName="createdBy"
               [label]="i18n.record.createdBy"></user-field>
           </div>
+          <!-- Force a new line to keep date range in same row -->
+          <div class="w-100"></div>
           <div class="col-12 col-md-6">
             <date-field labelPosition="side" formControlName="beginDate"
               [label]="i18n.general.beginDate" minDate="past5"
