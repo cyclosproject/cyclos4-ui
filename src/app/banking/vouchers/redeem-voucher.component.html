@@ -1,10 +1,13 @@
 <page-layout [ready]="data$ | async" [ngSwitch]="step$ | async">
   <page-content *ngSwitchCase="'form'" [heading]="i18n.voucher.title.redeem"
-    [mobileHeading]="i18n.voucher.mobileTitle.redeem">
+    [mobileHeading]="i18n.voucher.mobileTitle.redeem"
+    [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'">
     <ng-container *ngIf="(data$ | async); else loading">
       <ng-container [ngTemplateOutlet]="active_user"></ng-container>
-      <input-field type="text" [label]="i18n.voucher.token" [mask]="mask"
-        [formControl]="token" [placeholder]="mask" required></input-field>
+      <div class="d-flex flex-grow-1 flex-column">
+        <input-field type="text" [label]="i18n.voucher.token" [mask]="mask"
+          [formControl]="token" [placeholder]="mask" required></input-field>
+      </div>
       <actions>
         <button class="btn btn-primary" [disabled]="requesting$ | async"
           (click)="submit()">{{ i18n.general.submit }}</button>
@@ -13,7 +16,8 @@
   </page-content>
   <page-content *ngSwitchCase="'confirm'"
     [heading]="i18n.voucher.title.redeem"
-    [mobileHeading]="i18n.voucher.mobileTitle.redeem">
+    [mobileHeading]="i18n.voucher.mobileTitle.redeem"
+    [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'">
     <ng-container *ngIf="(dataForRedeem$ | async); else loading">
 
       <ng-container [ngTemplateOutlet]="active_user"></ng-container>
@@ -25,7 +29,7 @@
       <div class="d-flex flex-grow-1 flex-column">
 
         <div
-          [ngClass]="{'d-flex flex-row-reverse justify-content-between': layout.gtsm$ | async}">
+          [ngClass]="{'d-flex flex-row-reverse justify-content-between': (layout.gtsm$ | async) && dataForRedeem.type.image}">
           <div *ngIf="dataForRedeem.type.image"
             class="image d-flex justify-content-center mt-2 mb-4"
             [ngClass]="{'flex-grow-1':  !dataForRedeem.type.voucherDescription}">
@@ -35,7 +39,8 @@
           </div>
 
           <ng-container *ngIf="dataForRedeem.type.voucherDescription">
-            <p> {{ dataForRedeem.type.voucherDescription }}</p>
+            <div class="break-nl">{{ dataForRedeem.type.voucherDescription }}
+            </div>
           </ng-container>
         </div>
         <h2 class="mt-3"></h2>
@@ -44,7 +49,8 @@
         </label-value>
         <label-value [label]="i18n.voucher.token"> {{ dataForRedeem.token }}
         </label-value>
-        <label-value [label]="i18n.voucher.buy.buyer">
+        <label-value *ngIf="dataForRedeem.buyer"
+          [label]="i18n.voucher.buy.buyer">
           <user-link [user]="dataForRedeem.buyer"></user-link>
         </label-value>
         <label-value [label]="i18n.transaction.amount">

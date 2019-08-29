@@ -130,7 +130,7 @@ export class SearchRecordsComponent
   protected toSearchParams(params: any): RecordSearchParams {
     params.customFields = this.fieldHelper.toCustomValuesFilter(params.customValues);
     params.profileFields = this.fieldHelper.toCustomValuesFilter(params.profileFields);
-    params.creationPeriod = ApiHelper.rangeFilter(params.beginDate, params.endDate);
+    params.creationPeriod = ApiHelper.dateRangeFilter(params.beginDate, params.endDate);
     if (!this.generalSearch) {
       params.owner = this.param;
     }
