@@ -75,8 +75,8 @@ export class NotificationSettingsFormComponent
         internal: value.internal,
         kind: value.kind,
         // Handle null (or undefined) to indicate which fields wont be added in the HTML component
-        sms: value.sms || value.sms == null ? null : false,
-        email: value.email || value.email == null ? null : false
+        sms: value.sms === undefined ? null : value.sms,
+        email: value.email === undefined ? null : value.email
       });
       // Enable/disable email and sms controls based on internal field
       this.addSub(typeForm.controls.internal.valueChanges.subscribe(() => {
@@ -428,7 +428,7 @@ export class NotificationSettingsFormComponent
   }
 
   /**
-   * Returns the list of field options, values already set and model property for the given kind.
+   * Returns the list of field options, the values already set and the model property for the given kind.
    */
   resolveOptions(kind: NotificationKind, data: NotificationSettingsDataForEdit): [FieldOption[], string[], string] {
     let entities: InternalNamedEntity[];

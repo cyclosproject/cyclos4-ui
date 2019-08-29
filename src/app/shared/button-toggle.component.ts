@@ -6,6 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { LayoutService } from 'app/shared/layout.service';
 import { TooltipDirective } from 'ngx-bootstrap/tooltip';
+import { IconComponent } from 'app/shared/icon.component';
 
 /**
  * A button that switches between two icons.
@@ -27,6 +28,7 @@ export class ButtonToggleComponent extends BaseControlComponent<boolean> {
   @Input() iconTooltip: string;
 
   @ViewChild('button', { static: true }) button: ElementRef;
+  @ViewChild(IconComponent, { static: true }) iconComponent: IconComponent;
   @ViewChild('ttip', { static: true }) ttip: TooltipDirective;
 
   state: boolean;
@@ -45,6 +47,8 @@ export class ButtonToggleComponent extends BaseControlComponent<boolean> {
 
   onValueInitialized(value: boolean) {
     this.state = value;
+    // Update the icon whenever the value changes
+    this.iconComponent.icon = this.icon;
   }
 
   onDisabledChange(isDisabled: boolean) {
@@ -55,11 +59,11 @@ export class ButtonToggleComponent extends BaseControlComponent<boolean> {
     }
   }
 
-  get icon() {
+  get icon(): string {
     return this.state ? this.onIcon : this.offIcon;
   }
 
-  get tooltip() {
+  get tooltip(): string {
     const currentState = this.state ? this.i18n.general.enabled : this.i18n.general.disabled;
     return this.iconTooltip + ': ' + currentState.toLowerCase();
   }

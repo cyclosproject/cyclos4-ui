@@ -10,8 +10,8 @@
     [formControl]="multiSelectionControl" [fieldOptions]="options">
   </multi-selection-field>
   <div *ngIf="adminType" class="d-xs-none"></div>
-  <button-toggle *ngIf="!adminType" onIcon="notifications_active"
-    offIcon="notifications_off"
+  <button-toggle *ngIf="!adminType" [formControl]="internalControl"
+    onIcon="notifications_active" offIcon="notifications_off"
     [iconTooltip]="i18n.notificationSettings.internalNotification"
     formControlName="internal">
   </button-toggle>

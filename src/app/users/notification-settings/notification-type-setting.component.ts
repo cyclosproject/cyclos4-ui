@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, Injector, Input } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
+import { FormControl, FormGroup, AbstractControl } from '@angular/forms';
 import { NotificationKindMediums } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
 import { FieldOption } from 'app/shared/field-option';
@@ -14,7 +14,7 @@ import { FieldOption } from 'app/shared/field-option';
   styleUrls: ['notification-type-setting.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class NotificationTypeSettingComponent extends BaseComponent {
+export class NotificationTypeSettingComponent extends BaseComponent implements OnInit {
 
   @Input() label: string;
   @Input() setting: NotificationKindMediums;
@@ -22,8 +22,20 @@ export class NotificationTypeSettingComponent extends BaseComponent {
   @Input() form: FormGroup;
   @Input() multiSelectionControl: FormControl;
 
+  internalControl: AbstractControl;
+
   constructor(injector: Injector) {
     super(injector);
+  }
+
+  ngOnInit() {
+    this.internalControl = this.form.controls.internal;
+    if (this.adminType && this.multiSelectionControl) {
+      // Update internal control when selection is checked
+      this.addSub(this.multiSelectionControl.valueChanges.subscribe(values => {
+        this.form.controls.internal.setValue(values.length > 0);
+      }));
+    }
   }
 
   get adminType() {
