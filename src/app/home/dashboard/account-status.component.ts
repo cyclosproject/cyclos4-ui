@@ -78,7 +78,8 @@ export class AccountStatusComponent extends BaseDashboardComponent implements On
         owner: 'self',
         accountType: this.account.type.id,
         direction: TransferDirectionEnum.CREDIT,
-        pageSize: this.maxTransfers
+        pageSize: this.maxTransfers,
+        skipTotalCount: true
       }));
     }
 

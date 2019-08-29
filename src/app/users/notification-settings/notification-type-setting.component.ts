@@ -22,14 +22,11 @@ export class NotificationTypeSettingComponent extends BaseComponent implements O
   @Input() form: FormGroup;
   @Input() multiSelectionControl: FormControl;
 
-  internalControl: AbstractControl;
-
   constructor(injector: Injector) {
     super(injector);
   }
 
   ngOnInit() {
-    this.internalControl = this.form.controls.internal;
     if (this.adminType && this.multiSelectionControl) {
       // Update internal control when selection is checked
       this.addSub(this.multiSelectionControl.valueChanges.subscribe(values => {
