@@ -26,6 +26,7 @@ export class ButtonToggleComponent extends BaseControlComponent<boolean> {
   @Input() onIcon: string;
   @Input() offIcon: string;
   @Input() iconTooltip: string;
+  @Input() readOnly: boolean;
 
   @ViewChild('button', { static: true }) button: ElementRef;
   @ViewChild(IconComponent, { static: true }) iconComponent: IconComponent;

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup, AbstractControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { NotificationKindMediums } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
 import { FieldOption } from 'app/shared/field-option';
@@ -21,6 +21,7 @@ export class NotificationTypeSettingComponent extends BaseComponent implements O
   @Input() options: FieldOption[];
   @Input() form: FormGroup;
   @Input() multiSelectionControl: FormControl;
+  @Input() disabled: boolean;
 
   constructor(injector: Injector) {
     super(injector);

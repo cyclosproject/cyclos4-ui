@@ -1,26 +1,27 @@
 <div class="d-flex flex-wrap flex-xs-nowrap" [formGroup]="form">
   <single-selection-field *ngIf="adminType && !options" class="flex-grow-1"
-    [emptyOption]="false" formControlName="internal">
+    [emptyOption]="false" formControlName="internal" [disabled]="disabled">
     <field-option [value]="true" [text]="i18n.general.enabled">
     </field-option>
     <field-option [value]="false" [text]="i18n.general.disabled">
     </field-option>
   </single-selection-field>
   <multi-selection-field *ngIf="options" class="flex-grow-1"
-    [formControl]="multiSelectionControl" [fieldOptions]="options">
+    [formControl]="multiSelectionControl" [fieldOptions]="options"
+    [disabled]="disabled">
   </multi-selection-field>
   <div *ngIf="adminType" class="d-xs-none"></div>
   <button-toggle *ngIf="!adminType" onIcon="notifications_active"
     offIcon="notifications_off"
     [iconTooltip]="i18n.notificationSettings.internalNotification"
-    formControlName="internal">
+    formControlName="internal" [readOnly]="disabled">
   </button-toggle>
   <button-toggle *ngIf="setting.email != null" onIcon="mail" offIcon="drafts"
     [iconTooltip]="i18n.general.sendMedium.email" formControlName="email"
-    class="form-field">
+    class="form-field" [readOnly]="disabled">
   </button-toggle>
   <button-toggle *ngIf="setting.sms != null" onIcon="speaker_notes"
     offIcon="speaker_notes_off" [iconTooltip]="i18n.general.sendMedium.sms"
-    formControlName="sms" class="form-field">
+    formControlName="sms" class="form-field" [readOnly]="disabled">
   </button-toggle>
 </div>

@@ -5,7 +5,8 @@
       <form [formGroup]="form">
         <boolean-field *ngIf="data.forwardMessagesAllowed"
           [label]="i18n.notificationSettings.forwardMessages"
-          formControlName="forwardMessages"></boolean-field>
+          formControlName="forwardMessages" [disabled]="!data.editable">
+        </boolean-field>
         <ng-container *ngFor="let at of data.userAccounts; let first = first">
           <ng-container
             *ngIf="form.get('userAccounts').get(at.id) as accountForm">
@@ -45,12 +46,13 @@
               <notification-type-setting [setting]="notification"
                 [options]="this.kindFieldOptionsMap.get(notification.kind)"
                 [form]="resolveControl(notification.kind)"
-                [multiSelectionControl]="this.kindControlsMap.get(notification.kind)">
+                [multiSelectionControl]="this.kindControlsMap.get(notification.kind)"
+                [disabled]="!data.editable">
               </notification-type-setting>
             </label-value>
           </ng-container>
           <actions
-            *ngIf="!adminSettings && notificationSections.get(section).length > 3"
+            *ngIf="!adminSettings && notificationSections.get(section).length > 3 && data.editable"
             class="mt-3 mb-3">
             <button class="btn btn-outline-primary"
               (click)="enableNotifications(section, true)">
@@ -68,8 +70,8 @@
         </ng-container>
       </form>
       <actions>
-        <button class="btn btn-primary" [disabled]="requesting$ | async"
-          (click)="save()">
+        <button *ngIf="data.editable" class="btn btn-primary"
+          [disabled]="requesting$ | async" (click)="save()">
           {{ i18n.general.save }}
         </button>
       </actions>
@@ -83,11 +85,13 @@
     <decimal-field
       [label]="i18n.notificationSettings.paymentNotificationsAbove"
       formControlName="min" [scale]="at.currency.decimalDigits"
-      [prefix]="at.currency.prefix" [suffix]="at.currency.suffix">
+      [prefix]="at.currency.prefix" [suffix]="at.currency.suffix"
+      [disabled]="!data.editable" [emptyLabel]="i18n.general.notSet">
     </decimal-field>
     <decimal-field
       [label]="i18n.notificationSettings.paymentNotificationsBelow"
       formControlName="max" [scale]="at.currency.decimalDigits"
-      [prefix]="at.currency.prefix" [suffix]="at.currency.suffix">
+      [prefix]="at.currency.prefix" [suffix]="at.currency.suffix"
+      [disabled]="!data.editable" [emptyLabel]="i18n.general.notSet">
     </decimal-field>
   </ng-container>

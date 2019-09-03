@@ -39,6 +39,9 @@ export class DecimalFieldComponent extends BaseFormFieldComponent<string>
   /** Text to show as suffix */
   @Input() suffix: string;
 
+  /** Text to show when component is disabled and value is empty  */
+  @Input() emptyLabel: '';
+
   @ViewChild('inputField', { static: false }) private inputRef: ElementRef;
 
   internalControl: FormControl;
@@ -136,7 +139,8 @@ export class DecimalFieldComponent extends BaseFormFieldComponent<string>
   }
 
   protected getDisabledValue(): string {
-    return (this.prefix || '') + this.format.formatAsNumber(this.value, this.scale) + (this.suffix || '');
+    const value = this.format.formatAsNumber(this.value, this.scale);
+    return empty(value) ? this.emptyLabel : (this.prefix || '') + value + (this.suffix || '');
   }
 
   // Validator methods
