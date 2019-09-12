@@ -24,6 +24,9 @@ export interface ConfigurationDefinitions {
   /** Application title displayed on the sidenav menu small devices */
   appTitleMenu: string;
 
+  /** The application logo, displayed in the top bar */
+  logoUrl: string;
+
   /** Whether to use a separated menu bar (true) or merge the menu and top bar (false) */
   menuBar: boolean;
 

@@ -97,6 +97,10 @@ export class TopBarComponent extends AbstractComponent implements OnInit, OnChan
     return this.activeMenu == null ? null : this.activeMenu.menu.root;
   }
 
+  get logoUrl(): string {
+    return Configuration.logoUrl;
+  }
+
   xxsActions(defaultActions: HeadingAction[], _routerEvent: Event, user: User): HeadingAction[] {
     const actions: HeadingAction[] = [];
 

@@ -8,7 +8,7 @@
     </a>
     <a class="navbar-brand" routerLink="/">
       <!-- The title bar -->
-      <img *ngIf="layout.gtxs$ | async" class="logo" src="images/logo.png">
+      <img *ngIf="layout.gtxs$ | async" class="logo" [src]="logoUrl">
       <!-- Hide the title when dense on xl layout -->
       <span *ngIf="!((layout.xl$ | async) && density === 'dense')"
         class="top-title">

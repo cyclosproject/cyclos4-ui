@@ -18,6 +18,7 @@ function setupConfigurationDefaults() {
   Configuration.appTitle = 'Cyclos';
   Configuration.appTitleSmall = 'Cyclos';
   Configuration.appTitleMenu = 'Cyclos menu';
+  Configuration.logoUrl = 'images/logo.png';
   Configuration.searchPageSizeXxs = 10;
   Configuration.searchPageSizeXs = 20;
   Configuration.searchPageSize = 40;
