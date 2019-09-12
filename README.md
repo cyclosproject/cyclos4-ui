@@ -273,11 +273,18 @@ rootUrl = https://account.example.com
 
 ## Customizing layout
 
-There are basically 2 areas where the layout can be customized: modifying the style (CSS) and modifying the configuration.
+There are several layout aspects that can be customized:
 
 ### Change the application logo
 
-The application logo is served from `src/images/logo.png`. Feel free to replace this file with the one that fits your project.
+By default, the application logo is served from `src/images/logo.png`. You can either replace the image served from that URL or change the `Configuration.logoUrl` property in `src/app/setup.ts` to set the location from which the logo will be served. Here is an example:
+
+```typescript
+export function setup() {
+  // true means a separated menu bar, false means joining the menu on the top bar
+  Configuration.logoUrl = 'https://www.example.com/images/logo.png';
+}
+```
 
 ### Customizing the theme (style)
 
@@ -294,11 +301,7 @@ The most important variables are the following:
 
 You can also create custom styles for the application. To do so, just edit the `src/styles/_custom.scss` file. This is a SASS file, which is a superset of the standard CSS. Note that as styles defined in componenets generally have a greater priority, it might be needed to use the `!important` modifier for the custom definitions to be used.
 
-### Layout configuration
-
-Currently the Cyclos frontend offers some options in the configuration for the layout, as speficied in the following sections.
-
-#### Main menu position
+### Main menu position
 
 By default, on desktop resolutions, the menu is displayed in the top bar. An alternative is to have the menu displayed in a separated menu bar below the top. To configure this, set in the `src/app/setup.ts` file:
 
@@ -309,7 +312,7 @@ export function setup() {
 }
 ```
 
-#### Customize the advertisement categories
+### Customize the advertisement categories
 
 It is possible to customize the advertisements category icons and colors, which are shown when selecting the marketplace menu item. It is recommended that all the root advertisement categories in Cyclos have an internal name. The default settings in the frontend matches the categories created by default when creating a network in Cyclos via the wizard. Here is an example of the `src/app/setup.ts` file with the default settings:
 
@@ -329,7 +332,7 @@ export function setup() {
 }
 ```
 
-#### Customize the custom operations
+### Customize the custom operations
 
 Similarly to advertisement categories, it is also possible to set a custom icon for custom operations, by internal name. Here is an example of the `src/app/setup.ts`:
 
