@@ -339,11 +339,11 @@ export function setup() {
 }
 ```
 
-If this is the case, you may also want to remove the height limitation on the logo, which is limited to 32 pixels by default. If so, add on `src/styles/_custom.scss`:
+If this is the case, you may also want to remove the height limitation on the logo, which is limited to 32 pixels by default. If so, add on `src/styles/_custom.scss` (adjust to your liking):
 
 ```scss
 top-bar .logo {
-  max-height: 100% !important;
+  max-height: 80% !important;
 }
 ```
 
