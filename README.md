@@ -290,14 +290,14 @@ export function setup() {
 
 Cyclos uses [Bootstrap breakpoints](https://getbootstrap.com/docs/4.3/layout/overview/) with an additional one: 
 
-- `xxs` for extra small devices, such as most KaiOS's phone (240 pixels);
+- `xxs` for extra small devices, such as KaiOS's feature phones;
 - `xs` for portrait smart phones;
 - `sm` for landscape smart phones;
 - `md` for portrait tablets;
 - `lg` for landscape tablets / smaller resolution desktops;
 - `xl` for desktops.
 
-Also, greater-than and lower-than variations are available: `gt-xxs` (`xxs` or greater) up to `gt-lg`, as well as `lt-xg` up to `lt-xs`.
+Also, greater-than and lower-than variations are available: `gt-xxs` (`xs` or greater) up to `gt-lg`, as well as `lt-xg` up to `lt-xs`.
 
 ### Customize the logo, title and landing page per breakpoint
 
