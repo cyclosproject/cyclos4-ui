@@ -1,4 +1,4 @@
-<div class="container" *ngIf="(indicators$ | async)?.length > 0">
+<div class="container mw-100 px-0" *ngIf="(indicators$ | async)?.length > 0">
   <hr class="mt-0" *ngIf="showSeparator">
   <div class="row no-gutters">
     <div *ngIf="showAccount" class="status-label col-12">
@@ -15,11 +15,11 @@
     <hr *ngIf="showAccount || (account.user && showUser)">
     <ng-container
       *ngFor="let indicator of indicators$.value; let last = last">
-      <div class="status-label col-6 col-md-3"
+      <div class="status-label col-6 col-sm-3"
         [ngClass]="last ? 'status-label-last' : ''">
         {{ indicator.label }}
       </div>
-      <div class="status-value col-6 col-md-3" [ngClass]="{
+      <div class="status-value col-6 col-sm-3" [ngClass]="{
         negative: (indicator.alwaysNegative || format.isNegative(indicator.amount)),
         positive: (!indicator.alwaysNegative && format.isPositive(indicator.amount)),
         'status-value-last': last

@@ -286,6 +286,67 @@ export function setup() {
 }
 ```
 
+### Layout breakpoints
+
+Cyclos uses [Bootstrap breakpoints](https://getbootstrap.com/docs/4.3/layout/overview/) with an additional one: 
+
+- `xxs` for extra small devices, such as most KaiOS's phone (240 pixels);
+- `xs` for portrait smart phones;
+- `sm` for landscape smart phones;
+- `md` for portrait tablets;
+- `lg` for landscape tablets / smaller resolution desktops;
+- `xl` for desktops.
+
+Also, greater-than and lower-than variations are available: `gt-xxs` (`xxs` or greater) up to `gt-lg`, as well as `lt-xg` up to `lt-xs`.
+
+### Customize the logo, title and landing page per breakpoint
+
+This frontend allows configuring, per [layout breakpoint](#layout-breakpoints):
+
+- Whether the image will be displayed, and which image URL (different from the default);
+- Which title to show: the large, the small or none;
+- What is the landing page, that is, the initial page the users see when browsing to the application root - home page or login page.
+
+The `xxs` breakpoint is an exception, and is fixed: the logo is never shown and the title actually shows the current page title. The other defaults are:
+
+- For portrait mobiles (`xs`) the logo is hidden, and the small title is shown;
+- For landscape mobiles (`sm`) the logo is hidden, and the large title is shown;
+- For tablets and desktop (`gt-sm`) the logo is shown together with the large title.
+
+Overridding these values can be done in `src/app/setup.ts` file. It is guaranteed that all possible breakpoints have already an object set in Configuration, so its direct properties can be set. Here is an example setting both an object and a direct property:
+
+```typescript
+export function setup() {
+  // Always show a small logo and start with the login page for mobile
+  Configuration.breakpoints['lt-md'] = {
+    logoUrl: 'https://www.example.com/images/logo-small.png',
+    landingPage: 'login'
+  };
+  // Also use a different logo for large desktops
+  Configuration.breakpoints['xl'].logoUrl = 'https://www.example.com/images/logo-large.png';
+}
+```
+
+If your logo is already the full name of your project, you could also never show the application title, to avoid redundancy:
+
+```typescript
+export function setup() {
+  // Always show the logo and no title
+  Configuration.breakpoints['gt-xxs'] = {
+    logoUrl: Configuration.logoUrl,
+    title: 'none'
+  };
+}
+```
+
+If this is the case, you may also want to remove the height limitation on the logo, which is limited to 32 pixels by default. If so, add on `src/styles/_custom.scss`:
+
+```scss
+top-bar .logo {
+  max-height: 100% !important;
+}
+```
+
 ### Customizing the theme (style)
 
 Users have the option to use a light or a dark theme. This can be changed in the settings menu.
@@ -442,18 +503,7 @@ There is [an example BannerCardsResolver here](https://github.com/cyclosproject/
 
 ### Customizing the dashboard
 
-The dashboard is the home page for logged users. It contains several items that present useful information for users. Each item is an independent component that can be customized. Also, each item can be enabled only for some resolution breakpoints, namely:
-
-- `xxs`: Very small displays, such as KaiOS' smart feature phones;
-- `xs`: Mobile devices  / very small browser windows;
-- `sm`: Tablets in portrait mode / small desktop windows;
-- `md`: Tablets in landscape mode / medium desktop windows;
-- `lg`: Desktop browsers with not-so-large resolutions;
-- `xg`: Desktop browsers with large resolutions.
-
-Also, greater-than and lower-than variations are available: `gt-xxs` (`xxs` or greater) up to `gt-lg`, as well as `lt-xg` up to `lt-xs`.
-
-When displayed on desktop, the dashboard has 3 columns: `left`, `right` and `full` (presented below). Each item defines on which column it is shown.
+The dashboard is the home page for logged users. It contains several items that present useful information for users. Each item is an independent component that can be customized. Also, each item can be enabled only for some [layout breakpoints](#layout-breakpoints). When displayed on desktop, the dashboard has 3 columns: `left`, `right` and `full` (presented below). Each item defines on which column it is shown.
 
 The following dashboard items are available:
 

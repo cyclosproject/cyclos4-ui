@@ -9,6 +9,7 @@ import { I18nLoadingService } from 'app/core/i18n-loading.service';
 import { setup } from 'app/setup';
 import { LightboxConfig } from 'ngx-lightbox';
 import { forkJoin, of } from 'rxjs';
+import { ALL_BREAKPOINTS } from 'app/shared/layout.service';
 
 /**
  * Sets the default values on the global configuration
@@ -37,9 +38,12 @@ function setupConfigurationDefaults() {
   Configuration.homePage = {
     content: ContentGetter.url('content/home.html')
   };
+  Configuration.breakpoints = {};
+  for (const bp of ALL_BREAKPOINTS) {
+    Configuration.breakpoints[bp] = {};
+  }
   Configuration.dashboard = new DefaultDashboardResolver();
 }
-
 
 // Initializes the shared services
 export function initialize(
