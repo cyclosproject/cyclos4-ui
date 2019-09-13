@@ -15,9 +15,16 @@ export class RegistrationStepGroupComponent extends BaseComponent implements OnI
   @Input() groupSets: Group[];
   @Input() groups: (GroupForRegistration | Group)[];
   @Input() control: FormControl;
+  singleLine: boolean;
 
   constructor(injector: Injector) {
     super(injector);
+  }
+
+  ngOnInit() {
+    super.ngOnInit();
+    // Show in a single line if there's at most 3 groups, and none has description
+    this.singleLine = this.groups.length <= 3 && this.groups.filter(g => g['description']).length === 0;
   }
 
   groupsForSet(groupSet: Group) {
