@@ -7,21 +7,14 @@
       <icon class="top-icon" icon="menu"></icon>
     </a>
     <a class="navbar-brand" routerLink="/">
-      <!-- The title bar -->
-      <img *ngIf="layout.gtxs$ | async" class="logo" [src]="logoUrl">
-      <!-- Hide the title when dense on xl layout -->
-      <span *ngIf="!((layout.xl$ | async) && density === 'dense')"
-        class="top-title">
-        <ng-container *ngIf="layout.xxs$ | async">
-          <!-- On xxs we don't show the title, and join the title here -->
-          {{ (layout.title$ | async) || format.appTitleSmall }}
-        </ng-container>
-        <ng-container *ngIf="layout.xs$ | async">
-          {{ format.appTitleSmall }}
-        </ng-container>
-        <ng-container *ngIf="layout.gtxs$ | async">
-          {{ format.appTitle }}
-        </ng-container>
+      <!-- The application logo -->
+      <img *ngIf="logoUrl(layout.breakpointChanges$ | async) as _logoUrl"
+        class="logo" [src]="_logoUrl">
+
+      <!-- The title -->
+      <span class="top-title"
+        *ngIf="appTitle((layout.breakpointChanges$ | async), (layout.title$ | async)) as _appTitle">
+        {{ _appTitle }}
       </span>
     </a>
     <div class="menu-container">

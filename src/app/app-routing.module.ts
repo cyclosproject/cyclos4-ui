@@ -9,19 +9,19 @@ import { ChangeExpiredPasswordComponent } from 'app/login/change-expired-passwor
 import { ChangeForgottenPasswordComponent } from 'app/login/change-forgotten-password.component';
 import { ForgotPasswordComponent } from 'app/login/forgot-password.component';
 import { LoginComponent } from 'app/login/login.component';
+import { RedirectToLandingPageComponent } from 'app/home/redirect-to-landing-page-component';
 import { NotFoundComponent } from 'app/shared/not-found.component';
 import { SharedModule } from 'app/shared/shared.module';
 
 const rootRoutes: Routes = [
   {
     path: '',
-    component: HomeComponent,
+    component: RedirectToLandingPageComponent,
     pathMatch: 'full'
   },
   {
     path: 'home',
-    component: HomeComponent,
-    pathMatch: 'full'
+    component: HomeComponent
   },
   {
     path: 'login',

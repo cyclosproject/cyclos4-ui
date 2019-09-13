@@ -20,7 +20,7 @@
 }
 .logo {
   max-width: 64px;
-  max-height: 30px;
+  max-height: 32px;
   margin-right: $top-bar-item-spacing-spacious;
 }
 .menu-container {
@@ -98,41 +98,43 @@
   }
 }
 
-:host ::ng-deep a.menu-item:not(.never-active) {
-  &::before {
-    content: " ";
-    display: block;
-    position: absolute;
-    bottom: 10px;
-    height: 1px;
-    background-color: $top-bar-color;
-    transition: opacity ease-in-out 0.4s;
-    opacity: 0;
-    left: calc(#{$top-bar-item-spacing-spacious} - 0.1rem);
-    width: calc(100% - #{2 * $top-bar-item-spacing-spacious} + 0.2rem);
-  }
+@include media-breakpoint-up(lg) {
+  :host ::ng-deep a.menu-item:not(.never-active) {
+    &::before {
+      content: " ";
+      display: block;
+      position: absolute;
+      bottom: 10px;
+      height: 1px;
+      background-color: $top-bar-color;
+      transition: opacity ease-in-out 0.4s;
+      opacity: 0;
+      left: calc(#{$top-bar-item-spacing-spacious} - 0.1rem);
+      width: calc(100% - #{2 * $top-bar-item-spacing-spacious} + 0.2rem);
+    }
 
-  &.density-medium::before {
-    left: calc(#{$top-bar-item-spacing-medium} - 0.1rem);
-    width: calc(100% - #{2 * $top-bar-item-spacing-medium} + 0.2rem);
-  }
+    &.density-medium::before {
+      left: calc(#{$top-bar-item-spacing-medium} - 0.1rem);
+      width: calc(100% - #{2 * $top-bar-item-spacing-medium} + 0.2rem);
+    }
 
-  &.density-dense::before {
-    left: calc(#{$top-bar-item-spacing-dense} - 0.1rem);
-    width: calc(100% - #{2 * $top-bar-item-spacing-dense} + 0.2rem);
-  }
+    &.density-dense::before {
+      left: calc(#{$top-bar-item-spacing-dense} - 0.1rem);
+      width: calc(100% - #{2 * $top-bar-item-spacing-dense} + 0.2rem);
+    }
 
-  &.density-custom::before {
-    left: calc(#{$top-bar-item-spacing-custom} - 0.1rem);
-    width: calc(100% - #{2 * $top-bar-item-spacing-custom} + 0.2rem);
-  }
+    &.density-custom::before {
+      left: calc(#{$top-bar-item-spacing-custom} - 0.1rem);
+      width: calc(100% - #{2 * $top-bar-item-spacing-custom} + 0.2rem);
+    }
 
-  &:hover::before {
-    opacity: 0.7 !important;
-  }
+    &:hover::before {
+      opacity: 0.7 !important;
+    }
 
-  &.active::before {
-    opacity: 1 !important;
+    &.active::before {
+      opacity: 1 !important;
+    }
   }
 }
 
@@ -198,10 +200,6 @@
 
   @include media-breakpoint-up(lg) {
     height: $top-bar-with-menu-height;
-
-    .logo {
-      max-height: 32px;
-    }
   }
 }
 

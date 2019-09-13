@@ -4,6 +4,8 @@ import { ContentPagesResolver } from 'app/content/content-pages-resolver';
 import { ContentWithLayout } from 'app/content/content-with-layout';
 import { DashboardResolver } from 'app/content/dashboard-resolver';
 import { OperationConfiguration } from 'app/content/operation-configuration';
+import { Breakpoint } from 'app/shared/layout.service';
+import { BreakpointConfiguration } from 'app/content/breakpoint-configuration';
 
 /**
  * The global configuration
@@ -41,6 +43,9 @@ export interface ConfigurationDefinitions {
 
   /** Page size on quick search / autocomplete */
   quickSearchPageSize: number;
+
+  /** Custom configuration for media breakpoints */
+  breakpoints: { [breakpoint in Breakpoint]?: BreakpointConfiguration };
 
   /** Custom configuration for ad categories, by category internal name */
   adCategories: { [internalName: string]: AdCategoryConfiguration };
