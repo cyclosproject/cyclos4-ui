@@ -280,6 +280,20 @@ export class FormatService {
   }
 
   /**
+   * Returns the absolute numeric value as string, or null for null input
+   * @param num The input number or string representation of a number
+   */
+  abs(num: number | string): string {
+    if (num == null) {
+      return null;
+    }
+    if (typeof (num) === 'number') {
+      return Math.abs(num).toFixed();
+    }
+    return num.startsWith('-') ? num.substr(1) : num;
+  }
+
+  /**
    * Returns whether the given number (or string) represents a negative number
    * @param num The input number or string representation of a number
    */

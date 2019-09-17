@@ -172,20 +172,19 @@
             </td>
             <td>
               <a [routerLink]="path(row)">
-                {{ bankingHelper.accountOwnerDisplay(row.from) }}
+                {{ bankingHelper.accountOwnerDisplay(
+                  format.isNegative(row.amount) ? row.to : row.from) }}
               </a>
             </td>
             <td>
               <a [routerLink]="path(row)">
-                {{ bankingHelper.accountOwnerDisplay(row.to) }}
+                {{ bankingHelper.accountOwnerDisplay(
+                  format.isNegative(row.amount) ? row.from : row.to) }}
               </a>
             </td>
             <td class="amount">
-              <a [routerLink]="path(row)" [ngClass]="{
-                  positive: format.isPositive(row.amount),
-                  negative: format.isNegative(row.amount)
-                }">
-                {{ row.amount | currency:row.currency }}
+              <a [routerLink]="path(row)">
+                {{ format.abs(row.amount) | currency:row.currency }}
               </a>
             </td>
           </tr>
