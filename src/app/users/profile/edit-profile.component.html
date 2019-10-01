@@ -18,7 +18,7 @@
           </div>
         </div>
         <image-upload #singleUpload containerClass="mt-3" target="userProfile"
-          [user]="param" (uploadDone)="onUploadDone($event)"></image-upload>
+          [owner]="param" (uploadDone)="onUploadDone($event)"></image-upload>
         <actions class="mt-3" forceRow
           *ngIf="canEdit('image') && !(singleUpload.uploading$ | async)">
           <button class="btn btn-outline-primary"
@@ -63,7 +63,7 @@
             {{ i18n.field.image.manage }}
           </button>
         </div>
-        <image-upload #multiUpload target="userProfile" [user]="param"
+        <image-upload #multiUpload target="userProfile" [owner]="param"
           [max]="data.imageConfiguration.maxImages"
           (uploadDone)="onUploadDone($event)"></image-upload>
       </ng-container>

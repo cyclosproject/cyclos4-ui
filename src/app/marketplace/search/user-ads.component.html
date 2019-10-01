@@ -4,7 +4,56 @@
 
 <ng-template #content>
   <page-content mode="filters" [heading]="this.i18n.ad.title.owner(shortName)"
-    [mobileHeading]="this.i18n.ad.mobileTitle.owner">
+    [mobileHeading]="this.i18n.ad.mobileTitle.owner"
+    [headingActions]="headingActions$ | async">
+    <form [formGroup]="form"
+      class="filters-form filters-form-separator border-0">
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <input-field labelPosition="side" formControlName="keywords"
+            [label]="i18n.general.keywords" fieldSize="full"></input-field>
+        </div>
+        <div class="col-12 col-md-6">
+          <single-selection-field labelPosition="side"
+            formControlName="orderBy" [label]="i18n.general.orderBy"
+            [emptyOption]="i18n.general.noOptionSelected">
+            <field-option value="date" [text]="i18n.ad.orderBy.date">
+            </field-option>
+            <field-option value="distance" [text]="i18n.ad.orderBy.distance">
+            </field-option>
+            <field-option value="priceDesc"
+              [text]="i18n.ad.orderBy.priceDesc">
+            </field-option>
+            <field-option value="priceAsc" [text]="i18n.ad.orderBy.priceAsc">
+            </field-option>
+            <field-option value="relevance"
+              [text]="i18n.ad.orderBy.relevance">
+            </field-option>
+          </single-selection-field>
+        </div>
+        <div class="col-12 col-md-6">
+          <multi-selection-field labelPosition="side"
+            formControlName="statuses" [label]="i18n.general.status">
+            <field-option value="active" [text]="i18n.ad.status.active">
+            </field-option>
+            <field-option value="disabled" [text]="i18n.ad.status.disabled">
+            </field-option>
+            <field-option *ngIf="data.requiresAuthorization" value="draft"
+              [text]="i18n.ad.status.draft">
+            </field-option>
+            <field-option *ngIf="canViewPendingAds" value="pending"
+              [text]="i18n.ad.status.pending">
+            </field-option>
+            <field-option value="expired" [text]="i18n.ad.status.expired">
+            </field-option>
+            <field-option value="hidden" [text]="i18n.ad.status.hidden">
+            </field-option>
+            <field-option value="scheduled" [text]="i18n.ad.status.scheduled">
+            </field-option>
+          </multi-selection-field>
+        </div>
+      </div>
+    </form>
     <div class="filters-row">
       <result-type-field [formControl]="resultTypeControl"
         [allowedResultTypes]="allowedResultTypes$ | async">

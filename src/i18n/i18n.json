@@ -60,6 +60,9 @@
     "map": "Map",
     "map.view": "View map",
     "noOptionsSelected": "No options selected",
+    "noOptionSelected": "No option selected",
+    "currency": "Currency",
+    "images": "Images",
     "sendMedium": {
       "email": "E-mail",
       "sms": "SMS"
@@ -253,6 +256,7 @@
     "marketplace.userSearch": "Users",
     "marketplace.businessDirectory": "Business directory",
     "marketplace.advertisements": "Advertisements",
+    "marketplace.myAdvertisements": "My advertisements",
     "marketplace.connectedUsers": "Connected users",
     "marketplace.userAlerts": "User alerts",
     "personal": "Personal",
@@ -1065,27 +1069,50 @@
     "zip": "Zip code"
   },
   "ad": {
+    "adSaved": "The advertisement was saved",
     "name": "Title",
     "owner": "Publisher",
     "price": "Price",
     "category": "Category",
     "categories": "Categories",
+    "creationDate": "Creation date",
     "byOwner": "By {owner}",
     "showAllCategories": "Show all",
     "rootCategory": "Main",
+    "imagesChanged": "To actually save the changes on images, the advertisement needs to be saved",
+    "publicationPeriod": "Publication period",
+    "promotionalPeriod": "Promotional period",
+    "promotionalPrice": "Promotional price",
+    "showAddressOnMap": "Show address on map",
+    "saveAndInsertNew": "Save and insert new",
     "orderBy": {
       "date": "Last published",
+      "distance": "Distance",
       "priceAsc": "Lowest price",
-      "priceDesc": "Highest price"
+      "priceDesc": "Highest price",
+      "relevance": "Relevance"
+    },
+    "status": {
+      "active": "Published",
+      "disabled": "Disabled",
+      "draft": "Draft",
+      "expired": "Expired",
+      "hidden": "Hidden",
+      "pending": "Pending",
+      "scheduled": "Scheduled"
     },
     "title": {
       "search": "Search advertisements",
-      "owner": "Advertisements of {name}"
+      "owner": "Advertisements of {name}",
+      "new": "New advertisement",
+      "edit": "Edit advertisement"
     },
     "mobileTitle": {
       "search": "Advertisements",
       "owner": "Advertisements",
-      "details": "Advertisement"
+      "details": "Advertisement",
+      "new": "New advertisement",
+      "edit": "Edit advertisement"
     }
   },
   "notification": {

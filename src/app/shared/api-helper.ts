@@ -1,6 +1,6 @@
 import {
   AccountWithOwner, AdminMenuEnum, Auth, Entity, Notification,
-  NotificationEntityTypeEnum, Operation, OperationScopeEnum, UserMenuEnum
+  NotificationEntityTypeEnum, Operation, OperationScopeEnum, UserMenuEnum, DatePeriod
 } from 'app/api/models';
 import { empty } from 'app/shared/helper';
 import { ActiveMenu, Menu, RootMenu } from 'app/shared/menu';
@@ -82,7 +82,17 @@ export class ApiHelper {
   static dateRangeFilter(min: string, max: string): string[] {
     return this.rangeFilter(min, this.shiftToDayEnd(max));
   }
-
+  /**
+   * Shift the max date to the end of the day and returns it with the min as range,
+   * suitable for posting a date period on the API
+   */
+  static dateRange(min: string, max: string): DatePeriod {
+    const range = this.rangeFilter(min, this.shiftToDayEnd(max));
+    if (range.length > 0) {
+      return { begin: range[0], end: range[1] };
+    }
+    return null;
+  }
   /**
    * Returns the given min / max value as a range, suitable for query filters on the API
    */

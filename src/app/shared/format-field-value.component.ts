@@ -311,7 +311,7 @@ export class FormatFieldValueComponent extends AbstractComponent implements OnIn
   }
 
   downloadImage(event: MouseEvent, image: Image) {
-    this.addSub(this.imagesService.getImageContentById({ id: image.id }).subscribe(blob => {
+    this.addSub(this.imagesService.getImageContent({ idOrKey: image.id }).subscribe(blob => {
       download(blob, image.name, image.contentType);
     }));
     event.stopPropagation();

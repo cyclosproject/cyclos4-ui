@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { PhoneKind, PhoneView, UserView, BasicProfileFieldEnum, RoleEnum, UserRelationshipEnum } from 'app/api/models';
+import { PhoneKind, PhoneView, UserView, BasicProfileFieldEnum, RoleEnum, UserRelationshipEnum, AdKind } from 'app/api/models';
 import { ContactsService, UsersService } from 'app/api/services';
 import { ErrorStatus } from 'app/core/error-status';
 import { MapsService } from 'app/core/maps.service';
@@ -237,9 +237,9 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
           this.router.navigate(['/banking', ApiHelper.SELF, 'payment', this.param]);
         }));
       }
-      if (marketplace.viewAdvertisements || marketplace.viewWebshop) {
+      if (marketplace.viewAdvertisements) {
         actions.push(new HeadingAction('shopping_basket', this.i18n.user.profile.viewAds, () => {
-          this.router.navigate(['/marketplace', this.param, 'list']);
+          this.router.navigate(['/marketplace', this.param, AdKind.SIMPLE, 'list']);
         }));
       }
       // Records

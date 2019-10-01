@@ -1,0 +1,148 @@
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data">
+    <page-content [heading]="create ? i18n.ad.title.new : i18n.ad.title.edit"
+      [mobileHeading]="create ? i18n.ad.mobileTitle.new : i18n.ad.mobileTitle.edit"
+      [headingActions]="headingActions$ | async">
+      <form [formGroup]="form">
+        <!-- TODO MISSING FOR MANAGEMENT 
+          <label-value *ngIf="!self" [label]="i18n.general.user"
+          mode="fieldView">
+          <user-link [user]="data.user"></user-link>
+        </label-value> -->
+        <ng-container *ngIf="data.maxImages > 0">
+          <h2
+            class="border-0 d-flex mb-3 flex-column flex-xs-row justify-content-between mt-2 mt-md-0">
+            <div class="mb-2 mb-xs-0">
+              {{ i18n.general.images }}
+            </div>
+            <button
+              *ngIf="canUploadImages && !(multiUpload.uploading$ | async)"
+              class="btn btn-outline-primary" (click)="multiUpload.perform()">
+              {{ i18n.field.image.upload }}
+            </button>
+          </h2>
+          <div class="row no-gutters">
+            <div
+              class="col-12 col-xs-6 col-sm-4 col-md-3 d-flex justify-content-center justify-content-center"
+              *ngFor="let image of (images$ | async)">
+              <avatar [image]="image" size="huge" useLightbox
+                [additionalImages]="images" additionalImagesHidden
+                class="mb-1 mb-xs-3">
+              </avatar>
+            </div>
+            <ng-container *ngIf="images.length === 0">
+              <div class="col-12">
+                {{ i18n.field.image.noImages }}
+              </div>
+            </ng-container>
+          </div>
+          <div *ngIf="images.length > 0" class="d-flex justify-content-end">
+            <button class="btn btn-outline-primary" (click)="manageImages()">
+              {{ i18n.field.image.manage }}
+            </button>
+          </div>
+          <image-upload #multiUpload target="advertisement"
+            [max]="data.maxImages" (uploadDone)="onUploadDone($event)"
+            [owner]="id">
+          </image-upload>
+        </ng-container>
+        <h2 *ngIf="data.maxImages > 0" class="mt-4 mb-2"></h2>
+        <label-value *ngIf="!create" [label]="i18n.general.status">
+          {{resolveStatusLabel()}}
+        </label-value>
+        <label-value *ngIf="!create" [label]="i18n.ad.creationDate">
+          {{ creationDate | date }}
+        </label-value>
+        <input-field [label]="i18n.general.name" formControlName="name"
+          required></input-field>
+        <single-selection-field *ngIf="data.maxCategoriesPerAd == 1"
+          formControlName="categories" [label]="i18n.ad.category">
+          <field-option *ngFor="let cat of categories"
+            [value]="ApiHelper.internalNameOrId(cat)" [id]="cat.id"
+            [internalName]="cat.internalName" [text]="cat.name"
+            [style]="cat.leaf ? 'leaf':'parent'" [level]="cat.level"
+            [enabled]="cat.leaf">
+          </field-option>
+        </single-selection-field>
+        <multi-selection-field *ngIf="data.maxCategoriesPerAd > 1"
+          [label]="i18n.ad.categories" formControlName="categories">
+          <field-option *ngFor="let cat of categories"
+            [value]="ApiHelper.internalNameOrId(cat)" [id]="cat.id"
+            [internalName]="cat.internalName" [text]="cat.name"
+            [style]="'hierarchy ' + (cat.leaf ? 'leaf':'parent')"
+            [level]="cat.level" [enabled]="cat.leaf">
+          </field-option>
+        </multi-selection-field>
+        <single-selection-field
+          *ngIf="data.currencies && data.currencies.length > 1"
+          formControlName="currency" [label]="i18n.general.currency">
+          <field-option *ngFor="let c of data.currencies"
+            [value]="ApiHelper.internalNameOrId(c)" [id]="c.id"
+            [internalName]="c.internalName" [text]="c.name">
+          </field-option>
+        </single-selection-field>
+        <decimal-field *ngIf="currency$ | async" formControlName="price"
+          [label]="i18n.ad.price" [scale]="currency.decimalDigits"
+          [prefix]="currency.prefix" [suffix]="currency.suffix">
+        </decimal-field>
+        <label-value [label]="i18n.ad.publicationPeriod" labelPosition="side">
+          <div class="row">
+            <div class="col-md-6">
+              <date-field labelPosition="side"
+                formControlName="publicationBeginDate" minDate="past5"
+                fieldSize="full">
+              </date-field>
+            </div>
+            <div class="col-md-6">
+              <date-field labelPosition="side"
+                formControlName="publicationEndDate" minDate="past5"
+                fieldSize="full">
+              </date-field>
+            </div>
+          </div>
+        </label-value>
+        <label-value [label]="i18n.ad.promotionalPeriod" labelPosition="side">
+          <div class="row">
+            <div class="col-md-6">
+              <date-field labelPosition="side"
+                formControlName="promotionalBeginDate" minDate="past5"
+                fieldSize="full">
+              </date-field>
+            </div>
+            <div class="col-md-6">
+              <date-field labelPosition="side"
+                formControlName="promotionalEndDate" minDate="past5"
+                fieldSize="full">
+              </date-field>
+            </div>
+          </div>
+        </label-value>
+        <decimal-field *ngIf="currency$ | async"
+          formControlName="promotionalPrice"
+          [label]="i18n.ad.promotionalPrice" [scale]="currency.decimalDigits"
+          [prefix]="currency.prefix" [suffix]="currency.suffix">
+        </decimal-field>
+        <textarea-field formControlName="description"
+          [label]="i18n.general.description"></textarea-field>
+        <custom-field-input *ngFor="let cf of data.customFields" [field]="cf"
+          [formControl]="form.get('customValues').get(cf.internalName)"
+          [binaryValues]="binaryValues">
+        </custom-field-input>
+        <multi-selection-field *ngIf="data.addresses"
+          [label]="i18n.ad.showAddressOnMap" formControlName="addresses">
+          <field-option *ngFor="let addr of data.addresses" [value]="addr.id"
+            [id]="addr.id" [text]="addr.name">
+          </field-option>
+        </multi-selection-field>
+      </form>
+      <actions>
+        <button class="btn btn-primary" (click)="save()">
+          {{ i18n.general.save }}
+        </button>
+        <button *ngIf="data.canCreateNew" class="btn btn-outline-primary"
+          [disabled]="requesting$ | async"
+          (click)="save(true)">{{ i18n.ad.saveAndInsertNew }}</button>
+      </actions>
+    </page-content>
+  </ng-container>
+</page-layout>

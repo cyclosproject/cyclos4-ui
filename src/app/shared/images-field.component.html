@@ -38,7 +38,7 @@
   </div>
 
   <image-upload #imageUpload containerClass="mt-3"
-    [max]="maxFiles == 1 ? 1 : maxFiles - images.length" [user]="user"
+    [max]="maxFiles == 1 ? 1 : maxFiles - images.length" [owner]="user"
     [target]="target" [customField]="customField"
     (uploadDone)="onImagesUploaded($event)"></image-upload>
   <field-errors [control]="formControl"></field-errors>

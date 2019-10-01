@@ -20,6 +20,7 @@ import { Menu } from 'app/shared/menu';
 export class ViewAdComponent extends BaseViewPageComponent<AdView> implements OnInit {
 
   title: string;
+  id: string;
   addresses: Address[];
 
   constructor(
@@ -36,15 +37,40 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
   ngOnInit() {
     super.ngOnInit();
     this.headingActions = [this.printAction];
-    const id = this.route.snapshot.paramMap.get('id');
-    this.addSub(this.marketplaceService.viewAd({ ad: id })
+    this.id = this.route.snapshot.paramMap.get('id');
+    this.addSub(this.marketplaceService.viewAd({ ad: this.id })
       .subscribe(ad => {
         this.data = ad;
       }));
   }
 
+  /**
+   * Removes this advertisement and goes back to the list page
+   */
+  protected doRemove() {
+    this.addSub(this.marketplaceService.deleteAd({ ad: this.id }).subscribe(() => {
+      this.notification.snackBar(this.i18n.general.removeDone(this.ad.name));
+      history.back();
+    }));
+  }
+
   onDataInitialized(ad: AdView) {
     const headingActions: HeadingAction[] = [];
+    if (ad.canEdit) {
+      headingActions.push(
+        new HeadingAction('edit', this.i18n.general.edit, () => {
+          this.router.navigate(['/marketplace', 'edit', this.id]);
+        }, true));
+    }
+    if (ad.canRemove) {
+      headingActions.push(
+        new HeadingAction('clear', this.i18n.general.remove, () => {
+          this.notification.confirm({
+            message: this.i18n.general.removeConfirm(this.ad.name),
+            callback: () => this.doRemove()
+          });
+        }, true));
+    }
     headingActions.push(this.printAction);
     for (const operation of ad.operations || []) {
       headingActions.push(this.operationHelper.headingAction(operation, ad.id));

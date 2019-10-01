@@ -18,6 +18,9 @@ export class FieldOptionDirective implements OnInit, OnDestroy, FieldOption {
   @Input() text: string;
   @Input() category: string;
   @Input() parent: string;
+  @Input() style: string;
+  @Input() enabled = true;
+  _level: number;
 
   constructor(
     @Inject(FORM_FIELD_WITH_OPTIONS) private component: BaseFormFieldWithOptionsComponent<any>
@@ -32,7 +35,11 @@ export class FieldOptionDirective implements OnInit, OnDestroy, FieldOption {
   }
 
   get level(): number {
-    return this.parent ? 1 : 0;
+    return this._level ? this._level : this.parent ? 1 : 0;
+  }
+
+  @Input() set level(level: number) {
+    this._level = level;
   }
 
 }
