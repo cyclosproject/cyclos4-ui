@@ -1076,6 +1076,7 @@
     "adUnhidden": "The advertisement is now visible",
     "authorize": "Authorize",
     "authorized": "The advertisement has been authorized",
+    "askQuestion": "Ask a question",
     "backToDraft": "The advertisement is now in draft mode",
     "beginDate": "Begin date",
     "endDate": "End date",
@@ -1084,6 +1085,7 @@
     "name": "Title",
     "owner": "Publisher",
     "price": "Price",
+    "questionAsked": "The question has been submitted to the seller",
     "category": "Category",
     "categories": "Categories",
     "creationDate": "Creation date",
@@ -1109,6 +1111,7 @@
     "productNumber": "Product number",
     "outOfStock": "Out of stock",
     "authorizationNotes": "Authorization notes",
+    "questionsAndAnswers": "Questions & Answers",
     "orderBy": {
       "date": "Last published",
       "distance": "Distance",

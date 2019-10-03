@@ -76,7 +76,6 @@
         </ng-container>
       </div>
     </div>
-
     <ng-container *ngIf="data.lastAuthorizationComments">
       <h2 class="d-none d-sm-block my-3 pt-3">{{ i18n.ad.authorizationNotes }}
       </h2>
@@ -95,7 +94,8 @@
         <label-value [label]="i18n.ad.deliveryTime">
           {{ formatTimeInterval(dm.deliveryTime) }}
         </label-value>
-        <label-value *ngIf="hasFixedPrice(dm)" [label]="i18n.ad.price">
+        <label-value *ngIf="hasFixedDeliveryPrice(dm)"
+          [label]="i18n.ad.price">
           {{ dm.chargeAmount | currency:ad.currency }}
         </label-value>
         <label-value *ngIf="dm.description"
@@ -132,6 +132,21 @@
             </div>
           </div>
         </ng-container>
+      </ng-container>
+    </div>
+    <div *ngIf="data.questionsEnabled">
+      <h2
+        class="border-0 d-flex mb-3 flex-column flex-xs-row justify-content-between mt-3 mt-md-0">
+        <div class="mb-2 mb-xs-0">
+          {{ i18n.ad.questionsAndAnswers }}
+        </div>
+        <button *ngIf="data.canAsk" class="btn btn-outline-primary"
+          (click)="ask()">
+          {{ i18n.ad.askQuestion }}
+        </button>
+      </h2>
+      <ng-container *ngFor="let q of data.questions">
+
       </ng-container>
     </div>
   </page-content>

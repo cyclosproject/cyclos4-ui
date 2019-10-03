@@ -1,5 +1,8 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { AdCategoryWithParent, Address, AdView, AdKind, RoleEnum, TimeInterval, DeliveryMethod, DeliveryMethodChargeTypeEnum } from 'app/api/models';
+import {
+  AdCategoryWithParent, Address, AdView, AdKind, RoleEnum, TimeInterval,
+  DeliveryMethod, DeliveryMethodChargeTypeEnum
+} from 'app/api/models';
 import { MarketplaceService } from 'app/api/services';
 import { OperationHelperService } from 'app/core/operation-helper.service';
 import { HeadingAction } from 'app/shared/action';
@@ -10,7 +13,8 @@ import { Observable } from 'rxjs';
 import { MarketplaceHelperService } from 'app/core/marketplace-helper.service';
 import { FormatService } from 'app/core/format.service';
 import { LoginService } from 'app/core/login.service';
-
+import { AskQuestionDialogComponent } from 'app/marketplace/questions/ask-question-dialog.component';
+import { BsModalService } from 'ngx-bootstrap/modal';
 /**
  * Displays an advertisement details
  */
@@ -31,6 +35,7 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
 
   constructor(
     injector: Injector,
+    private modal: BsModalService,
     private formatService: FormatService,
     private operationHelper: OperationHelperService,
     private loginService: LoginService,
@@ -172,7 +177,7 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
   /**
    * Returns if the delivery method has a fixed price
    */
-  hasFixedPrice(dm: DeliveryMethod) {
+  hasFixedDeliveryPrice(dm: DeliveryMethod) {
     return dm.chargeType === DeliveryMethodChargeTypeEnum.FIXED;
   }
 
@@ -198,6 +203,22 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
       category = category.parent;
     }
     return categories;
+  }
+
+  /**
+   * Ask a question for the current ad and reloads the page
+   */
+  ask() {
+    const ref = this.modal.show(AskQuestionDialogComponent, {
+      class: 'modal-form', initialState: {
+        id: this.id
+      }
+    });
+    const component = ref.content as AskQuestionDialogComponent;
+    this.addSub(component.done.subscribe(() => {
+      this.notification.snackBar(this.i18n.ad.questionAsked);
+      this.reload();
+    }));
   }
 
   resolveMenu() {

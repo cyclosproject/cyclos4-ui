@@ -205,10 +205,10 @@ export class EditAdComponent
 
       value.images = this.uploadedImages.map(i => i.id);
 
-      this.marketplaceService.createAd({
+      this.addSub(this.marketplaceService.createAd({
         user: this.owner,
         body: value
-      }).subscribe(onFinish);
+      }).subscribe(onFinish));
 
     } else {
 
@@ -219,13 +219,13 @@ export class EditAdComponent
 
       // If the main image has changed reload the ad version
       if (this.mainImageChanged()) {
-        this.marketplaceService.getAdDataForEdit({ ad: this.id, fields: ['advertisement.version'] })
+        this.addSub(this.marketplaceService.getAdDataForEdit({ ad: this.id, fields: ['advertisement.version'] })
           .subscribe(data => {
             value.version = data.advertisement.version;
-            updateAdReq.subscribe(onFinish);
-          });
+            this.addSub(updateAdReq.subscribe(onFinish));
+          }));
       } else {
-        updateAdReq.subscribe(onFinish);
+        this.addSub(updateAdReq.subscribe(onFinish));
       }
     }
   }
@@ -256,7 +256,7 @@ export class EditAdComponent
       this.hasRemovedImages = !empty(result.removedImages);
       if (this.hasRemovedImages) {
         for (const removed of result.removedImages) {
-          this.imagesService.deleteImage({ idOrKey: removed }).subscribe();
+          this.addSub(this.imagesService.deleteImage({ idOrKey: removed }).subscribe());
         }
         // Update the images and uploaded images lists
         this.images = this.images.filter(i => !result.removedImages.includes(i.id));
@@ -269,7 +269,7 @@ export class EditAdComponent
           return this.images.find(i => i.id === id);
         });
         if (!this.create) {
-          this.imagesService.reorderAdImages({ ids: result.order, ad: this.id }).subscribe();
+          this.addSub(this.imagesService.reorderAdImages({ ids: result.order, ad: this.id }).subscribe());
         }
       }
       if (this.create && (this.hasRemovedImages || hasOrderChanged)) {
