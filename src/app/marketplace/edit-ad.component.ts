@@ -1,5 +1,5 @@
 import {
-  AdDataForEdit, AdKind, AdDataForNew, Image, AdStatusEnum, Currency,
+  AdDataForEdit, AdKind, AdDataForNew, Image, Currency,
   AdBasicData, AdCategoryWithChildren, AdEdit
 } from 'app/api/models';
 import { OnInit, ChangeDetectionStrategy, Component, Injector, ChangeDetectorRef } from '@angular/core';
@@ -40,8 +40,10 @@ export class EditAdComponent
   owner: string;
   self: boolean;
   create: boolean;
+  hasRemovedImages: boolean;
   kind: AdKind;
   uploadedImages: Image[];
+  mainImage: string;
   categories: HierarchyItem[] = [];
 
   images$ = new BehaviorSubject<Image[]>([]);
@@ -57,12 +59,6 @@ export class EditAdComponent
     private marketplaceHelper: MarketplaceHelperService,
     private marketplaceService: MarketplaceService) {
     super(injector);
-  }
-
-  get canUploadImages(): boolean {
-    const max = this.data.maxImages;
-    const current = this.images.length;
-    return current < max;
   }
 
   ngOnInit() {
@@ -85,6 +81,7 @@ export class EditAdComponent
       if (!this.create && data.maxImages > 0) {
         this.addSub(this.imagesService.listAdImages({ ad: this.id }).subscribe(currentImages => {
           this.images = currentImages;
+          this.mainImage = this.images.length > 0 ? this.ApiHelper.internalNameOrId(this.images[0]) : null;
           this.data = data;
         }));
       } else {
@@ -133,30 +130,8 @@ export class EditAdComponent
     this.uploadedImages = [];
   }
 
-  resolveMenu() {
-    return Menu.SEARCH_USER_ADS;
-  }
-
-  get currency(): Currency {
-    return this.currency$.value;
-  }
-  set currency(currency: Currency) {
-    this.currency$.next(currency);
-  }
-
-  get images(): Image[] {
-    return this.images$.value;
-  }
-  set images(images: Image[]) {
-    this.images$.next(images);
-  }
-
-  get creationDate() {
-    return (this.data as AdDataForEdit).creationDate;
-  }
-
-  get binaryValues() {
-    return (this.data as AdDataForEdit).binaryValues;
+  resolveMenu(data: AdBasicData) {
+    return this.authHelper.userMenu(data.owner, Menu.SEARCH_ADS);
   }
 
   /**
@@ -185,25 +160,14 @@ export class EditAdComponent
   /**
    * Resolves the current ad status label
    */
-  resolveStatusLabel() {
-    switch ((this.data as AdDataForEdit).status) {
-      case AdStatusEnum.ACTIVE:
-        return this.i18n.ad.status.active;
-      case AdStatusEnum.DISABLED:
-        return this.i18n.ad.status.disabled;
-      case AdStatusEnum.DRAFT:
-        return this.i18n.ad.status.draft;
-      case AdStatusEnum.EXPIRED:
-        return this.i18n.ad.status.expired;
-      case AdStatusEnum.HIDDEN:
-        return this.i18n.ad.status.hidden;
-      case AdStatusEnum.PENDING:
-        return this.i18n.ad.status.pending;
-      case AdStatusEnum.SCHEDULED:
-        return this.i18n.ad.status.scheduled;
-    }
+  get status(): string {
+    return this.marketplaceHelper.resolveStatusLabel((this.data as AdDataForEdit).status);
   }
 
+  /**
+   * Creates or updates the current ad and allows to create
+   * a new ad based on the current one
+   */
   save(insertNew?: boolean) {
 
     validateBeforeSubmit(this.form);
@@ -221,23 +185,7 @@ export class EditAdComponent
     delete value['promotionalBeginDate'];
     delete value['promotionalEndDate'];
 
-
-    let request: any;
-    if (this.create) {
-      // Temp images
-      value.images = this.uploadedImages.map(i => i.id);
-
-      request = this.marketplaceService.createAd({
-        user: this.owner,
-        body: value
-      });
-    } else {
-      request = this.marketplaceService.updateAd({
-        ad: this.id,
-        body: value
-      });
-    }
-    request.subscribe((id: string) => {
+    const onFinish: any = (id: string) => {
       this.notification.snackBar(this.i18n.ad.adSaved);
       if (insertNew) {
         EditAdComponent.BASED_ON_ID = id || this.id;
@@ -251,7 +199,45 @@ export class EditAdComponent
       } else {
         history.back();
       }
-    });
+    };
+
+    if (this.create) {
+
+      value.images = this.uploadedImages.map(i => i.id);
+
+      this.marketplaceService.createAd({
+        user: this.owner,
+        body: value
+      }).subscribe(onFinish);
+
+    } else {
+
+      const updateAdReq = this.marketplaceService.updateAd({
+        ad: this.id,
+        body: value
+      });
+
+      // If the main image has changed reload the ad version
+      if (this.mainImageChanged()) {
+        this.marketplaceService.getAdDataForEdit({ ad: this.id, fields: ['advertisement.version'] })
+          .subscribe(data => {
+            value.version = data.advertisement.version;
+            updateAdReq.subscribe(onFinish);
+          });
+      } else {
+        updateAdReq.subscribe(onFinish);
+      }
+    }
+  }
+
+  /**
+   * Returns if the main ad image has changed
+   */
+  protected mainImageChanged(): boolean {
+    const currentImage = this.images.length > 0 ? this.ApiHelper.internalNameOrId(this.images[0]) : null;
+    // Check any change in the main image, either added and removed, or changed
+    return this.mainImage == null && currentImage == null && this.hasRemovedImages ||
+      this.mainImage !== currentImage;
   }
 
   /**
@@ -267,8 +253,8 @@ export class EditAdComponent
     });
     const component = ref.content as ManageImagesComponent;
     this.addSub(component.result.pipe(take(1)).subscribe(result => {
-      const hasRemovedImages = !empty(result.removedImages);
-      if (hasRemovedImages) {
+      this.hasRemovedImages = !empty(result.removedImages);
+      if (this.hasRemovedImages) {
         for (const removed of result.removedImages) {
           this.imagesService.deleteImage({ idOrKey: removed }).subscribe();
         }
@@ -286,13 +272,16 @@ export class EditAdComponent
           this.imagesService.reorderAdImages({ ids: result.order, ad: this.id }).subscribe();
         }
       }
-      if (this.create && (hasRemovedImages || hasOrderChanged)) {
+      if (this.create && (this.hasRemovedImages || hasOrderChanged)) {
         this.notification.snackBar(this.i18n.ad.imagesChanged, { timeout: IMAGE_MANAGED_TIMEOUT });
       }
       ref.hide();
     }));
   }
 
+  /**
+   * Updates images and displays a notification after the image was uploaded
+   */
   onUploadDone(images: Image[]) {
     this.images = ([...this.images, ...images]);
     if (this.create) {
@@ -300,5 +289,33 @@ export class EditAdComponent
     }
     this.uploadedImages = [...(this.uploadedImages || []), ...images];
     this.changeDetector.detectChanges();
+  }
+
+  get canUploadImages(): boolean {
+    const max = this.data.maxImages;
+    const current = this.images.length;
+    return current < max;
+  }
+
+  get currency(): Currency {
+    return this.currency$.value;
+  }
+  set currency(currency: Currency) {
+    this.currency$.next(currency);
+  }
+
+  get images(): Image[] {
+    return this.images$.value;
+  }
+  set images(images: Image[]) {
+    this.images$.next(images);
+  }
+
+  get creationDate() {
+    return (this.data as AdDataForEdit).creationDate;
+  }
+
+  get binaryValues() {
+    return (this.data as AdDataForEdit).binaryValues;
   }
 }

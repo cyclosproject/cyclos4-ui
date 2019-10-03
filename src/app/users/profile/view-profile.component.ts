@@ -242,6 +242,11 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
           this.router.navigate(['/marketplace', this.param, AdKind.SIMPLE, 'list']);
         }));
       }
+      if (marketplace.viewWebshop) {
+        actions.push(new HeadingAction('shopping_basket', this.i18n.user.profile.viewWebshop, () => {
+          this.router.navigate(['/marketplace', this.param, AdKind.WEBSHOP, 'list']);
+        }));
+      }
       // Records
       for (const record of permissions.records || []) {
         actions.push(new HeadingAction('library_books', this.i18n.record.action(

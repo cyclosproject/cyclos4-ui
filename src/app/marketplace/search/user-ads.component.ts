@@ -77,6 +77,9 @@ export class UserAdsComponent
   }
 
   resolveMenu() {
-    return this.param === this.ApiHelper.SELF ? Menu.SEARCH_USER_ADS : Menu.SEARCH_ADS;
+    if (this.param === this.ApiHelper.SELF) {
+      return this.kind === AdKind.SIMPLE ? Menu.SEARCH_USER_ADS : Menu.SEARCH_USER_WEBSHOP;
+    }
+    return Menu.SEARCH_ADS;
   }
 }

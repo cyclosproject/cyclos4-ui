@@ -58,6 +58,7 @@ export class ImageUploadComponent extends AbstractComponent implements OnDestroy
   @Input() max = 1;
   @Input() target: TempImageTargetEnum;
   @Input() owner = '';
+  @Input() user = '';
   @Input() customField: CustomField;
   @Output() uploadDone = new EventEmitter<Image[]>();
   @ViewChild('inputField', { static: true }) inputField: ElementRef;
@@ -177,7 +178,8 @@ export class ImageUploadComponent extends AbstractComponent implements OnDestroy
           url = `marketplace/${this.owner}/images`;
         } else {
           params = {
-            target: this.target
+            target: this.target,
+            user: this.user
           };
         }
         url = this.nextRequestState.appendAuth(url);

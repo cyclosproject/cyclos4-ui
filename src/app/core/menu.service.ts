@@ -645,8 +645,11 @@ export class MenuService {
       if (marketplace.search) {
         add(Menu.SEARCH_ADS, '/marketplace/search', 'shopping_cart', this.i18n.menu.marketplaceAdvertisements);
       }
-      if (marketplace.ownAdvertisements) {
+      if (marketplace.mySimple.enable) {
         add(Menu.SEARCH_USER_ADS, 'marketplace/self/simple/list', 'shopping_cart', this.i18n.menu.marketplaceMyAdvertisements);
+      }
+      if (marketplace.myWebshop.enable) {
+        add(Menu.SEARCH_USER_WEBSHOP, 'marketplace/self/webshop/list', 'shopping_basket', this.i18n.menu.marketplaceMyWebshop);
       }
 
       if (vouchers.buy && role !== RoleEnum.ADMINISTRATOR) {

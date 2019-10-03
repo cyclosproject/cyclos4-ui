@@ -297,6 +297,10 @@ tags:
   - name: WebshopSettings
     description: >-
       Provides access to general webshop settings for sellers.
+  - name: AdInterests
+    description: >-
+      Provides access to advertisement interests, which are criteria registered
+      by users to be notified when new matching advertisements are published.
   - name: NFC
     description: >-
       Contains operations regarding NFC tags
@@ -31702,8 +31706,10 @@ A note for dynamic custom fields: If a script is used to generate possible value
         Request for authorization for an advertisement.
       description: >-
         Request for authorization for an advertisement.
-        Only if the system is configured to require authorizations and the authenticated user is the owner of the
-        advertisement. The advertisement will remain in status `pending` until accepted or rejected.
+        Only if the system is configured to require authorizations and the
+        authenticated user is the owner of the advertisement. The advertisement
+        will remain in status `pending` until approved
+        or rejected.
       tags:
         - Marketplace
       parameters:
@@ -31741,6 +31747,108 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+
+  /marketplace/{ad}/approve:
+    post:
+      operationId: approveAd
+      summary: >-
+        Approves a pending advertisement.
+      description: >-
+        Change the advertisement status from `pending` to
+        `active`, making it publcly visible.
+      tags:
+        - Marketplace
+      parameters:
+        - $ref: '#/components/parameters/ad'
+      responses:
+        '204':
+          description: >-
+            The advertisement status was changed.
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /marketplace/{ad}/reject:
+    post:
+      operationId: rejectAd
+      summary: >-
+        Rejects a pending advertisement.
+      description: >-
+        Change the advertisement status from `pending` to
+        `draft`, making it visible only to its owner.
+        A comment text is set in the request body.
+      tags:
+        - Marketplace
+      parameters:
+        - $ref: '#/components/parameters/ad'
+      responses:
+        '204':
+          description: >-
+            The advertisement status was changed.
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      requestBody:
+        description: >-
+          The comments for the action.
+        required: false
+        content:
+          text/plain:
+            schema:
+              type: string
+
   /marketplace/{ad}/questions:
     post:
       operationId: createAdQuestion
@@ -33037,7 +33145,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
       responses:
         '200':
           description: >-
-            The data for listing addresses
+            The data for listing webshop delivery methods
           content:
             application/json:
               schema:
@@ -33092,7 +33200,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
       responses:
         '200':
           description: >-
-            The data for creating a new webashop delivery method.
+            The data for creating a new webshop delivery method.
           content:
             application/json:
               schema:
@@ -33546,6 +33654,420 @@ A note for dynamic custom fields: If a script is used to generate possible value
           application/json:
             schema:
               $ref: '#/components/schemas/WebshopSettings'
+  /{user}/marketplace-interests/list-data:
+    parameters:
+      - $ref: '#/components/parameters/user'
+    get:
+      operationId: getUserAdInterestsListData
+      summary: >-
+        Returns data for advertisement interests listing of the given user.
+      description: >-
+        Returns data for advertisement interests listing of the given user.
+      tags:
+        - AdInterests
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            The data for listing advertisement interests.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserAdInterestsListData'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /{user}/marketplace-interests/data-for-new:
+    parameters:
+      - $ref: '#/components/parameters/user'
+    get:
+      operationId: getAdInterestDataForNew
+      summary: >-
+        Returns data for creating a new advertisement interest for a given user.
+      description: >-
+        Returns data for creating a new advertisement interest for a given user.
+      tags:
+        - AdInterests
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            The data for creating a new advertisement interest.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdInterestDataForNew'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /{user}/marketplace-interests:
+    parameters:
+      - $ref: '#/components/parameters/user'
+    post:
+      operationId: createAdInterest
+      summary: >-
+        Creates a new advertisement interest for a given user.
+      description: >-
+        Creates a new advertisement interest for a given user.
+      tags:
+        - AdInterests
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      responses:
+        '201':
+          description: >-
+            Returns the identifier of the new advertisement interest.
+          headers:
+            Location:
+              description: >-
+                URL for viewing the advertisement interest details.
+              schema:
+                type: string
+          content:
+            text/plain:
+              schema:
+                type: string
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: >-
+            Input error. Either a validation error or the maximum allowed items was
+            exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      requestBody:
+        description: >-
+          The advertisement interest to be created.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdInterestNew'
+
+  /marketplace-interests/{id}/data-for-edit:
+    parameters:
+      - $ref: '#/components/parameters/id'
+    get:
+      operationId: getAdInterestDataForEdit
+      summary: >-
+        Returns data for modifying an advertisement interest.
+      description: >-
+        Returns data for modifying an advertisement interest.
+      tags:
+        - AdInterests
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            The advertisement interest data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdInterestDataForEdit'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /marketplace-interests/{id}:
+    parameters:
+      - $ref: '#/components/parameters/id'
+    get:
+      operationId: viewAdInterest
+      summary: >-
+        Returns details of an advertisement interest.
+      description: >-
+        Returns details of an advertisement interest.
+      tags:
+        - AdInterests
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            The advertisement interest data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdInterestView'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      operationId: updateAdInterest
+      summary: >-
+        Updates an existing advertisement interest.
+      description: >-
+        Updates an existing advertisement interest.
+      tags:
+        - AdInterests
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      responses:
+        '204':
+          description: >-
+            The advertisement interest was updated.
+        '409':
+          description: >-
+            This operation expected an entity state, but it has resulted in a conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictError'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: >-
+            Input error. Either a validation error or the maximum allowed items was
+            exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      requestBody:
+        description: >-
+          The advertisement interest to be edited.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AdInterestEdit'
+    delete:
+      operationId: deleteAdInterest
+      summary: >-
+        Removes an advertisement interest.
+      description: >-
+        Removes an advertisement interest.
+      tags:
+        - AdInterests
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      responses:
+        '204':
+          description: >-
+            The advertisement interest was removed.
+        '409':
+          description: >-
+            This operation expected an entity state, but it has resulted in a conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictError'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
 
 components:
@@ -38441,6 +38963,194 @@ components:
                 multiple users (or processes) from updating the same object and unwilingly
                 overridding the property values, leading to data loss.
 
+    AdInterest:
+      description: >-
+        Reference to an advertisement interest
+      allOf:
+        - $ref: '#/components/schemas/NamedEntity'
+
+    AdInterestBasicData:
+      description: >-
+        Contains data shared by both AdInterestDataForNew and
+        AdInterestDataForEdit
+      type: object
+      properties:
+        user:
+          description: >-
+            Reference to the owner of the advertisement interest
+          allOf:
+            - $ref: '#/components/schemas/User'
+        categories:
+          description: >-
+            Contains the list of possible categories for the advertisement interest
+          type: array
+          items:
+            $ref: '#/components/schemas/AdCategoryWithChildren'
+        currencies:
+          description: >-
+            Contains the list of possible currencies for the advertisement interest
+          type: array
+          items:
+            $ref: '#/components/schemas/Currency'
+
+    AdInterestDataForEdit:
+      description: >-
+        Contains data for editing an exinsting advertisement interest
+      allOf:
+        - $ref: '#/components/schemas/AdInterestBasicData'
+        - type: object
+          properties:
+            edit:
+              description: >-
+                Can the authenticated user edit this advertisement interest?
+              type: boolean
+            remove:
+              description: >-
+                Can the authenticated user remove this advertisement interest?
+              type: boolean
+            adInterest:
+              description: >-
+                The advertisement interest populated with the current fields. This value
+                can be modified and sent back on `PUT /marketplace-interest/{id}`.
+              allOf:
+                - $ref: '#/components/schemas/AdInterestEdit'
+
+    AdInterestDataForNew:
+      description: >-
+        Contains data for creating a new advertisement interest
+      allOf:
+        - $ref: '#/components/schemas/AdInterestBasicData'
+        - type: object
+          properties:
+            adInterest:
+              description: >-
+                The advertisement interest populated with the default fields. This value
+                can be modified and sent back on `POST /{user}/marketplace-interest`.
+              allOf:
+                - $ref: '#/components/schemas/AdInterestNew'
+
+    AdInterestEdit:
+      description: >-
+        Fields for modifying an advertisement interest.
+      allOf:
+        - $ref: '#/components/schemas/AdInterestManage'
+        - type: object
+          properties:
+            version:
+              type: integer
+              description: >-
+                The version stamp for the current object, used for optimistic locking. When
+                saving, the same version as previously received needs to be passed back. If
+                no one else has saved the object, the version will match and the object will
+                be updated. However, if someone other has saved the object, the version will
+                no longer match, and an error will be raised. This is used to prevent
+                multiple users (or processes) from updating the same object and unwilingly
+                overridding the property values, leading to data loss.
+
+    AdInterestManage:
+      description: >-
+        Common fields for either creating or editing an advertisement interest
+      type: object
+      x-abstract: true
+      properties:
+        name:
+          description: >-
+            The name identifying this advertisement interest.
+          type: string
+        kind:
+          description: >-
+            The kind of advertisements.
+          allOf:
+            - $ref: '#/components/schemas/AdKind'
+        category:
+          description: >-
+            Either internal name or id of the advertisements category.
+          type: string
+        keywords:
+          type: array
+          items:
+            type: string
+          description: >-
+            A set of keywords to match advertisements.
+        currency:
+          description: >-
+            Either internal name or id of the currency for price range.
+          type: string
+        minPrice:
+          description: >-
+            Minimum price for advertisements.
+          type: string
+          format: number
+        maxPrice:
+          description: >-
+            Maximum price for advertisements.
+          type: string
+          format: number
+        user:
+          description: >-
+            Either internal id or other accepted identification (username,
+            e-mail, etc) for the user to watch advertisements
+          type: string
+
+    AdInterestNew:
+      description: >-
+        Fields for a new advertisement interest.
+      allOf:
+        - $ref: '#/components/schemas/AdInterestManage'
+
+    AdInterestView:
+      description: >-
+        Details of an advertisement interest
+      allOf:
+        - $ref: '#/components/schemas/AdInterest'
+        - type: object
+          properties:
+            kind:
+              description: >-
+                The kind of advertisements.
+              allOf:
+                - $ref: '#/components/schemas/AdKind'
+            category:
+              description: >-
+                The advertisements category.
+              allOf:
+                - $ref: '#/components/schemas/AdCategoryWithParent'
+            keywords:
+              type: array
+              items:
+                type: string
+              description: >-
+                Set of keywords to match advertisements.
+            currency:
+              description: >-
+                Currency for the price range.
+              allOf:
+                - $ref: '#/components/schemas/Currency'
+            minPrice:
+              description: >-
+                Minimum price for advertisements.
+              type: string
+              format: number
+            maxPrice:
+              description: >-
+                Maximum price for advertisements.
+              type: string
+              format: number
+            user:
+              description: >-
+                Owner of advertisements
+              allOf:
+                - $ref: '#/components/schemas/User'
+            edit:
+              description: >-
+                Can the authenticated user edit this advertisement interest?
+              type: boolean
+            remove:
+              description: >-
+                Can the authenticated user remove this advertisement interest?
+              type: boolean
+
+
     AdManage:
       description: >-
         Common fields for either creating or editing a advertisement
@@ -38749,6 +39459,14 @@ components:
             canRequestAuthorization:
               description: >-
                 Indicates if the authenticated user can request for authorization for this advertisement.
+              type: boolean
+            canAuthorize:
+              description: >-
+                Indicates if the authenticated user can authorize this advertisement (user managers only).
+              type: boolean
+            canReject:
+              description: >-
+                Indicates if the authenticated user can reject this advertisement (user managers only).
               type: boolean
             questionsEnabled:
               description: >-
@@ -51564,6 +52282,29 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AccountBalanceLimitsResult'
+
+    UserAdInterestsListData:
+      description: >-
+        Contains, besides the user's advertisement interests, additional data for its
+        management
+      type: object
+      properties:
+        canManage:
+          description: >-
+            Indicates whether the advertisement interests can be managed by the
+            authenticated user
+          type: boolean
+        canCreate:
+          description: >-
+            Indicates whether the authenticated user can create a new delivery
+            method this user
+          type: boolean
+        adInterests:
+          description: >-
+            The advertisement interests list
+          type: array
+          items:
+            $ref: '#/components/schemas/AdInterest'
 
     UserAddressesListData:
       description: >-
