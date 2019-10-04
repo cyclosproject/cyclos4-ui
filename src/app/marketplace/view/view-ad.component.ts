@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
   AdCategoryWithParent, Address, AdView, AdKind, RoleEnum, TimeInterval,
-  DeliveryMethod, DeliveryMethodChargeTypeEnum
+  DeliveryMethod, DeliveryMethodChargeTypeEnum, AdQuestionView
 } from 'app/api/models';
-import { MarketplaceService } from 'app/api/services';
+import { MarketplaceService, AdQuestionsService } from 'app/api/services';
 import { OperationHelperService } from 'app/core/operation-helper.service';
 import { HeadingAction } from 'app/shared/action';
 import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
@@ -15,6 +15,7 @@ import { FormatService } from 'app/core/format.service';
 import { LoginService } from 'app/core/login.service';
 import { AskQuestionDialogComponent } from 'app/marketplace/questions/ask-question-dialog.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
+import { empty } from 'app/shared/helper';
 /**
  * Displays an advertisement details
  */
@@ -39,6 +40,7 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
     private formatService: FormatService,
     private operationHelper: OperationHelperService,
     private loginService: LoginService,
+    private adQuestionService: AdQuestionsService,
     private marketplaceHelper: MarketplaceHelperService,
     private marketplaceService: MarketplaceService) {
     super(injector);
@@ -113,7 +115,7 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
           this.i18n.ad.backToDraft
         )));
     }
-    if (ad.canAuthorize) {
+    if (ad.canApprove) {
       headingActions.push(
         new HeadingAction('thumb_up_alt', this.i18n.ad.authorize, () => this.updateStatus(
           this.marketplaceService.setAdAsDraft({ ad: this.id }),
@@ -175,6 +177,35 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
   }
 
   /**
+   * Returns if questions should be displayed if
+   * there are questions or the user can ask
+   */
+  get questionsEnabled(): boolean {
+    return !this.guest && this.data.questionsEnabled &&
+      (this.data.canAsk || this.data.questions.length > 0);
+  }
+
+  /**
+   * Returns if the given question can be removed.
+   * An admin can always remove if the ad is editable.
+   * A broker, ad owner and question owner can remove
+   * if the ad is editable and the answer is empty.
+   * Operators cannot remove owner's questions.
+   */
+  canRemoveQuestion(question: AdQuestionView) {
+    if (this.guest) {
+      return false;
+    } else if (this.dataForUiHolder.role === RoleEnum.ADMINISTRATOR) {
+      return this.data.canEdit;
+    } else if (this.dataForUiHolder.role === RoleEnum.BROKER ||
+      this.authHelper.isSelfOrOwner(this.data.owner) ||
+      (this.authHelper.isSelfOrOwner(question.user) && this.dataForUiHolder.role !== RoleEnum.OPERATOR)) {
+      return this.data.canEdit && empty(question.answer);
+    }
+    return false;
+  }
+
+  /**
    * Returns if the delivery method has a fixed price
    */
   hasFixedDeliveryPrice(dm: DeliveryMethod) {
@@ -223,5 +254,15 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
 
   resolveMenu() {
     return Menu.SEARCH_ADS;
+  }
+
+  /**
+   * Removes a question with the given id
+   */
+  removeQuestion(id: string) {
+    this.addSub(this.adQuestionService.deleteAdQuestion({ id: id }).subscribe(() => {
+      this.notification.snackBar(this.i18n.ad.questionRemoved);
+      this.reload();
+    }));
   }
 }

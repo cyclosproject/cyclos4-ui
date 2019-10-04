@@ -40,7 +40,7 @@ export class UserAdsComponent
   }
 
   protected getFormControlNames() {
-    return ['keywords', 'user', 'orderBy', 'statuses'];
+    return ['keywords', 'user', 'orderBy', 'statuses', 'productNumber'];
   }
 
   getInitialResultType() {
@@ -78,8 +78,15 @@ export class UserAdsComponent
 
   resolveMenu() {
     if (this.param === this.ApiHelper.SELF) {
-      return this.kind === AdKind.SIMPLE ? Menu.SEARCH_USER_ADS : Menu.SEARCH_USER_WEBSHOP;
+      return this.simple ? Menu.SEARCH_USER_ADS : Menu.SEARCH_USER_WEBSHOP;
     }
     return Menu.SEARCH_ADS;
+  }
+
+  /**
+   * Returns if the ad is simple or webshop
+   */
+  get simple() {
+    return this.kind === AdKind.SIMPLE;
   }
 }

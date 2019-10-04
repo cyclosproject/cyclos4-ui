@@ -30741,6 +30741,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
               description: ''
               type: string
               format: number
+        - name: productNumber
+          in: query
+          required: false
+          description: "Textual search for a product number for webshop only."
+          schema:
+            type: string
         - name: profileFields
           in: query
           required: false
@@ -31125,6 +31131,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
               description: ''
               type: string
               format: number
+        - name: productNumber
+          in: query
+          required: false
+          description: "Textual search for a product number for webshop only."
+          schema:
+            type: string
         - name: profileFields
           in: query
           required: false
@@ -39460,7 +39472,7 @@ components:
               description: >-
                 Indicates if the authenticated user can request for authorization for this advertisement.
               type: boolean
-            canAuthorize:
+            canApprove:
               description: >-
                 Indicates if the authenticated user can authorize this advertisement (user managers only).
               type: boolean
@@ -41212,6 +41224,10 @@ components:
               items:
                 type: string
                 format: number
+            productNumber:
+              type: string
+              description: >-
+                Textual search for a product number for webshop only.
             hasImages:
               type: boolean
               description: >-

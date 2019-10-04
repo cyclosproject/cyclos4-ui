@@ -134,9 +134,9 @@
         </ng-container>
       </ng-container>
     </div>
-    <div *ngIf="data.questionsEnabled">
+    <div *ngIf="questionsEnabled">
       <h2
-        class="border-0 d-flex mb-3 flex-column flex-xs-row justify-content-between mt-3 mt-md-0">
+        class="d-flex mb-3 flex-column flex-xs-row justify-content-between mt-3 mt-md-0">
         <div class="mb-2 mb-xs-0">
           {{ i18n.ad.questionsAndAnswers }}
         </div>
@@ -145,8 +145,35 @@
           {{ i18n.ad.askQuestion }}
         </button>
       </h2>
-      <ng-container *ngFor="let q of data.questions">
-
+      <ng-container *ngFor="let q of data.questions; let last = last">
+        <div class="d-flex flex-row pb-1">
+          <div class="d-flex">
+            <icon size="1rem" icon="chat"></icon>
+          </div>
+          <div class="pl-2" style="line-height: 1rem">
+            <span class="font-weight-bold">{{ q.question }}</span>
+            <div style="font-size: 0.6rem">{{q.user.display}} -
+              {{ q.questionDate | dateTime }}</div>
+          </div>
+          <div *ngIf="canRemoveQuestion(q)" class="d-flex"
+            style="margin-left: auto">
+            <a href="#" class="icon" [tooltip]="i18n.ad.removeQuestion"
+              (click)="removeQuestion(q.id); $event.preventDefault()">
+              <icon size="1rem" icon="delete"></icon>
+            </a>
+          </div>
+        </div>
+        <div *ngIf="q.answer" class="d-flex flex-row pb-1 pt-1">
+          <div class="d-flex">
+            <icon size="1rem" icon="comment"></icon>
+          </div>
+          <div class="pl-2" style="line-height: 1rem">
+            {{ q.answer}}
+            <div style="font-size: 0.6rem">
+              {{data.owner.display}} - {{ q.answerDate | dateTime }}</div>
+          </div>
+        </div>
+        <hr class="inner-separator pb-1" *ngIf="!last">
       </ng-container>
     </div>
   </page-content>

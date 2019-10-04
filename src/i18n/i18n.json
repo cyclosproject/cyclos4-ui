@@ -1086,6 +1086,7 @@
     "owner": "Publisher",
     "price": "Price",
     "questionAsked": "The question has been submitted to the seller",
+    "questionRemoved": "The question was removed",
     "category": "Category",
     "categories": "Categories",
     "creationDate": "Creation date",
@@ -1112,6 +1113,7 @@
     "outOfStock": "Out of stock",
     "authorizationNotes": "Authorization notes",
     "questionsAndAnswers": "Questions & Answers",
+    "removeQuestion": "Remove question",
     "orderBy": {
       "date": "Last published",
       "distance": "Distance",
@@ -1131,12 +1133,14 @@
     "title": {
       "search": "Search advertisements",
       "owner": "Advertisements of {name}",
+      "webshopOwner": "Webshop of {name}",
       "new": "New advertisement",
       "edit": "Edit advertisement"
     },
     "mobileTitle": {
       "search": "Advertisements",
       "owner": "Advertisements",
+      "webshopOwner": "Webshop",
       "details": "Advertisement",
       "new": "New advertisement",
       "edit": "Edit advertisement"

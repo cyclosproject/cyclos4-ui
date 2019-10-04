@@ -3,8 +3,11 @@
 </page-layout>
 
 <ng-template #content>
-  <page-content mode="filters" [heading]="this.i18n.ad.title.owner(shortName)"
-    [mobileHeading]="this.i18n.ad.mobileTitle.owner"
+  <page-content mode="filters" [heading]="simple ?
+  i18n.ad.title.owner(shortName) :
+  i18n.ad.title.webshopOwner(shortName)" [mobileHeading]="simple ? 
+    i18n.ad.mobileTitle.owner :
+    i18n.ad.mobileTitle.webshopOwner"
     [headingActions]="headingActions$ | async">
     <form [formGroup]="form"
       class="filters-form filters-form-separator border-0">
@@ -12,6 +15,10 @@
         <div class="col-12 col-md-6">
           <input-field labelPosition="side" formControlName="keywords"
             [label]="i18n.general.keywords" fieldSize="full"></input-field>
+        </div>
+        <div class="col-12 col-md-6">
+          <input-field labelPosition="side" formControlName="productNumber"
+            [label]="i18n.ad.productNumber" fieldSize="full"></input-field>
         </div>
         <div class="col-12 col-md-6">
           <single-selection-field labelPosition="side"
