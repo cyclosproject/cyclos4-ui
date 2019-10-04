@@ -87,7 +87,7 @@
     <hr class="d-block d-sm-none">
     <rich-text-container autoHeight [value]="ad.description">
     </rich-text-container>
-    <div *ngIf="data.deliveryMethods">
+    <div *ngIf="data.deliveryMethods && data.deliveryMethods.length > 0">
       <h2 class="mt-3"> {{ i18n.ad.deliveryMethods }} </h2>
       <ng-container *ngFor="let dm of data.deliveryMethods">
         <h3> {{ dm.name }} </h3>
