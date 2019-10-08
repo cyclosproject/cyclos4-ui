@@ -40,6 +40,7 @@ export class EditAdComponent
   owner: string;
   self: boolean;
   create: boolean;
+  webshop: boolean;
   hasRemovedImages: boolean;
   kind: AdKind;
   uploadedImages: Image[];
@@ -92,6 +93,8 @@ export class EditAdComponent
 
   onDataInitialized(data: AdDataForNew | AdDataForEdit) {
 
+    this.webshop = this.kind === AdKind.WEBSHOP;
+
     this.owner = this.authHelper.isSelf(data.owner)
       ? this.ApiHelper.SELF
       : data.owner.id;
@@ -107,7 +110,7 @@ export class EditAdComponent
       name: [adManage.name, Validators.required],
       categories: [categories, Validators.required],
       currency: [!empty(data.currencies) ? this.ApiHelper.internalNameOrId(data.currencies[0]) : null, Validators.required],
-      price: [adManage.price, Validators.required],
+      price: adManage.price,
       publicationBeginDate: [adManage.publicationPeriod.begin, Validators.required],
       publicationEndDate: [adManage.publicationPeriod.end, Validators.required],
       promotionalBeginDate: adManage.promotionalPeriod ? adManage.promotionalPeriod.begin : null,
@@ -204,6 +207,11 @@ export class EditAdComponent
     if (this.create) {
 
       value.images = this.uploadedImages.map(i => i.id);
+
+      if (this.data.requiresAuthorization) {
+        // When requires authorization submit as draft when saving for first time
+        value.submitForAuthorization = false;
+      }
 
       this.addSub(this.marketplaceService.createAd({
         user: this.owner,
