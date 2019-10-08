@@ -59,7 +59,7 @@
             [value]="ApiHelper.internalNameOrId(cat)" [id]="cat.id"
             [internalName]="cat.internalName" [text]="cat.name"
             [style]="cat.leaf ? 'leaf':'parent'" [level]="cat.level"
-            [enabled]="cat.leaf">
+            [disabled]="!cat.leaf">
           </field-option>
         </single-selection-field>
         <multi-selection-field *ngIf="data.maxCategoriesPerAd > 1"
@@ -68,7 +68,7 @@
             [value]="ApiHelper.internalNameOrId(cat)" [id]="cat.id"
             [internalName]="cat.internalName" [text]="cat.name"
             [style]="'hierarchy ' + (cat.leaf ? 'leaf':'parent')"
-            [level]="cat.level" [enabled]="cat.leaf">
+            [level]="cat.level" [disabled]="!cat.leaf">
           </field-option>
         </multi-selection-field>
         <single-selection-field

@@ -55,10 +55,10 @@ export class SingleSelectionFieldComponent extends BaseSelectionFieldComponent<s
   }
 
   select(option: FieldOption) {
-    if (!option.enabled) {
+    if (option && option.disabled) {
       return;
     }
-    this.value = option.value;
+    this.value = option ? option.value : null;
     this.close();
   }
 

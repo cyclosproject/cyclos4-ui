@@ -19,7 +19,7 @@ export class FieldOptionDirective implements OnInit, OnDestroy, FieldOption {
   @Input() category: string;
   @Input() parent: string;
   @Input() style: string;
-  @Input() enabled = true;
+  @Input() disabled: boolean;
   _level: number;
 
   constructor(

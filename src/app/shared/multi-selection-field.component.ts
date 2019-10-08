@@ -54,7 +54,7 @@ export class MultiSelectionFieldComponent extends BaseSelectionFieldComponent<st
     let selected = this.selectedValues;
     const index = selected.indexOf(value);
     const option = this.findOption(value);
-    if (!option.enabled) {
+    if (option && option.disabled) {
       return;
     }
     const childValues = this.optionsByParent(value).map(o => o.value);

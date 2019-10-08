@@ -46,8 +46,8 @@ export interface FieldOption {
   /** The option level in a hierarchy */
   level?: number;
 
-  /** The option is enabled for selection */
-  enabled?: boolean;
+  /** The option is disabled for selection */
+  disabled?: boolean;
 
   /** Option particular style */
   style?: string;
