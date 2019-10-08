@@ -8,6 +8,7 @@ import { AdsResultsComponent } from 'app/marketplace/search/ads-results.componen
 import { UserAdsComponent } from 'app/marketplace/search/user-ads.component';
 import { EditAdComponent } from 'app/marketplace/edit-ad.component';
 import { AskQuestionDialogComponent } from 'app/marketplace/questions/ask-question-dialog.component';
+import { ListOrdersComponent } from 'app/marketplace/search/list-orders.component';
 
 /**
  * Marketplace module
@@ -21,6 +22,7 @@ import { AskQuestionDialogComponent } from 'app/marketplace/questions/ask-questi
   declarations: [
     SearchAdsComponent,
     UserAdsComponent,
+    ListOrdersComponent,
     AdsResultsComponent,
     EditAdComponent,
     ViewAdComponent,

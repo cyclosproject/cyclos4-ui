@@ -110,22 +110,30 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
     }
     if (ad.canSetAsDraft) {
       headingActions.push(
-        new HeadingAction('edit', this.i18n.ad.setAsDraft, () => this.updateStatus(
-          this.marketplaceService.setAdAsDraft({ ad: this.id }),
-          this.i18n.ad.backToDraft
-        )));
+        new HeadingAction('edit', this.i18n.ad.setAsDraft, () =>
+          this.marketplaceService.setAdAsDraft({ ad: this.id }).subscribe(() => {
+            this.notification.snackBar(this.i18n.ad.backToDraft);
+            if (this.dataForUiHolder.role === RoleEnum.BROKER &&
+              !this.authHelper.isSelfOrOwner(this.data.owner)) {
+              // A broker cannot view the ad after set it to draft,
+              // so go back to the ad list
+              history.back();
+            } else {
+              this.reload();
+            }
+          })));
     }
     if (ad.canApprove) {
       headingActions.push(
         new HeadingAction('thumb_up_alt', this.i18n.ad.authorize, () => this.updateStatus(
-          this.marketplaceService.setAdAsDraft({ ad: this.id }),
+          this.marketplaceService.approveAd({ ad: this.id }),
           this.i18n.ad.authorized
         )));
     }
     if (ad.canReject) {
       headingActions.push(
         new HeadingAction('thumb_down_alt', this.i18n.ad.reject, () => this.updateStatus(
-          this.marketplaceService.setAdAsDraft({ ad: this.id }),
+          this.marketplaceService.rejectAd({ ad: this.id }),
           this.i18n.ad.rejected
         )));
     }
