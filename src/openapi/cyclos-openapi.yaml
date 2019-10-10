@@ -1,6 +1,6 @@
 openapi: '3.0.0'
 info:
-  title: 'Cyclos @cyclosVersion API'
+  title: 'Cyclos 4.13.0 API'
   description: >-
     The Cyclos REST API is described using OpenAPI 3.0. The descriptor for the
     api can be downloaded in both [YAML](@url/cyclos-openapi.yaml) or
@@ -33,9 +33,9 @@ info:
 
     For details of the deprecated elements (operations and model) please visit the
     [deprecation notes
-    page](https://documentation.cyclos.org/@cyclosVersion/api-deprecation.html)
+    page](https://documentation.cyclos.org/4.13.0/api-deprecation.html)
     for this version.
-  version: '@cyclosVersion'
+  version: '4.13.0'
 servers:
   - url: '@url'
 
