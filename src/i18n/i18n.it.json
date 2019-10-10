@@ -111,10 +111,10 @@
     "timeField": {
       "pattern": "{amount} {field}",
       "plural": {
-        "days": "Days",
-        "hours": "Hours",
-        "millis": "Milliseconds",
-        "minutes": "Minutes",
+        "days": "Giorni",
+        "hours": "Ore",
+        "millis": "Millisecondi",
+        "minutes": "Minuti",
         "months": "Months",
         "seconds": "Seconds",
         "weeks": "Weeks",
