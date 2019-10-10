@@ -23,7 +23,7 @@
     "brokers": "Partners",
     "groups": "Gruppi",
     "name": "Nome",
-    "to": "to",
+    "to": "a",
     "description": "Descrizione",
     "image": "Immagine",
     "keywords": "Parole Chiave",
@@ -31,8 +31,8 @@
     "orderBy": "Ordina per",
     "orderBy.relevance": "Rilevanza",
     "print": "Stampa",
-    "printed": "Printed",
-    "all": "All",
+    "printed": "Stampato",
+    "all": "Tutti",
     "showFilters": "Mostra filtri",
     "hideFilters": "Nascondi filtri",
     "moreFilters": "Più filtri",
@@ -65,44 +65,44 @@
       "sms": "SMS"
     },
     "labelValue": "{label}: {value}",
-    "reloadPage": "Reload page",
+    "reloadPage": "Aggiorna",
     "sessionExpired": {
-      "title": "Session expired",
-      "message": "You have been logged-out.<br>You can keep viewing the same page or login again now.",
-      "loginAgain": "Login again"
+      "title": "Sessione scaduta",
+      "message": "Sei stato disconnesso.<br>Puoi continuare a visualizzare la stessa pagina o accedere nuovamente.",
+      "loginAgain": "Accedi di nuovo"
     },
     "datePart": {
       "long": {
-        "year": "Year",
-        "month": "Month",
-        "day": "Day"
+        "year": "Anno",
+        "month": "Mese",
+        "day": "Giorno"
       }
     },
     "month": {
       "long": {
-        "jan": "January",
-        "feb": "February",
-        "mar": "March",
-        "apr": "April",
-        "may": "May",
-        "jun": "June",
-        "jul": "July",
-        "aug": "August",
-        "sep": "September",
-        "oct": "October",
-        "nov": "November",
-        "dec": "December"
+        "jan": "Gennaio",
+        "feb": "Febbraio",
+        "mar": "Marzo",
+        "apr": "Aprile",
+        "may": "Maggio",
+        "jun": "Giugno",
+        "jul": "Luglio",
+        "aug": "Agosto",
+        "sep": "Settembre",
+        "oct": "Ottobre",
+        "nov": "Novembre",
+        "dec": "Dicembre"
       },
       "short": {
-        "jan": "Jan",
+        "jan": "Gen",
         "feb": "Feb",
         "mar": "Mar",
         "apr": "Apr",
-        "may": "May",
-        "jun": "Jun",
-        "jul": "Jul",
-        "aug": "Aug",
-        "sep": "Sep",
+        "may": "Mag",
+        "jun": "Giu",
+        "jul": "Lug",
+        "aug": "Ago",
+        "sep": "Set",
         "oct": "Oct",
         "nov": "Nov",
         "dec": "Dec"
