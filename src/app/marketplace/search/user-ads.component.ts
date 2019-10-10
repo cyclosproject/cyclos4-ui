@@ -1,6 +1,6 @@
 import { HttpResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { AdResult, UserAdsDataForSearch, UserAdsQueryFilters, AdKind } from 'app/api/models';
+import { AdResult, UserAdsDataForSearch, UserAdsQueryFilters, AdKind, RoleEnum } from 'app/api/models';
 import { MarketplaceService } from 'app/api/services';
 import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { words } from 'app/shared/helper';
@@ -28,8 +28,6 @@ export class UserAdsComponent
   private kind: AdKind;
   private param: string;
   shortName: string;
-  canViewPendingAds: boolean;
-
 
   constructor(
     injector: Injector,
@@ -86,7 +84,22 @@ export class UserAdsComponent
   /**
    * Returns if the ad is simple or webshop
    */
-  get simple() {
+  get simple(): boolean {
     return this.kind === AdKind.SIMPLE;
   }
+
+  get canViewPending(): boolean {
+    // TODO missing USER_PENDING_ADS_VIEW permission
+    return this.data.requiresAuthorization && this.isManager;
+  }
+
+  get canViewDraft(): boolean {
+    return this.data.requiresAuthorization && !this.isManager;
+  }
+
+  get isManager() {
+    return !this.authHelper.isSelfOrOwner(this.data.user) &&
+      (this.dataForUiHolder.role === RoleEnum.BROKER || this.dataForUiHolder.role === RoleEnum.ADMINISTRATOR);
+  }
+
 }

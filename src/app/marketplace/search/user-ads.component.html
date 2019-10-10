@@ -16,7 +16,7 @@
           <input-field labelPosition="side" formControlName="keywords"
             [label]="i18n.general.keywords" fieldSize="full"></input-field>
         </div>
-        <div class="col-12 col-md-6">
+        <div *ngIf="!simple" class="col-12 col-md-6">
           <input-field labelPosition="side" formControlName="productNumber"
             [label]="i18n.ad.productNumber" fieldSize="full"></input-field>
         </div>
@@ -45,10 +45,10 @@
             </field-option>
             <field-option value="disabled" [text]="i18n.ad.status.disabled">
             </field-option>
-            <field-option *ngIf="data.requiresAuthorization" value="draft"
+            <field-option *ngIf="canViewDraft" value="draft"
               [text]="i18n.ad.status.draft">
             </field-option>
-            <field-option *ngIf="canViewPendingAds" value="pending"
+            <field-option *ngIf="canViewPending" value="pending"
               [text]="i18n.ad.status.pending">
             </field-option>
             <field-option value="expired" [text]="i18n.ad.status.expired">

@@ -16,6 +16,7 @@ import { LoginService } from 'app/core/login.service';
 import { AskQuestionDialogComponent } from 'app/marketplace/questions/ask-question-dialog.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { empty } from 'app/shared/helper';
+import { TextDialogComponent } from 'app/shared/text-dialog.component';
 /**
  * Displays an advertisement details
  */
@@ -74,9 +75,20 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
   /**
    * Executes the given request, displays the given message and reloads page after finish
    */
-  protected updateStatus(request: Observable<any>, message: string) {
+  protected updateStatus(request: Observable<any>, message: string, checkRole?: boolean) {
     request.subscribe(() => {
       this.notification.snackBar(message);
+      if (checkRole &&
+        (this.dataForUiHolder.role === RoleEnum.BROKER &&
+          !this.authHelper.isSelfOrOwner(this.data.owner) ||
+          this.dataForUiHolder.role === RoleEnum.ADMINISTRATOR)) {
+        // A broker or admin cannot view the ad after perform
+        // some actions (e.g set it to draft, reject), so go
+        // back to the ad list
+        history.back();
+      } else {
+        this.reload();
+      }
       this.reload();
     });
   }
@@ -110,18 +122,11 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
     }
     if (ad.canSetAsDraft) {
       headingActions.push(
-        new HeadingAction('edit', this.i18n.ad.setAsDraft, () =>
-          this.marketplaceService.setAdAsDraft({ ad: this.id }).subscribe(() => {
-            this.notification.snackBar(this.i18n.ad.backToDraft);
-            if (this.dataForUiHolder.role === RoleEnum.BROKER &&
-              !this.authHelper.isSelfOrOwner(this.data.owner)) {
-              // A broker cannot view the ad after set it to draft,
-              // so go back to the ad list
-              history.back();
-            } else {
-              this.reload();
-            }
-          })));
+        new HeadingAction('edit', this.i18n.ad.setAsDraft, () => this.updateStatus(
+          this.marketplaceService.setAdAsDraft({ ad: this.id }),
+          this.i18n.ad.backToDraft,
+          true
+        )));
     }
     if (ad.canApprove) {
       headingActions.push(
@@ -132,10 +137,7 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
     }
     if (ad.canReject) {
       headingActions.push(
-        new HeadingAction('thumb_down_alt', this.i18n.ad.reject, () => this.updateStatus(
-          this.marketplaceService.rejectAd({ ad: this.id }),
-          this.i18n.ad.rejected
-        )));
+        new HeadingAction('thumb_down_alt', this.i18n.ad.reject, () => this.reject()));
     }
     if (ad.canEdit) {
       headingActions.push(
@@ -159,6 +161,25 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
     this.headingActions = headingActions;
     this.title = words(ad.name, 60);
     this.addresses = [...ad.adAddresses, ...ad.userAddresses];
+  }
+
+  /**
+   * Displays a comment text area in a popup and rejects the authorization
+   */
+  protected reject() {
+    const ref = this.modal.show(TextDialogComponent, {
+      class: 'modal-form', initialState: {
+        title: this.i18n.ad.reject
+      }
+    });
+    const component = ref.content as TextDialogComponent;
+    this.addSub(component.done.subscribe((comments: string) => {
+      this.updateStatus(
+        this.marketplaceService.rejectAd({ ad: this.id, body: comments }),
+        this.i18n.ad.rejected,
+        true
+      );
+    }));
   }
 
   get categoryLabel(): string {

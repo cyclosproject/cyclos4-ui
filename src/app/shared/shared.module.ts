@@ -89,6 +89,7 @@ import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { BooleanPipe } from 'app/shared/boolean.pipe';
 import { MultipleUsersFieldComponent } from 'app/shared/multiple-users-field.component';
 import { UserInfoComponent } from 'app/shared/user-info.component';
+import { TextDialogComponent } from 'app/shared/text-dialog.component';
 
 
 
@@ -143,6 +144,7 @@ export function initTooltipConfig(): TooltipConfig {
     BooleanFieldComponent,
     InputFieldComponent,
     TextAreaFieldComponent,
+    TextDialogComponent,
     FieldErrorsComponent,
     FieldOptionDirective,
     SingleSelectionFieldComponent,
@@ -307,7 +309,8 @@ export function initTooltipConfig(): TooltipConfig {
     ConfirmationComponent,
     ManageImagesComponent,
     ManageFilesComponent,
-    PickContactComponent
+    PickContactComponent,
+    TextDialogComponent,
   ]
 })
 export class SharedModule {
