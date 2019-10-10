@@ -474,37 +474,37 @@
     "noTypes": "Non ci sono tipi di pagamento possibili",
     "noTypesSelection": "Non ci sono tipi di pagamento possibili da questo conto all'utente selezionato",
     "scheduling": "Pianificazione",
-    "scheduling.direct": "Pay now",
-    "scheduling.single": "Scheduled",
-    "scheduling.installments": "Monthly installments",
-    "scheduling.recurring": "Repeat monthly",
+    "scheduling.direct": "Paga ora",
+    "scheduling.single": "Pianificato",
+    "scheduling.installments": "Rate mensili",
+    "scheduling.recurring": "Ripeti mensilmente",
     "schedulingStatus": {
-      "direct": "Direct payment",
-      "scheduledToDate": "Scheduled to {date}",
-      "openInstallments": "{count} installments, next on {dueDate}",
-      "closedInstallments": "{count} installments",
-      "closedRecurring": "Closed recurring payment",
-      "canceledRecurring": "Canceled recurring payment",
-      "openRecurring": "Recurring payment, next on {date}"
+      "direct": "Pagamento diretto",
+      "scheduledToDate": "Pianificato il {date}",
+      "openInstallments": "{count} rate, prossima il {dueDate}",
+      "closedInstallments": "{count} rate",
+      "closedRecurring": "Pagamento ricorrente chiuso",
+      "canceledRecurring": "Annulla pagamento ricorrente",
+      "openRecurring": "Il prossimo pagamento ricorrente è il {date}"
     },
-    "recurringPayment": "Recurring payment",
-    "recurringPayment.nowManual": "Repeats until manually canceled, starting now",
-    "recurringPayment.dateManual": "Repeats until manually canceled, starting at {date}",
-    "recurringPayment.nowFixed": "Repeats {count} times, starting now",
-    "recurringPayment.dateFixed": "Repeats {count} times, starting at {date}",
-    "installmentsCount": "Number of installments",
-    "firstInstallment": "First installment",
-    "firstInstallment.date": "First installment date",
-    "repeatUntil": "Repeat until",
-    "repeatUntil.manual": "Manually canceled",
-    "repeatUntil.fixed": "Fixed number of occurrences",
-    "occurrencesCount": "Number of occurrences",
-    "firstOccurrence": "First occurrence",
-    "firstOccurrence.date": "First occurrence date",
-    "processed": "The payment was successfully processed",
-    "processed.withNumber": "The payment with transaction number {number} was successfully processed",
-    "pending": "The payment was submitted for further authorization",
-    "pending.withNumber": "The payment with transaction number {number} was submitted for further authorization",
+    "recurringPayment": "Pagamento ricorrente",
+    "recurringPayment.nowManual": "Ripeti fino a quando non è annullato manualmente, a partire da ora",
+    "recurringPayment.dateManual": "Ripeti fino a quando non è annullato manualmente, a partire da {date}",
+    "recurringPayment.nowFixed": "Si ripete {count} volte, a partire da ora",
+    "recurringPayment.dateFixed": "Si ripete {count} volte, a partire da {date}",
+    "installmentsCount": "Numero di rate",
+    "firstInstallment": "Prima rata",
+    "firstInstallment.date": "Data prima rata",
+    "repeatUntil": "Ripeti fino a",
+    "repeatUntil.manual": "Annullato manualmente",
+    "repeatUntil.fixed": "Numero fisso di occorrenze",
+    "occurrencesCount": "Numero di occorrenze",
+    "firstOccurrence": "Prima occorrenza",
+    "firstOccurrence.date": "Data prima occorrenza",
+    "processed": "Il tuo pagamento è stato processato correttamente",
+    "processed.withNumber": "Il pagamento con il numero di transazione {number} è stato elaborato con successo",
+    "pending": "Il pagamento è stato inviato per ulteriore autorizzazione",
+    "pending.withNumber": "Il pagamento con il numero di transazione {number} è stato inviato per ulteriore autorizzazione",
     "done.view": "Vedi pagamento",
     "done.new": "Nuovo pagamento",
     "status": {
@@ -624,32 +624,32 @@
       "buy": {
         "amountForPeriod": "L'acquisto di questo tipo di voucher è limitato per periodo. Fino a {date} solo {amount} è disponibile per l'acquisto.",
         "openAmount": "L'utente attuale supera il limite consentito per Voucher non riscossi di {maxAmount}. L'importo aperto attuale è {currentAmount}.",
-        "notAllowedForUser": "The current user is not allowed to buy vouchers from this type."
+        "notAllowedForUser": "L'utente attuale non è autorizzato ad acquistare voucher da questo tipo."
       },
       "redeem": {
-        "status": "This voucher cannot be redeemed. Its current status is: {status}.",
-        "user": "The current user cannot redeem vouchers from this type.",
-        "notAllowedYet": "This voucher cannot be redeemed before {beginDate}.",
-        "notAllowedToday": "This voucher cannot be redeemed today. The days allowed for redeeming are: {allowedDays}.",
-        "userBlocked": "You have been blocked by exceeding the number of allowed attempts."
+        "status": "Questo voucher non può essere riscattato. Lo stato attuale è: {status}.",
+        "user": "L'utente attuale non è autorizzato ad acquistare voucher di questo tipo.",
+        "notAllowedYet": "Questo voucher non può essere riscattato prima di {beginDate}.",
+        "notAllowedToday": "Questo buono non può essere riscattato oggi. I giorni consentiti per riscattare sono: {allowedDays}.",
+        "userBlocked": "Sei stato bloccato per il superamento del numero di tentativi consentiti."
       }
     },
     "redeem": {
       "error": {
-        "status": "This voucher cannot be redeemed. Its current status is: {status}.",
-        "user": "The current user cannot redeem vouchers from this type.",
-        "notAllowedYet": "This voucher cannot be redeemed before {beginDate}.",
-        "notAllowedToday": "This voucher cannot be redeemed today. The days allowed for redeeming are: {allowedDays}.",
-        "userBlocked": "You have been blocked by exceeding the number of allowed attempts."
+        "status": "Questo voucher non può essere riscattato. Lo stato attuale è: {status}.",
+        "user": "L'utente attuale non è autorizzato a riscattare voucher di questo tipo.",
+        "notAllowedYet": "Questo voucher non può essere riscattato prima di {beginDate}.",
+        "notAllowedToday": "Questo buono non può essere riscattato oggi. I giorni consentiti per riscattare sono: {allowedDays}.",
+        "userBlocked": "Sei stato bloccato per il superamento del numero di tentativi consentiti."
       },
-      "confirm": "The voucher details are given below. Please, review it below and confirm this action.",
-      "done": "The voucher was redeemed successfully.",
-      "date": "Redeeming date",
-      "redeemer": "Redeemer",
-      "payment": "Redeem payment"
+      "confirm": "I dettagli del voucher sono riportati sotto. Per favore, consultali qui sotto e conferma questa azione.",
+      "done": "Il voucher è stato riscattato con successo.",
+      "date": "Data di riscatto",
+      "redeemer": "Riscattato da",
+      "payment": "Pagamento per riscatto voucher"
     },
     "status": {
-      "redeemed": "Redeemed",
+      "redeemed": "Riscossi",
       "pending": "Pending",
       "open": "Open",
       "expired": "Expired",
@@ -1043,72 +1043,72 @@
     },
     "verify": {
       "title": "Verifica {number} per SMS",
-      "mobileTitle": "Verification",
-      "code": "Code",
-      "send": "Send",
-      "message": "Click the button above to send the verification code to your phone",
-      "done": "The verification code was sent to {number}"
+      "mobileTitle": "Verifica",
+      "code": "Codice",
+      "send": "Invia",
+      "message": "Clicca sul pulsante qui sopra per inviare il codice di verifica al tuo telefono",
+      "done": "Il codice di verifica è stato inviato a {number}"
     }
   },
   "address": {
-    "address": "Address",
-    "line1": "Address line 1",
-    "line2": "Address line 2",
-    "buildingNumber": "Building number",
-    "city": "City",
-    "complement": "Complement",
-    "country": "Country",
-    "neighborhood": "Neighborhood",
-    "poBox": "Post-office box",
-    "region": "Region / state",
-    "street": "Street",
-    "zip": "Zip code"
+    "address": "Indirizzo",
+    "line1": "Riga indirizzo 1",
+    "line2": "Riga indirizzo 2",
+    "buildingNumber": "Edificio",
+    "city": "Città",
+    "complement": "Complemento",
+    "country": "Stato",
+    "neighborhood": "Quartiere",
+    "poBox": "Casella postale",
+    "region": "Regione / stato",
+    "street": "Indirizzo",
+    "zip": "CAP"
   },
   "ad": {
-    "name": "Title",
-    "owner": "Publisher",
-    "price": "Price",
-    "category": "Category",
-    "categories": "Categories",
-    "byOwner": "By {owner}",
-    "showAllCategories": "Show all",
-    "rootCategory": "Main",
+    "name": "Titolo",
+    "owner": "Pubblicato da",
+    "price": "Prezzo",
+    "category": "Categoria",
+    "categories": "Categorie",
+    "byOwner": "Da {owner}",
+    "showAllCategories": "Mostra tutto",
+    "rootCategory": "Principale",
     "orderBy": {
-      "date": "Last published",
-      "priceAsc": "Lowest price",
-      "priceDesc": "Highest price"
+      "date": "I più recenti",
+      "priceAsc": "Prezzo più basso",
+      "priceDesc": "Prezzo più alto"
     },
     "title": {
-      "search": "Search advertisements",
-      "owner": "Advertisements of {name}"
+      "search": "Ricerca annunci",
+      "owner": "Annunci di {name}"
     },
     "mobileTitle": {
-      "search": "Advertisements",
-      "owner": "Advertisements",
-      "details": "Advertisement"
+      "search": "Annunci",
+      "owner": "Annunci",
+      "details": "Annuncio"
     }
   },
   "notification": {
-    "message": "Message",
-    "title": "Notifications",
-    "mobileTitle": "Notifications",
-    "onlyUnread": "Unread only",
+    "message": "Messaggio",
+    "title": "Notifiche",
+    "mobileTitle": "Notifiche",
+    "onlyUnread": "Solo non letti",
     "actions": {
-      "remove": "Remove this notification",
-      "removeAll": "Remove all",
-      "markAllRead": "Mark all as read"
+      "remove": "Rimuovi notifica",
+      "removeAll": "Rimuovi tutto",
+      "markAllRead": "Segna tutti come già letti"
     }
   },
   "connectedUser": {
-    "title": "Connected users",
-    "mobileTitle": "Connected users",
-    "loggedInAt": "Logged in at",
-    "channel": "Channel",
-    "ipAddress": "IP Address",
-    "disconnect": "Disconnect user",
+    "title": "Utenti connessi",
+    "mobileTitle": "Utenti connessi",
+    "loggedInAt": "Accesso effettuato il",
+    "channel": "Canale",
+    "ipAddress": "Indirizzo IP",
+    "disconnect": "Disconnetti utente",
     "viewConnected": {
-      "operator": "View connected operators",
-      "broker": "View connected brokers",
+      "operator": "Visualizza operatori connessi",
+      "broker": "Visualizza partners connessi",
       "admin": "View connected admins",
       "member": "View connected members"
     },
