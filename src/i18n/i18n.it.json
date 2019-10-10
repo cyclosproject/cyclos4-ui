@@ -118,55 +118,55 @@
         "months": "Mesi",
         "seconds": "Secondi",
         "weeks": "Settimane",
-        "years": "Years"
+        "years": "Anni"
       },
       "singular": {
-        "day": "Day",
-        "hour": "Hour",
-        "milli": "Millisecond",
-        "minute": "Minute",
-        "month": "Month",
-        "second": "Second",
-        "week": "Week",
-        "year": "Year"
+        "day": "Giorno",
+        "hour": "Ora",
+        "milli": "Millisecondo",
+        "minute": "Minuto",
+        "month": "Mese",
+        "second": "Secondo",
+        "week": "Settimana",
+        "year": "Anno"
       }
     },
     "weekday": {
       "min": {
-        "sun": "S",
-        "mon": "M",
-        "tue": "T",
-        "wed": "W",
-        "thu": "T",
-        "fri": "F",
+        "sun": "D",
+        "mon": "L",
+        "tue": "M",
+        "wed": "Me",
+        "thu": "G",
+        "fri": "V",
         "sat": "S"
       },
       "long": {
-        "sun": "Sunday",
-        "mon": "Monday",
-        "tue": "Tuesday",
-        "wed": "Wednesday",
-        "thu": "Thursday",
-        "fri": "Friday",
-        "sat": "Saturday"
+        "sun": "Domenica",
+        "mon": "Lunedi",
+        "tue": "Martedì",
+        "wed": "Mercoledì",
+        "thu": "Giovedi",
+        "fri": "Venerdì",
+        "sat": "Sabato"
       }
     },
     "range": {
-      "fromTo": "From {min} to {max}",
-      "from": "From {min}",
-      "to": "Up to {max}"
+      "fromTo": "Da {min} a {max}",
+      "from": "Da {min}",
+      "to": "Fino a {max}"
     },
     "fileSize": {
-      "b": "{n} bytes",
+      "b": "{n} byte",
       "k": "{n}KB",
       "m": "{n}MB"
     },
     "results": {
-      "withTotal": "Showing {first} - {last} of {total} results",
-      "noTotal": "Showing {first} - {last} results",
-      "none": "No results match the search criteria",
-      "nextXxs": "Next",
-      "previousXxs": "Previous"
+      "withTotal": "Mostra da {first} - a {last} di {total} risultati",
+      "noTotal": "Mostra da {first} - a {last} risultato",
+      "none": "Nessun risultato corrisponde ai criteri di ricerca",
+      "nextXxs": "Avanti",
+      "previousXxs": "Indietro"
     },
     "geolocation": {
       "kilometersFrom": "km da",
@@ -233,11 +233,11 @@
     "banking.paySelf": "Auto-pagamento",
     "banking.scheduledPayments": "Pagamenti pianificati",
     "banking.authorizations": "Autorizzazioni di pagamento",
-    "banking.searchVouchers": "Search vouchers",
-    "banking.buyVouchers": "Buy vouchers",
-    "banking.boughtVouchers": "View buys",
-    "banking.redeemVoucher": "Redeem voucher",
-    "banking.redeemedVouchers": "View redeemed",
+    "banking.searchVouchers": "Cerca voucher",
+    "banking.buyVouchers": "Acquista voucher",
+    "banking.boughtVouchers": "Visualizza acquisti",
+    "banking.redeemVoucher": "Riscatta voucher",
+    "banking.redeemedVouchers": "Mostra voucher riscattati",
     "banking.transfersOverview": "Panoramica operazioni",
     "operators": "Operatori",
     "operators.operators": "Operatori",
@@ -249,15 +249,15 @@
     "marketplace": "Marketplace",
     "marketplace.users": "Utenti",
     "marketplace.register": "Iscrivi utente",
-    "marketplace.directory": "Directory",
-    "marketplace.userSearch": "Users",
-    "marketplace.businessDirectory": "Business directory",
-    "marketplace.advertisements": "Advertisements",
-    "marketplace.connectedUsers": "Connected users",
-    "marketplace.userAlerts": "User alerts",
-    "personal": "Personal",
-    "personal.viewProfile": "My profile",
-    "personal.editProfile": "Edit profile",
+    "marketplace.directory": "Elenco",
+    "marketplace.userSearch": "Utenti",
+    "marketplace.businessDirectory": "Elenco attività",
+    "marketplace.advertisements": "Annunci",
+    "marketplace.connectedUsers": "Utenti connessi",
+    "marketplace.userAlerts": "Avvisi utente",
+    "personal": "Personale",
+    "personal.viewProfile": "Profilo",
+    "personal.editProfile": "Modifica profilo",
     "personal.contacts": "Contacts",
     "personal.password": "Password",
     "personal.passwords": "Password",
@@ -611,19 +611,19 @@
       "balance": "Saldo insufficiente per eseguire questa operazione",
       "upperLimit": "Non puoi eseguire questo pagamento perché il limite massimo del saldo del conto di destinazione è stato superato",
       "daily.amount": "Il massimo giornaliero di {amount} è stato superato",
-      "daily.count": "The maximum allowed number of payments per day is {count}",
-      "weekly.amount": "The maximum weekly amount of {amount} was exceeded",
-      "weekly.count": "The maximum allowed number of payments per week is {count}",
-      "monthly.amount": "The maximum monthly amount of {amount} was exceeded",
-      "monthly.count": "The maximum allowed number of payments per month is {count}"
+      "daily.count": "Il numero massimo di pagamenti consentiti al giorno è {count}",
+      "weekly.amount": "La massima quantità settimanale di {amount} è stata superata",
+      "weekly.count": "Il numero massimo di pagamenti consentito per settimana è {count}",
+      "monthly.amount": "La quantità massima mensile di {amount} è stata superata",
+      "monthly.count": "Il numero massimo di pagamenti consentiti al mese è {count}"
     }
   },
   "voucher": {
     "error": {
-      "totalOpenAmount": "The total amount of all open vouchers would exceed {maxAmount}, as defined in this voucher type. The current total open amount is {currentAmount}.",
+      "totalOpenAmount": "L'importo totale di tutti i voucher aperti supererebbe il {maxAmount}, come definito in questo tipo di voucher. L'importo totale aperto attuale è {currentAmount}.",
       "buy": {
-        "amountForPeriod": "Buying on this voucher type is limited by period. Until {date} only {amount} is available for buying.",
-        "openAmount": "The current user exceeds the maximum allowed open amount of {maxAmount} for vouchers of this type. The current open amount is {currentAmount}.",
+        "amountForPeriod": "L'acquisto di questo tipo di voucher è limitato per periodo. Fino a {date} solo {amount} è disponibile per l'acquisto.",
+        "openAmount": "L'utente attuale supera il limite consentito per Voucher non riscossi di {maxAmount}. L'importo aperto attuale è {currentAmount}.",
         "notAllowedForUser": "The current user is not allowed to buy vouchers from this type."
       },
       "redeem": {
