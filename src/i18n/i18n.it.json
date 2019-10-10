@@ -985,54 +985,54 @@
       "group.user": "Gruppo utente",
       "group.operator": "Gruppo Operatore",
       "change.user": "Cambia gruppo utente",
-      "change.operator": "Change group",
-      "history.user": "User group history",
-      "history.operator": "Operator group history"
+      "change.operator": "Cambia gruppo",
+      "history.user": "Cronologia gruppi utente",
+      "history.operator": "Cronologia gruppi operatore"
     },
     "mobileTitle": {
-      "group.user": "User group",
-      "group.operator": "Operator group",
-      "change.user": "Change group",
-      "change.operator": "Change group",
-      "history.user": "Group history",
-      "history.operator": "Group history"
+      "group.user": "Gruppo utente",
+      "group.operator": "Gruppo Operatore",
+      "change.user": "Cambia gruppo",
+      "change.operator": "Cambia gruppo",
+      "history.user": "Storico gruppo",
+      "history.operator": "Storico gruppo"
     }
   },
   "brokers": {
     "title": {
-      "list": "Brokers",
-      "new": "Add broker",
-      "history": "Brokers history"
+      "list": "Partners",
+      "new": "Aggiungi partner",
+      "history": "Cronologia Partners"
     },
     "mobileTitle": {
-      "list": "Brokers",
-      "new": "Add broker",
-      "history": "Brokers history"
+      "list": "Partners",
+      "new": "Aggiungi partner",
+      "history": "Cronologia Partners"
     },
-    "mainBroker": "Main broker",
-    "setMain": "Set main",
-    "broker": "Broker",
-    "brokerAdded": "The broker has been added successfully",
-    "administration": "The administration",
+    "mainBroker": "Partner principale",
+    "setMain": "Imposta principale",
+    "broker": "Partner",
+    "brokerAdded": "Il partner è stato aggiunto correttamente",
+    "administration": "Amministrazione",
     "action": {
-      "add": "Added as broker",
-      "remove": "Removed a broker",
-      "setMain": "Set as main"
+      "add": "Aggiunto come partner",
+      "remove": "Rimosso un partner",
+      "setMain": "Imposta come principale"
     }
   },
   "phone": {
-    "mobile": "Mobile phone",
-    "landLine": "Land-line phone",
-    "name.mobile": "Mobile phone name",
-    "name.landLine": "Land-line phone name",
-    "number": "Number",
-    "number.mobile": "Mobile phone number",
-    "number.landLine": "Land-line phone number",
-    "phoneNumber": "Phone number",
-    "extension": "Land-line extension",
-    "extensionValue": "ext. {value}",
-    "numberExtensionValue": "{number} ext. {extension}",
-    "enabledSms": "Enabled for SMS",
+    "mobile": "Cellulare",
+    "landLine": "Telefono fisso",
+    "name.mobile": "Tag cellulare",
+    "name.landLine": "Tag telefono fisso",
+    "number": "Numero",
+    "number.mobile": "Numero di cellulare",
+    "number.landLine": "Numero telefono fisso",
+    "phoneNumber": "Telefono",
+    "extension": "Estensione",
+    "extensionValue": "est. {value}",
+    "numberExtensionValue": "{number} est. {extension}",
+    "enabledSms": "SMS abilitati",
     "verified": "Verificato",
     "error": {
       "verify": {
