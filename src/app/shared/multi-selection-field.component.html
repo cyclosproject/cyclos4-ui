@@ -28,7 +28,7 @@
         <div #check
           *ngFor="let option of category.options | async; let firstOpt = first"
           class="custom-control custom-checkbox d-flex align-content-center"
-          [ngClass]="{
+          [class]="resolveStyle(option)" [ngClass]="{
             'mt-1': !(firstCat && firstOpt)
           }" (click)="toggle(option.value)"
           (keydown.space)="$event.preventDefault(); $event.stopPropagation()"
@@ -37,7 +37,7 @@
             [id]="id + '_' + option.value" [value]="option.value"
             [checked]="isSelected(option)">
           <label class="custom-control-label" [for]="id + '_' + option.value"
-            [ngClass]="'level' + (option.level || 0)">
+            [ngClass]="">
             {{ option.text }}
           </label>
         </div>

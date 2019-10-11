@@ -1,3 +1,23 @@
-.level1 {
+.level1 .custom-control-label {
   margin-left: 1.8rem;
+}
+.level2 .custom-control-label {
+  margin-left: 3.5rem;
+}
+.level3 .custom-control-label {
+  margin-left: 5.2rem;
+}
+.hierarchy {
+  padding-left: 0;
+}
+.leaf.level0,
+.hierarchy.leaf {
+  padding-left: 1.5rem;
+}
+.parent .custom-control-label::before,
+.parent .custom-control-label::after {
+  display: none;
+}
+.parent .custom-control-label {
+  font-weight: 500;
 }

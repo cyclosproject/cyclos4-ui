@@ -31,6 +31,10 @@ a.plain, maybe-link.plain a {
 a.decorated {
   color: $link-color !important;
 }
+a.icon {
+  outline: none;
+  text-decoration: none;
+}
 
 .link-with-icon {
   display: flex;

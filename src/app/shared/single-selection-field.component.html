@@ -22,7 +22,7 @@
       <a *ngIf="emptyLabel != null" role="option" class="select-option mt-1"
         [id]="id + '_'" tabindex="0" href="#"
         [ngClass]="{selected: value == null || value === ''}"
-        (click)="select(''); $event.preventDefault()">{{
+        (click)="select(null); $event.preventDefault()">{{
         emptyLabel }}</a>
       <ng-container
         *ngFor="let category of categories | async; let firstCat = first">
@@ -32,11 +32,12 @@
         </div>
         <a *ngFor="let option of category.options | async; let firstOpt = first"
           tabindex="0" href="#" class="select-option"
-          [id]="id + '_' + option.value" [ngClass]="{
+          [class]="resolveStyle(option)" [id]="id + '_' + option.value"
+          [ngClass]="{
             'mt-1': emptyLabel != null || !(firstCat && firstOpt),
             'pl-3': category.name,
             selected: isSelected(option)
-          }" (click)="select(option.value);$event.preventDefault()">
+          }" (click)="select(option);$event.preventDefault()">
           {{ option.text }}
         </a>
       </ng-container>

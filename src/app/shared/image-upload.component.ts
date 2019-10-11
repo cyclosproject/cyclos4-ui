@@ -11,6 +11,7 @@ import { BehaviorSubject, forkJoin, Observable, Subscription } from 'rxjs';
 import { ImagesService } from 'app/api/services';
 import { first } from 'rxjs/operators';
 import { AbstractComponent } from 'app/shared/abstract.component';
+import { NextRequestState } from 'app/core/next-request-state';
 
 /**
  * Represents an image file being uploaded
@@ -56,6 +57,7 @@ export class ImageUploadComponent extends AbstractComponent implements OnDestroy
   @Input() containerClass = '';
   @Input() max = 1;
   @Input() target: TempImageTargetEnum;
+  @Input() owner = '';
   @Input() user = '';
   @Input() customField: CustomField;
   @Output() uploadDone = new EventEmitter<Image[]>();
@@ -79,7 +81,8 @@ export class ImageUploadComponent extends AbstractComponent implements OnDestroy
     private apiConfiguration: ApiConfiguration,
     private login: LoginService,
     private imagesService: ImagesService,
-    private changeDetector: ChangeDetectorRef) {
+    private changeDetector: ChangeDetectorRef,
+    private nextRequestState: NextRequestState) {
     super(injector);
   }
 
@@ -167,21 +170,37 @@ export class ImageUploadComponent extends AbstractComponent implements OnDestroy
 
   private doUpload(file: ImageToUpload): Observable<Image> {
     return new Observable(observer => {
-      const url = `${this.apiConfiguration.rootUrl}/images/temp`;
+      let params = null;
+      let url = 'images/temp';
+      if (this.target === 'advertisement') {
+        if (this.owner) {
+          // Upload image to the ad itself
+          url = `marketplace/${this.owner}/images`;
+        } else {
+          params = {
+            target: this.target,
+            user: this.user
+          };
+        }
+        url = this.nextRequestState.appendAuth(url);
+      } else {
+        params = {
+          target: this.target,
+          guestKey: this.login.guestKey,
+          user: this.owner,
+          customField: this.customField == null ? null : this.customField.id,
+          customFieldKind: this.customField == null ? null : this.customField.kind
+        };
+      }
+
       const data = new FormData();
       data.append('image', file.content, file.name);
 
-      file.subscription = this.http.post(url, data, {
+      file.subscription = this.http.post(`${this.apiConfiguration.rootUrl}/${url}`, data, {
         observe: 'events',
         reportProgress: true,
         responseType: 'text',
-        params: {
-          target: this.target,
-          guestKey: this.login.guestKey,
-          user: this.user,
-          customField: this.customField == null ? null : this.customField.id,
-          customFieldKind: this.customField == null ? null : this.customField.kind,
-        }
+        params: params
       }).subscribe(event => {
         if (event.type === HttpEventType.UploadProgress) {
           file.progress = event.loaded;

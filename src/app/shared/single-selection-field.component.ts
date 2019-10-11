@@ -3,6 +3,7 @@ import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { FORM_FIELD_WITH_OPTIONS } from 'app/shared/base-form-field-with-options.component';
 import { BaseSelectionFieldComponent } from 'app/shared/base-selection-field.component';
 import { empty } from 'app/shared/helper';
+import { FieldOption } from 'app/shared/field-option';
 
 /**
  * Component used to display a single selection field (using a `select` tag).
@@ -12,6 +13,7 @@ import { empty } from 'app/shared/helper';
   selector: 'single-selection-field',
   templateUrl: 'single-selection-field.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  styleUrls: ['single-selection-field.component.scss'],
   providers: [
     { provide: NG_VALUE_ACCESSOR, useExisting: SingleSelectionFieldComponent, multi: true },
     { provide: FORM_FIELD_WITH_OPTIONS, useExisting: SingleSelectionFieldComponent },
@@ -52,12 +54,19 @@ export class SingleSelectionFieldComponent extends BaseSelectionFieldComponent<s
     return empty(value) ? [] : [value];
   }
 
-  select(value: string) {
-    this.value = value;
+  select(option: FieldOption) {
+    if (option && option.disabled) {
+      return;
+    }
+    this.value = option ? option.value : null;
     this.close();
   }
 
   hasEmptyOption() {
     return !(this.emptyOption == null || this.emptyOption === false);
+  }
+
+  resolveStyle(option: FieldOption) {
+    return option.style + ' level' + option.level;
   }
 }
