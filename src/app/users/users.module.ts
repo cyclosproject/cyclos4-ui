@@ -32,6 +32,7 @@ import { UsersRoutingModule } from 'app/users/users-routing.module';
 import { SearchConnectedComponent } from 'app/users/connected/search-connected.component';
 import { OperatorGroupFormComponent } from 'app/users/operator-groups/operator-group-form.component';
 import { SearchUserAlertsComponent } from 'app/users/alerts/search-user-alerts.component';
+import { NotificationSettingsFormComponent } from 'app/users/notification-settings/notification-settings-form.component';
 
 /**
  * Users module
@@ -81,6 +82,8 @@ import { SearchUserAlertsComponent } from 'app/users/alerts/search-user-alerts.c
 
     ManagePasswordsComponent,
     ChangePasswordDialogComponent,
+
+    NotificationSettingsFormComponent,
   ],
   entryComponents: [
     VerifyPhoneComponent,

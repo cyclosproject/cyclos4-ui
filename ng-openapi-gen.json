@@ -6,6 +6,7 @@
     "Auth",
     "DeviceConfirmations",
     "Notifications",
+    "NotificationSettings",
     "Passwords",
     "Agreements",
     "Users",
