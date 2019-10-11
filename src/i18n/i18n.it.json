@@ -8,7 +8,7 @@
     "actions": "Azioni",
     "date": "Data",
     "performedBy": "Eseguito da",
-    "status": "Status",
+    "status": "Stato",
     "comments": "Commenti",
     "futureDate": "Data futura",
     "beginDate": "Data inizio",
@@ -17,10 +17,10 @@
     "expirationDate": "Data di scadenza",
     "newExpirationDate": "Nuova data di scadenza",
     "notApplied": "Non applicato",
-    "notAppliedSelect": "Not applied (select to apply)",
+    "notAppliedSelect": "Non applicato (selezionare per applicare)",
     "user": "Utente",
     "operator": "Operatore",
-    "brokers": "Partners",
+    "brokers": "Brokers",
     "groups": "Gruppi",
     "name": "Nome",
     "to": "a",
@@ -39,6 +39,8 @@
     "showMoreFilters": "Mostra più filtri",
     "lessFilters": "Meno filtri",
     "showLessFilters": "Mostra meno filtri",
+    "enabled": "Enabled",
+    "disabled": "Disabilitato",
     "back": "Indietro",
     "previous": "Precedente",
     "next": "Prossimo",
@@ -57,6 +59,7 @@
     "addNew": "Aggiungi nuovo",
     "yes": "Sì",
     "no": "No",
+    "notSet": "Not set",
     "map": "Mappa",
     "map.view": "Mostra mappa",
     "noOptionsSelected": "Nessuna opzione selezionata",
@@ -186,22 +189,22 @@
     "staleEntity": "Questo dato non può essere salvato perché è stato modificato da qualcun altro.<br>Si prega di caricare nuovamente la pagina e riavviare l'operazione.",
     "removeDataInUse": "Questo elemento non può essere rimosso perché è attualmente in uso.",
     "notFound": {
-      "location": "The location you typed or tried to access was not found",
-      "type": "The requested data could not be found: {type}",
-      "typeKey": "The requested data could not be found: {type} with key {key}"
+      "location": "La posizione che hai digitato o provato ad accedere non è stata trovata",
+      "type": "I dati richiesti non sono stati trovati: {type}",
+      "typeKey": "I dati richiesti non sono stati trovati: {type} con chiave {key}"
     },
     "login": "Il nome / password specificato non sono corretti. Riprova.",
     "remoteAddressBlocked": "Il tuo indirizzo IP è bloccato per aver superato i tentativi di accesso",
     "permission": "Non hai i permessi sufficienti per eseguire l'azione richiesta",
     "unauthorized": {
-      "address": "Your IP address is not allowed to login",
-      "url": "Access is not allowed from this URL"
+      "address": "Il tuo indirizzo IP non è autorizzato a accedere",
+      "url": "L'accesso non è consentito da questo URL"
     },
     "loggedOut": "Sei stato disconnesso. Effettua nuovamente il login e ripeti l'operazione.",
     "otp": "Si è verificato un errore durante l'invio della password. Riprova più tardi.",
     "securityAnswer": {
-      "invalid": "The given security answer is invalid",
-      "disabled": "By exceeding the number of security question attempts, this request has been aborted. Please, contact the administration"
+      "invalid": "La risposta di sicurezza fornita non è valida",
+      "disabled": "A causa del numero di tentativi sulla domande di sicurezza, questa richiesta è stata interrotta. Si prega di contattare l'amministrazione"
     },
     "illegalAction": "L'azione che hai tentato di eseguire non è valida",
     "field": {
@@ -215,9 +218,9 @@
       "maxDate": "Dovrebbe essere {max} o prima"
     },
     "geolocation": {
-      "denied": "No permission to get the current location. Please, grant this permission in your browser.",
-      "unavailable": "The current location is unavailable",
-      "general": "Error getting the current location"
+      "denied": "Non hai i permessi per ottenere la posizione corrente. Si prega di autorizzare questo permesso nel browser.",
+      "unavailable": "La posizione attuale non è disponibile",
+      "general": "Errore nell'ottenere la posizione corrente"
     }
   },
   "menu": {
@@ -243,7 +246,7 @@
     "operators.operators": "Operatori",
     "operators.register": "Iscrivi operatore",
     "operators.groups": "Gruppi operatore",
-    "brokering": "Partners",
+    "brokering": "Brokering",
     "brokering.users": "Utenti",
     "brokering.register": "Iscrivi utente",
     "marketplace": "Marketplace",
@@ -262,126 +265,127 @@
     "personal.password": "Password",
     "personal.passwords": "Password",
     "personal.notifications": "Notifiche",
+    "personal.notificationSettings": "Notification settings",
     "personal.settings": "Impostazioni",
     "content": "Informazioni"
   },
   "login": {
     "title": "Login",
     "mobileTitle": "Login",
-    "message": "You can login with your username and password",
-    "disconnected": "You have been disconnected.<br>Please, login again in order to view the requested page.",
+    "message": "Puoi accedere con il tuo nome utente e password",
+    "disconnected": "Sei stato disconnesso.<br>Per favore, accedi di nuovo per visualizzare la pagina richiesta.",
     "principal": "Utente",
-    "forgotPassword": "Forgot your password?",
-    "register": "Not a user yet? Register here."
+    "forgotPassword": "Password dimenticata?",
+    "register": "Non sei ancora un utente? Registrati qui."
   },
   "password": {
-    "confirmationMessage": "Supply your {passwordType} to confirm this operation",
-    "confirm.noPassword": "In order to confirm you need a {passwordType}, but you do not have any",
-    "confirm.mode": "Confirm with",
+    "confirmationMessage": "Inserisci la tua {passwordType} per confermare questa operazione",
+    "confirm.noPassword": "Per confermare hai bisogno di un {passwordType}, ma non ne hai",
+    "confirm.mode": "Conferma con",
     "confirm.mode.device": "Cellulare",
     "confirm.mode.password": "Password",
-    "confirm.device.active": "In order to confirm, scan this QR-code with your mobile phone",
-    "confirm.device.none": "In order to confirm you must have a trusted mobile phone but you do not have any",
-    "confirm.deviceOrPassword.active": "In order to confirm, either scan this QR-code with your mobile phone or supply your {password}",
-    "confirm.deviceOrPassword.none": "In order to confirm you must have a trusted mobile phone or supply your {password} but you do not have any",
-    "confirm.deviceOrOtp.noMediums": "In order to confirm you need either a trusted mobile phone (and you have none) or a confirmation password, but there are no possible mediums to receive it.<br>Please, contact the administration.",
-    "confirm.deviceOrOtp.active": "In order to confirm, either scan this QR-code with your mobile phone, use the previously sent confirmation password or request a new one",
-    "confirm.deviceOrOtp.request": "In order to confirm, either scan this QR-code with your mobile phone, or request a confirmation password below",
-    "confirm.otp.noMediums": "In order to confirm you need a confirmation password, but there are no possible mediums to receive it.<br>Please, contact the administration.",
-    "confirm.otp.active": "You can use the previously sent confirmation password or request a new one",
-    "confirm.otp.request": "Please, request a confirmation password below in order to confirm",
-    "otp.sent": "The password was sent to {dest}",
-    "otp.receiveBy": "Get by {medium}",
-    "oldPassword": "Old password",
-    "newPassword": "New password",
-    "passwordConfirmation": "Password confirmation",
+    "confirm.device.active": "Per confermare, scansiona questo codice QR con il tuo telefono cellulare",
+    "confirm.device.none": "Per confermare che devi avere un cellulare verificato. Il tuo non è ancora verificato",
+    "confirm.deviceOrPassword.active": "Per confermare, scansionare questo codice QR con il tuo cellulare o inserisci la tua {password}",
+    "confirm.deviceOrPassword.none": "Per confermare è necessario disporre di una cellulare verificato o inserire la {password}",
+    "confirm.deviceOrOtp.noMediums": "Per confermare che è necessario un cellulare verificato (e non ne hai) o un Otp ma non ci sono possibili mezzi per riceverlo.<br>Contatta l'amministrazione.",
+    "confirm.deviceOrOtp.active": "Per confermare, scansionare questo codice QR con il tuo cellulare, utilizzare la password di conferma precedentemente inviata o richiedine una nuova",
+    "confirm.deviceOrOtp.request": "Per confermare, scansionare questo codice QR con il tuo cellulare o richiedere una password di conferma qui sotto",
+    "confirm.otp.noMediums": "Per confermare hai bisogno di una password di conferma, ma non ci sono i mezzi per riceverla.<br>Per favore, contatta l'amministrazione.",
+    "confirm.otp.active": "Puoi utilizzare la password di conferma inviata in precedenza o richiederne una nuova",
+    "confirm.otp.request": "Per favore, richiedi una password di conferma qui sotto per confermare",
+    "otp.sent": "La password è stata inviata a {dest}",
+    "otp.receiveBy": "Ricevi via {medium}",
+    "oldPassword": "Vecchia password",
+    "newPassword": "Nuova password",
+    "passwordConfirmation": "Conferma password",
     "error": {
-      "disabled": "Your password has been disabled. Please, contact the administration.",
-      "reset": "Your password has been reset.",
-      "indefinitelyBlocked": "Your password has been disabled by exceeding the maximum tries. Please, contact the administration.",
-      "temporarilyBlocked": "Your password is temporarily blocked by exceeding the maximum tries.",
-      "expired": "Your password has expired. Please, contact the administration.",
-      "pending": "Your password is pending activation. Please, contact the administration.",
-      "invalid": "The given {type} is invalid"
+      "disabled": "La password è stata disattivata. Contatta l'amministrazione.",
+      "reset": "La password è stata reimpostata.",
+      "indefinitelyBlocked": "La password di accesso è stato disabilitato dal superamento dei tentativi massimi. Si prega di contattare l'amministrazione.",
+      "temporarilyBlocked": "La password è temporaneamente bloccata.",
+      "expired": "La password è scaduta. Contatta l'amministrazione.",
+      "pending": "La password è in attesa di attivazione. Contatta l'amministrazione.",
+      "invalid": "Il dato {type} non è valido"
     },
     "title": {
-      "change.self": "Change your password",
+      "change.self": "Cambia la tua password",
       "change.user": "Modifica la password",
-      "forgotten": "Recover your password",
-      "manage.single.self": "Manage your password",
-      "manage.multiple.self": "Manage your passwords",
+      "forgotten": "Recupera la tua password",
+      "manage.single.self": "Gestisci la tua password",
+      "manage.multiple.self": "Gestisci le password",
       "manage.single.user": "Gestisci password utente",
       "manage.multiple.user": "Gestire le password utente",
-      "securityAnswer": "Set your security answer"
+      "securityAnswer": "Imposta la tua risposta di sicurezza"
     },
     "mobileTitle": {
-      "change.self": "Password change",
-      "change.user": "Password change",
-      "forgotten": "Password recovery",
+      "change.self": "Modifica password",
+      "change.user": "Modifica password",
+      "forgotten": "Recupero password",
       "manage.single.self": "Password",
       "manage.multiple.self": "Password",
       "manage.single.user": "Password utente",
       "manage.multiple.user": "Password utente",
-      "securityAnswer": "Security answer"
+      "securityAnswer": "Risposta di sicurezza"
     },
     "forgotten": {
-      "preface": "Here you can recover your password. Fill in your user identification below. You can use one of the following:",
+      "preface": "Qui puoi recuperare la password. Inserisci la tua Id qui sotto. Puoi utilizzare uno dei seguenti:",
       "principal": "Utente",
-      "captcha": "Type in the characters below",
-      "email": "You will receive shortly an e-mail with your user identification and instructions on how to reset your password",
-      "generated.message": "Once you submit, a new password will be generated and sent to your e-mail address",
-      "generated.done": "You should receive shortly an e-mail with your new password.",
-      "manual.done": "Your password has been successfully changed. You can now use it to login."
+      "captcha": "Digita i caratteri qui sotto",
+      "email": "Riceverai a breve una e-mail con l'identificazione utente e le istruzioni su come reimpostare la password",
+      "generated.message": "Dopo la conferma verrà generata una nuova password e inviata al tuo indirizzo e-mail",
+      "generated.done": "Dovresti ricevere a breve una e-mail con la tua nuova password.",
+      "manual.done": "La tua password è stata modificata con successo. Ora puoi usarla per accedere."
     },
     "expired": {
       "preface": "Il tuo {type} è scaduto.",
-      "message.manual": "In order to proceed, you must change it.",
-      "message.generated": "In order to proceed, a new value must be generated.<br>This value will only be displayed once, so, make sure you either memorize it or write it down.",
-      "generatedValue": "The value for {type} is <data>{value}</data>.<br>This value won't be displayed again, so, make sure you either memorize it or write it down.",
-      "generateNew": "Generate new",
-      "changed": "Your {type} was changed"
+      "message.manual": "Per procedere, è necessario modificarla.",
+      "message.generated": "Per procedere, deve essere generato un nuovo valore.<br>Questo valore verrà visualizzato solo una volta, quindi, assicurati di memorizzarlo o di annotarlo.",
+      "generatedValue": "Il valore per {type} è <data>{value}</data>.<br>Questo valore non verrà visualizzato di nuovo, quindi, assicurati di memorizzarlo o di annotarlo.",
+      "generateNew": "Genera nuovo",
+      "changed": "Il tuo {type} è stato modificato"
     },
-    "statusSince": "Since {date}",
+    "statusSince": "Dal {date}",
     "status": {
-      "active": "Active",
-      "disabled": "Disabled",
+      "active": "Attivo",
+      "disabled": "Disabilitato",
       "expired": "Scaduto",
       "indefinitelyBlocked": "Bloccato",
-      "neverCreated": "Never created",
-      "pending": "Pending",
-      "reset": "Reset",
-      "temporarilyBlocked": "Temporarily blocked"
+      "neverCreated": "Mai creato",
+      "pending": "In attesa",
+      "reset": "Resetta",
+      "temporarilyBlocked": "Temporaneamente bloccato"
     },
     "action": {
-      "change": "Change",
-      "change.done": "Your {type} was changed",
-      "change.generated.confirm": "This will generate a new {type}, and the value will be displayed only once. Are you sure?",
-      "change.generated.done": "The value for {type} is <data>{value}</data>.<br>Make sure to memorize it, as it won't be displayed again.",
-      "unblock": "Unblock",
-      "unblock.confirm": "Are you sure to unblock your {type}?",
-      "unblock.done": "Your {type} was unblocked",
-      "activate": "Activate",
-      "activate.confirm": "This will activate your {type}, and the generated value will be displayed only once. Are you sure?",
-      "enable": "Enable",
-      "enable.confirm": "Are you sure to enable your {type}?",
-      "enable.done": "Your {type} was enabled",
-      "disable": "Disable",
-      "disable.confirm": "Are you sure to disable your {type}?",
-      "disable.done": "Your {type} was disabled"
+      "change": "Modifica",
+      "change.done": "Il tuo {type} è stato modificato",
+      "change.generated.confirm": "Questo genererà un nuovo {type}, e il valore verrà visualizzato solo una volta. Sei sicuro?",
+      "change.generated.done": "Il valore per {type} è <data>{value}</data>.<br>Memorizzalo, perché non verrà visualizzato di nuovo.",
+      "unblock": "Sblocca",
+      "unblock.confirm": "Sei sicuro di sbloccare il tuo {type}?",
+      "unblock.done": "Il tuo {type} è stato sbloccato",
+      "activate": "Attiva",
+      "activate.confirm": "Questo attiverà il tuo {type}, e il valore generato verrà visualizzato solo una volta. Sei sicuro?",
+      "enable": "Abilita",
+      "enable.confirm": "Sei sicuro di abilitare il tuo {type}?",
+      "enable.done": "Il tuo {type} è stato abilitato",
+      "disable": "Disattiva",
+      "disable.confirm": "Sei sicuro di voler disattivare il tuo {type}?",
+      "disable.done": "Il {type} è stato disattivato"
     }
   },
-  "registrationAgreement": "Registration agreement",
+  "registrationAgreement": "Termini e condizioni",
   "pendingAgreements": {
-    "title": "Updated agreement",
-    "mobileTitle": "Updated agreement",
-    "message": "The registration agreement has been updated.<br><br>In order to continue, you must agree with the new terms.",
-    "agree": "I agree with the following registration agreements: {agreements}"
+    "title": "Termini e condizioni aggiornati",
+    "mobileTitle": "Termini e condizioni aggiornati",
+    "message": "I termini e condizioni sono stati aggiornati.<br><br>Per continuare, devi accettare i nuovi termini e condizioni.",
+    "agree": "Accetto i seguenti termini e condizioni: {agreements}"
   },
   "securityQuestion": {
-    "message": "The security question is required in case you need to reset your password. Once set, if you need to change it, contact the administration.",
-    "question": "Security question",
-    "answer": "Your answer",
-    "set": "Your security answer was set"
+    "message": "La domanda di sicurezza è richiesta nel caso in cui sia necessario reimpostare la password. Una volta impostata, se si vuole modificare, contattare l'amministrazione.",
+    "question": "Domanda di sicurezza",
+    "answer": "La tua risposta",
+    "set": "La tua risposta di sicurezza è stata impostata"
   },
   "dashboard": {
     "quickAccess": "Accesso rapido",
@@ -650,7 +654,7 @@
     },
     "status": {
       "redeemed": "Riscossi",
-      "pending": "Pending",
+      "pending": "In attesa",
       "open": "Aperto",
       "expired": "Scaduto",
       "canceled": "Annullato"
@@ -788,7 +792,7 @@
       "userOperators": "Operatori",
       "operatorRegistration": "Nuovo operatore",
       "myBrokerings": "Membri assegnati",
-      "userBrokerings": "Membri del Partner"
+      "userBrokerings": "Membri del Broker"
     },
     "group": "Gruppo",
     "groupSet": "Supergruppo",
@@ -853,7 +857,7 @@
       "viewAuthorizedPayments": "Visualizza le autorizzazioni di pagamento",
       "viewAds": "Visualizza annunci",
       "viewBrokerings": "Visualizza membri assegnati",
-      "viewBrokers": "Vedi partners",
+      "viewBrokers": "Vedi broker",
       "viewOperators": "Visualizza operatori",
       "status.user": "Stato utente",
       "status.operator": "Stato operatore",
@@ -862,17 +866,18 @@
       "viewRedeemedVouchers": "Mostra voucher riscattati",
       "redeemVoucher": "Riscatta voucher",
       "viewBoughtVouchers": "Vedi voucher acquistati",
-      "buyVouchers": "Acquista voucher"
+      "buyVouchers": "Acquista voucher",
+      "notificationSettings": "Notification settings"
     },
     "registration": {
-      "group.public": "Choose the group you want to participate",
+      "group.public": "Scegliere il gruppo a cui si desidera partecipare",
       "group.manager": "Scegli il gruppo per il nuovo utente",
       "skipActivationEmail": "Saltare e-mail di attivazione",
       "password.assign": "Assegna password",
       "password.forceChange": "Obbliga l'utente a cambiare password",
-      "active.public": "You have been successfully registered, and your account is now active.",
-      "inactive.public": "Your account was successfully created.<br>However, you will need to be activated by the administration.<br>You will be notified when your account is active.",
-      "pending.public": "Your registration has been submitted, and needs to be verified.<br>You should receive an e-mail shortly with instructions on how to activate your account.<br>If you don't receive the e-mail, make sure to check your spam / junk folder.",
+      "active.public": "Sei stato registrato con successo. Il tuo account è attivo.",
+      "inactive.public": "Il tuo account è stato creato con successo.<br>Tuttavia, dovrai essere attivato dall'amministrazione.<br>Sarai avvisato quando il tuo account è attivo.",
+      "pending.public": "La tua registrazione è stata inviata e deve essere verificata.<br>Dovresti ricevere una e-mail a breve con le istruzioni su come attivare il tuo account.<br>Se non riesci a trovare l'e-mail, assicurati di controllare la cartella spam.",
       "active.manager": "Il conto dell'utente {user} è stato attivato.",
       "inactive.manager": "L'utente {user} è stato registrato, tuttavia, ha ancora bisogno di essere attivato dall'amministrazione.",
       "pending.manager": "L'utente {user} è stato registrato, tuttavia, deve ancora convalidare la sua registrazione confermando l'e-mail.",
@@ -929,7 +934,7 @@
     "editOwnProfile": "Modifica il proprio profilo",
     "notifications": "Notifiche",
     "viewAdvertisements": "Vedi annunci",
-    "brokering": "Esegui operazioni come partner",
+    "brokering": "Esegui operazioni come broker",
     "runOperations": "Esegui operazioni",
     "created": "Il gruppo di operatore è stato creato",
     "saved": "Il gruppo di operatore è stato salvato"
@@ -967,9 +972,9 @@
       "history.user": "Cronologia stato",
       "history.operator": "Cronologia stato"
     },
-    "active": "Active",
+    "active": "Attivo",
     "blocked": "Accesso bloccato",
-    "disabled": "Disabled",
+    "disabled": "Disabilitato",
     "pending": "In attesa di attivazione",
     "purged": "Rimozione totale (tutti i dati privati sono cancellati)",
     "removed": "Rimozione parziale (nessun dato privato è stato eliminato)"
@@ -1000,23 +1005,23 @@
   },
   "brokers": {
     "title": {
-      "list": "Partners",
-      "new": "Aggiungi partner",
-      "history": "Cronologia Partners"
+      "list": "Brokers",
+      "new": "Aggiungi broker",
+      "history": "Cronologia Brokers"
     },
     "mobileTitle": {
-      "list": "Partners",
-      "new": "Aggiungi partner",
-      "history": "Cronologia Partners"
+      "list": "Brokers",
+      "new": "Aggiungi broker",
+      "history": "Cronologia Brokers"
     },
-    "mainBroker": "Partner principale",
+    "mainBroker": "Broker principale",
     "setMain": "Imposta principale",
-    "broker": "Partner",
-    "brokerAdded": "Il partner è stato aggiunto correttamente",
+    "broker": "Broker",
+    "brokerAdded": "Il broker è stato aggiunto con successo",
     "administration": "Amministrazione",
     "action": {
-      "add": "Aggiunto come partner",
-      "remove": "Rimosso un partner",
+      "add": "Aggiunto come broker",
+      "remove": "Rimosso un broker",
       "setMain": "Imposta come principale"
     }
   },
@@ -1036,9 +1041,9 @@
     "verified": "Verificato",
     "error": {
       "verify": {
-        "expired": "The verification code was not sent or has expired.<br> Please, send the code again to your phone and restart the process.",
-        "invalid": "Invalid verification code",
-        "maxAttempts": "You have exceeded the number of allowed attempts.<br>Please, send the code again to your phone and restart the process."
+        "expired": "Il codice di verifica non è stato inviato o è scaduto.<br> Per favore, invia nuovamente il codice al tuo telefono e riavvia il processo.",
+        "invalid": "Codice di verifica non valido",
+        "maxAttempts": "Hai superato il numero di tentativi consentiti.<br>Per favore, invia nuovamente il codice al tuo telefono e riavvia il processo."
       }
     },
     "verify": {
@@ -1097,7 +1102,149 @@
       "remove": "Rimuovi notifica",
       "removeAll": "Rimuovi tutto",
       "markAllRead": "Segna tutti come già letti"
+    },
+    "admin": {
+      "adPendingAuthorization": "Ad pending for authorization",
+      "applicationErrors": "Application errors",
+      "externalPaymentExpired": "External payment expired",
+      "externalPaymentPerformedFailed": "External payment could not be delivered",
+      "generatedVouchersAboutToExpire": "Generated vouchers about to expire",
+      "generatedVouchersExpired": "Generated vouchers expiration",
+      "networkCreated": "Network created",
+      "paymentAwaitingAuthorization": "Payments pending by authorization",
+      "paymentPerformed": "Payments",
+      "systemAlert": "System alerts",
+      "userAlert": "User alerts",
+      "userRegistration": "New registered users",
+      "voucherBuyingAboutToExpire": "Voucher buying about to expire"
+    },
+    "user": {
+      "account": {
+        "allNonSmsPerformedPayments": "Payment performed",
+        "authorizedPaymentCanceled": "Authorized payment canceled",
+        "authorizedPaymentDenied": "Authorized payment denied",
+        "authorizedPaymentExpired": "Authorized payment expired",
+        "authorizedPaymentSucceeded": "Authorized payment successful",
+        "boughtVouchersAboutToExpire": "Bought vouchers will expire in a few days",
+        "boughtVouchersExpirationDateChanged": "Bought voucher expiration date was changed",
+        "boughtVouchersExpired": "Bought voucher have expired",
+        "externalPaymentExpired": "External payment expired",
+        "externalPaymentPerformedFailed": "External payment could not be delivered",
+        "externalPaymentReceivedFailed": "External payment could not be received",
+        "incomingRecurringPaymentCanceled": "Incoming recurring payment was canceled",
+        "incomingRecurringPaymentFailed": "Incoming recurring payment has failed",
+        "incomingRecurringPaymentReceived": "Incoming recurring payment was received",
+        "incomingScheduledPaymentCanceled": "Incoming scheduled payment canceled",
+        "incomingScheduledPaymentFailed": "Incoming scheduled payment failed",
+        "incomingScheduledPaymentReceived": "Scheduled payment received",
+        "limitChange": "Account limit changed",
+        "paymentAwaitingAuthorization": "Payment awaiting authorization",
+        "paymentReceived": "Payment received",
+        "paymentRequestCanceled": "Payment request canceled",
+        "paymentRequestDenied": "Payment request denied",
+        "paymentRequestExpirationDateChanged": "Payment request expiration date changed",
+        "paymentRequestExpired": "Payment request expired",
+        "paymentRequestProcessed": "Payment request processed",
+        "paymentRequestReceived": "Payment request received",
+        "recurringPaymentFailed": "Recurring payment occurrence has failed",
+        "recurringPaymentOcurrenceProcessed": "Recurring payment was processed",
+        "scheduledPaymentFailed": "Scheduled payment failed",
+        "scheduledPaymentInstallmentProcessed": "Scheduled payment installment was processed",
+        "scheduledPaymentRequestFailed": "Scheduled payment request failed",
+        "sentPaymentRequestExpirationDateChanged": "Sent payment request expiration date changed",
+        "smsPerformedPayment": "SMS performed payment",
+        "ticketWebhookFailed": "Ticket approval could not be notified through webhook",
+        "operator": {
+          "authorizedPaymentApprovedStillPending": "Pending payment by operator approved but still pending further authorization",
+          "authorizedPaymentCanceled": "Pending payment by operator was canceled",
+          "authorizedPaymentDenied": "Pending payment by operator was denied",
+          "authorizedPaymentExpired": "Authorized payment by operator has expired",
+          "authorizedPaymentSucceeded": "Pending payment by operator successful",
+          "paymentAwaitingAuthorization": "Operator payment awaiting authorization"
+        }
+      },
+      "brokering": {
+        "adPendingAuthorization": "Ad is pending for authorization",
+        "memberAssigned": "Member assigned",
+        "memberUnassigned": "Member unassigned"
+      },
+      "buyer": {
+        "adInterestNotification": "New ad matching interest",
+        "adQuestionAnswered": "Ad question answered",
+        "orderCanceled": "Purchase order canceled",
+        "orderPaymentCanceled": "Purchase order payment canceled",
+        "orderPaymentDenied": "Purchase order payment denied",
+        "orderPaymentExpired": "Purchase order payment expired",
+        "orderPending": "Pending order",
+        "orderPendingAuthorization": "Purchase order awaiting payment authorization",
+        "orderPendingDeliveryData": "Order awaiting delivery information",
+        "orderProcessedBySeller": "Order accepted by seller",
+        "orderRejectedBySeller": "Order rejected by seller",
+        "buyerSalePending": "Order created",
+        "buyerSaleRejectedBySeller": "Sale order canceled"
+      },
+      "feedback": {
+        "changed": "Feedback changed",
+        "created": "Feedback received",
+        "expirationReminder": "Feedback reminder",
+        "optional": "Feedback optional",
+        "replyCreated": "Feedback reply received",
+        "required": "Feedback required"
+      },
+      "personal": {
+        "brokerAssigned": "Broker assigned",
+        "brokerUnassigned": "Broker unassigned",
+        "maxSmsPerMonthReached": "Maximum SMS per month reached",
+        "newToken": "New token / card",
+        "newTokenPendingActivation": "New token / card pending activation",
+        "passwordStatusChanged": "Password status changed",
+        "tokenStatusChanged": "Token / card status changed",
+        "userStatusChanged": "User status changed"
+      },
+      "reference": {
+        "changed": "Reference changed",
+        "created": "Reference received"
+      },
+      "seller": {
+        "adAuthorized": "Advertisement authorized",
+        "adExpired": "Advertisement expired",
+        "adLowStock": "Low quantity of article",
+        "adOutOfStock": "Article out of stock",
+        "adQuestionCreated": "New ad question",
+        "adRejected": "Advertisement rejected",
+        "orderCanceled": "Sale order canceled",
+        "orderCreated": "New web shop order",
+        "orderPaymentCanceled": "Sale order payment canceled",
+        "orderPaymentDenied": "Sale order payment denied",
+        "orderPaymentExpired": "Sale order payment expired",
+        "orderPendingAuthorization": "Sale order awaiting payment authorization",
+        "orderPendingDeliveryData": "Delivery information requested",
+        "orderProcessedByBuyer": "Order accepted by buyer",
+        "orderRejectedByBuyer": "Order rejected",
+        "saleProcessedByBuyer": "Sale realized"
+      }
     }
+  },
+  "notificationSettings": {
+    "title": "Notification settings",
+    "mobileTitle": "Notification settings",
+    "notAvailableSettings": "You are not allowed to change any settings.",
+    "forwardMessages": "Forward internal messages to your email address",
+    "notifications": "Notifications",
+    "internalNotification": "Internal notification",
+    "accounts": "Accounts",
+    "personal": "Personal",
+    "payments": "Payments",
+    "marketplaceAsBuyer": "Marketplace as buyer",
+    "marketplaceAsSeller": "Marketplace as seller",
+    "feedbackAndReferences": "Feedback and references",
+    "smsCount": "You have used {count} of {total} free SMS messages this month.",
+    "paymentNotifications.above": "Only notify payments above",
+    "paymentNotifications.below": "Only notify payments below",
+    "saved": "The notification settings were saved",
+    "enableOrDisable": "Enable or disable {section}",
+    "enableAll": "Enable all",
+    "disableAll": "Disable all"
   },
   "connectedUser": {
     "title": "Utenti connessi",
@@ -1108,7 +1255,7 @@
     "disconnect": "Disconnetti utente",
     "viewConnected": {
       "operator": "Visualizza operatori connessi",
-      "broker": "Visualizza partners connessi",
+      "broker": "Visualizza broker connessi",
       "admin": "Visualizza amministratori connessi",
       "member": "Visualizza membri connessi"
     },
@@ -1172,6 +1319,16 @@
       "passwordTemporarilyBlocked": "Password temporaneamente bloccata",
       "receivedVeryBadRefs": "Utente ha ricevuto troppi feedback 'molto negativi'",
       "scheduledPaymentFailed": "Pagamento pianificato fallito"
+    }
+  },
+  "systemAlert": {
+    "type": {
+      "accountFeeChargedNoFailures": "Account fee has finished without any failures",
+      "accountFeeChargedWithFailures": "Account fee has finished with at least one failure",
+      "applicationRestarted": "Application restarted",
+      "custom": "Custom",
+      "maxGlobalSmsReached": "The global maximum of SMS messages per month has been reached",
+      "maxIncorrectLoginAttempts": "Max incorrect login attempts for invalid user"
     }
   }
 }
