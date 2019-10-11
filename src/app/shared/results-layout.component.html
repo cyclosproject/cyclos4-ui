@@ -88,7 +88,7 @@
         (mapReady)="adjustMap();">
         <ng-container *ngFor="let row of rows">
           <ng-container *ngIf="toAddress(row) as addr">
-            <agm-marker [title]="toMarkerTitle(row)" [iconUrl]="redMarker"
+            <agm-marker [title]="toMarkerTitle(row)" [iconUrl]="mainMarker"
               [latitude]="addr.location.latitude"
               [longitude]="addr.location.longitude"
               (markerClick)="closeAllInfoWindows()">
@@ -107,7 +107,7 @@
         <agm-marker
           *ngIf="referencePoint?.latitude != null && referencePoint?.longitude != null"
           [title]="referencePoint.name" [latitude]="referencePoint.latitude"
-          [longitude]="referencePoint.longitude" [iconUrl]="blueMarker">
+          [longitude]="referencePoint.longitude" [iconUrl]="altMarker">
           <agm-info-window>
             {{ referencePoint.name }}
           </agm-info-window>

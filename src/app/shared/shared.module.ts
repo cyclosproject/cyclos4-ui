@@ -90,6 +90,8 @@ import { BooleanPipe } from 'app/shared/boolean.pipe';
 import { MultipleUsersFieldComponent } from 'app/shared/multiple-users-field.component';
 import { UserInfoComponent } from 'app/shared/user-info.component';
 import { TextDialogComponent } from 'app/shared/text-dialog.component';
+import { ButtonToggleComponent } from 'app/shared/button-toggle.component';
+import { NotificationTypeSettingComponent } from 'app/users/notification-settings/notification-type-setting.component';
 
 
 
@@ -176,6 +178,8 @@ export function initTooltipConfig(): TooltipConfig {
     ChipComponent,
     CaptchaComponent,
     IconWithCounterComponent,
+    ButtonToggleComponent,
+    NotificationTypeSettingComponent,
 
     TrustPipe,
     DatePipe,
@@ -287,6 +291,8 @@ export function initTooltipConfig(): TooltipConfig {
     ChipComponent,
     CaptchaComponent,
     IconWithCounterComponent,
+    ButtonToggleComponent,
+    NotificationTypeSettingComponent,
 
     FocusedDirective,
     NumbersOnlyDirective,

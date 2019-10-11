@@ -24,6 +24,7 @@ import { ContactListComponent } from 'app/users/search/contact-list.component';
 import { SearchUsersComponent } from 'app/users/search/search-users.component';
 import { ViewUserStatusHistoryComponent } from 'app/users/status/view-user-status-history.component';
 import { ViewUserStatusComponent } from 'app/users/status/view-user-status.component';
+import { NotificationSettingsFormComponent } from 'app/users/notification-settings/notification-settings-form.component';
 
 const usersRoutes: Routes = [
   {
@@ -184,6 +185,11 @@ const usersRoutes: Routes = [
         path: 'validate-email-change/:key',
         component: ValidateEmailChangeComponent
       },
+      {
+        path: ':user/notification-settings',
+        component: NotificationSettingsFormComponent,
+        canActivate: [LoggedUserGuard]
+      }
     ]
   }
 ];

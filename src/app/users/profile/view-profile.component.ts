@@ -103,6 +103,7 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     const recurringPayments = permissions.recurringPayments || {};
     const authorizedPayments = permissions.authorizedPayments || {};
     const marketplace = permissions.marketplace || {};
+    const notificationSettings = permissions.notificationSettings || {};
     const status = permissions.status || {};
     const group = permissions.group || {};
     const operators = permissions.operators || {};
@@ -245,6 +246,11 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
       if (marketplace.viewWebshop) {
         actions.push(new HeadingAction('shopping_basket', this.i18n.user.profile.viewWebshop, () => {
           this.router.navigate(['/marketplace', this.param, AdKind.WEBSHOP, 'list']);
+        }));
+      }
+      if (notificationSettings.view) {
+        this.managementActions.push(new HeadingAction('notifications_off', this.i18n.user.profile.notificationSettings, () => {
+          this.router.navigate(['/users', this.param, 'notification-settings']);
         }));
       }
       // Records

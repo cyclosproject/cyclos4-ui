@@ -714,6 +714,10 @@ export class MenuService {
       if ((permissions.notifications || {}).enable) {
         add(Menu.NOTIFICATIONS, '/personal/notifications', 'notifications', this.i18n.menu.personalNotifications);
       }
+      if ((permissions.notificationSettings || {}).enable) {
+        add(Menu.NOTIFICATIONS_SETTINGS, `/users/${ApiHelper.SELF}/notification-settings`,
+          'notifications_off', this.i18n.menu.personalNotificationSettings);
+      }
       add(Menu.SETTINGS, '/personal/settings', 'settings', this.i18n.menu.personalSettings);
       addOperations(RootMenu.PERSONAL);
       addContentPages(Menu.CONTENT_PAGE_PERSONAL);
