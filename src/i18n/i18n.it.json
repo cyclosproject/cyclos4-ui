@@ -564,7 +564,7 @@
       "image": "Immagine profilo",
       "images": "Immagini del profilo",
       "fields": "Campi profilo",
-      "group": "Choose the group you want to participate",
+      "group": "Scegliere il gruppo a cui si desidera partecipare",
       "phones": "Telefoni",
       "addresses": "Indirizzi",
       "contactInfos": "Contatti aggiuntivi",
@@ -636,9 +636,9 @@
       "viewAds": "Visualizza annunci"
     },
     "registration": {
-      "active": "You have been successfully registered, and your account is now active.",
-      "inactive": "Your account was successfully created.<br>However, you will need to be activated by the administration.<br>You will be notified when your account is active.",
-      "pending": "Your registration has been submitted, and needs to be verified.<br>You should receive an e-mail shortly with instructions on how to activate your account.<br>If you don't receive the e-mail, make sure to check your spam / junk folder.",
+      "active": "Sei stato registrato con successo. Il tuo account è attivo.",
+      "inactive": "Il tuo account è stato creato con successo.<br>Tuttavia, dovrai essere attivato dall'amministrazione.<br>Sarai avvisato quando il tuo account è attivo.",
+      "pending": "La tua registrazione è stata inviata e deve essere verificata.<br>Dovresti ricevere una e-mail a breve con le istruzioni su come attivare il tuo account.<br>Se non riesci a trovare l'e-mail, assicurati di controllare la cartella spam.",
       "principal.single": "Puoi utilizzare il tuo {principal} ({value}) su {channels}",
       "principal.multiple.preface": "Puoi accedere con i seguenti dati:",
       "principal.multiple.item": "<b>{principal}</b> ({value}): può essere utilizzato su {channels}",
@@ -671,9 +671,9 @@
       "send": "Invia",
       "message": "Clicca sul pulsante qui sopra per inviare il codice di verifica al tuo telefono",
       "done": "Il codice di verifica è stato inviato a {number}",
-      "error.expired": "The verification code was not sent or has expired.<br> Please, send the code again to your phone and restart the process.",
-      "error.invalid": "Invalid verification code",
-      "error.maxAttempts": "You have exceeded the number of allowed attempts.<br>Please, send the code again to your phone and restart the process."
+      "error.expired": "Il codice di verifica non è stato inviato o è scaduto.<br> Per favore, invia nuovamente il codice al tuo telefono e riavvia il processo.",
+      "error.invalid": "Codice di verifica non valido",
+      "error.maxAttempts": "Hai superato il numero di tentativi consentiti.<br>Per favore, invia nuovamente il codice al tuo telefono e riavvia il processo."
     }
   },
   "address": {
