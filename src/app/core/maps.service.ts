@@ -5,10 +5,11 @@ import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { MapData, GeographicalCoordinate, AddressManage } from 'app/api/models';
 import { Observable, of, from } from 'rxjs';
 import { MapsAPILoader, MapTypeStyle } from '@agm/core';
-import { empty, RedMarker, blank } from 'app/shared/helper';
+import { empty, blank } from 'app/shared/helper';
 import { mergeMap } from 'rxjs/operators';
 import { Address } from 'app/api/models';
 import { LayoutService } from 'app/shared/layout.service';
+import { Configuration } from 'app/configuration';
 
 const STATIC_URL = 'https://maps.googleapis.com/maps/api/staticmap';
 const EXTERNAL_URL = 'https://www.google.com/maps/search/?api=1';
@@ -76,7 +77,7 @@ export class MapsService {
     const key = this.data.googleMapsApiKey;
     const scale = (window.devicePixelRatio || 0) >= 2 ? 2 : 1;
     return `${STATIC_URL}?size=${width}x${height}&scale=${scale}&zoom=15`
-      + `&markers=icon:${RedMarker}|${coords.latitude},${coords.longitude}&key=${key}`
+      + `&markers=icon:${Configuration.mainMapMarker}|${coords.latitude},${coords.longitude}&key=${key}`
       + this.styles();
   }
 
