@@ -42,6 +42,8 @@ function setupConfigurationDefaults() {
   for (const bp of ALL_BREAKPOINTS) {
     Configuration.breakpoints[bp] = {};
   }
+  Configuration.mainMapMarker = 'https://maps.google.com/mapfiles/ms/icons/red-dot.png';
+  Configuration.altMapMarker = 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png';
   Configuration.dashboard = new DefaultDashboardResolver();
 }
 

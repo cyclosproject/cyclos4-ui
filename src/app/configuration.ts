@@ -110,6 +110,16 @@ export interface ConfigurationDefinitions {
    */
   banners: BannerCardsResolver;
 
+  /**
+   * The absolute URL for the main map marker icon.
+   */
+  mainMapMarker: string;
+
+  /**
+   * The absolute URL for the alternative map marker icon
+   */
+  altMapMarker: string;
+
 }
 
 /** The global configuration */
