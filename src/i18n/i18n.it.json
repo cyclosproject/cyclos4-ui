@@ -288,15 +288,15 @@
     "registrationAgreement": "Termini e condizioni",
     "pendingAgreements": {
       "title": "Termini e condizioni aggiornati",
-      "mobileTitle": "Updated agreement",
-      "message": "The registration agreement has been updated.<br><br>In order to continue, you must agree with the new terms.",
-      "agree": "I agree with the following registration agreements: {agreements}"
+      "mobileTitle": "Termini e condizioni aggiornati",
+      "message": "I termini e condizioni sono stati aggiornati.<br><br>Per continuare, devi accettare i nuovi termini e condizioni.",
+      "agree": "Accetto i seguenti termini e condizioni: {agreements}"
     },
     "securityQuestion": {
-      "message": "The security question is required in case you need to reset your password. Once set, if you need to change it, contact the administration.",
-      "question": "Security question",
-      "answer": "Your answer",
-      "set": "Your security answer was set"
+      "message": "La domanda di sicurezza è richiesta nel caso in cui sia necessario reimpostare la password. Una volta impostata, se si vuole modificare, contattare l'amministrazione.",
+      "question": "Domanda di sicurezza",
+      "answer": "La tua risposta",
+      "set": "La tua risposta di sicurezza è stata impostata"
     }
   },
   "dashboard": {
@@ -421,7 +421,7 @@
     "done.view": "Vedi pagamento",
     "done.new": "Nuovo pagamento",
     "status": {
-      "name": "Status",
+      "name": "Stato",
       "open": "Aperto",
       "closed": "Chiuso",
       "canceled": "Annullato",
