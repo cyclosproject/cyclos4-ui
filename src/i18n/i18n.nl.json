@@ -1,5 +1,7 @@
 {
   "general": {
+    "type": "Type",
+    "code": "Code",
     "period": "Periode",
     "now": "Nu",
     "action": "Actie",
@@ -11,11 +13,17 @@
     "futureDate": "Datum in de toekomst",
     "beginDate": "Begindatum",
     "endDate": "Einddatum",
+    "creationDate": "Creation date",
+    "expirationDate": "Expiration date",
+    "newExpirationDate": "New expiration date",
     "notApplied": "Niet van toepassing",
     "notAppliedSelect": "Not applied (select to apply)",
     "user": "Gebruiker",
     "operator": "Operator",
+    "brokers": "Brokers",
+    "groups": "Groups",
     "name": "Volledige naam",
+    "to": "to",
     "description": "Omschrijving",
     "image": "Afbeelding",
     "keywords": "Trefwoorden",
@@ -23,6 +31,8 @@
     "orderBy": "Sorteer op",
     "orderBy.relevance": "Relevantie",
     "print": "Afdrukken",
+    "printed": "Printed",
+    "all": "All",
     "showFilters": "Filters weergeven",
     "hideFilters": "Filters verbergen",
     "moreFilters": "Meer filters",
@@ -98,6 +108,29 @@
         "dec": "Dec"
       }
     },
+    "timeField": {
+      "pattern": "{amount} {field}",
+      "plural": {
+        "days": "Days",
+        "hours": "Hours",
+        "millis": "Milliseconds",
+        "minutes": "Minutes",
+        "months": "Months",
+        "seconds": "Seconds",
+        "weeks": "Weeks",
+        "years": "Years"
+      },
+      "singular": {
+        "day": "Day",
+        "hour": "Hour",
+        "milli": "Millisecond",
+        "minute": "Minute",
+        "month": "Month",
+        "second": "Second",
+        "week": "Week",
+        "year": "Year"
+      }
+    },
     "weekday": {
       "min": {
         "sun": "Z",
@@ -107,6 +140,15 @@
         "thu": "D",
         "fri": "V",
         "sat": "Z"
+      },
+      "long": {
+        "sun": "Sunday",
+        "mon": "Monday",
+        "tue": "Tuesday",
+        "wed": "Wednesday",
+        "thu": "Thursday",
+        "fri": "Friday",
+        "sat": "Saturday"
       }
     },
     "range": {
@@ -191,6 +233,11 @@
     "banking.paySelf": "De betaling zelf",
     "banking.scheduledPayments": "Geautoriseerde betalingen",
     "banking.authorizations": "Betalingsautorisaties",
+    "banking.searchVouchers": "Search vouchers",
+    "banking.buyVouchers": "Buy vouchers",
+    "banking.boughtVouchers": "View buys",
+    "banking.redeemVoucher": "Redeem voucher",
+    "banking.redeemedVouchers": "View redeemed",
     "banking.transfersOverview": "Transfers overview",
     "operators": "Operators",
     "operators.operators": "Operators",
@@ -206,6 +253,8 @@
     "marketplace.userSearch": "Users",
     "marketplace.businessDirectory": "Gebruikers",
     "marketplace.advertisements": "Advertenties",
+    "marketplace.connectedUsers": "Connected users",
+    "marketplace.userAlerts": "User alerts",
     "personal": "Persoonlijk",
     "personal.viewProfile": "Mijn profiel",
     "personal.editProfile": "Profiel bewerken",
@@ -347,7 +396,8 @@
       "editProfile": "Profiel bewerken",
       "password": "Wachtwoord",
       "passwords": "Wachtwoorden",
-      "switchTheme": "Switch theme"
+      "switchTheme": "Switch theme",
+      "connectedUsers": "Connected users"
     },
     "accountStatus": "Rekeningoverzicht",
     "lastIncomingPayments": "Laatste inkomende betalingen",
@@ -568,6 +618,99 @@
       "monthly.count": "Het maximaal toegestane aantal betalingen per maand is {count}"
     }
   },
+  "voucher": {
+    "error": {
+      "totalOpenAmount": "The total amount of all open vouchers would exceed {maxAmount}, as defined in this voucher type. The current total open amount is {currentAmount}.",
+      "buy": {
+        "amountForPeriod": "Buying on this voucher type is limited by period. Until {date} only {amount} is available for buying.",
+        "openAmount": "The current user exceeds the maximum allowed open amount of {maxAmount} for vouchers of this type. The current open amount is {currentAmount}.",
+        "notAllowedForUser": "The current user is not allowed to buy vouchers from this type."
+      },
+      "redeem": {
+        "status": "This voucher cannot be redeemed. Its current status is: {status}.",
+        "user": "The current user cannot redeem vouchers from this type.",
+        "notAllowedYet": "This voucher cannot be redeemed before {beginDate}.",
+        "notAllowedToday": "This voucher cannot be redeemed today. The days allowed for redeeming are: {allowedDays}.",
+        "userBlocked": "You have been blocked by exceeding the number of allowed attempts."
+      }
+    },
+    "redeem": {
+      "error": {
+        "status": "This voucher cannot be redeemed. Its current status is: {status}.",
+        "user": "The current user cannot redeem vouchers from this type.",
+        "notAllowedYet": "This voucher cannot be redeemed before {beginDate}.",
+        "notAllowedToday": "This voucher cannot be redeemed today. The days allowed for redeeming are: {allowedDays}.",
+        "userBlocked": "You have been blocked by exceeding the number of allowed attempts."
+      },
+      "confirm": "The voucher details are given below. Please, review it below and confirm this action.",
+      "done": "The voucher was redeemed successfully.",
+      "date": "Redeeming date",
+      "redeemer": "Redeemer",
+      "payment": "Redeem payment"
+    },
+    "status": {
+      "redeemed": "Redeemed",
+      "pending": "In behandeling",
+      "open": "Open",
+      "expired": "Expired",
+      "canceled": "Canceled"
+    },
+    "mobileTitle": {
+      "buy": "Buy vouchers",
+      "buyConfirmation": "Buy confirmation",
+      "bought": "Bought vouchers",
+      "redeem": "Redeem voucher",
+      "redeemed": "Redeemed vouchers",
+      "search": "Search vouchers"
+    },
+    "title": {
+      "buy": "Buy vouchers",
+      "buyConfirmation": "Buy confirmation",
+      "searchBought": "Search bought vouchers",
+      "redeem": "Redeem voucher",
+      "redeemed": "Redeemed vouchers",
+      "search": "Search vouchers"
+    },
+    "boughtType": "Bought",
+    "generatedType": "Generated",
+    "buy": {
+      "amountRange": "Amount range",
+      "buyer": "Buyer",
+      "done": "The voucher(s) has been bought.",
+      "minTimeToRedeem": "Can be redeemed",
+      "minTimeToRedeem.afterBuy": "{interval} after buying",
+      "numberOfVouchers": "Number of vouchers",
+      "amountPerVoucher": "Amount per voucher",
+      "originAccount": "Origin account",
+      "payment": "Buy payment"
+    },
+    "buyerGroups": "Buyer groups",
+    "redeemerGroups": "Redeemer groups",
+    "creationType": "CreationType",
+    "cancel": {
+      "done": "This voucher has been canceled.",
+      "packConfirmation": "There are other vouchers belonging to the same pack that will be also canceled. Are you sure to continue?",
+      "refundConfirmation": "Are you sure to cancel and refund this voucher?",
+      "confirmation": "Are you sure to cancel this voucher?"
+    },
+    "sort": {
+      "creationDateDesc": "Creation date descending",
+      "creationDateAsc": "Creation date ascending",
+      "expirationDateDesc": "Expiration date descending",
+      "expirationDateAsc": "Expiration date ascending",
+      "redeemDateDesc": "Redeem date descending",
+      "redeemDateAsc": "Redeem date ascending"
+    },
+    "cancelAndRefund": "Cancel & refund",
+    "cancelDone": "This voucher has been canceled.",
+    "cancelConfirmation": "Are you sure to cancel this voucher?",
+    "cancelPackConfirmation": "There are other vouchers belonging to the same pack that will be also canceled. Are you sure to continue?",
+    "token": "Voucher code",
+    "changeExpirationDate": "Change expiration date",
+    "expirationDateChanged": "Expiration date changed",
+    "refundPayment": "Refund payment",
+    "refundDate": "Refund date"
+  },
   "field": {
     "privacy": {
       "name": "Privacy",
@@ -710,11 +853,16 @@
       "viewAuthorizedPayments": "View payment authorizations",
       "viewAds": "Bekijk advertenties",
       "viewBrokerings": "View assigned members",
+      "viewBrokers": "View brokers",
       "viewOperators": "View operators",
       "status.user": "User status",
       "status.operator": "Operator status",
       "group.user": "User group",
-      "group.operator": "Operator group"
+      "group.operator": "Operator group",
+      "viewRedeemedVouchers": "View redeemed vouchers",
+      "redeemVoucher": "Redeem voucher",
+      "viewBoughtVouchers": "View bought vouchers",
+      "buyVouchers": "Buy vouchers"
     },
     "registration": {
       "group.public": "Kies de groep die u wilt om deel te nemen",
@@ -781,7 +929,7 @@
     "editOwnProfile": "Edit own profile",
     "notifications": "Notifications",
     "viewAdvertisements": "View advertisements",
-    "registerUsersAsBroker": "Register users (as broker)",
+    "brokering": "Perform brokering operations",
     "runOperations": "Run operations",
     "created": "The operator group was created",
     "saved": "The operator group was saved"
@@ -848,6 +996,28 @@
       "change.operator": "Change group",
       "history.user": "Group history",
       "history.operator": "Group history"
+    }
+  },
+  "brokers": {
+    "title": {
+      "list": "Brokers",
+      "new": "Add broker",
+      "history": "Brokers history"
+    },
+    "mobileTitle": {
+      "list": "Brokers",
+      "new": "Add broker",
+      "history": "Brokers history"
+    },
+    "mainBroker": "Main broker",
+    "setMain": "Set main",
+    "broker": "Broker",
+    "brokerAdded": "The broker has been added successfully",
+    "administration": "The administration",
+    "action": {
+      "add": "Added as broker",
+      "remove": "Removed a broker",
+      "setMain": "Set as main"
     }
   },
   "phone": {
@@ -929,6 +1099,22 @@
       "markAllRead": "Mark all as read"
     }
   },
+  "connectedUser": {
+    "title": "Connected users",
+    "mobileTitle": "Connected users",
+    "loggedInAt": "Logged in at",
+    "channel": "Channel",
+    "ipAddress": "IP Address",
+    "disconnect": "Disconnect user",
+    "viewConnected": {
+      "operator": "View connected operators",
+      "broker": "View connected brokers",
+      "admin": "View connected admins",
+      "member": "View connected members"
+    },
+    "showConnected": "Show connected",
+    "disconnected": "{user} has been disconnected"
+  },
   "operation": {
     "user": "User",
     "ad": "Advertisement",
@@ -945,5 +1131,47 @@
     "theme": "Theme",
     "theme.light": "Light",
     "theme.dark": "Dark"
+  },
+  "record": {
+    "createdBy": "Created by",
+    "lastModifiedBy": "Last modified by",
+    "lastModificationDate": "Last modified at",
+    "removeConfirm": "Are you sure to remove this item?",
+    "removeDone": "The item has been removed",
+    "action": "{type} ({count})",
+    "fields": "Fields",
+    "title": {
+      "details": "{name} details",
+      "new": "Create new {name}",
+      "edit": "Edit {name}"
+    },
+    "mobileTitle": {
+      "details": "{name} details",
+      "new": "Create new {name}",
+      "edit": "Edit {name}"
+    },
+    "created": "The {name} was created",
+    "saved": "The {name} was saved"
+  },
+  "userAlert": {
+    "title": "Search user alerts",
+    "text": "Text",
+    "mobileTitle": "User alerts",
+    "type": {
+      "title": "Type",
+      "custom": "Custom",
+      "givenVeryBadRefs": "User gave too many 'very bad' references",
+      "insufficientBalanceForInitialCredit": "Insufficient balance for an account's initial credit",
+      "maxDeviceActivationAttemptsReached": "Max device activation attempts reached",
+      "maxDeviceConfirmationCheckAttemptsReached": "Max device confirmation check attempts reached",
+      "maxTokenActivationAttemptsReached": "Max token activation attempts reached",
+      "maxUserLocalizationAttemptsReached": "Max user localization attempts reached",
+      "maxVoucherRedeemAttemptsReached": "Max voucher redeem attempts reached",
+      "moveUserAutomaticallyFailed": "Move user automatically to group failed",
+      "passwordDisabledByTries": "Password is indefinitely blocked by exceeding attempts",
+      "passwordTemporarilyBlocked": "Password temporarily blocked by exceeding attempts",
+      "receivedVeryBadRefs": "User received too many 'very bad' references",
+      "scheduledPaymentFailed": "Scheduled payment failed"
+    }
   }
 }

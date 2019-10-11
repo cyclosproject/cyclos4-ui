@@ -1,5 +1,7 @@
 {
   "general": {
+    "type": "Tipo",
+    "code": "Código",
     "period": "Período",
     "now": "Ahora",
     "action": "Acción",
@@ -11,11 +13,17 @@
     "futureDate": "Fecha futura",
     "beginDate": "Fecha inicial",
     "endDate": "Fecha final",
+    "creationDate": "Fecha de creación",
+    "expirationDate": "Fecha de vencimiento",
+    "newExpirationDate": "Nueva fecha de vencimiento",
     "notApplied": "No se aplica",
     "notAppliedSelect": "No aplicado (seleccionar para aplicar)",
     "user": "Usuario",
     "operator": "Operador",
+    "brokers": "Brokers",
+    "groups": "Grupos",
     "name": "Nombre",
+    "to": "hasta",
     "description": "Descripción",
     "image": "Imágen",
     "keywords": "Palabras clave",
@@ -23,6 +31,8 @@
     "orderBy": "Ordenado por",
     "orderBy.relevance": "Relevancia",
     "print": "Imprimir",
+    "printed": "Impreso",
+    "all": "Todo",
     "showFilters": "Mostrar filtros",
     "hideFilters": "Ocultar filtros",
     "moreFilters": "Más filtros",
@@ -98,6 +108,29 @@
         "dec": "Dic"
       }
     },
+    "timeField": {
+      "pattern": "{amount} {field}",
+      "plural": {
+        "days": "Días",
+        "hours": "Horas",
+        "millis": "Milisegundos",
+        "minutes": "Minutos",
+        "months": "Meses",
+        "seconds": "Segundos",
+        "weeks": "Semanas",
+        "years": "Años"
+      },
+      "singular": {
+        "day": "Día",
+        "hour": "Hora",
+        "milli": "Milisegundo",
+        "minute": "Minuto",
+        "month": "Mes",
+        "second": "Segundo",
+        "week": "Semana",
+        "year": "Año"
+      }
+    },
     "weekday": {
       "min": {
         "sun": "D",
@@ -107,6 +140,15 @@
         "thu": "J",
         "fri": "V",
         "sat": "S"
+      },
+      "long": {
+        "sun": "Domingo",
+        "mon": "Lunes",
+        "tue": "Martes",
+        "wed": "Miércoles",
+        "thu": "Jueves",
+        "fri": "Viernes",
+        "sat": "Sábado"
       }
     },
     "range": {
@@ -191,6 +233,11 @@
     "banking.paySelf": "Auto pago",
     "banking.scheduledPayments": "Pagos agendados",
     "banking.authorizations": "Pagos con autorización",
+    "banking.searchVouchers": "Buscar cupones",
+    "banking.buyVouchers": "Comprar cupones",
+    "banking.boughtVouchers": "Ver comprados",
+    "banking.redeemVoucher": "Canjear cupón",
+    "banking.redeemedVouchers": "Cupones canjeados",
     "banking.transfersOverview": "Visión general de Transferencias",
     "operators": "Operadores",
     "operators.operators": "Operadores",
@@ -206,6 +253,8 @@
     "marketplace.userSearch": "Usuarios",
     "marketplace.businessDirectory": "Directorio de anunciantes",
     "marketplace.advertisements": "Anuncios",
+    "marketplace.connectedUsers": "Usuarios conectados",
+    "marketplace.userAlerts": "Alertas de usuario",
     "personal": "Personal",
     "personal.viewProfile": "Mi perfil",
     "personal.editProfile": "Editar perfil",
@@ -347,7 +396,8 @@
       "editProfile": "Editar perfil",
       "password": "Contraseña",
       "passwords": "Contraseñas",
-      "switchTheme": "Cambiar tema"
+      "switchTheme": "Cambiar tema",
+      "connectedUsers": "Usuarios conectados"
     },
     "accountStatus": "Estado de cuenta",
     "lastIncomingPayments": "Ultimos pagos recibidos",
@@ -568,6 +618,99 @@
       "monthly.count": "El número máximo de pagos permitidos por mes es de {count}"
     }
   },
+  "voucher": {
+    "error": {
+      "totalOpenAmount": "La monto total de todos los cupones abiertos superaría a {maxAmount}, como se define en para este tipo de cupón. Actualmente el monto abierto total es de {currentAmount}.",
+      "buy": {
+        "amountForPeriod": "La compra de este tipo de cupón está limitada por período. Hasta el {date} solamente es posible comprar {amount}.",
+        "openAmount": "El usuario actual excede el monto máximo de {maxAmount} permitido para este tipo de cupón abierto. El monto actual abierto en cupones es de {currentAmount}.",
+        "notAllowedForUser": "El usuario actual no puede comprar cupones de este tipo."
+      },
+      "redeem": {
+        "status": "El cupón no puede ser canjeado. Su estado actual es: {status}.",
+        "user": "El usuario actual no puede canjear cupones de este tipo.",
+        "notAllowedYet": "Este cupón no puede ser canjeado antes del {beginDate}.",
+        "notAllowedToday": "Este cupón no puede ser canjeado hoy. Los días permitidos para su canje son: {allowedDays}.",
+        "userBlocked": "Usted ha sido bloqueado por exceder el número de intentos permitidos."
+      }
+    },
+    "redeem": {
+      "error": {
+        "status": "El cupón no puede ser canjeado. Su estado actual es: {status}.",
+        "user": "El usuario actual no puede canjear cupones de este tipo.",
+        "notAllowedYet": "Este cupón no puede ser canjeado antes del {beginDate}.",
+        "notAllowedToday": "Este cupón no puede ser canjeado hoy. Los días permitidos para su canje son: {allowedDays}.",
+        "userBlocked": "Usted ha sido bloqueado por exceder el número de intentos permitidos."
+      },
+      "confirm": "Los detalles del cupón se muestran a continuación. Por favor, revise la información y confirme esta acción.",
+      "done": "El cupón fue canjeado exitosamente.",
+      "date": "Fecha de canje",
+      "redeemer": "Canjeado por",
+      "payment": "Pago de canje"
+    },
+    "status": {
+      "redeemed": "Canjeado",
+      "pending": "Pendiente",
+      "open": "Abierto",
+      "expired": "Expirado",
+      "canceled": "Cancelado"
+    },
+    "mobileTitle": {
+      "buy": "Comprar cupones",
+      "buyConfirmation": "Confirmación de compra",
+      "bought": "Cupones comprados",
+      "redeem": "Canjear cupón",
+      "redeemed": "Cupones canjeados",
+      "search": "Buscar cupones"
+    },
+    "title": {
+      "buy": "Comprar cupones",
+      "buyConfirmation": "Confirmación de compra",
+      "searchBought": "Buscar cupones comprados",
+      "redeem": "Canjear cupón",
+      "redeemed": "Cupones canjeados",
+      "search": "Buscar cupones"
+    },
+    "boughtType": "Comprado",
+    "generatedType": "Generado",
+    "buy": {
+      "amountRange": "Rango de monto",
+      "buyer": "Comprador",
+      "done": "El cupón ha sido comprado.",
+      "minTimeToRedeem": "Puede ser canjeado",
+      "minTimeToRedeem.afterBuy": "{interval} después de la compra",
+      "numberOfVouchers": "Cantidad de cupones",
+      "amountPerVoucher": "Monto por cupón",
+      "originAccount": "Cuenta de origen",
+      "payment": "Transacción de compra"
+    },
+    "buyerGroups": "Grupos de compradores",
+    "redeemerGroups": "Grupos que canjean",
+    "creationType": "TipoCreación",
+    "cancel": {
+      "done": "El cupón ha sido cancelado.",
+      "packConfirmation": "Hay otros cupones pertenecientes al mismo paquete, que también serán cancelados. ¿Estás seguro de continuar?",
+      "refundConfirmation": "Está seguro de cancelar y reembolsar este cupón?",
+      "confirmation": "Está seguro de cancelar este cupón?"
+    },
+    "sort": {
+      "creationDateDesc": "Fecha de creación descendente",
+      "creationDateAsc": "Fecha de creación ascendente",
+      "expirationDateDesc": "Fecha de vencimiento descendente",
+      "expirationDateAsc": "Fecha de vencimiento ascendente",
+      "redeemDateDesc": "Fecha de canje descendente",
+      "redeemDateAsc": "Fecha de canje ascendente"
+    },
+    "cancelAndRefund": "Cancelar y reembolsar",
+    "cancelDone": "Este cupón ha sido cancelado.",
+    "cancelConfirmation": "¿Está seguro de cancelar este cupón?",
+    "cancelPackConfirmation": "Hay otros cupones pertenecientes al mismo paquete, que también serán cancelados. ¿Estás seguro de continuar?",
+    "token": "Código de cupón",
+    "changeExpirationDate": "Cambiar fecha de vencimiento",
+    "expirationDateChanged": "La fecha de vencimiento ha sido cambiada",
+    "refundPayment": "Pago de reembolso",
+    "refundDate": "Fecha de Rembolso"
+  },
   "field": {
     "privacy": {
       "name": "Privacidad",
@@ -710,11 +853,16 @@
       "viewAuthorizedPayments": "Ver autorizaciones de pago",
       "viewAds": "Ver anuncios",
       "viewBrokerings": "Ver miembros asignados",
+      "viewBrokers": "Ver brokers",
       "viewOperators": "Ver operadores",
       "status.user": "Estado del usuario",
       "status.operator": "Estado del operador",
       "group.user": "Grupo de usuario",
-      "group.operator": "Grupo de operador"
+      "group.operator": "Grupo de operador",
+      "viewRedeemedVouchers": "Ver cupones canjeados",
+      "redeemVoucher": "Canjear cupón",
+      "viewBoughtVouchers": "Ver cupones comprados",
+      "buyVouchers": "Comprar cupones"
     },
     "registration": {
       "group.public": "Elija el grupo en el que desea registrarse",
@@ -781,7 +929,7 @@
     "editOwnProfile": "Editar su perfil",
     "notifications": "Notificaciones",
     "viewAdvertisements": "Ver anuncios",
-    "registerUsersAsBroker": "Registrar usuarios (como broker)",
+    "brokering": "Realiza operaciones de broker",
     "runOperations": "Ejecutar operaciones",
     "created": "El grupo de operador fue creado",
     "saved": "El grupo de operador fue guardado"
@@ -848,6 +996,28 @@
       "change.operator": "Cambio de grupo",
       "history.user": "Histórial de Grupos",
       "history.operator": "Histórial de Grupos"
+    }
+  },
+  "brokers": {
+    "title": {
+      "list": "Brokers",
+      "new": "Agregar broker",
+      "history": "Historial de brokers"
+    },
+    "mobileTitle": {
+      "list": "Brokers",
+      "new": "Agregar broker",
+      "history": "Historial de brokers"
+    },
+    "mainBroker": "Broker principal",
+    "setMain": "Definir principal",
+    "broker": "Broker",
+    "brokerAdded": "El broker ha sido agregado exitosamente",
+    "administration": "La administración",
+    "action": {
+      "add": "Agregar broker",
+      "remove": "Eliminar broker",
+      "setMain": "Definir broker principal"
     }
   },
   "phone": {
@@ -929,6 +1099,22 @@
       "markAllRead": "Marcar todo como leído"
     }
   },
+  "connectedUser": {
+    "title": "Usuarios conectados",
+    "mobileTitle": "Usuarios conectados",
+    "loggedInAt": "Acceso desde",
+    "channel": "Canal",
+    "ipAddress": "Dirección IP",
+    "disconnect": "Desconectar usuario",
+    "viewConnected": {
+      "operator": "Ver operadores conectados",
+      "broker": "Ver brokers conectados",
+      "admin": "Ver administradores conectados",
+      "member": "Ver miembros conectados"
+    },
+    "showConnected": "Mostrar conectado",
+    "disconnected": "{user} ha sido desconectado"
+  },
   "operation": {
     "user": "Usuario",
     "ad": "Anuncio",
@@ -945,5 +1131,47 @@
     "theme": "Tema",
     "theme.light": "Claro",
     "theme.dark": "Oscuro"
+  },
+  "record": {
+    "createdBy": "Creado por",
+    "lastModifiedBy": "Última modificación por",
+    "lastModificationDate": "Última modificación",
+    "removeConfirm": "¿Está seguro de eliminar este elemento?",
+    "removeDone": "El elemento ha sido eliminado",
+    "action": "{type} ({count})",
+    "fields": "Campos",
+    "title": {
+      "details": "Detalle de {name}",
+      "new": "Crear nuevo/a {name}",
+      "edit": "Editar {name}"
+    },
+    "mobileTitle": {
+      "details": "Detalle de {name}",
+      "new": "Crear nuevo {name}",
+      "edit": "Editar {name}"
+    },
+    "created": "{name} ha sido creado",
+    "saved": "{name} ha sido guardado"
+  },
+  "userAlert": {
+    "title": "Buscar alertas de usuario",
+    "text": "Texto",
+    "mobileTitle": "Alertas de usuario",
+    "type": {
+      "title": "Tipo",
+      "custom": "Personalizado",
+      "givenVeryBadRefs": "El usuario ha dado demasiadas referencias de 'Muy malo'",
+      "insufficientBalanceForInitialCredit": "Saldo insuficiente para dar el crédito inicial de una cuenta",
+      "maxDeviceActivationAttemptsReached": "Se ha alcanzado la máxima cantidad de intentos de activación del dispositivo",
+      "maxDeviceConfirmationCheckAttemptsReached": "Se ha alcanzado la máxima cantidad de intentos de confirmación del dispositivo",
+      "maxTokenActivationAttemptsReached": "Se ha alcanzado la máxima cantidad de intentos de activación del token",
+      "maxUserLocalizationAttemptsReached": "Se ha alcanzado la máxima cantidad de intentos de localizar el usuario",
+      "maxVoucherRedeemAttemptsReached": "Se ha alcanzado la máxima cantidad de intentos de canjear un cupón",
+      "moveUserAutomaticallyFailed": "Error al cambiar el usuario de grupo automáticamente",
+      "passwordDisabledByTries": "La contraseña ha sido bloqueada indefinidamente por exceder la máxima cantidad de intentos",
+      "passwordTemporarilyBlocked": "La contraseña ha sido bloqueada temporalmente por exceder la máxima cantidad de intentos",
+      "receivedVeryBadRefs": "El usuario recibido demasiadas referencias de \"Muy malo\"",
+      "scheduledPaymentFailed": "Error de pago agendado"
+    }
   }
 }
