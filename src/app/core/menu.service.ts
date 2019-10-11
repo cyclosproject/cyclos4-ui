@@ -645,10 +645,13 @@ export class MenuService {
       if (marketplace.search) {
         add(Menu.SEARCH_ADS, '/marketplace/search', 'shopping_cart', this.i18n.menu.marketplaceAdvertisements);
       }
-      if (marketplace.mySimple.enable) {
+
+      const simple = marketplace.mySimple || {};
+      if (simple.enable) {
         add(Menu.SEARCH_USER_ADS, 'marketplace/self/simple/list', 'shopping_cart', this.i18n.menu.marketplaceMyAdvertisements);
       }
-      if (marketplace.myWebshop.enable) {
+      const webshop = marketplace.myWebshop || {};
+      if (webshop.enable) {
         add(Menu.SEARCH_USER_WEBSHOP, 'marketplace/self/webshop/list', 'shopping_basket', this.i18n.menu.marketplaceMyWebshop);
       }
 

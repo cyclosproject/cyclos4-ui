@@ -13,7 +13,6 @@ import { Observable } from 'rxjs';
 import { MarketplaceHelperService } from 'app/core/marketplace-helper.service';
 import { FormatService } from 'app/core/format.service';
 import { LoginService } from 'app/core/login.service';
-import { AskQuestionDialogComponent } from 'app/marketplace/questions/ask-question-dialog.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { empty } from 'app/shared/helper';
 import { TextDialogComponent } from 'app/shared/text-dialog.component';
@@ -269,16 +268,24 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
    * Ask a question for the current ad and reloads the page
    */
   ask() {
-    const ref = this.modal.show(AskQuestionDialogComponent, {
+    const ref = this.modal.show(TextDialogComponent, {
       class: 'modal-form', initialState: {
-        id: this.id
+        title: this.i18n.ad.askQuestion
       }
     });
-    const component = ref.content as AskQuestionDialogComponent;
-    this.addSub(component.done.subscribe(() => {
-      this.notification.snackBar(this.i18n.ad.questionAsked);
-      this.reload();
-    }));
+    const component = ref.content as TextDialogComponent;
+    this.addSub(component.done.subscribe((question: string) => {
+      if (!empty(question)) {
+        this.addSub(this.adQuestionService.createAdQuestion({
+          ad: this.id,
+          body: question
+        }).subscribe(() => {
+          this.notification.snackBar(this.i18n.ad.questionAsked);
+          this.reload();
+        }));
+      }
+    }
+    ));
   }
 
   resolveMenu() {

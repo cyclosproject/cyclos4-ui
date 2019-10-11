@@ -86,7 +86,7 @@ export class ApiHelper {
    * Shift the max date to the end of the day and returns it with the min as range,
    * suitable for posting a date period on the API
    */
-  static dateRange(min: string, max: string): DatePeriod {
+  static datePeriod(min: string, max: string): DatePeriod {
     const range = this.rangeFilter(min, this.shiftToDayEnd(max));
     if (range.length > 0) {
       return { begin: range[0], end: range[1] };

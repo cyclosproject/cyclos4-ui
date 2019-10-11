@@ -7,7 +7,6 @@ import { ShowSubCategoriesComponent } from 'app/marketplace/search/show-sub-cate
 import { AdsResultsComponent } from 'app/marketplace/search/ads-results.component';
 import { UserAdsComponent } from 'app/marketplace/search/user-ads.component';
 import { EditAdComponent } from 'app/marketplace/edit-ad.component';
-import { AskQuestionDialogComponent } from 'app/marketplace/questions/ask-question-dialog.component';
 
 /**
  * Marketplace module
@@ -24,13 +23,11 @@ import { AskQuestionDialogComponent } from 'app/marketplace/questions/ask-questi
     AdsResultsComponent,
     EditAdComponent,
     ViewAdComponent,
-    ShowSubCategoriesComponent,
-    AskQuestionDialogComponent
+    ShowSubCategoriesComponent
 
   ],
   entryComponents: [
-    ShowSubCategoriesComponent,
-    AskQuestionDialogComponent
+    ShowSubCategoriesComponent
   ]
 })
 export class MarketplaceModule {

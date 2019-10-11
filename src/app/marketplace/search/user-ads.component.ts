@@ -9,7 +9,6 @@ import { MAX_SIZE_SHORT_NAME } from 'app/users/profile/view-profile.component';
 import { Observable } from 'rxjs';
 import { Menu } from 'app/shared/menu';
 import { HeadingAction } from 'app/shared/action';
-import { MarketplaceHelperService } from 'app/core/marketplace-helper.service';
 
 type UserAdsSearchParams = UserAdsQueryFilters & { user: string };
 
@@ -31,7 +30,6 @@ export class UserAdsComponent
 
   constructor(
     injector: Injector,
-    private marketplaceHelper: MarketplaceHelperService,
     private marketplaceService: MarketplaceService
   ) {
     super(injector);
@@ -48,7 +46,7 @@ export class UserAdsComponent
   ngOnInit() {
     super.ngOnInit();
     this.param = this.route.snapshot.paramMap.get('user') || this.ApiHelper.SELF;
-    this.kind = this.marketplaceHelper.resolveKind(this.route.snapshot.paramMap.get('kind'));
+    this.kind = this.route.snapshot.paramMap.get('kind') as AdKind;
     this.allowedResultTypes = [ResultType.TILES, ResultType.LIST];
     this.addSub(this.marketplaceService.getUserAdsDataForSearch({ user: this.param, kind: this.kind }).subscribe(data => this.data = data));
   }

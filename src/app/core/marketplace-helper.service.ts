@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AdKind, AdStatusEnum } from 'app/api/models';
+import { AdStatusEnum } from 'app/api/models';
 import { I18n } from 'app/i18n/i18n';
 
 
@@ -17,22 +17,6 @@ export class MarketplaceHelperService {
   constructor(
     private i18n: I18n
   ) { }
-
-
-  /**
-   * Resolves an AdKind from the given parameter
-   */
-  resolveKind(param: string): AdKind {
-    if (param) {
-      switch (param) {
-        case 'simple':
-          return AdKind.SIMPLE;
-        case 'webshop':
-          return AdKind.WEBSHOP;
-      }
-    }
-    return null;
-  }
 
   /**
    * Resolves the label for the given status

@@ -10,7 +10,7 @@ import { MarketplaceHelperService } from 'app/core/marketplace-helper.service';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { FormGroup, Validators } from '@angular/forms';
 import { ManageImagesComponent } from 'app/shared/manage-images.component';
-import { take } from 'rxjs/operators';
+import { first } from 'rxjs/operators';
 import { empty, validateBeforeSubmit } from 'app/shared/helper';
 import { BsModalService } from 'ngx-bootstrap/modal';
 
@@ -32,8 +32,6 @@ const IMAGE_MANAGED_TIMEOUT = 6_000;
 export class EditAdComponent
   extends BasePageComponent<AdDataForNew | AdDataForEdit>
   implements OnInit {
-
-  static BASED_ON_ID: string;
 
   id: string;
   basedOnId: string;
@@ -65,11 +63,9 @@ export class EditAdComponent
   ngOnInit() {
     super.ngOnInit();
 
-    this.basedOnId = EditAdComponent.BASED_ON_ID;
-    EditAdComponent.BASED_ON_ID = null;
-
+    this.basedOnId = this.route.snapshot.queryParams.basedOnId;
     this.id = this.route.snapshot.params.id;
-    this.kind = this.marketplaceHelper.resolveKind(this.route.snapshot.paramMap.get('kind'));
+    this.kind = this.route.snapshot.paramMap.get('kind') as AdKind;
     this.create = this.id == null;
     const request: Observable<AdDataForNew | AdDataForEdit> = this.create
       ? this.marketplaceService.getAdDataForNew({
@@ -180,23 +176,21 @@ export class EditAdComponent
 
     const value = this.form.value;
 
-    value.publicationPeriod = this.ApiHelper.dateRange(value.publicationBeginDate, value.publicationEndDate);
+    value.publicationPeriod = this.ApiHelper.datePeriod(value.publicationBeginDate, value.publicationEndDate);
     delete value['publicationBeginDate'];
     delete value['publicationEndDate'];
 
-    value.promotionalPeriod = this.ApiHelper.dateRange(value.promotionalBeginDate, value.promotionalEndDate);
+    value.promotionalPeriod = this.ApiHelper.datePeriod(value.promotionalBeginDate, value.promotionalEndDate);
     delete value['promotionalBeginDate'];
     delete value['promotionalEndDate'];
 
     const onFinish: any = (id: string) => {
       this.notification.snackBar(this.i18n.ad.adSaved);
       if (insertNew) {
-        EditAdComponent.BASED_ON_ID = id || this.id;
-        if (this.create) {
-          this.reload();
-        } else {
-          this.router.navigate(['/marketplace', this.owner, this.data.kind, 'new'], { replaceUrl: true });
-        }
+        this.router.navigate(['/marketplace', this.owner, this.data.kind, 'new'], {
+          replaceUrl: true,
+          queryParams: { basedOnId: id || this.id }
+        });
       } else if (this.basedOnId) {
         this.router.navigate(['/marketplace', 'edit', id], { replaceUrl: true });
       } else {
@@ -260,7 +254,7 @@ export class EditAdComponent
       }
     });
     const component = ref.content as ManageImagesComponent;
-    this.addSub(component.result.pipe(take(1)).subscribe(result => {
+    component.result.pipe(first()).subscribe(result => {
       this.hasRemovedImages = !empty(result.removedImages);
       if (this.hasRemovedImages) {
         for (const removed of result.removedImages) {
@@ -284,7 +278,7 @@ export class EditAdComponent
         this.notification.snackBar(this.i18n.ad.imagesChanged, { timeout: IMAGE_MANAGED_TIMEOUT });
       }
       ref.hide();
-    }));
+    });
   }
 
   /**
