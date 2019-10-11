@@ -27,6 +27,7 @@ const DIRECT_TYPES = [
 @Component({
   selector: 'format-field-value',
   templateUrl: 'format-field-value.component.html',
+  styleUrls: ['format-field-value.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FormatFieldValueComponent implements OnInit {
@@ -166,10 +167,6 @@ export class FormatFieldValueComponent implements OnInit {
             const div = document.createElement('div');
             div.innerHTML = rich;
             rich = div.textContent || div.innerText || '';
-          } else {
-            // For HTML, add a div in the end that prevents floats from passing
-            // through the parent div's height
-            rich += '<div class="clear-floats"></div>';
           }
         }
         return rich;

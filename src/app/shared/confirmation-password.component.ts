@@ -75,7 +75,7 @@ export class ConfirmationPasswordComponent extends BaseControlComponent<string> 
     this.confirmationMessage = this.authHelper.getConfirmationMessage(this.passwordInput);
     this.confirmationModeControl = new FormControl(null);
     this.addSub(this.confirmationModeControl.valueChanges.subscribe(mode => {
-      if (!this.deviceConfirmationId) {
+      if (mode === ConfirmationMode.Device && !this.deviceConfirmationId) {
         this.newQR();
       }
       this.confirmationModeChanged.emit(mode);
