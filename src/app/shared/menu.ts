@@ -86,6 +86,8 @@ export module Menu {
   // Users / Marketplace
   export const SEARCH_USERS = new Menu(RootMenu.MARKETPLACE, 'SEARCH_USERS');
   export const SEARCH_ADS = new Menu(RootMenu.MARKETPLACE, 'SEARCH_ADS');
+  export const SEARCH_USER_ADS = new Menu(RootMenu.MARKETPLACE, 'SEARCH_USER_ADS');
+  export const SEARCH_USER_WEBSHOP = new Menu(RootMenu.MARKETPLACE, 'SEARCH_USER_WEBSHOP');
   export const CONNECTED_USERS = new Menu(RootMenu.MARKETPLACE, 'CONNECTED_USERS');
   export const ADMIN_REGISTRATION = new Menu(RootMenu.MARKETPLACE, 'ADMIN_REGISTRATION');
   export const USER_ALERTS = new Menu(RootMenu.MARKETPLACE, 'USER_ALERTS');

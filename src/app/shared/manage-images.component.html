@@ -19,7 +19,7 @@
 <bs-sortable [itemTemplate]="imageTemplate" [formControl]="order">
 </bs-sortable>
 
-<div class="mt-4 text-primary">
+<div *ngIf="manageAfterConfirm" class="mt-4 text-primary">
   {{ i18n.field.image.manageAfterConfirm }}
 </div>
 

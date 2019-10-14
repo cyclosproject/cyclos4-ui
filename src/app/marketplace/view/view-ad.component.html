@@ -33,10 +33,13 @@
         <label-value [label]="i18n.ad.owner">
           <user-link [user]="ad.owner"></user-link>
         </label-value>
+        <label-value *ngIf="status" [label]="i18n.general.status">
+          {{ status }}
+        </label-value>
         <label-value *ngIf="ad.price" [label]="i18n.ad.price">
           <ng-container *ngIf="ad.promotionalPrice">
             <span class="promo-price">
-              {{ ad.price | number:ad.currency.decimalDigits }}
+              {{ ad.price | currency:ad.currency }}
             </span>
             {{ ad.promotionalPrice | currency:ad.currency }}
           </ng-container>
@@ -44,17 +47,63 @@
             {{ ad.price | currency:ad.currency }}
           </ng-container>
         </label-value>
+        <ng-container *ngIf="data.canEdit">
+          <label-value [label]="i18n.ad.beginDate">
+            {{ data.publicationPeriod.begin | date }}
+          </label-value>
+          <label-value [label]="i18n.ad.endDate">
+            {{ data.publicationPeriod.end | date }}
+          </label-value>
+        </ng-container>
         <custom-field-value *ngFor="let value of ad.customValues"
           [fieldValue]="value"></custom-field-value>
+        <ng-container *ngIf="webshop">
+          <label-value *ngIf="!data.unlimitedStock"
+            [label]="i18n.ad.stockQuantity">
+            {{ stock }}
+          </label-value>
+          <label-value *ngIf="data.minAllowedInCart"
+            [label]="i18n.ad.minAllowedInCart">
+            {{ formatStock(data.minAllowedInCart) }}
+          </label-value>
+          <label-value *ngIf="data.maxAllowedInCart"
+            [label]="i18n.ad.maxAllowedInCart">
+            {{ formatStock(data.maxAllowedInCart) }}
+          </label-value>
+          <label-value [label]="i18n.ad.productNumber">
+            {{ data.productNumber }}
+          </label-value>
+        </ng-container>
       </div>
     </div>
-
+    <ng-container *ngIf="data.lastAuthorizationComments">
+      <h2 class="d-none d-sm-block my-3 pt-3">{{ i18n.ad.authorizationNotes }}
+      </h2>
+      <hr class="d-block d-sm-none">
+      {{ ad.lastAuthorizationComments }}
+    </ng-container>
     <h2 class="d-none d-sm-block my-3 pt-3">{{ i18n.general.description }}
     </h2>
     <hr class="d-block d-sm-none">
     <rich-text-container autoHeight [value]="ad.description">
     </rich-text-container>
-
+    <div *ngIf="data.deliveryMethods && data.deliveryMethods.length > 0">
+      <h2 class="mt-3"> {{ i18n.ad.deliveryMethods }} </h2>
+      <ng-container *ngFor="let dm of data.deliveryMethods">
+        <h3> {{ dm.name }} </h3>
+        <label-value [label]="i18n.ad.deliveryTime">
+          {{ formatTimeInterval(dm.deliveryTime) }}
+        </label-value>
+        <label-value *ngIf="hasFixedDeliveryPrice(dm)"
+          [label]="i18n.ad.price">
+          {{ dm.chargeAmount | currency:ad.currency }}
+        </label-value>
+        <label-value *ngIf="dm.description"
+          [label]="i18n.general.description">
+          {{ dm.description }}
+        </label-value>
+      </ng-container>
+    </div>
     <div *ngIf="addresses?.length > 0" class="d-flex flex-grow-1 flex-column">
       <ng-container>
         <h2 class="mt-3">
@@ -83,6 +132,48 @@
             </div>
           </div>
         </ng-container>
+      </ng-container>
+    </div>
+    <div *ngIf="questionsEnabled">
+      <h2
+        class="d-flex mb-3 flex-column flex-xs-row justify-content-between mt-3 mt-md-0">
+        <div class="mb-2 mb-xs-0">
+          {{ i18n.ad.questionsAndAnswers }}
+        </div>
+        <button *ngIf="data.canAsk" class="btn btn-outline-primary"
+          (click)="ask()">
+          {{ i18n.ad.askQuestion }}
+        </button>
+      </h2>
+      <ng-container *ngFor="let q of data.questions; let last = last">
+        <div class="d-flex flex-row pb-1">
+          <div class="d-flex">
+            <icon size="1rem" icon="chat"></icon>
+          </div>
+          <div class="pl-2" style="line-height: 1rem">
+            <span class="font-weight-bold">{{ q.question }}</span>
+            <div style="font-size: 0.6rem">{{q.user.display}} -
+              {{ q.questionDate | dateTime }}</div>
+          </div>
+          <div *ngIf="canRemoveQuestion(q)" class="d-flex"
+            style="margin-left: auto">
+            <a href="#" class="icon" [tooltip]="i18n.ad.removeQuestion"
+              (click)="removeQuestion(q.id); $event.preventDefault()">
+              <icon size="1rem" icon="delete"></icon>
+            </a>
+          </div>
+        </div>
+        <div *ngIf="q.answer" class="d-flex flex-row pb-1 pt-1">
+          <div class="d-flex">
+            <icon size="1rem" icon="comment"></icon>
+          </div>
+          <div class="pl-2" style="line-height: 1rem">
+            {{ q.answer}}
+            <div style="font-size: 0.6rem">
+              {{data.owner.display}} - {{ q.answerDate | dateTime }}</div>
+          </div>
+        </div>
+        <hr class="inner-separator pb-1" *ngIf="!last">
       </ng-container>
     </div>
   </page-content>

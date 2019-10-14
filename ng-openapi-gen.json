@@ -26,6 +26,8 @@
     "Payments",
     "Accounts",
     "Marketplace",
+    "AdQuestions",
+    "Orders",
     "UI",
     "Captcha",
     "Files",
