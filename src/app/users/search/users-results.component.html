@@ -1,7 +1,7 @@
 <results-layout (update)="update.emit($event)" [results]="results"
   [rendering$]="rendering$" [resultType]="resultType" [toAddress]="address"
   [referencePoint]="referencePoint" [toMarkerTitle]="displayFunction()"
-  [toLink]="toLink">
+  [toLink]="canViewProfile ? toLink : null">
 
   <mobile-result *mobileResult="let row" [avatarImage]="user(row).image"
     avatarIcon="user">
@@ -17,7 +17,8 @@
     </ng-container>
   </mobile-result>
 
-  <table *resultTable class="table table-hover cursor-pointer">
+  <table *resultTable class="table table-hover"
+    [ngClass]="{'cursor-pointer': canViewProfile}">
     <thead>
       <th class="avatar"></th>
       <th *ngFor="let field of fieldsInList">{{ fieldName(field) }}</th>
@@ -25,7 +26,7 @@
     </thead>
     <tbody>
       <tr *ngFor="let row of results.results"
-        (click)="path(row) ? router.navigate(path(row)) : null">
+        (click)="canViewProfile ? router.navigate(path(row)) : null">
         <td class="avatar">
           <avatar [image]="user(row).image"></avatar>
         </td>
