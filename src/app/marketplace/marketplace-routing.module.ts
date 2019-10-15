@@ -4,6 +4,7 @@ import { SearchAdsComponent } from 'app/marketplace/search/search-ads.component'
 import { UserAdsComponent } from 'app/marketplace/search/user-ads.component';
 import { ViewAdComponent } from 'app/marketplace/view/view-ad.component';
 import { EditAdComponent } from 'app/marketplace/edit-ad.component';
+import { ListOrdersComponent } from 'app/marketplace/search/list-orders.component';
 
 const marketplaceRoutes: Routes = [
   {
@@ -16,6 +17,10 @@ const marketplaceRoutes: Routes = [
       {
         path: ':user/:kind/list',
         component: UserAdsComponent
+      },
+      {
+        path: ':user/purchases',
+        component: ListOrdersComponent
       },
       {
         path: ':user/:kind/new',
