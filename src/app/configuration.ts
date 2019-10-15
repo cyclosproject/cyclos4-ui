@@ -6,6 +6,7 @@ import { DashboardResolver } from 'app/content/dashboard-resolver';
 import { OperationConfiguration } from 'app/content/operation-configuration';
 import { Breakpoint } from 'app/shared/layout.service';
 import { BreakpointConfiguration } from 'app/content/breakpoint-configuration';
+import { ShortcutIconConfiguration } from 'app/content/shortcut-icon-configuration';
 
 /**
  * The global configuration
@@ -28,6 +29,12 @@ export interface ConfigurationDefinitions {
 
   /** The application logo, displayed in the top bar */
   logoUrl: string;
+
+  /**
+   * A set of icons by resolution to be shown by browsers.
+   * If nothing is set, defaults to the same as `logoUrl`.
+   */
+  shortcutIcons: ShortcutIconConfiguration[];
 
   /** Whether to use a separated menu bar (true) or merge the menu and top bar (false) */
   menuBar: boolean;

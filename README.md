@@ -281,8 +281,35 @@ By default, the application logo is served from `src/images/logo.png`. You can e
 
 ```typescript
 export function setup() {
-  // true means a separated menu bar, false means joining the menu on the top bar
   Configuration.logoUrl = 'https://www.example.com/images/logo.png';
+}
+```
+
+### Change the shortcut icon (favicon)
+
+By default, the same application logo is used as shortcut icon. However, it is possible to change that to another URL, or even set multiple images for different sizes.
+
+Here is an example for having a single shortcut icon:
+
+```typescript
+export function setup() {
+  Configuration.shortcutIcons = [{ url: 'https://www.example.com/images/icon.png' }];
+}
+```
+
+And here is a more complete example, with multiple icons:
+
+```typescript
+export function setup() {
+  Configuration.shortcutIcons = [
+    { size: 32, url: 'https://www.example.com/images/icon-32.png' },
+    { size: 64, url: 'https://www.example.com/images/icon-64.png' },
+    { size: 192, url: 'https://www.example.com/images/icon-192.png' },
+    { size: 512, url: 'https://www.example.com/images/icon-512.png' },
+    { size: 120, rel: 'apple-touch-icon', url: 'https://www.example.com/images/icon-120.png' },
+    { size: 152, rel: 'apple-touch-icon', url: 'https://www.example.com/images/icon-152.png' },
+    { size: 180, rel: 'apple-touch-icon', url: 'https://www.example.com/images/icon-180.png' }
+  ];
 }
 ```
 
