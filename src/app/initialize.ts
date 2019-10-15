@@ -10,6 +10,7 @@ import { setup } from 'app/setup';
 import { LightboxConfig } from 'ngx-lightbox';
 import { forkJoin, of } from 'rxjs';
 import { ALL_BREAKPOINTS } from 'app/shared/layout.service';
+import { empty } from 'app/shared/helper';
 
 /**
  * Sets the default values on the global configuration
@@ -63,6 +64,21 @@ export function initialize(
     setup();
     if (Configuration.apiRoot.endsWith('/')) {
       Configuration.apiRoot = Configuration.apiRoot.substring(0, Configuration.apiRoot.length - 1);
+    }
+
+    // Initialize the shortcut icons
+    let icons = Configuration.shortcutIcons;
+    if (empty(icons)) {
+      icons = [{ url: Configuration.logoUrl }];
+    }
+    for (const icon of icons) {
+      const link = document.createElement('link');
+      link.rel = icon.rel || 'icon';
+      if (icon.size) {
+        link.setAttribute('sizes', `${icon.size}x${icon.size}`);
+      }
+      link.href = icon.url;
+      document.head.appendChild(link);
     }
 
     // Initialize the API configuration
