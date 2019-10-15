@@ -142,30 +142,22 @@ export class ResultsLayoutComponent<C, R> extends BaseComponent {
     let link = this.toLink ? this.toLink(row) : null;
     if (link instanceof Array) {
       link = link.join('/');
-    } else if (!link) {
-      link = '#';
     }
     return link;
   }
 
   handleClick(row: R, event: Event) {
-    let stop = false;
     if (this.onClick) {
       this.onClick(row);
-      stop = true;
     } else {
       const link = this.toLink ? this.toLink(row) : null;
       if (typeof link === 'string') {
         this.router.navigateByUrl(link);
-        stop = true;
       } else if (link instanceof Array) {
         this.router.navigate(link);
-        stop = true;
       }
     }
-    if (stop) {
-      event.stopPropagation();
-      event.preventDefault();
-    }
+    event.stopPropagation();
+    event.preventDefault();
   }
 }
