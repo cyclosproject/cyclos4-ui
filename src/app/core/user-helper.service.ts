@@ -73,7 +73,7 @@ export class UserHelperService {
       );
     }
     // E-mail
-    const emailActions = data.profileFieldActions.username;
+    const emailActions = data.profileFieldActions.email;
     if (emailActions && emailActions.edit) {
       const val = [];
       if (data.emailRequired) {
