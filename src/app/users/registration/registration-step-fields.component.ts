@@ -59,9 +59,6 @@ export class RegistrationStepFieldsComponent
   ngOnInit() {
     super.ngOnInit();
 
-    this.editableFields = new Set();
-    this.managePrivacyFields = new Set();
-
     // Cache the field actions to avoid having to calculate every time
     this.editableFields = this.userHelper.fieldNamesByAction(this.data, 'edit');
     this.managePrivacyFields = this.userHelper.fieldNamesByAction(this.data, 'managePrivacy');
