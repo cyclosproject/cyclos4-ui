@@ -53,21 +53,6 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
 
     // TODO missing history in OrderView
     this.headingActions = headingActions;
-
-    if (this.route.snapshot.queryParams.processedOrder) {
-      switch (data.status) {
-        case OrderStatusEnum.PAYMENT_PENDING:
-          this.notification.snackBar(this.i18n.ad.orderPendingPayment);
-          break;
-        case OrderStatusEnum.COMPLETED:
-          this.notification.snackBar(this.i18n.ad.orderAccepted);
-          break;
-        case OrderStatusEnum.REJECTED_BY_BUYER:
-        case OrderStatusEnum.REJECTED_BY_SELLER:
-          this.notification.snackBar(this.i18n.ad.orderRejected);
-          break;
-      }
-    }
   }
 
   path(row: OrderItem): string[] {
@@ -142,17 +127,6 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
   }
 
   /**
-   * Reloads the page and sets a parameter to
-   * display a message with the new order status
-   */
-  reload() {
-    this.router.navigate(['/marketplace', 'order', this.id], {
-      replaceUrl: true,
-      queryParams: { processedOrder: true }
-    });
-  }
-
-  /**
    * Accepts the order and allows to enter payment type,
    * remarks and confirmation password
    */
@@ -175,7 +149,10 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
                   remarks: res.customValues.remarks,
                   paymentType: res.customValues.paymentType,
                 }
-              }).subscribe(() => this.reload()));
+              }).subscribe(() => {
+                this.notification.snackBar(this.i18n.ad.orderAccepted);
+                this.reload();
+              }));
             }
           });
         }
@@ -191,7 +168,10 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
             body: {
               remarks: res.customValues.remarks
             }
-          }).subscribe(() => this.reload()));
+          }).subscribe(() => {
+            this.notification.snackBar(this.i18n.ad.orderAccepted);
+            this.reload();
+          }));
         }
       });
     }
@@ -211,7 +191,10 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
           body: {
             remarks: res.customValues.remarks
           }
-        }).subscribe(() => this.reload()));
+        }).subscribe(() => {
+          this.notification.snackBar(this.i18n.ad.orderRejected);
+          this.reload();
+        }));
       }
     });
   }

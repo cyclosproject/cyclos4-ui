@@ -1110,7 +1110,6 @@
     "rootCategory": "Main",
     "imagesChanged": "To actually save the changes on images, the advertisement needs to be saved",
     "orderAccepted": "The order was processed",
-    "orderPendingPayment": "The order was processed but the payment is awaiting for authorization",
     "orderRejected": "The order was rejected",
     "publicationPeriod": "Publication period",
     "promotionalPeriod": "Promotional period",
