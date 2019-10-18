@@ -4,7 +4,8 @@ import { SearchAdsComponent } from 'app/marketplace/search/search-ads.component'
 import { UserAdsComponent } from 'app/marketplace/search/user-ads.component';
 import { ViewAdComponent } from 'app/marketplace/view/view-ad.component';
 import { EditAdComponent } from 'app/marketplace/edit-ad.component';
-import { ListOrdersComponent } from 'app/marketplace/search/list-orders.component';
+import { SearchOrdersComponent } from 'app/marketplace/search/search-orders.component';
+import { ViewOrderComponent } from 'app/marketplace/view/view-order.component';
 
 const marketplaceRoutes: Routes = [
   {
@@ -20,7 +21,11 @@ const marketplaceRoutes: Routes = [
       },
       {
         path: ':user/purchases',
-        component: ListOrdersComponent
+        component: SearchOrdersComponent
+      },
+      {
+        path: ':user/sales',
+        component: SearchOrdersComponent
       },
       {
         path: ':user/:kind/new',
@@ -33,6 +38,10 @@ const marketplaceRoutes: Routes = [
       {
         path: 'edit/:id',
         component: EditAdComponent
+      },
+      {
+        path: 'order/:id',
+        component: ViewOrderComponent
       },
     ]
   }

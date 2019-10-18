@@ -1,0 +1,86 @@
+<page-layout [ready]="data$ | async">
+  <page-content *ngIf="data" last mode="viewForm"
+    [heading]="i18n.ad.title.order"
+    [mobileHeading]="i18n.ad.mobileTitle.order"
+    [headingActions]="headingActions$ | async">
+    <label-value [label]="i18n.ad.order">
+      {{ data.number }}
+    </label-value>
+    <label-value [label]="i18n.general.date">
+      {{ data.creationDate | dateTime }}
+    </label-value>
+    <label-value [label]="i18n.general.status">
+      {{ resolveStatusLabel() }}
+    </label-value>
+    <label-value *ngIf="!seller" [label]="i18n.ad.seller">
+      <user-link [user]="data.seller"></user-link>
+    </label-value>
+    <label-value *ngIf="!buyer" [label]="i18n.ad.buyer">
+      <user-link [user]="data.buyer"></user-link>
+    </label-value>
+    <label-value *ngIf="data.remarks" [label]="i18n.ad.remarks">
+      {{ data.remarks }}
+    </label-value>
+    <h2 class="mb-3">{{ i18n.ad.products }}</h2>
+    <table class="table table-hover cursor-pointer">
+      <thead>
+        <th class="no-border">{{ i18n.ad.number }}</th>
+        <th class="no-border">{{ i18n.ad.product }}</th>
+        <th class="no-border text-right">{{ i18n.ad.price }}</th>
+        <th class="no-border text-right">{{ i18n.ad.quantity }}</th>
+        <th class="no-border text-right">{{ i18n.transaction.totalAmount }}
+        </th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of data.items"
+          (click)="router.navigate(path(row))">
+          <td>{{ row.product.productNumber }}</td>
+          <td>{{ row.product.name }}</td>
+          <td class="text-right">{{ row.price | currency:data.currency }}</td>
+          <td class="text-right">{{ row.quantity }}</td>
+          <td class="text-right">{{ row.totalPrice | currency:data.currency }}
+          </td>
+        </tr>
+        <tr>
+          <td class="table-head-color" colspan="4">
+            {{ i18n.ad.subtotal }}</td>
+          <td class="table-head-color text-right">
+            {{ subtotal | currency:data.currency }}</td>
+        </tr>
+        <tr>
+          <td colspan="4">
+            {{ i18n.ad.deliveryMethod + ': ' + resolveDeliveryLabel() }}</td>
+          <td class="text-right">
+            {{ data.deliveryPrice | currency:data.currency }}</td>
+        </tr>
+        <tr>
+          <td class="border-bottom-0 table-head-color" colspan="4">
+            {{ i18n.ad.total }}</td>
+          <td class="border-bottom-0 table-head-color text-right">
+            {{ data.totalPrice | currency: data.currency }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <h2>{{ i18n.ad.deliveryInformation }}</h2>
+    <label-value *ngIf="data.deliveryTime" [label]="i18n.ad.deliveryTime">
+      {{ formatTimeInterval(data.deliveryTime) }}
+    </label-value>
+    <label-value *ngIf="data.deliveryPrice" [label]="i18n.ad.price">
+      {{ data.deliveryPrice |currency: data.currency }}
+    </label-value>
+    <label-value *ngIf="hasAddressFields" [label]="i18n.ad.deliveryAddress"
+      class="align-items-baseline">
+      <address-details [address]="data.deliveryAddress"></address-details>
+    </label-value>
+    <h2>{{ i18n.ad.remarks }}</h2>
+    <div>{{ remarks }}</div>
+    <actions>
+      <button *ngIf="canAccept" class="btn btn-primary" (click)="accept()">
+        {{ i18n.ad.accept }}
+      </button>
+      <button *ngIf="canReject" class="btn btn-outline-primary"
+        [disabled]="requesting$ | async"
+        (click)="reject()">{{ i18n.ad.reject }}</button>
+    </actions>
+  </page-content>
+</page-layout>

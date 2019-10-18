@@ -1,0 +1,126 @@
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data">
+    <page-content mode="filters"
+      [heading]="this.sales ? i18n.ad.title.sales : i18n.ad.title.purchases"
+      [mobileHeading]="this.sales ? i18n.ad.mobileTitle.sales : i18n.ad.mobileTitle.purchases">
+      <form [formGroup]="form"
+        class="filters-form filters-form-separator border-0">
+        <div class="row">
+          <div class="col-12 col-md-6">
+            <single-selection-field labelPosition="side"
+              formControlName="statuses" [label]="i18n.general.status"
+              [emptyOption]="true">
+              <field-option *ngIf="sales && isOwner" value="draft"
+                [text]="i18n.ad.orderStatus.draft">
+              </field-option>
+              <field-option value="pendingBuyer" [text]="!sales && isOwner ? 
+                i18n.ad.requiringMyConfirmation :
+                i18n.ad.waitingForBuyersApproval">
+              </field-option>
+              <field-option value="pendingSeller" [text]=" sales && isOwner ?
+                i18n.ad.requiringMyConfirmation :
+                i18n.ad.waitingForSellersApproval">
+              </field-option>
+              <field-option value="completed"
+                [text]="i18n.ad.orderStatus.completed">
+              </field-option>
+              <field-option value="rejectedByBuyer"
+                [text]="i18n.ad.orderStatus.rejectedByBuyer">
+              </field-option>
+              <field-option value="rejectedBySeller"
+                [text]="i18n.ad.orderStatus.rejectedBySeller">
+              </field-option>
+              <field-option value="paymentPending"
+                [text]="i18n.ad.orderStatus.paymentPending">
+              </field-option>
+              <field-option value="paymentDenied"
+                [text]="i18n.ad.orderStatus.paymentDenied">
+              </field-option>
+              <field-option value="paymentCanceled"
+                [text]="i18n.ad.orderStatus.paymentCanceled">
+              </field-option>
+              <field-option value="paymentExpired"
+                [text]="i18n.ad.orderStatus.paymentExpired">
+              </field-option>
+              <field-option value="disposed"
+                [text]="i18n.ad.orderStatus.disposed">
+              </field-option>
+            </single-selection-field>
+          </div>
+          <div class="col-12 col-md-6">
+            <user-field labelPosition="side" formControlName="relatedUser"
+              [label]="sales ? i18n.ad.buyer : i18n.ad.seller">
+            </user-field>
+          </div>
+          <div class="row no-gutters col-12">
+            <div class="col-12 col-md-6">
+              <date-field labelPosition="side" formControlName="periodBegin"
+                [label]="i18n.general.beginDate" minDate="past100"
+                maxDate="todayEnd" fieldSize="full" class>
+              </date-field>
+            </div>
+            <div class="col-12 col-md-6">
+              <date-field labelPosition="side" formControlName="periodEnd"
+                [label]="i18n.general.endDate" minDate="past100"
+                maxDate="todayEnd" fieldSize="full">
+              </date-field>
+            </div>
+          </div>
+          <div class="col-12 col-md-6">
+            <input-field labelPosition="side" formControlName="number"
+              [label]="i18n.ad.order" fieldSize="full"></input-field>
+          </div>
+          <div class="col-12 col-md-6">
+            <input-field labelPosition="side" formControlName="productNumber"
+              [label]="i18n.ad.productNumber" fieldSize="full"></input-field>
+          </div>
+        </div>
+      </form>
+    </page-content>
+
+    <results-layout resultType="list" [results]="results$ | async"
+      (update)="update($event)" [rendering$]="rendering$" [toLink]="toLink">
+
+      <mobile-result *mobileResult="let row">
+        <div class="d-flex">
+          <div>
+            <div class="cell-main">
+              {{ row.number }}
+            </div>
+            <div class="cell-cell-date">
+              {{ row.creationDate | date }}
+            </div>
+            <div class="cell-text">
+              {{ row.relatedUser.shortDisplay }}
+            </div>
+          </div>
+          <div class="ml-auto">
+            {{ row.totalPrice |currency: row.currency }}
+          </div>
+        </div>
+      </mobile-result>
+
+      <table *resultTable class="table table-hover cursor-pointer">
+        <thead>
+          <th>{{ i18n.ad.order }}</th>
+          <th>{{ i18n.general.status }}</th>
+          <th>{{ i18n.general.date }}</th>
+          <th>{{ sales ? i18n.ad.buyer : i18n.ad.seller }}</th>
+          <th class="text-right">{{ i18n.ad.total }}</th>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let row of (results$ | async).results">
+            <tr (click)="router.navigate(path(row))">
+              <td>{{ row.number }}</td>
+              <td>{{ resolveStatusLabel(row) }}</td>
+              <td>{{ row.creationDate | date }}</td>
+              <td>{{ row.relatedUser.shortDisplay }}</td>
+              <td class=" text-right">
+                {{ row.totalPrice |currency: row.currency }}</td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </results-layout>
+  </ng-container>
+</page-layout>

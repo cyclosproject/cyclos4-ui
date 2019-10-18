@@ -7,7 +7,8 @@ import { ShowSubCategoriesComponent } from 'app/marketplace/search/show-sub-cate
 import { AdsResultsComponent } from 'app/marketplace/search/ads-results.component';
 import { UserAdsComponent } from 'app/marketplace/search/user-ads.component';
 import { EditAdComponent } from 'app/marketplace/edit-ad.component';
-import { ListOrdersComponent } from 'app/marketplace/search/list-orders.component';
+import { SearchOrdersComponent } from 'app/marketplace/search/search-orders.component';
+import { ViewOrderComponent } from 'app/marketplace/view/view-order.component';
 
 /**
  * Marketplace module
@@ -21,10 +22,11 @@ import { ListOrdersComponent } from 'app/marketplace/search/list-orders.componen
   declarations: [
     SearchAdsComponent,
     UserAdsComponent,
-    ListOrdersComponent,
+    SearchOrdersComponent,
     AdsResultsComponent,
     EditAdComponent,
     ViewAdComponent,
+    ViewOrderComponent,
     ShowSubCategoriesComponent
 
   ],

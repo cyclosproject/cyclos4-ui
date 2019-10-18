@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AddressConfiguration, AddressFieldEnum, Address } from 'app/api/models';
 import { I18n } from 'app/i18n/i18n';
+import { empty } from 'app/shared/helper';
+import { cloneDeep } from 'lodash';
 
 /**
  * Helper service for handling address fields
@@ -86,5 +88,18 @@ export class AddressHelperService {
       result += ', ' + address.complement;
     }
     return result;
+  }
+
+  /**
+   * Returns if the given address has one display field specified at least
+   */
+  hasFields(address: Address): boolean {
+    if (address) {
+      // Remove id first as it's never displayed
+      const withoutId = cloneDeep(address);
+      delete withoutId['id'];
+      return Object.values(withoutId).filter(value => !empty(value)).length > 0;
+    }
+    return false;
   }
 }
