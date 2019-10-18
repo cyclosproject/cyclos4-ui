@@ -1131,24 +1131,24 @@
       "disabled": "Desabilitada",
       "draft": "Rascunho",
       "expired": "Expirado",
-      "hidden": "Hidden",
+      "hidden": "Oculto",
       "pending": "Pendente",
-      "scheduled": "Scheduled"
+      "scheduled": "Agendado"
     },
     "title": {
       "search": "Buscar anúncios",
       "owner": "Anúncios de {name}",
-      "webshopOwner": "Webshop of {name}",
-      "new": "New advertisement",
-      "edit": "Edit advertisement"
+      "webshopOwner": "Loja virtual de {name}",
+      "new": "Novo anúncio",
+      "edit": "Editar anúncio"
     },
     "mobileTitle": {
       "search": "Anúncios",
       "owner": "Anúncios",
-      "webshopOwner": "Webshop",
+      "webshopOwner": "Loja virtual",
       "details": "Anúncio",
-      "new": "New advertisement",
-      "edit": "Edit advertisement"
+      "new": "Novo anúncio",
+      "edit": "Editar anúncio"
     }
   },
   "notification": {
@@ -1162,32 +1162,32 @@
       "markAllRead": "Marcar todas como lida"
     },
     "admin": {
-      "adPendingAuthorization": "Ad pending for authorization",
-      "applicationErrors": "Application errors",
-      "externalPaymentExpired": "External payment expired",
-      "externalPaymentPerformedFailed": "External payment could not be delivered",
-      "generatedVouchersAboutToExpire": "Generated vouchers about to expire",
-      "generatedVouchersExpired": "Generated vouchers expiration",
-      "networkCreated": "Network created",
-      "paymentAwaitingAuthorization": "Payments pending by authorization",
-      "paymentPerformed": "Payments",
-      "systemAlert": "System alerts",
-      "userAlert": "User alerts",
-      "userRegistration": "New registered users",
-      "voucherBuyingAboutToExpire": "Voucher buying about to expire"
+      "adPendingAuthorization": "Anúncio pendente de autorização",
+      "applicationErrors": "Erros da aplicação",
+      "externalPaymentExpired": "Pagamento externo vencido",
+      "externalPaymentPerformedFailed": "Pagamento externo não pode ser entregue",
+      "generatedVouchersAboutToExpire": "Cupons gerados prestes a expirar",
+      "generatedVouchersExpired": "Expiração de cupons gerados",
+      "networkCreated": "Rede criada",
+      "paymentAwaitingAuthorization": "Pagamentos pendentes por autorização",
+      "paymentPerformed": "Pagamentos",
+      "systemAlert": "Alertas de sistema",
+      "userAlert": "Alertas de usuário",
+      "userRegistration": "Novos usuários registrados",
+      "voucherBuyingAboutToExpire": "Cupons comprados prestes a expirar"
     },
     "user": {
       "account": {
-        "allNonSmsPerformedPayments": "Payment performed",
-        "authorizedPaymentCanceled": "Authorized payment canceled",
-        "authorizedPaymentDenied": "Authorized payment denied",
-        "authorizedPaymentExpired": "Authorized payment expired",
-        "authorizedPaymentSucceeded": "Authorized payment successful",
-        "boughtVouchersAboutToExpire": "Bought vouchers will expire in a few days",
-        "boughtVouchersExpirationDateChanged": "Bought voucher expiration date was changed",
-        "boughtVouchersExpired": "Bought voucher have expired",
-        "externalPaymentExpired": "External payment expired",
-        "externalPaymentPerformedFailed": "External payment could not be delivered",
+        "allNonSmsPerformedPayments": "Pagamento efetuado",
+        "authorizedPaymentCanceled": "Pagamento autorizado cancelado",
+        "authorizedPaymentDenied": "Pagamento autorizado negado",
+        "authorizedPaymentExpired": "Pagamento autorizado expirado",
+        "authorizedPaymentSucceeded": "Pagamento autorizado realizado com sucesso",
+        "boughtVouchersAboutToExpire": "Cupons comprados irão expirar em poucos dias",
+        "boughtVouchersExpirationDateChanged": "Data de expiração de cupons comprados foi alterada",
+        "boughtVouchersExpired": "Cupons comprados expiraram",
+        "externalPaymentExpired": "Pagamento externo vencido",
+        "externalPaymentPerformedFailed": "Pagaemnto externo não pode ser entregue",
         "externalPaymentReceivedFailed": "External payment could not be received",
         "incomingRecurringPaymentCanceled": "Incoming recurring payment was canceled",
         "incomingRecurringPaymentFailed": "Incoming recurring payment has failed",
@@ -1254,23 +1254,23 @@
         "brokerUnassigned": "Relação de corretagem removida",
         "maxSmsPerMonthReached": "Máximo de SMS por mês alcançado",
         "newToken": "Novo token / cartão",
-        "newTokenPendingActivation": "New token / card pending activation",
-        "passwordStatusChanged": "Password status changed",
-        "tokenStatusChanged": "Token / card status changed",
-        "userStatusChanged": "User status changed"
+        "newTokenPendingActivation": "Novo token / cartão pendente de ativação",
+        "passwordStatusChanged": "Estado da senha alterado",
+        "tokenStatusChanged": "Estado do Token / cartão alterado",
+        "userStatusChanged": "Estado do usuário alterado"
       },
       "reference": {
-        "changed": "Reference changed",
-        "created": "Reference received"
+        "changed": "Referência alterada",
+        "created": "Referência recebida"
       },
       "seller": {
-        "adAuthorized": "Advertisement authorized",
-        "adExpired": "Advertisement expired",
-        "adLowStock": "Low quantity of article",
-        "adOutOfStock": "Article out of stock",
-        "adQuestionCreated": "New ad question",
-        "adRejected": "Advertisement rejected",
-        "orderCanceled": "Sale order canceled",
+        "adAuthorized": "Anúncio autorizado",
+        "adExpired": "Anúncio expirado",
+        "adLowStock": "Quantidade baixa de artigo",
+        "adOutOfStock": "Artigo sem estoque",
+        "adQuestionCreated": "Nova pergunta sobre anúncio",
+        "adRejected": "Anúncio rejeitado",
+        "orderCanceled": "Ordem de venda cancelada",
         "orderCreated": "New web shop order",
         "orderPaymentCanceled": "Sale order payment canceled",
         "orderPaymentDenied": "Sale order payment denied",
