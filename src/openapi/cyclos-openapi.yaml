@@ -35,7 +35,7 @@ info:
     [deprecation notes
     page](https://documentation.cyclos.org/4.13/api-deprecation.html)
     for this version.
-  version: '4.13.0'
+  version: '4.13'
 servers:
   - url: '@url'
 

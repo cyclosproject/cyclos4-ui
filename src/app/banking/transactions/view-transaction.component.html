@@ -151,12 +151,12 @@
           </td>
           <td>
             <maybe-link [link]="path(occurrence)">
-              {{ occurrence.date | date }}
+              {{ occurrence.dueDate | date }}
             </maybe-link>
           </td>
           <td>
             <maybe-link [link]="path(occurrence)">
-              {{ occurrenceStatus(occurrence.status) }}
+              {{ installmentStatus(occurrence.status) }}
             </maybe-link>
           </td>
           <td class="text-right">
