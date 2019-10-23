@@ -34,7 +34,7 @@ export class SetDeliveryMethodComponent extends BaseComponent implements OnInit 
     this.form = this.formBuilder.group({
       name: new FormControl(this.name, Validators.required),
       chargeAmount: new FormControl(this.chargeAmount, Validators.required),
-      mintime: new FormControl(this.minTime),
+      minTime: new FormControl(this.minTime),
       maxTime: new FormControl(this.maxTime, Validators.required),
       remarks: new FormControl('')
     });

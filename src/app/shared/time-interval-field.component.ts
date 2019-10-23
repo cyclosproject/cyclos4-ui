@@ -4,6 +4,7 @@ import {
 import { ControlContainer, NG_VALUE_ACCESSOR, FormGroup, FormBuilder } from '@angular/forms';
 import { TimeInterval, TimeFieldEnum } from 'app/api/models';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
+import { empty } from 'app/shared/helper';
 
 /**
  * A field that allows to enter a time interval by specifing amount and field (days, months, etc)
@@ -35,6 +36,13 @@ export class TimeIntervalFieldComponent extends BaseFormFieldComponent<TimeInter
       amount: null,
       field: TimeFieldEnum.DAYS
     });
+    this.addSub(this.form.valueChanges.subscribe(value => {
+      if (empty(this.form.controls.amount == null)) {
+        this.value = null;
+      } else {
+        this.value = value;
+      }
+    }));
   }
 
   protected getDisabledValue(): string {
