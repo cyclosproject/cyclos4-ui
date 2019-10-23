@@ -16,7 +16,8 @@ export class SetDeliveryMethodComponent extends BaseComponent implements OnInit 
 
   @Input() name: string;
   @Input() chargeAmount: number;
-  @Input() time: TimeInterval;
+  @Input() minTime: TimeInterval;
+  @Input() maxTime: TimeInterval;
   @Input() currency: Currency;
   @Output() done = new EventEmitter<SetDeliveryMethod>();
 
@@ -33,7 +34,8 @@ export class SetDeliveryMethodComponent extends BaseComponent implements OnInit 
     this.form = this.formBuilder.group({
       name: new FormControl(this.name, Validators.required),
       chargeAmount: new FormControl(this.chargeAmount, Validators.required),
-      time: new FormControl(this.time, Validators.required),
+      mintime: new FormControl(this.minTime),
+      maxTime: new FormControl(this.maxTime, Validators.required),
       remarks: new FormControl('')
     });
   }

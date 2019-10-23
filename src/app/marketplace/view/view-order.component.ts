@@ -193,7 +193,8 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
         title: this.i18n.ad.deliveryMethod,
         name: this.data.deliveryMethodName,
         chargeAmount: this.data.deliveryPrice,
-        time: this.data.deliveryTime,
+        minTime: this.data.minDeliveryTime,
+        maxTime: this.data.maxDeliveryTime,
         currency: this.data.currency
       }
     });

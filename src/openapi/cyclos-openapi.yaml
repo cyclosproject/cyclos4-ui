@@ -1,6 +1,6 @@
 openapi: '3.0.0'
 info:
-  title: 'Cyclos 4.13.0 API'
+  title: 'Cyclos 4.13 API'
   description: >-
     The Cyclos REST API is described using OpenAPI 3.0. The descriptor for the
     api can be downloaded in both [YAML](@url/cyclos-openapi.yaml) or
@@ -33,7 +33,7 @@ info:
 
     For details of the deprecated elements (operations and model) please visit the
     [deprecation notes
-    page](https://documentation.cyclos.org/4.13.0/api-deprecation.html)
+    page](https://documentation.cyclos.org/4.13/api-deprecation.html)
     for this version.
   version: '4.13.0'
 servers:
@@ -208,6 +208,11 @@ tags:
       Provides actions specific to scheduled payments and installments.
       Performing a scheduled payment is done via `Payments`, while searching or
       viewing details, via `Transactions`.
+  - name: Installments
+    description: >-
+      Provides search and actions over specific to scheduled payment
+      installments and recurring payment occurrences. Both are generically
+      treated as `Installments`.
   - name: RecurringPayments
     description: >-
       Provides actions specific to recurring payments and their occurrences.
@@ -17522,6 +17527,1412 @@ Reference to the broker of users involved in transfers. Is only taken into accou
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /{owner}/installments/data-for-search:
+    parameters:
+      - $ref: '#/components/parameters/owner'
+    get:
+      operationId: getInstallmentsDataForSearch
+      summary: >-
+        Returns data for searching installments of an account owner
+      description: >-
+        Returns data which can be used to filter a installment search
+      tags:
+        - Installments
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            Data for searching installments of an account owner
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InstallmentDataForSearch'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /{owner}/installments:
+    parameters:
+      - $ref: '#/components/parameters/owner'
+    get:
+      operationId: searchInstallments
+      summary: >-
+        Searches installments of an account owner
+      description: >-
+        Returns the installments of a given account owner that match the specified
+        criteria. Each result will will be relative to this owner. The amount may
+        be positive or negative, depending on whether this owner has performed or
+        received the transaction.
+      tags:
+        - Installments
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+        - name: accessClients
+          in: query
+          required: false
+          description: "References to access clients (id or token) used to perform / receive the transfer."
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: accountTypes
+          in: query
+          required: false
+          description: "The account types"
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: amountRange
+          in: query
+          required: false
+          description: "The minimum / maximum amount. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+              format: number
+        - name: authorizationPerformedBy
+          in: query
+          required: false
+          description: "Id or other identifier (login name, email, etc) of the user that performed an authorization action (authorize, deny or cancel)."
+          schema:
+            type: string
+        - name: authorizationStatuses
+          in: query
+          required: false
+          description: "Authorization statuses used as search criteria. When set, only kinds that can go through authorization are returned (`payment`, `order`, `recurringPayment` or `scheduledPayment`)."
+          style: simple
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/TransactionAuthorizationStatusEnum'
+        - name: authorized
+          in: query
+          required: false
+          description: "When set, will only return transactions that went through the authorization process (if true) or that never went through it (when false). In either case, only kinds that can go through authorization are returned (`payment`, `order`, `recurringPayment` or `scheduledPayment`)."
+          schema:
+            type: boolean
+        - name: broker
+          in: query
+          required: false
+          description: "DEPRECATED: Use `brokers` instead.
+
+Reference to the broker of users involved in transfers. Is only taken into account if authenticated as administrator."
+          schema:
+            type: string
+        - name: brokers
+          in: query
+          required: false
+          description: "Reference to the broker of users involved in transfers. Is only taken into account if authenticated as administrator."
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: by
+          in: query
+          required: false
+          description: "Reference to the user that was authenticated when the transfer was performed. Is only taken into account if authenticated as administrator."
+          schema:
+            type: string
+        - name: channels
+          in: query
+          required: false
+          description: "Reference to the channel used to perform / receive the transfer. Only taken into account if authenticated as administrator."
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: datePeriod
+          in: query
+          required: false
+          description: "The minimum / maximum transfer date. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+              format: date-time
+        - name: direction
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/TransferDirectionEnum'
+        - name: excludedIds
+          in: query
+          required: false
+          description: "List of transfers ids to be excluded from the result."
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: fromCurrentAccessClient
+          in: query
+          required: false
+          description: "Flag indicating whether to include only transfers by the current access client."
+          schema:
+            type: boolean
+        - name: groups
+          in: query
+          required: false
+          description: "Reference to the user group used to perform / receive the transfer. Only taken into account if authenticated as administrator."
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: includeGeneratedByAccessClient
+          in: query
+          required: false
+          description: "Flag indicating whether to include or not the generated transfer. Only valid if there is at least one access client specified. For example if a `ticket` or `paymentRequest` was processed then a new transfer will be generated."
+          schema:
+            type: boolean
+        - name: kinds
+          in: query
+          required: false
+          description: ''
+          style: simple
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/TransactionKind'
+        - name: orderBy
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/TransOrderByEnum'
+        - name: page
+          in: query
+          required: false
+          description: "The page number (zero-based) of the search. The default value is zero."
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          required: false
+          description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
+          schema:
+            type: integer
+            format: int32
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
+        - name: statuses
+          in: query
+          required: false
+          description: "Possible statuses for installments."
+          style: simple
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/InstallmentStatusEnum'
+        - name: transactionNumber
+          in: query
+          required: false
+          description: "The transaction number of the matching transfer"
+          schema:
+            type: string
+        - name: transferFilters
+          in: query
+          required: false
+          description: "Reference to the transfer filters, which filters transfers by type. May be either the internal id or qualified transfer filter internal name, in the format `accountType.transferFilter`."
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: transferTypes
+          in: query
+          required: false
+          description: "Reference to the transfer types for filter. May be either the internal id or qualified transfer type internal name, in the format `accountType.transferType`."
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: user
+          in: query
+          required: false
+          description: "Reference a user that should have either received / performed the transfer."
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >-
+            The installment entries matching the criteria
+          headers:
+            X-Total-Count:
+              schema:
+                type: integer
+              description: >-
+                The total number of results. It may be configured in Cyclos to skip the
+                total count, which is useful on large databases, where the count itself
+                may use a lot of resources from the database. If disabled, this header is
+                not returned.
+            X-Page-Size:
+              schema:
+                type: integer
+              description: >-
+                The maximum number of results per page
+            X-Current-Page:
+              schema:
+                type: integer
+              description: >-
+                The current page the results are in
+            X-Has-Next-Page:
+              schema:
+                type: boolean
+              description: >-
+                Returns whether there is a next page. This is normally always returned,
+                whether total count is enabled or not. If the total count is not returned,
+                is the only way for clients to know whether more results are available or
+                not.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InstallmentResult'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /{owner}/installments/export/{format}:
+    parameters:
+      - $ref: '#/components/parameters/owner'
+      - $ref: '#/components/parameters/format'
+    get:
+      operationId: exportInstallments
+      summary: >-
+        Exports the owner installments search results as file
+      description: >-
+        Generates a file containing the search results. The available export
+        formats are returned in `GET /{owner}/installments/data-for-search`.
+      tags:
+        - Installments
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - name: accessClients
+          in: query
+          required: false
+          description: "References to access clients (id or token) used to perform / receive the transfer."
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: accountTypes
+          in: query
+          required: false
+          description: "The account types"
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: amountRange
+          in: query
+          required: false
+          description: "The minimum / maximum amount. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+              format: number
+        - name: authorizationPerformedBy
+          in: query
+          required: false
+          description: "Id or other identifier (login name, email, etc) of the user that performed an authorization action (authorize, deny or cancel)."
+          schema:
+            type: string
+        - name: authorizationStatuses
+          in: query
+          required: false
+          description: "Authorization statuses used as search criteria. When set, only kinds that can go through authorization are returned (`payment`, `order`, `recurringPayment` or `scheduledPayment`)."
+          style: simple
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/TransactionAuthorizationStatusEnum'
+        - name: authorized
+          in: query
+          required: false
+          description: "When set, will only return transactions that went through the authorization process (if true) or that never went through it (when false). In either case, only kinds that can go through authorization are returned (`payment`, `order`, `recurringPayment` or `scheduledPayment`)."
+          schema:
+            type: boolean
+        - name: broker
+          in: query
+          required: false
+          description: "DEPRECATED: Use `brokers` instead.
+
+Reference to the broker of users involved in transfers. Is only taken into account if authenticated as administrator."
+          schema:
+            type: string
+        - name: brokers
+          in: query
+          required: false
+          description: "Reference to the broker of users involved in transfers. Is only taken into account if authenticated as administrator."
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: by
+          in: query
+          required: false
+          description: "Reference to the user that was authenticated when the transfer was performed. Is only taken into account if authenticated as administrator."
+          schema:
+            type: string
+        - name: channels
+          in: query
+          required: false
+          description: "Reference to the channel used to perform / receive the transfer. Only taken into account if authenticated as administrator."
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: datePeriod
+          in: query
+          required: false
+          description: "The minimum / maximum transfer date. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+              format: date-time
+        - name: direction
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/TransferDirectionEnum'
+        - name: excludedIds
+          in: query
+          required: false
+          description: "List of transfers ids to be excluded from the result."
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: fromCurrentAccessClient
+          in: query
+          required: false
+          description: "Flag indicating whether to include only transfers by the current access client."
+          schema:
+            type: boolean
+        - name: groups
+          in: query
+          required: false
+          description: "Reference to the user group used to perform / receive the transfer. Only taken into account if authenticated as administrator."
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: includeGeneratedByAccessClient
+          in: query
+          required: false
+          description: "Flag indicating whether to include or not the generated transfer. Only valid if there is at least one access client specified. For example if a `ticket` or `paymentRequest` was processed then a new transfer will be generated."
+          schema:
+            type: boolean
+        - name: kinds
+          in: query
+          required: false
+          description: ''
+          style: simple
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/TransactionKind'
+        - name: orderBy
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/TransOrderByEnum'
+        - name: page
+          in: query
+          required: false
+          description: "The page number (zero-based) of the search. The default value is zero."
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          required: false
+          description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
+          schema:
+            type: integer
+            format: int32
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
+        - name: statuses
+          in: query
+          required: false
+          description: "Possible statuses for installments."
+          style: simple
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/InstallmentStatusEnum'
+        - name: transactionNumber
+          in: query
+          required: false
+          description: "The transaction number of the matching transfer"
+          schema:
+            type: string
+        - name: transferFilters
+          in: query
+          required: false
+          description: "Reference to the transfer filters, which filters transfers by type. May be either the internal id or qualified transfer filter internal name, in the format `accountType.transferFilter`."
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: transferTypes
+          in: query
+          required: false
+          description: "Reference to the transfer types for filter. May be either the internal id or qualified transfer type internal name, in the format `accountType.transferType`."
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: user
+          in: query
+          required: false
+          description: "Reference a user that should have either received / performed the transfer."
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >-
+            The file content
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: binary
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: >-
+            Input error. Either a validation error or the maximum allowed items was
+            exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /installments/data-for-search:
+    get:
+      operationId: getInstallmentsOverviewDataForSearch
+      summary: >-
+        Returns data for searching installments regardless of a owner
+      description: >-
+        Returns data which can be used to filter a installment search
+      tags:
+        - Installments
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            Data for searching installments of an account owner
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InstallmentOverviewDataForSearch'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /installments:
+    get:
+      operationId: searchInstallmentsOverview
+      summary: >-
+        Searches installments regardless of a owner
+      description: >-
+        Searches installments regardless of a owner that match the specified
+        criteria.
+      tags:
+        - Installments
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+        - name: accessClients
+          in: query
+          required: false
+          description: "References to access clients (id or token) used to perform / receive the transfer."
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: amountRange
+          in: query
+          required: false
+          description: "The minimum / maximum amount. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+              format: number
+        - name: authorizationPerformedBy
+          in: query
+          required: false
+          description: "Id or other identifier (login name, email, etc) of the user that performed an authorization action (authorize, deny or cancel)."
+          schema:
+            type: string
+        - name: authorizationStatuses
+          in: query
+          required: false
+          description: "Authorization statuses used as search criteria. When set, only kinds that can go through authorization are returned (`payment`, `order`, `recurringPayment` or `scheduledPayment`)."
+          style: simple
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/TransactionAuthorizationStatusEnum'
+        - name: authorized
+          in: query
+          required: false
+          description: "When set, will only return transactions that went through the authorization process (if true) or that never went through it (when false). In either case, only kinds that can go through authorization are returned (`payment`, `order`, `recurringPayment` or `scheduledPayment`)."
+          schema:
+            type: boolean
+        - name: broker
+          in: query
+          required: false
+          description: "DEPRECATED: Use `brokers` instead.
+
+Reference to the broker of users involved in transfers. Is only taken into account if authenticated as administrator."
+          schema:
+            type: string
+        - name: brokers
+          in: query
+          required: false
+          description: "Reference to the broker of users involved in transfers. Is only taken into account if authenticated as administrator."
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: by
+          in: query
+          required: false
+          description: "Reference to the user that was authenticated when the transfer was performed. Is only taken into account if authenticated as administrator."
+          schema:
+            type: string
+        - name: channels
+          in: query
+          required: false
+          description: "Reference to the channel used to perform / receive the transfer. Only taken into account if authenticated as administrator."
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: currencies
+          in: query
+          required: false
+          description: "The currencies internal names or ids."
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: datePeriod
+          in: query
+          required: false
+          description: "The minimum / maximum transfer date. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+              format: date-time
+        - name: excludedIds
+          in: query
+          required: false
+          description: "List of transfers ids to be excluded from the result."
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: fromAccountTypes
+          in: query
+          required: false
+          description: "The source account types internal names or ids."
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: fromCurrentAccessClient
+          in: query
+          required: false
+          description: "Flag indicating whether to include only transfers by the current access client."
+          schema:
+            type: boolean
+        - name: groups
+          in: query
+          required: false
+          description: "Reference to the user group used to perform / receive the transfer. Only taken into account if authenticated as administrator."
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: includeGeneratedByAccessClient
+          in: query
+          required: false
+          description: "Flag indicating whether to include or not the generated transfer. Only valid if there is at least one access client specified. For example if a `ticket` or `paymentRequest` was processed then a new transfer will be generated."
+          schema:
+            type: boolean
+        - name: kinds
+          in: query
+          required: false
+          description: ''
+          style: simple
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/TransactionKind'
+        - name: orderBy
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/TransOrderByEnum'
+        - name: page
+          in: query
+          required: false
+          description: "The page number (zero-based) of the search. The default value is zero."
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          required: false
+          description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
+          schema:
+            type: integer
+            format: int32
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
+        - name: statuses
+          in: query
+          required: false
+          description: "Possible statuses for installments."
+          style: simple
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/InstallmentStatusEnum'
+        - name: toAccountTypes
+          in: query
+          required: false
+          description: "The source account types internal names or ids."
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: transactionNumber
+          in: query
+          required: false
+          description: "The transaction number of the matching transfer"
+          schema:
+            type: string
+        - name: transferFilters
+          in: query
+          required: false
+          description: "Reference to the transfer filters, which filters transfers by type. May be either the internal id or qualified transfer filter internal name, in the format `accountType.transferFilter`."
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: transferTypes
+          in: query
+          required: false
+          description: "Reference to the transfer types for filter. May be either the internal id or qualified transfer type internal name, in the format `accountType.transferType`."
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: user
+          in: query
+          required: false
+          description: "Reference a user that should have either received / performed the transfer."
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >-
+            The installment entries matching the criteria
+          headers:
+            X-Total-Count:
+              schema:
+                type: integer
+              description: >-
+                The total number of results. It may be configured in Cyclos to skip the
+                total count, which is useful on large databases, where the count itself
+                may use a lot of resources from the database. If disabled, this header is
+                not returned.
+            X-Page-Size:
+              schema:
+                type: integer
+              description: >-
+                The maximum number of results per page
+            X-Current-Page:
+              schema:
+                type: integer
+              description: >-
+                The current page the results are in
+            X-Has-Next-Page:
+              schema:
+                type: boolean
+              description: >-
+                Returns whether there is a next page. This is normally always returned,
+                whether total count is enabled or not. If the total count is not returned,
+                is the only way for clients to know whether more results are available or
+                not.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InstallmentOverviewResult'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /installments/export/{format}:
+    parameters:
+      - $ref: '#/components/parameters/format'
+    get:
+      operationId: exportInstallmentsOverview
+      summary: >-
+        Exports the installments overview search results as file
+      description: >-
+        Generates a file containing the search results. The available export
+        formats are returned in `GET /installments/data-for-search`.
+      tags:
+        - Installments
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - name: accessClients
+          in: query
+          required: false
+          description: "References to access clients (id or token) used to perform / receive the transfer."
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: amountRange
+          in: query
+          required: false
+          description: "The minimum / maximum amount. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+              format: number
+        - name: authorizationPerformedBy
+          in: query
+          required: false
+          description: "Id or other identifier (login name, email, etc) of the user that performed an authorization action (authorize, deny or cancel)."
+          schema:
+            type: string
+        - name: authorizationStatuses
+          in: query
+          required: false
+          description: "Authorization statuses used as search criteria. When set, only kinds that can go through authorization are returned (`payment`, `order`, `recurringPayment` or `scheduledPayment`)."
+          style: simple
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/TransactionAuthorizationStatusEnum'
+        - name: authorized
+          in: query
+          required: false
+          description: "When set, will only return transactions that went through the authorization process (if true) or that never went through it (when false). In either case, only kinds that can go through authorization are returned (`payment`, `order`, `recurringPayment` or `scheduledPayment`)."
+          schema:
+            type: boolean
+        - name: broker
+          in: query
+          required: false
+          description: "DEPRECATED: Use `brokers` instead.
+
+Reference to the broker of users involved in transfers. Is only taken into account if authenticated as administrator."
+          schema:
+            type: string
+        - name: brokers
+          in: query
+          required: false
+          description: "Reference to the broker of users involved in transfers. Is only taken into account if authenticated as administrator."
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: by
+          in: query
+          required: false
+          description: "Reference to the user that was authenticated when the transfer was performed. Is only taken into account if authenticated as administrator."
+          schema:
+            type: string
+        - name: channels
+          in: query
+          required: false
+          description: "Reference to the channel used to perform / receive the transfer. Only taken into account if authenticated as administrator."
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: currencies
+          in: query
+          required: false
+          description: "The currencies internal names or ids."
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: datePeriod
+          in: query
+          required: false
+          description: "The minimum / maximum transfer date. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+              format: date-time
+        - name: excludedIds
+          in: query
+          required: false
+          description: "List of transfers ids to be excluded from the result."
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: fromAccountTypes
+          in: query
+          required: false
+          description: "The source account types internal names or ids."
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: fromCurrentAccessClient
+          in: query
+          required: false
+          description: "Flag indicating whether to include only transfers by the current access client."
+          schema:
+            type: boolean
+        - name: groups
+          in: query
+          required: false
+          description: "Reference to the user group used to perform / receive the transfer. Only taken into account if authenticated as administrator."
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: includeGeneratedByAccessClient
+          in: query
+          required: false
+          description: "Flag indicating whether to include or not the generated transfer. Only valid if there is at least one access client specified. For example if a `ticket` or `paymentRequest` was processed then a new transfer will be generated."
+          schema:
+            type: boolean
+        - name: kinds
+          in: query
+          required: false
+          description: ''
+          style: simple
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/TransactionKind'
+        - name: orderBy
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/TransOrderByEnum'
+        - name: page
+          in: query
+          required: false
+          description: "The page number (zero-based) of the search. The default value is zero."
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          required: false
+          description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
+          schema:
+            type: integer
+            format: int32
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
+        - name: statuses
+          in: query
+          required: false
+          description: "Possible statuses for installments."
+          style: simple
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/InstallmentStatusEnum'
+        - name: toAccountTypes
+          in: query
+          required: false
+          description: "The source account types internal names or ids."
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: transactionNumber
+          in: query
+          required: false
+          description: "The transaction number of the matching transfer"
+          schema:
+            type: string
+        - name: transferFilters
+          in: query
+          required: false
+          description: "Reference to the transfer filters, which filters transfers by type. May be either the internal id or qualified transfer filter internal name, in the format `accountType.transferFilter`."
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: transferTypes
+          in: query
+          required: false
+          description: "Reference to the transfer types for filter. May be either the internal id or qualified transfer type internal name, in the format `accountType.transferType`."
+          style: simple
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: user
+          in: query
+          required: false
+          description: "Reference a user that should have either received / performed the transfer."
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >-
+            The file content
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: binary
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: >-
+            Input error. Either a validation error or the maximum allowed items was
+            exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /installments/{key}/process:
+    parameters:
+      - name: key
+        in: path
+        required: true
+        description: >-
+          Either the id or a string in the form `number@transaction`,
+          beging transaction either the id or transaction number.
+        schema:
+          type: string
+    post:
+      operationId: processInstallment
+      summary: >-
+        Processes a installment, generating its corresponding transfer.
+      description: >-
+        Processes an installment. The installment status must be either
+        `scheduled`, `failed`
+        or `blocked`.
+        This action must be performed by the payer or manager.
+      tags:
+        - Installments
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+        - $ref: '#/components/parameters/confirmationPassword'
+      responses:
+        '201':
+          description: >-
+            The installment is processed and the transfer is returned
+          headers:
+            Location:
+              description: >-
+                URL for viewing the transfer details
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transfer'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /installments/{key}/settle:
+    parameters:
+      - name: key
+        in: path
+        required: true
+        description: >-
+          Either the id or a string in the form `number@transaction`,
+          beging transaction either the id or transaction number.
+        schema:
+          type: string
+    post:
+      operationId: settleInstallment
+      summary: >-
+        Settles a scheduled payment installment.
+      description: >-
+        Settles a single installment. It must be a scheduled payment installment
+        (not recurring payment), and the status must be either
+        `scheduled`, `failed`
+        or `blocked`.
+        This action must be performed by the payment receiver or manager.
+      tags:
+        - Installments
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/confirmationPassword'
+      responses:
+        '204':
+          description: >-
+            The installment is unblocked and nothing is returned.
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /{owner}/payments/data-for-perform:
     get:
       operationId: dataForPerformPayment
@@ -17795,7 +19206,7 @@ Reference to the broker of users involved in transfers. Is only taken into accou
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/PerformScheduledPaymentInstallment'
+                  $ref: '#/components/schemas/PerformInstallment'
         '401':
           description: >-
             Unauthorized access. Missing or invalid crendentials supplied for such
@@ -18393,7 +19804,11 @@ Reference to the broker of users involved in transfers. Is only taken into accou
   /scheduled-payments/installments/{id}/process:
     post:
       operationId: processScheduledPaymentInstallment
+      deprecated: true
+      x-remove-version: 4.15
       summary: >-
+        DEPRECATED: Use `POST /installments/{key}/process` instead.
+
         Processes a single scheduled payment installment.
       description: >-
         Processes a single installment. The installment status must be either
@@ -18457,7 +19872,11 @@ Reference to the broker of users involved in transfers. Is only taken into accou
   /scheduled-payments/installments/{id}/settle:
     post:
       operationId: settleScheduledPaymentInstallment
+      deprecated: true
+      x-remove-version: 4.15
       summary: >-
+        DEPRECATED: Use `POST /installments/{key}/process` instead.
+
         Settles a single scheduled payment installment.
       description: >-
         Settles a single installment. The installment status must be either
@@ -18566,7 +19985,11 @@ Reference to the broker of users involved in transfers. Is only taken into accou
   /recurring-payments/occurrences/{id}/process-failed:
     post:
       operationId: processFailedRecurringPaymentOccurrence
+      deprecated: true
+      x-remove-version: 4.15
       summary: >-
+        DEPRECATED: Use `POST /installments/{key}/process` instead.
+
         Processes a failed recurring payment occurrence.
       description: >-
         Processes a failed recurring payment occurrence. The occurrence status
@@ -19575,7 +20998,7 @@ Reference to the broker of users involved in transfers. Is only taken into accou
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/PerformScheduledPaymentInstallment'
+                  $ref: '#/components/schemas/PerformInstallment'
         '401':
           description: >-
             Unauthorized access. Missing or invalid crendentials supplied for such
@@ -35558,6 +36981,32 @@ components:
         - process
         - settle
 
+    InstallmentStatusEnum:
+      description: >
+        The status of a installment
+
+        Possible values are:
+        
+        - `blocked`: The installment is blocked, and won't be automatically processed on its due date
+        
+        - `canceled`: The installment was canceled
+        
+        - `failed`: The installment processing failed, for example, because there was no funds in the source account
+        
+        - `processed`: The installment was processed, generating a transfer
+        
+        - `scheduled`: The installment is scheduled for a future date
+        
+        - `settled`: The installment was marked as settled by the receiver
+      type: string
+      enum:
+        - blocked
+        - canceled
+        - failed
+        - processed
+        - scheduled
+        - settled
+
     InvalidDeviceConfirmationEnum:
       description: >
         The possible results for an invalid device confirmation
@@ -37079,20 +38528,6 @@ components:
       enum:
         - cancel
 
-    RecurringPaymentOccurrenceStatusEnum:
-      description: >
-        The status of a recurring payment occurrence
-
-        Possible values are:
-        
-        - `failed`: The occurrence has failed processing (probably because there was not enough funds in the payer account)
-        
-        - `processed`: The occurrence was correctly processed, generating a transfer
-      type: string
-      enum:
-        - failed
-        - processed
-
     RecurringPaymentStatusEnum:
       description: >
         The status of a recurring payment
@@ -37238,32 +38673,6 @@ components:
         - cancel
         - settle
         - unblock
-
-    ScheduledPaymentInstallmentStatusEnum:
-      description: >
-        The status of a scheduled payment installment
-
-        Possible values are:
-        
-        - `blocked`: The installment is blocked, and won't be automatically processed on its due date
-        
-        - `canceled`: The installment was canceled
-        
-        - `failed`: The installment processing failed, for example, because there was no funds in the source account
-        
-        - `processed`: The installment was processed, generating a transfer
-        
-        - `scheduled`: The installment is scheduled for a future date
-        
-        - `settled`: The installment was marked as settled by the receiver
-      type: string
-      enum:
-        - blocked
-        - canceled
-        - failed
-        - processed
-        - scheduled
-        - settled
 
     ScheduledPaymentStatusEnum:
       description: >
@@ -37700,11 +39109,9 @@ components:
         
         - `initialCredit`: A transfer which is the initial credit for a newly created account
         
+        - `installment`: A transfer generated when processing a scheduled / recurring payment installment / occurrence
+        
         - `payment`: A transfer generated by a direct payment or accepting a webshop order
-        
-        - `recurringPayment`: A transfer generated when processing a recurring payment
-        
-        - `scheduledPaymentInstallment`: A transfer generated when processing a scheduled payment installment
         
         - `transferFee`: A transfer generated by a transfer fee charge
       type: string
@@ -37713,9 +39120,8 @@ components:
         - chargeback
         - import
         - initialCredit
+        - installment
         - payment
-        - recurringPayment
-        - scheduledPaymentInstallment
         - transferFee
 
     UiKind:
@@ -39994,10 +41400,16 @@ components:
           allOf:
             - $ref: '#/components/schemas/ScheduledPaymentsPermissions'
         recurringPayments:
+          deprecated: true
+          x-remove-version: 4.15
           description: >-
+            DEPRECATED: Recurring payment permissions are no longer separated from
+            scheduled payment permissions. Use `scheduledPayments` instead.
+
+
             Recurring payments permissions
           allOf:
-            - $ref: '#/components/schemas/RecurringPaymentsPermissions'
+            - $ref: '#/components/schemas/ScheduledPaymentsPermissions'
         externalPayments:
           description: >-
             External payments permissions
@@ -40459,6 +41871,105 @@ components:
               allOf:
                 - $ref: '#/components/schemas/User'
 
+    BaseInstallmentDataForSearch:
+      x-abstract: true
+      description: >-
+        Contains common data used to search installments for a given owner
+      type: object
+      properties:
+        exportFormats:
+          description: >-
+            The formats which the search results can be exported.
+          type: array
+          items:
+            $ref: '#/components/schemas/ExportFormat'
+        groups:
+          description: >-
+            Groups that can be used to filter entries, so that only transfers from
+            or to users of those groups are returned on search. Is only returned if
+            the authenticated user is an administrator.
+          type: array
+          items:
+            $ref: '#/components/schemas/Group'
+        accountTypes:
+          description: >-
+            Visible account types from the given owner
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountType'
+        canViewAuthorized:
+          description: >-
+            Can the authenticated user view authorized transactions of this
+            owner?
+          type: boolean
+        visibleKinds:
+          description: >-
+            Contains the transaction kinds the authenticated user can view over
+            this owner. Only kinds that allow installments are returned.
+          type: array
+          items:
+            $ref: '#/components/schemas/TransactionKind'
+
+    BaseInstallmentQueryFilters:
+      x-abstract: true
+      description: >-
+        Base query filters for installments
+      allOf:
+        - $ref: '#/components/schemas/BaseTransactionOrInstallmentQueryFilters'
+        - type: object
+          properties:
+            statuses:
+              description: >-
+                Possible statuses for installments.
+              type: array
+              items:
+                $ref: '#/components/schemas/InstallmentStatusEnum'
+
+
+    BaseInstallmentResult:
+      description: >-
+        Base fields for an installment result
+      type: object
+      properties:
+        status:
+          description: >-
+            The installment status.
+          allOf:
+            - $ref: '#/components/schemas/InstallmentStatusEnum'
+        number:
+          description: >-
+            The installment number
+          type: integer
+        totalInstallments:
+          description: >-
+            The total number of installments in the transaction.
+            Only not returned if the installment belongs to a recurring payment
+            with an unbound number of occurrences (until cancel).
+          type: integer
+        dueDate:
+          description: >-
+            The installment due date
+          type: string
+          format: date-time
+        amount:
+          description: >-
+            The installment amount.
+          type: string
+          format: number
+        transactionNumber:
+          description: >-
+            When processed, is the transaction number of the generated transfer.
+          type: string
+        transferDate:
+          description: >-
+            When processed, is the date of the generated transfer.
+          type: string
+          format: date-time
+        transferId:
+          description: >-
+            When processed, is the id of the generated transfer.
+          type: string
+
     BaseNfcError:
       description: >-
         Base Error when work with a NFC card
@@ -40845,9 +42356,9 @@ components:
               items:
                 $ref: '#/components/schemas/TransactionKind'
 
-    BaseTransactionQueryFilters:
+    BaseTransactionOrInstallmentQueryFilters:
       description: >-
-        Base query filters for transactions
+        Base query filters for either transactions or installments
       allOf:
         - $ref: '#/components/schemas/BaseTransQueryFilters'
         - type: object
@@ -40885,6 +42396,13 @@ components:
                 that performed an authorization action (authorize, deny or cancel).
               type: string
 
+    BaseTransactionQueryFilters:
+      description: >-
+        Base query filters for transactions
+      allOf:
+        - $ref: '#/components/schemas/BaseTransactionOrInstallmentQueryFilters'
+        - type: object
+          properties:
             ticketStatuses:
               description: >-
                 Statuses used as search criteria applied only to transactions of
@@ -40992,13 +42510,13 @@ components:
                 A reference to the first installment of this scheduled payment. Only
                 returned if `kind` is `scheduledPayment`.
               allOf:
-                - $ref: '#/components/schemas/ScheduledPaymentInstallment'
+                - $ref: '#/components/schemas/Installment'
             firstOpenInstallment:
               description: >-
                 A reference to the first installment which is still open. Only
                 returned if `kind` is `scheduledPayment`.
               allOf:
-                - $ref: '#/components/schemas/ScheduledPaymentInstallment'
+                - $ref: '#/components/schemas/Installment'
 
             recurringPaymentStatus:
               description: >-
@@ -43842,6 +45360,21 @@ components:
             chargeType:
               $ref: '#/components/schemas/DeliveryMethodChargeTypeEnum'
             deliveryTime:
+              x-remove-version: 4.15
+              deprecated: true
+              description: >-
+                Use `minDeliveryTime` and `maxDeliveryTime` instead.
+
+
+                The maximum time interval expected for the products to be delivered.
+              allOf:
+                - $ref: '#/components/schemas/TimeInterval'
+            minDeliveryTime:
+              description: >-
+                The minimum time interval expected for the products to be delivered.
+              allOf:
+                - $ref: '#/components/schemas/TimeInterval'
+            maxDeliveryTime:
               description: >-
                 The maximum time interval expected for the products to be delivered.
               allOf:
@@ -43954,6 +45487,21 @@ components:
         chargeType:
           $ref: '#/components/schemas/DeliveryMethodChargeTypeEnum'
         deliveryTime:
+          x-remove-version: 4.15
+          deprecated: true
+          description: >-
+            Use `minDeliveryTime` and `maxDeliveryTime` instead.
+
+
+            The maximum time interval expected for the products to be delivered.
+          allOf:
+            - $ref: '#/components/schemas/TimeInterval'
+        minDeliveryTime:
+          description: >-
+            The minimum time interval expected for the products to be delivered.
+          allOf:
+            - $ref: '#/components/schemas/TimeInterval'
+        maxDeliveryTime:
           description: >-
             The maximum time interval expected for the products to be delivered.
           allOf:
@@ -45451,6 +46999,192 @@ components:
               $ref: '#/components/schemas/InputError'
         code:
           $ref: '#/components/schemas/InputErrorCode'
+
+    Installment:
+      description: >-
+        Reference to a scheduled payment installment
+      allOf:
+        - $ref: '#/components/schemas/Entity'
+        - type: object
+          properties:
+            number:
+              description: >-
+                The installment number.
+              type: integer
+            dueDate:
+              description: >-
+                The installment due date.
+              type: string
+              format: date-time
+            amount:
+              description: >-
+                The installment amount
+              type: string
+              format: number
+            status:
+              $ref: '#/components/schemas/InstallmentStatusEnum'
+
+    InstallmentDataForSearch:
+      description: >-
+        Contains data used to search installments for a given owner
+      allOf:
+        - $ref: '#/components/schemas/BaseInstallmentDataForSearch'
+        - type: object
+          properties:
+            user:
+              description: >-
+                When the given owner is a user, is the reference to it
+              allOf:
+                - $ref: '#/components/schemas/User'
+
+    InstallmentOverviewDataForSearch:
+      description: >-
+        Contains data used to search installments regardless of an owner
+      allOf:
+        - $ref: '#/components/schemas/BaseInstallmentDataForSearch'
+
+    InstallmentOverviewQueryFilters:
+      description: >-
+        Query filters for installments regardless of an account owner.
+      allOf:
+        - $ref: '#/components/schemas/BaseInstallmentQueryFilters'
+        - type: object
+          properties:
+            currencies:
+              description: >-
+                The currencies internal names or ids.
+              type: array
+              items:
+                type: string
+            fromAccountTypes:
+              description: >-
+                The source account types internal names or ids.
+              type: array
+              items:
+                type: string
+            toAccountTypes:
+              description: >-
+                The source account types internal names or ids.
+              type: array
+              items:
+                type: string
+
+    InstallmentOverviewResult:
+      description: >-
+        Represents an installment.
+      allOf:
+        - $ref: '#/components/schemas/BaseInstallmentResult'
+        - type: object
+          properties:
+            transaction:
+              description: >-
+                The transaction that originated this installment
+              allOf:
+                - $ref: '#/components/schemas/TransactionOverviewResult'
+
+
+    InstallmentPreview:
+      description: >-
+        Preview of an installment
+      type: object
+      properties:
+        number:
+          description: >-
+            The installment number
+          type: integer
+        dueDate:
+          description: >-
+            The installment due date
+          type: string
+          format: date-time
+        totalAmount:
+          description: >-
+            The final total installment amount
+          type: string
+          format: number
+        mainAmount:
+          description: >-
+            Depending on the configured fees, it could happen that the main amount
+            is deducted from fees amount. This reflects the new main amount. If no
+            fees deduct, it will be the same as `totalAmount`.
+          type: string
+          format: number
+        fees:
+          description: >-
+            Only returned for direct payments. Contains the fees that would be paid
+            by the payer if the payment is confirmed.
+          type: array
+          items:
+            $ref: '#/components/schemas/TransferFeePreview'
+
+    InstallmentQueryFilters:
+      description: >-
+        Query filters for transactions related to an account owner.
+      allOf:
+        - $ref: '#/components/schemas/BaseInstallmentQueryFilters'
+        - type: object
+          properties:
+            accountTypes:
+              description: >-
+                The account types
+              type: array
+              items:
+                type: string
+            direction:
+              $ref: '#/components/schemas/TransferDirectionEnum'
+
+    InstallmentResult:
+      description: >-
+        Represents an installment, as viewed from the point-of-view of an account
+        owner. This means that credits will have a positive amount, while debits
+        will be negative.
+      allOf:
+        - $ref: '#/components/schemas/BaseInstallmentResult'
+        - type: object
+          properties:
+            transaction:
+              description: >-
+                The transaction that originated this installment
+              allOf:
+                - $ref: '#/components/schemas/TransactionResult'
+
+
+    InstallmentView:
+      description: >-
+        Contains details about an installment
+      allOf:
+        - $ref: '#/components/schemas/Installment'
+        - type: object
+          properties:
+            by:
+              description: >-
+                The user that performed an status change. For example, who manually
+                paid, settled or canceled an open installment
+              allOf:
+                - $ref: '#/components/schemas/User'
+            transferId:
+              description: >-
+                Only if the installment was processed, contains the internal
+                identifier of the generated transfer.
+              type: string
+            transactionNumber:
+              description: >-
+                Only if the installment was processed, contains the transaction
+                number of the generated transfer.
+              type: string
+            transferDate:
+              description: >-
+                The date the transfer was processed.
+              type: string
+              format: date-time
+            canProcess:
+              description: >-
+                Can the authenticated user process this installment?
+              type: boolean
+            canSettle:
+              description: >-
+                Can the authenticated user settle this installment?
+              type: boolean
 
     InternalNamedEntity:
       description: >-
@@ -47508,7 +49242,24 @@ components:
               description: >-
                 The delivery method price.
             deliveryTime:
-              $ref: '#/components/schemas/TimeInterval'
+              x-remove-version: 4.15
+              deprecated: true
+              description: >-
+                Use `minDeliveryTime` and `maxDeliveryTime` instead.
+
+
+              allOf:
+                - $ref: '#/components/schemas/TimeInterval'
+            minDeliveryTime:
+              description: >-
+                The minimum time interval expected for the products to be delivered.
+              allOf:
+                - $ref: '#/components/schemas/TimeInterval'
+            maxDeliveryTime:
+              description: >-
+                The maximum time interval expected for the products to be delivered.
+              allOf:
+                - $ref: '#/components/schemas/TimeInterval'
             paymentType:
               $ref: '#/components/schemas/TransferType'
             items:
@@ -47952,7 +49703,7 @@ components:
                 installment, if the payment is confirmed.
               type: array
               items:
-                $ref: '#/components/schemas/ScheduledPaymentInstallmentPreview'
+                $ref: '#/components/schemas/InstallmentPreview'
             payment:
               description: >-
                 Depending on the configuration, some script might alter the payment
@@ -48090,6 +49841,25 @@ components:
           additionalProperties:
             type: string
 
+    PerformInstallment:
+      description: >-
+        An installment definition when performing a scheduled payment
+      type: object
+      properties:
+        dueDate:
+          description: >-
+            The installment due date
+          type: string
+          format: date-time
+        amount:
+          description: >-
+            The installment amount
+          type: string
+          format: number
+      required:
+        - dueDate
+        - amount
+
     PerformInternalTransaction:
       description: >-
         Base definitions to performing a transaction to an internal account (any
@@ -48193,7 +49963,7 @@ components:
                 is `scheduled`.
               type: array
               items:
-                $ref: '#/components/schemas/PerformScheduledPaymentInstallment'
+                $ref: '#/components/schemas/PerformInstallment'
             occurrencesCount:
               description: >-
                 Represents the number of occurrences in a recurring payment. When
@@ -48225,25 +49995,6 @@ components:
               type: string
             scheduling:
               $ref: '#/components/schemas/PaymentSchedulingEnum'
-
-    PerformScheduledPaymentInstallment:
-      description: >-
-        An installment definition when performing a scheduled payment
-      type: object
-      properties:
-        dueDate:
-          description: >-
-            The installment due date
-          type: string
-          format: date-time
-        amount:
-          description: >-
-            The installment amount
-          type: string
-          format: number
-      required:
-        - dueDate
-        - amount
 
     PerformTransaction:
       description: >-
@@ -49411,52 +51162,6 @@ components:
             $ref: '#/components/schemas/RecordPermissions'
 
 
-    RecurringPaymentOccurrenceView:
-      description: >-
-        Contains details about an occurrence of a recurring payment
-      allOf:
-        - $ref: '#/components/schemas/Entity'
-        - type: object
-          properties:
-            number:
-              description: >-
-                The occurrence number.
-              type: integer
-            date:
-              description: >-
-                The occurrence date.
-              type: string
-              format: date-time
-            amount:
-              description: >-
-                The installment amount
-              type: string
-              format: number
-            by:
-              description: >-
-                The user that performed an status change. For example, who manually
-                paid, settled or canceled an open installment
-              allOf:
-                - $ref: '#/components/schemas/User'
-            transferId:
-              description: >-
-                Only if the occurrence was processed, contains the internal
-                identifier of the generated transfer.
-              type: string
-            transactionNumber:
-              description: >-
-                Only if the occurrence was processed, contains the transaction
-                number of the generated transfer.
-              type: string
-            transferDate:
-              description: >-
-                The date the occurrence was processed. It might happen that the
-                occurrence has first failed, then later processed
-              type: string
-              format: date-time
-            status:
-              $ref: '#/components/schemas/RecurringPaymentOccurrenceStatusEnum'
-
     RecurringPaymentPermissions:
       description: >-
         Permissions the user has over a recurring payment
@@ -49892,101 +51597,6 @@ components:
             script result and the client application.
           type: string
 
-    ScheduledPaymentInstallment:
-      description: >-
-        Reference to a scheduled payment installment
-      allOf:
-        - $ref: '#/components/schemas/Entity'
-        - type: object
-          properties:
-            number:
-              description: >-
-                The installment number.
-              type: integer
-            dueDate:
-              description: >-
-                The installment due date.
-              type: string
-              format: date-time
-            amount:
-              description: >-
-                The installment amount
-              type: string
-              format: number
-            status:
-              $ref: '#/components/schemas/ScheduledPaymentInstallmentStatusEnum'
-
-    ScheduledPaymentInstallmentPreview:
-      description: >-
-        Preview of a direct or scheduled payment
-      type: object
-      properties:
-        number:
-          description: >-
-            The installment number
-          type: integer
-        dueDate:
-          description: >-
-            The installment due date
-          type: string
-          format: date-time
-        totalAmount:
-          description: >-
-            The final total installment amount
-          type: string
-          format: number
-        mainAmount:
-          description: >-
-            Depending on the configured fees, it could happen that the main amount
-            is deducted from fees amount. This reflects the new main amount. If no
-            fees deduct, it will be the same as `totalAmount`.
-          type: string
-          format: number
-        fees:
-          description: >-
-            Only returned for direct payments. Contains the fees that would be paid
-            by the payer if the payment is confirmed.
-          type: array
-          items:
-            $ref: '#/components/schemas/TransferFeePreview'
-
-    ScheduledPaymentInstallmentView:
-      description: >-
-        Contains details about an installment of a scheduled payment
-      allOf:
-        - $ref: '#/components/schemas/ScheduledPaymentInstallment'
-        - type: object
-          properties:
-            by:
-              description: >-
-                The user that performed an status change. For example, who manually
-                paid, settled or canceled an open installment
-              allOf:
-                - $ref: '#/components/schemas/User'
-            transferId:
-              description: >-
-                Only if the installment was processed, contains the internal
-                identifier of the generated transfer.
-              type: string
-            transactionNumber:
-              description: >-
-                Only if the installment was processed, contains the transaction
-                number of the generated transfer.
-              type: string
-            transferDate:
-              description: >-
-                The date the transfer was processed.
-              type: string
-              format: date-time
-            canProcess:
-              description: >-
-                Can the authenticated user process this installment?
-              type: boolean
-            canSettle:
-              description: >-
-                Can the authenticated user settle this installment?
-              type: boolean
-
     ScheduledPaymentPermissions:
       description: >-
         Permissions the user has over a scheduled payment
@@ -50274,7 +51884,24 @@ components:
               type: string
               format: number
             time:
-              $ref: '#/components/schemas/TimeInterval'
+              x-remove-version: 4.15
+              deprecated: true
+              description: >-
+                Use `minTime` and `maxTime` instead.
+
+
+              allOf:
+                - $ref: '#/components/schemas/TimeInterval'
+            minTime:
+              description: >-
+                The delivery method minimum time interval
+              allOf:
+                - $ref: '#/components/schemas/TimeInterval'
+            maxTime:
+              description: >-
+                The delivery method maximum time interval
+              allOf:
+                - $ref: '#/components/schemas/TimeInterval'
 
     SetSecurityAnswer:
       description: >-
@@ -51692,7 +53319,7 @@ components:
                 references.
               type: array
               items:
-                $ref: '#/components/schemas/ScheduledPaymentInstallmentView'
+                $ref: '#/components/schemas/InstallmentView'
             recurringPaymentPermissions:
               description: >-
                 Only returned if the `kind` is
@@ -51728,7 +53355,7 @@ components:
                 occurrences this payment has.
               type: array
               items:
-                $ref: '#/components/schemas/RecurringPaymentOccurrenceView'
+                $ref: '#/components/schemas/InstallmentView'
             originalTransfer:
               description: >-
                 Only returned if the `kind` is `chargeback`. This is the original
@@ -53377,7 +55004,14 @@ components:
         scheduledPayments:
           $ref: '#/components/schemas/UserScheduledPaymentsPermissions'
         recurringPayments:
-          $ref: '#/components/schemas/UserRecurringPaymentsPermissions'
+          deprecated: true
+          x-remove-version: 4.15
+          description: >-
+            DEPRECATED: As of Cyclos 4.13, the recurring payments permissions
+            are the same as scheduled payments.
+            Use `scheduledPayments` instead.
+
+          $ref: '#/components/schemas/UserScheduledPaymentsPermissions'
         paymentRequests:
           $ref: '#/components/schemas/UserPaymentRequestsPermissions'
         authorizedPayments:
@@ -53676,17 +55310,6 @@ components:
                 $ref: '#/components/schemas/RoleEnum'
             orderBy:
               $ref: '#/components/schemas/UserOrderByEnum'
-
-    UserRecurringPaymentsPermissions:
-      description: >-
-        Permissions for recurring payments over a user
-      type: object
-      properties:
-        view:
-          description: >-
-            Can the authenticated administrator or broker view recurring
-            payments of the given user?
-          type: boolean
 
     UserReferenceDataForSearch:
       description: >-

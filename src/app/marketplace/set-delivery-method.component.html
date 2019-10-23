@@ -9,8 +9,11 @@
     [prefix]="currency.prefix" [suffix]="currency.suffix" fieldSize="full"
     required>
   </decimal-field>
-  <time-interval-field formControlName="time" [label]="i18n.ad.deliveryTime"
-    required>
+  <time-interval-field formControlName="minTime"
+    [label]="i18n.ad.minDeliveryTime" required>
+  </time-interval-field>
+  <time-interval-field formControlName="maxTime"
+    [label]="i18n.ad.maxDeliveryTime" required>
   </time-interval-field>
   <textarea-field formControlName="remarks" [label]="i18n.ad.remarks">
   </textarea-field>
