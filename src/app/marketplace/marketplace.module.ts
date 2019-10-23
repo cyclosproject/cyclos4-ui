@@ -9,6 +9,7 @@ import { UserAdsComponent } from 'app/marketplace/search/user-ads.component';
 import { EditAdComponent } from 'app/marketplace/edit-ad.component';
 import { SearchOrdersComponent } from 'app/marketplace/search/search-orders.component';
 import { ViewOrderComponent } from 'app/marketplace/view/view-order.component';
+import { SetDeliveryMethodComponent } from 'app/marketplace/set-delivery-method.component';
 
 /**
  * Marketplace module
@@ -27,11 +28,13 @@ import { ViewOrderComponent } from 'app/marketplace/view/view-order.component';
     EditAdComponent,
     ViewAdComponent,
     ViewOrderComponent,
-    ShowSubCategoriesComponent
+    ShowSubCategoriesComponent,
+    SetDeliveryMethodComponent
 
   ],
   entryComponents: [
-    ShowSubCategoriesComponent
+    ShowSubCategoriesComponent,
+    SetDeliveryMethodComponent
   ]
 })
 export class MarketplaceModule {

@@ -1,0 +1,26 @@
+<h1>{{ i18n.ad.deliveryMethod }}</h1>
+
+<form [formGroup]="form">
+  <input-field *ngIf="!name" formControlName="name"
+    [label]="i18n.general.name" required>
+  </input-field>
+  <decimal-field formControlName="chargeAmount"
+    [label]="i18n.ad.deliveryPrice" [scale]="currency.decimalDigits"
+    [prefix]="currency.prefix" [suffix]="currency.suffix" fieldSize="full"
+    required>
+  </decimal-field>
+  <time-interval-field formControlName="time" [label]="i18n.ad.deliveryTime"
+    required>
+  </time-interval-field>
+  <textarea-field formControlName="remarks" [label]="i18n.ad.remarks">
+  </textarea-field>
+</form>
+<actions forceRow>
+  <button class="btn btn-primary" (click)="submit()"
+    [disabled]="requesting$ | async">
+    {{ i18n.general.submit }}
+  </button>
+  <button class="btn btn-outline-primary" (click)="modalRef.hide()">
+    {{ i18n.general.cancel }}
+  </button>
+</actions>

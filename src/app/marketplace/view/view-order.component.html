@@ -76,7 +76,7 @@
     <div>{{ remarks }}</div>
     <actions>
       <button *ngIf="canAccept" class="btn btn-primary" (click)="accept()">
-        {{ i18n.ad.accept }}
+        {{ this.canSetDeliveryMethod ? i18n.ad.setDeliveryMethod : i18n.ad.accept }}
       </button>
       <button *ngIf="canReject" class="btn btn-outline-primary"
         [disabled]="requesting$ | async"

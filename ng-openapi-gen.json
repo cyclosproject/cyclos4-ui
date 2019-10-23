@@ -37,7 +37,8 @@
     "Vouchers",
     "Alerts",
     "Brokering",
-    "Records"
+    "Records",
+    "DeliveryMethods"
   ],
   "enumStyle": "upper"
 }

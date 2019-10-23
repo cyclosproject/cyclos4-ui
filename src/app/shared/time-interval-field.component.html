@@ -1,0 +1,24 @@
+<label-value *ngIf="label; else widget" [formField]="self"
+  [fieldSize]="fieldSize">
+  <ng-container *ngTemplateOutlet="widget"></ng-container>
+</label-value>
+
+<ng-template #widget>
+  <form [formGroup]="form">
+    <div class="row no-gutters w-100">
+      <input-field #inputField formControlName="amount" class="col-8">
+      </input-field>
+      <single-selection-field formControlName="field" class="col-4 pl-1">
+        <field-option value="days"
+          [text]="i18n.general.timeField.plural.days">
+        </field-option>
+        <field-option value="weeks"
+          [text]="i18n.general.timeField.plural.weeks">
+        </field-option>
+        <field-option value="months"
+          [text]="i18n.general.timeField.plural.months">
+        </field-option>
+      </single-selection-field>
+    </div>
+  </form>
+</ng-template>

@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/c
 import {
   OrderView, TimeInterval, OrderItem, CreateDeviceConfirmation,
   DeviceConfirmationTypeEnum, OrderStatusEnum, CustomFieldDetailed,
-  CustomFieldTypeEnum, OrderDataForAcceptByBuyer, CustomFieldControlEnum
+  CustomFieldTypeEnum, OrderDataForAcceptByBuyer, CustomFieldControlEnum, DeliveryMethod
 } from 'app/api/models';
 import { OrdersService } from 'app/api/services';
 import { HeadingAction } from 'app/shared/action';
@@ -12,6 +12,8 @@ import { MarketplaceHelperService } from 'app/core/marketplace-helper.service';
 import { empty } from 'app/shared/helper';
 import { FormatService } from 'app/core/format.service';
 import { AddressHelperService } from 'app/core/address-helper.service';
+import { SetDeliveryMethodComponent } from 'app/marketplace/set-delivery-method.component';
+import { BsModalService } from 'ngx-bootstrap/modal';
 
 /**
  * Displays an order with it's possible actions
@@ -29,10 +31,11 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
 
   constructor(
     injector: Injector,
-    protected marketplaceHelper: MarketplaceHelperService,
-    protected addressHelper: AddressHelperService,
-    protected formatService: FormatService,
-    protected orderService: OrdersService) {
+    private modal: BsModalService,
+    private marketplaceHelper: MarketplaceHelperService,
+    private addressHelper: AddressHelperService,
+    private formatService: FormatService,
+    private orderService: OrdersService) {
     super(injector);
   }
 
@@ -127,53 +130,99 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
   }
 
   /**
+   * Accepts the order when is pending buyer and
+   * allows to enter transfer type, remarks and confirmation
+   */
+  protected acceptByBuyer() {
+    this.addSub(this.orderService.getOrderDataForAcceptByBuyer({ order: this.id }).subscribe(
+      data => {
+        this.notification.confirm({
+          title: this.i18n.ad.acceptOrder,
+          labelPosition: 'above',
+          customFields: this.orderFields(data),
+          passwordInput: data.confirmationPasswordInput,
+          createDeviceConfirmation: this.orderDeviceConfirmation(DeviceConfirmationTypeEnum.ACCEPT_ORDER),
+          callback: res => {
+            this.addSub(this.orderService.acceptOrderByBuyer({
+              order: this.id,
+              confirmationPassword: res.confirmationPassword,
+              body: {
+                remarks: res.customValues.remarks,
+                paymentType: res.customValues.paymentType,
+              }
+            }).subscribe(() => {
+              this.notification.snackBar(this.i18n.ad.orderAccepted);
+              this.reload();
+            }));
+          }
+        });
+      }
+    ));
+  }
+
+  /**
+   * Accepts the order when is pending seller and
+   * allows to enter remarks
+   */
+  protected acceptBySeller() {
+    this.notification.confirm({
+      title: this.i18n.ad.acceptOrder,
+      labelPosition: 'above',
+      customFields: this.orderFields(),
+      callback: res => {
+        this.addSub(this.orderService.acceptOrderBySeller({
+          order: this.id,
+          body: {
+            remarks: res.customValues.remarks
+          }
+        }).subscribe(() => {
+          this.notification.snackBar(this.i18n.ad.orderAccepted);
+          this.reload();
+        }));
+      }
+    });
+  }
+
+  /**
+   * Submits the order to pending buyer status and allows
+   * to enter charge amount, name, remarks and time for a delivery method
+   */
+  protected setDeliveryMethod() {
+    const ref = this.modal.show(SetDeliveryMethodComponent, {
+      class: 'modal-form', initialState: {
+        title: this.i18n.ad.deliveryMethod,
+        name: this.data.deliveryMethodName,
+        chargeAmount: this.data.deliveryPrice,
+        time: this.data.deliveryTime,
+        currency: this.data.currency
+      }
+    });
+    const component = ref.content as SetDeliveryMethodComponent;
+    this.addSub(component.done.subscribe((deliveryMethod: DeliveryMethod) => {
+      this.orderService.setDeliveryMethod({
+        order: this.id,
+        body: deliveryMethod
+      }).subscribe(() => {
+        this.notification.snackBar(this.i18n.ad.orderAccepted);
+        this.reload();
+      });
+    }));
+  }
+
+  /**
    * Accepts the order and allows to enter payment type,
-   * remarks and confirmation password
+   * remarks, confirmation password and delivery method
+   * based on order status
    */
   accept() {
-
     if (this.data.status === OrderStatusEnum.PENDING_BUYER) {
-      this.addSub(this.orderService.getOrderDataForAcceptByBuyer({ order: this.id }).subscribe(
-        data => {
-          this.notification.confirm({
-            title: this.i18n.ad.acceptOrder,
-            labelPosition: 'above',
-            customFields: this.orderFields(data),
-            passwordInput: data.confirmationPasswordInput,
-            createDeviceConfirmation: this.orderDeviceConfirmation(DeviceConfirmationTypeEnum.ACCEPT_ORDER),
-            callback: res => {
-              this.addSub(this.orderService.acceptOrderByBuyer({
-                order: this.id,
-                confirmationPassword: res.confirmationPassword,
-                body: {
-                  remarks: res.customValues.remarks,
-                  paymentType: res.customValues.paymentType,
-                }
-              }).subscribe(() => {
-                this.notification.snackBar(this.i18n.ad.orderAccepted);
-                this.reload();
-              }));
-            }
-          });
-        }
-      ));
+      this.acceptByBuyer();
     } else if (this.data.status === OrderStatusEnum.PENDING_SELLER) {
-      this.notification.confirm({
-        title: this.i18n.ad.acceptOrder,
-        labelPosition: 'above',
-        customFields: this.orderFields(),
-        callback: res => {
-          this.addSub(this.orderService.acceptOrderBySeller({
-            order: this.id,
-            body: {
-              remarks: res.customValues.remarks
-            }
-          }).subscribe(() => {
-            this.notification.snackBar(this.i18n.ad.orderAccepted);
-            this.reload();
-          }));
-        }
-      });
+      if (this.canSetDeliveryMethod) {
+        this.setDeliveryMethod();
+      } else {
+        this.acceptBySeller();
+      }
     }
   }
 
@@ -232,6 +281,11 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
     // TODO add can reject flag to data
     return (this.data.status === OrderStatusEnum.PENDING_BUYER ||
       this.data.status === OrderStatusEnum.PENDING_SELLER) && (this.buyer || this.seller);
+  }
+
+  get canSetDeliveryMethod(): boolean {
+    // TODO add can set delivery method flag to data
+    return this.data.deliveryPrice == null && this.seller;
   }
 
 }
