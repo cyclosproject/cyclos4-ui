@@ -2,9 +2,9 @@ import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/c
 import {
   AuthorizationActionEnum, CreateDeviceConfirmation, CustomFieldDetailed,
   CustomFieldTypeEnum, DeviceConfirmationTypeEnum, InstallmentActionEnum,
-  RecurringPaymentActionEnum, RecurringPaymentOccurrenceStatusEnum,
-  RecurringPaymentOccurrenceView, ScheduledPaymentActionEnum, ScheduledPaymentInstallmentStatusEnum,
-  ScheduledPaymentInstallmentView, TransactionKind, TransactionView
+  RecurringPaymentActionEnum, InstallmentStatusEnum,
+  InstallmentView, ScheduledPaymentActionEnum,
+  TransactionKind, TransactionView
 } from 'app/api/models';
 import { TransactionsService, TransfersService } from 'app/api/services';
 import { PendingPaymentsService } from 'app/api/services/pending-payments.service';
@@ -400,15 +400,11 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
     }
   }
 
-  installmentStatus(status: ScheduledPaymentInstallmentStatusEnum): string {
+  installmentStatus(status: InstallmentStatusEnum): string {
     return this.transactionStatusService.installmentStatus(status);
   }
 
-  occurrenceStatus(status: RecurringPaymentOccurrenceStatusEnum): string {
-    return this.transactionStatusService.occurrenceStatus(status);
-  }
-
-  path(row: ScheduledPaymentInstallmentView | RecurringPaymentOccurrenceView) {
+  path(row: InstallmentView) {
     const key = row.transactionNumber || row.transferId;
     if (key) {
       return ['/banking', 'transfer', key];
@@ -418,7 +414,7 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
 
   private installmentDeviceConfirmation(
     action: InstallmentActionEnum,
-    installment: ScheduledPaymentInstallmentView): () => CreateDeviceConfirmation {
+    installment: InstallmentView): () => CreateDeviceConfirmation {
 
     return () => ({
       type: DeviceConfirmationTypeEnum.MANAGE_INSTALLMENT,
@@ -427,7 +423,7 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
     });
   }
 
-  settleInstallment(installment: ScheduledPaymentInstallmentView) {
+  settleInstallment(installment: InstallmentView) {
     this.notification.confirm({
       title: this.i18n.transaction.settleInstallment,
       message: this.i18n.transaction.settleInstallmentMessage(String(installment.number)),
@@ -445,7 +441,7 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
     });
   }
 
-  processInstallment(installment: ScheduledPaymentInstallmentView) {
+  processInstallment(installment: InstallmentView) {
     this.notification.confirm({
       title: this.i18n.transaction.processInstallment,
       message: this.i18n.transaction.processInstallmentMessage(installment.number),

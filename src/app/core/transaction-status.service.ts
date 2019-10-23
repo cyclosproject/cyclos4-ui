@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import {
   ExternalPaymentStatusEnum, PaymentRequestStatusEnum,
-  RecurringPaymentOccurrenceStatusEnum, RecurringPaymentStatusEnum,
-  ScheduledPaymentInstallmentStatusEnum, ScheduledPaymentStatusEnum,
+  InstallmentStatusEnum, RecurringPaymentStatusEnum,
+  ScheduledPaymentStatusEnum,
   TicketStatusEnum, TransactionAuthorizationActionEnum,
   TransactionAuthorizationStatusEnum, TransactionKind, TransactionResult,
   TransactionView
@@ -148,32 +148,20 @@ export class TransactionStatusService {
   /**
    * Returns the display for the given installment status
    */
-  installmentStatus(status: ScheduledPaymentInstallmentStatusEnum): string {
+  installmentStatus(status: InstallmentStatusEnum): string {
     switch (status) {
-      case ScheduledPaymentInstallmentStatusEnum.BLOCKED:
+      case InstallmentStatusEnum.BLOCKED:
         return this.i18n.transaction.status.blocked;
-      case ScheduledPaymentInstallmentStatusEnum.CANCELED:
+      case InstallmentStatusEnum.CANCELED:
         return this.i18n.transaction.status.canceled;
-      case ScheduledPaymentInstallmentStatusEnum.FAILED:
+      case InstallmentStatusEnum.FAILED:
         return this.i18n.transaction.status.failed;
-      case ScheduledPaymentInstallmentStatusEnum.PROCESSED:
+      case InstallmentStatusEnum.PROCESSED:
         return this.i18n.transaction.status.processed;
-      case ScheduledPaymentInstallmentStatusEnum.SCHEDULED:
+      case InstallmentStatusEnum.SCHEDULED:
         return this.i18n.transaction.status.scheduled;
-      case ScheduledPaymentInstallmentStatusEnum.SETTLED:
+      case InstallmentStatusEnum.SETTLED:
         return this.i18n.transaction.status.settled;
-    }
-  }
-
-  /**
-   * Returns the display for the given recurring payment occurrence status
-   */
-  occurrenceStatus(status: RecurringPaymentOccurrenceStatusEnum): string {
-    switch (status) {
-      case RecurringPaymentOccurrenceStatusEnum.FAILED:
-        return this.i18n.transaction.status.failed;
-      case RecurringPaymentOccurrenceStatusEnum.PROCESSED:
-        return this.i18n.transaction.status.processed;
     }
   }
 
