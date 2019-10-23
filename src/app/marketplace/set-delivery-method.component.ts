@@ -5,7 +5,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Currency, TimeInterval, SetDeliveryMethod } from 'app/api/models';
 
 /**
- * A component which allows to specify a delivery method (name, charge amount, remarks, min and max time)
+ * A component which allows to specify a delivery method (name, charge amount, remarks, min and max delivery time)
  */
 @Component({
   selector: 'set-delivery-method',
