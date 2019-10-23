@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AsyncValidatorFn, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import {
   AvailabilityEnum, OperatorDataForNew, UserDataForNew, UserStatusEnum,
-  UserBasicData, ProfileFieldActions, OperatorGroupAccountAccessEnum, User
+  UserBasicData, ProfileFieldActions, OperatorGroupAccountAccessEnum, User, BasicUserDataForNew
 } from 'app/api/models';
 import { FieldHelperService } from 'app/core/field-helper.service';
 import { I18n } from 'app/i18n/i18n';
@@ -167,7 +167,12 @@ export class UserHelperService {
    */
   fieldNamesByAction(data: UserBasicData, action: keyof ProfileFieldActions): Set<string> {
     const fields = new Set<string>();
+    const generatedUsername = (data as BasicUserDataForNew).generatedUsername;
     for (const name of Object.keys(data.profileFieldActions)) {
+      if (name === 'username' && generatedUsername) {
+        // No actions on username on registration if generated
+        continue;
+      }
       const actions = data.profileFieldActions[name];
       if (actions[action]) {
         fields.add(name);
