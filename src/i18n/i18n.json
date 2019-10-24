@@ -230,6 +230,7 @@
     "login": "Login",
     "register": "Register",
     "logout": "Logout",
+    "shoppingCart": "Shopping cart",
     "home": "Home",
     "dashboard": "Dashboard",
     "banking": "Banking",
@@ -1186,7 +1187,8 @@
       "edit": "Edit advertisement",
       "purchases": "Purchases",
       "sales": "Sales",
-      "order": "Webshop order details"
+      "order": "Webshop order details",
+      "shoppingCart": "Shopping cart"
     },
     "mobileTitle": {
       "search": "Advertisements",
@@ -1197,7 +1199,8 @@
       "edit": "Edit advertisement",
       "purchases": "Purchases",
       "sales": "Sales",
-      "order": "Webshop order details"
+      "order": "Webshop order details",
+      "shoppingCart": "Shopping cart"
     }
   },
   "notification": {

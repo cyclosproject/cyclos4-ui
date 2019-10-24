@@ -93,6 +93,7 @@ export module Menu {
   export const CONNECTED_USERS = new Menu(RootMenu.MARKETPLACE, 'CONNECTED_USERS');
   export const ADMIN_REGISTRATION = new Menu(RootMenu.MARKETPLACE, 'ADMIN_REGISTRATION');
   export const USER_ALERTS = new Menu(RootMenu.MARKETPLACE, 'USER_ALERTS');
+  export const SHOPPING_CART = new Menu(RootMenu.MARKETPLACE, 'SHOPPING_CART');
 
   export const VIEW_AD = new Menu(RootMenu.MARKETPLACE, 'VIEW_AD');
 

@@ -10,6 +10,7 @@ import { EditAdComponent } from 'app/marketplace/edit-ad.component';
 import { SearchOrdersComponent } from 'app/marketplace/search/search-orders.component';
 import { ViewOrderComponent } from 'app/marketplace/view/view-order.component';
 import { SetDeliveryMethodComponent } from 'app/marketplace/set-delivery-method.component';
+import { ListShoppingCartComponent } from 'app/marketplace/checkout/list-shopping-cart.component';
 
 /**
  * Marketplace module
@@ -29,7 +30,8 @@ import { SetDeliveryMethodComponent } from 'app/marketplace/set-delivery-method.
     ViewAdComponent,
     ViewOrderComponent,
     ShowSubCategoriesComponent,
-    SetDeliveryMethodComponent
+    SetDeliveryMethodComponent,
+    ListShoppingCartComponent
 
   ],
   entryComponents: [

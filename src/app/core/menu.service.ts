@@ -646,6 +646,11 @@ export class MenuService {
         add(Menu.SEARCH_ADS, '/marketplace/search', 'shopping_cart', this.i18n.menu.marketplaceAdvertisements);
       }
 
+      // Shopping cart
+      if (marketplace.userWebshop.purchase) {
+        add(Menu.SHOPPING_CART, '/marketplace/shopping-cart', 'shopping_cart', this.i18n.menu.shoppingCart);
+      }
+
       const simple = marketplace.mySimple || {};
       if (simple.enable) {
         add(Menu.SEARCH_USER_ADS, 'marketplace/self/simple/list', 'shopping_cart', this.i18n.menu.marketplaceMyAdvertisements);

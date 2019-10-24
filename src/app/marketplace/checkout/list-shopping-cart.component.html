@@ -1,0 +1,10 @@
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data">
+    <page-content [mode]="'empty'" [heading]="i18n.ad.title.shoppingCart"
+      [mobileHeading]="i18n.ad.mobileTitle.shoppingCart"
+      [headingActions]="headingActions$ | async">
+    </page-content>
+    <results-layout [results]="data">
+    </results-layout>
+  </ng-container>
+</page-layout>

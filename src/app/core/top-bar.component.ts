@@ -44,6 +44,7 @@ export class TopBarComponent extends AbstractComponent implements OnInit, OnChan
   userName: string;
   roots$ = new BehaviorSubject<RootMenuEntry[]>([]);
   forcedActive: RootMenuEntry;
+  shoppingCart: boolean;
 
   get roots(): RootMenuEntry[] {
     return this.roots$.value;
@@ -80,12 +81,14 @@ export class TopBarComponent extends AbstractComponent implements OnInit, OnChan
     const maxDisplaySize = this.hasMenu ? MaxUserDisplaySizeMenu : MaxUserDisplaySize;
     this.login.user$.subscribe(user => {
       this.userName = user == null ? '' : words(user.display, maxDisplaySize);
+      const marketplace = this.dataForUiHolder.auth.permissions.marketplace || {};
+      this.shoppingCart = marketplace.userWebshop.purchase;
     });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.activeMenu) {
-      this.updateMenuTextWidts();
+      this.updateMenuTextWidths();
     }
   }
 
@@ -208,15 +211,15 @@ export class TopBarComponent extends AbstractComponent implements OnInit, OnChan
 
   dropdownShown(root: RootMenuEntry) {
     this.forcedActive = root;
-    this.updateMenuTextWidts();
+    this.updateMenuTextWidths();
   }
 
   dropdownHidden() {
     this.forcedActive = null;
-    this.updateMenuTextWidts();
+    this.updateMenuTextWidths();
   }
 
-  private updateMenuTextWidts() {
+  private updateMenuTextWidths() {
     const activeRoot = this.forcedActive || this.activeRoot;
     for (const root of this.roots) {
       const anchor = document.getElementById(menuAnchorId(root));
