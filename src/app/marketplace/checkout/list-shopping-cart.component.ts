@@ -1,7 +1,6 @@
 import { Component, ChangeDetectionStrategy, OnInit, Injector } from '@angular/core';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { ShoppingCartResult } from 'app/api/models';
-import { List } from 'lodash';
 import { Menu } from 'app/shared/menu';
 import { ShoppingCartsService } from 'app/api/services';
 
@@ -15,7 +14,7 @@ import { ShoppingCartsService } from 'app/api/services';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ListShoppingCartComponent
-  extends BasePageComponent<List<ShoppingCartResult>> implements OnInit {
+  extends BasePageComponent<ShoppingCartResult[]> implements OnInit {
 
   constructor(
     injector: Injector,
@@ -31,8 +30,27 @@ export class ListShoppingCartComponent
     }));
   }
 
+  onDataInitialized(data: ShoppingCartResult[]) {
+    if (data.length === 1) {
+      // Go to details when there is a single cart
+      this.router.navigate(this.path(data[0]), {
+        replaceUrl: true
+      });
+    }
+  }
+
   resolveMenu() {
     return Menu.SHOPPING_CART;
   }
 
+  get toLink() {
+    return (row: ShoppingCartResult) => this.path(row);
+  }
+
+  /**
+   * Returns the route components for a cart details
+   */
+  path(row: ShoppingCartResult): string[] {
+    return ['/marketplace', 'cart', row.id];
+  }
 }

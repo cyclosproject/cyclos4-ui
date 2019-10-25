@@ -1,0 +1,11 @@
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data;">
+    <page-content mode="filters" [heading]="i18n.ad.title.shoppingCart"
+      [mobileHeading]="i18n.ad.mobileTitle.shoppingCart"
+      [headingActions]="headingActions$ | async" mode="viewForm">
+      <label-value [label]="i18n.ad.seller">
+        <user-link [user]="data.seller"></user-link>
+      </label-value>
+    </page-content>
+  </ng-container>
+</page-layout>

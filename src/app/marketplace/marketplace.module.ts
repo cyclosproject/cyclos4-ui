@@ -11,6 +11,7 @@ import { SearchOrdersComponent } from 'app/marketplace/search/search-orders.comp
 import { ViewOrderComponent } from 'app/marketplace/view/view-order.component';
 import { SetDeliveryMethodComponent } from 'app/marketplace/set-delivery-method.component';
 import { ListShoppingCartComponent } from 'app/marketplace/checkout/list-shopping-cart.component';
+import { ViewCartComponent } from 'app/marketplace/checkout/view-cart.component';
 
 /**
  * Marketplace module
@@ -31,7 +32,8 @@ import { ListShoppingCartComponent } from 'app/marketplace/checkout/list-shoppin
     ViewOrderComponent,
     ShowSubCategoriesComponent,
     SetDeliveryMethodComponent,
-    ListShoppingCartComponent
+    ListShoppingCartComponent,
+    ViewCartComponent
 
   ],
   entryComponents: [
