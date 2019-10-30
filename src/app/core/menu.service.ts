@@ -654,10 +654,10 @@ export class MenuService {
       const simple = marketplace.mySimple || {};
       if (simple.enable) {
         add(Menu.SEARCH_USER_ADS, 'marketplace/self/simple/list', 'shopping_cart', this.i18n.menu.marketplaceMyAdvertisements);
-        add(Menu.PURCHASES, 'marketplace/self/purchases', 'shop_two', this.i18n.menu.marketplaceMyPurchases);
       }
       const webshop = marketplace.myWebshop || {};
       if (webshop.enable) {
+        add(Menu.PURCHASES, 'marketplace/self/purchases', 'shop_two', this.i18n.menu.marketplaceMyPurchases);
         add(Menu.SEARCH_USER_WEBSHOP, 'marketplace/self/webshop/list', 'shopping_basket', this.i18n.menu.marketplaceMyWebshop);
         add(Menu.SALES, 'marketplace/self/sales', 'local_offer', this.i18n.menu.marketplaceMySales);
       }

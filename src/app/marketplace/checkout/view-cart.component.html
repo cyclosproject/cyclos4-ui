@@ -6,6 +6,82 @@
       <label-value [label]="i18n.ad.seller">
         <user-link [user]="data.seller"></user-link>
       </label-value>
+      <label-value [label]="i18n.ad.totalCartPrice">
+        <div class="positive">
+          {{ data.totalPrice | currency:data.currency }}
+        </div>
+      </label-value>
     </page-content>
+    <!-- <results-layout resultType="list"> -->
+
+    <!-- <mobile-result *mobileResult="let row">
+        <div class="d-flex">
+          <div>
+            <label-value [label]="i18n.general.creationDate"
+              labelPosition="above">
+              {{ row.creationDate | dateTime }}
+            </label-value>
+            <label-value *ngIf="this.generalSearch"
+              [label]="i18n.general.user" labelPosition="above">
+              {{ recordOwner(row) }}
+            </label-value>
+            <label-value *ngFor="let field of this.fieldsInList"
+              [label]="field.name" labelPosition="above">
+              <format-field-value [fields]="data.customFields"
+                [plainText]="true" [fieldName]="field.internalName"
+                [object]="row" [customValues]="row.customValues">
+              </format-field-value>
+            </label-value>
+          </div>
+          <div class="ml-auto text-right">
+            <button *ngIf="data.edit" [tooltip]="i18n.general.edit"
+              class="btn btn-icon"
+              (click)="router.navigate(editPath(row)); $event.stopPropagation(); $event.preventDefault()">
+              <icon icon="edit"></icon>
+            </button>
+            <button *ngIf="this.data.remove" [tooltip]="i18n.general.remove"
+              class="btn btn-icon" [ngClass]="{'ml-3': data.edit}"
+              (click)="remove(row); $event.stopPropagation(); $event.preventDefault()">
+              <icon icon="clear"></icon>
+            </button>
+          </div>
+        </div>
+      </mobile-result> -->
+
+    <!-- <table *resultTable class="table table-hover cursor-pointer">
+        <thead>
+          <th class="avatar"></th>
+          <th>{{ i18n.ad.product }}</th>
+          <th>{{ i18n.ad.number }}</th>
+          <th>{{ i18n.ad.unitPrice }}</th>
+          <th class="actions"></th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of results.results"
+            (click)="router.navigate(viewPath(row))">
+            <td>{{ row.creationDate | dateTime }}</td>
+            <td *ngIf="this.generalSearch">{{ recordOwner(row) }}</td>
+            <td *ngFor=" let field of this.fieldsInList">
+              <format-field-value [fields]="data.customFields"
+                [plainText]="true" [fieldName]="field.internalName"
+                [object]="row" [customValues]="row.customValues">
+              </format-field-value>
+            </td>
+            <td class="actions actions-multiple">
+              <button *ngIf="data.edit" [tooltip]="i18n.general.edit"
+                class="btn btn-icon"
+                (click)="router.navigate(editPath(row)); $event.stopPropagation()">
+                <icon icon="edit"></icon>
+              </button>
+              <button *ngIf="this.data.remove" [tooltip]="i18n.general.remove"
+                class="btn btn-icon" [ngClass]="data.edit ? 'ml-3' : ''"
+                (click)="remove(row); $event.stopPropagation()">
+                <icon icon="clear"></icon>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </results-layout> -->
   </ng-container>
 </page-layout>
