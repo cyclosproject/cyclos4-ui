@@ -1214,10 +1214,10 @@
         "ticketWebhookFailed": "Ticket approval could not be notified through webhook",
         "operator": {
           "authorizedPaymentApprovedStillPending": "Pago de operador aprobado, pero pendiente de autorización adicional",
-          "authorizedPaymentCanceled": "Pago pendiente cancelado",
-          "authorizedPaymentDenied": "Pago pendiente fue denegado",
-          "authorizedPaymentExpired": "Authorized payment by operator has expired",
-          "authorizedPaymentSucceeded": "Pending payment by operator successful",
+          "authorizedPaymentCanceled": "Pago de operador pendiente cancelado",
+          "authorizedPaymentDenied": "Pago de operador pendiente fue denegado",
+          "authorizedPaymentExpired": "Pago de operador autorizado ha expirado",
+          "authorizedPaymentSucceeded": "Pago de operador pendiente exitoso",
           "paymentAwaitingAuthorization": "Operator payment awaiting authorization"
         }
       },
@@ -1231,7 +1231,7 @@
         "adQuestionAnswered": "Ad question answered",
         "orderCanceled": "Purchase order canceled",
         "orderPaymentCanceled": "Purchase order payment canceled",
-        "orderPaymentDenied": "Purchase order payment denied",
+        "orderPaymentDenied": "Pago de orden de compra denegado",
         "orderPaymentExpired": "Purchase order payment expired",
         "orderPending": "Orden pendiente",
         "orderPendingAuthorization": "Purchase order awaiting payment authorization",
@@ -1273,7 +1273,7 @@
         "orderCanceled": "Sale order canceled",
         "orderCreated": "New web shop order",
         "orderPaymentCanceled": "Sale order payment canceled",
-        "orderPaymentDenied": "Sale order payment denied",
+        "orderPaymentDenied": "Pago de orden de venta denegado",
         "orderPaymentExpired": "Sale order payment expired",
         "orderPendingAuthorization": "Sale order awaiting payment authorization",
         "orderPendingDeliveryData": "Información de entrega solicitada",
