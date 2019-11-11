@@ -1104,51 +1104,51 @@
     "promotionalPrice": "Precio promocional",
     "reject": "Rechazar",
     "rejected": "Se ha rechazado el anuncio",
-    "showAddressOnMap": "Show address on map",
-    "saveAndInsertNew": "Save and insert new",
-    "setAsDraft": "Set as draft to edit",
-    "submitForAuthorization": "Submit for authorization",
+    "showAddressOnMap": "Mostrar la dirección en el mapa",
+    "saveAndInsertNew": "Guardar y agregar nuevo anuncio",
+    "setAsDraft": "Definir borrador para editar",
+    "submitForAuthorization": "Enviar para autorización",
     "pendingForAuth": "El anuncio se ha enviado para su autorización",
-    "hide": "Hide",
-    "unhide": "Unhide",
-    "stockQuantity": "In stock quantity",
-    "minAllowedInCart": "Minimum allowed in cart",
-    "maxAllowedInCart": "Maximum allowed in cart",
-    "productNumber": "Product number",
-    "outOfStock": "Out of stock",
-    "authorizationNotes": "Authorization notes",
-    "questionsAndAnswers": "Questions & Answers",
-    "removeQuestion": "Remove question",
+    "hide": "Ocultar",
+    "unhide": "Definir visible",
+    "stockQuantity": "Cantidad en stock",
+    "minAllowedInCart": "Mínimo permitido en el carrito",
+    "maxAllowedInCart": "Máximo permitido en el carrito",
+    "productNumber": "Número de producto",
+    "outOfStock": "Sin stock",
+    "authorizationNotes": "Notas de autorización",
+    "questionsAndAnswers": "Preguntas y Respuestas",
+    "removeQuestion": "Eliminar pregunta",
     "orderBy": {
       "date": "Ultimos publicados",
-      "distance": "Distance",
+      "distance": "Distancia",
       "priceAsc": "Precio inferior",
       "priceDesc": "Precio superior",
-      "relevance": "Relevance"
+      "relevance": "Relevancia"
     },
     "status": {
-      "active": "Published",
+      "active": "Publicado",
       "disabled": "Deshabilitada",
-      "draft": "Draft",
-      "expired": "Expired",
-      "hidden": "Hidden",
+      "draft": "Borrador",
+      "expired": "Expirado",
+      "hidden": "Oculto",
       "pending": "Pendiente",
-      "scheduled": "Scheduled"
+      "scheduled": "Agendado"
     },
     "title": {
       "search": "Búsqueda de anuncios",
       "owner": "Anuncios de {name}",
-      "webshopOwner": "Webshop of {name}",
-      "new": "New advertisement",
-      "edit": "Edit advertisement"
+      "webshopOwner": "Tienda virtual de {name}",
+      "new": "Nuevo anuncio",
+      "edit": "Editar anuncio"
     },
     "mobileTitle": {
       "search": "Anuncios",
       "owner": "Anuncios",
-      "webshopOwner": "Webshop",
+      "webshopOwner": "Tienda virtual",
       "details": "Anuncio",
-      "new": "New advertisement",
-      "edit": "Edit advertisement"
+      "new": "Nuevo anuncio",
+      "edit": "Editar anuncio"
     }
   },
   "notification": {
@@ -1162,14 +1162,14 @@
       "markAllRead": "Marcar todo como leído"
     },
     "admin": {
-      "adPendingAuthorization": "Ad pending for authorization",
+      "adPendingAuthorization": "Anuncio pendiente de autorización",
       "applicationErrors": "Application errors",
       "externalPaymentExpired": "External payment expired",
       "externalPaymentPerformedFailed": "External payment could not be delivered",
       "generatedVouchersAboutToExpire": "Generated vouchers about to expire",
       "generatedVouchersExpired": "Generated vouchers expiration",
       "networkCreated": "Network created",
-      "paymentAwaitingAuthorization": "Payments pending by authorization",
+      "paymentAwaitingAuthorization": "Pagos pendientes de autorización",
       "paymentPerformed": "Payments",
       "systemAlert": "System alerts",
       "userAlert": "User alerts",
@@ -1180,7 +1180,7 @@
       "account": {
         "allNonSmsPerformedPayments": "Payment performed",
         "authorizedPaymentCanceled": "Authorized payment canceled",
-        "authorizedPaymentDenied": "Authorized payment denied",
+        "authorizedPaymentDenied": "Pago denegado",
         "authorizedPaymentExpired": "Authorized payment expired",
         "authorizedPaymentSucceeded": "Authorized payment successful",
         "boughtVouchersAboutToExpire": "Bought vouchers will expire in a few days",
@@ -1199,7 +1199,7 @@
         "paymentAwaitingAuthorization": "Payment awaiting authorization",
         "paymentReceived": "Payment received",
         "paymentRequestCanceled": "Payment request canceled",
-        "paymentRequestDenied": "Payment request denied",
+        "paymentRequestDenied": "Solicitud de pago denegada",
         "paymentRequestExpirationDateChanged": "Payment request expiration date changed",
         "paymentRequestExpired": "Payment request expired",
         "paymentRequestProcessed": "Payment request processed",
@@ -1213,16 +1213,16 @@
         "smsPerformedPayment": "SMS performed payment",
         "ticketWebhookFailed": "Ticket approval could not be notified through webhook",
         "operator": {
-          "authorizedPaymentApprovedStillPending": "Pending payment by operator approved but still pending further authorization",
-          "authorizedPaymentCanceled": "Pending payment by operator was canceled",
-          "authorizedPaymentDenied": "Pending payment by operator was denied",
+          "authorizedPaymentApprovedStillPending": "Pago de operador aprobado, pero pendiente de autorización adicional",
+          "authorizedPaymentCanceled": "Pago pendiente cancelado",
+          "authorizedPaymentDenied": "Pago pendiente fue denegado",
           "authorizedPaymentExpired": "Authorized payment by operator has expired",
           "authorizedPaymentSucceeded": "Pending payment by operator successful",
           "paymentAwaitingAuthorization": "Operator payment awaiting authorization"
         }
       },
       "brokering": {
-        "adPendingAuthorization": "Ad is pending for authorization",
+        "adPendingAuthorization": "Anuncio pendiente de autorización",
         "memberAssigned": "Member assigned",
         "memberUnassigned": "Member unassigned"
       },
@@ -1233,7 +1233,7 @@
         "orderPaymentCanceled": "Purchase order payment canceled",
         "orderPaymentDenied": "Purchase order payment denied",
         "orderPaymentExpired": "Purchase order payment expired",
-        "orderPending": "Pending order",
+        "orderPending": "Orden pendiente",
         "orderPendingAuthorization": "Purchase order awaiting payment authorization",
         "orderPendingDeliveryData": "Orden aguardando información de entrega",
         "orderProcessedBySeller": "Order accepted by seller",
@@ -1254,7 +1254,7 @@
         "brokerUnassigned": "Broker unassigned",
         "maxSmsPerMonthReached": "Maximum SMS per month reached",
         "newToken": "New token / card",
-        "newTokenPendingActivation": "New token / card pending activation",
+        "newTokenPendingActivation": "Nuevo token o tarjeta pendiente de activación",
         "passwordStatusChanged": "Password status changed",
         "tokenStatusChanged": "Token / card status changed",
         "userStatusChanged": "User status changed"
