@@ -1178,7 +1178,7 @@
     },
     "user": {
       "account": {
-        "allNonSmsPerformedPayments": "Pago realizado",
+        "allNonSmsPerformedPayments": "Realización de pago",
         "authorizedPaymentCanceled": "Pago autorizado cancelado",
         "authorizedPaymentDenied": "Pago denegado",
         "authorizedPaymentExpired": "Pago autorizado expirado",
@@ -1257,7 +1257,7 @@
         "newTokenPendingActivation": "Nuevo token o tarjeta pendiente de activación",
         "passwordStatusChanged": "Estado de contraseña cambiado",
         "tokenStatusChanged": "Estado de token / tarjeta cambiado",
-        "userStatusChanged": "Estado de usuario cambiado"
+        "userStatusChanged": "Cambio de estado de usuario"
       },
       "reference": {
         "changed": "Referencia cambiada",
@@ -1381,12 +1381,12 @@
   },
   "systemAlert": {
     "type": {
-      "accountFeeChargedNoFailures": "Account fee has finished without any failures",
-      "accountFeeChargedWithFailures": "Account fee has finished with at least one failure",
-      "applicationRestarted": "Application restarted",
-      "custom": "Custom",
+      "accountFeeChargedNoFailures": "El cargo de cuenta han finalizado sin fallos",
+      "accountFeeChargedWithFailures": "El cargos de cuenta ha terminado con al menos un fallo",
+      "applicationRestarted": "Aplicación reiniciada",
+      "custom": "Personalizado",
       "maxGlobalSmsReached": "Se ha alcanzado el máximo de mensajes SMS global mensual",
-      "maxIncorrectLoginAttempts": "Max incorrect login attempts for invalid user"
+      "maxIncorrectLoginAttempts": "Máxima cantidad de intentos de acceso para usuario no válido"
     }
   }
 }
