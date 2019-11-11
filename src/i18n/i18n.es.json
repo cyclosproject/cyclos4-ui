@@ -1218,40 +1218,40 @@
           "authorizedPaymentDenied": "Pago de operador pendiente fue denegado",
           "authorizedPaymentExpired": "Pago de operador autorizado ha expirado",
           "authorizedPaymentSucceeded": "Pago de operador pendiente exitoso",
-          "paymentAwaitingAuthorization": "Operator payment awaiting authorization"
+          "paymentAwaitingAuthorization": "Pago de operador pendiente de autorización"
         }
       },
       "brokering": {
         "adPendingAuthorization": "Anuncio pendiente de autorización",
-        "memberAssigned": "Member assigned",
-        "memberUnassigned": "Member unassigned"
+        "memberAssigned": "Miembro asignado",
+        "memberUnassigned": "Se ha quitado un miembro asignado"
       },
       "buyer": {
-        "adInterestNotification": "New ad matching interest",
-        "adQuestionAnswered": "Ad question answered",
-        "orderCanceled": "Purchase order canceled",
-        "orderPaymentCanceled": "Purchase order payment canceled",
+        "adInterestNotification": "Nuevo coincidencia de anuncio de interés",
+        "adQuestionAnswered": "Pergunta de anuncio contestada",
+        "orderCanceled": "Orden de compra cancelada",
+        "orderPaymentCanceled": "Pago de la orden de compra cancelado",
         "orderPaymentDenied": "Pago de orden de compra denegado",
-        "orderPaymentExpired": "Purchase order payment expired",
+        "orderPaymentExpired": "Pago de la orden de compra expirado",
         "orderPending": "Orden pendiente",
-        "orderPendingAuthorization": "Purchase order awaiting payment authorization",
+        "orderPendingAuthorization": "Orden de compra pendiente de autorización de pago",
         "orderPendingDeliveryData": "Orden aguardando información de entrega",
-        "orderProcessedBySeller": "Order accepted by seller",
-        "orderRejectedBySeller": "Order rejected by seller",
-        "buyerSalePending": "Order created",
-        "buyerSaleRejectedBySeller": "Sale order canceled"
+        "orderProcessedBySeller": "Orden aceptada por el vendedor",
+        "orderRejectedBySeller": "Orden rechazada por el vendedor",
+        "buyerSalePending": "Orden creada",
+        "buyerSaleRejectedBySeller": "Orden de venta cancelada"
       },
       "feedback": {
-        "changed": "Feedback changed",
-        "created": "Feedback received",
-        "expirationReminder": "Feedback reminder",
+        "changed": "Calificación cambiada",
+        "created": "Calificación recibida",
+        "expirationReminder": "Recordatorio de calificación",
         "optional": "Feedback optional",
         "replyCreated": "Feedback reply received",
         "required": "Feedback required"
       },
       "personal": {
-        "brokerAssigned": "Broker assigned",
-        "brokerUnassigned": "Broker unassigned",
+        "brokerAssigned": "Broker asignado",
+        "brokerUnassigned": "Se ha quitado un broker asignado",
         "maxSmsPerMonthReached": "Maximum SMS per month reached",
         "newToken": "New token / card",
         "newTokenPendingActivation": "Nuevo token o tarjeta pendiente de activación",
