@@ -1210,7 +1210,7 @@
         "scheduledPaymentInstallmentProcessed": "Cuota de pago agendado procesada",
         "scheduledPaymentRequestFailed": "Error de solicitud de pago",
         "sentPaymentRequestExpirationDateChanged": "Expiración de solicitud de pago enviado cambiada",
-        "smsPerformedPayment": "SMS performed payment",
+        "smsPerformedPayment": "Pago SMS realizado",
         "ticketWebhookFailed": "Error de notificación de aprobación del ticket por webhook",
         "operator": {
           "authorizedPaymentApprovedStillPending": "Pago de operador aprobado, pero pendiente de autorización adicional",
