@@ -22,7 +22,7 @@
     "optimize-svgs": "npm run svgo -- src/icons/*.svg --config='{ \"plugins\": [{ \"removeViewBox\": false }] }'",
     "start": "npm run generate && npm run ng -- serve --proxy-config proxy.json",
     "build": "npm run generate && npm run optimize-svgs && npm run merge-translations && npm run ng -- build --prod --progress=false",
-    "lint": "npm run ng lint"
+    "lint": "npm run ng -- lint"
   },
   "private": true,
   "dependencies": {
