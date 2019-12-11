@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, OnInit, Component, Injector } from '@angular/core';
 import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { UserOrderResult } from 'app/api/models/user-order-result';
-import { QueryFilters, OrderStatusEnum, OrderResult } from 'app/api/models';
+import { QueryFilters, OrderStatusEnum, OrderResult, OrderDataForSearch } from 'app/api/models';
 import { OrdersService, MarketplaceService } from 'app/api/services';
 import { Observable } from 'rxjs';
 import { HttpResponse } from '@angular/common/http';
@@ -53,7 +53,7 @@ export class SearchOrdersComponent
     this.sales = this.route.snapshot.url[1].path === 'sales';
     this.param = this.route.snapshot.paramMap.get('user') || this.ApiHelper.SELF;
     this.isOwner = this.authHelper.isSelf(this.param);
-    this.data = {};
+    this.addSub(this.orderService.getOrderDataForSearch({ user: this.param }).subscribe(data => this.data = data));
   }
 
   protected toSearchParams(value: any): SearchUserOrdersParams {
@@ -88,12 +88,11 @@ export class SearchOrdersComponent
     return this.marketplaceHelper.resolveOrderStatusLabel(order.status);
   }
 
-  resolveMenu() {
+  resolveMenu(data: OrderDataForSearch) {
     if (this.isOwner) {
       return this.sales ? Menu.SALES : Menu.PURCHASES;
     }
-    // TODO missing getData in API with the owner to check the correct menu for admin/brokers
-    return this.authHelper.searchUsersMenu();
+    return this.authHelper.searchUsersMenu(data.user);
   }
 
 }

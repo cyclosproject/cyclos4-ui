@@ -8,6 +8,7 @@ import { SearchOrdersComponent } from 'app/marketplace/search/search-orders.comp
 import { ViewOrderComponent } from 'app/marketplace/view/view-order.component';
 import { ListShoppingCartComponent } from 'app/marketplace/checkout/list-shopping-cart.component';
 import { ViewCartComponent } from 'app/marketplace/checkout/view-cart.component';
+import { ViewOrderHistoryComponent } from 'app/marketplace/view/view-order-history.component';
 
 const marketplaceRoutes: Routes = [
   {
@@ -44,6 +45,10 @@ const marketplaceRoutes: Routes = [
       {
         path: 'order/:id',
         component: ViewOrderComponent
+      },
+      {
+        path: 'order/:id/history',
+        component: ViewOrderHistoryComponent
       },
       {
         path: 'shopping-cart',

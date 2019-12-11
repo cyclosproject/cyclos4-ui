@@ -1,0 +1,44 @@
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data then content"></ng-container>
+</page-layout>
+
+<ng-template #content>
+  <page-content [heading]="i18n.ad.title.history"
+    [mobileHeading]="i18n.ad.mobileTitle.history">
+    <label-value *ngIf="!seller" [label]="i18n.ad.seller">
+      <user-link [user]="data.seller"></user-link>
+    </label-value>
+    <label-value *ngIf="!buyer" [label]="i18n.ad.buyer">
+      <user-link [user]="data.buyer"></user-link>
+    </label-value>
+  </page-content>
+  <results-layout [results]="data.history" [onClick]="onClick">
+    <mobile-result *mobileResult="let row">
+      <div class="cell-main">
+        {{ resolveStatusLabel(row.status) }}
+      </div>
+      <div class="cell-date">
+        {{ row.date | dateTime }}
+      </div>
+      <div class="cell-text">
+        {{ i18n.general.by }}: {{ row.by.shortDisplay }}
+      </div>
+    </mobile-result>
+    <table *resultTable class="table table-hover">
+      <thead>
+        <th>{{ i18n.general.date }}</th>
+        <th>{{ i18n.general.status }}</th>
+        <th>{{ i18n.general.by }}</th>
+        <th>{{ i18n.ad.remarks }}</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of data.history">
+          <td>{{ row.date | dateTime }}</td>
+          <td>{{ resolveStatusLabel(row.status) }}</td>
+          <td>{{ row.by.shortDisplay }}</td>
+          <td>{{ row.remarks }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </results-layout>
+</ng-template>

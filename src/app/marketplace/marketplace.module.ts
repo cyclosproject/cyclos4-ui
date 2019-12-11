@@ -9,6 +9,7 @@ import { UserAdsComponent } from 'app/marketplace/search/user-ads.component';
 import { EditAdComponent } from 'app/marketplace/edit-ad.component';
 import { SearchOrdersComponent } from 'app/marketplace/search/search-orders.component';
 import { ViewOrderComponent } from 'app/marketplace/view/view-order.component';
+import { ViewOrderHistoryComponent } from 'app/marketplace/view/view-order-history.component';
 import { SetDeliveryMethodComponent } from 'app/marketplace/set-delivery-method.component';
 import { ListShoppingCartComponent } from 'app/marketplace/checkout/list-shopping-cart.component';
 import { ViewCartComponent } from 'app/marketplace/checkout/view-cart.component';
@@ -30,6 +31,7 @@ import { ViewCartComponent } from 'app/marketplace/checkout/view-cart.component'
     EditAdComponent,
     ViewAdComponent,
     ViewOrderComponent,
+    ViewOrderHistoryComponent,
     ShowSubCategoriesComponent,
     SetDeliveryMethodComponent,
     ListShoppingCartComponent,

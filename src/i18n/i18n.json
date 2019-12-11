@@ -1,5 +1,6 @@
 {
   "general": {
+    "by": "By",
     "type": "Type",
     "code": "Code",
     "period": "Period",
@@ -1194,7 +1195,8 @@
       "purchases": "Purchases",
       "sales": "Sales",
       "order": "Webshop order details",
-      "shoppingCart": "Shopping cart"
+      "shoppingCart": "Shopping cart",
+      "history": "Order history"
     },
     "mobileTitle": {
       "search": "Advertisements",
@@ -1206,7 +1208,8 @@
       "purchases": "Purchases",
       "sales": "Sales",
       "order": "Webshop order details",
-      "shoppingCart": "Shopping cart"
+      "shoppingCart": "Shopping cart",
+      "history": "Order history"
     }
   },
   "notification": {

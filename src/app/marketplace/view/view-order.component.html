@@ -79,12 +79,12 @@
     <h2>{{ i18n.ad.remarks }}</h2>
     <div>{{ remarks }}</div>
     <actions>
-      <button *ngIf="canAccept || canSetDeliveryMethod"
+      <button *ngIf="data.canAccept || data.canSetDeliveryInformation"
         class="btn btn-primary" (click)="accept()">
-        {{ this.canSetDeliveryMethod ? i18n.ad.setDeliveryMethod : i18n.ad.accept }}
+        {{ data.canSetDeliveryInformation ? i18n.ad.setDeliveryMethod : i18n.ad.accept }}
       </button>
-      <button *ngIf="canReject" class="btn"
-        [ngClass]="canAccept || canSetDeliveryMethod ? 'btn-outline-primary' : 'btn-primary'"
+      <button *ngIf="data.canReject" class="btn"
+        [ngClass]="data.canAccept || data.canSetDeliveryInformation ? 'btn-outline-primary' : 'btn-primary'"
         [disabled]="requesting$ | async"
         (click)="reject()">{{ i18n.ad.reject }}</button>
     </actions>

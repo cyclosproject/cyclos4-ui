@@ -54,7 +54,11 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
 
     const headingActions: HeadingAction[] = [];
 
-    // TODO missing history in OrderView
+    if (data.history) {
+      headingActions.push(new HeadingAction('history', this.i18n.general.viewHistory, () =>
+        this.router.navigate(['/marketplace', 'order', this.id, 'history']), true));
+    }
+
     this.headingActions = headingActions;
   }
 
@@ -219,7 +223,7 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
     if (this.data.status === OrderStatusEnum.PENDING_BUYER) {
       this.acceptByBuyer();
     } else if (this.data.status === OrderStatusEnum.PENDING_SELLER) {
-      if (this.canSetDeliveryMethod) {
+      if (this.data.canSetDeliveryInformation) {
         this.setDeliveryMethod();
       } else {
         this.acceptBySeller();
@@ -270,23 +274,6 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
    */
   get remarks(): string {
     return this.data.remarks ? this.data.remarks : this.i18n.ad.noRemarksGiven;
-  }
-
-  get canAccept(): boolean {
-    // TODO add can accept flag to data
-    return (this.data.status === OrderStatusEnum.PENDING_BUYER) && this.buyer ||
-      (this.data.status === OrderStatusEnum.PENDING_SELLER && this.seller);
-  }
-
-  get canReject(): boolean {
-    // TODO add can reject flag to data
-    return (this.data.status === OrderStatusEnum.PENDING_BUYER ||
-      this.data.status === OrderStatusEnum.PENDING_SELLER) && (this.buyer || this.seller);
-  }
-
-  get canSetDeliveryMethod(): boolean {
-    // TODO add can set delivery method flag to data
-    return this.data.deliveryPrice == null && this.seller;
   }
 
 }

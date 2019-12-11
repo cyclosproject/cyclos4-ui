@@ -291,9 +291,9 @@ tags:
     description: >-
       An order contains a set of items from a seller, to a buyer in a certain
       currency. Orders can be created in 2 ways: either via a shopping cart
-      checkout (by the buyer) or directly by the seller. Once created, the
-      order must be approved by the other party until its payment is finally
-      performed.
+      checkout (by the buyer, using the operations in the `ShoppingCarts` tag to
+      access it. ) or directly by the seller. Once created, the order must be approved
+      by the other party until its payment is finally performed.
   - name: DeliveryMethods
     description: >-
       Provides access to webshop delivery methods, which must be selected for
@@ -329,6 +329,13 @@ tags:
     description: >-
       Provides access to (general) references, which are given from a user
       to another to show the satisfaction level.
+  - name: OIDC
+    description: >-
+      Provides the delegation of data and operations via OAuth2 / OpenID
+      Connect. These are standard protocols which enables logging-in
+      on other services with Cyclos, as well as allowing external services
+      to perform operations in behalf of users.
+
 
 security:
   - basic: []
@@ -1101,6 +1108,450 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/ChangeForgottenPassword'
+  /oidc/authorize:
+    get:
+      operationId: oidcAuthorize
+      summary: >-
+        The standard OAuth2 / OpenID Connect authorization endpoint.
+      description: >-
+        Creates a new authorization request. A redirect in HTML format is
+        returne, which should be followed for the user to identify himself
+        and grant the consent to the requested resources.
+
+        For more information, see also:
+
+
+        - [OAuth 2.0 authorization endpoint](http://tools.ietf.org/html/rfc6749#section-3.1)
+
+        - [OIDC authentication request](http://openid.net/specs/openid-connect-core-1_0.html#AuthRequest)
+
+        - [OIDC successful authentication response](http://openid.net/specs/openid-connect-core-1_0.html#AuthResponse)
+
+        - [OIDC authentication error response](http://openid.net/specs/openid-connect-core-1_0.html#AuthError)
+
+
+        The following standard optional parameters are not supported by Cyclos,
+        and thus, ignored:
+
+
+        - `claims`
+
+        - `claims_locales`
+
+        - `max_age`
+
+        - `id_token_hint`
+
+        - `ui_locales`
+
+        - `acr_value`.
+      tags:
+        - OIDC
+      parameters:
+        - name: scope
+          in: query
+          required: true
+          description: >-
+            A space-delimited list of requested scopes. Scopes are permissions
+            to view user data and to perform operations in behalf of the user.
+
+
+            The OpenID standard scopes are supported:
+
+            - `openid` for enabling the OpenID Connect id tokens. When not
+              requested, standard OAuth2 will be used;
+
+            - `profile` for basic profile data access;
+
+            - `email` for e-mail access;
+
+            - `phone` for phone number access;
+
+            - `address` for address access;
+
+            - `offline_access` for refresh tokens to be issued.
+
+
+            Other scopes are defined in Cyclos which represent permissions.
+            These scopes are listed in @root/.well-known/openid-configuration.
+          schema:
+            type: string
+        - name: response_type
+          in: query
+          required: true
+          description: >-
+            A space-delimited list of response types for this authentication.
+            Accepted avalues are:
+
+
+            - `code`: returing the Authorization code
+
+            - `id_token`: returns the Id token
+
+            - `token`: returns the access token
+          schema:
+            type: string
+        - name: client_id
+          in: query
+          required: true
+          description: >-
+            The client id as registered in the Cyclos, in OpenID Connect client.
+          schema:
+            type: string
+        - name: redirect_uri
+          in: query
+          required: true
+          description: >
+            The URI to which users will be redirected after authentication.
+            Must match one of the registered redirect URIs in Cyclos, in OpenID
+            Connect client.
+          schema:
+            type: string
+        - name: state
+          in: query
+          required: false
+          description: >
+            A client-state string, which is opaque to the server.
+            Will be passed back to the redirect URL as well as in the generated tokens.
+            Can be used to prevent CSRF attacks by clients.
+          schema:
+            type: string
+        - name: response_mode
+          in: query
+          required: false
+          description: >
+            How to pass parameters in the redirect URL. Accepted values are:
+
+
+            - `query`: Uses the query string, such as `https://example.com/result?param1=value1&param2=value2`
+
+            - `fragment`: Uses fragments / hash, such as `https://example.com/result#param1=value1&param2=value2`
+
+            - `form_post`: Renders an HTML that immediately performs a FORM POST with the parameters
+
+          schema:
+            type: string
+        - name: nonce
+          in: query
+          required: false
+          description: >
+            A nonce provided by the client, which will be included in any ID
+            token generated for this session. This is a opaque string for the
+            server, but clients should use it to mitigate replay attacks.
+          schema:
+            type: string
+        - name: display
+          in: query
+          required: false
+          description: >
+            How the consent page should be displayed.
+            Though currently the consent page is responsive, and as such,
+            doesn't depend on this value, the accepted values are the standard
+            `page`, `popup` and `touch`.
+          schema:
+            type: string
+        - name: prompt
+          in: query
+          required: false
+          description: >
+            Space-delimited string that determines how the consent page is
+            displayed to the end user.
+
+
+            Cyclos currently presents the login and consent page together, so
+            any value other than `none` will actually present the page to the
+            end user to login and consent. There is no such state as a
+            'previously logged-in' user that would only consent, or first
+            login and then consent. As such, whenever `prompt=none`,
+            Cyclos always replies with `login_required`.
+          schema:
+            type: string
+        - name: login_hint
+          in: query
+          required: false
+          description: >
+            A principal value (username, e-mail, phone number) for the user
+            that will be initially presented in the authentication page.
+          schema:
+            type: string
+      responses:
+        '302':
+          description: >-
+            Either the request succeeded and the referred location is the user
+            login / consent page, or an error was found, and the referred
+            location is the requested `redirect_uri` with the `error` parameter.
+          headers:
+            Location:
+              description: >-
+                The URI to follow
+              schema:
+                type: string
+        '400':
+          description: >-
+            Either the `client_id` parameter was invalid, the `redirect_uri`
+            parameter was not set or doesn't match a valid redirect URI as
+            defined in Cyclos. In this case, both `error` and `error_description`
+            are sent encoded in the response body.
+          content:
+            application/x-www-form-urlencoded:
+              schema:
+                type: string
+
+  /oidc/token:
+    post:
+      operationId: oidcToken
+      summary: >-
+        The standard OAuth2 / OpenID Connect token endpoint.
+      description: >-
+        Exchanges an authorization code for an id token and / or access token.
+        The client id / secret can either be passed in via a basic authentication
+        or via the `client_id` and `client_secret` parameters.
+
+
+        Although the OpenID Connect Core specification doesn't mandate a format
+        for access tokens, Cyclos issues them as signed JSON Web Tokens (JWTs).
+        So, clients can, for instance, check for the expiration date in advance,
+        without having to attempt using an expired token. Clients can verify the
+        signature, which makes it easy to detect whether the token has been
+        tampered with.
+
+
+        For more information, see also:
+
+
+        - [OAuth 2.0 access token request](https://tools.ietf.org/html/rfc6749#section-4.1.3)
+
+        - [OIDC token request](https://openid.net/specs/openid-connect-core-1_0.html#TokenRequest)
+
+        - [OIDC successful token response](https://openid.net/specs/openid-connect-core-1_0.html#TokenResponse)
+
+        - [OIDC token error response](https://openid.net/specs/openid-connect-core-1_0.html#TokenErrorResponse)
+      tags:
+        - OIDC
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - grant_type
+              properties:
+                client_id:
+                  description: >-
+                    The client id when not using an HTTP Basic authentication.
+                  type: string
+                client_secret:
+                  description: >-
+                    The client secret when not using an HTTP Basic
+                    authentication.
+                  type: string
+                grant_type:
+                  description: >-
+                    The supported values are `authorization_code` and
+                    `refresh_token`.
+                  type: string
+                code:
+                  description: >-
+                    The authorization code received in the authorize endpoint.
+                    Required when `grant_type` is `authorization_code`.
+                  type: string
+                redirect_uri:
+                  description: >-
+                    The same `redirect_uri` passed in the `authorize` request.
+                    Required when `grant_type` is `authorization_code`.
+                  type: string
+                refresh_token:
+                  description: >-
+                    The refresh token requested authorization code received in
+                    the authorize endpoint.
+                    Required when `grant_type` is `refresh_token`.
+                  type: string
+      responses:
+        '200':
+          description: >-
+            The object containing the access token and the ID token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OidcTokenResult'
+        '400':
+          description: >-
+            Error validating the request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OidcError'
+        '500':
+          description: >-
+            Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OidcError'
+
+  /oidc/revoke:
+    post:
+      operationId: oidcRevoke
+      summary: >-
+        The standard OAuth2 token revocation endpoint.
+      description: >-
+        Revokes a refresh token or access token.
+
+        For more information, see also:
+
+
+        - [OAuth 2.0 token revocation](https://tools.ietf.org/html/rfc7009#section-2)
+      tags:
+        - OIDC
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              required:
+                - token
+              properties:
+                client_id:
+                  description: >-
+                    The client id when not using an HTTP Basic authentication.
+                  type: string
+                client_secret:
+                  description: >-
+                    The client secret when not using an HTTP Basic
+                    authentication.
+                  type: string
+                token:
+                  description: >-
+                    The token to revoke. May correspond to either a refresh
+                    token or an access token.
+                  type: string
+      responses:
+        '200':
+          description: >-
+            Either the token was successfully revoked or the token isn't valid.
+            As per spec, errors shouldn't be returned on either case.
+
+  /oidc/userinfo:
+    get:
+      operationId: oidcUserInfoGet
+      summary: >-
+        The standard OpenID Connect UserInfo endpoint, using the `GET` method.
+      description: >-
+        Returns all granted claims about the identified user. The OpenID Connect
+        specification requires both `GET` and `POST` methods to be available for
+        this endpoint. This is the implementation via `GET` method.
+
+
+        For more information, see also:
+
+
+        - [OIDC UserInfo Endpoint](https://openid.net/specs/openid-connect-core-1_0.html#UserInfo)
+      tags:
+        - OIDC
+      security:
+        - oidc:
+          - openid
+      responses:
+        '200':
+          description: >-
+            The user claims encoded as JSON
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: >-
+            The provided access token is invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OidcError'
+        '403':
+          description: >-
+            The `openid` scope was not granted for this access token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OidcError'
+        '500':
+          description: >-
+            Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OidcError'
+    post:
+      operationId: oidcUserInfoPost
+      summary: >-
+        The standard OpenID Connect UserInfo endpoint, using the `POST` method.
+      description: >-
+        Returns all granted claims about the identified user. The OpenID Connect
+        specification requires both `GET` and `POST` methods to be available for
+        this endpoint. This is the implementation via `POST` method.
+
+
+        For more information, see also:
+
+
+        - [OIDC UserInfo Endpoint](https://openid.net/specs/openid-connect-core-1_0.html#UserInfo)
+      tags:
+        - OIDC
+      security:
+        - oidc:
+          - openid
+      responses:
+        '200':
+          description: >-
+            The user claims encoded as JSON
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: >-
+            The provided access token is invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OidcError'
+        '403':
+          description: >-
+            The `openid` scope was not granted for this access token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OidcError'
+        '500':
+          description: >-
+            Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OidcError'
+
+  /oidc/jwks:
+    get:
+      operationId: oidcJwks
+      summary: >-
+        The standard OpenID Connect JWKS endpoint.
+      description: >-
+        Returns the keys used to sign issued JSON Web Tokens (JWT).
+
+
+        - [JSON Web Key (JWK)](https://tools.ietf.org/html/draft-ietf-jose-json-web-key-41)
+      tags:
+        - OIDC
+
+      responses:
+        '200':
+          description: >-
+            The object describing the JWKS
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JWKSResponse'
   /sessions/data-for-search:
     get:
       operationId: getSessionDataForSearch
@@ -1653,6 +2104,15 @@ paths:
             broker (id, identification method or `self`)
           schema:
             type: string
+        - name: fromMenu
+          in: query
+          required: false
+          description: >-
+            Set to true if you want to use as group filters those defined in the 'User search in menu' configuration
+            setting. Otherwise the group filters would be those defined in the 'Search users on groups' product setting (or in the configuration in
+            case of guests).
+          schema:
+            type: boolean
       responses:
         '200':
           description: >-
@@ -1754,6 +2214,12 @@ paths:
           in: query
           required: false
           description: "When set to `true` will not return any user that is already a contact of the user indicated on `contactsOwner` (the logged user if not set)."
+          schema:
+            type: boolean
+        - name: fromMenu
+          in: query
+          required: false
+          description: "When set to true the search will be restricted to those groups defined for the user search menu, if false then for those defined in the 'Search users on groups' product setting (or in the configuration in case of guests)."
           schema:
             type: boolean
         - name: groups
@@ -2151,6 +2617,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "When set to `true` will not return any user that is already a contact of the user indicated on `contactsOwner` (the logged user if not set)."
+          schema:
+            type: boolean
+        - name: fromMenu
+          in: query
+          required: false
+          description: "When set to true the search will be restricted to those groups defined for the user search menu, if false then for those defined in the 'Search users on groups' product setting (or in the configuration in case of guests)."
           schema:
             type: boolean
         - name: groups
@@ -3000,6 +3472,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - $ref: '#/components/parameters/user'
       tags:
         - Users
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+        - oidc:
+          - profile_write
       responses:
         '200':
           description: >-
@@ -3059,6 +3537,8 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - basic: []
         - session: []
         - accessClient: []
+        - oidc:
+          - profile_write
       responses:
         '200':
           description: >-
@@ -3191,6 +3671,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "When set to `true` will not return any user that is already a contact of the user indicated on `contactsOwner` (the logged user if not set)."
+          schema:
+            type: boolean
+        - name: fromMenu
+          in: query
+          required: false
+          description: "When set to true the search will be restricted to those groups defined for the user search menu, if false then for those defined in the 'Search users on groups' product setting (or in the configuration in case of guests)."
           schema:
             type: boolean
         - name: groups
@@ -11373,14 +11859,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - basic: []
         - session: []
         - accessClient: []
-      parameters:
-        - name: code
-          description: >-
-            The device activation code.
-          in: query
-          required: true
-          schema:
-            type: string
+      parameters: []
       responses:
         '200':
           description: >-
@@ -11426,6 +11905,14 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+      requestBody:
+        description: >-
+          The parameters for activating a device.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeviceActivation'
 
   /devices/{id}/data-for-edit:
     get:
@@ -11452,6 +11939,62 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/DeviceDataForEdit'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /devices/{id}/password-for-remove:
+    get:
+      operationId: getPasswordInputForRemoveDevice
+      summary: >-
+        Returns a confirmation `PasswordInput` for removing a device, if any
+      description: >-
+        If a confirmation password is required to remove a device, clients should
+        invoke this operation prior to effectively removing the device, which will
+        return the data regarding the confirmation password.
+      tags:
+        - Devices
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+        - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          description: >-
+            The confirmation password input, or null
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PasswordInput'
         '401':
           description: >-
             Unauthorized access. Missing or invalid crendentials supplied for such
@@ -11570,6 +12113,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - accessClient: []
       parameters:
         - $ref: '#/components/parameters/id'
+        - $ref: '#/components/parameters/confirmationPassword'
       responses:
         '204':
           description: >-
@@ -11620,7 +12164,14 @@ A note for dynamic custom fields: If a script is used to generate possible value
         device confirmations.
       tags:
         - DeviceConfirmations
-      parameters: []
+      parameters:
+        - name: deviceId
+          in: query
+          required: true
+          description: >-
+            The id of the device used to confirm operations.
+          schema:
+            type: string
       responses:
         '200':
           description: >-
@@ -18946,6 +19497,8 @@ Reference to the broker of users involved in transfers. Is only taken into accou
         - basic: []
         - session: []
         - accessClient: []
+        - oidc:
+          - payment
       parameters:
         - $ref: '#/components/parameters/owner'
         - $ref: '#/components/parameters/fields'
@@ -19022,6 +19575,8 @@ Reference to the broker of users involved in transfers. Is only taken into accou
         - basic: []
         - session: []
         - accessClient: []
+        - oidc:
+          - payment
       parameters:
         - $ref: '#/components/parameters/fields'
         - $ref: '#/components/parameters/owner'
@@ -19070,6 +19625,8 @@ Reference to the broker of users involved in transfers. Is only taken into accou
         - basic: []
         - session: []
         - accessClient: []
+        - oidc:
+          - payment
       parameters:
         - $ref: '#/components/parameters/owner'
         - $ref: '#/components/parameters/fields'
@@ -19143,6 +19700,8 @@ Reference to the broker of users involved in transfers. Is only taken into accou
         - basic: []
         - session: []
         - accessClient: []
+        - oidc:
+          - payment
       parameters:
         - $ref: '#/components/parameters/owner'
         - $ref: '#/components/parameters/fields'
@@ -30512,6 +31071,16 @@ A note for dynamic custom fields: If a script is used to generate possible value
             this parameter can be used to filter which ticket to monitor.
           schema:
             type: string
+        - name: deviceConfirmationId
+          in: query
+          required: false
+          description: >-
+            When subscribing to
+            `deviceConfirmationFeedback` events,
+            this parameter can be used to filter which device confirmation to
+            monitor.
+          schema:
+            type: string
         - name: lastEventId
           in: header
           required: false
@@ -33407,6 +33976,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+
     delete:
       operationId: deleteAdQuestion
       summary: >-
@@ -33461,6 +34031,150 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+
+  /questions/{id}/answer:
+    post:
+      operationId: answerAdQuestion
+      summary: >-
+        Answers an advertisement question as the authenticated user.
+      description: >-
+        Answers a question by id (created for an advertisement of its own).
+      tags:
+        - AdQuestions
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '204':
+          description: >-
+            The question was answered.
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: >-
+            Input error. Either a validation error or the maximum allowed items was
+            exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+
+  /{user}/unanswered-questions:
+    get:
+      operationId: searchUnansweredAdQuestions
+      summary: >-
+        Searches for unanswered questions for a specific user
+      description: >-
+        Searches for unanswered questions for a specific user, if a type is not given then `simple` will be
+        used.
+        Only if the user has the ad questions enabled or can manage webshops and the authenticated user can manage
+        ads / webshops of the given user.
+      tags:
+        - AdQuestions
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+        - $ref: '#/components/parameters/user'
+        - name: kind
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/AdKind'
+        - name: page
+          in: query
+          required: false
+          description: "The page number (zero-based) of the search. The default value is zero."
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          required: false
+          description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
+          schema:
+            type: integer
+            format: int32
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: >-
+            Returns the unanswered questions.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdQuestion'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
   /shopping-carts:
     get:
       operationId: getShoppingCarts
@@ -34181,6 +34895,68 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 type: array
                 items:
                   $ref: '#/components/schemas/UserOrderResult'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /{user}/orders/data-for-search:
+    get:
+      operationId: getOrderDataForSearch
+      summary: >-
+        Returns data for searching orders (purchases / sales) of a specific user.
+      description: >-
+        The authenticated user must be the seller, buyer or a manager user with
+        permission to view purchases or sales.
+      tags:
+        - Orders
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+        - $ref: '#/components/parameters/user'
+        - name: sales
+          in: query
+          required: false
+          description: >-
+            Whether we are getting data for searching purchases or sales
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: >-
+            The order data fo search.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderDataForSearch'
         '401':
           description: >-
             Unauthorized access. Missing or invalid crendentials supplied for such
@@ -35088,7 +35864,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/WebshopSettings'
+              $ref: '#/components/schemas/WebshopSettingsDetailed'
   /{user}/marketplace-interests/list-data:
     parameters:
       - $ref: '#/components/parameters/user'
@@ -35520,21 +36296,15 @@ components:
 
           - Login name;
 
-
           - E-mail;
-
 
           - Mobile phone;
 
-
           - Account number;
-
 
           - Custom field (fields configured as principal type in Cyclos);
 
-
           - Pin (see below for more details).
-
 
 
           There is a configuration in Cyclos, under System > Configurations >
@@ -35545,12 +36315,10 @@ components:
           there's no default, all possible principal types are attempted.
 
 
-
           To specify the principal type, set the HTTP header `Principal-Type`,
           containing the principal type internal name. If there is a default
           set in the channel configuration, but still you want all types to be
           attempted, pass `*` in the `Principal-Type` header.
-
 
 
           It is also possible to access with a device PIN. To do so, first activate
@@ -35558,7 +36326,6 @@ components:
           and a cryptographic salt. Then, to authenticate as PIN, set the
           `Principal-Type` header to `#` and send the `Authorization` header with
           value: `Basic base64(principal:salt+PIN)`.
-
 
     session:
       type: apiKey
@@ -35579,6 +36346,20 @@ components:
         Access via an access client token, which is obtained when the client is
         activated. This token is passed in as a header on every request
         (stateless).
+
+    oidc:
+      type: openIdConnect
+      openIdConnectUrl: '@root/.well-known/openid-configuration'
+      description: >-
+        OAuth2 / OpenID Connect authentication. Clients must be previously
+        registered in Cyclos. Then they request an authorization using the
+        standard OAuth2 / OpenID Connect authorization endpoint at
+        `@url/oidc/authorize`.
+        When the OpenID Connect standard scope `openid` is requested, the flow
+        will follow the OpenID Connect specification, allowing `id_token`s to
+        be issued. Otherwise, plain OAuth2 authorization will be granted.
+        The obtained access token should be passed in the
+        `Authorization: Bearer <token>` request header to access the API.
 
   parameters:
 
@@ -36475,6 +37256,43 @@ components:
         - fixed
         - negotiated
 
+    DeviceActionEnum:
+      description: >
+        Possible actions that could be confirmed with a device for another device
+
+        Possible values are:
+        
+        - `activate`: Activate a device as trusted
+        
+        - `remove`: Remove the trusted device
+      type: string
+      enum:
+        - activate
+        - remove
+
+    DeviceActivationEnum:
+      description: >
+        Contains useful information needed when a device is being activated as trusted
+
+        Possible values are:
+        
+        - `disabled`: The activation is not required but the user can not activate a device as trusted because it does not have any mediums to receive the activation code or the session is already trusted
+        
+        - `optional`: The activation is not required and the user can activate a device by code
+        
+        - `required`: The activation is required with an activation code
+        
+        - `requiredNoMediums`: The activation is required but the user can not activate a device as trusted because it does not have any mediums to receive the activation code
+        
+        - `requiredWithDevice`: The activation is required with an existing trusted device
+      type: string
+      enum:
+        - disabled
+        - optional
+        - required
+        - requiredNoMediums
+        - requiredWithDevice
+
     DeviceConfirmationStatusEnum:
       description: >
         The possible status for a device confirmation
@@ -36526,6 +37344,8 @@ components:
         
         - `manageContactInfo`: A confirmation for managing an additional contact information of his own
         
+        - `manageDevice`: A confirmation for managing a trusted device
+        
         - `manageExternalPayment`: A confirmation for managing an external payment
         
         - `manageFailedOccurrence`: A confirmation for managing a recurring payment failed occurrence
@@ -36569,6 +37389,7 @@ components:
         - manageAddress
         - manageAuthorization
         - manageContactInfo
+        - manageDevice
         - manageExternalPayment
         - manageFailedOccurrence
         - manageInstallment
@@ -36882,9 +37703,13 @@ components:
         
         - `customFieldValue`: An image used as custom field value
         
+        - `identityProvider`: An external identity provider
+        
         - `marketplace`: Advertisement images are associated with an advertisement, be it simple or for web shop.
         
         - `marketplaceCategory`: An image of an advertisement (simple or webshop)
+        
+        - `oidcClient`: An OpenID Connect client
         
         - `profile`: User profile images are those associated with the user profile. The first profile image is used to depict the user on search results.
         
@@ -36899,8 +37724,10 @@ components:
       enum:
         - contactInfo
         - customFieldValue
+        - identityProvider
         - marketplace
         - marketplaceCategory
+        - oidcClient
         - profile
         - systemCustom
         - temp
@@ -38075,6 +38902,8 @@ components:
         - `rejectedByBuyer`: The order was rejected by the buyer.
         
         - `rejectedBySeller`: The order was rejected by the seller.
+        
+        - `shoppingCart`: The order is just a shopping cart, possibly temporary, as hasn't been checked out yet
       type: string
       enum:
         - completed
@@ -38088,6 +38917,7 @@ components:
         - pendingSeller
         - rejectedByBuyer
         - rejectedBySeller
+        - shoppingCart
 
     OtpErrorCode:
       description: >
@@ -38470,20 +39300,26 @@ components:
         
         - `deviceConfirmation`: A device confirmation was approved / rejected
         
+        - `deviceConfirmationFeedback`: The result of an operation approved by a device confirmation
+        
         - `loggedOut`: The current session has been invalidated
         
         - `newMessage`: New message on the user's inbox
         
         - `newNotification`: New received notification
         
+        - `paymentAuthorization`: A payment authorization status has changed
+        
         - `ticket`: A ticket status has changed
       type: string
       enum:
         - accountStatus
         - deviceConfirmation
+        - deviceConfirmationFeedback
         - loggedOut
         - newMessage
         - newNotification
+        - paymentAuthorization
         - ticket
 
     RecordKind:
@@ -38790,6 +39626,8 @@ components:
         
         - `custom`: Custom alerts thrown by scripts
         
+        - `maxBlockedUsersReached`: The max number of users blocked from the same IP has been reached
+        
         - `maxGlobalSmsReached`: The groups under a certain configuration have run out of SMS messages
         
         - `maxIncorrectLoginAttempts`: Someone tried for a given number of tries to login with an invalid username
@@ -38799,6 +39637,7 @@ components:
         - accountFeeChargedWithFailures
         - applicationRestarted
         - custom
+        - maxBlockedUsersReached
         - maxGlobalSmsReached
         - maxIncorrectLoginAttempts
 
@@ -39154,6 +39993,8 @@ components:
         
         - `invalidAccessClient`: The access client used for access is invalid
         
+        - `invalidAccessToken`: The OAuth2 / OpenID Connect access token used for access is invalid
+        
         - `invalidChannelUsage`: Attempt to login on a stateless-only channel, or use stateless in a stateful-only channel, or invoke as guest in a channel configuration which is only for users
         
         - `invalidNetwork`: Attempt to access a network that has been disabled
@@ -39173,6 +40014,7 @@ components:
       enum:
         - blockedAccessClient
         - invalidAccessClient
+        - invalidAccessToken
         - invalidChannelUsage
         - invalidNetwork
         - loggedOut
@@ -40200,7 +41042,14 @@ components:
              The owner of the advertisement.
            allOf:
              - $ref: '#/components/schemas/User'
-
+        webshopSettings:
+          $ref: '#/components/schemas/WebshopSettings'
+        deliveryMethods:
+          description: >-
+            The available delivery methods. Only for webshops.
+          type: array
+          items:
+            $ref: '#/components/schemas/BaseDeliveryMethod'
 
     AdCategoryWithChildren:
       description: >-
@@ -40571,7 +41420,7 @@ components:
 
     AdManage:
       description: >-
-        Common fields for either creating or editing a advertisement
+        Common fields for either creating or editing a simple or webshop advertisement
       type: object
       x-abstract: true
       properties:
@@ -40625,6 +41474,49 @@ components:
           description: >-
             Ids of addresses (belonging to the advertisement owner) this
             advertisement is available at.
+          type: array
+          items:
+            type: string
+        unlimitedStock:
+          description: >-
+            Whether the stock is unlimited or not.
+            If true then it means there is always disponibility of the webshop and the `stockQuantity` and
+            `minStockQuantityToNotify` are meaningless.
+          type: boolean
+        stockQuantity:
+          description: >-
+            The quantity in stock (if `unlimitedStock` is false). Only for webshop.
+          type: string
+          format: number
+        minStockQuantityToNotify:
+          description: >-
+            Reached this minimum limit a notification will be sent to the user
+            indicating there is low stock for this webshop. Only for webshop.
+          type: string
+          format: number
+        minAllowedInCart:
+          description: >-
+            Minimum quantity allowed in a shopping cart. Only for webshop.
+          type: string
+          format: number
+        maxAllowedInCart:
+          description: >-
+            Maximum quantity allowed in a shopping cart. Only for webshop.
+          type: string
+          format: number
+        allowDecimalQuantity:
+          description: >-
+            Whether a decimal quantity of this webshop can be added to the shopping cart or not.
+          type: boolean
+        productNumber:
+          description: >-
+            The unique number assigned to this webshop. Required if it's not marked as
+            generated in the user webshop settings. Only for webshop.
+          type: string
+        deliveryMethods:
+          description: >-
+            Ids of delivery method (belonging to the advertisement owner) this
+            advertisement has allowed.
           type: array
           items:
             type: string
@@ -40730,9 +41622,21 @@ components:
               type: string
             answerDate:
               description: >-
-                The answer date and time.
+                The answer date and time (if any).
               type: string
               format: date-time
+
+    AdQuestionQueryFilters:
+      description: >-
+        Definitions for unanswered questions search
+      allOf:
+        - $ref: '#/components/schemas/QueryFilters'
+        - type: object
+          properties:
+            kind:
+              $ref: '#/components/schemas/AdKind'
+
+
 
     AdQuestionView:
       description: >-
@@ -41871,6 +42775,18 @@ components:
               allOf:
                 - $ref: '#/components/schemas/User'
 
+    BaseDeliveryMethod:
+      description: >-
+        Reference to a webshop delivery method containig basic data
+      allOf:
+        - $ref: '#/components/schemas/NamedEntity'
+        - type: object
+          properties:
+            enabled:
+              type: boolean
+              description: >-
+                Whether this delivery method is enabled for new sales.
+
     BaseInstallmentDataForSearch:
       x-abstract: true
       description: >-
@@ -42058,6 +42974,26 @@ components:
               format: number
             product:
               $ref: '#/components/schemas/WebshopAd'
+
+    BasePasswordType:
+      description: >-
+        Contains base definitions for a password type
+      allOf:
+        - $ref: '#/components/schemas/InternalNamedEntity'
+        - type: object
+          properties:
+            onlyNumeric:
+              type: boolean
+              description: >-
+                Indicates whether this password type only allows numbers as possible characters
+            minLength:
+              type: integer
+              description: >-
+                Indicates the minimum length of characters allowed for a password definition
+            maxLength:
+              type: integer
+              description: >-
+                Indicates the maximum length of characters allowed for a password definition
 
     BaseRecordDataForSearch:
       description: >-
@@ -44161,6 +45097,17 @@ components:
             The number of vouchers to be generated.
             Required only if type is `generateVouchers` or
             `buyVouchers`.
+        deviceId:
+          type: string
+          description: >-
+            The id of a device.
+            Required only if type is `manageDevice`.
+        deviceAction:
+          description: >-
+            The action being applied to the device. Required only if type is
+            `manageDevice`.
+          allOf:
+            - $ref: '#/components/schemas/DeviceActionEnum'
 
 
 
@@ -44853,7 +45800,11 @@ components:
             dataForLogin:
               $ref: '#/components/schemas/DataForLogin'
             dataForDeviceConfirmationApproval:
-              $ref: '#/components/schemas/DataForDeviceConfirmationApproval'
+              description: >-
+                Data for confirmation approval. Only sent if a device id was given when getting the guest data and it
+                was not removed.
+              allOf:
+                - $ref: '#/components/schemas/DataForDeviceConfirmationApproval'
             groupsForRegistration:
               description: >-
                 The list of groups the authenticated user can use to perform a new
@@ -44914,11 +45865,11 @@ components:
                 Indicates whether there is at least one NFC tag the user can use to
                 receive payments
               type: boolean
-            canActivateAsTrustedDevice:
+            deviceActivationMode:
               description: >-
-                Indicates whether there is an allowed medium to activate the device
-                as trusted
-              type: boolean
+                Contains information needed when the authenticated user wants to activate a device as trusted.
+              allOf:
+                - $ref: '#/components/schemas/DeviceActivationEnum'
             personalizeOtherUsers:
               description: >-
                 Indicates if the current user can personalize NFC tags for other
@@ -45197,6 +46148,16 @@ components:
           description: >-
             The mobile app url in the Play store.
           type: string
+        hideUserSearchInMenu:
+          description: >-
+            Whether the search users action must be shown or not in the menu. If the user doesn't have permission to search
+            other users (`permissions.users.search`) then this flag will be `true`. Otherwise it depends on the configuration
+          type: boolean
+        deviceActivationMode:
+          description: >-
+            Contains information needed when the authenticated user wants to activate a device as trusted.
+          allOf:
+            - $ref: '#/components/schemas/DeviceActivationEnum'
         theme:
           description: >-
             The theme content (i.e the CSS or its components according). Only
@@ -45256,6 +46217,11 @@ components:
             invoice confirmation interface.
           allOf:
             - $ref: '#/components/schemas/UIElementWithContent'
+        shoppingCartWebShopCount:
+          description: >-
+            The total number of webshop ads present in the shopping cart.
+            Not returned for guests.
+          type: integer
 
     DataForUserBalancesSearch:
       description: >-
@@ -45346,13 +46312,9 @@ components:
       description: >-
         Reference to a webshop delivery method
       allOf:
-        - $ref: '#/components/schemas/NamedEntity'
+        - $ref: '#/components/schemas/BaseDeliveryMethod'
         - type: object
           properties:
-            enabled:
-              type: boolean
-              description: >-
-                Whether this delivery method is enabled for new sales.
             description:
               type: string
               description: >-
@@ -45559,6 +46521,26 @@ components:
                 When the device is not active it represents the creation date.
                 Otherwise, the activation date.
 
+    DeviceActivation:
+      type: object
+      properties:
+        code:
+          type: string
+          description: >-
+            The device activation code.
+            Only required if the activation must be confirmed with code.
+        deviceId:
+          type: string
+          description: >-
+            Trusted device identification.
+            Only required if the activation must be confirmed with another trusted device.
+        deviceConfirmationId:
+          type: string
+          description: >-
+            The approved device confirmation identification used to validate the activation.
+            Only required if the activation must be confirmed with another trusted device.
+
+
     DeviceActivationResult:
       type: object
       properties:
@@ -45585,6 +46567,19 @@ components:
           description: >-
             The HMAC-SHA256 calculated for the QR code using the secret key stored
             in the device.
+
+    DeviceConfirmationFeedbackPush:
+      description: >-
+        The result of the action accepted by a device confirmation
+      type: object
+      properties:
+        deviceConfirmation:
+          $ref: '#/components/schemas/DeviceConfirmationView'
+        successful:
+          description: >-
+            True if the operation approved by the device confirmation has finished
+            successfully.
+          type: boolean
 
     DeviceConfirmationView:
       description: >-
@@ -45646,10 +46641,16 @@ components:
             $ref: '#/components/schemas/Phone'
         mediums:
           description: >-
-            The available mediums for the activation code to be sent.
+            The available mediums for the activation code to be sent. Only returned if the activation can be made by using
+            an activation code.
           type: array
           items:
             $ref: '#/components/schemas/SendMediumEnum'
+        deviceConfirmation:
+          description: >-
+            The pending device confirmation used to confirm the device activation. Only returned if a trusted device
+            is required for the new activation.
+          $ref: '#/components/schemas/DeviceConfirmationView'
 
     DeviceEdit:
       description: >-
@@ -47214,6 +48215,22 @@ components:
               type: boolean
             toAccount:
               $ref: '#/components/schemas/AccountWithOwner'
+            toOperator:
+              description: >-
+                The operator who is receiving the payment.
+                Only sent if the payment is made to an operator.
+              allOf:
+                - $ref: '#/components/schemas/User'
+
+    JWKSResponse:
+      type: object
+      properties:
+        keys:
+          description: Each of the JWK
+          type: array
+          items:
+            type: object
+            additionalProperties: true
 
     Language:
       description: >-
@@ -48280,6 +49297,80 @@ components:
           type: string
           format: date-time
 
+    OidcAuthorizeResult:
+      description: >-
+        Result after an OAuth2 / OpenID Connect approve / deny
+      type: object
+      properties:
+        url:
+          description: The URL to which the user should be redirected
+          type: string
+        postData:
+          type: object
+          additionalProperties:
+            type: string
+          description: >-
+            Variables that should be POSTed to the given URL.
+            When null it means that a plain redirect should be performed.
+
+    OidcClient:
+      description: >-
+        Represents a client
+      allOf:
+        - $ref: '#/components/schemas/InternalNamedEntity'
+        - type: object
+          properties:
+            image:
+              $ref: '#/components/schemas/Image'
+
+    OidcError:
+      description: >-
+        Error generating an OAuth2 / OpenID Connect response
+      type: object
+      properties:
+        error:
+          description: The error code
+          type: string
+        error_description:
+          description: The error description
+          type: string
+
+    OidcTokenResult:
+      description: >-
+        Result after an OAuth2 / OpenID Connect token request
+      type: object
+      properties:
+        access_token:
+          description: >-
+            The access token which can be used to make additional requests.
+            It will be used as a `Bearer` token.
+          type: string
+        token_type:
+          description: >-
+            Cyclos always returns `bearer` tokens.
+          type: string
+        id_token:
+          description: >-
+            The JWT-encoded ID token.
+          type: string
+        state:
+          description: >-
+            The same opaque `state` value provided by the client on the
+            authenticate request.
+          type: string
+        expires_in:
+          description: >-
+            The number of seconds until the token expires, counted from the time
+            the request was received.
+          type: integer
+        refresh_token:
+          description: >-
+            The refresh token, which can be used to obtain additional access
+            tokens. Is only issued if the `offline_access` scope has been
+            granted, and only when the `grant_type` is `authorization_code`.
+          type: string
+
+
     Operation:
       description: >-
         Contains definitions used to run a custom operation
@@ -49098,6 +50189,36 @@ components:
           allOf:
             - $ref: '#/components/schemas/PasswordInput'
 
+    OrderDataForSearch:
+      description: >-
+        Data for searching orders (purchases / sales)
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+        query:
+          description: >-
+            Default query filters to search operators
+          allOf:
+          - $ref: '#/components/schemas/OrderQueryFilters'
+        numberMask:
+          type: string
+          description: >-
+            The order number mask according to the webshop settings if it is manually generated.
+            Only for sales
+        currencies:
+          description: >-
+            The visible currencies the user have.
+            Only for sales
+          type: array
+          items:
+            $ref: '#/components/schemas/Currency'
+        canCreateNew:
+          description: >-
+            Whether the logged user can create a new sale or not.
+          type: boolean
+
+
     OrderDataForSetDeliveryMethod:
       description: >-
         Data used to to set a delivery method.
@@ -49131,6 +50252,29 @@ components:
                 product  multiplied by its corresponding quantity.
               type: string
               format: number
+
+    OrderLog:
+      description: >-
+        Information regarding a specific order status change
+      type: object
+      properties:
+        by:
+          $ref: '#/components/schemas/User'
+        date:
+          description: >-
+            When the chage was made
+          type: string
+          format: date-time
+        remarks:
+          description: >-
+            The remarks associated to the change made by the user
+          type: string
+        status:
+          description: >-
+            The new status for the order
+          allOf:
+           - $ref: '#/components/schemas/OrderStatusEnum'
+
 
     OrderQueryFilters:
       description: >-
@@ -49277,6 +50421,50 @@ components:
               type: boolean
               description: >-
                 Is it a sale (initiated by the seller)?
+            canAccept:
+              description: >-
+                An order can be accepted only for the following statuses:
+
+
+                - `draft`: only if the authenticated user is the seller meaning the seller can
+                submit the sale to the buyer.
+
+                - `pendingBuyer`: only if the authenticated user is the buyer
+
+                - `pendingSeller`: only if the authenticated user is the seller and the order has a
+                delivery method already set
+
+
+              type: boolean
+            canReject:
+              description: >-
+                An order can be rejected only for the following statuses:
+
+
+                - `pendingBuyer`: only if the authenticated user is the buyer or the seller
+
+                - `pendingSeller`: only if the authenticated user is the seller
+
+
+              type: boolean
+            canSetDeliveryInformation:
+              description: >-
+                Delivery information can be set only for the following statuses:
+
+
+                - `draft`: only if the authenticated user is the seller
+
+                - `pendingSeller`: only if the authenticated user is the seller and a delivery method
+                was not already set
+
+
+              type: boolean
+            history:
+              description: >-
+                Contains the history entries for all order status changes
+              type: array
+              items:
+                $ref: '#/components/schemas/OrderLog'
 
     OtpError:
       description: >-
@@ -49409,6 +50597,10 @@ components:
               description: >-
                 For text passwords, the maximum password length
               type: integer
+            onlyNumeric:
+              description: >-
+                Whether the password contains only numbers or not
+              type: boolean
             numberOfButtons:
               description: >-
                 Only for `virtualKeyboard`, is the
@@ -49576,7 +50768,7 @@ components:
       description: >-
         Contains definitions for a password type
       allOf:
-        - $ref: '#/components/schemas/InternalNamedEntity'
+        - $ref: '#/components/schemas/BasePasswordType'
         - type: object
           properties:
             global:
@@ -49591,7 +50783,7 @@ components:
       description: >-
         Data for a given password type to be used on user registration
       allOf:
-        - $ref: '#/components/schemas/InternalNamedEntity'
+        - $ref: '#/components/schemas/BasePasswordType'
         - type: object
           properties:
             description:
@@ -49732,6 +50924,12 @@ components:
                 The maturity used for this payment
               type: string
               format: number
+            skipConfirmation:
+              description: >-
+                True if the payment should be performed directly without showing the
+                preview. If there is a `confirmationPasswordInput` defined then this
+                flag will be false regardless the setting in the transfer type.
+              type: boolean
 
     PaymentRequestPermissions:
       description: >-
@@ -53065,6 +54263,12 @@ components:
           $ref: '#/components/schemas/Currency'
         fromAccount:
           $ref: '#/components/schemas/AccountWithOwner'
+        fromOperator:
+          description: >-
+            The operator who is performing the payment.
+            Only sent if the payment is made from an operator.
+          allOf:
+            - $ref: '#/components/schemas/User'
         totalAmount:
           description: >-
             The final amount charged to the payer including fees.
@@ -53231,6 +54435,13 @@ components:
                 The access client in use when this transaction was performed
               allOf:
                 - $ref: '#/components/schemas/EntityReference'
+            oidcClient:
+              description: >-
+                When the transaction was performed from an OpenID Connect / OAuth2
+                client, contains a reference to it. The client is the third party
+                application used to perform the payment
+              allOf:
+                - $ref: '#/components/schemas/OidcClient'
             by:
               description: >-
                 The user that actually performed the action. May be different than
@@ -53242,7 +54453,7 @@ components:
               description: >-
                 The operator that actually received the payment. Only available if
                 some other user has paid directly to it or the operator has received
-                the payment vía POS.
+                the payment via POS.
               allOf:
                 - $ref: '#/components/schemas/User'
             received:
@@ -53572,6 +54783,11 @@ components:
             The transfer fee amout
           type: string
           format: number
+        currency:
+          description: >-
+            The transfer fee currency
+          allOf:
+            - $ref: '#/components/schemas/Currency'
 
     TransferFilter:
       description: >-
@@ -53880,6 +55096,12 @@ components:
             May only returned when `code` is `login`.
           allOf:
             - $ref: '#/components/schemas/PasswordStatusEnum'
+        error:
+          description: >-
+            Is the OAuth2 / OpenID Connect required error message.
+            Is only returned when `code` is `invalidAccessToken`.
+          type: string
+
 
     User:
       description: >-
@@ -53939,8 +55161,7 @@ components:
           type: boolean
         canCreate:
           description: >-
-            Indicates whether the authenticated user can create a new delivery
-            method this user
+            Indicates whether the authenticated user can create a new ad interest
           type: boolean
         adInterests:
           description: >-
@@ -54597,7 +55818,14 @@ components:
           description: >-
             Permissions over webshop ads
           $ref: '#/components/schemas/UserWebshopPermissions'
-
+        viewInterests:
+          description: >-
+            Can view ad interests? Only returned if there is an authenticated user.
+          type: boolean
+        manageInterests:
+          description: >-
+            Can manage ad interests? Only returned if there is an authenticated user.
+          type: boolean
         viewAdvertisements:
           description: >-
             Use `simple.view` instead
@@ -55300,6 +56528,12 @@ components:
                 When set to `true` will not return any user that is already a
                 contact of the user indicated on `contactsOwner` (the logged user
                 if not set).
+            fromMenu:
+              type: boolean
+              description: >-
+                When set to true the search will be restricted to those groups defined for the user search menu, if false
+                then for those defined in the 'Search users on groups' product setting (or in the configuration in case of
+                guests).
             statuses:
               type: array
               items:
@@ -56667,7 +57901,7 @@ components:
 
     WebshopSettings:
       description: >-
-        Settings for a user's webshop
+        Base Settings for a user's webshop
       type: object
       properties:
         productNumberGenerated:
@@ -56690,35 +57924,43 @@ components:
             - `\` folowed by any character, or any character not in the list
               above: A literal character.
           example: "UUU-####"
-        customOrderNumberFormat:
-          type: boolean
-          description: >-
-            Whether orders will have a custom format for assigned numbers.
-            When set, the number will be generated from a given prefix,
-            inner length and suffix. When false, a numeric string will be used.
-        orderNumberPrefix:
-          type: string
-          description: >-
-            The order number prefix. You can generate a date part by using a
-            [Java date pattern](https://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html)
-            between sharp (#) characters.
-          example: "#yyyyMM#-"
-        orderNumberInnerLength:
-          type: integer
-          description: >-
-            The size of the numerical part of the order number.
-        orderNumberSuffix:
-          type: string
-          description: >-
-            The order number suffix. You can generate a date part by using a
-            [Java date pattern](https://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html)
-            between sharp (#) characters.
+
+    WebshopSettingsDetailed:
+      description: >-
+        Settings for a user's webshop
+      allOf:
+        - $ref: '#/components/schemas/WebshopSettings'
+        - type: object
+          properties:
+            customOrderNumberFormat:
+              type: boolean
+              description: >-
+                Whether orders will have a custom format for assigned numbers.
+                When set, the number will be generated from a given prefix,
+                inner length and suffix. When false, a numeric string will be used.
+            orderNumberPrefix:
+              type: string
+              description: >-
+                The order number prefix. You can generate a date part by using a
+                [Java date pattern](https://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html)
+                between sharp (#) characters.
+              example: "#yyyyMM#-"
+            orderNumberInnerLength:
+              type: integer
+              description: >-
+                The size of the numerical part of the order number.
+            orderNumberSuffix:
+              type: string
+              description: >-
+                The order number suffix. You can generate a date part by using a
+                [Java date pattern](https://docs.oracle.com/javase/8/docs/api/java/text/SimpleDateFormat.html)
+                between sharp (#) characters.
 
     WebshopSettingsView:
       description: >-
         Details of a user webshop settings
       allOf:
-        - $ref: '#/components/schemas/WebshopSettings'
+        - $ref: '#/components/schemas/WebshopSettingsDetailed'
         - type: object
           properties:
             user:
