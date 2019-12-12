@@ -21,6 +21,7 @@ export class MobileResultComponent implements OnInit {
   @Input() amount: string;
   @Input() amountColor = true;
   @Input() currency: Currency;
+  @Input() title: string;
 
   _forceSign: boolean | string = false;
   @Input() get forceSign(): boolean | string {

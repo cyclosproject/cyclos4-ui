@@ -3,7 +3,7 @@ import {
   AdCategoryWithParent, Address, AdView, AdKind, RoleEnum, TimeInterval,
   DeliveryMethod, DeliveryMethodChargeTypeEnum, AdQuestionView
 } from 'app/api/models';
-import { MarketplaceService, AdQuestionsService } from 'app/api/services';
+import { MarketplaceService, AdQuestionsService, ShoppingCartsService } from 'app/api/services';
 import { OperationHelperService } from 'app/core/operation-helper.service';
 import { HeadingAction } from 'app/shared/action';
 import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
@@ -42,7 +42,8 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
     private loginService: LoginService,
     private adQuestionService: AdQuestionsService,
     private marketplaceHelper: MarketplaceHelperService,
-    private marketplaceService: MarketplaceService) {
+    private marketplaceService: MarketplaceService,
+    private shoppingCartService: ShoppingCartsService) {
     super(injector);
   }
 
@@ -75,7 +76,7 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
    * Executes the given request, displays the given message and reloads page after finish
    */
   protected updateStatus(request: Observable<any>, message: string, checkRole?: boolean) {
-    request.subscribe(() => {
+    this.addSub(request.subscribe(() => {
       this.notification.snackBar(message);
       if (checkRole &&
         (this.dataForUiHolder.role === RoleEnum.BROKER &&
@@ -89,7 +90,7 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
         this.reload();
       }
       this.reload();
-    });
+    }));
   }
 
   onDataInitialized(ad: AdView) {
@@ -98,6 +99,18 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
       (this.dataForUiHolder.role === RoleEnum.ADMINISTRATOR ||
         this.dataForUiHolder.role === RoleEnum.BROKER));
     const headingActions: HeadingAction[] = [];
+    if (ad.canBuy) {
+      headingActions.push(
+        new HeadingAction('add_shopping_cart', this.i18n.ad.addToCart, () => {
+          this.addSub(this.shoppingCartService.addItemToShoppingCart({ ad: ad.id }).subscribe(items => {
+            // Assume if the amount of items has not changed if
+            // because this product was already in cart
+            // TODO items check against current shopping cart items in top bar to determine key
+            // and update the top bar
+            this.notification.snackBar(this.i18n.ad.addedProduct);
+          }));
+        }));
+    }
     if (ad.canHide) {
       headingActions.push(
         new HeadingAction('lock', this.i18n.ad.hide, () => this.updateStatus(
@@ -231,6 +244,13 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
       return this.data.canEdit && empty(question.answer);
     }
     return false;
+  }
+
+  /**
+   * Buys the article buy adding it to the shopping cart
+   */
+  buy() {
+
   }
 
   /**

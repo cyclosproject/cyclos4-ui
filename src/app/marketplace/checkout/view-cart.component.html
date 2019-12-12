@@ -1,8 +1,11 @@
-<page-layout [ready]="data$ | async">
-  <ng-container *ngIf="data;">
-    <page-content mode="filters" [heading]="i18n.ad.title.shoppingCart"
-      [mobileHeading]="i18n.ad.mobileTitle.shoppingCart"
-      [headingActions]="headingActions$ | async" mode="viewForm">
+<page-layout [ready]="(data$ || emptyCart$ | async)">
+  <page-content mode="filters" [heading]="i18n.ad.title.shoppingCart"
+    [mobileHeading]="i18n.ad.mobileTitle.shoppingCart"
+    [headingActions]="headingActions$ | async" mode="viewForm">
+    <ng-container *ngIf="!data">
+      {{ i18n.ad.cartEmpty }}
+    </ng-container>
+    <ng-container *ngIf="data">
       <label-value [label]="i18n.ad.seller">
         <user-link [user]="data.seller"></user-link>
       </label-value>
@@ -11,77 +14,83 @@
           {{ data.totalPrice | currency:data.currency }}
         </div>
       </label-value>
-    </page-content>
-    <!-- <results-layout resultType="list"> -->
-
-    <!-- <mobile-result *mobileResult="let row">
-        <div class="d-flex">
-          <div>
-            <label-value [label]="i18n.general.creationDate"
-              labelPosition="above">
-              {{ row.creationDate | dateTime }}
-            </label-value>
-            <label-value *ngIf="this.generalSearch"
-              [label]="i18n.general.user" labelPosition="above">
-              {{ recordOwner(row) }}
-            </label-value>
-            <label-value *ngFor="let field of this.fieldsInList"
-              [label]="field.name" labelPosition="above">
-              <format-field-value [fields]="data.customFields"
-                [plainText]="true" [fieldName]="field.internalName"
-                [object]="row" [customValues]="row.customValues">
-              </format-field-value>
-            </label-value>
+    </ng-container>
+  </page-content>
+  <results-layout *ngIf="data" [results]="data.items" resultType="list">
+    <mobile-result *mobileResult="let row" [avatarImage]="row.product.image"
+      avatarIcon="shopping_basket" [title]="row.product.name">
+      <div class="d-flex">
+        <div>
+          <div class="cell-main">
+            {{ i18n.ad.total }}:
+            {{ row.totalPrice | currency:data.currency }}
           </div>
-          <div class="ml-auto text-right">
-            <button *ngIf="data.edit" [tooltip]="i18n.general.edit"
-              class="btn btn-icon"
-              (click)="router.navigate(editPath(row)); $event.stopPropagation(); $event.preventDefault()">
-              <icon icon="edit"></icon>
-            </button>
-            <button *ngIf="this.data.remove" [tooltip]="i18n.general.remove"
-              class="btn btn-icon" [ngClass]="{'ml-3': data.edit}"
-              (click)="remove(row); $event.stopPropagation(); $event.preventDefault()">
-              <icon icon="clear"></icon>
-            </button>
+          <div class="cell-text">
+            {{ i18n.ad.number }}: {{ row.product.productNumber }}
+          </div>
+          <div class="cell-text">
+            {{ i18n.ad.unitPrice }}:
+            {{ row.price | currency: data.currency}}
+          </div>
+          <div class="cell-text">
+            {{ i18n.ad.quantity }}: {{ resolveQuantityLabel(row) }}
           </div>
         </div>
-      </mobile-result> -->
+        <div class="ml-auto text-right">
+          <button [tooltip]="i18n.ad.changeQuantity" class="btn btn-icon"
+            (click)="changeQuantity(row); $event.stopPropagation(); $event.preventDefault()">
+            <icon icon="edit"></icon>
+          </button>
+          <button [tooltip]="i18n.general.remove" class="btn btn-icon ml-3"
+            (click)="remove(row); $event.stopPropagation(); $event.preventDefault()">
+            <icon icon="clear"></icon>
+          </button>
+        </div>
+      </div>
+    </mobile-result>
 
-    <!-- <table *resultTable class="table table-hover cursor-pointer">
-        <thead>
-          <th class="avatar"></th>
-          <th>{{ i18n.ad.product }}</th>
-          <th>{{ i18n.ad.number }}</th>
-          <th>{{ i18n.ad.unitPrice }}</th>
-          <th class="actions"></th>
-        </thead>
-        <tbody>
-          <tr *ngFor="let row of results.results"
-            (click)="router.navigate(viewPath(row))">
-            <td>{{ row.creationDate | dateTime }}</td>
-            <td *ngIf="this.generalSearch">{{ recordOwner(row) }}</td>
-            <td *ngFor=" let field of this.fieldsInList">
-              <format-field-value [fields]="data.customFields"
-                [plainText]="true" [fieldName]="field.internalName"
-                [object]="row" [customValues]="row.customValues">
-              </format-field-value>
-            </td>
-            <td class="actions actions-multiple">
-              <button *ngIf="data.edit" [tooltip]="i18n.general.edit"
-                class="btn btn-icon"
-                (click)="router.navigate(editPath(row)); $event.stopPropagation()">
-                <icon icon="edit"></icon>
-              </button>
-              <button *ngIf="this.data.remove" [tooltip]="i18n.general.remove"
-                class="btn btn-icon" [ngClass]="data.edit ? 'ml-3' : ''"
-                (click)="remove(row); $event.stopPropagation()">
-                <icon icon="clear"></icon>
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </results-layout> -->
-  </ng-container>
+    <table *resultTable class="table table-hover cursor-pointer">
+      <thead>
+        <th class="avatar"></th>
+        <th width="30%">{{ i18n.ad.product }}</th>
+        <th>{{ i18n.ad.number }}</th>
+        <th class="text-right">{{ i18n.ad.unitPrice }}</th>
+        <th class="text-right">{{ i18n.ad.quantity }}</th>
+        <th class="text-right">{{ i18n.ad.total }}</th>
+        <th class="actions"></th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of data.items">
+          <td class="avatar" [ngClass]="{
+                'pb-0': layout.xxs$ | async,
+                'border-0': layout.xxs$ | async
+              }">
+            <avatar [image]="row.product.image" [tooltip]="row.product.name"
+              icon="shopping_basket"></avatar>
+          <td
+            [ngStyle]="{'text-decoration': !isAvailable(row) ? 'line-through' : ''}">
+            {{ row.product.name }}</td>
+          <td>{{ row.product.productNumber }}</td>
+          <td class="text-right">{{ row.price | currency: data.currency }}
+          </td>
+          <td class="text-right">{{ resolveQuantityLabel(row) }}
+          </td>
+          <td class="text-right">
+            {{ row.totalPrice | currency: data.currency }}</td>
+          <td class="actions actions-multiple">
+            <button *ngIf="isAvailable(row)"
+              [tooltip]="i18n.ad.changeQuantity" class="btn btn-icon"
+              (click)="changeQuantity(row); $event.stopPropagation()">
+              <icon icon="edit"></icon>
+            </button>
+            <button [tooltip]="i18n.general.remove" class="btn btn-icon"
+              [ngClass]="{'ml-3' : isAvailable(row)}"
+              (click)="remove(row); $event.stopPropagation()">
+              <icon icon="clear"></icon>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </results-layout>
 </page-layout>

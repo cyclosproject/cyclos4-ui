@@ -91,7 +91,7 @@ export class SearchRecordsComponent
 
   remove(record: RecordResult) {
     this.notification.confirm({
-      message: this.i18n.record.removeConfirm,
+      message: this.i18n.general.removeItemConfirm,
       callback: () => this.doRemove(record)
     });
   }
@@ -99,7 +99,7 @@ export class SearchRecordsComponent
   private doRemove(record: RecordResult) {
     this.addSub(this.recordsService.deleteRecord({ id: record.id })
       .subscribe(() => {
-        this.notification.snackBar(this.i18n.record.removeDone);
+        this.notification.snackBar(this.i18n.general.removeItemDone);
         this.update();
       }));
   }
