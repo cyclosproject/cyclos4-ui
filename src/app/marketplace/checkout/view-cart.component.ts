@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit, Injector } from '@angular/core';
-import { ShoppingCartView, ShoppingCartItemDetailed, ShoppingCartItemAvailabilityEnum, CustomFieldTypeEnum } from 'app/api/models';
+import { ShoppingCartView, ShoppingCartItemDetailed, ShoppingCartItemAvailabilityEnum, CustomFieldTypeEnum, ShoppingCartItemQuantityAdjustmentEnum } from 'app/api/models';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { Menu } from 'app/shared/menu';
 import { ShoppingCartsService } from 'app/api/services';
@@ -22,6 +22,8 @@ export class ViewCartComponent
   implements OnInit {
 
   id: string;
+  unavailable: boolean;
+  outOfStock: boolean;
   emptyCart$ = new BehaviorSubject(false);
 
   constructor(
@@ -52,11 +54,66 @@ export class ViewCartComponent
     });
   }
 
-  onDataInitialized() {
+  onDataInitialized(data: ShoppingCartView) {
     this.headingActions = [
-      new HeadingAction('local_mall', this.i18n.ad.checkout, () =>
-        this.router.navigate(['/marketplace', 'checkout', this.id]), true)
+      new HeadingAction('local_mall', this.i18n.ad.checkout, () => this.checkout(), true)
     ];
+
+    this.checkMessages(data);
+  }
+
+  /**
+   * Checks for messages about the cart like unavailable / out of stock / adjusted items, low balance, etc   
+   */
+  protected checkMessages(data: ShoppingCartView) {
+    const adjustments = new Set();
+    data.items.forEach(item => {
+      if (item.availability === ShoppingCartItemAvailabilityEnum.UNAVAILABLE) {
+        this.unavailable = true;
+      } else if (item.availability === ShoppingCartItemAvailabilityEnum.OUT_OF_STOCK) {
+        this.outOfStock = true;
+      } else if (item.quantityAdjustment != null) {
+        adjustments.add(item.quantityAdjustment);
+      }
+    });
+
+    let message = '';
+    if (this.unavailable) {
+      message += this.i18n.ad.itemsNoLongerAvailable;
+    }
+    if (this.outOfStock) {
+      message += this.i18n.ad.itemsOutOfStock;
+    }
+    adjustments.forEach(adjustment => {
+      switch (adjustment) {
+        case ShoppingCartItemQuantityAdjustmentEnum.MAX:
+          message += this.i18n.ad.adjustedQuantity.max;
+          break;
+        case ShoppingCartItemQuantityAdjustmentEnum.MIN:
+          message += this.i18n.ad.adjustedQuantity.min;
+          break;
+        case ShoppingCartItemQuantityAdjustmentEnum.STOCK:
+          message += this.i18n.ad.adjustedQuantity.stock;
+          break;
+      }
+    });
+    if (data.insufficientBalance) {
+      message += this.i18n.ad.lowBalance(data.currency.name);
+    }
+    if (message !== '') {
+      this.notification.warning(this.i18n.ad.articlesNotice(message), true, false);
+    }
+  }
+
+  /**
+   * Validates and navigates to the checkout page
+   */
+  protected checkout() {
+    if (this.unavailable || this.outOfStock || this.data.insufficientBalance) {
+      this.notification.error(this.i18n.ad.error.cannotProceedToCheckout);
+      return;
+    }
+    this.router.navigate(['/marketplace', 'checkout', this.id])
   }
 
   /**

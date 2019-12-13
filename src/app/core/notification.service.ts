@@ -169,8 +169,8 @@ export class NotificationService {
    * @param message The notification message
    * @returns The dialog reference
    */
-  warning(message: string, allowClose = true): NotificationRef {
-    return this.showNotification(NotificationType.WARNING, message, allowClose);
+  warning(message: string, allowClose = true, backdrop = true): NotificationRef {
+    return this.showNotification(NotificationType.WARNING, message, allowClose, backdrop);
   }
 
   /**
@@ -178,8 +178,8 @@ export class NotificationService {
    * @param message The notification message
    * @returns The dialog reference
    */
-  info(message: string, allowClose = true): NotificationRef {
-    return this.showNotification(NotificationType.INFO, message, allowClose);
+  info(message: string, allowClose = true, backdrop = true): NotificationRef {
+    return this.showNotification(NotificationType.INFO, message, allowClose, backdrop);
   }
 
   /**
@@ -188,7 +188,7 @@ export class NotificationService {
    * @param message The notification message
    * @returns The dialog reference
    */
-  showNotification(type: NotificationType, message: string, allowClose = true): NotificationRef {
+  showNotification(type: NotificationType, message: string, allowClose = true, backdrop = true): NotificationRef {
     // Close the current notification, if any
     this.close();
 
@@ -200,6 +200,9 @@ export class NotificationService {
         allowClose: allowClose
       }
     });
+    if (!backdrop) {
+      this.modal.removeBackdrop();
+    }
 
     // Store the currently opened notification
     this.currentNotification = new NotificationRef(modalRef, this.onClosed);

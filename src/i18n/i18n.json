@@ -1089,9 +1089,15 @@
     "addedProduct": "The product was added to cart",
     "addedProductAlreadyInCart": "The product was added to cart (this item has been added previously to your cart)",
     "addToCart": "Add to cart",
+    "adjustedQuantity": {
+      "max": "- the quantity demanded cannot be delivered, because there is a maximum of items you are allowed to have in your shopping cart. The quantity of this article is automatically reduced.<br>",
+      "min": "- the quantity demanded cannot be delivered, because there is a minimum of items you are allowed to have in your shopping cart. The quantity of this article is automatically increased.<br>",
+      "stock": "- the quantity demanded cannot be delivered, because the article is almost out of stock. The quantity of this article is automatically reduced.<br>"
+    },
     "adSaved": "The advertisement was saved",
     "adHidden": "The advertisement has been hidden",
     "adUnhidden": "The advertisement is now visible",
+    "articlesNotice": "Please notice, some articles in your shopping cart:<br> {notice}",
     "authorize": "Authorize",
     "authorized": "The advertisement has been authorized",
     "askQuestion": "Ask a question",
@@ -1102,6 +1108,11 @@
     "changeQuantity": "Change quantity",
     "chooseSeller": "Choose a seller from the list below to continue with the shopping cart process",
     "endDate": "End date",
+    "error": {
+      "cannotBuyFromSeller": "At the moment, you are not allowed to buy products from this user. Please contact your administrator.",
+      "cannotProceedToCheckout": "You can not proceed with checkout because some items are unavailable or you do not have enough balance",
+      "notEnoughStock": "The quantity demanded cannot be delivered, because the article is almost out of stock."
+    },
     "deliveryAddress": "Delivery address",
     "deliveryInformation": "Delivery information",
     "deliveryPrice": "Delivery price",
@@ -1110,6 +1121,9 @@
     "item": "Item",
     "items": "Items",
     "itemNotAvailable": "Not available",
+    "itemsNoLongerAvailable": "- are no longer available.<br>",
+    "itemsOutOfStock": "- are out of stock.<br>",
+    "lowBalance": "- are exceeding your {currency} balance.",
     "minDeliveryTime": "Min. delivery time",
     "maxDeliveryTime": "Max. delivery time",
     "name": "Title",
