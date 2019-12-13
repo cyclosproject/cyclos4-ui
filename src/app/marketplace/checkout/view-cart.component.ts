@@ -1,5 +1,8 @@
 import { ChangeDetectionStrategy, Component, OnInit, Injector } from '@angular/core';
-import { ShoppingCartView, ShoppingCartItemDetailed, ShoppingCartItemAvailabilityEnum, CustomFieldTypeEnum, ShoppingCartItemQuantityAdjustmentEnum } from 'app/api/models';
+import {
+  ShoppingCartView, ShoppingCartItemDetailed, ShoppingCartItemAvailabilityEnum,
+  CustomFieldTypeEnum, ShoppingCartItemQuantityAdjustmentEnum
+} from 'app/api/models';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { Menu } from 'app/shared/menu';
 import { ShoppingCartsService } from 'app/api/services';

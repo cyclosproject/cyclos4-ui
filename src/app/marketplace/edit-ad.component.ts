@@ -106,7 +106,7 @@ export class EditAdComponent
       name: [adManage.name, Validators.required],
       categories: [categories, Validators.required],
       currency: [!empty(data.currencies) ? this.ApiHelper.internalNameOrId(data.currencies[0]) : null, Validators.required],
-      price: adManage.price,
+      price: [adManage.price, this.webshop ? Validators.required : null],
       publicationBeginDate: [adManage.publicationPeriod.begin, Validators.required],
       publicationEndDate: [adManage.publicationPeriod.end, Validators.required],
       promotionalBeginDate: adManage.promotionalPeriod ? adManage.promotionalPeriod.begin : null,
@@ -114,6 +114,13 @@ export class EditAdComponent
       promotionalPrice: adManage.promotionalPrice,
       description: [adManage.description, Validators.required],
       addresses: adManage.addresses,
+      maxAllowedInCart: adManage.maxAllowedInCart,
+      minAllowedInCart: adManage.minAllowedInCart,
+      allowDecimalQuantity: adManage.allowDecimalQuantity,
+      unlimitedStock: adManage.unlimitedStock,
+      stockQuantity: [adManage.stockQuantity, this.webshop ? Validators.required : null],
+      minStockQuantityToNotify: [adManage.minStockQuantityToNotify, this.webshop ? Validators.required : null],
+      deliveryMethods: adManage.deliveryMethods,
       version: adEdit.version,
       id: this.id
     });
