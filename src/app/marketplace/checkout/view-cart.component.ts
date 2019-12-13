@@ -7,6 +7,7 @@ import { HeadingAction } from 'app/shared/action';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ErrorStatus } from 'app/core/error-status';
 import { BehaviorSubject } from 'rxjs';
+import { MarketplaceHelperService } from 'app/core/marketplace-helper.service';
 
 /**
  * Edits a shopping cart by changing quantity or removing items
@@ -25,7 +26,8 @@ export class ViewCartComponent
 
   constructor(
     injector: Injector,
-    private shoppingCartService: ShoppingCartsService
+    private shoppingCartService: ShoppingCartsService,
+    private marketplaceHelper: MarketplaceHelperService
   ) {
     super(injector);
   }
@@ -69,10 +71,10 @@ export class ViewCartComponent
    */
   remove(item: ShoppingCartItemDetailed) {
     this.addSub(this.shoppingCartService.removeItemFromShoppingCart({ ad: item.product.id })
-      .subscribe(() => {
+      .subscribe(items => {
         this.notification.snackBar(this.i18n.general.removeItemDone);
-        // TODO update top bar icon
         this.reload();
+        this.marketplaceHelper.cartItems = items;
       }));
   }
 

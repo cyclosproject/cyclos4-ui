@@ -18,6 +18,7 @@ import { Breakpoint, LayoutService } from 'app/shared/layout.service';
 import { ActiveMenu, Menu, MenuType, RootMenu, RootMenuEntry } from 'app/shared/menu';
 import { BehaviorSubject } from 'rxjs';
 import { MenuDensity } from 'app/core/menu-density';
+import { MarketplaceHelperService } from 'app/core/marketplace-helper.service';
 
 const MaxUserDisplaySize = 30;
 const MaxUserDisplaySizeMenu = 15;
@@ -61,7 +62,8 @@ export class TopBarComponent extends AbstractComponent implements OnInit, OnChan
     public menu: MenuService,
     public router: Router,
     public breadcrumb: BreadcrumbService,
-    public login: LoginService) {
+    public login: LoginService,
+    public marketplaceHelper: MarketplaceHelperService) {
     super(injector);
   }
 

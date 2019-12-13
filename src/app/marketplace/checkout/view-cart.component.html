@@ -1,4 +1,4 @@
-<page-layout [ready]="(data$ || emptyCart$ | async)">
+<page-layout [ready]="(data$ | async) || (emptyCart$ | async) ">
   <page-content mode="filters" [heading]="i18n.ad.title.shoppingCart"
     [mobileHeading]="i18n.ad.mobileTitle.shoppingCart"
     [headingActions]="headingActions$ | async" mode="viewForm">

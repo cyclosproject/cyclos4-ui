@@ -75,11 +75,13 @@
       [ngClass]="customNgClass(Menu.SHOPPING_CART)"
       [tooltip]="hasMenu ? i18n.menu.shoppingCart : null"
       (click)="navigate(Menu.SHOPPING_CART, $event); blurIfClick('shopping-cart', $event);">
-      <icon class="top-icon" icon="shopping_cart"></icon>
+      <icon-with-counter class="top-icon" icon="shopping_cart"
+        [count]="marketplaceHelper.cartItems$ | async"></icon-with-counter>
       <div *ngIf="(layout.gtmd$ | async) && !hasMenu" class="ml-2">
         {{ i18n.menu.shoppingCart }}
       </div>
     </a>
+
     <a href="#" *ngIf="user != null" id="logout-trigger" class="nav-item"
       [ngClass]="customNgClass(Menu.LOGOUT)"
       [tooltip]="hasMenu ? i18n.menu.logout : null"

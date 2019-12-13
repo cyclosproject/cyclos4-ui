@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { AdStatusEnum, OrderStatusEnum } from 'app/api/models';
 import { I18n } from 'app/i18n/i18n';
 import { AuthHelperService } from 'app/core/auth-helper.service';
+import { BehaviorSubject } from 'rxjs';
+import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 
 
 
@@ -13,12 +15,19 @@ import { AuthHelperService } from 'app/core/auth-helper.service';
 })
 export class MarketplaceHelperService {
 
-
+  cartItems$ = new BehaviorSubject<number>(0);
 
   constructor(
     private i18n: I18n,
-    protected authHelper: AuthHelperService
-  ) { }
+    protected authHelper: AuthHelperService,
+    protected dataForUiHolder: DataForUiHolder
+  ) {
+
+    // Subscribe for cart items count on UI initialization
+    dataForUiHolder.subscribe(dataForUi => {
+      this.cartItems = dataForUi ? dataForUi.shoppingCartWebShopCount : 0;
+    });
+  }
 
   /**
    * Resolves the label for the given status
@@ -70,6 +79,20 @@ export class MarketplaceHelperService {
       case OrderStatusEnum.REJECTED_BY_SELLER:
         return this.i18n.ad.orderStatus.rejectedBySeller;
     }
+  }
+
+  /**
+   * Returns the current cart items count
+   */
+  get cartItems(): number {
+    return this.cartItems$.value;
+  }
+
+  /**
+   * Updates the cart items count to be reflected in top bar
+   */
+  set cartItems(items: number) {
+    this.cartItems$.next(items);
   }
 
 }

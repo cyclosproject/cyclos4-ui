@@ -98,14 +98,13 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
    */
   protected addToCart() {
     this.addSub(this.shoppingCartService.addItemToShoppingCart({ ad: this.ad.id }).subscribe(items => {
-      // Assume if the amount of items has not changed if
+      // Assume if the amount of items has not changed is
       // because this product was already in cart
-      // TODO items check against current shopping cart items in top bar to determine key
-      // and update the top bar
-      if (items == null) {
-        return;
-      }
-      this.notification.snackBar(this.i18n.ad.addedProduct);
+      this.notification.snackBar(
+        items === this.marketplaceHelper.cartItems ?
+          this.i18n.ad.addedProductAlreadyInCart :
+          this.i18n.ad.addedProduct);
+      this.marketplaceHelper.cartItems = items;
     }));
   }
 
