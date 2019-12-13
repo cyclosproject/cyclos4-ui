@@ -93,6 +93,22 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
     }));
   }
 
+  /**
+   * Adds the current ad to cart, displays a message and updates the top bar
+   */
+  protected addToCart() {
+    this.addSub(this.shoppingCartService.addItemToShoppingCart({ ad: this.ad.id }).subscribe(items => {
+      // Assume if the amount of items has not changed if
+      // because this product was already in cart
+      // TODO items check against current shopping cart items in top bar to determine key
+      // and update the top bar
+      if (items == null) {
+        return;
+      }
+      this.notification.snackBar(this.i18n.ad.addedProduct);
+    }));
+  }
+
   onDataInitialized(ad: AdView) {
     this.webshop = ad.kind === AdKind.WEBSHOP;
     this.hasStatus = !this.guest && (this.authHelper.isSelfOrOwner(ad.owner) ||
@@ -101,15 +117,7 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
     const headingActions: HeadingAction[] = [];
     if (ad.canBuy) {
       headingActions.push(
-        new HeadingAction('add_shopping_cart', this.i18n.ad.addToCart, () => {
-          this.addSub(this.shoppingCartService.addItemToShoppingCart({ ad: ad.id }).subscribe(items => {
-            // Assume if the amount of items has not changed if
-            // because this product was already in cart
-            // TODO items check against current shopping cart items in top bar to determine key
-            // and update the top bar
-            this.notification.snackBar(this.i18n.ad.addedProduct);
-          }));
-        }));
+        new HeadingAction('add_shopping_cart', this.i18n.ad.addToCart, () => this.addToCart()));
     }
     if (ad.canHide) {
       headingActions.push(
