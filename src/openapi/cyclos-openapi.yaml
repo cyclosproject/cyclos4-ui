@@ -52,6 +52,17 @@ tags:
     description: >-
       Generate new captcha challenges, which are required for some operations
       performed as guest, in order to make it harder for bots to abuse the api.
+  - name: IdentityProviders
+    description: >-
+      Provides access operations using identity providers such as Google or
+      Facebook. The operations involving the user consent cannot be implemented
+      solely with this API, because a browser window must be opened for the
+      user to consent with the operation. Such operations need first to be
+      prepared, which will store validate and store all the context in Cyclos,
+      and then the popup must be opened. After finishing, the resulting data
+      is sent via push notifications.
+      For more information, see the corresponding section in the
+      [Cyclos Wiki](https://wiki4.cyclos.org/index.php/External_identity_providers#Using_identity_providers_together_with_the_REST_API).
   - name: Users
     description: >-
       User searching, registration and profile modification. Also provides
@@ -517,6 +528,15 @@ paths:
           description: >-
             The HMAC-SHA256 calculated for the QR-code of the confirmation using
             the secret key stored in the device.
+          schema:
+            type: string
+        - name: identityProviderRequestId
+          in: query
+          required: false
+          description: >-
+            When using an [external identity provider](https://wiki4.cyclos.org/index.php/External_identity_providers),
+            this is the request id used to automatically link the user to the provider. Is only needed when no user
+            was matched, either by being previously linked to the provider or by having the same e-mail.
           schema:
             type: string
       responses:
@@ -2085,6 +2105,336 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /{user}/identity-providers/list-data:
+    parameters:
+      - $ref: '#/components/parameters/user'
+    get:
+      operationId: getUserIdentityProvidersListData
+      summary: >-
+        Returns data for identity providers links of the given user.
+      description: >-
+        Returns data for identity providers links of the given user,
+        plus additional data related to them.
+      tags:
+        - IdentityProviders
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            The data for listing identity provider links
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserIdentityProvidersListData'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /{user}/identity-providers/{identityProvider}:
+    parameters:
+      - $ref: '#/components/parameters/user'
+      - name: identityProvider
+        in: path
+        required: true
+        description: >-
+          Either the id or internal name of the identity provider
+        schema:
+          type: string
+    delete:
+      operationId: deleteUserIdentityProvider
+      summary: >-
+        Removes the link between a user and an identity provider,
+        optionally disabling it
+      description: >-
+        The link between the user and identity provider is removed.
+        If the user attempts to login with the same provider again and
+        the same e-mail address is used a new link will be automatically
+        create.
+        However, if the `disable` parameter is set to `true`, the provider
+        will be disabled for the user, meaning that any subsequent attempts
+        to login the user with that provider will fail, even if the e-mail
+        addres match.
+      tags:
+        - IdentityProviders
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - name: disable
+          in: query
+          required: false
+          description: >-
+            When set to true will disable the link between the user and the
+            provider, preventing a new link to be created on login even if the
+            regitered e-mail address matches the on in the identity provider.
+          schema:
+            type: boolean
+      responses:
+        '204':
+          description: >-
+            The link between the user and the identity provider was removed
+            and optionally disabled.
+        '409':
+          description: >-
+            This operation expected an entity state, but it has resulted in a conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictError'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /identity-providers/{identityProvider}/login:
+    parameters:
+      - name: identityProvider
+        in: path
+        required: true
+        description: >-
+          Either the id or internal name of the identity provider
+        schema:
+          type: string
+    post:
+      operationId: prepareIdentityProviderLogin
+      summary: >-
+        Prepares an operation to login a user from an identity provider.
+      description: >-
+        Prepares an operation to login a user from an identity provider.
+        Several validations are performed, and the result contains the
+        URL which should be used to open a browser window to get the
+        user consent.
+      tags:
+        - IdentityProviders
+      responses:
+        '200':
+          description: >-
+            Contains both the request identifier and the URL.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IdentityProviderRequestResult'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /identity-providers/{identityProvider}/register:
+    parameters:
+      - name: identityProvider
+        in: path
+        required: true
+        description: >-
+          Either the id or internal name of the identity provider
+        schema:
+          type: string
+    post:
+      operationId: prepareIdentityProviderRegistration
+      summary: >-
+        Prepares an operation to register a user from an identity provider.
+      description: >-
+        Prepares an operation to register a user from an identity provider.
+        Several validations are performed, and the result contains the
+        URL which should be used to open a browser window to get the
+        user consent.
+        The channel configuration in Cyclos determines whether registration
+        with identity providers is allowed, and if so, whether a direct
+        registration will be attempted or will just return the profile data
+        to fill-in the registration form.
+      tags:
+        - IdentityProviders
+      parameters:
+        - name: group
+          in: query
+          required: true
+          description: >-
+            The group in which the registration is being requested
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >-
+            Contains both the request identifier and the URL.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IdentityProviderRequestResult'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /identity-providers/{identityProvider}/link:
+    parameters:
+      - name: identityProvider
+        in: path
+        required: true
+        description: >-
+          Either the id or internal name of the identity provider
+        schema:
+          type: string
+    post:
+      operationId: prepareIdentityProviderLink
+      summary: >-
+        Prepares an operation to link the authenticated user to an identity
+        provider.
+      description: >-
+        Prepares an operation to link the authenticated user to an identity
+        provider.
+        Must be authenticated with a session token (via `Session-Token`
+        request header).
+        Several validations are performed, and the result contains the
+        URL which should be used to open a browser window to get the
+        user consent.
+      tags:
+        - IdentityProviders
+      security:
+        - session: []
+      responses:
+        '200':
+          description: >-
+            Contains both the request identifier and the URL.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IdentityProviderRequestResult'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
   /users/data-for-search:
     get:
       operationId: getUserDataForSearch
@@ -31081,6 +31431,15 @@ A note for dynamic custom fields: If a script is used to generate possible value
             monitor.
           schema:
             type: string
+        - name: identityProviderRequestId
+          in: query
+          required: false
+          description: >-
+            When subscribing to
+            `identityProviderCallback` events,
+            this parameter can be used to filter which request to monitor.
+          schema:
+            type: string
         - name: lastEventId
           in: header
           required: false
@@ -31097,6 +31456,22 @@ A note for dynamic custom fields: If a script is used to generate possible value
             text/event-stream:
               schema:
                 type: string
+        '203':
+          description: >-
+            This status code isn't actually returned, but listed here to
+            reference all possible data types which are sent in push events.
+          content:
+            application/json:
+              schema:
+                anyOf:
+                  - $ref: '#/components/schemas/NewNotificationPush'
+                  - $ref: '#/components/schemas/NewMessagePush'
+                  - $ref: '#/components/schemas/Transaction'
+                  - $ref: '#/components/schemas/TransactionView'
+                  - $ref: '#/components/schemas/AccountWithStatus'
+                  - $ref: '#/components/schemas/DeviceConfirmationView'
+                  - $ref: '#/components/schemas/DeviceConfirmationFeedbackPush'
+                  - $ref: '#/components/schemas/IdentityProviderCallbackResult'
         '401':
           description: >-
             Unauthorized access. Missing or invalid crendentials supplied for such
@@ -37693,6 +38068,41 @@ components:
         - contacts
         - principalType
 
+    IdentityProviderCallbackStatusEnum:
+      description: >
+        The status the result of a callback from an identity provider.
+
+        Possible values are:
+        
+        - `denied`: The user has denied the request. Generally nothing should be done, as the popup will be automatically closed.
+        
+        - `error`: There was an error. The `errorMessage` property is likely to contain the error description, though it can be empty. If so, a generic error message should be displayed.
+        
+        - `linked`: The currently logged user was successfully linked to the provider.
+        
+        - `loginEmail`: Successful login. No user was previously linked to this provider account, but a user was matched by e-mail and automatically linked.  The `sessionToken` is returned.
+        
+        - `loginLink`: Successful login with a user was previously linked to the provider.
+        
+        - `loginNoEmail`: Similar to `loginNoMatch`, except that the identity provider hasn't returned / disclosed the user's e-mail address.
+        
+        - `loginNoMatch`: No matching user, either linked or by e-mail. If on the next login the `requestId` value is passed in, a link will be automatically created, so the next time the login works directly.  The `sessionToken` is returned.
+        
+        - `registrationData`: The profile data was read and the available data has been returned.
+        
+        - `registrationDone`: The user was directly registered and logged-in. The `sessionToken` is returned.
+      type: string
+      enum:
+        - denied
+        - error
+        - linked
+        - loginEmail
+        - loginLink
+        - loginNoEmail
+        - loginNoMatch
+        - registrationData
+        - registrationDone
+
     ImageKind:
       description: >
         Determines the kind of an image
@@ -38852,6 +39262,23 @@ components:
         - transfer
         - user
 
+    OperationShowFormEnum:
+      description: >
+        Determines in which conditions the parameters form is shown
+
+        Possible values are:
+        
+        - `always`: Show form even if parameters are not missing
+        
+        - `missingAny`: Show form if any parameter (optional or required) is missing
+        
+        - `missingRequired`: Show form only if required parameters are missing
+      type: string
+      enum:
+        - always
+        - missingAny
+        - missingRequired
+
     OperatorGroupAccountAccessEnum:
       description: >
         How an owner account can be accessed by operators
@@ -39302,6 +39729,8 @@ components:
         
         - `deviceConfirmationFeedback`: The result of an operation approved by a device confirmation
         
+        - `identityProviderCallback`: An identity provider has returned profile data for the user
+        
         - `loggedOut`: The current session has been invalidated
         
         - `newMessage`: New message on the user's inbox
@@ -39316,6 +39745,7 @@ components:
         - accountStatus
         - deviceConfirmation
         - deviceConfirmationFeedback
+        - identityProviderCallback
         - loggedOut
         - newMessage
         - newNotification
@@ -40090,6 +40520,23 @@ components:
         - passwordTemporarilyBlocked
         - receivedVeryBadRefs
         - scheduledPaymentFailed
+
+    UserIdentityProviderStatusEnum:
+      description: >
+        The status of a link between a user and an identity provider
+
+        Possible values are:
+        
+        - `disabled`: The identity provider is disabled for the user, which means that the login with external provider will not work even if the user has the same e-mail address in the provider and in Cyclos.
+        
+        - `linked`: The identity provider is linked to the user
+        
+        - `notLinked`: The identity provider is not currently linked with the user
+      type: string
+      enum:
+        - disabled
+        - linked
+        - notLinked
 
     UserImageKind:
       description: >
@@ -41049,7 +41496,7 @@ components:
             The available delivery methods. Only for webshops.
           type: array
           items:
-            $ref: '#/components/schemas/BaseDeliveryMethod'
+            $ref: '#/components/schemas/DeliveryMethod'
 
     AdCategoryWithChildren:
       description: >-
@@ -45770,6 +46217,12 @@ components:
             the data and it exists and is active.
           allOf:
             - $ref: '#/components/schemas/DeviceConfirmationView'
+        identityProviders:
+          description: >-
+            The identity providers available for login
+          type: array
+          items:
+            $ref: '#/components/schemas/IdentityProvider'
         forgotPasswordCaptchaProvider:
           description: >-
             If the forgot password request requires a captcha, will be the provider
@@ -47794,6 +48247,129 @@ components:
           description: >-
             The user's e-mail
 
+    IdentityProvider:
+      description: >-
+        A reference to an identity provider
+      allOf:
+        - $ref: '#/components/schemas/InternalNamedEntity'
+        - type: object
+          properties:
+            backgroundColor:
+              description: >-
+                The background color for the button that represents this provider
+              type: string
+            borderColor:
+              description: >-
+                The border color for the button that represents this provider
+              type: string
+            textColor:
+              description: >-
+                The text color for the button that represents this provider
+              type: string
+            image:
+              description: >-
+                The provider image
+              allOf:
+                - $ref: '#/components/schemas/Image'
+
+    IdentityProviderCallbackResult:
+      description: >-
+        Result of a callback by an identity provider
+      type: object
+      properties:
+        identityProvider:
+          $ref: '#/components/schemas/IdentityProvider'
+        status:
+          $ref: '#/components/schemas/IdentityProviderCallbackStatusEnum'
+        requestId:
+          description: >-
+            The identifier used to track this operation.
+          type: string
+        sessionToken:
+          description: >-
+            If the user was logged-in, this is the token identifying the session.
+            Only returned if `status` is either:
+            `loginLink`,
+            `loginEmail` or
+            `registrationDone`.
+          type: string
+        name:
+          description: >-
+            The user display name as returned by the provider.
+            Only returned if `status` is
+            `registrationData`.
+          type: string
+        email:
+          description: >-
+            The user e-mail as returned by the provider.
+            Only returned if `status` is
+            `registrationData`.
+          type: string
+        username:
+          description: >-
+            The user login name as returned by the provider.
+            Only returned if `status` is
+            `registrationData`.
+          type: string
+        mobilePhone:
+          description: >-
+            The user mobile phone number name as returned by the provider.
+            Only returned if `status` is
+            `registrationData`.
+          type: string
+        landLinePhone:
+          description: >-
+            The user land-line phone number name as returned by the provider.
+            Only returned if `status` is
+            `registrationData`.
+          type: string
+        landLineExtension:
+          description: >-
+            The user land-line phone extension name as returned by the provider.
+            Only returned if `status` is
+            `registrationData`.
+          type: string
+        image:
+          description: >-
+            The user image as returned by the provider.
+            Only returned if `status` is
+            `registrationData`.
+          allOf:
+            - $ref: '#/components/schemas/Image'
+        customValues:
+          description: >-
+            The user custom field values as returned by the provider.
+            Only returned if `status` is
+            `registrationData`.
+          type: object
+          additionalProperties:
+            type: string
+        errorMessage:
+          description: >-
+            Description for the error being returned. It is possible that no
+            message is returned. In this case, a generic error message should
+            be displayed for the user.
+            Only returned if `status` is
+            `error`.
+          type: string
+
+    IdentityProviderRequestResult:
+      description: >-
+        Result of the preparation of an operation with an identity provider
+      type: object
+      properties:
+        identityProvider:
+          $ref: '#/components/schemas/IdentityProvider'
+        requestId:
+          description: >-
+            The identifier used to track this operation
+          type: string
+        url:
+          description: >-
+            The URL which should be opened in a new browser window / popup
+            to get the user consent.
+          type: string
+
     Image:
       description: >-
         Contains data for displaying an image
@@ -49442,12 +50018,26 @@ components:
               items:
                 type: string
             showFormForMissingOptionalParameters:
+              deprecated: true
+              x-remove-version: 4.15
               description: >-
+                Use `showForm` instead.
+
+
+
                 Indicates whether a form to enter the missing optional parameters
                 must be shown. Only returned if the `missingOptionalParameters` list
                 is not empty and `scope` is  `internal`.
                 Only returned in contexts where the operation can be executed.
               type: boolean
+            showForm:
+              description: >-
+                Indicates whether a form with the parameters must be shown.
+                Only returned if `scope` is `internal` and
+                the `resultType` is not `resultPage`
+                Only returned in contexts where the operation can be executed.
+              allOf:
+                - $ref: '#/components/schemas/OperationShowFormEnum'
             scope:
               $ref: '#/components/schemas/OperationScopeEnum'
             resultType:
@@ -55613,6 +56203,13 @@ components:
                 broker details.
               allOf:
                 - $ref: '#/components/schemas/User'
+            identityProviders:
+              description: >-
+                The identity providers available for registering in this group.
+                Only returned for public registrations.
+              type: array
+              items:
+                $ref: '#/components/schemas/IdentityProvider'
             addressConfiguration:
               $ref: '#/components/schemas/AddressConfigurationForUserProfile'
             contactInfoConfiguration:
@@ -55702,6 +56299,8 @@ components:
         management
       type: object
       properties:
+        user:
+          $ref: '#/components/schemas/User'
         canManage:
           description: >-
             Indicates whether the delivery methods can be managed by the
@@ -55773,6 +56372,58 @@ components:
           description: >-
             Can the authenticated user view the group membership of a given user?
           type: boolean
+
+    UserIdentityProvider:
+      description: >-
+        A link between a user an an identity provider
+      allOf:
+        - $ref: '#/components/schemas/Entity'
+        - type: object
+          properties:
+            identityProvider:
+              $ref: '#/components/schemas/IdentityProvider'
+            status:
+              $ref: '#/components/schemas/UserIdentityProviderStatusEnum'
+            linkDate:
+              description: >-
+                The date the link was created. Only if `status` is
+                `linked`.
+              type: string
+              format: date-time
+            name:
+              description: >-
+                The display name of the user in the identity provider.
+                Only if `status` is `linked`.
+              type: string
+            email:
+              description: >-
+                The e-mail name of the user in the identity provider
+                Only if `status` is `linked`
+                and if the provider has disclosed the user's e-mail.
+              type: string
+
+    UserIdentityProvidersListData:
+      description: >-
+        Contains, besides the user's identity provider links,
+        additional data for its management
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+        canLink:
+          description: >-
+            Indicates whether a new identity provider can be linked to the user
+          type: boolean
+        canManage:
+          description: >-
+            Indicates whether existing links can be managed
+          type: boolean
+        identityProviders:
+          description: >-
+            The identity provider links
+          type: array
+          items:
+            $ref: '#/components/schemas/UserIdentityProvider'
 
     UserLocale:
       description: >-
@@ -55933,6 +56584,12 @@ components:
                 registered user. Can only be used when an administrator / broker is
                 registering a user, and ignored on public registrations (the e-mail
                 is always sent on public registrations).
+            identityProviderRequestId:
+              type: string
+              description: >-
+                When using an [external identity provider](https://wiki4.cyclos.org/index.php/External_identity_providers),
+                this is the request id used to complete the registration process
+                after filling up the registration form.
             addresses:
               type: array
               items:

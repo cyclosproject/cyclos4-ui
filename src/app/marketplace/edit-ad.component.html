@@ -132,6 +132,41 @@
             [id]="addr.id" [text]="addr.name">
           </field-option>
         </multi-selection-field>
+        <ng-container *ngIf="webshop">
+          <boolean-field [label]="i18n.ad.allowDecimalQuantity"
+            formControlName="allowDecimalQuantity"></boolean-field>
+          <boolean-field [label]="i18n.ad.unlimitedStock"
+            formControlName="unlimitedStock"></boolean-field>
+          <ng-container *ngIf="!(unlimitedStock$ | async)">
+            <decimal-field formControlName="stockQuantity"
+              [label]="i18n.ad.stockQuantity" [scale]="decimalQuantity$.value"
+              required>
+            </decimal-field>
+            <decimal-field formControlName="minStockQuantityToNotify"
+              [label]="i18n.ad.lowStockNotification"
+              [scale]="decimalQuantity$.value">
+            </decimal-field>
+          </ng-container>
+          <decimal-field formControlName="maxAllowedInCart"
+            [label]="i18n.ad.maxAllowedInCart"
+            [scale]="decimalQuantity$.value">
+          </decimal-field>
+          <decimal-field formControlName="minAllowedInCart"
+            [label]="i18n.ad.minAllowedInCart"
+            [scale]="decimalQuantity$.value">
+          </decimal-field>
+          <input-field type="text" [label]="i18n.ad.productNumber"
+            [mask]="mask" formControlName="productNumber" [placeholder]="mask"
+            required>
+          </input-field>
+          <multi-selection-field *ngIf="deliveryMethods$ | async"
+            [label]=" i18n.ad.deliveryMethods"
+            formControlName="deliveryMethods">
+            <field-option *ngFor="let dm of deliveryMethods$.value"
+              [value]="dm.id" [id]="dm.id" [text]="dm.name">
+            </field-option>
+          </multi-selection-field>
+        </ng-container>
       </form>
       <actions>
         <button class="btn btn-primary" (click)="save()">
