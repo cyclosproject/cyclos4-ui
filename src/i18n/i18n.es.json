@@ -39,6 +39,8 @@
     "showMoreFilters": "Mostrar más filtros",
     "lessFilters": "Menos filtros",
     "showLessFilters": "Mostrar menos filtros",
+    "enabled": "Habilitada",
+    "disabled": "Deshabilitada",
     "back": "Regresar",
     "previous": "Anterior",
     "next": "Siguiente",
@@ -57,9 +59,13 @@
     "addNew": "Agregar",
     "yes": "Si",
     "no": "No",
+    "notSet": "Sin definir",
     "map": "Mapa",
     "map.view": "Ver mapa",
     "noOptionsSelected": "Sin opciones seleccionadas",
+    "noOptionSelected": "Sin opción seleccionada",
+    "currency": "Moneda",
+    "images": "Imágenes",
     "sendMedium": {
       "email": "Correo electrónico",
       "sms": "SMS"
@@ -231,6 +237,7 @@
     "banking.payUser": "Pago a usuario",
     "banking.paySystem": "Pago al sistema",
     "banking.paySelf": "Auto pago",
+    "banking.pos": "Receive payment",
     "banking.scheduledPayments": "Pagos agendados",
     "banking.authorizations": "Pagos con autorización",
     "banking.searchVouchers": "Buscar cupones",
@@ -253,6 +260,8 @@
     "marketplace.userSearch": "Usuarios",
     "marketplace.businessDirectory": "Directorio de anunciantes",
     "marketplace.advertisements": "Anuncios",
+    "marketplace.myAdvertisements": "Mis anuncios",
+    "marketplace.myWebshop": "Mis productos de tienda virtual",
     "marketplace.connectedUsers": "Usuarios conectados",
     "marketplace.userAlerts": "Alertas de usuario",
     "personal": "Personal",
@@ -262,6 +271,7 @@
     "personal.password": "Contraseñas",
     "personal.passwords": "Contraseñas",
     "personal.notifications": "Notificaciones",
+    "personal.notificationSettings": "Configuración de notificaciones",
     "personal.settings": "Configuración",
     "content": "Información"
   },
@@ -390,6 +400,7 @@
       "account": "Cuenta",
       "payUser": "Pago a usuario",
       "paySystem": "Pago a sistema",
+      "pos": "Receive payment",
       "contacts": "Contactos",
       "directory": "Anunciantes",
       "advertisements": "Comercio electrónico",
@@ -523,6 +534,7 @@
       "settled": "Saldado"
     },
     "title": {
+      "pos": "Receive payment",
       "paymentSystemToSystem": "Pago entre cuentas de sistema",
       "paymentSystemToUser": "Pago de sistema a usuario",
       "paymentToSystem": "Pago al sistema",
@@ -547,6 +559,7 @@
       "transfersOverview": "Visión general de Transferencias"
     },
     "mobileTitle": {
+      "pos": "Receive payment",
       "paymentSystemToSystem": "Pago a sistema",
       "paymentSystemToUser": "Pago a usuario",
       "paymentToSystem": "Pago a sistema",
@@ -855,6 +868,7 @@
       "viewBrokerings": "Ver miembros asignados",
       "viewBrokers": "Ver brokers",
       "viewOperators": "Ver operadores",
+      "viewWebshop": "Ver tienda virtual",
       "status.user": "Estado del usuario",
       "status.operator": "Estado del operador",
       "group.user": "Grupo de usuario",
@@ -862,7 +876,8 @@
       "viewRedeemedVouchers": "Ver cupones canjeados",
       "redeemVoucher": "Canjear cupón",
       "viewBoughtVouchers": "Ver cupones comprados",
-      "buyVouchers": "Comprar cupones"
+      "buyVouchers": "Comprar cupones",
+      "notificationSettings": "Configuración de notificaciones"
     },
     "registration": {
       "group.public": "Elija el grupo en el que desea registrarse",
@@ -1065,27 +1080,79 @@
     "zip": "Código postal"
   },
   "ad": {
+    "adSaved": "El anuncio se ha guardado",
+    "adHidden": "Se ha ocultado el anuncio",
+    "adUnhidden": "El anuncio es ahora visible",
+    "authorize": "Autorizar",
+    "authorized": "Se ha autorizado el anuncio",
+    "askQuestion": "Realizar una pregunta",
+    "backToDraft": "El anuncio está ahora en modo de borrador",
+    "beginDate": "Fecha de inicio",
+    "endDate": "Fecha de finalización",
+    "deliveryMethods": "Métodos de entrega",
+    "deliveryTime": "Tiempo de entrega",
     "name": "Título",
     "owner": "Dueño",
     "price": "Precio",
+    "questionAsked": "La pregunta se ha enviado al vendedor",
+    "questionRemoved": "La pregunta ha sido eliminada",
     "category": "Categoría",
     "categories": "Categorías",
+    "creationDate": "Fecha de creación",
     "byOwner": "Por {owner}",
     "showAllCategories": "Mostrar todas",
     "rootCategory": "Principal",
+    "imagesChanged": "Para guardar los cambios en las imágenes, se debe guardar el anuncio",
+    "publicationPeriod": "Período de publicación",
+    "promotionalPeriod": "Período de la promoción",
+    "promotionalPrice": "Precio promocional",
+    "reject": "Rechazar",
+    "rejected": "Se ha rechazado el anuncio",
+    "showAddressOnMap": "Mostrar la dirección en el mapa",
+    "saveAndInsertNew": "Guardar y agregar nuevo anuncio",
+    "setAsDraft": "Definir borrador para editar",
+    "submitForAuthorization": "Enviar para autorización",
+    "pendingForAuth": "El anuncio se ha enviado para su autorización",
+    "hide": "Ocultar",
+    "unhide": "Definir visible",
+    "stockQuantity": "Cantidad en stock",
+    "minAllowedInCart": "Mínimo permitido en el carrito",
+    "maxAllowedInCart": "Máximo permitido en el carrito",
+    "productNumber": "Número de producto",
+    "outOfStock": "Sin stock",
+    "authorizationNotes": "Notas de autorización",
+    "questionsAndAnswers": "Preguntas y Respuestas",
+    "removeQuestion": "Eliminar pregunta",
     "orderBy": {
       "date": "Ultimos publicados",
+      "distance": "Distancia",
       "priceAsc": "Precio inferior",
-      "priceDesc": "Precio superior"
+      "priceDesc": "Precio superior",
+      "relevance": "Relevancia"
+    },
+    "status": {
+      "active": "Publicado",
+      "disabled": "Deshabilitada",
+      "draft": "Borrador",
+      "expired": "Expirado",
+      "hidden": "Oculto",
+      "pending": "Pendiente",
+      "scheduled": "Agendado"
     },
     "title": {
       "search": "Búsqueda de anuncios",
-      "owner": "Anuncios de {name}"
+      "owner": "Anuncios de {name}",
+      "webshopOwner": "Tienda virtual de {name}",
+      "new": "Nuevo anuncio",
+      "edit": "Editar anuncio"
     },
     "mobileTitle": {
       "search": "Anuncios",
       "owner": "Anuncios",
-      "details": "Anuncio"
+      "webshopOwner": "Tienda virtual",
+      "details": "Anuncio",
+      "new": "Nuevo anuncio",
+      "edit": "Editar anuncio"
     }
   },
   "notification": {
@@ -1097,7 +1164,149 @@
       "remove": "Eliminar esta notificación",
       "removeAll": "Eliminar todo",
       "markAllRead": "Marcar todo como leído"
+    },
+    "admin": {
+      "adPendingAuthorization": "Anuncio pendiente de autorización",
+      "applicationErrors": "Errores de aplicación",
+      "externalPaymentExpired": "Pago externo expirado",
+      "externalPaymentPerformedFailed": "Pago externo no pudo ser entregado",
+      "generatedVouchersAboutToExpire": "Cupones generados a punto de expirar",
+      "generatedVouchersExpired": "Expiración de cupones generados",
+      "networkCreated": "Red creada",
+      "paymentAwaitingAuthorization": "Pagos pendientes de autorización",
+      "paymentPerformed": "Pagos",
+      "systemAlert": "Alertas del sistema",
+      "userAlert": "Alertas de usuario",
+      "userRegistration": "Nuevos usuarios registrados",
+      "voucherBuyingAboutToExpire": "Compra cupón a punto de expirar"
+    },
+    "user": {
+      "account": {
+        "allNonSmsPerformedPayments": "Pago realizado",
+        "authorizedPaymentCanceled": "Pago autorizado cancelado",
+        "authorizedPaymentDenied": "Pago denegado",
+        "authorizedPaymentExpired": "Pago autorizado expirado",
+        "authorizedPaymentSucceeded": "Pago autorizado exitoso",
+        "boughtVouchersAboutToExpire": "Los cupones comprados expirarán en unos días",
+        "boughtVouchersExpirationDateChanged": "Cambio de fecha de vencimiento de cupón comprado",
+        "boughtVouchersExpired": "Expiración de cupón comprado",
+        "externalPaymentExpired": "Pago externo expirado",
+        "externalPaymentPerformedFailed": "No se pudo entregar pago externo",
+        "externalPaymentReceivedFailed": "No se pudo recibir pago externo",
+        "incomingRecurringPaymentCanceled": "Pago recurrente entrante cancelado",
+        "incomingRecurringPaymentFailed": "Error de pago recurrente entrante",
+        "incomingRecurringPaymentReceived": "Pago recurrente entrante recibido",
+        "incomingScheduledPaymentCanceled": "Pago agendado entrante cancelado",
+        "incomingScheduledPaymentFailed": "Error de pago agendado entrante",
+        "incomingScheduledPaymentReceived": "Pago agendado recibido",
+        "limitChange": "Límite de cuenta cambiado",
+        "paymentAwaitingAuthorization": "Pago pendiente de autorización",
+        "paymentReceived": "Pago recibido",
+        "paymentRequestCanceled": "Solicitud de pago cancelada",
+        "paymentRequestDenied": "Solicitud de pago denegada",
+        "paymentRequestExpirationDateChanged": "Expiración de solicitud de pago cambiada",
+        "paymentRequestExpired": "Solicitud de pago expirada",
+        "paymentRequestProcessed": "Solicitud de pago procesada",
+        "paymentRequestReceived": "Solicitud de pago recibida",
+        "recurringPaymentFailed": "Error en la ocurrencia de pago recurrente",
+        "recurringPaymentOcurrenceProcessed": "Pago recurrente procesado",
+        "scheduledPaymentFailed": "Error de pago agendado",
+        "scheduledPaymentInstallmentProcessed": "Cuota de pago agendado procesada",
+        "scheduledPaymentRequestFailed": "Error de solicitud de pago",
+        "sentPaymentRequestExpirationDateChanged": "Expiración de solicitud de pago enviado cambiada",
+        "smsPerformedPayment": "Pago SMS realizado",
+        "ticketWebhookFailed": "Error de notificación de aprobado de ticket mediante webhook",
+        "operator": {
+          "authorizedPaymentApprovedStillPending": "Pago de operador aprobado, pero pendiente de autorización adicional",
+          "authorizedPaymentCanceled": "Pago de operador pendiente cancelado",
+          "authorizedPaymentDenied": "Pago de operador pendiente fue denegado",
+          "authorizedPaymentExpired": "Pago de operador autorizado ha expirado",
+          "authorizedPaymentSucceeded": "Pago de operador pendiente exitoso",
+          "paymentAwaitingAuthorization": "Pago de operador pendiente de autorización"
+        }
+      },
+      "brokering": {
+        "adPendingAuthorization": "Anuncio pendiente de autorización",
+        "memberAssigned": "Miembro asignado",
+        "memberUnassigned": "Se ha quitado un miembro asignado"
+      },
+      "buyer": {
+        "adInterestNotification": "Nuevo coincidencia de anuncio de interés",
+        "adQuestionAnswered": "Pergunta de anuncio contestada",
+        "orderCanceled": "Orden de compra cancelada",
+        "orderPaymentCanceled": "Pago de la orden de compra cancelado",
+        "orderPaymentDenied": "Pago de orden de compra denegado",
+        "orderPaymentExpired": "Pago de la orden de compra expirado",
+        "orderPending": "Orden pendiente",
+        "orderPendingAuthorization": "Orden de compra pendiente de autorización de pago",
+        "orderPendingDeliveryData": "Orden aguardando información de entrega",
+        "orderProcessedBySeller": "Orden aceptada por el vendedor",
+        "orderRejectedBySeller": "Orden rechazada por el vendedor",
+        "buyerSalePending": "Orden creada",
+        "buyerSaleRejectedBySeller": "Orden de venta cancelada"
+      },
+      "feedback": {
+        "changed": "Calificación cambiada",
+        "created": "Calificación recibida",
+        "expirationReminder": "Recordatorio de calificación",
+        "optional": "Calificación opcional",
+        "replyCreated": "Respuesta de calificación recibida",
+        "required": "Calificación requerida"
+      },
+      "personal": {
+        "brokerAssigned": "Broker asignado",
+        "brokerUnassigned": "Se ha quitado un broker asignado",
+        "maxSmsPerMonthReached": "Máximo de SMS por mes alcanzado",
+        "newToken": "Nuevo token / tarjeta",
+        "newTokenPendingActivation": "Nuevo token o tarjeta pendiente de activación",
+        "passwordStatusChanged": "Estado de contraseña cambiado",
+        "tokenStatusChanged": "Estado de token / tarjeta cambiado",
+        "userStatusChanged": "Cambio de estado de usuario"
+      },
+      "reference": {
+        "changed": "Referencia cambiada",
+        "created": "Referencia recibida"
+      },
+      "seller": {
+        "adAuthorized": "Anuncio autorizado",
+        "adExpired": "Anuncio expirado",
+        "adLowStock": "Baja cantidad de unidades de artículo",
+        "adOutOfStock": "Artículo agotado",
+        "adQuestionCreated": "Nueva pregunta de anuncio",
+        "adRejected": "Anuncio rechazado",
+        "orderCanceled": "Orden de venta cancelada",
+        "orderCreated": "Nueva orden de tienda virtual",
+        "orderPaymentCanceled": "Pago de orden de venta cancelado",
+        "orderPaymentDenied": "Pago de orden de venta denegado",
+        "orderPaymentExpired": "Pago de orden de venta expirado",
+        "orderPendingAuthorization": "Orden de venta pendiente de autorización de pago",
+        "orderPendingDeliveryData": "Información de entrega solicitada",
+        "orderProcessedByBuyer": "Orden aceptada por el comprador",
+        "orderRejectedByBuyer": "Orden rechazada",
+        "saleProcessedByBuyer": "Venta realizada"
+      }
     }
+  },
+  "notificationSettings": {
+    "title": "Configuración de notificaciones",
+    "mobileTitle": "Configuración de notificaciones",
+    "notAvailableSettings": "No tiene permisos para cambiar ninguna configuración.",
+    "forwardMessages": "Reenviar mensajes internos a tu correo electrónico",
+    "notifications": "Notificaciones",
+    "internalNotification": "Notificación interna",
+    "accounts": "Cuentas",
+    "personal": "Personal",
+    "payments": "Pagos",
+    "marketplaceAsBuyer": "Comercio electrónico como comprador",
+    "marketplaceAsSeller": "Comercio electrónico como vendedor",
+    "feedbackAndReferences": "Calificaciones y referencias",
+    "smsCount": "Ha utilizado {count} de los {total} mensajes de SMS gratuitos en este mes.",
+    "paymentNotifications.above": "Sólo notificar los pagos por encima de",
+    "paymentNotifications.below": "Sólo notificar a los pagos por debajo de",
+    "saved": "La configuración de notificaciones fue guardada",
+    "enableOrDisable": "Activar o desactivar {section}",
+    "enableAll": "Activar todo",
+    "disableAll": "Desactivar todo"
   },
   "connectedUser": {
     "title": "Usuarios conectados",
@@ -1172,6 +1381,16 @@
       "passwordTemporarilyBlocked": "La contraseña ha sido bloqueada temporalmente por exceder la máxima cantidad de intentos",
       "receivedVeryBadRefs": "El usuario recibido demasiadas referencias de \"Muy malo\"",
       "scheduledPaymentFailed": "Error de pago agendado"
+    }
+  },
+  "systemAlert": {
+    "type": {
+      "accountFeeChargedNoFailures": "El cargo de cuenta han finalizado sin fallos",
+      "accountFeeChargedWithFailures": "El cargos de cuenta ha terminado con al menos un fallo",
+      "applicationRestarted": "Aplicación reiniciada",
+      "custom": "Personalizado",
+      "maxGlobalSmsReached": "Se ha alcanzado el máximo de mensajes SMS global mensual",
+      "maxIncorrectLoginAttempts": "Máxima cantidad de intentos de acceso para usuario no válido"
     }
   }
 }
