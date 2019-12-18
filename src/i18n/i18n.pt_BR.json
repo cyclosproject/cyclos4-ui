@@ -483,7 +483,7 @@
     "occurrences": "Ocorrências",
     "noAccounts": "Você não tem nenhuma conta para realizar o pagamento",
     "noTypes": "Não existem tipos de pagamento possíveis",
-    "noTypesSelection": "There are no possible payment types for this account and user",
+    "noTypesSelection": "Não existe tipos de pagamento possíveis a partir dessa conta para o usuário selecionado",
     "scheduling": "Agendamento",
     "scheduling.direct": "Pagar agora",
     "scheduling.single": "Agendado",
@@ -733,7 +733,7 @@
     "image": {
       "noImage": "Sem imagem",
       "noImages": "Sem imagens",
-      "upload": "Enviar nova imagem",
+      "upload": "Enviar uma nova imagem",
       "manage": "Reordenar ou remover imagens",
       "remove": "Remover esta imagem",
       "manageMessage": "Você pode arrastar e soltar imagens para reordená-las",
@@ -742,7 +742,7 @@
     "file": {
       "noFile": "Sem arquivo",
       "noFiles": "Sem arquivos",
-      "upload": "Enviar novo arquivo",
+      "upload": "Enviar um novo arquivo",
       "manage": "Reordenar ou remover arquivos",
       "remove": "Remover este arquivo",
       "manage.message": "Você pode arrastar e soltar arquivos para reordená-los"
