@@ -483,7 +483,7 @@
     "occurrences": "Ocurrences",
     "noAccounts": "U hoeft geen rekeningen voor het uitvoeren van de betaling",
     "noTypes": "Er zijn geen mogelijke betaling soorten",
-    "noTypesSelection": "There are no possible payment types for this account and user",
+    "noTypesSelection": "Er zijn geen mogelijke betaling typen van dit account naar de geselecteerde gebruiker",
     "scheduling": "Agendering",
     "scheduling.direct": "Betaal nu",
     "scheduling.single": "Geagendeerde",
