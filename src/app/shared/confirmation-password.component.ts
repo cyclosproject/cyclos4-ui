@@ -1,24 +1,24 @@
 import {
-  ChangeDetectionStrategy, Component, EventEmitter, Host, Input,
-  OnChanges, OnInit, Optional, Output, SkipSelf, ViewChild, OnDestroy, Injector
+  ChangeDetectionStrategy, Component, EventEmitter, Host, Injector, Input,
+  OnChanges, OnDestroy, OnInit, Optional, Output, SkipSelf, ViewChild
 } from '@angular/core';
 import {
-  AbstractControl, ControlContainer, FormControl,
-  NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator
+  AbstractControl, ControlContainer, FormControl, NG_VALIDATORS, NG_VALUE_ACCESSOR,
+  ValidationErrors, Validator
 } from '@angular/forms';
 import {
-  CreateDeviceConfirmation, PasswordInput, PasswordModeEnum,
-  ImageSizeEnum, DeviceConfirmationView, DeviceConfirmationStatusEnum
+  CreateDeviceConfirmation, DeviceConfirmationStatusEnum, DeviceConfirmationView,
+  ImageSizeEnum, PasswordInput, PasswordModeEnum, PerformPayment
 } from 'app/api/models';
+import { DeviceConfirmationsService, PosService } from 'app/api/services';
 import { AuthHelperService } from 'app/core/auth-helper.service';
+import { PushNotificationsService } from 'app/core/push-notifications.service';
 import { BaseControlComponent } from 'app/shared/base-control.component';
 import { ConfirmationMode } from 'app/shared/confirmation-mode';
 import { empty } from 'app/shared/helper';
 import { PasswordInputComponent } from 'app/shared/password-input.component';
-import { Subscription, BehaviorSubject } from 'rxjs';
-import { DeviceConfirmationsService } from 'app/api/services';
+import { BehaviorSubject, Subscription, Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { PushNotificationsService } from 'app/core/push-notifications.service';
 
 /**
  * Component used to input a password to confirm an action
@@ -37,8 +37,9 @@ export class ConfirmationPasswordComponent extends BaseControlComponent<string> 
 
   ConfirmationMode = ConfirmationMode;
 
+  @Input() pos: boolean;
   @Input() passwordInput: PasswordInput;
-  @Input() createDeviceConfirmation: () => CreateDeviceConfirmation;
+  @Input() createDeviceConfirmation: () => CreateDeviceConfirmation | PerformPayment;
   @Output() confirmationModeChanged = new EventEmitter<ConfirmationMode>();
   @Output() confirmed = new EventEmitter<string>();
 
@@ -60,6 +61,7 @@ export class ConfirmationPasswordComponent extends BaseControlComponent<string> 
   constructor(
     injector: Injector,
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
+    private posService: PosService,
     private deviceConfirmationsService: DeviceConfirmationsService,
     private pushNotifications: PushNotificationsService,
     private authHelper: AuthHelperService
@@ -147,16 +149,34 @@ export class ConfirmationPasswordComponent extends BaseControlComponent<string> 
 
   newQR() {
     this.rejected$.next(false);
-    this.addSub(this.deviceConfirmationsService.createDeviceConfirmation({
-      body: this.createDeviceConfirmation()
-    }).pipe(first())
-      .subscribe(id => {
-        this.deviceConfirmationId = id;
-        this.addSub(this.deviceConfirmationsService.getDeviceConfirmationQrCode({ id: id, size: ImageSizeEnum.MEDIUM }).subscribe(blob => {
-          this.revokeCurrent();
-          this.currentUrl$.next(URL.createObjectURL(blob));
-        }));
-      }));
+    let request: Observable<string>;
+    if (this.pos) {
+      request = this.posService.receivePaymentCreateDeviceConfirmation({
+        body: this.createDeviceConfirmation() as PerformPayment
+      });
+    } else {
+      request = this.deviceConfirmationsService.createDeviceConfirmation({
+        body: this.createDeviceConfirmation() as CreateDeviceConfirmation
+      });
+    }
+    request.pipe(first()).subscribe(id => {
+      this.deviceConfirmationId = id;
+      let qrReq: Observable<Blob>;
+      if (this.pos) {
+        const perform = this.createDeviceConfirmation() as PerformPayment;
+        qrReq = this.posService.receivePaymentDeviceConfirmationQrCode({
+          id: id, payer: perform.subject, size: ImageSizeEnum.MEDIUM
+        });
+      } else {
+        qrReq = this.deviceConfirmationsService.getDeviceConfirmationQrCode({
+          id: id, size: ImageSizeEnum.MEDIUM
+        });
+      }
+      qrReq.pipe(first()).subscribe(blob => {
+        this.revokeCurrent();
+        this.currentUrl$.next(URL.createObjectURL(blob));
+      });
+    });
   }
 
   private revokeCurrent() {

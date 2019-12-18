@@ -4,6 +4,7 @@ import { MarketplaceService } from 'app/api/services';
 import { BaseDashboardComponent } from 'app/home/dashboard/base-dashboard.component';
 import { BehaviorSubject } from 'rxjs';
 import { Menu, ActiveMenu } from 'app/shared/menu';
+import { HeadingAction } from 'app/shared/action';
 
 /**
  * Displays the latest advertisements
@@ -31,6 +32,17 @@ export class LatestAdsComponent extends BaseDashboardComponent implements OnInit
     if (!this.max) {
       this.max = 6;
     }
+
+    // The heading actions
+    this.headingActions = [
+      new HeadingAction('search', this.i18n.general.view,
+        event => this.menu.navigate({
+          menu: new ActiveMenu(Menu.SEARCH_ADS),
+          clear: false,
+          event: event
+        }),
+        true)
+    ];
 
     this.addSub(this.marketplaceService.searchAds({
       addressResult: AdAddressResultEnum.NONE,

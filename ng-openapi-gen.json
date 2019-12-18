@@ -23,6 +23,7 @@
     "PendingPayments",
     "Transfers",
     "Payments",
+    "POS",
     "Accounts",
     "Marketplace",
     "UI",

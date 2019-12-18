@@ -9,8 +9,7 @@
       [label]="accountBalanceLabel$ | async" kind="fieldView"
       labelPosition="sideForced" noWrapLabel>
       <!-- Single account -->
-      <div *ngIf="singleAccount.status"
-        class="w-100 text-nowrap text-right text-xs-left font-weight-bold"
+      <div class="w-100 text-nowrap text-right text-xs-left font-weight-bold"
         [ngClass]="{
           positive: format.isPositive(singleAccount.status.balance),
           negative: format.isNegative(singleAccount.status.balance),
@@ -22,10 +21,12 @@
   </ng-container>
   <ng-template #multipleAccounts>
     <!-- Multiple accounts -->
-    <label-value [label]="i18n.transaction.fromAccount" required kind="field">
+    <label-value
+      [label]="pos ? i18n.transaction.toAccount : i18n.transaction.fromAccount"
+      required kind="field">
       <div class="w-100 row no-gutters mb-2"
         *ngFor="let account of data.accounts">
-        <div class="col-7 col-sm-8 col-md-5">
+        <div [class]="pos ? 'col' : 'col-7 col-sm-8 col-md-5'">
           <div class="custom-control custom-radio">
             <input #radio type="radio" formControlName="account"
               class="custom-control-input" [id]="'from_' + account.id"
@@ -42,7 +43,7 @@
             </label>
           </div>
         </div>
-        <div *ngIf="account.status"
+        <div *ngIf="!pos && account.status"
           class="col-5 col-sm-4 col-md-7 pl-2 text-right text-xs-left font-weight-bold"
           [ngClass]="{
             positive: format.isPositive(account.status.balance),
@@ -56,7 +57,7 @@
   </ng-template>
 
   <label-value *ngIf="!fixedDestination" kind="field" required
-    [label]="i18n.transaction.toUser">
+    [label]="pos ? i18n.transaction.fromUser : i18n.transaction.toUser">
     <single-selection-field focused formControlName="subject"
       *ngIf="fixedUsersList; else toUserField">
       <!-- A fixed user list to pay to. Generally only applicable to restricted operators -->

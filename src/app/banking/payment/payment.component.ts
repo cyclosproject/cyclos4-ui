@@ -14,6 +14,8 @@ import { clearValidatorsAndErrors, empty, locateControl, scrollTop, validateBefo
 import { Menu } from 'app/shared/menu';
 import { isEqual } from 'lodash';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { PosService } from 'app/api/services/pos.service';
+import { first } from 'rxjs/operators';
 
 export type PaymentStep = 'form' | 'confirm' | 'done';
 
@@ -74,11 +76,12 @@ const FIRST_OCCURRENCE_DATE_VAL: ValidatorFn = control => {
  * Perform a payment
  */
 @Component({
-  selector: 'perform-payment',
-  templateUrl: 'perform-payment.component.html',
+  // tslint:disable-next-line: component-selector
+  selector: 'payment',
+  templateUrl: 'payment.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PerformPaymentComponent extends BasePageComponent<DataForTransaction> implements OnInit {
+export class PaymentComponent extends BasePageComponent<DataForTransaction> implements OnInit {
 
   ConfirmationMode = ConfirmationMode;
 
@@ -88,6 +91,7 @@ export class PerformPaymentComponent extends BasePageComponent<DataForTransactio
   fromSystem: boolean;
   toSelf: boolean;
   toSystem: boolean;
+  pos: boolean;
 
   steps: PaymentStep[] = ['form', 'confirm', 'done'];
   step$ = new BehaviorSubject<PaymentStep>(null);
@@ -133,6 +137,7 @@ export class PerformPaymentComponent extends BasePageComponent<DataForTransactio
     injector: Injector,
     private bankingHelper: BankingHelperService,
     private paymentsService: PaymentsService,
+    private posService: PosService,
     private changeDetector: ChangeDetectorRef) {
     super(injector);
   }
@@ -142,15 +147,21 @@ export class PerformPaymentComponent extends BasePageComponent<DataForTransactio
 
     // Resolve the from and to parameters
     const route = this.route.snapshot;
-    this.fromParam = route.params.from;
-    this.fromSelf = this.authHelper.isSelf(this.fromParam);
-    this.fromSystem = this.authHelper.isSystem(this.fromParam);
-    this.toParam = route.params.to;
-    this.toSelf = this.toParam != null && this.authHelper.isSelf(this.toParam);
-    this.toSystem = this.toParam != null && this.authHelper.isSystem(this.toParam);
+    this.pos = route.url[route.url.length - 1].path === 'pos';
+    if (!this.pos) {
+      this.fromParam = route.params.from;
+      this.fromSelf = this.authHelper.isSelf(this.fromParam);
+      this.fromSystem = this.authHelper.isSystem(this.fromParam);
+      this.toParam = route.params.to;
+      this.toSelf = this.toParam != null && this.authHelper.isSelf(this.toParam);
+      this.toSystem = this.toParam != null && this.authHelper.isSystem(this.toParam);
+    }
 
     // Resolve the correct title according to the from and to parameters
-    if (this.fromSystem) {
+    if (this.pos) {
+      this.title = this.i18n.transaction.title.pos;
+      this.mobileTitle = this.i18n.transaction.mobileTitle.pos;
+    } else if (this.fromSystem) {
       if (this.toSystem) {
         this.title = this.i18n.transaction.title.paymentSystemToSystem;
         this.mobileTitle = this.i18n.transaction.mobileTitle.paymentSystemToSystem;
@@ -177,11 +188,16 @@ export class PerformPaymentComponent extends BasePageComponent<DataForTransactio
     // The confirmation password is hold in a separated control
     this.confirmationPassword = this.formBuilder.control(null);
 
-    // Get data for perform payment
-    this.addSub(this.paymentsService.dataForPerformPayment({
-      owner: this.fromParam,
-      to: this.toParam
-    }).subscribe(data => this.data = data));
+    // Get the payment / pos data
+    if (this.pos) {
+      this.addSub(this.posService.dataForReceivePayment({})
+        .subscribe(data => this.data = data));
+    } else {
+      this.addSub(this.paymentsService.dataForPerformPayment({
+        owner: this.fromParam,
+        to: this.toParam
+      }).subscribe(data => this.data = data));
+    }
 
     // When the account changes, update the currency
     this.addSub(this.form.get('account').valueChanges.subscribe(type => this.updateCurrency(this.data, type)));
@@ -202,7 +218,7 @@ export class PerformPaymentComponent extends BasePageComponent<DataForTransactio
     // Custom values are handled separatedly
     return this.formBuilder.group({
       account: null,
-      subject: [this.toParam, Validators.required],
+      subject: [this.pos ? null : this.toParam, Validators.required],
       type: [null, Validators.required],
       amount: [null, Validators.required],
       description: null,
@@ -328,18 +344,31 @@ export class PerformPaymentComponent extends BasePageComponent<DataForTransactio
     }));
   }
 
-  perform(confirmationPassword?: string) {
-    if (confirmationPassword) {
-      this.confirmationPassword.setValue(confirmationPassword);
+  perform(password?: string) {
+    if (password) {
+      this.confirmationPassword.setValue(password);
     }
     if (!validateBeforeSubmit(this.confirmationPassword)) {
       return;
     }
-    this.addSub(this.performPaymentRequest().subscribe(performed => {
+    let request: Observable<Transaction>;
+    if (this.pos) {
+      request = this.posService.receivePayment({
+        body: this.preview.payment,
+        confirmationPassword: this.confirmationPassword.value
+      });
+    } else {
+      request = this.paymentsService.performPayment({
+        owner: this.fromParam,
+        body: this.preview.payment,
+        confirmationPassword: this.confirmationPassword.value
+      });
+    }
+    request.pipe(first()).subscribe(performed => {
       this.performed = performed;
       this.step = 'done';
       scrollTop();
-    }));
+    });
   }
 
   private confirmDataRequest(): Observable<PaymentPreview> {
@@ -373,18 +402,16 @@ export class PerformPaymentComponent extends BasePageComponent<DataForTransactio
     delete value.repeatUntilCanceled;
     delete value.firstOccurrenceIsNow;
     // Preview
-    return this.paymentsService.previewPayment({
-      owner: this.fromParam,
-      body: payment
-    });
-  }
-
-  private performPaymentRequest(): Observable<Transaction> {
-    return this.paymentsService.performPayment({
-      owner: this.fromParam,
-      body: this.preview.payment,
-      confirmationPassword: this.confirmationPassword.value
-    });
+    if (this.pos) {
+      return this.posService.previewReceivePayment({
+        body: payment
+      });
+    } else {
+      return this.paymentsService.previewPayment({
+        owner: this.fromParam,
+        body: payment
+      });
+    }
   }
 
   get doneTitle(): string {
@@ -431,7 +458,9 @@ export class PerformPaymentComponent extends BasePageComponent<DataForTransactio
   }
 
   resolveMenu(data: DataForTransaction) {
-    if (this.fromSystem) {
+    if (this.pos) {
+      return Menu.POS;
+    } else if (this.fromSystem) {
       // Payment from system
       return this.toSystem ? Menu.PAYMENT_TO_SYSTEM : Menu.PAYMENT_TO_USER;
     } else {
