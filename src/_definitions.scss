@@ -4,7 +4,7 @@
 $primary: #329bce !default;
 $accent: #329bce !default;
 $primary-dark: #334758 !default;
-$accent-dark: #5498d4 !default;
+$accent-dark: #329bce !default;
 
 // Make sure the font import URL and the font family (sans serif) are in sync
 $font-import-url: "https://fonts.googleapis.com/css?family=Roboto:400,500" !default;
@@ -185,7 +185,7 @@ $menu-bar-line-color-dark: $border-color-dark !default;
 // Side menu (second-level menu on desktop)
 $side-menu-title-bg: $menu-bar-bg !default;
 $side-menu-title-color: $body-color !default;
-$side-menu-icon-bg: $menu-bar-active-color !default;
+$side-menu-icon-bg: fade-out($menu-bar-active-color, 0.2) !default;
 $side-menu-icon-color: $top-bar-color !default;
 $side-menu-border-color: $border-color !default;
 $side-menu-bg: $menu-bar-bg !default;
@@ -203,7 +203,7 @@ $side-menu-inactive-hover-color: $menu-bar-inactive-hover-color !default;
 // Side menu with dark background
 $side-menu-title-bg-dark: $menu-bar-bg-dark !default;
 $side-menu-title-color-dark: $body-color-dark !default;
-$side-menu-icon-bg-dark: $menu-bar-active-color-dark !default;
+$side-menu-icon-bg-dark: fade-out($menu-bar-active-color-dark, 0.2) !default;
 $side-menu-icon-color-dark: $side-menu-title-bg-dark !default;
 $side-menu-border-color-dark: $border-color-dark !default;
 $side-menu-bg-dark: $menu-bar-bg-dark !default;
