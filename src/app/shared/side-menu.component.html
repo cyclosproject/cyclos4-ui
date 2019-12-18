@@ -1,11 +1,16 @@
-<div class="card mx-auto shadow-sm">
-  <div *ngIf="(entries$ | async)?.title as title" class="side-menu-title">
-    {{ title }}
+<div class="card mx-auto shadow-sm" *ngIf="(entries$ | async) as entries">
+  <div *ngIf="entries.title" class="side-menu-header">
+    <div class="side-menu-icon">
+      <icon [icon]="entries.icon" size="2.8rem"></icon>
+    </div>
+    <div class="side-menu-title">
+      {{ entries.title }}
+    </div>
   </div>
 
   <nav class="navbar d-flex flex-column align-items-stretch">
-    <a *ngFor="let entry of (entries$ | async)?.entries" #anchor
-      class="nav-item" [routerLink]="entry.url"
+    <a *ngFor="let entry of entries.entries" #anchor class="nav-item"
+      [routerLink]="entry.url"
       [ngClass]="{active: (menu.activeMenu$ | async)?.matches(entry)}"
       (click)="navigate(entry, $event); blurIfClick(anchor, $event);">
       <icon size="1.4rem" [icon]="entry.icon"></icon>

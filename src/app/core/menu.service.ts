@@ -397,9 +397,9 @@ export class MenuService {
       map(roots => {
         const root = menu == null ? null : roots.find(e => e.rootMenu === menu.root);
         if (root == null) {
-          return new SideMenuEntries(null, []);
+          return new SideMenuEntries(null, null, []);
         }
-        return new SideMenuEntries(root.title, root.entries);
+        return new SideMenuEntries(root.title, root.icon, root.entries);
       })
     );
   }

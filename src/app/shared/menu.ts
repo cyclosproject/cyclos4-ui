@@ -153,6 +153,7 @@ export module Menu {
 export class SideMenuEntries {
   constructor(
     public title: string,
+    public icon: string,
     public entries: MenuEntry[]
   ) {
   }
