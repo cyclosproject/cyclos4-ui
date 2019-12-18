@@ -535,7 +535,7 @@
     "image": {
       "noImage": "Sem imagem",
       "noImages": "Sem imagens",
-      "upload": "Enviar uma nova imagem",
+      "upload": "Enviar nova imagem",
       "manage": "Reordenar ou remover imagens",
       "remove": "Remover esta imagem",
       "manageMessage": "Você pode arrastar e soltar imagens para reordená-las",
@@ -544,7 +544,7 @@
     "file": {
       "noFile": "Sem arquivo",
       "noFiles": "Sem arquivos",
-      "upload": "Enviar um novo arquivo",
+      "upload": "Enviar novo arquivo",
       "manage": "Reordenar ou remover arquivos",
       "remove": "Remover este arquivo",
       "manage.message": "Você pode arrastar e soltar arquivos para reordená-los"
