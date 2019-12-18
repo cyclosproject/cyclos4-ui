@@ -544,7 +544,7 @@
     "file": {
       "noFile": "Sem arquivo",
       "noFiles": "Sem arquivos",
-      "upload": "Enviar um novo arquivo",
+      "upload": "Enviar novo arquivo",
       "manage": "Reordenar ou remover arquivos",
       "remove": "Remover este arquivo",
       "manage.message": "Você pode arrastar e soltar arquivos para reordená-los"
