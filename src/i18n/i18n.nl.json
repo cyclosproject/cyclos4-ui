@@ -189,6 +189,7 @@
     "banking.payUser": "Betaling aan gebruiker",
     "banking.paySystem": "Betaling aan systeem",
     "banking.paySelf": "De betaling zelf",
+    "banking.pos": "Receive payment",
     "banking.scheduledPayments": "Geautoriseerde betalingen",
     "banking.authorizations": "Betalingsautorisaties",
     "banking.transfersOverview": "Transfers overview",
@@ -341,6 +342,7 @@
       "account": "Rekening",
       "payUser": "Betaal",
       "paySystem": "Euro's kopen",
+      "pos": "Receive payment",
       "contacts": "Contacten",
       "directory": "Bedrijven",
       "advertisements": "Marketplace",
@@ -473,6 +475,7 @@
       "settled": "Afgehandeld"
     },
     "title": {
+      "pos": "Receive payment",
       "paymentSystemToSystem": "Payment between system accounts",
       "paymentSystemToUser": "Payment from system to user",
       "paymentToSystem": "Betaling aan systeem",
@@ -497,6 +500,7 @@
       "transfersOverview": "Transfers overview"
     },
     "mobileTitle": {
+      "pos": "Receive payment",
       "paymentSystemToSystem": "Pay system",
       "paymentSystemToUser": "Pay user",
       "paymentToSystem": "Pay system",
