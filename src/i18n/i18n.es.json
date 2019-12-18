@@ -237,6 +237,7 @@
     "banking.payUser": "Pago a usuario",
     "banking.paySystem": "Pago al sistema",
     "banking.paySelf": "Auto pago",
+    "banking.pos": "Receive payment",
     "banking.scheduledPayments": "Pagos agendados",
     "banking.authorizations": "Pagos con autorización",
     "banking.searchVouchers": "Buscar cupones",
@@ -399,6 +400,7 @@
       "account": "Cuenta",
       "payUser": "Pago a usuario",
       "paySystem": "Pago a sistema",
+      "pos": "Receive payment",
       "contacts": "Contactos",
       "directory": "Anunciantes",
       "advertisements": "Comercio electrónico",
@@ -481,7 +483,7 @@
     "occurrences": "Ocurrencias",
     "noAccounts": "No posee ninguna cuenta para poder realizar el pago",
     "noTypes": "No hay tipos de transacción posibles",
-    "noTypesSelection": "No hay tipos de transacción posibles desde esta cuenta al usuario seleccionado",
+    "noTypesSelection": "There are no possible payment types for this account and user",
     "scheduling": "Agendado",
     "scheduling.direct": "No agendar (pagar de inmediato)",
     "scheduling.single": "Agendado a futuro",
@@ -532,6 +534,7 @@
       "settled": "Saldado"
     },
     "title": {
+      "pos": "Receive payment",
       "paymentSystemToSystem": "Pago entre cuentas de sistema",
       "paymentSystemToUser": "Pago de sistema a usuario",
       "paymentToSystem": "Pago al sistema",
@@ -556,6 +559,7 @@
       "transfersOverview": "Visión general de Transferencias"
     },
     "mobileTitle": {
+      "pos": "Receive payment",
       "paymentSystemToSystem": "Pago a sistema",
       "paymentSystemToUser": "Pago a usuario",
       "paymentToSystem": "Pago a sistema",
@@ -1178,7 +1182,7 @@
     },
     "user": {
       "account": {
-        "allNonSmsPerformedPayments": "Realización de pago",
+        "allNonSmsPerformedPayments": "Pago realizado",
         "authorizedPaymentCanceled": "Pago autorizado cancelado",
         "authorizedPaymentDenied": "Pago denegado",
         "authorizedPaymentExpired": "Pago autorizado expirado",
@@ -1211,7 +1215,7 @@
         "scheduledPaymentRequestFailed": "Error de solicitud de pago",
         "sentPaymentRequestExpirationDateChanged": "Expiración de solicitud de pago enviado cambiada",
         "smsPerformedPayment": "Pago SMS realizado",
-        "ticketWebhookFailed": "Error de notificación de aprobación del ticket por webhook",
+        "ticketWebhookFailed": "Error de notificación de aprobado de ticket mediante webhook",
         "operator": {
           "authorizedPaymentApprovedStillPending": "Pago de operador aprobado, pero pendiente de autorización adicional",
           "authorizedPaymentCanceled": "Pago de operador pendiente cancelado",
