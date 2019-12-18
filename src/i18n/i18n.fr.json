@@ -483,7 +483,7 @@
     "occurrences": "Occurrences",
     "noAccounts": "Vous n'avez pas de compte pour effectuer le paiement",
     "noTypes": "Il n'y a pas de types de paiement possibles",
-    "noTypesSelection": "There are no possible payment types for this account and user",
+    "noTypesSelection": "Il n'y a pas de types de paiement possibles de ce compte à l'utilisateur sélectionné",
     "scheduling": "Calendrier",
     "scheduling.direct": "Payer maintenant",
     "scheduling.single": "Planifié",
