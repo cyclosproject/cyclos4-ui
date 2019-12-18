@@ -189,6 +189,7 @@
     "banking.payUser": "Paiement à l'utilisateur",
     "banking.paySystem": "Paiement au système",
     "banking.paySelf": "Paiement à soi-même",
+    "banking.pos": "Receive payment",
     "banking.scheduledPayments": "Paiements planifiés",
     "banking.authorizations": "Autorisations de paiement",
     "banking.transfersOverview": "Transfers overview",
@@ -341,6 +342,7 @@
       "account": "Compte",
       "payUser": "Payer l'utilisateur",
       "paySystem": "Payer le système",
+      "pos": "Receive payment",
       "contacts": "Contacts",
       "directory": "Annuaire",
       "advertisements": "Marketplace",
@@ -473,6 +475,7 @@
       "settled": "Paramétré"
     },
     "title": {
+      "pos": "Receive payment",
       "paymentSystemToSystem": "Payment between system accounts",
       "paymentSystemToUser": "Payment from system to user",
       "paymentToSystem": "Paiement au système",
@@ -497,6 +500,7 @@
       "transfersOverview": "Transfers overview"
     },
     "mobileTitle": {
+      "pos": "Receive payment",
       "paymentSystemToSystem": "Pay system",
       "paymentSystemToUser": "Pay user",
       "paymentToSystem": "Pay system",
