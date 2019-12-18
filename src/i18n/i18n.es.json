@@ -189,6 +189,7 @@
     "banking.payUser": "Pago a usuario",
     "banking.paySystem": "Pago al sistema",
     "banking.paySelf": "Auto pago",
+    "banking.pos": "Receive payment",
     "banking.scheduledPayments": "Pagos agendados",
     "banking.authorizations": "Pagos con autorización",
     "banking.transfersOverview": "Visión general de Transferencias",
@@ -341,6 +342,7 @@
       "account": "Cuenta",
       "payUser": "Pago a usuario",
       "paySystem": "Pago a sistema",
+      "pos": "Receive payment",
       "contacts": "Contactos",
       "directory": "Anunciantes",
       "advertisements": "Comercio electrónico",
@@ -473,6 +475,7 @@
       "settled": "Saldado"
     },
     "title": {
+      "pos": "Receive payment",
       "paymentSystemToSystem": "Pago entre cuentas de sistema",
       "paymentSystemToUser": "Pago de sistema a usuario",
       "paymentToSystem": "Pago al sistema",
@@ -497,6 +500,7 @@
       "transfersOverview": "Visión general de Transferencias"
     },
     "mobileTitle": {
+      "pos": "Receive payment",
       "paymentSystemToSystem": "Pago a sistema",
       "paymentSystemToUser": "Pago a usuario",
       "paymentToSystem": "Pago a sistema",
@@ -781,7 +785,7 @@
     "editOwnProfile": "Editar su perfil",
     "notifications": "Notificaciones",
     "viewAdvertisements": "Ver anuncios",
-    "brokering": "Perform brokering operations",
+    "brokering": "Realiza operaciones de broker",
     "runOperations": "Ejecutar operaciones",
     "created": "El grupo de operador fue creado",
     "saved": "El grupo de operador fue guardado"
