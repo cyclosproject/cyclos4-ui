@@ -1,5 +1,5 @@
 <page-content [heading]="i18n.dashboard.latestAds" hideBack [last]="last"
-  [ngStyle]="{minHeight: minHeight}">
+  [ngStyle]="{minHeight: minHeight}" [headingActions]="headingActions">
   <div *ngIf="(ads$ | async) != null; else spinner" class="container">
     <div class="row">
       <ng-container *ngFor="let ad of ads$.value">

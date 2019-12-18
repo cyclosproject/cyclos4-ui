@@ -23,7 +23,7 @@ export class DefaultDashboardResolver implements DashboardResolver {
    */
   dashboardItems(injector: Injector): DashboardItemConfig[] {
     return [
-      this.quickAccess(),
+      this.quickAccess(injector),
       ...this.accountStatuses(injector),
       this.latestAds(injector),
       this.contentPage()
@@ -34,21 +34,26 @@ export class DefaultDashboardResolver implements DashboardResolver {
    * Returns a default quick access, comprised of:
    * - Accounts (only for mobile devices, as for larger displays an account status item will be shown per account)
    * - Pay user
+   * - Receive payment
    * - Contacts
    * - Search users (business directory)
    * - Search ads (marketplace)
    * - Edit profile
    * - Switch theme
    */
-  quickAccess(): DashboardItemConfig {
+  quickAccess(injector: Injector): DashboardItemConfig {
+    const banking = this.permissions(injector).banking || {};
+    const pos = !!(banking.payments || {}).pos;
+
     // The quick access is always there
     return DashboardItemConfig.quickAccess({
       descriptors: [
         { type: QuickAccessType.Account, breakpoints: ['lt-md'] },
         { type: QuickAccessType.PayUser },
+        { type: QuickAccessType.Pos },
         { type: QuickAccessType.Contacts },
         { type: QuickAccessType.SearchUsers },
-        { type: QuickAccessType.SearchAds },
+        { type: QuickAccessType.SearchAds, breakpoints: pos ? ['lt-md'] : null },
         { type: QuickAccessType.EditProfile },
         { type: QuickAccessType.SwitchTheme }
       ],

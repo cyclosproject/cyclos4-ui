@@ -24,6 +24,7 @@
     "PendingPayments",
     "Transfers",
     "Payments",
+    "POS",
     "Accounts",
     "Marketplace",
     "AdQuestions",

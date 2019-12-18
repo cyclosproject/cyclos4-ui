@@ -104,7 +104,7 @@
   <hr *ngIf="layout.gtxxs$ | async">
   <form [formGroup]="form">
     <confirmation-password focused formControlName="confirmationPassword"
-      [passwordInput]="preview.confirmationPasswordInput"
+      [pos]="pos" [passwordInput]="preview.confirmationPasswordInput"
       [createDeviceConfirmation]="createDeviceConfirmation"
       (confirmationModeChanged)="confirmationModeChanged.emit($event)"
       (confirmed)="confirmed.emit($event)">

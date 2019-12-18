@@ -19,6 +19,11 @@ export enum QuickAccessType {
   PaySystem = 'paySystem',
 
   /**
+   * Receive payment
+   */
+  Pos = 'pos',
+
+  /**
    * View contacts
    */
   Contacts = 'contacts',
