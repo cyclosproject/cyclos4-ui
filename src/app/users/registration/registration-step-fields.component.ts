@@ -3,10 +3,8 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { AvailabilityEnum, CustomField, GeographicalCoordinate, Image, StoredFile, UserDataForNew } from 'app/api/models';
 import { ImagesService } from 'app/api/services';
 import { UserHelperService } from 'app/core/user-helper.service';
-import { ApiHelper } from 'app/shared/api-helper';
 import { BaseComponent } from 'app/shared/base.component';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
 
 /**
  * Public registration step: fill in the profile fields
@@ -61,22 +59,9 @@ export class RegistrationStepFieldsComponent
   ngOnInit() {
     super.ngOnInit();
 
-    this.editableFields = new Set();
-    this.managePrivacyFields = new Set();
-
     // Cache the field actions to avoid having to calculate every time
     this.editableFields = this.userHelper.fieldNamesByAction(this.data, 'edit');
     this.managePrivacyFields = this.userHelper.fieldNamesByAction(this.data, 'managePrivacy');
-
-    // Whenever the form changes, geocode the location
-    if (this.addressForm) {
-      this.addSub(this.addressForm.valueChanges.pipe(debounceTime(ApiHelper.DEBOUNCE_TIME)).subscribe(value => {
-        this.addSub(this.maps.geocode(value).subscribe(location => {
-          this.addressForm.patchValue({ location: location }, { emitEvent: false });
-          this.location = location;
-        }));
-      }));
-    }
   }
 
   get mobileAvailability(): AvailabilityEnum {
@@ -133,4 +118,13 @@ export class RegistrationStepFieldsComponent
   canManagePrivacy(field: string | CustomField): boolean {
     return this.managePrivacyFields.has(this.fieldHelper.fieldName(field));
   }
+
+  locateAddress() {
+    const value = this.addressForm.value;
+    this.addSub(this.maps.geocode(value).subscribe(coords => {
+      this.addressForm.patchValue({ location: coords });
+      this.changeDetector.detectChanges();
+    }));
+  }
+
 }

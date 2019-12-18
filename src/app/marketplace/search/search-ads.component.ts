@@ -41,6 +41,15 @@ export class SearchAdsComponent
     return ResultType.CATEGORIES;
   }
 
+  getInitialFormValue(data: AdDataForSearch) {
+    const value = super.getInitialFormValue(data);
+    if (value.maxDistance || value.latitude || value.longitude) {
+      // Here the distanceFilter is a MaxDistance, but the query has the distance properties directly
+      value.distanceFilter = value;
+    }
+    return value;
+  }
+
   ngOnInit() {
     super.ngOnInit();
     this.allowedResultTypes = this.layout.xxs
@@ -48,12 +57,6 @@ export class SearchAdsComponent
       : [ResultType.CATEGORIES, ResultType.TILES, ResultType.LIST, ResultType.MAP];
     this.stateManager.cache('data', this.marketplaceService.getAdDataForSearch({}))
       .subscribe(data => {
-        const defaultQuery = data.query || {};
-        this.form.patchValue(defaultQuery);
-        if (defaultQuery.maxDistance || defaultQuery.latitude || defaultQuery.longitude) {
-          // Here the distanceFilter is a MaxDistance, but the query has the distance properties directly
-          this.form.get('distanceFilter').patchValue(defaultQuery);
-        }
         this.data = data;
       });
   }

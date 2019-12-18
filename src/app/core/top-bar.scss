@@ -62,6 +62,7 @@ nav {
     }
     .navbar {
       height: $top-bar-height-xs;
+      padding: 0;
       a {
         height: 100%;
         padding: 0 $top-bar-item-spacing-custom;

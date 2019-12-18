@@ -45,37 +45,44 @@ export class ContactListComponent
     return this.layout.xxs ? ResultType.LIST : ResultType.TILES;
   }
 
+
+
   ngOnInit() {
     super.ngOnInit();
     this.allowedResultTypes = [ResultType.TILES, ResultType.LIST];
-    this.form.patchValue({ 'user': ApiHelper.SELF }, { emitEvent: false });
     this.stateManager.cache('data', this.contactsService.getContactListDataForSearch({
       user: ApiHelper.SELF
     })).subscribe(data => {
-      const fieldsInList = (data.fieldsInList || []).slice();
-      if (!fieldsInList.includes('display')) {
-        fieldsInList.unshift('display');
-        data.fieldsInList = fieldsInList;
-      }
-      const auth = this.login.auth || {};
-      const permissions = auth.permissions || {};
-      const users = permissions.users || {};
-      // If can search other users, allow the add contacts dialog
-      if (users.search) {
-        this.headingActions = [
-          new HeadingAction('add', this.i18n.general.addNew, () => this.addNew(), true)
-        ];
-      }
       this.data = data;
     });
   }
 
   protected toSearchParams(value: any): ContactListSearchParams {
+    const params = value as ContactListSearchParams;
+    params.user = ApiHelper.SELF;
     return value;
   }
 
   protected doSearch(value: ContactListSearchParams) {
     return this.contactsService.searchContactList$Response(value);
+  }
+
+  onDataInitialized(data: ContactListDataForSearch) {
+    super.onDataInitialized(data);
+    const fieldsInList = (data.fieldsInList || []).slice();
+    if (!fieldsInList.includes('display')) {
+      fieldsInList.unshift('display');
+      data.fieldsInList = fieldsInList;
+    }
+    const auth = this.login.auth || {};
+    const permissions = auth.permissions || {};
+    const users = permissions.users || {};
+    // If can search other users, allow the add contacts dialog
+    if (users.search) {
+      this.headingActions = [
+        new HeadingAction('add', this.i18n.general.addNew, () => this.addNew(), true)
+      ];
+    }
   }
 
   private addNew() {

@@ -6,7 +6,7 @@ import {
 import { Address } from 'app/api/models';
 import { MapsService } from 'app/core/maps.service';
 import { BaseComponent } from 'app/shared/base.component';
-import { BlueMarker, empty, fitBounds, RedMarker } from 'app/shared/helper';
+import { empty, fitBounds } from 'app/shared/helper';
 import { MaxDistance } from 'app/shared/max-distance';
 import { MobileResultDirective } from 'app/shared/mobile-result.directive';
 import { PageData } from 'app/shared/page-data';
@@ -17,6 +17,7 @@ import { ResultTableDirective } from 'app/shared/result-table.directive';
 import { ResultTileDirective } from 'app/shared/result-tile.directive';
 import { ResultType } from 'app/shared/result-type';
 import { BehaviorSubject } from 'rxjs';
+import { Configuration } from 'app/configuration';
 
 
 
@@ -31,8 +32,8 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class ResultsLayoutComponent<C, R> extends BaseComponent {
 
-  redMarker = RedMarker;
-  blueMarker = BlueMarker;
+  mainMarker = Configuration.mainMapMarker;
+  altMarker = Configuration.altMapMarker;
 
   private _resultType: ResultType = ResultType.LIST;
   @Input() get resultType(): ResultType {
@@ -141,30 +142,22 @@ export class ResultsLayoutComponent<C, R> extends BaseComponent {
     let link = this.toLink ? this.toLink(row) : null;
     if (link instanceof Array) {
       link = link.join('/');
-    } else if (!link) {
-      link = '#';
     }
     return link;
   }
 
   handleClick(row: R, event: Event) {
-    let stop = false;
     if (this.onClick) {
       this.onClick(row);
-      stop = true;
     } else {
       const link = this.toLink ? this.toLink(row) : null;
       if (typeof link === 'string') {
         this.router.navigateByUrl(link);
-        stop = true;
       } else if (link instanceof Array) {
         this.router.navigate(link);
-        stop = true;
       }
     }
-    if (stop) {
-      event.stopPropagation();
-      event.preventDefault();
-    }
+    event.stopPropagation();
+    event.preventDefault();
   }
 }

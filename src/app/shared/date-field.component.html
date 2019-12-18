@@ -5,7 +5,7 @@
 <ng-template #widget>
   <!-- Need a relatively-positioned element to position the dropdown corretcly -->
   <div class="date-field-wrapper" style="position:relative" dropdown
-    #dropdown="bs-dropdown" (onShown)="onShown()"
+    #dropdown="bs-dropdown" container="body" (onShown)="onShown()"
     (onHidden)="onHidden(); toggleButton.focus()">
     <div class="date-field d-flex align-items-center">
       <ng-container

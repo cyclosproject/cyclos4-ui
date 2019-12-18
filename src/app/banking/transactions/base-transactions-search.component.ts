@@ -47,11 +47,11 @@ export abstract class BaseTransactionsSearch
     this.param = route.params.owner;
     this.self = this.authHelper.isSelf(this.param);
 
-    // Get the account history data
+    // Get the transactions search data
     this.stateManager.cache('data',
       this.transactionsService.getTransactionsDataForSearch({
         owner: this.param,
-        fields: ['user', 'accountTypes', 'transferFilters', 'preselectedPeriods', 'query']
+        fields: ['user', 'accountTypes', 'visibleKinds', 'transferFilters', 'preselectedPeriods', 'query']
       })
     ).subscribe(data => {
       this.bankingHelper.preProcessPreselectedPeriods(data, this.form);
@@ -95,7 +95,7 @@ export abstract class BaseTransactionsSearch
     params.accountTypes = value.accountType ? [value.accountType] : null;
     params.transferFilters = value.transferFilter ? [value.transferFilter] : null;
     params.datePeriod = this.bankingHelper.resolveDatePeriod(value);
-    params.kinds = this.getKinds();
+    params.kinds = this.getKinds().filter(k => this.data.visibleKinds.includes(k));
     return params;
   }
 

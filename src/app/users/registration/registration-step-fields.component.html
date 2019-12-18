@@ -102,10 +102,12 @@
     [configuration]="data.addressConfiguration"
     [managePrivacy]="data.addressConfiguration.managePrivacy">
   </address-form>
-  <agm-map *ngIf="(location$ | async) as loc"
-    [styles]="layout.googleMapStyles" class="my-3" [latitude]="loc.latitude"
-    [longitude]="loc.longitude" [zoom]="16" [maxZoom]="18">
-    <agm-marker [latitude]="loc.latitude" [longitude]="loc.longitude">
-    </agm-marker>
-  </agm-map>
+  <label-value [label]="i18n.general.map" kind="field" *ngIf="maps.enabled">
+    <static-map *ngIf="addressForm.get('location').value.latitude != null"
+      [address]="addressForm.value"></static-map>
+    <button *ngIf="addressForm.get('location').value.latitude == null"
+      class="btn btn-outline-primary" type="button" (click)="locateAddress()">
+      {{ i18n.general.mapView }}
+    </button>
+  </label-value>
 </ng-container>

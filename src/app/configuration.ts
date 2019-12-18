@@ -4,6 +4,9 @@ import { ContentPagesResolver } from 'app/content/content-pages-resolver';
 import { ContentWithLayout } from 'app/content/content-with-layout';
 import { DashboardResolver } from 'app/content/dashboard-resolver';
 import { OperationConfiguration } from 'app/content/operation-configuration';
+import { Breakpoint } from 'app/shared/layout.service';
+import { BreakpointConfiguration } from 'app/content/breakpoint-configuration';
+import { ShortcutIconConfiguration } from 'app/content/shortcut-icon-configuration';
 
 /**
  * The global configuration
@@ -24,6 +27,15 @@ export interface ConfigurationDefinitions {
   /** Application title displayed on the sidenav menu small devices */
   appTitleMenu: string;
 
+  /** The application logo, displayed in the top bar */
+  logoUrl: string;
+
+  /**
+   * A set of icons by resolution to be shown by browsers.
+   * If nothing is set, defaults to the same as `logoUrl`.
+   */
+  shortcutIcons: ShortcutIconConfiguration[];
+
   /** Whether to use a separated menu bar (true) or merge the menu and top bar (false) */
   menuBar: boolean;
 
@@ -38,6 +50,9 @@ export interface ConfigurationDefinitions {
 
   /** Page size on quick search / autocomplete */
   quickSearchPageSize: number;
+
+  /** Custom configuration for media breakpoints */
+  breakpoints: { [breakpoint in Breakpoint]?: BreakpointConfiguration };
 
   /** Custom configuration for ad categories, by category internal name */
   adCategories: { [internalName: string]: AdCategoryConfiguration };
@@ -101,6 +116,16 @@ export interface ConfigurationDefinitions {
    * The resolver for banners
    */
   banners: BannerCardsResolver;
+
+  /**
+   * The absolute URL for the main map marker icon.
+   */
+  mainMapMarker: string;
+
+  /**
+   * The absolute URL for the alternative map marker icon
+   */
+  altMapMarker: string;
 
 }
 

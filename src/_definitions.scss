@@ -414,6 +414,12 @@ $calendar-selected-bg: $accent !default;
 $calendar-selected-color: color-yiq($calendar-selected-bg) !default;
 $calendar-disabled-color: $text-muted !default;
 $calendar-disabled-bg: transparent !default;
+$calendar-header-padding: 0.5rem;
+$calendar-header-nav-size: 2.6rem;
+$calendar-header-height: $calendar-header-nav-size + 2 * $calendar-header-padding;
+$calendar-cell-height: 2rem;
+$calendar-month-width: 7rem;
+$calendar-year-width: 4rem;
 
 // Date-picker calendar on dark background
 $calendar-header-bg-dark: $accent-dark !default;

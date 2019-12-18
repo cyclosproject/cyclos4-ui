@@ -9,6 +9,8 @@ import { I18nLoadingService } from 'app/core/i18n-loading.service';
 import { setup } from 'app/setup';
 import { LightboxConfig } from 'ngx-lightbox';
 import { forkJoin, of } from 'rxjs';
+import { ALL_BREAKPOINTS } from 'app/shared/layout.service';
+import { empty } from 'app/shared/helper';
 
 /**
  * Sets the default values on the global configuration
@@ -18,6 +20,7 @@ function setupConfigurationDefaults() {
   Configuration.appTitle = 'Cyclos';
   Configuration.appTitleSmall = 'Cyclos';
   Configuration.appTitleMenu = 'Cyclos menu';
+  Configuration.logoUrl = 'images/logo.png';
   Configuration.searchPageSizeXxs = 10;
   Configuration.searchPageSizeXs = 20;
   Configuration.searchPageSize = 40;
@@ -36,9 +39,14 @@ function setupConfigurationDefaults() {
   Configuration.homePage = {
     content: ContentGetter.url('content/home.html')
   };
+  Configuration.breakpoints = {};
+  for (const bp of ALL_BREAKPOINTS) {
+    Configuration.breakpoints[bp] = {};
+  }
+  Configuration.mainMapMarker = 'https://maps.google.com/mapfiles/ms/icons/red-dot.png';
+  Configuration.altMapMarker = 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png';
   Configuration.dashboard = new DefaultDashboardResolver();
 }
-
 
 // Initializes the shared services
 export function initialize(
@@ -56,6 +64,21 @@ export function initialize(
     setup();
     if (Configuration.apiRoot.endsWith('/')) {
       Configuration.apiRoot = Configuration.apiRoot.substring(0, Configuration.apiRoot.length - 1);
+    }
+
+    // Initialize the shortcut icons
+    let icons = Configuration.shortcutIcons;
+    if (empty(icons)) {
+      icons = [{ url: Configuration.logoUrl }];
+    }
+    for (const icon of icons) {
+      const link = document.createElement('link');
+      link.rel = icon.rel || 'icon';
+      if (icon.size) {
+        link.setAttribute('sizes', `${icon.size}x${icon.size}`);
+      }
+      link.href = icon.url;
+      document.head.appendChild(link);
     }
 
     // Initialize the API configuration

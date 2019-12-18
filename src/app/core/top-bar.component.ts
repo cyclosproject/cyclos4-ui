@@ -97,6 +97,54 @@ export class TopBarComponent extends AbstractComponent implements OnInit, OnChan
     return this.activeMenu == null ? null : this.activeMenu.menu.root;
   }
 
+  logoUrl(breakpoints: Set<Breakpoint>): string {
+    const configs = Configuration.breakpoints;
+    for (const bp of breakpoints) {
+      const config = configs[bp];
+      if (config && config.logoUrl) {
+        // empty means no logo
+        return config.logoUrl === '' ? null : config.logoUrl;
+      }
+    }
+    // Return the default logo url
+    if (breakpoints.has('lt-md')) {
+      // No logo on mobile
+      return null;
+    } else {
+      return Configuration.logoUrl;
+    }
+  }
+
+  appTitle(breakpoints: Set<Breakpoint>, pageTitle: string): string {
+    // xxs is a special case
+    if (breakpoints.has('xxs')) {
+      return empty(pageTitle) ? Configuration.appTitleSmall : pageTitle;
+    }
+
+    // Look for a customized title
+    const configs = Configuration.breakpoints;
+    for (const bp of breakpoints) {
+      const config = configs[bp];
+      if (config && config.title) {
+        switch (config.title) {
+          case 'large':
+            return this.density === MenuDensity.Dense ? Configuration.appTitleSmall : Configuration.appTitle;
+          case 'small':
+            return Configuration.appTitleSmall;
+          case 'none':
+            return null;
+        }
+      }
+    }
+
+    // Return the default, which depends on the active breakpoints and density
+    if (breakpoints.has('xs') || this.density === MenuDensity.Dense) {
+      return Configuration.appTitleSmall;
+    } else {
+      return Configuration.appTitle;
+    }
+  }
+
   xxsActions(defaultActions: HeadingAction[], _routerEvent: Event, user: User): HeadingAction[] {
     const actions: HeadingAction[] = [];
 
@@ -145,6 +193,9 @@ export class TopBarComponent extends AbstractComponent implements OnInit, OnChan
   }
 
   get density(): MenuDensity {
+    if (this.layout.ltmd) {
+      return MenuDensity.Custom;
+    }
     if (!this.hasMenu) {
       return null;
     }

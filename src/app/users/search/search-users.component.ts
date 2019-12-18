@@ -56,8 +56,6 @@ export class SearchUsersComponent
   // See https://github.com/angular/angular/issues/20439
   private ignoreNextUpdate = false;
 
-  private firstTime = true;
-
   constructor(
     injector: Injector,
     private usersService: UsersService,
@@ -171,15 +169,6 @@ export class SearchUsersComponent
       this.form.setControl('customValues', this.fieldHelper.customValuesFormGroup(fieldsInSearch, {
         useDefaults: false
       }));
-      if (this.firstTime) {
-        const defaultQuery = data.query || {};
-        this.form.patchValue(defaultQuery);
-        if (defaultQuery.maxDistance || defaultQuery.latitude || defaultQuery.longitude) {
-          // Here the distanceFilter is a MaxDistance, but the query has the distance properties directly
-          this.form.get('distanceFilter').patchValue(defaultQuery);
-        }
-        this.firstTime = false;
-      }
       this.ignoreNextUpdate = false;
       this.basicField$.next(fieldsInSearch.length === 0 ? null : fieldsInSearch[0]);
       this.advancedFields$.next(fieldsInSearch.length > 1 ? fieldsInSearch.slice(1) : []);

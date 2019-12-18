@@ -52,7 +52,6 @@ export class SearchUserOperatorsComponent
 
     this.addSub(this.operatorsService.getUserOperatorsDataForSearch({ user: this.param }).subscribe(data => {
       this.statusOptions = this.userHelper.statusOptions();
-      this.form.patchValue(data.query);
       if (!this.self && data.canCreateNew) {
         this.headingActions = [
           new HeadingAction('registration', this.i18n.general.addNew, () => {

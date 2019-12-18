@@ -28,13 +28,13 @@
       [mode]="(layout.ltsm$ | async) ? 'tight' : 'table'" last>
       <ng-container *ngIf="layout.ltsm$ | async; else largeTable">
         <div class="mobile-results">
-          <a *ngFor="let row of rows" class="mobile-result"
-            [href]="linkUrl(row)" (click)="handleClick(row, $event)"
+          <maybe-link *ngFor="let row of rows" class="mobile-result"
+            [link]="linkUrl(row)" (click)="handleClick(row, $event)"
             (keydown.enter)="handleClick(row, $event)">
             <ng-container
               *ngTemplateOutlet="mobileResultTemplate; context: {$implicit: row}">
             </ng-container>
-          </a>
+          </maybe-link>
         </div>
       </ng-container>
       <ng-template #largeTable>
@@ -58,13 +58,13 @@
           'col-xl-3': layout.leftAreaVisible$ | async,
           'col-xl-2': !(layout.leftAreaVisible$ | async)
         }">
-          <a class="tiled-result" [href]="linkUrl(row)"
+          <maybe-link class="tiled-result" [link]="linkUrl(row)"
             (click)="handleClick(row, $event)"
             (keydown.enter)="handleClick(row, $event)">
             <ng-container
               *ngTemplateOutlet="tileTemplate; context: {$implicit: row}">
             </ng-container>
-          </a>
+          </maybe-link>
         </div>
       </div>
     </page-content>
@@ -88,18 +88,18 @@
         (mapReady)="adjustMap();">
         <ng-container *ngFor="let row of rows">
           <ng-container *ngIf="toAddress(row) as addr">
-            <agm-marker [title]="toMarkerTitle(row)" [iconUrl]="redMarker"
+            <agm-marker [title]="toMarkerTitle(row)" [iconUrl]="mainMarker"
               [latitude]="addr.location.latitude"
               [longitude]="addr.location.longitude"
               (markerClick)="closeAllInfoWindows()">
               <agm-info-window>
-                <a class="map-info-window" [href]="linkUrl(row)"
+                <maybe-link class="map-info-window" [link]="linkUrl(row)"
                   (click)="handleClick(row, $event)"
                   (keydown.enter)="handleClick(row, $event)">
                   <ng-container
                     *ngTemplateOutlet="infoWindowTemplate; context: {$implicit: row, address: addr}">
                   </ng-container>
-                </a>
+                </maybe-link>
               </agm-info-window>
             </agm-marker>
           </ng-container>
@@ -107,7 +107,7 @@
         <agm-marker
           *ngIf="referencePoint?.latitude != null && referencePoint?.longitude != null"
           [title]="referencePoint.name" [latitude]="referencePoint.latitude"
-          [longitude]="referencePoint.longitude" [iconUrl]="blueMarker">
+          [longitude]="referencePoint.longitude" [iconUrl]="altMarker">
           <agm-info-window>
             {{ referencePoint.name }}
           </agm-info-window>

@@ -11,12 +11,6 @@ import download from 'downloadjs';
 import { combineLatest, Observable, of, Subject } from 'rxjs';
 import { first, tap } from 'rxjs/operators';
 
-/** URL for the Google maps red marker */
-export const RedMarker = 'https://maps.google.com/mapfiles/ms/icons/red-dot.png';
-
-/** URL for the Google maps blue marker */
-export const BlueMarker = 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png';
-
 /**
  * Sets whether the root spinner in the page is visible
  */
@@ -289,7 +283,7 @@ export function validateBeforeSubmit(control: AbstractControl, returnNonValid = 
       Array.prototype.push.apply(result, validateBeforeSubmit(current, true) as FormControl[]);
     });
   }
-  const valid = empty(result.length);
+  const valid = empty(result);
   if (!valid) {
     // Focus the first invalid field
     focusFirstInvalid();
