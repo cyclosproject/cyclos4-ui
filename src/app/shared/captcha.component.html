@@ -1,6 +1,6 @@
 <ng-container [formGroup]="form">
   <div class="flex-grow-1 d-flex justify-content-center mb-1">
-    <img #image alt="captcha" (load)="updateWidth()">
+    <img #image alt="captcha">
   </div>
   <div class="d-flex">
     <input class="form-control" formControlName="response" [ngClass]="{
