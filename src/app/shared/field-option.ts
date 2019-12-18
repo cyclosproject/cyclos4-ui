@@ -8,13 +8,17 @@ export function fieldOptionMatches(option: FieldOption, value: any) {
   if (option == null || value == null) {
     return false;
   }
-  if (option.value === value || option.value === value.value) {
+  if (typeof value === 'string' && value.includes('|')) {
+    value = value.split('|')[0];
+  }
+  if (option.value === value
+    || option.id && option.id === value
+    || option.internalName && option.internalName === value) {
     return true;
   }
-  if (option.id && option.id === value.id) {
-    return true;
-  }
-  if (option.internalName && option.internalName === value.internalName) {
+  if (typeof value === 'object'
+    && (option.id && option.id === value.id
+      || option.internalName && option.internalName === value.internalName)) {
     return true;
   }
   return false;

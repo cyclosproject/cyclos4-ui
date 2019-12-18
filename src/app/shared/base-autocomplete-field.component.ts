@@ -148,6 +148,9 @@ export abstract class BaseAutocompleteFieldComponent<T, A>
   }
 
   onShown() {
+    if (!this.inputField) {
+      return;
+    }
     const input = this.inputField.nativeElement as HTMLInputElement;
     const rect = input.getBoundingClientRect();
     const docHeight = (window.innerHeight || document.documentElement.clientHeight);
