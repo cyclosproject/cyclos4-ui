@@ -117,7 +117,9 @@ export abstract class BaseAutocompleteFieldComponent<T, A>
       this.select(null);
     } else {
       this.fetch(this.value).subscribe(res => {
-        this.select(res, this.value);
+        this.select(res, this.value, {
+          emitEvent: false
+        });
       });
     }
   }
@@ -197,9 +199,9 @@ export abstract class BaseAutocompleteFieldComponent<T, A>
     }
     this.close();
     if (selected == null) {
-      this.inputFieldControl.setValue(null);
+      this.inputFieldControl.setValue(null, options);
     } else if (this.inputFieldControl.value !== newValue) {
-      this.inputFieldControl.setValue(newValue);
+      this.inputFieldControl.setValue(newValue, options);
     }
   }
 
