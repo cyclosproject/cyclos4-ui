@@ -237,6 +237,7 @@
     "banking.payUser": "Pagamento utente",
     "banking.paySystem": "Pagamento sistema",
     "banking.paySelf": "Auto-pagamento",
+    "banking.pos": "Receive payment",
     "banking.scheduledPayments": "Pagamenti pianificati",
     "banking.authorizations": "Autorizzazioni di pagamento",
     "banking.searchVouchers": "Cerca voucher",
@@ -399,6 +400,7 @@
       "account": "Conto",
       "payUser": "Paga utente",
       "paySystem": "Paga sistema",
+      "pos": "Receive payment",
       "contacts": "Contatti",
       "directory": "Elenco",
       "advertisements": "Marketplace",
@@ -481,7 +483,7 @@
     "occurrences": "Occorrenze",
     "noAccounts": "Non hai nessun conto per eseguire il pagamento",
     "noTypes": "Non ci sono tipi di pagamento possibili",
-    "noTypesSelection": "Non ci sono tipi di pagamento possibili da questo conto all'utente selezionato",
+    "noTypesSelection": "There are no possible payment types for this account and user",
     "scheduling": "Pianificazione",
     "scheduling.direct": "Paga ora",
     "scheduling.single": "Pianificato",
@@ -532,6 +534,7 @@
       "settled": "Saldato"
     },
     "title": {
+      "pos": "Receive payment",
       "paymentSystemToSystem": "Pagamento tra conti di sistema",
       "paymentSystemToUser": "Pagamento da sistema a utente",
       "paymentToSystem": "Pagamento al sistema",
@@ -556,6 +559,7 @@
       "transfersOverview": "Panoramica operazioni"
     },
     "mobileTitle": {
+      "pos": "Receive payment",
       "paymentSystemToSystem": "Paga sistema",
       "paymentSystemToUser": "Paga utente",
       "paymentToSystem": "Paga sistema",
