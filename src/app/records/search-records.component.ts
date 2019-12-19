@@ -131,6 +131,9 @@ export class SearchRecordsComponent
     params.customFields = this.fieldHelper.toCustomValuesFilter(params.customValues);
     params.profileFields = this.fieldHelper.toCustomValuesFilter(params.profileFields);
     params.creationPeriod = ApiHelper.dateRangeFilter(params.beginDate, params.endDate);
+    delete params['beginDate'];
+    delete params['endDate'];
+
     if (!this.generalSearch) {
       params.owner = this.param;
     }

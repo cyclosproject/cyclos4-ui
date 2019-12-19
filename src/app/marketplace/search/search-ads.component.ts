@@ -1,5 +1,8 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { AdAddressResultEnum, AdCategoryWithChildren, AdQueryFilters, AdResult, CustomFieldDetailed } from 'app/api/models';
+import {
+  AdAddressResultEnum, AdCategoryWithChildren, AdQueryFilters,
+  AdResult, CustomFieldDetailed, RoleEnum, MarketplacePermissions, Currency
+} from 'app/api/models';
 import { AdDataForSearch } from 'app/api/models/ad-data-for-search';
 import { MarketplaceService } from 'app/api/services';
 import { ApiHelper } from 'app/shared/api-helper';
@@ -9,6 +12,7 @@ import { MaxDistance } from 'app/shared/max-distance';
 import { ResultType } from 'app/shared/result-type';
 import { BehaviorSubject } from 'rxjs';
 import { Menu } from 'app/shared/menu';
+import { LoginService } from 'app/core/login.service';
 
 /**
  * Search for advertisements
@@ -23,18 +27,22 @@ export class SearchAdsComponent
   implements OnInit {
 
   categoryTrail$ = new BehaviorSubject<AdCategoryWithChildren[]>(null);
+  currency$ = new BehaviorSubject<Currency>(null);
   basicFields: CustomFieldDetailed[];
   advancedFields: CustomFieldDetailed[];
+  marketplacePermissions: MarketplacePermissions;
 
   constructor(
     injector: Injector,
-    private marketplaceService: MarketplaceService
+    private marketplaceService: MarketplaceService,
+    private loginService: LoginService
   ) {
     super(injector);
   }
 
   protected getFormControlNames() {
-    return ['keywords', 'groups', 'category', 'customValues', 'distanceFilter', 'orderBy'];
+    return ['keywords', 'statuses', 'groups', 'category', 'customValues', 'distanceFilter', 'orderBy', 'kind', 'hasImages',
+      'minAmount', 'maxAmount', 'currency', 'beginDate', 'endDate'];
   }
 
   getInitialResultType() {
@@ -62,13 +70,24 @@ export class SearchAdsComponent
   }
 
   onDataInitialized(data: AdDataForSearch) {
+    const auth = this.dataForUiHolder.auth || {};
+    const permissions = auth.permissions || {};
+    this.marketplacePermissions = permissions.marketplace || {};
+
     const customField = (name: string) => data.customFields.find(f => f.internalName === name);
     this.basicFields = data.fieldsInBasicSearch.map(customField);
     this.advancedFields = data.fieldsInAdvancedSearch.map(customField);
     this.form.setControl('customValues', this.fieldHelper.customValuesFormGroup(data.customFields, {
       useDefaults: false
     }));
-    this.headingActions = empty(this.advancedFields) || this.layout.xxs ? [] : [this.moreFiltersAction];
+    this.headingActions = [this.moreFiltersAction];
+
+    this.addSub(this.form.get('currency').valueChanges.subscribe(id =>
+      this.updateCurrency(id, data)));
+    // Preselect the currency if there is a single one
+    if (!empty(data.currencies) && data.currencies.length === 1) {
+      this.currency = data.currencies[0];
+    }
     super.onDataInitialized(data);
   }
 
@@ -86,6 +105,13 @@ export class SearchAdsComponent
       params.latitude = distanceFilter.latitude;
       params.longitude = distanceFilter.longitude;
     }
+    params.publicationPeriod = ApiHelper.dateRangeFilter(value.beginDate, value.endDate);
+    delete params['beginDate'];
+    delete params['endDate'];
+
+    params.priceRange = ApiHelper.rangeFilter(value.minAmount, value.maxAmount);
+    delete params['minAmount'];
+    delete params['maxAmount'];
     return params;
   }
 
@@ -145,4 +171,43 @@ export class SearchAdsComponent
   resolveMenu() {
     return this.login.user ? Menu.SEARCH_ADS : Menu.PUBLIC_MARKETPLACE;
   }
+
+  /**
+ * Changes the current currency to update related filters
+ */
+  protected updateCurrency(id: string, data: AdDataForSearch) {
+    this.currency = data.currencies.find(c => c.id === id || c.internalName === id);
+  }
+
+  /**
+   * Returns if the current user is a manager to enable specific filters
+   */
+  get manager(): boolean {
+    return this.dataForUiHolder.role === RoleEnum.ADMINISTRATOR ||
+      (this.dataForUiHolder.role === RoleEnum.BROKER &&
+        !empty(this.data.query.brokers));
+  }
+
+  /**
+   * Returns if the current user can view pending ads/webshop
+   */
+  get canViewPending(): boolean {
+    return this.marketplacePermissions.userSimple.viewPending || this.marketplacePermissions.userWebshop.viewPending;
+  }
+
+  /**
+   * Returns currency, min and max price filters should be hidden
+   */
+  get hidePrice(): boolean {
+    return this.data.hidePrice || this.loginService.user == null;
+  }
+
+  get currency(): Currency {
+    return this.currency$.value;
+  }
+
+  set currency(currency: Currency) {
+    this.currency$.next(currency);
+  }
+
 }

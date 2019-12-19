@@ -1119,12 +1119,15 @@
     "deliveryPrice": "Delivery price",
     "deliveryMethod": "Delivery method",
     "deliveryMethods": "Delivery methods",
+    "hasImages": "With images",
     "item": "Item",
     "items": "Items",
     "itemNotAvailable": "Not available",
     "itemsNoLongerAvailable": "- are no longer available.<br>",
     "itemsOutOfStock": "- are out of stock.<br>",
     "lowBalance": "- are exceeding your {currency} balance.",
+    "minPrice": "Min. price",
+    "maxPrice": "Max. price",
     "minDeliveryTime": "Min. delivery time",
     "maxDeliveryTime": "Max. delivery time",
     "name": "Title",
@@ -1176,6 +1179,10 @@
     "total": "Total",
     "totalCartPrice": "Total cart price",
     "toBeConfirmedBySeller": "To be confirmed by seller",
+    "type": {
+      "simple": "Advertisement",
+      "webshop": "Webshop"
+    },
     "orderBy": {
       "date": "Last published",
       "distance": "Distance",
