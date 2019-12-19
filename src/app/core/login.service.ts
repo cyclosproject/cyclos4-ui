@@ -102,9 +102,9 @@ export class LoginService {
     if (Configuration.externalLoginUrl) {
       // Login is handled in an external frontend
       let url = Configuration.externalLoginUrl;
-      if (Configuration.externalLoginParam && !empty(redirectUrl)) {
-        // Also send the redirect url
-        url += (url.includes('?') ? '&' : '?') + Configuration.externalLoginParam + '=' + encodeURIComponent(redirectUrl);
+      if (!empty(redirectUrl)) {
+        // Also send the path to return to after logging-in
+        url += (url.includes('?') ? '&' : '?') + 'returnTo=' + encodeURIComponent(redirectUrl);
       }
       location.assign(url);
     } else {

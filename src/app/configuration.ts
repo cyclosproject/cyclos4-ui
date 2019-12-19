@@ -80,12 +80,6 @@ export interface ConfigurationDefinitions {
   externalLoginUrl: string;
 
   /**
-   * When using an external login, and supported, will send this parameter containing the
-   * internal path to which users should be redirected after logging in.
-   */
-  externalLoginParam: string;
-
-  /**
    * When using an external login, is the URL to where users are redirected after logging-out.
    */
   afterLogoutUrl: string;
