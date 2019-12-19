@@ -162,7 +162,16 @@ export class DataForUiHolder {
         }
       }),
       catchError((resp: HttpErrorResponse) => {
-        if (resp.status === 0) {
+        // Maybe we're using an old session data. In that case, we have to clear the session and try again
+        if (nextRequestState.hasSession && [ErrorStatus.FORBIDDEN, ErrorStatus.UNAUTHORIZED].includes(resp.status)) {
+          // Clear the session token and try again
+          nextRequestState.setSessionToken(null);
+          return this.uiService.dataForUi({ kind: UiKind.CUSTOM }).pipe(
+            tap(dataForUi => {
+              this.dataForUi = dataForUi;
+            })
+          );
+        } else {
           // The server couldn't be contacted
           let serverOffline = this.i18n.error.serverOffline;
           let reloadPage = this.i18n.general.reloadPage;
@@ -174,16 +183,6 @@ export class DataForUiHolder {
           setRootAlert(serverOffline);
           setReloadButton(reloadPage);
           return;
-        }
-        // Maybe we're using an old session data. In that case, we have to clear the session and try again
-        if (nextRequestState.hasSession && [ErrorStatus.FORBIDDEN, ErrorStatus.UNAUTHORIZED].includes(resp.status)) {
-          // Clear the session token and try again
-          nextRequestState.setSessionToken(null);
-          return this.uiService.dataForUi({ kind: UiKind.CUSTOM }).pipe(
-            tap(dataForUi => {
-              this.dataForUi = dataForUi;
-            })
-          );
         }
       })
     );
