@@ -66,7 +66,7 @@ export class ViewCartComponent
   }
 
   /**
-   * Checks for messages about the cart like unavailable / out of stock / adjusted items, low balance, etc   
+   * Checks for messages about the cart like unavailable / out of stock / adjusted items, low balance, etc
    */
   protected checkMessages(data: ShoppingCartView) {
     const adjustments = new Set();
@@ -116,7 +116,7 @@ export class ViewCartComponent
       this.notification.error(this.i18n.ad.error.cannotProceedToCheckout);
       return;
     }
-    this.router.navigate(['/marketplace', 'checkout', this.id])
+    this.router.navigate(['/marketplace', 'checkout', this.id]);
   }
 
   /**

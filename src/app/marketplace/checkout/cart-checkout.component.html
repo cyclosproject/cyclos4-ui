@@ -1,0 +1,109 @@
+<page-layout [ready]="data$ | async" [ngSwitch]="step$ | async">
+
+  <!-- Step 1: Delivery information -->
+  <page-content *ngSwitchCase="'delivery'"
+    [heading]="i18n.ad.title.deliveryMethod"
+    [mobileHeading]="i18n.ad.mobileTitle.deliveryMethod"
+    [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'">
+    <form [formGroup]="form">
+      <div class="mb-4">
+        <radio-group-field [asColumn]="true"
+          [label]="i18n.ad.chooseDeliveryMethod"
+          formControlName="deliveryMethod">
+          <field-option *ngFor="let dm of data.deliveryMethods"
+            [value]="dm.id" [text]="dm.name"></field-option>
+        </radio-group-field>
+      </div>
+    </form>
+    <h2>{{ i18n.ad.deliveryInformation }}</h2>
+    <ng-container *ngIf="deliveryMethod$ | async">
+      <label-value *ngIf="deliveryMethod.minDeliveryTime"
+        [label]="i18n.ad.minDeliveryTime">
+        {{ formatService.formatTimeInterval(deliveryMethod.minDeliveryTime) }}
+      </label-value>
+      <label-value *ngIf="deliveryMethod.maxDeliveryTime"
+        [label]="i18n.ad.maxDeliveryTime">
+        {{ formatService.formatTimeInterval(deliveryMethod.maxDeliveryTime) }}
+      </label-value>
+      <label-value [label]="i18n.ad.price">
+        {{ deliveryMethod.chargeAmount != null ?
+        (deliveryMethod.chargeAmount | currency: deliveryMethod.chargeCurrency) : i18n.ad.negotiated}}
+      </label-value>
+    </ng-container>
+    <actions forceRow>
+      <button class="btn btn-primary" (click)="next()">
+        {{ i18n.general.next }}
+      </button>
+    </actions>
+  </page-content>
+
+  <!-- Step 2: Address and remarks -->
+  <page-content *ngSwitchCase="'address'"
+    [heading]="i18n.ad.title.deliveryAddress"
+    [mobileHeading]="i18n.ad.mobileTitle.deliveryAddress"
+    [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'">
+    <form [formGroup]="form">
+      <div class="mb-4">
+        <radio-group-field [asColumn]="true"
+          [label]="i18n.ad.chooseDeliveryAddress" formControlName="address">
+          <field-option *ngFor="let dm of data.addresses" [value]="dm.id"
+            [text]="dm.name"></field-option>
+        </radio-group-field>
+      </div>
+    </form>
+    <hr />
+    <address-form [addressForm]="addressForm"
+      [configuration]="data.addressConfiguration">
+    </address-form>
+    <actions forceRow>
+      <button class="btn btn-primary" (click)="next()">
+        {{ i18n.general.next }}
+      </button>
+      <ng-template #spacer>&nbsp;</ng-template>
+      <button *ngIf="data.deliveryMethods.length > 1"
+        class="btn btn-outline-primary" (click)="back()">
+        {{ i18n.general.previous }}
+      </button>
+    </actions>
+  </page-content>
+
+  <!-- Step 3: Payment types -->
+  <page-content *ngSwitchCase="'payment'"
+    [heading]="i18n.ad.title.paymentType"
+    [mobileHeading]="i18n.ad.mobileTitle.paymentType"
+    [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'">
+    <form [formGroup]="form">
+      <radio-group-field [asColumn]="true" [label]="i18n.ad.choosePaymentType"
+        formControlName="paymentType">
+        <field-option *ngFor="let pt of data.paymentTypes" [value]="pt.id"
+          [text]="pt.name"></field-option>
+      </radio-group-field>
+    </form>
+    <actions forceRow>
+      <button class="btn btn-primary" (click)="next()">
+        {{ i18n.general.next }}
+      </button>
+      <ng-template #spacer>&nbsp;</ng-template>
+      <button class="btn btn-outline-primary" (click)="back()">
+        {{ i18n.general.previous }}
+      </button>
+    </actions>
+  </page-content>
+
+  <!-- Step 4: Confirm -->
+  <page-content *ngSwitchCase="'confirm'"
+    [heading]="i18n.ad.title.confirmOrder"
+    [mobileHeading]="i18n.ad.mobileTitle.confirmOrder"
+    [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'">
+    <actions forceRow>
+      <button class="btn btn-primary" (click)="next()">
+        {{ i18n.general.confirm }}
+      </button>
+      <ng-template #spacer>&nbsp;</ng-template>
+      <button class="btn btn-outline-primary" (click)="back()">
+        {{ i18n.general.previous }}
+      </button>
+    </actions>
+  </page-content>
+
+</page-layout>

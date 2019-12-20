@@ -13,6 +13,7 @@ import { ViewOrderHistoryComponent } from 'app/marketplace/view/view-order-histo
 import { SetDeliveryMethodComponent } from 'app/marketplace/set-delivery-method.component';
 import { ListShoppingCartComponent } from 'app/marketplace/checkout/list-shopping-cart.component';
 import { ViewCartComponent } from 'app/marketplace/checkout/view-cart.component';
+import { CartCheckoutComponent } from 'app/marketplace/checkout/cart-checkout.component';
 
 /**
  * Marketplace module
@@ -35,7 +36,8 @@ import { ViewCartComponent } from 'app/marketplace/checkout/view-cart.component'
     ShowSubCategoriesComponent,
     SetDeliveryMethodComponent,
     ListShoppingCartComponent,
-    ViewCartComponent
+    ViewCartComponent,
+    CartCheckoutComponent
 
   ],
   entryComponents: [

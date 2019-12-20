@@ -1108,6 +1108,10 @@
     "checkout": "Checkout",
     "changeQuantity": "Change quantity",
     "chooseSeller": "Choose a seller from the list below to continue with the shopping cart process",
+    "chooseDeliveryMethod": "Choose delivery method",
+    "chooseDeliveryAddress": "Choose delivery address",
+    "choosePaymentType": "Choose payment type",
+    "customAddress": "Custom address",
     "endDate": "End date",
     "error": {
       "cannotBuyFromSeller": "At the moment, you are not allowed to buy products from this user. Please contact your administrator.",
@@ -1131,6 +1135,7 @@
     "minDeliveryTime": "Min. delivery time",
     "maxDeliveryTime": "Max. delivery time",
     "name": "Title",
+    "negotiated": "Negotiated",
     "noRemarksGiven": "No remarks given",
     "owner": "Publisher",
     "price": "Price",
@@ -1228,7 +1233,11 @@
       "sales": "Sales",
       "order": "Webshop order details",
       "shoppingCart": "Shopping cart",
-      "history": "Order history"
+      "history": "Order history",
+      "deliveryAddress": "Delivery address",
+      "deliveryMethod": "Delivery method",
+      "paymentType": "Payment type",
+      "confirmOrder": "Confirm order"
     },
     "mobileTitle": {
       "search": "Advertisements",
@@ -1241,7 +1250,11 @@
       "sales": "Sales",
       "order": "Webshop order details",
       "shoppingCart": "Shopping cart",
-      "history": "Order history"
+      "history": "Order history",
+      "deliveryAddress": "Delivery address",
+      "deliveryMethod": "Delivery method",
+      "paymentType": "Payment type",
+      "confirmOrder": "Confirm order"
     }
   },
   "notification": {
