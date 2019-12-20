@@ -12,13 +12,14 @@ export function fieldOptionMatches(option: FieldOption, value: any) {
     value = value.split('|')[0];
   }
   if (option.value === value
-    || option.id && option.id === value
-    || option.internalName && option.internalName === value) {
+    || option.id != null && option.id === value
+    || option.internalName != null && option.internalName === value) {
     return true;
   }
   if (typeof value === 'object'
-    && (option.id && option.id === value.id
-      || option.internalName && option.internalName === value.internalName)) {
+    && (option.id != null && option.id === value.id
+      || option.internalName != null && option.internalName === value.internalName
+      || option.value != null && option.value === value.value)) {
     return true;
   }
   return false;
