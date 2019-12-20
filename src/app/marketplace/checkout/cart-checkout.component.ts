@@ -48,7 +48,7 @@ export class CartCheckoutComponent extends BasePageComponent<ShoppingCartDataFor
 
   onDataInitialized(data: ShoppingCartDataForCheckout) {
     const hasDeliveryMethods = !empty(data.deliveryMethods);
-    this.form = this.formBuilder.group({});
+    this.form = this.formBuilder.group({ remarks: null });
     this.step = data.deliveryMethods.length > 1 ? 'delivery' : 'address';
 
     // Delivery methods
