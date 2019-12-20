@@ -221,7 +221,7 @@ $side-menu-inactive-hover-color-dark: $menu-bar-inactive-hover-color-dark !defau
 // Quick access (icons in the dashboard)
 $quick-access-bg: $menu-bar-inactive-hover-bg !default;
 $quick-access-color: $body-color !default;
-$quick-access-icon-color: lighten($accent, 12%) !default;
+$quick-access-icon-color: $primary !default;
 $quick-access-hover-bg: darken($menu-bar-inactive-hover-bg, 5%) !default;
 $quick-access-hover-color: $body-color !default;
 $quick-access-hover-icon-color: $accent !default;
