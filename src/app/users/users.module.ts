@@ -8,7 +8,6 @@ import { OperatorRegistrationComponent } from 'app/users/operators/operator-regi
 import { SearchUserOperatorsComponent } from 'app/users/operators/search-user-operators.component';
 import { ChangePasswordDialogComponent } from 'app/users/passwords/change-password-dialog.component';
 import { ManagePasswordsComponent } from 'app/users/passwords/manage-passwords.component';
-import { AddressFormComponent } from 'app/shared/address-form.component';
 import { EditProfileComponent } from 'app/users/profile/edit-profile.component';
 import { ValidateEmailChangeComponent } from 'app/users/profile/validate-email-change.component';
 import { VerifyPhoneComponent } from 'app/users/profile/verify-phone.component';
