@@ -28,6 +28,7 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
   id: string;
   seller: boolean;
   buyer: boolean;
+  detailed: boolean;
 
   constructor(
     injector: Injector,
@@ -49,6 +50,7 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
 
   onDataInitialized(data: OrderView) {
 
+    this.detailed = this.layout.gtxxs;
     this.seller = this.authHelper.isSelfOrOwner(data.seller);
     this.buyer = !this.seller && this.authHelper.isSelfOrOwner(data.buyer);
 

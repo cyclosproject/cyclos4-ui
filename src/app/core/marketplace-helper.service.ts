@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { AdStatusEnum, OrderStatusEnum } from 'app/api/models';
+import { AdStatusEnum, OrderStatusEnum, ShoppingCartItemDetailed } from 'app/api/models';
 import { I18n } from 'app/i18n/i18n';
 import { AuthHelperService } from 'app/core/auth-helper.service';
 import { BehaviorSubject } from 'rxjs';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
+import { FormatService } from 'app/core/format.service';
 
 
 
@@ -20,7 +21,8 @@ export class MarketplaceHelperService {
   constructor(
     private i18n: I18n,
     protected authHelper: AuthHelperService,
-    protected dataForUiHolder: DataForUiHolder
+    protected dataForUiHolder: DataForUiHolder,
+    protected format: FormatService
   ) {
 
     // Subscribe for cart items count on UI initialization
@@ -79,6 +81,13 @@ export class MarketplaceHelperService {
       case OrderStatusEnum.REJECTED_BY_SELLER:
         return this.i18n.ad.orderStatus.rejectedBySeller;
     }
+  }
+
+  /**
+ * Returns the items quantity formatted with decimals based on the webshop definition
+ */
+  getFormattedQuantity(item: ShoppingCartItemDetailed): string {
+    return this.format.formatAsNumber(item.quantity, item.product.allowDecimalQuantity ? 2 : 0);
   }
 
   /**

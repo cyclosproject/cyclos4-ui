@@ -26,7 +26,7 @@
         {{ formatService.formatTimeInterval(deliveryMethod.maxDeliveryTime) }}
       </label-value>
       <label-value [label]="i18n.ad.price">
-        {{ deliveryMethod.chargeAmount != null ?
+        {{ !negotiated ?
         (deliveryMethod.chargeAmount | currency: deliveryMethod.chargeCurrency) : i18n.ad.negotiated}}
       </label-value>
     </ng-container>
@@ -97,19 +97,53 @@
   </page-content>
 
   <!-- Step 4: Confirm -->
-  <page-content *ngSwitchCase="'confirm'"
-    [heading]="i18n.ad.title.confirmOrder"
-    [mobileHeading]="i18n.ad.mobileTitle.confirmOrder"
-    [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'">
-    <actions forceRow>
-      <button class="btn btn-primary" (click)="next()">
-        {{ i18n.general.confirm }}
-      </button>
-      <ng-template #spacer>&nbsp;</ng-template>
-      <button class="btn btn-outline-primary" (click)="back()">
-        {{ i18n.general.previous }}
-      </button>
-    </actions>
-  </page-content>
+  <ng-container *ngSwitchCase="'confirm'">
+    <page-content [heading]="i18n.ad.title.confirmOrder"
+      [mobileHeading]="i18n.ad.mobileTitle.confirmOrder"
+      [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'">
+      <label-value [label]="i18n.ad.seller">
+        <user-link [user]="data.cart.seller"></user-link>
+      </label-value>
+      <label-value [label]="i18n.ad.deliveryPrice">
+        {{ !negotiated ?
+          (deliveryMethod.chargeAmount | currency: deliveryMethod.chargeCurrency) : i18n.ad.toBeConfirmedBySeller }}
+      </label-value>
+      <hr>
+      <label-value [label]="i18n.transaction.totalAmount">
+        <div class="totalAmount">
+          {{ totalPrice | currency: data.cart.currency }}</div>
+      </label-value>
+      <label class="any-label-value notice text-muted">
+        {{ negotiated ? i18n.ad.deliveryPriceToBeConfirmed : i18n.ad.reserveAmount }}
+      </label>
+      <ng-container *ngIf="!negotiated && data.confirmationPasswordInput">
+        <hr *ngIf="layout.gtxxs$ | async">
+        <form [formGroup]="form">
+          <confirmation-password focused
+            formControlName="confirmationPassword"
+            [passwordInput]="data.confirmationPasswordInput"
+            [createDeviceConfirmation]="createDeviceConfirmation"
+            (confirmationModeChanged)="confirmationMode$.next($event)"
+            (confirmed)="submit($event)">
+          </confirmation-password>
+        </form>
+      </ng-container>
+      <actions forceRow>
+        <button
+          *ngIf="negotiated || (confirmationMode$ | async) != ConfirmationMode.Device; else spacer"
+          class="btn btn-primary" (click)="next()"
+          [disabled]="requesting$ | async">
+          {{ i18n.general.confirm }}
+        </button>
+        <ng-template #spacer>&nbsp;</ng-template>
+        <button class="btn btn-outline-primary" (click)="back()">
+          {{ i18n.general.previous }}
+        </button>
+      </actions>
+    </page-content>
+    <shopping-cart-items [items]="data.cart.items"
+      [currency]="data.cart.currency">
+    </shopping-cart-items>
+  </ng-container>
 
 </page-layout>

@@ -1,13 +1,15 @@
 import { ChangeDetectionStrategy, OnInit, Component, Injector } from '@angular/core';
-import { ShoppingCartDataForCheckout, DeliveryMethod, Address } from 'app/api/models';
+import { ShoppingCartDataForCheckout, DeliveryMethod, Address, DeviceConfirmationTypeEnum } from 'app/api/models';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { Menu } from 'app/shared/menu';
 import { ShoppingCartsService } from 'app/api/services';
 import { BehaviorSubject } from 'rxjs';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormControl } from '@angular/forms';
 import { FormatService } from 'app/core/format.service';
 import { empty } from 'app/shared/helper';
 import { AddressHelperService } from 'app/core/address-helper.service';
+import { ConfirmationMode } from 'app/shared/confirmation-mode';
+import { validateBeforeSubmit } from 'app/shared/helper';
 
 export type CheckoutStep = 'delivery' | 'address' | 'payment' | 'confirm';
 
@@ -22,11 +24,16 @@ export type CheckoutStep = 'delivery' | 'address' | 'payment' | 'confirm';
 export class CartCheckoutComponent extends BasePageComponent<ShoppingCartDataForCheckout>
   implements OnInit {
 
+  ConfirmationMode = ConfirmationMode;
+
   step$ = new BehaviorSubject<CheckoutStep>(null);
   deliveryMethod$ = new BehaviorSubject<DeliveryMethod>(null);
   address$ = new BehaviorSubject<Address>(null);
+  confirmationMode$ = new BehaviorSubject<ConfirmationMode>(null);
+
   form: FormGroup;
   addressForm: FormGroup;
+  confirmationPassword: FormControl;
 
   constructor(
     injector: Injector,
@@ -51,6 +58,10 @@ export class CartCheckoutComponent extends BasePageComponent<ShoppingCartDataFor
     this.form = this.formBuilder.group({ remarks: null });
     this.step = data.deliveryMethods.length > 1 ? 'delivery' : 'address';
 
+    // The confirmation password is hold in a separated control
+    this.confirmationPassword = this.formBuilder.control(null);
+    this.form.setControl('confirmationPassword', this.confirmationPassword);
+
     // Delivery methods
     if (hasDeliveryMethods) {
       const deliveryField = this.formBuilder.control(data.deliveryMethods);
@@ -72,7 +83,7 @@ export class CartCheckoutComponent extends BasePageComponent<ShoppingCartDataFor
     addressField.setValue(data.addresses[0].id, { emitEvent: true });
 
     // Payment types
-    if (!empty(data.deliveryMethods)) {
+    if (!empty(data.paymentTypes)) {
       const paymentField = this.formBuilder.control(data.paymentTypes);
       this.form.addControl('paymentType', paymentField);
       paymentField.setValue(data.paymentTypes[0].id, { emitEvent: true });
@@ -141,8 +152,16 @@ export class CartCheckoutComponent extends BasePageComponent<ShoppingCartDataFor
     }
   }
 
-  protected submit() {
-
+  /**
+   * Finish the checkout process by submitting the order
+   */
+  protected submit(password?: string) {
+    if (password) {
+      this.confirmationPassword.setValue(password);
+    }
+    if (!validateBeforeSubmit(this.confirmationPassword)) {
+      return;
+    }
   }
 
   get step(): CheckoutStep {
@@ -164,5 +183,29 @@ export class CartCheckoutComponent extends BasePageComponent<ShoppingCartDataFor
   }
   set address(address: Address) {
     this.address$.next(address);
+  }
+
+  get totalPrice(): number {
+    const price = +this.data.cart.totalPrice;
+
+    if (this.negotiated) {
+      return price;
+    }
+    return +this.deliveryMethod.chargeAmount + price;
+  }
+
+  get negotiated(): boolean {
+    return this.deliveryMethod == null || this.deliveryMethod.chargeAmount == null;
+  }
+
+  get createDeviceConfirmation() {
+    return () => {
+      return {
+        type: DeviceConfirmationTypeEnum.SHOPPING_CART_CHECKOUT,
+        seller: this.ApiHelper.accountOwner(this.data.cart.seller),
+        amount: this.totalPrice,
+        paymentType: this.form.value.paymentType,
+      };
+    };
   }
 }

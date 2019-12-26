@@ -149,7 +149,7 @@ export class ViewCartComponent
         internalName: 'quantity',
         name: this.i18n.ad.quantity,
         type: item.product.allowDecimalQuantity ? CustomFieldTypeEnum.DECIMAL : CustomFieldTypeEnum.INTEGER,
-        defaultValue: this.getFormattedQuantity(item)
+        defaultValue: this.marketplaceHelper.getFormattedQuantity(item)
       }],
       callback: res => {
         this.addSub(this.shoppingCartService.modifyItemQuantityOnShoppingCart({
@@ -161,19 +161,12 @@ export class ViewCartComponent
   }
 
   /**
-   * Returns the items quantity formatted with decimals based on the webshop definition
-   */
-  protected getFormattedQuantity(item: ShoppingCartItemDetailed): string {
-    return this.format.formatAsNumber(item.quantity, item.product.allowDecimalQuantity ? 2 : 0);
-  }
-
-  /**
    * Resolves the label for available/unavailable/out of stock item
    */
   resolveQuantityLabel(item: ShoppingCartItemDetailed): string {
     switch (item.availability) {
       case ShoppingCartItemAvailabilityEnum.AVAILABLE:
-        return this.getFormattedQuantity(item);
+        return this.marketplaceHelper.getFormattedQuantity(item);
       case ShoppingCartItemAvailabilityEnum.OUT_OF_STOCK:
         return this.i18n.ad.outOfStock;
       case ShoppingCartItemAvailabilityEnum.UNAVAILABLE:

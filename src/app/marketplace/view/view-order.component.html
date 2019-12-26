@@ -23,37 +23,40 @@
     <h2 class="mb-3">{{ i18n.ad.products }}</h2>
     <table class="table table-hover cursor-pointer">
       <thead>
-        <th class="no-border">{{ i18n.ad.number }}</th>
+        <th *ngIf="detailed" class="no-border">{{ i18n.ad.number }}</th>
         <th class="no-border">{{ i18n.ad.product }}</th>
-        <th class="no-border text-right">{{ i18n.ad.price }}</th>
+        <th *ngIf="detailed" class="no-border text-right">{{ i18n.ad.price }}
+        </th>
         <th class="no-border text-right">{{ i18n.ad.quantity }}</th>
-        <th class="no-border text-right">{{ i18n.transaction.totalAmount }}
+        <th class="no-border text-right">{{ i18n.transaction.amount }}
         </th>
       </thead>
       <tbody>
         <tr *ngFor="let row of data.items"
           (click)="router.navigate(path(row))">
-          <td>{{ row.product.productNumber }}</td>
+          <td *ngIf="detailed">{{ row.product.productNumber }}</td>
           <td>{{ row.product.name }}</td>
-          <td class="text-right">{{ row.price | currency:data.currency }}</td>
+          <td *ngIf="detailed" class="text-right">
+            {{ row.price | currency:data.currency }}</td>
           <td class="text-right">{{ row.quantity }}</td>
           <td class="text-right">{{ row.totalPrice | currency:data.currency }}
           </td>
         </tr>
         <tr>
-          <td class="table-head-color" colspan="4">
+          <td class="table-head-color" [attr.colspan]="detailed ? 4 : 2">
             {{ i18n.ad.subtotal }}</td>
           <td class="table-head-color text-right">
             {{ subtotal | currency:data.currency }}</td>
         </tr>
         <tr>
-          <td colspan="4">
+          <td [attr.colspan]="detailed ? 4 : 2">
             {{ i18n.ad.deliveryMethod + ': ' + resolveDeliveryLabel() }}</td>
           <td class="text-right">
             {{ data.deliveryPrice | currency:data.currency }}</td>
         </tr>
         <tr>
-          <td class="border-bottom-0 table-head-color" colspan="4">
+          <td class="border-bottom-0 table-head-color"
+            [attr.colspan]="detailed ? 4 : 2">
             {{ i18n.ad.total }}</td>
           <td class="border-bottom-0 table-head-color text-right">
             {{ data.totalPrice | currency: data.currency }}</td>
