@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, OnInit, Component, Injector } from '@angular/core';
-import { ShoppingCartDataForCheckout, DeliveryMethod, Address, DeviceConfirmationTypeEnum } from 'app/api/models';
+import { ShoppingCartDataForCheckout, DeliveryMethod, Address, DeviceConfirmationTypeEnum, ShoppingCartCheckout } from 'app/api/models';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { Menu } from 'app/shared/menu';
 import { ShoppingCartsService } from 'app/api/services';
@@ -10,6 +10,7 @@ import { empty } from 'app/shared/helper';
 import { AddressHelperService } from 'app/core/address-helper.service';
 import { ConfirmationMode } from 'app/shared/confirmation-mode';
 import { validateBeforeSubmit } from 'app/shared/helper';
+import { MarketplaceHelperService } from 'app/core/marketplace-helper.service';
 
 export type CheckoutStep = 'delivery' | 'address' | 'payment' | 'confirm';
 
@@ -39,7 +40,8 @@ export class CartCheckoutComponent extends BasePageComponent<ShoppingCartDataFor
     injector: Injector,
     public formatService: FormatService,
     private shoppingCartService: ShoppingCartsService,
-    private addressHelper: AddressHelperService) {
+    private addressHelper: AddressHelperService,
+    private marketplaceHelper: MarketplaceHelperService) {
     super(injector);
   }
 
@@ -162,6 +164,20 @@ export class CartCheckoutComponent extends BasePageComponent<ShoppingCartDataFor
     if (!validateBeforeSubmit(this.confirmationPassword)) {
       return;
     }
+
+    const checkout: ShoppingCartCheckout = this.form.value;
+    delete checkout['address'];
+    checkout.deliveryAddress = this.addressForm.value;
+
+    this.addSub(this.shoppingCartService.checkoutShoppingCart({
+      id: this.data.cart.id,
+      body: checkout,
+      confirmationPassword: this.confirmationPassword.value
+    }).subscribe(items => {
+      this.marketplaceHelper.cartItems = items;
+      this.notification.snackBar(this.i18n.ad.orderWaitingForSellersApproval);
+      this.router.navigate(['marketplace', 'self', 'purchases']);
+    }));
   }
 
   get step(): CheckoutStep {
