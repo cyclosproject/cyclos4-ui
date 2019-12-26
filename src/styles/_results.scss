@@ -138,10 +138,8 @@
     flex-direction: column;
     justify-content: center;
   }
-  a.mobile-result {
+  .mobile-result {
     border-bottom: 1px solid $mobile-results-border-color;
-  }
-  a.mobile-result {
     display: block;
     &:focus, a:focus {
       box-shadow: none;

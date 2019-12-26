@@ -3,7 +3,7 @@
     [mobileHeading]="mobileTitle"
     [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'" last>
     <payment-step-form class="flex-grow-1 d-flex flex-column" [data]="data"
-      [form]="form" [currency]="currency$ | async"
+      [pos]="pos" [form]="form" [currency]="currency$ | async"
       [paymentTypeData$]="paymentTypeData$"
       (availablePaymentTypes)="availablePaymentTypes = $event"
       [customValuesControlGetter]="customValuesControlGetter">
@@ -18,7 +18,7 @@
     [heading]="i18n.transaction.title.paymentConfirmation"
     [mobileHeading]="i18n.transaction.mobileTitle.paymentConfirmation"
     [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'" last>
-    <payment-step-confirm class="flex-grow-1 d-flex flex-column"
+    <payment-step-confirm class="flex-grow-1 d-flex flex-column" [pos]="pos"
       [preview]="preview" [confirmationPassword]="confirmationPassword"
       (confirmationModeChanged)="confirmationMode$.next($event)"
       (confirmed)="perform($event)"

@@ -397,9 +397,9 @@ export class MenuService {
       map(roots => {
         const root = menu == null ? null : roots.find(e => e.rootMenu === menu.root);
         if (root == null) {
-          return new SideMenuEntries(null, []);
+          return new SideMenuEntries(null, null, []);
         }
-        return new SideMenuEntries(root.title, root.entries);
+        return new SideMenuEntries(root.title, root.icon, root.entries);
       })
     );
   }
@@ -568,13 +568,16 @@ export class MenuService {
       }
       const payments = banking.payments || {};
       if (payments.user) {
-        add(Menu.PAYMENT_TO_USER, `/banking/${owner}/payment`, 'payment', this.i18n.menu.bankingPayUser);
+        add(Menu.PAYMENT_TO_USER, `/banking/${owner}/payment`, 'account_balance_wallet', this.i18n.menu.bankingPayUser);
       }
       if (payments.self) {
-        add(Menu.PAYMENT_TO_SELF, `/banking/${owner}/payment/self`, 'payment', this.i18n.menu.bankingPaySelf);
+        add(Menu.PAYMENT_TO_SELF, `/banking/${owner}/payment/self`, 'account_balance_wallet', this.i18n.menu.bankingPaySelf);
       }
       if (payments.system) {
-        add(Menu.PAYMENT_TO_SYSTEM, `/banking/${owner}/payment/system`, 'payment', this.i18n.menu.bankingPaySystem);
+        add(Menu.PAYMENT_TO_SYSTEM, `/banking/${owner}/payment/system`, 'account_balance_wallet', this.i18n.menu.bankingPaySystem);
+      }
+      if (payments.pos) {
+        add(Menu.POS, `/banking/pos`, 'payment', this.i18n.menu.bankingPos);
       }
       const scheduledPayments = (banking.scheduledPayments || {});
       const recurringPayments = (banking.recurringPayments || {});

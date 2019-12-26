@@ -241,6 +241,7 @@
     "banking.payUser": "Payment to user",
     "banking.paySystem": "Payment to system",
     "banking.paySelf": "Payment to self",
+    "banking.pos": "Receive payment",
     "banking.scheduledPayments": "Scheduled payments",
     "banking.authorizations": "Payment authorizations",
     "banking.searchVouchers": "Search vouchers",
@@ -405,6 +406,7 @@
       "account": "Account",
       "payUser": "Pay user",
       "paySystem": "Pay system",
+      "pos": "Receive payment",
       "contacts": "Contacts",
       "directory": "Directory",
       "advertisements": "Marketplace",
@@ -487,7 +489,7 @@
     "occurrences": "Ocurrences",
     "noAccounts": "You don't have any accounts to perform the payment",
     "noTypes": "There are no possible payment types",
-    "noTypesSelection": "There are no possible payment types from this account to the selected user",
+    "noTypesSelection": "There are no possible payment types for this account and user",
     "scheduling": "Scheduling",
     "scheduling.direct": "Pay now",
     "scheduling.single": "Scheduled",
@@ -538,6 +540,7 @@
       "settled": "Settled"
     },
     "title": {
+      "pos": "Receive payment",
       "paymentSystemToSystem": "Payment between system accounts",
       "paymentSystemToUser": "Payment from system to user",
       "paymentToSystem": "Payment to system",
@@ -562,6 +565,7 @@
       "transfersOverview": "Transfers overview"
     },
     "mobileTitle": {
+      "pos": "Receive payment",
       "paymentSystemToSystem": "Pay system",
       "paymentSystemToUser": "Pay user",
       "paymentToSystem": "Pay system",

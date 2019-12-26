@@ -1,11 +1,14 @@
-import { ChangeDetectionStrategy, Component, Injector, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { PaymentPreview, TransferFeePreview, CreateDeviceConfirmation, DeviceConfirmationTypeEnum, User, AccountKind } from 'app/api/models';
-import { BaseComponent } from 'app/shared/base.component';
-import { empty } from 'app/shared/helper';
+import {
+  AccountKind, CreateDeviceConfirmation, DeviceConfirmationTypeEnum,
+  PaymentPreview, PerformPayment, TransferFeePreview, User
+} from 'app/api/models';
 import { BankingHelperService } from 'app/core/banking-helper.service';
-import { ConfirmationMode } from 'app/shared/confirmation-mode';
 import { ApiHelper } from 'app/shared/api-helper';
+import { BaseComponent } from 'app/shared/base.component';
+import { ConfirmationMode } from 'app/shared/confirmation-mode';
+import { empty } from 'app/shared/helper';
 import { Enter } from 'app/shared/shortcut.service';
 
 
@@ -25,6 +28,7 @@ export class PaymentStepConfirmComponent extends BaseComponent implements OnInit
   toUser: User;
   toSelf: boolean;
   toSystem: boolean;
+  @Input() pos: boolean;
   @Input() preview: PaymentPreview;
   @Input() confirmationPassword: FormControl;
   @Input() showPaymentType: boolean;
@@ -35,7 +39,7 @@ export class PaymentStepConfirmComponent extends BaseComponent implements OnInit
 
   form: FormGroup;
 
-  createDeviceConfirmation: () => CreateDeviceConfirmation;
+  createDeviceConfirmation: () => CreateDeviceConfirmation | PerformPayment;
 
   constructor(injector: Injector,
     public bankingHelper: BankingHelperService) {
@@ -61,6 +65,9 @@ export class PaymentStepConfirmComponent extends BaseComponent implements OnInit
       this.fees = this.preview.installments[0].fees;
     }
     this.createDeviceConfirmation = () => {
+      if (this.pos) {
+        return this.preview.payment;
+      }
       return {
         type: DeviceConfirmationTypeEnum.PERFORM_PAYMENT,
         from: ApiHelper.accountOwner(this.preview.fromAccount),

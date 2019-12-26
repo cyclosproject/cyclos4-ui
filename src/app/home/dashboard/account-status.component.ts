@@ -27,7 +27,6 @@ export class AccountStatusComponent extends BaseDashboardComponent implements On
   history$ = new BehaviorSubject<AccountBalanceHistoryResult>(null);
   lastPayments$ = new BehaviorSubject<AccountHistoryResult[]>(null);
   title: string;
-  headingActions: HeadingAction[];
   currency: Currency;
   balance: string;
 

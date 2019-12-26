@@ -1,7 +1,7 @@
 @import 'src/definitions';
 
 .navbar {
-  padding: 0;
+  padding: 1rem 0;
 }
 .side-menu-title {
   background-color: $side-menu-title-bg;
@@ -15,7 +15,20 @@
   align-items: center;
   justify-content: center;
   line-height: 1em;
-  padding-top: 0.1rem;
+  margin-top: 0.6rem;
+  padding: 0rem;
+  padding-bottom: 0.7rem;
+}
+.side-menu-icon {
+  border-radius: 50%;
+  background-color: $side-menu-icon-bg;
+  width: 4.4rem;
+  height: 4.4rem;
+  margin: 2rem auto 0;
+  color: $side-menu-icon-color;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .card {
@@ -26,8 +39,7 @@
 a.nav-item {
   color: $side-menu-inactive-color;
   background: $side-menu-inactive-bg;
-  padding: 1rem;
-  border-bottom: 1px solid $side-menu-border-color;
+  padding: 0.5rem 1rem;
   font-size: 1.1em;
   display: flex;
   flex-direction: row;
@@ -79,6 +91,10 @@ body.dark :host ::ng-deep {
     background-color: $side-menu-title-bg-dark;
     color: $side-menu-title-color-dark;
   }
+  .side-menu-icon {
+    background-color: $side-menu-icon-bg-dark;
+    color: $side-menu-icon-color-dark;
+  }  
   .card {
     background-color: $side-menu-bg-dark;
     border-color: $menu-bar-line-color-dark;

@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@an
 import { Transaction, TransactionAuthorizationStatusEnum } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
 import { Enter } from 'app/shared/shortcut.service';
-import { PerformPaymentComponent } from 'app/banking/payment/perform-payment.component';
+import { PaymentComponent } from 'app/banking/payment/payment.component';
 
 
 /**
@@ -20,7 +20,7 @@ export class PaymentStepDoneComponent extends BaseComponent implements OnInit {
   message: string;
 
   constructor(injector: Injector,
-    private performPayment: PerformPaymentComponent) {
+    private performPayment: PaymentComponent) {
     super(injector);
   }
 

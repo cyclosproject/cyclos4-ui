@@ -89,6 +89,10 @@ export class QuickAccessComponent extends BaseDashboardComponent implements OnIn
         addAction(QuickAccessType.PaySystem, 'quick_access_pay',
           this.i18n.dashboard.action.paySystem, new ActiveMenu(Menu.PAYMENT_TO_SYSTEM));
       }
+      if (permissions.banking.payments.pos) {
+        addAction(QuickAccessType.Pos, 'quick_access_pos',
+          this.i18n.dashboard.action.pos, new ActiveMenu(Menu.POS));
+      }
     }
     if (permissions.contacts && (permissions.contacts.enable)) {
       addAction(QuickAccessType.Contacts, 'quick_access_contact_list',

@@ -19,6 +19,7 @@ export abstract class BaseAutocompleteFieldComponent<T, A>
   @ViewChild('inputField', { static: false }) inputField: ElementRef;
   @ViewChild('dropdown', { static: false }) dropdown: BsDropdownDirective;
 
+  @Input() container = 'body';
   @Input() autoSearch = true;
 
   @Output() selected = new EventEmitter<A>();
@@ -116,7 +117,9 @@ export abstract class BaseAutocompleteFieldComponent<T, A>
       this.select(null);
     } else {
       this.fetch(this.value).subscribe(res => {
-        this.select(res, this.value);
+        this.select(res, this.value, {
+          emitEvent: false
+        });
       });
     }
   }
@@ -148,6 +151,9 @@ export abstract class BaseAutocompleteFieldComponent<T, A>
   }
 
   onShown() {
+    if (!this.inputField) {
+      return;
+    }
     const input = this.inputField.nativeElement as HTMLInputElement;
     const rect = input.getBoundingClientRect();
     const docHeight = (window.innerHeight || document.documentElement.clientHeight);
@@ -193,9 +199,9 @@ export abstract class BaseAutocompleteFieldComponent<T, A>
     }
     this.close();
     if (selected == null) {
-      this.inputFieldControl.setValue(null);
+      this.inputFieldControl.setValue(null, options);
     } else if (this.inputFieldControl.value !== newValue) {
-      this.inputFieldControl.setValue(newValue);
+      this.inputFieldControl.setValue(newValue, options);
     }
   }
 

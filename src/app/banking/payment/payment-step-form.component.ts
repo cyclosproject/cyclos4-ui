@@ -2,19 +2,19 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, EventEmitter, Injector, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import {
-  AccountWithStatus, Currency, CustomFieldDetailed, DataForTransaction, NotFoundError,
-  TransactionTypeData, TransferType, User
+  AccountWithStatus, Currency, CustomFieldDetailed, DataForTransaction,
+  NotFoundError, TransactionTypeData, TransferType, User
 } from 'app/api/models';
-import { PaymentsService } from 'app/api/services';
+import { PaymentsService, PosService } from 'app/api/services';
+import { BankingHelperService } from 'app/core/banking-helper.service';
 import { ErrorStatus } from 'app/core/error-status';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseComponent } from 'app/shared/base.component';
 import { DecimalFieldComponent } from 'app/shared/decimal-field.component';
 import { blank, empty, focus } from 'app/shared/helper';
 import { UserFieldComponent } from 'app/shared/user-field.component';
-import { BehaviorSubject } from 'rxjs';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { BankingHelperService } from 'app/core/banking-helper.service';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { debounceTime, distinctUntilChanged, first } from 'rxjs/operators';
 
 
 const IGNORED_STATUSES = [ErrorStatus.FORBIDDEN, ErrorStatus.UNAUTHORIZED, ErrorStatus.NOT_FOUND];
@@ -30,6 +30,7 @@ const IGNORED_STATUSES = [ErrorStatus.FORBIDDEN, ErrorStatus.UNAUTHORIZED, Error
 export class PaymentStepFormComponent extends BaseComponent implements OnInit {
 
   @Input() data: DataForTransaction;
+  @Input() pos: boolean;
   @Input() form: FormGroup;
   @Input() currency: Currency;
   @Input() paymentTypeData$: BehaviorSubject<TransactionTypeData>;
@@ -56,7 +57,8 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
   constructor(
     injector: Injector,
     public bankingHelper: BankingHelperService,
-    private paymentsService: PaymentsService) {
+    private paymentsService: PaymentsService,
+    private posService: PosService) {
     super(injector);
   }
 
@@ -119,11 +121,20 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
 
     // Fetch the payment types to that user
     this.errorHandler.requestWithCustomErrorHandler(defaultHandling => {
-      this.addSub(this.paymentsService.dataForPerformPayment({
-        owner: this.fromParam,
-        to: subject,
-        fields: ['toUser', 'paymentTypes', 'paymentTypeData']
-      }).subscribe(data => {
+      let request: Observable<DataForTransaction>;
+      if (this.pos) {
+        request = this.posService.dataForReceivePayment({
+          from: subject,
+          fields: ['fromUser', 'paymentTypes', 'paymentTypeData']
+        });
+      } else {
+        request = this.paymentsService.dataForPerformPayment({
+          owner: this.fromParam,
+          to: subject,
+          fields: ['toUser', 'paymentTypes', 'paymentTypeData']
+        });
+      }
+      request.pipe(first()).subscribe(data => {
         this.setFetchedPaymentTypes(data);
       }, (err: HttpErrorResponse) => {
         if (this.allowPrincipal && this.userField && err.status === ErrorStatus.NOT_FOUND) {
@@ -146,7 +157,7 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
         if (!IGNORED_STATUSES.includes(err.status)) {
           defaultHandling(err);
         }
-      }));
+      });
     });
   }
 
@@ -188,7 +199,7 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
 
   private setFetchedPaymentTypes(data: DataForTransaction) {
     if (this.userField) {
-      this.userField.user = data.toUser;
+      this.userField.user = this.pos ? data.fromUser : data.toUser;
     }
     this.fetchedPaymentTypes = data.paymentTypes;
     const typeData = data.paymentTypeData;
@@ -216,19 +227,29 @@ export class PaymentStepFormComponent extends BaseComponent implements OnInit {
 
     // Finally, fetch the data
     this.errorHandler.requestWithCustomErrorHandler(defaultHandling => {
-      this.addSub(this.paymentsService.dataForPerformPayment({
-        owner: this.fromParam,
-        to: value.subject,
-        type: type,
-        fields: ['paymentTypeData']
-      }).subscribe(data => {
+      let request: Observable<DataForTransaction>;
+      if (this.pos) {
+        request = this.posService.dataForReceivePayment({
+          from: value.subject,
+          type: type,
+          fields: ['paymentTypeData']
+        });
+      } else {
+        request = this.paymentsService.dataForPerformPayment({
+          owner: this.fromParam,
+          to: value.subject,
+          type: type,
+          fields: ['paymentTypeData']
+        });
+      }
+      request.pipe(first()).subscribe(data => {
         const typeData = data.paymentTypeData;
         this.setPaymentTypeData(typeData);
       }, (err: HttpErrorResponse) => {
         if (!IGNORED_STATUSES.includes(err.status)) {
           defaultHandling(err);
         }
-      }));
+      });
     });
   }
 
