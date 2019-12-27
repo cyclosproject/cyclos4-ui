@@ -1,8 +1,8 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="data">
     <page-content mode="filters"
-      [heading]="this.sales ? i18n.ad.title.sales : i18n.ad.title.purchases"
-      [mobileHeading]="this.sales ? i18n.ad.mobileTitle.sales : i18n.ad.mobileTitle.purchases">
+      [heading]="sales ? i18n.ad.title.sales : i18n.ad.title.purchases"
+      [mobileHeading]="sales ? i18n.ad.mobileTitle.sales : i18n.ad.mobileTitle.purchases">
       <form [formGroup]="form"
         class="filters-form filters-form-separator border-0">
         <div class="row">

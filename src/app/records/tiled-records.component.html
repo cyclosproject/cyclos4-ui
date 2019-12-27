@@ -1,7 +1,7 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="data">
-    <page-content [heading]="this.data.type.pluralName"
-      [mobileHeading]="this.data.type.pluralName"
+    <page-content [heading]="data.type.pluralName"
+      [mobileHeading]="data.type.pluralName"
       [headingActions]="headingActions$ | async">
       <ng-container *ngFor="let row of (results$ | async); let first = first">
         <h2 class="mb-0" [ngClass]="first ? 'border-0' : ''"></h2>
@@ -19,8 +19,7 @@
           [label]="i18n.record.lastModifiedBy">
           {{ row.lastModifiedBy.display }}
         </label-value>
-        <label-value *ngFor="let field of this.fieldsInList"
-          [label]="field.name">
+        <label-value *ngFor="let field of fieldsInList" [label]="field.name">
           <format-field-value [fields]="data.customFields" [plainText]="true"
             [fieldName]="field.internalName" [object]="row"
             [customValues]="row.customValues">

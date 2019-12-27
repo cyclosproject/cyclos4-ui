@@ -19,11 +19,11 @@
     <ng-container *ngIf="deliveryMethod$ | async">
       <label-value *ngIf="deliveryMethod.minDeliveryTime"
         [label]="i18n.ad.minDeliveryTime">
-        {{ formatService.formatTimeInterval(deliveryMethod.minDeliveryTime) }}
+        {{ format.formatTimeInterval(deliveryMethod.minDeliveryTime) }}
       </label-value>
       <label-value *ngIf="deliveryMethod.maxDeliveryTime"
         [label]="i18n.ad.maxDeliveryTime">
-        {{ formatService.formatTimeInterval(deliveryMethod.maxDeliveryTime) }}
+        {{ format.formatTimeInterval(deliveryMethod.maxDeliveryTime) }}
       </label-value>
       <label-value [label]="i18n.ad.price">
         {{ !negotiated ?

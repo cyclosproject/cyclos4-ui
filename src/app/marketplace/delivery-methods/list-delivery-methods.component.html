@@ -1,0 +1,89 @@
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data">
+    <page-content mode="empty" [heading]="i18n.ad.title.deliveryMethods"
+      [mobileHeading]="i18n.ad.mobileTitle.deliveryMethods"
+      [headingActions]="headingActions$ | async">
+      <div class="col-12 col-md-6" *ngIf="!self">
+        <label-value [label]="i18n.general.user" kind="fieldView"
+          labelPosition="side">
+          <user-link [user]="data.user"></user-link>
+        </label-value>
+      </div>
+    </page-content>
+
+    <results-layout [results]="data.deliveryMethods" [toLink]="toLink">
+      <mobile-result *mobileResult="let row">
+        <div class="d-flex">
+          <div>
+            <div class="cell-main">{{ row.name }}</div>
+            <div *ngIf="data.canManage" class="ml-auto text-right">
+              <button [tooltip]="i18n.general.edit" class="btn btn-icon"
+                (click)="router.navigate(editPath(row)); $event.stopPropagation(); $event.preventDefault()">
+                <icon icon="edit"></icon>
+              </button>
+              <button [tooltip]="i18n.general.remove" class="btn btn-icon"
+                (click)="remove(row); $event.stopPropagation(); $event.preventDefault()">
+                <icon icon="clear"></icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </mobile-result>
+      <table *resultTable class="table table-hover cursor-pointer">
+        <thead>
+          <th>{{ i18n.general.name }}</th>
+          <th>{{ i18n.ad.chargeType }}</th>
+          <th class="text-right">{{ i18n.ad.price }}</th>
+          <th>{{ i18n.ad.minDeliveryTime }}</th>
+          <th>{{ i18n.ad.maxDeliveryTime }}</th>
+          <th>{{ i18n.general.enabled }}</th>
+          <th *ngIf="data.canManage" class="actions"></th>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let row of data.deliveryMethods">
+            <tr (click)="router.navigate(viewPath(row))">
+              <td>
+                {{ row.name }}
+              </td>
+              <td>
+                {{ resolveChargeTypeLabel(row.chargeType) }}
+              </td>
+              <td>
+                {{ row.chargeAmount | currency: row.chargeCurrency }}
+              </td>
+              <td>
+                {{ format.formatTimeInterval(row.minDeliveryTime) }}
+              </td>
+              <td>
+                {{ format.formatTimeInterval(row.maxDeliveryTime) }}
+              </td>
+              <td>
+                {{ row.enabled ?
+                i18n.general.yes :
+                i18n.general.no }}
+              </td>
+              <td class="actions">
+                <button [tooltip]="i18n.general.removeTooltip(row.name)"
+                  class="btn btn-icon"
+                  (click)="remove(row); $event.stopPropagation()">
+                  <icon icon="clear"></icon>
+                </button>
+              </td>
+              <td *ngIf="data.canManage" class="actions actions-multiple">
+                <button [tooltip]="i18n.general.edit" class="btn btn-icon"
+                  (click)="router.navigate(editPath(row)); $event.stopPropagation()">
+                  <icon icon="edit"></icon>
+                </button>
+                <button [tooltip]="i18n.general.remove"
+                  class="btn btn-icon ml-3"
+                  (click)="remove(row); $event.stopPropagation()">
+                  <icon icon="clear"></icon>
+                </button>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </results-layout>
+  </ng-container>
+</page-layout>

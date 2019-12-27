@@ -6,7 +6,7 @@
     <user-info [user]="data.user"></user-info>
 
     <label-value [label]="i18n.groupMembership.current">
-      {{ data.group ? data.group.name : this.i18n.user.operatorNoGroup }}
+      {{ data.group ? data.group.name : i18n.user.operatorNoGroup }}
     </label-value>
 
     <ng-container *ngIf="editable">
@@ -14,7 +14,7 @@
       <form [formGroup]="form">
         <single-selection-field formControlName="group"
           [label]="i18n.groupMembership.new" [required]="!allowEmptyGroup"
-          [emptyOption]="allowEmptyGroup ? this.i18n.user.operatorNoGroup : null">
+          [emptyOption]="allowEmptyGroup ? i18n.user.operatorNoGroup : null">
           <field-option *ngFor="let group of data.possibleNewGroups"
             [value]="ApiHelper.internalNameOrId(group)" [id]="group.id"
             [internalName]="group.internalName" [text]="group.name">

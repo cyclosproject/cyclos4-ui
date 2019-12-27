@@ -5,7 +5,6 @@ import { Menu } from 'app/shared/menu';
 import { ShoppingCartsService } from 'app/api/services';
 import { BehaviorSubject } from 'rxjs';
 import { FormGroup, FormControl } from '@angular/forms';
-import { FormatService } from 'app/core/format.service';
 import { empty } from 'app/shared/helper';
 import { AddressHelperService } from 'app/core/address-helper.service';
 import { ConfirmationMode } from 'app/shared/confirmation-mode';
@@ -38,7 +37,6 @@ export class CartCheckoutComponent extends BasePageComponent<ShoppingCartDataFor
 
   constructor(
     injector: Injector,
-    public formatService: FormatService,
     private shoppingCartService: ShoppingCartsService,
     private addressHelper: AddressHelperService,
     private marketplaceHelper: MarketplaceHelperService) {

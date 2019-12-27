@@ -10,6 +10,7 @@ import { ListShoppingCartComponent } from 'app/marketplace/checkout/list-shoppin
 import { ViewCartComponent } from 'app/marketplace/checkout/view-cart.component';
 import { ViewOrderHistoryComponent } from 'app/marketplace/view/view-order-history.component';
 import { CartCheckoutComponent } from 'app/marketplace/checkout/cart-checkout.component';
+import { ListDeliveryMethodsComponent } from 'app/marketplace/delivery-methods/list-delivery-methods.component';
 
 const marketplaceRoutes: Routes = [
   {
@@ -62,6 +63,10 @@ const marketplaceRoutes: Routes = [
       {
         path: 'checkout/:id',
         component: CartCheckoutComponent
+      },
+      {
+        path: ':user/delivery-methods',
+        component: ListDeliveryMethodsComponent
       }
     ]
   }

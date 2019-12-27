@@ -1,0 +1,9 @@
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data">
+    <page-content
+      [heading]="create ? i18n.ad.title.deliveryMethodNew : i18n.ad.title.deliveryMethod"
+      [mobileHeading]="create ? i18n.ad.mobileTitle.deliveryMethodNew : i18n.ad.mobileTitle.deliveryMethod"
+      [headingActions]="headingActions$ | async">
+    </page-content>
+  </ng-container>
+</page-layout>
