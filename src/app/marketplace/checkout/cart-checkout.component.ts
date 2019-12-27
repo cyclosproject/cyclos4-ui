@@ -176,7 +176,7 @@ export class CartCheckoutComponent extends BasePageComponent<ShoppingCartDataFor
     }).subscribe(items => {
       this.marketplaceHelper.cartItems = items;
       this.notification.snackBar(this.i18n.ad.orderWaitingForSellersApproval);
-      this.router.navigate(['marketplace', 'self', 'purchases']);
+      this.router.navigate(['marketplace', 'self', 'purchases'], { replaceUrl: true });
     }));
   }
 
