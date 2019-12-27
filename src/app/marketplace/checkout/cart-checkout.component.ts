@@ -157,7 +157,7 @@ export class CartCheckoutComponent extends BasePageComponent<ShoppingCartDataFor
   /**
    * Finish the checkout process by submitting the order
    */
-  protected submit(password?: string) {
+  submit(password?: string) {
     if (password) {
       this.confirmationPassword.setValue(password);
     }
