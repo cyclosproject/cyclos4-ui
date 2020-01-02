@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { HeadingAction } from 'app/shared/action';
 import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
 import { DeliveryMethodView } from 'app/api/models';
 import { DeliveryMethodsService } from 'app/api/services';
