@@ -102,27 +102,33 @@
             </div>
           </div>
         </label-value>
-        <label-value [label]="i18n.ad.promotionalPeriod" labelPosition="side">
-          <div class="row">
-            <div class="col-md-6">
-              <date-field labelPosition="side"
-                formControlName="promotionalBeginDate" minDate="past5"
-                fieldSize="full">
-              </date-field>
+        <boolean-field [label]="i18n.ad.setPromotionalPeriod"
+          formControlName="setPromotionalPeriod"></boolean-field>
+        <ng-container *ngIf="setPromotionalPeriod$ | async">
+          <label-value [label]="i18n.ad.promotionalPeriod"
+            labelPosition="side">
+            <div class="row">
+              <div class="col-md-6">
+                <date-field labelPosition="side"
+                  formControlName="promotionalBeginDate" minDate="past5"
+                  fieldSize="full">
+                </date-field>
+              </div>
+              <div class="col-md-6">
+                <date-field labelPosition="side"
+                  formControlName="promotionalEndDate" minDate="past5"
+                  fieldSize="full">
+                </date-field>
+              </div>
             </div>
-            <div class="col-md-6">
-              <date-field labelPosition="side"
-                formControlName="promotionalEndDate" minDate="past5"
-                fieldSize="full">
-              </date-field>
-            </div>
-          </div>
-        </label-value>
-        <decimal-field *ngIf="currency$ | async"
-          formControlName="promotionalPrice"
-          [label]="i18n.ad.promotionalPrice" [scale]="currency.decimalDigits"
-          [prefix]="currency.prefix" [suffix]="currency.suffix">
-        </decimal-field>
+          </label-value>
+          <decimal-field *ngIf="currency$ | async"
+            formControlName="promotionalPrice"
+            [label]="i18n.ad.promotionalPrice"
+            [scale]="currency.decimalDigits" [prefix]="currency.prefix"
+            [suffix]="currency.suffix">
+          </decimal-field>
+        </ng-container>
         <textarea-field formControlName="description"
           [label]="i18n.general.description" required></textarea-field>
         <custom-field-input *ngFor="let cf of data.customFields" [field]="cf"
@@ -164,7 +170,8 @@
           </input-field>
           <multi-selection-field *ngIf="deliveryMethods$ | async"
             [label]=" i18n.ad.deliveryMethods"
-            formControlName="deliveryMethods">
+            formControlName="deliveryMethods"
+            [emptyLabel]="deliveryMethods$.value.length === 0 ? i18n.ad.noDeliveryMethodsAvailable : null">
             <field-option *ngFor="let dm of deliveryMethods$.value"
               [value]="dm.id" [id]="dm.id" [text]="dm.name">
             </field-option>

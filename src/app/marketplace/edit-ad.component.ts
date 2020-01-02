@@ -51,6 +51,7 @@ export class EditAdComponent
   decimalQuantity$ = new BehaviorSubject<number>(null);
   unlimitedStock$ = new BehaviorSubject<boolean>(true);
   deliveryMethods$ = new BehaviorSubject<DeliveryMethod[]>(null);
+  setPromotionalPeriod$ = new BehaviorSubject<boolean>(false);
 
   form: FormGroup;
 
@@ -121,6 +122,7 @@ export class EditAdComponent
       price: [adManage.price, this.webshop ? Validators.required : null],
       publicationBeginDate: [adManage.publicationPeriod.begin, Validators.required],
       publicationEndDate: [adManage.publicationPeriod.end, Validators.required],
+      setPromotionalPeriod: adManage.promotionalPeriod != null,
       promotionalBeginDate: adManage.promotionalPeriod ? adManage.promotionalPeriod.begin : null,
       promotionalEndDate: adManage.promotionalPeriod ? adManage.promotionalPeriod.end : null,
       promotionalPrice: adManage.promotionalPrice,
@@ -149,11 +151,13 @@ export class EditAdComponent
     if (!empty(data.currencies)) {
       this.currency = data.currencies[0];
     }
+    this.addSub(this.form.controls.setPromotionalPeriod.valueChanges.subscribe(() => this.updatePromotionalControls()));
     this.addSub(this.form.controls.unlimitedStock.valueChanges.subscribe(() => this.updateStockControls()));
     this.addSub(this.form.controls.allowDecimalQuantity.valueChanges.subscribe(() => this.updateDecimalControls()));
     this.uploadedImages = [];
 
     this.updateDeliveryMethods(data);
+    this.updatePromotionalControls();
     this.updateStockControls();
     this.updateDecimalControls();
   }
@@ -179,8 +183,16 @@ export class EditAdComponent
       } else {
         this.form.controls.stockQuantity.setValidators(Validators.required);
       }
+      this.form.controls.stockQuantity.updateValueAndValidity();
       this.unlimitedStock$.next(this.form.controls.unlimitedStock.value);
     }
+  }
+
+  /**
+  * Display promotional controls based on flag
+  */
+  protected updatePromotionalControls() {
+    this.setPromotionalPeriod$.next(this.form.controls.setPromotionalPeriod.value);
   }
 
   /**
@@ -246,9 +258,16 @@ export class EditAdComponent
     delete value['publicationBeginDate'];
     delete value['publicationEndDate'];
 
-    value.promotionalPeriod = this.ApiHelper.datePeriod(value.promotionalBeginDate, value.promotionalEndDate);
+    value.promotionalPeriod = value.setPromotionalPeriod ?
+      this.ApiHelper.datePeriod(value.promotionalBeginDate, value.promotionalEndDate) :
+      null;
+    delete value['setPromotionaPeriod'];
     delete value['promotionalBeginDate'];
     delete value['promotionalEndDate'];
+    if (value.promotionalPeriod == null) {
+      delete value['promotionalPrice'];
+    }
+
 
     const onFinish: any = (id: string) => {
       this.notification.snackBar(this.i18n.ad.adSaved);
@@ -385,5 +404,12 @@ export class EditAdComponent
 
   get binaryValues() {
     return (this.data as AdDataForEdit).binaryValues;
+  }
+
+  get setPromotionalPeriod(): boolean {
+    return this.setPromotionalPeriod$.value;
+  }
+  set setPromotionalPeriod(value: boolean) {
+    this.setPromotionalPeriod$.next(value);
   }
 }

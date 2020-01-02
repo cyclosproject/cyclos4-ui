@@ -662,7 +662,7 @@ export class MenuService {
         add(Menu.PURCHASES, 'marketplace/self/purchases', 'shop_two', this.i18n.menu.marketplaceMyPurchases);
       }
       const webshop = marketplace.myWebshop || {};
-      if (webshop.enable) {
+      if (webshop.manage) {
         add(Menu.SEARCH_USER_WEBSHOP, 'marketplace/self/webshop/list', 'shopping_basket', this.i18n.menu.marketplaceMyWebshop);
         add(Menu.SALES, 'marketplace/self/sales', 'local_offer', this.i18n.menu.marketplaceMySales);
         add(Menu.DELIVERY_METHODS, 'marketplace/self/delivery-methods', 'local_shipping', this.i18n.menu.marketplaceDeliveryMethods);

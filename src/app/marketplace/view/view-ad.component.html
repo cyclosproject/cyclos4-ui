@@ -48,11 +48,10 @@
           </ng-container>
         </label-value>
         <ng-container *ngIf="data.canEdit">
-          <label-value [label]="i18n.ad.beginDate">
-            {{ data.publicationPeriod.begin | date }}
-          </label-value>
-          <label-value [label]="i18n.ad.endDate">
-            {{ data.publicationPeriod.end | date }}
+          <label-value [label]="i18n.ad.publicationPeriod">
+            <span>{{ data.publicationPeriod.begin | date }}<span
+                class="d-inline pl-2 pr-2"> -
+              </span>{{ data.publicationPeriod.end | date }}</span>
           </label-value>
         </ng-container>
         <custom-field-value *ngFor="let value of ad.customValues"
@@ -89,8 +88,9 @@
     </rich-text-container>
     <div *ngIf="data.deliveryMethods && data.deliveryMethods.length > 0">
       <h2 class="mt-3"> {{ i18n.ad.deliveryMethods }} </h2>
-      <ng-container *ngFor="let dm of data.deliveryMethods">
-        <h3> {{ dm.name }} </h3>
+      <ng-container
+        *ngFor="let dm of data.deliveryMethods; let first = first">
+        <h3 [ngClass]="{'pt-2': !first}"> {{ dm.name }} </h3>
         <label-value *ngIf="dm.minDeliveryTime"
           [label]="i18n.ad.minDeliveryTime">
           {{ format.formatTimeInterval(dm.minDeliveryTime) }}
