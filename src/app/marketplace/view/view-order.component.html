@@ -66,11 +66,11 @@
     <h2>{{ i18n.ad.deliveryInformation }}</h2>
     <label-value *ngIf="data.minDeliveryTime"
       [label]="i18n.ad.minDeliveryTime">
-      {{ formatTimeInterval(data.minDeliveryTime) }}
+      {{  format.formatTimeInterval(data.minDeliveryTime) }}
     </label-value>
     <label-value *ngIf="data.maxDeliveryTime"
       [label]="i18n.ad.maxDeliveryTime">
-      {{ formatTimeInterval(data.maxDeliveryTime) }}
+      {{ format.formatTimeInterval(data.maxDeliveryTime) }}
     </label-value>
     <label-value *ngIf="data.deliveryPrice" [label]="i18n.ad.price">
       {{ data.deliveryPrice |currency: data.currency }}

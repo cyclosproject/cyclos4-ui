@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
-  OrderView, TimeInterval, OrderItem, CreateDeviceConfirmation,
+  OrderView, OrderItem, CreateDeviceConfirmation,
   DeviceConfirmationTypeEnum, OrderStatusEnum, CustomFieldDetailed,
   CustomFieldTypeEnum, OrderDataForAcceptByBuyer, CustomFieldControlEnum, DeliveryMethod
 } from 'app/api/models';
@@ -10,7 +10,6 @@ import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
 import { Menu } from 'app/shared/menu';
 import { MarketplaceHelperService } from 'app/core/marketplace-helper.service';
 import { empty } from 'app/shared/helper';
-import { FormatService } from 'app/core/format.service';
 import { AddressHelperService } from 'app/core/address-helper.service';
 import { SetDeliveryMethodComponent } from 'app/marketplace/set-delivery-method.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
@@ -35,7 +34,6 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
     private modal: BsModalService,
     private marketplaceHelper: MarketplaceHelperService,
     private addressHelper: AddressHelperService,
-    private formatService: FormatService,
     private orderService: OrdersService) {
     super(injector);
   }
@@ -80,13 +78,6 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
    */
   resolveDeliveryLabel(): string {
     return empty(this.data.deliveryMethodName) ? this.i18n.ad.toBeConfirmedBySeller : this.data.deliveryMethodName;
-  }
-
-  /**
-   * Formats the given time as time interval
-   */
-  formatTimeInterval(timeInterval: TimeInterval): string {
-    return this.formatService.formatTimeInterval(timeInterval);
   }
 
   resolveMenu() {

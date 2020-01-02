@@ -93,10 +93,10 @@
         <h3> {{ dm.name }} </h3>
         <label-value *ngIf="dm.minDeliveryTime"
           [label]="i18n.ad.minDeliveryTime">
-          {{ formatTimeInterval(dm.minDeliveryTime) }}
+          {{ format.formatTimeInterval(dm.minDeliveryTime) }}
         </label-value>
         <label-value [label]="i18n.ad.maxDeliveryTime">
-          {{ formatTimeInterval(dm.maxDeliveryTime) }}
+          {{ format.formatTimeInterval(dm.maxDeliveryTime) }}
         </label-value>
         <label-value *ngIf="hasFixedDeliveryPrice(dm)"
           [label]="i18n.ad.price">
