@@ -48,7 +48,7 @@
               <td>
                 {{ resolveChargeTypeLabel(row.chargeType) }}
               </td>
-              <td>
+              <td class="text-right">
                 {{ row.chargeAmount | currency: row.chargeCurrency }}
               </td>
               <td>
@@ -62,20 +62,14 @@
                 i18n.general.yes :
                 i18n.general.no }}
               </td>
-              <td class="actions">
-                <button [tooltip]="i18n.general.removeTooltip(row.name)"
-                  class="btn btn-icon"
-                  (click)="remove(row); $event.stopPropagation()">
-                  <icon icon="clear"></icon>
-                </button>
-              </td>
               <td *ngIf="data.canManage" class="actions actions-multiple">
                 <button [tooltip]="i18n.general.edit" class="btn btn-icon"
                   (click)="router.navigate(editPath(row)); $event.stopPropagation()">
                   <icon icon="edit"></icon>
                 </button>
-                <button [tooltip]="i18n.general.remove"
-                  class="btn btn-icon ml-3"
+                <button [tooltip]="i18n.general.removeTooltip(row.name)"
+                  class="btn btn-icon"
+                  [ngClass]="data.canManage ? 'ml-3' : ''"
                   (click)="remove(row); $event.stopPropagation()">
                   <icon icon="clear"></icon>
                 </button>

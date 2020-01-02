@@ -53,7 +53,7 @@ export class ListDeliveryMethodsComponent
   }
 
   editPath(deliveryMethod: DeliveryMethod) {
-    return ['/records', 'delivery-methods', 'edit', deliveryMethod.id];
+    return ['/marketplace', 'delivery-methods', 'edit', deliveryMethod.id];
   }
 
   get toLink() {
