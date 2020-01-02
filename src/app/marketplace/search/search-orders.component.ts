@@ -53,7 +53,7 @@ export class SearchOrdersComponent
     this.sales = this.route.snapshot.url[1].path === 'sales';
     this.param = this.route.snapshot.paramMap.get('user') || this.ApiHelper.SELF;
     this.isOwner = this.authHelper.isSelf(this.param);
-    this.addSub(this.orderService.getOrderDataForSearch({ user: this.param }).subscribe(data => this.data = data));
+    this.addSub(this.orderService.getOrderDataForSearch({ user: this.param, sales: this.sales }).subscribe(data => this.data = data));
   }
 
   protected toSearchParams(value: any): SearchUserOrdersParams {
