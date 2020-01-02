@@ -254,13 +254,6 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
   }
 
   /**
-   * Buys the article buy adding it to the shopping cart
-   */
-  buy() {
-
-  }
-
-  /**
    * Returns if the delivery method has a fixed price
    */
   hasFixedDeliveryPrice(dm: DeliveryMethod) {

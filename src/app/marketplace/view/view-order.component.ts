@@ -44,7 +44,7 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
     super.ngOnInit();
 
     this.id = this.route.snapshot.paramMap.get('id');
-    this.addSub(this.orderService.viewOrder({ order: this.id })
+    this.addSub(this.orderService.viewOrder({ order: this.id, fields: ['-history'] })
       .subscribe(order => this.data = order));
   }
 
