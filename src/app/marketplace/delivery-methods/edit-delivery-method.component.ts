@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 import { Menu } from 'app/shared/menu';
 
 /**
- * Assigns a broker to an user
+ * Edit a delivery method for webshop ads
  */
 @Component({
   selector: 'edit-delivery-method',
@@ -22,9 +22,7 @@ export class EditDeliveryMethodComponent
   id: string;
   user: string;
   create: boolean;
-  self: boolean;
   form: FormGroup;
-  userQuery: any;
 
   constructor(
     injector: Injector,
@@ -60,8 +58,6 @@ export class EditDeliveryMethodComponent
       this.deliveryMethodService.createDeliveryMethod({ body: value, user: this.user }) :
       this.deliveryMethodService.updateDeliveryMethod({ id: this.id, body: value });
     this.addSub(request.subscribe(() => {
-      /*this.notification.snackBar(this.i18n.brokers.brokerAdded);
-      this.router.navigate(['/users', this.user, 'brokers']);*/
     }));
   }
 

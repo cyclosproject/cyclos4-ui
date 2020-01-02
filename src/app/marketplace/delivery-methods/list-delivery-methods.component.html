@@ -67,8 +67,7 @@
                   (click)="router.navigate(editPath(row)); $event.stopPropagation()">
                   <icon icon="edit"></icon>
                 </button>
-                <button [tooltip]="i18n.general.removeTooltip(row.name)"
-                  class="btn btn-icon"
+                <button [tooltip]="i18n.general.remove" class="btn btn-icon"
                   [ngClass]="data.canManage ? 'ml-3' : ''"
                   (click)="remove(row); $event.stopPropagation()">
                   <icon icon="clear"></icon>

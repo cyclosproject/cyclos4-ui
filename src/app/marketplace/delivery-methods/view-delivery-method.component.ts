@@ -6,7 +6,7 @@ import { DeliveryMethodsService } from 'app/api/services';
 import { Menu } from 'app/shared/menu';
 
 /**
- * Displays the information about delivery method
+ * Displays the information about a delivery method
  */
 @Component({
   selector: 'view-delivery-method',
@@ -34,8 +34,6 @@ export class ViewDeliveryMethodComponent extends BaseViewPageComponent<DeliveryM
   onDataInitialized(data: DeliveryMethodView) {
     const actions = [];
     if (data.edit) {
-      actions.push(new HeadingAction('history', this.i18n.general.viewHistory, () =>
-        this.router.navigate(['users', this.param, 'group', 'history']), true));
     }
     this.headingActions = actions;
   }
