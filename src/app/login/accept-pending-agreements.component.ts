@@ -21,6 +21,10 @@ export class AcceptPendingAgreementsComponent
   extends BasePageComponent<Agreement[]>
   implements OnInit, AfterViewChecked {
 
+  title: string;
+  mobileTitle: string;
+  message: string;
+
   accept = new FormControl(false, Validators.requiredTrue);
   initialized = false;
   @ViewChild('agreementsContent', { static: false }) agreementsContent: ElementRef;
@@ -45,6 +49,16 @@ export class AcceptPendingAgreementsComponent
       // No agreements
       this.router.navigateByUrl(this.loginState.redirectUrl || '');
       return;
+    }
+
+    if (auth.everAcceptedAgreements) {
+      this.title = this.i18n.pendingAgreements.title.previouslyAccepted;
+      this.mobileTitle = this.i18n.pendingAgreements.mobileTitle.previouslyAccepted;
+      this.message = this.i18n.pendingAgreements.messagePreviouslyAccepted;
+    } else {
+      this.title = this.i18n.pendingAgreements.title.firstTime;
+      this.mobileTitle = this.i18n.pendingAgreements.mobileTitle.firstTime;
+      this.message = this.i18n.pendingAgreements.messageFirstTime;
     }
 
     this.addSub(this.agreementsService.listPendingAgreements().subscribe(data => {

@@ -1,9 +1,8 @@
 <page-layout [ready]="data$ | async" size="small" hideMenu>
-  <page-content *ngIf="data" layout="centered"
-    [heading]="i18n.pendingAgreements.title"
-    [mobileHeading]="i18n.pendingAgreements.mobileTitle">
+  <page-content *ngIf="data" layout="centered" [heading]="title"
+    [mobileHeading]="mobileTitle">
     <notification type="warning">
-      <div [innerHTML]="i18n.pendingAgreements.message | trust"></div>
+      <div [innerHTML]="message | trust"></div>
     </notification>
     <div class="mt-3 text-left">
       <boolean-field [formControl]="accept">

@@ -390,9 +390,16 @@
   },
   "registrationAgreement": "Registration agreement",
   "pendingAgreements": {
-    "title": "Updated agreement",
-    "mobileTitle": "Updated agreement",
-    "message": "The registration agreement has been updated.<br><br>In order to continue, you must agree with the new terms.",
+    "title": {
+      "previouslyAccepted": "Updated agreement",
+      "firstTime": "Registration agreement"
+    },
+    "mobileTitle": {
+      "previouslyAccepted": "Updated agreement",
+      "firstTime": "Registration agreement"
+    },
+    "message.previouslyAccepted": "The registration agreement has been updated.<br><br>In order to continue, you must agree with the new terms.",
+    "message.firstTime": "In order to complete your registration, you must agree with these terms.",
     "agree": "I agree with the following registration agreements: {agreements}"
   },
   "securityQuestion": {
