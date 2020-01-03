@@ -708,6 +708,9 @@ export class MenuService {
         }
         add(Menu.PASSWORDS, '/users/self/passwords', 'vpn_key', passwordsLabel);
       }
+      if ((permissions.identityProviders || {}).enabled) {
+        add(Menu.IDENTITY_PROVIDERS, '/users/self/identity-providers', 'perm_identity', this.i18n.menu.personalIdentityProviders);
+      }
 
       // Records
       addRecords( // My

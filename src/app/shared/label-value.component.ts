@@ -124,6 +124,8 @@ export class LabelValueComponent implements OnInit, OnDestroy, OnChanges {
 
   @Input() kind: LabelValueKind = 'view';
 
+  @Input() labelCols: number | string;
+
   @HostBinding('class.view') get view() {
     return this.kind === 'view';
   }
@@ -257,6 +259,10 @@ export class LabelValueComponent implements OnInit, OnDestroy, OnChanges {
   private getLabelCols(breakpoint: Breakpoint): number {
     const labelOnSide = this.isLabelOnSide(breakpoint);
     if (labelOnSide) {
+      const cols = typeof this.labelCols === 'string' ? parseInt(this.labelCols, 10) : this.labelCols || 0;
+      if (cols > 0) {
+        return cols;
+      }
       switch (breakpoint) {
         case 'xxs':
           // On xxs use 6 cols

@@ -166,7 +166,6 @@ export class UserRegistrationComponent
   continueWithProvider(idp: IdentityProvider) {
     if (idp) {
       this.authHelper.identityProviderPopup(idp, 'register', this.group.value).pipe(first()).subscribe(callback => {
-        this.identityProviderRequestId = callback.requestId;
         switch (callback.status) {
           case IdentityProviderCallbackStatusEnum.REGISTRATION_DONE:
             // Already registered and logged-in

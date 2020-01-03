@@ -26,6 +26,8 @@ export class UserInfoComponent extends BaseComponent {
 
   @Input() kind: LabelValueKind = 'view';
 
+  @Input() labelCols: number | string;
+
   get operator(): boolean {
     return !!this.user.user;
   }

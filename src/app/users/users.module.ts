@@ -7,6 +7,7 @@ import { ViewBrokerHistoryComponent } from 'app/users/brokering/view-broker-hist
 import { SearchConnectedComponent } from 'app/users/connected/search-connected.component';
 import { ViewUserGroupHistoryComponent } from 'app/users/group-membership/view-user-group-history.component';
 import { ViewUserGroupComponent } from 'app/users/group-membership/view-user-group.component';
+import { UserIdentityProvidersComponent } from 'app/users/identity-providers/user-identity-providers.component';
 import { NotificationSettingsFormComponent } from 'app/users/notification-settings/notification-settings-form.component';
 import { ListOperatorGroupsComponent } from 'app/users/operator-groups/list-operator-groups.component';
 import { OperatorGroupFormComponent } from 'app/users/operator-groups/operator-group-form.component';
@@ -82,6 +83,8 @@ import { UsersRoutingModule } from 'app/users/users-routing.module';
 
     ManagePasswordsComponent,
     ChangePasswordDialogComponent,
+
+    UserIdentityProvidersComponent,
 
     NotificationSettingsFormComponent,
   ],
