@@ -249,17 +249,17 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
         }));
       }
       if (marketplace.viewPurchases) {
-        actions.push(new HeadingAction('shop_two', this.i18n.user.profile.purchases, () => {
+        this.managementActions.push(new HeadingAction('shop_two', this.i18n.user.profile.purchases, () => {
           this.router.navigate(['/marketplace', this.param, 'purchases']);
         }));
       }
       if (marketplace.viewSales) {
-        actions.push(new HeadingAction('local_offer', this.i18n.user.profile.sales, () => {
+        this.managementActions.push(new HeadingAction('local_offer', this.i18n.user.profile.sales, () => {
           this.router.navigate(['/marketplace', this.param, 'sales']);
         }));
       }
       if (marketplace.webshop.viewSettings) {
-        actions.push(new HeadingAction('local_shipping', this.i18n.user.profile.deliveryMethods, () => {
+        this.managementActions.push(new HeadingAction('local_shipping', this.i18n.user.profile.deliveryMethods, () => {
           this.router.navigate(['/marketplace', this.param, 'delivery-methods']);
         }));
       }

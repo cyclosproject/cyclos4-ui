@@ -35300,6 +35300,161 @@ A note for dynamic custom fields: If a script is used to generate possible value
               schema:
                 $ref: '#/components/schemas/Error'
 
+    post:
+      operationId: createOrder
+      summary: >-
+        Creates a new order as the seller for a specific buyer
+      description: >-
+        Creates a new order as the seller (i.e the user given in the path must resolve to the authenticated user) for a
+        specific buyer (given in the request body). By default the status of the order will be
+        `draft`.
+        If the order contains all the required information and the seller wants to send it to the buyer then he can do it
+        changing the `draft` boolean field to `false` before submit.
+      tags:
+        - Orders
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/user'
+      responses:
+        '201':
+          description: >-
+            Returns the identifier of the new order
+          headers:
+            Location:
+              description: >-
+                URL for viewing the order details
+              schema:
+                type: string
+          content:
+            text/plain:
+              schema:
+                type: string
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: >-
+            Input error. Either a validation error or the maximum allowed items was
+            exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      requestBody:
+        description: >-
+          The order to be created with status `draft`
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderNew'
+
+  /{user}/orders/data-for-new:
+    get:
+      operationId: getOrderDataForNew
+      summary: >-
+        Returns data for creating orders as the seller for a specific buyer.
+      description: >-
+        The authenticated user must be the seller (i.e the user given in the path must resolve to the authenticated user)
+        with webshop enable permission.
+      tags:
+        - Orders
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+        - $ref: '#/components/parameters/user'
+        - name: buyer
+          in: query
+          required: true
+          description: >-
+            The user for whom the order will be created.
+            It could be a user identification value, such as id, username, e-mail, phone, etc.
+            Id is always allowed, others depend on Cyclos configuration. Note that
+            a valid numeric value is always considered as id. For example, when
+            using another identification method that can be numeric only, prefix\
+            the value with a single quote (like in Excel spreadsheets);
+          schema:
+            type: string
+        - name: currency
+          in: query
+          required: false
+          description: >-
+            Either id or internal name of the currency for the new order.
+            If not given a list with the available currencies for the given buyer will be returned.
+            At the moment of create the order a currency is required.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >-
+            The order data for create sales.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderDataForNew'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: >-
+            Input error. Either a validation error or the maximum allowed items was
+            exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
+
   /{user}/orders/data-for-search:
     get:
       operationId: getOrderDataForSearch
@@ -35363,12 +35518,15 @@ A note for dynamic custom fields: If a script is used to generate possible value
                 $ref: '#/components/schemas/Error'
 
   /orders/{order}:
+    parameters:
+      - $ref: '#/components/parameters/order'
+
     get:
       operationId: viewOrder
       summary: >-
         Returns details of an order.
       description: >-
-        Returns detailed information of an order given by id.
+        Returns detailed information of an order.
       tags:
         - Orders
       security:
@@ -35377,7 +35535,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - accessClient: []
       parameters:
         - $ref: '#/components/parameters/fields'
-        - $ref: '#/components/parameters/order'
       responses:
         '200':
           description: >-
@@ -35415,6 +35572,183 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+
+    put:
+      operationId: updateOrder
+      summary: >-
+        Updates an existing order.
+      description: >-
+        Updates an existing order.
+      tags:
+        - Orders
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      responses:
+        '204':
+          description: >-
+            The order was updated.
+        '409':
+          description: >-
+            This operation expected an entity state, but it has resulted in a conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictError'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: >-
+            Input error. Either a validation error or the maximum allowed items was
+            exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      requestBody:
+        description: >-
+          The order to be edited.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderEdit'
+
+    delete:
+      operationId: deleteOrder
+      summary: >-
+        Removes an order.
+      description: >-
+        Removes an order.
+      tags:
+        - Orders
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      responses:
+        '204':
+          description: >-
+            The order was removed.
+        '409':
+          description: >-
+            This operation expected an entity state, but it has resulted in a conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConflictError'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /orders/{order}/data-for-edit:
+    get:
+      operationId: getOrderDataForEdit
+      summary: >-
+        Returns data for modifying an order as the seller.
+      description: >-
+        Returns data for modifying an order as the seller.
+      tags:
+        - Orders
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+        - $ref: '#/components/parameters/order'
+      responses:
+        '200':
+          description: >-
+            The order data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderDataForEdit'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: >-
+            Input error. Either a validation error or the maximum allowed items was
+            exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
 
   /orders/{order}/seller/data-for-set-delivery:
     get:
@@ -38155,11 +38489,14 @@ components:
         - `medium`: Medium thumbnail
         
         - `small`: Small thumbnail
+        
+        - `tiny`: Tiny thumbnail
       type: string
       enum:
         - large
         - medium
         - small
+        - tiny
 
     InitializeNfcErrorCode:
       description: >
@@ -43222,18 +43559,6 @@ components:
               allOf:
                 - $ref: '#/components/schemas/User'
 
-    BaseDeliveryMethod:
-      description: >-
-        Reference to a webshop delivery method containig basic data
-      allOf:
-        - $ref: '#/components/schemas/NamedEntity'
-        - type: object
-          properties:
-            enabled:
-              type: boolean
-              description: >-
-                Whether this delivery method is enabled for new sales.
-
     BaseInstallmentDataForSearch:
       x-abstract: true
       description: >-
@@ -46318,6 +46643,14 @@ components:
                 Indicates whether there is at least one NFC tag the user can use to
                 receive payments
               type: boolean
+            canActivateAsTrustedDevice:
+              x-remove-version: 4.15
+              deprecated: true
+              description: >-
+                DEPRECATED: Use `deviceActivationMode` instead. Will be removed in 4.15.
+                Indicates whether there is an allowed medium to activate the device
+                as trusted
+              type: boolean
             deviceActivationMode:
               description: >-
                 Contains information needed when the authenticated user wants to activate a device as trusted.
@@ -46765,13 +47098,17 @@ components:
       description: >-
         Reference to a webshop delivery method
       allOf:
-        - $ref: '#/components/schemas/BaseDeliveryMethod'
+        - $ref: '#/components/schemas/NamedEntity'
         - type: object
           properties:
             description:
               type: string
               description: >-
                 A description on how this delivery method works.
+            enabled:
+              type: boolean
+              description: >-
+                Whether this delivery method is enabled for new sales.
             chargeType:
               $ref: '#/components/schemas/DeliveryMethodChargeTypeEnum'
             deliveryTime:
@@ -46954,6 +47291,11 @@ components:
               description: >-
                 Can the authenticated user remove this delivery method?
               type: boolean
+            user:
+              description: >-
+                The user which owns this delivery method
+              allOf:
+                - $ref: '#/components/schemas/User'
 
 
     Device:
@@ -49094,6 +49436,16 @@ components:
               items:
                 $ref: '#/components/schemas/Country'
 
+    MyIdentityProvidersPermissions:
+      description: >-
+        Permissions over the logged user's identity provider links
+      type: object
+      properties:
+        enabled:
+          description: >-
+            Is the identity providers functionality enabled for the logged user?
+          type: boolean
+
     MyMarketplacePermissions:
       description: >-
         Permissions for the marketplace for the logged user
@@ -50757,6 +51109,37 @@ components:
             Whether I can manage my own operator groups
           type: boolean
 
+    OrderBasicData:
+      description: >-
+        Common data for `OrderDataForNew` and `OrderDataForEdit`
+      type: object
+      properties:
+        seller:
+          $ref: '#/components/schemas/User'
+        buyer:
+          $ref: '#/components/schemas/User'
+        deliveryMethods:
+          description: >-
+            List with all delivery methods defined for the seller.
+            When creating or updating an order it can be filled with the fields from one of these existing delivery methods
+            or a custom delivery method can be set.
+          type: array
+          items:
+            $ref: '#/components/schemas/DeliveryMethod'
+        addressConfiguration:
+          description: >
+            The address configuration for the buyer
+          $ref: '#/components/schemas/AddressConfiguration'
+        addresses:
+          description: >
+            List containing the visible addresses of the buyer.
+            When creating or updating an order it can be filled with the fields from one of these existing addresses or
+            a custom delivery address can be set.
+          type: array
+          items:
+            $ref: '#/components/schemas/Address'
+
+
     OrderDataForAcceptByBuyer:
       description: >-
         Data used to accept an order by the buyer.
@@ -50778,6 +51161,48 @@ components:
             (pinless).
           allOf:
             - $ref: '#/components/schemas/PasswordInput'
+
+    OrderDataForEdit:
+      description: >-
+        Data for edit an order as the seller
+      allOf:
+        - $ref: '#/components/schemas/OrderBasicData'
+        - type: object
+          properties:
+            edit:
+              description: >-
+                Can the authenticated user edit this order?
+              type: boolean
+            remove:
+              description: >-
+                Can the authenticated user remove this order?
+              type: boolean
+            currency:
+              $ref: '#/components/schemas/Currency'
+            order:
+              description: >-
+                The order that is being edited
+              $ref: '#/components/schemas/OrderEdit'
+
+
+    OrderDataForNew:
+      description: >-
+        Data for create a new order as the seller
+      allOf:
+        - $ref: '#/components/schemas/OrderBasicData'
+        - type: object
+          properties:
+            currencies:
+              description: >-
+                The available currencies for the sale
+              type: array
+              items:
+                $ref: '#/components/schemas/Currency'
+            order:
+              description: >-
+                The order that is being created
+              $ref: '#/components/schemas/OrderNew'
+
 
     OrderDataForSearch:
       description: >-
@@ -50824,6 +51249,50 @@ components:
           items:
             $ref: '#/components/schemas/DeliveryMethod'
 
+    OrderDeliveryMethod:
+      description: >-
+        The order delivery method
+      type: object
+      properties:
+        name:
+          description: >-
+            The name of the delivery method
+          type: string
+        minTime:
+          description: >-
+            The minimum time interval expected for the products to be delivered.
+          allOf:
+            - $ref: '#/components/schemas/TimeInterval'
+        maxTime:
+          description: >-
+            The maximum time interval expected for the products to be delivered.
+          allOf:
+            - $ref: '#/components/schemas/TimeInterval'
+        price:
+          description: >-
+            The amount to be charged for the delivery method
+          type: string
+          format: number
+
+    OrderEdit:
+      description: >-
+        Fields for modifying an order.
+      allOf:
+        - $ref: '#/components/schemas/OrderManage'
+        - type: object
+          properties:
+            version:
+              type: integer
+              description: >-
+                The version stamp for the current object, used for optimistic locking. When
+                saving, the same version as previously received needs to be passed back. If
+                no one else has saved the object, the version will match and the object will
+                be updated. However, if someone other has saved the object, the version will
+                no longer match, and an error will be raised. This is used to prevent
+                multiple users (or processes) from updating the same object and unwilingly
+                overridding the property values, leading to data loss.
+
+
     OrderItem:
       description: >-
         Data for an order item.
@@ -50842,6 +51311,27 @@ components:
                 product  multiplied by its corresponding quantity.
               type: string
               format: number
+
+    OrderItemManage:
+      description: >-
+        Data for create / edit an order item
+      type: object
+      properties:
+        quantity:
+          description: >-
+            It represents how much of the product was ordered.  It could be a
+            decimal number only if it's allowed by the  product (i.e the webshopad).
+          type: string
+          format: number
+        price:
+          description: >-
+            The charged price of the product.
+          type: string
+          format: number
+        product:
+          description: >-
+            Can be either the ad webshop internal identifier or the product number.
+          type: string
 
     OrderLog:
       description: >-
@@ -50864,6 +51354,52 @@ components:
             The new status for the order
           allOf:
            - $ref: '#/components/schemas/OrderStatusEnum'
+
+
+    OrderManage:
+      description: >-
+        Common fields for either creating or editing an order
+      type: object
+      properties:
+        deliveryMethod:
+          $ref: '#/components/schemas/OrderDeliveryMethod'
+        deliveryAddress:
+          $ref: '#/components/schemas/SimpleAddress'
+        draft:
+          description: >-
+            If `true` then the order is saved with status `draft` and is visible only for the seller.
+            Otherwise, the order is saved with status `pendingBuyer` and sent to the buyer for
+            acceptance.
+          type: boolean
+        remarks:
+          description: >-
+            Remarks shown to the buyer if set
+          type: string
+        items:
+          description: >-
+            The order items
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItemManage'
+
+
+
+    OrderNew:
+      description: >-
+        A new order to be created
+      allOf:
+        - $ref: '#/components/schemas/OrderManage'
+        - type: object
+          properties:
+            currency:
+              description: >-
+                Either internal name or id of the order currency.
+              type: string
+            buyer:
+              description: >-
+                Either internal id or other accepted identification (username,
+                e-mail, etc) for the buyer
+              type: string
 
 
     OrderQueryFilters:
@@ -50965,33 +51501,51 @@ components:
               allOf:
                 - $ref: '#/components/schemas/User'
             deliveryAddress:
-              $ref: '#/components/schemas/Address'
+              $ref: '#/components/schemas/SimpleAddress'
+            deliveryMethod:
+              $ref: '#/components/schemas/OrderDeliveryMethod'
             deliveryMethodName:
+              x-remove-version: 4.15
+              deprecated: true
               type: string
               description: >-
-                The delivery method name.
+                Use `deliveryMethod.name` instead.
+
+
             deliveryPrice:
+              x-remove-version: 4.15
+              deprecated: true
               type: string
               format: number
               description: >-
-                The delivery method price.
+                Use `deliveryMethod.price` instead.
+
+
             deliveryTime:
               x-remove-version: 4.15
               deprecated: true
               description: >-
-                Use `minDeliveryTime` and `maxDeliveryTime` instead.
+                Use `deliveryMethod.minTime` and `deliveryMethod.maxTime` instead.
 
 
               allOf:
                 - $ref: '#/components/schemas/TimeInterval'
             minDeliveryTime:
+              x-remove-version: 4.15
+              deprecated: true
               description: >-
-                The minimum time interval expected for the products to be delivered.
+                Use `deliveryMethod.minTime` instead.
+
+
               allOf:
                 - $ref: '#/components/schemas/TimeInterval'
             maxDeliveryTime:
+              x-remove-version: 4.15
+              deprecated: true
               description: >-
-                The maximum time interval expected for the products to be delivered.
+                Use `deliveryMethod.maxTime` instead.
+
+
               allOf:
                 - $ref: '#/components/schemas/TimeInterval'
             paymentType:
@@ -51885,10 +52439,11 @@ components:
             Permissions over vouchers
           allOf:
             -  $ref: '#/components/schemas/VouchersPermissions'
-
-
-
-
+        identityProviders:
+          description: >-
+            Permissions over identity provider links
+          allOf:
+            - $ref: '#/components/schemas/MyIdentityProvidersPermissions'
 
     PersonalizeNfcError:
       description: >-
@@ -53930,6 +54485,62 @@ components:
               items:
                 $ref: '#/components/schemas/ShoppingCartItemDetailed'
 
+    SimpleAddress:
+      description: >-
+        Address fields container
+      type: object
+      x-implements: IAddress
+      properties:
+        addressLine1:
+          type: string
+          description: >-
+            The first line of the descriptive address
+        addressLine2:
+          type: string
+          description: >-
+            The second line of the descriptive address
+        street:
+          type: string
+          description: >-
+            The street name
+        buildingNumber:
+          type: string
+          description: >-
+            The numeric identifier for a land parcel, house, building or other
+        complement:
+          type: string
+          description: >-
+            The complement (like apartment number)
+        zip:
+          type: string
+          description: >-
+            A zip code that identifies a specific geographic (postal) delivery area
+        poBox:
+          type: string
+          description: >-
+            The post-office box, is an uniquely addressable box
+        neighborhood:
+          type: string
+          description: >-
+            The neighborhood name
+        city:
+          type: string
+          description: >-
+            The city name
+        region:
+          type: string
+          description: >-
+            The region or state
+        country:
+          type: string
+          description: >-
+            The country, represented as 2-letter, uppercase, ISO 3166-1 code
+        location:
+          description: >-
+            The geolocation of the current address
+          allOf:
+            - $ref: '#/components/schemas/GeographicalCoordinate'
+
     StoredFile:
       description: >-
         Contains data about a stored file
@@ -55704,14 +56315,21 @@ components:
               type: string
               description: >-
                 Contains the formatting of the user according to the configuration.
-                Is only returned if no profile fields are marked to return in user
-                list.
+                When this object is in the search result, this is only returned if
+                no profile fields are marked to return in user list.
             shortDisplay:
+              deprecated: true
+              x-remove-version: 4.15
               type: string
               description: >-
-                Contains the short formatting of the user according to the
-                configuration. Is only returned if no profile fields are marked to
-                return in user list
+                DEPRECATED: The short display was originally meant for SMS only.
+                Will be removed in Cyclos 4.15 with no replacement.
+
+
+                Contains the optional short formatting of the user according to the
+                configuration. When not defined, the value is not sent.
+                When this object is in the search result, this is only returned if
+                no profile fields are marked to return in user list.
             image:
               description: >-
                 The primary user profile image
@@ -56425,6 +57043,16 @@ components:
           items:
             $ref: '#/components/schemas/UserIdentityProvider'
 
+    UserIdentityProvidersPermissions:
+      description: >-
+        Permissions over the identity provider links
+      type: object
+      properties:
+        view:
+          description: >-
+            Can view the relationships to identity providers?
+          type: boolean
+
     UserLocale:
       description: >-
         Defines the user's language and region
@@ -56888,6 +57516,8 @@ components:
           $ref: '#/components/schemas/UserPaymentPermissions'
         scheduledPayments:
           $ref: '#/components/schemas/UserScheduledPaymentsPermissions'
+        identityProviders:
+          $ref: '#/components/schemas/UserIdentityProvidersPermissions'
         recurringPayments:
           deprecated: true
           x-remove-version: 4.15

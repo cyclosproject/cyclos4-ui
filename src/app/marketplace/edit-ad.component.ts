@@ -48,10 +48,7 @@ export class EditAdComponent
 
   images$ = new BehaviorSubject<Image[]>([]);
   currency$ = new BehaviorSubject<Currency>(null);
-  decimalQuantity$ = new BehaviorSubject<number>(null);
-  unlimitedStock$ = new BehaviorSubject<boolean>(true);
   deliveryMethods$ = new BehaviorSubject<DeliveryMethod[]>(null);
-  setPromotionalPeriod$ = new BehaviorSubject<boolean>(false);
 
   form: FormGroup;
 
@@ -139,7 +136,7 @@ export class EditAdComponent
       id: this.id
     });
     this.form.addControl('deliveryMethods', this.formBuilder.control(adManage.deliveryMethods));
-    this.form.setControl('customValues', this.fieldHelper.customValuesFormGroup(data.customFields, {
+    this.form.addControl('customValues', this.fieldHelper.customValuesFormGroup(data.customFields, {
       currentValues: adManage.customValues
     }));
     this.addSub(this.form.get('currency').valueChanges.subscribe(id => {
@@ -151,15 +148,13 @@ export class EditAdComponent
     if (!empty(data.currencies)) {
       this.currency = data.currencies[0];
     }
-    this.addSub(this.form.controls.setPromotionalPeriod.valueChanges.subscribe(() => this.updatePromotionalControls()));
-    this.addSub(this.form.controls.unlimitedStock.valueChanges.subscribe(() => this.updateStockControls()));
-    this.addSub(this.form.controls.allowDecimalQuantity.valueChanges.subscribe(() => this.updateDecimalControls()));
-    this.uploadedImages = [];
 
+    this.addSub(this.form.controls.unlimitedStock.valueChanges.subscribe(() => this.updateStockControls()));
+
+    this.uploadedImages = [];
     this.updateDeliveryMethods(data);
-    this.updatePromotionalControls();
     this.updateStockControls();
-    this.updateDecimalControls();
+
   }
 
   resolveMenu(data: AdBasicData) {
@@ -184,22 +179,7 @@ export class EditAdComponent
         this.form.controls.stockQuantity.setValidators(Validators.required);
       }
       this.form.controls.stockQuantity.updateValueAndValidity();
-      this.unlimitedStock$.next(this.form.controls.unlimitedStock.value);
     }
-  }
-
-  /**
-  * Display promotional controls based on flag
-  */
-  protected updatePromotionalControls() {
-    this.setPromotionalPeriod$.next(this.form.controls.setPromotionalPeriod.value);
-  }
-
-  /**
-   * Adds or remove decimals from number controls based on allow decimal quantity setting
-   */
-  protected updateDecimalControls() {
-    this.decimalQuantity$.next(this.form.controls.allowDecimalQuantity.value ? 2 : 0);
   }
 
   /**
@@ -261,7 +241,7 @@ export class EditAdComponent
     value.promotionalPeriod = value.setPromotionalPeriod ?
       this.ApiHelper.datePeriod(value.promotionalBeginDate, value.promotionalEndDate) :
       null;
-    delete value['setPromotionaPeriod'];
+    delete value['setPromotionalPeriod'];
     delete value['promotionalBeginDate'];
     delete value['promotionalEndDate'];
     if (value.promotionalPeriod == null) {
@@ -406,10 +386,7 @@ export class EditAdComponent
     return (this.data as AdDataForEdit).binaryValues;
   }
 
-  get setPromotionalPeriod(): boolean {
-    return this.setPromotionalPeriod$.value;
-  }
-  set setPromotionalPeriod(value: boolean) {
-    this.setPromotionalPeriod$.next(value);
+  get decimalQuantity(): number {
+    return this.form.controls.allowDecimalQuantity.value ? 2 : 0;
   }
 }
