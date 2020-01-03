@@ -390,9 +390,16 @@
   },
   "registrationAgreement": "Contrat d'inscription",
   "pendingAgreements": {
-    "title": "Accord mis à jour",
-    "mobileTitle": "Accord mis à jour",
-    "message": "Le contrat d’enregistrement a été mis à jour. Pour continuer, vous devez accepter les nouveaux termes.",
+    "title": {
+      "previouslyAccepted": "Accord mis à jour",
+      "firstTime": "Contrat d'inscription"
+    },
+    "mobileTitle": {
+      "previouslyAccepted": "Accord mis à jour",
+      "firstTime": "Contrat d'inscription"
+    },
+    "message.previouslyAccepted": "Le contrat d’enregistrement a été mis à jour. Pour continuer, vous devez accepter les nouveaux termes.",
+    "message.firstTime": "In order to complete your registration, you must agree with these terms.",
     "agree": "Je suis d'accord avec les accords d'enregistrement suivants: {agreements}"
   },
   "securityQuestion": {
