@@ -390,9 +390,16 @@
   },
   "registrationAgreement": "Termini e condizioni",
   "pendingAgreements": {
-    "title": "Termini e condizioni aggiornati",
-    "mobileTitle": "Termini e condizioni aggiornati",
-    "message": "I termini e condizioni sono stati aggiornati.<br><br>Per continuare, devi accettare i nuovi termini e condizioni.",
+    "title": {
+      "previouslyAccepted": "Termini e condizioni aggiornati",
+      "firstTime": "Termini e condizioni"
+    },
+    "mobileTitle": {
+      "previouslyAccepted": "Termini e condizioni aggiornati",
+      "firstTime": "Termini e condizioni"
+    },
+    "message.previouslyAccepted": "I termini e condizioni sono stati aggiornati.<br><br>Per continuare, devi accettare i nuovi termini e condizioni.",
+    "message.firstTime": "In order to complete your registration, you must agree with these terms.",
     "agree": "Accetto i seguenti termini e condizioni: {agreements}"
   },
   "securityQuestion": {
