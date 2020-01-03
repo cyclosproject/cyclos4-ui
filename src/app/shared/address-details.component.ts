@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Injector, Input } from '@angular/core';
-import { AddressView } from 'app/api/models';
+import { Address } from 'app/api/models';
 import { CountriesResolve } from 'app/countries.resolve';
 import { BaseComponent } from 'app/shared/base.component';
 import { AddressHelperService } from 'app/core/address-helper.service';
@@ -21,7 +21,7 @@ export class AddressDetailsComponent extends BaseComponent {
     super(injector);
   }
 
-  @Input() address: AddressView;
+  @Input() address: Address;
   @Input() elementClass: string;
 
   get classNames() {

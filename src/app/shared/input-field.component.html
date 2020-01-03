@@ -8,7 +8,8 @@
     [numbersOnly]="type === 'number'" [mask]="mask"
     [placeholder]="placeholder" [autocomplete]="autocomplete"
     class="form-control w-100" [ngClass]="{
-      'is-invalid': (formControl.statusChanges | async) === 'INVALID' && formControl.touched
+      'is-invalid': (formControl.statusChanges | async) === 'INVALID' && formControl.touched,
+      'text-right' : type === 'number'
     }">
   <field-errors [control]="formControl"></field-errors>
 </ng-template>

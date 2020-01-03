@@ -91,7 +91,7 @@ export class SearchRecordsComponent
 
   remove(record: RecordResult) {
     this.notification.confirm({
-      message: this.i18n.record.removeConfirm,
+      message: this.i18n.general.removeItemConfirm,
       callback: () => this.doRemove(record)
     });
   }
@@ -99,7 +99,7 @@ export class SearchRecordsComponent
   private doRemove(record: RecordResult) {
     this.addSub(this.recordsService.deleteRecord({ id: record.id })
       .subscribe(() => {
-        this.notification.snackBar(this.i18n.record.removeDone);
+        this.notification.snackBar(this.i18n.general.removeItemDone);
         this.update();
       }));
   }
@@ -131,6 +131,9 @@ export class SearchRecordsComponent
     params.customFields = this.fieldHelper.toCustomValuesFilter(params.customValues);
     params.profileFields = this.fieldHelper.toCustomValuesFilter(params.profileFields);
     params.creationPeriod = ApiHelper.dateRangeFilter(params.beginDate, params.endDate);
+    delete params['beginDate'];
+    delete params['endDate'];
+
     if (!this.generalSearch) {
       params.owner = this.param;
     }

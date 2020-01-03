@@ -16,7 +16,7 @@
               <icon class="d-inline-block" *ngIf="row.main"
                 icon="done_outline"></icon>
               <a class="decorated" *ngIf="!row.main"
-                (click)="setMain(row); $event.stopPropagation(); $event.preventDefault()">{{ this.i18n.brokers.setMain }}
+                (click)="setMain(row); $event.stopPropagation(); $event.preventDefault()">{{ i18n.brokers.setMain }}
               </a>
             </div>
           </div>
@@ -55,7 +55,7 @@
                 <icon class="d-inline-block" *ngIf="row.main"
                   icon="done_outline"></icon>
                 <a class="decorated" *ngIf="!row.main"
-                  (click)="setMain(row); $event.stopPropagation(); $event.preventDefault()">{{ this.i18n.brokers.setMain }}
+                  (click)="setMain(row); $event.stopPropagation(); $event.preventDefault()">{{ i18n.brokers.setMain }}
                 </a>
               </td>
               <td class="actions actions-multiple">

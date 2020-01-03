@@ -1,6 +1,6 @@
 import {
   AdDataForEdit, AdKind, AdDataForNew, Image, Currency,
-  AdBasicData, AdCategoryWithChildren, AdEdit
+  AdBasicData, AdCategoryWithChildren, AdEdit, DeliveryMethod
 } from 'app/api/models';
 import { OnInit, ChangeDetectionStrategy, Component, Injector, ChangeDetectorRef } from '@angular/core';
 import { BasePageComponent } from 'app/shared/base-page.component';
@@ -36,6 +36,7 @@ export class EditAdComponent
   id: string;
   basedOnId: string;
   owner: string;
+  mask: string;
   self: boolean;
   create: boolean;
   webshop: boolean;
@@ -47,6 +48,7 @@ export class EditAdComponent
 
   images$ = new BehaviorSubject<Image[]>([]);
   currency$ = new BehaviorSubject<Currency>(null);
+  deliveryMethods$ = new BehaviorSubject<DeliveryMethod[]>(null);
 
   form: FormGroup;
 
@@ -89,9 +91,12 @@ export class EditAdComponent
 
   onDataInitialized(data: AdDataForNew | AdDataForEdit) {
 
+    this.kind = data.kind;
     this.webshop = this.kind === AdKind.WEBSHOP;
 
-    this.owner = this.authHelper.isSelf(data.owner)
+    this.self = this.authHelper.isSelfOrOwner(data.owner);
+
+    this.owner = this.self
       ? this.ApiHelper.SELF
       : data.owner.id;
 
@@ -102,35 +107,79 @@ export class EditAdComponent
     const categories = adManage.categories && data.maxCategoriesPerAd === 1 ?
       adManage.categories[0] :
       adManage.categories;
+    const settings = (data.webshopSettings || {});
+    const requiredProductNumber = this.webshop && !settings.productNumberGenerated;
+
+    this.mask = !settings.productNumberGenerated ? settings.productNumberMask : '';
+
     this.form = this.formBuilder.group({
       name: [adManage.name, Validators.required],
       categories: [categories, Validators.required],
       currency: [!empty(data.currencies) ? this.ApiHelper.internalNameOrId(data.currencies[0]) : null, Validators.required],
-      price: adManage.price,
+      price: [adManage.price, this.webshop ? Validators.required : null],
       publicationBeginDate: [adManage.publicationPeriod.begin, Validators.required],
       publicationEndDate: [adManage.publicationPeriod.end, Validators.required],
+      setPromotionalPeriod: adManage.promotionalPeriod != null,
       promotionalBeginDate: adManage.promotionalPeriod ? adManage.promotionalPeriod.begin : null,
       promotionalEndDate: adManage.promotionalPeriod ? adManage.promotionalPeriod.end : null,
       promotionalPrice: adManage.promotionalPrice,
       description: [adManage.description, Validators.required],
       addresses: adManage.addresses,
+      maxAllowedInCart: adManage.maxAllowedInCart,
+      minAllowedInCart: adManage.minAllowedInCart,
+      allowDecimalQuantity: adManage.allowDecimalQuantity,
+      unlimitedStock: adManage.unlimitedStock,
+      stockQuantity: adManage.stockQuantity,
+      minStockQuantityToNotify: adManage.minStockQuantityToNotify,
+      productNumber: [adManage.productNumber, requiredProductNumber ? Validators.required : null],
       version: adEdit.version,
       id: this.id
     });
-    this.form.setControl('customValues', this.fieldHelper.customValuesFormGroup(data.customFields, {
+    this.form.addControl('deliveryMethods', this.formBuilder.control(adManage.deliveryMethods));
+    this.form.addControl('customValues', this.fieldHelper.customValuesFormGroup(data.customFields, {
       currentValues: adManage.customValues
     }));
-    this.addSub(this.form.get('currency').valueChanges.subscribe(id => this.updateCurrency(id, data)));
+    this.addSub(this.form.get('currency').valueChanges.subscribe(id => {
+      this.updateCurrency(id, data);
+      this.updateDeliveryMethods(data);
+    }));
     // Preselect the first currency when creating a new ad
     // or use the single returned currency when editing
     if (!empty(data.currencies)) {
       this.currency = data.currencies[0];
     }
+
+    this.addSub(this.form.controls.unlimitedStock.valueChanges.subscribe(() => this.updateStockControls()));
+
     this.uploadedImages = [];
+    this.updateDeliveryMethods(data);
+    this.updateStockControls();
+
   }
 
   resolveMenu(data: AdBasicData) {
+    if (this.self) {
+      if (data.kind === AdKind.SIMPLE) {
+        return Menu.SEARCH_USER_ADS;
+      } else {
+        return Menu.SEARCH_USER_WEBSHOP;
+      }
+    }
     return this.authHelper.userMenu(data.owner, Menu.SEARCH_ADS);
+  }
+
+  /**
+   * Display stock controls based on stock type
+   */
+  protected updateStockControls() {
+    if (this.webshop) {
+      if (this.form.controls.unlimitedStock.value) {
+        this.form.controls.stockQuantity.clearValidators();
+      } else {
+        this.form.controls.stockQuantity.setValidators(Validators.required);
+      }
+      this.form.controls.stockQuantity.updateValueAndValidity();
+    }
   }
 
   /**
@@ -138,6 +187,15 @@ export class EditAdComponent
    */
   protected updateCurrency(id: string, data: AdBasicData) {
     this.currency = data.currencies.find(c => c.id === id || c.internalName === id);
+  }
+
+  /**
+   * Filters delivery methods which has the same currency as the webshop or negotiated ones
+   */
+  protected updateDeliveryMethods(data: AdBasicData) {
+    this.deliveryMethods$.next(
+      data.deliveryMethods.filter(dm => dm.chargeCurrency == null || dm.chargeCurrency.id === (this.currency || {}).id)
+    );
   }
 
   /**
@@ -180,9 +238,16 @@ export class EditAdComponent
     delete value['publicationBeginDate'];
     delete value['publicationEndDate'];
 
-    value.promotionalPeriod = this.ApiHelper.datePeriod(value.promotionalBeginDate, value.promotionalEndDate);
+    value.promotionalPeriod = value.setPromotionalPeriod ?
+      this.ApiHelper.datePeriod(value.promotionalBeginDate, value.promotionalEndDate) :
+      null;
+    delete value['setPromotionalPeriod'];
     delete value['promotionalBeginDate'];
     delete value['promotionalEndDate'];
+    if (value.promotionalPeriod == null) {
+      delete value['promotionalPrice'];
+    }
+
 
     const onFinish: any = (id: string) => {
       this.notification.snackBar(this.i18n.ad.adSaved);
@@ -319,5 +384,9 @@ export class EditAdComponent
 
   get binaryValues() {
     return (this.data as AdDataForEdit).binaryValues;
+  }
+
+  get decimalQuantity(): number {
+    return this.form.controls.allowDecimalQuantity.value ? 2 : 0;
   }
 }

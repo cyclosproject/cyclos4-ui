@@ -63,7 +63,7 @@
             {{ key.name }}
           </h2>
           <custom-field-value [labelPosition]="labelPosition"
-            *ngFor="let value of this.valuesWithSection.get(key)"
+            *ngFor="let value of valuesWithSection.get(key)"
             [fieldValue]="value" [class]="resolveColumnClass(value)">
           </custom-field-value>
         </ng-container>

@@ -1,0 +1,23 @@
+<page-layout [ready]="(data$ | async) || (emptyCart$ | async) ">
+  <page-content mode="filters" [heading]="i18n.ad.title.shoppingCart"
+    [mobileHeading]="i18n.ad.mobileTitle.shoppingCart"
+    [headingActions]="headingActions$ | async" mode="viewForm">
+    <ng-container *ngIf="!data">
+      {{ i18n.ad.cartEmpty }}
+    </ng-container>
+    <ng-container *ngIf="data">
+      <label-value [label]="i18n.ad.seller">
+        <user-link [user]="data.seller"></user-link>
+      </label-value>
+      <label-value [label]="i18n.transaction.totalAmount">
+        <div class="positive">
+          {{ data.totalPrice | currency:data.currency }}
+        </div>
+      </label-value>
+    </ng-container>
+  </page-content>
+  <shopping-cart-items *ngIf="data" [detailed]="true" [items]="data.items"
+    [currency]="data.currency" (changeQuantity)="changeQuantity($event)"
+    (remove)="remove($event)">
+  </shopping-cart-items>
+</page-layout>

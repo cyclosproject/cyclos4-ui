@@ -92,7 +92,8 @@ import { UserInfoComponent } from 'app/shared/user-info.component';
 import { TextDialogComponent } from 'app/shared/text-dialog.component';
 import { ButtonToggleComponent } from 'app/shared/button-toggle.component';
 import { NotificationTypeSettingComponent } from 'app/users/notification-settings/notification-type-setting.component';
-
+import { TimeIntervalFieldComponent } from 'app/shared/time-interval-field.component';
+import { AddressFormComponent } from 'app/shared/address-form.component';
 
 
 export function initTooltipConfig(): TooltipConfig {
@@ -153,8 +154,10 @@ export function initTooltipConfig(): TooltipConfig {
     MultiSelectionFieldComponent,
     CheckboxGroupFieldComponent,
     RadioGroupFieldComponent,
+    AddressFormComponent,
     CalendarComponent,
     DateFieldComponent,
+    TimeIntervalFieldComponent,
     DecimalFieldComponent,
     CustomFieldInputComponent,
     CustomFieldFilterComponent,
@@ -266,8 +269,10 @@ export function initTooltipConfig(): TooltipConfig {
     MultiSelectionFieldComponent,
     CheckboxGroupFieldComponent,
     RadioGroupFieldComponent,
+    AddressFormComponent,
     CalendarComponent,
     DateFieldComponent,
+    TimeIntervalFieldComponent,
     DecimalFieldComponent,
     CustomFieldInputComponent,
     CustomFieldFilterComponent,

@@ -1,7 +1,7 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="data;">
-    <page-content mode="filters" [heading]="this.data.type.pluralName"
-      [mobileHeading]="this.data.type.pluralName"
+    <page-content mode="filters" [heading]="data.type.pluralName"
+      [mobileHeading]="data.type.pluralName"
       [headingActions]="headingActions$ | async">
       <form [formGroup]="form"
         class="filters-form filters-form-separator border-0">
@@ -35,22 +35,22 @@
           <div class="w-100"></div>
           <div class="col-12 col-md-6">
             <date-field labelPosition="side" formControlName="beginDate"
-              [label]="i18n.general.beginDate" minDate="past5"
+              [label]="i18n.general.beginDate" minDate="past100"
               maxDate="todayEnd" fieldSize="full">
             </date-field>
           </div>
           <div class="col-12 col-md-6">
             <date-field labelPosition="side" formControlName="endDate"
-              [label]="i18n.general.endDate" minDate="past5"
+              [label]="i18n.general.endDate" minDate="past100"
               maxDate="todayEnd" fieldSize="full">
             </date-field>
           </div>
-          <div class="col-12 col-md-6" *ngFor="let cf of this.fieldsInSearch">
+          <div class="col-12 col-md-6" *ngFor="let cf of fieldsInSearch">
             <custom-field-filter labelPosition="side" [field]="cf"
               [formControl]="form.get('customValues').get(cf.internalName)">
             </custom-field-filter>
           </div>
-          <div class="col-12 col-md-6" *ngFor="let cf of this.profileFields">
+          <div class="col-12 col-md-6" *ngFor="let cf of profileFields">
             <custom-field-filter labelPosition="side" [field]="cf"
               [formControl]="form.get('profileFields').get(cf.internalName)">
             </custom-field-filter>
@@ -68,11 +68,11 @@
               labelPosition="above">
               {{ row.creationDate | dateTime }}
             </label-value>
-            <label-value *ngIf="this.generalSearch"
-              [label]="i18n.general.user" labelPosition="above">
+            <label-value *ngIf="generalSearch" [label]="i18n.general.user"
+              labelPosition="above">
               {{ recordOwner(row) }}
             </label-value>
-            <label-value *ngFor="let field of this.fieldsInList"
+            <label-value *ngFor="let field of fieldsInList"
               [label]="field.name" labelPosition="above">
               <format-field-value [fields]="data.customFields"
                 [plainText]="true" [fieldName]="field.internalName"
@@ -86,7 +86,7 @@
               (click)="router.navigate(editPath(row)); $event.stopPropagation(); $event.preventDefault()">
               <icon icon="edit"></icon>
             </button>
-            <button *ngIf="this.data.remove" [tooltip]="i18n.general.remove"
+            <button *ngIf="data.remove" [tooltip]="i18n.general.remove"
               class="btn btn-icon" [ngClass]="{'ml-3': data.edit}"
               (click)="remove(row); $event.stopPropagation(); $event.preventDefault()">
               <icon icon="clear"></icon>
@@ -98,8 +98,8 @@
       <table *resultTable class="table table-hover cursor-pointer">
         <thead>
           <th>{{ i18n.general.creationDate }}</th>
-          <th *ngIf="this.generalSearch">{{ i18n.general.user }}</th>
-          <th *ngFor="let field of this.fieldsInList">
+          <th *ngIf="generalSearch">{{ i18n.general.user }}</th>
+          <th *ngFor="let field of fieldsInList">
             {{ fieldName(field.internalName) }}
           </th>
           <th class="actions"></th>
@@ -108,8 +108,8 @@
           <tr *ngFor="let row of results.results"
             (click)="router.navigate(viewPath(row))">
             <td>{{ row.creationDate | dateTime }}</td>
-            <td *ngIf="this.generalSearch">{{ recordOwner(row) }}</td>
-            <td *ngFor=" let field of this.fieldsInList">
+            <td *ngIf="generalSearch">{{ recordOwner(row) }}</td>
+            <td *ngFor=" let field of fieldsInList">
               <format-field-value [fields]="data.customFields"
                 [plainText]="true" [fieldName]="field.internalName"
                 [object]="row" [customValues]="row.customValues">
@@ -121,7 +121,7 @@
                 (click)="router.navigate(editPath(row)); $event.stopPropagation()">
                 <icon icon="edit"></icon>
               </button>
-              <button *ngIf="this.data.remove" [tooltip]="i18n.general.remove"
+              <button *ngIf="data.remove" [tooltip]="i18n.general.remove"
                 class="btn btn-icon" [ngClass]="data.edit ? 'ml-3' : ''"
                 (click)="remove(row); $event.stopPropagation()">
                 <icon icon="clear"></icon>

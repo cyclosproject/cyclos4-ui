@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Host, HostBinding, Optional, SkipSelf, Injector } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Host, HostBinding, Optional, SkipSelf, Injector, Input } from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { BaseFormFieldWithOptionsComponent, FORM_FIELD_WITH_OPTIONS } from 'app/shared/base-form-field-with-options.component';
 import { empty } from 'app/shared/helper';
@@ -19,6 +19,7 @@ export class RadioGroupFieldComponent extends BaseFormFieldWithOptionsComponent<
 
   @HostBinding('class.d-block') classBlock = true;
   @HostBinding('class.w-100') classW100 = true;
+  @Input() asColumn = false;
 
   constructor(
     injector: Injector,

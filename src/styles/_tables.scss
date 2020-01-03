@@ -31,6 +31,13 @@ table.table {
     border-bottom-width: 1px;
     border-bottom-style: solid;
   }
+  th.no-border {
+    border-top: none;
+  }
+  .table-head-color {
+    color: $table-head-color;
+    font-weight: $font-weight-bold;
+  }
   a, a:hover {
     text-decoration: none !important;
   }

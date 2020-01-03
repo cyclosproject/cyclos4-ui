@@ -44,7 +44,7 @@ export class ViewBrokerHistoryComponent extends BaseViewPageComponent<UserBroker
     return (row: any) => row != null;
   }
 
-  resolveMenu() {
-    return this.authHelper.searchUsersMenu();
+  resolveMenu(data: UserBrokersData) {
+    return this.authHelper.searchUsersMenu(data.user);
   }
 }

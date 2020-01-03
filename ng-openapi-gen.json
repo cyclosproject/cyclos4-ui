@@ -40,7 +40,9 @@
     "Vouchers",
     "Alerts",
     "Brokering",
-    "Records"
+    "Records",
+    "DeliveryMethods",
+    "ShoppingCarts"
   ],
   "enumStyle": "upper"
 }

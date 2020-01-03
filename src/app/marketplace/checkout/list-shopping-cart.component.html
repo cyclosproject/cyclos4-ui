@@ -1,0 +1,60 @@
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data">
+    <page-content mode="viewForm" [heading]="i18n.ad.title.shoppingCart"
+      [mobileHeading]="i18n.ad.mobileTitle.shoppingCart"
+      [headingActions]="headingActions$ | async">
+      <ng-container>
+        {{ data.length > 0 ? i18n.ad.chooseSeller : i18n.ad.cartEmpty }}
+      </ng-container>
+    </page-content>
+    <results-layout *ngIf="data.length > 0" [results]="data"
+      [toLink]="toLink">
+      <mobile-result *mobileResult="let cart"
+        [avatarImage]="cart.seller.image" avatarIcon="user">
+        <div>
+          <div class="cell-main">
+            {{ cart.seller.display }}
+          </div>
+          <div class="cell-text">
+            {{ cart.currency.name }}
+          </div>
+          <div class="cell-text">
+            {{ cart.items.length + ' ' + (cart.items.length > 1 ? i18n.ad.items : i18n.ad.item)  }}
+          </div>
+        </div>
+      </mobile-result>
+      <table *resultTable class="table table-hover cursor-pointer">
+        <thead>
+          <th class="avatar"></th>
+          <th>{{ i18n.ad.seller }}</th>
+          <th>{{ i18n.general.currency }}</th>
+          <th>{{ i18n.ad.items }}</th>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let cart of data">
+            <tr (click)="router.navigate(path(cart))">
+              <td class="avatar" [ngClass]="{
+                  'pb-0': layout.xxs$ | async,
+                  'border-0': layout.xxs$ | async
+                }">
+                <avatar [image]="cart.seller.image"
+                  [tooltip]="cart.seller.display" icon="user"></avatar>
+              </td>
+              <td>
+                <a [routerLink]="path(cart)">
+                  {{ cart.seller.shortDisplay }}
+                </a>
+              </td>
+              <td>
+                {{ cart.currency.name }}
+              </td>
+              <td>
+                {{ cart.items.length }}
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </results-layout>
+  </ng-container>
+</page-layout>

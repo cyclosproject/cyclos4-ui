@@ -4,8 +4,12 @@
 <ng-template #widget>
   <ng-container
     *ngFor="let category of categories | async; let firstCat = first">
-    <div class="w-100 input-min-height d-flex flex-wrap align-items-center"
-      style="margin-top: -0.25rem">
+    <div class="w-100 input-min-height d-flex " [ngClass]="{
+      'flex-wrap': !asColumn,
+      'align-items-center': !asColumn,
+      'flex-column': asColumn,
+      'align-items-left': asColumn
+    }" style="margin-top: -0.25rem">
       <div *ngIf="category.name" class="font-weight-bold"
         [ngClass]="{'mt-3': !firstCat}">{{ category.name }}</div>
       <div #check

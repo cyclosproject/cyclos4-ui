@@ -228,6 +228,10 @@ $spaced-label-values: (
   padding-top: 0.15rem;
   font-weight: $font-weight-normal;
 }
+.notice {
+  font-size: 0.8rem;
+  font-weight: $font-weight-normal;
+}
 
 // Select-options are used both in single-selection field and autocomplete fields
 .select-option {
