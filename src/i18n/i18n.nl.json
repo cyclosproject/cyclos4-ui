@@ -390,9 +390,16 @@
   },
   "registrationAgreement": "Registratie akkoord",
   "pendingAgreements": {
-    "title": "Bijgewerkt overeenkomst",
-    "mobileTitle": "Bijgewerkt overeenkomst",
-    "message": "De registratie overeenkomst is bijgewerkt.<br><br>om verder te kunnen gaan, moet je akkoord gaan met de nieuwe voorwaarden.",
+    "title": {
+      "previouslyAccepted": "Bijgewerkt overeenkomst",
+      "firstTime": "Registratie akkoord"
+    },
+    "mobileTitle": {
+      "previouslyAccepted": "Bijgewerkt overeenkomst",
+      "firstTime": "Registratie akkoord"
+    },
+    "message.previouslyAccepted": "De registratie overeenkomst is bijgewerkt.<br><br>om verder te kunnen gaan, moet je akkoord gaan met de nieuwe voorwaarden.",
+    "message.firstTime": "In order to complete your registration, you must agree with these terms.",
     "agree": "Ik ben het eens met de volgende registratie overeenkomsten: {agreements}"
   },
   "securityQuestion": {
