@@ -1,16 +1,17 @@
 import { Injectable, NgZone } from '@angular/core';
 import { ApiConfiguration } from 'app/api/api-configuration';
-import { DeviceConfirmationView, Notification, NotificationsStatus } from 'app/api/models';
+import { DeviceConfirmationView, NewNotificationPush, IdentityProviderCallbackResult, PushNotificationEventKind } from 'app/api/models';
 import { NextRequestState } from 'app/core/next-request-state';
 import { EventSourcePolyfill } from 'ng-event-source';
 import { Subject } from 'rxjs';
 
-export const LoggedOut = 'loggedOut';
-export const NewNotification = 'newNotification';
-export const DeviceConfirmation = 'deviceConfirmation';
-const Kinds = [LoggedOut, NewNotification, DeviceConfirmation];
+export const Kinds: PushNotificationEventKind[] = [
+  PushNotificationEventKind.LOGGED_OUT,
+  PushNotificationEventKind.NEW_NOTIFICATION,
+  PushNotificationEventKind.DEVICE_CONFIRMATION,
+  PushNotificationEventKind.IDENTITY_PROVIDER_CALLBACK];
+export const ClientId = Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
 
-export type NewNotificationPush = NotificationsStatus & { notification: Notification };
 
 /**
  * Handles the registration and notitification of push events
@@ -25,6 +26,7 @@ export class PushNotificationsService {
   public loggedOut$ = new Subject<void>();
   public newNotifications$ = new Subject<NewNotificationPush>();
   public deviceConfirmations$ = new Subject<DeviceConfirmationView>();
+  public identityProviderCallback$ = new Subject<IdentityProviderCallbackResult>();
 
   constructor(
     private apiConfiguration: ApiConfiguration,
@@ -34,44 +36,42 @@ export class PushNotificationsService {
   }
 
   /**
-   * Opens the stream
+   * Opens the stream. Must be called when there's a logged user
    */
   open() {
     if (this.eventSource) {
       // Already opened
       return;
     }
-    const clientId = Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
     const kinds = new Set<string>(Kinds);
-    let url = this.apiConfiguration.rootUrl + '/push/subscribe?clientId=' + clientId;
+    let url = this.apiConfiguration.rootUrl + '/push/subscribe?clientId=' + ClientId;
     kinds.forEach(kind => url += '&kinds=' + kind);
     this.eventSource = new EventSourcePolyfill(url, {
       headers: this.nextRequestState.headers
     });
 
-    // Listen for logged-out events
-    this.eventSource.addEventListener(LoggedOut, () => {
-      this.zone.run(() => {
-        this.close();
-        this.loggedOut$.next();
-      });
-    });
+    // Setup the listeners
+    this.setupListener(PushNotificationEventKind.LOGGED_OUT, this.loggedOut$);
+    this.setupListener(PushNotificationEventKind.NEW_NOTIFICATION, this.newNotifications$);
+    this.setupListener(PushNotificationEventKind.DEVICE_CONFIRMATION, this.deviceConfirmations$);
+    this.setupListener(PushNotificationEventKind.IDENTITY_PROVIDER_CALLBACK, this.identityProviderCallback$);
+  }
 
-    // Listen for new notification events
-    this.eventSource.addEventListener(NewNotification, (event: any) => {
-      this.zone.run(() => {
-        const status = JSON.parse(event.data) as NewNotificationPush;
-        this.newNotifications$.next(status);
-      });
+  /**
+   * Opens the stream. Must be called when there's a logged user
+   */
+  openForIdentityProviderCallback(requestId: string) {
+    if (this.eventSource) {
+      // Already opened
+      return;
+    }
+    const url = `${this.apiConfiguration.rootUrl}/push/subscribe?clientId=${ClientId}&kinds=`
+      + PushNotificationEventKind.IDENTITY_PROVIDER_CALLBACK
+      + `&identityProviderRequestId=${requestId}`;
+    this.eventSource = new EventSourcePolyfill(url, {
+      headers: this.nextRequestState.headers
     });
-
-    // Listen for new device confirmation events
-    this.eventSource.addEventListener(DeviceConfirmation, (event: any) => {
-      this.zone.run(() => {
-        const confirmation = JSON.parse(event.data) as DeviceConfirmationView;
-        this.deviceConfirmations$.next(confirmation);
-      });
-    });
+    this.setupListener(PushNotificationEventKind.IDENTITY_PROVIDER_CALLBACK, this.identityProviderCallback$);
   }
 
   /**
@@ -82,5 +82,14 @@ export class PushNotificationsService {
       this.eventSource.close();
       this.eventSource = null;
     }
+  }
+
+  private setupListener(kind: PushNotificationEventKind, subject: Subject<any>) {
+    this.eventSource.addEventListener(kind, (event: any) => {
+      this.zone.run(() => {
+        const data = JSON.parse(event.data);
+        subject.next(data);
+      });
+    });
   }
 }

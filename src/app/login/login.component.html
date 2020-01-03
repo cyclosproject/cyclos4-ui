@@ -38,10 +38,22 @@
         [placeholder]="data.accessPasswordType.name"></password-input>
 
       <button #submit type="button"
-        class="btn btn-primary login-margin-top login-margin-bottom px-5 mt-3 mt-sm-4"
+        class="btn btn-primary login-margin-top login-margin-bottom px-5 mt-3"
         [disabled]="requesting$ | async"
         (click)="doLogin();$event.preventDefault();">
         {{ i18n.general.submit }}
+      </button>
+
+      <button *ngFor="let idp of data.identityProviders"
+        class="identity-provider" [ngStyle]="{
+          border: '1px solid ' + idp.borderColor,
+          background: idp.backgroundColor,
+          color: idp.textColor
+        }" (click)="loginWith(idp)">
+        <img *ngIf="idp.image" [src]="idp.image.url" [alt]="idp.name"
+          class="aria-hidden">
+        <span
+          [innerHTML]="i18n.identityProvider.login(idp.name) | trust"></span>
       </button>
 
       <a id="forgotPasswordLink" *ngIf="forgotPasswordEnabled"

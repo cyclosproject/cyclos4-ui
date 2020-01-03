@@ -11,8 +11,6 @@ import { Breakpoint } from 'app/shared/layout.service';
 import { ActiveMenu, Menu } from 'app/shared/menu';
 import { BehaviorSubject } from 'rxjs';
 
-export const SessionToken = 'sessionToken';
-
 export const PasswordStatusNeedingAttention = [
   PasswordStatusEnum.EXPIRED, PasswordStatusEnum.RESET,
   PasswordStatusEnum.PENDING, PasswordStatusEnum.NEVER_CREATED

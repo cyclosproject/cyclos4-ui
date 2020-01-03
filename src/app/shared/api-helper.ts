@@ -242,4 +242,38 @@ export class ApiHelper {
     }
     return false;
   }
+
+  /**
+   * Opens a popup window with a given HTML content
+   */
+  static openPopup(content: string, width: number, height: number): Window {
+    const left = (screen.width - width) / 2;
+    const top = (screen.height - height) / 2;
+
+    const options = `top=${top},left=${left},width=${width},height=${height},`
+      + 'personalbar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes';
+
+    const win = window.open('about:blank', 'identityProvider', options);
+    win.document.write(`
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <style>
+      body {
+      height: 100%;
+      background-color: #fff;
+      overflow-y: scroll;
+      font-family: Arial, helvetica, sans-serif;
+      font-size: 12px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    </style>
+    </head>
+    <body>
+    ${content}
+    </body>
+    </html>`);
+    return win;
+  }
 }

@@ -1,16 +1,16 @@
-import { APP_INITIALIZER, Injector, Provider } from '@angular/core';
+import { APP_INITIALIZER, Provider } from '@angular/core';
 import { ApiConfiguration } from 'app/api/api-configuration';
 import { Configuration } from 'app/configuration';
 import { ContentGetter } from 'app/content/content-getter';
 import { DefaultDashboardResolver } from 'app/content/default-dashboard-resolver';
-import { ContentService } from 'app/core/content.service';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { I18nLoadingService } from 'app/core/i18n-loading.service';
+import { NextRequestState } from 'app/core/next-request-state';
 import { setup } from 'app/setup';
-import { LightboxConfig } from 'ngx-lightbox';
-import { forkJoin, of } from 'rxjs';
-import { ALL_BREAKPOINTS } from 'app/shared/layout.service';
 import { empty } from 'app/shared/helper';
+import { ALL_BREAKPOINTS } from 'app/shared/layout.service';
+import { LightboxConfig } from 'ngx-lightbox';
+import { Location } from '@angular/common';
 
 /**
  * Sets the default values on the global configuration
@@ -50,12 +50,12 @@ function setupConfigurationDefaults() {
 
 // Initializes the shared services
 export function initialize(
-  injector: Injector,
+  location: Location,
   apiConfig: ApiConfiguration,
   lightboxConfig: LightboxConfig,
   i18nLoading: I18nLoadingService,
   dataForUiHolder: DataForUiHolder,
-  content: ContentService
+  nextRequestState: NextRequestState
 ): Function {
   return async () => {
     // First setup the configuration with the defaults
@@ -64,6 +64,19 @@ export function initialize(
     setup();
     if (Configuration.apiRoot.endsWith('/')) {
       Configuration.apiRoot = Configuration.apiRoot.substring(0, Configuration.apiRoot.length - 1);
+    }
+
+    // When receiving an external session token, actually assign the URL again
+    const path = location.path();
+    const match = /[\?\&]sessionToken=([\w\.\-\+]+)/.exec(path);
+    if (match) {
+      const sessionToken = match[1];
+      const newUrl = path.replace('sessionToken=' + sessionToken, '');
+      nextRequestState.replaceSession(sessionToken).subscribe(() => {
+        location.go(newUrl);
+      });
+      // Nothing else to do: after storing the session token / cookie, will assign a new URL, causing a reload.
+      return;
     }
 
     // Initialize the shortcut icons
@@ -94,23 +107,19 @@ export function initialize(
     // Initialize the translations loading
     i18nLoading.initialize();
 
-    let contentPages = Configuration.contentPages ? Configuration.contentPages.contentPages(injector) : null;
-    if (!contentPages) {
-      contentPages = [];
-    }
-    if (contentPages instanceof Array) {
-      // The pages are already available
-      contentPages = of(contentPages);
-    }
-
-    // Load both content pages and data for UI
-    const result = await forkJoin([contentPages, dataForUiHolder.initialize()]).toPromise();
-    content.contentPages = (result[0] || []).filter((p: any) => !!p);
+    return await dataForUiHolder.initialize().toPromise();
   };
 }
 export const INITIALIZE: Provider = {
   provide: APP_INITIALIZER,
   useFactory: initialize,
-  deps: [Injector, ApiConfiguration, LightboxConfig, I18nLoadingService, DataForUiHolder, ContentService],
+  deps: [
+    Location,
+    ApiConfiguration,
+    LightboxConfig,
+    I18nLoadingService,
+    DataForUiHolder,
+    NextRequestState
+  ],
   multi: true
 };

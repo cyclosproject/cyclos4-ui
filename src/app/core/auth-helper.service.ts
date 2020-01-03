@@ -2,17 +2,19 @@ import { Injectable } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import {
   AccountKind, AccountWithOwner, AvailabilityEnum, PasswordInput,
-  PasswordModeEnum, RoleEnum, User, UserRelationshipEnum, Transfer
+  PasswordModeEnum, RoleEnum, User, UserRelationshipEnum, Transfer, IdentityProvider, IdentityProviderRequestResult, IdentityProviderCallbackResult
 } from 'app/api/models';
-import { UsersService } from 'app/api/services';
+import { UsersService, IdentityProvidersService } from 'app/api/services';
 import { CacheService } from 'app/core/cache.service';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { I18n } from 'app/i18n/i18n';
 import { ApiHelper } from 'app/shared/api-helper';
 import { empty, truthyAttr } from 'app/shared/helper';
 import { ActiveMenu, Menu } from 'app/shared/menu';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, Subscription, Subject } from 'rxjs';
+import { map, first } from 'rxjs/operators';
+import { PushNotificationsService } from 'app/core/push-notifications.service';
+import { NextRequestState } from 'app/core/next-request-state';
 
 /**
  * Helper service for authentication / password common functions
@@ -22,12 +24,17 @@ import { map } from 'rxjs/operators';
 })
 export class AuthHelperService {
 
+  private identityProviderSubscription: Subscription;
+
   constructor(
     private i18n: I18n,
     private dataForUiHolder: DataForUiHolder,
     private formBuilder: FormBuilder,
     private cache: CacheService,
-    private usersService: UsersService) {
+    private usersService: UsersService,
+    private identityProvidersService: IdentityProvidersService,
+    private pushNotifications: PushNotificationsService,
+    private nextRequestState: NextRequestState) {
   }
 
   /**
@@ -382,6 +389,58 @@ export class AuthHelperService {
       // Either an admin or broker viewing other member's accounts
       return this.searchUsersMenu();
     }
+  }
+
+  /**
+   * Opens a popup with a request for an identity provider
+   */
+  identityProviderPopup(idp: IdentityProvider, type: 'login' | 'register' | 'link', group?: string):
+    Observable<IdentityProviderCallbackResult> {
+    const observable = new Subject<IdentityProviderCallbackResult>();
+
+    // Open a popup which will redirect the user to the identity provider
+    const win = ApiHelper.openPopup(this.i18n.identityProvider.popup(idp.name), 600, 600);
+
+    // Build the request according to the request type
+    let request: Observable<IdentityProviderRequestResult>;
+    switch (type) {
+      case 'login':
+        this.nextRequestState.nextAsGuest();
+        request = this.identityProvidersService.prepareIdentityProviderLogin({ identityProvider: idp.internalName });
+        break;
+      case 'register':
+        this.nextRequestState.nextAsGuest();
+        request = this.identityProvidersService.prepareIdentityProviderRegistration({
+          identityProvider: idp.internalName,
+          group: group as string
+        });
+        break;
+      case 'link':
+        request = this.identityProvidersService.prepareIdentityProviderLink({ identityProvider: idp.internalName });
+        break;
+    }
+    request.pipe(first()).subscribe(result => {
+      // We got the response and need to observe changes. For logged user it will be already registered. For guests, we need a new one.
+      if (!this.dataForUiHolder.user) {
+        this.pushNotifications.openForIdentityProviderCallback(result.requestId);
+      }
+      // Whenever the callback result is received, notify the resulting Observable
+      this.identityProviderSubscription = this.pushNotifications.identityProviderCallback$.subscribe(callback => {
+        if (result.requestId === callback.requestId) {
+          // The callback is really for this request
+          observable.next(callback);
+          // Remove the previous subscription, if any
+          if (this.identityProviderSubscription) {
+            this.identityProviderSubscription.unsubscribe();
+            this.identityProviderSubscription = null;
+          }
+        }
+      });
+
+      // Go to the provider URL
+      win.location.assign(result.url);
+    });
+    return observable;
   }
 
 }

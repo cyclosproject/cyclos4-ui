@@ -4,11 +4,13 @@
   "output": "src/app/api",
   "includeTags": [
     "Auth",
+    "Push",
     "DeviceConfirmations",
     "Notifications",
     "NotificationSettings",
     "Passwords",
     "Agreements",
+    "IdentityProviders",
     "Users",
     "Phones",
     "Addresses",

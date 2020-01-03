@@ -157,14 +157,16 @@ export class LoginService {
    * Once logged in, will automatically redirect the user to the correct page.
    * @param principal The user principal
    * @param password The user password
+   * @param identityProviderRequestId The requestId from the last identity provider callback, when there was no match.
    */
-  login(principal: string, password: string): Observable<Auth> {
+  login(principal: string, password: string, identityProviderRequestId?: string): Observable<Auth> {
     // Setup the basic authentication for the login request
     this.nextRequestState.nextAsBasic(principal, password);
     const useCookie = isSameOrigin(this.apiConfiguration.rootUrl) && !isDevMode();
 
     return this.authService.login({
       cookie: useCookie,
+      identityProviderRequestId: identityProviderRequestId,
       fields: ['sessionToken']
     }).pipe(
       switchMap(auth => {

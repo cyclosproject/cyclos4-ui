@@ -1,9 +1,11 @@
 import { HttpRequest } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, isDevMode } from '@angular/core';
 import { Params } from '@angular/router';
-import { empty } from 'app/shared/helper';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { distinctUntilChanged, map } from 'rxjs/operators';
+import { empty, isSameOrigin } from 'app/shared/helper';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { distinctUntilChanged, map, switchMap } from 'rxjs/operators';
+import { ApiConfiguration } from 'app/api/api-configuration';
+import { AuthService } from 'app/api/services';
 
 const Channel = 'Channel';
 const Authorization = 'Authorization';
@@ -41,7 +43,9 @@ export class NextRequestState {
   private pending$ = new BehaviorSubject<HttpRequest<any>[]>([]);
   private nextAuth: string;
 
-  constructor() {
+  constructor(
+    private apiConfiguration: ApiConfiguration,
+    private authService: AuthService) {
     this.requesting$ = this.pending$.asObservable().pipe(
       map(reqs => reqs.length > 0),
       distinctUntilChanged()
@@ -141,6 +145,22 @@ export class NextRequestState {
     if (sessionToken) {
       localStorage.setItem(useCookie ? SessionPrefix : SessionToken, sessionToken);
     }
+  }
+
+  /**
+   * Replaces a session token token obtained externally by a new one, correctly setting the cookie if needed.
+   * Returns a cold observer.
+   */
+  replaceSession(sessionToken: string): Observable<any> {
+    this.nextAsGuest();
+    const useCookie = isSameOrigin(this.apiConfiguration.rootUrl) && !isDevMode();
+    return this.authService.replaceSession({
+      sessionToken: sessionToken,
+      cookie: useCookie
+    }).pipe(switchMap(newToken => {
+      this.setSessionToken(newToken, useCookie);
+      return of(null);
+    }));
   }
 
   /**
