@@ -1324,6 +1324,12 @@
     "showConnected": "Show connected",
     "disconnected": "{user} has been disconnected"
   },
+  "identityProvider": {
+    "popup": "Contacting {provider}. Please, wait...",
+    "login": "Continue with <b>{provider}</b>",
+    "login.noMatch": "No user found with e-mail {email}. You will need to login with your regular user and password. After logging-in, your {app} account will be automatically linked, so, on the next time, the 'Continue with {provider}' functionality will work directly.",
+    "login.noEmail": "Couldn't read an e-mail address from your {provider} account. You will need to login with your regular user and password. After logging-in, your {app} account will be automatically linked, so, on the next time, the 'Continue with {provider}' functionality will work directly."
+  },
   "operation": {
     "user": "User",
     "ad": "Advertisement",
