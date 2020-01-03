@@ -277,6 +277,7 @@
     "personal.contacts": "Contacts",
     "personal.password": "Mot de passe",
     "personal.passwords": "Mots de passe",
+    "personal.identityProviders": "Identity providers",
     "personal.notifications": "Notifications",
     "personal.notificationSettings": "Notification settings",
     "personal.settings": "Settings",
@@ -859,6 +860,7 @@
       "management": "Management",
       "edit": "Edit profile",
       "managePasswords": "Manage passwords",
+      "viewIdentityProviders": "View identity providers",
       "addContact": "Ajouter à mes contacts",
       "addContact.done": "{user} a été ajouté à votre liste de contacts",
       "removeContact": "Supprimer de mes contacts",
@@ -1450,7 +1452,25 @@
     "registration": "Register faster with your identity provider:",
     "registration.or": "Or",
     "registration.fillForm": "Fill-in the registration form",
-    "registration.disclaimer": "<b>Disclaimer:</b> None of your {app} data will be shared with these providers, and the only purpose of reading your personal data from them is to fill in the registration form and logging you in after you're registered."
+    "registration.disclaimer": "<b>Disclaimer:</b> None of your {app} data will be shared with these providers, and the only purpose of reading your personal data from them is to fill in the registration form and logging you in after you're registered.",
+    "disclaimer": "<b>Disclaimer</b>: None of your {app} data will be shared with any provider. The only data read from the providers are your display name and e-mail, with the sole purpose to logging-in faster on {app}.",
+    "title": {
+      "manage.self": "Manage your identity providers",
+      "manage.user": "Manage user identity providers"
+    },
+    "mobileTitle": {
+      "manage.self": "Identity providers",
+      "manage.user": "Identity providers"
+    },
+    "action": {
+      "connect": "Connect",
+      "connect.done": "You can now login as {name} using {provider}",
+      "disconnect": "Disconnect",
+      "disconnect.confirm": "This will disable the 'Continue with {provider}' functionality. Are you sure?",
+      "disconnect.done": "The login with {provider} has been disabled"
+    },
+    "connectedOn": "Connected on {date}",
+    "disconnected": "Disconnected"
   },
   "operation": {
     "user": "User",
