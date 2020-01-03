@@ -1446,7 +1446,11 @@
     "popup": "Contacting {provider}. Please, wait...",
     "login": "Continue with <b>{provider}</b>",
     "login.noMatch": "No user found with e-mail {email}. You will need to login with your regular user and password. After logging-in, your {app} account will be automatically linked, so, on the next time, the 'Continue with {provider}' functionality will work directly.",
-    "login.noEmail": "Couldn't read an e-mail address from your {provider} account. You will need to login with your regular user and password. After logging-in, your {app} account will be automatically linked, so, on the next time, the 'Continue with {provider}' functionality will work directly."
+    "login.noEmail": "Couldn't read an e-mail address from your {provider} account. You will need to login with your regular user and password. After logging-in, your {app} account will be automatically linked, so, on the next time, the 'Continue with {provider}' functionality will work directly.",
+    "registration": "Register faster with your identity provider:",
+    "registration.or": "Or",
+    "registration.fillForm": "Fill-in the registration form",
+    "registration.disclaimer": "<b>Disclaimer:</b> None of your {app} data will be shared with these providers, and the only purpose of reading your personal data from them is to fill in the registration form and logging you in after you're registered."
   },
   "operation": {
     "user": "Usuario",
