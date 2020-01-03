@@ -390,9 +390,16 @@
   },
   "registrationAgreement": "Términos de acuerdo",
   "pendingAgreements": {
-    "title": "Términos de acuerdo actualizados",
-    "mobileTitle": "Términos de acuerdo actualizados",
-    "message": "Los términos de acuerdo ha sido actualizados.\n\nUsted debe aceptar los nuevos términos de acuerdo para poder continuar.",
+    "title": {
+      "previouslyAccepted": "Términos de acuerdo actualizados",
+      "firstTime": "Términos de acuerdo"
+    },
+    "mobileTitle": {
+      "previouslyAccepted": "Términos de acuerdo actualizados",
+      "firstTime": "Términos de acuerdo"
+    },
+    "message.previouslyAccepted": "Los términos de acuerdo ha sido actualizados.\n\nUsted debe aceptar los nuevos términos de acuerdo para poder continuar.",
+    "message.firstTime": "In order to complete your registration, you must agree with these terms.",
     "agree": "He aceptado los siguientes términos de acuerdo: {agreements}"
   },
   "securityQuestion": {
