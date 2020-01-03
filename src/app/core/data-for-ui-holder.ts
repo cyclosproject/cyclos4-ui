@@ -1,7 +1,5 @@
-import { Location } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
-import { Router } from '@angular/router';
 import { ApiConfiguration } from 'app/api/api-configuration';
 import { Auth, DataForUi, RoleEnum, UiKind, User } from 'app/api/models';
 import { AuthService, UiService } from 'app/api/services';
@@ -13,7 +11,8 @@ import { I18n } from 'app/i18n/i18n';
 import { isSameOrigin, setReloadButton, setRootAlert } from 'app/shared/helper';
 import moment from 'moment-mini-ts';
 import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
-import { catchError, first, map, switchMap, tap } from 'rxjs/operators';
+import { catchError, first, map, tap, switchMap } from 'rxjs/operators';
+import { ContentService } from 'app/core/content.service';
 
 /**
  * Injectable used to hold the `DataForUi` instance used by the application
@@ -33,27 +32,71 @@ export class DataForUiHolder {
     private authService: AuthService,
     private i18n: I18n,
     private injector: Injector,
-    private location: Location) {
+    private nextRequestState: NextRequestState) {
   }
 
   /**
    * Returns a cold observer for initializing the `DataForUi` instance
    */
   initialize(): Observable<DataForUi> {
-    // When initializing with a session token parameter,
-    // replace it with another token and only then initialize
-    const path = this.location.path();
-    const match = /[\?\&]sessionToken=([\w\.\-\+]+)/.exec(path);
-    if (match) {
-      const sessionToken = match[1];
-      const newUrl = path.replace('sessionToken=' + sessionToken, '');
-      return this.replaceSession(sessionToken).pipe(
-        switchMap(() => this.doInitialize()),
-        tap(() => this.injector.get(Router).navigateByUrl(newUrl))
-      );
+    const nextRequestState = this.nextRequestState;
+
+    if (Configuration.redirectGuests && !nextRequestState.hasSession) {
+      // Guests aren't handled at all in this frontend. Redirect them.
+      location.assign(Configuration.redirectGuests);
+      return of(null);
     }
 
-    return this.doInitialize();
+    nextRequestState.ignoreNextError = true;
+    return this.uiService.dataForUi({ kind: UiKind.CUSTOM }).pipe(
+      switchMap(dataForUi => {
+        this.dataForUi = dataForUi;
+        if (dataForUi.auth == null || dataForUi.auth.user == null) {
+          // When not logged-in, clear any previous cruft on the stored session token
+          nextRequestState.setSessionToken(null);
+        }
+
+        // Prepare the content pages before initializing
+        let contentPages = Configuration.contentPages ? Configuration.contentPages.contentPages(this.injector) : null;
+        if (!contentPages) {
+          contentPages = [];
+        }
+        if (contentPages instanceof Array) {
+          // The pages are already available
+          contentPages = of(contentPages);
+        }
+
+        // Actually get the content pages
+        return contentPages.pipe(map(pages => {
+          this.injector.get(ContentService).setContentPages(pages.filter(p => !!p), this.user);
+          return dataForUi;
+        }));
+      }),
+      catchError((resp: HttpErrorResponse) => {
+        // Maybe we're using an old session data. In that case, we have to clear the session and try again
+        if (nextRequestState.hasSession && [ErrorStatus.FORBIDDEN, ErrorStatus.UNAUTHORIZED].includes(resp.status)) {
+          // Clear the session token and try again
+          nextRequestState.setSessionToken(null);
+          return this.uiService.dataForUi({ kind: UiKind.CUSTOM }).pipe(
+            tap(dataForUi => {
+              this.dataForUi = dataForUi;
+            })
+          );
+        } else {
+          // The server couldn't be contacted
+          let serverOffline = this.i18n.error.serverOffline;
+          let reloadPage = this.i18n.general.reloadPage;
+          if (serverOffline.startsWith('???')) {
+            // We're so early that we couldn't even fetch translations
+            serverOffline = 'The server couldn\'t be contacted.<br>Please, try again later.';
+            reloadPage = 'Reload';
+          }
+          setRootAlert(serverOffline);
+          setReloadButton(reloadPage);
+          return;
+        }
+      })
+    );
   }
 
   /**
@@ -114,9 +157,9 @@ export class DataForUiHolder {
   /**
    * Replaces the given session token with a new one.
    * Handles any exception and uses the session token as is,
-   * because this operation is only supported in Cyclos 4.12
+   * because this operation is only supported in Cyclos 4.12 onwards.
    */
-  private replaceSession(sessionToken: string): Observable<void> {
+  replaceSession(sessionToken: string): Observable<void> {
     const nextRequestState = this.injector.get(NextRequestState);
 
     // Setup the basic authentication for the login request
@@ -139,51 +182,6 @@ export class DataForUiHolder {
         }
         nextRequestState.setSessionToken(actualSessionValue);
         return of(null);
-      })
-    );
-  }
-
-  private doInitialize(): Observable<DataForUi> {
-    const nextRequestState = this.injector.get(NextRequestState);
-
-    if (Configuration.redirectGuests && !nextRequestState.hasSession) {
-      // Guests aren't handled at all in this frontend. Redirect them.
-      location.assign(Configuration.redirectGuests);
-      return of(null);
-    }
-
-    nextRequestState.ignoreNextError = true;
-    return this.uiService.dataForUi({ kind: UiKind.CUSTOM }).pipe(
-      tap(dataForUi => {
-        this.dataForUi = dataForUi;
-        if (dataForUi.auth == null || dataForUi.auth.user == null) {
-          // When not logged-in, clear any previous cruft on the stored session token
-          nextRequestState.setSessionToken(null);
-        }
-      }),
-      catchError((resp: HttpErrorResponse) => {
-        // Maybe we're using an old session data. In that case, we have to clear the session and try again
-        if (nextRequestState.hasSession && [ErrorStatus.FORBIDDEN, ErrorStatus.UNAUTHORIZED].includes(resp.status)) {
-          // Clear the session token and try again
-          nextRequestState.setSessionToken(null);
-          return this.uiService.dataForUi({ kind: UiKind.CUSTOM }).pipe(
-            tap(dataForUi => {
-              this.dataForUi = dataForUi;
-            })
-          );
-        } else {
-          // The server couldn't be contacted
-          let serverOffline = this.i18n.error.serverOffline;
-          let reloadPage = this.i18n.general.reloadPage;
-          if (serverOffline.startsWith('???')) {
-            // We're so early that we couldn't even fetch translations
-            serverOffline = 'The server couldn\'t be contacted.<br>Please, try again later.';
-            reloadPage = 'Reload';
-          }
-          setRootAlert(serverOffline);
-          setReloadButton(reloadPage);
-          return;
-        }
       })
     );
   }

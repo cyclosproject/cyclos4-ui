@@ -1,6 +1,6 @@
 openapi: '3.0.0'
 info:
-  title: 'Cyclos 4.13 API'
+  title: 'Cyclos @cyclosVersion API'
   description: >-
     The Cyclos REST API is described using OpenAPI 3.0. The descriptor for the
     api can be downloaded in both [YAML](@url/cyclos-openapi.yaml) or
@@ -33,9 +33,9 @@ info:
 
     For details of the deprecated elements (operations and model) please visit the
     [deprecation notes
-    page](https://documentation.cyclos.org/4.13/api-deprecation.html)
+    page](https://documentation.cyclos.org/@cyclosVersion/api-deprecation.html)
     for this version.
-  version: '4.13'
+  version: '@cyclosVersion'
 servers:
   - url: '@url'
 
@@ -1644,7 +1644,6 @@ paths:
           in: query
           required: false
           description: "Internal names of the sessions channels that can be returned."
-          style: simple
           schema:
             type: array
             items:
@@ -1680,7 +1679,6 @@ paths:
           in: query
           required: false
           description: "The role of the logged user in the sessions."
-          style: simple
           schema:
             type: array
             items:
@@ -2521,7 +2519,6 @@ paths:
           in: query
           required: false
           description: "The minimum / maximum user activation date. Only taken into account if searching as administrator or managing broker. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -2537,7 +2534,6 @@ paths:
           in: query
           required: false
           description: "Either id or a principal (login name, e-mail, etc) for brokers"
-          style: simple
           schema:
             type: array
             items:
@@ -2553,7 +2549,6 @@ paths:
           in: query
           required: false
           description: "The minimum / maximum user creation date. Only taken into account if searching as administrator or managing broker. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -2576,7 +2571,6 @@ paths:
           in: query
           required: false
           description: "Either id or internal names of groups / group sets"
-          style: simple
           schema:
             type: array
             items:
@@ -2610,7 +2604,6 @@ paths:
           in: query
           required: false
           description: "The minimum / maximum user last login date. Only taken into account if searching as administrator or managing broker. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -2699,7 +2692,6 @@ The specific address fields are:
 - `address.region`: Searches by region (or state);
 - `address.country`: Searches by ISO 3166-1 alpha-2 country code.
 A note for dynamic custom fields: If a script is used to generate possible values for search, the list will be returned in the corresponding data, and it is sent as a pipe-separated list of values (not labels). For example: `profileFields=dynamic:a|b|c`. However, it is also possible to perform a keywords-like (full-text) search using the dynamic value label. In this case a single value, prefixed by single quotes should be used. For example: `profileFields=dynamic:'business`."
-          style: simple
           schema:
             type: array
             items:
@@ -2709,7 +2701,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: ''
-          style: simple
           schema:
             type: array
             items:
@@ -2724,7 +2715,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: ''
-          style: simple
           schema:
             type: array
             items:
@@ -2733,7 +2723,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Indicated the users to be excluded from the result"
-          style: simple
           schema:
             type: array
             items:
@@ -2743,7 +2732,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Indicated the users to be included in the result.  Any other user not present in this list will be excluded from the result."
-          style: simple
           schema:
             type: array
             items:
@@ -2924,7 +2912,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minimum / maximum user activation date. Only taken into account if searching as administrator or managing broker. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -2940,7 +2927,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Either id or a principal (login name, e-mail, etc) for brokers"
-          style: simple
           schema:
             type: array
             items:
@@ -2956,7 +2942,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minimum / maximum user creation date. Only taken into account if searching as administrator or managing broker. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -2979,7 +2964,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Either id or internal names of groups / group sets"
-          style: simple
           schema:
             type: array
             items:
@@ -3013,7 +2997,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minimum / maximum user last login date. Only taken into account if searching as administrator or managing broker. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -3102,7 +3085,6 @@ The specific address fields are:
 - `address.region`: Searches by region (or state);
 - `address.country`: Searches by ISO 3166-1 alpha-2 country code.
 A note for dynamic custom fields: If a script is used to generate possible values for search, the list will be returned in the corresponding data, and it is sent as a pipe-separated list of values (not labels). For example: `profileFields=dynamic:a|b|c`. However, it is also possible to perform a keywords-like (full-text) search using the dynamic value label. In this case a single value, prefixed by single quotes should be used. For example: `profileFields=dynamic:'business`."
-          style: simple
           schema:
             type: array
             items:
@@ -3112,7 +3094,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: ''
-          style: simple
           schema:
             type: array
             items:
@@ -3127,7 +3108,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: ''
-          style: simple
           schema:
             type: array
             items:
@@ -3136,7 +3116,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Indicated the users to be excluded from the result"
-          style: simple
           schema:
             type: array
             items:
@@ -3146,7 +3125,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Indicated the users to be included in the result.  Any other user not present in this list will be excluded from the result."
-          style: simple
           schema:
             type: array
             items:
@@ -3978,7 +3956,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minimum / maximum user activation date. Only taken into account if searching as administrator or managing broker. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -3994,7 +3971,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Either id or a principal (login name, e-mail, etc) for brokers"
-          style: simple
           schema:
             type: array
             items:
@@ -4010,7 +3986,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minimum / maximum user creation date. Only taken into account if searching as administrator or managing broker. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -4033,7 +4008,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Either id or internal names of groups / group sets"
-          style: simple
           schema:
             type: array
             items:
@@ -4067,7 +4041,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minimum / maximum user last login date. Only taken into account if searching as administrator or managing broker. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -4156,7 +4129,6 @@ The specific address fields are:
 - `address.region`: Searches by region (or state);
 - `address.country`: Searches by ISO 3166-1 alpha-2 country code.
 A note for dynamic custom fields: If a script is used to generate possible values for search, the list will be returned in the corresponding data, and it is sent as a pipe-separated list of values (not labels). For example: `profileFields=dynamic:a|b|c`. However, it is also possible to perform a keywords-like (full-text) search using the dynamic value label. In this case a single value, prefixed by single quotes should be used. For example: `profileFields=dynamic:'business`."
-          style: simple
           schema:
             type: array
             items:
@@ -4166,7 +4138,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: ''
-          style: simple
           schema:
             type: array
             items:
@@ -4181,7 +4152,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: ''
-          style: simple
           schema:
             type: array
             items:
@@ -4190,7 +4160,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Indicated the users to be excluded from the result"
-          style: simple
           schema:
             type: array
             items:
@@ -4200,7 +4169,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Indicated the users to be included in the result.  Any other user not present in this list will be excluded from the result."
-          style: simple
           schema:
             type: array
             items:
@@ -4349,7 +4317,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minimum / maximum user creation date. Only taken into account if searching as administrator or managing broker. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -4366,7 +4333,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "An array of operator group ids"
-          style: simple
           schema:
             type: array
             items:
@@ -4396,7 +4362,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: ''
-          style: simple
           schema:
             type: array
             items:
@@ -9338,7 +9303,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Either the ids or identification methods of individual document owners' brokers"
-          style: simple
           schema:
             type: array
             items:
@@ -9348,7 +9312,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The shared document categories"
-          style: simple
           schema:
             type: array
             items:
@@ -9364,7 +9327,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Either the ids or internal names of individual document owners' group"
-          style: simple
           schema:
             type: array
             items:
@@ -10349,7 +10311,6 @@ The specific address fields are:
 - `address.region`: Searches by region (or state);
 - `address.country`: Searches by ISO 3166-1 alpha-2 country code.
 A note for dynamic custom fields: If a script is used to generate possible values for search, the list will be returned in the corresponding data, and it is sent as a pipe-separated list of values (not labels). For example: `profileFields=dynamic:a|b|c`. However, it is also possible to perform a keywords-like (full-text) search using the dynamic value label. In this case a single value, prefixed by single quotes should be used. For example: `profileFields=dynamic:'business`."
-          style: simple
           schema:
             type: array
             items:
@@ -10453,7 +10414,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Concat custom field values used as filters. Is a comma-separated array, where each part consists in two parts: the internal name (or custom field id) of the field, and a value, both separated by : (colon).  For example, `customFields=field1:value1,field2:value2`. Sometimes multiple values are accepted. In this case, the multiple values are separated by pipes. For example, customFields=field1:valueA|valueB. Enumerated fields accept multiple values, while numeric and date fields also accept ranges, which are two values, pipe-separated. For example, `customFields=tradeType:offer|search,extraDate:2000-01-01|2001-12-31` would match results whose custom field with internal name `tradeType` is either `offer` or `search`, and whose `extraDate` is between January 1, 2000 and December 31, 2001. To specify a single bound in ranges (like birth dates before December 31, 2001), use a pipe in one of the values, like `customValues=extraDate:|2001-12-31`."
-          style: simple
           schema:
             type: array
             items:
@@ -13418,7 +13378,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "References to access clients (id or token) used to perform / receive the transfer."
-          style: simple
           schema:
             type: array
             items:
@@ -13428,7 +13387,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minimum / maximum amount. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -13447,7 +13405,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Reference to the broker of users involved in transfers. Is only taken into account if authenticated as administrator."
-          style: simple
           schema:
             type: array
             items:
@@ -13463,7 +13420,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Reference to the channel used to perform / receive the transfer. Only taken into account if authenticated as administrator."
-          style: simple
           schema:
             type: array
             items:
@@ -13480,7 +13436,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           required: false
           description: "Transaction custom field values used as filters. Is a comma-separated array, where each part consists in two parts: the internal name (or custom field id) of the field, and a value, both separated by : (colon).  For example, `customFields=field1:value1,field2:value2`. Sometimes multiple values are accepted. In this case, the multiple values are separated by pipes. For example, customFields=field1:valueA|valueB. Enumerated fields accept multiple values, while numeric and date fields also accept ranges, which are two values, pipe-separated. For example, `customFields=rank:bronze|silver,documentDate:2000-01-01|2001-12-31` would match results whose custom field with internal name `rank` is either `bronze` or `silver`, and whose `documentDate` is between January 1, 2000 and December 31, 2001. To specify a single bound in ranges (like birth dates before December 31, 2001), use a pipe in one of the values, like `customFields=documentDate:|2001-12-31`.
 A note for dynamic custom fields: If a script is used to generate possible values for search, the list will be returned in the  corresponding data, and it is sent as a pipe-separated list of values (not labels). For example: `customFields=dynamic:a|b|c`. However, it is also possible to perform a partial-match search using the dynamic value label. In this case a single value, prefixed or enclosed by single quotes should be used. For example: `customFields=dynamic:'business` or `customFields=dynamic:'business'`."
-          style: simple
           schema:
             type: array
             items:
@@ -13490,7 +13445,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minimum / maximum transfer date. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -13506,7 +13460,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "List of transfers ids to be excluded from the result."
-          style: simple
           schema:
             type: array
             items:
@@ -13522,7 +13475,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Reference to the user group used to perform / receive the transfer. Only taken into account if authenticated as administrator."
-          style: simple
           schema:
             type: array
             items:
@@ -13538,7 +13490,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The kind of transfers to return"
-          style: simple
           schema:
             type: array
             items:
@@ -13567,7 +13518,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Transfer statuses used as search criteria. Each array element should be either the identifier or the status qualified internal name, composed by flow internal name, a dot, and the status internal name. For example, `loan.open` would be a valid internal name."
-          style: simple
           schema:
             type: array
             items:
@@ -13583,7 +13533,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Reference to the transfer filters, which filters transfers by type. May be either the internal id or qualified transfer filter internal name, in the format `accountType.transferFilter`."
-          style: simple
           schema:
             type: array
             items:
@@ -13593,7 +13542,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "DEPRECATED: Use `kinds` instead"
-          style: simple
           schema:
             type: array
             items:
@@ -13602,7 +13550,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Reference to the transfer types for filter. May be either the internal id or qualified transfer type internal name, in the format `accountType.transferType`."
-          style: simple
           schema:
             type: array
             items:
@@ -13732,7 +13679,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "References to access clients (id or token) used to perform / receive the transfer."
-          style: simple
           schema:
             type: array
             items:
@@ -13742,7 +13688,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minimum / maximum amount. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -13761,7 +13706,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Reference to the broker of users involved in transfers. Is only taken into account if authenticated as administrator."
-          style: simple
           schema:
             type: array
             items:
@@ -13777,7 +13721,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Reference to the channel used to perform / receive the transfer. Only taken into account if authenticated as administrator."
-          style: simple
           schema:
             type: array
             items:
@@ -13794,7 +13737,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           required: false
           description: "Transaction custom field values used as filters. Is a comma-separated array, where each part consists in two parts: the internal name (or custom field id) of the field, and a value, both separated by : (colon).  For example, `customFields=field1:value1,field2:value2`. Sometimes multiple values are accepted. In this case, the multiple values are separated by pipes. For example, customFields=field1:valueA|valueB. Enumerated fields accept multiple values, while numeric and date fields also accept ranges, which are two values, pipe-separated. For example, `customFields=rank:bronze|silver,documentDate:2000-01-01|2001-12-31` would match results whose custom field with internal name `rank` is either `bronze` or `silver`, and whose `documentDate` is between January 1, 2000 and December 31, 2001. To specify a single bound in ranges (like birth dates before December 31, 2001), use a pipe in one of the values, like `customFields=documentDate:|2001-12-31`.
 A note for dynamic custom fields: If a script is used to generate possible values for search, the list will be returned in the  corresponding data, and it is sent as a pipe-separated list of values (not labels). For example: `customFields=dynamic:a|b|c`. However, it is also possible to perform a partial-match search using the dynamic value label. In this case a single value, prefixed or enclosed by single quotes should be used. For example: `customFields=dynamic:'business` or `customFields=dynamic:'business'`."
-          style: simple
           schema:
             type: array
             items:
@@ -13804,7 +13746,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minimum / maximum transfer date. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -13820,7 +13761,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "List of transfers ids to be excluded from the result."
-          style: simple
           schema:
             type: array
             items:
@@ -13836,7 +13776,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Reference to the user group used to perform / receive the transfer. Only taken into account if authenticated as administrator."
-          style: simple
           schema:
             type: array
             items:
@@ -13852,7 +13791,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The kind of transfers to return"
-          style: simple
           schema:
             type: array
             items:
@@ -13886,7 +13824,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Transfer statuses used as search criteria. Each array element should be either the identifier or the status qualified internal name, composed by flow internal name, a dot, and the status internal name. For example, `loan.open` would be a valid internal name."
-          style: simple
           schema:
             type: array
             items:
@@ -13902,7 +13839,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Reference to the transfer filters, which filters transfers by type. May be either the internal id or qualified transfer filter internal name, in the format `accountType.transferFilter`."
-          style: simple
           schema:
             type: array
             items:
@@ -13912,7 +13848,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "DEPRECATED: Use `kinds` instead"
-          style: simple
           schema:
             type: array
             items:
@@ -13921,7 +13856,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Reference to the transfer types for filter. May be either the internal id or qualified transfer type internal name, in the format `accountType.transferType`."
-          style: simple
           schema:
             type: array
             items:
@@ -14024,7 +13958,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "References to access clients (id or token) used to perform / receive the transfer."
-          style: simple
           schema:
             type: array
             items:
@@ -14034,7 +13967,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minimum / maximum amount. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -14053,7 +13985,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Reference to the broker of users involved in transfers. Is only taken into account if authenticated as administrator."
-          style: simple
           schema:
             type: array
             items:
@@ -14069,7 +14000,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Reference to the channel used to perform / receive the transfer. Only taken into account if authenticated as administrator."
-          style: simple
           schema:
             type: array
             items:
@@ -14086,7 +14016,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           required: false
           description: "Transaction custom field values used as filters. Is a comma-separated array, where each part consists in two parts: the internal name (or custom field id) of the field, and a value, both separated by : (colon).  For example, `customFields=field1:value1,field2:value2`. Sometimes multiple values are accepted. In this case, the multiple values are separated by pipes. For example, customFields=field1:valueA|valueB. Enumerated fields accept multiple values, while numeric and date fields also accept ranges, which are two values, pipe-separated. For example, `customFields=rank:bronze|silver,documentDate:2000-01-01|2001-12-31` would match results whose custom field with internal name `rank` is either `bronze` or `silver`, and whose `documentDate` is between January 1, 2000 and December 31, 2001. To specify a single bound in ranges (like birth dates before December 31, 2001), use a pipe in one of the values, like `customFields=documentDate:|2001-12-31`.
 A note for dynamic custom fields: If a script is used to generate possible values for search, the list will be returned in the  corresponding data, and it is sent as a pipe-separated list of values (not labels). For example: `customFields=dynamic:a|b|c`. However, it is also possible to perform a partial-match search using the dynamic value label. In this case a single value, prefixed or enclosed by single quotes should be used. For example: `customFields=dynamic:'business` or `customFields=dynamic:'business'`."
-          style: simple
           schema:
             type: array
             items:
@@ -14096,7 +14025,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minimum / maximum transfer date. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -14112,7 +14040,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "List of transfers ids to be excluded from the result."
-          style: simple
           schema:
             type: array
             items:
@@ -14128,7 +14055,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Reference to the user group used to perform / receive the transfer. Only taken into account if authenticated as administrator."
-          style: simple
           schema:
             type: array
             items:
@@ -14144,7 +14070,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The kind of transfers to return"
-          style: simple
           schema:
             type: array
             items:
@@ -14178,7 +14103,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Transfer statuses used as search criteria. Each array element should be either the identifier or the status qualified internal name, composed by flow internal name, a dot, and the status internal name. For example, `loan.open` would be a valid internal name."
-          style: simple
           schema:
             type: array
             items:
@@ -14194,7 +14118,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Reference to the transfer filters, which filters transfers by type. May be either the internal id or qualified transfer filter internal name, in the format `accountType.transferFilter`."
-          style: simple
           schema:
             type: array
             items:
@@ -14204,7 +14127,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "DEPRECATED: Use `kinds` instead"
-          style: simple
           schema:
             type: array
             items:
@@ -14213,7 +14135,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Reference to the transfer types for filter. May be either the internal id or qualified transfer type internal name, in the format `accountType.transferType`."
-          style: simple
           schema:
             type: array
             items:
@@ -14443,7 +14364,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minimum / maximum user activation date. Only taken into account if searching as administrator or managing broker. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -14459,7 +14379,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minimum and / or maximum balance for users to be returned. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -14470,7 +14389,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Either id or a principal (login name, e-mail, etc) for brokers"
-          style: simple
           schema:
             type: array
             items:
@@ -14480,7 +14398,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minimum / maximum user creation date. Only taken into account if searching as administrator or managing broker. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -14491,7 +14408,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Either id or internal names of groups / group sets"
-          style: simple
           schema:
             type: array
             items:
@@ -14519,7 +14435,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minimum / maximum date of the last incoming transfer for users to be returned. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -14530,7 +14445,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minimum / maximum user last login date. Only taken into account if searching as administrator or managing broker. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -14541,7 +14455,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minimum / maximum date of the last outgoing transfer for users to be returned. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -14579,7 +14492,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "An array with 2 elements, describing the lower and upper medium balance bounds. If not specified, the range defined in the account type will be used. If that one is also not defined, there will be no definitions for balance levels. Both bounds need to be set as 2 element in the array, or it won't be considered."
-          style: simple
           schema:
             type: array
             items:
@@ -14590,7 +14502,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minimum / maximum negative-since date for users to be returned. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -14647,7 +14558,6 @@ The specific address fields are:
 - `address.region`: Searches by region (or state);
 - `address.country`: Searches by ISO 3166-1 alpha-2 country code.
 A note for dynamic custom fields: If a script is used to generate possible values for search, the list will be returned in the corresponding data, and it is sent as a pipe-separated list of values (not labels). For example: `profileFields=dynamic:a|b|c`. However, it is also possible to perform a keywords-like (full-text) search using the dynamic value label. In this case a single value, prefixed by single quotes should be used. For example: `profileFields=dynamic:'business`."
-          style: simple
           schema:
             type: array
             items:
@@ -14663,7 +14573,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Indicated the users to be excluded from the result"
-          style: simple
           schema:
             type: array
             items:
@@ -14673,7 +14582,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Indicated the users to be included in the result.  Any other user not present in this list will be excluded from the result."
-          style: simple
           schema:
             type: array
             items:
@@ -14743,7 +14651,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minimum / maximum user activation date. Only taken into account if searching as administrator or managing broker. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -14759,7 +14666,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minimum and / or maximum balance for users to be returned. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -14770,7 +14676,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Either id or a principal (login name, e-mail, etc) for brokers"
-          style: simple
           schema:
             type: array
             items:
@@ -14780,7 +14685,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minimum / maximum user creation date. Only taken into account if searching as administrator or managing broker. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -14791,7 +14695,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Either id or internal names of groups / group sets"
-          style: simple
           schema:
             type: array
             items:
@@ -14819,7 +14722,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minimum / maximum date of the last incoming transfer for users to be returned. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -14830,7 +14732,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minimum / maximum user last login date. Only taken into account if searching as administrator or managing broker. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -14841,7 +14742,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minimum / maximum date of the last outgoing transfer for users to be returned. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -14879,7 +14779,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "An array with 2 elements, describing the lower and upper medium balance bounds. If not specified, the range defined in the account type will be used. If that one is also not defined, there will be no definitions for balance levels. Both bounds need to be set as 2 element in the array, or it won't be considered."
-          style: simple
           schema:
             type: array
             items:
@@ -14890,7 +14789,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minimum / maximum negative-since date for users to be returned. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -14952,7 +14850,6 @@ The specific address fields are:
 - `address.region`: Searches by region (or state);
 - `address.country`: Searches by ISO 3166-1 alpha-2 country code.
 A note for dynamic custom fields: If a script is used to generate possible values for search, the list will be returned in the corresponding data, and it is sent as a pipe-separated list of values (not labels). For example: `profileFields=dynamic:a|b|c`. However, it is also possible to perform a keywords-like (full-text) search using the dynamic value label. In this case a single value, prefixed by single quotes should be used. For example: `profileFields=dynamic:'business`."
-          style: simple
           schema:
             type: array
             items:
@@ -14968,7 +14865,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Indicated the users to be excluded from the result"
-          style: simple
           schema:
             type: array
             items:
@@ -14978,7 +14874,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Indicated the users to be included in the result.  Any other user not present in this list will be excluded from the result."
-          style: simple
           schema:
             type: array
             items:
@@ -15080,7 +14975,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minimum / maximum user activation date. Only taken into account if searching as administrator or managing broker. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -15096,7 +14990,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minimum and / or maximum balance for users to be returned. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -15107,7 +15000,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Either id or a principal (login name, e-mail, etc) for brokers"
-          style: simple
           schema:
             type: array
             items:
@@ -15117,7 +15009,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minimum / maximum user creation date. Only taken into account if searching as administrator or managing broker. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -15128,7 +15019,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Either id or internal names of groups / group sets"
-          style: simple
           schema:
             type: array
             items:
@@ -15156,7 +15046,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minimum / maximum date of the last incoming transfer for users to be returned. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -15167,7 +15056,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minimum / maximum user last login date. Only taken into account if searching as administrator or managing broker. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -15178,7 +15066,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minimum / maximum date of the last outgoing transfer for users to be returned. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -15216,7 +15103,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "An array with 2 elements, describing the lower and upper medium balance bounds. If not specified, the range defined in the account type will be used. If that one is also not defined, there will be no definitions for balance levels. Both bounds need to be set as 2 element in the array, or it won't be considered."
-          style: simple
           schema:
             type: array
             items:
@@ -15227,7 +15113,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minimum / maximum negative-since date for users to be returned. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -15289,7 +15174,6 @@ The specific address fields are:
 - `address.region`: Searches by region (or state);
 - `address.country`: Searches by ISO 3166-1 alpha-2 country code.
 A note for dynamic custom fields: If a script is used to generate possible values for search, the list will be returned in the corresponding data, and it is sent as a pipe-separated list of values (not labels). For example: `profileFields=dynamic:a|b|c`. However, it is also possible to perform a keywords-like (full-text) search using the dynamic value label. In this case a single value, prefixed by single quotes should be used. For example: `profileFields=dynamic:'business`."
-          style: simple
           schema:
             type: array
             items:
@@ -15305,7 +15189,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Indicated the users to be excluded from the result"
-          style: simple
           schema:
             type: array
             items:
@@ -15315,7 +15198,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Indicated the users to be included in the result.  Any other user not present in this list will be excluded from the result."
-          style: simple
           schema:
             type: array
             items:
@@ -15625,7 +15507,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Either the ids or identification methods of users' broker"
-          style: simple
           schema:
             type: array
             items:
@@ -15653,7 +15534,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minimum / maximum customized limit. Is only used when `customLimit` is set to true. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -15670,7 +15550,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minimum / maximum customized upper limit. Is only used when `customUpperLimit` is set to true. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -15681,7 +15560,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Either the ids or internal names of user group"
-          style: simple
           schema:
             type: array
             items:
@@ -15818,7 +15696,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Either the ids or identification methods of users' broker"
-          style: simple
           schema:
             type: array
             items:
@@ -15846,7 +15723,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minimum / maximum customized limit. Is only used when `customLimit` is set to true. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -15863,7 +15739,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minimum / maximum customized upper limit. Is only used when `customUpperLimit` is set to true. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -15874,7 +15749,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Either the ids or internal names of user group"
-          style: simple
           schema:
             type: array
             items:
@@ -16033,7 +15907,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "References to access clients (id or token) used to perform / receive the transfer."
-          style: simple
           schema:
             type: array
             items:
@@ -16043,7 +15916,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minimum / maximum amount. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -16062,7 +15934,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Reference to the broker of users involved in transfers. Is only taken into account if authenticated as administrator."
-          style: simple
           schema:
             type: array
             items:
@@ -16078,7 +15949,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Reference to the channel used to perform / receive the transfer. Only taken into account if authenticated as administrator."
-          style: simple
           schema:
             type: array
             items:
@@ -16094,7 +15964,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Either ids or internal names of the currency"
-          style: simple
           schema:
             type: array
             items:
@@ -16112,7 +15981,6 @@ Either id or internal name of the currency"
           in: query
           required: false
           description: "The minimum / maximum transfer date. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -16123,7 +15991,6 @@ Either id or internal name of the currency"
           in: query
           required: false
           description: "List of transfers ids to be excluded from the result."
-          style: simple
           schema:
             type: array
             items:
@@ -16141,7 +16008,6 @@ Either ids or internal names of the origin account type"
           in: query
           required: false
           description: "Either ids or internal names of the origin account type"
-          style: simple
           schema:
             type: array
             items:
@@ -16157,7 +16023,6 @@ Either ids or internal names of the origin account type"
           in: query
           required: false
           description: "Reference to the user group used to perform / receive the transfer. Only taken into account if authenticated as administrator."
-          style: simple
           schema:
             type: array
             items:
@@ -16173,7 +16038,6 @@ Either ids or internal names of the origin account type"
           in: query
           required: false
           description: "The kind of transfers to return"
-          style: simple
           schema:
             type: array
             items:
@@ -16207,7 +16071,6 @@ Either ids or internal names of the origin account type"
           in: query
           required: false
           description: "Transfer statuses used as search criteria. Each array element should be either the identifier or the status qualified internal name, composed by flow internal name, a dot, and the status internal name. For example, `loan.open` would be a valid internal name."
-          style: simple
           schema:
             type: array
             items:
@@ -16225,7 +16088,6 @@ Either ids or internal names of the destination account type"
           in: query
           required: false
           description: "Either ids or internal names of the destination account type"
-          style: simple
           schema:
             type: array
             items:
@@ -16241,7 +16103,6 @@ Either ids or internal names of the destination account type"
           in: query
           required: false
           description: "Reference to the transfer filters, which filters transfers by type. May be either the internal id or qualified transfer filter internal name, in the format `accountType.transferFilter`."
-          style: simple
           schema:
             type: array
             items:
@@ -16251,7 +16112,6 @@ Either ids or internal names of the destination account type"
           in: query
           required: false
           description: "DEPRECATED: Use `kinds` instead"
-          style: simple
           schema:
             type: array
             items:
@@ -16260,7 +16120,6 @@ Either ids or internal names of the destination account type"
           in: query
           required: false
           description: "Reference to the transfer types for filter. May be either the internal id or qualified transfer type internal name, in the format `accountType.transferType`."
-          style: simple
           schema:
             type: array
             items:
@@ -16360,7 +16219,6 @@ Either ids or internal names of the destination account type"
           in: query
           required: false
           description: "References to access clients (id or token) used to perform / receive the transfer."
-          style: simple
           schema:
             type: array
             items:
@@ -16370,7 +16228,6 @@ Either ids or internal names of the destination account type"
           in: query
           required: false
           description: "The minimum / maximum amount. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -16389,7 +16246,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Reference to the broker of users involved in transfers. Is only taken into account if authenticated as administrator."
-          style: simple
           schema:
             type: array
             items:
@@ -16405,7 +16261,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Reference to the channel used to perform / receive the transfer. Only taken into account if authenticated as administrator."
-          style: simple
           schema:
             type: array
             items:
@@ -16421,7 +16276,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Either ids or internal names of the currency"
-          style: simple
           schema:
             type: array
             items:
@@ -16439,7 +16293,6 @@ Either id or internal name of the currency"
           in: query
           required: false
           description: "The minimum / maximum transfer date. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -16450,7 +16303,6 @@ Either id or internal name of the currency"
           in: query
           required: false
           description: "List of transfers ids to be excluded from the result."
-          style: simple
           schema:
             type: array
             items:
@@ -16468,7 +16320,6 @@ Either ids or internal names of the origin account type"
           in: query
           required: false
           description: "Either ids or internal names of the origin account type"
-          style: simple
           schema:
             type: array
             items:
@@ -16484,7 +16335,6 @@ Either ids or internal names of the origin account type"
           in: query
           required: false
           description: "Reference to the user group used to perform / receive the transfer. Only taken into account if authenticated as administrator."
-          style: simple
           schema:
             type: array
             items:
@@ -16500,7 +16350,6 @@ Either ids or internal names of the origin account type"
           in: query
           required: false
           description: "The kind of transfers to return"
-          style: simple
           schema:
             type: array
             items:
@@ -16534,7 +16383,6 @@ Either ids or internal names of the origin account type"
           in: query
           required: false
           description: "Transfer statuses used as search criteria. Each array element should be either the identifier or the status qualified internal name, composed by flow internal name, a dot, and the status internal name. For example, `loan.open` would be a valid internal name."
-          style: simple
           schema:
             type: array
             items:
@@ -16552,7 +16400,6 @@ Either ids or internal names of the destination account type"
           in: query
           required: false
           description: "Either ids or internal names of the destination account type"
-          style: simple
           schema:
             type: array
             items:
@@ -16568,7 +16415,6 @@ Either ids or internal names of the destination account type"
           in: query
           required: false
           description: "Reference to the transfer filters, which filters transfers by type. May be either the internal id or qualified transfer filter internal name, in the format `accountType.transferFilter`."
-          style: simple
           schema:
             type: array
             items:
@@ -16578,7 +16424,6 @@ Either ids or internal names of the destination account type"
           in: query
           required: false
           description: "DEPRECATED: Use `kinds` instead"
-          style: simple
           schema:
             type: array
             items:
@@ -16587,7 +16432,6 @@ Either ids or internal names of the destination account type"
           in: query
           required: false
           description: "Reference to the transfer types for filter. May be either the internal id or qualified transfer type internal name, in the format `accountType.transferType`."
-          style: simple
           schema:
             type: array
             items:
@@ -16905,7 +16749,6 @@ Either ids or internal names of the destination account type"
           in: query
           required: false
           description: "References to access clients (id or token) used to perform / receive the transfer."
-          style: simple
           schema:
             type: array
             items:
@@ -16915,7 +16758,6 @@ Either ids or internal names of the destination account type"
           in: query
           required: false
           description: "The account types"
-          style: simple
           schema:
             type: array
             items:
@@ -16925,7 +16767,6 @@ Either ids or internal names of the destination account type"
           in: query
           required: false
           description: "The minimum / maximum amount. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -16942,7 +16783,6 @@ Either ids or internal names of the destination account type"
           in: query
           required: false
           description: "Authorization statuses used as search criteria. When set, only kinds that can go through authorization are returned (`payment`, `order`, `recurringPayment` or `scheduledPayment`)."
-          style: simple
           schema:
             type: array
             items:
@@ -16965,7 +16805,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Reference to the broker of users involved in transfers. Is only taken into account if authenticated as administrator."
-          style: simple
           schema:
             type: array
             items:
@@ -16981,7 +16820,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Reference to the channel used to perform / receive the transfer. Only taken into account if authenticated as administrator."
-          style: simple
           schema:
             type: array
             items:
@@ -16991,7 +16829,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "The minimum / maximum transfer date. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -17007,7 +16844,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "List of transfers ids to be excluded from the result."
-          style: simple
           schema:
             type: array
             items:
@@ -17017,7 +16853,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Statuses used as search criteria applied only to transactions of kind `externalPayment`."
-          style: simple
           schema:
             type: array
             items:
@@ -17032,7 +16867,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Reference to the user group used to perform / receive the transfer. Only taken into account if authenticated as administrator."
-          style: simple
           schema:
             type: array
             items:
@@ -17048,7 +16882,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: ''
-          style: simple
           schema:
             type: array
             items:
@@ -17076,7 +16909,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "The minimum / maximum date for payment request expiration. Only affects payment requests. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -17087,7 +16919,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Statuses used as search criteria applied only to transactions of kind `paymentRequest`."
-          style: simple
           schema:
             type: array
             items:
@@ -17096,7 +16927,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Statuses used as search criteria applied only to transactions of kind `recurringPayment`. If this filter is not empty then pending recurring payments will be excluded from the result. Pending recurring payments does not have a status."
-          style: simple
           schema:
             type: array
             items:
@@ -17105,7 +16935,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Statuses used as search criteria applied only to transactions of kind `scheduledPayment`. If this filter is not empty then pending scheduled payments will be excluded from the result. Pending scheduled payments does not have a status."
-          style: simple
           schema:
             type: array
             items:
@@ -17120,7 +16949,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Statuses used as search criteria applied only to transactions of kind `ticket`."
-          style: simple
           schema:
             type: array
             items:
@@ -17135,7 +16963,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Reference to the transfer filters, which filters transfers by type. May be either the internal id or qualified transfer filter internal name, in the format `accountType.transferFilter`."
-          style: simple
           schema:
             type: array
             items:
@@ -17145,7 +16972,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Reference to the transfer types for filter. May be either the internal id or qualified transfer type internal name, in the format `accountType.transferType`."
-          style: simple
           schema:
             type: array
             items:
@@ -17246,7 +17072,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "References to access clients (id or token) used to perform / receive the transfer."
-          style: simple
           schema:
             type: array
             items:
@@ -17256,7 +17081,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "The account types"
-          style: simple
           schema:
             type: array
             items:
@@ -17266,7 +17090,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "The minimum / maximum amount. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -17283,7 +17106,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Authorization statuses used as search criteria. When set, only kinds that can go through authorization are returned (`payment`, `order`, `recurringPayment` or `scheduledPayment`)."
-          style: simple
           schema:
             type: array
             items:
@@ -17306,7 +17128,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Reference to the broker of users involved in transfers. Is only taken into account if authenticated as administrator."
-          style: simple
           schema:
             type: array
             items:
@@ -17322,7 +17143,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Reference to the channel used to perform / receive the transfer. Only taken into account if authenticated as administrator."
-          style: simple
           schema:
             type: array
             items:
@@ -17332,7 +17152,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "The minimum / maximum transfer date. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -17348,7 +17167,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "List of transfers ids to be excluded from the result."
-          style: simple
           schema:
             type: array
             items:
@@ -17358,7 +17176,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Statuses used as search criteria applied only to transactions of kind `externalPayment`."
-          style: simple
           schema:
             type: array
             items:
@@ -17373,7 +17190,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Reference to the user group used to perform / receive the transfer. Only taken into account if authenticated as administrator."
-          style: simple
           schema:
             type: array
             items:
@@ -17389,7 +17205,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: ''
-          style: simple
           schema:
             type: array
             items:
@@ -17417,7 +17232,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "The minimum / maximum date for payment request expiration. Only affects payment requests. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -17428,7 +17242,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Statuses used as search criteria applied only to transactions of kind `paymentRequest`."
-          style: simple
           schema:
             type: array
             items:
@@ -17437,7 +17250,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Statuses used as search criteria applied only to transactions of kind `recurringPayment`. If this filter is not empty then pending recurring payments will be excluded from the result. Pending recurring payments does not have a status."
-          style: simple
           schema:
             type: array
             items:
@@ -17446,7 +17258,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Statuses used as search criteria applied only to transactions of kind `scheduledPayment`. If this filter is not empty then pending scheduled payments will be excluded from the result. Pending scheduled payments does not have a status."
-          style: simple
           schema:
             type: array
             items:
@@ -17461,7 +17272,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Statuses used as search criteria applied only to transactions of kind `ticket`."
-          style: simple
           schema:
             type: array
             items:
@@ -17476,7 +17286,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Reference to the transfer filters, which filters transfers by type. May be either the internal id or qualified transfer filter internal name, in the format `accountType.transferFilter`."
-          style: simple
           schema:
             type: array
             items:
@@ -17486,7 +17295,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Reference to the transfer types for filter. May be either the internal id or qualified transfer type internal name, in the format `accountType.transferType`."
-          style: simple
           schema:
             type: array
             items:
@@ -17626,7 +17434,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "References to access clients (id or token) used to perform / receive the transfer."
-          style: simple
           schema:
             type: array
             items:
@@ -17636,7 +17443,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "The minimum / maximum amount. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -17653,7 +17459,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Authorization statuses used as search criteria. When set, only kinds that can go through authorization are returned (`payment`, `order`, `recurringPayment` or `scheduledPayment`)."
-          style: simple
           schema:
             type: array
             items:
@@ -17676,7 +17481,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Reference to the broker of users involved in transfers. Is only taken into account if authenticated as administrator."
-          style: simple
           schema:
             type: array
             items:
@@ -17692,7 +17496,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Reference to the channel used to perform / receive the transfer. Only taken into account if authenticated as administrator."
-          style: simple
           schema:
             type: array
             items:
@@ -17702,7 +17505,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "The currencies internal names or ids."
-          style: simple
           schema:
             type: array
             items:
@@ -17712,7 +17514,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "The minimum / maximum transfer date. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -17723,7 +17524,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "List of transfers ids to be excluded from the result."
-          style: simple
           schema:
             type: array
             items:
@@ -17733,7 +17533,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Statuses used as search criteria applied only to transactions of kind `externalPayment`."
-          style: simple
           schema:
             type: array
             items:
@@ -17742,7 +17541,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "The source account types internal names or ids."
-          style: simple
           schema:
             type: array
             items:
@@ -17758,7 +17556,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Reference to the user group used to perform / receive the transfer. Only taken into account if authenticated as administrator."
-          style: simple
           schema:
             type: array
             items:
@@ -17774,7 +17571,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: ''
-          style: simple
           schema:
             type: array
             items:
@@ -17802,7 +17598,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "The minimum / maximum date for payment request expiration. Only affects payment requests. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -17813,7 +17608,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Statuses used as search criteria applied only to transactions of kind `paymentRequest`."
-          style: simple
           schema:
             type: array
             items:
@@ -17828,7 +17622,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Statuses used as search criteria applied only to transactions of kind `recurringPayment`. If this filter is not empty then pending recurring payments will be excluded from the result. Pending recurring payments does not have a status."
-          style: simple
           schema:
             type: array
             items:
@@ -17837,7 +17630,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Statuses used as search criteria applied only to transactions of kind `scheduledPayment`. If this filter is not empty then pending scheduled payments will be excluded from the result. Pending scheduled payments does not have a status."
-          style: simple
           schema:
             type: array
             items:
@@ -17852,7 +17644,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Statuses used as search criteria applied only to transactions of kind `ticket`."
-          style: simple
           schema:
             type: array
             items:
@@ -17861,7 +17652,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "The source account types internal names or ids."
-          style: simple
           schema:
             type: array
             items:
@@ -17877,7 +17667,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Reference to the transfer filters, which filters transfers by type. May be either the internal id or qualified transfer filter internal name, in the format `accountType.transferFilter`."
-          style: simple
           schema:
             type: array
             items:
@@ -17887,7 +17676,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Reference to the transfer types for filter. May be either the internal id or qualified transfer type internal name, in the format `accountType.transferType`."
-          style: simple
           schema:
             type: array
             items:
@@ -17987,7 +17775,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "References to access clients (id or token) used to perform / receive the transfer."
-          style: simple
           schema:
             type: array
             items:
@@ -17997,7 +17784,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "The minimum / maximum amount. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -18014,7 +17800,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Authorization statuses used as search criteria. When set, only kinds that can go through authorization are returned (`payment`, `order`, `recurringPayment` or `scheduledPayment`)."
-          style: simple
           schema:
             type: array
             items:
@@ -18037,7 +17822,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Reference to the broker of users involved in transfers. Is only taken into account if authenticated as administrator."
-          style: simple
           schema:
             type: array
             items:
@@ -18053,7 +17837,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Reference to the channel used to perform / receive the transfer. Only taken into account if authenticated as administrator."
-          style: simple
           schema:
             type: array
             items:
@@ -18063,7 +17846,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "The currencies internal names or ids."
-          style: simple
           schema:
             type: array
             items:
@@ -18073,7 +17855,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "The minimum / maximum transfer date. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -18084,7 +17865,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "List of transfers ids to be excluded from the result."
-          style: simple
           schema:
             type: array
             items:
@@ -18094,7 +17874,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Statuses used as search criteria applied only to transactions of kind `externalPayment`."
-          style: simple
           schema:
             type: array
             items:
@@ -18103,7 +17882,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "The source account types internal names or ids."
-          style: simple
           schema:
             type: array
             items:
@@ -18119,7 +17897,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Reference to the user group used to perform / receive the transfer. Only taken into account if authenticated as administrator."
-          style: simple
           schema:
             type: array
             items:
@@ -18135,7 +17912,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: ''
-          style: simple
           schema:
             type: array
             items:
@@ -18163,7 +17939,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "The minimum / maximum date for payment request expiration. Only affects payment requests. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -18174,7 +17949,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Statuses used as search criteria applied only to transactions of kind `paymentRequest`."
-          style: simple
           schema:
             type: array
             items:
@@ -18189,7 +17963,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Statuses used as search criteria applied only to transactions of kind `recurringPayment`. If this filter is not empty then pending recurring payments will be excluded from the result. Pending recurring payments does not have a status."
-          style: simple
           schema:
             type: array
             items:
@@ -18198,7 +17971,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Statuses used as search criteria applied only to transactions of kind `scheduledPayment`. If this filter is not empty then pending scheduled payments will be excluded from the result. Pending scheduled payments does not have a status."
-          style: simple
           schema:
             type: array
             items:
@@ -18213,7 +17985,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Statuses used as search criteria applied only to transactions of kind `ticket`."
-          style: simple
           schema:
             type: array
             items:
@@ -18222,7 +17993,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "The source account types internal names or ids."
-          style: simple
           schema:
             type: array
             items:
@@ -18238,7 +18008,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Reference to the transfer filters, which filters transfers by type. May be either the internal id or qualified transfer filter internal name, in the format `accountType.transferFilter`."
-          style: simple
           schema:
             type: array
             items:
@@ -18248,7 +18017,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Reference to the transfer types for filter. May be either the internal id or qualified transfer type internal name, in the format `accountType.transferType`."
-          style: simple
           schema:
             type: array
             items:
@@ -18507,7 +18275,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "References to access clients (id or token) used to perform / receive the transfer."
-          style: simple
           schema:
             type: array
             items:
@@ -18517,7 +18284,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "The account types"
-          style: simple
           schema:
             type: array
             items:
@@ -18527,7 +18293,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "The minimum / maximum amount. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -18544,7 +18309,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Authorization statuses used as search criteria. When set, only kinds that can go through authorization are returned (`payment`, `order`, `recurringPayment` or `scheduledPayment`)."
-          style: simple
           schema:
             type: array
             items:
@@ -18567,7 +18331,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Reference to the broker of users involved in transfers. Is only taken into account if authenticated as administrator."
-          style: simple
           schema:
             type: array
             items:
@@ -18583,7 +18346,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Reference to the channel used to perform / receive the transfer. Only taken into account if authenticated as administrator."
-          style: simple
           schema:
             type: array
             items:
@@ -18593,7 +18355,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "The minimum / maximum transfer date. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -18609,7 +18370,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "List of transfers ids to be excluded from the result."
-          style: simple
           schema:
             type: array
             items:
@@ -18625,7 +18385,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Reference to the user group used to perform / receive the transfer. Only taken into account if authenticated as administrator."
-          style: simple
           schema:
             type: array
             items:
@@ -18641,7 +18400,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: ''
-          style: simple
           schema:
             type: array
             items:
@@ -18675,7 +18433,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Possible statuses for installments."
-          style: simple
           schema:
             type: array
             items:
@@ -18690,7 +18447,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Reference to the transfer filters, which filters transfers by type. May be either the internal id or qualified transfer filter internal name, in the format `accountType.transferFilter`."
-          style: simple
           schema:
             type: array
             items:
@@ -18700,7 +18456,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Reference to the transfer types for filter. May be either the internal id or qualified transfer type internal name, in the format `accountType.transferType`."
-          style: simple
           schema:
             type: array
             items:
@@ -18801,7 +18556,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "References to access clients (id or token) used to perform / receive the transfer."
-          style: simple
           schema:
             type: array
             items:
@@ -18811,7 +18565,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "The account types"
-          style: simple
           schema:
             type: array
             items:
@@ -18821,7 +18574,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "The minimum / maximum amount. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -18838,7 +18590,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Authorization statuses used as search criteria. When set, only kinds that can go through authorization are returned (`payment`, `order`, `recurringPayment` or `scheduledPayment`)."
-          style: simple
           schema:
             type: array
             items:
@@ -18861,7 +18612,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Reference to the broker of users involved in transfers. Is only taken into account if authenticated as administrator."
-          style: simple
           schema:
             type: array
             items:
@@ -18877,7 +18627,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Reference to the channel used to perform / receive the transfer. Only taken into account if authenticated as administrator."
-          style: simple
           schema:
             type: array
             items:
@@ -18887,7 +18636,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "The minimum / maximum transfer date. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -18903,7 +18651,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "List of transfers ids to be excluded from the result."
-          style: simple
           schema:
             type: array
             items:
@@ -18919,7 +18666,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Reference to the user group used to perform / receive the transfer. Only taken into account if authenticated as administrator."
-          style: simple
           schema:
             type: array
             items:
@@ -18935,7 +18681,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: ''
-          style: simple
           schema:
             type: array
             items:
@@ -18969,7 +18714,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Possible statuses for installments."
-          style: simple
           schema:
             type: array
             items:
@@ -18984,7 +18728,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Reference to the transfer filters, which filters transfers by type. May be either the internal id or qualified transfer filter internal name, in the format `accountType.transferFilter`."
-          style: simple
           schema:
             type: array
             items:
@@ -18994,7 +18737,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Reference to the transfer types for filter. May be either the internal id or qualified transfer type internal name, in the format `accountType.transferType`."
-          style: simple
           schema:
             type: array
             items:
@@ -19126,7 +18868,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "References to access clients (id or token) used to perform / receive the transfer."
-          style: simple
           schema:
             type: array
             items:
@@ -19136,7 +18877,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "The minimum / maximum amount. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -19153,7 +18893,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Authorization statuses used as search criteria. When set, only kinds that can go through authorization are returned (`payment`, `order`, `recurringPayment` or `scheduledPayment`)."
-          style: simple
           schema:
             type: array
             items:
@@ -19176,7 +18915,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Reference to the broker of users involved in transfers. Is only taken into account if authenticated as administrator."
-          style: simple
           schema:
             type: array
             items:
@@ -19192,7 +18930,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Reference to the channel used to perform / receive the transfer. Only taken into account if authenticated as administrator."
-          style: simple
           schema:
             type: array
             items:
@@ -19202,7 +18939,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "The currencies internal names or ids."
-          style: simple
           schema:
             type: array
             items:
@@ -19212,7 +18948,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "The minimum / maximum transfer date. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -19223,7 +18958,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "List of transfers ids to be excluded from the result."
-          style: simple
           schema:
             type: array
             items:
@@ -19233,7 +18967,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "The source account types internal names or ids."
-          style: simple
           schema:
             type: array
             items:
@@ -19249,7 +18982,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Reference to the user group used to perform / receive the transfer. Only taken into account if authenticated as administrator."
-          style: simple
           schema:
             type: array
             items:
@@ -19265,7 +18997,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: ''
-          style: simple
           schema:
             type: array
             items:
@@ -19299,7 +19030,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Possible statuses for installments."
-          style: simple
           schema:
             type: array
             items:
@@ -19308,7 +19038,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "The source account types internal names or ids."
-          style: simple
           schema:
             type: array
             items:
@@ -19324,7 +19053,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Reference to the transfer filters, which filters transfers by type. May be either the internal id or qualified transfer filter internal name, in the format `accountType.transferFilter`."
-          style: simple
           schema:
             type: array
             items:
@@ -19334,7 +19062,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Reference to the transfer types for filter. May be either the internal id or qualified transfer type internal name, in the format `accountType.transferType`."
-          style: simple
           schema:
             type: array
             items:
@@ -19434,7 +19161,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "References to access clients (id or token) used to perform / receive the transfer."
-          style: simple
           schema:
             type: array
             items:
@@ -19444,7 +19170,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "The minimum / maximum amount. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -19461,7 +19186,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Authorization statuses used as search criteria. When set, only kinds that can go through authorization are returned (`payment`, `order`, `recurringPayment` or `scheduledPayment`)."
-          style: simple
           schema:
             type: array
             items:
@@ -19484,7 +19208,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Reference to the broker of users involved in transfers. Is only taken into account if authenticated as administrator."
-          style: simple
           schema:
             type: array
             items:
@@ -19500,7 +19223,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Reference to the channel used to perform / receive the transfer. Only taken into account if authenticated as administrator."
-          style: simple
           schema:
             type: array
             items:
@@ -19510,7 +19232,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "The currencies internal names or ids."
-          style: simple
           schema:
             type: array
             items:
@@ -19520,7 +19241,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "The minimum / maximum transfer date. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -19531,7 +19251,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "List of transfers ids to be excluded from the result."
-          style: simple
           schema:
             type: array
             items:
@@ -19541,7 +19260,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "The source account types internal names or ids."
-          style: simple
           schema:
             type: array
             items:
@@ -19557,7 +19275,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Reference to the user group used to perform / receive the transfer. Only taken into account if authenticated as administrator."
-          style: simple
           schema:
             type: array
             items:
@@ -19573,7 +19290,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: ''
-          style: simple
           schema:
             type: array
             items:
@@ -19607,7 +19323,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Possible statuses for installments."
-          style: simple
           schema:
             type: array
             items:
@@ -19616,7 +19331,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "The source account types internal names or ids."
-          style: simple
           schema:
             type: array
             items:
@@ -19632,7 +19346,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Reference to the transfer filters, which filters transfers by type. May be either the internal id or qualified transfer filter internal name, in the format `accountType.transferFilter`."
-          style: simple
           schema:
             type: array
             items:
@@ -19642,7 +19355,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "Reference to the transfer types for filter. May be either the internal id or qualified transfer type internal name, in the format `accountType.transferType`."
-          style: simple
           schema:
             type: array
             items:
@@ -23347,7 +23059,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "The minimum / maximum voucher amount"
-          style: simple
           schema:
             type: array
             items:
@@ -23364,7 +23075,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "The ids or internal names of buyers groups"
-          style: simple
           schema:
             type: array
             items:
@@ -23374,7 +23084,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "The minimum / maximum voucher creation date. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -23390,7 +23099,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "The minimum / maximum voucher expiration date. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -23426,7 +23134,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "The minimum / maximum voucher redeem date. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -23443,7 +23150,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "The ids or internal names of redeemers groups"
-          style: simple
           schema:
             type: array
             items:
@@ -23459,7 +23165,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: ''
-          style: simple
           schema:
             type: array
             items:
@@ -23474,7 +23179,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "The ids or internal names of voucher types"
-          style: simple
           schema:
             type: array
             items:
@@ -23568,7 +23272,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "The minimum / maximum voucher amount"
-          style: simple
           schema:
             type: array
             items:
@@ -23585,7 +23288,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "The ids or internal names of buyers groups"
-          style: simple
           schema:
             type: array
             items:
@@ -23595,7 +23297,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "The minimum / maximum voucher creation date. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -23611,7 +23312,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "The minimum / maximum voucher expiration date. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -23647,7 +23347,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "The minimum / maximum voucher redeem date. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -23664,7 +23363,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "The ids or internal names of redeemers groups"
-          style: simple
           schema:
             type: array
             items:
@@ -23680,7 +23378,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: ''
-          style: simple
           schema:
             type: array
             items:
@@ -23695,7 +23392,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "The ids or internal names of voucher types"
-          style: simple
           schema:
             type: array
             items:
@@ -24135,7 +23831,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "The minimum / maximum voucher amount"
-          style: simple
           schema:
             type: array
             items:
@@ -24146,7 +23841,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "The minimum / maximum voucher creation date. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -24157,7 +23851,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "The minimum / maximum voucher expiration date. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -24188,7 +23881,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "The minimum / maximum voucher redeem date. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -24210,7 +23902,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: ''
-          style: simple
           schema:
             type: array
             items:
@@ -24225,7 +23916,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "The ids or internal names of voucher types"
-          style: simple
           schema:
             type: array
             items:
@@ -25460,7 +25150,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           in: query
           required: false
           description: "The minimum / maximum record creation date"
-          style: simple
           schema:
             type: array
             items:
@@ -25472,7 +25161,6 @@ Reference to the broker of users involved in transfers. Is only taken into accou
           required: false
           description: "Record custom field values used as filters. Is a comma-separated array, where each part consists in two parts: the internal name (or custom field id) of the field, and a value, both separated by : (colon).  For example, `customFields=field1:value1,field2:value2`. Sometimes multiple values are accepted. In this case, the multiple values are separated by pipes. For example, customFields=field1:valueA|valueB. Enumerated fields accept multiple values, while numeric and date fields also accept ranges, which are two values, pipe-separated. For example, `customFields=tradeType:offer|search,extraDate:2000-01-01|2001-12-31` would match results whose custom field with internal name `tradeType` is either `offer` or `search`, and whose `extraDate` is between January 1, 2000 and December 31, 2001. To specify a single bound in ranges (like birth dates before December 31, 2001), use a pipe in one of the values, like `customFields=extraDate:|2001-12-31`.
 A note for dynamic custom fields: If a script is used to generate possible values for search, the list will be returned in the  corresponding data, and it is sent as a pipe-separated list of values (not labels). For example: `customFields=dynamic:a|b|c`. However, it is also possible to perform a keywords-like (full-text) search using the dynamic value label. In this case a single value, prefixed by single quotes should be used. For example: `customFields=dynamic:'business`."
-          style: simple
           schema:
             type: array
             items:
@@ -25534,7 +25222,6 @@ The specific address fields are:
 - `address.region`: Searches by region (or state);
 - `address.country`: Searches by ISO 3166-1 alpha-2 country code.
 A note for dynamic custom fields: If a script is used to generate possible values for search, the list will be returned in the corresponding data, and it is sent as a pipe-separated list of values (not labels). For example: `profileFields=dynamic:a|b|c`. However, it is also possible to perform a keywords-like (full-text) search using the dynamic value label. In this case a single value, prefixed by single quotes should be used. For example: `profileFields=dynamic:'business`."
-          style: simple
           schema:
             type: array
             items:
@@ -25726,7 +25413,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minimum / maximum record creation date"
-          style: simple
           schema:
             type: array
             items:
@@ -25738,7 +25424,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           required: false
           description: "Record custom field values used as filters. Is a comma-separated array, where each part consists in two parts: the internal name (or custom field id) of the field, and a value, both separated by : (colon).  For example, `customFields=field1:value1,field2:value2`. Sometimes multiple values are accepted. In this case, the multiple values are separated by pipes. For example, customFields=field1:valueA|valueB. Enumerated fields accept multiple values, while numeric and date fields also accept ranges, which are two values, pipe-separated. For example, `customFields=tradeType:offer|search,extraDate:2000-01-01|2001-12-31` would match results whose custom field with internal name `tradeType` is either `offer` or `search`, and whose `extraDate` is between January 1, 2000 and December 31, 2001. To specify a single bound in ranges (like birth dates before December 31, 2001), use a pipe in one of the values, like `customFields=extraDate:|2001-12-31`.
 A note for dynamic custom fields: If a script is used to generate possible values for search, the list will be returned in the  corresponding data, and it is sent as a pipe-separated list of values (not labels). For example: `customFields=dynamic:a|b|c`. However, it is also possible to perform a keywords-like (full-text) search using the dynamic value label. In this case a single value, prefixed by single quotes should be used. For example: `customFields=dynamic:'business`."
-          style: simple
           schema:
             type: array
             items:
@@ -25800,7 +25485,6 @@ The specific address fields are:
 - `address.region`: Searches by region (or state);
 - `address.country`: Searches by ISO 3166-1 alpha-2 country code.
 A note for dynamic custom fields: If a script is used to generate possible values for search, the list will be returned in the corresponding data, and it is sent as a pipe-separated list of values (not labels). For example: `profileFields=dynamic:a|b|c`. However, it is also possible to perform a keywords-like (full-text) search using the dynamic value label. In this case a single value, prefixed by single quotes should be used. For example: `profileFields=dynamic:'business`."
-          style: simple
           schema:
             type: array
             items:
@@ -26296,7 +25980,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Either the ids or identification methods of record owners' brokers"
-          style: simple
           schema:
             type: array
             items:
@@ -26312,7 +25995,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minimum / maximum record creation date"
-          style: simple
           schema:
             type: array
             items:
@@ -26324,7 +26006,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           required: false
           description: "Record custom field values used as filters. Is a comma-separated array, where each part consists in two parts: the internal name (or custom field id) of the field, and a value, both separated by : (colon).  For example, `customFields=field1:value1,field2:value2`. Sometimes multiple values are accepted. In this case, the multiple values are separated by pipes. For example, customFields=field1:valueA|valueB. Enumerated fields accept multiple values, while numeric and date fields also accept ranges, which are two values, pipe-separated. For example, `customFields=tradeType:offer|search,extraDate:2000-01-01|2001-12-31` would match results whose custom field with internal name `tradeType` is either `offer` or `search`, and whose `extraDate` is between January 1, 2000 and December 31, 2001. To specify a single bound in ranges (like birth dates before December 31, 2001), use a pipe in one of the values, like `customFields=extraDate:|2001-12-31`.
 A note for dynamic custom fields: If a script is used to generate possible values for search, the list will be returned in the  corresponding data, and it is sent as a pipe-separated list of values (not labels). For example: `customFields=dynamic:a|b|c`. However, it is also possible to perform a keywords-like (full-text) search using the dynamic value label. In this case a single value, prefixed by single quotes should be used. For example: `customFields=dynamic:'business`."
-          style: simple
           schema:
             type: array
             items:
@@ -26334,7 +26015,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Either the ids or internal names of record owners' groups"
-          style: simple
           schema:
             type: array
             items:
@@ -26396,7 +26076,6 @@ The specific address fields are:
 - `address.region`: Searches by region (or state);
 - `address.country`: Searches by ISO 3166-1 alpha-2 country code.
 A note for dynamic custom fields: If a script is used to generate possible values for search, the list will be returned in the corresponding data, and it is sent as a pipe-separated list of values (not labels). For example: `profileFields=dynamic:a|b|c`. However, it is also possible to perform a keywords-like (full-text) search using the dynamic value label. In this case a single value, prefixed by single quotes should be used. For example: `profileFields=dynamic:'business`."
-          style: simple
           schema:
             type: array
             items:
@@ -26509,7 +26188,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Either the ids or identification methods of record owners' brokers"
-          style: simple
           schema:
             type: array
             items:
@@ -26525,7 +26203,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minimum / maximum record creation date"
-          style: simple
           schema:
             type: array
             items:
@@ -26537,7 +26214,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           required: false
           description: "Record custom field values used as filters. Is a comma-separated array, where each part consists in two parts: the internal name (or custom field id) of the field, and a value, both separated by : (colon).  For example, `customFields=field1:value1,field2:value2`. Sometimes multiple values are accepted. In this case, the multiple values are separated by pipes. For example, customFields=field1:valueA|valueB. Enumerated fields accept multiple values, while numeric and date fields also accept ranges, which are two values, pipe-separated. For example, `customFields=tradeType:offer|search,extraDate:2000-01-01|2001-12-31` would match results whose custom field with internal name `tradeType` is either `offer` or `search`, and whose `extraDate` is between January 1, 2000 and December 31, 2001. To specify a single bound in ranges (like birth dates before December 31, 2001), use a pipe in one of the values, like `customFields=extraDate:|2001-12-31`.
 A note for dynamic custom fields: If a script is used to generate possible values for search, the list will be returned in the  corresponding data, and it is sent as a pipe-separated list of values (not labels). For example: `customFields=dynamic:a|b|c`. However, it is also possible to perform a keywords-like (full-text) search using the dynamic value label. In this case a single value, prefixed by single quotes should be used. For example: `customFields=dynamic:'business`."
-          style: simple
           schema:
             type: array
             items:
@@ -26547,7 +26223,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Either the ids or internal names of record owners' groups"
-          style: simple
           schema:
             type: array
             items:
@@ -26609,7 +26284,6 @@ The specific address fields are:
 - `address.region`: Searches by region (or state);
 - `address.country`: Searches by ISO 3166-1 alpha-2 country code.
 A note for dynamic custom fields: If a script is used to generate possible values for search, the list will be returned in the corresponding data, and it is sent as a pipe-separated list of values (not labels). For example: `profileFields=dynamic:a|b|c`. However, it is also possible to perform a keywords-like (full-text) search using the dynamic value label. In this case a single value, prefixed by single quotes should be used. For example: `profileFields=dynamic:'business`."
-          style: simple
           schema:
             type: array
             items:
@@ -26744,7 +26418,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Either the ids or identification methods of record owners' brokers"
-          style: simple
           schema:
             type: array
             items:
@@ -26760,7 +26433,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minimum / maximum record creation date"
-          style: simple
           schema:
             type: array
             items:
@@ -26772,7 +26444,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           required: false
           description: "Record custom field values used as filters. Is a comma-separated array, where each part consists in two parts: the internal name (or custom field id) of the field, and a value, both separated by : (colon).  For example, `customFields=field1:value1,field2:value2`. Sometimes multiple values are accepted. In this case, the multiple values are separated by pipes. For example, customFields=field1:valueA|valueB. Enumerated fields accept multiple values, while numeric and date fields also accept ranges, which are two values, pipe-separated. For example, `customFields=tradeType:offer|search,extraDate:2000-01-01|2001-12-31` would match results whose custom field with internal name `tradeType` is either `offer` or `search`, and whose `extraDate` is between January 1, 2000 and December 31, 2001. To specify a single bound in ranges (like birth dates before December 31, 2001), use a pipe in one of the values, like `customFields=extraDate:|2001-12-31`.
 A note for dynamic custom fields: If a script is used to generate possible values for search, the list will be returned in the  corresponding data, and it is sent as a pipe-separated list of values (not labels). For example: `customFields=dynamic:a|b|c`. However, it is also possible to perform a keywords-like (full-text) search using the dynamic value label. In this case a single value, prefixed by single quotes should be used. For example: `customFields=dynamic:'business`."
-          style: simple
           schema:
             type: array
             items:
@@ -26782,7 +26453,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Either the ids or internal names of record owners' groups"
-          style: simple
           schema:
             type: array
             items:
@@ -26844,7 +26514,6 @@ The specific address fields are:
 - `address.region`: Searches by region (or state);
 - `address.country`: Searches by ISO 3166-1 alpha-2 country code.
 A note for dynamic custom fields: If a script is used to generate possible values for search, the list will be returned in the corresponding data, and it is sent as a pipe-separated list of values (not labels). For example: `profileFields=dynamic:a|b|c`. However, it is also possible to perform a keywords-like (full-text) search using the dynamic value label. In this case a single value, prefixed by single quotes should be used. For example: `profileFields=dynamic:'business`."
-          style: simple
           schema:
             type: array
             items:
@@ -26860,7 +26529,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Either the ids or identification methods of record types"
-          style: simple
           schema:
             type: array
             items:
@@ -26960,7 +26628,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Either the ids or identification methods of record owners' brokers"
-          style: simple
           schema:
             type: array
             items:
@@ -26976,7 +26643,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minimum / maximum record creation date"
-          style: simple
           schema:
             type: array
             items:
@@ -26988,7 +26654,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           required: false
           description: "Record custom field values used as filters. Is a comma-separated array, where each part consists in two parts: the internal name (or custom field id) of the field, and a value, both separated by : (colon).  For example, `customFields=field1:value1,field2:value2`. Sometimes multiple values are accepted. In this case, the multiple values are separated by pipes. For example, customFields=field1:valueA|valueB. Enumerated fields accept multiple values, while numeric and date fields also accept ranges, which are two values, pipe-separated. For example, `customFields=tradeType:offer|search,extraDate:2000-01-01|2001-12-31` would match results whose custom field with internal name `tradeType` is either `offer` or `search`, and whose `extraDate` is between January 1, 2000 and December 31, 2001. To specify a single bound in ranges (like birth dates before December 31, 2001), use a pipe in one of the values, like `customFields=extraDate:|2001-12-31`.
 A note for dynamic custom fields: If a script is used to generate possible values for search, the list will be returned in the  corresponding data, and it is sent as a pipe-separated list of values (not labels). For example: `customFields=dynamic:a|b|c`. However, it is also possible to perform a keywords-like (full-text) search using the dynamic value label. In this case a single value, prefixed by single quotes should be used. For example: `customFields=dynamic:'business`."
-          style: simple
           schema:
             type: array
             items:
@@ -26998,7 +26663,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Either the ids or internal names of record owners' groups"
-          style: simple
           schema:
             type: array
             items:
@@ -27060,7 +26724,6 @@ The specific address fields are:
 - `address.region`: Searches by region (or state);
 - `address.country`: Searches by ISO 3166-1 alpha-2 country code.
 A note for dynamic custom fields: If a script is used to generate possible values for search, the list will be returned in the corresponding data, and it is sent as a pipe-separated list of values (not labels). For example: `profileFields=dynamic:a|b|c`. However, it is also possible to perform a keywords-like (full-text) search using the dynamic value label. In this case a single value, prefixed by single quotes should be used. For example: `profileFields=dynamic:'business`."
-          style: simple
           schema:
             type: array
             items:
@@ -27076,7 +26739,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Either the ids or identification methods of record types"
-          style: simple
           schema:
             type: array
             items:
@@ -27983,7 +27645,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minimum / maximum token activation date."
-          style: simple
           schema:
             type: array
             items:
@@ -27994,7 +27655,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Either id or a principal (login name, e-mail, etc) for brokers"
-          style: simple
           schema:
             type: array
             items:
@@ -28004,7 +27664,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minimum / maximum token expiry date."
-          style: simple
           schema:
             type: array
             items:
@@ -28015,7 +27674,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Either id or internal names of groups / group sets"
-          style: simple
           schema:
             type: array
             items:
@@ -28045,7 +27703,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The desired token statuses"
-          style: simple
           schema:
             type: array
             items:
@@ -32051,7 +31708,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Either the ids or identification methods the alert user's brokers"
-          style: simple
           schema:
             type: array
             items:
@@ -32061,7 +31717,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minimum / maximum alert date. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -32072,7 +31727,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Either the ids or internal names of the alert user"
-          style: simple
           schema:
             type: array
             items:
@@ -32102,7 +31756,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The types of user alerts to search"
-          style: simple
           schema:
             type: array
             items:
@@ -32313,7 +31966,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The levels to filter"
-          style: simple
           schema:
             type: array
             items:
@@ -32336,7 +31988,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minimum / maximum reference date"
-          style: simple
           schema:
             type: array
             items:
@@ -32984,7 +32635,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Either ids or an identifications, such as login name, e-mail, etc, for the brokers of the advertisement owner. Can only be used when searching with a broker himself or admin."
-          style: simple
           schema:
             type: array
             items:
@@ -33007,7 +32657,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           required: false
           description: "Advertisement custom field values used as filters. Is a comma-separated array, where each part consists in two parts: the internal name (or custom field id) of the field, and a value, both separated by : (colon).  For example, `customFields=field1:value1,field2:value2`. Sometimes multiple values are accepted. In this case, the multiple values are separated by pipes. For example, customFields=field1:valueA|valueB. Enumerated fields accept multiple values, while numeric and date fields also accept ranges, which are two values, pipe-separated. For example, `customFields=tradeType:offer|search,extraDate:2000-01-01|2001-12-31` would match results whose custom field with internal name `tradeType` is either `offer` or `search`, and whose `extraDate` is between January 1, 2000 and December 31, 2001. To specify a single bound in ranges (like birth dates before December 31, 2001), use a pipe in one of the values, like `customFields=extraDate:|2001-12-31`.
 A note for dynamic custom fields: If a script is used to generate possible values for search, the list will be returned in the  corresponding data, and it is sent as a pipe-separated list of values (not labels). For example: `customFields=dynamic:a|b|c`. However, it is also possible to perform a keywords-like (full-text) search using the dynamic value label. In this case a single value, prefixed by single quotes should be used. For example: `customFields=dynamic:'business`."
-          style: simple
           schema:
             type: array
             items:
@@ -33017,7 +32666,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minimum / maximum expiration date. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -33028,7 +32676,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "Array of either id or internal names of user groups the advertisement owner must belong to"
-          style: simple
           schema:
             type: array
             items:
@@ -33101,7 +32748,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minumum / maximum price. Used only if a currency is specified. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -33150,7 +32796,6 @@ The specific address fields are:
 - `address.region`: Searches by region (or state);
 - `address.country`: Searches by ISO 3166-1 alpha-2 country code.
 A note for dynamic custom fields: If a script is used to generate possible values for search, the list will be returned in the corresponding data, and it is sent as a pipe-separated list of values (not labels). For example: `profileFields=dynamic:a|b|c`. However, it is also possible to perform a keywords-like (full-text) search using the dynamic value label. In this case a single value, prefixed by single quotes should be used. For example: `profileFields=dynamic:'business`."
-          style: simple
           schema:
             type: array
             items:
@@ -33160,7 +32805,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minimum / maximum publication date. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -33183,7 +32827,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: ''
-          style: simple
           schema:
             type: array
             items:
@@ -33413,7 +33056,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           required: false
           description: "Advertisement custom field values used as filters. Is a comma-separated array, where each part consists in two parts: the internal name (or custom field id) of the field, and a value, both separated by : (colon).  For example, `customFields=field1:value1,field2:value2`. Sometimes multiple values are accepted. In this case, the multiple values are separated by pipes. For example, customFields=field1:valueA|valueB. Enumerated fields accept multiple values, while numeric and date fields also accept ranges, which are two values, pipe-separated. For example, `customFields=tradeType:offer|search,extraDate:2000-01-01|2001-12-31` would match results whose custom field with internal name `tradeType` is either `offer` or `search`, and whose `extraDate` is between January 1, 2000 and December 31, 2001. To specify a single bound in ranges (like birth dates before December 31, 2001), use a pipe in one of the values, like `customFields=extraDate:|2001-12-31`.
 A note for dynamic custom fields: If a script is used to generate possible values for search, the list will be returned in the  corresponding data, and it is sent as a pipe-separated list of values (not labels). For example: `customFields=dynamic:a|b|c`. However, it is also possible to perform a keywords-like (full-text) search using the dynamic value label. In this case a single value, prefixed by single quotes should be used. For example: `customFields=dynamic:'business`."
-          style: simple
           schema:
             type: array
             items:
@@ -33423,7 +33065,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minimum / maximum expiration date. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -33491,7 +33132,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minumum / maximum price. Used only if a currency is specified. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -33540,7 +33180,6 @@ The specific address fields are:
 - `address.region`: Searches by region (or state);
 - `address.country`: Searches by ISO 3166-1 alpha-2 country code.
 A note for dynamic custom fields: If a script is used to generate possible values for search, the list will be returned in the corresponding data, and it is sent as a pipe-separated list of values (not labels). For example: `profileFields=dynamic:a|b|c`. However, it is also possible to perform a keywords-like (full-text) search using the dynamic value label. In this case a single value, prefixed by single quotes should be used. For example: `profileFields=dynamic:'business`."
-          style: simple
           schema:
             type: array
             items:
@@ -33550,7 +33189,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minimum / maximum publication date. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -33567,7 +33205,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: ''
-          style: simple
           schema:
             type: array
             items:
@@ -35173,7 +34810,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: "The minimum / maximum order creation date. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
-          style: simple
           schema:
             type: array
             items:
@@ -35228,7 +34864,6 @@ A note for dynamic custom fields: If a script is used to generate possible value
           in: query
           required: false
           description: ''
-          style: simple
           schema:
             type: array
             items:

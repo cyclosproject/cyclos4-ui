@@ -8,7 +8,7 @@ import { ContentPage } from 'app/content/content-page';
 import { handleFullWidthLayout } from 'app/content/content-with-layout';
 import { empty as isEmpty } from 'app/shared/helper';
 import { RootMenu } from 'app/shared/menu';
-import { LoginService } from 'app/core/login.service';
+import { User } from 'app/api/models';
 
 const VALID_CONTENT_PAGES_ROOT_MENUS = [RootMenu.CONTENT, RootMenu.BANKING, RootMenu.MARKETPLACE, RootMenu.PERSONAL];
 
@@ -25,11 +25,13 @@ export class ContentService {
   get contentPages(): ContentPage[] {
     return this._contentPages;
   }
-  set contentPages(contentPages: ContentPage[]) {
-    this._contentPages = this.preprocessContentPages(contentPages);
+  setContentPages(contentPages: ContentPage[], user: User) {
+    this._contentPages = this.preprocessContentPages(contentPages, user);
   }
 
-  constructor(private cache: CacheService, private injector: Injector) {
+  constructor(
+    private cache: CacheService,
+    private injector: Injector) {
   }
 
   /**
@@ -63,7 +65,7 @@ export class ContentService {
     return (this._contentPages || []).find(p => p.slug === slug);
   }
 
-  private preprocessContentPages(contentPages: ContentPage[]): ContentPage[] {
+  private preprocessContentPages(contentPages: ContentPage[], user: User): ContentPage[] {
     contentPages = (contentPages || []).filter(p => p != null);
     let nextId = 0;
     for (const page of contentPages) {
@@ -87,7 +89,6 @@ export class ContentService {
       // Normalize the isVisible method to always be there and do all checks
       const originalIsVisible = page.isVisible;
       page.isVisible = injector => {
-        const user = injector.get(LoginService).user;
         if (user == null && page.guests === false
           || user != null && page.loggedUsers === false) {
           return false;

@@ -17,6 +17,10 @@ import { first, tap } from 'rxjs/operators';
 export function setRootSpinnerVisible(visible: boolean): void {
   const rootSpinner = document.getElementById('rootSpinner') as HTMLElement;
   rootSpinner.style.display = visible ? '' : 'none';
+  const root = document.getElementsByClassName('root-container').item(0) as HTMLElement;
+  if (root) {
+    root.style.display = visible ? 'none' : '';
+  }
 }
 
 /**

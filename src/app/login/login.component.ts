@@ -1,14 +1,15 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, ValidationErrors } from '@angular/forms';
-import { DataForLogin, DataForUi } from 'app/api/models';
+import { DataForLogin, DataForUi, IdentityProvider, IdentityProviderCallbackStatusEnum, Auth } from 'app/api/models';
 import { Configuration } from 'app/configuration';
 import { LoginReason, LoginState } from 'app/core/login-state';
 import { NextRequestState } from 'app/core/next-request-state';
 import { BasePageComponent } from 'app/shared/base-page.component';
-import { empty } from 'app/shared/helper';
+import { empty, setRootSpinnerVisible } from 'app/shared/helper';
 import { PasswordInputComponent } from 'app/shared/password-input.component';
 import { ApiHelper } from 'app/shared/api-helper';
 import { Menu } from 'app/shared/menu';
+import { first } from 'rxjs/operators';
 
 /**
  * Component used to show a login form.
@@ -26,6 +27,8 @@ export class LoginComponent
   implements OnInit {
 
   form: FormGroup;
+
+  private identityProviderRequestId: string;
 
   @ViewChild('principal', { static: false }) principalRef: ElementRef;
   @ViewChild('password', { static: false }) passwordInput: PasswordInputComponent;
@@ -98,12 +101,7 @@ export class LoginComponent
     if (!this.form.valid) {
       return;
     }
-    this.login.login(value.principal, value.password).subscribe(auth => {
-      // Redirect to the correct URL
-      if (!ApiHelper.isRestrictedAccess(auth)) {
-        this.router.navigateByUrl(this.loginState.redirectUrl || '');
-      }
-    });
+    this.login.login(value.principal, value.password, this.identityProviderRequestId).subscribe(this.afterLogin);
   }
 
   get loggedOut(): boolean {
@@ -112,5 +110,47 @@ export class LoginComponent
 
   resolveMenu() {
     return Menu.LOGIN;
+  }
+
+  loginWith(idp: IdentityProvider) {
+    this.authHelper.identityProviderPopup(idp, 'login').pipe(first()).subscribe(callback => {
+      this.identityProviderRequestId = callback.requestId;
+      switch (callback.status) {
+        case IdentityProviderCallbackStatusEnum.LOGIN_LINK:
+        case IdentityProviderCallbackStatusEnum.LOGIN_EMAIL:
+          // Successful login
+          this.nextRequestState.replaceSession(callback.sessionToken).pipe(first()).subscribe(() => {
+            setRootSpinnerVisible(true);
+            this.dataForUiHolder.initialize().subscribe(this.afterLogin);
+          });
+          break;
+        case IdentityProviderCallbackStatusEnum.LOGIN_NO_MATCH:
+          this.notification.info(this.i18n.identityProvider.loginNoMatch({
+            app: this.format.appTitleSmall,
+            email: callback.email,
+            provider: idp.name
+          }));
+          break;
+        case IdentityProviderCallbackStatusEnum.LOGIN_NO_EMAIL:
+          this.notification.info(this.i18n.identityProvider.loginNoEmail({
+            app: this.format.appTitleSmall,
+            provider: idp.name
+          }));
+          break;
+        default:
+          this.notification.error(callback.errorMessage || this.i18n.error.general);
+          break;
+      }
+    });
+  }
+
+  private get afterLogin(): (auth: Auth) => any {
+    return auth => {
+      setRootSpinnerVisible(false);
+      // Redirect to the correct URL
+      if (!ApiHelper.isRestrictedAccess(auth)) {
+        this.router.navigateByUrl(this.loginState.redirectUrl || '');
+      }
+    };
   }
 }
