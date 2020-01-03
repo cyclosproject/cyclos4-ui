@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import {
   ConflictError, ConflictErrorCode, ErrorKind, ForbiddenError, ForbiddenErrorCode, ForgottenPasswordError, ForgottenPasswordErrorCode,
   InputError, InputErrorCode, NestedError, NotFoundError, OtpError, PasswordStatusEnum, PaymentError, PaymentErrorCode, RedeemVoucherError,
-  RedeemVoucherErrorCode, UnauthorizedError, UnauthorizedErrorCode, BuyVoucherError, BuyVoucherErrorCode
+  RedeemVoucherErrorCode, UnauthorizedError, UnauthorizedErrorCode, BuyVoucherError, BuyVoucherErrorCode, ShoppingCartErrorCode, ShoppingCartError
 } from 'app/api/models';
 import { BankingHelperService } from 'app/core/banking-helper.service';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
@@ -111,6 +111,9 @@ export class ErrorHandlerService {
                 return;
               case ErrorKind.BUY_VOUCHER:
                 this.handleBuyVoucherError(error as BuyVoucherError);
+                return;
+              case ErrorKind.SHOPPING_CART:
+                this.handleShoppingCartError(error as ShoppingCartError);
                 return;
               case ErrorKind.NESTED:
                 // An error in a nested property
@@ -253,6 +256,19 @@ export class ErrorHandlerService {
 
   public handleRedeemVoucherError(error: RedeemVoucherError) {
     this.notification.error(this.redeemVoucherErrorMessage(error));
+  }
+
+  public handleShoppingCartError(error: ShoppingCartError) {
+    this.notification.error(this.shoppingCartErrorMessage(error));
+  }
+
+  private shoppingCartErrorMessage(error: ShoppingCartError) {
+    if (error.code === ShoppingCartErrorCode.CAN_NOT_BUY_FROM_SELLER) {
+      return this.i18n.ad.error.cannotBuyFromSeller;
+    } else if (error.code === ShoppingCartErrorCode.NOT_ENOUGH_STOCK) {
+      return this.i18n.ad.error.notEnoughStock;
+    }
+    return this.general;
   }
 
   public handleBuyVoucherError(error: BuyVoucherError) {

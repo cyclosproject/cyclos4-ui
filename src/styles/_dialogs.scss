@@ -12,6 +12,10 @@
   }
 }
 
+bs-dropdown-container {
+  z-index: 9999 !important;
+}
+
 alert .close {
   font-size: 2rem !important;
   padding: 0 !important;

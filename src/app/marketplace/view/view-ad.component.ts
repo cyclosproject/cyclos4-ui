@@ -1,9 +1,8 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
-  AdCategoryWithParent, Address, AdView, AdKind, RoleEnum, TimeInterval,
-  DeliveryMethod, DeliveryMethodChargeTypeEnum, AdQuestionView
+  AdCategoryWithParent, Address, AdView, AdKind, RoleEnum, DeliveryMethod, DeliveryMethodChargeTypeEnum, AdQuestionView
 } from 'app/api/models';
-import { MarketplaceService, AdQuestionsService } from 'app/api/services';
+import { MarketplaceService, AdQuestionsService, ShoppingCartsService } from 'app/api/services';
 import { OperationHelperService } from 'app/core/operation-helper.service';
 import { HeadingAction } from 'app/shared/action';
 import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
@@ -11,7 +10,6 @@ import { words } from 'app/shared/helper';
 import { Menu } from 'app/shared/menu';
 import { Observable } from 'rxjs';
 import { MarketplaceHelperService } from 'app/core/marketplace-helper.service';
-import { FormatService } from 'app/core/format.service';
 import { LoginService } from 'app/core/login.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { empty } from 'app/shared/helper';
@@ -37,12 +35,12 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
   constructor(
     injector: Injector,
     private modal: BsModalService,
-    private formatService: FormatService,
     private operationHelper: OperationHelperService,
     private loginService: LoginService,
     private adQuestionService: AdQuestionsService,
     private marketplaceHelper: MarketplaceHelperService,
-    private marketplaceService: MarketplaceService) {
+    private marketplaceService: MarketplaceService,
+    private shoppingCartService: ShoppingCartsService) {
     super(injector);
   }
 
@@ -75,7 +73,7 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
    * Executes the given request, displays the given message and reloads page after finish
    */
   protected updateStatus(request: Observable<any>, message: string, checkRole?: boolean) {
-    request.subscribe(() => {
+    this.addSub(request.subscribe(() => {
       this.notification.snackBar(message);
       if (checkRole &&
         (this.dataForUiHolder.role === RoleEnum.BROKER &&
@@ -89,7 +87,22 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
         this.reload();
       }
       this.reload();
-    });
+    }));
+  }
+
+  /**
+   * Adds the current ad to cart, displays a message and updates the top bar
+   */
+  protected addToCart() {
+    this.addSub(this.shoppingCartService.addItemToShoppingCart({ ad: this.ad.id }).subscribe(items => {
+      // Assume if the amount of items has not changed is
+      // because this product was already in cart
+      this.notification.snackBar(
+        items === this.marketplaceHelper.cartItems ?
+          this.i18n.ad.addedProductAlreadyInCart :
+          this.i18n.ad.addedProduct);
+      this.marketplaceHelper.cartItems = items;
+    }));
   }
 
   onDataInitialized(ad: AdView) {
@@ -98,6 +111,10 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
       (this.dataForUiHolder.role === RoleEnum.ADMINISTRATOR ||
         this.dataForUiHolder.role === RoleEnum.BROKER));
     const headingActions: HeadingAction[] = [];
+    if (ad.canBuy) {
+      headingActions.push(
+        new HeadingAction('add_shopping_cart', this.i18n.ad.addToCart, () => this.addToCart()));
+    }
     if (ad.canHide) {
       headingActions.push(
         new HeadingAction('lock', this.i18n.ad.hide, () => this.updateStatus(
@@ -241,17 +258,10 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
   }
 
   /**
-   * Formats the given time as time interval
-   */
-  formatTimeInterval(timeInterval: TimeInterval): string {
-    return this.formatService.formatTimeInterval(timeInterval);
-  }
-
-  /**
    * Formats the given quantity if allow decimals
    */
   formatStock(quantity: string): string {
-    const stock = this.formatService.numberToFixed(quantity, this.data.allowDecimal ? 2 : 0);
+    const stock = this.format.numberToFixed(quantity, this.data.allowDecimal ? 2 : 0);
     return stock || '';
   }
 

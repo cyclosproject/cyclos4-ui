@@ -87,8 +87,13 @@ export class UserAdsComponent
   }
 
   get canViewPending(): boolean {
-    // TODO missing USER_PENDING_ADS_VIEW permission
-    return this.data.requiresAuthorization && this.isManager;
+    const auth = this.dataForUiHolder.auth || {};
+    const permissions = auth.permissions || {};
+    const marketplace = permissions.marketplace || {};
+    return this.data.requiresAuthorization &&
+      (this.simple ?
+        marketplace.userSimple.viewPending :
+        marketplace.userWebshop.viewPending);
   }
 
   get canViewDraft(): boolean {

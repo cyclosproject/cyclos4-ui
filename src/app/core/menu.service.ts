@@ -649,13 +649,23 @@ export class MenuService {
         add(Menu.SEARCH_ADS, '/marketplace/search', 'shopping_cart', this.i18n.menu.marketplaceAdvertisements);
       }
 
+      // Shopping cart
+      if (marketplace.userWebshop.purchase) {
+        add(Menu.SHOPPING_CART, '/marketplace/shopping-cart', 'shopping_cart', this.i18n.menu.shoppingCart);
+      }
+
       const simple = marketplace.mySimple || {};
       if (simple.enable) {
         add(Menu.SEARCH_USER_ADS, 'marketplace/self/simple/list', 'shopping_cart', this.i18n.menu.marketplaceMyAdvertisements);
       }
+      if (marketplace.purchase) {
+        add(Menu.PURCHASES, 'marketplace/self/purchases', 'shop_two', this.i18n.menu.marketplaceMyPurchases);
+      }
       const webshop = marketplace.myWebshop || {};
       if (webshop.enable) {
         add(Menu.SEARCH_USER_WEBSHOP, 'marketplace/self/webshop/list', 'shopping_basket', this.i18n.menu.marketplaceMyWebshop);
+        add(Menu.SALES, 'marketplace/self/sales', 'local_offer', this.i18n.menu.marketplaceMySales);
+        add(Menu.DELIVERY_METHODS, 'marketplace/self/delivery-methods', 'local_shipping', this.i18n.menu.marketplaceDeliveryMethods);
       }
 
       if (vouchers.buy && role !== RoleEnum.ADMINISTRATOR) {

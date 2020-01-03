@@ -54,7 +54,7 @@
         <input-field [label]="i18n.general.name" formControlName="name"
           required></input-field>
         <single-selection-field *ngIf="data.maxCategoriesPerAd == 1"
-          formControlName="categories" [label]="i18n.ad.category">
+          formControlName="categories" [label]="i18n.ad.category" required>
           <field-option *ngFor="let cat of categories"
             [value]="ApiHelper.internalNameOrId(cat)" [id]="cat.id"
             [internalName]="cat.internalName" [text]="cat.name"
@@ -63,7 +63,7 @@
           </field-option>
         </single-selection-field>
         <multi-selection-field *ngIf="data.maxCategoriesPerAd > 1"
-          [label]="i18n.ad.categories" formControlName="categories">
+          [label]="i18n.ad.categories" formControlName="categories" required>
           <field-option *ngFor="let cat of categories"
             [value]="ApiHelper.internalNameOrId(cat)" [id]="cat.id"
             [internalName]="cat.internalName" [text]="cat.name"
@@ -73,7 +73,8 @@
         </multi-selection-field>
         <single-selection-field
           *ngIf="data.currencies && data.currencies.length > 1"
-          formControlName="currency" [label]="i18n.general.currency">
+          formControlName="currency" [label]="i18n.general.currency"
+          [required]="webshop">
           <field-option *ngFor="let c of data.currencies"
             [value]="ApiHelper.internalNameOrId(c)" [id]="c.id"
             [internalName]="c.internalName" [text]="c.name">
@@ -81,9 +82,11 @@
         </single-selection-field>
         <decimal-field *ngIf="currency$ | async" formControlName="price"
           [label]="i18n.ad.price" [scale]="currency.decimalDigits"
-          [prefix]="currency.prefix" [suffix]="currency.suffix">
+          [prefix]="currency.prefix" [suffix]="currency.suffix"
+          [required]="webshop">
         </decimal-field>
-        <label-value [label]="i18n.ad.publicationPeriod" labelPosition="side">
+        <label-value [label]="i18n.ad.publicationPeriod" labelPosition="side"
+          required>
           <div class="row">
             <div class="col-md-6">
               <date-field labelPosition="side"
@@ -99,29 +102,37 @@
             </div>
           </div>
         </label-value>
-        <label-value [label]="i18n.ad.promotionalPeriod" labelPosition="side">
-          <div class="row">
-            <div class="col-md-6">
-              <date-field labelPosition="side"
-                formControlName="promotionalBeginDate" minDate="past5"
-                fieldSize="full">
-              </date-field>
+        <boolean-field [label]="i18n.ad.setPromotionalPeriod"
+          formControlName="setPromotionalPeriod"></boolean-field>
+        <ng-container
+          *ngIf="
+        (form.get('setPromotionalPeriod').valueChanges | async) || form.get('setPromotionalPeriod').value">
+          <label-value [label]="i18n.ad.promotionalPeriod"
+            labelPosition="side">
+            <div class="row">
+              <div class="col-md-6">
+                <date-field labelPosition="side"
+                  formControlName="promotionalBeginDate" minDate="past5"
+                  fieldSize="full">
+                </date-field>
+              </div>
+              <div class="col-md-6">
+                <date-field labelPosition="side"
+                  formControlName="promotionalEndDate" minDate="past5"
+                  fieldSize="full">
+                </date-field>
+              </div>
             </div>
-            <div class="col-md-6">
-              <date-field labelPosition="side"
-                formControlName="promotionalEndDate" minDate="past5"
-                fieldSize="full">
-              </date-field>
-            </div>
-          </div>
-        </label-value>
-        <decimal-field *ngIf="currency$ | async"
-          formControlName="promotionalPrice"
-          [label]="i18n.ad.promotionalPrice" [scale]="currency.decimalDigits"
-          [prefix]="currency.prefix" [suffix]="currency.suffix">
-        </decimal-field>
+          </label-value>
+          <decimal-field *ngIf="currency$ | async"
+            formControlName="promotionalPrice"
+            [label]="i18n.ad.promotionalPrice"
+            [scale]="currency.decimalDigits" [prefix]="currency.prefix"
+            [suffix]="currency.suffix">
+          </decimal-field>
+        </ng-container>
         <textarea-field formControlName="description"
-          [label]="i18n.general.description"></textarea-field>
+          [label]="i18n.general.description" required></textarea-field>
         <custom-field-input *ngFor="let cf of data.customFields" [field]="cf"
           [formControl]="form.get('customValues').get(cf.internalName)"
           [binaryValues]="binaryValues">
@@ -132,6 +143,41 @@
             [id]="addr.id" [text]="addr.name">
           </field-option>
         </multi-selection-field>
+        <ng-container *ngIf="webshop">
+          <boolean-field [label]="i18n.ad.allowDecimalQuantity"
+            formControlName="allowDecimalQuantity"></boolean-field>
+          <boolean-field [label]="i18n.ad.unlimitedStock"
+            formControlName="unlimitedStock"></boolean-field>
+          <ng-container
+            *ngIf="!(form.get('unlimitedStock').valueChanges | async) && !form.get('unlimitedStock').value">
+            <decimal-field formControlName="stockQuantity"
+              [label]="i18n.ad.stockQuantity" [scale]="decimalQuantity"
+              required>
+            </decimal-field>
+            <decimal-field formControlName="minStockQuantityToNotify"
+              [label]="i18n.ad.lowStockNotification"
+              [scale]="decimalQuantity">
+            </decimal-field>
+          </ng-container>
+          <decimal-field formControlName="maxAllowedInCart"
+            [label]="i18n.ad.maxAllowedInCart" [scale]="decimalQuantity">
+          </decimal-field>
+          <decimal-field formControlName="minAllowedInCart"
+            [label]="i18n.ad.minAllowedInCart" [scale]="decimalQuantity">
+          </decimal-field>
+          <input-field type="text" [label]="i18n.ad.productNumber"
+            [mask]="mask" formControlName="productNumber" [placeholder]="mask"
+            required>
+          </input-field>
+          <multi-selection-field *ngIf="deliveryMethods$ | async"
+            [label]=" i18n.ad.deliveryMethods"
+            formControlName="deliveryMethods"
+            [emptyLabel]="deliveryMethods$.value.length === 0 ? i18n.ad.noDeliveryMethodsAvailable : null">
+            <field-option *ngFor="let dm of deliveryMethods$.value"
+              [value]="dm.id" [id]="dm.id" [text]="dm.name">
+            </field-option>
+          </multi-selection-field>
+        </ng-container>
       </form>
       <actions>
         <button class="btn btn-primary" (click)="save()">

@@ -6,7 +6,7 @@ import { FormGroup, Validators } from '@angular/forms';
 import { validateBeforeSubmit } from 'app/shared/helper';
 
 /**
- * Operator group form - either to create or edit
+ * Assigns a broker to an user
  */
 @Component({
   selector: 'broker-form',

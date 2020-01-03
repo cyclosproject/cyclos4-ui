@@ -154,9 +154,9 @@ export class FormatService {
     ];
 
     this.singularTimeFieldNames = new Map();
-    this.singularTimeFieldNames.set(TimeFieldEnum.DAYS, this.i18n.general.timeField.singular.hour);
-    this.singularTimeFieldNames.set(TimeFieldEnum.HOURS, this.i18n.general.timeField.singular.minute);
-    this.singularTimeFieldNames.set(TimeFieldEnum.MINUTES, this.i18n.general.timeField.singular.day);
+    this.singularTimeFieldNames.set(TimeFieldEnum.DAYS, this.i18n.general.timeField.singular.day);
+    this.singularTimeFieldNames.set(TimeFieldEnum.HOURS, this.i18n.general.timeField.singular.hour);
+    this.singularTimeFieldNames.set(TimeFieldEnum.MINUTES, this.i18n.general.timeField.singular.minute);
     this.singularTimeFieldNames.set(TimeFieldEnum.SECONDS, this.i18n.general.timeField.singular.second);
     this.singularTimeFieldNames.set(TimeFieldEnum.MILLIS, this.i18n.general.timeField.singular.milli);
     this.singularTimeFieldNames.set(TimeFieldEnum.MONTHS, this.i18n.general.timeField.singular.month);
