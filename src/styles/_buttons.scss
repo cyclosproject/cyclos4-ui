@@ -49,6 +49,22 @@ table.table {
   display: inline-block !important;
 }
 
+.identity-provider {
+  display: flex;
+  margin-top: 1rem;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1rem;
+  position: relative;
+  border-radius: $input-border-radius;
+
+  img {
+    max-width: 1rem;
+    position: absolute;
+    left: 0.5rem;
+  }
+}
+
 body.dark {
   .btn-primary {
     @include button-variant($button-color-dark, $button-border-color-dark);

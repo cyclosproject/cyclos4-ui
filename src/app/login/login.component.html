@@ -44,17 +44,19 @@
         {{ i18n.general.submit }}
       </button>
 
-      <button *ngFor="let idp of data.identityProviders"
-        class="identity-provider" [ngStyle]="{
+      <div *ngIf="data.identityProviders?.length > 0" class="mb-4">
+        <button *ngFor="let idp of data.identityProviders"
+          class="identity-provider" [ngStyle]="{
           border: '1px solid ' + idp.borderColor,
           background: idp.backgroundColor,
           color: idp.textColor
         }" (click)="loginWith(idp)">
-        <img *ngIf="idp.image" [src]="idp.image.url" [alt]="idp.name"
-          class="aria-hidden">
-        <span
-          [innerHTML]="i18n.identityProvider.login(idp.name) | trust"></span>
-      </button>
+          <img *ngIf="idp.image" [src]="idp.image.url" [alt]="idp.name"
+            class="aria-hidden">
+          <span
+            [innerHTML]="i18n.identityProvider.login(idp.name) | trust"></span>
+        </button>
+      </div>
 
       <a id="forgotPasswordLink" *ngIf="forgotPasswordEnabled"
         class="d-block login-margin-top login-margin-bottom"

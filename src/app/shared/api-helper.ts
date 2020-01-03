@@ -253,21 +253,28 @@ export class ApiHelper {
     const options = `top=${top},left=${left},width=${width},height=${height},`
       + 'personalbar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes';
 
+    const style = getComputedStyle(document.body);
     const win = window.open('about:blank', 'identityProvider', options);
     win.document.write(`
     <!DOCTYPE html>
     <html>
     <head>
     <style>
+      html {
+        height: 100%;
+      }
       body {
-      height: 100%;
-      background-color: #fff;
-      overflow-y: scroll;
-      font-family: Arial, helvetica, sans-serif;
-      font-size: 12px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+        height: 100%;
+        background: ${style.background};
+        color: ${style.color};
+        overflow-y: auto;
+        font: ${style.font};
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+        padding: 0;
+      }
     </style>
     </head>
     <body>

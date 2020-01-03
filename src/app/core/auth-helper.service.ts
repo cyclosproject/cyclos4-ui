@@ -421,19 +421,24 @@ export class AuthHelperService {
     }
     request.pipe(first()).subscribe(result => {
       // We got the response and need to observe changes. For logged user it will be already registered. For guests, we need a new one.
-      if (!this.dataForUiHolder.user) {
+      const guest = !this.dataForUiHolder.user;
+      if (guest) {
         this.pushNotifications.openForIdentityProviderCallback(result.requestId);
       }
       // Whenever the callback result is received, notify the resulting Observable
       this.identityProviderSubscription = this.pushNotifications.identityProviderCallback$.subscribe(callback => {
         if (result.requestId === callback.requestId) {
-          // The callback is really for this request
-          observable.next(callback);
+          // When as guest, close the opened push notifications stream
+          if (guest) {
+            this.pushNotifications.close();
+          }
           // Remove the previous subscription, if any
           if (this.identityProviderSubscription) {
             this.identityProviderSubscription.unsubscribe();
             this.identityProviderSubscription = null;
           }
+          // The callback is really for this request
+          observable.next(callback);
         }
       });
 
