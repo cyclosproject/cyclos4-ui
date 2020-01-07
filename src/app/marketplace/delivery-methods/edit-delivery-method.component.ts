@@ -74,7 +74,7 @@ export class EditDeliveryMethodComponent
    * Update required controls like charge currency and amount based on the charge type
    */
   protected updateRequiredControls() {
-    const controls = [this.form.controls.chargePrice, this.form.controls.chargeCurrency];
+    const controls = [this.form.controls.chargeAmount, this.form.controls.chargeCurrency];
     if (this.form.controls.chargeType.value === DeliveryMethodChargeTypeEnum.NEGOTIATED) {
       controls.forEach(c => c.clearValidators());
     } else {
