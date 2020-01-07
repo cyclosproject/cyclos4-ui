@@ -1,6 +1,6 @@
 import {
   AdDataForEdit, AdKind, AdDataForNew, Image, Currency,
-  AdBasicData, AdCategoryWithChildren, AdEdit, DeliveryMethod
+  AdBasicData, AdCategoryWithChildren, AdEdit, DeliveryMethod, AdManage
 } from 'app/api/models';
 import { OnInit, ChangeDetectionStrategy, Component, Injector, ChangeDetectorRef } from '@angular/core';
 import { BasePageComponent } from 'app/shared/base-page.component';
@@ -19,6 +19,8 @@ type HierarchyItem = AdCategoryWithChildren & {
   level: number,
   leaf: boolean
 };
+
+export type StockType = 'available' | 'notAvailable' | 'quantity';
 
 const IMAGE_MANAGED_TIMEOUT = 6_000;
 
@@ -135,6 +137,7 @@ export class EditAdComponent
       minStockQuantityToNotify: adManage.minStockQuantityToNotify,
       productNumber: [adManage.productNumber, this.requiredProductNumber ? Validators.required : null],
       version: adEdit.version,
+      stockType: this.webshop ? this.resolveStockType(adManage) : null,
       id: this.id,
       kind: this.kind
     });
@@ -152,7 +155,7 @@ export class EditAdComponent
       this.currency = data.currencies[0];
     }
 
-    this.addSub(this.form.controls.unlimitedStock.valueChanges.subscribe(() => this.updateStockControls()));
+    this.addSub(this.form.controls.stockType.valueChanges.subscribe(() => this.updateStockControls()));
 
     this.uploadedImages = [];
     this.updateDeliveryMethods(data);
@@ -176,7 +179,8 @@ export class EditAdComponent
    */
   protected updateStockControls() {
     if (this.webshop) {
-      if (this.form.controls.unlimitedStock.value) {
+      const value = this.form.controls.stockType.value;
+      if (value === 'available' || value === 'notAvailable') {
         this.form.controls.stockQuantity.clearValidators();
       } else {
         this.form.controls.stockQuantity.setValidators(Validators.required);
@@ -199,6 +203,18 @@ export class EditAdComponent
     this.deliveryMethods$.next(
       data.deliveryMethods.filter(dm => dm.chargeCurrency == null || dm.chargeCurrency.id === (this.currency || {}).id)
     );
+  }
+
+  /**
+   * Resolves the current stock type based on webshop status
+   */
+  protected resolveStockType(ad: AdManage): StockType {
+    if (this.create || ad.unlimitedStock) {
+      return 'available';
+    } else if (ad.stockQuantity) {
+      return 'quantity';
+    }
+    return 'notAvailable';
   }
 
   /**
@@ -251,6 +267,13 @@ export class EditAdComponent
       delete value['promotionalPrice'];
     }
 
+    if (this.webshop) {
+      value.unlimitedStock = value.stockType === 'available';
+      if (value.stockType !== 'quantity') {
+        value.stockQuantity = null;
+      }
+      delete value['stockType'];
+    }
 
     const onFinish: any = (id: string) => {
       this.notification.snackBar(this.i18n.ad.adSaved);
