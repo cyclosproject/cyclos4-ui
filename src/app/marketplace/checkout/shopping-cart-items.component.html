@@ -36,27 +36,28 @@
       <th class="avatar"></th>
       <th width="30%">{{ i18n.ad.product }}</th>
       <th>{{ i18n.ad.number }}</th>
+      <th>{{ i18n.ad.quantity }}</th>
       <th class="text-right">{{ i18n.ad.unitPrice }}</th>
-      <th class="text-right">{{ i18n.ad.quantity }}</th>
       <th class="text-right">{{ i18n.transaction.amount }}</th>
-      <th class="actions"></th>
+      <th *ngIf="detailed" class="actions"></th>
     </thead>
     <tbody>
-      <tr *ngFor="let row of items">
-        <td class="avatar" [ngClass]="{
+      <tr *ngFor="let row of items" (click)="router.navigate(path(row))">
+        <td class=" avatar" [ngClass]="{
               'pb-0': layout.xxs$ | async,
               'border-0': layout.xxs$ | async
             }">
           <avatar [image]="row.product.image" [tooltip]="row.product.name"
             icon="shopping_basket"></avatar>
-        <td
+        <td class="link"
           [ngStyle]="{'text-decoration': !isAvailable(row) ? 'line-through' : ''}">
-          {{ row.product.name }}</td>
+          {{ row.product.name }}
+        </td>
         <td>{{ row.product.productNumber }}</td>
+        <td>{{ resolveQuantityLabel(row) }}
+        </td>
         <td class="text-right">
           {{ row.price | currency: currency }}
-        </td>
-        <td class="text-right">{{ resolveQuantityLabel(row) }}
         </td>
         <td class="text-right">
           {{ row.totalPrice | currency: currency }}</td>

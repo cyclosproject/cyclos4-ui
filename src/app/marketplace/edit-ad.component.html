@@ -165,9 +165,9 @@
           <decimal-field formControlName="minAllowedInCart"
             [label]="i18n.ad.minAllowedInCart" [scale]="decimalQuantity">
           </decimal-field>
-          <input-field type="text" [label]="i18n.ad.productNumber"
-            [mask]="mask" formControlName="productNumber" [placeholder]="mask"
-            required>
+          <input-field *ngIf="requiredProductNumber" type="text"
+            [label]="i18n.ad.productNumber" [mask]="mask"
+            formControlName="productNumber" [placeholder]="mask" required>
           </input-field>
           <multi-selection-field *ngIf="deliveryMethods$ | async"
             [label]=" i18n.ad.deliveryMethods"

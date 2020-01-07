@@ -13,6 +13,7 @@ import { ManageImagesComponent } from 'app/shared/manage-images.component';
 import { first } from 'rxjs/operators';
 import { empty, validateBeforeSubmit } from 'app/shared/helper';
 import { BsModalService } from 'ngx-bootstrap/modal';
+import { cloneDeep } from 'lodash';
 
 type HierarchyItem = AdCategoryWithChildren & {
   level: number,
@@ -40,6 +41,7 @@ export class EditAdComponent
   self: boolean;
   create: boolean;
   webshop: boolean;
+  requiredProductNumber: boolean;
   hasRemovedImages: boolean;
   kind: AdKind;
   uploadedImages: Image[];
@@ -108,7 +110,7 @@ export class EditAdComponent
       adManage.categories[0] :
       adManage.categories;
     const settings = (data.webshopSettings || {});
-    const requiredProductNumber = this.webshop && !settings.productNumberGenerated;
+    this.requiredProductNumber = this.webshop && !settings.productNumberGenerated;
 
     this.mask = !settings.productNumberGenerated ? settings.productNumberMask : '';
 
@@ -128,12 +130,13 @@ export class EditAdComponent
       maxAllowedInCart: adManage.maxAllowedInCart,
       minAllowedInCart: adManage.minAllowedInCart,
       allowDecimalQuantity: adManage.allowDecimalQuantity,
-      unlimitedStock: adManage.unlimitedStock,
+      unlimitedStock: this.create ? true : adManage.unlimitedStock,
       stockQuantity: adManage.stockQuantity,
       minStockQuantityToNotify: adManage.minStockQuantityToNotify,
-      productNumber: [adManage.productNumber, requiredProductNumber ? Validators.required : null],
+      productNumber: [adManage.productNumber, this.requiredProductNumber ? Validators.required : null],
       version: adEdit.version,
-      id: this.id
+      id: this.id,
+      kind: this.kind
     });
     this.form.addControl('deliveryMethods', this.formBuilder.control(adManage.deliveryMethods));
     this.form.addControl('customValues', this.fieldHelper.customValuesFormGroup(data.customFields, {
@@ -232,7 +235,7 @@ export class EditAdComponent
       return;
     }
 
-    const value = this.form.value;
+    const value = cloneDeep(this.form.value);
 
     value.publicationPeriod = this.ApiHelper.datePeriod(value.publicationBeginDate, value.publicationEndDate);
     delete value['publicationBeginDate'];

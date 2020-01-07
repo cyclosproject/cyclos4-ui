@@ -10,6 +10,7 @@ import { AddressHelperService } from 'app/core/address-helper.service';
 import { ConfirmationMode } from 'app/shared/confirmation-mode';
 import { validateBeforeSubmit } from 'app/shared/helper';
 import { MarketplaceHelperService } from 'app/core/marketplace-helper.service';
+import { cloneDeep } from 'lodash';
 
 export type CheckoutStep = 'delivery' | 'address' | 'payment' | 'confirm';
 
@@ -163,7 +164,7 @@ export class CartCheckoutComponent extends BasePageComponent<ShoppingCartDataFor
       return;
     }
 
-    const checkout: ShoppingCartCheckout = this.form.value;
+    const checkout: ShoppingCartCheckout = cloneDeep(this.form.value);
     delete checkout['address'];
     checkout.deliveryAddress = this.addressForm.value;
 

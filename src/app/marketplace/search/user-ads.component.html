@@ -40,7 +40,8 @@
         </div>
         <div class="col-12 col-md-6">
           <multi-selection-field labelPosition="side"
-            formControlName="statuses" [label]="i18n.general.status">
+            formControlName="statuses" [label]="i18n.general.status"
+            [emptyLabel]="i18n.general.all">
             <field-option value="active" [text]="i18n.ad.status.active">
             </field-option>
             <field-option value="disabled" [text]="i18n.ad.status.disabled">

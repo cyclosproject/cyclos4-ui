@@ -38,6 +38,10 @@ export class ShoppingCartItemsComponent extends BaseComponent implements OnInit 
     return item.availability === ShoppingCartItemAvailabilityEnum.AVAILABLE;
   }
 
+  path(row: ShoppingCartItemDetailed): string[] {
+    return ['/marketplace', 'view', row.product.id];
+  }
+
   /**
    * Resolves the label for available/unavailable/out of stock item
    */

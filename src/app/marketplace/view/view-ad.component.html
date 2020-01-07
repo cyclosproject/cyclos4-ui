@@ -144,8 +144,7 @@
         <div class="mb-2 mb-xs-0">
           {{ i18n.ad.questionsAndAnswers }}
         </div>
-        <button *ngIf="data.canAsk" class="btn btn-outline-primary"
-          (click)="ask()">
+        <button *ngIf="data.canAsk" class="btn btn-primary" (click)="ask()">
           {{ i18n.ad.askQuestion }}
         </button>
       </h2>
