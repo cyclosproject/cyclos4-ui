@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Host, Injector, Input, OnInit, Optional, SkipSelf, ViewChild } from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR, FormControl } from '@angular/forms';
-import { User } from 'app/api/models';
+import { User, PrincipalType } from 'app/api/models';
 import { UserCacheService } from 'app/core/user-cache.service';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { UserFieldComponent } from 'app/shared/user-field.component';
@@ -31,6 +31,7 @@ export class MultipleUsersFieldComponent
 
   @Input() preselectedUsers: User[];
   @Input() allowPrincipal = false;
+  @Input() principalTypes: PrincipalType[];
   @Input() allowSearch = true;
   @Input() allowContacts = true;
 
