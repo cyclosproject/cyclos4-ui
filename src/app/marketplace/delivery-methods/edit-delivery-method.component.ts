@@ -91,13 +91,15 @@ export class EditDeliveryMethodComponent
   }
 
   /**
-   * Preselects the first currency if they aren't empty and
-   * the delivery method is fixed
+   * Preselects the first currency when there is any available currency and method is
+   * fixed, otherwise sets it to null (to hide currency and price fields)
    */
   protected preselectFirstCurrency(data: DeliveryMethodBasicData) {
     if (this.form.controls.chargeType.value === DeliveryMethodChargeTypeEnum.FIXED && !empty(data.currencies)) {
       this.currency = data.currencies[0];
       this.form.controls.chargeCurrency.setValue(this.currency.id);
+    } else {
+      this.currency = null;
     }
   }
 
