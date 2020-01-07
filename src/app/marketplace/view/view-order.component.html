@@ -2,25 +2,41 @@
   <page-content *ngIf="data" mode="viewForm" [heading]="i18n.ad.title.order"
     [mobileHeading]="i18n.ad.mobileTitle.order"
     [headingActions]="headingActions$ | async">
-    <label-value [label]="i18n.ad.order">
-      {{ data.number }}
-    </label-value>
-    <label-value [label]="i18n.general.date">
-      {{ data.creationDate | dateTime }}
-    </label-value>
-    <label-value [label]="i18n.general.status">
-      {{ resolveStatusLabel() }}
-    </label-value>
-    <label-value *ngIf="!seller" [label]="i18n.ad.seller">
-      <user-link [user]="data.seller"></user-link>
-    </label-value>
-    <label-value *ngIf="!buyer" [label]="i18n.ad.buyer">
-      <user-link [user]="data.buyer"></user-link>
-    </label-value>
-    <label-value *ngIf="data.remarks" [label]="i18n.ad.remarks">
-      {{ data.remarks }}
-    </label-value>
-    <h2 class="mb-3">{{ i18n.ad.products }}</h2>
+    <div *ngIf="data.image && (layout.ltsm$ | async)"
+      class="d-flex justify-content-center mt-2 mb-4">
+      <avatar [roundBorders]="false" size="120" useLightbox
+        [image]="data.image"></avatar>
+    </div>
+
+    <div class="d-flex flex-row-reverse">
+      <div *ngIf="data.image && (layout.gtxs$ | async)" class="image ml-4">
+        <avatar [roundBorders]="false" size="120" useLightbox
+          [image]="data.image">
+        </avatar>
+      </div>
+      <div class="d-flex flex-grow-1 flex-column">
+        <label-value [label]="i18n.ad.order">
+          {{ data.number }}
+        </label-value>
+        <label-value [label]="i18n.general.date">
+          {{ data.creationDate | dateTime }}
+        </label-value>
+        <label-value [label]="i18n.general.status">
+          {{ resolveStatusLabel() }}
+        </label-value>
+        <label-value *ngIf="!seller" [label]="i18n.ad.seller">
+          <user-link [user]="data.seller"></user-link>
+        </label-value>
+        <label-value *ngIf="!buyer" [label]="i18n.ad.buyer">
+          <user-link [user]="data.buyer"></user-link>
+        </label-value>
+        <label-value *ngIf="data.remarks" [label]="i18n.ad.remarks">
+          {{ data.remarks }}
+        </label-value>
+      </div>
+    </div>
+    <h2 class="mb-3" [ngClass]="{'mt-4': data.image}">{{ i18n.ad.products }}
+    </h2>
     <table class="table table-hover cursor-pointer">
       <thead>
         <th *ngIf="detailed" class="no-border">{{ i18n.ad.number }}</th>
@@ -40,7 +56,8 @@
           <td>{{ row.quantity }}</td>
           <td *ngIf="detailed" class="text-right">
             {{ row.price | currency:data.currency }}</td>
-          <td class="text-right">{{ row.totalPrice | currency:data.currency }}
+          <td class="text-right">
+            {{ row.totalPrice | currency:data.currency }}
           </td>
         </tr>
         <tr>
@@ -51,7 +68,8 @@
         </tr>
         <tr>
           <td [attr.colspan]="detailed ? 4 : 2">
-            {{ i18n.ad.deliveryMethod + ': ' + resolveDeliveryLabel() }}</td>
+            {{ i18n.ad.deliveryMethod + ': ' + resolveDeliveryLabel() }}
+          </td>
           <td class="text-right">
             {{ data.deliveryPrice | currency:data.currency }}</td>
         </tr>
