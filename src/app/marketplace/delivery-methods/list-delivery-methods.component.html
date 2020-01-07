@@ -16,16 +16,29 @@
         <div class="d-flex">
           <div>
             <div class="cell-main">{{ row.name }}</div>
-            <div *ngIf="data.canManage" class="ml-auto text-right">
-              <button [tooltip]="i18n.general.edit" class="btn btn-icon"
-                (click)="router.navigate(editPath(row)); $event.stopPropagation(); $event.preventDefault()">
-                <icon icon="edit"></icon>
-              </button>
-              <button [tooltip]="i18n.general.remove" class="btn btn-icon"
-                (click)="remove(row); $event.stopPropagation(); $event.preventDefault()">
-                <icon icon="clear"></icon>
-              </button>
-            </div>
+            <div class="cell-text">
+              {{ i18n.ad.chargeType }}:
+              {{ resolveChargeTypeLabel(row.chargeType) }}</div>
+            <div class="cell-text">
+              {{ i18n.ad.price }}:
+              {{ row.chargeAmount | currency: row.chargeCurrency }}</div>
+            <div *ngIf="row.minDeliveryTime" class="cell-text">
+              {{ i18n.ad.minDeliveryTime }}:
+              {{ format.formatTimeInterval(row.minDeliveryTime) }}</div>
+            <div class="cell-text">
+              {{ i18n.ad.maxDeliveryTime }}:
+              {{ format.formatTimeInterval(row.maxDeliveryTime) }}</div>
+            <div class="cell-text">
+              {{ i18n.general.enabled }}:
+              {{ row.enabled ?
+                      i18n.general.yes :
+                      i18n.general.no }}</div>
+          </div>
+          <div *ngIf="data.canManage" class="ml-auto text-right">
+            <button [tooltip]="i18n.general.remove" class="btn btn-icon"
+              (click)="remove(row); $event.stopPropagation(); $event.preventDefault()">
+              <icon icon="clear"></icon>
+            </button>
           </div>
         </div>
       </mobile-result>
@@ -62,13 +75,8 @@
                 i18n.general.yes :
                 i18n.general.no }}
               </td>
-              <td *ngIf="data.canManage" class="actions actions-multiple">
-                <button [tooltip]="i18n.general.edit" class="btn btn-icon"
-                  (click)="router.navigate(editPath(row)); $event.stopPropagation()">
-                  <icon icon="edit"></icon>
-                </button>
+              <td *ngIf="data.canManage" class="actions">
                 <button [tooltip]="i18n.general.remove" class="btn btn-icon"
-                  [ngClass]="data.canManage ? 'ml-3' : ''"
                   (click)="remove(row); $event.stopPropagation()">
                   <icon icon="clear"></icon>
                 </button>

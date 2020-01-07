@@ -38,6 +38,7 @@ export class ListDeliveryMethodsComponent
   onDataInitialized(data: UserDeliveryMethodsListData) {
 
     this.self = this.authHelper.isSelfOrOwner(data.user);
+
     if (data.canCreate) {
       this.headingActions = [
         new HeadingAction('add', this.i18n.general.addNew, () => {
@@ -47,13 +48,8 @@ export class ListDeliveryMethodsComponent
     }
   }
 
-
   viewPath(deliveryMethod: DeliveryMethod) {
     return ['/marketplace', 'delivery-methods', 'view', deliveryMethod.id];
-  }
-
-  editPath(deliveryMethod: DeliveryMethod) {
-    return ['/marketplace', 'delivery-methods', 'edit', deliveryMethod.id];
   }
 
   get toLink() {
@@ -68,7 +64,7 @@ export class ListDeliveryMethodsComponent
   }
 
   private doRemove(deliveryMethod: DeliveryMethod) {
-    this.addSub(this.deliveryMethodService.deleteDeliveryMethod$Response({ id: deliveryMethod.id }).subscribe(() => {
+    this.addSub(this.deliveryMethodService.deleteDeliveryMethod({ id: deliveryMethod.id }).subscribe(() => {
       this.notification.snackBar(this.i18n.general.removeDone(deliveryMethod.name));
       this.reload();
     }));

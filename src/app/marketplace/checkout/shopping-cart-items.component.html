@@ -3,7 +3,7 @@
     avatarIcon="shopping_basket" [title]="row.product.name">
     <div class="d-flex">
       <div>
-        <div class="cell-main">
+        <div class="cell-text">
           {{ i18n.transaction.amount }}:
           {{ row.totalPrice | currency:currency }}
         </div>
@@ -18,12 +18,12 @@
           {{ i18n.ad.quantity }}: {{ resolveQuantityLabel(row) }}
         </div>
       </div>
-      <div *ngIf="detailed" class="ml-auto text-right">
+      <div *ngIf="detailed" class="ml-auto text-right d-flex flex-column">
         <button [tooltip]="i18n.ad.changeQuantity" class="btn btn-icon"
           (click)="changeQuantity.emit(row); $event.stopPropagation(); $event.preventDefault()">
           <icon icon="edit"></icon>
         </button>
-        <button [tooltip]="i18n.general.remove" class="btn btn-icon ml-3"
+        <button [tooltip]="i18n.general.remove" class="btn btn-icon mt-2"
           (click)="remove.emit(row); $event.stopPropagation(); $event.preventDefault()">
           <icon icon="clear"></icon>
         </button>

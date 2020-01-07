@@ -176,7 +176,7 @@ export class EditAdComponent
       if (this.form.controls.unlimitedStock.value) {
         this.form.controls.stockQuantity.clearValidators();
       } else {
-        this.form.controls.stockQuantity.setValidators(Validators.required);
+        //this.form.controls.stockQuantity.setValidators(Validators.required);
       }
       this.form.controls.stockQuantity.updateValueAndValidity();
     }

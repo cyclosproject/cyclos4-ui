@@ -80,14 +80,14 @@
               </format-field-value>
             </label-value>
           </div>
-          <div class="ml-auto text-right">
+          <div class="ml-auto text-right d-flex flex-column">
             <button *ngIf="data.edit" [tooltip]="i18n.general.edit"
               class="btn btn-icon"
               (click)="router.navigate(editPath(row)); $event.stopPropagation(); $event.preventDefault()">
               <icon icon="edit"></icon>
             </button>
             <button *ngIf="data.remove" [tooltip]="i18n.general.remove"
-              class="btn btn-icon" [ngClass]="{'ml-3': data.edit}"
+              class="btn btn-icon" [ngClass]="{'mt-2': data.edit}"
               (click)="remove(row); $event.stopPropagation(); $event.preventDefault()">
               <icon icon="clear"></icon>
             </button>

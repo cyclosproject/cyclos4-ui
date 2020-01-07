@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { DeliveryMethodDataForEdit, DeliveryMethodDataForNew } from 'app/api/models';
+import { DeliveryMethodDataForEdit, DeliveryMethodDataForNew, DeliveryMethodChargeTypeEnum, Currency } from 'app/api/models';
 import { DeliveryMethodsService } from 'app/api/services';
 import { BasePageComponent } from 'app/shared/base-page.component';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, Validators } from '@angular/forms';
 import { validateBeforeSubmit } from 'app/shared/helper';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { Menu } from 'app/shared/menu';
 
 /**
@@ -22,7 +22,10 @@ export class EditDeliveryMethodComponent
   id: string;
   user: string;
   create: boolean;
+  self: boolean;
   form: FormGroup;
+
+  currency$ = new BehaviorSubject<Currency>(null);
 
   constructor(
     injector: Injector,
@@ -47,6 +50,38 @@ export class EditDeliveryMethodComponent
     }));
   }
 
+  onDataInitialized(data: DeliveryMethodDataForNew | DeliveryMethodDataForEdit) {
+
+    this.self = this.authHelper.isSelfOrOwner(data.user);
+
+    const dm = data.deliveryMethod;
+
+    this.form = this.formBuilder.group({
+      name: [dm.name, Validators.required],
+      chargeType: dm.chargeType,
+      chargeCurrency: dm.chargeCurrency,
+      chargeAmount: dm.chargeAmount,
+      minTime: dm.minDeliveryTime,
+      maxTime: [dm.maxDeliveryTime, Validators.required],
+      description: dm.description
+    });
+
+    this.addSub(this.form.controls.chargeType.valueChanges.subscribe(() => this.updateRequiredControls()));
+    this.updateRequiredControls();
+  }
+
+  /**
+   * Update required controls like charge currency and amount based on the charge type
+   */
+  protected updateRequiredControls() {
+    const controls = [this.form.controls.chargeType, this.form.controls.chargeCurrency];
+    if (this.form.controls.chargeType.value === DeliveryMethodChargeTypeEnum.NEGOTIATED) {
+      controls.forEach(c => c.clearValidators());
+    } else {
+      controls.forEach(c => c.setValidators(Validators.required));
+    }
+    controls.forEach(c => c.updateValueAndValidity());
+  }
 
   save() {
     validateBeforeSubmit(this.form);
@@ -63,5 +98,13 @@ export class EditDeliveryMethodComponent
 
   resolveMenu(data: DeliveryMethodDataForNew | DeliveryMethodDataForEdit) {
     return this.authHelper.userMenu(data.user, Menu.DELIVERY_METHODS);
+  }
+
+  get currency(): Currency {
+    return this.currency$.value;
+  }
+
+  set currency(currency: Currency) {
+    this.currency$.next(currency);
   }
 }
