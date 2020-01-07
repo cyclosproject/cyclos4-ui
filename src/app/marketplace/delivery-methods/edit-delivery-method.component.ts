@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { DeliveryMethodDataForEdit, DeliveryMethodDataForNew, DeliveryMethodChargeTypeEnum, Currency } from 'app/api/models';
+import { DeliveryMethodDataForEdit, DeliveryMethodDataForNew, DeliveryMethodChargeTypeEnum, Currency, DeliveryMethodBasicData, DeliveryMethod } from 'app/api/models';
 import { DeliveryMethodsService } from 'app/api/services';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { FormGroup, Validators } from '@angular/forms';
-import { validateBeforeSubmit } from 'app/shared/helper';
+import { validateBeforeSubmit, empty } from 'app/shared/helper';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { Menu } from 'app/shared/menu';
 
@@ -66,7 +66,14 @@ export class EditDeliveryMethodComponent
       description: dm.description
     });
 
-    this.addSub(this.form.controls.chargeType.valueChanges.subscribe(() => this.updateRequiredControls()));
+    this.addSub(this.form.controls.chargeType.valueChanges.subscribe(() => {
+      this.updateRequiredControls();
+      this.preselectFirstCurrency(data);
+    }));
+    this.addSub(this.form.controls.chargeCurrency.valueChanges.subscribe(id => {
+      this.updateCurrency(id, data);
+    }));
+    this.preselectFirstCurrency(data);
     this.updateRequiredControls();
   }
 
@@ -81,6 +88,24 @@ export class EditDeliveryMethodComponent
       controls.forEach(c => c.setValidators(Validators.required));
     }
     controls.forEach(c => c.updateValueAndValidity());
+  }
+
+  /**
+   * Preselects the first currency if they aren't empty and
+   * the delivery method is fixed
+   */
+  protected preselectFirstCurrency(data: DeliveryMethodBasicData) {
+    if (this.form.controls.chargeType.value === DeliveryMethodChargeTypeEnum.FIXED && !empty(data.currencies)) {
+      this.currency = data.currencies[0];
+      this.form.controls.chargeCurrency.setValue(this.currency.id);
+    }
+  }
+
+  /**
+   * Changes the current currency updating other referenced fields like price
+   */
+  protected updateCurrency(id: string, data: DeliveryMethodBasicData) {
+    this.currency = data.currencies.find(c => c.id === id || c.internalName === id);
   }
 
   save() {
