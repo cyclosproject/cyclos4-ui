@@ -19,12 +19,13 @@ A demo of the frontend can be seen at: https://demo-ui.cyclos.org/
 
 This frontend implements end-user functionality, as well as basic user administration / brokering and operator functionality. System administration functionality will always be performed in Cyclos' default web interface.
 
-As of version 1.1, this frontend implements the following functionality:
+As of version 1.2, this frontend implements the following functionality:
 
 - User access: login, logout, forgot password, login with expired password, login with pending agreements (no support for secondary access password / login confirmation);
 - Integration with a login form in an external system: receives a pre-created session token and is able to use external URLs for login page and after logout redirect;
 - Account history, transfer details by own user, admin and broker;
 - Perform payment both to user and system, supports direct, scheduled and recurring payments, by own user, admin and broker;
+- Receive payment (POS);
 - Search scheduled / recurring / authorized payments, by own user, admin and broker;
 - Search users (called business directory, as most systems only allow searching businesses);
 - View user profile, with actions;
@@ -55,7 +56,7 @@ More functionality will be added in future versions.
 
 The required Cyclos version depends on the frontend version:
 
-- Frontend 1.1 requires Cyclos 4.12.1 or up;
+- Frontend 1.1 / 1.2 requires Cyclos 4.12.1 or up;
 - Frontend 1.0 requires Cyclos 4.11.2 or up
 
 ## Getting and preparing the code
