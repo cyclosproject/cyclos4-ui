@@ -151,7 +151,8 @@
           <ng-container
             *ngIf="!(form.get('unlimitedStock').valueChanges | async) && !form.get('unlimitedStock').value">
             <decimal-field formControlName="stockQuantity"
-              [label]="i18n.ad.stockQuantity" [scale]="decimalQuantity">
+              [label]="i18n.ad.stockQuantity" [scale]="decimalQuantity"
+              required>
             </decimal-field>
             <decimal-field formControlName="minStockQuantityToNotify"
               [label]="i18n.ad.lowStockNotification"
