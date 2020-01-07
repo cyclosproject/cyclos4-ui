@@ -38,6 +38,9 @@ export interface NavigateParams {
   /** The menu entry to navigate to */
   entry?: MenuEntry;
 
+  /** Replace current URL */
+  replaceUrl?: boolean;
+
   /** Whether the clear the current navigation (default) or not */
   clear?: boolean;
 
@@ -186,13 +189,13 @@ export class MenuService {
       if (url.startsWith(absoluteRoot)) {
         // Is an internal link
         url = url.substring(absoluteRoot.length);
-        this.router.navigateByUrl(url);
+        this.router.navigateByUrl(url, { replaceUrl: !!params.replaceUrl });
       } else {
         // Is an external link - all we can do is assign the location
         location.assign(url);
       }
     } else if (url) {
-      this.router.navigateByUrl(url);
+      this.router.navigateByUrl(url, { replaceUrl: !!params.replaceUrl });
     }
 
     // Update the active state
