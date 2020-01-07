@@ -8,7 +8,7 @@
     <input #checkbox type="checkbox" [name]="name"
       class="custom-control-input" [id]="id" (click)="click.emit($event)"
       (keyup.enter)="toggle(); click.emit($event)" [formControl]="formControl"
-      [checked]="formControl.value || (formControl.valueChanges | async)">
+      [checked]="isTrue(value)">
     <label class="custom-control-label" [for]="id">
       <ng-content></ng-content>
     </label>
