@@ -35,7 +35,7 @@ export class BooleanFieldComponent
   }
 
   preprocessValue(value: any): boolean | string {
-    const bool = value === true || value === 'true';
+    const bool = this.isTrue(value);
     return this.type === 'boolean' ? bool : String(bool);
   }
 
@@ -49,6 +49,10 @@ export class BooleanFieldComponent
     const value = this.value;
     const bool = value === true || value === 'true';
     this.value = this.type === 'boolean' ? !bool : String(!bool);
+  }
+
+  isTrue(value: any): boolean {
+    return value === true || value === 'true';
   }
 
   protected getFocusableControl() {
