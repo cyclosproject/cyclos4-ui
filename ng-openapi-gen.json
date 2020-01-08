@@ -42,7 +42,8 @@
     "Brokering",
     "Records",
     "DeliveryMethods",
-    "ShoppingCarts"
+    "ShoppingCarts",
+    "Validation"
   ],
   "enumStyle": "upper"
 }
