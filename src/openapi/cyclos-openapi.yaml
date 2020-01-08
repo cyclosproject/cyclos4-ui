@@ -36752,7 +36752,6 @@ components:
       name: customFields
       required: false
       in: query
-      style: simple
       schema:
         type: array
         items:
@@ -48353,6 +48352,16 @@ components:
             to get the user consent.
           type: string
 
+    IdentityProvidersPermissions:
+      description: >-
+        Permissions over the logged user's identity provider links
+      type: object
+      properties:
+        enabled:
+          description: >-
+            Is the identity providers functionality enabled for the logged user?
+          type: boolean
+
     Image:
       description: >-
         Contains data for displaying an image
@@ -49076,16 +49085,6 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/Country'
-
-    MyIdentityProvidersPermissions:
-      description: >-
-        Permissions over the logged user's identity provider links
-      type: object
-      properties:
-        enabled:
-          description: >-
-            Is the identity providers functionality enabled for the logged user?
-          type: boolean
 
     MyMarketplacePermissions:
       description: >-
@@ -52084,7 +52083,7 @@ components:
           description: >-
             Permissions over identity provider links
           allOf:
-            - $ref: '#/components/schemas/MyIdentityProvidersPermissions'
+            - $ref: '#/components/schemas/IdentityProvidersPermissions'
 
     PersonalizeNfcError:
       description: >-
