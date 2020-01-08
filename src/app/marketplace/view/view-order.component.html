@@ -98,10 +98,10 @@
       class="align-items-baseline">
       <address-details [address]="data.deliveryAddress"></address-details>
     </label-value>
-    <h2>{{ i18n.ad.remarks }}</h2>
+    <h2 *ngIf="remarks || canSetRemarks">{{ i18n.ad.remarks }}</h2>
     <div *ngIf="remarks">{{ remarks }}</div>
-    <form *ngIf="data.status === OrderStatusEnum.PENDING_SELLER"
-      [ngClass]="{'mt-4': remarks}" [formGroup]="form">
+    <form *ngIf="canSetRemarks" [ngClass]="{'mt-4': remarks}"
+      [formGroup]="form">
       <textarea-field formControlName="remarks"></textarea-field>
     </form>
     <actions>

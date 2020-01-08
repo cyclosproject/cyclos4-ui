@@ -77,8 +77,8 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
       this.notification.snackBar(message);
       if (checkRole &&
         (this.dataForUiHolder.role === RoleEnum.BROKER &&
-          !this.authHelper.isSelfOrOwner(this.data.owner) ||
-          this.dataForUiHolder.role === RoleEnum.ADMINISTRATOR)) {
+          !this.authHelper.isSelfOrOwner(this.data.owner)) ||
+        this.dataForUiHolder.role === RoleEnum.ADMINISTRATOR) {
         // A broker or admin cannot view the ad after perform
         // some actions (e.g set it to draft, reject), so go
         // back to the ad list

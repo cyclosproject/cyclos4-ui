@@ -62,6 +62,7 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
       headingActions.push(new HeadingAction('history', this.i18n.general.viewHistory, () =>
         this.router.navigate(['/marketplace', 'order', this.id, 'history']), true));
     }
+    headingActions.push(this.printAction);
 
     this.headingActions = headingActions;
   }
@@ -261,10 +262,17 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
    * Returns the remarks for the given order or a generic label if not set
    */
   get remarks(): string {
-    if (this.data.status === OrderStatusEnum.PENDING_SELLER) {
+    if (this.canSetRemarks) {
       return this.data.remarks;
     }
     return this.data.remarks ? this.data.remarks : this.i18n.ad.noRemarksGiven;
+  }
+
+  /**
+   * Returns if there is a seller and can set remarks directly in the form
+   */
+  get canSetRemarks(): boolean {
+    return this.data.status === OrderStatusEnum.PENDING_SELLER && this.seller && this.data.canAccept;
   }
 
 }
