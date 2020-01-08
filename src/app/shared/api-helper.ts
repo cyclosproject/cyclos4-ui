@@ -1,9 +1,10 @@
 import {
   AccountWithOwner, AdminMenuEnum, Auth, Entity, Notification,
-  NotificationEntityTypeEnum, Operation, OperationScopeEnum, UserMenuEnum, DatePeriod
+  NotificationEntityTypeEnum, Operation, OperationScopeEnum, UserMenuEnum, DatePeriod, NotificationTypeEnum
 } from 'app/api/models';
 import { empty } from 'app/shared/helper';
 import { ActiveMenu, Menu, RootMenu } from 'app/shared/menu';
+import { MarketplaceHelperService } from 'app/core/marketplace-helper.service';
 
 /**
  * Helper methods for working with API model
@@ -136,9 +137,35 @@ export class ApiHelper {
           path: `/marketplace/view/${notification.entityId}`,
           menu: new ActiveMenu(Menu.SEARCH_ADS)
         };
+      case NotificationEntityTypeEnum.ORDER:
+        return {
+          path: `/marketplace/order/${notification.entityId}`,
+          menu: new ActiveMenu(ApiHelper.isBuyerOrderNotification(notification.type) ?
+            Menu.PURCHASES : Menu.SALES)
+        };
     }
   }
 
+  /**
+   * Returns if the given notification type is an order notification for buyer (otherwise should be for seller)
+   */
+  static isBuyerOrderNotification(type: NotificationTypeEnum): boolean {
+    switch (type) {
+      case NotificationTypeEnum.ORDER_CANCELED_BUYER:
+      case NotificationTypeEnum.ORDER_PAYMENT_CANCELED_BUYER:
+      case NotificationTypeEnum.ORDER_PAYMENT_EXPIRED_BUYER:
+      case NotificationTypeEnum.ORDER_PAYMENT_DENIED_BUYER:
+      case NotificationTypeEnum.ORDER_PENDING_AUTHORIZATION_BUYER:
+      case NotificationTypeEnum.ORDER_PENDING_BUYER:
+      case NotificationTypeEnum.ORDER_PENDING_DELIVERY_DATA_BUYER:
+      case NotificationTypeEnum.ORDER_REALIZED_SELLER:
+      case NotificationTypeEnum.ORDER_REJECTED_BY_SELLER:
+      case NotificationTypeEnum.SALE_PENDING_BUYER:
+      case NotificationTypeEnum.SALE_REJECTED_SELLER:
+        return true;
+    }
+    return false;
+  }
 
   /**
    * Returns whether the given frontend root menu matches the Cyclos root menu for an administrator function.
