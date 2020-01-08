@@ -24,6 +24,8 @@ export class ViewCartComponent
   extends BasePageComponent<ShoppingCartView>
   implements OnInit {
 
+  static details = false;
+
   id: string;
   unavailable: boolean;
   outOfStock: boolean;
@@ -43,7 +45,13 @@ export class ViewCartComponent
     this.id = this.route.snapshot.params.id;
 
     this.errorHandler.requestWithCustomErrorHandler(defaultHandling => {
-      this.addSub(this.shoppingCartService.adjustAndGetShoppingCartDetails({ id: this.id })
+      const req = ViewCartComponent.details ?
+        this.shoppingCartService.getShoppingCartDetails({ id: this.id }) :
+        this.shoppingCartService.adjustAndGetShoppingCartDetails({ id: this.id });
+
+      ViewCartComponent.details = false;
+
+      this.addSub(req
         .subscribe(data => {
           this.data = data;
         }, (err: HttpErrorResponse) => {
@@ -147,7 +155,10 @@ export class ViewCartComponent
       this.addSub(this.shoppingCartService.modifyItemQuantityOnShoppingCart({
         ad: item[1].product.id,
         quantity: +quantity,
-      }).subscribe(() => this.reload()));
+      }).subscribe(() => {
+        ViewCartComponent.details = true;
+        this.reload();
+      }));
     };
 
     if (item[0] != null) {
