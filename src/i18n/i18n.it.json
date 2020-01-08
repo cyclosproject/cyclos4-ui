@@ -189,7 +189,7 @@
     "banking.payUser": "Pagamento utente",
     "banking.paySystem": "Pagamento sistema",
     "banking.paySelf": "Auto-pagamento",
-    "banking.pos": "Receive payment",
+    "banking.pos": "Addebita carta",
     "banking.scheduledPayments": "Pagamenti pianificati",
     "banking.authorizations": "Autorizzazioni di pagamento",
     "banking.transfersOverview": "Panoramica operazioni",
@@ -342,7 +342,7 @@
       "account": "Conto",
       "payUser": "Paga utente",
       "paySystem": "Paga sistema",
-      "pos": "Receive payment",
+      "pos": "Addebita carta",
       "contacts": "Contatti",
       "directory": "Elenco",
       "advertisements": "Marketplace",
@@ -475,7 +475,7 @@
       "settled": "Saldato"
     },
     "title": {
-      "pos": "Receive payment",
+      "pos": "Addebita carta",
       "paymentSystemToSystem": "Pagamento tra conti di sistema",
       "paymentSystemToUser": "Pagamento da sistema a utente",
       "paymentToSystem": "Pagamento al sistema",
@@ -500,7 +500,7 @@
       "transfersOverview": "Panoramica operazioni"
     },
     "mobileTitle": {
-      "pos": "Receive payment",
+      "pos": "Addebita carta",
       "paymentSystemToSystem": "Paga sistema",
       "paymentSystemToUser": "Paga utente",
       "paymentToSystem": "Paga sistema",

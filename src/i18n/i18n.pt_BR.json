@@ -189,7 +189,7 @@
     "banking.payUser": "Pagamento para usuário",
     "banking.paySystem": "Pagamento para sistema",
     "banking.paySelf": "Pagamento entre contas",
-    "banking.pos": "Receive payment",
+    "banking.pos": "Receber pagamento",
     "banking.scheduledPayments": "Pagamentos agendados",
     "banking.authorizations": "Autorizações de pagamento",
     "banking.transfersOverview": "Visão geral de transações",
@@ -342,7 +342,7 @@
       "account": "Conta",
       "payUser": "Pagar usuário",
       "paySystem": "Pagar sistema",
-      "pos": "Receive payment",
+      "pos": "Receber pagamento",
       "contacts": "Contatos",
       "directory": "Diretório",
       "advertisements": "Anúncios",
@@ -475,7 +475,7 @@
       "settled": "Liquidado"
     },
     "title": {
-      "pos": "Receive payment",
+      "pos": "Receber pagamento",
       "paymentSystemToSystem": "Pagamento entre contas de sistema",
       "paymentSystemToUser": "Pagamento de sistema para usuário",
       "paymentToSystem": "Pagamento para sistema",
@@ -500,7 +500,7 @@
       "transfersOverview": "Visão geral de transações"
     },
     "mobileTitle": {
-      "pos": "Receive payment",
+      "pos": "Receber pagamento",
       "paymentSystemToSystem": "Pagar sistema",
       "paymentSystemToUser": "Pagar usuário",
       "paymentToSystem": "Pagar para sistema",
