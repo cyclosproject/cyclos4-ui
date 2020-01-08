@@ -3344,7 +3344,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
     post:
       deprecated: true
       x-remove-version: 4.14
-      operationId: validateUserRegistration
+      operationId: validateUserRegistrationDeprecated
       summary: >-
         Validates an user registration via a key sent by e-mail
       description: >-
@@ -3411,7 +3411,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
     post:
       deprecated: true
       x-remove-version: 4.14
-      operationId: validateEmailChange
+      operationId: validateEmailChangeDeprecated
       summary: >-
         Validates an e-mail via a validation key
       description: >-
