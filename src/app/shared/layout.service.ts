@@ -15,6 +15,10 @@ import { ShortcutService, Escape } from 'app/shared/shortcut.service';
 import { MapTypeStyle } from '@agm/core';
 import { LightMapStyles, DarkMapStyles } from 'app/shared/google-map-styles';
 
+export type Theme = 'light' | 'dark';
+export const Themes: Theme[] = ['light', 'dark'];
+const ThemeKey = 'theme';
+
 const DarkTheme = 'darkTheme';
 const ColorVariables = [
   'primary', 'theme-color', 'chart-color',
@@ -120,7 +124,7 @@ export class LayoutService {
   private _activeBreakpoints: BehaviorSubject<Set<Breakpoint>>;
   breakpointChanges$: Observable<Set<Breakpoint>>;
 
-  darkTheme$ = new BehaviorSubject(false);
+  theme$ = new BehaviorSubject<Theme>(null);
   title$ = new BehaviorSubject<string>(null);
   headingActions$ = new BehaviorSubject<HeadingAction[]>([]);
 
@@ -137,8 +141,14 @@ export class LayoutService {
     private shortcut: ShortcutService,
     dataForUiHolder: DataForUiHolder) {
 
+    // Legacy storage for DarkTheme
+    if (localStorage.getItem(DarkTheme) === 'dark') {
+      localStorage.removeItem(DarkTheme);
+      localStorage.setItem(ThemeKey, 'dark');
+    }
     // Initialize the theme from the local storage
-    this.darkTheme = localStorage.getItem(DarkTheme) === 'true';
+    const theme = (localStorage.getItem(ThemeKey) || 'light') as Theme;
+    this.setTheme(theme, false);
 
     // Read some elements we'll need
     this.readStylesAndApplyWhenReady();
@@ -495,21 +505,45 @@ export class LayoutService {
     }
   }
 
-  get darkTheme(): boolean {
-    return this.darkTheme$.value;
+  get theme(): Theme {
+    return this.theme$.value;
   }
 
+  get darkTheme(): boolean {
+    return this.theme === 'dark';
+  }
   set darkTheme(dark: boolean) {
-    localStorage.setItem(DarkTheme, String(dark));
-    this.darkTheme$.next(dark);
+    this.theme = dark ? 'dark' : 'light';
+  }
+
+  set theme(theme: Theme) {
+    this.setTheme(theme);
+  }
+
+  private setTheme(theme: Theme, updateStorage = true) {
+    if (!Themes.includes(theme)) {
+      return;
+    }
+    if (updateStorage) {
+      localStorage.setItem(ThemeKey, theme);
+    }
+    this.theme$.next(theme);
     const classList = document.body.classList;
+
+    // Prepare a transition class to make the color switch smooth
     classList.add('theme-transition');
     setTimeout(() => classList.remove('theme-transition'), 400);
-    if (dark) {
-      classList.add('dark');
-    } else {
-      classList.remove('dark');
+
+    // Update the body classList
+    for (const t of Themes) {
+      if (theme === t) {
+        classList.add(t);
+      } else {
+        classList.remove(t);
+      }
     }
+
+    // The theme color is a separated HTML tag
     this.applyThemeColor();
   }
 

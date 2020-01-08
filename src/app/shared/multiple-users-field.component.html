@@ -5,6 +5,8 @@
 <ng-template #widget>
   <div class="d-flex mw-100 w-100">
     <user-field #userField [formControl]="userFieldControl"
+      [allowSearch]="allowSearch" [allowContacts]="allowContacts"
+      [allowPrincipal]="allowPrincipal" [principalTypes]="principalTypes"
       (selected)="add($event)"></user-field>
   </div>
   <div *ngIf="users.length > 0" class="d-flex mw-100 w-100 flex-wrap">

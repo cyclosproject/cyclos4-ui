@@ -1,10 +1,10 @@
 @import 'styles/custom-definitions';
 
 // Base colors
-$primary: #35a8df !default;
-$accent: #35a8df !default;
+$primary: #329bce !default;
+$accent: #138bbd !default;
 $primary-dark: #334758 !default;
-$accent-dark: #5498d4 !default;
+$accent-dark: #329bce !default;
 
 // Make sure the font import URL and the font family (sans serif) are in sync
 $font-import-url: "https://fonts.googleapis.com/css?family=Roboto:400,500" !default;
@@ -160,7 +160,7 @@ $menu-bar-inactive-icon-color: lighten($text-muted, 5%) !default;
 $menu-bar-inactive-bg: $menu-bar-bg !default;
 $menu-bar-inactive-hover-color: $menu-bar-inactive-color !default;
 $menu-bar-inactive-hover-bg: #f5f5f5 !default;
-$menu-bar-active-color: $accent !default;
+$menu-bar-active-color: $primary !default;
 $menu-bar-active-icon-color: $menu-bar-active-color !default;
 $menu-bar-active-bg: $menu-bar-bg !default;
 $menu-bar-active-border-color: $menu-bar-active-color !default;
@@ -175,8 +175,8 @@ $menu-bar-inactive-icon-color-dark: $accent-dark !default;
 $menu-bar-inactive-bg-dark: $menu-bar-bg-dark !default;
 $menu-bar-inactive-hover-color-dark: $menu-bar-inactive-color-dark !default;
 $menu-bar-inactive-hover-bg-dark: darken($menu-bar-inactive-bg-dark, 2%) !default;
-$menu-bar-active-icon-color-dark: $accent-dark !default;
 $menu-bar-active-color-dark: $accent-dark !default;
+$menu-bar-active-icon-color-dark: $menu-bar-active-color-dark !default;
 $menu-bar-active-bg-dark: $menu-bar-bg-dark !default;
 $menu-bar-active-hover-color-dark: $menu-bar-active-color-dark !default;
 $menu-bar-active-hover-bg-dark: $menu-bar-inactive-hover-bg-dark !default;
@@ -185,7 +185,7 @@ $menu-bar-line-color-dark: $border-color-dark !default;
 // Side menu (second-level menu on desktop)
 $side-menu-title-bg: $menu-bar-bg !default;
 $side-menu-title-color: $body-color !default;
-$side-menu-icon-bg: $menu-bar-active-color !default;
+$side-menu-icon-bg: fade-out($menu-bar-active-color, 0.2) !default;
 $side-menu-icon-color: $top-bar-color !default;
 $side-menu-border-color: $border-color !default;
 $side-menu-bg: $menu-bar-bg !default;
@@ -203,7 +203,7 @@ $side-menu-inactive-hover-color: $menu-bar-inactive-hover-color !default;
 // Side menu with dark background
 $side-menu-title-bg-dark: $menu-bar-bg-dark !default;
 $side-menu-title-color-dark: $body-color-dark !default;
-$side-menu-icon-bg-dark: $menu-bar-active-color-dark !default;
+$side-menu-icon-bg-dark: fade-out($menu-bar-active-color-dark, 0.2) !default;
 $side-menu-icon-color-dark: $side-menu-title-bg-dark !default;
 $side-menu-border-color-dark: $border-color-dark !default;
 $side-menu-bg-dark: $menu-bar-bg-dark !default;
@@ -221,7 +221,7 @@ $side-menu-inactive-hover-color-dark: $menu-bar-inactive-hover-color-dark !defau
 // Quick access (icons in the dashboard)
 $quick-access-bg: $menu-bar-inactive-hover-bg !default;
 $quick-access-color: $body-color !default;
-$quick-access-icon-color: $accent !default;
+$quick-access-icon-color: $primary !default;
 $quick-access-hover-bg: darken($menu-bar-inactive-hover-bg, 5%) !default;
 $quick-access-hover-color: $body-color !default;
 $quick-access-hover-icon-color: $accent !default;

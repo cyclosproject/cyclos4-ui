@@ -104,6 +104,10 @@ export class BalanceHistoryChartDirective implements OnInit, OnChanges {
     const x = options.scales.xAxes[0];
     const y = options.scales.yAxes[0];
     for (const axis of [x, y]) {
+      axis.gridLines.display = true;
+      axis.gridLines.drawBorder = true;
+      axis.gridLines.drawTicks = true;
+      axis.gridLines.drawOnChartArea = false;
       axis.gridLines.color = this.layout.borderColor;
       axis.ticks.fontColor = this.layout.textMutedColor;
     }
