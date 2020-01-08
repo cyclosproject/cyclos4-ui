@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AdStatusEnum, OrderStatusEnum, ShoppingCartItemDetailed, NotificationTypeEnum } from 'app/api/models';
+import { AdStatusEnum, OrderStatusEnum, ShoppingCartItemDetailed } from 'app/api/models';
 import { I18n } from 'app/i18n/i18n';
 import { AuthHelperService } from 'app/core/auth-helper.service';
 import { BehaviorSubject } from 'rxjs';

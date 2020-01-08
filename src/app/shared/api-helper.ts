@@ -4,7 +4,7 @@ import {
 } from 'app/api/models';
 import { empty } from 'app/shared/helper';
 import { ActiveMenu, Menu, RootMenu } from 'app/shared/menu';
-import { MarketplaceHelperService } from 'app/core/marketplace-helper.service';
+
 
 /**
  * Helper methods for working with API model

@@ -21,7 +21,7 @@
       </div>
       <div *ngIf="detailed" class="ml-auto text-right d-flex flex-column">
         <button [tooltip]="i18n.ad.changeQuantity" class="btn btn-icon"
-          (click)="changeQuantity.emit(row); $event.stopPropagation(); $event.preventDefault()">
+          (click)="changeQuantity.emit([null, row]); $event.stopPropagation(); $event.preventDefault()">
           <icon icon="edit"></icon>
         </button>
         <button [tooltip]="i18n.general.remove" class="btn btn-icon mt-2"
@@ -37,13 +37,13 @@
       <th class="avatar"></th>
       <th width="30%">{{ i18n.ad.product }}</th>
       <th>{{ i18n.ad.number }}</th>
-      <th>{{ i18n.ad.quantity }}</th>
+      <th width="15%">{{ i18n.ad.quantity }}</th>
       <th class="text-right">{{ i18n.ad.unitPrice }}</th>
       <th class="text-right">{{ i18n.transaction.amount }}</th>
       <th *ngIf="detailed" class="actions"></th>
     </thead>
     <tbody>
-      <tr *ngFor="let row of items" (click)="navigate(row)">
+      <tr *ngFor="let row of items">
         <td class=" avatar" [ngClass]="{
               'pb-0': layout.xxs$ | async,
               'border-0': layout.xxs$ | async
@@ -52,10 +52,18 @@
             icon="shopping_basket"></avatar>
         <td [ngClass]="{'link' : detailed}"
           [ngStyle]="{'text-decoration': !isAvailable(row) ? 'line-through' : ''}">
-          {{ row.product.name }}
+          <span (click)="navigate(row)">{{ row.product.name }}</span>
         </td>
         <td>{{ row.product.productNumber }}</td>
-        <td>{{ resolveQuantityLabel(row) }}
+        <td>
+          <form *ngIf="useForm" [formGroup]="form">
+            <decimal-field *ngIf="isAvailable(row)" [formControlName]="row.id"
+              [scale]="row.product.allowDecimalQuantity ? 2 : 0">
+            </decimal-field>
+          </form>
+          <ng-container *ngIf="!useForm">
+            {{ resolveQuantityLabel(row) }}
+          </ng-container>
         </td>
         <td class="text-right">
           {{ row.price | currency: currency }}
@@ -63,13 +71,13 @@
         <td class="text-right">
           {{ row.totalPrice | currency: currency }}</td>
         <td *ngIf="detailed" class="actions actions-multiple">
-          <button *ngIf="isAvailable(row)" [tooltip]="i18n.ad.changeQuantity"
-            class="btn btn-icon"
-            (click)="changeQuantity.emit(row); $event.stopPropagation()">
+          <button *ngIf="!useForm && isAvailable(row)"
+            [tooltip]="i18n.ad.changeQuantity" class="btn btn-icon"
+            (click)="changeQuantity.emit([null, row]); $event.stopPropagation()">
             <icon icon="edit"></icon>
           </button>
           <button [tooltip]="i18n.general.remove" class="btn btn-icon"
-            [ngClass]="{'ml-3' : isAvailable(row)}"
+            [ngClass]="{'ml-3' : !useForm && isAvailable(row)}"
             (click)="remove.emit(row); $event.stopPropagation()">
             <icon icon="clear"></icon>
           </button>

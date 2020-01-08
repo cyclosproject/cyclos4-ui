@@ -2,6 +2,8 @@ import { ChangeDetectionStrategy, Component, OnInit, Input, Injector, Output, Ev
 import { BaseComponent } from 'app/shared/base.component';
 import { ShoppingCartItemDetailed, Currency, ShoppingCartItemAvailabilityEnum } from 'app/api/models';
 import { MarketplaceHelperService } from 'app/core/marketplace-helper.service';
+import { FormGroup } from '@angular/forms';
+import { debounceTime } from 'rxjs/operators';
 
 /**
  * Displays a list of shopping cart items optionally with detailed information and actions
@@ -13,11 +15,13 @@ import { MarketplaceHelperService } from 'app/core/marketplace-helper.service';
 })
 export class ShoppingCartItemsComponent extends BaseComponent implements OnInit {
 
+  form: FormGroup;
+
   @Input() detailed: boolean;
   @Input() items: ShoppingCartItemDetailed[];
   @Input() currency: Currency;
 
-  @Output() changeQuantity = new EventEmitter<ShoppingCartItemDetailed>();
+  @Output() changeQuantity = new EventEmitter<[string, ShoppingCartItemDetailed]>();
   @Output() remove = new EventEmitter<ShoppingCartItemDetailed>();
 
 
@@ -29,6 +33,26 @@ export class ShoppingCartItemsComponent extends BaseComponent implements OnInit 
 
   ngOnInit() {
     super.ngOnInit();
+    if (this.useForm) {
+      this.form = this.formBuilder.group({});
+      this.items.forEach(item => {
+        const control = this.formBuilder.control(item.quantity, { updateOn: 'blur' });
+        this.form.addControl(item.id, control);
+        // Only after finishing initialization add a listener to form values to update the results. This avoids lifecycle loop.
+        setTimeout(() => {
+          this.addSub(control.valueChanges.pipe(debounceTime(this.ApiHelper.DEBOUNCE_TIME)).subscribe(value => {
+            this.changeQuantity.emit([value, item]);
+          }), true);
+        }, 1);
+      });
+    }
+  }
+
+  /**
+   * Returns if the quantity can be changed directly from the table
+   */
+  get useForm(): boolean {
+    return this.detailed && this.layout.gtxs;
   }
 
   /**
