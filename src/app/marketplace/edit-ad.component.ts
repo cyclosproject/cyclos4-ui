@@ -128,7 +128,6 @@ export class EditAdComponent
       promotionalEndDate: adManage.promotionalPeriod ? adManage.promotionalPeriod.end : null,
       promotionalPrice: adManage.promotionalPrice,
       description: [adManage.description, Validators.required],
-      addresses: adManage.addresses,
       maxAllowedInCart: adManage.maxAllowedInCart,
       minAllowedInCart: adManage.minAllowedInCart,
       allowDecimalQuantity: adManage.allowDecimalQuantity,
@@ -141,6 +140,7 @@ export class EditAdComponent
       id: this.id,
       kind: this.kind
     });
+    this.form.addControl('addresses', this.formBuilder.control(adManage.addresses));
     this.form.addControl('deliveryMethods', this.formBuilder.control(adManage.deliveryMethods));
     this.form.addControl('customValues', this.fieldHelper.customValuesFormGroup(data.customFields, {
       currentValues: adManage.customValues
