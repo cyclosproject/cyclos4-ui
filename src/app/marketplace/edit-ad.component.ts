@@ -293,7 +293,7 @@ export class EditAdComponent
 
       value.images = this.uploadedImages.map(i => i.id);
 
-      if (this.data.requiresAuthorization) {
+      if (this.data.requiresAuthorization && this.owner) {
         // When requires authorization submit as draft when saving for first time
         value.submitForAuthorization = false;
       }

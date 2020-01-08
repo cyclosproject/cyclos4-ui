@@ -1,5 +1,8 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { DeliveryMethodDataForEdit, DeliveryMethodDataForNew, DeliveryMethodChargeTypeEnum, Currency, DeliveryMethodBasicData, DeliveryMethod } from 'app/api/models';
+import {
+  DeliveryMethodDataForEdit, DeliveryMethodDataForNew,
+  DeliveryMethodChargeTypeEnum, Currency, DeliveryMethodBasicData
+} from 'app/api/models';
 import { DeliveryMethodsService } from 'app/api/services';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { FormGroup, Validators } from '@angular/forms';

@@ -1,4 +1,5 @@
-<results-layout [results]="items" resultType="list">
+<results-layout [results]="items" resultType="list"
+  [toLink]="detailed ? toLink : null">
   <mobile-result *mobileResult="let row" [avatarImage]="row.product.image"
     avatarIcon="shopping_basket" [title]="row.product.name">
     <div class="d-flex">
@@ -42,14 +43,14 @@
       <th *ngIf="detailed" class="actions"></th>
     </thead>
     <tbody>
-      <tr *ngFor="let row of items" (click)="router.navigate(path(row))">
+      <tr *ngFor="let row of items" (click)="navigate(row)">
         <td class=" avatar" [ngClass]="{
               'pb-0': layout.xxs$ | async,
               'border-0': layout.xxs$ | async
             }">
           <avatar [image]="row.product.image" [tooltip]="row.product.name"
             icon="shopping_basket"></avatar>
-        <td class="link"
+        <td [ngClass]="{'link' : detailed}"
           [ngStyle]="{'text-decoration': !isAvailable(row) ? 'line-through' : ''}">
           {{ row.product.name }}
         </td>

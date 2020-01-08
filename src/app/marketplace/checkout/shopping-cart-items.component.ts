@@ -42,6 +42,16 @@ export class ShoppingCartItemsComponent extends BaseComponent implements OnInit 
     return ['/marketplace', 'view', row.product.id];
   }
 
+  get toLink() {
+    return (row: ShoppingCartItemDetailed) => this.path(row);
+  }
+
+  navigate(item: ShoppingCartItemDetailed) {
+    if (this.detailed) {
+      this.router.navigate(this.path(item));
+    }
+  }
+
   /**
    * Resolves the label for available/unavailable/out of stock item
    */
