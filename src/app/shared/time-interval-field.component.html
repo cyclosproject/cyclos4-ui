@@ -4,21 +4,21 @@
 </label-value>
 
 <ng-template #widget>
-  <form [formGroup]="form">
-    <div class="row no-gutters w-100">
-      <input-field #inputField formControlName="amount" class="col-8">
-      </input-field>
-      <single-selection-field formControlName="field" class="col-4 pl-1">
-        <field-option value="days"
-          [text]="i18n.general.timeField.plural.days">
-        </field-option>
-        <field-option value="weeks"
-          [text]="i18n.general.timeField.plural.weeks">
-        </field-option>
-        <field-option value="months"
-          [text]="i18n.general.timeField.plural.months">
-        </field-option>
-      </single-selection-field>
-    </div>
-  </form>
+  <div [formGroup]="form" class="d-flex w-100">
+    <input #inputField [id]="id" type="number" numbersOnly autocomplete="off"
+      formControlName="amount" class="form-control text-right" [ngClass]="{
+      'is-invalid': (formControl.statusChanges | async) === 'INVALID' && formControl.touched
+    }">
+    <single-selection-field formControlName="field" class="pl-1">
+      <field-option value="days" [text]="i18n.general.timeField.plural.days">
+      </field-option>
+      <field-option value="weeks"
+        [text]="i18n.general.timeField.plural.weeks">
+      </field-option>
+      <field-option value="months"
+        [text]="i18n.general.timeField.plural.months">
+      </field-option>
+    </single-selection-field>
+  </div>
+  <field-errors [control]="formControl"></field-errors>
 </ng-template>

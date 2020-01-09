@@ -8,12 +8,16 @@
         <input-field formControlName="name" [label]="i18n.general.name"
           required>
         </input-field>
-        <radio-group-field [label]="i18n.ad.chargeType"
+        <radio-group-field *ngIf="create" [label]="i18n.ad.chargeType"
           formControlName="chargeType">
           <field-option value="fixed" [text]="i18n.ad.fixed"></field-option>
           <field-option value="negotiated" [text]="i18n.ad.negotiated">
           </field-option>
         </radio-group-field>
+        <label-value *ngIf="!create" [label]="i18n.ad.chargeType">
+          {{ data.deliveryMethod.chargeType === DeliveryMethodChargeTypeEnum.FIXED ?
+          i18n.ad.fixed : i18n.ad.negotiated }}
+        </label-value>
         <single-selection-field *ngIf="((form.get('chargeType').valueChanges | async) || form.get('chargeType').value) === 'fixed' &&
           data.currencies && data.currencies.length > 1"
           formControlName="chargeCurrency" [label]="i18n.general.currency"
@@ -28,14 +32,16 @@
           [scale]="currency.decimalDigits" [prefix]="currency.prefix"
           [suffix]="currency.suffix" fieldSize="full" required>
         </decimal-field>
-        <time-interval-field formControlName="minTime"
+        <boolean-field formControlName="enabled"
+          [label]="i18n.general.enabled"></boolean-field>
+        <time-interval-field formControlName="minDeliveryTime"
           [label]="i18n.ad.minDeliveryTime">
         </time-interval-field>
-        <time-interval-field formControlName="maxTime"
+        <time-interval-field formControlName="maxDeliveryTime"
           [label]="i18n.ad.maxDeliveryTime" required>
         </time-interval-field>
         <textarea-field formControlName="description"
-          [label]="i18n.general.description">
+          [label]="i18n.general.details" required>
         </textarea-field>
       </form>
       <actions forceRow>

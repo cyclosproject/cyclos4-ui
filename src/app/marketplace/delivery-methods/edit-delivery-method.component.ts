@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
   DeliveryMethodDataForEdit, DeliveryMethodDataForNew,
-  DeliveryMethodChargeTypeEnum, Currency, DeliveryMethodBasicData
+  DeliveryMethodChargeTypeEnum, Currency, DeliveryMethodBasicData, DeliveryMethodEdit
 } from 'app/api/models';
 import { DeliveryMethodsService } from 'app/api/services';
 import { BasePageComponent } from 'app/shared/base-page.component';
@@ -21,6 +21,8 @@ import { Menu } from 'app/shared/menu';
 export class EditDeliveryMethodComponent
   extends BasePageComponent<DeliveryMethodDataForNew | DeliveryMethodDataForEdit>
   implements OnInit {
+
+  DeliveryMethodChargeTypeEnum = DeliveryMethodChargeTypeEnum;
 
   id: string;
   user: string;
@@ -64,65 +66,55 @@ export class EditDeliveryMethodComponent
       chargeType: dm.chargeType,
       chargeCurrency: dm.chargeCurrency,
       chargeAmount: dm.chargeAmount,
-      minTime: dm.minDeliveryTime,
-      maxTime: [dm.maxDeliveryTime, Validators.required],
-      description: dm.description
+      enabled: dm.enabled,
+      minDeliveryTime: dm.minDeliveryTime,
+      maxDeliveryTime: [dm.maxDeliveryTime, Validators.required],
+      description: [dm.description, Validators.required],
+      version: (dm as DeliveryMethodEdit).version
     });
+    this.updateCurrency(data);
 
-    this.addSub(this.form.controls.chargeType.valueChanges.subscribe(() => {
-      this.updateRequiredControls();
-      this.preselectFirstCurrency(data);
-    }));
-    this.addSub(this.form.controls.chargeCurrency.valueChanges.subscribe(id => {
-      this.updateCurrency(id, data);
-    }));
-    this.preselectFirstCurrency(data);
-    this.updateRequiredControls();
+    this.addSub(this.form.controls.chargeType.valueChanges.subscribe(() => this.updateCurrency(data)));
+    this.addSub(this.form.controls.chargeCurrency.valueChanges.subscribe(() => this.updateCurrency(data)));
   }
 
   /**
-   * Update required controls like charge currency and amount based on the charge type
+   * When charge type is fixed preselects the first currency if no one was specified,
+   * otherwise clears the currency and hides related fields
    */
-  protected updateRequiredControls() {
-    const controls = [this.form.controls.chargeAmount, this.form.controls.chargeCurrency];
-    if (this.form.controls.chargeType.value === DeliveryMethodChargeTypeEnum.NEGOTIATED) {
-      controls.forEach(c => c.clearValidators());
-    } else {
-      controls.forEach(c => c.setValidators(Validators.required));
-    }
-    controls.forEach(c => c.updateValueAndValidity());
-  }
-
-  /**
-   * Preselects the first currency when there is any available currency and method is
-   * fixed, otherwise sets it to null (to hide currency and price fields)
-   */
-  protected preselectFirstCurrency(data: DeliveryMethodBasicData) {
-    if (this.form.controls.chargeType.value === DeliveryMethodChargeTypeEnum.FIXED && !empty(data.currencies)) {
-      this.currency = data.currencies[0];
-      this.form.controls.chargeCurrency.setValue(this.currency.id);
+  protected updateCurrency(data: DeliveryMethodBasicData) {
+    if (!empty(data.currencies) &&
+      this.form.controls.chargeType.value === DeliveryMethodChargeTypeEnum.FIXED) {
+      const id = this.form.controls.chargeCurrency.value;
+      this.currency = data.currencies.find(c => c.id === id || c.internalName === id)
+        || data.currencies[0];
+      this.form.patchValue({ chargeCurrency: this.currency.id }, { emitEvent: false });
+      this.form.controls.chargeCurrency.setValidators(Validators.required);
+      this.form.controls.chargeAmount.setValidators(Validators.required);
     } else {
       this.currency = null;
+      this.form.patchValue({ chargeCurrency: null, chargeAmount: null }, { emitEvent: false });
+      this.form.controls.chargeCurrency.clearValidators();
+      this.form.controls.chargeAmount.clearValidators();
     }
   }
 
   /**
-   * Changes the current currency updating other referenced fields like price
+   * Saves or edits the current delivery method
    */
-  protected updateCurrency(id: string, data: DeliveryMethodBasicData) {
-    this.currency = data.currencies.find(c => c.id === id || c.internalName === id);
-  }
-
   save() {
-    validateBeforeSubmit(this.form);
-    if (!this.form.valid) {
+    if (!validateBeforeSubmit(this.form)) {
       return;
     }
     const value = this.form.value;
     const request: Observable<String | void> = this.create ?
       this.deliveryMethodService.createDeliveryMethod({ body: value, user: this.user }) :
       this.deliveryMethodService.updateDeliveryMethod({ id: this.id, body: value });
-    this.addSub(request.subscribe(() => {
+    this.addSub(request.subscribe(id => {
+      this.notification.snackBar(this.create
+        ? this.i18n.ad.deliveryMethodCreated
+        : this.i18n.ad.deliveryMethodSaved);
+      this.router.navigate(['/marketplace', 'delivery-methods', 'view', id || this.id]);
     }));
   }
 
@@ -137,4 +129,5 @@ export class EditDeliveryMethodComponent
   set currency(currency: Currency) {
     this.currency$.next(currency);
   }
+
 }

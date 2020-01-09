@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/c
 import {
   OrderView, OrderItem, CreateDeviceConfirmation,
   DeviceConfirmationTypeEnum, OrderStatusEnum, CustomFieldDetailed,
-  CustomFieldTypeEnum, OrderDataForAcceptByBuyer, CustomFieldControlEnum, DeliveryMethod
+  CustomFieldTypeEnum, OrderDataForAcceptByBuyer, CustomFieldControlEnum, SetDeliveryMethod
 } from 'app/api/models';
 import { OrdersService } from 'app/api/services';
 import { HeadingAction } from 'app/shared/action';
@@ -192,7 +192,7 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
       }
     });
     const component = ref.content as SetDeliveryMethodComponent;
-    this.addSub(component.done.subscribe((deliveryMethod: DeliveryMethod) => {
+    this.addSub(component.done.subscribe((deliveryMethod: SetDeliveryMethod) => {
       this.orderService.setDeliveryMethod({
         order: this.id,
         body: deliveryMethod

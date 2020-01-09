@@ -104,6 +104,7 @@ export class SearchAdsComponent
       params.maxDistance = distanceFilter.maxDistance;
       params.latitude = distanceFilter.latitude;
       params.longitude = distanceFilter.longitude;
+      params.addressResult = AdAddressResultEnum.NEAREST;
     }
     params.publicationPeriod = ApiHelper.dateRangeFilter(value.beginDate, value.endDate);
     delete params['beginDate'];

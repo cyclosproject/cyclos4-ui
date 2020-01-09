@@ -1,8 +1,6 @@
-import {
-  ChangeDetectionStrategy, Component, Injector, Optional, Host, SkipSelf, OnInit, ViewChild, ElementRef
-} from '@angular/core';
-import { ControlContainer, NG_VALUE_ACCESSOR, FormGroup, FormBuilder } from '@angular/forms';
-import { TimeInterval, TimeFieldEnum } from 'app/api/models';
+import { ChangeDetectionStrategy, Component, ElementRef, Host, Injector, OnInit, Optional, SkipSelf, ViewChild } from '@angular/core';
+import { ControlContainer, FormBuilder, FormControl, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { TimeFieldEnum, TimeInterval, CustomFieldSizeEnum } from 'app/api/models';
 import { BaseFormFieldComponent } from 'app/shared/base-form-field.component';
 import { empty } from 'app/shared/helper';
 
@@ -22,6 +20,7 @@ export class TimeIntervalFieldComponent extends BaseFormFieldComponent<TimeInter
   @ViewChild('inputField', { static: false }) private inputRef: ElementRef;
 
   form: FormGroup;
+  amountControl: FormControl;
 
   constructor(injector: Injector,
     @Optional() @Host() @SkipSelf() controlContainer: ControlContainer,
@@ -32,17 +31,29 @@ export class TimeIntervalFieldComponent extends BaseFormFieldComponent<TimeInter
 
   ngOnInit() {
     super.ngOnInit();
-    this.form = this.formBuilder.group({
-      amount: null,
-      field: TimeFieldEnum.DAYS
-    });
+
+    this.fieldSize = CustomFieldSizeEnum.MEDIUM;
+
+    this.form = this.formBuilder.group(this.defaultValue);
+
     this.addSub(this.form.valueChanges.subscribe(value => {
-      if (empty(this.form.controls.amount == null)) {
+      if (empty(value.amount)) {
         this.value = null;
       } else {
         this.value = value;
       }
     }));
+  }
+
+  onValueInitialized(value: TimeInterval) {
+    this.form.setValue(value || this.defaultValue);
+  }
+
+  get defaultValue(): TimeInterval {
+    return {
+      amount: null,
+      field: TimeFieldEnum.DAYS
+    };
   }
 
   protected getDisabledValue(): string {

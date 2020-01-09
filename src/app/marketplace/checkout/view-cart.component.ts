@@ -24,7 +24,7 @@ export class ViewCartComponent
   extends BasePageComponent<ShoppingCartView>
   implements OnInit {
 
-  static details = false;
+  private static details = false;
 
   id: string;
   unavailable: boolean;

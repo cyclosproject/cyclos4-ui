@@ -115,11 +115,12 @@ export class EditAdComponent
     this.requiredProductNumber = this.webshop && !settings.productNumberGenerated;
 
     this.mask = !settings.productNumberGenerated ? settings.productNumberMask : '';
+    const firstCurrency = !empty(data.currencies) ? data.currencies[0] : null;
 
     this.form = this.formBuilder.group({
       name: [adManage.name, Validators.required],
       categories: [categories, Validators.required],
-      currency: [!empty(data.currencies) ? this.ApiHelper.internalNameOrId(data.currencies[0]) : null, Validators.required],
+      currency: [firstCurrency ? this.ApiHelper.internalNameOrId(firstCurrency) : null, Validators.required],
       price: [adManage.price, this.webshop ? Validators.required : null],
       publicationBeginDate: [adManage.publicationPeriod.begin, Validators.required],
       publicationEndDate: [adManage.publicationPeriod.end, Validators.required],
@@ -151,9 +152,7 @@ export class EditAdComponent
     }));
     // Preselect the first currency when creating a new ad
     // or use the single returned currency when editing
-    if (!empty(data.currencies)) {
-      this.currency = data.currencies[0];
-    }
+    this.currency = firstCurrency;
 
     this.addSub(this.form.controls.stockType.valueChanges.subscribe(() => this.updateStockControls()));
 
@@ -246,8 +245,7 @@ export class EditAdComponent
    */
   save(insertNew?: boolean) {
 
-    validateBeforeSubmit(this.form);
-    if (!this.form.valid) {
+    if (!validateBeforeSubmit(this.form)) {
       return;
     }
 
