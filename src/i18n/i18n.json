@@ -1121,7 +1121,7 @@
     "available": "Available",
     "notAvailable": "Not available",
     "backToDraft": "The advertisement is now in draft mode",
-    "beginDate": "Begin date",
+    "beginDate": "Published begin date",
     "cartEmpty": "This cart is empty. Search marketplace for products and services to buy",
     "checkout": "Checkout",
     "changeQuantity": "Change quantity",
@@ -1131,7 +1131,7 @@
     "chooseDeliveryAddress": "Choose delivery address",
     "choosePaymentType": "Choose payment type",
     "customAddress": "Custom address",
-    "endDate": "End date",
+    "endDate": "Published end date",
     "error": {
       "cannotBuyFromSeller": "At the moment, you are not allowed to buy products from this user. Please contact your administrator.",
       "cannotProceedToCheckout": "You can not proceed with checkout because some items are unavailable or you do not have enough balance",

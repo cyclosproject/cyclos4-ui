@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import {
-  AdCategoryWithParent, Address, AdView, AdKind, RoleEnum, DeliveryMethod, DeliveryMethodChargeTypeEnum, AdQuestionView
+  AdCategoryWithParent, AdView, AdKind, RoleEnum, DeliveryMethod, DeliveryMethodChargeTypeEnum, AdQuestionView
 } from 'app/api/models';
 import { MarketplaceService, AdQuestionsService, ShoppingCartsService } from 'app/api/services';
 import { OperationHelperService } from 'app/core/operation-helper.service';
@@ -27,7 +27,6 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
 
   title: string;
   id: string;
-  addresses: Address[];
   webshop: boolean;
   guest: boolean;
   hasStatus: boolean;
@@ -176,7 +175,6 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
     }
     this.headingActions = headingActions;
     this.title = words(ad.name, 60);
-    this.addresses = [...ad.adAddresses, ...ad.userAddresses];
   }
 
   /**
