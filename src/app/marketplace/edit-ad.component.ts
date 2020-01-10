@@ -287,14 +287,13 @@ export class EditAdComponent
       }
     };
 
+    if (this.data.requiresAuthorization) {
+      value.submitForAuthorization = !this.self;
+    }
+
     if (this.create) {
 
       value.images = this.uploadedImages.map(i => i.id);
-
-      if (this.data.requiresAuthorization && this.self) {
-        // When requires authorization submit as draft when saving for first time
-        value.submitForAuthorization = false;
-      }
 
       this.addSub(this.marketplaceService.createAd({
         user: this.owner,
@@ -302,10 +301,6 @@ export class EditAdComponent
       }).subscribe(onFinish));
 
     } else {
-
-      if (this.data.requiresAuthorization && !this.self) {
-        value.submitForAuthorization = true;
-      }
 
       const updateAdReq = this.marketplaceService.updateAd({
         ad: this.id,
