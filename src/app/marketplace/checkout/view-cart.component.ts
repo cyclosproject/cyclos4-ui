@@ -149,7 +149,7 @@ export class ViewCartComponent
   /**
    * Changes the item quantity and reloads the page
    */
-  changeQuantity(item: [string, ShoppingCartItemDetailed]) {
+  changeQuantity(item: [string, ShoppingCartItemDetailed, boolean]) {
 
     const req: any = (quantity: string) => {
       this.addSub(this.shoppingCartService.modifyItemQuantityOnShoppingCart({
@@ -161,7 +161,7 @@ export class ViewCartComponent
       }));
     };
 
-    if (item[0] != null) {
+    if (item[2]) {
       // Edit quantity directly from table
       req(item[0]);
     } else {

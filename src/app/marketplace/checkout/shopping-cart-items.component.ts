@@ -21,7 +21,7 @@ export class ShoppingCartItemsComponent extends BaseComponent implements OnInit 
   @Input() items: ShoppingCartItemDetailed[];
   @Input() currency: Currency;
 
-  @Output() changeQuantity = new EventEmitter<[string, ShoppingCartItemDetailed]>();
+  @Output() changeQuantity = new EventEmitter<[string, ShoppingCartItemDetailed, boolean]>();
   @Output() remove = new EventEmitter<ShoppingCartItemDetailed>();
 
 
@@ -33,7 +33,7 @@ export class ShoppingCartItemsComponent extends BaseComponent implements OnInit 
 
   ngOnInit() {
     super.ngOnInit();
-    if (this.useForm) {
+    if (this.detailed) {
       this.form = this.formBuilder.group({});
       this.items.forEach(item => {
         const control = this.formBuilder.control(item.quantity, { updateOn: 'blur' });
@@ -41,7 +41,7 @@ export class ShoppingCartItemsComponent extends BaseComponent implements OnInit 
         // Only after finishing initialization add a listener to form values to update the results. This avoids lifecycle loop.
         setTimeout(() => {
           this.addSub(control.valueChanges.pipe(debounceTime(this.ApiHelper.DEBOUNCE_TIME)).subscribe(value => {
-            this.changeQuantity.emit([value, item]);
+            this.changeQuantity.emit([value, item, true]);
           }), true);
         }, 1);
       });
@@ -51,8 +51,8 @@ export class ShoppingCartItemsComponent extends BaseComponent implements OnInit 
   /**
    * Returns if the quantity can be changed directly from the table
    */
-  get useForm(): boolean {
-    return this.detailed && this.layout.gtxs;
+  useForm(smLayout: boolean): boolean {
+    return this.detailed && smLayout;
   }
 
   /**

@@ -21,7 +21,7 @@
       </div>
       <div *ngIf="detailed" class="ml-auto text-right d-flex flex-column">
         <button [tooltip]="i18n.ad.changeQuantity" class="btn btn-icon"
-          (click)="changeQuantity.emit([null, row]); $event.stopPropagation(); $event.preventDefault()">
+          (click)="changeQuantity.emit([null, row, false]); $event.stopPropagation(); $event.preventDefault()">
           <icon icon="edit"></icon>
         </button>
         <button [tooltip]="i18n.general.remove" class="btn btn-icon mt-2"
@@ -56,12 +56,12 @@
         </td>
         <td>{{ row.product.productNumber }}</td>
         <td>
-          <form *ngIf="useForm" [formGroup]="form">
+          <form *ngIf="useForm(layout.gtsm$ | async)" [formGroup]="form">
             <decimal-field *ngIf="isAvailable(row)" [formControlName]="row.id"
               [scale]="row.product.allowDecimalQuantity ? 2 : 0">
             </decimal-field>
           </form>
-          <ng-container *ngIf="!useForm">
+          <ng-container *ngIf="!useForm(layout.gtsm$ | async)">
             {{ resolveQuantityLabel(row) }}
           </ng-container>
         </td>
@@ -71,13 +71,13 @@
         <td class="text-right">
           {{ row.totalPrice | currency: currency }}</td>
         <td *ngIf="detailed" class="actions actions-multiple">
-          <button *ngIf="!useForm && isAvailable(row)"
+          <button *ngIf="!useForm(layout.gtsm$ | async) && isAvailable(row)"
             [tooltip]="i18n.ad.changeQuantity" class="btn btn-icon"
-            (click)="changeQuantity.emit([null, row]); $event.stopPropagation()">
+            (click)="changeQuantity.emit([null, row, false]); $event.stopPropagation()">
             <icon icon="edit"></icon>
           </button>
           <button [tooltip]="i18n.general.remove" class="btn btn-icon"
-            [ngClass]="{'ml-3' : !useForm && isAvailable(row)}"
+            [ngClass]="{'ml-3' : !useForm(layout.gtsm$ | async) && isAvailable(row)}"
             (click)="remove.emit(row); $event.stopPropagation()">
             <icon icon="clear"></icon>
           </button>
