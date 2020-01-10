@@ -20,23 +20,8 @@ form {
   margin-bottom: 0.5rem;
 }
 
-.identity-provider {
-  display: flex;
-  margin-top: 1rem;
-  align-items: center;
-  justify-content: center;
-  margin-top: 1rem;
-  position: relative;
-
-  img {
-    max-width: 1rem;
-    position: absolute;
-    left: 0.5rem;
-  }
-}
 button {
   width: 100%;
-  border-radius: $input-border-radius;
 }
 
 @include media-breakpoint-up(xs) {

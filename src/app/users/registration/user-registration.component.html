@@ -9,8 +9,25 @@
       </registration-step-group>
     </div>
     <actions forceRow>
-      <button class="btn btn-primary" (click)="showFields()">
+      <button class="btn btn-primary" (click)="showIdentityProviders()">
         {{ i18n.general.next }}
+      </button>
+    </actions>
+  </page-content>
+
+  <page-content *ngSwitchCase="'idp'" [heading]="i18n.user.title.registration"
+    [mobileHeading]="i18n.user.mobileTitle.registration"
+    [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'" last>
+    <div class="flex-grow-1">
+      <registration-step-idp [identityProviders]="data.identityProviders"
+        (continue)="continueWithProvider($event)">
+      </registration-step-idp>
+    </div>
+    <actions forceRow>
+      <span></span>
+      <button *ngIf="groups.length > 1" class="btn btn-outline-primary"
+        (click)="backToGroup()">
+        {{ i18n.general.previous }}
       </button>
     </actions>
   </page-content>
@@ -23,7 +40,8 @@
       <registration-step-fields [data]="data" [form]="form"
         [mobileForm]="mobileForm" [landLineForm]="landLineForm"
         [defineAddress]="defineAddress" [addressForm]="addressForm"
-        (imageUploaded)="image = $event" (imageRemoved)="image = null"
+        [image]="image" (imageUploaded)="image = $event"
+        (imageRemoved)="image = null"
         (customImagesUploaded)="addCustomImages($event)"
         (customFilesUploaded)="addCustomFiles($event)">
       </registration-step-fields>
@@ -33,8 +51,8 @@
         (click)="showConfirm()">
         {{ i18n.general.next }}
       </button>
-      <button *ngIf="groups.length > 1" class="btn btn-outline-primary"
-        (click)="backToGroup()">
+      <button *ngIf="groups.length > 1 || data.identityProviders?.length > 0"
+        class="btn btn-outline-primary" (click)="backToIdentityProviders()">
         {{ i18n.general.previous }}
       </button>
     </actions>

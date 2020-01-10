@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { UserRegistrationResult } from 'app/api/models';
-import { UsersService } from 'app/api/services';
+import { ValidationService } from 'app/api/services';
 import { BasePageComponent } from 'app/shared/base-page.component';
 
 /**
@@ -22,14 +22,14 @@ export class ValidateRegistrationComponent
 
   constructor(
     injector: Injector,
-    private usersService: UsersService
+    private validationService: ValidationService
   ) {
     super(injector);
   }
 
   ngOnInit() {
     const key = this.route.snapshot.params.key;
-    this.addSub(this.usersService.validateUserRegistration({ key: key }).subscribe(result => {
+    this.addSub(this.validationService.validateUserRegistration({ key: key }).subscribe(result => {
       this.data = result;
     }));
   }

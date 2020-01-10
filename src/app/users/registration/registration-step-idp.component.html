@@ -1,0 +1,21 @@
+<div class="text-center">{{ i18n.identityProvider.registration}}</div>
+<button *ngFor="let idp of identityProviders" type="button"
+  class="identity-provider" [ngStyle]="{
+      border: '1px solid ' + idp.borderColor,
+      background: idp.backgroundColor,
+      color: idp.textColor
+    }" (click)="registerWith(idp)">
+  <img *ngIf="idp.image" [src]="idp.image.url" [alt]="idp.name"
+    class="aria-hidden">
+  <span [innerHTML]="i18n.identityProvider.login(idp.name) | trust"></span>
+</button>
+
+<div class="text-center my-3">{{ i18n.identityProvider.registrationOr}}</div>
+
+<button class="btn btn-primary mx-auto" (click)="registerWith(null)">
+  {{ i18n.identityProvider.registrationFillForm }}
+</button>
+
+<div class="text-muted text-justify my-3"
+  [innerHTML]="i18n.identityProvider.registrationDisclaimer(format.appTitleSmall) | trust">
+</div>

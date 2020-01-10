@@ -1,0 +1,49 @@
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data then content"></ng-container>
+</page-layout>
+
+<ng-template #content>
+  <page-content [heading]="title" [mobileHeading]="mobileTitle">
+    <ng-container *ngIf="data.user && !self">
+      <user-info [user]="data.user" labelCols="2"></user-info>
+      <hr>
+    </ng-container>
+    <ng-container
+      *ngFor="let uip of data.identityProviders; let first = first">
+      <hr *ngIf="!first" class="mt-4">
+      <div class="row no-gutters">
+        <div class="col-4 col-xs-3 col-md-2">
+          <avatar *ngIf="layout.gtxxs$ | async"
+            class="ml-2 mr-5 management-icon" [size]="64" iconSize="64px"
+            [image]="uip.identityProvider.image" icon="perm_identity">
+          </avatar>
+        </div>
+        <div class="col-8 col-xs-9 col-md-7">
+          <h2 class="border-0 mb-3" [ngClass]="{'mt-0': first}">
+            {{ uip.identityProvider.name }}</h2>
+          <div class="mt-2">
+            <div *ngIf="uip.linkDate">
+              {{ i18n.identityProvider.connectedOn(uip.linkDate | dateTime) }}
+            </div>
+            <div *ngIf="uip.status !== 'linked'">
+              {{ i18n.identityProvider.disconnected }}
+            </div>
+            <div *ngIf="uip.name">
+              {{ uip.name }}
+            </div>
+            <div *ngIf="uip.email">
+              {{ uip.email }}
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-3 mt-3 mt-md-0">
+          <button class="d-block ml-auto btn btn-primary"
+            *ngFor="let action of actions(uip); let last = last"
+            [ngClass]="{'mb-3': !last}" (click)="action.onClick()">
+            {{ action.label }}
+          </button>
+        </div>
+      </div>
+    </ng-container>
+  </page-content>
+</ng-template>

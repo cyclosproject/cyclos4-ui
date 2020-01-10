@@ -1,20 +1,21 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import {
-  AccountKind, AccountWithOwner, AvailabilityEnum, PasswordInput,
-  PasswordModeEnum, RoleEnum, User, UserRelationshipEnum, Transfer, IdentityProvider, IdentityProviderRequestResult, IdentityProviderCallbackResult
+  AccountKind, AccountWithOwner, AvailabilityEnum, IdentityProvider,
+  IdentityProviderCallbackResult, IdentityProviderRequestResult,
+  PasswordInput, PasswordModeEnum, RoleEnum, Transfer, User, UserRelationshipEnum
 } from 'app/api/models';
-import { UsersService, IdentityProvidersService } from 'app/api/services';
+import { IdentityProvidersService, UsersService } from 'app/api/services';
 import { CacheService } from 'app/core/cache.service';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
+import { NextRequestState } from 'app/core/next-request-state';
+import { PushNotificationsService } from 'app/core/push-notifications.service';
 import { I18n } from 'app/i18n/i18n';
 import { ApiHelper } from 'app/shared/api-helper';
 import { empty, truthyAttr } from 'app/shared/helper';
 import { ActiveMenu, Menu } from 'app/shared/menu';
-import { Observable, Subscription, Subject } from 'rxjs';
-import { map, first } from 'rxjs/operators';
-import { PushNotificationsService } from 'app/core/push-notifications.service';
-import { NextRequestState } from 'app/core/next-request-state';
+import { Observable, Subject, Subscription } from 'rxjs';
+import { first, map } from 'rxjs/operators';
 
 /**
  * Helper service for authentication / password common functions
@@ -421,19 +422,24 @@ export class AuthHelperService {
     }
     request.pipe(first()).subscribe(result => {
       // We got the response and need to observe changes. For logged user it will be already registered. For guests, we need a new one.
-      if (!this.dataForUiHolder.user) {
+      const guest = !this.dataForUiHolder.user;
+      if (guest) {
         this.pushNotifications.openForIdentityProviderCallback(result.requestId);
       }
       // Whenever the callback result is received, notify the resulting Observable
       this.identityProviderSubscription = this.pushNotifications.identityProviderCallback$.subscribe(callback => {
         if (result.requestId === callback.requestId) {
-          // The callback is really for this request
-          observable.next(callback);
+          // When as guest, close the opened push notifications stream
+          if (guest) {
+            this.pushNotifications.close();
+          }
           // Remove the previous subscription, if any
           if (this.identityProviderSubscription) {
             this.identityProviderSubscription.unsubscribe();
             this.identityProviderSubscription = null;
           }
+          // The callback is really for this request
+          observable.next(callback);
         }
       });
 

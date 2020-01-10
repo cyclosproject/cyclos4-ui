@@ -33,7 +33,7 @@ export class RegistrationStepFieldsComponent
   managePrivacyFields: Set<string>;
 
   image$ = new BehaviorSubject<Image>(null);
-  get image(): Image {
+  @Input() get image(): Image {
     return this.image$.value;
   }
   set image(image: Image) {

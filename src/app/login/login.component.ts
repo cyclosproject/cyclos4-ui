@@ -91,7 +91,11 @@ export class LoginComponent
   /**
    * Performs the login
    */
-  doLogin(): void {
+  doLogin(event: MouseEvent): void {
+    if (event) {
+      event.stopPropagation();
+      event.preventDefault();
+    }
     const value = this.form.value;
     const required: ValidationErrors = { required: true };
     this.form.controls.principal.setErrors(empty(value.principal) ? required : null);
@@ -114,7 +118,6 @@ export class LoginComponent
 
   loginWith(idp: IdentityProvider) {
     this.authHelper.identityProviderPopup(idp, 'login').pipe(first()).subscribe(callback => {
-      this.identityProviderRequestId = callback.requestId;
       switch (callback.status) {
         case IdentityProviderCallbackStatusEnum.LOGIN_LINK:
         case IdentityProviderCallbackStatusEnum.LOGIN_EMAIL:
@@ -125,6 +128,7 @@ export class LoginComponent
           });
           break;
         case IdentityProviderCallbackStatusEnum.LOGIN_NO_MATCH:
+          this.identityProviderRequestId = callback.requestId;
           this.notification.info(this.i18n.identityProvider.loginNoMatch({
             app: this.format.appTitleSmall,
             email: callback.email,

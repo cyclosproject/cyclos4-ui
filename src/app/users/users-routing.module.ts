@@ -9,6 +9,8 @@ import { ViewBrokerHistoryComponent } from 'app/users/brokering/view-broker-hist
 import { SearchConnectedComponent } from 'app/users/connected/search-connected.component';
 import { ViewUserGroupHistoryComponent } from 'app/users/group-membership/view-user-group-history.component';
 import { ViewUserGroupComponent } from 'app/users/group-membership/view-user-group.component';
+import { UserIdentityProvidersComponent } from 'app/users/identity-providers/user-identity-providers.component';
+import { NotificationSettingsFormComponent } from 'app/users/notification-settings/notification-settings-form.component';
 import { ListOperatorGroupsComponent } from 'app/users/operator-groups/list-operator-groups.component';
 import { OperatorGroupFormComponent } from 'app/users/operator-groups/operator-group-form.component';
 import { ViewOperatorGroupComponent } from 'app/users/operator-groups/view-operator-group.component';
@@ -24,7 +26,6 @@ import { ContactListComponent } from 'app/users/search/contact-list.component';
 import { SearchUsersComponent } from 'app/users/search/search-users.component';
 import { ViewUserStatusHistoryComponent } from 'app/users/status/view-user-status-history.component';
 import { ViewUserStatusComponent } from 'app/users/status/view-user-status.component';
-import { NotificationSettingsFormComponent } from 'app/users/notification-settings/notification-settings-form.component';
 
 const usersRoutes: Routes = [
   {
@@ -160,6 +161,11 @@ const usersRoutes: Routes = [
       {
         path: ':user/passwords',
         component: ManagePasswordsComponent,
+        canActivate: [LoggedUserGuard]
+      },
+      {
+        path: ':user/identity-providers',
+        component: UserIdentityProvidersComponent,
         canActivate: [LoggedUserGuard]
       },
       {

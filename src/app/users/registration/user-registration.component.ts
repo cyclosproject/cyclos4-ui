@@ -2,22 +2,24 @@ import { ChangeDetectionStrategy, Component, Injector, OnDestroy, OnInit } from 
 import { AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import {
   AddressNew, AvailabilityEnum, Group, GroupForRegistration, GroupKind,
-  Image, PhoneNew, RoleEnum, StoredFile, UserDataForNew, UserNew, UserRegistrationResult
+  IdentityProvider, IdentityProviderCallbackStatusEnum, Image, PhoneNew, RoleEnum, StoredFile,
+  UserDataForNew, UserNew, UserRegistrationResult
 } from 'app/api/models';
 import { ImagesService, UsersService } from 'app/api/services';
+import { AddressHelperService } from 'app/core/address-helper.service';
+import { NextRequestState } from 'app/core/next-request-state';
 import { UserHelperService } from 'app/core/user-helper.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import {
   blank, copyProperties, empty, focusFirstField, focusFirstInvalid,
-  mergeValidity, scrollTop, validateBeforeSubmit
+  mergeValidity, scrollTop, setRootSpinnerVisible, validateBeforeSubmit
 } from 'app/shared/helper';
 import { Menu } from 'app/shared/menu';
 import { BehaviorSubject, Observable, of, Subscription, timer } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
-import { AddressHelperService } from 'app/core/address-helper.service';
+import { first, map, switchMap } from 'rxjs/operators';
 
-export type RegistrationStep = 'group' | 'fields' | 'confirm' | 'done';
+export type RegistrationStep = 'group' | 'idp' | 'fields' | 'confirm' | 'done';
 
 /** Validator function that ensures password and confirmation match */
 const SEGURITY_ANSWER_VAL: ValidatorFn = control => {
@@ -48,7 +50,7 @@ export class UserRegistrationComponent
 
   groupSets: Group[];
   groups: GroupForRegistration[];
-  steps: RegistrationStep[] = ['group', 'fields', 'confirm', 'done'];
+  steps: RegistrationStep[] = ['group', 'idp', 'fields', 'confirm', 'done'];
   group: FormControl;
   form: FormGroup;
   mobileForm: FormGroup;
@@ -60,6 +62,7 @@ export class UserRegistrationComponent
   validationSub: Subscription;
   customImages: Image[] = [];
   customFiles: StoredFile[] = [];
+  private identityProviderRequestId: string;
 
   step$ = new BehaviorSubject<RegistrationStep>(null);
   get step(): RegistrationStep {
@@ -82,7 +85,8 @@ export class UserRegistrationComponent
     private usersService: UsersService,
     private userHelper: UserHelperService,
     private imagesService: ImagesService,
-    private addressHelper: AddressHelperService) {
+    private addressHelper: AddressHelperService,
+    private nextRequestState: NextRequestState) {
     super(injector);
   }
 
@@ -147,19 +151,98 @@ export class UserRegistrationComponent
     }
   }
 
-  showFields() {
+  showIdentityProviders() {
     this.addSub(this.usersService.getUserDataForNew({ group: this.group.value })
       .subscribe(data => {
         this.data = data;
-        this.prepareForms(data);
-        focusFirstField();
+        if (empty(data.identityProviders)) {
+          this.showFields();
+        } else {
+          this.step = 'idp';
+        }
       }));
+  }
+
+  continueWithProvider(idp: IdentityProvider) {
+    if (idp) {
+      this.authHelper.identityProviderPopup(idp, 'register', this.group.value).pipe(first()).subscribe(callback => {
+        switch (callback.status) {
+          case IdentityProviderCallbackStatusEnum.REGISTRATION_DONE:
+            // Already registered and logged-in
+            this.nextRequestState.replaceSession(callback.sessionToken).pipe(first()).subscribe(() => {
+              setRootSpinnerVisible(true);
+              this.dataForUiHolder.initialize().subscribe(auth => {
+                setRootSpinnerVisible(false);
+                // Redirect to the home URL
+                if (!ApiHelper.isRestrictedAccess(auth)) {
+                  this.router.navigateByUrl('');
+                }
+              });
+            });
+            break;
+          case IdentityProviderCallbackStatusEnum.REGISTRATION_DATA:
+            // Data for the registration form
+            this.identityProviderRequestId = callback.requestId;
+            // No captcha is needed when using an identity provider
+            this.data.captchaType = null;
+            // Fill in the user fields
+            const user = this.data.user;
+            if (callback.name) {
+              user.name = callback.name;
+            }
+            if (callback.username) {
+              user.username = callback.username;
+            }
+            if (callback.email) {
+              user.email = callback.email;
+            }
+            if (callback.mobilePhone) {
+              user.mobilePhones = [{ number: callback.mobilePhone }];
+            }
+            if (callback.landLinePhone) {
+              user.landLinePhones = [{ number: callback.landLinePhone, extension: callback.landLineExtension }];
+            }
+            if (callback.customValues) {
+              if (!user.customValues) {
+                user.customValues = {};
+              }
+              for (const key of Object.keys(callback.customValues)) {
+                user.customValues[key] = callback.customValues[key];
+              }
+            }
+            if (callback.image) {
+              user.images = [callback.image.id];
+              this.image = callback.image;
+            }
+            this.showFields();
+            break;
+          default:
+            this.notification.error(callback.errorMessage || this.i18n.error.general);
+            break;
+        }
+      });
+    } else {
+      this.showFields();
+    }
+  }
+
+  showFields() {
+    this.prepareForms(this.data);
+    focusFirstField();
   }
 
   backToGroup() {
     this.form = null;
     this.data = null;
     this.step = 'group';
+  }
+
+  backToIdentityProviders() {
+    if (this.data && !empty(this.data.identityProviders)) {
+      this.step = 'idp';
+    } else {
+      this.backToGroup();
+    }
   }
 
   backToFields() {
@@ -313,6 +396,7 @@ export class UserRegistrationComponent
 
   get userNew(): UserNew {
     const user: UserNew = this.form.value;
+    user.identityProviderRequestId = this.identityProviderRequestId;
     const mobile: PhoneNew = (this.mobileForm || {} as FormGroup).value;
     const landLine: PhoneNew = (this.landLineForm || {} as FormGroup).value;
     const address: AddressNew = (this.addressForm || {} as FormGroup).value;

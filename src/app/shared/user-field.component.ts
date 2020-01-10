@@ -3,7 +3,7 @@ import {
   Input, OnDestroy, OnInit, Optional, SkipSelf, ViewChild
 } from '@angular/core';
 import { ControlContainer, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { User, UserQueryFilters, RoleEnum } from 'app/api/models';
+import { User, UserQueryFilters, RoleEnum, PrincipalType } from 'app/api/models';
 import { UsersService } from 'app/api/services';
 import { Configuration } from 'app/configuration';
 import { LoginService } from 'app/core/login.service';
@@ -11,7 +11,7 @@ import { NextRequestState } from 'app/core/next-request-state';
 import { UserCacheService } from 'app/core/user-cache.service';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseAutocompleteFieldComponent } from 'app/shared/base-autocomplete-field.component';
-import { focus } from 'app/shared/helper';
+import { focus, empty } from 'app/shared/helper';
 import { PickContactComponent } from 'app/shared/pick-contact.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { Observable, of, Subscription } from 'rxjs';
@@ -40,6 +40,7 @@ export class UserFieldComponent
   }
 
   @Input() allowPrincipal = false;
+  @Input() principalTypes: PrincipalType[];
   @Input() allowSearch = true;
   @Input() allowContacts = true;
   @Input() filters: UserQueryFilters;
@@ -65,14 +66,24 @@ export class UserFieldComponent
     this.fieldSub = this.inputFieldControl.valueChanges
       .pipe(distinctUntilChanged())
       .subscribe(value => {
-        if (this.allowPrincipal) {
-          this.value = ApiHelper.escapeNumeric(value);
+        if (value != null && this.allowPrincipal) {
+          value = ApiHelper.escapeNumeric(value);
+          if (!/^\w+\:/.test(value)) {
+            // When not already using a specific principal (such as id: when searching), use a wildcard
+            value = '*:' + value;
+          }
+          this.value = value;
         }
       });
     if (this.allowSearch) {
       this.placeholder = this.i18n.field.user.placeholderAllowSearch;
     } else if (this.allowPrincipal) {
-      this.placeholder = this.i18n.field.user.placeholderPrincipal;
+      if (empty(this.principalTypes) || this.principalTypes.length > 3) {
+        // Show a generic principal placeholder
+        this.placeholder = this.i18n.field.user.placeholderPrincipal;
+      } else {
+        this.placeholder = this.principalTypes.map(t => t.name).join(' / ');
+      }
     }
 
     const permissions = this.login.auth.permissions || {};
@@ -111,9 +122,14 @@ export class UserFieldComponent
   }
 
   protected query(text: string): Observable<User[]> {
-    if (!this.allowSearch) {
+    text = (text || '').trim();
+    if (text.startsWith('*:')) {
+      text = text.substr(2);
+    }
+    if (!this.allowSearch || empty(text)) {
       return of([]);
     }
+
     const role = this.dataForUiHolder.role;
     const filters: UserQueryFilters = this.filters ? { ...this.filters } : {};
     filters.ignoreProfileFieldsInList = true,

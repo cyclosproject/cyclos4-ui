@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { UsersService } from 'app/api/services';
+import { ValidationService } from 'app/api/services';
 import { BasePageComponent } from 'app/shared/base-page.component';
 
 /**
@@ -21,21 +21,21 @@ export class ValidateEmailChangeComponent
 
   constructor(
     injector: Injector,
-    private usersService: UsersService
+    private validationService: ValidationService
   ) {
     super(injector);
   }
 
   ngOnInit() {
     const key = this.route.snapshot.params.key;
-    this.addSub(this.usersService.validateEmailChange(key).subscribe(result => {
-      if (this.login.user && this.login.user.id !== result) {
+    this.addSub(this.validationService.validateEmailChange(key).subscribe(() => {
+      if (this.login.user) {
         // Was logged-in as a different user
         this.login.logout();
         this.notification.info(this.i18n.user.newEmailConfirmed);
       } else {
         // Show the page normally
-        this.data = result;
+        this.data = '';
       }
     }));
   }
