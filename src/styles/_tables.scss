@@ -143,6 +143,13 @@ table.table {
   }
 }
 
+.link {
+  color: $link-color !important;
+}
+.link:hover {
+  text-decoration: underline !important;
+}
+
 body.dark {
   .table {
     background-color: $table-bg-dark;
@@ -170,6 +177,10 @@ body.dark {
       border-color: $table-border-color-dark;
     }
 
+    .link {
+      color: $link-color-dark !important;
+    }
+
     &.table-hover {
       tbody tr {
         @include hover {
@@ -183,5 +194,6 @@ body.dark {
         color: $table-icon-color-dark;
       }
     }
+
   }
 }

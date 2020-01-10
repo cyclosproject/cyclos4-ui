@@ -11,6 +11,8 @@ import { ViewCartComponent } from 'app/marketplace/checkout/view-cart.component'
 import { ViewOrderHistoryComponent } from 'app/marketplace/view/view-order-history.component';
 import { CartCheckoutComponent } from 'app/marketplace/checkout/cart-checkout.component';
 import { ListDeliveryMethodsComponent } from 'app/marketplace/delivery-methods/list-delivery-methods.component';
+import { ViewDeliveryMethodComponent } from 'app/marketplace/delivery-methods/view-delivery-method.component';
+import { EditDeliveryMethodComponent } from 'app/marketplace/delivery-methods/edit-delivery-method.component';
 
 const marketplaceRoutes: Routes = [
   {
@@ -33,7 +35,7 @@ const marketplaceRoutes: Routes = [
         component: SearchOrdersComponent
       },
       {
-        path: ':user/:kind/new',
+        path: ':user/:kind/ad/new',
         component: EditAdComponent
       },
       {
@@ -67,7 +69,19 @@ const marketplaceRoutes: Routes = [
       {
         path: ':user/delivery-methods',
         component: ListDeliveryMethodsComponent
-      }
+      },
+      {
+        path: 'delivery-methods/view/:id',
+        component: ViewDeliveryMethodComponent
+      },
+      {
+        path: 'delivery-methods/edit/:id',
+        component: EditDeliveryMethodComponent
+      },
+      {
+        path: ':user/delivery-methods/new',
+        component: EditDeliveryMethodComponent
+      },
     ]
   }
 ];

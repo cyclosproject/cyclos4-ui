@@ -1,10 +1,13 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { DeliveryMethodDataForEdit, DeliveryMethodDataForNew } from 'app/api/models';
+import {
+  DeliveryMethodDataForEdit, DeliveryMethodDataForNew,
+  DeliveryMethodChargeTypeEnum, Currency, DeliveryMethodBasicData, DeliveryMethodEdit
+} from 'app/api/models';
 import { DeliveryMethodsService } from 'app/api/services';
 import { BasePageComponent } from 'app/shared/base-page.component';
-import { FormGroup } from '@angular/forms';
-import { validateBeforeSubmit } from 'app/shared/helper';
-import { Observable } from 'rxjs';
+import { FormGroup, Validators } from '@angular/forms';
+import { validateBeforeSubmit, empty } from 'app/shared/helper';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { Menu } from 'app/shared/menu';
 
 /**
@@ -19,10 +22,15 @@ export class EditDeliveryMethodComponent
   extends BasePageComponent<DeliveryMethodDataForNew | DeliveryMethodDataForEdit>
   implements OnInit {
 
+  DeliveryMethodChargeTypeEnum = DeliveryMethodChargeTypeEnum;
+
   id: string;
   user: string;
   create: boolean;
+  self: boolean;
   form: FormGroup;
+
+  currency$ = new BehaviorSubject<Currency>(null);
 
   constructor(
     injector: Injector,
@@ -47,21 +55,79 @@ export class EditDeliveryMethodComponent
     }));
   }
 
+  onDataInitialized(data: DeliveryMethodDataForNew | DeliveryMethodDataForEdit) {
 
+    this.self = this.authHelper.isSelfOrOwner(data.user);
+
+    const dm = data.deliveryMethod;
+
+    this.form = this.formBuilder.group({
+      name: [dm.name, Validators.required],
+      chargeType: dm.chargeType,
+      chargeCurrency: dm.chargeCurrency,
+      chargeAmount: dm.chargeAmount,
+      enabled: dm.enabled,
+      minDeliveryTime: dm.minDeliveryTime,
+      maxDeliveryTime: [dm.maxDeliveryTime, Validators.required],
+      description: [dm.description, Validators.required],
+      version: (dm as DeliveryMethodEdit).version
+    });
+    this.updateCurrency(data);
+
+    this.addSub(this.form.controls.chargeType.valueChanges.subscribe(() => this.updateCurrency(data)));
+    this.addSub(this.form.controls.chargeCurrency.valueChanges.subscribe(() => this.updateCurrency(data)));
+  }
+
+  /**
+   * When charge type is fixed preselects the first currency if no one was specified,
+   * otherwise clears the currency and hides related fields
+   */
+  protected updateCurrency(data: DeliveryMethodBasicData) {
+    if (!empty(data.currencies) &&
+      this.form.controls.chargeType.value === DeliveryMethodChargeTypeEnum.FIXED) {
+      const id = this.form.controls.chargeCurrency.value;
+      this.currency = data.currencies.find(c => c.id === id || c.internalName === id)
+        || data.currencies[0];
+      this.form.patchValue({ chargeCurrency: this.currency.id }, { emitEvent: false });
+      this.form.controls.chargeCurrency.setValidators(Validators.required);
+      this.form.controls.chargeAmount.setValidators(Validators.required);
+    } else {
+      this.currency = null;
+      this.form.patchValue({ chargeCurrency: null, chargeAmount: null }, { emitEvent: false });
+      this.form.controls.chargeCurrency.clearValidators();
+      this.form.controls.chargeAmount.clearValidators();
+    }
+  }
+
+  /**
+   * Saves or edits the current delivery method
+   */
   save() {
-    validateBeforeSubmit(this.form);
-    if (!this.form.valid) {
+    if (!validateBeforeSubmit(this.form)) {
       return;
     }
     const value = this.form.value;
     const request: Observable<String | void> = this.create ?
       this.deliveryMethodService.createDeliveryMethod({ body: value, user: this.user }) :
       this.deliveryMethodService.updateDeliveryMethod({ id: this.id, body: value });
-    this.addSub(request.subscribe(() => {
+    this.addSub(request.subscribe(id => {
+      this.notification.snackBar(this.create
+        ? this.i18n.ad.deliveryMethodCreated
+        : this.i18n.ad.deliveryMethodSaved);
+      this.router.navigate(['/marketplace', 'delivery-methods', 'view', id || this.id]);
     }));
   }
 
   resolveMenu(data: DeliveryMethodDataForNew | DeliveryMethodDataForEdit) {
     return this.authHelper.userMenu(data.user, Menu.DELIVERY_METHODS);
   }
+
+  get currency(): Currency {
+    return this.currency$.value;
+  }
+
+  set currency(currency: Currency) {
+    this.currency$.next(currency);
+  }
+
 }

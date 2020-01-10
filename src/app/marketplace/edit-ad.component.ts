@@ -1,6 +1,6 @@
 import {
   AdDataForEdit, AdKind, AdDataForNew, Image, Currency,
-  AdBasicData, AdCategoryWithChildren, AdEdit, DeliveryMethod
+  AdBasicData, AdCategoryWithChildren, AdEdit, DeliveryMethod, AdManage
 } from 'app/api/models';
 import { OnInit, ChangeDetectionStrategy, Component, Injector, ChangeDetectorRef } from '@angular/core';
 import { BasePageComponent } from 'app/shared/base-page.component';
@@ -13,11 +13,14 @@ import { ManageImagesComponent } from 'app/shared/manage-images.component';
 import { first } from 'rxjs/operators';
 import { empty, validateBeforeSubmit } from 'app/shared/helper';
 import { BsModalService } from 'ngx-bootstrap/modal';
+import { cloneDeep } from 'lodash';
 
 type HierarchyItem = AdCategoryWithChildren & {
   level: number,
   leaf: boolean
 };
+
+export type StockType = 'available' | 'notAvailable' | 'quantity';
 
 const IMAGE_MANAGED_TIMEOUT = 6_000;
 
@@ -40,6 +43,7 @@ export class EditAdComponent
   self: boolean;
   create: boolean;
   webshop: boolean;
+  requiredProductNumber: boolean;
   hasRemovedImages: boolean;
   kind: AdKind;
   uploadedImages: Image[];
@@ -108,14 +112,15 @@ export class EditAdComponent
       adManage.categories[0] :
       adManage.categories;
     const settings = (data.webshopSettings || {});
-    const requiredProductNumber = this.webshop && !settings.productNumberGenerated;
+    this.requiredProductNumber = this.webshop && !settings.productNumberGenerated;
 
     this.mask = !settings.productNumberGenerated ? settings.productNumberMask : '';
+    const firstCurrency = !empty(data.currencies) ? data.currencies[0] : null;
 
     this.form = this.formBuilder.group({
       name: [adManage.name, Validators.required],
       categories: [categories, Validators.required],
-      currency: [!empty(data.currencies) ? this.ApiHelper.internalNameOrId(data.currencies[0]) : null, Validators.required],
+      currency: [firstCurrency ? this.ApiHelper.internalNameOrId(firstCurrency) : null, Validators.required],
       price: [adManage.price, this.webshop ? Validators.required : null],
       publicationBeginDate: [adManage.publicationPeriod.begin, Validators.required],
       publicationEndDate: [adManage.publicationPeriod.end, Validators.required],
@@ -124,17 +129,19 @@ export class EditAdComponent
       promotionalEndDate: adManage.promotionalPeriod ? adManage.promotionalPeriod.end : null,
       promotionalPrice: adManage.promotionalPrice,
       description: [adManage.description, Validators.required],
-      addresses: adManage.addresses,
       maxAllowedInCart: adManage.maxAllowedInCart,
       minAllowedInCart: adManage.minAllowedInCart,
       allowDecimalQuantity: adManage.allowDecimalQuantity,
-      unlimitedStock: adManage.unlimitedStock,
+      unlimitedStock: this.create ? true : adManage.unlimitedStock,
       stockQuantity: adManage.stockQuantity,
       minStockQuantityToNotify: adManage.minStockQuantityToNotify,
-      productNumber: [adManage.productNumber, requiredProductNumber ? Validators.required : null],
+      productNumber: [adManage.productNumber, this.requiredProductNumber ? Validators.required : null],
       version: adEdit.version,
-      id: this.id
+      stockType: this.webshop ? this.resolveStockType(adManage) : null,
+      id: this.id,
+      kind: this.kind
     });
+    this.form.addControl('addresses', this.formBuilder.control(adManage.addresses));
     this.form.addControl('deliveryMethods', this.formBuilder.control(adManage.deliveryMethods));
     this.form.addControl('customValues', this.fieldHelper.customValuesFormGroup(data.customFields, {
       currentValues: adManage.customValues
@@ -145,11 +152,9 @@ export class EditAdComponent
     }));
     // Preselect the first currency when creating a new ad
     // or use the single returned currency when editing
-    if (!empty(data.currencies)) {
-      this.currency = data.currencies[0];
-    }
+    this.currency = firstCurrency;
 
-    this.addSub(this.form.controls.unlimitedStock.valueChanges.subscribe(() => this.updateStockControls()));
+    this.addSub(this.form.controls.stockType.valueChanges.subscribe(() => this.updateStockControls()));
 
     this.uploadedImages = [];
     this.updateDeliveryMethods(data);
@@ -173,7 +178,8 @@ export class EditAdComponent
    */
   protected updateStockControls() {
     if (this.webshop) {
-      if (this.form.controls.unlimitedStock.value) {
+      const value = this.form.controls.stockType.value;
+      if (value === 'available' || value === 'notAvailable') {
         this.form.controls.stockQuantity.clearValidators();
       } else {
         this.form.controls.stockQuantity.setValidators(Validators.required);
@@ -196,6 +202,18 @@ export class EditAdComponent
     this.deliveryMethods$.next(
       data.deliveryMethods.filter(dm => dm.chargeCurrency == null || dm.chargeCurrency.id === (this.currency || {}).id)
     );
+  }
+
+  /**
+   * Resolves the current stock type based on webshop status
+   */
+  protected resolveStockType(ad: AdManage): StockType {
+    if (this.create || ad.unlimitedStock) {
+      return 'available';
+    } else if (ad.stockQuantity) {
+      return 'quantity';
+    }
+    return 'notAvailable';
   }
 
   /**
@@ -227,12 +245,11 @@ export class EditAdComponent
    */
   save(insertNew?: boolean) {
 
-    validateBeforeSubmit(this.form);
-    if (!this.form.valid) {
+    if (!validateBeforeSubmit(this.form)) {
       return;
     }
 
-    const value = this.form.value;
+    const value = cloneDeep(this.form.value);
 
     value.publicationPeriod = this.ApiHelper.datePeriod(value.publicationBeginDate, value.publicationEndDate);
     delete value['publicationBeginDate'];
@@ -248,6 +265,13 @@ export class EditAdComponent
       delete value['promotionalPrice'];
     }
 
+    if (this.webshop) {
+      value.unlimitedStock = value.stockType === 'available';
+      if (value.stockType !== 'quantity') {
+        value.stockQuantity = null;
+      }
+      delete value['stockType'];
+    }
 
     const onFinish: any = (id: string) => {
       this.notification.snackBar(this.i18n.ad.adSaved);
@@ -263,14 +287,13 @@ export class EditAdComponent
       }
     };
 
+    if (this.data.requiresAuthorization) {
+      value.submitForAuthorization = !this.self;
+    }
+
     if (this.create) {
 
       value.images = this.uploadedImages.map(i => i.id);
-
-      if (this.data.requiresAuthorization) {
-        // When requires authorization submit as draft when saving for first time
-        value.submitForAuthorization = false;
-      }
 
       this.addSub(this.marketplaceService.createAd({
         user: this.owner,

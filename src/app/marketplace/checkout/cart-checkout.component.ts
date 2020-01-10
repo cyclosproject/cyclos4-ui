@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, OnInit, Component, Injector } from '@angular/core';
 import { ShoppingCartDataForCheckout, DeliveryMethod, Address, DeviceConfirmationTypeEnum, ShoppingCartCheckout } from 'app/api/models';
 import { BasePageComponent } from 'app/shared/base-page.component';
-import { Menu } from 'app/shared/menu';
+import { Menu, ActiveMenu } from 'app/shared/menu';
 import { ShoppingCartsService } from 'app/api/services';
 import { BehaviorSubject } from 'rxjs';
 import { FormGroup, FormControl } from '@angular/forms';
@@ -10,6 +10,7 @@ import { AddressHelperService } from 'app/core/address-helper.service';
 import { ConfirmationMode } from 'app/shared/confirmation-mode';
 import { validateBeforeSubmit } from 'app/shared/helper';
 import { MarketplaceHelperService } from 'app/core/marketplace-helper.service';
+import { cloneDeep } from 'lodash';
 
 export type CheckoutStep = 'delivery' | 'address' | 'payment' | 'confirm';
 
@@ -163,7 +164,7 @@ export class CartCheckoutComponent extends BasePageComponent<ShoppingCartDataFor
       return;
     }
 
-    const checkout: ShoppingCartCheckout = this.form.value;
+    const checkout: ShoppingCartCheckout = cloneDeep(this.form.value);
     delete checkout['address'];
     checkout.deliveryAddress = this.addressForm.value;
 
@@ -174,7 +175,7 @@ export class CartCheckoutComponent extends BasePageComponent<ShoppingCartDataFor
     }).subscribe(items => {
       this.marketplaceHelper.cartItems = items;
       this.notification.snackBar(this.i18n.ad.orderWaitingForSellersApproval);
-      this.router.navigate(['marketplace', 'self', 'purchases'], { replaceUrl: true });
+      this.menu.navigate({ menu: new ActiveMenu(Menu.PURCHASES), replaceUrl: true });
     }));
   }
 

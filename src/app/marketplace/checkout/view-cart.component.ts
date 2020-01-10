@@ -24,6 +24,8 @@ export class ViewCartComponent
   extends BasePageComponent<ShoppingCartView>
   implements OnInit {
 
+  private static details = false;
+
   id: string;
   unavailable: boolean;
   outOfStock: boolean;
@@ -43,7 +45,13 @@ export class ViewCartComponent
     this.id = this.route.snapshot.params.id;
 
     this.errorHandler.requestWithCustomErrorHandler(defaultHandling => {
-      this.addSub(this.shoppingCartService.adjustAndGetShoppingCartDetails({ id: this.id })
+      const req = ViewCartComponent.details ?
+        this.shoppingCartService.getShoppingCartDetails({ id: this.id }) :
+        this.shoppingCartService.adjustAndGetShoppingCartDetails({ id: this.id });
+
+      ViewCartComponent.details = false;
+
+      this.addSub(req
         .subscribe(data => {
           this.data = data;
         }, (err: HttpErrorResponse) => {
@@ -141,23 +149,35 @@ export class ViewCartComponent
   /**
    * Changes the item quantity and reloads the page
    */
-  changeQuantity(item: ShoppingCartItemDetailed) {
-    this.notification.confirm({
-      title: this.i18n.ad.changeQuantity,
-      labelPosition: 'above',
-      customFields: [{
-        internalName: 'quantity',
-        name: this.i18n.ad.quantity,
-        type: item.product.allowDecimalQuantity ? CustomFieldTypeEnum.DECIMAL : CustomFieldTypeEnum.INTEGER,
-        defaultValue: this.marketplaceHelper.getFormattedQuantity(item)
-      }],
-      callback: res => {
-        this.addSub(this.shoppingCartService.modifyItemQuantityOnShoppingCart({
-          ad: item.product.id,
-          quantity: +res.customValues.quantity
-        }).subscribe(() => this.reload()));
-      }
-    });
+  changeQuantity(item: [string, ShoppingCartItemDetailed, boolean]) {
+
+    const req: any = (quantity: string) => {
+      this.addSub(this.shoppingCartService.modifyItemQuantityOnShoppingCart({
+        ad: item[1].product.id,
+        quantity: +quantity,
+      }).subscribe(() => {
+        ViewCartComponent.details = true;
+        this.reload();
+      }));
+    };
+
+    if (item[2]) {
+      // Edit quantity directly from table
+      req(item[0]);
+    } else {
+      // Display a popup with a decimal field to edit quantity
+      this.notification.confirm({
+        title: this.i18n.ad.changeQuantity,
+        labelPosition: 'above',
+        customFields: [{
+          internalName: 'quantity',
+          name: this.i18n.ad.quantity,
+          type: item[1].product.allowDecimalQuantity ? CustomFieldTypeEnum.DECIMAL : CustomFieldTypeEnum.INTEGER,
+          defaultValue: this.marketplaceHelper.getFormattedQuantity(item[1])
+        }],
+        callback: res => req(+res.customValues.quantity)
+      });
+    }
   }
 
   /**

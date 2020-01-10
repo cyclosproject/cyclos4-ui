@@ -56,7 +56,8 @@ export class UserAdsComponent
     this.shortName = words(data.user.display, MAX_SIZE_SHORT_NAME);
     if (data.createNew) {
       this.headingActions = [
-        new HeadingAction('add', this.i18n.general.addNew, () => this.router.navigate(['/marketplace', this.param, this.kind, 'new']), true)
+        new HeadingAction('add', this.i18n.general.addNew, () =>
+          this.router.navigate(['/marketplace', this.param, this.kind, 'ad', 'new']), true)
       ];
     }
   }

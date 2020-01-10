@@ -146,10 +146,17 @@
         <ng-container *ngIf="webshop">
           <boolean-field [label]="i18n.ad.allowDecimalQuantity"
             formControlName="allowDecimalQuantity"></boolean-field>
-          <boolean-field [label]="i18n.ad.unlimitedStock"
-            formControlName="unlimitedStock"></boolean-field>
+          <radio-group-field [label]="i18n.ad.stockType"
+            formControlName="stockType">
+            <field-option value="available" [text]="i18n.ad.available">
+            </field-option>
+            <field-option value="notAvailable" [text]="i18n.ad.notAvailable">
+            </field-option>
+            <field-option value="quantity" [text]="i18n.ad.quantity">
+            </field-option>
+          </radio-group-field>
           <ng-container
-            *ngIf="!(form.get('unlimitedStock').valueChanges | async) && !form.get('unlimitedStock').value">
+            *ngIf="(form.value || (form.valueChanges | async)).stockType === 'quantity'">
             <decimal-field formControlName="stockQuantity"
               [label]="i18n.ad.stockQuantity" [scale]="decimalQuantity"
               required>
@@ -165,9 +172,9 @@
           <decimal-field formControlName="minAllowedInCart"
             [label]="i18n.ad.minAllowedInCart" [scale]="decimalQuantity">
           </decimal-field>
-          <input-field type="text" [label]="i18n.ad.productNumber"
-            [mask]="mask" formControlName="productNumber" [placeholder]="mask"
-            required>
+          <input-field *ngIf="requiredProductNumber" type="text"
+            [label]="i18n.ad.productNumber" [mask]="mask"
+            formControlName="productNumber" [placeholder]="mask" required>
           </input-field>
           <multi-selection-field *ngIf="deliveryMethods$ | async"
             [label]=" i18n.ad.deliveryMethods"

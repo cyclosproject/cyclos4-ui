@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/c
 import {
   OrderView, OrderItem, CreateDeviceConfirmation,
   DeviceConfirmationTypeEnum, OrderStatusEnum, CustomFieldDetailed,
-  CustomFieldTypeEnum, OrderDataForAcceptByBuyer, CustomFieldControlEnum, DeliveryMethod
+  CustomFieldTypeEnum, OrderDataForAcceptByBuyer, CustomFieldControlEnum, SetDeliveryMethod
 } from 'app/api/models';
 import { OrdersService } from 'app/api/services';
 import { HeadingAction } from 'app/shared/action';
@@ -13,6 +13,7 @@ import { empty } from 'app/shared/helper';
 import { AddressHelperService } from 'app/core/address-helper.service';
 import { SetDeliveryMethodComponent } from 'app/marketplace/set-delivery-method.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
+import { FormGroup } from '@angular/forms';
 
 /**
  * Displays an order with it's possible actions
@@ -24,10 +25,13 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 })
 export class ViewOrderComponent extends BaseViewPageComponent<OrderView> implements OnInit {
 
+  OrderStatusEnum = OrderStatusEnum;
+
   id: string;
   seller: boolean;
   buyer: boolean;
   detailed: boolean;
+  form: FormGroup;
 
   constructor(
     injector: Injector,
@@ -51,13 +55,14 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
     this.detailed = this.layout.gtxxs;
     this.seller = this.authHelper.isSelfOrOwner(data.seller);
     this.buyer = !this.seller && this.authHelper.isSelfOrOwner(data.buyer);
-
+    this.form = this.formBuilder.group({ remarks: null });
     const headingActions: HeadingAction[] = [];
 
     if (data.history) {
       headingActions.push(new HeadingAction('history', this.i18n.general.viewHistory, () =>
         this.router.navigate(['/marketplace', 'order', this.id, 'history']), true));
     }
+    headingActions.push(this.printAction);
 
     this.headingActions = headingActions;
   }
@@ -162,22 +167,13 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
    * allows to enter remarks
    */
   protected acceptBySeller() {
-    this.notification.confirm({
-      title: this.i18n.ad.acceptOrder,
-      labelPosition: 'above',
-      customFields: this.orderFields(),
-      callback: res => {
-        this.addSub(this.orderService.acceptOrderBySeller({
-          order: this.id,
-          body: {
-            remarks: res.customValues.remarks
-          }
-        }).subscribe(() => {
-          this.notification.snackBar(this.i18n.ad.orderAccepted);
-          this.reload();
-        }));
-      }
-    });
+    this.addSub(this.orderService.acceptOrderBySeller({
+      order: this.id,
+      body: this.form.value
+    }).subscribe(() => {
+      this.notification.snackBar(this.i18n.ad.orderAccepted);
+      this.reload();
+    }));
   }
 
   /**
@@ -196,7 +192,7 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
       }
     });
     const component = ref.content as SetDeliveryMethodComponent;
-    this.addSub(component.done.subscribe((deliveryMethod: DeliveryMethod) => {
+    this.addSub(component.done.subscribe((deliveryMethod: SetDeliveryMethod) => {
       this.orderService.setDeliveryMethod({
         order: this.id,
         body: deliveryMethod
@@ -266,7 +262,17 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
    * Returns the remarks for the given order or a generic label if not set
    */
   get remarks(): string {
+    if (this.canSetRemarks) {
+      return this.data.remarks;
+    }
     return this.data.remarks ? this.data.remarks : this.i18n.ad.noRemarksGiven;
+  }
+
+  /**
+   * Returns if there is a seller and can set remarks directly in the form
+   */
+  get canSetRemarks(): boolean {
+    return this.data.status === OrderStatusEnum.PENDING_SELLER && this.seller && this.data.canAccept;
   }
 
 }

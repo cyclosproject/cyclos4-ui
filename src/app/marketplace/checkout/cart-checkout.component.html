@@ -7,7 +7,7 @@
     [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'">
     <form [formGroup]="form">
       <div class="mb-4">
-        <radio-group-field [asColumn]="true"
+        <radio-group-field [asColumn]="data.deliveryMethods.length > 3"
           [label]="i18n.ad.chooseDeliveryMethod"
           formControlName="deliveryMethod">
           <field-option *ngFor="let dm of data.deliveryMethods"
@@ -44,7 +44,7 @@
     [mode]="(layout.ltsm$ | async) ? 'fullHeight' : 'normal'">
     <form [formGroup]="form">
       <div class="mb-4">
-        <radio-group-field [asColumn]="true"
+        <radio-group-field [asColumn]="data.addresses.length > 3"
           [label]="i18n.ad.chooseDeliveryAddress" formControlName="address">
           <field-option *ngFor="let dm of data.addresses" [value]="dm.id"
             [text]="dm.name"></field-option>
@@ -68,7 +68,7 @@
       <ng-template #spacer>&nbsp;</ng-template>
       <button *ngIf="data.deliveryMethods.length > 1"
         class="btn btn-outline-primary" (click)="back()">
-        {{ i18n.general.previous }}
+        {{ i18n.general.back }}
       </button>
     </actions>
   </page-content>
@@ -91,7 +91,7 @@
       </button>
       <ng-template #spacer>&nbsp;</ng-template>
       <button class="btn btn-outline-primary" (click)="back()">
-        {{ i18n.general.previous }}
+        {{ i18n.general.back }}
       </button>
     </actions>
   </page-content>
@@ -109,7 +109,8 @@
           (deliveryMethod.chargeAmount | currency: deliveryMethod.chargeCurrency) : i18n.ad.toBeConfirmedBySeller }}
       </label-value>
       <hr>
-      <label-value [label]="i18n.transaction.totalAmount">
+      <label-value [ngStyle]="{'font-size': '1.125rem'}"
+        [label]="i18n.transaction.totalAmount">
         <div class="totalAmount">
           {{ totalPrice | currency: data.cart.currency }}</div>
       </label-value>
@@ -137,7 +138,7 @@
         </button>
         <ng-template #spacer>&nbsp;</ng-template>
         <button class="btn btn-outline-primary" (click)="back()">
-          {{ i18n.general.previous }}
+          {{ i18n.general.back }}
         </button>
       </actions>
     </page-content>
