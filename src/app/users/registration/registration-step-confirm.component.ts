@@ -1,14 +1,14 @@
 import {
-  AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, Injector,
-  Input, OnDestroy, OnInit, ViewChild, AfterViewChecked, ViewChildren, QueryList
+  AfterViewChecked, AfterViewInit, ChangeDetectionStrategy, Component,
+  ElementRef, Injector, Input, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren
 } from '@angular/core';
 import { FormArray, FormGroup } from '@angular/forms';
-import { Address, CustomFieldDetailed, GroupForRegistration, Image, UserDataForNew, UserNew, StoredFile } from 'app/api/models';
+import { AddressNew, CustomFieldDetailed, GroupForRegistration, Image, StoredFile, UserDataForNew, UserNew } from 'app/api/models';
+import { RegistrationAgreementsComponent } from 'app/login/registration-agreements.component';
 import { BaseComponent } from 'app/shared/base.component';
 import { blank, empty, focus } from 'app/shared/helper';
-import { BsModalService } from 'ngx-bootstrap/modal';
 import { InputFieldComponent } from 'app/shared/input-field.component';
-import { RegistrationAgreementsComponent } from 'app/login/registration-agreements.component';
+import { BsModalService } from 'ngx-bootstrap/modal';
 
 /**
  * Public registration step: confirmation
@@ -131,12 +131,12 @@ export class RegistrationStepConfirmComponent
     }
   }
 
-  get address(): Address {
+  get address(): AddressNew {
     const addresses = this.user.addresses || [];
     if (empty(addresses)) {
       return null;
     }
-    return addresses[0] as Address;
+    return addresses[0] as AddressNew;
   }
 
   get customFields(): CustomFieldDetailed[] {

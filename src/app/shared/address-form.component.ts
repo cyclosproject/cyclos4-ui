@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component, Injector, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { AddressConfiguration, AddressFieldEnum, Country } from 'app/api/models';
+import { AddressConfiguration, AddressFieldEnum, Country, AddressConfigurationForUserProfile, CustomFieldBinaryValues } from 'app/api/models';
 import { AddressHelperService } from 'app/core/address-helper.service';
 import { CountriesResolve } from 'app/countries.resolve';
 import { BaseComponent } from 'app/shared/base.component';
@@ -14,7 +14,7 @@ import { truthyAttr } from 'app/shared/helper';
   templateUrl: 'address-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AddressFormComponent extends BaseComponent {
+export class AddressFormComponent extends BaseComponent implements OnInit {
   constructor(
     injector: Injector,
     private addressHelper: AddressHelperService,
@@ -28,6 +28,9 @@ export class AddressFormComponent extends BaseComponent {
   @Input() countries: Country[];
   @Input() idPrefix = '';
   @Input() idSuffix = '';
+  @Input() binaryValues: CustomFieldBinaryValues;
+
+  profileConfiguration: AddressConfigurationForUserProfile;
 
   private _managePrivacy: boolean | string = false;
   @Input() get managePrivacy(): boolean | string {
@@ -44,4 +47,10 @@ export class AddressFormComponent extends BaseComponent {
   isRequired(field: AddressFieldEnum): boolean {
     return (this.configuration.requiredFields || []).includes(field);
   }
+
+  ngOnInit() {
+    super.ngOnInit();
+    this.profileConfiguration = this.configuration as AddressConfigurationForUserProfile;
+  }
+
 }

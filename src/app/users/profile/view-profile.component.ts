@@ -1,18 +1,18 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { PhoneKind, PhoneView, UserView, BasicProfileFieldEnum, RoleEnum, UserRelationshipEnum, AdKind } from 'app/api/models';
+import { AdKind, BasicProfileFieldEnum, PhoneKind, PhoneView, RoleEnum, UserRelationshipEnum, UserView } from 'app/api/models';
 import { ContactsService, UsersService } from 'app/api/services';
 import { ErrorStatus } from 'app/core/error-status';
 import { MapsService } from 'app/core/maps.service';
 import { OperationHelperService } from 'app/core/operation-helper.service';
+import { RecordHelperService } from 'app/core/records-helper.service';
+import { UserHelperService } from 'app/core/user-helper.service';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
-import { words, empty } from 'app/shared/helper';
-import { BehaviorSubject } from 'rxjs';
+import { empty, words } from 'app/shared/helper';
 import { Menu } from 'app/shared/menu';
-import { UserHelperService } from 'app/core/user-helper.service';
-import { RecordHelperService } from 'app/core/records-helper.service';
+import { BehaviorSubject } from 'rxjs';
 
 export const MAX_SIZE_SHORT_NAME = 25;
 
@@ -361,5 +361,4 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
         return this.login.user ? Menu.SEARCH_USERS : Menu.PUBLIC_DIRECTORY;
     }
   }
-
 }

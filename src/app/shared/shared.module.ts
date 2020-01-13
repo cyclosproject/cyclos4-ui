@@ -7,9 +7,12 @@ import { RouterModule } from '@angular/router';
 import { AccountPipe } from 'app/shared/account.pipe';
 import { ActionsComponent } from 'app/shared/actions.component';
 import { AddressDetailsComponent } from 'app/shared/address-details.component';
+import { AddressFormComponent } from 'app/shared/address-form.component';
 import { AvatarComponent } from 'app/shared/avatar.component';
 import { BannerCardComponent } from 'app/shared/banner-card.component';
 import { BooleanFieldComponent } from 'app/shared/boolean-field.component';
+import { BooleanPipe } from 'app/shared/boolean.pipe';
+import { ButtonToggleComponent } from 'app/shared/button-toggle.component';
 import { CalendarComponent } from 'app/shared/calendar.component';
 import { CaptchaComponent } from 'app/shared/captcha.component';
 import { CheckboxGroupFieldComponent } from 'app/shared/checkbox-group-field.component';
@@ -49,6 +52,7 @@ import { MaybeLinkComponent } from 'app/shared/maybe-link.component';
 import { MobileResultComponent } from 'app/shared/mobile-result.component';
 import { MobileResultDirective } from 'app/shared/mobile-result.directive';
 import { MultiSelectionFieldComponent } from 'app/shared/multi-selection-field.component';
+import { MultipleUsersFieldComponent } from 'app/shared/multiple-users-field.component';
 import { NotFoundComponent } from 'app/shared/not-found.component';
 import { NotificationComponent } from 'app/shared/notification.component';
 import { NumberPipe } from 'app/shared/number.pipe';
@@ -58,6 +62,7 @@ import { PageLayoutComponent } from 'app/shared/page-layout.component';
 import { PaginatorComponent } from 'app/shared/paginator.component';
 import { PasswordInputComponent } from 'app/shared/password-input.component';
 import { PickContactComponent } from 'app/shared/pick-contact.component';
+import { ProfileAddressesComponent } from 'app/shared/profile-addresses.component';
 import { RadioGroupFieldComponent } from 'app/shared/radio-group-field.component';
 import { ResultCategoryDirective } from 'app/shared/result-category.directive';
 import { ResultInfoWindowDirective } from 'app/shared/result-info-window.directive';
@@ -72,12 +77,16 @@ import { SingleSelectionFieldComponent } from 'app/shared/single-selection-field
 import { SpinnerComponent } from 'app/shared/spinner.component';
 import { StaticMapComponent } from 'app/shared/static-map.component';
 import { TempFileUploadComponent } from 'app/shared/temp-file-upload.component';
+import { TextDialogComponent } from 'app/shared/text-dialog.component';
 import { TextAreaFieldComponent } from 'app/shared/textarea-field.component';
 import { TiledResultComponent } from 'app/shared/tiled-result.component';
+import { TimeIntervalFieldComponent } from 'app/shared/time-interval-field.component';
 import { TimePipe } from 'app/shared/time.pipe';
 import { TrustPipe } from 'app/shared/trust.pipe';
 import { UserFieldComponent } from 'app/shared/user-field.component';
+import { UserInfoComponent } from 'app/shared/user-info.component';
 import { UserLinkComponent } from 'app/shared/user-link.component';
+import { NotificationTypeSettingComponent } from 'app/users/notification-settings/notification-type-setting.component';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
@@ -86,14 +95,6 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { SortableModule } from 'ngx-bootstrap/sortable';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
-import { BooleanPipe } from 'app/shared/boolean.pipe';
-import { MultipleUsersFieldComponent } from 'app/shared/multiple-users-field.component';
-import { UserInfoComponent } from 'app/shared/user-info.component';
-import { TextDialogComponent } from 'app/shared/text-dialog.component';
-import { ButtonToggleComponent } from 'app/shared/button-toggle.component';
-import { NotificationTypeSettingComponent } from 'app/users/notification-settings/notification-type-setting.component';
-import { TimeIntervalFieldComponent } from 'app/shared/time-interval-field.component';
-import { AddressFormComponent } from 'app/shared/address-form.component';
 
 
 export function initTooltipConfig(): TooltipConfig {
@@ -172,6 +173,7 @@ export function initTooltipConfig(): TooltipConfig {
     ManageFilesComponent,
     ResultTypeFieldComponent,
     AddressDetailsComponent,
+    ProfileAddressesComponent,
     UserLinkComponent,
     UserInfoComponent,
     UserFieldComponent,
@@ -287,6 +289,7 @@ export function initTooltipConfig(): TooltipConfig {
     ManageFilesComponent,
     ResultTypeFieldComponent,
     AddressDetailsComponent,
+    ProfileAddressesComponent,
     UserLinkComponent,
     UserInfoComponent,
     UserFieldComponent,
