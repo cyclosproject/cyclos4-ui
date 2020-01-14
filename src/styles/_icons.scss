@@ -64,8 +64,19 @@
   }
 }
 
+.solid-icon {
+  background-color: $card-bg;
+  color: $tiled-results-icon-color;
+  border-radius: 50%;
+}
+
 body.dark {
   spinner, .spinner {
     filter: invert(1);
+  }
+
+  .solid-icon {
+    background-color: $card-bg-dark;
+    color: $tiled-results-icon-color-dark;
   }
 }

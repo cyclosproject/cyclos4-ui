@@ -10,10 +10,9 @@
 }
 .avatar-container {
   position: relative;
-  background-size: cover;
-  background-position: center 30%;
   -webkit-print-color-adjust: exact;
   color-adjust: exact;
+  background-repeat: no-repeat;
 }
 .avatar-container.full-size {
   width: 100%;

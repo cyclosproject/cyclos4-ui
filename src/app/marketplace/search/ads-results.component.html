@@ -92,12 +92,12 @@
     </tbody>
   </table>
 
-  <tiled-result *resultTile="let ad" [image]="ad.image"
+  <tiled-result *resultTile="let ad" [image]="ad.image" [zoom]="false"
     icon="shopping_basket">
     <ng-container *ngIf="!singleUser">
       <div class="tile-floating-avatar">
-        <avatar [image]="ad.owner.image" [tooltip]="ad.owner.display"
-          size="medium-large"
+        <avatar class="solid-icon" [image]="ad.owner.image"
+          [tooltip]="ad.owner.display" icon="user_full" size="medium-large"
           (click)="$event.preventDefault(); $event.stopPropagation; router.navigate(['users', ad.owner.id, 'profile'])">
         </avatar>
       </div>

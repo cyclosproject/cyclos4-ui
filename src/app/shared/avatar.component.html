@@ -4,19 +4,22 @@
       'with-lightbox': url != null && useLightbox,
       'round-borders': url != null && roundBorders,
       'full-size': fullSize
-    }"
-      [ngStyle]="{
+    }" [ngStyle]="{
         backgroundImage: 'url(' + url + ')',
+        backgroundSize: zoom ? 'cover' : 'contain',
+        backgroundPosition: zoom ? 'center 30%' : 'center',
         width: fullSize ? '' : size + 'px',
         height: fullSize ? '' : size + 'px'
       }">
     </div>
     <div *ngIf="!additionalImagesHidden && additionalImagesToShow?.length > 0"
       class="additional-images">
-      <ng-container *ngFor="let additional of additionalImagesToShow; let index = index">
-        <avatar [useLightbox]="useLightbox" [ngClass]="['additional', 'additional-' + index]"
-          size="medium-large" [image]="additional" [additionalImages]="allImages"
-          additionalImagesHidden>
+      <ng-container
+        *ngFor="let additional of additionalImagesToShow; let index = index">
+        <avatar [useLightbox]="useLightbox"
+          [ngClass]="['additional', 'additional-' + index]"
+          size="medium-large" [image]="additional"
+          [additionalImages]="allImages" additionalImagesHidden>
         </avatar>
       </ng-container>
     </div>
@@ -26,11 +29,11 @@
 <ng-template #iconTemplate>
   <div class="avatar-container" (click)="click.emit($event)" [ngClass]="{
       'full-size': fullSize
-    }"
-    [ngStyle]="{
+    }" [ngStyle]="{
       width: fullSize ? '' : size + 'px',
       height: fullSize ? '' : size + 'px'
     }">
-    <icon [icon]="icon" [size]="iconSize || size" [ngStyle]="{color: iconColor}"></icon>
+    <icon [icon]="icon" [size]="iconSize || size"
+      [ngStyle]="{color: iconColor}"></icon>
   </div>
 </ng-template>
