@@ -3,7 +3,7 @@ import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { UserOrderResult } from 'app/api/models/user-order-result';
 import { QueryFilters, OrderStatusEnum, OrderResult, OrderDataForSearch } from 'app/api/models';
 import { OrdersService, MarketplaceService } from 'app/api/services';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { HttpResponse } from '@angular/common/http';
 import { Menu } from 'app/shared/menu';
 import { MarketplaceHelperService } from 'app/core/marketplace-helper.service';
@@ -35,6 +35,8 @@ export class SearchOrdersComponent
   sales: boolean;
   isOwner: boolean;
 
+  showForm$ = new BehaviorSubject(false);
+
   constructor(
     injector: Injector,
     protected marketplaceHelper: MarketplaceHelperService,
@@ -64,6 +66,21 @@ export class SearchOrdersComponent
       result.creationPeriod = this.ApiHelper.dateRangeFilter(value.periodBegin, value.periodEnd);
     }
     return value;
+  }
+
+  onDataInitialized(data: any) {
+    super.onDataInitialized(data);
+    this.addSub(this.layout.ltsm$.subscribe(() => {
+      this.headingActions = this.layout.ltsm ? [this.moreFiltersAction] : [];
+    }));
+  }
+
+  showMoreFiltersLabel() {
+    return this.i18n.general.showFilters;
+  }
+
+  showLessFiltersLabel() {
+    return this.i18n.general.hideFilters;
   }
 
   doSearch(filters: SearchUserOrdersParams): Observable<HttpResponse<UserOrderResult[]>> {

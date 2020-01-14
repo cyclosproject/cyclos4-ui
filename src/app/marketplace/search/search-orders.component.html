@@ -2,8 +2,10 @@
   <ng-container *ngIf="data">
     <page-content mode="filters"
       [heading]="sales ? i18n.ad.title.sales : i18n.ad.title.purchases"
-      [mobileHeading]="sales ? i18n.ad.mobileTitle.sales : i18n.ad.mobileTitle.purchases">
-      <form [formGroup]="form"
+      [mobileHeading]="sales ? i18n.ad.mobileTitle.sales : i18n.ad.mobileTitle.purchases"
+      [headingActions]="headingActions$ | async">
+      <form *ngIf="(moreFilters$ | async) || !(this.layout.ltsm$ | async)"
+        [formGroup]="form"
         class="filters-form filters-form-separator border-0">
         <div class="row">
           <div class="col-12 col-md-6">
