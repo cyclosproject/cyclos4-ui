@@ -9,22 +9,28 @@
 .negative {
   color: $negative-color !important;
 }
-.totalAmount {
+
+.totalAmount .label-value-value {
   color: $total-amount-color !important;
   font-size: 1.2rem;
   font-weight: 400;
 }
+.totalAmount .label-value-label {
+  font-size: 1.125rem;
+  font-weight: $font-weight-bold;
+  color: $label-color;
+}
 @include media-breakpoint-up(md) {
-  .totalAmount {
+  .totalAmount .label-value-value {
     color: $total-amount-color !important;
     font-size: $total-amount-size;
-    font-weight: 400;
   }
 }
 .promo-price {
   color: $text-muted;
   text-decoration: line-through;
   margin-right: 0.5rem;
+  font-size: $font-size-base;
 }
 
 .amount, .cell-amount {
