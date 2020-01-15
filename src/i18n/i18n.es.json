@@ -1,6 +1,6 @@
 {
   "general": {
-    "by": "By",
+    "by": "Por",
     "type": "Tipo",
     "code": "Código",
     "period": "Período",
@@ -26,7 +26,7 @@
     "name": "Nombre",
     "to": "hasta",
     "description": "Descripción",
-    "details": "Details",
+    "details": "Detalles",
     "image": "Imágen",
     "keywords": "Palabras clave",
     "distanceFilter": "Distancia",
@@ -66,8 +66,8 @@
     "map.view": "Ver mapa",
     "noOptionsSelected": "Sin opciones seleccionadas",
     "noOptionSelected": "Sin opción seleccionada",
-    "removeItemConfirm": "Are you sure to remove this item?",
-    "removeItemDone": "The item has been removed",
+    "removeItemConfirm": "Estás seguro de eliminar este elemento?",
+    "removeItemDone": "El elemento ha sido eliminado",
     "currency": "Moneda",
     "images": "Imágenes",
     "sendMedium": {
@@ -234,7 +234,7 @@
     "login": "Acceder",
     "register": "Registrarse",
     "logout": "Salir",
-    "shoppingCart": "Shopping cart",
+    "shoppingCart": "Carrito de compras",
     "home": "Inicio",
     "dashboard": "Panel de acciones",
     "banking": "Banca",
@@ -1102,7 +1102,7 @@
   "ad": {
     "accept": "Accept",
     "acceptOrder": "Accept order",
-    "addedProduct": "The product was added to cart",
+    "addedProduct": "El producto fue añadido a su carrito de compras",
     "addedProductAlreadyInCart": "The product was added to cart (this item has been added previously to your cart)",
     "addToCart": "Add to cart",
     "adjustedQuantity": {
