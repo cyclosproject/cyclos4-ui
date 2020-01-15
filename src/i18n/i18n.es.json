@@ -1245,7 +1245,7 @@
       "pendingSeller": "Pendiente por el vendedor",
       "disposed": "Desechada"
     },
-    "requiringMyConfirmation": "Requiring my confirmation",
+    "requiringMyConfirmation": "Requieren mi confirmación",
     "buyer": "Comprador",
     "seller": "Vendedor",
     "waitingForBuyersApproval": "Esperando aprobación del comprador",
@@ -1462,7 +1462,7 @@
     "popup": "Contactando con {provider}. Por favor, aguarde...",
     "login": "Continuar con <b>{provider}</b>",
     "login.noMatch": "No se ha encontrado ningún usuario con el correo electrónico {email}. Necesitará acceder con su usuario y contraseña regulares. Después de iniciar sesión, tu cuenta de {app} se vinculará automáticamente, de esta forma 'Continuar con {provider}' funcionará directamente la próxima vez.",
-    "login.noEmail": "Couldn't read an e-mail address from your {provider} account. You will need to login with your regular user and password. After logging-in, your {app} account will be automatically linked, so, on the next time, the 'Continue with {provider}' functionality will work directly.",
+    "login.noEmail": "No se pudo leer una dirección de correo electrónico en su cuenta de {provider}. Necesitará acceder con su usuario y contraseña regulares. Después de iniciar sesión, tu cuenta de {app} se vinculará automáticamente, de esta forma 'Continuar con {provider}' funcionará directamente la próxima vez.",
     "registration": "Register faster with your identity provider:",
     "registration.or": "Or",
     "registration.fillForm": "Fill-in the registration form",
@@ -1478,10 +1478,10 @@
     },
     "action": {
       "connect": "Connect",
-      "connect.done": "You can now login as {name} using {provider}",
+      "connect.done": "Ahora puede acceder como {name} utilizando su cuenta de {provider}",
       "disconnect": "Disconnect",
       "disconnect.confirm": "This will disable the 'Continue with {provider}' functionality. Are you sure?",
-      "disconnect.done": "The login with {provider} has been disabled"
+      "disconnect.done": "El acceso con {provider} ha sido deshabilitado"
     },
     "connectedOn": "Connected on {date}",
     "disconnected": "Disconnected"
