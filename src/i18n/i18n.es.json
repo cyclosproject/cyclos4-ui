@@ -1467,10 +1467,10 @@
     "registration.or": "O",
     "registration.fillForm": "Completar el formulario de registro",
     "registration.disclaimer": "<b>Descargo de responsabilidad:</b> Ninguno de los datos en su {app} serán compartidos con estos proveedores. El único propósito de lleer sus datos de carácter personal desde el proveedor es rellenar su formulario de registración y facilitar su acceso una vez completado el proceso.",
-    "disclaimer": "<b>Disclaimer</b>: None of your {app} data will be shared with any provider. The only data read from the providers are your display name and e-mail, with the sole purpose to logging-in faster on {app}.",
+    "disclaimer": "<b>Descargo de responsabilidad</b>: Ninguno de sus datos en {app} serán compartidos con los proveedores. Los únicos datos que se toman de su proveedor serán su nombre y e-mail, y con el único propósito de acelerar y facilitar el proceso de acceso a {app}.",
     "title": {
-      "manage.self": "Manage your identity providers",
-      "manage.user": "Manage user identity providers"
+      "manage.self": "Administrar sus proveedores de identidad",
+      "manage.user": "Administrar sus proveedores de identidad"
     },
     "mobileTitle": {
       "manage.self": "Proveedores de identidad",
