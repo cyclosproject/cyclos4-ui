@@ -1266,8 +1266,8 @@
       "deliveryMethod": "Método de entrega",
       "deliveryMethodNew": "Nuevo método de entrega",
       "deliveryMethods": "Métodos de entrega",
-      "paymentType": "Payment type",
-      "confirmOrder": "Confirm order"
+      "paymentType": "Tipo de pago",
+      "confirmOrder": "Confirmar orden"
     },
     "mobileTitle": {
       "search": "Anuncios",
@@ -1279,14 +1279,14 @@
       "purchases": "Compras",
       "sales": "Ventas",
       "order": "Detalle de orden de tienda virtual",
-      "shoppingCart": "Shopping cart",
-      "history": "Order history",
+      "shoppingCart": "Carrito de compras",
+      "history": "Historial de ordenes",
       "deliveryAddress": "Dirección de entrega",
       "deliveryMethod": "Método de entrega",
       "deliveryMethodNew": "Nuevo método de entrega",
       "deliveryMethods": "Métodos de entrega",
-      "paymentType": "Payment type",
-      "confirmOrder": "Confirm order"
+      "paymentType": "Tipo de pago",
+      "confirmOrder": "Confirmar orden"
     }
   },
   "notification": {
@@ -1459,9 +1459,9 @@
     "disconnected": "{user} ha sido desconectado"
   },
   "identityProvider": {
-    "popup": "Contacting {provider}. Please, wait...",
-    "login": "Continue with <b>{provider}</b>",
-    "login.noMatch": "No user found with e-mail {email}. You will need to login with your regular user and password. After logging-in, your {app} account will be automatically linked, so, on the next time, the 'Continue with {provider}' functionality will work directly.",
+    "popup": "Contactando con {provider}. Por favor, aguarde...",
+    "login": "Continuar con <b>{provider}</b>",
+    "login.noMatch": "No se ha encontrado ningún usuario con el correo electrónico {email}. Necesitará acceder con su usuario y contraseña regulares. Después de iniciar sesión, tu cuenta de {app} se vinculará automáticamente, de esta forma 'Continuar con {provider}' funcionará directamente la próxima vez.",
     "login.noEmail": "Couldn't read an e-mail address from your {provider} account. You will need to login with your regular user and password. After logging-in, your {app} account will be automatically linked, so, on the next time, the 'Continue with {provider}' functionality will work directly.",
     "registration": "Register faster with your identity provider:",
     "registration.or": "Or",
