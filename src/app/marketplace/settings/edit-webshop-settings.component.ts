@@ -95,7 +95,7 @@ export class EditWebshopSettingsComponent
     value.productNumberGenerated = this.form.controls.generationType.value === 'generated';
     delete value['generationType'];
 
-    this.addSub(this.webshopSettingsService.updateWebshopSettings({ user: this.user, body: value }).subscribe(id => {
+    this.addSub(this.webshopSettingsService.updateWebshopSettings({ user: this.user, body: value }).subscribe(() => {
       this.notification.snackBar(this.i18n.ad.webshopSettingsSaved);
       history.back();
     }));
