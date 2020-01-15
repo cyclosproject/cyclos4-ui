@@ -1,0 +1,16 @@
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data">
+    <page-content [heading]="i18n.ad.title.webshopSettings"
+      [mobileHeading]="i18n.ad.mobileTitle.webshopSettings"
+      [headingActions]="headingActions$ | async">
+      <form [formGroup]="form">
+      </form>
+      <actions forceRow>
+        <button class="btn btn-primary" (click)="save()"
+          [disabled]="requesting$ | async">
+          {{ i18n.general.submit }}
+        </button>
+      </actions>
+    </page-content>
+  </ng-container>
+</page-layout>

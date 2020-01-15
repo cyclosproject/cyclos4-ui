@@ -13,6 +13,8 @@ import { CartCheckoutComponent } from 'app/marketplace/checkout/cart-checkout.co
 import { ListDeliveryMethodsComponent } from 'app/marketplace/delivery-methods/list-delivery-methods.component';
 import { ViewDeliveryMethodComponent } from 'app/marketplace/delivery-methods/view-delivery-method.component';
 import { EditDeliveryMethodComponent } from 'app/marketplace/delivery-methods/edit-delivery-method.component';
+import { ViewWebshopSettingsComponent } from 'app/marketplace/settings/view-webshop-settings.component';
+import { EditWebshopSettingsComponent } from 'app/marketplace/settings/edit-webshop-settings.component';
 
 const marketplaceRoutes: Routes = [
   {
@@ -81,6 +83,14 @@ const marketplaceRoutes: Routes = [
       {
         path: ':user/delivery-methods/new',
         component: EditDeliveryMethodComponent
+      },
+      {
+        path: ':user/webshop-settings/view',
+        component: ViewWebshopSettingsComponent
+      },
+      {
+        path: ':user/webshop-settings/edit',
+        component: EditWebshopSettingsComponent
       },
     ]
   }

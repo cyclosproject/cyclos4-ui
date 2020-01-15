@@ -266,6 +266,7 @@
     "marketplace.businessDirectory": "Business directory",
     "marketplace.advertisements": "Advertisements",
     "marketplace.deliveryMethods": "Delivery methods",
+    "marketplace.webshopSettings": "Webshop settings",
     "marketplace.myAdvertisements": "My advertisements",
     "marketplace.myPurchases": "My purchases",
     "marketplace.mySales": "My sales",
@@ -889,6 +890,7 @@
       "viewOperators": "View operators",
       "viewWebshop": "View webshop",
       "deliveryMethods": "Delivery methods",
+      "webshopSettings": "Webshop settings",
       "status.user": "User status",
       "status.operator": "Operator status",
       "group.user": "User group",
@@ -1215,6 +1217,7 @@
       "simple": "Advertisement",
       "webshop": "Webshop"
     },
+    "webshopSettingsSaved": "The webshop settings were saved",
     "orderBy": {
       "date": "Last published",
       "distance": "Distance",
@@ -1266,7 +1269,8 @@
       "deliveryMethodNew": "New delivery method",
       "deliveryMethods": "Delivery methods",
       "paymentType": "Payment type",
-      "confirmOrder": "Confirm order"
+      "confirmOrder": "Confirm order",
+      "webshopSettings": "Webshop settings"
     },
     "mobileTitle": {
       "search": "Advertisements",
@@ -1285,7 +1289,8 @@
       "deliveryMethodNew": "New delivery method",
       "deliveryMethods": "Delivery methods",
       "paymentType": "Payment type",
-      "confirmOrder": "Confirm order"
+      "confirmOrder": "Confirm order",
+      "webshopSettings": "Webshop settings"
     }
   },
   "notification": {

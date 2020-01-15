@@ -269,6 +269,9 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
         this.managementActions.push(new HeadingAction('local_shipping', this.i18n.user.profile.deliveryMethods, () => {
           this.router.navigate(['/marketplace', this.param, 'delivery-methods']);
         }));
+        this.managementActions.push(new HeadingAction('store', this.i18n.user.profile.webshopSettings, () => {
+          this.router.navigate(['/marketplace', this.param, 'webshop-settings', 'view']);
+        }));
       }
       if (notificationSettings.view) {
         this.managementActions.push(new HeadingAction('notifications_off', this.i18n.user.profile.notificationSettings, () => {

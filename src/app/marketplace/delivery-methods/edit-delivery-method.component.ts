@@ -36,7 +36,6 @@ export class EditDeliveryMethodComponent
     injector: Injector,
     private deliveryMethodService: DeliveryMethodsService) {
     super(injector);
-    this.form = this.formBuilder.group({});
   }
 
   ngOnInit() {
