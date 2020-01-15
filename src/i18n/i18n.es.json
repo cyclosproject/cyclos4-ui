@@ -1463,9 +1463,9 @@
     "login": "Continuar con <b>{provider}</b>",
     "login.noMatch": "No se ha encontrado ningún usuario con el correo electrónico {email}. Necesitará acceder con su usuario y contraseña regulares. Después de iniciar sesión, tu cuenta de {app} se vinculará automáticamente, de esta forma 'Continuar con {provider}' funcionará directamente la próxima vez.",
     "login.noEmail": "No se pudo leer una dirección de correo electrónico en su cuenta de {provider}. Necesitará acceder con su usuario y contraseña regulares. Después de iniciar sesión, tu cuenta de {app} se vinculará automáticamente, de esta forma 'Continuar con {provider}' funcionará directamente la próxima vez.",
-    "registration": "Register faster with your identity provider:",
-    "registration.or": "Or",
-    "registration.fillForm": "Fill-in the registration form",
+    "registration": "Registrarse rápidamente con su proveedor de identidad:",
+    "registration.or": "O",
+    "registration.fillForm": "Completar el formulario de registro",
     "registration.disclaimer": "<b>Disclaimer:</b> None of your {app} data will be shared with these providers, and the only purpose of reading your personal data from them is to fill in the registration form and logging you in after you're registered.",
     "disclaimer": "<b>Disclaimer</b>: None of your {app} data will be shared with any provider. The only data read from the providers are your display name and e-mail, with the sole purpose to logging-in faster on {app}.",
     "title": {
@@ -1473,18 +1473,18 @@
       "manage.user": "Manage user identity providers"
     },
     "mobileTitle": {
-      "manage.self": "Identity providers",
-      "manage.user": "Identity providers"
+      "manage.self": "Proveedores de identidad",
+      "manage.user": "Proveedores de identidad"
     },
     "action": {
-      "connect": "Connect",
+      "connect": "Conectar",
       "connect.done": "Ahora puede acceder como {name} utilizando su cuenta de {provider}",
-      "disconnect": "Disconnect",
-      "disconnect.confirm": "This will disable the 'Continue with {provider}' functionality. Are you sure?",
+      "disconnect": "Desconectar",
+      "disconnect.confirm": "Esto desactivará la funcionalidad de 'Continuar con {provider}. Está usted seguro?",
       "disconnect.done": "El acceso con {provider} ha sido deshabilitado"
     },
-    "connectedOn": "Connected on {date}",
-    "disconnected": "Disconnected"
+    "connectedOn": "Conectado el {date}",
+    "disconnected": "Desconectado"
   },
   "operation": {
     "user": "Usuario",
