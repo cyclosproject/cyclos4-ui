@@ -3,7 +3,39 @@
     <page-content [heading]="i18n.ad.title.webshopSettings"
       [mobileHeading]="i18n.ad.mobileTitle.webshopSettings"
       [headingActions]="headingActions$ | async">
+      <label-value *ngIf="!self" class="mb-3" [label]="i18n.general.user"
+        labelPosition="side">
+        <user-link [user]="data.user"></user-link>
+      </label-value>
       <form [formGroup]="form">
+        <radio-group-field [label]="i18n.ad.productNumberGenerationType"
+          formControlName="generationType">
+          <field-option value="generated" [text]="i18n.ad.generated">
+          </field-option>
+          <field-option value="manual" [text]="i18n.ad.manual">
+          </field-option>
+        </radio-group-field>
+        <input-field
+          *ngIf="((form.get('generationType').valueChanges | async) || form.get('generationType').value) === 'manual'"
+          formControlName="productNumberMask"
+          [label]="i18n.ad.productNumberMask" required>
+        </input-field>
+        <boolean-field [label]="i18n.ad.customOrderNumber"
+          formControlName="customOrderNumberFormat"></boolean-field>
+        <ng-container
+          *ngIf="
+      (form.get('customOrderNumberFormat').valueChanges | async) || form.get('customOrderNumberFormat').value">
+          <input-field formControlName="orderNumberPrefix" fieldSize="small"
+            [label]="i18n.ad.prefix" required>
+          </input-field>
+          <decimal-field formControlName="orderNumberInnerLength"
+            fieldSize="small" [label]="i18n.ad.length" [textRight]="false"
+            required>
+          </decimal-field>
+          <input-field formControlName="orderNumberSuffix" fieldSize="small"
+            [label]="i18n.ad.suffix" required>
+          </input-field>
+        </ng-container>
       </form>
       <actions forceRow>
         <button class="btn btn-primary" (click)="save()"

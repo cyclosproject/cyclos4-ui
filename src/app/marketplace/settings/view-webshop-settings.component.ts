@@ -38,7 +38,7 @@ export class ViewWebshopSettingsComponent extends BaseViewPageComponent<WebshopS
     // TODO missing data.edit
     actions.push(
       new HeadingAction('edit', this.i18n.general.edit, () =>
-        this.router.navigate(['/marketplace', 'webshop-settings', 'edit', this.user]), true
+        this.router.navigate(['/marketplace', this.user, 'webshop-settings', 'edit']), true
       ));
 
     this.headingActions = actions;
@@ -46,6 +46,14 @@ export class ViewWebshopSettingsComponent extends BaseViewPageComponent<WebshopS
 
   resolveMenu(data: WebshopSettingsView) {
     return this.authHelper.userMenu(data.user, Menu.WEBSHOP_SETTINGS);
+  }
+
+  /**
+ * Resolves the label generated or manual product number
+ */
+  resolveGenerationTypeLabel(): string {
+    return this.data.productNumberGenerated ?
+      this.i18n.ad.generated : this.i18n.ad.manual;
   }
 
 }
