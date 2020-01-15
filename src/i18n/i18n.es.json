@@ -278,7 +278,7 @@
     "personal.contacts": "Contactos",
     "personal.password": "Contraseñas",
     "personal.passwords": "Contraseñas",
-    "personal.identityProviders": "Identity providers",
+    "personal.identityProviders": "Proveedores de identidad",
     "personal.notifications": "Notificaciones",
     "personal.notificationSettings": "Configuración de notificaciones",
     "personal.settings": "Configuración",
@@ -400,7 +400,7 @@
       "firstTime": "Términos de acuerdo"
     },
     "message.previouslyAccepted": "Los términos de acuerdo ha sido actualizados.\n\nUsted debe aceptar los nuevos términos de acuerdo para poder continuar.",
-    "message.firstTime": "In order to complete your registration, you must agree with these terms.",
+    "message.firstTime": "Para completar su registro, debe aceptar estos términos.",
     "agree": "He aceptado los siguientes términos de acuerdo: {agreements}"
   },
   "securityQuestion": {
@@ -868,7 +868,7 @@
       "management": "Administración",
       "edit": "Editar perfil",
       "managePasswords": "Administrar contraseñas",
-      "viewIdentityProviders": "View identity providers",
+      "viewIdentityProviders": "Ver proveedores de identidad",
       "addContact": "Agregar a contactos",
       "addContact.done": "{user} ha sido agregado a su lista de contactos",
       "removeContact": "Eliminar de mis contactos",
@@ -1100,8 +1100,8 @@
     "zip": "Código postal"
   },
   "ad": {
-    "accept": "Accept",
-    "acceptOrder": "Accept order",
+    "accept": "Aceptar",
+    "acceptOrder": "Aceptar orden",
     "addedProduct": "El producto fue añadido a su carrito de compras",
     "addedProductAlreadyInCart": "El producto fue añadido a su carrito de compras (este elemento ha sido añadido previamente a su carrito de compras)",
     "addToCart": "Add to cart",
