@@ -133,8 +133,7 @@ export class EditProfileComponent
         // Update the current user to reflect any changes if editing own profile
         this.login.user$.next({
           id: this.login.user.id,
-          display: data.display,
-          shortDisplay: data.shortDisplay,
+          display: data.userConfiguration.details.display,
           image: empty(data.images) ? null : data.images[0]
         });
       }
@@ -360,6 +359,12 @@ export class EditProfileComponent
     this.removedAddresses = [];
     this.removedContactInfos = [];
     this.removedImages = [];
+
+    if (data.contactInfoConfiguration.availability !== AvailabilityEnum.DISABLED) {
+      // Additional contacts are enabled. Copy the fields to the address configuration
+      data.addressConfiguration.contactInfoEnabled = true;
+      data.addressConfiguration.contactInfoFields = data.contactInfoConfiguration.customFields;
+    }
 
     // Cache the field actions to avoid having to calculate every time
     const fieldActions = data.userConfiguration.profileFieldActions;

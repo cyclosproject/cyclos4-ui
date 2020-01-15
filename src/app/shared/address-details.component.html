@@ -28,6 +28,28 @@
 <div [ngClass]="classNames" *ngIf="address.region">
   {{ address.region }}
 </div>
-<div [ngClass]="classNames" *ngIf="address.country && countriesResolve.data | async">
+<div [ngClass]="classNames"
+  *ngIf="address.country && countriesResolve.data | async">
   {{ country }}
 </div>
+<ng-container *ngIf="contactInfo">
+  <div [ngClass]="classNames" *ngIf="contactInfo.email">
+    <a [href]="'mailTo:' + contactInfo.email">
+      {{ contactInfo.email }}
+    </a>
+  </div>
+  <div [ngClass]="classNames" *ngIf="contactInfo.mobilePhone">
+    <a [href]="'tel:' + contactInfo.normalizedMobilePhone">
+      {{ contactInfo.mobilePhone }}
+    </a>
+  </div>
+  <div [ngClass]="classNames" *ngIf="contactInfo.landLinePhone">
+    <a [href]="'tel:' + contactInfo.normalizedLandLinePhone">
+      {{ contactInfo.landLinePhone }}
+    </a>
+  </div>
+  <div *ngFor="let fieldValue of contactInfo.customValues"
+    [ngClass]="classNames">
+    <format-field-value [fieldValue]="fieldValue"></format-field-value>
+  </div>
+</ng-container>

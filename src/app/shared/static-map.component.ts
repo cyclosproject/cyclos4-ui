@@ -1,12 +1,11 @@
 import {
-  AfterViewInit, ChangeDetectionStrategy, Component, ElementRef,
-  HostBinding, Input, OnInit, ChangeDetectorRef, OnDestroy
+  AfterViewInit, ChangeDetectionStrategy, Component,
+  ElementRef, Input, OnChanges, OnDestroy, OnInit, SimpleChanges
 } from '@angular/core';
 import { Address } from 'app/api/models';
-import { MapsService } from 'app/core/maps.service';
-import { LayoutService } from 'app/shared/layout.service';
-import { Subscription } from 'rxjs';
 import { AddressHelperService } from 'app/core/address-helper.service';
+import { MapsService } from 'app/core/maps.service';
+import { BehaviorSubject, Subscription } from 'rxjs';
 
 /**
  * Shows a static image for an address location
@@ -14,54 +13,32 @@ import { AddressHelperService } from 'app/core/address-helper.service';
 @Component({
   selector: 'static-map',
   templateUrl: 'static-map.component.html',
+  styleUrls: ['static-map.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class StaticMapComponent implements OnInit, OnDestroy, AfterViewInit {
-
-  @HostBinding('class.d-block') classBlock = true;
-  @HostBinding('class.flex-grow-1') classFlexGrow = true;
-  @HostBinding('class.w-100') classW100 = true;
+export class StaticMapComponent implements OnInit, OnDestroy, OnChanges, AfterViewInit {
 
   @Input() address: Address;
   @Input() width: number | 'auto' = 'auto';
   @Input() height: number | 'auto' = 260;
 
-  url: string;
+  url$ = new BehaviorSubject<string>(null);
   externalUrl: string;
   title: string;
-  widthWasAuto: boolean;
-  heightWasAuto: boolean;
-  imageWidth: string;
-  imageHeight: string;
+  imageWidth: number;
+  imageHeight: number;
   anchorHeight: string;
   private sub: Subscription;
 
   constructor(
     private maps: MapsService,
     private el: ElementRef,
-    private cd: ChangeDetectorRef,
-    private addressHelper: AddressHelperService,
-    private layout: LayoutService) {
+    private addressHelper: AddressHelperService) {
   }
 
   ngOnInit() {
     this.title = this.address.addressLine1 || this.addressHelper.addressStreet(this.address);
     this.externalUrl = this.maps.externalUrl(this.address);
-    this.widthWasAuto = this.width === 'auto';
-    this.heightWasAuto = this.height === 'auto';
-    this.sub = this.layout.breakpointChanges$.subscribe(() => {
-      if (this.widthWasAuto) {
-        this.width = 'auto';
-      }
-      if (this.heightWasAuto) {
-        this.height = 'auto';
-      }
-      this.url = null;
-      this.imageWidth = null;
-      this.imageHeight = null;
-      this.cd.detectChanges();
-      this.checkSizes();
-    });
   }
 
   ngOnDestroy() {
@@ -70,38 +47,58 @@ export class StaticMapComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-  ngAfterViewInit() {
-    this.checkSizes();
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.width || changes.height) {
+      this.update();
+    }
   }
 
-  private checkSizes() {
+  ngAfterViewInit() {
+    this.update();
+  }
+
+  private update() {
     if (typeof this.height === 'number') {
       this.anchorHeight = `${this.height}px`;
     } else {
       this.anchorHeight = null;
     }
+    this.updateDimensions();
+  }
+
+  private updateDimensions(timeout = 0) {
+    if (typeof this.width === 'number') {
+      this.imageWidth = this.width;
+    }
+    if (typeof this.height === 'number') {
+      this.imageHeight = this.height;
+    }
     if (this.width === 'auto' || this.height === 'auto') {
+      // Need to figure out the actual dimensions
       setTimeout(() => {
         const element = this.element;
-        if (this.width === 'auto') {
-          this.width = element.offsetWidth;
+        if (element.offsetWidth === 0) {
+          // Not displayed yet.
+          this.updateDimensions(300);
+        } else {
+          // Update the widths and then update the URL
+          if (this.width === 'auto') {
+            this.imageWidth = element.offsetWidth;
+          }
+          if (this.height === 'auto') {
+            this.imageHeight = element.offsetHeight;
+          }
+          this.doInitUrl();
         }
-        if (this.height === 'auto') {
-          this.height = element.offsetHeight;
-        }
-        this.doInitUrl();
-      }, 1);
+      }, timeout);
     } else {
       this.doInitUrl();
     }
   }
 
   private doInitUrl() {
-    if (typeof this.width === 'number' && typeof this.height === 'number') {
-      this.url = this.maps.staticUrl(this.address, this.width, this.height);
-      this.imageWidth = this.width + 'px';
-      this.imageHeight = this.height + 'px';
-      this.cd.detectChanges();
+    if (this.imageWidth && this.imageHeight) {
+      this.url$.next(this.maps.staticUrl(this.address, this.imageWidth, this.imageHeight));
     }
   }
 

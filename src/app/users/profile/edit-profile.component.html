@@ -168,7 +168,8 @@
       <ng-container *ngIf="defineSingleAddress.value">
         <address-form [addressForm]="singleAddress"
           [configuration]="data.addressConfiguration"
-          [managePrivacy]="data.addressConfiguration.managePrivacy">
+          [managePrivacy]="data.addressConfiguration.managePrivacy"
+          [binaryValues]="data.addressBinaryValues[data.addresses[0]?.id]">
         </address-form>
         <label-value [label]="i18n.general.map" kind="field"
           *ngIf="maps.enabled">
@@ -299,7 +300,8 @@
         </input-field>
         <address-form [addressForm]="address['form']"
           [configuration]="data.addressConfiguration" idPrefix="address_"
-          [idSuffix]="address['idSuffix']" [managePrivacy]="false">
+          [idSuffix]="address['idSuffix']" [managePrivacy]="false"
+          [binaryValues]="data.addressBinaryValues[address['id']]">
         </address-form>
         <label-value *ngIf="data.addressConfiguration.managePrivacy"
           [label]="i18n.field.privacy.name" kind="field">

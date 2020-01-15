@@ -1,0 +1,59 @@
+<ng-container *ngIf="addresses?.length === 1">
+  <!-- Single address -->
+  <hr>
+  <div class="d-flex flex-column flex-sm-row">
+    <div class="flex-grow-1">
+      <h2 class="border-0">
+        {{ i18n.address.address }}
+      </h2>
+      <ng-container
+        *ngTemplateOutlet="addressDetails; context: {$implicit: addresses[0]}">
+      </ng-container>
+    </div>
+    <div *ngIf="locatedAddresses?.length === 1">
+      <static-map [address]="locatedAddresses[0]"
+        [width]="singleMapWidth(layout.breakpointChanges$ | async)">
+      </static-map>
+    </div>
+  </div>
+</ng-container>
+<ng-container *ngIf="addresses?.length > 1">
+  <!-- Multiple addresses -->
+  <div class="map-container">
+    <agm-map [styles]="layout.googleMapStyles"
+      [fitBounds]="mapBounds$ | async" [fullscreenControl]="true" maxZoom="17"
+      minZoom="2" (mapClick)="closeAllInfoWindows()"
+      (mapReady)="adjustMap();">
+      <ng-container *ngFor="let addr of addresses">
+        <ng-container *ngIf="addr.location">
+          <agm-marker [title]="addr.name" [iconUrl]="mainMarker"
+            [latitude]="addr.location.latitude"
+            [longitude]="addr.location.longitude"
+            (markerClick)="closeAllInfoWindows()">
+            <agm-info-window>
+              Address {{ addr.name }}
+            </agm-info-window>
+          </agm-marker>
+        </ng-container>
+      </ng-container>
+    </agm-map>
+  </div>
+
+  <div class="row no-gutters" [ngClass]="{'mt-3': !first}">
+    <ng-container
+      *ngFor="let address of addresses; let first = first; let last = last">
+      <div class="col-12 col-md-4">
+        <ng-container
+          *ngTemplateOutlet="addressDetails; context: {$implicit: address}">
+        </ng-container>
+      </div>
+    </ng-container>
+  </div>
+</ng-container>
+
+<ng-template #addressDetails let-address>
+  <h3 *ngIf="addresses.length > 1" class="mt-0">
+    {{ address.name }}
+  </h3>
+  <address-details [address]="address"></address-details>
+</ng-template>

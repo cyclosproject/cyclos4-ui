@@ -1,6 +1,8 @@
-<ng-container *ngFor="let field of configuration.enabledFields" [formGroup]="addressForm">
-  <single-selection-field [id]="idPrefix + field + idSuffix" *ngIf="field === 'country'; else inputTemplate"
-    formControlName="country" [label]="getLabel(field)" [required]="isRequired(field)">
+<ng-container *ngFor="let field of configuration.enabledFields"
+  [formGroup]="addressForm">
+  <single-selection-field [id]="idPrefix + field + idSuffix"
+    *ngIf="field === 'country'; else inputTemplate" formControlName="country"
+    [label]="getLabel(field)" [required]="isRequired(field)">
     <field-option *ngFor="let country of countriesResolve.data | async"
       [value]="country.code" [text]="country.name">
     </field-option>
@@ -10,6 +12,31 @@
       [label]="getLabel(field)" [required]="isRequired(field)"></input-field>
   </ng-template>
 </ng-container>
-<label-value *ngIf="managePrivacy" [label]="i18n.field.privacy.name" kind="field">
-  <field-privacy [control]="addressForm.get('hidden')" justifyStart></field-privacy>
+<ng-container *ngIf="profileConfiguration.contactInfoEnabled"
+  [formGroup]="addressForm.get('contactInfo')">
+  <input-field [id]="idPrefix + 'email' + idSuffix" formControlName="email"
+    [label]="i18n.user.email">
+  </input-field>
+  <input-field [id]="idPrefix + 'mobilePhone' + idSuffix"
+    formControlName="mobilePhone" [label]="i18n.phone.mobile">
+  </input-field>
+  <input-field [id]="idPrefix + 'landLinePhone' + idSuffix"
+    formControlName="landLinePhone" [label]="i18n.phone.landLine">
+  </input-field>
+  <input-field
+    *ngIf="profileConfiguration.phoneConfiguration?.extensionEnabled"
+    [id]="idPrefix + 'landLineExtension' + idSuffix"
+    formControlName="landLineExtension" [label]="i18n.phone.extension">
+  </input-field>
+  <ng-container *ngFor="let cf of profileConfiguration.contactInfoFields">
+    <custom-field-input [field]="cf"
+      [formControl]="addressForm.get('contactInfo').get('customValues').get(cf.internalName)"
+      [binaryValues]="binaryValues">
+    </custom-field-input>
+  </ng-container>
+</ng-container>
+<label-value *ngIf="managePrivacy" [label]="i18n.field.privacy.name"
+  kind="field">
+  <field-privacy [control]="addressForm.get('hidden')" justifyStart>
+  </field-privacy>
 </label-value>

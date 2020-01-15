@@ -97,88 +97,35 @@
       </div>
     </div>
     <div class="d-flex flex-grow-1 flex-column">
-      <!-- Addresses -->
-      <ng-container *ngIf="user.addresses?.length > 0">
-        <h2 class="mt-3">
-          <ng-container *ngIf="user.addresses?.length > 1">
-            {{ i18n.user.title.addresses }}
-          </ng-container>
-          <ng-container *ngIf="user.addresses?.length == 1">
-            {{ i18n.address.address }}
-          </ng-container>
-        </h2>
-        <ng-container
-          *ngFor="let address of user.addresses; let first = first; let last = last">
-          <div class="row no-gutters" [ngClass]="{'mt-3': !first}">
-            <div class="col-12 col-md-6">
-              <h3 *ngIf="user.addresses.length > 1" class="mt-0">
-                {{ address.name }}
-              </h3>
-              <address-details [address]="address"></address-details>
-            </div>
-            <div *ngIf="maps.enabled && address.location"
-              class="col-12 col-md-6"
-              [ngClass]="{'pt-2': layout.ltsm$ | async, 'mb-2': !last}">
-              <static-map [address]="address"></static-map>
-            </div>
-          </div>
-        </ng-container>
-      </ng-container>
+      <profile-addresses [addresses]="user.addresses"></profile-addresses>
 
       <!-- Contact infos -->
       <ng-container *ngIf="user.contactInfos?.length > 0">
         <h2 class="mt-3">{{ i18n.user.contactInfo }}</h2>
-        <div *ngFor="let contactInfo of user.contactInfos; let first=first">
-          <h3>{{ contactInfo.name }}</h3>
-          <div class="d-flex" [ngClass]="{'mt-0': first, 'mt-3': !first}">
-            <div class="flex-grow-1">
-              <div *ngIf="contactInfo.image && (layout.ltsm$ | async)"
-                class="d-flex justify-content-center mb-4">
-                <avatar size="120" useLightbox [image]="contactInfo.image">
-                </avatar>
-              </div>
-              <label-value *ngIf="contactInfo.email"
-                [label]="i18n.user.email">
-                <a [href]="'mailto:' + contactInfo.email"
-                  class="link-with-icon">
-                  <icon icon="email"></icon>
-                  <span>{{ contactInfo.email }}</span>
-                </a>
-              </label-value>
-              <label-value *ngIf="contactInfo.mobilePhone"
-                [label]="i18n.phone.mobile">
-                <a [href]="'tel:' + contactInfo.normalizedMobilePhone"
-                  class="link-with-icon">
-                  <icon icon="smartphone"></icon>
-                  <span>{{ contactInfo.mobilePhone }}</span>
-                </a>
-              </label-value>
-              <label-value *ngIf="contactInfo.landLinePhone"
-                [label]="i18n.phone.landLine">
-                <a [href]="'tel:' + contactInfo.normalizedLandLinePhone"
-                  class="link-with-icon">
-                  <icon icon="phone"></icon>
-                  <span>{{ contactInfo.landLinePhone }}</span>
-                </a>
-              </label-value>
-              <custom-field-value
-                *ngFor="let value of contactInfo.customValues"
-                [fieldValue]="value">
-              </custom-field-value>
-              <ng-container *ngIf="contactInfo.address">
-                <label-value [label]="i18n.address.address">
-                  <address-details [address]="contactInfo.address">
-                  </address-details>
-                </label-value>
-              </ng-container>
+        <div class="row no-gutters">
+          <div class="text-center col-12 col-sm-6 col-md-4 col-lg-3"
+            *ngFor="let contactInfo of user.contactInfos; let first=first">
+            <avatar size="140" useLightbox [image]="contactInfo.image"
+              class="mb-2">
+            </avatar>
+            <div class="font-weight-bold">{{ contactInfo.name }}</div>
+            <a class="d-block" *ngIf="contactInfo.email"
+              [href]="'mailto:' + contactInfo.email">
+              {{ contactInfo.email }}
+            </a>
+            <a class="d-block"
+              [href]="'tel:' + contactInfo.normalizedMobilePhone">
+              {{ contactInfo.mobilePhone }}
+            </a>
+            <a class="d-block"
+              [href]="'tel:' + contactInfo.normalizedLandLinePhone">
+              {{ contactInfo.landLinePhone }}
+            </a>
+            <div *ngFor="let value of contactInfo.customValues">
+              <format-field-value [fieldValue]="value"></format-field-value>
             </div>
-            <div *ngIf="layout.gtxs$ | async">
-              <avatar *ngIf="contactInfo.image; else emptySpace" size="120"
-                useLightbox [image]="contactInfo.image"></avatar>
-              <ng-template #emptySpace>
-                <!-- Need this empty space to make contact infos with and without image take the same space -->
-                <div style="width: 120px; height: 120px"></div>
-              </ng-template>
+            <div *ngIf="contactInfo.address" class="text-accent">
+              {{ i18n.user.contactInfoAtAddress(contactInfo.address.name) }}
             </div>
           </div>
         </div>
