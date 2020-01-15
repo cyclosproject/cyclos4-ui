@@ -35,13 +35,14 @@ export class ViewWebshopSettingsComponent extends BaseViewPageComponent<WebshopS
     this.self = this.authHelper.isSelfOrOwner(data.user);
     const actions = [];
 
-    // TODO missing data.edit
-    actions.push(
-      new HeadingAction('edit', this.i18n.general.edit, () =>
-        this.router.navigate(['/marketplace', this.user, 'webshop-settings', 'edit']), true
-      ));
+    if (data.canEdit) {
+      actions.push(
+        new HeadingAction('edit', this.i18n.general.edit, () =>
+          this.router.navigate(['/marketplace', this.user, 'webshop-settings', 'edit']), true
+        ));
 
-    this.headingActions = actions;
+      this.headingActions = actions;
+    }
   }
 
   resolveMenu(data: WebshopSettingsView) {
