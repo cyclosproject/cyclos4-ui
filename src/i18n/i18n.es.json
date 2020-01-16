@@ -1124,7 +1124,7 @@
     "available": "Disponible",
     "notAvailable": "No disponible",
     "backToDraft": "El anuncio está ahora en modo de borrador",
-    "beginDate": "Publicar desde",
+    "beginDate": "Publicado desde",
     "cartEmpty": "Este carrito de compras está vacío. Por favor, busque en la sección comercio electrónico para seleccionar productos y servicios a comprar",
     "checkout": "Ordenar la compra",
     "changeQuantity": "Cambiar cantidad",
@@ -1134,7 +1134,7 @@
     "chooseDeliveryAddress": "Seleccione la dirección de entrega",
     "choosePaymentType": "Seleccione el tipo de pago",
     "customAddress": "Dirección personalizada",
-    "endDate": "Publicar hasta",
+    "endDate": "Publicado hasta",
     "error": {
       "cannotBuyFromSeller": "Por el momento, no puede comprar productos de este usuario. Por favor, contacte a su administración.",
       "cannotProceedToCheckout": "No se puede continuar con la generación de la orden de compra debido a que algunos productos no están disponibles, o usted no posee saldo suficiente",
