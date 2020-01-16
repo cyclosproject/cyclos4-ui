@@ -701,8 +701,8 @@
     "rootCategory": "Principal",
     "orderBy": {
       "date": "Ultimos publicados",
-      "priceAsc": "Precio inferior",
-      "priceDesc": "Precio superior"
+      "priceAsc": "Precio más bajo",
+      "priceDesc": "Precio más alto"
     },
     "title": {
       "search": "Búsqueda de anuncios",
