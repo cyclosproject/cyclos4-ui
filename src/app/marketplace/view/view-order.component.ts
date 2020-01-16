@@ -30,7 +30,6 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
   id: string;
   seller: boolean;
   buyer: boolean;
-  detailed: boolean;
   form: FormGroup;
 
   constructor(
@@ -52,7 +51,6 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
 
   onDataInitialized(data: OrderView) {
 
-    this.detailed = this.layout.gtxxs;
     this.seller = this.authHelper.isSelfOrOwner(data.seller);
     this.buyer = !this.seller && this.authHelper.isSelfOrOwner(data.buyer);
     this.form = this.formBuilder.group({ remarks: null });

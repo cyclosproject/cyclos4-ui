@@ -4,13 +4,13 @@
     [headingActions]="headingActions$ | async">
     <div *ngIf="data.image && (layout.ltsm$ | async)"
       class="d-flex justify-content-center mt-2 mb-4">
-      <avatar [roundBorders]="false" size="120" useLightbox
+      <avatar [roundBorders]="false" [zoom]="false" size="120" useLightbox
         [image]="data.image"></avatar>
     </div>
 
     <div class="d-flex flex-row-reverse">
       <div *ngIf="data.image && (layout.gtxs$ | async)" class="image ml-4">
-        <avatar [roundBorders]="false" size="120" useLightbox
+        <avatar [roundBorders]="false" [zoom]="false" size="120" useLightbox
           [image]="data.image">
         </avatar>
       </div>
@@ -39,10 +39,11 @@
     </h2>
     <table class="table table-hover cursor-pointer">
       <thead>
-        <th *ngIf="detailed" class="no-border">{{ i18n.ad.number }}</th>
+        <th *ngIf="layout.gtxs$ | async" class="no-border">
+          {{ i18n.ad.number }}</th>
         <th class="no-border">{{ i18n.ad.product }}</th>
         <th class="no-border">{{ i18n.ad.quantity }}</th>
-        <th *ngIf="detailed" class="no-border text-right">
+        <th *ngIf="layout.gtxs$ | async" class="no-border text-right">
           {{ i18n.ad.unitPrice }}
         </th>
         <th class="no-border text-right">{{ i18n.transaction.amount }}
@@ -51,33 +52,35 @@
       <tbody>
         <tr *ngFor="let row of data.items"
           (click)="router.navigate(path(row))">
-          <td *ngIf="detailed">{{ row.product.productNumber }}</td>
+          <td *ngIf="layout.gtxs$ | async">{{ row.product.productNumber }}
+          </td>
           <td class="link">{{ row.product.name }}</td>
           <td>{{ row.quantity }}</td>
-          <td *ngIf="detailed" class="text-right">
+          <td *ngIf="layout.gtxs$ | async" class="text-right">
             {{ row.price | currency:data.currency }}</td>
           <td class="text-right">
             {{ row.totalPrice | currency:data.currency }}
           </td>
         </tr>
         <tr>
-          <td class="table-head-color" [attr.colspan]="detailed ? 4 : 2">
+          <td class="table-head-color"
+            [attr.colspan]="(layout.gtxs$ | async) ? 4 : 2">
             {{ i18n.ad.subtotal }}</td>
           <td class="table-head-color text-right">
             {{ subtotal | currency:data.currency }}</td>
         </tr>
         <tr>
-          <td [attr.colspan]="detailed ? 4 : 2">
+          <td [attr.colspan]="(layout.gtxs$ | async) ? 4 : 2">
             {{ i18n.ad.deliveryMethod + ': ' + resolveDeliveryLabel() }}
           </td>
           <td class="text-right">
             {{ data.deliveryPrice | currency:data.currency }}</td>
         </tr>
-        <tr>
-          <td class="border-bottom-0 table-head-color"
-            [attr.colspan]="detailed ? 4 : 2">
+        <tr class="totalAmount">
+          <td class="border-bottom-0 label label-value-label"
+            [attr.colspan]="(layout.gtxs$ | async) ? 4 : 2">
             {{ i18n.ad.total }}</td>
-          <td class="border-bottom-0 table-head-color text-right">
+          <td class="border-bottom-0 text-right label-value-value">
             {{ data.totalPrice | currency: data.currency }}</td>
         </tr>
       </tbody>

@@ -205,7 +205,7 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
    * Resolves the current ad status label
    */
   get status(): string {
-    return this.marketplaceHelper.resolveStatusLabel(this.ad.status);
+    return this.ad.status ? this.marketplaceHelper.resolveStatusLabel(this.ad.status) : null;
   }
 
   /**

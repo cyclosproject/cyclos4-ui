@@ -39,6 +39,11 @@ export class DecimalFieldComponent extends BaseFormFieldComponent<string>
   /** Text to show as suffix */
   @Input() suffix: string;
 
+  /**
+   * Aligh text to left or right
+   */
+  @Input() textRight = true;
+
   /** Text to show when component is disabled and value is empty  */
   @Input() emptyLabel: '';
 

@@ -59,6 +59,8 @@ export class AvatarComponent implements OnInit, AfterContentChecked {
 
   @Input() iconColor: string;
 
+  @Input() zoom = true;
+
   @Output() click = new EventEmitter<MouseEvent>();
 
   private _roundBorders = true;

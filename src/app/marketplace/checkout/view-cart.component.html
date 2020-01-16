@@ -9,10 +9,8 @@
       <label-value [label]="i18n.ad.seller">
         <user-link [user]="data.seller"></user-link>
       </label-value>
-      <label-value [label]="i18n.transaction.totalAmount">
-        <div class="positive">
-          {{ data.totalPrice | currency:data.currency }}
-        </div>
+      <label-value class="totalAmount" [label]="i18n.transaction.totalAmount">
+        {{ data.totalPrice | currency:data.currency }}
       </label-value>
     </ng-container>
   </page-content>

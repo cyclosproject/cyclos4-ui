@@ -17,6 +17,8 @@ import { CartCheckoutComponent } from 'app/marketplace/checkout/cart-checkout.co
 import { ShoppingCartItemsComponent } from 'app/marketplace/checkout/shopping-cart-items.component';
 import { ListDeliveryMethodsComponent } from 'app/marketplace/delivery-methods/list-delivery-methods.component';
 import { EditDeliveryMethodComponent } from 'app/marketplace/delivery-methods/edit-delivery-method.component';
+import { ViewWebshopSettingsComponent } from 'app/marketplace/settings/view-webshop-settings.component';
+import { EditWebshopSettingsComponent } from 'app/marketplace/settings/edit-webshop-settings.component';
 import { ViewDeliveryMethodComponent } from 'app/marketplace/delivery-methods/view-delivery-method.component';
 
 /**
@@ -44,6 +46,8 @@ import { ViewDeliveryMethodComponent } from 'app/marketplace/delivery-methods/vi
     ListDeliveryMethodsComponent,
     EditDeliveryMethodComponent,
     ViewDeliveryMethodComponent,
+    EditWebshopSettingsComponent,
+    ViewWebshopSettingsComponent,
     ViewCartComponent,
     CartCheckoutComponent,
   ],
