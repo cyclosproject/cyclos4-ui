@@ -8,23 +8,27 @@
         <user-link [user]="data.user"></user-link>
       </label-value>
       <form [formGroup]="form">
-        <radio-group-field [label]="i18n.ad.productNumberGenerationType"
-          formControlName="generationType">
+        <radio-group-field [label]="i18n.ad.productNumber"
+          formControlName="productGenerationType">
           <field-option value="generated" [text]="i18n.ad.generated">
           </field-option>
           <field-option value="manual" [text]="i18n.ad.manual">
           </field-option>
         </radio-group-field>
         <input-field
-          *ngIf="((form.get('generationType').valueChanges | async) || form.get('generationType').value) === 'manual'"
+          *ngIf="((form.get('productGenerationType').valueChanges | async) || form.get('productGenerationType').value) === 'manual'"
           formControlName="productNumberMask"
           [label]="i18n.ad.productNumberMask" required>
         </input-field>
-        <boolean-field [label]="i18n.ad.customOrderNumber"
-          formControlName="customOrderNumberFormat"></boolean-field>
+        <radio-group-field [label]="i18n.ad.orderNumber"
+          formControlName="orderGenerationType">
+          <field-option value="generated" [text]="i18n.ad.generated">
+          </field-option>
+          <field-option value="manual" [text]="i18n.ad.manual">
+          </field-option>
+        </radio-group-field>
         <ng-container
-          *ngIf="
-      (form.get('customOrderNumberFormat').valueChanges | async) || form.get('customOrderNumberFormat').value">
+          *ngIf="((form.get('orderGenerationType').valueChanges | async) || form.get('orderGenerationType').value) === 'manual'">
           <input-field formControlName="orderNumberPrefix" fieldSize="small"
             [label]="i18n.ad.prefix" required>
           </input-field>

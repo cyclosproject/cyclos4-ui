@@ -49,12 +49,4 @@ export class ViewWebshopSettingsComponent extends BaseViewPageComponent<WebshopS
     return this.authHelper.userMenu(data.user, Menu.WEBSHOP_SETTINGS);
   }
 
-  /**
- * Resolves the label generated or manual product number
- */
-  resolveGenerationTypeLabel(): string {
-    return this.data.productNumberGenerated ?
-      this.i18n.ad.generated : this.i18n.ad.manual;
-  }
-
 }

@@ -13,7 +13,7 @@ export class TiledResultComponent {
 
   @Input() image: Image;
   @Input() icon: string;
-  @Input() zoom: boolean;
+  @Input() zoom = true;
 
   constructor() {
   }
