@@ -900,7 +900,7 @@
       "redeemVoucher": "Canjear cupón",
       "viewBoughtVouchers": "Ver cupones comprados",
       "buyVouchers": "Comprar cupones",
-      "notificationSettings": "Configuración de notificaciones"
+      "notificationSettings": "Ajustes de notificaciones"
     },
     "registration": {
       "group.public": "Elija el grupo en el que desea registrarse",
@@ -1300,7 +1300,7 @@
       "deliveryMethods": "Métodos de entrega",
       "paymentType": "Tipo de pago",
       "confirmOrder": "Confirmar orden",
-      "webshopSettings": "Configuración de tienda virtual"
+      "webshopSettings": "Ajustes de tienda virtual"
     }
   },
   "notification": {
