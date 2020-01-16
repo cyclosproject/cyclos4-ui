@@ -266,6 +266,7 @@
     "marketplace.businessDirectory": "Directorio de anunciantes",
     "marketplace.advertisements": "Anuncios",
     "marketplace.deliveryMethods": "Métodos de entrega",
+    "marketplace.webshopSettings": "Webshop settings",
     "marketplace.myAdvertisements": "Mis anuncios",
     "marketplace.myPurchases": "Mis compras",
     "marketplace.mySales": "Mis ventas",
@@ -890,6 +891,7 @@
       "viewOperators": "Ver operadores",
       "viewWebshop": "Ver tienda virtual",
       "deliveryMethods": "Métodos de entrega",
+      "webshopSettings": "Webshop settings",
       "status.user": "Estado del usuario",
       "status.operator": "Estado del operador",
       "group.user": "Grupo de usuario",
@@ -1168,6 +1170,7 @@
     "questionRemoved": "La pregunta ha sido eliminada",
     "category": "Categoría",
     "categories": "Categorías",
+    "customOrderNumber": "Custom order number",
     "creationDate": "Fecha de creación",
     "byOwner": "Por {owner}",
     "showAllCategories": "Mostrar todas",
@@ -1176,11 +1179,19 @@
     "orderAccepted": "La orden fue procesada",
     "orderRejected": "La orden fue rechazada",
     "publicationPeriod": "Período de publicación",
+    "productNumberGenerationType": "Generation type",
+    "productNumberMask": "Mask",
     "promotionalPeriod": "Período de la promoción",
     "promotionalPrice": "Precio promocional",
     "products": "Productos",
     "product": "Producto",
+    "generated": "Generated",
+    "manual": "Manual",
     "number": "Número",
+    "orderNumber": "Order number",
+    "prefix": "Prefix",
+    "length": "Length",
+    "suffix": "Suffix",
     "quantity": "Cantidad",
     "reject": "Rechazar",
     "rejectOrder": "Rechazar orden",
@@ -1216,11 +1227,12 @@
       "simple": "Anuncio",
       "webshop": "Tienda virtual"
     },
+    "webshopSettingsSaved": "The webshop settings were saved",
     "orderBy": {
       "date": "Ultimos publicados",
       "distance": "Distancia",
-      "priceAsc": "Precio inferior",
-      "priceDesc": "Precio superior",
+      "priceAsc": "Precio más bajo",
+      "priceDesc": "Precio más alto",
       "relevance": "Relevancia"
     },
     "status": {
@@ -1259,7 +1271,7 @@
       "edit": "Editar anuncio",
       "purchases": "Compras",
       "sales": "Ventas",
-      "order": "Detalle de orden de tienda virtual",
+      "order": "Order details",
       "shoppingCart": "Carrito de compras",
       "history": "Historial de ordenes",
       "deliveryAddress": "Dirección de entrega",
@@ -1267,7 +1279,8 @@
       "deliveryMethodNew": "Nuevo método de entrega",
       "deliveryMethods": "Métodos de entrega",
       "paymentType": "Tipo de pago",
-      "confirmOrder": "Confirmar orden"
+      "confirmOrder": "Confirmar orden",
+      "webshopSettings": "Webshop settings"
     },
     "mobileTitle": {
       "search": "Anuncios",
@@ -1278,7 +1291,7 @@
       "edit": "Editar anuncio",
       "purchases": "Compras",
       "sales": "Ventas",
-      "order": "Detalle de orden de tienda virtual",
+      "order": "Order details",
       "shoppingCart": "Carrito de compras",
       "history": "Historial de ordenes",
       "deliveryAddress": "Dirección de entrega",
@@ -1286,7 +1299,8 @@
       "deliveryMethodNew": "Nuevo método de entrega",
       "deliveryMethods": "Métodos de entrega",
       "paymentType": "Tipo de pago",
-      "confirmOrder": "Confirmar orden"
+      "confirmOrder": "Confirmar orden",
+      "webshopSettings": "Webshop settings"
     }
   },
   "notification": {
