@@ -266,7 +266,7 @@
     "marketplace.businessDirectory": "Directorio de anunciantes",
     "marketplace.advertisements": "Anuncios",
     "marketplace.deliveryMethods": "Métodos de entrega",
-    "marketplace.webshopSettings": "Configuración de tienda virtual",
+    "marketplace.webshopSettings": "Ajustes de tienda virtual",
     "marketplace.myAdvertisements": "Mis anuncios",
     "marketplace.myPurchases": "Mis compras",
     "marketplace.mySales": "Mis ventas",
@@ -281,8 +281,8 @@
     "personal.passwords": "Contraseñas",
     "personal.identityProviders": "Proveedores de identidad",
     "personal.notifications": "Notificaciones",
-    "personal.notificationSettings": "Configuración de notificaciones",
-    "personal.settings": "Configuración",
+    "personal.notificationSettings": "Ajustes de notificaciones",
+    "personal.settings": "Ajustes",
     "content": "Información"
   },
   "login": {
@@ -891,7 +891,7 @@
       "viewOperators": "Ver operadores",
       "viewWebshop": "Ver tienda virtual",
       "deliveryMethods": "Métodos de entrega",
-      "webshopSettings": "Configuración de tienda virtual",
+      "webshopSettings": "Ajustes de tienda virtual",
       "status.user": "Estado del usuario",
       "status.operator": "Estado del operador",
       "group.user": "Grupo de usuario",
@@ -1227,7 +1227,7 @@
       "simple": "Anuncio",
       "webshop": "Tienda virtual"
     },
-    "webshopSettingsSaved": "La configuración de la tienda virtual se ha guardado",
+    "webshopSettingsSaved": "Los ajustes de la tienda virtual se han guardado",
     "orderBy": {
       "date": "Ultimos publicados",
       "distance": "Distancia",
@@ -1280,7 +1280,7 @@
       "deliveryMethods": "Métodos de entrega",
       "paymentType": "Tipo de pago",
       "confirmOrder": "Confirmar orden",
-      "webshopSettings": "Configuración de tienda virtual"
+      "webshopSettings": "Ajustes de tienda virtual"
     },
     "mobileTitle": {
       "search": "Anuncios",
@@ -1436,9 +1436,9 @@
     }
   },
   "notificationSettings": {
-    "title": "Configuración de notificaciones",
-    "mobileTitle": "Configuración de notificaciones",
-    "notAvailableSettings": "No tiene permisos para cambiar ninguna configuración.",
+    "title": "Ajustes de notificaciones",
+    "mobileTitle": "Ajustes de notificaciones",
+    "notAvailableSettings": "No tiene permisos para cambiar los ajustes.",
     "forwardMessages": "Reenviar mensajes internos a tu correo electrónico",
     "notifications": "Notificaciones",
     "internalNotification": "Notificación interna",
@@ -1451,7 +1451,7 @@
     "smsCount": "Ha utilizado {count} de los {total} mensajes de SMS gratuitos en este mes.",
     "paymentNotifications.above": "Sólo notificar los pagos por encima de",
     "paymentNotifications.below": "Sólo notificar a los pagos por debajo de",
-    "saved": "La configuración de notificaciones fue guardada",
+    "saved": "Los ajustes de notificaciones se han guardado",
     "enableOrDisable": "Activar o desactivar {section}",
     "enableAll": "Activar todo",
     "disableAll": "Desactivar todo"
@@ -1511,8 +1511,8 @@
     }
   },
   "setting": {
-    "title": "Configuración",
-    "mobileTitle": "Configuración",
+    "title": "Ajustes",
+    "mobileTitle": "Ajustes",
     "theme": "Tema",
     "theme.light": "Claro",
     "theme.dark": "Oscuro"
