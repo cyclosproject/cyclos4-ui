@@ -39,7 +39,7 @@
         <label-value *ngIf="status" [label]="i18n.general.status">
           {{ status }}
         </label-value>
-        <ng-container *ngIf="data.canEdit">
+        <ng-container *ngIf="data.publicationPeriod">
           <label-value [label]="i18n.ad.publicationPeriod">
             <span>{{ data.publicationPeriod.begin | date }}<span
                 class="d-inline pl-2 pr-2"> -
@@ -67,14 +67,11 @@
         </ng-container>
         <label-value *ngIf="ad.price" [label]="i18n.ad.price"
           class="totalAmount">
-          <ng-container *ngIf="ad.promotionalPrice">
+          <ng-container *ngIf="ad.promotionalPrice; else plainPrice">
             {{ ad.promotionalPrice | currency:ad.currency }}
             <span class="promo-price">
               {{ ad.price | currency:ad.currency }}
             </span>
-          </ng-container>
-          <ng-container *ngIf="ad.promotionalPrice == null">
-            {{ ad.price | currency:ad.currency }}
           </ng-container>
         </label-value>
       </div>
@@ -155,3 +152,7 @@
     </div>
   </page-content>
 </page-layout>
+
+<ng-template #plainPrice>
+  {{ ad.price | currency:ad.currency }}
+</ng-template>
