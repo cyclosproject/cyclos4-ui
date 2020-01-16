@@ -266,6 +266,7 @@
     "marketplace.businessDirectory": "Elenco attività",
     "marketplace.advertisements": "Annunci",
     "marketplace.deliveryMethods": "Delivery methods",
+    "marketplace.webshopSettings": "Webshop settings",
     "marketplace.myAdvertisements": "I miei annunci",
     "marketplace.myPurchases": "My purchases",
     "marketplace.mySales": "My sales",
@@ -890,6 +891,7 @@
       "viewOperators": "Visualizza operatori",
       "viewWebshop": "Vedi negozio online",
       "deliveryMethods": "Delivery methods",
+      "webshopSettings": "Webshop settings",
       "status.user": "Stato utente",
       "status.operator": "Stato operatore",
       "group.user": "Gruppo utente",
@@ -1168,6 +1170,7 @@
     "questionRemoved": "La domanda è stata rimossa",
     "category": "Categoria",
     "categories": "Categorie",
+    "customOrderNumber": "Custom order number",
     "creationDate": "Data di creazione",
     "byOwner": "Da {owner}",
     "showAllCategories": "Mostra tutto",
@@ -1176,11 +1179,19 @@
     "orderAccepted": "The order was processed",
     "orderRejected": "The order was rejected",
     "publicationPeriod": "Periodo di pubblicazione",
+    "productNumberGenerationType": "Generation type",
+    "productNumberMask": "Mask",
     "promotionalPeriod": "Periodo promozionale",
     "promotionalPrice": "Prezzo promozionale",
     "products": "Products",
     "product": "Product",
+    "generated": "Generated",
+    "manual": "Manual",
     "number": "Number",
+    "orderNumber": "Order number",
+    "prefix": "Prefix",
+    "length": "Length",
+    "suffix": "Suffix",
     "quantity": "Quantity",
     "reject": "Rifiuta",
     "rejectOrder": "Reject order",
@@ -1216,6 +1227,7 @@
       "simple": "Advertisement",
       "webshop": "Webshop"
     },
+    "webshopSettingsSaved": "The webshop settings were saved",
     "orderBy": {
       "date": "I più recenti",
       "distance": "Distanza",
@@ -1259,7 +1271,7 @@
       "edit": "Edit advertisement",
       "purchases": "Purchases",
       "sales": "Sales",
-      "order": "Webshop order details",
+      "order": "Order details",
       "shoppingCart": "Shopping cart",
       "history": "Order history",
       "deliveryAddress": "Delivery address",
@@ -1267,7 +1279,8 @@
       "deliveryMethodNew": "New delivery method",
       "deliveryMethods": "Delivery methods",
       "paymentType": "Payment type",
-      "confirmOrder": "Confirm order"
+      "confirmOrder": "Confirm order",
+      "webshopSettings": "Webshop settings"
     },
     "mobileTitle": {
       "search": "Annunci",
@@ -1278,7 +1291,7 @@
       "edit": "Edit advertisement",
       "purchases": "Purchases",
       "sales": "Sales",
-      "order": "Webshop order details",
+      "order": "Order details",
       "shoppingCart": "Shopping cart",
       "history": "Order history",
       "deliveryAddress": "Delivery address",
@@ -1286,7 +1299,8 @@
       "deliveryMethodNew": "New delivery method",
       "deliveryMethods": "Delivery methods",
       "paymentType": "Payment type",
-      "confirmOrder": "Confirm order"
+      "confirmOrder": "Confirm order",
+      "webshopSettings": "Webshop settings"
     }
   },
   "notification": {
