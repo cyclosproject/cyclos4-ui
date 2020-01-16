@@ -266,6 +266,7 @@
     "marketplace.businessDirectory": "Diretório de negócios",
     "marketplace.advertisements": "Anúncios",
     "marketplace.deliveryMethods": "Métodos de entrega",
+    "marketplace.webshopSettings": "Webshop settings",
     "marketplace.myAdvertisements": "Meus anúncios",
     "marketplace.myPurchases": "Minhas compras",
     "marketplace.mySales": "Minhas vendas",
@@ -890,6 +891,7 @@
       "viewOperators": "Ver operadores",
       "viewWebshop": "Ver loja virtual",
       "deliveryMethods": "Métodos de entrega",
+      "webshopSettings": "Webshop settings",
       "status.user": "Estado do usuário",
       "status.operator": "Estado do operador",
       "group.user": "Grupo do usuário",
@@ -1168,6 +1170,7 @@
     "questionRemoved": "A pergunta foi removida",
     "category": "Categoria",
     "categories": "Categorias",
+    "customOrderNumber": "Custom order number",
     "creationDate": "Data de criação",
     "byOwner": "Por {owner}",
     "showAllCategories": "Mostrar todos",
@@ -1176,11 +1179,19 @@
     "orderAccepted": "O pedido foi processado",
     "orderRejected": "O pedido foi rejeitado",
     "publicationPeriod": "Período de publicação",
+    "productNumberGenerationType": "Generation type",
+    "productNumberMask": "Mask",
     "promotionalPeriod": "Período promocional",
     "promotionalPrice": "Preço promocional",
     "products": "Produtos",
     "product": "Produto",
+    "generated": "Generated",
+    "manual": "Manual",
     "number": "Número",
+    "orderNumber": "Order number",
+    "prefix": "Prefix",
+    "length": "Length",
+    "suffix": "Suffix",
     "quantity": "Quantidade",
     "reject": "Rejeitar",
     "rejectOrder": "Rejeitar pedido",
@@ -1216,6 +1227,7 @@
       "simple": "Anúncio",
       "webshop": "Loja virtual"
     },
+    "webshopSettingsSaved": "The webshop settings were saved",
     "orderBy": {
       "date": "Último publicado",
       "distance": "Distância",
@@ -1259,7 +1271,7 @@
       "edit": "Editar anúncio",
       "purchases": "Compras",
       "sales": "Vendas",
-      "order": "Detalhes do pedido",
+      "order": "Order details",
       "shoppingCart": "Carrinho de compra",
       "history": "Histórico de pedidos",
       "deliveryAddress": "Endereço de entrega",
@@ -1267,7 +1279,8 @@
       "deliveryMethodNew": "Novo método de entrega",
       "deliveryMethods": "Métodos de entrega",
       "paymentType": "Tipo de pagamento",
-      "confirmOrder": "Confirmar pedido"
+      "confirmOrder": "Confirmar pedido",
+      "webshopSettings": "Webshop settings"
     },
     "mobileTitle": {
       "search": "Anúncios",
@@ -1278,7 +1291,7 @@
       "edit": "Editar anúncio",
       "purchases": "Compras",
       "sales": "Vendas",
-      "order": "Detalhes do pedido",
+      "order": "Order details",
       "shoppingCart": "Carrinho de compra",
       "history": "Histórico de pedidos",
       "deliveryAddress": "Endereço de entrega",
@@ -1286,7 +1299,8 @@
       "deliveryMethodNew": "Novo método de entrega",
       "deliveryMethods": "Métodos de entrega",
       "paymentType": "Tipo de pagamento",
-      "confirmOrder": "Confirmar pedido"
+      "confirmOrder": "Confirmar pedido",
+      "webshopSettings": "Webshop settings"
     }
   },
   "notification": {
