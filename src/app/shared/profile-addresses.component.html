@@ -39,15 +39,12 @@
     </agm-map>
   </div>
 
-  <div class="row no-gutters" [ngClass]="{'mt-3': !first}">
-    <ng-container
-      *ngFor="let address of addresses; let first = first; let last = last">
-      <div class="col-12 col-md-4">
-        <ng-container
-          *ngTemplateOutlet="addressDetails; context: {$implicit: address}">
-        </ng-container>
-      </div>
-    </ng-container>
+  <div class="row no-gutters">
+    <div class="col-12 col-md-4" *ngFor="let address of addresses">
+      <ng-container
+        *ngTemplateOutlet="addressDetails; context: {$implicit: address}">
+      </ng-container>
+    </div>
   </div>
 </ng-container>
 
