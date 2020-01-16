@@ -266,6 +266,7 @@
     "marketplace.businessDirectory": "Annuaire professionnel",
     "marketplace.advertisements": "Annonces",
     "marketplace.deliveryMethods": "Delivery methods",
+    "marketplace.webshopSettings": "Webshop settings",
     "marketplace.myAdvertisements": "My advertisements",
     "marketplace.myPurchases": "My purchases",
     "marketplace.mySales": "My sales",
@@ -890,6 +891,7 @@
       "viewOperators": "View operators",
       "viewWebshop": "View webshop",
       "deliveryMethods": "Delivery methods",
+      "webshopSettings": "Webshop settings",
       "status.user": "User status",
       "status.operator": "Operator status",
       "group.user": "User group",
@@ -1168,6 +1170,7 @@
     "questionRemoved": "The question was removed",
     "category": "Catégorie",
     "categories": "Catégories",
+    "customOrderNumber": "Custom order number",
     "creationDate": "Creation date",
     "byOwner": "Par {owner}",
     "showAllCategories": "Afficher tout",
@@ -1176,11 +1179,19 @@
     "orderAccepted": "The order was processed",
     "orderRejected": "The order was rejected",
     "publicationPeriod": "Publication period",
+    "productNumberGenerationType": "Generation type",
+    "productNumberMask": "Mask",
     "promotionalPeriod": "Promotional period",
     "promotionalPrice": "Promotional price",
     "products": "Products",
     "product": "Product",
+    "generated": "Generated",
+    "manual": "Manual",
     "number": "Number",
+    "orderNumber": "Order number",
+    "prefix": "Prefix",
+    "length": "Length",
+    "suffix": "Suffix",
     "quantity": "Quantity",
     "reject": "Reject",
     "rejectOrder": "Reject order",
@@ -1216,6 +1227,7 @@
       "simple": "Advertisement",
       "webshop": "Webshop"
     },
+    "webshopSettingsSaved": "The webshop settings were saved",
     "orderBy": {
       "date": "Dernières publications",
       "distance": "Distance",
@@ -1259,7 +1271,7 @@
       "edit": "Edit advertisement",
       "purchases": "Purchases",
       "sales": "Sales",
-      "order": "Webshop order details",
+      "order": "Order details",
       "shoppingCart": "Shopping cart",
       "history": "Order history",
       "deliveryAddress": "Delivery address",
@@ -1267,7 +1279,8 @@
       "deliveryMethodNew": "New delivery method",
       "deliveryMethods": "Delivery methods",
       "paymentType": "Payment type",
-      "confirmOrder": "Confirm order"
+      "confirmOrder": "Confirm order",
+      "webshopSettings": "Webshop settings"
     },
     "mobileTitle": {
       "search": "Advertisements",
@@ -1278,7 +1291,7 @@
       "edit": "Edit advertisement",
       "purchases": "Purchases",
       "sales": "Sales",
-      "order": "Webshop order details",
+      "order": "Order details",
       "shoppingCart": "Shopping cart",
       "history": "Order history",
       "deliveryAddress": "Delivery address",
@@ -1286,7 +1299,8 @@
       "deliveryMethodNew": "New delivery method",
       "deliveryMethods": "Delivery methods",
       "paymentType": "Payment type",
-      "confirmOrder": "Confirm order"
+      "confirmOrder": "Confirm order",
+      "webshopSettings": "Webshop settings"
     }
   },
   "notification": {
