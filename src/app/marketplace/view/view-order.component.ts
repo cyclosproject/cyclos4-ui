@@ -11,7 +11,7 @@ import { Menu } from 'app/shared/menu';
 import { MarketplaceHelperService } from 'app/core/marketplace-helper.service';
 import { empty } from 'app/shared/helper';
 import { AddressHelperService } from 'app/core/address-helper.service';
-import { SetDeliveryMethodComponent } from 'app/marketplace/set-delivery-method.component';
+import { SetDeliveryMethodComponent } from 'app/marketplace/delivery-methods/set-delivery-method.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { FormGroup } from '@angular/forms';
 

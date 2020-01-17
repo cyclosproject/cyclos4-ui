@@ -15,6 +15,7 @@ import { ViewDeliveryMethodComponent } from 'app/marketplace/delivery-methods/vi
 import { EditDeliveryMethodComponent } from 'app/marketplace/delivery-methods/edit-delivery-method.component';
 import { ViewWebshopSettingsComponent } from 'app/marketplace/settings/view-webshop-settings.component';
 import { EditWebshopSettingsComponent } from 'app/marketplace/settings/edit-webshop-settings.component';
+import { SearchUnansweredQuestionsComponent } from 'app/marketplace/search/search-unanswered-questions.component';
 
 const marketplaceRoutes: Routes = [
   {
@@ -91,6 +92,10 @@ const marketplaceRoutes: Routes = [
       {
         path: ':user/webshop-settings/edit',
         component: EditWebshopSettingsComponent
+      },
+      {
+        path: 'unanswered-questions',
+        component: SearchUnansweredQuestionsComponent
       },
     ]
   }

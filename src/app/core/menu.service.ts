@@ -659,7 +659,7 @@ export class MenuService {
 
       const simple = marketplace.mySimple || {};
       if (simple.enable) {
-        add(Menu.SEARCH_USER_ADS, 'marketplace/self/simple/list', 'shopping_cart', this.i18n.menu.marketplaceMyAdvertisements);
+        add(Menu.SEARCH_USER_ADS, 'marketplace/self/simple/list', 'shop', this.i18n.menu.marketplaceMyAdvertisements);
       }
       if (marketplace.purchase) {
         add(Menu.PURCHASES, 'marketplace/self/purchases', 'shop_two', this.i18n.menu.marketplaceMyPurchases);
@@ -670,6 +670,11 @@ export class MenuService {
         add(Menu.SALES, 'marketplace/self/sales', 'local_offer', this.i18n.menu.marketplaceMySales);
         add(Menu.DELIVERY_METHODS, 'marketplace/self/delivery-methods', 'local_shipping', this.i18n.menu.marketplaceDeliveryMethods);
         add(Menu.WEBSHOP_SETTINGS, 'marketplace/self/webshop-settings/view', 'store', this.i18n.menu.marketplaceWebshopSettings);
+      }
+
+      if (marketplace.questions || webshop.enable) {
+        add(Menu.UNANSWERED_QUESTIONS, 'marketplace/unanswered-questions',
+          'question_answer', this.i18n.menu.marketplaceUnansweredQuestions);
       }
 
       if (vouchers.buy && role !== RoleEnum.ADMINISTRATOR) {

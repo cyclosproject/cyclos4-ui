@@ -34109,7 +34109,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
       summary: >-
         Searches for unanswered questions for a specific user
       description: >-
-        Searches for unanswered questions for a specific user, if a type is not given then `simple` will be
+        Searches for unanswered questions for a specific user (currently `self` only is supported), if a type is not given then `simple` will be
         used.
         Only if the user has the ad questions enabled or can manage webshops and the authenticated user can manage
         ads / webshops of the given user.
@@ -34156,7 +34156,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/AdQuestion'
+                  $ref: '#/components/schemas/AdQuestionResult'
         '401':
           description: >-
             Unauthorized access. Missing or invalid crendentials supplied for such
@@ -42043,6 +42043,11 @@ components:
                 The answer date and time (if any).
               type: string
               format: date-time
+            user:
+              description: >-
+                The user which asked the question
+              allOf:
+                - $ref: '#/components/schemas/User'
 
     AdQuestionQueryFilters:
       description: >-
@@ -42056,18 +42061,26 @@ components:
 
 
 
-    AdQuestionView:
+    AdQuestionResult:
       description: >-
-        A question asked for an advertisement.
+        Data returned from question search
       allOf:
         - $ref: '#/components/schemas/AdQuestion'
         - type: object
           properties:
-            user:
+            advertisement:
               description: >-
-                The user which asked the question
+                The advertisement of the question.
               allOf:
-                - $ref: '#/components/schemas/User'
+                - $ref: '#/components/schemas/Ad'
+
+    AdQuestionView:
+      description: >-
+        A question asked for an advertisement.
+      allOf:
+        - $ref: '#/components/schemas/AdQuestionResult'
+        - type: object
+
 
     AdResult:
       description: >-
@@ -42242,7 +42255,7 @@ components:
                 The list of questions this advertisement has.
               type: array
               items:
-                $ref: '#/components/schemas/AdQuestionView'
+                $ref: '#/components/schemas/AdQuestion'
             allowDecimal:
               description: >-
                 if true then this webshop ad can be ordered specifying the quantity
@@ -50165,9 +50178,11 @@ components:
               type: boolean
             showForm:
               description: >-
-                Indicates whether a form with the parameters must be shown.
-                Only returned if `scope` is `internal` and
-                the `resultType` is not `resultPage`
+                Indicates the conditions in which the form with the parameters must
+                be shown.
+                Only returned if the `resultType` is not
+                `resultPage`, for this `resultType`
+                see `OperationDataForRun.searchAutomatically`.
                 Only returned in contexts where the operation can be executed.
               allOf:
                 - $ref: '#/components/schemas/OperationShowFormEnum'

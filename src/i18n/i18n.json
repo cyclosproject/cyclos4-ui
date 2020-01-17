@@ -271,6 +271,7 @@
     "marketplace.myPurchases": "My purchases",
     "marketplace.mySales": "My sales",
     "marketplace.myWebshop": "My webshop",
+    "marketplace.unansweredQuestions": "Unanswered questions",
     "marketplace.connectedUsers": "Connected users",
     "marketplace.userAlerts": "User alerts",
     "personal": "Personal",
@@ -1191,6 +1192,7 @@
     "length": "Length",
     "suffix": "Suffix",
     "quantity": "Quantity",
+    "question": "Question",
     "reject": "Reject",
     "rejectOrder": "Reject order",
     "rejected": "The advertisement has been rejected",
@@ -1278,7 +1280,8 @@
       "deliveryMethods": "Delivery methods",
       "paymentType": "Payment type",
       "confirmOrder": "Confirm order",
-      "webshopSettings": "Webshop settings"
+      "webshopSettings": "Webshop settings",
+      "unansweredQuestions": "Unanswered questions"
     },
     "mobileTitle": {
       "search": "Advertisements",
@@ -1298,7 +1301,8 @@
       "deliveryMethods": "Delivery methods",
       "paymentType": "Payment type",
       "confirmOrder": "Confirm order",
-      "webshopSettings": "Webshop settings"
+      "webshopSettings": "Webshop settings",
+      "unansweredQuestions": "Unanswered questions"
     }
   },
   "notification": {
