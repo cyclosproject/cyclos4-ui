@@ -23,14 +23,23 @@
   }) }}
 </div>
 <div [ngClass]="classNames" *ngIf="address.city">
-  {{ address.city }}
+  {{ i18n.general.labelValue({
+    label: i18n.address.city,
+    value: address.city
+    }) }}
 </div>
 <div [ngClass]="classNames" *ngIf="address.region">
-  {{ address.region }}
+  {{ i18n.general.labelValue({
+    label: i18n.address.region,
+    value: address.region
+    }) }}
 </div>
 <div [ngClass]="classNames"
   *ngIf="address.country && countriesResolve.data | async">
-  {{ country }}
+  {{ i18n.general.labelValue({
+    label: i18n.address.country,
+    value: country
+    }) }}
 </div>
 <ng-container *ngIf="contactInfo">
   <div [ngClass]="classNames" *ngIf="contactInfo.email">
@@ -50,6 +59,8 @@
   </div>
   <div *ngFor="let fieldValue of contactInfo.customValues"
     [ngClass]="classNames">
-    <format-field-value [fieldValue]="fieldValue"></format-field-value>
+    <format-field-value asLabelValue class="flex-grow-1"
+      [fieldValue]="fieldValue">
+    </format-field-value>
   </div>
 </ng-container>

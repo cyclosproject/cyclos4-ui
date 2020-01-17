@@ -360,7 +360,7 @@ export class EditProfileComponent
     this.removedContactInfos = [];
     this.removedImages = [];
 
-    if (data.contactInfoConfiguration.availability !== AvailabilityEnum.DISABLED) {
+    if (data.contactInfoConfiguration && data.contactInfoConfiguration.availability !== AvailabilityEnum.DISABLED) {
       // Additional contacts are enabled. Copy the fields to the address configuration
       data.addressConfiguration.contactInfoEnabled = true;
       data.addressConfiguration.contactInfoFields = data.contactInfoConfiguration.customFields;

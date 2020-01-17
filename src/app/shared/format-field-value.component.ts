@@ -16,6 +16,9 @@ const DIRECT_TYPES = [
   CustomFieldTypeEnum.STRING,
   CustomFieldTypeEnum.DYNAMIC_SELECTION,
   CustomFieldTypeEnum.BOOLEAN,
+  CustomFieldTypeEnum.INTEGER,
+  CustomFieldTypeEnum.DECIMAL,
+  CustomFieldTypeEnum.DATE,
   CustomFieldTypeEnum.LINKED_ENTITY
 ];
 
@@ -78,6 +81,15 @@ export class FormatFieldValueComponent extends AbstractComponent implements OnIn
    */
   @Input() files: StoredFile[];
 
+  private _asLabelValue: boolean | string = false;
+
+  @Input() get asLabelValue(): boolean | string {
+    return this._asLabelValue;
+  }
+  set asLabelValue(value: boolean | string) {
+    this._asLabelValue = truthyAttr(value);
+  }
+
   /**
    * Indicates that multi-line / rich text should be rendered as plain text with no line breaks
    */
@@ -122,6 +134,12 @@ export class FormatFieldValueComponent extends AbstractComponent implements OnIn
     }
     this.value = value;
     this.hasValue = value != null && (value.length === undefined || value.length > 0);
+    if (this.asLabelValue && typeof value === 'string' && this.field.type !== CustomFieldTypeEnum.URL) {
+      this.value = this.i18n.general.labelValue({
+        label: this.field.name,
+        value: value
+      });
+    }
   }
 
   private getValue(): any {
@@ -134,9 +152,9 @@ export class FormatFieldValueComponent extends AbstractComponent implements OnIn
         }
         break;
       case CustomFieldTypeEnum.DATE:
-        return this.fieldValue.dateValue;
+        return this.format.formatAsDate(this.fieldValue.dateValue);
       case CustomFieldTypeEnum.DECIMAL:
-        return this.fieldValue.decimalValue;
+        return this.format.formatAsNumber(this.fieldValue.decimalValue, this.field.decimalDigits);
       case CustomFieldTypeEnum.DYNAMIC_SELECTION:
         const dyn = this.fieldValue.dynamicValue;
         if (dyn) {
@@ -148,7 +166,7 @@ export class FormatFieldValueComponent extends AbstractComponent implements OnIn
       case CustomFieldTypeEnum.IMAGE:
         return this.fieldValue.imageValues;
       case CustomFieldTypeEnum.INTEGER:
-        return this.fieldValue.integerValue;
+        return this.format.formatAsNumber(this.fieldValue.integerValue, 0);
       case CustomFieldTypeEnum.LINKED_ENTITY:
         let entity = null;
         switch (this.field.linkedEntityType) {

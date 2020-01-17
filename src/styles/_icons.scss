@@ -30,9 +30,6 @@
   font-size: $top-icon-size-xxs !important;
   line-height: $top-icon-size-xxs !important;
 }
-.top-icon-faded {
-  opacity: 0.7 !important;
-}
 
 @include media-breakpoint-up(sm) {
   .top-icon {
