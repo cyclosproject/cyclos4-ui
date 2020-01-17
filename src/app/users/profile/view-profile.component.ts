@@ -10,9 +10,10 @@ import { UserHelperService } from 'app/core/user-helper.service';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
-import { empty, words } from 'app/shared/helper';
+import { empty, words, galleryImages, ProfileGalleryOptions } from 'app/shared/helper';
 import { Menu } from 'app/shared/menu';
 import { BehaviorSubject } from 'rxjs';
+import { NgxGalleryImage } from 'ngx-gallery';
 
 export const MAX_SIZE_SHORT_NAME = 25;
 
@@ -48,6 +49,8 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
   showActions$ = new BehaviorSubject(false);
   bankingActions: HeadingAction[] = [];
   managementActions: HeadingAction[] = [];
+  galleryImages: NgxGalleryImage[];
+  galleryOptions = ProfileGalleryOptions;
 
   get user(): UserView {
     return this.data;
@@ -77,6 +80,8 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     this.shortName = words(user.name || user.display, MAX_SIZE_SHORT_NAME);
     const enabledFields = user.enabledProfileFields;
     this.imageEnabled = enabledFields == null || enabledFields.includes(BasicProfileFieldEnum.IMAGE);
+
+    this.galleryImages = galleryImages(user.image, user.additionalImages);
 
     // We'll show the phones either as single or multiple
     this.mobilePhones = user.phones.filter(p => p.type === PhoneKind.MOBILE);

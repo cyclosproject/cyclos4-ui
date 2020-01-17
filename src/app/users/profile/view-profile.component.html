@@ -28,15 +28,20 @@
 
     <div *ngIf="imageEnabled && user.image && (layout.ltsm$ | async)"
       class="image d-flex justify-content-center mt-2 mb-4">
-      <avatar size="160" imageSize="200" useLightbox [image]="user.image"
-        [additionalImages]="user.additionalImages"></avatar>
+      <ngx-gallery *ngIf="user.image" [options]="galleryOptions"
+        [images]="galleryImages">
+      </ngx-gallery>
     </div>
 
     <div class="d-flex flex-row-reverse">
       <div *ngIf="imageEnabled && (layout.gtxs$ | async)" class="image ml-4">
-        <avatar [size]="user.image ? 200 : 128" iconSize="128px" useLightbox
-          [image]="user.image" [additionalImages]="user.additionalImages">
-        </avatar>
+        <avatar size="128" iconSize="128px" *ngIf="!user.image"></avatar>
+        <ngx-gallery *ngIf="user.image" [options]="galleryOptions"
+          [images]="galleryImages">
+        </ngx-gallery>
+      </div>
+
+      <div>
       </div>
       <div class="d-flex flex-grow-1 flex-column">
         <label-value *ngIf="showOperatorOwner"
@@ -103,7 +108,7 @@
       <ng-container *ngIf="user.contactInfos?.length > 0">
         <h2 class="mt-3">{{ i18n.user.contactInfo }}</h2>
         <div class="row no-gutters">
-          <div class="text-center col-12 col-sm-6 col-md-4 col-lg-3"
+          <div class="text-center col-12 col-sm-6 col-md-4 col-lg-3 pb-3"
             *ngFor="let contactInfo of user.contactInfos; let first=first">
             <avatar size="140" useLightbox [image]="contactInfo.image"
               class="mb-2">

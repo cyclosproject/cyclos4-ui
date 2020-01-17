@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { NgxGalleryModule } from 'ngx-gallery';
 import { AccountPipe } from 'app/shared/account.pipe';
 import { ActionsComponent } from 'app/shared/actions.component';
 import { AddressDetailsComponent } from 'app/shared/address-details.component';
@@ -207,6 +208,7 @@ export function initTooltipConfig(): TooltipConfig {
     ProgressbarModule.forRoot(),
     SortableModule.forRoot(),
     TooltipModule.forRoot(),
+    NgxGalleryModule,
 
     LayoutModule,
 
@@ -225,6 +227,7 @@ export function initTooltipConfig(): TooltipConfig {
     ProgressbarModule,
     SortableModule,
     TooltipModule,
+    NgxGalleryModule,
 
     LayoutModule,
 

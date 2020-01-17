@@ -2,8 +2,6 @@
 
 .map-container {
   margin-top: 1rem;
-  margin-left: -$layout-spacer;
-  margin-right: -$layout-spacer;
   border-top: 1px solid $border-color;
   border-bottom: 1px solid $border-color;
   height: 260px;
@@ -11,6 +9,13 @@
 agm-map {
   /* Without this 2px difference, the bottom border isn't shown */
   height: 258px;
+}
+
+@include media-breakpoint-up(md) {
+  .map-container {
+    margin-left: -$layout-spacer;
+    margin-right: -$layout-spacer;
+  }
 }
 
 body.dark :host ::ng-deep {

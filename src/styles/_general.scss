@@ -79,8 +79,12 @@ hr {
   transition: opacity 0.3s;
 }
 
+.ngx-gallery-image {
+  border: 1px solid $border-color;
+}
+
 body.dark {
-  hr {
+  hr, .ngx-gallery-image {
     border-color: $border-color-dark;
   }
 }

@@ -46,6 +46,13 @@ body.dark {
   }
   .totalAmount {
     color: $total-amount-color-dark !important;
+
+    .label-value-value {
+      color: $total-amount-color-dark !important;
+    }
+    .label-value-label {
+      color: $label-color-dark;
+    }    
   }
   .promo-price {
     color: $text-muted-dark;

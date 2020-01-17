@@ -11,6 +11,9 @@
         width: fullSize ? '' : size + 'px',
         height: fullSize ? '' : size + 'px'
       }">
+      <ngx-gallery *ngIf="galleryImages" [options]="galleryOptions"
+        [images]="galleryImages">
+      </ngx-gallery>
     </div>
     <div *ngIf="!additionalImagesHidden && additionalImagesToShow?.length > 0"
       class="additional-images">

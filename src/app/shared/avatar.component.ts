@@ -1,13 +1,10 @@
 import {
-  AfterContentChecked, ChangeDetectionStrategy, ChangeDetectorRef,
-  Component, ElementRef, EventEmitter, Input, OnInit, Output
+  AfterContentChecked, ChangeDetectionStrategy, ChangeDetectorRef, Component,
+  ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild
 } from '@angular/core';
 import { Image } from 'app/api/models';
-import { truthyAttr, empty } from 'app/shared/helper';
-import { Lightbox } from 'ngx-lightbox';
-
-const MAX_THUMB_WIDTH = 160;
-const MAX_THUMB_HEIGHT = 100;
+import { AvatarGalleryOptions, galleryImage, truthyAttr } from 'app/shared/helper';
+import { NgxGalleryComponent, NgxGalleryImage } from 'ngx-gallery';
 
 /** Maximum number of additional images to show */
 const MAX_ADDITIONAL = 3;
@@ -27,18 +24,6 @@ export const SIZES: { [key: string]: number } = {
   'huge': 128
 };
 
-export class LightboxImage {
-  src: string;
-  thumb: string;
-  caption: string;
-
-  constructor(image: Image) {
-    this.src = image.url;
-    this.thumb = `${image.url}?width=${MAX_THUMB_WIDTH}&height=${MAX_THUMB_HEIGHT}`;
-    this.caption = image.name;
-  }
-}
-
 /**
  * Renders an avatar (image within a circle).
  * If there is no image, an icon is shown instead
@@ -50,7 +35,7 @@ export class LightboxImage {
   styleUrls: ['avatar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AvatarComponent implements OnInit, AfterContentChecked {
+export class AvatarComponent implements OnInit, OnChanges, AfterContentChecked {
 
   /**
    * The icon show when no image is available
@@ -77,10 +62,7 @@ export class AvatarComponent implements OnInit, AfterContentChecked {
   }
   set useLightbox(use: boolean | string) {
     this._useLightbox = truthyAttr(use);
-    this.initLightboxImages();
   }
-
-  private lightboxImages: LightboxImage[];
 
   fullSize = false;
   private _size: number = SIZES['medium'];
@@ -110,37 +92,27 @@ export class AvatarComponent implements OnInit, AfterContentChecked {
       this._size = Number(size);
       this.iconSize = `${this._size}px`;
     }
-    this.init();
   }
 
   @Input() iconSize: string;
 
-  private _image: Image;
   /**
    * The image to show
    */
-  @Input() get image(): Image {
-    return this._image;
-  }
-  set image(image: Image) {
-    this._image = image;
-    this.init();
-    this.initLightboxImages();
-  }
+  @Input() image: Image;
+
+  /**
+   * Other images in the collection
+   */
+  @Input() additionalImages: Image[];
+
+  allImages: Image[];
+
+  galleryImages: NgxGalleryImage[];
 
   @Input() imageSize: number = null;
 
   additionalImagesToShow: Image[];
-
-  private _additionalImages: Image[];
-  @Input() get additionalImages(): Image[] {
-    return this._additionalImages;
-  }
-  set additionalImages(images: Image[]) {
-    this._additionalImages = images;
-    this.additionalImagesToShow = (images || []).slice(0, Math.min(images.length, MAX_ADDITIONAL)).reverse();
-    this.initLightboxImages();
-  }
 
   private _additionalImagesHidden = false;
   @Input() get additionalImagesHidden(): boolean | string {
@@ -150,53 +122,45 @@ export class AvatarComponent implements OnInit, AfterContentChecked {
     this._additionalImagesHidden = truthyAttr(hidden);
   }
 
-  get allImages(): Image[] {
-    const images: Image[] = [];
-    if (this.image) {
-      images.push(this.image);
-    }
-    if (!empty(this.additionalImages)) {
-      Array.prototype.push.apply(images, this.additionalImages);
-    }
-    return images;
-  }
-
   url: string;
   visible = false;
+  @ViewChild(NgxGalleryComponent, { static: false }) gallery: NgxGalleryComponent;
+  galleryOptions = AvatarGalleryOptions;
+
 
   constructor(
     private element: ElementRef,
-    private changeDetector: ChangeDetectorRef,
-    private lightbox: Lightbox) {
+    private changeDetector: ChangeDetectorRef) {
   }
 
   ngOnInit() {
-    this.init();
+    this.update();
   }
 
-  private init() {
-    if (this.image != null) {
-      this.initImage();
-    } else {
-      this.initIcon();
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.image || changes.additionalImages || changes.useLightbox || changes.size) {
+      this.update();
     }
   }
 
-  private initLightboxImages() {
-    if (this.useLightbox) {
-      this.lightboxImages = [];
-      if (this._image) {
-        this.lightboxImages.push(new LightboxImage(this._image));
+  private update() {
+    if (this.image) {
+      this.initImage();
+      const additional = (this.additionalImages || []);
+      this.additionalImagesToShow = additional.slice(0, Math.min(additional.length, MAX_ADDITIONAL)).reverse();
+      this.allImages = [...additional];
+      if (this.allImages.findIndex(i => i.url === this.image.url) < 0) {
+        this.allImages.unshift(this.image);
       }
-      if (this._additionalImages) {
-        this._additionalImages.map(img => new LightboxImage(img)).forEach(img => {
-          if (this.lightboxImages.findIndex(li => li.src === img.src) < 0) {
-            this.lightboxImages.push(img);
-          }
-        });
+      if (this.useLightbox) {
+        this.galleryImages = this.allImages.map(galleryImage);
+      } else {
+        this.galleryImages = null;
       }
     } else {
-      this.lightboxImages = null;
+      this.allImages = [];
+      this.galleryImages = null;
+      this.initIcon();
     }
   }
 
@@ -249,8 +213,9 @@ export class AvatarComponent implements OnInit, AfterContentChecked {
 
   showLightbox(index?: number) {
     if (this.image && this.useLightbox) {
-      const toShow = index === undefined ? this.lightboxImages.findIndex(li => li.src === this.image.url) : index;
-      this.lightbox.open(this.lightboxImages, toShow);
+      const images = this.galleryImages || [];
+      const toShow = index == null ? images.findIndex(li => li.big === this.image.url) : index;
+      this.gallery.openPreview(toShow);
     }
   }
 
