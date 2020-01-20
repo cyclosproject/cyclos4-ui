@@ -384,7 +384,7 @@
           [id]="'contact-info_landLinePhone' + contactInfo['idSuffix']"
           formControlName="landLinePhone" [label]="i18n.phone.landLine">
         </input-field>
-        <input-field
+        <input-field *ngIf="data.phoneConfiguration.extensionEnabled"
           [id]="'contact-info_landLineExtension' + contactInfo['idSuffix']"
           formControlName="landLineExtension" [label]="i18n.phone.extension">
         </input-field>
