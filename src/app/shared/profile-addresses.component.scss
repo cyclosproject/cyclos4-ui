@@ -1,7 +1,7 @@
 @import 'src/definitions';
 
 .map-container {
-  margin-top: 1rem;
+  margin-top: 1.5rem;
   border-top: 1px solid $border-color;
   border-bottom: 1px solid $border-color;
   height: 260px;
@@ -19,7 +19,7 @@ agm-map {
 }
 
 body.dark :host ::ng-deep {
-  agm-map {
+  .map-container {
     border-color: $border-color-dark;
   }
 }
