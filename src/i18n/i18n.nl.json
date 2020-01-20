@@ -74,7 +74,6 @@
       "email": "E-mail",
       "sms": "SMS"
     },
-    "labelValue": "{label}: {value}",
     "reloadPage": "Pagina herladen",
     "sessionExpired": {
       "title": "Sessie verlopen",
@@ -850,7 +849,7 @@
     "contactInfo.add": "Contact toevoegen",
     "contactInfo.remove": "Contact verwijderen",
     "contactInfo.none": "Er zijn momenteel geen extra contacten",
-    "contactInfo.atAddress": "At: {name}",
+    "contactInfo.atAddress": "At",
     "confirmation.message": "Opslaan in uw profiel, uw {type}",
     "profileSaved": "Het profiel is opgeslagen",
     "imagesChanged": "Eigenlijk sla de wijzigingen op de beelden, het profiel moet worden opgeslagen",
