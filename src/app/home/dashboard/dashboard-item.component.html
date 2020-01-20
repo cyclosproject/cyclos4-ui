@@ -8,7 +8,8 @@
     [maxTransfers]="data.maxTransfers"></account-status>
 
   <latest-ads *ngSwitchCase="DashboardItemType.LATEST_ADS" [last]="last"
-    [minHeight]="minHeight$ | async" [groups]="data.groups" [max]="data.max">
+    [minHeight]="minHeight$ | async" [groups]="data.groups" [max]="data.max"
+    [showOwner]="data.showOwner">
   </latest-ads>
 
   <latest-users *ngSwitchCase="DashboardItemType.LATEST_USERS" [last]="last"
