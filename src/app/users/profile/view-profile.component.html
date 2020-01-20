@@ -130,7 +130,10 @@
               <format-field-value [fieldValue]="value"></format-field-value>
             </div>
             <div *ngIf="contactInfo.address" class="text-accent">
-              {{ i18n.user.contactInfoAtAddress(contactInfo.address.name) }}
+              <span class="inline-label">{{
+                i18n.user.contactInfoAtAddress
+                }}</span>
+              {{ contactInfo.address.name }}
             </div>
           </div>
         </div>

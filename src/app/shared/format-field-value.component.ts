@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injector, Input, OnInit, HostBinding } from '@angular/core';
 import {
   CustomField, CustomFieldDetailed, CustomFieldTypeEnum, CustomFieldValue,
   Image, LinkedEntityTypeEnum, StoredFile
@@ -81,13 +81,12 @@ export class FormatFieldValueComponent extends AbstractComponent implements OnIn
    */
   @Input() files: StoredFile[];
 
-  private _asLabelValue: boolean | string = false;
-
-  @Input() get asLabelValue(): boolean | string {
-    return this._asLabelValue;
+  private _inline: boolean | string = false;
+  @HostBinding('class.inline') @Input() get inline(): boolean | string {
+    return this._inline;
   }
-  set asLabelValue(value: boolean | string) {
-    this._asLabelValue = truthyAttr(value);
+  set inline(flag: boolean | string) {
+    this._inline = truthyAttr(flag);
   }
 
   /**
@@ -134,12 +133,6 @@ export class FormatFieldValueComponent extends AbstractComponent implements OnIn
     }
     this.value = value;
     this.hasValue = value != null && (value.length === undefined || value.length > 0);
-    if (this.asLabelValue && typeof value === 'string' && this.field.type !== CustomFieldTypeEnum.URL) {
-      this.value = this.i18n.general.labelValue({
-        label: this.field.name,
-        value: value
-      });
-    }
   }
 
   private getValue(): any {

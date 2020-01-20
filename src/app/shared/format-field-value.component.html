@@ -1,12 +1,10 @@
 <ng-container *ngIf="hasValue; else empty">
   <ng-container *ngIf="directValue">{{ value }}</ng-container>
-  <div *ngIf="type == 'text'" class="break-nl">{{ value }}</div>
+  <div *ngIf="type == 'text'" class="break-nl"
+    [ngClass]="{'d-inline': inline}">{{ value }}</div>
   <rich-text-container *ngIf="type == 'richText'" [value]="value">
   </rich-text-container>
   <ng-container *ngIf="type == 'url'">
-    <ng-container *ngIf="asLabelValue">
-      {{ field.name }}:
-    </ng-container>
     <a [href]="value">{{ value }}</a>
   </ng-container>
   <span
@@ -18,7 +16,6 @@
     </span>
   </ng-container>
   <ng-container *ngIf="type == 'file' && (value || []).length > 0">
-    <ng-container *ngIf="asLabelValue">{{ field.name }}: </ng-container>
     <ng-container *ngFor="let file of value; let last = last;">
       <a [href]="appendAuth(file.url)" [type]="file.contentType"
         target="_blank" (click)="downloadFile($event, file)"
@@ -28,8 +25,8 @@
     </ng-container>
   </ng-container>
   <ng-container *ngIf="type == 'image' && (value || []).length > 0">
-    <div class="d-flex flex-wrap">
-      <div *ngIf="asLabelValue">{{ field.name }}: </div>
+    <div class="flex-wrap"
+      [ngClass]="{'d-flex': !inline, 'd-inline-flex': inline}">
       <avatar class="d-block mr-1" *ngFor="let img of value" size="small"
         useLightbox [image]="img" additionalImagesHidden
         [additionalImages]="value"></avatar>
