@@ -5,13 +5,22 @@
   border-top: 1px solid $border-color;
   border-bottom: 1px solid $border-color;
   height: 260px;
+  margin-left: -$layout-spacer-xxs;
+  margin-right: -$layout-spacer-xxs;
 }
 agm-map {
   /* Without this 2px difference, the bottom border isn't shown */
   height: 258px;
 }
 
-@include media-breakpoint-up(md) {
+@include media-breakpoint-up(xs) {
+  .map-container {
+    margin-left: -$layout-spacer-xs;
+    margin-right: -$layout-spacer-xs;
+  }
+}
+
+@include media-breakpoint-up(sm) {
   .map-container {
     margin-left: -$layout-spacer;
     margin-right: -$layout-spacer;
