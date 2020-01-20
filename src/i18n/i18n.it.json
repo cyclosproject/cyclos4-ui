@@ -74,7 +74,6 @@
       "email": "E-mail",
       "sms": "SMS"
     },
-    "labelValue": "{label}: {value}",
     "reloadPage": "Aggiorna",
     "sessionExpired": {
       "title": "Sessione scaduta",
@@ -850,7 +849,7 @@
     "contactInfo.add": "Aggiungi contatto",
     "contactInfo.remove": "Rimuovi Contatto",
     "contactInfo.none": "Al momento non ci sono contatti aggiuntivi",
-    "contactInfo.atAddress": "At: {name}",
+    "contactInfo.atAddress": "At",
     "confirmation.message": "Per salvare il tuo profilo, fornisci il tuo {type}",
     "profileSaved": "Il profilo è stato salvato",
     "imagesChanged": "Per salvare le modifiche sulle immagini, il profilo deve essere salvato",
