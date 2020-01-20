@@ -74,7 +74,6 @@
       "email": "E-mail",
       "sms": "SMS"
     },
-    "labelValue": "{label}: {value}",
     "reloadPage": "Recharger la page",
     "sessionExpired": {
       "title": "Votre session a expiré",
@@ -850,7 +849,7 @@
     "contactInfo.add": "Ajouter le contact",
     "contactInfo.remove": "Supprimer le contact",
     "contactInfo.none": "Il n'y a actuellement aucun contact supplémentaire",
-    "contactInfo.atAddress": "At: {name}",
+    "contactInfo.atAddress": "At",
     "confirmation.message": "Pour enregistrer votre profil, indiquez votre {type}",
     "profileSaved": "Le profil a été enregistré",
     "imagesChanged": "Pour enregistrer les modifications sur les images, le profil doit être enregistré.",
