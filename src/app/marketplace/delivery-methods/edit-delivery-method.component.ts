@@ -36,7 +36,6 @@ export class EditDeliveryMethodComponent
     injector: Injector,
     private deliveryMethodService: DeliveryMethodsService) {
     super(injector);
-    this.form = this.formBuilder.group({});
   }
 
   ngOnInit() {
@@ -110,11 +109,11 @@ export class EditDeliveryMethodComponent
     const request: Observable<String | void> = this.create ?
       this.deliveryMethodService.createDeliveryMethod({ body: value, user: this.user }) :
       this.deliveryMethodService.updateDeliveryMethod({ id: this.id, body: value });
-    this.addSub(request.subscribe(id => {
+    this.addSub(request.subscribe(() => {
       this.notification.snackBar(this.create
         ? this.i18n.ad.deliveryMethodCreated
         : this.i18n.ad.deliveryMethodSaved);
-      this.router.navigate(['/marketplace', 'delivery-methods', 'view', id || this.id]);
+      history.back();
     }));
   }
 

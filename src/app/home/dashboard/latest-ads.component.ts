@@ -19,6 +19,7 @@ export class LatestAdsComponent extends BaseDashboardComponent implements OnInit
 
   @Input() groups: string[];
   @Input() max: number;
+  @Input() showOwner: boolean;
 
   ads$ = new BehaviorSubject<AdResult[]>(null);
 
@@ -48,7 +49,6 @@ export class LatestAdsComponent extends BaseDashboardComponent implements OnInit
       addressResult: AdAddressResultEnum.NONE,
       groups: this.groups,
       hasImages: true,
-      profileFields: ['image:true'],
       orderBy: AdOrderByEnum.DATE,
       fields: ['id', 'owner', 'image', 'name'],
       pageSize: this.max * 3,

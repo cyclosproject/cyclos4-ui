@@ -109,10 +109,8 @@
           (deliveryMethod.chargeAmount | currency: deliveryMethod.chargeCurrency) : i18n.ad.toBeConfirmedBySeller }}
       </label-value>
       <hr>
-      <label-value [ngStyle]="{'font-size': '1.125rem'}"
-        [label]="i18n.transaction.totalAmount">
-        <div class="totalAmount">
-          {{ totalPrice | currency: data.cart.currency }}</div>
+      <label-value class="totalAmount" [label]="i18n.transaction.totalAmount">
+        {{ totalPrice | currency: data.cart.currency }}
       </label-value>
       <label class="any-label-value notice text-muted">
         {{ negotiated ? i18n.ad.deliveryPriceToBeConfirmed : i18n.ad.reserveAmount }}

@@ -3,13 +3,17 @@ import { LatLngBounds } from '@agm/core';
 import { HttpResponse } from '@angular/common/http';
 import { ElementRef } from '@angular/core';
 import { AbstractControl, FormArray, FormControl, FormGroup } from '@angular/forms';
-import { Address, GeographicalCoordinate } from 'app/api/models';
+import { Address, GeographicalCoordinate, Image } from 'app/api/models';
 import { FormControlLocator } from 'app/shared/form-control-locator';
 import { LayoutService } from 'app/shared/layout.service';
 import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp, End, Home, PageDown, PageUp } from 'app/shared/shortcut.service';
 import download from 'downloadjs';
+import { NgxGalleryImage, NgxGalleryOptions, NgxGalleryImageSize, NgxGalleryAnimation } from 'ngx-gallery';
 import { combineLatest, Observable, of, Subject } from 'rxjs';
 import { first, tap } from 'rxjs/operators';
+
+const SmallThumbSize = [160, 100];
+const MediumThumbSize = [320, 200];
 
 /**
  * Sets whether the root spinner in the page is visible
@@ -829,3 +833,46 @@ export function enumValues<T>(type: any): T[] {
   const keys = Object.keys(type);
   return keys.map(k => type[k]) as T[];
 }
+
+/**
+ * Returns a ngx-gallery image representing the given image
+ */
+export function galleryImage(image: Image): NgxGalleryImage {
+  return new NgxGalleryImage({
+    big: image.url,
+    medium: `${image.url}?width=${MediumThumbSize[0]}&height=${MediumThumbSize[1]}`,
+    small: `${image.url}?width=${SmallThumbSize[0]}&height=${SmallThumbSize[1]}`
+  });
+}
+
+/**
+ * Returns an array of ngx-gallery image for a main and additional images
+ */
+export function galleryImages(image: Image, additionalImages?: Image[]): NgxGalleryImage[] {
+  const images: Image[] = [...(additionalImages || [])];
+  if (image && images.findIndex(i => i.url === image.url) < 0) {
+    images.unshift(image);
+  }
+  return images.map(galleryImage);
+}
+
+export const ProfileGalleryOptions: NgxGalleryOptions[] = [{
+  width: '16rem',
+  height: '16rem',
+  imageSize: NgxGalleryImageSize.Contain,
+  imageAnimation: NgxGalleryAnimation.Slide,
+  thumbnailsMoveSize: 4,
+  previewKeyboardNavigation: true,
+  previewCloseOnClick: true,
+  previewCloseOnEsc: true,
+  thumbnailsAutoHide: true
+}];
+
+export const AvatarGalleryOptions: NgxGalleryOptions[] = [{
+  width: '0',
+  height: '0',
+  thumbnails: false,
+  previewKeyboardNavigation: true,
+  imageSize: NgxGalleryImageSize.Contain,
+  image: false
+}];

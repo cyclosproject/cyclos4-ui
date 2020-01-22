@@ -40,7 +40,8 @@
     </tbody>
   </table>
 
-  <tiled-result *resultTile="let row" [image]="user(row).image" icon="user">
+  <tiled-result *resultTile="let row" [image]="user(row).image" icon="user"
+    zoom>
     <div *ngFor="let field of fieldsInTile; let first = first"
       [ngClass]="first ? 'card-title' : 'card-text'">
       <format-field-value class="d-block text-truncate"

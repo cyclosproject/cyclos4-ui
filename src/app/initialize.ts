@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { APP_INITIALIZER, Provider } from '@angular/core';
 import { ApiConfiguration } from 'app/api/api-configuration';
 import { Configuration } from 'app/configuration';
@@ -9,8 +10,6 @@ import { NextRequestState } from 'app/core/next-request-state';
 import { setup } from 'app/setup';
 import { empty } from 'app/shared/helper';
 import { ALL_BREAKPOINTS } from 'app/shared/layout.service';
-import { LightboxConfig } from 'ngx-lightbox';
-import { Location } from '@angular/common';
 
 /**
  * Sets the default values on the global configuration
@@ -52,7 +51,6 @@ function setupConfigurationDefaults() {
 export function initialize(
   location: Location,
   apiConfig: ApiConfiguration,
-  lightboxConfig: LightboxConfig,
   i18nLoading: I18nLoadingService,
   dataForUiHolder: DataForUiHolder,
   nextRequestState: NextRequestState
@@ -97,13 +95,6 @@ export function initialize(
     // Initialize the API configuration
     apiConfig.rootUrl = Configuration.apiRoot;
 
-    // Initialize the Lightbox configuration
-    lightboxConfig.centerVertically = true;
-    lightboxConfig.fadeDuration = 0.4;
-    lightboxConfig.resizeDuration = 0.4;
-    lightboxConfig.disableScrolling = true;
-    lightboxConfig.wrapAround = true;
-
     // Initialize the translations loading
     i18nLoading.initialize();
 
@@ -116,7 +107,6 @@ export const INITIALIZE: Provider = {
   deps: [
     Location,
     ApiConfiguration,
-    LightboxConfig,
     I18nLoadingService,
     DataForUiHolder,
     NextRequestState

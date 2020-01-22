@@ -37,7 +37,6 @@ import { LayoutService } from 'app/shared/layout.service';
 import { SharedModule } from 'app/shared/shared.module';
 import { ShortcutService } from 'app/shared/shortcut.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
-import { LightboxModule } from 'ngx-lightbox';
 import { NextRequestState } from './next-request-state';
 
 export const API_INTERCEPTOR_PROVIDER: Provider = {
@@ -61,10 +60,8 @@ export const API_INTERCEPTOR_PROVIDER: Provider = {
   ],
   imports: [
     SharedModule,
-    LightboxModule
   ],
   exports: [
-    LightboxModule,
     TopBarComponent,
     MenuBarComponent,
     MenusComponent,

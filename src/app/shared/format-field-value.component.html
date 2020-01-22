@@ -1,11 +1,12 @@
 <ng-container *ngIf="hasValue; else empty">
   <ng-container *ngIf="directValue">{{ value }}</ng-container>
-  <div *ngIf="type == 'text'" class="break-nl">{{ value }}</div>
+  <div *ngIf="type == 'text'" class="break-nl"
+    [ngClass]="{'d-inline': inline}">{{ value }}</div>
   <rich-text-container *ngIf="type == 'richText'" [value]="value">
   </rich-text-container>
-  <a *ngIf="type == 'url'" [href]="value">{{ value }}</a>
-  <span *ngIf="type == 'date'">{{ value | date }}</span>
-  <span *ngIf="type == 'integer'">{{ value | number }}</span>
+  <ng-container *ngIf="type == 'url'">
+    <a [href]="value">{{ value }}</a>
+  </ng-container>
   <span
     *ngIf="type == 'decimal'">{{ value | number:field.decimalDigits }}</span>
   <ng-container *ngIf="type == 'singleSelection' || type == 'multiSelection'">
@@ -24,7 +25,8 @@
     </ng-container>
   </ng-container>
   <ng-container *ngIf="type == 'image' && (value || []).length > 0">
-    <div class="d-flex flex-wrap">
+    <div class="flex-wrap"
+      [ngClass]="{'d-flex': !inline, 'd-inline-flex': inline}">
       <avatar class="d-block mr-1" *ngFor="let img of value" size="small"
         useLightbox [image]="img" additionalImagesHidden
         [additionalImages]="value"></avatar>

@@ -47,7 +47,7 @@
         [tooltip]="hasMenu ? i18n.menu.personal : null">
         <avatar *ngIf="user.image" size="small-medium" [image]="user.image">
         </avatar>
-        <icon *ngIf="!user.image" class="top-icon top-icon-faded" icon="user">
+        <icon *ngIf="!user.image" class="top-icon" icon="user">
         </icon>
         <div *ngIf="(layout.gtsm$ | async)" class="personal-label">
           {{ userName }}

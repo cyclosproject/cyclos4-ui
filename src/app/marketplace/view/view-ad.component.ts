@@ -6,7 +6,7 @@ import { MarketplaceService, AdQuestionsService, ShoppingCartsService } from 'ap
 import { OperationHelperService } from 'app/core/operation-helper.service';
 import { HeadingAction } from 'app/shared/action';
 import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
-import { words } from 'app/shared/helper';
+import { words, ProfileGalleryOptions, galleryImages } from 'app/shared/helper';
 import { Menu } from 'app/shared/menu';
 import { Observable } from 'rxjs';
 import { MarketplaceHelperService } from 'app/core/marketplace-helper.service';
@@ -14,6 +14,7 @@ import { LoginService } from 'app/core/login.service';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { empty } from 'app/shared/helper';
 import { TextDialogComponent } from 'app/shared/text-dialog.component';
+import { NgxGalleryImage } from 'ngx-gallery';
 /**
  * Displays an advertisement details
  */
@@ -30,6 +31,9 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
   webshop: boolean;
   guest: boolean;
   hasStatus: boolean;
+
+  galleryImages: NgxGalleryImage[];
+  galleryOptions = ProfileGalleryOptions;
 
   constructor(
     injector: Injector,
@@ -109,6 +113,9 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
     this.hasStatus = !this.guest && (this.authHelper.isSelfOrOwner(ad.owner) ||
       (this.dataForUiHolder.role === RoleEnum.ADMINISTRATOR ||
         this.dataForUiHolder.role === RoleEnum.BROKER));
+
+    this.galleryImages = galleryImages(ad.image, ad.additionalImages);
+
     const headingActions: HeadingAction[] = [];
     if (ad.canBuy) {
       headingActions.push(
@@ -205,7 +212,7 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
    * Resolves the current ad status label
    */
   get status(): string {
-    return this.marketplaceHelper.resolveStatusLabel(this.ad.status);
+    return this.ad.status ? this.marketplaceHelper.resolveStatusLabel(this.ad.status) : null;
   }
 
   /**

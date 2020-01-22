@@ -48,8 +48,8 @@
               "src/locale"
             ],
             "styles": [
-              "node_modules/ngx-lightbox/lightbox.css",
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/font-awesome/css/font-awesome.css"
             ],
             "scripts": []
           },

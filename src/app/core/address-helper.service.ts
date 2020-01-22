@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AddressConfiguration, AddressFieldEnum, Address } from 'app/api/models';
+import { Address, AddressConfiguration, AddressConfigurationForUserProfile, AddressFieldEnum } from 'app/api/models';
+import { FieldHelperService } from 'app/core/field-helper.service';
 import { I18n } from 'app/i18n/i18n';
 import { empty } from 'app/shared/helper';
 import { cloneDeep } from 'lodash';
@@ -15,6 +16,7 @@ export class AddressHelperService {
 
   constructor(
     private formBuilder: FormBuilder,
+    private fieldsHelper: FieldHelperService,
     private i18n: I18n) {
   }
 
@@ -36,6 +38,19 @@ export class AddressHelperService {
     for (const field of config.enabledFields) {
       const val = config.requiredFields.includes(field) ? Validators.required : null;
       form.setControl(field, this.formBuilder.control(null, val));
+    }
+    const forProfile = config as AddressConfigurationForUserProfile;
+    if (forProfile.contactInfoEnabled) {
+      const contactInfo = this.formBuilder.group({
+        email: null,
+        mobilePhone: null,
+        landLinePhone: null,
+        landLineExtension: null
+      });
+      if (!empty(forProfile.contactInfoFields)) {
+        contactInfo.addControl('customValues', this.fieldsHelper.customValuesFormGroup(forProfile.contactInfoFields));
+      }
+      form.addControl('contactInfo', contactInfo);
     }
     return form;
   }

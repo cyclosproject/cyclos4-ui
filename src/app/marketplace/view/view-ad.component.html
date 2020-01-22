@@ -5,16 +5,18 @@
 
     <div *ngIf="ad.image && (layout.ltsm$ | async)"
       class="d-flex justify-content-center mt-2 mb-4">
-      <avatar [roundBorders]="false" size="160" imageSize="200" useLightbox
-        [image]="ad.image" [additionalImages]="ad.additionalImages"></avatar>
+      <ngx-gallery *ngIf="ad.image" [options]="galleryOptions"
+        [images]="galleryImages">
+      </ngx-gallery>
     </div>
 
     <div class="d-flex flex-row-reverse">
       <div *ngIf="layout.gtxs$ | async" class="image ml-4">
-        <avatar [roundBorders]="false" [size]="ad.image ? 200 : 128"
-          iconSize="128px" useLightbox icon="shopping_basket"
-          [image]="ad.image" [additionalImages]="ad.additionalImages">
-        </avatar>
+        <avatar size="128" iconSize="128px" *ngIf="!ad.image"
+          icon="shopping_basket"></avatar>
+        <ngx-gallery *ngIf="ad.image" [options]="galleryOptions"
+          [images]="galleryImages">
+        </ngx-gallery>
       </div>
       <div class="d-flex flex-grow-1 flex-column">
         <label-value [label]="i18n.ad.name" [value]="ad.name"></label-value>
@@ -37,18 +39,7 @@
         <label-value *ngIf="status" [label]="i18n.general.status">
           {{ status }}
         </label-value>
-        <label-value *ngIf="ad.price" [label]="i18n.ad.price">
-          <ng-container *ngIf="ad.promotionalPrice">
-            <span class="promo-price">
-              {{ ad.price | currency:ad.currency }}
-            </span>
-            {{ ad.promotionalPrice | currency:ad.currency }}
-          </ng-container>
-          <ng-container *ngIf="ad.promotionalPrice == null">
-            {{ ad.price | currency:ad.currency }}
-          </ng-container>
-        </label-value>
-        <ng-container *ngIf="data.canEdit">
+        <ng-container *ngIf="data.publicationPeriod">
           <label-value [label]="i18n.ad.publicationPeriod">
             <span>{{ data.publicationPeriod.begin | date }}<span
                 class="d-inline pl-2 pr-2"> -
@@ -74,6 +65,15 @@
             {{ data.productNumber }}
           </label-value>
         </ng-container>
+        <label-value *ngIf="ad.price" [label]="i18n.ad.price"
+          class="totalAmount">
+          <ng-container *ngIf="ad.promotionalPrice; else plainPrice">
+            {{ ad.promotionalPrice | currency:ad.currency }}
+            <span class="promo-price">
+              {{ ad.price | currency:ad.currency }}
+            </span>
+          </ng-container>
+        </label-value>
       </div>
     </div>
     <ng-container *ngIf="data.lastAuthorizationComments">
@@ -152,3 +152,7 @@
     </div>
   </page-content>
 </page-layout>
+
+<ng-template #plainPrice>
+  {{ ad.price | currency:ad.currency }}
+</ng-template>

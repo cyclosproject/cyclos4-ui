@@ -92,6 +92,7 @@ export module Menu {
   export const SEARCH_USER_WEBSHOP = new Menu(RootMenu.MARKETPLACE, 'SEARCH_USER_WEBSHOP');
   export const SALES = new Menu(RootMenu.MARKETPLACE, 'SALES');
   export const DELIVERY_METHODS = new Menu(RootMenu.MARKETPLACE, 'DELIVERY_METHODS');
+  export const WEBSHOP_SETTINGS = new Menu(RootMenu.MARKETPLACE, 'WEBSHOP_SETTINGS');
   export const CONNECTED_USERS = new Menu(RootMenu.MARKETPLACE, 'CONNECTED_USERS');
   export const ADMIN_REGISTRATION = new Menu(RootMenu.MARKETPLACE, 'ADMIN_REGISTRATION');
   export const USER_ALERTS = new Menu(RootMenu.MARKETPLACE, 'USER_ALERTS');
@@ -149,6 +150,60 @@ export module Menu {
    */
   export function contentPages(): Menu[] {
     return [CONTENT_PAGE_BANKING, CONTENT_PAGE_MARKETPLACE, CONTENT_PAGE_PERSONAL, CONTENT_PAGE_CONTENT];
+  }
+}
+
+
+/**
+ * Additional identifier for a dynamic active menu
+ */
+export interface ActiveMenuData {
+  accountType?: AccountType;
+  contentPage?: string;
+  operation?: Operation;
+  recordType?: RecordType;
+}
+
+/**
+ * Contains information about the active menu
+ */
+export class ActiveMenu {
+  constructor(
+    public menu: Menu,
+    public data?: ActiveMenuData
+  ) {
+    if (!menu) {
+      throw new Error('null menu');
+    }
+  }
+
+  matches(menu: any): boolean {
+    let other: ActiveMenu;
+    if (menu instanceof ActiveMenu) {
+      other = menu;
+    } else if (menu.activeMenu instanceof ActiveMenu) {
+      // An MenuEntry, but we can't statically reference it yet
+      other = menu.activeMenu;
+    } else if (menu instanceof Menu) {
+      other = new ActiveMenu(menu);
+    } else {
+      // Null
+      return false;
+    }
+
+    // First check the menu reference
+    if (other == null || this.menu !== other.menu) {
+      return false;
+    }
+
+    // At this point the menu matches. See if the data matches
+    const data1 = this.data || {};
+    const data2 = other.data || {};
+    return empty(Object.keys(data1)) && empty(Object.keys(data2))
+      || (data1.accountType && data2.accountType && data1.accountType.id === data2.accountType.id)
+      || (data1.operation && data2.operation && data1.operation.id === data2.operation.id)
+      || (data1.contentPage && data1.contentPage === data2.contentPage)
+      || (data1.recordType && data2.recordType && data1.recordType.id === data2.recordType.id);
   }
 }
 
@@ -218,55 +273,3 @@ export class MenuEntry extends BaseMenuEntry {
   }
 }
 
-
-/**
- * Additional identifier for a dynamic active menu
- */
-export interface ActiveMenuData {
-  accountType?: AccountType;
-  contentPage?: string;
-  operation?: Operation;
-  recordType?: RecordType;
-}
-
-/**
- * Contains information about the active menu
- */
-export class ActiveMenu {
-  constructor(
-    public menu: Menu,
-    public data?: ActiveMenuData
-  ) {
-    if (!menu) {
-      throw new Error('null menu');
-    }
-  }
-
-  matches(menu: MenuEntry | ActiveMenu | Menu): boolean {
-    let other: ActiveMenu;
-    if (menu instanceof MenuEntry) {
-      other = menu.activeMenu;
-    } else if (menu instanceof Menu) {
-      other = new ActiveMenu(menu);
-    } else if (menu) {
-      other = menu;
-    } else {
-      // Null
-      return false;
-    }
-
-    // First check the menu reference
-    if (other == null || this.menu !== other.menu) {
-      return false;
-    }
-
-    // At this point the menu matches. See if the data matches
-    const data1 = this.data || {};
-    const data2 = other.data || {};
-    return empty(Object.keys(data1)) && empty(Object.keys(data2))
-      || (data1.accountType && data2.accountType && data1.accountType.id === data2.accountType.id)
-      || (data1.operation && data2.operation && data1.operation.id === data2.operation.id)
-      || (data1.contentPage && data1.contentPage === data2.contentPage)
-      || (data1.recordType && data2.recordType && data1.recordType.id === data2.recordType.id);
-  }
-}

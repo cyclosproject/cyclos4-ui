@@ -10,9 +10,9 @@
               <div class="images">
                 <avatar [roundBorders]="false" class="main-image" size="huge"
                   [image]="ad.image"></avatar>
-                <avatar *ngIf="ad.owner.image" class="owner-image"
-                  size="medium-large" [image]="ad.owner.image"
-                  [tooltip]="ad.owner.display"
+                <avatar *ngIf="showOwner" class="owner-image solid-icon"
+                  icon="user_full" size="medium-large"
+                  [image]="ad.owner.image" [tooltip]="ad.owner.display"
                   (click)="navigateToOwner(ad, $event)"></avatar>
               </div>
             </div>

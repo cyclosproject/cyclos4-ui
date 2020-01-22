@@ -130,7 +130,7 @@ export class UserRegistrationComponent
       if (groups.length === 1) {
         // When there's a single group, fetch the data already
         this.steps = this.steps.filter(s => s !== 'group');
-        this.showFields();
+        this.showIdentityProviders();
       } else {
         // Initialize on the groups step
         this.step = 'group';

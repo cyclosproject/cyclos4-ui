@@ -79,8 +79,16 @@ hr {
   transition: opacity 0.3s;
 }
 
+.ngx-gallery-image {
+  border: 1px solid $border-color;
+  z-index: 100 !important;
+}
+.ngx-gallery-arrow-wrapper, .ngx-gallery-icon {
+  z-index: 200 !important;
+}
+
 body.dark {
-  hr {
+  hr, .ngx-gallery-image {
     border-color: $border-color-dark;
   }
 }

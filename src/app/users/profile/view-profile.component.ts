@@ -1,18 +1,19 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { PhoneKind, PhoneView, UserView, BasicProfileFieldEnum, RoleEnum, UserRelationshipEnum, AdKind } from 'app/api/models';
+import { AdKind, BasicProfileFieldEnum, PhoneKind, PhoneView, RoleEnum, UserRelationshipEnum, UserView } from 'app/api/models';
 import { ContactsService, UsersService } from 'app/api/services';
 import { ErrorStatus } from 'app/core/error-status';
 import { MapsService } from 'app/core/maps.service';
 import { OperationHelperService } from 'app/core/operation-helper.service';
+import { RecordHelperService } from 'app/core/records-helper.service';
+import { UserHelperService } from 'app/core/user-helper.service';
 import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
 import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
-import { words, empty } from 'app/shared/helper';
-import { BehaviorSubject } from 'rxjs';
+import { empty, words, galleryImages, ProfileGalleryOptions } from 'app/shared/helper';
 import { Menu } from 'app/shared/menu';
-import { UserHelperService } from 'app/core/user-helper.service';
-import { RecordHelperService } from 'app/core/records-helper.service';
+import { BehaviorSubject } from 'rxjs';
+import { NgxGalleryImage } from 'ngx-gallery';
 
 export const MAX_SIZE_SHORT_NAME = 25;
 
@@ -48,6 +49,8 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
   showActions$ = new BehaviorSubject(false);
   bankingActions: HeadingAction[] = [];
   managementActions: HeadingAction[] = [];
+  galleryImages: NgxGalleryImage[];
+  galleryOptions = ProfileGalleryOptions;
 
   get user(): UserView {
     return this.data;
@@ -77,6 +80,8 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     this.shortName = words(user.name || user.display, MAX_SIZE_SHORT_NAME);
     const enabledFields = user.enabledProfileFields;
     this.imageEnabled = enabledFields == null || enabledFields.includes(BasicProfileFieldEnum.IMAGE);
+
+    this.galleryImages = galleryImages(user.image, user.additionalImages);
 
     // We'll show the phones either as single or multiple
     this.mobilePhones = user.phones.filter(p => p.type === PhoneKind.MOBILE);
@@ -269,6 +274,9 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
         this.managementActions.push(new HeadingAction('local_shipping', this.i18n.user.profile.deliveryMethods, () => {
           this.router.navigate(['/marketplace', this.param, 'delivery-methods']);
         }));
+        this.managementActions.push(new HeadingAction('store', this.i18n.user.profile.webshopSettings, () => {
+          this.router.navigate(['/marketplace', this.param, 'webshop-settings', 'view']);
+        }));
       }
       if (notificationSettings.view) {
         this.managementActions.push(new HeadingAction('notifications_off', this.i18n.user.profile.notificationSettings, () => {
@@ -361,5 +369,4 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
         return this.login.user ? Menu.SEARCH_USERS : Menu.PUBLIC_DIRECTORY;
     }
   }
-
 }
