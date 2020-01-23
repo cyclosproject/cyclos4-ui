@@ -34,6 +34,7 @@ import { UsersResultsComponent } from 'app/users/search/users-results.component'
 import { ViewUserStatusHistoryComponent } from 'app/users/status/view-user-status-history.component';
 import { ViewUserStatusComponent } from 'app/users/status/view-user-status.component';
 import { UsersRoutingModule } from 'app/users/users-routing.module';
+import { PrivacySettingsFormComponent } from 'app/users/privacy-settings/privacy-settings-form.component';
 
 /**
  * Users module
@@ -87,6 +88,8 @@ import { UsersRoutingModule } from 'app/users/users-routing.module';
     UserIdentityProvidersComponent,
 
     NotificationSettingsFormComponent,
+
+    PrivacySettingsFormComponent
   ],
   entryComponents: [
     VerifyPhoneComponent,
