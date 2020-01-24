@@ -461,8 +461,8 @@ export class MenuService {
       if (restrictedAccess) {
         return;
       }
-      const pages = contentPages.filter(p => {
-        return p.rootMenu === menu.root && p.isVisible(this.injector);
+      const pages = (contentPages || []).filter(p => {
+        return p.rootMenu === menu.root && p.isVisible(auth, this.injector);
       });
       for (const page of pages) {
         const activeMenu = new ActiveMenu(menu, {
@@ -748,6 +748,8 @@ export class MenuService {
 
     // Content pages in the content root menu
     const pagesInContent = addContentPages(Menu.CONTENT_PAGE_CONTENT);
+    console.log('Building menu, with the following pages:');
+    console.dir(pagesInContent);
 
     // For guests, content will always be dropdown.
     // For logged users, only if at least 1 content page with layout full is used
