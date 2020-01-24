@@ -6,9 +6,7 @@
 
 .label-value-label {
   display: block;
-  padding-top: 0 !important;
-  padding-bottom: 3px !important;
-  line-height: 1rem;
+  padding: 0;
 }
 :host.field .label-value-value,
 :host.field-view .label-value-value {
@@ -21,15 +19,12 @@
   align-items: flex-start;
 }
 
-:host.label-on-side .label-value-label {
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
-  display: flex;
-  align-items: center;
-}
-
-:host:not(.label-on-side) .label-value-label {
-  padding-top: calc(#{$input-padding-y} + #{$input-border-width}) !important;
+:host(.label-on-side) {
+  &:not(.view) .label-value-label,
+  &.field-view .label-value-value {
+    padding-top: calc(#{$input-padding-y} + 3px) !important;
+    padding-bottom: 3px;
+  }
 }
 
 :host.field-view, :host.field {
