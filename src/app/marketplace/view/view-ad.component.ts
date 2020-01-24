@@ -21,7 +21,6 @@ import { NgxGalleryImage } from 'ngx-gallery';
 @Component({
   selector: 'view-ad',
   templateUrl: 'view-ad.component.html',
-  styleUrls: ['../../users/profile/view-profile.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ViewAdComponent extends BaseViewPageComponent<AdView> implements OnInit {

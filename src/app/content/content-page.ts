@@ -1,6 +1,7 @@
 import { ContentWithLayout } from 'app/content/content-with-layout';
 import { RootMenu } from 'app/shared/menu';
 import { Injector } from '@angular/core';
+import { Auth } from 'app/api/models';
 
 /** A content page to be displayed */
 export interface ContentPage extends ContentWithLayout {
@@ -49,6 +50,6 @@ export interface ContentPage extends ContentWithLayout {
    * Returns whether this page is visible for the current context.
    * Called when the menu is re-calculated.
    */
-  isVisible?(injector: Injector): boolean;
+  isVisible?(auth: Auth, injector: Injector): boolean;
 
 }

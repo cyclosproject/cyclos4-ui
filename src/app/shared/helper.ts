@@ -857,8 +857,6 @@ export function galleryImages(image: Image, additionalImages?: Image[]): NgxGall
 }
 
 export const ProfileGalleryOptions: NgxGalleryOptions[] = [{
-  width: '16rem',
-  height: '16rem',
   imageSize: NgxGalleryImageSize.Contain,
   imageAnimation: NgxGalleryAnimation.Slide,
   thumbnailsMoveSize: 4,

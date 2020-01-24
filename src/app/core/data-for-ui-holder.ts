@@ -11,7 +11,7 @@ import { I18n } from 'app/i18n/i18n';
 import { isSameOrigin, setReloadButton, setRootAlert } from 'app/shared/helper';
 import moment from 'moment-mini-ts';
 import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
-import { catchError, first, map, tap, switchMap } from 'rxjs/operators';
+import { catchError, first, map, switchMap } from 'rxjs/operators';
 import { ContentService } from 'app/core/content.service';
 
 /**
@@ -46,7 +46,14 @@ export class DataForUiHolder {
       location.assign(Configuration.redirectGuests);
       return of(null);
     }
+    return this.reload();
+  }
 
+  /**
+   * Returns a cold observer for reloading the `DataForUi` instance
+   */
+  reload(retry = true): Observable<DataForUi> {
+    const nextRequestState = this.nextRequestState;
     nextRequestState.ignoreNextError = true;
     return this.uiService.dataForUi({ kind: UiKind.CUSTOM }).pipe(
       switchMap(dataForUi => {
@@ -68,20 +75,16 @@ export class DataForUiHolder {
 
         // Actually get the content pages
         return contentPages.pipe(map(pages => {
-          this.injector.get(ContentService).setContentPages(pages.filter(p => !!p), this.user);
+          this.injector.get(ContentService).setContentPages(pages.filter(p => !!p));
           return dataForUi;
         }));
       }),
       catchError((resp: HttpErrorResponse) => {
         // Maybe we're using an old session data. In that case, we have to clear the session and try again
-        if (nextRequestState.hasSession && [ErrorStatus.FORBIDDEN, ErrorStatus.UNAUTHORIZED].includes(resp.status)) {
+        if (retry && nextRequestState.hasSession && [ErrorStatus.FORBIDDEN, ErrorStatus.UNAUTHORIZED].includes(resp.status)) {
           // Clear the session token and try again
           nextRequestState.setSessionToken(null);
-          return this.uiService.dataForUi({ kind: UiKind.CUSTOM }).pipe(
-            tap(dataForUi => {
-              this.dataForUi = dataForUi;
-            })
-          );
+          return this.reload();
         } else {
           // The server couldn't be contacted
           let serverOffline = this.i18n.error.serverOffline;
@@ -95,17 +98,6 @@ export class DataForUiHolder {
           setReloadButton(reloadPage);
           return;
         }
-      })
-    );
-  }
-
-  /**
-   * Returns a cold observer for reloading the `DataForUi` instance
-   */
-  reload(): Observable<DataForUi> {
-    return this.uiService.dataForUi({ kind: UiKind.CUSTOM }).pipe(
-      tap(dataForUi => {
-        this.dataForUi = dataForUi;
       })
     );
   }

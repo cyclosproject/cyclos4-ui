@@ -23,7 +23,6 @@ export const MAX_SIZE_SHORT_NAME = 25;
 @Component({
   selector: 'view-profile',
   templateUrl: 'view-profile.component.html',
-  styleUrls: ['view-profile.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ViewProfileComponent extends BaseViewPageComponent<UserView> implements OnInit {

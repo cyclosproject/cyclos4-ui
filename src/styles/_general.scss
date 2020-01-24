@@ -79,7 +79,29 @@ hr {
   transition: opacity 0.3s;
 }
 
-.ngx-gallery-image {
+.profile-image {
+  icon {
+    color: $tiled-results-icon-color;
+  }
+  display: flex;
+  justify-content: center;
+  margin: 0.5rem 0 1.5rem 0;
+  ngx-gallery {
+    width: 16rem !important;
+    height: 16rem !important;
+  }
+}
+@include media-breakpoint-up(sm) {
+  .profile-image {
+    justify-content: end;
+    margin: 0 0 0 1.5rem;
+  }
+}
+.single-profile-image {
+  max-width: 16rem;
+  max-height: 12rem;
+}
+.ngx-gallery-image, .ngx-gallery-thumbnail {
   border: 1px solid $border-color;
   z-index: 100 !important;
 }
@@ -88,7 +110,7 @@ hr {
 }
 
 body.dark {
-  hr, .ngx-gallery-image {
+  hr, .ngx-gallery-image, .ngx-gallery-thumbnail {
     border-color: $border-color-dark;
   }
 }
