@@ -27,17 +27,22 @@
     </ng-container>
 
     <div *ngIf="imageEnabled && user.image && (layout.ltsm$ | async)"
-      class="image d-flex justify-content-center mt-2 mb-4">
-      <ngx-gallery *ngIf="user.image" [options]="galleryOptions"
+      class="profile-image">
+      <img *ngIf="galleryImages.length === 1" class="single-profile-image"
+        [src]="user.image.url">
+      <ngx-gallery *ngIf="galleryImages.length > 1" [options]="galleryOptions"
         [images]="galleryImages">
       </ngx-gallery>
     </div>
 
     <div class="d-flex flex-row-reverse">
-      <div *ngIf="imageEnabled && (layout.gtxs$ | async)" class="image ml-4">
+      <div *ngIf="imageEnabled && (layout.gtxs$ | async)"
+        class="profile-image">
         <avatar size="128" iconSize="128px" *ngIf="!user.image"></avatar>
-        <ngx-gallery *ngIf="user.image" [options]="galleryOptions"
-          [images]="galleryImages">
+        <img *ngIf="galleryImages.length === 1" class="single-profile-image"
+          [src]="user.image.url">
+        <ngx-gallery *ngIf="galleryImages.length > 1"
+          [options]="galleryOptions" [images]="galleryImages">
         </ngx-gallery>
       </div>
 

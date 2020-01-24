@@ -40,7 +40,7 @@
   </div>
 
   <div class="row no-gutters">
-    <div class="col-12 col-md-4" *ngFor="let address of addresses">
+    <div class="col-12 col-sm-6 col-md-4" *ngFor="let address of addresses">
       <ng-container
         *ngTemplateOutlet="addressDetails; context: {$implicit: address}">
       </ng-container>
