@@ -57,6 +57,8 @@ export class FieldHelperService {
         return this.i18n.phone.phoneNumber;
       case 'accountNumber':
         return this.i18n.account.number;
+      case 'address':
+        return this.i18n.address.address;
       default:
         const customField = customFields.find(cf => cf.internalName === field);
         return (customField || {}).name;

@@ -97,9 +97,7 @@ export module Menu {
   export const ADMIN_REGISTRATION = new Menu(RootMenu.MARKETPLACE, 'ADMIN_REGISTRATION');
   export const USER_ALERTS = new Menu(RootMenu.MARKETPLACE, 'USER_ALERTS');
   export const SHOPPING_CART = new Menu(RootMenu.MARKETPLACE, 'SHOPPING_CART');
-
   export const VIEW_AD = new Menu(RootMenu.MARKETPLACE, 'VIEW_AD');
-
   export const BUY_VOUCHER = new Menu(RootMenu.MARKETPLACE, 'BUY_VOUCHER');
   export const SEARCH_BOUGHT_VOUCHERS = new Menu(RootMenu.MARKETPLACE, 'SEARCH_BOUGHT_VOUCHERS');
 
@@ -122,6 +120,7 @@ export module Menu {
   export const NOTIFICATIONS = new Menu(RootMenu.PERSONAL, 'NOTIFICATIONS');
   export const NOTIFICATIONS_SETTINGS = new Menu(RootMenu.PERSONAL, 'NOTIFICATIONS_SETTINGS');
   export const SETTINGS = new Menu(RootMenu.PERSONAL, 'SETTINGS');
+  export const PRIVACY_SETTINGS = new Menu(RootMenu.PERSONAL, 'PRIVACY_SETTINGS');
 
   // Custom operations (one per root menu in owner, also one per operation container)
   export const RUN_OPERATION_BANKING = new Menu(RootMenu.BANKING, 'RUN_OPERATION_BANKING');

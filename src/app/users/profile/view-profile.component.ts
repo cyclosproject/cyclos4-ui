@@ -116,6 +116,7 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     const operators = permissions.operators || {};
     const brokering = permissions.brokering || {};
     const vouchers = permissions.vouchers || {};
+    const privacySettings = permissions.privacySettings || {};
 
     if (user.relationship === UserRelationshipEnum.SELF) {
       // For the own user, we just show the edit as a top-level action
@@ -281,6 +282,11 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
       if (notificationSettings.view) {
         this.managementActions.push(new HeadingAction('notifications_off', this.i18n.user.profile.notificationSettings, () => {
           this.router.navigate(['/users', this.param, 'notification-settings']);
+        }));
+      }
+      if (privacySettings.view) {
+        this.managementActions.push(new HeadingAction('lock', this.i18n.user.profile.privacySettings, () => {
+          this.router.navigate(['/users', this.param, 'privacy-settings', 'view']);
         }));
       }
       // Records

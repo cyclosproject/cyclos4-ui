@@ -738,6 +738,10 @@ export class MenuService {
         add(Menu.NOTIFICATIONS_SETTINGS, `/users/${ApiHelper.SELF}/notification-settings`,
           'notifications_off', this.i18n.menu.personalNotificationSettings);
       }
+      if ((permissions.privacySettings || {}).view) {
+        add(Menu.PRIVACY_SETTINGS, `/users/${ApiHelper.SELF}/privacy-settings/view`,
+          'lock', this.i18n.menu.personalPrivacySettings);
+      }
       add(Menu.SETTINGS, '/personal/settings', 'settings', this.i18n.menu.personalSettings);
       addOperations(RootMenu.PERSONAL);
       addContentPages(Menu.CONTENT_PAGE_PERSONAL);

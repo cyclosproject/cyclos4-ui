@@ -26,7 +26,8 @@ import { ContactListComponent } from 'app/users/search/contact-list.component';
 import { SearchUsersComponent } from 'app/users/search/search-users.component';
 import { ViewUserStatusHistoryComponent } from 'app/users/status/view-user-status-history.component';
 import { ViewUserStatusComponent } from 'app/users/status/view-user-status.component';
-import { PrivacySettingsFormComponent } from 'app/users/privacy-settings/privacy-settings-form.component';
+import { ViewPrivacySettingsComponent } from 'app/users/privacy-settings/view-privacy-settings.component';
+import { EditPrivacySettingsComponent } from 'app/users/privacy-settings/edit-privacy-settings.component';
 
 const usersRoutes: Routes = [
   {
@@ -198,9 +199,12 @@ const usersRoutes: Routes = [
         canActivate: [LoggedUserGuard]
       },
       {
-        path: ':user/privacy-settings',
-        component: PrivacySettingsFormComponent,
-        canActivate: [LoggedUserGuard]
+        path: ':user/privacy-settings/view',
+        component: ViewPrivacySettingsComponent
+      },
+      {
+        path: ':user/privacy-settings/edit',
+        component: EditPrivacySettingsComponent
       }
     ]
   }

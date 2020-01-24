@@ -5,12 +5,12 @@ import { BasePageComponent } from 'app/shared/base-page.component';
 import { Menu } from 'app/shared/menu';
 
 @Component({
-  selector: 'privacy-settings-form',
-  templateUrl: 'privacy-settings-form.component.html',
+  selector: 'edit-privacy-settings',
+  templateUrl: 'edit-privacy-settings.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class PrivacySettingsFormComponent extends BasePageComponent<PrivacySettingsData> implements OnInit {
+export class EditPrivacySettingsComponent extends BasePageComponent<PrivacySettingsData> implements OnInit {
   constructor(injector: Injector,
     private privacySettingsService: PrivacySettingsService) {
     super(injector);
@@ -19,7 +19,6 @@ export class PrivacySettingsFormComponent extends BasePageComponent<PrivacySetti
   ngOnInit() {
     super.ngOnInit();
     const user = this.route.snapshot.params.user;
-    console.log('PrivacySettingsFormComponent');
     this.privacySettingsService.getPrivacySettingsData({ user }).subscribe(data => this.data = data);
   }
 

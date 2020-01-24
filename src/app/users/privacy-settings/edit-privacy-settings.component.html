@@ -1,0 +1,15 @@
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data then content"></ng-container>
+</page-layout>
+
+<ng-template #content>
+  <page-content [heading]="i18n.privacySettings.title"
+    [mobileHeading]="i18n.privacySettings.mobileTitle"
+    [headingActions]="headingActions$ | async">
+
+    <h1>EDIT</h1>
+    <ul>
+      <li *ngFor="let field of data.controlledFields">{{field}}</li>
+    </ul>
+  </page-content>
+</ng-template>

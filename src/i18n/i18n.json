@@ -281,6 +281,7 @@
     "personal.identityProviders": "Identity providers",
     "personal.notifications": "Notifications",
     "personal.notificationSettings": "Notification settings",
+    "personal.privacySettings": "Privacy settings",
     "personal.settings": "Settings",
     "content": "Information"
   },
@@ -899,7 +900,8 @@
       "redeemVoucher": "Redeem voucher",
       "viewBoughtVouchers": "View bought vouchers",
       "buyVouchers": "Buy vouchers",
-      "notificationSettings": "Notification settings"
+      "notificationSettings": "Notification settings",
+      "privacySettings": "Privacy settings"
     },
     "registration": {
       "group.public": "Choose the group you want to participate",
@@ -1454,6 +1456,11 @@
     "enableOrDisable": "Enable or disable {section}",
     "enableAll": "Enable all",
     "disableAll": "Disable all"
+  },
+  "privacySettings": {
+    "title": "Privacy settings",
+    "mobileTitle": "Privacy settings",
+    "text": "Personal data subject to privacy control:"
   },
   "connectedUser": {
     "title": "Connected users",
