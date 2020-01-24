@@ -19,8 +19,8 @@
     "generate-icons": "node tools/generate-icons.js",
     "generate": "npm run ng-openapi-gen && npm run ng-translation-gen && npm run generate-icons",
     "optimize-svgs": "npm run svgo -- src/icons/*.svg --config='{ \"plugins\": [{ \"removeViewBox\": false }] }'",
-    "start": "npm run generate && npm run ng -- serve --proxy-config proxy.json",
-    "build": "npm run generate && npm run optimize-svgs && npm run merge-translations && npm run ng -- build --prod --progress=false",
+    "start": "npm run generate && npm run ng -- serve --host 0.0.0.0 --proxy-config proxy.json",
+    "build": "npm run generate && npm run optimize-svgs && npm run merge-translations && npm run ng -- build --prod --progress=false --named-chunks",
     "lint": "npm run ng -- lint"
   },
   "private": true,
