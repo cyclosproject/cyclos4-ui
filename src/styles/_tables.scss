@@ -111,7 +111,12 @@ table.table {
   table:not(.table-auto-height) {
     td, th {
       padding: 0.75rem;
+    }
+    td {
       height: 3.8rem;
+    }
+    th {
+      height: 3.3rem;
     }
   }
 }
