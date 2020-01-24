@@ -6,11 +6,26 @@
   <page-content [heading]="i18n.privacySettings.title"
     [mobileHeading]="i18n.privacySettings.mobileTitle"
     [headingActions]="headingActions$ | async">
+    <label-value *ngIf="!self" [label]="i18n.general.user"
+      labelPosition="side">
+      <user-link [user]="data.user"></user-link>
+    </label-value>
 
-    {{i18n.privacySettings.text}}
+    <hr>
+    {{i18n.privacySettings.textControledFields}}
     <ul>
       <li *ngFor="let field of data.controlledFields">{{fieldDisplay(field)}}
       </li>
     </ul>
+    <h2 *ngIf="!data.enabled">{{i18n.privacySettings.textDisabled}}</h2>
+
+    <ng-container *ngIf="data.enabled">
+      <h2>{{i18n.privacySettings.controls}}</h2>
+      <label-value *ngFor="let control of data.availableControls"
+        [label]=control.name>
+        {{isSelectedControl(control)}}
+      </label-value>
+    </ng-container>
+
   </page-content>
 </ng-template>

@@ -1460,7 +1460,9 @@
   "privacySettings": {
     "title": "Privacy settings",
     "mobileTitle": "Privacy settings",
-    "text": "Personal data subject to privacy control:"
+    "controls": "Departments allowed to access private data",
+    "textControledFields": "Personal data subject to privacy control:",
+    "textDisabled": "Privacy control is disabled"
   },
   "connectedUser": {
     "title": "Connected users",
