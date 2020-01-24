@@ -748,8 +748,6 @@ export class MenuService {
 
     // Content pages in the content root menu
     const pagesInContent = addContentPages(Menu.CONTENT_PAGE_CONTENT);
-    console.log('Building menu, with the following pages:');
-    console.dir(pagesInContent);
 
     // For guests, content will always be dropdown.
     // For logged users, only if at least 1 content page with layout full is used
