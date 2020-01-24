@@ -1,10 +1,10 @@
 openapi: '3.0.0'
 info:
-  title: 'Cyclos @cyclosVersion API'
+  title: 'Cyclos 4.13 API'
   description: >-
     The Cyclos REST API is described using OpenAPI 3.0. The descriptor for the
-    api can be downloaded in both [YAML](@url/cyclos-openapi.yaml) or
-    [JSON](@url/cyclos-openapi.json) formats. These files can be used in tools
+    api can be downloaded in both [YAML](http://localhost:8888/england/api/cyclos-openapi.yaml) or
+    [JSON](http://localhost:8888/england/api/cyclos-openapi.json) formats. These files can be used in tools
     that support the OpenAPI specification, such as the [Swagger
     Generator](https://generator.swagger.io/).
 
@@ -33,11 +33,11 @@ info:
 
     For details of the deprecated elements (operations and model) please visit the
     [deprecation notes
-    page](https://documentation.cyclos.org/@cyclosVersion/api-deprecation.html)
+    page](https://documentation.cyclos.org/4.13/api-deprecation.html)
     for this version.
-  version: '@cyclosVersion'
+  version: '4.13'
 servers:
-  - url: '@url'
+  - url: 'http://localhost:8888/england/api'
 
 tags:
   - name: Auth
@@ -1196,7 +1196,7 @@ paths:
 
 
             Other scopes are defined in Cyclos which represent permissions.
-            These scopes are listed in @root/.well-known/openid-configuration.
+            These scopes are listed in http://localhost:8888/england/.well-known/openid-configuration.
           schema:
             type: string
         - name: response_type
@@ -33574,6 +33574,62 @@ A note for dynamic custom fields: If a script is used to generate possible value
               schema:
                 $ref: '#/components/schemas/Error'
 
+  /marketplace/{ad}/export/{format}:
+    parameters:
+      - $ref: '#/components/parameters/ad'
+      - $ref: '#/components/parameters/format'
+    get:
+      operationId: exportAd
+      summary: >-
+        Exports the advertisement details to a file.
+      description: >-
+        Exports the advertisement details to a file. The available formats are
+        available in `AdView`
+      tags:
+        - Marketplace
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      responses:
+        '200':
+          description: >-
+            The file content
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: binary
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
   /marketplace/{ad}/hide:
     post:
       operationId: hideAd
@@ -35333,6 +35389,62 @@ A note for dynamic custom fields: If a script is used to generate possible value
               schema:
                 $ref: '#/components/schemas/Error'
 
+  /orders/{order}/export/{format}:
+    parameters:
+      - $ref: '#/components/parameters/order'
+      - $ref: '#/components/parameters/format'
+    get:
+      operationId: exportOrder
+      summary: >-
+        Exports the order details to a file.
+      description: >-
+        Exports the order details to a file. The available formats are
+        available in `OrderView`
+      tags:
+        - Orders
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      responses:
+        '200':
+          description: >-
+            The file content
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: binary
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
   /orders/{order}/data-for-edit:
     get:
       operationId: getOrderDataForEdit
@@ -36808,12 +36920,12 @@ components:
 
     oidc:
       type: openIdConnect
-      openIdConnectUrl: '@root/.well-known/openid-configuration'
+      openIdConnectUrl: 'http://localhost:8888/england/.well-known/openid-configuration'
       description: >-
         OAuth2 / OpenID Connect authentication. Clients must be previously
         registered in Cyclos. Then they request an authorization using the
         standard OAuth2 / OpenID Connect authorization endpoint at
-        `@url/oidc/authorize`.
+        `http://localhost:8888/england/api/oidc/authorize`.
         When the OpenID Connect standard scope `openid` is requested, the flow
         will follow the OpenID Connect specification, allowing `id_token`s to
         be issued. Otherwise, plain OAuth2 authorization will be granted.
@@ -42400,6 +42512,13 @@ components:
               description: >-
                 Indicates whether show or not this advertisement owner to guests
               type: boolean
+            exportFormats:
+              description: >-
+                The formats which the advertisement can be exported
+              type: array
+              items:
+                $ref: '#/components/schemas/ExportFormat'
+
 
     Address:
       description: >-
@@ -51539,6 +51658,12 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/OrderLog'
+            exportFormats:
+              description: >-
+                The formats which the ordercan be exported
+              type: array
+              items:
+                $ref: '#/components/schemas/ExportFormat'
 
     OtpError:
       description: >-
@@ -52876,6 +53001,10 @@ components:
             The privacy settings owner
           allOf:
             - $ref: '#/components/schemas/User'
+        enabled:
+          description: >-
+            Whether the privacy control is enabled or not for the owner
+          type: boolean
         canEdit:
           description: >-
             Can the authenticated user edit this privacy setting data?
