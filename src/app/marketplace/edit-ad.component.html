@@ -21,8 +21,7 @@
               class="col-12 col-xs-6 col-sm-4 col-md-3 d-flex justify-content-center justify-content-center"
               *ngFor="let image of (images$ | async)">
               <avatar [image]="image" size="huge" [roundBorders]="false"
-                useLightbox [additionalImages]="images" additionalImagesHidden
-                class="mb-1 mb-xs-3">
+                useLightbox [additionalImages]="images" class="mb-1 mb-xs-3">
               </avatar>
             </div>
             <ng-container *ngIf="images.length === 0">

@@ -26,28 +26,16 @@
       <hr>
     </ng-container>
 
-    <div *ngIf="imageEnabled && user.image && (layout.ltsm$ | async)"
-      class="profile-image">
-      <img *ngIf="galleryImages.length === 1" class="single-profile-image"
-        [src]="user.image.url">
-      <ngx-gallery *ngIf="galleryImages.length > 1" [options]="galleryOptions"
-        [images]="galleryImages">
-      </ngx-gallery>
-    </div>
+    <profile-images
+      *ngIf="imageEnabled && user.image && (layout.ltsm$ | async)"
+      [image]="user.image" [additionalImages]="user.additionalImages">
+    </profile-images>
 
     <div class="d-flex flex-row-reverse">
-      <div *ngIf="imageEnabled && (layout.gtxs$ | async)"
-        class="profile-image">
-        <avatar size="128" iconSize="128px" *ngIf="!user.image"></avatar>
-        <img *ngIf="galleryImages.length === 1" class="single-profile-image"
-          [src]="user.image.url">
-        <ngx-gallery *ngIf="galleryImages.length > 1"
-          [options]="galleryOptions" [images]="galleryImages">
-        </ngx-gallery>
-      </div>
-
-      <div>
-      </div>
+      <profile-images *ngIf="imageEnabled && (layout.gtxs$ | async)"
+        [image]="user.image" [additionalImages]="user.additionalImages"
+        icon="user">
+      </profile-images>
       <div class="d-flex flex-grow-1 flex-column">
         <label-value *ngIf="showOperatorOwner"
           [label]="i18n.user.operatorOwner">

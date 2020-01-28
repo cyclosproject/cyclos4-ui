@@ -41,22 +41,6 @@
   }
 }
 
-.additional {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-}
-
-@for $i from 1 through 5 {
-  .additional-#{$i} {
-    right: 0.9rem * $i;
-  }
-}
-
-.additional .avatar-container {
-  border: 2px solid $card-bg;
-}
-
 :host.management icon {
   color: $management-icon-color;
 }

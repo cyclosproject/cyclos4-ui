@@ -1,13 +1,11 @@
 import {
-  AfterContentChecked, ChangeDetectionStrategy, ChangeDetectorRef, Component,
-  ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild
+  AfterContentChecked, ChangeDetectionStrategy, ChangeDetectorRef,
+  Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output,
+  SimpleChanges, ViewChild
 } from '@angular/core';
 import { Image } from 'app/api/models';
-import { AvatarGalleryOptions, galleryImage, truthyAttr } from 'app/shared/helper';
-import { NgxGalleryComponent, NgxGalleryImage } from 'ngx-gallery';
-
-/** Maximum number of additional images to show */
-const MAX_ADDITIONAL = 3;
+import { galleryImage, truthyAttr } from 'app/shared/helper';
+import { NgxGalleryComponent, NgxGalleryImage, NgxGalleryOptions } from 'ngx-gallery';
 
 /**
  * The size for rendered avatars.
@@ -112,21 +110,11 @@ export class AvatarComponent implements OnInit, OnChanges, AfterContentChecked {
 
   @Input() imageSize: number = null;
 
-  additionalImagesToShow: Image[];
-
-  private _additionalImagesHidden = false;
-  @Input() get additionalImagesHidden(): boolean | string {
-    return this._additionalImagesHidden;
-  }
-  set additionalImagesHidden(hidden: boolean | string) {
-    this._additionalImagesHidden = truthyAttr(hidden);
-  }
-
   url: string;
   visible = false;
   @ViewChild(NgxGalleryComponent, { static: false }) gallery: NgxGalleryComponent;
-  galleryOptions = AvatarGalleryOptions;
 
+  galleryOptions: NgxGalleryOptions[];
 
   constructor(
     private element: ElementRef,
@@ -147,13 +135,26 @@ export class AvatarComponent implements OnInit, OnChanges, AfterContentChecked {
     if (this.image) {
       this.initImage();
       const additional = (this.additionalImages || []);
-      this.additionalImagesToShow = additional.slice(0, Math.min(additional.length, MAX_ADDITIONAL)).reverse();
       this.allImages = [...additional];
       if (this.allImages.findIndex(i => i.url === this.image.url) < 0) {
         this.allImages.unshift(this.image);
       }
       if (this.useLightbox) {
         this.galleryImages = this.allImages.map(galleryImage);
+        this.galleryOptions = [{
+          width: '0',
+          height: '0',
+          image: false,
+          thumbnails: false,
+          previewKeyboardNavigation: true,
+          previewCloseOnClick: true,
+          previewCloseOnEsc: true,
+          previewArrows: additional.length > 0
+        }];
+        if (this.gallery) {
+          this.gallery.images = this.galleryImages;
+          this.gallery.options = this.galleryOptions;
+        }
       } else {
         this.galleryImages = null;
       }

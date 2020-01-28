@@ -3,20 +3,16 @@
     [mobileHeading]="i18n.ad.mobileTitle.details"
     [headingActions]="headingActions$ | async">
 
-    <div *ngIf="ad.image && (layout.ltsm$ | async)" class="profile-image">
-      <ngx-gallery *ngIf="ad.image" [options]="galleryOptions"
-        [images]="galleryImages">
-      </ngx-gallery>
-    </div>
+    <profile-images *ngIf="ad.image && (layout.ltsm$ | async)"
+      [image]="ad.image" [additionalImages]="ad.additionalImages">
+    </profile-images>
 
     <div class="d-flex flex-row-reverse">
-      <div *ngIf="layout.gtxs$ | async" class="profile-image">
-        <avatar size="128" iconSize="128px" *ngIf="!ad.image"
-          icon="shopping_basket"></avatar>
-        <ngx-gallery *ngIf="ad.image" [options]="galleryOptions"
-          [images]="galleryImages">
-        </ngx-gallery>
-      </div>
+      <profile-images *ngIf="ad.image && (layout.gtxs$ | async)"
+        icon="shopping_basket" [image]="ad.image"
+        [additionalImages]="ad.additionalImages">
+      </profile-images>
+
       <div class="d-flex flex-grow-1 flex-column">
         <label-value [label]="i18n.ad.name" [value]="ad.name"></label-value>
         <label-value [label]="categoryLabel">

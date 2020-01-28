@@ -96,6 +96,7 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { SortableModule } from 'ngx-bootstrap/sortable';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
+import { ProfileImagesComponent } from 'app/shared/profile-images.component';
 
 
 export function initTooltipConfig(): TooltipConfig {
@@ -175,6 +176,7 @@ export function initTooltipConfig(): TooltipConfig {
     ResultTypeFieldComponent,
     AddressDetailsComponent,
     ProfileAddressesComponent,
+    ProfileImagesComponent,
     UserLinkComponent,
     UserInfoComponent,
     UserFieldComponent,
@@ -293,6 +295,7 @@ export function initTooltipConfig(): TooltipConfig {
     ResultTypeFieldComponent,
     AddressDetailsComponent,
     ProfileAddressesComponent,
+    ProfileImagesComponent,
     UserLinkComponent,
     UserInfoComponent,
     UserFieldComponent,

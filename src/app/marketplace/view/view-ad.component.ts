@@ -1,20 +1,17 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import {
-  AdCategoryWithParent, AdView, AdKind, RoleEnum, DeliveryMethod, DeliveryMethodChargeTypeEnum, AdQuestionView
-} from 'app/api/models';
-import { MarketplaceService, AdQuestionsService, ShoppingCartsService } from 'app/api/services';
+import { AdCategoryWithParent, AdKind, AdQuestionView, AdView, DeliveryMethod, DeliveryMethodChargeTypeEnum, RoleEnum } from 'app/api/models';
+import { AdQuestionsService, MarketplaceService, ShoppingCartsService } from 'app/api/services';
+import { LoginService } from 'app/core/login.service';
+import { MarketplaceHelperService } from 'app/core/marketplace-helper.service';
 import { OperationHelperService } from 'app/core/operation-helper.service';
 import { HeadingAction } from 'app/shared/action';
 import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
-import { words, ProfileGalleryOptions, galleryImages } from 'app/shared/helper';
+import { empty, words } from 'app/shared/helper';
 import { Menu } from 'app/shared/menu';
-import { Observable } from 'rxjs';
-import { MarketplaceHelperService } from 'app/core/marketplace-helper.service';
-import { LoginService } from 'app/core/login.service';
-import { BsModalService } from 'ngx-bootstrap/modal';
-import { empty } from 'app/shared/helper';
 import { TextDialogComponent } from 'app/shared/text-dialog.component';
-import { NgxGalleryImage } from 'ngx-gallery';
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { Observable } from 'rxjs';
+
 /**
  * Displays an advertisement details
  */
@@ -30,9 +27,6 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
   webshop: boolean;
   guest: boolean;
   hasStatus: boolean;
-
-  galleryImages: NgxGalleryImage[];
-  galleryOptions = ProfileGalleryOptions;
 
   constructor(
     injector: Injector,
@@ -112,8 +106,6 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
     this.hasStatus = !this.guest && (this.authHelper.isSelfOrOwner(ad.owner) ||
       (this.dataForUiHolder.role === RoleEnum.ADMINISTRATOR ||
         this.dataForUiHolder.role === RoleEnum.BROKER));
-
-    this.galleryImages = galleryImages(ad.image, ad.additionalImages);
 
     const headingActions: HeadingAction[] = [];
     if (ad.canBuy) {
