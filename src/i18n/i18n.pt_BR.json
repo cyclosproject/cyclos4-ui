@@ -849,7 +849,7 @@
     "contactInfo.add": "Adicionar contato",
     "contactInfo.remove": "Remover contato",
     "contactInfo.none": "Atualmente não existem contatos adicionais",
-    "contactInfo.atAddress": "At",
+    "contactInfo.atAddress": "Em",
     "confirmation.message": "Para salvar o seu perfil, forneça seu {type}",
     "profileSaved": "O perfil foi salvo",
     "imagesChanged": "Para que as mudanças nas imagens sejam concluídas é necessário salvar o perfil",
