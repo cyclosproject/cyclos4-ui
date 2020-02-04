@@ -672,7 +672,7 @@ export class MenuService {
         add(Menu.WEBSHOP_SETTINGS, 'marketplace/self/webshop-settings/view', 'store', this.i18n.menu.marketplaceWebshopSettings);
       }
 
-      if (marketplace.questions || webshop.enable) {
+      if (marketplace.questions || webshop.manage) {
         add(Menu.UNANSWERED_QUESTIONS, 'marketplace/unanswered-questions',
           'question_answer', this.i18n.menu.marketplaceUnansweredQuestions);
       }

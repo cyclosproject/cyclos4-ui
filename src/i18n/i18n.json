@@ -1193,6 +1193,7 @@
     "suffix": "Suffix",
     "quantity": "Quantity",
     "question": "Question",
+    "questionAnswered": "The answer was submitted",
     "reject": "Reject",
     "rejectOrder": "Reject order",
     "rejected": "The advertisement has been rejected",
@@ -1281,7 +1282,8 @@
       "paymentType": "Payment type",
       "confirmOrder": "Confirm order",
       "webshopSettings": "Webshop settings",
-      "unansweredQuestions": "Unanswered questions"
+      "unansweredQuestions": "Unanswered questions",
+      "answerQuestion": "Answer question"
     },
     "mobileTitle": {
       "search": "Advertisements",
@@ -1302,7 +1304,8 @@
       "paymentType": "Payment type",
       "confirmOrder": "Confirm order",
       "webshopSettings": "Webshop settings",
-      "unansweredQuestions": "Unanswered questions"
+      "unansweredQuestions": "Unanswered questions",
+      "answerQuestion": "Answer question"
     }
   },
   "notification": {

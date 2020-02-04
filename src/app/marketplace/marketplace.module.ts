@@ -21,6 +21,7 @@ import { ViewWebshopSettingsComponent } from 'app/marketplace/settings/view-webs
 import { EditWebshopSettingsComponent } from 'app/marketplace/settings/edit-webshop-settings.component';
 import { ViewDeliveryMethodComponent } from 'app/marketplace/delivery-methods/view-delivery-method.component';
 import { SearchUnansweredQuestionsComponent } from 'app/marketplace/search/search-unanswered-questions.component';
+import { AnswerFormComponent } from 'app/marketplace/answer-form.component';
 
 /**
  * Marketplace module
@@ -50,6 +51,7 @@ import { SearchUnansweredQuestionsComponent } from 'app/marketplace/search/searc
     EditWebshopSettingsComponent,
     ViewWebshopSettingsComponent,
     SearchUnansweredQuestionsComponent,
+    AnswerFormComponent,
     ViewCartComponent,
     CartCheckoutComponent,
   ],

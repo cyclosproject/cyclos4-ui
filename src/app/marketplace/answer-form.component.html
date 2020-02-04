@@ -1,0 +1,18 @@
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data">
+    <page-content [heading]="i18n.ad.title.answerQuestion"
+      [mobileHeading]="i18n.ad.mobileTitle.answerQuestion">
+      <label-value [label]="i18n.general.by" labelPosition="side">
+        <user-link [user]="data.user"></user-link>
+      </label-value>
+      <form [formGroup]="form">
+      </form>
+      <actions>
+        <button class="btn btn-primary" [disabled]="requesting$ | async"
+          (click)="submit()">
+          {{ i18n.general.submit }}
+        </button>
+      </actions>
+    </page-content>
+  </ng-container>
+</page-layout>

@@ -23,6 +23,9 @@ export class SearchUnansweredQuestionsComponent
   extends BaseSearchPageComponent<any, AdQuestionQueryFilters, AdQuestionResult>
   implements OnInit {
 
+  simpleQuestions: boolean;
+  webshopQuestions: boolean;
+
   constructor(
     injector: Injector,
     private adQuestionService: AdQuestionsService,
@@ -33,24 +36,32 @@ export class SearchUnansweredQuestionsComponent
   ngOnInit() {
     super.ngOnInit();
 
+    const auth = this.dataForUiHolder.auth || {};
+    const permissions = auth.permissions || {};
+    const marketplace = permissions.marketplace || {};
+    const webshop = marketplace.myWebshop || {};
+    this.simpleQuestions = marketplace.questions;
+    this.webshopQuestions = webshop.manage;
+
+
     // Update the data with any non-null value, so the search page is properly initialized
     this.data = {};
   }
 
   protected getFormControlNames(): string[] {
-    return [];
+    return ['kind'];
   }
 
-  path(row: AdQuestion): string[] {
-    return ['/marketplace', 'unanswered-questions', 'answer', row.id];
+  path(row: AdQuestion) {
+    return ['/marketplace', 'unanswered-questions', 'view', row.id];
   }
 
   get toLink() {
     return (row: AdQuestion) => this.path(row);
   }
 
-  navigate(item: AdQuestion) {
-    this.router.navigate(this.path(item));
+  navigate(question: AdQuestion) {
+    this.router.navigate(this.path(question));
   }
 
   navigateToAd(value: AdQuestionResult) {
@@ -73,6 +84,17 @@ export class SearchUnansweredQuestionsComponent
     });
   }
 
+  getInitialFormValue(data: AdQuestionQueryFilters) {
+    const value = super.getInitialFormValue(data);
+    // Use a default value based on user permissions
+    if (this.simpleQuestions) {
+      value.kind = AdKind.SIMPLE;
+    } else if (this.webshopQuestions) {
+      value.kind = AdKind.WEBSHOP;
+    }
+    return value;
+  }
+
   protected toSearchParams(value: any): AdQuestionQueryFilters {
     value.user = 'self';
     return value;
@@ -81,8 +103,6 @@ export class SearchUnansweredQuestionsComponent
   protected doSearch(value: AdQuestionQueryFilters): Observable<HttpResponse<AdQuestion[]>> {
     return this.adQuestionService.searchUnansweredAdQuestions$Response(value);
   }
-
-
 
   resolveMenu() {
     return Menu.UNANSWERED_QUESTIONS;
