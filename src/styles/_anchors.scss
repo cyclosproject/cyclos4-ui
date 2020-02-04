@@ -35,6 +35,10 @@ a.icon {
   outline: none;
   text-decoration: none;
 }
+a.ngx-gallery-thumbnail:focus {
+  outline: none;
+  box-shadow: none;
+}
 
 .link-with-icon {
   display: flex;

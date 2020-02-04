@@ -8,7 +8,6 @@ import { ContentPage } from 'app/content/content-page';
 import { handleFullWidthLayout } from 'app/content/content-with-layout';
 import { empty as isEmpty } from 'app/shared/helper';
 import { RootMenu } from 'app/shared/menu';
-import { User } from 'app/api/models';
 
 const VALID_CONTENT_PAGES_ROOT_MENUS = [RootMenu.CONTENT, RootMenu.BANKING, RootMenu.MARKETPLACE, RootMenu.PERSONAL];
 
@@ -25,8 +24,8 @@ export class ContentService {
   get contentPages(): ContentPage[] {
     return this._contentPages;
   }
-  setContentPages(contentPages: ContentPage[], user: User) {
-    this._contentPages = this.preprocessContentPages(contentPages, user);
+  setContentPages(contentPages: ContentPage[]) {
+    this._contentPages = this.preprocessContentPages(contentPages);
   }
 
   constructor(
@@ -65,7 +64,7 @@ export class ContentService {
     return (this._contentPages || []).find(p => p.slug === slug);
   }
 
-  private preprocessContentPages(contentPages: ContentPage[], user: User): ContentPage[] {
+  private preprocessContentPages(contentPages: ContentPage[]): ContentPage[] {
     contentPages = (contentPages || []).filter(p => p != null);
     let nextId = 0;
     for (const page of contentPages) {
@@ -87,14 +86,17 @@ export class ContentService {
       }
 
       // Normalize the isVisible method to always be there and do all checks
-      const originalIsVisible = page.isVisible;
-      page.isVisible = injector => {
-        if (user == null && page.guests === false
-          || user != null && page.loggedUsers === false) {
-          return false;
-        }
-        return originalIsVisible ? originalIsVisible(injector) : true;
-      };
+      if (!page['processedIsVisible']) {
+        const originalIsVisible = page.isVisible;
+        page.isVisible = (auth, injector) => {
+          if (auth.user == null && page.guests === false
+            || auth.user != null && page.loggedUsers === false) {
+            return false;
+          }
+          return originalIsVisible ? originalIsVisible(auth, injector) : true;
+        };
+        page['processedIsVisible'] = true;
+      }
     }
     return contentPages;
   }

@@ -56,7 +56,7 @@ export class LoginComponent
       principal: '',
       password: ''
     });
-    if (this.nextRequestState.hasSession) {
+    if (this.dataForUiHolder.user) {
       // Already logged in
       this.addSub(this.dataForUiHolder.reload().subscribe(() =>
         this.router.navigateByUrl(this.loginState.redirectUrl || '')

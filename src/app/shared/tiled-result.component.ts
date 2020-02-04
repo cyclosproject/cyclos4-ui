@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Image } from 'app/api/models';
+import { truthyAttr } from 'app/shared/helper';
 
 /**
  * A result when result type is tile.
@@ -13,7 +14,14 @@ export class TiledResultComponent {
 
   @Input() image: Image;
   @Input() icon: string;
-  @Input() zoom = true;
+
+  private _zoom: boolean | string = false;
+  @Input() get zoom(): boolean | string {
+    return this._zoom;
+  }
+  set zoom(zoom: boolean | string) {
+    this._zoom = truthyAttr(zoom);
+  }
 
   constructor() {
   }

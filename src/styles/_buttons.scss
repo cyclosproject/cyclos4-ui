@@ -56,12 +56,18 @@ table.table {
   justify-content: center;
   margin-top: 1rem;
   position: relative;
-  border-radius: $input-border-radius;
+  height: auto;
+  padding: 0.5rem 0;
 
   img {
-    max-width: 1.4rem;
+    max-width: 1.6rem;
     position: absolute;
     left: 0.5rem;
+  }
+
+  span {
+    position: relative;
+    top: 1px;
   }
 }
 

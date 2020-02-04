@@ -4,7 +4,7 @@
   [toLink]="canViewProfile ? toLink : null">
 
   <mobile-result *mobileResult="let row" [avatarImage]="user(row).image"
-    avatarIcon="user">
+    [avatarIcon]="resultKind === 'operator' ? null : 'user'">
     <ng-container *ngFor="let field of fieldsInTile; let first = first">
       <div [ngClass]="{
         'cell-main': first,
@@ -15,19 +15,22 @@
           [customValues]="customValues(row)"></format-field-value>
       </div>
     </ng-container>
+    <div *ngIf="resultKind === 'operator'" class="cell-text">
+      {{ operatorGroup(row) }}
+    </div>
   </mobile-result>
 
   <table *resultTable class="table table-hover"
     [ngClass]="{'cursor-pointer': canViewProfile}">
     <thead>
-      <th class="avatar"></th>
+      <th *ngIf="resultKind !== 'operator'" class="avatar"></th>
       <th *ngFor="let field of fieldsInList">{{ fieldName(field) }}</th>
       <th *ngIf="resultKind === 'operator'">{{ i18n.user.group }}</th>
     </thead>
     <tbody>
       <tr *ngFor="let row of results.results"
         (click)="canViewProfile ? router.navigate(path(row)) : null">
-        <td class="avatar">
+        <td *ngIf="resultKind !== 'operator'" class="avatar">
           <avatar [image]="user(row).image"></avatar>
         </td>
         <td *ngFor="let field of fieldsInList">
@@ -40,7 +43,8 @@
     </tbody>
   </table>
 
-  <tiled-result *resultTile="let row" [image]="user(row).image" icon="user">
+  <tiled-result *resultTile="let row" [image]="user(row).image" icon="user"
+    zoom>
     <div *ngFor="let field of fieldsInTile; let first = first"
       [ngClass]="first ? 'card-title' : 'card-text'">
       <format-field-value class="d-block text-truncate"

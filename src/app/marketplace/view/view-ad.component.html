@@ -3,21 +3,16 @@
     [mobileHeading]="i18n.ad.mobileTitle.details"
     [headingActions]="headingActions$ | async">
 
-    <div *ngIf="ad.image && (layout.ltsm$ | async)"
-      class="d-flex justify-content-center mt-2 mb-4">
-      <avatar [roundBorders]="false" [zoom]="false" size="160" imageSize="200"
-        useLightbox [image]="ad.image"
-        [additionalImages]="ad.additionalImages"></avatar>
-    </div>
+    <profile-images *ngIf="ad.image && (layout.ltsm$ | async)"
+      [image]="ad.image" [additionalImages]="ad.additionalImages">
+    </profile-images>
 
     <div class="d-flex flex-row-reverse">
-      <div *ngIf="layout.gtxs$ | async" class="image ml-4">
-        <avatar [roundBorders]="false" [zoom]="false"
-          [size]="ad.image ? 200 : 128" iconSize="128px" useLightbox
-          icon="shopping_basket" [image]="ad.image"
-          [additionalImages]="ad.additionalImages">
-        </avatar>
-      </div>
+      <profile-images *ngIf="ad.image && (layout.gtxs$ | async)"
+        icon="shopping_basket" [image]="ad.image"
+        [additionalImages]="ad.additionalImages">
+      </profile-images>
+
       <div class="d-flex flex-grow-1 flex-column">
         <label-value [label]="i18n.ad.name" [value]="ad.name"></label-value>
         <label-value [label]="categoryLabel">

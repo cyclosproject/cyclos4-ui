@@ -2,9 +2,12 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import {
-  ConflictError, ConflictErrorCode, ErrorKind, ForbiddenError, ForbiddenErrorCode, ForgottenPasswordError, ForgottenPasswordErrorCode,
-  InputError, InputErrorCode, NestedError, NotFoundError, OtpError, PasswordStatusEnum, PaymentError, PaymentErrorCode, RedeemVoucherError,
-  RedeemVoucherErrorCode, UnauthorizedError, UnauthorizedErrorCode, BuyVoucherError, BuyVoucherErrorCode, ShoppingCartErrorCode, ShoppingCartError
+  BuyVoucherError, BuyVoucherErrorCode, ConflictError, ConflictErrorCode,
+  ErrorKind, ForbiddenError, ForbiddenErrorCode, ForgottenPasswordError,
+  ForgottenPasswordErrorCode, InputError, InputErrorCode, NestedError, NotFoundError,
+  OtpError, PasswordStatusEnum, PaymentError, PaymentErrorCode, RedeemVoucherError,
+  RedeemVoucherErrorCode, ShoppingCartError, ShoppingCartErrorCode,
+  UnauthorizedError, UnauthorizedErrorCode
 } from 'app/api/models';
 import { BankingHelperService } from 'app/core/banking-helper.service';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';

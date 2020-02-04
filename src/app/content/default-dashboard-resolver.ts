@@ -101,7 +101,7 @@ export class DefaultDashboardResolver implements DashboardResolver {
   }
 
   /**
-   * Shows the last 6 advertisements on tablet / desktop displays
+   * Shows the last 6 advertisements on tablet / desktop displays.
    */
   latestAds(injector: Injector): DashboardItemConfig | null {
     // Account status
@@ -111,6 +111,7 @@ export class DefaultDashboardResolver implements DashboardResolver {
     }
     return DashboardItemConfig.latestAds({
       max: 6,
+      showOwner: false,
       column: 'left',
       breakpoints: ['gt-sm'],
       minHeight: this.minHeight

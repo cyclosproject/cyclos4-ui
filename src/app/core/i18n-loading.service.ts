@@ -100,7 +100,9 @@ export class I18nLoadingService {
    */
   private setLocale(locale: string, translationValues: any) {
     this.i18n.initialize(translationValues);
-    this.locale$.next(locale);
+    if (this.locale$.value !== locale) {
+      this.locale$.next(locale);
+    }
     document.documentElement.lang = locale.toLowerCase();
   }
 }

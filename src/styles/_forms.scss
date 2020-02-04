@@ -290,6 +290,13 @@ $spaced-label-values: (
   width: 66.66% !important;
 }
 
+.inline-label {
+  font-weight: $font-weight-bold;
+}
+.inline-label::after {
+  content: ": ";
+}
+
 body.dark {
   label {
     color: $label-color-dark;

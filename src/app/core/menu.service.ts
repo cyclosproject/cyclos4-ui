@@ -461,8 +461,8 @@ export class MenuService {
       if (restrictedAccess) {
         return;
       }
-      const pages = contentPages.filter(p => {
-        return p.rootMenu === menu.root && p.isVisible(this.injector);
+      const pages = (contentPages || []).filter(p => {
+        return p.rootMenu === menu.root && p.isVisible(auth, this.injector);
       });
       for (const page of pages) {
         const activeMenu = new ActiveMenu(menu, {

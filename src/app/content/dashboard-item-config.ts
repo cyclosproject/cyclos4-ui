@@ -144,6 +144,11 @@ namespace DashboardItemConfig {
      * Maximum number of advertisements
      */
     max?: number;
+
+    /**
+     * Indicates whether the advertisement owner should be displayed in the list
+     */
+    showOwner?: boolean;
   }
 
   /**
@@ -152,7 +157,8 @@ namespace DashboardItemConfig {
   export function latestAds(params: LatestAdsParams): DashboardItemConfig {
     return config(DashboardItemType.LATEST_ADS, params, {
       groups: params.groups,
-      max: params.max == null ? 6 : params.max
+      max: params.max == null ? 6 : params.max,
+      showOwner: !!params.showOwner
     });
   }
 

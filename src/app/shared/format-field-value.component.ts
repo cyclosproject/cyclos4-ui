@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Injector, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injector, Input, OnInit, HostBinding } from '@angular/core';
 import {
   CustomField, CustomFieldDetailed, CustomFieldTypeEnum, CustomFieldValue,
   Image, LinkedEntityTypeEnum, StoredFile
@@ -16,6 +16,9 @@ const DIRECT_TYPES = [
   CustomFieldTypeEnum.STRING,
   CustomFieldTypeEnum.DYNAMIC_SELECTION,
   CustomFieldTypeEnum.BOOLEAN,
+  CustomFieldTypeEnum.INTEGER,
+  CustomFieldTypeEnum.DECIMAL,
+  CustomFieldTypeEnum.DATE,
   CustomFieldTypeEnum.LINKED_ENTITY
 ];
 
@@ -78,6 +81,14 @@ export class FormatFieldValueComponent extends AbstractComponent implements OnIn
    */
   @Input() files: StoredFile[];
 
+  private _inline: boolean | string = false;
+  @HostBinding('class.inline') @Input() get inline(): boolean | string {
+    return this._inline;
+  }
+  set inline(flag: boolean | string) {
+    this._inline = truthyAttr(flag);
+  }
+
   /**
    * Indicates that multi-line / rich text should be rendered as plain text with no line breaks
    */
@@ -134,9 +145,9 @@ export class FormatFieldValueComponent extends AbstractComponent implements OnIn
         }
         break;
       case CustomFieldTypeEnum.DATE:
-        return this.fieldValue.dateValue;
+        return this.format.formatAsDate(this.fieldValue.dateValue);
       case CustomFieldTypeEnum.DECIMAL:
-        return this.fieldValue.decimalValue;
+        return this.format.formatAsNumber(this.fieldValue.decimalValue, this.field.decimalDigits);
       case CustomFieldTypeEnum.DYNAMIC_SELECTION:
         const dyn = this.fieldValue.dynamicValue;
         if (dyn) {
@@ -148,7 +159,7 @@ export class FormatFieldValueComponent extends AbstractComponent implements OnIn
       case CustomFieldTypeEnum.IMAGE:
         return this.fieldValue.imageValues;
       case CustomFieldTypeEnum.INTEGER:
-        return this.fieldValue.integerValue;
+        return this.format.formatAsNumber(this.fieldValue.integerValue, 0);
       case CustomFieldTypeEnum.LINKED_ENTITY:
         let entity = null;
         switch (this.field.linkedEntityType) {

@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { NgxGalleryModule } from 'ngx-gallery';
 import { AccountPipe } from 'app/shared/account.pipe';
 import { ActionsComponent } from 'app/shared/actions.component';
 import { AddressDetailsComponent } from 'app/shared/address-details.component';
@@ -95,6 +96,7 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { SortableModule } from 'ngx-bootstrap/sortable';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
+import { ProfileImagesComponent } from 'app/shared/profile-images.component';
 
 
 export function initTooltipConfig(): TooltipConfig {
@@ -174,6 +176,7 @@ export function initTooltipConfig(): TooltipConfig {
     ResultTypeFieldComponent,
     AddressDetailsComponent,
     ProfileAddressesComponent,
+    ProfileImagesComponent,
     UserLinkComponent,
     UserInfoComponent,
     UserFieldComponent,
@@ -207,6 +210,7 @@ export function initTooltipConfig(): TooltipConfig {
     ProgressbarModule.forRoot(),
     SortableModule.forRoot(),
     TooltipModule.forRoot(),
+    NgxGalleryModule,
 
     LayoutModule,
 
@@ -225,6 +229,7 @@ export function initTooltipConfig(): TooltipConfig {
     ProgressbarModule,
     SortableModule,
     TooltipModule,
+    NgxGalleryModule,
 
     LayoutModule,
 
@@ -290,6 +295,7 @@ export function initTooltipConfig(): TooltipConfig {
     ResultTypeFieldComponent,
     AddressDetailsComponent,
     ProfileAddressesComponent,
+    ProfileImagesComponent,
     UserLinkComponent,
     UserInfoComponent,
     UserFieldComponent,

@@ -14,6 +14,7 @@ import { setRootSpinnerVisible, handleKeyboardFocus } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
 import { BehaviorSubject } from 'rxjs';
 import { ShortcutService, ArrowsVertical } from 'app/shared/shortcut.service';
+import 'hammerjs';
 
 @Component({
   selector: 'app-root',

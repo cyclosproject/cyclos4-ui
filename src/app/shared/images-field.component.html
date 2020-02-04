@@ -16,7 +16,7 @@
       </ng-container>
       <avatar class="d-block mr-1" *ngFor="let img of images"
         [size]="avatarSize" useLightbox [image]="img"
-        [additionalImages]="images" additionalImagesHidden></avatar>
+        [additionalImages]="images"></avatar>
     </div>
     <div class="d-flex ml-xs-2">
       <button *ngIf="maxFiles === 1 || images.length < maxFiles"

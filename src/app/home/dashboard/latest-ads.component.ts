@@ -19,6 +19,7 @@ export class LatestAdsComponent extends BaseDashboardComponent implements OnInit
 
   @Input() groups: string[];
   @Input() max: number;
+  @Input() showOwner: boolean;
 
   ads$ = new BehaviorSubject<AdResult[]>(null);
 

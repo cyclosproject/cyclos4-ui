@@ -1,26 +1,23 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import {
-  AdCategoryWithParent, AdView, AdKind, RoleEnum, DeliveryMethod, DeliveryMethodChargeTypeEnum, AdQuestionView
-} from 'app/api/models';
-import { MarketplaceService, AdQuestionsService, ShoppingCartsService } from 'app/api/services';
+import { AdCategoryWithParent, AdKind, AdQuestionView, AdView, DeliveryMethod, DeliveryMethodChargeTypeEnum, RoleEnum } from 'app/api/models';
+import { AdQuestionsService, MarketplaceService, ShoppingCartsService } from 'app/api/services';
+import { LoginService } from 'app/core/login.service';
+import { MarketplaceHelperService } from 'app/core/marketplace-helper.service';
 import { OperationHelperService } from 'app/core/operation-helper.service';
 import { HeadingAction } from 'app/shared/action';
 import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
-import { words } from 'app/shared/helper';
+import { empty, words } from 'app/shared/helper';
 import { Menu } from 'app/shared/menu';
-import { Observable } from 'rxjs';
-import { MarketplaceHelperService } from 'app/core/marketplace-helper.service';
-import { LoginService } from 'app/core/login.service';
-import { BsModalService } from 'ngx-bootstrap/modal';
-import { empty } from 'app/shared/helper';
 import { TextDialogComponent } from 'app/shared/text-dialog.component';
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { Observable } from 'rxjs';
+
 /**
  * Displays an advertisement details
  */
 @Component({
   selector: 'view-ad',
   templateUrl: 'view-ad.component.html',
-  styleUrls: ['../../users/profile/view-profile.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ViewAdComponent extends BaseViewPageComponent<AdView> implements OnInit {
@@ -109,6 +106,7 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
     this.hasStatus = !this.guest && (this.authHelper.isSelfOrOwner(ad.owner) ||
       (this.dataForUiHolder.role === RoleEnum.ADMINISTRATOR ||
         this.dataForUiHolder.role === RoleEnum.BROKER));
+
     const headingActions: HeadingAction[] = [];
     if (ad.canBuy) {
       headingActions.push(

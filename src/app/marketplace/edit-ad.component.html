@@ -21,8 +21,7 @@
               class="col-12 col-xs-6 col-sm-4 col-md-3 d-flex justify-content-center justify-content-center"
               *ngFor="let image of (images$ | async)">
               <avatar [image]="image" size="huge" [roundBorders]="false"
-                useLightbox [additionalImages]="images" additionalImagesHidden
-                class="mb-1 mb-xs-3">
+                useLightbox [additionalImages]="images" class="mb-1 mb-xs-3">
               </avatar>
             </div>
             <ng-container *ngIf="images.length === 0">
@@ -42,13 +41,16 @@
           </image-upload>
         </ng-container>
         <h2 *ngIf="data.maxImages > 0" class="mt-4 mb-2"></h2>
-        <label-value *ngIf="!self" [label]="i18n.general.user" class="mb-3">
+        <label-value kind="fieldView" *ngIf="!self"
+          [label]="i18n.general.user" class="mb-3">
           <user-link [user]="data.owner"></user-link>
         </label-value>
-        <label-value *ngIf="!create" [label]="i18n.general.status">
+        <label-value kind="fieldView" *ngIf="!create"
+          [label]="i18n.general.status">
           {{ status }}
         </label-value>
-        <label-value *ngIf="!create" [label]="i18n.ad.creationDate">
+        <label-value kind="fieldView" *ngIf="!create"
+          [label]="i18n.ad.creationDate">
           {{ creationDate | date }}
         </label-value>
         <input-field [label]="i18n.general.name" formControlName="name"

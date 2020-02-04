@@ -1,0 +1,7 @@
+<avatar *ngIf="galleryImages.length === 0 && icon" size="128" iconSize="128px"
+  [icon]="icon"></avatar>
+<img *ngIf="galleryImages.length === 1" class="single-image cursor-pointer"
+  [src]="image.url" (click)="showLightbox()">
+<ngx-gallery *ngIf="galleryImages.length > 0" [options]="galleryOptions"
+  [images]="galleryImages">
+</ngx-gallery>

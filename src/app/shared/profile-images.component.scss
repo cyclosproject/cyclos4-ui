@@ -1,0 +1,46 @@
+@import 'src/definitions';
+
+:host {
+  display: flex;
+  justify-content: center;
+  margin: 0.5rem 0 1.5rem 0;
+}
+:host ::ng-deep {
+  icon {
+    color: $tiled-results-icon-color;
+  }
+  .ngx-gallery-image, .ngx-gallery-thumbnail {
+    border: 1px solid $border-color;
+    z-index: 100 !important;
+  }
+  .ngx-gallery-arrow-wrapper, .ngx-gallery-icon {
+    z-index: 200 !important;
+  }  
+}
+:host:not(.single-image) ::ng-deep {
+  ngx-gallery {
+    width: 16rem !important;
+    height: 16rem !important;
+  }  
+}
+
+@include media-breakpoint-up(sm) {
+  :host {
+    justify-content: end;
+    margin: 0 0 0 1.5rem;
+  }
+}
+img.single-image {
+  max-width: 16rem;
+  max-height: 13rem;
+  margin-bottom: 0.2rem;
+}
+
+body.dark :host ::ng-deep {
+  icon {
+    color: $tiled-results-icon-color-dark;
+  }
+  .ngx-gallery-image, .ngx-gallery-thumbnail {
+    border-color: $border-color-dark;
+  }
+}

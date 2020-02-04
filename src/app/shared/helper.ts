@@ -3,13 +3,17 @@ import { LatLngBounds } from '@agm/core';
 import { HttpResponse } from '@angular/common/http';
 import { ElementRef } from '@angular/core';
 import { AbstractControl, FormArray, FormControl, FormGroup } from '@angular/forms';
-import { Address, GeographicalCoordinate } from 'app/api/models';
+import { Address, GeographicalCoordinate, Image } from 'app/api/models';
 import { FormControlLocator } from 'app/shared/form-control-locator';
 import { LayoutService } from 'app/shared/layout.service';
 import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp, End, Home, PageDown, PageUp } from 'app/shared/shortcut.service';
 import download from 'downloadjs';
+import { NgxGalleryImage } from 'ngx-gallery';
 import { combineLatest, Observable, of, Subject } from 'rxjs';
 import { first, tap } from 'rxjs/operators';
+
+const SmallThumbSize = [160, 100];
+const MediumThumbSize = [320, 200];
 
 /**
  * Sets whether the root spinner in the page is visible
@@ -828,4 +832,15 @@ export function blurIfClick(el: ElementReference, event: MouseEvent) {
 export function enumValues<T>(type: any): T[] {
   const keys = Object.keys(type);
   return keys.map(k => type[k]) as T[];
+}
+
+/**
+ * Returns a ngx-gallery image representing the given image
+ */
+export function galleryImage(image: Image): NgxGalleryImage {
+  return new NgxGalleryImage({
+    big: image.url,
+    medium: `${image.url}?width=${MediumThumbSize[0]}&height=${MediumThumbSize[1]}`,
+    small: `${image.url}?width=${SmallThumbSize[0]}&height=${SmallThumbSize[1]}`
+  });
 }
