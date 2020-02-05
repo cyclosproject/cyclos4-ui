@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { AdQuestionView } from 'app/api/models';
 import { AdQuestionsService } from 'app/api/services';
 import { BasePageComponent } from 'app/shared/base-page.component';
@@ -19,7 +19,7 @@ export class AnswerFormComponent
   implements OnInit {
 
   id: string;
-  form: FormGroup;
+  answer = new FormControl(null, Validators.required);
 
   constructor(
     injector: Injector,
@@ -35,23 +35,19 @@ export class AnswerFormComponent
     ));
   }
 
-  onDataInitialized() {
-    this.form = this.formBuilder.group({
-      answer: null
-    });
-  }
-
   submit() {
-    validateBeforeSubmit(this.form);
-    if (!this.form.valid) {
+    validateBeforeSubmit(this.answer);
+    if (!this.answer.valid) {
       return;
     }
     this.addSub(this.adQuestionService.answerAdQuestion({
       id: this.id,
-      body: this.form.value
+      body: this.answer.value
     }).subscribe(() => {
       this.notification.snackBar(this.i18n.ad.questionAnswered);
-      history.back();
+      this.router.navigate(['/marketplace', 'unanswered-questions'], {
+        replaceUrl: true
+      });
     }));
   }
 

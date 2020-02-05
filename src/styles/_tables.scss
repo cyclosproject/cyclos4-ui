@@ -148,6 +148,7 @@ table.table {
 
 .link {
   color: $link-color !important;
+  cursor: pointer;
 }
 .link:hover {
   text-decoration: underline !important;

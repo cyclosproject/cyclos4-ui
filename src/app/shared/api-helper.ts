@@ -137,6 +137,14 @@ export class ApiHelper {
           path: `/marketplace/view/${notification.entityId}`,
           menu: new ActiveMenu(Menu.SEARCH_ADS)
         };
+      case NotificationEntityTypeEnum.AD_QUESTION:
+        const answer = notification.type === NotificationTypeEnum.AD_QUESTION_ANSWERED;
+        return {
+          path: answer ?
+            `/marketplace/view/${notification.entityId}` :
+            `/marketplace/unanswered-questions/view/${notification.entityId}`,
+          menu: new ActiveMenu(answer ? Menu.SEARCH_ADS : Menu.UNANSWERED_QUESTIONS)
+        };
       case NotificationEntityTypeEnum.ORDER:
         return {
           path: `/marketplace/order/${notification.entityId}`,
