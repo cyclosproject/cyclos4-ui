@@ -264,6 +264,7 @@
     "marketplace.userSearch": "Users",
     "marketplace.businessDirectory": "Business directory",
     "marketplace.advertisements": "Advertisements",
+    "marketplace.adInterests": "Advertisement interests",
     "marketplace.deliveryMethods": "Delivery methods",
     "marketplace.webshopSettings": "Webshop settings",
     "marketplace.myAdvertisements": "My advertisements",
@@ -890,6 +891,7 @@
       "viewBrokers": "View brokers",
       "viewOperators": "View operators",
       "viewWebshop": "View webshop",
+      "adInterests": "Ad interests",
       "deliveryMethods": "Delivery methods",
       "webshopSettings": "Webshop settings",
       "status.user": "User status",
@@ -1113,6 +1115,8 @@
       "min": "- the quantity demanded cannot be delivered, because there is a minimum of items you are allowed to have in your shopping cart. The quantity of this article is automatically increased.<br>",
       "stock": "- the quantity demanded cannot be delivered, because the article is almost out of stock. The quantity of this article is automatically reduced.<br>"
     },
+    "adInterestCreated": "The ad interest was created",
+    "adInterestSaved": "The ad interest was saved",
     "adSaved": "The advertisement was saved",
     "adHidden": "The advertisement has been hidden",
     "adUnhidden": "The advertisement is now visible",
@@ -1161,6 +1165,7 @@
     "maxPrice": "Max. price",
     "minDeliveryTime": "Min. delivery time",
     "maxDeliveryTime": "Max. delivery time",
+    "matchFields": "Match the following ad fields",
     "name": "Title",
     "negotiated": "Negotiated",
     "noRemarksGiven": "No remarks given",
@@ -1283,7 +1288,10 @@
       "confirmOrder": "Confirm order",
       "webshopSettings": "Webshop settings",
       "unansweredQuestions": "Unanswered questions",
-      "answerQuestion": "Answer question"
+      "answerQuestion": "Answer question",
+      "adInterests": "Advertisement interests",
+      "adInterestNew": "New advertisement interest",
+      "adInterest": "Advertisement interest"
     },
     "mobileTitle": {
       "search": "Advertisements",
@@ -1305,7 +1313,10 @@
       "confirmOrder": "Confirm order",
       "webshopSettings": "Webshop settings",
       "unansweredQuestions": "Unanswered questions",
-      "answerQuestion": "Answer question"
+      "answerQuestion": "Answer question",
+      "adInterests": "Advertisment interests",
+      "adInterestNew": "New advertisement interest",
+      "adInterest": "Advertisement interest"
     }
   },
   "notification": {

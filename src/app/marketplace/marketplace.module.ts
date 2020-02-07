@@ -22,6 +22,9 @@ import { EditWebshopSettingsComponent } from 'app/marketplace/settings/edit-webs
 import { ViewDeliveryMethodComponent } from 'app/marketplace/delivery-methods/view-delivery-method.component';
 import { SearchUnansweredQuestionsComponent } from 'app/marketplace/search/search-unanswered-questions.component';
 import { AnswerFormComponent } from 'app/marketplace/answer-form.component';
+import { ListAdInterestsComponent } from 'app/marketplace/interests/list-ad-interests.component';
+import { ViewAdInterestComponent } from 'app/marketplace/interests/view-ad-interest.component';
+import { EditAdInterestComponent } from 'app/marketplace/interests/edit-ad-interest.component';
 
 /**
  * Marketplace module
@@ -46,8 +49,11 @@ import { AnswerFormComponent } from 'app/marketplace/answer-form.component';
     ShoppingCartItemsComponent,
     ListShoppingCartComponent,
     ListDeliveryMethodsComponent,
+    ListAdInterestsComponent,
     EditDeliveryMethodComponent,
+    EditAdInterestComponent,
     ViewDeliveryMethodComponent,
+    ViewAdInterestComponent,
     EditWebshopSettingsComponent,
     ViewWebshopSettingsComponent,
     SearchUnansweredQuestionsComponent,

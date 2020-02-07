@@ -92,6 +92,7 @@ export module Menu {
   export const SEARCH_USER_WEBSHOP = new Menu(RootMenu.MARKETPLACE, 'SEARCH_USER_WEBSHOP');
   export const SALES = new Menu(RootMenu.MARKETPLACE, 'SALES');
   export const DELIVERY_METHODS = new Menu(RootMenu.MARKETPLACE, 'DELIVERY_METHODS');
+  export const AD_INTERESTS = new Menu(RootMenu.MARKETPLACE, 'AD_INTERESTS');
   export const WEBSHOP_SETTINGS = new Menu(RootMenu.MARKETPLACE, 'WEBSHOP_SETTINGS');
   export const UNANSWERED_QUESTIONS = new Menu(RootMenu.MARKETPLACE, 'UNANSWERED_QUESTIONS');
   export const CONNECTED_USERS = new Menu(RootMenu.MARKETPLACE, 'CONNECTED_USERS');

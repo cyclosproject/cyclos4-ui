@@ -543,7 +543,7 @@ export class MenuService {
       if (users.search || users.map) {
         add(Menu.PUBLIC_DIRECTORY, '/users/search', publicDirectory.icon, publicDirectory.label);
       }
-      if (marketplace.search) {
+      if (marketplace.userSimple.view || marketplace.userWebshop.view) {
         add(Menu.PUBLIC_MARKETPLACE, '/marketplace/search', publicMarketplace.icon, publicMarketplace.label);
       }
       const registrationGroups = (this.dataForUiHolder.dataForUi || {}).publicRegistrationGroups || [];
@@ -648,20 +648,23 @@ export class MenuService {
         add(Menu.USER_ALERTS, '/users/alerts', 'notification_important', this.i18n.menu.marketplaceUserAlerts);
       }
 
-      if (marketplace.search) {
+      if (marketplace.userSimple.view || marketplace.userWebshop.view) {
         add(Menu.SEARCH_ADS, '/marketplace/search', 'shopping_cart', this.i18n.menu.marketplaceAdvertisements);
       }
 
-      // Shopping cart
       if (marketplace.userWebshop.purchase) {
         add(Menu.SHOPPING_CART, '/marketplace/shopping-cart', 'shopping_cart', this.i18n.menu.shoppingCart);
+      }
+
+      if (marketplace.interests) {
+        add(Menu.AD_INTERESTS, 'marketplace/self/ad-interests', 'star', this.i18n.menu.marketplaceAdInterests);
       }
 
       const simple = marketplace.mySimple || {};
       if (simple.enable) {
         add(Menu.SEARCH_USER_ADS, 'marketplace/self/simple/list', 'shop', this.i18n.menu.marketplaceMyAdvertisements);
       }
-      if (marketplace.purchase) {
+      if (marketplace.userWebshop.purchase) {
         add(Menu.PURCHASES, 'marketplace/self/purchases', 'shop_two', this.i18n.menu.marketplaceMyPurchases);
       }
       const webshop = marketplace.myWebshop || {};

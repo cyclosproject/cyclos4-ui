@@ -59,7 +59,7 @@ export class UserIdentityProvidersComponent
         this.connect(uip);
       }));
     }
-    if (uip.status === UserIdentityProviderStatusEnum.LINKED && this.data.canManage) {
+    if (uip.status === UserIdentityProviderStatusEnum.LINKED && this.data.canEdit) {
       actions.push(new Action(this.i18n.identityProvider.action.disconnect, () => {
         this.disconnect(uip);
       }));

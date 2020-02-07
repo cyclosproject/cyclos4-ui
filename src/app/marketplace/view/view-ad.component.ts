@@ -1,5 +1,8 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { AdCategoryWithParent, AdKind, AdQuestionView, AdView, DeliveryMethod, DeliveryMethodChargeTypeEnum, RoleEnum } from 'app/api/models';
+import {
+  AdCategoryWithParent, AdKind, AdQuestionView, AdView,
+  DeliveryMethod, DeliveryMethodChargeTypeEnum, RoleEnum
+} from 'app/api/models';
 import { AdQuestionsService, MarketplaceService, ShoppingCartsService } from 'app/api/services';
 import { LoginService } from 'app/core/login.service';
 import { MarketplaceHelperService } from 'app/core/marketplace-helper.service';

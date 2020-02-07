@@ -431,18 +431,19 @@ export class FormatService {
    * Formats a range of values
    * @param range The range, with min and max values
    */
-  formatRange(range: { min?: any, max?: any }): string {
+  formatRange(range: { min?: any, max?: any }, currency?: Currency): string {
     if (range == null || range.min == null && range.max == null) {
       return '';
     }
     if (range.min != null && range.max != null) {
       return this.i18n.general.range.fromTo({
-        min: range.min, max: range.max
+        min: currency ? this.formatAsCurrency(currency, range.min) : range.min,
+        max: currency ? this.formatAsCurrency(currency, range.max) : range.max
       });
     } else if (range.min != null) {
-      return this.i18n.general.range.from(range.min);
+      return this.i18n.general.range.from(currency ? this.formatAsCurrency(currency, range.min) : range.min);
     } else if (range.max != null) {
-      return this.i18n.general.range.to(range.max);
+      return this.i18n.general.range.to(currency ? this.formatAsCurrency(currency, range.max) : range.max);
     }
   }
 

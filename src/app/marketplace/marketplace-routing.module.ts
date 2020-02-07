@@ -17,6 +17,9 @@ import { ViewWebshopSettingsComponent } from 'app/marketplace/settings/view-webs
 import { EditWebshopSettingsComponent } from 'app/marketplace/settings/edit-webshop-settings.component';
 import { SearchUnansweredQuestionsComponent } from 'app/marketplace/search/search-unanswered-questions.component';
 import { AnswerFormComponent } from 'app/marketplace/answer-form.component';
+import { ListAdInterestsComponent } from 'app/marketplace/interests/list-ad-interests.component';
+import { ViewAdInterestComponent } from 'app/marketplace/interests/view-ad-interest.component';
+import { EditAdInterestComponent } from 'app/marketplace/interests/edit-ad-interest.component';
 
 const marketplaceRoutes: Routes = [
   {
@@ -75,8 +78,16 @@ const marketplaceRoutes: Routes = [
         component: ListDeliveryMethodsComponent
       },
       {
+        path: ':user/ad-interests',
+        component: ListAdInterestsComponent
+      },
+      {
         path: 'delivery-methods/view/:id',
         component: ViewDeliveryMethodComponent
+      },
+      {
+        path: 'ad-interests/view/:id',
+        component: ViewAdInterestComponent
       },
       {
         path: 'delivery-methods/edit/:id',
@@ -85,6 +96,14 @@ const marketplaceRoutes: Routes = [
       {
         path: ':user/delivery-methods/new',
         component: EditDeliveryMethodComponent
+      },
+      {
+        path: ':user/ad-interests/new',
+        component: EditAdInterestComponent
+      },
+      {
+        path: 'ad-interests/edit/:id',
+        component: EditAdInterestComponent
       },
       {
         path: ':user/webshop-settings/view',
