@@ -35,10 +35,10 @@ export class ViewAdInterestComponent extends BaseViewPageComponent<AdInterestVie
 
   onDataInitialized(data: AdInterestView) {
 
-    this.self = this.authHelper.isSelfOrOwner(data.user);
+    this.self = this.authHelper.isSelfOrOwner(data.owner);
 
     const actions = [];
-    if (data.edit) {
+    if (data.canEdit) {
       actions.push(
         new HeadingAction('edit', this.i18n.general.edit, () =>
           this.router.navigate(['/marketplace', 'ad-interests', 'edit', this.id]), true

@@ -4,17 +4,20 @@
       [heading]="create ? i18n.ad.title.adInterestNew : i18n.ad.title.adInterest"
       [mobileHeading]="create ? i18n.ad.mobileTitle.adInterestNew : i18n.ad.mobileTitle.adInterest"
       [headingActions]="headingActions$ | async">
+      <label-value *ngIf="!self" [label]="i18n.general.user">
+        <user-link [user]="data.user"></user-link>
+      </label-value>
       <form [formGroup]="form">
         <input-field formControlName="name" [label]="i18n.general.name"
           required></input-field>
-        <single-selection-field labelPosition="side" formControlName="kind"
+        <single-selection-field formControlName="kind"
           [label]="i18n.general.type">
           <field-option [text]="i18n.ad.type.simple" value="simple">
           </field-option>
           <field-option [text]="i18n.ad.type.webshop" value="webshop">
           </field-option>
         </single-selection-field>
-        <user-field formControlName="user" [label]="i18n.general.user">
+        <user-field formControlName="user" [label]="i18n.general.by">
         </user-field>
         <single-selection-field
           *ngIf="data.currencies && data.currencies.length > 1"
