@@ -59,7 +59,7 @@ export class EditAdInterestComponent
 
     this.form = this.formBuilder.group({
       name: [ai.name, Validators.required],
-      keywords: null, // TODO ai.keywords,
+      keywords: [ai.keywords, null],
       kind: ai.kind,
       category: ai.category,
       user: ai.user,

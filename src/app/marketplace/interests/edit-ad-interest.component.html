@@ -10,6 +10,9 @@
       <form [formGroup]="form">
         <input-field formControlName="name" [label]="i18n.general.name"
           required></input-field>
+        <text-selection-field formControlName="keywords"
+          [label]="i18n.general.keywords">
+        </text-selection-field>
         <single-selection-field formControlName="kind"
           [label]="i18n.general.type">
           <field-option [text]="i18n.ad.type.simple" value="simple">

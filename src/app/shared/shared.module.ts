@@ -97,6 +97,7 @@ import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
 import { SortableModule } from 'ngx-bootstrap/sortable';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ProfileImagesComponent } from 'app/shared/profile-images.component';
+import { TextSelectionFieldComponent } from 'app/shared/text-selection-field.component';
 
 
 export function initTooltipConfig(): TooltipConfig {
@@ -181,6 +182,7 @@ export function initTooltipConfig(): TooltipConfig {
     UserInfoComponent,
     UserFieldComponent,
     MultipleUsersFieldComponent,
+    TextSelectionFieldComponent,
     PickContactComponent,
     ContentMonitorComponent,
     ChipComponent,
@@ -300,6 +302,7 @@ export function initTooltipConfig(): TooltipConfig {
     UserInfoComponent,
     UserFieldComponent,
     MultipleUsersFieldComponent,
+    TextSelectionFieldComponent,
     PickContactComponent,
     ContentMonitorComponent,
     ChipComponent,
