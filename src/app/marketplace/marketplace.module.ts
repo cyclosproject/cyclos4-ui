@@ -25,6 +25,7 @@ import { AnswerFormComponent } from 'app/marketplace/answer-form.component';
 import { ListAdInterestsComponent } from 'app/marketplace/interests/list-ad-interests.component';
 import { ViewAdInterestComponent } from 'app/marketplace/interests/view-ad-interest.component';
 import { EditAdInterestComponent } from 'app/marketplace/interests/edit-ad-interest.component';
+import { SaleFormComponent } from 'app/marketplace/sale-form.component';
 
 /**
  * Marketplace module
@@ -44,6 +45,7 @@ import { EditAdInterestComponent } from 'app/marketplace/interests/edit-ad-inter
     ViewAdComponent,
     ViewOrderComponent,
     ViewOrderHistoryComponent,
+    SaleFormComponent,
     ShowSubCategoriesComponent,
     SetDeliveryMethodComponent,
     ShoppingCartItemsComponent,

@@ -75,7 +75,7 @@ export class SearchRecordsComponent
 
     const headingActions: HeadingAction[] = [];
     if (!this.generalSearch && data.create) {
-      headingActions.push(new HeadingAction('add_circle_outline', this.i18n.general.addNew, () =>
+      headingActions.push(new HeadingAction('add', this.i18n.general.addNew, () =>
         this.router.navigate(['/records', this.param, this.type, 'new']), true));
     }
     this.headingActions = headingActions;

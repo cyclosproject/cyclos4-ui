@@ -1,0 +1,9 @@
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data">
+    <page-content
+      [heading]="create ? i18n.ad.title.newOrder : i18n.ad.title.order"
+      [mobileHeading]="create ? i18n.ad.mobileTitle.newOrder : i18n.ad.mobileTitle.order">
+
+    </page-content>
+  </ng-container>
+</page-layout>

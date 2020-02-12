@@ -7,6 +7,7 @@ import { Observable, BehaviorSubject } from 'rxjs';
 import { HttpResponse } from '@angular/common/http';
 import { Menu } from 'app/shared/menu';
 import { MarketplaceHelperService } from 'app/core/marketplace-helper.service';
+import { HeadingAction } from 'app/shared/action';
 
 type SearchUserOrdersParams = QueryFilters & {
   user: string,
@@ -28,7 +29,7 @@ type SearchUserOrdersParams = QueryFilters & {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SearchOrdersComponent
-  extends BaseSearchPageComponent<any, SearchUserOrdersParams, UserOrderResult>
+  extends BaseSearchPageComponent<OrderDataForSearch, SearchUserOrdersParams, UserOrderResult>
   implements OnInit {
 
   param: string;
@@ -68,11 +69,36 @@ export class SearchOrdersComponent
     return value;
   }
 
-  onDataInitialized(data: any) {
+  onDataInitialized(data: OrderDataForSearch) {
     super.onDataInitialized(data);
+
+    this.headingActions = this.initActions(data);
+
     this.addSub(this.layout.ltsm$.subscribe(() => {
-      this.headingActions = this.layout.ltsm ? [this.moreFiltersAction] : [];
+      this.headingActions = this.initActions(data);
     }));
+  }
+
+  protected initActions(data: OrderDataForSearch) {
+    const actions: HeadingAction[] = [];
+    if (this.sales && data.canCreateNew) {
+      const newAction = new HeadingAction('add', this.i18n.general.addNew, this.addNew(), true);
+      actions.push(newAction);
+    }
+    if (this.layout.ltsm) {
+      actions.push(this.moreFiltersAction);
+    }
+    return actions;
+  }
+
+  private addNew() {
+    // const ref = this.modal.show(AddContactDialogComponent, {
+    //   class: 'modal-form'
+    // });
+    // const component = ref.content as AddContactDialogComponent;
+    // this.addSub(component.done.subscribe(user => {
+    // this.router.navigate(['marketplace', this.param, 'sale', 'new']);
+    // }));
   }
 
   showMoreFiltersLabel() {
