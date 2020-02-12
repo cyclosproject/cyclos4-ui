@@ -14,7 +14,7 @@
           [label]="i18n.general.keywords">
         </text-selection-field>
         <single-selection-field formControlName="kind"
-          [label]="i18n.general.type">
+          [label]="i18n.general.type" [emptyOption]="i18n.general.all">
           <field-option [text]="i18n.ad.type.simple" value="simple">
           </field-option>
           <field-option [text]="i18n.ad.type.webshop" value="webshop">
@@ -22,6 +22,15 @@
         </single-selection-field>
         <user-field formControlName="user" [label]="i18n.general.by">
         </user-field>
+        <single-selection-field formControlName="category"
+          [label]="i18n.ad.category">
+          <field-option *ngFor="let cat of categories"
+            [value]="ApiHelper.internalNameOrId(cat)" [id]="cat.id"
+            [internalName]="cat.internalName" [text]="cat.name"
+            [style]="cat.leaf ? 'leaf':'parent'" [level]="cat.level"
+            [disabled]="!cat.leaf">
+          </field-option>
+        </single-selection-field>
         <single-selection-field
           *ngIf="data.currencies && data.currencies.length > 1"
           formControlName="currency" [label]="i18n.general.currency">

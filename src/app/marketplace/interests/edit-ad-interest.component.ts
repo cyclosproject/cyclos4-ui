@@ -6,6 +6,8 @@ import { BasePageComponent } from 'app/shared/base-page.component';
 import { validateBeforeSubmit, empty } from 'app/shared/helper';
 import { Menu } from 'app/shared/menu';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { MarketplaceHelperService } from 'app/core/marketplace-helper.service';
+import { HierarchyItem } from 'app/marketplace/hierarchy-item.component';
 
 /**
  * Edit an advertisement interest
@@ -24,12 +26,14 @@ export class EditAdInterestComponent
   create: boolean;
   self: boolean;
   form: FormGroup;
+  categories: HierarchyItem[] = [];
 
   currency$ = new BehaviorSubject<Currency>(null);
 
   constructor(
     injector: Injector,
-    private adInterestService: AdInterestsService) {
+    private adInterestService: AdInterestsService,
+    private marketplaceHelper: MarketplaceHelperService) {
     super(injector);
   }
 
@@ -56,6 +60,8 @@ export class EditAdInterestComponent
     const ai = data.adInterest;
     const currency = ai.currency ? ai.currency :
       !empty(data.currencies) ? this.ApiHelper.internalNameOrId(data.currencies[0]) : null;
+
+    this.marketplaceHelper.populateCategories(this.categories, data.categories, 0);
 
     this.form = this.formBuilder.group({
       name: [ai.name, Validators.required],

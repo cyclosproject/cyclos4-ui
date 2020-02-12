@@ -1,24 +1,19 @@
-import {
-  AdDataForEdit, AdKind, AdDataForNew, Image, Currency,
-  AdBasicData, AdCategoryWithChildren, AdEdit, DeliveryMethod, AdManage
-} from 'app/api/models';
-import { OnInit, ChangeDetectionStrategy, Component, Injector, ChangeDetectorRef } from '@angular/core';
-import { BasePageComponent } from 'app/shared/base-page.component';
-import { Menu } from 'app/shared/menu';
-import { MarketplaceService, ImagesService } from 'app/api/services';
-import { MarketplaceHelperService } from 'app/core/marketplace-helper.service';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Injector, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
-import { ManageImagesComponent } from 'app/shared/manage-images.component';
-import { first } from 'rxjs/operators';
+import { AdBasicData, AdDataForEdit, AdDataForNew, AdEdit, AdKind, AdManage, Currency, DeliveryMethod, Image } from 'app/api/models';
+import { ImagesService, MarketplaceService } from 'app/api/services';
+import { MarketplaceHelperService } from 'app/core/marketplace-helper.service';
+import { HierarchyItem } from 'app/marketplace/hierarchy-item.component';
+import { BasePageComponent } from 'app/shared/base-page.component';
 import { empty, validateBeforeSubmit } from 'app/shared/helper';
-import { BsModalService } from 'ngx-bootstrap/modal';
+import { ManageImagesComponent } from 'app/shared/manage-images.component';
+import { Menu } from 'app/shared/menu';
 import { cloneDeep } from 'lodash';
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { first } from 'rxjs/operators';
 
-type HierarchyItem = AdCategoryWithChildren & {
-  level: number,
-  leaf: boolean
-};
+
 
 export type StockType = 'available' | 'notAvailable' | 'quantity';
 
@@ -104,7 +99,7 @@ export class EditAdComponent
       ? this.ApiHelper.SELF
       : data.owner.id;
 
-    this.populateCategories(data.categories, 0);
+    this.marketplaceHelper.populateCategories(this.categories, data.categories, 0);
 
     const adManage = data.advertisement;
     const adEdit = adManage as AdEdit;
@@ -216,21 +211,7 @@ export class EditAdComponent
     return 'notAvailable';
   }
 
-  /**
-   * Creates a list of categories with extra information (e.g level, leaf) used for rendering
-   */
-  protected populateCategories(items: AdCategoryWithChildren[], level: number) {
-    for (const item of items) {
-      const hasChildren = !empty(item.children);
-      const hierarchy: HierarchyItem = item as any;
-      hierarchy.level = level;
-      hierarchy.leaf = !hasChildren;
-      this.categories.push(hierarchy);
-      if (hasChildren) {
-        this.populateCategories(item.children, level + 1);
-      }
-    }
-  }
+
 
   /**
    * Resolves the current ad status label
