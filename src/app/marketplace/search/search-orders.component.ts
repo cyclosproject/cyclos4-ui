@@ -1,13 +1,17 @@
 import { ChangeDetectionStrategy, OnInit, Component, Injector } from '@angular/core';
 import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { UserOrderResult } from 'app/api/models/user-order-result';
-import { QueryFilters, OrderStatusEnum, OrderResult, OrderDataForSearch } from 'app/api/models';
+import {
+  QueryFilters, OrderStatusEnum, OrderResult, OrderDataForSearch, CustomFieldTypeEnum, CustomFieldControlEnum,
+  LinkedEntityTypeEnum, CustomFieldDetailed
+} from 'app/api/models';
 import { OrdersService, MarketplaceService } from 'app/api/services';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { HttpResponse } from '@angular/common/http';
 import { Menu } from 'app/shared/menu';
 import { MarketplaceHelperService } from 'app/core/marketplace-helper.service';
 import { HeadingAction } from 'app/shared/action';
+import { empty } from 'app/shared/helper';
 
 type SearchUserOrdersParams = QueryFilters & {
   user: string,
@@ -82,7 +86,7 @@ export class SearchOrdersComponent
   protected initActions(data: OrderDataForSearch) {
     const actions: HeadingAction[] = [];
     if (this.sales && data.canCreateNew) {
-      const newAction = new HeadingAction('add', this.i18n.general.addNew, this.addNew(), true);
+      const newAction = new HeadingAction('add', this.i18n.general.addNew, () => this.addNew(), true);
       actions.push(newAction);
     }
     if (this.layout.ltsm) {
@@ -92,13 +96,52 @@ export class SearchOrdersComponent
   }
 
   private addNew() {
-    // const ref = this.modal.show(AddContactDialogComponent, {
-    //   class: 'modal-form'
-    // });
-    // const component = ref.content as AddContactDialogComponent;
-    // this.addSub(component.done.subscribe(user => {
-    // this.router.navigate(['marketplace', this.param, 'sale', 'new']);
-    // }));
+
+    this.notification.confirm({
+      title: this.i18n.ad.title.newOrder,
+      labelPosition: 'above',
+      customFields: this.newOrderFields(),
+      callback: res => {
+        this.router.navigate(['marketplace', this.param, 'sale', 'new'], {
+          queryParams: {
+            buyer: res.customValues.buyer,
+            currency: res.customValues.currency
+          }
+        });
+      }
+    });
+  }
+
+  protected newOrderFields(): CustomFieldDetailed[] {
+    const fields: CustomFieldDetailed[] = [
+      {
+        internalName: 'buyer',
+        name: this.i18n.ad.buyer,
+        type: CustomFieldTypeEnum.LINKED_ENTITY,
+        control: CustomFieldControlEnum.ENTITY_SELECTION,
+        linkedEntityType: LinkedEntityTypeEnum.USER,
+        hasValuesList: false,
+        required: true
+      }
+    ];
+    if (!empty(this.data.currencies) && this.data.currencies.length > 1) {
+      fields.push({
+        internalName: 'currency',
+        name: this.i18n.general.currency,
+        type: CustomFieldTypeEnum.SINGLE_SELECTION,
+        control: CustomFieldControlEnum.SINGLE_SELECTION,
+        hasValuesList: true,
+        defaultValue: this.data.currencies[0].id,
+        possibleValues: this.data.currencies.map(c => {
+          return {
+            id: c.id,
+            value: c.name
+          };
+        }),
+        required: true
+      });
+    }
+    return fields;
   }
 
   showMoreFiltersLabel() {
@@ -121,6 +164,9 @@ export class SearchOrdersComponent
   }
 
   path(row: UserOrderResult): string[] {
+    if (row.status === OrderStatusEnum.DRAFT) {
+      return ['/marketplace', 'sale', row.id];
+    }
     return ['/marketplace', 'order', row.id];
   }
 

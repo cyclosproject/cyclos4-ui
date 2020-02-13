@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { OrderDataForEdit, OrderDataForNew } from 'app/api/models';
+import { OrdersService } from 'app/api/services';
+import { MarketplaceHelperService } from 'app/core/marketplace-helper.service';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { Menu } from 'app/shared/menu';
-import { OrdersService } from 'app/api/services';
 import { Observable } from 'rxjs';
 
 /**
@@ -21,12 +22,32 @@ export class SaleFormComponent
 
   constructor(
     injector: Injector,
-    private orderService: OrdersService) {
+    private orderService: OrdersService,
+    public marketplaceHelper: MarketplaceHelperService) {
     super(injector);
   }
 
   ngOnInit() {
     super.ngOnInit();
+
+    const buyer = this.route.snapshot.queryParams.buyer;
+    const currency = this.route.snapshot.queryParams.currency;
+    const id = this.route.snapshot.params.id;
+    const user = this.route.snapshot.params.user;
+    this.create = id == null;
+
+    const request: Observable<OrderDataForNew | OrderDataForEdit> = this.create
+      ? this.orderService.getOrderDataForNew({
+        buyer: buyer,
+        user: user,
+        currency: currency
+      })
+      : this.orderService.getOrderDataForEdit({
+        order: id
+      });
+    this.addSub(request.subscribe(data => {
+      this.data = data;
+    }));
   }
 
   submit() {

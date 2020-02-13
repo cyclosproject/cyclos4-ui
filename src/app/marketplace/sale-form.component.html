@@ -3,7 +3,12 @@
     <page-content
       [heading]="create ? i18n.ad.title.newOrder : i18n.ad.title.order"
       [mobileHeading]="create ? i18n.ad.mobileTitle.newOrder : i18n.ad.mobileTitle.order">
-
+      <label-value [label]="i18n.general.status">
+        {{ i18n.ad.orderStatus.draft }}
+      </label-value>
+      <label-value [label]="i18n.ad.buyer">
+        <user-link [user]="data.buyer"></user-link>
+      </label-value>
     </page-content>
   </ng-container>
 </page-layout>
