@@ -1228,7 +1228,7 @@
     "reserveAmount": "This amount will be reserved when the order is confirmed, and will be debited from your account once the order is accepted by the seller.",
     "order": "Order",
     "orderWaitingForSellersApproval": "The order has been created and is waiting for sellers approval",
-    "total": "Total",
+    "total": "Total price",
     "toBeConfirmedBySeller": "To be confirmed by seller",
     "type": {
       "simple": "Advertisement",
