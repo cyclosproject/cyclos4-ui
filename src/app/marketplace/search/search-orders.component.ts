@@ -1,17 +1,17 @@
-import { ChangeDetectionStrategy, OnInit, Component, Injector } from '@angular/core';
-import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
-import { UserOrderResult } from 'app/api/models/user-order-result';
-import {
-  QueryFilters, OrderStatusEnum, OrderResult, OrderDataForSearch, CustomFieldTypeEnum, CustomFieldControlEnum,
-  LinkedEntityTypeEnum, CustomFieldDetailed
-} from 'app/api/models';
-import { OrdersService, MarketplaceService } from 'app/api/services';
-import { Observable, BehaviorSubject } from 'rxjs';
 import { HttpResponse } from '@angular/common/http';
-import { Menu } from 'app/shared/menu';
+import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
+import {
+  CustomFieldControlEnum, CustomFieldDetailed, CustomFieldTypeEnum,
+  LinkedEntityTypeEnum, OrderDataForSearch, OrderResult, OrderStatusEnum, QueryFilters
+} from 'app/api/models';
+import { UserOrderResult } from 'app/api/models/user-order-result';
+import { OrdersService } from 'app/api/services';
 import { MarketplaceHelperService } from 'app/core/marketplace-helper.service';
 import { HeadingAction } from 'app/shared/action';
+import { BaseSearchPageComponent } from 'app/shared/base-search-page.component';
 import { empty } from 'app/shared/helper';
+import { Menu } from 'app/shared/menu';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 type SearchUserOrdersParams = QueryFilters & {
   user: string,
@@ -44,9 +44,8 @@ export class SearchOrdersComponent
 
   constructor(
     injector: Injector,
-    protected marketplaceHelper: MarketplaceHelperService,
-    protected marketplaceService: MarketplaceService,
-    protected orderService: OrdersService
+    private marketplaceHelper: MarketplaceHelperService,
+    private orderService: OrdersService
   ) {
     super(injector);
   }

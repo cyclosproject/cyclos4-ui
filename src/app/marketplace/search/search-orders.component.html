@@ -1,6 +1,6 @@
 <page-layout [ready]="data$ | async">
   <ng-container *ngIf="data">
-    <page-content mode="filters"
+    <page-content mode="filters" class="no-padding"
       [heading]="sales ? i18n.ad.title.sales : i18n.ad.title.purchases"
       [mobileHeading]="sales ? i18n.ad.mobileTitle.sales : i18n.ad.mobileTitle.purchases"
       [headingActions]="headingActions$ | async">

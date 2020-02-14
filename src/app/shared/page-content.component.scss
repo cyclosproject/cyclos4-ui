@@ -343,6 +343,19 @@
   border-radius: 0;
 }
 
+@include media-breakpoint-up(xxs) {
+  :host.no-padding .page-content {
+    padding-bottom: 0;
+  }
+  
+  :host.no-padding .page-content-body {
+    padding: 0 $layout-spacer-xxs;
+  }
+}
+.xs :host.no-padding ::ng-deep .mode-filters .page-content-body form {
+  padding-top: $layout-spacer-xs;
+}
+
 // Colors for dark scheme
 body.dark :host ::ng-deep {
   .page-content {

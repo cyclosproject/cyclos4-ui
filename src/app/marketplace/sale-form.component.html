@@ -3,9 +3,17 @@
     <page-content
       [heading]="create ? i18n.ad.title.newOrder : i18n.ad.title.order"
       [mobileHeading]="create ? i18n.ad.mobileTitle.newOrder : i18n.ad.mobileTitle.order">
-      <label-value [label]="i18n.general.status">
-        {{ i18n.ad.orderStatus.draft }}
-      </label-value>
+      <ng-container *ngIf="!create">
+        <label-value [label]="i18n.ad.number">
+          {{ number }}
+        </label-value>
+        <label-value [label]="i18n.general.date">
+          {{ creationDate | dateTime }}
+        </label-value>
+        <label-value [label]="i18n.general.status">
+          {{ resolveStatusLabel() }}
+        </label-value>
+      </ng-container>
       <label-value [label]="i18n.ad.buyer">
         <user-link [user]="data.buyer"></user-link>
       </label-value>

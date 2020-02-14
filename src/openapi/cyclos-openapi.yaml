@@ -13399,7 +13399,8 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: broker
           in: query
           required: false
-          description: "DEPRECATED: Use `brokers` instead.
+          description: "Use `brokers` instead.
+
 
 Reference to the broker of users involved in transfers. Is only taken into account if authenticated as administrator."
           schema:
@@ -13544,7 +13545,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: transferKinds
           in: query
           required: false
-          description: "DEPRECATED: Use `kinds` instead"
+          description: "Use `kinds` instead."
           schema:
             type: array
             items:
@@ -13700,7 +13701,8 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: broker
           in: query
           required: false
-          description: "DEPRECATED: Use `brokers` instead.
+          description: "Use `brokers` instead.
+
 
 Reference to the broker of users involved in transfers. Is only taken into account if authenticated as administrator."
           schema:
@@ -13850,7 +13852,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: transferKinds
           in: query
           required: false
-          description: "DEPRECATED: Use `kinds` instead"
+          description: "Use `kinds` instead."
           schema:
             type: array
             items:
@@ -13979,7 +13981,8 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: broker
           in: query
           required: false
-          description: "DEPRECATED: Use `brokers` instead.
+          description: "Use `brokers` instead.
+
 
 Reference to the broker of users involved in transfers. Is only taken into account if authenticated as administrator."
           schema:
@@ -14129,7 +14132,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: transferKinds
           in: query
           required: false
-          description: "DEPRECATED: Use `kinds` instead"
+          description: "Use `kinds` instead."
           schema:
             type: array
             items:
@@ -15503,7 +15506,10 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: broker
           in: query
           required: false
-          description: "DEPRECATED: Use `brokers` instead. Will be removed in 4.14. Either the ids or identification methods of users' broker"
+          description: "Use `brokers` instead.
+
+
+Either the ids or identification methods of users' broker"
           schema:
             type: string
         - name: brokers
@@ -15692,7 +15698,10 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: broker
           in: query
           required: false
-          description: "DEPRECATED: Use `brokers` instead. Will be removed in 4.14. Either the ids or identification methods of users' broker"
+          description: "Use `brokers` instead.
+
+
+Either the ids or identification methods of users' broker"
           schema:
             type: string
         - name: brokers
@@ -15928,7 +15937,8 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: broker
           in: query
           required: false
-          description: "DEPRECATED: Use `brokers` instead.
+          description: "Use `brokers` instead.
+
 
 Reference to the broker of users involved in transfers. Is only taken into account if authenticated as administrator."
           schema:
@@ -15975,7 +15985,8 @@ Reference to the broker of users involved in transfers. Is only taken into accou
         - name: currency
           in: query
           required: false
-          description: "DEPRECATED: Use `currencies` instead.
+          description: "Use `currencies` instead.
+
 
 Either id or internal name of the currency"
           schema:
@@ -16002,7 +16013,8 @@ Either id or internal name of the currency"
         - name: fromAccountType
           in: query
           required: false
-          description: "DEPRECATED: Use `fromAccountTypes` instead.
+          description: "Use `fromAccountTypes` instead.
+
 
 Either ids or internal names of the origin account type"
           schema:
@@ -16082,7 +16094,8 @@ Either ids or internal names of the origin account type"
         - name: toAccountType
           in: query
           required: false
-          description: "DEPRECATED: Use `toAccountTypes` instead.
+          description: "Use `toAccountTypes` instead.
+
 
 Either ids or internal names of the destination account type"
           schema:
@@ -16114,7 +16127,7 @@ Either ids or internal names of the destination account type"
         - name: transferKinds
           in: query
           required: false
-          description: "DEPRECATED: Use `kinds` instead"
+          description: "Use `kinds` instead."
           schema:
             type: array
             items:
@@ -16240,7 +16253,8 @@ Either ids or internal names of the destination account type"
         - name: broker
           in: query
           required: false
-          description: "DEPRECATED: Use `brokers` instead.
+          description: "Use `brokers` instead.
+
 
 Reference to the broker of users involved in transfers. Is only taken into account if authenticated as administrator."
           schema:
@@ -16287,7 +16301,8 @@ Reference to the broker of users involved in transfers. Is only taken into accou
         - name: currency
           in: query
           required: false
-          description: "DEPRECATED: Use `currencies` instead.
+          description: "Use `currencies` instead.
+
 
 Either id or internal name of the currency"
           schema:
@@ -16314,7 +16329,8 @@ Either id or internal name of the currency"
         - name: fromAccountType
           in: query
           required: false
-          description: "DEPRECATED: Use `fromAccountTypes` instead.
+          description: "Use `fromAccountTypes` instead.
+
 
 Either ids or internal names of the origin account type"
           schema:
@@ -16394,7 +16410,8 @@ Either ids or internal names of the origin account type"
         - name: toAccountType
           in: query
           required: false
-          description: "DEPRECATED: Use `toAccountTypes` instead.
+          description: "Use `toAccountTypes` instead.
+
 
 Either ids or internal names of the destination account type"
           schema:
@@ -16426,7 +16443,7 @@ Either ids or internal names of the destination account type"
         - name: transferKinds
           in: query
           required: false
-          description: "DEPRECATED: Use `kinds` instead"
+          description: "Use `kinds` instead."
           schema:
             type: array
             items:
@@ -16799,7 +16816,8 @@ Either ids or internal names of the destination account type"
         - name: broker
           in: query
           required: false
-          description: "DEPRECATED: Use `brokers` instead.
+          description: "Use `brokers` instead.
+
 
 Reference to the broker of users involved in transfers. Is only taken into account if authenticated as administrator."
           schema:
@@ -17122,7 +17140,8 @@ Reference to the broker of users involved in transfers. Is only taken into accou
         - name: broker
           in: query
           required: false
-          description: "DEPRECATED: Use `brokers` instead.
+          description: "Use `brokers` instead.
+
 
 Reference to the broker of users involved in transfers. Is only taken into account if authenticated as administrator."
           schema:
@@ -17475,7 +17494,8 @@ Reference to the broker of users involved in transfers. Is only taken into accou
         - name: broker
           in: query
           required: false
-          description: "DEPRECATED: Use `brokers` instead.
+          description: "Use `brokers` instead.
+
 
 Reference to the broker of users involved in transfers. Is only taken into account if authenticated as administrator."
           schema:
@@ -17816,7 +17836,8 @@ Reference to the broker of users involved in transfers. Is only taken into accou
         - name: broker
           in: query
           required: false
-          description: "DEPRECATED: Use `brokers` instead.
+          description: "Use `brokers` instead.
+
 
 Reference to the broker of users involved in transfers. Is only taken into account if authenticated as administrator."
           schema:
@@ -18325,7 +18346,8 @@ Reference to the broker of users involved in transfers. Is only taken into accou
         - name: broker
           in: query
           required: false
-          description: "DEPRECATED: Use `brokers` instead.
+          description: "Use `brokers` instead.
+
 
 Reference to the broker of users involved in transfers. Is only taken into account if authenticated as administrator."
           schema:
@@ -18606,7 +18628,8 @@ Reference to the broker of users involved in transfers. Is only taken into accou
         - name: broker
           in: query
           required: false
-          description: "DEPRECATED: Use `brokers` instead.
+          description: "Use `brokers` instead.
+
 
 Reference to the broker of users involved in transfers. Is only taken into account if authenticated as administrator."
           schema:
@@ -18909,7 +18932,8 @@ Reference to the broker of users involved in transfers. Is only taken into accou
         - name: broker
           in: query
           required: false
-          description: "DEPRECATED: Use `brokers` instead.
+          description: "Use `brokers` instead.
+
 
 Reference to the broker of users involved in transfers. Is only taken into account if authenticated as administrator."
           schema:
@@ -19202,7 +19226,8 @@ Reference to the broker of users involved in transfers. Is only taken into accou
         - name: broker
           in: query
           required: false
-          description: "DEPRECATED: Use `brokers` instead.
+          description: "Use `brokers` instead.
+
 
 Reference to the broker of users involved in transfers. Is only taken into account if authenticated as administrator."
           schema:
@@ -24003,6 +24028,7 @@ Reference to the broker of users involved in transfers. Is only taken into accou
         given user
       description: >-
         Instead use "/{user}/vouchers/data-for-buy" without passing a type.
+
 
 
         List the voucher types the user can buy to another user (or himself)
@@ -32631,7 +32657,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: broker
           in: query
           required: false
-          description: "DEPRECATED. Use `brokers` instead."
+          description: "Use `brokers` instead."
           schema:
             type: string
         - name: brokers
@@ -41201,7 +41227,10 @@ components:
                 type: string
             broker:
               description: >-
-                DEPRECATED: Use `brokers` instead. Will be removed in 4.14.
+                Use `brokers` instead.
+
+
+
                 Either the ids or identification methods of users' broker
               deprecated: true
               x-remove-version: 4.14
@@ -42312,7 +42341,10 @@ components:
               deprecated: true
               x-remove-version: 4.15
               description: >-
-                DEPRECATED. Use `brokers` instead.
+                Use `brokers` instead.
+
+
+
             brokers:
               type: array
               items:
@@ -43230,8 +43262,9 @@ components:
           deprecated: true
           x-remove-version: 4.15
           description: >-
-            DEPRECATED: Recurring payment permissions are no longer separated from
-            scheduled payment permissions. Use `scheduledPayments` instead.
+            Recurring payment permissions are no longer separated from scheduled
+            payment permissions. Use `scheduledPayments` instead.
+
 
 
             Recurring payments permissions
@@ -44132,7 +44165,8 @@ components:
               type: string
             broker:
               description: >-
-                DEPRECATED: Use `brokers` instead.
+                Use `brokers` instead.
+
 
 
                 Reference to the broker of users involved in transfers. Is only
@@ -44484,7 +44518,10 @@ components:
                 $ref: '#/components/schemas/TransferKind'
             transferKinds:
               description: >-
-                DEPRECATED: Use `kinds` instead
+                Use `kinds` instead.
+
+
+
               deprecated: true
               x-remove-version: 4.15
               type: array
@@ -46636,11 +46673,11 @@ components:
           $ref: '#/components/schemas/UserDataForEdit'
         user:
           $ref: '#/components/schemas/UserEdit'
-
         display:
           type: string
           description: >-
-            DEPRECATED. Use `userConfiguration.details.display` instead.
+            Use `userConfiguration.details.display` instead.
+
 
 
             Contains the formatting of the user according to the configuration. Is
@@ -46650,7 +46687,8 @@ components:
         shortDisplay:
           type: string
           description: >-
-            DEPRECATED. Use `userConfiguration.details.shortDisplay` instead.
+            Use `userConfiguration.details.shortDisplay` instead.
+
 
 
             Contains the short formatting of the user according to the
@@ -46658,7 +46696,6 @@ components:
             return in user list
           deprecated: true
           x-remove-version: 4.14
-
         phoneConfiguration:
           $ref: '#/components/schemas/PhoneConfigurationForUserProfile'
         landLinePhones:
@@ -46673,7 +46710,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PhoneEditWithId'
-
         addressConfiguration:
           $ref: '#/components/schemas/AddressConfigurationForUserProfile'
         addresses:
@@ -46689,7 +46725,6 @@ components:
           type: object
           additionalProperties:
             $ref: '#/components/schemas/CustomFieldBinaryValues'
-
         contactInfoConfiguration:
           $ref: '#/components/schemas/ContactInfoConfigurationForUserProfile'
         contactInfos:
@@ -46705,7 +46740,6 @@ components:
           type: object
           additionalProperties:
             $ref: '#/components/schemas/ContactInfoBinaryValuesForUserProfile'
-
         imageConfiguration:
           $ref: '#/components/schemas/ImageConfigurationForUserProfile'
         images:
@@ -46714,7 +46748,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Image'
-
         confirmationPasswordInput:
           description: >-
             If a confirmation password is used, contains the definitions on how to
@@ -46880,7 +46913,10 @@ components:
               x-remove-version: 4.15
               deprecated: true
               description: >-
-                DEPRECATED: Use `deviceActivationMode` instead. Will be removed in 4.15.
+                Use `deviceActivationMode` instead.
+
+
+
                 Indicates whether there is an allowed medium to activate the device
                 as trusted
               type: boolean
@@ -47351,6 +47387,7 @@ components:
                 Use `minDeliveryTime` and `maxDeliveryTime` instead.
 
 
+
                 The maximum time interval expected for the products to be delivered.
               allOf:
                 - $ref: '#/components/schemas/TimeInterval'
@@ -47496,6 +47533,7 @@ components:
           deprecated: true
           description: >-
             Use `minDeliveryTime` and `maxDeliveryTime` instead.
+
 
 
             The maximum time interval expected for the products to be delivered.
@@ -49758,7 +49796,8 @@ components:
                 type: string
             countries:
               description: >-
-                The list of countries must be read from the already existing list in the mobile.
+                The list of countries must be read from the already existing list in
+                the mobile.
 
 
 
@@ -51572,6 +51611,17 @@ components:
               description: >-
                 The order that is being edited
               $ref: '#/components/schemas/OrderEdit'
+            creationDate:
+              type: string
+              format: date-time
+              description: >-
+                The creation date when the order was saved for first time
+            number:
+              type: string
+              description: >-
+                The generated order number according to the webshop settings.
+            status:
+              $ref: '#/components/schemas/OrderStatusEnum'
 
 
     OrderDataForNew:
@@ -51901,6 +51951,7 @@ components:
                 Use `deliveryMethod.name` instead.
 
 
+
             deliveryPrice:
               x-remove-version: 4.15
               deprecated: true
@@ -51910,11 +51961,13 @@ components:
                 Use `deliveryMethod.price` instead.
 
 
+
             deliveryTime:
               x-remove-version: 4.15
               deprecated: true
               description: >-
                 Use `deliveryMethod.minTime` and `deliveryMethod.maxTime` instead.
+
 
 
               allOf:
@@ -51926,6 +51979,7 @@ components:
                 Use `deliveryMethod.minTime` instead.
 
 
+
               allOf:
                 - $ref: '#/components/schemas/TimeInterval'
             maxDeliveryTime:
@@ -51933,6 +51987,7 @@ components:
               deprecated: true
               description: >-
                 Use `deliveryMethod.maxTime` instead.
+
 
 
               allOf:
@@ -54372,8 +54427,11 @@ components:
           type: string
 
         pageContext:
+          deprecated: true
           description: >-
-            DEPRECATED: Use `exportFormat` instead.
+            Use `exportFormat` instead.
+
+
 
             Only when running a custom operation with `resultType` =
             `resultPage`.
@@ -54816,6 +54874,7 @@ components:
               deprecated: true
               description: >-
                 Use `minTime` and `maxTime` instead.
+
 
 
               allOf:
@@ -55601,14 +55660,13 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/TokenType'
-
-
         nfc:
           deprecated: true
           x-remove-version: 4.15
           description: >-
-            DEPRECATED: Use either `my`, `user` or `personalizeNfcTokensAsMember`,
-            filtering by `physicalType` to be `nfcTag`.
+            Use either `my`, `user` or `personalizeNfcTokensAsMember`, filtering by
+            `physicalType` to be `nfcTag`.
+
 
 
             Permissions over each visible nfc token type
@@ -55730,7 +55788,8 @@ components:
               deprecated: true
               x-remove-version: 4.15
               description: >-
-                DEPRECATED. Use `from.kind`.
+                Use `from.kind` instead.
+
 
 
                 The kind of account owner that sent the transaction.
@@ -55744,7 +55803,8 @@ components:
               deprecated: true
               x-remove-version: 4.15
               description: >-
-                DEPRECATED. Use `from.user`.
+                Use `from.user` instead.
+
 
 
                 The kind of account owner that sent the transaction.
@@ -55758,7 +55818,8 @@ components:
               deprecated: true
               x-remove-version: 4.15
               description: >-
-                DEPRECATED. Use `to.kind`.
+                Use `to.kind` instead.
+
 
 
                 The kind of account owner that sent the transaction.
@@ -55772,7 +55833,8 @@ components:
               deprecated: true
               x-remove-version: 4.15
               description: >-
-                DEPRECATED. Use `to.user`.
+                Use `to.user` instead.
+
 
 
                 The kind of account owner that sent the transaction.
@@ -55997,28 +56059,40 @@ components:
               deprecated: true
               x-remove-version: 4.15
               description: >-
-                DEPRECATED. Use `from.kind`.
+                Use `from.kind` instead.
+
+
+
               allOf:
                 - $ref: '#/components/schemas/AccountKind'
             fromUser:
               deprecated: true
               x-remove-version: 4.15
               description: >-
-                DEPRECATED. Use `from.user`.
+                Use `from.user` instead.
+
+
+
               allOf:
                 - $ref: '#/components/schemas/User'
             toKind:
               deprecated: true
               x-remove-version: 4.15
               description: >-
-                DEPRECATED. Use `to.kind`.
+                Use `to.kind` instead.
+
+
+
               allOf:
                 - $ref: '#/components/schemas/AccountKind'
             toUser:
               deprecated: true
               x-remove-version: 4.15
               description: >-
-                DEPRECATED. Use `to.user`.
+                Use `to.user` instead.
+
+
+
               allOf:
                 - $ref: '#/components/schemas/User'
 
@@ -56107,14 +56181,20 @@ components:
               deprecated: true
               x-remove-version: 4.15
               description: >-
-                DEPRECATED. Use `related.kind` instead.
+                Use `related.kind` instead.
+
+
+
               allOf:
                 - $ref: '#/components/schemas/AccountKind'
             relatedUser:
               deprecated: true
               x-remove-version: 4.15
               description: >-
-                DEPRECATED. Use `related.user` instead.
+                Use `related.user` instead.
+
+
+
               allOf:
                 - $ref: '#/components/schemas/User'
 
@@ -56597,7 +56677,8 @@ components:
           properties:
             currency:
               description: >-
-                DEPRECATED: Use `currencies` instead.
+                Use `currencies` instead.
+
 
 
                 Either id or internal name of the currency
@@ -56613,7 +56694,8 @@ components:
 
             fromAccountType:
               description: >-
-                DEPRECATED: Use `fromAccountTypes` instead.
+                Use `fromAccountTypes` instead.
+
 
 
                 Either ids or internal names of the origin account type
@@ -56629,7 +56711,8 @@ components:
 
             toAccountType:
               description: >-
-                DEPRECATED: Use `toAccountTypes` instead.
+                Use `toAccountTypes` instead.
+
 
 
                 Either ids or internal names of the destination account type
@@ -56907,8 +56990,9 @@ components:
               x-remove-version: 4.15
               type: string
               description: >-
-                DEPRECATED: The short display was originally meant for SMS only.
+                The short display was originally meant for SMS only.
                 Will be removed in Cyclos 4.15 with no replacement.
+
 
 
                 Contains the optional short formatting of the user according to the
@@ -58177,9 +58261,11 @@ components:
           deprecated: true
           x-remove-version: 4.15
           description: >-
-            DEPRECATED: As of Cyclos 4.13, the recurring payments permissions
-            are the same as scheduled payments.
+            As of Cyclos 4.13, the recurring payments permissions are the same as
+            scheduled payments.
             Use `scheduledPayments` instead.
+
+
 
           $ref: '#/components/schemas/UserScheduledPaymentsPermissions'
         paymentRequests:
@@ -58216,8 +58302,9 @@ components:
           deprecated: true
           x-remove-version: 4.15
           description: >-
-            DEPRECATED: Filter the `tokens` list with
-            `type.physicalType = 'nfcTag'` and `activate = true`.
+            Filter the `tokens` list with `type.physicalType = 'nfcTag'` and
+            `activate = true`.
+
 
 
             NFC tokens the authenticated user can personalize for the given user

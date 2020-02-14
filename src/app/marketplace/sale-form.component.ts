@@ -1,10 +1,12 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { OrderDataForEdit, OrderDataForNew } from 'app/api/models';
+import { OrderDataForEdit, OrderDataForNew, InputError } from 'app/api/models';
 import { OrdersService } from 'app/api/services';
 import { MarketplaceHelperService } from 'app/core/marketplace-helper.service';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { Menu } from 'app/shared/menu';
 import { Observable } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ErrorStatus } from 'app/core/error-status';
 
 /**
  * Create or edit a sale (initiated by seller) for an specific user and currency
@@ -23,7 +25,7 @@ export class SaleFormComponent
   constructor(
     injector: Injector,
     private orderService: OrdersService,
-    public marketplaceHelper: MarketplaceHelperService) {
+    private marketplaceHelper: MarketplaceHelperService) {
     super(injector);
   }
 
@@ -45,15 +47,35 @@ export class SaleFormComponent
       : this.orderService.getOrderDataForEdit({
         order: id
       });
+
     this.addSub(request.subscribe(data => {
       this.data = data;
+    }, (resp: HttpErrorResponse) => {
+      if (this.create && ErrorStatus.UNPROCESSABLE_ENTITY === resp.status) {
+        // Go back to sales list if there is an error when starting the sale
+        history.back();
+      } else {
+        this.errorHandler.handleHttpError(resp);
+      }
     }));
   }
 
   submit() {
   }
 
+  resolveStatusLabel() {
+    return this.marketplaceHelper.resolveOrderStatusLabel((this.data as OrderDataForEdit).status);
+  }
+
   resolveMenu() {
     return Menu.SALES;
+  }
+
+  get number() {
+    return (this.data as OrderDataForEdit).number;
+  }
+
+  get creationDate() {
+    return (this.data as OrderDataForEdit).creationDate;
   }
 }
