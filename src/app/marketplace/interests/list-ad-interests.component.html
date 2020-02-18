@@ -1,0 +1,49 @@
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data">
+    <page-content mode="empty" [heading]="i18n.ad.title.adInterests"
+      [mobileHeading]="i18n.ad.mobileTitle.adInterests"
+      [headingActions]="headingActions$ | async">
+      <div class="col-12 col-md-6" *ngIf="!self">
+        <label-value [label]="i18n.general.user" kind="fieldView"
+          labelPosition="side">
+          <user-link [user]="data.user"></user-link>
+        </label-value>
+      </div>
+    </page-content>
+
+    <results-layout [results]="data.adInterests" [toLink]="toLink">
+      <mobile-result *mobileResult="let row">
+        <div class="d-flex">
+          <div class="cell-main">{{ row.name }}</div>
+          <div *ngIf="data.canManage" class="ml-auto text-right">
+            <button [tooltip]="i18n.general.remove" class="btn btn-icon"
+              (click)="remove(row); $event.stopPropagation(); $event.preventDefault()">
+              <icon icon="clear"></icon>
+            </button>
+          </div>
+        </div>
+      </mobile-result>
+      <table *resultTable class="table table-hover cursor-pointer">
+        <thead>
+          <th>{{ i18n.general.name }}</th>
+          <th *ngIf="data.canManage" class="actions"></th>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let row of data.adInterests">
+            <tr (click)="router.navigate(viewPath(row))">
+              <td>
+                {{ row.name }}
+              </td>
+              <td *ngIf="data.canManage" class="actions">
+                <button [tooltip]="i18n.general.remove" class="btn btn-icon"
+                  (click)="remove(row); $event.stopPropagation()">
+                  <icon icon="clear"></icon>
+                </button>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </results-layout>
+  </ng-container>
+</page-layout>

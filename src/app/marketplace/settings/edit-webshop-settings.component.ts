@@ -41,15 +41,16 @@ export class EditWebshopSettingsComponent
     this.self = this.authHelper.isSelfOrOwner(data.user);
     this.form = this.formBuilder.group({
       productNumberGenerated: data.productNumberGenerated,
-      generationType: data.productNumberGenerated ? 'generated' : 'manual',
+      productGenerationType: data.productNumberGenerated ? 'generated' : 'manual',
       productNumberMask: data.productNumberMask,
       customOrderNumberFormat: data.customOrderNumberFormat,
+      orderGenerationType: data.customOrderNumberFormat ? 'manual' : 'generated',
       orderNumberInnerLength: data.orderNumberInnerLength,
       orderNumberPrefix: data.orderNumberPrefix,
       orderNumberSuffix: data.orderNumberSuffix,
     });
-    this.addSub(this.form.controls.generationType.valueChanges.subscribe(() => this.updateMaskControl()));
-    this.addSub(this.form.controls.customOrderNumberFormat.valueChanges.subscribe(() => this.updateOrderControls()));
+    this.addSub(this.form.controls.productGenerationType.valueChanges.subscribe(() => this.updateMaskControl()));
+    this.addSub(this.form.controls.orderGenerationType.valueChanges.subscribe(() => this.updateOrderControls()));
     this.updateMaskControl();
     this.updateOrderControls();
   }
@@ -58,7 +59,7 @@ export class EditWebshopSettingsComponent
    * Updates mask control validator based on generation type
    */
   protected updateMaskControl() {
-    const value = this.form.controls.generationType.value;
+    const value = this.form.controls.productGenerationType.value;
     if (value === 'generated') {
       this.form.controls.productNumberMask.clearValidators();
     } else {
@@ -75,7 +76,7 @@ export class EditWebshopSettingsComponent
       this.form.controls.orderNumberInnerLength,
       this.form.controls.orderNumberPrefix,
       this.form.controls.orderNumberSuffix];
-    if (!this.form.controls.customOrderNumberFormat.value) {
+    if (this.form.controls.orderGenerationType.value === 'generated') {
       controls.forEach(c => c.clearValidators());
     } else {
       controls.forEach(c => c.setValidators(Validators.required));
@@ -92,8 +93,11 @@ export class EditWebshopSettingsComponent
     }
 
     const value = cloneDeep(this.form.value);
-    value.productNumberGenerated = this.form.controls.generationType.value === 'generated';
-    delete value['generationType'];
+    value.productNumberGenerated = this.form.controls.productGenerationType.value === 'generated';
+    delete value['productGenerationType'];
+
+    value.customOrderNumberFormat = this.form.controls.orderGenerationType.value === 'manual';
+    delete value['orderGenerationType'];
 
     this.addSub(this.webshopSettingsService.updateWebshopSettings({ user: this.user, body: value }).subscribe(() => {
       this.notification.snackBar(this.i18n.ad.webshopSettingsSaved);

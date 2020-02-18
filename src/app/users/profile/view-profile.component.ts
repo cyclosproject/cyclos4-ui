@@ -244,24 +244,29 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
           this.router.navigate(['/banking', ApiHelper.SELF, 'payment', this.param]);
         }));
       }
-      if (marketplace.viewAdvertisements) {
+      if (marketplace.simple.view) {
         actions.push(new HeadingAction('shopping_basket', this.i18n.user.profile.viewAds, () => {
           this.router.navigate(['/marketplace', this.param, AdKind.SIMPLE, 'list']);
         }));
       }
-      if (marketplace.viewWebshop) {
+      if (marketplace.webshop.view) {
         actions.push(new HeadingAction('shopping_basket', this.i18n.user.profile.viewWebshop, () => {
           this.router.navigate(['/marketplace', this.param, AdKind.WEBSHOP, 'list']);
         }));
       }
-      if (marketplace.viewPurchases) {
+      if (marketplace.webshop.viewPurchases) {
         this.managementActions.push(new HeadingAction('shop_two', this.i18n.user.profile.purchases, () => {
           this.router.navigate(['/marketplace', this.param, 'purchases']);
         }));
       }
-      if (marketplace.viewSales) {
+      if (marketplace.webshop.viewSales) {
         this.managementActions.push(new HeadingAction('local_offer', this.i18n.user.profile.sales, () => {
           this.router.navigate(['/marketplace', this.param, 'sales']);
+        }));
+      }
+      if (marketplace.viewInterests) {
+        this.managementActions.push(new HeadingAction('star', this.i18n.user.profile.adInterests, () => {
+          this.router.navigate(['/marketplace', this.param, 'ad-interests']);
         }));
       }
       if (webshop.viewSettings) {

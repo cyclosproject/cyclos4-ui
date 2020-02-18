@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { AdStatusEnum, OrderStatusEnum, ShoppingCartItemDetailed } from 'app/api/models';
+import { AdStatusEnum, OrderStatusEnum, ShoppingCartItemDetailed, AdCategoryWithChildren } from 'app/api/models';
 import { I18n } from 'app/i18n/i18n';
 import { AuthHelperService } from 'app/core/auth-helper.service';
 import { BehaviorSubject } from 'rxjs';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
 import { FormatService } from 'app/core/format.service';
-
-
+import { empty } from 'app/shared/helper';
+import { HierarchyItem } from 'app/marketplace/hierarchy-item.component';
 
 /**
  * Helper service for marketplace functions
@@ -102,6 +102,22 @@ export class MarketplaceHelperService {
    */
   set cartItems(items: number) {
     this.cartItems$.next(items);
+  }
+
+  /**
+   * Creates a list of categories with extra information (e.g level, leaf) used for rendering
+   */
+  populateCategories(categories: HierarchyItem[], items: AdCategoryWithChildren[], level: number) {
+    for (const item of items) {
+      const hasChildren = !empty(item.children);
+      const hierarchy: HierarchyItem = item as any;
+      hierarchy.level = level;
+      hierarchy.leaf = !hasChildren;
+      categories.push(hierarchy);
+      if (hasChildren) {
+        this.populateCategories(categories, item.children, level + 1);
+      }
+    }
   }
 
 }

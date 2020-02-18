@@ -1,0 +1,61 @@
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data">
+    <page-content
+      [heading]="create ? i18n.ad.title.adInterestNew : i18n.ad.title.adInterest"
+      [mobileHeading]="create ? i18n.ad.mobileTitle.adInterestNew : i18n.ad.mobileTitle.adInterest"
+      [headingActions]="headingActions$ | async">
+      <label-value *ngIf="!self" [label]="i18n.general.user">
+        <user-link [user]="data.user"></user-link>
+      </label-value>
+      <form [formGroup]="form">
+        <input-field formControlName="name" [label]="i18n.general.name"
+          required></input-field>
+        <text-selection-field formControlName="keywords"
+          [label]="i18n.general.keywords">
+        </text-selection-field>
+        <single-selection-field formControlName="kind"
+          [label]="i18n.general.type" [emptyOption]="i18n.general.all">
+          <field-option [text]="i18n.ad.type.simple" value="simple">
+          </field-option>
+          <field-option [text]="i18n.ad.type.webshop" value="webshop">
+          </field-option>
+        </single-selection-field>
+        <user-field formControlName="user" [label]="i18n.general.by">
+        </user-field>
+        <single-selection-field formControlName="category"
+          [label]="i18n.ad.category">
+          <field-option *ngFor="let cat of categories"
+            [value]="ApiHelper.internalNameOrId(cat)" [id]="cat.id"
+            [internalName]="cat.internalName" [text]="cat.name"
+            [style]="cat.leaf ? 'leaf':'parent'" [level]="cat.level"
+            [disabled]="!cat.leaf">
+          </field-option>
+        </single-selection-field>
+        <single-selection-field
+          *ngIf="data.currencies && data.currencies.length > 1"
+          formControlName="currency" [label]="i18n.general.currency">
+          <field-option *ngFor="let c of data.currencies"
+            [value]="ApiHelper.internalNameOrId(c)" [id]="c.id"
+            [internalName]="c.internalName" [text]="c.name">
+          </field-option>
+        </single-selection-field>
+        <decimal-field *ngIf="currency$ | async" formControlName="minPrice"
+          fieldSize="small" [label]="i18n.ad.minPrice" [textRight]="false"
+          [scale]="currency.decimalDigits" [prefix]="currency.prefix"
+          [suffix]="currency.suffix">
+        </decimal-field>
+        <decimal-field *ngIf="currency$ | async" formControlName="maxPrice"
+          fieldSize="small" [label]="i18n.ad.maxPrice" [textRight]="false"
+          [scale]="currency.decimalDigits" [prefix]="currency.prefix"
+          [suffix]="currency.suffix">
+        </decimal-field>
+      </form>
+      <actions forceRow>
+        <button class="btn btn-primary" (click)="save()"
+          [disabled]="requesting$ | async">
+          {{ i18n.general.submit }}
+        </button>
+      </actions>
+    </page-content>
+  </ng-container>
+</page-layout>

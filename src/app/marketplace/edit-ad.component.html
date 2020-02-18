@@ -88,7 +88,7 @@
           [required]="webshop">
         </decimal-field>
         <label-value [label]="i18n.ad.publicationPeriod" labelPosition="side"
-          required>
+          [fieldSize]="(layout.ltsm$ | async) ? 'medium' : ''" required>
           <div class="row">
             <div class="col-md-6">
               <date-field labelPosition="side"

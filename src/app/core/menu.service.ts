@@ -543,7 +543,7 @@ export class MenuService {
       if (users.search || users.map) {
         add(Menu.PUBLIC_DIRECTORY, '/users/search', publicDirectory.icon, publicDirectory.label);
       }
-      if (marketplace.search) {
+      if (marketplace.userSimple.view || marketplace.userWebshop.view) {
         add(Menu.PUBLIC_MARKETPLACE, '/marketplace/search', publicMarketplace.icon, publicMarketplace.label);
       }
       const registrationGroups = (this.dataForUiHolder.dataForUi || {}).publicRegistrationGroups || [];
@@ -648,20 +648,23 @@ export class MenuService {
         add(Menu.USER_ALERTS, '/users/alerts', 'notification_important', this.i18n.menu.marketplaceUserAlerts);
       }
 
-      if (marketplace.search) {
+      if (marketplace.userSimple.view || marketplace.userWebshop.view) {
         add(Menu.SEARCH_ADS, '/marketplace/search', 'shopping_cart', this.i18n.menu.marketplaceAdvertisements);
       }
 
-      // Shopping cart
       if (marketplace.userWebshop.purchase) {
         add(Menu.SHOPPING_CART, '/marketplace/shopping-cart', 'shopping_cart', this.i18n.menu.shoppingCart);
       }
 
+      if (marketplace.interests) {
+        add(Menu.AD_INTERESTS, 'marketplace/self/ad-interests', 'star', this.i18n.menu.marketplaceAdInterests);
+      }
+
       const simple = marketplace.mySimple || {};
       if (simple.enable) {
-        add(Menu.SEARCH_USER_ADS, 'marketplace/self/simple/list', 'shopping_cart', this.i18n.menu.marketplaceMyAdvertisements);
+        add(Menu.SEARCH_USER_ADS, 'marketplace/self/simple/list', 'shop', this.i18n.menu.marketplaceMyAdvertisements);
       }
-      if (marketplace.purchase) {
+      if (marketplace.userWebshop.purchase) {
         add(Menu.PURCHASES, 'marketplace/self/purchases', 'shop_two', this.i18n.menu.marketplaceMyPurchases);
       }
       const webshop = marketplace.myWebshop || {};
@@ -670,6 +673,11 @@ export class MenuService {
         add(Menu.SALES, 'marketplace/self/sales', 'local_offer', this.i18n.menu.marketplaceMySales);
         add(Menu.DELIVERY_METHODS, 'marketplace/self/delivery-methods', 'local_shipping', this.i18n.menu.marketplaceDeliveryMethods);
         add(Menu.WEBSHOP_SETTINGS, 'marketplace/self/webshop-settings/view', 'store', this.i18n.menu.marketplaceWebshopSettings);
+      }
+
+      if (marketplace.questions || webshop.manage) {
+        add(Menu.UNANSWERED_QUESTIONS, 'marketplace/unanswered-questions',
+          'question_answer', this.i18n.menu.marketplaceUnansweredQuestions);
       }
 
       if (vouchers.buy && role !== RoleEnum.ADMINISTRATOR) {

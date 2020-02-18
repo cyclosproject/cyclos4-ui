@@ -1,5 +1,8 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
-import { AdCategoryWithParent, AdKind, AdQuestionView, AdView, DeliveryMethod, DeliveryMethodChargeTypeEnum, RoleEnum } from 'app/api/models';
+import {
+  AdCategoryWithParent, AdKind, AdQuestionView, AdView,
+  DeliveryMethod, DeliveryMethodChargeTypeEnum, RoleEnum
+} from 'app/api/models';
 import { AdQuestionsService, MarketplaceService, ShoppingCartsService } from 'app/api/services';
 import { LoginService } from 'app/core/login.service';
 import { MarketplaceHelperService } from 'app/core/marketplace-helper.service';
@@ -112,6 +115,10 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
       headingActions.push(
         new HeadingAction('add_shopping_cart', this.i18n.ad.addToCart, () => this.addToCart()));
     }
+    if (ad.canAsk) {
+      headingActions.push(
+        new HeadingAction('chat', this.i18n.ad.askQuestion, () => this.ask()));
+    }
     if (ad.canHide) {
       headingActions.push(
         new HeadingAction('lock', this.i18n.ad.hide, () => this.updateStatus(
@@ -222,8 +229,7 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
    * there are questions or the user can ask
    */
   get questionsEnabled(): boolean {
-    return !this.guest && this.data.questionsEnabled &&
-      (this.data.canAsk || this.data.questions.length > 0);
+    return !this.guest && this.data.questionsEnabled && this.data.questions.length > 0;
   }
 
   /**

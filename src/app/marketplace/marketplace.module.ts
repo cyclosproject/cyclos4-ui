@@ -10,7 +10,7 @@ import { EditAdComponent } from 'app/marketplace/edit-ad.component';
 import { SearchOrdersComponent } from 'app/marketplace/search/search-orders.component';
 import { ViewOrderComponent } from 'app/marketplace/view/view-order.component';
 import { ViewOrderHistoryComponent } from 'app/marketplace/view/view-order-history.component';
-import { SetDeliveryMethodComponent } from 'app/marketplace/set-delivery-method.component';
+import { SetDeliveryMethodComponent } from 'app/marketplace/delivery-methods/set-delivery-method.component';
 import { ListShoppingCartComponent } from 'app/marketplace/checkout/list-shopping-cart.component';
 import { ViewCartComponent } from 'app/marketplace/checkout/view-cart.component';
 import { CartCheckoutComponent } from 'app/marketplace/checkout/cart-checkout.component';
@@ -20,6 +20,11 @@ import { EditDeliveryMethodComponent } from 'app/marketplace/delivery-methods/ed
 import { ViewWebshopSettingsComponent } from 'app/marketplace/settings/view-webshop-settings.component';
 import { EditWebshopSettingsComponent } from 'app/marketplace/settings/edit-webshop-settings.component';
 import { ViewDeliveryMethodComponent } from 'app/marketplace/delivery-methods/view-delivery-method.component';
+import { SearchUnansweredQuestionsComponent } from 'app/marketplace/search/search-unanswered-questions.component';
+import { AnswerFormComponent } from 'app/marketplace/answer-form.component';
+import { ListAdInterestsComponent } from 'app/marketplace/interests/list-ad-interests.component';
+import { ViewAdInterestComponent } from 'app/marketplace/interests/view-ad-interest.component';
+import { EditAdInterestComponent } from 'app/marketplace/interests/edit-ad-interest.component';
 
 /**
  * Marketplace module
@@ -44,10 +49,15 @@ import { ViewDeliveryMethodComponent } from 'app/marketplace/delivery-methods/vi
     ShoppingCartItemsComponent,
     ListShoppingCartComponent,
     ListDeliveryMethodsComponent,
+    ListAdInterestsComponent,
     EditDeliveryMethodComponent,
+    EditAdInterestComponent,
     ViewDeliveryMethodComponent,
+    ViewAdInterestComponent,
     EditWebshopSettingsComponent,
     ViewWebshopSettingsComponent,
+    SearchUnansweredQuestionsComponent,
+    AnswerFormComponent,
     ViewCartComponent,
     CartCheckoutComponent,
   ],

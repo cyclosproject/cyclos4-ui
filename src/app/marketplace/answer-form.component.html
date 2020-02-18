@@ -1,0 +1,48 @@
+<page-layout [ready]="data$ | async">
+  <ng-container *ngIf="data">
+    <page-content [heading]="i18n.ad.title.answerQuestion"
+      [mobileHeading]="i18n.ad.mobileTitle.answerQuestion">
+      <div *ngIf="data.advertisement.image && (layout.ltsm$ | async)"
+        class="d-flex justify-content-center mt-2 mb-4">
+        <avatar [roundBorders]="false" [zoom]="false" size="120" useLightbox
+          [image]="data.advertisement.image"></avatar>
+      </div>
+
+      <div class="d-flex flex-row-reverse">
+        <div *ngIf="data.advertisement.image && (layout.gtxs$ | async)"
+          class="image ml-4">
+          <avatar [roundBorders]="false" [zoom]="false" size="120" useLightbox
+            [image]="data.advertisement.image">
+          </avatar>
+        </div>
+        <div class="d-flex flex-grow-1 flex-column">
+          <label-value [label]="i18n.ad.name">
+            {{ data.advertisement.name }}
+          </label-value>
+          <label-value [label]="i18n.general.by">
+            <user-link [user]="data.user"></user-link>
+          </label-value>
+          <label-value [label]="i18n.general.date">
+            {{ data.questionDate | dateTime }}
+          </label-value>
+          <label-value [label]="i18n.ad.question">
+            {{ data.question }}
+          </label-value>
+          <label-value [ngClass]="{'pt-1': !data.answer}"
+            [label]="i18n.ad.answer" [required]="!data.answer">
+            <textarea-field *ngIf="!data.answer" required="true"
+              [formControl]="answer">
+            </textarea-field>
+            <ng-container *ngIf="data.answer"> {{data.answer}} </ng-container>
+          </label-value>
+        </div>
+      </div>
+      <actions *ngIf="!data.answer">
+        <button class="btn btn-primary" [disabled]="requesting$ | async"
+          (click)="submit()">
+          {{ i18n.general.submit }}
+        </button>
+      </actions>
+    </page-content>
+  </ng-container>
+</page-layout>
