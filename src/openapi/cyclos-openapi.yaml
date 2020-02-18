@@ -54353,6 +54353,8 @@ components:
               description: >-
                 Use `canEdit` instead.
 
+                Can the authenticated user manage this reference?
+              type: boolean
 
 
                 Can the authenticated user manage this reference?
