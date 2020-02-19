@@ -1140,6 +1140,7 @@
     "chooseDeliveryAddress": "Choose delivery address",
     "choosePaymentType": "Choose payment type",
     "customAddress": "Custom address",
+    "customDeliveryMethod": "Custom delivery method",
     "endDate": "Published end date",
     "error": {
       "cannotBuyFromSeller": "At the moment, you are not allowed to buy products from this user. Please contact your administrator.",
