@@ -18,7 +18,21 @@
         <user-link [user]="data.buyer"></user-link>
       </label-value>
       <div [formGroup]="form">
-        <h2 class="mt-3">{{ i18n.ad.deliveryMethod }}</h2>
+        <h2
+          class="mt-2 mb-2 d-flex flex-column flex-xs-row justify-content-between">
+          <div class="mb-2 mb-xs-0">
+            {{ i18n.ad.products  }}
+          </div>
+          <div class="section-title-action">
+            <button class="btn btn-outline-primary">
+              {{ i18n.ad.addProducts }}
+            </button>
+          </div>
+        </h2>
+        <div *ngIf="items.length == 0">
+          {{ i18n.ad.itemsNone }}
+        </div>
+        <h2 class="mt-2">{{ i18n.ad.deliveryMethod }}</h2>
         <single-selection-field [emptyOption]="i18n.ad.customDeliveryMethod"
           [label]="i18n.ad.chooseDeliveryMethod"
           formControlName="deliveryMethod">
@@ -30,15 +44,15 @@
           <input-field formControlName="name" [label]="i18n.general.name"
             required>
           </input-field>
-          <decimal-field formControlName="chargeAmount"
+          <decimal-field formControlName="price"
             [label]="i18n.ad.deliveryPrice" [scale]="currency.decimalDigits"
             [prefix]="currency.prefix" [suffix]="currency.suffix"
             fieldSize="full" required>
           </decimal-field>
-          <time-interval-field formControlName="minDeliveryTime"
+          <time-interval-field formControlName="minTime"
             [label]="i18n.ad.minDeliveryTime">
           </time-interval-field>
-          <time-interval-field formControlName="maxDeliveryTime"
+          <time-interval-field formControlName="maxTime"
             [label]="i18n.ad.maxDeliveryTime" required>
           </time-interval-field>
         </div>
@@ -56,6 +70,14 @@
         <textarea-field formControlName="remarks">
         </textarea-field>
       </div>
+      <actions>
+        <button class="btn btn-primary">
+          {{ i18n.ad.submitToBuyer }}
+        </button>
+        <button class="btn btn-outline-primary">
+          {{ i18n.ad.saveDraft }}
+        </button>
+      </actions>
     </page-content>
   </ng-container>
 </page-layout>

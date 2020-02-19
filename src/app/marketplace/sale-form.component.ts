@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
-import { Address, DeliveryMethod, OrderDataForEdit, OrderDataForNew } from 'app/api/models';
+import { Address, DeliveryMethod, OrderDataForEdit, OrderDataForNew, OrderItemManage } from 'app/api/models';
 import { OrdersService } from 'app/api/services';
 import { AddressHelperService } from 'app/core/address-helper.service';
 import { ErrorStatus } from 'app/core/error-status';
@@ -23,8 +23,9 @@ export class SaleFormComponent
   implements OnInit {
 
   create: boolean;
-  form: FormGroup;
+  items: OrderItemManage[] = [];
 
+  form: FormGroup;
   deliveryForm: FormGroup;
   addressForm: FormGroup;
 
@@ -77,10 +78,10 @@ export class SaleFormComponent
     });
 
     this.deliveryForm = this.formBuilder.group({
-      name: [Validators.required],
-      chargeAmount: [Validators.required],
-      minDeliveryTime: null,
-      maxDeliveryTime: [Validators.required],
+      name: [null, Validators.required],
+      price: [null, Validators.required],
+      minTime: null,
+      maxTime: [null, Validators.required],
     });
     this.deliveryForm.patchValue(data.order.deliveryMethod);
 
@@ -97,10 +98,13 @@ export class SaleFormComponent
 
     const addressField = this.formBuilder.control(data.addresses);
     this.form.addControl('address', addressField);
-    if (data.order.deliveryAddress) {
-      addressField.setValue(this.resolveAddressId(data.order.deliveryAddress));
-      this.address = data.order.deliveryMethod;
-    }
+    this.address = data.order.deliveryAddress;
+    const currentAddressId = this.resolveAddressId(this.address);
+    // Match current address by fields
+    addressField.setValue(
+      data.addresses.find(a => currentAddressId === this.resolveAddressId(a)) ?
+        currentAddressId : null
+    );
     this.addSub(addressField.valueChanges.subscribe(a => this.updateAddress(a, data)));
   }
 
@@ -110,22 +114,27 @@ export class SaleFormComponent
   protected updateAddress(id: string, data: OrderDataForNew | OrderDataForEdit) {
     if (id == null) {
       this.addressForm.reset();
+      this.address = null;
     } else {
       this.address = data.addresses.find(a => id === this.resolveAddressId(a));
       this.addressForm.patchValue(this.address);
     }
   }
 
+  /**
+   * Resolves an address id by concatenating it's fields
+   */
   resolveAddressId(address: Address) {
     if (address == null) {
       return null;
     }
     return [
-      address.id,
+      address.addressLine1,
+      address.addressLine2,
+      address.buildingNumber,
       address.city,
       address.complement,
       address.country,
-      address.name,
       address.neighborhood,
       address.poBox,
       address.region,
@@ -139,9 +148,15 @@ export class SaleFormComponent
   protected updateDelivery(name: string, data: OrderDataForNew | OrderDataForEdit) {
     if (name == null) {
       this.deliveryForm.reset();
+      this.deliveryMethod = null;
     } else {
       this.deliveryMethod = data.deliveryMethods.find(a => name === a.name);
-      this.deliveryForm.patchValue(this.deliveryMethod);
+      this.deliveryForm.patchValue(this.deliveryMethod ? {
+        name: this.deliveryMethod.name,
+        price: this.deliveryMethod.chargeAmount || null,
+        minTime: this.deliveryMethod.minDeliveryTime,
+        maxTime: this.deliveryMethod.maxDeliveryTime,
+      } : null);
     }
   }
 
