@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
-import { Address, DeliveryMethod, OrderDataForEdit, OrderDataForNew, OrderItemManage } from 'app/api/models';
+import { Address, DeliveryMethod, OrderDataForEdit, OrderDataForNew, OrderItemManage, AdResult } from 'app/api/models';
 import { OrdersService } from 'app/api/services';
 import { AddressHelperService } from 'app/core/address-helper.service';
 import { ErrorStatus } from 'app/core/error-status';
@@ -9,6 +9,8 @@ import { MarketplaceHelperService } from 'app/core/marketplace-helper.service';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { Menu } from 'app/shared/menu';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { SearchProductsComponent } from 'app/marketplace/search/search-products.component';
+import { BsModalService } from 'ngx-bootstrap/modal';
 
 /**
  * Create or edit a sale (initiated by seller) for an specific user and currency
@@ -36,7 +38,8 @@ export class SaleFormComponent
     injector: Injector,
     private orderService: OrdersService,
     private marketplaceHelper: MarketplaceHelperService,
-    private addressHelper: AddressHelperService) {
+    private addressHelper: AddressHelperService,
+    private modal: BsModalService) {
     super(injector);
   }
 
@@ -119,6 +122,23 @@ export class SaleFormComponent
       this.address = data.addresses.find(a => id === this.resolveAddressId(a));
       this.addressForm.patchValue(this.address);
     }
+  }
+
+  /**
+   * Add webshop products to the order with the actual currency
+   */
+  addProducts() {
+    const ref = this.modal.show(SearchProductsComponent, {
+      class: 'modal-form', initialState: {
+        currency: this.currency.id
+      }
+    });
+    const component = ref.content as SearchProductsComponent;
+    this.addSub(component.select.subscribe((ad: AdResult) => {
+      if (ad) {
+        // TODO add product to table
+      }
+    }));
   }
 
   /**

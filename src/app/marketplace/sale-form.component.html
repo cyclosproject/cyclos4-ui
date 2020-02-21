@@ -23,8 +23,8 @@
           <div class="mb-2 mb-xs-0">
             {{ i18n.ad.products  }}
           </div>
-          <div class="section-title-action">
-            <button class="btn btn-outline-primary">
+          <div [ngClass]="{'section-title-action': layout.gtsm$ | async}">
+            <button class="btn btn-outline-primary" (click)="addProducts()">
               {{ i18n.ad.addProducts }}
             </button>
           </div>
