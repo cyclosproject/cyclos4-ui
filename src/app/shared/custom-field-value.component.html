@@ -1,6 +1,5 @@
 <label-value [hidden]="!formatFieldValue.hasValue"
-  [label]="fieldValue?.field?.name"
-  [labelPosition]="getLabelPosition(layout.ltsm$ | async)">
+  [label]="fieldValue?.field?.name">
   <format-field-value #formatFieldValue [fieldValue]="fieldValue">
   </format-field-value>
 </label-value>
