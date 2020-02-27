@@ -214,7 +214,7 @@ export class OperationHelperService {
     } else {
       // Can run directly if there's no missing parameter
       return empty(operation.missingRequiredParameters)
-        && (!operation.showFormForMissingOptionalParameters || empty(operation.missingOptionalParameters));
+        && (!operation.showForm || empty(operation.missingOptionalParameters));
     }
   }
 

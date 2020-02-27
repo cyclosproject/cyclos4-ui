@@ -62,7 +62,7 @@ export class ViewOperatorGroupComponent
         .filter(p => p.authorize && p.paymentType.from.id === a.accountType.id)
         .map(p => p.paymentType);
     }
-    if (group.editable) {
+    if (group.canEdit) {
       const headingActions: HeadingAction[] = [
         new HeadingAction('edit', this.i18n.general.edit, () => {
           this.router.navigateByUrl(this.router.url + '/edit');

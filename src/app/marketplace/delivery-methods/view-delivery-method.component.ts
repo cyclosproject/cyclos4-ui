@@ -36,7 +36,7 @@ export class ViewDeliveryMethodComponent extends BaseViewPageComponent<DeliveryM
     this.self = this.authHelper.isSelfOrOwner(data.user);
 
     const actions = [];
-    if (data.edit) {
+    if (data.canEdit) {
       actions.push(
         new HeadingAction('edit', this.i18n.general.edit, () =>
           this.router.navigate(['/marketplace', 'delivery-methods', 'edit', this.id]), true

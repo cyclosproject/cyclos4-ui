@@ -76,7 +76,7 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
       this.notification.snackBar(message);
       if (checkRole &&
         (this.dataForUiHolder.role === RoleEnum.BROKER &&
-          !this.authHelper.isSelfOrOwner(this.data.owner)) ||
+          !this.authHelper.isSelfOrOwner(this.data.user)) ||
         this.dataForUiHolder.role === RoleEnum.ADMINISTRATOR) {
         // A broker or admin cannot view the ad after perform
         // some actions (e.g set it to draft, reject), so go
@@ -106,7 +106,7 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
 
   onDataInitialized(ad: AdView) {
     this.webshop = ad.kind === AdKind.WEBSHOP;
-    this.hasStatus = !this.guest && (this.authHelper.isSelfOrOwner(ad.owner) ||
+    this.hasStatus = !this.guest && (this.authHelper.isSelfOrOwner(ad.user) ||
       (this.dataForUiHolder.role === RoleEnum.ADMINISTRATOR ||
         this.dataForUiHolder.role === RoleEnum.BROKER));
 
@@ -245,7 +245,7 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
     } else if (this.dataForUiHolder.role === RoleEnum.ADMINISTRATOR) {
       return this.data.canEdit;
     } else if (this.dataForUiHolder.role === RoleEnum.BROKER ||
-      this.authHelper.isSelfOrOwner(this.data.owner) ||
+      this.authHelper.isSelfOrOwner(this.data.user) ||
       (this.authHelper.isSelfOrOwner(question.user) && this.dataForUiHolder.role !== RoleEnum.OPERATOR)) {
       return this.data.canEdit && empty(question.answer);
     }

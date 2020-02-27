@@ -100,7 +100,6 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     const contact = permissions.contact || {};
     const payment = permissions.payment || {};
     const scheduledPayments = permissions.scheduledPayments || {};
-    const recurringPayments = permissions.recurringPayments || {};
     const authorizedPayments = permissions.authorizedPayments || {};
     const marketplace = permissions.marketplace || {};
     const webshop = marketplace.webshop || {};
@@ -153,7 +152,7 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
           this.router.navigate(['/banking', this.param, 'payment', ApiHelper.SYSTEM]);
         }));
       }
-      if (scheduledPayments.view || recurringPayments.view) {
+      if (scheduledPayments.view) {
         this.bankingActions.push(new HeadingAction('schedule', this.i18n.user.profile.viewScheduledPayments, () => {
           this.router.navigate(['/banking', this.param, 'scheduled-payments']);
         }));

@@ -87,11 +87,11 @@ export class LatestAdsComponent extends BaseDashboardComponent implements OnInit
     const result: AdResult[] = [];
     // First pass: collect a single ad from each owner
     for (const ad of ads) {
-      if (ad.owner && ad.owner.id) {
-        if (owners.has(ad.owner.id)) {
+      if (ad.user && ad.user.id) {
+        if (owners.has(ad.user.id)) {
           continue;
         }
-        owners.add(ad.owner.id);
+        owners.add(ad.user.id);
         result.push(ad);
       }
     }
@@ -113,7 +113,7 @@ export class LatestAdsComponent extends BaseDashboardComponent implements OnInit
 
   navigateToOwner(ad: AdResult, event: MouseEvent) {
     this.menu.navigate({
-      url: `/users/${ad.owner.id}/profile`,
+      url: `/users/${ad.user.id}/profile`,
       menu: new ActiveMenu(Menu.SEARCH_USERS),
       clear: false,
       event: event

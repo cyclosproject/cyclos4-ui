@@ -106,7 +106,9 @@ export class DefaultDashboardResolver implements DashboardResolver {
   latestAds(injector: Injector): DashboardItemConfig | null {
     // Account status
     const marketplace = this.permissions(injector).marketplace || {};
-    if (!marketplace.search) {
+    const userSimple = marketplace.userSimple || {};
+    const userWebshop = marketplace.userWebshop || {};
+    if (!userSimple.view && !userWebshop.view) {
       return null;
     }
     return DashboardItemConfig.latestAds({
