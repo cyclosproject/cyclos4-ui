@@ -738,6 +738,7 @@
     "cancelConfirmation": "Sei sicuro di voler annullare questo voucher?",
     "cancelPackConfirmation": "Ci sono altri buoni appartenenti allo stesso pacchetto che saranno cancellati. Sei sicuro di continuare?",
     "token": "Codice voucher",
+    "owner": "Owner",
     "changeExpirationDate": "Cambia data di scadenza",
     "expirationDateChanged": "Data di scadenza modificata",
     "refundPayment": "Pagamento rimborso",
