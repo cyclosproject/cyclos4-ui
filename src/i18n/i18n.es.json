@@ -738,6 +738,7 @@
     "cancelConfirmation": "¿Está seguro de cancelar este cupón?",
     "cancelPackConfirmation": "Hay otros cupones pertenecientes al mismo paquete, que también serán cancelados. ¿Estás seguro de continuar?",
     "token": "Código de cupón",
+    "owner": "Owner",
     "changeExpirationDate": "Cambiar fecha de vencimiento",
     "expirationDateChanged": "La fecha de vencimiento ha sido cambiada",
     "refundPayment": "Pago de reembolso",
