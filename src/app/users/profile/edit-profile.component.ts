@@ -198,7 +198,19 @@ export class EditProfileComponent
   }
 
   canManagePrivacy(field: string | CustomField): boolean {
-    return this.managePrivacyFields.has(this.fieldName(field));
+    if (!this.data.enablePrivacy) {
+      return false;
+    }
+    switch (field) {
+      case 'phone':
+        return this.data.phoneConfiguration.managePrivacy;
+      case 'address':
+        return this.data.addressConfiguration.managePrivacy;
+      case 'contactInfo':
+        return this.data.contactInfoConfiguration.managePrivacy;
+      default:
+        return this.managePrivacyFields.has(this.fieldName(field));
+    }
   }
 
   get landLineAvailability(): Availability {
