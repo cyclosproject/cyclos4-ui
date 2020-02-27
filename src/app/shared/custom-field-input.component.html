@@ -27,13 +27,18 @@
 </ng-template>
 
 <ng-template #specificTemplate>
-  <!-- string, integer, URL or entity -->
+  <!-- string, integer or entity -->
   <input-field #inputField *ngIf="input" [id]="id" [label]="label"
     [name]="name" [labelPosition]="labelPosition" [fieldSize]="fieldSize"
     [required]="required" [formControl]="formControl"
-    [autocomplete]="autocomplete"
-    [type]="type == 'integer' ? 'number' : type == 'url' ? 'url' : 'text'"
+    [autocomplete]="autocomplete" [type]="type == 'integer' ? 'tel' : 'text'"
     [mask]="field.pattern"></input-field>
+
+  <!-- url -->
+  <url-field #urlField *ngIf="type === 'url'" [id]="id" [label]="label"
+    [name]="name" [labelPosition]="labelPosition" [fieldSize]="fieldSize"
+    [required]="required" [formControl]="formControl"
+    [autocomplete]="autocomplete"></url-field>
 
   <!-- text or rich text (no WYSIWYG editor yet!) -->
   <textarea-field #textareaField *ngIf="textarea" #textComponent [id]="id"

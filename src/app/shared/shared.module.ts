@@ -43,6 +43,7 @@ import { IconComponent } from 'app/shared/icon.component';
 import { ImageUploadComponent } from 'app/shared/image-upload.component';
 import { ImagesFieldComponent } from 'app/shared/images-field.component';
 import { InputFieldComponent } from 'app/shared/input-field.component';
+import { UrlFieldComponent } from 'app/shared/url-field.component';
 import { LabelValueComponent } from 'app/shared/label-value.component';
 import { ManageFilesComponent } from 'app/shared/manage-files.component';
 import { ManageImagesComponent } from 'app/shared/manage-images.component';
@@ -150,6 +151,7 @@ export function initTooltipConfig(): TooltipConfig {
     CustomFieldValueComponent,
     BooleanFieldComponent,
     InputFieldComponent,
+    UrlFieldComponent,
     TextAreaFieldComponent,
     TextDialogComponent,
     FieldErrorsComponent,
@@ -271,6 +273,7 @@ export function initTooltipConfig(): TooltipConfig {
     CustomFieldValueComponent,
     BooleanFieldComponent,
     InputFieldComponent,
+    UrlFieldComponent,
     TextAreaFieldComponent,
     FieldErrorsComponent,
     FieldOptionDirective,
