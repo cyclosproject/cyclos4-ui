@@ -113,11 +113,11 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     if (user.relationship === UserRelationshipEnum.SELF) {
       // For the own user, we just show the edit as a top-level action
       if (profile.editProfile) {
-        this.headingActions = [
-          new HeadingAction('edit', this.i18n.general.edit, () => {
-            this.router.navigateByUrl(this.router.url + '/edit');
-          }, true)
-        ];
+        const edit = new HeadingAction('edit', this.i18n.general.edit, () => {
+          this.router.navigateByUrl(this.router.url + '/edit');
+        }, true);
+        edit.position = 'title';
+        this.headingActions = [edit];
       }
     } else {
       // For others, will have actions in sections
@@ -304,12 +304,12 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     const show = !this.showActions$.value;
     const icon = show ? 'play_circle_outline' : 'clear';
     const label = show ? this.i18n.user.profile.showActions : this.i18n.user.profile.hideActions;
-    this.headingActions = [
-      new HeadingAction(icon, label, () => {
-        this.showActions$.next(show);
-        this.updateHeadingActions();
-      }, true)
-    ];
+    const headingAction = new HeadingAction(icon, label, () => {
+      this.showActions$.next(show);
+      this.updateHeadingActions();
+    }, true);
+    headingAction.position = 'title';
+    this.headingActions = [headingAction];
   }
 
   private addContact(): any {

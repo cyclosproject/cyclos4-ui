@@ -119,6 +119,16 @@ export class LayoutService {
     return this._focusTrap || this.modal;
   }
 
+  hasActionsToolbar$ = new BehaviorSubject(false);
+  get hasActionsToolbar(): boolean {
+    return this.hasActionsToolbar$.value;
+  }
+  set hasActionsToolbar(flag: boolean) {
+    if (flag !== this.hasActionsToolbar$.value) {
+      this.hasActionsToolbar$.next(flag);
+    }
+  }
+
   private breakpointObservers = new Map<Breakpoint, Observable<boolean>>();
 
   private _activeBreakpoints: BehaviorSubject<Set<Breakpoint>>;
@@ -427,6 +437,9 @@ export class LayoutService {
   }
 
   set headingActions(actions: HeadingAction[]) {
+    if (empty(actions)) {
+      actions = null;
+    }
     if (!isEqual(actions, this.headingActions)) {
       this.headingActions$.next(actions);
     }

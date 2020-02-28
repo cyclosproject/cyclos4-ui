@@ -71,13 +71,16 @@
         </label-value>
       </div>
     </div>
+    <actions-toolbar [headingActions]="headingActions$ | async">
+    </actions-toolbar>
     <ng-container *ngIf="data.lastAuthorizationComments">
-      <h2 class="d-none d-sm-block my-3 pt-3">{{ i18n.ad.authorizationNotes }}
+      <h2 class="d-none d-sm-block my-ls pt-ls">
+        {{ i18n.ad.authorizationNotes }}
       </h2>
       <hr class="d-block d-sm-none">
       {{ ad.lastAuthorizationComments }}
     </ng-container>
-    <h2 class="d-none d-sm-block my-3 pt-3">{{ i18n.general.description }}
+    <h2 class="d-none d-sm-block my-ls pt-ls">{{ i18n.general.description }}
     </h2>
     <hr class="d-block d-sm-none">
     <rich-text-container autoHeight [value]="ad.description">
@@ -106,7 +109,7 @@
     </div>
     <div *ngIf="questionsEnabled">
       <h2
-        class="d-flex mb-3 flex-column flex-xs-row justify-content-between mt-3">
+        class="d-flex mb-ls flex-column flex-xs-row justify-content-between mt-ls">
         <div class="mb-2 mb-xs-0">
           {{ i18n.ad.questionsAndAnswers }}
         </div>

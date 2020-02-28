@@ -28,7 +28,8 @@
   }
 }
 
-.page-content.mode-empty .content-title {
+.page-content.mode-empty .content-title,
+.page-content.mode-empty-filters .content-title {
   border-bottom-left-radius: $card-border-radius;
   border-bottom-right-radius: $card-border-radius;
   border-bottom: none;
@@ -399,9 +400,8 @@ body.dark :host ::ng-deep {
 }
 .page-content.mode-empty .page-content-body,
 .page-content.mode-empty-filters .page-content-body {
-  display: none;
+  display: none !important;
 }
-
 
 body.dark.lt-md :host ::ng-deep {
   .page-content {

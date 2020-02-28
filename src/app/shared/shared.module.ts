@@ -99,6 +99,7 @@ import { SortableModule } from 'ngx-bootstrap/sortable';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ProfileImagesComponent } from 'app/shared/profile-images.component';
 import { TextSelectionFieldComponent } from 'app/shared/text-selection-field.component';
+import { ActionsToolbarComponent } from 'app/shared/actions-toolbar.component';
 
 
 export function initTooltipConfig(): TooltipConfig {
@@ -128,6 +129,7 @@ export function initTooltipConfig(): TooltipConfig {
     PageLayoutComponent,
     PageContentComponent,
     HeadingActionsComponent,
+    ActionsToolbarComponent,
     BannerCardComponent,
     ShowContentComponent,
     ResultsLayoutComponent,
@@ -250,6 +252,7 @@ export function initTooltipConfig(): TooltipConfig {
     PageLayoutComponent,
     PageContentComponent,
     HeadingActionsComponent,
+    ActionsToolbarComponent,
     BannerCardComponent,
     ShowContentComponent,
     ResultsLayoutComponent,

@@ -111,6 +111,13 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
         this.dataForUiHolder.role === RoleEnum.BROKER));
 
     const headingActions: HeadingAction[] = [];
+    if (ad.canEdit) {
+      const edit = new HeadingAction('edit', this.i18n.general.edit, () => {
+        this.router.navigate(['/marketplace', 'edit', this.id]);
+      }, true);
+      edit.position = 'title';
+      headingActions.push(edit);
+    }
     if (ad.canBuy) {
       headingActions.push(
         new HeadingAction('add_shopping_cart', this.i18n.ad.addToCart, () => this.addToCart()));
@@ -158,12 +165,6 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
     if (ad.canReject) {
       headingActions.push(
         new HeadingAction('thumb_down_alt', this.i18n.ad.reject, () => this.reject()));
-    }
-    if (ad.canEdit) {
-      headingActions.push(
-        new HeadingAction('edit', this.i18n.general.edit, () => {
-          this.router.navigate(['/marketplace', 'edit', this.id]);
-        }));
     }
     if (ad.canRemove) {
       headingActions.push(

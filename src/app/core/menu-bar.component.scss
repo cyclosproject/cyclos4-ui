@@ -186,5 +186,8 @@ body.dark :host ::ng-deep {
         box-shadow: none;
       }
     }
+    a.active:not(.sub-menu-item)::before {
+      background-color: $menu-bar-active-border-color-dark;
+    }  
   }
 }

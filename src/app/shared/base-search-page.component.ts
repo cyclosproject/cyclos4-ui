@@ -178,6 +178,8 @@ export abstract class BaseSearchPageComponent<D, P extends QueryFilters, R> exte
       this._moreFiltersAction.label = this.moreFilters ? this.showLessFiltersLabel() : this.showMoreFiltersLabel();
     }, true);
     this._moreFiltersAction.breakpoint = 'gt-xxs';
+    this._moreFiltersAction.maybeRoot = true;
+    this._moreFiltersAction.position = 'title';
 
     return this._moreFiltersAction;
   }

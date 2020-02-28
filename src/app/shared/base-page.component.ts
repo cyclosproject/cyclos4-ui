@@ -61,6 +61,7 @@ export abstract class BasePageComponent<D> extends BaseComponent implements OnIn
       self.print();
     }, true);
     this._printAction.breakpoint = 'gt-xs';
+    this._printAction.position = 'title';
     return this._printAction;
   }
 

@@ -1,0 +1,39 @@
+@import 'src/definitions';
+
+.actions-toolbar-container {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: -0.75rem;
+  margin-top: -0.75rem;
+}
+
+.actions-toolbar-item-right {
+  flex-grow: 1;
+  text-align: end;
+}
+
+.btn-action-toolbar {
+  display: inline-flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0.4rem 0.7rem 0.4rem 0.6rem;
+  margin-left: 0.75rem;
+  margin-top: 0.75rem;
+
+  icon {
+    position: relative;
+    top: -1px;
+  }
+
+  .btn-action-toolbar-text {
+    padding-left: 0.5rem;
+    text-align: start;
+    @include text-truncate();
+  }  
+}
+
+@media print {
+  :host {
+    display: none;
+  }
+}

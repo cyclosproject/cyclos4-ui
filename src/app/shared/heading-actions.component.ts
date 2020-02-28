@@ -1,12 +1,10 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { BreadcrumbService } from 'app/core/breadcrumb.service';
-import { I18n } from 'app/i18n/i18n';
+import { ChangeDetectionStrategy, Component, Injector, Input, OnInit, ViewChild } from '@angular/core';
 import { HeadingAction } from 'app/shared/action';
-import { LayoutService } from 'app/shared/layout.service';
-import { ActionsRight, Escape, ShortcutService } from 'app/shared/shortcut.service';
+import { BaseComponent } from 'app/shared/base.component';
+import { blurIfClick } from 'app/shared/helper';
+import { ActionsRight, Escape } from 'app/shared/shortcut.service';
 import { BsDropdownDirective } from 'ngx-bootstrap/dropdown';
 import { BehaviorSubject, Subscription } from 'rxjs';
-import { blurIfClick } from 'app/shared/helper';
 
 const HeadingActionsMenu = 'heading-actions-menu';
 
@@ -19,65 +17,77 @@ const HeadingActionsMenu = 'heading-actions-menu';
   styleUrls: ['heading-actions.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HeadingActionsComponent implements OnInit, OnDestroy {
+export class HeadingActionsComponent extends BaseComponent implements OnInit {
   blurIfClick = blurIfClick;
 
   @ViewChild('dropdown', { static: false }) dropdown: BsDropdownDirective;
+
+  visibleActions$ = new BehaviorSubject<HeadingAction[]>([]);
 
   private _actions: HeadingAction[] = [];
   @Input() get headingActions(): HeadingAction[] {
     return this._actions;
   }
   set headingActions(actions: HeadingAction[]) {
-    this._actions = (actions || []).filter(a => !a.breakpoint || this.layoutService.activeBreakpoints.has(a.breakpoint));
-
-    const singleAction = (this.headingActions || []).length === 1 ? this.headingActions[0] : null;
-    this.groupActions$.next(singleAction ? !singleAction.maybeRoot : true);
+    this._actions = actions;
+    this.updateVisible();
   }
 
   groupActions$ = new BehaviorSubject(false);
-  globalShortcutSub: Subscription;
   shortcutsSub: Subscription;
 
-  constructor(
-    public layoutService: LayoutService,
-    public breadcrumb: BreadcrumbService,
-    public i18n: I18n,
-    private shortcut: ShortcutService
-  ) { }
+  constructor(injector: Injector) {
+    super(injector);
+  }
 
   ngOnInit() {
-    this.layoutService.headingActions = this.headingActions.filter(a => !a.topBarOnly);
-    this.globalShortcutSub = this.shortcut.subscribe(ActionsRight, () => {
-      if (this.layoutService.gtxs) {
+    super.ngOnInit();
+
+    this.layout.headingActions = this.headingActions;
+
+    this.addSub(this.shortcut.subscribe(ActionsRight, () => {
+      if (this.layout.gtxs) {
         // Don't show the menu when not on mobile
         return;
       }
-      const focusTrap = this.layoutService.focusTrap;
+      const focusTrap = this.layout.focusTrap;
       if (focusTrap != null && focusTrap !== HeadingActionsMenu) {
         // Ignore when there's some element trapping focus that is not the menu itself
         return;
       }
-      const actions = this.headingActions || [];
+      const actions = this.visibleActions$.value || [];
       if (actions.length === 1) {
         // Execute the action directly
         actions[0].onClick();
-      } else if (actions.length > 1) {
+      } else if (actions.length > 1 && this.dropdown) {
         // Show the menu
         this.dropdown.toggle(true);
       }
-    });
+    }));
+
+    // Update the visible actions when conditions change
+    const update = () => this.updateVisible();
+    this.addSub(this.layout.breakpointChanges$.subscribe(update));
+    this.addSub(this.layout.hasActionsToolbar$.subscribe(update));
+    update();
   }
 
-  ngOnDestroy() {
-    if (this.globalShortcutSub) {
-      this.globalShortcutSub.unsubscribe();
-    }
+  private updateVisible() {
+    const activeBreakpoints = this.layout.activeBreakpoints;
+    // When showing on xxs, ignore the toolbar
+    const hasActionsToolbar = activeBreakpoints.has('lt-sm') ? false : this.layout.hasActionsToolbar;
+    const actions = (this.headingActions || [])
+      .filter(action => action.showOn(activeBreakpoints)
+        && action.showOnTitle(hasActionsToolbar));
+    this.visibleActions$.next(actions);
+
+    const groupActions = actions.length > 0 && actions.findIndex(a => !a.maybeRoot) >= 0;
+    this.groupActions$.next(groupActions);
   }
 
   onShown(dropdown: BsDropdownDirective) {
     this.shortcutsSub = this.shortcut.subscribe(Escape, () => dropdown.hide());
-    this.layoutService.setFocusTrap(HeadingActionsMenu);
+    this.layout.setFocusTrap(HeadingActionsMenu);
   }
 
   onHidden() {
@@ -85,6 +95,6 @@ export class HeadingActionsComponent implements OnInit, OnDestroy {
       this.shortcutsSub.unsubscribe();
       this.shortcutsSub = null;
     }
-    this.layoutService.setFocusTrap(null);
+    this.layout.setFocusTrap(null);
   }
 }

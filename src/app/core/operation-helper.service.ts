@@ -1,21 +1,23 @@
 import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router, Params } from '@angular/router';
+import { Params, Router } from '@angular/router';
 import {
   NotificationLevelEnum, Operation, OperationDataForRun,
-  OperationResultTypeEnum, OperationScopeEnum, RunOperationResult, RunOperation
+  OperationResultTypeEnum, OperationScopeEnum, RunOperation,
+  RunOperationResult
 } from 'app/api/models';
 import { OperationsService } from 'app/api/services';
+import { Configuration } from 'app/configuration';
+import { BreadcrumbService } from 'app/core/breadcrumb.service';
 import { DataForUiHolder } from 'app/core/data-for-ui-holder';
+import { NextRequestState } from 'app/core/next-request-state';
 import { NotificationService } from 'app/core/notification.service';
+import { HeadingAction } from 'app/shared/action';
 import { ApiHelper } from 'app/shared/api-helper';
 import { downloadResponse, empty } from 'app/shared/helper';
+import { PageData } from 'app/shared/page-data';
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { BreadcrumbService } from 'app/core/breadcrumb.service';
-import { HeadingAction } from 'app/shared/action';
-import { PageData } from 'app/shared/page-data';
-import { Configuration } from 'app/configuration';
 
 /**
  * Types which can run actions directly without going to the run page
@@ -41,7 +43,8 @@ export class OperationHelperService {
     private notification: NotificationService,
     private breadcrumb: BreadcrumbService,
     private router: Router,
-    private operationsService: OperationsService) {
+    private operationsService: OperationsService,
+    private nextRequestState: NextRequestState) {
     dataForUiHolder.subscribe(dataForUi => {
       // Store all custom operations in the registry
       const operations = ((((dataForUi || {}).auth || {}).permissions || {}).operations || {});
@@ -275,6 +278,7 @@ export class OperationHelperService {
             handled = true;
             break;
         }
+        this.nextRequestState.leaveNotification = true;
         break;
       case OperationResultTypeEnum.URL:
         // Open the URL in a new window

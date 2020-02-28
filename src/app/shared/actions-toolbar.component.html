@@ -1,0 +1,29 @@
+<ng-container *ngIf="(visibleActions$ | async)?.length > 0">
+  <hr>
+  <div class="actions-toolbar-container">
+    <ng-container *ngFor="let action of visibleActions$.value">
+      <div *ngIf="action.position !== 'right'" class="actions-toolbar-item">
+        <ng-container
+          *ngTemplateOutlet="button; context: {$implicit: action}">
+        </ng-container>
+      </div>
+    </ng-container>
+    <ng-container *ngFor="let action of headingActions">
+      <div *ngIf="action.position === 'right'"
+        class="actions-toolbar-item actions-toolbar-item-right">
+        <ng-container
+          *ngTemplateOutlet="button; context: {$implicit: action}">
+        </ng-container>
+      </div>
+    </ng-container>
+  </div>
+  <hr *ngIf="bottomSeparator">
+</ng-container>
+
+<ng-template #button let-action>
+  <button class="btn-action-toolbar btn btn-outline-primary"
+    (click)="action.onClick(); $event.stopPropagation(); $event.preventDefault()">
+    <icon size="1.5rem" [icon]="action.icon"></icon>
+    <div class="btn-action-toolbar-text">{{ action.label }}</div>
+  </button>
+</ng-template>

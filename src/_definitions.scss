@@ -181,6 +181,7 @@ $menu-bar-active-bg-dark: $menu-bar-bg-dark !default;
 $menu-bar-active-hover-color-dark: $menu-bar-active-color-dark !default;
 $menu-bar-active-hover-bg-dark: $menu-bar-inactive-hover-bg-dark !default;
 $menu-bar-line-color-dark: $border-color-dark !default;
+$menu-bar-active-border-color-dark: $menu-bar-active-color-dark;
 
 // Side menu (second-level menu on desktop)
 $side-menu-title-bg: $menu-bar-bg !default;
@@ -336,6 +337,13 @@ $title-button-active-bg: $title-button-bg !default;
 $title-button-option-hover-bg: darken($title-button-bg, 5%) !default;
 $title-button-option-hover-color: color-yiq($title-button-option-hover-bg) !default;
 $title-button-option-hover-icon-color: $title-button-icon-color !default;
+$title-plain-button-bg: $gray-100 !default;
+$title-plain-button-color: color-yiq($title-plain-button-bg) !default;
+$title-plain-button-border-color: $title-plain-button-bg !default;
+$title-plain-button-icon-color: $menu-bar-active-icon-color !default;
+$title-plain-button-active-border-color: $menu-bar-active-border-color !default;
+$title-plain-button-active-color: $title-plain-button-color !default;
+$title-plain-button-active-bg: $title-plain-button-bg !default;
 
 // Page title with dark background
 $title-bg-dark: $menu-bar-bg-dark !default;
@@ -350,6 +358,13 @@ $title-button-active-bg-dark: $title-button-bg-dark !default;
 $title-button-option-hover-bg-dark: darken($title-button-bg-dark, 5%) !default;
 $title-button-option-hover-color-dark: color-yiq($title-button-option-hover-bg-dark) !default;
 $title-button-option-hover-icon-color-dark: $title-button-icon-color-dark !default;
+$title-plain-button-bg-dark: $side-menu-active-hover-bg-dark !default;
+$title-plain-button-color-dark: color-yiq($title-plain-button-bg-dark) !default;
+$title-plain-button-border-color-dark: $title-plain-button-bg-dark !default;
+$title-plain-button-icon-color-dark: $menu-bar-active-icon-color-dark !default;
+$title-plain-button-active-border-color-dark: $menu-bar-active-border-color-dark !default;
+$title-plain-button-active-color-dark: $title-plain-button-color-dark !default;
+$title-plain-button-active-bg-dark: $title-plain-button-bg-dark !default;
 
 // Tables
 $table-color: $card-color !default;

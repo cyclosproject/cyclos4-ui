@@ -1,14 +1,15 @@
-<ng-container *ngIf="headingActions?.length > 0">
+<ng-container *ngIf="(visibleActions$ | async)?.length > 0">
   <!-- We have actions. They may be grouped or not -->
-  <div class="heading-actions" *ngIf="groupActions$ | async; else rootActions"
-    dropdown placement="bottom right" #dropdown="bs-dropdown"
+  <div class="heading-actions"
+    *ngIf="(groupActions$ | async); else rootActions" dropdown
+    placement="bottom right" #dropdown="bs-dropdown"
     (onShown)="onShown(dropdown)" (onHidden)="onHidden()">
     <button dropdownToggle id="heading-action-toggle"
       class="heading-action heading-action-dropdown" [ngClass]="{
-          'dropdown-toggle': layoutService.gtxxs$ | async
+          'dropdown-toggle': layout.gtxxs$ | async
         }" (click)="blurIfClick('heading-action-toggle', $event)">
-      <icon *ngIf="(layoutService.xxs$ | async); else actionsLabel"
-        icon="more_vert" class="mx-2"></icon>
+      <icon *ngIf="(layout.xxs$ | async); else actionsLabel" icon="more_vert"
+        class="mx-2"></icon>
       <ng-template #actionsLabel>
         <div class="action-label">
           {{ i18n.general.actions }}
@@ -20,7 +21,7 @@
       attr.aria-labelledby="id"
       (click)="$event.preventDefault(); $event.stopPropagation();">
       <a #actionLink tabindex="0"
-        *ngFor="let action of headingActions; let first = first; let i = index;"
+        *ngFor="let action of visibleActions$.value; let first = first; let i = index;"
         class="heading-action-option" [ngClass]="'heading-action-' + i"
         href="#"
         (click)="dropdown.hide();action.onClick(actionLink); $event.stopPropagation(); $event.preventDefault()">
@@ -29,14 +30,28 @@
       </a>
     </div>
   </div>
-  <ng-template #rootActions>
-    <div class="d-flex heading-actions">
-      <button #actionButton *ngFor="let action of headingActions"
-        class="heading-action heading-action-with-icon d-flex"
-        (click)="action.onClick($event, actionButton)">
-        <icon size="1.3rem" [icon]="action.icon"></icon>
-        <div class="action-label">{{ action.label }}</div>
-      </button>
-    </div>
-  </ng-template>
 </ng-container>
+<ng-template #rootActions>
+  <!-- When we group actions or we're no mobile, show the gray buttons -->
+  <div
+    *ngIf="(groupActions$ | async) || (layout.ltsm$ | async); else plainButtons"
+    class="d-flex heading-actions">
+    <button #actionButton *ngFor="let action of visibleActions$.value"
+      class="heading-action heading-action-with-icon d-flex"
+      (click)="action.onClick($event, actionButton)">
+      <icon size="1.3rem" [icon]="action.icon"></icon>
+      <div class="action-label">{{ action.label }}</div>
+    </button>
+  </div>
+</ng-template>
+<ng-template #plainButtons>
+  <!-- Show separated buttons -->
+  <div class="d-flex heading-actions-plain-buttons">
+    <button #actionButton *ngFor="let action of visibleActions$.value"
+      class="btn heading-actions-plain-button"
+      (click)="action.onClick($event, actionButton)">
+      <icon [icon]="action.icon"></icon>
+      <div class="action-label">{{ action.label }}</div>
+    </button>
+  </div>
+</ng-template>

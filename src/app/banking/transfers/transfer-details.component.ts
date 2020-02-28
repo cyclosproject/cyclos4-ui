@@ -3,6 +3,7 @@ import { Transfer, TransferView } from 'app/api/models';
 import { BankingHelperService } from 'app/core/banking-helper.service';
 import { BaseComponent } from 'app/shared/base.component';
 import { empty } from 'app/shared/helper';
+import { HeadingAction } from 'app/shared/action';
 
 
 /**
@@ -16,7 +17,10 @@ import { empty } from 'app/shared/helper';
 export class TransferDetailsComponent extends BaseComponent implements OnInit {
 
   @Input() transfer: TransferView;
+  @Input() headingActions: HeadingAction[];
+
   lastAuthComment: string;
+  hasAdditionalData: boolean;
 
   constructor(
     injector: Injector,
@@ -30,6 +34,9 @@ export class TransferDetailsComponent extends BaseComponent implements OnInit {
     if (!empty(transaction.authorizations)) {
       this.lastAuthComment = transaction.authorizations[0].comments;
     }
+    this.hasAdditionalData = !empty(this.lastAuthComment)
+      || !!this.transfer.parent
+      || !empty(this.transfer.children);
   }
 
   path(transfer: Transfer): string[] {

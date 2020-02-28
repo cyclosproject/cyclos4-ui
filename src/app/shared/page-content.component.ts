@@ -3,7 +3,7 @@ import { CardMode } from 'app/content/card-mode';
 import { BreadcrumbService } from 'app/core/breadcrumb.service';
 import { I18n } from 'app/i18n/i18n';
 import { HeadingAction } from 'app/shared/action';
-import { blank, empty, truthyAttr } from 'app/shared/helper';
+import { blank, truthyAttr } from 'app/shared/helper';
 import { LayoutService } from 'app/shared/layout.service';
 import { Subscription } from 'rxjs';
 
@@ -63,9 +63,7 @@ export class PageContentComponent implements OnInit, OnChanges {
       this.maybeUpdateTitle();
     }
     if (changes['headingActions']) {
-      if (!empty(this.headingActions)) {
-        this.layoutService.headingActions = this.headingActions.filter(a => !a.topBarOnly);
-      }
+      this.layoutService.headingActions = (this.headingActions || []);
     }
   }
 

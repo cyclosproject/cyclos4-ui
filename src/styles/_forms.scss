@@ -82,6 +82,12 @@ label {
       padding-left: $layout-spacer;
     }
   }
+  .page-content.mode-filters actions-toolbar .actions-toolbar-container {
+    padding-bottom: $layout-spacer;
+  }
+  .page-content.mode-filters actions-toolbar hr {
+    margin-top: 0;
+  }
 }
 
 .form-control, .custom-select {

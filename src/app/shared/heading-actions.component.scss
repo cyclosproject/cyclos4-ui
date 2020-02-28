@@ -27,6 +27,31 @@
   display: none;
 }
 
+.heading-actions-plain-buttons {
+  display: flex;
+  align-items: center;
+  height: 100%;
+
+  .heading-actions-plain-button {
+    margin-right: 0.5rem;
+    display: flex;
+    background-color: $title-plain-button-bg;
+    color: $title-plain-button-color;
+    border-color: $title-plain-button-border-color;
+
+    icon {
+      margin-right: 0.5rem;
+      color: $title-plain-button-icon-color
+    }
+
+    &:active, &:focus, &:hover {
+      background-color: $title-plain-button-active-bg;
+      color: $title-plain-button-active-color;
+      border-color: $title-plain-button-active-border-color;  
+    }
+  }
+}
+
 @include media-breakpoint-up(xs) {
   .action-label {
     display: inline;
@@ -94,6 +119,24 @@
 
   .heading-actions-menu {
     padding: 1rem 0;
+  }
+}
+
+body.dark :host ::ng-deep .heading-actions-plain-buttons {  
+  .heading-actions-plain-button {
+    background-color: $title-plain-button-bg-dark;
+    color: $title-plain-button-color-dark;
+    border-color: $title-plain-button-border-color-dark;
+
+    icon {
+      color: $title-plain-button-icon-color-dark
+    }
+
+    &:active, &:focus, &:hover {
+      background-color: $title-plain-button-active-bg-dark;
+      color: $title-plain-button-active-color-dark;
+      border-color: $title-plain-button-active-border-color-dark;
+    }
   }
 }
 

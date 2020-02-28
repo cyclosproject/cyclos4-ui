@@ -134,6 +134,8 @@
       </account-status-view>
       <spinner *ngIf="!(status$ | async)"></spinner>
     </ng-container>
+    <actions-toolbar [headingActions]="headingActions$ | async">
+    </actions-toolbar>
   </page-content>
 
   <results-layout resultType="list" [results]="results$ | async"
