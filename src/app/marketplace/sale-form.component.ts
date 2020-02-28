@@ -1,16 +1,16 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
-import { Address, DeliveryMethod, OrderDataForEdit, OrderDataForNew, OrderItemManage, AdResult } from 'app/api/models';
+import { Address, AdResult, DeliveryMethod, OrderDataForEdit, OrderDataForNew, OrderItem, OrderDeliveryMethod } from 'app/api/models';
 import { OrdersService } from 'app/api/services';
 import { AddressHelperService } from 'app/core/address-helper.service';
 import { ErrorStatus } from 'app/core/error-status';
 import { MarketplaceHelperService } from 'app/core/marketplace-helper.service';
+import { SearchProductsComponent } from 'app/marketplace/search/search-products.component';
 import { BasePageComponent } from 'app/shared/base-page.component';
 import { Menu } from 'app/shared/menu';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { SearchProductsComponent } from 'app/marketplace/search/search-products.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 /**
  * Create or edit a sale (initiated by seller) for an specific user and currency
@@ -25,13 +25,13 @@ export class SaleFormComponent
   implements OnInit {
 
   create: boolean;
-  items: OrderItemManage[] = [];
 
   form: FormGroup;
   deliveryForm: FormGroup;
   addressForm: FormGroup;
 
-  deliveryMethod$ = new BehaviorSubject<DeliveryMethod>(null);
+  products$ = new BehaviorSubject<OrderItem[]>(null);
+  deliveryMethod$ = new BehaviorSubject<OrderDeliveryMethod>(null);
   address$ = new BehaviorSubject<Address>(null);
 
   constructor(
@@ -80,22 +80,24 @@ export class SaleFormComponent
       remarks: data.order.remarks
     });
 
+    // Delivery methods
     this.deliveryForm = this.formBuilder.group({
       name: [null, Validators.required],
       price: [null, Validators.required],
       minTime: null,
       maxTime: [null, Validators.required],
     });
+    this.addSub(this.deliveryForm.valueChanges.subscribe(value => this.deliveryMethod = value));
     this.deliveryForm.patchValue(data.order.deliveryMethod);
 
     const deliveryField = this.formBuilder.control(data.deliveryMethods);
     this.form.addControl('deliveryMethod', deliveryField);
     if (data.order.deliveryMethod) {
       deliveryField.setValue(data.order.deliveryMethod.name);
-      this.deliveryMethod = data.order.deliveryMethod;
     }
     this.addSub(deliveryField.valueChanges.subscribe(a => this.updateDelivery(a, data)));
 
+    // Addresses
     this.addressForm = this.addressHelper.addressFormGroup(data.addressConfiguration);
     this.addressForm.patchValue(data.order.deliveryAddress);
 
@@ -112,7 +114,7 @@ export class SaleFormComponent
   }
 
   /**
-   * Changes the address and updates the fields section
+   * Change the address and updates the fields section
    */
   protected updateAddress(id: string, data: OrderDataForNew | OrderDataForEdit) {
     if (id == null) {
@@ -135,10 +137,29 @@ export class SaleFormComponent
     });
     const component = ref.content as SearchProductsComponent;
     this.addSub(component.select.subscribe((ad: AdResult) => {
-      if (ad) {
-        // TODO add product to table
-      }
+      this.addProduct(ad);
     }));
+  }
+
+  protected addProduct(ad: AdResult) {
+    // Check if it was already added and increment quantity
+    const result = this.products || [];
+    let product = result.find(p => p.product.id === ad.id);
+    if (product != null) {
+      product.quantity = (+product.quantity + 1).toString();
+    } else {
+      // Add new product
+      ad.price = ad.promotionalPrice || ad.price;
+      product = {
+        price: ad.price,
+        totalPrice: ad.price,
+        quantity: '1',
+        product: ad
+      };
+      result.push(product);
+    }
+    // Trigger behavior change
+    this.products = result;
   }
 
   /**
@@ -168,14 +189,13 @@ export class SaleFormComponent
   protected updateDelivery(name: string, data: OrderDataForNew | OrderDataForEdit) {
     if (name == null) {
       this.deliveryForm.reset();
-      this.deliveryMethod = null;
     } else {
-      this.deliveryMethod = data.deliveryMethods.find(a => name === a.name);
+      const deliveryMethod = data.deliveryMethods.find(a => name === a.name);
       this.deliveryForm.patchValue(this.deliveryMethod ? {
-        name: this.deliveryMethod.name,
-        price: this.deliveryMethod.chargeAmount || null,
-        minTime: this.deliveryMethod.minDeliveryTime,
-        maxTime: this.deliveryMethod.maxDeliveryTime,
+        name: deliveryMethod.name,
+        price: deliveryMethod.chargeAmount || null,
+        minTime: deliveryMethod.minDeliveryTime,
+        maxTime: deliveryMethod.maxDeliveryTime,
       } : null);
     }
   }
@@ -185,6 +205,13 @@ export class SaleFormComponent
   }
   set address(address: Address) {
     this.address$.next(address);
+  }
+
+  get products(): OrderItem[] {
+    return this.products$.value;
+  }
+  set products(value: OrderItem[]) {
+    this.products$.next(value);
   }
 
   get deliveryMethod(): DeliveryMethod {

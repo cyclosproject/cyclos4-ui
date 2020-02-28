@@ -29,9 +29,9 @@
             </button>
           </div>
         </h2>
-        <div *ngIf="items.length == 0">
-          {{ i18n.ad.itemsNone }}
-        </div>
+        <order-products [products$]="products$"
+          [deliveryMethod$]="deliveryMethod$" [currency]="currency">
+        </order-products>
         <h2 class="mt-2">{{ i18n.ad.deliveryMethod }}</h2>
         <single-selection-field [emptyOption]="i18n.ad.customDeliveryMethod"
           [label]="i18n.ad.chooseDeliveryMethod"

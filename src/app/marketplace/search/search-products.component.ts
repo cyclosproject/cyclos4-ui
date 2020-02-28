@@ -27,6 +27,7 @@ export class SearchProductsComponent extends BaseComponent implements OnInit {
   form: FormGroup;
 
   results$ = new BehaviorSubject<PagedResults<AdResult>>(null);
+  rendering$ = new BehaviorSubject(false);
 
   constructor(
     injector: Injector,
@@ -47,6 +48,7 @@ export class SearchProductsComponent extends BaseComponent implements OnInit {
    * Updates the search results
    */
   update(pageData?: PageData) {
+    this.rendering = true;
     this.results = null;
     this.addSub(this.doSearch(pageData).subscribe(response =>
       this.results = PagedResults.from(response)
@@ -54,7 +56,14 @@ export class SearchProductsComponent extends BaseComponent implements OnInit {
   }
 
   get onClick() {
-    return (row: AdResult) => this.select.emit(row);
+    return (row: AdResult) => this.addProduct(row);
+  }
+
+  addProduct(row: AdResult) {
+    if (this.resolveStockLabel(row) == null) {
+      this.notification.snackBar(this.i18n.ad.addedProductOrder);
+      this.select.emit(row);
+    }
   }
 
   doSearch(pageData: PageData): Observable<HttpResponse<AdResult[]>> {
@@ -80,6 +89,12 @@ export class SearchProductsComponent extends BaseComponent implements OnInit {
   }
   set results(results: PagedResults<AdResult>) {
     this.results$.next(results);
+  }
+  get rendering(): boolean {
+    return this.rendering$.value;
+  }
+  set rendering(rendering: boolean) {
+    this.rendering$.next(rendering);
   }
 
   /**

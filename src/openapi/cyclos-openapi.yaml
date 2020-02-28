@@ -41903,11 +41903,6 @@ components:
                 - $ref: '#/components/schemas/User'
             publicationPeriod:
               $ref: '#/components/schemas/DatePeriod'
-            price:
-              description: >-
-                The regular price.
-              type: string
-              format: number
             stockQuantity:
               description: >-
                 The stock disponibility. Only if `unlimitedStock` is false and
@@ -41928,6 +41923,12 @@ components:
             minAllowedInCart:
               description: >-
                 The minimum quantity that can be specified in the shopping cart.
+              type: string
+              format: number
+            promotionalPrice:
+              description: >-
+                The promotional price, to be applied on the promotional period is
+                active
               type: string
               format: number
 
@@ -42441,12 +42442,6 @@ components:
         - $ref: '#/components/schemas/AdDetailed'
         - type: object
           properties:
-            promotionalPrice:
-              description: >-
-                The promotional price, only returned if there is a promotional price
-                set and the promotional period is active
-              type: string
-              format: number
             address:
               description: >-
                 Address to be placed on map. Is only returned when the search result
@@ -42505,12 +42500,6 @@ components:
                 $ref: '#/components/schemas/CustomFieldValue'
             currency:
               $ref: '#/components/schemas/Currency'
-            promotionalPrice:
-              description: >-
-                The promotional price, to be applied on the promotional period is
-                active
-              type: string
-              format: number
             promotionalPeriod:
               description: >-
                 The promotional period, the one when `promotionalPrice` is valid
@@ -42619,10 +42608,6 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/DeliveryMethod'
-            productNumber:
-              description: >-
-                The product number according to the webshop settings.
-              type: string
             operations:
               description: >-
                 List of runnable custom operations.
@@ -42726,6 +42711,10 @@ components:
         - $ref: '#/components/schemas/AddressConfiguration'
         - type: object
           properties:
+            enablePrivacy:
+              description: >-
+                Indicates whether privacy can be used for this address
+              type: boolean
             managePrivacy:
               type: boolean
               description: >-
@@ -43107,6 +43096,10 @@ components:
               description: >-
                 Can the authenticated user edit / remove this address?
               type: boolean
+            enablePrivacy:
+              description: >-
+                Indicates whether address privacy can be used for this user
+              type: boolean
             editable:
               deprecated: true
               x-remove-version: 4.15
@@ -43117,6 +43110,7 @@ components:
 
                 Can the authenticated user edit / remove this address?
               type: boolean
+
 
     Agreement:
       description: >-
@@ -43440,6 +43434,15 @@ components:
           properties:
             status:
               $ref: '#/components/schemas/AdStatusEnum'
+            price:
+              description: >-
+                The regular price.
+              type: string
+              format: number
+            productNumber:
+              description: >-
+                The product number according to the webshop settings.
+              type: string
 
     BaseAuth:
       description: >-
@@ -48901,8 +48904,8 @@ components:
         hidden:
           type: boolean
           description: >-
-            Indicates whether this phone is hidden for other users (`true`) or visible
-            to all users (`false`).
+            Indicates whether this phone is private / hidden for other users (`true`) or
+            public / visible to all users (`false`).
         enabledForSms:
           type: boolean
           description: >-
@@ -52970,6 +52973,10 @@ components:
             Only returned for mobile phones. Indicates whether outbound SMS is
             enabled in Cyclos
           type: boolean
+        enablePrivacy:
+          description: >-
+            Indicates whether privacy can be used for this phone
+          type: boolean
         managePrivacy:
           type: boolean
           description: >-
@@ -53181,8 +53188,8 @@ components:
         hidden:
           type: boolean
           description: >-
-            Indicates whether this phone is hidden for other users (`true`) or visible
-            to all users (`false`).
+            Indicates whether this phone is private / hidden for other users (`true`) or
+            public / visible to all users (`false`).
         enabledForSms:
           type: boolean
           description: >-
@@ -53282,8 +53289,8 @@ components:
             hidden:
               type: boolean
               description: >-
-                Indicates whether this phone is hidden for other users (`true`) or visible
-                to all users (`false`).
+                Indicates whether this phone is private / hidden for other users (`true`) or
+                public / visible to all users (`false`).
             enabledForSms:
               type: boolean
               description: >-
@@ -53296,7 +53303,10 @@ components:
                 Only applicable if this represents a mobile phone. Whether this mobile is
                 verified. Can only be directly set by administrators. Regular users need to
                 verify it.
-
+            enablePrivacy:
+              description: >-
+                Indicates whether phone privacy can be used for this user
+              type: boolean
 
     PinInput:
       description: >-
@@ -54353,8 +54363,6 @@ components:
               description: >-
                 Use `canEdit` instead.
 
-                Can the authenticated user manage this reference?
-              type: boolean
 
 
                 Can the authenticated user manage this reference?
@@ -57094,6 +57102,10 @@ components:
             Indicates whether the authenticated user can create a new address for
             this user
           type: boolean
+        enablePrivacy:
+          description: >-
+            Indicates whether address privacy can be used for this user
+          type: boolean
         maxAddresses:
           description: >-
             Indicates the maximum number of addresses the user can have
@@ -58351,6 +58363,10 @@ components:
         canCreateMobile:
           description: >-
             Can the authenticated user create new mobile phones for this user?
+          type: boolean
+        enablePrivacy:
+          description: >-
+            Indicates whether phone privacy can be used for this user
           type: boolean
         smsEnabled:
           description: >-
@@ -59620,6 +59636,11 @@ components:
         - $ref: '#/components/schemas/Voucher'
         - type: object
           properties:
+            owner:
+              description: >-
+                The user a generated voucher was assigned to, if any.
+              allOf:
+                - $ref: '#/components/schemas/User'
             buyer:
               description: >-
                 The voucher buyer. Is not returned when the voucher was generated or

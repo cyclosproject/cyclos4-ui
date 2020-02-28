@@ -1109,6 +1109,7 @@
     "accept": "Accept",
     "acceptOrder": "Accept order",
     "addedProduct": "The product was added to cart",
+    "addedProductOrder": "The product was added to the order",
     "addedProductAlreadyInCart": "The product was added to cart (this item has been added previously to your cart)",
     "addToCart": "Add to cart",
     "adjustedQuantity": {
@@ -1131,6 +1132,7 @@
     "available": "Available",
     "notAvailable": "Not available",
     "backToDraft": "The advertisement is now in draft mode",
+    "basePrice": "Base price",
     "beginDate": "Published begin date",
     "cartEmpty": "This cart is empty. Search marketplace for products and services to buy",
     "checkout": "Checkout",
@@ -1142,6 +1144,7 @@
     "choosePaymentType": "Choose payment type",
     "customAddress": "Custom address",
     "customDeliveryMethod": "Custom delivery method",
+    "discount": "Discount %",
     "endDate": "Published end date",
     "error": {
       "cannotBuyFromSeller": "At the moment, you are not allowed to buy products from this user. Please contact your administrator.",

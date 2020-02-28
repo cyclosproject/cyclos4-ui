@@ -4,15 +4,21 @@
   </input-field>
 </form>
 <results-layout resultType="list" [results]="results$ | async"
-  (update)="update($event)" [onClick]="onClick">
-  <mobile-result *mobileResult="let row">
-    <div class="cell-main">{{ row.name }}</div>
+  (update)="update($event)" [onClick]="onClick" [rendering$]="rendering$"
+  [ngStyle]="{'min-height': '44vh'}">
+  <mobile-result *mobileResult="let row" [avatarImage]="row.image"
+    avatarIcon="shopping_basket">
+    <div class="cell-main"
+      [ngStyle]="{'text-decoration': resolveStockLabel(row) ? 'line-through' : ''}">
+      {{ row.name }}</div>
+    <div *ngIf="resolveStockLabel(row)" class="cell-text text-muted">
+      {{ i18n.ad.outOfStock }}</div>
   </mobile-result>
   <table *resultTable class="table table-hover cursor-pointer">
     <tbody>
       <ng-container *ngFor="let row of (results$ | async).results">
-        <tr>
-          <td class="avatar">
+        <tr (click)="addProduct(row)">
+          <td class=" avatar">
             <avatar [image]="row.image" icon="shopping_basket"></avatar>
           </td>
           <td>

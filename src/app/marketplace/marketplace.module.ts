@@ -27,6 +27,7 @@ import { ViewAdInterestComponent } from 'app/marketplace/interests/view-ad-inter
 import { EditAdInterestComponent } from 'app/marketplace/interests/edit-ad-interest.component';
 import { SaleFormComponent } from 'app/marketplace/sale-form.component';
 import { SearchProductsComponent } from 'app/marketplace/search/search-products.component';
+import { OrderProductsComponent } from 'app/marketplace/order-products.component';
 
 /**
  * Marketplace module
@@ -63,12 +64,14 @@ import { SearchProductsComponent } from 'app/marketplace/search/search-products.
     AnswerFormComponent,
     ViewCartComponent,
     CartCheckoutComponent,
-    SearchProductsComponent
+    SearchProductsComponent,
+    OrderProductsComponent
   ],
   entryComponents: [
     ShowSubCategoriesComponent,
     SetDeliveryMethodComponent,
-    SearchProductsComponent
+    SearchProductsComponent,
+    OrderProductsComponent
   ]
 })
 export class MarketplaceModule {

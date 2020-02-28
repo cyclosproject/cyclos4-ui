@@ -79,6 +79,18 @@ hr {
   transition: opacity 0.3s;
 }
 
+.ellipsis {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.ellipsis-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 body.dark {
   hr {
     border-color: $border-color-dark;
