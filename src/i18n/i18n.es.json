@@ -213,7 +213,7 @@
     "personal.password": "Contraseñas",
     "personal.passwords": "Contraseñas",
     "personal.notifications": "Notificaciones",
-    "personal.settings": "Configuración",
+    "personal.settings": "Ajustes",
     "content": "Información"
   },
   "login": {
@@ -905,8 +905,8 @@
     "rootCategory": "Principal",
     "orderBy": {
       "date": "Ultimos publicados",
-      "priceAsc": "Precio inferior",
-      "priceDesc": "Precio superior"
+      "priceAsc": "Precio más bajo",
+      "priceDesc": "Precio más alto"
     },
     "title": {
       "search": "Búsqueda de anuncios",
@@ -940,8 +940,8 @@
     }
   },
   "setting": {
-    "title": "Configuración",
-    "mobileTitle": "Configuración",
+    "title": "Ajustes",
+    "mobileTitle": "Ajustes",
     "theme": "Tema",
     "theme.light": "Claro",
     "theme.dark": "Oscuro"
