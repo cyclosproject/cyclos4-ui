@@ -24,10 +24,13 @@
       {{ (layoutService.gtxs$ | async) ? heading || mobileHeading : mobileHeading || heading }}
     </div>
 
-    <ng-container *ngIf="headingActions?.length > 0">
-      <heading-actions [headingActions]="headingActions"></heading-actions>
-    </ng-container>
+    <heading-actions
+      *ngIf="(layoutService.ltsm$ | async) || headingActions?.length <= 2"
+      [headingActions]="headingActions"></heading-actions>
   </div>
+  <actions-toolbar
+    *ngIf="(layoutService.gtxs$ | async) && headingActions?.length > 2"
+    [headingActions]="headingActions"></actions-toolbar>
   <div *ngIf="mode !== 'empty'"
     class="page-content-body card-body d-flex flex-column">
     <ng-content></ng-content>

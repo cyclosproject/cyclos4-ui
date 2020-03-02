@@ -115,7 +115,6 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
       const edit = new HeadingAction('edit', this.i18n.general.edit, () => {
         this.router.navigate(['/marketplace', 'edit', this.id]);
       }, true);
-      edit.position = 'title';
       headingActions.push(edit);
     }
     if (ad.canBuy) {

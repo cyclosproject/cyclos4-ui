@@ -119,16 +119,6 @@ export class LayoutService {
     return this._focusTrap || this.modal;
   }
 
-  hasActionsToolbar$ = new BehaviorSubject(false);
-  get hasActionsToolbar(): boolean {
-    return this.hasActionsToolbar$.value;
-  }
-  set hasActionsToolbar(flag: boolean) {
-    if (flag !== this.hasActionsToolbar$.value) {
-      this.hasActionsToolbar$.next(flag);
-    }
-  }
-
   private breakpointObservers = new Map<Breakpoint, Observable<boolean>>();
 
   private _activeBreakpoints: BehaviorSubject<Set<Breakpoint>>;

@@ -32,22 +32,16 @@
   align-items: center;
   height: 100%;
 
-  .heading-actions-plain-button {
+  .btn {
     margin-right: 0.5rem;
     display: flex;
-    background-color: $title-plain-button-bg;
-    color: $title-plain-button-color;
-    border-color: $title-plain-button-border-color;
+    height: calc(#{$input-height} - 3px);
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    padding-left: calc(#{$btn-padding-x} - 2px);
 
     icon {
       margin-right: 0.5rem;
-      color: $title-plain-button-icon-color
-    }
-
-    &:active, &:focus, &:hover {
-      background-color: $title-plain-button-active-bg;
-      color: $title-plain-button-active-color;
-      border-color: $title-plain-button-active-border-color;  
     }
   }
 }
@@ -119,24 +113,6 @@
 
   .heading-actions-menu {
     padding: 1rem 0;
-  }
-}
-
-body.dark :host ::ng-deep .heading-actions-plain-buttons {  
-  .heading-actions-plain-button {
-    background-color: $title-plain-button-bg-dark;
-    color: $title-plain-button-color-dark;
-    border-color: $title-plain-button-border-color-dark;
-
-    icon {
-      color: $title-plain-button-icon-color-dark
-    }
-
-    &:active, &:focus, &:hover {
-      background-color: $title-plain-button-active-bg-dark;
-      color: $title-plain-button-active-color-dark;
-      border-color: $title-plain-button-active-border-color-dark;
-    }
   }
 }
 

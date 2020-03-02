@@ -116,7 +116,6 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
         const edit = new HeadingAction('edit', this.i18n.general.edit, () => {
           this.router.navigateByUrl(this.router.url + '/edit');
         }, true);
-        edit.position = 'title';
         this.headingActions = [edit];
       }
     } else {
@@ -308,7 +307,6 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
       this.showActions$.next(show);
       this.updateHeadingActions();
     }, true);
-    headingAction.position = 'title';
     this.headingActions = [headingAction];
   }
 

@@ -78,9 +78,6 @@
     valueFormat="break">
   </label-value>
 
-  <actions-toolbar [headingActions]="headingActions$ | async">
-  </actions-toolbar>
-
   <ng-container *ngIf="(transaction.installments || []).length > 1">
     <h2 class="border-0 mt-4">{{ i18n.transaction.installments }}</h2>
     <table class="table table-hover">

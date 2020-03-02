@@ -58,9 +58,6 @@
   [label]="i18n.general.description" valueFormat="break"
   [value]="transfer.transaction.description"></label-value>
 
-<actions-toolbar [headingActions]="headingActions">
-</actions-toolbar>
-
 <ng-container *ngIf="transfer.parent">
   <h2 class="mt-4">{{ (layout.gtxs$ | async)
     ? i18n.transaction.title.parentTransfer

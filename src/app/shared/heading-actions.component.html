@@ -48,7 +48,7 @@
   <!-- Show separated buttons -->
   <div class="d-flex heading-actions-plain-buttons">
     <button #actionButton *ngFor="let action of visibleActions$.value"
-      class="btn heading-actions-plain-button"
+      class="btn btn-outline-primary"
       (click)="action.onClick($event, actionButton)">
       <icon [icon]="action.icon"></icon>
       <div class="action-label">{{ action.label }}</div>

@@ -68,20 +68,17 @@ export class HeadingActionsComponent extends BaseComponent implements OnInit {
     // Update the visible actions when conditions change
     const update = () => this.updateVisible();
     this.addSub(this.layout.breakpointChanges$.subscribe(update));
-    this.addSub(this.layout.hasActionsToolbar$.subscribe(update));
     update();
   }
 
   private updateVisible() {
     const activeBreakpoints = this.layout.activeBreakpoints;
-    // When showing on xxs, ignore the toolbar
-    const hasActionsToolbar = activeBreakpoints.has('lt-sm') ? false : this.layout.hasActionsToolbar;
     const actions = (this.headingActions || [])
-      .filter(action => action.showOn(activeBreakpoints)
-        && action.showOnTitle(hasActionsToolbar));
+      .filter(action => action.showOn(activeBreakpoints));
     this.visibleActions$.next(actions);
 
-    const groupActions = actions.length > 0 && actions.findIndex(a => !a.maybeRoot) >= 0;
+    // Only group actions on mobile
+    const groupActions = activeBreakpoints.has('lt-sm') && actions.length > 0 && actions.findIndex(a => !a.maybeRoot) >= 0;
     this.groupActions$.next(groupActions);
   }
 
