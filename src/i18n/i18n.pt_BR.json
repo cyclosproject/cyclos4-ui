@@ -874,9 +874,9 @@
       "edit": "Editar perfil",
       "managePasswords": "Gerenciar senhas",
       "viewIdentityProviders": "Ver provedores de identidade",
-      "addContact": "Add to contacts",
+      "addContact": "Adicionar aos contatos",
       "addContact.done": "{user} foi adicionado à sua lista de contactos",
-      "removeContact": "Remove from contacts",
+      "removeContact": "Remover dos contatos",
       "removeContact.done": "{user} foi removido da sua lista de contatos",
       "pay": "Fazer pagamento",
       "paySystemToUser": "Pagamento de sistema para usuário",
@@ -1316,7 +1316,7 @@
       "webshopSettings": "Configurações da loja virtual",
       "unansweredQuestions": "Perguntas não respondidas",
       "answerQuestion": "Responder pergunta",
-      "adInterests": "Interesses em anúncio",
+      "adInterests": "Advertisement interests",
       "adInterestNew": "Novo interesse em anúncio",
       "adInterest": "Interesse em anúncio"
     }
