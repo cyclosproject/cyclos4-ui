@@ -49,7 +49,7 @@
   <div class="d-flex heading-actions-plain-buttons">
     <button #actionButton *ngFor="let action of visibleActions$.value"
       class="btn btn-outline-primary"
-      (click)="action.onClick($event, actionButton)">
+      (click)="action.onClick($event, actionButton); blurIfClick(actionButton, $event);">
       <icon [icon]="action.icon"></icon>
       <div class="action-label">{{ action.label }}</div>
     </button>

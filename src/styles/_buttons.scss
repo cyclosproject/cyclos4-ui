@@ -26,6 +26,9 @@ button.btn-transparent {
 .btn-outline-primary {
   @include button-outline-variant($button-color);
 }
+.btn-outline-primary {
+  border-color: rgba($button-color, 0.8);
+}
 
 .btn-icon {
   padding: 0.4rem 0.4rem 0.4rem 0.6rem;
