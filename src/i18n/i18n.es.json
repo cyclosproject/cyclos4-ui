@@ -189,7 +189,7 @@
     "banking.payUser": "Pago a usuario",
     "banking.paySystem": "Pago al sistema",
     "banking.paySelf": "Auto pago",
-    "banking.pos": "Receive payment",
+    "banking.pos": "Recibir pago",
     "banking.scheduledPayments": "Pagos agendados",
     "banking.authorizations": "Pagos con autorización",
     "banking.transfersOverview": "Visión general de Transferencias",
@@ -214,7 +214,7 @@
     "personal.password": "Contraseñas",
     "personal.passwords": "Contraseñas",
     "personal.notifications": "Notificaciones",
-    "personal.settings": "Configuración",
+    "personal.settings": "Ajustes",
     "content": "Información"
   },
   "login": {
@@ -342,7 +342,7 @@
       "account": "Cuenta",
       "payUser": "Pago a usuario",
       "paySystem": "Pago a sistema",
-      "pos": "Receive payment",
+      "pos": "Recibir pago",
       "contacts": "Contactos",
       "directory": "Anunciantes",
       "advertisements": "Comercio electrónico",
@@ -475,7 +475,7 @@
       "settled": "Saldado"
     },
     "title": {
-      "pos": "Receive payment",
+      "pos": "Recibir pago",
       "paymentSystemToSystem": "Pago entre cuentas de sistema",
       "paymentSystemToUser": "Pago de sistema a usuario",
       "paymentToSystem": "Pago al sistema",
@@ -500,7 +500,7 @@
       "transfersOverview": "Visión general de Transferencias"
     },
     "mobileTitle": {
-      "pos": "Receive payment",
+      "pos": "Recibir pago",
       "paymentSystemToSystem": "Pago a sistema",
       "paymentSystemToUser": "Pago a usuario",
       "paymentToSystem": "Pago a sistema",
@@ -909,8 +909,8 @@
     "rootCategory": "Principal",
     "orderBy": {
       "date": "Ultimos publicados",
-      "priceAsc": "Precio inferior",
-      "priceDesc": "Precio superior"
+      "priceAsc": "Precio más bajo",
+      "priceDesc": "Precio más alto"
     },
     "title": {
       "search": "Búsqueda de anuncios",
@@ -944,8 +944,8 @@
     }
   },
   "setting": {
-    "title": "Configuración",
-    "mobileTitle": "Configuración",
+    "title": "Ajustes",
+    "mobileTitle": "Ajustes",
     "theme": "Tema",
     "theme.light": "Claro",
     "theme.dark": "Oscuro"
