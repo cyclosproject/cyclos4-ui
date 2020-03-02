@@ -5,6 +5,7 @@ import { BaseDashboardComponent } from 'app/home/dashboard/base-dashboard.compon
 import { BehaviorSubject } from 'rxjs';
 import { Menu, ActiveMenu } from 'app/shared/menu';
 import { HeadingAction } from 'app/shared/action';
+import { empty } from 'app/shared/helper';
 
 /**
  * Displays the latest advertisements
@@ -66,7 +67,6 @@ export class LatestAdsComponent extends BaseDashboardComponent implements OnInit
       return ads;
     }
     const result = this.onePerOwner(ads).slice(0, this.max);
-    let i = 0;
     while (result.length < this.max) {
       // We still need more results, yet, from different owners
       const remaining = ads.filter(ad => !result.includes(ad));
@@ -76,7 +76,7 @@ export class LatestAdsComponent extends BaseDashboardComponent implements OnInit
           result.push(ad);
         }
       }
-      if (i++ > 3) {
+      if (empty(remaining)) {
         break;
       }
     }
