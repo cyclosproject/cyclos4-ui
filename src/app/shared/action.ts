@@ -33,7 +33,16 @@ export class ActionWithIcon extends Action {
  * or directly in the heading bar.
  */
 export class HeadingAction extends ActionWithIcon {
-  topBarOnly = false;
+  /**
+   * Indicates where the action is displayed
+   *
+   * - `default`: For xxs will be shown in the top bar, for xs in the 
+   *   actions button next to the title and for larger, if a toolbar is
+   *   available, in the toolbar;
+   * - `right`: If a toolbar is available, shows right-aligned in the toolbar.
+   *   Otherwise, works as `default`.
+   */
+  position: 'default' | 'right' = 'default';
   breakpoint: Breakpoint;
   constructor(
     icon: string,
@@ -42,5 +51,12 @@ export class HeadingAction extends ActionWithIcon {
     public maybeRoot = false
   ) {
     super(icon, label, onClick);
+  }
+
+  /**
+   * Returns whether this action is visible for the given set of breakpoints
+   */
+  showOn(activeBreakpoints: Set<Breakpoint>): boolean {
+    return this.breakpoint == null || activeBreakpoints.has(this.breakpoint);
   }
 }

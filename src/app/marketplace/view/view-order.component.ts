@@ -80,7 +80,8 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
    * Returns a label for the current delivery method if any
    */
   resolveDeliveryLabel(): string {
-    return empty(this.data.deliveryMethodName) ? this.i18n.ad.toBeConfirmedBySeller : this.data.deliveryMethodName;
+    const name = (this.data.deliveryMethod || {}).name;
+    return empty(name) ? this.i18n.ad.toBeConfirmedBySeller : name;
   }
 
   resolveMenu() {
@@ -179,13 +180,14 @@ export class ViewOrderComponent extends BaseViewPageComponent<OrderView> impleme
    * to enter charge amount, name, remarks and time for a delivery method
    */
   protected setDeliveryMethod() {
+    const dm = this.data.deliveryMethod || {};
     const ref = this.modal.show(SetDeliveryMethodComponent, {
       class: 'modal-form', initialState: {
         title: this.i18n.ad.deliveryMethod,
-        name: this.data.deliveryMethodName,
-        chargeAmount: this.data.deliveryPrice,
-        minTime: this.data.minDeliveryTime,
-        maxTime: this.data.maxDeliveryTime,
+        name: dm.name,
+        chargeAmount: dm.price,
+        minTime: dm.minTime,
+        maxTime: dm.maxTime,
         currency: this.data.currency
       }
     });

@@ -582,9 +582,7 @@ export class MenuService {
       if (payments.pos) {
         add(Menu.POS, `/banking/pos`, 'payment', this.i18n.menu.bankingPos);
       }
-      const scheduledPayments = (banking.scheduledPayments || {});
-      const recurringPayments = (banking.recurringPayments || {});
-      if (scheduledPayments.view || recurringPayments.view) {
+      if ((banking.scheduledPayments || {}).view) {
         add(Menu.SCHEDULED_PAYMENTS, `/banking/${owner}/scheduled-payments`,
           'schedule', this.i18n.menu.bankingScheduledPayments);
       }

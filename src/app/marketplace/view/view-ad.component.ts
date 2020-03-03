@@ -76,7 +76,7 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
       this.notification.snackBar(message);
       if (checkRole &&
         (this.dataForUiHolder.role === RoleEnum.BROKER &&
-          !this.authHelper.isSelfOrOwner(this.data.owner)) ||
+          !this.authHelper.isSelfOrOwner(this.data.user)) ||
         this.dataForUiHolder.role === RoleEnum.ADMINISTRATOR) {
         // A broker or admin cannot view the ad after perform
         // some actions (e.g set it to draft, reject), so go
@@ -106,11 +106,17 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
 
   onDataInitialized(ad: AdView) {
     this.webshop = ad.kind === AdKind.WEBSHOP;
-    this.hasStatus = !this.guest && (this.authHelper.isSelfOrOwner(ad.owner) ||
+    this.hasStatus = !this.guest && (this.authHelper.isSelfOrOwner(ad.user) ||
       (this.dataForUiHolder.role === RoleEnum.ADMINISTRATOR ||
         this.dataForUiHolder.role === RoleEnum.BROKER));
 
     const headingActions: HeadingAction[] = [];
+    if (ad.canEdit) {
+      const edit = new HeadingAction('edit', this.i18n.general.edit, () => {
+        this.router.navigate(['/marketplace', 'edit', this.id]);
+      }, true);
+      headingActions.push(edit);
+    }
     if (ad.canBuy) {
       headingActions.push(
         new HeadingAction('add_shopping_cart', this.i18n.ad.addToCart, () => this.addToCart()));
@@ -158,12 +164,6 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
     if (ad.canReject) {
       headingActions.push(
         new HeadingAction('thumb_down_alt', this.i18n.ad.reject, () => this.reject()));
-    }
-    if (ad.canEdit) {
-      headingActions.push(
-        new HeadingAction('edit', this.i18n.general.edit, () => {
-          this.router.navigate(['/marketplace', 'edit', this.id]);
-        }));
     }
     if (ad.canRemove) {
       headingActions.push(
@@ -245,7 +245,7 @@ export class ViewAdComponent extends BaseViewPageComponent<AdView> implements On
     } else if (this.dataForUiHolder.role === RoleEnum.ADMINISTRATOR) {
       return this.data.canEdit;
     } else if (this.dataForUiHolder.role === RoleEnum.BROKER ||
-      this.authHelper.isSelfOrOwner(this.data.owner) ||
+      this.authHelper.isSelfOrOwner(this.data.user) ||
       (this.authHelper.isSelfOrOwner(question.user) && this.dataForUiHolder.role !== RoleEnum.OPERATOR)) {
       return this.data.canEdit && empty(question.answer);
     }

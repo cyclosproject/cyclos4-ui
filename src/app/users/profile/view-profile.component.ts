@@ -100,7 +100,6 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     const contact = permissions.contact || {};
     const payment = permissions.payment || {};
     const scheduledPayments = permissions.scheduledPayments || {};
-    const recurringPayments = permissions.recurringPayments || {};
     const authorizedPayments = permissions.authorizedPayments || {};
     const marketplace = permissions.marketplace || {};
     const simple = marketplace.simple || {};
@@ -115,11 +114,10 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     if (user.relationship === UserRelationshipEnum.SELF) {
       // For the own user, we just show the edit as a top-level action
       if (profile.editProfile) {
-        this.headingActions = [
-          new HeadingAction('edit', this.i18n.general.edit, () => {
-            this.router.navigateByUrl(this.router.url + '/edit');
-          }, true)
-        ];
+        const edit = new HeadingAction('edit', this.i18n.general.edit, () => {
+          this.router.navigateByUrl(this.router.url + '/edit');
+        }, true);
+        this.headingActions = [edit];
       }
     } else {
       // For others, will have actions in sections
@@ -154,7 +152,7 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
           this.router.navigate(['/banking', this.param, 'payment', ApiHelper.SYSTEM]);
         }));
       }
-      if (scheduledPayments.view || recurringPayments.view) {
+      if (scheduledPayments.view) {
         this.bankingActions.push(new HeadingAction('schedule', this.i18n.user.profile.viewScheduledPayments, () => {
           this.router.navigate(['/banking', this.param, 'scheduled-payments']);
         }));
@@ -306,12 +304,11 @@ export class ViewProfileComponent extends BaseViewPageComponent<UserView> implem
     const show = !this.showActions$.value;
     const icon = show ? 'play_circle_outline' : 'clear';
     const label = show ? this.i18n.user.profile.showActions : this.i18n.user.profile.hideActions;
-    this.headingActions = [
-      new HeadingAction(icon, label, () => {
-        this.showActions$.next(show);
-        this.updateHeadingActions();
-      }, true)
-    ];
+    const headingAction = new HeadingAction(icon, label, () => {
+      this.showActions$.next(show);
+      this.updateHeadingActions();
+    }, true);
+    this.headingActions = [headingAction];
   }
 
   private addContact(): any {

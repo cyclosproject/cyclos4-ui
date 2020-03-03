@@ -1,12 +1,19 @@
 <ng-container *ngIf="hasValue; else empty">
-  <ng-container *ngIf="directValue">{{ value }}</ng-container>
+  <ng-container *ngIf="directValue">
+    <ng-container *ngIf="!link && !externalLink">
+      {{ value }}
+    </ng-container>
+    <ng-container *ngIf="link">
+      <a [routerLink]="link">{{ value }}</a>
+    </ng-container>
+    <ng-container *ngIf="externalLink">
+      <a [href]="externalLink">{{ value }}</a>
+    </ng-container>
+  </ng-container>
   <div *ngIf="type == 'text'" class="break-nl"
     [ngClass]="{'d-inline': inline}">{{ value }}</div>
   <rich-text-container *ngIf="type == 'richText'" [value]="value">
   </rich-text-container>
-  <ng-container *ngIf="type == 'url'">
-    <a [href]="value">{{ value }}</a>
-  </ng-container>
   <span
     *ngIf="type == 'decimal'">{{ value | number:field.decimalDigits }}</span>
   <ng-container *ngIf="type == 'singleSelection' || type == 'multiSelection'">

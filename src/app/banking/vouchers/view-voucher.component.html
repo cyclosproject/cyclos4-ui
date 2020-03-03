@@ -25,6 +25,9 @@
           <label-value [label]="i18n.general.creationDate">
             {{ data.creationDate | dateTime}}
           </label-value>
+          <label-value *ngIf="data.owner" [label]="i18n.voucher.owner">
+            <user-link [user]="data.owner"></user-link>
+          </label-value>
           <label-value *ngIf="data.buyer" [label]="i18n.voucher.buy.buyer">
             <user-link [user]="data.buyer"></user-link>
           </label-value>

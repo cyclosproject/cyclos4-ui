@@ -10,7 +10,7 @@
         *ngTemplateOutlet="addressDetails; context: {$implicit: addresses[0]}">
       </ng-container>
     </div>
-    <div *ngIf="locatedAddresses?.length === 1">
+    <div *ngIf="locatedAddresses?.length === 1" class="pt-1">
       <static-map [address]="locatedAddresses[0]"
         [width]="singleMapWidth(layout.breakpointChanges$ | async)">
       </static-map>

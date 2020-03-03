@@ -6,7 +6,7 @@ import {
   InstallmentView, ScheduledPaymentActionEnum,
   TransactionKind, TransactionView
 } from 'app/api/models';
-import { TransactionsService, TransfersService } from 'app/api/services';
+import { TransactionsService, TransfersService, InstallmentsService } from 'app/api/services';
 import { PendingPaymentsService } from 'app/api/services/pending-payments.service';
 import { RecurringPaymentsService } from 'app/api/services/recurring-payments.service';
 import { ScheduledPaymentsService } from 'app/api/services/scheduled-payments.service';
@@ -15,7 +15,6 @@ import { TransactionStatusService } from 'app/core/transaction-status.service';
 import { HeadingAction } from 'app/shared/action';
 import { BaseViewPageComponent } from 'app/shared/base-view-page.component';
 import { empty } from 'app/shared/helper';
-import { BankingHelperService } from 'app/core/banking-helper.service';
 
 /**
  * Displays a transaction details
@@ -36,13 +35,13 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
   constructor(
     injector: Injector,
     private transactionsService: TransactionsService,
+    private installmentsService: InstallmentsService,
     private transactionStatusService: TransactionStatusService,
     private pendingPaymentsService: PendingPaymentsService,
     private scheduledPaymentsService: ScheduledPaymentsService,
     private recurringPaymentsService: RecurringPaymentsService,
     private transfersService: TransfersService,
-    private operationHelper: OperationHelperService,
-    private bankingHelper: BankingHelperService
+    private operationHelper: OperationHelperService
   ) {
     super(injector);
   }
@@ -430,8 +429,8 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
       createDeviceConfirmation: this.installmentDeviceConfirmation(InstallmentActionEnum.SETTLE, installment),
       passwordInput: this.transaction.confirmationPasswordInput,
       callback: res => {
-        this.addSub(this.scheduledPaymentsService.settleScheduledPaymentInstallment({
-          id: installment.id,
+        this.addSub(this.installmentsService.settleInstallment({
+          key: installment.id,
           confirmationPassword: res.confirmationPassword
         }).subscribe(() => {
           this.notification.snackBar(this.i18n.transaction.settleInstallmentDone);
@@ -448,8 +447,8 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
       createDeviceConfirmation: this.installmentDeviceConfirmation(InstallmentActionEnum.PROCESS, installment),
       passwordInput: this.transaction.confirmationPasswordInput,
       callback: res => {
-        this.addSub(this.scheduledPaymentsService.processScheduledPaymentInstallment({
-          id: installment.id,
+        this.addSub(this.installmentsService.processInstallment({
+          key: installment.id,
           confirmationPassword: res.confirmationPassword
         }).subscribe(() => {
           this.notification.snackBar(this.i18n.transaction.processInstallmentDone);
@@ -460,9 +459,7 @@ export class ViewTransactionComponent extends BaseViewPageComponent<TransactionV
   }
 
   resolveMenu(view: TransactionView) {
-    return this.authHelper.accountMenu(
-      this.bankingHelper.asAccount(view, true),
-      this.bankingHelper.asAccount(view, false));
+    return this.authHelper.accountMenu(view.from, view.to);
   }
 
 }

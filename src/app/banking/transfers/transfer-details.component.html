@@ -89,7 +89,7 @@
 </ng-container>
 
 <ng-container *ngIf="transfer.children?.length > 0">
-  <h2 class="mt-4 border-0">{{ (layout.gtxs$ | async)
+  <h2 class="mt-4 mb-0">{{ (layout.gtxs$ | async)
     ? i18n.transaction.title.childTransfers
     : i18n.transaction.mobileTitle.childTransfers }}</h2>
   <results-layout [results]="transfer.children" [toLink]="toLink">

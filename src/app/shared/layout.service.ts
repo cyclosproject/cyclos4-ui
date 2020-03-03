@@ -427,6 +427,9 @@ export class LayoutService {
   }
 
   set headingActions(actions: HeadingAction[]) {
+    if (empty(actions)) {
+      actions = null;
+    }
     if (!isEqual(actions, this.headingActions)) {
       this.headingActions$.next(actions);
     }

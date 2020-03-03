@@ -21,6 +21,7 @@
     "UserStatus",
     "GroupMembership",
     "Transactions",
+    "Installments",
     "ScheduledPayments",
     "RecurringPayments",
     "PendingPayments",

@@ -116,7 +116,7 @@ export abstract class BaseTransactionsSearch
    * @param row The row
    */
   avatarIcon(row: TransactionResult): string {
-    return row.relatedKind === 'user' ? 'user' : 'account_balance_circle';
+    return row.related.kind === 'user' ? 'user' : 'account_balance_circle';
   }
 
   /**
@@ -124,7 +124,7 @@ export abstract class BaseTransactionsSearch
    * @param row The row
    */
   avatarImage(row: TransactionResult): Image {
-    return (row.relatedUser || {}).image;
+    return (row.related.user || {}).image;
   }
 
   /**
@@ -132,10 +132,10 @@ export abstract class BaseTransactionsSearch
    * @param row The row
    */
   subjectName(row: TransactionResult): string {
-    if (row.relatedKind === 'system') {
+    if (row.related.kind === 'system') {
       return this.i18n.account.system;
     } else {
-      return (row.relatedUser || {}).display;
+      return (row.related.user || {}).display;
     }
   }
 

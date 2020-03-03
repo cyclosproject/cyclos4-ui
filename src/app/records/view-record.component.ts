@@ -48,7 +48,7 @@ export class ViewRecordComponent extends BaseViewPageComponent<RecordView> imple
         this.valuesWithSection.set(s, filter);
       }
     });
-    if (record.edit) {
+    if (record.canEdit) {
       this.headingActions.push(
         new HeadingAction('edit', this.i18n.general.edit, () => {
           this.router.navigate(['/records', 'edit', record.id]);

@@ -102,7 +102,10 @@ export class QuickAccessComponent extends BaseDashboardComponent implements OnIn
       addAction(QuickAccessType.SearchUsers, 'quick_access_search_users',
         this.i18n.dashboard.action.directory, new ActiveMenu(Menu.SEARCH_USERS));
     }
-    if (permissions.marketplace && permissions.marketplace.search) {
+    if (permissions.marketplace && (
+      (permissions.marketplace.userSimple || {}).view
+      || (permissions.marketplace.userWebshop || {}).view)
+    ) {
       addAction(QuickAccessType.SearchAds, 'quick_access_marketplace',
         this.i18n.dashboard.action.advertisements, new ActiveMenu(Menu.SEARCH_ADS));
     }

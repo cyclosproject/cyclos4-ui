@@ -46676,6 +46676,12 @@ components:
           $ref: '#/components/schemas/UserDataForEdit'
         user:
           $ref: '#/components/schemas/UserEdit'
+        enablePrivacy:
+          type: boolean
+          description: >-
+            Whether privacy control is enabled for profile fields, phones
+            and addresses.
+
         display:
           type: string
           description: >-
@@ -57295,6 +57301,11 @@ components:
         emailRequired:
           description: >-
             Indicates whether the e-mail is required
+          type: boolean
+        enablePrivacy:
+          description: >-
+            Indicates whether privacy over profile fields can be controlled for
+            this user.
           type: boolean
         profileFieldActions:
           description: >-

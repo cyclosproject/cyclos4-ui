@@ -64,7 +64,7 @@ export class ListUserBrokersComponent
 
   remove(brokering: Brokering) {
     this.notification.confirm({
-      message: this.i18n.general.removeConfirm(brokering.broker.shortDisplay),
+      message: this.i18n.general.removeConfirm(brokering.broker.display),
       callback: () => this.doRemove(brokering)
     });
   }
@@ -74,7 +74,7 @@ export class ListUserBrokersComponent
       broker: brokering.broker.id,
       user: this.param
     }).subscribe(() => {
-      this.notification.snackBar(this.i18n.general.removeDone(brokering.broker.shortDisplay));
+      this.notification.snackBar(this.i18n.general.removeDone(brokering.broker.display));
       this.reload();
     }));
   }

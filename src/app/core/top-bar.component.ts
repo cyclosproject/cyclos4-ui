@@ -163,7 +163,7 @@ export class TopBarComponent extends AbstractComponent implements OnInit, OnChan
         };
       }
       const action = new HeadingAction(icon, label, onClick, true);
-      action.topBarOnly = true;
+      action.breakpoint = 'xxs';
       actions.push(action);
     };
 

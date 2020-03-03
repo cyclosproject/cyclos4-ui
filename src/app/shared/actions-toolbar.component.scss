@@ -1,0 +1,48 @@
+@import 'src/definitions';
+
+.actions-toolbar-container {
+  display: flex;
+  flex-wrap: wrap;
+  border-bottom: 1px solid $border-color;
+  padding-bottom: 0.75rem;
+}
+
+.actions-toolbar-item-right {
+  flex-grow: 1;
+  text-align: end;
+}
+
+.btn {
+  display: inline-flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-left: 0.75rem;
+  margin-top: 0.75rem;
+  height: calc(#{$input-height} - 3px);
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  padding-left: calc(#{$btn-padding-x} - 2px);
+
+  icon {
+    position: relative;
+    top: -1px;
+  }
+
+  .btn-action-toolbar-text {
+    padding-left: 0.5rem;
+    text-align: start;
+    @include text-truncate();
+  }  
+}
+
+body.dark :host ::ng-deep {
+  .actions-toolbar-container {
+    border-bottom: 1px solid $border-color-dark;
+  }
+}
+
+@media print {
+  :host {
+    display: none;
+  }
+}

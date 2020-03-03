@@ -738,6 +738,7 @@
     "cancelConfirmation": "Are you sure to cancel this voucher?",
     "cancelPackConfirmation": "There are other vouchers belonging to the same pack that will be also canceled. Are you sure to continue?",
     "token": "Voucher code",
+    "owner": "Owner",
     "changeExpirationDate": "Change expiration date",
     "expirationDateChanged": "Expiration date changed",
     "refundPayment": "Refund payment",
@@ -873,9 +874,9 @@
       "edit": "Edit profile",
       "managePasswords": "Manage passwords",
       "viewIdentityProviders": "View identity providers",
-      "addContact": "Add to my contacts",
+      "addContact": "Add to contacts",
       "addContact.done": "{user} was added to your contact list",
-      "removeContact": "Remove from my contacts",
+      "removeContact": "Remove from contacts",
       "removeContact.done": "{user} was removed from your contact list",
       "pay": "Make payment",
       "paySystemToUser": "Payment system to user",
@@ -1325,7 +1326,7 @@
       "webshopSettings": "Web shop settings",
       "unansweredQuestions": "Unanswered questions",
       "answerQuestion": "Answer question",
-      "adInterests": "Advertisment interests",
+      "adInterests": "Advertisement interests",
       "adInterestNew": "New advertisement interest",
       "adInterest": "Advertisement interest"
     }

@@ -3,6 +3,7 @@
     [heading]="i18n.transaction.title.detailsTransfer"
     [mobileHeading]="i18n.transaction.mobileTitle.detailsTransfer"
     [headingActions]="headingActions$ | async">
-    <transfer-details [transfer]="transfer"></transfer-details>
+    <transfer-details [headingActions]="headingActions$ | async"
+      [transfer]="transfer"></transfer-details>
   </page-content>
 </page-layout>

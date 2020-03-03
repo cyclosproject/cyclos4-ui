@@ -93,11 +93,11 @@ export class EditAdComponent
     this.kind = data.kind;
     this.webshop = this.kind === AdKind.WEBSHOP;
 
-    this.self = this.authHelper.isSelfOrOwner(data.owner);
+    this.self = this.authHelper.isSelfOrOwner(data.user);
 
     this.owner = this.self
       ? this.ApiHelper.SELF
-      : data.owner.id;
+      : data.user.id;
 
     this.marketplaceHelper.populateCategories(this.categories, data.categories, 0);
 
@@ -165,7 +165,7 @@ export class EditAdComponent
         return Menu.SEARCH_USER_WEBSHOP;
       }
     }
-    return this.authHelper.userMenu(data.owner, Menu.SEARCH_ADS);
+    return this.authHelper.userMenu(data.user, Menu.SEARCH_ADS);
   }
 
   /**

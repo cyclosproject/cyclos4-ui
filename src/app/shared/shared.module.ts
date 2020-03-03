@@ -43,6 +43,7 @@ import { IconComponent } from 'app/shared/icon.component';
 import { ImageUploadComponent } from 'app/shared/image-upload.component';
 import { ImagesFieldComponent } from 'app/shared/images-field.component';
 import { InputFieldComponent } from 'app/shared/input-field.component';
+import { UrlFieldComponent } from 'app/shared/url-field.component';
 import { LabelValueComponent } from 'app/shared/label-value.component';
 import { ManageFilesComponent } from 'app/shared/manage-files.component';
 import { ManageImagesComponent } from 'app/shared/manage-images.component';
@@ -98,6 +99,7 @@ import { SortableModule } from 'ngx-bootstrap/sortable';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
 import { ProfileImagesComponent } from 'app/shared/profile-images.component';
 import { TextSelectionFieldComponent } from 'app/shared/text-selection-field.component';
+import { ActionsToolbarComponent } from 'app/shared/actions-toolbar.component';
 
 
 export function initTooltipConfig(): TooltipConfig {
@@ -127,6 +129,7 @@ export function initTooltipConfig(): TooltipConfig {
     PageLayoutComponent,
     PageContentComponent,
     HeadingActionsComponent,
+    ActionsToolbarComponent,
     BannerCardComponent,
     ShowContentComponent,
     ResultsLayoutComponent,
@@ -150,6 +153,7 @@ export function initTooltipConfig(): TooltipConfig {
     CustomFieldValueComponent,
     BooleanFieldComponent,
     InputFieldComponent,
+    UrlFieldComponent,
     TextAreaFieldComponent,
     TextDialogComponent,
     FieldErrorsComponent,
@@ -248,6 +252,7 @@ export function initTooltipConfig(): TooltipConfig {
     PageLayoutComponent,
     PageContentComponent,
     HeadingActionsComponent,
+    ActionsToolbarComponent,
     BannerCardComponent,
     ShowContentComponent,
     ResultsLayoutComponent,
@@ -271,6 +276,7 @@ export function initTooltipConfig(): TooltipConfig {
     CustomFieldValueComponent,
     BooleanFieldComponent,
     InputFieldComponent,
+    UrlFieldComponent,
     TextAreaFieldComponent,
     FieldErrorsComponent,
     FieldOptionDirective,

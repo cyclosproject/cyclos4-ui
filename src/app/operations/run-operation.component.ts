@@ -49,6 +49,8 @@ export class RunOperationComponent
   isSearch: boolean;
   isContent: boolean;
   runDirectly: boolean;
+  hasSearchFields: boolean;
+  leaveNotification: boolean;
   private createDeviceConfirmation: () => CreateDeviceConfirmation;
 
   get result(): RunOperationResult {
@@ -122,6 +124,7 @@ export class RunOperationComponent
 
     // Perform the request to get the run data
     this.nextRequestState.queryParams = route.queryParams;
+    this.leaveNotification = this.nextRequestState.leaveNotification;
     this.addSub(request.subscribe(data => {
       this.data = data;
     }));
@@ -137,6 +140,7 @@ export class RunOperationComponent
     this.form = this.fieldsHelper.customValuesFormGroup(formFields);
     this.fileControl = this.formBuilder.control(null);
     this.runDirectly = this.operationHelper.canRunDirectly(data, false);
+    this.hasSearchFields = formFields.length > 0 || data.hasFileUpload;
 
     if (formFields.length > 0) {
       const queryParams = this.route.snapshot.queryParamMap;
@@ -169,6 +173,7 @@ export class RunOperationComponent
 
     // Maybe the operation will be executed directly
     if (this.runDirectly) {
+      this.nextRequestState.leaveNotification = this.leaveNotification;
       if (this.isSearch) {
         // When running searches directly, whenever some filter changes, re-run
         this.addSub(this.form.valueChanges.subscribe(() => this.run(data)));
@@ -258,6 +263,9 @@ export class RunOperationComponent
           this.operationHelper.run(op, null, action.parameters);
         }));
       }
+    }
+    if (headingActions.length === 1) {
+      headingActions[0].maybeRoot = true;
     }
     this.headingActions = headingActions;
 
