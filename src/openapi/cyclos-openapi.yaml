@@ -32756,7 +32756,10 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: owner
           in: query
           required: false
-          description: "Either id or an identification, such as login name, e-mail, etc, for the advertisement owner. The allowed identification methods are those the authenticated user can use on keywords search."
+          description: "Use `user` instead.
+
+
+Either id or an identification, such as login name, e-mail, etc, for the advertisement owner. The allowed identification methods are those the authenticated user can use on keywords search."
           schema:
             type: string
         - name: page
@@ -32860,6 +32863,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
             type: array
             items:
               $ref: '#/components/schemas/AdStatusEnum'
+        - name: user
+          in: query
+          required: false
+          description: "Either id or an identification, such as login name, e-mail, etc, for the advertisement owner. The allowed identification methods are those the authenticated user can use on keywords search."
+          schema:
+            type: string
       tags:
         - Marketplace
       responses:
@@ -42143,12 +42152,12 @@ components:
                 Maximum price for advertisements.
               type: string
               format: number
-            user:
+            adUser:
               description: >-
                 Owner of advertisements
               allOf:
                 - $ref: '#/components/schemas/User'
-            owner:
+            user:
               description: >-
                 Owner of this advertisement interest
               allOf:
@@ -42331,9 +42340,21 @@ components:
         - $ref: '#/components/schemas/BasicAdQueryFilters'
         - type: object
           properties:
-            owner:
+            user:
               type: string
               description: >-
+                Either id or an identification, such as login name, e-mail, etc, for
+                the advertisement owner. The allowed identification methods are
+                those the authenticated user can use on keywords search.
+            owner:
+              type: string
+              deprecated: true
+              x-remove-version: 4.15
+              description: >-
+                Use `user` instead.
+
+
+
                 Either id or an identification, such as login name, e-mail, etc, for
                 the advertisement owner. The allowed identification methods are
                 those the authenticated user can use on keywords search.
@@ -42425,7 +42446,7 @@ components:
               description: >-
                 The advertisement of the question.
               allOf:
-                - $ref: '#/components/schemas/AdWithOwner'
+                - $ref: '#/components/schemas/AdWithUser'
 
     AdQuestionView:
       description: >-
@@ -42630,16 +42651,16 @@ components:
                 $ref: '#/components/schemas/ExportFormat'
 
 
-    AdWithOwner:
+    AdWithUser:
       description: >-
         An advertisement with information about its owner
       allOf:
         - $ref: '#/components/schemas/Ad'
         - type: object
           properties:
-            owner:
+            user:
               description: >-
-                The owner of this advertisement
+                The user who owns this advertisement
               allOf:
                 - $ref: '#/components/schemas/User'
 
@@ -43929,6 +43950,11 @@ components:
         - $ref: '#/components/schemas/Entity'
         - type: object
           properties:
+            price:
+              description: >-
+                The regular price.
+              type: string
+              format: number
             quantity:
               description: >-
                 It represents how much of the product was ordered.  It could be a
@@ -51631,6 +51657,12 @@ components:
                 The generated order number according to the webshop settings.
             status:
               $ref: '#/components/schemas/OrderStatusEnum'
+            items:
+              description: >-
+                The list of product items added to the order
+              type: array
+              items:
+               $ref: '#/components/schemas/WebshopAd'
 
 
     OrderDataForNew:
@@ -51748,11 +51780,6 @@ components:
         - $ref: '#/components/schemas/BaseOrderItem'
         - type: object
           properties:
-            price:
-              description: >-
-                The charged price of the product.
-              type: string
-              format: number
             totalPrice:
               description: >-
                 The total price for this item, i.e the charged price of the
@@ -55075,11 +55102,6 @@ components:
                 could be used to show a warning message to the client
                 indicating  the price has changed if it is different from the
                 current price of the `product`.
-              type: string
-              format: number
-            price:
-              description: >-
-                The regular price.
               type: string
               format: number
             promotionalPrice:
@@ -59984,10 +60006,6 @@ components:
                 If true then it means there is always disponibility of the webshop
                 ad.
               type: boolean
-            productNumber:
-              description: >-
-                The number assigned to the webshop ad.
-              type: string
 
     WebshopSettings:
       description: >-

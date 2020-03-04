@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
-import { Address, AdResult, DeliveryMethod, OrderDataForEdit, OrderDataForNew, OrderItem, OrderDeliveryMethod } from 'app/api/models';
+import { Address, AdResult, DeliveryMethod, OrderDataForEdit, OrderDataForNew, OrderDeliveryMethod, OrderItem } from 'app/api/models';
 import { OrdersService } from 'app/api/services';
 import { AddressHelperService } from 'app/core/address-helper.service';
 import { ErrorStatus } from 'app/core/error-status';
@@ -76,6 +76,8 @@ export class SaleFormComponent
 
   onDataInitialized(data: OrderDataForNew | OrderDataForEdit) {
 
+
+    // Remarks
     this.form = this.formBuilder.group({
       remarks: data.order.remarks
     });
@@ -111,6 +113,20 @@ export class SaleFormComponent
         currentAddressId : null
     );
     this.addSub(addressField.valueChanges.subscribe(a => this.updateAddress(a, data)));
+
+    // Products
+    const ads = (data as OrderDataForEdit).items || [];
+    const orderItems = [];
+    ads.forEach(product => {
+      const orderItem = data.order.items.filter(item => item.product === product.id || item.product === product.productNumber)[0];
+      orderItems.push({
+        price: orderItem.price,
+        totalPrice: +orderItem.price * +orderItem.quantity,
+        quantity: orderItem.quantity,
+        product: product
+      });
+    });
+    this.products = orderItems;
   }
 
   /**

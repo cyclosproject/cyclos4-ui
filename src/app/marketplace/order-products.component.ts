@@ -4,6 +4,7 @@ import { Currency, OrderDeliveryMethod, OrderItem } from 'app/api/models';
 import { BaseComponent } from 'app/shared/base.component';
 import { empty } from 'app/shared/helper';
 import { BehaviorSubject } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 /**
  * A component which display a list of order products and allows to apply a discount and change quantity
@@ -35,10 +36,19 @@ export class OrderProductsComponent extends BaseComponent implements OnInit {
       this.form = this.formBuilder.group({});
       if (!empty(data)) {
         data.forEach(row => {
-          this.form.addControl(this.discount(row),
-            this.formBuilder.control(this.calculateDiscount(row)));
-          this.form.addControl(this.price(row),
-            this.formBuilder.control(row.price));
+          const discount = this.formBuilder.control(this.calculateDiscount(row, +row.price));
+          this.form.addControl(this.discount(row), discount);
+
+          const price = this.formBuilder.control(row.price);
+          this.form.addControl(this.price(row), price);
+
+          this.addSub(discount.valueChanges
+            .pipe(distinctUntilChanged(), debounceTime(550))
+            .subscribe(val => this.applyDiscount(row, val)));
+          this.addSub(price.valueChanges
+            .pipe(distinctUntilChanged(), debounceTime(550))
+            .subscribe(val => this.applyPrice(row, val)));
+
           this.form.addControl(this.quantity(row),
             this.formBuilder.control(row.quantity));
         });
@@ -47,11 +57,34 @@ export class OrderProductsComponent extends BaseComponent implements OnInit {
     });
   }
 
-  calculateDiscount(row: OrderItem): number {
-    if (row) {
-
+  protected applyDiscount(row: OrderItem, val: number) {
+    let price: number;
+    if (val < 0) {
+      price = +row.product.price;
+    } else if (val > 100) {
+      price = 0;
+    } else {
+      price = +row.product.price - (+row.product.price * (val / 100));
     }
-    return 0;
+    this.form.controls[this.price(row)].setValue(price, { emitEvent: false });
+  }
+
+  protected applyPrice(row: OrderItem, val: number) {
+    const discount = this.calculateDiscount(row, val);
+    if (val > +row.price) {
+      this.form.controls[this.price(row)].setValue(+row.price, { emitEvent: false, onlySelf: true });
+    }
+    this.form.controls[this.discount(row)].setValue(discount, { emitEvent: false });
+  }
+
+  calculateDiscount(row: OrderItem, price: number): number {
+    const divide = (1 - (price / +row.product.price)) * 100;
+    if (divide < 0) {
+      return 0;
+    } else if (divide > 100) {
+      return 100;
+    }
+    return divide;
   }
 
   discount(row: OrderItem) {
