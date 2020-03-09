@@ -1167,7 +1167,7 @@
     "maxPrice": "Precio máx.",
     "minDeliveryTime": "Tiempo de entrega mín.",
     "maxDeliveryTime": "Tiempo de entrega máx.",
-    "matchFields": "Match the following ad fields",
+    "matchFields": "Coincidir con los siguientes campos de anuncios",
     "name": "Título",
     "negotiated": "Negociable",
     "noRemarksGiven": "No hay comentarios",
@@ -1292,8 +1292,8 @@
       "unansweredQuestions": "Preguntas sin respuesta",
       "answerQuestion": "Responder a la pregunta",
       "adInterests": "Anuncios de interés",
-      "adInterestNew": "New advertisement interest",
-      "adInterest": "Advertisement interest"
+      "adInterestNew": "Nuevo anuncio de interés",
+      "adInterest": "Anuncios de interés"
     },
     "mobileTitle": {
       "search": "Anuncios",
@@ -1314,11 +1314,11 @@
       "paymentType": "Tipo de pago",
       "confirmOrder": "Confirmar orden",
       "webshopSettings": "Ajustes de tienda virtual",
-      "unansweredQuestions": "Unanswered questions",
+      "unansweredQuestions": "Preguntas sin respuesta",
       "answerQuestion": "Responder a la pregunta",
-      "adInterests": "Advertisement interests",
-      "adInterestNew": "New advertisement interest",
-      "adInterest": "Advertisement interest"
+      "adInterests": "Nuevo anuncio de interés",
+      "adInterestNew": "Nuevo anuncio de interés",
+      "adInterest": "Anuncios de interés"
     }
   },
   "notification": {
