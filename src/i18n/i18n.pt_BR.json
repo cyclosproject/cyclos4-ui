@@ -329,7 +329,7 @@
     "title": {
       "change.self": "Alterar sua senha",
       "change.user": "Alterar senha do usuário",
-      "forgotten": "Recuperar sua senha",
+      "forgotten": "User identification / password recovery",
       "manage.single.self": "Gerenciar sua senha",
       "manage.multiple.self": "Gerenciar as suas senhas",
       "manage.single.user": "Gerenciar senhas do usuário",
@@ -339,7 +339,7 @@
     "mobileTitle": {
       "change.self": "Alteração de senha",
       "change.user": "Alteração de senha",
-      "forgotten": "Recuperação de senha",
+      "forgotten": "User / password recovery",
       "manage.single.self": "Senha",
       "manage.multiple.self": "Senhas",
       "manage.single.user": "Senha do usuário",
@@ -347,13 +347,18 @@
       "securityAnswer": "Resposta de segurança"
     },
     "forgotten": {
-      "preface": "Aqui você pode recuperar sua senha. Preencha a sua identificação de usuário abaixo. Você pode usar um dos seguintes:",
+      "preface": "Here you can recover your user identification and change your password. Fill in your user identification below, and you will receive a verification code. You can use one of the following:",
       "principal": "Usuário",
-      "captcha": "Digite os caracteres abaixo",
-      "email": "Você irá receber em breve um e-mail com seu nome de usuário e instruções para redefinir sua senha",
+      "captcha": "Captcha validation",
+      "code": "Verification code",
+      "code.sent": "The verification code was sent to {to}",
+      "sendMedium": "Receive code by",
+      "generate": "Generate password",
       "generated.message": "Uma vez que você enviar, uma nova senha será gerada e enviada para seu endereço de e-mail",
-      "generated.done": "Você deve receber em breve um e-mail com sua nova senha.",
-      "manual.done": "Sua senha foi alterada com sucesso. Agora você pode usá-la para acessar."
+      "generated.done.email": "Você deve receber em breve um e-mail com sua nova senha.",
+      "generated.done.sms": "You should receive shortly an SMS message with your new password.",
+      "manual.done": "Sua senha foi alterada com sucesso. Agora você pode usá-la para acessar.",
+      "title.changePassword": "Alterar sua senha"
     },
     "expired": {
       "preface": "Sua {type} expirou.",
