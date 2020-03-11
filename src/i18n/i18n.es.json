@@ -329,7 +329,7 @@
     "title": {
       "change.self": "Cambiar su contraseña",
       "change.user": "Cambiar contraseña de usuario",
-      "forgotten": "Recuperar su contraseña",
+      "forgotten": "User identification / password recovery",
       "manage.single.self": "Administrar su contraseña",
       "manage.multiple.self": "Administrar sus contraseñas",
       "manage.single.user": "Administrar contraseña de usuario",
@@ -339,7 +339,7 @@
     "mobileTitle": {
       "change.self": "Cambio de contraseña",
       "change.user": "Cambio de contraseña",
-      "forgotten": "Recuperar contraseña",
+      "forgotten": "User / password recovery",
       "manage.single.self": "Contraseña",
       "manage.multiple.self": "Contraseñas",
       "manage.single.user": "Contraseña de usuario",
@@ -347,13 +347,18 @@
       "securityAnswer": "Respuesta de seguridad"
     },
     "forgotten": {
-      "preface": "Aquí puede recuperar su contraseña.\nComplete su identificación de usuario a continuación, puede utilizar uno de los siguientes valores:",
+      "preface": "Here you can recover your user identification and change your password. Fill in your user identification below, and you will receive a verification code. You can use one of the following:",
       "principal": "Usuario",
-      "captcha": "Escriba los caracteres a continuación",
-      "email": "En breve, usted recibirá un correo electrónico con su código de usuario y las instrucciones para restablecer su contraseña",
+      "captcha": "Captcha validation",
+      "code": "Verification code",
+      "code.sent": "The verification code was sent to {to}",
+      "sendMedium": "Receive code by",
+      "generate": "Generate password",
       "generated.message": "Una vez que acepte los datos, una nueva contraseña será generada y le será enviada mediante correo electrónico",
-      "generated.done": "En breve, usted recibirá un correo electrónico con su nueva contraseña.",
-      "manual.done": "Su contraseña ha sido restablecida con éxito.\nUsted ya puede utilizarla para acceder al sistema."
+      "generated.done.email": "En breve, usted recibirá un correo electrónico con su nueva contraseña.",
+      "generated.done.sms": "You should receive shortly an SMS message with your new password.",
+      "manual.done": "Su contraseña ha sido restablecida con éxito.\nUsted ya puede utilizarla para acceder al sistema.",
+      "title.changePassword": "Cambiar su contraseña"
     },
     "expired": {
       "preface": "Su {type} ha expirado.",
