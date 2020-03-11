@@ -62,16 +62,23 @@ export class CaptchaComponent extends AbstractComponent implements AfterViewInit
         return this.captchaService.getCaptchaContent({ id: id, group: this.group }).pipe(tap(blob => {
           this.revokeCurrent();
           this.currentUrl = URL.createObjectURL(blob);
-          const img = new Image();
-          img.onload = () => this.updateImage(img);
-          img.src = this.currentUrl;
+          this.image.nativeElement.style.display = 'none';
+          const tempImage = new Image();
+          tempImage.onload = () => this.updateImage(tempImage);
+          tempImage.onerror = () => setTimeout(() => this.newCaptcha(), 1000);
+          tempImage.src = this.currentUrl;
         }));
       })).subscribe());
   }
 
-  updateImage(img: HTMLImageElement) {
-    this.img.src = img.src;
-    this.img.style.width = `${this.img.width}px`;
-    this.element.style.width = `${this.img.width}px`;
+  updateImage(tempImage: HTMLImageElement) {
+    const width = tempImage.width;
+    if (width > 0) {
+      this.img.style.width = `${width}px`;
+      this.element.style.width = `${width}px`;
+    }
+    const img = this.image.nativeElement as HTMLImageElement;
+    img.src = tempImage.src;
+    img.style.display = '';
   }
 }

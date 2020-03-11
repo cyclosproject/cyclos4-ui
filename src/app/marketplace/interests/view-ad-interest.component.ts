@@ -35,7 +35,7 @@ export class ViewAdInterestComponent extends BaseViewPageComponent<AdInterestVie
 
   onDataInitialized(data: AdInterestView) {
 
-    this.self = this.authHelper.isSelfOrOwner(data.owner);
+    this.self = this.authHelper.isSelfOrOwner(data.user);
 
     const actions = [];
     if (data.canEdit) {

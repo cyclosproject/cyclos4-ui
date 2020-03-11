@@ -146,11 +146,11 @@ export function escapeHtml(value: string, nl2br: boolean = false) {
 
 /**
  * Attempt to match a form control from the given locator.
- * @param container May be an `AbstractControl` itself or an onbject in which to match locator's nested properties
+ * @param container May be an `AbstractControl` itself or an object in which to match locator's nested properties
  * @param locator The locator
  * @param customValuesProp The property name which holds custom values. Defaults to `customValues`
  */
-export function locateControl(container, locator: FormControlLocator, customValuesProp = 'customValues'): AbstractControl {
+export function locateControl(container: any, locator: FormControlLocator, customValuesProp = 'customValues'): AbstractControl {
   let result: AbstractControl;
 
   if (container instanceof AbstractControl) {

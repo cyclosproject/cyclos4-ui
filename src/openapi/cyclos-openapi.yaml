@@ -150,6 +150,19 @@ tags:
     description: >-
       Provides access to the balance limits of user accounts, as well as
       setting them.
+  - name: BalanceLimits (DEPRECATED)
+    description: >-
+      Use `BalanceLimits` instead.
+      This tag will be remove in Cyclos 4.15.
+
+
+
+      Provides access to the balance limits of user accounts, as well as
+      setting them.
+  - name: PaymentLimits
+    description: >-
+      Provides access to the payment limits of user accounts, as well as
+      setting them.
   - name: Transfers
     description: >-
       Provides access to balance transfers (also called transfers). A transfer
@@ -967,17 +980,20 @@ paths:
         Requests a forgotten password, notifying the user with instructions to
         reset it
       description: >-
-        Sends an e-mail (in the future SMS will be supported) with instructions on
-        how to reset the password, in case it was forgotten. In order to work, the
-        Cyclos configuration options, both to show the forgotten password link and
-        to enable for users need to be set.
+        Sends a verification code to the user, either by e-mail or SMS, so that
+        they can change the password if it was forgotten. For it to work, the
+        Cyclos configuration must allow the forgotten password operation.
       tags:
         - Auth
       parameters: []
       responses:
-        '204':
+        '200':
           description: >-
-            The password e-mail is sent and nothing is returned
+            The verification code is sent
+          content:
+            application/json:
+              schema:
+                 $ref: '#/components/schemas/ForgottenPasswordResponse'
         '401':
           description: >-
             Unauthorized access. Missing or invalid crendentials supplied for such
@@ -1035,9 +1051,29 @@ paths:
         - $ref: '#/components/parameters/fields'
         - name: key
           in: query
-          required: true
+          deprecated: true
+          x-remove-version: 4.15
+          required: false
           description: >-
+            Use both `user` and `code`.
+
+
             The validation key which was sent by e-mail to the user
+          schema:
+            type: string
+        # In 4.15, when validationKey is removed, make both user and code required
+        - name: user
+          in: query
+          required: false
+          description: >-
+            The user identification for password change
+          schema:
+            type: string
+        - name: code
+          in: query
+          required: false
+          description: >-
+            The verification code which was sent to the user
           schema:
             type: string
       responses:
@@ -15255,7 +15291,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /{user}/accounts/data-for-limits:
+  /{user}/accounts/data-for-balance-limits:
     parameters:
       - $ref: '#/components/parameters/user'
     get:
@@ -15310,7 +15346,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
               schema:
                 $ref: '#/components/schemas/Error'
 
-  /{user}/accounts/{accountType}/limits:
+  /{user}/accounts/{accountType}/balance-limits:
     parameters:
       - $ref: '#/components/parameters/user'
       - $ref: '#/components/parameters/accountType'
@@ -15429,7 +15465,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
             schema:
               $ref: '#/components/schemas/SetAccountBalanceLimits'
 
-  /accounts/data-for-limits:
+  /accounts/data-for-balance-limits:
     get:
       operationId: getAccountBalanceLimitsData
       summary: >-
@@ -15482,7 +15518,7 @@ A note for dynamic custom fields: If a script is used to generate possible value
               schema:
                 $ref: '#/components/schemas/Error'
 
-  /accounts/limits:
+  /accounts/balance-limits:
     get:
       operationId: searchAccountBalanceLimits
       summary: >-
@@ -15574,11 +15610,627 @@ Either the ids or identification methods of users' broker"
             items:
               description: ''
               type: string
-        - name: kind
+        - name: page
           in: query
           required: false
+          description: "The page number (zero-based) of the search. The default value is zero."
           schema:
-            $ref: '#/components/schemas/BalanceLimitKind'
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          required: false
+          description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
+          schema:
+            type: integer
+            format: int32
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
+        - name: user
+          in: query
+          required: false
+          description: "Either the id or identifier of the account owner"
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >-
+            The data for searching account balances limits
+          headers:
+            X-Total-Count:
+              schema:
+                type: integer
+              description: >-
+                The total number of results. It may be configured in Cyclos to skip the
+                total count, which is useful on large databases, where the count itself
+                may use a lot of resources from the database. If disabled, this header is
+                not returned.
+            X-Page-Size:
+              schema:
+                type: integer
+              description: >-
+                The maximum number of results per page
+            X-Current-Page:
+              schema:
+                type: integer
+              description: >-
+                The current page the results are in
+            X-Has-Next-Page:
+              schema:
+                type: boolean
+              description: >-
+                Returns whether there is a next page. This is normally always returned,
+                whether total count is enabled or not. If the total count is not returned,
+                is the only way for clients to know whether more results are available or
+                not.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GeneralAccountBalanceLimitsResult'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /accounts/balance-limits/export/{format}:
+    parameters:
+      - $ref: '#/components/parameters/format'
+    get:
+      operationId: exportAccountBalanceLimits
+      summary: >-
+        Exports the account balance limits results as file.
+      description: >-
+        Generates a file containing the search results. The available export
+        formats are returned in `GET /accounts/data-for-balance-limits`.
+      tags:
+        - BalanceLimits
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - name: accountType
+          in: query
+          required: false
+          description: "Either id or internal name of the account type"
+          schema:
+            type: string
+        - name: broker
+          in: query
+          required: false
+          description: "Use `brokers` instead.
+
+
+Either the ids or identification methods of users' broker"
+          schema:
+            type: string
+        - name: brokers
+          in: query
+          required: false
+          description: "Either the ids or identification methods of users' broker"
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: by
+          in: query
+          required: false
+          description: "Either the id or identifier of the user that performed the change"
+          schema:
+            type: string
+        - name: currency
+          in: query
+          required: false
+          description: "Either id or internal name of the currency"
+          schema:
+            type: string
+        - name: customLimit
+          in: query
+          required: false
+          description: "When set, returns only accounts that have a custom (if true) or have default (false) lower limit."
+          schema:
+            type: boolean
+        - name: customLimitRange
+          in: query
+          required: false
+          description: "The minimum / maximum customized limit. Is only used when `customLimit` is set to true. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+              format: number
+        - name: customUpperLimit
+          in: query
+          required: false
+          description: "When set, returns only accounts that have a custom (if true) or have default (false) upper limit."
+          schema:
+            type: boolean
+        - name: customUpperLimitRange
+          in: query
+          required: false
+          description: "The minimum / maximum customized upper limit. Is only used when `customUpperLimit` is set to true. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+              format: number
+        - name: groups
+          in: query
+          required: false
+          description: "Either the ids or internal names of user group"
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: page
+          in: query
+          required: false
+          description: "The page number (zero-based) of the search. The default value is zero."
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          required: false
+          description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
+          schema:
+            type: integer
+            format: int32
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
+        - name: user
+          in: query
+          required: false
+          description: "Either the id or identifier of the account owner"
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >-
+            The file content
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: binary
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: >-
+            Input error. Either a validation error or the maximum allowed items was
+            exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  ################################################################################
+  #                               DEPRECATED                                     #
+  ################################################################################
+  /{user}/accounts/data-for-limits:
+    parameters:
+      - $ref: '#/components/parameters/user'
+    get:
+      operationId: getDataForUserBalanceLimitsDeprecated
+      deprecated: true
+      x-remove-version: 4.15
+      summary: >-
+        Please use `GET /{user}/accounts/data-for-balance-limits`.
+        This path will be removed in Cyclos 4.15.
+        Returns data regarding the limits of all accounts of a given user.
+      description: >-
+        Please use `GET /{user}/accounts/data-for-balance-limits`.
+
+
+
+        Returns data regarding the limits of all accounts of a given user.
+      tags:
+        - BalanceLimits (DEPRECATED)
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            The user account limits data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserAccountBalanceLimitsListData'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /{user}/accounts/{accountType}/limits:
+    parameters:
+      - $ref: '#/components/parameters/user'
+      - $ref: '#/components/parameters/accountType'
+    get:
+      operationId: getAccountBalanceLimitsDeprecated
+      deprecated: true
+      x-remove-version: 4.15
+      summary: >-
+        Please use `GET /{user}/accounts/{accountType}/balance-limits`.
+        This path will be removed in Cyclos 4.15.
+        Returns data for the limits of a given account
+      description: >-
+        Please use `GET /{user}/accounts/{accountType}/balance-limits`.
+
+
+
+        Returns the data needed to edit the limits of the given account,
+        plus the history of limit changes.
+      tags:
+        - BalanceLimits (DEPRECATED)
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            The account limit data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountBalanceLimitsData'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      operationId: setAccountBalanceLimitsDeprecated
+      deprecated: true
+      x-remove-version: 4.15
+      summary: >-
+        Please use `PUT /{user}/accounts/{accountType}/balance-limits`.
+        This path will be removed in Cyclos 4.15.
+        Sets the limits for a given user account.
+      description: >-
+        Please use `POST /{user}/accounts/{accountType}/balance-limits`.
+
+
+
+        Saves the account limits. The lower limit may be customized or default,
+        while the upper limit may also be set to unlimited.
+      tags:
+        - BalanceLimits (DEPRECATED)
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/confirmationPassword'
+      responses:
+        '204':
+          description: >-
+            The limits were changed and nothing is returned.
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: >-
+            Input error. Either a validation error or the maximum allowed items was
+            exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      requestBody:
+        description: The new account balance limits
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetAccountBalanceLimits'
+
+  /accounts/data-for-limits:
+    get:
+      operationId: getAccountBalanceLimitsDataDeprecated
+      deprecated: true
+      x-remove-version: 4.15
+      summary: >-
+        Please use `GET /accounts/data-for-balance-limits`.
+        This path will be removed in Cyclos 4.15.
+        Returns data for a general search of account balance limits.
+      description: >-
+        Please use `GET /accounts/data-for-balance-limits`.
+
+
+
+        Returns data for a general search of account balance limits.
+      tags:
+        - BalanceLimits (DEPRECATED)
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            The data for searching account balances limits
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataForBalanceLimitsSearch'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /accounts/limits:
+    get:
+      operationId: searchAccountBalanceLimitsDeprecated
+      deprecated: true
+      x-remove-version: 4.15
+      summary: >-
+        Please use `GET /accounts/balance-limits`.
+        This path will be removed in Cyclos 4.15.
+        Searches for account balance limits.
+      description: >-
+        Please use `GET /accounts/balance-limits`.
+
+
+
+        Searches for account balance limits, according to the given filters.
+      tags:
+        - BalanceLimits (DEPRECATED)
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+        - name: accountType
+          in: query
+          required: false
+          description: "Either id or internal name of the account type"
+          schema:
+            type: string
+        - name: broker
+          in: query
+          required: false
+          description: "Use `brokers` instead.
+
+
+Either the ids or identification methods of users' broker"
+          schema:
+            type: string
+        - name: brokers
+          in: query
+          required: false
+          description: "Either the ids or identification methods of users' broker"
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: by
+          in: query
+          required: false
+          description: "Either the id or identifier of the user that performed the change"
+          schema:
+            type: string
+        - name: currency
+          in: query
+          required: false
+          description: "Either id or internal name of the currency"
+          schema:
+            type: string
+        - name: customLimit
+          in: query
+          required: false
+          description: "When set, returns only accounts that have a custom (if true) or have default (false) lower limit."
+          schema:
+            type: boolean
+        - name: customLimitRange
+          in: query
+          required: false
+          description: "The minimum / maximum customized limit. Is only used when `customLimit` is set to true. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+              format: number
+        - name: customUpperLimit
+          in: query
+          required: false
+          description: "When set, returns only accounts that have a custom (if true) or have default (false) upper limit."
+          schema:
+            type: boolean
+        - name: customUpperLimitRange
+          in: query
+          required: false
+          description: "The minimum / maximum customized upper limit. Is only used when `customUpperLimit` is set to true. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+              format: number
+        - name: groups
+          in: query
+          required: false
+          description: "Either the ids or internal names of user group"
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
         - name: page
           in: query
           required: false
@@ -15676,14 +16328,22 @@ Either the ids or identification methods of users' broker"
     parameters:
       - $ref: '#/components/parameters/format'
     get:
-      operationId: exportAccountBalanceLimits
+      operationId: exportAccountBalanceLimitsDeprecated
+      deprecated: true
+      x-remove-version: 4.15
       summary: >-
+        Please use `GET /accounts/balance-limits/export/{format}`.
+        This path will be removed in Cyclos 4.15.
         Exports the account balance limits results as file.
       description: >-
+        Please use `GET /accounts/balance-limits/export/{format}`.
+
+
+
         Generates a file containing the search results. The available export
         formats are returned in `GET /accounts/data-for-limits`.
       tags:
-        - BalanceLimits
+        - BalanceLimits (DEPRECATED)
       security:
         - basic: []
         - session: []
@@ -15766,11 +16426,630 @@ Either the ids or identification methods of users' broker"
             items:
               description: ''
               type: string
-        - name: kind
+        - name: page
           in: query
           required: false
+          description: "The page number (zero-based) of the search. The default value is zero."
           schema:
-            $ref: '#/components/schemas/BalanceLimitKind'
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          required: false
+          description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
+          schema:
+            type: integer
+            format: int32
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
+        - name: user
+          in: query
+          required: false
+          description: "Either the id or identifier of the account owner"
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >-
+            The file content
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: binary
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: >-
+            Input error. Either a validation error or the maximum allowed items was
+            exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /{user}/accounts/data-for-payment-limits:
+    parameters:
+      - $ref: '#/components/parameters/user'
+    get:
+      operationId: getDataForUserPaymentLimits
+      summary: >-
+        Returns data regarding the limits of all accounts of a given user.
+      description: >-
+        Returns data regarding the limits of all accounts of a given user.
+      tags:
+        - PaymentLimits
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            The user account payment limits data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserAccountPaymentLimitsListData'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /{user}/accounts/{accountType}/payment-limits:
+    parameters:
+      - $ref: '#/components/parameters/user'
+      - $ref: '#/components/parameters/accountType'
+    get:
+      operationId: getAccountPaymentLimits
+      summary: >-
+        Returns data for the limits of a given account
+      description: >-
+        Returns the data needed to edit the limits of the given account,
+        plus the history of limit changes.
+      tags:
+        - PaymentLimits
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            The account limit data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountPaymentLimitsData'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      operationId: setAccountPaymentLimits
+      summary: >-
+        Sets the limits for a given user account.
+      description: >-
+        Saves the account limits. The lower limit may be customized or default,
+        while the upper limit may also be set to unlimited.
+      tags:
+        - PaymentLimits
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/confirmationPassword'
+      responses:
+        '204':
+          description: >-
+            The limits were changed and nothing is returned.
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '422':
+          description: >-
+            Input error. Either a validation error or the maximum allowed items was
+            exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InputError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      requestBody:
+        description: The new account payment limits
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetAccountPaymentLimits'
+
+  /accounts/data-for-payment-limits:
+    get:
+      operationId: getAccountPaymentLimitsData
+      summary: >-
+        Returns data for a general search of account payment limits.
+      description: >-
+        Returns data for a general search of account payment limits.
+      tags:
+        - PaymentLimits
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+      responses:
+        '200':
+          description: >-
+            The data for searching account payment limits
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataForPaymentLimitsSearch'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /accounts/payment-limits:
+    get:
+      operationId: searchAccountPaymentLimits
+      summary: >-
+        Searches for account payment limits.
+      description: >-
+        Searches for account payment limits, according to the given filters.
+      tags:
+        - PaymentLimits
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - $ref: '#/components/parameters/fields'
+        - name: accountType
+          in: query
+          required: false
+          description: "Either id or internal name of the account type"
+          schema:
+            type: string
+        - name: brokers
+          in: query
+          required: false
+          description: "Either the ids or identification methods of users' broker"
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: by
+          in: query
+          required: false
+          description: "Either the id or identifier of the user that performed the change"
+          schema:
+            type: string
+        - name: currency
+          in: query
+          required: false
+          description: "Either id or internal name of the currency"
+          schema:
+            type: string
+        - name: customAmountLimit
+          in: query
+          required: false
+          description: "When set, returns only accounts that have a custom (if true) or have default (false) payment amount limit."
+          schema:
+            type: boolean
+        - name: customAmountLimitRange
+          in: query
+          required: false
+          description: "The minimum / maximum customized payment amount limit. Is only used when `customAmountLimit` is set to true. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+              format: number
+        - name: customAmountPerDayLimit
+          in: query
+          required: false
+          description: "When set, returns only accounts that have a custom (if true) or have default (false) payment amount per day limit."
+          schema:
+            type: boolean
+        - name: customAmountPerDayLimitRange
+          in: query
+          required: false
+          description: "The minimum / maximum customized payment amount per day limit. Is only used when `customAmountPerDayLimit` is set to true. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+              format: number
+        - name: customAmountPerMonthLimit
+          in: query
+          required: false
+          description: "When set, returns only accounts that have a custom (if true) or have default (false) payment amount per month limit."
+          schema:
+            type: boolean
+        - name: customAmountPerMonthLimitRange
+          in: query
+          required: false
+          description: "The minimum / maximum customized payment amount per month limit. Is only used when `customAmountPerMonthLimit` is set to true. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+              format: number
+        - name: customAmountPerWeekLimit
+          in: query
+          required: false
+          description: "When set, returns only accounts that have a custom (if true) or have default (false) payment amount per week limit."
+          schema:
+            type: boolean
+        - name: customAmountPerWeekLimitRange
+          in: query
+          required: false
+          description: "The minimum / maximum customized payment amount per week limit. Is only used when `customAmountPerWeekLimit` is set to true. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+              format: number
+        - name: groups
+          in: query
+          required: false
+          description: "Either the ids or internal names of user group"
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: page
+          in: query
+          required: false
+          description: "The page number (zero-based) of the search. The default value is zero."
+          schema:
+            type: integer
+            format: int32
+        - name: pageSize
+          in: query
+          required: false
+          description: "The maximum number of records that will be returned on the search. The default value is 40. The maximum number of returned results is configured in Cyclos, and even if more than that is requested, it will be limited by that setting."
+          schema:
+            type: integer
+            format: int32
+        - name: skipTotalCount
+          in: query
+          required: false
+          description: "When set to true the result will not include the total record count, only the information on whether there are more records. Depending on the server-side configuration, this can be always true. Otherwise, if the server allows total count, and the client doesn't need it, setting this to true can increase performance a bit."
+          schema:
+            type: boolean
+        - name: user
+          in: query
+          required: false
+          description: "Either the id or identifier of the account owner"
+          schema:
+            type: string
+      responses:
+        '200':
+          description: >-
+            The data for searching account payment limits
+          headers:
+            X-Total-Count:
+              schema:
+                type: integer
+              description: >-
+                The total number of results. It may be configured in Cyclos to skip the
+                total count, which is useful on large databases, where the count itself
+                may use a lot of resources from the database. If disabled, this header is
+                not returned.
+            X-Page-Size:
+              schema:
+                type: integer
+              description: >-
+                The maximum number of results per page
+            X-Current-Page:
+              schema:
+                type: integer
+              description: >-
+                The current page the results are in
+            X-Has-Next-Page:
+              schema:
+                type: boolean
+              description: >-
+                Returns whether there is a next page. This is normally always returned,
+                whether total count is enabled or not. If the total count is not returned,
+                is the only way for clients to know whether more results are available or
+                not.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GeneralAccountPaymentLimitsResult'
+        '401':
+          description: >-
+            Unauthorized access. Missing or invalid crendentials supplied for such
+            operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedError'
+        '403':
+          description: >-
+            Permission denied for such operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ForbiddenError'
+        '404':
+          description: >-
+            An expected data was not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFoundError'
+        '500':
+          description: >-
+            Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /accounts/payment-limits/export/{format}:
+    parameters:
+      - $ref: '#/components/parameters/format'
+    get:
+      operationId: exportAccountPaymentLimits
+      summary: >-
+        Exports the account payment limits results as file.
+      description: >-
+        Generates a file containing the search results. The available export
+        formats are returned in `GET /accounts/data-for-payment-limits`.
+      tags:
+        - PaymentLimits
+      security:
+        - basic: []
+        - session: []
+        - accessClient: []
+      parameters:
+        - name: accountType
+          in: query
+          required: false
+          description: "Either id or internal name of the account type"
+          schema:
+            type: string
+        - name: brokers
+          in: query
+          required: false
+          description: "Either the ids or identification methods of users' broker"
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+        - name: by
+          in: query
+          required: false
+          description: "Either the id or identifier of the user that performed the change"
+          schema:
+            type: string
+        - name: currency
+          in: query
+          required: false
+          description: "Either id or internal name of the currency"
+          schema:
+            type: string
+        - name: customAmountLimit
+          in: query
+          required: false
+          description: "When set, returns only accounts that have a custom (if true) or have default (false) payment amount limit."
+          schema:
+            type: boolean
+        - name: customAmountLimitRange
+          in: query
+          required: false
+          description: "The minimum / maximum customized payment amount limit. Is only used when `customAmountLimit` is set to true. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+              format: number
+        - name: customAmountPerDayLimit
+          in: query
+          required: false
+          description: "When set, returns only accounts that have a custom (if true) or have default (false) payment amount per day limit."
+          schema:
+            type: boolean
+        - name: customAmountPerDayLimitRange
+          in: query
+          required: false
+          description: "The minimum / maximum customized payment amount per day limit. Is only used when `customAmountPerDayLimit` is set to true. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+              format: number
+        - name: customAmountPerMonthLimit
+          in: query
+          required: false
+          description: "When set, returns only accounts that have a custom (if true) or have default (false) payment amount per month limit."
+          schema:
+            type: boolean
+        - name: customAmountPerMonthLimitRange
+          in: query
+          required: false
+          description: "The minimum / maximum customized payment amount per month limit. Is only used when `customAmountPerMonthLimit` is set to true. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+              format: number
+        - name: customAmountPerWeekLimit
+          in: query
+          required: false
+          description: "When set, returns only accounts that have a custom (if true) or have default (false) payment amount per week limit."
+          schema:
+            type: boolean
+        - name: customAmountPerWeekLimitRange
+          in: query
+          required: false
+          description: "The minimum / maximum customized payment amount per week limit. Is only used when `customAmountPerWeekLimit` is set to true. Is expressed an array, with the lower bound as first element, and the upper bound as second element. When only one element, will have just the lower bound. To specify only the upper bound, prefix the value with a comma."
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
+              format: number
+        - name: groups
+          in: query
+          required: false
+          description: "Either the ids or internal names of user group"
+          schema:
+            type: array
+            items:
+              description: ''
+              type: string
         - name: page
           in: query
           required: false
@@ -32756,7 +34035,10 @@ A note for dynamic custom fields: If a script is used to generate possible value
         - name: owner
           in: query
           required: false
-          description: "Either id or an identification, such as login name, e-mail, etc, for the advertisement owner. The allowed identification methods are those the authenticated user can use on keywords search."
+          description: "Use `user` instead.
+
+
+Either id or an identification, such as login name, e-mail, etc, for the advertisement owner. The allowed identification methods are those the authenticated user can use on keywords search."
           schema:
             type: string
         - name: page
@@ -32860,6 +34142,12 @@ A note for dynamic custom fields: If a script is used to generate possible value
             type: array
             items:
               $ref: '#/components/schemas/AdStatusEnum'
+        - name: user
+          in: query
+          required: false
+          description: "Either id or an identification, such as login name, e-mail, etc, for the advertisement owner. The allowed identification methods are those the authenticated user can use on keywords search."
+          schema:
+            type: string
       tags:
         - Marketplace
       responses:
@@ -37472,20 +38760,6 @@ components:
         - low
         - medium
 
-    BalanceLimitKind:
-      description: >
-        The kind of account balance limit
-
-        Possible values are:
-
-        - `lower`: The lower (negative) balance limit
-
-        - `upper`: The upper (positive) balance limit
-      type: string
-      enum:
-        - lower
-        - upper
-
     BasicProfileFieldEnum:
       description: >
         The existing user basic profile fields
@@ -41209,8 +42483,6 @@ components:
         - $ref: '#/components/schemas/QueryFilters'
         - type: object
           properties:
-            kind:
-              $ref: '#/components/schemas/BalanceLimitKind'
             currency:
               description: >-
                 Either id or internal name of the currency
@@ -41451,6 +42723,190 @@ components:
           properties:
             accountType:
               $ref: '#/components/schemas/AccountType'
+
+    AccountPaymentLimitsData:
+      description: >-
+        Data regarding the payment, daily, weekly and monthly amount limits of a
+        user account.
+      allOf:
+      - $ref: '#/components/schemas/BaseAccountPaymentLimits'
+      - type: object
+        properties:
+          account:
+            $ref: '#/components/schemas/AccountWithCurrency'
+          user:
+            $ref: '#/components/schemas/User'
+          editable:
+            description: >-
+              Can the authenticated user manage the payment limits of this account?
+            type: boolean
+          productAmountLimit:
+            description: The payment amount limit from the user products.
+            type: string
+            format: number
+          productAmountPerDayLimit:
+            description: >-
+              The payment amount per day limit from the user products.
+            type: string
+            format: number
+          productAmountPerWeekLimit:
+            description: >-
+              The payment amount per week limit from the user products.
+            type: string
+            format: number
+          productAmountPerMonthLimit:
+            description: >-
+              The payment amount per month limit from the user products.
+            type: string
+            format: number
+          history:
+            description: >-
+              The history of payment limits changes.
+            type: array
+            items:
+              $ref: '#/components/schemas/AccountPaymentLimitsLog'
+          confirmationPasswordInput:
+            description: >-
+              If a confirmation password is used, contains the definitions on how to
+              request that password from the user. This confirmation password is required
+              when performing sensible actions. Sometimes this is dynamic, for example,
+              the confirmation might be configured to be used only once per session, or
+              operations like payments may have a limit per day to be without confirmation
+              (pinless).
+            allOf:
+              - $ref: '#/components/schemas/PasswordInput'
+
+
+    AccountPaymentLimitsLog:
+      description: >-
+        Log of a payment limits change
+      allOf:
+      - $ref: '#/components/schemas/BaseAccountPaymentLimits'
+      - type: object
+        properties:
+          by:
+            $ref: '#/components/schemas/User'
+          date:
+            description: >-
+              The date the limit change was performed
+            type: string
+            format: date-time
+          comment:
+            description: >-
+              Comments supplied by the manager that performed the limit change.
+            type: string
+
+    AccountPaymentLimitsQueryFilters:
+      description: Parameters for searching account payment limits
+      allOf:
+        - $ref: '#/components/schemas/QueryFilters'
+        - type: object
+          properties:
+            currency:
+              description: >-
+                Either id or internal name of the currency
+              type: string
+            accountType:
+              description: >-
+                Either id or internal name of the account type
+              type: string
+            groups:
+              description: >-
+                Either the ids or internal names of user group
+              type: array
+              items:
+                type: string
+            brokers:
+              description: >-
+                Either the ids or identification methods of users' broker
+              type: array
+              items:
+                type: string
+            user:
+              description: Either the id or identifier of the account owner
+              type: string
+            by:
+              description: >-
+                Either the id or identifier of the user that performed the change
+              type: string
+            customAmountLimit:
+              description: >-
+                When set, returns only accounts that have a custom (if true) or
+                have default (false) payment amount limit.
+              type: boolean
+            customAmountLimitRange:
+              description: >-
+                The minimum / maximum customized payment amount limit. Is only used
+                when `customAmountLimit` is set to true.
+                Is expressed an array, with the lower bound as first element, and
+                the upper bound as second element. When only one element, will have
+                just the lower bound. To specify only the upper bound, prefix the value
+                with a comma.
+              type: array
+              items:
+                type: string
+                format: number
+            customAmountPerDayLimit:
+              description: >-
+                When set, returns only accounts that have a custom (if true) or
+                have default (false) payment amount per day limit.
+              type: boolean
+            customAmountPerDayLimitRange:
+              description: >-
+                The minimum / maximum customized payment amount per day limit. Is
+                only used when `customAmountPerDayLimit` is set to true.
+                Is expressed an array, with the lower bound as first element, and
+                the upper bound as second element. When only one element, will have
+                just the lower bound. To specify only the upper bound, prefix the value
+                with a comma.
+              type: array
+              items:
+                type: string
+                format: number
+            customAmountPerWeekLimit:
+              description: >-
+                When set, returns only accounts that have a custom (if true) or
+                have default (false) payment amount per week limit.
+              type: boolean
+            customAmountPerWeekLimitRange:
+              description: >-
+                The minimum / maximum customized payment amount per week limit. Is
+                only used when `customAmountPerWeekLimit` is set to true.
+                Is expressed an array, with the lower bound as first element, and
+                the upper bound as second element. When only one element, will have
+                just the lower bound. To specify only the upper bound, prefix the value
+                with a comma.
+              type: array
+              items:
+                type: string
+                format: number
+            customAmountPerMonthLimit:
+              description: >-
+                When set, returns only accounts that have a custom (if true) or
+                have default (false) payment amount per month limit.
+              type: boolean
+            customAmountPerMonthLimitRange:
+              description: >-
+                The minimum / maximum customized payment amount per month limit. Is
+                only used when `customAmountPerMonthLimit` is set to true.
+                Is expressed an array, with the lower bound as first element, and
+                the upper bound as second element. When only one element, will have
+                just the lower bound. To specify only the upper bound, prefix the value
+                with a comma.
+              type: array
+              items:
+                type: string
+                format: number
+
+    AccountPaymentLimitsResult:
+      description: >-
+        Result for the list of user account payment limits
+      allOf:
+      - $ref: '#/components/schemas/BaseAccountPaymentLimits'
+      - type: object
+        properties:
+          account:
+            $ref: '#/components/schemas/AccountWithCurrency'
 
     AccountPermissions:
       description: >-
@@ -41903,11 +43359,6 @@ components:
                 - $ref: '#/components/schemas/User'
             publicationPeriod:
               $ref: '#/components/schemas/DatePeriod'
-            price:
-              description: >-
-                The regular price.
-              type: string
-              format: number
             stockQuantity:
               description: >-
                 The stock disponibility. Only if `unlimitedStock` is false and
@@ -41928,6 +43379,12 @@ components:
             minAllowedInCart:
               description: >-
                 The minimum quantity that can be specified in the shopping cart.
+              type: string
+              format: number
+            promotionalPrice:
+              description: >-
+                The promotional price, to be applied on the promotional period is
+                active
               type: string
               format: number
 
@@ -42142,12 +43599,12 @@ components:
                 Maximum price for advertisements.
               type: string
               format: number
-            user:
+            adUser:
               description: >-
                 Owner of advertisements
               allOf:
                 - $ref: '#/components/schemas/User'
-            owner:
+            user:
               description: >-
                 Owner of this advertisement interest
               allOf:
@@ -42330,9 +43787,21 @@ components:
         - $ref: '#/components/schemas/BasicAdQueryFilters'
         - type: object
           properties:
-            owner:
+            user:
               type: string
               description: >-
+                Either id or an identification, such as login name, e-mail, etc, for
+                the advertisement owner. The allowed identification methods are
+                those the authenticated user can use on keywords search.
+            owner:
+              type: string
+              deprecated: true
+              x-remove-version: 4.15
+              description: >-
+                Use `user` instead.
+
+
+
                 Either id or an identification, such as login name, e-mail, etc, for
                 the advertisement owner. The allowed identification methods are
                 those the authenticated user can use on keywords search.
@@ -42424,7 +43893,7 @@ components:
               description: >-
                 The advertisement of the question.
               allOf:
-                - $ref: '#/components/schemas/AdWithOwner'
+                - $ref: '#/components/schemas/AdWithUser'
 
     AdQuestionView:
       description: >-
@@ -42441,12 +43910,6 @@ components:
         - $ref: '#/components/schemas/AdDetailed'
         - type: object
           properties:
-            promotionalPrice:
-              description: >-
-                The promotional price, only returned if there is a promotional price
-                set and the promotional period is active
-              type: string
-              format: number
             address:
               description: >-
                 Address to be placed on map. Is only returned when the search result
@@ -42505,12 +43968,6 @@ components:
                 $ref: '#/components/schemas/CustomFieldValue'
             currency:
               $ref: '#/components/schemas/Currency'
-            promotionalPrice:
-              description: >-
-                The promotional price, to be applied on the promotional period is
-                active
-              type: string
-              format: number
             promotionalPeriod:
               description: >-
                 The promotional period, the one when `promotionalPrice` is valid
@@ -42619,10 +44076,6 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/DeliveryMethod'
-            productNumber:
-              description: >-
-                The product number according to the webshop settings.
-              type: string
             operations:
               description: >-
                 List of runnable custom operations.
@@ -42645,16 +44098,16 @@ components:
                 $ref: '#/components/schemas/ExportFormat'
 
 
-    AdWithOwner:
+    AdWithUser:
       description: >-
         An advertisement with information about its owner
       allOf:
         - $ref: '#/components/schemas/Ad'
         - type: object
           properties:
-            owner:
+            user:
               description: >-
-                The owner of this advertisement
+                The user who owns this advertisement
               allOf:
                 - $ref: '#/components/schemas/User'
 
@@ -43342,6 +44795,58 @@ components:
             or if it is the default value.
           type: boolean
 
+    BaseAccountPaymentLimits:
+      x-abstract: true
+      description: >-
+        Basic data regarding the payment, daily, weekly and monthly amount limits
+        of a user account.
+      type: object
+      properties:
+        amountLimit:
+          description: >-
+            The payment amount limit. When this value is `null` the account has no
+            payment amount limit (is unlimited).
+          type: string
+          format: number
+        customAmountLimit:
+          description: >-
+            Indicates whether the `amountLimit` is customized for this account or
+            if it is from the product.
+          type: boolean
+        amountPerDayLimit:
+          description: >-
+            The payment amount per day limit. When this value is `null` the account
+            has no payment amount per day limit (is unlimited).
+          type: string
+          format: number
+        customAmountPerDayLimit:
+          description: >-
+            Indicates whether the `amountPerDayLimit` is customized for this account
+            or if it is from the product.
+          type: boolean
+        amountPerWeekLimit:
+          description: >-
+            The payment amount per week limit. When this value is `null` the account
+            has no payment amount per week limit (is unlimited).
+          type: string
+          format: number
+        customAmountPerWeekLimit:
+          description: >-
+            Indicates whether the `amountPerWeekLimit` is customized for this
+            account or if it is from the product.
+          type: boolean
+        amountPerMonthLimit:
+          description: >-
+            The payment amount per month limit. When this value is `null` the
+            account has no payment amount per month limit (is unlimited).
+          type: string
+          format: number
+        customAmountPerMonthLimit:
+          description: >-
+            Indicates whether the `amountPerMonthLimit` is customized for this
+            account or if it is from the product.
+          type: boolean
+
     BaseActivationCodeRequest:
       x-abstract: true
       description: >-
@@ -43449,6 +44954,15 @@ components:
           properties:
             status:
               $ref: '#/components/schemas/AdStatusEnum'
+            price:
+              description: >-
+                The regular price.
+              type: string
+              format: number
+            productNumber:
+              description: >-
+                The product number according to the webshop settings.
+              type: string
 
     BaseAuth:
       description: >-
@@ -43935,6 +45449,11 @@ components:
         - $ref: '#/components/schemas/Entity'
         - type: object
           properties:
+            price:
+              description: >-
+                The regular price.
+              type: string
+              format: number
             quantity:
               description: >-
                 It represents how much of the product was ordered.  It could be a
@@ -45084,9 +46603,13 @@ components:
         The parameters for confirming a forgotten password reset
       type: object
       properties:
-        key:
+        user:
           description: >-
-            The key received by e-mail on the forgotten password reset request
+            The user identification for password change
+          type: string
+        code:
+          description: >-
+            The verification code which was sent to the user
           type: string
         securityAnswer:
           description: >-
@@ -45113,6 +46636,20 @@ components:
           description: >-
             The new password confirmation value. Is ignored unless
             `checkConfirmation` is set to `true`.
+        sendMedium:
+          description: >-
+            Only used for generated passwords. Is the send medium to which to send
+            the password. Normally is the same as the one to which the verification
+            code was sent.
+          allOf:
+            - $ref: '#/components/schemas/SendMediumEnum'
+        key:
+          deprecated: true
+          x-remove-version: 4.15
+          description: >-
+            The key received by e-mail on the forgotten password reset request
+          type: string
+
 
     ChangeGroupMembershipParams:
       description: >-
@@ -46581,20 +48118,43 @@ components:
 
     DataForChangeForgottenPassword:
       description: >-
-        Definitions for a user to confirm a forgotten password request
+        Definitions for a user to confirm a forgotten password request,
+        after the verification code was successfully verified.
       type: object
       properties:
-        generated:
+        user:
           description: >-
-            Indicates whether the password that is being affected is generated (when
-            `true`) or manual (when `false`).
-          type: boolean
+            The user which is having the password changed
+          allOf:
+            - $ref: '#/components/schemas/User'
+        passwordType:
+          description: >-
+            The password type which is being changed
+          allOf:
+            - $ref: '#/components/schemas/PasswordType'
         securityQuestion:
           description: >-
             If configured in Cyclos, and defined by the user, will be the security
             question that needs to be answered in order to complete the forgotten
             password reset request.
           type: string
+        principals:
+          description: >-
+            The list of user identifications (principals) which can be used in
+            the current channel
+          type: array
+          items:
+            $ref: '#/components/schemas/UserRegistrationPrincipal'
+        generated:
+          deprecated: true
+          x-remove-version: 4.15
+          description: >-
+            Use `passwordType.mode == 'generated'` instead.
+
+            Indicates whether the password that is being affected is generated (when
+            `true`) or manual (when `false`).
+          type: boolean
+
 
     DataForDeviceConfirmationApproval:
       description: >-
@@ -46981,6 +48541,30 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/MobileOperationEnum'
+
+    DataForPaymentLimitsSearch:
+      description: >-
+        Configuration data for searching a account payment limits.
+      type: object
+      properties:
+        groups:
+          description: >-
+            The groups the authenticated user can use to filter.
+          type: array
+          items:
+            $ref: '#/components/schemas/Group'
+        accountTypes:
+          description: >-
+            The account types that can be used to filter.
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountType'
+        exportFormats:
+          description: >-
+            The formats which the search results can be exported.
+          type: array
+          items:
+            $ref: '#/components/schemas/ExportFormat'
 
     DataForSetSecurityAnswer:
       description: >-
@@ -48259,20 +49843,49 @@ components:
 
     ForgottenPasswordRequest:
       description: >-
-        Definitions to request a forgotten password reset
+        Definitions to request a the forgotten user identification or password
+        change.
       type: object
       properties:
         user:
           description: >-
             An identification method for the user. Allows the same identification
-            methods (principal types) as the login, plus e-mail.
+            methods (principal types) as the login, plus e-mail and mobile phone
+            (if they are used as identification methods).
           type: string
+        sendMedium:
+          description: >-
+            Which medium to send the code which is required for proceeding with
+            the operation
+          allOf:
+            - $ref: '#/components/schemas/SendMediumEnum'
         captcha:
           description: >-
             The captcha response required when something is returned in
             `DataForLogin.forgotPasswordCaptchaProvider`.
           allOf:
             - $ref: '#/components/schemas/CaptchaResponse'
+
+    ForgottenPasswordResponse:
+      description: >-
+        Result of a request to change a forgotten password
+      type: object
+      properties:
+        sendMedium:
+          description: >-
+            The medium to which the verification code was sent
+          allOf:
+            - $ref: '#/components/schemas/SendMediumEnum'
+        sentTo:
+          description: >-
+            Either a single element array with the e-mail address or the
+            mobile phone number to which the verification code was sent.
+            If not exactly the value used to identify the user, the values
+            will be masked, for example: `joh*******@email.com` or
+            `(**) *****-*123`.
+          type: array
+          items:
+            type: string
 
     FullProfileEdit:
       description: >-
@@ -48540,6 +50153,16 @@ components:
         Result for the list of a general search of account balance limits
       allOf:
       - $ref: '#/components/schemas/AccountBalanceLimitsResult'
+      - type: object
+        properties:
+          user:
+            $ref: '#/components/schemas/User'
+
+    GeneralAccountPaymentLimitsResult:
+      description: >-
+        Result for the list of a general search of account payment limits
+      allOf:
+      - $ref: '#/components/schemas/AccountPaymentLimitsResult'
       - type: object
         properties:
           user:
@@ -51637,6 +53260,12 @@ components:
                 The generated order number according to the webshop settings.
             status:
               $ref: '#/components/schemas/OrderStatusEnum'
+            items:
+              description: >-
+                The list of product items added to the order
+              type: array
+              items:
+               $ref: '#/components/schemas/WebshopAd'
 
 
     OrderDataForNew:
@@ -51754,11 +53383,6 @@ components:
         - $ref: '#/components/schemas/BaseOrderItem'
         - type: object
           properties:
-            price:
-              description: >-
-                The charged price of the product.
-              type: string
-              format: number
             totalPrice:
               description: >-
                 The total price for this item, i.e the charged price of the
@@ -54875,6 +56499,18 @@ components:
             type: string
 
 
+    SetAccountPaymentLimits:
+      description: Parameters for setting the new account payment limits.
+      allOf:
+      - $ref: '#/components/schemas/BaseAccountPaymentLimits'
+      - type: object
+        properties:
+          comment:
+            description: >-
+              Comments supplied by the manager regarding the limit change.
+            type: string
+
+
     SetDeliveryMethod:
       description: >-
         Delivery method information
@@ -55081,11 +56717,6 @@ components:
                 could be used to show a warning message to the client
                 indicating  the price has changed if it is different from the
                 current price of the `product`.
-              type: string
-              format: number
-            price:
-              description: >-
-                The regular price.
               type: string
               format: number
             promotionalPrice:
@@ -57047,6 +58678,20 @@ components:
           items:
             $ref: '#/components/schemas/AccountBalanceLimitsResult'
 
+    UserAccountPaymentLimitsListData:
+      description: >-
+        Data regarding the payment, daily, weekly and monthly amount limits of a
+        user accounts.
+      type: object
+      properties:
+        user:
+          $ref: '#/components/schemas/User'
+        accountLimits:
+          description: The payment limits for each account
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountPaymentLimitsResult'
+
     UserAdInterestsListData:
       description: >-
         Contains, besides the user's advertisement interests, additional data for its
@@ -57486,6 +59131,10 @@ components:
         - $ref: '#/components/schemas/UserBasicData'
         - type: object
           properties:
+            nameLabel:
+              description: >-
+                The label used for the name of users
+              type: string
             details:
               description: >-
                 Additional details to the user being edited
@@ -57557,6 +59206,10 @@ components:
         - $ref: '#/components/schemas/BasicUserDataForNew'
         - type: object
           properties:
+            nameLabel:
+              description: >-
+                The label used for the name of users
+              type: string
             group:
               description: >-
                 Details of the registration group.
@@ -58965,6 +60618,10 @@ components:
               type: string
               description: >-
                 The user's e-mail
+            nameLabel:
+              description: >-
+                The label used for the name of users
+              type: string
             emailPendingValidation:
               description: >-
                 Returned for managers / own user when the user has changed his
@@ -59735,6 +61392,20 @@ components:
               description: >-
                 The voucher description
               type: string
+            redeemAllowedGroups:
+              description: >-
+                The list of goups allowed as redeemers. And empty list means all groups with permissions are allowed.
+                Only this list or the `redeemAllowedUsers` list can be not null at the same time.
+              type: array
+              items:
+                $ref: '#/components/schemas/Group'
+            redeemAllowedUsers:
+              description: >-
+                The list of users allowed as redeemers. An empty list means all users with permissions are allowed.
+                Only this list or the `redeemAllowedGroups` list can be not null at the same time.
+              type: array
+              items:
+                $ref: '#/components/schemas/User'
 
     VoucherView:
       description: >-
@@ -59766,6 +61437,20 @@ components:
                 The transaction which redeemed this voucher, if any and visible.
               allOf:
                 - $ref: '#/components/schemas/Transaction'
+            redeemAllowedGroups:
+              description: >-
+                The list of goups allowed as redeemers. And empty list means all groups with permissions are allowed.
+                Only this list or the `redeemAllowedUsers` list can be not null at the same time.
+              type: array
+              items:
+                $ref: '#/components/schemas/Group'
+            redeemAllowedUsers:
+              description: >-
+                The list of users allowed as redeemers. An empty list means all users with permissions are allowed.
+                Only this list or the `redeemAllowedGroups` list can be not null at the same time.
+              type: array
+              items:
+                $ref: '#/components/schemas/User'
             canChangeExpirationDate:
               description:
                 Can the authenticated user change this voucher's expiration date?
@@ -59990,10 +61675,6 @@ components:
                 If true then it means there is always disponibility of the webshop
                 ad.
               type: boolean
-            productNumber:
-              description: >-
-                The number assigned to the webshop ad.
-              type: string
 
     WebshopSettings:
       description: >-
