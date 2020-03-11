@@ -329,7 +329,7 @@
     "title": {
       "change.self": "Change your password",
       "change.user": "Change user password",
-      "forgotten": "Recover your password",
+      "forgotten": "User identification / password recovery",
       "manage.single.self": "Manage your password",
       "manage.multiple.self": "Manage your passwords",
       "manage.single.user": "Manage user password",
@@ -339,7 +339,7 @@
     "mobileTitle": {
       "change.self": "Password change",
       "change.user": "Password change",
-      "forgotten": "Password recovery",
+      "forgotten": "User / password recovery",
       "manage.single.self": "Password",
       "manage.multiple.self": "Passwords",
       "manage.single.user": "User password",
@@ -347,13 +347,18 @@
       "securityAnswer": "Security answer"
     },
     "forgotten": {
-      "preface": "Here you can recover your password. Fill in your user identification below. You can use one of the following:",
+      "preface": "Here you can recover your user identification and change your password. Fill in your user identification below, and you will receive a verification code. You can use one of the following:",
       "principal": "User",
-      "captcha": "Type in the characters below",
-      "email": "You will receive shortly an e-mail with your user identification and instructions on how to reset your password",
+      "captcha": "Captcha validation",
+      "code": "Verification code",
+      "code.sent": "The verification code was sent to {to}",
+      "sendMedium": "Receive code by",
+      "generate": "Generate password",
       "generated.message": "Once you submit, a new password will be generated and sent to your e-mail address",
-      "generated.done": "You should receive shortly an e-mail with your new password.",
-      "manual.done": "Your password has been successfully changed. You can now use it to login."
+      "generated.done.email": "You should receive shortly an e-mail with your new password.",
+      "generated.done.sms": "You should receive shortly an SMS message with your new password.",
+      "manual.done": "Your password has been successfully changed. You can now use it to login.",
+      "title.changePassword": "Change your password"
     },
     "expired": {
       "preface": "Your {type} has expired.",

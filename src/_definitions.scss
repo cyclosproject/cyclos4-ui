@@ -366,6 +366,24 @@ $title-plain-button-active-border-color-dark: $menu-bar-active-border-color-dark
 $title-plain-button-active-color-dark: $title-plain-button-color-dark !default;
 $title-plain-button-active-bg-dark: $title-plain-button-bg-dark !default;
 
+// Action toolbar buttons
+$toolbar-button-bg: transparent !default;
+$toolbar-button-border-color: transparent !default;
+$toolbar-button-color: $side-menu-inactive-color !default;
+$toolbar-button-icon-color: $side-menu-inactive-icon-color !default;
+$toolbar-button-hover-bg: $side-menu-active-hover-bg !default;
+$toolbar-button-hover-border-color: $side-menu-inactive-hover-bg !default;
+$toolbar-button-hover-color: $side-menu-inactive-color !default;
+
+// Action toolbar buttons on dark background
+$toolbar-button-bg-dark: transparent !default;
+$toolbar-button-border-color-dark: transparent !default;
+$toolbar-button-color-dark: $side-menu-inactive-color-dark !default;
+$toolbar-button-icon-color-dark: $side-menu-inactive-icon-color-dark !default;
+$toolbar-button-hover-bg-dark: $side-menu-active-hover-bg-dark !default;
+$toolbar-button-hover-border-color-dark: $side-menu-inactive-hover-bg-dark !default;
+$toolbar-button-hover-color-dark: $side-menu-inactive-color-dark !default;
+
 // Tables
 $table-color: $card-color !default;
 $table-bg: $card-bg !default;

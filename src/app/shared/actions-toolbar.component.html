@@ -19,9 +19,9 @@
 </ng-container>
 
 <ng-template #button let-action>
-  <button #actionButton class="btn btn-outline-primary"
+  <button #actionButton class="btn btn-action-toolbar btn-outline-primary"
     (click)="action.onClick(); ; blurIfClick(actionButton, $event);">
     <icon size="1.5rem" [icon]="action.icon"></icon>
-    <div class="btn-action-toolbar-text">{{ action.label }}</div>
+    <div>{{ action.label }}</div>
   </button>
 </ng-template>

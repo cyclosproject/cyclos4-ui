@@ -73,6 +73,38 @@ table.table {
   }
 }
 
+.btn-action-toolbar {
+  display: inline-flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: calc(#{$input-height} - 3px);
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  padding-left: calc(#{$btn-padding-x} - 2px);
+
+  color: $toolbar-button-color;
+  background-color: $toolbar-button-bg;
+  border-color: $toolbar-button-border-color;
+
+  icon {
+    position: relative;
+    top: -1px;
+    color: $toolbar-button-icon-color;
+  }
+
+  &:active, &.focus, &:hover {
+    color: $toolbar-button-hover-color;
+    background-color: $toolbar-button-hover-bg;
+    border-color: $toolbar-button-hover-border-color;
+  }
+
+  & > div {
+    padding-left: 0.5rem;
+    text-align: start;
+    @include text-truncate();
+  }  
+}
+
 body.dark {
   .btn-primary {
     @include button-variant($button-color-dark, $button-border-color-dark);
@@ -84,4 +116,20 @@ body.dark {
     @include button-variant($button-icon-bg-dark, $button-icon-border-color-dark);
     color: $button-icon-color-dark;
   }
+
+  .btn-action-toolbar {
+    color: $toolbar-button-color-dark;
+    background-color: $toolbar-button-bg-dark;
+    border-color: $toolbar-button-border-color-dark;
+  
+    icon {
+      color: $toolbar-button-icon-color-dark;
+    }
+  
+    &:active, &.focus, &:hover {
+      color: $toolbar-button-hover-color-dark;
+      background-color: $toolbar-button-hover-bg-dark;
+      border-color: $toolbar-button-hover-border-color-dark;
+    }
+  }  
 }

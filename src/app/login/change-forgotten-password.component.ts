@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Injector, OnInit } from '@angular/core';
 import { FormGroup, ValidatorFn, Validators } from '@angular/forms';
-import { DataForChangeForgottenPassword } from 'app/api/models';
+import { DataForChangeForgottenPassword, PasswordModeEnum } from 'app/api/models';
 import { AuthService } from 'app/api/services';
 import { LoginState } from 'app/core/login-state';
 import { BasePageComponent } from 'app/shared/base-page.component';
@@ -23,7 +23,9 @@ const PASSWORDS_MATCH_VAL: ValidatorFn = control => {
 };
 
 /**
- * Component shown after the user clicks the received link to change a forgotten password
+ * Component shown after the user clicks the received link to change a forgotten password.
+ * This component will be removed in a future version.
+ * It is here just to support the large verification key which will be removed in Cyclos 4.15.
  */
 @Component({
   selector: 'change-forgotten-password',
@@ -61,7 +63,7 @@ export class ChangeForgottenPasswordComponent
       if (data.securityQuestion) {
         this.form.setControl('securityAnswer', this.formBuilder.control('', Validators.required));
       }
-      if (!data.generated) {
+      if (data.passwordType.mode === PasswordModeEnum.MANUAL) {
         this.form.setControl('checkConfirmation', this.formBuilder.control(true));
         this.form.setControl('newPassword', this.formBuilder.control('', Validators.required));
         this.form.setControl('newPasswordConfirmation', this.formBuilder.control('',
@@ -76,10 +78,10 @@ export class ChangeForgottenPasswordComponent
     }
     this.addSub(this.authService.changeForgottenPassword(this.form.value)
       .subscribe(() => {
-        const generated = this.data.generated;
+        const generated = this.data.passwordType.mode === PasswordModeEnum.GENERATED;
         let message: string;
         if (generated) {
-          message = this.i18n.password.forgotten.generatedDone;
+          message = this.i18n.password.forgotten.generatedDoneEmail;
         } else {
           message = this.i18n.password.forgotten.manualDone;
         }

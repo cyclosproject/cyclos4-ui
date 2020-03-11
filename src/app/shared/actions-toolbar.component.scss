@@ -4,7 +4,7 @@
   display: flex;
   flex-wrap: wrap;
   border-bottom: 1px solid $border-color;
-  padding-bottom: 0.75rem;
+  padding-bottom: 0.55rem;
 }
 
 .actions-toolbar-item-right {
@@ -13,26 +13,8 @@
 }
 
 .btn {
-  display: inline-flex;
-  justify-content: flex-start;
-  align-items: center;
   margin-left: 0.75rem;
-  margin-top: 0.75rem;
-  height: calc(#{$input-height} - 3px);
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
-  padding-left: calc(#{$btn-padding-x} - 2px);
-
-  icon {
-    position: relative;
-    top: -1px;
-  }
-
-  .btn-action-toolbar-text {
-    padding-left: 0.5rem;
-    text-align: start;
-    @include text-truncate();
-  }  
+  margin-top: 0.6rem;
 }
 
 body.dark :host ::ng-deep {
