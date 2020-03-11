@@ -4,7 +4,7 @@
   display: flex;
   flex-wrap: wrap;
   border-bottom: 1px solid $border-color;
-  padding-bottom: 0.75rem;
+  padding-bottom: 0.55rem;
 }
 
 .actions-toolbar-item-right {
@@ -14,7 +14,7 @@
 
 .btn {
   margin-left: 0.75rem;
-  margin-top: 0.75rem;
+  margin-top: 0.6rem;
 }
 
 body.dark :host ::ng-deep {
