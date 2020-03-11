@@ -4,7 +4,7 @@
       [mobileHeading]="i18n.ad.mobileTitle.adInterests"
       [headingActions]="headingActions$ | async">
       <label-value *ngIf="!self" [label]="i18n.general.user">
-        <user-link [user]="data.owner"></user-link>
+        <user-link [user]="data.user"></user-link>
       </label-value>
       <label-value [label]="i18n.general.name" [value]="data.name">
       </label-value>
