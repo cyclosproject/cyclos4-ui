@@ -980,20 +980,17 @@ paths:
         Requests a forgotten password, notifying the user with instructions to
         reset it
       description: >-
-        Sends a verification code to the user, either by e-mail or SMS, so that
-        they can change the password if it was forgotten. For it to work, the
-        Cyclos configuration must allow the forgotten password operation.
+        Sends an e-mail (in the future SMS will be supported) with instructions on
+        how to reset the password, in case it was forgotten. In order to work, the
+        Cyclos configuration options, both to show the forgotten password link and
+        to enable for users need to be set.
       tags:
         - Auth
       parameters: []
       responses:
-        '200':
+        '204':
           description: >-
-            The verification code is sent
-          content:
-            application/json:
-              schema:
-                 $ref: '#/components/schemas/ForgottenPasswordResponse'
+            The password e-mail is sent and nothing is returned
         '401':
           description: >-
             Unauthorized access. Missing or invalid crendentials supplied for such
@@ -1051,29 +1048,9 @@ paths:
         - $ref: '#/components/parameters/fields'
         - name: key
           in: query
-          deprecated: true
-          x-remove-version: 4.15
-          required: false
+          required: true
           description: >-
-            Use both `user` and `code`.
-
-
             The validation key which was sent by e-mail to the user
-          schema:
-            type: string
-        # In 4.15, when validationKey is removed, make both user and code required
-        - name: user
-          in: query
-          required: false
-          description: >-
-            The user identification for password change
-          schema:
-            type: string
-        - name: code
-          in: query
-          required: false
-          description: >-
-            The verification code which was sent to the user
           schema:
             type: string
       responses:
@@ -46603,13 +46580,9 @@ components:
         The parameters for confirming a forgotten password reset
       type: object
       properties:
-        user:
+        key:
           description: >-
-            The user identification for password change
-          type: string
-        code:
-          description: >-
-            The verification code which was sent to the user
+            The key received by e-mail on the forgotten password reset request
           type: string
         securityAnswer:
           description: >-
@@ -46636,20 +46609,6 @@ components:
           description: >-
             The new password confirmation value. Is ignored unless
             `checkConfirmation` is set to `true`.
-        sendMedium:
-          description: >-
-            Only used for generated passwords. Is the send medium to which to send
-            the password. Normally is the same as the one to which the verification
-            code was sent.
-          allOf:
-            - $ref: '#/components/schemas/SendMediumEnum'
-        key:
-          deprecated: true
-          x-remove-version: 4.15
-          description: >-
-            The key received by e-mail on the forgotten password reset request
-          type: string
-
 
     ChangeGroupMembershipParams:
       description: >-
@@ -48118,43 +48077,20 @@ components:
 
     DataForChangeForgottenPassword:
       description: >-
-        Definitions for a user to confirm a forgotten password request,
-        after the verification code was successfully verified.
+        Definitions for a user to confirm a forgotten password request
       type: object
       properties:
-        user:
+        generated:
           description: >-
-            The user which is having the password changed
-          allOf:
-            - $ref: '#/components/schemas/User'
-        passwordType:
-          description: >-
-            The password type which is being changed
-          allOf:
-            - $ref: '#/components/schemas/PasswordType'
+            Indicates whether the password that is being affected is generated (when
+            `true`) or manual (when `false`).
+          type: boolean
         securityQuestion:
           description: >-
             If configured in Cyclos, and defined by the user, will be the security
             question that needs to be answered in order to complete the forgotten
             password reset request.
           type: string
-        principals:
-          description: >-
-            The list of user identifications (principals) which can be used in
-            the current channel
-          type: array
-          items:
-            $ref: '#/components/schemas/UserRegistrationPrincipal'
-        generated:
-          deprecated: true
-          x-remove-version: 4.15
-          description: >-
-            Use `passwordType.mode == 'generated'` instead.
-
-            Indicates whether the password that is being affected is generated (when
-            `true`) or manual (when `false`).
-          type: boolean
-
 
     DataForDeviceConfirmationApproval:
       description: >-
@@ -49843,49 +49779,20 @@ components:
 
     ForgottenPasswordRequest:
       description: >-
-        Definitions to request a the forgotten user identification or password
-        change.
+        Definitions to request a forgotten password reset
       type: object
       properties:
         user:
           description: >-
             An identification method for the user. Allows the same identification
-            methods (principal types) as the login, plus e-mail and mobile phone
-            (if they are used as identification methods).
+            methods (principal types) as the login, plus e-mail.
           type: string
-        sendMedium:
-          description: >-
-            Which medium to send the code which is required for proceeding with
-            the operation
-          allOf:
-            - $ref: '#/components/schemas/SendMediumEnum'
         captcha:
           description: >-
             The captcha response required when something is returned in
             `DataForLogin.forgotPasswordCaptchaProvider`.
           allOf:
             - $ref: '#/components/schemas/CaptchaResponse'
-
-    ForgottenPasswordResponse:
-      description: >-
-        Result of a request to change a forgotten password
-      type: object
-      properties:
-        sendMedium:
-          description: >-
-            The medium to which the verification code was sent
-          allOf:
-            - $ref: '#/components/schemas/SendMediumEnum'
-        sentTo:
-          description: >-
-            Either a single element array with the e-mail address or the
-            mobile phone number to which the verification code was sent.
-            If not exactly the value used to identify the user, the values
-            will be masked, for example: `joh*******@email.com` or
-            `(**) *****-*123`.
-          type: array
-          items:
-            type: string
 
     FullProfileEdit:
       description: >-
@@ -59131,10 +59038,6 @@ components:
         - $ref: '#/components/schemas/UserBasicData'
         - type: object
           properties:
-            nameLabel:
-              description: >-
-                The label used for the name of users
-              type: string
             details:
               description: >-
                 Additional details to the user being edited
@@ -59206,10 +59109,6 @@ components:
         - $ref: '#/components/schemas/BasicUserDataForNew'
         - type: object
           properties:
-            nameLabel:
-              description: >-
-                The label used for the name of users
-              type: string
             group:
               description: >-
                 Details of the registration group.
@@ -60618,10 +60517,6 @@ components:
               type: string
               description: >-
                 The user's e-mail
-            nameLabel:
-              description: >-
-                The label used for the name of users
-              type: string
             emailPendingValidation:
               description: >-
                 Returned for managers / own user when the user has changed his
