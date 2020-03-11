@@ -329,7 +329,7 @@
     "title": {
       "change.self": "Uw wachtwoord wijzigen",
       "change.user": "Change user password",
-      "forgotten": "Recover your password",
+      "forgotten": "User identification / password recovery",
       "manage.single.self": "Het beheer van uw wachtwoord",
       "manage.multiple.self": "Het beheren van uw wachtwoorden",
       "manage.single.user": "Manage user password",
@@ -339,7 +339,7 @@
     "mobileTitle": {
       "change.self": "Password change",
       "change.user": "Password change",
-      "forgotten": "Password recovery",
+      "forgotten": "User / password recovery",
       "manage.single.self": "Password",
       "manage.multiple.self": "Passwords",
       "manage.single.user": "User password",
@@ -347,13 +347,18 @@
       "securityAnswer": "Security answer"
     },
     "forgotten": {
-      "preface": "Hier kunt u uw wachtwoord herstellen. Vul uw gebruikersnaam hieronder in. U kunt een van de volgende handelingen uit:",
+      "preface": "Here you can recover your user identification and change your password. Fill in your user identification below, and you will receive a verification code. You can use one of the following:",
       "principal": "Gebruiker",
-      "captcha": "Type de karakters hieronder",
-      "email": "U ontvangt binnenkort een e-mailbericht met uw gebruikersnaam en instructies hoe u uw wachtwoord kan resetten",
+      "captcha": "Captcha validation",
+      "code": "Verification code",
+      "code.sent": "The verification code was sent to {to}",
+      "sendMedium": "Receive code by",
+      "generate": "Generate password",
       "generated.message": "Zodra u dit hebt ingediend, wordt een nieuw wachtwoord gegenereerd en verzonden naar uw e-mail adres",
-      "generated.done": "U ontvangt binnenkort een e-mail met uw nieuwe wachtwoord.",
-      "manual.done": "Uw wachtwoord is met succes gewijzigd. U kunt het nu gebruiken om in te loggen."
+      "generated.done.email": "U ontvangt binnenkort een e-mail met uw nieuwe wachtwoord.",
+      "generated.done.sms": "You should receive shortly an SMS message with your new password.",
+      "manual.done": "Uw wachtwoord is met succes gewijzigd. U kunt het nu gebruiken om in te loggen.",
+      "title.changePassword": "Uw wachtwoord wijzigen"
     },
     "expired": {
       "preface": "Uw {type} is verlopen.",
